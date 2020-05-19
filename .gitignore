@@ -1,0 +1,10 @@
+build
+data/
+cas1*
+*.lp
+*.orig
+global_grid
+test_case_expansion
+/cas*
+/tyndp
+*.7z
