@@ -6,6 +6,8 @@ SET(   LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 
 SET(USE_MPI FALSE)
 
+set (CMAKE_CXX_STANDARD 11)
+
 IF( USE_MPI )
 	SET(CMAKE_CXX_COMPILER mpicxx)
 ENDIF( USE_MPI )
@@ -23,7 +25,7 @@ ELSE()
 #		SET ( CMAKE_BUILD_TYPE "RELEASE"     )
 #	ENDIF( WITH_DEBUG )
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -DNDEBUG")
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -fmessage-length=0 -fPIC" )
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -fmessage-length=0 -fPIC" )
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-conversion -Wno-sign-compare")
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-strict-aliasing -Wno-unused-parameter")
 ENDIF( WIN32 )
