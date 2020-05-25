@@ -1,10 +1,33 @@
+# ===========================================================================
+# CMake configuration
+# ===========================================================================
 CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
+
+# ===========================================================================
+# Project configuration
+# ===========================================================================
 PROJECT(antaresXpansion VERSION 0.0.0)
 
+# ===========================================================================
+# Default parameters
+# ===========================================================================
+IF(NOT USE_MPI)
+	SET(USE_MPI FALSE)
+ENDIF()
+
+IF(NOT NO_SEQUENTIAL)
+	SET(NO_SEQUENTIAL FALSE)
+ENDIF()
+
+IF((NOT USE_MPI) AND (NO_SEQUENTIAL))
+	MESSAGE(FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or NO_SEQUENTIAL to false")
+ENDIF()
+
+# ===========================================================================
+# Compiler options
+# ===========================================================================
 SET(EXECUTABLE_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 SET(   LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
-
-SET(USE_MPI FALSE)
 
 set (CMAKE_CXX_STANDARD 11)
 
@@ -39,6 +62,10 @@ MESSAGE("CMAKE_CXX_COMPILER_VERSION : ${CMAKE_CXX_COMPILER_VERSION}")
 MESSAGE("XPRESSDIR is $ENV{XPRESSDIR}")
 MESSAGE("BOOSTDIR  is $ENV{BOOSTDIR}")
 
+
+# ===========================================================================
+# Include directories
+# ===========================================================================
 INCLUDE_DIRECTORIES(
 	./src_cpp
 	$ENV{XPRESSDIR}/include
@@ -54,17 +81,20 @@ IF( USE_MPI )
 	ENDIF(WIN32)
 ENDIF( USE_MPI )
 
+
+# ===========================================================================
+# Link directories
+# ===========================================================================
 LINK_DIRECTORIES($ENV{XPRESSDIR}/lib)
 
-####################
+# ===========================================================================
 # Targets
-####################
+# ===========================================================================
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src_cpp")
 
 IF( USE_MPI )
 	add_subdirectory ("${PROJECT_SOURCE_DIR}/src_mpi")
 ENDIF( USE_MPI )
-
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src_enzo_test")
 
