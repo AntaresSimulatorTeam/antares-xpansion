@@ -38,15 +38,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 						unstash 'source'
 
 						config.buildTypes.each { buildType ->
-							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.14.0 (jenkins)'}/cmake"]) {
-								sh """
-									conan install \
-										--update \
-										--settings build_type=${buildType} \
-										--install-folder builds/${buildType} \
-										.
-								"""
-							}
+
 
 							cmakeBuild (
 								buildDir: "builds/${buildType}",
@@ -54,8 +46,8 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 								cleanBuild: false,
 								cmakeArgs: """
 									-D CMAKE_INSTALL_PREFIX="${WORKSPACE}/install/${buildType}"
-									-D myproject_WITH_COVERAGE=${config.containsKey('testSteps') && config.testSteps.contains('coverage') ? 'ON' : 'OFF'}
-									-D myproject_BUILD_DOCUMENTATION=always
+									-D STAGEENZO_WITH_COVERAGE=${config.containsKey('testSteps') && config.testSteps.contains('coverage') ? 'ON' : 'OFF'}
+									-D STAGEENZO_BUILD_DOCUMENTATION=always
 									-D STATIC_RUNTIME=OFF
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
 								""",
@@ -195,7 +187,6 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 
 	gitlabCommitStatus('deploy') {
 		stage("deploy") {
-			conanDeploy(configs)
 		}
 	}
 }
