@@ -12,6 +12,7 @@ IF( USE_MPI )
 	SET(CMAKE_CXX_COMPILER mpicxx)
 ENDIF( USE_MPI )
 MESSAGE("USE_MPI is ${USE_MPI}")
+
 IF( WIN32 )
 #	SET( CMAKE_CONFIGURATION_TYPES "Debug;Release;" CACHE STRING "limited configs" FORCE)
 #	SET( CMAKE_CXX_FLAGS_DEBUG          "/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1" )
@@ -37,10 +38,12 @@ MESSAGE("CMAKE_CXX_COMPILER_VERSION : ${CMAKE_CXX_COMPILER_VERSION}")
 
 MESSAGE("XPRESSDIR is $ENV{XPRESSDIR}")
 MESSAGE("BOOSTDIR  is $ENV{BOOSTDIR}")
+
 INCLUDE_DIRECTORIES(
 	./src_cpp
 	$ENV{XPRESSDIR}/include
 	)
+
 IF( USE_MPI )
 	IF(WIN32)
 		INCLUDE_DIRECTORIES($ENV{BOOSTDIR} ./src_mpi $ENV{MSMPI_INC} $ENV{MSMPI_INC}/x64)
@@ -53,46 +56,16 @@ ENDIF( USE_MPI )
 
 LINK_DIRECTORIES($ENV{XPRESSDIR}/lib)
 
-
-FILE(
-	GLOB
-	SEQUENTIAL_FILES
-	./src_cpp/*.cc
-	./src_cpp/*.cpp
-	./src_cpp/*.h  
-	./src_cpp/*.hxx
-)
-ADD_LIBRARY(sequentialcore STATIC ${SEQUENTIAL_FILES} )
-IF( USE_MPI )
-	FILE(
-		GLOB
-		MPI_FILES
-		./src_mpi/*.cc
-		./src_mpi/*.cpp
-		./src_mpi/*.h  
-		./src_mpi/*.hxx
-	)
-	ADD_LIBRARY(mpicore STATIC ${MPI_FILES} )
-ENDIF( USE_MPI )
-
-ADD_EXECUTABLE(test_sur_les_set ./src_enzo_test/test_sur_les_set.cpp)
-TARGET_LINK_LIBRARIES(test_sur_les_set sequentialcore)
-
-ADD_EXECUTABLE(merge_mps ./exe_cpp/merge_mps.cpp)
-TARGET_LINK_LIBRARIES(merge_mps sequentialcore xprs)
-
-ADD_EXECUTABLE(analyse_mps ./exe_cpp/analyse_mps.cpp)
-TARGET_LINK_LIBRARIES(analyse_mps sequentialcore xprs)
+####################
+# Targets
+####################
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src_cpp")
 
 IF( USE_MPI )
-	ADD_EXECUTABLE(bendersmpi  exe_mpi/main.cpp)
-	IF(WIN32)
-		TARGET_LINK_LIBRARIES(bendersmpi sequentialcore mpicore xprs msmpi libboost_serialization-vc141-mt-x64-1_67)
-	ELSE(WIN32)
-		TARGET_LINK_LIBRARIES(bendersmpi sequentialcore mpicore xprs boost_serialization boost_mpi-mt.so)
-	ENDIF(WIN32)
-	
-ELSE( USE_MPI )
-	ADD_EXECUTABLE(benderssequential exe_cpp/main.cpp)
-	TARGET_LINK_LIBRARIES(benderssequential sequentialcore xprs )
+	add_subdirectory ("${PROJECT_SOURCE_DIR}/src_mpi")
 ENDIF( USE_MPI )
+
+
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src_enzo_test")
+
+add_subdirectory ("${PROJECT_SOURCE_DIR}/exe")
