@@ -6,11 +6,6 @@ configs = [
 		buildTypes: [ 'Debug', 'Release' ],
 		testSteps: [ 'unittest', 'cppcheck', 'coverage', 'memcheck' ],
 		publish: true
-	],
-	[
-		node: 'compil-win64-vc14',
-		buildTypes: [ 'Release' ],
-		testSteps: [ 'unittest' ]
 	]
 ]
 
