@@ -1,15 +1,47 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-PROJECT(STAGE_ENZO)
+# ===========================================================================
+# CMake configuration
+# ===========================================================================
+CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 
+# ===========================================================================
+# Project configuration
+# ===========================================================================
+PROJECT(antaresXpansion VERSION 0.0.0)
+
+# ===========================================================================
+# Default parameters
+# ===========================================================================
+IF(NOT USE_MPI)
+	SET(USE_MPI FALSE)
+ENDIF()
+
+IF(NOT NO_SEQUENTIAL)
+	SET(NO_SEQUENTIAL FALSE)
+ENDIF()
+
+IF((NOT USE_MPI) AND (NO_SEQUENTIAL))
+	MESSAGE(FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or NO_SEQUENTIAL to false")
+ENDIF()
+
+set (BOOST_MIN_VERSION "1.65.1")
+
+# ===========================================================================
+# Compiler options
+# ===========================================================================
 SET(EXECUTABLE_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 SET(   LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 
-SET(USE_MPI FALSE)
+set (CMAKE_CXX_STANDARD 11)
 
+
+LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 IF( USE_MPI )
 	SET(CMAKE_CXX_COMPILER mpicxx)
 ENDIF( USE_MPI )
 MESSAGE("USE_MPI is ${USE_MPI}")
+
 IF( WIN32 )
 #	SET( CMAKE_CONFIGURATION_TYPES "Debug;Release;" CACHE STRING "limited configs" FORCE)
 #	SET( CMAKE_CXX_FLAGS_DEBUG          "/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1" )
@@ -23,7 +55,7 @@ ELSE()
 #		SET ( CMAKE_BUILD_TYPE "RELEASE"     )
 #	ENDIF( WITH_DEBUG )
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -DNDEBUG")
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pedantic -fmessage-length=0 -fPIC" )
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -fmessage-length=0 -fPIC" )
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-conversion -Wno-sign-compare")
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-strict-aliasing -Wno-unused-parameter")
 ENDIF( WIN32 )
@@ -33,64 +65,48 @@ MESSAGE("CMAKE_SOURCE_DIR : ${CMAKE_SOURCE_DIR}")
 MESSAGE("CMAKE_C_COMPILER_VERSION : ${CMAKE_C_COMPILER_VERSION}")
 MESSAGE("CMAKE_CXX_COMPILER_VERSION : ${CMAKE_CXX_COMPILER_VERSION}")
 
-MESSAGE("XPRESSDIR is $ENV{XPRESSDIR}")
-MESSAGE("BOOSTDIR  is $ENV{BOOSTDIR}")
+find_package("Xpress" REQUIRED)
+
+set (Xpress_INCLUDE "${XPRESS_LIBRARY_PATH}/../include")
+MESSAGE("Xpress_DIR is ${XPRESS_LIBRARY_PATH}/../")
+
+IF(USE_MPI)
+	find_package (Boost ${BOOST_MIN_VERSION} REQUIRED COMPONENTS mpi serialization)
+	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+
+	message(STATUS "BOOST_MPI_LIBRARY : " ${Boost_MPI_LIBRARY} )
+	message(STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY} )
+	message(STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS} )
+ENDIF()
+
+# ===========================================================================
+# Include directories
+# ===========================================================================
 INCLUDE_DIRECTORIES(
-	./src_cpp
-	$ENV{XPRESSDIR}/include
+    ${Xpress_INCLUDE}
 	)
+
 IF( USE_MPI )
 	IF(WIN32)
-		INCLUDE_DIRECTORIES($ENV{BOOSTDIR} ./src_mpi $ENV{MSMPI_INC} $ENV{MSMPI_INC}/x64)
-		LINK_DIRECTORIES($ENV{XPRESSDIR}/lib $ENV{BOOSTDIR}/stage/lib $ENV{MSMPI_LIB64})
-	ELSE(WIN32)
-		INCLUDE_DIRECTORIES($ENV{BOOSTDIR} ./src_mpi)
-		LINK_DIRECTORIES($ENV{XPRESSDIR}/lib $ENV{BOOSTDIR}/stage/lib)
-	ENDIF(WIN32)
+		INCLUDE_DIRECTORIES($ENV{MSMPI_INC} $ENV{MSMPI_INC}/x64)
+		LINK_DIRECTORIES($ENV{MSMPI_LIB64})
+	ENDIF( WIN32 )
 ENDIF( USE_MPI )
 
-LINK_DIRECTORIES($ENV{XPRESSDIR}/lib)
+# ===========================================================================
+# Link directories
+# ===========================================================================
+LINK_DIRECTORIES(${Xpress_LIBRARY_PATH})
 
-
-FILE(
-	GLOB
-	SEQUENTIAL_FILES
-	./src_cpp/*.cc
-	./src_cpp/*.cpp
-	./src_cpp/*.h  
-	./src_cpp/*.hxx
-)
-ADD_LIBRARY(sequentialcore STATIC ${SEQUENTIAL_FILES} )
-IF( USE_MPI )
-	FILE(
-		GLOB
-		MPI_FILES
-		./src_mpi/*.cc
-		./src_mpi/*.cpp
-		./src_mpi/*.h  
-		./src_mpi/*.hxx
-	)
-	ADD_LIBRARY(mpicore STATIC ${MPI_FILES} )
-ENDIF( USE_MPI )
-
-ADD_EXECUTABLE(test_sur_les_set ./src_enzo_test/test_sur_les_set.cpp)
-TARGET_LINK_LIBRARIES(test_sur_les_set sequentialcore)
-
-ADD_EXECUTABLE(merge_mps ./exe_cpp/merge_mps.cpp)
-TARGET_LINK_LIBRARIES(merge_mps sequentialcore xprs)
-
-ADD_EXECUTABLE(analyse_mps ./exe_cpp/analyse_mps.cpp)
-TARGET_LINK_LIBRARIES(analyse_mps sequentialcore xprs)
+# ===========================================================================
+# Targets
+# ===========================================================================
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src_cpp")
 
 IF( USE_MPI )
-	ADD_EXECUTABLE(bendersmpi  exe_mpi/main.cpp)
-	IF(WIN32)
-		TARGET_LINK_LIBRARIES(bendersmpi sequentialcore mpicore xprs msmpi libboost_serialization-vc141-mt-x64-1_67)
-	ELSE(WIN32)
-		TARGET_LINK_LIBRARIES(bendersmpi sequentialcore mpicore xprs boost_serialization boost_mpi-mt.so)
-	ENDIF(WIN32)
-	
-ELSE( USE_MPI )
-	ADD_EXECUTABLE(benderssequential exe_cpp/main.cpp)
-	TARGET_LINK_LIBRARIES(benderssequential sequentialcore xprs )
+	add_subdirectory ("${PROJECT_SOURCE_DIR}/src_mpi")
 ENDIF( USE_MPI )
+
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src_enzo_test")
+
+add_subdirectory ("${PROJECT_SOURCE_DIR}/exe")

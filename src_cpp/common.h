@@ -23,6 +23,7 @@
 #include <memory>
 #include <algorithm>
 #include <thread>
+#include <cmath>
 #include "Timer.h"
 
 struct Predicate;
