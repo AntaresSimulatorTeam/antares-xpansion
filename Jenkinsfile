@@ -4,7 +4,7 @@ configs = [
 	[
 		node: 'compil-debian9',
 		buildTypes: [ 'Debug', 'Release' ],
-		testSteps: [ 'unittest', 'cppcheck', 'coverage', 'memcheck' ],
+		testSteps: [ 'cppcheck' ],
 		publish: true
 	]
 ]
