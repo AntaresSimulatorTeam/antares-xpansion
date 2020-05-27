@@ -36,6 +36,7 @@ set (CMAKE_CXX_STANDARD 11)
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 IF( USE_MPI )
 	SET(CMAKE_CXX_COMPILER mpicxx)
 ENDIF( USE_MPI )
@@ -95,7 +96,7 @@ ENDIF( USE_MPI )
 # ===========================================================================
 # Link directories
 # ===========================================================================
-LINK_DIRECTORIES($ENV{XPRESSDIR}/lib)
+LINK_DIRECTORIES(${Xpress_LIBRARY_PATH})
 
 # ===========================================================================
 # Targets
