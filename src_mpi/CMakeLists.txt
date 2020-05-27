@@ -13,6 +13,16 @@ SET(
 	${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.h
 )
 
-
 ADD_LIBRARY(mpicore STATIC ${MPI_FILES} )
+
+target_link_libraries (mpicore
+	PUBLIC
+		sequentialcore
+)
+
+target_include_directories(mpicore
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 add_library (${PROJECT_NAME}::mpicore ALIAS mpicore)

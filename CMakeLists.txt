@@ -23,6 +23,8 @@ IF((NOT USE_MPI) AND (NO_SEQUENTIAL))
 	MESSAGE(FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or NO_SEQUENTIAL to false")
 ENDIF()
 
+set (BOOST_MIN_VERSION "1.65.1")
+
 # ===========================================================================
 # Compiler options
 # ===========================================================================
@@ -62,28 +64,33 @@ MESSAGE("CMAKE_SOURCE_DIR : ${CMAKE_SOURCE_DIR}")
 MESSAGE("CMAKE_C_COMPILER_VERSION : ${CMAKE_C_COMPILER_VERSION}")
 MESSAGE("CMAKE_CXX_COMPILER_VERSION : ${CMAKE_CXX_COMPILER_VERSION}")
 
-MESSAGE("XPRESSDIR is $ENV{XPRESSDIR}")
-MESSAGE("BOOSTDIR  is $ENV{BOOSTDIR}")
+find_package("Xpress" REQUIRED)
 
+set (Xpress_INCLUDE "${XPRESS_LIBRARY_PATH}/../include")
+MESSAGE("Xpress_DIR is ${XPRESS_LIBRARY_PATH}/../")
+
+IF(USE_MPI)
+	find_package (Boost ${BOOST_MIN_VERSION} REQUIRED COMPONENTS mpi serialization)
+	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+
+	message(STATUS "BOOST_MPI_LIBRARY : " ${Boost_MPI_LIBRARY} )
+	message(STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY} )
+	message(STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS} )
+ENDIF()
 
 # ===========================================================================
 # Include directories
 # ===========================================================================
 INCLUDE_DIRECTORIES(
-	./src_cpp
-	$ENV{XPRESSDIR}/include
+    ${Xpress_INCLUDE}
 	)
 
 IF( USE_MPI )
 	IF(WIN32)
-		INCLUDE_DIRECTORIES($ENV{BOOSTDIR} ./src_mpi $ENV{MSMPI_INC} $ENV{MSMPI_INC}/x64)
-		LINK_DIRECTORIES($ENV{XPRESSDIR}/lib $ENV{BOOSTDIR}/stage/lib $ENV{MSMPI_LIB64})
-	ELSE(WIN32)
-		INCLUDE_DIRECTORIES($ENV{BOOSTDIR} ./src_mpi)
-		LINK_DIRECTORIES($ENV{XPRESSDIR}/lib $ENV{BOOSTDIR}/stage/lib)
-	ENDIF(WIN32)
+		INCLUDE_DIRECTORIES($ENV{MSMPI_INC} $ENV{MSMPI_INC}/x64)
+		LINK_DIRECTORIES($ENV{MSMPI_LIB64})
+	ENDIF( WIN32 )
 ENDIF( USE_MPI )
-
 
 # ===========================================================================
 # Link directories

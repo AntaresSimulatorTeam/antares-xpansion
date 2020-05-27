@@ -37,4 +37,15 @@ SET(SEQUENTIAL_FILES
 )
 
 ADD_LIBRARY(sequentialcore STATIC ${SEQUENTIAL_FILES} )
+
+target_include_directories(sequentialcore
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+target_link_libraries (sequentialcore
+	PUBLIC
+		${XPRESS_LIBRARY}
+)
+
 ADD_LIBRARY (${PROJECT_NAME}::sequentialcore ALIAS sequentialcore)
