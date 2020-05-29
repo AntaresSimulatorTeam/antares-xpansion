@@ -49,8 +49,9 @@ int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
 		buffer >> variable_id;
 		coupling_map[problem_name][variable_name] = variable_id;
 	}
-	int n(0);
+	
 	if (options.SLAVE_NUMBER >= 0) {
+		int n(0);
 		CouplingMap trimmer;
 		for (auto const & problem : coupling_map) {
 			if (problem.first == options.MASTER_NAME)

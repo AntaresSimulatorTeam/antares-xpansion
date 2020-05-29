@@ -145,16 +145,6 @@ Point const & SlaveCutTrimmer::get_subgradient() const {
 }
 
 /*!
-*  \brief Operator overloading of slave cut trimmer for stream output
-*
-*  \param stream : output stream
-*/
-std::ostream & operator<<(std::ostream & stream, SlaveCutTrimmer const & rhs) {
-	rhs.print(stream);
-	return stream;
-}
-
-/*!
 *  \brief Function to print a slave cut trimmer
 *
 *  \param stream : output stream
@@ -163,16 +153,6 @@ void SlaveCutTrimmer::print(std::ostream & stream)const {
 	std::stringstream buffer;
 	buffer << _const_cut << get_subgradient();
 	stream << buffer.str();
-}
-
-/*!
-*  \brief Stream output overloading of slave cut handler
-*
-*  \param stream : output stream
-*/
-std::ostream & operator<<(std::ostream & stream, SlaveCutDataHandler const & rhs) {
-	rhs.print(stream);
-	return stream;
 }
 
 /*!
@@ -185,17 +165,4 @@ void SlaveCutDataHandler::print(std::ostream & stream)const {
 	buffer << get_dbl(SLAVE_COST) << get_subgradient();
 	stream << buffer.str();
 	stream << " Simplexiter " << get_int(SIMPLEXITER) << " | ";
-}
-
-/*!
-*  \brief Stream output overloading of a slave cut
-*
-*  \param stream : output stream
-*/
-std::ostream & operator<<(std::ostream & stream, SlaveCutData const & rhs) {
-	std::stringstream buffer;
-	buffer << rhs.first.second[SLAVE_COST] << rhs.first.first.first;
-	stream << buffer.str();
-	stream << " Simplexiter " << rhs.first.first.second[SIMPLEXITER] << " | ";
-	return stream;
 }

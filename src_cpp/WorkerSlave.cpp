@@ -84,19 +84,6 @@ WorkerSlave::~WorkerSlave() {
 }
 
 /*!
-*  \brief Write in a problem in an lp file 
-*
-* Method to write a problem in an lp file
-*
-*  \param it : id of the problem
-*/
-void WorkerSlave::write(int it) {
-	std::stringstream name;
-	name << "slave_" << it << ".lp";
-	XPRSwriteprob(_xprs, name.str().c_str(), "l");
-}
-
-/*!
 *  \brief Fix a set of variables to constant in a problem
 *
 *  Method to set variables in a problem by fixing their bounds

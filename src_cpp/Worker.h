@@ -11,7 +11,7 @@ typedef std::shared_ptr<Worker> WorkerPtr;
 
 /*!
 * \class Worker
-* \brief Mother-class Worker 
+* \brief Mother-class Worker
 *
 *  This class opens and sets a problem from a mps and a mapping variable map
 */
@@ -32,7 +32,7 @@ public:
 	std::string _path_to_mps;
 	Str2Int _name_to_id; /*!< Link between the variable name and its identifier */
 	Int2Str _id_to_name; /*!< Link between the identifier of a variable and its name*/
-	
+
 public:
 
 	/*!
@@ -40,7 +40,7 @@ public:
 	*
 	*  Method to manage the different errors we could encounter during the optimization process
 	*
-	*  \param sSubName : 
+	*  \param sSubName :
 	*/
 	std::list<std::ostream *> & stream();
 
@@ -53,5 +53,4 @@ public:
 	bool _is_master;
 };
 
-void errormsg(XPRSprob & xprs,  const char *sSubName, int nLineNo, int nErrCode);
 void optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen, int nMsglvl);

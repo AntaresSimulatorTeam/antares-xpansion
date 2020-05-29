@@ -17,7 +17,7 @@ std::list<std::ostream *> & Worker::stream() {
 void XPRS_CC optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen,
 	int nMsglvl) {
 	Worker * ptr = NULL;
-	if (worker != NULL)ptr = (Worker*)worker;
+	if (worker != NULL) ptr = static_cast<Worker*>(worker);
 	switch (nMsglvl) {
 
 		/* Print Optimizer error messages and warnings */
@@ -40,41 +40,14 @@ void XPRS_CC optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLe
 	}
 }
 
-/************************************************************************************\
-* Name:         errormsg                                                             *
-* Purpose:      Display error information about failed subroutines.                  *
-* Arguments:    const char *sSubName    Subroutine name                              *
-*               int nLineNo             Line number                                  *
-*               int nErrCode            Error code                                   *
-* Return Value: None                                                                 *
-\************************************************************************************/
-
-void errormsg(XPRSprob & _xprs, const char *sSubName, int nLineNo, int nErrCode) {
-	int nErrNo; /* Optimizer error number */
-				/* Print error message */
-	printf("The subroutine %s has failed on line %d\n", sSubName, nLineNo);
-
-	/* Append the error code if it exists */
-	if (nErrCode != -1)
-		printf("with error code %d.\n\n", nErrCode);
-
-	/* Append Optimizer error number, if available */
-	if (nErrCode == 32) {
-		XPRSgetintattrib(_xprs, XPRS_ERRORCODE, &nErrNo);
-		printf("The Optimizer eror number is: %d\n\n", nErrNo);
-	}
-
-	/* Free memory close files and exit */
-	XPRSdestroyprob(_xprs);
-	XPRSfree();
-	exit(nErrCode);
-}
-Worker::Worker() {
+Worker::Worker()
+	: _is_master(false)
+{
 
 }
 
 Worker::~Worker() {
-	
+
 }
 
 /*!
@@ -94,7 +67,7 @@ void Worker::get_value(double & lb) {
 }
 
 /*!
-*  \brief Initialization of a problem 
+*  \brief Initialization of a problem
 *
 *  \param variable_map : map linking each problem name to its variables and their ids
 *
@@ -155,12 +128,12 @@ void Worker::solve(int & lp_status) {
 	//	XPRSsetintcontrol(_xprs, XPRS_BARITERLIMIT, 500);
 	//}
 	status = XPRSlpoptimize(_xprs, "");
-	
+
 	XPRSgetintattrib(_xprs, XPRS_LPSTATUS, &lp_status);
 	if (lp_status != XPRS_LP_OPTIMAL) {
 		std::cout << "lp_status is : " << lp_status << std::endl;
 		std::stringstream buffer;
-		
+
 		buffer << _path_to_mps << "_lp_status_";
 		buffer << XPRS_LP_STATUS[lp_status];
 		buffer<< ".mps";
@@ -171,7 +144,7 @@ void Worker::solve(int & lp_status) {
 	}
 	else if (status) {
 		std::cout << "Worker::solve() status " << status<<", "<<_path_to_mps << std::endl;
-		
+
 	}
 }
 

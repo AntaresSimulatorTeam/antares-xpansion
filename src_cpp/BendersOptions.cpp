@@ -4,12 +4,12 @@
 *  \brief Constructor of Benders Options
 *
 */
-BendersOptions::BendersOptions() {
-
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) name__ = default__;
+BendersOptions::BendersOptions() :
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) name__( default__ ),
 #include "BendersOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
-
+	_weights()
+{
 }
 
 /*!

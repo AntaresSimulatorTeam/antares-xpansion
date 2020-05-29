@@ -26,8 +26,6 @@ public:
 
 public:
 
-	void write(int it);
-
 	void fix_to(Point const & x0);
 
 	void get_subgradient(Point & s);
