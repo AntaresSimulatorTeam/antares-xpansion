@@ -170,9 +170,6 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 
 								timeout(time: 1, unit: 'HOURS') {
 									def qg = waitForQualityGate()
-									if (qg.status != 'OK') {
-										error "SonarQube quality gate failure : ${qg.status}"
-									}
 								}
 							}
 						}
