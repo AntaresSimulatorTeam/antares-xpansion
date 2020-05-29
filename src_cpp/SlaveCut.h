@@ -67,8 +67,8 @@ public:
 
 public:
 
-	SlaveCutDataHandler(SlaveCutDataPtr const &data);
-	SlaveCutDataHandler(SlaveCutDataPtr & data);
+	explicit SlaveCutDataHandler(SlaveCutDataPtr const &data);
+	explicit SlaveCutDataHandler(SlaveCutDataPtr & data);
 	virtual ~SlaveCutDataHandler();
 
 	SlaveCutDataPtr _data;

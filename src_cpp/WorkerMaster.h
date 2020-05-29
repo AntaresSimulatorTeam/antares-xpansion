@@ -23,8 +23,6 @@ public:
 	void get_dual_values(std::vector<double> & dual);
 	int get_number_constraint();
 
-	void write(int it);
-
 	void add_cut(Point const & s, Point const & x0, double const & rhs);
 	void add_cut_by_iter(int const i, Point const & s, double const & sx0, double const & rhs);
 	void add_dynamic_cut(Point const & s, double const & sx0, double const & rhs);

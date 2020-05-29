@@ -69,15 +69,3 @@ void SimplexBasisHandler::print(std::ostream & stream)const {
 	buffer << ")";
 	stream << buffer.str();
 }
-
-/*!
-*  \brief Stream output overloading for simplex basis
-*
-*  \param stream : stream output
-*
-*  \param rhs : simplex basis to print
-*/
-std::ostream & operator<<(std::ostream & stream, SimplexBasisHandler const & rhs) {
-	rhs.print(stream);
-	return stream;
-}

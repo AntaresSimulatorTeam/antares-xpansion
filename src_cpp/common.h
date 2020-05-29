@@ -3,11 +3,11 @@
 #ifdef _MSC_VER
 #pragma warning( disable : 4267 ) // implicit conversion, possible loss of data
 #endif
-#if defined(WIN32) || defined(_WIN32) 
-#define PATH_SEPARATOR "\\" 
-#else 
-#define PATH_SEPARATOR "/" 
-#endif 
+#if defined(WIN32) || defined(_WIN32)
+#define PATH_SEPARATOR "\\"
+#else
+#define PATH_SEPARATOR "/"
+#endif
 
 #include <tuple>
 #include <sstream>
@@ -67,8 +67,8 @@ struct Predicate {
 			}
 			else {
 				if (std::fabs(it1->second - it2->second) < EPSILON_PREDICATE) {
-					it1++;
-					it2++;
+					++it1;
+					++it2;
 				}
 				else {
 					return it1->second < it2->second;
@@ -142,6 +142,5 @@ struct BendersData {
 };
 
 double norm_point(Point const & x0, Point const & x1);
-int norm_int(IntVector const & x0, IntVector const & x1);
 
 std::ostream & operator<<(std::ostream & stream, std::vector<IntVector> const & rhs);

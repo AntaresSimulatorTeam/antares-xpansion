@@ -21,8 +21,8 @@ public:
 public:
 
 	SimplexBasisHandler();
-	SimplexBasisHandler(SimplexBasisPtr const &data);
-	SimplexBasisHandler(SimplexBasisPtr & data);
+	explicit SimplexBasisHandler(SimplexBasisPtr const &data);
+	explicit SimplexBasisHandler(SimplexBasisPtr & data);
 	virtual ~SimplexBasisHandler();
 
 	bool operator<(SimplexBasisHandler const &  other)const;

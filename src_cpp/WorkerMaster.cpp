@@ -65,19 +65,6 @@ void WorkerMaster::delete_constraint(int const nrows) {
 	XPRSdelrows(_xprs, nrows, mindex.data());
 }
 
-
-/*!
-*  \brief Write a problem in a lp file
-*
-*  \param it : number of the problem
-*/
-
-void WorkerMaster::write(int it) {
-	std::stringstream name;
-	name << "master_" << it << ".lp";
-	XPRSwriteprob(_xprs, name.str().c_str(), "l");
-}
-
 /*!
 *  \brief Add benders cut to a problem
 *
