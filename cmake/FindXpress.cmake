@@ -23,7 +23,7 @@ endif()
 # ===============================
 
 if(MSVC)
-	set(XPRESS_ROOT "C:/opt/xpressmp-${XPRESS_FIND_VERSION}" CACHE PATH "XPRESS root directory")
+	set(XPRESS_ROOT "C:/Users/hudsonadmin/.conan/data/xpress/${XPRESS_FIND_VERSION}/eurodecision/external-binaries/package/ca33edce272a279b24f87dc0d4cf5bbdcffbc187/" CACHE PATH "XPRESS root directory")
 else()
 	set(XPRESS_ROOT "/opt/xpressmp-${XPRESS_FIND_VERSION}" CACHE PATH "XPRESS root directory")
 endif()
