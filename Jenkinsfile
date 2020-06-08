@@ -4,7 +4,7 @@ configs = [
 	[
 		node: 'compil-debian9',
 		buildTypes: [ 'Debug', 'Release' ],
-		testSteps: [ 'cppcheck' ],
+		testSteps: [ 'cppcheck', 'unittest' , 'memcheck', 'coverage'],
 		publish: true
 	],
 	[
@@ -45,14 +45,15 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 								cleanBuild: false,
 								cmakeArgs: """
 									-D CMAKE_INSTALL_PREFIX="${WORKSPACE}/install/${buildType}"
-									-D STAGEENZO_WITH_COVERAGE=${config.containsKey('testSteps') && config.testSteps.contains('coverage') ? 'ON' : 'OFF'}
-									-D STAGEENZO_BUILD_DOCUMENTATION=always
+									-D antaresXpansion_WITH_COVERAGE=${config.containsKey('testSteps') && config.testSteps.contains('coverage') ? 'ON' : 'OFF'}
+									-D antaresXpansion_BUILD_DOCUMENTATION=always
 									-D STATIC_RUNTIME=OFF
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
+									-D GTEST_ROOT="${env.OPT_PATH}/${env.GTEST_VERSION}" -D GTEST_MSVC_SEARCH="MT"
 								""",
 								generator: "${env.CMakeGenerator}",
 								installation: "3.14.0 (jenkins)",
-								steps: [[args: "--config ${buildType} --parallel 4", withCmake: true]]
+								steps: [[args: "--config ${buildType} --parallel 4 -v", withCmake: true]]
 							)
 						}
 					}
@@ -115,7 +116,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									excludePattern: '',
 									generateSuppressions: true,
 									ignoreExitCode: true,
-									includePattern: 'builds/Debug/bin/unit_tests',
+									includePattern: 'builds/Debug/unit_tests',
 									outputDirectory: "${env.VALGRIND_REPORTS_PATH}",
 									outputFileEnding: '.xml',
 									programOptions: '',

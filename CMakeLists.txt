@@ -28,6 +28,7 @@ set (BOOST_MIN_VERSION "1.65.1")
 # ===========================================================================
 # Compiler options
 # ===========================================================================
+
 SET(EXECUTABLE_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 SET(   LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 
@@ -43,6 +44,9 @@ ENDIF( USE_MPI )
 MESSAGE("USE_MPI is ${USE_MPI}")
 
 IF( WIN32 )
+	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
+	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
+	set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /MT")
 #	SET( CMAKE_CONFIGURATION_TYPES "Debug;Release;" CACHE STRING "limited configs" FORCE)
 #	SET( CMAKE_CXX_FLAGS_DEBUG          "/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1" )
 #	SET( CMAKE_CXX_FLAGS_RELEASE        "/MT /O2 /Ob2 /D NDEBUG")
@@ -65,11 +69,33 @@ MESSAGE("CMAKE_SOURCE_DIR : ${CMAKE_SOURCE_DIR}")
 MESSAGE("CMAKE_C_COMPILER_VERSION : ${CMAKE_C_COMPILER_VERSION}")
 MESSAGE("CMAKE_CXX_COMPILER_VERSION : ${CMAKE_CXX_COMPILER_VERSION}")
 
+# ----------------------------------------------------------------------------
+# Coverage build type definition
+# ----------------------------------------------------------------------------
+option (${PROJECT_NAME}_WITH_COVERAGE "enable coverage" OFF)
+if (${PROJECT_NAME}_WITH_COVERAGE)
+	include (SetUpCoverage)
+	SetUpCoverage ()
+endif ()
+
+
+
+# ===========================================================================
+# External dependencies
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# Xpress
+# ---------------------------------------------------------------------------
 find_package("Xpress" REQUIRED)
 
 set (Xpress_INCLUDE "${XPRESS_LIBRARY_PATH}/../include")
 MESSAGE("Xpress_DIR is ${XPRESS_LIBRARY_PATH}/../")
 
+
+# ---------------------------------------------------------------------------
+# Boost
+# ---------------------------------------------------------------------------
 IF(USE_MPI)
 	find_package (Boost ${BOOST_MIN_VERSION} REQUIRED COMPONENTS mpi serialization)
 	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
@@ -78,6 +104,15 @@ IF(USE_MPI)
 	message(STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY} )
 	message(STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS} )
 ENDIF()
+
+# ---------------------------------------------------------------------------
+# Threads
+# ---------------------------------------------------------------------------
+if (CMAKE_SYSTEM_NAME STREQUAL Linux)
+	set (THREADS_PREFER_PTHREAD_FLAG ON)
+endif ()
+
+find_package (Threads REQUIRED)
 
 # ===========================================================================
 # Include directories
@@ -110,3 +145,5 @@ ENDIF( USE_MPI )
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src_enzo_test")
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/exe")
+
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src_test")
