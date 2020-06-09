@@ -18,6 +18,7 @@ enable_testing ()
 # --------------------------------------------------------------------------
 set (UNITTEST_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/SimpleTest.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/ORToolsTest.cc
 	)
 
 add_executable (unit_tests ${UNITTEST_SRCS})
@@ -28,37 +29,39 @@ target_include_directories (unit_tests
 	)
 target_include_directories (unit_tests
 	PRIVATE
-	${UNITTEST_SRC_DIR}
+	${CMAKE_CURRENT_SOURCE_DIR}
 	)
 
-target_link_libraries (unit_tests
+
+target_link_libraries (unit_tests PRIVATE
 		${GTEST_BOTH_LIBRARIES}
-		${XPRESS_LIBRARY}
+		ortools
+		helpers
 	)
 
 if(NOT NO_SEQUENTIAL)
-	target_link_libraries (unit_tests
+	target_link_libraries (unit_tests PRIVATE
 			${PROJECT_NAME}::sequentialcore
 	)
 endif()
 
 if(USE_MPI)
-	target_link_libraries (unit_tests
+	target_link_libraries (unit_tests PRIVATE
 			${PROJECT_NAME}::mpicore
 	)
 
 	IF(WIN32)
-		target_link_libraries (unit_tests
+		target_link_libraries (unit_tests PRIVATE
 				msmpi libboost_serialization-vc141-mt-x64-1_67
 		)
 	else()
-		target_link_libraries (unit_tests
+		target_link_libraries (unit_tests PRIVATE
 				Boost::serialization Boost::mpi
 		)
 	endif()
 else()
 	set(THREADS_PREFER_PTHREAD_FLAG ON)
-	target_link_libraries (unit_tests
+	target_link_libraries (unit_tests PRIVATE
 			Threads::Threads
 		)
 endif()

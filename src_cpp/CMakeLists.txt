@@ -41,11 +41,13 @@ ADD_LIBRARY(sequentialcore STATIC ${SEQUENTIAL_FILES} )
 target_include_directories(sequentialcore
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
+		${ORTOOLS_INCLUDE_DIRS}
 )
 
 target_link_libraries (sequentialcore
 	PUBLIC
-		${XPRESS_LIBRARY}
+		ortools
+		helpers
 )
 
 ADD_LIBRARY (${PROJECT_NAME}::sequentialcore ALIAS sequentialcore)

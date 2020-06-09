@@ -16,9 +16,9 @@ ADD_EXECUTABLE(bendersmpi  ${EXE_MPI_FILES})
 IF(WIN32)
 	TARGET_LINK_LIBRARIES(bendersmpi
 			${PROJECT_NAME}::sequentialcore ${PROJECT_NAME}::mpicore
-			${XPRESS_LIBRARY} msmpi libboost_serialization-vc141-mt-x64-1_67)
+			msmpi libboost_serialization-vc141-mt-x64-1_67)
 ELSE(WIN32)
 	TARGET_LINK_LIBRARIES(bendersmpi
 			${PROJECT_NAME}::sequentialcore ${PROJECT_NAME}::mpicore
-			${XPRESS_LIBRARY} Boost::serialization Boost::mpi)
+			Boost::serialization Boost::mpi)
 ENDIF(WIN32)

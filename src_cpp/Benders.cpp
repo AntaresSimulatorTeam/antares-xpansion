@@ -11,7 +11,7 @@ Benders::~Benders() {
 *
 *  \param problem_list : map linking each problem name to its variables and their ids
 *
-*  \param options : set of options fixed by the user 
+*  \param options : set of options fixed by the user
 */
 Benders::Benders(CouplingMap const & problem_list, BendersOptions const & options) : _options(options) {
 	if (!problem_list.empty()) {
@@ -21,7 +21,7 @@ Benders::Benders(CouplingMap const & problem_list, BendersOptions const & option
 		}
 
 		auto it(problem_list.begin());
-		
+
 		auto const it_master = problem_list.find(_options.MASTER_NAME);
 		Str2Int const & master_variable(it_master->second);
 		for(int i(0); i < _data.nslaves; ++it) {
@@ -85,7 +85,7 @@ void Benders::build_cut() {
 * \param stream : stream to print the output
 */
 void Benders::run(std::ostream & stream) {
-	
+
 	init_log(stream, _options.LOG_LEVEL);
 	for (auto const & kvp : _problem_to_id) {
 		_all_cuts_storage[kvp.first] = SlaveCutStorage();
@@ -114,7 +114,7 @@ void Benders::run(std::ostream & stream) {
 		print_log(stream, _data, _options.LOG_LEVEL);
 		_data.stop = stopping_criterion(_data, _options);
 	}
-	
+
 	print_solution(stream, _data.bestx, true);
 	if (_options.TRACE) {
 		print_csv(_trace, _problem_to_id, _data, _options);

@@ -50,6 +50,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									-D STATIC_RUNTIME=OFF
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
 									-D GTEST_ROOT="${env.OPT_PATH}/${env.GTEST_VERSION}" -D GTEST_MSVC_SEARCH="MT"
+									-D ORTOOLS_ROOT="${env.OPT_PATH}/or-tools-7.6"
 								""",
 								generator: "${env.CMakeGenerator}",
 								installation: "3.14.0 (jenkins)",
