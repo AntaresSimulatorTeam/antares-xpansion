@@ -2,12 +2,11 @@
 
 
 #include "Worker.h"
-#include "xprs.h"
 #include "SlaveCut.h"
 #include "SimplexBasis.h"
 
 
-/*! 
+/*!
 * \class WorkerSlave
 * \brief Class daughter of Worker Class, build and manage a slave problem
 */

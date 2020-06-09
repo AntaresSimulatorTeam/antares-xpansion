@@ -1,7 +1,8 @@
 #pragma once
 
 #include "common.h"
-#include <xprs.h>
+
+#include "ortools_utils.h"
 
 class BendersOptions;
 int build_input(BendersOptions const & options, CouplingMap & coupling_map);
@@ -11,8 +12,6 @@ BendersOptions build_benders_options(int argc, char** argv);
 void sequential_launch(BendersOptions const &options);
 
 void usage(int argc);
-
-
 
 enum Attribute {
 	INT,
@@ -64,52 +63,89 @@ public:
 		std::get<Attribute::CHAR_VECTOR>(_data).assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE, CharVector());
 		std::get<Attribute::DBL_VECTOR>(_data).assign(DblVectorAttribute::MAX_DBL_VECTOR_ATTRIBUTE, DblVector());
 	}
-	explicit StandardLp(XPRSprob & _xp) {
+
+
+	StandardLp(operations_research::MPSolver & solver_p)
+	{
 		init();
 
-		XPRSgetintattrib(_xp, XPRS_COLS, &std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
-		XPRSgetintattrib(_xp, XPRS_ROWS, &std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
-		XPRSgetintattrib(_xp, XPRS_ELEMS, &std::get<Attribute::INT>(_data)[IntAttribute::NELES]);
+		std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] = solver_p.NumVariables();
+		std::cout << "vars: " << solver_p.NumVariables() << "\n";
+		std::get<Attribute::INT>(_data)[IntAttribute::NROWS] = solver_p.NumConstraints();
+		std::cout << "constraints: " << solver_p.NumConstraints() << "\n";
+		std::get<Attribute::INT>(_data)[IntAttribute::NELES] = 0;
+		for(operations_research::MPConstraint* constraint_l : solver_p.constraints())
+		{
+			std::get<Attribute::INT>(_data)[IntAttribute::NELES] += constraint_l->terms().size();
+		}
+		std::cout << "nelems: " << std::get<Attribute::INT>(_data)[IntAttribute::NELES] << "\n";
 
-		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].assign(std::get<Attribute::INT>(_data)[IntAttribute::NROWS] + 1, 0);
-		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].assign(std::get<Attribute::INT>(_data)[IntAttribute::NELES], 0);
 
-		std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].assign(std::get<Attribute::INT>(_data)[IntAttribute::NCOLS], 0);
-		std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].assign(std::get<Attribute::INT>(_data)[IntAttribute::NROWS], 'E');
+		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].clear();
+		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].clear();
+		std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].clear();
+		std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].clear();
+		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].clear();
+		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].clear();
+		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].clear();
+		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].clear();
+		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].clear();
+		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].clear();
 
-		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].assign(std::get<Attribute::INT>(_data)[IntAttribute::NELES], 0);
-		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].assign(std::get<Attribute::INT>(_data)[IntAttribute::NROWS], 0);
-		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].assign(std::get<Attribute::INT>(_data)[IntAttribute::NROWS], 0);
+		//@TODO verify correspondance between ortools variable ids and supposed ones
+		ORTgetrows(solver_p, std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART], std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
 
-		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].assign(std::get<Attribute::INT>(_data)[IntAttribute::NCOLS], 0);
-		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].assign(std::get<Attribute::INT>(_data)[IntAttribute::NCOLS], 0);
-		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].assign(std::get<Attribute::INT>(_data)[IntAttribute::NCOLS], 0);
+		ORTgetrowtype(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
+		ORTgetrhs(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
+		ORTgetrhsrange(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
 
-		int ncoeffs(0);
+		for(auto el : std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE]) std::cout << el << " ";
+		std::cout << std::endl << "RHS: ";
+		for(auto el : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS]) std::cout << el << " ";
+		std::cout << std::endl << "range: " ;
+		for(auto el : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE]) std::cout << el << " ";
+		std::cout << std::endl << std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() << std::endl;
 
-		XPRSgetrows(_xp, std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].data(), std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].data(), std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].data(), std::get<Attribute::INT>(_data)[IntAttribute::NELES], &ncoeffs, 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
+		//@TODO check if we use semi-continuous or partial-integer variables
+		ORTgetcolinfo(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] - 1);
 
-		XPRSgetrowtype(_xp, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].data(), 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
-		XPRSgetrhs(_xp, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].data(), 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
-		XPRSgetrhsrange(_xp, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].data(), 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
-		XPRSgetcoltype(_xp, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].data(), 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] - 1);
-		XPRSgetlb(_xp, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].data(), 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] - 1);
-		XPRSgetub(_xp, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].data(), 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] - 1);
-		XPRSgetobj(_xp, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].data(), 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] - 1);
+		for(auto el : std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE]) std::cout << el << " ";
+		std::cout << std::endl << "LB: ";
+		for(auto el : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB]) std::cout << el << " ";
+		std::cout << std::endl << "UB: " ;
+		for(auto el : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB]) std::cout << el << " ";
+		std::cout << std::endl << std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() << std::endl;
+
+		std::vector<double> v;//std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ]
+		ORTgetobj(solver_p, v, 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]-1);
+
+		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS] + 1);
+		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].size() == std::get<Attribute::INT>(_data)[IntAttribute::NELES]);
+
+		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
+		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
+
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NELES]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
+
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
 
 	}
 
-	int append_in(XPRSprob & xp) const {
+	int append_in(operations_research::MPSolver & containingSolver_p) const {
 		IntVector newmindex(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
-		int ncols(0);
-		XPRSgetintattrib(xp, XPRS_COLS, &ncols);
-		// symply increment the columns indexes
+		int nbExistingCols(containingSolver_p.NumVariables());
+		// simply increment the columns indexes
 		for (auto & i : newmindex) {
-			i += ncols;
+			i += nbExistingCols;
 		}
-		XPRSaddcols(xp, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS], 0, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].data(), NULL, NULL, NULL, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].data(), std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].data());
-		XPRSchgcoltype(xp, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS], newmindex.data(), std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].data());
-		XPRSaddrows(xp, std::get<Attribute::INT>(_data)[IntAttribute::NROWS], std::get<Attribute::INT>(_data)[IntAttribute::NELES], std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].data(), std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].data(), std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].data(), std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].data(), newmindex.data(), std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].data());
-		return ncols;
+
+		ORTaddcols(containingSolver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], {}, {}, {},  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE]);
+
+		ORTaddrows(containingSolver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE], std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART], newmindex, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
+		return nbExistingCols;
 	}
 };

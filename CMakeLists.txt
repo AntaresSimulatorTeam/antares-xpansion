@@ -84,14 +84,13 @@ endif ()
 # External dependencies
 # ===========================================================================
 
-# ---------------------------------------------------------------------------
-# Xpress
-# ---------------------------------------------------------------------------
-find_package("Xpress" REQUIRED)
-
-set (Xpress_INCLUDE "${XPRESS_LIBRARY_PATH}/../include")
-MESSAGE("Xpress_DIR is ${XPRESS_LIBRARY_PATH}/../")
-
+# optional conan setup
+if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+	include (${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+	conan_basic_setup ()
+elseif (EXISTS ${CMAKE_BINARY_DIR}/conan_paths.cmake)
+	include (${CMAKE_BINARY_DIR}/conan_paths.cmake)
+endif ()
 
 # ---------------------------------------------------------------------------
 # Boost
@@ -111,15 +110,15 @@ ENDIF()
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 	set (THREADS_PREFER_PTHREAD_FLAG ON)
 endif ()
-
 find_package (Threads REQUIRED)
 
-# ===========================================================================
-# Include directories
-# ===========================================================================
-INCLUDE_DIRECTORIES(
-    ${Xpress_INCLUDE}
-	)
+
+# OR-Tools
+find_package(ortools REQUIRED)
+add_definitions(${ORTOOLS_DEFINITIONS})
+add_definitions(-DUSE_CPLEX)
+add_definitions(-DCPLEX_SOLVER)
+
 
 IF( USE_MPI )
 	IF(WIN32)
@@ -129,13 +128,10 @@ IF( USE_MPI )
 ENDIF( USE_MPI )
 
 # ===========================================================================
-# Link directories
-# ===========================================================================
-LINK_DIRECTORIES(${Xpress_LIBRARY_PATH})
-
-# ===========================================================================
 # Targets
 # ===========================================================================
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src_helpers")
+
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src_cpp")
 
 IF( USE_MPI )

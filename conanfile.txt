@@ -1,0 +1,9 @@
+[requires]
+boost/1.65.1@conan/stable
+boost_mpi/1.65.1@bincrafters/stable
+
+[build_requires]
+gtest/1.8.1@bincrafters/stable
+
+[generators]
+cmake

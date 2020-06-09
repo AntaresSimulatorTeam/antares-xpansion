@@ -5,6 +5,7 @@
 #include "BendersOptions.h"
 #include "BendersFunctions.h"
 
+#include "ortools_utils.h"
 
 int main(int argc, char** argv)
 {
@@ -12,48 +13,45 @@ int main(int argc, char** argv)
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
 
-	XPRSinit("");
 	CouplingMap input;
 	build_input(options, input);
-	XPRSprob full;
-	XPRScreateprob(&full);
-	XPRSsetcbmessage(full, optimizermsg, NULL);
-	XPRSsetintcontrol(full, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-	XPRSloadlp(full, "full", 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+	operations_research::MPSolver mergedSolver_l("full_mip", ORTOOLS_LP_SOLVER_TYPE);
+	// XPRSsetcbmessage(full, optimizermsg, NULL);
+	// XPRSsetintcontrol(full, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	Str2Int _decalage;
 	int ncols(0);
-	int nslaves(input.size());
+	int nslaves(input.size());//size-1 no ? it contains the master
 	CouplingMap x_mps_id;
 	for (auto const & kvp : input) {
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first);
-		XPRSgetintattrib(full, XPRS_COLS, &ncols);
+		ncols = mergedSolver_l.NumVariables();
 		_decalage[kvp.first] = ncols;
 
-		XPRSprob prob;
-		XPRScreateprob(&prob);
-		XPRSsetcbmessage(prob, optimizermsg, NULL);
-		XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
-		XPRSreadprob(prob, problem_name.c_str(), "");
+		operations_research::MPSolver solver_l("toMerge", ORTOOLS_LP_SOLVER_TYPE);
+		ORTreadmps(solver_l, problem_name);
+		// XPRSsetcbmessage(prob, optimizermsg, NULL);
+		// XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
+
 		if (kvp.first != options.MASTER_NAME) {
 
-			int mps_ncols(0);
-			XPRSgetintattrib(prob, XPRS_COLS, &mps_ncols);
-			DblVector o(mps_ncols, 0);
+			int mps_ncols(solver_l.NumVariables());
+
+			DblVector o;
 			IntVector sequence(mps_ncols);
 			for (int i(0); i < mps_ncols; ++i) {
 				sequence[i] = i;
 			}
-			XPRSgetobj(prob, o.data(), 0, mps_ncols - 1);
+			ORTgetobj(solver_l, o, 0, mps_ncols - 1);
 			double const weigth = options.slave_weight(nslaves, problem_name);
 			for (auto & c : o) {
 				c *= weigth;
 			}
-			XPRSchgobj(prob, mps_ncols, sequence.data(), o.data());
+			ORTchgobj(solver_l, sequence, o);
 		}
-		StandardLp lpData(prob);
-		lpData.append_in(full);
+		StandardLp lpData(solver_l);
+		lpData.append_in(mergedSolver_l);
 
-		XPRSdestroyprob(prob);
 		for (auto const & x : kvp.second) {
 			x_mps_id[x.first][kvp.first] = x.second;
 		}
@@ -104,28 +102,26 @@ int main(int argc, char** argv)
 	}
 	DblVector rhs(nrows, 0);
 	CharVector sense(nrows, 'E');
-	XPRSaddrows(full, nrows, neles, sense.data(), rhs.data(), NULL, mstart.data(), cindex.data(), values.data());
+	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
 
 	//std::cout << "Writting mps file" << std::endl;
 	//XPRSwriteprob(full, "full.mps", "");
-	//std::cout << "Writting lp file" << std::endl; 
+	//std::cout << "Writting lp file" << std::endl;
 	//XPRSwriteprob(full, "full.lp", "l");
 	std::cout << "Solving" << std::endl;
-	XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
-	XPRSsetintcontrol(full, XPRS_BARCORES, 16);
-	XPRSlpoptimize(full, "-b");
+	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
+	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
+	// XPRSlpoptimize(full, "-b");
+	mergedSolver_l.SetNumThreads(16);
+	mergedSolver_l.Solve();
 
 	Point x0;
-	XPRSgetintattrib(full, XPRS_COLS, &ncols);
-	DblVector ptr(ncols, 0);
-	XPRSgetlpsol(full, ptr.data(), NULL, NULL, NULL);
+	DblVector ptr;
+	ORTgetlpsolution(mergedSolver_l, ptr);
 	for (auto const & kvp : input[options.MASTER_NAME]) {
 		x0[kvp.first] = ptr[kvp.second];
 	}
 	print_solution(std::cout, x0, true);
-
-	XPRSdestroyprob(full);
-	XPRSfree();
 
 	return 0;
 }

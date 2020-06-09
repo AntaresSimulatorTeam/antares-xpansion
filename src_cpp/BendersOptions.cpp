@@ -44,7 +44,7 @@ std::string BendersOptions::get_slave_path(std::string const & slave_name) const
 
 /*!
 *  \brief Read Benders options from file path
-*  
+*
 *  \param file_name : path to options txt file
 */
 void BendersOptions::read(std::string const & file_name) {

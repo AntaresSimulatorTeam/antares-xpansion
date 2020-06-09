@@ -5,6 +5,7 @@
 #include "BendersOptions.h"
 #include "BendersFunctions.h"
 
+#include "ortools_utils.h"
 
 int main(int argc, char** argv)
 {
@@ -12,8 +13,7 @@ int main(int argc, char** argv)
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
 
-	XPRSinit("");
-	CouplingMap input;
+	CouplingMap input; //map[probel_name][variable_name] <-> variable_id
 	build_input(options, input);
 	int i(0);
 	std::vector<DblVector> name_rhs(input.size());
@@ -23,13 +23,13 @@ int main(int argc, char** argv)
 	for (auto const & kvp : input) {
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first);
 		std::cout << problem_name << std::endl;
-		XPRSprob prob;
-		XPRScreateprob(&prob);
-		XPRSsetcbmessage(prob, optimizermsg, NULL);
-		XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
-		XPRSreadprob(prob, problem_name.c_str(), "");
+		operations_research::MPSolver solver("analyse_mip", ORTOOLS_LP_SOLVER_TYPE);
+		ORTreadmps(solver, problem_name);
+		// XPRSsetcbmessage(prob, optimizermsg, NULL);
+		// XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
+
 		if (kvp.first != options.MASTER_NAME) {
-			StandardLp lpData(prob);
+			StandardLp lpData(solver);
 			DblVector const & rhs = std::get<Attribute::DBL_VECTOR>(lpData._data)[DblVectorAttribute::RHS];
 			name_rhs[i] = rhs;
 			id_name[kvp.first] = i;
@@ -38,9 +38,7 @@ int main(int argc, char** argv)
 
 		++i;
 		if (i > 5)break;
-		XPRSdestroyprob(prob);
 	}
-	XPRSfree();
 	std::ofstream file("toto.csv");
 	for (auto const & kvp : id_name) {
 		file << kvp.first << ";";

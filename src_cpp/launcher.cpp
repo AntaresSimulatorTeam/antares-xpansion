@@ -1,9 +1,9 @@
 #include "launcher.h"
-#include "xprs.h"
 #include "Benders.h"
 #include "Timer.h"
 
 #include "BendersOptions.h"
+
 
 /*!
 *  \brief Get Benders Options from command line
@@ -49,7 +49,7 @@ int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
 		buffer >> variable_id;
 		coupling_map[problem_name][variable_name] = variable_id;
 	}
-	
+
 	if (options.SLAVE_NUMBER >= 0) {
 		int n(0);
 		CouplingMap trimmer;
@@ -75,13 +75,11 @@ int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
 */
 void sequential_launch(BendersOptions const & options) {
 	Timer timer;
-	XPRSinit("");
 	CouplingMap input;
 	build_input(options, input);
 	Benders benders(input, options);
 	benders.run(std::cout);
 	benders.free();
-	XPRSfree();
 	std::cout << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
 }
 

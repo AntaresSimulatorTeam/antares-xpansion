@@ -12,4 +12,12 @@ SET(ANALYSE_FILES
 )
 
 ADD_EXECUTABLE(analyse_mps ${ANALYSE_FILES})
-TARGET_LINK_LIBRARIES(analyse_mps ${PROJECT_NAME}::sequentialcore ${XPRESS_LIBRARY})
+target_include_directories(analyse_mps
+	PUBLIC
+		${ORTOOLS_INCLUDE_DIRS}
+)
+TARGET_LINK_LIBRARIES(analyse_mps
+		${PROJECT_NAME}::sequentialcore
+		ortools
+		helpers
+)

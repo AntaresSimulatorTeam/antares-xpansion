@@ -2,10 +2,10 @@
 
 #include "common.h"
 #include "BendersOptions.h"
-#include "xprs.h"
 
+#include "ortools/linear_solver/linear_solver.h"
 
-void XPRS_CC optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen, int nMsglvl);
+// void XPRS_CC optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen, int nMsglvl);
 class Worker;
 typedef std::shared_ptr<Worker> WorkerPtr;
 
@@ -48,9 +48,9 @@ public:
 
 
 public:
-	XPRSprob _xprs; /*!< Problem stocked in the instance Worker*/
+	operations_research::MPSolver * _solver;  /*!< Problem stocked in the instance Worker*/
 	std::list<std::ostream * >_stream;
 	bool _is_master;
 };
 
-void optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen, int nMsglvl);
+// void optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen, int nMsglvl);

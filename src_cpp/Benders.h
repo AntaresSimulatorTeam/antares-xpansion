@@ -33,7 +33,7 @@ public:
 	ActiveCutStorage _active_cuts;
 
 	void free();
-	
+
 	void build_cut();
 	void run(std::ostream & stream);
 };

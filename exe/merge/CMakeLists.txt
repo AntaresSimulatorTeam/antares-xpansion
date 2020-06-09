@@ -16,5 +16,5 @@ ADD_EXECUTABLE(merge_mps ${MERGE_FILES})
 TARGET_LINK_LIBRARIES(merge_mps 
 	PUBLIC
         ${PROJECT_NAME}::sequentialcore
-		${XPRESS_LIBRARY}
+		helpers
 )

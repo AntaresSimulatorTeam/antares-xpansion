@@ -12,4 +12,4 @@ SET(EXE_CPP_FILES
 )
 
 ADD_EXECUTABLE(benderssequential ${EXE_CPP_FILES})
-TARGET_LINK_LIBRARIES(benderssequential ${PROJECT_NAME}::sequentialcore ${XPRESS_LIBRARY})
+TARGET_LINK_LIBRARIES(benderssequential ${PROJECT_NAME}::sequentialcore ortools)
