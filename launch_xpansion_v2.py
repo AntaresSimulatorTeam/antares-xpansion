@@ -12,6 +12,7 @@ import os
 import shutil
 import subprocess
 import sys
+from sets import Set
 
 # dans settings.ini il y a plein de choses!!!
 # uc-type = expansion-accurate ou expansion-fast
@@ -383,6 +384,19 @@ class XpansionDriver(object):
                 print('Error candidates link cannot be empty : found in section %s' % each_section)
                 sys.exit(0)
 
+        # check some attributes unicity : name and links
+        unique_attributes = ["name", "link"]
+        for verified_attribute in unique_attributes:
+            unique_values = Set()
+            for each_section in ini_file.sections():
+                value = ini_file[each_section][verified_attribute].strip()
+                if value in unique_values:
+                    print('Error candidates %ss have to be unique, duplicate %s %s in section %s'
+                            % (verified_attribute, verified_attribute, value, each_section))
+                    sys.exit(0)
+                else:
+                    unique_values.add(value)
+
         #check attributes types and values
         for each_section in ini_file.sections():
             for (option, value) in ini_file.items(each_section):
@@ -390,6 +404,19 @@ class XpansionDriver(object):
                     print("value %s for option %s has the wrong type!" % (value, option))
                     sys.exit(0)
                 self.check_candidate_option_value(option, value)
+
+        #check exclusion between max-investment and (max-units, unit-size) attributes
+        for each_section in ini_file.sections():
+            max_invest = float(ini_file[each_section]['max-investment'].strip())
+            unit_size = float(ini_file[each_section]['unit-size'].strip())
+            max_units = float(ini_file[each_section]['max-units'].strip())
+            if max_invest != 0 :
+                if max_units != 0 or unit_size != 0 :
+                    print("Illegal values in section %s : cannot assign non-null values to max-investment and (unit-size or max_units) at the same time" % (each_section))
+                    sys.exit(0)
+            elif max_units == 0 or unit_size == 0 :
+                print("Illegal values in section %s : need to assign non-null values to max-investment or (unit-size and max_units)" % (each_section))
+                sys.exit(0)
 
         #check attributes profile is 0, 1 or an existent filename
         to_verif_attributes = ['link-profile', 'link-profile-indirect',
