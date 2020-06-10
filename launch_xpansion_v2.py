@@ -73,6 +73,7 @@ class XpansionConfig(object):
         self.SETTINGS = 'settings'
         self.USER = 'user'
         self.EXPANSION = 'expansion'
+        self.CAPADIR = 'capa'
         self.GENERAL_DATA_INI = 'generaldata.ini'
         self.NB_YEARS = 'nbyears'
         self.SETTINGS_INI = 'settings.ini'
@@ -199,6 +200,14 @@ class XpansionDriver(object):
         return os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
                             self.config.CANDIDATES_INI)
 
+    def capacity_file(self, filename):
+        """
+            returns path to input capacity file
+        """
+        return os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
+                            self.config.CAPADIR, filename)
+
+
     def antares_output(self):
         """
             returns path to antares output data directory
@@ -263,19 +272,135 @@ class XpansionDriver(object):
         ini_file.read(self.general_data())
         return float(ini_file['general']['nbyears'])
 
+    def check_candidate_option_type(self, option, value):
+        options_types = {   'name' : 'string',
+                            'enable' : 'string',
+                            'candidate-type' : 'string',
+                            'investment-type' : 'string',
+                            'link' : 'string',
+                            'annual-cost-per-mw' : 'non-negative',
+                            'unit-size' : 'non-negative',
+                            'max-units' : 'non-negative',
+                            'max-investment' : 'non-negative',
+                            'relaxed' : 'string',
+                            'has-link-profile' : 'string',
+                            'has-link-profile-indirect' : 'string',
+                            'link-profile' : 'string',
+                            'link-profile-indirect' : 'string',
+                            'already-installed-capacity' : 'non-negative',
+                            'already-installed-link-profile' : 'string',
+                            'already-installed-link-profile-indirect' : 'string' }
+        option_type = options_types.get(option)
+        if option_type is None :
+            print('check_candidate_option_type: Illegal %s option in candidates file.' % option)
+            sys.exit(0)
+        else :
+            if option_type == 'string':
+                return True
+            elif option_type == 'numeric':
+                return value.isnumeric()
+            elif option_type == 'non-negative':
+                try:
+                    return (float(value) >= 0)
+                except ValueError:
+                    return False
+            else:
+                print('check_candidate_option_type: Non handled data type %s for option %s' % (option_type, option))
+                sys.exit(0)
+
+    def check_candidate_option_value(self, option, value):
+        #TODO construct list from links directory by iterating on directories that have .txt files within them
+        antares_links_list = None
+        options_legal_values = {'name' : None,
+                                'enable' : ["true", "false"],
+                                'candidate-type' : ["investment", "decommissioning"],
+                                'investment-type' : None,
+                                'link' : antares_links_list,
+                                'annual-cost-per-mw' : None,
+                                'unit-size' : None,
+                                'max-units' : None,
+                                'max-investment' : None,
+                                'relaxed' : ["true", "false"],
+                                'has-link-profile' : ["true", "false"],
+                                'has-link-profile-indirect' : ["true", "false"],
+                                'link-profile' : None, #path exists study/user/expansion/capa/file
+                                'link-profile-indirect' : None, #path exists study/user/expansion/capa/file
+                                'already-installed-capacity' : None, #path exists study/user/expansion/capa/file
+                                'already-installed-link-profile' : None, #path exists study/user/expansion/capa/file
+                                'already-installed-link-profile-indirect' : None } #path exists study/user/expansion/capa/file
+        legal_values = options_legal_values.get(option)
+        if legal_values is None :
+            return True
+        elif value.lower() in legal_values:
+            return True
+        else:
+            print('check_candidate_option_value: Illegal value %s for option %s allowed values are : %s' % (value, option, legal_values))
+            sys.exit(0)
+
     def check_candidates(self):
         """
-            checks that candidates names do not have space
+            checks that candidates file has correct format
         """
-        ini_file = configparser.ConfigParser()
-        ini_file.read(self.candidates())
-        # check that name does not have space
-        for each_section in ini_file.sections():
+        #check file existence
+        if not os.path.isfile(self.candidates()):
+            print('Missing file : candidates.ini was not retrieved in the indicated path : ', self.candidates())
+            sys.exit(0)
 
+        #@TODO move to checkker class when reorganizing source code
+        default_values = {  'name' : 'NA',
+                            'enable' : 'true',
+                            'candidate-type' : 'investment',
+                            'investment-type' : 'generation',
+                            'link' : 'NA',
+                            'annual-cost-per-mw' : '0',
+                            'unit-size' : '0',
+                            'max-units' : '0',
+                            'max-investment' : '0',
+                            'Relaxed' : 'false',
+                            'has-link-profile' : 'false',
+                            'has-link-profile-indirect' : 'false',
+                            'link-profile' : '1',
+                            'link-profile-indirect' : '1',
+                            'already-installed-capacity' : '0',
+                            'already-installed-link-profile' : '1',
+                            'already-installed-link-profile-indirect' : '1'}
+        ini_file = configparser.ConfigParser(default_values)
+        ini_file.read(self.candidates())
+
+        # check that name is not empty and does not have space
+        # check that link is not empty
+        for each_section in ini_file.sections():
             name = ini_file[each_section]['name'].strip()
-            if ' ' in name:
-                print('Error candidates name should not contain space, found in ', name)
+            link = ini_file[each_section]['link'].strip()
+            if (not name) or (name == "NA") :
+                print('Error candidates name cannot be empty : found in section %s' % each_section)
                 sys.exit(0)
+            if ' ' in name:
+                print('Error candidates name should not contain space, found in section %s in "%s"'
+                        % (each_section, name))
+                sys.exit(0)
+            if (not link) or (link == "NA") :
+                print('Error candidates link cannot be empty : found in section %s' % each_section)
+                sys.exit(0)
+
+        #check attributes types and values
+        for each_section in ini_file.sections():
+            for (option, value) in ini_file.items(each_section):
+                if not self.check_candidate_option_type(option, value):
+                    print("value %s for option %s has the wrong type!" % (value, option))
+                    sys.exit(0)
+                self.check_candidate_option_value(option, value)
+
+        #check attributes profile is 0, 1 or an existent filename
+        to_verif_attributes = ['link-profile', 'link-profile-indirect',
+                                'already-installed-link-profile', 'already-installed-link-profile-indirect']
+        for each_section in ini_file.sections():
+            for attribute in to_verif_attributes:
+                value = ini_file[each_section][attribute].strip()
+                if ( value not in ['1', '0'] ) and (not os.path.isfile(self.capacity_file(value))):
+                    print('Illegal value : %s option can be 0, 1 or an existent filename. %s is not an existent file'
+                            % (attribute, self.capacity_file(value)))
+                    sys.exit(0)
 
     def pre_antares(self):
         """
