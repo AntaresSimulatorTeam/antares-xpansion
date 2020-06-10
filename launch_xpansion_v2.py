@@ -5,6 +5,7 @@ step are :
        - lp_namer
 """
 
+import shutil
 import argparse
 import configparser
 import glob
@@ -293,7 +294,7 @@ class XpansionDriver(object):
                             'already-installed-link-profile-indirect' : 'string' }
         option_type = options_types.get(option)
         if option_type is None :
-            print('check_candidate_option_type: Illegal %s option in candidates file.' % option)
+            print('check_candidate_option_type: %s option not recognized in candidates file.' % option)
             sys.exit(0)
         else :
             if option_type == 'string':
@@ -338,6 +339,38 @@ class XpansionDriver(object):
             print('check_candidate_option_value: Illegal value %s for option %s allowed values are : %s' % (value, option, legal_values))
             sys.exit(0)
 
+    def check_profile_file(self, filename):
+        #check file existence
+        if not os.path.isfile(self.capacity_file(filename)) :
+            print('Illegal value : option can be 0, 1 or an existent filename. %s is not an existent file'
+                    % self.capacity_file(filename))
+            sys.exit(0)
+
+        profile_column = []
+        with open(self.capacity_file(filename), 'r') as profile_file:
+            for idx, line in enumerate(profile_file):
+                try:
+                    line_value = float(line.strip())
+                    profile_column.append(line_value)
+                except ValueError:
+                    print('Line %d in file %s is not a single non-negative value'
+                            % (idx+1, self.capacity_file(filename)))
+                    sys.exit(0)
+                if line_value < 0:
+                    print('Line %d in file %s indicates a negative value'
+                        % (idx+1, self.capacity_file(filename)))
+                    sys.exit(0)
+
+        if len(profile_column) != 8760:
+            print('file %s does not have 8760 lines'
+                    % (idx+1, self.capacity_file(filename)))
+            sys.exit(0)
+
+        if any(profile_column) :
+            return True
+        else: #profile is 0
+            return False
+
     def check_candidates(self):
         """
             checks that candidates file has correct format
@@ -346,6 +379,8 @@ class XpansionDriver(object):
         if not os.path.isfile(self.candidates()):
             print('Missing file : candidates.ini was not retrieved in the indicated path : ', self.candidates())
             sys.exit(0)
+
+        config_changed = False
 
         #@TODO move to checkker class when reorganizing source code
         default_values = {  'name' : 'NA',
@@ -419,15 +454,30 @@ class XpansionDriver(object):
                 sys.exit(0)
 
         #check attributes profile is 0, 1 or an existent filename
-        to_verif_attributes = ['link-profile', 'link-profile-indirect',
+        profile_attributes = ['link-profile', 'link-profile-indirect',
                                 'already-installed-link-profile', 'already-installed-link-profile-indirect']
         for each_section in ini_file.sections():
-            for attribute in to_verif_attributes:
+            has_a_profile = False
+            for attribute in profile_attributes:
                 value = ini_file[each_section][attribute].strip()
-                if ( value not in ['1', '0'] ) and (not os.path.isfile(self.capacity_file(value))):
-                    print('Illegal value : %s option can be 0, 1 or an existent filename. %s is not an existent file'
-                            % (attribute, self.capacity_file(value)))
-                    sys.exit(0)
+                if value == '0' :
+                    continue
+                elif value == '1':
+                    has_a_profile = True
+                else :
+                    has_a_profile = has_a_profile or self.check_profile_file(value)
+            if not has_a_profile:
+                #remove candidate if it has no profile
+                print("candidate %s will be removed!" % ini_file[each_section]["name"])
+                ini_file.remove_section(each_section)
+                config_changed = True
+
+        if config_changed :
+            shutil.copyfile(self.candidates(), self.candidates()+".bak")
+            with open(self.candidates(), 'w') as out_file:
+                ini_file.write(out_file)
+            print("%s file was overwritten! backup file %s created" % ( self.candidates(), self.candidates()+".bak"))
+
 
     def pre_antares(self):
         """
