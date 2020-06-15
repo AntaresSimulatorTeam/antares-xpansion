@@ -209,6 +209,16 @@ class XpansionDriver(object):
         return os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
                             self.config.CAPADIR, filename)
 
+    def weights_file(self, filename):
+        """
+            returns the path to a yearly-weights file
+
+            :param filename: name of the yearly-weights file
+
+            :return: path to input yearly-weights file
+        """
+        return os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION, filename)
+
 
     def antares_output(self):
         """
@@ -226,7 +236,6 @@ class XpansionDriver(object):
         """
             indicates if method to use is accurate by reading the uc_type in the settings file
         """
-
         with open(self.settings(), 'r') as file_l:
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
@@ -377,7 +386,7 @@ class XpansionDriver(object):
         """
         #check file existence
         if not os.path.isfile(self.candidates()):
-            print('Missing file : candidates.ini was not retrieved in the indicated path : ', self.candidates())
+            print('Missing file : %s was not retrieved in the indicated path : ', self.candidates())
             sys.exit(0)
 
         config_changed = False
@@ -478,6 +487,198 @@ class XpansionDriver(object):
                 ini_file.write(out_file)
             print("%s file was overwritten! backup file %s created" % ( self.candidates(), self.candidates()+".bak"))
 
+
+    def check_weights_file(self, filename):
+        """
+            checks that the yearly-weights file exists and has correct format :
+                column of non-negative weights
+                sum of weights is positive
+            :return: True if the file has correct format
+        """
+
+        #check file existence
+        if not os.path.isfile(self.weights_file(filename)) :
+            print('Illegal value : %s is not an existent yearly-weights file'
+                    % self.weights_file(filename))
+            sys.exit(0)
+
+        null_weights = True
+        with open(self.weights_file(filename), 'r') as weights_file:
+            for idx, line in enumerate(weights_file):
+                try:
+                    line_value = float(line.strip())
+                    if line_value > 0 :
+                        null_weights = False
+                    elif line_value < 0:
+                        print('Line %d in file %s indicates a negative value'
+                            % (idx+1, self.weights_file(filename)))
+                        sys.exit(0)
+                except ValueError:
+                    print('Line %d in file %s is not a single non-negative value'
+                            % (idx+1, self.weights_file(filename)))
+                    sys.exit(0)
+
+        if null_weights :
+            print('file %s : all values are null'
+                    % self.weights_file(filename))
+            sys.exit(0)
+
+        return True
+
+    def check_setting_option_type(self, option, value):
+        """
+            checks that a given option value has the correct type
+
+            :param option: name of the option to verify from settings file
+            :param value: value of the option to verify
+
+            :return: True if the option has the correct type, False or exists if the value has the wrong type
+        """
+
+        options_types = {   'method' : 'string',
+                            'uc_type' : 'string',
+                            'master' : 'string',
+                            'optimality_gap' : 'double',
+                            'cut_type' : 'string',
+                            'week_selection' : 'string',
+                            'max_iteration' : 'integer',
+                            'relaxed_optimality_gap' : 'string',
+                            'solver' : 'string',
+                            'timelimit' : 'integer',
+                            'yearly_weights' : 'string' }
+        option_type = options_types.get(option)
+        if option_type is None :
+            print('check_setting_option_type: Illegal %s option in candidates file.' % option)
+            sys.exit(0)
+        else :
+            if option_type == 'string':
+                return True
+            elif option_type == 'numeric':
+                return value.isnumeric()
+            elif option_type == 'double':
+                try:
+                    float(value)
+                    return True
+                except ValueError:
+                    return False
+            elif option_type == 'integer':
+                if value in ["+Inf", "-Inf", "+infini", "-infini"]:
+                    return True
+                try:
+                    int(value)
+                    return True
+                except ValueError:
+                    return False
+            else:
+                print('check_setting_option_type: Non handled data type %s for option %s' % (option_type, option))
+                sys.exit(0)
+
+    def check_setting_option_value(self, option, value):
+        """
+            checks that an option has a legal value
+
+            :param option: name of the option to verify from settings file
+            :param value: value of the option to verify
+
+            :return: True if the option has the correct type, exists if the value has the wrong type
+        """
+
+        options_legal_values = {'method' : ['benders_decomposition'],
+                                'uc_type' : ['expansion_accurate', 'expansion_fast'],
+                                'master' : ['relaxed', 'integer', 'full_integer'],
+                                'optimality_gap' : None,
+                                'cut_type' : ['average', 'yearly', 'weekly'],
+                                'week_selection' : ['true', 'false'],
+                                'max_iteration' : None,
+                                'relaxed_optimality_gap' : None,
+                                'solver' : ['Cplex', 'Xpress', 'Cbc', 'Sirius', 'Gurobi', 'GLPK'],
+                                'timelimit' : None,
+                                'yearly_weights' : None }
+        legal_values = options_legal_values.get(option)
+
+        if ( legal_values is not None ) and ( value in legal_values ):
+            return True
+
+        if option == 'optimality_gap':
+            if ( value == "-Inf" ) or (float(value) >= 0 ):
+                return True
+        elif option == 'max_iteration':
+            if (value in ["+Inf", "+infini"]):
+                return True
+            else:
+                try:
+                    max_iter = int(value)
+                    if (value == -1) or (value > 0):
+                        return True
+                except ValueError:
+                    print('Illegal value %s for option %s : only -1 or positive values are allowed' % (value, option))
+                    sys.exit(0)
+        elif option == "relaxed_optimality_gap":
+            if value.strip().endswith("%"):
+                try:
+                    gap = float(value[:-1])
+                    if (gap >= 0) and (gap <= 100):
+                        return True
+                except ValueError:
+                    print('Illegal value %s for option %s : allowed format "X%%" with X between 0 and 100' % (value, option))
+                    sys.exit(0)
+        elif option == 'timelimit':
+            if (value in ["+Inf", "+infini"]):
+                return True
+            else:
+                try:
+                    timelimit = int(value)
+                    if timelimit > 0 :
+                        return True
+                except ValueError:
+                    print('Illegal value %s for option %s : only positive values are allowed' % (value, option))
+                    sys.exit(0)
+        elif option == 'yearly_weights':
+            if value == "":
+                print("warn : yearly_weights option is left blank")
+                return True
+            else :
+                return self.check_weights_file(value)
+
+        print('check_candidate_option_value: Illegal value %s for option %s' % (value, option))
+        sys.exit(0)
+        return False
+
+    def check_settings(self):
+        """
+            checks that settings file has correct format
+        """
+        #check file existence
+        if not os.path.isfile(self.settings()):
+            print('Missing file : %s was not retrieved in the indicated path : ', self.settings())
+            sys.exit(0)
+
+        with open(self.settings(), 'r') as file_l:
+            options = dict(
+                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
+                 for line in file_l.readlines()})
+
+        #TODO stil unused : force these values if needed
+        default_values = {  'method' : 'benders_decomposition',
+                            'uc_type' : 'expansion_fast',
+                            'master' : 'integer',
+                            'optimality_gap' : '0',
+                            'cut_type' : 'yearly',
+                            'week_selection' : 'false',
+                            'max_iteration' : '+infini',
+                            'relaxed_optimality_gap' : '0.01',
+                            'solver' : 'Cbc',
+                            'timelimit' : '+infini' }
+
+        for (option, value) in options.items():
+            if not self.check_setting_option_type(option, value):
+                print("check_settings : value %s for option %s has the wrong type!" % (value, option))
+                sys.exit(0)
+            self.check_setting_option_value(option, value)
+
+        if ( options.get("yearly_weights", "") != "" ) and (options.get("cut_type") == "average"):
+            print("check_settings : yearly_weights option can not be used when cut_type option is average")
+            sys.exit(0)
 
     def pre_antares(self):
         """
@@ -617,6 +818,7 @@ class XpansionDriver(object):
 CONFIG = XpansionConfig()
 DRIVER = XpansionDriver(CONFIG)
 DRIVER.check_candidates()
+DRIVER.check_settings()
 
 MY_LP_PATH = DRIVER.generate_mps_files()
 # my_lp_path = 'D:\\repo\\these-blanchot-lp-namer\\test_case\\output\\20200214-1622eco\\lp'
