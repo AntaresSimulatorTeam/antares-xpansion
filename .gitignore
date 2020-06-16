@@ -8,3 +8,5 @@ test_case_expansion
 /cas*
 /tyndp
 *.7z
+__pycache__
+*.pyc
