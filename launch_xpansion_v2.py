@@ -349,6 +349,13 @@ class XpansionDriver(object):
             sys.exit(0)
 
     def check_profile_file(self, filename):
+        """
+            verifies if a given profile file is valid and indicates if it is a null profile or not
+
+            :param filename: name of the profile file to check
+
+            :return: returns False if the profile is null
+        """
         #check file existence
         if not os.path.isfile(self.capacity_file(filename)) :
             print('Illegal value : option can be 0, 1 or an existent filename. %s is not an existent file'
@@ -375,7 +382,7 @@ class XpansionDriver(object):
                     % (idx+1, self.capacity_file(filename)))
             sys.exit(0)
 
-        if any(profile_column) :
+        if any(profile_column):
             return True
         else: #profile is 0
             return False
@@ -480,6 +487,23 @@ class XpansionDriver(object):
                 print("candidate %s will be removed!" % ini_file[each_section]["name"])
                 ini_file.remove_section(each_section)
                 config_changed = True
+
+        #check coherence between has-link-profile and link-profile values
+        linked_attributes = [["has-link-profile", "link-profile"],
+                                ["has-link-profile-indirect", "link-profile-indirect"]]
+        for each_section in ini_file.sections():
+            for idx in range(len(linked_attributes)):
+                has_link_value = ini_file[each_section][linked_attributes[idx][0]].strip()
+                link_profile_value = ini_file[each_section][linked_attributes[idx][1]].strip()
+                profile_exists = os.path.isfile(self.capacity_file(link_profile_value))
+                if (has_link_value == "true") and (not profile_exists):
+                    print('Incoherence in candidate %s : %s is set to true while no %s file was specified' 
+                        % (ini_file[each_section]["name"].strip(), linked_attributes[idx][0], linked_attributes[idx][1]))
+                    sys.exit(0)
+                if (has_link_value == "false") and (profile_exists):
+                    print('Incoherence in candidate %s : %s is set to false while a valid %s file was specified' 
+                        % (ini_file[each_section]["name"].strip(), linked_attributes[idx][0], linked_attributes[idx][1]))
+                    sys.exit(0)
 
         if config_changed :
             shutil.copyfile(self.candidates(), self.candidates()+".bak")
