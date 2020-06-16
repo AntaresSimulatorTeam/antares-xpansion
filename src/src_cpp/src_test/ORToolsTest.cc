@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include <sstream>
+#include <fstream>
 
 #include "ortools_utils.h"
 
@@ -13,18 +14,64 @@ protected:
 	static void SetUpTestCase()
 	{
 		// called before 1st test
+		std::string content_l = "\
+NAME          EXAMPLE\n\
+ROWS\n\
+ N  OBJ\n\
+ G  ROW01\n\
+ L  ROW02\n\
+ E  ROW03\n\
+ G  ROW04\n\
+ L  ROW05\n\
+COLUMNS\n\
+    COL01     OBJ                1.0\n\
+    COL01     ROW01              3.0   ROW05              5.6\n\
+    COL02     ROW01              1.0   ROW02              2.0\n\
+    COL03     ROW02              1.1   ROW03              1.0\n\
+    COL04     ROW01             -2.0   ROW04              2.8\n\
+    COL05     OBJ                2.0\n\
+    COL05     ROW01             -1.0   ROW05              1.0\n\
+    COL06     ROW03              1.0\n\
+    COL07     ROW04             -1.2\n\
+    COL08     OBJ               -1.0\n\
+    COL08     ROW01             -1.0   ROW05              1.9\n\
+RHS\n\
+    RHS1      ROW01              2.5\n\
+    RHS1      ROW02              2.1\n\
+    RHS1      ROW03              4.0\n\
+    RHS1      ROW04              1.8\n\
+    RHS1      ROW05             15.0\n\
+RANGES\n\
+    RNG1      ROW04              3.2\n\
+    RNG1      ROW05             12.0\n\
+BOUNDS\n\
+ LO BND1      COL01              2.5\n\
+ UP BND1      COL02              4.1\n\
+ LO BND1      COL05              0.5\n\
+ UP BND1      COL05              4.0\n\
+ UP BND1      COL08              4.3\n\
+ENDATA\
+";
+
+	// dummy mps tmp file name
+	std::ofstream file_l("temp_mps_problem.mps");
+	file_l << content_l;
+	file_l.close();
 	}
 
 	static void TearDownTestCase()
 	{
 		// called after last test
+
+		//delete the created tmp file
+		std::remove("temp_mps_problem.mps");
 	}
 
 	void SetUp()
 	{
 		// called before each test
 		_solver = new operations_research::MPSolver("mainSolver", ORTOOLS_LP_SOLVER_TYPE);
-		ORTreadmps(*_solver, "../../../src_test/test_data/problem.mps");
+		ORTreadmps(*_solver, "temp_mps_problem.mps");
 		infinity_ = _solver->infinity();
 		nbConstarints_ = 5;
 		nbVariables_ = 8;

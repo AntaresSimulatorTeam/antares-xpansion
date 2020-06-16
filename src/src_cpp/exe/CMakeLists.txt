@@ -18,7 +18,7 @@ ENDIF()
 
 IF(NOT NO_SEQUENTIAL )
 	message(STATUS "Generating sequential executable!")
-	add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/exe_cpp")
+	add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/exe_sequential")
 ENDIF()
 
 
