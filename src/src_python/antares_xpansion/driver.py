@@ -50,12 +50,12 @@ class XpansionDriver(object):
                           self.config.BENDERS_MPI,
                           self.config.BENDERS_SEQUENTIAL]
         if solver == self.config.MERGE_MPS:
-            return [self.exe_path(solver), self.config.OPTIONS_TXT]
+            return self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
         elif solver == self.config.BENDERS_MPI:
-            return [self.config.MPI_LAUNCHER,
-                    self.config.MPI_N, '1', self.exe_path(solver), self.config.OPTIONS_TXT]
+            return self.config.MPI_LAUNCHER +" "+\
+                    self.config.MPI_N + ' 1 ' + self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
         #solver == self.config.BENDERS_SEQUENTIAL:
-        return [self.exe_path(solver), self.config.OPTIONS_TXT]
+        return self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
 
     def antares(self):
         """
@@ -226,7 +226,7 @@ class XpansionDriver(object):
         old_output = os.listdir(self.antares_output())
         print([self.antares(), self.data_dir()])
         with open(self.antares() + '.log', 'w') as output_file:
-            subprocess.call([self.antares(), self.data_dir()], shell=True,
+            subprocess.call(self.antares() +" "+ self.data_dir(), shell=True,
                             stdout=output_file,
                             stderr=output_file)
         new_output = os.listdir(self.antares_output())
@@ -259,7 +259,7 @@ class XpansionDriver(object):
         os.makedirs(lp_path)
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
-            subprocess.call([self.exe_path(self.config.LP_NAMER), output_path, is_relaxed],
+            subprocess.call(self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed,
                             shell=True,
                             stdout=output_file,
                             stderr=output_file)
