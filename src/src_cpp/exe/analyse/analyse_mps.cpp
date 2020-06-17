@@ -19,6 +19,8 @@ int main(int argc, char** argv)
 	std::vector<DblVector> name_rhs(input.size());
 	Str2Int id_name;
 
+	//@TODO check desynchronisation possible entre i et kvp.second : check name_rhs
+
 	size_t n_rows(-1);
 	for (auto const & kvp : input) {
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first);

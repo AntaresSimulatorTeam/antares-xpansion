@@ -5,8 +5,6 @@
 #include "ortools/linear_solver/linear_solver.pb.h"
 #include "ortools/linear_solver/model_exporter.h"
 
-//TODO remove the nbXXXX variables : they were here to manage arrays => not needed with vectors
-
 operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSolver & solver_p, std::string const & filename_p)
 {
     operations_research::MPModelProto model_proto_l;

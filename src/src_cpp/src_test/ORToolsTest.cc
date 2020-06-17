@@ -229,7 +229,7 @@ TEST_F(ORToolsTest, testORTaddcols)
 	ASSERT_EQ(_solver->NumVariables(), nbVariables_);
 
 
-	//WARN: the created solver is an LP solver so integer calues will be solved as Continuous
+	//WARN: the created solver is an LP solver so integer values will be solved as Continuous
 	ORTaddcols(*_solver, {1, 2, -5}, {0, 2, 4}, {0, 2, 1, 3, 2, 4}, {1, 5.2, 1, 5, 1, -1}, {0, -8, 15}, {1, 5, 28}, {'B', 'I', 'C'});
 
 	ASSERT_EQ(_solver->NumConstraints(), nbConstarints_);
@@ -289,7 +289,7 @@ TEST_F(ORToolsTest, testORTaddcols)
 	std::vector<double> bdu_l;
 	ORTgetcolinfo(*_solver, coltype_l, bdl_l, bdu_l, 0, _solver->NumVariables()-1);
 
-	//WARN: the created solver is an LP solver so integer calues will be solved as Continuous
+	//WARN: the created solver is an LP solver so integer values will be solved as Continuous
 	std::vector<char> expected_coltype =  {'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'B', 'I', 'C'};
 	ASSERT_EQ(expected_coltype.size(), coltype_l.size()) << "column type vector size different";
 	for ( size_t i = 0 ; i < expected_coltype.size() ; ++i )
