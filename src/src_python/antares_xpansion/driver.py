@@ -249,8 +249,8 @@ class XpansionDriver(object):
         with open(os.path.join(output_path, self.config.MPS_TXT), 'w') as file_l:
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
-        area_files = glob.glob(os.path.join(output_path, 'area*.txt'))
-        interco_files = glob.glob(os.path.join(output_path, 'interco*.txt'))
+        area_files = glob.glob(os.path.join(output_path, 'about-the-study/areas.txt'))
+        interco_files = glob.glob(os.path.join(output_path, 'about-the-study/links.txt'))
         assert len(area_files) == 1
         assert len(interco_files) == 1
         shutil.copy(area_files[0], os.path.join(output_path, 'area.txt'))
