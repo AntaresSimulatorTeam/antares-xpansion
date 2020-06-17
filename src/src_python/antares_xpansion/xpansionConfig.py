@@ -15,7 +15,7 @@ class XpansionConfig(object):
     def __init__(self):
         self.MPI_LAUNCHER = "mpiexec"
         self.MPI_N = "-n"
-        self.ANTARES = 'antares-7.0-solver'
+        self.ANTARES = 'antares-7.1-solver'
         self.SETTINGS = 'settings'
         self.USER = 'user'
         self.EXPANSION = 'expansion'
