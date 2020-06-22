@@ -130,16 +130,4 @@ ENDIF( USE_MPI )
 # ===========================================================================
 # Targets
 # ===========================================================================
-add_subdirectory ("${PROJECT_SOURCE_DIR}/src_helpers")
-
-add_subdirectory ("${PROJECT_SOURCE_DIR}/src_cpp")
-
-IF( USE_MPI )
-	add_subdirectory ("${PROJECT_SOURCE_DIR}/src_mpi")
-ENDIF( USE_MPI )
-
-add_subdirectory ("${PROJECT_SOURCE_DIR}/src_enzo_test")
-
-add_subdirectory ("${PROJECT_SOURCE_DIR}/exe")
-
-add_subdirectory ("${PROJECT_SOURCE_DIR}/src_test")
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src/src_cpp")
