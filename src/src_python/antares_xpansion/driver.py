@@ -164,6 +164,21 @@ class XpansionDriver(object):
         ini_file.read(self.general_data())
         return float(ini_file['general']['nbyears'])
 
+    def launch(self):
+        lp_path = self.generate_mps_files()
+        if self.args.method == "mpibenders":
+            # self.launch_optimization(lp_path, self.config.BENDERS_MPI)
+            print("MPI not handled yet")
+        elif self.args.method == "mergeMPS":
+            self.launch_optimization(lp_path, self.config.MERGE_MPS)
+        elif self.args.method == "sequential":
+            self.launch_optimization(lp_path, self.config.BENDERS_SEQUENTIAL)
+        elif self.args.method == "both":
+            #TODO both ??
+            print("MPI not handled yet")
+        else:
+            print("Illegal optim method")
+            sys.exit(0)
     def check_candidates(self):
         """
             checks that candidates file has correct format

@@ -49,7 +49,7 @@ class XpansionConfig(object):
         self.parser.add_argument("--dataDir", help="antares study data directory", required=True)
         self.parser.add_argument("--installDir",
                                  help="the directory where all binaries are located", required=True)
-        self.parser.add_argument("--method", type=str, choices=["mpibenders", "mergeMPS", "both"],
+        self.parser.add_argument("--method", type=str, choices=["mpibenders", "mergeMPS", "both","sequential"],
                                  help="choose the optimization method")
 
         self.options_default = {
