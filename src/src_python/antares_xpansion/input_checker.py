@@ -25,27 +25,41 @@ def check_profile_file(filename_path):
                  %s is not an existent file' % filename_path)
         sys.exit(0)
 
-    profile_column = []
+    two_profiles = False
     with open(filename_path, 'r') as profile_file:
+        two_profiles = (len(profile_file.readline().strip().split("\t")) == 2)
+
+    with open(filename_path, 'r') as profile_file:
+        first_profile = []
+        indirect_profile = []
         for idx, line in enumerate(profile_file):
             try:
-                line_value = float(line.strip())
-                profile_column.append(line_value)
+                line_vals = line.strip().split("\t")
+
+                if (len(line_vals) == 1) and not two_profiles:
+                    first_profile.append(float(line_vals[0]))
+                elif (len(line_vals) == 2) and two_profiles:
+                    first_profile.append(float(line_vals[0]))
+                    indirect_profile.append(float(line_vals[1]))
+                else:
+                    print('Line %d in file %s is not valid.'
+                          % (idx+1, filename_path))
+                    sys.exit(0)
             except ValueError:
-                print('Line %d in file %s is not a single non-negative value'
+                print('Line %d in file %s is not valid: allowed formats "X" or "X\tY".'
                       % (idx+1, filename_path))
                 sys.exit(0)
-            if line_value < 0:
+            if (first_profile[-1] < 0) or (two_profiles and indirect_profile[-1] < 0):
                 print('Line %d in file %s indicates a negative value'
                       % (idx+1, filename_path))
                 sys.exit(0)
 
-    if len(profile_column) != 8760:
+    if len(first_profile) != 8760:
         print('file %s does not have 8760 lines'
               % filename_path)
         sys.exit(0)
 
-    return any(profile_column)
+    return any(first_profile) or any(indirect_profile)
 
 ##########################################
 # Checks related to weights files
@@ -113,12 +127,9 @@ def check_candidate_option_type(option, value):
                      'max-investment' : 'non-negative',
                      'relaxed' : 'string',
                      'has-link-profile' : 'string',
-                     'has-link-profile-indirect' : 'string',
                      'link-profile' : 'string',
-                     'link-profile-indirect' : 'string',
                      'already-installed-capacity' : 'non-negative',
-                     'already-installed-link-profile' : 'string',
-                     'already-installed-link-profile-indirect' : 'string'}
+                     'already-installed-link-profile' : 'string'}
     option_type = options_types.get(option)
     if option_type is None:
         print('check_candidate_option_type: %s option not recognized in candidates file.' % option)
@@ -133,10 +144,9 @@ def check_candidate_option_type(option, value):
                 return float(value) >= 0
             except ValueError:
                 return False
-        else:
-            print('check_candidate_option_type: Non handled data type %s for option %s'
-                  % (option_type, option))
-            sys.exit(0)
+        print('check_candidate_option_type: Non handled data type %s for option %s'
+              % (option_type, option))
+        sys.exit(0)
 
 def check_candidate_option_value(option, value):
     """
@@ -159,21 +169,16 @@ def check_candidate_option_value(option, value):
                             'max-investment' : None,
                             'relaxed' : ["true", "false"],
                             'has-link-profile' : ["true", "false"],
-                            'has-link-profile-indirect' : ["true", "false"],
                             'link-profile' : None,
-                            'link-profile-indirect' : None,
                             'already-installed-capacity' : None,
-                            'already-installed-link-profile' : None,
-                            'already-installed-link-profile-indirect' : None}
+                            'already-installed-link-profile' : None}
     legal_values = options_legal_values.get(option)
-    if legal_values is None:
+    if (legal_values is None) or (value.lower() in legal_values):
         return True
-    elif value.lower() in legal_values:
-        return True
-    else:
-        print('check_candidate_option_value: Illegal value %s for option %s allowed values are: %s'
-              % (value, option, legal_values))
-        sys.exit(0)
+
+    print('check_candidate_option_value: Illegal value %s for option %s allowed values are: %s'
+          % (value, option, legal_values))
+    sys.exit(0)
 
 def check_candidate_name(name, section):
     """
@@ -214,12 +219,9 @@ def check_candidates_file(driver):
                       'max-investment' : '0',
                       'Relaxed' : 'false',
                       'has-link-profile' : 'false',
-                      'has-link-profile-indirect' : 'false',
                       'link-profile' : '1',
-                      'link-profile-indirect' : '1',
                       'already-installed-capacity' : '0',
-                      'already-installed-link-profile' : '1',
-                      'already-installed-link-profile-indirect' : '1'}
+                      'already-installed-link-profile' : '1'}
     ini_file = configparser.ConfigParser(default_values)
     ini_file.read(driver.candidates())
 
@@ -268,8 +270,7 @@ def check_candidates_file(driver):
             sys.exit(0)
 
     #check attributes profile is 0, 1 or an existent filename
-    profile_attributes = ['link-profile', 'link-profile-indirect', 'already-installed-link-profile',
-                          'already-installed-link-profile-indirect']
+    profile_attributes = ['link-profile', 'already-installed-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
         for attribute in profile_attributes:
@@ -287,23 +288,18 @@ def check_candidates_file(driver):
             config_changed = True
 
     #check coherence between has-link-profile and link-profile values
-    linked_attributes = [["has-link-profile", "link-profile"],
-                         ["has-link-profile-indirect", "link-profile-indirect"]]
     for each_section in ini_file.sections():
-        for attributes in linked_attributes:
-            has_link_value = ini_file[each_section][attributes[0]].strip()
-            link_profile_value = ini_file[each_section][attributes[1]].strip()
-            profile_exists = os.path.isfile(driver.capacity_file(link_profile_value))
-            if (has_link_value == "true") and (not profile_exists):
-                print('Incoherence in candidate %s: %s set to true while no %s file was specified'
-                      % (ini_file[each_section]["name"].strip(),
-                         attributes[0], attributes[1]))
-                sys.exit(0)
-            if (has_link_value == "false") and (profile_exists):
-                print('Incoherence in candidate %s: %s set to false while a valid %s file was specified'
-                      % (ini_file[each_section]["name"].strip(),
-                         attributes[0], attributes[1]))
-                sys.exit(0)
+        has_link_value = ini_file[each_section]["has-link-profile"].strip()
+        link_profile_value = ini_file[each_section]["link-profile"].strip()
+        profile_exists = os.path.isfile(driver.capacity_file(link_profile_value))
+        if (has_link_value == "true") and (not profile_exists):
+            print('Incoherence in candidate %s: has-link-profile set to true while '
+                  'no link-profile file was specified' % ini_file[each_section]["name"].strip())
+            sys.exit(0)
+        if (has_link_value == "false") and (profile_exists):
+            print('Incoherence in candidate %s: has-link-profile set to false while a valid '
+                  'link-profile file was specified' % ini_file[each_section]["name"].strip())
+            sys.exit(0)
 
     if config_changed:
         shutil.copyfile(driver.candidates(), driver.candidates()+".bak")
@@ -466,6 +462,6 @@ def check_settings_file(driver):
 
     if options.get('yearly_weights', "") != "":
         if options.get("cut_type") == "average":
-            print("check_settings : yearly_weights option can not be used when cut_type option is average")
+            print("check_settings : yearly_weights option can not be used when cut_type is average")
             sys.exit(0)
         check_weights_file(driver.weights_file(options.get('yearly_weights', "")))
