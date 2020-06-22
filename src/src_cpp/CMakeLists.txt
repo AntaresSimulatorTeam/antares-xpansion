@@ -8,6 +8,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 # ===========================================================================
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_helpers")
 
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_lpnamer")
+
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_sequential")
 
 IF( USE_MPI )
