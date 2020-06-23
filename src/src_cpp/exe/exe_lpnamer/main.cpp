@@ -9,10 +9,11 @@
  *
  */
 #include "IntercoDataMps.h"
-#include "xprs_driver.h"
+//#include "xprs_driver.h"
 #include <fstream>
 #include <sstream>
 
+#include "ortools_utils.h"
 
 
  /**
@@ -129,20 +130,16 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
  * \return void
  */
 void masterGeneration(std::string rootPath, Candidates candidates, std::map< std::pair<std::string, std::string>, int> couplings, std::string const &master_formulation) {
-	XPRSprob master;
-	XPRScreateprob(&master);
-	XPRSsetcbmessage(master, optimizermsg, NULL);
-	XPRSsetintcontrol(master, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-	XPRSloadlp(master, "master", 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-	int status;
+	operations_research::MPSolver master("masterProblem", ORTOOLS_MIP_SOLVER_TYPE);
 
 	int ninterco = candidates.size();
-	std::vector<int> mstart(ninterco + 1, 0);
+	std::vector<int> mstart(ninterco, 0);
 	std::vector<double> obj_interco(ninterco, 0);
-	std::vector<double> lb_interco(ninterco, +XPRS_MINUSINFINITY);
-	std::vector<double> ub_interco(ninterco, +XPRS_PLUSINFINITY);
+	std::vector<double> lb_interco(ninterco, -master.infinity());
+	std::vector<double> ub_interco(ninterco, master.infinity());
+	std::vector<char> coltypes_interco(ninterco, 'C');
 	std::vector<std::string> interco_names(ninterco);
-	
+
 	int i(0);
 	std::vector<std::string> pallier_names;
 	std::vector<int> pallier;
@@ -159,7 +156,7 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		//buffer << "INVEST_INTERCO_" << interco_id;
 		buffer << Candidates::id_name.find(interco_id)->second;
 		interco_names[i] = buffer.str();
-		
+
 		if (interco.second.is_integer()) {
 			pallier.push_back(i);
 			int new_id = ninterco + pallier_i.size();
@@ -170,18 +167,16 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		}
 		++i;
 	}
-	status = XPRSaddcols(master, ninterco, 0, obj_interco.data(), mstart.data(), NULL, NULL, lb_interco.data(), ub_interco.data());
-	if (status) {
-		std::cout << "master XPRSaddcols error" << std::endl;
-		std::exit(0);
-	}
+
+	ORTaddcols(master, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, interco_names);
+
 	// integer constraints
 	int n_integer = pallier.size();
 	if(n_integer>0 && master_formulation=="integer"){
 		std::vector<double> zeros(n_integer, 0);
+		std::vector<int> int_zeros(n_integer, 0);
 		std::vector<char> integer_type(n_integer, 'I');
-		XPRSaddcols(master, n_integer, 0, zeros.data(), NULL, NULL, NULL, zeros.data(), max_unit.data());
-		XPRSchgcoltype(master, n_integer, pallier_i.data(), integer_type.data());
+		ORTaddcols(master, zeros, int_zeros, {}, {}, zeros, max_unit, integer_type);
 		std::vector<double> dmatval;
 		std::vector<int> colind;
 		std::vector<char> rowtype;
@@ -200,28 +195,12 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		int n_row_interco(rowtype.size());
 		int n_coeff_interco(dmatval.size());
 		rstart.push_back(dmatval.size());
-		status = XPRSaddrows(master, n_row_interco, n_coeff_interco, rowtype.data(), rhs.data(), NULL, rstart.data(), colind.data(), dmatval.data());
-		if (status) {
-			std::cout << "XPRSaddrows error l." << __LINE__ << std::endl;
-			std::exit(0);
-		}
-
+		ORTaddrows(master, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
 
-	i = 0;
-	for (auto const & name : interco_names) {
-		status = XPRSaddnames(master, 2, interco_names[i].c_str(), i, i);
-		if (status) {
-			std::cout << "master XPRSaddname error" << std::endl;
-			std::exit(0);
-		}
-		++i;
-	}
 	std::string const lp_name = "master";
-	XPRSwriteprob(master, (rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp").c_str(), "l");
-	XPRSwriteprob(master, (rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps").c_str(), "");
-	XPRSdestroyprob(master);
-	XPRSfree();
+	ORTwritelp(master, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
+	ORTwritemps(master, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps");
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const & coupling : couplings) {
 		output[get_name(coupling.first.second)][coupling.first.first] = coupling.second;
@@ -267,7 +246,6 @@ int main(int argc, char** argv) {
 	std::string const master_formulation(argv[2]);
 
 	std::map< std::pair<std::string, std::string>, int> couplings;
-	XPRSinit("");
 	candidates.treatloop(root, couplings);
 	masterGeneration(root, candidates, couplings, master_formulation);
 
