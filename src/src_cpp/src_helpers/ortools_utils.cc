@@ -39,6 +39,18 @@ bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string con
     mpsOut.close();
 }
 
+bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string const & filename_p)
+{
+    operations_research::MPModelProto proto_l;
+	solver_p.ExportModelToProto(&proto_l);
+	operations_research::MPModelExportOptions options_l;
+	const auto status_l = operations_research::ExportModelAsLpFormat(proto_l, options_l);
+
+    std::ofstream lpOut(filename_p);
+    lpOut <<  status_l.value_or("");
+    lpOut.close();
+}
+
 void ORTdescribe(operations_research::MPSolver const & solver_p, std::ostringstream & oss_p, bool index_p)
 {
     operations_research::MPObjective const & objective_l(solver_p.Objective());
@@ -512,5 +524,33 @@ void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rs
     {
         operations_research::MPSolver::BasisStatus colStatus_l = variable_l->basis_status();
         cstatus_p.push_back(basisStatusToInt(colStatus_l));
+    }
+}
+
+void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p)
+{
+    const std::vector<operations_research::MPVariable*> & variables_l = solver_p.variables();
+    for(int index_l : mindex_p)
+    {
+        switch(qbtype_p[index_l])
+        {
+            case 'U' :
+            {
+                variables_l[index_l]->SetUB(bnd_p[index_l]);
+                break;
+            }
+            case 'L' :
+            {
+                variables_l[index_l]->SetLB(bnd_p[index_l]);
+                break;
+            }
+            case 'B' :
+            {
+                variables_l[index_l]->SetBounds(bnd_p[index_l], bnd_p[index_l]);
+                break;
+            }
+            default:
+                std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[index_l] << "!";
+        }
     }
 }
