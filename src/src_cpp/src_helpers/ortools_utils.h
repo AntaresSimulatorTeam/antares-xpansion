@@ -251,3 +251,15 @@ void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rs
  * @warn if the same bound is changed twice the bound at the end of the vector will be used and no warning will be issued
  */
 void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p);
+
+/**
+ * @brief Returns the current basis
+ *
+ * @param outSolver_p  : solver containing the model with renamed variables.
+ * @param inSolver_p  : solver containing the model to copy.
+ * @param names_p : int array containing the indices of the columns on which the bounds will change.
+ *
+ * @Warn care when copying between solvers of different types : no special verifications are done (eg. infinity values correspondance)
+ * @Note duplicate/empty names will be named automatically by ortools
+ */
+void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operations_research::MPSolver const & inSolver_p, std::vector<std::string> const & names_p);

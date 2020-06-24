@@ -136,7 +136,7 @@ void ORTgetobj(operations_research::MPSolver const & solver_p, std::vector<doubl
 
 void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> const & objx_p, std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p, std::vector<double> const & bdl_p, std::vector<double> const & bdu_p, std::vector<char> const & colTypes_p, std::vector<std::string> const & colNames_p)
 {
-	assert(objx_p.size() == mstart_p.size());
+	assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
     assert(mrwind_p.size() == dmatval_p.size());
 
 	operations_research::MPObjective* objective_l = solver_p.MutableObjective();
@@ -551,6 +551,37 @@ void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> con
             }
             default:
                 std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[index_l] << "!";
+        }
+    }
+}
+
+
+void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operations_research::MPSolver const & inSolver_p, std::vector<std::string> const & names_p)
+{
+    if (outSolver_p.ProblemType() != inSolver_p.ProblemType())
+    {
+        std::out << "\nWarn: copying solvers with different types!";
+    }
+
+    //copy and rename columns
+    std::vector<double> obj_l;
+	ORTgetobj(inSolver_p, obj_l, 0, inSolver_p.NumVariables() - 1);
+    std::vector<double> lb_l;
+	std::vector<double> ub_l;
+	std::vector<char> coltype_l;
+	ORTgetcolinfo(inSolver_p, coltype_l, lb_l, ub_l, 0, inSolver_p.NumVariables() - 1);
+	ORTaddcols(outSolver_p, obj_l, {}, {}, {}, lb_l, ub_l, coltype_l, names_p);
+
+    const std::vector<operations_research::MPVariable*> & outVariables_l = outSolver_p.variables();
+    assert(inSolver.NumVariables() == outVariables_l.size());
+
+    //copy constraints
+    for(auto inConstraint_l : inSolver_p.constraints())
+    {
+        operations_research::MPConstraint* outConstraint_l = outSolver_p.MakeRowConstraint(inConstraint_l->lb(), inConstraint_l->ub(), inConstraint_l->name());
+        for(auto pairVarCoeff_l : inConstraint_l->terms())
+        {
+            outConstraint_l->SetCoefficient(outVariables_l[pairVarCoeff_l.first->index()], pairVarCoeff_l.second);
         }
     }
 }

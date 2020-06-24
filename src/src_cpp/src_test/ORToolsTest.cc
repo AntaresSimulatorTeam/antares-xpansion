@@ -546,3 +546,45 @@ TEST_F(ORToolsTest, testORTgetbasis)
 		EXPECT_EQ(expected_colstatus[i], cstatus_l[i]) << "(i) = (" << i << ")";
 	}
 }
+
+TEST_F(ORToolsTest, testORTcopy)
+{
+	ASSERT_EQ(_solver->NumConstraints(), nbConstarints_);
+	ASSERT_EQ(_solver->NumVariables(), nbVariables_);
+
+	// std::ostringstream oss_l;
+	// ORTdescribe(*_solver, oss_l);
+
+	operations_research::MPSolver outSolver_l("copy", ORTOOLS_LP_SOLVER_TYPE);
+	ORTcopyandrenamevars(outSolver_l, *_solver, {"y0","y1","y2","y3","y4","y5","y6","y7"});
+
+	// ORTdescribe(outSolver_l, oss_l);
+	// std::cout << "\n" << oss_l.str();
+
+	std::vector<double> x;
+	std::vector<double> dual;
+	std::vector<double> dj;
+	outSolver_l.Solve();
+	ORTgetlpsolution(outSolver_l, x);
+	ORTgetlpdual(outSolver_l, dual);
+	ORTgetlpreducedcost(outSolver_l, dj);
+	std::vector<double> expected_solution =  {2.5, 1.05, 0, 0.6428571428571429, 0.5, 4, 0, 0.26315789473684209};//cplex solution
+	std::vector<double> expected_dual =  {0, 0, 0, 0, -0.52631578947368418};//cplex solution
+	std::vector<double> expected_rc =  {3.9473684210526314, 0, 0, 0, 2.5263157894736841, 0, 0, 0};//cplex solution
+	ASSERT_EQ(expected_solution.size(), x.size()) << "solution size different";
+	for ( size_t i = 0 ; i < expected_solution.size() ; ++i )
+	{
+		EXPECT_NEAR(expected_solution[i], x[i], doubleTolerance_) << "(i) = (" << i << ")";
+	}
+	ASSERT_EQ(expected_dual.size(), dual.size()) << "dual size different";
+	for ( size_t i = 0 ; i < expected_dual.size() ; ++i )
+	{
+		EXPECT_NEAR(expected_dual[i], dual[i], doubleTolerance_) << "(i) = (" << i << ")";
+	}
+	ASSERT_EQ(expected_rc.size(), dj.size()) << "reduced cost size different";
+	for ( size_t i = 0 ; i < expected_rc.size() ; ++i )
+	{
+		EXPECT_NEAR(expected_rc[i], dj[i], doubleTolerance_) << "(i) = (" << i << ")";
+	}
+
+}
