@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name="AntaresXpansion",
+    name="AntaresXpansionLauncher",
     version="0.0.1",
     author="EURODECISION-RTE",
     description="Module Driving Antares Xpansion",

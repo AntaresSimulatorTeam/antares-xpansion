@@ -45,11 +45,16 @@ class XpansionConfig(object):
 
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument("--step", choices=["lp", "optim", "full", "antares", "getnames"],
-                                 help="generate the lp")
+                                 help='step to execute ("lp", "optim", "full", "antares", "getnames")',
+                                 required=True)
+        self.parser.add_argument("--simulationName",
+                                 help="name of the antares simulation to use. "
+                                 "Must be present in the output directory")
         self.parser.add_argument("--dataDir", help="antares study data directory", required=True)
         self.parser.add_argument("--installDir",
                                  help="the directory where all binaries are located", required=True)
-        self.parser.add_argument("--method", type=str, choices=["mpibenders", "mergeMPS", "both","sequential"],
+        self.parser.add_argument("--method", type=str,
+                                 choices=["mpibenders", "mergeMPS", "both", "sequential"],
                                  help="choose the optimization method")
 
         self.options_default = {
