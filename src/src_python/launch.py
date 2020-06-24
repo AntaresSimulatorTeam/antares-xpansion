@@ -8,8 +8,10 @@ from antares_xpansion.driver import XpansionDriver
 CONFIG = XpansionConfig()
 DRIVER = XpansionDriver(CONFIG)
 
-MY_LP_PATH = DRIVER.generate_mps_files()
+DRIVER.launch()
+
+#MY_LP_PATH = DRIVER.generate_mps_files()
 # my_lp_path = 'D:\\repo\\these-blanchot-lp-namer\\test_case\\output\\20200214-1622eco\\lp'
 # DRIVER.set_options('D:\\repo\\these-blanchot-lp-namer\\test_case\\output\\20200214-1622eco')
-DRIVER.launch_optimization(MY_LP_PATH, CONFIG.BENDERS_SEQUENTIAL)
+# DRIVER.launch_optimization(MY_LP_PATH, CONFIG.BENDERS_SEQUENTIAL)
 # DRIVER.launch_optimization(MY_LP_PATH, CONFIG.MERGE_MPS)

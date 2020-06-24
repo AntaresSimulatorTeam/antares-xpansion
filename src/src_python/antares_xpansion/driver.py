@@ -29,6 +29,8 @@ class XpansionDriver(object):
         self.config = config
         self.args = self.config.parser.parse_args()
 
+        self.clear_old_output()
+
         self.check_candidates()
         self.check_settings()
 
@@ -164,6 +166,34 @@ class XpansionDriver(object):
         ini_file.read(self.general_data())
         return float(ini_file['general']['nbyears'])
 
+    def launch(self):
+        lp_path = self.generate_mps_files()
+        if self.args.method == "mpibenders":
+            # self.launch_optimization(lp_path, self.config.BENDERS_MPI)
+            print("MPI not handled yet")
+            sys.exit(0)
+        elif self.args.method == "mergeMPS":
+            self.launch_optimization(lp_path, self.config.MERGE_MPS)
+        elif self.args.method == "sequential":
+            self.launch_optimization(lp_path, self.config.BENDERS_SEQUENTIAL)
+        elif self.args.method == "both":
+            #TODO both ??
+            print("both not handled yet")
+            sys.exit(0)
+        else:
+            print("Illegal optim method")
+            sys.exit(0)
+
+
+    def clear_old_output(self):
+        """
+            cleans old log files
+        """
+        if os.path.isfile(self.antares() + '.log'):
+            os.remove(self.antares() + '.log')
+        if os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log'):
+            os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
+
     def check_candidates(self):
         """
             checks that candidates file has correct format
@@ -256,6 +286,9 @@ class XpansionDriver(object):
         shutil.copy(area_files[0], os.path.join(output_path, 'area.txt'))
         shutil.copy(interco_files[0], os.path.join(output_path, 'interco.txt'))
         lp_path = os.path.join(output_path, 'lp')
+        if (os.path.isdir(lp_path)):
+            print("removing old antares-xpansion output directory")
+            shutil.rmtree(lp_path)
         os.makedirs(lp_path)
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
