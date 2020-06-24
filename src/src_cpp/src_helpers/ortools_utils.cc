@@ -560,7 +560,7 @@ void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operation
 {
     if (outSolver_p.ProblemType() != inSolver_p.ProblemType())
     {
-        std::out << "\nWarn: copying solvers with different types!";
+        std::cout << "\nWarn: copying solvers with different types!";
     }
 
     //copy and rename columns
