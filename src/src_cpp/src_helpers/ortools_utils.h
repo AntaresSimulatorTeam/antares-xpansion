@@ -38,6 +38,14 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
  */
 bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string const & filename_p);
 
+/**
+ * @brief writes a problem into an lp format
+ *
+ * @param solver_p  : solver containing the model to export
+ * @param filename_p  : path to the lp file to produce
+ */
+bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string const & filename_p);
+
 
 /**
  * @brief enables to print the problem in a human readable format
@@ -228,3 +236,30 @@ May be NULL if not required.
 May be NULL if not required.
  */
 void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rstatus_p, std::vector<int> & cstatus_p);
+
+/**
+ * @brief Returns the current basis
+ *
+ * @param solver_p  : solver containing the model to modify.
+ * @param mindex_p : int array containing the indices of the columns on which the bounds will change.
+ * @param qbtype_p : Character array of same length as mindex_p indicating the type of bound to change:
+ *      U : indicates change the upper bound;
+ *      L : indicates change the lower bound;
+ *      B : indicates change both bounds, i.e. fix the column.
+ * @param bnd_p : Double array of same length as mindex_p giving the new bound values.
+ *
+ * @warn if the same bound is changed twice the bound at the end of the vector will be used and no warning will be issued
+ */
+void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p);
+
+/**
+ * @brief Returns the current basis
+ *
+ * @param outSolver_p  : solver containing the model with renamed variables.
+ * @param inSolver_p  : solver containing the model to copy.
+ * @param names_p : int array containing the indices of the columns on which the bounds will change.
+ *
+ * @Warn care when copying between solvers of different types : no special verifications are done (eg. infinity values correspondance)
+ * @Note duplicate/empty names will be named automatically by ortools
+ */
+void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operations_research::MPSolver const & inSolver_p, std::vector<std::string> const & names_p);

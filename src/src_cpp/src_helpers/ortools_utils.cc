@@ -39,6 +39,18 @@ bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string con
     mpsOut.close();
 }
 
+bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string const & filename_p)
+{
+    operations_research::MPModelProto proto_l;
+	solver_p.ExportModelToProto(&proto_l);
+	operations_research::MPModelExportOptions options_l;
+	const auto status_l = operations_research::ExportModelAsLpFormat(proto_l, options_l);
+
+    std::ofstream lpOut(filename_p);
+    lpOut <<  status_l.value_or("");
+    lpOut.close();
+}
+
 void ORTdescribe(operations_research::MPSolver const & solver_p, std::ostringstream & oss_p, bool index_p)
 {
     operations_research::MPObjective const & objective_l(solver_p.Objective());
@@ -124,7 +136,7 @@ void ORTgetobj(operations_research::MPSolver const & solver_p, std::vector<doubl
 
 void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> const & objx_p, std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p, std::vector<double> const & bdl_p, std::vector<double> const & bdu_p, std::vector<char> const & colTypes_p, std::vector<std::string> const & colNames_p)
 {
-	assert(objx_p.size() == mstart_p.size());
+	assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
     assert(mrwind_p.size() == dmatval_p.size());
 
 	operations_research::MPObjective* objective_l = solver_p.MutableObjective();
@@ -512,5 +524,64 @@ void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rs
     {
         operations_research::MPSolver::BasisStatus colStatus_l = variable_l->basis_status();
         cstatus_p.push_back(basisStatusToInt(colStatus_l));
+    }
+}
+
+void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p)
+{
+    const std::vector<operations_research::MPVariable*> & variables_l = solver_p.variables();
+    for(int index_l : mindex_p)
+    {
+        switch(qbtype_p[index_l])
+        {
+            case 'U' :
+            {
+                variables_l[index_l]->SetUB(bnd_p[index_l]);
+                break;
+            }
+            case 'L' :
+            {
+                variables_l[index_l]->SetLB(bnd_p[index_l]);
+                break;
+            }
+            case 'B' :
+            {
+                variables_l[index_l]->SetBounds(bnd_p[index_l], bnd_p[index_l]);
+                break;
+            }
+            default:
+                std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[index_l] << "!";
+        }
+    }
+}
+
+
+void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operations_research::MPSolver const & inSolver_p, std::vector<std::string> const & names_p)
+{
+    if (outSolver_p.ProblemType() != inSolver_p.ProblemType())
+    {
+        std::cout << "\nWarn: copying solvers with different types!";
+    }
+
+    //copy and rename columns
+    std::vector<double> obj_l;
+	ORTgetobj(inSolver_p, obj_l, 0, inSolver_p.NumVariables() - 1);
+    std::vector<double> lb_l;
+	std::vector<double> ub_l;
+	std::vector<char> coltype_l;
+	ORTgetcolinfo(inSolver_p, coltype_l, lb_l, ub_l, 0, inSolver_p.NumVariables() - 1);
+	ORTaddcols(outSolver_p, obj_l, {}, {}, {}, lb_l, ub_l, coltype_l, names_p);
+
+    const std::vector<operations_research::MPVariable*> & outVariables_l = outSolver_p.variables();
+    assert(inSolver.NumVariables() == outVariables_l.size());
+
+    //copy constraints
+    for(auto inConstraint_l : inSolver_p.constraints())
+    {
+        operations_research::MPConstraint* outConstraint_l = outSolver_p.MakeRowConstraint(inConstraint_l->lb(), inConstraint_l->ub(), inConstraint_l->name());
+        for(auto pairVarCoeff_l : inConstraint_l->terms())
+        {
+            outConstraint_l->SetCoefficient(outVariables_l[pairVarCoeff_l.first->index()], pairVarCoeff_l.second);
+        }
     }
 }
