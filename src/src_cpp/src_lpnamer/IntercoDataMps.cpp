@@ -158,8 +158,9 @@ void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::stri
  * \return void
  */
 void Candidates::readCstrfiles(std::string const filePath,
-	std::list<std::string> & cstrList,
-	size_t & sizeCstrList) {
+							std::list<std::string> & cstrList,
+							size_t & sizeCstrList)
+{
 	std::string line;
 	std::ifstream file(filePath.c_str());
 	if (!file.good()) {
@@ -198,11 +199,12 @@ void Candidates::readCstrfiles(std::string const filePath,
  * \return void
  */
 void Candidates::readVarfiles(std::string const filePath,
-	std::list<std::string> & varList,
-	size_t & sizeVarList,
-	std::map<int, std::vector<int> > & interco_data,
-	std::map<std::vector<int>, int> & interco_id,
-	map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex) {
+							std::list<std::string> & varList,
+							size_t & sizeVarList,
+							std::map<int, std::vector<int> > & interco_data,
+							std::map<std::vector<int>, int> & interco_id,
+							map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex)
+{
 	std::string line;
 	std::ifstream file(filePath.c_str());
 	if (!file.good()) {
@@ -295,15 +297,16 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 											std::string study_path,
 											std::string const lp_mps_name)
 {
-	operations_research::MPSolver prblm("masterProblem", ORTOOLS_MIP_SOLVER_TYPE);
+	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
-	ORTreadmps(prblm, mps_name);
+	ORTreadmps(in_prblm, mps_name);
 
-	int ncols(prblm.NumVariables());
-	int nrows(prblm.NumConstraints());
+	int ncols(in_prblm.NumVariables());
+	int nrows(in_prblm.NumConstraints());
 
+	//FIXME why +1 ???
 	// check if number of rows in the solver matrix is equal to the number of constraints
 	if (nrows != cstr.size() + 1) {
 		std::cout << "WRONG NUMBER OF CSTR NAMES, solver = " << nrows << ", " << cstr.size() << " given" << std::endl;
@@ -316,29 +319,12 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 
 	int ninterco_pdt = interco_data.size();
 
-	//FIXME ORT does not allow renaming => names need to be set in the mps file
-// 	int status;
-// #ifdef __ADD_NAMES__
-// 	std::vector<char> vnames(vsize, '\0');
-// 	int iname(0);
-// 	for (auto const & name : var) {
-// 		for (int ichar(0); ichar < name.size(); ++ichar)
-// 			vnames[iname + ichar] = name[ichar];
-// 		iname += name.size() + 1;
-// 	}
-// 	status = XPRSaddnames(xpr, 2, vnames.data(), 0, ncols - 1);
-// 	if (status) {
-// 		std::cout << "XPRSaddnames error l." << __LINE__ << std::endl;
-// 		std::exit(0);
-// 	}
-// #endif
-
 	std::vector<double> lb;
 	std::vector<double> ub;
 	std::vector<char> coltype;
-	ORTgetcolinfo(prblm, coltype, lb, ub, 0, ncols - 1);
-	std::vector<double> posinf(ncols, prblm.infinity());
-	std::vector<double> neginf(ncols, -prblm.infinity());
+	ORTgetcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
+	std::vector<double> posinf(ncols, in_prblm.infinity());
+	std::vector<double> neginf(ncols, -in_prblm.infinity());
 	std::vector<char> lb_char(ncols, 'L');
 	std::vector<char> ub_char(ncols, 'U');
 	std::vector<int> indexes;
@@ -347,17 +333,26 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 		indexes.push_back(id.first);
 	}
 	// remove bounds on intero
-	ORTchgbounds(prblm, indexes, lb_char, neginf);
-	ORTchgbounds(prblm, indexes, ub_char, posinf);
+	ORTchgbounds(in_prblm, indexes, lb_char, neginf);
+	ORTchgbounds(in_prblm, indexes, ub_char, posinf);
+
+	//FIXME ORT does not allow renaming => names need to be set in the mps file or on a new solver
+	//FIXME empty lines in variables files => variables that have no name => automatically named by ortools
+	std::vector<std::string> vnames(var.begin(), var.end());
+	operations_research::MPSolver out_prblm("new_problem", in_prblm.ProblemType());
+	// copy in_prblm with the changed bounds and rename its variables
+	ORTcopyandrenamevars(out_prblm, in_prblm, vnames);
+
+
 	// create pMax variable
 	int ninterco = interco_id.size();
 	//std::cout << "ninterco : " << ninterco << std::endl;
 	std::vector<int> mstart(ninterco, 0);
 	std::vector<double> obj_interco(ninterco, 0);
-	std::vector<double> lb_interco(ninterco, -prblm.infinity());
-	std::vector<double> ub_interco(ninterco,  prblm.infinity());
+	std::vector<double> lb_interco(ninterco, -out_prblm.infinity());
+	std::vector<double> ub_interco(ninterco,  out_prblm.infinity());
 	std::vector<char> coltypes_interco(ninterco, 'C');
-	ORTaddcols(prblm, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco);
+	std::vector<std::string> colnames_l;
 
 	for (auto const & interco : interco_id) {
 		std::stringstream buffer;
@@ -368,19 +363,16 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 		//buffer << "INVEST_INTERCO_" << interco_i;
 		buffer << id_name.find(interco_i)->second;
 
-	//FIXME ORT does not allow renaming => names need to be set in the mps file
-// #ifdef __ADD_NAMES__
-// 		status = XPRSaddnames(xpr, 2, buffer.str().c_str(), ncols + interco.second, ncols + interco.second);
-// 		if (status) {
-// 			std::cout << "XPRSaddnames error l." << __LINE__ << std::endl;
-// 			std::exit(0);
-// 		}
-// #endif
+		// @FIXME check that names and variables orders correspond
+		colnames_l.push_back(buffer.str());
+
 		couplings[{buffer.str(), mps_name}] = interco.second + ncols;
 		//std::cout << "ncols " << ncols << std::endl;
 		//std::cout << "interco.second " << interco.second << std::endl;
 		//std::cout << "buffer " << buffer.str() << std::endl;
 	}
+
+	ORTaddcols(out_prblm, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
 
 	std::vector<double> dmatval;
 	std::vector<int> colind;
@@ -414,12 +406,11 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 		colind.push_back(ncols + i_interco_pmax);
 		dmatval.push_back(candidate.profile(kvp.second[2], study_path, false));
 	}
-	int n_row_interco(rowtype.size());
-	int n_coeff_interco(dmatval.size());
-	rstart.push_back(dmatval.size());
-	ORTaddrows(prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	ORTwritemps(prblm, lp_mps_name);
+	rstart.push_back(dmatval.size());
+	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
+
+	ORTwritemps(out_prblm, std::string(lp_mps_name).insert(lp_mps_name.size()-4, "_out") );
 	std::cout << "lp_name : " << lp_mps_name << " done" << std::endl;
 }
 
@@ -447,7 +438,7 @@ void Candidates::treat(std::string const & root,
 	std::string const var_name(root + PATH_SEPARATOR + mps[1]);
 	std::string const cstr_name(root + PATH_SEPARATOR + mps[2]);
 
-	// new mpw file in the new lp directory
+	// new mps file in the new lp directory
 	std::string const lp_name = mps[0].substr(0, mps[0].size() - 4);
 	std::string const lp_mps_name = root + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps";
 
@@ -461,7 +452,6 @@ void Candidates::treat(std::string const & root,
 
 	std::map<int, std::vector<int> > interco_data;
 	std::map<std::vector<int>, int> interco_id;
-
 
 	readCstrfiles(cstr_name, cstr, csize);
 	readVarfiles(var_name, var, vsize, interco_data, interco_id, key_paysor_paysex);
