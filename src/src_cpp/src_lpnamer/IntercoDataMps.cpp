@@ -410,7 +410,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 	rstart.push_back(dmatval.size());
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	ORTwritemps(out_prblm, std::string(lp_mps_name).insert(lp_mps_name.size()-4, "_out") );
+	ORTwritemps(out_prblm, lp_mps_name );
 	std::cout << "lp_name : " << lp_mps_name << " done" << std::endl;
 }
 
