@@ -29,8 +29,6 @@ class XpansionDriver(object):
         self.config = config
         self.args = self.config.parser.parse_args()
 
-        self.clear_old_output()
-
         self.check_candidates()
         self.check_settings()
 
@@ -167,31 +165,48 @@ class XpansionDriver(object):
         return float(ini_file['general']['nbyears'])
 
     def launch(self):
-        lp_path = self.generate_mps_files()
-        if self.args.method == "mpibenders":
-            # self.launch_optimization(lp_path, self.config.BENDERS_MPI)
-            print("MPI not handled yet")
-            sys.exit(0)
-        elif self.args.method == "mergeMPS":
-            self.launch_optimization(lp_path, self.config.MERGE_MPS)
-        elif self.args.method == "sequential":
-            self.launch_optimization(lp_path, self.config.BENDERS_SEQUENTIAL)
-        elif self.args.method == "both":
-            #TODO both ??
-            print("both not handled yet")
-            sys.exit(0)
+        """
+            launch antares xpansion steps
+        """
+        self.clear_old_log()
+
+        if self.args.step == "full":
+            lp_path = self.generate_mps_files()
+            self.launch_optimization(lp_path)
+        elif self.args.step == "antares":
+            self.pre_antares()
+            self.launch_antares()
+        elif self.args.step == "getnames":
+            if self.args.simulationName:
+                self.get_names(self.args.simulationName)
+            else:
+                print("Missing argument simulationName")
+                sys.exit(0)
+        elif self.args.step == "lp":
+            if self.args.simulationName:
+                self.lp_step(self.args.simulationName)
+            else:
+                print("Missing argument simulationName")
+                sys.exit(0)
+        elif self.args.step == "optim":
+            if self.args.simulationName:
+                lp_path = os.path.join(self.antares_output(), self.args.simulationName, 'lp')
+                self.launch_optimization(lp_path)
+            else:
+                print("Missing argument simulationName")
+                sys.exit(0)
         else:
             print("Illegal optim method")
             sys.exit(0)
 
-
-    def clear_old_output(self):
+    def clear_old_log(self):
         """
-            cleans old log files
+            clears old log files for antares and the lp_namer
         """
-        if os.path.isfile(self.antares() + '.log'):
+        if (self.args.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
             os.remove(self.antares() + '.log')
-        if os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log'):
+        if (self.args.step in ["full", "lp"])\
+            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
             os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
 
     def check_candidates(self):
@@ -200,7 +215,7 @@ class XpansionDriver(object):
         """
         #check file existence
         if not os.path.isfile(self.candidates()):
-            print('Missing file : %s was not retrieved in the indicated path : ', self.candidates())
+            print('Missing file : %s was not retrieved in the indicated path: ', self.candidates())
             sys.exit(0)
 
         check_candidates_file(self)
@@ -269,9 +284,29 @@ class XpansionDriver(object):
     def post_antares(self, antares_output_name):
         """
             creates necessary files for simulation using the antares simulation output files,
-            the existing configuration files and the lpnamer executable
+            the existing configuration files, get_names and the lpnamer executable
 
-            :return: path to lp directory
+            :param antares_output_name: name of the antares simulation output directory
+
+            :return: path to the lp output directory
+        """
+        output_path = os.path.join(self.antares_output(), antares_output_name)
+        self.get_names(antares_output_name)
+        lp_path = self.lp_step(antares_output_name)
+        self.set_options(output_path)
+        return lp_path
+
+    def get_names(self, antares_output_name):
+        """
+            produces a .txt file describing the weekly problems:
+            each line of the file contains :
+             - mps file name
+             - variables file name
+             - constraints file name
+
+            :param antares_output_name: name of the antares simulation output directory
+
+            produces a file named with xpansionConfig.MPS_TXT
         """
         output_path = os.path.join(self.antares_output(), antares_output_name)
         mps_txt = read_and_write_mps(output_path)
@@ -279,27 +314,38 @@ class XpansionDriver(object):
         with open(os.path.join(output_path, self.config.MPS_TXT), 'w') as file_l:
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
-        area_files = glob.glob(os.path.join(output_path, 'about-the-study/areas.txt'))
-        interco_files = glob.glob(os.path.join(output_path, 'about-the-study/links.txt'))
+
+        area_files = glob.glob(os.path.join(output_path, 'area*.txt'))
+        interco_files = glob.glob(os.path.join(output_path, 'interco*.txt'))
         assert len(area_files) == 1
         assert len(interco_files) == 1
         shutil.copy(area_files[0], os.path.join(output_path, 'area.txt'))
         shutil.copy(interco_files[0], os.path.join(output_path, 'interco.txt'))
+
+    def lp_step(self, antares_output_name):
+        """
+            copies area and interco files and launches the lp_namer
+
+            :param output_path: path to the antares simulation output directory
+
+            produces a file named with xpansionConfig.MPS_TXT
+        """
+        output_path = os.path.join(self.antares_output(), antares_output_name)
+
         lp_path = os.path.join(output_path, 'lp')
-        if (os.path.isdir(lp_path)):
-            print("removing old antares-xpansion output directory")
+        if os.path.isdir(lp_path):
             shutil.rmtree(lp_path)
         os.makedirs(lp_path)
+
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
             subprocess.call(self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed,
                             shell=True,
                             stdout=output_file,
                             stderr=output_file)
-        self.set_options(output_path)
         return lp_path
 
-    def launch_optimization(self, lp_path, solver):
+    def launch_optimization(self, lp_path):
         """
             launch the optimization of the antaresXpansion problem using the specified solver
 
@@ -309,6 +355,23 @@ class XpansionDriver(object):
             :type solver: value in [XpansionConfig.MERGE_MPS, XpansionConfig.BENDERS_MPI,
             XpansionConfig.BENDERS_SEQUENTIAL]
         """
+        solver = None
+        if self.args.method == "mpibenders":
+            solver = self.config.BENDERS_MPI
+            print("MPI not handled yet")
+            sys.exit(0)
+        elif self.args.method == "mergeMPS":
+            solver = self.config.MERGE_MPS
+        elif self.args.method == "sequential":
+            solver = self.config.BENDERS_SEQUENTIAL
+        elif self.args.method == "both":
+            #TODO both ??
+            print("both not handled yet")
+            sys.exit(0)
+        else:
+            print("Illegal optim method")
+            sys.exit(0)
+
         old_cwd = os.getcwd()
         os.chdir(lp_path)
         print('Current directory is now : ', os.getcwd())
@@ -316,6 +379,8 @@ class XpansionDriver(object):
                                                                   os.path.join(os.getcwd(),
                                                                                solver)))
 
+        if  os.path.isfile(solver + '.log'):
+            os.remove(solver + '.log')
         with open(solver + '.log', 'w') as output_file:
             subprocess.call(self.solver_cmd(solver), shell=True,
                             stdout=output_file,

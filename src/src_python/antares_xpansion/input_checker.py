@@ -406,7 +406,7 @@ def check_setting_option_value(option, value):
         if value.strip().endswith("%"):
             try:
                 gap = float(value[:-1])
-                if (gap >= 0) and (gap <= 100):
+                if 0 <= gap <= 100:
                     return True
             except ValueError:
                 print('Illegal value %s for option %s: legal format "X%%" with X between 0 and 100'
