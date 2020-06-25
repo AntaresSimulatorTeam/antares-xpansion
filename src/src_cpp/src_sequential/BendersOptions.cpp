@@ -25,7 +25,7 @@ file.close();
 *  \brief Get path to master problem mps file from options
 */
 std::string BendersOptions::get_master_path() const {
-	return INPUTROOT + PATH_SEPARATOR + MASTER_NAME;
+	return INPUTROOT + PATH_SEPARATOR + MASTER_NAME + ".mps";
 }
 
 /*!
@@ -39,7 +39,7 @@ std::string BendersOptions::get_structure_path() const {
 *  \brief Get path to slave problem mps file from options
 */
 std::string BendersOptions::get_slave_path(std::string const & slave_name) const {
-	return INPUTROOT + PATH_SEPARATOR + slave_name;
+	return INPUTROOT + PATH_SEPARATOR + slave_name + ".mps";
 }
 
 /*!
