@@ -18,6 +18,7 @@ WorkerSlave::WorkerSlave() {
 */
 WorkerSlave::WorkerSlave(Str2Int const & variable_map, std::string const & path_to_mps, double const & slave_weight, BendersOptions const & options) {
 	init(variable_map, path_to_mps);
+
 	// if (options.XPRESS_TRACE == 2 || options.XPRESS_TRACE == 3) {
 	// 	XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// }
@@ -104,11 +105,7 @@ void WorkerSlave::fix_to(Point const & x0) {
 		++i;
 	}
 
-	const std::vector<operations_research::MPVariable*> & variables_l = _solver->variables();
-	for(int cnt_l(0); cnt_l < nbnds; ++cnt_l)
-	{
-		variables_l[indexes[cnt_l]]->SetBounds(values[cnt_l],values[cnt_l]);
-	}
+	ORTchgbounds(*_solver, indexes, bndtypes, values);
 }
 
 /*!

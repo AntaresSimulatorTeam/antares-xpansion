@@ -547,6 +547,22 @@ TEST_F(ORToolsTest, testORTgetbasis)
 	}
 }
 
+TEST_F(ORToolsTest, testORTchgbounds)
+{
+	ASSERT_EQ(_solver->NumConstraints(), nbConstarints_);
+	ASSERT_EQ(_solver->NumVariables(), nbVariables_);
+
+	std::vector<int> const mindex_l = {1,0,4};
+	std::vector<char> const qbtype_l = {'B','L','U'};
+	std::vector<double> const bnd_l = {0,1.5,2};
+	ORTchgbounds(*_solver, mindex_l, qbtype_l, bnd_l);
+
+	EXPECT_EQ(_solver->variables()[0]->lb(), 1.5);
+	EXPECT_EQ(_solver->variables()[1]->lb(), 0);
+	EXPECT_EQ(_solver->variables()[1]->ub(), 0);
+	EXPECT_EQ(_solver->variables()[4]->ub(), 2);
+}
+
 TEST_F(ORToolsTest, testORTcopy)
 {
 	ASSERT_EQ(_solver->NumConstraints(), nbConstarints_);

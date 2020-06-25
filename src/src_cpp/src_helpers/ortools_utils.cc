@@ -532,29 +532,34 @@ void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rs
 
 void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p)
 {
+    assert(mindex_p.size() == qbtype_p.size());
+    assert(mindex_p.size() == bnd_p.size());
+
     const std::vector<operations_research::MPVariable*> & variables_l = solver_p.variables();
+    int cnt_l(0);
     for(int index_l : mindex_p)
     {
-        switch(qbtype_p[index_l])
+        switch(qbtype_p[cnt_l])
         {
             case 'U' :
             {
-                variables_l[index_l]->SetUB(bnd_p[index_l]);
+                variables_l[index_l]->SetUB(bnd_p[cnt_l]);
                 break;
             }
             case 'L' :
             {
-                variables_l[index_l]->SetLB(bnd_p[index_l]);
+                variables_l[index_l]->SetLB(bnd_p[cnt_l]);
                 break;
             }
             case 'B' :
             {
-                variables_l[index_l]->SetBounds(bnd_p[index_l], bnd_p[index_l]);
+                variables_l[index_l]->SetBounds(bnd_p[cnt_l], bnd_p[cnt_l]);
                 break;
             }
             default:
-                std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[index_l] << "!";
+                std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[cnt_l] << "!";
         }
+        ++cnt_l;
     }
 }
 
