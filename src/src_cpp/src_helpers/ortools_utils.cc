@@ -18,12 +18,15 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
         {
             std::cerr << "readMPS::error message: " << errorMessage_l << std::endl;
         }
+        else
+        {
+            if (solver_p.NumVariables() == 0) std::cerr << "readMPS:: no variable in mps " << filename_p << std::endl;
+            if (solver_p.NumConstraints() == 0) std::cerr << "readMPS:: no constraint in mps " << filename_p << std::endl;
+        }
         return status;
     }
-    else
-    {
-        std::cerr << "MPS file " << filename_p << " was not found!";
-    }
+
+    std::cerr << "MPS file " << filename_p << " was not found!";
     return operations_research::MPSOLVER_MODEL_INVALID;
 }
 
