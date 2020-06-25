@@ -147,7 +147,7 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
 
 	for(int col_l(0); col_l < objx_p.size(); ++col_l)
 	{
-		const std::string& name_l = (colNames_p.size() == objx_p.size()) ? colNames_p[col_l] : "addedCol_" + std::to_string(col_l);
+		const std::string& name_l = (colNames_p.size() == objx_p.size()) ? colNames_p[col_l] : "addedCol_" + std::to_string(solver_p.NumVariables());
 		operations_research::MPVariable* mpVar_l;
 		switch ( colTypes_p[col_l] )
 		{
@@ -168,7 +168,7 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
 			}
 			default:
 			{
-				std::cerr << "type of the variable " << name_l << " is not handled : -" << colTypes_p[col_l] << "-!\n" ;
+				std::cerr << "type of the variable " << col_l << " is not handled : -" << colTypes_p[col_l] << "-!\n" ;
 			}
 		}
 
@@ -209,7 +209,7 @@ void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> cons
 	{
 		double lb_l(-solver_p.infinity());
 		double ub_l(solver_p.infinity());
-		const std::string& name_l = "addedRow_" + std::to_string(row_l);
+		const std::string& name_l = "addedRow_" + std::to_string(solver_p.NumConstraints());
 
 		switch ( qrtype_p[row_l] )
 		{
@@ -249,11 +249,11 @@ void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> cons
 			}
 			default:
 			{
-				std::cerr << "type of the row " << name_l << " is not handled : " << qrtype_p[row_l] << "!\n" ;
+				std::cerr << "type of the row " << row_l << " is not handled : " << qrtype_p[row_l] << "!\n" ;
 			}
 		}
 
-		operations_research::MPConstraint* const mpConstraint_l = solver_p.MakeRowConstraint(lb_l, ub_l , name_l);
+		operations_research::MPConstraint* const mpConstraint_l = solver_p.MakeRowConstraint(lb_l, ub_l, name_l);
 		int startIndex_l = (mstart_p.size() > row_l) ? mstart_p[row_l] : 0;
 		int endIndex_l(0);
 		if(0 == mstart_p.size())
