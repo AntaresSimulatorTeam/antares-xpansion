@@ -44,8 +44,8 @@ std::list<std::ostream *> & Worker::stream() {
 
 Worker::Worker()
 	: _is_master(false)
+	, _solver(nullptr)
 {
-
 }
 
 Worker::~Worker() {
@@ -80,7 +80,6 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps)
 	_path_to_mps = path_to_mps;
 	_stream.push_back(&std::cout);
 
-	delete _solver;
 	_solver = new operations_research::MPSolver(path_to_mps, ORTOOLS_LP_SOLVER_TYPE);
 	_solver->EnableOutput();
 	_solver->SetNumThreads(1);
