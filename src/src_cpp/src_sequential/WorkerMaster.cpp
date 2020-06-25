@@ -205,8 +205,8 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 *  \param nslaves : number of slaves
 */
 WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & path_to_mps, BendersOptions const & options, int nslaves) :Worker() {
-	init(variable_map, path_to_mps);
 	_is_master = true;
+	init(variable_map, path_to_mps);
 	// if (options.XPRESS_TRACE == 1 || options.XPRESS_TRACE == 3) {
 	// 	XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// }

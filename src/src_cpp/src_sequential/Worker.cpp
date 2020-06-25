@@ -80,8 +80,15 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps)
 	_path_to_mps = path_to_mps;
 	_stream.push_back(&std::cout);
 
-	_solver = new operations_research::MPSolver(path_to_mps, ORTOOLS_LP_SOLVER_TYPE);
-	_solver->EnableOutput();
+	if (_is_master)
+	{
+		_solver = new operations_research::MPSolver(path_to_mps, ORTOOLS_MIP_SOLVER_TYPE);
+	}
+	else
+	{
+		_solver = new operations_research::MPSolver(path_to_mps, ORTOOLS_LP_SOLVER_TYPE);
+	}
+	// _solver->EnableOutput();
 	_solver->SetNumThreads(1);
 	ORTreadmps(*_solver, path_to_mps);
 
@@ -90,7 +97,6 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps)
 	for(auto const & kvp : variable_map) {
 		_id_to_name[kvp.second] = kvp.first;
 	}
-	_is_master = false;
 }
 
 StrVector ORT_LP_STATUS = {
