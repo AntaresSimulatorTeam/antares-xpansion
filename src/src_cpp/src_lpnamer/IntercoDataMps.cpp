@@ -285,7 +285,7 @@ void Candidates::readVarfiles(std::string const filePath,
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
+void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::list<std::string> var,
 											size_t vsize,
 											std::list<std::string> cstr,
@@ -297,10 +297,10 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 											std::string study_path,
 											std::string const lp_mps_name)
 {
-	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
+	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
 	ORTreadmps(in_prblm, mps_name);
 
 	int ncols(in_prblm.NumVariables());

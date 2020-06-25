@@ -24,12 +24,26 @@
   * \return The correct path
   */
 std::string get_name(std::string const & path) {
-	int last_sep(0);
-	for (int i(0); i < path.size(); ++i) {
-		if (path[i] == '\\') {
-			last_sep = i;
+	size_t last_sep(path.find(PATH_SEPARATOR));
+
+	if( last_sep == std::string::npos)
+	{
+		return path;
+	}
+
+	while(true)
+	{
+		size_t next_sep = path.find(PATH_SEPARATOR, last_sep+1);
+		if(next_sep == std::string::npos)
+		{
+			break;
+		}
+		else
+		{
+			last_sep = next_sep;
 		}
 	}
+
 	std::string name(path.substr(last_sep + 1));
 	name = name.substr(0, name.size() - 4);
 	return name;
