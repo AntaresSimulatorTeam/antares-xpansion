@@ -172,7 +172,6 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const & s, double const & 
 */
 void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, double const & rhs) {
 	// cut is -rhs >= alpha  + s^(x-x0)
-	// int nrows(1);
 	int ncoeffs(1 + (int)_name_to_id.size());
 	std::vector<char> rowtype(1, 'L');
 	std::vector<double> rowrhs(1, 0);
@@ -190,7 +189,6 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 	}
 	mclind.back() = _id_alpha_i[i];
 	matval.back() = -1;
-	mstart.back() = (int)matval.size();
 
 	ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
@@ -249,7 +247,7 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 			std::vector<double> rowrhs(1, 0);
 			std::vector<double> matval(nslaves+1, 0);
 			std::vector<int> mclind(nslaves + 1);
-			std::vector<int> mstart(1 + 1, 0);
+			std::vector<int> mstart(1, 0);
 			mclind[0] = _id_alpha;
 			matval[0] = 1;
 
