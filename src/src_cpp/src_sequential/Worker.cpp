@@ -141,7 +141,7 @@ void Worker::solve(int & lp_status) {
 		ORTwritemps(*_solver, buffer.str());
 		std::exit(0);
 	}
-	else if (lp_status) {
+	else if (lp_status != operations_research::MPSolver::NOT_SOLVED) {//@FIXME replace with equivalent to XPRS_LP_UNSTARTED
 		std::cout << "Worker::solve() status " << lp_status<<", "<<_path_to_mps << std::endl;
 
 	}
