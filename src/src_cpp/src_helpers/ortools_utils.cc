@@ -7,6 +7,8 @@
 
 operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSolver & solver_p, std::string const & filename_p)
 {
+    solver_p.Clear();
+
     operations_research::MPModelProto model_proto_l;
     std::ifstream mpsfile(filename_p.c_str());
     if(mpsfile.good())
