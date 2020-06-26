@@ -182,10 +182,12 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 
 	rowrhs.front() -= rhs;
 
+	size_t mclindCnt_l(0);
 	for (auto const & kvp : _name_to_id) {
 		rowrhs.front() += s.find(kvp.first)->second * x0.find(kvp.first)->second;
-		mclind[kvp.second] = kvp.second;
-		matval[kvp.second] = s.find(kvp.first)->second;
+		mclind[mclindCnt_l] = kvp.second;
+		matval[mclindCnt_l] = s.find(kvp.first)->second;
+		++mclindCnt_l;
 	}
 	mclind.back() = _id_alpha_i[i];
 	matval.back() = -1;
