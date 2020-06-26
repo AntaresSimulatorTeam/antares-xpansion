@@ -147,7 +147,7 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
 
 	for(int col_l(0); col_l < objx_p.size(); ++col_l)
 	{
-		const std::string& name_l = (colNames_p.size() == objx_p.size()) ? colNames_p[col_l] : "addedCol_" + std::to_string(solver_p.NumVariables());
+		const std::string& name_l = (colNames_p.size() == objx_p.size()) ? colNames_p[col_l] : "";
 		operations_research::MPVariable* mpVar_l;
 		switch ( colTypes_p[col_l] )
 		{
