@@ -93,10 +93,27 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps)
 	ORTreadmps(*_solver, path_to_mps);
 
 	//std::ifstream file(_path_to_mapping.c_str());
-	_name_to_id = variable_map;
+	bool error_l = false;
 	for(auto const & kvp : variable_map) {
-		_id_to_name[kvp.second] = kvp.first;
+		operations_research::MPVariable const * const var_l = _solver->LookupVariableOrNull(kvp.first);
+		if ( var_l != nullptr)
+		{
+			_id_to_name[var_l->index()] = kvp.first;
+			_name_to_id[kvp.first] = var_l->index();
+			// if (_id_to_name[kvp.second].compare(_solver->variables()[kvp.second]->name()) != 0 )
+			// {
+			// 	error_l = true;
+			// 	std::cout << "\nERROR : id mismatch: id of " << kvp.first << " is " << _solver->LookupVariableOrNull(kvp.first)->index() << " in worker "
+			// 														<< "but " << kvp.second << " in structure.";
+			// }
+		}
+		else
+		{
+			error_l = true;
+			std::cout << "\nERROR : missing variable " << kvp.first << " in " << path_to_mps;
+		}
 	}
+	if(error_l)	std::exit(0);
 }
 
 StrVector ORT_LP_STATUS = {
@@ -146,9 +163,8 @@ void Worker::solve(int & lp_status) {
 		ORTwritemps(*_solver, buffer.str());
 		std::exit(0);
 	}
-	else if (lp_status != operations_research::MPSolver::NOT_SOLVED) {//@FIXME replace with equivalent to XPRS_LP_UNSTARTED
-		std::cout << "Worker::solve() status " << lp_status<<", "<<_path_to_mps << std::endl;
-
+	else {//@FIXME conformity : replace with equivalent to XPRS_LP_UNSTARTED but useless
+		//std::cout << "Worker::solve() status " << lp_status<<", "<<_path_to_mps << std::endl;
 	}
 }
 

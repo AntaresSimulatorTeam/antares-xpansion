@@ -82,15 +82,17 @@ void WorkerMaster::add_cut(Point const & s, Point const & x0, double const & rhs
 	std::vector<int> mclind(ncoeffs);
 
 	rowrhs.front() -= rhs;
+
+	size_t mclindCnt_l(0);
 	for (auto const & kvp : _name_to_id) {
 		rowrhs.front() += (s.find(kvp.first)->second * x0.find(kvp.first)->second);
-		mclind[kvp.second] = kvp.second;
-		matval[kvp.second] = s.find(kvp.first)->second;
+		mclind[mclindCnt_l] = kvp.second;
+		matval[mclindCnt_l] = s.find(kvp.first)->second;
+		++mclindCnt_l;
 	}
 
 	mclind.back() = _id_alpha;
 	matval.back() = -1;
-	mstart.back() = (int)matval.size();
 
 	ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
@@ -116,14 +118,15 @@ void WorkerMaster::add_dynamic_cut(Point const & s, double const & sx0, double c
 	rowrhs.front() -= rhs;
 	rowrhs.front() += sx0;
 
+	size_t mclindCnt_l(0);
 	for (auto const & kvp : _name_to_id) {
-		mclind[kvp.second] = kvp.second;
-		matval[kvp.second] = s.find(kvp.first)->second;
+		mclind[mclindCnt_l] = kvp.second;
+		matval[mclindCnt_l] = s.find(kvp.first)->second;
+		++mclindCnt_l;
 	}
 
 	mclind.back() = _id_alpha;
 	matval.back() = -1;
-	mstart.back() = (int)matval.size();
 
 	ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
@@ -150,13 +153,14 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const & s, double const & 
 	rowrhs.front() -= rhs;
 	rowrhs.front() += sx0;
 
+	size_t mclindCnt_l(0);
 	for (auto const & kvp : _name_to_id) {
-		mclind[kvp.second] = kvp.second;
-		matval[kvp.second] = s.find(kvp.first)->second;
+		mclind[mclindCnt_l] = kvp.second;
+		matval[mclindCnt_l] = s.find(kvp.first)->second;
+		++mclindCnt_l;
 	}
 	mclind.back() = _id_alpha_i[i];
 	matval.back() = -1;
-	mstart.back() = (int)matval.size();
 
 	ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
@@ -245,11 +249,11 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 			ORTaddcols(*_solver, {0}, {}, {}, {}, {lb}, {ub}, {'C'}, {buffer.str()}); /* Add variable alpha_i and its parameters */
 		}
 		{
-			std::vector<char> rowtype(1, 'E');
-			std::vector<double> rowrhs(1, 0);
-			std::vector<double> matval(nslaves+1, 0);
+			std::vector<char> rowtype = {'E'};
+			std::vector<double> rowrhs = {0};
+			std::vector<double> matval(nslaves + 1, 0);
 			std::vector<int> mclind(nslaves + 1);
-			std::vector<int> mstart(1, 0);
+			std::vector<int> mstart = {0};
 			mclind[0] = _id_alpha;
 			matval[0] = 1;
 
