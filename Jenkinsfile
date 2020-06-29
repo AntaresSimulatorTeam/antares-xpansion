@@ -9,7 +9,8 @@ configs = [
 	],
 	[
 		node: 'compil-win64-vc14',
-		buildTypes: [ 'Release' ]
+		buildTypes: [ 'Release' ],
+		testSteps: [ 'unittest' ]
 	]
 ]
 
@@ -37,7 +38,15 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 						unstash 'source'
 
 						config.buildTypes.each { buildType ->
-
+							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.14.0 (jenkins)'}/cmake"]) {
+								sh """
+									conan install \
+										--update \
+										--settings build_type=${buildType} \
+										--install-folder builds/${buildType} \
+										.
+								"""
+							}
 
 							cmakeBuild (
 								buildDir: "builds/${buildType}",
@@ -49,7 +58,6 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									-D antaresXpansion_BUILD_DOCUMENTATION=always
 									-D STATIC_RUNTIME=OFF
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
-									-D GTEST_ROOT="${env.OPT_PATH}/${env.GTEST_VERSION}" -D GTEST_MSVC_SEARCH="MT"
 									-D ORTOOLS_ROOT="${env.OPT_PATH}/or-tools-7.6"
 								""",
 								generator: "${env.CMakeGenerator}",
