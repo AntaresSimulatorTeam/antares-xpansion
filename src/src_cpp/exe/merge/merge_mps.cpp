@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	CouplingMap input;
 	build_input(options, input);
 
-	operations_research::MPSolver mergedSolver_l("full_mip", ORTOOLS_LP_SOLVER_TYPE);
+	operations_research::MPSolver mergedSolver_l("full_mip", ORTOOLS_MIP_SOLVER_TYPE);
 	// XPRSsetcbmessage(full, optimizermsg, NULL);
 	// XPRSsetintcontrol(full, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	int ncols(0);
@@ -34,7 +34,14 @@ int main(int argc, char** argv)
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first + ".mps");
 		ncols = mergedSolver_l.NumVariables();
 
-		operations_research::MPSolver solver_l("toMerge", ORTOOLS_LP_SOLVER_TYPE);
+		if(kvp.first == options.MASTER_NAME)
+		{
+			operations_research::MPSolver solver_l("toMerge", ORTOOLS_MIP_SOLVER_TYPE);
+		}
+		else
+		{
+			operations_research::MPSolver solver_l("toMerge", ORTOOLS_LP_SOLVER_TYPE);
+		}
 		ORTreadmps(solver_l, problem_name);
 		// XPRSsetcbmessage(prob, optimizermsg, NULL);
 		// XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
