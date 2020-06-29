@@ -112,7 +112,7 @@ void Benders::run(std::ostream & stream) {
 		LOG(INFO) << "\tmaster solved in "<< _data.timer_master << "." << std::endl;
 
 		//log master for debug
-		ORTwritelp(*(_master->_solver), "logmaster"+std::to_string(_data.it)+".lp");
+		ORTwritelp(*(_master->_solver), "log_master"+std::to_string(_data.it)+".lp");
 
 		LOG(INFO) << "\t\tCandidates:" << std::endl;
 		for(auto pairVarnameValue : _data.x0)

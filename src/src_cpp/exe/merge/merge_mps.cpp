@@ -4,6 +4,7 @@
 #include "Worker.h"
 #include "BendersOptions.h"
 #include "BendersFunctions.h"
+#include "Timer.h"
 
 #include "ortools_utils.h"
 
@@ -14,6 +15,10 @@ size_t StandardLp::appendCNT = 0;
 
 int main(int argc, char** argv)
 {
+	google::InitGoogleLogging(argv[0]);
+	google::SetLogDestination(google::INFO, "./merge_mpsLog");
+	LOG(INFO) << "starting merge_mps" << std::endl;
+
 	usage(argc);
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
@@ -29,6 +34,7 @@ int main(int argc, char** argv)
 	CouplingMap x_mps_id;
 	int cntProblems_l(0);
 
+	LOG(INFO) << "Merging problems..." << std::endl;
 	for (auto const & kvp : input) {
 
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first + ".mps");
@@ -124,18 +130,23 @@ int main(int argc, char** argv)
 	CharVector sense(nrows, 'E');
 	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
 
-	ORTwritelp(mergedSolver_l, "merged.lp");
+	LOG(INFO) << "Problems merged." << std::endl;
+	ORTwritelp(mergedSolver_l, "log_merged.lp");
 
 	//std::cout << "Writting mps file" << std::endl;
 	//XPRSwriteprob(full, "full.mps", "");
 	//std::cout << "Writting lp file" << std::endl;
 	//XPRSwriteprob(full, "full.lp", "l");
 	std::cout << "Solving" << std::endl;
+	LOG(INFO) << "Solving..." << std::endl;
 	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
 	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
 	// XPRSlpoptimize(full, "-b");
 	mergedSolver_l.SetNumThreads(16);
+	Timer timer;
 	mergedSolver_l.Solve();
+	std::cout << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
+	LOG(INFO) << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
 
 	Point x0;
 	DblVector ptr;
@@ -143,7 +154,10 @@ int main(int argc, char** argv)
 	for (auto const & pairNameId : input[options.MASTER_NAME]) {
 		x0[pairNameId.first] = ptr[x_mps_id[pairNameId.first][options.MASTER_NAME]];
 	}
-	print_solution(std::cout, x0, true);
+	std::ostringstream oss_l;
+	print_solution(oss_l, x0, true);
+	std::cout << oss_l.str();
+	LOG(INFO) << oss_l.str() << std::endl;
 
 	return 0;
 }
