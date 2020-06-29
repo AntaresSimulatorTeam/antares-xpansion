@@ -285,7 +285,7 @@ void Candidates::readVarfiles(std::string const filePath,
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
+void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::list<std::string> var,
 											size_t vsize,
 											std::list<std::string> cstr,
@@ -297,10 +297,10 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 											std::string study_path,
 											std::string const lp_mps_name)
 {
-	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
+	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
 	ORTreadmps(in_prblm, mps_name);
 
 	int ncols(in_prblm.NumVariables());
@@ -347,7 +347,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 	// create pMax variable
 	int ninterco = interco_id.size();
 	//std::cout << "ninterco : " << ninterco << std::endl;
-	std::vector<int> mstart(ninterco, 0);
 	std::vector<double> obj_interco(ninterco, 0);
 	std::vector<double> lb_interco(ninterco, -out_prblm.infinity());
 	std::vector<double> ub_interco(ninterco,  out_prblm.infinity());
@@ -372,7 +371,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 		//std::cout << "buffer " << buffer.str() << std::endl;
 	}
 
-	ORTaddcols(out_prblm, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
+	ORTaddcols(out_prblm, obj_interco, {}, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
 
 	std::vector<double> dmatval;
 	std::vector<int> colind;
@@ -410,7 +409,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const mps_name,
 	rstart.push_back(dmatval.size());
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	ORTwritemps(out_prblm, std::string(lp_mps_name).insert(lp_mps_name.size()-4, "_out") );
+	ORTwritemps(out_prblm, lp_mps_name );
 	std::cout << "lp_name : " << lp_mps_name << " done" << std::endl;
 }
 

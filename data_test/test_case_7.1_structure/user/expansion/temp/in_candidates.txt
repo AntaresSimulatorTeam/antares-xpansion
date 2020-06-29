@@ -1,0 +1,5 @@
+semibase 126000 200 10 false
+peak 60000 100 20 false
+pv 55400 1 1000 true
+battery 60000 1 1000 true
+transmission_line 10000 400 8 false

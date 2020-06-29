@@ -7,6 +7,8 @@
 
 operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSolver & solver_p, std::string const & filename_p)
 {
+    solver_p.Clear();
+
     operations_research::MPModelProto model_proto_l;
     std::ifstream mpsfile(filename_p.c_str());
     if(mpsfile.good())
@@ -18,12 +20,15 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
         {
             std::cerr << "readMPS::error message: " << errorMessage_l << std::endl;
         }
+        else
+        {
+            if (solver_p.NumVariables() == 0) std::cerr << "readMPS:: no variable in mps " << filename_p << std::endl;
+            if (solver_p.NumConstraints() == 0) std::cerr << "readMPS:: no constraint in mps " << filename_p << std::endl;
+        }
         return status;
     }
-    else
-    {
-        std::cerr << "MPS file " << filename_p << " was not found!";
-    }
+
+    std::cerr << "MPS file " << filename_p << " was not found!";
     return operations_research::MPSOLVER_MODEL_INVALID;
 }
 
@@ -136,7 +141,8 @@ void ORTgetobj(operations_research::MPSolver const & solver_p, std::vector<doubl
 
 void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> const & objx_p, std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p, std::vector<double> const & bdl_p, std::vector<double> const & bdu_p, std::vector<char> const & colTypes_p, std::vector<std::string> const & colNames_p)
 {
-	assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
+	assert(objx_p.size() != 0);
+    assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
     assert(mrwind_p.size() == dmatval_p.size());
 
 	operations_research::MPObjective* objective_l = solver_p.MutableObjective();
@@ -144,7 +150,7 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
 
 	for(int col_l(0); col_l < objx_p.size(); ++col_l)
 	{
-		const std::string& name_l = (colNames_p.size() == objx_p.size()) ? colNames_p[col_l] : "addedCol_" + std::to_string(col_l);
+		const std::string& name_l = (colNames_p.size() == objx_p.size()) ? colNames_p[col_l] : "";
 		operations_research::MPVariable* mpVar_l;
 		switch ( colTypes_p[col_l] )
 		{
@@ -165,7 +171,7 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
 			}
 			default:
 			{
-				std::cerr << "type of the variable " << name_l << " is not handled : -" << colTypes_p[col_l] << "-!\n" ;
+				std::cerr << "type of the variable " << col_l << " is not handled : -" << colTypes_p[col_l] << "-!\n" ;
 			}
 		}
 
@@ -191,6 +197,7 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
 		}
 
 	}
+
 }
 
 void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> const &  qrtype_p, std::vector<double>  const & rhs_p, std::vector<double>  const & range_p, std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p)
@@ -206,7 +213,7 @@ void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> cons
 	{
 		double lb_l(-solver_p.infinity());
 		double ub_l(solver_p.infinity());
-		const std::string& name_l = "addedRow_" + std::to_string(row_l);
+		const std::string& name_l = "addedRow_" + std::to_string(solver_p.NumConstraints());
 
 		switch ( qrtype_p[row_l] )
 		{
@@ -246,11 +253,11 @@ void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> cons
 			}
 			default:
 			{
-				std::cerr << "type of the row " << name_l << " is not handled : " << qrtype_p[row_l] << "!\n" ;
+				std::cerr << "type of the row " << row_l << " is not handled : " << qrtype_p[row_l] << "!\n" ;
 			}
 		}
 
-		operations_research::MPConstraint* const mpConstraint_l = solver_p.MakeRowConstraint(lb_l, ub_l , name_l);
+		operations_research::MPConstraint* const mpConstraint_l = solver_p.MakeRowConstraint(lb_l, ub_l, name_l);
 		int startIndex_l = (mstart_p.size() > row_l) ? mstart_p[row_l] : 0;
 		int endIndex_l(0);
 		if(0 == mstart_p.size())
@@ -529,29 +536,34 @@ void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rs
 
 void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p)
 {
+    assert(mindex_p.size() == qbtype_p.size());
+    assert(mindex_p.size() == bnd_p.size());
+
     const std::vector<operations_research::MPVariable*> & variables_l = solver_p.variables();
+    int cnt_l(0);
     for(int index_l : mindex_p)
     {
-        switch(qbtype_p[index_l])
+        switch(qbtype_p[cnt_l])
         {
             case 'U' :
             {
-                variables_l[index_l]->SetUB(bnd_p[index_l]);
+                variables_l[index_l]->SetUB(bnd_p[cnt_l]);
                 break;
             }
             case 'L' :
             {
-                variables_l[index_l]->SetLB(bnd_p[index_l]);
+                variables_l[index_l]->SetLB(bnd_p[cnt_l]);
                 break;
             }
             case 'B' :
             {
-                variables_l[index_l]->SetBounds(bnd_p[index_l], bnd_p[index_l]);
+                variables_l[index_l]->SetBounds(bnd_p[cnt_l], bnd_p[cnt_l]);
                 break;
             }
             default:
-                std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[index_l] << "!";
+                std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[cnt_l] << "!";
         }
+        ++cnt_l;
     }
 }
 
@@ -562,6 +574,8 @@ void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operation
     {
         std::cout << "\nWarn: copying solvers with different types!";
     }
+
+    outSolver_p.Clear();
 
     //copy and rename columns
     std::vector<double> obj_l;

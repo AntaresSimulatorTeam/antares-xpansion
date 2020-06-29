@@ -24,12 +24,26 @@
   * \return The correct path
   */
 std::string get_name(std::string const & path) {
-	int last_sep(0);
-	for (int i(0); i < path.size(); ++i) {
-		if (path[i] == '\\') {
-			last_sep = i;
+	size_t last_sep(path.find(PATH_SEPARATOR));
+
+	if( last_sep == std::string::npos)
+	{
+		return path;
+	}
+
+	while(true)
+	{
+		size_t next_sep = path.find(PATH_SEPARATOR, last_sep+1);
+		if(next_sep == std::string::npos)
+		{
+			break;
+		}
+		else
+		{
+			last_sep = next_sep;
 		}
 	}
+
 	std::string name(path.substr(last_sep + 1));
 	name = name.substr(0, name.size() - 4);
 	return name;
@@ -130,13 +144,13 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
  * \return void
  */
 void masterGeneration(std::string rootPath, Candidates candidates, std::map< std::pair<std::string, std::string>, int> couplings, std::string const &master_formulation) {
-	operations_research::MPSolver master("masterProblem", ORTOOLS_MIP_SOLVER_TYPE);
+	operations_research::MPSolver master_l("masterProblem", ORTOOLS_MIP_SOLVER_TYPE);
 
 	int ninterco = candidates.size();
 	std::vector<int> mstart(ninterco, 0);
 	std::vector<double> obj_interco(ninterco, 0);
-	std::vector<double> lb_interco(ninterco, -master.infinity());
-	std::vector<double> ub_interco(ninterco, master.infinity());
+	std::vector<double> lb_interco(ninterco, -master_l.infinity());
+	std::vector<double> ub_interco(ninterco, master_l.infinity());
 	std::vector<char> coltypes_interco(ninterco, 'C');
 	std::vector<std::string> interco_names(ninterco);
 
@@ -168,7 +182,7 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		++i;
 	}
 
-	ORTaddcols(master, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, interco_names);
+	ORTaddcols(master_l, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, interco_names);
 
 	// integer constraints
 	int n_integer = pallier.size();
@@ -176,7 +190,7 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		std::vector<double> zeros(n_integer, 0);
 		std::vector<int> int_zeros(n_integer, 0);
 		std::vector<char> integer_type(n_integer, 'I');
-		ORTaddcols(master, zeros, int_zeros, {}, {}, zeros, max_unit, integer_type);
+		ORTaddcols(master_l, zeros, int_zeros, {}, {}, zeros, max_unit, integer_type);
 		std::vector<double> dmatval;
 		std::vector<int> colind;
 		std::vector<char> rowtype;
@@ -195,12 +209,12 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		int n_row_interco(rowtype.size());
 		int n_coeff_interco(dmatval.size());
 		rstart.push_back(dmatval.size());
-		ORTaddrows(master, rowtype, rhs, {}, rstart, colind, dmatval);
+		ORTaddrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
 
 	std::string const lp_name = "master";
-	ORTwritelp(master, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
-	ORTwritemps(master, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps");
+	ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
+	ORTwritemps(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps");
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const & coupling : couplings) {
 		output[get_name(coupling.first.second)][coupling.first.first] = coupling.second;

@@ -157,7 +157,7 @@ struct Candidates : public std::map<std::string, Candidate> {
 					  std::map<int, std::vector<int> > & interco_data ,
 					  std::map<std::vector<int>, int> & interco_id,
 					  map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex);
-	void createMpsFileAndFillCouplings(std::string const mps_name,
+	void createMpsFileAndFillCouplings(std::string const & mps_name,
 									   std::list<std::string> var,
 									   size_t vsize,
 									   std::list<std::string> cstr,

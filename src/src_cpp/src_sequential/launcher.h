@@ -52,9 +52,13 @@ enum DblVectorAttribute {
 typedef std::tuple<IntVector, std::vector<IntVector>, std::vector<CharVector>, std::vector<DblVector> > raw_standard_lp_data;
 
 class StandardLp {
+private:
+	std::vector<std::string> _colNames;
+
 public:
 	// to be used in boost serialization for mpi transfer
 	raw_standard_lp_data _data;
+	static size_t appendCNT;
 public:
 	void init() {
 		std::get<Attribute::INT>(_data).assign(IntAttribute::MAX_INT_ATTRIBUTE, 0);
@@ -71,8 +75,10 @@ public:
 
 		std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] = solver_p.NumVariables();
 		std::cout << "vars: " << solver_p.NumVariables() << "\n";
+
 		std::get<Attribute::INT>(_data)[IntAttribute::NROWS] = solver_p.NumConstraints();
 		std::cout << "constraints: " << solver_p.NumConstraints() << "\n";
+
 		std::get<Attribute::INT>(_data)[IntAttribute::NELES] = 0;
 		for(operations_research::MPConstraint* constraint_l : solver_p.constraints())
 		{
@@ -80,6 +86,10 @@ public:
 		}
 		std::cout << "nelems: " << std::get<Attribute::INT>(_data)[IntAttribute::NELES] << "\n";
 
+		for(auto var_l : solver_p.variables())
+		{
+			_colNames.push_back(var_l->name());
+		}
 
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].clear();
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].clear();
@@ -99,27 +109,12 @@ public:
 		ORTgetrhs(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
 		ORTgetrhsrange(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
 
-		for(auto el : std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE]) std::cout << el << " ";
-		std::cout << std::endl << "RHS: ";
-		for(auto el : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS]) std::cout << el << " ";
-		std::cout << std::endl << "range: " ;
-		for(auto el : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE]) std::cout << el << " ";
-		std::cout << std::endl << std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() << std::endl;
-
 		//@TODO check if we use semi-continuous or partial-integer variables
 		ORTgetcolinfo(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] - 1);
 
-		for(auto el : std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE]) std::cout << el << " ";
-		std::cout << std::endl << "LB: ";
-		for(auto el : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB]) std::cout << el << " ";
-		std::cout << std::endl << "UB: " ;
-		for(auto el : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB]) std::cout << el << " ";
-		std::cout << std::endl << std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() << std::endl;
+		ORTgetobj(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]-1);
 
-		std::vector<double> v;//std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ]
-		ORTgetobj(solver_p, v, 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]-1);
-
-		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS] + 1);
+		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
 		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].size() == std::get<Attribute::INT>(_data)[IntAttribute::NELES]);
 
 		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
@@ -132,20 +127,30 @@ public:
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
-
 	}
 
-	int append_in(operations_research::MPSolver & containingSolver_p) const {
+	int append_in(operations_research::MPSolver & containingSolver_p, std::string const & prefix_p = "") const {
+
+		// simply increment the columns indices
 		IntVector newmindex(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
 		int nbExistingCols(containingSolver_p.NumVariables());
-		// simply increment the columns indexes
 		for (auto & i : newmindex) {
 			i += nbExistingCols;
 		}
 
-		ORTaddcols(containingSolver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], {}, {}, {},  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE]);
+		//rename variables
+		std::string prefix_l = (prefix_p != "") ? prefix_p : ("prob"+std::to_string(appendCNT));
+		std::vector<std::string> newNames;
+		newNames.resize(_colNames.size());
+		std::transform(_colNames.begin(), _colNames.end(), newNames.begin(),
+					[&prefix_l](std::string varName_p)->std::string{ return prefix_l + varName_p; });
 
+
+		ORTaddcols(containingSolver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], {}, {}, {},  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE], newNames);
 		ORTaddrows(containingSolver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE], std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART], newmindex, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
+
+		++appendCNT;
+
 		return nbExistingCols;
 	}
 };
