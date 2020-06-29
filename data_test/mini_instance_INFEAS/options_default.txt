@@ -1,0 +1,20 @@
+                     LOG_LEVEL                                                 3
+                MAX_ITERATIONS                                                -1
+                           GAP                                             1e-06
+                   AGGREGATION                                                 0
+                    OUTPUTROOT                                                 .
+                    DELETE_CUT                                                 0
+                    LOG_OUTPUT                                           COMMAND
+                  SLAVE_WEIGHT                                          CONSTANT
+            SLAVE_WEIGHT_VALUE                                                 1
+                   MASTER_NAME                                            master
+                  SLAVE_NUMBER                                                -1
+                STRUCTURE_FILE                                     structure.txt
+                     INPUTROOT                                                 .
+                    ACTIVECUTS                                                 0
+              RAND_AGGREGATION                                                 0
+                 MASTER_METHOD                                           SIMPLEX
+                  XPRESS_TRACE                                                 0
+                        SOLVER                                            XPRESS
+            WRITE_ERRORED_PROB                                                 1
+

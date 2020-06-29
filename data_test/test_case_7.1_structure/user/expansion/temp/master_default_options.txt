@@ -1,0 +1,9 @@
+solver cbc
+solve_master 1 
+relaxed 0
+ub_constraint 0
+solve_bounds 0
+presolve 0
+write_time 1
+solve_bounds_frequency 1000000
+epsilon 0
