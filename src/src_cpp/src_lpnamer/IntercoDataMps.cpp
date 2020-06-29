@@ -347,7 +347,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// create pMax variable
 	int ninterco = interco_id.size();
 	//std::cout << "ninterco : " << ninterco << std::endl;
-	std::vector<int> mstart(ninterco, 0);
 	std::vector<double> obj_interco(ninterco, 0);
 	std::vector<double> lb_interco(ninterco, -out_prblm.infinity());
 	std::vector<double> ub_interco(ninterco,  out_prblm.infinity());
@@ -372,7 +371,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		//std::cout << "buffer " << buffer.str() << std::endl;
 	}
 
-	ORTaddcols(out_prblm, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
+	ORTaddcols(out_prblm, obj_interco, {}, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
 
 	std::vector<double> dmatval;
 	std::vector<int> colind;

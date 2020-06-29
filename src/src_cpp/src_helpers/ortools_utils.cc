@@ -141,7 +141,8 @@ void ORTgetobj(operations_research::MPSolver const & solver_p, std::vector<doubl
 
 void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> const & objx_p, std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p, std::vector<double> const & bdl_p, std::vector<double> const & bdu_p, std::vector<char> const & colTypes_p, std::vector<std::string> const & colNames_p)
 {
-	assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
+	assert(objx_p.size() != 0);
+    assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
     assert(mrwind_p.size() == dmatval_p.size());
 
 	operations_research::MPObjective* objective_l = solver_p.MutableObjective();
@@ -196,6 +197,7 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
 		}
 
 	}
+
 }
 
 void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> const &  qrtype_p, std::vector<double>  const & rhs_p, std::vector<double>  const & range_p, std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p)
@@ -572,6 +574,8 @@ void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operation
     {
         std::cout << "\nWarn: copying solvers with different types!";
     }
+
+    outSolver_p.Clear();
 
     //copy and rename columns
     std::vector<double> obj_l;
