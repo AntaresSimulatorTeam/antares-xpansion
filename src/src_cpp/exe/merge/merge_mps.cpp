@@ -7,6 +7,11 @@
 
 #include "ortools_utils.h"
 
+
+//@FIXME create and move to standardlp.cpp
+// Initialize static member
+size_t StandardLp::appendCNT = 0;
+
 int main(int argc, char** argv)
 {
 	usage(argc);
@@ -19,14 +24,15 @@ int main(int argc, char** argv)
 	operations_research::MPSolver mergedSolver_l("full_mip", ORTOOLS_LP_SOLVER_TYPE);
 	// XPRSsetcbmessage(full, optimizermsg, NULL);
 	// XPRSsetintcontrol(full, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-	Str2Int _decalage;
 	int ncols(0);
 	int nslaves(input.size());//size-1 no ? it contains the master
 	CouplingMap x_mps_id;
+	int cntProblems_l(0);
+
 	for (auto const & kvp : input) {
-		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first);
+
+		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first + ".mps");
 		ncols = mergedSolver_l.NumVariables();
-		_decalage[kvp.first] = ncols;
 
 		operations_research::MPSolver solver_l("toMerge", ORTOOLS_LP_SOLVER_TYPE);
 		ORTreadmps(solver_l, problem_name);
@@ -50,12 +56,26 @@ int main(int argc, char** argv)
 			ORTchgobj(solver_l, sequence, o);
 		}
 		StandardLp lpData(solver_l);
-		lpData.append_in(mergedSolver_l);
+		std::string varPrefix_l = "prob" + std::to_string(cntProblems_l) + "_";
+		lpData.append_in(mergedSolver_l, varPrefix_l);
 
 		for (auto const & x : kvp.second) {
-			x_mps_id[x.first][kvp.first] = x.second;
+			operations_research::MPVariable const * const var_l = mergedSolver_l.LookupVariableOrNull(varPrefix_l+x.first);
+			if (nullptr == var_l)
+			{
+				std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
+				ORTwritelp(mergedSolver_l, "mergeError.lp");
+				std::exit(1);
+			}
+			else
+			{
+				x_mps_id[x.first][kvp.first] = var_l->index();//x_mps_id[var_name_in_structure][problem_name] = var_id_in_merged_solver
+			}
 		}
+
+		++cntProblems_l;
 	}
+
 	IntVector mstart;
 	IntVector cindex;
 	DblVector values;
@@ -73,8 +93,8 @@ int main(int argc, char** argv)
 	mstart.reserve(nrows_reserve + 1);
 	// adding coupling constraints
 	for (auto const & kvp : x_mps_id) {
-		std::string const name(kvp.first);
-		std::cout << name << std::endl;
+		std::string const var_name(kvp.first);
+		std::cout << var_name << std::endl;
 		bool is_first(true);
 		int id1(-1);
 		std::string first_mps;
@@ -82,27 +102,29 @@ int main(int argc, char** argv)
 			if (is_first) {
 				is_first = false;
 				first_mps = mps.first;
-				id1 = mps.second + _decalage.find(first_mps)->second;
+				id1 = mps.second;
 			}
 			else {
-				int id2 = mps.second + _decalage.find(mps.first)->second;
+				int id2 = mps.second;
 				//std::cout << id1 << " - " << id2 << std::endl;
 				// x[id1] - x[id2] = 0
 				mstart.push_back(neles);
 				cindex.push_back(id1);
 				values.push_back(1);
-				neles += 1;
+				++neles;
 
 				cindex.push_back(id2);
 				values.push_back(-1);
-				neles += 1;
-				nrows += 1;
+				++neles;
+				++nrows;
 			}
 		}
 	}
 	DblVector rhs(nrows, 0);
 	CharVector sense(nrows, 'E');
 	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
+
+	ORTwritelp(mergedSolver_l, "merged.lp");
 
 	//std::cout << "Writting mps file" << std::endl;
 	//XPRSwriteprob(full, "full.mps", "");
@@ -118,8 +140,8 @@ int main(int argc, char** argv)
 	Point x0;
 	DblVector ptr;
 	ORTgetlpsolution(mergedSolver_l, ptr);
-	for (auto const & kvp : input[options.MASTER_NAME]) {
-		x0[kvp.first] = ptr[kvp.second];
+	for (auto const & pairNameId : input[options.MASTER_NAME]) {
+		x0[pairNameId.first] = ptr[x_mps_id[pairNameId.first][options.MASTER_NAME]];
 	}
 	print_solution(std::cout, x0, true);
 
