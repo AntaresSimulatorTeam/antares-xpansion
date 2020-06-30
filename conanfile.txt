@@ -1,6 +1,8 @@
 [requires]
-boost/1.65.1@conan/stable
-boost_mpi/1.65.1@bincrafters/stable
+#openmpi/3.0.0@bincrafters/stable
+#boost_mpi/1.66.0@bincrafters/stable
+#boost_serialization/1.66.0@bincrafters/stable
+jsoncpp/1.9.0@theirix/stable
 
 [build_requires]
 gtest/1.8.1@bincrafters/stable
