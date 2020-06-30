@@ -263,10 +263,11 @@ void print_active_cut(ActiveCutStorage const & active_cuts, BendersOptions const
 *
 *  \param x0 : current optimal variables
 */
-void update_best_ub(double & best_ub, double const & ub, Point & bestx, Point const & x0) {
+void update_best_ub(double & best_ub, double const & ub, Point & bestx, Point const & x0, int & bestit, int const & it) {
 	if (best_ub > ub) {
 		best_ub = ub;
 		bestx = x0;
+		bestit = it;
 	}
 }
 
