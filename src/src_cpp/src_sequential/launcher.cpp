@@ -1,6 +1,7 @@
 #include "launcher.h"
 #include "Benders.h"
 #include "Timer.h"
+#include "JsonWriter.h"
 
 #include "BendersOptions.h"
 
@@ -77,8 +78,14 @@ void sequential_launch(BendersOptions const & options) {
 	Timer timer;
 	CouplingMap input;
 	build_input(options, input);
+	JsonWriter jsonWriter_l;
+	jsonWriter_l.write(options);
+	jsonWriter_l.updateBeginTime();
 	Benders benders(input, options);
 	benders.run(std::cout);
+	jsonWriter_l.updateEndTime();
+	jsonWriter_l.write(benders._trace, benders._data);
+	jsonWriter_l.dump("out.json");
 	benders.free();
 	std::cout << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
 }
