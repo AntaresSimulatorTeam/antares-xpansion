@@ -34,14 +34,17 @@ int main(int argc, char** argv)
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first + ".mps");
 		ncols = mergedSolver_l.NumVariables();
 
+		operations_research::MPSolver::OptimizationProblemType solverType_l;
 		if(kvp.first == options.MASTER_NAME)
 		{
-			operations_research::MPSolver solver_l("toMerge", ORTOOLS_MIP_SOLVER_TYPE);
+			solverType_l = ORTOOLS_MIP_SOLVER_TYPE;
 		}
 		else
 		{
-			operations_research::MPSolver solver_l("toMerge", ORTOOLS_LP_SOLVER_TYPE);
+			solverType_l = ORTOOLS_LP_SOLVER_TYPE;
 		}
+		operations_research::MPSolver solver_l("toMerge", solverType_l);
+
 		ORTreadmps(solver_l, problem_name);
 		// XPRSsetcbmessage(prob, optimizermsg, NULL);
 		// XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
