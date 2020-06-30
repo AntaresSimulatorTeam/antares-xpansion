@@ -99,8 +99,21 @@ void JsonWriter::write(BendersTrace const & bendersTrace_p,
     _output["solution"]["overall_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost + bendersTrace_p[bestItIndex_l].get()->_operational_cost;
     double gap_l = bendersTrace_p.back().get()->_bestub - bendersTrace_p.back().get()->_lb;
     _output["solution"]["gap"] = gap_l;
-    _output["solution"]["optimality"] = (gap_l < 1e-03) ? true : false;
+    _output["solution"]["optimality"] = (gap_l < 1e-03);
     for(auto pairNameValue_l : bendersTrace_p[bestItIndex_l]->get_point())
+    {
+        _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
+    }
+}
+
+void JsonWriter::write(double const & lb_p, double const & ub_p, double const & investCost_p, Point const & solution_p, bool const & optimality_p)
+{
+    _output["solution"]["investment_cost"] = investCost_p;
+    _output["solution"]["lb"] = lb_p;
+    _output["solution"]["ub"] = ub_p;
+    _output["solution"]["gap"] = ub_p - lb_p;
+    _output["solution"]["optimality"] = optimality_p;
+    for(auto pairNameValue_l : solution_p)
     {
         _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
     }

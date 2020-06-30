@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "BendersOptions.h"
 #include "WorkerTrace.h"
+#include "common.h"
 
 #include <json/writer.h>
 
@@ -28,6 +29,7 @@ public:
 
     void write(BendersOptions const & bendersOptions_p);
     void write(BendersTrace const & bendersTrace_p, BendersData const & bendersData_p);
+    void write(double const & lb_p, double const & ub_p, double const & investCost_p, Point const & solution_p, bool const & optimality_p);
 
     void dump(std::string const & filename_p);
 };
