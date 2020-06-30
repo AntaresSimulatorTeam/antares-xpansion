@@ -20,6 +20,9 @@ public:
 	PointPtr _x0;
 	std::map<std::string,SlaveCutDataPtr> _cut_trace;
 
+	double _invest_cost;
+	double _operational_cost;
+
 	Point get_point();
 };
 
