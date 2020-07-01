@@ -130,7 +130,7 @@ void JsonWriter::dump(std::string const & filename_p)
     _output["antares"]["name"] = PROJECT_VER;
 
     //Xpansion
-    _output["antares-xpansion"]["version"] = PROJECT_VER;
+    _output["antares_xpansion"]["version"] = PROJECT_VER;
 
     //Time
     _output["duration"] = getDuration();
