@@ -34,25 +34,21 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
 
 bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string const & filename_p)
 {
-    operations_research::MPModelProto proto_l;
-	solver_p.ExportModelToProto(&proto_l);
-	operations_research::MPModelExportOptions options_l;
-	const auto status_l = operations_research::ExportModelAsMpsFormat(proto_l, options_l);
+    std::string modelMps_l;
+    solver_p.ExportModelAsMpsFormat(false, false, &modelMps_l);
 
     std::ofstream mpsOut(filename_p);
-    mpsOut <<  status_l.value_or("");
+    mpsOut <<  modelMps_l;
     mpsOut.close();
 }
 
 bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string const & filename_p)
 {
-    operations_research::MPModelProto proto_l;
-	solver_p.ExportModelToProto(&proto_l);
-	operations_research::MPModelExportOptions options_l;
-	const auto status_l = operations_research::ExportModelAsLpFormat(proto_l, options_l);
+    std::string modelLP_l;
+    solver_p.ExportModelAsLpFormat(false, &modelLP_l);
 
     std::ofstream lpOut(filename_p);
-    lpOut <<  status_l.value_or("");
+    lpOut <<  modelLP_l;
     lpOut.close();
 }
 
