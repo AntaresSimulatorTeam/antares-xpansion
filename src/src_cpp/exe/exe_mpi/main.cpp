@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 
 		if (world.rank() == 0) {
 			jsonWriter_l.updateEndTime();
-			jsonWriter_l.write(bendersMpi._trace, bendersMpi._data);
+			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
 			jsonWriter_l.dump("out.json");
 		}
 		bendersMpi.free(env, world);

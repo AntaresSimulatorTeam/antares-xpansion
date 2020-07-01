@@ -60,9 +60,11 @@ void JsonWriter::write(BendersOptions const & bendersOptions_p)
 }
 
 
-void JsonWriter::write(BendersTrace const & bendersTrace_p,
+void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_p,
                        BendersData const & bendersData_p)
 {
+    _output["nbWeeks"] = nbWeeks_p;
+
     //Iterations
     size_t iterCnt_l(0);
     for(auto masterDataPtr_l : bendersTrace_p)
@@ -106,8 +108,10 @@ void JsonWriter::write(BendersTrace const & bendersTrace_p,
     }
 }
 
-void JsonWriter::write(double const & lb_p, double const & ub_p, double const & investCost_p, Point const & solution_p, bool const & optimality_p)
+void JsonWriter::write(int nbWeeks_p, double const & lb_p, double const & ub_p, double const & investCost_p, Point const & solution_p, bool const & optimality_p)
 {
+    _output["nbWeeks"] = nbWeeks_p;
+
     _output["solution"]["investment_cost"] = investCost_p;
     _output["solution"]["lb"] = lb_p;
     _output["solution"]["ub"] = ub_p;

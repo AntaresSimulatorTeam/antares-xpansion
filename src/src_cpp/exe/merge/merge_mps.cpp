@@ -167,7 +167,7 @@ int main(int argc, char** argv)
 	print_solution(std::cout, x0, true);
 
 	bool optimality_l = (status_l == operations_research::MPSolver::OPTIMAL);
-	jsonWriter_l.write(mergedSolver_l.Objective().BestBound(), mergedSolver_l.Objective().Value(), investCost_l, x0, optimality_l);
+	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), mergedSolver_l.Objective().Value(), investCost_l, x0, optimality_l);
 	jsonWriter_l.dump("out.json");
 
 	return 0;
