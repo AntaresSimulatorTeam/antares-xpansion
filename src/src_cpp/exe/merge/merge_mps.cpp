@@ -5,6 +5,7 @@
 #include "BendersOptions.h"
 #include "BendersFunctions.h"
 #include "JsonWriter.h"
+#include "Timer.h"
 
 #include "ortools_utils.h"
 
@@ -15,6 +16,10 @@ size_t StandardLp::appendCNT = 0;
 
 int main(int argc, char** argv)
 {
+	google::InitGoogleLogging(argv[0]);
+	google::SetLogDestination(google::INFO, "./merge_mpsLog");
+	LOG(INFO) << "starting merge_mps" << std::endl;
+
 	usage(argc);
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
@@ -34,6 +39,7 @@ int main(int argc, char** argv)
 	CouplingMap x_mps_id;
 	int cntProblems_l(0);
 
+	LOG(INFO) << "Merging problems..." << std::endl;
 	for (auto const & kvp : input) {
 
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first + ".mps");
@@ -139,20 +145,25 @@ int main(int argc, char** argv)
 	CharVector sense(nrows, 'E');
 	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
 
-	ORTwritelp(mergedSolver_l, "merged.lp");
+	LOG(INFO) << "Problems merged." << std::endl;
+	ORTwritelp(mergedSolver_l, "log_merged.lp");
 
 	//std::cout << "Writting mps file" << std::endl;
 	//XPRSwriteprob(full, "full.mps", "");
 	//std::cout << "Writting lp file" << std::endl;
 	//XPRSwriteprob(full, "full.lp", "l");
 	std::cout << "Solving" << std::endl;
+	LOG(INFO) << "Solving..." << std::endl;
 	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
 	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
 	// XPRSlpoptimize(full, "-b");
 	mergedSolver_l.SetNumThreads(16);
-	int status_l = mergedSolver_l.Solve();
 
 	jsonWriter_l.updateEndTime();
+	Timer timer;
+	int status_l = mergedSolver_l.Solve();
+	std::cout << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
+	LOG(INFO) << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
 
 	Point x0;
 	DblVector ptr;
@@ -164,7 +175,10 @@ int main(int argc, char** argv)
 		double costCoeff_l = mergedSolver_l.Objective().GetCoefficient(mergedSolver_l.variables()[varIndexInMerged_l]);
 		investCost_l += x0[pairNameId.first] * costCoeff_l;
 	}
-	print_solution(std::cout, x0, true);
+	std::ostringstream oss_l;
+	print_solution(oss_l, x0, true);
+	std::cout << oss_l.str();
+	LOG(INFO) << oss_l.str() << std::endl;
 
 	bool optimality_l = (status_l == operations_research::MPSolver::OPTIMAL);
 	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), mergedSolver_l.Objective().Value(), investCost_l, x0, optimality_l);

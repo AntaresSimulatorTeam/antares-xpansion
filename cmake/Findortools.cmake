@@ -70,7 +70,7 @@ elseif(UNIX)
         # ===============================
         # Dependencies
         # ===============================
-        # set(LIB_TO_FIND
+        set(LIB_TO_FIND
         #     CbcSolver #CBC_LNK
         #     Cbc
         #     OsiCbc
@@ -110,15 +110,15 @@ elseif(UNIX)
         #     absl_time
         #     absl_time_zone
         #     protobuf #protobuf
-        #     glog #glog
+            glog #glog
         #     gflags #gflags
-        # )
+        )
 
-        # foreach(X ${LIB_TO_FIND})
-        #     find_library(LIB_${X} NAME ${X} PATH_SUFFIXES lib/)
-        #     message(STATUS "${X} lib found here : ${LIB_${X}}")
-        #     set(ORTOOLS_LIBRARIES ${ORTOOLS_LIBRARIES} ${LIB_${X}})
-        # endforeach()
+        foreach(X ${LIB_TO_FIND})
+            find_library(LIB_${X} NAME ${X} PATH_SUFFIXES lib/)
+            message(STATUS "${X} lib found here : ${LIB_${X}}")
+            set(ORTOOLS_LIBRARIES ${ORTOOLS_LIBRARIES} ${LIB_${X}})
+        endforeach()
 
         # ===============================
         # ORTOOLS LIBRARY PATH
