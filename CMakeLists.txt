@@ -117,7 +117,7 @@ find_package (Threads REQUIRED)
 find_package(ortools REQUIRED)
 add_definitions(${ORTOOLS_DEFINITIONS})
 add_definitions(-DUSE_CPLEX)
-add_definitions(-DCPLEX_SOLVER)
+# add_definitions(-DCPLEX_SOLVER)
 
 
 IF( USE_MPI )
