@@ -8,6 +8,7 @@
 		"begin",
 		"end",
 		"duration",
+		"nbWeeks",
 		"antares",
 		"antares_xpansion",
 		"options",
@@ -42,9 +43,19 @@
 			"$id": "#root/duration",
 			"title": "Duration",
 			"type": "number",
-			"default": "",
+			"default": 0,
 			"examples": [
 				12.3
+			],
+			"pattern": "^.*$"
+		},
+		"nbWeeks": {
+			"$id": "#root/nbweeks",
+			"title": "NbWeeks",
+			"type": "integer",
+			"default": 0,
+			"examples": [
+				52
 			],
 			"pattern": "^.*$"
 		},
@@ -134,7 +145,7 @@
 					"$id": "#root/options/ACTIVECUTS",
 					"title": "ACTIVECUTS",
 					"type": "boolean",
-					"default": "",
+					"default": false,
 					"examples": [
 						false
 					]
@@ -143,7 +154,7 @@
 					"$id": "#root/options/AGGREGATION",
 					"title": "AGGREGATION",
 					"type": "boolean",
-					"default": "",
+					"default": false,
 					"examples": [
 						false
 					]
@@ -152,7 +163,7 @@
 					"$id": "#root/options/BASIS",
 					"title": "BASIS",
 					"type": "boolean",
-					"default": "",
+					"default": true,
 					"examples": [
 						true
 					]
@@ -161,7 +172,7 @@
 					"$id": "#root/options/BOUND_ALPHA",
 					"title": "BOUND_ALPHA",
 					"type": "boolean",
-					"default": "",
+					"default": true,
 					"examples": [
 						true
 					]
@@ -170,7 +181,7 @@
 					"$id": "#root/options/CSV_NAME",
 					"title": "CSV_NAME",
 					"type": "string",
-					"default": "",
+					"default": "benders_output_trace",
 					"examples": [
 						"benders_output_trace"
 					],
@@ -180,7 +191,7 @@
 					"$id": "#root/options/DELETE_CUT",
 					"title": "DELETE_CUT",
 					"type": "boolean",
-					"default": "",
+					"default": false,
 					"examples": [
 						false
 					]
@@ -189,7 +200,7 @@
 					"$id": "#root/options/GAP",
 					"title": "GAP",
 					"type": "number",
-					"default": "",
+					"default": 1e-06,
 					"examples": [
 						1e-06
 					]
@@ -198,7 +209,7 @@
 					"$id": "#root/options/INPUTROOT",
 					"title": "INPUTROOT",
 					"type": "string",
-					"default": "",
+					"default": ".",
 					"examples": [
 						"."
 					],
@@ -208,7 +219,7 @@
 					"$id": "#root/options/LOG_LEVEL",
 					"title": "LOG_LEVEL",
 					"type": "integer",
-					"default": "",
+					"default": 3,
 					"examples": [
 						3
 					]
@@ -217,7 +228,7 @@
 					"$id": "#root/options/LOG_OUTPUT",
 					"title": "LOG_OUTPUT",
 					"type": "string",
-					"default": "",
+					"default": "COMMAND",
 					"examples": [
 						"COMMAND"
 					],
@@ -227,7 +238,7 @@
 					"$id": "#root/options/MASTER_METHOD",
 					"title": "MASTER_METHOD",
 					"type": "string",
-					"default": "",
+					"default": "SIMPLEX",
 					"examples": [
 						"SIMPLEX"
 					],
@@ -237,7 +248,7 @@
 					"$id": "#root/options/MASTER_NAME",
 					"title": "MASTER_NAME",
 					"type": "string",
-					"default": "",
+					"default": "master",
 					"examples": [
 						"master"
 					],
@@ -247,7 +258,7 @@
 					"$id": "#root/options/MAX_ITERATIONS",
 					"title": "MAX_ITERATIONS",
 					"type": "integer",
-					"default": "",
+					"default": -1,
 					"examples": [
 						-1
 					]
@@ -256,7 +267,7 @@
 					"$id": "#root/options/OUTPUTROOT",
 					"title": "OUTPUTROOT",
 					"type": "string",
-					"default": "",
+					"default": ".",
 					"examples": [
 						"."
 					],
@@ -266,7 +277,7 @@
 					"$id": "#root/options/RAND_AGGREGATION",
 					"title": "RAND_AGGREGATION",
 					"type": "integer",
-					"default": "",
+					"default": 0,
 					"examples": [
 						0
 					]
@@ -275,7 +286,7 @@
 					"$id": "#root/options/SLAVE_NUMBER",
 					"title": "SLAVE_NUMBER",
 					"type": "integer",
-					"default": "",
+					"default": -1,
 					"examples": [
 						-1
 					]
@@ -284,7 +295,7 @@
 					"$id": "#root/options/SLAVE_WEIGHT",
 					"title": "SLAVE_WEIGHT",
 					"type": "string",
-					"default": "",
+					"default": "CONSTANT",
 					"examples": [
 						"CONSTANT"
 					],
@@ -294,7 +305,7 @@
 					"$id": "#root/options/SLAVE_WEIGHT_VALUE",
 					"title": "SLAVE_WEIGHT_VALUE",
 					"type": "number",
-					"default": "",
+					"default": 1,
 					"examples": [
 						1.0
 					]
@@ -303,7 +314,7 @@
 					"$id": "#root/options/STRUCTURE_FILE",
 					"title": "STRUCTURE_FILE",
 					"type": "string",
-					"default": "",
+					"default": "structure.txt",
 					"examples": [
 						"structure.txt"
 					],
@@ -313,7 +324,7 @@
 					"$id": "#root/options/THRESHOLD_AGGREGATION",
 					"title": "THRESHOLD_AGGREGATION",
 					"type": "integer",
-					"default": "",
+					"default": 0,
 					"examples": [
 						0
 					]
@@ -322,7 +333,7 @@
 					"$id": "#root/options/THRESHOLD_ITERATION",
 					"title": "THRESHOLD_ITERATION",
 					"type": "integer",
-					"default": "",
+					"default": 0,
 					"examples": [
 						0
 					]
@@ -331,7 +342,7 @@
 					"$id": "#root/options/TRACE",
 					"title": "TRACE",
 					"type": "boolean",
-					"default": "",
+					"default": true,
 					"examples": [
 						true
 					]
@@ -340,7 +351,7 @@
 					"$id": "#root/options/XPRESS_TRACE",
 					"title": "XPRESS_TRACE",
 					"type": "integer",
-					"default": "",
+					"default": 0,
 					"examples": [
 						0
 					]
@@ -376,7 +387,7 @@
 							"$id": "#root/iterations/1/duration",
 							"title": "Duration",
 							"type": "number",
-							"default": "",
+							"default": 0,
 							"examples": [
 								0.005
 							]
@@ -385,7 +396,7 @@
 							"$id": "#root/iterations/1/gap",
 							"title": "gap",
 							"type": "number",
-							"default": "",
+							"default": 0,
 							"examples": [
 								100015.15
 							]
@@ -394,7 +405,7 @@
 							"$id": "#root/iterations/1/investment_cost",
 							"title": "investment_cost",
 							"type": "number",
-							"default": "",
+							"default": 0,
 							"examples": [
 								5955146100
 							]
@@ -403,7 +414,7 @@
 							"$id": "#root/iterations/1/operational_cost",
 							"title": "operational_cost",
 							"type": "number",
-							"default": "",
+							"default": 0,
 							"examples": [
 								0.005
 							]
@@ -412,7 +423,7 @@
 							"$id": "#root/iterations/1/overall_cost",
 							"title": "overall_cost",
 							"type": "number",
-							"default": "",
+							"default": 0,
 							"examples": [
 								0.005
 							]
@@ -421,7 +432,7 @@
 							"$id": "#root/iterations/1/relative_gap",
 							"title": "relative_gap",
 							"type": "number",
-							"default": "",
+							"default": 0,
 							"examples": [
 								0.005
 							]
@@ -430,7 +441,7 @@
 							"$id": "#root/iterations/1/ub",
 							"title": "ub",
 							"type": "number",
-							"default": "",
+							"default": 0,
 							"examples": [
 								0.005
 							]
@@ -439,7 +450,7 @@
 							"$id": "#root/iterations/1/lb",
 							"title": "lb",
 							"type": "number",
-							"default": "",
+							"default": 0,
 							"examples": [
 								0.005
 							]
@@ -462,7 +473,7 @@
 			"examples": [
 				1
 			],
-			"default": 0,
+			"default": {},
 			"required": [
 				"gap",
 				"investment_cost",
@@ -479,7 +490,7 @@
 					"$id": "#root/solution/gap",
 					"title": "gap",
 					"type": "number",
-					"default": "",
+					"default": 0,
 					"examples": [
 						100015.15
 					]
@@ -488,7 +499,7 @@
 					"$id": "#root/solution/investment_cost",
 					"title": "investment_cost",
 					"type": "number",
-					"default": "",
+					"default": 0,
 					"examples": [
 						5955146100
 					]
@@ -497,7 +508,7 @@
 					"$id": "#root/solution/operational_cost",
 					"title": "operational_cost",
 					"type": "number",
-					"default": "",
+					"default": 0,
 					"examples": [
 						0.005
 					]
@@ -506,7 +517,7 @@
 					"$id": "#root/solution/overall_cost",
 					"title": "overall_cost",
 					"type": "number",
-					"default": "",
+					"default": 0,
 					"examples": [
 						0.005
 					]
@@ -515,7 +526,7 @@
 					"$id": "#root/solution/iteration",
 					"title": "iteration",
 					"type": "integer",
-					"default": "",
+					"default": 0,
 					"examples": [
 						2
 					]
@@ -547,7 +558,9 @@
             "type": "object",
             "required": [
                 "name",
-                "invest"
+				"invest",
+				"min",
+				"max"
             ],
             "properties": {
                 "name" : {
@@ -562,6 +575,22 @@
                     "type": "number",
                     "examples": [
                         1
+                    ],
+                    "default": 0
+                },
+                "min": {
+                    "title": "Min",
+                    "type": "number",
+                    "examples": [
+                        0
+                    ],
+                    "default": 0
+                },
+                "max": {
+                    "title": "Max",
+                    "type": "number",
+                    "examples": [
+                        1200
                     ],
                     "default": 0
                 }
