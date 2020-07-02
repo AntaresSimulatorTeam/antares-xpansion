@@ -46,11 +46,10 @@ elseif(UNIX)
         # ORTOOLS_ROOT default path
         # ===============================
         if(CONAN_ORTOOLS_ROOT)
-            set(ORTOOLS_ROOT CONAN_ORTOOLS_ROOT CACHE PATH "ORTOOLS root directory")
+            set(ORTOOLS_ROOT ${CONAN_ORTOOLS_ROOT} CACHE PATH "ORTOOLS root directory")
         else()
             set(ORTOOLS_ROOT "/opt/or-tools/" CACHE PATH "ORTOOLS root directory")
         endif()
-
 
         # ===============================
         # ORTOOLS_INCLUDE_DIRS
