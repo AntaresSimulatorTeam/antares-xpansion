@@ -76,10 +76,15 @@ int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
 void sequential_launch(BendersOptions const & options) {
 	Timer timer;
 	CouplingMap input;
+	LOG(INFO) << "Building input" << std::endl;
 	build_input(options, input);
+	LOG(INFO) << "Constructing workers..." << std::endl;
 	Benders benders(input, options);
+	LOG(INFO) << "Running solver..." << std::endl;
 	benders.run(std::cout);
+	LOG(INFO) << "Benders solver terminated." << std::endl;
 	benders.free();
+	LOG(INFO) << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
 	std::cout << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
 }
 

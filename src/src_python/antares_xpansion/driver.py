@@ -355,6 +355,10 @@ class XpansionDriver(object):
             :type solver: value in [XpansionConfig.MERGE_MPS, XpansionConfig.BENDERS_MPI,
             XpansionConfig.BENDERS_SEQUENTIAL]
         """
+        old_cwd = os.getcwd()
+        os.chdir(lp_path)
+        print('Current directory is now : ', os.getcwd())
+
         solver = None
         if self.args.method == "mpibenders":
             solver = self.config.BENDERS_MPI
@@ -362,6 +366,9 @@ class XpansionDriver(object):
             sys.exit(0)
         elif self.args.method == "mergeMPS":
             solver = self.config.MERGE_MPS
+            mergemps_lp_log = "log_merged.lp"
+            if os.path.isfile(mergemps_lp_log):
+                os.remove(mergemps_lp_log)
         elif self.args.method == "sequential":
             solver = self.config.BENDERS_SEQUENTIAL
         elif self.args.method == "both":
@@ -372,15 +379,28 @@ class XpansionDriver(object):
             print("Illegal optim method")
             sys.exit(0)
 
-        old_cwd = os.getcwd()
-        os.chdir(lp_path)
-        print('Current directory is now : ', os.getcwd())
+        #delete logged master MIPs
+        master_lp_log_format = "log_master*.lp"
+        logfileList = glob.glob('./' +master_lp_log_format)
+        for filePath in logfileList:
+            try:
+                os.remove(filePath)
+            except:
+                print("Error while deleting file : ", filePath)
+
+        #delete execution logs
+        logfileList = glob.glob('./' +solver + 'Log*')
+        for filePath in logfileList:
+            try:
+                os.remove(filePath)
+            except:
+                print("Error while deleting file : ", filePath)
+        if  os.path.isfile(solver + '.log'):
+            os.remove(solver + '.log')
+
         print('Launching {}, logs will be saved to {}.log'.format(solver,
                                                                   os.path.join(os.getcwd(),
                                                                                solver)))
-
-        if  os.path.isfile(solver + '.log'):
-            os.remove(solver + '.log')
         with open(solver + '.log', 'w') as output_file:
             subprocess.call(self.solver_cmd(solver), shell=True,
                             stdout=output_file,

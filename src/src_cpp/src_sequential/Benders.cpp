@@ -1,5 +1,8 @@
 #include "Benders.h"
 
+#include "ortools_utils.h"
+
+#include <iomanip>
 
 Benders::~Benders() {
 }
@@ -64,6 +67,11 @@ void Benders::build_cut() {
 	}
 	else {
 		get_slave_cut(slave_cut_package, _map_slaves, _options, _data);
+		_data.slave_cost = 0;
+		for(auto pairSlavenameSlavecutdata_l : slave_cut_package)
+		{
+			_data.slave_cost += pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST];
+		}
 	}
 	_data.timer_slaves = timer_slaves.elapsed();
 	all_package.push_back(slave_cut_package);
@@ -95,7 +103,23 @@ void Benders::run(std::ostream & stream) {
 	while (!_data.stop) {
 		Timer timer_master;
 		++_data.it;
+		LOG(INFO) << "ITERATION " << _data.it << " :" << std::endl;
+
+		LOG(INFO) << "\tSolving master..." << std::endl;
+
 		get_master_value(_master, _data, _options);
+
+		LOG(INFO) << "\tmaster solved in "<< _data.timer_master << "." << std::endl;
+
+		//log master for debug
+		ORTwritelp(*(_master->_solver), "log_master"+std::to_string(_data.it)+".lp");
+
+		LOG(INFO) << "\t\tCandidates:" << std::endl;
+		for(auto pairVarnameValue : _data.x0)
+		{
+			LOG(INFO) << "\t\t\t" << pairVarnameValue.first << "  =  " << pairVarnameValue.second << std::endl;
+		}
+
 		if (_options.ACTIVECUTS) {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
 		}
@@ -103,9 +127,21 @@ void Benders::run(std::ostream & stream) {
 		if (_options.TRACE) {
 			_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 		}
+
+		LOG(INFO) << "\tBuilding cuts...\n";
 		build_cut();
+		LOG(INFO) << "\tCuts built.\n";
 
 		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0);
+
+		LOG(INFO) << "\t\tSolution:" << std::endl;
+		LOG(INFO) << "\t\t\tBest Upper Bound : " << _data.best_ub << std::endl;
+		LOG(INFO) << "\t\t\tUpper Bound : " << _data.ub << std::endl;
+		LOG(INFO) << "\t\t\tLower Bound : " << _data.lb << std::endl;
+		LOG(INFO) << "\t\t\tGap : " << _data.best_ub - _data.lb << std::endl;
+		LOG(INFO) << "\t\t\tOperational cost : " << std::fixed << std::setprecision(2) << _data.slave_cost << "€" << std::endl;
+		LOG(INFO) << "\t\t\tInvestment cost : " << std::fixed << std::setprecision(2) << _data.invest_cost << "€" << std::endl;
+		LOG(INFO) << "\t\t\tOverall cost : " << std::fixed << std::setprecision(2) <<  _data.slave_cost + _data.invest_cost << "€" << std::endl;
 
 		if (_options.TRACE) {
 			update_trace(_trace, _data);
