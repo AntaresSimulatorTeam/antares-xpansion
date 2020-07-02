@@ -14,7 +14,6 @@
 #TODO test on a windows platform
 #TODO use Components option in find_package to select solver and add specific definitions
 
-
 # ===============================
 # WINDOWS
 # ===============================
@@ -43,11 +42,14 @@ if(MSVC)
 # ===============================
 elseif(UNIX)
     if(NOT TARGET ortools::ortools)
-
         # ===============================
         # ORTOOLS_ROOT default path
         # ===============================
-        set(ORTOOLS_ROOT "/opt/or-tools/" CACHE PATH "ORTOOLS root directory")
+        if(CONAN_ORTOOLS_ROOT)
+            set(ORTOOLS_ROOT CONAN_ORTOOLS_ROOT CACHE PATH "ORTOOLS root directory")
+        else()
+            set(ORTOOLS_ROOT "/opt/or-tools/" CACHE PATH "ORTOOLS root directory")
+        endif()
 
 
         # ===============================
@@ -56,7 +58,6 @@ elseif(UNIX)
         find_path(ORTOOLS_INCLUDE_DIRS NAME ortools HINTS ${ORTOOLS_ROOT} PATH_SUFFIXES include/)
 
         if(ORTOOLS_INCLUDE_DIRS)
-            message("ORTOOLS_INCLUDE_DIRS : " ${ORTOOLS_INCLUDE_DIRS})
             if(NOT EXISTS ${ORTOOLS_INCLUDE_DIRS}/ortools/linear_solver/linear_solver.h)
                 message(FATAL_ERROR "Invalid ORTOOLS_INCLUDE_DIRS path ${ORTOOLS_INCLUDE_DIR} : no linear_solver/linear_solver.h file found in " ${ORTOOLS_INCLUDE_DIRS})
             else()

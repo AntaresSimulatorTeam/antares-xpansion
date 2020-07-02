@@ -44,6 +44,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 										--update \
 										--settings build_type=${buildType} \
 										--install-folder builds/${buildType} \
+										--build missing \
 										.
 								"""
 							}
@@ -58,7 +59,6 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									-D antaresXpansion_BUILD_DOCUMENTATION=always
 									-D STATIC_RUNTIME=OFF
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
-									-D ORTOOLS_ROOT="${env.OPT_PATH}/or-tools-7.6"
 								""",
 								generator: "${env.CMakeGenerator}",
 								installation: "3.14.0 (jenkins)",

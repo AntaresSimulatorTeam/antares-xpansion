@@ -10,7 +10,7 @@ cmake_minimum_required (VERSION 3.14.0)
 
 find_package (GTest REQUIRED)
 
-message("Gtest : " ${GTEST_INCLUDE_DIRS} )
+message("Gtest found here: " ${GTEST_INCLUDE_DIRS} )
 enable_testing ()
 
 # --------------------------------------------------------------------------

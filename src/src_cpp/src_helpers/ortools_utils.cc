@@ -2,6 +2,7 @@
 
 #include "ortools_utils.h"
 #include "ortools/lp_data/mps_reader.h"
+#include "ortools/lp_data/proto_utils.h"
 #include "ortools/linear_solver/linear_solver.pb.h"
 #include "ortools/linear_solver/model_exporter.h"
 
@@ -9,11 +10,13 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
 {
     solver_p.Clear();
 
-    operations_research::MPModelProto model_proto_l;
     std::ifstream mpsfile(filename_p.c_str());
     if(mpsfile.good())
     {
-        operations_research::glop::MPSReader().ParseFile(filename_p, &model_proto_l);
+        operations_research::MPModelProto model_proto_l;
+        operations_research::glop::LinearProgram linearProgram_l;
+        operations_research::glop::MPSReader().LoadFileWithMode(filename_p, true, &linearProgram_l);
+        operations_research::glop::LinearProgramToMPModelProto(linearProgram_l, &model_proto_l);
         std::string errorMessage_l;
         const operations_research::MPSolverResponseStatus status = solver_p.LoadModelFromProtoWithUniqueNamesOrDie(model_proto_l, &errorMessage_l);
         if(errorMessage_l.length())
@@ -34,25 +37,21 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
 
 bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string const & filename_p)
 {
-    operations_research::MPModelProto proto_l;
-	solver_p.ExportModelToProto(&proto_l);
-	operations_research::MPModelExportOptions options_l;
-	const auto status_l = operations_research::ExportModelAsMpsFormat(proto_l, options_l);
+    std::string modelMps_l;
+    solver_p.ExportModelAsMpsFormat(false, false, &modelMps_l);
 
     std::ofstream mpsOut(filename_p);
-    mpsOut <<  status_l.value_or("");
+    mpsOut <<  modelMps_l;
     mpsOut.close();
 }
 
 bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string const & filename_p)
 {
-    operations_research::MPModelProto proto_l;
-	solver_p.ExportModelToProto(&proto_l);
-	operations_research::MPModelExportOptions options_l;
-	const auto status_l = operations_research::ExportModelAsLpFormat(proto_l, options_l);
+    std::string modelLP_l;
+    solver_p.ExportModelAsLpFormat(false, &modelLP_l);
 
     std::ofstream lpOut(filename_p);
-    lpOut <<  status_l.value_or("");
+    lpOut <<  modelLP_l;
     lpOut.close();
 }
 
