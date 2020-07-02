@@ -1,6 +1,7 @@
 [requires]
-boost/1.65.1@conan/stable
-boost_mpi/1.65.1@bincrafters/stable
+#boost/1.65.1@conan/stable
+#boost_mpi/1.65.1@bincrafters/stable
+ortools/7.0@eurodecision/stable
 
 [build_requires]
 gtest/1.8.1@bincrafters/stable

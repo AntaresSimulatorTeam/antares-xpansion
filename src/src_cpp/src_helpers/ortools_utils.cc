@@ -2,6 +2,7 @@
 
 #include "ortools_utils.h"
 #include "ortools/lp_data/mps_reader.h"
+#include "ortools/lp_data/proto_utils.h"
 #include "ortools/linear_solver/linear_solver.pb.h"
 #include "ortools/linear_solver/model_exporter.h"
 
@@ -9,11 +10,13 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
 {
     solver_p.Clear();
 
-    operations_research::MPModelProto model_proto_l;
     std::ifstream mpsfile(filename_p.c_str());
     if(mpsfile.good())
     {
-        operations_research::glop::MPSReader().ParseFile(filename_p, &model_proto_l);
+        operations_research::MPModelProto model_proto_l;
+        operations_research::glop::LinearProgram linearProgram_l;
+        operations_research::glop::MPSReader().LoadFileWithMode(filename_p, true, &linearProgram_l);
+        operations_research::glop::LinearProgramToMPModelProto(linearProgram_l, &model_proto_l);
         std::string errorMessage_l;
         const operations_research::MPSolverResponseStatus status = solver_p.LoadModelFromProtoWithUniqueNamesOrDie(model_proto_l, &errorMessage_l);
         if(errorMessage_l.length())
