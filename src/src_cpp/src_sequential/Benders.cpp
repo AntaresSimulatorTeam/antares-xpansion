@@ -132,7 +132,7 @@ void Benders::run(std::ostream & stream) {
 		build_cut();
 		LOG(INFO) << "\tCuts built.\n";
 
-		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0);
+		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
 
 		LOG(INFO) << "\t\tSolution:" << std::endl;
 		LOG(INFO) << "\t\t\tBest Upper Bound : " << _data.best_ub << std::endl;

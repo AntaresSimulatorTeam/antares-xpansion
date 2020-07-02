@@ -18,6 +18,7 @@ SET(SEQUENTIAL_FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/common.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerTrace.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Worker.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.cpp
 
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerStabilizedMaster.h
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersFunctions.h
@@ -32,6 +33,7 @@ SET(SEQUENTIAL_FILES
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersOptions.h
 	${CMAKE_CURRENT_SOURCE_DIR}/SlaveCut.h
 	${CMAKE_CURRENT_SOURCE_DIR}/Benders.h
+	${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.h
 
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersOptions.hxx
 )
@@ -48,6 +50,7 @@ target_link_libraries (sequentialcore
 	PUBLIC
 		ortools
 		helpers
+		jsoncpp
 )
 
 ADD_LIBRARY (${PROJECT_NAME}::sequentialcore ALIAS sequentialcore)

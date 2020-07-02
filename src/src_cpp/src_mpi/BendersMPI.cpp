@@ -250,7 +250,7 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world, std::ost
 		}
 
 		if (world.rank() == 0) {
-			update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0);
+			update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
 			if (_options.TRACE) {
 				update_trace(_trace, _data);
 			}

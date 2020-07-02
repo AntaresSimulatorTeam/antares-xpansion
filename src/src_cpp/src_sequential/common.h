@@ -133,8 +133,11 @@ struct BendersData {
 	std::vector<double> alpha_i;
 	double slave_cost;
 	double invest_cost;
+	int best_it;
 	Point bestx;
 	Point x0;
+	Point min_invest;
+	Point max_invest;
 	int nslaves;
 	double dnslaves;
 	int master_status;

@@ -1,6 +1,7 @@
 #include "launcher.h"
 #include "Benders.h"
 #include "Timer.h"
+#include "JsonWriter.h"
 
 #include "BendersOptions.h"
 
@@ -78,11 +79,21 @@ void sequential_launch(BendersOptions const & options) {
 	CouplingMap input;
 	LOG(INFO) << "Building input" << std::endl;
 	build_input(options, input);
+
+	JsonWriter jsonWriter_l;
+	jsonWriter_l.write(options);
+	jsonWriter_l.updateBeginTime();
 	LOG(INFO) << "Constructing workers..." << std::endl;
+
 	Benders benders(input, options);
 	LOG(INFO) << "Running solver..." << std::endl;
 	benders.run(std::cout);
 	LOG(INFO) << "Benders solver terminated." << std::endl;
+
+	jsonWriter_l.updateEndTime();
+	jsonWriter_l.write(input.size(), benders._trace, benders._data);
+	jsonWriter_l.dump("out.json");
+
 	benders.free();
 	LOG(INFO) << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
 	std::cout << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;

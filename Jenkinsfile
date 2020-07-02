@@ -9,7 +9,8 @@ configs = [
 	],
 	[
 		node: 'compil-win64-vc14',
-		buildTypes: [ 'Release' ]
+		buildTypes: [ 'Release' ],
+		testSteps: [ 'unittest' ]
 	]
 ]
 
@@ -37,7 +38,6 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 						unstash 'source'
 
 						config.buildTypes.each { buildType ->
-
 							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.14.0 (jenkins)'}/cmake"]) {
 								sh """
 									conan install \

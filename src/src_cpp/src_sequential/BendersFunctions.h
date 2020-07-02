@@ -20,7 +20,7 @@ void print_solution(std::ostream&stream, Point const & point, bool const filter_
 void print_active_cut(ActiveCutStorage const & active_cuts, BendersOptions const & options);
 
 
-void update_best_ub(double & best_ub, double const & ub, Point & bestx, Point const & x0);
+void update_best_ub(double & best_ub, double const & ub, Point & bestx, Point const & x0, int & bestit, int const & it);
 void bound_simplex_iter(int simplexiter, BendersData & data);
 bool stopping_criterion(BendersData & data, BendersOptions const & options);
 void update_trace(BendersTrace & trace, BendersData const & data);

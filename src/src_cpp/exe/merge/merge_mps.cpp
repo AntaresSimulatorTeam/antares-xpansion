@@ -4,6 +4,7 @@
 #include "Worker.h"
 #include "BendersOptions.h"
 #include "BendersFunctions.h"
+#include "JsonWriter.h"
 #include "Timer.h"
 
 #include "ortools_utils.h"
@@ -22,6 +23,10 @@ int main(int argc, char** argv)
 	usage(argc);
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
+
+	JsonWriter jsonWriter_l;
+	jsonWriter_l.write(options);
+	jsonWriter_l.updateBeginTime();
 
 	CouplingMap input;
 	build_input(options, input);
@@ -153,21 +158,31 @@ int main(int argc, char** argv)
 	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
 	// XPRSlpoptimize(full, "-b");
 	mergedSolver_l.SetNumThreads(16);
+
+	jsonWriter_l.updateEndTime();
 	Timer timer;
-	mergedSolver_l.Solve();
+	int status_l = mergedSolver_l.Solve();
 	std::cout << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
 	LOG(INFO) << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
 
 	Point x0;
 	DblVector ptr;
+	double investCost_l(0);
 	ORTgetlpsolution(mergedSolver_l, ptr);
 	for (auto const & pairNameId : input[options.MASTER_NAME]) {
-		x0[pairNameId.first] = ptr[x_mps_id[pairNameId.first][options.MASTER_NAME]];
+		int varIndexInMerged_l = x_mps_id[pairNameId.first][options.MASTER_NAME];
+		x0[pairNameId.first] = ptr[varIndexInMerged_l];
+		double costCoeff_l = mergedSolver_l.Objective().GetCoefficient(mergedSolver_l.variables()[varIndexInMerged_l]);
+		investCost_l += x0[pairNameId.first] * costCoeff_l;
 	}
 	std::ostringstream oss_l;
 	print_solution(oss_l, x0, true);
 	std::cout << oss_l.str();
 	LOG(INFO) << oss_l.str() << std::endl;
+
+	bool optimality_l = (status_l == operations_research::MPSolver::OPTIMAL);
+	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), mergedSolver_l.Objective().Value(), investCost_l, x0, optimality_l);
+	jsonWriter_l.dump("out.json");
 
 	return 0;
 }
