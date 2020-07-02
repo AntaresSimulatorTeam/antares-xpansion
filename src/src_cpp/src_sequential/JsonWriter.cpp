@@ -88,6 +88,8 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
             Json::Value candidate_l;
             candidate_l["name"] = pairNameValue_l.first;
             candidate_l["invest"] = pairNameValue_l.second;
+            candidate_l["min"] = masterDataPtr_l->get_min_invest()[pairNameValue_l.first];
+            candidate_l["max"] = masterDataPtr_l->get_max_invest()[pairNameValue_l.first];
             vectCandidates_l.append(candidate_l);
         }
         _output["iterations"][strIterCnt_l]["candidates"] = vectCandidates_l;

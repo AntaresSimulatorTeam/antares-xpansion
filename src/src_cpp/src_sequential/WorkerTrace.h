@@ -18,12 +18,16 @@ public:
 	int _nbasis;
 	double _time;
 	PointPtr _x0;
+	PointPtr _min_invest;
+	PointPtr _max_invest;
 	std::map<std::string,SlaveCutDataPtr> _cut_trace;
 
 	double _invest_cost;
 	double _operational_cost;
 
 	Point get_point();
+	Point get_min_invest();
+	Point get_max_invest();
 };
 
 typedef std::shared_ptr<WorkerMasterData> WorkerMasterDataPtr;

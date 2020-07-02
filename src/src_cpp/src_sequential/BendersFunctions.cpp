@@ -317,6 +317,8 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 	trace[data.it - 1]->_ub = data.ub;
 	trace[data.it - 1]->_bestub = data.best_ub;
 	trace[data.it - 1]->_x0 = PointPtr(new Point(data.x0));
+	trace[data.it - 1]->_max_invest = PointPtr(new Point(data.max_invest));
+	trace[data.it - 1]->_min_invest = PointPtr(new Point(data.min_invest));
 	trace[data.it - 1]->_deleted_cut = data.deletedcut;
 	trace[data.it - 1]->_time = data.timer_master;
 	trace[data.it - 1]->_nbasis = data.nbasis;
@@ -364,7 +366,17 @@ void get_master_value(WorkerMasterPtr & master, BendersData & data, BendersOptio
 	master->solve(data.master_status);
 	master->get(data.x0, data.alpha, data.alpha_i); /*Get the optimal variables of the Master Problem*/
 	master->get_value(data.lb); /*Get the optimal value of the Master Problem*/
+
 	data.invest_cost = data.lb - data.alpha;
+
+	for(auto pairIdName : master->_id_to_name)
+	{
+		auto var_l = master->_solver->variables()[pairIdName.first];
+		data.max_invest[pairIdName.second] = var_l->ub();
+		data.min_invest[pairIdName.second] = var_l->lb();
+	}
+
+
 	if (!options.RAND_AGGREGATION) {
 		data.ub = data.invest_cost;
 	}
