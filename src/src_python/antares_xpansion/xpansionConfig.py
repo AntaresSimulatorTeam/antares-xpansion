@@ -3,6 +3,7 @@
 """
 
 import argparse
+import sys
 
 class XpansionConfig(object):
     """
@@ -13,8 +14,17 @@ class XpansionConfig(object):
     # pylint: disable=too-few-public-methods
 
     def __init__(self):
-        self.MPI_LAUNCHER = "mpiexec"
-        self.MPI_N = "-n"
+        if sys.platform.startswith("win32"):
+            self.MPI_LAUNCHER = "mpiexec"
+            self.MPI_N = "-n"
+        elif sys.platform.startswith("linux"):
+            self.MPI_LAUNCHER = "mpirun"
+            self.MPI_N = "-np"
+        else:
+            print("WARN: No mpi launcher was defined!")
+
+        self.MPI_N_PROCESSES = 4
+
         self.ANTARES = 'antares-7.1-solver'
         self.SETTINGS = 'settings'
         self.USER = 'user'

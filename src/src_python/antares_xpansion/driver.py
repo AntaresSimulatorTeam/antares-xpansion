@@ -53,7 +53,8 @@ class XpansionDriver(object):
             return self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
         elif solver == self.config.BENDERS_MPI:
             return self.config.MPI_LAUNCHER +" "+\
-                    self.config.MPI_N + ' 1 ' + self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
+                self.config.MPI_N +" "+ self.config.MPI_N_PROCESSES+\
+                " "+ self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
         #solver == self.config.BENDERS_SEQUENTIAL:
         return self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
 
