@@ -25,6 +25,13 @@ ENDIF()
 
 set (BOOST_MIN_VERSION "1.65.1")
 
+
+# ===========================================================================
+# CMAKE ADDITIONAL MODULES
+# ===========================================================================
+
+LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 # ===========================================================================
 # Compiler options
 # ===========================================================================
@@ -33,9 +40,6 @@ SET(EXECUTABLE_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 SET(   LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 
 set (CMAKE_CXX_STANDARD 11)
-
-
-LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 IF( USE_MPI )
@@ -51,7 +55,7 @@ IF( WIN32 )
 #	SET( CMAKE_CXX_FLAGS_DEBUG          "/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1" )
 #	SET( CMAKE_CXX_FLAGS_RELEASE        "/MT /O2 /Ob2 /D NDEBUG")
 ELSE()
-	SET ( CMAKE_BUILD_TYPE "RELEASE"     )
+#   SET ( CMAKE_BUILD_TYPE "RELEASE"     )
 #	SET ( CMAKE_BUILD_TYPE "DEBUG"     )
 #	IF( WITH_DEBUG )
 #		SET ( CMAKE_BUILD_TYPE "DEBUG"     )
@@ -64,6 +68,7 @@ ELSE()
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-strict-aliasing -Wno-unused-parameter")
 ENDIF( WIN32 )
 
+MESSAGE("cmake_build_type : ${CMAKE_BUILD_TYPE}")
 MESSAGE("CMAKE_BINARY_DIR : ${CMAKE_BINARY_DIR}")
 MESSAGE("CMAKE_SOURCE_DIR : ${CMAKE_SOURCE_DIR}")
 MESSAGE("CMAKE_C_COMPILER_VERSION : ${CMAKE_C_COMPILER_VERSION}")
@@ -77,8 +82,6 @@ if (${PROJECT_NAME}_WITH_COVERAGE)
 	include (SetUpCoverage)
 	SetUpCoverage ()
 endif ()
-
-
 
 # ===========================================================================
 # External dependencies
