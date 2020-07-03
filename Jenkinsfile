@@ -57,7 +57,6 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									-D CMAKE_INSTALL_PREFIX="${WORKSPACE}/install/${buildType}"
 									-D antaresXpansion_WITH_COVERAGE=${config.containsKey('testSteps') && config.testSteps.contains('coverage') ? 'ON' : 'OFF'}
 									-D antaresXpansion_BUILD_DOCUMENTATION=always
-									-D STATIC_RUNTIME=OFF
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
 								""",
 								generator: "${env.CMakeGenerator}",
