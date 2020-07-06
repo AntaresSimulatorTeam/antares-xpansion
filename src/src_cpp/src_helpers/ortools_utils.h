@@ -52,7 +52,7 @@ bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string cons
  *
  * @param solver_p  : solver containing the model to consider.
  * @param oss_p  : string stream that will contain the output
- * @param index_o : optional parameter that defaults to false,
+ * @param index_p : optional parameter that defaults to false,
  *              if set to true the indices of variables will be used (prefixed by x)
  *              if set to false the names of variables will be used
  */
@@ -222,13 +222,13 @@ void ORTdeactivaterows(operations_research::MPSolver & solver_p, std::vector<int
  * @brief Returns the current basis
  *
  * @param solver_p  : solver containing the model to modify.
- * @param rstatus : will be filled with  the basis status of the slack, surplus or artificial variable associated with each row. The status will be one of:
+ * @param rstatus_p : will be filled with  the basis status of the slack, surplus or artificial variable associated with each row. The status will be one of:
  *      0 : slack, surplus or artificial is non-basic at lower bound;
  *      1 : slack, surplus or artificial is basic;
  *      2 : slack or surplus is non-basic at upper bound.
  *      3 : slack or surplus is super-basic.
 May be NULL if not required.
- * @param cstatus : will be filled with the basis status of the columns in the constraint matrix. The status will be one of:
+ * @param cstatus_p : will be filled with the basis status of the columns in the constraint matrix. The status will be one of:
  *      0 : variable is non-basic at lower bound, or superbasic at zero if the variable has no lower bound;
  *      1 : variable is basic;
  *      2 : variable is non-basic at upper bound;
@@ -248,7 +248,7 @@ void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rs
  *      B : indicates change both bounds, i.e. fix the column.
  * @param bnd_p : Double array of same length as mindex_p giving the new bound values.
  *
- * @warn if the same bound is changed twice the bound at the end of the vector will be used and no warning will be issued
+ * @note if the same bound is changed twice the bound at the end of the vector will be used and no warning will be issued
  */
 void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p);
 
@@ -259,7 +259,7 @@ void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> con
  * @param inSolver_p  : solver containing the model to copy.
  * @param names_p : int array containing the indices of the columns on which the bounds will change.
  *
- * @Warn care when copying between solvers of different types : no special verifications are done (eg. infinity values correspondance)
- * @Note duplicate/empty names will be named automatically by ortools
+ * @note care when copying between solvers of different types : no special verifications are done (eg. infinity values correspondance)
+ * @note duplicate/empty names will be named automatically by ortools
  */
 void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operations_research::MPSolver const & inSolver_p, std::vector<std::string> const & names_p);
