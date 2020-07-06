@@ -2,12 +2,13 @@
 //
 #include "launcher.h"
 #include "BendersOptions.h"
+#include <glog/logging.h>
 
 
 int main(int argc, char** argv)
 {
 	google::InitGoogleLogging(argv[0]);
-	google::SetLogDestination(google::INFO, "./benderssequentialLog");
+	google::SetLogDestination(google::GLOG_INFO, "./benderssequentialLog");
 	LOG(INFO) << "starting Benders Sequential" << std::endl;
 
 	//options.print(std::cout);

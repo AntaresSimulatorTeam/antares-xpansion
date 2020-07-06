@@ -43,6 +43,7 @@ bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string con
     std::ofstream mpsOut(filename_p);
     mpsOut <<  modelMps_l;
     mpsOut.close();
+	return true;
 }
 
 bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string const & filename_p)
@@ -53,6 +54,7 @@ bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string cons
     std::ofstream lpOut(filename_p);
     lpOut <<  modelLP_l;
     lpOut.close();
+	return true;
 }
 
 void ORTdescribe(operations_research::MPSolver const & solver_p, std::ostringstream & oss_p, bool index_p)
@@ -586,7 +588,7 @@ void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operation
 	ORTaddcols(outSolver_p, obj_l, {}, {}, {}, lb_l, ub_l, coltype_l, names_p);
 
     const std::vector<operations_research::MPVariable*> & outVariables_l = outSolver_p.variables();
-    assert(inSolver.NumVariables() == outVariables_l.size());
+    assert(inSolver_p.NumVariables() == outVariables_l.size());
 
     //copy constraints
     for(auto inConstraint_l : inSolver_p.constraints())
