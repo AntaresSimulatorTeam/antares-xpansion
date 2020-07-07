@@ -40,7 +40,7 @@ class XpansionDriver(object):
 
             :return: path to specified executable
         """
-        return os.path.join(self.args.installDir, exe)
+        return os.path.normpath(os.path.join(self.args.installDir, exe))
 
     def solver_cmd(self, solver):
         """
@@ -62,34 +62,34 @@ class XpansionDriver(object):
         """
             returns antares binaries location
         """
-        return os.path.join(self.args.installDir, self.config.ANTARES)
+        return os.path.normpath(os.path.join(self.args.installDir, self.config.ANTARES))
 
     def general_data(self):
         """
             returns path to general data ini file
         """
-        return os.path.join(self.data_dir(), self.config.SETTINGS, self.config.GENERAL_DATA_INI)
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.SETTINGS, self.config.GENERAL_DATA_INI))
 
     def settings(self):
         """
             returns path to setting ini file
         """
-        return os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
-                            self.config.SETTINGS_INI)
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
+                            self.config.SETTINGS_INI))
 
     def candidates(self):
         """
             returns path to candidates ini file
         """
-        return os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
-                            self.config.CANDIDATES_INI)
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
+                            self.config.CANDIDATES_INI))
 
     def capacity_file(self, filename):
         """
             returns path to input capacity file
         """
-        return os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
-                            self.config.CAPADIR, filename)
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
+                            self.config.CAPADIR, filename))
 
     def weights_file(self, filename):
         """
@@ -99,14 +99,14 @@ class XpansionDriver(object):
 
             :return: path to input yearly-weights file
         """
-        return os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION, filename)
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION, filename))
 
 
     def antares_output(self):
         """
             returns path to antares output data directory
         """
-        return os.path.join(self.data_dir(), self.config.OUTPUT)
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.OUTPUT)))
 
     def data_dir(self):
         """
@@ -191,7 +191,7 @@ class XpansionDriver(object):
                 sys.exit(0)
         elif self.args.step == "optim":
             if self.args.simulationName:
-                lp_path = os.path.join(self.antares_output(), self.args.simulationName, 'lp')
+                lp_path = os.path.normpath(os.path.join(self.antares_output(), self.args.simulationName, 'lp'))
                 self.launch_optimization(lp_path)
             else:
                 print("Missing argument simulationName")
@@ -291,7 +291,7 @@ class XpansionDriver(object):
 
             :return: path to the lp output directory
         """
-        output_path = os.path.join(self.antares_output(), antares_output_name)
+        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
         self.get_names(antares_output_name)
         lp_path = self.lp_step(antares_output_name)
         self.set_options(output_path)
@@ -309,19 +309,19 @@ class XpansionDriver(object):
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        output_path = os.path.join(self.antares_output(), antares_output_name)
+        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
         mps_txt = read_and_write_mps(output_path)
         # print(mps_txt)
-        with open(os.path.join(output_path, self.config.MPS_TXT), 'w') as file_l:
+        with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
 
-        area_files = glob.glob(os.path.join(output_path, 'area*.txt'))
-        interco_files = glob.glob(os.path.join(output_path, 'interco*.txt'))
+        area_files = glob.glob(os.path.normpath(os.path.join(output_path, 'area*.txt')))
+        interco_files = glob.glob(os.path.normpath(os.path.join(output_path, 'interco*.txt')))
         assert len(area_files) == 1
         assert len(interco_files) == 1
-        shutil.copy(area_files[0], os.path.join(output_path, 'area.txt'))
-        shutil.copy(interco_files[0], os.path.join(output_path, 'interco.txt'))
+        shutil.copy(area_files[0], os.path.normpath(os.path.join(output_path, 'area.txt')))
+        shutil.copy(interco_files[0], os.path.normpath(os.path.join(output_path, 'interco.txt')))
 
     def lp_step(self, antares_output_name):
         """
@@ -331,9 +331,9 @@ class XpansionDriver(object):
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        output_path = os.path.join(self.antares_output(), antares_output_name)
+        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
 
-        lp_path = os.path.join(output_path, 'lp')
+        lp_path = os.path.normpath(os.path.join(output_path, 'lp'))
         if os.path.isdir(lp_path):
             shutil.rmtree(lp_path)
         os.makedirs(lp_path)
@@ -400,8 +400,8 @@ class XpansionDriver(object):
             os.remove(solver + '.log')
 
         print('Launching {}, logs will be saved to {}.log'.format(solver,
-                                                                  os.path.join(os.getcwd(),
-                                                                               solver)))
+                                                                  os.path.normpath(os.path.join(os.getcwd(),
+                                                                               solver))))
         with open(solver + '.log', 'w') as output_file:
             subprocess.call(self.solver_cmd(solver), shell=True,
                             stdout=output_file,
@@ -419,7 +419,7 @@ class XpansionDriver(object):
         print('Number of years is {}, setting SLAVE_WEIGHT_VALUE to {} '.
               format(self.nb_years(), options_values["SLAVE_WEIGHT_VALUE"]))
         # generate options file for the solver
-        with open(os.path.join(output_path, 'lp', self.config.OPTIONS_TXT), 'w') as options_file:
+        with open(os.path.normpath(os.path.join(output_path, 'lp', self.config.OPTIONS_TXT)), 'w') as options_file:
             options_file.writelines(["%30s%30s\n" % (kvp[0], kvp[1])
                                      for kvp in options_values.items()])
 
