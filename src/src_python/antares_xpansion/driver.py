@@ -106,7 +106,7 @@ class XpansionDriver(object):
         """
             returns path to antares output data directory
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.OUTPUT)))
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.OUTPUT))
 
     def data_dir(self):
         """
