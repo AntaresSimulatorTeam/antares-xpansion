@@ -8,7 +8,7 @@ configs = [
 		publish: true
 	],
 	[
-		node: 'compil-win64-vc141',
+		node: 'compil-win64-vc14',
 		buildTypes: [ 'Release' ],
 		testSteps: [ 'unittest' ]
 	]
@@ -39,8 +39,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 
 						config.buildTypes.each { buildType ->
 							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.14.0 (jenkins)'}/cmake"]) {
-								if(config.node.equals("compil-win64-vc141")) {
-									bat """
+								sh """
 										conan install \
 											--update \
 											--settings build_type=${buildType} \
@@ -48,16 +47,6 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 											--build missing \
 											.
 									"""
-								} else {
-									sh """
-										conan install \
-											--update \
-											--settings build_type=${buildType} \
-											--install-folder builds/${buildType} \
-											--build missing \
-											.
-									"""
-								}
 							}
 
 							cmakeBuild (
@@ -70,7 +59,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									-D BUILD_DOC=ON
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
 								""",
-								generator: "${env.CMakeGenerator}",
+								generator: "Visual Studio 15 2017",
 								installation: "3.14.0 (jenkins)",
 								steps: [[args: "--config ${buildType} --parallel 4 -v", withCmake: true]]
 							)
