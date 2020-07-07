@@ -11,6 +11,12 @@ PROJECT(antaresXpansion VERSION 0.0.0)
 # ===========================================================================
 # Default parameters
 # ===========================================================================
+#Please enable this option if ortools v7.1 or later is used
+option(ORTOOLS_RECENT "ORTools is v7.1 or later" OFF)
+IF(NOT ORTOOLS_RECENT)
+	add_definitions(-DORTOOLS_PRE_V71)
+ENDIF()
+
 IF(NOT USE_MPI)
 	SET(USE_MPI FALSE)
 ENDIF()

@@ -14,9 +14,13 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
     if(mpsfile.good())
     {
         operations_research::MPModelProto model_proto_l;
+#if defined(ORTOOLS_PRE_V71)
         operations_research::glop::LinearProgram linearProgram_l;
         operations_research::glop::MPSReader().LoadFileWithMode(filename_p, true, &linearProgram_l);
         operations_research::glop::LinearProgramToMPModelProto(linearProgram_l, &model_proto_l);
+#else
+        operations_research::glop::MPSReader().ParseFile(filename_p, &model_proto_l);
+#endif
         std::string errorMessage_l;
         const operations_research::MPSolverResponseStatus status = solver_p.LoadModelFromProtoWithUniqueNamesOrDie(model_proto_l, &errorMessage_l);
         if(errorMessage_l.length())
