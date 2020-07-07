@@ -71,47 +71,47 @@ elseif(UNIX)
         # Dependencies
         # ===============================
         set(LIB_TO_FIND
-        #     CbcSolver #CBC_LNK
-        #     Cbc
-        #     OsiCbc
-        #     Cgl
-        #     ClpSolver
-        #     Clp
-        #     OsiClp
-        #     Osi
-        #     CoinUtils
-        #     absl_bad_any_cast_impl #ABSL_LNK
-        #     absl_bad_optional_access
-        #     absl_bad_variant_access
-        #     absl_base
-        #     absl_city
-        #     absl_civil_time
-        #     absl_debugging_internal
-        #     absl_demangle_internal
-        #     absl_dynamic_annotations
-        #     absl_examine_stack
-        #     absl_failure_signal_handler
-        #     absl_graphcycles_internal
-        #     absl_hash
-        #     absl_hashtablez_sampler
-        #     absl_int128
-        #     absl_leak_check
-        #     absl_malloc_internal
-        #     absl_optional
-        #     absl_raw_hash_set
-        #     absl_spinlock_wait
-        #     absl_stacktrace
-        #     absl_str_format_internal
-        #     absl_strings
-        #     absl_strings_internal
-        #     absl_symbolize
-        #     absl_synchronization
-        #     absl_throw_delegate
-        #     absl_time
-        #     absl_time_zone
-        #     protobuf #protobuf
+            CbcSolver #CBC_LNK
+            Cbc
+            OsiCbc
+            Cgl
+            ClpSolver
+            Clp
+            OsiClp
+            Osi
+            CoinUtils
+            absl_bad_any_cast_impl #ABSL_LNK
+            absl_bad_optional_access
+            absl_bad_variant_access
+            absl_base
+            absl_city
+            absl_civil_time
+            absl_debugging_internal
+            absl_demangle_internal
+            absl_dynamic_annotations
+            absl_examine_stack
+            absl_failure_signal_handler
+            absl_graphcycles_internal
+            absl_hash
+            absl_hashtablez_sampler
+            absl_int128
+            absl_leak_check
+            absl_malloc_internal
+            absl_optional
+            absl_raw_hash_set
+            absl_spinlock_wait
+            absl_stacktrace
+            absl_str_format_internal
+            absl_strings
+            absl_strings_internal
+            absl_symbolize
+            absl_synchronization
+            absl_throw_delegate
+            absl_time
+            absl_time_zone
+            protobuf #protobuf
             glog #glog
-        #     gflags #gflags
+            gflags #gflags
         )
 
         foreach(X ${LIB_TO_FIND})
