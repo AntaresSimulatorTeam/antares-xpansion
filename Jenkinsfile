@@ -8,7 +8,7 @@ configs = [
 		publish: true
 	],
 	[
-		node: 'compil-win64-vc14',
+		node: 'compil-win64-vc141',
 		buildTypes: [ 'Release' ],
 		testSteps: [ 'unittest' ]
 	]
