@@ -128,10 +128,9 @@ find_package (Threads REQUIRED)
 # OR-Tools
 find_package(ortools REQUIRED)
 add_definitions(${ORTOOLS_DEFINITIONS})
-if (NOT MSVC)
-	add_definitions(-DUSE_CPLEX)
-endif()
-# add_definitions(-DCPLEX_SOLVER)
+# add_definitions(-DCPLEX_SOLVER -DUSE_CPLEX)
+# add_definitions(-DGUROBI_SOLVER -DUSE_GUROBI)
+# add_definitions(-DXPRESS_SOLVER -DUSE_XPRESS)
 
 
 IF( USE_MPI )
