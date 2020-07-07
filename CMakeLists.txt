@@ -65,7 +65,7 @@ ELSE()
 #	ELSE( WITH_DEBUG )GENDIOR
 #		SET ( CMAKE_BUILD_TYPE "RELEASE"     )
 #	ENDIF( WITH_DEBUG )
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -DNDEBUG")
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -fmessage-length=0 -fPIC" )
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-conversion -Wno-sign-compare")
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-strict-aliasing -Wno-unused-parameter")
