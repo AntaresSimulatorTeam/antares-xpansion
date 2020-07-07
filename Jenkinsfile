@@ -59,7 +59,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									-D BUILD_DOC=ON
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
 								""",
-								generator: "Visual Studio 15 2017",
+								generator: "${env.CMakeGenerator}",
 								installation: "3.14.0 (jenkins)",
 								steps: [[args: "--config ${buildType} --parallel 4 -v", withCmake: true]]
 							)
