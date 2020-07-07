@@ -39,14 +39,25 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 
 						config.buildTypes.each { buildType ->
 							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.14.0 (jenkins)'}/cmake"]) {
-								sh """
-									conan install \
-										--update \
-										--settings build_type=${buildType} \
-										--install-folder builds/${buildType} \
-										--build missing \
-										.
-								"""
+								if(config.node.equals("compil-win64-vc141")) {
+									bat """
+										conan install \
+											--update \
+											--settings build_type=${buildType} \
+											--install-folder builds/${buildType} \
+											--build missing \
+											.
+									"""
+								} else {
+									sh """
+										conan install \
+											--update \
+											--settings build_type=${buildType} \
+											--install-folder builds/${buildType} \
+											--build missing \
+											.
+									"""
+								}
 							}
 
 							cmakeBuild (
