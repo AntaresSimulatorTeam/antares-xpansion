@@ -129,7 +129,7 @@ void JsonWriter::dump(std::string const & filename_p)
 {
     //Antares
     _output["antares"]["version"] = "unknown";
-    _output["antares"]["name"] = PROJECT_VER;
+    _output["antares"]["name"] = "unknown";
 
     //Xpansion
     _output["antares_xpansion"]["version"] = PROJECT_VER;
