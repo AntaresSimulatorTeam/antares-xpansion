@@ -73,7 +73,7 @@ class XpansionConfig(object):
             'GAP': '1e-06',
             'AGGREGATION': '0',
             'OUTPUTROOT': '.',
-            'TRACE': '0',
+            'TRACE': '1',
             'DELETE_CUT': '0',
             'SLAVE_WEIGHT': 'CONSTANT',
             'SLAVE_WEIGHT_VALUE': '1',
