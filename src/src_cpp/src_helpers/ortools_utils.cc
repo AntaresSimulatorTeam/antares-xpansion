@@ -29,8 +29,8 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
         }
         else
         {
-            if (solver_p.NumVariables() == 0) std::cerr << "readMPS:: no variable in mps " << filename_p << std::endl;
-            if (solver_p.NumConstraints() == 0) std::cerr << "readMPS:: no constraint in mps " << filename_p << std::endl;
+            if (solver_p.NumVariables() == 0) std::cout << "readMPS:: no variable in mps " << filename_p << std::endl;
+            if (solver_p.NumConstraints() == 0) std::cout << "readMPS:: no constraint in mps " << filename_p << std::endl;
         }
         return status;
     }
