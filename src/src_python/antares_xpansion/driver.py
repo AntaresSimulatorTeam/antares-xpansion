@@ -363,8 +363,6 @@ class XpansionDriver(object):
         solver = None
         if self.args.method == "mpibenders":
             solver = self.config.BENDERS_MPI
-            print("MPI not handled yet")
-            sys.exit(0)
         elif self.args.method == "mergeMPS":
             solver = self.config.MERGE_MPS
             mergemps_lp_log = "log_merged.lp"
