@@ -6,7 +6,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 # ===========================================================================
 # Project configuration
 # ===========================================================================
-PROJECT(antaresXpansion VERSION 0.0.0)
+PROJECT(antaresXpansion VERSION 1.0.0)
 
 # ===========================================================================
 # Default parameters
