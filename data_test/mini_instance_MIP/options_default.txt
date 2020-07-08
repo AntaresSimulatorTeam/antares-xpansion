@@ -13,7 +13,6 @@
                      INPUTROOT                                                 .
                     ACTIVECUTS                                                 0
               RAND_AGGREGATION                                                 0
-                 MASTER_METHOD                                           SIMPLEX
                         SOLVER                                            CPLEX
                         ALGORITHM                                       BASE
 

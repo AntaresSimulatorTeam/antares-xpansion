@@ -213,18 +213,7 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & path_to_mps, BendersOptions const & options, int nslaves) :Worker() {
 	_is_master = true;
 	init(variable_map, path_to_mps);
-	// 4 barrier
-	// 2 dual
-	// if (options.MASTER_METHOD == "BARRIER") {
-	// 	XPRSsetintcontrol(_xprs, XPRS_DEFAULTALG, 4);
-	// }
-	// else if (options.MASTER_METHOD == "BARRIER_WO_CROSSOVER") {
-	// 	XPRSsetintcontrol(_xprs, XPRS_DEFAULTALG, 4);
-	// 	XPRSsetintcontrol(_xprs, XPRS_CROSSOVER, 0);
-	// }
-	// else {
-	// 	XPRSsetintcontrol(_xprs, XPRS_DEFAULTALG, 2);
-	// }
+
 	// add the variable alpha
 	auto const it(_name_to_id.find("alpha"));
 	if (it == _name_to_id.end()) {

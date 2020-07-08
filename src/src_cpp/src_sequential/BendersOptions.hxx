@@ -55,9 +55,6 @@ BENDERS_OPTIONS_MACRO(THRESHOLD_ITERATION, int, 0)
 //Number of slaves to select for random aggregation, set to 0 if no random aggregation needed
 BENDERS_OPTIONS_MACRO(RAND_AGGREGATION, int, 0)
 
-//Method use to solve the master problem (either SIMPLEX, BARRIER or BARRIER_WO_CROSSOVER)
-BENDERS_OPTIONS_MACRO(MASTER_METHOD, std::string, "SIMPLEX")
-
 //Name of the csv output file
 BENDERS_OPTIONS_MACRO(CSV_NAME, std::string, "benders_output_trace")
 

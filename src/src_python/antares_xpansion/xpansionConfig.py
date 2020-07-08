@@ -87,7 +87,6 @@ class XpansionConfig(object):
             'THRESHOLD_AGGREGATION': '0',
             'THRESHOLD_ITERATION': '0',
             'RAND_AGGREGATION': '0',
-            'MASTER_METHOD': 'SIMPLEX',
             'CSV_NAME': 'benders_output_trace',
             'BOUND_ALPHA': '1',
         }

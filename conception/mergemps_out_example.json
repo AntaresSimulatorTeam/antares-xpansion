@@ -24,7 +24,6 @@
 		"INPUTROOT" : ".",
 		"LOG_LEVEL" : 3,
 		"LOG_OUTPUT" : "COMMAND",
-		"MASTER_METHOD" : "SIMPLEX",
 		"MASTER_NAME" : "master",
 		"MAX_ITERATIONS" : -1,
 		"OUTPUTROOT" : ".",

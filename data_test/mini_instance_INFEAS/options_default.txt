@@ -13,7 +13,6 @@
                      INPUTROOT                                                 .
                     ACTIVECUTS                                                 0
               RAND_AGGREGATION                                                 0
-                 MASTER_METHOD                                           SIMPLEX
                         SOLVER                                            XPRESS
             WRITE_ERRORED_PROB                                                 1
 

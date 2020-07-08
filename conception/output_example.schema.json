@@ -126,7 +126,6 @@
 				"INPUTROOT",
 				"LOG_LEVEL",
 				"LOG_OUTPUT",
-				"MASTER_METHOD",
 				"MASTER_NAME",
 				"MAX_ITERATIONS",
 				"OUTPUTROOT",
@@ -232,16 +231,6 @@
 						"COMMAND"
 					],
 					"pattern": "^.*$"
-				},
-				"MASTER_METHOD": {
-					"$id": "#root/options/MASTER_METHOD",
-					"title": "MASTER_METHOD",
-					"type": "string",
-					"default": "SIMPLEX",
-					"examples": [
-						"SIMPLEX"
-					],
-					"enum": ["SIMPLEX", "BARRIER", "BARRIER_WO_CROSSOVER"]
 				},
 				"MASTER_NAME": {
 					"$id": "#root/options/MASTER_NAME",
