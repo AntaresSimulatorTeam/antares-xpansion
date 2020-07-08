@@ -63,10 +63,3 @@ BENDERS_OPTIONS_MACRO(CSV_NAME, std::string, "benders_output_trace")
 
 //True if alpha needs to be bounded by best upper bound, false otherwise
 BENDERS_OPTIONS_MACRO(BOUND_ALPHA, bool, true)
-
-//Set to 1 if Xpress output is wanted for the master, 2 for slaves, 3 for both, 0 otherwise
-BENDERS_OPTIONS_MACRO(XPRESS_TRACE, int, 0)
-
-
-
-

@@ -137,8 +137,7 @@
 				"STRUCTURE_FILE",
 				"THRESHOLD_AGGREGATION",
 				"THRESHOLD_ITERATION",
-				"TRACE",
-				"XPRESS_TRACE"
+				"TRACE"
 			],
 			"properties": {
 				"ACTIVECUTS": {
@@ -345,15 +344,6 @@
 					"default": true,
 					"examples": [
 						true
-					]
-				},
-				"XPRESS_TRACE": {
-					"$id": "#root/options/XPRESS_TRACE",
-					"title": "XPRESS_TRACE",
-					"type": "integer",
-					"default": 0,
-					"examples": [
-						0
 					]
 				}
 			}

@@ -90,5 +90,4 @@ class XpansionConfig(object):
             'MASTER_METHOD': 'SIMPLEX',
             'CSV_NAME': 'benders_output_trace',
             'BOUND_ALPHA': '1',
-            'XPRESS_TRACE': '0',
         }

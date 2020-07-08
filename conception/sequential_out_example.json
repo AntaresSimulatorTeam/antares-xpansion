@@ -98,8 +98,7 @@
 		"STRUCTURE_FILE" : "structure.txt",
 		"THRESHOLD_AGGREGATION" : 0,
 		"THRESHOLD_ITERATION" : 0,
-		"TRACE" : true,
-		"XPRESS_TRACE" : 0
+		"TRACE" : true
 	},
 	"solution" : 
 	{
