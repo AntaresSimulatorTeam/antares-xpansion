@@ -119,7 +119,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									excludePattern: '',
 									generateSuppressions: true,
 									ignoreExitCode: true,
-									includePattern: 'builds/Debug/unit_tests',
+									includePattern: 'builds/Debug/bin/unit_tests',
 									outputDirectory: "${env.VALGRIND_REPORTS_PATH}",
 									outputFileEnding: '.xml',
 									programOptions: '',
