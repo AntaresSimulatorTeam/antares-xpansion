@@ -19,11 +19,22 @@
 # ===============================
 if(MSVC)
     if(NOT TARGET ortools::ortools)
-        find_library(ORTOOLS_LIBRARIES NAME ortools PATH_SUFFIXES lib )
-        find_path(ORTOOLS_INCLUDE_DIRS NAME zlib.h PATH_SUFFIXES include)
+        if(ORTOOLS_ROOT)
+            message("looking for ortools using root hint " ${ORTOOLS_ROOT})
+            find_library(ORTOOLS_LIBRARIES NAME ortools HINTS ${ORTOOLS_ROOT} PATH_SUFFIXES lib )
+            find_path(ORTOOLS_INCLUDE_DIRS NAME zlib.h HINTS ${ORTOOLS_ROOT} PATH_SUFFIXES include)
+            link_directories(${ORTOOLS_LIBRARIES}/..)
+            message("lib ortools by hint " ${ORTOOLS_LIBRARIES})
+            message("include ortools by hint " ${ORTOOLS_INCLUDE_DIRS})
+        else()
+            find_library(ORTOOLS_LIBRARIES NAME ortools PATH_SUFFIXES lib )
+            find_path(ORTOOLS_INCLUDE_DIRS NAME zlib.h PATH_SUFFIXES include)
+        endif()
         set(ORTOOLS_DEFINITIONS /DNOMINMAX -DUSE_CBC -DUSE_CLP -DUSE_BOP -DUSE_GLOP)
 
+
         add_library(ortools::ortools STATIC IMPORTED GLOBAL)
+        add_library(ortools ALIAS ortools::ortools)
         set_target_properties(ortools::ortools PROPERTIES IMPORTED_LOCATION ${ORTOOLS_LIBRARIES} )
         target_include_directories(ortools::ortools INTERFACE ${ORTOOLS_INCLUDE_DIRS})
         target_link_libraries(ortools::ortools INTERFACE ${ORTOOLS_LIBRARIES})
@@ -33,8 +44,7 @@ if(MSVC)
         # handle the QUIETLY and REQUIRED arguments and set ortools to TRUE
         # if all listed variables are TRUE
         find_package_handle_standard_args(ortools_FOUND  REQUIRED_VARS
-                                          ORTOOLS_LIBRARIES ORTOOLS_INCLUDE_DIRS)
-
+                                        ORTOOLS_LIBRARIES ORTOOLS_INCLUDE_DIRS)
     endif()
 
 # ===============================
@@ -50,6 +60,7 @@ elseif(UNIX)
         else()
             set(ORTOOLS_ROOT "/opt/or-tools/" CACHE PATH "ORTOOLS root directory")
         endif()
+        message("ortools using root : " ${ORTOOLS_ROOT})
 
         # ===============================
         # ORTOOLS_INCLUDE_DIRS
