@@ -125,7 +125,6 @@
 				"GAP",
 				"INPUTROOT",
 				"LOG_LEVEL",
-				"LOG_OUTPUT",
 				"MASTER_NAME",
 				"MAX_ITERATIONS",
 				"OUTPUTROOT",
@@ -221,16 +220,6 @@
 					"examples": [
 						3
 					]
-				},
-				"LOG_OUTPUT": {
-					"$id": "#root/options/LOG_OUTPUT",
-					"title": "LOG_OUTPUT",
-					"type": "string",
-					"default": "COMMAND",
-					"examples": [
-						"COMMAND"
-					],
-					"pattern": "^.*$"
 				},
 				"MASTER_NAME": {
 					"$id": "#root/options/MASTER_NAME",

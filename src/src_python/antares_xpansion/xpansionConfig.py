@@ -75,7 +75,6 @@ class XpansionConfig(object):
             'OUTPUTROOT': '.',
             'TRACE': '0',
             'DELETE_CUT': '0',
-            'LOG_OUTPUT': 'COMMAND',
             'SLAVE_WEIGHT': 'CONSTANT',
             'SLAVE_WEIGHT_VALUE': '1',
             'MASTER_NAME': 'master',

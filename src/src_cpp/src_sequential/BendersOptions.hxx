@@ -19,9 +19,6 @@ BENDERS_OPTIONS_MACRO(TRACE, bool, true)
 //True if similar cuts should be deleted, false otherwise
 BENDERS_OPTIONS_MACRO(DELETE_CUT, bool, false)
 
-//Either "COMMAND" to print the log in the command prompt, or a file name to print in
-BENDERS_OPTIONS_MACRO(LOG_OUTPUT, std::string, "COMMAND")
-
 //UNIFORM (1/n), CONSTANT (to set in SLAVE_WEIGHT_VALUE), or a txt file linking each slave to its weight
 BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT, std::string, "CONSTANT")
 

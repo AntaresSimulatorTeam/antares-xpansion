@@ -23,7 +23,6 @@
 		"GAP" : 9.9999999999999995e-07,
 		"INPUTROOT" : ".",
 		"LOG_LEVEL" : 3,
-		"LOG_OUTPUT" : "COMMAND",
 		"MASTER_NAME" : "master",
 		"MAX_ITERATIONS" : -1,
 		"OUTPUTROOT" : ".",
