@@ -25,7 +25,7 @@ class XpansionConfig(object):
 
         self.MPI_N_PROCESSES = 4
 
-        self.ANTARES = 'antares-7.1-solver'
+        self.ANTARES = 'antares-7.0-solver'
         self.SETTINGS = 'settings'
         self.USER = 'user'
         self.EXPANSION = 'expansion'
