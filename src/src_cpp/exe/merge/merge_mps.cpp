@@ -17,7 +17,7 @@ size_t StandardLp::appendCNT = 0;
 int main(int argc, char** argv)
 {
 	google::InitGoogleLogging(argv[0]);
-	google::SetLogDestination(google::INFO, "./merge_mpsLog");
+	google::SetLogDestination(google::GLOG_INFO, "./merge_mpsLog");
 	LOG(INFO) << "starting merge_mps" << std::endl;
 
 	usage(argc);

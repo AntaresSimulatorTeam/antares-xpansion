@@ -19,12 +19,6 @@ WorkerSlave::WorkerSlave() {
 WorkerSlave::WorkerSlave(Str2Int const & variable_map, std::string const & path_to_mps, double const & slave_weight, BendersOptions const & options) {
 	init(variable_map, path_to_mps);
 
-	// if (options.XPRESS_TRACE == 2 || options.XPRESS_TRACE == 3) {
-	// 	XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-	// }
-	// else {
-	// 	XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
-	// }
 	int mps_ncols(_solver->NumVariables());
 	DblVector o_l;
 	IntVector sequence(mps_ncols);

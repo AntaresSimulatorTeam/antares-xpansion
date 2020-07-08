@@ -86,8 +86,6 @@
 		"GAP" : 9.9999999999999995e-07,
 		"INPUTROOT" : ".",
 		"LOG_LEVEL" : 3,
-		"LOG_OUTPUT" : "COMMAND",
-		"MASTER_METHOD" : "SIMPLEX",
 		"MASTER_NAME" : "master",
 		"MAX_ITERATIONS" : -1,
 		"OUTPUTROOT" : ".",
@@ -98,8 +96,7 @@
 		"STRUCTURE_FILE" : "structure.txt",
 		"THRESHOLD_AGGREGATION" : 0,
 		"THRESHOLD_ITERATION" : 0,
-		"TRACE" : true,
-		"XPRESS_TRACE" : 0
+		"TRACE" : true
 	},
 	"solution" : 
 	{

@@ -10,7 +10,7 @@
 int main(int argc, char** argv)
 {
 	google::InitGoogleLogging(argv[0]);
-	google::SetLogDestination(google::INFO, "./bendersmpiLog");
+	google::SetLogDestination(google::GLOG_INFO, "./bendersmpiLog");
 	LOG(INFO) << "starting bendersmpi" << std::endl;
 
 	mpi::environment env(argc, argv);

@@ -14,7 +14,7 @@ void sequential_launch(BendersOptions const &options);
 void usage(int argc);
 
 enum Attribute {
-	INT,
+	INT_VALUE,
 	INT_VECTOR,
 	CHAR_VECTOR,
 	DBL_VECTOR,
@@ -61,7 +61,7 @@ public:
 	static size_t appendCNT;
 public:
 	void init() {
-		std::get<Attribute::INT>(_data).assign(IntAttribute::MAX_INT_ATTRIBUTE, 0);
+		std::get<Attribute::INT_VALUE>(_data).assign(IntAttribute::MAX_INT_ATTRIBUTE, 0);
 
 		std::get<Attribute::INT_VECTOR>(_data).assign(IntVectorAttribute::MAX_INT_VECTOR_ATTRIBUTE, IntVector());
 		std::get<Attribute::CHAR_VECTOR>(_data).assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE, CharVector());
@@ -73,18 +73,18 @@ public:
 	{
 		init();
 
-		std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] = solver_p.NumVariables();
+		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] = solver_p.NumVariables();
 		std::cout << "vars: " << solver_p.NumVariables() << "\n";
 
-		std::get<Attribute::INT>(_data)[IntAttribute::NROWS] = solver_p.NumConstraints();
+		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] = solver_p.NumConstraints();
 		std::cout << "constraints: " << solver_p.NumConstraints() << "\n";
 
-		std::get<Attribute::INT>(_data)[IntAttribute::NELES] = 0;
+		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] = 0;
 		for(operations_research::MPConstraint* constraint_l : solver_p.constraints())
 		{
-			std::get<Attribute::INT>(_data)[IntAttribute::NELES] += constraint_l->terms().size();
+			std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] += constraint_l->terms().size();
 		}
-		std::cout << "nelems: " << std::get<Attribute::INT>(_data)[IntAttribute::NELES] << "\n";
+		std::cout << "nelems: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] << "\n";
 
 		for(auto var_l : solver_p.variables())
 		{
@@ -103,30 +103,29 @@ public:
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].clear();
 
 		//@TODO verify correspondance between ortools variable ids and supposed ones
-		ORTgetrows(solver_p, std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART], std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
+		ORTgetrows(solver_p, std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART], std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-		ORTgetrowtype(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
-		ORTgetrhs(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
-		ORTgetrhsrange(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE], 0, std::get<Attribute::INT>(_data)[IntAttribute::NROWS] - 1);
+		ORTgetrowtype(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+		ORTgetrhs(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+		ORTgetrhsrange(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
 		//@TODO check if we use semi-continuous or partial-integer variables
-		ORTgetcolinfo(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS] - 1);
+		ORTgetcolinfo(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
-		ORTgetobj(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], 0, std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]-1);
+		ORTgetobj(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]-1);
 
-		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
-		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].size() == std::get<Attribute::INT>(_data)[IntAttribute::NELES]);
+		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
-		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
-		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
+		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
+		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
-		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NELES]);
-		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
-		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].size() == std::get<Attribute::INT>(_data)[IntAttribute::NROWS]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
-		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
-		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
-		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].size() == std::get<Attribute::INT>(_data)[IntAttribute::NCOLS]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
+		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
 	}
 
 	int append_in(operations_research::MPSolver & containingSolver_p, std::string const & prefix_p = "") const {

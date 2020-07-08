@@ -14,9 +14,13 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
     if(mpsfile.good())
     {
         operations_research::MPModelProto model_proto_l;
+#if defined(ORTOOLS_PRE_V71)
         operations_research::glop::LinearProgram linearProgram_l;
         operations_research::glop::MPSReader().LoadFileWithMode(filename_p, true, &linearProgram_l);
         operations_research::glop::LinearProgramToMPModelProto(linearProgram_l, &model_proto_l);
+#else
+        operations_research::glop::MPSReader().ParseFile(filename_p, &model_proto_l);
+#endif
         std::string errorMessage_l;
         const operations_research::MPSolverResponseStatus status = solver_p.LoadModelFromProtoWithUniqueNamesOrDie(model_proto_l, &errorMessage_l);
         if(errorMessage_l.length())
@@ -25,8 +29,8 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
         }
         else
         {
-            if (solver_p.NumVariables() == 0) std::cerr << "readMPS:: no variable in mps " << filename_p << std::endl;
-            if (solver_p.NumConstraints() == 0) std::cerr << "readMPS:: no constraint in mps " << filename_p << std::endl;
+            if (solver_p.NumVariables() == 0) std::cout << "readMPS:: no variable in mps " << filename_p << std::endl;
+            if (solver_p.NumConstraints() == 0) std::cout << "readMPS:: no constraint in mps " << filename_p << std::endl;
         }
         return status;
     }
@@ -43,6 +47,7 @@ bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string con
     std::ofstream mpsOut(filename_p);
     mpsOut <<  modelMps_l;
     mpsOut.close();
+	return true;
 }
 
 bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string const & filename_p)
@@ -53,6 +58,7 @@ bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string cons
     std::ofstream lpOut(filename_p);
     lpOut <<  modelLP_l;
     lpOut.close();
+	return true;
 }
 
 void ORTdescribe(operations_research::MPSolver const & solver_p, std::ostringstream & oss_p, bool index_p)
@@ -586,7 +592,7 @@ void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operation
 	ORTaddcols(outSolver_p, obj_l, {}, {}, {}, lb_l, ub_l, coltype_l, names_p);
 
     const std::vector<operations_research::MPVariable*> & outVariables_l = outSolver_p.variables();
-    assert(inSolver.NumVariables() == outVariables_l.size());
+    assert(inSolver_p.NumVariables() == outVariables_l.size());
 
     //copy constraints
     for(auto inConstraint_l : inSolver_p.constraints())

@@ -19,9 +19,6 @@ BENDERS_OPTIONS_MACRO(TRACE, bool, true)
 //True if similar cuts should be deleted, false otherwise
 BENDERS_OPTIONS_MACRO(DELETE_CUT, bool, false)
 
-//Either "COMMAND" to print the log in the command prompt, or a file name to print in
-BENDERS_OPTIONS_MACRO(LOG_OUTPUT, std::string, "COMMAND")
-
 //UNIFORM (1/n), CONSTANT (to set in SLAVE_WEIGHT_VALUE), or a txt file linking each slave to its weight
 BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT, std::string, "CONSTANT")
 
@@ -55,18 +52,8 @@ BENDERS_OPTIONS_MACRO(THRESHOLD_ITERATION, int, 0)
 //Number of slaves to select for random aggregation, set to 0 if no random aggregation needed
 BENDERS_OPTIONS_MACRO(RAND_AGGREGATION, int, 0)
 
-//Method use to solve the master problem (either SIMPLEX, BARRIER or BARRIER_WO_CROSSOVER)
-BENDERS_OPTIONS_MACRO(MASTER_METHOD, std::string, "SIMPLEX")
-
 //Name of the csv output file
 BENDERS_OPTIONS_MACRO(CSV_NAME, std::string, "benders_output_trace")
 
 //True if alpha needs to be bounded by best upper bound, false otherwise
 BENDERS_OPTIONS_MACRO(BOUND_ALPHA, bool, true)
-
-//Set to 1 if Xpress output is wanted for the master, 2 for slaves, 3 for both, 0 otherwise
-BENDERS_OPTIONS_MACRO(XPRESS_TRACE, int, 0)
-
-
-
-

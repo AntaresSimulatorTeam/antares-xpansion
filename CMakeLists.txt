@@ -6,11 +6,17 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 # ===========================================================================
 # Project configuration
 # ===========================================================================
-PROJECT(antaresXpansion VERSION 0.0.0)
+PROJECT(antaresXpansion VERSION 1.0.0)
 
 # ===========================================================================
 # Default parameters
 # ===========================================================================
+#Please enable this option if ortools v7.1 or later is used
+option(ORTOOLS_RECENT "ORTools is v7.1 or later" OFF)
+IF(NOT ORTOOLS_RECENT)
+	add_definitions(-DORTOOLS_PRE_V71)
+ENDIF()
+
 IF(NOT USE_MPI)
 	SET(USE_MPI FALSE)
 ENDIF()
@@ -25,6 +31,13 @@ ENDIF()
 
 set (BOOST_MIN_VERSION "1.65.1")
 
+
+# ===========================================================================
+# CMAKE ADDITIONAL MODULES
+# ===========================================================================
+
+LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 # ===========================================================================
 # Compiler options
 # ===========================================================================
@@ -34,36 +47,37 @@ SET(   LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 
 set (CMAKE_CXX_STANDARD 11)
 
-
-LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
-
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 IF( USE_MPI )
 	SET(CMAKE_CXX_COMPILER mpicxx)
 ENDIF( USE_MPI )
 MESSAGE("USE_MPI is ${USE_MPI}")
 
-IF( WIN32 )
-	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
-	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MT")
-	set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} /MT")
-#	SET( CMAKE_CONFIGURATION_TYPES "Debug;Release;" CACHE STRING "limited configs" FORCE)
-#	SET( CMAKE_CXX_FLAGS_DEBUG          "/D_DEBUG /MTd /Zi /Ob0 /Od /RTC1" )
-#	SET( CMAKE_CXX_FLAGS_RELEASE        "/MT /O2 /Ob2 /D NDEBUG")
+IF( MSVC )
+	MESSAGE("WINDOWS")
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
+
+	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
+	set (RUNTIME_IGNORE_LIST_RELEASE "/NODEFAULTLIB:msvcrtd.lib /NODEFAULTLIB:msvcprtd.lib /NODEFAULTLIB:libcmtd.lib")
+	set (CMAKE_EXE_LINKER_FLAGS_RELEASE " ${CMAKE_EXE_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
+	set (CMAKE_SHARED_LINKER_FLAGS_RELEASE " ${CMAKE_SHARED_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
+	set (CMAKE_STATIC_LINKER_FLAGS_RELEASE " ${CMAKE_STATIC_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
+
 ELSE()
-	SET ( CMAKE_BUILD_TYPE "RELEASE"     )
+#   SET ( CMAKE_BUILD_TYPE "RELEASE"     )
 #	SET ( CMAKE_BUILD_TYPE "DEBUG"     )
 #	IF( WITH_DEBUG )
 #		SET ( CMAKE_BUILD_TYPE "DEBUG"     )
 #	ELSE( WITH_DEBUG )GENDIOR
 #		SET ( CMAKE_BUILD_TYPE "RELEASE"     )
 #	ENDIF( WITH_DEBUG )
-	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -DNDEBUG")
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -fmessage-length=0 -fPIC" )
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-conversion -Wno-sign-compare")
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-strict-aliasing -Wno-unused-parameter")
-ENDIF( WIN32 )
+ENDIF( MSVC )
 
+MESSAGE("cmake_build_type : ${CMAKE_BUILD_TYPE}")
 MESSAGE("CMAKE_BINARY_DIR : ${CMAKE_BINARY_DIR}")
 MESSAGE("CMAKE_SOURCE_DIR : ${CMAKE_SOURCE_DIR}")
 MESSAGE("CMAKE_C_COMPILER_VERSION : ${CMAKE_C_COMPILER_VERSION}")
@@ -77,8 +91,6 @@ if (${PROJECT_NAME}_WITH_COVERAGE)
 	include (SetUpCoverage)
 	SetUpCoverage ()
 endif ()
-
-
 
 # ===========================================================================
 # External dependencies
@@ -116,8 +128,9 @@ find_package (Threads REQUIRED)
 # OR-Tools
 find_package(ortools REQUIRED)
 add_definitions(${ORTOOLS_DEFINITIONS})
-add_definitions(-DUSE_CPLEX)
-# add_definitions(-DCPLEX_SOLVER)
+# add_definitions(-DCPLEX_SOLVER -DUSE_CPLEX)
+# add_definitions(-DGUROBI_SOLVER -DUSE_GUROBI)
+# add_definitions(-DXPRESS_SOLVER -DUSE_XPRESS)
 
 
 IF( USE_MPI )
@@ -131,3 +144,8 @@ ENDIF( USE_MPI )
 # Targets
 # ===========================================================================
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src/src_cpp")
+
+# ===========================================================================
+# Documentation
+# ===========================================================================
+add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")

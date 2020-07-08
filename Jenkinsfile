@@ -40,13 +40,13 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 						config.buildTypes.each { buildType ->
 							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.14.0 (jenkins)'}/cmake"]) {
 								sh """
-									conan install \
-										--update \
-										--settings build_type=${buildType} \
-										--install-folder builds/${buildType} \
-										--build missing \
-										.
-								"""
+										conan install \
+											--update \
+											--settings build_type=${buildType} \
+											--install-folder builds/${buildType} \
+											--build missing \
+											.
+									"""
 							}
 
 							cmakeBuild (
@@ -56,8 +56,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 								cmakeArgs: """
 									-D CMAKE_INSTALL_PREFIX="${WORKSPACE}/install/${buildType}"
 									-D antaresXpansion_WITH_COVERAGE=${config.containsKey('testSteps') && config.testSteps.contains('coverage') ? 'ON' : 'OFF'}
-									-D antaresXpansion_BUILD_DOCUMENTATION=always
-									-D STATIC_RUNTIME=OFF
+									-D BUILD_DOC=ON
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
 								""",
 								generator: "${env.CMakeGenerator}",
@@ -125,7 +124,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									excludePattern: '',
 									generateSuppressions: true,
 									ignoreExitCode: true,
-									includePattern: 'builds/Debug/unit_tests',
+									includePattern: 'builds/Debug/bin/unit_tests',
 									outputDirectory: "${env.VALGRIND_REPORTS_PATH}",
 									outputFileEnding: '.xml',
 									programOptions: '',

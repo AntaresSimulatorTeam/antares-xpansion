@@ -125,8 +125,6 @@
 				"GAP",
 				"INPUTROOT",
 				"LOG_LEVEL",
-				"LOG_OUTPUT",
-				"MASTER_METHOD",
 				"MASTER_NAME",
 				"MAX_ITERATIONS",
 				"OUTPUTROOT",
@@ -137,8 +135,7 @@
 				"STRUCTURE_FILE",
 				"THRESHOLD_AGGREGATION",
 				"THRESHOLD_ITERATION",
-				"TRACE",
-				"XPRESS_TRACE"
+				"TRACE"
 			],
 			"properties": {
 				"ACTIVECUTS": {
@@ -223,26 +220,6 @@
 					"examples": [
 						3
 					]
-				},
-				"LOG_OUTPUT": {
-					"$id": "#root/options/LOG_OUTPUT",
-					"title": "LOG_OUTPUT",
-					"type": "string",
-					"default": "COMMAND",
-					"examples": [
-						"COMMAND"
-					],
-					"pattern": "^.*$"
-				},
-				"MASTER_METHOD": {
-					"$id": "#root/options/MASTER_METHOD",
-					"title": "MASTER_METHOD",
-					"type": "string",
-					"default": "SIMPLEX",
-					"examples": [
-						"SIMPLEX"
-					],
-					"enum": ["SIMPLEX", "BARRIER", "BARRIER_WO_CROSSOVER"]
 				},
 				"MASTER_NAME": {
 					"$id": "#root/options/MASTER_NAME",
@@ -345,15 +322,6 @@
 					"default": true,
 					"examples": [
 						true
-					]
-				},
-				"XPRESS_TRACE": {
-					"$id": "#root/options/XPRESS_TRACE",
-					"title": "XPRESS_TRACE",
-					"type": "integer",
-					"default": 0,
-					"examples": [
-						0
 					]
 				}
 			}

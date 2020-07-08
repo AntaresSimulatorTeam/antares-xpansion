@@ -19,11 +19,22 @@
 # ===============================
 if(MSVC)
     if(NOT TARGET ortools::ortools)
-        find_library(ORTOOLS_LIBRARIES NAME ortools PATH_SUFFIXES lib )
-        find_path(ORTOOLS_INCLUDE_DIRS NAME zlib.h PATH_SUFFIXES include)
+        if(ORTOOLS_ROOT)
+            message("looking for ortools using root hint " ${ORTOOLS_ROOT})
+            find_library(ORTOOLS_LIBRARIES NAME ortools HINTS ${ORTOOLS_ROOT} PATH_SUFFIXES lib )
+            find_path(ORTOOLS_INCLUDE_DIRS NAME zlib.h HINTS ${ORTOOLS_ROOT} PATH_SUFFIXES include)
+            link_directories(${ORTOOLS_LIBRARIES}/..)
+            message("lib ortools by hint " ${ORTOOLS_LIBRARIES})
+            message("include ortools by hint " ${ORTOOLS_INCLUDE_DIRS})
+        else()
+            find_library(ORTOOLS_LIBRARIES NAME ortools PATH_SUFFIXES lib )
+            find_path(ORTOOLS_INCLUDE_DIRS NAME zlib.h PATH_SUFFIXES include)
+        endif()
         set(ORTOOLS_DEFINITIONS /DNOMINMAX -DUSE_CBC -DUSE_CLP -DUSE_BOP -DUSE_GLOP)
 
+
         add_library(ortools::ortools STATIC IMPORTED GLOBAL)
+        add_library(ortools ALIAS ortools::ortools)
         set_target_properties(ortools::ortools PROPERTIES IMPORTED_LOCATION ${ORTOOLS_LIBRARIES} )
         target_include_directories(ortools::ortools INTERFACE ${ORTOOLS_INCLUDE_DIRS})
         target_link_libraries(ortools::ortools INTERFACE ${ORTOOLS_LIBRARIES})
@@ -33,8 +44,7 @@ if(MSVC)
         # handle the QUIETLY and REQUIRED arguments and set ortools to TRUE
         # if all listed variables are TRUE
         find_package_handle_standard_args(ortools_FOUND  REQUIRED_VARS
-                                          ORTOOLS_LIBRARIES ORTOOLS_INCLUDE_DIRS)
-
+                                        ORTOOLS_LIBRARIES ORTOOLS_INCLUDE_DIRS)
     endif()
 
 # ===============================
@@ -46,11 +56,11 @@ elseif(UNIX)
         # ORTOOLS_ROOT default path
         # ===============================
         if(CONAN_ORTOOLS_ROOT)
-            set(ORTOOLS_ROOT CONAN_ORTOOLS_ROOT CACHE PATH "ORTOOLS root directory")
+            set(ORTOOLS_ROOT ${CONAN_ORTOOLS_ROOT} CACHE PATH "ORTOOLS root directory")
         else()
             set(ORTOOLS_ROOT "/opt/or-tools/" CACHE PATH "ORTOOLS root directory")
         endif()
-
+        message("ortools using root : " ${ORTOOLS_ROOT})
 
         # ===============================
         # ORTOOLS_INCLUDE_DIRS
@@ -72,47 +82,47 @@ elseif(UNIX)
         # Dependencies
         # ===============================
         set(LIB_TO_FIND
-        #     CbcSolver #CBC_LNK
-        #     Cbc
-        #     OsiCbc
-        #     Cgl
-        #     ClpSolver
-        #     Clp
-        #     OsiClp
-        #     Osi
-        #     CoinUtils
-        #     absl_bad_any_cast_impl #ABSL_LNK
-        #     absl_bad_optional_access
-        #     absl_bad_variant_access
-        #     absl_base
-        #     absl_city
-        #     absl_civil_time
-        #     absl_debugging_internal
-        #     absl_demangle_internal
-        #     absl_dynamic_annotations
-        #     absl_examine_stack
-        #     absl_failure_signal_handler
-        #     absl_graphcycles_internal
-        #     absl_hash
-        #     absl_hashtablez_sampler
-        #     absl_int128
-        #     absl_leak_check
-        #     absl_malloc_internal
-        #     absl_optional
-        #     absl_raw_hash_set
-        #     absl_spinlock_wait
-        #     absl_stacktrace
-        #     absl_str_format_internal
-        #     absl_strings
-        #     absl_strings_internal
-        #     absl_symbolize
-        #     absl_synchronization
-        #     absl_throw_delegate
-        #     absl_time
-        #     absl_time_zone
-        #     protobuf #protobuf
+            CbcSolver #CBC_LNK
+            Cbc
+            OsiCbc
+            Cgl
+            ClpSolver
+            Clp
+            OsiClp
+            Osi
+            CoinUtils
+            absl_bad_any_cast_impl #ABSL_LNK
+            absl_bad_optional_access
+            absl_bad_variant_access
+            absl_base
+            absl_city
+            absl_civil_time
+            absl_debugging_internal
+            absl_demangle_internal
+            absl_dynamic_annotations
+            absl_examine_stack
+            absl_failure_signal_handler
+            absl_graphcycles_internal
+            absl_hash
+            absl_hashtablez_sampler
+            absl_int128
+            absl_leak_check
+            absl_malloc_internal
+            absl_optional
+            absl_raw_hash_set
+            absl_spinlock_wait
+            absl_stacktrace
+            absl_str_format_internal
+            absl_strings
+            absl_strings_internal
+            absl_symbolize
+            absl_synchronization
+            absl_throw_delegate
+            absl_time
+            absl_time_zone
+            protobuf #protobuf
             glog #glog
-        #     gflags #gflags
+            gflags #gflags
         )
 
         foreach(X ${LIB_TO_FIND})

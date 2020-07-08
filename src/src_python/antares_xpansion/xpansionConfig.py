@@ -3,6 +3,7 @@
 """
 
 import argparse
+import sys
 
 class XpansionConfig(object):
     """
@@ -13,9 +14,18 @@ class XpansionConfig(object):
     # pylint: disable=too-few-public-methods
 
     def __init__(self):
-        self.MPI_LAUNCHER = "mpiexec"
-        self.MPI_N = "-n"
-        self.ANTARES = 'antares-7.1-solver'
+        if sys.platform.startswith("win32"):
+            self.MPI_LAUNCHER = "mpiexec"
+            self.MPI_N = "-n"
+        elif sys.platform.startswith("linux"):
+            self.MPI_LAUNCHER = "mpirun"
+            self.MPI_N = "-np"
+        else:
+            print("WARN: No mpi launcher was defined!")
+
+        self.MPI_N_PROCESSES = 4
+
+        self.ANTARES = 'antares-7.0-solver'
         self.SETTINGS = 'settings'
         self.USER = 'user'
         self.EXPANSION = 'expansion'
@@ -63,9 +73,8 @@ class XpansionConfig(object):
             'GAP': '1e-06',
             'AGGREGATION': '0',
             'OUTPUTROOT': '.',
-            'TRACE': '0',
+            'TRACE': '1',
             'DELETE_CUT': '0',
-            'LOG_OUTPUT': 'COMMAND',
             'SLAVE_WEIGHT': 'CONSTANT',
             'SLAVE_WEIGHT_VALUE': '1',
             'MASTER_NAME': 'master',
@@ -77,8 +86,6 @@ class XpansionConfig(object):
             'THRESHOLD_AGGREGATION': '0',
             'THRESHOLD_ITERATION': '0',
             'RAND_AGGREGATION': '0',
-            'MASTER_METHOD': 'SIMPLEX',
             'CSV_NAME': 'benders_output_trace',
             'BOUND_ALPHA': '1',
-            'XPRESS_TRACE': '0',
         }

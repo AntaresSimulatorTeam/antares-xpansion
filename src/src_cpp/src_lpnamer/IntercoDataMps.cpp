@@ -306,9 +306,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	int ncols(in_prblm.NumVariables());
 	int nrows(in_prblm.NumConstraints());
 
-	//FIXME why +1 ???
 	// check if number of rows in the solver matrix is equal to the number of constraints
-	if (nrows != cstr.size() + 1) {
+	if (nrows != cstr.size()) {
 		std::cout << "WRONG NUMBER OF CSTR NAMES, solver = " << nrows << ", " << cstr.size() << " given" << std::endl;
 	}
 
@@ -342,6 +341,18 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	operations_research::MPSolver out_prblm("new_problem", in_prblm.ProblemType());
 	// copy in_prblm with the changed bounds and rename its variables
 	ORTcopyandrenamevars(out_prblm, in_prblm, vnames);
+
+	size_t cnt_l = 0;
+	for(auto outVar_l : out_prblm.variables())
+	{
+		int outVarIndex_l = outVar_l->index();
+		int originalIndex_l = std::stoi(in_prblm.variables()[outVarIndex_l]->name().substr(1));
+		if( originalIndex_l != outVarIndex_l)
+			std::cout << "WARNING : Variables names in subproblems may not be representative."
+					<< " expected index " <<  originalIndex_l
+					<< " for variable " << outVar_l->name() << " but index " << outVarIndex_l << " retrieved\n";
+		++cnt_l;
+	}
 
 
 	// create pMax variable
