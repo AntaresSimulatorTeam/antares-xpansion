@@ -208,7 +208,6 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		}
 		int n_row_interco(rowtype.size());
 		int n_coeff_interco(dmatval.size());
-		rstart.push_back(dmatval.size());
 		ORTaddrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
 

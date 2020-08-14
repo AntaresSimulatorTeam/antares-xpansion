@@ -300,7 +300,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
-	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
+	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE); //@FIXMe LP problem ?
 	ORTreadmps(in_prblm, mps_name);
 
 	int ncols(in_prblm.NumVariables());
@@ -322,10 +322,10 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<double> ub;
 	std::vector<char> coltype;
 	ORTgetcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
-	std::vector<double> posinf(ncols, in_prblm.infinity());
-	std::vector<double> neginf(ncols, -in_prblm.infinity());
-	std::vector<char> lb_char(ncols, 'L');
-	std::vector<char> ub_char(ncols, 'U');
+	std::vector<double> posinf(ninterco_pdt, in_prblm.infinity());
+	std::vector<double> neginf(ninterco_pdt, -in_prblm.infinity());
+	std::vector<char> lb_char(ninterco_pdt, 'L');
+	std::vector<char> ub_char(ninterco_pdt, 'U');
 	std::vector<int> indexes;
 	indexes.reserve(ninterco_pdt);
 	for (auto const & id : interco_data) {
@@ -417,7 +417,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		dmatval.push_back(candidate.profile(kvp.second[2], study_path, false));
 	}
 
-	rstart.push_back(dmatval.size());
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
 	ORTwritemps(out_prblm, lp_mps_name );
