@@ -13,6 +13,7 @@ from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
 from antares_xpansion.input_checker import check_candidatesexclusion_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
+from antares_xpansion.xpansion_utils import read_and_write_exclusions
 
 class XpansionDriver(object):
     """
@@ -344,6 +345,11 @@ class XpansionDriver(object):
         assert len(interco_files) == 1
         shutil.copy(area_files[0], os.path.normpath(os.path.join(output_path, 'area.txt')))
         shutil.copy(interco_files[0], os.path.normpath(os.path.join(output_path, 'interco.txt')))
+
+        exclusions_txt = read_and_write_exclusions(self.exclusions())
+        #print(exclusions_txt)
+        with open(os.path.normpath(os.path.join(output_path, self.config.EXCLUSIONS_TXT)), 'w') as file_l:
+            file_l.write(exclusions_txt)
 
     def lp_step(self, antares_output_name):
         """

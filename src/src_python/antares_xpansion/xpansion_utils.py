@@ -3,7 +3,7 @@
 """
 
 import os
-
+import configparser
 
 def read_and_write_mps(root_path):
     """
@@ -43,4 +43,28 @@ def read_and_write_mps(root_path):
 
     # for line in result.items():
     #     print(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + ' ')
+    return result
+
+def read_and_write_exclusions(exclusion_file):
+    """
+        :return: a multiline string where each line describes an exclusion contraint :
+        "constraint_name candidate1_name candidate2_name"
+    """
+
+    print("treating file %s" % exclusion_file)
+
+    result = ""
+    default_values = {'name' : 'NA',
+                      'name-candidate1' : 'NA',
+                      'name-candidate2' : 'NA'}
+    ini_file = configparser.ConfigParser(default_values)
+    ini_file.read(exclusion_file)
+
+    for each_section in ini_file.sections():
+        result += ini_file[each_section]["name"].strip().lower() + " "\
+                        + ini_file[each_section]["name-candidate1"].strip().lower() + " "\
+                        + ini_file[each_section]["name-candidate2"].strip().lower() + "\n"
+
+    print("result :\n%s" % result)
+
     return result
