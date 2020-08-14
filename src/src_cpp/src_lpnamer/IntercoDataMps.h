@@ -135,6 +135,8 @@ struct Candidates : public std::map<std::string, Candidate> {
 
 	static std::map<int, std::string> id_name; /*!< id interco --> name of candidate in candidates.ini */
 
+	static std::map<std::string, std::string> name_key; /*!< name of candidate in candidates.ini --> entry name in Candidates */
+
 	static std::set<std::string> str_fields;
 	static std::set<std::string> dbl_fields;
 	
@@ -170,5 +172,18 @@ struct Candidates : public std::map<std::string, Candidate> {
 									   std::string const lp_mps_name);
 
 
+};
+
+
+/*!
+ *  \struct ExclusionConstraint
+ *  \brief candidate exclusion constraint structure
+ *
+ */
+struct ExclusionConstraints : public std::map<std::string, std::pair<std::string, std::string >>{
+
+	static std::set<std::string> str_fields;
+
+	ExclusionConstraints(std::string  const & exclusions_inifile_path);
 };
 

@@ -16,6 +16,8 @@ std::vector<std::tuple<int, int, int> > Candidates::intercos_map = {
 
 std::map<int, std::string> Candidates::id_name = std::map<int, std::string>();
 
+std::map<std::string, std::string> Candidates::name_key = std::map<std::string, std::string>();
+
 std::map<std::tuple<std::string, std::string>, int> Candidates::or_ex_id = std::map<std::tuple<std::string, std::string>, int>();
 std::set<std::string> Candidates::str_fields = std::set<std::string>({
 	"name",
@@ -37,9 +39,6 @@ std::set<std::string> Candidates::dbl_fields = std::set<std::string>({
 
 std::vector<std::string> Candidates::area_names = {
 };
-
-
-
 
 double Candidate::profile(size_t i, std::string const & study_path, bool is_direct) {
 	if (_profile.empty()) {
@@ -502,6 +501,9 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 			std::string val = reader.Get(candidateName, str, "NA");
 			if (val != "NA") {
 				std::cout << candidateName << " : " << str << " = " << val << std::endl;
+				if (str == "name") {
+					Candidates::name_key[val] = candidateName;
+				}
 				if (str == "link") {
 					size_t i = val.find(" - ");
 					if (i != std::string::npos) {
@@ -538,4 +540,25 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 		}
 	}
 	std::cout << "-------------------------------------------" << std::endl;
+}
+
+
+std::set<std::string> ExclusionConstraints::str_fields = std::set<std::string>({
+	"name",
+	"name-candidate1",
+	"name-candidate2"
+	});
+
+ExclusionConstraints::ExclusionConstraints(std::string  const & exclusions_inifile_path)
+{
+	INIReader reader(exclusions_inifile_path.c_str());
+	std::stringstream ss;
+	std::set<std::string> sections = reader.Sections();
+	for (auto const & exclusionSection : sections) {
+		std::string constraintName = reader.Get(exclusionSection, "name", "NA");
+		std::string nameCandidate1 = reader.Get(exclusionSection, "name-candidate1", "NA");
+		std::string nameCandidate2 = reader.Get(exclusionSection, "name-candidate2", "NA");
+
+		(*this)[constraintName] = std::make_pair(nameCandidate1, nameCandidate2);
+	}
 }
