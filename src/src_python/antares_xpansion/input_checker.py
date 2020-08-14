@@ -310,6 +310,59 @@ def check_candidates_file(driver):
               % (driver.candidates(), driver.candidates()+".bak"))
 
 ##########################################
+# Checks related to exclusions.ini
+##########################################
+def check_constraint_name(name, section):
+    """
+        checks that the exclusion constraint's name is not empty and does not contain a space
+    """
+    if (not name) or (name == "NA"):
+        print('Error exclusion constraint name cannot be empty : found in section %s' % section)
+        sys.exit(0)
+    if ' ' in name:
+        print('Error exclusion constraint name should not contain space, found in section %s in "%s"'
+              % (section, name))
+        sys.exit(0)
+
+def check_candidatesexclusion_file(driver):
+    """
+        checks that a candidate exclusion file related to an XpansionDriver has the correct format
+
+        :param driver: the XpansionDriver pointing to the candidates file
+
+        :return: Exits if the candidates files has the wrong format.
+    """
+    default_values = {'name' : 'NA',
+                      'name-candidate1' : 'NA',
+                      'name-candidate2' : 'NA'}
+    ini_file = configparser.ConfigParser(default_values)
+    ini_file.read(driver.exclusions())
+
+    #check names unicity and candidates existence
+    unique_names = set()
+    for each_section in ini_file.sections():
+        name = ini_file[each_section]["name"].strip().lower()
+        check_constraint_name(name, each_section)
+        if name in unique_names:
+            print('Error candidates exclusion constraints names have to be unique, duplicate name %s in section %s'
+                    % (name, each_section))
+            sys.exit(0)
+        else:
+            unique_names.add(name)
+
+        candidate1 = ini_file[each_section]["name-candidate1"].strip().lower()
+        if not candidate1 in driver.candidates_list :
+            print('check_candidatesexclusion_file: Unknown candidate %s in constraint %s.'
+                  % (candidate1, each_section))
+            sys.exit(0)
+        candidate2 = ini_file[each_section]["name-candidate2"].strip().lower()
+        if not candidate2 in driver.candidates_list :
+            print('check_candidatesexclusion_file: Unknown candidate %s in constraint %s.'
+                  % (candidate2, each_section))
+            sys.exit(0)
+
+
+##########################################
 # Checks related to settings.ini
 ##########################################
 def check_setting_option_type(option, value):

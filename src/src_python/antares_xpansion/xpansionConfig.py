@@ -34,6 +34,7 @@ class XpansionConfig(object):
         self.NB_YEARS = 'nbyears'
         self.SETTINGS_INI = 'settings.ini'
         self.CANDIDATES_INI = 'candidates.ini'
+        self.CANDIDATESEXCLUSION_INI = 'exclusions.ini'
         self.UC_TYPE = 'uc_type'
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'

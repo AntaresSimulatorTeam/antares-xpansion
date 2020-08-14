@@ -11,6 +11,7 @@ import sys
 
 from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
+from antares_xpansion.input_checker import check_candidatesexclusion_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
 
 class XpansionDriver(object):
@@ -32,6 +33,7 @@ class XpansionDriver(object):
         self.candidates_list = []
 
         self.check_candidates()
+        self.check_candidatesexclusion()
         self.check_settings()
 
     def exe_path(self, exe):
@@ -85,6 +87,13 @@ class XpansionDriver(object):
         """
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
                             self.config.CANDIDATES_INI))
+
+    def exclusions(self):
+        """
+            returns path to candidates exclusions ini file
+        """
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
+                            self.config.CANDIDATESEXCLUSION_INI))
 
     def capacity_file(self, filename):
         """
@@ -222,6 +231,17 @@ class XpansionDriver(object):
             sys.exit(0)
 
         check_candidates_file(self)
+
+    def check_candidatesexclusion(self):
+        """
+            checks that candidates exclusions file has correct format
+        """
+        #check file existence
+        if not os.path.isfile(self.candidates()):
+            print('Missing file : %s was not retrieved in the indicated path: ', self.exclusions())
+            sys.exit(0)
+
+        check_candidatesexclusion_file(self)
 
     def check_settings(self):
         """
