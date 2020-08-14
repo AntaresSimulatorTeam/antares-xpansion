@@ -206,7 +206,7 @@ def check_candidates_file(driver):
 
         :param driver: the XpansionDriver pointing to the candidates file
 
-        :return: Exists if the candidates files has the wrong format.
+        :return: Exits if the candidates files has the wrong format.
     """
     default_values = {'name' : 'NA',
                       'enable' : 'true',
@@ -240,13 +240,14 @@ def check_candidates_file(driver):
     for each_section in ini_file.sections():
         check_candidate_name(ini_file[each_section]['name'].strip(), each_section)
         check_candidate_link(ini_file[each_section]['link'].strip(), each_section)
+        driver.candidates_list.append(ini_file[each_section]['name'].strip().lower())
 
     # check some attributes unicity : name and links
     unique_attributes = ["name", "link"]
     for verified_attribute in unique_attributes:
         unique_values = set()
         for each_section in ini_file.sections():
-            value = ini_file[each_section][verified_attribute].strip()
+            value = ini_file[each_section][verified_attribute].strip().lower()
             if value in unique_values:
                 print('Error candidates %ss have to be unique, duplicate %s %s in section %s'
                       % (verified_attribute, verified_attribute, value, each_section))
@@ -319,7 +320,7 @@ def check_setting_option_type(option, value):
         :param value: value of the option to verify
 
         :return: True if the option has the correct type,
-                 False or exists if the value has the wrong type
+                 False or exits if the value has the wrong type
     """
 
     options_types = {'method' : 'string',
@@ -368,7 +369,7 @@ def check_setting_option_value(option, value):
         :param option: name of the option to verify from settings file
         :param value: value of the option to verify
 
-        :return: True if the option has the correct type, exists if the value has the wrong type
+        :return: True if the option has the correct type, exits if the value has the wrong type
     """
 
     options_legal_values = {'method' : ['benders_decomposition'],
@@ -435,7 +436,7 @@ def check_settings_file(driver):
 
         :param driver: the XpansionDriver pointing to the settings file
 
-        :return: Exists if the candidates files has the wrong format.
+        :return: Exits if the candidates files has the wrong format.
     """
     with open(driver.settings(), 'r') as file_l:
         options = dict(

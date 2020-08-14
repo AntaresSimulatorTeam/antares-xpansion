@@ -29,12 +29,14 @@ class XpansionDriver(object):
         self.config = config
         self.args = self.config.parser.parse_args()
 
+        self.candidates_list = []
+
         self.check_candidates()
         self.check_settings()
 
     def exe_path(self, exe):
         """
-            prefiwex the input exe with the install direcectory containing the binaries
+            prefixes the input exe with the install direcectory containing the binaries
 
             :param exe: executable name
 
