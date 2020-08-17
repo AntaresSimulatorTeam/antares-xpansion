@@ -16,7 +16,8 @@
 #include "ortools_utils.h"
 
 #define CANDIDATES_INI "candidates.ini"
-#define EXCLUSIONS_INI "exclusions.ini"
+#define STRUCTURE_FILE "structure.txt"
+#define MPS_TXT "mps.txt"
 
 
  /**
@@ -68,7 +69,7 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 
 	// Get all mandatory path
 	std::string const candidates_file_name(rootPath + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + CANDIDATES_INI);
-	std::string const mps_file_name(rootPath + PATH_SEPARATOR + "mps.txt");
+	std::string const mps_file_name(rootPath + PATH_SEPARATOR + MPS_TXT);
 	std::string const area_file_name(rootPath + PATH_SEPARATOR + "area.txt");
 	std::string const interco_file_name(rootPath + PATH_SEPARATOR + "interco.txt");
 
@@ -276,7 +277,7 @@ void masterGeneration(std::string rootPath,
 		output["master"][name] = i;
 		++i;
 	}
-	std::ofstream coupling_file((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + "structure.txt").c_str());
+	std::ofstream coupling_file((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + STRUCTURE_FILE).c_str());
 	for (auto const & mps : output) {
 		for (auto const & pmax : mps.second) {
 			coupling_file << std::setw(50) << mps.first;

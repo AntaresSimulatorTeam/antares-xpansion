@@ -328,7 +328,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	for (auto const & id : interco_data) {
 		indexes.push_back(id.first);
 	}
-	// remove bounds on intero
+	// remove bounds on interco
 	ORTchgbounds(in_prblm, indexes, lb_char, neginf);
 	ORTchgbounds(in_prblm, indexes, ub_char, posinf);
 
