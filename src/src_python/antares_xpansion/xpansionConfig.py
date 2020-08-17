@@ -34,7 +34,6 @@ class XpansionConfig(object):
         self.NB_YEARS = 'nbyears'
         self.SETTINGS_INI = 'settings.ini'
         self.CANDIDATES_INI = 'candidates.ini'
-        self.CANDIDATESEXCLUSION_INI = 'exclusions.ini'
         self.UC_TYPE = 'uc_type'
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
@@ -67,6 +66,8 @@ class XpansionConfig(object):
         self.parser.add_argument("--method", type=str,
                                  choices=["mpibenders", "mergeMPS", "both", "sequential"],
                                  help="choose the optimization method")
+        self.parser.add_argument("-c",
+                                 help='name of the file to use for exclusion constraints')
 
         self.options_default = {
             'LOG_LEVEL': '3',

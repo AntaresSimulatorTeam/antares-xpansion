@@ -33,7 +33,8 @@ class XpansionDriver(object):
         self.candidates_list = []
 
         self.check_candidates()
-        self.check_candidatesexclusion()
+        if self.args.c :
+            self.check_candidatesexclusion()
         self.check_settings()
 
         print(self.candidates_list)
@@ -95,7 +96,7 @@ class XpansionDriver(object):
             returns path to candidates exclusions ini file
         """
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
-                            self.config.CANDIDATESEXCLUSION_INI))
+                            self.args.c))
 
     def capacity_file(self, filename):
         """
@@ -364,7 +365,10 @@ class XpansionDriver(object):
 
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
-            subprocess.call(self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed,
+            lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed
+            if self.args.c :
+                lp_cmd += " " + self.exclusions()
+            subprocess.call( lp_cmd,
                             shell=True,
                             stdout=output_file,
                             stderr=output_file)

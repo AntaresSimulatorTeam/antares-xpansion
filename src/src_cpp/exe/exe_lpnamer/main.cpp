@@ -301,7 +301,7 @@ void masterGeneration(std::string rootPath,
 int main(int argc, char** argv) {
 	// Test if there are enough arguments
 	if (argc < 3) {
-		std::cout << "usage: <exe> <Xpansion study output> <relaxed or integer>" << std::endl;
+		std::cout << "usage: <exe> <Xpansion study output> <relaxed or integer> <path to exlusions file>" << std::endl;
 		std::exit(0);
 	}
 
@@ -309,9 +309,11 @@ int main(int argc, char** argv) {
 	std::string const root(argv[1]);
 	Candidates candidates;
 	initializedCandidates(root, candidates);
-	std::string const exclusions_inifile_name(root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + EXCLUSIONS_INI);
-	ExclusionConstraints exclusionConstraints(exclusions_inifile_name);
+
 	std::string const master_formulation(argv[2]);
+
+	std::string const exclusions_inifile_name = (argc > 3) ? argv[3] : "";
+	ExclusionConstraints exclusionConstraints = (argc > 3) ? ExclusionConstraints(exclusions_inifile_name) : ExclusionConstraints();
 
 	std::map< std::pair<std::string, std::string>, int> couplings;
 	candidates.treatloop(root, couplings);

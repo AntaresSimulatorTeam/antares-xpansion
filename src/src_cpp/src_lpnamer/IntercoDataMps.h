@@ -182,6 +182,9 @@ struct ExclusionConstraints : public std::map<std::string, std::pair<std::string
 
 	static std::set<std::string> str_fields;
 
+	ExclusionConstraints() {
+	}
+
 	ExclusionConstraints(std::string  const & exclusions_inifile_path);
 };
 
