@@ -15,6 +15,9 @@
 
 #include "ortools_utils.h"
 
+#define CANDIDATES_INI "candidates.ini"
+#define EXCLUSIONS_INI "exclusions.ini"
+
 
  /**
   * \fn string get_name(string const & path)
@@ -64,7 +67,7 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 	std::string line;
 
 	// Get all mandatory path
-	std::string const candidates_file_name(rootPath + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + "candidates.ini");
+	std::string const candidates_file_name(rootPath + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + CANDIDATES_INI);
 	std::string const mps_file_name(rootPath + PATH_SEPARATOR + "mps.txt");
 	std::string const area_file_name(rootPath + PATH_SEPARATOR + "area.txt");
 	std::string const interco_file_name(rootPath + PATH_SEPARATOR + "interco.txt");
@@ -308,7 +311,7 @@ int main(int argc, char** argv) {
 	std::string const root(argv[1]);
 	Candidates candidates;
 	initializedCandidates(root, candidates);
-	std::string const exclusions_inifile_name(root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + "exclusions.ini");
+	std::string const exclusions_inifile_name(root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + EXCLUSIONS_INI);
 	ExclusionConstraints exclusionConstraints(exclusions_inifile_name);
 	std::string const master_formulation(argv[2]);
 
