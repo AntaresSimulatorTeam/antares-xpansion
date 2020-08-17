@@ -149,8 +149,7 @@ void addExclusionConstraint(operations_research::MPSolver & master_p, std::strin
 		binaryVarCandidate1 = master_p.MakeBoolVar("bin_"+nameCandidate1_p);
 		operations_research::MPConstraint* exclsLinkCstr1 = master_p.MakeRowConstraint(-operations_research::MPSolver::infinity(),0,"binLink_"+nameCandidate1_p);
 		exclsLinkCstr1->SetCoefficient(varCandidate1, 1);
-		double max_capacity = candidates_p[candidates_p.name_key[nameCandidate1_p]].ub();
-		exclsLinkCstr1->SetCoefficient(binaryVarCandidate1, -max_capacity);
+		exclsLinkCstr1->SetCoefficient(binaryVarCandidate1, -varCandidate1->ub());
 	}
 	assert( nullptr != master_p.LookupConstraintOrNull("binLink_"+nameCandidate1_p) );
 
@@ -160,8 +159,7 @@ void addExclusionConstraint(operations_research::MPSolver & master_p, std::strin
 		binaryVarCandidate2 = master_p.MakeBoolVar("bin_"+nameCandidate2_p);
 		operations_research::MPConstraint* exclsLinkCstr2 = master_p.MakeRowConstraint(-operations_research::MPSolver::infinity(),0,"binLink_"+nameCandidate2_p);
 		exclsLinkCstr2->SetCoefficient(varCandidate2, 1);
-		double max_capacity = candidates_p[candidates_p.name_key[nameCandidate2_p]].ub();
-		exclsLinkCstr2->SetCoefficient(binaryVarCandidate2, -max_capacity);
+		exclsLinkCstr2->SetCoefficient(binaryVarCandidate2, -varCandidate2->ub());
 	}
 	assert( nullptr != master_p.LookupConstraintOrNull("binLink_"+nameCandidate2_p) );
 

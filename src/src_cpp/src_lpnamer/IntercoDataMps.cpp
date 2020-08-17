@@ -16,8 +16,6 @@ std::vector<std::tuple<int, int, int> > Candidates::intercos_map = {
 
 std::map<int, std::string> Candidates::id_name = std::map<int, std::string>();
 
-std::map<std::string, std::string> Candidates::name_key = std::map<std::string, std::string>();
-
 std::map<std::tuple<std::string, std::string>, int> Candidates::or_ex_id = std::map<std::tuple<std::string, std::string>, int>();
 std::set<std::string> Candidates::str_fields = std::set<std::string>({
 	"name",
@@ -501,9 +499,6 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 			std::string val = reader.Get(candidateName, str, "NA");
 			if (val != "NA") {
 				std::cout << candidateName << " : " << str << " = " << val << std::endl;
-				if (str == "name") {
-					Candidates::name_key[val] = candidateName;
-				}
 				if (str == "link") {
 					size_t i = val.find(" - ");
 					if (i != std::string::npos) {

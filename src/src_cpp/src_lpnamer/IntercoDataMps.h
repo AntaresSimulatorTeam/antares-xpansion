@@ -135,11 +135,9 @@ struct Candidates : public std::map<std::string, Candidate> {
 
 	static std::map<int, std::string> id_name; /*!< id interco --> name of candidate in candidates.ini */
 
-	static std::map<std::string, std::string> name_key; /*!< name of candidate in candidates.ini --> entry name in Candidates */
-
 	static std::set<std::string> str_fields;
 	static std::set<std::string> dbl_fields;
-	
+
 	static std::vector<std::string> area_names;						/*!< vector of string corresponding to area */
 
 
