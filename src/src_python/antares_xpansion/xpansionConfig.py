@@ -50,7 +50,6 @@ class XpansionConfig(object):
         self.OPTIONS_TXT = 'options.txt'
         self.MERGE_MPS = "merge_mps"
         self.MPS_TXT = "mps.txt"
-        self.EXCLUSIONS_TXT = "exclusions.txt"
         self.BENDERS_MPI = "bendersmpi"
         self.BENDERS_SEQUENTIAL = "benderssequential"
         self.LP_NAMER = "lp_namer"

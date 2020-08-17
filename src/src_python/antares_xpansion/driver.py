@@ -13,7 +13,6 @@ from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
 from antares_xpansion.input_checker import check_candidatesexclusion_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
-from antares_xpansion.xpansion_utils import read_and_write_exclusions
 
 class XpansionDriver(object):
     """
@@ -36,6 +35,8 @@ class XpansionDriver(object):
         self.check_candidates()
         self.check_candidatesexclusion()
         self.check_settings()
+
+        print(self.candidates_list)
 
     def exe_path(self, exe):
         """
@@ -228,7 +229,7 @@ class XpansionDriver(object):
         """
         #check file existence
         if not os.path.isfile(self.candidates()):
-            print('Missing file : %s was not retrieved in the indicated path: ', self.candidates())
+            print('Missing file : %s was not retrieved.' % self.candidates())
             sys.exit(0)
 
         check_candidates_file(self)
@@ -238,8 +239,8 @@ class XpansionDriver(object):
             checks that candidates exclusions file has correct format
         """
         #check file existence
-        if not os.path.isfile(self.candidates()):
-            print('Missing file : %s was not retrieved in the indicated path: ', self.exclusions())
+        if not os.path.isfile(self.exclusions()):
+            print('Missing file : %s was not retrieved.' % self.exclusions())
             sys.exit(0)
 
         check_candidatesexclusion_file(self)
@@ -250,7 +251,7 @@ class XpansionDriver(object):
         """
         #check file existence
         if not os.path.isfile(self.settings()):
-            print('Missing file : %s was not retrieved in the indicated path : ', self.settings())
+            print('Missing file : %s was not retrieved.' % self.settings())
             sys.exit(0)
 
         check_settings_file(self)
@@ -345,11 +346,6 @@ class XpansionDriver(object):
         assert len(interco_files) == 1
         shutil.copy(area_files[0], os.path.normpath(os.path.join(output_path, 'area.txt')))
         shutil.copy(interco_files[0], os.path.normpath(os.path.join(output_path, 'interco.txt')))
-
-        exclusions_txt = read_and_write_exclusions(self.exclusions())
-        #print(exclusions_txt)
-        with open(os.path.normpath(os.path.join(output_path, self.config.EXCLUSIONS_TXT)), 'w') as file_l:
-            file_l.write(exclusions_txt)
 
     def lp_step(self, antares_output_name):
         """
