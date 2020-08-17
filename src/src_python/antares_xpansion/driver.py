@@ -244,6 +244,10 @@ class XpansionDriver(object):
             print('Missing file : %s was not retrieved.' % self.exclusions())
             sys.exit(0)
 
+        if os.path.getsize(self.exclusions()) == 0:
+            print('Invalid file : %s is empty.' % self.exclusions())
+            sys.exit(0)
+
         check_candidatesexclusion_file(self)
 
     def check_settings(self):
