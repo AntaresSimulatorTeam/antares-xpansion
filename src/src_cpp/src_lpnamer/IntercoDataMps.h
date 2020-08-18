@@ -137,7 +137,7 @@ struct Candidates : public std::map<std::string, Candidate> {
 
 	static std::set<std::string> str_fields;
 	static std::set<std::string> dbl_fields;
-	
+
 	static std::vector<std::string> area_names;						/*!< vector of string corresponding to area */
 
 
@@ -170,5 +170,21 @@ struct Candidates : public std::map<std::string, Candidate> {
 									   std::string const lp_mps_name);
 
 
+};
+
+
+/*!
+ *  \struct ExclusionConstraint
+ *  \brief candidate exclusion constraint structure
+ *
+ */
+struct ExclusionConstraints : public std::map<std::string, std::pair<std::string, std::string >>{
+
+	static std::set<std::string> str_fields;
+
+	ExclusionConstraints() {
+	}
+
+	ExclusionConstraints(std::string  const & exclusions_inifile_path);
 };
 

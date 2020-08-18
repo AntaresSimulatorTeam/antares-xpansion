@@ -15,6 +15,10 @@
 
 #include "ortools_utils.h"
 
+#define CANDIDATES_INI "candidates.ini"
+#define STRUCTURE_FILE "structure.txt"
+#define MPS_TXT "mps.txt"
+
 
  /**
   * \fn string get_name(string const & path)
@@ -64,8 +68,8 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 	std::string line;
 
 	// Get all mandatory path
-	std::string const candidates_file_name(rootPath + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + "candidates.ini");
-	std::string const mps_file_name(rootPath + PATH_SEPARATOR + "mps.txt");
+	std::string const candidates_file_name(rootPath + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + CANDIDATES_INI);
+	std::string const mps_file_name(rootPath + PATH_SEPARATOR + MPS_TXT);
 	std::string const area_file_name(rootPath + PATH_SEPARATOR + "area.txt");
 	std::string const interco_file_name(rootPath + PATH_SEPARATOR + "interco.txt");
 
@@ -133,6 +137,49 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 
 
 
+void addExclusionConstraint(operations_research::MPSolver & master_p, std::string constraintName_p, std::string nameCandidate1_p, std::string nameCandidate2_p, Candidates candidates_p)
+{
+	std::cout << "adding exclusion constraint " << constraintName_p << " between " << nameCandidate1_p << " and " << nameCandidate2_p << ".\n";
+
+	operations_research::MPVariable* varCandidate1 = master_p.LookupVariableOrNull(nameCandidate1_p);
+	operations_research::MPVariable* varCandidate2 = master_p.LookupVariableOrNull(nameCandidate2_p);
+
+	operations_research::MPVariable* binaryVarCandidate1 = master_p.LookupVariableOrNull("bin_"+nameCandidate1_p);
+	if (nullptr == binaryVarCandidate1)
+	{
+		binaryVarCandidate1 = master_p.MakeBoolVar("bin_"+nameCandidate1_p);
+		operations_research::MPConstraint* exclsLinkCstr1 = master_p.MakeRowConstraint(-operations_research::MPSolver::infinity(),0,"binLink_"+nameCandidate1_p);
+		exclsLinkCstr1->SetCoefficient(varCandidate1, 1);
+		exclsLinkCstr1->SetCoefficient(binaryVarCandidate1, -varCandidate1->ub());
+	}
+	assert( nullptr != master_p.LookupConstraintOrNull("binLink_"+nameCandidate1_p) );
+
+	operations_research::MPVariable* binaryVarCandidate2 = master_p.LookupVariableOrNull("bin_"+nameCandidate2_p);
+	if (nullptr == binaryVarCandidate2)
+	{
+		binaryVarCandidate2 = master_p.MakeBoolVar("bin_"+nameCandidate2_p);
+		operations_research::MPConstraint* exclsLinkCstr2 = master_p.MakeRowConstraint(-operations_research::MPSolver::infinity(),0,"binLink_"+nameCandidate2_p);
+		exclsLinkCstr2->SetCoefficient(varCandidate2, 1);
+		exclsLinkCstr2->SetCoefficient(binaryVarCandidate2, -varCandidate2->ub());
+	}
+	assert( nullptr != master_p.LookupConstraintOrNull("binLink_"+nameCandidate2_p) );
+
+	operations_research::MPConstraint* exclsCstr = master_p.MakeRowConstraint(constraintName_p);
+	exclsCstr->SetUB(1);
+	exclsCstr->SetCoefficient(binaryVarCandidate1, 1);
+	exclsCstr->SetCoefficient(binaryVarCandidate2, 1);
+}
+
+
+void addExclusionConstraints(operations_research::MPSolver & master_p, ExclusionConstraints exclusionConstraints_p, Candidates candidates_p)
+{
+	for(auto pairCstrCandidatesnames_l : exclusionConstraints_p )
+	{
+		addExclusionConstraint(master_p, pairCstrCandidatesnames_l.first, pairCstrCandidatesnames_l.second.first, pairCstrCandidatesnames_l.second.second, candidates_p);
+	}
+}
+
+
 
 /**
  * \fn void masterGeneration()
@@ -143,7 +190,12 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
  * \param couplings map pairs and integer which give the correspondence between optim variable and antares variable
  * \return void
  */
-void masterGeneration(std::string rootPath, Candidates candidates, std::map< std::pair<std::string, std::string>, int> couplings, std::string const &master_formulation) {
+void masterGeneration(std::string rootPath,
+					Candidates candidates,
+					ExclusionConstraints exclusionConstraints_p,
+					std::map< std::pair<std::string, std::string>, int> couplings,
+					std::string const &master_formulation)
+{
 	operations_research::MPSolver master_l("masterProblem", ORTOOLS_MIP_SOLVER_TYPE);
 
 	int ninterco = candidates.size();
@@ -208,9 +260,10 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		}
 		int n_row_interco(rowtype.size());
 		int n_coeff_interco(dmatval.size());
-		rstart.push_back(dmatval.size());
 		ORTaddrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
+
+	addExclusionConstraints(master_l, exclusionConstraints_p, candidates);
 
 	std::string const lp_name = "master";
 	ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
@@ -224,7 +277,7 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 		output["master"][name] = i;
 		++i;
 	}
-	std::ofstream coupling_file((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + "structure.txt").c_str());
+	std::ofstream coupling_file((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + STRUCTURE_FILE).c_str());
 	for (auto const & mps : output) {
 		for (auto const & pmax : mps.second) {
 			coupling_file << std::setw(50) << mps.first;
@@ -249,7 +302,7 @@ void masterGeneration(std::string rootPath, Candidates candidates, std::map< std
 int main(int argc, char** argv) {
 	// Test if there are enough arguments
 	if (argc < 3) {
-		std::cout << "usage: <exe> <Xpansion study output> <relaxed or integer>" << std::endl;
+		std::cout << "usage: <exe> <Xpansion study output> <relaxed or integer> <path to exlusions file>" << std::endl;
 		std::exit(0);
 	}
 
@@ -257,11 +310,15 @@ int main(int argc, char** argv) {
 	std::string const root(argv[1]);
 	Candidates candidates;
 	initializedCandidates(root, candidates);
+
 	std::string const master_formulation(argv[2]);
+
+	std::string const exclusions_inifile_name = (argc > 3) ? argv[3] : "";
+	ExclusionConstraints exclusionConstraints = (argc > 3) ? ExclusionConstraints(exclusions_inifile_name) : ExclusionConstraints();
 
 	std::map< std::pair<std::string, std::string>, int> couplings;
 	candidates.treatloop(root, couplings);
-	masterGeneration(root, candidates, couplings, master_formulation);
+	masterGeneration(root, candidates, exclusionConstraints, couplings, master_formulation);
 
 	return 0;
 }

@@ -11,6 +11,7 @@ import sys
 
 from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
+from antares_xpansion.input_checker import check_candidatesexclusion_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
 
 class XpansionDriver(object):
@@ -29,12 +30,18 @@ class XpansionDriver(object):
         self.config = config
         self.args = self.config.parser.parse_args()
 
+        self.candidates_list = []
+
         self.check_candidates()
+        if self.args.c :
+            self.check_candidatesexclusion()
         self.check_settings()
+
+        print(self.candidates_list)
 
     def exe_path(self, exe):
         """
-            prefiwex the input exe with the install direcectory containing the binaries
+            prefixes the input exe with the install direcectory containing the binaries
 
             :param exe: executable name
 
@@ -83,6 +90,13 @@ class XpansionDriver(object):
         """
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
                             self.config.CANDIDATES_INI))
+
+    def exclusions(self):
+        """
+            returns path to candidates exclusions ini file
+        """
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
+                            self.args.c))
 
     def capacity_file(self, filename):
         """
@@ -216,10 +230,25 @@ class XpansionDriver(object):
         """
         #check file existence
         if not os.path.isfile(self.candidates()):
-            print('Missing file : %s was not retrieved in the indicated path: ', self.candidates())
+            print('Missing file : %s was not retrieved.' % self.candidates())
             sys.exit(0)
 
         check_candidates_file(self)
+
+    def check_candidatesexclusion(self):
+        """
+            checks that candidates exclusions file has correct format
+        """
+        #check file existence
+        if not os.path.isfile(self.exclusions()):
+            print('Missing file : %s was not retrieved.' % self.exclusions())
+            sys.exit(0)
+
+        if os.path.getsize(self.exclusions()) == 0:
+            print('Invalid file : %s is empty.' % self.exclusions())
+            sys.exit(0)
+
+        check_candidatesexclusion_file(self)
 
     def check_settings(self):
         """
@@ -227,7 +256,7 @@ class XpansionDriver(object):
         """
         #check file existence
         if not os.path.isfile(self.settings()):
-            print('Missing file : %s was not retrieved in the indicated path : ', self.settings())
+            print('Missing file : %s was not retrieved.' % self.settings())
             sys.exit(0)
 
         check_settings_file(self)
@@ -340,7 +369,10 @@ class XpansionDriver(object):
 
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
-            subprocess.call(self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed,
+            lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed
+            if self.args.c :
+                lp_cmd += " " + self.exclusions()
+            subprocess.call( lp_cmd,
                             shell=True,
                             stdout=output_file,
                             stderr=output_file)

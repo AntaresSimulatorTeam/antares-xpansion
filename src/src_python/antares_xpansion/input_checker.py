@@ -206,7 +206,7 @@ def check_candidates_file(driver):
 
         :param driver: the XpansionDriver pointing to the candidates file
 
-        :return: Exists if the candidates files has the wrong format.
+        :return: Exits if the candidates files has the wrong format.
     """
     default_values = {'name' : 'NA',
                       'enable' : 'true',
@@ -240,13 +240,14 @@ def check_candidates_file(driver):
     for each_section in ini_file.sections():
         check_candidate_name(ini_file[each_section]['name'].strip(), each_section)
         check_candidate_link(ini_file[each_section]['link'].strip(), each_section)
+        driver.candidates_list.append(ini_file[each_section]['name'].strip().lower())
 
     # check some attributes unicity : name and links
     unique_attributes = ["name", "link"]
     for verified_attribute in unique_attributes:
         unique_values = set()
         for each_section in ini_file.sections():
-            value = ini_file[each_section][verified_attribute].strip()
+            value = ini_file[each_section][verified_attribute].strip().lower()
             if value in unique_values:
                 print('Error candidates %ss have to be unique, duplicate %s %s in section %s'
                       % (verified_attribute, verified_attribute, value, each_section))
@@ -309,6 +310,59 @@ def check_candidates_file(driver):
               % (driver.candidates(), driver.candidates()+".bak"))
 
 ##########################################
+# Checks related to exclusions.ini
+##########################################
+def check_constraint_name(name, section):
+    """
+        checks that the exclusion constraint's name is not empty and does not contain a space
+    """
+    if (not name) or (name == "NA"):
+        print('Error exclusion constraint name cannot be empty : found in section %s' % section)
+        sys.exit(0)
+    if ' ' in name:
+        print('Error exclusion constraint name should not contain space, found in section %s in "%s"'
+              % (section, name))
+        sys.exit(0)
+
+def check_candidatesexclusion_file(driver):
+    """
+        checks that a candidate exclusion file related to an XpansionDriver has the correct format
+
+        :param driver: the XpansionDriver pointing to the candidates file
+
+        :return: Exits if the candidates files has the wrong format.
+    """
+    default_values = {'name' : 'NA',
+                      'name-candidate1' : 'NA',
+                      'name-candidate2' : 'NA'}
+    ini_file = configparser.ConfigParser(default_values)
+    ini_file.read(driver.exclusions())
+
+    #check names unicity and candidates existence
+    unique_names = set()
+    for each_section in ini_file.sections():
+        name = ini_file[each_section]["name"].strip().lower()
+        check_constraint_name(name, each_section)
+        if name in unique_names:
+            print('Error candidates exclusion constraints names have to be unique, duplicate name %s in section %s'
+                    % (name, each_section))
+            sys.exit(0)
+        else:
+            unique_names.add(name)
+
+        candidate1 = ini_file[each_section]["name-candidate1"].strip().lower()
+        if not candidate1 in driver.candidates_list :
+            print('check_candidatesexclusion_file: Unknown candidate %s in constraint %s.'
+                  % (candidate1, each_section))
+            sys.exit(0)
+        candidate2 = ini_file[each_section]["name-candidate2"].strip().lower()
+        if not candidate2 in driver.candidates_list :
+            print('check_candidatesexclusion_file: Unknown candidate %s in constraint %s.'
+                  % (candidate2, each_section))
+            sys.exit(0)
+
+
+##########################################
 # Checks related to settings.ini
 ##########################################
 def check_setting_option_type(option, value):
@@ -319,7 +373,7 @@ def check_setting_option_type(option, value):
         :param value: value of the option to verify
 
         :return: True if the option has the correct type,
-                 False or exists if the value has the wrong type
+                 False or exits if the value has the wrong type
     """
 
     options_types = {'method' : 'string',
@@ -368,7 +422,7 @@ def check_setting_option_value(option, value):
         :param option: name of the option to verify from settings file
         :param value: value of the option to verify
 
-        :return: True if the option has the correct type, exists if the value has the wrong type
+        :return: True if the option has the correct type, exits if the value has the wrong type
     """
 
     options_legal_values = {'method' : ['benders_decomposition'],
@@ -435,7 +489,7 @@ def check_settings_file(driver):
 
         :param driver: the XpansionDriver pointing to the settings file
 
-        :return: Exists if the candidates files has the wrong format.
+        :return: Exits if the candidates files has the wrong format.
     """
     with open(driver.settings(), 'r') as file_l:
         options = dict(

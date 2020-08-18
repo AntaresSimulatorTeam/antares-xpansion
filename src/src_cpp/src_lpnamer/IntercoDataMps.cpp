@@ -38,9 +38,6 @@ std::set<std::string> Candidates::dbl_fields = std::set<std::string>({
 std::vector<std::string> Candidates::area_names = {
 };
 
-
-
-
 double Candidate::profile(size_t i, std::string const & study_path, bool is_direct) {
 	if (_profile.empty()) {
 		if (has("link-profile")) {
@@ -300,7 +297,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
-	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
+	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE); //@FIXMe LP problem ?
 	ORTreadmps(in_prblm, mps_name);
 
 	int ncols(in_prblm.NumVariables());
@@ -322,16 +319,16 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<double> ub;
 	std::vector<char> coltype;
 	ORTgetcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
-	std::vector<double> posinf(ncols, in_prblm.infinity());
-	std::vector<double> neginf(ncols, -in_prblm.infinity());
-	std::vector<char> lb_char(ncols, 'L');
-	std::vector<char> ub_char(ncols, 'U');
+	std::vector<double> posinf(ninterco_pdt, in_prblm.infinity());
+	std::vector<double> neginf(ninterco_pdt, -in_prblm.infinity());
+	std::vector<char> lb_char(ninterco_pdt, 'L');
+	std::vector<char> ub_char(ninterco_pdt, 'U');
 	std::vector<int> indexes;
 	indexes.reserve(ninterco_pdt);
 	for (auto const & id : interco_data) {
 		indexes.push_back(id.first);
 	}
-	// remove bounds on intero
+	// remove bounds on interco
 	ORTchgbounds(in_prblm, indexes, lb_char, neginf);
 	ORTchgbounds(in_prblm, indexes, ub_char, posinf);
 
@@ -417,7 +414,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		dmatval.push_back(candidate.profile(kvp.second[2], study_path, false));
 	}
 
-	rstart.push_back(dmatval.size());
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
 	ORTwritemps(out_prblm, lp_mps_name );
@@ -539,4 +535,25 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 		}
 	}
 	std::cout << "-------------------------------------------" << std::endl;
+}
+
+
+std::set<std::string> ExclusionConstraints::str_fields = std::set<std::string>({
+	"name",
+	"name-candidate1",
+	"name-candidate2"
+	});
+
+ExclusionConstraints::ExclusionConstraints(std::string  const & exclusions_inifile_path)
+{
+	INIReader reader(exclusions_inifile_path.c_str());
+	std::stringstream ss;
+	std::set<std::string> sections = reader.Sections();
+	for (auto const & exclusionSection : sections) {
+		std::string constraintName = reader.Get(exclusionSection, "name", "NA");
+		std::string nameCandidate1 = reader.Get(exclusionSection, "name-candidate1", "NA");
+		std::string nameCandidate2 = reader.Get(exclusionSection, "name-candidate2", "NA");
+
+		(*this)[constraintName] = std::make_pair(nameCandidate1, nameCandidate2);
+	}
 }
