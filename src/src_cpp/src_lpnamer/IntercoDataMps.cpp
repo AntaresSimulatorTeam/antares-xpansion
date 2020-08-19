@@ -253,6 +253,7 @@ void Candidates::readVarfiles(std::string const filePath,
 
 			std::string const & paysor(Candidates::area_names[std::get<1>(intercos_map[interco])]);
 			std::string const & paysex(Candidates::area_names[std::get<2>(intercos_map[interco])]);
+			//add one variable index for each interco ==> for each canddidate
 			if (key_paysor_paysex.find({ paysor, paysex }) != key_paysor_paysex.end()) {
 				interco_data[id] = { pays, interco, pdt };
 				if (interco_id.find({ pays, interco }) == interco_id.end()) {
@@ -347,8 +348,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	ORTchgbounds(in_prblm, indexes, lb_char, neginf);
 	ORTchgbounds(in_prblm, indexes, ub_char, posinf);
 
-	//FIXME ORT does not allow renaming => names need to be set in the mps file or on a new solver
-	//FIXME empty lines in variables files => variables that have no name => automatically named by ortools
 	std::vector<std::string> vnames(var.begin(), var.end());
 	operations_research::MPSolver out_prblm("new_problem", in_prblm.ProblemType());
 	// copy in_prblm with the changed bounds and rename its variables
@@ -402,31 +401,35 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<double> rhs;
 	std::vector<int> rstart;
 	// create plower and upper constraint
-	for (auto const & kvp : interco_data) {
-		int const i_interco_pmax(interco_id.find({ kvp.second[0], kvp.second[1] })->second);
-		int const i_interco_p(kvp.first);
+	for (auto const & pairIdvarntcIntercodata : interco_data) {
+		int const i_interco_pmax(interco_id.find({ pairIdvarntcIntercodata.second[0], pairIdvarntcIntercodata.second[1] })->second);
+		int const i_interco_p(pairIdvarntcIntercodata.first);
 
-		std::string const & paysor(Candidates::area_names[std::get<1>(intercos_map[kvp.second[1]])]);
-		std::string const & paysex(Candidates::area_names[std::get<2>(intercos_map[kvp.second[1]])]);
+		size_t timestep = pairIdvarntcIntercodata.second[2];
+
+		int id_paysor(std::get<1>(intercos_map[pairIdvarntcIntercodata.second[1]]));
+		int id_paysex(std::get<2>(intercos_map[pairIdvarntcIntercodata.second[1]]));
+		std::string const & paysor(Candidates::area_names[id_paysor]);
+		std::string const & paysex(Candidates::area_names[id_paysex]);
 
 		Candidate & candidate(*(key_paysor_paysex.find({ paysor, paysex })->second));
 		// p[t] - alpha[t].pMax - alpha0[t].pMax0 <= 0
 		double already_installed_capacity( candidate.already_installed_capacity());
 		rstart.push_back(dmatval.size());
-		rhs.push_back(already_installed_capacity*candidate.already_installed_profile(kvp.second[2], study_path, true));
+		rhs.push_back(already_installed_capacity*candidate.already_installed_profile(timestep, study_path, true));
 		rowtype.push_back('L');
 		colind.push_back(i_interco_p);
 		dmatval.push_back(1);
 		colind.push_back(ncols + i_interco_pmax);
-		dmatval.push_back(-candidate.profile(kvp.second[2], study_path, true));
+		dmatval.push_back(-candidate.profile(timestep, study_path, true));
 		// p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
 		rstart.push_back(dmatval.size());
-		rhs.push_back(-already_installed_capacity*candidate.already_installed_profile(kvp.second[2], study_path, false));
+		rhs.push_back(-already_installed_capacity*candidate.already_installed_profile(timestep, study_path, false));
 		rowtype.push_back('G');
 		colind.push_back(i_interco_p);
 		dmatval.push_back(1);
 		colind.push_back(ncols + i_interco_pmax);
-		dmatval.push_back(candidate.profile(kvp.second[2], study_path, false));
+		dmatval.push_back(candidate.profile(timestep, study_path, false));
 	}
 
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);

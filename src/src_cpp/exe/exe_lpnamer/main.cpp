@@ -208,28 +208,29 @@ void masterGeneration(std::string rootPath,
 
 	int i(0);
 	std::vector<std::string> pallier_names;
-	std::vector<int> pallier;
-	std::vector<int> pallier_i;
+	std::vector<int> pallier; //capacity variables indices
+	std::vector<int> pallier_i; //number of units variables indices
 	std::vector<double> unit_size;
 	std::vector<double> max_unit;
 
 	for (auto const & interco : candidates) {
-		obj_interco[i] = interco.second.obj();
-		lb_interco[i] = interco.second.lb();
-		ub_interco[i] = interco.second.ub();
-		int interco_id = Candidates::or_ex_id.find(std::make_tuple(interco.second.str("linkor"), interco.second.str("linkex")))->second;
+		Candidate const & candidate_i = interco.second;
+		obj_interco[i] = candidate_i.obj();
+		lb_interco[i] = candidate_i.lb();
+		ub_interco[i] = candidate_i.ub();
+		int interco_id = Candidates::or_ex_id.find(std::make_tuple(candidate_i.str("linkor"), candidate_i.str("linkex")))->second;
 		std::stringstream buffer;
 		//buffer << "INVEST_INTERCO_" << interco_id;
 		buffer << Candidates::id_name.find(interco_id)->second;
 		interco_names[i] = buffer.str();
 
-		if (interco.second.is_integer()) {
+		if (candidate_i.is_integer()) {
 			pallier.push_back(i);
 			int new_id = ninterco + pallier_i.size();
 			pallier_i.push_back(new_id);
-			unit_size.push_back(interco.second.unit_size());
-			max_unit.push_back(interco.second.max_unit());
-			std::cout << interco.second.max_unit() << std::endl;
+			unit_size.push_back(candidate_i.unit_size());
+			max_unit.push_back(candidate_i.max_unit());
+			std::cout << candidate_i.max_unit() << std::endl;
 		}
 		++i;
 	}
@@ -249,7 +250,7 @@ void masterGeneration(std::string rootPath,
 		std::vector<double> rhs;
 		std::vector<int> rstart;
 		for (i = 0; i < n_integer; ++i) {
-			// pMax  - n max_unit = 0 <= 0
+			// pMax  - n unit_size = 0
 			rstart.push_back(dmatval.size());
 			rhs.push_back(0);
 			rowtype.push_back('E');
