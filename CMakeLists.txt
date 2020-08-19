@@ -128,9 +128,19 @@ find_package (Threads REQUIRED)
 # OR-Tools
 find_package(ortools REQUIRED)
 add_definitions(${ORTOOLS_DEFINITIONS})
-# add_definitions(-DCPLEX_SOLVER -DUSE_CPLEX)
-# add_definitions(-DGUROBI_SOLVER -DUSE_GUROBI)
-# add_definitions(-DXPRESS_SOLVER -DUSE_XPRESS)
+if(SOLVER)
+	if(SOLVER STREQUAL "cplex")
+		add_definitions(-DCPLEX_SOLVER -DUSE_CPLEX)
+	elseif(SOLVER STREQUAL "gurobi")
+		add_definitions(-DGUROBI_SOLVER -DUSE_GUROBI)
+	elseif(SOLVER STREQUAL "xpress")
+		add_definitions(-DXPRESS_SOLVER -DUSE_XPRESS)
+	elseif(SOLVER STREQUAL "coin") #already achieved by default through ORTOOLS_DEFINITIONS
+		add_definitions(-DUSE_CBC -DUSE_CLP)
+	else()
+		MESSAGE(FATAL_ERROR "unsupported value, ${SOLVER}, for solver option.")
+	endif()
+endif()
 
 
 IF( USE_MPI )
