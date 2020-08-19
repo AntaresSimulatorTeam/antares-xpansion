@@ -562,7 +562,7 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 			std::cout << "cannot link candidate to interco id" << std::endl;
 		}
 		else {
-			id_name[it->second] = (*this)[sectionName]._str["name"];
+			id_name[it->second] = toLowercase((*this)[sectionName]._str["name"]);
 			std::cout << "index is " << it->second << " and name is " << id_name[it->second] << std::endl;
 		}
 	}
