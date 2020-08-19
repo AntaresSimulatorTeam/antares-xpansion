@@ -168,7 +168,7 @@ struct Candidates : public std::map<std::string, Candidate> {
 									   map<std::pair<std::string, std::string>, Candidate *>  key_paysor_paysex,
 									   std::string study_path,
 									   std::string const lp_mps_name);
-
+	bool checkArea(std::string const & areaName_p) const;
 
 };
 

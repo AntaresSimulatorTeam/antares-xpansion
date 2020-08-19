@@ -1,7 +1,22 @@
+#include <algorithm>
+
 #include "IntercoDataMps.h"
 #include "INIReader.h"
 
 #include "ortools_utils.h"
+
+namespace
+{
+	std::string toLowercase(std::string const & inputString_p)
+	{
+		std::string result;
+		std::transform(inputString_p.cbegin(), inputString_p.cend(), std::back_inserter(result),[](char const & c) {
+				return std::tolower(c);
+		});
+		return result;
+	}
+}
+
 
 std::vector<std::vector<std::string> > Candidates::MPS_LIST = {
 };
@@ -493,48 +508,71 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 	INIReader reader(dataPath.c_str());
 	std::stringstream ss;
 	std::set<std::string> sections = reader.Sections();
-	for (auto const & candidateName : sections) {
+	for (auto const & sectionName : sections) {
 		std::cout << "-------------------------------------------" << std::endl;
 		for (auto const & str : Candidates::str_fields) {
-			std::string val = reader.Get(candidateName, str, "NA");
-			if (val != "NA") {
-				std::cout << candidateName << " : " << str << " = " << val << std::endl;
+			std::string val = reader.Get(sectionName, str, "NA");
+			if ((val != "NA") && (val != "na")) {
+				std::cout << sectionName << " : " << str << " = " << val << std::endl;
 				if (str == "link") {
 					size_t i = val.find(" - ");
 					if (i != std::string::npos) {
-						std::string s1 = val.substr(0, i);
-						std::string s2 = val.substr(i + 3, val.size());
+						std::string s1 = toLowercase(val.substr(0, i));
+						std::string s2 = toLowercase(val.substr(i + 3, val.size()));
 						std::cout << s1 << " and " << s2 << std::endl;
-						(*this)[candidateName]._str["linkor"] = s1;
-						(*this)[candidateName]._str["linkex"] = s2;
+						(*this)[sectionName]._str["linkor"] = s1;
+						(*this)[sectionName]._str["linkex"] = s2;
+						if(!this->checkArea(s1))
+						{
+							std::cout << "Unrecognized area " << s1
+										<< " in section " << sectionName << " in " << dataPath << ".";
+							std::exit(0);
+						}
+						if(!this->checkArea(s2))
+						{
+							std::cout << "Unrecognized area " << s2
+										<< " in section " << sectionName << " in " << dataPath << ".";
+							std::exit(0);
+						}
 					}
 				}
+				else if (str == "name")
+				{
+					std::string candidateName = toLowercase(val);
+					(*this)[sectionName]._str["name"] = candidateName;
+				}
 				else {
-					(*this)[candidateName]._str[str] = val;
+					(*this)[sectionName]._str[str] = val;
 				}
 			}
 		}
 		for (auto const & str : Candidates::dbl_fields) {
-			std::string val = reader.Get(candidateName, str, "NA");
+			std::string val = reader.Get(sectionName, str, "NA");
 			if (val != "NA") {
 				//std::cout <<"|||  "<< str << " is " << val << std::endl;
 				std::stringstream buffer(val);
 				double d_val(0);
 				buffer >> d_val;
-				(*this)[candidateName]._dbl[str] = d_val;
+				(*this)[sectionName]._dbl[str] = d_val;
 			}
 		}
 
-		auto it = or_ex_id.find({ (*this)[candidateName]._str["linkor"], (*this)[candidateName]._str["linkex"] });
+		auto it = or_ex_id.find({ (*this)[sectionName]._str["linkor"], (*this)[sectionName]._str["linkex"] });
 		if (it == or_ex_id.end()) {
 			std::cout << "cannot link candidate to interco id" << std::endl;
 		}
 		else {
-			id_name[it->second] = (*this)[candidateName]._str["name"];
+			id_name[it->second] = (*this)[sectionName]._str["name"];
 			std::cout << "index is " << it->second << " and name is " << id_name[it->second] << std::endl;
 		}
 	}
 	std::cout << "-------------------------------------------" << std::endl;
+}
+
+bool Candidates::checkArea(std::string const & areaName_p) const
+{
+	bool found_l = std::find(Candidates::area_names.cbegin(), Candidates::area_names.cend(), areaName_p) != Candidates::area_names.cend();
+	return found_l;
 }
 
 
