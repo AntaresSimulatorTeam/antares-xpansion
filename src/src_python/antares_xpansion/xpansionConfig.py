@@ -5,7 +5,7 @@
 import argparse
 import sys
 
-class XpansionConfig(object):
+class XpansionConfig():
     """
         Class defininf the parameters for an AntaresXpansion session
     """

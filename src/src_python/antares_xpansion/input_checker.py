@@ -320,8 +320,8 @@ def check_constraint_name(name, section):
         print('Error exclusion constraint name cannot be empty : found in section %s' % section)
         sys.exit(0)
     if ' ' in name:
-        print('Error exclusion constraint name should not contain space, found in section %s in "%s"'
-              % (section, name))
+        print('Error exclusion constraint name should not contain space,'
+              ' found in section %s in "%s"' % (section, name))
         sys.exit(0)
 
 def check_candidatesexclusion_file(driver):
@@ -344,19 +344,19 @@ def check_candidatesexclusion_file(driver):
         name = ini_file[each_section]["name"].strip().lower()
         check_constraint_name(name, each_section)
         if name in unique_names:
-            print('Error candidates exclusion constraints names have to be unique, duplicate name %s in section %s'
-                    % (name, each_section))
+            print('Error candidates exclusion constraints names have to be unique,'
+                  ' duplicate name %s in section %s' % (name, each_section))
             sys.exit(0)
         else:
             unique_names.add(name)
 
         candidate1 = ini_file[each_section]["name-candidate1"].strip().lower()
-        if not candidate1 in driver.candidates_list :
+        if not candidate1 in driver.candidates_list:
             print('check_candidatesexclusion_file: Unknown candidate %s in constraint %s.'
                   % (candidate1, each_section))
             sys.exit(0)
         candidate2 = ini_file[each_section]["name-candidate2"].strip().lower()
-        if not candidate2 in driver.candidates_list :
+        if not candidate2 in driver.candidates_list:
             print('check_candidatesexclusion_file: Unknown candidate %s in constraint %s.'
                   % (candidate2, each_section))
             sys.exit(0)

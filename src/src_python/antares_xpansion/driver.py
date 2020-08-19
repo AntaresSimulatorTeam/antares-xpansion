@@ -14,7 +14,7 @@ from antares_xpansion.input_checker import check_settings_file
 from antares_xpansion.input_checker import check_candidatesexclusion_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
 
-class XpansionDriver(object):
+class XpansionDriver():
     """
         Class to control the execution of the optimization session
     """
@@ -33,7 +33,7 @@ class XpansionDriver(object):
         self.candidates_list = []
 
         self.check_candidates()
-        if self.args.c :
+        if self.args.c:
             self.check_candidatesexclusion()
         self.check_settings()
 
@@ -75,35 +75,36 @@ class XpansionDriver(object):
         """
             returns path to general data ini file
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.SETTINGS, self.config.GENERAL_DATA_INI))
+        return os.path.normpath(os.path.join(self.data_dir(),
+                                             self.config.SETTINGS, self.config.GENERAL_DATA_INI))
 
     def settings(self):
         """
             returns path to setting ini file
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
-                            self.config.SETTINGS_INI))
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
+                                             self.config.EXPANSION, self.config.SETTINGS_INI))
 
     def candidates(self):
         """
             returns path to candidates ini file
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
-                            self.config.CANDIDATES_INI))
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
+                                             self.config.EXPANSION, self.config.CANDIDATES_INI))
 
     def exclusions(self):
         """
             returns path to candidates exclusions ini file
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
-                            self.args.c))
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
+                                             self.config.EXPANSION, self.args.c))
 
     def capacity_file(self, filename):
         """
             returns path to input capacity file
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION,
-                            self.config.CAPADIR, filename))
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
+                                             self.config.EXPANSION, self.config.CAPADIR, filename))
 
     def weights_file(self, filename):
         """
@@ -113,7 +114,8 @@ class XpansionDriver(object):
 
             :return: path to input yearly-weights file
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER, self.config.EXPANSION, filename))
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
+                                             self.config.EXPANSION, filename))
 
 
     def antares_output(self):
@@ -205,13 +207,14 @@ class XpansionDriver(object):
                 sys.exit(0)
         elif self.args.step == "optim":
             if self.args.simulationName:
-                lp_path = os.path.normpath(os.path.join(self.antares_output(), self.args.simulationName, 'lp'))
+                lp_path = os.path.normpath(os.path.join(self.antares_output(),
+                                                        self.args.simulationName, 'lp'))
                 self.launch_optimization(lp_path)
             else:
                 print("Missing argument simulationName")
                 sys.exit(0)
         else:
-            print("Illegal optim method")
+            print("Launching failed")
             sys.exit(0)
 
     def clear_old_log(self):
@@ -370,9 +373,9 @@ class XpansionDriver(object):
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
             lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed
-            if self.args.c :
+            if self.args.c:
                 lp_cmd += " " + self.exclusions()
-            subprocess.call( lp_cmd,
+            subprocess.call(lp_cmd,
                             shell=True,
                             stdout=output_file,
                             stderr=output_file)
@@ -403,8 +406,7 @@ class XpansionDriver(object):
         elif self.args.method == "sequential":
             solver = self.config.BENDERS_SEQUENTIAL
         elif self.args.method == "both":
-            #TODO both ??
-            print("both not handled yet")
+            print("metod both is not handled yet")
             sys.exit(0)
         else:
             print("Illegal optim method")
@@ -412,26 +414,26 @@ class XpansionDriver(object):
 
         #delete logged master MIPs
         master_lp_log_format = "log_master*.lp"
-        logfileList = glob.glob('./' +master_lp_log_format)
-        for filePath in logfileList:
+        logfile_list = glob.glob('./' +master_lp_log_format)
+        for file_path in logfile_list:
             try:
-                os.remove(filePath)
-            except:
-                print("Error while deleting file : ", filePath)
+                os.remove(file_path)
+            except OSError:
+                print("Error while deleting file : ", file_path)
 
         #delete execution logs
-        logfileList = glob.glob('./' +solver + 'Log*')
-        for filePath in logfileList:
+        logfile_list = glob.glob('./' +solver + 'Log*')
+        for file_path in logfile_list:
             try:
-                os.remove(filePath)
-            except:
-                print("Error while deleting file : ", filePath)
+                os.remove(file_path)
+            except OSError:
+                print("Error while deleting file : ", file_path)
         if  os.path.isfile(solver + '.log'):
             os.remove(solver + '.log')
 
         print('Launching {}, logs will be saved to {}.log'.format(solver,
-                                                                  os.path.normpath(os.path.join(os.getcwd(),
-                                                                               solver))))
+                                                                  os.path.normpath(os.path.join(
+                                                                      os.getcwd(), solver))))
         with open(solver + '.log', 'w') as output_file:
             subprocess.call(self.solver_cmd(solver), shell=True,
                             stdout=output_file,
@@ -449,7 +451,8 @@ class XpansionDriver(object):
         print('Number of years is {}, setting SLAVE_WEIGHT_VALUE to {} '.
               format(self.nb_years(), options_values["SLAVE_WEIGHT_VALUE"]))
         # generate options file for the solver
-        with open(os.path.normpath(os.path.join(output_path, 'lp', self.config.OPTIONS_TXT)), 'w') as options_file:
+        options_path = os.path.normpath(os.path.join(output_path, 'lp', self.config.OPTIONS_TXT))
+        with open(options_path, 'w') as options_file:
             options_file.writelines(["%30s%30s\n" % (kvp[0], kvp[1])
                                      for kvp in options_values.items()])
 

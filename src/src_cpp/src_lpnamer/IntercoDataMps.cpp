@@ -395,7 +395,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		std::string const & paysex(Candidates::area_names[std::get<2>(intercos_map[kvp.second[1]])]);
 
 		Candidate & candidate(*(key_paysor_paysex.find({ paysor, paysex })->second));
-		// p[t] - alpha.pMax - alpha0.pMax0 <= 0
+		// p[t] - alpha[t].pMax - alpha0[t].pMax0 <= 0
 		double already_installed_capacity( candidate.already_installed_capacity());
 		rstart.push_back(dmatval.size());
 		rhs.push_back(already_installed_capacity*candidate.already_installed_profile(kvp.second[2], study_path, true));
@@ -404,9 +404,9 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		dmatval.push_back(1);
 		colind.push_back(ncols + i_interco_pmax);
 		dmatval.push_back(-candidate.profile(kvp.second[2], study_path, true));
-		// p[t] + alpha.pMax + beta0.pMax0 >= 0
+		// p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
 		rstart.push_back(dmatval.size());
-		rhs.push_back(already_installed_capacity*candidate.already_installed_profile(kvp.second[2], study_path, false));
+		rhs.push_back(-already_installed_capacity*candidate.already_installed_profile(kvp.second[2], study_path, false));
 		rowtype.push_back('G');
 		colind.push_back(i_interco_p);
 		dmatval.push_back(1);
