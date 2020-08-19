@@ -312,6 +312,11 @@ int main(int argc, char** argv) {
 	initializedCandidates(root, candidates);
 
 	std::string const master_formulation(argv[2]);
+	if ( (master_formulation != "relaxed") && (master_formulation != "integer") )
+	{
+		std::cout << "Invalid argument : second argument must be \"integer\" or \"relaxed\"" << std::endl;
+		std::exit(0);
+	}
 
 	std::string const exclusions_inifile_name = (argc > 3) ? argv[3] : "";
 	ExclusionConstraints exclusionConstraints = (argc > 3) ? ExclusionConstraints(exclusions_inifile_name) : ExclusionConstraints();
