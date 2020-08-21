@@ -184,7 +184,7 @@ def check_candidate_name(name, section):
     """
         checks that the candidate's name is not empty and does not contain a space
     """
-    if (not name) or (name == "NA"):
+    if (not name) or (name.lower() == "na"):
         print('Error candidates name cannot be empty : found in section %s' % section)
         sys.exit(0)
     if ' ' in name:
@@ -196,8 +196,11 @@ def check_candidate_link(link, section):
     """
         checks that the candidate's link is not empty
     """
-    if (not link) or (link == "NA"):
+    if (not link) or (link.lower() == "na"):
         print('Error candidates link cannot be empty : found in section %s' % section)
+        sys.exit(0)
+    if " - " not in link:
+        print('Error candidates link value must contain " - " : found in section %s' % section)
         sys.exit(0)
 
 def check_candidates_file(driver):
@@ -254,6 +257,7 @@ def check_candidates_file(driver):
                 sys.exit(0)
             else:
                 unique_values.add(value)
+                #FIXME can also add reverse link
 
     #check exclusion between max-investment and (max-units, unit-size) attributes
     for each_section in ini_file.sections():
@@ -316,7 +320,7 @@ def check_constraint_name(name, section):
     """
         checks that the exclusion constraint's name is not empty and does not contain a space
     """
-    if (not name) or (name == "NA"):
+    if (not name) or (name.lower() == "na"):
         print('Error exclusion constraint name cannot be empty : found in section %s' % section)
         sys.exit(0)
     if ' ' in name:
