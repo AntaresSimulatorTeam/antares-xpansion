@@ -29,6 +29,9 @@ BendersOptions build_benders_options(int argc, char** argv) {
 *  \param summary_name : name of the structure file
 *
 *  \param coupling_map : empty map to increment
+*
+*  \note The id in the coupling_map is that of the variable in the solver responsible for the creation of
+*  the structure file.
 */
 int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
 	coupling_map.clear();
