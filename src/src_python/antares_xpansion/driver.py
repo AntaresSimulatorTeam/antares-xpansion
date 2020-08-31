@@ -186,7 +186,7 @@ class XpansionDriver():
             max_iterations_str = options['max_iteration']
             assert not '%' in  max_iterations_str
             print('max_iterations_str :', max_iterations_str)
-            return float(max_iterations_str) if max_iterations_str != '+Inf' else -1
+            return float(max_iterations_str) if ( (max_iterations_str != '+Inf') and (max_iterations_str != '+infini') )  else -1
         assert False
 
     def nb_years(self):
