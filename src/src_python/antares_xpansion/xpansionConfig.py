@@ -23,7 +23,7 @@ class XpansionConfig():
         else:
             print("WARN: No mpi launcher was defined!")
 
-        self.MPI_N_PROCESSES = 4
+        self.MPI_N_PROCESSES = "4"
 
         self.ANTARES = 'antares-7.0-solver'
         self.SETTINGS = 'settings'
