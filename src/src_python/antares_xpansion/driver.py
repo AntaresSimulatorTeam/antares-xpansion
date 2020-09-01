@@ -138,7 +138,8 @@ class XpansionDriver():
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
                  for line in file_l.readlines()})
-            uc_type = options[self.config.UC_TYPE]
+            uc_type = options.get(self.config.UC_TYPE,
+                                  self.config.settings_default[self.config.UC_TYPE])
             assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
             return uc_type == self.config.EXPANSION_ACCURATE
         assert False
@@ -152,7 +153,8 @@ class XpansionDriver():
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
                  for line in file_l.readlines()})
-            relaxation_type = options['master']
+            relaxation_type = options.get('master',
+                                          self.config.settings_default["master"])
             assert relaxation_type in ['integer', 'relaxed', 'full_integer']
             return relaxation_type == 'relaxed'
         assert False
@@ -167,7 +169,8 @@ class XpansionDriver():
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
                  for line in file_l.readlines()})
-            optimality_gap_str = options['optimality_gap']
+            optimality_gap_str = options.get('optimality_gap',
+                                             self.config.settings_default["optimality_gap"])
             assert not '%' in  optimality_gap_str
             print('optimality_gap_str :', optimality_gap_str)
             return float(optimality_gap_str) if optimality_gap_str != '-Inf' else 0
@@ -183,7 +186,8 @@ class XpansionDriver():
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
                  for line in file_l.readlines()})
-            max_iterations_str = options['max_iteration']
+            max_iterations_str = options.get('max_iteration',
+                                             self.config.settings_default["max_iteration"])
             assert not '%' in  max_iterations_str
             print('max_iterations_str :', max_iterations_str)
             return float(max_iterations_str) if ( (max_iterations_str != '+Inf') and (max_iterations_str != '+infini') )  else -1

@@ -91,3 +91,15 @@ class XpansionConfig():
             'CSV_NAME': 'benders_output_trace',
             'BOUND_ALPHA': '1',
         }
+
+        self.settings_default = {'method' : 'benders_decomposition',
+                      'uc_type' : 'expansion_fast',
+                      'master' : 'integer',
+                      'optimality_gap' : '0',
+                      'cut_type' : 'yearly',
+                      'week_selection' : 'false',
+                      'max_iteration' : '+infini',
+                      'relaxed_optimality_gap' : '0.01',
+                      'solver' : 'Cbc',
+                      'timelimit' : '+infini',
+                      'additional-constraints' : ""}

@@ -500,18 +500,6 @@ def check_settings_file(driver):
             {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
              for line in file_l.readlines()})
 
-    #TODO stil unused : force these values if needed
-    default_values = {'method' : 'benders_decomposition',
-                      'uc_type' : 'expansion_fast',
-                      'master' : 'integer',
-                      'optimality_gap' : '0',
-                      'cut_type' : 'yearly',
-                      'week_selection' : 'false',
-                      'max_iteration' : '+infini',
-                      'relaxed_optimality_gap' : '0.01',
-                      'solver' : 'Cbc',
-                      'timelimit' : '+infini'}
-
     for (option, value) in options.items():
         if not check_setting_option_type(option, value):
             print("check_settings : value %s for option %s has the wrong type!" % (value, option))
