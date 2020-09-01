@@ -33,8 +33,6 @@ class XpansionDriver():
         self.candidates_list = []
 
         self.check_candidates()
-        if self.args.c:
-            self.check_candidatesexclusion()
         self.check_settings()
 
         print(self.candidates_list)
@@ -91,13 +89,6 @@ class XpansionDriver():
         """
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
                                              self.config.EXPANSION, self.config.CANDIDATES_INI))
-
-    def exclusions(self):
-        """
-            returns path to candidates exclusions ini file
-        """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
-                                             self.config.EXPANSION, self.args.c))
 
     def capacity_file(self, filename):
         """
@@ -193,6 +184,23 @@ class XpansionDriver():
             return float(max_iterations_str) if ( (max_iterations_str != '+Inf') and (max_iterations_str != '+infini') )  else -1
         assert False
 
+    def additional_constraints(self):
+        """
+            returns path to additional constraints file
+        """
+        with open(self.settings(), 'r') as file_l:
+            options = dict(
+                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
+                 for line in file_l.readlines()})
+
+            additional_constraints_filename = options.get("additional-constraints",
+                                                self.config.settings_default["additional-constraints"])
+
+            if additional_constraints_filename == "" :
+                return ""
+            return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
+                                            self.config.EXPANSION, additional_constraints_filename))
+
     def nb_years(self):
         """
             returns the nubyears parameter value read from the general data file
@@ -259,21 +267,6 @@ class XpansionDriver():
             sys.exit(0)
 
         check_candidates_file(self)
-
-    def check_candidatesexclusion(self):
-        """
-            checks that candidates exclusions file has correct format
-        """
-        #check file existence
-        if not os.path.isfile(self.exclusions()):
-            print('Missing file : %s was not retrieved.' % self.exclusions())
-            sys.exit(0)
-
-        if os.path.getsize(self.exclusions()) == 0:
-            print('Invalid file : %s is empty.' % self.exclusions())
-            sys.exit(0)
-
-        check_candidatesexclusion_file(self)
 
     def check_settings(self):
         """
@@ -394,9 +387,7 @@ class XpansionDriver():
 
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
-            lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed
-            if self.args.c:
-                lp_cmd += " " + self.exclusions()
+            lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed +" "+ self.additional_constraints()
             subprocess.call(lp_cmd,
                             shell=True,
                             stdout=output_file,

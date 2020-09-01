@@ -340,7 +340,7 @@ def check_candidatesexclusion_file(driver):
                       'name-candidate1' : 'NA',
                       'name-candidate2' : 'NA'}
     ini_file = configparser.ConfigParser(default_values)
-    ini_file.read(driver.exclusions())
+    ini_file.read(driver.additional_constraints())
 
     #check names unicity and candidates existence
     unique_names = set()
@@ -390,7 +390,8 @@ def check_setting_option_type(option, value):
                      'relaxed_optimality_gap' : 'string',
                      'solver' : 'string',
                      'timelimit' : 'integer',
-                     'yearly_weights' : 'string'}
+                     'yearly_weights' : 'string',
+                     'additional-constraints' : 'string',}
     option_type = options_types.get(option)
     if option_type is None:
         print('check_setting_option_type: Illegal %s option in candidates file.' % option)
@@ -439,10 +440,13 @@ def check_setting_option_value(option, value):
                             'relaxed_optimality_gap' : None,
                             'solver' : ['Cplex', 'Xpress', 'Cbc', 'Sirius', 'Gurobi', 'GLPK'],
                             'timelimit' : None,
-                            'yearly_weights' : None}
+                            'yearly_weights' : None,
+                            'additional-constraints' : None}
     legal_values = options_legal_values.get(option)
 
-    if (legal_values is not None) and (value in legal_values):
+    skip_verif = ["yearly_weights", "additional-constraints"]
+
+    if ( (legal_values is not None) and (value in legal_values) ) or ( option in skip_verif ):
         return True
 
     if option == 'optimality_gap':
@@ -511,3 +515,12 @@ def check_settings_file(driver):
             print("check_settings : yearly_weights option can not be used when cut_type is average")
             sys.exit(0)
         check_weights_file(driver.weights_file(options.get('yearly_weights', "")))
+
+    if options.get('additional-constraints', "") != "":
+        additional_constraints_path = driver.additional_constraints()
+        if not os.path.isfile(additional_constraints_path):
+            print('Illegal value: %s is not an existent additional-constraints file'
+                % additional_constraints_path)
+            sys.exit(0)
+
+        check_candidatesexclusion_file(driver)
