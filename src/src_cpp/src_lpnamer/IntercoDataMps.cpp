@@ -576,28 +576,3 @@ bool Candidates::checkArea(std::string const & areaName_p) const
 	bool found_l = std::find(Candidates::area_names.cbegin(), Candidates::area_names.cend(), areaName_p) != Candidates::area_names.cend();
 	return found_l;
 }
-
-std::set<std::string> ExclusionConstraints::str_fields = std::set<std::string>({
-	"name",
-	"name-candidate1",
-	"name-candidate2"
-	});
-
-/**
- * \brief Construct ExclusionConstraints from an exclusions constraints file
- *
- * \param exclusions_inifile_path String path to the ini file defining the constraints
- */
-ExclusionConstraints::ExclusionConstraints(std::string  const & exclusions_inifile_path)
-{
-	INIReader reader(exclusions_inifile_path.c_str());
-	std::stringstream ss;
-	std::set<std::string> sections = reader.Sections();
-	for (auto const & exclusionSection : sections) {
-		std::string constraintName = reader.Get(exclusionSection, "name", "NA");
-		std::string nameCandidate1 = reader.Get(exclusionSection, "name-candidate1", "NA");
-		std::string nameCandidate2 = reader.Get(exclusionSection, "name-candidate2", "NA");
-
-		(*this)[constraintName] = std::make_pair(nameCandidate1, nameCandidate2);
-	}
-}

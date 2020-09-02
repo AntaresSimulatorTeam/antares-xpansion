@@ -276,8 +276,8 @@ int main(int argc, char** argv) {
 		std::exit(0);
 	}
 
-	std::string const exclusions_inifile_name = (argc > 3) ? argv[3] : "";
-	AdditionalConstraints additionalConstraints = (argc > 3) ? AdditionalConstraints(exclusions_inifile_name) : AdditionalConstraints();
+	std::string const additionalConstraintFilename_l = (argc > 3) ? argv[3] : "";
+	AdditionalConstraints additionalConstraints = (argc > 3) ? AdditionalConstraints(additionalConstraintFilename_l) : AdditionalConstraints();
 
 	std::map< std::pair<std::string, std::string>, int> couplings;
 	candidates.treatloop(root, couplings);
