@@ -75,6 +75,7 @@ struct AdditionalConstraints : public std::map<std::string, AdditionalConstraint
 private:
 	//set of variables to which a binary corresponding variable will be created
     std::map<std::string, std::string> _variablesToBinarise;
+    std::set<std::string> _binaryVariables;
 
 public:
 	AdditionalConstraints() {

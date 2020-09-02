@@ -59,6 +59,11 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
 
 void AdditionalConstraints::addVariableToBinarise(std::string oldVarName_p, std::string binVarName_p)
 {
+    if(!_binaryVariables.insert(binVarName_p).second)
+    {
+        std::cout << "Duplicate Binary variable name: " << binVarName_p << " was already added.\n";
+        std::exit(0);
+    }
     _variablesToBinarise[oldVarName_p] = binVarName_p;
 }
 
