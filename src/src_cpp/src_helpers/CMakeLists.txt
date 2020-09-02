@@ -2,27 +2,36 @@
 # CMake configuration
 # ===========================================================================
 
-cmake_minimum_required (VERSION 3.14.0)
-
 # ===========================================================================
 # External requirements
+# ===========================================================================
+
+# ===========================================================================
+# Targets
 # ===========================================================================
 
 # --------------------------------------------------------------------------
 # unit tests
 # --------------------------------------------------------------------------
-set (FILES_SRCS
+
+add_library (helpers STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ortools_utils.cc
 	)
 
-add_library (helpers STATIC ${FILES_SRCS})
+if (NOT ORTOOLS_RECENT)
+	target_add_definitions (helpers
+		PRIVATE
+			ORTOOLS_PRE_V71
+	)
+endif ()
 
 target_include_directories (helpers
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
 		${ORTOOLS_INCLUDE_DIRS}
-	)
+)
 
-target_link_libraries (helpers PUBLIC
+target_link_libraries (helpers 
+	PUBLIC
 		ortools
-	)
+)

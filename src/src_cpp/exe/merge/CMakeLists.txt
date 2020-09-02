@@ -1,20 +1,21 @@
 # ===========================================================================
 # CMake configuration
 # ===========================================================================
-CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 
+# ===========================================================================
+# Targets
+# ===========================================================================
 
 # ---------------------------------------------------------------------------
 # Merge MPS Exe
 # ---------------------------------------------------------------------------
 
-SET(MERGE_FILES
+add_executable (merge_mps
 	${CMAKE_CURRENT_SOURCE_DIR}/merge_mps.cpp
 )
 
-ADD_EXECUTABLE(merge_mps ${MERGE_FILES})
-TARGET_LINK_LIBRARIES(merge_mps 
+target_link_libraries (merge_mps 
 	PUBLIC
-        ${PROJECT_NAME}::sequentialcore
+		${PROJECT_NAME}::sequentialcore
 		helpers
 )
