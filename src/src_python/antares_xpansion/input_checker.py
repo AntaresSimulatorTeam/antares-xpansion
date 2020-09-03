@@ -187,10 +187,11 @@ def check_candidate_name(name, section):
     if (not name) or (name.lower() == "na"):
         print('Error candidates name cannot be empty : found in section %s' % section)
         sys.exit(0)
-    if ' ' in name:
-        print('Error candidates name should not contain space, found in section %s in "%s"'
-              % (section, name))
-        sys.exit(0)
+    illegal_chars = " \n\r\t\f\v-+=:[]()"
+    for c in illegal_chars:
+        if c in name:
+            print('Error candidates name should not contain %s, found in section %s in "%s"' % (c, section, name))
+            sys.exit(0)
 
 def check_candidate_link(link, section):
     """

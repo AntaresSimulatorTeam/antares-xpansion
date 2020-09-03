@@ -459,10 +459,10 @@ class XpansionDriver():
         # computing the weight of slaves
         options_values = self.config.options_default
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_years())
-        options_values["GAP"] = self.optimality_gap()
-        options_values["MAX_ITERATIONS"] = self.max_iterations()
         print('Number of years is {}, setting SLAVE_WEIGHT_VALUE to {} '.
               format(self.nb_years(), options_values["SLAVE_WEIGHT_VALUE"]))
+        options_values["GAP"] = self.optimality_gap()
+        options_values["MAX_ITERATIONS"] = self.max_iterations()
         # generate options file for the solver
         options_path = os.path.normpath(os.path.join(output_path, 'lp', self.config.OPTIONS_TXT))
         with open(options_path, 'w') as options_file:
