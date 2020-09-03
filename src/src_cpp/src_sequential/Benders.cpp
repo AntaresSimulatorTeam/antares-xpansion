@@ -105,14 +105,13 @@ void Benders::run(std::ostream & stream) {
 		++_data.it;
 		LOG(INFO) << "ITERATION " << _data.it << " :" << std::endl;
 
+		//log master for debug
+		ORTwritelp(*(_master->_solver), "log_master"+std::to_string(_data.it)+".lp");
 		LOG(INFO) << "\tSolving master..." << std::endl;
 
 		get_master_value(_master, _data, _options);
 
 		LOG(INFO) << "\tmaster solved in "<< _data.timer_master << "." << std::endl;
-
-		//log master for debug
-		ORTwritelp(*(_master->_solver), "log_master"+std::to_string(_data.it)+".lp");
 
 		LOG(INFO) << "\t\tCandidates:" << std::endl;
 		for(auto pairVarnameValue : _data.x0)
