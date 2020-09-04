@@ -129,6 +129,8 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
  * @param mstart_p : Integer array of containing the offsets in the mclind_p and dmatval_p arrays of the start of the elements for each row.
  * @param mclind_p : Integer array of containing the (contiguous) column indices for the elements in each row.
  * @param dmatval_p : Double array of containing the (contiguous) element values.
+ *
+ * @note ignores non-binding rows
  */
 void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> const &  qrtype_p, std::vector<double>  const & rhs_p, std::vector<double>  const & range_p, std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p);
 
@@ -179,6 +181,9 @@ void ORTgetrowtype(operations_research::MPSolver const & solver_p, std::vector<c
  *      This is the lb for >= constraints, the ub for <= and R constraints.
  * @param first_p : First row in the range.
  * @param last_p : Last row in the range
+ *
+ * @note if the constraint is a range, returns the ub.
+ * @note if the constraint is unbound, still returns the ub i.e. solver's +inf.
  */
 void ORTgetrhs(operations_research::MPSolver const & solver_p, std::vector<double> & rhs_p, int first_p, int last_p);
 
@@ -204,6 +209,8 @@ void ORTgetrhsrange(operations_research::MPSolver const & solver_p, std::vector<
  * @param bdu_p : will be filled with the upper bounds of the columns in the specified range:
  * @param first_p : First column in the range.
  * @param last_p : Last column in the range
+ *
+ * @note return 'I' if the variable is binary or integer and it was fixed
  */
 void ORTgetcolinfo(operations_research::MPSolver const & solver_p, std::vector<char> & coltype_p, std::vector<double> & bdl_p, std::vector<double> & bdu_p, int first_p, int last_p);
 
