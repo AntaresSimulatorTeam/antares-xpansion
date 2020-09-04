@@ -415,6 +415,9 @@ class XpansionDriver():
             mergemps_lp_log = "log_merged.lp"
             if os.path.isfile(mergemps_lp_log):
                 os.remove(mergemps_lp_log)
+            mergemps_mps_log = "log_merged.mps"
+            if os.path.isfile(mergemps_mps_log):
+                os.remove(mergemps_lp_log)
         elif self.args.method == "sequential":
             solver = self.config.BENDERS_SEQUENTIAL
         elif self.args.method == "both":

@@ -146,24 +146,24 @@ int main(int argc, char** argv)
 	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
 
 	LOG(INFO) << "Problems merged." << std::endl;
+	std::cout << "Writting mps file" << std::endl;
+	ORTwritelp(mergedSolver_l, "log_merged.mps");
+	std::cout << "Writting lp file" << std::endl;
 	ORTwritelp(mergedSolver_l, "log_merged.lp");
 
-	//std::cout << "Writting mps file" << std::endl;
-	//XPRSwriteprob(full, "full.mps", "");
-	//std::cout << "Writting lp file" << std::endl;
-	//XPRSwriteprob(full, "full.lp", "l");
-	std::cout << "Solving" << std::endl;
-	LOG(INFO) << "Solving..." << std::endl;
 	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
 	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
 	// XPRSlpoptimize(full, "-b");
 	mergedSolver_l.SetNumThreads(16);
 
-	jsonWriter_l.updateEndTime();
+	std::cout << "Solving" << std::endl;
+	LOG(INFO) << "Solving..." << std::endl;
 	Timer timer;
 	int status_l = mergedSolver_l.Solve();
 	std::cout << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
 	LOG(INFO) << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
+
+	jsonWriter_l.updateEndTime();
 
 	Point x0;
 	DblVector ptr;
