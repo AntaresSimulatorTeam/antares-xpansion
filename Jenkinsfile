@@ -58,6 +58,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									-D antaresXpansion_WITH_COVERAGE=${config.containsKey('testSteps') && config.testSteps.contains('coverage') ? 'ON' : 'OFF'}
 									-D BUILD_DOC=ON
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
+									-D USE_MPI=TRUE
 								""",
 								generator: "${env.CMakeGenerator}",
 								installation: "3.14.0 (jenkins)",

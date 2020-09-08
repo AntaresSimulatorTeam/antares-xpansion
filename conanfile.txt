@@ -1,9 +1,11 @@
 [requires]
 #openmpi/3.0.0@bincrafters/stable
-#boost_mpi/1.66.0@bincrafters/stable
-#boost_serialization/1.66.0@bincrafters/stable
 jsoncpp/1.9.0@theirix/stable
 ortools/7.0@eurodecision/stable
+boost/1.72.0@eurodecision/testing
+
+[options]
+boost:without_mpi=False
 
 [build_requires]
 gtest/1.8.1@bincrafters/stable

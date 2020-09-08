@@ -29,7 +29,7 @@ namespace
 
 }
 
-std::string AdditionalConstraintsReader::illegal_chars = " \n\r\t\f\v-+=:[]";
+std::string AdditionalConstraintsReader::illegal_chars = " \n\r\t\f\v-+=:[]()";
 
 void AdditionalConstraintsReader::processSectionLine()
 {
@@ -75,13 +75,7 @@ void AdditionalConstraintsReader::processEntryLine()
     size_t illegalCharIndex_l = attribute_l.find_first_of(AdditionalConstraintsReader::illegal_chars);
     if( illegalCharIndex_l != std::string::npos)
     {
-        std::cout << "line " << _lineNb << " : Illegal character " << attribute_l[illegalCharIndex_l] << " in attribute name!\n";
-        std::exit(0);
-    }
-    illegalCharIndex_l = value_l.find_first_of(AdditionalConstraintsReader::illegal_chars);
-    if( illegalCharIndex_l != std::string::npos)
-    {
-        std::cout << "line " << _lineNb << " : Illegal character " << value_l[illegalCharIndex_l] << " in value!\n";
+        std::cout << "line " << _lineNb << " : Illegal character '" << attribute_l[illegalCharIndex_l] << "' in attribute name!\n";
         std::exit(0);
     }
 
@@ -92,6 +86,16 @@ void AdditionalConstraintsReader::processEntryLine()
     }
     else
     {
+        if((attribute_l == "name") || (_section == "variables"))
+        {
+            illegalCharIndex_l = value_l.find_first_of(AdditionalConstraintsReader::illegal_chars);
+            if( illegalCharIndex_l != std::string::npos)
+            {
+                std::cout << "line " << _lineNb << " : Illegal character '" << value_l[illegalCharIndex_l] << "' in value!\n";
+                std::exit(0);
+            }
+        }
+
         if(attribute_l == "name")
         {
             _foundName = true;

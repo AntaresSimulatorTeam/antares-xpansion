@@ -6,6 +6,53 @@
 #include "ortools/linear_solver/linear_solver.pb.h"
 #include "ortools/linear_solver/model_exporter.h"
 
+
+namespace
+{
+//convert ortools status into an XPRSgetbasis like result value
+/**
+ * row status :
+ *   0 : slack, surplus or artificial is non-basic at lower bound;
+ *   1 : slack, surplus or artificial is basic;
+ *   2 : slack or surplus is non-basic at upper bound.
+ *   3 : slack or surplus is super-basic.
+ * column status
+ *   0 : variable is non-basic at lower bound, or superbasic at zero if the variable has no lower bound;
+ *   1 : variable is basic;
+ *   2 : variable is non-basic at upper bound;
+ *   3 : variable is super-basic.
+*/
+    int basisStatusToInt(operations_research::MPSolver::BasisStatus basisStatus_l)
+    {
+        switch(basisStatus_l)
+        {
+            case operations_research::MPSolver::FREE :
+            {
+                return 3;
+            }
+            case operations_research::MPSolver::AT_LOWER_BOUND :
+            {
+                return 0;
+            }
+            case operations_research::MPSolver::AT_UPPER_BOUND :
+            {
+                return 2;
+            }
+            case operations_research::MPSolver::FIXED_VALUE :
+            {
+                return 0; //actually this means 0 and 2 at the same time
+            }
+            case operations_research::MPSolver::BASIC :
+            {
+                return 1;
+            }
+            default:
+                std::cerr << "\nbasisStatusToInt: Unknown basis status : " << basisStatus_l << "!\n";
+                return 3;
+        }
+    }
+}
+
 operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSolver & solver_p, std::string const & filename_p)
 {
     solver_p.Clear();
@@ -35,7 +82,7 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
         return status;
     }
 
-    std::cerr << "MPS file " << filename_p << " was not found!";
+    std::cerr << "MPS file " << filename_p << " was not found!\n";
     return operations_research::MPSOLVER_MODEL_INVALID;
 }
 
@@ -84,7 +131,11 @@ void ORTdescribe(operations_research::MPSolver const & solver_p, std::ostringstr
 }
 
 
-void ORTgetrows(operations_research::MPSolver const & solver_p, std::vector<int> & mstart_p, std::vector<int> & mclind_p, std::vector<double> & dmatval_p, int first_p, int last_p)
+void ORTgetrows(operations_research::MPSolver const & solver_p,
+                std::vector<int> & mstart_p,
+                std::vector<int> & mclind_p,
+                std::vector<double> & dmatval_p,
+                int first_p, int last_p)
 {
     mstart_p.clear();
     mclind_p.clear();
@@ -95,12 +146,15 @@ void ORTgetrows(operations_research::MPSolver const & solver_p, std::vector<int>
     {
         operations_research::MPConstraint* constraint_l(*itConstraint_l);
         mstart_p.push_back(ind);
-        for(auto termVarVal : constraint_l->terms())
-        {
-            mclind_p.push_back(termVarVal.first->index());
-            dmatval_p.push_back(termVarVal.second);
-            ++ind;
-        }
+
+        std::for_each(constraint_l->terms().begin(), constraint_l->terms().end(),
+                        [&ind, &mclind_p, &dmatval_p]
+                        (std::pair<const operations_research::MPVariable*, double> const & termVarVal_p){
+                            mclind_p.push_back(termVarVal_p.first->index());
+                            dmatval_p.push_back(termVarVal_p.second);
+                            ++ind;
+                        });
+
     }
 }
 
@@ -128,23 +182,30 @@ void ORTgetobj(operations_research::MPSolver const & solver_p, std::vector<doubl
 {
     obj_p.clear();
 
-	operations_research::MPObjective const & objective_l(solver_p.Objective());
-	auto mapVarCoeff = objective_l.terms();
-	for(auto itVariable_l(solver_p.variables().cbegin()+first_p), itVariableEnd_l(solver_p.variables().cbegin()+last_p+1) ; itVariable_l!=itVariableEnd_l ; ++itVariable_l)
-	{
-		auto it_l = mapVarCoeff.find(*itVariable_l);
-		if ( it_l != mapVarCoeff.end() )
-		{
-			obj_p.push_back(it_l->second);
-		}
-		else
-		{
-			obj_p.push_back(0);
-		}
-	}
+	auto const & mapVarCoeff = solver_p.Objective().terms();
+    std::transform(solver_p.variables().cbegin()+first_p, solver_p.variables().cbegin()+last_p+1,
+                    std::back_inserter(obj_p),
+                    [&mapVarCoeff](operations_research::MPVariable * const variable_p) -> double{
+                        auto it_l = mapVarCoeff.find(variable_p);
+                        if ( it_l != mapVarCoeff.end() )
+                        {
+                            return it_l->second;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    });
 }
 
-void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> const & objx_p, std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p, std::vector<double> const & bdl_p, std::vector<double> const & bdu_p, std::vector<char> const & colTypes_p, std::vector<std::string> const & colNames_p)
+void ORTaddcols(operations_research::MPSolver & solver_p,
+                std::vector<double> const & objx_p,
+                std::vector<int> const & mstart_p,
+                std::vector<int> const & mrwind_p,
+                std::vector<double> const & dmatval_p,
+                std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
+                std::vector<char> const & colTypes_p,
+                std::vector<std::string> const & colNames_p)
 {
 	assert(objx_p.size() != 0);
     assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
@@ -247,13 +308,14 @@ void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> cons
                 }
                 else
                 {
-                    std::cerr << "negative range values are not handled!";
+                    std::cerr << "ORTaddrows: negative range values are not handled!\n";
                 }
                 break;
 			}
 			case 'N':
 			{
-				continue;//ignore non-binding rows
+				std::cout << "ORTaddrows: ignoring non-binding row " << row_l << ".\n";
+                continue;//ignore non-binding rows
                 break;
 			}
 			default:
@@ -284,259 +346,191 @@ void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> cons
 	}
 }
 
-// void ORTgetlpsol(operations_research::MPSolver const & solver_p, std::vector<double> & x_p, std::vector<double> & dual_p, std::vector<double> & dj_p)
-// {
-//     x_p.clear();
-//     dual_p.clear();
-//     dj_p.clear();
-
-// 	const std::vector<operations_research::MPVariable*> & variables_l = solver_p.variables();
-// 	for(operations_research::MPVariable* var_l : solver_p.variables())
-// 	{
-// 		x_p.push_back(var_l->solution_value());
-// 		dj_p.push_back(var_l->reduced_cost());
-// 	}
-// 	for(operations_research::MPConstraint* constraint_l : solver_p.constraints())
-// 	{
-// 		dual_p.push_back(constraint_l->dual_value());
-// 	}
-
-// }
-
 void ORTgetlpsolution(operations_research::MPSolver const & solver_p, std::vector<double> & x_p)
 {
     x_p.clear();
 
 	const std::vector<operations_research::MPVariable*> & variables_l = solver_p.variables();
-	for(operations_research::MPVariable* var_l : solver_p.variables())
-	{
-		x_p.push_back(var_l->solution_value());
-	}
+	std::transform(variables_l.begin(), variables_l.end(),
+                   std::back_inserter(x_p),
+                   [](operations_research::MPVariable * const var_l) -> double{
+                       return var_l->solution_value();
+                   });
 }
 
 void ORTgetlpdual(operations_research::MPSolver const & solver_p, std::vector<double> & dual_p)
 {
     dual_p.clear();
 
-	for(operations_research::MPConstraint* constraint_l : solver_p.constraints())
-	{
-		dual_p.push_back(constraint_l->dual_value());
-	}
+	const std::vector<operations_research::MPConstraint*> & constraints_l = solver_p.constraints();
+    std::transform(constraints_l.begin(), constraints_l.end(),
+                   std::back_inserter(dual_p),
+                   [](operations_research::MPConstraint * const cstr_l) -> double{
+                       return cstr_l->dual_value();
+                   });
 }
 
 void ORTgetlpreducedcost(operations_research::MPSolver const & solver_p, std::vector<double> & dj_p)
 {
     dj_p.clear();
 
-	const std::vector<operations_research::MPVariable*> & variables_l = solver_p.variables();
-	for(operations_research::MPVariable* var_l : solver_p.variables())
-	{
-		dj_p.push_back(var_l->reduced_cost());
-	}
+    const std::vector<operations_research::MPVariable*> & variables_l = solver_p.variables();
+	std::transform(variables_l.begin(), variables_l.end(),
+                   std::back_inserter(dj_p),
+                   [](operations_research::MPVariable * const var_l) -> double{
+                        return var_l->reduced_cost();
+                   });
 }
 
 void ORTgetrowtype(operations_research::MPSolver const & solver_p, std::vector<char> & qrtype_p, int first_p, int last_p)
 {
     qrtype_p.clear();
 
-    for(auto itConstraint_l(solver_p.constraints().cbegin()+first_p), itConstraintEnd_l(solver_p.constraints().cbegin()+last_p+1) ; itConstraint_l!=itConstraintEnd_l ; ++itConstraint_l)
-    {
-        operations_research::MPConstraint* constraint_l(*itConstraint_l);
-
-        if( (constraint_l->lb() == -solver_p.infinity()) && (constraint_l->ub() == solver_p.infinity()) )
-        {
-            qrtype_p.push_back('N');
-        }
-        if( constraint_l->lb() == -solver_p.infinity() )
-        {
-            qrtype_p.push_back('L');
-        }
-        else if ( constraint_l->ub() == solver_p.infinity())
-        {
-            qrtype_p.push_back('G');
-        }
-        else if ( constraint_l->lb() == constraint_l->ub() )
-        {
-            qrtype_p.push_back('E');
-        }
-        else
-        {
-            //TODO : we assume that the RHS for ranges is the ub : verify consistency with xpress results
-            qrtype_p.push_back('R');
-        }
-    }
+    std::transform(solver_p.constraints().cbegin()+first_p, solver_p.constraints().cbegin()+last_p+1,
+                   std::back_inserter(qrtype_p),
+                   [&solver_p](operations_research::MPConstraint * const cstr_l) -> char{
+                        if( (cstr_l->lb() == -solver_p.infinity()) && (cstr_l->ub() == solver_p.infinity()) )
+                        {
+                            return 'N';
+                        }
+                        if( cstr_l->lb() == -solver_p.infinity() )
+                        {
+                            return 'L';
+                        }
+                        else if ( cstr_l->ub() == solver_p.infinity())
+                        {
+                            return 'G';
+                        }
+                        else if ( cstr_l->lb() == cstr_l->ub() )
+                        {
+                            return 'E';
+                        }
+                        else
+                        {
+                            return 'R';
+                        }
+                   });
 }
 
 void ORTgetrhs(operations_research::MPSolver const & solver_p, std::vector<double> & rhs_p, int first_p, int last_p)
 {
     rhs_p.clear();
 
-    for(auto itConstraint_l(solver_p.constraints().cbegin()+first_p), itConstraintEnd_l(solver_p.constraints().cbegin()+last_p+1) ; itConstraint_l!=itConstraintEnd_l ; ++itConstraint_l)
-    {
-        operations_research::MPConstraint* constraint_l(*itConstraint_l);
-
-        if( constraint_l->lb() == -solver_p.infinity() )
-        {
-            rhs_p.push_back(constraint_l->ub());
-        }
-        else if ( constraint_l->ub() == solver_p.infinity())
-        {
-            rhs_p.push_back(constraint_l->lb());
-        }
-        else if ( constraint_l->lb() == constraint_l->ub() )
-        {
-            rhs_p.push_back(constraint_l->lb());
-        }
-        else
-        {
-            //TODO : we assume that the RHS for ranges is the ub : verify consistency with xpress results
-            rhs_p.push_back(constraint_l->ub());
-        }
-    }
+    std::transform(solver_p.constraints().cbegin()+first_p, solver_p.constraints().cbegin()+last_p+1,
+                   std::back_inserter(rhs_p),
+                   [&solver_p](operations_research::MPConstraint * const cstr_l) -> double{
+                        if( cstr_l->lb() == -solver_p.infinity() )
+                        {
+                            return cstr_l->ub();
+                        }
+                        else if ( cstr_l->ub() == solver_p.infinity())
+                        {
+                            return cstr_l->lb();
+                        }
+                        else if ( cstr_l->lb() == cstr_l->ub() )
+                        {
+                            return cstr_l->lb();
+                        }
+                        else
+                        {
+                            //TODO : we assume that the RHS for ranges is the ub : verify consistency with xpress results
+                            return cstr_l->ub();
+                        }
+                   });
 }
 
 void ORTgetrhsrange(operations_research::MPSolver const & solver_p, std::vector<double> &  range_p, int first_p, int last_p)
 {
     range_p.clear();
 
-    for(auto itConstraint_l(solver_p.constraints().cbegin()+first_p), itConstraintEnd_l(solver_p.constraints().cbegin()+last_p+1) ; itConstraint_l!=itConstraintEnd_l ; ++itConstraint_l)
-    {
-        operations_research::MPConstraint* constraint_l(*itConstraint_l);
-
-        if( (constraint_l->lb() == -solver_p.infinity()) ||  ( constraint_l->ub() == solver_p.infinity()) )
-        {
-            range_p.push_back( solver_p.infinity() );
-        }
-        else if ( constraint_l->ub() == solver_p.infinity())
-        {
-            range_p.push_back( 0 );
-        }
-        else
-        {
-            range_p.push_back(constraint_l->ub() - constraint_l->lb());
-        }
-    }
+    std::transform(solver_p.constraints().cbegin()+first_p, solver_p.constraints().cbegin()+last_p+1,
+                   std::back_inserter(range_p),
+                   [&solver_p](operations_research::MPConstraint * const cstr_l) -> double{
+                        if( (cstr_l->lb() == -solver_p.infinity()) ||  ( cstr_l->ub() == solver_p.infinity()) )
+                        {
+                            return solver_p.infinity();
+                        }
+                        else
+                        {
+                            return (cstr_l->ub() - cstr_l->lb());
+                        }
+                   });
 }
 
 void ORTgetcolinfo(operations_research::MPSolver const & solver_p, std::vector<char> & coltype_p, std::vector<double> & bdl_p, std::vector<double> & bdu_p, int first_p, int last_p)
 {
     bdl_p.clear();
     bdu_p.clear();
+    coltype_p.clear();
 
-    for(auto itVariable_l(solver_p.variables().cbegin()+first_p), itVariableEnd_l(solver_p.variables().cbegin()+last_p+1) ; itVariable_l!=itVariableEnd_l ; ++itVariable_l)
-    {
-        operations_research::MPVariable* variable_l(*itVariable_l);
+    std::for_each(solver_p.variables().cbegin()+first_p, solver_p.variables().cbegin()+last_p+1,
+                    [&bdl_p, &bdu_p, &coltype_p](operations_research::MPVariable* const variable_l){
+                        bdl_p.push_back(variable_l->lb());
+                        bdu_p.push_back(variable_l->ub());
 
-        bdl_p.push_back(variable_l->lb());
-        bdu_p.push_back(variable_l->ub());
-
-        if(variable_l->integer())
-        {
-            if( variable_l->lb() == 0 && variable_l->ub()==1 )
-            {
-                coltype_p.push_back('B');
-            }
-            else
-            {
-                coltype_p.push_back('I');
-            }
-        }
-        else
-        {
-            coltype_p.push_back('C');
-        }
-    }
+                        if(variable_l->integer())
+                        {
+                            if( variable_l->lb() == 0 && variable_l->ub()==1 )
+                            {
+                                coltype_p.push_back('B');
+                            }
+                            else
+                            {
+                                coltype_p.push_back('I');
+                            }
+                        }
+                        else
+                        {
+                            coltype_p.push_back('C');
+                        }
+                    });
 }
 
 
-//@WARN does not delete the constraints simply remove the coeficients and bounds
+//@WARN does not delete the constraints simply removes the coeficients and bounds
 void ORTdeactivaterows(operations_research::MPSolver & solver_p, std::vector<int> const & mindex)
 {
     const std::vector<operations_research::MPConstraint*> & constraints_l = solver_p.constraints();
-    for(int rowInd_l : mindex)
-    {
-        operations_research::MPConstraint* constraint_l = constraints_l[rowInd_l];
-        constraint_l->SetBounds(-solver_p.infinity(), solver_p.infinity());
-        constraint_l->Clear();
-    }
+    std::for_each(mindex.begin(), mindex.end(),
+                    [&constraints_l, &solver_p](int rowInd_l){
+                        operations_research::MPConstraint* cstr_l = constraints_l[rowInd_l];
+                        cstr_l->SetBounds(-solver_p.infinity(), solver_p.infinity());
+                        cstr_l->Clear();
+                    });
 }
 
-namespace
-{
-//convert ortools status into an XPRSgetbasis like result value
-/**
- * row status :
- *   0 : slack, surplus or artificial is non-basic at lower bound;
- *   1 : slack, surplus or artificial is basic;
- *   2 : slack or surplus is non-basic at upper bound.
- *   3 : slack or surplus is super-basic.
- * column status
- *   0 : variable is non-basic at lower bound, or superbasic at zero if the variable has no lower bound;
- *   1 : variable is basic;
- *   2 : variable is non-basic at upper bound;
- *   3 : variable is super-basic.
-*/
-    int basisStatusToInt(operations_research::MPSolver::BasisStatus basisStatus_l)
-    {
-        switch(basisStatus_l)
-        {
-            case operations_research::MPSolver::FREE :
-            {
-                return 3;
-            }
-            case operations_research::MPSolver::AT_LOWER_BOUND :
-            {
-                return 0;
-            }
-            case operations_research::MPSolver::AT_UPPER_BOUND :
-            {
-                return 2;
-            }
-            case operations_research::MPSolver::FIXED_VALUE :
-            {
-                return 0; //actually this means 0 and 2 at the same time
-            }
-            case operations_research::MPSolver::BASIC :
-            {
-                return 1;
-            }
-            default:
-                std::cerr << "\nbasisStatusToInt: Unknown basis status : " << basisStatus_l << "!";
-                return 3;
-        }
-    }
-}
 
-//@WARN I suspect rstatus and cstatus are inversed in ortools xpressinterface implementation using XPRSgetbasis
+//@WARN rstatus and cstatus are inversed in ortools xpressinterface implementation using XPRSgetbasis, check if ortools fixed this issue if having bad results with xpress
 void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rstatus_p, std::vector<int> & cstatus_p)
 {
     //row status
-    for(auto constraint_l : solver_p.constraints())
-    {
-        operations_research::MPSolver::BasisStatus rowStatus_l = constraint_l->basis_status();
+    std::transform(solver_p.constraints().begin(), solver_p.constraints().end(),
+                    std::back_inserter(rstatus_p),
+                    [&solver_p](const operations_research::MPConstraint * const cstr_l) -> int{
+                            operations_research::MPSolver::BasisStatus rowStatus_l = cstr_l->basis_status();
 
-        if ((rowStatus_l == operations_research::MPSolver::AT_LOWER_BOUND) && (constraint_l->lb() == -solver_p.infinity()))
-        {
-            double cst_value = 0;
-            for(const auto & pairVarCoeff : constraint_l->terms())
-            {
-                cst_value += pairVarCoeff.second * pairVarCoeff.first->solution_value();
-            }
-            if(cst_value == constraint_l->ub())
-            {
-                rowStatus_l = operations_research::MPSolver::AT_UPPER_BOUND;
-            }
-        }
+                            if ((rowStatus_l == operations_research::MPSolver::AT_LOWER_BOUND) && (cstr_l->lb() == -solver_p.infinity()))
+                            {
+                                double cst_value = 0;
+                                for(const auto & pairVarCoeff : cstr_l->terms())
+                                {
+                                    cst_value += pairVarCoeff.second * pairVarCoeff.first->solution_value();
+                                }
+                                if(cst_value == cstr_l->ub())
+                                {
+                                    rowStatus_l = operations_research::MPSolver::AT_UPPER_BOUND;
+                                }
+                            }
 
-        rstatus_p.push_back(basisStatusToInt(rowStatus_l));
-    }
+                            return basisStatusToInt(rowStatus_l);
+                    });
 
     //column status
-    for(auto variable_l : solver_p.variables())
-    {
-        operations_research::MPSolver::BasisStatus colStatus_l = variable_l->basis_status();
-        cstatus_p.push_back(basisStatusToInt(colStatus_l));
-    }
+    std::transform(solver_p.variables().begin(), solver_p.variables().end(),
+                    std::back_inserter(cstatus_p),
+                    [](const operations_research::MPVariable * const variable_l) -> int{
+                        return basisStatusToInt(variable_l->basis_status());
+                    });
 }
 
 void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p)
@@ -566,7 +560,7 @@ void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> con
                 break;
             }
             default:
-                std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[cnt_l] << "!";
+                std::cerr << "\nORTchgbounds: Unknown bound type : " << qbtype_p[cnt_l] << "!\n";
         }
         ++cnt_l;
     }
@@ -577,7 +571,7 @@ void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operation
 {
     if (outSolver_p.ProblemType() != inSolver_p.ProblemType())
     {
-        std::cout << "\nWarn: copying solvers with different types!";
+        std::cout << "\nWarn: ORTcopyandrenamevars is copying solvers with different types!\n";
     }
 
     outSolver_p.Clear();
