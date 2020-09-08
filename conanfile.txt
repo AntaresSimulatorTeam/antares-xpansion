@@ -14,8 +14,8 @@ jsoncpp/1.9.3@
 # 7.4 is available on compil-debian9 and compil-win64-vc141
 # note that 7.1 and later need to have the ORTOOLS_RECENT
 # option set in CMake settings
-ortools/7.0@eurodecision/stable
-#ortools/7.4@eurodecision/stable
+#ortools/7.0@eurodecision/stable
+ortools/7.4@eurodecision/stable
 
 # boost
 # waiting for PR on MPI activation,
