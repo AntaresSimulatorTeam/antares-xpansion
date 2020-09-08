@@ -77,7 +77,7 @@ void BendersOptions::read(std::string const & file_name) {
 			}
 		}
 
-		//@FIXME force TRACE to true => For now used in json
+		//@FIXME force TRACE to true => trace is used in json
 		TRACE = true;
 	}
 	else {

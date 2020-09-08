@@ -314,59 +314,6 @@ def check_candidates_file(driver):
               % (driver.candidates(), driver.candidates()+".bak"))
 
 ##########################################
-# Checks related to exclusions.ini
-##########################################
-def check_constraint_name(name, section):
-    """
-        checks that the exclusion constraint's name is not empty and does not contain a space
-    """
-    if (not name) or (name.lower() == "na"):
-        print('Error exclusion constraint name cannot be empty : found in section %s' % section)
-        sys.exit(0)
-    if ' ' in name:
-        print('Error exclusion constraint name should not contain space,'
-              ' found in section %s in "%s"' % (section, name))
-        sys.exit(0)
-
-def check_candidatesexclusion_file(driver):
-    """
-        checks that a candidate exclusion file related to an XpansionDriver has the correct format
-
-        :param driver: the XpansionDriver pointing to the candidates file
-
-        :return: Exits if the candidates files has the wrong format.
-    """
-    default_values = {'name' : 'NA',
-                      'name-candidate1' : 'NA',
-                      'name-candidate2' : 'NA'}
-    ini_file = configparser.ConfigParser(default_values)
-    ini_file.read(driver.exclusions())
-
-    #check names unicity and candidates existence
-    unique_names = set()
-    for each_section in ini_file.sections():
-        name = ini_file[each_section]["name"].strip().lower()
-        check_constraint_name(name, each_section)
-        if name in unique_names:
-            print('Error candidates exclusion constraints names have to be unique,'
-                  ' duplicate name %s in section %s' % (name, each_section))
-            sys.exit(0)
-        else:
-            unique_names.add(name)
-
-        candidate1 = ini_file[each_section]["name-candidate1"].strip().lower()
-        if not candidate1 in driver.candidates_list:
-            print('check_candidatesexclusion_file: Unknown candidate %s in constraint %s.'
-                  % (candidate1, each_section))
-            sys.exit(0)
-        candidate2 = ini_file[each_section]["name-candidate2"].strip().lower()
-        if not candidate2 in driver.candidates_list:
-            print('check_candidatesexclusion_file: Unknown candidate %s in constraint %s.'
-                  % (candidate2, each_section))
-            sys.exit(0)
-
-
-##########################################
 # Checks related to settings.ini
 ##########################################
 def check_setting_option_type(option, value):
@@ -390,7 +337,8 @@ def check_setting_option_type(option, value):
                      'relaxed_optimality_gap' : 'string',
                      'solver' : 'string',
                      'timelimit' : 'integer',
-                     'yearly_weights' : 'string'}
+                     'yearly_weights' : 'string',
+                     'additional-constraints' : 'string',}
     option_type = options_types.get(option)
     if option_type is None:
         print('check_setting_option_type: Illegal %s option in candidates file.' % option)
@@ -439,10 +387,13 @@ def check_setting_option_value(option, value):
                             'relaxed_optimality_gap' : None,
                             'solver' : ['Cplex', 'Xpress', 'Cbc', 'Sirius', 'Gurobi', 'GLPK'],
                             'timelimit' : None,
-                            'yearly_weights' : None}
+                            'yearly_weights' : None,
+                            'additional-constraints' : None}
     legal_values = options_legal_values.get(option)
 
-    if (legal_values is not None) and (value in legal_values):
+    skip_verif = ["yearly_weights", "additional-constraints"]
+
+    if ( (legal_values is not None) and (value in legal_values) ) or ( option in skip_verif ):
         return True
 
     if option == 'optimality_gap':
@@ -500,18 +451,6 @@ def check_settings_file(driver):
             {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
              for line in file_l.readlines()})
 
-    #TODO stil unused : force these values if needed
-    default_values = {'method' : 'benders_decomposition',
-                      'uc_type' : 'expansion_fast',
-                      'master' : 'integer',
-                      'optimality_gap' : '0',
-                      'cut_type' : 'yearly',
-                      'week_selection' : 'false',
-                      'max_iteration' : '+infini',
-                      'relaxed_optimality_gap' : '0.01',
-                      'solver' : 'Cbc',
-                      'timelimit' : '+infini'}
-
     for (option, value) in options.items():
         if not check_setting_option_type(option, value):
             print("check_settings : value %s for option %s has the wrong type!" % (value, option))
@@ -523,3 +462,12 @@ def check_settings_file(driver):
             print("check_settings : yearly_weights option can not be used when cut_type is average")
             sys.exit(0)
         check_weights_file(driver.weights_file(options.get('yearly_weights', "")))
+
+    if options.get('additional-constraints', "") != "":
+        additional_constraints_path = driver.additional_constraints()
+        if not os.path.isfile(additional_constraints_path):
+            print('Illegal value: %s is not an existent additional-constraints file'
+                % additional_constraints_path)
+            sys.exit(0)
+
+        #additional constraints checks are achieved in the lpnamer itself while processing

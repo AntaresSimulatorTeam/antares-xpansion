@@ -19,6 +19,7 @@ enable_testing ()
 set (UNITTEST_SRCS
 	${CMAKE_CURRENT_SOURCE_DIR}/SimpleTest.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/ORToolsTest.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsTest.cc
 	)
 
 add_executable (unit_tests ${UNITTEST_SRCS})
@@ -37,6 +38,7 @@ target_link_libraries (unit_tests PRIVATE
 		${GTEST_BOTH_LIBRARIES}
 		ortools
 		helpers
+		lpnamer
 	)
 
 if(NOT NO_SEQUENTIAL)

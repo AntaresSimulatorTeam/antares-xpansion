@@ -11,7 +11,6 @@ import sys
 
 from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
-from antares_xpansion.input_checker import check_candidatesexclusion_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
 
 class XpansionDriver():
@@ -33,8 +32,6 @@ class XpansionDriver():
         self.candidates_list = []
 
         self.check_candidates()
-        if self.args.c:
-            self.check_candidatesexclusion()
         self.check_settings()
 
         print(self.candidates_list)
@@ -92,13 +89,6 @@ class XpansionDriver():
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
                                              self.config.EXPANSION, self.config.CANDIDATES_INI))
 
-    def exclusions(self):
-        """
-            returns path to candidates exclusions ini file
-        """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
-                                             self.config.EXPANSION, self.args.c))
-
     def capacity_file(self, filename):
         """
             returns path to input capacity file
@@ -138,7 +128,8 @@ class XpansionDriver():
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
                  for line in file_l.readlines()})
-            uc_type = options[self.config.UC_TYPE]
+            uc_type = options.get(self.config.UC_TYPE,
+                                  self.config.settings_default[self.config.UC_TYPE])
             assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
             return uc_type == self.config.EXPANSION_ACCURATE
         assert False
@@ -152,7 +143,8 @@ class XpansionDriver():
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
                  for line in file_l.readlines()})
-            relaxation_type = options['master']
+            relaxation_type = options.get('master',
+                                          self.config.settings_default["master"])
             assert relaxation_type in ['integer', 'relaxed', 'full_integer']
             return relaxation_type == 'relaxed'
         assert False
@@ -167,11 +159,46 @@ class XpansionDriver():
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
                  for line in file_l.readlines()})
-            optimality_gap_str = options['optimality_gap']
+            optimality_gap_str = options.get('optimality_gap',
+                                             self.config.settings_default["optimality_gap"])
             assert not '%' in  optimality_gap_str
             print('optimality_gap_str :', optimality_gap_str)
             return float(optimality_gap_str) if optimality_gap_str != '-Inf' else 0
         assert False
+
+    def max_iterations(self):
+        """
+            prints and returns the maximum iterations read from the settings file
+
+            :return: max iterations value or -1 if the parameter is is set to +Inf
+        """
+        with open(self.settings(), 'r') as file_l:
+            options = dict(
+                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
+                 for line in file_l.readlines()})
+            max_iterations_str = options.get('max_iteration',
+                                             self.config.settings_default["max_iteration"])
+            assert not '%' in  max_iterations_str
+            print('max_iterations_str :', max_iterations_str)
+            return float(max_iterations_str) if ( (max_iterations_str != '+Inf') and (max_iterations_str != '+infini') )  else -1
+        assert False
+
+    def additional_constraints(self):
+        """
+            returns path to additional constraints file
+        """
+        with open(self.settings(), 'r') as file_l:
+            options = dict(
+                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
+                 for line in file_l.readlines()})
+
+            additional_constraints_filename = options.get("additional-constraints",
+                                                self.config.settings_default["additional-constraints"])
+
+            if additional_constraints_filename == "" :
+                return ""
+            return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
+                                            self.config.EXPANSION, additional_constraints_filename))
 
     def nb_years(self):
         """
@@ -202,6 +229,8 @@ class XpansionDriver():
         elif self.args.step == "lp":
             if self.args.simulationName:
                 self.lp_step(self.args.simulationName)
+                output_path = os.path.normpath(os.path.join(self.antares_output(), self.args.simulationName))
+                self.set_options(output_path)
             else:
                 print("Missing argument simulationName")
                 sys.exit(0)
@@ -237,21 +266,6 @@ class XpansionDriver():
             sys.exit(0)
 
         check_candidates_file(self)
-
-    def check_candidatesexclusion(self):
-        """
-            checks that candidates exclusions file has correct format
-        """
-        #check file existence
-        if not os.path.isfile(self.exclusions()):
-            print('Missing file : %s was not retrieved.' % self.exclusions())
-            sys.exit(0)
-
-        if os.path.getsize(self.exclusions()) == 0:
-            print('Invalid file : %s is empty.' % self.exclusions())
-            sys.exit(0)
-
-        check_candidatesexclusion_file(self)
 
     def check_settings(self):
         """
@@ -372,9 +386,7 @@ class XpansionDriver():
 
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
-            lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed
-            if self.args.c:
-                lp_cmd += " " + self.exclusions()
+            lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed +" "+ self.additional_constraints()
             subprocess.call(lp_cmd,
                             shell=True,
                             stdout=output_file,
@@ -448,6 +460,7 @@ class XpansionDriver():
         options_values = self.config.options_default
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_years())
         options_values["GAP"] = self.optimality_gap()
+        options_values["MAX_ITERATIONS"] = self.max_iterations()
         print('Number of years is {}, setting SLAVE_WEIGHT_VALUE to {} '.
               format(self.nb_years(), options_values["SLAVE_WEIGHT_VALUE"]))
         # generate options file for the solver

@@ -134,7 +134,6 @@ Candidates::Candidates(std::string  const & ini_file) {
 }
 
 /**
- * \fn void getListOfIntercoCandidates(map<std::pair<std::string, std::string>, Candidate *> & key_paysor_paysex)
  * \brief fill a map of interconnection candidate using the pair of string origin country and destination country as a key
  *
  * \param key_paysor_paysex map of candidate using the pair of string origin country and destination country as a key
@@ -161,7 +160,6 @@ void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::stri
 }
 
 /**
- * \fn void readCstrfiles(std::string const filePath, std::list<std::string> & list, size_t & sizeList)
  * \brief Read constraints***.txt file and fill the list of constraints cstrList
  *
  * \param filePath String corresponding to the constraints***.txt file path
@@ -199,7 +197,6 @@ void Candidates::readCstrfiles(std::string const filePath,
 }
 
 /**
- * \fn void readVarfiles(std::string const filePath, std::list<std::string> & list, size_t & sizeList, std::map<int, std::vector<int> > & interco_data, std::map<std::vector<int>, int> & interco_id, map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex)
  * \brief Read variable***.txt file and fill the list of variables varList
  *
  * \param filePath String corresponding to the variable***.txt file path
@@ -281,7 +278,6 @@ void Candidates::readVarfiles(std::string const filePath,
 
 
 /**
- * \fn void createMpsFileAndFillCouplings()
  * \brief This function redefine the optimization problem with new variables
  *
  * The function remove constraints on maximal capacity on interconnections candidates and create new variables which correspond to the capacity.
@@ -440,7 +436,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 
 /**
- * \fn void treat(root, mps, couplings)
  * \brief That function create new optimization problems with new candidates
  *
  * \param root String corresponding to the path where are located input data
@@ -484,7 +479,6 @@ void Candidates::treat(std::string const & root,
 
 
 /**
- * \fn void treatloop(std::string const & root, std::map< std::pair<std::string, std::string>, int>& couplings)
  * \brief Execute the treat function for each mps elements in the candidates MPS_LIST
  *
  * \param root String corresponding to the path where are located input data
@@ -501,7 +495,6 @@ void Candidates::treatloop(std::string const & root, std::map< std::pair<std::st
 
 
 /**
- * \fn getCandidatesFromFile(std::string  const & dataPath)
  * \brief Fill the map of candidate from the file candidate.ini
  *
  * \param dataPath String corresponding to the "candidate.ini" file path
@@ -572,29 +565,14 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 	std::cout << "-------------------------------------------" << std::endl;
 }
 
+/**
+ * \brief checks if a given areaname is in the list of areas of candidates
+ *
+ * \param areaName_p String corresponding to the area name to verify
+ * \return bool : True if the area exists in Candidates::area_names
+ */
 bool Candidates::checkArea(std::string const & areaName_p) const
 {
 	bool found_l = std::find(Candidates::area_names.cbegin(), Candidates::area_names.cend(), areaName_p) != Candidates::area_names.cend();
 	return found_l;
-}
-
-
-std::set<std::string> ExclusionConstraints::str_fields = std::set<std::string>({
-	"name",
-	"name-candidate1",
-	"name-candidate2"
-	});
-
-ExclusionConstraints::ExclusionConstraints(std::string  const & exclusions_inifile_path)
-{
-	INIReader reader(exclusions_inifile_path.c_str());
-	std::stringstream ss;
-	std::set<std::string> sections = reader.Sections();
-	for (auto const & exclusionSection : sections) {
-		std::string constraintName = reader.Get(exclusionSection, "name", "NA");
-		std::string nameCandidate1 = reader.Get(exclusionSection, "name-candidate1", "NA");
-		std::string nameCandidate2 = reader.Get(exclusionSection, "name-candidate2", "NA");
-
-		(*this)[constraintName] = std::make_pair(nameCandidate1, nameCandidate2);
-	}
 }

@@ -31,10 +31,10 @@ int main(int argc, char** argv)
 		options.print(oss_l);
 		std::cout << oss_l.str();
 		LOG(INFO) << oss_l.str() << std::endl;
-		
+
 		jsonWriter_l.write(options);
 		jsonWriter_l.updateBeginTime();
-		
+
 	}
 
 	world.barrier();//@FIXME here to wait for all processes to respect the beginTime ==> All Processes will start after the initialised beginTime

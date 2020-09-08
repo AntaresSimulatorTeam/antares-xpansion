@@ -330,6 +330,7 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 *  \brief Check if every slave has been solved to optimality
 *
 *  \param all_package : storage of each slaves status
+*  \param data : BendersData used to get master solving status
 */
 void check_status(AllCutPackage const & all_package, BendersData const & data) {
 	if (data.master_status != operations_research::MPSolver::OPTIMAL) {
@@ -773,7 +774,11 @@ void store_iter_aggregate_cut(DynamicAggregateCuts & dynamic_cuts, AllCutPackage
 *
 *  \param it : number of iteration
 *
+*  \param options : Benders options
+*
 *  \param nconstraints : number of previous added constraints to delete
+*
+*  \param problem_to_id : 
 */
 void gather_cut(DynamicAggregateCuts & dynamic_cuts, WorkerMasterPtr & master, BendersOptions const & options, int const nconstraints, Str2Int const & problem_to_id) {
 	master->delete_constraint(nconstraints);

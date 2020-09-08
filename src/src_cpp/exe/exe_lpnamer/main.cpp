@@ -1,5 +1,5 @@
 /**
- * \file main.cpp
+ * \file exe_lpnamer/main.cpp
  * \brief POC Antares Xpansion V2
  * \author {Manuel Ruiz; Luc Di Gallo}
  * \version 0.1
@@ -9,6 +9,8 @@
  *
  */
 #include "IntercoDataMps.h"
+#include "AdditionalConstraints.h"
+#include "LauncherHelpers.h"
 //#include "xprs_driver.h"
 #include <fstream>
 #include <sstream>
@@ -136,51 +138,6 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 }
 
 
-
-void addExclusionConstraint(operations_research::MPSolver & master_p, std::string constraintName_p, std::string nameCandidate1_p, std::string nameCandidate2_p, Candidates candidates_p)
-{
-	std::cout << "adding exclusion constraint " << constraintName_p << " between " << nameCandidate1_p << " and " << nameCandidate2_p << ".\n";
-
-	operations_research::MPVariable* varCandidate1 = master_p.LookupVariableOrNull(nameCandidate1_p);
-	operations_research::MPVariable* varCandidate2 = master_p.LookupVariableOrNull(nameCandidate2_p);
-
-	operations_research::MPVariable* binaryVarCandidate1 = master_p.LookupVariableOrNull("bin_"+nameCandidate1_p);
-	if (nullptr == binaryVarCandidate1)
-	{
-		binaryVarCandidate1 = master_p.MakeBoolVar("bin_"+nameCandidate1_p);
-		operations_research::MPConstraint* exclsLinkCstr1 = master_p.MakeRowConstraint(-operations_research::MPSolver::infinity(),0,"binLink_"+nameCandidate1_p);
-		exclsLinkCstr1->SetCoefficient(varCandidate1, 1);
-		exclsLinkCstr1->SetCoefficient(binaryVarCandidate1, -varCandidate1->ub());
-	}
-	assert( nullptr != master_p.LookupConstraintOrNull("binLink_"+nameCandidate1_p) );
-
-	operations_research::MPVariable* binaryVarCandidate2 = master_p.LookupVariableOrNull("bin_"+nameCandidate2_p);
-	if (nullptr == binaryVarCandidate2)
-	{
-		binaryVarCandidate2 = master_p.MakeBoolVar("bin_"+nameCandidate2_p);
-		operations_research::MPConstraint* exclsLinkCstr2 = master_p.MakeRowConstraint(-operations_research::MPSolver::infinity(),0,"binLink_"+nameCandidate2_p);
-		exclsLinkCstr2->SetCoefficient(varCandidate2, 1);
-		exclsLinkCstr2->SetCoefficient(binaryVarCandidate2, -varCandidate2->ub());
-	}
-	assert( nullptr != master_p.LookupConstraintOrNull("binLink_"+nameCandidate2_p) );
-
-	operations_research::MPConstraint* exclsCstr = master_p.MakeRowConstraint(constraintName_p);
-	exclsCstr->SetUB(1);
-	exclsCstr->SetCoefficient(binaryVarCandidate1, 1);
-	exclsCstr->SetCoefficient(binaryVarCandidate2, 1);
-}
-
-
-void addExclusionConstraints(operations_research::MPSolver & master_p, ExclusionConstraints exclusionConstraints_p, Candidates candidates_p)
-{
-	for(auto pairCstrCandidatesnames_l : exclusionConstraints_p )
-	{
-		addExclusionConstraint(master_p, pairCstrCandidatesnames_l.first, pairCstrCandidatesnames_l.second.first, pairCstrCandidatesnames_l.second.second, candidates_p);
-	}
-}
-
-
-
 /**
  * \fn void masterGeneration()
  * \brief Generate the master ob the optimization problem
@@ -192,7 +149,7 @@ void addExclusionConstraints(operations_research::MPSolver & master_p, Exclusion
  */
 void masterGeneration(std::string rootPath,
 					Candidates candidates,
-					ExclusionConstraints exclusionConstraints_p,
+					AdditionalConstraints additionalConstraints_p,
 					std::map< std::pair<std::string, std::string>, int> couplings,
 					std::string const &master_formulation)
 {
@@ -264,7 +221,7 @@ void masterGeneration(std::string rootPath,
 		ORTaddrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
 
-	addExclusionConstraints(master_l, exclusionConstraints_p, candidates);
+	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
 	std::string const lp_name = "master";
 	ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
@@ -319,12 +276,12 @@ int main(int argc, char** argv) {
 		std::exit(0);
 	}
 
-	std::string const exclusions_inifile_name = (argc > 3) ? argv[3] : "";
-	ExclusionConstraints exclusionConstraints = (argc > 3) ? ExclusionConstraints(exclusions_inifile_name) : ExclusionConstraints();
+	std::string const additionalConstraintFilename_l = (argc > 3) ? argv[3] : "";
+	AdditionalConstraints additionalConstraints = (argc > 3) ? AdditionalConstraints(additionalConstraintFilename_l) : AdditionalConstraints();
 
 	std::map< std::pair<std::string, std::string>, int> couplings;
 	candidates.treatloop(root, couplings);
-	masterGeneration(root, candidates, exclusionConstraints, couplings, master_formulation);
+	masterGeneration(root, candidates, additionalConstraints, couplings, master_formulation);
 
 	return 0;
 }

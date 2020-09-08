@@ -10,7 +10,7 @@
 #include "ortools_utils.h"
 
 
-//@FIXME create and move to standardlp.cpp
+//@suggest: create and move to standardlp.cpp
 // Initialize static member
 size_t StandardLp::appendCNT = 0;
 
