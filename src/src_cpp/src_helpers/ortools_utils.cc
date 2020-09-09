@@ -76,8 +76,10 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
         }
         else
         {
-            if (solver_p.NumVariables() == 0) std::cout << "readMPS:: no variable in mps " << filename_p << std::endl;
-            if (solver_p.NumConstraints() == 0) std::cout << "readMPS:: no constraint in mps " << filename_p << std::endl;
+            if (solver_p.NumVariables() == 0)
+                std::cout << "readMPS:: no variable in mps " << filename_p << std::endl;
+            if (solver_p.NumConstraints() == 0)
+                std::cout << "readMPS:: no constraint in mps " << filename_p << std::endl;
         }
         return status;
     }
@@ -142,7 +144,8 @@ void ORTgetrows(operations_research::MPSolver const & solver_p,
     dmatval_p.clear();
 
     int ind(0);
-    for(auto itConstraint_l(solver_p.constraints().cbegin()+first_p), itConstraintEnd_l(solver_p.constraints().cbegin()+last_p+1) ; itConstraint_l!=itConstraintEnd_l ; ++itConstraint_l)
+    for(auto itConstraint_l(solver_p.constraints().cbegin()+first_p), itConstraintEnd_l(solver_p.constraints().cbegin()+last_p+1) ;
+         itConstraint_l!=itConstraintEnd_l ; ++itConstraint_l)
     {
         operations_research::MPConstraint* constraint_l(*itConstraint_l);
         mstart_p.push_back(ind);
@@ -266,7 +269,13 @@ void ORTaddcols(operations_research::MPSolver & solver_p,
 
 }
 
-void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> const &  qrtype_p, std::vector<double>  const & rhs_p, std::vector<double>  const & range_p, std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p)
+void ORTaddrows(operations_research::MPSolver & solver_p,
+                std::vector<char> const &  qrtype_p,
+                std::vector<double>  const & rhs_p,
+                std::vector<double>  const & range_p,
+                std::vector<int> const & mstart_p,
+                std::vector<int> const & mclind_p,
+                std::vector<double> const & dmatval_p)
 {
 	assert(qrtype_p.size() == rhs_p.size());
 	assert((mstart_p.size() == 0 ) || (mstart_p.size() == qrtype_p.size()) );
@@ -457,7 +466,10 @@ void ORTgetrhsrange(operations_research::MPSolver const & solver_p, std::vector<
                    });
 }
 
-void ORTgetcolinfo(operations_research::MPSolver const & solver_p, std::vector<char> & coltype_p, std::vector<double> & bdl_p, std::vector<double> & bdu_p, int first_p, int last_p)
+void ORTgetcolinfo(operations_research::MPSolver const & solver_p,
+                    std::vector<char> & coltype_p,
+                    std::vector<double> & bdl_p, std::vector<double> & bdu_p,
+                    int first_p, int last_p)
 {
     bdl_p.clear();
     bdu_p.clear();
@@ -500,7 +512,8 @@ void ORTdeactivaterows(operations_research::MPSolver & solver_p, std::vector<int
 }
 
 
-//@WARN rstatus and cstatus are inversed in ortools xpressinterface implementation using XPRSgetbasis, check if ortools fixed this issue if having bad results with xpress
+//@WARN rstatus and cstatus are inversed in ortools xpressinterface implementation using XPRSgetbasis,
+//check if ortools fixed this issue if having bad results with xpress
 void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rstatus_p, std::vector<int> & cstatus_p)
 {
     //row status
@@ -533,7 +546,10 @@ void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rs
                     });
 }
 
-void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p)
+void ORTchgbounds(operations_research::MPSolver & solver_p,
+                  std::vector<int> const & mindex_p,
+                  std::vector<char> const & qbtype_p,
+                  std::vector<double> const & bnd_p)
 {
     assert(mindex_p.size() == qbtype_p.size());
     assert(mindex_p.size() == bnd_p.size());
@@ -567,7 +583,9 @@ void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> con
 }
 
 
-void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operations_research::MPSolver const & inSolver_p, std::vector<std::string> const & names_p)
+void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p,
+                          operations_research::MPSolver const & inSolver_p,
+                          std::vector<std::string> const & names_p)
 {
     if (outSolver_p.ProblemType() != inSolver_p.ProblemType())
     {
