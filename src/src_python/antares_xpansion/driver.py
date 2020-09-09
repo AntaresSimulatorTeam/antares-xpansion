@@ -432,15 +432,6 @@ class XpansionDriver():
             print("Illegal optim method")
             sys.exit(1)
 
-        #delete logged master MIPs
-        master_lp_log_format = "log_master*.lp"
-        logfile_list = glob.glob('./' +master_lp_log_format)
-        for file_path in logfile_list:
-            try:
-                os.remove(file_path)
-            except OSError:
-                print("Error while deleting file : ", file_path)
-
         #delete execution logs
         logfile_list = glob.glob('./' +solver + 'Log*')
         for file_path in logfile_list:
