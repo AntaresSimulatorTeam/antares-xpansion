@@ -35,10 +35,10 @@ public:
 	AdditionalConstraintsReader(std::string  const & constraints_file_path);
 
 
-    std::map<std::string, std::string> getVariablesSection();
+    std::map<std::string, std::string> const & getVariablesSection();
     std::set<std::string> getSections();
-    std::map<std::string, std::string> getSection(std::string sectionName_p);
-    std::string getValue(std::string sectionName_p, std::string attributeName_p);
+    std::map<std::string, std::string> const & getSection(std::string const & sectionName_p);
+    std::string getValue(std::string const & sectionName_p, std::string const & attributeName_p);
 
 private:
     void processSectionLine();

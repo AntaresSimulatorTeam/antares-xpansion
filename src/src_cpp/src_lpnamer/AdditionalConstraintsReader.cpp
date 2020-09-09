@@ -47,18 +47,6 @@ void AdditionalConstraintsReader::processSectionLine()
         std::exit(0);
     }
 
-    if(_section == "variables")
-    {
-        _foundName = true;
-        _foundSign = true;
-        _foundRHS = true;
-    }
-    else
-    {
-        _foundName = false;
-        _foundSign = false;
-        _foundRHS = false;
-    }
 }
 
 void AdditionalConstraintsReader::processEntryLine()
@@ -96,21 +84,12 @@ void AdditionalConstraintsReader::processEntryLine()
             }
         }
 
-        if(attribute_l == "name")
+        if (attribute_l == "sign")
         {
-            _foundName = true;
-        }
-        else if (attribute_l == "rhs")
-        {
-            _foundRHS = true;
-        }
-        else if (attribute_l == "sign")
-        {
-            _foundSign = true;
-
             if ( (value_l != "greater_or_equal") && (value_l != "less_or_equal") && (value_l != "equal") )
             {
-                std::cout << "line " << _lineNb << " : Illegal sign value : " << value_l << "!\n";
+                std::cout << "line " << _lineNb << " : Illegal sign value : " << value_l << "! supported values are:"
+                            <<"greater_or_equal, less_or_equal and equal.\n";
                 std::exit(0);
             }
         }
@@ -127,10 +106,6 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
     _section = "";
     _lineNb = 0;
 
-    _foundName = true;
-    _foundSign = true;
-    _foundRHS = true;
-
     while (std::getline(file_l, _line))
     {
         ++_lineNb;
@@ -144,13 +119,6 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
         }
         else if ( _line[0] == '[' )
         {//line is a section
-            //check that previous section had defined a name, sign and rhs
-            if(!_foundName || !_foundSign || !_foundRHS)
-            {
-                std::cout << "section " << _section << " is missing a name, sign or rhs attribute.\n";
-                std::exit(0);
-            }
-
             processSectionLine();
         }
         else
@@ -167,7 +135,7 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
     }
 }
 
-std::map<std::string, std::string> AdditionalConstraintsReader::getVariablesSection()
+std::map<std::string, std::string> const & AdditionalConstraintsReader::getVariablesSection()
 {
     return _values["variables"];
 }
@@ -177,12 +145,12 @@ std::set<std::string> AdditionalConstraintsReader::getSections()
     return _sections;
 }
 
-std::map<std::string, std::string> AdditionalConstraintsReader::getSection(std::string sectionName_p)
+std::map<std::string, std::string> const & AdditionalConstraintsReader::getSection(std::string const & sectionName_p)
 {
     return _values.at(sectionName_p);
 }
 
-std::string AdditionalConstraintsReader::getValue(std::string sectionName_p, std::string attributeName_p)
+std::string AdditionalConstraintsReader::getValue(std::string const &  sectionName_p, std::string const &  attributeName_p)
 {
     return _values[sectionName_p].at(attributeName_p);
 }
