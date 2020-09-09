@@ -26,58 +26,71 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
     {
         if (sectionName_l != "variables")
         {
-            bool emptyCstr_l = true;
             std::map<std::string, std::string> const & constarintsSection_l = reader_l.getSection(sectionName_l);
-            AdditionalConstraint constraint_l(sectionName_l);
-            std::string constraintName_l;
 
-            //check that section has defined a name, sign and rhs
-            if(constarintsSection_l.find("name") == constarintsSection_l.end())
+            std::string constraintName_l = "";
+            std::string constraintSign_l = "";
+            double constraintRHS_l = 0;
+
+            //check that section has defined a unique constraint name
+            auto temporatyIterator_l = constarintsSection_l.find("name");
+            if( temporatyIterator_l == constarintsSection_l.end())
             {
                 std::cout << "section " << sectionName_l << " is missing a name.\n";
                 std::exit(1);
             }
-            if(constarintsSection_l.find("rhs") == constarintsSection_l.end())
+            else
             {
-                std::cout << "section " << sectionName_l << " is missing a rhs.\n";
-                std::exit(1);
+                constraintName_l = temporatyIterator_l->second;
+                if(this->count(constraintName_l))
+                {
+                    std::cout << "Duplicate constraint name " << constraintName_l << ".\n";
+                    std::exit(1);
+                }
             }
-            if(constarintsSection_l.find("sign") == constarintsSection_l.end())
+
+            //check that section has defined a sign
+            temporatyIterator_l = constarintsSection_l.find("sign");
+            if(temporatyIterator_l == constarintsSection_l.end())
             {
                 std::cout << "section " << sectionName_l << " is missing a sign.\n";
                 std::exit(1);
             }
+            else
+            {
+                constraintSign_l = temporatyIterator_l->second;
+            }
 
+            //check that section has defined a rhs
+            temporatyIterator_l = constarintsSection_l.find("rhs");
+            if(temporatyIterator_l == constarintsSection_l.end())
+            {
+                std::cout << "section " << sectionName_l << " is missing a rhs.\n";
+                std::exit(1);
+            }
+            else
+            {
+                try
+                {
+                    std::string::size_type sz;
+                    constraintRHS_l = std::stod(temporatyIterator_l->second, &sz);
+                }
+                catch(const std::invalid_argument& e)
+                {
+                    std::cerr << "Invalid value " << temporatyIterator_l->second << " in section " << sectionName_l
+                                << ": rhs value must be a double!\n";
+                    std::exit(1);
+                }
+            }
+
+            //create and fill the constraint
+            AdditionalConstraint constraint_l(sectionName_l, constraintName_l, constraintSign_l, constraintRHS_l);
+            bool emptyCstr_l = true;
             for(auto pairAttributeValue_l : constarintsSection_l)
             {
-                if(pairAttributeValue_l.first == "name")
+                if(pairAttributeValue_l.first == "name" || pairAttributeValue_l.first == "rhs" || pairAttributeValue_l.first == "sign")
                 {
-                    constraintName_l = pairAttributeValue_l.second;
-                    if(this->count(constraintName_l))
-                    {
-                        std::cout << "Duplicate constraint name " << constraintName_l << ".\n";
-                        std::exit(1);
-                    }
-                    constraint_l.setName(constraintName_l);
-                }
-                else if(pairAttributeValue_l.first == "rhs")
-                {
-                    try
-                    {
-                        std::string::size_type sz;
-                        double rhs_l = std::stod(pairAttributeValue_l.second, &sz);
-                        constraint_l.setRHS(rhs_l);
-                    }
-                    catch(const std::invalid_argument& e)
-                    {
-                        std::cerr << "Invalid value " << pairAttributeValue_l.second << " in section " << sectionName_l
-                                    << ": rhs value must be a double!\n";
-                        std::exit(1);
-                    }
-                }
-                else if(pairAttributeValue_l.first == "sign")
-                {
-                    constraint_l.setSign(pairAttributeValue_l.second);
+                    continue;
                 }
                 else
                 {
@@ -99,13 +112,14 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
                     }
                 }
             }
-            (*this)[constraintName_l] = constraint_l;
 
             if(emptyCstr_l)
             {
                 std::cerr << "section " << sectionName_l << " defines an empty constraint.\n";
                 std::exit(1);
             }
+
+            (*this)[constraintName_l] = constraint_l;
         }
     }
 

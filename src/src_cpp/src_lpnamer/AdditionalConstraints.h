@@ -13,51 +13,83 @@ class AdditionalConstraint : public std::map<std::string, double>
 {
 
 private:
-    double _rhs;
-    std::string _sign;
-    std::string _name;
     std::string _sectionName;
+    std::string _name;
+    std::string _sign;
+    double _rhs;
 
 public:
-    AdditionalConstraint()
+
+/**
+ * \brief AdditionalConstraint default constructor
+ */
+    AdditionalConstraint() :
+    _sectionName(""),
+    _name(""),
+    _sign(""),
+    _rhs(0)
     {
     }
 
-    AdditionalConstraint(std::string sectionName_p) :
-    _sectionName(sectionName_p)
+/**
+ * @brief AdditionalConstraint constructor
+ *
+ * @param sectionName_p  : string value : name of the section in the ini file that declared this constraint.
+ * @param constraintName_p  : string value : name of the constraint.
+ * @param sign_p : string value : sign of the constraint. One of "less_or_equal", "equal" or "greater_or_equal"
+ * @param rhs_p : double RHS of the constraint
+ */
+    AdditionalConstraint(std::string const & sectionName_p, std::string const & constraintName_p, std::string const & sign_p, double rhs_p) :
+    _sectionName(sectionName_p),
+    _name(constraintName_p),
+    _sign(sign_p),
+    _rhs(rhs_p)
     {
     }
 
-    void setName(std::string name_p)
+/**
+ * @brief AdditionalConstraint destructor
+ */
+    virtual ~AdditionalConstraint()
     {
-        _name = name_p;
     }
 
-    void setRHS(double rhs_p)
-    {
-        _rhs = rhs_p;
-    }
-
-    void setSign(std::string sign_p)
-    {
-        _sign = sign_p;
-    }
-
+/**
+ * @brief AdditionalConstraint::_name getter
+ *
+ * @param name_p  : string value : name of the constraint
+ */
     std::string getName()
     {
         return _name;
     }
 
+/**
+ * @brief AdditionalConstraint::_rhs getter
+ *
+ * @param rhs_p  : double value : rhs of the constraint
+ */
     double getRHS()
     {
         return _rhs;
     }
 
+/**
+ * @brief AdditionalConstraint::_sign getter
+ *
+ * @param name_p  : string value : sign of the constraint
+ */
     std::string getSign()
     {
         return _sign;
     }
 
+/**
+ * @brief adds a term to the constraint
+ *
+ * @param varName_p  : string value : name of the variable concerned
+ * @param varCoeff_p  : double value : coefficient of the variable concerned
+ */
     void setCoeff(std::string varName_p, double varCoeff_p)
     {
         (*this)[varName_p] = varCoeff_p;
@@ -81,7 +113,7 @@ public:
 	AdditionalConstraints() {
 	}
 
-	AdditionalConstraints(std::string  const & constraints_file_path);
+	explicit AdditionalConstraints(std::string  const & constraints_file_path);
 
     void addVariableToBinarise(std::string oldVarName_p, std::string binVarName_p);
 

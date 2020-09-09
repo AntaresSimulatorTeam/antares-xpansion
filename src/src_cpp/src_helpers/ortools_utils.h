@@ -71,7 +71,9 @@ void ORTdescribe(operations_research::MPSolver const & solver_p, std::ostringstr
  * @param first_p  : First row in the range.
  * @param last_p  : Last row in the range.
  */
-void ORTgetrows(operations_research::MPSolver const & solver_p, std::vector<int> & mstart_p, std::vector<int> & mclind_p, std::vector<double> & dmatval_p, int first_p, int last_p);
+void ORTgetrows(operations_research::MPSolver const & solver_p,
+                 std::vector<int> & mstart_p, std::vector<int> & mclind_p, std::vector<double> & dmatval_p,
+                 int first_p, int last_p);
 
 /**
  * @brief Change the objective function coefficients of an existent problem
@@ -110,7 +112,12 @@ void ORTgetobj(operations_research::MPSolver const & solver_p, std::vector<doubl
  *          'C' for continuous variables
  * @param colNames_p : optional parameter. array containing the names of the new columns to add.
  */
-void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> const & objx_p, std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p, std::vector<double> const & bdl_p, std::vector<double> const & bdu_p, std::vector<char> const & colTypes_p, std::vector<std::string> const & colNames_p = {});
+void ORTaddcols(operations_research::MPSolver & solver_p,
+                std::vector<double> const & objx_p, 
+                std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p,
+                std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
+                std::vector<char> const & colTypes_p,
+                std::vector<std::string> const & colNames_p = {});
 
 /**
  * @brief Adds constraints to an existent solver
@@ -132,7 +139,11 @@ void ORTaddcols(operations_research::MPSolver & solver_p, std::vector<double> co
  *
  * @note ignores non-binding rows
  */
-void ORTaddrows(operations_research::MPSolver & solver_p, std::vector<char> const &  qrtype_p, std::vector<double>  const & rhs_p, std::vector<double>  const & range_p, std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p);
+void ORTaddrows(operations_research::MPSolver & solver_p,
+                std::vector<char> const &  qrtype_p,
+                std::vector<double>  const & rhs_p,
+                std::vector<double>  const & range_p,
+                std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p);
 
 /**
  * @brief returns the solution of a solved problem
@@ -212,7 +223,10 @@ void ORTgetrhsrange(operations_research::MPSolver const & solver_p, std::vector<
  *
  * @note return 'I' if the variable is binary or integer and it was fixed
  */
-void ORTgetcolinfo(operations_research::MPSolver const & solver_p, std::vector<char> & coltype_p, std::vector<double> & bdl_p, std::vector<double> & bdu_p, int first_p, int last_p);
+void ORTgetcolinfo(operations_research::MPSolver const & solver_p,
+                   std::vector<char> & coltype_p,
+                   std::vector<double> & bdl_p, std::vector<double> & bdu_p,
+                   int first_p, int last_p);
 
 /**
  * @brief Deactivates some rows in an existent model
@@ -257,7 +271,10 @@ void ORTgetbasis(operations_research::MPSolver & solver_p, std::vector<int> & rs
  *
  * @note if the same bound is changed twice the bound at the end of the vector will be used and no warning will be issued
  */
-void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> const & mindex_p, std::vector<char> const & qbtype_p, std::vector<double> const & bnd_p);
+void ORTchgbounds(operations_research::MPSolver & solver_p,
+                  std::vector<int> const & mindex_p,
+                  std::vector<char> const & qbtype_p,
+                  std::vector<double> const & bnd_p);
 
 /**
  * @brief Returns the current basis
@@ -269,4 +286,6 @@ void ORTchgbounds(operations_research::MPSolver & solver_p, std::vector<int> con
  * @note care when copying between solvers of different types : no special verifications are done (eg. infinity values correspondance)
  * @note duplicate/empty names will be named automatically by ortools
  */
-void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p, operations_research::MPSolver const & inSolver_p, std::vector<std::string> const & names_p);
+void ORTcopyandrenamevars(operations_research::MPSolver & outSolver_p,
+                            operations_research::MPSolver const & inSolver_p,
+                            std::vector<std::string> const & names_p);

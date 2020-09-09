@@ -100,12 +100,6 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps)
 		{
 			_id_to_name[var_l->index()] = kvp.first;
 			_name_to_id[kvp.first] = var_l->index();
-			// if (_id_to_name[kvp.second].compare(_solver->variables()[kvp.second]->name()) != 0 )
-			// {
-			// 	error_l = true;
-			// 	std::cout << "\nERROR : id mismatch: id of " << kvp.first << " is " << _solver->LookupVariableOrNull(kvp.first)->index() << " in worker "
-			// 														<< "but " << kvp.second << " in structure.";
-			// }
 		}
 		else
 		{

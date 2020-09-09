@@ -103,16 +103,40 @@ public:
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].clear();
 
 		//@TODO verify correspondance between ortools variable ids and supposed ones
-		ORTgetrows(solver_p, std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART], std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+		ORTgetrows(solver_p,
+					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
+					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX],
+					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE],
+					0,
+					std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-		ORTgetrowtype(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
-		ORTgetrhs(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
-		ORTgetrhsrange(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+		ORTgetrowtype(solver_p,
+					  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
+					  0,
+					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+
+		ORTgetrhs(solver_p,
+				  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
+				  0,
+				  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+
+		ORTgetrhsrange(solver_p,
+						std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE],
+						0,
+						std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
 		//@TODO check if we use semi-continuous or partial-integer variables
-		ORTgetcolinfo(solver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
+		ORTgetcolinfo(solver_p,
+					  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
+					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
+					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
+					  0,
+					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
-		ORTgetobj(solver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], 0, std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]-1);
+		ORTgetobj(solver_p,
+				  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
+				  0,
+				  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]-1);
 
 		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
@@ -145,8 +169,22 @@ public:
 					[&prefix_l](std::string varName_p)->std::string{ return prefix_l + varName_p; });
 
 
-		ORTaddcols(containingSolver_p, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], {}, {}, {},  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB], std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE], newNames);
-		ORTaddrows(containingSolver_p, std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE], std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART], newmindex, std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
+		ORTaddcols(containingSolver_p,
+				   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
+				   {}, {}, {},
+				   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
+				   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
+				   std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
+				   newNames);
+
+
+		ORTaddrows(containingSolver_p,
+					std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
+					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
+					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE],
+					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
+					newmindex,
+					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
 
 		++appendCNT;
 
