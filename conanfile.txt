@@ -20,7 +20,7 @@ ortools/7.4@eurodecision/stable
 # boost
 # waiting for PR on MPI activation,
 # see https://github.com/conan-io/conan-center-index/issues/2501
-boost/1.72.0@eurodecision/testing
+#boost/1.72.0@eurodecision/testing
 
 # ===========================================================================
 [build_requires]
@@ -31,7 +31,7 @@ boost/1.72.0@eurodecision/testing
 # see https://github.com/conan-io/conan-center-index/pull/2844
 #gtest/1.8.1@bincrafters/stable
 #gtest/1.10.0@
-gtest/1.10.0@eurodecision/testing
+#gtest/1.10.0@eurodecision/testing
 
 # ===========================================================================
 [options]
