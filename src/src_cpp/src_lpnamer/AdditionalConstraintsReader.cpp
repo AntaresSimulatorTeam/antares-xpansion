@@ -36,7 +36,7 @@ void AdditionalConstraintsReader::processSectionLine()
     if ( _line[_line.length()-1] != ']' )
     {
         std::cout << "line " << _lineNb << " : section line not ending with ']'.\n";
-        std::exit(0);
+        std::exit(1);
     }
 
     _section = _line.substr(1,_line.find(']')-1);
@@ -44,20 +44,7 @@ void AdditionalConstraintsReader::processSectionLine()
     if (!_sections.insert(_section).second)
     {
         std::cout << "line " << _lineNb << " : duplicate section " << _section << "!\n";
-        std::exit(0);
-    }
-
-    if(_section == "variables")
-    {
-        _foundName = true;
-        _foundSign = true;
-        _foundRHS = true;
-    }
-    else
-    {
-        _foundName = false;
-        _foundSign = false;
-        _foundRHS = false;
+        std::exit(1);
     }
 }
 
@@ -67,7 +54,7 @@ void AdditionalConstraintsReader::processEntryLine()
     if ((delimiterIt_l == std::string::npos))
     {
         std::cout << "line " << _lineNb << " : incorrect entry line format. Expected format 'attribute = value'!\n";
-        std::exit(0);
+        std::exit(1);
     }
     std::string attribute_l = rtrim( _line.substr(0, delimiterIt_l) );
     std::string value_l = ltrim( _line.substr(delimiterIt_l+3) );
@@ -76,13 +63,13 @@ void AdditionalConstraintsReader::processEntryLine()
     if( illegalCharIndex_l != std::string::npos)
     {
         std::cout << "line " << _lineNb << " : Illegal character '" << attribute_l[illegalCharIndex_l] << "' in attribute name!\n";
-        std::exit(0);
+        std::exit(1);
     }
 
     if(_values[_section].count(attribute_l))
     {
         std::cout << "line " << _lineNb << " : duplicate attribute " << attribute_l << "!\n";
-        std::exit(0);
+        std::exit(1);
     }
     else
     {
@@ -92,26 +79,17 @@ void AdditionalConstraintsReader::processEntryLine()
             if( illegalCharIndex_l != std::string::npos)
             {
                 std::cout << "line " << _lineNb << " : Illegal character '" << value_l[illegalCharIndex_l] << "' in value!\n";
-                std::exit(0);
+                std::exit(1);
             }
         }
 
-        if(attribute_l == "name")
+        if (attribute_l == "sign")
         {
-            _foundName = true;
-        }
-        else if (attribute_l == "rhs")
-        {
-            _foundRHS = true;
-        }
-        else if (attribute_l == "sign")
-        {
-            _foundSign = true;
-
             if ( (value_l != "greater_or_equal") && (value_l != "less_or_equal") && (value_l != "equal") )
             {
-                std::cout << "line " << _lineNb << " : Illegal sign value : " << value_l << "!\n";
-                std::exit(0);
+                std::cout << "line " << _lineNb << " : Illegal sign value : " << value_l << "! supported values are:"
+                            <<"greater_or_equal, less_or_equal and equal.\n";
+                std::exit(1);
             }
         }
 
@@ -127,10 +105,6 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
     _section = "";
     _lineNb = 0;
 
-    _foundName = true;
-    _foundSign = true;
-    _foundRHS = true;
-
     while (std::getline(file_l, _line))
     {
         ++_lineNb;
@@ -144,13 +118,6 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
         }
         else if ( _line[0] == '[' )
         {//line is a section
-            //check that previous section had defined a name, sign and rhs
-            if(!_foundName || !_foundSign || !_foundRHS)
-            {
-                std::cout << "section " << _section << " is missing a name, sign or rhs attribute.\n";
-                std::exit(0);
-            }
-
             processSectionLine();
         }
         else
@@ -159,7 +126,7 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
             if(_section == "")
             {
                 std::cout << "Section line is required before line " << _lineNb << "!\n";
-                std::exit(0);
+                std::exit(1);
             }
 
             processEntryLine();
@@ -167,7 +134,7 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
     }
 }
 
-std::map<std::string, std::string> AdditionalConstraintsReader::getVariablesSection()
+std::map<std::string, std::string> const & AdditionalConstraintsReader::getVariablesSection()
 {
     return _values["variables"];
 }
@@ -177,12 +144,12 @@ std::set<std::string> AdditionalConstraintsReader::getSections()
     return _sections;
 }
 
-std::map<std::string, std::string> AdditionalConstraintsReader::getSection(std::string sectionName_p)
+std::map<std::string, std::string> const & AdditionalConstraintsReader::getSection(std::string const & sectionName_p)
 {
     return _values.at(sectionName_p);
 }
 
-std::string AdditionalConstraintsReader::getValue(std::string sectionName_p, std::string attributeName_p)
+std::string AdditionalConstraintsReader::getValue(std::string const &  sectionName_p, std::string const &  attributeName_p)
 {
     return _values[sectionName_p].at(attributeName_p);
 }

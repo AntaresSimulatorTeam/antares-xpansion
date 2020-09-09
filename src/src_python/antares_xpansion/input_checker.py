@@ -23,7 +23,7 @@ def check_profile_file(filename_path):
     if not os.path.isfile(filename_path):
         print('Illegal value : option can be 0, 1 or an existent filename.\
                  %s is not an existent file' % filename_path)
-        sys.exit(0)
+        sys.exit(1)
 
     two_profiles = False
     with open(filename_path, 'r') as profile_file:
@@ -44,20 +44,20 @@ def check_profile_file(filename_path):
                 else:
                     print('Line %d in file %s is not valid.'
                           % (idx+1, filename_path))
-                    sys.exit(0)
+                    sys.exit(1)
             except ValueError:
                 print('Line %d in file %s is not valid: allowed formats "X" or "X\tY".'
                       % (idx+1, filename_path))
-                sys.exit(0)
+                sys.exit(1)
             if (first_profile[-1] < 0) or (two_profiles and indirect_profile[-1] < 0):
                 print('Line %d in file %s indicates a negative value'
                       % (idx+1, filename_path))
-                sys.exit(0)
+                sys.exit(1)
 
     if len(first_profile) != 8760:
         print('file %s does not have 8760 lines'
               % filename_path)
-        sys.exit(0)
+        sys.exit(1)
 
     return any(first_profile) or any(indirect_profile)
 
@@ -77,7 +77,7 @@ def check_weights_file(filename_path):
     if not os.path.isfile(filename_path):
         print('Illegal value : %s is not an existent yearly-weights file'
               % filename_path)
-        sys.exit(0)
+        sys.exit(1)
 
     null_weights = True
     with open(filename_path, 'r') as weights_file:
@@ -89,16 +89,16 @@ def check_weights_file(filename_path):
                 elif line_value < 0:
                     print('Line %d in file %s indicates a negative value'
                           % (idx+1, filename_path))
-                    sys.exit(0)
+                    sys.exit(1)
             except ValueError:
                 print('Line %d in file %s is not a single non-negative value'
                       % (idx+1, filename_path))
-                sys.exit(0)
+                sys.exit(1)
 
     if null_weights:
         print('file %s : all values are null'
               % filename_path)
-        sys.exit(0)
+        sys.exit(1)
 
     return True
 
@@ -133,7 +133,7 @@ def check_candidate_option_type(option, value):
     option_type = options_types.get(option)
     if option_type is None:
         print('check_candidate_option_type: %s option not recognized in candidates file.' % option)
-        sys.exit(0)
+        sys.exit(1)
     else:
         if option_type == 'string':
             return True
@@ -146,7 +146,7 @@ def check_candidate_option_type(option, value):
                 return False
         print('check_candidate_option_type: Non handled data type %s for option %s'
               % (option_type, option))
-        sys.exit(0)
+        sys.exit(1)
 
 def check_candidate_option_value(option, value):
     """
@@ -178,7 +178,7 @@ def check_candidate_option_value(option, value):
 
     print('check_candidate_option_value: Illegal value %s for option %s allowed values are: %s'
           % (value, option, legal_values))
-    sys.exit(0)
+    sys.exit(1)
 
 def check_candidate_name(name, section):
     """
@@ -186,12 +186,12 @@ def check_candidate_name(name, section):
     """
     if (not name) or (name.lower() == "na"):
         print('Error candidates name cannot be empty : found in section %s' % section)
-        sys.exit(0)
+        sys.exit(1)
     illegal_chars = " \n\r\t\f\v-+=:[]()"
     for c in illegal_chars:
         if c in name:
             print('Error candidates name should not contain %s, found in section %s in "%s"' % (c, section, name))
-            sys.exit(0)
+            sys.exit(1)
 
 def check_candidate_link(link, section):
     """
@@ -199,10 +199,10 @@ def check_candidate_link(link, section):
     """
     if (not link) or (link.lower() == "na"):
         print('Error candidates link cannot be empty : found in section %s' % section)
-        sys.exit(0)
+        sys.exit(1)
     if " - " not in link:
         print('Error candidates link value must contain " - " : found in section %s' % section)
-        sys.exit(0)
+        sys.exit(1)
 
 def check_candidates_file(driver):
     """
@@ -236,7 +236,7 @@ def check_candidates_file(driver):
         for (option, value) in ini_file.items(each_section):
             if not check_candidate_option_type(option, value):
                 print("value %s for option %s has the wrong type!" % (value, option))
-                sys.exit(0)
+                sys.exit(1)
             check_candidate_option_value(option, value)
 
     # check that name is not empty and does not have space
@@ -255,7 +255,7 @@ def check_candidates_file(driver):
             if value in unique_values:
                 print('Error candidates %ss have to be unique, duplicate %s %s in section %s'
                       % (verified_attribute, verified_attribute, value, each_section))
-                sys.exit(0)
+                sys.exit(1)
             else:
                 unique_values.add(value)
                 #FIXME can also add reverse link
@@ -269,11 +269,11 @@ def check_candidates_file(driver):
             if max_units != 0 or unit_size != 0:
                 print("Illegal values in section %s: cannot assign non-null values simultaneously \
                       to max-investment and (unit-size or max_units)" % (each_section))
-                sys.exit(0)
+                sys.exit(1)
         elif max_units == 0 or unit_size == 0:
             print("Illegal values in section %s: need to assign non-null values to max-investment \
                   or (unit-size and max_units)" % (each_section))
-            sys.exit(0)
+            sys.exit(1)
 
     #check attributes profile is 0, 1 or an existent filename
     profile_attributes = ['link-profile', 'already-installed-link-profile']
@@ -301,11 +301,11 @@ def check_candidates_file(driver):
         if (has_link_value == "true") and (not profile_exists):
             print('Incoherence in candidate %s: has-link-profile set to true while '
                   'no link-profile file was specified' % ini_file[each_section]["name"].strip())
-            sys.exit(0)
+            sys.exit(1)
         if (has_link_value == "false") and (profile_exists):
             print('Incoherence in candidate %s: has-link-profile set to false while a valid '
                   'link-profile file was specified' % ini_file[each_section]["name"].strip())
-            sys.exit(0)
+            sys.exit(1)
 
     if config_changed:
         shutil.copyfile(driver.candidates(), driver.candidates()+".bak")
@@ -343,7 +343,7 @@ def check_setting_option_type(option, value):
     option_type = options_types.get(option)
     if option_type is None:
         print('check_setting_option_type: Illegal %s option in candidates file.' % option)
-        sys.exit(0)
+        sys.exit(1)
     else:
         if option_type == 'string':
             return True
@@ -366,7 +366,7 @@ def check_setting_option_type(option, value):
         else:
             print('check_setting_option_type: Non handled data type %s for option %s'
                   % (option_type, option))
-            sys.exit(0)
+            sys.exit(1)
 
 def check_setting_option_value(option, value):
     """
@@ -411,7 +411,7 @@ def check_setting_option_value(option, value):
             except ValueError:
                 print('Illegal value %s for option %s : only -1 or positive values are allowed'
                       % (value, option))
-                sys.exit(0)
+                sys.exit(1)
     elif option == "relaxed_optimality_gap":
         if value.strip().endswith("%"):
             try:
@@ -421,7 +421,7 @@ def check_setting_option_value(option, value):
             except ValueError:
                 print('Illegal value %s for option %s: legal format "X%%" with X between 0 and 100'
                       % (value, option))
-                sys.exit(0)
+                sys.exit(1)
     elif option == 'timelimit':
         if (value in ["+Inf", "+infini"]):
             return True
@@ -433,10 +433,10 @@ def check_setting_option_value(option, value):
             except ValueError:
                 print('Illegal value %s for option %s : only positive values are allowed'
                       % (value, option))
-                sys.exit(0)
+                sys.exit(1)
 
     print('check_candidate_option_value: Illegal value %s for option %s' % (value, option))
-    sys.exit(0)
+    sys.exit(1)
     return False
 
 def check_settings_file(driver):
@@ -455,13 +455,13 @@ def check_settings_file(driver):
     for (option, value) in options.items():
         if not check_setting_option_type(option, value):
             print("check_settings : value %s for option %s has the wrong type!" % (value, option))
-            sys.exit(0)
+            sys.exit(1)
         check_setting_option_value(option, value)
 
     if options.get('yearly_weights', "") != "":
         if options.get("cut_type") == "average":
             print("check_settings : yearly_weights option can not be used when cut_type is average")
-            sys.exit(0)
+            sys.exit(1)
         check_weights_file(driver.weights_file(options.get('yearly_weights', "")))
 
     if options.get('additional-constraints', "") != "":
@@ -469,6 +469,6 @@ def check_settings_file(driver):
         if not os.path.isfile(additional_constraints_path):
             print('Illegal value: %s is not an existent additional-constraints file'
                 % additional_constraints_path)
-            sys.exit(0)
+            sys.exit(1)
 
         #additional constraints checks are achieved in the lpnamer itself while processing

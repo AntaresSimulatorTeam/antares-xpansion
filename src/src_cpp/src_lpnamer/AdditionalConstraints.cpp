@@ -22,13 +22,33 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
     }
 
     //treat constraints sections
-    for(auto sectionName_l : reader_l.getSections())
+    for(std::string sectionName_l : reader_l.getSections())
     {
         if (sectionName_l != "variables")
         {
+            bool emptyCstr_l = true;
+            std::map<std::string, std::string> const & constarintsSection_l = reader_l.getSection(sectionName_l);
             AdditionalConstraint constraint_l(sectionName_l);
             std::string constraintName_l;
-            for(auto pairAttributeValue_l : reader_l.getSection(sectionName_l))
+
+            //check that section has defined a name, sign and rhs
+            if(constarintsSection_l.find("name") == constarintsSection_l.end())
+            {
+                std::cout << "section " << sectionName_l << " is missing a name.\n";
+                std::exit(1);
+            }
+            if(constarintsSection_l.find("rhs") == constarintsSection_l.end())
+            {
+                std::cout << "section " << sectionName_l << " is missing a rhs.\n";
+                std::exit(1);
+            }
+            if(constarintsSection_l.find("sign") == constarintsSection_l.end())
+            {
+                std::cout << "section " << sectionName_l << " is missing a sign.\n";
+                std::exit(1);
+            }
+
+            for(auto pairAttributeValue_l : constarintsSection_l)
             {
                 if(pairAttributeValue_l.first == "name")
                 {
@@ -36,15 +56,24 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
                     if(this->count(constraintName_l))
                     {
                         std::cout << "Duplicate constraint name " << constraintName_l << ".\n";
-                        std::exit(0);
+                        std::exit(1);
                     }
                     constraint_l.setName(constraintName_l);
                 }
                 else if(pairAttributeValue_l.first == "rhs")
                 {
-                    std::string::size_type sz;
-                    double rhs_l = std::stod(pairAttributeValue_l.second, &sz);
-                    constraint_l.setRHS(rhs_l);
+                    try
+                    {
+                        std::string::size_type sz;
+                        double rhs_l = std::stod(pairAttributeValue_l.second, &sz);
+                        constraint_l.setRHS(rhs_l);
+                    }
+                    catch(const std::invalid_argument& e)
+                    {
+                        std::cerr << "Invalid value " << pairAttributeValue_l.second << " in section " << sectionName_l
+                                    << ": rhs value must be a double!\n";
+                        std::exit(1);
+                    }
                 }
                 else if(pairAttributeValue_l.first == "sign")
                 {
@@ -52,12 +81,31 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
                 }
                 else
                 {
-                    std::string::size_type sz;
-                    double coeff_l = std::stod(pairAttributeValue_l.second, &sz);
-                    constraint_l.setCoeff(pairAttributeValue_l.first, coeff_l);
+                    try
+                    {
+                        std::string::size_type sz;
+                        double coeff_l = std::stod(pairAttributeValue_l.second, &sz);
+                        if(coeff_l != 0)
+                        {
+                            emptyCstr_l = false;
+                        }
+                        constraint_l.setCoeff(pairAttributeValue_l.first, coeff_l);
+                    }
+                    catch(const std::invalid_argument& e)
+                    {
+                        std::cerr << "Invalid value " << pairAttributeValue_l.second << " in section " << sectionName_l
+                                    << ": coeff value must be a double!\n";
+                        std::exit(1);
+                    }
                 }
             }
             (*this)[constraintName_l] = constraint_l;
+
+            if(emptyCstr_l)
+            {
+                std::cerr << "section " << sectionName_l << " defines an empty constraint.\n";
+                std::exit(1);
+            }
         }
     }
 
@@ -76,7 +124,7 @@ void AdditionalConstraints::addVariableToBinarise(std::string oldVarName_p, std:
     if(!_binaryVariables.insert(binVarName_p).second)
     {
         std::cout << "Duplicate Binary variable name: " << binVarName_p << " was already added.\n";
-        std::exit(0);
+        std::exit(1);
     }
     _variablesToBinarise[oldVarName_p] = binVarName_p;
 }

@@ -113,7 +113,7 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps)
 			std::cout << "\nERROR : missing variable " << kvp.first << " in " << path_to_mps;
 		}
 	}
-	if(error_l)	std::exit(0);
+	if(error_l)	std::exit(1);
 }
 
 StrVector ORT_LP_STATUS = {
@@ -161,7 +161,7 @@ void Worker::solve(int & lp_status) {
 		std::cout << "lp_status is : " << ORT_LP_STATUS[lp_status] << std::endl;
 		std::cout << "written in " << buffer.str() << std::endl;
 		ORTwritemps(*_solver, buffer.str());
-		std::exit(0);
+		std::exit(1);
 	}
 	else {//@FIXME conformity : replace with equivalent to XPRS_LP_UNSTARTED but useless
 		//std::cout << "Worker::solve() status " << lp_status<<", "<<_path_to_mps << std::endl;

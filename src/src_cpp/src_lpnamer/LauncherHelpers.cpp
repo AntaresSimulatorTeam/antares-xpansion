@@ -68,7 +68,7 @@ void addBinaryVariables(operations_research::MPSolver & master_p, std::map<std::
 		if ( nullptr == oldVar_l )
 		{
 			std::cout << "missing variable " << pairOldNewVarnames.first << " used in additional constraint file!\n";
-			std::exit(0);
+			std::exit(1);
 		}
 
 		operations_research::MPVariable * binaryVar_l = master_p.MakeBoolVar(pairOldNewVarnames.second);

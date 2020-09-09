@@ -112,7 +112,7 @@ void usage(int argc) {
 		std::cout << "usage is : <exe> <option_file> " << std::endl;
 		BendersOptions input;
 		input.write_default();
-		std::exit(0);
+		std::exit(1);
 	}
 	else {
 		std::cout << "argc = " << argc << std::endl;

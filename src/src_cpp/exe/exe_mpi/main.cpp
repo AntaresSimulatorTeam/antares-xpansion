@@ -24,7 +24,7 @@ int main(int argc, char** argv)
 	BendersOptions options(build_benders_options(argc, argv));
 	if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1) {
 		std::cout << "You need to have at least one slave by thread" << std::endl;
-		exit(0);
+		exit(1);
 	}
 	if (world.rank() == 0) {
 		std::ostringstream oss_l;

@@ -149,11 +149,11 @@ void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::stri
 		// Check if duplicate or reverse interco does already exist
 		if (key_paysor_paysex.find({ paysor, paysex }) != key_paysor_paysex.end()) {
 			std::cout << "duplicate interco : " << paysor << " - " << paysex << std::endl;
-			std::exit(0);
+			std::exit(1);
 		}
 		if (key_paysor_paysex.find({ paysex, paysor }) != key_paysor_paysex.end()) {
 			std::cout << "reverse interco already defined : " << paysex << " - " << paysor << std::endl;
-			std::exit(0);
+			std::exit(1);
 		}
 		key_paysor_paysex[{paysor, paysex }] = &pairNameCandidate.second;
 	}
@@ -175,7 +175,7 @@ void Candidates::readCstrfiles(std::string const filePath,
 	std::ifstream file(filePath.c_str());
 	if (!file.good()) {
 		std::cout << "unable to open " << filePath << std::endl;
-		std::exit(0);
+		std::exit(1);
 	}
 	while (std::getline(file, line)) {
 		std::istringstream buffer(line);
@@ -218,7 +218,7 @@ void Candidates::readVarfiles(std::string const filePath,
 	std::ifstream file(filePath.c_str());
 	if (!file.good()) {
 		std::cout << "unable to open " << filePath << std::endl;
-		std::exit(0);
+		std::exit(1);
 	}
 	while (std::getline(file, line)) {
 		std::ostringstream name;
@@ -522,13 +522,13 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 						{
 							std::cout << "Unrecognized area " << s1
 										<< " in section " << sectionName << " in " << dataPath << ".";
-							std::exit(0);
+							std::exit(1);
 						}
 						if(!this->checkArea(s2))
 						{
 							std::cout << "Unrecognized area " << s2
 										<< " in section " << sectionName << " in " << dataPath << ".";
-							std::exit(0);
+							std::exit(1);
 						}
 					}
 				}

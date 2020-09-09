@@ -80,7 +80,7 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 	std::ifstream mps_filestream(mps_file_name.c_str());
 	if (!mps_filestream.good()) {
 		std::cout << "unable to open " << mps_file_name << std::endl;
-		std::exit(0);
+		std::exit(1);
 	}
 	while (std::getline(mps_filestream, line)) {
 		std::stringstream buffer(line);
@@ -99,7 +99,7 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 	std::ifstream interco_filestream(interco_file_name.c_str());
 	if (!interco_filestream.good()) {
 		std::cout << "unable to open " << interco_file_name << std::endl;
-		std::exit(0);
+		std::exit(1);
 	}
 	while (std::getline(interco_filestream, line)) {
 		std::stringstream buffer(line);
@@ -121,7 +121,7 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 	std::ifstream area_filestream(area_file_name.c_str());
 	if (!area_filestream.good()) {
 		std::cout << "unable to open " << area_file_name << std::endl;
-		std::exit(0);
+		std::exit(1);
 	}
 	while (std::getline(area_filestream, line)) {
 		if (!line.empty() && line.front() != '#') {
@@ -261,7 +261,7 @@ int main(int argc, char** argv) {
 	// Test if there are enough arguments
 	if (argc < 3) {
 		std::cout << "usage: <exe> <Xpansion study output> <relaxed or integer> <path to exlusions file>" << std::endl;
-		std::exit(0);
+		std::exit(1);
 	}
 
 	// Instantiation of candidates
@@ -273,7 +273,7 @@ int main(int argc, char** argv) {
 	if ( (master_formulation != "relaxed") && (master_formulation != "integer") )
 	{
 		std::cout << "Invalid argument : second argument must be \"integer\" or \"relaxed\"" << std::endl;
-		std::exit(0);
+		std::exit(1);
 	}
 
 	std::string const additionalConstraintFilename_l = (argc > 3) ? argv[3] : "";

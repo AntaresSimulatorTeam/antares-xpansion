@@ -225,7 +225,7 @@ class XpansionDriver():
                 self.get_names(self.args.simulationName)
             else:
                 print("Missing argument simulationName")
-                sys.exit(0)
+                sys.exit(1)
         elif self.args.step == "lp":
             if self.args.simulationName:
                 self.lp_step(self.args.simulationName)
@@ -233,7 +233,7 @@ class XpansionDriver():
                 self.set_options(output_path)
             else:
                 print("Missing argument simulationName")
-                sys.exit(0)
+                sys.exit(1)
         elif self.args.step == "optim":
             if self.args.simulationName:
                 lp_path = os.path.normpath(os.path.join(self.antares_output(),
@@ -241,10 +241,10 @@ class XpansionDriver():
                 self.launch_optimization(lp_path)
             else:
                 print("Missing argument simulationName")
-                sys.exit(0)
+                sys.exit(1)
         else:
             print("Launching failed")
-            sys.exit(0)
+            sys.exit(1)
 
     def clear_old_log(self):
         """
@@ -263,7 +263,7 @@ class XpansionDriver():
         #check file existence
         if not os.path.isfile(self.candidates()):
             print('Missing file : %s was not retrieved.' % self.candidates())
-            sys.exit(0)
+            sys.exit(1)
 
         check_candidates_file(self)
 
@@ -274,7 +274,7 @@ class XpansionDriver():
         #check file existence
         if not os.path.isfile(self.settings()):
             print('Missing file : %s was not retrieved.' % self.settings())
-            sys.exit(0)
+            sys.exit(1)
 
         check_settings_file(self)
 
@@ -318,9 +318,11 @@ class XpansionDriver():
         old_output = os.listdir(self.antares_output())
         print([self.antares(), self.data_dir()])
         with open(self.antares() + '.log', 'w') as output_file:
-            subprocess.call(self.antares() +" "+ self.data_dir(), shell=True,
+            returned_l = subprocess.call(self.antares() +" "+ self.data_dir(), shell=True,
                             stdout=output_file,
                             stderr=output_file)
+            if returned_l != 0:
+                print("WARNING: exited antares with status %d" % returned_l)
         new_output = os.listdir(self.antares_output())
         print(old_output)
         print(new_output)
@@ -387,10 +389,13 @@ class XpansionDriver():
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
             lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed +" "+ self.additional_constraints()
-            subprocess.call(lp_cmd,
+            returned_l = subprocess.call(lp_cmd,
                             shell=True,
                             stdout=output_file,
                             stderr=output_file)
+            if returned_l != 0:
+                print("ERROR: exited lpnamer with status %d" % returned_l)
+                sys.exit(1)
         return lp_path
 
     def launch_optimization(self, lp_path):
@@ -422,10 +427,10 @@ class XpansionDriver():
             solver = self.config.BENDERS_SEQUENTIAL
         elif self.args.method == "both":
             print("metod both is not handled yet")
-            sys.exit(0)
+            sys.exit(1)
         else:
             print("Illegal optim method")
-            sys.exit(0)
+            sys.exit(1)
 
         #delete logged master MIPs
         master_lp_log_format = "log_master*.lp"
@@ -450,9 +455,13 @@ class XpansionDriver():
                                                                   os.path.normpath(os.path.join(
                                                                       os.getcwd(), solver))))
         with open(solver + '.log', 'w') as output_file:
-            subprocess.call(self.solver_cmd(solver), shell=True,
+            returned_l = subprocess.call(self.solver_cmd(solver), shell=True,
                             stdout=output_file,
                             stderr=output_file)
+            if returned_l != 0:
+                print("ERROR: exited solver with status %d" % returned_l)
+                sys.exit(1)
+
         os.chdir(old_cwd)
 
     def set_options(self, output_path):
