@@ -225,7 +225,7 @@ class XpansionDriver():
                 self.get_names(self.args.simulationName)
             else:
                 print("Missing argument simulationName")
-                sys.exit(0)
+                sys.exit(1)
         elif self.args.step == "lp":
             if self.args.simulationName:
                 self.lp_step(self.args.simulationName)
@@ -233,7 +233,7 @@ class XpansionDriver():
                 self.set_options(output_path)
             else:
                 print("Missing argument simulationName")
-                sys.exit(0)
+                sys.exit(1)
         elif self.args.step == "optim":
             if self.args.simulationName:
                 lp_path = os.path.normpath(os.path.join(self.antares_output(),
@@ -241,10 +241,10 @@ class XpansionDriver():
                 self.launch_optimization(lp_path)
             else:
                 print("Missing argument simulationName")
-                sys.exit(0)
+                sys.exit(1)
         else:
             print("Launching failed")
-            sys.exit(0)
+            sys.exit(1)
 
     def clear_old_log(self):
         """
@@ -263,7 +263,7 @@ class XpansionDriver():
         #check file existence
         if not os.path.isfile(self.candidates()):
             print('Missing file : %s was not retrieved.' % self.candidates())
-            sys.exit(0)
+            sys.exit(1)
 
         check_candidates_file(self)
 
@@ -274,7 +274,7 @@ class XpansionDriver():
         #check file existence
         if not os.path.isfile(self.settings()):
             print('Missing file : %s was not retrieved.' % self.settings())
-            sys.exit(0)
+            sys.exit(1)
 
         check_settings_file(self)
 
@@ -422,10 +422,10 @@ class XpansionDriver():
             solver = self.config.BENDERS_SEQUENTIAL
         elif self.args.method == "both":
             print("metod both is not handled yet")
-            sys.exit(0)
+            sys.exit(1)
         else:
             print("Illegal optim method")
-            sys.exit(0)
+            sys.exit(1)
 
         #delete logged master MIPs
         master_lp_log_format = "log_master*.lp"
@@ -453,6 +453,7 @@ class XpansionDriver():
             subprocess.call(self.solver_cmd(solver), shell=True,
                             stdout=output_file,
                             stderr=output_file)
+
         os.chdir(old_cwd)
 
     def set_options(self, output_path):

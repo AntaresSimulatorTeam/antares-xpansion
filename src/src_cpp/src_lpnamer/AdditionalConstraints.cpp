@@ -56,7 +56,7 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
                     if(this->count(constraintName_l))
                     {
                         std::cout << "Duplicate constraint name " << constraintName_l << ".\n";
-                        std::exit(0);
+                        std::exit(1);
                     }
                     constraint_l.setName(constraintName_l);
                 }
@@ -124,7 +124,7 @@ void AdditionalConstraints::addVariableToBinarise(std::string oldVarName_p, std:
     if(!_binaryVariables.insert(binVarName_p).second)
     {
         std::cout << "Duplicate Binary variable name: " << binVarName_p << " was already added.\n";
-        std::exit(0);
+        std::exit(1);
     }
     _variablesToBinarise[oldVarName_p] = binVarName_p;
 }

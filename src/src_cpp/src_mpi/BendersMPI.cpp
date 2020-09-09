@@ -36,7 +36,7 @@ void BendersMpi::load(CouplingMap const & problem_list, mpi::environment & env, 
 			auto const it_master(problem_list.find(master_name));
 			if (it_master == problem_list.end()) {
 				std::cout << "UNABLE TO FIND " << master_name << std::endl;
-				std::exit(0);
+				std::exit(1);
 			}
 			// real problem list taking into account SLAVE_NUMBER
 			
