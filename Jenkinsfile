@@ -4,11 +4,11 @@ configs = [
 	[
 		node: 'compil-debian9',
 		buildTypes: [ 'Debug', 'Release' ],
-		testSteps: [ 'cppcheck', 'unittest' , 'memcheck', 'coverage'],
+		testSteps: [ 'unittest', 'cppcheck', 'coverage', 'memcheck' ],
 		publish: true
 	],
 	[
-		node: 'compil-win64-vc14',
+		node: 'compil-win64-vc141',
 		buildTypes: [ 'Release' ],
 		testSteps: [ 'unittest' ]
 	]
@@ -38,15 +38,16 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 						unstash 'source'
 
 						config.buildTypes.each { buildType ->
-							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.14.0 (jenkins)'}/cmake"]) {
-								sh """
-										conan install \
-											--update \
-											--settings build_type=${buildType} \
-											--install-folder builds/${buildType} \
-											--build missing \
-											.
-									"""
+							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.15.7'}/cmake"]) {
+								String vshell= isUnix() ? 'sh' : 'bat'
+								"${vshell}" """
+									conan install \
+										--update \
+										--settings build_type=${buildType} \
+										--install-folder builds/${buildType} \
+										--build missing \
+										.
+								"""
 							}
 
 							cmakeBuild (
@@ -56,12 +57,13 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 								cmakeArgs: """
 									-D CMAKE_INSTALL_PREFIX="${WORKSPACE}/install/${buildType}"
 									-D antaresXpansion_WITH_COVERAGE=${config.containsKey('testSteps') && config.testSteps.contains('coverage') ? 'ON' : 'OFF'}
-									-D BUILD_DOC=ON
+									-D USE_MPI=ON
+									-D BUILD_DOC=${isUnix() ? 'ON' : 'OFF'}
 									-D CMAKE_POSITION_INDEPENDENT_CODE=ON
 									-D USE_MPI=TRUE
 								""",
 								generator: "${env.CMakeGenerator}",
-								installation: "3.14.0 (jenkins)",
+								installation: "3.15.7",
 								steps: [[args: "--config ${buildType} --parallel 4 -v", withCmake: true]]
 							)
 						}
@@ -89,7 +91,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 											--target run_unit_tests
 											--config ${buildType}
 										""",
-										installation: '3.14.0 (jenkins)'
+										installation: '3.15.7'
 									)
 								}
 							}

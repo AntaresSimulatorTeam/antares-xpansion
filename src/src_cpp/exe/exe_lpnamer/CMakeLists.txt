@@ -1,15 +1,17 @@
 # ===========================================================================
 # CMake configuration
 # ===========================================================================
-CMAKE_MINIMUM_REQUIRED(VERSION 3.14)
 
+# ===========================================================================
+# Targets
+# ===========================================================================
 
 # ---------------------------------------------------------------------------
 # Sequential Benders Exe
 # ---------------------------------------------------------------------------
-SET(EXE_CPP_FILES
+
+add_executable (lp_namer 
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
-ADD_EXECUTABLE(lp_namer ${EXE_CPP_FILES})
-TARGET_LINK_LIBRARIES(lp_namer ${PROJECT_NAME}::lpnamer ortools)
+target_link_libraries (lp_namer ${PROJECT_NAME}::lpnamer)

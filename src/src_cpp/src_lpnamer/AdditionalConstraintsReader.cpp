@@ -1,5 +1,6 @@
 #include "AdditionalConstraintsReader.h"
 
+#include <cctype>
 #include <iostream>
 #include <fstream>
 #include <algorithm>

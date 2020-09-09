@@ -2,73 +2,59 @@
 # CMake configuration
 # ===========================================================================
 
-cmake_minimum_required (VERSION 3.14.0)
-
 # ===========================================================================
 # External requirements
 # ===========================================================================
 
 find_package (GTest REQUIRED)
 
-message("Gtest found here: " ${GTEST_INCLUDE_DIRS} )
+message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 enable_testing ()
+
+# ===========================================================================
+# Targets
+# ===========================================================================
 
 # --------------------------------------------------------------------------
 # unit tests
 # --------------------------------------------------------------------------
-set (UNITTEST_SRCS
+
+add_executable (unit_tests
 	${CMAKE_CURRENT_SOURCE_DIR}/SimpleTest.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/ORToolsTest.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsTest.cc
-	)
-
-add_executable (unit_tests ${UNITTEST_SRCS})
+)
 
 target_include_directories (unit_tests
 	SYSTEM PRIVATE
-	${GTEST_INCLUDE_DIRS}
 	)
 target_include_directories (unit_tests
 	PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
 	)
 
-
 target_link_libraries (unit_tests PRIVATE
-		${GTEST_BOTH_LIBRARIES}
-		ortools
+		GTest::Main
 		helpers
 		lpnamer
 	)
 
-if(NOT NO_SEQUENTIAL)
+if (USE_SEQUENTIAL)
 	target_link_libraries (unit_tests PRIVATE
 			${PROJECT_NAME}::sequentialcore
 	)
-endif()
+endif ()
 
-if(USE_MPI)
+if (USE_MPI)
 	target_link_libraries (unit_tests PRIVATE
 			${PROJECT_NAME}::mpicore
 	)
-
-	IF(WIN32)
-		target_link_libraries (unit_tests PRIVATE
-				msmpi libboost_serialization-vc141-mt-x64-1_67
-		)
-	else()
-		target_link_libraries (unit_tests PRIVATE
-				Boost::serialization Boost::mpi
-		)
-	endif()
-else()
-	set(THREADS_PREFER_PTHREAD_FLAG ON)
+else ()
+	set (THREADS_PREFER_PTHREAD_FLAG ON)
 	target_link_libraries (unit_tests PRIVATE
 			Threads::Threads
 		)
-endif()
-
-
+endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options (unit_tests PUBLIC -Wno-global-constructors)
@@ -84,13 +70,11 @@ add_custom_command (TARGET unit_tests
 	COMMENT "Runs the unit tests after build"
 	)
 
-
 add_test (unit_tests unit_tests)
 
 # ----------------------------------------------------------------------------
 # run_unit_tests & coverage
 # ----------------------------------------------------------------------------
-
 set (TESTS_REPORTS_DIR "${CMAKE_BINARY_DIR}/tests-reports")
 set (TESTS_REPORTS_FILE "unit_tests-results.xml")
 
