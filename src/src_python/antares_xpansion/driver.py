@@ -318,9 +318,11 @@ class XpansionDriver():
         old_output = os.listdir(self.antares_output())
         print([self.antares(), self.data_dir()])
         with open(self.antares() + '.log', 'w') as output_file:
-            subprocess.call(self.antares() +" "+ self.data_dir(), shell=True,
+            returned_l = subprocess.call(self.antares() +" "+ self.data_dir(), shell=True,
                             stdout=output_file,
                             stderr=output_file)
+            if returned_l != 0:
+                print("WARNING: exited antares with status %d" % returned_l)
         new_output = os.listdir(self.antares_output())
         print(old_output)
         print(new_output)
@@ -387,10 +389,13 @@ class XpansionDriver():
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
             lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed +" "+ self.additional_constraints()
-            subprocess.call(lp_cmd,
+            returned_l = subprocess.call(lp_cmd,
                             shell=True,
                             stdout=output_file,
                             stderr=output_file)
+            if returned_l != 0:
+                print("ERROR: exited lpnamer with status %d" % returned_l)
+                sys.exit(1)
         return lp_path
 
     def launch_optimization(self, lp_path):
@@ -450,9 +455,12 @@ class XpansionDriver():
                                                                   os.path.normpath(os.path.join(
                                                                       os.getcwd(), solver))))
         with open(solver + '.log', 'w') as output_file:
-            subprocess.call(self.solver_cmd(solver), shell=True,
+            returned_l = subprocess.call(self.solver_cmd(solver), shell=True,
                             stdout=output_file,
                             stderr=output_file)
+            if returned_l != 0:
+                print("ERROR: exited solver with status %d" % returned_l)
+                sys.exit(1)
 
         os.chdir(old_cwd)
 
