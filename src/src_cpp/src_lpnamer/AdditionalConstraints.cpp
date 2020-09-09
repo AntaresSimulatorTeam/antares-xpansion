@@ -62,9 +62,18 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
                 }
                 else if(pairAttributeValue_l.first == "rhs")
                 {
-                    std::string::size_type sz;
-                    double rhs_l = std::stod(pairAttributeValue_l.second, &sz);
-                    constraint_l.setRHS(rhs_l);
+                    try
+                    {
+                        std::string::size_type sz;
+                        double rhs_l = std::stod(pairAttributeValue_l.second, &sz);
+                        constraint_l.setRHS(rhs_l);
+                    }
+                    catch(const std::invalid_argument& e)
+                    {
+                        std::cerr << "Invalid value " << pairAttributeValue_l.second << " in section " << sectionName_l
+                                    << ": rhs value must be a double!\n";
+                        std::exit(1);
+                    }
                 }
                 else if(pairAttributeValue_l.first == "sign")
                 {
@@ -72,9 +81,22 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
                 }
                 else
                 {
-                    std::string::size_type sz;
-                    double coeff_l = std::stod(pairAttributeValue_l.second, &sz);
-                    constraint_l.setCoeff(pairAttributeValue_l.first, coeff_l);
+                    try
+                    {
+                        std::string::size_type sz;
+                        double coeff_l = std::stod(pairAttributeValue_l.second, &sz);
+                        if(coeff_l != 0)
+                        {
+                            emptyCstr_l = false;
+                        }
+                        constraint_l.setCoeff(pairAttributeValue_l.first, coeff_l);
+                    }
+                    catch(const std::invalid_argument& e)
+                    {
+                        std::cerr << "Invalid value " << pairAttributeValue_l.second << " in section " << sectionName_l
+                                    << ": coeff value must be a double!\n";
+                        std::exit(1);
+                    }
                 }
             }
             (*this)[constraintName_l] = constraint_l;
