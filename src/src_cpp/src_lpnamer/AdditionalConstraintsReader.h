@@ -24,12 +24,12 @@ private:
     std::string _line;
     int _lineNb;
 
-    bool _foundName;
-    bool _foundSign;
-    bool _foundRHS;
-
 public:
-	AdditionalConstraintsReader() {
+	AdditionalConstraintsReader():
+    _section(""),
+    _line(""),
+    _lineNb(0)
+    {
 	}
 
 	AdditionalConstraintsReader(std::string  const & constraints_file_path);

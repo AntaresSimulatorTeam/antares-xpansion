@@ -88,7 +88,7 @@ void AdditionalConstraintsReader::processEntryLine()
         {
             if ( (value_l != "greater_or_equal") && (value_l != "less_or_equal") && (value_l != "equal") )
             {
-                std::cout << "line " << _lineNb << " : Illegal sign value : " << value_l << "! supported values are:"
+                std::cout << "line " << _lineNb << " : Illegal sign value : " << value_l << "! supported values are: "
                             <<"greater_or_equal, less_or_equal and equal.\n";
                 std::exit(1);
             }
@@ -99,12 +99,10 @@ void AdditionalConstraintsReader::processEntryLine()
 }
 
 
-AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & constraints_file_path)
+AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & constraints_file_path):
+    AdditionalConstraintsReader()
 {
     std::ifstream file_l(constraints_file_path);
-    _line = "";
-    _section = "";
-    _lineNb = 0;
 
     while (std::getline(file_l, _line))
     {

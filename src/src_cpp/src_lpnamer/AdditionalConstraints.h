@@ -13,18 +13,29 @@ class AdditionalConstraint : public std::map<std::string, double>
 {
 
 private:
-    double _rhs;
-    std::string _sign;
-    std::string _name;
     std::string _sectionName;
+    std::string _name;
+    std::string _sign;
+    double _rhs;
 
 public:
-    AdditionalConstraint()
+    AdditionalConstraint() :
+    _sectionName(""),
+    _name(""),
+    _sign(""),
+    _rhs(0)
     {
     }
 
-    AdditionalConstraint(std::string sectionName_p) :
-    _sectionName(sectionName_p)
+    AdditionalConstraint(std::string sectionName_p, std::string constraintName_p, std::string sign_p, double rhs_p) :
+    _sectionName(sectionName_p),
+    _name(constraintName_p),
+    _sign(sign_p),
+    _rhs(rhs_p)
+    {
+    }
+
+    virtual ~AdditionalConstraint()
     {
     }
 
