@@ -4,10 +4,10 @@ build:
   stage: build
   script:
     - apt-get update --fix-missing
-    - apt-get install build-essential
-    - apt-get install cmake
-    - apt-get install libjsoncpp-dev
-    - apt-get install libgtest-dev
-    - apt-get install libboost-mpi-dev
+    - apt-get install build-essential -y
+    - apt-get install cmake -y
+    - apt-get install libjsoncpp-dev -y
+    - apt-get install libgtest-dev -y
+    - apt-get install libboost-mpi-dev -y
     - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DBUILD_DEPS=ON
     - cmake --build _build --config Release
