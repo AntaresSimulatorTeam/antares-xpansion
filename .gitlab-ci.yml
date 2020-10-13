@@ -1,7 +1,7 @@
 image: gcc
 
-.pre:
-  stage: install_deps
+build:
+  stage: build
   script:
     - sudo apt-get update --fix-missing
     - sudo apt-get install build-essential
@@ -9,9 +9,5 @@ image: gcc
     - sudo apt-get install libjsoncpp-dev
     - sudo apt-get install libgtest-dev
     - sudo apt-get install libboost-mpi-dev
-
-build:
-  stage: build
-  script:
     - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DBUILD_DEPS=ON
     - cmake --build _build --config Release

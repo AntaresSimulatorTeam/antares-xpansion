@@ -25,7 +25,7 @@ class XpansionConfig():
 
         self.MPI_N_PROCESSES = "4"
 
-        self.ANTARES = 'antares-7.0-solver'
+        self.ANTARES = 'antares-7.2-solver.exe'
         self.SETTINGS = 'settings'
         self.USER = 'user'
         self.EXPANSION = 'expansion'
@@ -47,11 +47,11 @@ class XpansionConfig():
 
         self.OUTPUT = 'output'
         self.OPTIONS_TXT = 'options.txt'
-        self.MERGE_MPS = "merge_mps"
+        self.MERGE_MPS = "merge_mps.exe"
         self.MPS_TXT = "mps.txt"
-        self.BENDERS_MPI = "bendersmpi"
-        self.BENDERS_SEQUENTIAL = "benderssequential"
-        self.LP_NAMER = "lp_namer"
+        self.BENDERS_MPI = "bendersmpi.exe"
+        self.BENDERS_SEQUENTIAL = "benderssequential.exe"
+        self.LP_NAMER = "lp_namer.exe"
 
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument("--step", choices=["lp", "optim", "full", "antares", "getnames"],
