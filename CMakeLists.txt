@@ -57,6 +57,7 @@ if (MSVC)
 	set (CMAKE_STATIC_LINKER_FLAGS_RELEASE " ${CMAKE_STATIC_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
 		
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
+	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc")
     
     
 
@@ -127,8 +128,11 @@ endif ()
 find_package (Threads REQUIRED)
 
 # OR-Tools
-find_package (ortools REQUIRED)
-add_definitions (${ORTOOLS_DEFINITIONS})
+
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+find_package(gflags REQUIRED)
+find_package(ortools REQUIRED)
+
 if (SOLVER)
 	if (SOLVER STREQUAL "cplex")
 		add_definitions (-DCPLEX_SOLVER -DUSE_CPLEX)

@@ -33,5 +33,4 @@ target_include_directories (helpers
 target_link_libraries (helpers 
 	PUBLIC
 		ortools::ortools 
-        gflags::gflags
 )
