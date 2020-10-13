@@ -1,0 +1,18 @@
+image: ubuntu::latest
+
+install_deps
+  stage: install_deps
+  script:
+    - sudo apt-get install libjsoncpp-dev
+    - sudo apt-get install libgtest-dev
+    - sudo apt-get install libboost-mpi-dev
+
+configure:
+  stage: configure
+  script:
+    - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DBUILD_DEPS=ON
+
+build:
+  stage: build
+  script:
+    - cmake --build _build --config Release
