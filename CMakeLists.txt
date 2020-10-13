@@ -2,7 +2,7 @@
 # CMake configuration
 # ===========================================================================
 
-CMAKE_MINIMUM_REQUIRED (VERSION 3.14)
+CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 
 # ===========================================================================
 # Project configuration
@@ -93,6 +93,26 @@ endif ()
 # ===========================================================================
 # External dependencies
 # ===========================================================================
+#CMake function to build dependancy from git
+include("cmake/utils.cmake")
+
+option(BUILD_DEPS "Build all dependencies" OFF)
+message(STATUS "Build all dependencies: ${BUILD_DEPS}")
+
+# IF BUILD_DEPS=ON THEN Force all BUILD_*=ON
+include(CMakeDependentOption)
+
+CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build BUILD_ortools dependency Library" ON
+		"NOT BUILD_DEPS" ON)
+message(STATUS "Build ortools: ${BUILD_ortools}")
+
+# Build Needed dependencies
+message ("CMAKE_CURRENT_SOURCE_DIR")
+message (${CMAKE_CURRENT_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install)
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/libs/pkgconfig)
+
+add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_SOURCE_DIR}/build_deps)
 
 # optional conan setup
 if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
