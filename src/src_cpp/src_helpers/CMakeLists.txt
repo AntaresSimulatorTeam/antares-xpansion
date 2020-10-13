@@ -28,10 +28,10 @@ endif ()
 target_include_directories (helpers
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
-		${ORTOOLS_INCLUDE_DIRS}
 )
 
 target_link_libraries (helpers 
 	PUBLIC
-		ortools::ortools
+		ortools::ortools 
+        gflags::gflags
 )
