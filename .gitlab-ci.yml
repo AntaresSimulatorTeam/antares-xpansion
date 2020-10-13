@@ -8,6 +8,5 @@ build:
     - apt-get install cmake -y
     - apt-get install libjsoncpp-dev -y
     - apt-get install libgtest-dev -y
-    - apt-get install libboost-mpi-dev -y
     - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DBUILD_DEPS=ON
     - cmake --build _build --config Release
