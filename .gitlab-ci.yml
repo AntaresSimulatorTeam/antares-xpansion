@@ -3,11 +3,11 @@ image: gcc
 build:
   stage: build
   script:
-    - sudo apt-get update --fix-missing
-    - sudo apt-get install build-essential
-    - sudo apt-get install cmake
-    - sudo apt-get install libjsoncpp-dev
-    - sudo apt-get install libgtest-dev
-    - sudo apt-get install libboost-mpi-dev
+    - apt-get update --fix-missing
+    - apt-get install build-essential
+    - apt-get install cmake
+    - apt-get install libjsoncpp-dev
+    - apt-get install libgtest-dev
+    - apt-get install libboost-mpi-dev
     - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DBUILD_DEPS=ON
     - cmake --build _build --config Release
