@@ -1,4 +1,4 @@
-image: gcc
+image: ubuntu
 
 build:
   stage: build
@@ -8,5 +8,6 @@ build:
     - apt-get install cmake -y
     - apt-get install libjsoncpp-dev -y
     - apt-get install libgtest-dev -y
-    - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DBUILD_DEPS=ON
+    - apt-get install libboost-mpi-dev -y
+    - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON
     - cmake --build _build --config Release
