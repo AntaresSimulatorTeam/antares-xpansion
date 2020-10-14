@@ -3,6 +3,7 @@ image: ubuntu
 build:
   stage: build
   script:
+    - export DEBIAN_FRONTEND=noninteractive
     - apt-get update --fix-missing
     - apt-get install build-essential -y
     - apt-get install cmake -y
