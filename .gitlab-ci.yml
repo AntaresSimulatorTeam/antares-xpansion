@@ -6,6 +6,7 @@ build:
     - export DEBIAN_FRONTEND=noninteractive
     - apt-get update --fix-missing
     - apt-get install build-essential -y
+    - apt-get install git -y
     - apt-get install cmake -y
     - apt-get install libjsoncpp-dev -y
     - apt-get install libgtest-dev -y
