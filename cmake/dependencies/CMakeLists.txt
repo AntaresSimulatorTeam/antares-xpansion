@@ -4,7 +4,7 @@
 if(BUILD_antares_solver)
 
 set(REPOSITORY "https://github.com/AntaresSimulatorTeam/Antares_Simulator.git")
-set(TAG "feature/xpansion_struct_export")
+set(TAG "develop")
 set(CMAKE_ARGS "-DBUILD_UI=OFF -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")

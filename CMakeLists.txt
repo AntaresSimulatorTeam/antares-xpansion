@@ -206,10 +206,6 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "antares-*.*-solver.exe")
   
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
-  DESTINATION bin
-  FILES_MATCHING PATTERN "antares-*.*-solver")
-  
 #For now only test archive, need to define several CPACK variable
 include(CPack)
 set(CPACK_PROJECT_NAME "antaresXpansion")
