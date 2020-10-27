@@ -24,3 +24,6 @@ target_link_libraries (analyse_mps
 		${PROJECT_NAME}::sequentialcore
 		helpers
 )
+
+
+install(TARGETS analyse_mps DESTINATION bin)

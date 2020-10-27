@@ -19,3 +19,6 @@ target_link_libraries (merge_mps
 		${PROJECT_NAME}::sequentialcore
 		helpers
 )
+
+
+install(TARGETS merge_mps DESTINATION bin)

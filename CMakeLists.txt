@@ -182,10 +182,18 @@ find_package(jsoncpp CONFIG REQUIRED)
 # Targets
 # ===========================================================================
 
-add_subdirectory ("${PROJECT_SOURCE_DIR}/src/src_cpp")
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
 # ===========================================================================
 # Documentation
 # ===========================================================================
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
+
+
+#For now only test archive, need to define several CPACK variable
+include(CPack)
+set(CPACK_PROJECT_NAME "antaresXpansion")
+set(CPACK_PACKAGE_VERSION_MAJOR 1)
+set(CPACK_PACKAGE_VERSION_MINOR 1)
+set(CPACK_PACKAGE_VERSION_PATCH 0)
