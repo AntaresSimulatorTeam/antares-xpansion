@@ -13,11 +13,6 @@ build:
     - apt-get install libboost-mpi-dev -y
     - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON
     - cmake --build _build --config Release
-    
-    
-deploy:
-  stage: deploy
-  script:
     - cd _build
     - cpack -G ZIP
   artifacts:

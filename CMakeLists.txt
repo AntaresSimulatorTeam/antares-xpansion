@@ -106,6 +106,10 @@ CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build BUILD_ortools dependency Library" ON
 		"NOT BUILD_DEPS" ON)
 message(STATUS "Build ortools: ${BUILD_ortools}")
 
+CMAKE_DEPENDENT_OPTION(BUILD_antares_solver "Build antares solver" OFF
+		"NOT BUILD_DEPS" ON)
+message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+
 # Build Needed dependencies
 message ("CMAKE_CURRENT_SOURCE_DIR")
 message (${CMAKE_CURRENT_BINARY_DIR})
@@ -190,7 +194,18 @@ add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
 
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "*.dll")
 
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "*.dll")
+  
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "antares-*.*-solver.exe")
+  
 #For now only test archive, need to define several CPACK variable
 include(CPack)
 set(CPACK_PROJECT_NAME "antaresXpansion")
