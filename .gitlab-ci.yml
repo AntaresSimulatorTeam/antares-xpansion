@@ -11,7 +11,7 @@ build:
     - apt-get install libjsoncpp-dev -y
     - apt-get install libgtest-dev -y
     - apt-get install libboost-mpi-dev -y
-    - apt-get install openssl -y
+    - apt-get install libssl-dev -y
     - apt-get install libuuid1 uuid-dev libssh2-1 libssh2-1-dev libidn2-dev libidn11 libidn11-dev libcurl4-openssl-dev libb64-dev -y
     - apt-get install libboost-test-dev libboost-filesystem-dev libboost-dev -y
     - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON
