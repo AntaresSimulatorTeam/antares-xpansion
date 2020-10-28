@@ -37,11 +37,10 @@ windows/x64:
   - $env:VCPKG_DEFAULT_TRIPLET="x64-windows"
   - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_TOOLCHAIN_FILE"
   tags:
-  - vs2019
   - windows
 
 centos7/x64:
-  image: centos7
+  image: centos
   stage: build
   before_script:
     - yum install git -y
