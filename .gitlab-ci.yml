@@ -42,7 +42,7 @@ windows/x64:
   - windows
 
 centos7/x64:
-  image: centos
+  image: centos:7
   stage: build
   before_script:
     - yum install epel-release -y
