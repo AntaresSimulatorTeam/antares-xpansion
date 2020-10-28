@@ -51,6 +51,7 @@ centos7/x64:
   stage: build
   before_script:
     - yum install epel-release -y
+    - yum install gcc-c++ gcc -y
     - yum install git -y
     - yum install cmake3 -y
     - yum install jsoncpp -y
