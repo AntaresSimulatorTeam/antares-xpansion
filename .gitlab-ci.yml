@@ -37,6 +37,11 @@ windows/x64:
   - choco install -y cmake
   - $env:Path += ';C:\Program Files\CMake\bin'
   - $env:VCPKG_DEFAULT_TRIPLET="x64-windows"
+  - vcpkg install openssl 
+  - vcpkg install curl
+  - vcpkg install wxwidgets
+  - vcpkg install boost-test
+  - vcpkg install boost-filesystem
   - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_TOOLCHAIN_FILE"
   tags:
   - windows
