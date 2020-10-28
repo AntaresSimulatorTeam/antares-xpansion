@@ -58,7 +58,7 @@ centos7/x64:
     - yum install gtest -y
     - yum install boost-openmpi -y
     - yum install openssl -y
-    - yum install curl -y
+    - yum install libcurl-devel -y
     - yum install boost-test boost-filesystem boost-filesystem boost-regex boost-devel -y
     - cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON
 
