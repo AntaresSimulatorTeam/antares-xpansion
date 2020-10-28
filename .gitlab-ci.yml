@@ -34,6 +34,8 @@ ubuntu/x64:
 windows/x64:
   extends: .build
   before_script:
+  - choco install -y cmake
+  - $env:Path += ';C:\Program Files\CMake\bin'
   - $env:VCPKG_DEFAULT_TRIPLET="x64-windows"
   - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_TOOLCHAIN_FILE"
   tags:
@@ -43,6 +45,7 @@ centos7/x64:
   image: centos
   stage: build
   before_script:
+    - yum install epel-release -y
     - yum install git -y
     - yum install cmake3 -y
     - yum install jsoncpp -y
