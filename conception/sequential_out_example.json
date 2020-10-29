@@ -1,0 +1,114 @@
+{
+	"antares" : 
+	{
+		"name" : "0.0.0",
+		"version" : "unknown"
+	},
+	"antares_xpansion" : 
+	{
+		"version" : "0.0.0"
+	},
+	"begin" : "02-07-2020 11:37:09",
+	"duration" : 0.0,
+	"end" : "02-07-2020 11:37:09",
+	"iterations" : 
+	{
+		"1" : 
+		{
+			"candidates" : 
+			[
+				{
+					"invest" : 0.0,
+					"max" : 10.0,
+					"min" : 0.0,
+					"name" : "x"
+				}
+			],
+			"duration" : 0.0070572860000000003,
+			"gap" : 10000000004.0,
+			"investment_cost" : 0.0,
+			"lb" : -10000000000.0,
+			"operational_cost" : 0.0,
+			"overall_cost" : 0.0,
+			"relative_gap" : 2500000001.0,
+			"ub" : 4.0
+		},
+		"2" : 
+		{
+			"candidates" : 
+			[
+				{
+					"invest" : 10.000000000000004,
+					"max" : 10.0,
+					"min" : 0.0,
+					"name" : "x"
+				}
+			],
+			"duration" : 0.0047323749999999996,
+			"gap" : 16.000000000000007,
+			"investment_cost" : 15.000000000000005,
+			"lb" : -1.0000000000000018,
+			"operational_cost" : 0.0,
+			"overall_cost" : 15.000000000000005,
+			"relative_gap" : 1.0666666666666667,
+			"ub" : 15.000000000000005
+		},
+		"3" : 
+		{
+			"candidates" : 
+			[
+				{
+					"invest" : 1.5,
+					"max" : 10.0,
+					"min" : 0.0,
+					"name" : "x"
+				}
+			],
+			"duration" : 0.006557935,
+			"gap" : 0.0,
+			"investment_cost" : 2.25,
+			"lb" : 3.25,
+			"operational_cost" : 0.0,
+			"overall_cost" : 2.25,
+			"relative_gap" : 0.0,
+			"ub" : 3.25
+		}
+	},
+	"nbWeeks" : 3,
+	"options" : 
+	{
+		"ACTIVECUTS" : false,
+		"AGGREGATION" : false,
+		"BASIS" : true,
+		"BOUND_ALPHA" : true,
+		"CSV_NAME" : "benders_output_trace",
+		"DELETE_CUT" : false,
+		"GAP" : 9.9999999999999995e-07,
+		"INPUTROOT" : ".",
+		"LOG_LEVEL" : 3,
+		"MASTER_NAME" : "master",
+		"MAX_ITERATIONS" : -1,
+		"OUTPUTROOT" : ".",
+		"RAND_AGGREGATION" : 0,
+		"SLAVE_NUMBER" : -1,
+		"SLAVE_WEIGHT" : "CONSTANT",
+		"SLAVE_WEIGHT_VALUE" : 1.0,
+		"STRUCTURE_FILE" : "structure.txt",
+		"THRESHOLD_AGGREGATION" : 0,
+		"THRESHOLD_ITERATION" : 0,
+		"TRACE" : true
+	},
+	"solution" : 
+	{
+		"gap" : 0.0,
+		"investment_cost" : 2.25,
+		"iteration" : 3,
+		"operational_cost" : 0.0,
+		"optimality" : true,
+		"overall_cost" : 2.25,
+		"values" : 
+		{
+			"x" : 1.5
+		}
+	}
+}

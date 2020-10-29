@@ -1,0 +1,80 @@
+# ===========================================================================
+[requires]
+# ===========================================================================
+
+# openmpi
+#openmpi/3.0.0@bincrafters/stable
+
+# jsoncpp
+#jsoncpp/1.9.0@theirix/stable
+jsoncpp/1.9.3@
+
+# or-tools
+# 7.0 is available on compil-debian9 and compil-win64-vc141
+# 7.4 is available on compil-debian9 and compil-win64-vc141
+# note that 7.1 and later need to have the ORTOOLS_RECENT
+# option set in CMake settings
+#ortools/7.0@eurodecision/stable
+ortools/7.4@eurodecision/stable
+
+# boost
+# waiting for PR on MPI activation,
+# see https://github.com/conan-io/conan-center-index/issues/2501
+#boost/1.72.0@eurodecision/testing
+
+# ===========================================================================
+[build_requires]
+# ===========================================================================
+
+# gtest
+# waiting for PR on debug libraries,
+# see https://github.com/conan-io/conan-center-index/pull/2844
+#gtest/1.8.1@bincrafters/stable
+#gtest/1.10.0@
+#gtest/1.10.0@eurodecision/testing
+
+# ===========================================================================
+[options]
+# ===========================================================================
+
+# boost
+#boost:layout=b2-default
+boost:without_mpi=False
+boost:without_python=True
+boost:without_math=True
+boost:without_wave=True
+boost:without_container=True
+boost:without_contract=True
+boost:without_exception=True
+boost:without_graph=True
+boost:without_iostreams=True
+boost:without_locale=True
+boost:without_log=True
+boost:without_program_options=True
+boost:without_random=True
+boost:without_regex=True
+boost:without_serialization=False
+boost:without_coroutine=True
+boost:without_fiber=True
+boost:without_context=True
+boost:without_timer=True
+boost:without_thread=True
+boost:without_chrono=True
+boost:without_date_time=True
+boost:without_atomic=True
+boost:without_filesystem=True
+boost:without_system=True
+boost:without_graph_parallel=True
+boost:without_stacktrace=True
+boost:without_test=True
+boost:without_type_erasure=True
+
+# gtest
+gtest:debug_postfix=
+gtest:build_gmock=False
+
+# ===========================================================================
+[generators]
+# ===========================================================================
+
+cmake

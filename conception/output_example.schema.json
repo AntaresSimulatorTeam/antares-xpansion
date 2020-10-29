@@ -1,0 +1,568 @@
+{
+	"definitions": {},
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://example.com/object1591364010.json",
+	"title": "Root",
+	"type": "object",
+	"required": [
+		"begin",
+		"end",
+		"duration",
+		"nbWeeks",
+		"antares",
+		"antares_xpansion",
+		"options",
+		"solution"
+	],
+	"optional": [
+		"iterations"
+	],
+	"additionalProperties": false,
+	"properties": {
+		"begin": {
+			"$id": "#root/begin",
+			"title": "Begin",
+			"type": "string",
+			"default": "",
+			"examples": [
+				"datetime"
+			],
+			"pattern": "^.*$"
+		},
+		"end": {
+			"$id": "#root/end",
+			"title": "End",
+			"type": "string",
+			"default": "",
+			"examples": [
+				"datetime"
+			],
+			"pattern": "^.*$"
+		},
+		"duration": {
+			"$id": "#root/duration",
+			"title": "Duration",
+			"type": "number",
+			"default": 0,
+			"examples": [
+				12.3
+			],
+			"pattern": "^.*$"
+		},
+		"nbWeeks": {
+			"$id": "#root/nbweeks",
+			"title": "NbWeeks",
+			"type": "integer",
+			"default": 0,
+			"examples": [
+				52
+			],
+			"pattern": "^.*$"
+		},
+		"antares": {
+			"$id": "#root/antares",
+			"title": "Antares",
+			"type": "object",
+			"required": [
+				"version",
+				"name"
+			],
+			"properties": {
+				"version": {
+					"$id": "#root/antares/version",
+					"title": "Version",
+					"type": "string",
+					"default": "",
+					"examples": [
+						"version"
+					],
+					"pattern": "^.*$"
+				},
+				"name": {
+					"$id": "#root/antares/name",
+					"title": "Name",
+					"type": "string",
+					"default": "",
+					"examples": [
+						"study_name"
+					],
+					"pattern": "^.*$"
+				}
+			}
+		},
+		"antares_xpansion": {
+			"$id": "#root/antares_xpansion",
+			"title": "Antares_xpansion",
+			"type": "object",
+			"required": [
+				"version"
+			],
+			"properties": {
+				"version": {
+					"$id": "#root/antares_xpansion/version",
+					"title": "Version",
+					"type": "string",
+					"default": "",
+					"examples": [
+						"version"
+					],
+					"pattern": "^.*$"
+				}
+			}
+		}
+,
+		"options": {
+			"$id": "#root/options",
+			"title": "options",
+			"type": "object",
+			"required": [
+				"ACTIVECUTS",
+				"AGGREGATION",
+				"BASIS",
+				"BOUND_ALPHA",
+				"CSV_NAME",
+				"DELETE_CUT",
+				"GAP",
+				"INPUTROOT",
+				"LOG_LEVEL",
+				"MASTER_NAME",
+				"MAX_ITERATIONS",
+				"OUTPUTROOT",
+				"RAND_AGGREGATION",
+				"SLAVE_NUMBER",
+				"SLAVE_WEIGHT",
+				"SLAVE_WEIGHT_VALUE",
+				"STRUCTURE_FILE",
+				"THRESHOLD_AGGREGATION",
+				"THRESHOLD_ITERATION",
+				"TRACE"
+			],
+			"properties": {
+				"ACTIVECUTS": {
+					"$id": "#root/options/ACTIVECUTS",
+					"title": "ACTIVECUTS",
+					"type": "boolean",
+					"default": false,
+					"examples": [
+						false
+					]
+				},
+				"AGGREGATION": {
+					"$id": "#root/options/AGGREGATION",
+					"title": "AGGREGATION",
+					"type": "boolean",
+					"default": false,
+					"examples": [
+						false
+					]
+				},
+				"BASIS": {
+					"$id": "#root/options/BASIS",
+					"title": "BASIS",
+					"type": "boolean",
+					"default": true,
+					"examples": [
+						true
+					]
+				},
+				"BOUND_ALPHA": {
+					"$id": "#root/options/BOUND_ALPHA",
+					"title": "BOUND_ALPHA",
+					"type": "boolean",
+					"default": true,
+					"examples": [
+						true
+					]
+				},
+				"CSV_NAME": {
+					"$id": "#root/options/CSV_NAME",
+					"title": "CSV_NAME",
+					"type": "string",
+					"default": "benders_output_trace",
+					"examples": [
+						"benders_output_trace"
+					],
+					"pattern": "^.*$"
+				},
+				"DELETE_CUT": {
+					"$id": "#root/options/DELETE_CUT",
+					"title": "DELETE_CUT",
+					"type": "boolean",
+					"default": false,
+					"examples": [
+						false
+					]
+				},
+				"GAP": {
+					"$id": "#root/options/GAP",
+					"title": "GAP",
+					"type": "number",
+					"default": 1e-06,
+					"examples": [
+						1e-06
+					]
+				},
+				"INPUTROOT": {
+					"$id": "#root/options/INPUTROOT",
+					"title": "INPUTROOT",
+					"type": "string",
+					"default": ".",
+					"examples": [
+						"."
+					],
+					"pattern": "^.*$"
+				},
+				"LOG_LEVEL": {
+					"$id": "#root/options/LOG_LEVEL",
+					"title": "LOG_LEVEL",
+					"type": "integer",
+					"default": 3,
+					"examples": [
+						3
+					]
+				},
+				"MASTER_NAME": {
+					"$id": "#root/options/MASTER_NAME",
+					"title": "MASTER_NAME",
+					"type": "string",
+					"default": "master",
+					"examples": [
+						"master"
+					],
+					"pattern": "^.*$"
+				},
+				"MAX_ITERATIONS": {
+					"$id": "#root/options/MAX_ITERATIONS",
+					"title": "MAX_ITERATIONS",
+					"type": "integer",
+					"default": -1,
+					"examples": [
+						-1
+					]
+				},
+				"OUTPUTROOT": {
+					"$id": "#root/options/OUTPUTROOT",
+					"title": "OUTPUTROOT",
+					"type": "string",
+					"default": ".",
+					"examples": [
+						"."
+					],
+					"pattern": "^.*$"
+				},
+				"RAND_AGGREGATION": {
+					"$id": "#root/options/RAND_AGGREGATION",
+					"title": "RAND_AGGREGATION",
+					"type": "integer",
+					"default": 0,
+					"examples": [
+						0
+					]
+				},
+				"SLAVE_NUMBER": {
+					"$id": "#root/options/SLAVE_NUMBER",
+					"title": "SLAVE_NUMBER",
+					"type": "integer",
+					"default": -1,
+					"examples": [
+						-1
+					]
+				},
+				"SLAVE_WEIGHT": {
+					"$id": "#root/options/SLAVE_WEIGHT",
+					"title": "SLAVE_WEIGHT",
+					"type": "string",
+					"default": "CONSTANT",
+					"examples": [
+						"CONSTANT"
+					],
+					"pattern": "^.*$"
+				},
+				"SLAVE_WEIGHT_VALUE": {
+					"$id": "#root/options/SLAVE_WEIGHT_VALUE",
+					"title": "SLAVE_WEIGHT_VALUE",
+					"type": "number",
+					"default": 1,
+					"examples": [
+						1.0
+					]
+				},
+				"STRUCTURE_FILE": {
+					"$id": "#root/options/STRUCTURE_FILE",
+					"title": "STRUCTURE_FILE",
+					"type": "string",
+					"default": "structure.txt",
+					"examples": [
+						"structure.txt"
+					],
+					"pattern": "^.*$"
+				},
+				"THRESHOLD_AGGREGATION": {
+					"$id": "#root/options/THRESHOLD_AGGREGATION",
+					"title": "THRESHOLD_AGGREGATION",
+					"type": "integer",
+					"default": 0,
+					"examples": [
+						0
+					]
+				},
+				"THRESHOLD_ITERATION": {
+					"$id": "#root/options/THRESHOLD_ITERATION",
+					"title": "THRESHOLD_ITERATION",
+					"type": "integer",
+					"default": 0,
+					"examples": [
+						0
+					]
+				},
+				"TRACE": {
+					"$id": "#root/options/TRACE",
+					"title": "TRACE",
+					"type": "boolean",
+					"default": true,
+					"examples": [
+						true
+					]
+				}
+			}
+		}
+,
+		"iterations": {
+			"$id": "#root/iterations",
+			"title": "Iterations",
+			"type": "object",
+			"required": [
+				"1"
+			],
+			"properties": {
+				"1": {
+					"$id": "#root/iterations/1",
+					"title": "1",
+					"type": "object",
+					"required": [
+						"duration",
+						"gap",
+						"investment_cost",
+						"operational_cost",
+						"overall_cost",
+						"relative_gap",
+						"ub",
+						"lb",
+						"candidates"
+					],
+					"properties": {
+						"duration": {
+							"$id": "#root/iterations/1/duration",
+							"title": "Duration",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								0.005
+							]
+						},
+						"gap": {
+							"$id": "#root/iterations/1/gap",
+							"title": "gap",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								100015.15
+							]
+						},
+						"investment_cost": {
+							"$id": "#root/iterations/1/investment_cost",
+							"title": "investment_cost",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								5955146100
+							]
+						},
+						"operational_cost": {
+							"$id": "#root/iterations/1/operational_cost",
+							"title": "operational_cost",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								0.005
+							]
+						},
+						"overall_cost": {
+							"$id": "#root/iterations/1/overall_cost",
+							"title": "overall_cost",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								0.005
+							]
+						},
+						"relative_gap": {
+							"$id": "#root/iterations/1/relative_gap",
+							"title": "relative_gap",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								0.005
+							]
+						},
+						"ub": {
+							"$id": "#root/iterations/1/ub",
+							"title": "ub",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								0.005
+							]
+						},
+						"lb": {
+							"$id": "#root/iterations/1/lb",
+							"title": "lb",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								0.005
+							]
+						},
+						"candidates": {
+							"$id": "#root/iterations/1/candidates",
+							"title": "candidates",
+							"type": "array",
+							"default": [],
+							"items" : { "$ref" : "#/definitions/candidate_name" }
+						}
+					}
+				}
+			}
+		},
+		"solution": {
+			"$id": "#root/solution",
+			"title": "solution",
+			"type": "object",
+			"examples": [
+				1
+			],
+			"default": {},
+			"required": [
+				"gap",
+				"investment_cost",
+				"optimality",
+				"values"
+            ],
+            "optional": [
+                "operational_cost",
+				"overall_cost",
+				"iteration"
+            ],
+			"properties": {
+				"gap": {
+					"$id": "#root/solution/gap",
+					"title": "gap",
+					"type": "number",
+					"default": 0,
+					"examples": [
+						100015.15
+					]
+				},
+				"investment_cost": {
+					"$id": "#root/solution/investment_cost",
+					"title": "investment_cost",
+					"type": "number",
+					"default": 0,
+					"examples": [
+						5955146100
+					]
+				},
+				"operational_cost": {
+					"$id": "#root/solution/operational_cost",
+					"title": "operational_cost",
+					"type": "number",
+					"default": 0,
+					"examples": [
+						0.005
+					]
+				},
+				"overall_cost": {
+					"$id": "#root/solution/overall_cost",
+					"title": "overall_cost",
+					"type": "number",
+					"default": 0,
+					"examples": [
+						0.005
+					]
+				},
+				"iteration": {
+					"$id": "#root/solution/iteration",
+					"title": "iteration",
+					"type": "integer",
+					"default": 0,
+					"examples": [
+						2
+					]
+				},
+				"optimality": {
+					"$id": "#root/solution/optimality",
+					"title": "optimality",
+					"type": "boolean",
+					"default": false,
+					"examples": [
+						false
+					]
+				},
+				"values": {
+					"$id": "#root/solution/values",
+					"title": "values",
+					"type": "object",
+					"default": {},
+					"additionalProperties": {
+                    	"type": "number"
+                    }
+				}
+			}
+		}
+	},
+    "definitions": {
+        "candidate_name": {
+            "title": "Candidate",
+            "type": "object",
+            "required": [
+                "name",
+				"invest",
+				"min",
+				"max"
+            ],
+            "properties": {
+                "name" : {
+                    "title": "Name",
+                    "type": "string",
+                    "examples": [
+                        "Candidate_A"
+                    ]
+                },
+                "invest": {
+                    "title": "Invest",
+                    "type": "number",
+                    "examples": [
+                        1
+                    ],
+                    "default": 0
+                },
+                "min": {
+                    "title": "Min",
+                    "type": "number",
+                    "examples": [
+                        0
+                    ],
+                    "default": 0
+                },
+                "max": {
+                    "title": "Max",
+                    "type": "number",
+                    "examples": [
+                        1200
+                    ],
+                    "default": 0
+                }
+            }
+        }
+    }
+}
