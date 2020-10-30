@@ -49,6 +49,7 @@ jobs:
            sudo cmake --build . --target install
         
     - name: Configure with VCPKG
+      shell: cmd
       if: matrix.os == 'windows-latest'
       run: |
            cmake -B _build -S . -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_BUILD_TYPE=release -DBUILD_DEPS=ON

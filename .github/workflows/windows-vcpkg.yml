@@ -38,6 +38,7 @@ jobs:
       run: echo "root='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}', triplet='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_TRIPLET_OUT }}' "
         
     - name: Configure
+      shell: cmd
       run: |
            cmake -B _build -S . -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_PREFIX_PATH=%BOOST_ROOT_1_72_0% -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_BUILD_TYPE=release -DBUILD_DEPS=ON
     
