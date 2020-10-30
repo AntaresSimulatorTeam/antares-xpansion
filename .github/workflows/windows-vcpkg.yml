@@ -20,7 +20,7 @@ jobs:
           - os: windows-latest
             triplet: x64-windows
             vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
-            vcpkgPackages: openssl curl wxwidgets boost-test boost-filesystem boost-mpi boost-regex
+            vcpkgPackages: openssl curl wxwidgets
 
     steps:
     - uses: actions/checkout@v2 
@@ -39,7 +39,7 @@ jobs:
         
     - name: Configure
       run: |
-           cmake -B _build -S . -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_BUILD_TYPE=release -DBUILD_DEPS=ON
+           cmake -B _build -S . -DCMAKE_PREFIX_PATH=%BOOST_ROOT_1_72_0% -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_BUILD_TYPE=release -DBUILD_DEPS=ON
     
     - name: Build
       run: |
