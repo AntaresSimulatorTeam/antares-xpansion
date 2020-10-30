@@ -29,14 +29,15 @@ jobs:
       uses: lukka/run-vcpkg@v4
       id: runvcpkg
       with:
-        vcpkgArguments: '${{ matrix.vcpkgPackages }}'
         vcpkgTriplet: '${{ matrix.triplet }}'
         vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
         vcpkgGitCommitId: '${{ matrix.vcpkgCommitId }}'
-          
-    - name: Prints output of run-vcpkg's task
-      run: echo "root='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}', triplet='${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_TRIPLET_OUT }}' "
-        
+
+    - name: Install ms-mpi
+      shell: cmd
+      run: |
+           ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/downloads/msmpisetup-10.0.12498.exe -unattend
+    
     - name: Configure
       shell: cmd
       run: |
