@@ -111,12 +111,11 @@ CMAKE_DEPENDENT_OPTION(BUILD_antares_solver "Build antares solver" OFF
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
 # Build Needed dependencies
-message ("CMAKE_CURRENT_SOURCE_DIR")
-message (${CMAKE_CURRENT_BINARY_DIR})
+message ("CMAKE_PREFIX_PATH")
+message (${CMAKE_PREFIX_PATH})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install)
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/libs/pkgconfig)
 
-add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_SOURCE_DIR}/build_deps)
 
 # optional conan setup
 if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -142,6 +141,8 @@ if (USE_MPI)
 	message (STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY})
 	message (STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS})
 endif ()
+
+add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_SOURCE_DIR}/build_deps)
 
 # ---------------------------------------------------------------------------
 # Threads
