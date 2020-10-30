@@ -20,7 +20,7 @@ jobs:
           - os: windows-latest
             triplet: x64-windows
             vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
-            vcpkgPackages: openssl curl wxwidgets
+            vcpkgPackages: 
 
     steps:
     - uses: actions/checkout@v2 
@@ -29,6 +29,7 @@ jobs:
       uses: lukka/run-vcpkg@v4
       id: runvcpkg
       with:
+        vcpkgArguments: '${{ matrix.vcpkgPackages }}'
         vcpkgTriplet: '${{ matrix.triplet }}'
         vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
         vcpkgGitCommitId: '${{ matrix.vcpkgCommitId }}'
@@ -37,6 +38,7 @@ jobs:
       shell: cmd
       run: |
            ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/downloads/msmpisetup-10.0.12498.exe -unattend
+    
     
     - name: Configure
       shell: cmd
