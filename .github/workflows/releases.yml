@@ -27,6 +27,14 @@ jobs:
     - name: Get release
       id: get_release
       uses: bruceadams/get-release@v1.2.0
+      
+    - name: Pre-requisites
+      if: matrix.os == 'windows-latest'
+      shell: cmd
+      run: |          
+          choco install wget --no-progress
+          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          msmpisetup.exe -unattend
     
     - name : Install deps with VCPKG
       if: matrix.os == 'windows-latest'
