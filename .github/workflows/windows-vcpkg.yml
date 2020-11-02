@@ -20,10 +20,13 @@ jobs:
           - os: windows-latest
             triplet: x64-windows
             vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
-            vcpkgPackages: boost-test
+            vcpkgPackages: boost-test boost-mpi
 
     steps:
     - uses: actions/checkout@v2 
+    
+    - name : Install MSMPI with nuget
+      run: nuget install MSMPIsdk
 
     - name : Install deps with VCPKG
       uses: lukka/run-vcpkg@v4
@@ -33,20 +36,3 @@ jobs:
         vcpkgTriplet: '${{ matrix.triplet }}'
         vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
         vcpkgGitCommitId: '${{ matrix.vcpkgCommitId }}'
-    
-    - name: Configure
-      shell: cmd
-      run: |
-           choco install boost-msvc-14.1
-           dir C:\local\boost_1_67_0
-           cmake -B _build -S . -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_PREFIX_PATH=C:\local\boost_1_67_0-DCMAKE_BUILD_TYPE=release -DBUILD_DEPS=ON
-    
-    - name: Build
-      run: |
-           cmake --build _build --config release -j2
-
-    - name: Installer upload
-      uses: actions/upload-artifact@v2
-      with:
-        name: antares-installer-64bits
-        path: _build/antaresXpansion-*.*.*-*.zip
