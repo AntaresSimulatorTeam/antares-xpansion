@@ -23,10 +23,13 @@ jobs:
             vcpkgPackages: boost-test boost-mpi
 
     steps:
-    - uses: actions/checkout@v2 
     
-    - name : Install MSMPI with nuget
-      run: nuget install MSMPIsdk
+    - name: Pre-requisites
+      shell: cmd
+      run: |          
+          choco install wget --no-progress
+          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          msmpisetup.exe -unattend
 
     - name : Install deps with VCPKG
       uses: lukka/run-vcpkg@v4
