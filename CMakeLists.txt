@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 1.1.0)
+PROJECT (antaresXpansion VERSION 0.1.0)
 
 # ===========================================================================
 # Default parameters
@@ -102,7 +102,7 @@ message(STATUS "Build all dependencies: ${BUILD_DEPS}")
 # IF BUILD_DEPS=ON THEN Force all BUILD_*=ON
 include(CMakeDependentOption)
 
-CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build BUILD_ortools dependency Library" ON
+CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build ortools library" ON
 		"NOT BUILD_DEPS" ON)
 message(STATUS "Build ortools: ${BUILD_ortools}")
 
@@ -111,11 +111,10 @@ CMAKE_DEPENDENT_OPTION(BUILD_antares_solver "Build antares solver" OFF
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
 # Build Needed dependencies
-message ("CMAKE_PREFIX_PATH")
-message (${CMAKE_PREFIX_PATH})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install)
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/libs/pkgconfig)
 
+add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_SOURCE_DIR}/build_deps)
 
 # optional conan setup
 if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -141,8 +140,6 @@ if (USE_MPI)
 	message (STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY})
 	message (STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS})
 endif ()
-
-add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_SOURCE_DIR}/build_deps)
 
 # ---------------------------------------------------------------------------
 # Threads
@@ -206,6 +203,10 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "antares-*.*-solver.exe")
+  
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "antares-*.*-solver")
   
 #For now only test archive, need to define several CPACK variable
 include(CPack)
