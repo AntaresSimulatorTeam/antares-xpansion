@@ -23,7 +23,7 @@ jobs:
            cmake3 --build . --target install
            cd ..
            rm -rf googletest
-           yum install jsoncpp-devel
+           yum install jsoncpp-devel -y
 
     - name: Configure
       run: |
