@@ -33,7 +33,7 @@ jobs:
 
     - name: Build
       run: |
-           cmake3 --build _build --config release -j2
+           cmake3 --build _build --config release
            
     - name: Installer .tar.gz creation
       run: |
