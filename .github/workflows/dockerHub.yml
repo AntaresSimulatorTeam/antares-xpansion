@@ -23,13 +23,13 @@ jobs:
            cmake3 --build . --target install
            cd ..
            rm -rf googletest
-           yum install jsoncpp-devel boost-mpi
+           yum install jsoncpp-devel
 
     - name: Configure
       run: |
            mkdir _build
            cd _build
-           cmake3  .. -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_antares_solver=OFF -DBUILD_ortools=OFF
+           cmake3  .. -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=false -DBUILD_antares_solver=OFF -DBUILD_ortools=OFF
 
     - name: Build
       run: |
