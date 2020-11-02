@@ -33,12 +33,6 @@ jobs:
         vcpkgTriplet: '${{ matrix.triplet }}'
         vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
         vcpkgGitCommitId: '${{ matrix.vcpkgCommitId }}'
-
-    - name: Install ms-mpi
-      shell: cmd
-      run: |
-           ${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/downloads/msmpisetup-10.0.12498.exe -unattend
-    
     
     - name: Configure
       shell: cmd
