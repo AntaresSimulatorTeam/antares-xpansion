@@ -46,7 +46,7 @@ Git version must be above 2.15 for external dependencies build because `--ignore
  ANTARES XPansion V2 depends on severals mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
- - [OrTools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius) (fork from 
+ - [OrTools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
  - Boost mpi (Only for MPI benders compilation)
 
 This section describes the install procedures for the third-party Open source libraries used by ANTARES XPansion V2.
@@ -123,6 +123,15 @@ sudo yum install jsoncpp
 sudo yum install gtest
 sudo yum install boost-openmpi
 ```
+
+Note :
+> Some external repositories must be enabled : EPEL and PowerTools (for boost-mpi on centos8)
+> ```
+> sudo yum install epel-release
+> sudo yum install 'dnf-command(config-manager)'
+> sudo yum config-manager --set-enabled PowerTools
+> ``` 
+
 ### [Automatic librairies compilation from git](#git_compil)
 Dependency can be built  at configure time using the option `-DBUILD_DEPS=ON` (`OFF` by default) or you can compile few of them using the options below.
 
