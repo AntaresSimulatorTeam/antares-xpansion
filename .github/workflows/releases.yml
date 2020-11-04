@@ -78,7 +78,7 @@ jobs:
            cd _build
            cpack -G ZIP
            $ZIP_NAME=dir *.exe
-           $ZIP_NAME=Split-Path $NSIS_NAME -Leaf
+           $ZIP_NAME=Split-Path $ZIP_NAME -Leaf
            echo "::set-env name=ZIP_NAME::$ZIP_NAME" 
         
     - name: .tar.gz creation
