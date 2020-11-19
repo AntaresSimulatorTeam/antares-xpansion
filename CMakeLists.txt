@@ -102,9 +102,9 @@ message(STATUS "Build all dependencies: ${BUILD_DEPS}")
 # IF BUILD_DEPS=ON THEN Force all BUILD_*=ON
 include(CMakeDependentOption)
 
-CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build ortools library" ON
+CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build OR-Tools library" ON
 		"NOT BUILD_DEPS" ON)
-message(STATUS "Build ortools: ${BUILD_ortools}")
+message(STATUS "Build OR-Tools: ${BUILD_ortools}")
 
 CMAKE_DEPENDENT_OPTION(BUILD_antares_solver "Build antares solver" OFF
 		"NOT BUILD_DEPS" ON)

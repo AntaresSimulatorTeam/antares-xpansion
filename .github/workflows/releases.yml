@@ -19,7 +19,7 @@ jobs:
           - os: windows-latest
             triplet: x64-windows
             vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
-            vcpkgPackages: jsoncpp gtest boost-mpi openssl curl boost-test boost-filesystem boost-regex
+            vcpkgPackages: jsoncpp gtest boost-mpi openssl curl wxwidgets boost-test boost-process boost-filesystem boost-dll boost-regex
 
     steps:
     - uses: actions/checkout@v2 
@@ -52,9 +52,9 @@ jobs:
            sudo apt-get update --fix-missing
            sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev
            sudo apt-get install libuuid1 uuid-dev libssh2-1 libssh2-1-dev libidn2-dev libidn11 libidn11-dev gtk2.0 libwxgtk3.0-dev libcurl4-openssl-dev libb64-dev
-           sudo apt-get install libboost-test-dev libboost-filesystem-dev libboost-dev
+           sudo apt-get install libboost-test-dev libboost-filesystem-dev libboost-regex-dev libboost-dev
            cd /usr/src/googletest/
-           sudo cmake .
+           cmake .
            sudo cmake --build . --target install
         
     - name: Configure with VCPKG

@@ -40,13 +40,13 @@ Note:
 > All ``cmake``  command must be replaced by ``cmake3``.
 
 ## [Git version](#git-version)
-Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with ortools compilation of ZLib and application of patch on Windows (see https://github.com/google/or-tools/issues/1193).
+Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see https://github.com/google/or-tools/issues/1193).
 
 ## [Dependencies](#deps)
  ANTARES XPansion V2 depends on severals mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
- - [OrTools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
+ - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
  - Boost mpi (Only for MPI benders compilation)
 
 This section describes the install procedures for the third-party Open source libraries used by ANTARES XPansion V2.
@@ -105,9 +105,7 @@ On linux you can use a package manger to download the precompiled librairies.
 #### Ubuntu
 
 ```
-sudo apt-get install libjsoncpp-dev
-sudo apt-get install libgtest-dev
-sudo apt-get install libboost-mpi-dev
+sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev
 ```
 Note :
 > Depending on Ubuntu version you might need to compile google test :
@@ -119,23 +117,21 @@ Note :
 #### RHEL / Centos
 
 ```
-sudo yum install jsoncpp
-sudo yum install gtest
-sudo yum install boost-openmpi
+sudo yum install jsoncpp gtest boost-openmpi-devel
 ```
 
 Note :
-> Some external repositories must be enabled : EPEL and PowerTools (for boost-mpi on centos8)
+> Some external repositories must be enabled : EPEL and PowerTools (for boost-mpi-devel on centos8)
 > ```
 > sudo yum install epel-release
-> sudo yum install 'dnf-command(config-manager)'
+> sudo yum install dnf-plugins-core
 > sudo yum config-manager --set-enabled PowerTools
 > ``` 
 
 ### [Automatic librairies compilation from git](#git_compil)
 Dependency can be built  at configure time using the option `-DBUILD_DEPS=ON` (`OFF` by default) or you can compile few of them using the options below.
 
-* OrTools (`BUILD_ortools`) (ON by default)
+* OR-Tools (`BUILD_ortools`) (ON by default)
 
 You can specify previously dependencies install directory with `CMAKE_PREFIX_PATH` :
 ```
@@ -158,9 +154,9 @@ cmake -B _build -S . -DCMAKE_BUILD_TYPE=Debug -DUSE_SEQUENTIAL=true -DUSE_MPI=tr
 cmake --build _build --config Debug
 ```
 
-### Ortools linking
+### OR-Tools linking
 
-By default ortools is compiled with Antares XPansion V2.
+By default OR-Tools is compiled with Antares XPansion V2.
 You can disable compilation with `-DBUILD_ortools=OFF` when you configure build with cmake.
 
 In this case you can specify librairies path with :
