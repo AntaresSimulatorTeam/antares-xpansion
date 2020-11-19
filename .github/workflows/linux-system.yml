@@ -36,7 +36,7 @@ jobs:
 
     - name: Build
       run: |
-           cmake --build _build --config release -j2
+           cmake --build _build --config Release -j2
            
     - name: Installer .tar.gz creation
       run: |

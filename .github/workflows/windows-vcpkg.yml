@@ -48,7 +48,7 @@ jobs:
            cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
     - name: Build
       run: |
-           cmake --build _build --config release -j2
+           cmake --build _build --config Release -j2
            
     - name: Installer .zip creation
       run: |
