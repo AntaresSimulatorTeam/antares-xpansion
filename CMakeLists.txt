@@ -14,8 +14,6 @@ PROJECT (antaresXpansion VERSION 0.1.0)
 # Default parameters
 # ===========================================================================
 
-#Please enable this option if ortools v7.1 or later is used
-option (ORTOOLS_RECENT "ORTools is v7.1 or later" ON)
 option (USE_MPI "Enable MPI" OFF)
 option (USE_SEQUENTIAL "Enable sequential" OFF)
 
