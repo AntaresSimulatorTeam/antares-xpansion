@@ -1,12 +1,33 @@
-build
-data/
-cas1*
-*.lp
-*.orig
-global_grid
-test_case_expansion
-/cas*
-/tyndp
-*.7z
-__pycache__
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
 *.pyc
