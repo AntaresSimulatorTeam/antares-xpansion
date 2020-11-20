@@ -27,3 +27,13 @@ target_link_libraries (helpers
 	PUBLIC
 		ortools::ortools 
 )
+
+#Dirty hack to add sirius solver dependency if available (needed because ortools doesn't indicated sirius dependency)
+find_package(sirius_solver)
+
+if(sirius_solver_FOUND)
+	target_link_libraries(helpers
+			PUBLIC
+			sirius_solver
+			)
+endif()
