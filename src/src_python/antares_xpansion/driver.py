@@ -9,6 +9,8 @@ import os
 import subprocess
 import sys
 
+from pathlib import Path
+
 from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
@@ -286,7 +288,6 @@ class XpansionDriver():
         ini_file.read(self.general_data())
         ini_file[self.config.OPTIMIZATION][self.config.EXPORT_MPS] = "true"
         ini_file[self.config.OPTIMIZATION][self.config.EXPORT_STRUCTURE] = "true"
-        ini_file[self.config.OPTIMIZATION][self.config.TRACE] = "false"
         ini_file[self.config.OPTIMIZATION][self.config.USE_XPRS] = "false"
         ini_file.remove_option(self.config.OPTIMIZATION, self.config.USE_XPRS)
         ini_file.remove_option(self.config.OPTIMIZATION, self.config.INBASIS)
@@ -364,8 +365,9 @@ class XpansionDriver():
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
 
-        area_files = glob.glob(os.path.normpath(os.path.join(output_path, 'area*.txt')))
-        interco_files = glob.glob(os.path.normpath(os.path.join(output_path, 'interco*.txt')))
+        glob_path= Path(output_path)
+        area_files = [str(pp) for pp in glob_path.glob("area*.txt")]
+        interco_files = [str(pp) for pp in glob_path.glob("interco*.txt")]
         assert len(area_files) == 1
         assert len(interco_files) == 1
         shutil.copy(area_files[0], os.path.normpath(os.path.join(output_path, 'area.txt')))
@@ -380,7 +382,7 @@ class XpansionDriver():
             produces a file named with xpansionConfig.MPS_TXT
         """
         output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
-
+        
         lp_path = os.path.normpath(os.path.join(output_path, 'lp'))
         if os.path.isdir(lp_path):
             shutil.rmtree(lp_path)

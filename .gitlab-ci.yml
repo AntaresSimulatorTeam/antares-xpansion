@@ -1,0 +1,75 @@
+stages:
+  - build
+
+.build:
+  stage: build
+
+  script:
+    - cmake --build _build --config Release -j8
+    - cd _build
+    - cpack -G ZIP
+
+  artifacts:
+    paths:
+      - _build/antaresXpansion-*.*.*-*.zip
+
+ubuntu/x64:
+   image: ubuntu
+   extends: .build
+   before_script:
+     - export DEBIAN_FRONTEND=noninteractive
+     - apt-get update --fix-missing
+     - apt-get install build-essential -y
+     - apt-get install git -y
+     - apt-get install cmake -y
+     - apt-get install libjsoncpp-dev -y
+     - apt-get install libgtest-dev -y
+     - apt-get install libboost-mpi-dev -y
+     - apt-get install libssl-dev -y
+     - apt-get install unzip -y
+     - apt-get install libuuid1 uuid-dev libssh2-1 libssh2-1-dev libidn2-dev libidn11 libidn11-dev libcurl4-openssl-dev libb64-dev -y
+     - apt-get install libboost-test-dev libboost-filesystem-dev libboost-dev -y
+     - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON
+
+windows/x64:
+  extends: .build
+  before_script:
+  - choco install -y cmake
+  - $env:Path += ';C:\Program Files\CMake\bin'
+  - $env:VCPKG_DEFAULT_TRIPLET="x64-windows"
+  - vcpkg install openssl 
+  - vcpkg install curl
+  - vcpkg install wxwidgets
+  - vcpkg install boost-test
+  - vcpkg install boost-filesystem
+  - cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_TOOLCHAIN_FILE"
+  tags:
+  - windows
+
+centos7/x64:
+  image: centos:7
+  stage: build
+  before_script:
+    - yum install epel-release -y
+    - yum install gcc-c++ gcc -y
+    - yum install git -y
+    - yum install cmake3 -y
+    - yum install jsoncpp -y
+    - yum install gtest -y
+    - yum install boost-openmpi -y
+    - yum install openssl -y
+    - yum install libcurl-devel -y
+    - yum install boost-test boost-filesystem boost-filesystem boost-regex boost-devel -y
+    - cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON
+
+  script:
+    - cmake3 --build _build --config Release -j8
+    - cd _build
+    - cpack -G ZIP
+
+  artifacts:
+    paths:
+      - _build/antaresXpansion-*.*.*-*.zip
+
+
+

@@ -3,6 +3,8 @@
 #include "ortools_utils.h"
 
 #include <iomanip>
+#include <algorithm>
+#include <random>
 
 Benders::~Benders() {
 }
@@ -62,7 +64,9 @@ void Benders::build_cut() {
 	AllCutPackage all_package;
 	Timer timer_slaves;
 	if (_options.RAND_AGGREGATION) {
-		std::random_shuffle(_slaves.begin(), _slaves.end());
+        std::random_device rd;
+        std::mt19937 g(rd());
+		std::shuffle(_slaves.begin(), _slaves.end(),g);
 		get_random_slave_cut(slave_cut_package, _map_slaves, _slaves, _options, _data);
 	}
 	else {

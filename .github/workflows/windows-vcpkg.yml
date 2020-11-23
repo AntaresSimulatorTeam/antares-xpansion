@@ -1,0 +1,62 @@
+name: Windows CI (VCPKG)
+
+on:
+  push:
+    branches:
+      - develop
+      - features/*
+      - feature/*
+      - fix/*
+jobs:
+
+  windows:
+
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      matrix:
+        os: [windows-latest]
+        buildtype: [release]
+        include:
+          - os: windows-latest
+            triplet: x64-windows
+            vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
+            vcpkgPackages: jsoncpp gtest boost-mpi openssl curl wxwidgets boost-test boost-process boost-filesystem boost-dll boost-regex
+
+    steps:
+    
+    - uses: actions/checkout@v2
+    
+    - name: Pre-requisites
+      shell: cmd
+      run: |          
+          choco install wget --no-progress
+          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          msmpisetup.exe -unattend
+
+    - name : Install deps with VCPKG
+      uses: lukka/run-vcpkg@v4
+      id: runvcpkg
+      with:
+        vcpkgArguments: '${{ matrix.vcpkgPackages }}'
+        vcpkgTriplet: '${{ matrix.triplet }}'
+        vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
+        vcpkgGitCommitId: '${{ matrix.vcpkgCommitId }}'
+        
+    - name: Configure
+      run: |
+           cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
+    - name: Build
+      run: |
+           cmake --build _build --config Release -j2
+           
+    - name: Installer .zip creation
+      run: |
+           cd _build
+           cpack -G ZIP
+           
+    - name: Installer upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: antares-xpansion-installer-64bits
+        path: _build/antaresXpansion-*.*.*-*.zip

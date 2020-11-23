@@ -2,20 +2,18 @@
 # CMake configuration
 # ===========================================================================
 
-CMAKE_MINIMUM_REQUIRED (VERSION 3.14)
+CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 
 # ===========================================================================
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 1.1.0)
+PROJECT (antaresXpansion VERSION 0.1.0)
 
 # ===========================================================================
 # Default parameters
 # ===========================================================================
 
-#Please enable this option if ortools v7.1 or later is used
-option (ORTOOLS_RECENT "ORTools is v7.1 or later" ON)
 option (USE_MPI "Enable MPI" OFF)
 option (USE_SEQUENTIAL "Enable sequential" OFF)
 
@@ -55,6 +53,11 @@ if (MSVC)
 	set (CMAKE_EXE_LINKER_FLAGS_RELEASE " ${CMAKE_EXE_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
 	set (CMAKE_SHARED_LINKER_FLAGS_RELEASE " ${CMAKE_SHARED_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
 	set (CMAKE_STATIC_LINKER_FLAGS_RELEASE " ${CMAKE_STATIC_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
+		
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
+	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc")
+    
+    
 
 else ()
 #   set (CMAKE_BUILD_TYPE "RELEASE")
@@ -88,6 +91,28 @@ endif ()
 # ===========================================================================
 # External dependencies
 # ===========================================================================
+#CMake function to build dependancy from git
+include("cmake/utils.cmake")
+
+option(BUILD_DEPS "Build all dependencies" OFF)
+message(STATUS "Build all dependencies: ${BUILD_DEPS}")
+
+# IF BUILD_DEPS=ON THEN Force all BUILD_*=ON
+include(CMakeDependentOption)
+
+CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build OR-Tools library" ON
+		"NOT BUILD_DEPS" ON)
+message(STATUS "Build OR-Tools: ${BUILD_ortools}")
+
+CMAKE_DEPENDENT_OPTION(BUILD_antares_solver "Build antares solver" OFF
+		"NOT BUILD_DEPS" ON)
+message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+
+# Build Needed dependencies
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install)
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/libs/pkgconfig)
+
+add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_SOURCE_DIR}/build_deps)
 
 # optional conan setup
 if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -123,8 +148,11 @@ endif ()
 find_package (Threads REQUIRED)
 
 # OR-Tools
-find_package (ortools REQUIRED)
-add_definitions (${ORTOOLS_DEFINITIONS})
+
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+find_package(gflags REQUIRED)
+find_package(ortools REQUIRED)
+
 if (SOLVER)
 	if (SOLVER STREQUAL "cplex")
 		add_definitions (-DCPLEX_SOLVER -DUSE_CPLEX)
@@ -148,14 +176,39 @@ endif ()
 #	ENDIF (WIN32)
 #ENDIF (USE_MPI)
 
+find_package(jsoncpp CONFIG REQUIRED)
+
 # ===========================================================================
 # Targets
 # ===========================================================================
 
-add_subdirectory ("${PROJECT_SOURCE_DIR}/src/src_cpp")
+add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
 # ===========================================================================
 # Documentation
 # ===========================================================================
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "*.dll")
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "*.dll")
+  
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "antares-*.*-solver.exe")
+  
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "antares-*.*-solver")
+  
+#For now only test archive, need to define several CPACK variable
+include(CPack)
+set(CPACK_PROJECT_NAME "antaresXpansion")
+set(CPACK_PACKAGE_VERSION_MAJOR 1)
+set(CPACK_PACKAGE_VERSION_MINOR 1)
+set(CPACK_PACKAGE_VERSION_PATCH 0)

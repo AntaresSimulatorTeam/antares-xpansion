@@ -23,3 +23,5 @@ add_executable (bendersmpi
 			${PROJECT_NAME}::sequentialcore ${PROJECT_NAME}::mpicore
 			Boost::serialization)
 #ENDIF (WIN32)
+
+install(TARGETS bendersmpi DESTINATION bin)

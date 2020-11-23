@@ -31,7 +31,7 @@ target_include_directories (sequentialcore
 target_link_libraries (sequentialcore
 	PUBLIC
 		helpers
-		jsoncpp
+		jsoncpp_lib
 )
 
 add_library (${PROJECT_NAME}::sequentialcore ALIAS sequentialcore)

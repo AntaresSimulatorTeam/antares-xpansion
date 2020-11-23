@@ -1,3 +1,7 @@
+
+#include <algorithm>
+#include <random>
+
 #include "BendersMPI.h"
 
 #define __DEBUG_BENDERS_MPI__ 0
@@ -136,7 +140,9 @@ void BendersMpi::step_1(mpi::environment & env, mpi::communicator & world) {
 	}
 	broadcast(world, _data.x0, 0);
 	if (_options.RAND_AGGREGATION) {
-		std::random_shuffle(_slaves.begin(), _slaves.end());
+        std::random_device rd;
+        std::mt19937 g(rd());
+		std::shuffle(_slaves.begin(), _slaves.end(),g);
 	}
 	world.barrier();
 

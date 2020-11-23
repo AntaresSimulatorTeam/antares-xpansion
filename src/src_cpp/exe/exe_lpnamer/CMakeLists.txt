@@ -15,3 +15,5 @@ add_executable (lp_namer
 )
 
 target_link_libraries (lp_namer ${PROJECT_NAME}::lpnamer)
+
+install(TARGETS lp_namer DESTINATION bin)

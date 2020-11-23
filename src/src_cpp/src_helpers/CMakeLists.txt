@@ -18,20 +18,22 @@ add_library (helpers STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ortools_utils.cc
 	)
 
-if (NOT ORTOOLS_RECENT)
-	target_add_definitions (helpers
-		PRIVATE
-			ORTOOLS_PRE_V71
-	)
-endif ()
-
 target_include_directories (helpers
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
-		${ORTOOLS_INCLUDE_DIRS}
 )
 
 target_link_libraries (helpers 
 	PUBLIC
-		ortools
+		ortools::ortools 
 )
+
+#Dirty hack to add sirius solver dependency if available (needed because ortools doesn't indicated sirius dependency)
+find_package(sirius_solver)
+
+if(sirius_solver_FOUND)
+	target_link_libraries(helpers
+			PUBLIC
+			sirius_solver
+			)
+endif()
