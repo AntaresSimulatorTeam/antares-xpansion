@@ -1,12 +1,6 @@
 #include "LauncherHelpers.h"
 
 
-/**
- * \brief adds binary variables and additional constraints to an existent solver
- *
- * \param master_p solver to which the constraints and variables will be added
- * \param additionalConstraints_p the additional constraints to add
- */
 void treatAdditionalConstraints(operations_research::MPSolver & master_p, AdditionalConstraints additionalConstraints_p)
 {
 	//add requested binary variables
@@ -19,12 +13,6 @@ void treatAdditionalConstraints(operations_research::MPSolver & master_p, Additi
 	}
 }
 
-/**
- * \brief adds an additional constraint to an existent solver
- *
- * \param master_p solver to which the constraint will be added
- * \param additionalConstraint_p the additional constraint to add
- */
 void addAdditionalConstraint(operations_research::MPSolver & master_p, AdditionalConstraint & additionalConstraint_p)
 {
 	operations_research::MPConstraint* newCstr_l = master_p.MakeRowConstraint(additionalConstraint_p.getName());
@@ -50,16 +38,7 @@ void addAdditionalConstraint(operations_research::MPSolver & master_p, Additiona
 	}
 }
 
-/**
- * \brief creates a binary variable and its corresponding linking constraint
- *
- * \param master_p solver to which the binary variable and the linking constraint will be added
- * \param variablesToBinarise_p map listing the variables to add and their corresponding ones
- *
- * for each entry (BinVar, CorrespondingVar) from the input map,
- *          creates the binary variable BinVar
- *          adds the linking constraint link_BinVar_CorrespondingVar : CorrespondingVar  <= UB(CorrespondingVar) * BinVar
- */
+
 void addBinaryVariables(operations_research::MPSolver & master_p, std::map<std::string, std::string> const & variablesToBinarise_p)
 {
 	for(auto pairOldNewVarnames : variablesToBinarise_p)
@@ -73,7 +52,7 @@ void addBinaryVariables(operations_research::MPSolver & master_p, std::map<std::
 
 		operations_research::MPVariable * binaryVar_l = master_p.MakeBoolVar(pairOldNewVarnames.second);
 		operations_research::MPConstraint* linkCstr_l = master_p.MakeRowConstraint(-operations_research::MPSolver::infinity(),0,
-																					"link_"+pairOldNewVarnames.first+"_"+pairOldNewVarnames.second);
+																	"link_"+pairOldNewVarnames.first+"_"+pairOldNewVarnames.second);
 		linkCstr_l->SetCoefficient(oldVar_l, 1);
 		linkCstr_l->SetCoefficient(binaryVar_l, -oldVar_l->ub());
 	}

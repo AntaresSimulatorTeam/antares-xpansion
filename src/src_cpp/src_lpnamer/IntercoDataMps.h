@@ -3,14 +3,46 @@
 #include "common_lpnamer.h"
 
 
+#define CANDIDATES_INI "candidates.ini"
+#define STRUCTURE_FILE "structure.txt"
+#define MPS_TXT "mps.txt"
+#define STUDY_FILE "study.antares"
+
+/*!
+ *  \struct LinkProfile
+ *  \brief LinkProfile structure
+ *
+ */
+
 struct LinkProfile {
+
+	//! direct linkprofile values
+	std::vector<double> _column1;
+	//! indirect linkprofile values if different from column1
+	std::vector<double> _column2;
+
 public:
+/*!
+ *  \brief LinkProfile default constructor
+ *
+ */
 	LinkProfile() {
 
 	}
+
+/*!
+ *  \brief returns true if the direct link profile column is empty
+ *
+ */
 	bool empty() const{
 		return _column1.empty();
 	}
+
+/*!
+ *  \brief reads a linkprofile file into the LinkProfile structure
+ *
+ *  \note input file format verification is delegated to the AntaresXpansionLauncher python module
+ */
 	void read(std::string const & file_path) {
 		std::ifstream infile(file_path.c_str());
 		if (!infile.good()) {
@@ -36,10 +68,19 @@ public:
 		infile.close();
 	}
 
-	std::vector<double> _column1;
-	std::vector<double> _column2;
+/*!
+ *  \brief returns the value of a link profile
+ *
+ *  \param i : period for which to get the linkprofile value (between 0 and 8759)
+ *  \param is_direct : if true, return the direct linkprofile value else the indirect
+ */
+	double get(size_t i, bool is_direct) const {
+		if (i > 8759)
+		{
+			std::cout << "Link profiles can be requested between point 0 and 8759." << std::endl;
+			std::exit(1);
+		}
 
-	double get(size_t i, bool is_direct) {
 		if (_column1.empty() && _column2.empty()) {
 			return 1.0;
 		}else if (!is_direct && !_column2.empty()) {
@@ -47,7 +88,7 @@ public:
 		}
 		else {
 			return _column1[i];
-		}		
+		}
 	}
 };
 
@@ -57,6 +98,9 @@ public:
  *
  */
 struct Candidate {
+	//! folder containing the linkprofile files indicated in the candidates ini file
+	static std::string _capacitySubfolder;
+
 	std::map<std::string, std::string> _str; /*!<  map of string , string associated type of link (origin, destination) and the country */
 	std::map<std::string, double> _dbl;
 
@@ -117,7 +161,7 @@ struct Candidate {
 	double already_installed_capacity() const;
 
 	bool has_already_installed_link_profile() const;
-	
+
 };
 
 
@@ -144,7 +188,7 @@ struct Candidates : public std::map<std::string, Candidate> {
 	Candidates() {
 
 	}
-	Candidates(std::string  const & datas);
+	explicit Candidates(std::string  const & datas);
 
 	void treat(std::string const & root, std::vector<std::string> const &, std::map< std::pair<std::string, std::string>, int>& couplings);
 	void treatloop(std::string const & root, std::map< std::pair<std::string, std::string>, int>& couplings);

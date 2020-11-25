@@ -10,8 +10,6 @@
 #  ORTOOLS_DEFINITIONS, compiler switches required for using ORTOOLS.
 #  ORTOOLS_FOUND, If false, do not try to use ORTOOLS.
 
-
-#TODO test on a windows platform
 #TODO use Components option in find_package to select solver and add specific definitions
 
 # ===============================

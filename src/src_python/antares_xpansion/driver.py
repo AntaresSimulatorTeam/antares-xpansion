@@ -28,9 +28,10 @@ class XpansionDriver():
         self.platform = sys.platform
         self.config = config
         self.args = self.config.parser.parse_args()
+        self.simulation_name = self.args.simulationName
 
         self.candidates_list = []
-
+        
         self.check_candidates()
         self.check_settings()
 
@@ -217,6 +218,7 @@ class XpansionDriver():
         if self.args.step == "full":
             lp_path = self.generate_mps_files()
             self.launch_optimization(lp_path)
+            self.update_step(self.simulation_name)
         elif self.args.step == "antares":
             self.pre_antares()
             self.launch_antares()
@@ -229,8 +231,12 @@ class XpansionDriver():
         elif self.args.step == "lp":
             if self.args.simulationName:
                 self.lp_step(self.args.simulationName)
-                output_path = os.path.normpath(os.path.join(self.antares_output(), self.args.simulationName))
-                self.set_options(output_path)
+            else:
+                print("Missing argument simulationName")
+                sys.exit(1)
+        elif self.args.step == "update":
+            if self.args.simulationName:
+                self.update_step(self.args.simulationName)
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
@@ -253,8 +259,11 @@ class XpansionDriver():
         if (self.args.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
             os.remove(self.antares() + '.log')
         if (self.args.step in ["full", "lp"])\
-            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
-            os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
+            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '_generate.log')):
+            os.remove(self.exe_path(self.config.LP_NAMER) + '_generate.log')
+        if (self.args.step in ["full", "update"])\
+            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '_update.log')):
+            os.remove(self.exe_path(self.config.LP_NAMER) + '_update.log')
 
     def check_candidates(self):
         """
@@ -375,7 +384,7 @@ class XpansionDriver():
         """
             copies area and interco files and launches the lp_namer
 
-            :param output_path: path to the antares simulation output directory
+            :param antares_output_name: path to the antares simulation output directory
 
             produces a file named with xpansionConfig.MPS_TXT
         """
@@ -387,8 +396,8 @@ class XpansionDriver():
         os.makedirs(lp_path)
 
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
-        with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
-            lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed +" "+ self.additional_constraints()
+        with open(self.exe_path(self.config.LP_NAMER) + '_generate.log', 'w') as output_file:
+            lp_cmd = self.exe_path(self.config.LP_NAMER) +" --generate "+ output_path +" "+ is_relaxed +" "+ self.additional_constraints()
             returned_l = subprocess.call(lp_cmd,
                             shell=True,
                             stdout=output_file,
@@ -397,6 +406,26 @@ class XpansionDriver():
                 print("ERROR: exited lpnamer with status %d" % returned_l)
                 sys.exit(1)
         return lp_path
+
+    def update_step(self, antares_output_name):
+        """
+            updates the antares study using the candidates file and the json solution output
+
+            :param antares_output_name: path to the antares simulation output directory
+
+            produces a file named with xpansionConfig.MPS_TXT
+        """
+        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
+
+        with open(self.exe_path(self.config.LP_NAMER) + '_update.log', 'w') as output_file:
+            update_cmd = self.exe_path(self.config.LP_NAMER) +" --update-study "+ output_path + " " + self.config.options_default["JSON_NAME"]+".json"
+            returned_l = subprocess.call(update_cmd,
+                            shell=True,
+                            stdout=output_file,
+                            stderr=output_file)
+            if returned_l != 0:
+                print("ERROR: exited lpnamer with status %d" % returned_l)
+                sys.exit(1)
 
     def launch_optimization(self, lp_path):
         """
@@ -408,6 +437,9 @@ class XpansionDriver():
             :type solver: value in [XpansionConfig.MERGE_MPS, XpansionConfig.BENDERS_MPI,
             XpansionConfig.BENDERS_SEQUENTIAL]
         """
+        output_path = os.path.normpath(os.path.join(self.antares_output(), self.simulation_name))
+        self.set_options(output_path)
+
         old_cwd = os.getcwd()
         os.chdir(lp_path)
         print('Current directory is now : ', os.getcwd())
@@ -474,7 +506,10 @@ class XpansionDriver():
 
     def generate_mps_files(self):
         """
-            launches antares to produce mps files
+            launches antares to produce mps files and
+            sets the simulation_name attribute
+
+            :return: path to the lp output directory
         """
         print("starting mps generation")
         # setting antares options
@@ -482,8 +517,8 @@ class XpansionDriver():
         self.pre_antares()
         # launching antares
         print("-- launching antares")
-        antares_output_name = self.launch_antares()
+        self.simulation_name = self.launch_antares()
         # writting things
         print("-- post antares")
-        lp_path = self.post_antares(antares_output_name)
+        lp_path = self.post_antares(self.simulation_name)
         return lp_path
