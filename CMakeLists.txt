@@ -194,19 +194,24 @@ add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
 
+
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
   DESTINATION bin
   FILES_MATCHING PATTERN "*.dll")
-
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+  
+install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "*.dll")
   
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "*.so")
+  
+install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "antares-*.*-solver.exe")
   
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "antares-*.*-solver")
   
