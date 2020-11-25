@@ -16,6 +16,7 @@
 
 add_library (helpers STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ortools_utils.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
 	)
 
 if (NOT ORTOOLS_RECENT)
@@ -34,4 +35,5 @@ target_include_directories (helpers
 target_link_libraries (helpers 
 	PUBLIC
 		ortools
+		jsoncpp
 )

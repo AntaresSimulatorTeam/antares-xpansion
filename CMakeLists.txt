@@ -17,7 +17,7 @@ PROJECT (antaresXpansion VERSION 1.1.0)
 #Please enable this option if ortools v7.1 or later is used
 option (ORTOOLS_RECENT "ORTools is v7.1 or later" ON)
 option (USE_MPI "Enable MPI" OFF)
-option (USE_SEQUENTIAL "Enable sequential" OFF)
+option (USE_SEQUENTIAL "Enable sequential" ON)
 
 IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")

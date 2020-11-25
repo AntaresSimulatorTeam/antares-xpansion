@@ -1,0 +1,57 @@
+#pragma once
+
+
+#include <json/reader.h>
+
+/*!
+* \class JsonXpansionReader
+* \brief Class that reads a json file describing an antares-xpansion solution
+*/
+class JsonXpansionReader
+{
+private:
+    typedef std::map<std::string, double> Point;
+
+private:
+    //number of the last iteration
+    int _lastIterNb;
+
+    //json file content
+    Json::Value _input;
+
+public:
+
+/*!
+*  \brief JsonXpansionReader default constructor
+*/
+    JsonXpansionReader();
+
+/*!
+*  \brief JsonWriter default destructor
+*/
+    virtual ~JsonXpansionReader();
+
+
+/*!
+*  \brief reads a json file describing the execution of an antares xpansion optimisation 
+*   and populates the jsonXpansionReader class attributes with the data from the file
+*
+*  \param filename_p name of the json file to read from 
+*/
+    void read(std::string const & filename_p);
+
+/*!
+*  \brief returns the index of the best iteration indicated in the json output file 
+*/
+	int getBestIteration() const;
+
+/*!
+*  \brief returns the index of the last iteration indicated in the json output file 
+*/
+    int getLastIteration() const;
+
+/*!
+*  \brief returns the solution to the xpansion problem indicated in the json output file 
+*/
+    Point getSolutionPoint() const;
+};

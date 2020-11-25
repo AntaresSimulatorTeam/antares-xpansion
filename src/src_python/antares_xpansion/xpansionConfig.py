@@ -54,8 +54,8 @@ class XpansionConfig():
         self.LP_NAMER = "lp_namer"
 
         self.parser = argparse.ArgumentParser()
-        self.parser.add_argument("--step", choices=["lp", "optim", "full", "antares", "getnames"],
-                                 help='step to execute ("lp", "optim", "full", "antares", "getnames")',
+        self.parser.add_argument("--step", choices=["full", "antares", "getnames", "lp", "optim", "update"],
+                                 help='step to execute ("lp", "optim", "full", "antares", "getnames", "update")',
                                  required=True)
         self.parser.add_argument("--simulationName",
                                  help="name of the antares simulation to use. "
@@ -89,6 +89,7 @@ class XpansionConfig():
             'THRESHOLD_ITERATION': '0',
             'RAND_AGGREGATION': '0',
             'CSV_NAME': 'benders_output_trace',
+            'JSON_NAME': 'out',
             'BOUND_ALPHA': '1',
         }
 

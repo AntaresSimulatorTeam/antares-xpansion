@@ -11,16 +11,13 @@
 #include "IntercoDataMps.h"
 #include "AdditionalConstraints.h"
 #include "LauncherHelpers.h"
+#include "StudyUpdater.h"
+#include "CandidatesInitializer.h"
 //#include "xprs_driver.h"
 #include <fstream>
 #include <sstream>
 
 #include "ortools_utils.h"
-
-#define CANDIDATES_INI "candidates.ini"
-#define STRUCTURE_FILE "structure.txt"
-#define MPS_TXT "mps.txt"
-
 
  /**
   * \fn string get_name(string const & path)
@@ -54,89 +51,6 @@ std::string get_name(std::string const & path) {
 	name = name.substr(0, name.size() - 4);
 	return name;
 }
-
-
-
-
-/**
- * \fn void initializedCandidates(string rootPath, Candidates & candidates)
- * \brief Initialize the candidates structure with input data located in the directory given in argument
- *
- * \param rootPath String corresponding to the path where are located input data
- * \param candidates Structure which is initialized
- * \return void
- */
-void initializedCandidates(std::string rootPath, Candidates & candidates) {
-	std::string line;
-
-	// Get all mandatory path
-	std::string const candidates_file_name(rootPath + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + CANDIDATES_INI);
-	std::string const mps_file_name(rootPath + PATH_SEPARATOR + MPS_TXT);
-	std::string const area_file_name(rootPath + PATH_SEPARATOR + "area.txt");
-	std::string const interco_file_name(rootPath + PATH_SEPARATOR + "interco.txt");
-
-	// Initialize the list of MPS files
-	Candidates::MPS_LIST.clear();
-	std::ifstream mps_filestream(mps_file_name.c_str());
-	if (!mps_filestream.good()) {
-		std::cout << "unable to open " << mps_file_name << std::endl;
-		std::exit(1);
-	}
-	while (std::getline(mps_filestream, line)) {
-		std::stringstream buffer(line);
-		if (!line.empty() && line.front() != '#') {
-			std::vector<std::string> data;
-			std::string str;
-			while (buffer >> str) {
-				data.push_back(str);
-			}
-			Candidates::MPS_LIST.push_back(data);
-		}
-	}
-
-	// Initialize the list of interconnexion
-	Candidates::intercos_map.clear();
-	std::ifstream interco_filestream(interco_file_name.c_str());
-	if (!interco_filestream.good()) {
-		std::cout << "unable to open " << interco_file_name << std::endl;
-		std::exit(1);
-	}
-	while (std::getline(interco_filestream, line)) {
-		std::stringstream buffer(line);
-		if (!line.empty() && line.front() != '#') {
-			int interco; /*!< Number of the interconnection */
-			int pays_or; /*!< Number of the origin country */
-			int pays_ex; /*!< Number of the destination country */
-
-			buffer >> interco;
-			buffer >> pays_or;
-			buffer >> pays_ex;
-
-			Candidates::intercos_map.push_back(std::make_tuple(interco, pays_or, pays_ex));
-		}
-	}
-
-	// Initialize the list of area
-	Candidates::area_names.clear();
-	std::ifstream area_filestream(area_file_name.c_str());
-	if (!area_filestream.good()) {
-		std::cout << "unable to open " << area_file_name << std::endl;
-		std::exit(1);
-	}
-	while (std::getline(area_filestream, line)) {
-		if (!line.empty() && line.front() != '#') {
-			Candidates::area_names.push_back(line);
-		}
-	}
-	for (auto const & kvp : Candidates::intercos_map) {
-		std::string const & pays_or(Candidates::area_names[std::get<1>(kvp)]);
-		std::string const & pays_ex(Candidates::area_names[std::get<2>(kvp)]);
-		Candidates::or_ex_id[std::make_tuple(pays_or, pays_ex)] = std::get<0>(kvp);
-	}
-
-	candidates.getCandidatesFromFile(candidates_file_name);
-}
-
 
 /**
  * \fn void masterGeneration()
@@ -248,6 +162,39 @@ void masterGeneration(std::string rootPath,
 }
 
 
+/*!
+ * \brief update links in the antares study directory
+ *
+ * \param rootPath_p String corresponding to the path to the simulation output directory containing the lp directory
+ * \param candidates_p Structure which contains the list of candidates
+ * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
+ * \return void
+ */
+void updateStudy(std::string const & rootPath_p, Candidates const & candidates_p, std::string const & solutionFilename_p)
+{
+	std::string linksPath_l = rootPath_p + PATH_SEPARATOR 
+							+ ".." + PATH_SEPARATOR + "..";
+	std::string jsonPath_l = rootPath_p + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + solutionFilename_p;
+
+	StudyUpdater studyUpdater(linksPath_l);
+	int updateFailures_l = studyUpdater.update(candidates_p, jsonPath_l);
+
+	if (updateFailures_l)
+	{
+        std::cout << "Error : Failed to update " << updateFailures_l << " files."
+				<< candidates_p.size() - updateFailures_l << " files were updated\n";
+    }
+}
+
+
+void show_usage(std::string exe)
+{
+    std::cout << "usage: " << exe << "\n"
+				<< "Options:\n"
+				<< "\t-g, --generate" << "\t <Xpansion study output> <relaxed or integer> <path to exlusions file>\n"
+				<< "\t-us, --update-study" << "\t <Xpansion study output>" << "\t <solution json filename>"
+				<< std::endl;
+}
 
 /**
  * \fn int main (void)
@@ -259,29 +206,44 @@ void masterGeneration(std::string rootPath,
  */
 int main(int argc, char** argv) {
 	// Test if there are enough arguments
-	if (argc < 3) {
-		std::cout << "usage: <exe> <Xpansion study output> <relaxed or integer> <path to exlusions file>" << std::endl;
+	if (argc < 4) {
+		show_usage(argv[0]);
 		std::exit(1);
 	}
 
 	// Instantiation of candidates
-	std::string const root(argv[1]);
+	std::string const root(argv[2]);
 	Candidates candidates;
 	initializedCandidates(root, candidates);
 
-	std::string const master_formulation(argv[2]);
-	if ( (master_formulation != "relaxed") && (master_formulation != "integer") )
+
+	std::string arg_l = argv[1];
+	if ((arg_l == "-us") || (arg_l == "--update-study"))
 	{
-		std::cout << "Invalid argument : second argument must be \"integer\" or \"relaxed\"" << std::endl;
+		const std::string solutionFile_l(argv[3]);
+		updateStudy(root, candidates, solutionFile_l);
+	}
+	else if ( (arg_l == "-g") || (arg_l == "--generate") )
+	{
+		std::string const master_formulation(argv[3]);
+		if ( (master_formulation != "relaxed") && (master_formulation != "integer") )
+		{
+			std::cout << "Invalid argument : third argument must be \"integer\" or \"relaxed\"" << std::endl;
+			std::exit(1);
+		}
+
+		std::string const additionalConstraintFilename_l = (argc > 4) ? argv[4] : "";
+		AdditionalConstraints additionalConstraints = (argc > 4) ? AdditionalConstraints(additionalConstraintFilename_l) : AdditionalConstraints();
+
+		std::map< std::pair<std::string, std::string>, int> couplings;
+		candidates.treatloop(root, couplings);
+		masterGeneration(root, candidates, additionalConstraints, couplings, master_formulation);
+	}
+	else
+	{
+		show_usage(argv[0]);
 		std::exit(1);
 	}
-
-	std::string const additionalConstraintFilename_l = (argc > 3) ? argv[3] : "";
-	AdditionalConstraints additionalConstraints = (argc > 3) ? AdditionalConstraints(additionalConstraintFilename_l) : AdditionalConstraints();
-
-	std::map< std::pair<std::string, std::string>, int> couplings;
-	candidates.treatloop(root, couplings);
-	masterGeneration(root, candidates, additionalConstraints, couplings, master_formulation);
 
 	return 0;
 }

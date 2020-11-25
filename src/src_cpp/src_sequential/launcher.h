@@ -102,7 +102,6 @@ public:
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].clear();
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].clear();
 
-		//@TODO verify correspondance between ortools variable ids and supposed ones
 		ORTgetrows(solver_p,
 					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
 					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX],
@@ -125,7 +124,6 @@ public:
 						0,
 						std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-		//@TODO check if we use semi-continuous or partial-integer variables
 		ORTgetcolinfo(solver_p,
 					  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
 					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],

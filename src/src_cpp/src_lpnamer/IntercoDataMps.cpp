@@ -53,11 +53,13 @@ std::set<std::string> Candidates::dbl_fields = std::set<std::string>({
 std::vector<std::string> Candidates::area_names = {
 };
 
+std::string Candidate::_capacitySubfolder = std::string(PATH_SEPARATOR) + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + "capa";
+
 double Candidate::profile(size_t i, std::string const & study_path, bool is_direct) {
 	if (_profile.empty()) {
 		if (has("link-profile")) {
 			std::string const file_name = str("link-profile");
-			std::string const profile_path(study_path + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + "capa" + PATH_SEPARATOR + file_name);
+			std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
 			_profile.read(profile_path);
 		}
 	}
@@ -68,7 +70,7 @@ double Candidate::already_installed_profile(size_t i, std::string const & study_
 	if (_already_installed_profile.empty()) {
 		if (has("already-installed-link-profile")) {
 			std::string const file_name = str("already-installed-link-profile");
-			std::string const profile_path(study_path + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + "capa" + PATH_SEPARATOR + file_name);
+			std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
 			_already_installed_profile.read(profile_path);
 		}
 	}
@@ -380,7 +382,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		//buffer << "INVEST_INTERCO_" << interco_i;
 		buffer << id_name.find(interco_i)->second;
 
-		// @FIXME check that names and variables orders correspond
 		colnames_l.push_back(buffer.str());
 
 		couplings[{buffer.str(), mps_name}] = interco.second + ncols;

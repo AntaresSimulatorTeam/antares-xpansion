@@ -20,9 +20,10 @@ enable_testing ()
 # --------------------------------------------------------------------------
 
 add_executable (unit_tests
-	${CMAKE_CURRENT_SOURCE_DIR}/SimpleTest.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/ORToolsTest.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsTest.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateTest.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReaderTest.cc
 )
 
 target_include_directories (unit_tests
@@ -37,13 +38,8 @@ target_link_libraries (unit_tests PRIVATE
 		GTest::Main
 		helpers
 		lpnamer
+		${PROJECT_NAME}::sequentialcore
 	)
-
-if (USE_SEQUENTIAL)
-	target_link_libraries (unit_tests PRIVATE
-			${PROJECT_NAME}::sequentialcore
-	)
-endif ()
 
 if (USE_MPI)
 	target_link_libraries (unit_tests PRIVATE
