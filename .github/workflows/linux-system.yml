@@ -32,7 +32,7 @@ jobs:
 
     - name: Configure
       run: |
-           cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON
+           cmake -B _build -S . -DBUILD_ortools=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_DEPS=ON
 
     - name: Build
       run: |

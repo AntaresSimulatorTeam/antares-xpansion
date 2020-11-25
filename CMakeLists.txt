@@ -100,7 +100,7 @@ message(STATUS "Build all dependencies: ${BUILD_DEPS}")
 # IF BUILD_DEPS=ON THEN Force all BUILD_*=ON
 include(CMakeDependentOption)
 
-CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build OR-Tools library" ON
+CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build OR-Tools library" OFF
 		"NOT BUILD_DEPS" ON)
 message(STATUS "Build OR-Tools: ${BUILD_ortools}")
 
@@ -108,11 +108,15 @@ CMAKE_DEPENDENT_OPTION(BUILD_antares_solver "Build antares solver" OFF
 		"NOT BUILD_DEPS" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
-# Build Needed dependencies
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install)
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/libs/pkgconfig)
+#Define install directory
+if (NOT DEPS_INSTALL_DIR)
+    SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
+endif()
 
-add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_SOURCE_DIR}/build_deps)
+# Build Needed dependencies
+list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR})
+
+add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 
 # optional conan setup
 if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
