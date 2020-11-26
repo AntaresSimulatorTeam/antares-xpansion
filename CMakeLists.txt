@@ -153,9 +153,14 @@ find_package (Threads REQUIRED)
 
 # OR-Tools
 
+find_package(ortools)
+if(NOT ortools_FOUND)
+	message (FATAL_ERROR "OR-Tools not found. OR-Tools can be compiled with -DBUILD_ortools=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
+endif()
+
+#gflags needed for ortools
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
 find_package(gflags REQUIRED)
-find_package(ortools REQUIRED)
 
 if (SOLVER)
 	if (SOLVER STREQUAL "cplex")
@@ -203,7 +208,7 @@ install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "*.dll")
   
-install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
+install(DIRECTORY ${DEPS_INSTALL_DIR}/lib/
   DESTINATION bin
   FILES_MATCHING PATTERN "*.so")
   
