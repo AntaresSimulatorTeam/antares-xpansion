@@ -24,7 +24,7 @@ jobs:
     
     - name: Set up Python
       run: |
-          apt-get install python3-pip
+          apt-get install python3-pip -y
                     
     - name: Install dependencies
       run: |
