@@ -2,8 +2,10 @@
     parameters for an AntaresXpansion session
 """
 
+from pathlib import Path
 import argparse
 import sys
+import yaml
 
 class XpansionConfig():
     """
@@ -13,7 +15,21 @@ class XpansionConfig():
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-few-public-methods
 
+
     def __init__(self):
+    
+        with open(Path.cwd() / "config.yaml") as file:
+            content = yaml.full_load(file)
+            # content is a Python dict
+            if content is not None:
+                self.ANTARES            = self._readcontent(content,'ANTARES')
+                self.MERGE_MPS          = self._readcontent(content,'MERGE_MPS')
+                self.BENDERS_MPI        = self._readcontent(content,'BENDERS_MPI')
+                self.BENDERS_SEQUENTIAL = self._readcontent(content,'BENDERS_SEQUENTIAL')
+                self.LP_NAMER           = self._readcontent(content,'LP_NAMER')
+            else:
+                raise RuntimeError("Please check file config.yaml, content is empty")
+
         if sys.platform.startswith("win32"):
             self.MPI_LAUNCHER = "mpiexec"
             self.MPI_N = "-n"
@@ -25,7 +41,6 @@ class XpansionConfig():
 
         self.MPI_N_PROCESSES = "4"
 
-        self.ANTARES = 'antares-7.2-solver.exe'
         self.SETTINGS = 'settings'
         self.USER = 'user'
         self.EXPANSION = 'expansion'
@@ -47,11 +62,7 @@ class XpansionConfig():
 
         self.OUTPUT = 'output'
         self.OPTIONS_TXT = 'options.txt'
-        self.MERGE_MPS = "merge_mps.exe"
         self.MPS_TXT = "mps.txt"
-        self.BENDERS_MPI = "bendersmpi.exe"
-        self.BENDERS_SEQUENTIAL = "benderssequential.exe"
-        self.LP_NAMER = "lp_namer.exe"
 
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument("--step", choices=["lp", "optim", "full", "antares", "getnames"],
@@ -103,3 +114,10 @@ class XpansionConfig():
                       'solver' : 'Cbc',
                       'timelimit' : '+infini',
                       'additional-constraints' : ""}
+    
+    def _readcontent(self, content, attribute):
+        if content is not None and attribute in content:
+               val = content[attribute]
+               return val
+        else:
+            raise RuntimeError(attribute + " not found. Please check file config.yaml")

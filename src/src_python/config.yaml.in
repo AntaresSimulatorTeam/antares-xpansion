@@ -1,0 +1,5 @@
+ANTARES             : "antares-7.2-solver.exe"
+MERGE_MPS           : $<TARGET_FILE_NAME:merge_mps>
+BENDERS_MPI         : $<TARGET_FILE_NAME:bendersmpi>
+BENDERS_SEQUENTIAL  : $<TARGET_FILE_NAME:benderssequential>
+LP_NAMER            : $<TARGET_FILE_NAME:lp_namer>
