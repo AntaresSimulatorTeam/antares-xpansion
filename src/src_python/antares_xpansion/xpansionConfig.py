@@ -7,6 +7,7 @@ import argparse
 import sys
 import yaml
 
+
 class XpansionConfig():
     """
         Class defininf the parameters for an AntaresXpansion session
@@ -15,18 +16,16 @@ class XpansionConfig():
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-few-public-methods
 
+    def __init__(self, configfile: Path):
 
-    def __init__(self):
-    
-        with open(Path.cwd() / "config.yaml") as file:
+        with open(configfile) as file:
             content = yaml.full_load(file)
-            # content is a Python dict
             if content is not None:
-                self.ANTARES            = self._readcontent(content,'ANTARES')
-                self.MERGE_MPS          = self._readcontent(content,'MERGE_MPS')
-                self.BENDERS_MPI        = self._readcontent(content,'BENDERS_MPI')
-                self.BENDERS_SEQUENTIAL = self._readcontent(content,'BENDERS_SEQUENTIAL')
-                self.LP_NAMER           = self._readcontent(content,'LP_NAMER')
+                self.ANTARES = content.get('ANTARES', "antares-solver")
+                self.MERGE_MPS = content.get('MERGE_MPS', "merge_mps")
+                self.BENDERS_MPI = content.get('BENDERS_MPI', "bender_mpi")
+                self.BENDERS_SEQUENTIAL = content.get('BENDERS_SEQUENTIAL', "benders_sequential")
+                self.LP_NAMER = content.get('LP_NAMER', "lp_namer")
             else:
                 raise RuntimeError("Please check file config.yaml, content is empty")
 
@@ -70,7 +69,7 @@ class XpansionConfig():
                                  required=True)
         self.parser.add_argument("--simulationName",
                                  help="name of the antares simulation to use. "
-                                 "Must be present in the output directory")
+                                      "Must be present in the output directory")
         self.parser.add_argument("--dataDir", help="antares study data directory", required=True)
         self.parser.add_argument("--installDir",
                                  help="the directory where all binaries are located", required=True)
@@ -103,21 +102,14 @@ class XpansionConfig():
             'BOUND_ALPHA': '1',
         }
 
-        self.settings_default = {'method' : 'benders_decomposition',
-                      'uc_type' : 'expansion_fast',
-                      'master' : 'integer',
-                      'optimality_gap' : '0',
-                      'cut_type' : 'yearly',
-                      'week_selection' : 'false',
-                      'max_iteration' : '+infini',
-                      'relaxed_optimality_gap' : '0.01',
-                      'solver' : 'Cbc',
-                      'timelimit' : '+infini',
-                      'additional-constraints' : ""}
-    
-    def _readcontent(self, content, attribute):
-        if content is not None and attribute in content:
-               val = content[attribute]
-               return val
-        else:
-            raise RuntimeError(attribute + " not found. Please check file config.yaml")
+        self.settings_default = {'method': 'benders_decomposition',
+                                 'uc_type': 'expansion_fast',
+                                 'master': 'integer',
+                                 'optimality_gap': '0',
+                                 'cut_type': 'yearly',
+                                 'week_selection': 'false',
+                                 'max_iteration': '+infini',
+                                 'relaxed_optimality_gap': '0.01',
+                                 'solver': 'Cbc',
+                                 'timelimit': '+infini',
+                                 'additional-constraints': ""}
