@@ -1,4 +1,4 @@
-ANTARES             : "antares-7.2-solver.exe"
+ANTARES             : @ANTARES_SOLVER_APP@
 MERGE_MPS           : $<TARGET_FILE_NAME:merge_mps>
 BENDERS_MPI         : $<TARGET_FILE_NAME:bendersmpi>
 BENDERS_SEQUENTIAL  : $<TARGET_FILE_NAME:benderssequential>
