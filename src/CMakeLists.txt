@@ -2,10 +2,11 @@ add_subdirectory (src_cpp)
 
 #generate config.yaml with executable names in current source directory
 SET(ANTARES_VERSION 7.2)
-SET(ANTARES_SOLVER_APP "antares-${ANTARES_VERSION}-solver")
 
 if (MSVC)
-    SET(ANTARES_SOLVER_APP "${ANTARES_SOLVER_APP}.exe")
+    SET(ANTARES_SOLVER_APP "antares-${ANTARES_VERSION}-solver.exe")
+elseif(UNIX)
+    SET(ANTARES_SOLVER_APP "antares-${ANTARES_VERSION}-solver")
 endif()
 
 #configure file to define antares-solver executable
