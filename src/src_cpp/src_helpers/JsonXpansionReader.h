@@ -6,6 +6,7 @@
 /*!
 * \class JsonXpansionReader
 * \brief Class that reads a json file describing an antares-xpansion solution
+* \note does not consider if the json file was created from sequential, mpi or merge optimizers
 */
 class JsonXpansionReader
 {
@@ -41,12 +42,14 @@ public:
     void read(std::string const & filename_p);
 
 /*!
-*  \brief returns the index of the best iteration indicated in the json output file 
+*  \brief returns the index of the best iteration indicated in the json output file
+*  \return iteration entry in the solution object of the read json if exists, Json::nullValue otherwise
 */
 	int getBestIteration() const;
 
 /*!
 *  \brief returns the index of the last iteration indicated in the json output file 
+*  \return index of the last iteration in the read json if possible, Json::nullValue otherwise
 */
     int getLastIteration() const;
 
