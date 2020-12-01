@@ -1,21 +1,22 @@
 #####################
-##  ORTOOLS  ##
+##  OR-TOOLS       ##
 #####################
 if(BUILD_ortools)
 
-set(REPOSITORY "https://github.com/AntaresSimulatorTeam/or-tools.git")
-set(TAG "rte_dev_sirius")
-set(CMAKE_ARGS "-DUSE_SIRIUS=OFF")
 
 if (USE_ORTOOLS_STABLE)
 	set(REPOSITORY "https://github.com/google/or-tools.git")
 	set(TAG "stable")
 	set(CMAKE_ARGS "")
+else()
+    set(REPOSITORY "https://github.com/AntaresSimulatorTeam/or-tools.git")
+    set(TAG "rte_dev_sirius")
+    set(CMAKE_ARGS "-DUSE_SIRIUS=OFF")
 endif()
 
 build_git_dependency(
     NAME
-      ortools
+      or-tools
     REPOSITORY
       ${REPOSITORY}
     TAG
@@ -27,7 +28,7 @@ build_git_dependency(
 endif()
 
 #####################
-##  Antares solver  ##
+##  Antares solver ##
 #####################
 if(BUILD_antares_solver)
 
@@ -38,7 +39,6 @@ set(CMAKE_ARGS "-DBUILD_UI=OFF -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}")
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   set(ANTARES_BUILD_TYPE "debug")
 else ()
-  
   set(ANTARES_BUILD_TYPE "release")
 endif ()
 
