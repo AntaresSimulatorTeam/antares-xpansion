@@ -15,16 +15,20 @@ jobs:
       fail-fast: false
       matrix:
         container:
-        - 'jmkerloch/rte-antares:ubuntu-ortools'
+        - 'antares-rte/rte-antares:ubuntu-ortools'
   
     runs-on: ubuntu-latest
     container: ${{ matrix.container }}
     steps:
     - uses: actions/checkout@v2
     
+    - name: Init submodule
+      run: |
+           git submodule update --init --recursive .
+    
     - name: Configure
       run: |
-           cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -Dsirius_solver_ROOT=/sirius-install -DBUILD_ortools=OFF -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+           cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -Dsirius_solver_ROOT=/sirius-install -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DBUILD_antares_solver=ON
 
     - name: Build
       run: |           

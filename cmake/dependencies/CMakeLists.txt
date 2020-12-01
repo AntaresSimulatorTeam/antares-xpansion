@@ -1,45 +1,11 @@
 #####################
-##  ORTOOLS  ##
-#####################
-if(BUILD_ortools)
-
-#Check if ortools is already available
-find_package(ortools)
-
-if(NOT ortools_FOUND)
-
-set(REPOSITORY "https://github.com/AntaresSimulatorTeam/or-tools.git")
-set(TAG "rte_dev_sirius")
-set(CMAKE_ARGS "-DUSE_SIRIUS=OFF")
-
-if (USE_ORTOOLS_STABLE)
-	set(REPOSITORY "https://github.com/google/or-tools.git")
-	set(TAG "stable")
-	set(CMAKE_ARGS "")
-endif()
-
-build_git_dependency(
-    NAME
-      ortools
-    REPOSITORY
-      ${REPOSITORY}
-    TAG
-      ${TAG}
-    CMAKE_ARGS
-      "${CMAKE_ARGS} -DUSE_COINOR=ON -DBUILD_PYTHON=OFF -DBUILD_TESTING=OFF -DBUILD_DEPS=ON -DBUILD_SAMPLES=OFF -DBUILD_EXAMPLES=OFF -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}"
-  )
-endif()
-  
-endif()
-
-#####################
 ##  Antares solver  ##
 #####################
 if(BUILD_antares_solver)
 
 set(REPOSITORY "https://github.com/AntaresSimulatorTeam/Antares_Simulator.git")
 set(TAG "develop")
-set(CMAKE_ARGS "-DBUILD_sirius=ON -DBUILD_UI=OFF -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}")
+set(CMAKE_ARGS "-DBUILD_sirius=ON -DBUILD_UI=OFF -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} -DDEPS_INSTALL_DIR=${DEPS_INSTALL_DIR}")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   set(ANTARES_BUILD_TYPE "debug")
