@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         container:
-        - 'antares-rte/rte-antares:ubuntu-ortools'
+        - 'antaresrte/rte-antares:ubuntu-ortools'
   
     runs-on: ubuntu-latest
     container: ${{ matrix.container }}
