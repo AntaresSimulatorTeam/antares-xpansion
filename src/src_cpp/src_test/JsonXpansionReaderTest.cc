@@ -31,7 +31,7 @@ protected:
 	},\n\
 	\"antares_xpansion\" : \n\
 	{\n\
-		\"version\" : \"1.1.0\"\n\
+		\"version\" : \"1.2.0\"\n\
 	},\n\
 	\"begin\" : \"20-11-2020 17:23:15\",\n\
 	\"duration\" : 0.0,\n\
