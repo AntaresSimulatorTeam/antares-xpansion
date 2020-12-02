@@ -129,21 +129,32 @@ Note :
 > ``` 
 
 ### [Automatic librairies compilation from git](#git_compil)
-Dependency can be built  at configure time using the option `-DBUILD_DEPS=ON` (`OFF` by default) or you can compile few of them using the options below.
+[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic librairies compilation from git.
 
-* OR-Tools (`BUILD_ortools`)
+Dependency can be built at configure time using the option `-DBUILD_ALL=ON` (`OFF` by default). For a list of available option see [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps).
 
+We recommand you to define the options below at your first antares xpansion checkout :
+
+* Sirius solver (`-DBUILD_sirius=ON`)
+* OR-Tools (`-DBUILD_ortools=ON`)
+
+This allow the compilation of the librairies that are not available in package manager.
 
 
 #### Defining dependency install directory
 When using multiple directories for antares development with multiple branches it can be useful to have a common dependency install directory.
 
-Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By default install directory is `<xpansion_checkout_dir>/../rte-antares-deps-<build_type>`
+Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By default install directory is `<antares_xpansion_checkout_dir>/../rte-antares-deps-<build_type>`
 
 Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
 ## [Building Antares XPansion V2](#build)
+First you need to update git submodule for dependency build :
+```
+git submodule update --init antares-deps
+```
+
 
 You can define build type with ```-DCMAKE_BUILD_TYPE``` and ```--config``` option.
 
@@ -167,11 +178,6 @@ You can enable compilation with `-DBUILD_ortools=ON` when you configure build wi
 We recommand you to use `-DDEPS_INSTALL_DIR` option so you can use these builds in another antares-xpansion checkout directory.
 
 In this case you can specify dependency install directory with :
-
-```
-cmake -DCMAKE_PREFIX_PATH=<deps_install_dir>
-````
-or 
 ```
 cmake -DDEPS_INSTALL_DIR=<deps_install_dir>
 ````
