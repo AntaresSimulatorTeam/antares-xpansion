@@ -48,6 +48,8 @@ Git version must be above 2.15 for external dependencies build because `--ignore
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
  - Boost mpi (Only for MPI benders compilation)
+ - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
+ - [GraphViz](https://graphviz.org/) for doxygen use
 
 This section describes the install procedures for the third-party Open source libraries used by ANTARES XPansion V2.
 The install procedure can be done
@@ -105,7 +107,7 @@ On linux you can use a package manger to download the precompiled librairies.
 #### Ubuntu
 
 ```
-sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev
+sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz
 ```
 Note :
 > Depending on Ubuntu version you might need to compile google test :
@@ -117,7 +119,7 @@ Note :
 #### RHEL / Centos
 
 ```
-sudo yum install jsoncpp gtest boost-openmpi-devel
+sudo yum install jsoncpp gtest boost-openmpi-devel doxygen graphviz
 ```
 
 Note :

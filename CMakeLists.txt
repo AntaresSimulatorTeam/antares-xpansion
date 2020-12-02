@@ -116,14 +116,6 @@ message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 
-# optional conan setup
-if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-	include (${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-	conan_basic_setup ()
-elseif (EXISTS ${CMAKE_BINARY_DIR}/conan_paths.cmake)
-	include (${CMAKE_BINARY_DIR}/conan_paths.cmake)
-endif ()
-
 # ---------------------------------------------------------------------------
 # Boost
 # ---------------------------------------------------------------------------
@@ -174,15 +166,6 @@ if (SOLVER)
 	endif ()
 endif ()
 
-#IF (USE_MPI)
-#	IF (WIN32)
-#		message ("MPI_INC $ENV{MSMPI_INC}")
-#		message ("MPI_LIB64 $ENV{MSMPI_LIB64}")
-#		INCLUDE_DIRECTORIES ($ENV{MSMPI_INC} $ENV{MSMPI_INC}/x64)
-#		LINK_DIRECTORIES ($ENV{MSMPI_LIB64})
-#	ENDIF (WIN32)
-#ENDIF (USE_MPI)
-
 find_package(jsoncpp CONFIG REQUIRED)
 
 # ===========================================================================
@@ -221,6 +204,6 @@ install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
 #For now only test archive, need to define several CPACK variable
 include(CPack)
 set(CPACK_PROJECT_NAME "antaresXpansion")
-set(CPACK_PACKAGE_VERSION_MAJOR 1)
+set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 1)
 set(CPACK_PACKAGE_VERSION_PATCH 0)

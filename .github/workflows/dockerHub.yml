@@ -25,6 +25,15 @@ jobs:
     - name: Init submodule
       run: |
            git submodule update --init --recursive .
+           
+    - name: Set up Python
+      run: |
+          apt-get install python3-pip -y
+                    
+    - name: Install dependencies
+      run: |
+          python3 -m pip install --upgrade pip
+          pip3 install -r src/src_python/requirements.txt
     
     - name: Configure
       run: |
