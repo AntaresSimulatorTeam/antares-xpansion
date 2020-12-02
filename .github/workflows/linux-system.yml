@@ -43,7 +43,7 @@ jobs:
 
     - name: Configure
       run: |
-           cmake -B _build -S . -DBUILD_antares_solver=ON -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 
     - name: Build
       run: |
