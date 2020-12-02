@@ -2,8 +2,11 @@
     parameters for an AntaresXpansion session
 """
 
+from pathlib import Path
 import argparse
 import sys
+import yaml
+
 
 class XpansionConfig():
     """
@@ -13,7 +16,19 @@ class XpansionConfig():
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-few-public-methods
 
-    def __init__(self):
+    def __init__(self, configfile: Path):
+
+        with open(configfile) as file:
+            content = yaml.full_load(file)
+            if content is not None:
+                self.ANTARES = content.get('ANTARES', "antares-solver")
+                self.MERGE_MPS = content.get('MERGE_MPS', "merge_mps")
+                self.BENDERS_MPI = content.get('BENDERS_MPI', "bender_mpi")
+                self.BENDERS_SEQUENTIAL = content.get('BENDERS_SEQUENTIAL', "benders_sequential")
+                self.LP_NAMER = content.get('LP_NAMER', "lp_namer")
+            else:
+                raise RuntimeError("Please check file config.yaml, content is empty")
+
         if sys.platform.startswith("win32"):
             self.MPI_LAUNCHER = "mpiexec"
             self.MPI_N = "-n"
@@ -25,7 +40,6 @@ class XpansionConfig():
 
         self.MPI_N_PROCESSES = "4"
 
-        self.ANTARES = 'antares-7.2-solver.exe'
         self.SETTINGS = 'settings'
         self.USER = 'user'
         self.EXPANSION = 'expansion'
@@ -47,11 +61,7 @@ class XpansionConfig():
 
         self.OUTPUT = 'output'
         self.OPTIONS_TXT = 'options.txt'
-        self.MERGE_MPS = "merge_mps.exe"
         self.MPS_TXT = "mps.txt"
-        self.BENDERS_MPI = "bendersmpi.exe"
-        self.BENDERS_SEQUENTIAL = "benderssequential.exe"
-        self.LP_NAMER = "lp_namer.exe"
 
         self.parser = argparse.ArgumentParser()
         self.parser.add_argument("--step", choices=["lp", "optim", "full", "antares", "getnames"],
@@ -59,7 +69,7 @@ class XpansionConfig():
                                  required=True)
         self.parser.add_argument("--simulationName",
                                  help="name of the antares simulation to use. "
-                                 "Must be present in the output directory")
+                                      "Must be present in the output directory")
         self.parser.add_argument("--dataDir", help="antares study data directory", required=True)
         self.parser.add_argument("--installDir",
                                  help="the directory where all binaries are located", required=True)
@@ -92,14 +102,14 @@ class XpansionConfig():
             'BOUND_ALPHA': '1',
         }
 
-        self.settings_default = {'method' : 'benders_decomposition',
-                      'uc_type' : 'expansion_fast',
-                      'master' : 'integer',
-                      'optimality_gap' : '0',
-                      'cut_type' : 'yearly',
-                      'week_selection' : 'false',
-                      'max_iteration' : '+infini',
-                      'relaxed_optimality_gap' : '0.01',
-                      'solver' : 'Cbc',
-                      'timelimit' : '+infini',
-                      'additional-constraints' : ""}
+        self.settings_default = {'method': 'benders_decomposition',
+                                 'uc_type': 'expansion_fast',
+                                 'master': 'integer',
+                                 'optimality_gap': '0',
+                                 'cut_type': 'yearly',
+                                 'week_selection': 'false',
+                                 'max_iteration': '+infini',
+                                 'relaxed_optimality_gap': '0.01',
+                                 'solver': 'Cbc',
+                                 'timelimit': '+infini',
+                                 'additional-constraints': ""}
