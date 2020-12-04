@@ -29,7 +29,6 @@ class XpansionDriver():
         """
         self.platform = sys.platform
         self.config = config
-        self.args = self.config.parser.parse_args()
 
         self.candidates_list = []
 
@@ -46,7 +45,7 @@ class XpansionDriver():
 
             :return: path to specified executable
         """
-        return os.path.normpath(os.path.join(self.args.installDir, exe))
+        return os.path.normpath(os.path.join(self.config.installDir, exe))
 
     def solver_cmd(self, solver):
         """
@@ -59,7 +58,7 @@ class XpansionDriver():
             return self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
         elif solver == self.config.BENDERS_MPI:
             return self.config.MPI_LAUNCHER +" "+\
-                self.config.MPI_N +" "+ self.config.MPI_N_PROCESSES+\
+                self.config.MPI_N +" "+ str(self.config.n_mpi)+\
                 " "+ self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
         #solver == self.config.BENDERS_SEQUENTIAL:
         return self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
@@ -68,7 +67,7 @@ class XpansionDriver():
         """
             returns antares binaries location
         """
-        return os.path.normpath(os.path.join(self.args.installDir, self.config.ANTARES))
+        return os.path.normpath(os.path.join(self.config.installDir, self.config.ANTARES))
 
     def general_data(self):
         """
@@ -120,7 +119,7 @@ class XpansionDriver():
         """
             returns path to the data directory
         """
-        return self.args.dataDir
+        return self.config.dataDir
 
     def is_accurate(self):
         """
@@ -216,30 +215,30 @@ class XpansionDriver():
         """
         self.clear_old_log()
 
-        if self.args.step == "full":
+        if self.config.step == "full":
             lp_path = self.generate_mps_files()
             self.launch_optimization(lp_path)
-        elif self.args.step == "antares":
+        elif self.config.step == "antares":
             self.pre_antares()
             self.launch_antares()
-        elif self.args.step == "getnames":
-            if self.args.simulationName:
-                self.get_names(self.args.simulationName)
+        elif self.config.step == "getnames":
+            if self.config.simulationName:
+                self.get_names(self.config.simulationName)
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
-        elif self.args.step == "lp":
-            if self.args.simulationName:
-                self.lp_step(self.args.simulationName)
-                output_path = os.path.normpath(os.path.join(self.antares_output(), self.args.simulationName))
+        elif self.config.step == "lp":
+            if self.config.simulationName:
+                self.lp_step(self.config.simulationName)
+                output_path = os.path.normpath(os.path.join(self.antares_output(), self.config.simulationName))
                 self.set_options(output_path)
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
-        elif self.args.step == "optim":
-            if self.args.simulationName:
+        elif self.config.step == "optim":
+            if self.config.simulationName:
                 lp_path = os.path.normpath(os.path.join(self.antares_output(),
-                                                        self.args.simulationName, 'lp'))
+                                                        self.config.simulationName, 'lp'))
                 self.launch_optimization(lp_path)
             else:
                 print("Missing argument simulationName")
@@ -252,9 +251,9 @@ class XpansionDriver():
         """
             clears old log files for antares and the lp_namer
         """
-        if (self.args.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
+        if (self.config.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
             os.remove(self.antares() + '.log')
-        if (self.args.step in ["full", "lp"])\
+        if (self.config.step in ["full", "lp"])\
             and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
             os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
 
@@ -415,9 +414,9 @@ class XpansionDriver():
         print('Current directory is now : ', os.getcwd())
 
         solver = None
-        if self.args.method == "mpibenders":
+        if self.config.method == "mpibenders":
             solver = self.config.BENDERS_MPI
-        elif self.args.method == "mergeMPS":
+        elif self.config.method == "mergeMPS":
             solver = self.config.MERGE_MPS
             mergemps_lp_log = "log_merged.lp"
             if os.path.isfile(mergemps_lp_log):
@@ -425,9 +424,9 @@ class XpansionDriver():
             mergemps_mps_log = "log_merged.mps"
             if os.path.isfile(mergemps_mps_log):
                 os.remove(mergemps_lp_log)
-        elif self.args.method == "sequential":
+        elif self.config.method == "sequential":
             solver = self.config.BENDERS_SEQUENTIAL
-        elif self.args.method == "both":
+        elif self.config.method == "both":
             print("metod both is not handled yet")
             sys.exit(1)
         else:
