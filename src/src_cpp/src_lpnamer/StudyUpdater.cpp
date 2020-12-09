@@ -115,6 +115,9 @@ int StudyUpdater::updateLinkdataFile(Candidate candidate_p, double investment_p)
         tempOutCsvFile << record_l.to_row("\t") << "\n";
     }
 
+    inputCsv_l.close();
+    tempOutCsvFile.close();
+
     //delete old file and rename the temporarily created file
     std::remove(linkdataFilename_l.c_str());
     std::rename((linkdataFilename_l + ".tmp").c_str(), linkdataFilename_l.c_str());

@@ -38,7 +38,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 						unstash 'source'
 
 						config.buildTypes.each { buildType ->
-							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.15.7'}/cmake"]) {
+							withEnv(["CONAN_CMAKE_PROGRAM=${tool '3.14.0 (jenkins)'}/cmake"]) {
 								String vshell= isUnix() ? 'sh' : 'bat'
 								"${vshell}" """
 									conan install \
@@ -63,7 +63,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 									-D USE_MPI=TRUE
 								""",
 								generator: "${env.CMakeGenerator}",
-								installation: "3.15.7",
+								installation: "3.14.0 (jenkins)",
 								steps: [[args: "--config ${buildType} --parallel 4 -v", withCmake: true]]
 							)
 						}
@@ -91,7 +91,7 @@ gitlabBuilds(builds: ['build', 'test', 'publish', 'deploy']) {
 											--target run_unit_tests
 											--config ${buildType}
 										""",
-										installation: '3.15.7'
+										installation: '3.14.0 (jenkins)'
 									)
 								}
 							}
