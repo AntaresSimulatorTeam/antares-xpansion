@@ -3,6 +3,7 @@
 """
 
 from pathlib import Path
+import os
 import sys
 import yaml
 import argparse
@@ -54,7 +55,7 @@ class XpansionConfig():
         parser.add_argument("--installDir",
                             dest="installDir",
                             help="The directory where all binaries are located",
-                            required=True)
+                            default="../bin/")
         parser.add_argument("--method",
                             dest="method",
                             type=str,
@@ -77,6 +78,9 @@ class XpansionConfig():
         self.method = args.method
         self.c = args.c
         self.n_mpi = args.n_mpi
+
+        if not Path.is_absolute(Path(self.installDir)):
+            self.installDir = os.path.join(Path.cwd(), Path(self.installDir))
 
         self.SETTINGS = 'settings'
         self.USER = 'user'
