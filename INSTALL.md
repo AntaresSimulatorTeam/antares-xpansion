@@ -131,16 +131,32 @@ Note :
 > ``` 
 
 ### [Automatic librairies compilation from git](#git_compil)
-Dependency can be built  at configure time using the option `-DBUILD_DEPS=ON` (`OFF` by default) or you can compile few of them using the options below.
+[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic librairies compilation from git.
 
-* OR-Tools (`BUILD_ortools`) (ON by default)
+Dependency can be built at configure time using the option `-DBUILD_ALL=ON` (`OFF` by default). For a list of available option see [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps).
 
-You can specify previously dependencies install directory with `CMAKE_PREFIX_PATH` :
-```
-cmake -DCMAKE_PREFIX_PATH=<previous_build_dir>/dependencies/install
-````
+We recommand you to define the options below at your first antares xpansion checkout :
+
+* Sirius solver (`-DBUILD_sirius=ON`)
+* OR-Tools (`-DBUILD_ortools=ON`)
+
+This allow the compilation of the librairies that are not available in package manager.
+
+
+#### Defining dependency install directory
+When using multiple directories for antares development with multiple branches it can be useful to have a common dependency install directory.
+
+Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By default install directory is `<antares_xpansion_checkout_dir>/../rte-antares-deps-<build_type>`
+
+Note :
+> `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
 ## [Building Antares XPansion V2](#build)
+First you need to update git submodule for dependency build :
+```
+git submodule update --init antares-deps
+```
+
 
 You can define build type with ```-DCMAKE_BUILD_TYPE``` and ```--config``` option.
 
@@ -158,18 +174,14 @@ cmake --build _build --config Debug
 
 ### OR-Tools linking
 
-By default OR-Tools is compiled with Antares XPansion V2.
-You can disable compilation with `-DBUILD_ortools=OFF` when you configure build with cmake.
+By default OR-Tools is NOT compiled with Antares XPansion V2.
+You can enable compilation with `-DBUILD_ortools=ON` when you configure build with cmake.
 
-In this case you can specify librairies path with :
+We recommand you to use `-DDEPS_INSTALL_DIR` option so you can use these builds in another antares-xpansion checkout directory.
 
-* librairies root directories :
+In this case you can specify dependency install directory with :
 ```
-cmake -Dortools_ROOT=<ortools_install_dir>
-```
-* previous build directory :
-```
-cmake -DCMAKE_PREFIX_PATH=<previous_build_dir>/dependencies/install
+cmake -DDEPS_INSTALL_DIR=<deps_install_dir>
 ````
 ### Linux using system libs
 - Install dependencies [using package manager](#using-a-package-manager).

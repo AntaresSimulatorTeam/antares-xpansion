@@ -91,28 +91,30 @@ endif ()
 # ===========================================================================
 # External dependencies
 # ===========================================================================
-#CMake function to build dependancy from git
+#CMake function
 include("cmake/utils.cmake")
 
-option(BUILD_DEPS "Build all dependencies" OFF)
-message(STATUS "Build all dependencies: ${BUILD_DEPS}")
+#Define install directory
+if (NOT DEPS_INSTALL_DIR)
+    SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
 
-# IF BUILD_DEPS=ON THEN Force all BUILD_*=ON
-include(CMakeDependentOption)
-
-CMAKE_DEPENDENT_OPTION(BUILD_ortools "Build OR-Tools library" ON
-		"NOT BUILD_DEPS" ON)
-message(STATUS "Build OR-Tools: ${BUILD_ortools}")
-
-CMAKE_DEPENDENT_OPTION(BUILD_antares_solver "Build antares solver" OFF
-		"NOT BUILD_DEPS" ON)
-message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+else()
+    if(NOT IS_ABSOLUTE ${DEPS_INSTALL_DIR})
+        SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${DEPS_INSTALL_DIR})
+    endif()    
+endif()
 
 # Build Needed dependencies
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install)
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/libs/pkgconfig)
+list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR})
+message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 
-add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_SOURCE_DIR}/build_deps)
+add_subdirectory(antares-deps)
+
+# Build dependencies not handled by antares-deps repository
+option(BUILD_antares_solver "Build antares solver" OFF)
+message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+
+add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 
 # ---------------------------------------------------------------------------
 # Boost
@@ -141,9 +143,14 @@ find_package (Threads REQUIRED)
 
 # OR-Tools
 
+find_package(ortools)
+if(NOT ortools_FOUND)
+	message (FATAL_ERROR "OR-Tools not found. OR-Tools can be compiled with -DBUILD_ortools=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
+endif()
+
+#gflags needed for ortools
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
 find_package(gflags REQUIRED)
-find_package(ortools REQUIRED)
 
 if (SOLVER)
 	if (SOLVER STREQUAL "cplex")
@@ -173,22 +180,25 @@ add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
 
-
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
   DESTINATION bin
   FILES_MATCHING PATTERN "*.dll")
-
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+  
+install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "*.dll")
   
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+install(DIRECTORY ${DEPS_INSTALL_DIR}/lib/
+  DESTINATION bin
+  FILES_MATCHING PATTERN "*.so")
+  
+install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "antares-*.*-solver.exe")
   
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build_deps/install/bin/
+install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   DESTINATION bin
   FILES_MATCHING PATTERN "antares-*.*-solver")
   
