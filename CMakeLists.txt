@@ -148,9 +148,6 @@ if(NOT ortools_FOUND)
 	message (FATAL_ERROR "OR-Tools not found. OR-Tools can be compiled with -DBUILD_ortools=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
 endif()
 
-#gflags needed for ortools
-set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
-find_package(gflags REQUIRED)
 
 if (SOLVER)
 	if (SOLVER STREQUAL "cplex")
