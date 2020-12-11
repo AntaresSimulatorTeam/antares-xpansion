@@ -3,6 +3,7 @@ name: Linux CI (system libs)
 on:
   push:
     branches:
+      - main
       - develop
       - features/*
       - feature/*
