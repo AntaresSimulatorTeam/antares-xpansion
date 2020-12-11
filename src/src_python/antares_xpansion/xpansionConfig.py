@@ -3,9 +3,10 @@
 """
 
 from pathlib import Path
-import argparse
+import os
 import sys
 import yaml
+import argparse
 
 
 class XpansionConfig():
@@ -38,7 +39,48 @@ class XpansionConfig():
         else:
             print("WARN: No mpi launcher was defined!")
 
-        self.MPI_N_PROCESSES = "4"
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--step",
+                            dest="step",
+                            choices=["lp", "optim", "full", "antares", "getnames"],
+                            help='Step to execute ("lp", "optim", "full", "antares", "getnames")',
+                            required=True)
+        parser.add_argument("--simulationName",
+                            dest="simulationName",
+                            help="Name of the antares simulation to use. Must be present in the output directory")
+        parser.add_argument("--dataDir",
+                            dest="dataDir",
+                            help="Antares study data directory",
+                            required=True)
+        parser.add_argument("--installDir",
+                            dest="installDir",
+                            help="The directory where all binaries are located",
+                            default="../bin/")
+        parser.add_argument("--method",
+                            dest="method",
+                            type=str,
+                            choices=["mpibenders", "mergeMPS", "both", "sequential"],
+                            help="Choose the optimization method")
+        parser.add_argument("-c",
+                            dest="c",
+                            help='Name of the file to use for exclusion constraints')
+        parser.add_argument("-n", "--np",
+                            dest="n_mpi",
+                            default=4,
+                            type=lambda x: (int(x) > 1) and int(x) or sys.exit("Minimum of MPI processes is 1"),
+                            help='Number of MPI processes')
+
+        args = parser.parse_args()
+        self.step = args.step
+        self.simulationName = args.simulationName
+        self.dataDir = args.dataDir
+        self.installDir = args.installDir
+        self.method = args.method
+        self.c = args.c
+        self.n_mpi = args.n_mpi
+
+        if not Path.is_absolute(Path(self.installDir)):
+            self.installDir = os.path.join(Path.cwd(), Path(self.installDir))
 
         self.SETTINGS = 'settings'
         self.USER = 'user'
@@ -62,22 +104,6 @@ class XpansionConfig():
         self.OUTPUT = 'output'
         self.OPTIONS_TXT = 'options.txt'
         self.MPS_TXT = "mps.txt"
-
-        self.parser = argparse.ArgumentParser()
-        self.parser.add_argument("--step", choices=["lp", "optim", "full", "antares", "getnames"],
-                                 help='step to execute ("lp", "optim", "full", "antares", "getnames")',
-                                 required=True)
-        self.parser.add_argument("--simulationName",
-                                 help="name of the antares simulation to use. "
-                                      "Must be present in the output directory")
-        self.parser.add_argument("--dataDir", help="antares study data directory", required=True)
-        self.parser.add_argument("--installDir",
-                                 help="the directory where all binaries are located", required=True)
-        self.parser.add_argument("--method", type=str,
-                                 choices=["mpibenders", "mergeMPS", "both", "sequential"],
-                                 help="choose the optimization method")
-        self.parser.add_argument("-c",
-                                 help='name of the file to use for exclusion constraints')
 
         self.options_default = {
             'LOG_LEVEL': '3',
