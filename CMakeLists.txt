@@ -173,6 +173,8 @@ add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
 
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-guide-0.1.0.pdf
+        DESTINATION documentation)
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 
