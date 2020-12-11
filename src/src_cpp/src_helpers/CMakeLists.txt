@@ -36,4 +36,6 @@ if(sirius_solver_FOUND)
 			PUBLIC
 			sirius_solver
 			)
+            
+	copy_dependency(sirius_solver helpers)
 endif()
