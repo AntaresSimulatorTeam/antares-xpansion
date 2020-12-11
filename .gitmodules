@@ -1,4 +1,4 @@
 [submodule "antares-deps"]
 	path = antares-deps
 	url = https://github.com/AntaresSimulatorTeam/antares-deps.git
-	branch = feature/init
+	branch = v1.0.0
