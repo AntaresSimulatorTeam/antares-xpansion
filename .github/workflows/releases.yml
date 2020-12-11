@@ -72,7 +72,7 @@ jobs:
            
     - name: Init submodule
       run: |
-           git submodule update --init --recursive src
+           git submodule update --init --recursive .
     
     - name: Install mandatory system libraries 
       if: matrix.os == 'ubuntu-latest'    
