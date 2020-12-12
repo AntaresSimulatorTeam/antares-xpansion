@@ -149,6 +149,13 @@ if(NOT ortools_FOUND)
 endif()
 
 
+#gflags needed for ortools
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+find_package(gflags)
+
+
+find_package(sirius_solver REQUIRED)
+
 if (SOLVER)
 	if (SOLVER STREQUAL "cplex")
 		add_definitions (-DCPLEX_SOLVER -DUSE_CPLEX)
