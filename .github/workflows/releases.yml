@@ -101,12 +101,12 @@ jobs:
            cmake --build _build --config Release -j2
            
     - name: .zip Installer creation
+      shell: bash
       if: matrix.os == 'windows-latest'
       run: |
            cd _build
            cpack -G ZIP
-           $ZIP_NAME=dir *.zip
-           $ZIP_NAME=Split-Path $ZIP_NAME -Leaf
+           export ZIP_NAME=$(ls *.zip)
            echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
         
     - name: .tar.gz creation
