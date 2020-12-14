@@ -2,7 +2,6 @@
 //
 #include "launcher.h"
 #include "BendersOptions.h"
-#include <glog/logging.h>
 
 
 int main(int argc, char** argv)

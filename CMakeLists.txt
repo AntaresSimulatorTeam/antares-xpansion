@@ -152,6 +152,8 @@ if(NOT ortools_FOUND)
 endif()
 
 
+find_package(sirius_solver REQUIRED)
+
 if (SOLVER)
 	if (SOLVER STREQUAL "cplex")
 		add_definitions (-DCPLEX_SOLVER -DUSE_CPLEX)
