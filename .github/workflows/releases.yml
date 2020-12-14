@@ -107,7 +107,7 @@ jobs:
            cpack -G ZIP
            $ZIP_NAME=dir *.exe
            $ZIP_NAME=Split-Path $ZIP_NAME -Leaf
-           echo "::set-env name=ZIP_NAME::$ZIP_NAME" 
+           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
         
     - name: .tar.gz creation
       if: matrix.os == 'ubuntu-latest'
@@ -115,7 +115,7 @@ jobs:
            cd _build
            cpack -G TGZ
            export TGZ_NAME=$(ls *.tar.gz)
-           echo "::set-env name=TGZ_NAME::$TGZ_NAME"
+           echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
            
     - name: Upload .tar.gz
       if: matrix.os == 'ubuntu-latest'
