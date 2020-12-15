@@ -29,6 +29,9 @@ set (BOOST_MIN_VERSION "1.65.1")
 
 LIST (APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 
+
+set(CMAKE_INSTALL_RPATH 		$ORIGIN)
+
 # ===========================================================================
 # Compiler options
 # ===========================================================================
@@ -188,23 +191,25 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-gu
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
-  DESTINATION bin
+  TYPE BIN
   FILES_MATCHING PATTERN "*.dll")
   
 install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
-  DESTINATION bin
+  TYPE BIN
   FILES_MATCHING PATTERN "*.dll")
   
 install(DIRECTORY ${DEPS_INSTALL_DIR}/lib/
-  DESTINATION bin
+  TYPE BIN
   FILES_MATCHING PATTERN "*.so")
   
 install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
-  DESTINATION bin
+  TYPE BIN
+  USE_SOURCE_PERMISSIONS
   FILES_MATCHING PATTERN "antares-*.*-solver.exe")
   
 install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
-  DESTINATION bin
+  TYPE BIN
+  USE_SOURCE_PERMISSIONS
   FILES_MATCHING PATTERN "antares-*.*-solver")
   
 #For now only test archive, need to define several CPACK variable
