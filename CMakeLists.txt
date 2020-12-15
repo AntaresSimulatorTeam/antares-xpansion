@@ -212,6 +212,13 @@ install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   USE_SOURCE_PERMISSIONS
   FILES_MATCHING PATTERN "antares-*.*-solver")
   
+  
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    get_linux_lsb_release_information()
+    message(STATUS "Linux ${LSB_RELEASE_ID_SHORT} ${LSB_RELEASE_VERSION_SHORT} ${LSB_RELEASE_CODENAME_SHORT}")
+    set(CPACK_SYSTEM_NAME "${LSB_RELEASE_ID_SHORT}-${LSB_RELEASE_VERSION_SHORT}") 
+endif()
+  
 #For now only test archive, need to define several CPACK variable
 include(CPack)
 set(CPACK_PROJECT_NAME "antaresXpansion")
