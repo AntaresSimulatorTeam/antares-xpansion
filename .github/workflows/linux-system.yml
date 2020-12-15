@@ -16,7 +16,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-20.04]
 
     steps:
     - uses: actions/checkout@v2
