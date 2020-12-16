@@ -42,8 +42,8 @@ class XpansionConfig():
         parser = argparse.ArgumentParser()
         parser.add_argument("--step",
                             dest="step",
-                            choices=["lp", "optim", "full", "antares", "getnames"],
-                            help='Step to execute ("lp", "optim", "full", "antares", "getnames")',
+                            choices=["lp", "optim", "full", "antares", "getnames", "update"],
+                            help='Step to execute ("lp", "optim", "full", "antares", "getnames", "update")',
                             required=True)
         parser.add_argument("--simulationName",
                             dest="simulationName",
@@ -105,6 +105,7 @@ class XpansionConfig():
         self.OPTIONS_TXT = 'options.txt'
         self.MPS_TXT = "mps.txt"
 
+
         self.options_default = {
             'LOG_LEVEL': '3',
             'MAX_ITERATIONS': '-1',
@@ -125,6 +126,7 @@ class XpansionConfig():
             'THRESHOLD_ITERATION': '0',
             'RAND_AGGREGATION': '0',
             'CSV_NAME': 'benders_output_trace',
+            'JSON_NAME': 'out',
             'BOUND_ALPHA': '1',
         }
 

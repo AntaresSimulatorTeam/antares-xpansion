@@ -25,9 +25,9 @@
 			"type": "string",
 			"default": "",
 			"examples": [
-				"datetime"
+				"26-11-2020 11:22:45"
 			],
-			"pattern": "^.*$"
+			"pattern": "^(\\d{2})-(\\d{2})-(\\d{4}) (\\d{2}):(\\d{2}):(\\d{2})$"
 		},
 		"end": {
 			"$id": "#root/end",
@@ -35,9 +35,9 @@
 			"type": "string",
 			"default": "",
 			"examples": [
-				"datetime"
+				"26-11-2020 11:22:50"
 			],
-			"pattern": "^.*$"
+			"pattern": "^(\\d{2})-(\\d{2})-(\\d{4}) (\\d{2}):(\\d{2}):(\\d{2})$"
 		},
 		"duration": {
 			"$id": "#root/duration",
@@ -46,8 +46,7 @@
 			"default": 0,
 			"examples": [
 				12.3
-			],
-			"pattern": "^.*$"
+			]
 		},
 		"nbWeeks": {
 			"$id": "#root/nbweeks",
@@ -56,8 +55,7 @@
 			"default": 0,
 			"examples": [
 				52
-			],
-			"pattern": "^.*$"
+			]
 		},
 		"antares": {
 			"$id": "#root/antares",
@@ -104,9 +102,9 @@
 					"type": "string",
 					"default": "",
 					"examples": [
-						"version"
+						"2.0.20"
 					],
-					"pattern": "^.*$"
+					"pattern": "^\\d+\\.\\d+\\.\\d+$"
 				}
 			}
 		}
@@ -121,6 +119,7 @@
 				"BASIS",
 				"BOUND_ALPHA",
 				"CSV_NAME",
+				"JSON_NAME",
 				"DELETE_CUT",
 				"GAP",
 				"INPUTROOT",
@@ -181,6 +180,16 @@
 					"default": "benders_output_trace",
 					"examples": [
 						"benders_output_trace"
+					],
+					"pattern": "^.*$"
+				},
+				"JSON_NAME": {
+					"$id": "#root/options/JSON_NAME",
+					"title": "JSON_NAME",
+					"type": "string",
+					"default": "out",
+					"examples": [
+						"out"
 					],
 					"pattern": "^.*$"
 				},
@@ -331,13 +340,8 @@
 			"$id": "#root/iterations",
 			"title": "Iterations",
 			"type": "object",
-			"required": [
-				"1"
-			],
-			"properties": {
-				"1": {
-					"$id": "#root/iterations/1",
-					"title": "1",
+			"patternProperties": {
+				"^\\d+": {
 					"type": "object",
 					"required": [
 						"duration",
@@ -346,6 +350,7 @@
 						"operational_cost",
 						"overall_cost",
 						"relative_gap",
+						"best_ub",
 						"ub",
 						"lb",
 						"candidates"
@@ -405,6 +410,15 @@
 								0.005
 							]
 						},
+						"best_ub": {
+							"$id": "#root/iterations/1/best_ub",
+							"title": "best_ub",
+							"type": "number",
+							"default": 0,
+							"examples": [
+								0.005
+							]
+						},
 						"ub": {
 							"$id": "#root/iterations/1/ub",
 							"title": "ub",
@@ -432,7 +446,8 @@
 						}
 					}
 				}
-			}
+			},
+			"additionalProperties": false
 		},
 		"solution": {
 			"$id": "#root/solution",
@@ -451,7 +466,9 @@
             "optional": [
                 "operational_cost",
 				"overall_cost",
-				"iteration"
+				"iteration",
+				"lb",
+				"ub"
             ],
 			"properties": {
 				"gap": {
@@ -461,6 +478,24 @@
 					"default": 0,
 					"examples": [
 						100015.15
+					]
+				},
+				"lb": {
+					"$id": "#root/solution/lb",
+					"title": "lb",
+					"type": "number",
+					"default": 0,
+					"examples": [
+						3.5
+					]
+				},
+				"ub": {
+					"$id": "#root/solution/ub",
+					"title": "ub",
+					"type": "number",
+					"default": 0,
+					"examples": [
+						10
 					]
 				},
 				"investment_cost": {
