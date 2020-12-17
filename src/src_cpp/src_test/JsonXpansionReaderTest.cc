@@ -121,7 +121,7 @@ protected:
 			\"overall_cost\" : 15.0,\n\
 			\"relative_gap\" : 1.0666666666666667,\n\
 			\"ub\" : 15.0\n\
-		},\n\
+		}\n\
 	},\n\
 	\"nbWeeks\" : 3,\n\
 	\"options\" : \n\
