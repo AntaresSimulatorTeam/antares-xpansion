@@ -154,6 +154,9 @@ if(NOT ortools_FOUND)
 	message (FATAL_ERROR "OR-Tools not found. OR-Tools can be compiled with -DBUILD_ortools=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
 endif()
 
+if(POLICY CMP0074)
+	cmake_policy(SET CMP0074 NEW)
+endif()
 
 find_package(sirius_solver REQUIRED)
 
