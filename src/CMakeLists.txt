@@ -27,10 +27,14 @@ if (PYINSTALLER)
     
     #code is executed in CMAKE_BINARY_DIR
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/
-            DESTINATION xpansion-launcher)
+            DESTINATION xpansion-launcher
+            USE_SOURCE_PERMISSIONS)
 else ()
     
     message(STATUS "PyInstaller was not found : python scripts are use for install target")
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src_python/" 		DESTINATION xpansion-launcher)
+    
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/src_python/"	
+    	    DESTINATION xpansion-launcher
+    	    USE_SOURCE_PERMISSIONS)
     
 endif()
