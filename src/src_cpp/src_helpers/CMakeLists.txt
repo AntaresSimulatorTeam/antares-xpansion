@@ -27,7 +27,7 @@ target_include_directories (helpers
 target_link_libraries (helpers 
 	PUBLIC
 		ortools::ortools 
-		jsoncpp
+		jsoncpp_lib
 )
 
 #Dirty hack to add sirius solver dependency if available (needed because ortools doesn't indicated sirius dependency)
