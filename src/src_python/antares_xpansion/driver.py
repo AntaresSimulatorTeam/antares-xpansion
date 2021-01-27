@@ -220,12 +220,8 @@ class XpansionDriver():
         if self.config.step == "full":
             lp_path = self.generate_mps_files()
             self.launch_optimization(lp_path)
-<<<<<<< HEAD
-        elif self.config.step == "antares":
-=======
             self.update_step(self.simulation_name)
         elif self.args.step == "antares":
->>>>>>> origin/master
             self.pre_antares()
             self.launch_antares()
         elif self.config.step == "getnames":
@@ -263,18 +259,12 @@ class XpansionDriver():
         """
         if (self.config.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
             os.remove(self.antares() + '.log')
-<<<<<<< HEAD
-        if (self.config.step in ["full", "lp"])\
-            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
-            os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
-=======
         if (self.args.step in ["full", "lp"])\
             and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '_generate.log')):
             os.remove(self.exe_path(self.config.LP_NAMER) + '_generate.log')
         if (self.args.step in ["full", "update"])\
             and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '_update.log')):
             os.remove(self.exe_path(self.config.LP_NAMER) + '_update.log')
->>>>>>> origin/master
 
     def check_candidates(self):
         """
