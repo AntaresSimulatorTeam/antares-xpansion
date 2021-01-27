@@ -11,16 +11,13 @@
 #include "IntercoDataMps.h"
 #include "AdditionalConstraints.h"
 #include "LauncherHelpers.h"
+#include "StudyUpdater.h"
+#include "CandidatesInitializer.h"
 //#include "xprs_driver.h"
 #include <fstream>
 #include <sstream>
 
 #include "ortools_utils.h"
-
-#define CANDIDATES_INI "candidates.ini"
-#define STRUCTURE_FILE "structure.txt"
-#define MPS_TXT "mps.txt"
-
 
  /**
   * \fn string get_name(string const & path)
@@ -54,7 +51,6 @@ std::string get_name(std::string const & path) {
 	name = name.substr(0, name.size() - 4);
 	return name;
 }
-
 
 std::string toLowercase(std::string const& inputString_p)
 {
@@ -144,7 +140,6 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 
 	candidates.getCandidatesFromFile(candidates_file_name);
 }
-
 
 /**
  * \fn void masterGeneration()
@@ -256,6 +251,39 @@ void masterGeneration(std::string rootPath,
 }
 
 
+/*!
+ * \brief update links in the antares study directory
+ *
+ * \param rootPath_p String corresponding to the path to the simulation output directory containing the lp directory
+ * \param candidates_p Structure which contains the list of candidates
+ * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
+ * \return void
+ */
+void updateStudy(std::string const & rootPath_p, Candidates const & candidates_p, std::string const & solutionFilename_p)
+{
+	std::string linksPath_l = rootPath_p + PATH_SEPARATOR 
+							+ ".." + PATH_SEPARATOR + "..";
+	std::string jsonPath_l = rootPath_p + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + solutionFilename_p;
+
+	StudyUpdater studyUpdater(linksPath_l);
+	int updateFailures_l = studyUpdater.update(candidates_p, jsonPath_l);
+
+	if (updateFailures_l)
+	{
+        std::cout << "Error : Failed to update " << updateFailures_l << " files."
+				<< candidates_p.size() - updateFailures_l << " files were updated\n";
+    }
+}
+
+
+void show_usage(std::string exe)
+{
+    std::cout << "usage: " << exe << "\n"
+				<< "Options:\n"
+				<< "\t-g, --generate" << "\t <Xpansion study output> <relaxed or integer> <path to exlusions file>\n"
+				<< "\t-us, --update-study" << "\t <Xpansion study output>" << "\t <solution json filename>"
+				<< std::endl;
+}
 
 /**
  * \fn int main (void)
@@ -267,29 +295,44 @@ void masterGeneration(std::string rootPath,
  */
 int main(int argc, char** argv) {
 	// Test if there are enough arguments
-	if (argc < 3) {
-		std::cout << "usage: <exe> <Xpansion study output> <relaxed or integer> <path to exlusions file>" << std::endl;
+	if (argc < 4) {
+		show_usage(argv[0]);
 		std::exit(1);
 	}
 
 	// Instantiation of candidates
-	std::string const root(argv[1]);
+	std::string const root(argv[2]);
 	Candidates candidates;
 	initializedCandidates(root, candidates);
 
-	std::string const master_formulation(argv[2]);
-	if ( (master_formulation != "relaxed") && (master_formulation != "integer") )
+
+	std::string arg_l = argv[1];
+	if ((arg_l == "-us") || (arg_l == "--update-study"))
 	{
-		std::cout << "Invalid argument : second argument must be \"integer\" or \"relaxed\"" << std::endl;
+		const std::string solutionFile_l(argv[3]);
+		updateStudy(root, candidates, solutionFile_l);
+	}
+	else if ( (arg_l == "-g") || (arg_l == "--generate") )
+	{
+		std::string const master_formulation(argv[3]);
+		if ( (master_formulation != "relaxed") && (master_formulation != "integer") )
+		{
+			std::cout << "Invalid argument : third argument must be \"integer\" or \"relaxed\"" << std::endl;
+			std::exit(1);
+		}
+
+		std::string const additionalConstraintFilename_l = (argc > 4) ? argv[4] : "";
+		AdditionalConstraints additionalConstraints = (argc > 4) ? AdditionalConstraints(additionalConstraintFilename_l) : AdditionalConstraints();
+
+		std::map< std::pair<std::string, std::string>, int> couplings;
+		candidates.treatloop(root, couplings);
+		masterGeneration(root, candidates, additionalConstraints, couplings, master_formulation);
+	}
+	else
+	{
+		show_usage(argv[0]);
 		std::exit(1);
 	}
-
-	std::string const additionalConstraintFilename_l = (argc > 3) ? argv[3] : "";
-	AdditionalConstraints additionalConstraints = (argc > 3) ? AdditionalConstraints(additionalConstraintFilename_l) : AdditionalConstraints();
-
-	std::map< std::pair<std::string, std::string>, int> couplings;
-	candidates.treatloop(root, couplings);
-	masterGeneration(root, candidates, additionalConstraints, couplings, master_formulation);
 
 	return 0;
 }

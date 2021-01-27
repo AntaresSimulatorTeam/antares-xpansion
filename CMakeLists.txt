@@ -8,14 +8,14 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.1.0)
+PROJECT (antaresXpansion VERSION 1.2.0)
 
 # ===========================================================================
 # Default parameters
 # ===========================================================================
 
 option (USE_MPI "Enable MPI" OFF)
-option (USE_SEQUENTIAL "Enable sequential" OFF)
+option (USE_SEQUENTIAL "Enable sequential" ON)
 
 IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
@@ -87,8 +87,8 @@ message ("CMAKE_CXX_COMPILER_VERSION : ${CMAKE_CXX_COMPILER_VERSION}")
 # ----------------------------------------------------------------------------
 option (${PROJECT_NAME}_WITH_COVERAGE "enable coverage" OFF)
 if (${PROJECT_NAME}_WITH_COVERAGE)
-	include (SetUpCoverage)
-	SetUpCoverage ()
+	include(SetUpCoverage)
+	SetUpCoverage()
 endif ()
 
 # ===========================================================================

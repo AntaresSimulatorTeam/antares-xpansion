@@ -16,6 +16,7 @@
 
 add_library (helpers STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ortools_utils.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
 	)
 
 target_include_directories (helpers
@@ -26,6 +27,7 @@ target_include_directories (helpers
 target_link_libraries (helpers 
 	PUBLIC
 		ortools::ortools 
+		jsoncpp_lib
 )
 
 #Dirty hack to add sirius solver dependency if available (needed because ortools doesn't indicated sirius dependency)

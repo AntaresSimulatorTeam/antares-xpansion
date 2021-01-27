@@ -95,7 +95,7 @@ void sequential_launch(BendersOptions const & options) {
 
 	jsonWriter_l.updateEndTime();
 	jsonWriter_l.write(input.size(), benders._trace, benders._data);
-	jsonWriter_l.dump("out.json");
+	jsonWriter_l.dump(options.JSON_NAME+".json");
 
 	benders.free();
 	LOG(INFO) << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
