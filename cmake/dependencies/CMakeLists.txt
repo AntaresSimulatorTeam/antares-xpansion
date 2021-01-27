@@ -4,7 +4,7 @@
 if(BUILD_antares_solver)
 
 set(REPOSITORY "https://github.com/AntaresSimulatorTeam/Antares_Simulator.git")
-set(TAG "v8.0.0-rc")
+set(TAG "v8.0.0-rc2")
 set(CMAKE_ARGS "-DBUILD_sirius=ON -DBUILD_UI=OFF -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} -DDEPS_INSTALL_DIR=${DEPS_INSTALL_DIR}")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
