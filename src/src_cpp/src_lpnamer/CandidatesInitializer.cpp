@@ -91,6 +91,6 @@ void initializedCandidates(std::string const & rootPath, Candidates & candidates
 	// Initialize the list of area
 	initAreas(area_file_name);
 
-    //read the canddiates from file
+    //read the candidates from file
 	candidates.getCandidatesFromFile(candidates_file_name);
 }
