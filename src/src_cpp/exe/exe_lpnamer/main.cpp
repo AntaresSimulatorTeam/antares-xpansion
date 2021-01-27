@@ -56,6 +56,14 @@ std::string get_name(std::string const & path) {
 }
 
 
+std::string toLowercase(std::string const& inputString_p)
+{
+	std::string result;
+	std::transform(inputString_p.cbegin(), inputString_p.cend(), std::back_inserter(result), [](char const& c) {
+		return std::tolower(c);
+		});
+	return result;
+}
 
 
 /**
@@ -125,7 +133,7 @@ void initializedCandidates(std::string rootPath, Candidates & candidates) {
 	}
 	while (std::getline(area_filestream, line)) {
 		if (!line.empty() && line.front() != '#') {
-			Candidates::area_names.push_back(line);
+			Candidates::area_names.push_back(toLowercase(line));
 		}
 	}
 	for (auto const & kvp : Candidates::intercos_map) {
