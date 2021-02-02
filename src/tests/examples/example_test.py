@@ -26,7 +26,8 @@ def find_log_path(output_dir):
 def remove_outputs(study_path):
     output_path = study_path / 'output'
     for f in Path(output_path).iterdir():
-        shutil.rmtree(f)
+        if f.is_dir():
+            shutil.rmtree(f)
 
 
 def launch_xpansion(install_dir, study_path, method):
