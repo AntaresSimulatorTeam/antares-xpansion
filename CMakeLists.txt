@@ -179,6 +179,26 @@ find_package(jsoncpp CONFIG REQUIRED)
 # ===========================================================================
 # Targets
 # ===========================================================================
+option(BUILD_TESTING "Activates unit tests building" OFF)
+if(BUILD_TESTING)
+	enable_testing()
+endif()
+
+#Copy antares-solver from DEPS_INSTALL_DIR to build directory
+FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
+    USE_SOURCE_PERMISSIONS
+    FILES_MATCHING PATTERN "antares-*.*-solver")
+    
+FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
+    USE_SOURCE_PERMISSIONS
+    FILES_MATCHING PATTERN "antares-*.*-solver.exe")
+    
+FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
+    DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
+    USE_SOURCE_PERMISSIONS
+    FILES_MATCHING PATTERN "*.dll")
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
