@@ -36,7 +36,7 @@ def launch_xpansion(install_dir, study_path, method):
 
     install_dir_full = str(Path(install_dir).resolve())
 
-    command = ["python", "../../src_python/launch.py", "--installDir", install_dir_full, "--dataDir", str(study_path),"--method", method, "--step","full"]
+    command = [sys.executable, "../../src_python/launch.py", "--installDir", install_dir_full, "--dataDir", str(study_path),"--method", method, "--step","full"]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
 
