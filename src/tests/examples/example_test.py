@@ -85,9 +85,14 @@ def check_investment_solution(study_path, expected_last_it,expected_investment_s
 @pytest.mark.medium
 def test_001(installDir):
     study_path = ALL_STUDIES_PATH / "xpansion-test-01"
-    launch_xpansion(installDir, study_path, "sequential")
 
     expected_last_it = [2.2738256189e+10, 2.2738256189e+10]
     expected_investment_solution = {"battery" : 1.0e+03, "peak" : 1.4e+03 , "pv" : 1.0e+03 , "semibase" : 2.0e+02}
-
+    
+    launch_xpansion(installDir, study_path, "sequential")
     check_investment_solution(study_path,expected_last_it,expected_investment_solution)
+    
+    launch_xpansion(installDir, study_path, "mpibenders")
+    check_investment_solution(study_path, expected_last_it,expected_investment_solution)
+
+

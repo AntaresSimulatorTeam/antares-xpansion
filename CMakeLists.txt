@@ -224,10 +224,12 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-gu
         
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 
-install(DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-  TYPE BIN
-  FILES_MATCHING PATTERN "*.dll")
-  
+if (WIN32)
+  install(DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}/
+    TYPE BIN
+    FILES_MATCHING PATTERN "*.dll")
+endif()
+
 install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   TYPE BIN
   FILES_MATCHING PATTERN "*.dll")
