@@ -36,7 +36,7 @@ def launch_xpansion(install_dir, study_path, method):
 
     install_dir_full = str(Path(install_dir).resolve())
 
-    command = [sys.executable, "../../src_python/launch.py", "--installDir", install_dir_full, "--dataDir", str(study_path),"--method", method, "--step","full"]
+    command = [sys.executable, "../../src_python/launch.py", "--installDir", install_dir_full, "--dataDir", str(study_path),"--method", method, "--step","full","-n","2"]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
 
@@ -64,7 +64,10 @@ def check_investment_solution(study_path, expected_last_it,expected_investment_s
         if "ITE" in log and "LB" in log and "UB" in log:
             it = log_file.readline().strip()
             while len(it) != 0:
-                last_it = [float(i) for i in it.split()]
+                #check if its a iteration log
+                splitStr = it.split()
+                if len(splitStr)==10:
+                    last_it = [float(i) for i in splitStr]
                 it = log_file.readline().strip()
         if "Investment solution" in log:
             res = log_file.readline().strip()
