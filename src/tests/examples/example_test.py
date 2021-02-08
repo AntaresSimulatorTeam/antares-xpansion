@@ -40,6 +40,11 @@ def launch_xpansion(install_dir, study_path, method):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
 
+    if process.returncode !=0 :
+        log_path = find_log_path(study_path / 'output')
+        #print log
+        print(open(str(log_path), 'r').read())
+
     # Check return value
     assert process.returncode == 0
 
