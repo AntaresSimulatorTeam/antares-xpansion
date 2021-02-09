@@ -99,9 +99,18 @@ jobs:
     
     - name: Build
       run: |
-           cmake --build _build --config Release -j2           
+           cmake --build _build --config Release -j2
+
+    - name: Running unit tests
+      if: matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+           cd _build
+           ctest -C Release --output-on-failure -L "medium"
                
     - name: Running unit tests
+      if: matrix.os != 'windows-latest'
       run: |
            cd _build
            ctest -C Release --output-on-failure -L "medium"
