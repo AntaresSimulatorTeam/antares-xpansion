@@ -77,7 +77,7 @@ public:
 /**
  * @brief AdditionalConstraint::_sign getter
  *
- * @param name_p  : string value : sign of the constraint
+ * @param name_p  : string value : sign of the constraint (supported values "less_or_equal", "equal", "greater_or_equal")
  */
     std::string getSign() const
     {

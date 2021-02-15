@@ -26,7 +26,7 @@ private:
 
     //! the section that is being currently processed
     std::string _section;
-    //! line sting that is being currently processed
+    //! line string that is being currently processed
     std::string _line;
     //! number of the line that is being currently processed
     int _lineNb;

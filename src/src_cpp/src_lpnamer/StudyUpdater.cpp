@@ -1,3 +1,5 @@
+#include <filesystem>
+
 #include "StudyUpdater.h"
 
 #include "common_lpnamer.h"
@@ -50,8 +52,8 @@ void StudyUpdater::readAntaresVersion()
 
 std::string StudyUpdater::getLinkdataFilepath(Candidate const & candidate_p) const
 {
-	std::string result_l = linksPath_ + PATH_SEPARATOR + candidate_p.str("linkor") + PATH_SEPARATOR + candidate_p.str("linkex") + ".txt";
-	return result_l;
+    std::filesystem::path result_l = std::filesystem::path(linksPath_) / candidate_p.str("linkor") / std::filesystem::path(candidate_p.str("linkex") + ".txt");
+	return result_l.string();
 }
 
 

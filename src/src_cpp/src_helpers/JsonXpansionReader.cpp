@@ -21,7 +21,7 @@ void JsonXpansionReader::read(std::string const & filename_p)
     Json::CharReaderBuilder builder_l;
     JSONCPP_STRING errs;
     if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
-        std::cout << errs << std::endl;
+        std::cerr << errs << std::endl;
     }
 
     //save lastIteration

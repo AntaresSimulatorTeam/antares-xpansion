@@ -77,7 +77,7 @@ public:
 	double get(size_t i, bool is_direct) const {
 		if (i > 8759)
 		{
-			std::cout << "Link profiles can be requested between point 0 and 8759." << std::endl;
+			std::cerr << "Link profiles can be requested between point 0 and 8759." << std::endl;
 			std::exit(1);
 		}
 

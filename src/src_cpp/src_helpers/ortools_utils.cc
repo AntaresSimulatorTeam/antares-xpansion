@@ -6,7 +6,6 @@
 #include "ortools/linear_solver/linear_solver.pb.h"
 #include "ortools/linear_solver/model_exporter.h"
 
-//TODO rename to .cpp 
 
 namespace
 {
