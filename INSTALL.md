@@ -47,7 +47,7 @@ Git version must be above 2.15 for external dependencies build because `--ignore
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost mpi (Only for MPI benders compilation)
+ - Boost : mpi serialization (Only for MPI benders compilation) program_options
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
@@ -92,6 +92,7 @@ cd [vcpkg_root]
 vcpkg install jsoncpp:[vcpg-triplet] 
 vcpkg install gtest:[vcpg-triplet] 
 vcpkg install boost-mpi:[vcpg-triplet] 
+vcpkg install boost-program-options:[vcpg-triplet] 
 ```
 
 Note :
@@ -107,7 +108,7 @@ On linux you can use a package manger to download the precompiled librairies.
 #### Ubuntu
 
 ```
-sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz
+sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev doxygen graphviz
 ```
 Note :
 > Depending on Ubuntu version you might need to compile google test :
@@ -119,7 +120,7 @@ Note :
 #### RHEL / Centos
 
 ```
-sudo yum install jsoncpp gtest boost-openmpi-devel doxygen graphviz
+sudo yum install jsoncpp gtest boost-openmpi-devel boost-program-options doxygen graphviz
 ```
 
 Note :

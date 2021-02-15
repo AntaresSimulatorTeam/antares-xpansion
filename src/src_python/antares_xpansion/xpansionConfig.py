@@ -27,6 +27,7 @@ class XpansionConfig():
                 self.BENDERS_MPI = content.get('BENDERS_MPI', "bender_mpi")
                 self.BENDERS_SEQUENTIAL = content.get('BENDERS_SEQUENTIAL', "benders_sequential")
                 self.LP_NAMER = content.get('LP_NAMER', "lp_namer")
+                self.STUDY_UPDATER = content.get('STUDY_UPDATER', "study_updater")
             else:
                 raise RuntimeError("Please check file config.yaml, content is empty")
 

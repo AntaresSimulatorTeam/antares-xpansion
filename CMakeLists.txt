@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 1.2.0)
+PROJECT (antaresXpansion VERSION 0.2.0)
 
 # ===========================================================================
 # Default parameters
@@ -39,7 +39,7 @@ set(CMAKE_INSTALL_RPATH 		$ORIGIN)
 set (EXECUTABLE_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 set (LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 if (USE_MPI)
@@ -122,6 +122,10 @@ add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 # ---------------------------------------------------------------------------
 # Boost
 # ---------------------------------------------------------------------------
+
+find_package (Boost REQUIRED COMPONENTS program_options)
+	
+	
 if (USE_MPI)
 	# ugly fix required due to conan packages and policies vs. boost brainfucking name rules
 	if (MSVC)

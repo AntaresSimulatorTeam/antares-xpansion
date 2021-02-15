@@ -8,16 +8,20 @@
  * POC Antares Xpansion V2: create inputs for the solver version 2
  *
  */
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <boost/program_options.hpp>
+
 #include "IntercoDataMps.h"
 #include "AdditionalConstraints.h"
 #include "LauncherHelpers.h"
-#include "StudyUpdater.h"
 #include "CandidatesInitializer.h"
-//#include "xprs_driver.h"
-#include <fstream>
-#include <sstream>
 
 #include "ortools_utils.h"
+
+namespace po = boost::program_options;
 
  /**
   * \fn string get_name(string const & path)
@@ -170,41 +174,6 @@ void masterGeneration(std::string rootPath,
 	coupling_file.close();
 }
 
-
-/*!
- * \brief update links in the antares study directory
- *
- * \param rootPath_p String corresponding to the path to the simulation output directory containing the lp directory
- * \param candidates_p Structure which contains the list of candidates
- * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
- * \return void
- */
-void updateStudy(std::string const & rootPath_p, Candidates const & candidates_p, std::string const & solutionFilename_p)
-{
-	std::string linksPath_l = rootPath_p + PATH_SEPARATOR 
-							+ ".." + PATH_SEPARATOR + "..";
-	std::string jsonPath_l = rootPath_p + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + solutionFilename_p;
-
-	StudyUpdater studyUpdater(linksPath_l);
-	int updateFailures_l = studyUpdater.update(candidates_p, jsonPath_l);
-
-	if (updateFailures_l)
-	{
-        std::cout << "Error : Failed to update " << updateFailures_l << " files."
-				<< candidates_p.size() - updateFailures_l << " files were updated\n";
-    }
-}
-
-
-void show_usage(std::string exe)
-{
-    std::cout << "usage: " << exe << "\n"
-				<< "Options:\n"
-				<< "\t-g, --generate" << "\t <Xpansion study output> <relaxed or integer> <path to exlusions file>\n"
-				<< "\t-us, --update-study" << "\t <Xpansion study output>" << "\t <solution json filename>"
-				<< std::endl;
-}
-
 /**
  * \fn int main (void)
  * \brief Main program
@@ -214,44 +183,61 @@ void show_usage(std::string exe)
  * \return an integer 0 corresponding to exit success
  */
 int main(int argc, char** argv) {
-	// Test if there are enough arguments
-	if (argc < 4) {
-		show_usage(argv[0]);
-		std::exit(1);
-	}
 
-	// Instantiation of candidates
-	std::string const root(argv[2]);
-	Candidates candidates;
-	initializedCandidates(root, candidates);
+	try {
+		
+		std::string root;
+		std::string master_formulation;
+		std::string additionalConstraintFilename_l;
 
+		po::options_description desc("Allowed options");
 
-	std::string arg_l = argv[1];
-	if ((arg_l == "-us") || (arg_l == "--update-study"))
-	{
-		const std::string solutionFile_l(argv[3]);
-		updateStudy(root, candidates, solutionFile_l);
-	}
-	else if ( (arg_l == "-g") || (arg_l == "--generate") )
-	{
-		std::string const master_formulation(argv[3]);
-		if ( (master_formulation != "relaxed") && (master_formulation != "integer") )
+		desc.add_options()
+			("help,h", "produce help message")
+			("output,o", po::value<std::string>(&root)->required(), "antares-xpansion study output")
+			("formulation,f", po::value<std::string>(&master_formulation)->default_value("relaxed"), "master formulation (relaxed or integer)")
+			("exclusion-files,e", po::value<std::string>(&additionalConstraintFilename_l), "path to exclusion files")
+			;
+
+		po::variables_map opts;
+		po::store(po::parse_command_line(argc, argv, desc), opts);
+
+		if (opts.count("help")) {
+			std::cout << desc << std::endl;
+			return 0;
+		}
+
+		po::notify(opts);
+
+		// Instantiation of candidates
+		Candidates candidates;
+		initializedCandidates(root, candidates);
+		
+		if ((master_formulation != "relaxed") && (master_formulation != "integer"))
 		{
-			std::cout << "Invalid argument : third argument must be \"integer\" or \"relaxed\"" << std::endl;
+			std::cout << "Invalid formulation argument : argument must be \"integer\" or \"relaxed\"" << std::endl;
 			std::exit(1);
 		}
 
-		std::string const additionalConstraintFilename_l = (argc > 4) ? argv[4] : "";
-		AdditionalConstraints additionalConstraints = (argc > 4) ? AdditionalConstraints(additionalConstraintFilename_l) : AdditionalConstraints();
+
+		AdditionalConstraints additionalConstraints;
+		if (!additionalConstraintFilename_l.empty())
+		{
+			additionalConstraints = AdditionalConstraints(additionalConstraintFilename_l);
+		}
 
 		std::map< std::pair<std::string, std::string>, int> couplings;
 		candidates.treatloop(root, couplings);
-		masterGeneration(root, candidates, additionalConstraints, couplings, master_formulation);
+		masterGeneration(root, candidates, additionalConstraints, couplings, master_formulation);		
+
+		return 0;		
 	}
-	else
-	{
-		show_usage(argv[0]);
-		std::exit(1);
+	catch (std::exception& e) {
+		std::cerr << "error: " << e.what() << std::endl;
+		return 1;
+	}
+	catch (...) {
+		std::cerr << "Exception of unknown type!" << std::endl;
 	}
 
 	return 0;

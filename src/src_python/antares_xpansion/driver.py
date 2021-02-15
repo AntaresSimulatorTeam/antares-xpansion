@@ -260,11 +260,11 @@ class XpansionDriver():
         if (self.config.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
             os.remove(self.antares() + '.log')
         if (self.args.step in ["full", "lp"])\
-            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '_generate.log')):
-            os.remove(self.exe_path(self.config.LP_NAMER) + '_generate.log')
+            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
+            os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
         if (self.args.step in ["full", "update"])\
-            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '_update.log')):
-            os.remove(self.exe_path(self.config.LP_NAMER) + '_update.log')
+            and (os.path.isfile(self.exe_path(self.config.STUDY_UPDATER) + '.log')):
+            os.remove(self.exe_path(self.config.STUDY_UPDATER) + '.log')
 
     def check_candidates(self):
         """
@@ -397,8 +397,8 @@ class XpansionDriver():
         os.makedirs(lp_path)
 
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
-        with open(self.exe_path(self.config.LP_NAMER) + '_generate.log', 'w') as output_file:
-            lp_cmd = self.exe_path(self.config.LP_NAMER) +" --generate "+ output_path +" "+ is_relaxed +" "+ self.additional_constraints()
+        with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
+            lp_cmd = self.exe_path(self.config.LP_NAMER) +" -o "+ output_path +" -f "+ is_relaxed +" -e "+ self.additional_constraints()
             returned_l = subprocess.call(lp_cmd,
                             shell=True,
                             stdout=output_file,
@@ -418,8 +418,8 @@ class XpansionDriver():
         """
         output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
 
-        with open(self.exe_path(self.config.LP_NAMER) + '_update.log', 'w') as output_file:
-            update_cmd = self.exe_path(self.config.LP_NAMER) +" --update-study "+ output_path + " " + self.config.options_default["JSON_NAME"]+".json"
+        with open(self.exe_path(self.config.STUDY_UPDATER) + '.log', 'w') as output_file:
+            update_cmd = self.exe_path(self.config.STUDY_UPDATER) +" -o "+ output_path + " -s " + self.config.options_default["JSON_NAME"]+".json"
             returned_l = subprocess.call(update_cmd,
                             shell=True,
                             stdout=output_file,
