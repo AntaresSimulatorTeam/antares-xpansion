@@ -1,17 +1,8 @@
-/**
- * \file exe_lpnamer/main.cpp
- * \brief POC Antares Xpansion V2
- * \author {Manuel Ruiz; Luc Di Gallo}
- * \version 0.1
- * \date 07 aout 2019
- *
- * POC Antares Xpansion V2: create inputs for the solver version 2
- *
- */
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 #include <boost/program_options.hpp>
 
 #include "StudyUpdater.h"
@@ -22,19 +13,18 @@ namespace po = boost::program_options;
 /*!
  * \brief update links in the antares study directory
  *
- * \param rootPath_p String corresponding to the path to the simulation output directory containing the lp directory
+ * \param rootPath_p path corresponding to the path to the simulation output directory containing the lp directory
  * \param candidates_p Structure which contains the list of candidates
  * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
  * \return void
  */
-void updateStudy(std::string const & rootPath_p, Candidates const & candidates_p, std::string const & solutionFilename_p)
+void updateStudy(std::filesystem::path const & rootPath_p, Candidates const & candidates_p, std::string const & solutionFilename_p)
 {
-	std::string linksPath_l = rootPath_p + PATH_SEPARATOR 
-							+ ".." + PATH_SEPARATOR + "..";
-	std::string jsonPath_l = rootPath_p + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + solutionFilename_p;
+	std::filesystem::path linksPath_l = rootPath_p / ".." / "..";
+	std::filesystem::path jsonPath_l  = rootPath_p / "lp" / solutionFilename_p;
 
-	StudyUpdater studyUpdater(linksPath_l);
-	int updateFailures_l = studyUpdater.update(candidates_p, jsonPath_l);
+	StudyUpdater studyUpdater(linksPath_l.string());
+	int updateFailures_l = studyUpdater.update(candidates_p, jsonPath_l.string());
 
 	if (updateFailures_l)
 	{

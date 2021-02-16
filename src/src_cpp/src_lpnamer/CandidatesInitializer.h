@@ -1,3 +1,5 @@
+#include <filesystem>
+
 #include "IntercoDataMps.h"
 
 /*!
@@ -32,4 +34,4 @@ void initAreas(std::string const & areaFilepath_p);
  * \param candidates : Structure which is initialized
  * \return void
  */
-void initializedCandidates(std::string const & rootPath, Candidates & candidates);
+void initializedCandidates(std::filesystem::path const & rootPath, Candidates & candidates);

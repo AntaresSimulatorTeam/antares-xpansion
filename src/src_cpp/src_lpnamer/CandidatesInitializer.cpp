@@ -1,3 +1,5 @@
+#include <filesystem>
+
 #include "CandidatesInitializer.h"
 
 
@@ -74,23 +76,22 @@ void initAreas(std::string const & areaFilepath_p)
 }
 
 
-void initializedCandidates(std::string const & rootPath, Candidates & candidates) {
+void initializedCandidates(std::filesystem::path const & rootPath, Candidates & candidates) {
 	// Get all mandatory path
-	std::string const candidates_file_name(rootPath + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR
-										+ "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + CANDIDATES_INI);
-	std::string const mps_file_name(rootPath + PATH_SEPARATOR + MPS_TXT);
-	std::string const area_file_name(rootPath + PATH_SEPARATOR + "area.txt");
-	std::string const interco_file_name(rootPath + PATH_SEPARATOR + "interco.txt");
+	std::filesystem::path const candidates_file_name	= rootPath / ".." / ".." / "user" / "expansion" / CANDIDATES_INI;
+	std::filesystem::path const mps_file_name			= rootPath / MPS_TXT;
+	std::filesystem::path const area_file_name			= rootPath / "area.txt";
+	std::filesystem::path const interco_file_name		= rootPath / "interco.txt";
 
 	// Initialize the list of MPS files
-	initMPSList(mps_file_name);
+	initMPSList(mps_file_name.string());
 
 	// Initialize the list of interconnexion
-	initIntercoMap(interco_file_name);
+	initIntercoMap(interco_file_name.string());
 
 	// Initialize the list of area
-	initAreas(area_file_name);
+	initAreas(area_file_name.string());
 
     //read the candidates from file
-	candidates.getCandidatesFromFile(candidates_file_name);
+	candidates.getCandidatesFromFile(candidates_file_name.string());
 }
