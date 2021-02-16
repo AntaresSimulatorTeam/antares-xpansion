@@ -14,6 +14,13 @@ PROJECT (antaresXpansion VERSION 0.1.0)
 # Default parameters
 # ===========================================================================
 
+set(DEFAULT_BUILD_TYPE Release)
+
+# Set Build Type
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
+endif()
+
 option (USE_MPI "Enable MPI" OFF)
 option (USE_SEQUENTIAL "Enable sequential" OFF)
 
@@ -108,6 +115,26 @@ endif()
 
 # Build Needed dependencies
 list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR})
+
+# Add DEPS_INSTALL_DIR with antares-simulator CMAKE_BUILD_TYPE special case
+if (${CMAKE_BUILD_TYPE} STREQUAL  "Release")
+
+	string(REPLACE release ${CMAKE_BUILD_TYPE}
+			DEPS_INSTALL_DIR_ANTARES
+			${DEPS_INSTALL_DIR})
+	
+	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
+	
+elseif(${CMAKE_BUILD_TYPE} STREQUAL  "Debug")
+
+	string(REPLACE debug ${CMAKE_BUILD_TYPE}
+			DEPS_INSTALL_DIR_ANTARES
+			${DEPS_INSTALL_DIR})
+	
+	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
+
+endif()
+
 message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 
 add_subdirectory(antares-deps)

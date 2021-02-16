@@ -56,7 +56,7 @@ The install procedure can be done
 
 ```
 sudo yum install jsoncpp-devel gtest-devel boost-openmpi-devel doxygen graphviz redhat-lsb-core
-sudo yum install openssl-devel curl-devel
+sudo yum install openssl-devel curl-devel libuuid-devel
 ```
 
 Note :
@@ -115,5 +115,5 @@ Note :
 CPack can be used to create the installer after the build phase :
  ```
 cd _build
-cpack -G TGZ
+cpack3 -G TGZ
 ```
