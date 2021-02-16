@@ -21,7 +21,6 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
-set (BOOST_MIN_VERSION "1.65.1")
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -127,8 +126,8 @@ if (USE_MPI)
 	if (MSVC)
 		list (APPEND CMAKE_FIND_LIBRARY_PREFIXES "" "lib")
 	endif ()
-
-	find_package (Boost ${BOOST_MIN_VERSION} REQUIRED COMPONENTS mpi serialization)
+	find_package(MPI REQUIRED)
+	find_package (Boost REQUIRED COMPONENTS mpi serialization)
 	include_directories (${Boost_INCLUDE_DIRS})
 
 	message (STATUS "BOOST_MPI_LIBRARY : " ${Boost_MPI_LIBRARY})
