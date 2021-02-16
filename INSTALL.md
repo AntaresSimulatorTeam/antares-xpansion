@@ -4,9 +4,9 @@
 
 ## [Supported OS](#supported-os)
 antares-xpansion compilation is tested on :
-- Windows see (INSTALL-windows.md)
-- Ubuntu see (INSTALL-ubuntu.md)
-- Centos7 see (INSTALL-windows.md)
+- Windows see [INSTALL-windows.md](INSTALL-windows.md)
+- Ubuntu see [INSTALL-ubuntu.md](INSTALL-ubuntu.md)
+- Centos7 see [INSTALL-centos.md](INSTALL-centos.md)
 
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
@@ -15,7 +15,7 @@ CMake 3.x must be used.
 Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see https://github.com/google/or-tools/issues/1193).
 
 ## [Dependencies](#deps)
- ANTARES XPansion V2 depends on severals mandatory libraries. 
+antares-xpansion depends on severals mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)

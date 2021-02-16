@@ -1,4 +1,4 @@
-# Antares XPansion V2 CMake Build Instructions
+# antares-xpansion CMake Build Instructions
 
  [CMake version](#cmake-version) | [Dependencies](#dependencies) | [Building](#building-antares-solution) |
  
@@ -8,7 +8,7 @@ CMake 3.x must be used.
 You can download latest Windows version directly from [CMake website](https://cmake.org/download/).
 
 ## [Dependencies](#deps)
- ANTARES XPansion V2 depends on severals mandatory libraries. 
+antares-xpansion depends on severals mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
@@ -16,7 +16,7 @@ You can download latest Windows version directly from [CMake website](https://cm
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
-This section describes the install procedures for the third-party Open source libraries used by ANTARES XPansion V2.
+This section describes the install procedures for the third-party Open source libraries used by antares-xpansion.
 The install procedure can be done
 - by compiling the sources after cloning the official git repository
 - by using VCPKG
@@ -85,7 +85,7 @@ Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By defaul
 Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
-## [Building Antares XPansion V2](#build)
+## [Building antares-xpansion](#build)
 - Update git submodule for dependency build :
 ```
 git submodule update --init antares-deps

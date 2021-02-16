@@ -1,4 +1,4 @@
-# Antares XPansion V2 CMake Build Instructions
+# antares-xpansion CMake Build Instructions
 
  [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [Building](#building-antares-solution) |
  
@@ -26,7 +26,7 @@ scl enable devtoolset-7 bash
 ```
 
 ## [Dependencies](#deps)
- ANTARES XPansion V2 depends on severals mandatory libraries. 
+antares-xpansion depends on severals mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
@@ -34,7 +34,7 @@ scl enable devtoolset-7 bash
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
-This section describes the install procedures for the third-party Open source libraries used by ANTARES XPansion V2.
+This section describes the install procedures for the third-party Open source libraries used by antares-xpansion.
 The install procedure can be done
 - by compiling the sources after cloning the official git repository
 - by using yum
@@ -73,7 +73,7 @@ Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By defaul
 Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
-## [Building Antares XPansion V2](#build)
+## [Building antares-xpansion](#build)
 - Enable `devtoolset-7` :
 ```
 scl enable devtoolset-7 bash

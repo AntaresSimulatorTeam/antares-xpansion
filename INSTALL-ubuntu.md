@@ -1,4 +1,4 @@
-# Antares XPansion V2 CMake Build Instructions
+# antares-xpansion CMake Build Instructions
 
  [CMake version](#cmake-version) | [Environnement build install](#env-build-install)| [Dependencies](#dependencies) | [Building](#building-antares-solution) |
  
@@ -36,7 +36,7 @@ sudo apt-get install build-essential
 ```
 
 ## [Dependencies](#deps)
- ANTARES XPansion V2 depends on severals mandatory libraries. 
+antares-xpansion depends on severals mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
@@ -44,7 +44,7 @@ sudo apt-get install build-essential
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
-This section describes the install procedures for the third-party Open source libraries used by ANTARES XPansion V2.
+This section describes the install procedures for the third-party Open source libraries used by antares-xpansion.
 The install procedure can be done
 - by compiling the sources after cloning the official git repository
 - by using a package manager. Depending on the OS we propose a solution
