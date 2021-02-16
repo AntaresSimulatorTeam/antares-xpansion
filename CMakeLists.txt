@@ -113,7 +113,7 @@ message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 add_subdirectory(antares-deps)
 
 # Build dependencies not handled by antares-deps repository
-option(BUILD_antares_solver "Build antares solver" OFF)
+option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
