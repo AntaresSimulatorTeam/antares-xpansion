@@ -35,6 +35,19 @@ sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 -
 sudo apt-get install build-essential
 ```
 
+## [Python version](#python-version)
+Python 3.x must be used.
+
+```
+sudo apt-get install python3 python3-pip
+```
+
+Required python modules can be installed with :
+```
+pip3 install -r src/src_python/requirements.txt
+pip3 install -r src/src_python/tests/examples/requirements.txt
+```
+
 ## [Dependencies](#deps)
 antares-xpansion depends on severals mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
@@ -56,6 +69,7 @@ The install procedure can be done
 
 ```
 sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz
+sudo apt install uuid-dev libcurl4-openssl-dev libssl-dev
 ```
 Note :
 > Depending on Ubuntu version you might need to compile google test :
@@ -86,6 +100,9 @@ Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By defaul
 Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
+## [antares-solver build](antares-solver-build)
+antares-solver is needed for antares-xpansion use. A Cmake option allows compilation of antares-solver at configure : `-DBUILD_antares_solver=ON` (default `ON`)
+
 ## [Building Antares XPansion V2](#build)
 - update git submodule for dependency build :
 ```
@@ -102,3 +119,10 @@ cmake --build _build --config Release -j8
 ```
 Note :
 >Compilation can be done on several processor with ```-j``` option.
+
+## [Installer creation](#installer)
+CPack can be used to create the installer after the build phase :
+ ```
+cd _build
+cpack -G TGZ
+```

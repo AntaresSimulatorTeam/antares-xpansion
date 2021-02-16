@@ -1,6 +1,6 @@
 # antares-xpansion CMake Build Instructions
 
- [Supported OS](#supported-os)| [CMake version](#cmake-version) | [Git version](#git-version) | [Dependencies](#dependencies) | [Building](#building-antares-solution) |
+ [Supported OS](#supported-os)| [CMake version](#cmake-version) |[Python version](#python-version) | [Git version](#git-version) | [Dependencies](#dependencies) | [Building](#building-antares-solution) |
 
 ## [Supported OS](#supported-os)
 antares-xpansion compilation is tested on :
@@ -10,6 +10,9 @@ antares-xpansion compilation is tested on :
 
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
+
+## [Python version](#python-version)
+Python 3.x must be used.
 
 ## [Git version](#git-version)
 Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see https://github.com/google/or-tools/issues/1193).
@@ -22,5 +25,8 @@ antares-xpansion depends on severals mandatory libraries.
  - Boost : mpi serialization (Only for MPI benders compilation)
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
+ - [OpenSSL](https://github.com/openssl/openssl)
+ - [CURL](https://github.com/curl/curl)
+ - [Sirius Solver](https://github.com/AntaresSimulatorTeam/sirius-solver/tree/Antares_VCPKG) (fork from [RTE](https://github.com/rte-france/sirius-solver/tree/Antares_VCPKG))
  
  Installation of these dependencies is described in OS specific antares-xpansion install procedure.

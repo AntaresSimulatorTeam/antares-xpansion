@@ -7,12 +7,23 @@ CMake 3.x must be used.
 
 You can download latest Windows version directly from [CMake website](https://cmake.org/download/).
 
+## [Python version](#python-version)
+Python 3.x must be used.
+
+You can download latest Windows version directly from [Python website](https://www.python.org/downloads/windows/).
+
+Required python modules can be installed with :
+```
+pip install -r src/src_python/requirements.txt
+pip install -r src/src_python/tests/examples/requirements.txt
+```
+
 ## [Dependencies](#deps)
 antares-xpansion depends on severals mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost : mpi serialization (Only for MPI benders compilation) program_options
+ - Boost : mpi serialization (Only for MPI benders compilation)
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
@@ -54,6 +65,8 @@ cd [vcpkg_root]
 vcpkg install jsoncpp:[vcpg-triplet] 
 vcpkg install gtest:[vcpg-triplet] 
 vcpkg install boost-mpi:[vcpg-triplet]
+vcpkg install openssl:[vcpg-triplet] 
+vcpkg install curl:[vcpg-triplet]
 ```
 
 Note :
@@ -85,6 +98,9 @@ Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By defaul
 Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
+## [antares-solver build](antares-solver-build)
+antares-solver is needed for antares-xpansion use. A Cmake option allows compilation of antares-solver at configure : `-DBUILD_antares_solver=ON` (default `ON`)
+
 ## [Building antares-xpansion](#build)
 - Update git submodule for dependency build :
 ```
@@ -102,3 +118,10 @@ cmake --build _build --config Release -j8
 ```
 Note :
 > Compilation can be done on several processor with ```-j``` option.
+
+## [Installer creation](#installer)
+CPack can be used to create the installer after the build phase :
+ ```
+cd _build
+cpack -G ZIP
+```

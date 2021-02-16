@@ -1,6 +1,6 @@
 # antares-xpansion CMake Build Instructions
 
- [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [Building](#building-antares-solution) |
+ [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [antares-solver build](antares-solver-build) [Building](#building-antares-solution) | [Installer creation](#installer)
  
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
@@ -25,6 +25,18 @@ Before compiling antares-xpansion we must launch a new shell with `scl` tool :
 ```
 scl enable devtoolset-7 bash
 ```
+## [Python version](#python-version)
+Python 3.x must be used.
+
+```
+sudo yum install python3 python3-pip
+```
+
+Required python modules can be installed with :
+```
+pip3 install -r src/src_python/requirements.txt
+pip3 install -r src/src_python/tests/examples/requirements.txt
+```
 
 ## [Dependencies](#deps)
 antares-xpansion depends on severals mandatory libraries. 
@@ -43,7 +55,8 @@ The install procedure can be done
 ### Yum commands
 
 ```
-sudo yum install jsoncpp gtest boost-openmpi-devel doxygen graphviz
+sudo yum install jsoncpp-devel gtest-devel boost-openmpi-devel doxygen graphviz redhat-lsb-core
+sudo yum install openssl-devel curl-devel
 ```
 
 Note :
@@ -74,6 +87,9 @@ Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By defaul
 Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
+## [antares-solver build](antares-solver-build)
+antares-solver is needed for antares-xpansion use. A Cmake option allows compilation of antares-solver at configure : `-DBUILD_antares_solver=ON` (default `ON`)
+
 ## [Building antares-xpansion](#build)
 - Enable `devtoolset-7` :
 ```
@@ -94,3 +110,10 @@ cmake3 --build _build --config Release -j8
 ```
 Note :
 >Compilation can be done on several processor with ```-j``` option.
+
+## [Installer creation](#installer)
+CPack can be used to create the installer after the build phase :
+ ```
+cd _build
+cpack -G TGZ
+```
