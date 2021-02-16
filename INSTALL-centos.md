@@ -5,6 +5,7 @@
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
 ```
+sudo yum install epel-release
 sudo yum install cmake3
 ```
 Note:
