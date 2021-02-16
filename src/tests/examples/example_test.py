@@ -60,6 +60,7 @@ def check_investment_solution(study_path, expected_last_it,expected_investment_s
     investment_solution = {}
 
     # search in log content for iteration result and investment solution
+    # TODO : it could be better to check the .json result file instead of the log file
     while log:
         if "ITE" in log and "LB" in log and "UB" in log:
             it = log_file.readline().strip()
@@ -91,7 +92,7 @@ def check_investment_solution(study_path, expected_last_it,expected_investment_s
 
 ## TESTS ##
 @pytest.mark.medium
-def test_001(installDir):
+def test_001_sequential(installDir):
     study_path = ALL_STUDIES_PATH / "xpansion-test-01"
 
     expected_last_it = [2.2738256189e+10, 2.2738256189e+10]
@@ -99,8 +100,13 @@ def test_001(installDir):
     
     launch_xpansion(installDir, study_path, "sequential")
     check_investment_solution(study_path,expected_last_it,expected_investment_solution)
+
+@pytest.mark.medium
+def test_001_mpibenders(installDir):
+    study_path = ALL_STUDIES_PATH / "xpansion-test-01"
+
+    expected_last_it = [2.2738256189e+10, 2.2738256189e+10]
+    expected_investment_solution = {"battery" : 1.0e+03, "peak" : 1.4e+03 , "pv" : 1.0e+03 , "semibase" : 2.0e+02}
     
     launch_xpansion(installDir, study_path, "mpibenders")
     check_investment_solution(study_path, expected_last_it,expected_investment_solution)
-
-
