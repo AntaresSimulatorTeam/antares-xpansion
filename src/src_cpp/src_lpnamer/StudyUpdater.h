@@ -105,18 +105,18 @@ struct LinkdataRecord
     double directCapacity_;
     //! 2nd column of the file : indirect capacity of the link
     double indirectCapacity_;
-    //! 3rd column of the file
-    int field3_;
-    //! 4th column of the file
-    int field4_;
-    //! 5th column of the file
-    int field5_;
-    //! 6th column of the file
-    int field6_;
-    //! 7th column of the file
-    int field7_;
-    //! 8th column of the file
-    int field8_;
+    //! 3rd column of the file : direct hurdles cost
+    double directHurdlesCost_;
+    //! 4th column of the file : indirect hurdles cost
+    double indirectHurdlesCost_;
+    //! 5th column of the file : impedances
+    double impedances_;
+    //! 6th column of the file : loop flow
+    double loopFlow_;
+    //! 7th column of the file : power shift min.
+    double pShiftMin_;
+    //! 8th column of the file : power shift max.
+    double pShiftMax_;
 
 /*!
  * \brief LinkdataRecord constructor
@@ -131,28 +131,28 @@ struct LinkdataRecord
  *
  * \param directCapacity_p : value to set to directCapacity_
  * \param indirectCapacity_p : value to set to indirectCapacity_
- * \param field3_p : value to set to field3_
- * \param field4_p : value to set to field4_
- * \param field5_p : value to set to field5_
- * \param field6_p : value to set to field6_
- * \param field7_p : value to set to field7_
- * \param field8_p : value to set to field8_
+ * \param directHurdlesCost_p : value to set to directHurdlesCost_
+ * \param indirectHurdlesCost_p : value to set to indirectHurdlesCost_
+ * \param impedances_p : value to set to impedances_
+ * \param loopFlow_p : value to set to loopFlow_
+ * \param pShiftMin_p : value to set to pShiftMin_
+ * \param pShiftMax_p : value to set to pShiftMax_
  */
     LinkdataRecord(double directCapacity_p, double indirectCapacity_p,
-                int field3_p, int field4_p, int field5_p,
-                int field6_p, int field7_p, int field8_p);
+        double directHurdlesCost_p, double indirectHurdlesCost_p, double impedances_p,
+        double loopFlow_p, double pShiftMin_p, double pShiftMax_p);
 
 /*!
  * \brief LinkdataRecord constructor to use with old antares studies versions
  *
  * \param directCapacity_p : value to set to directCapacity_
  * \param indirectCapacity_p : value to set to indirectCapacity_
- * \param field3_p : value to set to field3_
- * \param field4_p : value to set to field4_
- * \param field5_p : value to set to field5_
+ * \param directHurdlesCost_p : value to set to directHurdlesCost_
+ * \param indirectHurdlesCost_p : value to set to indirectHurdlesCost_
+ * \param impedances_p : value to set to impedances_
  */
     LinkdataRecord(double directCapacity_p, double indirectCapacity_p,
-                int field3_p, int field4_p, int field5_p);
+        double directHurdlesCost_p, double indirectHurdlesCost_p, double impedances_p);
 
 /*!
  * \brief returns a one-line string describing the LinkdataRecord

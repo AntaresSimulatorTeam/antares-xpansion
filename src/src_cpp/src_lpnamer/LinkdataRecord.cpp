@@ -6,43 +6,43 @@ LinkdataRecord::LinkdataRecord(bool modernAntaresVersion_p):
 modernAntaresVersion_(modernAntaresVersion_p),
 directCapacity_(0),
 indirectCapacity_(0),
-field3_(0),
-field4_(0),
-field5_(0),
-field6_(0),
-field7_(0),
-field8_(0)
+directHurdlesCost_(0),
+indirectHurdlesCost_(0),
+impedances_(0),
+loopFlow_(0),
+pShiftMin_(0),
+pShiftMax_(0)
 {
 }
 
 
 LinkdataRecord::LinkdataRecord(double directCapacity_p, double indirectCapacity_p,
-            int field3_p, int field4_p, int field5_p,
-            int field6_p, int field7_p, int field8_p):
+    double directHurdlesCost_p, double indirectHurdlesCost_p, double impedances_p,
+    double loopFlow_p, double pShiftMin_p, double pShiftMax_p):
 modernAntaresVersion_(true),
 directCapacity_(directCapacity_p),
 indirectCapacity_(indirectCapacity_p),
-field3_(field3_p),
-field4_(field4_p),
-field5_(field5_p),
-field6_(field6_p),
-field7_(field7_p),
-field8_(field8_p)
+directHurdlesCost_(directHurdlesCost_p),
+indirectHurdlesCost_(indirectHurdlesCost_p),
+impedances_(impedances_p),
+loopFlow_(loopFlow_p),
+pShiftMin_(pShiftMin_p),
+pShiftMax_(pShiftMax_p)
 {
 }
 
 
 LinkdataRecord::LinkdataRecord(double directCapacity_p, double indirectCapacity_p,
-            int field3_p, int field4_p, int field5_p):
+    double directHurdlesCost_p, double indirectHurdlesCost_p, double impedances_p):
 modernAntaresVersion_(false),
 directCapacity_(directCapacity_p),
 indirectCapacity_(indirectCapacity_p),
-field3_(field3_p),
-field4_(field4_p),
-field5_(field5_p),
-field6_(0),
-field7_(0),
-field8_(0)
+directHurdlesCost_(directHurdlesCost_p),
+indirectHurdlesCost_(indirectHurdlesCost_p),
+impedances_(impedances_p),
+loopFlow_(0),
+pShiftMin_(0),
+pShiftMax_(0)
 {
 }
 
@@ -50,12 +50,12 @@ void LinkdataRecord::reset()
 {
     directCapacity_ = 0;
     indirectCapacity_ = 0;
-    field3_ = 0;
-    field4_ = 0;
-    field5_ = 0;
-    field6_ = 0;
-    field7_ = 0;
-    field8_ = 0;
+    directHurdlesCost_ = 0;
+    indirectHurdlesCost_ = 0;
+    impedances_ = 0;
+    loopFlow_ = 0;
+    pShiftMin_ = 0;
+    pShiftMax_ = 0;
 }
 
 
@@ -65,15 +65,15 @@ void LinkdataRecord::fillFromRow(std::string const &  line_p)
 
     iss_l >> directCapacity_;
     iss_l >> indirectCapacity_;
-    iss_l >> field3_;
-    iss_l >> field4_;
-    iss_l >> field5_;
+    iss_l >> directHurdlesCost_;
+    iss_l >> indirectHurdlesCost_;
+    iss_l >> impedances_;
 
     if(modernAntaresVersion_)
     {
-        iss_l >> field6_;
-        iss_l >> field7_;
-        iss_l >> field8_;
+        iss_l >> loopFlow_;
+        iss_l >> pShiftMin_;
+        iss_l >> pShiftMax_;
     }
 }
 
@@ -88,10 +88,10 @@ void LinkdataRecord::updateCapacities(double directCapacity_p, double indirectCa
 std::string LinkdataRecord::to_row(std::string const & sep_p) const
 {
     std::string row_l = std::to_string(directCapacity_) + sep_p + std::to_string(indirectCapacity_)
-                    + sep_p + std::to_string(field3_) + sep_p + std::to_string(field4_) + sep_p + std::to_string(field5_);
+                    + sep_p + std::to_string(directHurdlesCost_) + sep_p + std::to_string(indirectHurdlesCost_) + sep_p + std::to_string(impedances_);
     if(modernAntaresVersion_)
     {
-        row_l += sep_p + std::to_string(field6_) + sep_p + std::to_string(field7_) + sep_p + std::to_string(field8_);
+        row_l += sep_p + std::to_string(loopFlow_) + sep_p + std::to_string(pShiftMin_) + sep_p + std::to_string(pShiftMax_);
     }
 
     return row_l;
