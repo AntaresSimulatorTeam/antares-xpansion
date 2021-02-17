@@ -16,9 +16,6 @@ jobs:
     container: 'centos:7'
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
     
     - name: Set up Python
       run: |
@@ -34,14 +31,19 @@ jobs:
       run: |
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
            yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz
-           yum install -y cmake3 devtoolset-7
-           
-           
+           yum install -y cmake3 devtoolset-7           
+                      
+    - uses: actions/checkout@v2
+    
     - name: Download pre-compiled librairies
       run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.1.0/rte-antares-deps-centos7-Release-solver.tar.gz
            tar -xvf rte-antares-deps-centos7-Release-solver.tar.gz
            rm -rf rte-antares-deps-centos7-Release-solver.tar.gz
+    
+    - name: Init submodule
+      run: |
+           git submodule update --init --recursive .
 
     - name: Configure
       run: |
