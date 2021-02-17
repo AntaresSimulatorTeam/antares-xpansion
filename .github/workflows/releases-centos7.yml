@@ -27,7 +27,11 @@ jobs:
            yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz
            yum install -y cmake3 devtoolset-7
            
-    - uses: actions/checkout@v2
+    - uses: nelonoel/branch-name@v1.0.1
+    
+    - name: Checkout
+      run: |
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
     
     - name: Get release
       id: get_release
