@@ -45,7 +45,7 @@ jobs:
            
     - name: Init submodule
       run: |
-           git submodule update --init --recursive .
+           git submodule update --init antares-deps
         
     
     - name: Configure
