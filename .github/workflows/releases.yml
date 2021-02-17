@@ -33,6 +33,7 @@ jobs:
       run: |
           python -m pip install --upgrade pip
           pip install -r src/src_python/requirements.txt
+          pip install -r src/tests/examples/requirements.txt
     
     - name: Get release
       id: get_release
@@ -89,16 +90,30 @@ jobs:
       shell: cmd
       if: matrix.os == 'windows-latest'
       run: |
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_antares_solver=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
     
     - name: Configure
       if: matrix.os != 'windows-latest'
       run: |
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_antares_solver=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
     
     - name: Build
       run: |
            cmake --build _build --config Release -j2
+
+    - name: Running unit tests
+      if: matrix.os == 'windows-latest'
+      shell: cmd
+      run: |
+           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+           cd _build
+           ctest -C Release --output-on-failure -L "medium"
+               
+    - name: Running unit tests
+      if: matrix.os != 'windows-latest'
+      run: |
+           cd _build
+           ctest -C Release --output-on-failure -L "medium"
            
     - name: .zip Installer creation
       shell: bash

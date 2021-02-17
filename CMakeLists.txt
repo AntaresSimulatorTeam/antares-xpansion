@@ -179,6 +179,37 @@ find_package(jsoncpp CONFIG REQUIRED)
 # ===========================================================================
 # Targets
 # ===========================================================================
+option(BUILD_TESTING "Activates unit tests building" OFF)
+if(BUILD_TESTING)
+	enable_testing()
+endif()
+
+if(WIN32)
+	set(CURRENT_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
+else()
+	set(CURRENT_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
+#Copy antares-solver from DEPS_INSTALL_DIR to build directory
+FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
+	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+    USE_SOURCE_PERMISSIONS
+    FILES_MATCHING PATTERN "antares-*.*-solver")
+    
+FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
+	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+    USE_SOURCE_PERMISSIONS
+    FILES_MATCHING PATTERN "antares-*.*-solver.exe")
+    
+FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
+	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+    USE_SOURCE_PERMISSIONS
+    FILES_MATCHING PATTERN "*.dll")
+
+FILE(COPY ${DEPS_INSTALL_DIR}/bin/
+	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+	USE_SOURCE_PERMISSIONS
+	FILES_MATCHING PATTERN "*.so")
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
@@ -193,10 +224,12 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-gu
         
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}/
-  TYPE BIN
-  FILES_MATCHING PATTERN "*.dll")
-  
+if (WIN32)
+  install(DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}/
+    TYPE BIN
+    FILES_MATCHING PATTERN "*.dll")
+endif()
+
 install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
   TYPE BIN
   FILES_MATCHING PATTERN "*.dll")

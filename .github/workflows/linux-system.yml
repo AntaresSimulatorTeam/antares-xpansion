@@ -30,6 +30,7 @@ jobs:
       run: |
           python -m pip install --upgrade pip
           pip3 install -r src/src_python/requirements.txt
+          pip3 install -r src/tests/examples/requirements.txt
 
     - name: Install libraries
       run: |
@@ -54,11 +55,16 @@ jobs:
 
     - name: Configure
       run: |
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 
     - name: Build
       run: |
            cmake --build _build --config Release -j2
+           
+    - name: Running unit tests
+      run: |
+           cd _build
+           ctest -C Release --output-on-failure -L "medium"
            
     - name: Installer .tar.gz creation
       run: |
