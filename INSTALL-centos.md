@@ -55,7 +55,7 @@ The install procedure can be done
 ### Yum commands
 
 ```
-sudo yum install jsoncpp-devel gtest-devel boost-openmpi-devel doxygen graphviz redhat-lsb-core
+sudo yum install jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz redhat-lsb-core
 sudo yum install openssl-devel curl-devel libuuid-devel
 ```
 
@@ -91,9 +91,10 @@ Note :
 antares-solver is needed for antares-xpansion use. A Cmake option allows compilation of antares-solver at configure : `-DBUILD_antares_solver=ON` (default `ON`)
 
 ## [Building antares-xpansion](#build)
-- Enable `devtoolset-7` :
+- Enable `devtoolset-7` and load mpi module:
 ```
 scl enable devtoolset-7 bash
+module load mpi
 ```
 - Update git submodule for dependency build :
 ```
