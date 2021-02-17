@@ -1,4 +1,4 @@
-# antares-xpansion CMake Build Instructions
+# *antares-xpansion* CMake Build Instructions
 
  [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [antares-solver build](antares-solver-build) [Building](#building-antares-solution) | [Installer creation](#installer)
  
@@ -13,15 +13,15 @@ Note:
 
 ## [GCC version](#gcc-version)
 By default, GCC version of Centos7 is 4.8.5.
-For compiling antares-xpansion we need C++17 support.
+The compilation of  *antares-xpansion* requires C++17 support.
 
-You can use a more recent version of GCC by enabling devtoolset :
+You can use a more recent version of GCC by enabling `devtoolset-7` :
 ```
 sudo yum install centos-release-scl
 sudo yum install devtoolset-7
 ```
 
-Before compiling antares-xpansion we must launch a new shell with `scl` tool :
+Before compiling *antares-xpansion* we must launch a new shell with `scl` tool :
 ```
 scl enable devtoolset-7 bash
 ```
@@ -39,7 +39,7 @@ pip3 install -r src/src_python/tests/examples/requirements.txt
 ```
 
 ## [Dependencies](#deps)
-antares-xpansion depends on severals mandatory libraries. 
+*antares-xpansion* depends on several mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
@@ -47,7 +47,7 @@ antares-xpansion depends on severals mandatory libraries.
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
-This section describes the install procedures for the third-party Open source libraries used by antares-xpansion.
+This section describes the install procedures for the third-party Open source libraries used by *antares-xpansion*.
 The install procedure can be done
 - by compiling the sources after cloning the official git repository
 - by using yum
@@ -88,9 +88,9 @@ Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
 ## [antares-solver build](antares-solver-build)
-antares-solver is needed for antares-xpansion use. A Cmake option allows compilation of antares-solver at configure : `-DBUILD_antares_solver=ON` (default `ON`)
+*antares-xpansion* needs the *antares-solver* binary in order to execute the whole simulation process. A Cmake option allows compilation of *antares-solver* at configure : `-DBUILD_antares_solver=ON` (default `ON`)
 
-## [Building antares-xpansion](#build)
+## [Building *antares-xpansion*](#build)
 - Enable `devtoolset-7` and load mpi module:
 ```
 scl enable devtoolset-7 bash

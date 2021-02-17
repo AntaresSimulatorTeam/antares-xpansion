@@ -1,4 +1,4 @@
-# antares-xpansion CMake Build Instructions
+# *antares-xpansion* CMake Build Instructions
 
  [CMake version](#cmake-version) | [Dependencies](#dependencies) | [Building](#building-antares-solution) |
  
@@ -19,7 +19,7 @@ pip install -r src/src_python/tests/examples/requirements.txt
 ```
 
 ## [Dependencies](#deps)
-antares-xpansion depends on severals mandatory libraries. 
+*antares-xpansion* depends on several mandatory libraries. 
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
@@ -27,7 +27,7 @@ antares-xpansion depends on severals mandatory libraries.
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
-This section describes the install procedures for the third-party Open source libraries used by antares-xpansion.
+This section describes the install procedures for the third-party Open source libraries used by *antares-xpansion*.
 The install procedure can be done
 - by compiling the sources after cloning the official git repository
 - by using VCPKG
@@ -99,9 +99,9 @@ Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
 ## [antares-solver build](antares-solver-build)
-antares-solver is needed for antares-xpansion use. A Cmake option allows compilation of antares-solver at configure : `-DBUILD_antares_solver=ON` (default `ON`)
+*antares-xpansion* needs the *antares-solver* binary in order to execute the whole simulation process. A Cmake option allows compilation of *antares-solver* at configure : `-DBUILD_antares_solver=ON` (default `ON`)
 
-## [Building antares-xpansion](#build)
+## [Building *antares-xpansion*](#build)
 - Update git submodule for dependency build :
 ```
 git submodule update --init antares-deps
