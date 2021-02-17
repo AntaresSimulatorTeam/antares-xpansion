@@ -30,7 +30,12 @@ jobs:
     - name: Get release
       id: get_release
       uses: bruceadams/get-release@v1.2.0     
-    
+        
+    - name: Install mandatory system libraries
+      run: |
+           yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
+           yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz
+           yum install -y cmake3 devtoolset-7
            
     - name: Download pre-compiled librairies
       run: |
@@ -41,12 +46,6 @@ jobs:
     - name: Init submodule
       run: |
            git submodule update --init --recursive .
-    
-    - name: Install mandatory system libraries
-      run: |
-           yum install -y git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
-           yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz
-           yum install -y cmake3 devtoolset-7
         
     
     - name: Configure
