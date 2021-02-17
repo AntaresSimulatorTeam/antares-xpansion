@@ -61,6 +61,15 @@ jobs:
 
     - name: Build
       run: |
+           echo $PATH
+           echo $LD_LIBRARY_PATH
+           source /opt/rh/devtoolset-7/enable           
+           echo $PATH
+           echo $LD_LIBRARY_PATH
+           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+           export PATH=/usr/lib64/openmpi/bin:$PATH           
+           echo $PATH
+           echo $LD_LIBRARY_PATH
            cmake3 --build _build --config Release -j2
            
     - name: Running unit tests
