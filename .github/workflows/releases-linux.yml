@@ -16,9 +16,8 @@ jobs:
       matrix:
         os: [ubuntu-20.04]
 
-    - name: Checkout
-      run: |
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b $GITHUB_REF .
+    steps:
+    - uses: actions/checkout@v2 
     
     - name: Set up Python
       uses: actions/setup-python@v1
