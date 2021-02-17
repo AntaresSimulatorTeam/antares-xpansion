@@ -53,7 +53,11 @@ jobs:
 
     - name: Configure
       run: |
+           echo $PATH
            source /opt/rh/devtoolset-7/enable
+           echo $PATH
+           scl enable devtoolset-7 sh
+           echo $PATH
            module load mpi
            cmake3 -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 
