@@ -28,7 +28,9 @@ jobs:
            yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz
            yum install -y cmake3 devtoolset-7           
                       
-    - uses: actions/checkout@v2
+    - name: Checkout
+      run: |
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b $GITHUB_REF .
     
     - name: Download pre-compiled librairies
       run: |
