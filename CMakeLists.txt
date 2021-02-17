@@ -14,6 +14,13 @@ PROJECT (antaresXpansion VERSION 0.1.0)
 # Default parameters
 # ===========================================================================
 
+set(DEFAULT_BUILD_TYPE Release)
+
+# Set Build Type
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
+endif()
+
 option (USE_MPI "Enable MPI" OFF)
 option (USE_SEQUENTIAL "Enable sequential" OFF)
 
@@ -21,7 +28,6 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
-set (BOOST_MIN_VERSION "1.65.1")
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -109,12 +115,32 @@ endif()
 
 # Build Needed dependencies
 list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR})
+
+# Add DEPS_INSTALL_DIR with antares-simulator CMAKE_BUILD_TYPE special case
+if (${CMAKE_BUILD_TYPE} STREQUAL  "Release")
+
+	string(REPLACE ${CMAKE_BUILD_TYPE} release
+			DEPS_INSTALL_DIR_ANTARES
+			${DEPS_INSTALL_DIR})
+	
+	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
+	
+elseif(${CMAKE_BUILD_TYPE} STREQUAL  "Debug")
+
+	string(REPLACE ${CMAKE_BUILD_TYPE} debug
+			DEPS_INSTALL_DIR_ANTARES
+			${DEPS_INSTALL_DIR})
+	
+	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
+
+endif()
+
 message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 
 add_subdirectory(antares-deps)
 
 # Build dependencies not handled by antares-deps repository
-option(BUILD_antares_solver "Build antares solver" OFF)
+option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
@@ -127,8 +153,8 @@ if (USE_MPI)
 	if (MSVC)
 		list (APPEND CMAKE_FIND_LIBRARY_PREFIXES "" "lib")
 	endif ()
-
-	find_package (Boost ${BOOST_MIN_VERSION} REQUIRED COMPONENTS mpi serialization)
+	find_package(MPI REQUIRED)
+	find_package (Boost REQUIRED COMPONENTS mpi serialization)
 	include_directories (${Boost_INCLUDE_DIRS})
 
 	message (STATUS "BOOST_MPI_LIBRARY : " ${Boost_MPI_LIBRARY})
