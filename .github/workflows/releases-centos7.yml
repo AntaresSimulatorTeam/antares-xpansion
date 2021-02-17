@@ -15,7 +15,9 @@ jobs:
     container: 'centos:7'
 
     steps:
-    - uses: actions/checkout@v2 
+    - uses: actions/checkout@v2
+      with:
+      submodules:true 
     
     - name: Set up Python
       run: |
