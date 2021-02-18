@@ -71,6 +71,8 @@ jobs:
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
+           export OMPI_ALLOW_RUN_AS_ROOT=1
+           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
            cd _build
            ctest3 -C Release --output-on-failure -L "medium"
            
