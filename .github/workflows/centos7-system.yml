@@ -55,8 +55,7 @@ jobs:
       run: |
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-           export PATH=/usr/lib64/openmpi/bin:$PATH
-           
+           export PATH=/usr/lib64/openmpi/bin:$PATH           
            cmake3 -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 
     - name: Build
@@ -66,15 +65,6 @@ jobs:
            export PATH=/usr/lib64/openmpi/bin:$PATH
            cmake3 --build _build --config Release -j2
            
-    - name: Running unit tests
-      run: |
-           source /opt/rh/devtoolset-7/enable
-           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-           export PATH=/usr/lib64/openmpi/bin:$PATH
-           export OMPI_ALLOW_RUN_AS_ROOT=1
-           export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
-           cd _build
-           ctest3 -C Release --output-on-failure -L "medium"
            
     - name: Installer .tar.gz creation
       run: |
