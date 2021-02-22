@@ -125,3 +125,18 @@ CPack can be used to create the installer after the build phase :
 cd _build
 cpack3 -G TGZ
 ```
+There are still some system librairies that must be installed if you want to use *antares-xpansion*:
+
+```
+sudo yum install epel-release
+sudo yum install openmpi jsoncpp boost-openmpi
+```
+
+Before launching *antares-xpansion* with mpi for parallel launch (method `mpibenders`), you must load mpi module :
+```
+scl enable devtoolset-7 bash
+module load mpi
+```
+
+Note :
+> `mpirun` can't be used as root on Centos7. Be sure to launch antares-xpansion without root user.

@@ -64,16 +64,26 @@ jobs:
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
            cmake3 --build _build --config Release -j2
-           
+               
+    - name: Installer .rpm creation
+      run: |
+           cd _build
+           cpack3 -G RPM
            
     - name: Installer .tar.gz creation
       run: |
            cd _build
            cpack3 -G TGZ
            
-    - name: Installer upload
+    - name: Installer archive upload
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-centos7-archive
-        path: _build/antaresXpansion-*.*.*-*.tar.gz
+        path: _build/*.tar.gz
+        
+    - name: Installer rpm upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: antares-xpansion-centos7-rpm
+        path: _build/*.rpm
 

@@ -133,3 +133,8 @@ CPack can be used to create the installer after the build phase :
 cd _build
 cpack -G TGZ
 ```
+There are still some system librairies that must be installed if you want to use *antares-xpansion*:
+
+```
+sudo apt-get install libcurl4 libjsoncpp1 libboost-mpi-dev
+```
