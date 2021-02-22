@@ -3,11 +3,11 @@
  [CMake version](#cmake-version) | [Environnement build install](#env-build-install)| [Dependencies](#dependencies) | [Building](#building-antares-solution) |
 
 ## C/I status
-[![Status][linux_system_svg]][linux_system_link] 
+[![Status][ubuntu_system_svg]][ubuntu_system_link] 
 
-[linux_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Linux%20CI%20(system%20libs)/badge.svg
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
 
-[linux_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Linux%20CI%20(system%20libs)"
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Ubuntu%20CI%20(system%20libs)"
 
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.

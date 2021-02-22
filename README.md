@@ -1,12 +1,12 @@
 # Antares-Xpansion
 
-[![Status][linux_system_svg]][linux_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link] [![Status][centos_system_svg]][centos_system_link]  
+[![Status][ubuntu_system_svg]][ubuntu_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link] [![Status][centos_system_svg]][centos_system_link]  
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-[linux_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Linux%20CI%20(system%20libs)/badge.svg
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
 
-[linux_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Linux%20CI%20(system%20libs)"
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Ubuntu%20CI%20(system%20libs)"
 
 [windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Windows%20CI%20(VCPKG)/badge.svg
 
@@ -37,7 +37,7 @@ a minimum. The total cost evaluated in this problem are the sum of the
 
 This software suite has been tested under:
 
-*   Ubuntu 20.04 [![Status][linux_system_svg]][linux_system_link] 
+*   Ubuntu 20.04 [![Status][ubuntu_system_svg]][ubuntu_system_link] 
 *   Microsoft Windows with Visual Studio 2019 (64-bit) [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
 *   Centos 7 [![Status][centos_system_svg]][centos_system_link] 
 

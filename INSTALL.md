@@ -5,13 +5,13 @@
 ## C/I status
 | OS     | Status|
 |:-------|--------|
-| Ubuntu  | [![Status][linux_system_svg]][linux_system_link] |
+| Ubuntu  | [![Status][ubuntu_system_svg]][ubuntu_system_link] |
 | Windows  | [![Status][windows_vcpkg_svg]][windows_vcpkg_link] |
 | Centos7  | [![Status][centos_system_svg]][centos_system_link] |
 
-[linux_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Linux%20CI%20(system%20libs)/badge.svg
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
 
-[linux_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Linux%20CI%20(system%20libs)"
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Ubuntu%20CI%20(system%20libs)"
 
 [windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Windows%20CI%20(VCPKG)/badge.svg
 
