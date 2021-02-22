@@ -1,7 +1,14 @@
 # *antares-xpansion* CMake Build Instructions
 
  [CMake version](#cmake-version) | [Dependencies](#dependencies) | [Building](#building-antares-solution) |
- 
+
+## C/I status
+[![Status][windows_vcpkg_svg]][windows_vcpkg_link]
+
+[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Windows%20CI%20(VCPKG)/badge.svg
+
+[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Windows%20CI%20(VCPKG)"
+
 ## [CMake version](#cmake-version)
 CMake 3.x must be used. 
 

@@ -1,7 +1,14 @@
 # *antares-xpansion* CMake Build Instructions
 
  [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [antares-solver build](antares-solver-build) [Building](#building-antares-solution) | [Installer creation](#installer)
- 
+
+## C/I status
+[![Status][centos_system_svg]][centos_system_link]
+
+[centos_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Centos7%20CI%20(system%20libs)/badge.svg
+
+[centos_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)"
+
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
 ```
