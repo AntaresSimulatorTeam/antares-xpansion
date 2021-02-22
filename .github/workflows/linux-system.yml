@@ -74,6 +74,6 @@ jobs:
     - name: Installer upload
       uses: actions/upload-artifact@v2
       with:
-        name: antares-xpansion-installer-64bits
+        name: antares-xpansion-ubuntu-archive
         path: _build/antaresXpansion-*.*.*-*.tar.gz
 
