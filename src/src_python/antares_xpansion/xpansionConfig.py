@@ -60,7 +60,7 @@ class XpansionConfig():
                             dest="method",
                             type=str,
                             choices=["mpibenders", "mergeMPS", "sequential"],
-                            help="Choose the optimization method"
+                            help="Choose the optimization method",
                             default="sequential")
         parser.add_argument("-c",
                             dest="c",
