@@ -1,5 +1,7 @@
 # Antares-Xpansion
 
+![antares logo](./media/AntaresSimulator_Logo.png)
+
 [![Status][linux_system_svg]][linux_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
@@ -77,6 +79,8 @@ syntax used within this file is illustrated in the example below.
 
 An example with two investments candidates, one in semi-base generation and one
 in network capacity, is given below.
+
+![simple_example](./media/simple-investments-candidates.png)
 
 The invested semi-base generation in area 1 is shifted in the "virtual node"
 invest_semibase. Within the optimization process, the capacity of the link
@@ -172,8 +176,9 @@ As the optimal solution is not more realistic than an approximate solution of th
 
 First, create an Antares study with the description of the candidates and create the `candidates.ini` and `settings.ini` files as explained above and store them in the directory `study_path/user/expansion`.
 
-The entry point to run Antares Xpansion is in the source code: `src_python > launch.py`
-This script is called on the Command Prompt:
+Antares Xpansion does not have a GUI, the entry point to run Antares Xpansion is in the executable
+`/antares-xpansion-install-dir/xpansion-launcher/antares-xpansion-launcher.exe`.
+This binary should be run from a command prompt or unix terminal:
 
 TODO code snippet with the shell command and output 
 
