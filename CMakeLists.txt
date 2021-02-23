@@ -28,6 +28,7 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
+set(ANTARES_XPANSION_RC 2)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -291,5 +292,11 @@ set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4,libjsoncpp1,libboost-mpi-dev")
 set(CPACK_RPM_PACKAGE_REQUIRES "openmpi,jsoncpp,boost-openmpi")
 set(CPACK_RPM_PACKAGE_AUTOREQPROV "0")
+
+if (ANTARES_XPANSION_RC)
+	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}-${CPACK_SYSTEM_NAME}")
+else()
+	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-${CPACK_SYSTEM_NAME}")
+endif()
 
 include(CPack)
