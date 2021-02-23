@@ -87,8 +87,8 @@ Note :
 > ```
 
 
-### Automatic librairies compilation from git
-[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic librairies compilation from git.
+### Automatic libraries compilation from git
+[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic libraries compilation from git.
 
 ALL dependency can be built at configure time using the option `-DBUILD_ALL=ON` (`OFF` by default). For a list of available option see [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps).
 
@@ -129,12 +129,22 @@ Note :
 
 ## [Installer creation](#installer)
 CPack can be used to create the installer after the build phase :
+
+## Ubuntu .deb (Experimental)
+ ```
+cd _build
+cpack -G DEB .
+```
+
+## Linux .tar.gz
  ```
 cd _build
 cpack -G TGZ
 ```
-There are still some system librairies that must be installed if you want to use *antares-xpansion*:
+There are still some system libraries that must be installed if you want to use *antares-xpansion*:
 
 ```
 sudo apt-get install libcurl4 libjsoncpp1 libboost-mpi-dev
 ```
+Note :
+>These libraries Compilation can be done on several processor with ```-j``` option.

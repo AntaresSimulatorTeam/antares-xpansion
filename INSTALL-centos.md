@@ -74,8 +74,8 @@ Note :
 > sudo yum config-manager --set-enabled PowerTools
 > ``` 
 
-### Automatic librairies compilation from git
-[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic librairies compilation from git.
+### Automatic libraries compilation from git
+[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic libraries compilation from git.
 
 ALL dependency can be built at configure time using the option `-DBUILD_ALL=ON` (`OFF` by default). For a list of available option see [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps).
 
@@ -121,11 +121,21 @@ Note :
 
 ## [Installer creation](#installer)
 CPack can be used to create the installer after the build phase :
+
+## RHEL .rpm (Experimental)
+ ```
+cd _build
+cpack3 -G RPM .
+```
+Note :
+> `rpm-build` must be installed for RPM creation :  `sudo yum install rpm-build`
+
+## Linux .tar.gz
  ```
 cd _build
 cpack3 -G TGZ
 ```
-There are still some system librairies that must be installed if you want to use *antares-xpansion*:
+There are still some system libraries that must be installed if you want to use *antares-xpansion*:
 
 ```
 sudo yum install epel-release

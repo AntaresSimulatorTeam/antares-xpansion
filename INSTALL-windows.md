@@ -41,14 +41,14 @@ The install procedure can be done
 
 ### VCPKG
 
-For Windows we will use [vcpkg](https://github.com/microsoft/vcpkg) to download and compile the librairies.
+For Windows we will use [vcpkg](https://github.com/microsoft/vcpkg) to download and compile the libraries.
 
 You must install the corresponding [vcpkg-triplet](https://vcpkg.readthedocs.io/en/latest/users/integration/#triplet-selection) depending on Antares version and libraries load:
 
-- ``x64-windows``        : 64 bits version with dynamic librairies load
-- ``x86-windows``        : 32 bits version with dynamic librairies load
-- ``x64-windows-static`` : 64 bits version with static librairies load
-- ``x86-windows-static`` : 32 bits version with static librairies load
+- ``x64-windows``        : 64 bits version with dynamic libraries load
+- ``x86-windows``        : 32 bits version with dynamic libraries load
+- ``x64-windows-static`` : 64 bits version with static libraries load
+- ``x86-windows-static`` : 32 bits version with static libraries load
 
 The vcpkg-triplet used will be named [vcpg-triplet] later in this document.
 
@@ -84,8 +84,8 @@ Note :
 >      [vcpkg_root]/downloads/msmpisetup-10.0.12498.exe
 > ``` 
 
-### Automatic librairies compilation from git
-[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic librairies compilation from git.
+### Automatic libraries compilation from git
+[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic libraries compilation from git.
 
 ALL dependency can be built at configure time using the option `-DBUILD_ALL=ON` (`OFF` by default). For a list of available option see [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps).
 
