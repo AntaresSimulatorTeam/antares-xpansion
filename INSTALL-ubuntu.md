@@ -52,7 +52,7 @@ sudo apt-get install python3 python3-pip
 Required python modules can be installed with :
 ```
 pip3 install -r src/src_python/requirements.txt
-pip3 install -r src/src_python/tests/examples/requirements.txt
+pip3 install -r src/tests/examples/requirements.txt
 ```
 
 ## [Dependencies](#deps)
@@ -75,8 +75,8 @@ The install procedure can be done
 #### Ubuntu
 
 ```
-sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz
-sudo apt install uuid-dev libcurl4-openssl-dev libssl-dev
+sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz
+sudo apt-get install unzip uuid-dev libcurl4-openssl-dev libssl-dev
 ```
 Note :
 > Depending on Ubuntu version you might need to compile google test :
@@ -118,7 +118,7 @@ git submodule update --init antares-deps
 
 - Configure build with cmake
 ```
-cmake -B _build -S [antares_src] -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 ```
 - Build
  ```

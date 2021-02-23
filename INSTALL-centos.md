@@ -42,7 +42,7 @@ sudo yum install python3 python3-pip
 Required python modules can be installed with :
 ```
 pip3 install -r src/src_python/requirements.txt
-pip3 install -r src/src_python/tests/examples/requirements.txt
+pip3 install -r src/tests/examples/requirements.txt
 ```
 
 ## [Dependencies](#deps)
@@ -110,7 +110,7 @@ git submodule update --init antares-deps
 
 - Configure build with cmake
 ```
-cmake3 -B _build -S [antares_src] -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 ```
 - Build
  ```
