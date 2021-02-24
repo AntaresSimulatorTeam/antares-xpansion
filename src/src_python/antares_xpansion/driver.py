@@ -205,7 +205,7 @@ class XpansionDriver():
         """
             returns the nubyears parameter value read from the general data file
         """
-        ini_file = configparser.ConfigParser()
+        ini_file = configparser.ConfigParser(strict=False)
         ini_file.read(self.general_data())
         return float(ini_file['general']['nbyears'])
 
@@ -283,7 +283,7 @@ class XpansionDriver():
         """
             modifies the general data file to configure antares execution
         """
-        ini_file = configparser.ConfigParser()
+        ini_file = configparser.ConfigParser(strict=False)
         ini_file.read(self.general_data())
         ini_file[self.config.OPTIMIZATION][self.config.EXPORT_MPS] = "true"
         ini_file[self.config.OPTIMIZATION][self.config.EXPORT_STRUCTURE] = "true"
