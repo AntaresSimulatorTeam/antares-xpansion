@@ -65,9 +65,6 @@ jobs:
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v8.0.0/rte-antares-8.0.0-installer-64bits.zip
            Expand-Archive rte-antares-8.0.0-installer-64bits.zip -DestinationPath .
            rm rte-antares-8.0.0-installer-64bits.zip
-           mv rte-antares-8.0.0-installer-64bits\* rte-antares-deps-Release -Force
-           mv rte-antares-8.0.0-installer-64bits\*.* rte-antares-deps-Release -Force
-           rm rte-antares-8.0.0-installer-64bits
            
     - name: Init submodule
       run: |
@@ -75,7 +72,7 @@ jobs:
         
     - name: Configure
       run: |
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH=rte-antares-8.0.0-installer-64bits -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
     
     - name: Build
       run: |
