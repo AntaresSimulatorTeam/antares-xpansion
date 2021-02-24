@@ -8,7 +8,7 @@ find_package(antares-solver)
 if (NOT antares-solver_FOUND)
 
     set(REPOSITORY "https://github.com/AntaresSimulatorTeam/Antares_Simulator.git")
-    set(TAG "release/8.0")
+    set(TAG "v8.0.0")
     set(CMAKE_ARGS "-DBUILD_sirius=ON -DBUILD_UI=OFF -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} -DDEPS_INSTALL_DIR=${DEPS_INSTALL_DIR}")
 
     if (CMAKE_BUILD_TYPE STREQUAL "Debug")
