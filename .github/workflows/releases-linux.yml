@@ -33,12 +33,23 @@ jobs:
     - name: Get release
       id: get_release
       uses: bruceadams/get-release@v1.2.0 
+      
+    - name: Read antares-solver version
+      id: antares-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_version'
            
     - name: Download pre-compiled librairies
       run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.0.0/rte-antares-deps-${{matrix.os}}-Release-solver.tar.gz
            tar -xvf rte-antares-deps-${{matrix.os}}-Release-solver.tar.gz
            rm -rf rte-antares-deps-${{matrix.os}}-Release-solver.tar.gz
+           
+           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/antares-${{steps.antares-version.outputs.prop}}-Ubuntu-20.04.tar.gz
+           tar -xvf antares-${{steps.antares-version.outputs.prop}}-Ubuntu-20.04.tar.gz -C rte-antares-deps-Release --strip-components=1
+           rm -rf antares-${{steps.antares-version.outputs.prop}}-Ubuntu-20.04.tar.gz
            
     - name: Init submodule
       run: |

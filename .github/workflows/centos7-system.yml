@@ -35,12 +35,23 @@ jobs:
     - name: Checkout
       run: |
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+          
+    - name: Read antares-solver version
+      id: antares-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_version'
     
     - name: Download pre-compiled librairies
       run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.1.0/rte-antares-deps-centos7-Release-solver.tar.gz
            tar -xvf rte-antares-deps-centos7-Release-solver.tar.gz
            rm -rf rte-antares-deps-centos7-Release-solver.tar.gz
+           
+           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
+           tar -xvf antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz -C rte-antares-deps-Release --strip-components=1
+           rm -rf antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
     
     - name: Init submodule
       run: |
