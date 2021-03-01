@@ -1,4 +1,4 @@
-name: Release asset upload
+name: Release asset upload (Centos7)
 
 on:
   release:
@@ -26,7 +26,7 @@ jobs:
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
            yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz
            yum install -y openssl-devel curl-devel libuuid-devel
-           yum install -y cmake3 devtoolset-7 environment-modules
+           yum install -y cmake3 devtoolset-7 environment-modules rpm-build
            
     - uses: nelonoel/branch-name@v1.0.1
     
@@ -74,6 +74,13 @@ jobs:
            export TGZ_NAME=$(ls *.tar.gz)
            echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
            
+    - name: Installer .rpm creation
+      run: |
+           cd _build
+           cpack3 -G RPM
+           export RPM_NAME=$(ls *.rpm)
+           echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
+           
     - name: Upload .tar.gz
       uses: actions/upload-release-asset@v1.0.2
       with:
@@ -81,4 +88,13 @@ jobs:
         asset_path: _build/${{env.TGZ_NAME}}
         asset_name: ${{env.TGZ_NAME}}
         asset_content_type: application/octet-stream
+           
+    - name: Upload .rpm
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: _build/${{env.RPM_NAME}}
+        asset_name: ${{env.RPM_NAME}}
+        asset_content_type: application/octet-stream
+    
     

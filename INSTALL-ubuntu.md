@@ -1,7 +1,14 @@
 # *antares-xpansion* CMake Build Instructions
 
  [CMake version](#cmake-version) | [Environnement build install](#env-build-install)| [Dependencies](#dependencies) | [Building](#building-antares-solution) |
- 
+
+## C/I status
+[![Status][ubuntu_system_svg]][ubuntu_system_link] 
+
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
+
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Ubuntu%20CI%20(system%20libs)"
+
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
 
@@ -45,7 +52,7 @@ sudo apt-get install python3 python3-pip
 Required python modules can be installed with :
 ```
 pip3 install -r src/src_python/requirements.txt
-pip3 install -r src/src_python/tests/examples/requirements.txt
+pip3 install -r src/tests/examples/requirements.txt
 ```
 
 ## [Dependencies](#deps)
@@ -68,8 +75,8 @@ The install procedure can be done
 #### Ubuntu
 
 ```
-sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz
-sudo apt install uuid-dev libcurl4-openssl-dev libssl-dev
+sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz
+sudo apt-get install unzip uuid-dev libcurl4-openssl-dev libssl-dev
 ```
 Note :
 > Depending on Ubuntu version you might need to compile google test :
@@ -80,8 +87,8 @@ Note :
 > ```
 
 
-### Automatic librairies compilation from git
-[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic librairies compilation from git.
+### Automatic libraries compilation from git
+[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic libraries compilation from git.
 
 ALL dependency can be built at configure time using the option `-DBUILD_ALL=ON` (`OFF` by default). For a list of available option see [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps).
 
@@ -111,7 +118,7 @@ git submodule update --init antares-deps
 
 - Configure build with cmake
 ```
-cmake -B _build -S [antares_src] -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 ```
 - Build
  ```
@@ -122,7 +129,22 @@ Note :
 
 ## [Installer creation](#installer)
 CPack can be used to create the installer after the build phase :
+
+## Ubuntu .deb (Experimental)
+ ```
+cd _build
+cpack -G DEB .
+```
+
+## Linux .tar.gz
  ```
 cd _build
 cpack -G TGZ
 ```
+There are still some system libraries that must be installed if you want to use *antares-xpansion*:
+
+```
+sudo apt-get install libcurl4 libjsoncpp1 libboost-mpi-dev
+```
+Note :
+>These libraries Compilation can be done on several processor with ```-j``` option.

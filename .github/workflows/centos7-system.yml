@@ -27,7 +27,7 @@ jobs:
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
            yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz
            yum install -y openssl-devel curl-devel libuuid-devel
-           yum install -y cmake3 devtoolset-7 environment-modules
+           yum install -y cmake3 devtoolset-7 environment-modules rpm-build
                       
     
     - uses: nelonoel/branch-name@v1.0.1
@@ -64,16 +64,26 @@ jobs:
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
            cmake3 --build _build --config Release -j2
-           
+               
+    - name: Installer .rpm creation
+      run: |
+           cd _build
+           cpack3 -G RPM
            
     - name: Installer .tar.gz creation
       run: |
            cd _build
            cpack3 -G TGZ
            
-    - name: Installer upload
+    - name: Installer archive upload
       uses: actions/upload-artifact@v2
       with:
-        name: antares-xpansion-installer-64bits
-        path: _build/antaresXpansion-*.*.*-*.tar.gz
+        name: antares-xpansion-centos7-archive
+        path: _build/*.tar.gz
+        
+    - name: Installer rpm upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: antares-xpansion-centos7-rpm
+        path: _build/*.rpm
 

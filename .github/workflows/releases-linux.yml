@@ -1,4 +1,4 @@
-name: Release asset upload (Linux)
+name: Release asset upload (Ubuntu)
 
 on:
   release:
@@ -74,11 +74,26 @@ jobs:
            export TGZ_NAME=$(ls *.tar.gz)
            echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
            
+    - name: .deb creation
+      run: |
+           cd _build
+           cpack -G DEB
+           export DEB_NAME=$(ls *.deb)
+           echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
+           
     - name: Upload .tar.gz
       uses: actions/upload-release-asset@v1.0.2
       with:
         upload_url: ${{ steps.get_release.outputs.upload_url }}
         asset_path: _build/${{env.TGZ_NAME}}
         asset_name: ${{env.TGZ_NAME}}
+        asset_content_type: application/octet-stream
+        
+    - name: Upload .deb
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: _build/${{env.DEB_NAME}}
+        asset_name: ${{env.DEB_NAME}}
         asset_content_type: application/octet-stream
     

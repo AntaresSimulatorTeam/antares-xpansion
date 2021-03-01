@@ -1,4 +1,4 @@
-name: Release asset upload
+name: Release asset upload (Windows)
 
 on:
   release:

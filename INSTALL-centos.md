@@ -1,7 +1,14 @@
 # *antares-xpansion* CMake Build Instructions
 
  [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [antares-solver build](antares-solver-build) [Building](#building-antares-solution) | [Installer creation](#installer)
- 
+
+## C/I status
+[![Status][centos_system_svg]][centos_system_link]
+
+[centos_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Centos7%20CI%20(system%20libs)/badge.svg
+
+[centos_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)"
+
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
 ```
@@ -35,7 +42,7 @@ sudo yum install python3 python3-pip
 Required python modules can be installed with :
 ```
 pip3 install -r src/src_python/requirements.txt
-pip3 install -r src/src_python/tests/examples/requirements.txt
+pip3 install -r src/tests/examples/requirements.txt
 ```
 
 ## [Dependencies](#deps)
@@ -67,8 +74,8 @@ Note :
 > sudo yum config-manager --set-enabled PowerTools
 > ``` 
 
-### Automatic librairies compilation from git
-[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic librairies compilation from git.
+### Automatic libraries compilation from git
+[Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic libraries compilation from git.
 
 ALL dependency can be built at configure time using the option `-DBUILD_ALL=ON` (`OFF` by default). For a list of available option see [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps).
 
@@ -103,7 +110,7 @@ git submodule update --init antares-deps
 
 - Configure build with cmake
 ```
-cmake3 -B _build -S [antares_src] -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 ```
 - Build
  ```
@@ -114,7 +121,32 @@ Note :
 
 ## [Installer creation](#installer)
 CPack can be used to create the installer after the build phase :
+
+## RHEL .rpm (Experimental)
+ ```
+cd _build
+cpack3 -G RPM .
+```
+Note :
+> `rpm-build` must be installed for RPM creation :  `sudo yum install rpm-build`
+
+## Linux .tar.gz
  ```
 cd _build
 cpack3 -G TGZ
 ```
+There are still some system libraries that must be installed if you want to use *antares-xpansion*:
+
+```
+sudo yum install epel-release
+sudo yum install openmpi jsoncpp boost-openmpi
+```
+
+Before launching *antares-xpansion* with mpi for parallel launch (method `mpibenders`), you must load mpi module :
+```
+scl enable devtoolset-7 bash
+module load mpi
+```
+
+Note :
+> `mpirun` can't be used as root on Centos7. Be sure to launch antares-xpansion without root user.

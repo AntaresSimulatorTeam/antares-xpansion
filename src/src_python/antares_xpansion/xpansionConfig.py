@@ -59,8 +59,9 @@ class XpansionConfig():
         parser.add_argument("--method",
                             dest="method",
                             type=str,
-                            choices=["mpibenders", "mergeMPS", "both", "sequential"],
-                            help="Choose the optimization method")
+                            choices=["mpibenders", "mergeMPS", "sequential"],
+                            help="Choose the optimization method",
+                            default="sequential")
         parser.add_argument("-c",
                             dest="c",
                             help='Name of the file to use for exclusion constraints')
