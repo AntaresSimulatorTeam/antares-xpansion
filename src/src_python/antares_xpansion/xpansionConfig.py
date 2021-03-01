@@ -62,9 +62,6 @@ class XpansionConfig():
                             choices=["mpibenders", "mergeMPS", "sequential"],
                             help="Choose the optimization method",
                             default="sequential")
-        parser.add_argument("-c",
-                            dest="c",
-                            help='Name of the file to use for exclusion constraints')
         parser.add_argument("-n", "--np",
                             dest="n_mpi",
                             default=4,
@@ -77,7 +74,6 @@ class XpansionConfig():
         self.dataDir = str(Path(args.dataDir).resolve())
         self.installDir = args.installDir
         self.method = args.method
-        self.c = args.c
         self.n_mpi = args.n_mpi
 
         if not Path.is_absolute(Path(self.installDir)):
