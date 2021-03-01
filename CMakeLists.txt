@@ -102,6 +102,7 @@ endif ()
 # ===========================================================================
 #CMake function
 include("cmake/utils.cmake")
+include("cmake/json-cmake-1.1.0/JSONParser.cmake")
 
 #Define install directory
 if (NOT DEPS_INSTALL_DIR)
@@ -218,8 +219,13 @@ endif()
 
 find_package(antares-solver REQUIRED)
 
+file(READ antares-version.json jsonContent)
+sbeParseJson(antares_version jsonContent)
+
 #need to know antares solver version because antares-solver targets still refers to antares version
-SET(ANTARES_VERSION 8.0)
+SET(ANTARES_VERSION ${antares_version.antares_version_executable})
+
+sbeClearJson(antares_version)
 
 get_target_property( ANTARES_SOLVER_PATH antares-${ANTARES_VERSION}-solver IMPORTED_LOCATION_RELEASE )
 get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)
