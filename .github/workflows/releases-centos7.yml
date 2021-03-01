@@ -51,9 +51,9 @@ jobs:
            tar -xvf rte-antares-deps-centos7-Release-solver.tar.gz
            rm -rf rte-antares-deps-centos7-Release-solver.tar.gz
            
-           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{step.antares-version.outputs.prop}}/antares-${{step.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
-           tar -xvf antares-${{step.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz -C rte-antares-deps-Release --strip-components=1
-           rm -rf antares-${{step.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
+           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
+           tar -xvf antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz -C rte-antares-deps-Release --strip-components=1
+           rm -rf antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
            
     - name: Init submodule
       run: |
