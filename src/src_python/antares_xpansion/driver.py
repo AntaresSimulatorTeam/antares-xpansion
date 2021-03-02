@@ -32,6 +32,11 @@ class XpansionDriver():
 
         self.candidates_list = []
 
+        with open(self.settings(), 'r') as file_l:
+            self.options = dict(
+                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
+                 for line in file_l.readlines() if line.strip()})
+
         self.check_candidates()
         self.check_settings()
 
@@ -125,30 +130,20 @@ class XpansionDriver():
         """
             indicates if method to use is accurate by reading the uc_type in the settings file
         """
-        with open(self.settings(), 'r') as file_l:
-            options = dict(
-                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines() if line.strip()})
-            uc_type = options.get(self.config.UC_TYPE,
-                                  self.config.settings_default[self.config.UC_TYPE])
-            assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
-            return uc_type == self.config.EXPANSION_ACCURATE
-        assert False
+        uc_type = self.options.get(self.config.UC_TYPE,
+                                   self.config.settings_default[self.config.UC_TYPE])
+        assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
+        return uc_type == self.config.EXPANSION_ACCURATE
 
     def is_relaxed(self):
         """
             indicates if method to use is relaxed by reading the relaxation_type
             from the settings file
         """
-        with open(self.settings(), 'r') as file_l:
-            options = dict(
-                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines() if line.strip()})
-            relaxation_type = options.get('master',
-                                          self.config.settings_default["master"])
-            assert relaxation_type in ['integer', 'relaxed', 'full_integer']
-            return relaxation_type == 'relaxed'
-        assert False
+        relaxation_type = self.options.get('master',
+                                           self.config.settings_default["master"])
+        assert relaxation_type in ['integer', 'relaxed', 'full_integer']
+        return relaxation_type == 'relaxed'
 
     def optimality_gap(self):
         """
@@ -156,16 +151,10 @@ class XpansionDriver():
 
             :return: gap value or 0 if the gap is set to -Inf
         """
-        with open(self.settings(), 'r') as file_l:
-            options = dict(
-                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines() if line.strip()})
-            optimality_gap_str = options.get('optimality_gap',
-                                             self.config.settings_default["optimality_gap"])
-            assert not '%' in  optimality_gap_str
-            print('optimality_gap_str :', optimality_gap_str)
-            return float(optimality_gap_str) if optimality_gap_str != '-Inf' else 0
-        assert False
+        optimality_gap_str = self.options.get('optimality_gap',
+                                              self.config.settings_default["optimality_gap"])
+        assert not '%' in  optimality_gap_str
+        return float(optimality_gap_str) if optimality_gap_str != '-Inf' else 0
 
     def max_iterations(self):
         """
@@ -173,33 +162,23 @@ class XpansionDriver():
 
             :return: max iterations value or -1 if the parameter is is set to +Inf
         """
-        with open(self.settings(), 'r') as file_l:
-            options = dict(
-                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines() if line.strip()})
-            max_iterations_str = options.get('max_iteration',
-                                             self.config.settings_default["max_iteration"])
-            assert not '%' in  max_iterations_str
-            print('max_iterations_str :', max_iterations_str)
-            return float(max_iterations_str) if ( (max_iterations_str != '+Inf') and (max_iterations_str != '+infini') )  else -1
-        assert False
+        max_iterations_str = self.options.get('max_iteration',
+                                              self.config.settings_default["max_iteration"])
+        assert not '%' in max_iterations_str
+        print('max_iterations_str :', max_iterations_str)
+        return float(max_iterations_str) if ( (max_iterations_str != '+Inf') and (max_iterations_str != '+infini') )  else -1
 
     def additional_constraints(self):
         """
             returns path to additional constraints file
         """
-        with open(self.settings(), 'r') as file_l:
-            options = dict(
-                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines() if line.strip()})
+        additional_constraints_filename = self.options.get("additional-constraints",
+                                                           self.config.settings_default["additional-constraints"])
 
-            additional_constraints_filename = options.get("additional-constraints",
-                                                self.config.settings_default["additional-constraints"])
-
-            if additional_constraints_filename == "" :
-                return ""
-            return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
-                                            self.config.EXPANSION, additional_constraints_filename))
+        if additional_constraints_filename == "" :
+            return ""
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
+                                             self.config.EXPANSION, additional_constraints_filename))
 
     def nb_years(self):
         """
