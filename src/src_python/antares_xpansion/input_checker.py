@@ -450,7 +450,7 @@ def check_settings_file(driver):
     with open(driver.settings(), 'r') as file_l:
         options = dict(
             {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-             for line in file_l.readlines()})
+             for line in file_l.readlines() if line.strip()})
 
     for (option, value) in options.items():
         if not check_setting_option_type(option, value):

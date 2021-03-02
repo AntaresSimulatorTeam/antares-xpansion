@@ -128,7 +128,7 @@ class XpansionDriver():
         with open(self.settings(), 'r') as file_l:
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines()})
+                 for line in file_l.readlines() if line.strip()})
             uc_type = options.get(self.config.UC_TYPE,
                                   self.config.settings_default[self.config.UC_TYPE])
             assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
@@ -143,7 +143,7 @@ class XpansionDriver():
         with open(self.settings(), 'r') as file_l:
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines()})
+                 for line in file_l.readlines() if line.strip()})
             relaxation_type = options.get('master',
                                           self.config.settings_default["master"])
             assert relaxation_type in ['integer', 'relaxed', 'full_integer']
@@ -159,7 +159,7 @@ class XpansionDriver():
         with open(self.settings(), 'r') as file_l:
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines()})
+                 for line in file_l.readlines() if line.strip()})
             optimality_gap_str = options.get('optimality_gap',
                                              self.config.settings_default["optimality_gap"])
             assert not '%' in  optimality_gap_str
@@ -176,7 +176,7 @@ class XpansionDriver():
         with open(self.settings(), 'r') as file_l:
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines()})
+                 for line in file_l.readlines() if line.strip()})
             max_iterations_str = options.get('max_iteration',
                                              self.config.settings_default["max_iteration"])
             assert not '%' in  max_iterations_str
@@ -191,7 +191,7 @@ class XpansionDriver():
         with open(self.settings(), 'r') as file_l:
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines()})
+                 for line in file_l.readlines() if line.strip()})
 
             additional_constraints_filename = options.get("additional-constraints",
                                                 self.config.settings_default["additional-constraints"])
