@@ -32,12 +32,13 @@ class XpansionDriver():
 
         self.candidates_list = []
 
-        self.check_candidates()
-        self.check_settings()
-
         self.options = dict(
             {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
              for line in file_l.readlines() if line.strip()})
+
+        self.check_candidates()
+        self.check_settings()
+
 
         print(self.candidates_list)
 
