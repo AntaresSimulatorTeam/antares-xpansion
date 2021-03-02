@@ -1,6 +1,6 @@
 # *antares-xpansion* CMake Build Instructions
 
- [Supported OS](#supported-os)|[C++ version](#cpp-version)|[CMake version](#cmake-version) |[Python version](#python-version) | [Git version](#git-version) | [Dependencies](#dependencies) | [Building](#building-antares-solution) |
+ [Supported OS](#supported-os)| [C++ version](#cpp-version) | [CMake version](#cmake-version) | [Python version](#python-version) | [Git version](#git-version) | [Dependencies](#dependencies) |
 
 ## C/I status
 | OS     | Status|
@@ -9,9 +9,9 @@
 | Windows  | [![Status][windows_vcpkg_svg]][windows_vcpkg_link] |
 | Centos7  | [![Status][centos_system_svg]][centos_system_link] |
 
-[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml/badge.svg
 
-[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Ubuntu%20CI%20(system%20libs)"
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml
 
 [windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Windows%20CI%20(VCPKG)/badge.svg
 
