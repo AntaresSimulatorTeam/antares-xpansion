@@ -262,6 +262,19 @@ class XpansionDriver():
         """
             modifies the general data file to configure antares execution
         """
+        
+        changed_val = {'[' + self.config.OPTIMIZATION + ']/' + self.config.EXPORT_MPS       : 'true',
+                       '[' + self.config.OPTIMIZATION + ']/' + self.config.EXPORT_STRUCTURE : 'true',
+                       '[' + self.config.OPTIMIZATION + ']/' + 'include-tc-minstablepower'  : 'true' if self.is_accurate() else 'false',
+                       '[' + self.config.OPTIMIZATION + ']/' + 'include-tc-min-ud-time'     : 'true' if self.is_accurate() else 'false',
+                       '[' + self.config.OPTIMIZATION + ']/' + 'include-dayahead'           : 'true' if self.is_accurate() else 'false',
+                       '[' + self.config.OPTIMIZATION + ']/' + self.config.USE_XPRS         : '',
+                       '[' + self.config.OPTIMIZATION + ']/' + self.config.INBASIS          : '',
+                       '[' + self.config.OPTIMIZATION + ']/' + self.config.OUTBASIS         : '',
+                       '[' + 'general'                + ']/' + 'mode'                       : 'expansion' if self.is_accurate() else 'Economy',
+                       '[' + 'other preferences'      + ']/' + 'unit-commitment-mode'       : 'accurate' if self.is_accurate() else 'fast'
+                       }
+                       
         with open(self.general_data(), 'r') as reader:
             lines = reader.readlines()
         
@@ -273,26 +286,11 @@ class XpansionDriver():
                 if (len(split_str) == 2 ):
                     key = split_str[0].strip()
                     value = split_str[1].strip()
-                    if(section == '[' + self.config.OPTIMIZATION + ']'):
-                        if (key in {self.config.EXPORT_MPS, self.config.EXPORT_STRUCTURE}) :
-                            lineWrite = key + '=true\n'
-                        elif (key in {'include-tc-minstablepower','include-tc-min-ud-time','include-dayahead'}) :
-                            if self.is_accurate():
-                                lineWrite = key + '=true\n'
-                            else:
-                                lineWrite = key + '=false\n'
-                        elif(key in {self.config.USE_XPRS,self.config.INBASIS,self.config.OUTBASIS}) :
-                            lineWrite = ''
-                    elif (section == '[general]' and key == 'mode') :
-                        if self.is_accurate():
-                            lineWrite = key + '=expansion\n'
-                        else:
-                            lineWrite = key + '=Economy\n'
-                    elif (section == '[other preferences]'and key == 'unit-commitment-mode') :
-                        if self.is_accurate():
-                            lineWrite = key + '=accurate\n'
-                        else:
-                            lineWrite = key + '=fast\n'
+                    dict_key = section +'/'+key
+                    if (dict_key in changed_val):
+                        new_val = changed_val[dict_key]
+                        if (new_val):
+                            lineWrite = key + '=' + new_val + '\n'
                 else:
                     section = line.strip()
                 writer.write(lineWrite)
