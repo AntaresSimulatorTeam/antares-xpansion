@@ -262,29 +262,40 @@ class XpansionDriver():
         """
             modifies the general data file to configure antares execution
         """
-        ini_file = configparser.ConfigParser(strict=False)
-        ini_file.read(self.general_data())
-        ini_file[self.config.OPTIMIZATION][self.config.EXPORT_MPS] = "true"
-        ini_file[self.config.OPTIMIZATION][self.config.EXPORT_STRUCTURE] = "true"
-        ini_file[self.config.OPTIMIZATION][self.config.USE_XPRS] = "false"
-        ini_file.remove_option(self.config.OPTIMIZATION, self.config.USE_XPRS)
-        ini_file.remove_option(self.config.OPTIMIZATION, self.config.INBASIS)
-        ini_file.remove_option(self.config.OPTIMIZATION, self.config.OUTBASIS)
-        if self.is_accurate():
-            ini_file['general']['mode'] = 'expansion'
-            ini_file['other preferences']['unit-commitment-mode'] = 'accurate'
-            ini_file[self.config.OPTIMIZATION]['include-tc-minstablepower'] = 'true'
-            ini_file[self.config.OPTIMIZATION]['include-tc-min-ud-time'] = 'true'
-            ini_file[self.config.OPTIMIZATION]['include-dayahead'] = 'true'
-        else:
-            ini_file['general']['mode'] = 'Economy'
-            ini_file['other preferences']['unit-commitment-mode'] = 'fast'
-            ini_file[self.config.OPTIMIZATION]['include-tc-minstablepower'] = 'false'
-            ini_file[self.config.OPTIMIZATION]['include-tc-min-ud-time'] = 'false'
-            ini_file[self.config.OPTIMIZATION]['include-dayahead'] = 'false'
-
-        with open(self.general_data(), 'w') as out_file:
-            ini_file.write(out_file)
+        with open(self.general_data(), 'r') as reader:
+            lines = reader.readlines()
+        
+        section = ""
+        with open(self.general_data(), 'w') as writer:
+            for line in lines:
+                lineWrite = line
+                split_str = line.split('=')
+                if (len(split_str) == 2 ):
+                    key = split_str[0].strip()
+                    value = split_str[1].strip()
+                    if(section == '[' + self.config.OPTIMIZATION + ']'):
+                        if (key in {self.config.EXPORT_MPS, self.config.EXPORT_STRUCTURE}) :
+                            lineWrite = key + '=true\n'
+                        elif (key in {'include-tc-minstablepower','include-tc-min-ud-time','include-dayahead'}) :
+                            if self.is_accurate():
+                                lineWrite = key + '=true\n'
+                            else:
+                                lineWrite = key + '=false\n'
+                        elif(key in {self.config.USE_XPRS,self.config.INBASIS,self.config.OUTBASIS}) :
+                            lineWrite = ''
+                    elif (section == '[general]' and key == 'mode') :
+                        if self.is_accurate():
+                            lineWrite = key + '=expansion\n'
+                        else:
+                            lineWrite = key + '=Economy\n'
+                    elif (section == '[other preferences]'and key == 'unit-commitment-mode') :
+                        if self.is_accurate():
+                            lineWrite = key + '=accurate\n'
+                        else:
+                            lineWrite = key + '=fast\n'
+                else:
+                    section = line.strip()
+                writer.write(lineWrite)
 
     def launch_antares(self):
         """
