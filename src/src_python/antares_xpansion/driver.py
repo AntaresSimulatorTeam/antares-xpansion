@@ -15,6 +15,7 @@ from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
 
+
 class XpansionDriver():
     """
         Class to control the execution of the optimization session
@@ -60,13 +61,13 @@ class XpansionDriver():
                           self.config.BENDERS_MPI,
                           self.config.BENDERS_SEQUENTIAL]
         if solver == self.config.MERGE_MPS:
-            return self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
+            return self.exe_path(solver) + " " + self.config.OPTIONS_TXT
         elif solver == self.config.BENDERS_MPI:
-            return self.config.MPI_LAUNCHER +" "+\
-                self.config.MPI_N +" "+ str(self.config.n_mpi)+\
-                " "+ self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
-        #solver == self.config.BENDERS_SEQUENTIAL:
-        return self.exe_path(solver) +" "+ self.config.OPTIONS_TXT
+            return self.config.MPI_LAUNCHER + " " + \
+                   self.config.MPI_N + " " + str(self.config.n_mpi) + \
+                   " " + self.exe_path(solver) + " " + self.config.OPTIONS_TXT
+        # solver == self.config.BENDERS_SEQUENTIAL:
+        return self.exe_path(solver) + " " + self.config.OPTIONS_TXT
 
     def antares(self):
         """
@@ -113,7 +114,6 @@ class XpansionDriver():
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
                                              self.config.EXPANSION, filename))
 
-
     def antares_output(self):
         """
             returns path to antares output data directory
@@ -153,7 +153,7 @@ class XpansionDriver():
         """
         optimality_gap_str = self.options.get('optimality_gap',
                                               self.config.settings_default["optimality_gap"])
-        assert not '%' in  optimality_gap_str
+        assert not '%' in optimality_gap_str
         return float(optimality_gap_str) if optimality_gap_str != '-Inf' else 0
 
     def max_iterations(self):
@@ -166,7 +166,8 @@ class XpansionDriver():
                                               self.config.settings_default["max_iteration"])
         assert not '%' in max_iterations_str
         print('max_iterations_str :', max_iterations_str)
-        return float(max_iterations_str) if ( (max_iterations_str != '+Inf') and (max_iterations_str != '+infini') )  else -1
+        return float(max_iterations_str) if (
+                (max_iterations_str != '+Inf') and (max_iterations_str != '+infini')) else -1
 
     def additional_constraints(self):
         """
@@ -175,7 +176,7 @@ class XpansionDriver():
         additional_constraints_filename = self.options.get("additional-constraints",
                                                            self.config.settings_default["additional-constraints"])
 
-        if additional_constraints_filename == "" :
+        if additional_constraints_filename == "":
             return ""
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
                                              self.config.EXPANSION, additional_constraints_filename))
@@ -232,15 +233,15 @@ class XpansionDriver():
         """
         if (self.config.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
             os.remove(self.antares() + '.log')
-        if (self.config.step in ["full", "lp"])\
-            and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
+        if (self.config.step in ["full", "lp"]) \
+                and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
             os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
 
     def check_candidates(self):
         """
             checks that candidates file has correct format
         """
-        #check file existence
+        # check file existence
         if not os.path.isfile(self.candidates()):
             print('Missing file : %s was not retrieved.' % self.candidates())
             sys.exit(1)
@@ -251,7 +252,7 @@ class XpansionDriver():
         """
             checks that settings file has correct format
         """
-        #check file existence
+        # check file existence
         if not os.path.isfile(self.settings()):
             print('Missing file : %s was not retrieved.' % self.settings())
             sys.exit(1)
@@ -262,38 +263,43 @@ class XpansionDriver():
         """
             modifies the general data file to configure antares execution
         """
-        
-        changed_val = {'[' + self.config.OPTIMIZATION + ']/' + self.config.EXPORT_MPS       : 'true',
-                       '[' + self.config.OPTIMIZATION + ']/' + self.config.EXPORT_STRUCTURE : 'true',
-                       '[' + self.config.OPTIMIZATION + ']/' + 'include-tc-minstablepower'  : 'true' if self.is_accurate() else 'false',
-                       '[' + self.config.OPTIMIZATION + ']/' + 'include-tc-min-ud-time'     : 'true' if self.is_accurate() else 'false',
-                       '[' + self.config.OPTIMIZATION + ']/' + 'include-dayahead'           : 'true' if self.is_accurate() else 'false',
-                       '[' + self.config.OPTIMIZATION + ']/' + self.config.USE_XPRS         : '',
-                       '[' + self.config.OPTIMIZATION + ']/' + self.config.INBASIS          : '',
-                       '[' + self.config.OPTIMIZATION + ']/' + self.config.OUTBASIS         : '',
-                       '[' + 'general'                + ']/' + 'mode'                       : 'expansion' if self.is_accurate() else 'Economy',
-                       '[' + 'other preferences'      + ']/' + 'unit-commitment-mode'       : 'accurate' if self.is_accurate() else 'fast'
-                       }
-                       
+
+        def _line_is_not_a_section_header(_line):
+            return len(_line.split('=')) == 2
+
         with open(self.general_data(), 'r') as reader:
             lines = reader.readlines()
-        
-        section = ""
+
         with open(self.general_data(), 'w') as writer:
+            current_section = ""
             for line in lines:
-                lineWrite = line
-                split_str = line.split('=')
-                if (len(split_str) == 2 ):
-                    key = split_str[0].strip()
-                    value = split_str[1].strip()
-                    dict_key = section +'/'+key
-                    if (dict_key in changed_val):
-                        new_val = changed_val[dict_key]
-                        if (new_val):
-                            lineWrite = key + '=' + new_val + '\n'
+                if _line_is_not_a_section_header(line):
+                    key = line.split('=')[0].strip()
+                    line = self._get_new_line(current_section, key)
                 else:
-                    section = line.strip()
-                writer.write(lineWrite)
+                    current_section = line.strip()
+
+                if line:
+                    writer.write(line)
+
+    def _get_new_line(self, section, key):
+        changed_val = {(self.config.OPTIMIZATION, self.config.EXPORT_MPS): 'true',
+                       (self.config.OPTIMIZATION, self.config.EXPORT_STRUCTURE): 'true',
+                       (self.config.OPTIMIZATION, 'include-tc-minstablepower'): 'true' if self.is_accurate() else 'false',
+                       (self.config.OPTIMIZATION, 'include-tc-min-ud-time'): 'true' if self.is_accurate() else 'false',
+                       (self.config.OPTIMIZATION, 'include-dayahead'): 'true' if self.is_accurate() else 'false',
+                       (self.config.OPTIMIZATION, self.config.USE_XPRS): None,
+                       (self.config.OPTIMIZATION, self.config.INBASIS): None,
+                       (self.config.OPTIMIZATION, self.config.OUTBASIS): None,
+                       ('general', 'mode'): 'expansion' if self.is_accurate() else 'Economy',
+                       ('other preferences', 'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
+                       }
+        line = None
+        if (section, key) in changed_val:
+            new_val = changed_val[(section, key)]
+            if new_val:
+                line = key + '=' + new_val + '\n'
+        return line
 
     def launch_antares(self):
         """
@@ -306,9 +312,9 @@ class XpansionDriver():
         old_output = os.listdir(self.antares_output())
         print([self.antares(), self.data_dir()])
         with open(self.antares() + '.log', 'w') as output_file:
-            returned_l = subprocess.call(self.antares() +" "+ self.data_dir(), shell=True,
-                            stdout=output_file,
-                            stderr=output_file)
+            returned_l = subprocess.call(self.antares() + " " + self.data_dir(), shell=True,
+                                         stdout=output_file,
+                                         stderr=output_file)
             if returned_l != 0:
                 print("WARNING: exited antares with status %d" % returned_l)
         new_output = os.listdir(self.antares_output())
@@ -352,7 +358,7 @@ class XpansionDriver():
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
 
-        glob_path= Path(output_path)
+        glob_path = Path(output_path)
         area_files = [str(pp) for pp in glob_path.glob("area*.txt")]
         interco_files = [str(pp) for pp in glob_path.glob("interco*.txt")]
         assert len(area_files) == 1
@@ -369,7 +375,7 @@ class XpansionDriver():
             produces a file named with xpansionConfig.MPS_TXT
         """
         output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
-        
+
         lp_path = os.path.normpath(os.path.join(output_path, 'lp'))
         if os.path.isdir(lp_path):
             shutil.rmtree(lp_path)
@@ -377,11 +383,12 @@ class XpansionDriver():
 
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
         with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
-            lp_cmd = self.exe_path(self.config.LP_NAMER) +" "+ output_path +" "+ is_relaxed +" "+ self.additional_constraints()
+            lp_cmd = self.exe_path(
+                self.config.LP_NAMER) + " " + output_path + " " + is_relaxed + " " + self.additional_constraints()
             returned_l = subprocess.call(lp_cmd,
-                            shell=True,
-                            stdout=output_file,
-                            stderr=output_file)
+                                         shell=True,
+                                         stdout=output_file,
+                                         stderr=output_file)
             if returned_l != 0:
                 print("ERROR: exited lpnamer with status %d" % returned_l)
                 sys.exit(1)
@@ -421,14 +428,14 @@ class XpansionDriver():
             print("Illegal optim method")
             sys.exit(1)
 
-        #delete execution logs
-        logfile_list = glob.glob('./' +solver + 'Log*')
+        # delete execution logs
+        logfile_list = glob.glob('./' + solver + 'Log*')
         for file_path in logfile_list:
             try:
                 os.remove(file_path)
             except OSError:
                 print("Error while deleting file : ", file_path)
-        if  os.path.isfile(solver + '.log'):
+        if os.path.isfile(solver + '.log'):
             os.remove(solver + '.log')
 
         print('Launching {}, logs will be saved to {}.log'.format(solver,
@@ -436,8 +443,8 @@ class XpansionDriver():
                                                                       os.getcwd(), solver))))
         with open(solver + '.log', 'w') as output_file:
             returned_l = subprocess.call(self.solver_cmd(solver), shell=True,
-                            stdout=output_file,
-                            stderr=output_file)
+                                         stdout=output_file,
+                                         stderr=output_file)
             if returned_l != 0:
                 print("ERROR: exited solver with status %d" % returned_l)
                 sys.exit(1)
