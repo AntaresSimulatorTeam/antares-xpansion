@@ -106,7 +106,7 @@ Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
 ### Pre-compiled libraries download : release version only
-You can download pre-compiled antares-deps archive from [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps/releases/tag/v1.1.0). Only release version are available. 
+You can download pre-compiled antares-deps archive from [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps/releases/tag/v1.1.0). Only release versions are available. 
 
 Note:
 > You must you use a MSVC version compatible with MSVC version used in GitHub Action.
