@@ -279,7 +279,6 @@ install(FILES ${ANTARES_SOLVER_PATH}
   DESTINATION BIN)
   
 
-include(CPack)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     get_linux_lsb_release_information()
@@ -297,6 +296,8 @@ set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4,libjsoncpp1,libboost-mpi-dev")
 set(CPACK_RPM_PACKAGE_REQUIRES "openmpi,jsoncpp,boost-openmpi")
 set(CPACK_RPM_PACKAGE_AUTOREQPROV "0")
+
+include(CPack)
 
 if (ANTARES_XPANSION_RC)
 	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}-${CPACK_SYSTEM_NAME}")
