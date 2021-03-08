@@ -41,6 +41,22 @@ class XpansionDriver():
         self.check_candidates()
         self.check_settings()
 
+        self.changed_val = {('[' + self.config.OPTIMIZATION + ']', self.config.EXPORT_MPS): 'true',
+                            ('[' + self.config.OPTIMIZATION + ']', self.config.EXPORT_STRUCTURE): 'true',
+                            ('[' + self.config.OPTIMIZATION + ']',
+                             'include-tc-minstablepower'): 'true' if self.is_accurate() else 'false',
+                            ('[' + self.config.OPTIMIZATION + ']',
+                             'include-tc-min-ud-time'): 'true' if self.is_accurate() else 'false',
+                            ('[' + self.config.OPTIMIZATION + ']',
+                             'include-dayahead'): 'true' if self.is_accurate() else 'false',
+                            ('[' + self.config.OPTIMIZATION + ']', self.config.USE_XPRS): None,
+                            ('[' + self.config.OPTIMIZATION + ']', self.config.INBASIS): None,
+                            ('[' + self.config.OPTIMIZATION + ']', self.config.OUTBASIS): None,
+                            ('[general]', 'mode'): 'expansion' if self.is_accurate() else 'Economy',
+                            (
+                            '[other preferences]', 'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
+                            }
+
         print(self.candidates_list)
 
     def exe_path(self, exe):
@@ -264,16 +280,13 @@ class XpansionDriver():
             modifies the general data file to configure antares execution
         """
 
-        def _line_is_not_a_section_header(_line):
-            return len(_line.split('=')) == 2
-
         with open(self.general_data(), 'r') as reader:
             lines = reader.readlines()
 
         with open(self.general_data(), 'w') as writer:
             current_section = ""
             for line in lines:
-                if _line_is_not_a_section_header(line):
+                if self._line_is_not_a_section_header(line):
                     key = line.split('=')[0].strip()
                     line = self._get_new_line(line, current_section, key)
                 else:
@@ -282,20 +295,13 @@ class XpansionDriver():
                 if line:
                     writer.write(line)
 
+    @staticmethod
+    def _line_is_not_a_section_header(_line):
+        return len(_line.split('=')) == 2
+
     def _get_new_line(self, line, section, key):
-        changed_val = {('['+self.config.OPTIMIZATION+']', self.config.EXPORT_MPS): 'true',
-                       ('['+self.config.OPTIMIZATION+']', self.config.EXPORT_STRUCTURE): 'true',
-                       ('['+self.config.OPTIMIZATION+']', 'include-tc-minstablepower'): 'true' if self.is_accurate() else 'false',
-                       ('['+self.config.OPTIMIZATION+']', 'include-tc-min-ud-time'): 'true' if self.is_accurate() else 'false',
-                       ('['+self.config.OPTIMIZATION+']', 'include-dayahead'): 'true' if self.is_accurate() else 'false',
-                       ('['+self.config.OPTIMIZATION+']', self.config.USE_XPRS): None,
-                       ('['+self.config.OPTIMIZATION+']', self.config.INBASIS): None,
-                       ('['+self.config.OPTIMIZATION+']', self.config.OUTBASIS): None,
-                       ('[general]', 'mode'): 'expansion' if self.is_accurate() else 'Economy',
-                       ('[other preferences]', 'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
-                       }
-        if (section, key) in changed_val:
-            new_val = changed_val[(section, key)]
+        if (section, key) in self.changed_val:
+            new_val = self.changed_val[(section, key)]
             if new_val:
                 line = key + ' = ' + new_val + '\n'
             else:
