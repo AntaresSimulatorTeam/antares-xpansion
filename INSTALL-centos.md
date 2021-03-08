@@ -1,6 +1,6 @@
 # *antares-xpansion* CMake Build Instructions
 
- [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [antares-solver build](antares-solver-build) [Building](#building-antares-solution) | [Installer creation](#installer)
+ [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [Building](#building-antares-solution) | [Tests](#tests) | [Installer creation](#installer)
 
 ## C/I status
 [![Status][centos_system_svg]][centos_system_link]
@@ -94,8 +94,14 @@ Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By defaul
 Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
-## [antares-solver build](antares-solver-build)
-*antares-xpansion* needs the *antares-solver* binary in order to execute the whole simulation process. A Cmake option allows compilation of *antares-solver* at configure : `-DBUILD_antares_solver=ON` (default `ON`)
+### Pre-compiled libraries download : release version only
+You can download pre-compiled antares-deps archive from [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps/releases/tag/v1.1.0). Only release versions are available.
+
+There are still some system libraries that must be installed :
+
+```
+sudo yum install libuuid-devel libidn2-devel redhat-lsb-core
+```
 
 ## [Building *antares-xpansion*](#build)
 - Enable `devtoolset-7` and load mpi module:
@@ -109,6 +115,20 @@ git submodule update --init antares-deps
 ```
 
 - Configure build with cmake
+
+Here is a list of available CMake configure option :
+
+|Option | Description |
+|:-------|-------|
+|`CMAKE_BUILD_TYPE` | Define build type. Available values are `Release` and `Debug`  |
+|`USE_SEQUENTIAL`|Enable build of sequential executable (default `OFF`)|
+|`USE_MPI`|Enable build of bendersmpi executable (default `OFF`)|
+|`DBUILD_antares_solver`|Enable build of antares-solver (default `ON`)|
+|`BUILD_not_system`|Enable build of external librairies not available on system package manager (default `ON`)|
+|`BUILD_ALL`|Enable build of ALL external librairies (default `OFF`)|
+|`DEPS_INSTALL_DIR`|Define dependencies libraries install directory|
+|`BUILD_TESTING`| Enable test build (default `OFF`)| 
+
 ```
 cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
 ```
@@ -118,6 +138,36 @@ cmake3 --build _build --config Release -j8
 ```
 Note :
 >Compilation can be done on several processor with ```-j``` option.
+
+## [Tests](#tests)
+
+Tests compilation  can be enabled at configure time using the option `-DBUILD_TESTING=ON` (`OFF` by default)
+
+After build, tests can be run with ``ctest`` :
+ ```
+cd _build
+ctest -C Release --output-on-failure
+```
+All tests are associated to a label and multiple labels can be defined. You can choose which tests will be executed at ctest run.
+
+This is the list of the available labels :
+
+| Label     | Description |
+|:-------|-----|
+| `unit_tests`  | Unit test for OR-Tools use|
+| `example`  | End to end tests with examples antares study|
+Note :
+> Use `ctest -N` to see all available tests
+
+Here is an example for running only example tests:
+```
+ctest -C Release --output-on-failure -L example
+```` 
+
+To run all test, don't indicate any labels:
+```
+ctest -C Release --output-on-failure
+```` 
 
 ## [Installer creation](#installer)
 CPack can be used to create the installer after the build phase :
