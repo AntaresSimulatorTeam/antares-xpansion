@@ -139,6 +139,15 @@ endif()
 
 message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 
+file(READ antares-version.json jsonContent)
+sbeParseJson(antares_version jsonContent)
+
+#need to know antares solver version because antares-solver targets still refers to antares version
+SET(ANTARES_VERSION ${antares_version.antares_version_executable})
+SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
+
+sbeClearJson(antares_version)
+
 add_subdirectory(antares-deps)
 
 # Build dependencies not handled by antares-deps repository
@@ -219,14 +228,6 @@ else()
 endif()
 
 find_package(antares-solver REQUIRED)
-
-file(READ antares-version.json jsonContent)
-sbeParseJson(antares_version jsonContent)
-
-#need to know antares solver version because antares-solver targets still refers to antares version
-SET(ANTARES_VERSION ${antares_version.antares_version_executable})
-
-sbeClearJson(antares_version)
 
 get_target_property( ANTARES_SOLVER_PATH antares-${ANTARES_VERSION}-solver IMPORTED_LOCATION_RELEASE )
 get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)
