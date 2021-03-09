@@ -75,6 +75,11 @@ jobs:
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
            cmake3 --build _build --config Release -j2
+           
+    - name: Running unit tests
+      run: |
+           cd _build
+           ctest3 -C Release --output-on-failure -L "unit"
                
     - name: Installer .rpm creation
       run: |
