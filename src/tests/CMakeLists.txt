@@ -7,6 +7,15 @@ find_python_module(pytest)
 find_python_module(numpy)
 
 if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
+
+	# Python unit test
+	add_test(
+        NAME unit_launcher
+        COMMAND Python3::Interpreter -m pytest test_ini_reader.py
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/../../src_python/antares_xpansion/test/"
+    )
+    set_property(TEST unit_launcher PROPERTY LABELS unit) 
+	
     # Examples tests
     add_test(
         NAME examples
