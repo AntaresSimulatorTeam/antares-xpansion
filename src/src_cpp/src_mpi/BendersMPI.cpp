@@ -164,6 +164,15 @@ void BendersMpi::step_2(mpi::environment & env, mpi::communicator & world) {
 		Timer timer_slaves;
 		gather(world, slave_cut_package, all_package, 0);
 		_data.timer_slaves = timer_slaves.elapsed();
+
+		_data.slave_cost = 0;
+		for (auto const& pack : all_package) {
+			for (auto& dataVal : pack) {
+				_data.slave_cost += dataVal.second.first.second[SLAVE_COST];
+
+			}
+		}
+
 		all_package.erase(all_package.begin());
 		build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);
 	}

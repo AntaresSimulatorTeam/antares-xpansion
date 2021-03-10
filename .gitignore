@@ -31,3 +31,7 @@
 *.out
 *.app
 *.pyc
+
+# build
+_build
+antares-deps
