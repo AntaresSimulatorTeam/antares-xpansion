@@ -52,6 +52,7 @@ class XpansionDriver():
                             ('[' + self.config.OPTIMIZATION + ']', self.config.USE_XPRS): None,
                             ('[' + self.config.OPTIMIZATION + ']', self.config.INBASIS): None,
                             ('[' + self.config.OPTIMIZATION + ']', self.config.OUTBASIS): None,
+                            ('[' + self.config.OPTIMIZATION + ']', self.config.TRACE): None,
                             ('[general]', 'mode'): 'expansion' if self.is_accurate() else 'Economy',
                             (
                             '[other preferences]', 'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
