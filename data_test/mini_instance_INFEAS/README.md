@@ -9,7 +9,11 @@ This test case is used by bendersEndToEnd test.
 ## Problem formulation
 
 min 1.5 x + y2
+
 sc.
+
     x = 1.5
+
     x + y2 >= 2.5
+    
     x <= 1

@@ -26,15 +26,25 @@ Variables :
 * perte2 : breakdown variable in scenario 2
 
 min 3 t + 2 p + 1.5 w1 z1 + 1.5 w2 z2 + 100 (perte1 + perte 2)
+
 sc:
+
     t + p <= 10 *budget constraint*
+
     z1 <= t
+
     z1 <= p
+
     z1 + perte1 = 2.0 *demand constraint in scenario 1*
+
     z2 <= t
+
     z2 <= p
+
     z2 + perte2 = 6.0 *demand constraint in scenario 2*
+
     t, p, z1, z2, perte1, perte1 >= 0
+    
 
 ## Weights file format
 

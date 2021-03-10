@@ -13,10 +13,18 @@ This data is used in the test bendersEndToEnd.
 ## Problem formulation
 
 min 1.5 x + z1 + 2 z2
+
 sc:
+
     0 <= x <= 10
+
     x + z1 >= 1.5
+
     x + z2 >= 2.5
+
     0 <= z1
+
     0 <= z2
+
     x integer
+    

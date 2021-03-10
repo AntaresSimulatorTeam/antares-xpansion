@@ -18,22 +18,34 @@ This is a test for the inner optimization part of AntaresXpansion. Those tests f
 
 ## Description
 
-There are three instances for this test. The file *resultTest.json* contains every information to run the test. 
+The file *resultTest.json* contains every information to run the test. 
 Each section is a test containing at least :
 1. "path" : A path to the instance data, where the program will be launched
 2. "option_file" : A name of the option file to use 
 
 ### mini_network_default
 
-Test the resolution of a mini expansion network instance with default options. 
+Tests the resolution of a mini network design instance with default options. 
+
+### mini_network_slave_weight
+
+Tests the resolution of a mini network design instance with a file giving weights for subproblems. 
 
 ### mini_instance_LP_default
 
-Test the resolution of a mini LP problem with default options.
+Tests the resolution of a mini LP problem with default options.
 
 ### mini_instance_MIP_default
 
-Test the resolution of a mini MIP problem with default options. Optimal solution differs from its LP relaxation.
+Tests the resolution of a mini MIP problem with default options. Optimal solution differs from its LP relaxation.
+
+### mini_instance_UNBOUNDED
+
+Tests the resolution of an unbounded instance.
+
+### mini_instance_INFEASIBLE
+
+Tests the resolution of an infeasible instance.
 
 ## Launching the test
 

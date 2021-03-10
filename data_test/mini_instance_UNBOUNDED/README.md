@@ -9,8 +9,14 @@ This test case is used by bendersEndToEnd test.
 ## Problem formulation
 
 min -10 x + z1 + z2
+
 sc.
+
     x + z1 >= 1.5
+
     x + z2 >= 2.5
+
     0 <= z1
+
     0 <= z2
+    
