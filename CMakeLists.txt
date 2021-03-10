@@ -28,6 +28,7 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
+set(ANTARES_XPANSION_RC 2)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -102,6 +103,7 @@ endif ()
 # ===========================================================================
 #CMake function
 include("cmake/utils.cmake")
+include("cmake/json-cmake-1.1.0/JSONParser.cmake")
 
 #Define install directory
 if (NOT DEPS_INSTALL_DIR)
@@ -216,23 +218,32 @@ else()
 	set(CURRENT_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
-#Copy antares-solver from DEPS_INSTALL_DIR to build directory
-FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
+find_package(antares-solver REQUIRED)
+
+file(READ antares-version.json jsonContent)
+sbeParseJson(antares_version jsonContent)
+
+#need to know antares solver version because antares-solver targets still refers to antares version
+SET(ANTARES_VERSION ${antares_version.antares_version_executable})
+
+sbeClearJson(antares_version)
+
+get_target_property( ANTARES_SOLVER_PATH antares-${ANTARES_VERSION}-solver IMPORTED_LOCATION_RELEASE )
+get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)
+get_filename_component(ANTARES_SOLVER_APP ${ANTARES_SOLVER_PATH} NAME)
+
+#Copy antares-solver to build directory
+FILE(COPY ${ANTARES_SOLVER_PATH}
 	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-    USE_SOURCE_PERMISSIONS
-    FILES_MATCHING PATTERN "antares-*.*-solver")
+    USE_SOURCE_PERMISSIONS)  
     
-FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
-	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-    USE_SOURCE_PERMISSIONS
-    FILES_MATCHING PATTERN "antares-*.*-solver.exe")
-    
-FILE(COPY  ${DEPS_INSTALL_DIR}/bin/
+#Copy associated .so and .dll to build directory
+FILE(COPY  ${ANTARES_SOLVER_DIR}
 	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
     USE_SOURCE_PERMISSIONS
     FILES_MATCHING PATTERN "*.dll")
 
-FILE(COPY ${DEPS_INSTALL_DIR}/bin/
+FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
 	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
 	USE_SOURCE_PERMISSIONS
 	FILES_MATCHING PATTERN "*.so")
@@ -256,23 +267,16 @@ if (WIN32)
     FILES_MATCHING PATTERN "*.dll")
 endif()
 
-install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
+install(DIRECTORY ${ANTARES_SOLVER_DIR}
   TYPE BIN
   FILES_MATCHING PATTERN "*.dll")
   
-install(DIRECTORY ${DEPS_INSTALL_DIR}/lib/
+install(DIRECTORY ${ANTARES_SOLVER_DIR}/../lib/
   TYPE BIN
   FILES_MATCHING PATTERN "*.so")
-  
-install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
-  TYPE BIN
-  USE_SOURCE_PERMISSIONS
-  FILES_MATCHING PATTERN "antares-*.*-solver.exe")
-  
-install(DIRECTORY ${DEPS_INSTALL_DIR}/bin/
-  TYPE BIN
-  USE_SOURCE_PERMISSIONS
-  FILES_MATCHING PATTERN "antares-*.*-solver")
+    
+install(FILES ${ANTARES_SOLVER_PATH}
+  DESTINATION BIN)
   
   
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
@@ -280,10 +284,22 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     message(STATUS "Linux ${LSB_RELEASE_ID_SHORT} ${LSB_RELEASE_VERSION_SHORT} ${LSB_RELEASE_CODENAME_SHORT}")
     set(CPACK_SYSTEM_NAME "${LSB_RELEASE_ID_SHORT}-${LSB_RELEASE_VERSION_SHORT}") 
 endif()
-  
-#For now only test archive, need to define several CPACK variable
-include(CPack)
+
 set(CPACK_PROJECT_NAME "antaresXpansion")
 set(CPACK_PACKAGE_VERSION_MAJOR 0)
 set(CPACK_PACKAGE_VERSION_MINOR 1)
 set(CPACK_PACKAGE_VERSION_PATCH 0)
+
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
+set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
+set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4,libjsoncpp1,libboost-mpi-dev")
+set(CPACK_RPM_PACKAGE_REQUIRES "openmpi,jsoncpp,boost-openmpi")
+set(CPACK_RPM_PACKAGE_AUTOREQPROV "0")
+
+if (ANTARES_XPANSION_RC)
+	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}-${CPACK_SYSTEM_NAME}")
+else()
+	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-${CPACK_SYSTEM_NAME}")
+endif()
+
+include(CPack)
