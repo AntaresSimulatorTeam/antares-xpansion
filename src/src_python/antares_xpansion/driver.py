@@ -281,7 +281,7 @@ class XpansionDriver():
         with open(self.general_data(), 'w') as writer:
             current_section = ""
             for line in lines:
-                if IniReader().line_is_not_a_section_header(line):
+                if IniReader.line_is_not_a_section_header(line):
                     key = line.split('=')[0].strip()
                     line = self._get_new_line(line, current_section, key)
                 else:

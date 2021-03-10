@@ -1,6 +1,8 @@
 from configparser import ConfigParser
 from pathlib import Path
 
+from typing import List
+
 
 class IniFileNotFound(Exception):
     pass
@@ -22,7 +24,7 @@ class IniReader:
         return key, val
 
 
-class GeneralDataIniReader(IniReader):
+class GeneralDataIniReader:
     def __init__(self, file_path: Path = None):
         if not file_path or not file_path.is_file():
             raise IniFileNotFound
@@ -32,55 +34,63 @@ class GeneralDataIniReader(IniReader):
 
         self.file_lines = open(file_path, 'r').readlines()
 
+        self._mc_years: int = int(self.config["general"]["nbyears"])
+        self._playlist_reset_option: bool = True
+        self._active_year_list: List[int] = []
+        self._inactive_year_list: List[int] = []
+
     def get_nb_years(self) -> int:
-        return int(self.config["general"]["nbyears"])
+        return self._mc_years
 
     def get_nb_activated_year(self):
-        _mc_years = self.get_nb_years()
-        _playlist_reset_option = self._get_playlist_reset_option()
-        _active_year_list, _inactive_year_list = self._get_playlist_year_lists()
-        return self._compute_nb_activated_years(_active_year_list, _inactive_year_list, _mc_years,
-                                                _playlist_reset_option)
+        self._set_playlist_reset_option()
+        self._set_playlist_year_lists()
+        return self._compute_nb_activated_years()
 
-    def _get_playlist_reset_option(self) -> bool:
+    def _set_playlist_reset_option(self):
         # Default : all mc years are activated
-        return self.config.getboolean('playlist', 'playlist_reset', fallback=True)
+        self._playlist_reset_option = self.config.getboolean('playlist', 'playlist_reset', fallback=True)
 
-    def _get_playlist_year_lists(self):
-        _active_year_list = []
-        _inactive_year_list = []
+    def _set_playlist_year_lists(self):
+        self._active_year_list = []
+        self._inactive_year_list = []
         current_section = ""
         for line in self.file_lines:
-            current_section = self._read_playlist(_active_year_list, _inactive_year_list, current_section, line.strip())
+            current_section = self._read_playlist(current_section, line.strip())
 
-        return _active_year_list, _inactive_year_list
-
-    def _read_playlist(self, active_year: [], inactive_year: [], current_section: str, line: str):
-        if self.line_is_not_a_section_header(line):
+    def _read_playlist(self, current_section: str, line: str):
+        if IniReader.line_is_not_a_section_header(line):
             if current_section == 'playlist':
-                key, val = self.get_key_val_from_line(line)
-                self._read_playlist_val(active_year, inactive_year, key, val)
+                key, val = IniReader.get_key_val_from_line(line)
+                self._read_playlist_val(key, val)
         else:
-            current_section = self.read_section_header(line)
+            current_section = IniReader.read_section_header(line)
         return current_section
 
-    @staticmethod
-    def _compute_nb_activated_years(active_year_list: [], inactive_year_list: [int],
-                                    mc_years: int, playlist_reset_option: bool) -> int:
-        nb_activated_year = mc_years if playlist_reset_option else 0
-        if playlist_reset_option:
-            for inactive_year in inactive_year_list:
-                if int(inactive_year) < mc_years:
-                    nb_activated_year -= 1
+    def _read_playlist_val(self, key: str, val: str):
+        if key == 'playlist_year +':
+            self._active_year_list.append(int(val))
+        elif key == 'playlist_year -':
+            self._inactive_year_list.append(int(val))
+
+    def _compute_nb_activated_years(self) -> int:
+        if self._playlist_reset_option:
+            nb_activated_year = self._count_years_from_inactive_years_list()
         else:
-            for active_year in active_year_list:
-                if int(active_year) < mc_years:
-                    nb_activated_year += 1
+            nb_activated_year = self._count_years_from_active_years_list()
         return nb_activated_year
 
-    @staticmethod
-    def _read_playlist_val(active_year: [], inactive_year: [], key: str, val: str):
-        if key == 'playlist_year +':
-            active_year.append(val)
-        elif key == 'playlist_year -':
-            inactive_year.append(val)
+    def _count_years_from_active_years_list(self):
+        nb_activated_year = 0
+        for active_year in self._active_year_list:
+            if int(active_year) < self._mc_years:
+                nb_activated_year += 1
+        return nb_activated_year
+
+    def _count_years_from_inactive_years_list(self):
+        nb_activated_year = self._mc_years
+        for inactive_year in self._inactive_year_list:
+            if int(inactive_year) < self._mc_years:
+                nb_activated_year -= 1
+        return nb_activated_year
+

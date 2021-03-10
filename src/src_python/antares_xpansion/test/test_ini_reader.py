@@ -43,7 +43,7 @@ class TestGetNbActivatedYear:
     @pytest.mark.parametrize(
         "nb_years", [1, 12, 14],
     )
-    def test_read_nb_years(self,tmp_path, nb_years: int):
+    def test_read_nb_years(self, tmp_path, nb_years: int):
         content = self._create_nb_year_content(nb_years)
         self._create_reader(tmp_path, content)
         assert self.ini_reader.get_nb_years() == nb_years
@@ -66,12 +66,13 @@ class TestGetNbActivatedYear:
             (12, False, [6, 7], [1, 5], 2),
             (12, True, [], [], 12),
             (12, True, [0, 4, 5, 6], [], 12),
-            (2,  True, [0, 4, 5, 6, 40, 45, 50, 99], [], 2),
+            (2, True, [0, 4, 5, 6, 40, 45, 50, 99], [], 2),
             (12, True, [], [0, 5], 10),
             (12, True, [], [0, 5, 15, 20], 10)
         ],
     )
-    def test_read_nb_activated_year(self, tmp_path, nb_years, playlist_reset, active_years, inactive_years, nb_activated_years):
+    def test_read_nb_activated_year(self, tmp_path, nb_years, playlist_reset, active_years, inactive_years,
+                                    nb_activated_years):
         content = self._create_nb_year_content(nb_years)
         content += self._create_playlist_section(playlist_reset)
         content += self._create_active_years_content(active_years)
