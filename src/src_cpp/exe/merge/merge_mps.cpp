@@ -16,17 +16,23 @@ size_t StandardLp::appendCNT = 0;
 
 int main(int argc, char** argv)
 {
-	google::InitGoogleLogging(argv[0]);
-	google::SetLogDestination(google::GLOG_INFO, "./merge_mpsLog");
-	LOG(INFO) << "starting merge_mps" << std::endl;
-
 	usage(argc);
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
 
+	google::InitGoogleLogging(argv[0]);
+	std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "merge_mpsLog";
+	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
+	LOG(INFO) << "starting merge_mps" << std::endl;
+
 	JsonWriter jsonWriter_l;
+	jsonWriter_l.write_failure();
+	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
+
 	jsonWriter_l.write(options);
 	jsonWriter_l.updateBeginTime();
+
+
 
 	CouplingMap input;
 	build_input(options, input);
@@ -70,7 +76,7 @@ int main(int argc, char** argv)
 				sequence[i] = i;
 			}
 			ORTgetobj(solver_l, o, 0, mps_ncols - 1);
-			double const weigth = options.slave_weight(nslaves, problem_name);
+			double const weigth = options.slave_weight(nslaves, kvp.first);
 			for (auto & c : o) {
 				c *= weigth;
 			}
@@ -85,7 +91,7 @@ int main(int argc, char** argv)
 			if (nullptr == var_l)
 			{
 				std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
-				ORTwritelp(mergedSolver_l, "mergeError.lp");
+				ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
 				std::exit(1);
 			}
 			else
@@ -147,9 +153,9 @@ int main(int argc, char** argv)
 
 	LOG(INFO) << "Problems merged." << std::endl;
 	std::cout << "Writting mps file" << std::endl;
-	ORTwritelp(mergedSolver_l, "log_merged.mps");
+	ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.mps");
 	std::cout << "Writting lp file" << std::endl;
-	ORTwritelp(mergedSolver_l, "log_merged.lp");
+	ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.lp");
 
 	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
 	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
@@ -175,14 +181,20 @@ int main(int argc, char** argv)
 		double costCoeff_l = mergedSolver_l.Objective().GetCoefficient(mergedSolver_l.variables()[varIndexInMerged_l]);
 		investCost_l += x0[pairNameId.first] * costCoeff_l;
 	}
+
+	double overallCost_l = mergedSolver_l.Objective().Value();
+	double operationalCost_l = overallCost_l - investCost_l;
+
 	std::ostringstream oss_l;
 	print_solution(oss_l, x0, true);
 	std::cout << oss_l.str();
 	LOG(INFO) << oss_l.str() << std::endl;
 
 	bool optimality_l = (status_l == operations_research::MPSolver::OPTIMAL);
-	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), mergedSolver_l.Objective().Value(), investCost_l, x0, optimality_l);
-	jsonWriter_l.dump("out.json");
+	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), 
+		mergedSolver_l.Objective().Value(), investCost_l, operationalCost_l, 
+		overallCost_l, x0, optimality_l);
+	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
 
 	return 0;
 }

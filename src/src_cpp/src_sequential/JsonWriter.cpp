@@ -134,6 +134,12 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
     double gap_l = bendersTrace_p.back().get()->_bestub - bendersTrace_p.back().get()->_lb;
     _output["solution"]["gap"] = gap_l;
     _output["solution"]["optimality"] = (gap_l < 1e-03);
+    if (_output["solution"]["optimality"]) {
+        _output["solution"]["problem_status"] = "OPTIMAL";
+    }
+    else {
+        _output["solution"]["problem_status"] = "ERROR";
+    }
     for(auto pairNameValue_l : bendersTrace_p[bestItIndex_l]->get_point())
     {
         _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
@@ -153,20 +159,39 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
 void JsonWriter::write(int nbWeeks_p,
                        double const & lb_p, double const & ub_p,
                        double const & investCost_p,
+                       double const& operationalCost_p,
+                       double const & overallCost_p,
                        Point const & solution_p,
                        bool const & optimality_p)
 {
     _output["nbWeeks"] = nbWeeks_p;
 
     _output["solution"]["investment_cost"] = investCost_p;
+    _output["solution"]["operational_cost"] = operationalCost_p;
+    _output["solution"]["overall_cost"] = overallCost_p;
     _output["solution"]["lb"] = lb_p;
     _output["solution"]["ub"] = ub_p;
     _output["solution"]["gap"] = ub_p - lb_p;
     _output["solution"]["optimality"] = optimality_p;
+    if (optimality_p) {
+        _output["solution"]["problem_status"] = "OPTIMAL";
+    }
+    else {
+        _output["solution"]["problem_status"] = "ERROR";
+    }
     for(auto pairNameValue_l : solution_p)
     {
         _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
     }
+}
+
+/*!
+*  \brief write a json output with a failure status in solution. If optimization process exits before it ends, this failure will be available as an output.
+*
+*/
+void JsonWriter::write_failure() {
+    _output["solution"]["optimality"] = false;
+    _output["solution"]["problem_status"] = "ERROR";
 }
 
 /*!

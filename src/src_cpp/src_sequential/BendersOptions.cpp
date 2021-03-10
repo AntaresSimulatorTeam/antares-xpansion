@@ -65,15 +65,34 @@ void BendersOptions::read(std::string const & file_name) {
 			std::string line;
 			std::string filename = INPUTROOT + PATH_SEPARATOR + SLAVE_WEIGHT;
 			std::ifstream file(filename);
+
+
+
 			if (!file) {
 				std::cout << "Cannot open file " << filename << std::endl;
 			}
+			double weights_sum = -1;
 			while (std::getline(file, line))
 			{
 				std::stringstream buffer(line);
 				std::string problem_name;
+
 				buffer >> problem_name;
-				buffer >> _weights[problem_name];
+				if (problem_name == "WEIGHT_SUM") {
+					buffer >> weights_sum;
+				}else{
+					buffer >> _weights[problem_name];
+				}
+			}
+
+			if (weights_sum == -1) {
+				std::cout << "ERROR : Invalid weight file format : Key WEIGHT_SUM not found." << std::endl;
+				std::exit(1);
+			}
+			else {
+				for (auto& kvp : _weights) {
+					_weights[kvp.first] /= weights_sum;
+				}
 			}
 		}
 

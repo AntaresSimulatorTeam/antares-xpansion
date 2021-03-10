@@ -28,8 +28,13 @@ public:
     void updateEndTime();
 
     void write(BendersOptions const & bendersOptions_p);
-    void write(int const & nbWeeks_p, BendersTrace const & bendersTrace_p, BendersData const & bendersData_p);
-    void write(int nbWeeks_p, double const & lb_p, double const & ub_p, double const & investCost_p, Point const & solution_p, bool const & optimality_p);
+    void write(int const & nbWeeks_p, BendersTrace const & bendersTrace_p, 
+                BendersData const & bendersData_p);
+    void write(int nbWeeks_p, double const & lb_p, double const & ub_p, double const & investCost_p,
+                double const& operationalCost_p, double const & overallCost_p,
+                Point const & solution_p, bool const & optimality_p);
+
+    void write_failure();
 
     void dump(std::string const & filename_p);
 };

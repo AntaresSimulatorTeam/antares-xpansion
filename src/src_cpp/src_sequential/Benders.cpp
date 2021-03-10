@@ -71,12 +71,13 @@ void Benders::build_cut() {
 	}
 	else {
 		get_slave_cut(slave_cut_package, _map_slaves, _options, _data);
+		_data.slave_cost = 0;
+		for (auto pairSlavenameSlavecutdata_l : slave_cut_package)
+		{
+			_data.slave_cost += pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST];
+		}
 	}
-	_data.slave_cost = 0;
-	for (auto pairSlavenameSlavecutdata_l : slave_cut_package)
-	{
-		_data.slave_cost += pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST];
-	}
+	
 	_data.timer_slaves = timer_slaves.elapsed();
 	all_package.push_back(slave_cut_package);
 	build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);

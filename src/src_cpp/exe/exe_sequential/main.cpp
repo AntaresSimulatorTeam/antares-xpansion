@@ -6,13 +6,15 @@
 
 int main(int argc, char** argv)
 {
-	google::InitGoogleLogging(argv[0]);
-	google::SetLogDestination(google::GLOG_INFO, "./benderssequentialLog");
-	LOG(INFO) << "starting Benders Sequential" << std::endl;
-
 	//options.print(std::cout);
 	usage(argc);
 	BendersOptions options(build_benders_options(argc, argv));
+
+	google::InitGoogleLogging(argv[0]);
+	std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "benderssequentialLog";
+	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
+	LOG(INFO) << "starting Benders Sequential" << std::endl;
+
 	std::ostringstream oss_l;
 	options.print(oss_l);
 	std::cout << oss_l.str();

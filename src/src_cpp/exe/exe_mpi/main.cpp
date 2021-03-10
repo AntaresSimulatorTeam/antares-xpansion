@@ -9,19 +9,23 @@
 
 int main(int argc, char** argv)
 {
-	google::InitGoogleLogging(argv[0]);
-	google::SetLogDestination(google::GLOG_INFO, "./bendersmpiLog");
-	LOG(INFO) << "starting bendersmpi" << std::endl;
-
 	mpi::environment env(argc, argv);
 	mpi::communicator world;
-
-	JsonWriter jsonWriter_l;
 
 	if (world.rank() == 0)
 		usage(argc);
 
 	BendersOptions options(build_benders_options(argc, argv));
+
+	JsonWriter jsonWriter_l;
+	jsonWriter_l.write_failure();
+	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
+
+	google::InitGoogleLogging(argv[0]);
+	std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog";
+	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
+	LOG(INFO) << "starting bendersmpi" << std::endl;
+
 	if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1) {
 		std::cout << "You need to have at least one slave by thread" << std::endl;
 		exit(1);
@@ -63,7 +67,7 @@ int main(int argc, char** argv)
 		if (world.rank() == 0) {
 			jsonWriter_l.updateEndTime();
 			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
-			jsonWriter_l.dump("out.json");
+			jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
 		}
 		bendersMpi.free(env, world);
 		world.barrier();
