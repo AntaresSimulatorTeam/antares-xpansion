@@ -70,7 +70,8 @@ add_custom_command (TARGET unit_tests
 	COMMENT "Runs the unit tests after build"
 	)
 
-add_test (unit_tests unit_tests)
+add_test(NAME unit_ortools COMMAND unit_tests)
+set_property(TEST unit_ortools PROPERTY LABELS unit)
 
 # ----------------------------------------------------------------------------
 # run_unit_tests & coverage
