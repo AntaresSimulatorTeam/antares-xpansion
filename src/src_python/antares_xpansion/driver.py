@@ -442,7 +442,7 @@ class XpansionDriver():
                                                                   os.path.normpath(os.path.join(
                                                                       os.getcwd(), solver))))
         with open(solver + '.log', 'w') as output_file:
-            returned_l = subprocess.run(self.get_solver_cmd(solver), shell=True,
+            returned_l = subprocess.run(self.get_solver_cmd(solver), shell=False,
                                          stdout=output_file,
                                          stderr=output_file)
             if returned_l.returncode != 0:
