@@ -111,7 +111,7 @@ def test_001_mpibenders(installDir):
     launch_xpansion(installDir, study_path, "mpibenders")
     check_investment_solution(study_path, expected_last_it,expected_investment_solution)
     
-@pytest.mark.medium
+@pytest.mark.long
 def test_002_sequential(installDir):
     study_path = ALL_STUDIES_PATH / "xpansion-test-02"
 
