@@ -11,6 +11,7 @@ import sys
 
 from pathlib import Path
 
+from antares_xpansion.general_data_reader import GeneralDataIniReader, IniReader
 from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
@@ -59,6 +60,8 @@ class XpansionDriver():
                             }
 
         print(self.candidates_list)
+
+        self.nb_years = GeneralDataIniReader(Path(self.general_data())).get_nb_activated_year()
 
     def exe_path(self, exe):
         """
@@ -198,14 +201,6 @@ class XpansionDriver():
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
                                              self.config.EXPANSION, additional_constraints_filename))
 
-    def nb_years(self):
-        """
-            returns the nubyears parameter value read from the general data file
-        """
-        ini_file = configparser.ConfigParser(strict=False)
-        ini_file.read(self.general_data())
-        return float(ini_file['general']['nbyears'])
-
     def launch(self):
         """
             launch antares xpansion steps
@@ -287,7 +282,7 @@ class XpansionDriver():
         with open(self.general_data(), 'w') as writer:
             current_section = ""
             for line in lines:
-                if self._line_is_not_a_section_header(line):
+                if IniReader.line_is_not_a_section_header(line):
                     key = line.split('=')[0].strip()
                     line = self._get_new_line(line, current_section, key)
                 else:
@@ -295,10 +290,6 @@ class XpansionDriver():
 
                 if line:
                     writer.write(line)
-
-    @staticmethod
-    def _line_is_not_a_section_header(_line):
-        return len(_line.split('=')) == 2
 
     def _get_new_line(self, line, section, key):
         if (section, key) in self.changed_val:
@@ -465,9 +456,9 @@ class XpansionDriver():
         """
         # computing the weight of slaves
         options_values = self.config.options_default
-        options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_years())
+        options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_years)
         print('Number of years is {}, setting SLAVE_WEIGHT_VALUE to {} '.
-              format(self.nb_years(), options_values["SLAVE_WEIGHT_VALUE"]))
+              format(self.nb_years, options_values["SLAVE_WEIGHT_VALUE"]))
         options_values["GAP"] = self.optimality_gap()
         options_values["MAX_ITERATIONS"] = self.max_iterations()
         # generate options file for the solver

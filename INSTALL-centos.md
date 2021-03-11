@@ -146,27 +146,32 @@ Tests compilation  can be enabled at configure time using the option `-DBUILD_TE
 After build, tests can be run with ``ctest`` :
  ```
 cd _build
-ctest -C Release --output-on-failure
+ctest3 -C Release --output-on-failure
 ```
 All tests are associated to a label and multiple labels can be defined. You can choose which tests will be executed at ctest run.
 
 This is the list of the available labels :
 
-| Label     | Description |
-|:-------|-----|
-| `unit_tests`  | Unit test for OR-Tools use|
-| `example`  | End to end tests with examples antares study|
+| Name     | Label |Description |
+|:-------|-----|-----|
+| `unit_ortools`  | `unit`  | Unit test for OR-Tools use|
+| `unit_launcher`  | `unit`  |Unit test antares-xpansion python launcher|
+| `example`  | `medium`  |End to end tests with examples antares study|
 Note :
-> Use `ctest -N` to see all available tests
+> Use `ctest3 -N` to see all available tests
 
-Here is an example for running only example tests:
+Here is an example for running only example tests (use of `Name` with `-R` option):
 ```
-ctest -C Release --output-on-failure -L example
+ctest3 -C Release --output-on-failure -R example
+```` 
+Here is an example for running only units tests (use of `Label` with `-L` option):
+```
+ctest3 -C Release --output-on-failure -L unit
 ```` 
 
-To run all test, don't indicate any labels:
+To run all test, don't indicate any label or name:
 ```
-ctest -C Release --output-on-failure
+ctest3 -C Release --output-on-failure
 ```` 
 
 ## [Installer creation](#installer)

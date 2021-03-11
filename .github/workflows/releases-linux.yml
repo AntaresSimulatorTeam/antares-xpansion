@@ -76,7 +76,7 @@ jobs:
     - name: Running unit tests
       run: |
            cd _build
-           ctest -C Release --output-on-failure -L "medium"
+           ctest -C Release --output-on-failure -L "medium|unit"
         
     - name: .tar.gz creation
       run: |
