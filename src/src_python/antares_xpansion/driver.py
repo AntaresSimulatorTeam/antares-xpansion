@@ -69,22 +69,6 @@ class XpansionDriver():
         """
         return os.path.normpath(os.path.join(self.config.installDir, exe))
 
-    def solver_cmd(self, solver):
-        """
-            returns a list consisting of the path to the required solver and its launching options
-        """
-        assert solver in [self.config.MERGE_MPS,
-                          self.config.BENDERS_MPI,
-                          self.config.BENDERS_SEQUENTIAL]
-        if solver == self.config.MERGE_MPS:
-            return self.exe_path(solver) + " " + self.config.OPTIONS_TXT
-        elif solver == self.config.BENDERS_MPI:
-            return self.config.MPI_LAUNCHER + " " + \
-                   self.config.MPI_N + " " + str(self.config.n_mpi) + \
-                   " " + self.exe_path(solver) + " " + self.config.OPTIONS_TXT
-        # solver == self.config.BENDERS_SEQUENTIAL:
-        return self.exe_path(solver) + " " + self.config.OPTIONS_TXT
-
     def antares(self):
         """
             returns antares binaries location
@@ -318,18 +302,24 @@ class XpansionDriver():
         #     os.mkdir(driver.antares_output(), )
         old_output = os.listdir(self.antares_output())
         print([self.antares(), self.data_dir()])
-        with open(self.antares() + '.log', 'w') as output_file:
-            returned_l = subprocess.call(self.antares() + " " + self.data_dir(), shell=True,
-                                         stdout=output_file,
-                                         stderr=output_file)
-            if returned_l != 0:
-                print("WARNING: exited antares with status %d" % returned_l)
+        with open(self.get_antares_log_filename(), 'w') as output_file:
+            returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
+                                        stdout=output_file,
+                                        stderr=output_file)
+            if returned_l.returncode != 0:
+                print("WARNING: exited antares with status %d" % returned_l.returncode)
         new_output = os.listdir(self.antares_output())
         print(old_output)
         print(new_output)
         assert len(old_output) + 1 == len(new_output)
         diff = list(set(new_output) - set(old_output))
         return diff[0]
+
+    def get_antares_log_filename(self):
+        return str(self.antares()) + '.log'
+
+    def get_antares_cmd(self):
+        return [self.antares(), self.data_dir()]
 
     def post_antares(self, antares_output_name):
         """
@@ -388,18 +378,21 @@ class XpansionDriver():
             shutil.rmtree(lp_path)
         os.makedirs(lp_path)
 
-        is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
-        with open(self.exe_path(self.config.LP_NAMER) + '.log', 'w') as output_file:
-            lp_cmd = self.exe_path(
-                self.config.LP_NAMER) + " " + output_path + " " + is_relaxed + " " + self.additional_constraints()
-            returned_l = subprocess.call(lp_cmd,
-                                         shell=True,
-                                         stdout=output_file,
-                                         stderr=output_file)
-            if returned_l != 0:
-                print("ERROR: exited lpnamer with status %d" % returned_l)
+        with open(self.get_lp_namer_log_filename(), 'w') as output_file:
+            returned_l = subprocess.run(self.get_lp_namer_command(output_path), shell=False,
+                                        stdout=output_file,
+                                        stderr=output_file)
+            if returned_l.returncode != 0:
+                print("ERROR: exited lpnamer with status %d" % returned_l.returncode)
                 sys.exit(1)
         return lp_path
+
+    def get_lp_namer_log_filename(self):
+        return self.exe_path(self.config.LP_NAMER) + '.log'
+
+    def get_lp_namer_command(self,output_path):
+        is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
+        return [self.exe_path(self.config.LP_NAMER), output_path, is_relaxed, self.additional_constraints()]
 
     def launch_optimization(self, lp_path):
         """
@@ -449,14 +442,26 @@ class XpansionDriver():
                                                                   os.path.normpath(os.path.join(
                                                                       os.getcwd(), solver))))
         with open(solver + '.log', 'w') as output_file:
-            returned_l = subprocess.call(self.solver_cmd(solver), shell=True,
+            returned_l = subprocess.run(self.get_solver_cmd(solver), shell=True,
                                          stdout=output_file,
                                          stderr=output_file)
-            if returned_l != 0:
-                print("ERROR: exited solver with status %d" % returned_l)
+            if returned_l.returncode != 0:
+                print("ERROR: exited solver with status %d" % returned_l.returncode)
                 sys.exit(1)
 
         os.chdir(old_cwd)
+
+    def get_solver_cmd(self,solver):
+        """
+            returns a list consisting of the path to the required solver and its launching options
+        """
+        assert solver in [self.config.MERGE_MPS,
+                          self.config.BENDERS_MPI,
+                          self.config.BENDERS_SEQUENTIAL]
+        if solver == self.config.BENDERS_MPI:
+            return [self.config.MPI_LAUNCHER, self.config.MPI_N, str(self.config.n_mpi), self.exe_path(solver), self.config.OPTIONS_TXT]
+        else:
+            return [self.exe_path(solver),self.config.OPTIONS_TXT]
 
     def set_options(self, output_path):
         """
