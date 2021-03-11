@@ -100,6 +100,7 @@ def test_001_sequential(installDir):
     
     launch_xpansion(installDir, study_path, "sequential")
     check_investment_solution(study_path,expected_last_it,expected_investment_solution)
+    remove_outputs(study_path)
 
 @pytest.mark.medium
 def test_001_mpibenders(installDir):
@@ -110,6 +111,7 @@ def test_001_mpibenders(installDir):
     
     launch_xpansion(installDir, study_path, "mpibenders")
     check_investment_solution(study_path, expected_last_it,expected_investment_solution)
+    remove_outputs(study_path)
     
 @pytest.mark.long
 def test_002_sequential(installDir):
@@ -120,8 +122,9 @@ def test_002_sequential(installDir):
     
     launch_xpansion(installDir, study_path, "sequential")
     check_investment_solution(study_path,expected_last_it,expected_investment_solution)
+    remove_outputs(study_path)
 
-@pytest.mark.medium
+@pytest.mark.long
 def test_002_mpibenders(installDir):
     study_path = ALL_STUDIES_PATH / "xpansion-test-02"
 
@@ -130,4 +133,5 @@ def test_002_mpibenders(installDir):
     
     launch_xpansion(installDir, study_path, "mpibenders")
     check_investment_solution(study_path, expected_last_it,expected_investment_solution)
+    remove_outputs(study_path)
 
