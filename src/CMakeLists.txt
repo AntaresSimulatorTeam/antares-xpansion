@@ -4,6 +4,12 @@ if(BUILD_TESTING)
 	add_subdirectory(tests)
 endif()
 
+if(USE_MPI)
+    set(BENDERSMPI_APP $<TARGET_FILE_NAME:bendersmpi>)    
+else()    
+    set(BENDERSMPI_APP "mpi_not_available")    
+endif()
+
 #configure file to define antares-solver executable
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/src_python/config.yaml.in  ${CMAKE_CURRENT_SOURCE_DIR}/src_python/config.yaml)
 

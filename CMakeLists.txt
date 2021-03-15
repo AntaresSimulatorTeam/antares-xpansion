@@ -28,7 +28,7 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
-set(ANTARES_XPANSION_RC 2)
+set(ANTARES_XPANSION_RC 3)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -139,6 +139,15 @@ endif()
 
 message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 
+file(READ antares-version.json jsonContent)
+sbeParseJson(antares_version jsonContent)
+
+#need to know antares solver version because antares-solver targets still refers to antares version
+SET(ANTARES_VERSION ${antares_version.antares_version_executable})
+SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
+
+sbeClearJson(antares_version)
+
 add_subdirectory(antares-deps)
 
 # Build dependencies not handled by antares-deps repository
@@ -220,14 +229,6 @@ endif()
 
 find_package(antares-solver REQUIRED)
 
-file(READ antares-version.json jsonContent)
-sbeParseJson(antares_version jsonContent)
-
-#need to know antares solver version because antares-solver targets still refers to antares version
-SET(ANTARES_VERSION ${antares_version.antares_version_executable})
-
-sbeClearJson(antares_version)
-
 get_target_property( ANTARES_SOLVER_PATH antares-${ANTARES_VERSION}-solver IMPORTED_LOCATION_RELEASE )
 get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)
 get_filename_component(ANTARES_SOLVER_APP ${ANTARES_SOLVER_PATH} NAME)
@@ -278,11 +279,12 @@ install(DIRECTORY ${ANTARES_SOLVER_DIR}/../lib/
 install(FILES ${ANTARES_SOLVER_PATH}
   DESTINATION BIN)
   
-  
+
+
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     get_linux_lsb_release_information()
     message(STATUS "Linux ${LSB_RELEASE_ID_SHORT} ${LSB_RELEASE_VERSION_SHORT} ${LSB_RELEASE_CODENAME_SHORT}")
-    set(CPACK_SYSTEM_NAME "${LSB_RELEASE_ID_SHORT}-${LSB_RELEASE_VERSION_SHORT}") 
+    set(CPACK_SYSTEM_NAME "${LSB_RELEASE_ID_SHORT}-${LSB_RELEASE_VERSION_SHORT}")
 endif()
 
 set(CPACK_PROJECT_NAME "antaresXpansion")
@@ -297,9 +299,8 @@ set(CPACK_RPM_PACKAGE_REQUIRES "openmpi,jsoncpp,boost-openmpi")
 set(CPACK_RPM_PACKAGE_AUTOREQPROV "0")
 
 if (ANTARES_XPANSION_RC)
-	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}-${CPACK_SYSTEM_NAME}")
-else()
-	set(CPACK_PACKAGE_FILE_NAME "${CPACK_PROJECT_NAME}-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-${CPACK_SYSTEM_NAME}")
+	set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}")
 endif()
 
 include(CPack)
+

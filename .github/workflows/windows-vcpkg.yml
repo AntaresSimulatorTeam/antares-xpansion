@@ -8,6 +8,7 @@ on:
       - features/*
       - feature/*
       - fix/*
+      - release/*
 jobs:
 
   windows:
@@ -22,16 +23,16 @@ jobs:
           - os: windows-latest
             triplet: x64-windows
             vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
-            vcpkgPackages: jsoncpp gtest boost-mpi openssl curl wxwidgets boost-test boost-process boost-filesystem boost-dll boost-regex
+            vcpkgPackages: jsoncpp gtest boost-mpi
 
     steps:
     
     - uses: actions/checkout@v2
     
     - name: Set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: 3.9.1
           
     - name: Install dependencies
       run: |
@@ -47,7 +48,7 @@ jobs:
           msmpisetup.exe -unattend
 
     - name : Install deps with VCPKG
-      uses: lukka/run-vcpkg@v4
+      uses: lukka/run-vcpkg@v7
       id: runvcpkg
       with:
         vcpkgArguments: '${{ matrix.vcpkgPackages }}'
@@ -91,7 +92,7 @@ jobs:
       run: |
            set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
            cd _build
-           ctest -C Release --output-on-failure -L "medium"
+           ctest -C Release --output-on-failure -L "medium|unit"
     
     - name: Installer .zip creation
       run: |

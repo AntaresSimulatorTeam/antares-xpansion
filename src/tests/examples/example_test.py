@@ -100,6 +100,7 @@ def test_001_sequential(installDir):
     
     launch_xpansion(installDir, study_path, "sequential")
     check_investment_solution(study_path,expected_last_it,expected_investment_solution)
+    remove_outputs(study_path)
 
 @pytest.mark.medium
 def test_001_mpibenders(installDir):
@@ -110,3 +111,27 @@ def test_001_mpibenders(installDir):
     
     launch_xpansion(installDir, study_path, "mpibenders")
     check_investment_solution(study_path, expected_last_it,expected_investment_solution)
+    remove_outputs(study_path)
+    
+@pytest.mark.long
+def test_002_sequential(installDir):
+    study_path = ALL_STUDIES_PATH / "xpansion-test-02"
+
+    expected_last_it = [1.3554036761e+09, 1.3554036761e+09]
+    expected_investment_solution = {"battery" : 5.66e+02, "peak1" : 6.0e+02 , "peak2" : 1.0e+03, "pv" : 4.4267733994e+02, "semibase1" : 6.0e+02}
+    
+    launch_xpansion(installDir, study_path, "sequential")
+    check_investment_solution(study_path,expected_last_it,expected_investment_solution)
+    remove_outputs(study_path)
+
+@pytest.mark.long
+def test_002_mpibenders(installDir):
+    study_path = ALL_STUDIES_PATH / "xpansion-test-02"
+
+    expected_last_it = [1.3554036761e+09, 1.3554036761e+09]
+    expected_investment_solution = {"battery" : 5.66e+02, "peak1" : 6.0e+02 , "peak2" : 1.0e+03, "pv" : 4.4267733994e+02, "semibase1" : 6.0e+02}
+    
+    launch_xpansion(installDir, study_path, "mpibenders")
+    check_investment_solution(study_path, expected_last_it,expected_investment_solution)
+    remove_outputs(study_path)
+

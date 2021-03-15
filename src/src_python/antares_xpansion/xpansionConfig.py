@@ -44,7 +44,7 @@ class XpansionConfig():
                             dest="step",
                             choices=["lp", "optim", "full", "antares", "getnames"],
                             help='Step to execute ("lp", "optim", "full", "antares", "getnames")',
-                            required=True)
+                            default="full")
         parser.add_argument("--simulationName",
                             dest="simulationName",
                             help="Name of the antares simulation to use. Must be present in the output directory")
