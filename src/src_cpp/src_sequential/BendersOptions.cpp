@@ -76,9 +76,6 @@ void BendersOptions::read(std::string const & file_name) {
 				buffer >> _weights[problem_name];
 			}
 		}
-
-		//@FIXME force TRACE to true => trace is used in json
-		TRACE = true;
 	}
 	else {
 		std::cout << "setting option to default" << std::endl;

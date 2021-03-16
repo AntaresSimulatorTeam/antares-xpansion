@@ -134,10 +134,9 @@ void BendersMpi::step_1(mpi::environment & env, mpi::communicator & world) {
 
 		LOG_INFO_AND_COUT("\tmaster solved in " + std::to_string (_data.timer_master) + ".");
 		investment_candidates_log(_data);
+		
+		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
-		if (_options.TRACE) {
-			_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
-		}
 		if (_options.ACTIVECUTS) {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
 		}
@@ -272,11 +271,10 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
 
 		if (world.rank() == 0) {
 			update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
-			solution_log(_data);
+			solution_log(_data);			
 			
-			if (_options.TRACE) {
-				update_trace(_trace, _data);
-			}
+			update_trace(_trace, _data);
+
 			_data.timer_master = timer_master.elapsed();
 			_data.stop = stopping_criterion(_data,_options);
 		}

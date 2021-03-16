@@ -477,9 +477,8 @@ void sort_cut_slave(AllCutPackage const & all_package, WorkerMasterPtr & master,
 				}
 				all_cuts_storage[itmap.first].insert(cut);
 			}
-			if (options.TRACE) {
-				trace[data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
-			}
+			trace[data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
+			
 			bound_simplex_iter(handler->get_int(SIMPLEXITER), data);
 		}
 	}
@@ -521,9 +520,8 @@ void sort_cut_slave_aggregate(AllCutPackage const & all_package, WorkerMasterPtr
 				data.deletedcut++;
 			}
 			all_cuts_storage.find(itmap.first)->second.insert(cut);
-			if (options.TRACE) {
-				trace[data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
-			}
+			trace[data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
+			
 			bound_simplex_iter(handler->get_int(SIMPLEXITER), data);
 		}
 	}
@@ -560,9 +558,7 @@ void add_random_cuts(WorkerMasterPtr & master, AllCutPackage const & all_package
 			if (handler->get_dbl(SLAVE_COST) <= options.GAP + handler->get_dbl(ALPHA_I)) {
 				nboundslaves++;
 			}
-			if (options.TRACE) {
-				trace[data.it - 1]->_cut_trace[kvp.first] = slave_cut_data;
-			}
+			trace[data.it - 1]->_cut_trace[kvp.first] = slave_cut_data;			
 		}
 	}
 	if (nboundslaves == options.RAND_AGGREGATION) {

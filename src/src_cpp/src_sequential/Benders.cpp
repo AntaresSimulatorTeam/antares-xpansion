@@ -115,9 +115,7 @@ void Benders::run() {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
 		}
 
-		if (_options.TRACE) {
-			_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
-		}
+		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));		
 
 		LOG_INFO_AND_COUT("\tBuilding cuts...");
 		build_cut();
@@ -126,9 +124,8 @@ void Benders::run() {
 		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
 		solution_log(_data);
 
-		if (_options.TRACE) {
-			update_trace(_trace, _data);
-		}
+		update_trace(_trace, _data);
+		
 		_data.timer_master = timer_master.elapsed();
 		_data.stop = stopping_criterion(_data, _options);
 	}
