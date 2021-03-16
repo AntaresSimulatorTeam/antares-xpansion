@@ -55,7 +55,7 @@ void BendersMpi::load(CouplingMap const & problem_list, mpi::environment & env, 
 				}
 			}
 			_master.reset(new WorkerMaster(it_master->second, _options.get_master_path(), _options, _data.nslaves));
-			std::cout << "nrealslaves is " << _data.nslaves << std::endl;
+			LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
 		}
 		mpi::broadcast(world, _data.nslaves, 0);
 		int current_worker(1);
@@ -65,19 +65,16 @@ void BendersMpi::load(CouplingMap const & problem_list, mpi::environment & env, 
 			}
 			if (world.rank() == 0) {
 				CouplingMap::value_type kvp(*real_problem_list[islave]);
-				//std::cout << "#" << world.rank() << " send " << kvp.first <<" | "<<islave<< std::endl;
 				world.send(current_worker, islave, kvp);
 			}
 			else if (world.rank() == current_worker) {
 				CouplingMap::value_type kvp;
 				world.recv(0, islave, kvp);
-				//std::cout << "#" << world.rank() << " recv " << kvp.first << " | " << islave << std::endl;
 				_map_slaves[kvp.first] = WorkerSlavePtr(new WorkerSlave(kvp.second, _options.get_slave_path(kvp.first), _options.slave_weight(_data.nslaves, kvp.first), _options));
 				_slaves.push_back(kvp.first);
 			}
 		}
 	}
-	//std::cout << "#" << world.rank() << " : " << _map_slaves.size() << std::endl;
 }
 
 /*!
@@ -130,10 +127,16 @@ void BendersMpi::step_1(mpi::environment & env, mpi::communicator & world) {
 
 	if (world.rank() == 0)
 	{
+		LOG_INFO_AND_COUT("ITERATION " + std::to_string(_data.it) + " :");
+		LOG_INFO_AND_COUT("\tSolving master...");
+
 		get_master_value(_master, _data, _options);
-		if (_options.TRACE) {
-			_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
-		}
+
+		LOG_INFO_AND_COUT("\tmaster solved in " + std::to_string (_data.timer_master) + ".");
+		investment_candidates_log(_data);
+		
+		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
+
 		if (_options.ACTIVECUTS) {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
 		}
@@ -164,8 +167,22 @@ void BendersMpi::step_2(mpi::environment & env, mpi::communicator & world) {
 		Timer timer_slaves;
 		gather(world, slave_cut_package, all_package, 0);
 		_data.timer_slaves = timer_slaves.elapsed();
+
+		_data.slave_cost = 0;
+		for (auto const& pack : all_package) {
+			for (auto& dataVal : pack) {
+				_data.slave_cost += dataVal.second.first.second[SLAVE_COST];
+
+			}
+		}
+
 		all_package.erase(all_package.begin());
+
+		LOG_INFO_AND_COUT("\tBuilding cuts...");
+
 		build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);
+		
+		LOG_INFO_AND_COUT("\tCuts built.");
 	}
 	else {
 		if (_options.RAND_AGGREGATION) {
@@ -227,12 +244,9 @@ void BendersMpi::free(mpi::environment & env, mpi::communicator & world) {
 *  \param env : environment variable for mpi communication
 *
 *  \param world : communicator variable for mpi communication
-*
-*  \param stream : stream to print the output
 */
-void BendersMpi::run(mpi::environment & env, mpi::communicator & world, std::ostream & stream) {
+void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
 	if (world.rank() == 0) {
-		init_log(stream, _options.LOG_LEVEL);
 		for (auto const & kvp : _problem_to_id) {
 			_all_cuts_storage[kvp.first] = SlaveCutStorage();
 		}
@@ -257,11 +271,11 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world, std::ost
 
 		if (world.rank() == 0) {
 			update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
-			if (_options.TRACE) {
-				update_trace(_trace, _data);
-			}
+			solution_log(_data);			
+			
+			update_trace(_trace, _data);
+
 			_data.timer_master = timer_master.elapsed();
-			print_log(stream, _data, _options.LOG_LEVEL);
 			_data.stop = stopping_criterion(_data,_options);
 		}
 
@@ -270,7 +284,6 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world, std::ost
 	}
 
 	if (world.rank() == 0) {
-		print_solution(stream, _data.bestx, true);
 		if (_options.TRACE) {
 			print_csv(_trace,_problem_to_id,_data,_options);
 		}

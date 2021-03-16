@@ -447,24 +447,19 @@ def check_settings_file(driver):
 
         :return: Exits if the candidates files has the wrong format.
     """
-    with open(driver.settings(), 'r') as file_l:
-        options = dict(
-            {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-             for line in file_l.readlines()})
-
-    for (option, value) in options.items():
+    for (option, value) in driver.options.items():
         if not check_setting_option_type(option, value):
             print("check_settings : value %s for option %s has the wrong type!" % (value, option))
             sys.exit(1)
         check_setting_option_value(option, value)
 
-    if options.get('yearly_weights', "") != "":
-        if options.get("cut_type") == "average":
+    if driver.options.get('yearly_weights', "") != "":
+        if driver.options.get("cut_type") == "average":
             print("check_settings : yearly_weights option can not be used when cut_type is average")
             sys.exit(1)
-        check_weights_file(driver.weights_file(options.get('yearly_weights', "")))
+        check_weights_file(driver.weights_file(driver.options.get('yearly_weights', "")))
 
-    if options.get('additional-constraints', "") != "":
+    if driver.options.get('additional-constraints', "") != "":
         additional_constraints_path = driver.additional_constraints()
         if not os.path.isfile(additional_constraints_path):
             print('Illegal value: %s is not an existent additional-constraints file'

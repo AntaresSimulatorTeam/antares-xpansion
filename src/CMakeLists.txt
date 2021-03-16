@@ -1,12 +1,13 @@
 add_subdirectory (src_cpp)
 
-#generate config.yaml with executable names in current source directory
-SET(ANTARES_VERSION 8.0)
+if(BUILD_TESTING)
+	add_subdirectory(tests)
+endif()
 
-if (MSVC)
-    SET(ANTARES_SOLVER_APP "antares-${ANTARES_VERSION}-solver.exe")
-elseif(UNIX)
-    SET(ANTARES_SOLVER_APP "antares-${ANTARES_VERSION}-solver")
+if(USE_MPI)
+    set(BENDERSMPI_APP $<TARGET_FILE_NAME:bendersmpi>)    
+else()    
+    set(BENDERSMPI_APP "mpi_not_available")    
 endif()
 
 #configure file to define antares-solver executable

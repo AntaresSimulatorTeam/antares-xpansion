@@ -114,7 +114,6 @@ void masterGeneration(std::string rootPath,
 			pallier_i.push_back(new_id);
 			unit_size.push_back(candidate_i.unit_size());
 			max_unit.push_back(candidate_i.max_unit());
-			std::cout << candidate_i.max_unit() << std::endl;
 		}
 		++i;
 	}

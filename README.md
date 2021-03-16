@@ -1,16 +1,21 @@
 # Antares-Xpansion
 
-[![Status][linux_system_svg]][linux_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
+[![Status][ubuntu_system_svg]][ubuntu_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link] [![Status][centos_system_svg]][centos_system_link]  
+![antares logo](./media/AntaresSimulator_Logo.png)
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-[linux_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Linux%20CI%20(system%20libs)/badge.svg
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
 
-[linux_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Linux%20CI%20(system%20libs)"
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Ubuntu%20CI%20(system%20libs)"
 
 [windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Windows%20CI%20(VCPKG)/badge.svg
 
 [windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Windows%20CI%20(VCPKG)"
+
+[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Centos7%20CI%20(system%20libs)/badge.svg
+
+[centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)"
  
 This package works along with RTE's adequacy software ANTARES : https://antares.rte-france.com/
 
@@ -33,8 +38,9 @@ a minimum. The total cost evaluated in this problem are the sum of the
 
 This software suite has been tested under:
 
-*   Ubuntu 16.04 and up (64-bit) [![Status][linux_system_svg]][linux_system_link] 
+*   Ubuntu 20.04 [![Status][ubuntu_system_svg]][ubuntu_system_link] 
 *   Microsoft Windows with Visual Studio 2019 (64-bit) [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
+*   Centos 7 [![Status][centos_system_svg]][centos_system_link] 
 
 Antares XPansion is built using CMake.
 For installation instructions, please visit [INSTALL.md](INSTALL.md)
@@ -77,6 +83,8 @@ syntax used within this file is illustrated in the example below.
 
 An example with two investments candidates, one in semi-base generation and one
 in network capacity, is given below.
+
+![simple_example](./media/simple-investments-candidates.png)
 
 The invested semi-base generation in area 1 is shifted in the "virtual node"
 invest_semibase. Within the optimization process, the capacity of the link
@@ -172,8 +180,9 @@ As the optimal solution is not more realistic than an approximate solution of th
 
 First, create an Antares study with the description of the candidates and create the `candidates.ini` and `settings.ini` files as explained above and store them in the directory `study_path/user/expansion`.
 
-The entry point to run Antares Xpansion is in the source code: `src_python > launch.py`
-This script is called on the Command Prompt:
+Antares Xpansion does not have a GUI, the entry point to run Antares Xpansion is in the executable
+`/antares-xpansion-install-dir/xpansion-launcher/antares-xpansion-launcher.exe`.
+This binary should be run from a command prompt or unix terminal:
 
 TODO code snippet with the shell command and output 
 
@@ -202,12 +211,11 @@ This option enables to give a name to an Antares simulation. It is necessary if 
 This option, not optional, is used to define the directory containing the different executables that the script can launch. The path specified must be an explicit path. The directory must contain the following executables:
  
 ##### method
-This option enables to set the type of resolution to be used for Antares Xpansion.
-mpibenders	Launch the MPI version of the Benders decomposition if the user has MPI
-mergeMPS	Not implemented. Launch frontal resolution without decomposition
-Both	Not implemented
-sequential	Launch Benders decomposition
+This option enables to set the type of resolution to be used for Antares Xpansion :
 
+- mpibenders : Launch the MPI version of the Benders decomposition if the user has MPI
+- mergeMPS : Not implemented. Launch frontal resolution without decomposition
+- sequential : Launch Benders decomposition
  
 
 #### Results

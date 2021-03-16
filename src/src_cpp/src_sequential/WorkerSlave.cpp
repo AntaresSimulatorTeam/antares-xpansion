@@ -26,54 +26,10 @@ WorkerSlave::WorkerSlave(Str2Int const & variable_map, std::string const & path_
 		sequence[i] = i;
 	}
 	ORTgetobj(*_solver, o_l, 0, mps_ncols - 1);
-	//std::cout << "slave_weight : " << slave_weight << std::endl;
 	for (auto & c : o_l) {
 		c *= slave_weight;
 	}
-	ORTchgobj(*_solver, sequence, o_l);
-	// XPRSsetintcontrol(_xprs, XPRS_DEFAULTALG, 2);
-
-	//IntVector scols;
-	//for (auto const & x : _id_to_name) {
-	//	scols.push_back(x.first);
-	//}
-	//int ncols;
-	//int nrows;
-	//XPRSgetintattrib(_xprs, XPRS_COLS, &ncols);
-	//XPRSgetintattrib(_xprs, XPRS_COLS, &nrows);
-	//XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-	//XPRSloadsecurevecs(_xprs, 0, scols.size(), NULL, scols.data());
-	//XPRSsetintcontrol(_xprs, XPRS_LPITERLIMIT, 0);
-	//XPRSlpoptimize(_xprs, "");
-	//double objrhs(0);
-	//XPRSgetdblattrib(_xprs, XPRS_OBJRHS, &objrhs);
-	//IntVector colmap(ncols);
-	//XPRSgetpresolvemap(_xprs, NULL, colmap.data());
-	//for (int i(0); i < ncols; ++i) {
-	//	//if(_id_to_name.find(colmap[i]) != _id_to_name.end())
-	//	//std::cout << i << "   |   " << colmap[i] << std::endl;
-	//}
-	//StandardLp datapre(_xprs);
-	//IntVector precolstatus(ncols);
-	//IntVector prerowstatus(nrows);
-	//XPRSgetpresolvebasis(_xprs, prerowstatus.data(), precolstatus.data());
-	//XPRSprob prexp;
-	//XPRScreateprob(&prexp);
-	//XPRSsetcbmessage(prexp, optimizermsg, this);
-	//XPRSsetintcontrol(prexp, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-	//XPRSsetintcontrol(prexp, XPRS_THREADS, 1);
-	//XPRSloadlp(prexp, "prexp", 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
-	//datapre.append_in(prexp);
-	//IntVector minus_one(1, -1);
-	//std::cout << "objrhs : " << objrhs << std::endl;
-	//XPRSchgobj(prexp, 1, minus_one.data(), &objrhs);
-	//XPRSloadbasis(prexp, prerowstatus.data(), precolstatus.data());
-	//std::cout << "solving prexp" << std::endl;
-	//XPRSlpoptimize(prexp, "");
-	//std::cout << "solving xprs" << std::endl;
-	//XPRSsetintcontrol(_xprs, XPRS_LPITERLIMIT, 2147483645);
-	//XPRSlpoptimize(_xprs, "");
-	//std::exit(0);
+	ORTchgobj(*_solver, sequence, o_l);	
 }
 WorkerSlave::~WorkerSlave() {
 

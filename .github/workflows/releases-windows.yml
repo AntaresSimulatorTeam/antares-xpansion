@@ -1,0 +1,110 @@
+name: Release asset upload (Windows)
+
+on:
+  release:
+    types: [created]
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+  
+jobs:
+
+  windows:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+        include:
+          - os: windows-latest
+            triplet: x64-windows
+            vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
+            vcpkgPackages: jsoncpp gtest boost-mpi
+
+    steps:
+    - uses: actions/checkout@v2 
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9.1
+          
+    - name: Install dependencies
+      run: |
+          python -m pip install --upgrade pip
+          pip install -r src/src_python/requirements.txt
+          pip install -r src/tests/examples/requirements.txt
+    
+    - name: Get release
+      id: get_release
+      uses: bruceadams/get-release@v1.2.0
+      
+    - name: Pre-requisites
+      shell: cmd
+      run: |          
+          choco install wget --no-progress
+          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          msmpisetup.exe -unattend
+    
+    - name : Install deps with VCPKG
+      uses: lukka/run-vcpkg@v7
+      id: runvcpkg
+      with:
+        vcpkgArguments: '${{ matrix.vcpkgPackages }}'
+        vcpkgTriplet: '${{ matrix.triplet }}'
+        vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
+        vcpkgGitCommitId: '${{ matrix.vcpkgCommitId }}'        
+        
+    - name: Read antares-solver version
+      id: antares-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_version'
+        
+    - name: Download pre-compiled librairies
+      run: |
+           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.0.0/rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip
+           Expand-Archive ./rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip -DestinationPath .
+           rm rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip
+           
+           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip
+           Expand-Archive rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip -DestinationPath .
+           rm rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip         
+           
+    - name: Init submodule
+      run: |
+           git submodule update --init --recursive .
+        
+    - name: Configure with VCPKG
+      run: |
+           $pwd=Get-Location
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
+       
+    - name: Build
+      run: |
+           cmake --build _build --config Release -j2
+
+    - name: Running unit tests
+      shell: cmd
+      run: |
+           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+           cd _build
+           ctest -C Release --output-on-failure -L "medium|unit"
+           
+    - name: .zip Installer creation
+      shell: bash
+      run: |
+           cd _build
+           cpack -G ZIP
+           export ZIP_NAME=$(ls *.zip)
+           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+            
+    - name: Upload .zip
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: _build/${{env.ZIP_NAME}}
+        asset_name: ${{env.ZIP_NAME}}
+        asset_content_type: application/octet-stream
+    

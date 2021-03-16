@@ -45,7 +45,8 @@ class XpansionConfig():
                             dest="step",
                             choices=["lp", "optim", "full", "antares", "getnames", "update"],
                             help='Step to execute ("lp", "optim", "full", "antares", "getnames", "update")',
-                            required=True)
+                            default="full")
+
         parser.add_argument("--simulationName",
                             dest="simulationName",
                             help="Name of the antares simulation to use. Must be present in the output directory")
@@ -60,11 +61,9 @@ class XpansionConfig():
         parser.add_argument("--method",
                             dest="method",
                             type=str,
-                            choices=["mpibenders", "mergeMPS", "both", "sequential"],
-                            help="Choose the optimization method")
-        parser.add_argument("-c",
-                            dest="c",
-                            help='Name of the file to use for exclusion constraints')
+                            choices=["mpibenders", "mergeMPS", "sequential"],
+                            help="Choose the optimization method",
+                            default="sequential")
         parser.add_argument("-n", "--np",
                             dest="n_mpi",
                             default=4,
@@ -77,7 +76,6 @@ class XpansionConfig():
         self.dataDir = str(Path(args.dataDir).resolve())
         self.installDir = args.installDir
         self.method = args.method
-        self.c = args.c
         self.n_mpi = args.n_mpi
 
         if not Path.is_absolute(Path(self.installDir)):

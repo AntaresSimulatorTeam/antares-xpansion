@@ -90,16 +90,18 @@ void sequential_launch(BendersOptions const & options) {
 
 	Benders benders(input, options);
 	LOG(INFO) << "Running solver..." << std::endl;
-	benders.run(std::cout);
+	benders.run();
 	LOG(INFO) << "Benders solver terminated." << std::endl;
 
+	last_solution_log(benders._data, options.GAP);
 	jsonWriter_l.updateEndTime();
 	jsonWriter_l.write(input.size(), benders._trace, benders._data);
 	jsonWriter_l.dump(options.JSON_NAME+".json");
 
 	benders.free();
-	LOG(INFO) << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
-	std::cout << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
+	std::stringstream str;
+	str << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
+	LOG_INFO_AND_COUT(str.str());
 }
 
 /*!
@@ -113,9 +115,6 @@ void usage(int argc) {
 		BendersOptions input;
 		input.write_default();
 		std::exit(1);
-	}
-	else {
-		std::cout << "argc = " << argc << std::endl;
 	}
 }
 

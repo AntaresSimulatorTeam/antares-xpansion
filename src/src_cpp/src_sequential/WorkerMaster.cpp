@@ -248,7 +248,7 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 		}
 	}
 	else {
-		std::cout << "ERROR a variable named alpha is in input" << std::endl;
+		LOG(INFO) << "ERROR a variable named alpha is in input" << std::endl;
 	}
 }
 
