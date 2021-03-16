@@ -158,7 +158,7 @@ int main(int argc, char** argv)
 	Timer timer;
 	int status_l = mergedSolver_l.Solve();
 	std::stringstream str;
-	str << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
+	str << "Problem solved in " << timer.elapsed() << " seconds";
 	LOG_INFO_AND_COUT(str.str());
 
 	jsonWriter_l.updateEndTime();

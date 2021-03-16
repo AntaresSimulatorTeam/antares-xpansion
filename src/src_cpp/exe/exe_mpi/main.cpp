@@ -10,6 +10,14 @@
 #include "launcher.h"
 #include "JsonWriter.h"
 
+#if defined(WIN32) || defined(_WIN32) 
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#endif
+
 int main(int argc, char** argv)
 {
 	mpi::environment env(argc, argv);
@@ -69,13 +77,20 @@ int main(int argc, char** argv)
 			jsonWriter_l.updateEndTime();
 			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
 			jsonWriter_l.dump("out.json");
+
+			char buff[FILENAME_MAX];
+			GetCurrentDir(buff, FILENAME_MAX);
+
+			std::stringstream str;
+			str << "Optimization results available in : " << buff << PATH_SEPARATOR << "out.json";
+			LOG_INFO_AND_COUT(str.str());
 		}
 		bendersMpi.free(env, world);
 		world.barrier();
 
 		if (world.rank() == 0) {
 			std::stringstream str;
-			str << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
+			str << "Problem ran in " << timer.elapsed() << " seconds";
 			LOG_INFO_AND_COUT(str.str());
 			jsonWriter_l.updateEndTime();
 		}
