@@ -64,7 +64,7 @@ void print_csv(BendersTrace & trace, Str2Int & problem_to_id, BendersData const 
 		file.close();
 	}
 	else {
-		LOG(INFO) << "Impossible d'ouvrir le fichier .csv" << std::endl;
+		LOG(INFO) << "Impossible to open the .csv file" << std::endl;
 	}
 }
 
@@ -841,4 +841,3 @@ void update_active_cuts(WorkerMasterPtr & master, ActiveCutStorage & active_cuts
 		}
 	}
 }
-

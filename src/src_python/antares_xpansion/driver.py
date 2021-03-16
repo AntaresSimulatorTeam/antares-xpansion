@@ -407,7 +407,7 @@ class XpansionDriver():
         elif self.config.method == "sequential":
             solver = self.config.BENDERS_SEQUENTIAL
         elif self.config.method == "both":
-            print("method both is not handled yet")
+            print('method "both" is not handled yet')
             sys.exit(1)
         else:
             print("Illegal optim method")

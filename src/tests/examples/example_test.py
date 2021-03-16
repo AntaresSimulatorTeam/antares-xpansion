@@ -23,7 +23,7 @@ def find_log_path(output_dir):
 def find_json_output(output_dir):
     op = []
     for path in Path(output_dir).iterdir():
-        for log in Path(path / "lp").rglob('out.json'):
+        for jsonpath in Path(path / "lp").rglob('out.json'):
             op.append(log)
     assert len(op) == 1
     return op[0]
@@ -66,10 +66,11 @@ def check_solution(study_path, expected_values, expected_investment_solution):
     solution = json_data["solution"]
     investment_solution = solution["values"]
 
-    np.testing.assert_allclose(solution["gap"], expected_values["gap"], rtol=1e-4, atol=0)
-    np.testing.assert_allclose(solution["investment_cost"], expected_values["investment_cost"], rtol=1e-4, atol=0)
-    np.testing.assert_allclose(solution["operational_cost"], expected_values["operational_cost"], rtol=1e-4, atol=0)
-    np.testing.assert_allclose(solution["overall_cost"], expected_values["overall_cost"], rtol=1e-4, atol=0)
+    RELATIVE_TOLERANCE=1e-4
+    np.testing.assert_allclose(solution["gap"], expected_values["gap"], rtol=RELATIVE_TOLERANCE)
+    np.testing.assert_allclose(solution["investment_cost"], expected_values["investment_cost"], rtol=RELATIVE_TOLERANCE)
+    np.testing.assert_allclose(solution["operational_cost"], expected_values["operational_cost"], rtol=RELATIVE_TOLERANCE)
+    np.testing.assert_allclose(solution["overall_cost"], expected_values["overall_cost"], rtol=RELATIVE_TOLERANCE)
 
     for investment in expected_investment_solution.keys():
         assert investment in investment_solution.keys(), "Investment " + investment + " not found in solution"
