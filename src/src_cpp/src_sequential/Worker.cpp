@@ -2,46 +2,6 @@
 
 #include "ortools_utils.h"
 
-
-std::list<std::ostream *> & Worker::stream() {
-	return _stream;
-}
-
-/************************************************************************************\
-* Name:         optimizermsg                                                         *
-* Purpose:      Display Optimizer error messages and warnings.                       *
-* Arguments:    const char *sMsg    Message string                                   *
-*               int nLen            Message length                                   *
-*               int nMsgLvl         Message type                                     *
-* Return Value: None.                                                                *
-\************************************************************************************/
-
-// void XPRS_CC optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen,
-// 	int nMsglvl) {
-// 	Worker * ptr = NULL;
-// 	if (worker != NULL) ptr = static_cast<Worker*>(worker);
-// 	switch (nMsglvl) {
-
-// 		/* Print Optimizer error messages and warnings */
-// 	case 4: /* error */
-// 	case 3: /* warning */
-// 	case 2: /* dialogue */
-// 	case 1: /* information */
-// 		if (ptr != NULL) {
-// 			for (auto const & stream : ptr->stream())
-// 				*stream << sMsg << std::endl;
-// 		}
-// 		else {
-// 			std::cout << sMsg << std::endl;
-// 		}
-// 		break;
-// 		/* Exit and flush buffers */
-// 	default:
-// 		fflush(NULL);
-// 		break;
-// 	}
-// }
-
 Worker::Worker()
 	: _is_master(false)
 	, _solver(nullptr)
@@ -78,7 +38,6 @@ void Worker::get_value(double & lb) {
 */
 void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps) {
 	_path_to_mps = path_to_mps;
-	_stream.push_back(&std::cout);
 
 	if (_is_master)
 	{
@@ -146,14 +105,14 @@ void Worker::solve(int & lp_status) {
 	lp_status = _solver->Solve();
 
 	if (lp_status != operations_research::MPSolver::OPTIMAL) {
-		std::cout << "lp_status is : " << lp_status << std::endl;
+		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
 		std::stringstream buffer;
 
 		buffer << _path_to_mps << "_lp_status_";
 		buffer << ORT_LP_STATUS[lp_status];
 		buffer<< ".mps";
-		std::cout << "lp_status is : " << ORT_LP_STATUS[lp_status] << std::endl;
-		std::cout << "written in " << buffer.str() << std::endl;
+		LOG(INFO) << "lp_status is : " << ORT_LP_STATUS[lp_status] << std::endl;
+		LOG(INFO) << "written in " << buffer.str() << std::endl;
 		ORTwritemps(*_solver, buffer.str());
 		std::exit(1);
 	}
