@@ -11,20 +11,11 @@ import pytest
 ALL_STUDIES_PATH = Path('../../../examples')
 
 
-def find_log_path(output_dir):
-    op = []
-    for path in Path(output_dir).iterdir():
-        for log in Path(path / "lp").rglob('*.log'):
-            op.append(log)
-    assert len(op) == 1
-    return op[0]
-
-
-def find_json_output(output_dir):
+def get_first_json_filepath_output(output_dir):
     op = []
     for path in Path(output_dir).iterdir():
         for jsonpath in Path(path / "lp").rglob('out.json'):
-            op.append(log)
+            op.append(jsonpath)
     assert len(op) == 1
     return op[0]
 
@@ -47,18 +38,13 @@ def launch_xpansion(install_dir, study_path, method):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
 
-    if process.returncode != 0:
-        log_path = find_log_path(study_path / 'output')
-        # print log
-        print(open(str(log_path), 'r').read())
-
     # Check return value
     assert process.returncode == 0
 
 
-def check_solution(study_path, expected_values, expected_investment_solution):
+def verify_solution(study_path, expected_values, expected_investment_solution):
     output_path = study_path / 'output'
-    json_path = find_json_output(output_path)
+    json_path = get_first_json_filepath_output(output_path)
 
     json_file = open(str(json_path), 'r')
     json_data = json.load(json_file)
@@ -66,10 +52,11 @@ def check_solution(study_path, expected_values, expected_investment_solution):
     solution = json_data["solution"]
     investment_solution = solution["values"]
 
-    RELATIVE_TOLERANCE=1e-4
+    RELATIVE_TOLERANCE = 1e-4
     np.testing.assert_allclose(solution["gap"], expected_values["gap"], rtol=RELATIVE_TOLERANCE)
     np.testing.assert_allclose(solution["investment_cost"], expected_values["investment_cost"], rtol=RELATIVE_TOLERANCE)
-    np.testing.assert_allclose(solution["operational_cost"], expected_values["operational_cost"], rtol=RELATIVE_TOLERANCE)
+    np.testing.assert_allclose(solution["operational_cost"], expected_values["operational_cost"],
+                               rtol=RELATIVE_TOLERANCE)
     np.testing.assert_allclose(solution["overall_cost"], expected_values["overall_cost"], rtol=RELATIVE_TOLERANCE)
 
     for investment in expected_investment_solution.keys():
@@ -89,7 +76,7 @@ def test_001_sequential(installDir):
     expected_investment_solution = {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02}
 
     launch_xpansion(installDir, study_path, "sequential")
-    check_solution(study_path, expected_values, expected_investment_solution)
+    verify_solution(study_path, expected_values, expected_investment_solution)
     remove_outputs(study_path)
 
 
@@ -102,7 +89,7 @@ def test_001_mpibenders(installDir):
     expected_investment_solution = {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02}
 
     launch_xpansion(installDir, study_path, "mpibenders")
-    check_solution(study_path, expected_values, expected_investment_solution)
+    verify_solution(study_path, expected_values, expected_investment_solution)
     remove_outputs(study_path)
 
 
@@ -116,7 +103,7 @@ def test_002_sequential(installDir):
                                     "semibase1": 6.0e+02}
 
     launch_xpansion(installDir, study_path, "sequential")
-    check_solution(study_path, expected_values, expected_investment_solution)
+    verify_solution(study_path, expected_values, expected_investment_solution)
     remove_outputs(study_path)
 
 
@@ -130,5 +117,5 @@ def test_002_mpibenders(installDir):
                                     "semibase1": 6.0e+02}
 
     launch_xpansion(installDir, study_path, "mpibenders")
-    check_solution(study_path, expected_values, expected_investment_solution)
+    verify_solution(study_path, expected_values, expected_investment_solution)
     remove_outputs(study_path)

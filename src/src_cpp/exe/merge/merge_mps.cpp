@@ -173,8 +173,6 @@ int main(int argc, char** argv)
 		double costCoeff_l = mergedSolver_l.Objective().GetCoefficient(mergedSolver_l.variables()[varIndexInMerged_l]);
 		investCost_l += x0[pairNameId.first] * costCoeff_l;
 	}
-	std::ostringstream oss_l;
-	LOG_INFO_AND_COUT( oss_l.str());
 
 	bool optimality_l = (status_l == operations_research::MPSolver::OPTIMAL);
 	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), mergedSolver_l.Objective().Value(), investCost_l, x0, optimality_l);
