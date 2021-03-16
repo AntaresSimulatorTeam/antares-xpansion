@@ -254,18 +254,8 @@ void Candidates::readVarfiles(std::string const filePath,
 			if (key_paysor_paysex.find({ paysor, paysex }) != key_paysor_paysex.end()) {
 				interco_data[id] = { pays, interco, pdt };
 				if (interco_id.find({ pays, interco }) == interco_id.end()) {
-					//std::cout << "interco_id.size() is : " << std::setw(4) << interco_id.size() << std::endl;
 					int new_id = interco_id.size();
 					interco_id[{pays, interco }] = new_id;
-
-					//std::cout << "interco_id.size() is : " << std::setw(4) << interco_id.size() << std::endl;
-					//for (auto const& kvp : interco_id) {
-					//	std::cout << std::setw(4) << kvp.first[0];
-					//	std::cout << std::setw(4) << kvp.first[1];
-					//	std::cout << std::setw(4) << kvp.second;
-					//	std::cout << std::endl;
-					//}
-
 				}
 			}
 		}
@@ -364,7 +354,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 	// create pMax variable
 	int ninterco = interco_id.size();
-	//std::cout << "ninterco : " << ninterco << std::endl;
 	std::vector<double> obj_interco(ninterco, 0);
 	std::vector<double> lb_interco(ninterco, -out_prblm.infinity());
 	std::vector<double> ub_interco(ninterco,  out_prblm.infinity());
@@ -384,9 +373,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		colnames_l.push_back(buffer.str());
 
 		couplings[{buffer.str(), mps_name}] = interco.second + ncols;
-		//std::cout << "ncols " << ncols << std::endl;
-		//std::cout << "interco.second " << interco.second << std::endl;
-		//std::cout << "buffer " << buffer.str() << std::endl;
 	}
 
 	ORTaddcols(out_prblm, obj_interco, {}, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
@@ -545,7 +531,6 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 		for (auto const & str : Candidates::dbl_fields) {
 			std::string val = reader.Get(sectionName, str, "NA");
 			if (val != "NA") {
-				//std::cout <<"|||  "<< str << " is " << val << std::endl;
 				std::stringstream buffer(val);
 				double d_val(0);
 				buffer >> d_val;

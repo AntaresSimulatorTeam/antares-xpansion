@@ -59,8 +59,6 @@ class XpansionDriver():
                             '[other preferences]', 'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
                             }
 
-        print(self.candidates_list)
-
         self.nb_years = GeneralDataIniReader(Path(self.general_data())).get_nb_activated_year()
 
     def exe_path(self, exe):
@@ -169,7 +167,6 @@ class XpansionDriver():
         max_iterations_str = self.options.get('max_iteration',
                                               self.config.settings_default["max_iteration"])
         assert not '%' in max_iterations_str
-        print('max_iterations_str :', max_iterations_str)
         return float(max_iterations_str) if (
                 (max_iterations_str != '+Inf') and (max_iterations_str != '+infini')) else -1
 
@@ -293,7 +290,6 @@ class XpansionDriver():
         # if not os.path.isdir(driver.antares_output()):
         #     os.mkdir(driver.antares_output(), )
         old_output = os.listdir(self.antares_output())
-        print([self.antares(), self.data_dir()])
         with open(self.get_antares_log_filename(), 'w') as output_file:
             returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
                                         stdout=output_file,
@@ -301,8 +297,6 @@ class XpansionDriver():
             if returned_l.returncode != 0:
                 print("WARNING: exited antares with status %d" % returned_l.returncode)
         new_output = os.listdir(self.antares_output())
-        print(old_output)
-        print(new_output)
         assert len(old_output) + 1 == len(new_output)
         diff = list(set(new_output) - set(old_output))
         return diff[0]
@@ -342,7 +336,6 @@ class XpansionDriver():
         """
         output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
         mps_txt = read_and_write_mps(output_path)
-        # print(mps_txt)
         with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
@@ -414,7 +407,7 @@ class XpansionDriver():
         elif self.config.method == "sequential":
             solver = self.config.BENDERS_SEQUENTIAL
         elif self.config.method == "both":
-            print("metod both is not handled yet")
+            print("method both is not handled yet")
             sys.exit(1)
         else:
             print("Illegal optim method")
@@ -430,16 +423,12 @@ class XpansionDriver():
         if os.path.isfile(solver + '.log'):
             os.remove(solver + '.log')
 
-        print('Launching {}, logs will be saved to {}.log'.format(solver,
-                                                                  os.path.normpath(os.path.join(
-                                                                      os.getcwd(), solver))))
-        with open(solver + '.log', 'w') as output_file:
-            returned_l = subprocess.run(self.get_solver_cmd(solver), shell=False,
-                                         stdout=output_file,
-                                         stderr=output_file)
-            if returned_l.returncode != 0:
-                print("ERROR: exited solver with status %d" % returned_l.returncode)
-                sys.exit(1)
+        returned_l = subprocess.run(self.get_solver_cmd(solver), shell=False,
+                                     stdout= sys.stdout,
+                                     stderr= sys.stderr)
+        if returned_l.returncode != 0:
+            print("ERROR: exited solver with status %d" % returned_l.returncode)
+            sys.exit(1)
 
         os.chdir(old_cwd)
 
@@ -462,8 +451,6 @@ class XpansionDriver():
         # computing the weight of slaves
         options_values = self.config.options_default
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_years)
-        print('Number of years is {}, setting SLAVE_WEIGHT_VALUE to {} '.
-              format(self.nb_years, options_values["SLAVE_WEIGHT_VALUE"]))
         options_values["GAP"] = self.optimality_gap()
         options_values["MAX_ITERATIONS"] = self.max_iterations()
         # generate options file for the solver
@@ -476,14 +463,13 @@ class XpansionDriver():
         """
             launches antares to produce mps files
         """
-        print("starting mps generation")
         # setting antares options
         print("-- pre antares")
         self.pre_antares()
         # launching antares
         print("-- launching antares")
         antares_output_name = self.launch_antares()
-        # writting things
+        # writing things
         print("-- post antares")
         lp_path = self.post_antares(antares_output_name)
         return lp_path

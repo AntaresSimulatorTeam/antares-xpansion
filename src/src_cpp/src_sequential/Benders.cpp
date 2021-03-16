@@ -37,7 +37,6 @@ Benders::Benders(CouplingMap const & problem_list, BendersOptions const & option
 				i++;
 			}
 		}
-		std::cout << it_master->first << " " << _options.get_master_path() << std::endl;
 		_master.reset(new WorkerMaster(master_variable, _options.get_master_path(), _options, _data.nslaves));
 	}
 
@@ -93,12 +92,9 @@ void Benders::build_cut() {
 *  \brief Run Benders algorithm
 *
 *  Method to run Benders algorithm
-*
-* \param stream : stream to print the output
 */
-void Benders::run(std::ostream & stream) {
+void Benders::run() {
 
-	init_log(stream, _options.LOG_LEVEL);
 	for (auto const & kvp : _problem_to_id) {
 		_all_cuts_storage[kvp.first] = SlaveCutStorage();
 	}
@@ -107,18 +103,13 @@ void Benders::run(std::ostream & stream) {
 	while (!_data.stop) {
 		Timer timer_master;
 		++_data.it;
-		LOG(INFO) << "ITERATION " << _data.it << " :" << std::endl;
-
-		LOG(INFO) << "\tSolving master..." << std::endl;
+		LOG_INFO_AND_COUT("ITERATION " + std::to_string(_data.it) + " :");
+		LOG_INFO_AND_COUT("\tSolving master...");
 		get_master_value(_master, _data, _options);
 
-		LOG(INFO) << "\tmaster solved in "<< _data.timer_master << "." << std::endl;
+		LOG_INFO_AND_COUT("\tmaster solved in " + std::to_string(_data.timer_master) + ".");
 
-		LOG(INFO) << "\t\tCandidates:" << std::endl;
-		for(auto pairVarnameValue : _data.x0)
-		{
-			LOG(INFO) << "\t\t\t" << pairVarnameValue.first << "  =  " << pairVarnameValue.second << std::endl;
-		}
+		investment_candidates_log(_data);		
 
 		if (_options.ACTIVECUTS) {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
@@ -128,30 +119,20 @@ void Benders::run(std::ostream & stream) {
 			_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 		}
 
-		LOG(INFO) << "\tBuilding cuts...\n";
+		LOG_INFO_AND_COUT("\tBuilding cuts...");
 		build_cut();
-		LOG(INFO) << "\tCuts built.\n";
+		LOG_INFO_AND_COUT("\tCuts built.");
 
 		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
-
-		LOG(INFO) << "\t\tSolution:" << std::endl;
-		LOG(INFO) << "\t\t\tBest Upper Bound : " << _data.best_ub << std::endl;
-		LOG(INFO) << "\t\t\tUpper Bound : " << _data.ub << std::endl;
-		LOG(INFO) << "\t\t\tLower Bound : " << _data.lb << std::endl;
-		LOG(INFO) << "\t\t\tGap : " << _data.best_ub - _data.lb << std::endl;
-		LOG(INFO) << "\t\t\tOperational cost : " << std::fixed << std::setprecision(2) << _data.slave_cost << "€" << std::endl;
-		LOG(INFO) << "\t\t\tInvestment cost : " << std::fixed << std::setprecision(2) << _data.invest_cost << "€" << std::endl;
-		LOG(INFO) << "\t\t\tOverall cost : " << std::fixed << std::setprecision(2) <<  _data.slave_cost + _data.invest_cost << "€" << std::endl;
+		solution_log(_data);
 
 		if (_options.TRACE) {
 			update_trace(_trace, _data);
 		}
 		_data.timer_master = timer_master.elapsed();
-		print_log(stream, _data, _options.LOG_LEVEL);
 		_data.stop = stopping_criterion(_data, _options);
 	}
 
-	print_solution(stream, _data.bestx, true);
 	if (_options.TRACE) {
 		print_csv(_trace, _problem_to_id, _data, _options);
 	}

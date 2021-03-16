@@ -35,5 +35,5 @@ public:
 	void free();
 
 	void build_cut();
-	void run(std::ostream & stream);
+	void run();
 };

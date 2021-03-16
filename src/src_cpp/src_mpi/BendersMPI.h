@@ -43,6 +43,6 @@ public:
 	void step_2(mpi::environment & env, mpi::communicator & world);
 	void step_3(mpi::environment & env, mpi::communicator & world);
 	void update_random_option(mpi::environment & env, mpi::communicator & world, BendersOptions const & options, BendersData & data);
-	void run(mpi::environment & env, mpi::communicator & world, std::ostream & stream);
+	void run(mpi::environment & env, mpi::communicator & world);
 
 };

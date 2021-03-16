@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "BendersFunctions.h"
 
 
@@ -19,77 +21,6 @@ void init(BendersData & data) {
 	data.deletedcut = 0;
 	data.maxsimplexiter = 0;
 	data.minsimplexiter = std::numeric_limits<int>::max();
-}
-
-/*!
-*  \brief Initialize Benders log
-*
-*  Method to initialize Benders log by printing each column title
-*
-*  \param stream : output to print log
-*
-* \param log_level : level of log precision (from 1 to 3)
-*/
-void init_log(std::ostream&stream, int const log_level) {
-	stream << std::setw(10) << "ITE";
-	stream << std::setw(20) << "LB";
-	stream << std::setw(20) << "UB";
-	stream << std::setw(20) << "BESTUB";
-	stream << std::setw(15) << "GAP";
-
-	if (log_level > 1) {
-		stream << std::setw(15) << "MINSIMPLEX";
-		stream << std::setw(15) << "MAXSIMPLEX";
-	}
-
-	if (log_level > 2) {
-		stream << std::setw(15) << "DELETEDCUT";
-		stream << std::setw(15) << "TIMEMASTER";
-		stream << std::setw(15) << "TIMESLAVES";
-	}
-	stream << std::endl;
-}
-
-/*!
-*  \brief Print iteration log
-*
-*  Method to print the log of an iteration
-*
-*  \param stream : output to print log
-*
-* \param data : data to print
-*
-* \param log_level : level of log precision (from 1 to 3)
-*/
-void print_log(std::ostream&stream, BendersData const & data, int const log_level) {
-
-	stream << std::setw(10) << data.it;
-	if (data.lb == -1e20)
-		stream << std::setw(20) << "-INF";
-	else
-		stream << std::setw(20) << std::scientific << std::setprecision(10) << data.lb;
-	if (data.ub == +1e20)
-		stream << std::setw(20) << "+INF";
-	else
-		stream << std::setw(20) << std::scientific << std::setprecision(10) << data.ub;
-	if (data.best_ub == +1e20)
-		stream << std::setw(20) << "+INF";
-	else
-		stream << std::setw(20) << std::scientific << std::setprecision(10) << data.best_ub;
-		stream << std::setw(15) << std::scientific << std::setprecision(2) << data.best_ub - data.lb;
-
-	if (log_level > 1) {
-		stream << std::setw(15) << data.minsimplexiter;
-		stream << std::setw(15) << data.maxsimplexiter;
-	}
-
-	if (log_level > 2) {
-		stream << std::setw(15) << data.deletedcut;
-		stream << std::setw(15) << std::setprecision(2) << data.timer_master - data.timer_slaves;
-		stream << std::setw(15) << std::setprecision(2) << data.timer_slaves;
-	}
-	stream << std::endl;
-
 }
 
 /*!
@@ -133,7 +64,7 @@ void print_csv(BendersTrace & trace, Str2Int & problem_to_id, BendersData const 
 		file.close();
 	}
 	else {
-		std::cout << "Impossible d'ouvrir le fichier .csv" << std::endl;
+		LOG(INFO) << "Impossible d'ouvrir le fichier .csv" << std::endl;
 	}
 }
 
@@ -192,37 +123,6 @@ void print_cut_csv(std::ostream&stream, SlaveCutDataHandler const & handler, std
 }
 
 /*!
-*  \brief Print the optimal solution of the problem
-*
-*  Method to print the optimal solution of the problem
-*
-* \param stream : stream to print the output
-*
-* \param point : point to print
-*
-* \param filter_non_zero : either if zeros coordinates need to be printed or not
-*/
-void print_solution(std::ostream&stream, Point const & point, bool const filter_non_zero) {
-	stream << std::endl;
-	stream << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *" << std::endl;
-	stream << "*                                                                                               *" << std::endl;
-	stream << "*                                      Investment solution                                      *" << std::endl;
-	stream << "*                                                                                               *" << std::endl;
-	stream << "* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *" << std::endl;
-	stream << "|                                                                                               |" << std::endl;
-	for (auto const & kvp : point) {
-		if (!filter_non_zero || std::fabs(kvp.second) > 1e-10) {
-			stream << "|  " << std::setw(70) << std::left << kvp.first;
-			stream << " = ";
-			stream << std::setw(20) << std::scientific << std::setprecision(10) << kvp.second;
-			stream << "|" << std::endl;
-		}
-	}
-	stream << "|_______________________________________________________________________________________________|" << std::endl;
-	stream << std::endl;
-}
-
-/*!
 *  \brief Write in a csv file every active cut at every iteration
 *
 *	Write in a csv file every active cut for every slave for all iterations
@@ -246,9 +146,96 @@ void print_active_cut(ActiveCutStorage const & active_cuts, BendersOptions const
 		file.close();
 	}
 	else {
-		std::cout << "Impossible d'ouvrir le fichier .csv" << std::endl;
+		LOG(INFO) << "Impossible d'ouvrir le fichier .csv" << std::endl;
 	}
 }
+
+void LOG_INFO_AND_COUT(const std::string& message)
+{
+	LOG(INFO) << message << std::endl;
+	std::cout << message << std::endl;
+}
+
+std::string create_candidate_str(const std::string& candidate, double investment, const BendersData& data, int candidate_str_width)
+{
+	std::stringstream result;
+	result << "\t\t\t" << std::setw(candidate_str_width) <<  candidate << "  =  " << std::setw(5)  << investment << " invested MW -- possible interval [" << data.min_invest.at(candidate) << "; " << data.max_invest.at(candidate) << "] MW";
+	return result.str();
+}
+
+/*!
+*  \brief Add investment candidates description in log
+*
+*	Function to add investment candidates description in log
+* *  \param data : current BendersData
+*/
+void investment_candidates_log(const BendersData& data)
+{
+	LOG_INFO_AND_COUT("\t\tCandidates:");
+
+	int max_candidate_str_width = 0;
+	for (auto pairVarnameValue : data.x0)
+	{
+		const std::string& candidate = pairVarnameValue.first;
+		max_candidate_str_width = std::max<int>(candidate.length(), max_candidate_str_width);
+	}
+	for (auto pairVarnameValue : data.x0)
+	{
+		const std::string& candidate = pairVarnameValue.first;
+		LOG_INFO_AND_COUT(create_candidate_str(candidate, pairVarnameValue.second, data, max_candidate_str_width));
+	}
+}
+
+
+inline double convert_in_million_euros(double val) { return val / 1e6;}
+
+inline std::string create_str_million_euros(const std::string& str, double val)
+{
+	std::stringstream result;
+	result << "\t\t\t" << std::setw(20) << str << " = " << std::setw(12) << std::fixed << std::setprecision(2) << convert_in_million_euros(val) << " Me";
+	return result.str();
+}
+
+inline std::string create_str_euros(const std::string& str, double val)
+{
+	std::stringstream result;
+	result << "\t\t\t" << std::setw(20) << str << " = " << std::setw(12) << std::scientific << std::setprecision(5) << val << " e";
+	return result.str();
+}
+
+/*!
+*  \brief Add solution in log
+*
+*	Function to add solution in log
+* *  \param data : current BendersData
+*/
+void solution_log(const BendersData& data)
+{
+	LOG_INFO_AND_COUT("\t\tSolution =");
+	LOG_INFO_AND_COUT(create_str_million_euros("Operational cost", data.slave_cost));
+	LOG_INFO_AND_COUT(create_str_million_euros("Investment cost", data.invest_cost));
+	LOG_INFO_AND_COUT(create_str_million_euros("Overall cost", data.slave_cost + data.invest_cost));
+	LOG_INFO_AND_COUT(create_str_million_euros("Best Solution", data.best_ub));
+	LOG_INFO_AND_COUT(create_str_million_euros("Lower Bound", data.lb));
+	LOG_INFO_AND_COUT(create_str_euros("Gap", data.best_ub - data.lb));
+}
+
+
+void last_solution_log(const BendersData& data, double optimal_gap)
+{
+	double gap_l = data.best_ub - data.lb;
+
+	std::string optimality = gap_l <= optimal_gap ? "within" : "outside";
+
+	std::stringstream str;
+	str << "--- CONVERGENCE " << optimality << " optimitality gap :" << std::endl;
+	str << "\tBest solution = it " << data.it << std::endl;
+	str << "\tOverall cost  = " << std::setw(10) << std::fixed << std::setprecision(2) << convert_in_million_euros(data.slave_cost + data.invest_cost) << " Me";
+
+	LOG_INFO_AND_COUT(str.str());
+}
+
+
 
 /*!
 *  \brief Update best upper bound and best optimal variables
@@ -334,7 +321,7 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 */
 void check_status(AllCutPackage const & all_package, BendersData const & data) {
 	if (data.master_status != operations_research::MPSolver::OPTIMAL) {
-		std::cout << "Master status is " << data.master_status << std::endl;
+		LOG(INFO) << "Master status is " << data.master_status << std::endl;
 		exit(1);
 	}
 	for (int i(0); i < all_package.size(); i++) {
@@ -342,7 +329,7 @@ void check_status(AllCutPackage const & all_package, BendersData const & data) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(kvp.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
 			if (handler->get_int(LPSTATUS) != operations_research::MPSolver::OPTIMAL) {
-				std::cout << "Slave " << kvp.first << " status is " << handler->get_int(LPSTATUS) << std::endl;
+				LOG(INFO) << "Slave " << kvp.first << " status is " << handler->get_int(LPSTATUS) << std::endl;
 				exit(1);
 			}
 		}
