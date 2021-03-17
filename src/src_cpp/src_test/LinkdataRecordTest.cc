@@ -126,10 +126,10 @@ TEST_F(LinkdataRecordTest, fromRow)
 TEST_F(LinkdataRecordTest, toRow)
 {
     LinkdataRecord modernRecord_l(1000, 500, 1,1,1,1,1,1);
-    ASSERT_EQ(modernRecord_l.to_row("\t"), "1000.000000\t500.000000\t1\t1\t1\t1\t1\t1");
+    ASSERT_EQ(modernRecord_l.to_row("\t"), "1000.000000\t500.000000\t1.000000\t1.000000\t1.000000\t1.000000\t1.000000\t1.000000");
 
     LinkdataRecord record_l(1000, 500, 1,1,1);
-    ASSERT_EQ(record_l.to_row("\t"), "1000.000000\t500.000000\t1\t1\t1");
+    ASSERT_EQ(record_l.to_row("\t"), "1000.000000\t500.000000\t1.000000\t1.000000\t1.000000");
 }
 
 
