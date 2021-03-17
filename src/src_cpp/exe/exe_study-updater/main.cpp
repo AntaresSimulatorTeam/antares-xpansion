@@ -2,7 +2,22 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+/* GCC */
+#ifdef __GNUC__
+#if __GNUC__ < 8
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
 #include <filesystem>
+namespace fs = std::filesystem;
+#endif
+/* Other compilers */
+#else
+#include <filesystem>
+namespace fs = std::filesystem;
+#endif
+
 #include <boost/program_options.hpp>
 
 #include "StudyUpdater.h"
@@ -18,10 +33,10 @@ namespace po = boost::program_options;
  * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
  * \return void
  */
-void updateStudy(std::filesystem::path const & rootPath_p, Candidates const & candidates_p, std::string const & solutionFilename_p)
+void updateStudy(fs::path const & rootPath_p, Candidates const & candidates_p, std::string const & solutionFilename_p)
 {
-	std::filesystem::path linksPath_l = rootPath_p / ".." / "..";
-	std::filesystem::path jsonPath_l  = rootPath_p / "lp" / solutionFilename_p;
+	fs::path linksPath_l = rootPath_p / ".." / "..";
+	fs::path jsonPath_l  = rootPath_p / "lp" / solutionFilename_p;
 
 	StudyUpdater studyUpdater(linksPath_l.string());
 	int updateFailures_l = studyUpdater.update(candidates_p, jsonPath_l.string());
