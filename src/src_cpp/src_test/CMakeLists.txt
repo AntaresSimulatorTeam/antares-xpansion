@@ -61,13 +61,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options (unit_tests PUBLIC -Wno-covered-switch-default)
 endif ()
 
-add_custom_command (TARGET unit_tests
-	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:unit_tests> ${CMAKE_BINARY_DIR}/unit_tests.bak
-	COMMAND $<TARGET_FILE:unit_tests> --gtest_output=xml:${CMAKE_BINARY_DIR}/test_result.xml
-	COMMENT "Runs the unit tests after build"
-	)
-
 add_test(NAME unit_ortools COMMAND unit_tests)
 set_property(TEST unit_ortools PROPERTY LABELS unit)
 
