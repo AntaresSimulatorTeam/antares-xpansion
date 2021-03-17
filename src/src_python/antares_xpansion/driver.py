@@ -31,8 +31,6 @@ class XpansionDriver():
         """
         self.platform = sys.platform
         self.config = config
-        self.args = self.config.parser.parse_args()
-        self.simulation_name = self.args.simulationName
 
         self.candidates_list = []
 
@@ -194,7 +192,7 @@ class XpansionDriver():
             lp_path = self.generate_mps_files()
             self.launch_optimization(lp_path)
             self.update_step(self.simulation_name)
-        elif self.args.step == "antares":
+        elif self.config.step == "antares":
             self.pre_antares()
             self.launch_antares()
         elif self.config.step == "getnames":
@@ -208,9 +206,9 @@ class XpansionDriver():
                 self.lp_step(self.config.simulationName)
                 output_path = os.path.normpath(os.path.join(self.antares_output(), self.config.simulationName))
                 self.set_options(output_path)
-        elif self.args.step == "update":
-            if self.args.simulationName:
-                self.update_step(self.args.simulationName)
+        elif self.config.step == "update":
+            if self.config.simulationName:
+                self.update_step(self.config.simulationName)
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
@@ -235,7 +233,7 @@ class XpansionDriver():
         if (self.config.step in ["full", "lp"]) \
                 and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
             os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
-        if (self.args.step in ["full", "update"])\
+        if (self.config.step in ["full", "update"])\
             and (os.path.isfile(self.exe_path(self.config.STUDY_UPDATER) + '.log')):
             os.remove(self.exe_path(self.config.STUDY_UPDATER) + '.log')
 
