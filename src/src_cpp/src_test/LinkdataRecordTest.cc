@@ -2,7 +2,6 @@
 
 #include <sstream>
 #include <fstream>
-#include <filesystem>
 
 #include "common_lpnamer.h"
 #include "CandidatesInitializer.h"

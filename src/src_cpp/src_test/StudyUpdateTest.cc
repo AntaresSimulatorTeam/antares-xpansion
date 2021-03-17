@@ -1,8 +1,7 @@
 #include "gtest/gtest.h"
 
 #include <sstream>
-#include <fstream>
-#include <filesystem>
+#include <fstream>#include <filesystem>
 
 #include "common_lpnamer.h"
 #include "CandidatesInitializer.h"

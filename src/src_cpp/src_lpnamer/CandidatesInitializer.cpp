@@ -1,4 +1,17 @@
+/* GCC */
+#ifdef __GNUC__
+#if __GNUC__ < 8
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
+#else
 #include <filesystem>
+namespace fs = std::filesystem;
+#endif
+/* Other compilers */
+#else
+#include <filesystem>
+namespace fs = std::filesystem;
+#endif
 
 #include "CandidatesInitializer.h"
 
@@ -76,12 +89,12 @@ void initAreas(std::string const & areaFilepath_p)
 }
 
 
-void initializedCandidates(std::filesystem::path const & rootPath, Candidates & candidates) {
+void initializedCandidates(fs::path const & rootPath, Candidates & candidates) {
 	// Get all mandatory path
-	std::filesystem::path const candidates_file_name	= rootPath / ".." / ".." / "user" / "expansion" / CANDIDATES_INI;
-	std::filesystem::path const mps_file_name			= rootPath / MPS_TXT;
-	std::filesystem::path const area_file_name			= rootPath / "area.txt";
-	std::filesystem::path const interco_file_name		= rootPath / "interco.txt";
+	fs::path const candidates_file_name	= rootPath / ".." / ".." / "user" / "expansion" / CANDIDATES_INI;
+	fs::path const mps_file_name			= rootPath / MPS_TXT;
+	fs::path const area_file_name			= rootPath / "area.txt";
+	fs::path const interco_file_name		= rootPath / "interco.txt";
 
 	// Initialize the list of MPS files
 	initMPSList(mps_file_name.string());
