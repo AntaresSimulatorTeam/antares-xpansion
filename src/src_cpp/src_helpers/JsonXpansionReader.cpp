@@ -19,7 +19,7 @@ void JsonXpansionReader::read(std::string const & filename_p)
     std::ifstream input_file_l(filename_p, std::ifstream::binary);
 
     Json::CharReaderBuilder builder_l;
-    JSONCPP_STRING errs;
+    std::string errs;
     if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
         std::cerr << errs << std::endl;
     }
