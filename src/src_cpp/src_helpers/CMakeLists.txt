@@ -19,9 +19,13 @@ add_library (helpers STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
 	)
 
+get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
+
 target_include_directories (helpers
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
+		${ORTOOLS_INCLUDE_DIRS}
+                ${JSON_INC_PATH}/jsoncpp
 )
 
 target_link_libraries (helpers 
