@@ -405,7 +405,7 @@ class XpansionDriver():
 
     def get_lp_namer_command(self,output_path):
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
-        return [self.exe_path(self.config.LP_NAMER), output_path, is_relaxed, self.additional_constraints()]
+        return [self.exe_path(self.config.LP_NAMER), "-o", output_path,"-f", is_relaxed,"-e", self.additional_constraints()]
 
     def launch_optimization(self, lp_path):
         """
