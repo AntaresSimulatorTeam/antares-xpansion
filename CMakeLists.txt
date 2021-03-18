@@ -28,7 +28,7 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
-set(ANTARES_XPANSION_RC 3)
+#set(ANTARES_XPANSION_RC 3)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES

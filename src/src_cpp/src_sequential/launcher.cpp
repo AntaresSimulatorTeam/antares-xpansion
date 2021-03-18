@@ -100,7 +100,7 @@ void sequential_launch(BendersOptions const & options) {
 
 	benders.free();
 	std::stringstream str;
-	str << "Problem ran in " << timer.elapsed() << " seconds" << std::endl;
+	str << "Problem ran in " << timer.elapsed() << " seconds";
 	LOG_INFO_AND_COUT(str.str());
 }
 

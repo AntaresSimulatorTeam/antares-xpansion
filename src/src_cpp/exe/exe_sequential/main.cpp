@@ -4,8 +4,18 @@
 #include "glog/logging.h"
 
 #include "launcher.h"
+#include "Benders.h"
 #include "BendersOptions.h"
 
+#if defined(WIN32) || defined(_WIN32) 
+#include <direct.h>
+#define GetCurrentDir _getcwd
+#define PATH_SEPARATOR "\\" 
+#else
+#include <unistd.h>
+#define GetCurrentDir getcwd
+#define PATH_SEPARATOR "/" 
+#endif
 
 int main(int argc, char** argv)
 {
@@ -21,6 +31,13 @@ int main(int argc, char** argv)
 
 	LOG(INFO) << "Launching Benders Sequential" << std::endl;
 	sequential_launch(options);
+
+	char buff[FILENAME_MAX];
+	GetCurrentDir(buff, FILENAME_MAX);
+
+	std::stringstream str;
+	str << "Optimization results available in : " << buff <<  PATH_SEPARATOR << "out.json";
+	LOG_INFO_AND_COUT(str.str());
 
 	return 0;
 }

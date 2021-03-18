@@ -109,13 +109,13 @@ void Benders::run() {
 
 		LOG_INFO_AND_COUT("\tmaster solved in " + std::to_string(_data.timer_master) + ".");
 
-		investment_candidates_log(_data);		
+		investment_candidates_log(_data);
 
 		if (_options.ACTIVECUTS) {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
 		}
 
-		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));		
+		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
 		LOG_INFO_AND_COUT("\tBuilding cuts...");
 		build_cut();
@@ -125,7 +125,7 @@ void Benders::run() {
 		solution_log(_data);
 
 		update_trace(_trace, _data);
-		
+
 		_data.timer_master = timer_master.elapsed();
 		_data.stop = stopping_criterion(_data, _options);
 	}

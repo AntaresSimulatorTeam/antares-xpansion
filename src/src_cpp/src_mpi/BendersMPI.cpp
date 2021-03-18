@@ -36,14 +36,14 @@ void BendersMpi::load(CouplingMap const & problem_list, mpi::environment & env, 
 			if (_data.nslaves < 0) {
 				_data.nslaves = problem_list.size() - 1;
 			}
-			std::string const & master_name(_options.MASTER_NAME);			
+			std::string const & master_name(_options.MASTER_NAME);
 			auto const it_master(problem_list.find(master_name));
 			if (it_master == problem_list.end()) {
 				std::cout << "UNABLE TO FIND " << master_name << std::endl;
 				std::exit(1);
 			}
 			// real problem list taking into account SLAVE_NUMBER
-			
+
 			real_problem_list.resize(_data.nslaves, problem_list.end());
 
 			CouplingMap::const_iterator it(problem_list.begin());
@@ -81,7 +81,7 @@ void BendersMpi::load(CouplingMap const & problem_list, mpi::environment & env, 
 *  \brief Update the value of options RAND_AGGREGATION according to the number of slaves on each thread
 *
 *	Update the value of options RAND_AGGREGATION according to the number of slaves on each thread
-* 
+*
 *  \param options : set of Benders options
 *
 *  \param options : set of Benders data
@@ -134,7 +134,7 @@ void BendersMpi::step_1(mpi::environment & env, mpi::communicator & world) {
 
 		LOG_INFO_AND_COUT("\tmaster solved in " + std::to_string (_data.timer_master) + ".");
 		investment_candidates_log(_data);
-		
+
 		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
 		if (_options.ACTIVECUTS) {
@@ -181,7 +181,7 @@ void BendersMpi::step_2(mpi::environment & env, mpi::communicator & world) {
 		LOG_INFO_AND_COUT("\tBuilding cuts...");
 
 		build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);
-		
+
 		LOG_INFO_AND_COUT("\tCuts built.");
 	}
 	else {
@@ -193,7 +193,7 @@ void BendersMpi::step_2(mpi::environment & env, mpi::communicator & world) {
 		}
 		gather(world, slave_cut_package, 0);
 	}
-	broadcast(world, _options.RAND_AGGREGATION, 0);	
+	broadcast(world, _options.RAND_AGGREGATION, 0);
 	world.barrier();
 }
 
@@ -271,8 +271,8 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
 
 		if (world.rank() == 0) {
 			update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
-			solution_log(_data);			
-			
+			solution_log(_data);
+
 			update_trace(_trace, _data);
 
 			_data.timer_master = timer_master.elapsed();
