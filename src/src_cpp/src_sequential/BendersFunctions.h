@@ -7,17 +7,17 @@
 #include "WorkerTrace.h"
 #include "BendersOptions.h"
 
-
 void init(BendersData & data);
-void init_log(std::ostream&stream, int const log_level);
 
+void LOG_INFO_AND_COUT(const std::string& message);
 
-void print_log(std::ostream&stream, BendersData const & data, int const log_level);
 void print_csv(BendersTrace & trace, Str2Int & problem_to_id, BendersData const & data, BendersOptions const & options);
 void print_master_csv(std::ostream&stream, WorkerMasterDataPtr & trace, Point const & xopt, std::string const & name, int const nslaves);
 void print_cut_csv(std::ostream&stream, SlaveCutDataHandler const & handler, std::string const & name, int const islaves);
-void print_solution(std::ostream&stream, Point const & point, bool const filter_non_zero);
 void print_active_cut(ActiveCutStorage const & active_cuts, BendersOptions const & options);
+void investment_candidates_log(const BendersData& data);
+void solution_log(const BendersData& data);
+void last_solution_log(const BendersData& data, double optimal_gap);
 
 
 void update_best_ub(double & best_ub, double const & ub, Point & bestx, Point const & x0, int & bestit, int const & it);

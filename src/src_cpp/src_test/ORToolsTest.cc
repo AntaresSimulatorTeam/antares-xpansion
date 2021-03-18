@@ -95,12 +95,6 @@ TEST_F(ORToolsTest, testReadMPS)
 {
 	ASSERT_EQ(_solver->NumConstraints(), nbConstarints_);
 	ASSERT_EQ(_solver->NumVariables(), nbVariables_);
-
-	// std::ostringstream oss;
-	// ORTdescribe(*_solver, oss);
-	// std::cout << "\n" << oss.str() ;
-
-	// ORTwritemps(*_solver, "exported.mps");
 }
 
 
@@ -110,10 +104,6 @@ TEST_F(ORToolsTest, testDeleteRows)
 	ASSERT_EQ(_solver->NumVariables(), nbVariables_);
 
 	ORTdeactivaterows(*_solver, {0,3});
-
-	// std::ostringstream oss;
-	// ORTdescribe(*_solver, oss);
-	// std::cout << "\n" << oss.str();
 
 	ASSERT_EQ(_solver->NumConstraints(), nbConstarints_);
 	ASSERT_EQ(_solver->NumVariables(), nbVariables_);
@@ -128,23 +118,7 @@ TEST_F(ORToolsTest, testGetRows)
 	std::vector<int> mstart;
 	std::vector<int> mclind;
 	std::vector<double> dmatval;
-	ORTgetrows(*_solver, mstart , mclind, dmatval, 0, 4);
-
-	// std::cout << "\nmstart : ";
-	// for(auto el : mstart)
-	// {
-	// 	std::cout << el << " ";
-	// }
-	// std::cout << "\nmclind : ";
-	// for(auto el : mclind)
-	// {
-	// 	std::cout << el << " ";
-	// }
-	// std::cout << "\ndmatval : ";
-	// for(auto el : dmatval)
-	// {
-	// 	std::cout << el << " ";
-	// }
+	ORTgetrows(*_solver, mstart , mclind, dmatval, 0, 4);	
 
 	std::vector<int> expected_mstart = {0, 5, 7, 9, 11};
 	ASSERT_EQ(expected_mstart.size(), mstart.size()) << "mstart size different";
@@ -157,13 +131,10 @@ TEST_F(ORToolsTest, testGetRows)
 	for(auto constraint : _solver->constraints())
 	{
 		int endIndex_l = (row_l == mstart.size()-1) ? mclind.size() : mstart[row_l+1];
-		// std::cout << "\nconstraint " << constraint->name() << " ends before " << endIndex_l << ": \n";
 		for(int cnt_l(mstart[row_l]); cnt_l < endIndex_l; ++cnt_l)
 		{
 			int varInd(mclind[cnt_l]);
 			double varCoeff(dmatval[cnt_l]);
-			// std::cout << "index " << cnt_l << ": coeff of variable " << _solver->variables()[varInd]->name()
-			// 			<< " is " << constraint->GetCoefficient(_solver->variables()[varInd]) << "\n";
 			ASSERT_EQ(varCoeff, constraint->GetCoefficient(_solver->variables()[varInd]));
 		}
 		++row_l;
@@ -271,13 +242,10 @@ TEST_F(ORToolsTest, testORTaddcols)
 	for(auto constraint : _solver->constraints())
 	{
 		int endIndex_l = (row_l == mstart.size()-1) ? mclind.size() : mstart[row_l+1];
-		// std::cout << "\nconstraint " << constraint->name() << " ends before " << endIndex_l << ": \n";
 		for(int cnt_l(mstart[row_l]); cnt_l < endIndex_l; ++cnt_l)
 		{
 			int varInd(mclind[cnt_l]);
 			double varCoeff(dmatval[cnt_l]);
-			// std::cout << "index " << cnt_l << ": coeff of variable " << _solver->variables()[varInd]->name()
-			// 			<< " is " << constraint->GetCoefficient(_solver->variables()[varInd]) << "\n";
 			ASSERT_EQ(varCoeff, constraint->GetCoefficient(_solver->variables()[varInd]));
 		}
 		++row_l;
@@ -568,14 +536,8 @@ TEST_F(ORToolsTest, testORTcopy)
 	ASSERT_EQ(_solver->NumConstraints(), nbConstarints_);
 	ASSERT_EQ(_solver->NumVariables(), nbVariables_);
 
-	// std::ostringstream oss_l;
-	// ORTdescribe(*_solver, oss_l);
-
 	operations_research::MPSolver outSolver_l("copy", ORTOOLS_LP_SOLVER_TYPE);
 	ORTcopyandrenamevars(outSolver_l, *_solver, {"y0","y1","y2","y3","y4","y5","y6","y7"});
-
-	// ORTdescribe(outSolver_l, oss_l);
-	// std::cout << "\n" << oss_l.str();
 
 	std::vector<double> x;
 	std::vector<double> dual;
