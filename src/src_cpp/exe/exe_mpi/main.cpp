@@ -85,13 +85,13 @@ int main(int argc, char** argv)
 			jsonWriter_l.updateEndTime();
 			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
 			jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
-			jsonWriter_l.dump("out.json");
 
 			char buff[FILENAME_MAX];
 			GetCurrentDir(buff, FILENAME_MAX);
 
 			std::stringstream str;
-			str << "Optimization results available in : " << buff << PATH_SEPARATOR << "out.json";
+			str << "Optimization results available in : " << buff << PATH_SEPARATOR 
+				<< options.OUTPUTROOT + PATH_SEPARATOR + "out.json";
 			LOG_INFO_AND_COUT(str.str());
 		}
 		bendersMpi.free(env, world);
