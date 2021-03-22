@@ -23,28 +23,30 @@ int main(int argc, char** argv)
 	mpi::environment env(argc, argv);
 	mpi::communicator world;
 
+	// First check usage (options are given)
+	if (world.rank() == 0)
+	{
+		usage(argc);
+	}
+
+	// Read options, needed to have options.OUTPUTROOT
+	BendersOptions options(build_benders_options(argc, argv));
+
 	if (world.rank() == 0)
 	{
 		gflags::ParseCommandLineFlags(&argc, &argv, true);
 
 		google::InitGoogleLogging(argv[0]);
 
-		google::SetLogDestination(google::GLOG_INFO, "./bendersmpiLog");
+		std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog";
+		google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
+
 		LOG(INFO) << "starting bendersmpi" << std::endl;
-
-		usage(argc);
 	}
-
-	BendersOptions options(build_benders_options(argc, argv));
 
 	JsonWriter jsonWriter_l;
 	jsonWriter_l.write_failure();
 	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
-
-	google::InitGoogleLogging(argv[0]);
-	std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog";
-	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
-	LOG(INFO) << "starting bendersmpi" << std::endl;
 
 	if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1) {
 		std::cout << "You need to have at least one slave by thread" << std::endl;
