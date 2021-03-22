@@ -35,15 +35,6 @@ public:
 
 public:
 
-	/*!
-	*  \brief Generate an error message
-	*
-	*  Method to manage the different errors we could encounter during the optimization process
-	*
-	*  \param sSubName :
-	*/
-	std::list<std::ostream *> & stream();
-
 	void solve(int & lp_status);
 
 
@@ -52,5 +43,3 @@ public:
 	std::list<std::ostream * >_stream;
 	bool _is_master;
 };
-
-// void optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen, int nMsglvl);

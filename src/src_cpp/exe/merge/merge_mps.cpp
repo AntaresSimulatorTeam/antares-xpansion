@@ -114,14 +114,14 @@ int main(int argc, char** argv)
 		neles_reserve += kvp.second.size()*(kvp.second.size() - 1);
 		nrows_reserve += kvp.second.size()*(kvp.second.size() - 1) / 2;
 	}
-	std::cout << "About to add " << nrows_reserve << " coupling constraints" << std::endl;
+	LOG(INFO) << "About to add " << nrows_reserve << " coupling constraints" << std::endl;
 	values.reserve(neles_reserve);
 	cindex.reserve(neles_reserve);
 	mstart.reserve(nrows_reserve + 1);
 	// adding coupling constraints
 	for (auto const & kvp : x_mps_id) {
 		std::string const var_name(kvp.first);
-		std::cout << var_name << std::endl;
+		LOG(INFO) << var_name << std::endl;
 		bool is_first(true);
 		int id1(-1);
 		std::string first_mps;
@@ -133,8 +133,6 @@ int main(int argc, char** argv)
 			}
 			else {
 				int id2 = mps.second;
-				//std::cout << id1 << " - " << id2 << std::endl;
-				// x[id1] - x[id2] = 0
 				mstart.push_back(neles);
 				cindex.push_back(id1);
 				values.push_back(1);
@@ -152,22 +150,22 @@ int main(int argc, char** argv)
 	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
 
 	LOG(INFO) << "Problems merged." << std::endl;
-	std::cout << "Writting mps file" << std::endl;
-	ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.mps");
-	std::cout << "Writting lp file" << std::endl;
-	ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.lp");
+	LOG(INFO) << "Writting mps file" << std::endl;
+	ORTwritelp(mergedSolver_l, "log_merged.mps");
+	LOG(INFO) << "Writting lp file" << std::endl;
+	ORTwritelp(mergedSolver_l, "log_merged.lp");
 
 	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
 	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
 	// XPRSlpoptimize(full, "-b");
 	mergedSolver_l.SetNumThreads(16);
 
-	std::cout << "Solving" << std::endl;
-	LOG(INFO) << "Solving..." << std::endl;
+	LOG_INFO_AND_COUT("Solving...");
 	Timer timer;
 	int status_l = mergedSolver_l.Solve();
-	std::cout << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
-	LOG(INFO) << "Problem solved in " << timer.elapsed() << " seconds" << std::endl;
+	std::stringstream str;
+	str << "Problem solved in " << timer.elapsed() << " seconds";
+	LOG_INFO_AND_COUT(str.str());
 
 	jsonWriter_l.updateEndTime();
 
