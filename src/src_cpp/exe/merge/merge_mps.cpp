@@ -184,7 +184,7 @@ int main(int argc, char** argv)
 	double operationalCost_l = overallCost_l - investCost_l;
 
 	std::ostringstream oss_l;
-	print_solution(oss_l, x0, true);
+	//print_solution(oss_l, x0, true);
 	std::cout << oss_l.str();
 	LOG(INFO) << oss_l.str() << std::endl;
 
