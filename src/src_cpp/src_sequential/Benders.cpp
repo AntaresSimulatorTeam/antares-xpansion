@@ -75,6 +75,7 @@ void Benders::build_cut() {
 		{
 			_data.slave_cost += pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST];
 		}
+
 	}
 	
 	_data.timer_slaves = timer_slaves.elapsed();
