@@ -134,7 +134,7 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
     double gap_l = bendersTrace_p.back().get()->_bestub - bendersTrace_p.back().get()->_lb;
     _output["solution"]["gap"] = gap_l;
     _output["solution"]["optimality"] = (gap_l < 1e-03);
-    if (_output["solution"]["optimality"]) {
+    if (gap_l < 1e-03) {
         _output["solution"]["problem_status"] = "OPTIMAL";
     }
     else {
