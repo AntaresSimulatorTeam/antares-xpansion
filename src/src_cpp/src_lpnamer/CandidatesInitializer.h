@@ -1,18 +1,3 @@
-/* GCC */
-#ifdef __GNUC__
-#if __GNUC__ <8
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#else
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-/* Other compilers */
-#else
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-
 #include "IntercoDataMps.h"
 
 /*!
@@ -47,4 +32,4 @@ void initAreas(std::string const & areaFilepath_p);
  * \param candidates : Structure which is initialized
  * \return void
  */
-void initializedCandidates(fs::path const & rootPath, Candidates & candidates);
+void initializedCandidates(std::string const & rootPath, Candidates & candidates);

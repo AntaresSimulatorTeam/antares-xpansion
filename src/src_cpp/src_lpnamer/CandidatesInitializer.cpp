@@ -1,18 +1,3 @@
-/* GCC */
-#ifdef __GNUC__
-#if __GNUC__ < 8
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#else
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-/* Other compilers */
-#else
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-
 #include "CandidatesInitializer.h"
 
 
@@ -89,22 +74,22 @@ void initAreas(std::string const & areaFilepath_p)
 }
 
 
-void initializedCandidates(fs::path const & rootPath, Candidates & candidates) {
+void initializedCandidates(std::string const & rootPath, Candidates & candidates) {
 	// Get all mandatory path
-	fs::path const candidates_file_name	= rootPath / ".." / ".." / "user" / "expansion" / CANDIDATES_INI;
-	fs::path const mps_file_name			= rootPath / MPS_TXT;
-	fs::path const area_file_name			= rootPath / "area.txt";
-	fs::path const interco_file_name		= rootPath / "interco.txt";
+	std::string const candidates_file_name	= rootPath + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + CANDIDATES_INI;
+	std::string const mps_file_name			= rootPath + PATH_SEPARATOR + MPS_TXT;
+	std::string const area_file_name			= rootPath + PATH_SEPARATOR + "area.txt";
+	std::string const interco_file_name		= rootPath + PATH_SEPARATOR + "interco.txt";
 
 	// Initialize the list of MPS files
-	initMPSList(mps_file_name.string());
+	initMPSList(mps_file_name);
 
 	// Initialize the list of interconnexion
-	initIntercoMap(interco_file_name.string());
+	initIntercoMap(interco_file_name);
 
 	// Initialize the list of area
-	initAreas(area_file_name.string());
+	initAreas(area_file_name);
 
     //read the candidates from file
-	candidates.getCandidatesFromFile(candidates_file_name.string());
+	candidates.getCandidatesFromFile(candidates_file_name);
 }

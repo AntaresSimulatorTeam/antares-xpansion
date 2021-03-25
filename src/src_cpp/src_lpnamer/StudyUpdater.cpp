@@ -1,18 +1,3 @@
-/* GCC */
-#ifdef __GNUC__
-#if __GNUC__ < 8
-#include <experimental/filesystem>
-namespace fs = std::experimental::filesystem;
-#else
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-/* Other compilers */
-#else
-#include <filesystem>
-namespace fs = std::filesystem;
-#endif
-
 #include "StudyUpdater.h"
 
 #include "common_lpnamer.h"
@@ -65,8 +50,8 @@ void StudyUpdater::readAntaresVersion()
 
 std::string StudyUpdater::getLinkdataFilepath(Candidate const & candidate_p) const
 {
-    fs::path result_l = fs::path(linksPath_) / candidate_p.str("linkor") / fs::path(candidate_p.str("linkex") + ".txt");
-	return result_l.string();
+    std::string result_l = linksPath_ + PATH_SEPARATOR + candidate_p.str("linkor") + PATH_SEPARATOR + candidate_p.str("linkex") + ".txt";
+	return result_l;
 }
 
 

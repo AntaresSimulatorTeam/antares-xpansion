@@ -22,15 +22,6 @@ add_library (lpnamer STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
 )
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-
-	target_link_libraries(lpnamer
-		PUBLIC
-		stdc++fs
-	)
-
-endif()
-
 target_include_directories (lpnamer
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
