@@ -119,3 +119,29 @@ def test_002_mpibenders(installDir):
     launch_xpansion(installDir, study_path, "mpibenders")
     verify_solution(study_path, expected_values, expected_investment_solution)
     remove_outputs(study_path)
+
+
+@pytest.mark.medium
+def test_003_sequential(installDir):
+    study_path = ALL_STUDIES_PATH / "xpansion-test-03"
+
+    expected_values = {"gap": 241262.43024921417, "investment_cost": 185999999.99999905,
+                       "operational_cost": 5777590545.5126762, "overall_cost": 5963590545.5126753}
+    expected_investment_solution = {"peak": 1599.9999999999998, "transmission_line": 0.0, "semibase": 1000.0000000000002}
+
+    launch_xpansion(installDir, study_path, "sequential")
+    verify_solution(study_path, expected_values, expected_investment_solution)
+    remove_outputs(study_path)
+
+
+@pytest.mark.medium
+def test_003_mpibenders(installDir):
+    study_path = ALL_STUDIES_PATH / "xpansion-test-03"
+
+    expected_values = {"gap": 241262.43024921417, "investment_cost": 185999999.99999905,
+                       "operational_cost": 5777590545.5126762, "overall_cost": 5963590545.5126753}
+    expected_investment_solution = {"peak": 1599.9999999999998, "transmission_line": 0.0, "semibase": 1000.0000000000002}
+
+    launch_xpansion(installDir, study_path, "mpibenders")
+    verify_solution(study_path, expected_values, expected_investment_solution)
+    remove_outputs(study_path)
