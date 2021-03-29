@@ -233,8 +233,8 @@ class XpansionDriver():
         if (self.config.step in ["full", "lp"]) \
                 and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
             os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
-        if (self.config.step in ["full", "update"])\
-            and (os.path.isfile(self.exe_path(self.config.STUDY_UPDATER) + '.log')):
+        if (self.config.step in ["full", "update"]) \
+                and (os.path.isfile(self.exe_path(self.config.STUDY_UPDATER) + '.log')):
             os.remove(self.exe_path(self.config.STUDY_UPDATER) + '.log')
 
     def check_candidates(self):
@@ -379,33 +379,36 @@ class XpansionDriver():
                 sys.exit(1)
         return lp_path
 
+    def get_lp_namer_log_filename(self):
+        return self.exe_path(self.config.LP_NAMER) + '.log'
+
+    def get_lp_namer_command(self, output_path):
+        is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
+        return [self.exe_path(self.config.LP_NAMER), "-o", output_path, "-f", is_relaxed, "-e",
+                self.additional_constraints()]
+
     def update_step(self, antares_output_name):
         """
             updates the antares study using the candidates file and the json solution output
 
             :param antares_output_name: path to the antares simulation output directory
-
-            produces a file named with xpansionConfig.MPS_TXT
         """
         output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
 
-        # TODO : refactor output
-        with open(self.exe_path(self.config.STUDY_UPDATER) + '.log', 'w') as output_file:
-            update_cmd = self.exe_path(self.config.STUDY_UPDATER) +" -o "+ output_path + " -s " + self.config.options_default["JSON_NAME"]+".json"
-            returned_l = subprocess.call(update_cmd,
-                            shell=True,
-                            stdout=output_file,
-                            stderr=output_file)
-            if returned_l != 0:
-                print("ERROR: exited lpnamer with status %d" % returned_l)
+        with open(self.get_study_updater_log_filename(), 'w') as output_file:
+            returned_l = subprocess.call(self.get_study_updater_command(output_path), shell=False,
+                                         stdout=output_file,
+                                         stderr=output_file)
+            if returned_l.returncode != 0:
+                print("ERROR: exited study-updater with status %d" % returned_l)
                 sys.exit(1)
 
-    def get_lp_namer_log_filename(self):
-        return self.exe_path(self.config.LP_NAMER) + '.log'
+    def get_study_updater_log_filename(self):
+        return self.exe_path(self.config.STUDY_UPDATER) + '.log'
 
-    def get_lp_namer_command(self,output_path):
-        is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
-        return [self.exe_path(self.config.LP_NAMER), "-o", output_path,"-f", is_relaxed,"-e", self.additional_constraints()]
+    def get_study_updater_command(self, output_path):
+        return [self.exe_path(self.config.STUDY_UPDATER), "-o", output_path, "-s",
+                self.config.options_default["JSON_NAME"] + ".json"]
 
     def launch_optimization(self, lp_path):
         """
