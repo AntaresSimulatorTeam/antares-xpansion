@@ -279,6 +279,15 @@ install(DIRECTORY ${ANTARES_SOLVER_DIR}/../lib/
 install(FILES ${ANTARES_SOLVER_PATH}
   DESTINATION BIN)
   
+find_package(antares-study-updater)
+if (antares-study-updater_FOUND)
+
+get_target_property( ANTARES_STUDY_UPDATER_PATH antares-${ANTARES_VERSION}-study-updater IMPORTED_LOCATION_RELEASE )
+
+install(FILES ${ANTARES_STUDY_UPDATER_PATH}
+  DESTINATION BIN)
+
+endif()
 
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
