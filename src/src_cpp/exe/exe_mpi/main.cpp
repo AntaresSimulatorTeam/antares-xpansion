@@ -73,7 +73,7 @@ int main(int argc, char** argv)
 		world.barrier();
 
 		if (world.rank() == 0) {
-			last_solution_log(bendersMpi._data, options.GAP);
+			best_solution_log(bendersMpi._data, bendersMpi._trace, options.GAP);
 			jsonWriter_l.updateEndTime();
 			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
 			jsonWriter_l.dump("out.json");
