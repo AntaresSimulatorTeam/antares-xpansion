@@ -93,7 +93,7 @@ void sequential_launch(BendersOptions const & options) {
 	benders.run();
 	LOG(INFO) << "Benders solver terminated." << std::endl;
 
-	last_solution_log(benders._data, benders._trace, options.GAP);
+	best_solution_log(benders._data, benders._trace, options.GAP);
 	jsonWriter_l.updateEndTime();
 	jsonWriter_l.write(input.size(), benders._trace, benders._data);
 	jsonWriter_l.dump("out.json");
