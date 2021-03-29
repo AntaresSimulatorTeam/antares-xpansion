@@ -396,7 +396,7 @@ class XpansionDriver():
         output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
 
         with open(self.get_study_updater_log_filename(), 'w') as output_file:
-            returned_l = subprocess.call(self.get_study_updater_command(output_path), shell=False,
+            returned_l = subprocess.run(self.get_study_updater_command(output_path), shell=False,
                                          stdout=output_file,
                                          stderr=output_file)
             if returned_l.returncode != 0:
