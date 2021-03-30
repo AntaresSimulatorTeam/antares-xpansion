@@ -96,7 +96,7 @@ void sequential_launch(BendersOptions const & options) {
 	best_solution_log(benders._data, benders._trace, options.GAP);
 	jsonWriter_l.updateEndTime();
 	jsonWriter_l.write(input.size(), benders._trace, benders._data);
-	jsonWriter_l.dump("out.json");
+	jsonWriter_l.dump(options.JSON_NAME+".json");
 
 	benders.free();
 	std::stringstream str;

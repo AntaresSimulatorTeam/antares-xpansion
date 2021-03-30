@@ -33,12 +33,6 @@ namespace
 std::string AdditionalConstraintsReader::illegal_chars = " \n\r\t\f\v-+=:[]()";
 
 
-/**
- * \brief process a section line ie a line that indicates a section name
- *
- * checks that the line ends with "]" and that the section name is not duplicate
- * updates the _section attribute
- */
 void AdditionalConstraintsReader::processSectionLine()
 {
     if ( _line[_line.length()-1] != ']' )
@@ -56,11 +50,6 @@ void AdditionalConstraintsReader::processSectionLine()
     }
 }
 
-/**
- * \brief processes an entry line ie that indicates an attribute and a value
- *
- * adds the entry to the values map
- */
 void AdditionalConstraintsReader::processEntryLine()
 {
     size_t delimiterIt_l = _line.find(" = ");
@@ -111,11 +100,6 @@ void AdditionalConstraintsReader::processEntryLine()
     }
 }
 
-/**
- * \brief AdditionalConstraintsReader from an inifile
- *
- * \param constraints_file_path String name of the file to use to read the additional constraints
- */
 AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & constraints_file_path):
     AdditionalConstraintsReader()
 {
@@ -150,32 +134,17 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
     }
 }
 
-/**
- * \brief return the section defining the binary variables to add
- */
 std::map<std::string, std::string> const & AdditionalConstraintsReader::getVariablesSection()
 {
     return _values["variables"];
 }
 
-/**
- * \brief returns the set of the names of sections defined in the file
- *
- * \param constraints_file_path String name of the file to use to read the additional constraints
- */
-std::set<std::string> AdditionalConstraintsReader::getSections()
+std::set<std::string> const & AdditionalConstraintsReader::getSections() const
 {
     return _sections;
 }
 
-/**
- * \brief returns a section
- *
- * \param sectionName_p String name of the section to return
- * 
- * \throw if the section does not exist
- */
-std::map<std::string, std::string> const & AdditionalConstraintsReader::getSection(std::string const & sectionName_p)
+std::map<std::string, std::string> const & AdditionalConstraintsReader::getSection(std::string const & sectionName_p) const
 {
     return _values.at(sectionName_p);
 }

@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 
 	}
 
-	world.barrier();//@FIXME here to wait for all processes to respect the beginTime ==> All Processes will start after the initialised beginTime
+	world.barrier();
 	if (world.size() == 1) {
 		std::cout << "Sequential launch" << std::endl;
 		LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;

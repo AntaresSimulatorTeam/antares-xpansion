@@ -3,3 +3,4 @@ MERGE_MPS           : $<TARGET_FILE_NAME:merge_mps>
 BENDERS_MPI         : @BENDERSMPI_APP@
 BENDERS_SEQUENTIAL  : $<TARGET_FILE_NAME:benderssequential>
 LP_NAMER            : $<TARGET_FILE_NAME:lp_namer>
+STUDY_UPDATER       : $<TARGET_FILE_NAME:xpansion-study-updater>

@@ -13,68 +13,42 @@ namespace
     }
 }
 
-/*!
-*  \brief JsonWriter default constructor
-*/
 JsonWriter::JsonWriter() :
     _beginTime(std::time(0)),
     _endTime(std::time(0))
 {
 }
 
-/*!
-*  \brief Constructor of class JsonWriter
-*/
 JsonWriter::~JsonWriter() {
 }
 
-/*!
-*  \brief updates the execution begin time
-*/
 void JsonWriter::updateBeginTime()
 {
     _beginTime = std::time(0);
     _output["begin"] = getBegin();
 }
 
-/*!
-*  \brief updates the end of execution time
-*/
 void JsonWriter::updateEndTime()
 {
     _endTime =  std::time(0);
     _output["end"] = getEnd();
 }
 
-/*!
-*  returns the start of execution time as a string
-*/
 std::string JsonWriter::getBegin()
 {
     return timeToStr(&_beginTime);
 }
 
-/*!
-*  returns the end of execution time as a string
-*/
 std::string JsonWriter::getEnd()
 {
     return timeToStr(&_endTime);
 }
 
-/*!
-*  \brief return a double indicating the exection time in seconds
-*/
 double JsonWriter::getDuration()
 {
     return std::difftime(_endTime, _beginTime);
 }
 
-/*!
-*  \brief Sets the options of the benders algorithm to be later written to the json file
-*
-*  \param bendersOptions_p : set of options used for the optimization
-*/
 void JsonWriter::write(BendersOptions const & bendersOptions_p)
 {
     //Options
@@ -83,13 +57,6 @@ void JsonWriter::write(BendersOptions const & bendersOptions_p)
     #undef BENDERS_OPTIONS_MACRO
 }
 
-/*!
-*  \brief Sets some entries to be later written to the json file
-*
-*  \param nbWeeks_p : number of the weeks in the study
-*  \param bendersTrace_p : trace to be written ie iterations details
-*  \param bendersData_p : final benders data to get the best iteration
-*/
 void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_p,
                        BendersData const & bendersData_p)
 {
@@ -105,7 +72,8 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
         _output["iterations"][strIterCnt_l]["duration"] = masterDataPtr_l->_time;
         _output["iterations"][strIterCnt_l]["lb"] = masterDataPtr_l->_lb;
         _output["iterations"][strIterCnt_l]["ub"] = masterDataPtr_l->_ub;
-        _output["iterations"][strIterCnt_l]["gap"] = masterDataPtr_l->_ub - masterDataPtr_l->_lb;
+        _output["iterations"][strIterCnt_l]["best_ub"] = masterDataPtr_l->_bestub;
+        _output["iterations"][strIterCnt_l]["gap"] = masterDataPtr_l->_bestub - masterDataPtr_l->_lb;
         _output["iterations"][strIterCnt_l]["relative_gap"] = (masterDataPtr_l->_ub - masterDataPtr_l->_lb) / masterDataPtr_l->_ub;
         _output["iterations"][strIterCnt_l]["investment_cost"] = masterDataPtr_l->_invest_cost;
         _output["iterations"][strIterCnt_l]["operational_cost"] = masterDataPtr_l->_operational_cost;
@@ -131,7 +99,7 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
     _output["solution"]["investment_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost;
     _output["solution"]["operational_cost"] = bendersTrace_p[bestItIndex_l].get()->_operational_cost;
     _output["solution"]["overall_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost + bendersTrace_p[bestItIndex_l].get()->_operational_cost;
-    double gap_l = bendersTrace_p.back().get()->_bestub - bendersTrace_p.back().get()->_lb;
+    double gap_l = bendersData_p.best_ub - bendersData_p.lb;
     _output["solution"]["gap"] = gap_l;
     _output["solution"]["optimality"] = (gap_l < 1e-03);
     for(auto pairNameValue_l : bendersTrace_p[bestItIndex_l]->get_point())
@@ -140,16 +108,6 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
     }
 }
 
-/*!
-*  \brief  Sets some entries to be later written to the json file
-*
-*  \param nbWeeks_p : number of the weeks in the study
-*  \param lb_p : solution lower bound
-*  \param ub_p : solution upper bound
-*  \param investCost_p : investment cost
-*  \param solution_p : point giving the solution and the candidates
-*  \param optimality_p : indicates if optimality was reached
-*/
 void JsonWriter::write(int nbWeeks_p,
                        double const & lb_p, double const & ub_p,
                        double const & investCost_p,
@@ -169,11 +127,6 @@ void JsonWriter::write(int nbWeeks_p,
     }
 }
 
-/*!
-*  \brief write the json data into a file
-*
-*  \param filename_p : name of the file to be written
-*/
 void JsonWriter::dump(std::string const & filename_p)
 {
     //Antares
@@ -191,7 +144,6 @@ void JsonWriter::dump(std::string const & filename_p)
     {
         //Output
         jsonOut_l << _output << std::endl;
-        jsonOut_l.close();
     }
     else
     {

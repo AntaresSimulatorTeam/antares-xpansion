@@ -176,7 +176,7 @@ int main(int argc, char** argv)
 
 	bool optimality_l = (status_l == operations_research::MPSolver::OPTIMAL);
 	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), mergedSolver_l.Objective().Value(), investCost_l, x0, optimality_l);
-	jsonWriter_l.dump("out.json");
+	jsonWriter_l.dump(options.JSON_NAME+".json");
 
 	return 0;
 }

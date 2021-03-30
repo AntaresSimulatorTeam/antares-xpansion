@@ -1,6 +1,6 @@
 # *antares-xpansion* CMake Build Instructions
 
- [CMake version](#cmake-version) | [Environnement build install](#env-build-install)| [Dependencies](#dependencies) | [Building](#building-antares-solution) | [Tests](#tests) | [Installer creation](#installer)
+[Build tools](#build-tools) | [Dependencies](#dependencies) | [Building](#building-antares-solution) | [Tests](#tests) | [Installer creation](#installer)
 
 ## C/I status
 
@@ -10,37 +10,10 @@
 
 [ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml
 
-## [CMake version](#cmake-version)
-CMake 3.x must be used.
-
-There are several ways to get CMake 3.x on your system.
-
-#### Using snap
-```
-sudo snap install cmake --classic
-```
-#### Compiling from sources
+## [Build tools](#build-tools)
 
 ```
-sudo apt install build-essential libssl-dev
-wget https://github.com/Kitware/CMake/releases/download/v3.16.5/cmake-3.18.1.tar.gz
-tar -zxvf cmake-3.18.1.tar.gz
-cd cmake-3.18.1
-./bootstrap
-make 
-sudo make install
-```
-Note:
-> You can use a different version of CMake. Check CMake website for available version and chang ``wget`` url.
-
-You can then tell Ubuntu that a new version of cmake should be used :
-```
-sudo update-alternatives --install /usr/bin/cmake cmake /usr/local/bin/cmake 1 --force
-```
-
-## [Environnement build install](#env-build-install)
-```
-sudo apt-get install build-essential
+sudo apt install build-essential libssl-dev cmake
 ```
 
 ## [Python version](#python-version)
@@ -61,7 +34,7 @@ pip3 install -r src/tests/examples/requirements.txt
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost : mpi serialization (Only for MPI benders compilation)
+ - Boost : program-option mpi serialization (Only for MPI benders compilation)
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
@@ -76,7 +49,7 @@ The install procedure can be done
 #### Ubuntu
 
 ```
-sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz
+sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev
 sudo apt-get install unzip uuid-dev libcurl4-openssl-dev libssl-dev
 ```
 Note :

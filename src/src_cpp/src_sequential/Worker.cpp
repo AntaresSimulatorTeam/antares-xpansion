@@ -116,7 +116,7 @@ void Worker::solve(int & lp_status) {
 		ORTwritemps(*_solver, buffer.str());
 		std::exit(1);
 	}
-	else {//@FIXME conformity : replace with equivalent to XPRS_LP_UNSTARTED but useless
+	else {//@NOTE conformity : replace with equivalent to XPRS_LP_UNSTARTED but useless
 		//std::cout << "Worker::solve() status " << lp_status<<", "<<_path_to_mps << std::endl;
 	}
 }

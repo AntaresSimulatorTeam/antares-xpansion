@@ -198,7 +198,8 @@ The python script does several operations one after the other. The step option a
 |     getnames     |     Launch getnamer one time to   get the name of Antares variables        |
 |     lp           |     Launch lpnamer one time to   create the master problem of expansion    |
 |     optim        |     Launch the resolution of   Antares Xpansion                            |
-|     full         |     Launch all steps in order   (antares > getnames > lp > optim)          |
+|     update       |     Update antares study with investment solution                          |
+|     full         |     Launch all steps in order   (antares > getnames > lp > optim > update) |
 
 ##### dataDir
 Indicate the Antares simulation path. The specified path must be an explicit path. 

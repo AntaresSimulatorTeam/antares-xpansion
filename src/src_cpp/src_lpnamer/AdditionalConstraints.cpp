@@ -5,11 +5,6 @@
 #include "AdditionalConstraintsReader.h"
 
 
-/**
- * \brief AdditionalConstraints constructor from an ini file path
- *
- * \param constraints_file_path String corresponding to the additional constraints file path
- */
 AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_file_path)
 {
     AdditionalConstraintsReader reader_l(constraints_file_path);
@@ -125,14 +120,6 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
 
 }
 
-/**
- * \brief adds a binary variable to be created and links it to the corresponding variable
- *
- * \param oldVarName_p String name of the old variable
- * \param binVarName_p String name of the new binary variable to link to the old existing one
- *
- * adds an entry to the AdditionalConstraints::_variablesToBinarise
- */
 void AdditionalConstraints::addVariableToBinarise(std::string oldVarName_p, std::string binVarName_p)
 {
     if(!_binaryVariables.insert(binVarName_p).second)
@@ -143,13 +130,7 @@ void AdditionalConstraints::addVariableToBinarise(std::string oldVarName_p, std:
     _variablesToBinarise[oldVarName_p] = binVarName_p;
 }
 
-/**
- * \brief getter for AdditionalConstraints::_variablesToBinarise
- *
- * \return std::map<std::string, std::string> whose value is the name of the binary variables to create
- * and whose key is the corresponding existing variable to link to
- */
-std::map<std::string, std::string> AdditionalConstraints::getVariablesToBinarise()
+std::map<std::string, std::string> const & AdditionalConstraints::getVariablesToBinarise() const
 {
     return _variablesToBinarise;
 }

@@ -20,9 +20,12 @@ enable_testing ()
 # --------------------------------------------------------------------------
 
 add_executable (unit_tests
-	${CMAKE_CURRENT_SOURCE_DIR}/SimpleTest.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/ORToolsTest.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsTest.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReaderTest.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecordTest.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateTest.cc
+	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReaderTest.cc
 )
 
 target_include_directories (unit_tests
@@ -37,13 +40,8 @@ target_link_libraries (unit_tests PRIVATE
 		GTest::Main
 		helpers
 		lpnamer
+		${PROJECT_NAME}::sequentialcore
 	)
-
-if (USE_SEQUENTIAL)
-	target_link_libraries (unit_tests PRIVATE
-			${PROJECT_NAME}::sequentialcore
-	)
-endif ()
 
 if (USE_MPI)
 	target_link_libraries (unit_tests PRIVATE
@@ -63,13 +61,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options (unit_tests PUBLIC -Wno-covered-switch-default)
 endif ()
 
-add_custom_command (TARGET unit_tests
-	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:unit_tests> ${CMAKE_BINARY_DIR}/unit_tests.bak
-	COMMAND $<TARGET_FILE:unit_tests> --gtest_output=xml:${CMAKE_BINARY_DIR}/test_result.xml
-	COMMENT "Runs the unit tests after build"
-	)
-
 add_test(NAME unit_ortools COMMAND unit_tests)
 set_property(TEST unit_ortools PROPERTY LABELS unit)
 
@@ -80,6 +71,7 @@ set (TESTS_REPORTS_DIR "${CMAKE_BINARY_DIR}/tests-reports")
 set (TESTS_REPORTS_FILE "unit_tests-results.xml")
 
 add_custom_target (run_unit_tests
+	COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:unit_tests> ${CMAKE_BINARY_DIR}/unit_tests.bak
 	COMMAND ${CMAKE_COMMAND} -E make_directory "${TESTS_REPORTS_DIR}"
 	COMMAND $<TARGET_FILE:unit_tests> --gtest_output=xml:${TESTS_REPORTS_DIR}/${TESTS_REPORTS_FILE}
 	DEPENDS $<TARGET_FILE:unit_tests>
@@ -89,8 +81,8 @@ add_custom_target (run_unit_tests
 # --------------------------------------------------------------------------
 # coverage
 # --------------------------------------------------------------------------
-if (${PROJECT_NAME}_WITH_COVERAGE)
-	add_custom_command (TARGET unit_tests
+if (${PROJECT_NAME}_WITH_COVERAGE AND (CMAKE_BUILD_TYPE STREQUAL Debug))
+	add_custom_command (TARGET run_unit_tests
 	POST_BUILD
 	COMMAND ${GCOVR_PATH} --root=${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --gcov-exclude=".*/src_test/.*Test.c*" --branches --xml-pretty --output ${GCOV_RESULT_FILE} --print-summary
 	COMMENT "Generate coverage reports"
