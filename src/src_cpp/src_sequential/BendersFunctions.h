@@ -17,7 +17,7 @@ void print_cut_csv(std::ostream&stream, SlaveCutDataHandler const & handler, std
 void print_active_cut(ActiveCutStorage const & active_cuts, BendersOptions const & options);
 void investment_candidates_log(const BendersData& data);
 void solution_log(const BendersData& data);
-void last_solution_log(const BendersData& data, double optimal_gap);
+void best_solution_log(const BendersData& data, const BendersTrace& trace, double optimal_gap);
 
 
 void update_best_ub(double & best_ub, double const & ub, Point & bestx, Point const & x0, int & bestit, int const & it);

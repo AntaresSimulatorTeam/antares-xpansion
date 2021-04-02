@@ -39,7 +39,8 @@ int main(int argc, char** argv)
 	GetCurrentDir(buff, FILENAME_MAX);
 
 	std::stringstream str;
-	str << "Optimization results available in : " << buff <<  PATH_SEPARATOR << "out.json";
+	str << "Optimization results available in : " << buff <<  PATH_SEPARATOR 
+		<< options.OUTPUTROOT << PATH_SEPARATOR << options.JSON_NAME + ".json";
 	LOG_INFO_AND_COUT(str.str());
 
 	return 0;

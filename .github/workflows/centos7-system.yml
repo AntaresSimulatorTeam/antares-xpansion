@@ -26,7 +26,7 @@ jobs:
     - name: Install libraries
       run: |
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
-           yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz
+           yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options
            yum install -y cmake3 devtoolset-7 environment-modules rpm-build
                       
     

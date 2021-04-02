@@ -221,16 +221,19 @@ void solution_log(const BendersData& data)
 }
 
 
-void last_solution_log(const BendersData& data, double optimal_gap)
+void best_solution_log(const BendersData& data, const BendersTrace& trace, double optimal_gap)
 {
-	double gap_l = data.best_ub - data.lb;
+	size_t bestItIndex_l = data.best_it - 1;
+	const WorkerMasterData* bestData = trace[bestItIndex_l].get();
+
+	double gap_l = bestData->_bestub - bestData->_lb;
 
 	std::string optimality = gap_l <= optimal_gap ? "within" : "outside";
 
 	std::stringstream str;
 	str << "--- CONVERGENCE " << optimality << " optimitality gap :" << std::endl;
-	str << "\tBest solution = it " << data.it << std::endl;
-	str << "\tOverall cost  = " << std::setw(10) << std::fixed << std::setprecision(2) << convert_in_million_euros(data.slave_cost + data.invest_cost) << " Me";
+	str << "\tBest solution = it " << data.best_it << std::endl;
+	str << "\tOverall cost  = " << std::setw(10) << std::fixed << std::setprecision(2) << convert_in_million_euros(bestData->_operational_cost + bestData->_invest_cost) << " Me";
 
 	LOG_INFO_AND_COUT(str.str());
 }

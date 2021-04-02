@@ -85,7 +85,7 @@ void sequential_launch(BendersOptions const & options) {
 
 	JsonWriter jsonWriter_l;
 	jsonWriter_l.write_failure();
-	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
+	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	jsonWriter_l.write(options);
 	jsonWriter_l.updateBeginTime();
@@ -96,10 +96,10 @@ void sequential_launch(BendersOptions const & options) {
 	benders.run();
 	LOG(INFO) << "Benders solver terminated." << std::endl;
 
-	last_solution_log(benders._data, options.GAP);
+	best_solution_log(benders._data, benders._trace, options.GAP);
 	jsonWriter_l.updateEndTime();
 	jsonWriter_l.write(input.size(), benders._trace, benders._data);
-	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
+	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	benders.free();
 	std::stringstream str;

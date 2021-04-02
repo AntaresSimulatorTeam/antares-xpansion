@@ -442,7 +442,6 @@ void ORTgetrhs(operations_research::MPSolver const & solver_p, std::vector<doubl
                         }
                         else
                         {
-                            //TODO : we assume that the RHS for ranges is the ub : verify consistency with xpress results
                             return cstr_l->ub();
                         }
                    });

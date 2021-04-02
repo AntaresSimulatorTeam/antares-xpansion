@@ -8,6 +8,7 @@
 
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/merge")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/exe_lpnamer")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/exe_study-updater")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/analyse")
 
 if (USE_MPI)

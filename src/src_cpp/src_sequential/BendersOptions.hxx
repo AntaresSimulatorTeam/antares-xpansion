@@ -55,5 +55,8 @@ BENDERS_OPTIONS_MACRO(RAND_AGGREGATION, int, 0)
 //Name of the csv output file
 BENDERS_OPTIONS_MACRO(CSV_NAME, std::string, "benders_output_trace")
 
+//Name of the json output file
+BENDERS_OPTIONS_MACRO(JSON_NAME, std::string, "out")
+
 //True if alpha needs to be bounded by best upper bound, false otherwise
 BENDERS_OPTIONS_MACRO(BOUND_ALPHA, bool, true)

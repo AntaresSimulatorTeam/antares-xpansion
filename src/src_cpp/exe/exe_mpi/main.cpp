@@ -46,7 +46,7 @@ int main(int argc, char** argv)
 
 	JsonWriter jsonWriter_l;
 	jsonWriter_l.write_failure();
-	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
+	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1) {
 		std::cout << "You need to have at least one slave by thread" << std::endl;
@@ -62,7 +62,7 @@ int main(int argc, char** argv)
 
 	}
 
-	world.barrier();//@FIXME here to wait for all processes to respect the beginTime ==> All Processes will start after the initialised beginTime
+	world.barrier();
 	if (world.size() == 1) {
 		std::cout << "Sequential launch" << std::endl;
 		LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;
@@ -83,17 +83,17 @@ int main(int argc, char** argv)
 		world.barrier();
 
 		if (world.rank() == 0) {
-			last_solution_log(bendersMpi._data, options.GAP);
+			best_solution_log(bendersMpi._data, bendersMpi._trace, options.GAP);
 			jsonWriter_l.updateEndTime();
 			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
-			jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + "out.json");
+			jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 			char buff[FILENAME_MAX];
 			GetCurrentDir(buff, FILENAME_MAX);
 
 			std::stringstream str;
 			str << "Optimization results available in : " << buff << PATH_SEPARATOR 
-				<< options.OUTPUTROOT + PATH_SEPARATOR + "out.json";
+				<< options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json";
 			LOG_INFO_AND_COUT(str.str());
 		}
 		bendersMpi.free(env, world);
