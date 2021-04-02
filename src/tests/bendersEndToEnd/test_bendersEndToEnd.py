@@ -1,11 +1,7 @@
-import glob
 import json
 import os
 import shutil
 import subprocess
-import sys
-import urllib.request
-import zipfile
 from pathlib import Path
 
 import numpy as np
@@ -84,16 +80,21 @@ def check_optimization_json_output(expected_results_dict, instance_path) :
     # Testing optimization output if the instance has a solution
     if(prb_status == 'OPTIMAL') :
         value = curr_instance_json['solution']['overall_cost']
-        optimal_variables = curr_instance_json['solution']['values']
+        optimal_variables = np.array([i[1] for i in \
+            sorted(curr_instance_json['solution']['values'].items())])
+        
 
         #Testing optimal value
         np.testing.assert_allclose(value, \
             expected_results_dict['optimal_value'], rtol=1e-6, atol=0)
 
         #Testing optmal solution (variables)
-        for var in optimal_variables :
-            np.testing.assert_allclose(optimal_variables[var], \
-                expected_results_dict['optimal_variables'][var], rtol=1e-6, atol=0)
+        # Sorting the Dict tuples (key, val) by alphabetic order then taking the values
+        # for comparison
+        expected_sorted_values = np.array([i[1] for i in \
+            sorted(expected_results_dict['optimal_variables'].items())])
+        np.testing.assert_allclose(optimal_variables, expected_sorted_values, \
+                rtol=1e-6, atol=0)
 
 
 ## TESTS ##

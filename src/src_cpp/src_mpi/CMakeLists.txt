@@ -11,7 +11,9 @@ message ("MPI_C_INCLUDE_PATH ${MPI_C_INCLUDE_PATH}")
 message ("MPI_C_INCLUDE_DIRS ${MPI_C_INCLUDE_DIRS}")
 message ("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
-add_library (mpicore STATIC 
+add_library (mpicore STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.h
+	${CMAKE_CURRENT_SOURCE_DIR}/BendersMPI.h
 	${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMPI.cpp
 )

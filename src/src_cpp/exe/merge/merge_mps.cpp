@@ -151,9 +151,9 @@ int main(int argc, char** argv)
 
 	LOG(INFO) << "Problems merged." << std::endl;
 	LOG(INFO) << "Writting mps file" << std::endl;
-	ORTwritelp(mergedSolver_l, "log_merged.mps");
+	ORTwritemps(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.mps");
 	LOG(INFO) << "Writting lp file" << std::endl;
-	ORTwritelp(mergedSolver_l, "log_merged.lp");
+	ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.lp");
 
 	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
 	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
@@ -182,11 +182,6 @@ int main(int argc, char** argv)
 
 	double overallCost_l = mergedSolver_l.Objective().Value();
 	double operationalCost_l = overallCost_l - investCost_l;
-
-	std::ostringstream oss_l;
-	//print_solution(oss_l, x0, true);
-	std::cout << oss_l.str();
-	LOG(INFO) << oss_l.str() << std::endl;
 
 	bool optimality_l = (status_l == operations_research::MPSolver::OPTIMAL);
 	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), 

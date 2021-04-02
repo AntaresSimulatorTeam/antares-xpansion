@@ -66,8 +66,6 @@ void BendersOptions::read(std::string const & file_name) {
 			std::string filename = INPUTROOT + PATH_SEPARATOR + SLAVE_WEIGHT;
 			std::ifstream file(filename);
 
-
-
 			if (!file) {
 				std::cout << "Cannot open file " << filename << std::endl;
 			}
