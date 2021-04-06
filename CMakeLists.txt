@@ -243,7 +243,7 @@ FILE(COPY ${ANTARES_SOLVER_PATH}
     USE_SOURCE_PERMISSIONS)  
     
 #Copy associated .so and .dll to build directory
-FILE(COPY  ${ANTARES_SOLVER_DIR}
+FILE(COPY  ${ANTARES_SOLVER_DIR}/
 	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
     USE_SOURCE_PERMISSIONS
     FILES_MATCHING PATTERN "*.dll")
@@ -272,7 +272,7 @@ if (WIN32)
     FILES_MATCHING PATTERN "*.dll")
 endif()
 
-install(DIRECTORY ${ANTARES_SOLVER_DIR}
+install(DIRECTORY ${ANTARES_SOLVER_DIR}/
   TYPE BIN
   FILES_MATCHING PATTERN "*.dll")
   
@@ -281,9 +281,9 @@ install(DIRECTORY ${ANTARES_SOLVER_DIR}/../lib/
   FILES_MATCHING PATTERN "*.so")
     
 install(FILES ${ANTARES_SOLVER_PATH}
-  DESTINATION BIN)
-  
+  DESTINATION bin)
 
+include (InstallRequiredSystemLibraries)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     get_linux_lsb_release_information()
