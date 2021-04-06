@@ -297,19 +297,15 @@ class XpansionDriver():
         # if not os.path.isdir(driver.antares_output()):
         #     os.mkdir(driver.antares_output(), )
         old_output = os.listdir(self.antares_output())
-        with open(self.get_antares_log_filename(), 'w') as output_file:
-            returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
-                                        stdout=output_file,
-                                        stderr=output_file)
-            if returned_l.returncode != 0:
-                print("WARNING: exited antares with status %d" % returned_l.returncode)
+        returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
+                                        stdout= subprocess.DEVNULL,
+                                        stderr= subprocess.DEVNULL)
+        if returned_l.returncode != 0:
+            print("WARNING: exited antares with status %d" % returned_l.returncode)
         new_output = os.listdir(self.antares_output())
         assert len(old_output) + 1 == len(new_output)
         diff = list(set(new_output) - set(old_output))
         return diff[0]
-
-    def get_antares_log_filename(self):
-        return str(self.antares()) + '.log'
 
     def get_antares_cmd(self):
         return [self.antares(), self.data_dir()]
@@ -370,7 +366,7 @@ class XpansionDriver():
             shutil.rmtree(lp_path)
         os.makedirs(lp_path)
 
-        with open(self.get_lp_namer_log_filename(), 'w') as output_file:
+        with open(self.get_lp_namer_log_filename(lp_path), 'w') as output_file:
             returned_l = subprocess.run(self.get_lp_namer_command(output_path), shell=False,
                                         stdout=output_file,
                                         stderr=output_file)
@@ -379,8 +375,8 @@ class XpansionDriver():
                 sys.exit(1)
         return lp_path
 
-    def get_lp_namer_log_filename(self):
-        return self.exe_path(self.config.LP_NAMER) + '.log'
+    def get_lp_namer_log_filename(self, lp_path):
+        return os.path.join(lp_path , self.config.LP_NAMER + '.log')
 
     def get_lp_namer_command(self, output_path):
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
@@ -395,7 +391,7 @@ class XpansionDriver():
         """
         output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
 
-        with open(self.get_study_updater_log_filename(), 'w') as output_file:
+        with open(self.get_study_updater_log_filename(output_path), 'w') as output_file:
             returned_l = subprocess.run(self.get_study_updater_command(output_path), shell=False,
                                          stdout=output_file,
                                          stderr=output_file)
@@ -403,8 +399,8 @@ class XpansionDriver():
                 print("ERROR: exited study-updater with status %d" % returned_l)
                 sys.exit(1)
 
-    def get_study_updater_log_filename(self):
-        return self.exe_path(self.config.STUDY_UPDATER) + '.log'
+    def get_study_updater_log_filename(self, output_path):
+        return os.path.join(output_path , self.config.STUDY_UPDATER + '.log')
 
     def get_study_updater_command(self, output_path):
         return [self.exe_path(self.config.STUDY_UPDATER), "-o", output_path, "-s",
@@ -432,12 +428,6 @@ class XpansionDriver():
             solver = self.config.BENDERS_MPI
         elif self.config.method == "mergeMPS":
             solver = self.config.MERGE_MPS
-            mergemps_lp_log = "log_merged.lp"
-            if os.path.isfile(mergemps_lp_log):
-                os.remove(mergemps_lp_log)
-            mergemps_mps_log = "log_merged.mps"
-            if os.path.isfile(mergemps_mps_log):
-                os.remove(mergemps_lp_log)
         elif self.config.method == "sequential":
             solver = self.config.BENDERS_SEQUENTIAL
         elif self.config.method == "both":
