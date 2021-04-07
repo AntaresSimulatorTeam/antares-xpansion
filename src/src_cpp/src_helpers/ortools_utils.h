@@ -3,7 +3,10 @@
 #include <sstream>
 
 #include "ortools/linear_solver/linear_solver.h"
-
+#include "OsiClpSolverInterface.hpp"
+#include "OsiSolverInterface.hpp"
+#include "CoinMpsIO.hpp"
+#include "CoinHelperFunctions.hpp"
 
 #if ( (!defined(ORTOOLS_LP_SOLVER_TYPE)) || (!defined(ORTOOLS_MIP_SOLVER_TYPE)) )
 #if defined(CPLEX_SOLVER)
@@ -37,6 +40,43 @@ operations_research::MPSolverResponseStatus ORTreadmps(operations_research::MPSo
  * @param filename_p  : path to the mps file to produce
  */
 bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string const & filename_p);
+
+/**
+ * @brief writes a problem into an mps format with high precision on number, 
+ *              only available if COIN-OR CBC is used as solver
+ *
+ * @param solver_p  : solver containing the model to export, cannot be const as the model 
+ *              to be written is sent to the inner solver in this method
+ * @param filename_p  : path to the mps file to produce
+ */
+bool ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p, 
+    std::string const& filename_p);
+
+
+/**
+ * @brief writes a problem into an mps format
+ *
+ * @param solver : Solver containing the problem data
+ * @param filename : path to the mps file to produce
+ * @param formatType : 0 for default CBC accuracy, 1 for ExtraAccuracy
+ * @param numberAcross : Not described in CBC documentation
+ * @param objSense : Not described in CBC documentation,
+ *              1.0 for minimization, -1.0 for maximization
+ * @param numberSOS : Not described in CBC documentation
+ * @param setInfo : Not described in CBC documentation, may bu NULL
+ * @param colNamesVec : Vector of column (variables) names, needs an artificial variable named
+ *              "dummy" at index 0
+ * @param rowNamesVec : Vector of row names (contraints)
+ */
+int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
+    const char* filename,
+    int formatType,
+    int numberAcross,
+    double objSense,
+    int numberSOS,
+    const CoinSet* setInfo,
+    std::vector<std::string> const& colNamesVec,
+    std::vector<std::string> const& rowNamesVec);
 
 /**
  * @brief writes a problem into an lp format

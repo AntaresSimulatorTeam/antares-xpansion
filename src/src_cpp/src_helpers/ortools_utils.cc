@@ -99,6 +99,119 @@ bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string con
 	return true;
 }
 
+bool ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p, 
+    std::string const& filename_p) {
+    
+    /*The MPS writer of inner CBC solver will be used
+    At this part, the optimization data in only set in ORTools data, not in CBC Solver
+    To send the data to CBC, the model has to be solved
+    We set a Time limit of 1ms so that the solve, which is only required to send the data
+    is not time consuming */
+    solver_p.set_time_limit(1);
+    solver_p.Solve();
+
+    // We take the underlying solver present in CBC
+    OsiClpSolverInterface* underlying_CBC_solver = 
+        static_cast<OsiClpSolverInterface*>(solver_p.underlying_solver());
+
+    // Getting row names
+    std::vector<std::string> rowNamesVector(solver_p.NumConstraints());
+    int ind = 0;
+    for (auto const& ctr : solver_p.constraints()) {
+        rowNamesVector[ind] = ctr->name();
+        ind++;
+    }
+
+    // Getting column names
+    // A "dummy" variable is added by CBC at index 0 when the problem is solved
+    // It will not be written in MPS but need to be present in names
+    std::vector<std::string> columnNamesVector(solver_p.NumVariables() + 1);
+    columnNamesVector[0] = "dummy";
+    ind = 1;
+    for (auto const& var : solver_p.variables()) {
+        columnNamesVector[ind] = var->name();
+        ind++;
+    }
+
+    int formatType = 1;
+    int numberAcross = 0;
+    double objSense = 1.0;
+    int numberSOS = 0;
+    const CoinSet* setInfo = NULL;
+    ORTwriteMps_CBC_with_names(
+        underlying_CBC_solver,
+        "master_cbcWritten.mps",
+        formatType,
+        numberAcross,
+        objSense,
+        numberSOS,
+        setInfo,
+        columnNamesVector,
+        rowNamesVector
+    );
+    
+}
+
+int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
+    const char* filename,
+    int formatType,
+    int numberAcross,
+    double objSense,
+    int numberSOS,
+    const CoinSet* setInfo,
+    std::vector<std::string> const& colNamesVec,
+    std::vector<std::string> const& rowNamesVec) 
+{
+    const int numcols = solver->getNumCols();
+    char* integrality = CoinCopyOfArray(solver->getColType(false), numcols);
+    bool hasInteger = false;
+    for (int i = 0; i < numcols; ++i) {
+        if (solver->isInteger(i)) {
+            hasInteger = true;
+            break;
+        }
+    }
+
+    // Get multiplier for objective function - default 1.0
+    double* objective = new double[numcols];
+    memcpy(objective, solver->getObjCoefficients(), numcols * sizeof(double));
+    double locObjSense = (objSense == 0 ? 1 : objSense);
+    if (solver->getObjSense() * locObjSense < 0.0) {
+        for (int i = 0; i < numcols; ++i)
+            objective[i] = -objective[i];
+    }
+
+    CoinMpsIO writer;
+    writer.setInfinity(solver->getInfinity());
+    writer.passInMessageHandler(solver->messageHandler());
+
+    writer.setMpsData(
+        *(solver->getMatrixByCol()),
+        solver->getInfinity(),
+        solver->getColLower(),
+        solver->getColUpper(),
+        objective,
+        hasInteger ? integrality : 0,
+        solver->getRowLower(),
+        solver->getRowUpper(),
+        colNamesVec,
+        rowNamesVec
+    );
+
+
+    std::string probName = "";
+    solver->getStrParam(OsiProbName, probName);
+    writer.setProblemName(probName.c_str());
+    double objOffset = 0.0;
+    solver->getDblParam(OsiObjOffset, objOffset);
+    writer.setObjectiveOffset(objOffset);
+    delete[] objective;
+    delete[] integrality;
+
+    return writer.writeMps(filename, 0 /*gzip it*/, formatType, numberAcross,
+        NULL, numberSOS, setInfo);
+}
+
 bool ORTwritelp(operations_research::MPSolver const & solver_p, std::string const & filename_p)
 {
     std::string modelLP_l;
