@@ -99,7 +99,7 @@ bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string con
 	return true;
 }
 
-bool ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p, 
+void ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p, 
     std::string const& filename_p) {
     
     /*The MPS writer of inner CBC solver will be used
@@ -140,7 +140,7 @@ bool ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p,
     const CoinSet* setInfo = NULL;
     ORTwriteMps_CBC_with_names(
         underlying_CBC_solver,
-        "master_cbcWritten.mps",
+        filename_p.c_str(),
         formatType,
         numberAcross,
         objSense,
@@ -149,7 +149,6 @@ bool ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p,
         columnNamesVector,
         rowNamesVector
     );
-    
 }
 
 int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
