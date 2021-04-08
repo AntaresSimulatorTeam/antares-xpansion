@@ -69,7 +69,7 @@ void ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p,
  * @param rowNamesVec : Vector of row names (contraints)
  */
 int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
-    const char* filename,
+    std::string const& filename,
     int formatType,
     int numberAcross,
     double objSense,

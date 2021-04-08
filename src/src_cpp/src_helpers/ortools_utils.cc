@@ -140,7 +140,7 @@ void ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p,
     const CoinSet* setInfo = NULL;
     ORTwriteMps_CBC_with_names(
         underlying_CBC_solver,
-        filename_p.c_str(),
+        filename_p,
         formatType,
         numberAcross,
         objSense,
@@ -152,7 +152,7 @@ void ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p,
 }
 
 int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
-    const char* filename,
+    std::string const& filename,
     int formatType,
     int numberAcross,
     double objSense,
@@ -162,7 +162,10 @@ int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
     std::vector<std::string> const& rowNamesVec) 
 {
     const int numcols = solver->getNumCols();
-    char* integrality = CoinCopyOfArray(solver->getColType(false), numcols);
+    std::shared_ptr<char[]> shared_integrality(new char[numcols]);
+    char* integrality = shared_integrality.get();
+    integrality = CoinCopyOfArray(solver->getColType(false), numcols);
+
     bool hasInteger = false;
     for (int i = 0; i < numcols; ++i) {
         if (solver->isInteger(i)) {
@@ -172,8 +175,10 @@ int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
     }
 
     // Get multiplier for objective function - default 1.0
-    double* objective = new double[numcols];
-    memcpy(objective, solver->getObjCoefficients(), numcols * sizeof(double));
+    std::shared_ptr<double[]> shared_objective(new double[numcols]);
+    double* objective = shared_objective.get();
+    objective = CoinCopyOfArray(solver->getObjCoefficients(), numcols);
+
     double locObjSense = (objSense == 0 ? 1 : objSense);
     if (solver->getObjSense() * locObjSense < 0.0) {
         for (int i = 0; i < numcols; ++i)
@@ -190,24 +195,22 @@ int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
         solver->getColLower(),
         solver->getColUpper(),
         objective,
-        hasInteger ? integrality : 0,
+        hasInteger ? integrality : NULL,
         solver->getRowLower(),
         solver->getRowUpper(),
         colNamesVec,
         rowNamesVec
     );
 
-
     std::string probName = "";
     solver->getStrParam(OsiProbName, probName);
     writer.setProblemName(probName.c_str());
+
     double objOffset = 0.0;
     solver->getDblParam(OsiObjOffset, objOffset);
     writer.setObjectiveOffset(objOffset);
-    delete[] objective;
-    delete[] integrality;
 
-    return writer.writeMps(filename, 0 /*gzip it*/, formatType, numberAcross,
+    return writer.writeMps(filename.c_str(), 0 /*gzip it*/, formatType, numberAcross,
         NULL, numberSOS, setInfo);
 }
 
