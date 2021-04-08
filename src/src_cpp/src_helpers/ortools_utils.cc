@@ -107,7 +107,7 @@ void ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p,
     To send the data to CBC, the model has to be solved
     We set a Time limit of 1ms so that the solve, which is only required to send the data
     is not time consuming */
-    solver_p.set_time_limit(1);
+    solver_p.SetTimeLimit( absl::Milliseconds(1) );
     solver_p.Solve();
 
     // We take the underlying solver present in CBC
@@ -164,8 +164,8 @@ int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
     const int numcols = solver->getNumCols();
     std::shared_ptr<char[]> shared_integrality(new char[numcols]);
     char* integrality = shared_integrality.get();
-    integrality = CoinCopyOfArray(solver->getColType(false), numcols);
-
+    CoinCopyN(solver->getColType(false), numcols, integrality);
+    
     bool hasInteger = false;
     for (int i = 0; i < numcols; ++i) {
         if (solver->isInteger(i)) {
@@ -177,7 +177,7 @@ int ORTwriteMps_CBC_with_names(OsiClpSolverInterface* solver,
     // Get multiplier for objective function - default 1.0
     std::shared_ptr<double[]> shared_objective(new double[numcols]);
     double* objective = shared_objective.get();
-    objective = CoinCopyOfArray(solver->getObjCoefficients(), numcols);
+    CoinCopyN(solver->getObjCoefficients(), numcols, objective);
 
     double locObjSense = (objSense == 0 ? 1 : objSense);
     if (solver->getObjSense() * locObjSense < 0.0) {
