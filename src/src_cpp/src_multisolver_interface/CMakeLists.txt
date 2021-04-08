@@ -36,14 +36,14 @@ IF( XPRESS )
 ENDIF( XPRESS )
 
 #Clp - CBc
-IF(CLP_CBC)
+IF(COIN_OR)
 	list(APPEND Solver_sources
 		${CMAKE_CURRENT_LIST_DIR}/SolverCbc.h
 		${CMAKE_CURRENT_LIST_DIR}/SolverCbc.cpp
 		${CMAKE_CURRENT_LIST_DIR}/SolverClp.h
 		${CMAKE_CURRENT_LIST_DIR}/SolverClp.cpp
 	)
-ENDIF(CLP_CBC)
+ENDIF(COIN_OR)
 
 
 # ---------------------------------------------------------------------------
@@ -85,7 +85,7 @@ if(XPRESS)
 endif()
 
 #CLP-CBC
-if(CLP_CBC)
+if(COIN_OR)
 	target_include_directories (solvers
 		PUBLIC
 			${ORTOOLS_INCLUDE_DIRS}

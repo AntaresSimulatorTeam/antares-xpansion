@@ -61,6 +61,10 @@ public:
     * @brief destructor of SolverAbstract class : does nothing
     */
 	virtual ~SolverAbstract() {};
+
+    /**
+    * @brief Returns number of instances of solver currently in memory
+    */
     virtual int get_number_of_instances() = 0;
 
 

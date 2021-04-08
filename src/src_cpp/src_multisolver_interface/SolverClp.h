@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SolverAbstract.h"
-//#include "Clp_C_Interface.h"
 #include "ClpSimplex.hpp"
 
 #include "CoinHelperFunctions.hpp"
