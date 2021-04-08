@@ -28,6 +28,15 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
+# Set solvers to use
+option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
+option (XPRESS  "Use solver FICO XPRESS" OFF)
+option (CPLEX   "Use solver IMB ILOG CPLES" OFF)
+
+IF(COIN_OR)
+	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
+ENDIF()
+
 #set(ANTARES_XPANSION_RC 3)
 
 # ===========================================================================
