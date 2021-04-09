@@ -101,7 +101,6 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
     _output["solution"]["overall_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost + bendersTrace_p[bestItIndex_l].get()->_operational_cost;
     double gap_l = bendersData_p.best_ub - bendersData_p.lb;
     _output["solution"]["gap"] = gap_l;
-    _output["solution"]["optimality"] = (gap_l < 1e-03);
     if (gap_l < 1e-03) {
         _output["solution"]["problem_status"] = "OPTIMAL";
     }
@@ -130,7 +129,6 @@ void JsonWriter::write(int nbWeeks_p,
     _output["solution"]["lb"] = lb_p;
     _output["solution"]["ub"] = ub_p;
     _output["solution"]["gap"] = ub_p - lb_p;
-    _output["solution"]["optimality"] = optimality_p;
     if (optimality_p) {
         _output["solution"]["problem_status"] = "OPTIMAL";
     }
@@ -148,7 +146,6 @@ void JsonWriter::write(int nbWeeks_p,
 *
 */
 void JsonWriter::write_failure() {
-    _output["solution"]["optimality"] = false;
     _output["solution"]["problem_status"] = "ERROR";
 }
 
