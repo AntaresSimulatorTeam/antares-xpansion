@@ -13,8 +13,6 @@ SolverClp::SolverClp() {
 
 	_NumberOfProblems += 1;
 	_clp = NULL;
-
-	set_output_log_level(0);
 }
 
 SolverClp::SolverClp(const std::string& name, const SolverAbstract::Ptr fictif) {
@@ -46,6 +44,7 @@ int SolverClp::get_number_of_instances()
 *************************************************************************************************/
 void SolverClp::init() {
 	_clp = ClpSimplex();
+	set_output_log_level(0);
 }
 
 void SolverClp::free() {
@@ -67,13 +66,13 @@ void SolverClp::write_prob(const char* name, const char* flags) const{
 }
 
 void SolverClp::read_prob(const char* prob_name, const char* flags){
-
+	set_output_log_level(0);
 	if (std::string(flags) == "LP") {
 		_clp.readLp(prob_name);
 	}
 	else {
 		_clp.readMps(prob_name, true, false);
-	}	
+	}
 }
 
 void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv){
@@ -490,11 +489,12 @@ void SolverClp::get_MIP_sol(double* primals, double* slacks){
 ------------------------    Methods to set algorithm or logs levels    ---------------------------
 *************************************************************************************************/
 void SolverClp::set_output_log_level(int loglevel){
+	_clp.passInMessageHandler(&_message_handler);
 	if (loglevel == 1 || loglevel == 3) {
-		_clp.setLogLevel(4);
+		_message_handler.setLogLevel(1);
 	}
 	else {
-		_clp.setLogLevel(0);
+		_message_handler.setLogLevel(0);
 	}
 }
 

@@ -30,8 +30,8 @@ ENDIF ()
 
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
-option (XPRESS  "Use solver FICO XPRESS" OFF)
-option (CPLEX   "Use solver IMB ILOG CPLES" OFF)
+option (XPRESS  "Use solver FICO XPRESS" ON)
+option (CPLEX   "Use solver IMB ILOG CPLES" ON)
 
 if(COIN_OR)
 	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
@@ -246,7 +246,7 @@ if(XPRESS)
 	# and we want to allow compilation with several solvers so that the user can switch 
 	# the solver without any compilation phase.
 	# @TODO : I think those parameters should be merged in a future version
-	#add_definitions( -DXPRESS=true )
+	add_definitions( -DXPRESS=true )
 endif(XPRESS)
 
 ## Cplex
@@ -261,14 +261,14 @@ if(CPLEX)
 	message("CPLEX optim library is ${CPLEX_OPT_LIB}")
 
 	# Add solver variables for usage in C++ source code
-	#add_definitions( -DCPLEX=true )
+	add_definitions( -DCPLEX=true )
 endif(CPLEX)
 
 ## Coin-OR (Clp and CBC solvers)
 if(COIN_OR)
 	message("COIN-OR is ${COIN_OR}")
 	# Add solver variables for usage in C++ source code
-	#add_definitions( -DCOIN_OR=true )
+	add_definitions( -DCOIN_OR=true )
 endif(COIN_OR)
 
 

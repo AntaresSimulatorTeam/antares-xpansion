@@ -8,7 +8,7 @@ SolverFactory::SolverFactory(){
 #ifdef XPRESS
 	_available_solvers.push_back("XPRESS");
 #endif
-#ifdef CLP_CBC
+#ifdef COIN_OR
 	_available_solvers.push_back("CLP");
 	_available_solvers.push_back("CBC");
 #endif
@@ -33,7 +33,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name){
 		solver = std::make_unique< SolverXpress>();
 	}
 #endif
-#ifdef CLP_CBC
+#ifdef COIN_OR
 	else if (solver_name == "CLP") {
 		solver = std::make_unique< SolverClp>();
 	}

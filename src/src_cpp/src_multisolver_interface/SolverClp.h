@@ -27,6 +27,7 @@ class SolverClp : public SolverAbstract {
                                     declared to set or end the environment */
 public:
 	ClpSimplex _clp;
+	CoinMessageHandler _message_handler;
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor    --------------------------------

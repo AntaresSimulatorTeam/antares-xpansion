@@ -12,9 +12,6 @@ SolverCbc::SolverCbc() {
 	}
 
 	_NumberOfProblems += 1;
-
-	// Default desactivation of screen output
-	set_output_log_level(0);
 }
 
 SolverCbc::SolverCbc(const std::string& name, const SolverAbstract::Ptr fictif) {
@@ -47,6 +44,7 @@ int SolverCbc::get_number_of_instances()
 void SolverCbc::init() {
 	_clp_inner_solver = OsiClpSolverInterface();
 	_cbc = CbcModel(_clp_inner_solver);
+	set_output_log_level(0);
 }
 
 void SolverCbc::free() {
@@ -75,7 +73,9 @@ void SolverCbc::read_prob(const char* prob_name, const char* flags){
 	zero_status_check(status, "read problem");
 
 	// Affectation of new Clp interface to Cbc
+	// As CbcModel _cbc is modified, need to set log level to 0 again
 	_cbc = CbcModel(_clp_inner_solver);	
+	set_output_log_level(0);
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv){
@@ -498,12 +498,20 @@ void SolverCbc::get_MIP_sol(double* primals, double* slacks){
 ------------------------    Methods to set algorithm or logs levels    ---------------------------
 *************************************************************************************************/
 void SolverCbc::set_output_log_level(int loglevel){
-
+	_clp_inner_solver.passInMessageHandler(&_message_handler);
+	_cbc.passInMessageHandler(&_message_handler);
 	if (loglevel == 1 || loglevel == 3) {
-		_cbc.setLogLevel(1);
+		_message_handler.setLogLevel(0, 1);  // Coin messages
+		_message_handler.setLogLevel(1, 1);  // Clp messages
+		_message_handler.setLogLevel(2, 1);  // Presolve messages
+		_message_handler.setLogLevel(3, 1);  // Cgl messages
 	}
 	else {
-		_cbc.setLogLevel(0);
+		_message_handler.setLogLevel(0, 0);  // Coin messages
+		_message_handler.setLogLevel(1, 0);  // Clp messages
+		_message_handler.setLogLevel(2, 0);  // Presolve messages
+		_message_handler.setLogLevel(3, 0);  // Cgl messages
+		_message_handler.setLogLevel(0);
 	}
 }
 

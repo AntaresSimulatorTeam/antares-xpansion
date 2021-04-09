@@ -60,8 +60,6 @@ SolverCplex::~SolverCplex() {
 	if (_NumberOfProblems == 0) {
 		int status = CPXcloseCPLEX(&_env);
         zero_status_check(status, "close CPLEX environment");
-
-        std::cout << "Closing CPLEX environment." << std::endl;
 	}
 }
 

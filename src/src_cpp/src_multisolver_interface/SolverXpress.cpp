@@ -29,7 +29,6 @@ SolverXpress::~SolverXpress() {
 	if (_NumberOfProblems == 0) {
 		int status = XPRSfree();
 		zero_status_check(status, "free XPRESS environment");
-		std::cout << "Closing XPRESS environment." << std::endl;
 	}
 }
 

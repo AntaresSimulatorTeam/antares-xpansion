@@ -6,8 +6,8 @@
 #include "OsiClpSolverInterface.hpp"
 
 /*!
-* \class class SolverXpress
-* \brief Daughter class of AsbtractSolver implementing solver XPRESS FICO
+* \class class SolverCbc
+* \brief Daughter class of AsbtractSolver implementing solver COIN-OR CBC with intern CLP solver
 */
 class SolverCbc : public SolverAbstract {
 
@@ -19,18 +19,19 @@ class SolverCbc : public SolverAbstract {
 public:
 	OsiClpSolverInterface _clp_inner_solver;
 	CbcModel _cbc;
+	CoinMessageHandler _message_handler;
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor    --------------------------------
 *************************************************************************************************/
 public:
 	/**
-    * @brief Default constructor of a XPRESS solver
+    * @brief Default constructor of a CBC solver
     */
 	SolverCbc();
 
 	/**
-    * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and name it "name"
+    * @brief Copy constructor of solver, copy the problem toCopy in memory and name it "name"
 	*
 	* @param name 	: Name to give to the solver object (ony for CPLEX)
 	* @param toCopy : Pointer to an AbstractSolver object, containing an XPRESS solver to copy

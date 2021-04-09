@@ -7,7 +7,7 @@
 #ifdef XPRESS
 #include "SolverXpress.h"
 #endif
-#ifdef CLP_CBC
+#ifdef COIN_OR
 #include "SolverCbc.h"
 #include "SolverClp.h"
 #endif
