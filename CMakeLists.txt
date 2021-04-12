@@ -282,11 +282,14 @@ install(FILES ${ANTARES_SOLVER_PATH}
 find_package(antares-study-updater)
 if (antares-study-updater_FOUND)
 
-	get_target_property( ANTARES_STUDY_UPDATER_PATH antares-${ANTARES_VERSION}-study-updater IMPORTED_LOCATION_RELEASE )
+        if (${CMAKE_BUILD_TYPE} STREQUAL  "Release")
+	    get_target_property( ANTARES_STUDY_UPDATER_PATH antares-${ANTARES_VERSION}-study-updater IMPORTED_LOCATION_RELEASE )
+	else()	
+	    get_target_property( ANTARES_STUDY_UPDATER_PATH antares-${ANTARES_VERSION}-study-updater IMPORTED_LOCATION_DEBUG )
+	endif()
 
-	install(FILES ${ANTARES_STUDY_UPDATER_PATH}
-  		DESTINATION BIN)
-
+	install(PROGRAMS ${ANTARES_STUDY_UPDATER_PATH}
+  		TYPE BIN)
 endif()
 
 
