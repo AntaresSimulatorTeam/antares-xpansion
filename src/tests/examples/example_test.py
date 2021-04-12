@@ -53,6 +53,8 @@ def verify_solution(study_path, expected_values, expected_investment_solution):
 
     solution = json_data["solution"]
     investment_solution = solution["values"]
+    
+    json_file.close()
 
     RELATIVE_TOLERANCE = 1e-4
     np.testing.assert_allclose(solution["gap"], expected_values["gap"], rtol=RELATIVE_TOLERANCE)
