@@ -12,8 +12,8 @@ v0.2.0 (04/2021)
  - Invalid best iteration display in logs
  - Rounding problem in writing MPS with or-tools
  - Antares-Xpansion can't be launched twice at the same time
- - Windows : Add microsoft visual studio needed redistribuable to installer
- - Linux : wrong antares-solver executable permission and install directory
+ - Windows: Add Microsoft Visual Studio needed redistribuable to installer
+ - Linux: wrong antares-solver executable permission and install directory
 
 
 v0.1.0 (03/2021)
