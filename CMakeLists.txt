@@ -281,7 +281,7 @@ install(DIRECTORY ${ANTARES_SOLVER_DIR}/../lib/
   FILES_MATCHING PATTERN "*.so")
     
 install(FILES ${ANTARES_SOLVER_PATH}
-  DESTINATION bin)
+  TYPE BIN)
 
 include (InstallRequiredSystemLibraries)
 
