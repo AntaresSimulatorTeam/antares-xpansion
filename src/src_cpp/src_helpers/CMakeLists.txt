@@ -15,6 +15,7 @@
 # --------------------------------------------------------------------------
 
 add_library (helpers STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/ortools_utils.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ortools_utils.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
 	)

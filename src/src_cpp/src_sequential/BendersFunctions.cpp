@@ -354,7 +354,7 @@ void get_master_value(WorkerMasterPtr & master, BendersData & data, BendersOptio
 	if (options.BOUND_ALPHA) {
 		master->fix_alpha(data.best_ub);
 	}
-	master->solve(data.master_status);
+	master->solve(data.master_status, options);
 	master->get(data.x0, data.alpha, data.alpha_i); /*Get the optimal variables of the Master Problem*/
 	master->get_value(data.lb); /*Get the optimal value of the Master Problem*/
 
@@ -395,7 +395,7 @@ void get_slave_cut(SlaveCutPackage & slave_cut_package, SlavesMapPtr & map_slave
 		SlaveCutDataPtr slave_cut_data(new SlaveCutData);
 		SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
 		ptr->fix_to(data.x0);
-		ptr->solve(handler->get_int(LPSTATUS));
+		ptr->solve(handler->get_int(LPSTATUS), options);
 		if (options.BASIS) {
 			ptr->get_basis();
 		}
@@ -428,7 +428,7 @@ void get_random_slave_cut(SlaveCutPackage & slave_cut_package, SlavesMapPtr & ma
 		SlaveCutDataPtr slave_cut_data(new SlaveCutData);
 		SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
 		ptr->fix_to(data.x0);
-		ptr->solve(handler->get_int(LPSTATUS));
+		ptr->solve(handler->get_int(LPSTATUS), options);
 		if (options.BASIS) {
 			ptr->get_basis();
 		}

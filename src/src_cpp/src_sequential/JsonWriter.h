@@ -68,7 +68,6 @@ public:
 */
     void write(BendersOptions const & bendersOptions_p);
 
-
 /*!
 *  \brief saves some entries to be later written to the json file
 *
@@ -85,10 +84,19 @@ public:
 *  \param lb_p : solution lower bound
 *  \param ub_p : solution upper bound
 *  \param investCost_p : investment cost
+*  \param operationalCost_p : operational cost
+*  \param overallCost_p : total cost, sum of invest and operational
 *  \param solution_p : point giving the solution and the candidates
 *  \param optimality_p : indicates if optimality was reached
 */
-    void write(int nbWeeks_p, double const & lb_p, double const & ub_p, double const & investCost_p, Point const & solution_p, bool const & optimality_p);
+    void write(int nbWeeks_p, double const & lb_p, double const & ub_p, double const & investCost_p,
+                double const& operationalCost_p, double const & overallCost_p,
+                Point const & solution_p, bool const & optimality_p);
+
+/*!
+*  \brief write an a priori errored json output, overwritten if optimization ends
+*/
+    void write_failure();
 
 /*!
 *  \brief write the json data into a file
