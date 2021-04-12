@@ -453,7 +453,7 @@ void SolverCbc::get_simplex_ite(int& result) const{
 	_cbc.solver()->getIterationCount();
 }
 
-void SolverCbc::get_LP_sol(double* primals, double* slacks, double* duals,
+void SolverCbc::get_lp_sol(double* primals, double* slacks, double* duals,
                     double* reduced_costs){
 	if (primals != NULL) {
 		const double* primalSol = _cbc.solver()->getColSolution();
@@ -479,12 +479,11 @@ void SolverCbc::get_LP_sol(double* primals, double* slacks, double* duals,
 
 	if (slacks != NULL) {
 		std::cout << "Warning : Cbc does not give a method to compute slacks. They have to be comuted by hand." << std::endl;
-		//std::exit(1);
 	}
 	
 }
 
-void SolverCbc::get_MIP_sol(double* primals, double* slacks){
+void SolverCbc::get_mip_sol(double* primals, double* slacks){
 
 
 
@@ -537,16 +536,6 @@ void SolverCbc::set_threads(int n_threads){
 	_cbc.setNumberThreads(n_threads);
 }
 
-void SolverCbc::scaling(int scale){
-	std::cout << "ERROR : Scaling not implemented in the interface for CBC" << std::endl;
-	std::exit(1);
-}
-
-void SolverCbc::presolve(int presolve){
-	std::cout << "ERROR : Presolve not implemented in the interface for CBC" << std::endl;
-	std::exit(1);
-}
-
 void SolverCbc::optimality_gap(double gap){
 	std::cout << "ERROR : Optimality gap handling not implemented in the interface for CBC" << std::endl;
 	std::exit(1);
@@ -555,8 +544,4 @@ void SolverCbc::optimality_gap(double gap){
 void SolverCbc::set_simplex_iter(int iter){
 	std::cout << "ERROR : Simplex iterations not implemented in the interface for CBC" << std::endl;
 	std::exit(1);
-}
-
-void SolverCbc::numerical_emphasis(int val){
-	std::cout << "NUMERICAL EMPHASIS NOT FOUND FOR CBC" << std::endl;
 }

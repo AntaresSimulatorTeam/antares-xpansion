@@ -428,7 +428,7 @@ void SolverClp::get_simplex_ite(int& result) const{
 	result = _clp.numberIterations();
 }
 
-void SolverClp::get_LP_sol(double* primals, double* slacks, double* duals,
+void SolverClp::get_lp_sol(double* primals, double* slacks, double* duals,
                     double* reduced_costs){
 	if (primals != NULL) {
 		double* primalSol = _clp.primalColumnSolution();
@@ -465,7 +465,7 @@ void SolverClp::get_LP_sol(double* primals, double* slacks, double* duals,
 	}
 }
 
-void SolverClp::get_MIP_sol(double* primals, double* slacks){
+void SolverClp::get_mip_sol(double* primals, double* slacks){
 	if (primals != NULL) {
 		double* primalSol = _clp.primalColumnSolution();
 		for (int i(0); i < get_ncols(); i++) {
@@ -519,16 +519,6 @@ void SolverClp::set_threads(int n_threads){
 	_clp.setNumberThreads(n_threads);
 }
 
-void SolverClp::scaling(int scale){
-	std::cout << "ERROR : Scaling not implemented with Clp" << std::endl;
-	std::exit(1);
-}
-
-void SolverClp::presolve(int presolve){
-	std::cout << "ERROR : Presolve not implemented with Clp" << std::endl;
-	std::exit(1);
-}
-
 void SolverClp::optimality_gap(double gap){
 	std::cout << "ERROR : Optimality gap handling not implemented with Clp" << std::endl;
 	std::exit(1);
@@ -536,9 +526,4 @@ void SolverClp::optimality_gap(double gap){
 
 void SolverClp::set_simplex_iter(int iter){
 	_clp.setMaximumIterations(iter);
-}
-
-void SolverClp::numerical_emphasis(int val){
-	std::cout << "ERROR : NUMERICAL EMPHASIS NOT FOUND FOR Clp" << std::endl;
-	std::exit(1);
 }

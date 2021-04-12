@@ -83,9 +83,6 @@ public:
 ------------------------------    Methods to modify problem    ----------------------------------
 *************************************************************************************************/
 public:
-    virtual void fix_first_stage(std::vector<double> const& x0);
-    virtual void add_cut(std::vector<double> const& s, std::vector<double> const& x0, 
-                    double rhs);
     virtual void del_rows(int first, int last);
     virtual void add_rows(int newrows, int newnz, const char* qrtype, const double* rhs, 
 		            const double* range, const int* mstart, const int* mclind, 
@@ -115,9 +112,9 @@ public:
 	virtual void get_mip_value(double& lb) const;
 	virtual void get_lp_value(double& lb) const;
 	virtual void get_simplex_ite(int& result) const;
-	virtual void get_LP_sol(double* primals, double* slacks, double* duals, 
+	virtual void get_lp_sol(double* primals, double* slacks, double* duals, 
                     double* reduced_costs);
-    virtual void get_MIP_sol(double* primals, double* slacks);
+    virtual void get_mip_sol(double* primals, double* slacks);
 
 /*************************************************************************************************
 ------------------------    Methods to set algorithm or logs levels    ---------------------------
@@ -126,11 +123,8 @@ public:
 	virtual void set_output_log_level(int loglevel);
 	virtual void set_algorithm(std::string const& algo);
     virtual void set_threads(int n_threads);
-	virtual void scaling(int scale);
-	virtual void presolve(int presolve);
 	virtual void optimality_gap(double gap);
 	virtual void set_simplex_iter(int iter);
-	virtual void numerical_emphasis(int val);
 };
 
 /************************************************************************************\

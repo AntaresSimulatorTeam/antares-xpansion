@@ -360,12 +360,12 @@ void SolverCplex::get_simplex_ite(int& result) const{
 	result = CPXgetitcnt(_env, _prb);
 }
 
-void SolverCplex::get_LP_sol(double* primals, double* slacks, double* duals, 
+void SolverCplex::get_lp_sol(double* primals, double* slacks, double* duals, 
                     double* reduced_costs){
 	CPXsolution(_env, _prb, NULL, NULL, primals, duals, slacks, reduced_costs);
 }
 
-void SolverCplex::get_MIP_sol(double* primals, double* slacks){
+void SolverCplex::get_mip_sol(double* primals, double* slacks){
 	CPXsolution(_env, _prb, NULL, NULL, primals, NULL, slacks, NULL);
 }
 
@@ -410,16 +410,6 @@ void SolverCplex::set_threads(int n_threads){
 	zero_status_check(status, "set threads number");
 }
 
-void SolverCplex::scaling(int scale){
-	int status = CPXsetintparam(_env, CPXPARAM_Read_Scale, scale);
-	zero_status_check(status, "set scaling value");
-}
-
-void SolverCplex::presolve(int presolve){
-	int status = CPXsetintparam(_env, CPXPARAM_Preprocessing_Presolve, presolve);
-	zero_status_check(status, "set presolve value");
-}
-
 void SolverCplex::optimality_gap(double gap){
 	int status = CPXsetdblparam(_env, CPXPARAM_Simplex_Tolerances_Optimality, gap);
 	zero_status_check(status, "set optimality tol for simplex");
@@ -431,9 +421,4 @@ void SolverCplex::optimality_gap(double gap){
 void SolverCplex::set_simplex_iter(int iter){
 	int status = CPXsetintparam(_env, CPXPARAM_Simplex_Limits_Iterations, iter);
 	zero_status_check(status, "set maximum number of simplex iterations");
-}
-
-void SolverCplex::numerical_emphasis(int val){
-	int status = CPXsetintparam(_env, CPX_PARAM_NUMERICALEMPHASIS, val);
-	zero_status_check(status, "set numerical emphasis value");
 }

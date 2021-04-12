@@ -124,9 +124,9 @@ public:
 	virtual void get_mip_value(double& lb) const;
 	virtual void get_lp_value(double& lb) const;
 	virtual void get_simplex_ite(int& result) const;
-	virtual void get_LP_sol(double* primals, double* slacks, double* duals, 
+	virtual void get_lp_sol(double* primals, double* slacks, double* duals, 
                     double* reduced_costs);
-    virtual void get_MIP_sol(double* primals, double* slacks);
+    virtual void get_mip_sol(double* primals, double* slacks);
 
 /*************************************************************************************************
 ------------------------    Methods to set algorithm or logs levels    ---------------------------
@@ -135,9 +135,6 @@ public:
 	virtual void set_output_log_level(int loglevel);
 	virtual void set_algorithm(std::string const& algo);
     virtual void set_threads(int n_threads);
-	virtual void scaling(int scale);
-	virtual void presolve(int presolve);
 	virtual void optimality_gap(double gap);
 	virtual void set_simplex_iter(int iter);
-	virtual void numerical_emphasis(int val);
 };

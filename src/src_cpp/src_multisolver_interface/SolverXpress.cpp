@@ -181,20 +181,6 @@ void SolverXpress::get_ub(double* ub, int first, int last) const{
 	zero_status_check(status, "get upper bounds of variables");
 }
 
-/*************************************************************************************************
-------------------------------    Methods to modify problem    ----------------------------------
-*************************************************************************************************/
-void SolverXpress::fix_first_stage(std::vector<double> const& x0){
-    std::cout << "TO DO IF NEEDED" << std::endl;
-    std::exit(0);
-}
-
-void SolverXpress::add_cut(std::vector<double> const& s, std::vector<double> const& x0, 
-                    double rhs){
-	std::cout << "XPRESS add cuts: TO DO IF NEEDED" << std::endl;
-    std::exit(0);
-}
-
 void SolverXpress::del_rows(int first, int last){
 	std::vector<int> mindex(last - first + 1);
 	for (int i = 0; i < last - first + 1; i++) {
@@ -323,13 +309,13 @@ void SolverXpress::get_simplex_ite(int& result) const{
 	zero_status_check(status, "get simplex iterations");
 }
 
-void SolverXpress::get_LP_sol(double* primals, double* slacks, double* duals, 
+void SolverXpress::get_lp_sol(double* primals, double* slacks, double* duals, 
                     double* reduced_costs){
 	int status = XPRSgetlpsol(_xprs, primals, slacks, duals, reduced_costs);
 	zero_status_check(status, "get LP sol");
 }
 
-void SolverXpress::get_MIP_sol(double* primals, double* slacks){
+void SolverXpress::get_mip_sol(double* primals, double* slacks){
 	int status = XPRSgetmipsol(_xprs, primals, slacks);
 	zero_status_check(status, "get MIP sol");
 }
@@ -376,16 +362,6 @@ void SolverXpress::set_threads(int n_threads){
 	zero_status_check(status, "set threads");
 }
 
-void SolverXpress::scaling(int scale){
-	int status = XPRSsetintcontrol(_xprs, XPRS_SCALING, scale);
-	zero_status_check(status, "set scaling level");
-}
-
-void SolverXpress::presolve(int presolve){
-	int status = XPRSsetintcontrol(_xprs, XPRS_PRESOLVE, presolve);
-	zero_status_check(status, "set presolve value");
-}
-
 void SolverXpress::optimality_gap(double gap){
 	int status = XPRSsetdblcontrol(_xprs, XPRS_OPTIMALITYTOL, gap);
 	zero_status_check(status, "set optimality gap");
@@ -397,12 +373,6 @@ void SolverXpress::set_simplex_iter(int iter){
 
 	status = XPRSsetdblcontrol(_xprs, XPRS_LPITERLIMIT, iter);
 	zero_status_check(status, "set simplex max iter");
-}
-
-void SolverXpress::numerical_emphasis(int val){
-	//int status = 
-	//zero_status_check(status, "set numerical emphasis");
-	std::cout << "NUMERICAL EMPHASIS NOT FOUND FOR XPRESS" << std::endl;
 }
 
 void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLen,
@@ -451,3 +421,4 @@ void errormsg(XPRSprob & _xprs, const char* sSubName, int nLineNo, int nErrCode)
 	XPRSfree();
 	exit(nErrCode);
 }
+

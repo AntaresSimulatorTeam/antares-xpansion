@@ -442,7 +442,7 @@ public:
     * @param duals      : values of dual variables
     * @param reduced_cost: reduced_cost in an optimal basis
     */
-	virtual void get_LP_sol(double* primals, double* slacks, double* duals, 
+	virtual void get_lp_sol(double* primals, double* slacks, double* duals, 
                     double* reduced_costs) = 0;
 	
     /**
@@ -451,7 +451,7 @@ public:
     * @param primals    : values of primal variables
     * @param slacks     : values of the slack variables
     */
-    virtual void get_MIP_sol(double* primals, double* slacks) = 0;
+    virtual void get_mip_sol(double* primals, double* slacks) = 0;
 
 /*************************************************************************************************
 ------------------------    Methods to set algorithm or logs levels    ---------------------------
@@ -480,20 +480,6 @@ public:
     virtual void set_threads(int n_threads) = 0;
 
     /**
-    * @brief Sets how scaling is performed before optimization
-    *
-    * @param scale: value defining level of scaling
-    */
-	virtual void scaling(int scale) = 0;
-
-    /**
-    * @brief Sets how presolve is performed before optimization
-    *
-    * @param presolve: level of presolve to perform
-    */
-	virtual void presolve(int presolve) = 0;
-
-    /**
     * @brief Sets the optimality gap
     *
     * @param gap: double of the value of wanted gap
@@ -506,13 +492,6 @@ public:
     * @param iter: maximum number of simplex iterations
     */
 	virtual void set_simplex_iter(int iter) = 0;
-
-    /**
-    * @brief Use numerical emphasis to obtain more accurates results (may slow down the solver)
-    *
-    * @param val: 1 to use numerical emphasis, 0 to not use it
-    */
-	virtual void numerical_emphasis(int val) = 0;
 };
 
 
