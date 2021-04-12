@@ -50,7 +50,7 @@ pip3 install -r src/tests/examples/requirements.txt
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost : mpi serialization (Only for MPI benders compilation)
+ - Boost : mpi serialization (Only for MPI benders compilation), program-options
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
@@ -62,7 +62,7 @@ The install procedure can be done
 ### Yum commands
 
 ```
-sudo yum install jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz redhat-lsb-core
+sudo yum install jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel boost-program-options doxygen graphviz redhat-lsb-core
 sudo yum install openssl-devel curl-devel libuuid-devel
 ```
 

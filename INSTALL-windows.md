@@ -30,7 +30,7 @@ pip install -r src/src_python/tests/examples/requirements.txt
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost : mpi serialization (Only for MPI benders compilation)
+ - Boost : mpi serialization (Only for MPI benders compilation), program-options
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
@@ -72,6 +72,7 @@ cd [vcpkg_root]
 vcpkg install jsoncpp:[vcpg-triplet] 
 vcpkg install gtest:[vcpg-triplet] 
 vcpkg install boost-mpi:[vcpg-triplet]
+vcpkg install boost-program-options:[vcpg-triplet]
 vcpkg install openssl:[vcpg-triplet] 
 vcpkg install curl:[vcpg-triplet]
 ```
