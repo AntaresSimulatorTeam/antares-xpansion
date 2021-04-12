@@ -301,7 +301,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
-	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_LP_SOLVER_TYPE);
+	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
 	ORTreadmps(in_prblm, mps_name);
 
 	int ncols(in_prblm.NumVariables());
@@ -417,7 +417,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	ORTwritemps(out_prblm, lp_mps_name );
+	ORTwritempsPreciseWithCoin(out_prblm, lp_mps_name );
 	std::cout << "lp_name : " << lp_mps_name << " done" << std::endl;
 }
 

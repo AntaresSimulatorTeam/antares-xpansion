@@ -151,7 +151,7 @@ void masterGeneration(std::string rootPath,
 
 	std::string const lp_name = "master";
 	ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
-	ORTwritemps(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps");
+	ORTwritempsPreciseWithCoin(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps");
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const & coupling : couplings) {
 		output[get_name(coupling.first.second)][coupling.first.first] = coupling.second;
