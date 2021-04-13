@@ -153,8 +153,8 @@ protected:
 		\"investment_cost\" : 2.25,\n\
 		\"iteration\" : 3,\n\
 		\"operational_cost\" : 1.0,\n\
-		\"optimality\" : true,\n\
 		\"overall_cost\" : 3.25,\n\
+		\"problem_status\" : \"OPTIMAL\",\n\
 		\"values\" : \n\
 		{\n\
 			\"x\" : 1.5\n\

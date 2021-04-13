@@ -6,7 +6,22 @@
 # Targets
 # ===========================================================================
 
-add_library (sequentialcore STATIC 
+add_library (sequentialcore STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/SimplexBasis.h
+	${CMAKE_CURRENT_SOURCE_DIR}/launcher.h
+	${CMAKE_CURRENT_SOURCE_DIR}/WorkerSlave.h
+	${CMAKE_CURRENT_SOURCE_DIR}/WorkerStabilizedMaster.h
+	${CMAKE_CURRENT_SOURCE_DIR}/BendersOptions.h
+	${CMAKE_CURRENT_SOURCE_DIR}/BendersOptions.hxx
+	${CMAKE_CURRENT_SOURCE_DIR}/BendersFunctions.h
+	${CMAKE_CURRENT_SOURCE_DIR}/Benders.h
+	${CMAKE_CURRENT_SOURCE_DIR}/WorkerMaster.h
+	${CMAKE_CURRENT_SOURCE_DIR}/SlaveCut.h
+	${CMAKE_CURRENT_SOURCE_DIR}/common.h
+	${CMAKE_CURRENT_SOURCE_DIR}/WorkerTrace.h
+	${CMAKE_CURRENT_SOURCE_DIR}/Worker.h
+	${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.h
+	${CMAKE_CURRENT_SOURCE_DIR}/Timer.h
 	${CMAKE_CURRENT_SOURCE_DIR}/SimplexBasis.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/launcher.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerSlave.cpp

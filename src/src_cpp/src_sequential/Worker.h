@@ -35,7 +35,7 @@ public:
 
 public:
 
-	void solve(int & lp_status);
+	void solve(int & lp_status, BendersOptions const& options);
 
 
 public:

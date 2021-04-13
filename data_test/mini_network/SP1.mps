@@ -1,20 +1,20 @@
 *SENSE:Minimize
-NAME          SP1
+NAME          SP2
 ROWS
- N	OBJ
- L	C1
- L	C2
- G	C3
+ N  	OBJ
+ L		prod
+ L 		lines
+ G 		demand
 COLUMNS
-    x1	C2	-1.0
-    x2	C1 	-1.0	
-    x3	OBJ		1.5
-    x3	C1	1.5
-    x3	C2	1.0
-    x3	C3	1.0
-    x4 	OBJ		100.0
-    x4	C3	1.0
+    t		lines		-1.0
+    p 		prod 		-1.0	
+    z		OBJ			1.5
+    z 		prod		1.5
+    z		lines		1.0
+    z 		demand		1.0
+    perte 	OBJ			100.0
+    perte	demand		1.0
 RHS
- 	RHS  C3	 2.0
+ 	RHS 	demand		2.0
 BOUNDS
 ENDATA

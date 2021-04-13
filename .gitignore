@@ -35,3 +35,10 @@
 # build
 _build
 antares-deps
+
+# Cmake generated files
+CMakeCache.txt
+CMakeFiles/*
+
+# Outputs of instances
+src/src_python/config.yaml

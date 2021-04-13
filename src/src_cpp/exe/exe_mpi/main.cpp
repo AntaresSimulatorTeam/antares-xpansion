@@ -23,7 +23,14 @@ int main(int argc, char** argv)
 	mpi::environment env(argc, argv);
 	mpi::communicator world;
 
-	JsonWriter jsonWriter_l;
+	// First check usage (options are given)
+	if (world.rank() == 0)
+	{
+		usage(argc);
+	}
+
+	// Read options, needed to have options.OUTPUTROOT
+	BendersOptions options(build_benders_options(argc, argv));
 
 	if (world.rank() == 0)
 	{
@@ -31,13 +38,16 @@ int main(int argc, char** argv)
 
 		google::InitGoogleLogging(argv[0]);
 
-		google::SetLogDestination(google::GLOG_INFO, "./bendersmpiLog");
-		LOG(INFO) << "starting bendersmpi" << std::endl;
+		std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog";
+		google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 
-		usage(argc);
+		LOG(INFO) << "starting bendersmpi" << std::endl;
 	}
 
-	BendersOptions options(build_benders_options(argc, argv));
+	JsonWriter jsonWriter_l;
+	jsonWriter_l.write_failure();
+	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+
 	if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1) {
 		std::cout << "You need to have at least one slave by thread" << std::endl;
 		exit(1);
@@ -76,13 +86,14 @@ int main(int argc, char** argv)
 			best_solution_log(bendersMpi._data, bendersMpi._trace, options.GAP);
 			jsonWriter_l.updateEndTime();
 			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
-			jsonWriter_l.dump("out.json");
+			jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 			char buff[FILENAME_MAX];
 			GetCurrentDir(buff, FILENAME_MAX);
 
 			std::stringstream str;
-			str << "Optimization results available in : " << buff << PATH_SEPARATOR << "out.json";
+			str << "Optimization results available in : " << buff << PATH_SEPARATOR 
+				<< options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json";
 			LOG_INFO_AND_COUT(str.str());
 		}
 		bendersMpi.free(env, world);

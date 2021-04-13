@@ -84,7 +84,7 @@ StrVector ORT_LP_STATUS = {
 *
 *  \param lp_status : problem status after optimization
 */
-void Worker::solve(int & lp_status) {
+void Worker::solve(int & lp_status, BendersOptions const& options) {
 
 	//int initial_rows(0);
 	//int presolved_rows(0);
@@ -108,6 +108,7 @@ void Worker::solve(int & lp_status) {
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
 		std::stringstream buffer;
 
+		buffer << options.OUTPUTROOT << PATH_SEPARATOR;
 		buffer << _path_to_mps << "_lp_status_";
 		buffer << ORT_LP_STATUS[lp_status];
 		buffer<< ".mps";
