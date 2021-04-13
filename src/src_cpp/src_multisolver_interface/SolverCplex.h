@@ -38,10 +38,9 @@ public:
 	/**
     * @brief Copy constructor of CPLEX, copy the problem "fictif" in memory and name it "name"
 	*
-	* @param name 	: Name of the solver, used in memory by CPLEX
 	* @param fictif : Pointer to an AbstractSolver object, containing a CPLEX solver to copy
     */
-	SolverCplex(const std::string& name, const SolverAbstract::Ptr fictif);
+	SolverCplex(const SolverAbstract::Ptr fictif);
 	virtual ~SolverCplex();
 	virtual int get_number_of_instances();
 

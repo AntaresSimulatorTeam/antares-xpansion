@@ -627,3 +627,62 @@ TEST_CASE("We can get the indices of rows and columns by their names", "[read][g
         }
     }
 }
+
+TEST_CASE("Testing copy constructor", "[init][copy-constructor]") {
+    AllDatas datas;
+    fill_datas(datas);
+
+    SolverFactory factory;
+
+    auto inst = GENERATE(MIP_TOY, MULTIKP);
+    SECTION("Construction and destruction") {
+
+        for (auto const& solver_name : factory.get_solvers_list()) {
+            std::string instance = datas[inst]._path;
+
+            //========================================================================================
+            // Intial solver declaration and read problem
+            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            solver->init();
+            solver->read_prob(instance.c_str(), "MPS");
+            REQUIRE(solver->get_number_of_instances() == 1);
+
+            REQUIRE(solver->get_ncols() == datas[inst]._ncols);
+            REQUIRE(solver->get_nrows() == datas[inst]._nrows);
+
+            //========================================================================================
+            // Declare copy prob
+            SolverAbstract::Ptr solver2 = factory.create_solver(solver_name, solver);
+            REQUIRE(solver2->get_number_of_instances() == 2);
+
+            REQUIRE(solver2->get_ncols() == datas[inst]._ncols);
+            REQUIRE(solver2->get_nrows() == datas[inst]._nrows);
+
+            //========================================================================================
+            // Delete initial solver
+            solver.reset();
+            REQUIRE(solver == nullptr);
+            REQUIRE(solver2->get_number_of_instances() == 1);
+
+            REQUIRE(solver2->get_ncols() == datas[inst]._ncols);
+            REQUIRE(solver2->get_nrows() == datas[inst]._nrows);
+
+            //========================================================================================
+            // Check variable names
+            int ncols_copied = solver2->get_ncols();
+            std::vector<std::string> copiedNames(ncols_copied);
+            solver2->get_col_names(0, ncols_copied - 1, copiedNames);
+
+            std::string cur_name = "";
+            for (int i = 0; i < ncols_copied; i++) {
+                cur_name = datas[inst]._col_names[i];
+                REQUIRE(copiedNames[i].compare(0, cur_name.size(), cur_name) == 0 );
+            }
+
+            //========================================================================================
+            // solvers destruction
+            solver2.reset();
+            REQUIRE(solver2 == nullptr);
+        }
+    }
+}

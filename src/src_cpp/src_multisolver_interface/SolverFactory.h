@@ -36,6 +36,16 @@ public:
     SolverAbstract::Ptr create_solver(const std::string solver_name);
 
     /**
+    * @brief Copy constructor : Creates and returns to an object solver from the wanted 
+    * implementation by copying datas from same solver implementation 
+    *
+    * @param solver_name : Name of the solver to use
+    * @param to_copy : solver to copy
+    */
+    SolverAbstract::Ptr create_solver(const std::string solver_name, 
+        SolverAbstract::Ptr to_copy);
+
+    /**
     * @brief Returns a reference to the list of available solvers
     */
     const std::vector<std::string>& get_solvers_list() const;

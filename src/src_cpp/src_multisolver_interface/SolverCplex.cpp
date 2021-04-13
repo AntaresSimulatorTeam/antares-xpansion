@@ -31,7 +31,7 @@ SolverCplex::SolverCplex(const std::string& name) {
 	_NumberOfProblems += 1;
 }
 
-SolverCplex::SolverCplex(const std::string& name, const SolverAbstract::Ptr fictif) {
+SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif) {
     int status(0);
 
     // Openning CPLEX environment

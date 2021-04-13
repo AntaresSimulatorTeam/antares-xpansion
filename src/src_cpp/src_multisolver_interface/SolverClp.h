@@ -41,10 +41,9 @@ public:
 	/**
     * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and name it "name"
 	*
-	* @param name 	: Name to give to the solver object (ony for CPLEX)
-	* @param toCopy : Pointer to an AbstractSolver object, containing an XPRESS solver to copy
+	* @param toCopy : Pointer to an AbstractSolver object, containing a CLP solver to copy
     */
-	SolverClp(const std::string& name, const SolverAbstract::Ptr toCopy);
+	SolverClp(const SolverAbstract::Ptr toCopy);
 
 	virtual ~SolverClp();
 	virtual int get_number_of_instances();

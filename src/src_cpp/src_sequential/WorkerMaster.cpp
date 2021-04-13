@@ -59,8 +59,7 @@ void WorkerMaster::delete_constraint(int const nrows) {
 	for (int i(0); i < nrows; i++) {
 		mindex[i] = nconstraint - nrows + i;
 	}
-	// XPRSdelrows(_xprs, nrows, mindex.data());
-	ORTdeactivaterows(*_solver, mindex); //rows are not really deleted
+	ORTdeactivaterows(_solver, mindex);
 }
 
 /*!

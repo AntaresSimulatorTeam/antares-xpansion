@@ -53,7 +53,7 @@ public:
     * @brief Copy constructor, copy the problem "toCopy" in memory and name it "name" if possible
 	*
 	* @param name 	: Name to give to new problem
-	* @param fictif : Pointer to an AbstractSolver object, containing a solver object to copy
+	* @param toCopy : Pointer to an AbstractSolver object, containing a solver object to copy
     */
     SolverAbstract(const std::string& name, const SolverAbstract::Ptr toCopy) {};
 

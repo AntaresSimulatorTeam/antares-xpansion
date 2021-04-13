@@ -24,7 +24,6 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name){
 	}
 #ifdef CPLEX
 	else if (solver_name == "CPLEX") {
-		solver = std::make_unique< SolverCplex>("");
 		solver = std::make_unique< SolverCplex>();
 	}
 #endif
@@ -39,6 +38,41 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name){
 	}
 	else if (solver_name == "CBC") {
 		solver = std::make_unique< SolverCbc>();
+	}
+#endif
+	else {
+		std::cout << "SOLVER NON RECONU" << std::endl;
+		std::exit(0);
+	}
+
+	return solver;
+}
+
+SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name, 
+	SolverAbstract::Ptr to_copy)
+{
+	SolverAbstract::Ptr solver;
+
+	if (solver_name == "") {
+		std::cout << "SOLVER NON RECONU" << std::endl;
+		std::exit(0);
+	}
+#ifdef CPLEX
+	else if (solver_name == "CPLEX") {
+		solver = std::make_unique< SolverCplex>(to_copy);
+	}
+#endif
+#ifdef XPRESS
+	else if (solver_name == "XPRESS") {
+		solver = std::make_unique< SolverXpress>(to_copy);
+	}
+#endif
+#ifdef COIN_OR
+	else if (solver_name == "CLP") {
+		solver = std::make_unique< SolverClp>(to_copy);
+	}
+	else if (solver_name == "CBC") {
+		solver = std::make_unique< SolverCbc>(to_copy);
 	}
 #endif
 	else {

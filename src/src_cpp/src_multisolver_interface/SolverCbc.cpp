@@ -14,10 +14,20 @@ SolverCbc::SolverCbc() {
 	_NumberOfProblems += 1;
 }
 
-SolverCbc::SolverCbc(const std::string& name, const SolverAbstract::Ptr fictif) {
-	SolverCbc();
-	std::cout << "Copy constructor of XPRESS : TO DO WHEN NEEDED" << std::endl;
-	std::exit(0);
+SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
+	// Try to cast the solver in fictif to a SolverCPLEX
+	if (SolverCbc* c = dynamic_cast<SolverCbc*>(fictif.get()))
+	{
+		_clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
+		_cbc = CbcModel(_clp_inner_solver);
+		set_output_log_level(0);
+	}
+	else {
+		_NumberOfProblems -= 1;
+		std::cout << "Failed to cast fictif prob into SolverCplex in SolverCplex copy constructor"
+			<< std::endl;
+		std::exit(0);
+	}
 }
 
 SolverCbc::~SolverCbc() {

@@ -15,10 +15,18 @@ SolverClp::SolverClp() {
 	_clp = NULL;
 }
 
-SolverClp::SolverClp(const std::string& name, const SolverAbstract::Ptr fictif) {
-	SolverClp();
-	std::cout << "Copy constructor of COIN CLP : TO DO WHEN NEEDED" << std::endl;
-	std::exit(0);
+SolverClp::SolverClp(const SolverAbstract::Ptr fictif) : SolverClp() {
+	// Try to cast the solver in fictif to a SolverCPLEX
+	if (SolverClp* c = dynamic_cast<SolverClp*>(fictif.get()))
+	{
+		_clp = ClpSimplex(c->_clp);
+	}
+	else {
+		_NumberOfProblems -= 1;
+		std::cout << "Failed to cast fictif prob into SolverCplex in SolverCplex copy constructor"
+			<< std::endl;
+		std::exit(0);
+	}
 }
 
 SolverClp::~SolverClp() {

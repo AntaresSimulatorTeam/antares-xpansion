@@ -13,13 +13,27 @@ SolverXpress::SolverXpress() {
 	}
 
 	_NumberOfProblems += 1;
+
 	_xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const std::string& name, const SolverAbstract::Ptr fictif) {
-	SolverXpress();
-	std::cout << "Copy constructor of XPRESS : TO DO WHEN NEEDED" << std::endl;
-	std::exit(0);
+SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
+	init();
+	int status = 0;
+
+	// Try to cast the solver in fictif to a SolverCPLEX
+	if (SolverXpress* xpSolv = dynamic_cast<SolverXpress*>(toCopy.get()))
+	{
+		status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
+		zero_status_check(status, "create problem");
+	}
+	else {
+		_NumberOfProblems -= 1;
+		std::cout << "Failed to cast prob into SolverXpress in SolverXpress copy constructor"
+			<< std::endl;
+		free();
+		std::exit(0);
+	}
 }
 
 SolverXpress::~SolverXpress() {
@@ -183,12 +197,14 @@ void SolverXpress::get_ub(double* ub, int first, int last) const{
 int SolverXpress::get_row_index(std::string const& name) const {
 	int id = 0;
 	int status = XPRSgetindex(_xprs, 1, name.c_str(), &id);
+	zero_status_check(status, "get row index. Name does not exist.");
 	return id;
 }
 
 int SolverXpress::get_col_index(std::string const& name) const {
 	int id = 0;
 	int status = XPRSgetindex(_xprs, 2, name.c_str(), &id);
+	zero_status_check(status, "get column index. Name does not exist.");
 	return id;
 }
 
@@ -198,6 +214,7 @@ int SolverXpress::get_row_names(int first, int last, std::vector<std::string>& n
 	char cur_name[100];
 	for (int i = 0; i < last - first + 1; i++) {
 		status = XPRSgetnames(_xprs, 1, cur_name, i + first, i + first);
+		zero_status_check(status, "get row names.");
 		names[i] = cur_name;
 		memset(cur_name, 0, 100);
 	}
@@ -211,6 +228,7 @@ int SolverXpress::get_col_names(int first, int last, std::vector<std::string>& n
 	char cur_name[100];
 	for (int i = 0; i < last - first + 1; i++) {
 		status = XPRSgetnames(_xprs, 2, cur_name, i + first, i + first);
+		zero_status_check(status, "get column names.");
 		names[i] = cur_name;
 		memset(cur_name, 0, 100);
 	}
@@ -370,12 +388,6 @@ void SolverXpress::get_lp_sol(double* primals, double* duals,
 
 void SolverXpress::get_mip_sol(double* primals){
 	int status = XPRSgetmipsol(_xprs, primals, NULL);
-	/*if (get_n_integer_vars() > 0) {
-		
-	}
-	else {
-		status = XPRSgetlpsol(_xprs, primals, NULL, NULL, NULL);
-	}*/
 	zero_status_check(status, "get MIP sol"); 
 }
 

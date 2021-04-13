@@ -362,9 +362,8 @@ void get_master_value(WorkerMasterPtr & master, BendersData & data, BendersOptio
 
 	for(auto pairIdName : master->_id_to_name)
 	{
-		auto var_l = master->_solver->variables()[pairIdName.first];
-		data.max_invest[pairIdName.second] = var_l->ub();
-		data.min_invest[pairIdName.second] = var_l->lb();
+		master->_solver->get_ub(&data.max_invest[pairIdName.second], pairIdName.first, pairIdName.first);
+		master->_solver->get_lb(&data.min_invest[pairIdName.second], pairIdName.first, pairIdName.first);
 	}
 
 
