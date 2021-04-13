@@ -473,8 +473,7 @@ void SolverCbc::solve_mip(int& lp_status){
 -------------------------    Methods to get solutions information    -----------------------------
 *************************************************************************************************/
 void SolverCbc::get_basis(int* rstatus, int* cstatus) const{
-	std::cout << "ERROR : get basis not implemented for CLP interface." << std::endl;
-	std::exit(1);
+	_cbc.solver()->getBasisStatus(cstatus, rstatus);
 }
 
 void SolverCbc::get_mip_value(double& val) const{

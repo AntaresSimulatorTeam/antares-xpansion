@@ -448,8 +448,15 @@ void SolverClp::solve_mip(int& lp_status){
 -------------------------    Methods to get solutions information    -----------------------------
 *************************************************************************************************/
 void SolverClp::get_basis(int* rstatus, int* cstatus) const{
-	std::cout << "ERROR : get basis not implemented for CLP interface." << std::endl;
-	std::exit(1);
+	int ncols = get_ncols();
+	for (int i = 0; i < ncols; i++) {
+		cstatus[i] = _clp.getColumnStatus(i);
+	}
+
+	int nrows = get_nrows();
+	for (int i = 0; i < nrows; i++) {
+		rstatus[i] = _clp.getRowStatus(i);
+	}
 }
 
 void SolverClp::get_mip_value(double& val) const{

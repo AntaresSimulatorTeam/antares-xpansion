@@ -17,10 +17,15 @@ TEST_CASE("Modification: deleting rows", "[modif][del-rows]") {
         for (auto const& solver_name : factory.get_solvers_list()) {
 
             std::string instance = datas[inst]._path;
+            
+            //========================================================================================
+            // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
             solver->read_prob(instance.c_str(), "MPS");
 
+            //========================================================================================
+            // Deleting a row and checking new constraints matrix
             solver->del_rows(0, 0);
 
             int n_elems = solver->get_nelems();
@@ -54,10 +59,15 @@ TEST_CASE("Modification: add rows", "[modif][add-rows]") {
         for (auto const& solver_name : factory.get_solvers_list()) {
 
             std::string instance = datas[inst]._path;
+
+            //========================================================================================
+            // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
             solver->read_prob(instance.c_str(), "MPS");
 
+            //========================================================================================
+            // Add a row to problem : creating row structure
             int n_elems = solver->get_nelems();
             int n_cstr = solver->get_nrows();
             std::vector<double> matval(n_elems);
@@ -69,9 +79,14 @@ TEST_CASE("Modification: add rows", "[modif][add-rows]") {
             mstart = { 0, 2 };
             std::vector<char> ntype = { 'L' };
             std::vector<double> rhs = { 5.0 };
+
+            //========================================================================================
+            // Add the row to solver
             solver->add_rows(1, 2, ntype.data(), rhs.data(), NULL, mstart.data(),
                 mind.data(), matval.data());
 
+            //========================================================================================
+            // Check new constraint matrix
             n_elems = solver->get_nelems();
             n_cstr = solver->get_nrows();
 
@@ -116,10 +131,15 @@ TEST_CASE("Modification: change obj", "[modif][chg-obj]") {
         for (auto const& solver_name : factory.get_solvers_list()) {
 
             std::string instance = datas[inst]._path;
+            
+            //========================================================================================
+            // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
             solver->read_prob(instance.c_str(), "MPS");
 
+            //========================================================================================
+            // Modify objective function
             int n_vars = solver->get_ncols();
             std::vector<double> obj(n_vars);
             std::vector<int> ids(n_vars);
@@ -129,6 +149,9 @@ TEST_CASE("Modification: change obj", "[modif][chg-obj]") {
                 obj[i] -= 1;
             }
             solver->chg_obj(n_vars, ids.data(), obj.data());
+
+            //========================================================================================
+            // Check new objective function
             solver->get_obj(obj.data(), 0, n_vars - 1);
 
             std::vector<double> neededObj = datas[inst]._obj;
@@ -152,10 +175,15 @@ TEST_CASE("Modification: change right-hand side", "[modif][chg-rhs]") {
         for (auto const& solver_name : factory.get_solvers_list()) {
 
             std::string instance = datas[inst]._path;
+
+            //========================================================================================
+            // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
             solver->read_prob(instance.c_str(), "MPS");
 
+            //========================================================================================
+            // Change constraints right hand sides
             int n_cstr = solver->get_nrows();
             std::vector<double> rhs;
             rhs.resize(n_cstr);
@@ -163,6 +191,9 @@ TEST_CASE("Modification: change right-hand side", "[modif][chg-rhs]") {
             for (int i(0); i < n_cstr; i++) {
                 solver->chg_rhs(i, rhs[i] + 1);
             }
+
+            //========================================================================================
+            // Check new RHS
             solver->get_rhs(rhs.data(), 0, n_cstr - 1);
 
             std::vector<double> neededRhs = datas[inst]._rhs;
@@ -186,10 +217,15 @@ TEST_CASE("Modification: change matrix coefficient", "[modif][chg-coef]") {
         for (auto const& solver_name : factory.get_solvers_list()) {
 
             std::string instance = datas[inst]._path;
+
+            //========================================================================================
+            // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
             solver->read_prob(instance.c_str(), "MPS");
 
+            //========================================================================================
+            // Change matrix coefficient
             int n_elems = solver->get_nelems();
             int n_cstr = solver->get_nrows();
 
@@ -207,6 +243,8 @@ TEST_CASE("Modification: change matrix coefficient", "[modif][chg-coef]") {
             double val = matval[matval.size() - 1];
             solver->chg_coef(row, idcol, val / 10.0);
 
+            //========================================================================================
+            // Check new matrix
             int n_returned(0);
             solver->get_rows(mstart.data(), mind.data(), matval.data(), n_elems, &n_returned, 0, n_cstr - 1);
 
@@ -234,11 +272,15 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
         for (auto const& solver_name : factory.get_solvers_list()) {
 
             std::string instance = datas[inst]._path;
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
 
+            //========================================================================================
+            // solver declaration
+            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
             solver->read_prob(instance.c_str(), "MPS");
 
+            //========================================================================================
+            // Add new variable to problem
             int newcol = 1;
             int nnz = 2;
             std::vector<double> newobj(newcol, 3.0);
@@ -261,6 +303,8 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
             solver->add_cols(newcol, nnz, newobj.data(), nmstart.data(),
                 nmind.data(), nmatval.data(), lbs.data(), ubs.data());
 
+            //========================================================================================
+            // Check objective and rows
             REQUIRE(solver->get_ncols() == datas[inst]._ncols + 1);
 
             //test obj
@@ -326,8 +370,7 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
             std::vector<double> neededUb = datas[inst]._ub;
             neededUb.push_back(6.0);
 
-            // gestion a la main des infinis differents selon les solveurs
-            // tous les infinis mis a 1e20 pour les tests
+            // infinite management, setting to 1e20
             for (int i(0); i < solver->get_ncols(); i++) {
                 if (neededUb[i] == 1e20 && ubs[i] > 1e20) {
                     ubs[i] = 1e20;

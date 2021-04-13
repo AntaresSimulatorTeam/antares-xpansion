@@ -17,12 +17,12 @@ TEST_CASE("Un objet solveur peut etre cree et detruit", "[read][init]") {
             std::string instance = datas[inst]._path;
 
             //========================================================================================
-            // 1. declaration d'un objet solveur
+            // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
 
             //========================================================================================
-            // 2. destruction de l'objet pointe
+            // solver destruction
             solver.reset();
             REQUIRE(solver == nullptr);
         }
@@ -42,19 +42,19 @@ TEST_CASE("MPS file can be read and we can get number of columns", "[read][read-
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
+            // Solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
 
             //========================================================================================
-            // 2. initialisation d'un probleme et lecture
+            // initalization and read problem
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
             
             //========================================================================================
-            // 3. Recuperation des donnees de base du probleme
+            // Get number of columns
             REQUIRE(solver->get_ncols() == datas[inst]._ncols);
         }
     }
@@ -73,19 +73,16 @@ TEST_CASE("MPS file can be read and we can get number of rows", "[read][read-row
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 3. Recuperation des donnees de base du probleme
+            // Get numer of rows
             REQUIRE(solver->get_nrows() == datas[inst]._nrows);
         }
     }
@@ -104,19 +101,16 @@ TEST_CASE("MPS file can be read and we can get number of integer variables", "[r
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
+            // Solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 3. Recuperation des donnees de base du probleme
+            // Get number of integer variables
             REQUIRE(solver->get_n_integer_vars() == datas[inst]._nintegervars);
         }
     }
@@ -135,19 +129,16 @@ TEST_CASE("MPS file can be read and we can get number of non zero elements in th
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
+            //Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 3. Recuperation des donnees de base du probleme
+            // Get number of non zero elements in matrix
             REQUIRE(solver->get_nelems() == datas[inst]._nelems);
         }
     }
@@ -168,21 +159,16 @@ TEST_CASE("MPS file can be read and we can get objective function coefficients",
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 4. Recuperation de la fonction objectif
+            // Get objective function
             int n_vars = solver->get_ncols();
             REQUIRE(n_vars == datas[inst]._ncols);
             std::vector<double> obj(n_vars);
@@ -208,27 +194,22 @@ TEST_CASE("MPS file can be read and we can get matrix coefficients", "[read][rea
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 3. Recuperation des donnees de base du probleme
+            // Get necessary datas from solver
             REQUIRE(solver->get_ncols() == datas[inst]._ncols);
             REQUIRE(solver->get_nrows() == datas[inst]._nrows);
             REQUIRE(solver->get_nelems() == datas[inst]._nelems);
 
             //========================================================================================
-            // 5. Recuperation des contraintes
+            // Get rows
             int n_elems = solver->get_nelems();
             int n_cstr = solver->get_nrows();
 
@@ -261,21 +242,16 @@ TEST_CASE("MPS file can be read and we can get right hand side", "[read][read-rh
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());          
 
             //========================================================================================
-            // 6. Recuperation des seconds membres
+            // Get Constraints Right Hand Sides
             int n_cstr = solver->get_nrows();
             REQUIRE(solver->get_nrows() == datas[inst]._nrows);
 
@@ -304,14 +280,9 @@ TEST_CASE("MPS file can be read and we can get row types", "[read][read-rowtypes
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver Declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
@@ -320,7 +291,7 @@ TEST_CASE("MPS file can be read and we can get row types", "[read][read-rowtypes
 
             REQUIRE(solver->get_nrows() == datas[inst]._nrows);
             //========================================================================================
-            // 7. Recuperation des types de contraintes
+            // Get rowtypes
             int n_cstr = solver->get_nrows();
             std::vector<char> rtypes(n_cstr);
             if (n_cstr > 0) {
@@ -346,21 +317,16 @@ TEST_CASE("MPS file can be read and we can get types of columns", "[read][read-c
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver Declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 8. Recuperation des types de variables
+            // Get column types
             int n_vars = solver->get_ncols();
             REQUIRE(solver->get_ncols() == datas[inst]._ncols);
             std::vector<char> coltype(n_vars);
@@ -385,21 +351,16 @@ TEST_CASE("MPS file can be read and we can get lower bounds on variables", "[rea
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 9. Recuperation des bornes inf sur les variables
+            // Get lower bounds on variables
             int n_vars = solver->get_ncols();
             REQUIRE(solver->get_ncols() == datas[inst]._ncols);
             std::vector<double> lb(n_vars);
@@ -424,28 +385,23 @@ TEST_CASE("MPS file can be read and we can get upper bounds on variables", "[rea
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 10. Recuperation des bornes sup sur les variables
+            // Get upper bounds on variables
             int n_vars = solver->get_ncols();
             REQUIRE(solver->get_ncols() == datas[inst]._ncols);
             std::vector<double> ub(n_vars);
             solver->get_ub(ub.data(), 0, n_vars - 1);
 
-            // gestion a la main des infinis differents selon les solveurs
-            // tous les infinis mis a 1e20 pour les tests
+            // Hand management of infinites
+            // +infty is set to 1e20
             for (int i(0); i < solver->get_ncols(); i++) {
                 if (datas[inst]._ub[i] == 1e20 && ub[i] > 1e20) {
                     ub[i] = 1e20;
@@ -470,29 +426,23 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
         for (auto const& solver_name : factory.get_solvers_list()) {
 
             std::string instance = datas[inst]._path;
-            //========================================================================================
-            // 1. declaration d'un objet solveur
-
-            
+            // Solver declaration and read problem            
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
             //========================================================================================
-            // 3. Recuperation des donnees de base du probleme
+            // Required datas
             REQUIRE(solver->get_ncols() == datas[inst]._ncols);
             REQUIRE(solver->get_nrows() == datas[inst]._nrows);
             REQUIRE(solver->get_n_integer_vars() == datas[inst]._nintegervars);
             REQUIRE(solver->get_nelems() == datas[inst]._nelems);
 
             //========================================================================================
-            // 4. Recuperation de la fonction objectif
+            // Read objective
             int n_vars = solver->get_ncols();
             std::vector<double> obj(n_vars);
 
@@ -502,7 +452,7 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
 
 
             //========================================================================================
-            // 5. Recuperation des contraintes
+            // Read constraints
             int n_elems = solver->get_nelems();
             int n_cstr = solver->get_nrows();
 
@@ -519,7 +469,7 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
             REQUIRE(mstart == datas[inst]._mstart);
 
             //========================================================================================
-            // 6. Recuperation des seconds membres
+            // Read constraints RHS
             n_cstr = solver->get_nrows();
             std::vector<double> rhs(n_cstr);
             if (n_cstr > 0) {
@@ -529,7 +479,7 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
             REQUIRE(rhs == datas[inst]._rhs);
 
             //========================================================================================
-            // 7. Recuperation des types de contraintes
+            // Read row types
             n_cstr = solver->get_nrows();
             std::vector<char> rtypes(n_cstr);
             if (n_cstr > 0) {
@@ -539,7 +489,7 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
 
 
             //========================================================================================
-            // 8. Recuperation des types de variables
+            // Read Column types
             n_vars = solver->get_ncols();
             std::vector<char> coltype(n_vars);
             solver->get_col_type(coltype.data(), 0, n_vars - 1);
@@ -547,7 +497,7 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
             REQUIRE(coltype == datas[inst]._coltypes);
 
             //========================================================================================
-            // 9. Recuperation des bornes inf sur les variables
+            // Read lower bounds on variables
             n_vars = solver->get_ncols();
             std::vector<double> lb(n_vars);
             solver->get_lb(lb.data(), 0, n_vars - 1);
@@ -555,13 +505,11 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
             REQUIRE(lb == datas[inst]._lb);
 
             //========================================================================================
-            // 10. Recuperation des bornes sup sur les variables
+            // Read upper bounds on variables
             n_vars = solver->get_ncols();
             std::vector<double> ub(n_vars);
             solver->get_ub(ub.data(), 0, n_vars - 1);
 
-            // gestion a la main des infinis differents selon les solveurs
-            // tous les infinis mis a 1e20 pour les tests
             for (int i(0); i < solver->get_ncols(); i++) {
                 if (datas[inst]._ub[i] == 1e20 && ub[i] > 1e20) {
                     ub[i] = 1e20;
@@ -579,7 +527,6 @@ TEST_CASE("We can get the names of variables and constraints present in MPS file
 
     SolverFactory factory;
     int ind = 0;
-    //auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER, NET_SP1, NET_SP2);
     auto inst = GENERATE(MIP_TOY, MULTIKP);
     SECTION("Reading instance") {
 
@@ -587,14 +534,9 @@ TEST_CASE("We can get the names of variables and constraints present in MPS file
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
@@ -607,11 +549,9 @@ TEST_CASE("We can get the names of variables and constraints present in MPS file
                 ind++;
             }
             //========================================================================================
-            // 10. Recuperation des noms
+            // Get names of columns and rows
             int n_vars = solver->get_ncols();
             int n_rows = solver->get_nrows();
-            //REQUIRE(solver->get_ncols() == datas[inst]._ncols);
-            //REQUIRE(solver->get_nrows() == datas[inst]._nrows);
 
             std::vector<std::string> rowNames(n_rows);
             std::vector<std::string> colNames(n_vars);
@@ -651,14 +591,9 @@ TEST_CASE("We can get the indices of rows and columns by their names", "[read][g
 
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
-
-
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             REQUIRE(solver->get_number_of_instances() == 1);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
 
             const std::string flags = "MPS";
@@ -671,7 +606,7 @@ TEST_CASE("We can get the indices of rows and columns by their names", "[read][g
                 ind++;
             }
             //========================================================================================
-            // Indices
+            // Get row and columns indices by their names
             int n_vars = solver->get_ncols();
             int n_rows = solver->get_nrows();
             

@@ -120,6 +120,22 @@ public:
 -------------------------    Methods to get solutions information    -----------------------------
 *************************************************************************************************/
 public:	
+    /**
+    * @brief Returns the current basis into the user’s data arrays.
+    *
+    * @param rstatus    : Integer array of length ROWS to the basis status of the slack, surplus or
+                        artifficial variable associated with each row. The status will be one of:
+                        0 slack, surplus or artifficial is non-basic;
+                        1 slack, surplus or artifficial is basic;.
+                        May be NULL if not required.
+    * @param cstatus    : Integer array of length COLS to hold the basis status of the columns
+                        in the constraint matrix. The status will be one of:
+                        0 variable is non-basic at lower bound;
+                        1 variable is basic;
+                        2 variable is non-basic at upper bound;
+                        3 variable is free and non-basic
+                        May be NULL if not required.
+    */
 	virtual void get_basis(int* rstatus, int* cstatus) const;
 	virtual void get_mip_value(double& lb) const;
 	virtual void get_lp_value(double& lb) const;

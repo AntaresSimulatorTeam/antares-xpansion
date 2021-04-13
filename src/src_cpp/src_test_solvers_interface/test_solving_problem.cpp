@@ -19,18 +19,16 @@ TEST_CASE("A LP problem is solved", "[solve-lp]") {
 
         for (auto const& solver_name : factory.get_solvers_list()) {
             std::string instance = datas[inst]._path;
+
             //========================================================================================
-            // 1. declaration d'un objet solveur
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
-
-
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
+            //========================================================================================
+            // Solve as LP
             int slv_status(0);
             solver->solve_lp(slv_status);
 
@@ -76,16 +74,14 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
         for (auto const& solver_name : factory.get_solvers_list()) {
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
+            // Solver declaration 
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
-
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
-            
+
+            //========================================================================================
+            // Solve as LP
             int slv_status(0);
             solver->solve_lp(slv_status);
 
@@ -112,6 +108,9 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
             if (!success) {
                 FAIL();
             }
+
+            //========================================================================================
+            // Check LP value after solve
             if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
             {
                 double lp_val(0);
@@ -140,16 +139,14 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
         for (auto const& solver_name : factory.get_solvers_list()) {
             std::string instance = datas[inst]._path;
             //========================================================================================
-            // 1. declaration d'un objet solveur
+            // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-
-            //========================================================================================
-            // 2. initialisation d'un probleme et lecture
             solver->init();
-
             const std::string flags = "MPS";
             solver->read_prob(instance.c_str(), flags.c_str());
 
+            //========================================================================================
+            // Solve as LP and get solution
             int slv_status(0);
             solver->solve_lp(slv_status);
 
@@ -230,20 +227,19 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
 
         for (auto const& solver_name : factory.get_solvers_list()) {
 
+            // As CLP is a pure LP solver, it cannot pass this test
             if (solver_name != "CLP") {
+
                 std::string instance = datas[inst]._path;
                 //========================================================================================
-                // 1. declaration d'un objet solveur
+                // Solver declaration
                 SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-
-                //========================================================================================
-                // 2. initialisation d'un probleme et lecture
                 solver->init();
-
-
                 const std::string flags = "MPS";
                 solver->read_prob(instance.c_str(), flags.c_str());
 
+                //========================================================================================
+                // Solve as MIP
                 int slv_status(0);
                 solver->solve_mip(slv_status);
 

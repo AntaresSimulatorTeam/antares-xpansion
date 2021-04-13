@@ -431,32 +431,24 @@ public:
     * @brief Returns the current basis into the user’s data arrays.
     *
     * @param rstatus    : Integer array of length ROWS to the basis status of the slack, surplus or 
-                        artifficial variable associated with each row. The status will be one of:
-                        0 slack, surplus or artifficial is non-basic at lower bound;
-                        1 slack, surplus or artifficial is basic;
-                        2 slack or surplus is non-basic at upper bound.
-                        3 slack or surplus is super-basic.
-                        May be NULL if not required.
+                        artifficial variable associated with each row. The values depend on the 
+                        solver used.May be NULL if not required.
+                        
     * @param cstatus    : Integer array of length COLS to hold the basis status of the columns 
-                        in the constraint matrix. The status will be one of:
-                        0 variable is non-basic at lower bound, or superbasic at zero if the 
-                            variable has no lower bound;
-                        1 variable is basic;
-                        2 variable is non-basic at upper bound;
-                        3 variable is super-basic.
-                        May be NULL if not required.
+                        in the constraint matrix. The values depend on the 
+                        solver used.May be NULL if not required.
     */
 	virtual void get_basis(int* rstatus, int* cstatus) const = 0;
 
     /**
-    * @brief Get the optimale value of a MIP problem (available after method "integer_solve")
+    * @brief Get the optimale value of a MIP problem (available after method "solve_mip")
     *
     * @param lb : double to store the value
     */
 	virtual void get_mip_value(double& lb) const = 0;
 
     /**
-    * @brief Get the optimale value of a LP problem (available after method "solve" for LP's)
+    * @brief Get the optimale value of a LP problem (available after method "solve_lp" )
     *
     * @param lb : double to store the value
     */
