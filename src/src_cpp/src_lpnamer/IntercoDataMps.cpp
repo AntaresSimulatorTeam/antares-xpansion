@@ -417,7 +417,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	ORTwritempsPreciseWithCoin(out_prblm, lp_mps_name );
+	ORTwriteMpsPreciseWithCoin(out_prblm, lp_mps_name );
 	std::cout << "lp_name : " << lp_mps_name << " done" << std::endl;
 }
 

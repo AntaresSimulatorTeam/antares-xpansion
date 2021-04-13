@@ -49,7 +49,7 @@ bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string con
  *              to be written is sent to the inner solver in this method
  * @param filename_p  : path to the mps file to produce
  */
-void ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p, 
+void ORTwriteMpsPreciseWithCoin(operations_research::MPSolver & solver_p,
     std::string const& filename_p);
 
 

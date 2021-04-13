@@ -99,7 +99,7 @@ bool ORTwritemps(operations_research::MPSolver const & solver_p, std::string con
 	return true;
 }
 
-void ORTwritempsPreciseWithCoin(operations_research::MPSolver & solver_p, 
+void ORTwriteMpsPreciseWithCoin(operations_research::MPSolver & solver_p,
     std::string const& filename_p) {
     
     /*The MPS writer of inner CBC solver will be used
