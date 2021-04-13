@@ -30,7 +30,7 @@
  * @param solver_p  : solver into which the model will be loaded
  * @param filename_p  : path to the mps file
  */
-operations_research::MPSolverResponseStatus ORTreadmps(SolverAbstract::Ptr solver_p, std::string const & filename_p);
+void ORTreadmps(SolverAbstract::Ptr solver_p, std::string const & filename_p);
 
 /**
  * @brief writes a problem into an mps format
@@ -38,7 +38,7 @@ operations_research::MPSolverResponseStatus ORTreadmps(SolverAbstract::Ptr solve
  * @param solver_p  : solver containing the model to export
  * @param filename_p  : path to the mps file to produce
  */
-bool ORTwritemps(SolverAbstract::Ptr const solver_p, std::string const & filename_p);
+void ORTwritemps(SolverAbstract::Ptr const solver_p, std::string const & filename_p);
 
 /**
  * @brief writes a problem into an lp format
@@ -46,7 +46,7 @@ bool ORTwritemps(SolverAbstract::Ptr const solver_p, std::string const & filenam
  * @param solver_p  : solver containing the model to export
  * @param filename_p  : path to the lp file to produce
  */
-bool ORTwritelp(SolverAbstract::Ptr const solver_p, std::string const & filename_p);
+void ORTwritelp(SolverAbstract::Ptr const solver_p, std::string const & filename_p);
 
 /**
  * @brief Returns the nonzeros in the constraint matrix for the rows in a given range
@@ -278,4 +278,5 @@ void ORTchgbounds(SolverAbstract::Ptr solver_p,
  */
 void ORTcopyandrenamevars(SolverAbstract::Ptr outSolver_p,
                             SolverAbstract::Ptr const inSolver_p,
-                            std::vector<std::string> const & names_p);
+                            std::vector<std::string> & names_p,
+                            std::string const& solver_name);

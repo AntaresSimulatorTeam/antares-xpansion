@@ -69,27 +69,20 @@ public:
 	}
 
 
-	StandardLp(operations_research::MPSolver & solver_p)
+	StandardLp(SolverAbstract::Ptr solver_p)
 	{
 		init();
 
-		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] = solver_p.NumVariables();
-		std::cout << "vars: " << solver_p.NumVariables() << "\n";
+		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] = solver_p->get_ncols();
+		std::cout << "vars: " << solver_p->get_ncols() << "\n";
 
-		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] = solver_p.NumConstraints();
-		std::cout << "constraints: " << solver_p.NumConstraints() << "\n";
+		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] = solver_p->get_nrows();
+		std::cout << "constraints: " << solver_p->get_ncols() << "\n";
 
-		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] = 0;
-		for(operations_research::MPConstraint* constraint_l : solver_p.constraints())
-		{
-			std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] += constraint_l->terms().size();
-		}
+		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] = solver_p->get_nelems();
 		std::cout << "nelems: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] << "\n";
 
-		for(auto var_l : solver_p.variables())
-		{
-			_colNames.push_back(var_l->name());
-		}
+		solver_p->get_col_names(0, solver_p->get_ncols() - 1, _colNames);
 
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].clear();
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].clear();
@@ -150,11 +143,11 @@ public:
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
 	}
 
-	int append_in(operations_research::MPSolver & containingSolver_p, std::string const & prefix_p = "") const {
+	int append_in(SolverAbstract::Ptr containingSolver_p, std::string const & prefix_p = "") const {
 
 		// simply increment the columns indices
 		IntVector newmindex(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
-		int nbExistingCols(containingSolver_p.NumVariables());
+		int nbExistingCols(containingSolver_p->get_ncols());
 		for (auto & i : newmindex) {
 			i += nbExistingCols;
 		}

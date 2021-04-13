@@ -21,7 +21,7 @@ WorkerMaster::~WorkerMaster() {
 void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
 	x0.clear();
 	std::vector<double> ptr;
-	ORTgetlpsolution(*_solver, ptr);
+	ORTgetlpsolution(_solver, ptr);
 	assert(_id_alpha_i.back()+1 == ptr.size());
 	for (auto const & kvp : _id_to_name) {
 		x0[kvp.second] = ptr[kvp.first];
@@ -38,14 +38,14 @@ void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
 *  \param dual : reference to a vector of double
 */
 void WorkerMaster::get_dual_values(std::vector<double> & dual) {
-	ORTgetlpdual(*_solver, dual);
+	ORTgetlpdual(_solver, dual);
 }
 
 /*!
 *  \brief Return number of constraint in a problem
 */
 int WorkerMaster::get_number_constraint() {
-	return _solver->NumConstraints();
+	return _solver->get_nrows();
 }
 
 /*!
@@ -93,7 +93,7 @@ void WorkerMaster::add_cut(Point const & s, Point const & x0, double const & rhs
 	mclind.back() = _id_alpha;
 	matval.back() = -1;
 
-	ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+	ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 /*!
@@ -127,7 +127,7 @@ void WorkerMaster::add_dynamic_cut(Point const & s, double const & sx0, double c
 	mclind.back() = _id_alpha;
 	matval.back() = -1;
 
-	ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+	ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 /*!
@@ -161,7 +161,7 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const & s, double const & 
 	mclind.back() = _id_alpha_i[i];
 	matval.back() = -1;
 
-	ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+	ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 
@@ -195,7 +195,7 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 	mclind.back() = _id_alpha_i[i];
 	matval.back() = -1;
 
-	ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+	ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 
@@ -210,8 +210,10 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 *  \param nslaves : number of slaves
 */
 WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & path_to_mps, BendersOptions const & options, int nslaves) :Worker() {
+	
 	_is_master = true;
-	init(variable_map, path_to_mps);
+	init(variable_map, path_to_mps, options.SOLVER_NAME);
+	_id_alpha = 0;
 
 	// add the variable alpha
 	auto const it(_name_to_id.find("alpha"));
@@ -220,15 +222,15 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 		double ub(+1e20); /*!< Upper Bound*/
 		double obj(+1);
 		std::vector<int> start(2, 0);
-		_id_alpha = _solver->NumVariables(); /* Set the number of columns in _id_alpha */
-		ORTaddcols(*_solver, {obj}, {}, {}, {}, {lb}, {ub}, {'C'}, {"alpha"}); /* Add variable alpha and its parameters */
+		_id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
+		ORTaddcols(_solver, {obj}, {}, {}, {}, {lb}, {ub}, {'C'}, {"alpha"}); /* Add variable alpha and its parameters */
 
 		_id_alpha_i.resize(nslaves, -1);
 		for (int i(0); i < nslaves; ++i) {
 			std::stringstream buffer;
 			buffer << "alpha_" << i;
-			_id_alpha_i[i] = _solver->NumVariables();
-			ORTaddcols(*_solver, {0}, {}, {}, {}, {lb}, {ub}, {'C'}, {buffer.str()}); /* Add variable alpha_i and its parameters */
+			_id_alpha_i[i] = _solver->get_ncols();
+			ORTaddcols(_solver, {0}, {}, {}, {}, {lb}, {ub}, {'C'}, {buffer.str()}); /* Add variable alpha_i and its parameters */
 		}
 		{
 			std::vector<char> rowtype = {'E'};
@@ -243,7 +245,7 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 				mclind[i + 1] = _id_alpha_i[i];
 				matval[i + 1] = -1;
 			}
-			ORTaddrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+			ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 		}
 	}
 	else {
@@ -257,5 +259,8 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 *  \param bestUB : bound to fix
 */
 void WorkerMaster::fix_alpha(double const & bestUB) {
-	_solver->variables()[_id_alpha]->SetUB(bestUB);
+	std::vector<int> mindex(1, _id_alpha);
+	std::vector<char> bnd_types(1, 'U');
+	std::vector<double> bnd_values(1, bestUB);
+	_solver->chg_bounds(1, mindex.data(), bnd_types.data(), bnd_values.data());
 }

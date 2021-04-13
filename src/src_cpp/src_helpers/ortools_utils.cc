@@ -6,18 +6,18 @@
 #include "ortools/linear_solver/linear_solver.pb.h"
 #include "ortools/linear_solver/model_exporter.h"
 
-operations_research::MPSolverResponseStatus ORTreadmps(SolverAbstract::Ptr solver_p, 
+void ORTreadmps(SolverAbstract::Ptr solver_p, 
     std::string const & filename_p)
 {
     solver_p->read_prob(filename_p.c_str(), "MPS");
 }
 
-bool ORTwritemps(SolverAbstract::Ptr const solver_p, std::string const & filename_p)
+void ORTwritemps(SolverAbstract::Ptr const solver_p, std::string const & filename_p)
 {
     solver_p->write_prob(filename_p.c_str(), "MPS");
 }
 
-bool ORTwritelp(SolverAbstract::Ptr const solver_p, std::string const & filename_p)
+void ORTwritelp(SolverAbstract::Ptr const solver_p, std::string const & filename_p)
 {
     solver_p->write_prob(filename_p.c_str(), "LP");
 }
@@ -170,15 +170,15 @@ void ORTchgbounds(SolverAbstract::Ptr solver_p,
     solver_p->chg_bounds(mindex_p.size(), mindex_p.data(), qbtype_p.data(), bnd_p.data());
 }
 
-
 void ORTcopyandrenamevars(SolverAbstract::Ptr outSolver_p,
                           SolverAbstract::Ptr const & inSolver_p,
-                          std::vector<std::string> const & names_p)
+                          std::vector<std::string> & names_p,
+                          std::string const& solver_name)
 {
     outSolver_p.reset();
 
     //copy and rename columns
-    std::vector<double> obj_l;
+    /*std::vector<double> obj_l;
 	ORTgetobj(inSolver_p, obj_l, 0, inSolver_p->get_ncols() - 1);
     std::vector<double> lb_l;
 	std::vector<double> ub_l;
@@ -197,5 +197,11 @@ void ORTcopyandrenamevars(SolverAbstract::Ptr outSolver_p,
         {
             outConstraint_l->SetCoefficient(outVariables_l[pairVarCoeff_l.first->index()], pairVarCoeff_l.second);
         }
+    }*/
+
+    SolverFactory factory;
+    outSolver_p = factory.create_solver(solver_name, inSolver_p);
+    for (int i = 0; i < outSolver_p->get_ncols() - 1; i++) {
+        outSolver_p->chg_col_name(i, names_p[i]);
     }
 }

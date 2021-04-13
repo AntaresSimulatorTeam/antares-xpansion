@@ -92,7 +92,7 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 
 	_solver->solve_mip(lp_status);
 
-	if (lp_status != operations_research::MPSolver::OPTIMAL) {
+	if (lp_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
 		std::stringstream buffer;
 
@@ -102,7 +102,7 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 		buffer<< ".mps";
 		LOG(INFO) << "lp_status is : " << ORT_LP_STATUS[lp_status] << std::endl;
 		LOG(INFO) << "written in " << buffer.str() << std::endl;
-		ORTwritemps(*_solver, buffer.str());
+		ORTwritemps(_solver, buffer.str());
 		std::exit(1);
 	}
 	else {//@NOTE conformity : replace with equivalent to XPRS_LP_UNSTARTED but useless
@@ -116,5 +116,5 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 *  \param result : result
 */
 void Worker::get_simplex_ite(int & result) {
-	result = _solver->iterations();
+	_solver->get_simplex_ite(result);
 }

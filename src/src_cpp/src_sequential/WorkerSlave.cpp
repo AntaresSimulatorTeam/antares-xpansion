@@ -17,19 +17,20 @@ WorkerSlave::WorkerSlave() {
 *
 */
 WorkerSlave::WorkerSlave(Str2Int const & variable_map, std::string const & path_to_mps, double const & slave_weight, BendersOptions const & options) {
-	init(variable_map, path_to_mps);
 
-	int mps_ncols(_solver->NumVariables());
+	init(variable_map, path_to_mps, options.SOLVER_NAME);
+
+	int mps_ncols(_solver->get_ncols());
 	DblVector o_l;
 	IntVector sequence(mps_ncols);
 	for (int i(0); i < mps_ncols; ++i) {
 		sequence[i] = i;
 	}
-	ORTgetobj(*_solver, o_l, 0, mps_ncols - 1);
+	ORTgetobj(_solver, o_l, 0, mps_ncols - 1);
 	for (auto & c : o_l) {
 		c *= slave_weight;
 	}
-	ORTchgobj(*_solver, sequence, o_l);	
+	ORTchgobj(_solver, sequence, o_l);	
 }
 WorkerSlave::~WorkerSlave() {
 
@@ -55,7 +56,7 @@ void WorkerSlave::fix_to(Point const & x0) {
 		++i;
 	}
 
-	ORTchgbounds(*_solver, indexes, bndtypes, values);
+	ORTchgbounds(_solver, indexes, bndtypes, values);
 }
 
 /*!
@@ -66,7 +67,7 @@ void WorkerSlave::fix_to(Point const & x0) {
 void WorkerSlave::get_subgradient(Point & s) {
 	s.clear();
 	std::vector<double> ptr;
-	ORTgetlpreducedcost(*_solver, ptr);
+	ORTgetlpreducedcost(_solver, ptr);
 	for (auto const & kvp : _id_to_name) {
 		s[kvp.second] = +ptr[kvp.first];
 	}
@@ -81,7 +82,7 @@ void WorkerSlave::get_subgradient(Point & s) {
 SimplexBasis WorkerSlave::get_basis() {
 	IntVector cstatus;
 	IntVector rstatus;
-	ORTgetbasis(*_solver, rstatus, cstatus);
+	ORTgetbasis(_solver, rstatus, cstatus);
 	return std::make_pair(rstatus, cstatus);
 }
 

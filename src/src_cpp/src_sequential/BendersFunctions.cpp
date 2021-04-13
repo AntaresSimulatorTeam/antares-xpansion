@@ -323,7 +323,7 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 *  \param data : BendersData used to get master solving status
 */
 void check_status(AllCutPackage const & all_package, BendersData const & data) {
-	if (data.master_status != operations_research::MPSolver::OPTIMAL) {
+	if (data.master_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "Master status is " << data.master_status << std::endl;
 		exit(1);
 	}
@@ -331,7 +331,7 @@ void check_status(AllCutPackage const & all_package, BendersData const & data) {
 		for (auto const & kvp : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(kvp.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
-			if (handler->get_int(LPSTATUS) != operations_research::MPSolver::OPTIMAL) {
+			if (handler->get_int(LPSTATUS) != SOLVER_STATUS::OPTIMAL) {
 				LOG(INFO) << "Slave " << kvp.first << " status is " << handler->get_int(LPSTATUS) << std::endl;
 				exit(1);
 			}

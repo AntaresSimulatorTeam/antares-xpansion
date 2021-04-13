@@ -354,8 +354,8 @@ public:
     *
     * @param nbds   : number of bounds to change
     * @param mindex : indices of columns to modify
-    * @param qbtype : types of the bounds to modify
-    * @param qbtype : new values for the bounds
+    * @param qbtype : types of the bounds to modify ('U' upper, 'L' lower, 'B' both)
+    * @param bnd    : new values for the bounds
     */
     virtual void chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd) = 0;
 	
