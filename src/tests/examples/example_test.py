@@ -48,16 +48,15 @@ def verify_solution(study_path, expected_values, expected_investment_solution):
     output_path = study_path / 'output'
     json_path = get_first_json_filepath_output(output_path)
 
-    json_file = open(str(json_path), 'r')
-    json_data = json.load(json_file)
+    with open(str(json_path), 'r') as json_file:
+        json_data = json.load(json_file)
 
     solution = json_data["solution"]
     investment_solution = solution["values"]
-    
-    json_file.close()
 
     RELATIVE_TOLERANCE = 1e-4
-    np.testing.assert_allclose(solution["gap"], expected_values["gap"], rtol=RELATIVE_TOLERANCE)
+    ABSOLUTE_TOLERANCE = 0.1
+    np.testing.assert_allclose(solution["gap"], expected_values["gap"], rtol=RELATIVE_TOLERANCE, atol=ABSOLUTE_TOLERANCE)
     np.testing.assert_allclose(solution["investment_cost"], expected_values["investment_cost"], rtol=RELATIVE_TOLERANCE)
     np.testing.assert_allclose(solution["operational_cost"], expected_values["operational_cost"],
                                rtol=RELATIVE_TOLERANCE)
@@ -66,8 +65,7 @@ def verify_solution(study_path, expected_values, expected_investment_solution):
     for investment in expected_investment_solution.keys():
         assert investment in investment_solution.keys(), "Investment " + investment + " not found in solution"
 
-        np.testing.assert_allclose(expected_investment_solution[investment], investment_solution[investment], rtol=1e-4,
-                                   atol=0)
+        np.testing.assert_allclose(expected_investment_solution[investment], investment_solution[investment], rtol=RELATIVE_TOLERANCE)
 
 
 def verify_study_update(study_path, expected_investment_solution):
