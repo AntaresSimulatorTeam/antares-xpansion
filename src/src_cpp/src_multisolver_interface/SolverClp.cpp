@@ -235,16 +235,26 @@ void SolverClp::get_ub(double* ub, int first, int last) const{
 
 int SolverClp::get_row_index(std::string const& name) const {
 	int id = 0;
-	std::cout << "ERROR : get row index not implemented for COIN CLP" << std::endl;
-	std::exit(1);
-	return id;
+	int nrows = get_nrows();
+	while (id < nrows) {
+		if (_clp.getRowName(id) == name) {
+			return id;
+		}
+		id++;
+	}
+	return -1;
 }
 
 int SolverClp::get_col_index(std::string const& name) const {
 	int id = 0;
-	std::cout << "ERROR : get col index not implemented for COIN CLP" << std::endl;
-	std::exit(1);
-	return id;
+	int ncols = get_ncols();
+	while (id < ncols) {
+		if (_clp.getColumnName(id) == name) {
+			return id;
+		}
+		id++;
+	}
+	return -1;
 }
 
 int SolverClp::get_row_names(int first, int last, std::vector<std::string>& names) const

@@ -635,3 +635,60 @@ TEST_CASE("We can get the names of variables and constraints present in MPS file
         }
     }
 }
+
+
+TEST_CASE("We can get the indices of rows and columns by their names", "[read][get-indices]") {
+
+    AllDatas datas;
+    fill_datas(datas);
+
+    SolverFactory factory;
+    int ind = 0;
+    auto inst = GENERATE(MIP_TOY, MULTIKP);
+    SECTION("Reading instance") {
+
+        for (auto const& solver_name : factory.get_solvers_list()) {
+
+            std::string instance = datas[inst]._path;
+            //========================================================================================
+            // 1. declaration d'un objet solveur
+
+
+            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            REQUIRE(solver->get_number_of_instances() == 1);
+
+            //========================================================================================
+            // 2. initialisation d'un probleme et lecture
+            solver->init();
+
+            const std::string flags = "MPS";
+            solver->read_prob(instance.c_str(), flags.c_str());
+
+
+            if (solver_name == "XPRESS") {
+                std::string prb_name = "test" + ind;
+                solver->write_prob(prb_name.c_str(), "MPS");
+                ind++;
+            }
+            //========================================================================================
+            // Indices
+            int n_vars = solver->get_ncols();
+            int n_rows = solver->get_nrows();
+            
+            int col_index = -1;
+            std::string cur_name;
+            for (int i(0); i < 2; i++) {
+                cur_name = datas[inst]._col_names[i];
+                col_index = solver->get_col_index(cur_name);
+                REQUIRE(col_index == i);
+            }
+
+            int row_index = -1;
+            for (int i(0); i < 2; i++) {
+                cur_name = datas[inst]._row_names[i];
+                row_index = solver->get_row_index(cur_name);
+                REQUIRE(row_index == i);
+            }
+        }
+    }
+}
