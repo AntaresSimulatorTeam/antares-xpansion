@@ -25,6 +25,8 @@
 #include <thread>
 #include <cmath>
 #include "Timer.h"
+// MultiSolver interface 
+#include "Solver.h"
 
 struct Predicate;
 typedef std::map<std::string, double> Point;

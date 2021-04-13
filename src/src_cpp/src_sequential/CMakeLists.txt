@@ -51,6 +51,7 @@ target_link_libraries (sequentialcore
 	PUBLIC
 		helpers
 		jsoncpp_lib
+		solvers
 )
 
 add_library (${PROJECT_NAME}::sequentialcore ALIAS sequentialcore)
