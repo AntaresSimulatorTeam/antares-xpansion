@@ -3,7 +3,7 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-
+import yaml
 import numpy as np
 import pytest
 
@@ -20,6 +20,9 @@ import pytest
 #               value of the variable
 RESULT_FILE_PATH = Path('resultTest.json')
 
+# File CONFIG_FILE_PATH
+# yaml file containing executable name
+CONFIG_FILE_PATH = '../../src_python/config.yaml'
 
 def remove_outputs(study_path):
     output_path = study_path / 'output'
@@ -37,19 +40,13 @@ def remove_outputs(study_path):
 #                   If this status is not 'OPTIMAL', then the process might return a 
 #                   code different from 0.
 def launch_optimization(data_path, commands, status):
-    
-    # Clean study output
-    # Only optim does not have a specific folder for output
-    # os.remove(data_path + 'out.json')
-    # remove_outputs(data_path)
 
     # Going to instance folder
     owd = os.getcwd()
     os.chdir(data_path)
 
     # Launching optimization from instance folder
-    process = subprocess.Popen(commands, stdout=subprocess.PIPE, stderr=None)
-    output = process.communicate()
+    process = subprocess.run(commands, stdout=subprocess.PIPE, stderr=None)
 
     # Back to working directory
     os.chdir(owd)
@@ -97,63 +94,43 @@ def check_optimization_json_output(expected_results_dict, instance_path) :
                 rtol=1e-6, atol=0)
 
 
-## TESTS ##
-@pytest.mark.optim
-@pytest.mark.benderssequential
-def test_001_sequential(installDir):
-
+def run_solver(installDir, solver : str):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
 
-    for instance in expected_results_dict :
+    with open(CONFIG_FILE_PATH) as file:
+        content = yaml.full_load(file)
+        if content is not None:
+            solver_executable = content.get(solver, solver)
+        else:
+            raise RuntimeError("Please check file config.yaml, content is empty")
+
+    for instance in expected_results_dict:
         instance_path = expected_results_dict[instance]['path']
 
-        executable_path = str(Path(installDir + "/benderssequential.exe").resolve())
-        commands = [executable_path, 
+        executable_path = str((Path(installDir) / Path(solver_executable)).resolve())
+        commands = [executable_path,
                     expected_results_dict[instance]['option_file']
                     ]
-        
-        launch_optimization(instance_path, commands,\
-            expected_results_dict[instance]["status"])
+
+        launch_optimization(instance_path, commands, expected_results_dict[instance]["status"])
         check_optimization_json_output(expected_results_dict[instance], instance_path)
+
+## TESTS ##
+@pytest.mark.optim
+@pytest.mark.benderssequential
+def test_001_sequential(installDir):
+    run_solver(installDir, 'BENDERS_SEQUENTIAL')
 
 
 @pytest.mark.optim
 @pytest.mark.mergemps
 def test_001_mergemps(installDir):
-
-    # Loading expected results from json RESULT_FILE_PATH
-    with open(RESULT_FILE_PATH, 'r') as jsonFile:
-        expected_results_dict = json.load(jsonFile)
-
-    for instance in expected_results_dict :
-        instance_path = expected_results_dict[instance]['path']
-
-        executable_path = str(Path(installDir + "/merge_mps.exe").resolve())
-        commands = [executable_path, 
-                    expected_results_dict[instance]['option_file']
-                    ]
-        
-        launch_optimization(instance_path, commands,\
-            expected_results_dict[instance]["status"])
-        check_optimization_json_output(expected_results_dict[instance], instance_path)
+    run_solver(installDir, 'MERGE_MPS')
 
 
 @pytest.mark.optim
 @pytest.mark.bendersmpi
 def test_001_mpibenders(installDir):
-    # Loading expected results from json RESULT_FILE_PATH
-    with open(RESULT_FILE_PATH, 'r') as jsonFile:
-        expected_results_dict = json.load(jsonFile)
-
-    for instance in expected_results_dict :
-        instance_path = expected_results_dict[instance]['path']
-
-        executable_path = str(Path(installDir + "/bendersmpi.exe").resolve())
-        commands = ["mpiexec", "-n", "2", executable_path , 
-                    expected_results_dict[instance]['option_file']
-                    ]
-        launch_optimization(instance_path, commands,\
-            expected_results_dict[instance]["status"])
-        check_optimization_json_output(expected_results_dict[instance], instance_path)
+    run_solver(installDir, 'BENDERS_MPI')

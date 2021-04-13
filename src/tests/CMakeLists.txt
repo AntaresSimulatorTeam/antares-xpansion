@@ -30,6 +30,14 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples"
     )
     set_property(TEST examples_long PROPERTY LABELS long)
+	
+	# benders end to end tests
+    add_test(
+        NAME benders_end_to_end
+        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersEndToEnd.py
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bendersEndToEnd"
+    )
+    set_property(TEST benders_end_to_end PROPERTY LABELS benders)
     
 else()   
   message(FATAL "Module pytest or numpy not installed : can't run python scripts for end to end tests" )
