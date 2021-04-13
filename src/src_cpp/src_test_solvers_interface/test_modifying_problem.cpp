@@ -340,3 +340,45 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
         }
     }
 }
+
+TEST_CASE("Modification: change name of row and column", "[modif][chg-names]") {
+
+    AllDatas datas;
+    fill_datas(datas);
+
+    SolverFactory factory;
+
+    auto inst = GENERATE(MIP_TOY, MULTIKP);
+    SECTION("Loop on instances") {
+        for (auto const& solver_name : factory.get_solvers_list()) {
+
+            std::string instance = datas[inst]._path;
+            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            solver->init();
+            solver->read_prob(instance.c_str(), "MPS");
+
+            // Test change col name
+            // Modifying name of Column of index 1
+            std::string newColName = "testColumn";
+            solver->chg_col_name(1, newColName);
+
+            std::vector<std::string> solverColNames(1);
+            solver->get_col_names(1, 1, solverColNames);
+            /*
+            WARNING : Xpress Solver adds sometimes spaces at the end of the names.
+            In order to perform comparison, we only compare the str.size() first characters 
+            of the required names.
+            */
+            REQUIRE(solverColNames[0].compare(0, newColName.size(), newColName) == 0);
+
+            // Test change row name
+            // Modifying name of Row of index 1
+            std::string newRowName = "testRow";
+            solver->chg_row_name(1, newRowName);
+
+            std::vector<std::string> solverRowNames(1);
+            solver->get_row_names(1, 1, solverRowNames);
+            REQUIRE(solverRowNames[0].compare(0, newRowName.size(), newRowName) == 0);
+        }
+    }
+}

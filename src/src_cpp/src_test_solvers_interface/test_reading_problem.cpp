@@ -571,3 +571,67 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
         }
     }
 }
+
+TEST_CASE("We can get the names of variables and constraints present in MPS file after read", "[read][read-names]") {
+
+    AllDatas datas;
+    fill_datas(datas);
+
+    SolverFactory factory;
+    int ind = 0;
+    //auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER, NET_SP1, NET_SP2);
+    auto inst = GENERATE(MIP_TOY, MULTIKP);
+    SECTION("Reading instance") {
+
+        for (auto const& solver_name : factory.get_solvers_list()) {
+
+            std::string instance = datas[inst]._path;
+            //========================================================================================
+            // 1. declaration d'un objet solveur
+
+
+            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            REQUIRE(solver->get_number_of_instances() == 1);
+
+            //========================================================================================
+            // 2. initialisation d'un probleme et lecture
+            solver->init();
+
+            const std::string flags = "MPS";
+            solver->read_prob(instance.c_str(), flags.c_str());
+
+            
+            if (solver_name == "XPRESS") {
+                std::string prb_name = "test" + ind;
+                solver->write_prob(prb_name.c_str(), "MPS");
+                ind++;
+            }
+            //========================================================================================
+            // 10. Recuperation des noms
+            int n_vars = solver->get_ncols();
+            int n_rows = solver->get_nrows();
+            //REQUIRE(solver->get_ncols() == datas[inst]._ncols);
+            //REQUIRE(solver->get_nrows() == datas[inst]._nrows);
+
+            std::vector<std::string> rowNames(n_rows);
+            std::vector<std::string> colNames(n_vars);
+
+            solver->get_row_names(0, n_rows - 1, rowNames);
+            solver->get_col_names(0, n_vars - 1, colNames);
+
+            int ind = 0;
+            std::string cur_name;
+            for (auto const& name : rowNames) {
+                cur_name = datas[inst]._row_names[ind];
+                REQUIRE(name.compare(0, cur_name.size(), cur_name) == 0);
+                ind++;
+            }
+            ind = 0;
+            for (auto const& name : colNames) {
+                cur_name = datas[inst]._col_names[ind];
+                REQUIRE(name.compare(0, cur_name.size(), cur_name) == 0);
+                ind++;
+            }
+        }
+    }
+}

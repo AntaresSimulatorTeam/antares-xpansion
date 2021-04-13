@@ -183,10 +183,9 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
                 REQUIRE(Approx(lp_val) == datas[inst]._optval);
 
                 std::vector<double> primals(solver->get_ncols());
-                std::vector<double> slacks(solver->get_nrows());
                 std::vector<double> duals(solver->get_nrows());
                 std::vector<double> reduced(solver->get_ncols());
-                solver->get_LP_sol(primals.data(), slacks.data(), duals.data(), reduced.data());
+                solver->get_lp_sol(primals.data(), duals.data(), reduced.data());
                 double solve_val;
                 double expected_val;
                 
@@ -219,14 +218,14 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
 }
 
 
-TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip][.]") {
+TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip]") {
 
     AllDatas datas;
     fill_datas(datas);
 
     SolverFactory factory;
 
-    auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
+    auto inst = GENERATE(MIP_TOY, LP_TOY, UNBD_PRB, INFEAS_PRB);
     SECTION("Loop on the instances") {
 
         for (auto const& solver_name : factory.get_solvers_list()) {
@@ -277,6 +276,18 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
                     double mip_val(0);
                     solver->get_mip_value(mip_val);
                     REQUIRE(mip_val == datas[inst]._optval);
+
+                    std::vector<double> primals(solver->get_ncols());
+                    solver->get_mip_sol(primals.data());
+                    double solve_val;
+                    double expected_val;
+
+                    /* Testing primals*/
+                    for (int i(0); i < solver->get_ncols(); i++) {
+                        solve_val = primals[i];
+                        expected_val = datas[inst]._primals[i];
+                        REQUIRE(Approx(solve_val) == expected_val);
+                    }
                 }
 
                 solver->free();

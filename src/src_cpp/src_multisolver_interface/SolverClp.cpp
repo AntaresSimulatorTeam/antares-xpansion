@@ -217,20 +217,6 @@ void SolverClp::get_col_type(char* coltype, int first, int last) const{
 	}
 }
 
-int SolverClp::get_row_index(std::string const& name) const{
-	int id = 0;
-	std::cout << "ERROR : get row index not implemented for COIN CLP" << std::endl;
-	std::exit(1);
-	return id;
-}
-
-int SolverClp::get_col_index(std::string const& name) const{
-	int id = 0;
-	std::cout << "ERROR : get col index not implemented for COIN CLP" << std::endl;
-	std::exit(1);
-	return id;
-}
-
 void SolverClp::get_lb(double* lb, int first, int last) const{
 	const double* colLower = _clp.getColLower();
 
@@ -245,6 +231,36 @@ void SolverClp::get_ub(double* ub, int first, int last) const{
 	for (int i(first); i < last + 1; i++) {
 		ub[i - first] = colUpper[i];
 	}
+}
+
+int SolverClp::get_row_index(std::string const& name) const {
+	int id = 0;
+	std::cout << "ERROR : get row index not implemented for COIN CLP" << std::endl;
+	std::exit(1);
+	return id;
+}
+
+int SolverClp::get_col_index(std::string const& name) const {
+	int id = 0;
+	std::cout << "ERROR : get col index not implemented for COIN CLP" << std::endl;
+	std::exit(1);
+	return id;
+}
+
+int SolverClp::get_row_names(int first, int last, std::vector<std::string>& names) const
+{
+	for (int i(first); i < last + 1; i++) {
+		names[i - first] = _clp.getRowName(i);
+	}
+	return 0;
+}
+
+int SolverClp::get_col_names(int first, int last, std::vector<std::string>& names) const
+{
+	for (int i(first); i < last + 1; i++) {
+		names[i - first] = _clp.getColumnName(i);
+	}
+	return 0;
 }
 
 /*************************************************************************************************
@@ -365,6 +381,16 @@ void SolverClp::chg_coef(int id_row, int id_col, double val){
 	CoinPackedMatrix* matrix = _clp.matrix();
 	matrix->modifyCoefficient(id_row, id_col, val);
 }
+
+void SolverClp::chg_row_name(int id_row, std::string & name)
+{
+	_clp.setRowName(id_row, name);
+}
+
+void SolverClp::chg_col_name(int id_col, std::string & name)
+{
+	_clp.setColumnName(id_col, name);
+}
 	
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
@@ -428,7 +454,7 @@ void SolverClp::get_simplex_ite(int& result) const{
 	result = _clp.numberIterations();
 }
 
-void SolverClp::get_lp_sol(double* primals, double* slacks, double* duals,
+void SolverClp::get_lp_sol(double* primals, double* duals,
                     double* reduced_costs){
 	if (primals != NULL) {
 		double* primalSol = _clp.primalColumnSolution();
@@ -451,36 +477,13 @@ void SolverClp::get_lp_sol(double* primals, double* slacks, double* duals,
 			//std::cout << "RD    " << i << " " << reducedCostSolution[i] << std::endl;
 		}
 	}
-
-	if (slacks != NULL) {
-		
-		std::vector<double> rhs(get_nrows());
-		get_rhs(rhs.data(), 0, get_nrows());
-
-		double* sum_of_primals = _clp.primalRowSolution();
-		for (int i(0); i < get_nrows(); i++) {
-			slacks[i] = rhs[i] - sum_of_primals[i];
-			//std::cout << "slacks " << i << " " << slacks[i] << std::endl;
-		}
-	}
 }
 
-void SolverClp::get_mip_sol(double* primals, double* slacks){
+void SolverClp::get_mip_sol(double* primals){
 	if (primals != NULL) {
 		double* primalSol = _clp.primalColumnSolution();
 		for (int i(0); i < get_ncols(); i++) {
 			primals[i] = primalSol[i];
-		}
-	}
-
-	if (slacks != NULL) {
-
-		std::vector<double> rhs(get_nrows());
-		get_rhs(rhs.data(), 0, get_nrows());
-
-		double* sum_of_primals = _clp.primalRowSolution();
-		for (int i(0); i < get_nrows(); i++) {
-			slacks[i] = rhs[i] - sum_of_primals[i];
 		}
 	}
 }

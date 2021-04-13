@@ -64,6 +64,7 @@ void SolverXpress::write_prob(const char* name, const char* flags) const{
 	if (std::string(flags) == "LP") {
 		nFlags = "-l";
 	}
+
 	int status = XPRSwriteprob(_xprs, name, nFlags.c_str());
 	zero_status_check(status, "write problem");
 }
@@ -74,6 +75,16 @@ void SolverXpress::read_prob(const char* prob_name, const char* flags){
 		xprs_flags = "l";
 	}
 
+
+	/*
+	* This part of the code requires XPRESS version 8.8.5 or higher
+	* For previous versions, the param KEEPNROWS deletes row names 
+	* when reading.
+	* In order to bypass that without modifying the code,
+	* the first row, which is the objective function
+	* is deleted after read
+	* 
+	
 	// To delete obj from rows when reading prob
 	int keeprows(0);
 	int status = XPRSgetintcontrol(_xprs, XPRS_KEEPNROWS, &keeprows);
@@ -82,10 +93,13 @@ void SolverXpress::read_prob(const char* prob_name, const char* flags){
 	if (keeprows != -1) {
 		status = XPRSsetintcontrol(_xprs, XPRS_KEEPNROWS, -1);
 		zero_status_check(status, "set XPRS_KEEPNROWS to -1");
-	}
+	}*/
 	
-	status = XPRSreadprob(_xprs, prob_name, xprs_flags.c_str());
+	int status = XPRSreadprob(_xprs, prob_name, xprs_flags.c_str());
 	zero_status_check(status, "read problem");
+
+	// Only necessary because param KEEPNROWS cannot be set to -1
+	del_rows(0, 0); 
 }
 
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv){
@@ -132,7 +146,6 @@ void SolverXpress::get_obj(double* obj, int first, int last) const{
 
 void SolverXpress::get_rows(int* mstart, int* mclind, double* dmatval, int size, int* nels, 
                     int first, int last) const{
-	// Need to add 1 to indices to avoid objective a index 0
 	int status = XPRSgetrows(_xprs, mstart, mclind, dmatval, size, nels, first, last);
 	zero_status_check(status, "get rows");
 }
@@ -157,20 +170,6 @@ void SolverXpress::get_col_type(char* coltype, int first, int last) const{
 	zero_status_check(status, "get type of columns");
 }
 
-int SolverXpress::get_row_index(std::string const& name) const{
-	std::cout << "Seems not working as XPRESS renaims the rows \"Ri\" " << std::endl;
-	int id = 0;
-	int status = XPRSgetindex(_xprs, 1, name.c_str(), &id);
-	return id;
-}
-
-int SolverXpress::get_col_index(std::string const& name) const{
-	std::cout << "Seems not working as XPRESS renaims the rows \"Ci\" " << std::endl;
-	int id = 0;
-	int status = XPRSgetindex(_xprs, 2, name.c_str(), &id);
-	return id;
-}
-
 void SolverXpress::get_lb(double* lb, int first, int last) const{
 	int status = XPRSgetlb(_xprs, lb, first, last);
 	zero_status_check(status, "get lower bounds of variables");
@@ -180,6 +179,48 @@ void SolverXpress::get_ub(double* ub, int first, int last) const{
 	int status = XPRSgetub(_xprs, ub, first, last);
 	zero_status_check(status, "get upper bounds of variables");
 }
+
+int SolverXpress::get_row_index(std::string const& name) const {
+	int id = 0;
+	int status = XPRSgetindex(_xprs, 1, name.c_str(), &id);
+	return id;
+}
+
+int SolverXpress::get_col_index(std::string const& name) const {
+	int id = 0;
+	int status = XPRSgetindex(_xprs, 2, name.c_str(), &id);
+	return id;
+}
+
+int SolverXpress::get_row_names(int first, int last, std::vector<std::string>& names) const
+{
+	int status = 0;
+	char cur_name[100];
+	for (int i = 0; i < last - first + 1; i++) {
+		status = XPRSgetnames(_xprs, 1, cur_name, i + first, i + first);
+		names[i] = cur_name;
+		memset(cur_name, 0, 100);
+	}
+	
+	return status;
+}
+
+int SolverXpress::get_col_names(int first, int last, std::vector<std::string>& names) const
+{
+	int status = 0;
+	char cur_name[100];
+	for (int i = 0; i < last - first + 1; i++) {
+		status = XPRSgetnames(_xprs, 2, cur_name, i + first, i + first);
+		names[i] = cur_name;
+		memset(cur_name, 0, 100);
+	}
+
+	return status;
+}
+
+/*************************************************************************************************
+------------------------------    Methods to modify problem    ----------------------------------
+*************************************************************************************************/
 
 void SolverXpress::del_rows(int first, int last){
 	std::vector<int> mindex(last - first + 1);
@@ -234,6 +275,18 @@ void SolverXpress::chg_rhs(int id_row, double val){
 void SolverXpress::chg_coef(int id_row, int id_col, double val){
 	int status = XPRSchgcoef(_xprs, id_row, id_col, val);
 	zero_status_check(status, "change matrix coefficient");
+}
+
+void SolverXpress::chg_row_name(int id_row, std::string & name)
+{
+	int status = XPRSaddnames(_xprs, 1, name.data(), id_row, id_row);
+	zero_status_check(status, "Set row name");
+}
+
+void SolverXpress::chg_col_name(int id_col, std::string & name)
+{
+	int status = XPRSaddnames(_xprs, 2, name.data(), id_col, id_col);
+	zero_status_check(status, "Set col name");
 }
 	
 /*************************************************************************************************
@@ -309,15 +362,21 @@ void SolverXpress::get_simplex_ite(int& result) const{
 	zero_status_check(status, "get simplex iterations");
 }
 
-void SolverXpress::get_lp_sol(double* primals, double* slacks, double* duals, 
+void SolverXpress::get_lp_sol(double* primals, double* duals, 
                     double* reduced_costs){
-	int status = XPRSgetlpsol(_xprs, primals, slacks, duals, reduced_costs);
+	int status = XPRSgetlpsol(_xprs, primals, NULL, duals, reduced_costs);
 	zero_status_check(status, "get LP sol");
 }
 
-void SolverXpress::get_mip_sol(double* primals, double* slacks){
-	int status = XPRSgetmipsol(_xprs, primals, slacks);
-	zero_status_check(status, "get MIP sol");
+void SolverXpress::get_mip_sol(double* primals){
+	int status = XPRSgetmipsol(_xprs, primals, NULL);
+	/*if (get_n_integer_vars() > 0) {
+		
+	}
+	else {
+		status = XPRSgetlpsol(_xprs, primals, NULL, NULL, NULL);
+	}*/
+	zero_status_check(status, "get MIP sol"); 
 }
 
 /*************************************************************************************************

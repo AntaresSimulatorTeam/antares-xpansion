@@ -173,18 +173,6 @@ void SolverCplex::get_col_type(char* coltype, int first, int last) const{
     zero_status_check(status, "get col type");
 }
 
-int SolverCplex::get_row_index(std::string const& name) const{
-    int id;
-	CPXgetrowindex(_env, _prb, name.c_str(), &id);
-	return id;
-}
-
-int SolverCplex::get_col_index(std::string const& name) const{
-    int id;
-	CPXgetcolindex(_env, _prb, name.c_str(), &id);
-	return id;
-}
-
 void SolverCplex::get_lb(double* lb, int first, int last) const{
     int status = CPXgetlb(_env, _prb, lb, first, last);
     zero_status_check(status, "get lb");
@@ -193,6 +181,54 @@ void SolverCplex::get_lb(double* lb, int first, int last) const{
 void SolverCplex::get_ub(double* ub, int first, int last) const{
     int status = CPXgetub(_env, _prb, ub, first, last);
     zero_status_check(status, "get ub");
+}
+
+int SolverCplex::get_row_index(std::string const& name) const {
+	int id;
+	int status = CPXgetrowindex(_env, _prb, name.c_str(), &id);
+	zero_status_check(status, "get row index");
+	return id;
+}
+
+int SolverCplex::get_col_index(std::string const& name) const {
+	int id;
+	int status = CPXgetcolindex(_env, _prb, name.c_str(), &id);
+	zero_status_check(status, "get col index");
+	return id;
+}
+
+int SolverCplex::get_row_names(int first, int last, std::vector<std::string>& names) const
+{
+	int status = 0;
+	const int charSize = 100;
+	char cur_name[charSize];
+	std::vector<char*> namesPtr(charSize);
+	for (int i = 0; i < last - first + 1; i++) {
+		status = CPXgetrowname(_env, _prb, namesPtr.data(), cur_name, charSize, 
+			NULL, i + first, i + first);
+		zero_status_check(status, "get row name");
+		names[i] = cur_name;
+		memset(cur_name, 0, 100);
+	}
+
+	return status;
+}
+
+int SolverCplex::get_col_names(int first, int last, std::vector<std::string>& names) const
+{
+	int status = 0;
+	const int charSize = 100;
+	char cur_name[charSize];
+	std::vector<char*> namesPtr(charSize);
+	for (int i = 0; i < last - first + 1; i++) {
+		status = CPXgetcolname(_env, _prb, namesPtr.data(), cur_name, charSize, 
+			NULL, i + first, i + first);
+		zero_status_check(status, "get column name");
+		names[i] = cur_name;
+		memset(cur_name, 0, 100);
+	}
+
+	return status;
 }
 
 /*************************************************************************************************
@@ -268,6 +304,36 @@ void SolverCplex::chg_rhs(int id_row, double val){
 void SolverCplex::chg_coef(int id_row, int id_col, double val){
     int status = CPXchgcoef(_env, _prb, id_row, id_col, val);
     zero_status_check(status, "change coef");
+}
+
+void SolverCplex::chg_row_name(int id_row, std::string & name)
+{
+	const std::vector<int> indices(1, id_row);
+	
+	std::vector<char*> nameVec(1);
+	char nameToChar[100];
+	for (int i(0); i < name.size(); i++) {
+		nameToChar[i] = name[i];
+	}
+	nameVec[0] = nameToChar;
+
+	int status = CPXchgrowname(_env, _prb, 1, indices.data(), nameVec.data());
+	zero_status_check(status, "Set row name");
+}
+
+void SolverCplex::chg_col_name(int id_col, std::string & name)
+{
+	const std::vector<int> indices(1, id_col);
+
+	std::vector<char*> nameVec(1);
+	char nameToChar[100];
+	for (int i(0); i < name.size(); i++) {
+		nameToChar[i] = name[i];
+	}
+	nameVec[0] = nameToChar;
+
+	int status = CPXchgcolname(_env, _prb, 1, indices.data(), nameVec.data());
+	zero_status_check(status, "Set col name");
 }
 	
 /*************************************************************************************************
@@ -360,13 +426,13 @@ void SolverCplex::get_simplex_ite(int& result) const{
 	result = CPXgetitcnt(_env, _prb);
 }
 
-void SolverCplex::get_lp_sol(double* primals, double* slacks, double* duals, 
+void SolverCplex::get_lp_sol(double* primals, double* duals, 
                     double* reduced_costs){
-	CPXsolution(_env, _prb, NULL, NULL, primals, duals, slacks, reduced_costs);
+	CPXsolution(_env, _prb, NULL, NULL, primals, duals, NULL, reduced_costs);
 }
 
-void SolverCplex::get_mip_sol(double* primals, double* slacks){
-	CPXsolution(_env, _prb, NULL, NULL, primals, NULL, slacks, NULL);
+void SolverCplex::get_mip_sol(double* primals){
+	CPXsolution(_env, _prb, NULL, NULL, primals, NULL, NULL, NULL);
 }
 
 /*************************************************************************************************

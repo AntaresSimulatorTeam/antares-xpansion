@@ -37,8 +37,8 @@ void fill_datas(AllDatas& datas) {
     miptoy._status = { "OPTIMAL" };
     miptoy._status_int = { OPTIMAL };
 
-    miptoy.first_col_name = "x1";
-    miptoy.first_row_name = "C1";
+    miptoy._col_names = { "x1", "x2" };
+    miptoy._row_names = { "C0001", "contrainte2" };
 
     datas.push_back(miptoy);
 
@@ -74,8 +74,8 @@ void fill_datas(AllDatas& datas) {
     lptoy._status = { "OPTIMAL" };
     lptoy._status_int = { OPTIMAL };
 
-    lptoy.first_col_name = "x1";
-    lptoy.first_row_name = "C1";
+    lptoy._col_names = { "x1", "x2" };
+    lptoy._row_names = { "C1", "C2" };
 
     datas.push_back(lptoy);
 
@@ -111,8 +111,13 @@ void fill_datas(AllDatas& datas) {
     multikp._status = { "OPTIMAL" };
     multikp._status_int = { OPTIMAL };
 
-    multikp.first_col_name = "x11";
-    multikp.first_row_name = "sac1";
+    multikp._col_names = {
+        "x11", "x12", "x13",
+        "x21", "x22", "x23",
+        "x31", "x32", "x33"
+    };
+    multikp._row_names = { "sac1", "sac2", "sac3",
+        "maxobj1", "maxobj2"};
 
     datas.push_back(multikp);
 
@@ -148,8 +153,8 @@ void fill_datas(AllDatas& datas) {
     unbd._status = { "UNBOUNDED", "INForUNBOUND" };
     unbd._status_int = { UNBOUNDED, INForUNBOUND };
 
-    unbd.first_col_name = "x1";
-    unbd.first_row_name = "sac1";
+    unbd._col_names = { "x1" };
+    unbd._row_names = { "sac1" };
 
     datas.push_back(unbd);
 
@@ -185,8 +190,8 @@ void fill_datas(AllDatas& datas) {
     infeas._status = { "INFEASIBLE", "INForUNBOUND" };
     infeas._status_int = { INFEASIBLE, INForUNBOUND };
     
-    infeas.first_col_name = "x";
-    infeas.first_row_name = "low";
+    infeas._col_names = { "x" };
+    infeas._row_names = { "low" };
 
     datas.push_back(infeas);
 

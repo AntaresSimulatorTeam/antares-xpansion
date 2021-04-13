@@ -217,20 +217,6 @@ void SolverCbc::get_col_type(char* coltype, int first, int last) const{
 	}
 }
 
-int SolverCbc::get_row_index(std::string const& name) const{
-	int id = 0;
-	std::cout << "ERROR : get row index not implemented for COIN CBC" << std::endl;
-	std::exit(1);
-	return id;
-}
-
-int SolverCbc::get_col_index(std::string const& name) const{
-	int id = 0;
-	std::cout << "ERROR : get col index not implemented for COIN CBC" << std::endl;
-	std::exit(1);
-	return id;
-}
-
 void SolverCbc::get_lb(double* lb, int first, int last) const{
 	const double* colLower = _cbc.solver()->getColLower();
 
@@ -245,6 +231,38 @@ void SolverCbc::get_ub(double* ub, int first, int last) const{
 	for (int i(first); i < last + 1; i++) {
 		ub[i - first] = colUpper[i];
 	}
+}
+
+int SolverCbc::get_row_index(std::string const& name) const {
+	int id = 0;
+	std::cout << "ERROR : get row index not implemented for COIN CBC" << std::endl;
+	std::exit(1);
+	return id;
+}
+
+int SolverCbc::get_col_index(std::string const& name) const {
+	int id = 0;
+	std::cout << "ERROR : get col index not implemented for COIN CBC" << std::endl;
+	std::exit(1);
+	return id;
+}
+
+int SolverCbc::get_row_names(int first, int last, std::vector<std::string>& names) const
+{
+	std::vector<std::string> solver_row_names = _cbc.solver()->getRowNames();
+	for (int i(first); i < last + 1; i++) {
+		names[i - first] = solver_row_names[i];
+	}
+	return 0;
+}
+
+int SolverCbc::get_col_names(int first, int last, std::vector<std::string>& names) const
+{
+	std::vector<std::string> solver_col_names = _cbc.solver()->getColNames();
+	for (int i(first); i < last + 1; i++) {
+		names[i - first] = solver_col_names[i];
+	}
+	return 0;
 }
 
 /*************************************************************************************************
@@ -372,6 +390,16 @@ void SolverCbc::chg_coef(int id_row, int id_col, double val){
 	matrix.modifyCoefficient(id_row, id_col, val);
 	_cbc.solver()->replaceMatrix(matrix);
 }
+
+void SolverCbc::chg_row_name(int id_row, std::string & name)
+{
+	_cbc.solver()->setRowName(id_row, name);
+}
+
+void SolverCbc::chg_col_name(int id_col, std::string & name)
+{
+	_cbc.solver()->setColName(id_col, name);
+}
 	
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
@@ -429,8 +457,6 @@ void SolverCbc::solve_mip(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CBC STATUS after branch and bound complete search." << std::endl;
 	}
-
-	std::cout << "Status final : " << lp_status << "   " << SOLVER_STRING_STATUS[lp_status] << std::endl;
 }
 	
 /*************************************************************************************************
@@ -453,7 +479,7 @@ void SolverCbc::get_simplex_ite(int& result) const{
 	_cbc.solver()->getIterationCount();
 }
 
-void SolverCbc::get_lp_sol(double* primals, double* slacks, double* duals,
+void SolverCbc::get_lp_sol(double* primals, double* duals,
                     double* reduced_costs){
 	if (primals != NULL) {
 		const double* primalSol = _cbc.solver()->getColSolution();
@@ -473,23 +499,16 @@ void SolverCbc::get_lp_sol(double* primals, double* slacks, double* duals,
 		const double* reducedCostSolution = _cbc.solver()->getReducedCost();
 		for (int i(0); i < get_ncols(); i++) {
 			reduced_costs[i] = reducedCostSolution[i];
-			//std::cout << "RD    " << i << " " << reducedCostSolution[i] << std::endl;
 		}
-	}
-
-	if (slacks != NULL) {
-		std::cout << "Warning : Cbc does not give a method to compute slacks. They have to be comuted by hand." << std::endl;
-	}
-	
+	}	
 }
 
-void SolverCbc::get_mip_sol(double* primals, double* slacks){
-
-
-
-	if (slacks != NULL) {
-		std::cout << "ERROR : Cbc does not give a method to compute slacks. They have to be comuted by hand." << std::endl;
-		std::exit(1);
+void SolverCbc::get_mip_sol(double* primals){
+	if (primals != NULL) {
+		const double* primalSol = _cbc.getColSolution();
+		for (int i(0); i < get_ncols(); i++) {
+			primals[i] = primalSol[i];
+		}
 	}
 }
 

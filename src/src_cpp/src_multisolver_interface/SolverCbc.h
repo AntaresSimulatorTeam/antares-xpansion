@@ -84,10 +84,13 @@ public:
 	virtual void get_rhs(double* rhs, int first, int last) const;
 	virtual void get_rhs_range(double* range, int first, int last) const;
 	virtual void get_col_type(char* coltype, int first, int last) const;
-	virtual int get_row_index(std::string const& name) const;
-	virtual int get_col_index(std::string const& name) const;
 	virtual void get_lb(double* lb, int fisrt, int last) const;
     virtual void get_ub(double* ub, int fisrt, int last) const;
+
+	virtual int get_row_index(std::string const& name) const;
+	virtual int get_col_index(std::string const& name) const;
+	virtual int get_row_names(int first, int last, std::vector<std::string>& names) const;
+	virtual int get_col_names(int first, int last, std::vector<std::string>& names) const;
 
 
 /*************************************************************************************************
@@ -107,6 +110,8 @@ public:
     virtual void chg_col_type(int nels, const int* mindex, const char* qctype) const;
 	virtual void chg_rhs(int id_row, double val);
     virtual void chg_coef(int id_row, int id_col, double val);
+	virtual void chg_row_name(int id_row, std::string & name);
+	virtual void chg_col_name(int id_col, std::string & name);
 	
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
@@ -123,9 +128,9 @@ public:
 	virtual void get_mip_value(double& lb) const;
 	virtual void get_lp_value(double& lb) const;
 	virtual void get_simplex_ite(int& result) const;
-	virtual void get_lp_sol(double* primals, double* slacks, double* duals, 
+	virtual void get_lp_sol(double* primals, double* duals, 
                     double* reduced_costs);
-    virtual void get_mip_sol(double* primals, double* slacks);
+    virtual void get_mip_sol(double* primals);
 
 /*************************************************************************************************
 ------------------------    Methods to set algorithm or logs levels    ---------------------------

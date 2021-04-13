@@ -227,20 +227,6 @@ public:
 	virtual void get_col_type(char* coltype, int first, int last) const = 0;
 
     /**
-    * @brief Returns the index of row named "name"
-    * 
-    * @param name : name of row to get the index
-    */
-	virtual int get_row_index(std::string const& name) const = 0;
-
-    /**
-    * @brief Returns the index of column named "name"
-    * 
-    * @param name : name of column to get the index
-    */
-	virtual int get_col_index(std::string const& name) const = 0;
-
-    /**
     * @brief Returns the lower bounds for variables in a given range.
     *
     * @param lb     : Double array of length last-first+1 where the lower bounds are to be placed.
@@ -258,6 +244,39 @@ public:
     */
     virtual void get_ub(double* ub, int fisrt, int last) const = 0;
 
+    /**
+    * @brief Returns the index of row named "name"
+    *
+    * @param name : name of row to get the index
+    */
+    virtual int get_row_index(std::string const& name) const = 0;
+
+    /**
+    * @brief Returns the index of column named "name"
+    *
+    * @param name : name of column to get the index
+    */
+    virtual int get_col_index(std::string const& name) const = 0;
+
+    /**
+    * @brief Returns the names of row from index first to last
+    *
+    * @param first : first index from which name has be returned
+    * @param last  : last index from which name has be returned
+    * @param names : vector of names, the size of vector has to be set by user before 
+                    calling the method
+    */
+    virtual int get_row_names(int first, int last, std::vector<std::string> &names) const = 0;
+
+    /**
+    * @brief Returns the names of columns from index first to last
+    *
+    * @param first : first index from which name has be returned
+    * @param last  : last index from which name has be returned
+    * @param names : vector of names, the size of vector has to be set by user before 
+                    calling the method
+    */
+    virtual int get_col_names(int first, int last, std::vector<std::string>& names) const = 0;
 
 /*************************************************************************************************
 ------------------------------    Methods to modify problem    ----------------------------------
@@ -365,6 +384,22 @@ public:
     * @param val    : new value to set in the matrix
     */
     virtual void chg_coef(int id_row, int id_col, double val) = 0;
+
+    /**
+    * @brief Change the name of a constraint
+    *
+    * @param id_row : index of the row
+    * @param name   : new name of the row
+    */
+    virtual void chg_row_name(int id_row, std::string & name) = 0;
+
+    /**
+    * @brief Change the name of a variable
+    *
+    * @param id_col : index of the column
+    * @param name   : new name of the column
+    */
+    virtual void chg_col_name(int id_col, std::string & name) = 0;
 	
     
 /*************************************************************************************************
@@ -438,20 +473,18 @@ public:
     * @brief Get LP solution of a problem (available after method "solve")
     *
     * @param primals    : values of primal variables
-    * @param slacks     : values of the slack variables
     * @param duals      : values of dual variables
     * @param reduced_cost: reduced_cost in an optimal basis
     */
-	virtual void get_lp_sol(double* primals, double* slacks, double* duals, 
+	virtual void get_lp_sol(double* primals, double* duals, 
                     double* reduced_costs) = 0;
 	
     /**
     * @brief Get MIP solution of a problem (available after method "solve_integer")
     *
     * @param primals    : values of primal variables
-    * @param slacks     : values of the slack variables
     */
-    virtual void get_mip_sol(double* primals, double* slacks) = 0;
+    virtual void get_mip_sol(double* primals) = 0;
 
 /*************************************************************************************************
 ------------------------    Methods to set algorithm or logs levels    ---------------------------
