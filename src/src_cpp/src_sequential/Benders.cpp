@@ -19,6 +19,7 @@ Benders::~Benders() {
 *  \param options : set of options fixed by the user
 */
 Benders::Benders(CouplingMap const & problem_list, BendersOptions const & options) : _options(options) {
+
 	if (!problem_list.empty()) {
 		_data.nslaves = _options.SLAVE_NUMBER;
 		if (_data.nslaves < 0) {
@@ -39,7 +40,6 @@ Benders::Benders(CouplingMap const & problem_list, BendersOptions const & option
 		}
 		_master.reset(new WorkerMaster(master_variable, _options.get_master_path(), _options, _data.nslaves));
 	}
-
 }
 
 

@@ -20,7 +20,7 @@ WorkerMaster::~WorkerMaster() {
 */
 void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
 	x0.clear();
-	std::vector<double> ptr;
+	std::vector<double> ptr(_solver->get_ncols());
 	ORTgetlpsolution(_solver, ptr);
 	assert(_id_alpha_i.back()+1 == ptr.size());
 	for (auto const & kvp : _id_to_name) {
@@ -38,6 +38,7 @@ void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
 *  \param dual : reference to a vector of double
 */
 void WorkerMaster::get_dual_values(std::vector<double> & dual) {
+	dual.resize(get_number_constraint());
 	ORTgetlpdual(_solver, dual);
 }
 

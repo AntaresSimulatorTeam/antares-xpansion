@@ -68,9 +68,7 @@ void SolverClp::write_prob(const char* name, const char* flags) const{
 	if (std::string(flags) == "LP") {
 		nFlags = "-l";
 	}
-	_clp.writeMps("coucou");
-	//std::cout << "ERROR: Clp does not instanciate a MPS writer" << std::endl;
-	//std::exit(1);
+	_clp.writeMps(name);
 }
 
 void SolverClp::read_prob(const char* prob_name, const char* flags){
@@ -80,6 +78,7 @@ void SolverClp::read_prob(const char* prob_name, const char* flags){
 	}
 	else {
 		_clp.readMps(prob_name, true, false);
+		std::cout << "read ok " << get_ncols()  << std::endl;
 	}
 }
 

@@ -114,7 +114,6 @@ void BendersOptions::print(std::ostream & stream)const {
 	if (SLAVE_NUMBER == 1) {
 		stream << "Sequential launch (only one slave problem)" << std::endl;
 	}
-
 }
 
 /*!

@@ -55,6 +55,7 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 	else
 	{
 		if (solver_name == "COIN") {
+			std::cout << "create coin" << std::endl;
 			_solver = factory.create_solver("CLP");
 		}
 		else {

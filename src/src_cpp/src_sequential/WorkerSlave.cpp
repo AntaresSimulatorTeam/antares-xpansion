@@ -21,7 +21,7 @@ WorkerSlave::WorkerSlave(Str2Int const & variable_map, std::string const & path_
 	init(variable_map, path_to_mps, options.SOLVER_NAME);
 
 	int mps_ncols(_solver->get_ncols());
-	DblVector o_l;
+	DblVector o_l(mps_ncols);
 	IntVector sequence(mps_ncols);
 	for (int i(0); i < mps_ncols; ++i) {
 		sequence[i] = i;
@@ -66,7 +66,7 @@ void WorkerSlave::fix_to(Point const & x0) {
 */
 void WorkerSlave::get_subgradient(Point & s) {
 	s.clear();
-	std::vector<double> ptr;
+	std::vector<double> ptr(_solver->get_ncols());
 	ORTgetlpreducedcost(_solver, ptr);
 	for (auto const & kvp : _id_to_name) {
 		s[kvp.second] = +ptr[kvp.first];

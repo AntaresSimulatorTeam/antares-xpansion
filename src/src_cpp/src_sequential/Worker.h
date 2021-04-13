@@ -3,8 +3,8 @@
 #include "common.h"
 #include "BendersOptions.h"
 
-//#include "ortools/linear_solver/linear_solver.h"
-#include "ortools/base/logging.h"
+#include "ortools/linear_solver/linear_solver.h"
+//include "ortools/base/logging.h"
 
 class Worker;
 typedef std::shared_ptr<Worker> WorkerPtr;
