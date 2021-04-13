@@ -22,7 +22,7 @@ RESULT_FILE_PATH = Path('resultTest.json')
 
 # File CONFIG_FILE_PATH
 # yaml file containing executable name
-CONFIG_FILE_PATH = '../../src_python/config.yaml'
+CONFIG_FILE_PATH = Path.cwd()/ ".." / ".."/ 'src_python' / 'config.yaml'
 
 def remove_outputs(study_path):
     output_path = study_path / 'output'
