@@ -9,8 +9,8 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 	# Python unit test
 	add_test(
         NAME unit_launcher
-        COMMAND Python3::Interpreter -m pytest test_ini_reader.py
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../src/python/antares_xpansion/test"
+        COMMAND Python3::Interpreter -m pytest tests/python/test_ini_reader.py
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/.."
     )
     set_property(TEST unit_launcher PROPERTY LABELS unit) 
 	
