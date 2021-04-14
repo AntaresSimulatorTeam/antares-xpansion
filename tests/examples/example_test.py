@@ -10,7 +10,7 @@ import pytest
 
 from candidates_reader import CandidatesReader
 
-ALL_STUDIES_PATH = Path('../../../examples')
+ALL_STUDIES_PATH = Path('../../examples')
 
 
 def get_first_json_filepath_output(output_dir):
@@ -35,7 +35,7 @@ def launch_xpansion(install_dir, study_path, method):
 
     install_dir_full = str(Path(install_dir).resolve())
 
-    command = [sys.executable, "../../src_python/launch.py", "--installDir", install_dir_full, "--dataDir",
+    command = [sys.executable, "../../src/python/launch.py", "--installDir", install_dir_full, "--dataDir",
                str(study_path), "--method", method, "--step", "full", "-n", "2"]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()

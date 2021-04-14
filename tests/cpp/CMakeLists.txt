@@ -9,7 +9,6 @@
 find_package (GTest REQUIRED)
 
 message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
-enable_testing ()
 
 # ===========================================================================
 # Targets

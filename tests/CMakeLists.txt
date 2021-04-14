@@ -1,6 +1,4 @@
-cmake_minimum_required(VERSION 3.10)
-
-project(unit_tests_antares_xpansion NONE )
+add_subdirectory(cpp)
 
 #check if pytest and numpy are installed
 find_python_module(pytest)
@@ -12,7 +10,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 	add_test(
         NAME unit_launcher
         COMMAND Python3::Interpreter -m pytest test_ini_reader.py
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/../../src_python/antares_xpansion/test/"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/../src/python/antares_xpansion/test"
     )
     set_property(TEST unit_launcher PROPERTY LABELS unit) 
 	
