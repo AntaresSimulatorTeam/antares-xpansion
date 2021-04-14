@@ -156,7 +156,9 @@ This is the list of the available labels :
 |:-------|-----|-----|
 | `unit_ortools`  | `unit`  | Unit test for OR-Tools use|
 | `unit_launcher`  | `unit`  |Unit test antares-xpansion python launcher|
-| `example`  | `medium`  |End to end tests with examples antares study|
+| `examples_medium`  | `medium`  |End to end tests with examples antares study (medium duration)|
+| `examples_long`  | `long`  |End to end tests with examples antares study (long duration)|
+| `benders_end_to_end`  | `benders`  |End to end tests for benders optimization|
 Note :
 > Use `ctest3 -N` to see all available tests
 

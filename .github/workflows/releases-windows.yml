@@ -90,7 +90,7 @@ jobs:
       run: |
            set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
            cd _build
-           ctest -C Release --output-on-failure -L "medium|unit"
+           ctest -C Release --output-on-failure -L "medium|unit|benders"
            
     - name: .zip Installer creation
       shell: bash
