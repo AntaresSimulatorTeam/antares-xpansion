@@ -24,4 +24,5 @@ endif ()
 
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_test")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_test_solvers_interface")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_test_benders_interface")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/exe")
