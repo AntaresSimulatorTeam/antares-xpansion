@@ -1,0 +1,18 @@
+[Default Ruleset]
+l,area1,0 = 1
+l,area2,0 = 1
+l,peak,0 = 1
+l,semibase,0 = 1
+w,area1,0 = 1
+w,area2,0 = 1
+w,peak,0 = 1
+w,semibase,0 = 1
+t,area1,0,base = 1
+t,area1,0,peak = 1
+t,area1,0,semibase = 1
+t,area2,0,base = 1
+t,area2,0,peak = 1
+t,area2,0,semibase = 1
+t,peak,0,peak_unit1 = 1
+t,semibase,0,semibase1 = 1
+
