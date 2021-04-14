@@ -78,7 +78,7 @@ void WorkerMaster::add_cut(Point const & s, Point const & x0, double const & rhs
 	std::vector<double> rowrhs(1, 0);
 	std::vector<double> matval(ncoeffs, 1);
 	// std::vector<int> mstart(nrows + 1, 0);
-	std::vector<int> mstart = {0};
+	std::vector<int> mstart = {0, ncoeffs};
 	std::vector<int> mclind(ncoeffs);
 
 	rowrhs.front() -= rhs;
@@ -112,7 +112,7 @@ void WorkerMaster::add_dynamic_cut(Point const & s, double const & sx0, double c
 	std::vector<double> rowrhs(1, 0);
 	std::vector<double> matval(ncoeffs, 1);
 	// std::vector<int> mstart(nrows + 1, 0);
-	std::vector<int> mstart = {0};
+	std::vector<int> mstart = {0, ncoeffs};
 	std::vector<int> mclind(ncoeffs);
 
 	rowrhs.front() -= rhs;
@@ -147,7 +147,7 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const & s, double const & 
 	std::vector<double> rowrhs(1, 0);
 	std::vector<double> matval(ncoeffs, 1);
 	// std::vector<int> mstart(nrows + 1, 0);
-	std::vector<int> mstart = {0};
+	std::vector<int> mstart = {0, ncoeffs};
 	std::vector<int> mclind(ncoeffs);
 
 	rowrhs.front() -= rhs;
@@ -181,7 +181,7 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 	std::vector<double> rowrhs(1, 0);
 	std::vector<double> matval(ncoeffs, 1);
 	// std::vector<int> mstart(nrows + 1, 0);
-	std::vector<int> mstart = {0};
+	std::vector<int> mstart = {0, ncoeffs};
 	std::vector<int> mclind(ncoeffs);
 
 	rowrhs.front() -= rhs;
@@ -211,43 +211,57 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 *  \param nslaves : number of slaves
 */
 WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & path_to_mps, BendersOptions const & options, int nslaves) :Worker() {
-	
+
 	_is_master = true;
 	init(variable_map, path_to_mps, options.SOLVER_NAME);
 	_id_alpha = 0;
 
+	// Cbc solver sets infinite upper bounds to DBL_MAX = 1.79769e+308 which is way to large
+	// as it appears in datas.max_invest. We set it to 1e20
+	int ncols = _solver->get_ncols();
+	DblVector bounds(ncols);
+	_solver->get_ub(bounds.data(), 0, ncols - 1);
+	CharVector bndTypes(ncols, 'U');
+	IntVector indices(ncols);
+	for (int i = 0; i < _solver->get_ncols(); i++) {
+		indices[i] = i;
+		bounds[i] = std::min(bounds[i], 1e20);
+	}
+	_solver->chg_bounds(ncols, indices.data(), bndTypes.data(), bounds.data());
+
 	// add the variable alpha
 	auto const it(_name_to_id.find("alpha"));
 	if (it == _name_to_id.end()) {
-		double lb(-1e10); /*!< Lower Bound */
+		double lb(0); /*!< Lower Bound */
 		double ub(+1e20); /*!< Upper Bound*/
 		double obj(+1);
 		std::vector<int> start(2, 0);
 		_id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
-		ORTaddcols(_solver, {obj}, {}, {}, {}, {lb}, {ub}, {'C'}, {"alpha"}); /* Add variable alpha and its parameters */
+
+		ORTaddcols(_solver, DblVector(1, obj), IntVector(1, 0), IntVector(1, 0), DblVector(1, 0.0), 
+			DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), StrVector(1, "alpha")); /* Add variable alpha and its parameters */
 
 		_id_alpha_i.resize(nslaves, -1);
 		for (int i(0); i < nslaves; ++i) {
 			std::stringstream buffer;
 			buffer << "alpha_" << i;
 			_id_alpha_i[i] = _solver->get_ncols();
-			ORTaddcols(_solver, {0}, {}, {}, {}, {lb}, {ub}, {'C'}, {buffer.str()}); /* Add variable alpha_i and its parameters */
+			ORTaddcols(_solver, {0}, {0}, {0}, {0.0}, {lb}, {ub}, {'C'}, StrVector(1, buffer.str()) ); /* Add variable alpha_i and its parameters */
 		}
-		{
-			std::vector<char> rowtype = {'E'};
-			std::vector<double> rowrhs = {0};
-			std::vector<double> matval(nslaves + 1, 0);
-			std::vector<int> mclind(nslaves + 1);
-			std::vector<int> mstart = {0};
-			mclind[0] = _id_alpha;
-			matval[0] = 1;
 
-			for (int i(0); i < nslaves; ++i) {
-				mclind[i + 1] = _id_alpha_i[i];
-				matval[i + 1] = -1;
-			}
-			ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+		std::vector<char> rowtype = {'E'};
+		std::vector<double> rowrhs = {0};
+		std::vector<double> matval(nslaves + 1, 0);
+		std::vector<int> mclind(nslaves + 1);
+		std::vector<int> mstart = {0, nslaves + 1 };
+		mclind[0] = _id_alpha;
+		matval[0] = 1;
+
+		for (int i(0); i < nslaves; ++i) {
+			mclind[i + 1] = _id_alpha_i[i];
+			matval[i + 1] = -1;
 		}
+		ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 	}
 	else {
 		LOG(INFO) << "ERROR a variable named alpha is in input" << std::endl;

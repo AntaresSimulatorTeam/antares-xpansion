@@ -465,12 +465,12 @@ void SolverCbc::solve_mip(int& lp_status){
 			lp_status = OPTIMAL;
 		}
 	}
-	else if (	_cbc.isProvenInfeasible() || 
-				_cbc.isInitialSolveProvenPrimalInfeasible()) {
+	else if (_cbc.isProvenInfeasible() ||
+		_cbc.isInitialSolveProvenPrimalInfeasible()) {
 		lp_status = INFEASIBLE;
 	}
-	else if (	_cbc.isProvenDualInfeasible() || 
-				_cbc.isInitialSolveProvenDualInfeasible()) {
+	else if (_cbc.isProvenDualInfeasible() ||
+		_cbc.isInitialSolveProvenDualInfeasible()) {
 		lp_status = UNBOUNDED;
 	}
 	else {

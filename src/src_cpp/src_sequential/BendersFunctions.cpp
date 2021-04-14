@@ -461,7 +461,10 @@ void get_random_slave_cut(SlaveCutPackage & slave_cut_package, SlavesMapPtr & ma
 *  \param options : set of parameters
 *
 */
-void sort_cut_slave(AllCutPackage const & all_package, WorkerMasterPtr & master, Str2Int & problem_to_id, BendersTrace & trace, AllCutStorage & all_cuts_storage, BendersData & data, BendersOptions const & options, SlaveCutId & slave_cut_id) {
+void sort_cut_slave(AllCutPackage const & all_package, WorkerMasterPtr & master, 
+	Str2Int & problem_to_id, BendersTrace & trace, AllCutStorage & all_cuts_storage, 
+	BendersData & data, BendersOptions const & options, SlaveCutId & slave_cut_id) {
+
 	for (int i(0); i < all_package.size(); i++) {
 		for (auto const & itmap : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));

@@ -49,7 +49,6 @@ void ORTchgobj(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex_p,
 void ORTgetobj(SolverAbstract::Ptr const solver_p, std::vector<double> & obj_p, 
     int first_p, int last_p)
 {
-    obj_p.clear();
     solver_p->get_obj(obj_p.data(), first_p, last_p);
 }
 
@@ -60,7 +59,7 @@ void ORTaddcols(SolverAbstract::Ptr solver_p,
                 std::vector<double> const & dmatval_p,
                 std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
                 std::vector<char> const & colTypes_p,
-                std::vector<std::string> const & colNames_p)
+                std::vector<std::string> & colNames_p)
 {
     // Why objx_p cannot be empty ? A variable could not have any coeff in objective
 	assert(objx_p.size() != 0);
@@ -68,8 +67,16 @@ void ORTaddcols(SolverAbstract::Ptr solver_p,
     assert(mrwind_p.size() == dmatval_p.size());
 
     int newCols = colTypes_p.size();
+    int ncolInit = solver_p->get_ncols();
     solver_p->add_cols(newCols, dmatval_p.size(), objx_p.data(), mstart_p.data(), 
         mrwind_p.data(), dmatval_p.data(), bdl_p.data(), bdu_p.data());
+
+    if (colNames_p.size() > 0) {
+        int ncolFinal = solver_p->get_ncols();
+        for (int i = ncolInit; i < ncolFinal; i++) {
+            solver_p->chg_col_name(i, colNames_p[i - ncolInit]);
+        }
+    }
 }
 
 void ORTaddrows(SolverAbstract::Ptr solver_p,
@@ -91,40 +98,34 @@ void ORTaddrows(SolverAbstract::Ptr solver_p,
 
 void ORTgetlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> & x_p)
 {
-    x_p.clear();
     solver_p->get_lp_sol(x_p.data(), NULL, NULL);
 }
 
 void ORTgetlpdual(SolverAbstract::Ptr const solver_p, std::vector<double> & dual_p)
 {
-    dual_p.clear();
     solver_p->get_lp_sol(NULL, dual_p.data(), NULL);
 }
 
 void ORTgetlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<double> & dj_p)
 {
-    dj_p.clear();
     solver_p->get_lp_sol(NULL, NULL, dj_p.data());
 }
 
 void ORTgetrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> & qrtype_p, 
     int first_p, int last_p)
 {
-    qrtype_p.clear();
     solver_p->get_row_type(qrtype_p.data(), first_p, last_p);
 }
 
 void ORTgetrhs(SolverAbstract::Ptr const solver_p, std::vector<double> & rhs_p, 
     int first_p, int last_p)
 {
-    rhs_p.clear();
     solver_p->get_rhs(rhs_p.data(), first_p, last_p);
 }
 
 void ORTgetrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> &  range_p, 
     int first_p, int last_p)
 {
-    range_p.clear();
     solver_p->get_rhs_range(range_p.data(), first_p, last_p);
 }
 
@@ -133,10 +134,6 @@ void ORTgetcolinfo(SolverAbstract::Ptr const solver_p,
                     std::vector<double> & bdl_p, std::vector<double> & bdu_p,
                     int first_p, int last_p)
 {
-    bdl_p.clear();
-    bdu_p.clear();
-    coltype_p.clear();
-
     solver_p->get_lb(bdl_p.data(), first_p, last_p);
     solver_p->get_ub(bdu_p.data(), first_p, last_p);
     solver_p->get_col_type(coltype_p.data(), first_p, last_p);

@@ -1,11 +1,10 @@
-*SENSE:Minimize
 NAME          master
 ROWS
- N  OBJ
+ N        OBJ
 COLUMNS
-    x  		OBJ			1.5
+    x     OBJ       1.5
 RHS
 BOUNDS
- UP BND       x   10
- LO BND       x   0
+    UP    BND       x       10.0
+    LO    BND       x       0.0
 ENDATA

@@ -55,7 +55,6 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 	else
 	{
 		if (solver_name == "COIN") {
-			std::cout << "create coin" << std::endl;
 			_solver = factory.create_solver("CLP");
 		}
 		else {
@@ -65,7 +64,7 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 	}
 	_solver->set_threads(1);
 	_solver->read_prob(path_to_mps.c_str(), "MPS");
-
+	
 	int var_index;
 	for(auto const & kvp : variable_map) {
 		var_index = _solver->get_col_index(kvp.first);

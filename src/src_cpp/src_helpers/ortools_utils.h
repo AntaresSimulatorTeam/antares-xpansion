@@ -107,7 +107,7 @@ void ORTaddcols(SolverAbstract::Ptr solver_p,
                 std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p,
                 std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
                 std::vector<char> const & colTypes_p,
-                std::vector<std::string> const & colNames_p = {});
+                std::vector<std::string> & colNames_p);
 
 /**
  * @brief Adds constraints to an existent solver

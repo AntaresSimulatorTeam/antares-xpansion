@@ -300,7 +300,7 @@ public:
     * @param rhs        : Double array of length newrow containing the right hand side elements.
     * @param range      : Double array of length newrow containing the row range elements 
                         (index read only for R type rows)
-    * @param mstart     : Integer array of length newrow containing the offsets in the mclind 
+    * @param mstart     : Integer array of length newrow + 1 containing the offsets in the mclind 
                         and dmatval arrays of the start of the elements for each row.
     * @param mclind     : Integer array of length newnz containing the (contiguous) column indices 
                         for the elements in each row. 
