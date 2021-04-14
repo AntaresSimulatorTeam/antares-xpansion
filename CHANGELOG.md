@@ -5,7 +5,6 @@ v0.2.0 (04/2021)
 ### Features
 
  - Add `update` step to update antares study links with calculated investments
- - Add `antares-study-updater` executable in installer
  
 ### Bug fixes
 
