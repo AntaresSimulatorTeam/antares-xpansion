@@ -1,5 +1,5 @@
 /**
- * \file exe_lpnamer/main.cpp
+ * \file lpnamer/main.cpp
  * \brief POC Antares Xpansion V2
  * \author {Manuel Ruiz; Luc Di Gallo}
  * \version 0.1
