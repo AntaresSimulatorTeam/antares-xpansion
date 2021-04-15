@@ -7,13 +7,21 @@
 # ===========================================================================
 
 # ---------------------------------------------------------------------------
-# Sequential Benders Exe
+# MPI Benders Exe
 # ---------------------------------------------------------------------------
 
-add_executable (benderssequential
+add_executable (bendersmpi
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
-target_link_libraries (benderssequential ${PROJECT_NAME}::sequentialcore)
+#IF (WIN32)
+#	target_link_libraries (bendersmpi
+#			${PROJECT_NAME}::benders_sequential_core ${PROJECT_NAME}::benders_mpi_core
+#			msmpi libboost_serialization-vc141-mt-x64-1_67)
+#ELSE (WIN32)
+	target_link_libraries (bendersmpi
+			${PROJECT_NAME}::benders_sequential_core ${PROJECT_NAME}::benders_mpi_core
+			Boost::serialization)
+#ENDIF (WIN32)
 
-install(TARGETS benderssequential DESTINATION bin)
+install(TARGETS bendersmpi DESTINATION bin)

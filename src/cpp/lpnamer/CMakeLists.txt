@@ -6,7 +6,7 @@
 # Targets
 # ===========================================================================
 
-add_library (lp_namer_lib STATIC
+add_library (lp_namer_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/IntercoDataMps.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReader.cpp
@@ -22,15 +22,15 @@ add_library (lp_namer_lib STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
 )
 
-target_include_directories (lp_namer_lib
+target_include_directories (lp_namer_core
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
 		${ORTOOLS_INCLUDE_DIRS}
 )
 
-target_link_libraries (lp_namer_lib
+target_link_libraries (lp_namer_core
 	PUBLIC
 		helpers
 )
 
-add_library (${PROJECT_NAME}::lp_namer_lib ALIAS lp_namer_lib)
+add_library (${PROJECT_NAME}::lp_namer_core ALIAS lp_namer_core)

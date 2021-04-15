@@ -38,13 +38,13 @@ target_include_directories (unit_tests
 target_link_libraries (unit_tests PRIVATE
 		GTest::Main
 		helpers
-		lp_namer_lib
-		${PROJECT_NAME}::sequentialcore
+		lp_namer_core
+		${PROJECT_NAME}::benders_sequential_core
 	)
 
 if (USE_MPI)
 	target_link_libraries (unit_tests PRIVATE
-			${PROJECT_NAME}::mpicore
+			${PROJECT_NAME}::benders_mpi_core
 	)
 else ()
 	set (THREADS_PREFER_PTHREAD_FLAG ON)
