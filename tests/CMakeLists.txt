@@ -1,3 +1,13 @@
+
+if (MSVC)
+    set(XPANSION_INSTALL_DIR "${CMAKE_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
+else()
+    set(XPANSION_INSTALL_DIR "${CMAKE_BINARY_DIR}")
+endif()
+
+#configure file to define xpansion installDir
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml)
+
 add_subdirectory(cpp)
 
 #check if pytest and numpy are installed
