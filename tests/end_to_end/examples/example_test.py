@@ -8,7 +8,7 @@ import subprocess
 
 import pytest
 
-from tests.end_to_end.examples.candidates_reader import CandidatesReader
+from candidates_reader import CandidatesReader
 
 ALL_STUDIES_PATH = Path('../../../examples')
 
