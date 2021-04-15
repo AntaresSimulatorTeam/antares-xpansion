@@ -313,7 +313,7 @@ class XpansionDriver():
     def post_antares(self, antares_output_name):
         """
             creates necessary files for simulation using the antares simulation output files,
-            the existing configuration files, get_names and the lpnamer executable
+            the existing configuration files, get_names and the lp_namer executable
 
             :param antares_output_name: name of the antares simulation output directory
 

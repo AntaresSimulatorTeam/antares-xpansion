@@ -4,7 +4,7 @@ add_executable (xpansion-study-updater
 
 target_link_libraries (xpansion-study-updater 
 	PRIVATE 
-		${PROJECT_NAME}::lpnamer		
+		${PROJECT_NAME}::lp_namer_lib
 		Boost::boost Boost::program_options)
 
 install(TARGETS xpansion-study-updater DESTINATION bin)

@@ -16,7 +16,7 @@ add_executable (lp_namer
 
 target_link_libraries (lp_namer 
 	PRIVATE 
-		${PROJECT_NAME}::lpnamer		
+		${PROJECT_NAME}::lp_namer_lib
 		Boost::boost Boost::program_options)
 
 install(TARGETS lp_namer DESTINATION bin)
