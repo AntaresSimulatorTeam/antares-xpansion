@@ -28,14 +28,14 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
         NAME examples_medium
         COMMAND Python3::Interpreter -m pytest -m medium --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+        WORKING_DIRECTORY "end-to-end/examples"
     )
     set_property(TEST examples_medium PROPERTY LABELS medium)
 	
 	add_test(
         NAME examples_long
         COMMAND Python3::Interpreter -m pytest -m long --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples"
+        WORKING_DIRECTORY "end-to-end/examples"
     )
     set_property(TEST examples_long PROPERTY LABELS long)
 	
@@ -43,7 +43,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
         NAME benders_end_to_end
         COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersEndToEnd.py
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bendersEndToEnd"
+        WORKING_DIRECTORY "end-to-end/benders"
     )
     set_property(TEST benders_end_to_end PROPERTY LABELS benders)
     

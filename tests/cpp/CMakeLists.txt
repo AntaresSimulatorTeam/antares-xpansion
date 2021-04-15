@@ -19,12 +19,12 @@ message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 # --------------------------------------------------------------------------
 
 add_executable (unit_tests
-	${CMAKE_CURRENT_SOURCE_DIR}/ORToolsTest.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsTest.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReaderTest.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecordTest.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateTest.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReaderTest.cc
+        helpers/ORToolsTest.cc
+		lp_namer/AdditionalConstraintsTest.cc
+		lp_namer/AdditionalConstraintsReaderTest.cc
+		lp_namer/LinkdataRecordTest.cc
+		lp_namer/StudyUpdateTest.cc
+        helpers/JsonXpansionReaderTest.cc
 )
 
 target_include_directories (unit_tests

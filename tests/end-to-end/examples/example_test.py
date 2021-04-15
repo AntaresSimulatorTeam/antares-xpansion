@@ -10,7 +10,7 @@ import pytest
 
 from candidates_reader import CandidatesReader
 
-ALL_STUDIES_PATH = Path('../../examples')
+ALL_STUDIES_PATH = Path('../../../../examples')
 
 
 def get_first_json_filepath_output(output_dir):

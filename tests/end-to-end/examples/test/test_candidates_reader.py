@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from candidates_reader import CandidatesReader, IniFileNotFound, CandidateNotFound
+from ..candidates_reader import CandidatesReader, IniFileNotFound, CandidateNotFound
 
 
 class TestCandidateReader:
