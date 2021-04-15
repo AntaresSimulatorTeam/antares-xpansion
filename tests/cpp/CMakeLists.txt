@@ -38,7 +38,7 @@ target_include_directories (unit_tests
 target_link_libraries (unit_tests PRIVATE
 		GTest::Main
 		helpers
-		lp_namer
+		lp_namer_lib
 		${PROJECT_NAME}::sequentialcore
 	)
 
