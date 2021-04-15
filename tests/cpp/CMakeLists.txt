@@ -60,8 +60,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options (unit_tests PUBLIC -Wno-covered-switch-default)
 endif ()
 
-add_test(NAME unit_ortools COMMAND unit_tests)
-set_property(TEST unit_ortools PROPERTY LABELS unit)
+add_test(NAME unit_cpp COMMAND unit_tests)
+set_property(TEST unit_cpp PROPERTY LABELS unit)
 
 # ----------------------------------------------------------------------------
 # run_unit_tests & coverage
