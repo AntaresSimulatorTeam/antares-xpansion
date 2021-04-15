@@ -2,6 +2,7 @@ import yaml
 import os
 from pathlib import Path
 
+
 def get_install_dir():
     with open(Path(os.path.abspath(__file__)).parent / 'build_config.yaml') as file:
         content = yaml.full_load(file)
