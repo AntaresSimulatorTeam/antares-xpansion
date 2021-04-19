@@ -25,8 +25,7 @@ sudo apt-get install python3 python3-pip
 
 Required python modules can be installed with :
 ```
-pip3 install -r src/src_python/requirements.txt
-pip3 install -r src/tests/examples/requirements.txt
+pip3 install -r requirements-tests.txt
 ```
 
 ## [Dependencies](#deps)

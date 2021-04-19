@@ -60,8 +60,7 @@ jobs:
           
     - name: Install dependencies
       run: |
-          pip3 install -r src/src_python/requirements.txt
-          pip3 install -r src/tests/examples/requirements.txt
+          pip3 install -r requirements-tests.txt
     
     - name: Configure
       run: |

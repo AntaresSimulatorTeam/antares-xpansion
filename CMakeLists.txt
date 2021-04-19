@@ -221,9 +221,6 @@ find_package(jsoncpp CONFIG REQUIRED)
 # Targets
 # ===========================================================================
 option(BUILD_TESTING "Activates unit tests building" OFF)
-if(BUILD_TESTING)
-	enable_testing()
-endif()
 
 if(WIN32)
 	set(CURRENT_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
@@ -258,6 +255,12 @@ FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
 	FILES_MATCHING PATTERN "*.so")
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
+
+if(BUILD_TESTING)
+	enable_testing()
+	add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
+endif()
+
 
 # ===========================================================================
 # Documentation

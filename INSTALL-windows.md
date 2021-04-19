@@ -21,8 +21,7 @@ You can download latest Windows version directly from [Python website](https://w
 
 Required python modules can be installed with :
 ```
-pip install -r src/src_python/requirements.txt
-pip install -r src/src_python/tests/examples/requirements.txt
+pip install -r requirements-tests.txt
 ```
 
 ## [Dependencies](#deps)

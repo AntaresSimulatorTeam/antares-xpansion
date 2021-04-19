@@ -41,4 +41,4 @@ CMakeCache.txt
 CMakeFiles/*
 
 # Outputs of instances
-src/src_python/config.yaml
+src/python/config.yaml

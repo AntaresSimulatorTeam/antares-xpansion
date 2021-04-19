@@ -53,8 +53,8 @@ For installation instructions, please visit [INSTALL.md](INSTALL.md)
 * [conception/](conception)        - json output description 
 * [data_test/](data_test)	 - Free sample data sets. 
 * [documentation/](documentation)	 - Documentation generation with doxygen
-* [src/src_cpp/](src/src_cpp)      - source code for cpp application (lpnamer, benders with mpi, benders without MPI, merge)
-* [src/src_python/](src/scr_python)       - python script for Antares XPansion launch.
+* [src/cpp/](src/cpp)      - source code for cpp application (lpnamer, benders with mpi, benders without MPI, merge)
+* [src/python/](src/python)       - python script for Antares XPansion launch.
 
 ## Definition of investment candidates
 
