@@ -5,7 +5,9 @@
 # ===========================================================================
 # External requirements
 # ===========================================================================
-add_library(Catch2 INTERFACE catch2/catch.hpp)
+add_library(Catch2_interface INTERFACE)
+target_include_directories(Catch2_interface INTERFACE catch2/)
+add_library(Catch2::Catch2 ALIAS Catch2_interface)
 
 find_package (GTest REQUIRED)
 
