@@ -5,6 +5,7 @@
 # ===========================================================================
 # External requirements
 # ===========================================================================
+add_library(Catch2 INTERFACE catch2/catch.hpp)
 
 find_package (GTest REQUIRED)
 
@@ -17,6 +18,7 @@ message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 # --------------------------------------------------------------------------
 # unit tests
 # --------------------------------------------------------------------------
+add_subdirectory(logger)
 
 add_executable (unit_tests
         helpers/ORToolsTest.cc
