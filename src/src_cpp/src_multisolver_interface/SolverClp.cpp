@@ -78,7 +78,6 @@ void SolverClp::read_prob(const char* prob_name, const char* flags){
 	}
 	else {
 		_clp.readMps(prob_name, true, false);
-		std::cout << "read ok " << get_ncols()  << std::endl;
 	}
 }
 

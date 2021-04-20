@@ -89,6 +89,7 @@ TEST_CASE("Modification: add rows", "[modif][add-rows]") {
             // Check new constraint matrix
             n_elems = solver->get_nelems();
             n_cstr = solver->get_nrows();
+            REQUIRE(n_elems == datas[inst]._nelems + 2);
 
             matval.resize(n_elems);
             mstart.resize(n_cstr + 1);
@@ -422,6 +423,75 @@ TEST_CASE("Modification: change name of row and column", "[modif][chg-names]") {
             std::vector<std::string> solverRowNames(1);
             solver->get_row_names(1, 1, solverRowNames);
             REQUIRE(solverRowNames[0].compare(0, newRowName.size(), newRowName) == 0);
+        }
+    }
+}
+
+TEST_CASE("Modification: add cols and a row associated to those columns", "[modif][add-cols-rows]") {
+
+    AllDatas datas;
+    fill_datas(datas);
+
+    SolverFactory factory;
+
+    auto inst = GENERATE(NET_MASTER);
+    SECTION("Loop on instances") {
+        for (auto const& solver_name : factory.get_solvers_list()) {
+
+            std::cout << solver_name << std::endl;
+
+            std::string instance = datas[inst]._path;
+            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            solver->init();
+            solver->read_prob(instance.c_str(), "MPS");
+
+            // adding 4 columns, the first with obj 1 and the three others wih obj 0
+            // first column with obj 1
+            std::vector<double> obj(1, 1.0);
+            std::vector<int> matstart(1, 1);
+            std::vector<int> matind(0);
+            std::vector<double> matval(0);
+            std::vector<double> lb(1, 0.0);
+            std::vector<double> ub(1, 100.0);
+            solver->add_cols(1, 0, obj.data(), matstart.data(), matind.data(), matval.data(),
+                lb.data(), ub.data());
+
+            obj.resize(3);
+            obj = std::vector<double>(3, 0.0);
+            lb.resize(3);
+            lb = std::vector<double>(3, 0.0);
+            ub.resize(3);
+            ub = std::vector<double>(3, 100.0);
+            solver->add_cols(3, 0, obj.data(), matstart.data(), matind.data(), matval.data(),
+                lb.data(), ub.data());
+
+            REQUIRE(solver->get_ncols() == datas[inst]._ncols + 4);
+            REQUIRE(solver->get_nrows() == datas[inst]._nrows);
+            REQUIRE(solver->get_nelems() == datas[inst]._nelems);
+
+            int newrows = 1;
+            int newnz = 4;
+            std::vector<char> rowType(newrows, 'E');
+            std::vector<double> rhs(newrows, 0.0);
+            std::vector<double> range(0);
+            std::vector<int> rowmatstart(newrows + 1);
+            rowmatstart[0] = 0;
+            rowmatstart[1] = newnz;
+            std::vector<int> rowmatind(newnz);
+            for (int i = 0; i < 4; i++) {
+                rowmatind[i] = datas[inst]._ncols + i;
+            }
+            std::vector<double> rowmatval(newnz, -1.0);
+            rowmatval[0] = 1.0;
+
+            solver->add_rows(1, 4, rowType.data(), rhs.data(), NULL, rowmatstart.data(),
+                rowmatind.data(), rowmatval.data());
+
+            std::string fileName = solver_name + "written.mps";
+            solver->write_prob(fileName.c_str(), "MPS");
+
+            REQUIRE(solver->get_nrows() == datas[inst]._nrows + 1);
+            REQUIRE(solver->get_nelems() == datas[inst]._nelems + 4);
         }
     }
 }
