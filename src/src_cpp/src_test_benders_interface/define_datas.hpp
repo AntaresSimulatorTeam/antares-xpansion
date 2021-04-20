@@ -37,8 +37,8 @@ public:
     std::vector<std::string> _status;
     std::vector<int> _status_int;
 
-    std::string first_col_name;
-    std::string first_row_name;
+    std::vector<std::string> _col_names;
+    std::vector<std::string> _row_names;
     int iterations;
 
     std::map<std::string, int> _varmap;

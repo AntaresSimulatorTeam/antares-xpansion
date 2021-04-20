@@ -37,9 +37,12 @@ void fill_datas(AllDatas& datas) {
     miptoy._status = { "OPTIMAL" };
     miptoy._status_int = { OPTIMAL };
 
-    miptoy.first_col_name = "x1";
-    miptoy.first_row_name = "C1";
+    miptoy._col_names = { "x1", "x2" };
+    miptoy._row_names = { "C0001", "contrainte2" };
     miptoy.iterations = 3;
+    
+    miptoy._varmap["x1"] = 0;
+    miptoy._varmap["x2"] = 1;
 
     datas.push_back(miptoy);
 
@@ -52,7 +55,7 @@ void fill_datas(AllDatas& datas) {
     multikp._nintegervars = 0;
     multikp._nrows = 5;
     multikp._nelems = 15;
-    multikp._obj = { 4.0, 4.0, 4.0, 2.0, 2.0, 2.0, 0.5, 0.5, 0.5 };
+    multikp._obj = { -4.0, -4.0, -4.0, -2.0, -2.0, -2.0, -0.5, -0.5, -0.5 };
 
     multikp._matval = { 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
     multikp._mind = { 0, 3, 6, 1, 4, 7, 2, 5, 8, 0, 1, 2, 3, 4, 5 };
@@ -67,7 +70,7 @@ void fill_datas(AllDatas& datas) {
     multikp._ub = { 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20, 1e20 };
     multikp._coltypes = { 'C', 'C', 'C', 'C', 'C', 'C','C', 'C', 'C' };
     multikp._rowtypes = { 'L', 'L', 'L', 'L', 'L' };
-    multikp._optval = 46.25;
+    multikp._optval = -46.25;
     multikp._primals = { 0.0, 0.0, 5.5, 8.3, 0.0, 0.0, 3.7, 7.1, 4.5 };
     multikp._duals = {};
     multikp._slacks = { };
@@ -76,8 +79,26 @@ void fill_datas(AllDatas& datas) {
     multikp._status = { "OPTIMAL" };
     multikp._status_int = { OPTIMAL };
 
-    multikp.first_col_name = "x11";
-    multikp.first_row_name = "sac1";
+    multikp._col_names = { 
+        "x11", "x12", "x13",
+        "x21", "x22", "x23",
+        "x31", "x32", "x33"
+    };
+    multikp._row_names = { 
+        "sac1", "sac2", "sac3", 
+        "maxobj1", "maxobj2"
+    };
+
+    multikp._varmap["x11"] = 0;
+    multikp._varmap["x12"] = 1;
+    multikp._varmap["x13"] = 2;
+    multikp._varmap["x21"] = 3;
+    multikp._varmap["x22"] = 4;
+    multikp._varmap["x23"] = 5;
+    multikp._varmap["x31"] = 6;
+    multikp._varmap["x32"] = 7;
+    multikp._varmap["x33"] = 8;
+
     multikp.iterations = 5;
 
     datas.push_back(multikp);
@@ -114,8 +135,8 @@ void fill_datas(AllDatas& datas) {
     unbd._status = { "UNBOUNDED", "INForUNBOUND" };
     unbd._status_int = { UNBOUNDED, INForUNBOUND };
 
-    unbd.first_col_name = "x1";
-    unbd.first_row_name = "sac1";
+    unbd._col_names = { "x1" };
+    unbd._row_names = { "sac1" };
 
     datas.push_back(unbd);
 
@@ -151,8 +172,8 @@ void fill_datas(AllDatas& datas) {
     infeas._status = { "INFEASIBLE", "INForUNBOUND" };
     infeas._status_int = { INFEASIBLE, INForUNBOUND };
     
-    infeas.first_col_name = "x";
-    infeas.first_row_name = "low";
+    infeas._col_names = { "x" };
+    infeas._row_names = { "low" };
 
     datas.push_back(infeas);
 

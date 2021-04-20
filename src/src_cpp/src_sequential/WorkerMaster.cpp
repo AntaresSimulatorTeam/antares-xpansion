@@ -3,6 +3,8 @@
 #include "ortools_utils.h"
 
 WorkerMaster::WorkerMaster() {
+	_is_master = true;
+	_id_alpha = 0;
 }
 
 
@@ -232,13 +234,13 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 	// add the variable alpha
 	auto const it(_name_to_id.find("alpha"));
 	if (it == _name_to_id.end()) {
-		double lb(0); /*!< Lower Bound */
+		double lb(-1e10); /*!< Lower Bound */
 		double ub(+1e20); /*!< Upper Bound*/
 		double obj(+1);
 		std::vector<int> start(2, 0);
 		_id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
 
-		ORTaddcols(_solver, DblVector(1, obj), IntVector(1, 0), IntVector(1, 0), DblVector(1, 0.0), 
+		/*ORTaddcols(_solver, DblVector(1, obj), { 0, 2 }, IntVector(1, 0), DblVector(1, 0.0),
 			DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), StrVector(1, "alpha")); /* Add variable alpha and its parameters */
 
 		_id_alpha_i.resize(nslaves, -1);
@@ -246,7 +248,9 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 			std::stringstream buffer;
 			buffer << "alpha_" << i;
 			_id_alpha_i[i] = _solver->get_ncols();
-			ORTaddcols(_solver, {0}, {0}, {0}, {0.0}, {lb}, {ub}, {'C'}, StrVector(1, buffer.str()) ); /* Add variable alpha_i and its parameters */
+			ORTaddcols(_solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(1, 0), DblVector(1, 0.0), 
+				DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), 
+				StrVector(1, buffer.str()) ); /* Add variable alpha_i and its parameters */
 		}
 
 		std::vector<char> rowtype = {'E'};

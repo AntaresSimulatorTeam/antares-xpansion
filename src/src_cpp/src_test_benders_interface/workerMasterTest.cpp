@@ -51,14 +51,14 @@ TEST_CASE("WorkerMaster constructor", "[wrk-master][wrk-master-init]") {
 			// Testing 3 differents slave_weights 0, 1.0, and 10
 			for (auto const& nslaves : IntVector({ 10, 20, 30})) {
 
-
+				worker = std::make_shared<WorkerMaster>(datas[inst]._varmap, instance_path,
 				worker = std::make_shared<WorkerMaster>(varmap, instance_path,
 					opt, nslaves);
 
 				//1. varmap
-				REQUIRE(worker->_name_to_id == varmap);
+				REQUIRE(worker->_name_to_id == datas[inst]._varmap);
 
-				for (auto const& kvp : varmap) {
+				for (auto const& kvp : datas[inst]._varmap) {
 					REQUIRE(kvp.first == worker->_id_to_name[kvp.second]);
 				}
 

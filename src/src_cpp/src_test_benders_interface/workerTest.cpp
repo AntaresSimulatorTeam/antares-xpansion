@@ -23,11 +23,11 @@ TEST_CASE("Test init and free Worker object", "[worker][worker-init]") {
 	
 	SolverFactory factory;
 	for (auto const& solver_name : factory.get_solvers_list()) {
-		worker.init(varmap, instance_path, solver_name);
+		worker.init(datas[MIP_TOY]._varmap, instance_path, solver_name);
 
-		REQUIRE(worker._name_to_id == varmap);
+		REQUIRE(worker._name_to_id == datas[MIP_TOY]._varmap);
 
-		for (auto const& kvp : varmap) {
+		for (auto const& kvp : datas[MIP_TOY]._varmap) {
 			REQUIRE(kvp.first == worker._id_to_name[kvp.second]);
 		}
 	}
