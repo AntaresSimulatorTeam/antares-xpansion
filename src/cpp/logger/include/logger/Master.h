@@ -22,7 +22,9 @@ public:
 
     void log_at_initialization(const LogData &d) override;
 
-    void log_at_iteration(const LogData &d) override;
+    void log_at_iteration_start(const LogData &d) override;
+
+    void log_at_iteration_end(const LogData &d) override;
 
     void log_at_ending(const LogData &d) override;
 

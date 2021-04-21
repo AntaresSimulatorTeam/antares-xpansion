@@ -22,6 +22,13 @@ public :
     {
     }
 
+    void addCandidate(LogData& logData, std::string candidate, double invest, double minInvest, double maxInvest)
+    {
+        logData.x0[candidate] = invest;
+        logData.min_invest[candidate] = minInvest;
+        logData.max_invest[candidate] = maxInvest;
+    }
+
     std::stringstream _stream;
     User _logger;
 };
@@ -35,12 +42,25 @@ TEST_F(UserLoggerTest, InitLog) {
     ASSERT_EQ( _stream.str() ,"" );
 }
 
-TEST_F(UserLoggerTest, IterationLog) {
+
+TEST_F(UserLoggerTest, IterationStartLog) {
     LogData logData;
-    logData.it = 1;
-    std::string expected = "it = 1\n";
-    _logger.log_at_iteration(logData);
-    ASSERT_EQ( _stream.str() ,expected );
+    addCandidate(logData,"candidate1", 50.0 , 0.0, 100.0);
+    addCandidate(logData,"a", 10.0 , 0.0, 50.0);
+    addCandidate(logData,"c", 50.0 , 0.0, 100.0);
+    addCandidate(logData,"b", 20.0 , 0.0, 200.0);
+    addCandidate(logData,"very long name of investment", 50.0 , 0.0, 100.0);
+
+    std::stringstream expected;
+    expected << "\t\tCandidates:" << std::endl;
+    expected << "\t\t\t                           a = 10.00 invested MW -- possible interval [0.00; 50.00] MW" << std::endl;
+    expected << "\t\t\t                           b = 20.00 invested MW -- possible interval [0.00; 200.00] MW" << std::endl;
+    expected << "\t\t\t                           c = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
+    expected << "\t\t\t                  candidate1 = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
+    expected << "\t\t\tvery long name of investment = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
+
+    _logger.log_at_iteration_start(logData);
+    ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
 TEST_F(UserLoggerTest, EndLog) {
@@ -57,7 +77,8 @@ public:
     SimpleLoggerMock()
     {
         _initCall = false;
-        _iterationCall = false;
+        _iterationStartCall = false;
+        _iterationEndCall = false;
         _endingCall = false;
     }
 
@@ -65,8 +86,12 @@ public:
         _initCall = true;
     }
 
-    void log_at_iteration(const LogData &d) override {
-        _iterationCall = true;
+    void log_at_iteration_start(const LogData &d) override {
+        _iterationStartCall = true;
+    }
+
+    void log_at_iteration_end(const LogData &d) override {
+        _iterationEndCall = true;
     }
 
     void log_at_ending(const LogData &d) override {
@@ -74,7 +99,8 @@ public:
     }
 
     bool _initCall;
-    bool _iterationCall;
+    bool _iterationStartCall;
+    bool _iterationEndCall;
     bool _endingCall;
 };
 
@@ -101,11 +127,18 @@ TEST_F(MasterLoggerTest, InitLog) {
     ASSERT_TRUE( _logger2->_initCall);
 }
 
-TEST_F(MasterLoggerTest, IterationLog) {
+TEST_F(MasterLoggerTest, IterationStartLog) {
     LogData logData;
-    _master.log_at_iteration(logData);
-    ASSERT_TRUE( _logger->_iterationCall);
-    ASSERT_TRUE( _logger2->_iterationCall);
+    _master.log_at_iteration_start(logData);
+    ASSERT_TRUE( _logger->_iterationStartCall);
+    ASSERT_TRUE( _logger2->_iterationStartCall);
+}
+
+TEST_F(MasterLoggerTest, IterationEndLog) {
+    LogData logData;
+    _master.log_at_iteration_end(logData);
+    ASSERT_TRUE( _logger->_iterationEndCall);
+    ASSERT_TRUE( _logger2->_iterationEndCall);
 }
 
 TEST_F(MasterLoggerTest, EndLog) {

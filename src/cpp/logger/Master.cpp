@@ -17,9 +17,15 @@ void Master::log_at_initialization(const LogData &d) {
     }
 }
 
-void Master::log_at_iteration(const LogData &d) {
+void Master::log_at_iteration_start(const LogData &d) {
     for (auto logger : _loggers) {
-        logger->log_at_iteration(d);
+        logger->log_at_iteration_start(d);
+    }
+}
+
+void Master::log_at_iteration_end(const LogData &d) {
+    for (auto logger : _loggers) {
+        logger->log_at_iteration_end(d);
     }
 }
 
