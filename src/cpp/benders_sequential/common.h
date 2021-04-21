@@ -25,7 +25,7 @@
 #include <thread>
 #include <cmath>
 #include "Timer.h"
-#include "include/benders_sequential_core/ILogger.h"
+#include "benders_sequential_core/ILogger.h"
 
 struct Predicate;
 typedef std::map<std::string, double> Point;

@@ -2,7 +2,7 @@
 
 add_library (logger_lib
         Master.cpp
-        User.cpp)
+        User.cpp CandidateLog.cpp IterationResultLog.cpp)
 
 target_link_libraries (logger_lib
         PUBLIC
