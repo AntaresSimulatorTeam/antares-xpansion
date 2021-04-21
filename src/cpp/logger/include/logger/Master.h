@@ -12,27 +12,33 @@
 
 #include "benders_sequential_core/ILogger.h"
 
-class Master : public ILogger {
+namespace xpansion{
+namespace logger {
 
-public:
+    class Master : public ILogger {
 
-    Master();
-    virtual ~Master();
+    public:
 
-    void addLogger(const std::shared_ptr<ILogger>& logger) {_loggers.push_back(logger);}
+        Master();
+        virtual ~Master();
 
-    void log_at_initialization(const LogData &d) override;
+        void addLogger(const std::shared_ptr<ILogger>& logger) {_loggers.push_back(logger);}
 
-    void log_at_iteration_start(const LogData &d) override;
+        void log_at_initialization(const LogData &d) override;
 
-    void log_at_iteration_end(const LogData &d) override;
+        void log_at_iteration_start(const LogData &d) override;
 
-    void log_at_ending(const LogData &d) override;
+        void log_at_iteration_end(const LogData &d) override;
 
-private:
+        void log_at_ending(const LogData &d) override;
 
-    std::list<std::shared_ptr<ILogger>> _loggers;
+    private:
 
-};
+        std::list<std::shared_ptr<ILogger>> _loggers;
+
+    };
+
+} // namespace logger
+} // namespace xpansion
 
 #endif //ANTARESXPANSION_MASTER_H

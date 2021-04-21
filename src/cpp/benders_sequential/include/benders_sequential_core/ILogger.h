@@ -12,30 +12,14 @@
 typedef std::map<std::string, double> LogPoint;
 
 struct LogData {
-    int nbasis;
-    double timer_slaves;
-    double timer_master;
     double lb;
-    double ub;
     double best_ub;
-    int maxsimplexiter;
-    int minsimplexiter;
-    int deletedcut;
     int it;
-    bool stop;
-    double alpha;
-    std::vector<double> alpha_i;
     double slave_cost;
     double invest_cost;
-    int best_it;
-    LogPoint bestx;
     LogPoint x0;
     LogPoint min_invest;
     LogPoint max_invest;
-    int nslaves;
-    double dnslaves;
-    int master_status;
-    int nrandom;
     double optimal_gap;
 };
 

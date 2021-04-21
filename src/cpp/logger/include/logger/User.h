@@ -36,7 +36,4 @@ namespace logger {
 } // namespace logger
 } // namespace xpansion
 
-
-
-
 #endif //ANTARESXPANSION_USER_H

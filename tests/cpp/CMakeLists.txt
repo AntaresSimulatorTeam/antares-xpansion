@@ -5,10 +5,6 @@
 # ===========================================================================
 # External requirements
 # ===========================================================================
-add_library(Catch2_interface INTERFACE)
-target_include_directories(Catch2_interface INTERFACE catch2/)
-add_library(Catch2::Catch2 ALIAS Catch2_interface)
-
 find_package (GTest REQUIRED)
 
 message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})

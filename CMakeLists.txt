@@ -160,12 +160,7 @@ add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 # Boost
 # ---------------------------------------------------------------------------
 
-
-if(BUILD_TESTING)
-	find_package (Boost REQUIRED COMPONENTS program_options unit_test_framework)
-else()
-	find_package (Boost REQUIRED COMPONENTS program_options)
-endif()
+find_package (Boost REQUIRED COMPONENTS program_options)
 	
 if (USE_MPI)
 	# ugly fix required due to conan packages and policies vs. boost brainfucking name rules

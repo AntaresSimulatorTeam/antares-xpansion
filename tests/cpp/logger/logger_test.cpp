@@ -142,7 +142,7 @@ TEST_F(UserLoggerTest, IterationEndLogLongCost) {
 
 TEST_F(UserLoggerTest, EndLogWithinOptimitality) {
     LogData logData;
-    logData.best_it = 1;
+    logData.it = 1;
     logData.best_ub = 20;
     logData.lb = 19.5;
     logData.slave_cost = 1e6;
@@ -160,7 +160,7 @@ TEST_F(UserLoggerTest, EndLogWithinOptimitality) {
 
 TEST_F(UserLoggerTest, EndLogOutsideOptimitality) {
     LogData logData;
-    logData.best_it = 1;
+    logData.it = 1;
     logData.best_ub = 20;
     logData.lb = 18;
     logData.slave_cost = 1e6;

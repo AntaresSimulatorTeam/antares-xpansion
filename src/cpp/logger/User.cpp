@@ -144,7 +144,7 @@ namespace logger {
 
         std::stringstream str;
         _stream << "--- CONVERGENCE " << optimality << " optimitality gap :" << std::endl;
-        _stream << "\tBest solution = it " << d.best_it << std::endl;
+        _stream << "\tBest solution = it " << d.it << std::endl;
         _stream << "\t Overall cost = " << create_str_million_euros(overall_cost) << " Me" << std::endl;
 
 
