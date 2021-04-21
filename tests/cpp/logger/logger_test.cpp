@@ -17,6 +17,9 @@ class UserLoggerTest : public ::testing::Test
 
 public :
 
+    const std::string indent_0 = "\t\t";
+    const std::string indent_1 = "\t";
+
     UserLoggerTest():
     _logger(_stream)
     {
@@ -43,23 +46,91 @@ TEST_F(UserLoggerTest, InitLog) {
 }
 
 
-TEST_F(UserLoggerTest, IterationStartLog) {
+TEST_F(UserLoggerTest, IterationStartLogCandidateOrder) {
     LogData logData;
-    addCandidate(logData,"candidate1", 50.0 , 0.0, 100.0);
+    addCandidate(logData,"z", 50.0 , 0.0, 100.0);
     addCandidate(logData,"a", 10.0 , 0.0, 50.0);
     addCandidate(logData,"c", 50.0 , 0.0, 100.0);
+
+    std::stringstream expected;
+    expected << indent_0 << "Candidates:" << std::endl;
+    expected << indent_0 << indent_1 << "a = 10.00 invested MW -- possible interval [0.00;  50.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "c = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "z = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
+
+    _logger.log_at_iteration_start(logData);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, IterationStartLogCandidateLongInvestment) {
+    LogData logData;
+    addCandidate(logData,"z", 5000000.0 , 0.0, 10000000.0);
+    addCandidate(logData,"a", 10.0 , 200.0, 50.0);
     addCandidate(logData,"b", 20.0 , 0.0, 200.0);
+
+    std::stringstream expected;
+    expected << "\t\tCandidates:" << std::endl;
+    expected << indent_0 << indent_1 << "a =      10.00 invested MW -- possible interval [200.00;       50.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "b =      20.00 invested MW -- possible interval [  0.00;      200.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "z = 5000000.00 invested MW -- possible interval [  0.00; 10000000.00] MW" << std::endl;
+
+    _logger.log_at_iteration_start(logData);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, IterationStartLogCandidateNameLenght) {
+    LogData logData;
+    addCandidate(logData,"z", 50.0 , 0.0, 100.0);
+    addCandidate(logData,"a", 10.0 , 0.0, 50.0);
     addCandidate(logData,"very long name of investment", 50.0 , 0.0, 100.0);
 
     std::stringstream expected;
     expected << "\t\tCandidates:" << std::endl;
-    expected << "\t\t\t                           a = 10.00 invested MW -- possible interval [0.00; 50.00] MW" << std::endl;
-    expected << "\t\t\t                           b = 20.00 invested MW -- possible interval [0.00; 200.00] MW" << std::endl;
-    expected << "\t\t\t                           c = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
-    expected << "\t\t\t                  candidate1 = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
-    expected << "\t\t\tvery long name of investment = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "                           a = 10.00 invested MW -- possible interval [0.00;  50.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "very long name of investment = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "                           z = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
 
     _logger.log_at_iteration_start(logData);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, IterationEndLog) {
+    LogData logData;
+    logData.slave_cost = 15.5e6;
+    logData.invest_cost = 20e6;
+    logData.best_ub = 3e6;
+    logData.lb = 2e6;
+
+    std::stringstream expected;
+    expected << indent_0 << "Solution =" << std::endl;
+    expected << indent_0 << indent_1 << "Operational cost =       15.50 Me" << std::endl;
+    expected << indent_0 << indent_1 << " Investment cost =       20.00 Me" << std::endl;
+    expected << indent_0 << indent_1 << "    Overall cost =       35.50 Me" << std::endl;
+    expected << indent_0 << indent_1 << "   Best Solution =        3.00 Me" << std::endl;
+    expected << indent_0 << indent_1 << "     Lower Bound =        2.00 Me" << std::endl;
+    expected << indent_0 << indent_1 << "             Gap = 1.00000e+06 e" << std::endl;
+
+    _logger.log_at_iteration_end(logData);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, IterationEndLogLongCost) {
+    LogData logData;
+    logData.slave_cost = 150000000.5e6;
+    logData.invest_cost = 200000000e6;
+    logData.best_ub = 100e6;
+    logData.lb = 3e6;
+
+    std::stringstream expected;
+    expected << indent_0 << "Solution =" << std::endl;
+    expected << indent_0 << indent_1 << "Operational cost = 150000000.50 Me" << std::endl;
+    expected << indent_0 << indent_1 << " Investment cost = 200000000.00 Me" << std::endl;
+    expected << indent_0 << indent_1 << "    Overall cost = 350000000.50 Me" << std::endl;
+    expected << indent_0 << indent_1 << "   Best Solution =       100.00 Me" << std::endl;
+    expected << indent_0 << indent_1 << "     Lower Bound =         3.00 Me" << std::endl;
+    expected << indent_0 << indent_1 << "             Gap =  9.70000e+07 e" << std::endl;
+
+    _logger.log_at_iteration_end(logData);
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
