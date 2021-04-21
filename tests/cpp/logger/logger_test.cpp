@@ -134,11 +134,40 @@ TEST_F(UserLoggerTest, IterationEndLogLongCost) {
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
-TEST_F(UserLoggerTest, EndLog) {
+TEST_F(UserLoggerTest, EndLogWithinOptimitality) {
     LogData logData;
-    logData.it = 1;
+    logData.best_it = 1;
+    logData.best_ub = 20;
+    logData.lb = 19.5;
+    logData.slave_cost = 1e6;
+    logData.invest_cost = 10e6;
+    logData.optimal_gap = 1;
+
+    std::stringstream expected;
+    expected << "--- CONVERGENCE within optimitality gap :" << std::endl;
+    expected << indent_1 << "Best solution = it 1" << std::endl;
+    expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
+
     _logger.log_at_ending(logData);
-    ASSERT_EQ( _stream.str() ,"" );
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, EndLogOutsideOptimitality) {
+    LogData logData;
+    logData.best_it = 1;
+    logData.best_ub = 20;
+    logData.lb = 18;
+    logData.slave_cost = 1e6;
+    logData.invest_cost = 10e6;
+    logData.optimal_gap = 1;
+
+    std::stringstream expected;
+    expected << "--- CONVERGENCE outside optimitality gap :" << std::endl;
+    expected << indent_1 << "Best solution = it 1" << std::endl;
+    expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
+
+    _logger.log_at_ending(logData);
+    ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
 class SimpleLoggerMock : public ILogger

@@ -136,6 +136,17 @@ namespace logger {
 
     void User::log_at_ending(const LogData &d) {
 
+        const double gap = d.best_ub - d.lb;
+        const double overall_cost = d.slave_cost + d.invest_cost;
+
+        std::string optimality = gap <= d.optimal_gap ? "within" : "outside";
+
+        std::stringstream str;
+        _stream << "--- CONVERGENCE " << optimality << " optimitality gap :" << std::endl;
+        _stream << "\tBest solution = it " << d.best_it << std::endl;
+        _stream << "\t Overall cost = " << create_str_million_euros(overall_cost) << " Me" << std::endl;
+
+
     }
 
 } // namespace logger

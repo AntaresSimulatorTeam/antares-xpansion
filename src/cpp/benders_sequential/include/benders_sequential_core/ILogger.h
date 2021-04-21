@@ -36,6 +36,7 @@ struct LogData {
     double dnslaves;
     int master_status;
     int nrandom;
+    double optimal_gap;
 };
 
 class ILogger {
