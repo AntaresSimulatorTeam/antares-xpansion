@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <memory>
 
 #include "benders_sequential_core/ILogger.h"
 
@@ -18,7 +19,7 @@ public:
     Master();
     virtual ~Master();
 
-    void addLogger(std::shared_ptr<ILogger> logger) {_loggers.push_back(logger);}
+    void addLogger(const std::shared_ptr<ILogger>& logger) {_loggers.push_back(logger);}
 
     void log_at_initialization(const LogData &d) override;
 
