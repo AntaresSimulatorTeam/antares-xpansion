@@ -48,11 +48,13 @@ TEST_F(UserLoggerTest, InitLog) {
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateOrder) {
     LogData logData;
+    logData.it = 1;
     addCandidate(logData,"z", 50.0 , 0.0, 100.0);
     addCandidate(logData,"a", 10.0 , 0.0, 50.0);
     addCandidate(logData,"c", 50.0 , 0.0, 100.0);
 
     std::stringstream expected;
+    expected << indent_0 <<"ITERATION 1:" << std::endl;
     expected << indent_0 << "Candidates:" << std::endl;
     expected << indent_0 << indent_1 << "a = 10.00 invested MW -- possible interval [0.00;  50.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "c = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
@@ -64,12 +66,14 @@ TEST_F(UserLoggerTest, IterationStartLogCandidateOrder) {
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateLongInvestment) {
     LogData logData;
+    logData.it = 1;
     addCandidate(logData,"z", 5000000.0 , 0.0, 10000000.0);
     addCandidate(logData,"a", 10.0 , 200.0, 50.0);
     addCandidate(logData,"b", 20.0 , 0.0, 200.0);
 
     std::stringstream expected;
-    expected << "\t\tCandidates:" << std::endl;
+    expected << indent_0 <<"ITERATION 1:" << std::endl;
+    expected << indent_0 <<"Candidates:" << std::endl;
     expected << indent_0 << indent_1 << "a =      10.00 invested MW -- possible interval [200.00;       50.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "b =      20.00 invested MW -- possible interval [  0.00;      200.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "z = 5000000.00 invested MW -- possible interval [  0.00; 10000000.00] MW" << std::endl;
@@ -80,12 +84,14 @@ TEST_F(UserLoggerTest, IterationStartLogCandidateLongInvestment) {
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateNameLenght) {
     LogData logData;
+    logData.it = 1;
     addCandidate(logData,"z", 50.0 , 0.0, 100.0);
     addCandidate(logData,"a", 10.0 , 0.0, 50.0);
     addCandidate(logData,"very long name of investment", 50.0 , 0.0, 100.0);
 
     std::stringstream expected;
-    expected << "\t\tCandidates:" << std::endl;
+    expected << indent_0 <<"ITERATION 1:" << std::endl;
+    expected << indent_0 <<"Candidates:" << std::endl;
     expected << indent_0 << indent_1 << "                           a = 10.00 invested MW -- possible interval [0.00;  50.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "very long name of investment = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "                           z = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;

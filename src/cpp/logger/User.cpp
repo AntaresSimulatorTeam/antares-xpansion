@@ -44,6 +44,7 @@ namespace logger {
         typedef std::tuple<std::string, std::string , std::string, std::string> value_type;
         typedef std::tuple<int,int,int,int> value_size_type;
 
+        _stream << "\t\tITERATION " << d.it << ":" << std::endl;
         _stream << "\t\tCandidates:" << std::endl;
 
         //Get values
