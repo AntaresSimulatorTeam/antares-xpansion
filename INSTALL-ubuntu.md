@@ -33,7 +33,7 @@ pip3 install -r requirements-tests.txt
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost : mpi serialization (Only for MPI benders compilation), program-options
+ - Boost : mpi serialization (Only for MPI benders compilation), program-options test
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
@@ -48,7 +48,7 @@ The install procedure can be done
 #### Ubuntu
 
 ```
-sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev
+sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev libboost-test-dev
 sudo apt-get install unzip uuid-dev libcurl4-openssl-dev libssl-dev
 ```
 Note :
