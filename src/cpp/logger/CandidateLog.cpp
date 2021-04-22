@@ -41,16 +41,16 @@ namespace logger {
 
             value_map valuesMap;
             valuesMap[CANDIDATE] = candidate;
-            valuesMap[INVEST] = create_investment_str(pairVarnameValue.second);
-            valuesMap[INVEST_MIN] = create_investment_str(data.min_invest.at(candidate));
-            valuesMap[INVEST_MAX] = create_investment_str(data.max_invest.at(candidate));
+            valuesMap[INVEST] = get_formatted_string_from_value(pairVarnameValue.second);
+            valuesMap[INVEST_MIN] = get_formatted_string_from_value(data.min_invest.at(candidate));
+            valuesMap[INVEST_MAX] = get_formatted_string_from_value(data.max_invest.at(candidate));
             _values.push_back(valuesMap);
 
             updateMaximumSizes(valuesMap);
         }
     }
 
-    inline std::string CandidateLog::create_investment_str(double val) {
+    inline std::string CandidateLog::get_formatted_string_from_value(double val) {
         std::stringstream result;
         result << std::fixed << std::setprecision(2) << val;
         return result.str();

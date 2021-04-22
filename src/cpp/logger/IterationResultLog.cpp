@@ -8,27 +8,12 @@
 #include <map>
 
 #include "benders_sequential_core/ILogger.h"
+#include "Commons.h"
 #include "IterationResultLog.h"
 
 
 namespace xpansion{
 namespace logger {
-
-    inline double convert_in_million_euros(double val) { return val / 1e6;}
-
-    inline std::string create_str_million_euros(double val)
-    {
-        std::stringstream result;
-        result << std::fixed <<  std::setprecision(2) << convert_in_million_euros(val);
-        return result.str();
-    }
-
-    inline std::string create_str_euros(double val)
-    {
-        std::stringstream result;
-        result << std::scientific << std::setprecision(5) << val;
-        return result.str();
-    }
 
     std::string IterationResultLog::Log_at_iteration_end(const LogData &data) {
         setValuesFromData(data);
@@ -43,12 +28,12 @@ namespace logger {
         //Get values
 
         _values.clear();
-        _values.push_back(create_value_map("Operational cost", create_str_million_euros(data.slave_cost), " Me") );
-        _values.push_back(create_value_map("Investment cost", create_str_million_euros(data.invest_cost), " Me") );
-        _values.push_back(create_value_map("Overall cost", create_str_million_euros(overall_cost), " Me") );
-        _values.push_back(create_value_map("Best Solution", create_str_million_euros(data.best_ub), " Me"));
-        _values.push_back(create_value_map("Lower Bound", create_str_million_euros(data.lb), " Me"));
-        _values.push_back(create_value_map("Gap", create_str_euros(gap), " e")  );
+        _values.push_back(create_value_map("Operational cost", commons::create_str_million_euros(data.slave_cost), " Me") );
+        _values.push_back(create_value_map("Investment cost", commons::create_str_million_euros(data.invest_cost), " Me") );
+        _values.push_back(create_value_map("Overall cost", commons::create_str_million_euros(overall_cost), " Me") );
+        _values.push_back(create_value_map("Best Solution", commons::create_str_million_euros(data.best_ub), " Me"));
+        _values.push_back(create_value_map("Lower Bound", commons::create_str_million_euros(data.lb), " Me"));
+        _values.push_back(create_value_map("Gap", commons::create_str_euros(gap), " e")  );
     }
 
 

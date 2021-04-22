@@ -5,6 +5,7 @@
 #include "BendersOptions.h"
 #include "BendersFunctions.h"
 #include "SimplexBasis.h"
+#include "ILogger.h"
 
 
 /*!
@@ -13,7 +14,7 @@
 */
 class Benders {
 public:
-	Benders(CouplingMap const & problem_list, BendersOptions const & options);
+	explicit Benders(CouplingMap const &problem_list, BendersOptions const &options, Logger &logger);
 	virtual ~Benders();
 
 	WorkerMasterPtr _master;
@@ -36,4 +37,6 @@ public:
 
 	void build_cut();
 	void run();
+private:
+    Logger _logger;
 };

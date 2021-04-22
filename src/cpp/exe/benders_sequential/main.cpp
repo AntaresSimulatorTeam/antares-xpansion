@@ -4,7 +4,7 @@
 #include "glog/logging.h"
 
 #include "launcher.h"
-#include "Benders.h"
+#include "benders_sequential_core/Benders.h"
 #include "BendersOptions.h"
 
 #if defined(WIN32) || defined(_WIN32) 

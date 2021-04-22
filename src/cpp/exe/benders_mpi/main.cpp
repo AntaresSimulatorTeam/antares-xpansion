@@ -5,7 +5,7 @@
 
 #include "Worker.h"
 #include "Timer.h"
-#include "Benders.h"
+#include "benders_sequential_core/Benders.h"
 #include "BendersMPI.h"
 #include "launcher.h"
 #include "JsonWriter.h"

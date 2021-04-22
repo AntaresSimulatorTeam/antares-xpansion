@@ -32,7 +32,7 @@ namespace logger {
         std::string getHeaderString(const LogData &data);
         std::string getMainBodyString(const LogData &data);
         void set_values_and_sizes(const LogData &data);
-        static std::string create_investment_str(double val);
+        static std::string get_formatted_string_from_value(double val);
         void updateMaximumSizes(value_map &valuesMap);
         std::string getStringBodyUsingValuesAndSizes();
         std::string create_candidate_str(const value_map &value);

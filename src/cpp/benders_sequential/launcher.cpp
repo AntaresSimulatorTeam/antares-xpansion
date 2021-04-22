@@ -1,11 +1,43 @@
 #include "launcher.h"
-#include "Benders.h"
+#include "benders_sequential_core/Benders.h"
 #include "Timer.h"
 #include "JsonWriter.h"
 
 #include "BendersOptions.h"
 
+class SimpleLoggerMock : public ILogger
+{
+public:
 
+    SimpleLoggerMock()
+    {
+        _initCall = false;
+        _iterationStartCall = false;
+        _iterationEndCall = false;
+        _endingCall = false;
+    }
+
+    void log_at_initialization(const LogData &d) override {
+        _initCall = true;
+    }
+
+    void log_at_iteration_start(const LogData &d) override {
+        _iterationStartCall = true;
+    }
+
+    void log_at_iteration_end(const LogData &d) override {
+        _iterationEndCall = true;
+    }
+
+    void log_at_ending(const LogData &d) override {
+        _endingCall = true;
+    }
+
+    bool _initCall;
+    bool _iterationStartCall;
+    bool _iterationEndCall;
+    bool _endingCall;
+};
 /*!
 *  \brief Get Benders Options from command line
 *
@@ -91,7 +123,9 @@ void sequential_launch(BendersOptions const & options) {
 	jsonWriter_l.updateBeginTime();
 	LOG(INFO) << "Constructing workers..." << std::endl;
 
-	Benders benders(input, options);
+	// TODO fix this it should not be here
+    Logger logger = std::make_shared<SimpleLoggerMock>();
+    Benders benders(input, options, logger);
 	LOG(INFO) << "Running solver..." << std::endl;
 	benders.run();
 	LOG(INFO) << "Benders solver terminated." << std::endl;

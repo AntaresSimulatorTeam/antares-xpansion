@@ -14,7 +14,7 @@ add_library (benders_sequential_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersOptions.h
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersOptions.hxx
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersFunctions.h
-	${CMAKE_CURRENT_SOURCE_DIR}/Benders.h
+        include/benders_sequential_core/Benders.h
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerMaster.h
 	${CMAKE_CURRENT_SOURCE_DIR}/SlaveCut.h
 	${CMAKE_CURRENT_SOURCE_DIR}/common.h
