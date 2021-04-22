@@ -82,7 +82,5 @@ namespace logger {
     }
 
 
-
-
 } // namespace logger
 } // namespace xpansion

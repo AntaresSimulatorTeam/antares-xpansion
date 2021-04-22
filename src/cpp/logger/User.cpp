@@ -28,7 +28,7 @@ namespace logger {
     }
 
     void User::log_at_iteration_end(const LogData &d) {
-        _stream << IterationResultLog::Log_at_iteration_end(d);
+        _stream << IterationResultLog().Log_at_iteration_end(d);
     }
 
     const std::string indent_0 = "\t\t";

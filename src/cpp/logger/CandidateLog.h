@@ -15,6 +15,7 @@ namespace logger {
 
         std::string Log_at_iteration_start(const LogData &_data);
 
+
     private:
         const std::string indent_0 = "\t\t";
         const std::string indent_1 = "\t";
