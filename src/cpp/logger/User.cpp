@@ -24,7 +24,7 @@ namespace logger {
     }
 
     void User::log_at_iteration_start(const LogData &d) {
-        _stream << CandidateLog::Log_at_iteration_start(d);
+        _stream << CandidateLog().Log_at_iteration_start(d);
     }
 
     void User::log_at_iteration_end(const LogData &d) {

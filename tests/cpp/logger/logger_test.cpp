@@ -176,6 +176,32 @@ TEST_F(UserLoggerTest, EndLogOutsideOptimitality) {
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
+TEST_F(UserLoggerTest, DifferentCallsAddToTheSamStream) {
+    LogData logData1;
+    logData1.it = 1;
+    addCandidate(logData1, "z", 5000000.0 , 0.0, 10000000.0);
+    addCandidate(logData1, "a", 10.0 , 200.0, 50.0);
+
+    std::stringstream expected;
+    expected << indent_0 <<"ITERATION 1:" << std::endl;
+    expected << indent_0 <<"Candidates:" << std::endl;
+    expected << indent_0 << indent_1 << "a =      10.00 invested MW -- possible interval [200.00;       50.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "z = 5000000.00 invested MW -- possible interval [  0.00; 10000000.00] MW" << std::endl;
+
+    LogData logData2;
+    logData2.it = 2;
+    addCandidate(logData2, "b", 6000000.0 , 0.0, 10000000.0);
+    addCandidate(logData2, "a", 200.0 , 200.0, 50.0);
+
+    expected << indent_0 <<"ITERATION 2:" << std::endl;
+    expected << indent_0 <<"Candidates:" << std::endl;
+    expected << indent_0 << indent_1 << "a =     200.00 invested MW -- possible interval [200.00;       50.00] MW" << std::endl;
+    expected << indent_0 << indent_1 << "b = 6000000.00 invested MW -- possible interval [  0.00; 10000000.00] MW" << std::endl;
+    _logger.log_at_iteration_start(logData1);
+    _logger.log_at_iteration_start(logData2);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
 class SimpleLoggerMock : public ILogger
 {
 public:

@@ -14,66 +14,75 @@
 namespace xpansion{
 namespace logger {
 
-    const std::string indent_0 = "\t\t";
-    const std::string indent_1 = "\t";
-
-    const std::string CANDIDATE = "CANDIDATE";
-    const std::string INVEST = "INVEST";
-    const std::string INVEST_MIN = "INVEST_MIN";
-    const std::string INVEST_MAX = "INVEST_MAX";
-
-    typedef std::map<std::string, std::string> value_map;
-    typedef std::map<std::string, int> size_map;
-
-    inline std::string create_candidate_str(const value_map &values,
-                                            const size_map &sizes) {
-        std::stringstream result;
-        result << indent_0 << indent_1 << std::setw(sizes.at(CANDIDATE)) << values.at(CANDIDATE);
-        result << " = " << std::setw(sizes.at(INVEST)) << values.at(INVEST) << " invested MW ";
-        result << "-- possible interval [" << std::setw(sizes.at(INVEST_MIN)) << values.at(INVEST_MIN);
-        result << "; " << std::setw(sizes.at(INVEST_MAX)) << values.at(INVEST_MAX) << "] MW";
-        return result.str();
+    std::string CandidateLog::Log_at_iteration_start(const LogData &data){
+        std::stringstream _stream;
+        _stream << getHeaderString(data);
+        _stream << getMainBodyString(data);
+        return _stream.str();
     }
 
-    inline std::string create_investment_str(double val) {
+    std::string CandidateLog::getHeaderString(const LogData &data){
+        std::stringstream header;
+        header << indent_0 << "ITERATION " << data.it << ":" << std::endl;
+        header << indent_0 << "Candidates:" << std::endl;
+        return header.str();
+    }
+
+    std::string CandidateLog::getMainBodyString(const LogData &data) {
+        _values.clear();
+        _sizes.clear();
+        set_values_and_sizes(data);
+        return getStringBodyUsingValuesAndSizes();
+    }
+
+    void CandidateLog::set_values_and_sizes(const LogData &data) {
+        for (const auto& pairVarnameValue : data.x0) {
+            std::string candidate = pairVarnameValue.first;
+
+            value_map valuesMap;
+            valuesMap[CANDIDATE] = candidate;
+            valuesMap[INVEST] = create_investment_str(pairVarnameValue.second);
+            valuesMap[INVEST_MIN] = create_investment_str(data.min_invest.at(candidate));
+            valuesMap[INVEST_MAX] = create_investment_str(data.max_invest.at(candidate));
+            _values.push_back(valuesMap);
+
+            updateMaximumSizes(valuesMap);
+        }
+    }
+
+    inline std::string CandidateLog::create_investment_str(double val) {
         std::stringstream result;
         result << std::fixed << std::setprecision(2) << val;
         return result.str();
     }
 
-    std::string CandidateLog::Log_at_iteration_start(const LogData &d) {
-        std::stringstream _stream;
-        _stream << indent_0 << "ITERATION " << d.it << ":" << std::endl;
-        _stream << indent_0 << "Candidates:" << std::endl;
 
-        //Get values
-        std::list<value_map> values;
-        size_map sizes;
-
-        for (auto pairVarnameValue : d.x0) {
-            value_map valuesMap;
-            std::string candidate = pairVarnameValue.first;
-
-            valuesMap[CANDIDATE] = candidate;
-            valuesMap[INVEST] = create_investment_str(pairVarnameValue.second);
-            valuesMap[INVEST_MIN] = create_investment_str(d.min_invest.at(candidate));
-            valuesMap[INVEST_MAX] = create_investment_str(d.max_invest.at(candidate));
-
-            values.push_back(valuesMap);
-
-            //Compute maximum string size
-            for (auto it : valuesMap) {
-                const std::string &key = it.first;
-                sizes[key] = std::max<int>(it.second.length(), sizes[key]);
-            }
+    void CandidateLog::updateMaximumSizes(value_map &valuesMap) {//Compute maximum string size
+        for (const auto& it : valuesMap) {
+            const std::string &key = it.first;
+            _sizes[key] = std::max<int>(it.second.length(), _sizes[key]);
         }
-
-        //Add candidates values
-        for (auto value : values) {
-            _stream << create_candidate_str(value, sizes) << std::endl;
-        }
-        return _stream.str();
     }
+
+    std::string CandidateLog::getStringBodyUsingValuesAndSizes() {
+        std::stringstream main_body;
+        for (const auto& value : _values) {
+            main_body << create_candidate_str(value) << std::endl;
+        }
+        return main_body.str();
+    }
+
+    inline std::string CandidateLog::create_candidate_str(const value_map &value) {
+        std::stringstream result;
+        result << indent_0 << indent_1 << std::setw(_sizes.at(CANDIDATE)) << value.at(CANDIDATE);
+        result << " = " << std::setw(_sizes.at(INVEST)) << value.at(INVEST) << " invested MW ";
+        result << "-- possible interval [" << std::setw(_sizes.at(INVEST_MIN)) << value.at(INVEST_MIN);
+        result << "; " << std::setw(_sizes.at(INVEST_MAX)) << value.at(INVEST_MAX) << "] MW";
+        return result.str();
+    }
+
+
+
 
 } // namespace logger
 } // namespace xpansion
