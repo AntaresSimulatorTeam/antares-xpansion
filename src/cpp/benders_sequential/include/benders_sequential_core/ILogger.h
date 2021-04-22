@@ -7,6 +7,7 @@
 
 #include <map>
 #include <vector>
+#include <memory>
 #include <string>
 
 typedef std::map<std::string, double> LogPoint;
