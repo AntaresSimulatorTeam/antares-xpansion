@@ -84,13 +84,6 @@ void SolverCbc::write_prob(const char* name, const char* flags) const{
 			}
 		}
 
-		std::vector<std::string> colNamesVec(get_ncols());
-		std::vector<std::string> rowNamesVec(get_nrows());
-		get_col_names(0, get_ncols() - 1, colNamesVec);
-		get_row_names(0, get_nrows() - 1, rowNamesVec);
-		std::cout << colNamesVec.size() << "   " << get_ncols() << std::endl;
-		std::exit(1);
-
 		CoinMpsIO writer;
 		writer.setInfinity(_cbc.solver()->getInfinity());
 		writer.passInMessageHandler(_cbc.solver()->messageHandler());
@@ -104,8 +97,8 @@ void SolverCbc::write_prob(const char* name, const char* flags) const{
 			hasInteger ? integrality : NULL,
 			_cbc.solver()->getRowLower(),
 			_cbc.solver()->getRowUpper(),
-			colNamesVec,
-			rowNamesVec
+			_cbc.solver()->getColNames(),
+			_cbc.solver()->getRowNames()
 		);
 
 		std::string probName = "";
@@ -394,7 +387,6 @@ void SolverCbc::add_rows(int newrows, int newnz, const char* qrtype, const doubl
 			std::exit(1);
 		}
 	}
-	
 	_cbc.solver()->addRows(newrows, mstart, mclind, dmatval, rowLower.data(), rowUpper.data());
 }
 
@@ -409,7 +401,6 @@ void SolverCbc::add_cols(int newcol, int newnz, const double* objx, const int* m
 	colStart[newcol] = newnz;
 
 	_cbc.solver()->addCols(newcol, colStart.data(), mrwind, dmatval, bdl, bdu, objx);
-	_cbc.synchronizeModel();
 }
 
 void SolverCbc::add_name(int type, const char* cnames, int indice){
@@ -519,8 +510,12 @@ void SolverCbc::solve_lp(int& lp_status){
 
 void SolverCbc::solve_mip(int& lp_status){
 
-	_cbc.branchAndBound();
+	std::cout << "Cbc solver write before solve" << std::endl;
+	write_prob("master_test.mps", "MPS");
+	read_prob("master_test.mps", "MPS");
 
+	_cbc.branchAndBound();
+	
 	/*std::cout << "*********************************************" << std::endl;
 	std::cout << "COUCOU CBC STATUS " << _cbc.status() << std::endl;
 	std::cout << "COUCOU CBC STATUS " << _cbc.secondaryStatus() << std::endl;
@@ -530,7 +525,7 @@ void SolverCbc::solve_mip(int& lp_status){
 	std::cout << "UNBD   ? " << _cbc.isProvenDualInfeasible() << std::endl;
 	std::cout << "UNBD   ? " << _cbc.isInitialSolveProvenDualInfeasible() << std::endl;
 	std::cout << "*********************************************" << std::endl;*/
-
+	
 	if (_cbc.isProvenOptimal()) {
 		if (std::abs(_cbc.solver()->getObjValue()) >= 1e20) {
 			lp_status = UNBOUNDED;

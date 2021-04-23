@@ -240,7 +240,7 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 		std::vector<int> start(2, 0);
 		_id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
 
-		/*ORTaddcols(_solver, DblVector(1, obj), { 0, 2 }, IntVector(1, 0), DblVector(1, 0.0),
+		ORTaddcols(_solver, DblVector(1, obj), { 0, 2 }, IntVector(1, 0), DblVector(1, 0.0),
 			DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), StrVector(1, "alpha")); /* Add variable alpha and its parameters */
 
 		_id_alpha_i.resize(nslaves, -1);
@@ -255,16 +255,16 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 
 		std::vector<char> rowtype = {'E'};
 		std::vector<double> rowrhs = {0};
+		std::vector<int> mstart = { 0, nslaves + 1 };
 		std::vector<double> matval(nslaves + 1, 0);
 		std::vector<int> mclind(nslaves + 1);
-		std::vector<int> mstart = {0, nslaves + 1 };
 		mclind[0] = _id_alpha;
 		matval[0] = 1;
-
 		for (int i(0); i < nslaves; ++i) {
 			mclind[i + 1] = _id_alpha_i[i];
 			matval[i + 1] = -1;
 		}
+
 		ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 	}
 	else {

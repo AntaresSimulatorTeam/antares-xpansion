@@ -68,7 +68,7 @@ void SolverClp::write_prob(const char* name, const char* flags) const{
 	if (std::string(flags) == "LP") {
 		nFlags = "-l";
 	}
-	_clp.writeMps(name);
+	_clp.writeMps(name, 1);
 }
 
 void SolverClp::read_prob(const char* prob_name, const char* flags){
@@ -439,7 +439,15 @@ void SolverClp::solve_lp(int& lp_status){
 
 void SolverClp::solve_mip(int& lp_status){
 
+	std::cout << "Cbc solver write before solve" << std::endl;
+	write_prob("master_test.mps", "MPS");
+	std::cout << "ok" << std::endl;
+	read_prob("master_test.mps", "MPS");
+	std::cout << "ok" << std::endl;
 	_clp.dual();
+
+	std::cout << "ok" << std::endl;
+	std::exit(1);
 
 	int clp_status = _clp.status();
 	if (clp_status == CLP_OPTIMAL) {

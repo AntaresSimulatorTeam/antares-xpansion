@@ -67,7 +67,6 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 	
 	int var_index;
 	for(auto const & kvp : variable_map) {
-		std::cout << kvp.first << std::endl;
 		var_index = _solver->get_col_index(kvp.first);
 		_id_to_name[var_index] = kvp.first;
 		_name_to_id[kvp.first] = var_index;
