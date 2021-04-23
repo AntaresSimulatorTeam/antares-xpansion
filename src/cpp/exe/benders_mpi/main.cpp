@@ -9,6 +9,7 @@
 #include "BendersMPI.h"
 #include "launcher.h"
 #include "JsonWriter.h"
+#include "logger/User.h"
 
 #if defined(WIN32) || defined(_WIN32)
 #include <direct.h>
@@ -66,7 +67,8 @@ int main(int argc, char** argv)
 	if (world.size() == 1) {
 		std::cout << "Sequential launch" << std::endl;
 		LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;
-		sequential_launch(options);
+        Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
+		sequential_launch(options, logger);
 	}
 	else {
 		Timer timer;
