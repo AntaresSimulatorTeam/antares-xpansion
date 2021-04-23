@@ -109,7 +109,7 @@ int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
 *
 *  \param options : set of Benders options
 */
-void sequential_launch(BendersOptions const & options) {
+void sequential_launch(BendersOptions const & options,  Logger & logger) {
 	Timer timer;
 	CouplingMap input;
 	LOG(INFO) << "Building input" << std::endl;
@@ -124,7 +124,7 @@ void sequential_launch(BendersOptions const & options) {
 	LOG(INFO) << "Constructing workers..." << std::endl;
 
 	// TODO fix this it should not be here
-    Logger logger = std::make_shared<SimpleLoggerMock>();
+    // Logger logger = std::make_shared<SimpleLoggerMock>();
     Benders benders(input, options, logger);
 	LOG(INFO) << "Running solver..." << std::endl;
 	benders.run();

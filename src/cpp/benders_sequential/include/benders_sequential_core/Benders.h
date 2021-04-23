@@ -15,6 +15,7 @@
 class Benders {
 public:
 	explicit Benders(CouplingMap const &problem_list, BendersOptions const &options, Logger &logger);
+    explicit Benders( Logger &logger);
 	virtual ~Benders();
 
 	WorkerMasterPtr _master;
@@ -36,7 +37,10 @@ public:
 	void free();
 
 	void build_cut();
-	void run();
+	void run( CouplingMap const &problem_list, BendersOptions const &options);
+    void run();
 private:
     Logger _logger;
+
+    void initialise_problems(const CouplingMap &problem_list);
 };

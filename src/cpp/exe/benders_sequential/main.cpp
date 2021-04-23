@@ -6,6 +6,7 @@
 #include "launcher.h"
 #include "benders_sequential_core/Benders.h"
 #include "BendersOptions.h"
+#include "logger/User.h"
 
 #if defined(WIN32) || defined(_WIN32) 
 #include <direct.h>
@@ -33,7 +34,8 @@ int main(int argc, char** argv)
 	LOG(INFO) << oss_l.str() << std::endl;
 
 	LOG(INFO) << "Launching Benders Sequential" << std::endl;
-	sequential_launch(options);
+    Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
+	sequential_launch(options, logger);
 
 	char buff[FILENAME_MAX];
 	GetCurrentDir(buff, FILENAME_MAX);

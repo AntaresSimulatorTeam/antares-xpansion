@@ -18,29 +18,38 @@ Benders::~Benders() {
 *
 *  \param options : set of options fixed by the user
 */
+
+Benders::Benders(Logger &logger):_logger{ logger } {
+
+}
+
 Benders::Benders(CouplingMap const &problem_list, BendersOptions const &options, Logger &logger):
 _options(options),_logger{ logger } {
-	if (!problem_list.empty()) {
-		_data.nslaves = _options.SLAVE_NUMBER;
-		if (_data.nslaves < 0) {
-			_data.nslaves = problem_list.size() - 1;
-		}
+    initialise_problems(problem_list);
+}
 
-		auto it(problem_list.begin());
+void Benders::initialise_problems(const CouplingMap &problem_list) {
+    if (!problem_list.empty()) {
+        _data.nslaves = _options.SLAVE_NUMBER;
+        if (_data.nslaves < 0) {
+            _data.nslaves = problem_list.size() - 1;
+        }
 
-		auto const it_master = problem_list.find(_options.MASTER_NAME);
-		Str2Int const & master_variable(it_master->second);
-		for(int i(0); i < _data.nslaves; ++it) {
-			if (it != it_master) {
-				_problem_to_id[it->first] = i;
-				_map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(it->second, _options.get_slave_path(it->first), _options.slave_weight(_data.nslaves, it->first), _options));
-				_slaves.push_back(it->first);
-				i++;
-			}
-		}
-		_master.reset(new WorkerMaster(master_variable, _options.get_master_path(), _options, _data.nslaves));
-	}
+        auto it(problem_list.begin());
 
+        auto const it_master = problem_list.find(_options.MASTER_NAME);
+        Str2Int const & master_variable(it_master->second);
+        for(int i(0); i < _data.nslaves; ++it) {
+            if (it != it_master) {
+                _problem_to_id[it->first] = i;
+                _map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(it->second, _options.get_slave_path(it->first), _options.slave_weight(
+                        _data.nslaves, it->first), _options));
+                _slaves.push_back(it->first);
+                i++;
+            }
+        }
+        _master.reset(new WorkerMaster(master_variable, _options.get_master_path(), _options, _data.nslaves));
+    }
 }
 
 
@@ -95,8 +104,11 @@ void Benders::build_cut() {
 *
 *  Method to run Benders algorithm
 */
-void Benders::run() {
+void Benders::run( CouplingMap const &problem_list, BendersOptions const &options) {
+    _options = {options};
+}
 
+void Benders::run(){
 	for (auto const & kvp : _problem_to_id) {
 		_all_cuts_storage[kvp.first] = SlaveCutStorage();
 	}
