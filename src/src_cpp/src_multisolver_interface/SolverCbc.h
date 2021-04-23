@@ -4,6 +4,8 @@
 #include "Cbc_C_Interface.h"
 #include "CbcModel.hpp"
 #include "OsiClpSolverInterface.hpp"
+#include "CoinMpsIO.hpp"
+#include "CoinHelperFunctions.hpp"
 
 /*!
 * \class class SolverCbc

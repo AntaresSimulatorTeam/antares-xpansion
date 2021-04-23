@@ -57,65 +57,83 @@ TEST_CASE("Modification: add rows", "[modif][add-rows]") {
     auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
     SECTION("Loop on instances") {
         for (auto const& solver_name : factory.get_solvers_list()) {
+            
+            // trying each type of row
+            for (auto const& constr_type : { 'L', 'G', 'E' }) {
 
-            std::string instance = datas[inst]._path;
+                std::string instance = datas[inst]._path;
 
-            //========================================================================================
-            // solver declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+                //========================================================================================
+                // solver declaration
+                SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+                solver->init();
+                solver->read_prob(instance.c_str(), "MPS");
 
-            //========================================================================================
-            // Add a row to problem : creating row structure
-            int n_elems = solver->get_nelems();
-            int n_cstr = solver->get_nrows();
-            std::vector<double> matval(n_elems);
-            std::vector<int>	mstart(n_cstr + 1);
-            std::vector<int>	mind(n_elems);
+                //========================================================================================
+                // Add a row to problem : creating row structure
+                int n_elems = solver->get_nelems();
+                int n_cstr = solver->get_nrows();
+                std::vector<double> matval(n_elems);
+                std::vector<int>	mstart(n_cstr + 1);
+                std::vector<int>	mind(n_elems);
 
-            matval = { 5.0, -3.2 };
-            mind = { 0, 1 };
-            mstart = { 0, 2 };
-            std::vector<char> ntype = { 'L' };
-            std::vector<double> rhs = { 5.0 };
+                int newRows = 1;
+                int newElems = 2;
+                matval = { 5.0, -3.2 };
+                mind = { 0, 1 };
+                mstart = { 0, 2 };
+                std::vector<char> ntype = { constr_type };
+                std::vector<double> rhs = { 5.0 };
 
-            //========================================================================================
-            // Add the row to solver
-            solver->add_rows(1, 2, ntype.data(), rhs.data(), NULL, mstart.data(),
-                mind.data(), matval.data());
+                //========================================================================================
+                // Add the row to solver
+                solver->add_rows(newRows, newElems, ntype.data(), rhs.data(), NULL, mstart.data(),
+                    mind.data(), matval.data());
 
-            //========================================================================================
-            // Check new constraint matrix
-            n_elems = solver->get_nelems();
-            n_cstr = solver->get_nrows();
-            REQUIRE(n_elems == datas[inst]._nelems + 2);
+                //========================================================================================
+                // Check new constraint matrix
+                n_elems = solver->get_nelems();
+                n_cstr = solver->get_nrows();
+                REQUIRE(n_elems == datas[inst]._nelems + 2);
 
-            matval.resize(n_elems);
-            mstart.resize(n_cstr + 1);
-            mind.resize(n_elems);
-            int n_returned(0);
-            solver->get_rows(mstart.data(), mind.data(), matval.data(), n_elems, &n_returned, 0, n_cstr - 1);
+                matval.clear();
+                matval.resize(n_elems);
+                mstart.clear();
+                mstart.resize(n_cstr + 1);
+                mind.clear();
+                mind.resize(n_elems);
+                int n_returned(0);
+                solver->get_rows(mstart.data(), mind.data(), matval.data(), 
+                    n_elems, &n_returned, 0, n_cstr - 1);
 
+                std::vector<double> neededMatval = datas[inst]._matval;
+                neededMatval.push_back(5.0);
+                neededMatval.push_back(-3.2);
 
-            std::vector<double> neededMatval = datas[inst]._matval;
-            neededMatval.push_back(5.0);
-            neededMatval.push_back(-3.2);
+                std::vector<int> neededMatind = datas[inst]._mind;
+                neededMatind.push_back(0);
+                neededMatind.push_back(1);
 
-            std::vector<int> neededMatind = datas[inst]._mind;
-            neededMatind.push_back(0);
-            neededMatind.push_back(1);
+                std::vector<int> neededMstart = datas[inst]._mstart;
+                neededMstart.push_back(neededMstart.back() + 2);
 
-            std::vector<int> neededMstart = datas[inst]._mstart;
-            neededMstart.push_back(neededMstart.back() + 2);
+                REQUIRE(solver->get_nrows() == datas[inst]._nrows + 1);
+                REQUIRE(n_elems == datas[inst]._nelems + 2);
+                REQUIRE(n_returned == datas[inst]._nelems + 2);
+                REQUIRE(matval == neededMatval);
+                REQUIRE(mind == neededMatind);
+                REQUIRE(mstart == neededMstart);
 
-            REQUIRE(solver->get_nrows() == datas[inst]._nrows + 1);
-            REQUIRE(n_elems == datas[inst]._nelems + 2);
-            REQUIRE(n_returned == datas[inst]._nelems + 2);
-            REQUIRE(matval == neededMatval);
-            REQUIRE(mind == neededMatind);
-            REQUIRE(mstart == neededMstart);
+                std::vector<double> rhs_get(newRows);
+                solver->get_rhs(rhs_get.data(), solver->get_nrows() - 1, 
+                    solver->get_nrows() - 1);
+                REQUIRE(rhs_get == rhs);
 
+                std::vector<char> rtype_get(newRows);
+                solver->get_row_type(rtype_get.data(), solver->get_nrows() - 1, 
+                    solver->get_nrows() - 1);
+                REQUIRE(rtype_get == ntype);
+            }
         }
     }
 }
@@ -267,120 +285,131 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
 
     SolverFactory factory;
 
-    auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
+    //auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
+    auto inst = GENERATE(MIP_TOY);
     SECTION("Loop on instances") {
 
-        for (auto const& solver_name : factory.get_solvers_list()) {
+        for (auto const& solver_name : factory.get_solvers_list()) {            
+            // testing add 1 and 2 columns
+            for (int newcol = 1; newcol < 3; newcol++) {
 
-            std::string instance = datas[inst]._path;
+                std::string instance = datas[inst]._path;
 
-            //========================================================================================
-            // solver declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+                //========================================================================================
+                // solver declaration
+                SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+                solver->init();
+                solver->read_prob(instance.c_str(), "MPS");
 
-            //========================================================================================
-            // Add new variable to problem
-            int newcol = 1;
-            int nnz = 2;
-            std::vector<double> newobj(newcol, 3.0);
-            // Offset of col i
-            std::vector<int> nmstart(newcol);
-            nmstart[0] = 0;
-            // Row indices
-            std::vector<int> nmind(nnz);
-            nmind[0] = 0;
-            nmind[1] = 1;
-
-            // Values
-            std::vector<double> nmatval(nnz);
-            nmatval[0] = 8.32;
-            nmatval[1] = 21.78;
-            // LBs & UBs
-            std::vector<double> lbs(newcol, 0.0);
-            std::vector<double> ubs(newcol, 6.0);
-
-            solver->add_cols(newcol, nnz, newobj.data(), nmstart.data(),
-                nmind.data(), nmatval.data(), lbs.data(), ubs.data());
-
-            //========================================================================================
-            // Check objective and rows
-            REQUIRE(solver->get_ncols() == datas[inst]._ncols + 1);
-
-            //test obj
-            int n_vars = solver->get_ncols();
-            std::vector<double> obj(n_vars);
-            obj.resize(n_vars);
-            solver->get_obj(obj.data(), 0, n_vars - 1);
-
-            std::vector<double> neededObj = datas[inst]._obj;
-            neededObj.push_back(3.0);
-            REQUIRE(obj == neededObj);
-
-            //test matrix
-            int n_elems = solver->get_nelems();
-            int n_cstr = solver->get_nrows();
-            REQUIRE(n_elems == datas[inst]._nelems + 2);
-
-
-
-            REQUIRE(n_cstr == datas[inst]._nrows);
-
-            std::vector<double> matval;
-            std::vector<int> mind;
-            std::vector<int> mstart;
-
-            matval.resize(n_elems);
-            mstart.resize(n_cstr + 1);
-            mind.resize(n_elems);
-
-            int n_returned = 0;
-            solver->get_rows(mstart.data(), mind.data(), matval.data(), n_elems, &n_returned, 0, n_cstr - 1);
-
-
-            std::vector<double> neededMatval = datas[inst]._matval;
-            neededMatval.insert(neededMatval.begin() + datas[inst]._mstart[1], nmatval[0]);
-            neededMatval.insert(neededMatval.begin() + datas[inst]._mstart[2] + 1, nmatval[1]);
-
-            std::vector<int> neededMatind = datas[inst]._mind;
-            neededMatind.insert(neededMatind.begin() + datas[inst]._mstart[1], datas[inst]._ncols);
-            neededMatind.insert(neededMatind.begin() + datas[inst]._mstart[2] + 1, datas[inst]._ncols);
-
-            std::vector<int> neededMstart = datas[inst]._mstart;
-            neededMstart[1] += 1;
-            for (int i(2); i < neededMstart.size(); i++) {
-                neededMstart[i] += 2;
-            }
-
-            REQUIRE(n_returned == datas[inst]._nelems + 2);
-            REQUIRE(matval == neededMatval);
-            REQUIRE(mind == neededMatind);
-            REQUIRE(mstart == neededMstart);
-
-            // 9. test variables bounds
-            n_vars = solver->get_ncols();
-            lbs.resize(n_vars);
-            ubs.resize(n_vars);
-
-            solver->get_lb(lbs.data(), 0, n_vars - 1);
-            solver->get_ub(ubs.data(), 0, n_vars - 1);
-
-            std::vector<double> neededLb = datas[inst]._lb;
-            neededLb.push_back(0.0);
-            std::vector<double> neededUb = datas[inst]._ub;
-            neededUb.push_back(6.0);
-
-            // infinite management, setting to 1e20
-            for (int i(0); i < solver->get_ncols(); i++) {
-                if (neededUb[i] == 1e20 && ubs[i] > 1e20) {
-                    ubs[i] = 1e20;
+                //========================================================================================
+                // Add new variable to problem
+                int nnz = 2* newcol;
+                std::vector<double> newobj(newcol, 3.0);
+                // Offset of col j in mind and matval
+                std::vector<int> nmstart(newcol);
+                for (int j = 0; j < newcol; j++) {
+                    nmstart[j] = 2 * j;
                 }
+                // Row indices
+                std::vector<int> nmind(nnz);
+                for (int j = 0; j < newcol; j++) {
+                    nmind[2*j]      = 0;
+                    nmind[2*j + 1]  = 1;
+                }
+                // Values
+                std::vector<double> nmatval(nnz);
+                for (int j = 0; j < newcol; j++) {
+                    nmatval[2 * j]      = 8.32;
+                    nmatval[2 * j + 1]  = 21.78;
+                }
+                // LBs & UBs
+                std::vector<double> lbs(newcol, 0.0);
+                std::vector<double> ubs(newcol, 6.0);
+
+                solver->add_cols(newcol, nnz, newobj.data(), nmstart.data(),
+                    nmind.data(), nmatval.data(), lbs.data(), ubs.data());
+
+                //========================================================================================
+                // Check objective and rows
+                REQUIRE(solver->get_ncols() == datas[inst]._ncols + newcol);
+
+                //test obj
+                int n_vars = solver->get_ncols();
+                std::vector<double> obj(n_vars);
+                solver->get_obj(obj.data(), 0, n_vars - 1);
+
+                std::vector<double> neededObj = datas[inst]._obj;
+                for (int j = 0; j < newcol; j++) {
+                    neededObj.push_back(3.0);
+                }
+                REQUIRE(obj == neededObj);
+
+                //test matrix
+                int n_elems = solver->get_nelems();
+                int n_cstr = solver->get_nrows();
+                REQUIRE(n_elems == datas[inst]._nelems + nnz);
+                REQUIRE(n_cstr == datas[inst]._nrows);
+
+                std::vector<double> matval;
+                std::vector<int> mind;
+                std::vector<int> mstart;
+
+                matval.resize(n_elems);
+                mstart.resize(n_cstr + 1);
+                mind.resize(n_elems);
+
+                int n_returned = 0;
+                solver->get_rows(mstart.data(), mind.data(), matval.data(), 
+                    n_elems, &n_returned, 0, n_cstr - 1);
+
+                std::vector<double> neededMatval = datas[inst]._matval;
+                for (int j = 0; j < newcol; j++) {
+                    neededMatval.insert(neededMatval.begin() + datas[inst]._mstart[1] + j
+                        , nmatval[0]);
+                    neededMatval.insert(neededMatval.begin() + datas[inst]._mstart[2] + 1 + j
+                        , nmatval[1]);
+                }
+                std::vector<int> neededMatind = datas[inst]._mind;
+                for (int j = 0; j < newcol; j++) {
+                    neededMatind.insert(neededMatind.begin() + datas[inst]._mstart[1] + j
+                        , datas[inst]._ncols + j);
+                    neededMatind.insert(neededMatind.begin() + datas[inst]._mstart[2] + 1 + 2*j
+                        , datas[inst]._ncols + j);
+                }
+
+                std::vector<int> neededMstart = datas[inst]._mstart;
+                neededMstart[1] += newcol;
+                for (int j = 2; j < neededMstart.size(); j++) {
+                    neededMstart[j] += 2 * newcol;
+                }
+                REQUIRE(n_returned == datas[inst]._nelems + nnz);
+                REQUIRE(matval == neededMatval);
+                REQUIRE(mind == neededMatind);
+                REQUIRE(mstart == neededMstart);
+
+                // 9. test variables bounds
+                n_vars = solver->get_ncols();
+                lbs.resize(n_vars);
+                ubs.resize(n_vars);
+
+                solver->get_lb(lbs.data(), 0, n_vars - 1);
+                solver->get_ub(ubs.data(), 0, n_vars - 1);
+
+                std::vector<double> neededLb = datas[inst]._lb;
+                std::vector<double> neededUb = datas[inst]._ub;
+                for (int j = 0; j < newcol; j++) {
+                    neededLb.push_back(0.0);
+                    neededUb.push_back(6.0);
+                }
+                // infinite management, setting to 1e20
+                for (int i(0); i < solver->get_ncols(); i++) {
+                    if (neededUb[i] == 1e20 && ubs[i] > 1e20) {
+                        ubs[i] = 1e20;
+                    }
+                }
+                REQUIRE(lbs == neededLb);
+                REQUIRE(ubs == neededUb);
             }
-
-
-            REQUIRE(lbs == neededLb);
-            REQUIRE(ubs == neededUb);
         }
     }
 }
@@ -438,17 +467,16 @@ TEST_CASE("Modification: add cols and a row associated to those columns", "[modi
     SECTION("Loop on instances") {
         for (auto const& solver_name : factory.get_solvers_list()) {
 
-            std::cout << solver_name << std::endl;
-
             std::string instance = datas[inst]._path;
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
             solver->read_prob(instance.c_str(), "MPS");
 
+            /*--------------------------------------------------------------------------------*/
             // adding 4 columns, the first with obj 1 and the three others wih obj 0
             // first column with obj 1
             std::vector<double> obj(1, 1.0);
-            std::vector<int> matstart(1, 1);
+            std::vector<int> matstart(1, 0);
             std::vector<int> matind(0);
             std::vector<double> matval(0);
             std::vector<double> lb(1, 0.0);
@@ -456,6 +484,9 @@ TEST_CASE("Modification: add cols and a row associated to those columns", "[modi
             solver->add_cols(1, 0, obj.data(), matstart.data(), matind.data(), matval.data(),
                 lb.data(), ub.data());
 
+            // 3 Colunms with no obj
+            matstart.resize(3);
+            matstart = std::vector<int>(3, 0);
             obj.resize(3);
             obj = std::vector<double>(3, 0.0);
             lb.resize(3);
@@ -469,29 +500,42 @@ TEST_CASE("Modification: add cols and a row associated to those columns", "[modi
             REQUIRE(solver->get_nrows() == datas[inst]._nrows);
             REQUIRE(solver->get_nelems() == datas[inst]._nelems);
 
+            /*--------------------------------------------------------------------------------*/
+            /* Add a row linking the 4 new variables */
             int newrows = 1;
             int newnz = 4;
             std::vector<char> rowType(newrows, 'E');
             std::vector<double> rhs(newrows, 0.0);
-            std::vector<double> range(0);
             std::vector<int> rowmatstart(newrows + 1);
             rowmatstart[0] = 0;
             rowmatstart[1] = newnz;
+
             std::vector<int> rowmatind(newnz);
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < newnz; i++) {
                 rowmatind[i] = datas[inst]._ncols + i;
             }
+
             std::vector<double> rowmatval(newnz, -1.0);
             rowmatval[0] = 1.0;
 
-            solver->add_rows(1, 4, rowType.data(), rhs.data(), NULL, rowmatstart.data(),
+            solver->add_rows(newrows, newnz, rowType.data(), rhs.data(), NULL, rowmatstart.data(),
                 rowmatind.data(), rowmatval.data());
+            
+            REQUIRE(solver->get_nrows() == datas[inst]._nrows + newrows);
+            REQUIRE(solver->get_nelems() == datas[inst]._nelems + newnz);
 
-            std::string fileName = solver_name + "written.mps";
-            solver->write_prob(fileName.c_str(), "MPS");
+            std::vector<int> solv_matstart(newrows + 1);
+            std::vector<int> solv_matind(newnz);
+            std::vector<double> solv_matval(newnz);
+            int n_returned;
+            solver->get_rows(solv_matstart.data(), solv_matind.data(), solv_matval.data(),
+                newnz, &n_returned, solver->get_nrows() - 1, 
+                solver->get_nrows() - 1);
 
-            REQUIRE(solver->get_nrows() == datas[inst]._nrows + 1);
-            REQUIRE(solver->get_nelems() == datas[inst]._nelems + 4);
+            REQUIRE(n_returned == newnz);
+            REQUIRE(solv_matstart == rowmatstart);
+            REQUIRE(solv_matind == rowmatind);
+            REQUIRE(solv_matval == rowmatval);
         }
     }
 }

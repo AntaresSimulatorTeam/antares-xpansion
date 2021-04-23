@@ -131,17 +131,19 @@ void SolverClp::get_rows(int* mstart, int* mclind, double* dmatval, int size, in
 	const CoinBigIndex* rowStart = matrix.getVectorStarts();
 	const double* vals = matrix.getElements();
 	
-	int nelemsToReturn = 0;
-	for (int i(first); i < last + 2; i++) {
-		mstart[i] = rowStart[i];
-		nelemsToReturn = rowStart[i];
+	int firstIndexToReturn = rowStart[first];
+	int lastIndexToReturn = rowStart[last + 1] - 1;
+	int nelemsToReturn = lastIndexToReturn - firstIndexToReturn + 1;
+	// Need to take into account the offset of rowstart as _clp.matrix
+	// returnes the entire matrix
+	for (int i = first; i < last + 2; i++) {
+		mstart[i - first] = rowStart[i] - rowStart[first];
 	}
 	
-	for (int i(0); i < nelemsToReturn; i++) {
-		mclind[i] = column[i];
-		dmatval[i] = vals[i];
+	for (int i = firstIndexToReturn; i < lastIndexToReturn + 1; i++) {
+		mclind[i - firstIndexToReturn]	= column[i];
+		dmatval[i - firstIndexToReturn] = vals[i];
 	}
-
 	*nels = nelemsToReturn;
 
 }
@@ -151,10 +153,14 @@ void SolverClp::get_row_type(char* qrtype, int first, int last) const{
 	const double* rowUpper = _clp.getRowUpper();
 
 	std::vector<int> whichBound(get_nrows());
-	for (int i(first); i < last + 1; i++) {
-		if (rowLower[i] > -COIN_DBL_MAX) {
+	for (int i = first; i < last + 1; i++) {
+
+		if (rowLower[i] == rowUpper[i]) {
+			qrtype[i - first] = 'E';
+		}
+		else if (rowLower[i] > -COIN_DBL_MAX) {
 			if (rowUpper[i] < COIN_DBL_MAX) {
-				std::cout << "ERROR : Row " << i << " has two RHS, both right and left." << std::endl;
+				std::cout << "ERROR : Row " << i << " has two different RHS, both right and left." << std::endl;
 				std::exit(1);
 			}
 			else {
@@ -175,31 +181,32 @@ void SolverClp::get_rhs(double* rhs, int first, int last) const{
 	const double* rowLower = _clp.getRowLower();
 	const double* rowUpper = _clp.getRowUpper();
 
-	std::vector<int> whichBound(last - first + 1);
-	for (int i(0); i < get_nrows(); i++) {
-		if (rowLower[i] > -COIN_DBL_MAX) {
+	for (int i = first; i < last + 1; i++) {
+		if (rowLower[i] == rowUpper[i]) {
+			rhs[i - first] = rowLower[i];
+		}
+		else if (rowLower[i] > -COIN_DBL_MAX) {
 			if (rowUpper[i] < COIN_DBL_MAX) {
-				std::cout << "ERROR : Row " << i << " has two RHS, both right and left." << std::endl;
+				std::cout << "ERROR : Row " << i << " has two different RHS, both right and left." << std::endl;
+				std::cout << rowLower[i] << " < Row[" << i << "] < " << rowUpper[i] << std::endl;
 				std::exit(1);
 			}
 			else {
-				whichBound[i - first] = -1;
+				rhs[i - first] = rowLower[i];
 			}
 		}
 		else if (rowUpper[i] < COIN_DBL_MAX) {
-			whichBound[i - first] = 1;
+			rhs[i - first] = rowUpper[i];
 		}
 		else{
 			std::cout << "ERROR : Row " << i << " in unconstrained. No RHS found." << std::endl;
 			std::exit(1);
 		}
-
-		rhs[i - first] = whichBound[i - first] * std::min(-rowLower[i], rowUpper[i]);
 	}
 }
 
 void SolverClp::get_rhs_range(double* range, int first, int last) const{
-	std::cout << "ERROR : get rhs range not implemented for COIN CLP" << std::endl;
+	std::cout << "ERROR : get rhs range not implemented for COIN CLP interface" << std::endl;
 	std::exit(1);
 }
 
@@ -208,7 +215,7 @@ void SolverClp::get_col_type(char* coltype, int first, int last) const{
 	const double* colLower = _clp.getColLower();
 	const double* colUpper = _clp.getColUpper();
 
-	for (int i(first); i < last + 1; i++) {
+	for (int i = first; i < last + 1; i++) {
 		if (_clp.isInteger(i)) {
 			if (colLower[i] == 0 && colUpper[i] == 1) {
 				coltype[i - first] = 'B';
@@ -226,7 +233,7 @@ void SolverClp::get_col_type(char* coltype, int first, int last) const{
 void SolverClp::get_lb(double* lb, int first, int last) const{
 	const double* colLower = _clp.getColLower();
 
-	for (int i(first); i < last + 1; i++) {
+	for (int i = first; i < last + 1; i++) {
 		lb[i - first] = colLower[i];
 	}
 }
@@ -234,7 +241,7 @@ void SolverClp::get_lb(double* lb, int first, int last) const{
 void SolverClp::get_ub(double* ub, int first, int last) const{
 	const double* colUpper = _clp.getColUpper();
 
-	for (int i(first); i < last + 1; i++) {
+	for (int i = first; i < last + 1; i++) {
 		ub[i - first] = colUpper[i];
 	}
 }
@@ -265,7 +272,7 @@ int SolverClp::get_col_index(std::string const& name) const {
 
 int SolverClp::get_row_names(int first, int last, std::vector<std::string>& names) const
 {
-	for (int i(first); i < last + 1; i++) {
+	for (int i = first; i < last + 1; i++) {
 		names[i - first] = _clp.getRowName(i);
 	}
 	return 0;
@@ -273,7 +280,7 @@ int SolverClp::get_row_names(int first, int last, std::vector<std::string>& name
 
 int SolverClp::get_col_names(int first, int last, std::vector<std::string>& names) const
 {
-	for (int i(first); i < last + 1; i++) {
+	for (int i = first; i < last + 1; i++) {
 		names[i - first] = _clp.getColumnName(i);
 	}
 	return 0;
@@ -300,10 +307,10 @@ void SolverClp::add_rows(int newrows, int newnz, const char* qrtype, const doubl
 	for (int i(0); i < newrows; i++) {
 		if (qrtype[i] == 'L') {
 			rowUpper[i] = rhs[i];
-			rowLower[i] = -1e20;
+			rowLower[i] = -COIN_DBL_MAX;
 		}
 		else if (qrtype[i] == 'G') {
-			rowUpper[i] = 1e20;
+			rowUpper[i] = COIN_DBL_MAX;
 			rowLower[i] = rhs[i];
 		}
 		else if (qrtype[i] == 'E') {
@@ -371,8 +378,8 @@ void SolverClp::chg_rhs(int id_row, double val){
 	const double* rowLower = _clp.getRowLower();
 	const double* rowUpper = _clp.getRowUpper();
 
-	if (rowLower[id_row] <= -1e20) {
-		if (rowUpper[id_row] >= 1e20) {
+	if (rowLower[id_row] <= -COIN_DBL_MAX) {
+		if (rowUpper[id_row] >= COIN_DBL_MAX) {
 			std::cout << "ERROR : unconstrained constraint " << id_row << " in chg_rhs." << std::endl;
 			std::exit(1);
 		}
@@ -381,11 +388,11 @@ void SolverClp::chg_rhs(int id_row, double val){
 		}
 	}
 	else {
-		if (rowUpper[id_row] >= 1e20) {
+		if (rowUpper[id_row] >= COIN_DBL_MAX) {
 			_clp.setRowLower(id_row, val);
 		}
 		else {
-			std::cout << "ERROR : constraint " << id_row << " has both lower and upper bound in chg_rhs." << std::endl;
+			std::cout << "ERROR : constraint " << id_row << " has both different lower and upper bound in chg_rhs." << std::endl;
 			std::cout << "Not implemented in CLP interface yet." << std::endl;
 			std::exit(1);
 		}

@@ -65,12 +65,64 @@ void SolverCbc::free() {
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
 void SolverCbc::write_prob(const char* name, const char* flags) const{
-	std::string nFlags = "";
+
 	if (std::string(flags) == "LP") {
-		nFlags = "-l";
+		_cbc.solver()->writeLpNative(name, NULL, NULL);
 	}
-	std::cout << "ERROR : write_prob not coded with Cbc" << std::endl;
-	std::exit(1);
+	else if (std::string(flags) == "MPS") {
+
+		const int numcols = get_ncols();
+		std::shared_ptr<char[]> shared_integrality(new char[numcols]);
+		char* integrality = shared_integrality.get();
+		CoinCopyN(_cbc.solver()->getColType(false), numcols, integrality);
+
+		bool hasInteger = false;
+		for (int i = 0; i < numcols; ++i) {
+			if (_cbc.solver()->isInteger(i)) {
+				hasInteger = true;
+				break;
+			}
+		}
+
+		std::vector<std::string> colNamesVec(get_ncols());
+		std::vector<std::string> rowNamesVec(get_nrows());
+		get_col_names(0, get_ncols() - 1, colNamesVec);
+		get_row_names(0, get_nrows() - 1, rowNamesVec);
+		std::cout << colNamesVec.size() << "   " << get_ncols() << std::endl;
+		std::exit(1);
+
+		CoinMpsIO writer;
+		writer.setInfinity(_cbc.solver()->getInfinity());
+		writer.passInMessageHandler(_cbc.solver()->messageHandler());
+
+		writer.setMpsData(
+			*(_cbc.solver()->getMatrixByCol()),
+			_cbc.solver()->getInfinity(),
+			_cbc.solver()->getColLower(),
+			_cbc.solver()->getColUpper(),
+			_cbc.solver()->getObjCoefficients(),
+			hasInteger ? integrality : NULL,
+			_cbc.solver()->getRowLower(),
+			_cbc.solver()->getRowUpper(),
+			colNamesVec,
+			rowNamesVec
+		);
+
+		std::string probName = "";
+		_cbc.solver()->getStrParam(OsiProbName, probName);
+		writer.setProblemName(probName.c_str());
+
+		double objOffset = 0.0;
+		_cbc.solver()->getDblParam(OsiObjOffset, objOffset);
+		writer.setObjectiveOffset(objOffset);
+
+		writer.writeMps(name, 0 /*gzip it*/, 1, 1,
+			NULL, 0, NULL);
+	}
+	else {
+		std::cout << "ERROR : Write prob - unknown format type " << flags << std::endl;
+		std::exit(1);
+	}
 }
 
 void SolverCbc::read_prob(const char* prob_name, const char* flags){
@@ -98,7 +150,8 @@ void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv){
 *************************************************************************************************/
 int  SolverCbc::get_ncols() const{
 	int cols(0);
-	cols = _cbc.solver()->getNumCols();
+	//cols = _cbc.solver()->getNumCols();
+	cols = _cbc.getNumCols();
 	return cols;
 }
 
@@ -137,17 +190,19 @@ void SolverCbc::get_rows(int* mstart, int* mclind, double* dmatval, int size, in
 	const CoinBigIndex* rowStart = matrix.getVectorStarts();
 	const double* vals = matrix.getElements();
 
-	int nelemsToReturn = 0;
-	for (int i(first); i < last + 2; i++) {
-		mstart[i] = rowStart[i];
-		nelemsToReturn = rowStart[i];
+	int firstIndexToReturn = rowStart[first];
+	int lastIndexToReturn = rowStart[last + 1] - 1;
+	int nelemsToReturn = lastIndexToReturn - firstIndexToReturn + 1;
+	// Need to take into account the offset of rowstart as _clp.matrix
+	// returnes the entire matrix
+	for (int i = first; i < last + 2; i++) {
+		mstart[i - first] = rowStart[i] - rowStart[first];
 	}
 
-	for (int i(0); i < nelemsToReturn; i++) {
-		mclind[i] = column[i];
-		dmatval[i] = vals[i];
+	for (int i = firstIndexToReturn; i < lastIndexToReturn + 1; i++) {
+		mclind[i - firstIndexToReturn] = column[i];
+		dmatval[i - firstIndexToReturn] = vals[i];
 	}
-
 	*nels = nelemsToReturn;
 }
 
@@ -157,9 +212,13 @@ void SolverCbc::get_row_type(char* qrtype, int first, int last) const{
 
 	std::vector<int> whichBound(get_nrows());
 	for (int i(first); i < last + 1; i++) {
-		if (rowLower[i] > -COIN_DBL_MAX) {
+
+		if (rowLower[i] == rowUpper[i]) {
+			qrtype[i - first] = 'E';
+		}
+		else if (rowLower[i] > -COIN_DBL_MAX) {
 			if (rowUpper[i] < COIN_DBL_MAX) {
-				std::cout << "ERROR : Row " << i << " has two RHS, both right and left." << std::endl;
+				std::cout << "ERROR : Row " << i << " has two different RHS, both right and left." << std::endl;
 				std::exit(1);
 			}
 			else {
@@ -180,31 +239,33 @@ void SolverCbc::get_rhs(double* rhs, int first, int last) const{
 	const double* rowLower = _cbc.solver()->getRowLower();
 	const double* rowUpper = _cbc.solver()->getRowUpper();
 
-	std::vector<int> whichBound(last - first + 1);
-	for (int i(0); i < get_nrows(); i++) {
-		if (rowLower[i] > -COIN_DBL_MAX) {
+	for (int i = first; i < last + 1; i++) {
+
+		if (rowLower[i] == rowUpper[i]) {
+			rhs[i - first] = rowUpper[i];
+		}
+		else if (rowLower[i] > -COIN_DBL_MAX) {
 			if (rowUpper[i] < COIN_DBL_MAX) {
-				std::cout << "ERROR : Row " << i << " has two RHS, both right and left." << std::endl;
+				std::cout << "ERROR : Row " << i << " has two different RHS, both right and left." << std::endl;
 				std::exit(1);
 			}
 			else {
-				whichBound[i - first] = -1;
+				rhs[i - first] = rowLower[i];
 			}
 		}
 		else if (rowUpper[i] < COIN_DBL_MAX) {
-			whichBound[i - first] = 1;
+			rhs[i - first] = rowUpper[i];
 		}
 		else {
 			std::cout << "ERROR : Row " << i << " in unconstrained. No RHS found." << std::endl;
 			std::exit(1);
 		}
-
-		rhs[i - first] = whichBound[i - first] * std::min(-rowLower[i], rowUpper[i]);
 	}
 }
 
 void SolverCbc::get_rhs_range(double* range, int first, int last) const{
-	std::cout << "ERROR : get rhs range not implemented for COIN CLP-CBC" << std::endl;
+	std::cout << "ERROR : get rhs range not implemented in the interface for COIN CLP-CBC" << std::endl;
+	std::cout << "ERROR : range constraints have to be set as two different constraints." << std::endl;
 	std::exit(1);
 }
 
@@ -270,6 +331,12 @@ int SolverCbc::get_col_index(std::string const& name) const {
 int SolverCbc::get_row_names(int first, int last, std::vector<std::string>& names) const
 {
 	std::vector<std::string> solver_row_names = _cbc.solver()->getRowNames();
+	if (solver_row_names.size() < names.size()) {
+		std::cout << "ERROR : all required rows don't have a name. Impossible to get row names."
+			<< std::endl;
+		std::exit(1);
+	}
+
 	for (int i(first); i < last + 1; i++) {
 		names[i - first] = solver_row_names[i];
 	}
@@ -279,6 +346,12 @@ int SolverCbc::get_row_names(int first, int last, std::vector<std::string>& name
 int SolverCbc::get_col_names(int first, int last, std::vector<std::string>& names) const
 {
 	std::vector<std::string> solver_col_names = _cbc.solver()->getColNames();
+	if (solver_col_names.size() < names.size()) {
+		std::cout << "ERROR : all required columns don't have a name. Impossible to get col names."
+			<< std::endl;
+		std::exit(1);
+	}
+
 	for (int i(first); i < last + 1; i++) {
 		names[i - first] = solver_col_names[i];
 	}
@@ -306,10 +379,10 @@ void SolverCbc::add_rows(int newrows, int newnz, const char* qrtype, const doubl
 	for (int i(0); i < newrows; i++) {
 		if (qrtype[i] == 'L') {
 			rowUpper[i] = rhs[i];
-			rowLower[i] = -1e20;
+			rowLower[i] = -COIN_DBL_MAX;
 		}
 		else if (qrtype[i] == 'G') {
-			rowUpper[i] = 1e20;
+			rowUpper[i] = COIN_DBL_MAX;
 			rowLower[i] = rhs[i];
 		}
 		else if (qrtype[i] == 'E') {
@@ -321,7 +394,7 @@ void SolverCbc::add_rows(int newrows, int newnz, const char* qrtype, const doubl
 			std::exit(1);
 		}
 	}
-
+	
 	_cbc.solver()->addRows(newrows, mstart, mclind, dmatval, rowLower.data(), rowUpper.data());
 }
 
@@ -336,6 +409,7 @@ void SolverCbc::add_cols(int newcol, int newnz, const double* objx, const int* m
 	colStart[newcol] = newnz;
 
 	_cbc.solver()->addCols(newcol, colStart.data(), mrwind, dmatval, bdl, bdu, objx);
+	_cbc.synchronizeModel();
 }
 
 void SolverCbc::add_name(int type, const char* cnames, int indice){
@@ -377,8 +451,8 @@ void SolverCbc::chg_rhs(int id_row, double val){
 	const double* rowLower = _cbc.solver()->getRowLower();
 	const double* rowUpper = _cbc.solver()->getRowUpper();
 
-	if (rowLower[id_row] <= -1e20) {
-		if (rowUpper[id_row] >= 1e20) {
+	if (rowLower[id_row] <= -COIN_DBL_MAX) {
+		if (rowUpper[id_row] >= COIN_DBL_MAX) {
 			std::cout << "ERROR : unconstrained constraint " << id_row << " in chg_rhs." << std::endl;
 			std::exit(1);
 		}
@@ -387,7 +461,7 @@ void SolverCbc::chg_rhs(int id_row, double val){
 		}
 	}
 	else {
-		if (rowUpper[id_row] >= 1e20) {
+		if (rowUpper[id_row] >= COIN_DBL_MAX) {
 			_cbc.solver()->setRowLower(id_row, val);
 		}
 		else {

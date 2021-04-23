@@ -312,6 +312,7 @@ void SolverCplex::chg_row_name(int id_row, std::string & name)
 	
 	std::vector<char*> nameVec(1);
 	char nameToChar[100];
+	memset(nameToChar, 0, sizeof(nameToChar));
 	for (int i(0); i < name.size(); i++) {
 		nameToChar[i] = name[i];
 	}
@@ -327,11 +328,11 @@ void SolverCplex::chg_col_name(int id_col, std::string & name)
 
 	std::vector<char*> nameVec(1);
 	char nameToChar[100];
+	memset(nameToChar, 0, sizeof(nameToChar));
 	for (int i(0); i < name.size(); i++) {
 		nameToChar[i] = name[i];
 	}
 	nameVec[0] = nameToChar;
-
 	int status = CPXchgcolname(_env, _prb, 1, indices.data(), nameVec.data());
 	zero_status_check(status, "Set col name");
 }
