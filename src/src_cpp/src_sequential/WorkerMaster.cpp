@@ -23,7 +23,13 @@ WorkerMaster::~WorkerMaster() {
 void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
 	x0.clear();
 	std::vector<double> ptr(_solver->get_ncols());
-	ORTgetlpsolution(_solver, ptr);
+
+	if (_solver->get_n_integer_vars() > 0) {
+		_solver->get_mip_sol(ptr.data());
+	}
+	else {
+		_solver->get_lp_sol(ptr.data(), NULL, NULL);
+	}
 	assert(_id_alpha_i.back()+1 == ptr.size());
 	for (auto const & kvp : _id_to_name) {
 		x0[kvp.second] = ptr[kvp.first];
@@ -240,7 +246,7 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 		std::vector<int> start(2, 0);
 		_id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
 
-		ORTaddcols(_solver, DblVector(1, obj), { 0, 2 }, IntVector(1, 0), DblVector(1, 0.0),
+		ORTaddcols(_solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0), DblVector(0, 0.0),
 			DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), StrVector(1, "alpha")); /* Add variable alpha and its parameters */
 
 		_id_alpha_i.resize(nslaves, -1);
@@ -248,7 +254,7 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 			std::stringstream buffer;
 			buffer << "alpha_" << i;
 			_id_alpha_i[i] = _solver->get_ncols();
-			ORTaddcols(_solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(1, 0), DblVector(1, 0.0), 
+			ORTaddcols(_solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0), DblVector(0, 0.0), 
 				DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), 
 				StrVector(1, buffer.str()) ); /* Add variable alpha_i and its parameters */
 		}

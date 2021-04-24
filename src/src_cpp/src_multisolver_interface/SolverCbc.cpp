@@ -509,13 +509,21 @@ void SolverCbc::solve_lp(int& lp_status){
 }
 
 void SolverCbc::solve_mip(int& lp_status){
-
-	std::cout << "Cbc solver write before solve" << std::endl;
-	write_prob("master_test.mps", "MPS");
-	read_prob("master_test.mps", "MPS");
+	
+	std::cout << "Inner clp solver rows before save : " << _clp_inner_solver.getNumRows() << std::endl;
+	_cbc.saveModel(&_clp_inner_solver, NULL, NULL);
+	std::cout << "saved ok" << std::endl;
+	std::cout << "Inner clp solver rows after save : " << _clp_inner_solver.getNumRows() << std::endl;
+	write_prob("cbc_before_solve.mps", "MPS");
 
 	_cbc.branchAndBound();
-	
+
+	write_prob("cbc_after_solve.mps", "MPS");
+	std::vector<double> ubx(1);
+	get_ub(ubx.data(), 0, 0);
+	std::cout << "UB x = " << ubx[0] << std::endl;
+	std::exit(1);
+
 	/*std::cout << "*********************************************" << std::endl;
 	std::cout << "COUCOU CBC STATUS " << _cbc.status() << std::endl;
 	std::cout << "COUCOU CBC STATUS " << _cbc.secondaryStatus() << std::endl;

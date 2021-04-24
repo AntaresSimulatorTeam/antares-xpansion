@@ -26,7 +26,12 @@ void Worker::free() {
 *  \param lb : double which receives the optimal value
 */
 void Worker::get_value(double & lb) {
-	_solver->get_mip_value(lb);
+	if (_is_master && _solver->get_n_integer_vars() > 0) {
+		_solver->get_mip_value(lb);
+	}
+	else {
+		_solver->get_lp_value(lb);
+	}
 }
 
 /*!
@@ -90,7 +95,17 @@ StrVector ORT_LP_STATUS = {
 */
 void Worker::solve(int & lp_status, BendersOptions const& options) {
 
-	_solver->solve_mip(lp_status);
+	std::cout << "is master " << _is_master << std::endl;
+	std::cout << "integer " << _solver->get_n_integer_vars() << std::endl;
+	if (_is_master && _solver->get_n_integer_vars() > 0) {
+
+		_solver->write_prob("coin_master.mps", "MPS");
+		_solver->solve_mip(lp_status);
+	}
+	else {
+		_solver->solve_lp(lp_status);
+	}
+	
 
 	if (lp_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
