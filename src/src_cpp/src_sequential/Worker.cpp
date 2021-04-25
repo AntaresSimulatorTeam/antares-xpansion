@@ -95,11 +95,7 @@ StrVector ORT_LP_STATUS = {
 */
 void Worker::solve(int & lp_status, BendersOptions const& options) {
 
-	std::cout << "is master " << _is_master << std::endl;
-	std::cout << "integer " << _solver->get_n_integer_vars() << std::endl;
 	if (_is_master && _solver->get_n_integer_vars() > 0) {
-
-		_solver->write_prob("coin_master.mps", "MPS");
 		_solver->solve_mip(lp_status);
 	}
 	else {

@@ -92,10 +92,8 @@ public:
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].clear();
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].resize(nrows + 1);
 
-		std::cout << "mindex size = " << std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].size() << std::endl;
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].clear();
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].resize(nelems);
-		std::cout << "mindex size = " << std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].size() << std::endl;
 
 		std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].clear();
 		std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].resize(ncols);
@@ -122,8 +120,6 @@ public:
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].clear();
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].resize(ncols);
 
-
-		std::cout << "coucou StandardLp befreo getows" << std::endl;
 		ORTgetrows(solver_p,
 					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
 					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX],
@@ -131,44 +127,33 @@ public:
 					0,
 					std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 		
-		std::cout << "mindex size = " << std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX].size() << std::endl;
-		for (auto const& val : std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]) {
-			std::cout << val << "   ";
-		}
-		std::cout << std::endl;
-		for (auto const& val : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]) {
-			std::cout << val << "   ";
-		}
-		std::cout << std::endl;
-		std::cout << "coucou StandardLp befreo getRowtype" << std::endl;
 		ORTgetrowtype(solver_p,
 					  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
 					  0,
 					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
-		std::cout << "coucou StandardLp befreo getrhs" << std::endl;
+
 		ORTgetrhs(solver_p,
 				  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
 				  0,
 				  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
-		std::cout << "coucou StandardLp befreo comment" << std::endl;
+
 		// Range constraint don't exist in a sparse matrix formualtion
 		/*ORTgetrhsrange(solver_p,
 						std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE],
 						0,
 						std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);*/
-		std::cout << "coucou StandardLp befreo colinfo" << std::endl;
+
 		ORTgetcolinfo(solver_p,
 					  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
 					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
 					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
 					  0,
 					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
-		std::cout << "coucou StandardLp befreo gerobj" << std::endl;
+
 		ORTgetobj(solver_p,
 				  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
 				  0,
 				  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]-1);
-		std::cout << "coucou StandardLp befreo assert" << std::endl;
 
 		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
@@ -186,6 +171,10 @@ public:
 
 	int append_in(SolverAbstract::Ptr containingSolver_p, std::string const & prefix_p = "") const {
 
+		Timer timer;
+		timer.restart();
+
+
 		// simply increment the columns indices
 		IntVector newmindex(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
 		int nbExistingCols(containingSolver_p->get_ncols());
@@ -193,31 +182,20 @@ public:
 			i += nbExistingCols;
 		}
 
+		std::cout << "increment cols indices " << timer.elapsed() << std::endl;
+		timer.restart();
+
 		//rename variables
 		std::string prefix_l = (prefix_p != "") ? prefix_p : ("prob"+std::to_string(appendCNT));
 		std::vector<std::string> newNames;
 		newNames.resize(_colNames.size());
 		std::transform(_colNames.begin(), _colNames.end(), newNames.begin(),
 					[&prefix_l](std::string varName_p)->std::string{ return prefix_l + varName_p; });
-		std::cout << "coucou append in before addCol" << std::endl;
 
+		std::cout << "transform              " << timer.elapsed() << std::endl;
+		timer.restart();
 
-		std::cout << "newcols " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] << std::endl;
 		std::vector<int> mstart(std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS], 0);
-
-		std::cout << "Obj " << std::endl;
-		for (auto const& val : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ]) { std::cout << val << "   "; }
-		std::cout << "\n mstart" << std::endl;
-		for (auto const& val : mstart) { std::cout << val << "   "; }
-		std::cout << "\n lb" << std::endl;
-		for (auto const& val : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB]) { std::cout << val << "   "; }
-		std::cout << "\n ub" << std::endl;
-		for (auto const& val : std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB]) { std::cout << val << "   "; }
-		std::cout << "\n coltype" << std::endl;
-		for (auto const& val : std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE]) { std::cout << val << "   "; }
-		std::cout << "\n names" << std::endl;
-		for (auto const& val : newNames) { std::cout << val << "   "; }
-		std::cout << "\n" << std::endl;
 		ORTaddcols(containingSolver_p,
 				   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
 				   mstart, IntVector(0, 0), DblVector(0, 0.0),
@@ -226,7 +204,9 @@ public:
 				   std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
 				   newNames);
 
-		std::cout << "coucou append in before addRox" << std::endl;
+		std::cout << "add col              " << timer.elapsed() << std::endl;
+		timer.restart();
+
 		ORTaddrows(containingSolver_p,
 					std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
 					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
@@ -235,6 +215,8 @@ public:
 					newmindex,
 					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
 
+		std::cout << "add row              " << timer.elapsed() << std::endl;
+		timer.restart();
 		++appendCNT;
 
 		return nbExistingCols;

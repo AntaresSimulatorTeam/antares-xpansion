@@ -22,6 +22,7 @@ public:
 	OsiClpSolverInterface _clp_inner_solver;
 	CbcModel _cbc;
 	CoinMessageHandler _message_handler;
+	int _current_log_level;
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor    --------------------------------

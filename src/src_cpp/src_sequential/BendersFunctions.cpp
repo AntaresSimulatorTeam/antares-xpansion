@@ -401,11 +401,6 @@ void get_slave_cut(SlaveCutPackage & slave_cut_package, SlavesMapPtr & map_slave
 		ptr->get_value(handler->get_dbl(SLAVE_COST));
 		ptr->get_subgradient(handler->get_subgradient());
 
-		std::cout << kvp.first << "   val = " << handler->get_dbl(SLAVE_COST) <<  std::endl;
-		for (auto const& kp : handler->get_subgradient()) {
-			std::cout << kp.first << "  " << kp.second << std::endl;
-		}
-
 		ptr->get_simplex_ite(handler->get_int(SIMPLEXITER));
 		handler->get_dbl(SLAVE_TIMER) = timer_slave.elapsed();
 		slave_cut_package[kvp.first] = *slave_cut_data;
@@ -482,10 +477,6 @@ void sort_cut_slave(AllCutPackage const & all_package, WorkerMasterPtr & master,
 				data.deletedcut++;
 			}
 			else {
-				/*std::cout << "Cut " << itmap.first << "    SP val = "  << handler->get_dbl(SLAVE_COST) << std::endl;
-				for (auto const& kvp : handler->get_subgradient()) {
-					if(kvp.second != 0.0 ){ std::cout << "   " << kvp.first << "  " << kvp.second << std::endl; }
-				}*/
 				master->add_cut_slave(problem_to_id[itmap.first], handler->get_subgradient(), data.x0, handler->get_dbl(SLAVE_COST));
 				if (options.ACTIVECUTS) {
 					slave_cut_id[itmap.first].push_back(master->get_number_constraint());

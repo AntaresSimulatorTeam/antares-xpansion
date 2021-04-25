@@ -29,6 +29,7 @@ void ORTgetrows(SolverAbstract::Ptr const solver_p,
                 std::vector<double> & dmatval_p,
                 int first_p, int last_p)
 {
+
     int nelems_returned = 0;
     solver_p->get_rows(mstart_p.data(), mclind_p.data(), dmatval_p.data(),
         solver_p->get_nelems(), &nelems_returned, 0, solver_p->get_nrows() - 1);
@@ -95,7 +96,9 @@ void ORTaddrows(SolverAbstract::Ptr solver_p,
 	assert((range_p.size() == 0 ) || (range_p.size() == qrtype_p.size()) );
 	assert(mclind_p.size() == dmatval_p.size());
 
-    solver_p->add_rows(rhs_p.size(), dmatval_p.size(), qrtype_p.data(), 
+    int nrows = rhs_p.size();
+
+    solver_p->add_rows(nrows, dmatval_p.size(), qrtype_p.data(), 
         rhs_p.data(), range_p.data(), mstart_p.data(), mclind_p.data(), dmatval_p.data());
 }
 
@@ -117,19 +120,25 @@ void ORTgetlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<double>
 void ORTgetrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> & qrtype_p, 
     int first_p, int last_p)
 {
-    solver_p->get_row_type(qrtype_p.data(), first_p, last_p);
+    if (last_p >= first_p) {
+        solver_p->get_row_type(qrtype_p.data(), first_p, last_p);
+    }
 }
 
 void ORTgetrhs(SolverAbstract::Ptr const solver_p, std::vector<double> & rhs_p, 
     int first_p, int last_p)
 {
-    solver_p->get_rhs(rhs_p.data(), first_p, last_p);
+    if (last_p >= first_p) {
+        solver_p->get_rhs(rhs_p.data(), first_p, last_p);
+    }
 }
 
 void ORTgetrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> &  range_p, 
     int first_p, int last_p)
 {
-    solver_p->get_rhs_range(range_p.data(), first_p, last_p);
+    if (last_p >= first_p) {
+        solver_p->get_rhs_range(range_p.data(), first_p, last_p);
+    }
 }
 
 void ORTgetcolinfo(SolverAbstract::Ptr const solver_p,

@@ -39,14 +39,12 @@ int main(int argc, char** argv)
 
 	SolverFactory factory;
 	std::string solver_to_use = (options.SOLVER_NAME == "COIN") ? "CBC" : options.SOLVER_NAME;
-	SolverAbstract::Ptr mergedSolver_l = factory.create_solver(solver_to_use); // ("full_mip", ORTOOLS_MIP_SOLVER_TYPE);
+	SolverAbstract::Ptr mergedSolver_l = factory.create_solver(solver_to_use); 
 	mergedSolver_l->init();
 	mergedSolver_l->set_output_log_level(3);
 
-	// XPRSsetcbmessage(full, optimizermsg, NULL);
-	// XPRSsetintcontrol(full, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	int ncols(0);
-	int nslaves(input.size());//size-1 no ? it contains the master
+	int nslaves = input.size() - 1;
 	CouplingMap x_mps_id;
 	int cntProblems_l(0);
 
@@ -58,14 +56,10 @@ int main(int argc, char** argv)
 
 		SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
 		solver_l->init();
-		//solver_l->set_output_log_level(0);
+		solver_l->set_output_log_level(0);
 
-		std::cout << "Doing " << problem_name << std::endl;
-		
 		ORTreadmps(solver_l, problem_name);
 		
-		// XPRSsetcbmessage(prob, optimizermsg, NULL);
-		// XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 		if (kvp.first != options.MASTER_NAME) {
 
 			int mps_ncols(solver_l->get_ncols());
@@ -77,6 +71,7 @@ int main(int argc, char** argv)
 			}
 			ORTgetobj(solver_l, o, 0, mps_ncols - 1);
 			double const weigth = options.slave_weight(nslaves, kvp.first);
+			std::cout << kvp.first << "  wieght = " << weigth << std::endl;
 			for (auto & c : o) {
 				c *= weigth;
 			}
@@ -85,23 +80,18 @@ int main(int argc, char** argv)
 		StandardLp lpData(solver_l);
 		std::string varPrefix_l = "prob" + std::to_string(cntProblems_l) + "_";
 
-		std::cout << "    prefixe of prob : " << varPrefix_l << std::endl;
-
 		lpData.append_in(mergedSolver_l, varPrefix_l);
-		std::cout << kvp.first << "    interger vars  " << solver_l->get_n_integer_vars() << std::endl;
-		std::cout << "merge     interger vars  " << mergedSolver_l->get_n_integer_vars() << std::endl;
 
 		for (auto const & x : kvp.second) {
 			if (mergedSolver_l->get_col_index(varPrefix_l + x.first) == -1){
 				std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
-				//ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
+				ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
 				std::string mpsName = options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps";
 				mergedSolver_l->write_prob(mpsName.c_str(), "MPS");
 				std::exit(1);
 			}
 			else{
-				x_mps_id[x.first][kvp.first] = mergedSolver_l->get_col_index(varPrefix_l + x.first);//x_mps_id[var_name_in_structure][problem_name] = var_id_in_merged_solver
-				std::cout << "MAPS : " << x.first << "   " << kvp.first << "    " << x_mps_id[x.first][kvp.first] << std::endl;
+				x_mps_id[x.first][kvp.first] = mergedSolver_l->get_col_index(varPrefix_l + x.first);
 			}
 		}
 
@@ -123,6 +113,7 @@ int main(int argc, char** argv)
 	values.reserve(neles_reserve);
 	cindex.reserve(neles_reserve);
 	mstart.reserve(nrows_reserve + 1);
+
 	// adding coupling constraints
 	for (auto const & kvp : x_mps_id) {
 		std::string const var_name(kvp.first);
@@ -150,11 +141,8 @@ int main(int argc, char** argv)
 			}
 		}
 	}
-	std::cout << neles << std::endl;
 	mstart.push_back(neles);
-	std::cout << "coupling constr : " << nrows << std::endl;
-	for (auto const& ms : mstart) { std::cout << ms << "   "; }
-	std::cout << std::endl;
+
 	DblVector rhs(nrows, 0);
 	CharVector sense(nrows, 'E');
 	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
@@ -165,9 +153,6 @@ int main(int argc, char** argv)
 	LOG(INFO) << "Writting lp file" << std::endl;
 	ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.lp");
 
-	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
-	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
-	// XPRSlpoptimize(full, "-b");
 	mergedSolver_l->set_threads(16);
 
 	LOG_INFO_AND_COUT("Solving...");
@@ -190,11 +175,9 @@ int main(int argc, char** argv)
 	DblVector ptr(mergedSolver_l->get_ncols());
 	double investCost_l(0);
 	if (mergedSolver_l->get_n_integer_vars() > 0) {
-		std::cout << "ICI UN MIP A ETE RESOLU" << std::endl;
 		mergedSolver_l->get_mip_sol(ptr.data());
 	}
 	else {
-		std::cout << "ICI UN LP A ETE RESOLU ????" << std::endl;
 		mergedSolver_l->get_lp_sol(ptr.data(), NULL, NULL);
 	}
 

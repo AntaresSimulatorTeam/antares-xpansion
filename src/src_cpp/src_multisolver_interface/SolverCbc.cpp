@@ -12,6 +12,7 @@ SolverCbc::SolverCbc() {
 	}
 
 	_NumberOfProblems += 1;
+	_current_log_level = 0;
 }
 
 SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
@@ -20,7 +21,7 @@ SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
 	{
 		_clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
 		_cbc = CbcModel(_clp_inner_solver);
-		set_output_log_level(0);
+		set_output_log_level(_current_log_level);
 	}
 	else {
 		_NumberOfProblems -= 1;
@@ -54,7 +55,7 @@ int SolverCbc::get_number_of_instances()
 void SolverCbc::init() {
 	_clp_inner_solver = OsiClpSolverInterface();
 	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(0);
+	set_output_log_level(_current_log_level);
 }
 
 void SolverCbc::free() {
@@ -130,7 +131,7 @@ void SolverCbc::read_prob(const char* prob_name, const char* flags){
 	// Affectation of new Clp interface to Cbc
 	// As CbcModel _cbc is modified, need to set log level to 0 again
 	_cbc = CbcModel(_clp_inner_solver);	
-	set_output_log_level(0);
+	set_output_log_level(_current_log_level);
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv){
@@ -434,7 +435,6 @@ void SolverCbc::chg_col_type(int nels, const int* mindex, const char* qctype) {
 	std::vector<double> bnd_val(1, 1.0);
 
 	for (int i = 0; i < nels; i++) {
-		std::cout << i << qctype[i] << "    ncols " << get_ncols() << std::endl;
 		if (qctype[i] == 'C') {
 			_clp_inner_solver.setContinuous(mindex[i]);
 		}
@@ -452,7 +452,6 @@ void SolverCbc::chg_col_type(int nels, const int* mindex, const char* qctype) {
 		}
 		std::vector<char> colT(1);
 		get_col_type(colT.data(), mindex[i], mindex[i]);
-		std::cout << "newType : " << colT[i] << std::endl;
 	}
 }
 
@@ -514,7 +513,7 @@ void SolverCbc::solve_lp(int& lp_status){
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
 	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(0);
+	set_output_log_level(_current_log_level);
 
 	_cbc.solver()->initialSolve();
 
@@ -538,7 +537,7 @@ void SolverCbc::solve_mip(int& lp_status){
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
 	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(0);
+	set_output_log_level(_current_log_level);
 
 	_cbc.branchAndBound();
 
@@ -630,6 +629,9 @@ void SolverCbc::get_mip_sol(double* primals){
 ------------------------    Methods to set algorithm or logs levels    ---------------------------
 *************************************************************************************************/
 void SolverCbc::set_output_log_level(int loglevel){
+	// Saving asked log_level for calls in solve, when Cbc is reinitialized
+	_current_log_level = loglevel;
+
 	_clp_inner_solver.passInMessageHandler(&_message_handler);
 	_cbc.passInMessageHandler(&_message_handler);
 	if (loglevel == 1 || loglevel == 3) {
