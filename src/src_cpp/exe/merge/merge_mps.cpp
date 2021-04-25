@@ -37,7 +37,12 @@ int main(int argc, char** argv)
 	CouplingMap input;
 	build_input(options, input);
 
-	operations_research::MPSolver mergedSolver_l("full_mip", ORTOOLS_MIP_SOLVER_TYPE);
+	SolverFactory factory;
+	std::string solver_to_use = (options.SOLVER_NAME == "COIN") ? "CBC" : options.SOLVER_NAME;
+	SolverAbstract::Ptr mergedSolver_l = factory.create_solver(solver_to_use); // ("full_mip", ORTOOLS_MIP_SOLVER_TYPE);
+	mergedSolver_l->init();
+	mergedSolver_l->set_output_log_level(3);
+
 	// XPRSsetcbmessage(full, optimizermsg, NULL);
 	// XPRSsetintcontrol(full, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	int ncols(0);
@@ -49,28 +54,23 @@ int main(int argc, char** argv)
 	for (auto const & kvp : input) {
 
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first + ".mps");
-		ncols = mergedSolver_l.NumVariables();
+		ncols = mergedSolver_l->get_ncols();
 
-		operations_research::MPSolver::OptimizationProblemType solverType_l;
-		if(kvp.first == options.MASTER_NAME)
-		{
-			solverType_l = ORTOOLS_MIP_SOLVER_TYPE;
-		}
-		else
-		{
-			solverType_l = ORTOOLS_LP_SOLVER_TYPE;
-		}
-		operations_research::MPSolver solver_l("toMerge", solverType_l);
+		SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
+		solver_l->init();
+		//solver_l->set_output_log_level(0);
 
+		std::cout << "Doing " << problem_name << std::endl;
+		
 		ORTreadmps(solver_l, problem_name);
+		
 		// XPRSsetcbmessage(prob, optimizermsg, NULL);
 		// XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
-
 		if (kvp.first != options.MASTER_NAME) {
 
-			int mps_ncols(solver_l.NumVariables());
+			int mps_ncols(solver_l->get_ncols());
 
-			DblVector o;
+			DblVector o(mps_ncols);
 			IntVector sequence(mps_ncols);
 			for (int i(0); i < mps_ncols; ++i) {
 				sequence[i] = i;
@@ -84,19 +84,24 @@ int main(int argc, char** argv)
 		}
 		StandardLp lpData(solver_l);
 		std::string varPrefix_l = "prob" + std::to_string(cntProblems_l) + "_";
+
+		std::cout << "    prefixe of prob : " << varPrefix_l << std::endl;
+
 		lpData.append_in(mergedSolver_l, varPrefix_l);
+		std::cout << kvp.first << "    interger vars  " << solver_l->get_n_integer_vars() << std::endl;
+		std::cout << "merge     interger vars  " << mergedSolver_l->get_n_integer_vars() << std::endl;
 
 		for (auto const & x : kvp.second) {
-			operations_research::MPVariable const * const var_l = mergedSolver_l.LookupVariableOrNull(varPrefix_l+x.first);
-			if (nullptr == var_l)
-			{
+			if (mergedSolver_l->get_col_index(varPrefix_l + x.first) == -1){
 				std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
-				ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
+				//ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
+				std::string mpsName = options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps";
+				mergedSolver_l->write_prob(mpsName.c_str(), "MPS");
 				std::exit(1);
 			}
-			else
-			{
-				x_mps_id[x.first][kvp.first] = var_l->index();//x_mps_id[var_name_in_structure][problem_name] = var_id_in_merged_solver
+			else{
+				x_mps_id[x.first][kvp.first] = mergedSolver_l->get_col_index(varPrefix_l + x.first);//x_mps_id[var_name_in_structure][problem_name] = var_id_in_merged_solver
+				std::cout << "MAPS : " << x.first << "   " << kvp.first << "    " << x_mps_id[x.first][kvp.first] << std::endl;
 			}
 		}
 
@@ -145,6 +150,11 @@ int main(int argc, char** argv)
 			}
 		}
 	}
+	std::cout << neles << std::endl;
+	mstart.push_back(neles);
+	std::cout << "coupling constr : " << nrows << std::endl;
+	for (auto const& ms : mstart) { std::cout << ms << "   "; }
+	std::cout << std::endl;
 	DblVector rhs(nrows, 0);
 	CharVector sense(nrows, 'E');
 	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
@@ -158,11 +168,18 @@ int main(int argc, char** argv)
 	// XPRSsetintcontrol(full, XPRS_BARTHREADS, 16);
 	// XPRSsetintcontrol(full, XPRS_BARCORES, 16);
 	// XPRSlpoptimize(full, "-b");
-	mergedSolver_l.SetNumThreads(16);
+	mergedSolver_l->set_threads(16);
 
 	LOG_INFO_AND_COUT("Solving...");
 	Timer timer;
-	int status_l = mergedSolver_l.Solve();
+	int status_l = 0;
+	if (mergedSolver_l->get_n_integer_vars() > 0) {
+		mergedSolver_l->solve_mip(status_l);
+	}
+	else {
+		mergedSolver_l->solve_lp(status_l);
+	}
+	
 	std::stringstream str;
 	str << "Problem solved in " << timer.elapsed() << " seconds";
 	LOG_INFO_AND_COUT(str.str());
@@ -170,22 +187,37 @@ int main(int argc, char** argv)
 	jsonWriter_l.updateEndTime();
 
 	Point x0;
-	DblVector ptr;
+	DblVector ptr(mergedSolver_l->get_ncols());
 	double investCost_l(0);
-	ORTgetlpsolution(mergedSolver_l, ptr);
+	if (mergedSolver_l->get_n_integer_vars() > 0) {
+		std::cout << "ICI UN MIP A ETE RESOLU" << std::endl;
+		mergedSolver_l->get_mip_sol(ptr.data());
+	}
+	else {
+		std::cout << "ICI UN LP A ETE RESOLU ????" << std::endl;
+		mergedSolver_l->get_lp_sol(ptr.data(), NULL, NULL);
+	}
+
+	std::vector<double> obj_coef(mergedSolver_l->get_ncols());
+	mergedSolver_l->get_obj(obj_coef.data(), 0, mergedSolver_l->get_ncols() - 1);
 	for (auto const & pairNameId : input[options.MASTER_NAME]) {
 		int varIndexInMerged_l = x_mps_id[pairNameId.first][options.MASTER_NAME];
 		x0[pairNameId.first] = ptr[varIndexInMerged_l];
-		double costCoeff_l = mergedSolver_l.Objective().GetCoefficient(mergedSolver_l.variables()[varIndexInMerged_l]);
-		investCost_l += x0[pairNameId.first] * costCoeff_l;
+		investCost_l += x0[pairNameId.first] * obj_coef[varIndexInMerged_l];
 	}
 
-	double overallCost_l = mergedSolver_l.Objective().Value();
+	double overallCost_l;
+	if (mergedSolver_l->get_n_integer_vars() > 0) {
+		mergedSolver_l->get_mip_value(overallCost_l);
+	}
+	else {
+		mergedSolver_l->get_lp_value(overallCost_l);
+	}
 	double operationalCost_l = overallCost_l - investCost_l;
 
-	bool optimality_l = (status_l == operations_research::MPSolver::OPTIMAL);
-	jsonWriter_l.write(input.size(), mergedSolver_l.Objective().BestBound(), 
-		mergedSolver_l.Objective().Value(), investCost_l, operationalCost_l, 
+	bool optimality_l = (status_l == SOLVER_STATUS::OPTIMAL);
+	jsonWriter_l.write(input.size(), overallCost_l,
+		overallCost_l, investCost_l, operationalCost_l,
 		overallCost_l, x0, optimality_l);
 	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 

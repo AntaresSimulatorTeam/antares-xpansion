@@ -61,6 +61,9 @@ int SolverXpress::get_number_of_instances()
 void SolverXpress::init() {
 	int status = XPRScreateprob(&_xprs);
 	zero_status_check(status, "create XPRESS problem");
+
+	status = XPRSloadlp(_xprs, "empty", 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+	zero_status_check(status, "generate empty prob in XPRS interface init method");
 }
 
 void SolverXpress::free() {
@@ -279,7 +282,7 @@ void SolverXpress::chg_bounds(int nbds, const int* mindex, const char* qbtype, c
 	zero_status_check(status, "change bounds");
 }
 
-void SolverXpress::chg_col_type(int nels, const int* mindex, const char* qctype) const{
+void SolverXpress::chg_col_type(int nels, const int* mindex, const char* qctype) {
 	int status = XPRSchgcoltype(_xprs, nels, mindex, qctype);
 	zero_status_check(status, "change column types");
 }

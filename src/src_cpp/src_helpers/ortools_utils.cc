@@ -29,10 +29,6 @@ void ORTgetrows(SolverAbstract::Ptr const solver_p,
                 std::vector<double> & dmatval_p,
                 int first_p, int last_p)
 {
-    mstart_p.clear();
-    mclind_p.clear();
-    dmatval_p.clear();
-
     int nelems_returned = 0;
     solver_p->get_rows(mstart_p.data(), mclind_p.data(), dmatval_p.data(),
         solver_p->get_nelems(), &nelems_returned, 0, solver_p->get_nrows() - 1);
@@ -61,15 +57,22 @@ void ORTaddcols(SolverAbstract::Ptr solver_p,
                 std::vector<char> const & colTypes_p,
                 std::vector<std::string> & colNames_p)
 {
-    // Why objx_p cannot be empty ? A variable could not have any coeff in objective
 	assert(objx_p.size() != 0);
     assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
     assert(mrwind_p.size() == dmatval_p.size());
 
     int newCols = colTypes_p.size();
     int ncolInit = solver_p->get_ncols();
-    solver_p->add_cols(newCols, dmatval_p.size(), objx_p.data(), mstart_p.data(), 
+    int newnnz = dmatval_p.size();
+
+    solver_p->add_cols(newCols, newnnz, objx_p.data(), mstart_p.data(), 
         mrwind_p.data(), dmatval_p.data(), bdl_p.data(), bdu_p.data());
+
+    std::vector<int> newIndex(newCols);
+    for (int i = 0; i < newCols; i++) {
+        newIndex[i] = ncolInit + i;
+    }
+    solver_p->chg_col_type(newCols, newIndex.data(), colTypes_p.data());
 
     if (colNames_p.size() > 0) {
         int ncolFinal = solver_p->get_ncols();

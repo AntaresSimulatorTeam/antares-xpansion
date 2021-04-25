@@ -67,46 +67,46 @@ void SolverCbc::free() {
 void SolverCbc::write_prob(const char* name, const char* flags) const{
 
 	if (std::string(flags) == "LP") {
-		_cbc.solver()->writeLpNative(name, NULL, NULL);
+		_clp_inner_solver.writeLpNative(name, NULL, NULL);
 	}
 	else if (std::string(flags) == "MPS") {
 
 		const int numcols = get_ncols();
 		std::shared_ptr<char[]> shared_integrality(new char[numcols]);
 		char* integrality = shared_integrality.get();
-		CoinCopyN(_cbc.solver()->getColType(false), numcols, integrality);
+		CoinCopyN(_clp_inner_solver.getColType(false), numcols, integrality);
 
 		bool hasInteger = false;
 		for (int i = 0; i < numcols; ++i) {
-			if (_cbc.solver()->isInteger(i)) {
+			if (_clp_inner_solver.isInteger(i)) {
 				hasInteger = true;
 				break;
 			}
 		}
 
 		CoinMpsIO writer;
-		writer.setInfinity(_cbc.solver()->getInfinity());
-		writer.passInMessageHandler(_cbc.solver()->messageHandler());
+		writer.setInfinity(_clp_inner_solver.getInfinity());
+		writer.passInMessageHandler(_clp_inner_solver.messageHandler());
 
 		writer.setMpsData(
-			*(_cbc.solver()->getMatrixByCol()),
-			_cbc.solver()->getInfinity(),
-			_cbc.solver()->getColLower(),
-			_cbc.solver()->getColUpper(),
-			_cbc.solver()->getObjCoefficients(),
+			*(_clp_inner_solver.getMatrixByCol()),
+			_clp_inner_solver.getInfinity(),
+			_clp_inner_solver.getColLower(),
+			_clp_inner_solver.getColUpper(),
+			_clp_inner_solver.getObjCoefficients(),
 			hasInteger ? integrality : NULL,
-			_cbc.solver()->getRowLower(),
-			_cbc.solver()->getRowUpper(),
+			_clp_inner_solver.getRowLower(),
+			_clp_inner_solver.getRowUpper(),
 			_cbc.solver()->getColNames(),
 			_cbc.solver()->getRowNames()
 		);
 
 		std::string probName = "";
-		_cbc.solver()->getStrParam(OsiProbName, probName);
+		_clp_inner_solver.getStrParam(OsiProbName, probName);
 		writer.setProblemName(probName.c_str());
 
 		double objOffset = 0.0;
-		_cbc.solver()->getDblParam(OsiObjOffset, objOffset);
+		_clp_inner_solver.getDblParam(OsiObjOffset, objOffset);
 		writer.setObjectiveOffset(objOffset);
 
 		writer.writeMps(name, 0 /*gzip it*/, 1, 1,
@@ -142,33 +142,28 @@ void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv){
 -----------------------    Get general informations about problem    ----------------------------
 *************************************************************************************************/
 int  SolverCbc::get_ncols() const{
-	int cols(0);
-	//cols = _cbc.solver()->getNumCols();
-	cols = _cbc.getNumCols();
+	int cols = _clp_inner_solver.getNumCols();
 	return cols;
 }
 
 int SolverCbc::get_nrows() const {
-	int rows(0);
-	rows = _cbc.solver()->getNumRows();
+	int rows = _clp_inner_solver.getNumRows();
 	return rows;
 }
 
 int SolverCbc::get_nelems() const{
-	int elems(0);
-	elems = _cbc.solver()->getNumElements();
+	int elems = _clp_inner_solver.getNumElements();
 	return elems;
 }
 
 int SolverCbc::get_n_integer_vars() const{
-	int n_int_vars(0);
-	n_int_vars = _cbc.solver()->getNumIntegers();
+	int n_int_vars = _clp_inner_solver.getNumIntegers();
 	return n_int_vars;
 }
 
 void SolverCbc::get_obj(double* obj, int first, int last) const{
 	const int nvars = get_ncols();
-	const double* internalObj = _cbc.solver()->getObjCoefficients();
+	const double* internalObj = _clp_inner_solver.getObjCoefficients();
 
 	for (int i = first; i < last + 1; i++) {
 		obj[i - first] = internalObj[i];
@@ -177,7 +172,7 @@ void SolverCbc::get_obj(double* obj, int first, int last) const{
 
 void SolverCbc::get_rows(int* mstart, int* mclind, double* dmatval, int size, int* nels,
                     int first, int last) const{
-	CoinPackedMatrix matrix = *_cbc.solver()->getMatrixByRow();
+	CoinPackedMatrix matrix = *_clp_inner_solver.getMatrixByRow();
 	const int* column = matrix.getIndices();
 	const int* rowLength = matrix.getVectorLengths();
 	const CoinBigIndex* rowStart = matrix.getVectorStarts();
@@ -200,8 +195,8 @@ void SolverCbc::get_rows(int* mstart, int* mclind, double* dmatval, int size, in
 }
 
 void SolverCbc::get_row_type(char* qrtype, int first, int last) const{
-	const double* rowLower = _cbc.solver()->getRowLower();
-	const double* rowUpper = _cbc.solver()->getRowUpper();
+	const double* rowLower = _clp_inner_solver.getRowLower();
+	const double* rowUpper = _clp_inner_solver.getRowUpper();
 
 	std::vector<int> whichBound(get_nrows());
 	for (int i(first); i < last + 1; i++) {
@@ -229,8 +224,8 @@ void SolverCbc::get_row_type(char* qrtype, int first, int last) const{
 }
 
 void SolverCbc::get_rhs(double* rhs, int first, int last) const{
-	const double* rowLower = _cbc.solver()->getRowLower();
-	const double* rowUpper = _cbc.solver()->getRowUpper();
+	const double* rowLower = _clp_inner_solver.getRowLower();
+	const double* rowUpper = _clp_inner_solver.getRowUpper();
 
 	for (int i = first; i < last + 1; i++) {
 
@@ -263,11 +258,11 @@ void SolverCbc::get_rhs_range(double* range, int first, int last) const{
 }
 
 void SolverCbc::get_col_type(char* coltype, int first, int last) const{
-	const double* colLower = _cbc.solver()->getColLower();
-	const double* colUpper = _cbc.solver()->getColUpper();
+	const double* colLower = _clp_inner_solver.getColLower();
+	const double* colUpper = _clp_inner_solver.getColUpper();
 
 	for (int i(first); i < last + 1; i++) {
-		if (_cbc.solver()->isInteger(i)) {
+		if (_clp_inner_solver.isInteger(i)) {
 			if (colLower[i] == 0 && colUpper[i] == 1) {
 				coltype[i - first] = 'B';
 			}
@@ -282,7 +277,7 @@ void SolverCbc::get_col_type(char* coltype, int first, int last) const{
 }
 
 void SolverCbc::get_lb(double* lb, int first, int last) const{
-	const double* colLower = _cbc.solver()->getColLower();
+	const double* colLower = _clp_inner_solver.getColLower();
 
 	for (int i(first); i < last + 1; i++) {
 		lb[i - first] = colLower[i];
@@ -290,7 +285,7 @@ void SolverCbc::get_lb(double* lb, int first, int last) const{
 }
 
 void SolverCbc::get_ub(double* ub, int first, int last) const{
-	const double* colUpper = _cbc.solver()->getColUpper();
+	const double* colUpper = _clp_inner_solver.getColUpper();
 
 	for (int i(first); i < last + 1; i++) {
 		ub[i - first] = colUpper[i];
@@ -301,7 +296,7 @@ int SolverCbc::get_row_index(std::string const& name) const {
 	int id = 0;
 	int nrows = get_nrows();
 	while (id < nrows) {
-		if (_cbc.solver()->getRowName(id) == name) {
+		if (_clp_inner_solver.getRowName(id) == name) {
 			return id;
 		}
 		id++;
@@ -313,7 +308,7 @@ int SolverCbc::get_col_index(std::string const& name) const {
 	int id = 0;
 	int ncols = get_ncols();
 	while (id < ncols) {
-		if (_cbc.solver()->getColName(id) == name) {
+		if (_clp_inner_solver.getColName(id) == name) {
 			return id;
 		}
 		id++;
@@ -360,7 +355,7 @@ void SolverCbc::del_rows(int first, int last){
 	for (int i = 0; i < last - first + 1; i++) {
 		mindex[i] = first + i;
 	}
-	_cbc.solver()->deleteRows(last - first + 1, mindex.data());
+	_clp_inner_solver.deleteRows(last - first + 1, mindex.data());
 }
 
 void SolverCbc::add_rows(int newrows, int newnz, const char* qrtype, const double* rhs,
@@ -387,7 +382,7 @@ void SolverCbc::add_rows(int newrows, int newnz, const char* qrtype, const doubl
 			std::exit(1);
 		}
 	}
-	_cbc.solver()->addRows(newrows, mstart, mclind, dmatval, rowLower.data(), rowUpper.data());
+	_clp_inner_solver.addRows(newrows, mstart, mclind, dmatval, rowLower.data(), rowUpper.data());
 }
 
 void SolverCbc::add_cols(int newcol, int newnz, const double* objx, const int* mstart,
@@ -400,7 +395,7 @@ void SolverCbc::add_cols(int newcol, int newnz, const double* objx, const int* m
 	}
 	colStart[newcol] = newnz;
 
-	_cbc.solver()->addCols(newcol, colStart.data(), mrwind, dmatval, bdl, bdu, objx);
+	_clp_inner_solver.addCols(newcol, colStart.data(), mrwind, dmatval, bdl, bdu, objx);
 }
 
 void SolverCbc::add_name(int type, const char* cnames, int indice){
@@ -410,37 +405,60 @@ void SolverCbc::add_name(int type, const char* cnames, int indice){
 
 void SolverCbc::chg_obj(int nels, const int* mindex, const double* obj){
 	for (int i(0); i < nels; i++) {
-		_cbc.solver()->setObjCoeff(mindex[i], obj[i]);
+		_clp_inner_solver.setObjCoeff(mindex[i], obj[i]);
 	}
 }
 
 void SolverCbc::chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd){
 	for (int i(0); i < nbds; i++) {
 		if (qbtype[i] == 'L') {
-			_cbc.solver()->setColLower(mindex[i], bnd[i]);
+			_clp_inner_solver.setColLower(mindex[i], bnd[i]);
 		}
 		else if (qbtype[i] == 'U') {
-			_cbc.solver()->setColUpper(mindex[i], bnd[i]);
+			_clp_inner_solver.setColUpper(mindex[i], bnd[i]);
 		}
 		else if (qbtype[i] == 'B') {
-			_cbc.solver()->setColLower(mindex[i], bnd[i]);
-			_cbc.solver()->setColUpper(mindex[i], bnd[i]);
+			_clp_inner_solver.setColLower(mindex[i], bnd[i]);
+			_clp_inner_solver.setColUpper(mindex[i], bnd[i]);
 		}
 		else {
 			std::cout << "ERROR : Unknown bound type " << qbtype[i] << " for column " << mindex[i] << std::endl;
-		std:exit(1);
+			std:exit(1);
 		}
 	}
 }
 
-void SolverCbc::chg_col_type(int nels, const int* mindex, const char* qctype) const{
-	std::cout << "ERROR : chg_col_type not implemented for CLP as MIPs are not supported by solver." << std::endl;
-	std::exit(1);
+void SolverCbc::chg_col_type(int nels, const int* mindex, const char* qctype) {
+	std::vector<int> bnd_index(1, 0);
+	std::vector<char> bnd_type(1, 'U');
+	std::vector<double> bnd_val(1, 1.0);
+
+	for (int i = 0; i < nels; i++) {
+		std::cout << i << qctype[i] << "    ncols " << get_ncols() << std::endl;
+		if (qctype[i] == 'C') {
+			_clp_inner_solver.setContinuous(mindex[i]);
+		}
+		else if (qctype[i] == 'B') {
+			_clp_inner_solver.setInteger(mindex[i]);
+			bnd_index[0] = mindex[i];
+			chg_bounds(1, bnd_index.data(), bnd_type.data(), bnd_val.data());
+		}
+		else if (qctype[i] == 'I') {
+			_clp_inner_solver.setInteger(mindex[i]);
+		}
+		else {
+			std::cout << "ERROR : unknown column type " << qctype[i] << std::endl;
+			std::exit(1);
+		}
+		std::vector<char> colT(1);
+		get_col_type(colT.data(), mindex[i], mindex[i]);
+		std::cout << "newType : " << colT[i] << std::endl;
+	}
 }
 
 void SolverCbc::chg_rhs(int id_row, double val){
-	const double* rowLower = _cbc.solver()->getRowLower();
-	const double* rowUpper = _cbc.solver()->getRowUpper();
+	const double* rowLower = _clp_inner_solver.getRowLower();
+	const double* rowUpper = _clp_inner_solver.getRowUpper();
 
 	if (rowLower[id_row] <= -COIN_DBL_MAX) {
 		if (rowUpper[id_row] >= COIN_DBL_MAX) {
@@ -448,12 +466,12 @@ void SolverCbc::chg_rhs(int id_row, double val){
 			std::exit(1);
 		}
 		else {
-			_cbc.solver()->setRowUpper(id_row, val);
+			_clp_inner_solver.setRowUpper(id_row, val);
 		}
 	}
 	else {
 		if (rowUpper[id_row] >= COIN_DBL_MAX) {
-			_cbc.solver()->setRowLower(id_row, val);
+			_clp_inner_solver.setRowLower(id_row, val);
 		}
 		else {
 			std::cout << "ERROR : constraint " << id_row << " has both lower and upper bound in chg_rhs." << std::endl;
@@ -466,30 +484,37 @@ void SolverCbc::chg_rhs(int id_row, double val){
 void SolverCbc::chg_coef(int id_row, int id_col, double val){
 
 	// Very tricky method by method "modifyCoefficient" of OsiClp does not work
-	CoinPackedMatrix matrix = *_cbc.solver()->getMatrixByRow();
+	CoinPackedMatrix matrix = *_clp_inner_solver.getMatrixByRow();
 	const int* column = matrix.getIndices();
 	const int* rowLength = matrix.getVectorLengths();
 	const CoinBigIndex* rowStart = matrix.getVectorStarts();
 	const double* vals = matrix.getElements();
 
 	matrix.modifyCoefficient(id_row, id_col, val);
-	_cbc.solver()->replaceMatrix(matrix);
+	_clp_inner_solver.replaceMatrix(matrix);
 }
 
 void SolverCbc::chg_row_name(int id_row, std::string & name)
 {
-	_cbc.solver()->setRowName(id_row, name);
+	_clp_inner_solver.setRowName(id_row, name);
+	_cbc = CbcModel(_clp_inner_solver);
 }
 
 void SolverCbc::chg_col_name(int id_col, std::string & name)
 {
-	_cbc.solver()->setColName(id_col, name);
+	_clp_inner_solver.setColName(id_col, name);
+	_cbc = CbcModel(_clp_inner_solver);
 }
 	
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
 void SolverCbc::solve_lp(int& lp_status){
+
+	// Passing OsiClp to Cbc to solve
+	// Cbc keeps only solutions of problem
+	_cbc = CbcModel(_clp_inner_solver);
+	set_output_log_level(0);
 
 	_cbc.solver()->initialSolve();
 
@@ -509,20 +534,13 @@ void SolverCbc::solve_lp(int& lp_status){
 }
 
 void SolverCbc::solve_mip(int& lp_status){
-	
-	std::cout << "Inner clp solver rows before save : " << _clp_inner_solver.getNumRows() << std::endl;
-	_cbc.saveModel(&_clp_inner_solver, NULL, NULL);
-	std::cout << "saved ok" << std::endl;
-	std::cout << "Inner clp solver rows after save : " << _clp_inner_solver.getNumRows() << std::endl;
-	write_prob("cbc_before_solve.mps", "MPS");
+
+	// Passing OsiClp to Cbc to solve
+	// Cbc keeps only solutions of problem
+	_cbc = CbcModel(_clp_inner_solver);
+	set_output_log_level(0);
 
 	_cbc.branchAndBound();
-
-	write_prob("cbc_after_solve.mps", "MPS");
-	std::vector<double> ubx(1);
-	get_ub(ubx.data(), 0, 0);
-	std::cout << "UB x = " << ubx[0] << std::endl;
-	std::exit(1);
 
 	/*std::cout << "*********************************************" << std::endl;
 	std::cout << "COUCOU CBC STATUS " << _cbc.status() << std::endl;

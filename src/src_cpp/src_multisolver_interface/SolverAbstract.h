@@ -366,7 +366,7 @@ public:
     * @param mindex : indices of columns to modify
     * @param qctype : New types of columns
     */
-    virtual void chg_col_type(int nels, const int* mindex, const char* qctype) const = 0;
+    virtual void chg_col_type(int nels, const int* mindex, const char* qctype) = 0;
 
     /**
     * @brief Change rhs of a row

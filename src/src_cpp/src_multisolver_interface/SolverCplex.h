@@ -102,7 +102,7 @@ public:
     virtual void add_name(int type, const char* cnames, int indice);
     virtual void chg_obj(int nels, const int* mindex, const double* obj);
     virtual void chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd);
-    virtual void chg_col_type(int nels, const int* mindex, const char* qctype) const;
+    virtual void chg_col_type(int nels, const int* mindex, const char* qctype);
 	virtual void chg_rhs(int id_row, double val);
     virtual void chg_coef(int id_row, int id_col, double val);
 	virtual void chg_row_name(int id_row, std::string & name);

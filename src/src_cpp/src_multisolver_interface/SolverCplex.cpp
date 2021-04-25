@@ -283,7 +283,7 @@ void SolverCplex::chg_bounds(int nbds, const int* mindex, const char* qbtype, co
     zero_status_check(status, "change bounds");
 }
 
-void SolverCplex::chg_col_type(int nels, const int* mindex, const char* qctype) const{
+void SolverCplex::chg_col_type(int nels, const int* mindex, const char* qctype) {
     int status = CPXchgctype(_env, _prb, nels, mindex, qctype);
     zero_status_check(status, "change col type");
 	if (get_n_integer_vars() == 0) {

@@ -369,9 +369,27 @@ void SolverClp::chg_bounds(int nbds, const int* mindex, const char* qbtype, cons
 	}
 }
 
-void SolverClp::chg_col_type(int nels, const int* mindex, const char* qctype) const{
-	std::cout << "ERROR : chg_col_type not implemented for CLP as MIPs are not supported by solver." << std::endl;
-	std::exit(1);
+void SolverClp::chg_col_type(int nels, const int* mindex, const char* qctype) {
+	std::vector<int> bnd_index(1, 0);
+	std::vector<char> bnd_type(1, 'U');
+	std::vector<double> bnd_val(1, 1.0);
+
+	for (int i = 0; i < nels; i++) {
+		switch (qctype[i])
+		{
+		case 'C':
+			_clp.setContinuous(mindex[i]);
+		case 'B':
+			_clp.setInteger(mindex[i]);
+			bnd_index[0] = mindex[i];
+			chg_bounds(1, bnd_index.data(), bnd_type.data(), bnd_val.data());
+		case 'I':
+			_clp.setInteger(mindex[i]);
+		default:
+			std::cout << "ERROR : unknown column type " << qctype[i] << std::endl;
+			std::exit(1);
+		}
+	}
 }
 
 void SolverClp::chg_rhs(int id_row, double val){
