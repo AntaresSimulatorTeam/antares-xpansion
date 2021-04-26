@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.2.0)
+PROJECT (antaresXpansion VERSION 0.3.0)
 
 # ===========================================================================
 # Default parameters
@@ -28,7 +28,7 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
-#set(ANTARES_XPANSION_RC 3)
+#set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -316,9 +316,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 endif()
 
 set(CPACK_PROJECT_NAME "antaresXpansion")
-set(CPACK_PACKAGE_VERSION_MAJOR 0)
-set(CPACK_PACKAGE_VERSION_MINOR 2)
-set(CPACK_PACKAGE_VERSION_PATCH 0)
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
 set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
