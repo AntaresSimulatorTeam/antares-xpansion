@@ -108,6 +108,11 @@ def test_full_study(installDir, study_path, expected_values, expected_investment
           "overall_cost": 1323617436.0818214},
          {"battery": 503.64036279603744, "peak1": 800.0, "peak2": 1000.0, "pv": 446.78196988044607,
           "semibase1": 0.0,"semibase2": 200.0}
+         ),
+        (ALL_STUDIES_PATH / "xpansion-test-05-area-uppercase",
+         {"gap": 168.89355158805847, "investment_cost": 433632217.73959851, "operational_cost": 1348247642.9924254,
+          "overall_cost": 1781879860.732024},
+         {"elec_grid": 526.32217750589962, "h2_grid": 600.00000026293719, "p2g_marg_area1": 1124.9999998864932, "p2g_marg_area2": 2000.0}
          )
     ],
 )
