@@ -1,5 +1,6 @@
 #include "CandidatesInitializer.h"
 
+#include "helpers/StringUtils.h"
 
 void initMPSList(std::string const & mps_filePath_p)
 {
@@ -63,7 +64,7 @@ void initAreas(std::string const & areaFilepath_p)
 	}
 	while (std::getline(area_filestream, line)) {
 		if (!line.empty() && line.front() != '#') {
-			Candidates::area_names.push_back(line);
+			Candidates::area_names.push_back(StringUtils::ToLowercase(line));
 		}
 	}
 	for (auto const & kvp : Candidates::intercos_map) {

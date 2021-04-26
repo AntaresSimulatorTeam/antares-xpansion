@@ -56,15 +56,6 @@ std::string get_name(std::string const & path) {
 	return name;
 }
 
-std::string toLowercase(std::string const& inputString_p)
-{
-	std::string result;
-	std::transform(inputString_p.cbegin(), inputString_p.cend(), std::back_inserter(result), [](char const& c) {
-		return std::tolower(c);
-		});
-	return result;
-}
-
 /**
  * \fn void masterGeneration()
  * \brief Generate the master ob the optimization problem
