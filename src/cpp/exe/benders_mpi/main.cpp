@@ -24,10 +24,13 @@ int main(int argc, char** argv)
 	mpi::environment env(argc, argv);
 	mpi::communicator world;
 
+    Logger logger;
+
 	// First check usage (options are given)
 	if (world.rank() == 0)
 	{
 		usage(argc);
+		logger = std::make_shared<xpansion::logger::User>(std::cout);
 	}
 
 	// Read options, needed to have options.OUTPUTROOT
@@ -67,17 +70,14 @@ int main(int argc, char** argv)
 	if (world.size() == 1) {
 		std::cout << "Sequential launch" << std::endl;
 		LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;
-        Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 		sequential_launch(options, logger);
 	}
 	else {
 		Timer timer;
-		CouplingMap input;
-
-		build_input(options, input);
+		CouplingMap input = build_input(options);
 		world.barrier();
 
-		BendersMpi bendersMpi(env, world, options);
+		BendersMpi bendersMpi(env, world, options,logger);
 		bendersMpi.load(input, env, world);
 		world.barrier();
 
@@ -85,7 +85,12 @@ int main(int argc, char** argv)
 		world.barrier();
 
 		if (world.rank() == 0) {
-			best_solution_log(bendersMpi._data, bendersMpi._trace, options.GAP);
+
+            LogData logData = bendersDataToLogData(bendersMpi._data);
+            logData.optimal_gap = options.GAP;
+
+            logger->log_at_ending(logData);
+
 			jsonWriter_l.updateEndTime();
 			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
 			jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
@@ -96,15 +101,13 @@ int main(int argc, char** argv)
 			std::stringstream str;
 			str << "Optimization results available in : " << buff << PATH_SEPARATOR 
 				<< options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json";
-			LOG_INFO_AND_COUT(str.str());
+			logger->display_message(str.str());
 		}
 		bendersMpi.free(env, world);
 		world.barrier();
 
 		if (world.rank() == 0) {
-			std::stringstream str;
-			str << "Problem ran in " << timer.elapsed() << " seconds";
-			LOG_INFO_AND_COUT(str.str());
+			logger->display_process_duration("Problem ran", timer.elapsed());
 			jsonWriter_l.updateEndTime();
 		}
 	}

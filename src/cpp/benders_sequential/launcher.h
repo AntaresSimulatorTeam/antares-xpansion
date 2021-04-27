@@ -6,7 +6,8 @@
 #include "ortools_utils.h"
 
 class BendersOptions;
-int build_input(BendersOptions const & options, CouplingMap & coupling_map);
+
+CouplingMap build_input(BendersOptions const & options);
 
 BendersOptions build_benders_options(int argc, char** argv);
 

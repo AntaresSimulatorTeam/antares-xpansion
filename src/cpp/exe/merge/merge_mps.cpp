@@ -8,6 +8,7 @@
 #include "Timer.h"
 
 #include "ortools_utils.h"
+#include "logger/User.h"
 
 
 //@suggest: create and move to standardlp.cpp
@@ -19,6 +20,8 @@ int main(int argc, char** argv)
 	usage(argc);
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
+
+    Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
 	google::InitGoogleLogging(argv[0]);
 	std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "merge_mpsLog";
@@ -34,8 +37,8 @@ int main(int argc, char** argv)
 
 
 
-	CouplingMap input;
-	build_input(options, input);
+	CouplingMap input = build_input(options);
+
 
 	operations_research::MPSolver mergedSolver_l("full_mip", ORTOOLS_MIP_SOLVER_TYPE);
 	// XPRSsetcbmessage(full, optimizermsg, NULL);
@@ -160,12 +163,10 @@ int main(int argc, char** argv)
 	// XPRSlpoptimize(full, "-b");
 	mergedSolver_l.SetNumThreads(16);
 
-	LOG_INFO_AND_COUT("Solving...");
+	logger->display_message("Solving...");
 	Timer timer;
 	int status_l = mergedSolver_l.Solve();
-	std::stringstream str;
-	str << "Problem solved in " << timer.elapsed() << " seconds";
-	LOG_INFO_AND_COUT(str.str());
+	logger->display_process_duration("Problem solved", timer.elapsed());
 
 	jsonWriter_l.updateEndTime();
 

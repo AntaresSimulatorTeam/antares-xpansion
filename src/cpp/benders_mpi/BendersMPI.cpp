@@ -10,7 +10,8 @@ BendersMpi::~BendersMpi() {
 
 }
 
-BendersMpi::BendersMpi(mpi::environment & env, mpi::communicator & world, BendersOptions const & options):_options(options) {
+BendersMpi::BendersMpi(mpi::environment & env, mpi::communicator & world, BendersOptions const & options, Logger &logger):
+_options(options),_logger(logger) {
 
 }
 
@@ -123,17 +124,16 @@ void BendersMpi::update_random_option(mpi::environment & env, mpi::communicator 
 *
 *  \param world : communicator variable for mpi communication
 */
-void BendersMpi::step_1(mpi::environment & env, mpi::communicator & world) {
+void BendersMpi::step_1_solve_master(mpi::environment & env, mpi::communicator & world) {
 
 	if (world.rank() == 0)
 	{
-		LOG_INFO_AND_COUT("ITERATION " + std::to_string(_data.it) + " :");
-		LOG_INFO_AND_COUT("\tSolving master...");
-
+        _logger->log_at_initialization(bendersDataToLogData(_data));
+		_logger->display_message("\tSolving master...");
 		get_master_value(_master, _data, _options);
+        _logger->display_process_duration("\tmaster solved", _data.timer_master);
 
-		LOG_INFO_AND_COUT("\tmaster solved in " + std::to_string (_data.timer_master) + ".");
-		investment_candidates_log(_data);
+        _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
 		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
@@ -160,7 +160,7 @@ void BendersMpi::step_1(mpi::environment & env, mpi::communicator & world) {
 *
 *  \param world : communicator variable for mpi communication
 */
-void BendersMpi::step_2(mpi::environment & env, mpi::communicator & world) {
+void BendersMpi::step_2_build_cuts(mpi::environment & env, mpi::communicator & world) {
 	SlaveCutPackage slave_cut_package;
 	if (world.rank() == 0) {
 		AllCutPackage all_package;
@@ -178,11 +178,11 @@ void BendersMpi::step_2(mpi::environment & env, mpi::communicator & world) {
 
 		all_package.erase(all_package.begin());
 
-		LOG_INFO_AND_COUT("\tBuilding cuts...");
+		_logger->display_message("\tBuilding cuts...");
 
 		build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);
 
-		LOG_INFO_AND_COUT("\tCuts built.");
+        _logger->display_process_duration("\tCuts built", _data.timer_slaves);
 	}
 	else {
 		if (_options.RAND_AGGREGATION) {
@@ -204,7 +204,7 @@ void BendersMpi::step_2(mpi::environment & env, mpi::communicator & world) {
 *
 *  \param world : communicator variable for mpi communication
 */
-void BendersMpi::step_3(mpi::environment & env, mpi::communicator & world) {
+void BendersMpi::step_3_gather_slaves_basis(mpi::environment & env, mpi::communicator & world) {
 	SimplexBasisPackage slave_basis_package;
 	if (world.rank() == 0) {
 		AllBasisPackage all_basis_package;
@@ -260,18 +260,18 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
 		++_data.it;
 		_data.deletedcut = 0;
 		/*Solve Master problem, get optimal value and cost and send it to Slaves*/
-		step_1(env, world);
+		step_1_solve_master(env, world);
 
 		/*Gather cut from each slave in master thread and add them to Master problem*/
-		step_2(env, world);
+		step_2_build_cuts(env, world);
 
 		if (_options.BASIS) {
-			step_3(env, world);
+			step_3_gather_slaves_basis(env, world);
 		}
 
 		if (world.rank() == 0) {
 			update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
-			solution_log(_data);
+            _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
 			update_trace(_trace, _data);
 

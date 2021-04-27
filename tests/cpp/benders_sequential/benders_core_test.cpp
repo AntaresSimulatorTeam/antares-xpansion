@@ -63,6 +63,6 @@ TEST(Benders_tests, empty){
     BendersOptions options;
     CouplingMap input;
     // TODO fix this
-    Benders benders(input, options,logger);
+    Benders benders(logger);
     ASSERT_TRUE(1);
 }

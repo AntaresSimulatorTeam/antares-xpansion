@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 	std::stringstream str;
 	str << "Optimization results available in : " << buff <<  PATH_SEPARATOR 
 		<< options.OUTPUTROOT << PATH_SEPARATOR << options.JSON_NAME + ".json";
-	LOG_INFO_AND_COUT(str.str());
+	logger->display_message(str.str());
 
 	return 0;
 }

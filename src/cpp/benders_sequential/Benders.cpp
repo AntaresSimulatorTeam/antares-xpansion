@@ -23,11 +23,6 @@ Benders::Benders(Logger &logger):_logger{ logger } {
 
 }
 
-Benders::Benders(CouplingMap const &problem_list, BendersOptions const &options, Logger &logger):
-_options(options),_logger{ logger } {
-    initialise_problems(problem_list);
-}
-
 void Benders::initialise_problems(const CouplingMap &problem_list) {
     if (!problem_list.empty()) {
         _data.nslaves = _options.SLAVE_NUMBER;
@@ -105,10 +100,12 @@ void Benders::build_cut() {
 *  Method to run Benders algorithm
 */
 void Benders::run( CouplingMap const &problem_list, BendersOptions const &options) {
-    _options = {options};
+    _options = options;
+    initialise_problems(problem_list);
+    doRun();
 }
 
-void Benders::run(){
+void Benders::doRun(){
 	for (auto const & kvp : _problem_to_id) {
 		_all_cuts_storage[kvp.first] = SlaveCutStorage();
 	}
@@ -117,13 +114,13 @@ void Benders::run(){
 	while (!_data.stop) {
 		Timer timer_master;
 		++_data.it;
-		LOG_INFO_AND_COUT("ITERATION " + std::to_string(_data.it) + " :");
-		LOG_INFO_AND_COUT("\tSolving master...");
+
+        _logger->log_at_initialization(bendersDataToLogData(_data));
+        _logger->display_message("\tSolving master...");
 		get_master_value(_master, _data, _options);
+        _logger->display_process_duration("\tmaster solved", _data.timer_master);
 
-		LOG_INFO_AND_COUT("\tmaster solved in " + std::to_string(_data.timer_master) + ".");
-
-		investment_candidates_log(_data);
+        _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
 		if (_options.ACTIVECUTS) {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
@@ -131,12 +128,13 @@ void Benders::run(){
 
 		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
-		LOG_INFO_AND_COUT("\tBuilding cuts...");
+        _logger->display_message("\tBuilding cuts...");
 		build_cut();
-		LOG_INFO_AND_COUT("\tCuts built.");
+        _logger->display_process_duration("\tCuts built", _data.timer_slaves);
 
 		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
-		solution_log(_data);
+
+        _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
 		update_trace(_trace, _data);
 
