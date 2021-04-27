@@ -13,15 +13,27 @@ namespace logger {
 
     }
 
+    void Master::display_message(const std::string& str) {
+        for (auto logger : _loggers) {
+            logger->display_message(str);
+        }
+    }
+
+    void Master::display_process_duration(const std::string& processName, double durationInSeconds) {
+        for (auto logger : _loggers) {
+            logger->display_process_duration(processName, durationInSeconds);
+        }
+    }
+
     void Master::log_at_initialization(const LogData &d) {
         for (auto logger : _loggers) {
             logger->log_at_initialization(d);
         }
     }
 
-    void Master::log_at_iteration_start(const LogData &d) {
+    void Master::log_iteration_candidates(const LogData &d) {
         for (auto logger : _loggers) {
-            logger->log_at_iteration_start(d);
+            logger->log_iteration_candidates(d);
         }
     }
 

@@ -18,9 +18,13 @@ namespace logger {
 
         User(std::ostream& stream);
 
+        void display_message(const std::string& str) override;
+
+        void display_process_duration(const std::string& processName, double durationInSeconds) override;
+
         void log_at_initialization(const LogData &d) override;
 
-        void log_at_iteration_start(const LogData &d) override;
+        void log_iteration_candidates(const LogData &d) override;
 
         void log_at_iteration_end(const LogData &d) override;
 

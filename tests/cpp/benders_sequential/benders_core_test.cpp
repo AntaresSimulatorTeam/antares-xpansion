@@ -20,13 +20,24 @@ public:
         _iterationStartCall = false;
         _iterationEndCall = false;
         _endingCall = false;
+
+        _durationInSecond = std::nan("");
+    }
+
+    void display_message(const std::string& str) {
+        _displaymessage = str;
+    }
+
+    void display_process_duration(const std::string& processName, double durationInSeconds) {
+        _processName = processName;
+        _durationInSecond = durationInSeconds;
     }
 
     void log_at_initialization(const LogData &d) override {
         _initCall = true;
     }
 
-    void log_at_iteration_start(const LogData &d) override {
+    void log_iteration_candidates(const LogData &d) override {
         _iterationStartCall = true;
     }
 
@@ -42,6 +53,8 @@ public:
     bool _iterationStartCall;
     bool _iterationEndCall;
     bool _endingCall;
+    std::string _displaymessage;
+    std::string _processName; double _durationInSecond;
 };
 
 

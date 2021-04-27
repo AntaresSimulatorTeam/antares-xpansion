@@ -41,62 +41,59 @@ TEST_F(UserLoggerTest, EmptyStreamAtInit) {
 }
 TEST_F(UserLoggerTest, InitLog) {
     LogData logData;
-    _logger.log_at_initialization(logData);
-    ASSERT_EQ( _stream.str() ,"" );
-}
+    logData.it = 1;
+    std::stringstream expected;
+    expected << "ITERATION 1:" << std::endl;
 
+    _logger.log_at_initialization(logData);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateOrder) {
     LogData logData;
-    logData.it = 1;
     addCandidate(logData,"z", 50.0 , 0.0, 100.0);
     addCandidate(logData,"a", 10.0 , 0.0, 50.0);
     addCandidate(logData,"c", 50.0 , 0.0, 100.0);
 
     std::stringstream expected;
-    expected << indent_0 <<"ITERATION 1:" << std::endl;
     expected << indent_0 << "Candidates:" << std::endl;
     expected << indent_0 << indent_1 << "a = 10.00 invested MW -- possible interval [0.00;  50.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "c = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "z = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
 
-    _logger.log_at_iteration_start(logData);
+    _logger.log_iteration_candidates(logData);
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateLongInvestment) {
     LogData logData;
-    logData.it = 1;
     addCandidate(logData,"z", 5000000.0 , 0.0, 10000000.0);
     addCandidate(logData,"a", 10.0 , 200.0, 50.0);
     addCandidate(logData,"b", 20.0 , 0.0, 200.0);
 
     std::stringstream expected;
-    expected << indent_0 <<"ITERATION 1:" << std::endl;
     expected << indent_0 <<"Candidates:" << std::endl;
     expected << indent_0 << indent_1 << "a =      10.00 invested MW -- possible interval [200.00;       50.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "b =      20.00 invested MW -- possible interval [  0.00;      200.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "z = 5000000.00 invested MW -- possible interval [  0.00; 10000000.00] MW" << std::endl;
 
-    _logger.log_at_iteration_start(logData);
+    _logger.log_iteration_candidates(logData);
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateNameLenght) {
     LogData logData;
-    logData.it = 1;
     addCandidate(logData,"z", 50.0 , 0.0, 100.0);
     addCandidate(logData,"a", 10.0 , 0.0, 50.0);
     addCandidate(logData,"very long name of investment", 50.0 , 0.0, 100.0);
 
     std::stringstream expected;
-    expected << indent_0 <<"ITERATION 1:" << std::endl;
     expected << indent_0 <<"Candidates:" << std::endl;
     expected << indent_0 << indent_1 << "                           a = 10.00 invested MW -- possible interval [0.00;  50.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "very long name of investment = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "                           z = 50.00 invested MW -- possible interval [0.00; 100.00] MW" << std::endl;
 
-    _logger.log_at_iteration_start(logData);
+    _logger.log_iteration_candidates(logData);
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
@@ -142,7 +139,7 @@ TEST_F(UserLoggerTest, IterationEndLogLongCost) {
 
 TEST_F(UserLoggerTest, EndLogWithinOptimitality) {
     LogData logData;
-    logData.it = 1;
+    logData.best_it = 1;
     logData.best_ub = 20;
     logData.lb = 19.5;
     logData.slave_cost = 1e6;
@@ -160,7 +157,7 @@ TEST_F(UserLoggerTest, EndLogWithinOptimitality) {
 
 TEST_F(UserLoggerTest, EndLogOutsideOptimitality) {
     LogData logData;
-    logData.it = 1;
+    logData.best_it = 1;
     logData.best_ub = 20;
     logData.lb = 18;
     logData.slave_cost = 1e6;
@@ -183,7 +180,6 @@ TEST_F(UserLoggerTest, DifferentCallsAddToTheSamStream) {
     addCandidate(logData1, "a", 10.0 , 200.0, 50.0);
 
     std::stringstream expected;
-    expected << indent_0 <<"ITERATION 1:" << std::endl;
     expected << indent_0 <<"Candidates:" << std::endl;
     expected << indent_0 << indent_1 << "a =      10.00 invested MW -- possible interval [200.00;       50.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "z = 5000000.00 invested MW -- possible interval [  0.00; 10000000.00] MW" << std::endl;
@@ -193,12 +189,26 @@ TEST_F(UserLoggerTest, DifferentCallsAddToTheSamStream) {
     addCandidate(logData2, "b", 6000000.0 , 0.0, 10000000.0);
     addCandidate(logData2, "a", 200.0 , 200.0, 50.0);
 
-    expected << indent_0 <<"ITERATION 2:" << std::endl;
     expected << indent_0 <<"Candidates:" << std::endl;
     expected << indent_0 << indent_1 << "a =     200.00 invested MW -- possible interval [200.00;       50.00] MW" << std::endl;
     expected << indent_0 << indent_1 << "b = 6000000.00 invested MW -- possible interval [  0.00; 10000000.00] MW" << std::endl;
-    _logger.log_at_iteration_start(logData1);
-    _logger.log_at_iteration_start(logData2);
+    _logger.log_iteration_candidates(logData1);
+    _logger.log_iteration_candidates(logData2);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, DisplayMessage) {
+    std::stringstream expected;
+    expected << "Message" << std::endl;
+
+    _logger.display_message("Message");
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, DisplayProcessDuration) {
+    std::stringstream expected;
+    expected << "Process name in 3 s" << std::endl;
+    _logger.display_process_duration("Process name", 3.000000);
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
@@ -212,13 +222,24 @@ public:
         _iterationStartCall = false;
         _iterationEndCall = false;
         _endingCall = false;
+
+        _durationInSecond = std::nan("");
+    }
+
+    void display_message(const std::string& str) {
+        _displaymessage = str;
+    }
+
+    void display_process_duration(const std::string& processName, double durationInSeconds) {
+        _processName = processName;
+        _durationInSecond = durationInSeconds;
     }
 
     void log_at_initialization(const LogData &d) override {
         _initCall = true;
     }
 
-    void log_at_iteration_start(const LogData &d) override {
+    void log_iteration_candidates(const LogData &d) override {
         _iterationStartCall = true;
     }
 
@@ -234,6 +255,8 @@ public:
     bool _iterationStartCall;
     bool _iterationEndCall;
     bool _endingCall;
+    std::string _displaymessage;
+    std::string _processName; double _durationInSecond;
 };
 
 class MasterLoggerTest : public ::testing::Test
@@ -261,7 +284,7 @@ TEST_F(MasterLoggerTest, InitLog) {
 
 TEST_F(MasterLoggerTest, IterationStartLog) {
     LogData logData;
-    _master.log_at_iteration_start(logData);
+    _master.log_iteration_candidates(logData);
     ASSERT_TRUE( _logger->_iterationStartCall);
     ASSERT_TRUE( _logger2->_iterationStartCall);
 }
@@ -278,4 +301,21 @@ TEST_F(MasterLoggerTest, EndLog) {
     _master.log_at_ending(logData);
     ASSERT_TRUE( _logger->_endingCall);
     ASSERT_TRUE( _logger2->_endingCall);
+}
+
+TEST_F(MasterLoggerTest, DisplayMessage) {
+    std::string message = "message";
+    _master.display_message(message);
+    ASSERT_EQ( _logger->_displaymessage ,message );
+    ASSERT_EQ( _logger2->_displaymessage ,message );
+}
+
+TEST_F(MasterLoggerTest, DisplayProcessDuration) {
+    std::string message = "message";
+    double duration = 3.0;
+    _master.display_process_duration(message,duration);
+    ASSERT_EQ( _logger->_processName ,message );
+    ASSERT_EQ( _logger2->_processName ,message );
+    ASSERT_EQ( _logger->_durationInSecond ,duration );
+    ASSERT_EQ( _logger2->_durationInSecond ,duration );
 }
