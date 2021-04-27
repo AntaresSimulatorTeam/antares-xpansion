@@ -21,7 +21,7 @@ public:
         _iterationEndCall = false;
         _endingCall = false;
 
-        _durationInSecond = std::nan("");
+        _durationInSecond = 0.0;
     }
 
     void display_message(const std::string& str) {
