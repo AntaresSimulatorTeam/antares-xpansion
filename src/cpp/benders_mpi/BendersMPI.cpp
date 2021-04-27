@@ -131,7 +131,7 @@ void BendersMpi::step_1_solve_master(mpi::environment & env, mpi::communicator &
 		_logger->log_at_initialization(bendersDataToLogData(_data));
 		_logger->display_message("\tSolving master...");
 		get_master_value(_master, _data, _options);
-		_logger->display_process_duration("\tmaster solved", _data.timer_master);
+		_logger->log_master_solving_duration(_data.timer_master);
 
 		_logger->log_iteration_candidates(bendersDataToLogData(_data));
 
@@ -182,7 +182,7 @@ void BendersMpi::step_2_build_cuts(mpi::environment & env, mpi::communicator & w
 
 		build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);
 
-		_logger->display_process_duration("\tsubproblems solved", _data.timer_slaves);
+		_logger->log_subproblems_solving_duration(_data.timer_slaves);
 	}
 	else {
 		if (_options.RAND_AGGREGATION) {

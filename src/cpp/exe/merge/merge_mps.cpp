@@ -166,7 +166,7 @@ int main(int argc, char** argv)
 	logger->display_message("Solving...");
 	Timer timer;
 	int status_l = mergedSolver_l.Solve();
-	logger->display_process_duration("Problem solved", timer.elapsed());
+	logger->log_total_duration(timer.elapsed());
 
 	jsonWriter_l.updateEndTime();
 

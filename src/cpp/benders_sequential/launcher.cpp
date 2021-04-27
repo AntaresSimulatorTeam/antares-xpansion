@@ -124,8 +124,6 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
 	jsonWriter_l.updateBeginTime();
 	LOG(INFO) << "Constructing workers..." << std::endl;
 
-	// TODO fix this it should not be here
-    // Logger logger = std::make_shared<SimpleLoggerMock>();
     Benders benders(logger);
 	LOG(INFO) << "Running solver..." << std::endl;
 	benders.run(input,options);
@@ -140,7 +138,7 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
 	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	benders.free();
-	logger->display_process_duration("Problem ran", timer.elapsed());
+	logger->log_total_duration(timer.elapsed());
 }
 
 /*!

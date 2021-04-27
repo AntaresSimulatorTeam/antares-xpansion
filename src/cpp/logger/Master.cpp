@@ -19,12 +19,6 @@ namespace logger {
         }
     }
 
-    void Master::display_process_duration(const std::string& processName, double durationInSeconds) {
-        for (auto logger : _loggers) {
-            logger->display_process_duration(processName, durationInSeconds);
-        }
-    }
-
     void Master::log_at_initialization(const LogData &d) {
         for (auto logger : _loggers) {
             logger->log_at_initialization(d);
@@ -37,6 +31,18 @@ namespace logger {
         }
     }
 
+    void Master::log_master_solving_duration(double durationInSeconds) {
+        for (auto logger : _loggers) {
+            logger->log_master_solving_duration(durationInSeconds);
+        }
+    }
+
+    void Master::log_subproblems_solving_duration(double durationInSeconds){
+        for (auto logger : _loggers) {
+            logger->log_subproblems_solving_duration(durationInSeconds);
+        }
+    }
+
     void Master::log_at_iteration_end(const LogData &d) {
         for (auto logger : _loggers) {
             logger->log_at_iteration_end(d);
@@ -46,6 +52,12 @@ namespace logger {
     void Master::log_at_ending(const LogData &d) {
         for (auto logger : _loggers) {
             logger->log_at_ending(d);
+        }
+    }
+
+    void Master::log_total_duration(double durationInSeconds) {
+        for (auto logger : _loggers) {
+            logger->log_total_duration(durationInSeconds);
         }
     }
 

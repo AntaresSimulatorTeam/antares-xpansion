@@ -107,7 +107,7 @@ int main(int argc, char** argv)
 		world.barrier();
 
 		if (world.rank() == 0) {
-			logger->display_process_duration("Problem ran", timer.elapsed());
+			logger->log_total_duration(timer.elapsed());
 			jsonWriter_l.updateEndTime();
 		}
 	}

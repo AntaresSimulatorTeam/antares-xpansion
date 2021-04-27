@@ -205,10 +205,24 @@ TEST_F(UserLoggerTest, DisplayMessage) {
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
-TEST_F(UserLoggerTest, DisplayProcessDuration) {
+TEST_F(UserLoggerTest, LogMasterDuration) {
     std::stringstream expected;
-    expected << "Process name in 3 s" << std::endl;
-    _logger.display_process_duration("Process name", 3.000000);
+    expected << indent_1 << "Master solved in 3 s" << std::endl;
+    _logger.log_master_solving_duration(3.000000);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, LogSubProblemDuration) {
+    std::stringstream expected;
+    expected << indent_1 << "Subproblems solved in 3 s" << std::endl;
+    _logger.log_subproblems_solving_duration(3.000000);
+    ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, LogTotalDuration) {
+    std::stringstream expected;
+    expected << "Problem ran in 3 s" << std::endl;
+    _logger.log_total_duration(3.000000);
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
@@ -223,16 +237,13 @@ public:
         _iterationEndCall = false;
         _endingCall = false;
 
-        _durationInSecond = 0.0;
+        _durationMaster = 0.0;
+        _durationSubproblem = 0.0;
+        _durationTotal = 0.0;
     }
 
     void display_message(const std::string& str) {
         _displaymessage = str;
-    }
-
-    void display_process_duration(const std::string& processName, double durationInSeconds) {
-        _processName = processName;
-        _durationInSecond = durationInSeconds;
     }
 
     void log_at_initialization(const LogData &d) override {
@@ -243,6 +254,14 @@ public:
         _iterationStartCall = true;
     }
 
+    void log_master_solving_duration(double durationInSeconds) {
+        _durationMaster = durationInSeconds;
+    }
+
+    void log_subproblems_solving_duration(double durationInSeconds) {
+        _durationSubproblem = durationInSeconds;
+    }
+
     void log_at_iteration_end(const LogData &d) override {
         _iterationEndCall = true;
     }
@@ -250,13 +269,19 @@ public:
     void log_at_ending(const LogData &d) override {
         _endingCall = true;
     }
+    void log_total_duration(double durationInSeconds) {
+        _durationTotal = durationInSeconds;
+    }
 
     bool _initCall;
     bool _iterationStartCall;
     bool _iterationEndCall;
     bool _endingCall;
     std::string _displaymessage;
-    std::string _processName; double _durationInSecond;
+
+    double _durationMaster;
+    double _durationSubproblem;
+    double _durationTotal;
 };
 
 class MasterLoggerTest : public ::testing::Test
@@ -310,12 +335,23 @@ TEST_F(MasterLoggerTest, DisplayMessage) {
     ASSERT_EQ( _logger2->_displaymessage ,message );
 }
 
-TEST_F(MasterLoggerTest, DisplayProcessDuration) {
-    std::string message = "message";
+TEST_F(MasterLoggerTest, LogMasterDuration) {
     double duration = 3.0;
-    _master.display_process_duration(message,duration);
-    ASSERT_EQ( _logger->_processName ,message );
-    ASSERT_EQ( _logger2->_processName ,message );
-    ASSERT_EQ( _logger->_durationInSecond ,duration );
-    ASSERT_EQ( _logger2->_durationInSecond ,duration );
+    _master.log_master_solving_duration(duration);
+    ASSERT_EQ( _logger->_durationMaster ,duration );
+    ASSERT_EQ( _logger2->_durationMaster ,duration );
+}
+
+TEST_F(MasterLoggerTest, LogSubProblemDuration) {
+    double duration = 3.0;
+    _master.log_subproblems_solving_duration(duration);
+    ASSERT_EQ( _logger->_durationSubproblem ,duration );
+    ASSERT_EQ( _logger2->_durationSubproblem ,duration );
+}
+
+TEST_F(MasterLoggerTest, LogTotalDuration) {
+    double duration = 3.0;
+    _master.log_total_duration(duration);
+    ASSERT_EQ( _logger->_durationTotal ,duration );
+    ASSERT_EQ( _logger2->_durationTotal ,duration );
 }
