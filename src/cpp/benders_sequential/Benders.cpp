@@ -115,12 +115,12 @@ void Benders::doRun(){
 		Timer timer_master;
 		++_data.it;
 
-        _logger->log_at_initialization(bendersDataToLogData(_data));
-        _logger->display_message("\tSolving master...");
+		_logger->log_at_initialization(bendersDataToLogData(_data));
+		_logger->display_message("\tSolving master...");
 		get_master_value(_master, _data, _options);
-        _logger->display_process_duration("\tmaster solved", _data.timer_master);
+		_logger->display_process_duration("\tmaster solved", _data.timer_master);
 
-        _logger->log_iteration_candidates(bendersDataToLogData(_data));
+		_logger->log_iteration_candidates(bendersDataToLogData(_data));
 
 		if (_options.ACTIVECUTS) {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
@@ -128,13 +128,13 @@ void Benders::doRun(){
 
 		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
-        _logger->display_message("\tBuilding cuts...");
+		_logger->display_message("\tBuilding cuts...");
 		build_cut();
-        _logger->display_process_duration("\tCuts built", _data.timer_slaves);
+		_logger->display_process_duration("\tCuts built", _data.timer_slaves);
 
 		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
 
-        _logger->log_at_iteration_end(bendersDataToLogData(_data));
+		_logger->log_at_iteration_end(bendersDataToLogData(_data));
 
 		update_trace(_trace, _data);
 
