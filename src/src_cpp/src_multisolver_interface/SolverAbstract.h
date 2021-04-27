@@ -260,23 +260,25 @@ public:
 
     /**
     * @brief Returns the names of row from index first to last
+    * cannot be declared as const because of some solver methods
     *
     * @param first : first index from which name has be returned
     * @param last  : last index from which name has be returned
     * @param names : vector of names, the size of vector has to be set by user before 
                     calling the method
     */
-    virtual int get_row_names(int first, int last, std::vector<std::string> &names) const = 0;
+    virtual int get_row_names(int first, int last, std::vector<std::string> &names) = 0;
 
     /**
     * @brief Returns the names of columns from index first to last
+    * cannot be declared as const because of some solver methods
     *
     * @param first : first index from which name has be returned
     * @param last  : last index from which name has be returned
     * @param names : vector of names, the size of vector has to be set by user before 
                     calling the method
     */
-    virtual int get_col_names(int first, int last, std::vector<std::string>& names) const = 0;
+    virtual int get_col_names(int first, int last, std::vector<std::string>& names) = 0;
 
 /*************************************************************************************************
 ------------------------------    Methods to modify problem    ----------------------------------

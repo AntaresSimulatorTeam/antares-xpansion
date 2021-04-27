@@ -71,7 +71,6 @@ int main(int argc, char** argv)
 			}
 			ORTgetobj(solver_l, o, 0, mps_ncols - 1);
 			double const weigth = options.slave_weight(nslaves, kvp.first);
-			std::cout << kvp.first << "  wieght = " << weigth << std::endl;
 			for (auto & c : o) {
 				c *= weigth;
 			}

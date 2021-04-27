@@ -159,7 +159,7 @@ void LOG_INFO_AND_COUT(const std::string& message)
 std::string create_candidate_str(const std::string& candidate, double investment, const BendersData& data, int candidate_str_width)
 {
 	std::stringstream result;
-	result << "\t\t\t" << std::setw(candidate_str_width) <<  candidate << "  =  " << std::setw(5) << std::fixed << std::setprecision(2) << investment << " invested MW -- possible interval [" << std::fixed << std::setprecision(2) << data.min_invest.at(candidate) << "; " << std::setprecision(2) << data.max_invest.at(candidate) << "] MW";
+	result << "\t\t\t" << std::setw(candidate_str_width) <<  candidate << "  =  " << std::setw(5) << std::fixed << std::setprecision(12) << investment << " invested MW -- possible interval [" << std::fixed << std::setprecision(2) << data.min_invest.at(candidate) << "; " << std::setprecision(2) << data.max_invest.at(candidate) << "] MW";
 	return result.str();
 }
 

@@ -15,6 +15,7 @@ SolverXpress::SolverXpress() {
 	_NumberOfProblems += 1;
 
 	_xprs = NULL;
+	_stream.push_back(&std::cout);
 }
 
 SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
@@ -211,7 +212,7 @@ int SolverXpress::get_col_index(std::string const& name) const {
 	return id;
 }
 
-int SolverXpress::get_row_names(int first, int last, std::vector<std::string>& names) const
+int SolverXpress::get_row_names(int first, int last, std::vector<std::string>& names)
 {
 	int status = 0;
 	char cur_name[100];
@@ -225,7 +226,7 @@ int SolverXpress::get_row_names(int first, int last, std::vector<std::string>& n
 	return status;
 }
 
-int SolverXpress::get_col_names(int first, int last, std::vector<std::string>& names) const
+int SolverXpress::get_col_names(int first, int last, std::vector<std::string>& names)
 {
 	int status = 0;
 	char cur_name[100];

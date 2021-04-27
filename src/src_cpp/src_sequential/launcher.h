@@ -78,13 +78,13 @@ public:
 		int nelems = solver_p->get_nelems();
 
 		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] = ncols;
-		std::cout << "vars: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] << "\n";
+		//std::cout << "vars: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] << "\n";
 
 		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] = nrows;
-		std::cout << "constraints: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] << "\n";
+		//std::cout << "constraints: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] << "\n";
 
 		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] = nelems;
-		std::cout << "nelems: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] << "\n";
+		//std::cout << "nelems: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] << "\n";
 
 		_colNames.resize(ncols);
 		solver_p->get_col_names(0, ncols - 1, _colNames);
@@ -171,10 +171,6 @@ public:
 
 	int append_in(SolverAbstract::Ptr containingSolver_p, std::string const & prefix_p = "") const {
 
-		Timer timer;
-		timer.restart();
-
-
 		// simply increment the columns indices
 		IntVector newmindex(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
 		int nbExistingCols(containingSolver_p->get_ncols());
@@ -182,18 +178,12 @@ public:
 			i += nbExistingCols;
 		}
 
-		std::cout << "increment cols indices " << timer.elapsed() << std::endl;
-		timer.restart();
-
 		//rename variables
 		std::string prefix_l = (prefix_p != "") ? prefix_p : ("prob"+std::to_string(appendCNT));
 		std::vector<std::string> newNames;
 		newNames.resize(_colNames.size());
 		std::transform(_colNames.begin(), _colNames.end(), newNames.begin(),
 					[&prefix_l](std::string varName_p)->std::string{ return prefix_l + varName_p; });
-
-		std::cout << "transform              " << timer.elapsed() << std::endl;
-		timer.restart();
 
 		std::vector<int> mstart(std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS], 0);
 		ORTaddcols(containingSolver_p,
@@ -204,9 +194,6 @@ public:
 				   std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
 				   newNames);
 
-		std::cout << "add col              " << timer.elapsed() << std::endl;
-		timer.restart();
-
 		ORTaddrows(containingSolver_p,
 					std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
 					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
@@ -215,8 +202,6 @@ public:
 					newmindex,
 					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
 
-		std::cout << "add row              " << timer.elapsed() << std::endl;
-		timer.restart();
 		++appendCNT;
 
 		return nbExistingCols;

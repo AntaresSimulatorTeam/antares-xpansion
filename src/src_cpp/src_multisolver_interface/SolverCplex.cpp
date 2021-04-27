@@ -197,7 +197,7 @@ int SolverCplex::get_col_index(std::string const& name) const {
 	return id;
 }
 
-int SolverCplex::get_row_names(int first, int last, std::vector<std::string>& names) const
+int SolverCplex::get_row_names(int first, int last, std::vector<std::string>& names)
 {
 	int status = 0;
 	const int charSize = 100;
@@ -214,7 +214,7 @@ int SolverCplex::get_row_names(int first, int last, std::vector<std::string>& na
 	return status;
 }
 
-int SolverCplex::get_col_names(int first, int last, std::vector<std::string>& names) const
+int SolverCplex::get_col_names(int first, int last, std::vector<std::string>& names)
 {
 	int status = 0;
 	const int charSize = 100;

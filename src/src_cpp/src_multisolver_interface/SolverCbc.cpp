@@ -317,9 +317,9 @@ int SolverCbc::get_col_index(std::string const& name) const {
 	return -1;
 }
 
-int SolverCbc::get_row_names(int first, int last, std::vector<std::string>& names) const
+int SolverCbc::get_row_names(int first, int last, std::vector<std::string>& names)
 {
-	std::vector<std::string> solver_row_names = _cbc.solver()->getRowNames();
+	std::vector<std::string> solver_row_names = _clp_inner_solver.getRowNames();
 	if (solver_row_names.size() < names.size()) {
 		std::cout << "ERROR : all required rows don't have a name. Impossible to get row names."
 			<< std::endl;
@@ -332,9 +332,9 @@ int SolverCbc::get_row_names(int first, int last, std::vector<std::string>& name
 	return 0;
 }
 
-int SolverCbc::get_col_names(int first, int last, std::vector<std::string>& names) const
+int SolverCbc::get_col_names(int first, int last, std::vector<std::string>& names)
 {
-	std::vector<std::string> solver_col_names = _cbc.solver()->getColNames();
+	std::vector<std::string> solver_col_names = _clp_inner_solver.getColNames();
 	if (solver_col_names.size() < names.size()) {
 		std::cout << "ERROR : all required columns don't have a name. Impossible to get col names."
 			<< std::endl;
@@ -496,13 +496,11 @@ void SolverCbc::chg_coef(int id_row, int id_col, double val){
 void SolverCbc::chg_row_name(int id_row, std::string & name)
 {
 	_clp_inner_solver.setRowName(id_row, name);
-	_cbc = CbcModel(_clp_inner_solver);
 }
 
 void SolverCbc::chg_col_name(int id_col, std::string & name)
 {
 	_clp_inner_solver.setColName(id_col, name);
-	_cbc = CbcModel(_clp_inner_solver);
 }
 	
 /*************************************************************************************************
@@ -536,10 +534,13 @@ void SolverCbc::solve_mip(int& lp_status){
 
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
+
 	_cbc = CbcModel(_clp_inner_solver);
 	set_output_log_level(_current_log_level);
-
+	clock_t t_i = clock();
 	_cbc.branchAndBound();
+	clock_t t_f = clock();
+	std::cout << "Time master solve pure = " << (t_f - t_i) * 1e-3 << std::endl;
 
 	/*std::cout << "*********************************************" << std::endl;
 	std::cout << "COUCOU CBC STATUS " << _cbc.status() << std::endl;
