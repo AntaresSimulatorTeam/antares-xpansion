@@ -178,11 +178,11 @@ void BendersMpi::step_2_build_cuts(mpi::environment & env, mpi::communicator & w
 
 		all_package.erase(all_package.begin());
 
-		_logger->display_message("\tBuilding cuts...");
+		_logger->display_message("\tSolving subproblems...");
 
 		build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);
 
-		_logger->display_process_duration("\tCuts built", _data.timer_slaves);
+		_logger->display_process_duration("\tsubproblems solved", _data.timer_slaves);
 	}
 	else {
 		if (_options.RAND_AGGREGATION) {

@@ -128,9 +128,9 @@ void Benders::doRun(){
 
 		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
-		_logger->display_message("\tBuilding cuts...");
+		_logger->display_message("\tSolving subproblems...");
 		build_cut();
-		_logger->display_process_duration("\tCuts built", _data.timer_slaves);
+		_logger->display_process_duration("\tsubproblems solved", _data.timer_slaves);
 
 		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
 
