@@ -153,7 +153,8 @@ This is the list of the available labels :
 
 | Name     | Label |Description |
 |:-------|-----|-----|
-| `unit_ortools`  | `unit`  | Unit test for OR-Tools use|
+| `unit_tests`  | `unit`  | Unit test for OR-Tools use and lpnamer|
+| `unit_logger`  | `unit`  | Unit test for logger use|
 | `unit_launcher`  | `unit`  |Unit test antares-xpansion python launcher|
 | `examples_medium`  | `medium`  |End to end tests with examples antares study (medium duration)|
 | `examples_long`  | `long`  |End to end tests with examples antares study (long duration)|
@@ -161,9 +162,9 @@ This is the list of the available labels :
 Note :
 > Use `ctest3 -N` to see all available tests
 
-Here is an example for running only example tests (use of `Name` with `-R` option):
+Here is an example for running only examples_medium tests (use of `Name` with `-R` option):
 ```
-ctest3 -C Release --output-on-failure -R example
+ctest3 -C Release --output-on-failure -R examples_medium
 ```` 
 Here is an example for running only units tests (use of `Label` with `-L` option):
 ```
