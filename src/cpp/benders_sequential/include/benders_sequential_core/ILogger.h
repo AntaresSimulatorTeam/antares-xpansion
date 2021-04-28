@@ -16,6 +16,7 @@ struct LogData {
     double lb;
     double best_ub;
     int it;
+    int best_it;
     double slave_cost;
     double invest_cost;
     LogPoint x0;
@@ -28,10 +29,15 @@ class ILogger {
 
 public:
     virtual ~ILogger()= default;
+    
+    virtual void display_message(const std::string& str) = 0;
     virtual void log_at_initialization(const LogData& d) = 0;
-    virtual void log_at_iteration_start      (const LogData& d) = 0;
+    virtual void log_iteration_candidates      (const LogData& d) = 0;
+    virtual void log_master_solving_duration(double durationInSeconds) = 0;
+    virtual void log_subproblems_solving_duration(double durationInSeconds) = 0;
     virtual void log_at_iteration_end      (const LogData& d) = 0;
     virtual void log_at_ending        (const LogData& d) = 0;
+    virtual void log_total_duration(double durationInSeconds) = 0;
 
 };
 using Logger = std::shared_ptr<ILogger>;

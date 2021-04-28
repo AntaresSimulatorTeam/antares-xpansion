@@ -14,7 +14,7 @@
 namespace xpansion{
 namespace logger {
 
-    std::string CandidateLog::Log_at_iteration_start(const LogData &data){
+    std::string CandidateLog::log_iteration_candidates(const LogData &data){
         std::stringstream _stream;
         _stream << getHeaderString(data);
         _stream << getMainBodyString(data);
@@ -23,7 +23,6 @@ namespace logger {
 
     std::string CandidateLog::getHeaderString(const LogData &data){
         std::stringstream header;
-        header << indent_0 << "ITERATION " << data.it << ":" << std::endl;
         header << indent_0 << "Candidates:" << std::endl;
         return header.str();
     }

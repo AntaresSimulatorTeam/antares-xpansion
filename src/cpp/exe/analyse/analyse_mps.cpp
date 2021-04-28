@@ -13,8 +13,8 @@ int main(int argc, char** argv)
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
 
-	CouplingMap input; //map[probel_name][variable_name] <-> variable_id
-	build_input(options, input);
+	CouplingMap input = build_input(options);
+
 	int i(0);
 	std::vector<DblVector> name_rhs(input.size());
 	Str2Int id_name;

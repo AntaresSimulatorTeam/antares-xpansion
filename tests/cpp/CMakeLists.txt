@@ -17,7 +17,6 @@ message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 # unit tests
 # --------------------------------------------------------------------------
 add_subdirectory(logger)
-add_subdirectory(benders_sequential)
 add_executable (unit_tests
         helpers/ORToolsTest.cc
 		lp_namer/AdditionalConstraintsTest.cc

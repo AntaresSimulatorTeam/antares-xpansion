@@ -22,6 +22,7 @@ LogData bendersDataToLogData(const BendersData &data) {
     result.lb = data.lb;
     result.best_ub = data.best_ub;
     result.it = data.it;
+    result.best_it = data.best_it;
     result.slave_cost = data.slave_cost;
     result.invest_cost = data.invest_cost;
     result.x0 = data.x0;

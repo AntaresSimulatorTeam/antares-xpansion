@@ -13,7 +13,7 @@ namespace logger {
     class CandidateLog {
     public :
 
-        std::string Log_at_iteration_start(const LogData &_data);
+        std::string log_iteration_candidates(const LogData &_data);
 
 
     private:
