@@ -5,39 +5,6 @@
 
 #include "BendersOptions.h"
 
-class SimpleLoggerMock : public ILogger
-{
-public:
-
-    SimpleLoggerMock()
-    {
-        _initCall = false;
-        _iterationStartCall = false;
-        _iterationEndCall = false;
-        _endingCall = false;
-    }
-
-    void log_at_initialization(const LogData &d) override {
-        _initCall = true;
-    }
-
-    void log_iteration_candidates(const LogData &d) override {
-        _iterationStartCall = true;
-    }
-
-    void log_at_iteration_end(const LogData &d) override {
-        _iterationEndCall = true;
-    }
-
-    void log_at_ending(const LogData &d) override {
-        _endingCall = true;
-    }
-
-    bool _initCall;
-    bool _iterationStartCall;
-    bool _iterationEndCall;
-    bool _endingCall;
-};
 /*!
 *  \brief Get Benders Options from command line
 *
