@@ -78,8 +78,13 @@ class XpansionConfig():
         self.method = args.method
         self.n_mpi = args.n_mpi
 
-        if not Path.is_absolute(Path(self.installDir)):
-            self.installDir = os.path.join(Path.cwd(), Path(self.installDir))
+        #TODO cleanup this and
+        # change default value of installDir to None, in this way pyinstaller will find the binaries inside its package
+        if self.installDir is not None:
+            if not Path.is_absolute(Path(self.installDir)):
+                self.installDir = os.path.join(Path.cwd(), Path(self.installDir))
+        else:
+            self.installDir = Path(os.path.abspath(__file__)).parent.parent / "bin"
 
         self.SETTINGS = 'settings'
         self.USER = 'user'
