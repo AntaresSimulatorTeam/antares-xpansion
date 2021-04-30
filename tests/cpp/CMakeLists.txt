@@ -18,6 +18,9 @@ message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 # unit tests
 # --------------------------------------------------------------------------
 
+add_subdirectory(multisolver_interface_tests multisolver_interface)
+add_subdirectory(benders_interface_tests benders_interface)
+
 add_executable (unit_tests
         helpers/ORToolsTest.cc
 		lp_namer/AdditionalConstraintsTest.cc
