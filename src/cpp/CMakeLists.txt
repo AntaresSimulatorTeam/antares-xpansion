@@ -13,16 +13,12 @@ endif()
 # Targets
 # ===========================================================================
 
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_helpers")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_lpnamer")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_sequential")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_multisolver_interface")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/helpers")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/lpnamer")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders_sequential")
 
 if (USE_MPI)
-	add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_mpi")
+	add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders_mpi")
 endif ()
 
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_test")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_test_solvers_interface")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/src_test_benders_interface")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/exe")

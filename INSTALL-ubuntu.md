@@ -25,8 +25,7 @@ sudo apt-get install python3 python3-pip
 
 Required python modules can be installed with :
 ```
-pip3 install -r src/src_python/requirements.txt
-pip3 install -r src/tests/examples/requirements.txt
+pip3 install -r requirements-tests.txt
 ```
 
 ## [Dependencies](#deps)
@@ -34,7 +33,7 @@ pip3 install -r src/tests/examples/requirements.txt
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost : program-option mpi serialization (Only for MPI benders compilation)
+ - Boost : mpi serialization (Only for MPI benders compilation), program-options
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
@@ -138,7 +137,9 @@ This is the list of the available labels :
 |:-------|-----|-----|
 | `unit_ortools`  | `unit`  | Unit test for OR-Tools use|
 | `unit_launcher`  | `unit`  |Unit test antares-xpansion python launcher|
-| `example`  | `medium`  |End to end tests with examples antares study|
+| `examples_medium`  | `medium`  |End to end tests with examples antares study (medium duration)|
+| `examples_long`  | `long`  |End to end tests with examples antares study (long duration)|
+| `benders_end_to_end`  | `benders`  |End to end tests for benders optimization|
 Note :
 > Use `ctest -N` to see all available tests
 

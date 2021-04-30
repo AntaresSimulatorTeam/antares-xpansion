@@ -37,8 +37,7 @@ jobs:
     - name: Install dependencies
       run: |
           python -m pip install --upgrade pip
-          pip install -r src/src_python/requirements.txt
-          pip install -r src/tests/examples/requirements.txt
+          pip install -r requirements-tests.txt
           
     - name: Pre-requisites
       shell: cmd
@@ -92,7 +91,7 @@ jobs:
       run: |
            set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
            cd _build
-           ctest -C Release --output-on-failure -L "medium|unit"
+           ctest -C Release --output-on-failure -L "medium|unit|benders"
     
     - name: Installer .zip creation
       run: |

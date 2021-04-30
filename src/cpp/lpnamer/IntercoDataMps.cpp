@@ -4,19 +4,7 @@
 #include "INIReader.h"
 
 #include "ortools_utils.h"
-
-namespace
-{
-	std::string toLowercase(std::string const & inputString_p)
-	{
-		std::string result;
-		std::transform(inputString_p.cbegin(), inputString_p.cend(), std::back_inserter(result),[](char const & c) {
-				return std::tolower(c);
-		});
-		return result;
-	}
-}
-
+#include "helpers/StringUtils.h"
 
 std::vector<std::vector<std::string> > Candidates::MPS_LIST = {
 };
@@ -301,7 +289,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
-	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_LP_SOLVER_TYPE);
+	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
 	ORTreadmps(in_prblm, mps_name);
 
 	int ncols(in_prblm.NumVariables());
@@ -417,7 +405,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	ORTwritemps(out_prblm, lp_mps_name );
+	ORTwriteMpsPreciseWithCoin(out_prblm, lp_mps_name );
 	std::cout << "lp_name : " << lp_mps_name << " done" << std::endl;
 }
 
@@ -500,8 +488,8 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 				if (str == "link") {
 					size_t i = val.find(" - ");
 					if (i != std::string::npos) {
-						std::string s1 = toLowercase(val.substr(0, i));
-						std::string s2 = toLowercase(val.substr(i + 3, val.size()));
+						std::string s1 = StringUtils::ToLowercase(val.substr(0, i));
+						std::string s2 = StringUtils::ToLowercase(val.substr(i + 3, val.size()));
 						std::cout << s1 << " and " << s2 << std::endl;
 						(*this)[sectionName]._str["linkor"] = s1;
 						(*this)[sectionName]._str["linkex"] = s2;
@@ -521,7 +509,7 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 				}
 				else if (str == "name")
 				{
-					std::string candidateName = toLowercase(val);
+					std::string candidateName = StringUtils::ToLowercase(val);
 					(*this)[sectionName]._str["name"] = candidateName;
 				}
 				else {
@@ -544,7 +532,7 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 			std::cout << "cannot link candidate to interco id" << std::endl;
 		}
 		else {
-			id_name[it->second] = toLowercase((*this)[sectionName]._str["name"]);
+			id_name[it->second] = StringUtils::ToLowercase((*this)[sectionName]._str["name"]);
 			std::cout << "index is " << it->second << " and name is " << id_name[it->second] << std::endl;
 		}
 	}

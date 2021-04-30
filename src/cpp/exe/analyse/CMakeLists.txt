@@ -21,7 +21,7 @@ target_include_directories (analyse_mps
 
 target_link_libraries (analyse_mps
 	PUBLIC
-		${PROJECT_NAME}::sequentialcore
+		${PROJECT_NAME}::benders_sequential_core
 		helpers
 )
 

@@ -21,8 +21,7 @@ You can download latest Windows version directly from [Python website](https://w
 
 Required python modules can be installed with :
 ```
-pip install -r src/src_python/requirements.txt
-pip install -r src/src_python/tests/examples/requirements.txt
+pip install -r requirements-tests.txt
 ```
 
 ## [Dependencies](#deps)
@@ -30,7 +29,7 @@ pip install -r src/src_python/tests/examples/requirements.txt
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost : mpi serialization (Only for MPI benders compilation)
+ - Boost : mpi serialization (Only for MPI benders compilation), program-options
  - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
  - [GraphViz](https://graphviz.org/) for doxygen use
 
@@ -72,6 +71,7 @@ cd [vcpkg_root]
 vcpkg install jsoncpp:[vcpg-triplet] 
 vcpkg install gtest:[vcpg-triplet] 
 vcpkg install boost-mpi:[vcpg-triplet]
+vcpkg install boost-program-options:[vcpg-triplet]
 vcpkg install openssl:[vcpg-triplet] 
 vcpkg install curl:[vcpg-triplet]
 ```
@@ -160,7 +160,9 @@ This is the list of the available labels :
 |:-------|-----|-----|
 | `unit_ortools`  | `unit`  | Unit test for OR-Tools use|
 | `unit_launcher`  | `unit`  |Unit test antares-xpansion python launcher|
-| `example`  | `medium`  |End to end tests with examples antares study|
+| `examples_medium`  | `medium`  |End to end tests with examples antares study (medium duration)|
+| `examples_long`  | `long`  |End to end tests with examples antares study (long duration)|
+| `benders_end_to_end`  | `benders`  |End to end tests for benders optimization|
 Note :
 > Use `ctest -N` to see all available tests
 

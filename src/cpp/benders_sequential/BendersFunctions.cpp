@@ -159,7 +159,7 @@ void LOG_INFO_AND_COUT(const std::string& message)
 std::string create_candidate_str(const std::string& candidate, double investment, const BendersData& data, int candidate_str_width)
 {
 	std::stringstream result;
-	result << "\t\t\t" << std::setw(candidate_str_width) <<  candidate << "  =  " << std::setw(5) << std::fixed << std::setprecision(12) << investment << " invested MW -- possible interval [" << std::fixed << std::setprecision(2) << data.min_invest.at(candidate) << "; " << std::setprecision(2) << data.max_invest.at(candidate) << "] MW";
+	result << "\t\t\t" << std::setw(candidate_str_width) <<  candidate << "  =  " << std::setw(5) << std::fixed << std::setprecision(2) << investment << " invested MW -- possible interval [" << std::fixed << std::setprecision(2) << data.min_invest.at(candidate) << "; " << std::setprecision(2) << data.max_invest.at(candidate) << "] MW";
 	return result.str();
 }
 
@@ -187,7 +187,7 @@ void investment_candidates_log(const BendersData& data)
 }
 
 
-inline double convert_in_million_euros(double val) { return val / 1;}
+inline double convert_in_million_euros(double val) { return val / 1e6;}
 
 inline std::string create_str_million_euros(const std::string& str, double val)
 {
@@ -367,6 +367,7 @@ void get_master_value(WorkerMasterPtr & master, BendersData & data, BendersOptio
 	}
 
 
+
 	if (!options.RAND_AGGREGATION) {
 		data.ub = data.invest_cost;
 	}
@@ -400,7 +401,6 @@ void get_slave_cut(SlaveCutPackage & slave_cut_package, SlavesMapPtr & map_slave
 		}
 		ptr->get_value(handler->get_dbl(SLAVE_COST));
 		ptr->get_subgradient(handler->get_subgradient());
-
 		ptr->get_simplex_ite(handler->get_int(SIMPLEXITER));
 		handler->get_dbl(SLAVE_TIMER) = timer_slave.elapsed();
 		slave_cut_package[kvp.first] = *slave_cut_data;
@@ -462,10 +462,7 @@ void get_random_slave_cut(SlaveCutPackage & slave_cut_package, SlavesMapPtr & ma
 *  \param options : set of parameters
 *
 */
-void sort_cut_slave(AllCutPackage const & all_package, WorkerMasterPtr & master, 
-	Str2Int & problem_to_id, BendersTrace & trace, AllCutStorage & all_cuts_storage, 
-	BendersData & data, BendersOptions const & options, SlaveCutId & slave_cut_id) {
-
+void sort_cut_slave(AllCutPackage const & all_package, WorkerMasterPtr & master, Str2Int & problem_to_id, BendersTrace & trace, AllCutStorage & all_cuts_storage, BendersData & data, BendersOptions const & options, SlaveCutId & slave_cut_id) {
 	for (int i(0); i < all_package.size(); i++) {
 		for (auto const & itmap : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
@@ -844,6 +841,9 @@ void update_active_cuts(WorkerMasterPtr & master, ActiveCutStorage & active_cuts
 			active_cuts.push_back(std::make_tuple(it, kvp.first, i + 1, (dual[kvp.first[i]] != 0))); //@TODO check : kvp.first is a string and indexing a vector
 			//	}
 			//}
+		}
+	}
+}
 		}
 	}
 }

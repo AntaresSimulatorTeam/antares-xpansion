@@ -6,7 +6,7 @@
 # Targets
 # ===========================================================================
 
-add_library (sequentialcore STATIC
+add_library (benders_sequential_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/SimplexBasis.h
 	${CMAKE_CURRENT_SOURCE_DIR}/launcher.h
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerSlave.h
@@ -40,18 +40,18 @@ add_library (sequentialcore STATIC
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
 
-target_include_directories (sequentialcore
+target_include_directories (benders_sequential_core
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
 		${ORTOOLS_INCLUDE_DIRS}
         ${JSON_INC_PATH}/jsoncpp
 )
 
-target_link_libraries (sequentialcore
+target_link_libraries (benders_sequential_core
 	PUBLIC
 		helpers
 		jsoncpp_lib
 		solvers
 )
 
-add_library (${PROJECT_NAME}::sequentialcore ALIAS sequentialcore)
+add_library (${PROJECT_NAME}::benders_sequential_core ALIAS benders_sequential_core)

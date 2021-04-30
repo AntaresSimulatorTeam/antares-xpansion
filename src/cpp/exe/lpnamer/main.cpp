@@ -1,5 +1,5 @@
 /**
- * \file exe_lpnamer/main.cpp
+ * \file lpnamer/main.cpp
  * \brief POC Antares Xpansion V2
  * \author {Manuel Ruiz; Luc Di Gallo}
  * \version 0.1
@@ -54,15 +54,6 @@ std::string get_name(std::string const & path) {
 	std::string name(path.substr(last_sep + 1));
 	name = name.substr(0, name.size() - 4);
 	return name;
-}
-
-std::string toLowercase(std::string const& inputString_p)
-{
-	std::string result;
-	std::transform(inputString_p.cbegin(), inputString_p.cend(), std::back_inserter(result), [](char const& c) {
-		return std::tolower(c);
-		});
-	return result;
 }
 
 /**
@@ -151,7 +142,7 @@ void masterGeneration(std::string rootPath,
 
 	std::string const lp_name = "master";
 	ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
-	ORTwritemps(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps");
+	ORTwriteMpsPreciseWithCoin(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps");
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const & coupling : couplings) {
 		output[get_name(coupling.first.second)][coupling.first.first] = coupling.second;
