@@ -53,7 +53,7 @@ class XpansionConfig():
         parser.add_argument("--installDir",
                             dest="installDir",
                             help="The directory where all binaries are located",
-                            default="bin")
+                            default=None)
         parser.add_argument("--method",
                             dest="method",
                             type=str,
@@ -69,16 +69,32 @@ class XpansionConfig():
         self.step = args.step
         self.simulationName = args.simulationName
         self.dataDir = str(Path(args.dataDir).resolve())
-        self.installDir = args.installDir
+        self.installDir = self._get_install_dir(args.installDir)
         self.method = args.method
         self.n_mpi = args.n_mpi
-        # TODO cleanup this and
-        # change default value of installDir to None, in this way pyinstaller will find the binaries inside its package
-        if self.installDir is not None:
-            if not Path.is_absolute(Path(self.installDir)):
-                self.installDir = os.path.join(Path.cwd(), Path(self.installDir))
+        print(" ------------\nINSTALL DIR:", self.installDir)
+
+    def _get_install_dir(self, install_dir):
+        if install_dir is None:
+            return self._initialize_install_dir_with_default_value()
         else:
-            self.installDir = Path(os.path.abspath(__file__)).parent.parent / "bin"
+            return self._initialize_install_dir_with_absolute_path(install_dir)
+
+    @staticmethod
+    def _initialize_install_dir_with_absolute_path(install_dir):
+        if not Path.is_absolute(Path(install_dir)):
+            return os.path.join(Path.cwd(), Path(install_dir))
+        else:
+            return install_dir
+
+    @staticmethod
+    def _initialize_install_dir_with_default_value():
+        install_dir_inside_package = Path(os.path.abspath(__file__)).parent.parent / "bin"
+        install_dir_from_absolute_path = Path.cwd() / "bin"
+        if Path.is_dir(install_dir_inside_package):
+            return install_dir_inside_package
+        else:
+            return install_dir_from_absolute_path
 
     def _initialize_default_values(self):
         self._set_constants()
