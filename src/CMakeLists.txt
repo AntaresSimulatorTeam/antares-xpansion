@@ -36,7 +36,7 @@ if (PYINSTALLER)
 
     #code is executed in CMAKE_BINARY_DIR
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/
-            DESTINATION xpansion-launcher
+            DESTINATION .
             USE_SOURCE_PERMISSIONS)
 else ()
     
