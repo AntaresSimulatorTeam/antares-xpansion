@@ -284,16 +284,20 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::map< std::pair<std::string, std::string>, int> & couplings,
 											map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex,
 											std::string study_path,
-											std::string const lp_mps_name)
+											std::string const lp_mps_name,
+											std::string const& solver_name)
 {
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
-	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
-	ORTreadmps(in_prblm, mps_name);
+	SolverFactory factory;
+	SolverAbstract::Ptr in_prblm;// ("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
+	in_prblm = factory.create_solver(solver_name);
+	in_prblm->init();
+	in_prblm->read_prob(mps_name.c_str(), "MPS");
 
-	int ncols(in_prblm.NumVariables());
-	int nrows(in_prblm.NumConstraints());
+	int ncols = in_prblm->get_ncols();
+	int nrows = in_prblm->get_nrows();
 
 	// check if number of rows in the solver matrix is equal to the number of constraints
 	if (nrows != cstr.size()) {
@@ -311,8 +315,9 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<double> ub;
 	std::vector<char> coltype;
 	ORTgetcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
-	std::vector<double> posinf(ninterco_pdt, in_prblm.infinity());
-	std::vector<double> neginf(ninterco_pdt, -in_prblm.infinity());
+	// Setting bounds to +-1e20
+	std::vector<double> posinf(ninterco_pdt, 1e20);
+	std::vector<double> neginf(ninterco_pdt, -1e20);
 	std::vector<char> lb_char(ninterco_pdt, 'L');
 	std::vector<char> ub_char(ninterco_pdt, 'U');
 	std::vector<int> indexes;
@@ -325,19 +330,24 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	ORTchgbounds(in_prblm, indexes, ub_char, posinf);
 
 	std::vector<std::string> vnames(var.begin(), var.end());
-	operations_research::MPSolver out_prblm("new_problem", in_prblm.ProblemType());
+	SolverAbstract::Ptr out_prblm;
 	// copy in_prblm with the changed bounds and rename its variables
-	ORTcopyandrenamevars(out_prblm, in_prblm, vnames);
+	ORTcopyandrenamevars(out_prblm, in_prblm, vnames, solver_name);
 
 	size_t cnt_l = 0;
-	for(auto outVar_l : out_prblm.variables())
-	{
-		int outVarIndex_l = outVar_l->index();
-		int originalIndex_l = std::stoi(in_prblm.variables()[outVarIndex_l]->name().substr(1));
-		if( originalIndex_l != outVarIndex_l)
+	// All the names are retrieved before the loop.
+	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
+	// but it could be longer.
+	std::vector<std::string> outVarNames;
+	out_prblm->get_col_names(0, out_prblm->get_ncols() - 1, outVarNames);
+	for(int outVarIndex_l = 0; outVarIndex_l < out_prblm->get_ncols(); outVarIndex_l++){
+		int originalIndex_l = in_prblm->get_col_index(outVarNames[outVarIndex_l]);
+		if (originalIndex_l != outVarIndex_l) {
 			std::cout << "WARNING : Variables names in subproblems may not be representative."
-					<< " expected index " <<  originalIndex_l
-					<< " for variable " << outVar_l->name() << " but index " << outVarIndex_l << " retrieved\n";
+				<< " expected index " << originalIndex_l
+				<< " for variable " << outVarNames[outVarIndex_l] << " but index "
+				<< outVarIndex_l << " retrieved\n";
+		}
 		++cnt_l;
 	}
 
@@ -345,8 +355,9 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// create pMax variable
 	int ninterco = interco_id.size();
 	std::vector<double> obj_interco(ninterco, 0);
-	std::vector<double> lb_interco(ninterco, -out_prblm.infinity());
-	std::vector<double> ub_interco(ninterco,  out_prblm.infinity());
+	// Setting bounds to +-1e20
+	std::vector<double> lb_interco(ninterco, -1e20);
+	std::vector<double> ub_interco(ninterco,  1e20);
 	std::vector<char> coltypes_interco(ninterco, 'C');
 	std::vector<std::string> colnames_l;
 
@@ -405,8 +416,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	ORTwriteMpsPreciseWithCoin(out_prblm, lp_mps_name );
-	std::cout << "lp_name : " << lp_mps_name << " done" << std::endl;
+	out_prblm->write_prob(lp_mps_name.c_str(), "MPS");
+	std::cout << "mps_name : " << lp_mps_name << " done" << std::endl;
 }
 
 
@@ -420,7 +431,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
  */
 void Candidates::treat(std::string const & root,
 	std::vector<std::string> const & mps,
-	std::map< std::pair<std::string, std::string>, int> & couplings) {
+	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
 
 	std::map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex;
 	std::string const study_path = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
@@ -449,7 +460,8 @@ void Candidates::treat(std::string const & root,
 
 	readCstrfiles(cstr_name, cstr, csize);
 	readVarfiles(var_name, var, vsize, interco_data, interco_id, key_paysor_paysex);
-	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data, interco_id, couplings, key_paysor_paysex, study_path, lp_mps_name);
+	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data, interco_id, 
+		couplings, key_paysor_paysex, study_path, lp_mps_name, solver_name);
 }
 
 
@@ -460,10 +472,11 @@ void Candidates::treat(std::string const & root,
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>, int>& couplings) {
+void Candidates::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
+	int>& couplings, std::string const& solver_name) {
 	int n_mps(0);
 	for (auto const & mps : Candidates::MPS_LIST) {
-		treat(root, mps, couplings);
+		treat(root, mps, couplings, solver_name);
 		n_mps += 1;
 	}
 }

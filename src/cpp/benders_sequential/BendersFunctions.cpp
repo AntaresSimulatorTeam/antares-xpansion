@@ -844,6 +844,3 @@ void update_active_cuts(WorkerMasterPtr & master, ActiveCutStorage & active_cuts
 		}
 	}
 }
-		}
-	}
-}
