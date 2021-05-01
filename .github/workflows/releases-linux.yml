@@ -64,11 +64,11 @@ jobs:
     
     - name: Configure
       run: |
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_build/installation
     
     - name: Build
       run: |
-           cmake --build _build --config Release -j2
+           cmake --build _build --config Release -j2 --target install
 
     - name: Running unit tests
       run: |
@@ -88,7 +88,15 @@ jobs:
            cpack -G DEB
            export DEB_NAME=$(ls *.deb)
            echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
-           
+
+    - name: single_exe creation
+        run: |
+          cd _build
+          pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "installation/bin/:bin"
+          cd dist
+          export SINGLE_EXE_NAME=$(ls antares-xpansion-launcher*)
+          echo "SINGLE_EXE_NAME=$SINGLE_EXE_NAME" >> $GITHUB_ENV
+
     - name: Upload .tar.gz
       uses: actions/upload-release-asset@v1.0.2
       with:
@@ -104,4 +112,12 @@ jobs:
         asset_path: _build/${{env.DEB_NAME}}
         asset_name: ${{env.DEB_NAME}}
         asset_content_type: application/octet-stream
-    
+
+    - name: Upload single_exe
+        uses: actions/upload-release-asset@v1.0.2
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: _build/dist/${{env.SINGLE_EXE_NAME}}
+          asset_name: ${{env.SINGLE_EXE_NAME}}
+          asset_content_type: application/octet-stream
+
