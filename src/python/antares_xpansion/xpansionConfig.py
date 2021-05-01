@@ -72,7 +72,6 @@ class XpansionConfig():
         self.installDir = self._get_install_dir(args.installDir)
         self.method = args.method
         self.n_mpi = args.n_mpi
-        print(" ------------\nINSTALL DIR:", self.installDir)
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
