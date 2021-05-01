@@ -90,12 +90,12 @@ jobs:
            echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
 
     - name: single_exe creation
-        run: |
-          cd _build
-          pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "installation/bin/:bin"
-          cd dist
-          export SINGLE_EXE_NAME=$(ls antares-xpansion-launcher*)
-          echo "SINGLE_EXE_NAME=$SINGLE_EXE_NAME" >> $GITHUB_ENV
+      run: |
+           cd _build
+           pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "installation/bin/:bin"
+           cd dist
+           export SINGLE_EXE_NAME=$(ls antares-xpansion-launcher*)
+           echo "SINGLE_EXE_NAME=$SINGLE_EXE_NAME" >> $GITHUB_ENV
 
     - name: Upload .tar.gz
       uses: actions/upload-release-asset@v1.0.2
@@ -114,10 +114,10 @@ jobs:
         asset_content_type: application/octet-stream
 
     - name: Upload single_exe
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: _build/dist/${{env.SINGLE_EXE_NAME}}
-          asset_name: ${{env.SINGLE_EXE_NAME}}
-          asset_content_type: application/octet-stream
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: _build/dist/${{env.SINGLE_EXE_NAME}}
+        asset_name: ${{env.SINGLE_EXE_NAME}}
+        asset_content_type: application/octet-stream
 
