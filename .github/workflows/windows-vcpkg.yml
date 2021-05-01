@@ -101,7 +101,7 @@ jobs:
     - name: single_exe creation
       run: |
         cd _build
-        pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "installation/bin/;bin"
+        pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml;." --add-data "installation/bin/;bin"
 
     - name: Installer upload
       uses: actions/upload-artifact@v2
