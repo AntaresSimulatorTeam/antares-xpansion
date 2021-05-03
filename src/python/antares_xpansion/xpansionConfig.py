@@ -68,6 +68,7 @@ class XpansionConfig():
 
         parser.add_argument("--keepMps",
                             dest="keep_mps",
+                            default=False,
                             action='store_true',
                             help='Keep .mps from lp_namer and benders steps')
 
