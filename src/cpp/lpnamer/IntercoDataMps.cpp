@@ -291,29 +291,28 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
 	SolverFactory factory;
-	SolverAbstract::Ptr in_prblm;// ("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
+	SolverAbstract::Ptr in_prblm;
 	in_prblm = factory.create_solver(solver_name);
-	in_prblm->init();
 	in_prblm->read_prob(mps_name.c_str(), "MPS");
 
 	int ncols = in_prblm->get_ncols();
 	int nrows = in_prblm->get_nrows();
 
 	// check if number of rows in the solver matrix is equal to the number of constraints
-	if (nrows != cstr.size()) {
+	if (nrows != cstr.size() && cstr.size() > 0) {
 		std::cout << "WRONG NUMBER OF CSTR NAMES, solver = " << nrows << ", " << cstr.size() << " given" << std::endl;
 	}
 
 	// check if number of columns in the solver matrix is equal to the number of variables
-	if (ncols != var.size()) {
+	if (ncols != var.size() && var.size() > 0) {
 		std::cout << "WRONG NUMBER OF VAR NAMES, solver = " << ncols << ", " << var.size() << " given" << std::endl;
 	}
 
 	int ninterco_pdt = interco_data.size();
 
-	std::vector<double> lb;
-	std::vector<double> ub;
-	std::vector<char> coltype;
+	std::vector<double> lb(ncols);
+	std::vector<double> ub(ncols);
+	std::vector<char> coltype(ncols);
 	ORTgetcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
 	// Setting bounds to +-1e20
 	std::vector<double> posinf(ninterco_pdt, 1e20);
@@ -328,20 +327,27 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// remove bounds on interco
 	ORTchgbounds(in_prblm, indexes, lb_char, neginf);
 	ORTchgbounds(in_prblm, indexes, ub_char, posinf);
-
 	std::vector<std::string> vnames(var.begin(), var.end());
-	SolverAbstract::Ptr out_prblm;
+	SolverAbstract::Ptr out_prblm = factory.create_solver(solver_name, in_prblm);
+
+	// Xavier : Why do we need to copy the problem ?
+	// We could just change the names in "in_prblm" and continuing modif it
+	// This copy is just time consuming and useless for me
+
 	// copy in_prblm with the changed bounds and rename its variables
 	ORTcopyandrenamevars(out_prblm, in_prblm, vnames, solver_name);
-
 	size_t cnt_l = 0;
 	// All the names are retrieved before the loop.
 	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
 	// but it could be longer.
-	std::vector<std::string> outVarNames;
+	std::vector<std::string> outVarNames(out_prblm->get_ncols());
 	out_prblm->get_col_names(0, out_prblm->get_ncols() - 1, outVarNames);
+
+	/* Xavier : This check is useless as the names are not necessary and seem to be 
+	* no present in "in_prblm"
 	for(int outVarIndex_l = 0; outVarIndex_l < out_prblm->get_ncols(); outVarIndex_l++){
 		int originalIndex_l = in_prblm->get_col_index(outVarNames[outVarIndex_l]);
+
 		if (originalIndex_l != outVarIndex_l) {
 			std::cout << "WARNING : Variables names in subproblems may not be representative."
 				<< " expected index " << originalIndex_l
@@ -349,8 +355,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 				<< outVarIndex_l << " retrieved\n";
 		}
 		++cnt_l;
-	}
-
+	}*/
 
 	// create pMax variable
 	int ninterco = interco_id.size();
@@ -359,6 +364,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<double> lb_interco(ninterco, -1e20);
 	std::vector<double> ub_interco(ninterco,  1e20);
 	std::vector<char> coltypes_interco(ninterco, 'C');
+	std::vector<int> mstart_interco(ninterco, 0);
 	std::vector<std::string> colnames_l;
 
 	for (auto const & interco : interco_id) {
@@ -375,8 +381,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		couplings[{buffer.str(), mps_name}] = interco.second + ncols;
 	}
 
-	ORTaddcols(out_prblm, obj_interco, {}, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
-
+	ORTaddcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
 	std::vector<double> dmatval;
 	std::vector<int> colind;
 	std::vector<char> rowtype;
@@ -413,6 +418,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		colind.push_back(ncols + i_interco_pmax);
 		dmatval.push_back(candidate.profile(timestep, study_path, false));
 	}
+	rstart.push_back(dmatval.size());
 
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 

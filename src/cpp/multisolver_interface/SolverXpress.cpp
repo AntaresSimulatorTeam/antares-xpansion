@@ -77,7 +77,7 @@ void SolverXpress::free() {
 /*************************************************************************************************
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
-void SolverXpress::write_prob(const char* name, const char* flags) const{
+void SolverXpress::write_prob(const char* name, const char* flags){
 	std::string nFlags = "";
 	if (std::string(flags) == "LP") {
 		nFlags = "-l";

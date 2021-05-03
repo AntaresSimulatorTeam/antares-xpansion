@@ -65,7 +65,7 @@ void SolverCbc::free() {
 /*************************************************************************************************
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
-void SolverCbc::write_prob(const char* name, const char* flags) const{
+void SolverCbc::write_prob(const char* name, const char* flags) {
 
 	if (std::string(flags) == "LP") {
 		_clp_inner_solver.writeLpNative(name, NULL, NULL);
@@ -88,7 +88,24 @@ void SolverCbc::write_prob(const char* name, const char* flags) const{
 		CoinMpsIO writer;
 		writer.setInfinity(_clp_inner_solver.getInfinity());
 		writer.passInMessageHandler(_clp_inner_solver.messageHandler());
+		
+		// If the user added cuts or rows but did not added names to them
+		// the number of names returned by solver might be different from the
+		// actual number of names, resulting in a crash
+		std::vector<std::string> rowNames;
+		rowNames.reserve(get_nrows());
+		rowNames = _clp_inner_solver.getRowNames();
+		for (int i = _clp_inner_solver.getRowNames().size(); i < get_nrows(); i++) {
+			rowNames.push_back( "R" + std::to_string(i) );
+		}
 
+		std::vector<std::string> colNames;
+		colNames.reserve(get_ncols());
+		colNames = _clp_inner_solver.getColNames();
+		for (int i = _clp_inner_solver.getColNames().size(); i < get_ncols(); i++) {
+			colNames.push_back("C" + std::to_string(i));
+		}
+		
 		writer.setMpsData(
 			*(_clp_inner_solver.getMatrixByCol()),
 			_clp_inner_solver.getInfinity(),
@@ -98,8 +115,8 @@ void SolverCbc::write_prob(const char* name, const char* flags) const{
 			hasInteger ? integrality : NULL,
 			_clp_inner_solver.getRowLower(),
 			_clp_inner_solver.getRowUpper(),
-			_cbc.solver()->getColNames(),
-			_cbc.solver()->getRowNames()
+			colNames,
+			rowNames
 		);
 
 		std::string probName = "";
@@ -335,6 +352,7 @@ int SolverCbc::get_row_names(int first, int last, std::vector<std::string>& name
 int SolverCbc::get_col_names(int first, int last, std::vector<std::string>& names)
 {
 	std::vector<std::string> solver_col_names = _clp_inner_solver.getColNames();
+
 	if (solver_col_names.size() < names.size()) {
 		std::cout << "ERROR : all required columns don't have a name. Impossible to get col names."
 			<< std::endl;

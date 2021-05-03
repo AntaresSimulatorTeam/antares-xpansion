@@ -116,27 +116,39 @@ void masterGeneration(std::string rootPath,
 	// integer constraints
 	int n_integer = pallier.size();
 	if(n_integer>0 && master_formulation=="integer"){
-		std::vector<double> zeros(n_integer, 0);
-		std::vector<int> int_zeros(n_integer, 0);
+		std::vector<double> zeros(n_integer, 0.0);
+		std::vector<int> mstart(n_integer, 0);
 		std::vector<char> integer_type(n_integer, 'I');
 		// Empty colNames
 		std::vector<std::string> colNames(0);
-		ORTaddcols(master_l, zeros, int_zeros, {}, {}, zeros, max_unit, integer_type, colNames);
+		ORTaddcols(master_l, zeros, mstart, {}, {}, zeros, max_unit, integer_type, colNames);
+
 		std::vector<double> dmatval;
 		std::vector<int> colind;
 		std::vector<char> rowtype;
 		std::vector<double> rhs;
 		std::vector<int> rstart;
+
+		dmatval.reserve(2*n_integer);
+		colind.reserve(2 * n_integer);
+		rowtype.reserve(n_integer);
+		rhs.reserve(n_integer);
+		rstart.reserve(n_integer + 1);
+
 		for (i = 0; i < n_integer; ++i) {
 			// pMax  - n unit_size = 0
 			rstart.push_back(dmatval.size());
 			rhs.push_back(0);
 			rowtype.push_back('E');
+
 			colind.push_back(pallier[i]);
 			dmatval.push_back(1);
+
 			colind.push_back(pallier_i[i]);
 			dmatval.push_back(-unit_size[i]);
 		}
+		rstart.push_back(dmatval.size());
+
 		int n_row_interco(rowtype.size());
 		int n_coeff_interco(dmatval.size());
 		ORTaddrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
@@ -148,6 +160,7 @@ void masterGeneration(std::string rootPath,
 	// writelp is useless no ?
 	//ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
 	master_l->write_prob((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps").c_str(), "MPS");
+
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const & coupling : couplings) {
 		output[get_name(coupling.first.second)][coupling.first.first] = coupling.second;
@@ -157,6 +170,7 @@ void masterGeneration(std::string rootPath,
 		output["master"][name] = i;
 		++i;
 	}
+
 	std::ofstream coupling_file((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + STRUCTURE_FILE).c_str());
 	for (auto const & mps : output) {
 		for (auto const & pmax : mps.second) {

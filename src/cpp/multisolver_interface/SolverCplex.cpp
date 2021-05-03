@@ -96,7 +96,7 @@ void SolverCplex::free() {
 /*************************************************************************************************
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
-void SolverCplex::write_prob(const char* name, const char* flags) const{
+void SolverCplex::write_prob(const char* name, const char* flags){
     CPXwriteprob(_env, _prb, name, flags);
 }
 

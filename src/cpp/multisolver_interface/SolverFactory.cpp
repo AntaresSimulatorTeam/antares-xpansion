@@ -24,20 +24,20 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name){
 	}
 #ifdef CPLEX
 	else if (solver_name == "CPLEX") {
-		solver = std::make_unique< SolverCplex>();
+		solver = std::make_shared< SolverCplex>();
 	}
 #endif
 #ifdef XPRESS
 	else if (solver_name == "XPRESS") {
-		solver = std::make_unique< SolverXpress>();
+		solver = std::make_shared< SolverXpress>();
 	}
 #endif
 #ifdef COIN_OR
 	else if (solver_name == "CLP") {
-		solver = std::make_unique< SolverClp>();
+		solver = std::make_shared< SolverClp>();
 	}
 	else if (solver_name == "CBC") {
-		solver = std::make_unique< SolverCbc>();
+		solver = std::make_shared< SolverCbc>();
 	}
 #endif
 	else {
@@ -59,20 +59,20 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name,
 	}
 #ifdef CPLEX
 	else if (solver_name == "CPLEX") {
-		solver = std::make_unique< SolverCplex>(to_copy);
+		solver = std::make_shared< SolverCplex>(to_copy);
 	}
 #endif
 #ifdef XPRESS
 	else if (solver_name == "XPRESS") {
-		solver = std::make_unique< SolverXpress>(to_copy);
+		solver = std::make_shared< SolverXpress>(to_copy);
 	}
 #endif
 #ifdef COIN_OR
 	else if (solver_name == "CLP") {
-		solver = std::make_unique< SolverClp>(to_copy);
+		solver = std::make_shared< SolverClp>(to_copy);
 	}
 	else if (solver_name == "CBC") {
-		solver = std::make_unique< SolverCbc>(to_copy);
+		solver = std::make_shared< SolverCbc>(to_copy);
 	}
 #endif
 	else {

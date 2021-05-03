@@ -59,7 +59,7 @@ public:
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
 public:
-	virtual void write_prob(const char* name, const char* flags) const;
+	virtual void write_prob(const char* name, const char* flags);
 
 	/**
 	* @brief Reads a problem from a file, CBC WARNING : resets the solver log level to 0

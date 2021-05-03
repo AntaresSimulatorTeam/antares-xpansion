@@ -123,7 +123,7 @@ public:
     * @param name   : name of the file to write
     * @param falgs  : char* containing the file format (LP, MPS) 
     */    
-	virtual void write_prob(const char* name, const char* flags) const = 0;
+	virtual void write_prob(const char* name, const char* flags) = 0;
 	
     /**
     * @brief reads an optimization problem contained in a file

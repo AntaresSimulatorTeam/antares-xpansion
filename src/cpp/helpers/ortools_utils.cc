@@ -73,6 +73,7 @@ void ORTaddcols(SolverAbstract::Ptr solver_p,
     for (int i = 0; i < newCols; i++) {
         newIndex[i] = ncolInit + i;
     }
+
     solver_p->chg_col_type(newCols, newIndex.data(), colTypes_p.data());
 
     if (colNames_p.size() > 0) {
@@ -183,7 +184,8 @@ void ORTcopyandrenamevars(SolverAbstract::Ptr outSolver_p,
                           SolverAbstract::Ptr const inSolver_p, 
                           std::vector<std::string>& names_p, 
                           std::string const& solver_name){
-    outSolver_p.reset();
+
+    //outSolver_p.reset();
 
     //copy and rename columns
     /*std::vector<double> obj_l;
@@ -207,8 +209,9 @@ void ORTcopyandrenamevars(SolverAbstract::Ptr outSolver_p,
         }
     }*/
 
-    SolverFactory factory;
-    outSolver_p = factory.create_solver(solver_name, inSolver_p);
+    //SolverFactory factory;
+    //outSolver_p = factory.create_solver(solver_name, inSolver_p);
+
     for (int i = 0; i < outSolver_p->get_ncols() - 1; i++) {
         outSolver_p->chg_col_name(i, names_p[i]);
     }

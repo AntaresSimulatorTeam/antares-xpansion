@@ -63,7 +63,7 @@ void SolverClp::free() {
 /*************************************************************************************************
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
-void SolverClp::write_prob(const char* name, const char* flags) const{
+void SolverClp::write_prob(const char* name, const char* flags){
 	std::string nFlags = "";
 	if (std::string(flags) == "LP") {
 		nFlags = "-l";
