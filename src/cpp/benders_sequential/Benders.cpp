@@ -1,4 +1,4 @@
-#include "Benders.h"
+#include "benders_sequential_core/Benders.h"
 
 #include "ortools_utils.h"
 
@@ -18,28 +18,33 @@ Benders::~Benders() {
 *
 *  \param options : set of options fixed by the user
 */
-Benders::Benders(CouplingMap const & problem_list, BendersOptions const & options) : _options(options) {
-	if (!problem_list.empty()) {
-		_data.nslaves = _options.SLAVE_NUMBER;
-		if (_data.nslaves < 0) {
-			_data.nslaves = problem_list.size() - 1;
-		}
 
-		auto it(problem_list.begin());
+Benders::Benders(Logger &logger):_logger{ logger } {
 
-		auto const it_master = problem_list.find(_options.MASTER_NAME);
-		Str2Int const & master_variable(it_master->second);
-		for(int i(0); i < _data.nslaves; ++it) {
-			if (it != it_master) {
-				_problem_to_id[it->first] = i;
-				_map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(it->second, _options.get_slave_path(it->first), _options.slave_weight(_data.nslaves, it->first), _options));
-				_slaves.push_back(it->first);
-				i++;
-			}
-		}
-		_master.reset(new WorkerMaster(master_variable, _options.get_master_path(), _options, _data.nslaves));
-	}
+}
 
+void Benders::initialise_problems(const CouplingMap &problem_list) {
+    if (!problem_list.empty()) {
+        _data.nslaves = _options.SLAVE_NUMBER;
+        if (_data.nslaves < 0) {
+            _data.nslaves = problem_list.size() - 1;
+        }
+
+        auto it(problem_list.begin());
+
+        auto const it_master = problem_list.find(_options.MASTER_NAME);
+        Str2Int const & master_variable(it_master->second);
+        for(int i(0); i < _data.nslaves; ++it) {
+            if (it != it_master) {
+                _problem_to_id[it->first] = i;
+                _map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(it->second, _options.get_slave_path(it->first), _options.slave_weight(
+                        _data.nslaves, it->first), _options));
+                _slaves.push_back(it->first);
+                i++;
+            }
+        }
+        _master.reset(new WorkerMaster(master_variable, _options.get_master_path(), _options, _data.nslaves));
+    }
 }
 
 
@@ -94,8 +99,13 @@ void Benders::build_cut() {
 *
 *  Method to run Benders algorithm
 */
-void Benders::run() {
+void Benders::run( CouplingMap const &problem_list, BendersOptions const &options) {
+    _options = options;
+    initialise_problems(problem_list);
+    doRun();
+}
 
+void Benders::doRun(){
 	for (auto const & kvp : _problem_to_id) {
 		_all_cuts_storage[kvp.first] = SlaveCutStorage();
 	}
@@ -104,13 +114,13 @@ void Benders::run() {
 	while (!_data.stop) {
 		Timer timer_master;
 		++_data.it;
-		LOG_INFO_AND_COUT("ITERATION " + std::to_string(_data.it) + " :");
-		LOG_INFO_AND_COUT("\tSolving master...");
+
+		_logger->log_at_initialization(bendersDataToLogData(_data));
+		_logger->display_message("\tSolving master...");
 		get_master_value(_master, _data, _options);
+		_logger->log_master_solving_duration( _data.timer_master);
 
-		LOG_INFO_AND_COUT("\tmaster solved in " + std::to_string(_data.timer_master) + ".");
-
-		investment_candidates_log(_data);
+		_logger->log_iteration_candidates(bendersDataToLogData(_data));
 
 		if (_options.ACTIVECUTS) {
 			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
@@ -118,12 +128,13 @@ void Benders::run() {
 
 		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
-		LOG_INFO_AND_COUT("\tBuilding cuts...");
+		_logger->display_message("\tSolving subproblems...");
 		build_cut();
-		LOG_INFO_AND_COUT("\tCuts built.");
+		_logger->log_subproblems_solving_duration(_data.timer_slaves);
 
 		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
-		solution_log(_data);
+
+		_logger->log_at_iteration_end(bendersDataToLogData(_data));
 
 		update_trace(_trace, _data);
 

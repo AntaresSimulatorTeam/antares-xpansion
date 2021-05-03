@@ -9,6 +9,8 @@
 #include "WorkerTrace.h"
 #include "BendersFunctions.h"
 
+#include "benders_sequential_core/ILogger.h"
+
 /*!
 * \class BendersMpi
 * \brief Class use run the benders algorithm in parallel 
@@ -18,7 +20,7 @@ class BendersMpi {
 public:
 
 	virtual ~BendersMpi();
-	BendersMpi(mpi::environment & env, mpi::communicator & world, BendersOptions const & options);
+	BendersMpi(mpi::environment & env, mpi::communicator & world, BendersOptions const & options, Logger &logger);
 
 	void load(CouplingMap const & problem_list, mpi::environment & env, mpi::communicator & world);
 	
@@ -39,10 +41,14 @@ public:
 	ActiveCutStorage _active_cuts;
 
 	void free(mpi::environment & env, mpi::communicator & world);
-	void step_1(mpi::environment & env, mpi::communicator & world);
-	void step_2(mpi::environment & env, mpi::communicator & world);
-	void step_3(mpi::environment & env, mpi::communicator & world);
+	void step_1_solve_master(mpi::environment & env, mpi::communicator & world);
+	void step_2_build_cuts(mpi::environment & env, mpi::communicator & world);
+	void step_3_gather_slaves_basis(mpi::environment & env, mpi::communicator & world);
 	void update_random_option(mpi::environment & env, mpi::communicator & world, BendersOptions const & options, BendersData & data);
 	void run(mpi::environment & env, mpi::communicator & world);
+
+private:
+
+    Logger _logger;
 
 };

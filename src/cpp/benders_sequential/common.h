@@ -25,6 +25,7 @@
 #include <thread>
 #include <cmath>
 #include "Timer.h"
+#include "benders_sequential_core/ILogger.h"
 
 struct Predicate;
 typedef std::map<std::string, double> Point;
@@ -147,3 +148,6 @@ struct BendersData {
 double norm_point(Point const & x0, Point const & x1);
 
 std::ostream & operator<<(std::ostream & stream, std::vector<IntVector> const & rhs);
+
+
+LogData bendersDataToLogData(const BendersData& data);
