@@ -8,8 +8,6 @@ endif()
 #configure file to define xpansion installDir
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml)
 
-add_subdirectory(cpp)
-
 #check if pytest and numpy are installed
 find_python_module(pytest)
 find_python_module(numpy)
@@ -50,3 +48,5 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 else()   
   message(FATAL "Module pytest or numpy not installed : can't run python scripts for end to end tests" )
 endif()
+
+add_subdirectory(cpp)
