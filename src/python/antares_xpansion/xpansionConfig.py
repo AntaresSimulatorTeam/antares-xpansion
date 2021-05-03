@@ -75,7 +75,7 @@ class XpansionConfig():
         args = parser.parse_args()
         self.step = args.step
         self.simulationName = args.simulationName
-        self.dataDir = str(Path(args.dataDir).resolve())
+        self.dataDir = str(Path(args.dataDir).absolute())
         self.installDir = self._get_install_dir(args.installDir)
         self.method = args.method
         self.n_mpi = args.n_mpi
