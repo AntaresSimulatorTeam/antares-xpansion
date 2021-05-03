@@ -179,11 +179,10 @@ void ORTchgbounds(SolverAbstract::Ptr solver_p,
     solver_p->chg_bounds(mindex_p.size(), mindex_p.data(), qbtype_p.data(), bnd_p.data());
 }
 
-void ORTcopyandrenamevars(SolverAbstract::Ptr outSolver_p,
-                          SolverAbstract::Ptr const & inSolver_p,
-                          std::vector<std::string> & names_p,
-                          std::string const& solver_name)
-{
+void ORTcopyandrenamevars(SolverAbstract::Ptr outSolver_p, 
+                          SolverAbstract::Ptr const inSolver_p, 
+                          std::vector<std::string>& names_p, 
+                          std::string const& solver_name){
     outSolver_p.reset();
 
     //copy and rename columns
