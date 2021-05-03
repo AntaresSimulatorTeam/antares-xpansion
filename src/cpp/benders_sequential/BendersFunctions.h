@@ -9,15 +9,10 @@
 
 void init(BendersData & data);
 
-void LOG_INFO_AND_COUT(const std::string& message);
-
 void print_csv(BendersTrace & trace, Str2Int & problem_to_id, BendersData const & data, BendersOptions const & options);
 void print_master_csv(std::ostream&stream, WorkerMasterDataPtr & trace, Point const & xopt, std::string const & name, int const nslaves);
 void print_cut_csv(std::ostream&stream, SlaveCutDataHandler const & handler, std::string const & name, int const islaves);
 void print_active_cut(ActiveCutStorage const & active_cuts, BendersOptions const & options);
-void investment_candidates_log(const BendersData& data);
-void solution_log(const BendersData& data);
-void best_solution_log(const BendersData& data, const BendersTrace& trace, double optimal_gap);
 
 
 void update_best_ub(double & best_ub, double const & ub, Point & bestx, Point const & x0, int & bestit, int const & it);

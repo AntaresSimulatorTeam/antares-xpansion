@@ -1,10 +1,9 @@
 #include "launcher.h"
-#include "Benders.h"
+#include "benders_sequential_core/Benders.h"
 #include "Timer.h"
 #include "JsonWriter.h"
 
 #include "BendersOptions.h"
-
 
 /*!
 *  \brief Get Benders Options from command line
@@ -33,12 +32,13 @@ BendersOptions build_benders_options(int argc, char** argv) {
 *  \note The id in the coupling_map is that of the variable in the solver responsible for the creation of
 *  the structure file.
 */
-int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
-	coupling_map.clear();
+CouplingMap build_input(BendersOptions const & options) {
+    CouplingMap coupling_map;
 	std::ifstream summary(options.get_structure_path(), std::ios::in);
 	if (!summary) {
+	    //TODO JMK : gestion cas d'erreur si pas de structure d'entrée
 		std::cout << "Cannot open file summary " << options.get_structure_path() << std::endl;
-		return 0;
+		return coupling_map;
 	}
 	std::string line;
 
@@ -68,7 +68,7 @@ int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
 		coupling_map = trimmer;
 	}
 	summary.close();
-	return 0;
+	return coupling_map;
 }
 
 
@@ -77,11 +77,11 @@ int build_input(BendersOptions const & options, CouplingMap & coupling_map) {
 *
 *  \param options : set of Benders options
 */
-void sequential_launch(BendersOptions const & options) {
+void sequential_launch(BendersOptions const & options,  Logger & logger) {
 	Timer timer;
-	CouplingMap input;
+
 	LOG(INFO) << "Building input" << std::endl;
-	build_input(options, input);
+    CouplingMap input = build_input(options);
 
 	JsonWriter jsonWriter_l;
 	jsonWriter_l.write_failure();
@@ -91,20 +91,21 @@ void sequential_launch(BendersOptions const & options) {
 	jsonWriter_l.updateBeginTime();
 	LOG(INFO) << "Constructing workers..." << std::endl;
 
-	Benders benders(input, options);
+    Benders benders(logger);
 	LOG(INFO) << "Running solver..." << std::endl;
-	benders.run();
+	benders.run(input,options);
 	LOG(INFO) << "Benders solver terminated." << std::endl;
 
-	best_solution_log(benders._data, benders._trace, options.GAP);
+    LogData logData = bendersDataToLogData(benders._data);
+	logData.optimal_gap = options.GAP;
+
+    logger->log_at_ending(logData);
 	jsonWriter_l.updateEndTime();
 	jsonWriter_l.write(input.size(), benders._trace, benders._data);
 	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	benders.free();
-	std::stringstream str;
-	str << "Problem ran in " << timer.elapsed() << " seconds";
-	LOG_INFO_AND_COUT(str.str());
+	logger->log_total_duration(timer.elapsed());
 }
 
 /*!

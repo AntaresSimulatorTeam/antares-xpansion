@@ -19,34 +19,30 @@ class XpansionConfig():
 
     def __init__(self, configfile: Path):
 
-        with open(configfile) as file:
-            content = yaml.full_load(file)
-            if content is not None:
-                self.ANTARES = content.get('ANTARES', "antares-solver")
-                self.MERGE_MPS = content.get('MERGE_MPS', "merge_mps")
-                self.BENDERS_MPI = content.get('BENDERS_MPI', "bender_mpi")
-                self.BENDERS_SEQUENTIAL = content.get('BENDERS_SEQUENTIAL', "benders_sequential")
-                self.LP_NAMER = content.get('LP_NAMER', "lp_namer")
-                self.STUDY_UPDATER = content.get('STUDY_UPDATER', "study_updater")
-            else:
-                raise RuntimeError("Please check file config.yaml, content is empty")
+        self.ANTARES: str = ""
+        self.MERGE_MPS: str = ""
+        self.BENDERS_MPI: str = ""
+        self.BENDERS_SEQUENTIAL: str = ""
+        self.LP_NAMER: str = ""
+        self.STUDY_UPDATER: str = ""
+        self.MPI_LAUNCHER: str = ""
+        self.MPI_N: str = ""
 
-        if sys.platform.startswith("win32"):
-            self.MPI_LAUNCHER = "mpiexec"
-            self.MPI_N = "-n"
-        elif sys.platform.startswith("linux"):
-            self.MPI_LAUNCHER = "mpirun"
-            self.MPI_N = "-np"
-        else:
-            print("WARN: No mpi launcher was defined!")
+        self._initialize_values_from_config_file(configfile)
 
+        self._initialise_system_specific_mpi_vars()
+
+        self._get_parameters_from_arguments()
+
+        self._initialize_default_values()
+
+    def _get_parameters_from_arguments(self):
         parser = argparse.ArgumentParser()
         parser.add_argument("--step",
                             dest="step",
                             choices=["lp", "optim", "full", "antares", "getnames", "update"],
                             help='Step to execute ("lp", "optim", "full", "antares", "getnames", "update")',
                             default="full")
-
         parser.add_argument("--simulationName",
                             dest="simulationName",
                             help="Name of the antares simulation to use. Must be present in the output directory")
@@ -57,7 +53,7 @@ class XpansionConfig():
         parser.add_argument("--installDir",
                             dest="installDir",
                             help="The directory where all binaries are located",
-                            default="../bin/")
+                            default=None)
         parser.add_argument("--method",
                             dest="method",
                             type=str,
@@ -70,17 +66,49 @@ class XpansionConfig():
                             type=lambda x: (int(x) > 1) and int(x) or sys.exit("Minimum of MPI processes is 1"),
                             help='Number of MPI processes')
 
+        parser.add_argument("--keepMps",
+                            dest="keep_mps",
+                            default=False,
+                            action='store_true',
+                            help='Keep .mps from lp_namer and benders steps')
+
         args = parser.parse_args()
         self.step = args.step
         self.simulationName = args.simulationName
-        self.dataDir = str(Path(args.dataDir).resolve())
-        self.installDir = args.installDir
+        self.dataDir = str(Path(args.dataDir).absolute())
+        self.installDir = self._get_install_dir(args.installDir)
         self.method = args.method
         self.n_mpi = args.n_mpi
+        self.keep_mps = args.keep_mps
 
-        if not Path.is_absolute(Path(self.installDir)):
-            self.installDir = os.path.join(Path.cwd(), Path(self.installDir))
+    def _get_install_dir(self, install_dir):
+        if install_dir is None:
+            return self._initialize_install_dir_with_default_value()
+        else:
+            return self._initialize_install_dir_with_absolute_path(install_dir)
 
+    @staticmethod
+    def _initialize_install_dir_with_absolute_path(install_dir):
+        if not Path.is_absolute(Path(install_dir)):
+            return os.path.join(Path.cwd(), Path(install_dir))
+        else:
+            return install_dir
+
+    @staticmethod
+    def _initialize_install_dir_with_default_value():
+        install_dir_inside_package = Path(os.path.abspath(__file__)).parent.parent / "bin"
+        install_dir_from_absolute_path = Path.cwd() / "bin"
+        if Path.is_dir(install_dir_inside_package):
+            return install_dir_inside_package
+        else:
+            return install_dir_from_absolute_path
+
+    def _initialize_default_values(self):
+        self._set_constants()
+        self._set_default_options()
+        self._set_default_settings()
+
+    def _set_constants(self):
         self.SETTINGS = 'settings'
         self.USER = 'user'
         self.EXPANSION = 'expansion'
@@ -99,12 +127,24 @@ class XpansionConfig():
         self.USE_XPRS = 'include-usexprs'
         self.INBASIS = 'include-inbasis'
         self.OUTBASIS = 'include-outbasis'
-
         self.OUTPUT = 'output'
         self.OPTIONS_TXT = 'options.txt'
         self.MPS_TXT = "mps.txt"
 
+    def _set_default_settings(self):
+        self.settings_default = {'method': 'benders_decomposition',
+                                 'uc_type': 'expansion_fast',
+                                 'master': 'integer',
+                                 'optimality_gap': '0',
+                                 'cut_type': 'yearly',
+                                 'week_selection': 'false',
+                                 'max_iteration': '+infini',
+                                 'relaxed_optimality_gap': '0.01',
+                                 'solver': 'Cbc',
+                                 'timelimit': '+infini',
+                                 'additional-constraints': ""}
 
+    def _set_default_options(self):
         self.options_default = {
             'LOG_LEVEL': '3',
             'MAX_ITERATIONS': '-1',
@@ -129,14 +169,25 @@ class XpansionConfig():
             'BOUND_ALPHA': '1',
         }
 
-        self.settings_default = {'method': 'benders_decomposition',
-                                 'uc_type': 'expansion_fast',
-                                 'master': 'integer',
-                                 'optimality_gap': '0',
-                                 'cut_type': 'yearly',
-                                 'week_selection': 'false',
-                                 'max_iteration': '+infini',
-                                 'relaxed_optimality_gap': '0.01',
-                                 'solver': 'Cbc',
-                                 'timelimit': '+infini',
-                                 'additional-constraints': ""}
+    def _initialise_system_specific_mpi_vars(self):
+        if sys.platform.startswith("win32"):
+            self.MPI_LAUNCHER = "mpiexec"
+            self.MPI_N = "-n"
+        elif sys.platform.startswith("linux"):
+            self.MPI_LAUNCHER = "mpirun"
+            self.MPI_N = "-np"
+        else:
+            print("WARN: No mpi launcher was defined!")
+
+    def _initialize_values_from_config_file(self, configfile):
+        with open(configfile) as file:
+            content = yaml.full_load(file)
+            if content is not None:
+                self.ANTARES = content.get('ANTARES', "antares-solver")
+                self.MERGE_MPS = content.get('MERGE_MPS', "merge_mps")
+                self.BENDERS_MPI = content.get('BENDERS_MPI', "bender_mpi")
+                self.BENDERS_SEQUENTIAL = content.get('BENDERS_SEQUENTIAL', "benders_sequential")
+                self.LP_NAMER = content.get('LP_NAMER', "lp_namer")
+                self.STUDY_UPDATER = content.get('STUDY_UPDATER', "study_updater")
+            else:
+                raise RuntimeError("Please check file config.yaml, content is empty")

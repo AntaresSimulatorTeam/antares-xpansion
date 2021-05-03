@@ -173,7 +173,6 @@ add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 
 find_package (Boost REQUIRED COMPONENTS program_options)
 	
-	
 if (USE_MPI)
 	# ugly fix required due to conan packages and policies vs. boost brainfucking name rules
 	if (MSVC)

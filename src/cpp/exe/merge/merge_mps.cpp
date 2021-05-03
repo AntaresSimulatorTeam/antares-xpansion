@@ -8,6 +8,7 @@
 #include "Timer.h"
 
 #include "ortools_utils.h"
+#include "logger/User.h"
 
 
 //@suggest: create and move to standardlp.cpp
@@ -19,6 +20,8 @@ int main(int argc, char** argv)
 	usage(argc);
 	BendersOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
+
+    Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
 	google::InitGoogleLogging(argv[0]);
 	std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "merge_mpsLog";
@@ -34,8 +37,7 @@ int main(int argc, char** argv)
 
 
 
-	CouplingMap input;
-	build_input(options, input);
+	CouplingMap input = build_input(options);
 
 	SolverFactory factory;
 	std::string solver_to_use = (options.SOLVER_NAME == "COIN") ? "CBC" : options.SOLVER_NAME;
@@ -154,7 +156,7 @@ int main(int argc, char** argv)
 
 	mergedSolver_l->set_threads(16);
 
-	LOG_INFO_AND_COUT("Solving...");
+	logger->display_message("Solving...");
 	Timer timer;
 	int status_l = 0;
 	if (mergedSolver_l->get_n_integer_vars() > 0) {
@@ -164,9 +166,7 @@ int main(int argc, char** argv)
 		mergedSolver_l->solve_lp(status_l);
 	}
 	
-	std::stringstream str;
-	str << "Problem solved in " << timer.elapsed() << " seconds";
-	LOG_INFO_AND_COUT(str.str());
+	logger->log_total_duration(timer.elapsed());
 
 	jsonWriter_l.updateEndTime();
 

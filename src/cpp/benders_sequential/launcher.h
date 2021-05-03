@@ -1,15 +1,17 @@
 #pragma once
 
+#include <benders_sequential_core/Benders.h>
 #include "common.h"
 
 #include "ortools_utils.h"
 
 class BendersOptions;
-int build_input(BendersOptions const & options, CouplingMap & coupling_map);
+
+CouplingMap build_input(BendersOptions const & options);
 
 BendersOptions build_benders_options(int argc, char** argv);
 
-void sequential_launch(BendersOptions const &options);
+void sequential_launch(BendersOptions const &options,  Logger & logger);
 
 void usage(int argc);
 

@@ -5,7 +5,6 @@
 # ===========================================================================
 # External requirements
 # ===========================================================================
-
 find_package (GTest REQUIRED)
 
 message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
@@ -17,9 +16,8 @@ message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 # --------------------------------------------------------------------------
 # unit tests
 # --------------------------------------------------------------------------
-
 add_subdirectory(solvers_interface)
-
+add_subdirectory(logger)
 add_executable (unit_tests
         helpers/ORToolsTest.cc
 		lp_namer/AdditionalConstraintsTest.cc

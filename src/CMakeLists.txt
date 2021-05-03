@@ -12,19 +12,21 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml.in ${CMAKE_CURRENT
 #use file generator to define xpansion executable name with $<TARGET_FILE_NAME:exe> : need to be done with generate instead of configure because values are not available at configure time
 file(GENERATE OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml INPUT ${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml)
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml
-        DESTINATION xpansion-launcher)
-
 find_program(PYINSTALLER "pyinstaller")
 
 #if pyinstaller available add compiled version of python scripts
 if (PYINSTALLER)
 
-    install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher)")
-    
+
+    if (MSVC)
+        install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml;.\")" )
+    else()
+        install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml:.\")" )
+    endif()
+
     #code is executed in CMAKE_BINARY_DIR
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/
-            DESTINATION xpansion-launcher
+            DESTINATION .
             USE_SOURCE_PERMISSIONS)
 else ()
     

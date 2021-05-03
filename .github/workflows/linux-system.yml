@@ -63,11 +63,11 @@ jobs:
 
     - name: Configure
       run: |
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_build/installation
 
     - name: Build
       run: |
-           cmake --build _build --config Release -j2
+           cmake --build _build --config Release -j2 --target install
            
     - name: Running unit tests
       run: |
@@ -83,16 +83,27 @@ jobs:
       run: |
            cd _build
            cpack -G DEB
-           
+
+    - name: single_exe creation
+      run: |
+           cd _build
+           pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "installation/bin/:bin"
+
     - name: Installer upload
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-ubuntu-archive
         path: _build/*.tar.gz
         
-    - name: Installer upload
+    - name: Deb Installer upload
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-ubuntu-deb
         path: _build/*.deb
+
+    - name: Single file upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: antares-xpansion-ubuntu-single-file
+        path: _build/dist/antares-xpansion-launcher*
 
