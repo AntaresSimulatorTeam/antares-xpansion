@@ -385,7 +385,7 @@ class XpansionDriver():
             if returned_l.returncode != 0:
                 print("ERROR: exited lpnamer with status %d" % returned_l.returncode)
                 sys.exit(1)
-            else:
+            elif not self.config.keep_mps:
                 StudyOutputCleaner.clean_lpnamer_step(Path(output_path))
         return lp_path
 
@@ -469,7 +469,7 @@ class XpansionDriver():
         if returned_l.returncode != 0:
             print("ERROR: exited solver with status %d" % returned_l.returncode)
             sys.exit(1)
-        else:
+        elif not self.config.keep_mps:
             StudyOutputCleaner.clean_benders_step(Path(output_path))
         os.chdir(old_cwd)
 
