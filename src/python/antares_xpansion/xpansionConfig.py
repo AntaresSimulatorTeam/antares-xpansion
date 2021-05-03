@@ -65,6 +65,13 @@ class XpansionConfig():
                             default=4,
                             type=lambda x: (int(x) > 1) and int(x) or sys.exit("Minimum of MPI processes is 1"),
                             help='Number of MPI processes')
+
+        parser.add_argument("--keepMps",
+                            dest="keep_mps",
+                            default=False,
+                            action='store_true',
+                            help='Keep .mps from lp_namer and benders steps')
+
         args = parser.parse_args()
         self.step = args.step
         self.simulationName = args.simulationName
@@ -72,6 +79,7 @@ class XpansionConfig():
         self.installDir = self._get_install_dir(args.installDir)
         self.method = args.method
         self.n_mpi = args.n_mpi
+        self.keep_mps = args.keep_mps
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:

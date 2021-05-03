@@ -15,6 +15,7 @@ from antares_xpansion.general_data_reader import GeneralDataIniReader, IniReader
 from antares_xpansion.input_checker import check_candidates_file
 from antares_xpansion.input_checker import check_settings_file
 from antares_xpansion.xpansion_utils import read_and_write_mps
+from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class XpansionDriver():
@@ -206,6 +207,9 @@ class XpansionDriver():
                 self.lp_step(self.config.simulationName)
                 output_path = os.path.normpath(os.path.join(self.antares_output(), self.config.simulationName))
                 self.set_options(output_path)
+            else:
+                print("Missing argument simulationName")
+                sys.exit(1)
         elif self.config.step == "update":
             if self.config.simulationName:
                 self.update_step(self.config.simulationName)
@@ -294,6 +298,8 @@ class XpansionDriver():
 
             :return: name of the new simulation's directory
         """
+        simulation_name = ""
+
         # if not os.path.isdir(driver.antares_output()):
         #     os.mkdir(driver.antares_output(), )
         old_output = os.listdir(self.antares_output())
@@ -302,10 +308,14 @@ class XpansionDriver():
                                         stderr= subprocess.DEVNULL)
         if returned_l.returncode != 0:
             print("WARNING: exited antares with status %d" % returned_l.returncode)
-        new_output = os.listdir(self.antares_output())
-        assert len(old_output) + 1 == len(new_output)
-        diff = list(set(new_output) - set(old_output))
-        return diff[0]
+        else:
+            new_output = os.listdir(self.antares_output())
+            assert len(old_output) + 1 == len(new_output)
+            diff = list(set(new_output) - set(old_output))
+            simulation_name = diff[0]
+            StudyOutputCleaner.clean_antares_step(Path(self.antares_output()) / simulation_name)
+
+        return simulation_name
 
     def get_antares_cmd(self):
         return [self.antares(), self.data_dir()]
@@ -321,8 +331,10 @@ class XpansionDriver():
         """
         output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
         self.get_names(antares_output_name)
+
         lp_path = self.lp_step(antares_output_name)
         self.set_options(output_path)
+
         return lp_path
 
     def get_names(self, antares_output_name):
@@ -373,6 +385,8 @@ class XpansionDriver():
             if returned_l.returncode != 0:
                 print("ERROR: exited lpnamer with status %d" % returned_l.returncode)
                 sys.exit(1)
+            elif not self.config.keep_mps:
+                StudyOutputCleaner.clean_lpnamer_step(Path(output_path))
         return lp_path
 
     def get_lp_namer_log_filename(self, lp_path):
@@ -396,8 +410,10 @@ class XpansionDriver():
                                          stdout=output_file,
                                          stderr=output_file)
             if returned_l.returncode != 0:
-                print("ERROR: exited study-updater with status %d" % returned_l)
+                print("ERROR: exited study-updater with status %d" % returned_l.returncode)
                 sys.exit(1)
+            else:
+                StudyOutputCleaner.clean_study_update_step(Path(output_path))
 
     def get_study_updater_log_filename(self, output_path):
         return os.path.join(output_path , self.config.STUDY_UPDATER + '.log')
@@ -453,7 +469,8 @@ class XpansionDriver():
         if returned_l.returncode != 0:
             print("ERROR: exited solver with status %d" % returned_l.returncode)
             sys.exit(1)
-
+        elif not self.config.keep_mps:
+            StudyOutputCleaner.clean_benders_step(Path(output_path))
         os.chdir(old_cwd)
 
     def get_solver_cmd(self,solver):
