@@ -47,7 +47,7 @@ jobs:
           msmpisetup.exe -unattend
 
     - name : Install deps with VCPKG
-      uses: lukka/run-vcpkg@v7
+      uses: lukka/run-vcpkg@v7.3
       id: runvcpkg
       with:
         vcpkgArguments: '${{ matrix.vcpkgPackages }}'
