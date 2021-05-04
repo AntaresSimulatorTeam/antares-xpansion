@@ -1,0 +1,29 @@
+import os
+from pathlib import Path
+from typing import List
+
+
+class YearlyWeightWriter:
+
+    def __init__(self, simulation_path: Path):
+        self.LP = "lp"
+        self.simulation_path = simulation_path
+        if not os.path.isdir(self._output_dir):
+            os.mkdir(self._output_dir)
+
+    @property
+    def _output_dir(self):
+        return self.simulation_path / self.LP
+
+    def create_weight_file(self, weight_list: List[float], file_name: str):
+        sorted_dir = sorted(os.listdir(self.simulation_path))
+        content = []
+        for instance in sorted_dir:
+            if '.mps' in instance and not '-1.mps' in instance:
+                buffer_l = instance.strip().split("-")
+                year = int(buffer_l[1])
+                mps_file_name = instance.removesuffix(".mps")
+                content.append(mps_file_name + " " + str(weight_list[year - 1]) + "\n")
+        content.append("WEIGHT_SUM " + str(sum(weight_list)))
+        with open(self._output_dir / file_name, 'w') as weight_file:
+            weight_file.writelines(content)

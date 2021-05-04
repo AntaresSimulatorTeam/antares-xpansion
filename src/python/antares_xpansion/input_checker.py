@@ -66,6 +66,9 @@ def check_profile_file(filename_path):
 ##########################################
 # Checks related to weights files
 ##########################################
+class InvalidYearsWeightNumber(Exception):
+    pass
+
 
 def check_weights_file(filename_path, nb_active_years: int):
     """
@@ -82,20 +85,26 @@ def check_weights_file(filename_path, nb_active_years: int):
         sys.exit(1)
 
     null_weights = True
+    nb_values = 0
     with open(filename_path, 'r') as weights_file:
         for idx, line in enumerate(weights_file):
-            try:
-                line_value = float(line.strip())
-                if line_value > 0:
-                    null_weights = False
-                elif line_value < 0:
-                    print('Line %d in file %s indicates a negative value'
+            if line.strip():
+                try:
+                    nb_values += 1
+                    line_value = float(line.strip())
+                    if line_value > 0:
+                        null_weights = False
+                    elif line_value < 0:
+                        print('Line %d in file %s indicates a negative value'
+                              % (idx + 1, filename_path))
+                        sys.exit(1)
+                except ValueError:
+                    print('Line %d in file %s is not a single non-negative value'
                           % (idx + 1, filename_path))
                     sys.exit(1)
-            except ValueError:
-                print('Line %d in file %s is not a single non-negative value'
-                      % (idx + 1, filename_path))
-                sys.exit(1)
+
+    if nb_values != nb_active_years:
+        raise InvalidYearsWeightNumber
 
     if null_weights:
         print('file %s : all values are null'
@@ -345,7 +354,7 @@ def check_setting_option_type(option, value):
                      'relaxed_optimality_gap': 'string',
                      'solver': 'string',
                      'timelimit': 'integer',
-                     'yearly_weights': 'string',
+                     'yearly-weights': 'string',
                      'additional-constraints': 'string', }
     option_type = options_types.get(option)
     if option_type is None:
@@ -396,11 +405,11 @@ def check_setting_option_value(option, value):
                             'relaxed_optimality_gap': None,
                             'solver': ['Cplex', 'Xpress', 'Cbc', 'Sirius', 'Gurobi', 'GLPK'],
                             'timelimit': None,
-                            'yearly_weights': None,
+                            'yearly-weights': None,
                             'additional-constraints': None}
     legal_values = options_legal_values.get(option)
 
-    skip_verif = ["yearly_weights", "additional-constraints"]
+    skip_verif = ["yearly-weights", "additional-constraints"]
 
     if ((legal_values is not None) and (value in legal_values)) or (option in skip_verif):
         return True
@@ -465,8 +474,8 @@ def check_options(options):
             sys.exit(1)
         check_setting_option_value(option, value)
 
-    if options.get('yearly_weights', "") != "":
+    if options.get('yearly-weights', "") != "":
         if options.get("cut_type") == "average":
-            print("check_settings : yearly_weights option can not be used when cut_type is average")
+            print("check_settings : yearly-weights option can not be used when cut_type is average")
             sys.exit(1)
 

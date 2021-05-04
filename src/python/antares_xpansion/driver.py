@@ -16,6 +16,8 @@ from antares_xpansion.input_checker import check_candidates_file, check_weights_
 from antares_xpansion.input_checker import check_options
 from antares_xpansion.xpansion_utils import read_and_write_mps
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
+from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
 class XpansionDriver():
@@ -35,6 +37,8 @@ class XpansionDriver():
 
         self.candidates_list = []
         self._verify_settings_ini_file_exists()
+
+        self.nb_active_years = GeneralDataIniReader(Path(self.general_data())).get_nb_activated_year()
 
         self.options = self._get_options_from_settings_inifile()
 
@@ -58,8 +62,6 @@ class XpansionDriver():
                                 '[other preferences]',
                                 'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
                             }
-
-        self.nb_active_years = GeneralDataIniReader(Path(self.general_data())).get_nb_activated_year()
 
     def _get_options_from_settings_inifile(self):
         options: dict = {}
@@ -124,7 +126,7 @@ class XpansionDriver():
             :return: path to input yearly-weights file
         """
 
-        yearly_weights_filename = self.options.get('yearly_weights', self.config.settings_default["yearly_weights"])
+        yearly_weights_filename = self.options.get('yearly-weights', self.config.settings_default["yearly-weights"])
         if yearly_weights_filename:
             return self._get_path_from_file_in_xpansion_dir(yearly_weights_filename)
         else:
@@ -273,7 +275,7 @@ class XpansionDriver():
         self._verify_additional_constraints_file()
 
     def _verify_yearly_weights_consistency(self):
-        if self.options.get('yearly_weights', "") != "":
+        if self.options.get('yearly-weights', "") != "":
             check_weights_file(self.weights_file_path(), self.nb_active_years)
 
     def _verify_additional_constraints_file(self):
@@ -326,8 +328,8 @@ class XpansionDriver():
         """
         simulation_name = ""
 
-        # if not os.path.isdir(driver.antares_output()):
-        #     os.mkdir(driver.antares_output(), )
+        if not os.path.isdir(self.antares_output()):
+            os.mkdir(self.antares_output())
         old_output = os.listdir(self.antares_output())
         returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
                                     stdout=subprocess.DEVNULL,
@@ -403,6 +405,11 @@ class XpansionDriver():
         if os.path.isdir(lp_path):
             shutil.rmtree(lp_path)
         os.makedirs(lp_path)
+
+        weight_file_name = self.options.get('yearly-weights', "")
+        if weight_file_name:
+            weight_list = XpansionStudyReader.get_years_weight_from_file(self.weights_file_path())
+            YearlyWeightWriter(Path(output_path)).create_weight_file(weight_list, weight_file_name)
 
         with open(self.get_lp_namer_log_filename(lp_path), 'w') as output_file:
             returned_l = subprocess.run(self.get_lp_namer_command(output_path), shell=False,
@@ -521,6 +528,8 @@ class XpansionDriver():
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
         options_values["GAP"] = self.optimality_gap()
         options_values["MAX_ITERATIONS"] = self.max_iterations()
+        if self.options.get('yearly-weights', ""):
+            options_values["SLAVE_WEIGHT"] = self.options.get('yearly-weights', "")
         # generate options file for the solver
         options_path = os.path.normpath(os.path.join(output_path, 'lp', self.config.OPTIONS_TXT))
         with open(options_path, 'w') as options_file:

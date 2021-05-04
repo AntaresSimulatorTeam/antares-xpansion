@@ -143,7 +143,7 @@ class XpansionConfig():
                                  'solver': 'Cbc',
                                  'timelimit': '+infini',
                                  'additional-constraints': "",
-                                 'yearly_weights': ""}
+                                 'yearly-weights': ""}
 
     def _set_default_options(self):
         self.options_default = {
