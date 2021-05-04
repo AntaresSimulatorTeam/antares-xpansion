@@ -12,8 +12,8 @@ import sys
 from pathlib import Path
 
 from antares_xpansion.general_data_reader import GeneralDataIniReader, IniReader
-from antares_xpansion.input_checker import check_candidates_file
-from antares_xpansion.input_checker import check_settings_file
+from antares_xpansion.input_checker import check_candidates_file, check_weights_file
+from antares_xpansion.input_checker import check_options
 from antares_xpansion.xpansion_utils import read_and_write_mps
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
@@ -34,11 +34,9 @@ class XpansionDriver():
         self.config = config
 
         self.candidates_list = []
+        self._verify_settings_ini_file_exists()
 
-        with open(self.settings(), 'r') as file_l:
-            self.options = dict(
-                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines() if line.strip()})
+        self.options = self._get_options_from_settings_inifile()
 
         self.check_candidates()
         self.check_settings()
@@ -57,10 +55,19 @@ class XpansionDriver():
                             ('[' + self.config.OPTIMIZATION + ']', self.config.TRACE): None,
                             ('[general]', 'mode'): 'expansion' if self.is_accurate() else 'Economy',
                             (
-                            '[other preferences]', 'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
+                                '[other preferences]',
+                                'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
                             }
 
-        self.nb_years = GeneralDataIniReader(Path(self.general_data())).get_nb_activated_year()
+        self.nb_active_years = GeneralDataIniReader(Path(self.general_data())).get_nb_activated_year()
+
+    def _get_options_from_settings_inifile(self):
+        options: dict = {}
+        with open(self._get_settings_ini_filepath(), 'r') as file_l:
+            options = dict(
+                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
+                 for line in file_l.readlines() if line.strip()})
+        return options
 
     def exe_path(self, exe):
         """
@@ -85,19 +92,21 @@ class XpansionDriver():
         return os.path.normpath(os.path.join(self.data_dir(),
                                              self.config.SETTINGS, self.config.GENERAL_DATA_INI))
 
-    def settings(self):
+    def _get_settings_ini_filepath(self):
         """
             returns path to setting ini file
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
-                                             self.config.EXPANSION, self.config.SETTINGS_INI))
+        return self._get_path_from_file_in_xpansion_dir(self.config.SETTINGS_INI)
 
-    def candidates(self):
+    def candidates_ini_filepath(self):
         """
             returns path to candidates ini file
         """
+        return self._get_path_from_file_in_xpansion_dir(self.config.CANDIDATES_INI)
+
+    def _get_path_from_file_in_xpansion_dir(self, filename):
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
-                                             self.config.EXPANSION, self.config.CANDIDATES_INI))
+                                             self.config.EXPANSION, filename))
 
     def capacity_file(self, filename):
         """
@@ -106,7 +115,7 @@ class XpansionDriver():
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
                                              self.config.EXPANSION, self.config.CAPADIR, filename))
 
-    def weights_file(self, filename):
+    def weights_file_path(self):
         """
             returns the path to a yearly-weights file
 
@@ -114,8 +123,12 @@ class XpansionDriver():
 
             :return: path to input yearly-weights file
         """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
-                                             self.config.EXPANSION, filename))
+
+        yearly_weights_filename = self.options.get('yearly_weights', self.config.settings_default["yearly_weights"])
+        if yearly_weights_filename:
+            return self._get_path_from_file_in_xpansion_dir(yearly_weights_filename)
+        else:
+            return ""
 
     def antares_output(self):
         """
@@ -180,8 +193,7 @@ class XpansionDriver():
 
         if additional_constraints_filename == "":
             return ""
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
-                                             self.config.EXPANSION, additional_constraints_filename))
+        return self._get_path_from_file_in_xpansion_dir(additional_constraints_filename)
 
     def launch(self):
         """
@@ -246,8 +258,8 @@ class XpansionDriver():
             checks that candidates file has correct format
         """
         # check file existence
-        if not os.path.isfile(self.candidates()):
-            print('Missing file : %s was not retrieved.' % self.candidates())
+        if not os.path.isfile(self.candidates_ini_filepath()):
+            print('Missing file : %s was not retrieved.' % self.candidates_ini_filepath())
             sys.exit(1)
 
         check_candidates_file(self)
@@ -256,12 +268,26 @@ class XpansionDriver():
         """
             checks that settings file has correct format
         """
-        # check file existence
-        if not os.path.isfile(self.settings()):
-            print('Missing file : %s was not retrieved.' % self.settings())
-            sys.exit(1)
+        check_options(self.options)
+        self._verify_yearly_weights_consistency()
+        self._verify_additional_constraints_file()
 
-        check_settings_file(self)
+    def _verify_yearly_weights_consistency(self):
+        if self.options.get('yearly_weights', "") != "":
+            check_weights_file(self.weights_file_path(), self.nb_active_years)
+
+    def _verify_additional_constraints_file(self):
+        if self.options.get('additional-constraints', "") != "":
+            additional_constraints_path = self.additional_constraints()
+            if not os.path.isfile(additional_constraints_path):
+                print('Illegal value: %s is not an existent additional-constraints file'
+                      % additional_constraints_path)
+                sys.exit(1)
+
+    def _verify_settings_ini_file_exists(self):
+        if not os.path.isfile(self._get_settings_ini_filepath()):
+            print('Missing file : %s was not retrieved.' % self._get_settings_ini_filepath())
+            sys.exit(1)
 
     def pre_antares(self):
         """
@@ -304,8 +330,8 @@ class XpansionDriver():
         #     os.mkdir(driver.antares_output(), )
         old_output = os.listdir(self.antares_output())
         returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
-                                        stdout= subprocess.DEVNULL,
-                                        stderr= subprocess.DEVNULL)
+                                    stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL)
         if returned_l.returncode != 0:
             print("WARNING: exited antares with status %d" % returned_l.returncode)
         else:
@@ -390,7 +416,7 @@ class XpansionDriver():
         return lp_path
 
     def get_lp_namer_log_filename(self, lp_path):
-        return os.path.join(lp_path , self.config.LP_NAMER + '.log')
+        return os.path.join(lp_path, self.config.LP_NAMER + '.log')
 
     def get_lp_namer_command(self, output_path):
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
@@ -407,8 +433,8 @@ class XpansionDriver():
 
         with open(self.get_study_updater_log_filename(output_path), 'w') as output_file:
             returned_l = subprocess.run(self.get_study_updater_command(output_path), shell=False,
-                                         stdout=output_file,
-                                         stderr=output_file)
+                                        stdout=output_file,
+                                        stderr=output_file)
             if returned_l.returncode != 0:
                 print("ERROR: exited study-updater with status %d" % returned_l.returncode)
                 sys.exit(1)
@@ -416,7 +442,7 @@ class XpansionDriver():
                 StudyOutputCleaner.clean_study_update_step(Path(output_path))
 
     def get_study_updater_log_filename(self, output_path):
-        return os.path.join(output_path , self.config.STUDY_UPDATER + '.log')
+        return os.path.join(output_path, self.config.STUDY_UPDATER + '.log')
 
     def get_study_updater_command(self, output_path):
         return [self.exe_path(self.config.STUDY_UPDATER), "-o", output_path, "-s",
@@ -464,8 +490,8 @@ class XpansionDriver():
             os.remove(solver + '.log')
 
         returned_l = subprocess.run(self.get_solver_cmd(solver), shell=False,
-                                     stdout= sys.stdout,
-                                     stderr= sys.stderr)
+                                    stdout=sys.stdout,
+                                    stderr=sys.stderr)
         if returned_l.returncode != 0:
             print("ERROR: exited solver with status %d" % returned_l.returncode)
             sys.exit(1)
@@ -473,7 +499,7 @@ class XpansionDriver():
             StudyOutputCleaner.clean_benders_step(Path(output_path))
         os.chdir(old_cwd)
 
-    def get_solver_cmd(self,solver):
+    def get_solver_cmd(self, solver):
         """
             returns a list consisting of the path to the required solver and its launching options
         """
@@ -481,9 +507,10 @@ class XpansionDriver():
                           self.config.BENDERS_MPI,
                           self.config.BENDERS_SEQUENTIAL]
         if solver == self.config.BENDERS_MPI:
-            return [self.config.MPI_LAUNCHER, self.config.MPI_N, str(self.config.n_mpi), self.exe_path(solver), self.config.OPTIONS_TXT]
+            return [self.config.MPI_LAUNCHER, self.config.MPI_N, str(self.config.n_mpi), self.exe_path(solver),
+                    self.config.OPTIONS_TXT]
         else:
-            return [self.exe_path(solver),self.config.OPTIONS_TXT]
+            return [self.exe_path(solver), self.config.OPTIONS_TXT]
 
     def set_options(self, output_path):
         """
@@ -491,7 +518,7 @@ class XpansionDriver():
         """
         # computing the weight of slaves
         options_values = self.config.options_default
-        options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_years)
+        options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
         options_values["GAP"] = self.optimality_gap()
         options_values["MAX_ITERATIONS"] = self.max_iterations()
         # generate options file for the solver
