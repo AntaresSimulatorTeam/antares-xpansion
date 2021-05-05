@@ -92,18 +92,29 @@ void SolverCbc::write_prob(const char* name, const char* flags) {
 		// If the user added cuts or rows but did not added names to them
 		// the number of names returned by solver might be different from the
 		// actual number of names, resulting in a crash
-		std::vector<std::string> rowNames;
-		rowNames.reserve(get_nrows());
-		rowNames = _clp_inner_solver.getRowNames();
-		for (int i = _clp_inner_solver.getRowNames().size(); i < get_nrows(); i++) {
-			rowNames.push_back( "R" + std::to_string(i) );
+		std::vector<std::string> rowNames(get_nrows());
+		for (int i = 0; i < get_nrows(); ++i) {
+			std::string const& name(_clp_inner_solver.getRowName(i));
+			if (name == "") {
+				std::stringstream buffer;
+				buffer << "R" << i;
+				rowNames[i] = buffer.str();
+			}else{
+				rowNames[i] = name;
+			}
 		}
-
-		std::vector<std::string> colNames;
-		colNames.reserve(get_ncols());
-		colNames = _clp_inner_solver.getColNames();
-		for (int i = _clp_inner_solver.getColNames().size(); i < get_ncols(); i++) {
-			colNames.push_back("C" + std::to_string(i));
+		
+		std::vector<std::string> colNames(get_ncols());
+		for (int i = 0; i < get_ncols(); ++i) {
+			std::string const& name(_clp_inner_solver.getColName(i));
+			if (name == "") {
+				std::stringstream buffer;
+				buffer << "C" << i;
+				colNames[i] = buffer.str();
+			}
+			else {
+				colNames[i] = name;
+			}
 		}
 		
 		writer.setMpsData(
@@ -442,7 +453,7 @@ void SolverCbc::chg_bounds(int nbds, const int* mindex, const char* qbtype, cons
 		}
 		else {
 			std::cout << "ERROR : Unknown bound type " << qbtype[i] << " for column " << mindex[i] << std::endl;
-			std:exit(1);
+			std::exit(1);
 		}
 	}
 }
