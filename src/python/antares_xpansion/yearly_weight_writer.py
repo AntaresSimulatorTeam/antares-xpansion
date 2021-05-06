@@ -3,12 +3,6 @@ from pathlib import Path
 from typing import List
 
 
-def strip_end(text, suffix):
-    if suffix and text.endswith(suffix):
-        return text[:-len(suffix)]
-    return text
-
-
 class YearlyWeightWriter:
 
     def __init__(self, simulation_path: Path):
@@ -28,7 +22,7 @@ class YearlyWeightWriter:
             if '.mps' in instance and not '-1.mps' in instance:
                 buffer_l = instance.strip().split("-")
                 year = int(buffer_l[1])
-                mps_file_name = strip_end(instance, ".mps")
+                mps_file_name = Path(instance).with_suffix('').name
                 content.append(mps_file_name + " " + str(weight_list[year - 1]) + "\n")
         content.append("WEIGHT_SUM " + str(sum(weight_list)))
         with open(self.output_dir / file_name, 'w') as weight_file:
