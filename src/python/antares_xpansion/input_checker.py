@@ -62,58 +62,6 @@ def check_profile_file(filename_path):
 
     return any(first_profile) or any(indirect_profile)
 
-
-##########################################
-# Checks related to weights files
-##########################################
-class InvalidYearsWeightNumber(Exception):
-    pass
-
-
-def check_weights_file(filename_path, nb_active_years: int):
-    """
-        checks that the yearly-weights file exists and has correct format:
-            column of non-negative weights
-            sum of weights is positive
-        :return: True if the file has correct format, Exists otherwise
-    """
-
-    # check file existence
-    if not os.path.isfile(filename_path):
-        print('Illegal value : %s is not an existent yearly-weights file'
-              % filename_path)
-        sys.exit(1)
-
-    null_weights = True
-    nb_values = 0
-    with open(filename_path, 'r') as weights_file:
-        for idx, line in enumerate(weights_file):
-            if line.strip():
-                try:
-                    nb_values += 1
-                    line_value = float(line.strip())
-                    if line_value > 0:
-                        null_weights = False
-                    elif line_value < 0:
-                        print('Line %d in file %s indicates a negative value'
-                              % (idx + 1, filename_path))
-                        sys.exit(1)
-                except ValueError:
-                    print('Line %d in file %s is not a single non-negative value'
-                          % (idx + 1, filename_path))
-                    sys.exit(1)
-
-    if nb_values != nb_active_years:
-        raise InvalidYearsWeightNumber
-
-    if null_weights:
-        print('file %s : all values are null'
-              % filename_path)
-        sys.exit(1)
-
-    return True
-
-
 ##########################################
 # Checks related to candidates.ini
 ##########################################

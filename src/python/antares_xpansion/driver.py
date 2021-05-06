@@ -3,7 +3,6 @@
 """
 
 import shutil
-import configparser
 import glob
 import os
 import subprocess
@@ -12,7 +11,7 @@ import sys
 from pathlib import Path
 
 from antares_xpansion.general_data_reader import GeneralDataIniReader, IniReader
-from antares_xpansion.input_checker import check_candidates_file, check_weights_file, check_options
+from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.xpansion_utils import read_and_write_mps
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
@@ -116,10 +115,8 @@ class XpansionDriver():
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
                                              self.config.EXPANSION, self.config.CAPADIR, filename))
 
-
     def weight_file_name(self):
         return self.options.get('yearly-weights', self.config.settings_default["yearly-weights"])
-
 
     def weights_file_path(self):
         """
@@ -280,7 +277,11 @@ class XpansionDriver():
 
     def _verify_yearly_weights_consistency(self):
         if self.weight_file_name():
-            check_weights_file(self.weights_file_path(), self.nb_active_years)
+            try:
+                XpansionStudyReader.check_weights_file(self.weights_file_path(), self.nb_active_years)
+            except XpansionStudyReader.BaseException as e:
+                print(e)
+                sys.exit(1)
 
     def _verify_additional_constraints_file(self):
         if self.options.get('additional-constraints', "") != "":
