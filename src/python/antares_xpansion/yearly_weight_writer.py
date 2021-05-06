@@ -12,14 +12,14 @@ def strip_end(text, suffix):
 class YearlyWeightWriter:
 
     def __init__(self, simulation_path: Path):
-        self.LP = "lp"
+        self.MPS_DIR = "lp"
         self.simulation_path = simulation_path
-        if not os.path.isdir(self._output_dir):
-            os.mkdir(self._output_dir)
+        if not os.path.isdir(self.output_dir):
+            os.mkdir(self.output_dir)
 
     @property
-    def _output_dir(self):
-        return self.simulation_path / self.LP
+    def output_dir(self):
+        return self.simulation_path / self.MPS_DIR
 
     def create_weight_file(self, weight_list: List[float], file_name: str):
         sorted_dir = sorted(os.listdir(self.simulation_path))
@@ -31,5 +31,5 @@ class YearlyWeightWriter:
                 mps_file_name = strip_end(instance, ".mps")
                 content.append(mps_file_name + " " + str(weight_list[year - 1]) + "\n")
         content.append("WEIGHT_SUM " + str(sum(weight_list)))
-        with open(self._output_dir / file_name, 'w') as weight_file:
+        with open(self.output_dir / file_name, 'w') as weight_file:
             weight_file.writelines(content)

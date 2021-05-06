@@ -29,6 +29,6 @@ def test_weight_file_write(tmp_path):
                        "problem-3-24-AAAAMMDD-hhmmss 3\n" \
                        "WEIGHT_SUM 6"
 
-    with open(tmp_path / "lp" / input_weight_file_name, 'r') as write_file:
+    with open(YearlyWeightWriter(tmp_path).output_dir / input_weight_file_name, 'r') as write_file:
         content = write_file.read()
         assert content == expected_content
