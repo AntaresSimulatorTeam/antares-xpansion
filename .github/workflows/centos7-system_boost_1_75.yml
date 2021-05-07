@@ -1,4 +1,4 @@
-name: Centos7 CI (system libs)
+name: Centos7 CI (boost 1_75)
 
 on:
   push:
