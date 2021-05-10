@@ -108,7 +108,7 @@ jobs:
     - name: Single file .zip creation
       run: |
            cd _install
-           pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml;." --add-data "bin/;bin"
+           pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml;." --add-data "./bin/;bin"
            Remove-Item .\bin\ -Recurse
            Remove-Item .\build\ -Recurse
            Remove-Item .\dist\ -Recurse

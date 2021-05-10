@@ -83,15 +83,14 @@ jobs:
            export PATH=/usr/lib64/openmpi/bin:$PATH
            cmake3 --build _build --config Release -j2  --target install
            
-           
-    - name: Single file .tar.gz creation
-      uses: ./.github/workflows/single-file-creation-tgz
-        
     - name: Running unit tests
       run: |
            cd _build
            ctest3 -C Release --output-on-failure -L "unit|benders"
-               
+           
+    - name: Single file .tar.gz creation
+      uses: ./.github/workflows/single-file-creation-tgz
+      
     - name: Installer .rpm creation
       run: |
            cd _build

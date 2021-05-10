@@ -98,7 +98,10 @@ jobs:
       run: |
            cd _build
            ctest3 -C Release --output-on-failure -L "unit|benders"
-               
+
+    - name: Single file .tar.gz creation
+      uses: ./.github/workflows/single-file-creation-tgz
+      
     - name: Installer .rpm creation
       run: |
            cd _build
@@ -108,18 +111,6 @@ jobs:
       run: |
            cd _build
            cpack3 -G TGZ
-           
-    - name: Single file .tar.gz creation
-      run: |
-           LSB_RELEASE_ID_SHORT=$(lsb_release --short --id)
-           LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
-           cd _install
-           pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "bin/:bin"
-           rm -rf bin
-           rm -rf build
-           rm -rf dist
-           cd ..
-           tar -czf antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
 
     - name: Installer archive upload
       uses: actions/upload-artifact@v2
