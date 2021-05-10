@@ -3,6 +3,7 @@ description: "Execute some run setps to do something"
 runs:
   using: "composite"
   steps: 
-  - run: |
+  - shell: bash
+    run: |
       echo do something
       echo and do something else
