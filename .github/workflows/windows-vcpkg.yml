@@ -109,9 +109,10 @@ jobs:
       run: |
            cd _install
            pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml;." --add-data "bin/;bin"
-           rm bin
-           rm build
-           rm dist
+           Remove-Item .\bin\ -Recurse
+           Remove-Item .\build\ -Recurse
+           Remove-Item .\dist\ -Recurse
+           Remove-Item .\*.spec
            Compress-Archive -Path .\* antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-64bits.zip
         
 
