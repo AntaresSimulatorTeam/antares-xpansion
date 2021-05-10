@@ -5,5 +5,14 @@ runs:
   steps: 
   - shell: bash
     run: |
-      echo do something
-      echo and do something else
+      LSB_RELEASE_ID_SHORT=$(lsb_release --short --id)
+      LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
+      cd _install
+      pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "bin/:bin"
+      rm -rf bin
+      rm -rf build
+      rm -rf dist
+      rm *.spec
+      cd ..
+      tar -czf antaresXpansion-0.3.0-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
+      
