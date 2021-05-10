@@ -1,6 +1,5 @@
 name: "Single file .tar.gz creation"
-description : "Create a .tar.gz with single file 
-
+description: "Create a .tar.gz with single file 
 runs:
   using: "composite"
   steps: 
