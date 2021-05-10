@@ -98,14 +98,16 @@ jobs:
            cpack3 -G TGZ
            
     - name: Single file .tar.gz creation
-      run: |        
+      run: |
+           LSB_RELEASE_ID_SHORT=$(lsb_release --short --id)
+           LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
            cd _install
            pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "bin/:bin"
            rm -rf bin
            rm -rf build
            rm -rf dist
            cd ..
-           tar -xzf antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}.tar.gz -C _install .
+           tar -xzf antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
 
     - name: Installer archive upload
       uses: actions/upload-artifact@v2
@@ -123,4 +125,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-centos-single-file
-        path: antaresXpansion-*.*.*.tar.gz
+        path: antaresXpansion-*.*.*-*-*.tar.gz
