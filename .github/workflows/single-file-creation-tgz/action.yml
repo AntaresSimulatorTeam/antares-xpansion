@@ -3,7 +3,8 @@ description: "Create a .tar.gz with single file
 runs:
   using: "composite"
   steps: 
-    - run: |
+    - shell: bash
+      run: |
            LSB_RELEASE_ID_SHORT=$(lsb_release --short --id)
            LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
            cd _install
