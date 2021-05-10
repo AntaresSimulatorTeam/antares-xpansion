@@ -7,6 +7,7 @@ import sys
 import os
 import shutil
 
+
 ##########################################
 # Checks related to profile/capacity files
 ##########################################
@@ -19,7 +20,7 @@ def check_profile_file(filename_path):
 
         :return: returns False if the profile is null
     """
-    #check file existence
+    # check file existence
     if not os.path.isfile(filename_path):
         print('Illegal value : option can be 0, 1 or an existent filename.\
                  %s is not an existent file' % filename_path)
@@ -43,15 +44,15 @@ def check_profile_file(filename_path):
                     indirect_profile.append(float(line_vals[1]))
                 else:
                     print('Line %d in file %s is not valid.'
-                          % (idx+1, filename_path))
+                          % (idx + 1, filename_path))
                     sys.exit(1)
             except ValueError:
                 print('Line %d in file %s is not valid: allowed formats "X" or "X\tY".'
-                      % (idx+1, filename_path))
+                      % (idx + 1, filename_path))
                 sys.exit(1)
             if (first_profile[-1] < 0) or (two_profiles and indirect_profile[-1] < 0):
                 print('Line %d in file %s indicates a negative value'
-                      % (idx+1, filename_path))
+                      % (idx + 1, filename_path))
                 sys.exit(1)
 
     if len(first_profile) != 8760:
@@ -60,48 +61,6 @@ def check_profile_file(filename_path):
         sys.exit(1)
 
     return any(first_profile) or any(indirect_profile)
-
-##########################################
-# Checks related to weights files
-##########################################
-
-def check_weights_file(filename_path):
-    """
-        checks that the yearly-weights file exists and has correct format:
-            column of non-negative weights
-            sum of weights is positive
-        :return: True if the file has correct format, Exists otherwise
-    """
-
-    #check file existence
-    if not os.path.isfile(filename_path):
-        print('Illegal value : %s is not an existent yearly-weights file'
-              % filename_path)
-        sys.exit(1)
-
-    null_weights = True
-    with open(filename_path, 'r') as weights_file:
-        for idx, line in enumerate(weights_file):
-            try:
-                line_value = float(line.strip())
-                if line_value > 0:
-                    null_weights = False
-                elif line_value < 0:
-                    print('Line %d in file %s indicates a negative value'
-                          % (idx+1, filename_path))
-                    sys.exit(1)
-            except ValueError:
-                print('Line %d in file %s is not a single non-negative value'
-                      % (idx+1, filename_path))
-                sys.exit(1)
-
-    if null_weights:
-        print('file %s : all values are null'
-              % filename_path)
-        sys.exit(1)
-
-    return True
-
 
 ##########################################
 # Checks related to candidates.ini
@@ -116,20 +75,20 @@ def check_candidate_option_type(option, value):
 
         :return: True if the value has an appropriate type, False or exist otherwise
     """
-    options_types = {'name' : 'string',
-                     'enable' : 'string',
-                     'candidate-type' : 'string',
-                     'investment-type' : 'string',
-                     'link' : 'string',
-                     'annual-cost-per-mw' : 'non-negative',
-                     'unit-size' : 'non-negative',
-                     'max-units' : 'non-negative',
-                     'max-investment' : 'non-negative',
-                     'relaxed' : 'string',
-                     'has-link-profile' : 'string',
-                     'link-profile' : 'string',
-                     'already-installed-capacity' : 'non-negative',
-                     'already-installed-link-profile' : 'string'}
+    options_types = {'name': 'string',
+                     'enable': 'string',
+                     'candidate-type': 'string',
+                     'investment-type': 'string',
+                     'link': 'string',
+                     'annual-cost-per-mw': 'non-negative',
+                     'unit-size': 'non-negative',
+                     'max-units': 'non-negative',
+                     'max-investment': 'non-negative',
+                     'relaxed': 'string',
+                     'has-link-profile': 'string',
+                     'link-profile': 'string',
+                     'already-installed-capacity': 'non-negative',
+                     'already-installed-link-profile': 'string'}
     option_type = options_types.get(option)
     if option_type is None:
         print('check_candidate_option_type: %s option not recognized in candidates file.' % option)
@@ -148,6 +107,7 @@ def check_candidate_option_type(option, value):
               % (option_type, option))
         sys.exit(1)
 
+
 def check_candidate_option_value(option, value):
     """
         verifies if a given option value belongs to the list of allowed values for that option
@@ -158,20 +118,20 @@ def check_candidate_option_value(option, value):
         :return: True if the value is legal or is not to be checked. Exists otherwise.
     """
     antares_links_list = None
-    options_legal_values = {'name' : None,
-                            'enable' : ["true", "false"],
-                            'candidate-type' : ["investment", "decommissioning"],
-                            'investment-type' : None,
-                            'link' : antares_links_list,
-                            'annual-cost-per-mw' : None,
-                            'unit-size' : None,
-                            'max-units' : None,
-                            'max-investment' : None,
-                            'relaxed' : ["true", "false"],
-                            'has-link-profile' : ["true", "false"],
-                            'link-profile' : None,
-                            'already-installed-capacity' : None,
-                            'already-installed-link-profile' : None}
+    options_legal_values = {'name': None,
+                            'enable': ["true", "false"],
+                            'candidate-type': ["investment", "decommissioning"],
+                            'investment-type': None,
+                            'link': antares_links_list,
+                            'annual-cost-per-mw': None,
+                            'unit-size': None,
+                            'max-units': None,
+                            'max-investment': None,
+                            'relaxed': ["true", "false"],
+                            'has-link-profile': ["true", "false"],
+                            'link-profile': None,
+                            'already-installed-capacity': None,
+                            'already-installed-link-profile': None}
     legal_values = options_legal_values.get(option)
     if (legal_values is None) or (value.lower() in legal_values):
         return True
@@ -179,6 +139,7 @@ def check_candidate_option_value(option, value):
     print('check_candidate_option_value: Illegal value %s for option %s allowed values are: %s'
           % (value, option, legal_values))
     sys.exit(1)
+
 
 def check_candidate_name(name, section):
     """
@@ -193,6 +154,7 @@ def check_candidate_name(name, section):
             print('Error candidates name should not contain %s, found in section %s in "%s"' % (c, section, name))
             sys.exit(1)
 
+
 def check_candidate_link(link, section):
     """
         checks that the candidate's link is not empty
@@ -204,6 +166,7 @@ def check_candidate_link(link, section):
         print('Error candidates link value must contain " - " : found in section %s' % section)
         sys.exit(1)
 
+
 def check_candidates_file(driver):
     """
         checks that a candidate file related to an XpansionDriver has the correct format
@@ -212,26 +175,26 @@ def check_candidates_file(driver):
 
         :return: Exits if the candidates files has the wrong format.
     """
-    default_values = {'name' : 'NA',
-                      'enable' : 'true',
-                      'candidate-type' : 'investment',
-                      'investment-type' : 'generation',
-                      'link' : 'NA',
-                      'annual-cost-per-mw' : '0',
-                      'unit-size' : '0',
-                      'max-units' : '0',
-                      'max-investment' : '0',
-                      'Relaxed' : 'false',
-                      'has-link-profile' : 'false',
-                      'link-profile' : '1',
-                      'already-installed-capacity' : '0',
-                      'already-installed-link-profile' : '1'}
+    default_values = {'name': 'NA',
+                      'enable': 'true',
+                      'candidate-type': 'investment',
+                      'investment-type': 'generation',
+                      'link': 'NA',
+                      'annual-cost-per-mw': '0',
+                      'unit-size': '0',
+                      'max-units': '0',
+                      'max-investment': '0',
+                      'Relaxed': 'false',
+                      'has-link-profile': 'false',
+                      'link-profile': '1',
+                      'already-installed-capacity': '0',
+                      'already-installed-link-profile': '1'}
     ini_file = configparser.ConfigParser(default_values)
-    ini_file.read(driver.candidates())
+    ini_file.read(driver.candidates_ini_filepath())
 
     config_changed = False
 
-    #check attributes types and values
+    # check attributes types and values
     for each_section in ini_file.sections():
         for (option, value) in ini_file.items(each_section):
             if not check_candidate_option_type(option, value):
@@ -258,9 +221,9 @@ def check_candidates_file(driver):
                 sys.exit(1)
             else:
                 unique_values.add(value)
-                #FIXME can also add reverse link
+                # FIXME can also add reverse link
 
-    #check exclusion between max-investment and (max-units, unit-size) attributes
+    # check exclusion between max-investment and (max-units, unit-size) attributes
     for each_section in ini_file.sections():
         max_invest = float(ini_file[each_section]['max-investment'].strip())
         unit_size = float(ini_file[each_section]['unit-size'].strip())
@@ -275,7 +238,7 @@ def check_candidates_file(driver):
                   or (unit-size and max_units)" % (each_section))
             sys.exit(1)
 
-    #check attributes profile is 0, 1 or an existent filename
+    # check attributes profile is 0, 1 or an existent filename
     profile_attributes = ['link-profile', 'already-installed-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
@@ -288,12 +251,12 @@ def check_candidates_file(driver):
             else:
                 has_a_profile = has_a_profile or check_profile_file(driver.capacity_file(value))
         if not has_a_profile:
-            #remove candidate if it has no profile
+            # remove candidate if it has no profile
             print("candidate %s will be removed!" % ini_file[each_section]["name"])
             ini_file.remove_section(each_section)
             config_changed = True
 
-    #check coherence between has-link-profile and link-profile values
+    # check coherence between has-link-profile and link-profile values
     for each_section in ini_file.sections():
         has_link_value = ini_file[each_section]["has-link-profile"].strip()
         link_profile_value = ini_file[each_section]["link-profile"].strip()
@@ -308,11 +271,12 @@ def check_candidates_file(driver):
             sys.exit(1)
 
     if config_changed:
-        shutil.copyfile(driver.candidates(), driver.candidates()+".bak")
-        with open(driver.candidates(), 'w') as out_file:
+        shutil.copyfile(driver.candidates_ini_filepath(), driver.candidates_ini_filepath() + ".bak")
+        with open(driver.candidates_ini_filepath(), 'w') as out_file:
             ini_file.write(out_file)
         print("%s file was overwritten! backup file %s created"
-              % (driver.candidates(), driver.candidates()+".bak"))
+              % (driver.candidates_ini_filepath(), driver.candidates_ini_filepath() + ".bak"))
+
 
 ##########################################
 # Checks related to settings.ini
@@ -328,18 +292,18 @@ def check_setting_option_type(option, value):
                  False or exits if the value has the wrong type
     """
 
-    options_types = {'method' : 'string',
-                     'uc_type' : 'string',
-                     'master' : 'string',
-                     'optimality_gap' : 'double',
-                     'cut_type' : 'string',
-                     'week_selection' : 'string',
-                     'max_iteration' : 'integer',
-                     'relaxed_optimality_gap' : 'string',
-                     'solver' : 'string',
-                     'timelimit' : 'integer',
-                     'yearly_weights' : 'string',
-                     'additional-constraints' : 'string',}
+    options_types = {'method': 'string',
+                     'uc_type': 'string',
+                     'master': 'string',
+                     'optimality_gap': 'double',
+                     'cut_type': 'string',
+                     'week_selection': 'string',
+                     'max_iteration': 'integer',
+                     'relaxed_optimality_gap': 'string',
+                     'solver': 'string',
+                     'timelimit': 'integer',
+                     'yearly-weights': 'string',
+                     'additional-constraints': 'string', }
     option_type = options_types.get(option)
     if option_type is None:
         print('check_setting_option_type: Illegal %s option in candidates file.' % option)
@@ -368,6 +332,7 @@ def check_setting_option_type(option, value):
                   % (option_type, option))
             sys.exit(1)
 
+
 def check_setting_option_value(option, value):
     """
         checks that an option has a legal value
@@ -378,23 +343,23 @@ def check_setting_option_value(option, value):
         :return: True if the option has the correct type, exits if the value has the wrong type
     """
 
-    options_legal_values = {'method' : ['benders_decomposition'],
-                            'uc_type' : ['expansion_accurate', 'expansion_fast'],
-                            'master' : ['relaxed', 'integer', 'full_integer'],
-                            'optimality_gap' : None,
-                            'cut_type' : ['average', 'yearly', 'weekly'],
-                            'week_selection' : ['true', 'false'],
-                            'max_iteration' : None,
-                            'relaxed_optimality_gap' : None,
-                            'solver' : ['Cplex', 'Xpress', 'Cbc', 'Sirius', 'Gurobi', 'GLPK'],
-                            'timelimit' : None,
-                            'yearly_weights' : None,
-                            'additional-constraints' : None}
+    options_legal_values = {'method': ['benders_decomposition'],
+                            'uc_type': ['expansion_accurate', 'expansion_fast'],
+                            'master': ['relaxed', 'integer', 'full_integer'],
+                            'optimality_gap': None,
+                            'cut_type': ['average', 'yearly', 'weekly'],
+                            'week_selection': ['true', 'false'],
+                            'max_iteration': None,
+                            'relaxed_optimality_gap': None,
+                            'solver': ['Cplex', 'Xpress', 'Cbc', 'Sirius', 'Gurobi', 'GLPK'],
+                            'timelimit': None,
+                            'yearly-weights': None,
+                            'additional-constraints': None}
     legal_values = options_legal_values.get(option)
 
-    skip_verif = ["yearly_weights", "additional-constraints"]
+    skip_verif = ["yearly-weights", "additional-constraints"]
 
-    if ( (legal_values is not None) and (value in legal_values) ) or ( option in skip_verif ):
+    if ((legal_values is not None) and (value in legal_values)) or (option in skip_verif):
         return True
 
     if option == 'optimality_gap':
@@ -439,31 +404,26 @@ def check_setting_option_value(option, value):
     sys.exit(1)
     return False
 
-def check_settings_file(driver):
+
+def check_options(options):
     """
         checks that a settings file related to an XpansionDriver has the correct format
+        Exits if the candidates files has the wrong format.
 
-        :param driver: the XpansionDriver pointing to the settings file
+        :param options: the options obtained from the settings.ini file
 
-        :return: Exits if the candidates files has the wrong format.
+        :return:
     """
-    for (option, value) in driver.options.items():
+
+    option_items = options.items()
+    for (option, value) in option_items:
         if not check_setting_option_type(option, value):
             print("check_settings : value %s for option %s has the wrong type!" % (value, option))
             sys.exit(1)
         check_setting_option_value(option, value)
 
-    if driver.options.get('yearly_weights', "") != "":
-        if driver.options.get("cut_type") == "average":
-            print("check_settings : yearly_weights option can not be used when cut_type is average")
-            sys.exit(1)
-        check_weights_file(driver.weights_file(driver.options.get('yearly_weights', "")))
-
-    if driver.options.get('additional-constraints', "") != "":
-        additional_constraints_path = driver.additional_constraints()
-        if not os.path.isfile(additional_constraints_path):
-            print('Illegal value: %s is not an existent additional-constraints file'
-                % additional_constraints_path)
+    if options.get('yearly-weights', "") != "":
+        if options.get("cut_type") == "average":
+            print("check_settings : yearly-weights option can not be used when cut_type is average")
             sys.exit(1)
 
-        #additional constraints checks are achieved in the lpnamer itself while processing

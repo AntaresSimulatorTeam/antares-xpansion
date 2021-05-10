@@ -142,7 +142,8 @@ class XpansionConfig():
                                  'relaxed_optimality_gap': '0.01',
                                  'solver': 'Cbc',
                                  'timelimit': '+infini',
-                                 'additional-constraints': ""}
+                                 'additional-constraints': "",
+                                 'yearly-weights': ""}
 
     def _set_default_options(self):
         self.options_default = {
