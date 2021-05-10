@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 import sys
 import shutil
@@ -24,9 +25,10 @@ def get_first_json_filepath_output(output_dir):
 
 def remove_outputs(study_path):
     output_path = study_path / 'output'
-    for f in Path(output_path).iterdir():
-        if f.is_dir():
-            shutil.rmtree(f)
+    if os.path.isdir(output_path):
+        for f in Path(output_path).iterdir():
+            if f.is_dir():
+                shutil.rmtree(f)
 
 
 def launch_xpansion(install_dir, study_path, method):
@@ -136,6 +138,10 @@ def test_full_study_long(installDir, study_path, expected_values, expected_inves
             (ALL_STUDIES_PATH / "xpansion-test-04-mps-rounding",
              {"gap": -0.000560760498046875, "investment_cost": 115399999.99998856, "operational_cost": 21942457893.943958, "overall_cost": 22057857893.943947},
              {"battery": 1000.0000000000124, "peak": 0.0, "pv": 1000.0, "semibase": 0.0, "transmission_line": 0.0}
+             ),
+            (ALL_STUDIES_PATH / "xpansion-test-01-weights",
+             {"gap": 3.814697265625e-06, "investment_cost": 230600000.00002289, "operational_cost": 24001577891.450424, "overall_cost": 24232177891.450447},
+             {"battery": 1000.0, "peak": 1500.0, "pv": 1000.0, "semibase": 200.0, "transmission_line": 0.0}
              )
         ],
     )
