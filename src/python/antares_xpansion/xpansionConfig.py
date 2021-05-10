@@ -46,7 +46,7 @@ class XpansionConfig():
         parser.add_argument("--simulationName",
                             dest="simulationName",
                             help="Name of the antares simulation to use. Must be present in the output directory")
-        parser.add_argument("--dataDir",
+        parser.add_argument("-i", "--dataDir",
                             dest="dataDir",
                             help="Antares study data directory",
                             required=True)
@@ -54,7 +54,7 @@ class XpansionConfig():
                             dest="installDir",
                             help="The directory where all binaries are located",
                             default=None)
-        parser.add_argument("--method",
+        parser.add_argument("-m", "--method",
                             dest="method",
                             type=str,
                             choices=["mpibenders", "mergeMPS", "sequential"],
