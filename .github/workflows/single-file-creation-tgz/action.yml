@@ -1,7 +1,8 @@
-name: "Single file .tar.gz creation"
-description: "Create a .tar.gz with single file 
+name: "My composite action"
+description: "Execute some run setps to do something"
 runs:
   using: "composite"
   steps: 
-  - shell: bash
-    run: lsb_release --short --id
+  - run: |
+      echo do something
+      echo and do something else
