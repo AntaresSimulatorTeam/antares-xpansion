@@ -101,7 +101,7 @@ jobs:
            rm -rf build
            rm -rf dist
            cd ..
-           tar -xzf antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
+           tar -czf antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
 
     - name: Installer upload
       uses: actions/upload-artifact@v2
