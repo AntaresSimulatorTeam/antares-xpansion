@@ -61,7 +61,14 @@ jobs:
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_version'
-    
+        
+    - name: Read antares-xpansion version
+      id: antares-xpansion-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_xpansion_version'
+        
     - name: Download pre-compiled librairies
       run: |
            choco install wget
@@ -80,7 +87,7 @@ jobs:
     - name: Configure
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_build/installation
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install
     
     - name: Build
       run: |
@@ -97,11 +104,16 @@ jobs:
       run: |
            cd _build
            cpack -G ZIP
-
-    - name: single_exe creation
+        
+    - name: Single file .zip creation
       run: |
-        cd _build
-        pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml;." --add-data "installation/bin/;bin"
+           cd _install
+           pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml;." --add-data "bin/;bin"
+           rm bin
+           rm build
+           rm dist
+           Compress-Archive -Path .\* antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-64bits.zip
+        
 
     - name: Installer upload
       uses: actions/upload-artifact@v2
@@ -113,4 +125,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-windows-single-file
-        path: _build/dist/antares-xpansion-launcher*
+        path: _install/antaresXpansion-*.*.*-*.zip
