@@ -267,7 +267,7 @@ endif()
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-guide-0.2.0.pdf
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-guide-0.3.0.pdf
         DESTINATION documentation)
         
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
