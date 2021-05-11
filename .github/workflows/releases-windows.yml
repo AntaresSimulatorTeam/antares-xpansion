@@ -41,7 +41,7 @@ jobs:
     - name: Pre-requisites
       shell: cmd
       run: |          
-          choco install wget --no-progress
+          choco install wget zip unzip --no-progress
           wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
           msmpisetup.exe -unattend
     
@@ -60,6 +60,13 @@ jobs:
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_version'
+        
+    - name: Read antares-xpansion version
+      id: antares-xpansion-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_xpansion_version'
         
     - name: Download pre-compiled librairies
       run: |
@@ -91,6 +98,12 @@ jobs:
            cd _build
            ctest -C Release --output-on-failure -L "medium|unit|benders"
            
+    - id: create-single-file
+      name: Single file .zip creation
+      uses: ./.github/workflows/single-file-creation-zip
+      with:
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+        
     - name: .zip Installer creation
       shell: bash
       run: |
@@ -106,4 +119,11 @@ jobs:
         asset_path: _build/${{env.ZIP_NAME}}
         asset_name: ${{env.ZIP_NAME}}
         asset_content_type: application/octet-stream
-    
+   
+    - name: Single file upload
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: ${{ steps.create-single-file.outputs.archive-path }}
+        asset_name: ${{ steps.create-single-file.outputs.archive-name }}
+        asset_content_type: application/octet-stream   

@@ -42,7 +42,7 @@ jobs:
     - name: Pre-requisites
       shell: cmd
       run: |          
-          choco install wget --no-progress
+          choco install wget zip unzip --no-progress
           wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
           msmpisetup.exe -unattend
 
@@ -71,7 +71,6 @@ jobs:
         
     - name: Download pre-compiled librairies
       run: |
-           choco install wget zip unzip
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.0.0/rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip
            Expand-Archive ./rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip -DestinationPath .
            rm rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip

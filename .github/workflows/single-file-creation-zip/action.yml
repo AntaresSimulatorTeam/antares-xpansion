@@ -16,6 +16,9 @@ outputs:
   archive-path:
     description: "Created archive path"
     value: ${{ steps.create.outputs.archive-path }}
+  archive-name:
+    description: "Created archive name"
+    value: ${{ steps.create.outputs.archive-name }}
 runs:
   using: "composite"
   steps: 
@@ -33,4 +36,5 @@ runs:
       ARCHIVE_NAME=antaresXpansion-${{ inputs.antares-xpansion-version }}-${{ inputs.os-name }}.zip
       zip -r $ARCHIVE_NAME ./*
       echo "::set-output name=archive-path::_install/$ARCHIVE_NAME"
+      echo "::set-output name=archive-name::$ARCHIVE_NAME"
       
