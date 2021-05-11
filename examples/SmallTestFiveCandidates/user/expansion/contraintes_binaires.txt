@@ -1,0 +1,15 @@
+[variables]
+semibase = bin_semibase
+pv = toto_pv
+[1]
+name = additional_c1
+transmission_line = 2
+semibase = 1
+sign = less_or_equal
+rhs = 1000
+[2]
+name = additional_c2
+bin_semibase = 1
+toto_pv = 1
+sign = less_or_equal
+rhs = 1
