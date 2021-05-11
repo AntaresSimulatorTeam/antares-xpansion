@@ -28,7 +28,7 @@ runs:
       rm -rf dist
       rm -f *.spec
       cd ..
-      ARCHIVE_NAME=antaresXpansion-${{ inputs.antares-xpansion-version }}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz
+      ARCHIVE_NAME=antaresXpansion-${{ inputs.antares-xpansion-version }}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT-single-file.tar.gz
       tar -czf $ARCHIVE_NAME -C _install .
       echo "::set-output name=archive-path::$ARCHIVE_NAME"
       echo "::set-output name=archive-name::$ARCHIVE_NAME"
