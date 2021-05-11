@@ -1,0 +1,29 @@
+name: "Create single file .zip archive"
+description: "Create single file .zip archive : need to change pyinstaller-add-data-separator for use on linux"
+inputs:
+  antares-xpansion-version:
+    description: 'antares-xpansion version'
+    required: true
+  os-name:
+    description: 'OS name used for archive name'
+    required: true
+    default: "windows"
+  pyinstaller-add-data-separator:
+    description: 'Separator use for --add-data in pyinstaller'
+    required: true
+    default: ";"
+runs:
+  using: "composite"
+  steps: 
+  - shell: bash
+    run: |
+      cd _install
+      rm -f ./antares-xpansion-launcher*
+      pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml${{pyinstaller-add-data-separator}}." --add-data "./bin/${{pyinstaller-add-data-separator}}bin"
+      mv ./dist/antares-xpansion-launcher* .
+      rm -rf bin
+      rm -rf build
+      rm -rf dist
+      rm *.spec
+      zip antaresXpansion-${{ inputs.antares-xpansion-version }}-${{ inputs.os-name }}.zip
+      
