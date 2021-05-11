@@ -105,7 +105,8 @@ jobs:
            cd _build
            cpack -G ZIP
            
-    - name: Single file .zip creation
+    - id: create-single-file
+      name: Single file .zip creation
       uses: ./.github/workflows/single-file-creation-zip
       with:
         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}  
@@ -120,4 +121,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-windows-single-file
-        path: _install/antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-windows.zip
+        path: ${{ steps.create-single-file.outputs.archive-path }}
