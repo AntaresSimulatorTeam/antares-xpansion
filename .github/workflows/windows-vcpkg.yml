@@ -128,4 +128,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-windows-single-file
-        path: _install/antaresXpansion-*.*.*-*.zip
+        path: _install/antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-*.zip

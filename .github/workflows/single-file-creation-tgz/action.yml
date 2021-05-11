@@ -1,5 +1,9 @@
-name: "My composite action"
-description: "Execute some run setps to do something"
+name: "Create single file .tar.gz archive"
+description: "Create single file .tar.gz archive"
+inputs:
+  antares-xpansion-version:
+    description: 'antares-xpansion version'
+    required: true
 runs:
   using: "composite"
   steps: 
@@ -14,5 +18,5 @@ runs:
       rm -rf dist
       rm *.spec
       cd ..
-      tar -czf antaresXpansion-0.3.0-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
+      tar -czf antaresXpansion-${{ inputs.antares-xpansion-version }}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
       

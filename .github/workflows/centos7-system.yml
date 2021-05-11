@@ -90,6 +90,8 @@ jobs:
            
     - name: Single file .tar.gz creation
       uses: ./.github/workflows/single-file-creation-tgz
+      with:
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
       
     - name: Installer .rpm creation
       run: |
@@ -117,4 +119,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-centos-single-file
-        path: antaresXpansion-*.*.*-*-*.tar.gz
+        path: antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-*-*.tar.gz
