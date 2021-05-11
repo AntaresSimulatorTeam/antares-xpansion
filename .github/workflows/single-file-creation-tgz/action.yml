@@ -4,10 +4,15 @@ inputs:
   antares-xpansion-version:
     description: 'antares-xpansion version'
     required: true
+outputs:
+  archive-path:
+    description: "Created archive path"
+    value: ${{ steps.create.outputs.archive-path }}
 runs:
   using: "composite"
   steps: 
-  - shell: bash
+  - id: create
+    shell: bash
     run: |
       LSB_RELEASE_ID_SHORT=$(lsb_release --short --id)
       LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
@@ -20,5 +25,7 @@ runs:
       rm -rf dist
       rm -f *.spec
       cd ..
-      tar -czf antaresXpansion-${{ inputs.antares-xpansion-version }}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
+      ARCHIVE_NAME=antaresXpansion-${{ inputs.antares-xpansion-version }}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz
+      tar -czf $ARCHIVE_NAME -C _install .
+      echo "::set-output name=archive-path::$ARCHIVE_NAME"
       

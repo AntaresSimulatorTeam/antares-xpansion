@@ -88,7 +88,8 @@ jobs:
            cd _build
            ctest3 -C Release --output-on-failure -L "unit|benders"
            
-    - name: Single file .tar.gz creation
+    - id: create-single-file
+      name: Single file .tar.gz creation
       uses: ./.github/workflows/single-file-creation-tgz
       with:
         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
@@ -119,4 +120,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-centos-single-file
-        path: antaresXpansion-${{steps.antares-xpansion-version.outputs.prop}}-*-*.tar.gz
+        path: ${{ steps.create-single-file.outputs.archive-path }}
