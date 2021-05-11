@@ -1,0 +1,40 @@
+name: "Create single file .zip archive"
+description: "Create single file .zip archive : need to change pyinstaller-add-data-separator for use on linux"
+inputs:
+  antares-xpansion-version:
+    description: 'antares-xpansion version'
+    required: true
+  os-name:
+    description: 'OS name used for archive name'
+    required: true
+    default: "windows"
+  pyinstaller-add-data-separator:
+    description: 'Separator use for --add-data in pyinstaller'
+    required: true
+    default: ";"
+outputs:
+  archive-path:
+    description: "Created archive path"
+    value: ${{ steps.create.outputs.archive-path }}
+  archive-name:
+    description: "Created archive name"
+    value: ${{ steps.create.outputs.archive-name }}
+runs:
+  using: "composite"
+  steps: 
+  - id: create
+    shell: bash
+    run: |
+      cd _install
+      rm -f ./antares-xpansion-launcher*
+      pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml${{inputs.pyinstaller-add-data-separator}}." --add-data "./bin/${{inputs.pyinstaller-add-data-separator}}bin"
+      mv ./dist/antares-xpansion-launcher* .
+      rm -rf bin
+      rm -rf build
+      rm -rf dist
+      rm *.spec
+      ARCHIVE_NAME=antaresXpansion-${{ inputs.antares-xpansion-version }}-${{ inputs.os-name }}-single-file.zip
+      zip -r $ARCHIVE_NAME ./*
+      echo "::set-output name=archive-path::_install/$ARCHIVE_NAME"
+      echo "::set-output name=archive-name::$ARCHIVE_NAME"
+      

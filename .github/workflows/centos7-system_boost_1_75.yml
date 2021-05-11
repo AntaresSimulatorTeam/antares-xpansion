@@ -42,7 +42,14 @@ jobs:
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_version'
-    
+        
+    - name: Read antares-xpansion version
+      id: antares-xpansion-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_xpansion_version'
+        
     - name: Download pre-compiled librairies
       run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.1.0/rte-antares-deps-centos7-Release-solver.tar.gz
@@ -78,7 +85,7 @@ jobs:
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH           
-           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_PREFIX_PATH=./opt/boost_1_75_0 -DCMAKE_INSTALL_PREFIX=_build/installation
+           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_PREFIX_PATH=./opt/boost_1_75_0 -DCMAKE_INSTALL_PREFIX=_install
 
     - name: Build
       run: |
@@ -91,7 +98,13 @@ jobs:
       run: |
            cd _build
            ctest3 -C Release --output-on-failure -L "unit|benders"
-               
+
+    - id: create-single-file
+      name: Single file .tar.gz creation
+      uses: ./.github/workflows/single-file-creation-tgz
+      with:
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+      
     - name: Installer .rpm creation
       run: |
            cd _build
@@ -101,11 +114,6 @@ jobs:
       run: |
            cd _build
            cpack3 -G TGZ
-           
-    - name: single_exe creation
-      run: |
-        cd _build
-        pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "installation/bin/:bin"
 
     - name: Installer archive upload
       uses: actions/upload-artifact@v2
@@ -123,4 +131,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-centos-single-file
-        path: _build/dist/antares-xpansion-launcher*
+        path: ${{ steps.create-single-file.outputs.archive-path }}
