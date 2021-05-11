@@ -89,7 +89,7 @@ jobs:
        
     - name: Build
       run: |
-           cmake --build _build --config Release -j2
+           cmake --build _build --config Release -j2 --target install
 
     - name: Running unit tests
       shell: cmd
