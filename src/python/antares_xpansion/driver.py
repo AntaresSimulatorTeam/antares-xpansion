@@ -7,6 +7,7 @@ import glob
 import os
 import subprocess
 import sys
+from datetime import datetime
 
 from pathlib import Path
 
@@ -336,9 +337,16 @@ class XpansionDriver():
         if not os.path.isdir(self.antares_output()):
             os.mkdir(self.antares_output())
         old_output = os.listdir(self.antares_output())
+
+        start_time = datetime.now()
+
         returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
                                     stdout=subprocess.DEVNULL,
                                     stderr=subprocess.DEVNULL)
+
+        end_time = datetime.now()
+        print('Antares simulation duration : {}'.format(end_time - start_time))
+
         if returned_l.returncode != 0:
             print("WARNING: exited antares with status %d" % returned_l.returncode)
         else:
@@ -417,9 +425,15 @@ class XpansionDriver():
             YearlyWeightWriter(Path(output_path)).create_weight_file(weight_list, weight_file_name)
 
         with open(self.get_lp_namer_log_filename(lp_path), 'w') as output_file:
+
+            start_time = datetime.now()
             returned_l = subprocess.run(self.get_lp_namer_command(output_path), shell=False,
                                         stdout=output_file,
                                         stderr=output_file)
+
+            end_time = datetime.now()
+            print('Post antares step duration: {}'.format(end_time - start_time))
+
             if returned_l.returncode != 0:
                 print("ERROR: exited lpnamer with status %d" % returned_l.returncode)
                 sys.exit(1)
