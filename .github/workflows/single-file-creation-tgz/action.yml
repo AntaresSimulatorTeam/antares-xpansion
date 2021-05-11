@@ -1,5 +1,5 @@
 name: "Create single file .tar.gz archive"
-description: "Create single file .tar.gz archive"
+description: "Create single file .tar.gz archive (not supported on windows)"
 inputs:
   antares-xpansion-version:
     description: 'antares-xpansion version'
@@ -12,11 +12,14 @@ runs:
       LSB_RELEASE_ID_SHORT=$(lsb_release --short --id)
       LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
       cd _install
+      rm -f ./antares-xpansion-launcher*
+      ls ./bin
       pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "./bin/:bin"
+      mv ./dist/antares-xpansion-launcher* .
       rm -rf bin
       rm -rf build
       rm -rf dist
-      rm *.spec
+      rm -f *.spec
       cd ..
       tar -czf antaresXpansion-${{ inputs.antares-xpansion-version }}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT.tar.gz -C _install .
       
