@@ -1,5 +1,19 @@
 Antares-Xpansion Changelog
 =================
+v0.3.0 (05/2021)
+-------------------- 
+### Features
+
+ - Add `yearly-weights` file support to define a weight for each antares study MC years
+ - Clean of intermediate result file after each simulation step
+ - Creation of a Antares-Xpansion version with only one executable
+ 
+### Bug fixes
+
+ - Use study stored in mount network drive 
+ - Problem accepting capital letters in candidate areas
+ - Small alignment fix in output
+
 v0.2.0 (04/2021)
 -------------------- 
 ### Features
