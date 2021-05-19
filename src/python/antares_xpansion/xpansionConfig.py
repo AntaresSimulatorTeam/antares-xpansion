@@ -40,7 +40,7 @@ class XpansionConfig():
         parser = argparse.ArgumentParser()
         parser.add_argument("--step",
                             dest="step",
-                            choices=["lp", "optim", "full", "antares", "getnames", "update"],
+                            choices=["full", "antares", "getnames", "lp", "optim", "update"],
                             help='Step to execute ("lp", "optim", "full", "antares", "getnames", "update")',
                             default="full")
         parser.add_argument("--simulationName",
