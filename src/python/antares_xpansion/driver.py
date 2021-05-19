@@ -19,7 +19,7 @@ from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
-class XpansionDriver():
+class XpansionDriver:
     """
         Class to control the execution of the optimization session
     """
@@ -33,6 +33,7 @@ class XpansionDriver():
         """
         self.platform = sys.platform
         self.config = config
+        self.simulation_name = self.config.simulationName
 
         self.candidates_list = []
         self._verify_settings_ini_file_exists()
@@ -63,7 +64,6 @@ class XpansionDriver():
                             }
 
     def _get_options_from_settings_inifile(self):
-        options: dict = {}
         with open(self._get_settings_ini_filepath(), 'r') as file_l:
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
@@ -72,7 +72,7 @@ class XpansionDriver():
 
     def exe_path(self, exe):
         """
-            prefixes the input exe with the install direcectory containing the binaries
+            prefixes the input exe with the install directory containing the binaries
 
             :param exe: executable name
 
@@ -122,8 +122,6 @@ class XpansionDriver():
     def weights_file_path(self):
         """
             returns the path to a yearly-weights file
-
-            :param filename: name of the yearly-weights file
 
             :return: path to input yearly-weights file
         """
@@ -208,7 +206,7 @@ class XpansionDriver():
         if self.config.step == "full":
             lp_path = self.generate_mps_files()
             self.launch_optimization(lp_path)
-            self.update_step(self.simulation_name)
+            self.update_step()
         elif self.config.step == "antares":
             self.pre_antares()
             self.launch_antares()
@@ -228,7 +226,7 @@ class XpansionDriver():
                 sys.exit(1)
         elif self.config.step == "update":
             if self.config.simulationName:
-                self.update_step(self.config.simulationName)
+                self.update_step()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
@@ -353,8 +351,8 @@ class XpansionDriver():
             new_output = os.listdir(self.antares_output())
             assert len(old_output) + 1 == len(new_output)
             diff = list(set(new_output) - set(old_output))
-            simulation_name = diff[0]
-            StudyOutputCleaner.clean_antares_step(Path(self.antares_output()) / simulation_name)
+            simulation_name = str(diff[0])
+            StudyOutputCleaner.clean_antares_step((Path(self.antares_output()) / simulation_name))
 
         return simulation_name
 
@@ -449,13 +447,12 @@ class XpansionDriver():
         return [self.exe_path(self.config.LP_NAMER), "-o", output_path, "-f", is_relaxed, "-e",
                 self.additional_constraints()]
 
-    def update_step(self, antares_output_name):
+    def update_step(self):
         """
             updates the antares study using the candidates file and the json solution output
 
-            :param antares_output_name: path to the antares simulation output directory
         """
-        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
+        output_path = os.path.normpath(os.path.join(self.antares_output(), self.simulation_name))
 
         with open(self.get_study_updater_log_filename(output_path), 'w') as output_file:
             returned_l = subprocess.run(self.get_study_updater_command(output_path), shell=False,
