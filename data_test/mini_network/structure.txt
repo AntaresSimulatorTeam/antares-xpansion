@@ -1,0 +1,6 @@
+master		t       0
+master      p       1
+SP1			t		0
+SP1			p		1
+SP2			t		0
+SP2			p		1

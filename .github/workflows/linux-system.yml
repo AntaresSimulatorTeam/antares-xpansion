@@ -1,4 +1,4 @@
-name: Linux CI (system libs)
+name: Ubuntu CI (system libs)
 
 on:
   push:
@@ -8,6 +8,7 @@ on:
       - features/*
       - feature/*
       - fix/*
+      - release/*
 jobs:
 
   build:
@@ -22,31 +23,46 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
           
     - name: Install dependencies
       run: |
           python -m pip install --upgrade pip
-          pip3 install -r src/src_python/requirements.txt
+          pip3 install -r requirements-tests.txt
 
     - name: Install libraries
       run: |
            sudo apt-get update --fix-missing
-           sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev
-           sudo apt-get install uuid-dev libcurl4-openssl-dev libssl-dev libwxgtk3.0-gtk3-dev
-           sudo apt-get install libboost-test-dev libboost-filesystem-dev libboost-regex-dev libboost-dev
+           sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev
            cd /usr/src/googletest/
            sudo cmake .
            sudo cmake --build . --target install
-           
-           
+    
+    - name: Read antares-solver version
+      id: antares-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_version'
+        
+    - name: Read antares-xpansion version
+      id: antares-xpansion-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_xpansion_version'
+        
     - name: Download pre-compiled librairies
       run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.0.0/rte-antares-deps-${{matrix.os}}-Release-solver.tar.gz
            tar -xvf rte-antares-deps-${{matrix.os}}-Release-solver.tar.gz
            rm -rf rte-antares-deps-${{matrix.os}}-Release-solver.tar.gz
+           
+           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/antares-${{steps.antares-version.outputs.prop}}-Ubuntu-20.04.tar.gz
+           tar -xvf antares-${{steps.antares-version.outputs.prop}}-Ubuntu-20.04.tar.gz -C rte-antares-deps-Release --strip-components=1
+           rm -rf antares-${{steps.antares-version.outputs.prop}}-Ubuntu-20.04.tar.gz
            
     - name: Init submodule
       run: |
@@ -54,20 +70,48 @@ jobs:
 
     - name: Configure
       run: |
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install
 
     - name: Build
       run: |
-           cmake --build _build --config Release -j2
+           cmake --build _build --config Release -j2 --target install
            
+    - name: Running unit tests
+      run: |
+           cd _build
+           ctest -C Release --output-on-failure -L "medium|unit|benders"
+           
+    - id: create-single-file
+      name: Single file .tar.gz creation
+      uses: ./.github/workflows/single-file-creation-tgz
+      with:
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+      
     - name: Installer .tar.gz creation
       run: |
            cd _build
            cpack -G TGZ
            
+    - name: Installer .deb creation
+      run: |
+           cd _build
+           cpack -G DEB
+
     - name: Installer upload
       uses: actions/upload-artifact@v2
       with:
-        name: antares-xpansion-installer-64bits
-        path: _build/antaresXpansion-*.*.*-*.tar.gz
+        name: antares-xpansion-ubuntu-archive
+        path: _build/*.tar.gz
+        
+    - name: Deb Installer upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: antares-xpansion-ubuntu-deb
+        path: _build/*.deb
+
+    - name: Single file upload
+      uses: actions/upload-artifact@v2
+      with:
+        name: antares-xpansion-ubuntu-single-file
+        path: ${{ steps.create-single-file.outputs.archive-path }}
 

@@ -1,0 +1,35 @@
+name: "Create single file .tar.gz archive"
+description: "Create single file .tar.gz archive (not supported on windows)"
+inputs:
+  antares-xpansion-version:
+    description: 'antares-xpansion version'
+    required: true
+outputs:
+  archive-path:
+    description: "Created archive path"
+    value: ${{ steps.create.outputs.archive-path }}
+  archive-name:
+    description: "Created archive name"
+    value: ${{ steps.create.outputs.archive-name }}
+runs:
+  using: "composite"
+  steps: 
+  - id: create
+    shell: bash
+    run: |
+      LSB_RELEASE_ID_SHORT=$(lsb_release --short --id)
+      LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
+      cd _install
+      rm -f ./antares-xpansion-launcher*
+      pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "./bin/:bin"
+      mv ./dist/antares-xpansion-launcher* .
+      rm -rf bin
+      rm -rf build
+      rm -rf dist
+      rm -f *.spec
+      cd ..
+      ARCHIVE_NAME=antaresXpansion-${{ inputs.antares-xpansion-version }}-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT-single-file.tar.gz
+      tar -czf $ARCHIVE_NAME -C _install .
+      echo "::set-output name=archive-path::$ARCHIVE_NAME"
+      echo "::set-output name=archive-name::$ARCHIVE_NAME"
+      

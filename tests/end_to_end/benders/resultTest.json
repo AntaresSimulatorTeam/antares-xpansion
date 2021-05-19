@@ -1,0 +1,60 @@
+{
+    "mini_network_default":
+    {
+        "path": "../../../data_test/mini_network/",
+        "option_file": "options_default.txt",
+        "status": "OPTIMAL",
+        "optimal_value": 233.0,
+        "optimal_variables":
+        {
+            "t": 4.0,
+            "p": 6.0
+        }
+    },
+    "mini_network_slave_weight":
+    {
+        "path": "../../../data_test/mini_network/",
+        "option_file": "options_weights.txt",
+        "status": "OPTIMAL",
+        "optimal_value": 19.0,
+        "optimal_variables":
+        {
+            "t": 2.0,
+            "p": 3.0
+        }
+    },
+    "mini_instance_LP_default":
+    {
+        "path": "../../../data_test/mini_instance_LP/",
+        "option_file": "options_default.txt",
+        "status": "OPTIMAL",
+        "optimal_value": 3.25,
+        "optimal_variables":
+        {
+            "x": 1.5
+        }
+    },
+    "mini_instance_MIP_default":
+    {
+        "path": "../../../data_test/mini_instance_MIP/",
+        "option_file": "options_default.txt",
+        "status": "OPTIMAL",
+        "optimal_value": 3.50,
+        "optimal_variables":
+        {
+            "x": 2.0
+        }
+    },
+    "mini_instance_UNBOUNDED":
+    {
+        "path": "../../../data_test/mini_instance_UNBOUNDED/",
+        "option_file": "options_default.txt",
+        "status": "ERROR"
+    },
+    "mini_instance_INFEASIBLE":
+    {
+        "path": "../../../data_test/mini_instance_INFEAS/",
+        "option_file": "options_default.txt",
+        "status": "ERROR"
+    }
+}
