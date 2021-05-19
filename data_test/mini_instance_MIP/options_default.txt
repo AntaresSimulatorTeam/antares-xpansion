@@ -2,8 +2,7 @@
                 MAX_ITERATIONS                                                -1
                            GAP                                             1e-06
                    AGGREGATION                                                 0
-                    OUTPUTROOT                                                 ./outputs/
-                         TRACE                                                 1
+                    OUTPUTROOT                                                 .
                     DELETE_CUT                                                 0
                   SLAVE_WEIGHT                                          CONSTANT
             SLAVE_WEIGHT_VALUE                                                 1
@@ -11,12 +10,8 @@
                   SLAVE_NUMBER                                                -1
                 STRUCTURE_FILE                                     structure.txt
                      INPUTROOT                                                 .
-                         BASIS                                                 1
                     ACTIVECUTS                                                 0
-         THRESHOLD_AGGREGATION                                                 0
-           THRESHOLD_ITERATION                                                 0
               RAND_AGGREGATION                                                 0
-                      CSV_NAME                              benders_output_trace
-                     JSON_NAME                                               out
-                   BOUND_ALPHA                                                 1
+                        SOLVER                                            CPLEX
+                        ALGORITHM                                       BASE
 

@@ -35,10 +35,6 @@ function (SetUpCoverage)
 		return ()
 	endif ()
 
-	if (NOT CMAKE_BUILD_TYPE STREQUAL Debug)
-		return ()
-	endif ()
-
 	if (NOT GCOV_PATH)
 		set(GCOV_PATH $ENV{GCOV_PATH})
 	endif ()
@@ -66,18 +62,20 @@ function (SetUpCoverage)
 	set (GCOV_PATH "${GCOV_PATH}" CACHE FILEPATH "gcov binary path")
 	set (GCOVR_PATH "${GCOVR_PATH}" CACHE FILEPATH "gcovr binary path")
 
-	add_compile_options (-fprofile-arcs -ftest-coverage -fno-inline)
-	add_link_options (-fprofile-arcs -ftest-coverage -fno-inline)
+	set (CMAKE_CXX_FLAGS_COVERAGE "-g -O0 -Wall -fPIC -fprofile-arcs -ftest-coverage -fno-inline")
+	set (CMAKE_EXE_LINKER_FLAGS_COVERAGE "-fprofile-arcs -ftest-coverage -fno-inline")
 
 	if (CMAKE_C_COMPILER_ID STREQUAL "GNU")
-		link_libraries (debug gcov)
+		link_libraries (gcov)
 	else ()
-		add_link_options (--coverage)
+		set (CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_COVERAGE} --coverage")
 	endif ()
 
 	set (COVERAGE_REPORT_DIR "${PROJECT_BINARY_DIR}/coverage-reports")
 	set (COVERAGE_REPORT_DIR "${COVERAGE_REPORT_DIR}" PARENT_SCOPE)
 
+	set (CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE}" PARENT_SCOPE)
+	set (CMAKE_EXE_LINKER_FLAGS_COVERAGE "${CMAKE_EXE_LINKER_FLAGS_COVERAGE}" PARENT_SCOPE)
 	set (GCOV_RESULT_FILE "${COVERAGE_REPORT_DIR}/gcov-result.xml" PARENT_SCOPE)
 
 	file (MAKE_DIRECTORY ${COVERAGE_REPORT_DIR})

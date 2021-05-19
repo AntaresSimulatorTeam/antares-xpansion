@@ -1,4 +1,0 @@
-area1
-area2
-invest_peak
-invest_semibase
