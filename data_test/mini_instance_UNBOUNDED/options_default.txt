@@ -2,7 +2,7 @@
                 MAX_ITERATIONS                                                -1
                            GAP                                             1e-06
                    AGGREGATION                                                 0
-                    OUTPUTROOT                                                 ./outputs/
+                    OUTPUTROOT                                                 .
                     DELETE_CUT                                                 0
                   SLAVE_WEIGHT                                          CONSTANT
             SLAVE_WEIGHT_VALUE                                                 1

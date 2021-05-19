@@ -1,8 +1,0 @@
-Store_in
-area1
-area2
-flex
-peak
-pv
-semibase
-store_out
