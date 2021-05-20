@@ -31,6 +31,7 @@ target_include_directories (lp_namer_core
 target_link_libraries (lp_namer_core
 	PUBLIC
 		helpers
+		solvers
 )
 
 add_library (${PROJECT_NAME}::lp_namer_core ALIAS lp_namer_core)

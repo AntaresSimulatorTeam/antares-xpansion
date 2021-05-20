@@ -53,6 +53,7 @@ target_link_libraries (benders_sequential_core
 	PUBLIC
 		helpers
 		jsoncpp_lib
+		solvers
 )
 
 add_library (${PROJECT_NAME}::benders_sequential_core ALIAS benders_sequential_core)
