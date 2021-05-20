@@ -41,7 +41,7 @@ class XpansionConfig():
         parser.add_argument("--step",
                             dest="step",
                             choices=["full", "antares", "getnames", "lp", "optim", "update"],
-                            help='Step to execute ("lp", "optim", "full", "antares", "getnames", "update")',
+                            help='Step to execute ("full", "antares", "getnames", "lp", "optim", "update")',
                             default="full")
         parser.add_argument("--simulationName",
                             dest="simulationName",
