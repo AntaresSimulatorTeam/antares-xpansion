@@ -19,7 +19,7 @@ from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
-class XpansionDriver():
+class XpansionDriver:
     """
         Class to control the execution of the optimization session
     """
@@ -33,6 +33,7 @@ class XpansionDriver():
         """
         self.platform = sys.platform
         self.config = config
+        self.simulation_name = self.config.simulationName
 
         self.candidates_list = []
         self._verify_settings_ini_file_exists()
@@ -41,38 +42,281 @@ class XpansionDriver():
 
         self.options = self._get_options_from_settings_inifile()
 
-        self.check_candidates()
-        self.check_settings()
+        self.check_candidates_file_format()
+        self.check_settings_file_format()
 
-        self.changed_val = {('[' + self.config.OPTIMIZATION + ']', self.config.EXPORT_MPS): 'true',
-                            ('[' + self.config.OPTIMIZATION + ']', self.config.EXPORT_STRUCTURE): 'true',
-                            ('[' + self.config.OPTIMIZATION + ']',
-                             'include-tc-minstablepower'): 'true' if self.is_accurate() else 'false',
-                            ('[' + self.config.OPTIMIZATION + ']',
-                             'include-tc-min-ud-time'): 'true' if self.is_accurate() else 'false',
-                            ('[' + self.config.OPTIMIZATION + ']',
-                             'include-dayahead'): 'true' if self.is_accurate() else 'false',
-                            ('[' + self.config.OPTIMIZATION + ']', self.config.USE_XPRS): None,
-                            ('[' + self.config.OPTIMIZATION + ']', self.config.INBASIS): None,
-                            ('[' + self.config.OPTIMIZATION + ']', self.config.OUTBASIS): None,
-                            ('[' + self.config.OPTIMIZATION + ']', self.config.TRACE): None,
-                            ('[general]', 'mode'): 'expansion' if self.is_accurate() else 'Economy',
-                            (
-                                '[other preferences]',
-                                'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
-                            }
+    def _verify_settings_ini_file_exists(self):
+        if not os.path.isfile(self._get_settings_ini_filepath()):
+            print('Missing file : %s was not retrieved.' % self._get_settings_ini_filepath())
+            sys.exit(1)
 
     def _get_options_from_settings_inifile(self):
-        options: dict = {}
         with open(self._get_settings_ini_filepath(), 'r') as file_l:
             options = dict(
                 {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
                  for line in file_l.readlines() if line.strip()})
         return options
 
+    def check_candidates_file_format(self):
+        if not os.path.isfile(self.candidates_ini_filepath()):
+            print('Missing file : %s was not retrieved.' % self.candidates_ini_filepath())
+            sys.exit(1)
+
+        check_candidates_file(self)
+
+    def check_settings_file_format(self):
+        check_options(self.options)
+        self._verify_yearly_weights_consistency()
+        self._verify_additional_constraints_file()
+
+    def launch(self):
+        """
+            launch antares xpansion steps
+        """
+        self._clear_old_log()
+
+        if self.config.step == "full":
+            self._antares_step()
+            print("-- post antares")
+            self.get_names()
+            self.lp_step()
+            self.launch_optimization()
+            self.update_step()
+        elif self.config.step == "antares":
+            self._antares_step()
+        elif self.config.step == "getnames":
+            if self.config.simulationName:
+                self.get_names()
+            else:
+                print("Missing argument simulationName")
+                sys.exit(1)
+        elif self.config.step == "lp":
+            if self.config.simulationName:
+                self.lp_step()
+                self._set_options()
+            else:
+                print("Missing argument simulationName")
+                sys.exit(1)
+        elif self.config.step == "update":
+            if self.config.simulationName:
+                self.update_step()
+            else:
+                print("Missing argument simulationName")
+                sys.exit(1)
+        elif self.config.step == "optim":
+            if self.config.simulationName:
+                self.launch_optimization()
+            else:
+                print("Missing argument simulationName")
+                sys.exit(1)
+        else:
+            print("Launching failed")
+            sys.exit(1)
+
+    def _clear_old_log(self):
+        if (self.config.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
+            os.remove(self.antares() + '.log')
+        if (self.config.step in ["full", "lp"]) \
+                and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
+            os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
+        if (self.config.step in ["full", "update"]) \
+                and (os.path.isfile(self.exe_path(self.config.STUDY_UPDATER) + '.log')):
+            os.remove(self.exe_path(self.config.STUDY_UPDATER) + '.log')
+
+    def _antares_step(self):
+        self._change_general_data_file_to_configure_antares_execution()
+        self.launch_antares()
+
+    def _change_general_data_file_to_configure_antares_execution(self):
+        print("-- pre antares")
+        with open(self.general_data(), 'r') as reader:
+            lines = reader.readlines()
+
+        with open(self.general_data(), 'w') as writer:
+            current_section = ""
+            for line in lines:
+                if IniReader.line_is_not_a_section_header(line):
+                    key = line.split('=')[0].strip()
+                    line = self._get_new_line(line, current_section, key)
+                else:
+                    current_section = line.strip()
+
+                if line:
+                    writer.write(line)
+
+    def launch_antares(self):
+        print("-- launching antares")
+        simulation_name = ""
+
+        if not os.path.isdir(self.antares_output()):
+            os.mkdir(self.antares_output())
+        old_output = os.listdir(self.antares_output())
+
+        start_time = datetime.now()
+
+        returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
+                                    stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL)
+
+        end_time = datetime.now()
+        print('Antares simulation duration : {}'.format(end_time - start_time))
+
+        if returned_l.returncode != 0:
+            print("WARNING: exited antares with status %d" % returned_l.returncode)
+        else:
+            new_output = os.listdir(self.antares_output())
+            assert len(old_output) + 1 == len(new_output)
+            diff = list(set(new_output) - set(old_output))
+            simulation_name = str(diff[0])
+            StudyOutputCleaner.clean_antares_step((Path(self.antares_output()) / simulation_name))
+
+        self.simulation_name = simulation_name
+
+    def get_names(self):
+        """
+            produces a .txt file describing the weekly problems:
+            each line of the file contains :
+             - mps file name
+             - variables file name
+             - constraints file name
+
+            produces a file named with xpansionConfig.MPS_TXT
+        """
+        print("-- get names")
+
+        output_path = self.simulation_output_path()
+        mps_txt = read_and_write_mps(output_path)
+        with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
+            for line in mps_txt.items():
+                file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
+
+        glob_path = Path(output_path)
+        area_files = [str(pp) for pp in glob_path.glob("area*.txt")]
+        interco_files = [str(pp) for pp in glob_path.glob("interco*.txt")]
+        assert len(area_files) == 1
+        assert len(interco_files) == 1
+        shutil.copy(area_files[0], os.path.normpath(os.path.join(output_path, 'area.txt')))
+        shutil.copy(interco_files[0], os.path.normpath(os.path.join(output_path, 'interco.txt')))
+
+    def lp_step(self):
+        """
+            copies area and interco files and launches the lp_namer
+
+            produces a file named with xpansionConfig.MPS_TXT
+        """
+        print("-- lp")
+
+        output_path = self.simulation_output_path()
+
+        lp_path = self._simulation_lp_path()
+        if os.path.isdir(lp_path):
+            shutil.rmtree(lp_path)
+        os.makedirs(lp_path)
+
+        weight_file_name = self.weight_file_name()
+        if weight_file_name:
+            weight_list = XpansionStudyReader.get_years_weight_from_file(self.weights_file_path())
+            YearlyWeightWriter(Path(output_path)).create_weight_file(weight_list, weight_file_name)
+
+        with open(self.get_lp_namer_log_filename(lp_path), 'w') as output_file:
+
+            start_time = datetime.now()
+            returned_l = subprocess.run(self.get_lp_namer_command(output_path), shell=False,
+                                        stdout=output_file,
+                                        stderr=output_file)
+
+            end_time = datetime.now()
+            print('Post antares step duration: {}'.format(end_time - start_time))
+
+            if returned_l.returncode != 0:
+                print("ERROR: exited lpnamer with status %d" % returned_l.returncode)
+                sys.exit(1)
+            elif not self.config.keep_mps:
+                StudyOutputCleaner.clean_lpnamer_step(Path(output_path))
+        self._set_options_for_benders_solver()
+
+    def launch_optimization(self):
+        """
+            launch the optimization of the antaresXpansion problem using the specified solver
+
+            XpansionConfig.BENDERS_SEQUENTIAL]
+        """
+        self._set_options_for_benders_solver()
+        lp_path = self._simulation_lp_path()
+
+        old_cwd = os.getcwd()
+        os.chdir(lp_path)
+        print('Current directory is now : ', os.getcwd())
+
+        solver = None
+        if self.config.method == "mpibenders":
+            solver = self.config.BENDERS_MPI
+        elif self.config.method == "mergeMPS":
+            solver = self.config.MERGE_MPS
+        elif self.config.method == "sequential":
+            solver = self.config.BENDERS_SEQUENTIAL
+        elif self.config.method == "both":
+            print('method "both" is not handled yet')
+            sys.exit(1)
+        else:
+            print("Illegal optim method")
+            sys.exit(1)
+
+        # delete execution logs
+        logfile_list = glob.glob('./' + solver + 'Log*')
+        for file_path in logfile_list:
+            try:
+                os.remove(file_path)
+            except OSError:
+                print("Error while deleting file : ", file_path)
+        if os.path.isfile(solver + '.log'):
+            os.remove(solver + '.log')
+
+        returned_l = subprocess.run(self.get_solver_cmd(solver), shell=False,
+                                    stdout=sys.stdout,
+                                    stderr=sys.stderr)
+        if returned_l.returncode != 0:
+            print("ERROR: exited solver with status %d" % returned_l.returncode)
+            sys.exit(1)
+        elif not self.config.keep_mps:
+            StudyOutputCleaner.clean_benders_step(self.simulation_output_path())
+        os.chdir(old_cwd)
+
+    def update_step(self):
+        """
+            updates the antares study using the candidates file and the json solution output
+
+        """
+        output_path = self.simulation_output_path()
+
+        with open(self.get_study_updater_log_filename(), 'w') as output_file:
+            returned_l = subprocess.run(self.get_study_updater_command(output_path), shell=False,
+                                        stdout=output_file,
+                                        stderr=output_file)
+            if returned_l.returncode != 0:
+                print("ERROR: exited study-updater with status %d" % returned_l.returncode)
+                sys.exit(1)
+            else:
+                StudyOutputCleaner.clean_study_update_step(output_path)
+
+    def antares_output(self):
+        """
+            returns path to antares output data directory
+        """
+        return os.path.normpath(os.path.join(self.data_dir(), self.config.OUTPUT))
+
+    def get_antares_cmd(self):
+        return [self.antares(), self.data_dir()]
+
+    def antares(self):
+        """
+            returns antares binaries location
+        """
+        return self.exe_path(self.config.ANTARES)
+
     def exe_path(self, exe):
         """
-            prefixes the input exe with the install direcectory containing the binaries
+            prefixes the input exe with the install directory containing the binaries
 
             :param exe: executable name
 
@@ -80,11 +324,14 @@ class XpansionDriver():
         """
         return os.path.normpath(os.path.join(self.config.installDir, exe))
 
-    def antares(self):
+    def data_dir(self):
         """
-            returns antares binaries location
+            returns path to the data directory
         """
-        return os.path.normpath(os.path.join(self.config.installDir, self.config.ANTARES))
+        return self.config.dataDir
+
+    def weight_file_name(self):
+        return self.options.get('yearly-weights', self.config.settings_default["yearly-weights"])
 
     def general_data(self):
         """
@@ -116,14 +363,9 @@ class XpansionDriver():
         return os.path.normpath(os.path.join(self.data_dir(), self.config.USER,
                                              self.config.EXPANSION, self.config.CAPADIR, filename))
 
-    def weight_file_name(self):
-        return self.options.get('yearly-weights', self.config.settings_default["yearly-weights"])
-
     def weights_file_path(self):
         """
             returns the path to a yearly-weights file
-
-            :param filename: name of the yearly-weights file
 
             :return: path to input yearly-weights file
         """
@@ -133,18 +375,6 @@ class XpansionDriver():
             return self._get_path_from_file_in_xpansion_dir(yearly_weights_filename)
         else:
             return ""
-
-    def antares_output(self):
-        """
-            returns path to antares output data directory
-        """
-        return os.path.normpath(os.path.join(self.data_dir(), self.config.OUTPUT))
-
-    def data_dir(self):
-        """
-            returns path to the data directory
-        """
-        return self.config.dataDir
 
     def is_accurate(self):
         """
@@ -199,82 +429,9 @@ class XpansionDriver():
             return ""
         return self._get_path_from_file_in_xpansion_dir(additional_constraints_filename)
 
-    def launch(self):
-        """
-            launch antares xpansion steps
-        """
-        self.clear_old_log()
-
-        if self.config.step == "full":
-            lp_path = self.generate_mps_files()
-            self.launch_optimization(lp_path)
-            self.update_step(self.simulation_name)
-        elif self.config.step == "antares":
-            self.pre_antares()
-            self.launch_antares()
-        elif self.config.step == "getnames":
-            if self.config.simulationName:
-                self.get_names(self.config.simulationName)
-            else:
-                print("Missing argument simulationName")
-                sys.exit(1)
-        elif self.config.step == "lp":
-            if self.config.simulationName:
-                self.lp_step(self.config.simulationName)
-                output_path = os.path.normpath(os.path.join(self.antares_output(), self.config.simulationName))
-                self.set_options(output_path)
-            else:
-                print("Missing argument simulationName")
-                sys.exit(1)
-        elif self.config.step == "update":
-            if self.config.simulationName:
-                self.update_step(self.config.simulationName)
-            else:
-                print("Missing argument simulationName")
-                sys.exit(1)
-        elif self.config.step == "optim":
-            if self.config.simulationName:
-                lp_path = os.path.normpath(os.path.join(self.antares_output(),
-                                                        self.config.simulationName, 'lp'))
-                self.launch_optimization(lp_path)
-            else:
-                print("Missing argument simulationName")
-                sys.exit(1)
-        else:
-            print("Launching failed")
-            sys.exit(1)
-
-    def clear_old_log(self):
-        """
-            clears old log files for antares and the lp_namer
-        """
-        if (self.config.step in ["full", "antares"]) and (os.path.isfile(self.antares() + '.log')):
-            os.remove(self.antares() + '.log')
-        if (self.config.step in ["full", "lp"]) \
-                and (os.path.isfile(self.exe_path(self.config.LP_NAMER) + '.log')):
-            os.remove(self.exe_path(self.config.LP_NAMER) + '.log')
-        if (self.config.step in ["full", "update"]) \
-                and (os.path.isfile(self.exe_path(self.config.STUDY_UPDATER) + '.log')):
-            os.remove(self.exe_path(self.config.STUDY_UPDATER) + '.log')
-
-    def check_candidates(self):
-        """
-            checks that candidates file has correct format
-        """
-        # check file existence
-        if not os.path.isfile(self.candidates_ini_filepath()):
-            print('Missing file : %s was not retrieved.' % self.candidates_ini_filepath())
-            sys.exit(1)
-
-        check_candidates_file(self)
-
-    def check_settings(self):
-        """
-            checks that settings file has correct format
-        """
-        check_options(self.options)
-        self._verify_yearly_weights_consistency()
-        self._verify_additional_constraints_file()
+    def _simulation_lp_path(self):
+        lp_path = os.path.normpath(os.path.join(self.simulation_output_path(), 'lp'))
+        return lp_path
 
     def _verify_yearly_weights_consistency(self):
         if self.weight_file_name():
@@ -292,154 +449,37 @@ class XpansionDriver():
                       % additional_constraints_path)
                 sys.exit(1)
 
-    def _verify_settings_ini_file_exists(self):
-        if not os.path.isfile(self._get_settings_ini_filepath()):
-            print('Missing file : %s was not retrieved.' % self._get_settings_ini_filepath())
-            sys.exit(1)
-
-    def pre_antares(self):
-        """
-            modifies the general data file to configure antares execution
-        """
-
-        with open(self.general_data(), 'r') as reader:
-            lines = reader.readlines()
-
-        with open(self.general_data(), 'w') as writer:
-            current_section = ""
-            for line in lines:
-                if IniReader.line_is_not_a_section_header(line):
-                    key = line.split('=')[0].strip()
-                    line = self._get_new_line(line, current_section, key)
-                else:
-                    current_section = line.strip()
-
-                if line:
-                    writer.write(line)
-
     def _get_new_line(self, line, section, key):
-        if (section, key) in self.changed_val:
-            new_val = self.changed_val[(section, key)]
+        changed_val = self._get_values_to_change_general_data_file()
+        if (section, key) in changed_val:
+            new_val = changed_val[(section, key)]
             if new_val:
                 line = key + ' = ' + new_val + '\n'
             else:
                 line = None
         return line
 
-    def launch_antares(self):
-        """
-            launch antares
+    def _get_values_to_change_general_data_file(self):
+        return {('[' + self.config.OPTIMIZATION + ']', self.config.EXPORT_MPS): 'true',
+                ('[' + self.config.OPTIMIZATION + ']', self.config.EXPORT_STRUCTURE): 'true',
+                ('[' + self.config.OPTIMIZATION + ']',
+                 'include-tc-minstablepower'): 'true' if self.is_accurate() else 'false',
+                ('[' + self.config.OPTIMIZATION + ']',
+                 'include-tc-min-ud-time'): 'true' if self.is_accurate() else 'false',
+                ('[' + self.config.OPTIMIZATION + ']',
+                 'include-dayahead'): 'true' if self.is_accurate() else 'false',
+                ('[' + self.config.OPTIMIZATION + ']', self.config.USE_XPRS): None,
+                ('[' + self.config.OPTIMIZATION + ']', self.config.INBASIS): None,
+                ('[' + self.config.OPTIMIZATION + ']', self.config.OUTBASIS): None,
+                ('[' + self.config.OPTIMIZATION + ']', self.config.TRACE): None,
+                ('[general]', 'mode'): 'expansion' if self.is_accurate() else 'Economy',
+                (
+                    '[other preferences]',
+                    'unit-commitment-mode'): 'accurate' if self.is_accurate() else 'fast'
+                }
 
-            :return: name of the new simulation's directory
-        """
-        simulation_name = ""
-
-        if not os.path.isdir(self.antares_output()):
-            os.mkdir(self.antares_output())
-        old_output = os.listdir(self.antares_output())
-
-        start_time = datetime.now()
-
-        returned_l = subprocess.run(self.get_antares_cmd(), shell=False,
-                                    stdout=subprocess.DEVNULL,
-                                    stderr=subprocess.DEVNULL)
-
-        end_time = datetime.now()
-        print('Antares simulation duration : {}'.format(end_time - start_time))
-
-        if returned_l.returncode != 0:
-            print("WARNING: exited antares with status %d" % returned_l.returncode)
-        else:
-            new_output = os.listdir(self.antares_output())
-            assert len(old_output) + 1 == len(new_output)
-            diff = list(set(new_output) - set(old_output))
-            simulation_name = diff[0]
-            StudyOutputCleaner.clean_antares_step(Path(self.antares_output()) / simulation_name)
-
-        return simulation_name
-
-    def get_antares_cmd(self):
-        return [self.antares(), self.data_dir()]
-
-    def post_antares(self, antares_output_name):
-        """
-            creates necessary files for simulation using the antares simulation output files,
-            the existing configuration files, get_names and the lp_namer executable
-
-            :param antares_output_name: name of the antares simulation output directory
-
-            :return: path to the lp output directory
-        """
-        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
-        self.get_names(antares_output_name)
-
-        lp_path = self.lp_step(antares_output_name)
-        self.set_options(output_path)
-
-        return lp_path
-
-    def get_names(self, antares_output_name):
-        """
-            produces a .txt file describing the weekly problems:
-            each line of the file contains :
-             - mps file name
-             - variables file name
-             - constraints file name
-
-            :param antares_output_name: name of the antares simulation output directory
-
-            produces a file named with xpansionConfig.MPS_TXT
-        """
-        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
-        mps_txt = read_and_write_mps(output_path)
-        with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
-            for line in mps_txt.items():
-                file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
-
-        glob_path = Path(output_path)
-        area_files = [str(pp) for pp in glob_path.glob("area*.txt")]
-        interco_files = [str(pp) for pp in glob_path.glob("interco*.txt")]
-        assert len(area_files) == 1
-        assert len(interco_files) == 1
-        shutil.copy(area_files[0], os.path.normpath(os.path.join(output_path, 'area.txt')))
-        shutil.copy(interco_files[0], os.path.normpath(os.path.join(output_path, 'interco.txt')))
-
-    def lp_step(self, antares_output_name):
-        """
-            copies area and interco files and launches the lp_namer
-
-            :param antares_output_name: path to the antares simulation output directory
-
-            produces a file named with xpansionConfig.MPS_TXT
-        """
-        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
-
-        lp_path = os.path.normpath(os.path.join(output_path, 'lp'))
-        if os.path.isdir(lp_path):
-            shutil.rmtree(lp_path)
-        os.makedirs(lp_path)
-
-        weight_file_name = self.weight_file_name()
-        if weight_file_name:
-            weight_list = XpansionStudyReader.get_years_weight_from_file(self.weights_file_path())
-            YearlyWeightWriter(Path(output_path)).create_weight_file(weight_list, weight_file_name)
-
-        with open(self.get_lp_namer_log_filename(lp_path), 'w') as output_file:
-
-            start_time = datetime.now()
-            returned_l = subprocess.run(self.get_lp_namer_command(output_path), shell=False,
-                                        stdout=output_file,
-                                        stderr=output_file)
-
-            end_time = datetime.now()
-            print('Post antares step duration: {}'.format(end_time - start_time))
-
-            if returned_l.returncode != 0:
-                print("ERROR: exited lpnamer with status %d" % returned_l.returncode)
-                sys.exit(1)
-            elif not self.config.keep_mps:
-                StudyOutputCleaner.clean_lpnamer_step(Path(output_path))
-        return lp_path
+    def simulation_output_path(self) -> Path:
+        return Path(os.path.normpath(os.path.join(self.antares_output(), self.simulation_name)))
 
     def get_lp_namer_log_filename(self, lp_path):
         return os.path.join(lp_path, self.config.LP_NAMER + '.log')
@@ -449,81 +489,12 @@ class XpansionDriver():
         return [self.exe_path(self.config.LP_NAMER), "-o", output_path, "-f", is_relaxed, "-e",
                 self.additional_constraints()]
 
-    def update_step(self, antares_output_name):
-        """
-            updates the antares study using the candidates file and the json solution output
-
-            :param antares_output_name: path to the antares simulation output directory
-        """
-        output_path = os.path.normpath(os.path.join(self.antares_output(), antares_output_name))
-
-        with open(self.get_study_updater_log_filename(output_path), 'w') as output_file:
-            returned_l = subprocess.run(self.get_study_updater_command(output_path), shell=False,
-                                        stdout=output_file,
-                                        stderr=output_file)
-            if returned_l.returncode != 0:
-                print("ERROR: exited study-updater with status %d" % returned_l.returncode)
-                sys.exit(1)
-            else:
-                StudyOutputCleaner.clean_study_update_step(Path(output_path))
-
-    def get_study_updater_log_filename(self, output_path):
-        return os.path.join(output_path, self.config.STUDY_UPDATER + '.log')
+    def get_study_updater_log_filename(self):
+        return os.path.join(self.simulation_output_path(), self.config.STUDY_UPDATER + '.log')
 
     def get_study_updater_command(self, output_path):
         return [self.exe_path(self.config.STUDY_UPDATER), "-o", output_path, "-s",
                 self.config.options_default["JSON_NAME"] + ".json"]
-
-    def launch_optimization(self, lp_path):
-        """
-            launch the optimization of the antaresXpansion problem using the specified solver
-
-            :param lp_path: path to the lp directory containing input files
-            (c.f. generate_mps_files)
-            :param solver: name of the solver to be used
-            :type solver: value in [XpansionConfig.MERGE_MPS, XpansionConfig.BENDERS_MPI,
-            XpansionConfig.BENDERS_SEQUENTIAL]
-        """
-        output_path = os.path.normpath(os.path.join(self.antares_output(), self.simulation_name))
-        self.set_options(output_path)
-
-        old_cwd = os.getcwd()
-        os.chdir(lp_path)
-        print('Current directory is now : ', os.getcwd())
-
-        solver = None
-        if self.config.method == "mpibenders":
-            solver = self.config.BENDERS_MPI
-        elif self.config.method == "mergeMPS":
-            solver = self.config.MERGE_MPS
-        elif self.config.method == "sequential":
-            solver = self.config.BENDERS_SEQUENTIAL
-        elif self.config.method == "both":
-            print('method "both" is not handled yet')
-            sys.exit(1)
-        else:
-            print("Illegal optim method")
-            sys.exit(1)
-
-        # delete execution logs
-        logfile_list = glob.glob('./' + solver + 'Log*')
-        for file_path in logfile_list:
-            try:
-                os.remove(file_path)
-            except OSError:
-                print("Error while deleting file : ", file_path)
-        if os.path.isfile(solver + '.log'):
-            os.remove(solver + '.log')
-
-        returned_l = subprocess.run(self.get_solver_cmd(solver), shell=False,
-                                    stdout=sys.stdout,
-                                    stderr=sys.stderr)
-        if returned_l.returncode != 0:
-            print("ERROR: exited solver with status %d" % returned_l.returncode)
-            sys.exit(1)
-        elif not self.config.keep_mps:
-            StudyOutputCleaner.clean_benders_step(Path(output_path))
-        os.chdir(old_cwd)
 
     def get_solver_cmd(self, solver):
         """
@@ -538,7 +509,7 @@ class XpansionDriver():
         else:
             return [self.exe_path(solver), self.config.OPTIONS_TXT]
 
-    def set_options(self, output_path):
+    def _set_options_for_benders_solver(self):
         """
             generates a default option file for the solver
         """
@@ -550,25 +521,7 @@ class XpansionDriver():
         if self.weight_file_name():
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         # generate options file for the solver
-        options_path = os.path.normpath(os.path.join(output_path, 'lp', self.config.OPTIONS_TXT))
+        options_path = os.path.normpath(os.path.join(self._simulation_lp_path(), self.config.OPTIONS_TXT))
         with open(options_path, 'w') as options_file:
             options_file.writelines(["%30s%30s\n" % (kvp[0], kvp[1])
                                      for kvp in options_values.items()])
-
-    def generate_mps_files(self):
-        """
-            launches antares to produce mps files and
-            sets the simulation_name attribute
-
-            :return: path to the lp output directory
-        """
-        # setting antares options
-        print("-- pre antares")
-        self.pre_antares()
-        # launching antares
-        print("-- launching antares")
-        self.simulation_name = self.launch_antares()
-        # writting things
-        print("-- post antares")
-        lp_path = self.post_antares(self.simulation_name)
-        return lp_path
