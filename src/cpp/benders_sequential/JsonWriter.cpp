@@ -58,7 +58,7 @@ void JsonWriter::write(BendersOptions const & bendersOptions_p)
 }
 
 void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_p,
-                       BendersData const & bendersData_p)
+                       BendersData const & bendersData_p, double const & min_gap)
 {
     _output["nbWeeks"] = nbWeeks_p;
 
@@ -101,7 +101,7 @@ void JsonWriter::write(int const & nbWeeks_p, BendersTrace const & bendersTrace_
     _output["solution"]["overall_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost + bendersTrace_p[bestItIndex_l].get()->_operational_cost;
     double gap_l = bendersData_p.best_ub - bendersData_p.lb;
     _output["solution"]["gap"] = gap_l;
-    if (gap_l < 1e-03) {
+    if (gap_l <= min_gap) {
         _output["solution"]["problem_status"] = "OPTIMAL";
     }
     else {
