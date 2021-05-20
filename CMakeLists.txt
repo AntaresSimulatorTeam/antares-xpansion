@@ -31,8 +31,8 @@ ENDIF ()
 
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
-option (XPRESS  "Use solver FICO XPRESS" ON)
-option (CPLEX   "Use solver IMB ILOG CPLES" ON)
+option (XPRESS  "Use solver FICO XPRESS" OFF)
+option (CPLEX   "Use solver IMB ILOG CPLES" OFF)
 
 if(COIN_OR)
 	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")

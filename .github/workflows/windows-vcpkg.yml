@@ -23,7 +23,7 @@ jobs:
           - os: windows-latest
             triplet: x64-windows
             vcpkgCommitId: '5a271a9290282e09149401486f88dc106dc65b71'
-            vcpkgPackages: jsoncpp gtest boost-mpi boost-program-options
+            vcpkgPackages: jsoncpp gtest boost-mpi boost-program-options cgl clp
 
     steps:
     
