@@ -22,7 +22,7 @@ jobs:
         include:
           - os: windows-latest
             triplet: x64-windows
-            vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
+            vcpkgCommitId: '5a271a9290282e09149401486f88dc106dc65b71'
             vcpkgPackages: jsoncpp gtest boost-mpi boost-program-options
 
     steps:
@@ -42,12 +42,12 @@ jobs:
     - name: Pre-requisites
       shell: cmd
       run: |          
-          choco install wget --no-progress
+          choco install wget zip unzip --no-progress
           wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
           msmpisetup.exe -unattend
 
     - name : Install deps with VCPKG
-      uses: lukka/run-vcpkg@v7
+      uses: lukka/run-vcpkg@v7.3
       id: runvcpkg
       with:
         vcpkgArguments: '${{ matrix.vcpkgPackages }}'
@@ -61,10 +61,16 @@ jobs:
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_version'
-    
+        
+    - name: Read antares-xpansion version
+      id: antares-xpansion-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_xpansion_version'
+        
     - name: Download pre-compiled librairies
       run: |
-           choco install wget
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.0.0/rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip
            Expand-Archive ./rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip -DestinationPath .
            rm rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip
@@ -80,7 +86,7 @@ jobs:
     - name: Configure
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_build/installation
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install
     
     - name: Build
       run: |
@@ -97,11 +103,12 @@ jobs:
       run: |
            cd _build
            cpack -G ZIP
-
-    - name: single_exe creation
-      run: |
-        cd _build
-        pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml;." --add-data "installation/bin/;bin"
+           
+    - id: create-single-file
+      name: Single file .zip creation
+      uses: ./.github/workflows/single-file-creation-zip
+      with:
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}  
 
     - name: Installer upload
       uses: actions/upload-artifact@v2
@@ -113,4 +120,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-windows-single-file
-        path: _build/dist/antares-xpansion-launcher*
+        path: ${{ steps.create-single-file.outputs.archive-path }}

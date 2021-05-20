@@ -40,13 +40,13 @@ class XpansionConfig():
         parser = argparse.ArgumentParser()
         parser.add_argument("--step",
                             dest="step",
-                            choices=["lp", "optim", "full", "antares", "getnames", "update"],
-                            help='Step to execute ("lp", "optim", "full", "antares", "getnames", "update")',
+                            choices=["full", "antares", "getnames", "lp", "optim", "update"],
+                            help='Step to execute ("full", "antares", "getnames", "lp", "optim", "update")',
                             default="full")
         parser.add_argument("--simulationName",
                             dest="simulationName",
                             help="Name of the antares simulation to use. Must be present in the output directory")
-        parser.add_argument("--dataDir",
+        parser.add_argument("-i", "--dataDir",
                             dest="dataDir",
                             help="Antares study data directory",
                             required=True)
@@ -54,7 +54,7 @@ class XpansionConfig():
                             dest="installDir",
                             help="The directory where all binaries are located",
                             default=None)
-        parser.add_argument("--method",
+        parser.add_argument("-m", "--method",
                             dest="method",
                             type=str,
                             choices=["mpibenders", "mergeMPS", "sequential"],
@@ -142,7 +142,8 @@ class XpansionConfig():
                                  'relaxed_optimality_gap': '0.01',
                                  'solver': 'Cbc',
                                  'timelimit': '+infini',
-                                 'additional-constraints': ""}
+                                 'additional-constraints': "",
+                                 'yearly-weights': ""}
 
     def _set_default_options(self):
         self.options_default = {

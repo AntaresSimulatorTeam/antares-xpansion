@@ -18,7 +18,7 @@ jobs:
         include:
           - os: windows-latest
             triplet: x64-windows
-            vcpkgCommitId: 'ee17a685087a6886e5681e355d36cd784f0dd2c8'
+            vcpkgCommitId: '5a271a9290282e09149401486f88dc106dc65b71'
             vcpkgPackages: jsoncpp gtest boost-mpi boost-program-options
 
     steps:
@@ -41,7 +41,7 @@ jobs:
     - name: Pre-requisites
       shell: cmd
       run: |          
-          choco install wget --no-progress
+          choco install wget zip unzip --no-progress
           wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
           msmpisetup.exe -unattend
     
@@ -61,6 +61,13 @@ jobs:
         path: 'antares-version.json'
         prop_path: 'antares_version'
         
+    - name: Read antares-xpansion version
+      id: antares-xpansion-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_xpansion_version'
+        
     - name: Download pre-compiled librairies
       run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.0.0/rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip
@@ -78,11 +85,11 @@ jobs:
     - name: Configure with VCPKG
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE=${{ steps.runvcpkg.outputs.RUNVCPKG_VCPKG_ROOT_OUT }}/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install
        
     - name: Build
       run: |
-           cmake --build _build --config Release -j2
+           cmake --build _build --config Release -j2 --target install
 
     - name: Running unit tests
       shell: cmd
@@ -91,6 +98,12 @@ jobs:
            cd _build
            ctest -C Release --output-on-failure -L "medium|unit|benders"
            
+    - id: create-single-file
+      name: Single file .zip creation
+      uses: ./.github/workflows/single-file-creation-zip
+      with:
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+        
     - name: .zip Installer creation
       shell: bash
       run: |
@@ -106,4 +119,11 @@ jobs:
         asset_path: _build/${{env.ZIP_NAME}}
         asset_name: ${{env.ZIP_NAME}}
         asset_content_type: application/octet-stream
-    
+   
+    - name: Single file upload
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: ${{ steps.create-single-file.outputs.archive-path }}
+        asset_name: ${{ steps.create-single-file.outputs.archive-name }}
+        asset_content_type: application/octet-stream   

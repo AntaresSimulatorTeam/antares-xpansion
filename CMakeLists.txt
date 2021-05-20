@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.2.0)
+PROJECT (antaresXpansion VERSION 0.3.0)
 
 # ===========================================================================
 # Default parameters
@@ -28,6 +28,7 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
+
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
 option (XPRESS  "Use solver FICO XPRESS" ON)
@@ -39,7 +40,8 @@ else ()
 	message(FATAL_ERRROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")	
 endif()
 
-#set(ANTARES_XPANSION_RC 3)
+
+#set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -323,7 +325,7 @@ endif()
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-guide-0.2.0.pdf
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-guide-0.3.0.pdf
         DESTINATION documentation)
         
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
@@ -371,9 +373,6 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
 endif()
 
 set(CPACK_PROJECT_NAME "antaresXpansion")
-set(CPACK_PACKAGE_VERSION_MAJOR 0)
-set(CPACK_PACKAGE_VERSION_MINOR 2)
-set(CPACK_PACKAGE_VERSION_PATCH 0)
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
 set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")

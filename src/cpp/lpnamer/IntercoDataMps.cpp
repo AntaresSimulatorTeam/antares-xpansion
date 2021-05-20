@@ -298,16 +298,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	int ncols = in_prblm->get_ncols();
 	int nrows = in_prblm->get_nrows();
 
-	// check if number of rows in the solver matrix is equal to the number of constraints
-	if (nrows != cstr.size() && cstr.size() > 0) {
-		std::cout << "WRONG NUMBER OF CSTR NAMES, solver = " << nrows << ", " << cstr.size() << " given" << std::endl;
-	}
-
-	// check if number of columns in the solver matrix is equal to the number of variables
-	if (ncols != var.size() && var.size() > 0) {
-		std::cout << "WRONG NUMBER OF VAR NAMES, solver = " << ncols << ", " << var.size() << " given" << std::endl;
-	}
-
 	int ninterco_pdt = interco_data.size();
 
 	std::vector<double> lb(ncols);
