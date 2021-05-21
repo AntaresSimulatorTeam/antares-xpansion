@@ -50,7 +50,7 @@ void ORTaddcols(SolverAbstract::Ptr solver_p,
                 std::vector<double> const & dmatval_p,
                 std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
                 std::vector<char> const & colTypes_p,
-                std::vector<std::string> & colNames_p)
+                std::vector<std::string> const & colNames_p)
 {
 	assert(objx_p.size() != 0);
     assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));

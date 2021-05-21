@@ -428,9 +428,10 @@ void SolverClp::chg_row_name(int id_row, std::string & name)
 	_clp.setRowName(id_row, name);
 }
 
-void SolverClp::chg_col_name(int id_col, std::string & name)
+void SolverClp::chg_col_name(int id_col, std::string const & name)
 {
-	_clp.setColumnName(id_col, name);
+    std::string copy_name = name;
+	_clp.setColumnName(id_col, copy_name);
 }
 	
 /*************************************************************************************************

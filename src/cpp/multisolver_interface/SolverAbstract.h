@@ -403,7 +403,7 @@ public:
     * @param id_col : index of the column
     * @param name   : new name of the column
     */
-    virtual void chg_col_name(int id_col, std::string & name) = 0;
+    virtual void chg_col_name(int id_col, std::string const & name) = 0;
 	
     
 /*************************************************************************************************

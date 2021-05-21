@@ -322,7 +322,7 @@ void SolverCplex::chg_row_name(int id_row, std::string & name)
 	zero_status_check(status, "Set row name");
 }
 
-void SolverCplex::chg_col_name(int id_col, std::string & name)
+void SolverCplex::chg_col_name(int id_col, std::string const & name)
 {
 	const std::vector<int> indices(1, id_col);
 

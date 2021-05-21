@@ -305,7 +305,7 @@ void SolverXpress::chg_row_name(int id_row, std::string & name)
 	zero_status_check(status, "Set row name");
 }
 
-void SolverXpress::chg_col_name(int id_col, std::string & name)
+void SolverXpress::chg_col_name(int id_col, std::string const & name)
 {
 	int status = XPRSaddnames(_xprs, 2, name.data(), id_col, id_col);
 	zero_status_check(status, "Set col name");

@@ -527,7 +527,7 @@ void SolverCbc::chg_row_name(int id_row, std::string & name)
 	_clp_inner_solver.setRowName(id_row, name);
 }
 
-void SolverCbc::chg_col_name(int id_col, std::string & name)
+void SolverCbc::chg_col_name(int id_col, std::string const & name)
 {
 	_clp_inner_solver.setColName(id_col, name);
 }
