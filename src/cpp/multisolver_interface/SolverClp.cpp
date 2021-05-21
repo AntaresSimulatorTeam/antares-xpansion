@@ -423,9 +423,10 @@ void SolverClp::chg_coef(int id_row, int id_col, double val){
 	matrix->modifyCoefficient(id_row, id_col, val);
 }
 
-void SolverClp::chg_row_name(int id_row, std::string & name)
+void SolverClp::chg_row_name(int id_row, std::string const & name)
 {
-	_clp.setRowName(id_row, name);
+    std::string copy_name = name;
+	_clp.setRowName(id_row, copy_name);
 }
 
 void SolverClp::chg_col_name(int id_col, std::string const & name)

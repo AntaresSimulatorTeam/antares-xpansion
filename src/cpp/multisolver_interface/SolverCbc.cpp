@@ -522,7 +522,7 @@ void SolverCbc::chg_coef(int id_row, int id_col, double val){
 	_clp_inner_solver.replaceMatrix(matrix);
 }
 
-void SolverCbc::chg_row_name(int id_row, std::string & name)
+void SolverCbc::chg_row_name(int id_row, std::string const & name)
 {
 	_clp_inner_solver.setRowName(id_row, name);
 }

@@ -306,7 +306,7 @@ void SolverCplex::chg_coef(int id_row, int id_col, double val){
     zero_status_check(status, "change coef");
 }
 
-void SolverCplex::chg_row_name(int id_row, std::string & name)
+void SolverCplex::chg_row_name(int id_row, std::string const & name)
 {
 	const std::vector<int> indices(1, id_row);
 	

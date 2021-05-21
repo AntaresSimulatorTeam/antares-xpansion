@@ -109,7 +109,7 @@ public:
     virtual void chg_col_type(int nels, const int* mindex, const char* qctype);
 	virtual void chg_rhs(int id_row, double val);
     virtual void chg_coef(int id_row, int id_col, double val);
-	virtual void chg_row_name(int id_row, std::string & name);
+	virtual void chg_row_name(int id_row, std::string const & name);
 	virtual void chg_col_name(int id_col, std::string const & name);
 	
 /*************************************************************************************************

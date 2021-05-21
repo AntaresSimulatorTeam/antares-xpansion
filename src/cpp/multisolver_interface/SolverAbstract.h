@@ -395,7 +395,7 @@ public:
     * @param id_row : index of the row
     * @param name   : new name of the row
     */
-    virtual void chg_row_name(int id_row, std::string & name) = 0;
+    virtual void chg_row_name(int id_row, std::string const & name) = 0;
 
     /**
     * @brief Change the name of a variable

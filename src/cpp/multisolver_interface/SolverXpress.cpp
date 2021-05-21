@@ -299,7 +299,7 @@ void SolverXpress::chg_coef(int id_row, int id_col, double val){
 	zero_status_check(status, "change matrix coefficient");
 }
 
-void SolverXpress::chg_row_name(int id_row, std::string & name)
+void SolverXpress::chg_row_name(int id_row, std::string const & name)
 {
 	int status = XPRSaddnames(_xprs, 1, name.data(), id_row, id_row);
 	zero_status_check(status, "Set row name");
