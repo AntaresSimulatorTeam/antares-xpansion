@@ -197,15 +197,16 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif ()
 find_package (Threads REQUIRED)
 
-# OR-Tools
-#gflags needed for ortools
-set(GFLAGS_USE_TARGET_NAMESPACE TRUE) 
-find_package(gflags)
+
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+find_package(gflags REQUIRED)
 
 find_package(ortools)
 if(NOT ortools_FOUND)
 	message (FATAL_ERROR "OR-Tools not found. OR-Tools can be compiled with -DBUILD_ortools=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
 endif()
+
+find_package(glog REQUIRED)
 
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)

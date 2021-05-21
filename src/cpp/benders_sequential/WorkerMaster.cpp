@@ -1,3 +1,5 @@
+#include "glog/logging.h"
+
 #include "WorkerMaster.h"
 
 #include "ortools_utils.h"

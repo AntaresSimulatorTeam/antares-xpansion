@@ -23,6 +23,7 @@ target_link_libraries (benders_mpi_core
 		benders_sequential_core
 		Boost::mpi
 		MPI::MPI_C
+		glog::glog
 )
 
 #if (WIN32)

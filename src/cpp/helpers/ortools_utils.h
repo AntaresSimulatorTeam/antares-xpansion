@@ -2,8 +2,7 @@
 
 #include <sstream>
 
-//#include "ortools/linear_solver/linear_solver.h"
-#include "ortools/base/logging.h"
+
 #include "Solver.h"
 
 
