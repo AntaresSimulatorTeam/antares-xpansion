@@ -31,8 +31,8 @@ ENDIF ()
 
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
-option (XPRESS  "Use solver FICO XPRESS" ON)
-option (CPLEX   "Use solver IMB ILOG CPLES" ON)
+option (XPRESS  "Use solver FICO XPRESS" OFF)
+option (CPLEX   "Use solver IMB ILOG CPLES" OFF)
 
 if(COIN_OR)
 	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
@@ -197,15 +197,15 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif ()
 find_package (Threads REQUIRED)
 
-# OR-Tools
-#gflags needed for ortools
-set(GFLAGS_USE_TARGET_NAMESPACE TRUE) 
-find_package(gflags)
 
-find_package(ortools)
-if(NOT ortools_FOUND)
-	message (FATAL_ERROR "OR-Tools not found. OR-Tools can be compiled with -DBUILD_ortools=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
-endif()
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+find_package(gflags REQUIRED)
+find_package(Cbc REQUIRED)
+find_package(Cgl REQUIRED)
+find_package(Clp REQUIRED)
+find_package(CoinUtils REQUIRED)
+find_package(Osi REQUIRED)
+find_package(glog REQUIRED)
 
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)

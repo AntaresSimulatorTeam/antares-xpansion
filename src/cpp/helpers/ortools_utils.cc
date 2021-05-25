@@ -1,10 +1,4 @@
-#include <fstream>
-
 #include "ortools_utils.h"
-#include "ortools/lp_data/mps_reader.h"
-#include "ortools/lp_data/proto_utils.h"
-#include "ortools/linear_solver/linear_solver.pb.h"
-#include "ortools/linear_solver/model_exporter.h"
 
 void ORTreadmps(SolverAbstract::Ptr solver_p, 
     std::string const & filename_p)
@@ -56,7 +50,7 @@ void ORTaddcols(SolverAbstract::Ptr solver_p,
                 std::vector<double> const & dmatval_p,
                 std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
                 std::vector<char> const & colTypes_p,
-                std::vector<std::string> & colNames_p)
+                std::vector<std::string> const & colNames_p)
 {
 	assert(objx_p.size() != 0);
     assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));

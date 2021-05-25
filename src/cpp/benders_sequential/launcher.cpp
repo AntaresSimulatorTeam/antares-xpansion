@@ -1,3 +1,5 @@
+#include "glog/logging.h"
+
 #include "launcher.h"
 #include "benders_sequential_core/Benders.h"
 #include "Timer.h"

@@ -109,8 +109,8 @@ public:
     virtual void chg_col_type(int nels, const int* mindex, const char* qctype);
 	virtual void chg_rhs(int id_row, double val);
     virtual void chg_coef(int id_row, int id_col, double val);
-	virtual void chg_row_name(int id_row, std::string & name);
-	virtual void chg_col_name(int id_col, std::string & name);
+	virtual void chg_row_name(int id_row, std::string const & name);
+	virtual void chg_col_name(int id_col, std::string const & name);
 	
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
@@ -124,7 +124,7 @@ public:
 *************************************************************************************************/
 public:	
 	/**
-	* @brief Returns the current basis into the user’s data arrays.
+	* @brief Returns the current basis into the userâ€™s data arrays.
 	*
 	* @param rstatus    : Integer array of length ROWS to the basis status of the slack, surplus or
 						artifficial variable associated with each row. The status will be one of:

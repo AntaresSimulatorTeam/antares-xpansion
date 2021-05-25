@@ -86,13 +86,12 @@ endif()
 
 #CLP-CBC
 if(COIN_OR)
-	target_include_directories (solvers
-		PUBLIC
-			${ORTOOLS_INCLUDE_DIRS}
-	)
 	target_link_libraries (solvers
 		PUBLIC
-			debug		ortools::ortools 
-			optimized	ortools::ortools
+			Coin::Clp
+			Coin::Cgl
+			Coin::CoinUtils
+			Coin::Osi
+			Coin::Cbc
 	)
 endif()

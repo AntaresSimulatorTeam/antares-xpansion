@@ -1,5 +1,7 @@
 #include <sstream>
 
+#include "glog/logging.h"
+
 #include "BendersFunctions.h"
 
 
