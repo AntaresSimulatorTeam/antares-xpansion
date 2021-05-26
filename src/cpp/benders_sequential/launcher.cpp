@@ -101,7 +101,7 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
 
     logger->log_at_ending(logData);
 	jsonWriter_l.updateEndTime();
-	jsonWriter_l.write(input.size(), benders._trace, benders._data);
+	jsonWriter_l.write(input.size(), benders._trace, benders._data, options.GAP);
 	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	benders.free();
