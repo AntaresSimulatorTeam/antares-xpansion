@@ -92,7 +92,7 @@ int main(int argc, char** argv)
             logger->log_at_ending(logData);
 
 			jsonWriter_l.updateEndTime();
-			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data);
+			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data, options.GAP);
 			jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 			char buff[FILENAME_MAX];
