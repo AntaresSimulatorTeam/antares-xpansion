@@ -79,8 +79,8 @@ jobs:
     - name: Download pre-compiled librairies
       run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{steps.antares-deps-version.outputs.prop}}/rte-antares-deps-${{matrix.os}}-Release-solver-no-ortools.zip
-           Expand-Archive ./rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip -DestinationPath .
-           rm rte-antares-deps-${{matrix.os}}-x64-Release-solver.zip
+           Expand-Archive ./rte-antares-deps-${{matrix.os}}-Release-solver-no-ortools.zip -DestinationPath .
+           rm rte-antares-deps-${{matrix.os}}-Release-solver-no-ortools.zip
            
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip
            Expand-Archive rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip -DestinationPath .
