@@ -50,9 +50,16 @@ jobs:
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
         
+    - name: Read antares-deps version
+      id: antares-deps-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_deps_version'
+        
     - name: Download pre-compiled librairies
       run: |
-           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.1.0/rte-antares-deps-centos7-Release-solver.tar.gz
+           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{steps.antares-deps-version.outputs.prop}}/rte-antares-deps-centos7-Release-solver-no-ortools.tar.gz
            tar -xvf rte-antares-deps-centos7-Release-solver.tar.gz
            rm -rf rte-antares-deps-centos7-Release-solver.tar.gz
            
