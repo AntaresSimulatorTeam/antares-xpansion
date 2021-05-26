@@ -25,4 +25,5 @@ target_link_libraries (test_solver
 		solvers
 )
 
-install(TARGETS test_solver DESTINATION bin)
+add_test(NAME unit_solver COMMAND test_solver WORKING_DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY})
+set_property(TEST unit_solver PROPERTY LABELS unit)

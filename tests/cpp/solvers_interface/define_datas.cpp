@@ -1,14 +1,19 @@
 #include "define_datas.hpp"
 
-
 void fill_datas(AllDatas& datas) {
 
     datas.clear();
 
+#if defined(WIN32) || defined(_WIN32)
+	std::string data_test_dir = "../../data_test";
+#else
+	std::string data_test_dir = "../data_test";
+#endif
+
     //==================================================================
     //1. mip toy
     InstanceData miptoy = InstanceData();
-    miptoy._path = "../../data_test/mps/mip_toy_prob.mps";
+    miptoy._path = data_test_dir + "/mps/mip_toy_prob.mps";
     miptoy._ncols = 2;
     miptoy._nintegervars = 2;
     miptoy._nrows = 2;
@@ -45,7 +50,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     // LP toy
     InstanceData lptoy = InstanceData();
-    lptoy._path = "../../data_test/mps/lp_toy_prob.mps";
+    lptoy._path = data_test_dir + "/mps/lp_toy_prob.mps";
     lptoy._ncols = 2;
     lptoy._nintegervars = 2;
     lptoy._nrows = 2;
@@ -82,7 +87,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     //2. multi knapsack
     InstanceData multikp = InstanceData();
-    multikp._path = "../../data_test/mps/lp1.mps";
+    multikp._path = data_test_dir + "/mps/lp1.mps";
     multikp._ncols = 9;
     multikp._nintegervars = 0;
     multikp._nrows = 5;
@@ -124,7 +129,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     //3. unbounded
     InstanceData unbd = InstanceData();
-    unbd._path = "../../data_test/mps/unbounded.mps";
+    unbd._path = data_test_dir + "/mps/unbounded.mps";
     unbd._ncols = 2;
     unbd._nintegervars = 0;
     unbd._nrows = 2;
@@ -161,7 +166,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     //3. unbounded
     InstanceData infeas = InstanceData();
-    infeas._path = "../../data_test/mps/infeas.mps";
+    infeas._path = data_test_dir + "/mps/infeas.mps";
     infeas._ncols = 2;
     infeas._nintegervars = 0;
     infeas._nrows = 2;
@@ -198,7 +203,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     // 5. NETWORK instance -- master
     InstanceData net_master = InstanceData();
-    net_master._path = "../../data_test/mini_network/master.mps";
+    net_master._path = data_test_dir + "/mini_network/master.mps";
     net_master._ncols = 2;
     net_master._nintegervars = 0;
     net_master._nrows = 1;
@@ -228,7 +233,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     // 6. NETWORK instance -- SP1
     InstanceData net_sp1 = InstanceData();
-    net_sp1._path = "../../data_test/mini_network/SP1.mps";
+    net_sp1._path = data_test_dir + "/mini_network/SP1.mps";
     net_sp1._ncols = 4;
     net_sp1._nintegervars = 0;
     net_sp1._nrows = 3;
@@ -258,7 +263,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     // 7. NETWORK instance -- SP2
     InstanceData net_sp2 = InstanceData();
-    net_sp2._path = "../../data_test/mini_network/SP2.mps";
+    net_sp2._path = data_test_dir + "/mini_network/SP2.mps";
     net_sp2._ncols = 4;
     net_sp2._nintegervars = 0;
     net_sp2._nrows = 3;
@@ -289,7 +294,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     // test slacks computation
     InstanceData test_slacks = InstanceData();
-    test_slacks._path = "../../data_test/mps/test_slacks.mps";
+    test_slacks._path = data_test_dir + "/mps/test_slacks.mps";
     test_slacks._ncols = 1;
     test_slacks._nintegervars = 0;
     test_slacks._nrows = 3;
@@ -319,7 +324,7 @@ void fill_datas(AllDatas& datas) {
     //==================================================================
     // test slacks computation
     InstanceData test_reduced = InstanceData();
-    test_reduced._path = "../../data_test/mps/test_reduced_costs.mps";
+    test_reduced._path = data_test_dir + "/mps/test_reduced_costs.mps";
     test_reduced._ncols = 3;
     test_reduced._nintegervars = 0;
     test_reduced._nrows = 1;
