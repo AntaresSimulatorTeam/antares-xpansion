@@ -27,7 +27,7 @@ jobs:
       run: |
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
            yum install -y jsoncpp-devel gtest-devel openmpi-devel doxygen graphviz
-           yum install -y cmake3 devtoolset-7 environment-modules rpm-build
+           yum install -y cmake3 devtoolset-7 environment-modules rpm-build zlib-devel
                       
     
     - uses: nelonoel/branch-name@v1.0.1
