@@ -92,32 +92,36 @@ void SolverXpress::read_prob(const char* prob_name, const char* flags){
 	if (std::string(flags) == "LP") {
 		xprs_flags = "l";
 	}
-
-
-	/*
-	* This part of the code requires XPRESS version 8.8.5 or higher
-	* For previous versions, the param KEEPNROWS deletes row names 
-	* when reading.
-	* In order to bypass that without modifying the code,
-	* the first row, which is the objective function
-	* is deleted after read
-	* 
 	
 	// To delete obj from rows when reading prob
 	int keeprows(0);
 	int status = XPRSgetintcontrol(_xprs, XPRS_KEEPNROWS, &keeprows);
 	zero_status_check(status, "get XPRS_KEEPNROWS");
 
+	/*
+	* This part of the code requires XPRESS version 8.8.5 or higher
+	* For previous versions, the param KEEPNROWS deletes row names
+	* when reading.
+	* In order to bypass that without modifying the code,
+	* the first row, which is the objective function
+	* is deleted after read
+	*	
+	*/
+
+	/*
 	if (keeprows != -1) {
 		status = XPRSsetintcontrol(_xprs, XPRS_KEEPNROWS, -1);
 		zero_status_check(status, "set XPRS_KEEPNROWS to -1");
-	}*/
+	}
+	*/
 	
-	int status = XPRSreadprob(_xprs, prob_name, xprs_flags.c_str());
+	status = XPRSreadprob(_xprs, prob_name, xprs_flags.c_str());
 	zero_status_check(status, "read problem");
 
-	// Only necessary because param KEEPNROWS cannot be set to -1
-	del_rows(0, 0); 
+	//If param KEEPNROWS not -1 remove first row which is the objective function
+	if (keeprows != -1)	{
+		del_rows(0, 0);
+	}
 }
 
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv){
