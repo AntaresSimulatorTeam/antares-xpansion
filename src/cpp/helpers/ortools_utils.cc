@@ -87,7 +87,6 @@ void ORTaddrows(SolverAbstract::Ptr solver_p,
                 std::vector<double> const & dmatval_p)
 {
 	assert(qrtype_p.size() == rhs_p.size());
-	assert((mstart_p.size() == 0 ) || (mstart_p.size() == qrtype_p.size()) );
 	assert((range_p.size() == 0 ) || (range_p.size() == qrtype_p.size()) );
 	assert(mclind_p.size() == dmatval_p.size());
 
