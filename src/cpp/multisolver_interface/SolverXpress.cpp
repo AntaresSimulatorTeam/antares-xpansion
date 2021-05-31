@@ -383,9 +383,11 @@ double SolverXpress::get_lp_value() const{
 	return val;
 }
 
-void SolverXpress::get_simplex_ite(int& result) const{
+int SolverXpress::get_simplex_ite() const{
+    int result;
 	int status = XPRSgetintattrib(_xprs, XPRS_SIMPLEXITER, &result);
 	zero_status_check(status, "get simplex iterations");
+	return result;
 }
 
 void SolverXpress::get_lp_sol(double* primals, double* duals, 

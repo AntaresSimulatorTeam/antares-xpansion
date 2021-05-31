@@ -427,8 +427,8 @@ double SolverCplex::get_lp_value() const{
 	return val;
 }
 
-void SolverCplex::get_simplex_ite(int& result) const{
-	result = CPXgetitcnt(_env, _prb);
+int SolverCplex::get_simplex_ite() const{
+	return CPXgetitcnt(_env, _prb);
 }
 
 void SolverCplex::get_lp_sol(double* primals, double* duals, 

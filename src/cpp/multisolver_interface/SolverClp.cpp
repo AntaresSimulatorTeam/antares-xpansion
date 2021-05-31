@@ -501,8 +501,8 @@ double SolverClp::get_lp_value() const{
 	return _clp.objectiveValue();
 }
 
-void SolverClp::get_simplex_ite(int& result) const{
-	result = _clp.numberIterations();
+int SolverClp::get_simplex_ite() const{
+	return _clp.numberIterations();
 }
 
 void SolverClp::get_lp_sol(double* primals, double* duals,

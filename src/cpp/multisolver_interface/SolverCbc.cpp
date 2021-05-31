@@ -618,8 +618,8 @@ double SolverCbc::get_lp_value() const{
 	return _cbc.solver()->getObjValue();
 }
 
-void SolverCbc::get_simplex_ite(int& result) const{
-	result = _cbc.solver()->getIterationCount();
+int SolverCbc::get_simplex_ite() const{
+	return _cbc.solver()->getIterationCount();
 }
 
 void SolverCbc::get_lp_sol(double* primals, double* duals,

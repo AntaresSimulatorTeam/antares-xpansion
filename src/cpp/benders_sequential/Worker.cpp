@@ -129,5 +129,5 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 *  \param result : result
 */
 void Worker::get_simplex_ite(int & result) {
-	_solver->get_simplex_ite(result);
+    result = _solver->get_simplex_ite();
 }

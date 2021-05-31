@@ -461,9 +461,9 @@ public:
     /**
     * @brief Get the number of simplex iterations done in the last resolution of the problem
     *
-    * @param result : int to store the value
+    * @return result : number of simplex iterations done in the last resolution of the problem
     */
-	virtual void get_simplex_ite(int& result) const = 0;
+	virtual int get_simplex_ite() const = 0;
 
 	/**
     * @brief Get LP solution of a problem (available after method "solve")

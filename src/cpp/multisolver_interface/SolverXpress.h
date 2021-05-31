@@ -133,7 +133,7 @@ public:
 	virtual void get_basis(int* rstatus, int* cstatus) const;
 	virtual double get_mip_value() const;
 	virtual double get_lp_value() const;
-	virtual void get_simplex_ite(int& result) const;
+	virtual int get_simplex_ite() const;
 	virtual void get_lp_sol(double* primals, double* duals, 
                     double* reduced_costs);
     virtual void get_mip_sol(double* primals);
