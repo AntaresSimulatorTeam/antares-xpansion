@@ -466,7 +466,7 @@ public:
 	virtual int get_simplex_ite() const = 0;
 
 	/**
-    * @brief Get LP solution of a problem (available after method "solve")
+    * @brief Get LP solution of a problem (available after method "solve_lp")
     *
     * @param primals    : values of primal variables
     * @param duals      : values of dual variables
@@ -476,7 +476,7 @@ public:
                     double* reduced_costs) = 0;
 	
     /**
-    * @brief Get MIP solution of a problem (available after method "solve_integer")
+    * @brief Get MIP solution of a problem (available after method "solve_mip")
     *
     * @param primals    : values of primal variables
     */
