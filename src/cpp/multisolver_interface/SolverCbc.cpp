@@ -614,8 +614,8 @@ double SolverCbc::get_mip_value() const{
     return _cbc.getObjValue();
 }
 
-void SolverCbc::get_lp_value(double& val) const{
-	val = _cbc.solver()->getObjValue();
+double SolverCbc::get_lp_value() const{
+	return _cbc.solver()->getObjValue();
 }
 
 void SolverCbc::get_simplex_ite(int& result) const{

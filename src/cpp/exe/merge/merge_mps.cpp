@@ -196,7 +196,7 @@ int main(int argc, char** argv)
         overallCost_l = mergedSolver_l->get_mip_value();
 	}
 	else {
-		mergedSolver_l->get_lp_value(overallCost_l);
+        overallCost_l = mergedSolver_l->get_lp_value();
 	}
 	double operationalCost_l = overallCost_l - investCost_l;
 

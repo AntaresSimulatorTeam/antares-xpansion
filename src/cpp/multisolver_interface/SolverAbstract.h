@@ -452,11 +452,11 @@ public:
 	virtual double get_mip_value() const = 0;
 
     /**
-    * @brief Get the optimale value of a LP problem (available after method "solve_lp" )
+    * @brief Get the optimal value of a LP problem (available after method "solve_lp" )
     *
-    * @param lb : double to store the value
+    * @return lb : optimal value of a LP problem
     */
-	virtual void get_lp_value(double& lb) const = 0;
+	virtual double get_lp_value() const = 0;
 
     /**
     * @brief Get the number of simplex iterations done in the last resolution of the problem

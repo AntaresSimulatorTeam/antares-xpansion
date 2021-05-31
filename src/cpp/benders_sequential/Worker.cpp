@@ -32,7 +32,7 @@ void Worker::get_value(double & lb) {
         lb = _solver->get_mip_value();
 	}
 	else {
-		_solver->get_lp_value(lb);
+		lb = _solver->get_lp_value();
 	}
 }
 

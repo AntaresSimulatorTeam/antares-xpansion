@@ -376,9 +376,11 @@ double SolverXpress::get_mip_value() const{
 	return val;
 }
 
-void SolverXpress::get_lp_value(double& val) const{
+double SolverXpress::get_lp_value() const{
+    double val;
 	int status = XPRSgetdblattrib(_xprs, XPRS_LPOBJVAL, &val);
 	zero_status_check(status, "get LP value");
+	return val;
 }
 
 void SolverXpress::get_simplex_ite(int& result) const{

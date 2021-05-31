@@ -497,8 +497,8 @@ double SolverClp::get_mip_value() const{
 	return _clp.objectiveValue();
 }
 
-void SolverClp::get_lp_value(double& val) const{
-	val = _clp.objectiveValue();
+double SolverClp::get_lp_value() const{
+	return _clp.objectiveValue();
 }
 
 void SolverClp::get_simplex_ite(int& result) const{

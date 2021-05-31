@@ -113,8 +113,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
             // Check LP value after solve
             if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
             {
-                double lp_val(0);
-                solver->get_lp_value(lp_val);
+                double lp_val = solver->get_lp_value();
                 REQUIRE( Approx(lp_val) == datas[inst]._optval);
             }
 
@@ -175,8 +174,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
             }
             if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
             {
-                double lp_val(0);
-                solver->get_lp_value(lp_val);
+                double lp_val = solver->get_lp_value();
                 REQUIRE(Approx(lp_val) == datas[inst]._optval);
 
                 std::vector<double> primals(solver->get_ncols());
