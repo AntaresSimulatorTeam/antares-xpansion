@@ -513,7 +513,7 @@ public:
     *
     * @param gap: double of the value of wanted gap
     */
-	virtual void optimality_gap(double gap) = 0;
+	virtual void set_optimality_gap(double gap) = 0;
 
     /**
     * @brief Sets the maximum number of simplex iterations the solver can perform

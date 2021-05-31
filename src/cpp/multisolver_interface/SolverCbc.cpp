@@ -706,7 +706,7 @@ void SolverCbc::set_threads(int n_threads){
 	_cbc.setNumberThreads(n_threads);
 }
 
-void SolverCbc::optimality_gap(double gap){
+void SolverCbc::set_optimality_gap(double gap){
 	std::cout << "ERROR : Optimality gap handling not implemented in the interface for CBC" << std::endl;
 	std::exit(1);
 }

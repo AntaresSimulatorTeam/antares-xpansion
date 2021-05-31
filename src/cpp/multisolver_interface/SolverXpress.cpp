@@ -447,7 +447,7 @@ void SolverXpress::set_threads(int n_threads){
 	zero_status_check(status, "set threads");
 }
 
-void SolverXpress::optimality_gap(double gap){
+void SolverXpress::set_optimality_gap(double gap){
 	int status = XPRSsetdblcontrol(_xprs, XPRS_OPTIMALITYTOL, gap);
 	zero_status_check(status, "set optimality gap");
 }

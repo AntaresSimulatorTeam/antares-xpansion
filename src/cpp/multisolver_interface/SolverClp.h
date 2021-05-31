@@ -158,6 +158,6 @@ public:
 	virtual void set_output_log_level(int loglevel);
 	virtual void set_algorithm(std::string const& algo);
     virtual void set_threads(int n_threads);
-	virtual void optimality_gap(double gap);
+	virtual void set_optimality_gap(double gap);
 	virtual void set_simplex_iter(int iter);
 };

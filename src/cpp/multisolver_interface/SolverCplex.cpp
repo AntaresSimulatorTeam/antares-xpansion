@@ -483,7 +483,7 @@ void SolverCplex::set_threads(int n_threads){
 	zero_status_check(status, "set threads number");
 }
 
-void SolverCplex::optimality_gap(double gap){
+void SolverCplex::set_optimality_gap(double gap){
 	int status = CPXsetdblparam(_env, CPXPARAM_Simplex_Tolerances_Optimality, gap);
 	zero_status_check(status, "set optimality tol for simplex");
 	

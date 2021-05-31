@@ -575,7 +575,7 @@ void SolverClp::set_threads(int n_threads){
 	_clp.setNumberThreads(n_threads);
 }
 
-void SolverClp::optimality_gap(double gap){
+void SolverClp::set_optimality_gap(double gap){
 	std::cout << "ERROR : Optimality gap handling not implemented with Clp" << std::endl;
 	std::exit(1);
 }
