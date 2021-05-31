@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SolverAbstract.h"
+#include "multisolver_interface/SolverAbstract.h"
 #include "cplex.h"
 
 /*!

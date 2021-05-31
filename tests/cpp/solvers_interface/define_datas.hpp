@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "SolverAbstract.h"
+#include "multisolver_interface/SolverAbstract.h"
 
 /* Contains all the data to check the results of the tests on an instance*/
 class InstanceData {

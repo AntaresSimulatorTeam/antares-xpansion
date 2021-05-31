@@ -1,8 +1,9 @@
 #pragma once
 
 #include <sstream>
+#include <cassert>
 
-#include "Solver.h"
+#include "multisolver_interface/Solver.h"
 
 /**
  * @brief reads problem from an mps file

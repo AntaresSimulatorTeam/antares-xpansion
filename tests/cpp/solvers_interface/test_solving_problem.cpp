@@ -1,7 +1,7 @@
 #pragma once
 #include "catch2.hpp"
 
-#include "Solver.h"
+#include "multisolver_interface/Solver.h"
 #include <iostream>
 #include <fstream>
 #include "define_datas.hpp"
