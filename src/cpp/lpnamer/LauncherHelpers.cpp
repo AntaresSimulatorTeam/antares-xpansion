@@ -45,13 +45,14 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
 	int i = 0;
 	for(auto & pairNameCoeff : additionalConstraint_p)
 	{
-		if( master_p->get_col_index(pairNameCoeff.first) == -1)
+	    int col_index = master_p->get_col_index(pairNameCoeff.first);
+		if( col_index == -1)
 		{
 			std::cout << "missing variable " << pairNameCoeff.first 
 				<< " used in additional constraint file!\n";
 			std::exit(1);
 		}
-		mindex[i] = master_p->get_col_index(pairNameCoeff.first);
+		mindex[i] = col_index;
 		matval[i] = pairNameCoeff.second;
 		i++;
 	}
@@ -65,8 +66,9 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string,
 	std::string> const & variablesToBinarise_p){
 
 	for(auto pairOldNewVarnames : variablesToBinarise_p){
+	    int col_index = master_p->get_col_index(pairOldNewVarnames.first);
 
-		if ( master_p->get_col_index(pairOldNewVarnames.first) == -1){
+		if (col_index == -1){
 
 			std::cout << "missing variable " << pairOldNewVarnames.first 
 				<< " used in additional constraint file!\n";
@@ -90,13 +92,12 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string,
 		matstart[0] = 2;
 		
 		std::vector<int> matind(2);
-		matind[0] = master_p->get_col_index(pairOldNewVarnames.first);
+		matind[0] = col_index;
 		matind[1] = master_p->get_ncols() - 1;
 		
 		std::vector<double> matval(2);
 		std::vector<double> oldVarUb(1);
-		master_p->get_ub(oldVarUb.data(), master_p->get_col_index(pairOldNewVarnames.first),
-			master_p->get_col_index(pairOldNewVarnames.first));
+		master_p->get_ub(oldVarUb.data(), col_index, col_index);
 		matval[0] = 1;
 		matval[1] = oldVarUb[0];
 

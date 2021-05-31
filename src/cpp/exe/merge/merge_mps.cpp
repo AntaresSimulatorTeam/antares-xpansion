@@ -87,7 +87,8 @@ int main(int argc, char** argv)
 		lpData.append_in(mergedSolver_l, varPrefix_l);
 
 		for (auto const & x : kvp.second) {
-			if (mergedSolver_l->get_col_index(varPrefix_l + x.first) == -1){
+		    int col_index = mergedSolver_l->get_col_index(varPrefix_l + x.first);
+			if (col_index == -1){
 				std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
 				ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
 				std::string mpsName = options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps";
@@ -95,7 +96,7 @@ int main(int argc, char** argv)
 				std::exit(1);
 			}
 			else{
-				x_mps_id[x.first][kvp.first] = mergedSolver_l->get_col_index(varPrefix_l + x.first);
+				x_mps_id[x.first][kvp.first] = col_index;
 			}
 		}
 
