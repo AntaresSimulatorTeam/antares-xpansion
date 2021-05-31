@@ -80,13 +80,8 @@ public:
 		int nelems = solver_p->get_nelems();
 
 		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] = ncols;
-		//std::cout << "vars: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] << "\n";
-
 		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] = nrows;
-		//std::cout << "constraints: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] << "\n";
-
 		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] = nelems;
-		//std::cout << "nelems: " << std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] << "\n";
 
 		_colNames.resize(ncols);
 		solver_p->get_col_names(0, ncols - 1, _colNames);
