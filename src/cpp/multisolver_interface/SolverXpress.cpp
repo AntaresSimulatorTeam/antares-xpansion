@@ -314,7 +314,8 @@ void SolverXpress::chg_col_name(int id_col, std::string const & name)
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
-void SolverXpress::solve_lp(int& lp_status){
+int SolverXpress::solve_lp(){
+    int lp_status;
 	int status = XPRSlpoptimize(_xprs, "");
 	zero_status_check(status, "solve problem as LP");
 
@@ -335,9 +336,11 @@ void SolverXpress::solve_lp(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN XPRESS STATUS IS : " << xprs_status << std::endl;
 	}
+	return lp_status;
 }
 
-void SolverXpress::solve_mip(int& lp_status){
+int SolverXpress::solve_mip(){
+    int lp_status;
 	int status(0);
 	status = XPRSmipoptimize(_xprs, "");
 	zero_status_check(status, "solve problem as MIP");
@@ -359,6 +362,7 @@ void SolverXpress::solve_mip(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "XPRESS STATUS IS : " << xprs_status << std::endl;
 	}
+	return lp_status;
 }
 	
 /*************************************************************************************************

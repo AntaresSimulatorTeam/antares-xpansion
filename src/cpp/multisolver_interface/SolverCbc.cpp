@@ -535,7 +535,8 @@ void SolverCbc::chg_col_name(int id_col, std::string const & name)
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
-void SolverCbc::solve_lp(int& lp_status){
+int SolverCbc::solve_lp(){
+    int lp_status;
 
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
@@ -557,10 +558,12 @@ void SolverCbc::solve_lp(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CBC STATUS after initial solve." << std::endl;
 	}
+
+	return lp_status;
 }
 
-void SolverCbc::solve_mip(int& lp_status){
-
+int SolverCbc::solve_mip(){
+    int lp_status;
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
 
@@ -601,6 +604,8 @@ void SolverCbc::solve_mip(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CBC STATUS after branch and bound complete search." << std::endl;
 	}
+
+	return lp_status;
 }
 	
 /*************************************************************************************************

@@ -413,16 +413,16 @@ public:
     /**
     * @brief Solves a problem as LP
     *
-    * @param lp_status      : status of the problem after resolution
+    * @return lp_status      : status of the problem after resolution
     */
-    virtual void solve_lp(int& lp_status) = 0;
+    virtual int solve_lp() = 0;
 
     /**
     * @brief Solves a problem as MIP
     *
-    * @param lp_status      : status of the problem after resolution
+    * @return lp_status      : status of the problem after resolution
     */
-	virtual void solve_mip(int& lp_status) = 0;
+	virtual int solve_mip() = 0;
 	
 
 	

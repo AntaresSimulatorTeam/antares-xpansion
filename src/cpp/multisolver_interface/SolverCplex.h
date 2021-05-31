@@ -112,8 +112,8 @@ public:
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
 public:
-    virtual void solve_lp(int& lp_status);
-	virtual void solve_mip(int& lp_status);
+    virtual int solve_lp();
+	virtual int solve_mip();
 	
 /*************************************************************************************************
 -------------------------    Methods to get solutions information    -----------------------------

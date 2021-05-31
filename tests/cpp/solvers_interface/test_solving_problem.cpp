@@ -29,8 +29,7 @@ TEST_CASE("A LP problem is solved", "[solve-lp]") {
 
             //========================================================================================
             // Solve as LP
-            int slv_status(0);
-            solver->solve_lp(slv_status);
+            int slv_status = solver->solve_lp();
 
             bool success = false;
             for (auto stat : datas[inst]._status_int) {
@@ -82,8 +81,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
 
             //========================================================================================
             // Solve as LP
-            int slv_status(0);
-            solver->solve_lp(slv_status);
+            int slv_status =solver->solve_lp();
 
             bool success = false;
             for (auto stat : datas[inst]._status_int) {
@@ -146,8 +144,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
 
             //========================================================================================
             // Solve as LP and get solution
-            int slv_status(0);
-            solver->solve_lp(slv_status);
+            int slv_status = solver->solve_lp();
 
             bool success = false;
             for (auto stat : datas[inst]._status_int) {
@@ -238,8 +235,7 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
 
                 //========================================================================================
                 // Solve as MIP
-                int slv_status(0);
-                solver->solve_mip(slv_status);
+                int slv_status = solver->solve_mip();
 
                 bool success = false;
                 for (auto stat : datas[inst]._status_int) {

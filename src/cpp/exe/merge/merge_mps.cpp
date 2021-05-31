@@ -164,10 +164,10 @@ int main(int argc, char** argv)
 	Timer timer;
 	int status_l = 0;
 	if (mergedSolver_l->get_n_integer_vars() > 0) {
-		mergedSolver_l->solve_mip(status_l);
+        status_l = mergedSolver_l->solve_mip();
 	}
 	else {
-		mergedSolver_l->solve_lp(status_l);
+        status_l = mergedSolver_l->solve_lp();
 	}
 	
 	logger->log_total_duration(timer.elapsed());

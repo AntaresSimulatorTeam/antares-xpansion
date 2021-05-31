@@ -438,8 +438,8 @@ void SolverClp::chg_col_name(int id_col, std::string const & name)
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
-void SolverClp::solve_lp(int& lp_status){
-
+int SolverClp::solve_lp(){
+    int lp_status;
 	_clp.dual();
 
 	int clp_status = _clp.status();
@@ -456,10 +456,11 @@ void SolverClp::solve_lp(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CLP STATUS IS : " << clp_status << std::endl;
 	}
+	return lp_status;
 }
 
-void SolverClp::solve_mip(int& lp_status){
-
+int SolverClp::solve_mip(){
+    int lp_status;
 	_clp.dual();
 
 	int clp_status = _clp.status();
@@ -476,6 +477,7 @@ void SolverClp::solve_mip(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CLP STATUS IS : " << clp_status << std::endl;
 	}
+	return lp_status;
 }
 	
 /*************************************************************************************************

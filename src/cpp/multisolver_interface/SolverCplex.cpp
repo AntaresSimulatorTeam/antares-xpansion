@@ -340,8 +340,8 @@ void SolverCplex::chg_col_name(int id_col, std::string const & name)
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
-void SolverCplex::solve_lp(int& lp_status){
-    
+int SolverCplex::solve_lp(){
+    int lp_status;
     int status = CPXlpopt(_env, _prb);
 	zero_status_check(status, "solve prb as lp");
 
@@ -372,12 +372,13 @@ void SolverCplex::solve_lp(int& lp_status){
 		std::cout << "UNKNOWN CPLEX STATUS: " << cpx_status << std::endl;
         std::exit(0);
 	}
+	return lp_status;
 }
 
-void SolverCplex::solve_mip(int& lp_status){
-    
+int SolverCplex::solve_mip(){
+    int lp_status;
     if (get_n_integer_vars() == 0) {
-		solve_lp(lp_status);
+        lp_status = solve_lp();
 	}
 	else {
 		int status = CPXmipopt(_env, _prb);
@@ -406,6 +407,7 @@ void SolverCplex::solve_mip(int& lp_status){
             std::exit(0);
 		}
 	}
+	return lp_status;
 }
 	
 /*************************************************************************************************
