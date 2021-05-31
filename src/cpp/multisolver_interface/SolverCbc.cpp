@@ -610,8 +610,8 @@ void SolverCbc::get_basis(int* rstatus, int* cstatus) const{
 	_cbc.solver()->getBasisStatus(cstatus, rstatus);
 }
 
-void SolverCbc::get_mip_value(double& val) const{
-	val = _cbc.getObjValue();
+double SolverCbc::get_mip_value() const{
+    return _cbc.getObjValue();
 }
 
 void SolverCbc::get_lp_value(double& val) const{

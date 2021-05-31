@@ -193,7 +193,7 @@ int main(int argc, char** argv)
 
 	double overallCost_l;
 	if (mergedSolver_l->get_n_integer_vars() > 0) {
-		mergedSolver_l->get_mip_value(overallCost_l);
+        overallCost_l = mergedSolver_l->get_mip_value();
 	}
 	else {
 		mergedSolver_l->get_lp_value(overallCost_l);

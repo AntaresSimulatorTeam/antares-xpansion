@@ -369,9 +369,11 @@ void SolverXpress::get_basis(int* rstatus, int* cstatus) const{
 	zero_status_check(status, "get basis");
 }
 
-void SolverXpress::get_mip_value(double& val) const{
+double SolverXpress::get_mip_value() const{
+    double val;
 	int status = XPRSgetdblattrib(_xprs, XPRS_MIPOBJVAL, &val);
 	zero_status_check(status, "get MIP value");
+	return val;
 }
 
 void SolverXpress::get_lp_value(double& val) const{

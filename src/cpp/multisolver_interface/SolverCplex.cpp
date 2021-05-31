@@ -415,8 +415,10 @@ void SolverCplex::get_basis(int* rstatus, int* cstatus) const{
 	CPXgetbase(_env, _prb, cstatus, rstatus);
 }
 
-void SolverCplex::get_mip_value(double& val) const{
+double SolverCplex::get_mip_value() const{
+    double val;
 	CPXgetobjval(_env, _prb, &val);
+	return val;
 }
 
 void SolverCplex::get_lp_value(double& val) const{

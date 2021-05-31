@@ -493,8 +493,8 @@ void SolverClp::get_basis(int* rstatus, int* cstatus) const{
 	}
 }
 
-void SolverClp::get_mip_value(double& val) const{
-	val = _clp.objectiveValue();
+double SolverClp::get_mip_value() const{
+	return _clp.objectiveValue();
 }
 
 void SolverClp::get_lp_value(double& val) const{

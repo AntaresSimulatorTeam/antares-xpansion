@@ -29,7 +29,7 @@ void Worker::free() {
 */
 void Worker::get_value(double & lb) {
 	if (_is_master && _solver->get_n_integer_vars() > 0) {
-		_solver->get_mip_value(lb);
+        lb = _solver->get_mip_value();
 	}
 	else {
 		_solver->get_lp_value(lb);

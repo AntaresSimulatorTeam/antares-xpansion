@@ -445,11 +445,11 @@ public:
 	virtual void get_basis(int* rstatus, int* cstatus) const = 0;
 
     /**
-    * @brief Get the optimale value of a MIP problem (available after method "solve_mip")
+    * @brief Get the optimal value of a MIP problem (available after method "solve_mip")
     *
-    * @param lb : double to store the value
+    * @return lb : optimal value of a MIP problem
     */
-	virtual void get_mip_value(double& lb) const = 0;
+	virtual double get_mip_value() const = 0;
 
     /**
     * @brief Get the optimale value of a LP problem (available after method "solve_lp" )

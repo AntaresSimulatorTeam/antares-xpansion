@@ -131,7 +131,7 @@ public:
                         May be NULL if not required.
     */
 	virtual void get_basis(int* rstatus, int* cstatus) const;
-	virtual void get_mip_value(double& lb) const;
+	virtual double get_mip_value() const;
 	virtual void get_lp_value(double& lb) const;
 	virtual void get_simplex_ite(int& result) const;
 	virtual void get_lp_sol(double* primals, double* duals, 

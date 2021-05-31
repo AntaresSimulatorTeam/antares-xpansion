@@ -269,8 +269,7 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
 
                 if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
                 {
-                    double mip_val(0);
-                    solver->get_mip_value(mip_val);
+                    double mip_val = solver->get_mip_value();
                     REQUIRE(mip_val == datas[inst]._optval);
 
                     std::vector<double> primals(solver->get_ncols());
