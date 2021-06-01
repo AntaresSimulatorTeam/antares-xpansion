@@ -22,7 +22,7 @@ TEST_CASE("Modification: deleting rows", "[modif][del-rows]") {
             // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Deleting a row and checking new constraints matrix
@@ -67,7 +67,7 @@ TEST_CASE("Modification: add rows", "[modif][add-rows]") {
                 // solver declaration
                 SolverAbstract::Ptr solver = factory.create_solver(solver_name);
                 solver->init();
-                solver->read_prob(instance.c_str(), "MPS");
+                solver->read_prob_mps(instance);
 
                 //========================================================================================
                 // Add a row to problem : creating row structure
@@ -155,7 +155,7 @@ TEST_CASE("Modification: change obj", "[modif][chg-obj]") {
             // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Modify objective function
@@ -199,7 +199,7 @@ TEST_CASE("Modification: change right-hand side", "[modif][chg-rhs]") {
             // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Change constraints right hand sides
@@ -241,7 +241,7 @@ TEST_CASE("Modification: change matrix coefficient", "[modif][chg-coef]") {
             // solver declaration
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Change matrix coefficient
@@ -299,7 +299,7 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
                 // solver declaration
                 SolverAbstract::Ptr solver = factory.create_solver(solver_name);
                 solver->init();
-                solver->read_prob(instance.c_str(), "MPS");
+                solver->read_prob_mps(instance);
 
                 //========================================================================================
                 // Add new variable to problem
@@ -428,7 +428,7 @@ TEST_CASE("Modification: change name of row and column", "[modif][chg-names]") {
             std::string instance = datas[inst]._path;
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+            solver->read_prob_mps(instance);
 
             // Test change col name
             // Modifying name of Column of index 1
@@ -470,7 +470,7 @@ TEST_CASE("Modification: add cols and a row associated to those columns", "[modi
             std::string instance = datas[inst]._path;
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+            solver->read_prob_mps(instance);
 
             /*--------------------------------------------------------------------------------*/
             // adding 4 columns, the first with obj 1 and the three others wih obj 0

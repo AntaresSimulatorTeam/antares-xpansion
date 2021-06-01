@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 				std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
 				ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
 				std::string mpsName = options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps";
-				mergedSolver_l->write_prob(mpsName.c_str(), "MPS");
+				mergedSolver_l->write_prob_mps(mpsName);
 				std::exit(1);
 			}
 			else{

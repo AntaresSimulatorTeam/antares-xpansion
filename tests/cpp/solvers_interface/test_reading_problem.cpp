@@ -50,8 +50,7 @@ TEST_CASE("MPS file can be read and we can get number of columns", "[read][read-
             // initalization and read problem
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+            solver->read_prob_mps(instance);
             
             //========================================================================================
             // Get number of columns
@@ -78,8 +77,7 @@ TEST_CASE("MPS file can be read and we can get number of rows", "[read][read-row
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get numer of rows
@@ -106,8 +104,8 @@ TEST_CASE("MPS file can be read and we can get number of integer variables", "[r
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get number of integer variables
@@ -134,8 +132,8 @@ TEST_CASE("MPS file can be read and we can get number of non zero elements in th
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get number of non zero elements in matrix
@@ -164,8 +162,8 @@ TEST_CASE("MPS file can be read and we can get objective function coefficients",
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get objective function
@@ -199,8 +197,8 @@ TEST_CASE("MPS file can be read and we can get matrix coefficients", "[read][rea
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get necessary datas from solver
@@ -247,8 +245,8 @@ TEST_CASE("MPS file can be read and we can get right hand side", "[read][read-rh
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());          
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get Constraints Right Hand Sides
@@ -285,8 +283,8 @@ TEST_CASE("MPS file can be read and we can get row types", "[read][read-rowtypes
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
 
             REQUIRE(solver->get_nrows() == datas[inst]._nrows);
@@ -322,8 +320,8 @@ TEST_CASE("MPS file can be read and we can get types of columns", "[read][read-c
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get column types
@@ -356,8 +354,8 @@ TEST_CASE("MPS file can be read and we can get lower bounds on variables", "[rea
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get lower bounds on variables
@@ -390,8 +388,8 @@ TEST_CASE("MPS file can be read and we can get upper bounds on variables", "[rea
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Get upper bounds on variables
@@ -431,8 +429,8 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Required datas
@@ -539,13 +537,13 @@ TEST_CASE("We can get the names of variables and constraints present in MPS file
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
             
             if (solver_name == "XPRESS") {
                 std::string prb_name = "test" + ind;
-                solver->write_prob(prb_name.c_str(), "MPS");
+                solver->write_prob_mps(prb_name);
                 ind++;
             }
             //========================================================================================
@@ -596,13 +594,13 @@ TEST_CASE("We can get the indices of rows and columns by their names", "[read][g
             REQUIRE(solver->get_number_of_instances() == 1);
             solver->init();
 
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+
+            solver->read_prob_mps(instance);
 
 
             if (solver_name == "XPRESS") {
                 std::string prb_name = "test" + ind;
-                solver->write_prob(prb_name.c_str(), "MPS");
+                solver->write_prob_mps(prb_name);
                 ind++;
             }
             //========================================================================================
@@ -644,7 +642,7 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]") {
             // Intial solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            solver->read_prob(instance.c_str(), "MPS");
+            solver->read_prob_mps(instance);
             REQUIRE(solver->get_number_of_instances() == 1);
 
             REQUIRE(solver->get_ncols() == datas[inst]._ncols);

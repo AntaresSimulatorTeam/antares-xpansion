@@ -293,7 +293,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	SolverFactory factory;
 	SolverAbstract::Ptr in_prblm;
 	in_prblm = factory.create_solver(solver_name);
-	in_prblm->read_prob(mps_name.c_str(), "MPS");
+	in_prblm->read_prob_mps(mps_name);
 
 	int ncols = in_prblm->get_ncols();
 	int nrows = in_prblm->get_nrows();
@@ -412,7 +412,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	out_prblm->write_prob(lp_mps_name.c_str(), "MPS");
+	out_prblm->write_prob_mps(lp_mps_name);
 	std::cout << "mps_name : " << lp_mps_name << " done" << std::endl;
 }
 

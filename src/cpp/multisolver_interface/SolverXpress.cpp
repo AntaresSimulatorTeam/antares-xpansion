@@ -77,22 +77,28 @@ void SolverXpress::free() {
 /*************************************************************************************************
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
-void SolverXpress::write_prob(const char* name, const char* flags){
-	std::string nFlags = "";
-	if (std::string(flags) == "LP") {
-		nFlags = "-l";
-	}
+void SolverXpress::write_prob_mps(const std::string& filename){
+    std::string nFlags = "";
+    int status = XPRSwriteprob(_xprs, filename.c_str(), nFlags.c_str());
+    zero_status_check(status, "write problem");
+}
 
-	int status = XPRSwriteprob(_xprs, name, nFlags.c_str());
-	zero_status_check(status, "write problem");
+void SolverXpress::write_prob_lp(const std::string& filename){
+    std::string nFlags = "LP";
+    int status = XPRSwriteprob(_xprs, filename.c_str(), nFlags.c_str());
+    zero_status_check(status, "write problem");
+}
+
+void SolverXpress::read_prob_mps(const std::string& filename){
+    std::string nFlags = "";
+    read_prob(filename.c_str(), nFlags.c_str());
+}
+void SolverXpress::read_prob_lp(const std::string& filename){
+    std::string nFlags = "l";
+    read_prob(filename.c_str(), nFlags.c_str());
 }
 
 void SolverXpress::read_prob(const char* prob_name, const char* flags){
-	std::string xprs_flags = "";
-	if (std::string(flags) == "LP") {
-		xprs_flags = "l";
-	}
-	
 	// To delete obj from rows when reading prob
 	int keeprows(0);
 	int status = XPRSgetintcontrol(_xprs, XPRS_KEEPNROWS, &keeprows);
@@ -115,7 +121,7 @@ void SolverXpress::read_prob(const char* prob_name, const char* flags){
 	}
 	*/
 	
-	status = XPRSreadprob(_xprs, prob_name, xprs_flags.c_str());
+	status = XPRSreadprob(_xprs, prob_name, flags);
 	zero_status_check(status, "read problem");
 
 	//If param KEEPNROWS not -1 remove first row which is the objective function

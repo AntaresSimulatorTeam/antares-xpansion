@@ -96,12 +96,25 @@ void SolverCplex::free() {
 /*************************************************************************************************
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
-void SolverCplex::write_prob(const char* name, const char* flags){
-    CPXwriteprob(_env, _prb, name, flags);
+void SolverCplex::write_prob_mps(const std::string& filename){
+    std::string cplexFlags = "MPS";
+    CPXwriteprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
 }
 
-void SolverCplex::read_prob(const char* prob_name, const char* flags){
-	int status = CPXreadcopyprob(_env, _prb, prob_name, flags);
+void SolverCplex::write_prob_lp(const std::string& filename){
+    std::string cplexFlags = "LP";
+    CPXwriteprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
+}
+
+void SolverCplex::read_prob_mps(const std::string& filename){
+    std::string cplexFlags = "MPS";
+    int status = CPXreadcopyprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
+    zero_status_check(status, "read problem");
+}
+
+void SolverCplex::read_prob_lp(const std::string& filename){
+    std::string cplexFlags = "LP";
+    int status = CPXreadcopyprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
     zero_status_check(status, "read problem");
 }
 
