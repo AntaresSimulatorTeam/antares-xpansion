@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SolverAbstract.h"
+#include "multisolver_interface/SolverAbstract.h"
 #include "xprs.h"
 
 /*!
@@ -104,8 +104,8 @@ public:
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
 public:
-    virtual void solve_lp(int& lp_status);
-	virtual void solve_mip(int& lp_status);
+    virtual int solve_lp();
+	virtual int solve_mip();
 	
 /*************************************************************************************************
 -------------------------    Methods to get solutions information    -----------------------------
@@ -131,9 +131,9 @@ public:
                         May be NULL if not required.
     */
 	virtual void get_basis(int* rstatus, int* cstatus) const;
-	virtual void get_mip_value(double& lb) const;
-	virtual void get_lp_value(double& lb) const;
-	virtual void get_simplex_ite(int& result) const;
+	virtual double get_mip_value() const;
+	virtual double get_lp_value() const;
+	virtual int get_simplex_ite() const;
 	virtual void get_lp_sol(double* primals, double* duals, 
                     double* reduced_costs);
     virtual void get_mip_sol(double* primals);
@@ -145,7 +145,7 @@ public:
 	virtual void set_output_log_level(int loglevel);
 	virtual void set_algorithm(std::string const& algo);
     virtual void set_threads(int n_threads);
-	virtual void optimality_gap(double gap);
+	virtual void set_optimality_gap(double gap);
 	virtual void set_simplex_iter(int iter);
 };
 

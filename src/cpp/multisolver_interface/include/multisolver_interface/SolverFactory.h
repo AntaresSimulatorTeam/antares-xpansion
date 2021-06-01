@@ -1,16 +1,6 @@
 #pragma once
 
-#include "SolverAbstract.h"
-#ifdef CPLEX
-#include "SolverCplex.h"
-#endif
-#ifdef XPRESS
-#include "SolverXpress.h"
-#endif
-#ifdef COIN_OR
-#include "SolverCbc.h"
-#include "SolverClp.h"
-#endif
+#include "multisolver_interface/SolverAbstract.h"
 
 /*!
 * \class class SolverFactory

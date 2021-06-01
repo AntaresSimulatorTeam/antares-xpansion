@@ -1,27 +1,9 @@
 #pragma once
 
 #include <sstream>
+#include <cassert>
 
-
-#include "Solver.h"
-
-
-#if ( (!defined(ORTOOLS_LP_SOLVER_TYPE)) || (!defined(ORTOOLS_MIP_SOLVER_TYPE)) )
-#if defined(CPLEX_SOLVER)
-#define ORTOOLS_LP_SOLVER_TYPE operations_research::MPSolver::CPLEX_LINEAR_PROGRAMMING
-#define ORTOOLS_MIP_SOLVER_TYPE operations_research::MPSolver::CPLEX_MIXED_INTEGER_PROGRAMMING
-#elif defined(XPRESS_SOLVER)
-#define ORTOOLS_LP_SOLVER_TYPE operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING
-#define ORTOOLS_MIP_SOLVER_TYPE operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING
-#elif defined(GUROBI_SOLVER)
-#define ORTOOLS_LP_SOLVER_TYPE operations_research::MPSolver::GUROBI_LINEAR_PROGRAMMING
-#define ORTOOLS_MIP_SOLVER_TYPE operations_research::MPSolver::GUROBI_MIXED_INTEGER_PROGRAMMING
-#else
-#define ORTOOLS_LP_SOLVER_TYPE operations_research::MPSolver::CLP_LINEAR_PROGRAMMING
-#define ORTOOLS_MIP_SOLVER_TYPE operations_research::MPSolver::CBC_MIXED_INTEGER_PROGRAMMING
-#endif
-#endif
-
+#include "multisolver_interface/Solver.h"
 
 /**
  * @brief reads problem from an mps file

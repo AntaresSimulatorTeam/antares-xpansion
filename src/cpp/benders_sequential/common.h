@@ -27,7 +27,7 @@
 #include "Timer.h"
 #include "benders_sequential_core/ILogger.h"
 // MultiSolver interface 
-#include "Solver.h"
+#include "multisolver_interface/Solver.h"
 
 struct Predicate;
 typedef std::map<std::string, double> Point;

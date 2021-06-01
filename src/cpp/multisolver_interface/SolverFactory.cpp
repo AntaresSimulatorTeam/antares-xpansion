@@ -1,4 +1,15 @@
-#include "SolverFactory.h"
+#ifdef CPLEX
+#include "SolverCplex.h"
+#endif
+#ifdef XPRESS
+#include "SolverXpress.h"
+#endif
+#ifdef COIN_OR
+#include "SolverCbc.h"
+#include "SolverClp.h"
+#endif
+
+#include "multisolver_interface/SolverFactory.h"
 
 SolverFactory::SolverFactory(){
 	_available_solvers.clear();

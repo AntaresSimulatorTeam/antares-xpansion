@@ -87,7 +87,8 @@ int main(int argc, char** argv)
 		lpData.append_in(mergedSolver_l, varPrefix_l);
 
 		for (auto const & x : kvp.second) {
-			if (mergedSolver_l->get_col_index(varPrefix_l + x.first) == -1){
+		    int col_index = mergedSolver_l->get_col_index(varPrefix_l + x.first);
+			if (col_index == -1){
 				std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
 				ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
 				std::string mpsName = options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps";
@@ -95,7 +96,7 @@ int main(int argc, char** argv)
 				std::exit(1);
 			}
 			else{
-				x_mps_id[x.first][kvp.first] = mergedSolver_l->get_col_index(varPrefix_l + x.first);
+				x_mps_id[x.first][kvp.first] = col_index;
 			}
 		}
 
@@ -163,10 +164,10 @@ int main(int argc, char** argv)
 	Timer timer;
 	int status_l = 0;
 	if (mergedSolver_l->get_n_integer_vars() > 0) {
-		mergedSolver_l->solve_mip(status_l);
+        status_l = mergedSolver_l->solve_mip();
 	}
 	else {
-		mergedSolver_l->solve_lp(status_l);
+        status_l = mergedSolver_l->solve_lp();
 	}
 	
 	logger->log_total_duration(timer.elapsed());
@@ -193,10 +194,10 @@ int main(int argc, char** argv)
 
 	double overallCost_l;
 	if (mergedSolver_l->get_n_integer_vars() > 0) {
-		mergedSolver_l->get_mip_value(overallCost_l);
+        overallCost_l = mergedSolver_l->get_mip_value();
 	}
 	else {
-		mergedSolver_l->get_lp_value(overallCost_l);
+        overallCost_l = mergedSolver_l->get_lp_value();
 	}
 	double operationalCost_l = overallCost_l - investCost_l;
 

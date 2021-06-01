@@ -535,7 +535,8 @@ void SolverCbc::chg_col_name(int id_col, std::string const & name)
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
-void SolverCbc::solve_lp(int& lp_status){
+int SolverCbc::solve_lp(){
+    int lp_status;
 
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
@@ -557,10 +558,12 @@ void SolverCbc::solve_lp(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CBC STATUS after initial solve." << std::endl;
 	}
+
+	return lp_status;
 }
 
-void SolverCbc::solve_mip(int& lp_status){
-
+int SolverCbc::solve_mip(){
+    int lp_status;
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
 
@@ -601,6 +604,8 @@ void SolverCbc::solve_mip(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CBC STATUS after branch and bound complete search." << std::endl;
 	}
+
+	return lp_status;
 }
 	
 /*************************************************************************************************
@@ -610,16 +615,16 @@ void SolverCbc::get_basis(int* rstatus, int* cstatus) const{
 	_cbc.solver()->getBasisStatus(cstatus, rstatus);
 }
 
-void SolverCbc::get_mip_value(double& val) const{
-	val = _cbc.getObjValue();
+double SolverCbc::get_mip_value() const{
+    return _cbc.getObjValue();
 }
 
-void SolverCbc::get_lp_value(double& val) const{
-	val = _cbc.solver()->getObjValue();
+double SolverCbc::get_lp_value() const{
+	return _cbc.solver()->getObjValue();
 }
 
-void SolverCbc::get_simplex_ite(int& result) const{
-	result = _cbc.solver()->getIterationCount();
+int SolverCbc::get_simplex_ite() const{
+	return _cbc.solver()->getIterationCount();
 }
 
 void SolverCbc::get_lp_sol(double* primals, double* duals,
@@ -701,7 +706,7 @@ void SolverCbc::set_threads(int n_threads){
 	_cbc.setNumberThreads(n_threads);
 }
 
-void SolverCbc::optimality_gap(double gap){
+void SolverCbc::set_optimality_gap(double gap){
 	std::cout << "ERROR : Optimality gap handling not implemented in the interface for CBC" << std::endl;
 	std::exit(1);
 }

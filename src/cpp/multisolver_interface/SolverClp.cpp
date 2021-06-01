@@ -438,8 +438,8 @@ void SolverClp::chg_col_name(int id_col, std::string const & name)
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
-void SolverClp::solve_lp(int& lp_status){
-
+int SolverClp::solve_lp(){
+    int lp_status;
 	_clp.dual();
 
 	int clp_status = _clp.status();
@@ -456,10 +456,11 @@ void SolverClp::solve_lp(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CLP STATUS IS : " << clp_status << std::endl;
 	}
+	return lp_status;
 }
 
-void SolverClp::solve_mip(int& lp_status){
-
+int SolverClp::solve_mip(){
+    int lp_status;
 	_clp.dual();
 
 	int clp_status = _clp.status();
@@ -476,6 +477,7 @@ void SolverClp::solve_mip(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN CLP STATUS IS : " << clp_status << std::endl;
 	}
+	return lp_status;
 }
 	
 /*************************************************************************************************
@@ -493,16 +495,16 @@ void SolverClp::get_basis(int* rstatus, int* cstatus) const{
 	}
 }
 
-void SolverClp::get_mip_value(double& val) const{
-	val = _clp.objectiveValue();
+double SolverClp::get_mip_value() const{
+	return _clp.objectiveValue();
 }
 
-void SolverClp::get_lp_value(double& val) const{
-	val = _clp.objectiveValue();
+double SolverClp::get_lp_value() const{
+	return _clp.objectiveValue();
 }
 
-void SolverClp::get_simplex_ite(int& result) const{
-	result = _clp.numberIterations();
+int SolverClp::get_simplex_ite() const{
+	return _clp.numberIterations();
 }
 
 void SolverClp::get_lp_sol(double* primals, double* duals,
@@ -573,7 +575,7 @@ void SolverClp::set_threads(int n_threads){
 	_clp.setNumberThreads(n_threads);
 }
 
-void SolverClp::optimality_gap(double gap){
+void SolverClp::set_optimality_gap(double gap){
 	std::cout << "ERROR : Optimality gap handling not implemented with Clp" << std::endl;
 	std::exit(1);
 }

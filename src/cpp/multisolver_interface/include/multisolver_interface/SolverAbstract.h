@@ -413,16 +413,16 @@ public:
     /**
     * @brief Solves a problem as LP
     *
-    * @param lp_status      : status of the problem after resolution
+    * @return lp_status      : status of the problem after resolution
     */
-    virtual void solve_lp(int& lp_status) = 0;
+    virtual int solve_lp() = 0;
 
     /**
     * @brief Solves a problem as MIP
     *
-    * @param lp_status      : status of the problem after resolution
+    * @return lp_status      : status of the problem after resolution
     */
-	virtual void solve_mip(int& lp_status) = 0;
+	virtual int solve_mip() = 0;
 	
 
 	
@@ -445,28 +445,28 @@ public:
 	virtual void get_basis(int* rstatus, int* cstatus) const = 0;
 
     /**
-    * @brief Get the optimale value of a MIP problem (available after method "solve_mip")
+    * @brief Get the optimal value of a MIP problem (available after method "solve_mip")
     *
-    * @param lb : double to store the value
+    * @return lb : optimal value of a MIP problem
     */
-	virtual void get_mip_value(double& lb) const = 0;
+	virtual double get_mip_value() const = 0;
 
     /**
-    * @brief Get the optimale value of a LP problem (available after method "solve_lp" )
+    * @brief Get the optimal value of a LP problem (available after method "solve_lp" )
     *
-    * @param lb : double to store the value
+    * @return lb : optimal value of a LP problem
     */
-	virtual void get_lp_value(double& lb) const = 0;
+	virtual double get_lp_value() const = 0;
 
     /**
     * @brief Get the number of simplex iterations done in the last resolution of the problem
     *
-    * @param result : int to store the value
+    * @return result : number of simplex iterations done in the last resolution of the problem
     */
-	virtual void get_simplex_ite(int& result) const = 0;
+	virtual int get_simplex_ite() const = 0;
 
 	/**
-    * @brief Get LP solution of a problem (available after method "solve")
+    * @brief Get LP solution of a problem (available after method "solve_lp")
     *
     * @param primals    : values of primal variables
     * @param duals      : values of dual variables
@@ -476,7 +476,7 @@ public:
                     double* reduced_costs) = 0;
 	
     /**
-    * @brief Get MIP solution of a problem (available after method "solve_integer")
+    * @brief Get MIP solution of a problem (available after method "solve_mip")
     *
     * @param primals    : values of primal variables
     */
@@ -513,7 +513,7 @@ public:
     *
     * @param gap: double of the value of wanted gap
     */
-	virtual void optimality_gap(double gap) = 0;
+	virtual void set_optimality_gap(double gap) = 0;
 
     /**
     * @brief Sets the maximum number of simplex iterations the solver can perform

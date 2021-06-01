@@ -1,5 +1,5 @@
 #pragma once
 
-#include "SolverFactory.h"
+#include "multisolver_interface/SolverFactory.h"
 
 /* Empty header to include all the library*/

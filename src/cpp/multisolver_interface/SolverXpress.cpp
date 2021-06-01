@@ -318,7 +318,8 @@ void SolverXpress::chg_col_name(int id_col, std::string const & name)
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem    ---------------------------------
 *************************************************************************************************/    
-void SolverXpress::solve_lp(int& lp_status){
+int SolverXpress::solve_lp(){
+    int lp_status;
 	int status = XPRSlpoptimize(_xprs, "");
 	zero_status_check(status, "solve problem as LP");
 
@@ -339,9 +340,11 @@ void SolverXpress::solve_lp(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "Error : UNKNOWN XPRESS STATUS IS : " << xprs_status << std::endl;
 	}
+	return lp_status;
 }
 
-void SolverXpress::solve_mip(int& lp_status){
+int SolverXpress::solve_mip(){
+    int lp_status;
 	int status(0);
 	status = XPRSmipoptimize(_xprs, "");
 	zero_status_check(status, "solve problem as MIP");
@@ -363,6 +366,7 @@ void SolverXpress::solve_mip(int& lp_status){
 		lp_status = UNKNOWN;
 		std::cout << "XPRESS STATUS IS : " << xprs_status << std::endl;
 	}
+	return lp_status;
 }
 	
 /*************************************************************************************************
@@ -373,19 +377,25 @@ void SolverXpress::get_basis(int* rstatus, int* cstatus) const{
 	zero_status_check(status, "get basis");
 }
 
-void SolverXpress::get_mip_value(double& val) const{
+double SolverXpress::get_mip_value() const{
+    double val;
 	int status = XPRSgetdblattrib(_xprs, XPRS_MIPOBJVAL, &val);
 	zero_status_check(status, "get MIP value");
+	return val;
 }
 
-void SolverXpress::get_lp_value(double& val) const{
+double SolverXpress::get_lp_value() const{
+    double val;
 	int status = XPRSgetdblattrib(_xprs, XPRS_LPOBJVAL, &val);
 	zero_status_check(status, "get LP value");
+	return val;
 }
 
-void SolverXpress::get_simplex_ite(int& result) const{
+int SolverXpress::get_simplex_ite() const{
+    int result;
 	int status = XPRSgetintattrib(_xprs, XPRS_SIMPLEXITER, &result);
 	zero_status_check(status, "get simplex iterations");
+	return result;
 }
 
 void SolverXpress::get_lp_sol(double* primals, double* duals, 
@@ -441,7 +451,7 @@ void SolverXpress::set_threads(int n_threads){
 	zero_status_check(status, "set threads");
 }
 
-void SolverXpress::optimality_gap(double gap){
+void SolverXpress::set_optimality_gap(double gap){
 	int status = XPRSsetdblcontrol(_xprs, XPRS_OPTIMALITYTOL, gap);
 	zero_status_check(status, "set optimality gap");
 }

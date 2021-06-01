@@ -1,7 +1,7 @@
 #pragma once
 #include "catch2.hpp"
 
-#include "Solver.h"
+#include "multisolver_interface/Solver.h"
 #include <iostream>
 #include <fstream>
 #include "define_datas.hpp"
@@ -29,8 +29,7 @@ TEST_CASE("A LP problem is solved", "[solve-lp]") {
 
             //========================================================================================
             // Solve as LP
-            int slv_status(0);
-            solver->solve_lp(slv_status);
+            int slv_status = solver->solve_lp();
 
             bool success = false;
             for (auto stat : datas[inst]._status_int) {
@@ -82,8 +81,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
 
             //========================================================================================
             // Solve as LP
-            int slv_status(0);
-            solver->solve_lp(slv_status);
+            int slv_status =solver->solve_lp();
 
             bool success = false;
             for (auto stat : datas[inst]._status_int) {
@@ -113,8 +111,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
             // Check LP value after solve
             if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
             {
-                double lp_val(0);
-                solver->get_lp_value(lp_val);
+                double lp_val = solver->get_lp_value();
                 REQUIRE( Approx(lp_val) == datas[inst]._optval);
             }
 
@@ -147,8 +144,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
 
             //========================================================================================
             // Solve as LP and get solution
-            int slv_status(0);
-            solver->solve_lp(slv_status);
+            int slv_status = solver->solve_lp();
 
             bool success = false;
             for (auto stat : datas[inst]._status_int) {
@@ -175,8 +171,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
             }
             if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
             {
-                double lp_val(0);
-                solver->get_lp_value(lp_val);
+                double lp_val = solver->get_lp_value();
                 REQUIRE(Approx(lp_val) == datas[inst]._optval);
 
                 std::vector<double> primals(solver->get_ncols());
@@ -240,8 +235,7 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
 
                 //========================================================================================
                 // Solve as MIP
-                int slv_status(0);
-                solver->solve_mip(slv_status);
+                int slv_status = solver->solve_mip();
 
                 bool success = false;
                 for (auto stat : datas[inst]._status_int) {
@@ -269,8 +263,7 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
 
                 if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
                 {
-                    double mip_val(0);
-                    solver->get_mip_value(mip_val);
+                    double mip_val = solver->get_mip_value();
                     REQUIRE(mip_val == datas[inst]._optval);
 
                     std::vector<double> primals(solver->get_ncols());
