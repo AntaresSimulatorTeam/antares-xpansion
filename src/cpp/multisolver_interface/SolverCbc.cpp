@@ -441,8 +441,10 @@ void SolverCbc::chg_obj(const std::vector<int>& mindex, const std::vector<double
 	}
 }
 
-void SolverCbc::chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd){
-	for (int i(0); i < nbds; i++) {
+void SolverCbc::chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd){
+    assert(qbtype.size() == mindex.size());
+    assert(bnd.size() == mindex.size());
+	for (int i(0); i < mindex.size(); i++) {
 		if (qbtype[i] == 'L') {
 			_clp_inner_solver.setColLower(mindex[i], bnd[i]);
 		}
@@ -460,19 +462,20 @@ void SolverCbc::chg_bounds(int nbds, const int* mindex, const char* qbtype, cons
 	}
 }
 
-void SolverCbc::chg_col_type(int nels, const int* mindex, const char* qctype) {
+void SolverCbc::chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) {
+    assert(qctype.size() == mindex.size());
 	std::vector<int> bnd_index(1, 0);
 	std::vector<char> bnd_type(1, 'U');
 	std::vector<double> bnd_val(1, 1.0);
 
-	for (int i = 0; i < nels; i++) {
+	for (int i = 0; i < mindex.size(); i++) {
 		if (qctype[i] == 'C') {
 			_clp_inner_solver.setContinuous(mindex[i]);
 		}
 		else if (qctype[i] == 'B') {
 			_clp_inner_solver.setInteger(mindex[i]);
 			bnd_index[0] = mindex[i];
-			chg_bounds(1, bnd_index.data(), bnd_type.data(), bnd_val.data());
+			chg_bounds(bnd_index, bnd_type, bnd_val);
 		}
 		else if (qctype[i] == 'I') {
 			_clp_inner_solver.setInteger(mindex[i]);

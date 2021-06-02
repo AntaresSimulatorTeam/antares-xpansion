@@ -43,7 +43,7 @@ void solver_addcols(SolverAbstract::Ptr solver_p,
         newIndex[i] = ncolInit + i;
     }
 
-    solver_p->chg_col_type(newCols, newIndex.data(), colTypes_p.data());
+    solver_p->chg_col_type(newIndex, colTypes_p);
 
     if (colNames_p.size() > 0) {
         int ncolFinal = solver_p->get_ncols();
@@ -145,7 +145,7 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
     assert(mindex_p.size() == qbtype_p.size());
     assert(mindex_p.size() == bnd_p.size());
     
-    solver_p->chg_bounds(mindex_p.size(), mindex_p.data(), qbtype_p.data(), bnd_p.data());
+    solver_p->chg_bounds(mindex_p, qbtype_p, bnd_p);
 }
 
 void solver_copyandrenamevars(SolverAbstract::Ptr outSolver_p,

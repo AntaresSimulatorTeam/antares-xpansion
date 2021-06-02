@@ -299,13 +299,16 @@ void SolverCplex::chg_obj(const std::vector<int>& mindex, const std::vector<doub
     zero_status_check(status, "change obj");
 }
 
-void SolverCplex::chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd){
-    int status = CPXchgbds(_env, _prb, nbds, mindex, qbtype, bnd);
+void SolverCplex::chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd){
+    assert(qbtype.size() == mindex.size());
+    assert(bnd.size() == mindex.size());
+    int status = CPXchgbds(_env, _prb, mindex.size(), mindex.data(), qbtype.data(), bnd.data());
     zero_status_check(status, "change bounds");
 }
 
-void SolverCplex::chg_col_type(int nels, const int* mindex, const char* qctype) {
-    int status = CPXchgctype(_env, _prb, nels, mindex, qctype);
+void SolverCplex::chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) {
+    assert(qctype.size() == mindex.size());
+    int status = CPXchgctype(_env, _prb, mindex.size(), mindex.data(), qctype.data());
     zero_status_check(status, "change col type");
 	if (get_n_integer_vars() == 0) {
 		int status = CPXchgprobtype(_env, _prb, CPXPROB_LP);

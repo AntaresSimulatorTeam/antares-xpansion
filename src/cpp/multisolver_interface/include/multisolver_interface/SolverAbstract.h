@@ -395,7 +395,7 @@ public:
     * @param qbtype : types of the bounds to modify ('U' upper, 'L' lower, 'B' both)
     * @param bnd    : new values for the bounds
     */
-    virtual void chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd) = 0;
+    virtual void chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd) = 0;
 	
     /**
     * @brief Change type of some columns
@@ -404,7 +404,7 @@ public:
     * @param mindex : indices of columns to modify
     * @param qctype : New types of columns
     */
-    virtual void chg_col_type(int nels, const int* mindex, const char* qctype) = 0;
+    virtual void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) = 0;
 
     /**
     * @brief Change rhs of a row
