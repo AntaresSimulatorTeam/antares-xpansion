@@ -20,8 +20,7 @@ SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
 	if (SolverCbc* c = dynamic_cast<SolverCbc*>(fictif.get()))
 	{
 		_clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
-		_cbc = CbcModel(_clp_inner_solver);
-		set_output_log_level(_current_log_level);
+		defineCbcModelFromInnerSolver();
 	}
 	else {
 		_NumberOfProblems -= 1;
@@ -45,6 +44,14 @@ int SolverCbc::get_number_of_instances()
 	return _NumberOfProblems;
 }
 
+void SolverCbc::defineCbcModelFromInnerSolver()
+{
+    // Affectation of new Clp interface to Cbc
+    // As CbcModel _cbc is modified, need to set log level to 0 again
+    _cbc = CbcModel(_clp_inner_solver);
+    set_output_log_level(_current_log_level);
+}
+
 /*************************************************************************************************
 -----------------------------------    Output stream management    ------------------------------
 *************************************************************************************************/
@@ -54,8 +61,7 @@ int SolverCbc::get_number_of_instances()
 *************************************************************************************************/
 void SolverCbc::init() {
 	_clp_inner_solver = OsiClpSolverInterface();
-	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(_current_log_level);
+    defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::free() {
@@ -141,24 +147,17 @@ void SolverCbc::write_prob_mps(const std::string& filename) {
 void SolverCbc::write_prob_lp(const std::string& name) {
     _clp_inner_solver.writeLpNative(name.c_str(), NULL, NULL);
 }
-void SolverCbc::read_prob(const char* prob_name, const char* flags)
-{
-    int status = _clp_inner_solver.readMps(prob_name, flags);
-    zero_status_check(status, "read problem");
 
-    // Affectation of new Clp interface to Cbc
-    // As CbcModel _cbc is modified, need to set log level to 0 again
-    _cbc = CbcModel(_clp_inner_solver);
-    set_output_log_level(_current_log_level);
-}
 void SolverCbc::read_prob_mps(const std::string& prob_name){
-	std::string clp_flags = "mps";
-    read_prob(prob_name.c_str(), clp_flags.c_str());
+    int status = _clp_inner_solver.readMps(prob_name.c_str());
+    zero_status_check(status, "read problem");
+    defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::read_prob_lp(const std::string& prob_name){
-    std::string clp_flags = "lp";
-    read_prob(prob_name.c_str(), clp_flags.c_str());
+    int status = _clp_inner_solver.readLp(prob_name.c_str());
+    zero_status_check(status, "read problem");
+    defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv){
@@ -539,8 +538,7 @@ int SolverCbc::solve_lp(){
 
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
-	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(_current_log_level);
+    defineCbcModelFromInnerSolver();
 
 	_cbc.solver()->initialSolve();
 
@@ -565,9 +563,7 @@ int SolverCbc::solve_mip(){
     int lp_status;
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
-
-	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(_current_log_level);
+    defineCbcModelFromInnerSolver();
 	clock_t t_i = clock();
 	_cbc.branchAndBound();
 	clock_t t_f = clock();

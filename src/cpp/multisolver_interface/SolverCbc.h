@@ -43,6 +43,9 @@ public:
 	virtual ~SolverCbc();
 	virtual int get_number_of_instances();
 
+private:
+    void defineCbcModelFromInnerSolver();
+
 /*************************************************************************************************
 ---------------------------------    Output and stream management    -----------------------------
 *************************************************************************************************/
@@ -66,16 +69,6 @@ public:
     virtual void read_prob_lp(const std::string& filename);
 
     virtual void copy_prob(const SolverAbstract::Ptr fictif_solv);
-
-private:
-    /**
-	* @brief Reads a problem from a file, CBC WARNING : resets the solver log level to 0
-	*
-	* @param prob_name 	: Name of file containing the problem
-	* @param flags : flags to chose the file type
-	*/
-    virtual void read_prob(const char* prob_name, const char* flags);
-
 
 /*************************************************************************************************
 -----------------------    Get general informations about problem    ----------------------------
