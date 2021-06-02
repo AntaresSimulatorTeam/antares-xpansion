@@ -80,8 +80,8 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string,
 			std::vector<double>(1, -1e20).data(), std::vector<double>(1, 1e20).data());
 
 		// Changing column type to binary
-		master_p->chg_col_type(1, std::vector<int>(1, master_p->get_ncols() - 1).data(),
-			std::vector<char>(1, 'B').data());
+		master_p->chg_col_type(std::vector<int>(1, master_p->get_ncols() - 1),
+			std::vector<char>(1, 'B'));
 
 		// Changing column name
 		master_p->chg_col_name(master_p->get_ncols() - 1, pairOldNewVarnames.second);

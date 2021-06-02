@@ -1,3 +1,4 @@
+#include <cassert>
 #include "SolverXpress.h"
 
 /*************************************************************************************************
@@ -285,18 +286,22 @@ void SolverXpress::add_name(int type, const char* cnames, int indice){
 	zero_status_check(status, "add names");
 }
 
-void SolverXpress::chg_obj(int nels, const int* mindex, const double* obj){
-	int status = XPRSchgobj(_xprs, nels, mindex, obj);
+void SolverXpress::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj){
+    assert(obj.size() == mindex.size());
+	int status = XPRSchgobj(_xprs, obj.size(), mindex.data(), obj.data());
 	zero_status_check(status, "change objective");
 }
 
-void SolverXpress::chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd){
-	int status = XPRSchgbounds(_xprs, nbds, mindex, qbtype, bnd);
+void SolverXpress::chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd){
+    assert(qbtype.size() == mindex.size());
+    assert(bnd.size() == mindex.size());
+	int status = XPRSchgbounds(_xprs, mindex.size(), mindex.data(), qbtype.data(), bnd.data());
 	zero_status_check(status, "change bounds");
 }
 
-void SolverXpress::chg_col_type(int nels, const int* mindex, const char* qctype) {
-	int status = XPRSchgcoltype(_xprs, nels, mindex, qctype);
+void SolverXpress::chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) {
+    assert(qctype.size() == mindex.size());
+	int status = XPRSchgcoltype(_xprs, mindex.size(), mindex.data(), qctype.data());
 	zero_status_check(status, "change column types");
 }
 

@@ -12,27 +12,35 @@ class InvalidStatusException : public std::runtime_error {
 public:
     InvalidStatusException(int status,const std::string& action)
     :std::runtime_error("Failed to "+ action + ": invalid status " + std::to_string(status) + " (0 expected)")
-    {
-
-    }
+    {}
 };
 
 class InvalidRowSizeException : public std::runtime_error {
 public:
     InvalidRowSizeException(int expected_size, int actual_size)
             :std::runtime_error("Invalid row size for solver. " + std::to_string(actual_size) + " rows available ("+std::to_string(expected_size)+" expected)")
-    {
-
-    }
+    {}
 };
 
 class InvalidColSizeException : public std::runtime_error {
 public:
     InvalidColSizeException(int expected_size, int actual_size)
             :std::runtime_error("Invalid col size for solver. " + std::to_string(actual_size) + " cols available ("+std::to_string(expected_size)+" expected)")
-    {
+    {}
+};
 
-    }
+class InvalidBoundTypeException : public std::runtime_error {
+public:
+    InvalidBoundTypeException(char qbtype)
+            :std::runtime_error(std::string("Invalid bound type ") + qbtype + std::string(" for solver."))
+    {}
+};
+
+class InvalidColTypeException : public std::runtime_error {
+public:
+    InvalidColTypeException(char qctype)
+            :std::runtime_error(std::string("Invalid col type ") + qctype + std::string(" for solver."))
+    {}
 };
 
 // Definition of optimality codes
@@ -382,11 +390,10 @@ public:
     /**
     * @brief Change coefficients in objective function
     *
-    * @param nels   : number of elements to change
     * @param mindex : indices of columns to modify
     * @param obj    : Values to set in objective function
     */
-    virtual void chg_obj(int nels, const int* mindex, const double* obj) = 0;
+    virtual void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) = 0;
 	
     /**
     * @brief Change bounds of some variables
@@ -396,7 +403,7 @@ public:
     * @param qbtype : types of the bounds to modify ('U' upper, 'L' lower, 'B' both)
     * @param bnd    : new values for the bounds
     */
-    virtual void chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd) = 0;
+    virtual void chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd) = 0;
 	
     /**
     * @brief Change type of some columns
@@ -405,7 +412,7 @@ public:
     * @param mindex : indices of columns to modify
     * @param qctype : New types of columns
     */
-    virtual void chg_col_type(int nels, const int* mindex, const char* qctype) = 0;
+    virtual void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) = 0;
 
     /**
     * @brief Change rhs of a row

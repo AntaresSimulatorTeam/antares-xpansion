@@ -12,14 +12,6 @@ void solver_getrows(SolverAbstract::Ptr const solver_p,
         solver_p->get_nelems(), &nelems_returned, first_p, last_p);
 }
 
-
-
-void solver_chgobj(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex_p,
-                   std::vector<double> const & obj_p)
-{
-    solver_p->chg_obj(mindex_p.size(), mindex_p.data(), obj_p.data());
-}
-
 void solver_getobj(SolverAbstract::Ptr const solver_p, std::vector<double> & obj_p,
                    int first_p, int last_p)
 {
@@ -51,7 +43,7 @@ void solver_addcols(SolverAbstract::Ptr solver_p,
         newIndex[i] = ncolInit + i;
     }
 
-    solver_p->chg_col_type(newCols, newIndex.data(), colTypes_p.data());
+    solver_p->chg_col_type(newIndex, colTypes_p);
 
     if (colNames_p.size() > 0) {
         int ncolFinal = solver_p->get_ncols();
@@ -153,7 +145,7 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
     assert(mindex_p.size() == qbtype_p.size());
     assert(mindex_p.size() == bnd_p.size());
     
-    solver_p->chg_bounds(mindex_p.size(), mindex_p.data(), qbtype_p.data(), bnd_p.data());
+    solver_p->chg_bounds(mindex_p, qbtype_p, bnd_p);
 }
 
 void solver_copyandrenamevars(SolverAbstract::Ptr outSolver_p,

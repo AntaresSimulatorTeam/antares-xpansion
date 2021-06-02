@@ -77,7 +77,7 @@ int main(int argc, char** argv)
                 for (auto & c : o) {
                     c *= weigth;
                 }
-                solver_chgobj(solver_l, sequence, o);
+                solver_l->chg_obj(sequence,o);
             }
             StandardLp lpData(solver_l);
             std::string varPrefix_l = "prob" + std::to_string(cntProblems_l) + "_";

@@ -167,7 +167,7 @@ TEST_CASE("Modification: change obj", "[modif][chg-obj]") {
                 ids[i] = i;
                 obj[i] -= 1;
             }
-            solver->chg_obj(n_vars, ids.data(), obj.data());
+            solver->chg_obj(ids, obj);
 
             //========================================================================================
             // Check new objective function

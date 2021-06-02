@@ -23,16 +23,6 @@ void solver_getrows(SolverAbstract::Ptr const solver_p,
                     int first_p, int last_p);
 
 /**
- * @brief Change the objective function coefficients of an existent problem
- *
- * @param solver_p  : The problem to modify.
- * @param mindex_p  : Integer array of the indices of the columns on which the coefficients will change.
- *      An index of -1 indicates that the fixed part of the objective function should change.
- * @param obj_p  : new objective coefficients corresponding to the variables with indices in mindex_p.
- */
-void solver_chgobj(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex_p, std::vector<double> const & obj_p);
-
-/**
  * @brief Returns the objective function coefficients for the columns in a given range.
  *
  * @param solver_p  : solver containing the model to consider.

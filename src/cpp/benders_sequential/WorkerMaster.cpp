@@ -237,7 +237,7 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 		indices[i] = i;
 		bounds[i] = std::min(bounds[i], 1e20);
 	}
-	_solver->chg_bounds(ncols, indices.data(), bndTypes.data(), bounds.data());
+	_solver->chg_bounds(indices, bndTypes, bounds);
 
 	// add the variable alpha
 	auto const it(_name_to_id.find("alpha"));
@@ -289,5 +289,5 @@ void WorkerMaster::fix_alpha(double const & bestUB) {
 	std::vector<int> mindex(1, _id_alpha);
 	std::vector<char> bnd_types(1, 'U');
 	std::vector<double> bnd_values(1, bestUB);
-	_solver->chg_bounds(1, mindex.data(), bnd_types.data(), bnd_values.data());
+	_solver->chg_bounds(mindex, bnd_types, bnd_values);
 }

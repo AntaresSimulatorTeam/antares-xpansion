@@ -350,14 +350,17 @@ void SolverClp::add_name(int type, const char* cnames, int indice){
 	std::exit(1);
 }
 
-void SolverClp::chg_obj(int nels, const int* mindex, const double* obj){
-	for (int i(0); i < nels; i++) {
+void SolverClp::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj){
+    assert(obj.size() == mindex.size());
+	for (int i(0); i < obj.size(); i++) {
 		_clp.setObjCoeff(mindex[i], obj[i]);
 	}
 }
 
-void SolverClp::chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd){
-	for (int i(0); i < nbds; i++) {
+void SolverClp::chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd){
+    assert(qbtype.size() == mindex.size());
+    assert(bnd.size() == mindex.size());
+	for (int i(0); i < mindex.size(); i++) {
 		if (qbtype[i] == 'L') {
 			_clp.setColLower(mindex[i], bnd[i]);
 		}
@@ -369,31 +372,33 @@ void SolverClp::chg_bounds(int nbds, const int* mindex, const char* qbtype, cons
 			_clp.setColUpper(mindex[i], bnd[i]);
 		}
 		else {
-			std::cout << "ERROR : Unknown bound type " << qbtype[i] << " for column " << mindex[i] << std::endl;
-			std::exit(1);
+		    throw InvalidBoundTypeException(qbtype[i]);
 		}
 	}
 }
 
-void SolverClp::chg_col_type(int nels, const int* mindex, const char* qctype) {
+void SolverClp::chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) {
+    assert(qctype.size() == mindex.size());
 	std::vector<int> bnd_index(1, 0);
 	std::vector<char> bnd_type(1, 'U');
 	std::vector<double> bnd_val(1, 1.0);
 
-	for (int i = 0; i < nels; i++) {
+	for (int i = 0; i < mindex.size(); i++) {
 		switch (qctype[i])
 		{
 		case 'C':
 			_clp.setContinuous(mindex[i]);
+			break;
 		case 'B':
 			_clp.setInteger(mindex[i]);
 			bnd_index[0] = mindex[i];
-			chg_bounds(1, bnd_index.data(), bnd_type.data(), bnd_val.data());
+			chg_bounds(bnd_index, bnd_type, bnd_val);
+			break;
 		case 'I':
 			_clp.setInteger(mindex[i]);
+			break;
 		default:
-			std::cout << "ERROR : unknown column type " << qctype[i] << std::endl;
-			std::exit(1);
+			throw InvalidColTypeException(qctype[i]);
 		}
 	}
 }

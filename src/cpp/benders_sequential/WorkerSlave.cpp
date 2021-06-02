@@ -30,7 +30,7 @@ WorkerSlave::WorkerSlave(Str2Int const & variable_map, std::string const & path_
 	for (auto & c : o_l) {
 		c *= slave_weight;
 	}
-    solver_chgobj(_solver, sequence, o_l);
+	_solver->chg_obj(sequence,o_l);
 }
 WorkerSlave::~WorkerSlave() {
 
