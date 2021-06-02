@@ -343,35 +343,38 @@ int SolverCbc::get_col_index(std::string const& name) const {
 	return -1;
 }
 
-int SolverCbc::get_row_names(int first, int last, std::vector<std::string>& names)
+std::vector<std::string> SolverCbc::get_row_names(int first, int last)
 {
+    int size = 1 + last - first;
+    std::vector<std::string> names;
+    names.reserve(size);
+
 	std::vector<std::string> solver_row_names = _clp_inner_solver.getRowNames();
-	if (solver_row_names.size() < names.size()) {
-		std::cout << "ERROR : all required rows don't have a name. Impossible to get row names."
-			<< std::endl;
-		std::exit(1);
+	if (solver_row_names.size() < size) {
+        throw InvalidRowSizeException(size,solver_row_names.size());
 	}
 
 	for (int i(first); i < last + 1; i++) {
-		names[i - first] = solver_row_names[i];
+		names.push_back(solver_row_names[i]);
 	}
-	return 0;
+	return names;
 }
 
-int SolverCbc::get_col_names(int first, int last, std::vector<std::string>& names)
+std::vector<std::string> SolverCbc::get_col_names(int first, int last)
 {
-	std::vector<std::string> solver_col_names = _clp_inner_solver.getColNames();
+    int size = 1 + last - first;
+    std::vector<std::string> names;
+    names.reserve(size);
 
-	if (solver_col_names.size() < names.size()) {
-		std::cout << "ERROR : all required columns don't have a name. Impossible to get col names."
-			<< std::endl;
-		std::exit(1);
+	std::vector<std::string> solver_col_names = _clp_inner_solver.getColNames();
+	if (solver_col_names.size() < size) {
+        throw InvalidColSizeException(size,solver_col_names.size());
 	}
 
 	for (int i(first); i < last + 1; i++) {
-		names[i - first] = solver_col_names[i];
+        names.push_back(solver_col_names[i]);
 	}
-	return 0;
+	return names;
 }
 
 /*************************************************************************************************

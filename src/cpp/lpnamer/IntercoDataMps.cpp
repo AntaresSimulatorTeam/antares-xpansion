@@ -330,8 +330,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// All the names are retrieved before the loop.
 	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
 	// but it could be longer.
-	std::vector<std::string> outVarNames(out_prblm->get_ncols());
-	out_prblm->get_col_names(0, out_prblm->get_ncols() - 1, outVarNames);
+    std::vector<std::string> outVarNames = out_prblm->get_col_names(0, out_prblm->get_ncols() - 1);
 
 	/* Xavier : This check is useless as the names are not necessary and seem to be 
 	* no present in "in_prblm"

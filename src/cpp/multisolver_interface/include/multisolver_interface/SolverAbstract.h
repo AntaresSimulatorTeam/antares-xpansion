@@ -17,6 +17,24 @@ public:
     }
 };
 
+class InvalidRowSizeException : public std::runtime_error {
+public:
+    InvalidRowSizeException(int expected_size, int actual_size)
+            :std::runtime_error("Invalid row size for solver. " + std::to_string(actual_size) + " rows available ("+std::to_string(expected_size)+" expected)")
+    {
+
+    }
+};
+
+class InvalidColSizeException : public std::runtime_error {
+public:
+    InvalidColSizeException(int expected_size, int actual_size)
+            :std::runtime_error("Invalid col size for solver. " + std::to_string(actual_size) + " cols available ("+std::to_string(expected_size)+" expected)")
+    {
+
+    }
+};
+
 // Definition of optimality codes
 enum SOLVER_STATUS {
 	OPTIMAL,
@@ -285,10 +303,9 @@ public:
     *
     * @param first : first index from which name has be returned
     * @param last  : last index from which name has be returned
-    * @param names : vector of names, the size of vector has to be set by user before 
-                    calling the method
+    * @return names : vector of names
     */
-    virtual int get_row_names(int first, int last, std::vector<std::string> &names) = 0;
+    virtual std::vector<std::string> get_row_names(int first, int last) = 0;
 
     /**
     * @brief Returns the names of columns from index first to last
@@ -296,10 +313,9 @@ public:
     *
     * @param first : first index from which name has be returned
     * @param last  : last index from which name has be returned
-    * @param names : vector of names, the size of vector has to be set by user before 
-                    calling the method
+    * @return names : vector of names
     */
-    virtual int get_col_names(int first, int last, std::vector<std::string>& names) = 0;
+    virtual std::vector<std::string> get_col_names(int first, int last) = 0;
 
 /*************************************************************************************************
 ------------------------------    Methods to modify problem    ----------------------------------
