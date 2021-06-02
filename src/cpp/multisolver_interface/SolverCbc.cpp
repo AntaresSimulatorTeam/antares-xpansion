@@ -685,21 +685,7 @@ void SolverCbc::set_output_log_level(int loglevel){
 }
 
 void SolverCbc::set_algorithm(std::string const& algo){
-	if (algo == "BARRIER") {
-
-	}
-	else if (algo == "BARRIER_WO_CROSSOVER") {
-		
-	}
-	else if(algo == "DUAL"){
-		
-	}else{
-		std::cout << "Error: invalid algorithm " << algo << std::endl;
-		std::exit(0);
-	}
-
-	std::cout << "ERROR : Algortihm handling not implemented in the interface for CBC" << std::endl;
-	std::exit(1);
+    throw InvalidSolverOptionException("set_algorithm : " + algo);
 }
 
 void SolverCbc::set_threads(int n_threads){
@@ -707,11 +693,9 @@ void SolverCbc::set_threads(int n_threads){
 }
 
 void SolverCbc::set_optimality_gap(double gap){
-	std::cout << "ERROR : Optimality gap handling not implemented in the interface for CBC" << std::endl;
-	std::exit(1);
+    throw InvalidSolverOptionException("set_optimality_gap : " + std::to_string(gap));
 }
 
 void SolverCbc::set_simplex_iter(int iter){
-	std::cout << "ERROR : Simplex iterations not implemented in the interface for CBC" << std::endl;
-	std::exit(1);
+    throw InvalidSolverOptionException("set_simplex_iter : " + std::to_string(iter));
 }

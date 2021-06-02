@@ -566,19 +566,10 @@ void SolverClp::set_output_log_level(int loglevel){
 }
 
 void SolverClp::set_algorithm(std::string const& algo){
-	if (algo == "BARRIER") {
-		std::cout << "ERROR : Barrier algorithm non pris en charge par Clp Simplex." << std::endl;
-		std::exit(1);
-	}
-	else if (algo == "BARRIER_WO_CROSSOVER") {
-		std::cout << "ERROR : Barrier algorithm non pris en charge par Clp Simplex." << std::endl;
-		std::exit(1);
-	}
-	else if(algo == "DUAL"){
+    if(algo == "DUAL"){
 		_clp.setAlgorithm(1);
 	}else{
-		std::cout << "Error: invalid algorithm " << algo << std::endl;
-		std::exit(0);
+        throw InvalidSolverOptionException("set_algorithm : " + algo);
 	}
 }
 
@@ -587,8 +578,7 @@ void SolverClp::set_threads(int n_threads){
 }
 
 void SolverClp::set_optimality_gap(double gap){
-	std::cout << "ERROR : Optimality gap handling not implemented with Clp" << std::endl;
-	std::exit(1);
+    throw InvalidSolverOptionException("set_optimality_gap : " + std::to_string(gap));
 }
 
 void SolverClp::set_simplex_iter(int iter){
