@@ -6,30 +6,6 @@
 #include "multisolver_interface/Solver.h"
 
 /**
- * @brief reads problem from an mps file
- *
- * @param solver_p  : solver into which the model will be loaded
- * @param filename_p  : path to the mps file
- */
-void ORTreadmps(SolverAbstract::Ptr solver_p, std::string const & filename_p);
-
-/**
- * @brief writes a problem into an mps format
- *
- * @param solver_p  : solver containing the model to export
- * @param filename_p  : path to the mps file to produce
- */
-void ORTwritemps(SolverAbstract::Ptr const solver_p, std::string const & filename_p);
-
-/**
- * @brief writes a problem into an lp format
- *
- * @param solver_p  : solver containing the model to export
- * @param filename_p  : path to the lp file to produce
- */
-void ORTwritelp(SolverAbstract::Ptr const solver_p, std::string const & filename_p);
-
-/**
  * @brief Returns the nonzeros in the constraint matrix for the rows in a given range
  *
  * @param solver_p  : solver containing the model to consider.
@@ -42,9 +18,9 @@ void ORTwritelp(SolverAbstract::Ptr const solver_p, std::string const & filename
  * @param first_p  : First row in the range.
  * @param last_p  : Last row in the range.
  */
-void ORTgetrows(SolverAbstract::Ptr const solver_p,
-                 std::vector<int> & mstart_p, std::vector<int> & mclind_p, std::vector<double> & dmatval_p,
-                 int first_p, int last_p);
+void solver_getrows(SolverAbstract::Ptr const solver_p,
+                    std::vector<int> & mstart_p, std::vector<int> & mclind_p, std::vector<double> & dmatval_p,
+                    int first_p, int last_p);
 
 /**
  * @brief Change the objective function coefficients of an existent problem
@@ -54,7 +30,7 @@ void ORTgetrows(SolverAbstract::Ptr const solver_p,
  *      An index of -1 indicates that the fixed part of the objective function should change.
  * @param obj_p  : new objective coefficients corresponding to the variables with indices in mindex_p.
  */
-void ORTchgobj(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex_p, std::vector<double> const & obj_p);
+void solver_chgobj(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex_p, std::vector<double> const & obj_p);
 
 /**
  * @brief Returns the objective function coefficients for the columns in a given range.
@@ -64,7 +40,7 @@ void ORTchgobj(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex_p, 
  * @param first_p  : first column to consider.
  * @param last_p  : last column to consider.
  */
-void ORTgetobj(SolverAbstract::Ptr const solver_p, std::vector<double> & obj_p, int first_p, int last_p);
+void solver_getobj(SolverAbstract::Ptr const solver_p, std::vector<double> & obj_p, int first_p, int last_p);
 
 /**
  * @brief Adds variables to an existent solver
@@ -83,12 +59,12 @@ void ORTgetobj(SolverAbstract::Ptr const solver_p, std::vector<double> & obj_p, 
  *          'C' for continuous variables
  * @param colNames_p : optional parameter. array containing the names of the new columns to add.
  */
-void ORTaddcols(SolverAbstract::Ptr solver_p,
-                std::vector<double> const & objx_p, 
-                std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p,
-                std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
-                std::vector<char> const & colTypes_p,
-                std::vector<std::string> const & colNames_p);
+void solver_addcols(SolverAbstract::Ptr solver_p,
+                    std::vector<double> const & objx_p,
+                    std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p,
+                    std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
+                    std::vector<char> const & colTypes_p,
+                    std::vector<std::string> const & colNames_p);
 
 /**
  * @brief Adds constraints to an existent solver
@@ -110,11 +86,11 @@ void ORTaddcols(SolverAbstract::Ptr solver_p,
  *
  * @note ignores non-binding rows
  */
-void ORTaddrows(SolverAbstract::Ptr solver_p,
-                std::vector<char> const &  qrtype_p,
-                std::vector<double>  const & rhs_p,
-                std::vector<double>  const & range_p,
-                std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p);
+void solver_addrows(SolverAbstract::Ptr solver_p,
+                    std::vector<char> const &  qrtype_p,
+                    std::vector<double>  const & rhs_p,
+                    std::vector<double>  const & range_p,
+                    std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p);
 
 /**
  * @brief returns the solution of a solved problem
@@ -122,7 +98,7 @@ void ORTaddrows(SolverAbstract::Ptr solver_p,
  * @param solver_p  : solver containing the solved model.
  * @param x_p : will be filled with the variables values of the retrieved solution
  */
-void ORTgetlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> & x_p);
+void solver_getlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> & x_p);
 
 /**
  * @brief returns the dual values of a solved problem
@@ -130,7 +106,7 @@ void ORTgetlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> & 
  * @param solver_p  : solver containing the solved model.
  * @param dual_p : will be filled with the dual values of the retrieved solution
  */
-void ORTgetlpdual(SolverAbstract::Ptr const solver_p, std::vector<double> & dual_p);
+void solver_getlpdual(SolverAbstract::Ptr const solver_p, std::vector<double> & dual_p);
 
 /**
  * @brief Returns the reduced costs of a solved problem
@@ -138,7 +114,7 @@ void ORTgetlpdual(SolverAbstract::Ptr const solver_p, std::vector<double> & dual
  * @param solver_p  : solver containing the solved model.
  * @param dj_p : will be filled with the reduced costs
  */
-void ORTgetlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<double> & dj_p);
+void solver_getlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<double> & dj_p);
 
 /**
  * @brief Returns the row types for the rows in a given range.
@@ -153,7 +129,7 @@ void ORTgetlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<double>
  * @param first_p : First row in the range.
  * @param last_p : Last row in the range
  */
-void ORTgetrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> & qrtype_p, int first_p, int last_p);
+void solver_getrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> & qrtype_p, int first_p, int last_p);
 
 /**
  * @brief Returns the right hand side elements for the rows in a given range.
@@ -167,7 +143,7 @@ void ORTgetrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> & qrtyp
  * @note if the constraint is a range, returns the ub.
  * @note if the constraint is unbound, still returns the ub i.e. solver's +inf.
  */
-void ORTgetrhs(SolverAbstract::Ptr const solver_p, std::vector<double> & rhs_p, int first_p, int last_p);
+void solver_getrhs(SolverAbstract::Ptr const solver_p, std::vector<double> & rhs_p, int first_p, int last_p);
 
 /**
  * @brief Returns the right hand side range values for the rows in a given range.
@@ -177,7 +153,7 @@ void ORTgetrhs(SolverAbstract::Ptr const solver_p, std::vector<double> & rhs_p, 
  * @param first_p : First row in the range.
  * @param last_p : Last row in the range
  */
-void ORTgetrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> &  range_p, int first_p, int last_p);
+void solver_getrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> &  range_p, int first_p, int last_p);
 
 /**
  * @brief Returns infos about the columns
@@ -194,10 +170,10 @@ void ORTgetrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> &  r
  *
  * @note return 'I' if the variable is binary or integer and it was fixed
  */
-void ORTgetcolinfo(SolverAbstract::Ptr const solver_p,
-                   std::vector<char> & coltype_p,
-                   std::vector<double> & bdl_p, std::vector<double> & bdu_p,
-                   int first_p, int last_p);
+void solver_getcolinfo(SolverAbstract::Ptr const solver_p,
+                       std::vector<char> & coltype_p,
+                       std::vector<double> & bdl_p, std::vector<double> & bdu_p,
+                       int first_p, int last_p);
 
 /**
  * @brief Deactivates some rows in an existent model
@@ -208,7 +184,7 @@ void ORTgetcolinfo(SolverAbstract::Ptr const solver_p,
  * @note note that this method does not delete the rows but simply unbounds the constraint and supresses its terms
  * i.e. replaces the indexed rows with  -inf <= 0 <= +inf
  */
-void ORTdeactivaterows(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex);
+void solver_deactivaterows(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex);
 
 /**
  * @brief Returns the current basis
@@ -227,7 +203,7 @@ May be NULL if not required.
  *      3 : variable is super-basic.
 May be NULL if not required.
  */
-void ORTgetbasis(SolverAbstract::Ptr solver_p, std::vector<int> & rstatus_p, std::vector<int> & cstatus_p);
+void solver_getbasis(SolverAbstract::Ptr solver_p, std::vector<int> & rstatus_p, std::vector<int> & cstatus_p);
 
 /**
  * @brief Returns the current basis
@@ -242,10 +218,10 @@ void ORTgetbasis(SolverAbstract::Ptr solver_p, std::vector<int> & rstatus_p, std
  *
  * @note if the same bound is changed twice the bound at the end of the vector will be used and no warning will be issued
  */
-void ORTchgbounds(SolverAbstract::Ptr solver_p,
-                  std::vector<int> const & mindex_p,
-                  std::vector<char> const & qbtype_p,
-                  std::vector<double> const & bnd_p);
+void solver_chgbounds(SolverAbstract::Ptr solver_p,
+                      std::vector<int> const & mindex_p,
+                      std::vector<char> const & qbtype_p,
+                      std::vector<double> const & bnd_p);
 
 /**
  * @brief Returns the current basis
@@ -257,7 +233,7 @@ void ORTchgbounds(SolverAbstract::Ptr solver_p,
  * @note care when copying between solvers of different types : no special verifications are done (eg. infinity values correspondance)
  * @note duplicate/empty names will be named automatically by ortools
  */
-void ORTcopyandrenamevars(SolverAbstract::Ptr outSolver_p,
-                            SolverAbstract::Ptr const inSolver_p,
-                            std::vector<std::string> & names_p,
-                            std::string const& solver_name);
+void solver_copyandrenamevars(SolverAbstract::Ptr outSolver_p,
+                              SolverAbstract::Ptr const inSolver_p,
+                              std::vector<std::string> & names_p,
+                              std::string const& solver_name);

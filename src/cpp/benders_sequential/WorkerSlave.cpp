@@ -1,7 +1,7 @@
 #include "WorkerSlave.h"
 #include "launcher.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 
 WorkerSlave::WorkerSlave() {
 
@@ -26,11 +26,11 @@ WorkerSlave::WorkerSlave(Str2Int const & variable_map, std::string const & path_
 	for (int i(0); i < mps_ncols; ++i) {
 		sequence[i] = i;
 	}
-	ORTgetobj(_solver, o_l, 0, mps_ncols - 1);
+    solver_getobj(_solver, o_l, 0, mps_ncols - 1);
 	for (auto & c : o_l) {
 		c *= slave_weight;
 	}
-	ORTchgobj(_solver, sequence, o_l);	
+    solver_chgobj(_solver, sequence, o_l);
 }
 WorkerSlave::~WorkerSlave() {
 
@@ -56,7 +56,7 @@ void WorkerSlave::fix_to(Point const & x0) {
 		++i;
 	}
 
-	ORTchgbounds(_solver, indexes, bndtypes, values);
+    solver_chgbounds(_solver, indexes, bndtypes, values);
 }
 
 /*!
@@ -67,7 +67,7 @@ void WorkerSlave::fix_to(Point const & x0) {
 void WorkerSlave::get_subgradient(Point & s) {
 	s.clear();
 	std::vector<double> ptr(_solver->get_ncols());
-	ORTgetlpreducedcost(_solver, ptr);
+    solver_getlpreducedcost(_solver, ptr);
 	for (auto const & kvp : _id_to_name) {
 		s[kvp.second] = +ptr[kvp.first];
 	}
@@ -82,7 +82,7 @@ void WorkerSlave::get_subgradient(Point & s) {
 SimplexBasis WorkerSlave::get_basis() {
 	IntVector cstatus(_solver->get_ncols());
 	IntVector rstatus(_solver->get_nrows());
-	ORTgetbasis(_solver, rstatus, cstatus);
+    solver_getbasis(_solver, rstatus, cstatus);
 	return std::make_pair(rstatus, cstatus);
 }
 

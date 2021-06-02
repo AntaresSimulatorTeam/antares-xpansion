@@ -10,7 +10,7 @@
 #include "JsonWriter.h"
 #include "Timer.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 #include "logger/User.h"
 
 
@@ -62,8 +62,7 @@ int main(int argc, char** argv)
 		SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
 		solver_l->init();
 		solver_l->set_output_log_level(0);
-
-		ORTreadmps(solver_l, problem_name);
+        solver_l->read_prob_mps(problem_name);
 		
 		if (kvp.first != options.MASTER_NAME) {
 
@@ -74,12 +73,12 @@ int main(int argc, char** argv)
 			for (int i(0); i < mps_ncols; ++i) {
 				sequence[i] = i;
 			}
-			ORTgetobj(solver_l, o, 0, mps_ncols - 1);
+            solver_getobj(solver_l, o, 0, mps_ncols - 1);
 			double const weigth = options.slave_weight(nslaves, kvp.first);
 			for (auto & c : o) {
 				c *= weigth;
 			}
-			ORTchgobj(solver_l, sequence, o);
+            solver_chgobj(solver_l, sequence, o);
 		}
 		StandardLp lpData(solver_l);
 		std::string varPrefix_l = "prob" + std::to_string(cntProblems_l) + "_";
@@ -90,9 +89,8 @@ int main(int argc, char** argv)
 		    int col_index = mergedSolver_l->get_col_index(varPrefix_l + x.first);
 			if (col_index == -1){
 				std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
-				ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
-				std::string mpsName = options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps";
-				mergedSolver_l->write_prob_mps(mpsName);
+				mergedSolver_l->write_prob_lp(options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
+				mergedSolver_l->write_prob_mps(options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps");
 				std::exit(1);
 			}
 			else{
@@ -150,13 +148,13 @@ int main(int argc, char** argv)
 
 	DblVector rhs(nrows, 0);
 	CharVector sense(nrows, 'E');
-	ORTaddrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
+    solver_addrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
 
 	LOG(INFO) << "Problems merged." << std::endl;
 	LOG(INFO) << "Writting mps file" << std::endl;
-	ORTwritemps(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.mps");
+	mergedSolver_l->write_prob_mps(options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.mps");
 	LOG(INFO) << "Writting lp file" << std::endl;
-	ORTwritelp(mergedSolver_l, options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.lp");
+    mergedSolver_l->write_prob_lp(options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.lp");
 
 	mergedSolver_l->set_threads(16);
 

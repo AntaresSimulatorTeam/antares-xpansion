@@ -5,7 +5,7 @@
 #include "BendersOptions.h"
 #include "BendersFunctions.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 
 int main(int argc, char** argv)
 {
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
 
 		SolverAbstract::Ptr solver = factory.create_solver("CLP");
 		solver->init();
-		ORTreadmps(solver, problem_name);
+		solver->read_prob_mps(problem_name);
 
 		if (kvp.first != options.MASTER_NAME) {
 			StandardLp lpData(solver);
