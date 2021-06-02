@@ -454,8 +454,7 @@ void SolverXpress::set_algorithm(std::string const& algo){
 		int status = XPRSsetintcontrol(_xprs, XPRS_DEFAULTALG, 2);
 		zero_status_check(status, "set dual simplex algorithm");
 	}else{
-		std::cout << "Error: invalid algorithm " << algo << std::endl;
-		std::exit(0);
+        throw InvalidSolverOptionException("set_algorithm : " + algo);
 	}
 }
 

@@ -497,8 +497,7 @@ void SolverCplex::set_algorithm(std::string const& algo){
 		zero_status_check(status, "set dual simplex algorithm");
 	}
 	else {
-		std::cout << "Error: invalid algorithm " << algo << std::endl;
-		std::exit(0);
+        throw InvalidSolverOptionException("set_algorithm : " + algo);
 	}
 }
 

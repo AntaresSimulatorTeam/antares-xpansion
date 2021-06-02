@@ -43,6 +43,13 @@ public:
     {}
 };
 
+class InvalidSolverOptionException : public std::runtime_error {
+public:
+    InvalidSolverOptionException(const std::string& option)
+            :std::runtime_error("Invalid option '" + option +"' for solver.")
+    {}
+};
+
 // Definition of optimality codes
 enum SOLVER_STATUS {
 	OPTIMAL,
