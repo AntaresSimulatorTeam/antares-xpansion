@@ -19,7 +19,7 @@
 #include "LauncherHelpers.h"
 #include "CandidatesInitializer.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 
 namespace po = boost::program_options;
 
@@ -111,7 +111,7 @@ void masterGeneration(std::string rootPath,
 		++i;
 	}
 
-	ORTaddcols(master_l, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, interco_names);
+    solver_addcols(master_l, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, interco_names);
 
 	// integer constraints
 	int n_integer = pallier.size();
@@ -121,7 +121,7 @@ void masterGeneration(std::string rootPath,
 		std::vector<char> integer_type(n_integer, 'I');
 		// Empty colNames
 		std::vector<std::string> colNames(0);
-		ORTaddcols(master_l, zeros, mstart, {}, {}, zeros, max_unit, integer_type, colNames);
+        solver_addcols(master_l, zeros, mstart, {}, {}, zeros, max_unit, integer_type, colNames);
 
 		std::vector<double> dmatval;
 		std::vector<int> colind;
@@ -151,14 +151,14 @@ void masterGeneration(std::string rootPath,
 
 		int n_row_interco(rowtype.size());
 		int n_coeff_interco(dmatval.size());
-		ORTaddrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
+        solver_addrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
 
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
 	std::string const lp_name = "master";
 	// writelp is useless no ?
-	//ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
+	//master_l->write_prob_lp(rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
 	master_l->write_prob_mps((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps"));
 
 	std::map<std::string, std::map<std::string, int> > output;

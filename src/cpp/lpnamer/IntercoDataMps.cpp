@@ -3,7 +3,7 @@
 #include "IntercoDataMps.h"
 #include "INIReader.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 #include "helpers/StringUtils.h"
 
 std::vector<std::vector<std::string> > Candidates::MPS_LIST = {
@@ -303,7 +303,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<double> lb(ncols);
 	std::vector<double> ub(ncols);
 	std::vector<char> coltype(ncols);
-	ORTgetcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
+    solver_getcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
 	// Setting bounds to +-1e20
 	std::vector<double> posinf(ninterco_pdt, 1e20);
 	std::vector<double> neginf(ninterco_pdt, -1e20);
@@ -315,8 +315,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		indexes.push_back(id.first);
 	}
 	// remove bounds on interco
-	ORTchgbounds(in_prblm, indexes, lb_char, neginf);
-	ORTchgbounds(in_prblm, indexes, ub_char, posinf);
+    solver_chgbounds(in_prblm, indexes, lb_char, neginf);
+    solver_chgbounds(in_prblm, indexes, ub_char, posinf);
 	std::vector<std::string> vnames(var.begin(), var.end());
 	SolverAbstract::Ptr out_prblm = factory.create_solver(solver_name, in_prblm);
 
@@ -325,7 +325,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// This copy is just time consuming and useless for me
 
 	// copy in_prblm with the changed bounds and rename its variables
-	ORTcopyandrenamevars(out_prblm, in_prblm, vnames, solver_name);
+    solver_copyandrenamevars(out_prblm, in_prblm, vnames, solver_name);
 	size_t cnt_l = 0;
 	// All the names are retrieved before the loop.
 	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
@@ -371,7 +371,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		couplings[{buffer.str(), mps_name}] = interco.second + ncols;
 	}
 
-	ORTaddcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
+    solver_addcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
 	std::vector<double> dmatval;
 	std::vector<int> colind;
 	std::vector<char> rowtype;
@@ -410,7 +410,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	}
 	rstart.push_back(dmatval.size());
 
-	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
+    solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
 	out_prblm->write_prob_mps(lp_mps_name);
 	std::cout << "mps_name : " << lp_mps_name << " done" << std::endl;

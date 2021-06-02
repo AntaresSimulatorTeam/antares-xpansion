@@ -2,7 +2,7 @@
 
 #include "WorkerMaster.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 
 WorkerMaster::WorkerMaster() {
 	_is_master = true;
@@ -49,7 +49,7 @@ void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
 */
 void WorkerMaster::get_dual_values(std::vector<double> & dual) {
 	dual.resize(get_number_constraint());
-	ORTgetlpdual(_solver, dual);
+    solver_getlpdual(_solver, dual);
 }
 
 /*!
@@ -70,7 +70,7 @@ void WorkerMaster::delete_constraint(int const nrows) {
 	for (int i(0); i < nrows; i++) {
 		mindex[i] = nconstraint - nrows + i;
 	}
-	ORTdeactivaterows(_solver, mindex);
+    solver_deactivaterows(_solver, mindex);
 }
 
 /*!
@@ -104,7 +104,7 @@ void WorkerMaster::add_cut(Point const & s, Point const & x0, double const & rhs
 	mclind.back() = _id_alpha;
 	matval.back() = -1;
 
-	ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+    solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 /*!
@@ -138,7 +138,7 @@ void WorkerMaster::add_dynamic_cut(Point const & s, double const & sx0, double c
 	mclind.back() = _id_alpha;
 	matval.back() = -1;
 
-	ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+    solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 /*!
@@ -172,7 +172,7 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const & s, double const & 
 	mclind.back() = _id_alpha_i[i];
 	matval.back() = -1;
 
-	ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+    solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 
@@ -206,7 +206,7 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 	mclind.back() = _id_alpha_i[i];
 	matval.back() = -1;
 
-	ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+    solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 
@@ -248,17 +248,17 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 		std::vector<int> start(2, 0);
 		_id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
 
-		ORTaddcols(_solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0), DblVector(0, 0.0),
-			DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), StrVector(1, "alpha")); /* Add variable alpha and its parameters */
+        solver_addcols(_solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0), DblVector(0, 0.0),
+                       DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), StrVector(1, "alpha")); /* Add variable alpha and its parameters */
 
 		_id_alpha_i.resize(nslaves, -1);
 		for (int i(0); i < nslaves; ++i) {
 			std::stringstream buffer;
 			buffer << "alpha_" << i;
 			_id_alpha_i[i] = _solver->get_ncols();
-			ORTaddcols(_solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0), DblVector(0, 0.0), 
-				DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), 
-				StrVector(1, buffer.str()) ); /* Add variable alpha_i and its parameters */
+            solver_addcols(_solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0), DblVector(0, 0.0),
+                           DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'),
+                           StrVector(1, buffer.str())); /* Add variable alpha_i and its parameters */
 		}
 
 		std::vector<char> rowtype = {'E'};
@@ -273,7 +273,7 @@ WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & pat
 			matval[i + 1] = -1;
 		}
 
-		ORTaddrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+        solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 	}
 	else {
 		LOG(INFO) << "ERROR a variable named alpha is in input" << std::endl;

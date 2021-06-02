@@ -3,7 +3,7 @@
 #include <benders_sequential_core/Benders.h>
 #include "common.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 
 class BendersOptions;
 
@@ -117,40 +117,40 @@ public:
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].clear();
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].resize(ncols);
 
-		ORTgetrows(solver_p,
-					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
-					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX],
-					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE],
-					0,
-					std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
-		
-		ORTgetrowtype(solver_p,
-					  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
-					  0,
-					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+        solver_getrows(solver_p,
+                       std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
+                       std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX],
+                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE],
+                       0,
+                       std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-		ORTgetrhs(solver_p,
-				  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
-				  0,
-				  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+        solver_getrowtype(solver_p,
+                          std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
+                          0,
+                          std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+
+        solver_getrhs(solver_p,
+                      std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
+                      0,
+                      std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
 		// Range constraint don't exist in a sparse matrix formualtion
-		/*ORTgetrhsrange(solver_p,
+		/*solver_getrhsrange(solver_p,
 						std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE],
 						0,
 						std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);*/
 
-		ORTgetcolinfo(solver_p,
-					  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
-					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
-					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
-					  0,
-					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
+        solver_getcolinfo(solver_p,
+                          std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
+                          std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
+                          std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
+                          0,
+                          std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
-		ORTgetobj(solver_p,
-				  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
-				  0,
-				  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]-1);
+        solver_getobj(solver_p,
+                      std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
+                      0,
+                      std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
 		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
@@ -183,21 +183,21 @@ public:
 					[&prefix_l](std::string varName_p)->std::string{ return prefix_l + varName_p; });
 
 		std::vector<int> mstart(std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS], 0);
-		ORTaddcols(containingSolver_p,
-				   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
-				   mstart, IntVector(0, 0), DblVector(0, 0.0),
-				   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
-				   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
-				   std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
-				   newNames);
+        solver_addcols(containingSolver_p,
+                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
+                       mstart, IntVector(0, 0), DblVector(0, 0.0),
+                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
+                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
+                       std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
+                       newNames);
 
-		ORTaddrows(containingSolver_p,
-					std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
-					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
-					{},
-					std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
-					newmindex,
-					std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
+        solver_addrows(containingSolver_p,
+                       std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
+                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
+                       {},
+                       std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
+                       newmindex,
+                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
 
 		++appendCNT;
 
