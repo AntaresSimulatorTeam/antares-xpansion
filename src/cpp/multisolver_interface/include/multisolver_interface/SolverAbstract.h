@@ -6,8 +6,16 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <stdexcept>
 
+class InvalidStatusException : public std::runtime_error {
+public:
+    InvalidStatusException(int status,const std::string& action)
+    :std::runtime_error("Failed to "+ action + ": invalid status " + std::to_string(status) + " (0 expected)")
+    {
 
+    }
+};
 
 // Definition of optimality codes
 enum SOLVER_STATUS {
@@ -87,7 +95,7 @@ public:
     void add_stream(std::ostream& stream) { get_stream().push_back(&stream); };
 
     /**
-    * @brief Check if a status code is different to 0, exit if it occures
+    * @brief Check if a status code is different to 0, throw InvalidStatusException if it occurs
     *
     * @param status         : status code to check
     * @param action_failed  : action which returned the non zero status code, 
@@ -95,9 +103,7 @@ public:
     */
     void zero_status_check(int status, const std::string& action_failed) const{
 		if(status != 0){
-			std::cout 	<< "Failed to " << action_failed << ". Exit with status: " 
-						<< status << std::endl;
-			std::exit(0);
+		    throw InvalidStatusException(status, action_failed);
 		}
 	};
 
