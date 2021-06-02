@@ -1,3 +1,4 @@
+#include <cassert>
 #include "SolverXpress.h"
 
 /*************************************************************************************************
@@ -285,8 +286,9 @@ void SolverXpress::add_name(int type, const char* cnames, int indice){
 	zero_status_check(status, "add names");
 }
 
-void SolverXpress::chg_obj(int nels, const int* mindex, const double* obj){
-	int status = XPRSchgobj(_xprs, nels, mindex, obj);
+void SolverXpress::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj){
+    assert(obj.size() == mindex.size());
+	int status = XPRSchgobj(_xprs, obj.size(), mindex.data(), obj.data());
 	zero_status_check(status, "change objective");
 }
 

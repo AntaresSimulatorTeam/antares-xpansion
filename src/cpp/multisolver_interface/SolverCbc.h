@@ -106,7 +106,7 @@ public:
                     const int* mrwind, const double* dmatval, const double* bdl, 
                     const double* bdu);
     virtual void add_name(int type, const char* cnames, int indice);
-    virtual void chg_obj(int nels, const int* mindex, const double* obj);
+    virtual void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj);
     virtual void chg_bounds(int nbds, const int* mindex, const char* qbtype, const double* bnd);
     virtual void chg_col_type(int nels, const int* mindex, const char* qctype);
 	virtual void chg_rhs(int id_row, double val);

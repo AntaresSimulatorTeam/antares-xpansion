@@ -382,11 +382,10 @@ public:
     /**
     * @brief Change coefficients in objective function
     *
-    * @param nels   : number of elements to change
     * @param mindex : indices of columns to modify
     * @param obj    : Values to set in objective function
     */
-    virtual void chg_obj(int nels, const int* mindex, const double* obj) = 0;
+    virtual void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) = 0;
 	
     /**
     * @brief Change bounds of some variables

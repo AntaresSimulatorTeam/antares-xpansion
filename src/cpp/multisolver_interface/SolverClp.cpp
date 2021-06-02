@@ -350,8 +350,9 @@ void SolverClp::add_name(int type, const char* cnames, int indice){
 	std::exit(1);
 }
 
-void SolverClp::chg_obj(int nels, const int* mindex, const double* obj){
-	for (int i(0); i < nels; i++) {
+void SolverClp::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj){
+    assert(obj.size() == mindex.size());
+	for (int i(0); i < obj.size(); i++) {
 		_clp.setObjCoeff(mindex[i], obj[i]);
 	}
 }

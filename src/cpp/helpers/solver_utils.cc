@@ -12,14 +12,6 @@ void solver_getrows(SolverAbstract::Ptr const solver_p,
         solver_p->get_nelems(), &nelems_returned, first_p, last_p);
 }
 
-
-
-void solver_chgobj(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex_p,
-                   std::vector<double> const & obj_p)
-{
-    solver_p->chg_obj(mindex_p.size(), mindex_p.data(), obj_p.data());
-}
-
 void solver_getobj(SolverAbstract::Ptr const solver_p, std::vector<double> & obj_p,
                    int first_p, int last_p)
 {

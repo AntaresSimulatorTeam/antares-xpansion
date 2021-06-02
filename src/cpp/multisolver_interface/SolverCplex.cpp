@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "SolverCplex.h"
 
 /*************************************************************************************************
@@ -291,8 +293,9 @@ void SolverCplex::add_name(int type, const char* cnames, int indice){
     zero_status_check(status, "add name");
 }
 
-void SolverCplex::chg_obj(int nels, const int* mindex, const double* obj){
-    int status = CPXchgobj(_env, _prb, nels, mindex, obj);
+void SolverCplex::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj){
+    assert(obj.size() == mindex.size());
+    int status = CPXchgobj(_env, _prb, obj.size(), mindex.data(), obj.data());
     zero_status_check(status, "change obj");
 }
 
