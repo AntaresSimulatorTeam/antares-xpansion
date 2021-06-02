@@ -31,10 +31,8 @@ SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
 	}
 	else {
 		_NumberOfProblems -= 1;
-		std::cout << "Failed to cast prob into SolverXpress in SolverXpress copy constructor"
-			<< std::endl;
 		free();
-		std::exit(0);
+        throw InvalidSolverForCopyException(toCopy->get_solver_name(),get_solver_name());
 	}
 }
 

@@ -43,6 +43,8 @@ public:
 	virtual ~SolverCbc();
 	virtual int get_number_of_instances();
 
+    virtual std::string get_solver_name() const {return "CBC";}
+
 private:
     void defineCbcModelFromInnerSolver();
 
