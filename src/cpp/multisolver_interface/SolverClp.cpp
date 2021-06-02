@@ -372,8 +372,7 @@ void SolverClp::chg_bounds(const std::vector<int>& mindex, const std::vector<cha
 			_clp.setColUpper(mindex[i], bnd[i]);
 		}
 		else {
-			std::cout << "ERROR : Unknown bound type " << qbtype[i] << " for column " << mindex[i] << std::endl;
-			std::exit(1);
+		    throw InvalidBoundTypeException(qbtype[i]);
 		}
 	}
 }
@@ -389,15 +388,17 @@ void SolverClp::chg_col_type(const std::vector<int>& mindex, const std::vector<c
 		{
 		case 'C':
 			_clp.setContinuous(mindex[i]);
+			break;
 		case 'B':
 			_clp.setInteger(mindex[i]);
 			bnd_index[0] = mindex[i];
 			chg_bounds(bnd_index, bnd_type, bnd_val);
+			break;
 		case 'I':
 			_clp.setInteger(mindex[i]);
+			break;
 		default:
-			std::cout << "ERROR : unknown column type " << qctype[i] << std::endl;
-			std::exit(1);
+			throw InvalidColTypeException(qctype[i]);
 		}
 	}
 }

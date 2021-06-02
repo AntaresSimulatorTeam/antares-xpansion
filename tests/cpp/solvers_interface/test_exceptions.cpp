@@ -56,6 +56,59 @@ TEST_CASE("InvalidColSizeException", "[exceptions][invalid_col_size]") {
     }
 }
 
+SolverAbstract::Ptr createSimpleProblem(const std::string& solver_name)
+{
+    SolverFactory factory;
+    SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+    solver->init();
 
+    // 2 Colunms with no obj
+    std::vector<int> matind(0);
+    std::vector<double> matval(0);
+    std::vector<int> matstart = std::vector<int>(2, 0);
+    std::vector<double> obj = std::vector<double>(2, 0.0);
+    std::vector<double> lb = std::vector<double>(2, 0.0);
+    std::vector<double> ub = std::vector<double>(2, 100.0);
+    solver->add_cols(2, 0, obj.data(), matstart.data(), matind.data(), matval.data(),
+                     lb.data(), ub.data());
+    //========================================================================================
+    // Add a row to problem : creating row structure
+    int newRows = 2;
+    int newElems = 3;
+    std::vector<double> matvalRow = { 5.0, -3.2, 10 };
+    std::vector<int> mind = { 0, 1 , 1 };
+    std::vector<int> mstart = { 0, 2 , 3 };
+    std::vector<char> ntype = { 'L', 'G' };
+    std::vector<double> rhs = { 5.0 , 2};
+    //========================================================================================
+    // Add rows to solver
+    solver->add_rows(newRows, newElems, ntype.data(), rhs.data(), NULL, mstart.data(),
+                     mind.data(), matvalRow.data());
 
+    return solver;
+}
 
+TEST_CASE("InvalidColTypeException", "[exceptions][invalid_col_type]") {
+
+    for (auto const& solver_name : {"CBC", "CLP"}) {
+        SolverAbstract::Ptr solver = createSimpleProblem(solver_name);
+        try {
+            solver->chg_col_type(std::vector<int>(1, 0), std::vector<char>(1, 'P'));
+        } catch (InvalidColTypeException &ex) {
+            REQUIRE(std::string(ex.what()) == "Invalid col type P for solver.");
+        }
+    }
+}
+
+TEST_CASE("InvalidBoundTypeException", "[exceptions][invalid_bound_type]") {
+
+    for (auto const& solver_name : {"CBC", "CLP"}) {
+        SolverAbstract::Ptr solver = createSimpleProblem(solver_name);
+
+        try {
+            solver->chg_bounds(std::vector<int>(1, 0), std::vector<char>(1, 'P'), std::vector<double>(1, 0));
+        } catch (InvalidBoundTypeException &ex) {
+            REQUIRE(std::string(ex.what()) == "Invalid bound type P for solver.");
+        }
+    }
+}

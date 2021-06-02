@@ -32,14 +32,14 @@ public:
 class InvalidBoundTypeException : public std::runtime_error {
 public:
     InvalidBoundTypeException(char qbtype)
-            :std::runtime_error("Invalid bound type " + std::to_string(qbtype) + " for solver.")
+            :std::runtime_error(std::string("Invalid bound type ") + qbtype + std::string(" for solver."))
     {}
 };
 
 class InvalidColTypeException : public std::runtime_error {
 public:
     InvalidColTypeException(char qctype)
-            :std::runtime_error("Invalid col type " + std::to_string(qctype) + " for solver.")
+            :std::runtime_error(std::string("Invalid col type ") + qctype + std::string(" for solver."))
     {}
 };
 
