@@ -70,7 +70,7 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 		_solver->init();
 	}
 	_solver->set_threads(1);
-	_solver->read_prob(path_to_mps.c_str(), "MPS");
+	_solver->read_prob_mps(path_to_mps);
 	
 	int var_index;
 	for(auto const & kvp : variable_map) {

@@ -24,8 +24,7 @@ TEST_CASE("A LP problem is solved", "[solve-lp]") {
             // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Solve as LP
@@ -76,8 +75,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
             // Solver declaration 
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Solve as LP
@@ -139,8 +137,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
             // Solver declaration and read problem
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
             solver->init();
-            const std::string flags = "MPS";
-            solver->read_prob(instance.c_str(), flags.c_str());
+            solver->read_prob_mps(instance);
 
             //========================================================================================
             // Solve as LP and get solution
@@ -230,8 +227,7 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
                 // Solver declaration
                 SolverAbstract::Ptr solver = factory.create_solver(solver_name);
                 solver->init();
-                const std::string flags = "MPS";
-                solver->read_prob(instance.c_str(), flags.c_str());
+                solver->read_prob_mps(instance);
 
                 //========================================================================================
                 // Solve as MIP

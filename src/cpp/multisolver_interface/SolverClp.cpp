@@ -63,22 +63,22 @@ void SolverClp::free() {
 /*************************************************************************************************
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
-void SolverClp::write_prob(const char* name, const char* flags){
-	std::string nFlags = "";
-	if (std::string(flags) == "LP") {
-		nFlags = "-l";
-	}
-	_clp.writeMps(name, 1);
+void SolverClp::write_prob_mps(const std::string& filename){
+	_clp.writeMps(filename.c_str(), 1);
 }
 
-void SolverClp::read_prob(const char* prob_name, const char* flags){
+void SolverClp::write_prob_lp(const std::string& filename){
+    _clp.writeLp(filename.c_str());
+}
+
+void SolverClp::read_prob_mps(const std::string& filename){
 	set_output_log_level(0);
-	if (std::string(flags) == "LP") {
-		_clp.readLp(prob_name);
-	}
-	else {
-		_clp.readMps(prob_name, true, false);
-	}
+	_clp.readMps(filename.c_str(), true, false);
+}
+
+void SolverClp::read_prob_lp(const std::string& filename){
+    set_output_log_level(0);
+    _clp.readLp(filename.c_str());
 }
 
 void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv){

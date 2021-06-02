@@ -52,10 +52,16 @@ public:
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
 public:
-	virtual void write_prob(const char* name, const char* flags);
-    virtual void read_prob(const char* prob_name, const char* flags);
+    virtual void write_prob_mps(const std::string& filename);
+    virtual void write_prob_lp(const std::string& filename);
+
+    virtual void read_prob_mps(const std::string& filename);
+    virtual void read_prob_lp(const std::string& filename);
     virtual void copy_prob(const SolverAbstract::Ptr fictif_solv);
 
+private:
+
+    virtual void read_prob(const char* prob_name, const char* flags);
 
 /*************************************************************************************************
 -----------------------    Get general informations about problem    ----------------------------

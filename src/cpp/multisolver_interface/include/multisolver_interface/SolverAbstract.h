@@ -119,21 +119,34 @@ public:
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
 public:
+
     /**
-    * @brief writes an optimization problem in a file
+    * @brief writes an optimization problem in a MPS file
     *
     * @param name   : name of the file to write
-    * @param falgs  : char* containing the file format (LP, MPS) 
+    */
+    virtual void write_prob_mps(const std::string& filename) = 0;
+
+    /**
+    * @brief writes an optimization problem in a LP file
+    *
+    * @param name   : name of the file to write
     */    
-	virtual void write_prob(const char* name, const char* flags) = 0;
+	virtual void write_prob_lp(const std::string& filename) = 0;
 	
     /**
-    * @brief reads an optimization problem contained in a file
+    * @brief reads an optimization problem contained in a MPS file
     *
     * @param name   : name of the file to read
-    * @param falgs  : char* containing the file format (LP, MPS) 
     */
-    virtual void read_prob(const char* prob_name, const char* flags) = 0;
+    virtual void read_prob_mps(const std::string& filename) = 0;
+
+    /**
+    * @brief reads an optimization problem contained in a MPS file
+    *
+    * @param name   : name of the file to read
+    */
+    virtual void read_prob_lp(const std::string& filename) = 0;
 	
     /**
     * @brief copy an existing problem

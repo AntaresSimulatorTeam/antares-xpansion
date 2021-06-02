@@ -3,17 +3,17 @@
 void ORTreadmps(SolverAbstract::Ptr solver_p, 
     std::string const & filename_p)
 {
-    solver_p->read_prob(filename_p.c_str(), "MPS");
+    solver_p->read_prob_mps(filename_p);
 }
 
 void ORTwritemps(SolverAbstract::Ptr const solver_p, std::string const & filename_p)
 {
-    solver_p->write_prob(filename_p.c_str(), "MPS");
+    solver_p->write_prob_mps(filename_p);
 }
 
 void ORTwritelp(SolverAbstract::Ptr const solver_p, std::string const & filename_p)
 {
-    solver_p->write_prob(filename_p.c_str(), "LP");
+    solver_p->write_prob_lp(filename_p);
 }
 
 

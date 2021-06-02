@@ -20,8 +20,7 @@ SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
 	if (SolverCbc* c = dynamic_cast<SolverCbc*>(fictif.get()))
 	{
 		_clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
-		_cbc = CbcModel(_clp_inner_solver);
-		set_output_log_level(_current_log_level);
+		defineCbcModelFromInnerSolver();
 	}
 	else {
 		_NumberOfProblems -= 1;
@@ -45,6 +44,14 @@ int SolverCbc::get_number_of_instances()
 	return _NumberOfProblems;
 }
 
+void SolverCbc::defineCbcModelFromInnerSolver()
+{
+    // Affectation of new Clp interface to Cbc
+    // As CbcModel _cbc is modified, need to set log level to 0 again
+    _cbc = CbcModel(_clp_inner_solver);
+    set_output_log_level(_current_log_level);
+}
+
 /*************************************************************************************************
 -----------------------------------    Output stream management    ------------------------------
 *************************************************************************************************/
@@ -54,8 +61,7 @@ int SolverCbc::get_number_of_instances()
 *************************************************************************************************/
 void SolverCbc::init() {
 	_clp_inner_solver = OsiClpSolverInterface();
-	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(_current_log_level);
+    defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::free() {
@@ -65,101 +71,93 @@ void SolverCbc::free() {
 /*************************************************************************************************
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
-void SolverCbc::write_prob(const char* name, const char* flags) {
+void SolverCbc::write_prob_mps(const std::string& filename) {
 
-	if (std::string(flags) == "LP") {
-		_clp_inner_solver.writeLpNative(name, NULL, NULL);
-	}
-	else if (std::string(flags) == "MPS") {
+    const int numcols = get_ncols();
+    std::shared_ptr<char[]> shared_integrality(new char[numcols]);
+    char* integrality = shared_integrality.get();
+    CoinCopyN(_clp_inner_solver.getColType(false), numcols, integrality);
 
-		const int numcols = get_ncols();
-		std::shared_ptr<char[]> shared_integrality(new char[numcols]);
-		char* integrality = shared_integrality.get();
-		CoinCopyN(_clp_inner_solver.getColType(false), numcols, integrality);
+    bool hasInteger = false;
+    for (int i = 0; i < numcols; ++i) {
+        if (_clp_inner_solver.isInteger(i)) {
+            hasInteger = true;
+            break;
+        }
+    }
 
-		bool hasInteger = false;
-		for (int i = 0; i < numcols; ++i) {
-			if (_clp_inner_solver.isInteger(i)) {
-				hasInteger = true;
-				break;
-			}
-		}
+    CoinMpsIO writer;
+    writer.setInfinity(_clp_inner_solver.getInfinity());
+    writer.passInMessageHandler(_clp_inner_solver.messageHandler());
 
-		CoinMpsIO writer;
-		writer.setInfinity(_clp_inner_solver.getInfinity());
-		writer.passInMessageHandler(_clp_inner_solver.messageHandler());
-		
-		// If the user added cuts or rows but did not added names to them
-		// the number of names returned by solver might be different from the
-		// actual number of names, resulting in a crash
-		std::vector<std::string> rowNames(get_nrows());
-		for (int i = 0; i < get_nrows(); ++i) {
-			std::string const& name(_clp_inner_solver.getRowName(i));
-			if (name == "") {
-				std::stringstream buffer;
-				buffer << "R" << i;
-				rowNames[i] = buffer.str();
-			}else{
-				rowNames[i] = name;
-			}
-		}
-		
-		std::vector<std::string> colNames(get_ncols());
-		for (int i = 0; i < get_ncols(); ++i) {
-			std::string const& name(_clp_inner_solver.getColName(i));
-			if (name == "") {
-				std::stringstream buffer;
-				buffer << "C" << i;
-				colNames[i] = buffer.str();
-			}
-			else {
-				colNames[i] = name;
-			}
-		}
-		
-		writer.setMpsData(
-			*(_clp_inner_solver.getMatrixByCol()),
-			_clp_inner_solver.getInfinity(),
-			_clp_inner_solver.getColLower(),
-			_clp_inner_solver.getColUpper(),
-			_clp_inner_solver.getObjCoefficients(),
-			hasInteger ? integrality : NULL,
-			_clp_inner_solver.getRowLower(),
-			_clp_inner_solver.getRowUpper(),
-			colNames,
-			rowNames
-		);
+    // If the user added cuts or rows but did not added names to them
+    // the number of names returned by solver might be different from the
+    // actual number of names, resulting in a crash
+    std::vector<std::string> rowNames(get_nrows());
+    for (int i = 0; i < get_nrows(); ++i) {
+        std::string const& name(_clp_inner_solver.getRowName(i));
+        if (name == "") {
+            std::stringstream buffer;
+            buffer << "R" << i;
+            rowNames[i] = buffer.str();
+        }else{
+            rowNames[i] = name;
+        }
+    }
 
-		std::string probName = "";
-		_clp_inner_solver.getStrParam(OsiProbName, probName);
-		writer.setProblemName(probName.c_str());
+    std::vector<std::string> colNames(get_ncols());
+    for (int i = 0; i < get_ncols(); ++i) {
+        std::string const& name(_clp_inner_solver.getColName(i));
+        if (name == "") {
+            std::stringstream buffer;
+            buffer << "C" << i;
+            colNames[i] = buffer.str();
+        }
+        else {
+            colNames[i] = name;
+        }
+    }
 
-		double objOffset = 0.0;
-		_clp_inner_solver.getDblParam(OsiObjOffset, objOffset);
-		writer.setObjectiveOffset(objOffset);
+    writer.setMpsData(
+        *(_clp_inner_solver.getMatrixByCol()),
+        _clp_inner_solver.getInfinity(),
+        _clp_inner_solver.getColLower(),
+        _clp_inner_solver.getColUpper(),
+        _clp_inner_solver.getObjCoefficients(),
+        hasInteger ? integrality : NULL,
+        _clp_inner_solver.getRowLower(),
+        _clp_inner_solver.getRowUpper(),
+        colNames,
+        rowNames
+    );
 
-		writer.writeMps(name, 0 /*gzip it*/, 1, 1,
-			NULL, 0, NULL);
-	}
-	else {
-		std::cout << "ERROR : Write prob - unknown format type " << flags << std::endl;
-		std::exit(1);
-	}
+    std::string probName = "";
+    _clp_inner_solver.getStrParam(OsiProbName, probName);
+    writer.setProblemName(probName.c_str());
+
+    double objOffset = 0.0;
+    _clp_inner_solver.getDblParam(OsiObjOffset, objOffset);
+    writer.setObjectiveOffset(objOffset);
+
+    writer.writeMps(filename.c_str(), 0 /*gzip it*/, 1, 1,
+        NULL, 0, NULL);
+
 }
 
-void SolverCbc::read_prob(const char* prob_name, const char* flags){
-	std::string clp_flags = "mps";
-	if (std::string(flags) == "LP") {
-		clp_flags = "lp";
-	}
+void SolverCbc::write_prob_lp(const std::string& name) {
+    _clp_inner_solver.writeLpNative(name.c_str(), NULL, NULL);
+}
 
-	int status = _clp_inner_solver.readMps(prob_name, clp_flags.c_str());
-	zero_status_check(status, "read problem");
+void SolverCbc::read_prob_mps(const std::string& prob_name){
+    int status = _clp_inner_solver.readMps(prob_name.c_str());
+    zero_status_check(status, "read problem");
+    defineCbcModelFromInnerSolver();
+}
 
-	// Affectation of new Clp interface to Cbc
-	// As CbcModel _cbc is modified, need to set log level to 0 again
-	_cbc = CbcModel(_clp_inner_solver);	
-	set_output_log_level(_current_log_level);
+void SolverCbc::read_prob_lp(const std::string& prob_name){
+    int status = _clp_inner_solver.readLp(prob_name.c_str());
+    zero_status_check(status, "read problem");
+    defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv){
@@ -540,8 +538,7 @@ int SolverCbc::solve_lp(){
 
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
-	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(_current_log_level);
+    defineCbcModelFromInnerSolver();
 
 	_cbc.solver()->initialSolve();
 
@@ -566,9 +563,7 @@ int SolverCbc::solve_mip(){
     int lp_status;
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
-
-	_cbc = CbcModel(_clp_inner_solver);
-	set_output_log_level(_current_log_level);
+    defineCbcModelFromInnerSolver();
 	clock_t t_i = clock();
 	_cbc.branchAndBound();
 	clock_t t_f = clock();

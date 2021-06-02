@@ -159,7 +159,7 @@ void masterGeneration(std::string rootPath,
 	std::string const lp_name = "master";
 	// writelp is useless no ?
 	//ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
-	master_l->write_prob((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps").c_str(), "MPS");
+	master_l->write_prob_mps((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps"));
 
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const & coupling : couplings) {
