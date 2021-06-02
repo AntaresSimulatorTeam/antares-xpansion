@@ -12,27 +12,35 @@ class InvalidStatusException : public std::runtime_error {
 public:
     InvalidStatusException(int status,const std::string& action)
     :std::runtime_error("Failed to "+ action + ": invalid status " + std::to_string(status) + " (0 expected)")
-    {
-
-    }
+    {}
 };
 
 class InvalidRowSizeException : public std::runtime_error {
 public:
     InvalidRowSizeException(int expected_size, int actual_size)
             :std::runtime_error("Invalid row size for solver. " + std::to_string(actual_size) + " rows available ("+std::to_string(expected_size)+" expected)")
-    {
-
-    }
+    {}
 };
 
 class InvalidColSizeException : public std::runtime_error {
 public:
     InvalidColSizeException(int expected_size, int actual_size)
             :std::runtime_error("Invalid col size for solver. " + std::to_string(actual_size) + " cols available ("+std::to_string(expected_size)+" expected)")
-    {
+    {}
+};
 
-    }
+class InvalidBoundTypeException : public std::runtime_error {
+public:
+    InvalidBoundTypeException(char qbtype)
+            :std::runtime_error("Invalid bound type " + std::to_string(qbtype) + " for solver.")
+    {}
+};
+
+class InvalidColTypeException : public std::runtime_error {
+public:
+    InvalidColTypeException(char qctype)
+            :std::runtime_error("Invalid col type " + std::to_string(qctype) + " for solver.")
+    {}
 };
 
 // Definition of optimality codes

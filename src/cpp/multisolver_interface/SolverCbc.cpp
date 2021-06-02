@@ -456,8 +456,7 @@ void SolverCbc::chg_bounds(const std::vector<int>& mindex, const std::vector<cha
 			_clp_inner_solver.setColUpper(mindex[i], bnd[i]);
 		}
 		else {
-			std::cout << "ERROR : Unknown bound type " << qbtype[i] << " for column " << mindex[i] << std::endl;
-			std::exit(1);
+		    throw InvalidBoundTypeException(qbtype[i]);
 		}
 	}
 }
@@ -481,8 +480,7 @@ void SolverCbc::chg_col_type(const std::vector<int>& mindex, const std::vector<c
 			_clp_inner_solver.setInteger(mindex[i]);
 		}
 		else {
-			std::cout << "ERROR : unknown column type " << qctype[i] << std::endl;
-			std::exit(1);
+		    throw InvalidColTypeException(qctype[i]);
 		}
 		std::vector<char> colT(1);
 		get_col_type(colT.data(), mindex[i], mindex[i]);
