@@ -50,6 +50,20 @@ public:
     {}
 };
 
+class InvalidSolverForCopyException : public std::runtime_error {
+public:
+    InvalidSolverForCopyException(const std::string& from_solver, const std::string& to_solver)
+            :std::runtime_error("Can't copy "+ from_solver + "solver from "+ to_solver)
+    {}
+};
+
+class InvalidSolverName : public std::runtime_error {
+public:
+    InvalidSolverName(const std::string& solver_name)
+            :std::runtime_error("Solver '"+ solver_name + "' not supported")
+    {}
+};
+
 // Definition of optimality codes
 enum SOLVER_STATUS {
 	OPTIMAL,
@@ -109,6 +123,11 @@ public:
     * @brief Returns number of instances of solver currently in memory
     */
     virtual int get_number_of_instances() = 0;
+
+    /**
+    * @brief Returns the solver used
+    */
+    virtual std::string get_solver_name() const =0;
 
 
 /*************************************************************************************************

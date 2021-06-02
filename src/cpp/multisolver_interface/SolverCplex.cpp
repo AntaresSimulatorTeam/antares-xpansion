@@ -49,9 +49,7 @@ SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif) {
 		_NumberOfProblems += 1;
 	}
 	else {
-		std::cout << "Failed to cast fictif prob into SolverCplex in SolverCplex copy constructor" 
-            << std::endl;
-		std::exit(0);
+        throw InvalidSolverForCopyException(fictif->get_solver_name(),get_solver_name());
 	}
 }
 

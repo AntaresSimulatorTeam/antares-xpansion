@@ -34,12 +34,12 @@ public:
 *************************************************************************************************/
 public:
 	/**
-    * @brief Default constructor of a XPRESS solver
+    * @brief Default constructor of a CLP solver
     */
 	SolverClp();
 
 	/**
-    * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and name it "name"
+    * @brief Copy constructor of CLP, copy the problem toCopy in memory and name it "name"
 	*
 	* @param toCopy : Pointer to an AbstractSolver object, containing a CLP solver to copy
     */
@@ -47,6 +47,8 @@ public:
 
 	virtual ~SolverClp();
 	virtual int get_number_of_instances();
+
+    virtual std::string get_solver_name() const {return "CLP";}
 
 /*************************************************************************************************
 ---------------------------------    Output and stream management    -----------------------------

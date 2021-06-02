@@ -30,8 +30,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name){
     SolverAbstract::Ptr solver;
 
 	if (solver_name == "") {
-		std::cout << "SOLVER NON RECONU" << std::endl;
-		std::exit(0);
+        throw InvalidSolverName(solver_name);
 	}
 #ifdef CPLEX
 	else if (solver_name == "CPLEX") {
@@ -52,21 +51,19 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name){
 	}
 #endif
 	else {
-		std::cout << "SOLVER NON RECONU" << std::endl;
-		std::exit(0);
+        throw InvalidSolverName(solver_name);
 	}
 
 	return solver;
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name, 
-	SolverAbstract::Ptr to_copy)
+SolverAbstract::Ptr SolverFactory::create_solver(SolverAbstract::Ptr to_copy)
 {
 	SolverAbstract::Ptr solver;
+	std::string solver_name = to_copy->get_solver_name();
 
 	if (solver_name == "") {
-		std::cout << "SOLVER NON RECONU" << std::endl;
-		std::exit(0);
+        throw InvalidSolverName(solver_name);
 	}
 #ifdef CPLEX
 	else if (solver_name == "CPLEX") {
@@ -87,8 +84,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name,
 	}
 #endif
 	else {
-		std::cout << "SOLVER NON RECONU" << std::endl;
-		std::exit(0);
+        throw InvalidSolverName(solver_name);
 	}
 
 	return solver;

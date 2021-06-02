@@ -318,7 +318,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
     solver_chgbounds(in_prblm, indexes, lb_char, neginf);
     solver_chgbounds(in_prblm, indexes, ub_char, posinf);
 	std::vector<std::string> vnames(var.begin(), var.end());
-	SolverAbstract::Ptr out_prblm = factory.create_solver(solver_name, in_prblm);
+	SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
 
 	// Xavier : Why do we need to copy the problem ?
 	// We could just change the names in "in_prblm" and continuing modif it
