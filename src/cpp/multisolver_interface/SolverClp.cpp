@@ -64,13 +64,11 @@ void SolverClp::free() {
 -------------------------------    Reading & Writing problems    -------------------------------
 *************************************************************************************************/
 void SolverClp::write_prob_mps(const std::string& filename){
-	std::string nFlags = "";
 	_clp.writeMps(filename.c_str(), 1);
 }
 
 void SolverClp::write_prob_lp(const std::string& filename){
-    std::string nFlags = "-l";
-    _clp.writeMps(filename.c_str(), 1);
+    _clp.writeLp(filename.c_str());
 }
 
 void SolverClp::read_prob_mps(const std::string& filename){
