@@ -551,11 +551,11 @@ TEST_CASE("We can get the names of variables and constraints present in MPS file
             int n_vars = solver->get_ncols();
             int n_rows = solver->get_nrows();
 
-            std::vector<std::string> rowNames(n_rows);
-            std::vector<std::string> colNames(n_vars);
+            std::vector<std::string> rowNames = solver->get_row_names(0, n_rows - 1);
+            std::vector<std::string> colNames = solver->get_col_names(0, n_vars - 1);
 
-            solver->get_row_names(0, n_rows - 1, rowNames);
-            solver->get_col_names(0, n_vars - 1, colNames);
+
+
 
             int ind = 0;
             std::string cur_name;
@@ -668,8 +668,7 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]") {
             //========================================================================================
             // Check variable names
             int ncols_copied = solver2->get_ncols();
-            std::vector<std::string> copiedNames(ncols_copied);
-            solver2->get_col_names(0, ncols_copied - 1, copiedNames);
+            std::vector<std::string> copiedNames = solver2->get_col_names(0, ncols_copied - 1);
 
             std::string cur_name = "";
             for (int i = 0; i < ncols_copied; i++) {

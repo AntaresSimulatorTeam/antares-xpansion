@@ -270,20 +270,26 @@ int SolverClp::get_col_index(std::string const& name) const {
 	return -1;
 }
 
-int SolverClp::get_row_names(int first, int last, std::vector<std::string>& names)
+std::vector<std::string> SolverClp::get_row_names(int first, int last)
 {
+    std::vector<std::string> names;
+    names.reserve(1 + last - first);
+
 	for (int i = first; i < last + 1; i++) {
-		names[i - first] = _clp.getRowName(i);
+		names.push_back(_clp.getRowName(i));
 	}
-	return 0;
+	return names;
 }
 
-int SolverClp::get_col_names(int first, int last, std::vector<std::string>& names)
+std::vector<std::string> SolverClp::get_col_names(int first, int last)
 {
+    std::vector<std::string> names;
+    names.reserve(1 + last - first);
+
 	for (int i = first; i < last + 1; i++) {
-		names[i - first] = _clp.getColumnName(i);
+		names.push_back(_clp.getColumnName(i));
 	}
-	return 0;
+	return names;
 }
 
 /*************************************************************************************************

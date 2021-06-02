@@ -222,32 +222,34 @@ int SolverXpress::get_col_index(std::string const& name) const {
 	return id;
 }
 
-int SolverXpress::get_row_names(int first, int last, std::vector<std::string>& names)
+std::vector<std::string> SolverXpress::get_row_names(int first, int last)
 {
-	int status = 0;
+    std::vector<std::string> names;
+    names.reserve(1 + last - first);
 	char cur_name[100];
 	for (int i = 0; i < last - first + 1; i++) {
-		status = XPRSgetnames(_xprs, 1, cur_name, i + first, i + first);
+		int status = XPRSgetnames(_xprs, 1, cur_name, i + first, i + first);
 		zero_status_check(status, "get row names.");
-		names[i] = cur_name;
+        names.push_back(cur_name);
 		memset(cur_name, 0, 100);
 	}
 	
-	return status;
+	return names;
 }
 
-int SolverXpress::get_col_names(int first, int last, std::vector<std::string>& names)
+std::vector<std::string> SolverXpress::get_col_names(int first, int last)
 {
-	int status = 0;
+    std::vector<std::string> names;
+    names.reserve(1 + last - first);
 	char cur_name[100];
 	for (int i = 0; i < last - first + 1; i++) {
-		status = XPRSgetnames(_xprs, 2, cur_name, i + first, i + first);
+		int status = XPRSgetnames(_xprs, 2, cur_name, i + first, i + first);
 		zero_status_check(status, "get column names.");
-		names[i] = cur_name;
+        names.push_back(cur_name);
 		memset(cur_name, 0, 100);
 	}
 
-	return status;
+	return names;
 }
 
 /*************************************************************************************************

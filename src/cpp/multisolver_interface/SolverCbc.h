@@ -90,8 +90,8 @@ public:
 
 	virtual int get_row_index(std::string const& name) const;
 	virtual int get_col_index(std::string const& name) const;
-	virtual int get_row_names(int first, int last, std::vector<std::string>& names);
-	virtual int get_col_names(int first, int last, std::vector<std::string>& names);
+    virtual std::vector<std::string> get_row_names(int first, int last);
+    virtual std::vector<std::string> get_col_names(int first, int last);
 
 
 /*************************************************************************************************

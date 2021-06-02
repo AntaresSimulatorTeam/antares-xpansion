@@ -210,38 +210,43 @@ int SolverCplex::get_col_index(std::string const& name) const {
 	return id;
 }
 
-int SolverCplex::get_row_names(int first, int last, std::vector<std::string>& names)
+std::vector<std::string> SolverCplex::get_row_names(int first, int last)
 {
+    std::vector<std::string> names;
+    names.reserve(1 + last - first);
+
 	int status = 0;
 	const int charSize = 100;
 	char cur_name[charSize];
 	std::vector<char*> namesPtr(charSize);
 	for (int i = 0; i < last - first + 1; i++) {
-		status = CPXgetrowname(_env, _prb, namesPtr.data(), cur_name, charSize, 
+		int status = CPXgetrowname(_env, _prb, namesPtr.data(), cur_name, charSize,
 			NULL, i + first, i + first);
 		zero_status_check(status, "get row name");
-		names[i] = cur_name;
+		names.push_back(cur_name);
 		memset(cur_name, 0, 100);
 	}
 
-	return status;
+	return names;
 }
 
-int SolverCplex::get_col_names(int first, int last, std::vector<std::string>& names)
+std::vector<std::string> SolverCplex::get_col_names(int first, int last, std::vector<std::string>& names)
 {
-	int status = 0;
+    std::vector<std::string> names;
+    names.reserve(1 + last - first);
+
 	const int charSize = 100;
 	char cur_name[charSize];
 	std::vector<char*> namesPtr(charSize);
 	for (int i = 0; i < last - first + 1; i++) {
-		status = CPXgetcolname(_env, _prb, namesPtr.data(), cur_name, charSize, 
+		int status = CPXgetcolname(_env, _prb, namesPtr.data(), cur_name, charSize,
 			NULL, i + first, i + first);
 		zero_status_check(status, "get column name");
-		names[i] = cur_name;
+		names.push_back(cur_name);
 		memset(cur_name, 0, 100);
 	}
 
-	return status;
+	return names;
 }
 
 /*************************************************************************************************

@@ -435,8 +435,7 @@ TEST_CASE("Modification: change name of row and column", "[modif][chg-names]") {
             std::string newColName = "testColumn";
             solver->chg_col_name(1, newColName);
 
-            std::vector<std::string> solverColNames(1);
-            solver->get_col_names(1, 1, solverColNames);
+            std::vector<std::string> solverColNames = solver->get_col_names(1, 1);
             /*
             WARNING : Xpress Solver adds sometimes spaces at the end of the names.
             In order to perform comparison, we only compare the str.size() first characters 
@@ -449,8 +448,7 @@ TEST_CASE("Modification: change name of row and column", "[modif][chg-names]") {
             std::string newRowName = "testRow";
             solver->chg_row_name(1, newRowName);
 
-            std::vector<std::string> solverRowNames(1);
-            solver->get_row_names(1, 1, solverRowNames);
+            std::vector<std::string> solverRowNames= solver->get_row_names(1, 1);
             REQUIRE(solverRowNames[0].compare(0, newRowName.size(), newRowName) == 0);
         }
     }
