@@ -84,7 +84,7 @@ void SolverXpress::write_prob_mps(const std::string& filename){
 }
 
 void SolverXpress::write_prob_lp(const std::string& filename){
-    std::string nFlags = "LP";
+    std::string nFlags = "l";
     int status = XPRSwriteprob(_xprs, filename.c_str(), nFlags.c_str());
     zero_status_check(status, "write problem");
 }
