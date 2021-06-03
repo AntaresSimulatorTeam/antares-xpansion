@@ -284,8 +284,9 @@ void SolverCplex::add_name(int type, const char* cnames, int indice){
 		type = 'c';
 	}
 	else {
-		std::cout << "ERROR : wrong type sent to add_name" << std::endl;
-		std::exit(0);
+        std::stringstream  buffer;
+        buffer << "ERROR : wrong type sent to add_name";
+        throw GenericSolverException(buffer.str());
 	}
 	int status = CPXchgname(_env, _prb, type, indice, cnames);
     zero_status_check(status, "add name");
@@ -392,7 +393,6 @@ int SolverCplex::solve_lp(){
 	else {
 		lp_status = UNKNOWN;
 		std::cout << "UNKNOWN CPLEX STATUS: " << cpx_status << std::endl;
-        std::exit(0);
 	}
 	return lp_status;
 }
@@ -426,7 +426,6 @@ int SolverCplex::solve_mip(){
 		else {
 			lp_status = UNKNOWN;
 		    std::cout << "UNKNOWN CPLEX STATUS: " << cpx_status << std::endl;
-            std::exit(0);
 		}
 	}
 	return lp_status;

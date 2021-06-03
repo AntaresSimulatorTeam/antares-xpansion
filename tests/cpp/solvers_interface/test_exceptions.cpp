@@ -158,13 +158,13 @@ TEST_CASE("InvalidSetOptimatilityGap", "[exceptions][set_optimality_gap]") {
     }
 }
 
-TEST_CASE("InvalidSolverName", "[exceptions][invalid_solver_name]") {
+TEST_CASE("InvalidSolverNameException", "[exceptions][invalid_solver_name]") {
 
     for (std::string const& solver_name : {"SIRIUS", "GUROBI"}) {
         SolverFactory factory;
         try {
             SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-        } catch (InvalidSolverName &ex) {
+        } catch (InvalidSolverNameException &ex) {
             REQUIRE(std::string(ex.what()) == std::string("Solver '"+ solver_name + "' not supported"));
         }
     }

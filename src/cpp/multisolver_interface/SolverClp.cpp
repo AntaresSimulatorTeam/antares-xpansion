@@ -80,8 +80,8 @@ void SolverClp::read_prob_lp(const std::string& filename){
 }
 
 void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv){
-	std::cout << "Copy Clp problem : TO DO WHEN NEEDED" << std::endl;
-	std::exit(0);
+	std::string error =  "Copy Clp problem : TO DO WHEN NEEDED";
+	throw NotImplementedFeatureSolverException(error);
 }
 
 /*************************************************************************************************
@@ -158,8 +158,8 @@ void SolverClp::get_row_type(char* qrtype, int first, int last) const{
 		}
 		else if (rowLower[i] > -COIN_DBL_MAX) {
 			if (rowUpper[i] < COIN_DBL_MAX) {
-				std::cout << "ERROR : Row " << i << " has two different RHS, both right and left." << std::endl;
-				std::exit(1);
+				std::string error =  "ERROR : Row " + std::to_string(i) + " has two different RHS, both right and left.";
+				throw GenericSolverException(error);
 			}
 			else {
 				qrtype[i - first] = 'G';
@@ -169,8 +169,8 @@ void SolverClp::get_row_type(char* qrtype, int first, int last) const{
 			qrtype[i - first] = 'L';
 		}
 		else {
-			std::cout << "ERROR : Row " << i << " in unconstrained. No RHS found." << std::endl;
-			std::exit(1);
+            std::string error =  "ERROR : Row " + std::to_string(i) + " in unconstrained. No RHS found.";
+            throw GenericSolverException(error);
 		}
 	}
 }
@@ -185,9 +185,8 @@ void SolverClp::get_rhs(double* rhs, int first, int last) const{
 		}
 		else if (rowLower[i] > -COIN_DBL_MAX) {
 			if (rowUpper[i] < COIN_DBL_MAX) {
-				std::cout << "ERROR : Row " << i << " has two different RHS, both right and left." << std::endl;
-				std::cout << rowLower[i] << " < Row[" << i << "] < " << rowUpper[i] << std::endl;
-				std::exit(1);
+                std::string error =  "ERROR : Row " + std::to_string(i) + " has two different RHS, both right and left.";
+                throw GenericSolverException(error);
 			}
 			else {
 				rhs[i - first] = rowLower[i];
@@ -197,15 +196,15 @@ void SolverClp::get_rhs(double* rhs, int first, int last) const{
 			rhs[i - first] = rowUpper[i];
 		}
 		else{
-			std::cout << "ERROR : Row " << i << " in unconstrained. No RHS found." << std::endl;
-			std::exit(1);
+            std::string error =  "ERROR : Row " + std::to_string(i) + " in unconstrained. No RHS found.";
+            throw GenericSolverException(error);
 		}
 	}
 }
 
 void SolverClp::get_rhs_range(double* range, int first, int last) const{
-	std::cout << "ERROR : get rhs range not implemented for COIN CLP interface" << std::endl;
-	std::exit(1);
+	std::string error = "ERROR : get rhs range not implemented for COIN CLP interface";
+	throw NotImplementedFeatureSolverException(error);
 }
 
 void SolverClp::get_col_type(char* coltype, int first, int last) const{
@@ -322,8 +321,9 @@ void SolverClp::add_rows(int newrows, int newnz, const char* qrtype, const doubl
 			rowLower[i] = rhs[i];
 		}
 		else {
-			std::cout << "ERROR : add rows, qrtype " << qrtype[i] << " of row " << i << " to add unknown." << std::endl;
-			std::exit(1);
+			std::stringstream  buffer;
+			buffer << "ERROR : add rows, qrtype " << qrtype[i] << " of row " << i << " to add unknown.";
+            throw GenericSolverException(buffer.str());
 		}
 	}
 
@@ -344,8 +344,8 @@ void SolverClp::add_cols(int newcol, int newnz, const double* objx, const int* m
 }
 
 void SolverClp::add_name(int type, const char* cnames, int indice){
-	std::cout << "ERROR : addnames not implemented in the CLP interface." << std::endl;
-	std::exit(1);
+	std::string  error = "ERROR : addnames not implemented in the CLP interface.";
+	throw NotImplementedFeatureSolverException(error);
 }
 
 void SolverClp::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj){
@@ -407,8 +407,9 @@ void SolverClp::chg_rhs(int id_row, double val){
 
 	if (rowLower[id_row] <= -COIN_DBL_MAX) {
 		if (rowUpper[id_row] >= COIN_DBL_MAX) {
-			std::cout << "ERROR : unconstrained constraint " << id_row << " in chg_rhs." << std::endl;
-			std::exit(1);
+            std::stringstream  buffer;
+			buffer << "ERROR : unconstrained constraint " << id_row << " in chg_rhs.";
+            throw GenericSolverException(buffer.str());
 		}
 		else {
 			_clp.setRowUpper(id_row, val);
@@ -419,9 +420,9 @@ void SolverClp::chg_rhs(int id_row, double val){
 			_clp.setRowLower(id_row, val);
 		}
 		else {
-			std::cout << "ERROR : constraint " << id_row << " has both different lower and upper bound in chg_rhs." << std::endl;
-			std::cout << "Not implemented in CLP interface yet." << std::endl;
-			std::exit(1);
+            std::stringstream  buffer;
+            std::cout << "ERROR : constraint " << id_row << " has both different lower and upper bound in chg_rhs.";
+            throw GenericSolverException(buffer.str());
 		}
 	}
 }

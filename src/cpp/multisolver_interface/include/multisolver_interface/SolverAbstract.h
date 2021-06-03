@@ -57,10 +57,23 @@ public:
     {}
 };
 
-class InvalidSolverName : public std::runtime_error {
+class InvalidSolverNameException : public std::runtime_error {
 public:
-    InvalidSolverName(const std::string& solver_name)
+    InvalidSolverNameException(const std::string& solver_name)
             :std::runtime_error("Solver '"+ solver_name + "' not supported")
+    {}
+};
+class GenericSolverException : public std::runtime_error {
+public:
+    GenericSolverException(const std::string& message)
+            :std::runtime_error(message)
+    {}
+};
+
+class NotImplementedFeatureSolverException : public std::runtime_error {
+public:
+    NotImplementedFeatureSolverException(const std::string& message)
+            :std::runtime_error(message)
     {}
 };
 
