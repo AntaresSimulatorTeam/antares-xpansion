@@ -57,9 +57,9 @@ public:
     {}
 };
 
-class InvalidSolverName : public std::runtime_error {
+class InvalidSolverNameException : public std::runtime_error {
 public:
-    InvalidSolverName(const std::string& solver_name)
+    InvalidSolverNameException(const std::string& solver_name)
             :std::runtime_error("Solver '"+ solver_name + "' not supported")
     {}
 };

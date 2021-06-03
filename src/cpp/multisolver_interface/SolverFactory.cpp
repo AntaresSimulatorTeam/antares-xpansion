@@ -30,7 +30,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name){
     SolverAbstract::Ptr solver;
 
 	if (solver_name == "") {
-        throw InvalidSolverName(solver_name);
+        throw InvalidSolverNameException(solver_name);
 	}
 #ifdef CPLEX
 	else if (solver_name == "CPLEX") {
@@ -51,7 +51,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string solver_name){
 	}
 #endif
 	else {
-        throw InvalidSolverName(solver_name);
+        throw InvalidSolverNameException(solver_name);
 	}
 
 	return solver;
@@ -63,7 +63,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(SolverAbstract::Ptr to_copy)
 	std::string solver_name = to_copy->get_solver_name();
 
 	if (solver_name == "") {
-        throw InvalidSolverName(solver_name);
+        throw InvalidSolverNameException(solver_name);
 	}
 #ifdef CPLEX
 	else if (solver_name == "CPLEX") {
@@ -84,7 +84,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(SolverAbstract::Ptr to_copy)
 	}
 #endif
 	else {
-        throw InvalidSolverName(solver_name);
+        throw InvalidSolverNameException(solver_name);
 	}
 
 	return solver;
