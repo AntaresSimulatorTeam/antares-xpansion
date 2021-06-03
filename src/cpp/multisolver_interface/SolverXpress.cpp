@@ -130,8 +130,9 @@ void SolverXpress::read_prob(const char* prob_name, const char* flags){
 }
 
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv){
-	std::cout << "Copy XPRESS problem : TO DO WHEN NEEDED" << std::endl;
-	std::exit(0);
+
+	std::string error = "Copy XPRESS problem : TO DO WHEN NEEDED";
+    throw NotImplementedFeatureSolverException(error);
 }
 
 /*************************************************************************************************

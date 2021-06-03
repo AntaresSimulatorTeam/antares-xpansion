@@ -63,6 +63,19 @@ public:
             :std::runtime_error("Solver '"+ solver_name + "' not supported")
     {}
 };
+class GenericSolverException : public std::runtime_error {
+public:
+    GenericSolverException(const std::string& message)
+            :std::runtime_error(message)
+    {}
+};
+
+class NotImplementedFeatureSolverException : public std::runtime_error {
+public:
+    NotImplementedFeatureSolverException(const std::string& message)
+            :std::runtime_error(message)
+    {}
+};
 
 // Definition of optimality codes
 enum SOLVER_STATUS {
