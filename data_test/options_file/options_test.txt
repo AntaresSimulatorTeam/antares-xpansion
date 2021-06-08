@@ -1,0 +1,8 @@
+            LOG_LEVEL                                       1
+      MAX_ITERATIONS                                       -1
+                 GAP                                       1e-1
+         AGGREGATION                                       1
+               TRACE                                       0
+        SLAVE_WEIGHT                                       UNIFORM
+         MASTER_NAME                                       titi
+        SLAVE_NUMBER                                       8

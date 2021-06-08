@@ -1,5 +1,7 @@
 #include <sstream>
 
+#include "glog/logging.h"
+
 #include "BendersFunctions.h"
 
 
@@ -233,7 +235,7 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 *  \param data : BendersData used to get master solving status
 */
 void check_status(AllCutPackage const & all_package, BendersData const & data) {
-	if (data.master_status != operations_research::MPSolver::OPTIMAL) {
+	if (data.master_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "Master status is " << data.master_status << std::endl;
 		exit(1);
 	}
@@ -241,7 +243,7 @@ void check_status(AllCutPackage const & all_package, BendersData const & data) {
 		for (auto const & kvp : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(kvp.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
-			if (handler->get_int(LPSTATUS) != operations_research::MPSolver::OPTIMAL) {
+			if (handler->get_int(LPSTATUS) != SOLVER_STATUS::OPTIMAL) {
 				LOG(INFO) << "Slave " << kvp.first << " status is " << handler->get_int(LPSTATUS) << std::endl;
 				exit(1);
 			}
@@ -272,10 +274,10 @@ void get_master_value(WorkerMasterPtr & master, BendersData & data, BendersOptio
 
 	for(auto pairIdName : master->_id_to_name)
 	{
-		auto var_l = master->_solver->variables()[pairIdName.first];
-		data.max_invest[pairIdName.second] = var_l->ub();
-		data.min_invest[pairIdName.second] = var_l->lb();
+		master->_solver->get_ub(&data.max_invest[pairIdName.second], pairIdName.first, pairIdName.first);
+		master->_solver->get_lb(&data.min_invest[pairIdName.second], pairIdName.first, pairIdName.first);
 	}
+
 
 
 	if (!options.RAND_AGGREGATION) {
