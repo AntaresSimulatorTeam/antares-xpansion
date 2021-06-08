@@ -66,6 +66,7 @@ class XpansionDriver:
 
     def check_settings_file_format(self):
         check_options(self.options)
+        self._verify_solver()
         self._verify_yearly_weights_consistency()
         self._verify_additional_constraints_file()
 
@@ -449,6 +450,13 @@ class XpansionDriver:
                       % additional_constraints_path)
                 sys.exit(1)
 
+    def _verify_solver(self):
+        try:
+            XpansionStudyReader.check_solver(self.options.get('solver', ""), self.config)
+        except XpansionStudyReader.BaseException as e:
+            print(e)
+            sys.exit(1)
+
     def _get_new_line(self, line, section, key):
         changed_val = self._get_values_to_change_general_data_file()
         if (section, key) in changed_val:
@@ -518,6 +526,7 @@ class XpansionDriver:
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
         options_values["GAP"] = self.optimality_gap()
         options_values["MAX_ITERATIONS"] = self.max_iterations()
+        options_values["SOLVER_NAME"] = self.options.get('solver', "COIN")
         if self.weight_file_name():
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         # generate options file for the solver

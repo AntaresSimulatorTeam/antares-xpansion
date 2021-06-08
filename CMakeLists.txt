@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.3.0)
+PROJECT (antaresXpansion VERSION 0.4.0)
 
 # ===========================================================================
 # Default parameters
@@ -32,7 +32,7 @@ ENDIF ()
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
 option (XPRESS  "Use solver FICO XPRESS" OFF)
-option (CPLEX   "Use solver IMB ILOG CPLES" OFF)
+option (CPLEX   "Use solver IBM ILOG CPLEX" OFF)
 
 if(COIN_OR)
 	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
@@ -41,7 +41,7 @@ else ()
 endif()
 
 
-#set(ANTARES_XPANSION_RC 1)
+set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES

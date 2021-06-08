@@ -3,6 +3,8 @@ import sys
 from pathlib import Path
 from typing import List
 
+from antares_xpansion.xpansionConfig import XpansionConfig
+
 
 class XpansionStudyReader:
     class BaseException(Exception):
@@ -15,6 +17,9 @@ class XpansionStudyReader:
         pass
 
     class OnlyNullYearsWeightValue(BaseException):
+        pass
+
+    class SolverNotAvailable(BaseException):
         pass
 
     @staticmethod
@@ -46,6 +51,22 @@ class XpansionStudyReader:
                                                                % filename_path)
 
         return True
+
+
+    @staticmethod
+    def check_solver(solver_str : str, config : XpansionConfig):
+        """
+        check that solver is available in XpansionConfig
+        :param solver_str: solver obtained from the settings.ini file
+        :param config: xpansionConfig with list of available solver
+        :return:
+        """
+        if not solver_str:
+            print("No solver defined in user/expansion/settings.ini. COIN used")
+            solver_str = "COIN"
+        if not config.AVAILABLE_SOLVER.count(solver_str):
+            raise XpansionStudyReader.SolverNotAvailable(
+                f'Solver {solver_str} not available. Please use one of these solver in user/expansion/settings.ini : {str(config.AVAILABLE_SOLVER)}')
 
     @staticmethod
     def _count_values_and_check_if_all_weights_are_null(filename_path, weights_file):
