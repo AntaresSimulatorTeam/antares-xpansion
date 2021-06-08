@@ -119,6 +119,6 @@ int main(int argc, char** argv)
         logger->display_message(error);
         exit(1);
     }
-
+  
 	return(0);
 }
