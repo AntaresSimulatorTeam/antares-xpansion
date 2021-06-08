@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from tests.python.file_creation import _create_weight_file
+from file_creation import _create_weight_file
 
-from src.python.antares_xpansion.xpansion_study_reader import XpansionStudyReader
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
 def test_check_fails_if_file_does_not_exist(tmp_path):
