@@ -25,12 +25,12 @@ add_library (lp_namer_core STATIC
 target_include_directories (lp_namer_core
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
-		${ORTOOLS_INCLUDE_DIRS}
 )
 
 target_link_libraries (lp_namer_core
 	PUBLIC
 		helpers
+		solvers
 )
 
 add_library (${PROJECT_NAME}::lp_namer_core ALIAS lp_namer_core)

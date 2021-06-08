@@ -27,7 +27,7 @@ jobs:
       run: |
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
            yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options
-           yum install -y cmake3 devtoolset-7 environment-modules rpm-build
+           yum install -y cmake3 devtoolset-7 environment-modules rpm-build zlib-devel
                       
     
     - uses: nelonoel/branch-name@v1.0.1
@@ -50,12 +50,19 @@ jobs:
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
         
+    - name: Read antares-deps version
+      id: antares-deps-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_deps_version'
+        
                
     - name: Download pre-compiled librairies
       run: |
-           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v1.1.0/rte-antares-deps-centos7-Release-solver.tar.gz
-           tar -xvf rte-antares-deps-centos7-Release-solver.tar.gz
-           rm -rf rte-antares-deps-centos7-Release-solver.tar.gz
+           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{steps.antares-deps-version.outputs.prop}}/rte-antares-deps-centos7-Release-solver-no-ortools.tar.gz
+           tar -xvf rte-antares-deps-centos7-Release-solver-no-ortools.tar.gz
+           rm -rf rte-antares-deps-centos7-Release-solver-no-ortools.tar.gz
            
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
            tar -xvf antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz -C rte-antares-deps-Release --strip-components=1
@@ -74,7 +81,7 @@ jobs:
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH           
-           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true  -DCMAKE_INSTALL_PREFIX=_install
+           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
 
     - name: Build
       run: |

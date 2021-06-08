@@ -16,9 +16,9 @@ message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 # --------------------------------------------------------------------------
 # unit tests
 # --------------------------------------------------------------------------
+add_subdirectory(solvers_interface)
 add_subdirectory(logger)
 add_executable (unit_tests
-        helpers/ORToolsTest.cc
 		lp_namer/AdditionalConstraintsTest.cc
 		lp_namer/AdditionalConstraintsReaderTest.cc
 		lp_namer/LinkdataRecordTest.cc
