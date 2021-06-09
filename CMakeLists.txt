@@ -374,6 +374,17 @@ endif()
 
 set(CPACK_PROJECT_NAME "antaresXpansion")
 
+
+set(CPACK_PACKAGE_NAME "${CPACK_PROJECT_NAME}")
+
+if(XPRESS)
+set(CPACK_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-xpress")
+endif(XPRESS)
+
+if(CPLEX)
+set(CPACK_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-cplex")
+endif(CPLEX)
+
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
 set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4,libjsoncpp1,libboost-mpi-dev")
