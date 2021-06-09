@@ -23,6 +23,19 @@ class XpansionStudyReader:
         pass
 
     @staticmethod
+    def convert_study_solver_to_option_solver(study_solver: str) -> str:
+        keys = {
+            "Cbc": "COIN",
+            "Xpress": "XPRESS",
+            "Cplex": "CPLEX",
+        }
+        if study_solver in keys:
+            return keys.get(study_solver)
+        else:
+            raise XpansionStudyReader.SolverNotAvailable(
+                f'Solver {study_solver} not available.')
+
+    @staticmethod
     def check_weights_file(filename_path, nb_active_years: int):
         """
             checks that the yearly-weights file exists and has correct format:
@@ -52,9 +65,8 @@ class XpansionStudyReader:
 
         return True
 
-
     @staticmethod
-    def check_solver(solver_str : str, config : XpansionConfig):
+    def check_solver(solver_str: str, config: XpansionConfig):
         """
         check that solver is available in XpansionConfig
         :param solver_str: solver obtained from the settings.ini file
@@ -62,8 +74,8 @@ class XpansionStudyReader:
         :return:
         """
         if not solver_str:
-            print("No solver defined in user/expansion/settings.ini. COIN used")
-            solver_str = "COIN"
+            print("No solver defined in user/expansion/settings.ini. Cbc used")
+            solver_str = "Cbc"
         if not config.AVAILABLE_SOLVER.count(solver_str):
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {solver_str} not available. Please use one of these solver in user/expansion/settings.ini : {str(config.AVAILABLE_SOLVER)}')

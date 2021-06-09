@@ -526,7 +526,7 @@ class XpansionDriver:
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
         options_values["GAP"] = self.optimality_gap()
         options_values["MAX_ITERATIONS"] = self.max_iterations()
-        options_values["SOLVER_NAME"] = self.options.get('solver', "COIN")
+        options_values["SOLVER_NAME"] = XpansionStudyReader.convert_study_solver_to_option_solver(self.options.get('solver', "Cbc"))
         if self.weight_file_name():
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         # generate options file for the solver
