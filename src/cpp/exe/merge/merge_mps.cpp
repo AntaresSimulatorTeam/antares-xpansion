@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 
             SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
             solver_l->init();
-            solver_l->set_output_log_level(0);
+            solver_l->set_output_log_level(options.LOG_LEVEL);
             solver_l->read_prob_mps(problem_name);
 
             if (kvp.first != options.MASTER_NAME) {
