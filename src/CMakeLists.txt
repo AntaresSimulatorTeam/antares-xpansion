@@ -6,6 +6,16 @@ else()
     set(BENDERSMPI_APP "mpi_not_available")    
 endif()
 
+if (COIN_OR)
+    SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Cbc\n")
+endif()
+if (XPRESS)
+    SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Xpress\n")
+endif()
+if (CPLEX)
+    SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Cplex\n")
+endif()
+
 #configure file to define antares-solver executable
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml)
 
