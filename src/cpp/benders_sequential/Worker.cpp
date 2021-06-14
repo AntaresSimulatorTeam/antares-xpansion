@@ -18,8 +18,11 @@ Worker::~Worker() {
 *  \brief Free the problem
 */
 void Worker::free() {
-	_solver.reset();
-	_solver = nullptr;
+	if (_solver)
+	{
+		_solver.reset();
+		_solver = nullptr;
+	}
 }
 
 /*!

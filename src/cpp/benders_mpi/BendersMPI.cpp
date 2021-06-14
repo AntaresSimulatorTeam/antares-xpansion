@@ -112,7 +112,7 @@ void BendersMpi::update_random_option(mpi::environment & env, mpi::communicator 
 				}
 			}
 		}
-		broadcast(world, set_rand_slave, 0);
+		boost::mpi::broadcast(world, set_rand_slave, 0);
 		if (set_rand_slave.find(world.rank()) != set_rand_slave.end()) {
 			data.nrandom++;
 		}
@@ -126,31 +126,49 @@ void BendersMpi::update_random_option(mpi::environment & env, mpi::communicator 
 *
 *  \param world : communicator variable for mpi communication
 */
-void BendersMpi::step_1_solve_master(mpi::environment & env, mpi::communicator & world) {
+bool BendersMpi::step_1_solve_master(mpi::environment & env, mpi::communicator & world) {
 
+    int success = 1;
 	if (world.rank() == 0)
 	{
 		_logger->log_at_initialization(bendersDataToLogData(_data));
 		_logger->display_message("\tSolving master...");
-		get_master_value(_master, _data, _options);
-		_logger->log_master_solving_duration(_data.timer_master);
+		try {
+            get_master_value(_master, _data, _options);
+            _logger->log_master_solving_duration(_data.timer_master);
 
-		_logger->log_iteration_candidates(bendersDataToLogData(_data));
+            _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
+            _trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
 
-		if (_options.ACTIVECUTS) {
-			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
+            if (_options.ACTIVECUTS) {
+                update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
+            }
+        }catch(std::exception& ex){
+            success = 0;
+            std::string error = "Exception raised : " + std::string(ex.what());
+            LOG(WARNING) << error << std::endl;
+            _logger->display_message(error);
 		}
 	}
-	broadcast(world, _data.x0, 0);
-	if (_options.RAND_AGGREGATION) {
-        std::random_device rd;
-        std::mt19937 g(rd());
-		std::shuffle(_slaves.begin(), _slaves.end(),g);
-	}
-	world.barrier();
-
+    int result;
+    boost::mpi::all_reduce(world, success, result, mpi::bitwise_and<int>());
+    if (result ==0)
+    {
+        _data.stop = true;
+        return false;
+    }
+    else
+    {
+        boost::mpi::broadcast(world, _data.x0, 0);
+        if (_options.RAND_AGGREGATION) {
+            std::random_device rd;
+            std::mt19937 g(rd());
+            std::shuffle(_slaves.begin(), _slaves.end(),g);
+        }
+        world.barrier();
+        return true;
+    }
 }
 
 /*!
@@ -162,41 +180,68 @@ void BendersMpi::step_1_solve_master(mpi::environment & env, mpi::communicator &
 *
 *  \param world : communicator variable for mpi communication
 */
-void BendersMpi::step_2_build_cuts(mpi::environment & env, mpi::communicator & world) {
-	SlaveCutPackage slave_cut_package;
-	if (world.rank() == 0) {
-		AllCutPackage all_package;
-		Timer timer_slaves;
-		gather(world, slave_cut_package, all_package, 0);
-		_data.timer_slaves = timer_slaves.elapsed();
+bool BendersMpi::step_2_build_cuts(mpi::environment & env, mpi::communicator & world) {
 
-		_data.slave_cost = 0;
-		for (auto const& pack : all_package) {
-			for (auto& dataVal : pack) {
-				_data.slave_cost += dataVal.second.first.second[SLAVE_COST];
+    int success = 1;
 
-			}
-		}
+    try {
+        if (world.rank() != 0) {
+            SlaveCutPackage slave_cut_package = get_slave_package();
+            boost::mpi::gather(world, slave_cut_package, 0);
+        }
+        else {
+            SlaveCutPackage slave_cut_package;
+            AllCutPackage all_package;
+            Timer timer_slaves;
+            boost::mpi::gather(world, slave_cut_package, all_package, 0);
+            _data.timer_slaves = timer_slaves.elapsed();
+            master_build_cuts(all_package);
+        }
+    }catch(std::exception& ex){
+        success = 0;
+        std::string error = "Exception raised : " + std::string(ex.what());
+        LOG(WARNING) << error << std::endl;
+        _logger->display_message(error);
+    }
+    int result;
+    mpi::all_reduce(world, success, result, mpi::bitwise_and<int>());
+    if (result ==0)  {
+        _data.stop = true;
+        return false;
+    }
+    else {
+        broadcast(world, _options.RAND_AGGREGATION, 0);
+        world.barrier();
+        return true;
+    }
+}
 
-		all_package.erase(all_package.begin());
+SlaveCutPackage BendersMpi::get_slave_package()  {
+    SlaveCutPackage slave_cut_package;
+    if (_options.RAND_AGGREGATION) {
+        get_random_slave_cut(slave_cut_package, _map_slaves, _slaves, _options, _data);
+    }
+    else {
+        get_slave_cut(slave_cut_package, _map_slaves, _options, _data);
+    }
+    return slave_cut_package;
+}
 
-		_logger->display_message("\tSolving subproblems...");
+void BendersMpi::master_build_cuts(AllCutPackage all_package) {
 
-		build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);
+    _data.slave_cost = 0;
+    for (auto const& pack : all_package) {
+        for (auto& dataVal : pack) {
+            _data.slave_cost += dataVal.second.first.second[SLAVE_COST];
+        }
+    }
+    all_package.erase(all_package.begin());
 
-		_logger->log_subproblems_solving_duration(_data.timer_slaves);
-	}
-	else {
-		if (_options.RAND_AGGREGATION) {
-			get_random_slave_cut(slave_cut_package, _map_slaves, _slaves, _options, _data);
-		}
-		else {
-			get_slave_cut(slave_cut_package, _map_slaves, _options, _data);
-		}
-		gather(world, slave_cut_package, 0);
-	}
-	broadcast(world, _options.RAND_AGGREGATION, 0);
-	world.barrier();
+    _logger->display_message("\tSolving subproblems...");
+
+    build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage,
+                   _dynamic_aggregate_cuts, _data, _options);
+    _logger->log_subproblems_solving_duration(_data.timer_slaves);
 }
 
 /*!
@@ -206,7 +251,8 @@ void BendersMpi::step_2_build_cuts(mpi::environment & env, mpi::communicator & w
 *
 *  \param world : communicator variable for mpi communication
 */
-void BendersMpi::step_3_gather_slaves_basis(mpi::environment & env, mpi::communicator & world) {
+bool BendersMpi::step_3_gather_slaves_basis(mpi::environment & env, mpi::communicator & world) {
+
 	SimplexBasisPackage slave_basis_package;
 	if (world.rank() == 0) {
 		AllBasisPackage all_basis_package;
@@ -219,6 +265,7 @@ void BendersMpi::step_3_gather_slaves_basis(mpi::environment & env, mpi::communi
 		gather(world, slave_basis_package, 0);
 	}
 	world.barrier();
+	return true;
 }
 
 /*!
@@ -261,14 +308,16 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
 		update_random_option(env, world, _options, _data);
 		++_data.it;
 		_data.deletedcut = 0;
+
 		/*Solve Master problem, get optimal value and cost and send it to Slaves*/
-		step_1_solve_master(env, world);
+		bool result = step_1_solve_master(env, world);
 
 		/*Gather cut from each slave in master thread and add them to Master problem*/
-		step_2_build_cuts(env, world);
+		result &= step_2_build_cuts(env, world);
+
 
 		if (_options.BASIS) {
-			step_3_gather_slaves_basis(env, world);
+            result &= step_3_gather_slaves_basis(env, world);
 		}
 
 		if (world.rank() == 0) {
