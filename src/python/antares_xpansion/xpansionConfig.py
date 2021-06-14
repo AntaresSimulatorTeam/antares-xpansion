@@ -148,7 +148,7 @@ class XpansionConfig():
 
     def _set_default_options(self):
         self.options_default = {
-            'LOG_LEVEL': '1',
+            'LOG_LEVEL': '0',
             'MAX_ITERATIONS': '-1',
             'GAP': '1e-06',
             'AGGREGATION': '0',
