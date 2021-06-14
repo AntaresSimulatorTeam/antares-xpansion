@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.3.0)
+PROJECT (antaresXpansion VERSION 0.4.0)
 
 # ===========================================================================
 # Default parameters
@@ -32,7 +32,7 @@ ENDIF ()
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
 option (XPRESS  "Use solver FICO XPRESS" OFF)
-option (CPLEX   "Use solver IMB ILOG CPLES" OFF)
+option (CPLEX   "Use solver IBM ILOG CPLEX" OFF)
 
 if(COIN_OR)
 	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
@@ -41,7 +41,7 @@ else ()
 endif()
 
 
-#set(ANTARES_XPANSION_RC 1)
+set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -374,6 +374,17 @@ endif()
 
 set(CPACK_PROJECT_NAME "antaresXpansion")
 
+
+set(CPACK_PACKAGE_NAME "${CPACK_PROJECT_NAME}")
+
+if(XPRESS)
+set(CPACK_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-xpress")
+endif(XPRESS)
+
+if(CPLEX)
+set(CPACK_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-cplex")
+endif(CPLEX)
+
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
 set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4,libjsoncpp1,libboost-mpi-dev")
@@ -381,7 +392,7 @@ set(CPACK_RPM_PACKAGE_REQUIRES "openmpi,jsoncpp,boost-openmpi")
 set(CPACK_RPM_PACKAGE_AUTOREQPROV "0")
 
 if (ANTARES_XPANSION_RC)
-	set(CPACK_PACKAGE_VERSION "${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}")
+	set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}")
 endif()
 
 include(CPack)
