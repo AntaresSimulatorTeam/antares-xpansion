@@ -1,7 +1,7 @@
 from pathlib import Path
 
-from src.python.antares_xpansion.yearly_weight_writer import YearlyWeightWriter
-from tests.python.file_creation import _create_weight_file, _create_empty_file_from_list
+from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
+from file_creation import _create_weight_file, _create_empty_file_from_list
 
 
 def test_weight_file_write(tmp_path):

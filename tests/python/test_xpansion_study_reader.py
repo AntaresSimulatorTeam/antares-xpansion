@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from tests.python.file_creation import _create_weight_file
+from file_creation import _create_weight_file
 
-from src.python.antares_xpansion.xpansion_study_reader import XpansionStudyReader
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
 def test_check_fails_if_file_does_not_exist(tmp_path):
@@ -50,3 +50,18 @@ def test_xpansion_weight_read(tmp_path):
     weight_list = [1, 2, 3, 4]
     _create_weight_file(file_path, weight_list)
     assert (XpansionStudyReader.get_years_weight_from_file(file_path) == weight_list)
+
+
+def test_option_solver_conversion():
+    study_solver = "Cbc"
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "COIN")
+    study_solver = "Xpress"
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "XPRESS")
+    study_solver = "Cplex"
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "CPLEX")
+
+    study_solver = "Gurobi"
+    expected_message = f'Solver {study_solver} not available.'
+    with pytest.raises(XpansionStudyReader.SolverNotAvailable) as expect:
+        XpansionStudyReader.convert_study_solver_to_option_solver(study_solver)
+    assert str(expect.value) == expected_message
