@@ -428,7 +428,7 @@ void SolverXpress::set_output_log_level(int loglevel){
 	int status = XPRSsetcbmessage(_xprs, optimizermsg, &get_stream());
 	zero_status_check(status, "set message stream to solver stream");
 
-	if (loglevel == 1 || loglevel == 3) {
+	if (loglevel > 0) {
 		int status = XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 		zero_status_check(status, "set log level");
 	}

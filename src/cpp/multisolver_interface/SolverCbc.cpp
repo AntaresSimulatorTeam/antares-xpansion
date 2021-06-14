@@ -671,7 +671,7 @@ void SolverCbc::set_output_log_level(int loglevel){
 
 	_clp_inner_solver.passInMessageHandler(&_message_handler);
 	_cbc.passInMessageHandler(&_message_handler);
-	if (loglevel == 1 || loglevel == 3) {
+	if (loglevel > 0){
 		_message_handler.setLogLevel(0, 1);  // Coin messages
 		_message_handler.setLogLevel(1, 1);  // Clp messages
 		_message_handler.setLogLevel(2, 1);  // Presolve messages

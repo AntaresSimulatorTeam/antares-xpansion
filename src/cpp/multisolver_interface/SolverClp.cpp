@@ -553,7 +553,7 @@ void SolverClp::get_mip_sol(double* primals){
 *************************************************************************************************/
 void SolverClp::set_output_log_level(int loglevel){
 	_clp.passInMessageHandler(&_message_handler);
-	if (loglevel == 1 || loglevel == 3) {
+	if (loglevel > 0) {
 		_message_handler.setLogLevel(1);
 	}
 	else {
