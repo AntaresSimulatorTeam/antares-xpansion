@@ -45,7 +45,7 @@ int main(int argc, char** argv)
         std::string solver_to_use = (options.SOLVER_NAME == "COIN") ? "CBC" : options.SOLVER_NAME;
         SolverAbstract::Ptr mergedSolver_l = factory.create_solver(solver_to_use);
         mergedSolver_l->init();
-        mergedSolver_l->set_output_log_level(3);
+        mergedSolver_l->set_output_log_level(options.LOG_LEVEL);
 
         int ncols(0);
         int nslaves = input.size() - 1;
