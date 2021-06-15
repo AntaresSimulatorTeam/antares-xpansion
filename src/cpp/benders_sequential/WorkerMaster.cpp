@@ -33,9 +33,21 @@ void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
 		_solver->get_lp_sol(ptr.data(), NULL, NULL);
 	}
 	assert(_id_alpha_i.back()+1 == ptr.size());
-	for (auto const & kvp : _id_to_name) {
-		x0[kvp.second] = ptr[kvp.first];
-	}
+
+    std::vector<double> inf_bound(_solver->get_ncols());
+    _solver->get_lb(inf_bound.data(), 0, _solver->get_ncols() -1 );
+
+    double ACCEPTED_TOLERANCE = 2;
+    double tol = ACCEPTED_TOLERANCE;
+    for (auto const & kvp : _id_to_name) {
+        double solver_sol = ptr[kvp.first];
+        double lower_bound = inf_bound[kvp.first];
+        if (solver_sol < lower_bound && lower_bound - solver_sol < tol){
+            x0[kvp.second] = lower_bound;
+        }else{
+            x0[kvp.second] = solver_sol;
+        }
+    }
 	alpha = ptr[_id_alpha];
 	for (int i(0); i < _id_alpha_i.size(); ++i) {
 		alpha_i[i] = ptr[_id_alpha_i[i]];
