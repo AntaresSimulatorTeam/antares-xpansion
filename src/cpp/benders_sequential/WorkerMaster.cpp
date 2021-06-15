@@ -235,7 +235,7 @@ void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, doubl
 WorkerMaster::WorkerMaster(Str2Int const & variable_map, std::string const & path_to_mps, BendersOptions const & options, int nslaves) :Worker() {
 
 	_is_master = true;
-	init(variable_map, path_to_mps, options.SOLVER_NAME, options.LOG_LEVEL);
+	init(variable_map, path_to_mps, options.SOLVER_NAME);
 	_id_alpha = 0;
 
 	// Cbc solver sets infinite upper bounds to DBL_MAX = 1.79769e+308 which is way to large
