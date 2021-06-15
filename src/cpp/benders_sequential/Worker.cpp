@@ -44,7 +44,7 @@ void Worker::get_value(double & lb) {
 *  \param problem_name : name of the problem
 */
 void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
-	std::string const& solver_name) {
+	std::string const& solver_name, int log_level) {
 	_path_to_mps = path_to_mps;
 
 	SolverFactory factory;
@@ -70,6 +70,7 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 		_solver->init();
 	}
 	_solver->set_threads(1);
+	_solver->set_output_log_level(log_level);
 	_solver->read_prob_mps(path_to_mps);
 	
 	int var_index;
