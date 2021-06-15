@@ -38,14 +38,17 @@ void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
     _solver->get_lb(inf_bound.data(), 0, _solver->get_ncols() -1 );
 
     double ACCEPTED_TOLERANCE = 2;
-    double tol = ACCEPTED_TOLERANCE;
     for (auto const & kvp : _id_to_name) {
         double solver_sol = ptr[kvp.first];
+        x0[kvp.second] = solver_sol;
         double lower_bound = inf_bound[kvp.first];
-        if (solver_sol < lower_bound && lower_bound - solver_sol < tol){
-            x0[kvp.second] = lower_bound;
-        }else{
-            x0[kvp.second] = solver_sol;
+        if (solver_sol < lower_bound){
+            if (lower_bound - solver_sol < ACCEPTED_TOLERANCE) {
+                std::cout << "WARN : solution "<< kvp.second << "=" << solver_sol <<" rounded to lower bound " << lower_bound;
+                x0[kvp.second] = lower_bound;
+            }else{
+                std::cout << "WARN : solution "<< kvp.second << "=" << solver_sol <<" NOT rounded to lower bound " << lower_bound;
+            }
         }
     }
 	alpha = ptr[_id_alpha];
