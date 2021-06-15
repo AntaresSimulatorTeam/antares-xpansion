@@ -57,4 +57,16 @@ private:
     void solve_master_and_create_trace();
 
     bool _exceptionRaised;
+
+    void do_solve_master_create_trace_and_update_cuts(const mpi::communicator &world);
+
+    void broadcast_the_master_problem(const mpi::communicator &world);
+
+    void solve_slaves_and_build_cuts(const mpi::communicator &world);
+
+    void broadcast_rand_aggregation(const mpi::communicator &world);
+
+    void write_exception_message(const std::exception &ex);
+
+    void check_if_some_proc_had_a_failure(const mpi::communicator &world, int success);
 };
