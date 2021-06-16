@@ -11,6 +11,11 @@
 class WorkerMasterData {
 public:
 
+    WorkerMasterData(){
+        _valid = false;
+    }
+
+    bool _valid;
 	double _lb;
 	double _ub;
 	double _bestub;

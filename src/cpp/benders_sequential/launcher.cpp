@@ -91,12 +91,19 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
 
 	jsonWriter_l.write(options);
 	jsonWriter_l.updateBeginTime();
+
 	LOG(INFO) << "Constructing workers..." << std::endl;
 
     Benders benders(logger);
 	LOG(INFO) << "Running solver..." << std::endl;
-	benders.run(input,options);
-	LOG(INFO) << "Benders solver terminated." << std::endl;
+    try {
+	    benders.run(input,options);
+	    LOG(INFO) << "Benders solver terminated." << std::endl;
+    }catch (std::exception& ex) {
+        std::string error = "Exception raised : " + std::string(ex.what());
+        LOG(WARNING) << error << std::endl;
+        logger->display_message(error);
+    }
 
     LogData logData = bendersDataToLogData(benders._data);
 	logData.optimal_gap = options.GAP;
