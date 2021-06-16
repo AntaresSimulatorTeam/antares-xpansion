@@ -58,11 +58,12 @@ private:
 
     bool _exceptionRaised;
 
-    void do_solve_master_create_trace_and_update_cuts(const mpi::communicator &world);
+    void do_solve_master_create_trace_and_update_cuts(int rank);
 
     void broadcast_the_master_problem(const mpi::communicator &world);
 
     void solve_slaves_and_build_cuts(const mpi::communicator &world);
+    void gather_slave_cut_package_and_build_cuts(const mpi::communicator &world,const SlaveCutPackage& slave_cut_package,const Timer& timer_slaves);
 
     void broadcast_rand_aggregation(const mpi::communicator &world);
 

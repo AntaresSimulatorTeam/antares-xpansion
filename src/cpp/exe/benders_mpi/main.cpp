@@ -25,28 +25,25 @@ int main(int argc, char** argv)
 	mpi::environment env(argc, argv);
 	mpi::communicator world;
 
-    Logger logger;
+    Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
 	// First check usage (options are given)
 	if (world.rank() == 0)
 	{
 		usage(argc);
-		logger = std::make_shared<xpansion::logger::User>(std::cout);
 	}
 
 	// Read options, needed to have options.OUTPUTROOT
 	BendersOptions options(build_benders_options(argc, argv));
 
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
+    google::InitGoogleLogging(argv[0]);
+    std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog-rank" + std::to_string(world.rank()) + "-";
+    google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
+
 	if (world.rank() == 0)
 	{
-		gflags::ParseCommandLineFlags(&argc, &argv, true);
-
-		google::InitGoogleLogging(argv[0]);
-
-		std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog";
-		google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
-
-		LOG(INFO) << "starting bendersmpi" << std::endl;
+	    LOG(INFO) << "starting bendersmpi" << std::endl;
 	}
 
 	JsonWriter jsonWriter_l;
