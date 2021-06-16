@@ -5,6 +5,14 @@
 
 #include "multisolver_interface/Solver.h"
 
+
+class InvalidSolverStatusException : public std::runtime_error {
+public:
+    InvalidSolverStatusException(const std::string& message)
+        :std::runtime_error(message)
+    {}
+};
+
 /**
  * @brief Returns the nonzeros in the constraint matrix for the rows in a given range
  *
