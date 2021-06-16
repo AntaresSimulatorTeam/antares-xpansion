@@ -228,6 +228,7 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 	trace[data.it - 1]->_nbasis = data.nbasis;
 	trace[data.it - 1]->_invest_cost = data.invest_cost;
 	trace[data.it - 1]->_operational_cost = data.slave_cost;
+    trace[data.it - 1]->_valid = true;
 }
 
 /*!

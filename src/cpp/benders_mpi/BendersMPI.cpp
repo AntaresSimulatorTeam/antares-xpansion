@@ -291,6 +291,19 @@ void BendersMpi::step_3_gather_slaves_basis(mpi::environment & env, mpi::communi
 	world.barrier();
 }
 
+
+void BendersMpi::step_4_update_best_solution(int rank, const Timer& timer_master){
+    if (rank == 0) {
+        update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
+        _logger->log_at_iteration_end(bendersDataToLogData(_data));
+
+        update_trace(_trace, _data);
+
+        _data.timer_master = timer_master.elapsed();
+        _data.stop = stopping_criterion(_data,_options);
+    }
+}
+
 /*!
 *  \brief Method to free the memory used by each problem
 *
@@ -344,21 +357,16 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
             step_3_gather_slaves_basis(env, world);
 		}
 
-		if (world.rank() == 0) {
-			update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
-			_logger->log_at_iteration_end(bendersDataToLogData(_data));
-
-			update_trace(_trace, _data);
-
-			_data.timer_master = timer_master.elapsed();
-			_data.stop = stopping_criterion(_data,_options) || _exceptionRaised;
-		}
+        if (!_exceptionRaised) {
+            step_4_update_best_solution(world.rank(), timer_master);
+        }
+        _data.stop |= _exceptionRaised;
 
 		broadcast(world, _data.stop, 0);
 		world.barrier();
 	}
 
-	if (world.rank() == 0) {
+	if (world.rank() == 0 && !_exceptionRaised) {
 		if (_options.TRACE) {
 			print_csv(_trace,_problem_to_id,_data,_options);
 		}

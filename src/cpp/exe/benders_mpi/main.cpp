@@ -41,14 +41,14 @@ int main(int argc, char** argv)
     std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog-rank" + std::to_string(world.rank()) + "-";
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 
+    JsonWriter jsonWriter_l;
+
 	if (world.rank() == 0)
 	{
 	    LOG(INFO) << "starting bendersmpi" << std::endl;
+        jsonWriter_l.write_failure();
+        jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 	}
-
-	JsonWriter jsonWriter_l;
-	jsonWriter_l.write_failure();
-	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1) {
 		std::cout << "You need to have at least one slave by thread" << std::endl;
