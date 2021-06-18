@@ -44,10 +44,10 @@ void WorkerMaster::get(Point & x0, double & alpha, DblVector & alpha_i) {
         double lower_bound = inf_bound[kvp.first];
         if (solver_sol < lower_bound){
             if (lower_bound - solver_sol < ACCEPTED_TOLERANCE) {
-                std::cout << "WARN : solution "<< kvp.second << "=" << solver_sol <<" rounded to lower bound " << lower_bound;
+                std::cout << "WARN : solution "<< kvp.second << "=" << solver_sol <<" rounded to lower bound " << lower_bound << std::endl;
                 x0[kvp.second] = lower_bound;
             }else{
-                std::cout << "WARN : solution "<< kvp.second << "=" << solver_sol <<" NOT rounded to lower bound " << lower_bound;
+                std::cout << "WARN : solution "<< kvp.second << "=" << solver_sol <<" NOT rounded to lower bound " << lower_bound << std::endl;
             }
         }
     }
