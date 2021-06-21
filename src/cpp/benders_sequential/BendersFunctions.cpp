@@ -65,7 +65,7 @@ void print_csv(BendersTrace & trace, Str2Int & problem_to_id, BendersData const 
                 if (i == 0) {
                     int best_it_index = data.best_it -1;
                     if (best_it_index >= 0 && trace.size() > best_it_index) {
-                        xopt = trace[data.best_it - 1]->get_point();
+                        xopt = trace[best_it_index]->get_point();
                     }
                 }else{
                     xopt = trace[i - 1]->get_point();
@@ -150,7 +150,6 @@ void print_active_cut(ActiveCutStorage const & active_cuts, BendersOptions const
 	{
 		file << "Ite;Slave;CutNumber;IsActive;" << std::endl;
 		for (int i(0); i < active_cuts.size(); i++) {
-            std::cout<< "Writing active cuts"  << std::endl;
 			file << std::get<0>(active_cuts[i]) << ";";
 			file << std::get<1>(active_cuts[i]) << ";";
 			file << std::get<2>(active_cuts[i]) << ";";
