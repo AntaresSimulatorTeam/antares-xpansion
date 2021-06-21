@@ -366,7 +366,7 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
 		world.barrier();
 	}
 
-	if (world.rank() == 0 && !_exceptionRaised) {
+	if (world.rank() == 0) {
 		if (_options.TRACE) {
 			print_csv(_trace,_problem_to_id,_data,_options);
 		}
