@@ -39,7 +39,7 @@ TEST_F(ConsoleLoggerTest, FileHasBeenCreated) {
 
     std::ifstream fileStream(_fileName);
     
-    ASSERT_TRUE(fileStream);
+    ASSERT_TRUE(fileStream.is_open());
 }
 
 
