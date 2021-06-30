@@ -6,6 +6,8 @@
 #include "launcher.h"
 #include "benders_sequential_core/Benders.h"
 #include "BendersOptions.h"
+#include "logger/Master.h"
+#include "logger/Console.h"
 #include "logger/User.h"
 
 #if defined(WIN32) || defined(_WIN32) 
@@ -34,7 +36,15 @@ int main(int argc, char** argv)
 	LOG(INFO) << oss_l.str() << std::endl;
 
 	LOG(INFO) << "Launching Benders Sequential" << std::endl;
-    Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
+	auto masterLogger = std::make_shared<xpansion::logger::Master>();
+	
+	const std::string& loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbenderssequential";
+    Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
+	Logger loggerFile = std::make_shared<xpansion::logger::Console>(loggerFileName);
+	masterLogger->addLogger(loggerUser);
+	masterLogger->addLogger(loggerFile);
+
+	Logger logger = masterLogger;
 
     sequential_launch(options, logger);
 

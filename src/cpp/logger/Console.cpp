@@ -15,7 +15,7 @@ namespace xpansion {
         Console::Console(const std::string& filename)
         {
             _file.open(filename);
-            _userLog = std::make_unique<User>(_file);
+            _userLog = std::unique_ptr<User>(new User(_file));
         }
 
         Console::~Console()
