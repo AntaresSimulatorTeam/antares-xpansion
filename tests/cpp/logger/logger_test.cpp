@@ -9,8 +9,72 @@
 #include "benders_sequential_core/ILogger.h"
 #include "logger/User.h"
 #include "logger/Master.h"
+#include "logger/Console.h"
+#include <iostream>
+#include <stdio.h>
 
 using namespace xpansion::logger;
+
+class ConsoleLoggerTest : public ::testing::Test
+{
+public:
+
+    void SetUp()
+    {
+        _fileName = std::tmpnam(nullptr);
+    }
+
+    void TearDown()
+    {
+        std::remove(_fileName.c_str());
+    }
+
+
+    std::string _fileName;
+
+};
+
+TEST_F(ConsoleLoggerTest, FileHasBeenCreated) {
+    Console consoleLog(_fileName);
+
+    std::ifstream fileStream(_fileName);
+    
+    ASSERT_TRUE(fileStream);
+}
+
+
+TEST_F(ConsoleLoggerTest, EmptyFileAtInit) {
+    Console consoleLog(_fileName);
+
+    std::ifstream fileStream(_fileName);
+    std::stringstream stringStreamFromFile;
+    if (fileStream)
+    {
+        stringStreamFromFile << fileStream.rdbuf();
+        fileStream.close();
+    }
+
+    ASSERT_TRUE(stringStreamFromFile.str().empty());
+}
+
+TEST_F(ConsoleLoggerTest, FileHasBeenWritten) {
+    Console consoleLog(_fileName);
+    const std::string& displayMessage = "Test d'écriture";
+    std::stringstream expected;
+    expected << displayMessage << std::endl;
+
+    consoleLog.display_message(displayMessage);
+
+    std::ifstream fileStream(_fileName);
+    std::stringstream stringStringFromFile;
+    if (fileStream)
+    {
+        stringStringFromFile << fileStream.rdbuf();
+        fileStream.close();
+    }
+
+    ASSERT_EQ(stringStringFromFile.str(), expected.str());
+}
 
 class UserLoggerTest : public ::testing::Test
 {
