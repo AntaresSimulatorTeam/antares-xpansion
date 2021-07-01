@@ -11,7 +11,7 @@
 #include "launcher.h"
 #include "JsonWriter.h"
 #include "logger/User.h"
-#include "logger/Console.h"
+#include "logger/UserFile.h"
 #include "logger/Master.h"
 
 #if defined(WIN32) || defined(_WIN32)
