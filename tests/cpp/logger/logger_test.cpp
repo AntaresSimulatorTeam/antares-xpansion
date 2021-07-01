@@ -9,7 +9,7 @@
 #include "benders_sequential_core/ILogger.h"
 #include "logger/User.h"
 #include "logger/Master.h"
-#include "logger/Console.h"
+#include "logger/UserFile.h"
 #include <iostream>
 #include <stdio.h>
 
@@ -35,16 +35,16 @@ public:
 };
 
 TEST_F(ConsoleLoggerTest, FileHasBeenCreated) {
-    Console consoleLog(_fileName);
+    UserFile consoleLog(_fileName);
 
     std::ifstream fileStream(_fileName);
     
-    ASSERT_TRUE(fileStream.is_open());
+    ASSERT_TRUE(fileStream.good());
 }
 
 
 TEST_F(ConsoleLoggerTest, EmptyFileAtInit) {
-    Console consoleLog(_fileName);
+    UserFile consoleLog(_fileName);
 
     std::ifstream fileStream(_fileName);
     std::stringstream stringStreamFromFile;
@@ -58,7 +58,7 @@ TEST_F(ConsoleLoggerTest, EmptyFileAtInit) {
 }
 
 TEST_F(ConsoleLoggerTest, FileHasBeenWritten) {
-    Console consoleLog(_fileName);
+    UserFile consoleLog(_fileName);
     const std::string& displayMessage = "Test d'écriture";
     std::stringstream expected;
     expected << displayMessage << std::endl;

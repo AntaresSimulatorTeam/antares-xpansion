@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     {
         loggerFileName += "-" + std::to_string(world.rank());
     }
-    Logger loggerFile = std::make_shared<xpansion::logger::Console>(loggerFileName);
+    Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
     masterLogger->addLogger(loggerUser);
     masterLogger->addLogger(loggerFile);
 

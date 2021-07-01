@@ -14,12 +14,12 @@
 namespace xpansion{
 namespace logger {
 
-    class Console : public ILogger {
+    class UserFile : public ILogger {
 
     public:
 
-        Console(const std::string& filename);
-        ~Console();
+        UserFile(const std::string& filename);
+        ~UserFile();
 
         void display_message(const std::string& str) override;
 

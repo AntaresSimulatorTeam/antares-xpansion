@@ -7,7 +7,7 @@
 #include "benders_sequential_core/Benders.h"
 #include "BendersOptions.h"
 #include "logger/Master.h"
-#include "logger/Console.h"
+#include "logger/UserFile.h"
 #include "logger/User.h"
 
 #if defined(WIN32) || defined(_WIN32) 
@@ -40,7 +40,7 @@ int main(int argc, char** argv)
 	
 	const std::string& loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbenderssequential";
     Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
-	Logger loggerFile = std::make_shared<xpansion::logger::Console>(loggerFileName);
+	Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
 	masterLogger->addLogger(loggerUser);
 	masterLogger->addLogger(loggerFile);
 
