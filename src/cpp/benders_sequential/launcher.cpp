@@ -105,7 +105,7 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
         logger->display_message(error);
     }
 
-    LogData logData = bendersDataToLogData(benders._data);
+    LogData logData = defineLogDataFromBendersDataAndTrace(benders._data, benders._trace);
 	logData.optimal_gap = options.GAP;
 
     logger->log_at_ending(logData);

@@ -38,4 +38,6 @@ public:
 typedef std::shared_ptr<WorkerMasterData> WorkerMasterDataPtr;
 typedef std::vector<WorkerMasterDataPtr> BendersTrace;
 
+LogData defineLogDataFromBendersDataAndTrace(const BendersData& data, const BendersTrace& trace);
+
 
