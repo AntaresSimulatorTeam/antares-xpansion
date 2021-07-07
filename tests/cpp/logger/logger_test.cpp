@@ -26,11 +26,7 @@ public:
 
     void TearDown()
     {
-        std::ifstream file(_fileName.c_str());
-        if(file.good())
-        {
-            std::remove(_fileName.c_str());
-        }
+        std::remove(_fileName.c_str());
     }
 
 
