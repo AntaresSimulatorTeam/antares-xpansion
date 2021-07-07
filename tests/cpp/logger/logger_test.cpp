@@ -42,9 +42,10 @@ TEST_F(FileLoggerTest, InvalidFileNotified) {
 
     const std::string& expectedErrorString = "Invalid file name passed as parameter";
     std::stringstream redirectedErrorStream;
-    std::cerr.rdbuf(redirectedErrorStream.rdbuf());
+    std::streambuf* initialBufferCerr = std::cerr.rdbuf(redirectedErrorStream.rdbuf());
 
     UserFile userFileLogger("");
+    std::cerr.rdbuf(initialBufferCerr);
 
     ASSERT_TRUE(redirectedErrorStream.str().find(expectedErrorString) != std::string::npos);
 }
@@ -124,10 +125,12 @@ TEST_F(UserLoggerTest, InvalidStreamNotified) {
     std::stringstream expectedErrorStringStream;
     expectedErrorStringStream  << "Invalid stream passed as parameter" << std::endl;
     std::stringstream redirectedErrorStream;
-    std::cerr.rdbuf(redirectedErrorStream.rdbuf());
+    std::streambuf* initialBufferCerr = std::cerr.rdbuf(redirectedErrorStream.rdbuf());
     std::ofstream invalidStream("");
 
     User userLogger(invalidStream);
+
+    std::cerr.rdbuf(initialBufferCerr);
    
     ASSERT_EQ(redirectedErrorStream.str(), expectedErrorStringStream.str());
 }
