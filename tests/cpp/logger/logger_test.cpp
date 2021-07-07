@@ -15,7 +15,7 @@
 
 using namespace xpansion::logger;
 
-class ConsoleLoggerTest : public ::testing::Test
+class FileLoggerTest : public ::testing::Test
 {
 public:
 
@@ -34,7 +34,18 @@ public:
 
 };
 
-TEST_F(ConsoleLoggerTest, FileHasBeenCreated) {
+TEST_F(FileLoggerTest, InvalidFileNotified) {
+
+    const std::string& expectedErrorString = "Invalid file name passed as parameter";
+    std::stringstream redirectedErrorStream;
+    std::cerr.rdbuf(redirectedErrorStream.rdbuf());
+
+    UserFile userFileLogger("");
+
+    ASSERT_TRUE(redirectedErrorStream.str().find(expectedErrorString) != std::string::npos);
+}
+
+TEST_F(FileLoggerTest, FileHasBeenCreated) {
     UserFile consoleLog(_fileName);
 
     std::ifstream fileStream(_fileName);
@@ -43,7 +54,7 @@ TEST_F(ConsoleLoggerTest, FileHasBeenCreated) {
 }
 
 
-TEST_F(ConsoleLoggerTest, EmptyFileAtInit) {
+TEST_F(FileLoggerTest, EmptyFileAtInit) {
     UserFile consoleLog(_fileName);
 
     std::ifstream fileStream(_fileName);
@@ -57,9 +68,9 @@ TEST_F(ConsoleLoggerTest, EmptyFileAtInit) {
     ASSERT_TRUE(stringStreamFromFile.str().empty());
 }
 
-TEST_F(ConsoleLoggerTest, FileHasBeenWritten) {
+TEST_F(FileLoggerTest, FileHasBeenWritten) {
     UserFile consoleLog(_fileName);
-    const std::string& displayMessage = "Test d'écriture";
+    const std::string& displayMessage = "Writing test";
     std::stringstream expected;
     expected << displayMessage << std::endl;
 
@@ -103,6 +114,20 @@ public :
 TEST_F(UserLoggerTest, EmptyStreamAtInit) {
     ASSERT_EQ( _stream.str().size() ,0 );
 }
+
+TEST_F(UserLoggerTest, InvalidStreamNotified) {
+
+    std::stringstream expectedErrorStringStream;
+    expectedErrorStringStream  << "Invalid stream passed as parameter" << std::endl;
+    std::stringstream redirectedErrorStream;
+    std::cerr.rdbuf(redirectedErrorStream.rdbuf());
+    std::ofstream invalidStream("");
+
+    User userLogger(invalidStream);
+   
+    ASSERT_EQ(redirectedErrorStream.str(), expectedErrorStringStream.str());
+}
+
 TEST_F(UserLoggerTest, InitLog) {
     LogData logData;
     logData.it = 1;

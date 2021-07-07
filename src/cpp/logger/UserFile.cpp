@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
+#include <iostream>
 #include <list>
 
 #include "logger/UserFile.h"
@@ -15,6 +16,10 @@ namespace xpansion {
         UserFile::UserFile(const std::string& filename)
         {
             _file.open(filename);
+            if (_file.fail())
+            {
+                std::cerr << "Invalid file name passed as parameter" << std::endl;
+            }
             _userLog = std::unique_ptr<User>(new User(_file));
         }
 
