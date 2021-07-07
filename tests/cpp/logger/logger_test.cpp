@@ -46,44 +46,31 @@ TEST_F(FileLoggerTest, InvalidFileNotified) {
     ASSERT_TRUE(redirectedErrorStream.str().find(expectedErrorString) != std::string::npos);
 }
 
-TEST_F(FileLoggerTest, FileHasBeenCreated) {
-    UserFile consoleLog(_fileName);
-
-    std::ifstream fileStream(_fileName);
-    
-    ASSERT_TRUE(fileStream.good());
-}
-
-
-TEST_F(FileLoggerTest, EmptyFileAtInit) {
-    UserFile consoleLog(_fileName);
+TEST_F(FileLoggerTest, EmptyFileCreatedAtInit) {
+    UserFile fileLog(_fileName);
 
     std::ifstream fileStream(_fileName);
     std::stringstream stringStreamFromFile;
-    if (fileStream)
-    {
-        stringStreamFromFile << fileStream.rdbuf();
-        fileStream.close();
-    }
+    
+    stringStreamFromFile << fileStream.rdbuf();
+    fileStream.close();
 
-    ASSERT_TRUE(stringStreamFromFile.str().empty());
+    ASSERT_TRUE(fileStream.good() && stringStreamFromFile.str().empty());
 }
 
 TEST_F(FileLoggerTest, FileHasBeenWritten) {
-    UserFile consoleLog(_fileName);
+    UserFile fileLog(_fileName);
     const std::string& displayMessage = "Writing test";
     std::stringstream expected;
     expected << displayMessage << std::endl;
 
-    consoleLog.display_message(displayMessage);
+    fileLog.display_message(displayMessage);
 
     std::ifstream fileStream(_fileName);
     std::stringstream stringStringFromFile;
-    if (fileStream)
-    {
-        stringStringFromFile << fileStream.rdbuf();
-        fileStream.close();
-    }
+    
+    stringStringFromFile << fileStream.rdbuf();
+    fileStream.close();
 
     ASSERT_EQ(stringStringFromFile.str(), expected.str());
 }
