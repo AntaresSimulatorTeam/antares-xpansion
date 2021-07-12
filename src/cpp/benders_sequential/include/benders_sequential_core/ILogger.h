@@ -1,3 +1,7 @@
+//
+// Created by jmkerloch on 19/04/2021.
+//
+
 #ifndef ANTARESXPANSION_ILOGGER_H
 #define ANTARESXPANSION_ILOGGER_H
 

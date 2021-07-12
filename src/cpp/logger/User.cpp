@@ -1,7 +1,10 @@
+//
+// Created by s20217 on 20/04/2021.
+//
+
 #include <algorithm>
 #include <iomanip>
 #include <sstream>
-#include <iostream>
 #include <list>
 
 #include "logger/User.h"
@@ -18,10 +21,6 @@ namespace logger {
     User::User(std::ostream& stream)
     :_stream(stream)
     {
-        if (_stream.fail())
-        {
-            std::cerr << "Invalid stream passed as parameter" << std::endl;
-        }
     }
 
     void User::display_message(const std::string& str) {
