@@ -1,4 +1,4 @@
-// projet_benders.cpp�: d�finit le point d'entr�e pour l'application console.
+// projet_benders.cpp: defines the entry point  for the console application
 //
 
 #include "glog/logging.h"

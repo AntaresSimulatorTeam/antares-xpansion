@@ -1,7 +1,3 @@
-//
-// Created by s90365 on 29/06/2021.
-//
-
 #ifndef ANTARESXPANSION_CONSOLE_H
 #define ANTARESXPANSION_CONSOLE_H
 
