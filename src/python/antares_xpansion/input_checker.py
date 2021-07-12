@@ -351,12 +351,13 @@ def check_setting_option_value(option, value):
                             'week_selection': ['true', 'false'],
                             'max_iteration': None,
                             'relaxed_optimality_gap': None,
+                            'solver': ['Cplex', 'Xpress', 'Cbc', 'Sirius', 'Gurobi', 'GLPK'],
                             'timelimit': None,
                             'yearly-weights': None,
                             'additional-constraints': None}
     legal_values = options_legal_values.get(option)
 
-    skip_verif = ["yearly-weights", "additional-constraints", "solver"]
+    skip_verif = ["yearly-weights", "additional-constraints"]
 
     if ((legal_values is not None) and (value in legal_values)) or (option in skip_verif):
         return True
@@ -425,3 +426,4 @@ def check_options(options):
         if options.get("cut_type") == "average":
             print("check_settings : yearly-weights option can not be used when cut_type is average")
             sys.exit(1)
+

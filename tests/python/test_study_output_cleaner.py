@@ -1,8 +1,13 @@
 import os
+import touch
 from pathlib import Path
 
-from antares_xpansion.study_output_cleaner import remove_files_containing_str_from_dir, StudyOutputCleaner
-from file_creation import _create_empty_file_from_list
+import pytest
+
+from src.python.antares_xpansion.study_output_cleaner import remove_files_containing_str_from_dir, StudyOutputCleaner
+
+from tests.python.file_creation import _create_empty_file_from_list
+
 
 def _check_result(tmp_path: Path, removed_files, keep_files):
     keep_files_result = os.listdir(tmp_path)
