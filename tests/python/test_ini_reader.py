@@ -1,6 +1,6 @@
 import pytest
 
-from antares_xpansion.general_data_reader import GeneralDataIniReader, IniFileNotFound
+from src.python.antares_xpansion.general_data_reader import GeneralDataIniReader, IniFileNotFound
 
 
 class TestGetNbActivatedYear:
