@@ -1,7 +1,3 @@
-//
-// Created by jmkerloch on 19/04/2021.
-//
-
 #include <ostream>
 
 #include "gtest/gtest.h"
@@ -9,8 +5,71 @@
 #include "benders_sequential_core/ILogger.h"
 #include "logger/User.h"
 #include "logger/Master.h"
+#include "logger/UserFile.h"
+#include <iostream>
+#include <cstdio>
 
 using namespace xpansion::logger;
+
+class FileLoggerTest : public ::testing::Test
+{
+public:
+
+    void SetUp()
+    {
+        _fileName = std::tmpnam(nullptr);
+    }
+
+    void TearDown()
+    {
+        std::remove(_fileName.c_str());
+    }
+
+
+    std::string _fileName;
+
+};
+
+TEST_F(FileLoggerTest, InvalidFileNotified) {
+
+    const std::string& expectedErrorString = "Invalid file name passed as parameter";
+    std::stringstream redirectedErrorStream;
+    std::streambuf* initialBufferCerr = std::cerr.rdbuf(redirectedErrorStream.rdbuf());
+
+    UserFile userFileLogger("");
+    std::cerr.rdbuf(initialBufferCerr);
+
+    ASSERT_TRUE(redirectedErrorStream.str().find(expectedErrorString) != std::string::npos);
+}
+
+TEST_F(FileLoggerTest, EmptyFileCreatedAtInit) {
+    UserFile fileLog(_fileName);
+
+    std::ifstream fileStream(_fileName);
+    std::stringstream stringStreamFromFile;
+    
+    stringStreamFromFile << fileStream.rdbuf();
+    fileStream.close();
+
+    ASSERT_TRUE(fileStream.good() && stringStreamFromFile.str().empty());
+}
+
+TEST_F(FileLoggerTest, FileHasBeenWritten) {
+    UserFile fileLog(_fileName);
+    const std::string& displayMessage = "Writing test";
+    std::stringstream expected;
+    expected << displayMessage << std::endl;
+
+    fileLog.display_message(displayMessage);
+
+    std::ifstream fileStream(_fileName);
+    std::stringstream stringStringFromFile;
+    
+    stringStringFromFile << fileStream.rdbuf();
+    fileStream.close();
+
+    ASSERT_EQ(stringStringFromFile.str(), expected.str());
+}
 
 class UserLoggerTest : public ::testing::Test
 {
@@ -39,6 +98,22 @@ public :
 TEST_F(UserLoggerTest, EmptyStreamAtInit) {
     ASSERT_EQ( _stream.str().size() ,0 );
 }
+
+TEST_F(UserLoggerTest, InvalidStreamNotified) {
+
+    const std::string expectedErrorString  = "Invalid stream passed as parameter\n";
+
+    std::stringstream redirectedErrorStream;
+    std::streambuf* initialBufferCerr = std::cerr.rdbuf(redirectedErrorStream.rdbuf());
+    std::ofstream invalidStream("");
+
+    User userLogger(invalidStream);
+
+    std::cerr.rdbuf(initialBufferCerr);
+   
+    ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString);
+}
+
 TEST_F(UserLoggerTest, InitLog) {
     LogData logData;
     logData.it = 1;
