@@ -27,18 +27,6 @@ void init(BendersData & data) {
 	data.best_it =0;
 }
 
-void print_master_and_cut(std::ostream& file,Str2Int & problem_to_id, int ite, WorkerMasterDataPtr & trace, Point const & xopt, std::string const & master_name, int const nslaves) {
-    file << ite << ";";
-
-    print_master_csv(file, trace, xopt, master_name, nslaves);
-
-    for (auto &kvp : trace->_cut_trace) {
-        SlaveCutDataHandler const handler(kvp.second);
-        file << ite << ";";
-        print_cut_csv(file, handler, kvp.first, problem_to_id[kvp.first]);
-    }
-}
-
 /*!
 *  \brief Print the trace of the Benders algorithm in a csv file
 *
@@ -55,24 +43,28 @@ void print_master_and_cut(std::ostream& file,Str2Int & problem_to_id, int ite, W
 void print_csv(BendersTrace & trace, Str2Int & problem_to_id, BendersData const & data, BendersOptions const & options) {
 	std::string const output(options.OUTPUTROOT + PATH_SEPARATOR + options.CSV_NAME + ".csv");
 	std::ofstream file(output, std::ios::out | std::ios::trunc);
-	if (file) {
-        file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;deletedcut;time;basis;" << std::endl;
-        int const nite = trace.size();
-        for (int i =0; i < nite; i++) {
-            if (trace[i]->_valid) {
-                Point xopt;
-                //Write first problem : use result of best iteration
-                if (i == 0) {
-                    int best_it_index = data.best_it -1;
-                    if (best_it_index >= 0 && trace.size() > best_it_index) {
-                        xopt = trace[best_it_index]->get_point();
-                    }
-                }else{
-                    xopt = trace[i - 1]->get_point();
-                }
-                print_master_and_cut(file, problem_to_id, i+1, trace[i],xopt,options.MASTER_NAME,data.nslaves);
-            }
-        }
+	if (file)
+	{
+		file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;deletedcut;time;basis;" << std::endl;
+		Point xopt;
+		int const nite(data.it);
+		xopt = trace[nite - 1]->get_point();
+		file << 1 << ";";
+		print_master_csv(file, trace[0], xopt, options.MASTER_NAME, data.nslaves);
+		for (auto & kvp : trace[0]->_cut_trace) {
+			SlaveCutDataHandler const handler(kvp.second);
+			file << 1 << ";";
+			print_cut_csv(file, handler, kvp.first, problem_to_id[kvp.first]);
+		}
+		for (int i(1); i < nite; i++) {
+			file << i + 1 << ";";
+			print_master_csv(file, trace[i], trace[i - 1]->get_point(), options.MASTER_NAME, data.nslaves);
+			for (auto & kvp : trace[i]->_cut_trace) {
+				SlaveCutDataHandler const handler(kvp.second);
+				file << i + 1 << ";";
+				print_cut_csv(file, handler, kvp.first, problem_to_id[kvp.first]);
+			}
+		}
 		file.close();
 	}
 	else {
