@@ -52,8 +52,7 @@ void Benders::initialise_problems(const CouplingMap &problem_list) {
 *  \brief Method to free the memory used by each problem
 */
 void Benders::free() {
-	if (_master)
-		_master->free();
+	_master->free();
 	for (auto & ptr : _map_slaves)
 		ptr.second->free();
 }

@@ -36,16 +36,23 @@ int main(int argc, char** argv)
 	LOG(INFO) << "Launching Benders Sequential" << std::endl;
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-    sequential_launch(options, logger);
+    try{
+        sequential_launch(options, logger);
 
-    char buff[FILENAME_MAX];
-    GetCurrentDir(buff, FILENAME_MAX);
+        char buff[FILENAME_MAX];
+        GetCurrentDir(buff, FILENAME_MAX);
 
-    std::stringstream str;
-    str << "Optimization results available in : " << buff <<  PATH_SEPARATOR
-        << options.OUTPUTROOT << PATH_SEPARATOR << options.JSON_NAME + ".json";
-    logger->display_message(str.str());
+        std::stringstream str;
+        str << "Optimization results available in : " << buff <<  PATH_SEPARATOR
+            << options.OUTPUTROOT << PATH_SEPARATOR << options.JSON_NAME + ".json";
+        logger->display_message(str.str());
 
+    }catch (std::exception& ex){
+        std::string error = "Exception raised and program stopped : " + std::string(ex.what());
+        LOG(WARNING) << error << std::endl;
+        logger->display_message(error);
+        exit(1);
+    }
 
 	return 0;
 }
