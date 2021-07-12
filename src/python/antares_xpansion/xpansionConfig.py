@@ -27,7 +27,6 @@ class XpansionConfig():
         self.STUDY_UPDATER: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
-        self.AVAILABLE_SOLVER: list[str] = {}
 
         self._initialize_values_from_config_file(configfile)
 
@@ -191,6 +190,5 @@ class XpansionConfig():
                 self.BENDERS_SEQUENTIAL = content.get('BENDERS_SEQUENTIAL', "benders_sequential")
                 self.LP_NAMER = content.get('LP_NAMER', "lp_namer")
                 self.STUDY_UPDATER = content.get('STUDY_UPDATER', "study_updater")
-                self.AVAILABLE_SOLVER = content.get('AVAILABLE_SOLVER')
             else:
                 raise RuntimeError("Please check file config.yaml, content is empty")
