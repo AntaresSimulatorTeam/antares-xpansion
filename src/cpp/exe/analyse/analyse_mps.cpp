@@ -30,7 +30,6 @@ int main(int argc, char** argv)
 
 		SolverAbstract::Ptr solver = factory.create_solver("CLP");
 		solver->init();
-		solver->set_output_log_level(options.LOG_LEVEL);
 		solver->read_prob_mps(problem_name);
 
 		if (kvp.first != options.MASTER_NAME) {
