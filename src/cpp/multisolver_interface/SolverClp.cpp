@@ -50,6 +50,7 @@ int SolverClp::get_number_of_instances()
 *************************************************************************************************/
 void SolverClp::init() {
 	_clp = ClpSimplex();
+	set_output_log_level(0);
 }
 
 void SolverClp::free() {
@@ -69,10 +70,12 @@ void SolverClp::write_prob_lp(const std::string& filename){
 }
 
 void SolverClp::read_prob_mps(const std::string& filename){
+	set_output_log_level(0);
 	_clp.readMps(filename.c_str(), true, false);
 }
 
 void SolverClp::read_prob_lp(const std::string& filename){
+    set_output_log_level(0);
     _clp.readLp(filename.c_str());
 }
 
@@ -553,7 +556,7 @@ void SolverClp::get_mip_sol(double* primals){
 *************************************************************************************************/
 void SolverClp::set_output_log_level(int loglevel){
 	_clp.passInMessageHandler(&_message_handler);
-	if (loglevel > 0) {
+	if (loglevel == 1 || loglevel == 3) {
 		_message_handler.setLogLevel(1);
 	}
 	else {

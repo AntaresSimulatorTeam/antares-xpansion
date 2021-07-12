@@ -18,7 +18,7 @@ class Worker
 public:
 	Worker();
 	void init(Str2Int const & variable_map, std::string const & path_to_mps,
-		std::string const& solver_name, int log_level);
+		std::string const& solver_name);
 	virtual ~Worker();
 
 	void get_value(double & lb);

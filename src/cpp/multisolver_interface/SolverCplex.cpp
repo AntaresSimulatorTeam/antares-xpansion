@@ -467,7 +467,7 @@ void SolverCplex::get_mip_sol(double* primals){
 ------------------------    Methods to set algorithm or logs levels    ---------------------------
 *************************************************************************************************/
 void SolverCplex::set_output_log_level(int loglevel){
-	if (loglevel > 0) {
+	if (loglevel == 1 || loglevel == 3) {
 		int status = CPXsetintparam(_env, CPXPARAM_ScreenOutput, CPX_ON);
 		zero_status_check(status, "set solver log level");
 	}
