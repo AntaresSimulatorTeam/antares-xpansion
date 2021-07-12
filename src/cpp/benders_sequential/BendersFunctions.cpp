@@ -3,7 +3,6 @@
 #include "glog/logging.h"
 
 #include "BendersFunctions.h"
-#include "solver_utils.h"
 
 
 /*!
@@ -24,7 +23,6 @@ void init(BendersData & data) {
 	data.deletedcut = 0;
 	data.maxsimplexiter = 0;
 	data.minsimplexiter = std::numeric_limits<int>::max();
-	data.best_it =0;
 }
 
 /*!
@@ -228,7 +226,6 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 	trace[data.it - 1]->_nbasis = data.nbasis;
 	trace[data.it - 1]->_invest_cost = data.invest_cost;
 	trace[data.it - 1]->_operational_cost = data.slave_cost;
-    trace[data.it - 1]->_valid = true;
 }
 
 /*!
@@ -240,18 +237,15 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 void check_status(AllCutPackage const & all_package, BendersData const & data) {
 	if (data.master_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "Master status is " << data.master_status << std::endl;
-		throw InvalidSolverStatusException("Master status is " + std::to_string(data.master_status));
+		exit(1);
 	}
 	for (int i(0); i < all_package.size(); i++) {
 		for (auto const & kvp : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(kvp.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
 			if (handler->get_int(LPSTATUS) != SOLVER_STATUS::OPTIMAL) {
-			    std::stringstream stream;
-			    stream << "Slave " << kvp.first << " status is " << handler->get_int(LPSTATUS);
-				LOG(INFO) << stream.str() << std::endl;
-
-                throw InvalidSolverStatusException(stream.str());
+				LOG(INFO) << "Slave " << kvp.first << " status is " << handler->get_int(LPSTATUS) << std::endl;
+				exit(1);
 			}
 		}
 	}
