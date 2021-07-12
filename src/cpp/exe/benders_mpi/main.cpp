@@ -85,7 +85,7 @@ int main(int argc, char** argv)
 
         if (world.rank() == 0) {
 
-            LogData logData = defineLogDataFromBendersDataAndTrace(bendersMpi._data, bendersMpi._trace);
+            LogData logData = bendersDataToLogData(bendersMpi._data);
             logData.optimal_gap = options.GAP;
 
             logger->log_at_ending(logData);
