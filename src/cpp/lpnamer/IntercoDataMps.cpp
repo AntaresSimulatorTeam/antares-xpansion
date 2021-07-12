@@ -3,7 +3,7 @@
 #include "IntercoDataMps.h"
 #include "INIReader.h"
 
-#include "solver_utils.h"
+#include "ortools_utils.h"
 #include "helpers/StringUtils.h"
 
 std::vector<std::vector<std::string> > Candidates::MPS_LIST = {
@@ -284,29 +284,30 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::map< std::pair<std::string, std::string>, int> & couplings,
 											map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex,
 											std::string study_path,
-											std::string const lp_mps_name,
-											std::string const& solver_name)
+											std::string const lp_mps_name)
 {
 	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
 	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
-	SolverFactory factory;
-	SolverAbstract::Ptr in_prblm;
-	in_prblm = factory.create_solver(solver_name);
-	in_prblm->read_prob_mps(mps_name);
+	operations_research::MPSolver in_prblm("read_problem", ORTOOLS_MIP_SOLVER_TYPE);
+	ORTreadmps(in_prblm, mps_name);
 
-	int ncols = in_prblm->get_ncols();
-	int nrows = in_prblm->get_nrows();
+	int ncols(in_prblm.NumVariables());
+	int nrows(in_prblm.NumConstraints());
+
+	// check if number of columns in the solver matrix is equal to the number of variables
+	if (ncols != var.size()) {
+		std::cout << "WRONG NUMBER OF VAR NAMES, solver = " << ncols << ", " << var.size() << " given" << std::endl;
+	}
 
 	int ninterco_pdt = interco_data.size();
 
-	std::vector<double> lb(ncols);
-	std::vector<double> ub(ncols);
-	std::vector<char> coltype(ncols);
-    solver_getcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
-	// Setting bounds to +-1e20
-	std::vector<double> posinf(ninterco_pdt, 1e20);
-	std::vector<double> neginf(ninterco_pdt, -1e20);
+	std::vector<double> lb;
+	std::vector<double> ub;
+	std::vector<char> coltype;
+	ORTgetcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
+	std::vector<double> posinf(ninterco_pdt, in_prblm.infinity());
+	std::vector<double> neginf(ninterco_pdt, -in_prblm.infinity());
 	std::vector<char> lb_char(ninterco_pdt, 'L');
 	std::vector<char> ub_char(ninterco_pdt, 'U');
 	std::vector<int> indexes;
@@ -315,45 +316,33 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		indexes.push_back(id.first);
 	}
 	// remove bounds on interco
-    solver_chgbounds(in_prblm, indexes, lb_char, neginf);
-    solver_chgbounds(in_prblm, indexes, ub_char, posinf);
+	ORTchgbounds(in_prblm, indexes, lb_char, neginf);
+	ORTchgbounds(in_prblm, indexes, ub_char, posinf);
+
 	std::vector<std::string> vnames(var.begin(), var.end());
-	SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
-
-	// Xavier : Why do we need to copy the problem ?
-	// We could just change the names in "in_prblm" and continuing modif it
-	// This copy is just time consuming and useless for me
-
+	operations_research::MPSolver out_prblm("new_problem", in_prblm.ProblemType());
 	// copy in_prblm with the changed bounds and rename its variables
-    solver_copyandrenamevars(out_prblm, in_prblm, vnames, solver_name);
+	ORTcopyandrenamevars(out_prblm, in_prblm, vnames);
+
 	size_t cnt_l = 0;
-	// All the names are retrieved before the loop.
-	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
-	// but it could be longer.
-    std::vector<std::string> outVarNames = out_prblm->get_col_names(0, out_prblm->get_ncols() - 1);
-
-	/* Xavier : This check is useless as the names are not necessary and seem to be 
-	* no present in "in_prblm"
-	for(int outVarIndex_l = 0; outVarIndex_l < out_prblm->get_ncols(); outVarIndex_l++){
-		int originalIndex_l = in_prblm->get_col_index(outVarNames[outVarIndex_l]);
-
-		if (originalIndex_l != outVarIndex_l) {
+	for(auto outVar_l : out_prblm.variables())
+	{
+		int outVarIndex_l = outVar_l->index();
+		int originalIndex_l = std::stoi(in_prblm.variables()[outVarIndex_l]->name().substr(1));
+		if( originalIndex_l != outVarIndex_l)
 			std::cout << "WARNING : Variables names in subproblems may not be representative."
-				<< " expected index " << originalIndex_l
-				<< " for variable " << outVarNames[outVarIndex_l] << " but index "
-				<< outVarIndex_l << " retrieved\n";
-		}
+					<< " expected index " <<  originalIndex_l
+					<< " for variable " << outVar_l->name() << " but index " << outVarIndex_l << " retrieved\n";
 		++cnt_l;
-	}*/
+	}
+
 
 	// create pMax variable
 	int ninterco = interco_id.size();
 	std::vector<double> obj_interco(ninterco, 0);
-	// Setting bounds to +-1e20
-	std::vector<double> lb_interco(ninterco, -1e20);
-	std::vector<double> ub_interco(ninterco,  1e20);
+	std::vector<double> lb_interco(ninterco, -out_prblm.infinity());
+	std::vector<double> ub_interco(ninterco,  out_prblm.infinity());
 	std::vector<char> coltypes_interco(ninterco, 'C');
-	std::vector<int> mstart_interco(ninterco, 0);
 	std::vector<std::string> colnames_l;
 
 	for (auto const & interco : interco_id) {
@@ -370,7 +359,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		couplings[{buffer.str(), mps_name}] = interco.second + ncols;
 	}
 
-    solver_addcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
+	ORTaddcols(out_prblm, obj_interco, {}, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
+
 	std::vector<double> dmatval;
 	std::vector<int> colind;
 	std::vector<char> rowtype;
@@ -407,12 +397,11 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		colind.push_back(ncols + i_interco_pmax);
 		dmatval.push_back(candidate.profile(timestep, study_path, false));
 	}
-	rstart.push_back(dmatval.size());
 
-    solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
+	ORTaddrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 
-	out_prblm->write_prob_mps(lp_mps_name);
-	std::cout << "mps_name : " << lp_mps_name << " done" << std::endl;
+	ORTwriteMpsPreciseWithCoin(out_prblm, lp_mps_name );
+	std::cout << "lp_name : " << lp_mps_name << " done" << std::endl;
 }
 
 
@@ -426,7 +415,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
  */
 void Candidates::treat(std::string const & root,
 	std::vector<std::string> const & mps,
-	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
+	std::map< std::pair<std::string, std::string>, int> & couplings) {
 
 	std::map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex;
 	std::string const study_path = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
@@ -455,8 +444,7 @@ void Candidates::treat(std::string const & root,
 
 	readCstrfiles(cstr_name, cstr, csize);
 	readVarfiles(var_name, var, vsize, interco_data, interco_id, key_paysor_paysex);
-	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data, interco_id, 
-		couplings, key_paysor_paysex, study_path, lp_mps_name, solver_name);
+	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data, interco_id, couplings, key_paysor_paysex, study_path, lp_mps_name);
 }
 
 
@@ -467,11 +455,10 @@ void Candidates::treat(std::string const & root,
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
-	int>& couplings, std::string const& solver_name) {
+void Candidates::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>, int>& couplings) {
 	int n_mps(0);
 	for (auto const & mps : Candidates::MPS_LIST) {
-		treat(root, mps, couplings, solver_name);
+		treat(root, mps, couplings);
 		n_mps += 1;
 	}
 }

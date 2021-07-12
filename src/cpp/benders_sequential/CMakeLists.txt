@@ -45,6 +45,7 @@ target_include_directories (benders_sequential_core
 			${CMAKE_CURRENT_SOURCE_DIR}/include
 		PUBLIC
 			${CMAKE_CURRENT_SOURCE_DIR}
+			${ORTOOLS_INCLUDE_DIRS}
             ${JSON_INC_PATH}/jsoncpp
 )
 
@@ -52,8 +53,6 @@ target_link_libraries (benders_sequential_core
 	PUBLIC
 		helpers
 		jsoncpp_lib
-		solvers
-		glog::glog
 )
 
 add_library (${PROJECT_NAME}::benders_sequential_core ALIAS benders_sequential_core)

@@ -2,8 +2,6 @@
 #include <algorithm>
 #include <random>
 
-#include "glog/logging.h"
-
 #include "BendersMPI.h"
 
 #define __DEBUG_BENDERS_MPI__ 0

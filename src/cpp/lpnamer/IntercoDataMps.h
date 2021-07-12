@@ -190,13 +190,10 @@ struct Candidates : public std::map<std::string, Candidate> {
 	}
 	explicit Candidates(std::string  const & datas);
 
-	void treat(std::string const& root, std::vector<std::string> const&, 
-		std::map< std::pair<std::string, std::string>, int>& couplings, std::string const& solver_name);
-	void treatloop(std::string const & root, std::map< std::pair<std::string, 
-		std::string>, int>& couplings, std::string const& solver_name);
+	void treat(std::string const & root, std::vector<std::string> const &, std::map< std::pair<std::string, std::string>, int>& couplings);
+	void treatloop(std::string const & root, std::map< std::pair<std::string, std::string>, int>& couplings);
 	void getCandidatesFromFile(std::string  const & dataPath);
-	void getListOfIntercoCandidates(map<std::pair<std::string, std::string>, 
-		Candidate *> & key_paysor_paysex);
+	void getListOfIntercoCandidates(map<std::pair<std::string, std::string>, Candidate *> & key_paysor_paysex);
 	void readCstrfiles(std::string const filePath, std::list<std::string> & list, size_t & sizeList);
 	void readVarfiles(std::string const filePath,
 			          std::list<std::string> & list,
@@ -214,8 +211,7 @@ struct Candidates : public std::map<std::string, Candidate> {
 									   std::map< std::pair<std::string, std::string>, int> & couplings,
 									   map<std::pair<std::string, std::string>, Candidate *>  key_paysor_paysex,
 									   std::string study_path,
-									   std::string const lp_mps_name,
-									   std::string const& solver_name);
+									   std::string const lp_mps_name);
 	bool checkArea(std::string const & areaName_p) const;
 
 };

@@ -28,19 +28,6 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
-
-# Set solvers to use
-option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
-option (XPRESS  "Use solver FICO XPRESS" OFF)
-option (CPLEX   "Use solver IMB ILOG CPLES" OFF)
-
-if(COIN_OR)
-	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
-else ()
-	message(FATAL_ERRROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")	
-endif()
-
-
 #set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
@@ -197,15 +184,15 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif ()
 find_package (Threads REQUIRED)
 
+# OR-Tools
+#gflags needed for ortools
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE) 
+find_package(gflags)
 
-set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
-find_package(gflags REQUIRED)
-find_package(Cbc REQUIRED)
-find_package(Cgl REQUIRED)
-find_package(Clp REQUIRED)
-find_package(CoinUtils REQUIRED)
-find_package(Osi REQUIRED)
-find_package(glog REQUIRED)
+find_package(ortools)
+if(NOT ortools_FOUND)
+	message (FATAL_ERROR "OR-Tools not found. OR-Tools can be compiled with -DBUILD_ortools=ON or you can specify previous dependency install directory with -DCMAKE_PREFIX_PATH or -DDEPS_INSTALL_DIR")
+endif()
 
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
@@ -228,51 +215,6 @@ if (SOLVER)
 endif ()
 
 find_package(jsoncpp CONFIG REQUIRED)
-
-# Third-party solver
-## Xpress
-if(XPRESS)
-	message("XPRESS is ${XPRESS}")
-	set ( XPRESS_INCLUDE_FILES	$ENV{XPRESSDIR}/include )
-	set ( XPRESS_DEBUG_LIB  	$ENV{XPRESSDIR}/lib/xprs.lib )
-	set ( XPRESS_OPT_LIB 		$ENV{XPRESSDIR}/lib/xprs.lib )
-	message("XPRESS include directory is ${XPRESS_INCLUDE_FILES}")
-	message("XPRESS debug library is ${XPRESS_DEBUG_LIB}")
-	message("XPRESS optim library is ${XPRESS_OPT_LIB}")
-
-	# Add solver variables for usage in C++ source code
-	# There are already some variables defined by SOLVER, -DUSE_XPRESS, -DUSE_CBC
-	# But they are exclusive, only one can be set to True
-	# We need to keep COIN-OR at least COIN-OR to True while it is required in lpnamer
-	# and we want to allow compilation with several solvers so that the user can switch 
-	# the solver without any compilation phase.
-	# @TODO : I think those parameters should be merged in a future version
-	add_definitions( -DXPRESS=true )
-endif(XPRESS)
-
-## Cplex
-if(CPLEX)
-	message("CPLEX is ${CPLEX}")
-	# Folder including file cplex.h (C interface)
-	set ( CPLEX_INCLUDE_FILES	$ENV{CPLEX_STUDIO_DIR129}/cplex/include/ilcplex )
-	set ( CPLEX_DEBUG_LIB  		$ENV{CPLEX_STUDIO_DIR129}/cplex/lib/x64_windows_vs2017/stat_mdd/cplex1290.lib )
-	set ( CPLEX_OPT_LIB 		$ENV{CPLEX_STUDIO_DIR129}/cplex/lib/x64_windows_vs2017/stat_mda/cplex1290.lib )
-	message("CPLEX include directory is ${CPLEX_INCLUDE_FILES}")
-	message("CPLEX debug library is ${CPLEX_DEBUG_LIB}")
-	message("CPLEX optim library is ${CPLEX_OPT_LIB}")
-
-	# Add solver variables for usage in C++ source code
-	add_definitions( -DCPLEX=true )
-endif(CPLEX)
-
-## Coin-OR (Clp and CBC solvers)
-if(COIN_OR)
-	message("COIN-OR is ${COIN_OR}")
-	# Add solver variables for usage in C++ source code
-	add_definitions( -DCOIN_OR=true )
-endif(COIN_OR)
-
-
 
 # ===========================================================================
 # Targets

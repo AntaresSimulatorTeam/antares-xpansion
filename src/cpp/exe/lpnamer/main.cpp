@@ -19,7 +19,7 @@
 #include "LauncherHelpers.h"
 #include "CandidatesInitializer.h"
 
-#include "solver_utils.h"
+#include "ortools_utils.h"
 
 namespace po = boost::program_options;
 
@@ -69,17 +69,15 @@ void masterGeneration(std::string rootPath,
 					Candidates candidates,
 					AdditionalConstraints additionalConstraints_p,
 					std::map< std::pair<std::string, std::string>, int> couplings,
-					std::string const &master_formulation,
-					std::string const& solver_name)
+					std::string const &master_formulation)
 {
-	SolverFactory factory;
-	SolverAbstract::Ptr master_l = factory.create_solver(solver_name);
+	operations_research::MPSolver master_l("masterProblem", ORTOOLS_MIP_SOLVER_TYPE);
 
 	int ninterco = candidates.size();
 	std::vector<int> mstart(ninterco, 0);
 	std::vector<double> obj_interco(ninterco, 0);
-	std::vector<double> lb_interco(ninterco, -1e20);
-	std::vector<double> ub_interco(ninterco, 1e20);
+	std::vector<double> lb_interco(ninterco, -master_l.infinity());
+	std::vector<double> ub_interco(ninterco, master_l.infinity());
 	std::vector<char> coltypes_interco(ninterco, 'C');
 	std::vector<std::string> interco_names(ninterco);
 
@@ -111,56 +109,40 @@ void masterGeneration(std::string rootPath,
 		++i;
 	}
 
-    solver_addcols(master_l, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, interco_names);
+	ORTaddcols(master_l, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, interco_names);
 
 	// integer constraints
 	int n_integer = pallier.size();
 	if(n_integer>0 && master_formulation=="integer"){
-		std::vector<double> zeros(n_integer, 0.0);
-		std::vector<int> mstart(n_integer, 0);
+		std::vector<double> zeros(n_integer, 0);
+		std::vector<int> int_zeros(n_integer, 0);
 		std::vector<char> integer_type(n_integer, 'I');
-		// Empty colNames
-		std::vector<std::string> colNames(0);
-        solver_addcols(master_l, zeros, mstart, {}, {}, zeros, max_unit, integer_type, colNames);
-
+		ORTaddcols(master_l, zeros, int_zeros, {}, {}, zeros, max_unit, integer_type);
 		std::vector<double> dmatval;
 		std::vector<int> colind;
 		std::vector<char> rowtype;
 		std::vector<double> rhs;
 		std::vector<int> rstart;
-
-		dmatval.reserve(2*n_integer);
-		colind.reserve(2 * n_integer);
-		rowtype.reserve(n_integer);
-		rhs.reserve(n_integer);
-		rstart.reserve(n_integer + 1);
-
 		for (i = 0; i < n_integer; ++i) {
 			// pMax  - n unit_size = 0
 			rstart.push_back(dmatval.size());
 			rhs.push_back(0);
 			rowtype.push_back('E');
-
 			colind.push_back(pallier[i]);
 			dmatval.push_back(1);
-
 			colind.push_back(pallier_i[i]);
 			dmatval.push_back(-unit_size[i]);
 		}
-		rstart.push_back(dmatval.size());
-
 		int n_row_interco(rowtype.size());
 		int n_coeff_interco(dmatval.size());
-        solver_addrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
+		ORTaddrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
 
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
 	std::string const lp_name = "master";
-	// writelp is useless no ?
-	//master_l->write_prob_lp(rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
-	master_l->write_prob_mps((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps"));
-
+	ORTwritelp(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
+	ORTwriteMpsPreciseWithCoin(master_l, rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps");
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const & coupling : couplings) {
 		output[get_name(coupling.first.second)][coupling.first.first] = coupling.second;
@@ -170,7 +152,6 @@ void masterGeneration(std::string rootPath,
 		output["master"][name] = i;
 		++i;
 	}
-
 	std::ofstream coupling_file((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + STRUCTURE_FILE).c_str());
 	for (auto const & mps : output) {
 		for (auto const & pmax : mps.second) {
@@ -224,8 +205,7 @@ int main(int argc, char** argv) {
 		
 		if ((master_formulation != "relaxed") && (master_formulation != "integer"))
 		{
-			std::cout << "Invalid formulation argument : argument must be \"integer\" or \"relaxed\"" 
-				<< std::endl;
+			std::cout << "Invalid formulation argument : argument must be \"integer\" or \"relaxed\"" << std::endl;
 			std::exit(1);
 		}
 
@@ -237,10 +217,8 @@ int main(int argc, char** argv) {
 		}
 
 		std::map< std::pair<std::string, std::string>, int> couplings;
-		std::string solver_name = "CBC";
-		candidates.treatloop(root, couplings, solver_name);
-		masterGeneration(root, candidates, additionalConstraints, couplings, 
-			master_formulation, solver_name);
+		candidates.treatloop(root, couplings);
+		masterGeneration(root, candidates, additionalConstraints, couplings, master_formulation);		
 
 		return 0;		
 	}
