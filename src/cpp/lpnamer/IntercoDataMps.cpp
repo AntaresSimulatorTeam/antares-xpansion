@@ -295,6 +295,11 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	int ncols(in_prblm.NumVariables());
 	int nrows(in_prblm.NumConstraints());
 
+	// check if number of rows in the solver matrix is equal to the number of constraints
+	if (nrows != cstr.size()) {
+		std::cout << "WRONG NUMBER OF CSTR NAMES, solver = " << nrows << ", " << cstr.size() << " given" << std::endl;
+	}
+
 	// check if number of columns in the solver matrix is equal to the number of variables
 	if (ncols != var.size()) {
 		std::cout << "WRONG NUMBER OF VAR NAMES, solver = " << ncols << ", " << var.size() << " given" << std::endl;
