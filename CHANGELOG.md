@@ -1,21 +1,5 @@
 Antares-Xpansion Changelog
 =================
-v0.4.0 (07/2021)
--------------------- 
-### Features
-
- - A new multi solver interface is introduced, we no longer use OR-tools
- - The user can choose different solvers
- - The optimality gap is no longer hard-coded and the user can define it in the inputs
- - in case of unfeaseable problems, the program now prints a console and file outputs
- - solver traces can be activated by specific option in benders/bendersmpi console applications
- - Benders console information are now also printed on a specific file
- 
-### Bug fixes
-
- - remove erroneus value from the `"problem_status"` entry  of the output json file
- - fix display of overall cost of the best solutions
-
 v0.3.0 (05/2021)
 -------------------- 
 ### Features
