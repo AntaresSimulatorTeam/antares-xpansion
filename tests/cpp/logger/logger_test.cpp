@@ -11,7 +11,7 @@
 #include "logger/Master.h"
 #include "logger/UserFile.h"
 #include <iostream>
-#include <stdio.h>
+#include <cstdio>
 
 using namespace xpansion::logger;
 
@@ -105,8 +105,8 @@ TEST_F(UserLoggerTest, EmptyStreamAtInit) {
 
 TEST_F(UserLoggerTest, InvalidStreamNotified) {
 
-    std::stringstream expectedErrorStringStream;
-    expectedErrorStringStream  << "Invalid stream passed as parameter" << std::endl;
+    const std::string expectedErrorString  = "Invalid stream passed as parameter\n";
+
     std::stringstream redirectedErrorStream;
     std::streambuf* initialBufferCerr = std::cerr.rdbuf(redirectedErrorStream.rdbuf());
     std::ofstream invalidStream("");
@@ -115,7 +115,7 @@ TEST_F(UserLoggerTest, InvalidStreamNotified) {
 
     std::cerr.rdbuf(initialBufferCerr);
    
-    ASSERT_EQ(redirectedErrorStream.str(), expectedErrorStringStream.str());
+    ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString);
 }
 
 TEST_F(UserLoggerTest, InitLog) {
