@@ -1,3 +1,7 @@
+//
+// Created by jmkerloch on 19/04/2021.
+//
+
 #include "logger/Master.h"
 
 namespace xpansion{
