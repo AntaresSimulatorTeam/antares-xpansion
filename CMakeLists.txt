@@ -41,7 +41,7 @@ else ()
 endif()
 
 
-set(ANTARES_XPANSION_RC 1)
+# set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
