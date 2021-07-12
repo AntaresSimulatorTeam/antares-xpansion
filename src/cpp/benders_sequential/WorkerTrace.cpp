@@ -15,28 +15,4 @@ Point WorkerMasterData::get_max_invest() {
 	return *_max_invest;
 }
 
-LogData defineLogDataFromBendersDataAndTrace(const BendersData& data, const BendersTrace& trace){
-
-    LogData result;
-
-    result.it = data.it;
-    result.best_it = data.best_it;
-
-    size_t bestItIndex_l = data.best_it - 1;
-
-    if (bestItIndex_l >= 0 && bestItIndex_l < trace.size())
-    {
-        const WorkerMasterDataPtr& bestItTrace = trace[bestItIndex_l];
-        result.lb = bestItTrace->_lb;
-        result.best_ub = bestItTrace->_ub;
-        result.slave_cost = bestItTrace->_operational_cost;
-        result.invest_cost = bestItTrace->_invest_cost;
-        result.x0 = bestItTrace->get_point();
-        result.min_invest = bestItTrace->get_min_invest();
-        result.max_invest = bestItTrace->get_max_invest();
-    }
-
-    return result;
-}
-
 
