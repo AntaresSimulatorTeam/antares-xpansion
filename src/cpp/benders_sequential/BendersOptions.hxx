@@ -60,6 +60,3 @@ BENDERS_OPTIONS_MACRO(JSON_NAME, std::string, "out")
 
 //True if alpha needs to be bounded by best upper bound, false otherwise
 BENDERS_OPTIONS_MACRO(BOUND_ALPHA, bool, true)
-
-//Name of solver to use
-BENDERS_OPTIONS_MACRO(SOLVER_NAME, std::string, "COIN")

@@ -2,7 +2,6 @@
 //
 
 #include "glog/logging.h"
-#include "gflags/gflags.h"
 
 #include "Worker.h"
 #include "Timer.h"
@@ -68,57 +67,49 @@ int main(int argc, char** argv)
 	}
 
 	world.barrier();
-	try {
-        if (world.size() == 1) {
-            std::cout << "Sequential launch" << std::endl;
-            LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;
-            sequential_launch(options, logger);
-        }
-        else {
-            Timer timer;
-            CouplingMap input = build_input(options);
-            world.barrier();
+	if (world.size() == 1) {
+		std::cout << "Sequential launch" << std::endl;
+		LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;
+		sequential_launch(options, logger);
+	}
+	else {
+		Timer timer;
+		CouplingMap input = build_input(options);
+		world.barrier();
 
-            BendersMpi bendersMpi(env, world, options,logger);
-            bendersMpi.load(input, env, world);
-            world.barrier();
+		BendersMpi bendersMpi(env, world, options,logger);
+		bendersMpi.load(input, env, world);
+		world.barrier();
 
-            bendersMpi.run(env, world);
-            world.barrier();
+		bendersMpi.run(env, world);
+		world.barrier();
 
-            if (world.rank() == 0) {
+		if (world.rank() == 0) {
 
-                LogData logData = bendersDataToLogData(bendersMpi._data);
-                logData.optimal_gap = options.GAP;
+            LogData logData = bendersDataToLogData(bendersMpi._data);
+            logData.optimal_gap = options.GAP;
 
-                logger->log_at_ending(logData);
+            logger->log_at_ending(logData);
 
-                jsonWriter_l.updateEndTime();
-                jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data, options.GAP);
-                jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+			jsonWriter_l.updateEndTime();
+			jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data, options.GAP);
+			jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
-                char buff[FILENAME_MAX];
-                GetCurrentDir(buff, FILENAME_MAX);
+			char buff[FILENAME_MAX];
+			GetCurrentDir(buff, FILENAME_MAX);
 
-                std::stringstream str;
-                str << "Optimization results available in : " << buff << PATH_SEPARATOR
-                    << options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json";
-                logger->display_message(str.str());
-            }
-            bendersMpi.free(env, world);
-            world.barrier();
+			std::stringstream str;
+			str << "Optimization results available in : " << buff << PATH_SEPARATOR 
+				<< options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json";
+			logger->display_message(str.str());
+		}
+		bendersMpi.free(env, world);
+		world.barrier();
 
-            if (world.rank() == 0) {
-                logger->log_total_duration(timer.elapsed());
-                jsonWriter_l.updateEndTime();
-            }
-        }
-	}catch (std::exception& ex) {
-	    std::string error = "Exception raised and program stopped : " + std::string(ex.what());
-	    LOG(WARNING) << error << std::endl;
-        logger->display_message(error);
-        exit(1);
-    }
-  
+		if (world.rank() == 0) {
+			logger->log_total_duration(timer.elapsed());
+			jsonWriter_l.updateEndTime();
+		}
+	}
 	return(0);
 }

@@ -18,5 +18,4 @@
               RAND_AGGREGATION                                                 0
                       CSV_NAME                              benders_output_trace
                    BOUND_ALPHA                                                 1
-                   SOLVER_NAME                                        COIN
 
