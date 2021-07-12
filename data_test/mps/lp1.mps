@@ -1,4 +1,6 @@
 NAME mini_sac_lp
+OBJSENSE      
+  MIN
 ROWS
     N       OBJ
     L       sac1

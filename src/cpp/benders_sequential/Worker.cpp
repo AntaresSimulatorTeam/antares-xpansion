@@ -1,8 +1,6 @@
-#include "glog/logging.h"
-
 #include "Worker.h"
 
-#include "solver_utils.h"
+#include "ortools_utils.h"
 
 Worker::Worker()
 	: _is_master(false)
@@ -18,7 +16,7 @@ Worker::~Worker() {
 *  \brief Free the problem
 */
 void Worker::free() {
-	_solver.reset();
+	delete _solver;
 	_solver = nullptr;
 }
 
@@ -28,12 +26,7 @@ void Worker::free() {
 *  \param lb : double which receives the optimal value
 */
 void Worker::get_value(double & lb) {
-	if (_is_master && _solver->get_n_integer_vars() > 0) {
-        lb = _solver->get_mip_value();
-	}
-	else {
-		lb = _solver->get_lp_value();
-	}
+	lb = _solver->Objective().Value();
 }
 
 /*!
@@ -43,41 +36,37 @@ void Worker::get_value(double & lb) {
 *
 *  \param problem_name : name of the problem
 */
-void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
-	std::string const& solver_name) {
+void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps) {
 	_path_to_mps = path_to_mps;
 
-	SolverFactory factory;
 	if (_is_master)
 	{
-		if (solver_name == "COIN") {
-			_solver = factory.create_solver("CBC");
-		}
-		else {
-			_solver = factory.create_solver(solver_name);
-		}
-		_solver->init();
-		
+		_solver = new operations_research::MPSolver(path_to_mps, ORTOOLS_MIP_SOLVER_TYPE);
 	}
 	else
 	{
-		if (solver_name == "COIN") {
-			_solver = factory.create_solver("CLP");
-		}
-		else {
-			_solver = factory.create_solver(solver_name);
-		}
-		_solver->init();
+		_solver = new operations_research::MPSolver(path_to_mps, ORTOOLS_LP_SOLVER_TYPE);
 	}
-	_solver->set_threads(1);
-	_solver->read_prob_mps(path_to_mps);
-	
-	int var_index;
+	// _solver->EnableOutput();
+	_solver->SetNumThreads(1);
+	ORTreadmps(*_solver, path_to_mps);
+
+	//std::ifstream file(_path_to_mapping.c_str());
+	bool error_l = false;
 	for(auto const & kvp : variable_map) {
-		var_index = _solver->get_col_index(kvp.first);
-		_id_to_name[var_index] = kvp.first;
-		_name_to_id[kvp.first] = var_index;
+		operations_research::MPVariable const * const var_l = _solver->LookupVariableOrNull(kvp.first);
+		if ( var_l != nullptr)
+		{
+			_id_to_name[var_l->index()] = kvp.first;
+			_name_to_id[kvp.first] = var_l->index();
+		}
+		else
+		{
+			error_l = true;
+			std::cout << "\nERROR : missing variable " << kvp.first << " in " << path_to_mps;
+		}
 	}
+	if(error_l)	std::exit(1);
 }
 
 StrVector ORT_LP_STATUS = {
@@ -97,15 +86,25 @@ StrVector ORT_LP_STATUS = {
 */
 void Worker::solve(int & lp_status, BendersOptions const& options) {
 
-	if (_is_master && _solver->get_n_integer_vars() > 0) {
-        lp_status = _solver->solve_mip();
-	}
-	else {
-        lp_status = _solver->solve_lp();
-	}
-	
+	//int initial_rows(0);
+	//int presolved_rows(0);
+	//if (_is_master) {
+	//	XPRSgetintattrib(_xprs, XPRS_ROWS, &initial_rows);
 
-	if (lp_status != SOLVER_STATUS::OPTIMAL) {
+	//	XPRSsetintcontrol(_xprs, XPRS_LPITERLIMIT, 0);
+	//	XPRSsetintcontrol(_xprs, XPRS_BARITERLIMIT, 0);
+
+	//	status = XPRSlpoptimize(_xprs, "");
+
+	//	XPRSgetintattrib(_xprs, XPRS_ROWS, &presolved_rows);
+
+	//	XPRSsetintcontrol(_xprs, XPRS_LPITERLIMIT, 2147483645);
+	//	XPRSsetintcontrol(_xprs, XPRS_BARITERLIMIT, 500);
+	//}
+
+	lp_status = _solver->Solve();
+
+	if (lp_status != operations_research::MPSolver::OPTIMAL) {
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
 		std::stringstream buffer;
 
@@ -115,7 +114,7 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 		buffer<< ".mps";
 		LOG(INFO) << "lp_status is : " << ORT_LP_STATUS[lp_status] << std::endl;
 		LOG(INFO) << "written in " << buffer.str() << std::endl;
-		_solver->write_prob_mps(buffer.str());
+		ORTwritemps(*_solver, buffer.str());
 		std::exit(1);
 	}
 	else {//@NOTE conformity : replace with equivalent to XPRS_LP_UNSTARTED but useless
@@ -129,5 +128,5 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 *  \param result : result
 */
 void Worker::get_simplex_ite(int & result) {
-    result = _solver->get_simplex_ite();
+	result = _solver->iterations();
 }
