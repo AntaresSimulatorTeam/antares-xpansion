@@ -1,4 +1,4 @@
-// projet_benders.cpp: defines the entry point  for the console application
+// projet_benders.cpp�: d�finit le point d'entr�e pour l'application console.
 //
 
 #include "glog/logging.h"
@@ -11,8 +11,6 @@
 #include "launcher.h"
 #include "JsonWriter.h"
 #include "logger/User.h"
-#include "logger/UserFile.h"
-#include "logger/Master.h"
 
 #if defined(WIN32) || defined(_WIN32)
 #include <direct.h>
@@ -27,6 +25,8 @@ int main(int argc, char** argv)
 	mpi::environment env(argc, argv);
 	mpi::communicator world;
 
+    Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
+
 	// First check usage (options are given)
 	if (world.rank() == 0)
 	{
@@ -35,19 +35,6 @@ int main(int argc, char** argv)
 
 	// Read options, needed to have options.OUTPUTROOT
 	BendersOptions options(build_benders_options(argc, argv));
-
-    auto masterLogger = std::make_shared<xpansion::logger::Master>();
-    Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
-    std::string loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbendersmpi";
-    if (world.rank() == 0)
-    {
-        loggerFileName += "-" + std::to_string(world.rank());
-    }
-    Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
-    masterLogger->addLogger(loggerUser);
-    masterLogger->addLogger(loggerFile);
-
-    Logger logger = masterLogger;
 
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     google::InitGoogleLogging(argv[0]);
