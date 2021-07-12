@@ -11,6 +11,11 @@
 class WorkerMasterData {
 public:
 
+    WorkerMasterData(){
+        _valid = false;
+    }
+
+    bool _valid;
 	double _lb;
 	double _ub;
 	double _bestub;
@@ -32,5 +37,7 @@ public:
 
 typedef std::shared_ptr<WorkerMasterData> WorkerMasterDataPtr;
 typedef std::vector<WorkerMasterDataPtr> BendersTrace;
+
+LogData defineLogDataFromBendersDataAndTrace(const BendersData& data, const BendersTrace& trace);
 
 

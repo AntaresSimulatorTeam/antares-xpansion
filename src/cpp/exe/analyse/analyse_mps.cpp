@@ -5,7 +5,7 @@
 #include "BendersOptions.h"
 #include "BendersFunctions.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 
 int main(int argc, char** argv)
 {
@@ -19,16 +19,19 @@ int main(int argc, char** argv)
 	std::vector<DblVector> name_rhs(input.size());
 	Str2Int id_name;
 
+	SolverFactory factory;
+
 	//@TODO check desynchronisation possible entre i et kvp.second : check name_rhs
 
 	size_t n_rows(-1);
 	for (auto const & kvp : input) {
 		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first);
 		std::cout << problem_name << std::endl;
-		operations_research::MPSolver solver("analyse_mip", ORTOOLS_LP_SOLVER_TYPE);
-		ORTreadmps(solver, problem_name);
-		// XPRSsetcbmessage(prob, optimizermsg, NULL);
-		// XPRSsetintcontrol(prob, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
+
+		SolverAbstract::Ptr solver = factory.create_solver("CLP");
+		solver->init();
+		solver->set_output_log_level(options.LOG_LEVEL);
+		solver->read_prob_mps(problem_name);
 
 		if (kvp.first != options.MASTER_NAME) {
 			StandardLp lpData(solver);
@@ -41,6 +44,7 @@ int main(int argc, char** argv)
 		++i;
 		if (i > 5)break;
 	}
+	// Really ??
 	std::ofstream file("toto.csv");
 	for (auto const & kvp : id_name) {
 		file << kvp.first << ";";

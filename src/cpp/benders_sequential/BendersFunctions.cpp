@@ -1,6 +1,9 @@
 #include <sstream>
 
+#include "glog/logging.h"
+
 #include "BendersFunctions.h"
+#include "solver_utils.h"
 
 
 /*!
@@ -21,6 +24,19 @@ void init(BendersData & data) {
 	data.deletedcut = 0;
 	data.maxsimplexiter = 0;
 	data.minsimplexiter = std::numeric_limits<int>::max();
+	data.best_it =0;
+}
+
+void print_master_and_cut(std::ostream& file,Str2Int & problem_to_id, int ite, WorkerMasterDataPtr & trace, Point const & xopt, std::string const & master_name, int const nslaves) {
+    file << ite << ";";
+
+    print_master_csv(file, trace, xopt, master_name, nslaves);
+
+    for (auto &kvp : trace->_cut_trace) {
+        SlaveCutDataHandler const handler(kvp.second);
+        file << ite << ";";
+        print_cut_csv(file, handler, kvp.first, problem_to_id[kvp.first]);
+    }
 }
 
 /*!
@@ -39,28 +55,24 @@ void init(BendersData & data) {
 void print_csv(BendersTrace & trace, Str2Int & problem_to_id, BendersData const & data, BendersOptions const & options) {
 	std::string const output(options.OUTPUTROOT + PATH_SEPARATOR + options.CSV_NAME + ".csv");
 	std::ofstream file(output, std::ios::out | std::ios::trunc);
-	if (file)
-	{
-		file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;deletedcut;time;basis;" << std::endl;
-		Point xopt;
-		int const nite(data.it);
-		xopt = trace[nite - 1]->get_point();
-		file << 1 << ";";
-		print_master_csv(file, trace[0], xopt, options.MASTER_NAME, data.nslaves);
-		for (auto & kvp : trace[0]->_cut_trace) {
-			SlaveCutDataHandler const handler(kvp.second);
-			file << 1 << ";";
-			print_cut_csv(file, handler, kvp.first, problem_to_id[kvp.first]);
-		}
-		for (int i(1); i < nite; i++) {
-			file << i + 1 << ";";
-			print_master_csv(file, trace[i], trace[i - 1]->get_point(), options.MASTER_NAME, data.nslaves);
-			for (auto & kvp : trace[i]->_cut_trace) {
-				SlaveCutDataHandler const handler(kvp.second);
-				file << i + 1 << ";";
-				print_cut_csv(file, handler, kvp.first, problem_to_id[kvp.first]);
-			}
-		}
+	if (file) {
+        file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;deletedcut;time;basis;" << std::endl;
+        int const nite = trace.size();
+        for (int i =0; i < nite; i++) {
+            if (trace[i]->_valid) {
+                Point xopt;
+                //Write first problem : use result of best iteration
+                if (i == 0) {
+                    int best_it_index = data.best_it -1;
+                    if (best_it_index >= 0 && trace.size() > best_it_index) {
+                        xopt = trace[best_it_index]->get_point();
+                    }
+                }else{
+                    xopt = trace[i - 1]->get_point();
+                }
+                print_master_and_cut(file, problem_to_id, i+1, trace[i],xopt,options.MASTER_NAME,data.nslaves);
+            }
+        }
 		file.close();
 	}
 	else {
@@ -224,6 +236,7 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 	trace[data.it - 1]->_nbasis = data.nbasis;
 	trace[data.it - 1]->_invest_cost = data.invest_cost;
 	trace[data.it - 1]->_operational_cost = data.slave_cost;
+    trace[data.it - 1]->_valid = true;
 }
 
 /*!
@@ -233,17 +246,20 @@ void update_trace(BendersTrace & trace, BendersData const & data) {
 *  \param data : BendersData used to get master solving status
 */
 void check_status(AllCutPackage const & all_package, BendersData const & data) {
-	if (data.master_status != operations_research::MPSolver::OPTIMAL) {
+	if (data.master_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "Master status is " << data.master_status << std::endl;
-		exit(1);
+		throw InvalidSolverStatusException("Master status is " + std::to_string(data.master_status));
 	}
 	for (int i(0); i < all_package.size(); i++) {
 		for (auto const & kvp : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(kvp.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
-			if (handler->get_int(LPSTATUS) != operations_research::MPSolver::OPTIMAL) {
-				LOG(INFO) << "Slave " << kvp.first << " status is " << handler->get_int(LPSTATUS) << std::endl;
-				exit(1);
+			if (handler->get_int(LPSTATUS) != SOLVER_STATUS::OPTIMAL) {
+			    std::stringstream stream;
+			    stream << "Slave " << kvp.first << " status is " << handler->get_int(LPSTATUS);
+				LOG(INFO) << stream.str() << std::endl;
+
+                throw InvalidSolverStatusException(stream.str());
 			}
 		}
 	}
@@ -272,10 +288,10 @@ void get_master_value(WorkerMasterPtr & master, BendersData & data, BendersOptio
 
 	for(auto pairIdName : master->_id_to_name)
 	{
-		auto var_l = master->_solver->variables()[pairIdName.first];
-		data.max_invest[pairIdName.second] = var_l->ub();
-		data.min_invest[pairIdName.second] = var_l->lb();
+		master->_solver->get_ub(&data.max_invest[pairIdName.second], pairIdName.first, pairIdName.first);
+		master->_solver->get_lb(&data.min_invest[pairIdName.second], pairIdName.first, pairIdName.first);
 	}
+
 
 
 	if (!options.RAND_AGGREGATION) {

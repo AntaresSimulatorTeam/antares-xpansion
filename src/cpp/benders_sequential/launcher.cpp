@@ -1,3 +1,5 @@
+#include "glog/logging.h"
+
 #include "launcher.h"
 #include "benders_sequential_core/Benders.h"
 #include "Timer.h"
@@ -89,19 +91,26 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
 
 	jsonWriter_l.write(options);
 	jsonWriter_l.updateBeginTime();
+
 	LOG(INFO) << "Constructing workers..." << std::endl;
 
     Benders benders(logger);
 	LOG(INFO) << "Running solver..." << std::endl;
-	benders.run(input,options);
-	LOG(INFO) << "Benders solver terminated." << std::endl;
+    try {
+	    benders.run(input,options);
+	    LOG(INFO) << "Benders solver terminated." << std::endl;
+    }catch (std::exception& ex) {
+        std::string error = "Exception raised : " + std::string(ex.what());
+        LOG(WARNING) << error << std::endl;
+        logger->display_message(error);
+    }
 
-    LogData logData = bendersDataToLogData(benders._data);
+    LogData logData = defineLogDataFromBendersDataAndTrace(benders._data, benders._trace);
 	logData.optimal_gap = options.GAP;
 
     logger->log_at_ending(logData);
 	jsonWriter_l.updateEndTime();
-	jsonWriter_l.write(input.size(), benders._trace, benders._data);
+	jsonWriter_l.write(input.size(), benders._trace, benders._data, options.GAP);
 	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	benders.free();

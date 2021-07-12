@@ -1,6 +1,6 @@
 #include "benders_sequential_core/Benders.h"
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 
 #include <iomanip>
 #include <algorithm>
@@ -52,7 +52,8 @@ void Benders::initialise_problems(const CouplingMap &problem_list) {
 *  \brief Method to free the memory used by each problem
 */
 void Benders::free() {
-	_master->free();
+	if (_master)
+		_master->free();
 	for (auto & ptr : _map_slaves)
 		ptr.second->free();
 }

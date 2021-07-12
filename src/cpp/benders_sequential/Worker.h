@@ -3,9 +3,6 @@
 #include "common.h"
 #include "BendersOptions.h"
 
-#include "ortools/linear_solver/linear_solver.h"
-
-// void XPRS_CC optimizermsg(XPRSprob prob, void* worker, const char *sMsg, int nLen, int nMsglvl);
 class Worker;
 typedef std::shared_ptr<Worker> WorkerPtr;
 
@@ -20,7 +17,8 @@ class Worker
 {
 public:
 	Worker();
-	void init(Str2Int const & variable_map, std::string const & path_to_mps);
+	void init(Str2Int const & variable_map, std::string const & path_to_mps,
+		std::string const& solver_name, int log_level);
 	virtual ~Worker();
 
 	void get_value(double & lb);
@@ -39,7 +37,7 @@ public:
 
 
 public:
-	operations_research::MPSolver * _solver;  /*!< Problem stocked in the instance Worker*/
+	SolverAbstract::Ptr _solver;  /*!< Problem stocked in the instance Worker*/
 	std::list<std::ostream * >_stream;
 	bool _is_master;
 };

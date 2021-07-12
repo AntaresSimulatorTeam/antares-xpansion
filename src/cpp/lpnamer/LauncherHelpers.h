@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ortools_utils.h"
+#include "solver_utils.h"
 
 #include "AdditionalConstraints.h"
 
@@ -12,7 +12,7 @@
  * \param master_p solver to which the constraints and variables will be added
  * \param additionalConstraints_p the additional constraints to add
  */
-void treatAdditionalConstraints(operations_research::MPSolver & master_p, AdditionalConstraints additionalConstraints_p);
+void treatAdditionalConstraints(SolverAbstract::Ptr master_p, AdditionalConstraints additionalConstraints_p);
 
 /**
  * \brief adds an additional constraint to an existent solver
@@ -20,7 +20,7 @@ void treatAdditionalConstraints(operations_research::MPSolver & master_p, Additi
  * \param master_p solver to which the constraint will be added
  * \param additionalConstraint_p the additional constraint to add
  */
-void addAdditionalConstraint(operations_research::MPSolver & master_p, AdditionalConstraint & additionalConstraint_p);
+void addAdditionalConstraint(SolverAbstract::Ptr master_p, AdditionalConstraint & additionalConstraint_p);
 
 /**
  * \brief creates a binary variable and its corresponding linking constraint
@@ -32,4 +32,4 @@ void addAdditionalConstraint(operations_research::MPSolver & master_p, Additiona
  *          creates the binary variable BinVar
  *          adds the linking constraint link_BinVar_CorrespondingVar : CorrespondingVar  <= UB(CorrespondingVar) * BinVar
  */
-void addBinaryVariables(operations_research::MPSolver & master_p, std::map<std::string, std::string> const & variablesToBinarise_p);
+void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string, std::string> const & variablesToBinarise_p);
