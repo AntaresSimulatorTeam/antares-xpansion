@@ -1,0 +1,8 @@
+upstream	downstream
+area1	area2
+area1	peak
+area1	semibase
+area2	flex
+area2	pv
+flex	store_in
+flex	store_out
