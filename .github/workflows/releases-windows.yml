@@ -103,7 +103,7 @@ jobs:
       run: |
            set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
            cd _build
-           ctest -C Release --output-on-failure -L "medium|unit|benders"
+           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
            
     - id: create-single-file
       name: Single file .zip creation
