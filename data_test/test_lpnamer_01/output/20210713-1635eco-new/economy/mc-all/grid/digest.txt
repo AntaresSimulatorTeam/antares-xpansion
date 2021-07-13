@@ -1,0 +1,56 @@
+	digest
+	VARIABLES	AREAS	LINKS
+	35	8	0
+
+		OV. COST	OP. COST	MRG. PRICE	CO2 EMIS.	BALANCE	ROW BAL.	PSP	MISC. NDG	LOAD	H. ROR	WIND	SOLAR	NUCLEAR	LIGNITE	COAL	GAS	OIL	MIX. FUEL	MISC. DTG	H. STOR	H. PUMP	H. LEV	H. INFL	H. OVFL	H. VAL	H. COST	UNSP. ENRG	SPIL. ENRG	LOLD	LOLP	AVL DTG	DTG MRG	MAX MRG	NP COST	NODU
+		Euro	Euro	Euro	Tons	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	MWh	%	MWh	%	Euro/MWh	Euro	MWh	MWh	Hours	%	MWh	MWh	MWh	Euro	 
+		EXP	EXP	EXP	EXP	EXP	values	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	values	EXP	EXP	EXP	EXP	EXP
+	area1	15865630	14125630	297.41	0	-2339	0	0	0	629725	0	121592	0	398505	0	82994	0	24208	0	0	0	0	N/A	0	N/A	N/A	0	87	0	2.00	100.00	720000	214293	214206	0	0
+	area2	591239402	13185375	13043.69	0	-29455	0	0	0	679255	0	143182	0	387634	0	65008	0	25073	0	0	0	0	N/A	0	N/A	N/A	0	28903	0	70.00	100.00	508800	31084	2182	0	0
+	flex	0	0	13328.51	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	N/A	0	N/A	N/A	0	0	0	0	0	0	0	0	0	0
+	peak	421020	421020	61.46	0	2339	0	0	0	0	0	0	0	0	0	0	0	2339	0	0	0	0	N/A	0	N/A	N/A	0	0	0	0	0	302400	300061	300061	0	0
+	pv	0	0	0.00	0	33424	0	0	0	0	0	0	168000	0	0	0	0	0	0	0	0	0	N/A	0	N/A	N/A	0	0	134576	0	0	0	0	134576	0	0
+	semibase	0	0	50.00	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	N/A	0	N/A	N/A	0	0	0	0	0	288000	288000	288000	0	0
+	store_in	0	0	1883.37	0	-19846	-168000	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	N/A	0	N/A	N/A	0	148154	0	168.00	100.00	0	0	-148154	0	0
+	store_out	0	0	-977.92	0	15877	168000	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	N/A	0	N/A	N/A	0	0	152123	0	0	0	0	152123	0	0
+
+
+	digest
+	VARIABLES	AREAS	LINKS
+	0	0	0
+
+	
+	
+	
+
+
+
+
+
+
+	Links (FLOW LIN.)
+		From...
+	...To	area1	area2	flex	peak	pv	semibase	store_in	store_out
+	area1	X	0	--	2339	--	0	--	--
+	area2	0	X	-3969	--	33424	--	--	--
+	flex	--	3969	X	--	--	--	-19846	15877
+	peak	-2339	--	--	X	--	--	--	--
+	pv	--	-33424	--	--	X	--	--	--
+	semibase	0	--	--	--	--	X	--	--
+	store_in	--	--	19846	--	--	--	X	--
+	store_out	--	--	-15877	--	--	--	--	X
+
+
+
+
+	Links (FLOW QUAD.)
+		From...
+	...To	area1	area2	flex	peak	pv	semibase	store_in	store_out
+	area1	X	0	--	0	--	0	--	--
+	area2	0	X	0	--	0	--	--	--
+	flex	--	0	X	--	--	--	0	0
+	peak	0	--	--	X	--	--	--	--
+	pv	--	0	--	--	X	--	--	--
+	semibase	0	--	--	--	--	X	--	--
+	store_in	--	--	0	--	--	--	X	--
+	store_out	--	--	0	--	--	--	--	X

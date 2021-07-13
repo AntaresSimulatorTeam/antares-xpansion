@@ -1,0 +1,8 @@
+semibase	area	de	annual
+	VARIABLES	BEGIN	END
+	3	1	1
+
+semibase	annual	SemiBase1	SemiBase1	SemiBase1
+		MWh	NP Cost - Euro	NODU
+				
+	Annual	0	0	0

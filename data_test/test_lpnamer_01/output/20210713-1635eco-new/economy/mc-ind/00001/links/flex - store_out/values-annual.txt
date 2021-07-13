@@ -1,0 +1,8 @@
+flex	link	va	annual
+store_out	VARIABLES	BEGIN	END
+	10	1	1
+
+flex	annual	FLOW LIN.	UCAP LIN.	LOOP FLOW	FLOW QUAD.	CONG. FEE (ALG.)	CONG. FEE (ABS.)	MARG. COST	CONG. PROB +	CONG. PROB -	HURDLE COST
+		MWh	MWh	MWh	MWh	Euro	Euro	Euro/MW	%	%	Euro
+											
+	Annual	-15877	15877	0	0	171398829	171398829	0	0	0	0

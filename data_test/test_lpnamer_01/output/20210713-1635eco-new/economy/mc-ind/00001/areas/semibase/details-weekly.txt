@@ -1,0 +1,8 @@
+semibase	area	de	weekly
+	VARIABLES	BEGIN	END
+	3	1	1
+
+semibase	weekly	SemiBase1	SemiBase1	SemiBase1
+		MWh	NP Cost - Euro	NODU
+	week			
+	27	0	0	0

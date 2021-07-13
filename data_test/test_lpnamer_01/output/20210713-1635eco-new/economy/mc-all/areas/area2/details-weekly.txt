@@ -1,0 +1,8 @@
+area2	area	de	weekly
+	VARIABLES	BEGIN	END
+	9	1	1
+
+area2	weekly	Base	Peak	SemiBase	Base	Peak	SemiBase	Base	Peak	SemiBase
+		MWh	MWh	MWh	NP Cost - Euro	NP Cost - Euro	NP Cost - Euro	NODU	NODU	NODU
+	week	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP	EXP
+	27	387634	25073	65008	0	0	0	432	252	147
