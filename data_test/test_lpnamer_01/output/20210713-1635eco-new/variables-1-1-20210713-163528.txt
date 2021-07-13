@@ -1,0 +1,5544 @@
+0 ValeurDeNTCOrigineVersExtremite 0 0 0 
+1 CoutOrigineVersExtremiteDeLInterconnexion 0 0 
+2 CoutExtremiteVersOrigineDeLInterconnexion 0 0 
+3 ValeurDeNTCOrigineVersExtremite 0 1 0 
+4 ValeurDeNTCOrigineVersExtremite 0 2 0 
+5 ValeurDeNTCOrigineVersExtremite 1 3 0 
+6 ValeurDeNTCOrigineVersExtremite 1 4 0 
+7 ValeurDeNTCOrigineVersExtremite 2 5 0 
+8 ValeurDeNTCOrigineVersExtremite 2 6 0 
+9 PalierThermique 0 0 0 
+10 PalierThermique 0 1 0 
+11 PalierThermique 0 2 0 
+12 DefaillancePositive 0 0 
+13 DefaillanceNegative 0 0 
+14 PalierThermique 1 3 0 
+15 PalierThermique 1 4 0 
+16 PalierThermique 1 5 0 
+17 DefaillancePositive 1 0 
+18 DefaillanceNegative 1 0 
+19 DefaillancePositive 2 0 
+20 DefaillanceNegative 2 0 
+21 PalierThermique 3 6 0 
+22 DefaillancePositive 3 0 
+23 DefaillanceNegative 3 0 
+24 DefaillancePositive 4 0 
+25 DefaillanceNegative 4 0 
+26 PalierThermique 5 7 0 
+27 DefaillancePositive 5 0 
+28 DefaillanceNegative 5 0 
+29 DefaillancePositive 6 0 
+30 DefaillanceNegative 6 0 
+31 DefaillancePositive 7 0 
+32 DefaillanceNegative 7 0 
+33 ValeurDeNTCOrigineVersExtremite 0 0 1 
+34 CoutOrigineVersExtremiteDeLInterconnexion 0 1 
+35 CoutExtremiteVersOrigineDeLInterconnexion 0 1 
+36 ValeurDeNTCOrigineVersExtremite 0 1 1 
+37 ValeurDeNTCOrigineVersExtremite 0 2 1 
+38 ValeurDeNTCOrigineVersExtremite 1 3 1 
+39 ValeurDeNTCOrigineVersExtremite 1 4 1 
+40 ValeurDeNTCOrigineVersExtremite 2 5 1 
+41 ValeurDeNTCOrigineVersExtremite 2 6 1 
+42 PalierThermique 0 0 1 
+43 PalierThermique 0 1 1 
+44 PalierThermique 0 2 1 
+45 DefaillancePositive 0 1 
+46 DefaillanceNegative 0 1 
+47 PalierThermique 1 3 1 
+48 PalierThermique 1 4 1 
+49 PalierThermique 1 5 1 
+50 DefaillancePositive 1 1 
+51 DefaillanceNegative 1 1 
+52 DefaillancePositive 2 1 
+53 DefaillanceNegative 2 1 
+54 PalierThermique 3 6 1 
+55 DefaillancePositive 3 1 
+56 DefaillanceNegative 3 1 
+57 DefaillancePositive 4 1 
+58 DefaillanceNegative 4 1 
+59 PalierThermique 5 7 1 
+60 DefaillancePositive 5 1 
+61 DefaillanceNegative 5 1 
+62 DefaillancePositive 6 1 
+63 DefaillanceNegative 6 1 
+64 DefaillancePositive 7 1 
+65 DefaillanceNegative 7 1 
+66 ValeurDeNTCOrigineVersExtremite 0 0 2 
+67 CoutOrigineVersExtremiteDeLInterconnexion 0 2 
+68 CoutExtremiteVersOrigineDeLInterconnexion 0 2 
+69 ValeurDeNTCOrigineVersExtremite 0 1 2 
+70 ValeurDeNTCOrigineVersExtremite 0 2 2 
+71 ValeurDeNTCOrigineVersExtremite 1 3 2 
+72 ValeurDeNTCOrigineVersExtremite 1 4 2 
+73 ValeurDeNTCOrigineVersExtremite 2 5 2 
+74 ValeurDeNTCOrigineVersExtremite 2 6 2 
+75 PalierThermique 0 0 2 
+76 PalierThermique 0 1 2 
+77 PalierThermique 0 2 2 
+78 DefaillancePositive 0 2 
+79 DefaillanceNegative 0 2 
+80 PalierThermique 1 3 2 
+81 PalierThermique 1 4 2 
+82 PalierThermique 1 5 2 
+83 DefaillancePositive 1 2 
+84 DefaillanceNegative 1 2 
+85 DefaillancePositive 2 2 
+86 DefaillanceNegative 2 2 
+87 PalierThermique 3 6 2 
+88 DefaillancePositive 3 2 
+89 DefaillanceNegative 3 2 
+90 DefaillancePositive 4 2 
+91 DefaillanceNegative 4 2 
+92 PalierThermique 5 7 2 
+93 DefaillancePositive 5 2 
+94 DefaillanceNegative 5 2 
+95 DefaillancePositive 6 2 
+96 DefaillanceNegative 6 2 
+97 DefaillancePositive 7 2 
+98 DefaillanceNegative 7 2 
+99 ValeurDeNTCOrigineVersExtremite 0 0 3 
+100 CoutOrigineVersExtremiteDeLInterconnexion 0 3 
+101 CoutExtremiteVersOrigineDeLInterconnexion 0 3 
+102 ValeurDeNTCOrigineVersExtremite 0 1 3 
+103 ValeurDeNTCOrigineVersExtremite 0 2 3 
+104 ValeurDeNTCOrigineVersExtremite 1 3 3 
+105 ValeurDeNTCOrigineVersExtremite 1 4 3 
+106 ValeurDeNTCOrigineVersExtremite 2 5 3 
+107 ValeurDeNTCOrigineVersExtremite 2 6 3 
+108 PalierThermique 0 0 3 
+109 PalierThermique 0 1 3 
+110 PalierThermique 0 2 3 
+111 DefaillancePositive 0 3 
+112 DefaillanceNegative 0 3 
+113 PalierThermique 1 3 3 
+114 PalierThermique 1 4 3 
+115 PalierThermique 1 5 3 
+116 DefaillancePositive 1 3 
+117 DefaillanceNegative 1 3 
+118 DefaillancePositive 2 3 
+119 DefaillanceNegative 2 3 
+120 PalierThermique 3 6 3 
+121 DefaillancePositive 3 3 
+122 DefaillanceNegative 3 3 
+123 DefaillancePositive 4 3 
+124 DefaillanceNegative 4 3 
+125 PalierThermique 5 7 3 
+126 DefaillancePositive 5 3 
+127 DefaillanceNegative 5 3 
+128 DefaillancePositive 6 3 
+129 DefaillanceNegative 6 3 
+130 DefaillancePositive 7 3 
+131 DefaillanceNegative 7 3 
+132 ValeurDeNTCOrigineVersExtremite 0 0 4 
+133 CoutOrigineVersExtremiteDeLInterconnexion 0 4 
+134 CoutExtremiteVersOrigineDeLInterconnexion 0 4 
+135 ValeurDeNTCOrigineVersExtremite 0 1 4 
+136 ValeurDeNTCOrigineVersExtremite 0 2 4 
+137 ValeurDeNTCOrigineVersExtremite 1 3 4 
+138 ValeurDeNTCOrigineVersExtremite 1 4 4 
+139 ValeurDeNTCOrigineVersExtremite 2 5 4 
+140 ValeurDeNTCOrigineVersExtremite 2 6 4 
+141 PalierThermique 0 0 4 
+142 PalierThermique 0 1 4 
+143 PalierThermique 0 2 4 
+144 DefaillancePositive 0 4 
+145 DefaillanceNegative 0 4 
+146 PalierThermique 1 3 4 
+147 PalierThermique 1 4 4 
+148 PalierThermique 1 5 4 
+149 DefaillancePositive 1 4 
+150 DefaillanceNegative 1 4 
+151 DefaillancePositive 2 4 
+152 DefaillanceNegative 2 4 
+153 PalierThermique 3 6 4 
+154 DefaillancePositive 3 4 
+155 DefaillanceNegative 3 4 
+156 DefaillancePositive 4 4 
+157 DefaillanceNegative 4 4 
+158 PalierThermique 5 7 4 
+159 DefaillancePositive 5 4 
+160 DefaillanceNegative 5 4 
+161 DefaillancePositive 6 4 
+162 DefaillanceNegative 6 4 
+163 DefaillancePositive 7 4 
+164 DefaillanceNegative 7 4 
+165 ValeurDeNTCOrigineVersExtremite 0 0 5 
+166 CoutOrigineVersExtremiteDeLInterconnexion 0 5 
+167 CoutExtremiteVersOrigineDeLInterconnexion 0 5 
+168 ValeurDeNTCOrigineVersExtremite 0 1 5 
+169 ValeurDeNTCOrigineVersExtremite 0 2 5 
+170 ValeurDeNTCOrigineVersExtremite 1 3 5 
+171 ValeurDeNTCOrigineVersExtremite 1 4 5 
+172 ValeurDeNTCOrigineVersExtremite 2 5 5 
+173 ValeurDeNTCOrigineVersExtremite 2 6 5 
+174 PalierThermique 0 0 5 
+175 PalierThermique 0 1 5 
+176 PalierThermique 0 2 5 
+177 DefaillancePositive 0 5 
+178 DefaillanceNegative 0 5 
+179 PalierThermique 1 3 5 
+180 PalierThermique 1 4 5 
+181 PalierThermique 1 5 5 
+182 DefaillancePositive 1 5 
+183 DefaillanceNegative 1 5 
+184 DefaillancePositive 2 5 
+185 DefaillanceNegative 2 5 
+186 PalierThermique 3 6 5 
+187 DefaillancePositive 3 5 
+188 DefaillanceNegative 3 5 
+189 DefaillancePositive 4 5 
+190 DefaillanceNegative 4 5 
+191 PalierThermique 5 7 5 
+192 DefaillancePositive 5 5 
+193 DefaillanceNegative 5 5 
+194 DefaillancePositive 6 5 
+195 DefaillanceNegative 6 5 
+196 DefaillancePositive 7 5 
+197 DefaillanceNegative 7 5 
+198 ValeurDeNTCOrigineVersExtremite 0 0 6 
+199 CoutOrigineVersExtremiteDeLInterconnexion 0 6 
+200 CoutExtremiteVersOrigineDeLInterconnexion 0 6 
+201 ValeurDeNTCOrigineVersExtremite 0 1 6 
+202 ValeurDeNTCOrigineVersExtremite 0 2 6 
+203 ValeurDeNTCOrigineVersExtremite 1 3 6 
+204 ValeurDeNTCOrigineVersExtremite 1 4 6 
+205 ValeurDeNTCOrigineVersExtremite 2 5 6 
+206 ValeurDeNTCOrigineVersExtremite 2 6 6 
+207 PalierThermique 0 0 6 
+208 PalierThermique 0 1 6 
+209 PalierThermique 0 2 6 
+210 DefaillancePositive 0 6 
+211 DefaillanceNegative 0 6 
+212 PalierThermique 1 3 6 
+213 PalierThermique 1 4 6 
+214 PalierThermique 1 5 6 
+215 DefaillancePositive 1 6 
+216 DefaillanceNegative 1 6 
+217 DefaillancePositive 2 6 
+218 DefaillanceNegative 2 6 
+219 PalierThermique 3 6 6 
+220 DefaillancePositive 3 6 
+221 DefaillanceNegative 3 6 
+222 DefaillancePositive 4 6 
+223 DefaillanceNegative 4 6 
+224 PalierThermique 5 7 6 
+225 DefaillancePositive 5 6 
+226 DefaillanceNegative 5 6 
+227 DefaillancePositive 6 6 
+228 DefaillanceNegative 6 6 
+229 DefaillancePositive 7 6 
+230 DefaillanceNegative 7 6 
+231 ValeurDeNTCOrigineVersExtremite 0 0 7 
+232 CoutOrigineVersExtremiteDeLInterconnexion 0 7 
+233 CoutExtremiteVersOrigineDeLInterconnexion 0 7 
+234 ValeurDeNTCOrigineVersExtremite 0 1 7 
+235 ValeurDeNTCOrigineVersExtremite 0 2 7 
+236 ValeurDeNTCOrigineVersExtremite 1 3 7 
+237 ValeurDeNTCOrigineVersExtremite 1 4 7 
+238 ValeurDeNTCOrigineVersExtremite 2 5 7 
+239 ValeurDeNTCOrigineVersExtremite 2 6 7 
+240 PalierThermique 0 0 7 
+241 PalierThermique 0 1 7 
+242 PalierThermique 0 2 7 
+243 DefaillancePositive 0 7 
+244 DefaillanceNegative 0 7 
+245 PalierThermique 1 3 7 
+246 PalierThermique 1 4 7 
+247 PalierThermique 1 5 7 
+248 DefaillancePositive 1 7 
+249 DefaillanceNegative 1 7 
+250 DefaillancePositive 2 7 
+251 DefaillanceNegative 2 7 
+252 PalierThermique 3 6 7 
+253 DefaillancePositive 3 7 
+254 DefaillanceNegative 3 7 
+255 DefaillancePositive 4 7 
+256 DefaillanceNegative 4 7 
+257 PalierThermique 5 7 7 
+258 DefaillancePositive 5 7 
+259 DefaillanceNegative 5 7 
+260 DefaillancePositive 6 7 
+261 DefaillanceNegative 6 7 
+262 DefaillancePositive 7 7 
+263 DefaillanceNegative 7 7 
+264 ValeurDeNTCOrigineVersExtremite 0 0 8 
+265 CoutOrigineVersExtremiteDeLInterconnexion 0 8 
+266 CoutExtremiteVersOrigineDeLInterconnexion 0 8 
+267 ValeurDeNTCOrigineVersExtremite 0 1 8 
+268 ValeurDeNTCOrigineVersExtremite 0 2 8 
+269 ValeurDeNTCOrigineVersExtremite 1 3 8 
+270 ValeurDeNTCOrigineVersExtremite 1 4 8 
+271 ValeurDeNTCOrigineVersExtremite 2 5 8 
+272 ValeurDeNTCOrigineVersExtremite 2 6 8 
+273 PalierThermique 0 0 8 
+274 PalierThermique 0 1 8 
+275 PalierThermique 0 2 8 
+276 DefaillancePositive 0 8 
+277 DefaillanceNegative 0 8 
+278 PalierThermique 1 3 8 
+279 PalierThermique 1 4 8 
+280 PalierThermique 1 5 8 
+281 DefaillancePositive 1 8 
+282 DefaillanceNegative 1 8 
+283 DefaillancePositive 2 8 
+284 DefaillanceNegative 2 8 
+285 PalierThermique 3 6 8 
+286 DefaillancePositive 3 8 
+287 DefaillanceNegative 3 8 
+288 DefaillancePositive 4 8 
+289 DefaillanceNegative 4 8 
+290 PalierThermique 5 7 8 
+291 DefaillancePositive 5 8 
+292 DefaillanceNegative 5 8 
+293 DefaillancePositive 6 8 
+294 DefaillanceNegative 6 8 
+295 DefaillancePositive 7 8 
+296 DefaillanceNegative 7 8 
+297 ValeurDeNTCOrigineVersExtremite 0 0 9 
+298 CoutOrigineVersExtremiteDeLInterconnexion 0 9 
+299 CoutExtremiteVersOrigineDeLInterconnexion 0 9 
+300 ValeurDeNTCOrigineVersExtremite 0 1 9 
+301 ValeurDeNTCOrigineVersExtremite 0 2 9 
+302 ValeurDeNTCOrigineVersExtremite 1 3 9 
+303 ValeurDeNTCOrigineVersExtremite 1 4 9 
+304 ValeurDeNTCOrigineVersExtremite 2 5 9 
+305 ValeurDeNTCOrigineVersExtremite 2 6 9 
+306 PalierThermique 0 0 9 
+307 PalierThermique 0 1 9 
+308 PalierThermique 0 2 9 
+309 DefaillancePositive 0 9 
+310 DefaillanceNegative 0 9 
+311 PalierThermique 1 3 9 
+312 PalierThermique 1 4 9 
+313 PalierThermique 1 5 9 
+314 DefaillancePositive 1 9 
+315 DefaillanceNegative 1 9 
+316 DefaillancePositive 2 9 
+317 DefaillanceNegative 2 9 
+318 PalierThermique 3 6 9 
+319 DefaillancePositive 3 9 
+320 DefaillanceNegative 3 9 
+321 DefaillancePositive 4 9 
+322 DefaillanceNegative 4 9 
+323 PalierThermique 5 7 9 
+324 DefaillancePositive 5 9 
+325 DefaillanceNegative 5 9 
+326 DefaillancePositive 6 9 
+327 DefaillanceNegative 6 9 
+328 DefaillancePositive 7 9 
+329 DefaillanceNegative 7 9 
+330 ValeurDeNTCOrigineVersExtremite 0 0 10 
+331 CoutOrigineVersExtremiteDeLInterconnexion 0 10 
+332 CoutExtremiteVersOrigineDeLInterconnexion 0 10 
+333 ValeurDeNTCOrigineVersExtremite 0 1 10 
+334 ValeurDeNTCOrigineVersExtremite 0 2 10 
+335 ValeurDeNTCOrigineVersExtremite 1 3 10 
+336 ValeurDeNTCOrigineVersExtremite 1 4 10 
+337 ValeurDeNTCOrigineVersExtremite 2 5 10 
+338 ValeurDeNTCOrigineVersExtremite 2 6 10 
+339 PalierThermique 0 0 10 
+340 PalierThermique 0 1 10 
+341 PalierThermique 0 2 10 
+342 DefaillancePositive 0 10 
+343 DefaillanceNegative 0 10 
+344 PalierThermique 1 3 10 
+345 PalierThermique 1 4 10 
+346 PalierThermique 1 5 10 
+347 DefaillancePositive 1 10 
+348 DefaillanceNegative 1 10 
+349 DefaillancePositive 2 10 
+350 DefaillanceNegative 2 10 
+351 PalierThermique 3 6 10 
+352 DefaillancePositive 3 10 
+353 DefaillanceNegative 3 10 
+354 DefaillancePositive 4 10 
+355 DefaillanceNegative 4 10 
+356 PalierThermique 5 7 10 
+357 DefaillancePositive 5 10 
+358 DefaillanceNegative 5 10 
+359 DefaillancePositive 6 10 
+360 DefaillanceNegative 6 10 
+361 DefaillancePositive 7 10 
+362 DefaillanceNegative 7 10 
+363 ValeurDeNTCOrigineVersExtremite 0 0 11 
+364 CoutOrigineVersExtremiteDeLInterconnexion 0 11 
+365 CoutExtremiteVersOrigineDeLInterconnexion 0 11 
+366 ValeurDeNTCOrigineVersExtremite 0 1 11 
+367 ValeurDeNTCOrigineVersExtremite 0 2 11 
+368 ValeurDeNTCOrigineVersExtremite 1 3 11 
+369 ValeurDeNTCOrigineVersExtremite 1 4 11 
+370 ValeurDeNTCOrigineVersExtremite 2 5 11 
+371 ValeurDeNTCOrigineVersExtremite 2 6 11 
+372 PalierThermique 0 0 11 
+373 PalierThermique 0 1 11 
+374 PalierThermique 0 2 11 
+375 DefaillancePositive 0 11 
+376 DefaillanceNegative 0 11 
+377 PalierThermique 1 3 11 
+378 PalierThermique 1 4 11 
+379 PalierThermique 1 5 11 
+380 DefaillancePositive 1 11 
+381 DefaillanceNegative 1 11 
+382 DefaillancePositive 2 11 
+383 DefaillanceNegative 2 11 
+384 PalierThermique 3 6 11 
+385 DefaillancePositive 3 11 
+386 DefaillanceNegative 3 11 
+387 DefaillancePositive 4 11 
+388 DefaillanceNegative 4 11 
+389 PalierThermique 5 7 11 
+390 DefaillancePositive 5 11 
+391 DefaillanceNegative 5 11 
+392 DefaillancePositive 6 11 
+393 DefaillanceNegative 6 11 
+394 DefaillancePositive 7 11 
+395 DefaillanceNegative 7 11 
+396 ValeurDeNTCOrigineVersExtremite 0 0 12 
+397 CoutOrigineVersExtremiteDeLInterconnexion 0 12 
+398 CoutExtremiteVersOrigineDeLInterconnexion 0 12 
+399 ValeurDeNTCOrigineVersExtremite 0 1 12 
+400 ValeurDeNTCOrigineVersExtremite 0 2 12 
+401 ValeurDeNTCOrigineVersExtremite 1 3 12 
+402 ValeurDeNTCOrigineVersExtremite 1 4 12 
+403 ValeurDeNTCOrigineVersExtremite 2 5 12 
+404 ValeurDeNTCOrigineVersExtremite 2 6 12 
+405 PalierThermique 0 0 12 
+406 PalierThermique 0 1 12 
+407 PalierThermique 0 2 12 
+408 DefaillancePositive 0 12 
+409 DefaillanceNegative 0 12 
+410 PalierThermique 1 3 12 
+411 PalierThermique 1 4 12 
+412 PalierThermique 1 5 12 
+413 DefaillancePositive 1 12 
+414 DefaillanceNegative 1 12 
+415 DefaillancePositive 2 12 
+416 DefaillanceNegative 2 12 
+417 PalierThermique 3 6 12 
+418 DefaillancePositive 3 12 
+419 DefaillanceNegative 3 12 
+420 DefaillancePositive 4 12 
+421 DefaillanceNegative 4 12 
+422 PalierThermique 5 7 12 
+423 DefaillancePositive 5 12 
+424 DefaillanceNegative 5 12 
+425 DefaillancePositive 6 12 
+426 DefaillanceNegative 6 12 
+427 DefaillancePositive 7 12 
+428 DefaillanceNegative 7 12 
+429 ValeurDeNTCOrigineVersExtremite 0 0 13 
+430 CoutOrigineVersExtremiteDeLInterconnexion 0 13 
+431 CoutExtremiteVersOrigineDeLInterconnexion 0 13 
+432 ValeurDeNTCOrigineVersExtremite 0 1 13 
+433 ValeurDeNTCOrigineVersExtremite 0 2 13 
+434 ValeurDeNTCOrigineVersExtremite 1 3 13 
+435 ValeurDeNTCOrigineVersExtremite 1 4 13 
+436 ValeurDeNTCOrigineVersExtremite 2 5 13 
+437 ValeurDeNTCOrigineVersExtremite 2 6 13 
+438 PalierThermique 0 0 13 
+439 PalierThermique 0 1 13 
+440 PalierThermique 0 2 13 
+441 DefaillancePositive 0 13 
+442 DefaillanceNegative 0 13 
+443 PalierThermique 1 3 13 
+444 PalierThermique 1 4 13 
+445 PalierThermique 1 5 13 
+446 DefaillancePositive 1 13 
+447 DefaillanceNegative 1 13 
+448 DefaillancePositive 2 13 
+449 DefaillanceNegative 2 13 
+450 PalierThermique 3 6 13 
+451 DefaillancePositive 3 13 
+452 DefaillanceNegative 3 13 
+453 DefaillancePositive 4 13 
+454 DefaillanceNegative 4 13 
+455 PalierThermique 5 7 13 
+456 DefaillancePositive 5 13 
+457 DefaillanceNegative 5 13 
+458 DefaillancePositive 6 13 
+459 DefaillanceNegative 6 13 
+460 DefaillancePositive 7 13 
+461 DefaillanceNegative 7 13 
+462 ValeurDeNTCOrigineVersExtremite 0 0 14 
+463 CoutOrigineVersExtremiteDeLInterconnexion 0 14 
+464 CoutExtremiteVersOrigineDeLInterconnexion 0 14 
+465 ValeurDeNTCOrigineVersExtremite 0 1 14 
+466 ValeurDeNTCOrigineVersExtremite 0 2 14 
+467 ValeurDeNTCOrigineVersExtremite 1 3 14 
+468 ValeurDeNTCOrigineVersExtremite 1 4 14 
+469 ValeurDeNTCOrigineVersExtremite 2 5 14 
+470 ValeurDeNTCOrigineVersExtremite 2 6 14 
+471 PalierThermique 0 0 14 
+472 PalierThermique 0 1 14 
+473 PalierThermique 0 2 14 
+474 DefaillancePositive 0 14 
+475 DefaillanceNegative 0 14 
+476 PalierThermique 1 3 14 
+477 PalierThermique 1 4 14 
+478 PalierThermique 1 5 14 
+479 DefaillancePositive 1 14 
+480 DefaillanceNegative 1 14 
+481 DefaillancePositive 2 14 
+482 DefaillanceNegative 2 14 
+483 PalierThermique 3 6 14 
+484 DefaillancePositive 3 14 
+485 DefaillanceNegative 3 14 
+486 DefaillancePositive 4 14 
+487 DefaillanceNegative 4 14 
+488 PalierThermique 5 7 14 
+489 DefaillancePositive 5 14 
+490 DefaillanceNegative 5 14 
+491 DefaillancePositive 6 14 
+492 DefaillanceNegative 6 14 
+493 DefaillancePositive 7 14 
+494 DefaillanceNegative 7 14 
+495 ValeurDeNTCOrigineVersExtremite 0 0 15 
+496 CoutOrigineVersExtremiteDeLInterconnexion 0 15 
+497 CoutExtremiteVersOrigineDeLInterconnexion 0 15 
+498 ValeurDeNTCOrigineVersExtremite 0 1 15 
+499 ValeurDeNTCOrigineVersExtremite 0 2 15 
+500 ValeurDeNTCOrigineVersExtremite 1 3 15 
+501 ValeurDeNTCOrigineVersExtremite 1 4 15 
+502 ValeurDeNTCOrigineVersExtremite 2 5 15 
+503 ValeurDeNTCOrigineVersExtremite 2 6 15 
+504 PalierThermique 0 0 15 
+505 PalierThermique 0 1 15 
+506 PalierThermique 0 2 15 
+507 DefaillancePositive 0 15 
+508 DefaillanceNegative 0 15 
+509 PalierThermique 1 3 15 
+510 PalierThermique 1 4 15 
+511 PalierThermique 1 5 15 
+512 DefaillancePositive 1 15 
+513 DefaillanceNegative 1 15 
+514 DefaillancePositive 2 15 
+515 DefaillanceNegative 2 15 
+516 PalierThermique 3 6 15 
+517 DefaillancePositive 3 15 
+518 DefaillanceNegative 3 15 
+519 DefaillancePositive 4 15 
+520 DefaillanceNegative 4 15 
+521 PalierThermique 5 7 15 
+522 DefaillancePositive 5 15 
+523 DefaillanceNegative 5 15 
+524 DefaillancePositive 6 15 
+525 DefaillanceNegative 6 15 
+526 DefaillancePositive 7 15 
+527 DefaillanceNegative 7 15 
+528 ValeurDeNTCOrigineVersExtremite 0 0 16 
+529 CoutOrigineVersExtremiteDeLInterconnexion 0 16 
+530 CoutExtremiteVersOrigineDeLInterconnexion 0 16 
+531 ValeurDeNTCOrigineVersExtremite 0 1 16 
+532 ValeurDeNTCOrigineVersExtremite 0 2 16 
+533 ValeurDeNTCOrigineVersExtremite 1 3 16 
+534 ValeurDeNTCOrigineVersExtremite 1 4 16 
+535 ValeurDeNTCOrigineVersExtremite 2 5 16 
+536 ValeurDeNTCOrigineVersExtremite 2 6 16 
+537 PalierThermique 0 0 16 
+538 PalierThermique 0 1 16 
+539 PalierThermique 0 2 16 
+540 DefaillancePositive 0 16 
+541 DefaillanceNegative 0 16 
+542 PalierThermique 1 3 16 
+543 PalierThermique 1 4 16 
+544 PalierThermique 1 5 16 
+545 DefaillancePositive 1 16 
+546 DefaillanceNegative 1 16 
+547 DefaillancePositive 2 16 
+548 DefaillanceNegative 2 16 
+549 PalierThermique 3 6 16 
+550 DefaillancePositive 3 16 
+551 DefaillanceNegative 3 16 
+552 DefaillancePositive 4 16 
+553 DefaillanceNegative 4 16 
+554 PalierThermique 5 7 16 
+555 DefaillancePositive 5 16 
+556 DefaillanceNegative 5 16 
+557 DefaillancePositive 6 16 
+558 DefaillanceNegative 6 16 
+559 DefaillancePositive 7 16 
+560 DefaillanceNegative 7 16 
+561 ValeurDeNTCOrigineVersExtremite 0 0 17 
+562 CoutOrigineVersExtremiteDeLInterconnexion 0 17 
+563 CoutExtremiteVersOrigineDeLInterconnexion 0 17 
+564 ValeurDeNTCOrigineVersExtremite 0 1 17 
+565 ValeurDeNTCOrigineVersExtremite 0 2 17 
+566 ValeurDeNTCOrigineVersExtremite 1 3 17 
+567 ValeurDeNTCOrigineVersExtremite 1 4 17 
+568 ValeurDeNTCOrigineVersExtremite 2 5 17 
+569 ValeurDeNTCOrigineVersExtremite 2 6 17 
+570 PalierThermique 0 0 17 
+571 PalierThermique 0 1 17 
+572 PalierThermique 0 2 17 
+573 DefaillancePositive 0 17 
+574 DefaillanceNegative 0 17 
+575 PalierThermique 1 3 17 
+576 PalierThermique 1 4 17 
+577 PalierThermique 1 5 17 
+578 DefaillancePositive 1 17 
+579 DefaillanceNegative 1 17 
+580 DefaillancePositive 2 17 
+581 DefaillanceNegative 2 17 
+582 PalierThermique 3 6 17 
+583 DefaillancePositive 3 17 
+584 DefaillanceNegative 3 17 
+585 DefaillancePositive 4 17 
+586 DefaillanceNegative 4 17 
+587 PalierThermique 5 7 17 
+588 DefaillancePositive 5 17 
+589 DefaillanceNegative 5 17 
+590 DefaillancePositive 6 17 
+591 DefaillanceNegative 6 17 
+592 DefaillancePositive 7 17 
+593 DefaillanceNegative 7 17 
+594 ValeurDeNTCOrigineVersExtremite 0 0 18 
+595 CoutOrigineVersExtremiteDeLInterconnexion 0 18 
+596 CoutExtremiteVersOrigineDeLInterconnexion 0 18 
+597 ValeurDeNTCOrigineVersExtremite 0 1 18 
+598 ValeurDeNTCOrigineVersExtremite 0 2 18 
+599 ValeurDeNTCOrigineVersExtremite 1 3 18 
+600 ValeurDeNTCOrigineVersExtremite 1 4 18 
+601 ValeurDeNTCOrigineVersExtremite 2 5 18 
+602 ValeurDeNTCOrigineVersExtremite 2 6 18 
+603 PalierThermique 0 0 18 
+604 PalierThermique 0 1 18 
+605 PalierThermique 0 2 18 
+606 DefaillancePositive 0 18 
+607 DefaillanceNegative 0 18 
+608 PalierThermique 1 3 18 
+609 PalierThermique 1 4 18 
+610 PalierThermique 1 5 18 
+611 DefaillancePositive 1 18 
+612 DefaillanceNegative 1 18 
+613 DefaillancePositive 2 18 
+614 DefaillanceNegative 2 18 
+615 PalierThermique 3 6 18 
+616 DefaillancePositive 3 18 
+617 DefaillanceNegative 3 18 
+618 DefaillancePositive 4 18 
+619 DefaillanceNegative 4 18 
+620 PalierThermique 5 7 18 
+621 DefaillancePositive 5 18 
+622 DefaillanceNegative 5 18 
+623 DefaillancePositive 6 18 
+624 DefaillanceNegative 6 18 
+625 DefaillancePositive 7 18 
+626 DefaillanceNegative 7 18 
+627 ValeurDeNTCOrigineVersExtremite 0 0 19 
+628 CoutOrigineVersExtremiteDeLInterconnexion 0 19 
+629 CoutExtremiteVersOrigineDeLInterconnexion 0 19 
+630 ValeurDeNTCOrigineVersExtremite 0 1 19 
+631 ValeurDeNTCOrigineVersExtremite 0 2 19 
+632 ValeurDeNTCOrigineVersExtremite 1 3 19 
+633 ValeurDeNTCOrigineVersExtremite 1 4 19 
+634 ValeurDeNTCOrigineVersExtremite 2 5 19 
+635 ValeurDeNTCOrigineVersExtremite 2 6 19 
+636 PalierThermique 0 0 19 
+637 PalierThermique 0 1 19 
+638 PalierThermique 0 2 19 
+639 DefaillancePositive 0 19 
+640 DefaillanceNegative 0 19 
+641 PalierThermique 1 3 19 
+642 PalierThermique 1 4 19 
+643 PalierThermique 1 5 19 
+644 DefaillancePositive 1 19 
+645 DefaillanceNegative 1 19 
+646 DefaillancePositive 2 19 
+647 DefaillanceNegative 2 19 
+648 PalierThermique 3 6 19 
+649 DefaillancePositive 3 19 
+650 DefaillanceNegative 3 19 
+651 DefaillancePositive 4 19 
+652 DefaillanceNegative 4 19 
+653 PalierThermique 5 7 19 
+654 DefaillancePositive 5 19 
+655 DefaillanceNegative 5 19 
+656 DefaillancePositive 6 19 
+657 DefaillanceNegative 6 19 
+658 DefaillancePositive 7 19 
+659 DefaillanceNegative 7 19 
+660 ValeurDeNTCOrigineVersExtremite 0 0 20 
+661 CoutOrigineVersExtremiteDeLInterconnexion 0 20 
+662 CoutExtremiteVersOrigineDeLInterconnexion 0 20 
+663 ValeurDeNTCOrigineVersExtremite 0 1 20 
+664 ValeurDeNTCOrigineVersExtremite 0 2 20 
+665 ValeurDeNTCOrigineVersExtremite 1 3 20 
+666 ValeurDeNTCOrigineVersExtremite 1 4 20 
+667 ValeurDeNTCOrigineVersExtremite 2 5 20 
+668 ValeurDeNTCOrigineVersExtremite 2 6 20 
+669 PalierThermique 0 0 20 
+670 PalierThermique 0 1 20 
+671 PalierThermique 0 2 20 
+672 DefaillancePositive 0 20 
+673 DefaillanceNegative 0 20 
+674 PalierThermique 1 3 20 
+675 PalierThermique 1 4 20 
+676 PalierThermique 1 5 20 
+677 DefaillancePositive 1 20 
+678 DefaillanceNegative 1 20 
+679 DefaillancePositive 2 20 
+680 DefaillanceNegative 2 20 
+681 PalierThermique 3 6 20 
+682 DefaillancePositive 3 20 
+683 DefaillanceNegative 3 20 
+684 DefaillancePositive 4 20 
+685 DefaillanceNegative 4 20 
+686 PalierThermique 5 7 20 
+687 DefaillancePositive 5 20 
+688 DefaillanceNegative 5 20 
+689 DefaillancePositive 6 20 
+690 DefaillanceNegative 6 20 
+691 DefaillancePositive 7 20 
+692 DefaillanceNegative 7 20 
+693 ValeurDeNTCOrigineVersExtremite 0 0 21 
+694 CoutOrigineVersExtremiteDeLInterconnexion 0 21 
+695 CoutExtremiteVersOrigineDeLInterconnexion 0 21 
+696 ValeurDeNTCOrigineVersExtremite 0 1 21 
+697 ValeurDeNTCOrigineVersExtremite 0 2 21 
+698 ValeurDeNTCOrigineVersExtremite 1 3 21 
+699 ValeurDeNTCOrigineVersExtremite 1 4 21 
+700 ValeurDeNTCOrigineVersExtremite 2 5 21 
+701 ValeurDeNTCOrigineVersExtremite 2 6 21 
+702 PalierThermique 0 0 21 
+703 PalierThermique 0 1 21 
+704 PalierThermique 0 2 21 
+705 DefaillancePositive 0 21 
+706 DefaillanceNegative 0 21 
+707 PalierThermique 1 3 21 
+708 PalierThermique 1 4 21 
+709 PalierThermique 1 5 21 
+710 DefaillancePositive 1 21 
+711 DefaillanceNegative 1 21 
+712 DefaillancePositive 2 21 
+713 DefaillanceNegative 2 21 
+714 PalierThermique 3 6 21 
+715 DefaillancePositive 3 21 
+716 DefaillanceNegative 3 21 
+717 DefaillancePositive 4 21 
+718 DefaillanceNegative 4 21 
+719 PalierThermique 5 7 21 
+720 DefaillancePositive 5 21 
+721 DefaillanceNegative 5 21 
+722 DefaillancePositive 6 21 
+723 DefaillanceNegative 6 21 
+724 DefaillancePositive 7 21 
+725 DefaillanceNegative 7 21 
+726 ValeurDeNTCOrigineVersExtremite 0 0 22 
+727 CoutOrigineVersExtremiteDeLInterconnexion 0 22 
+728 CoutExtremiteVersOrigineDeLInterconnexion 0 22 
+729 ValeurDeNTCOrigineVersExtremite 0 1 22 
+730 ValeurDeNTCOrigineVersExtremite 0 2 22 
+731 ValeurDeNTCOrigineVersExtremite 1 3 22 
+732 ValeurDeNTCOrigineVersExtremite 1 4 22 
+733 ValeurDeNTCOrigineVersExtremite 2 5 22 
+734 ValeurDeNTCOrigineVersExtremite 2 6 22 
+735 PalierThermique 0 0 22 
+736 PalierThermique 0 1 22 
+737 PalierThermique 0 2 22 
+738 DefaillancePositive 0 22 
+739 DefaillanceNegative 0 22 
+740 PalierThermique 1 3 22 
+741 PalierThermique 1 4 22 
+742 PalierThermique 1 5 22 
+743 DefaillancePositive 1 22 
+744 DefaillanceNegative 1 22 
+745 DefaillancePositive 2 22 
+746 DefaillanceNegative 2 22 
+747 PalierThermique 3 6 22 
+748 DefaillancePositive 3 22 
+749 DefaillanceNegative 3 22 
+750 DefaillancePositive 4 22 
+751 DefaillanceNegative 4 22 
+752 PalierThermique 5 7 22 
+753 DefaillancePositive 5 22 
+754 DefaillanceNegative 5 22 
+755 DefaillancePositive 6 22 
+756 DefaillanceNegative 6 22 
+757 DefaillancePositive 7 22 
+758 DefaillanceNegative 7 22 
+759 ValeurDeNTCOrigineVersExtremite 0 0 23 
+760 CoutOrigineVersExtremiteDeLInterconnexion 0 23 
+761 CoutExtremiteVersOrigineDeLInterconnexion 0 23 
+762 ValeurDeNTCOrigineVersExtremite 0 1 23 
+763 ValeurDeNTCOrigineVersExtremite 0 2 23 
+764 ValeurDeNTCOrigineVersExtremite 1 3 23 
+765 ValeurDeNTCOrigineVersExtremite 1 4 23 
+766 ValeurDeNTCOrigineVersExtremite 2 5 23 
+767 ValeurDeNTCOrigineVersExtremite 2 6 23 
+768 PalierThermique 0 0 23 
+769 PalierThermique 0 1 23 
+770 PalierThermique 0 2 23 
+771 DefaillancePositive 0 23 
+772 DefaillanceNegative 0 23 
+773 PalierThermique 1 3 23 
+774 PalierThermique 1 4 23 
+775 PalierThermique 1 5 23 
+776 DefaillancePositive 1 23 
+777 DefaillanceNegative 1 23 
+778 DefaillancePositive 2 23 
+779 DefaillanceNegative 2 23 
+780 PalierThermique 3 6 23 
+781 DefaillancePositive 3 23 
+782 DefaillanceNegative 3 23 
+783 DefaillancePositive 4 23 
+784 DefaillanceNegative 4 23 
+785 PalierThermique 5 7 23 
+786 DefaillancePositive 5 23 
+787 DefaillanceNegative 5 23 
+788 DefaillancePositive 6 23 
+789 DefaillanceNegative 6 23 
+790 DefaillancePositive 7 23 
+791 DefaillanceNegative 7 23 
+792 ValeurDeNTCOrigineVersExtremite 0 0 24 
+793 CoutOrigineVersExtremiteDeLInterconnexion 0 24 
+794 CoutExtremiteVersOrigineDeLInterconnexion 0 24 
+795 ValeurDeNTCOrigineVersExtremite 0 1 24 
+796 ValeurDeNTCOrigineVersExtremite 0 2 24 
+797 ValeurDeNTCOrigineVersExtremite 1 3 24 
+798 ValeurDeNTCOrigineVersExtremite 1 4 24 
+799 ValeurDeNTCOrigineVersExtremite 2 5 24 
+800 ValeurDeNTCOrigineVersExtremite 2 6 24 
+801 PalierThermique 0 0 24 
+802 PalierThermique 0 1 24 
+803 PalierThermique 0 2 24 
+804 DefaillancePositive 0 24 
+805 DefaillanceNegative 0 24 
+806 PalierThermique 1 3 24 
+807 PalierThermique 1 4 24 
+808 PalierThermique 1 5 24 
+809 DefaillancePositive 1 24 
+810 DefaillanceNegative 1 24 
+811 DefaillancePositive 2 24 
+812 DefaillanceNegative 2 24 
+813 PalierThermique 3 6 24 
+814 DefaillancePositive 3 24 
+815 DefaillanceNegative 3 24 
+816 DefaillancePositive 4 24 
+817 DefaillanceNegative 4 24 
+818 PalierThermique 5 7 24 
+819 DefaillancePositive 5 24 
+820 DefaillanceNegative 5 24 
+821 DefaillancePositive 6 24 
+822 DefaillanceNegative 6 24 
+823 DefaillancePositive 7 24 
+824 DefaillanceNegative 7 24 
+825 ValeurDeNTCOrigineVersExtremite 0 0 25 
+826 CoutOrigineVersExtremiteDeLInterconnexion 0 25 
+827 CoutExtremiteVersOrigineDeLInterconnexion 0 25 
+828 ValeurDeNTCOrigineVersExtremite 0 1 25 
+829 ValeurDeNTCOrigineVersExtremite 0 2 25 
+830 ValeurDeNTCOrigineVersExtremite 1 3 25 
+831 ValeurDeNTCOrigineVersExtremite 1 4 25 
+832 ValeurDeNTCOrigineVersExtremite 2 5 25 
+833 ValeurDeNTCOrigineVersExtremite 2 6 25 
+834 PalierThermique 0 0 25 
+835 PalierThermique 0 1 25 
+836 PalierThermique 0 2 25 
+837 DefaillancePositive 0 25 
+838 DefaillanceNegative 0 25 
+839 PalierThermique 1 3 25 
+840 PalierThermique 1 4 25 
+841 PalierThermique 1 5 25 
+842 DefaillancePositive 1 25 
+843 DefaillanceNegative 1 25 
+844 DefaillancePositive 2 25 
+845 DefaillanceNegative 2 25 
+846 PalierThermique 3 6 25 
+847 DefaillancePositive 3 25 
+848 DefaillanceNegative 3 25 
+849 DefaillancePositive 4 25 
+850 DefaillanceNegative 4 25 
+851 PalierThermique 5 7 25 
+852 DefaillancePositive 5 25 
+853 DefaillanceNegative 5 25 
+854 DefaillancePositive 6 25 
+855 DefaillanceNegative 6 25 
+856 DefaillancePositive 7 25 
+857 DefaillanceNegative 7 25 
+858 ValeurDeNTCOrigineVersExtremite 0 0 26 
+859 CoutOrigineVersExtremiteDeLInterconnexion 0 26 
+860 CoutExtremiteVersOrigineDeLInterconnexion 0 26 
+861 ValeurDeNTCOrigineVersExtremite 0 1 26 
+862 ValeurDeNTCOrigineVersExtremite 0 2 26 
+863 ValeurDeNTCOrigineVersExtremite 1 3 26 
+864 ValeurDeNTCOrigineVersExtremite 1 4 26 
+865 ValeurDeNTCOrigineVersExtremite 2 5 26 
+866 ValeurDeNTCOrigineVersExtremite 2 6 26 
+867 PalierThermique 0 0 26 
+868 PalierThermique 0 1 26 
+869 PalierThermique 0 2 26 
+870 DefaillancePositive 0 26 
+871 DefaillanceNegative 0 26 
+872 PalierThermique 1 3 26 
+873 PalierThermique 1 4 26 
+874 PalierThermique 1 5 26 
+875 DefaillancePositive 1 26 
+876 DefaillanceNegative 1 26 
+877 DefaillancePositive 2 26 
+878 DefaillanceNegative 2 26 
+879 PalierThermique 3 6 26 
+880 DefaillancePositive 3 26 
+881 DefaillanceNegative 3 26 
+882 DefaillancePositive 4 26 
+883 DefaillanceNegative 4 26 
+884 PalierThermique 5 7 26 
+885 DefaillancePositive 5 26 
+886 DefaillanceNegative 5 26 
+887 DefaillancePositive 6 26 
+888 DefaillanceNegative 6 26 
+889 DefaillancePositive 7 26 
+890 DefaillanceNegative 7 26 
+891 ValeurDeNTCOrigineVersExtremite 0 0 27 
+892 CoutOrigineVersExtremiteDeLInterconnexion 0 27 
+893 CoutExtremiteVersOrigineDeLInterconnexion 0 27 
+894 ValeurDeNTCOrigineVersExtremite 0 1 27 
+895 ValeurDeNTCOrigineVersExtremite 0 2 27 
+896 ValeurDeNTCOrigineVersExtremite 1 3 27 
+897 ValeurDeNTCOrigineVersExtremite 1 4 27 
+898 ValeurDeNTCOrigineVersExtremite 2 5 27 
+899 ValeurDeNTCOrigineVersExtremite 2 6 27 
+900 PalierThermique 0 0 27 
+901 PalierThermique 0 1 27 
+902 PalierThermique 0 2 27 
+903 DefaillancePositive 0 27 
+904 DefaillanceNegative 0 27 
+905 PalierThermique 1 3 27 
+906 PalierThermique 1 4 27 
+907 PalierThermique 1 5 27 
+908 DefaillancePositive 1 27 
+909 DefaillanceNegative 1 27 
+910 DefaillancePositive 2 27 
+911 DefaillanceNegative 2 27 
+912 PalierThermique 3 6 27 
+913 DefaillancePositive 3 27 
+914 DefaillanceNegative 3 27 
+915 DefaillancePositive 4 27 
+916 DefaillanceNegative 4 27 
+917 PalierThermique 5 7 27 
+918 DefaillancePositive 5 27 
+919 DefaillanceNegative 5 27 
+920 DefaillancePositive 6 27 
+921 DefaillanceNegative 6 27 
+922 DefaillancePositive 7 27 
+923 DefaillanceNegative 7 27 
+924 ValeurDeNTCOrigineVersExtremite 0 0 28 
+925 CoutOrigineVersExtremiteDeLInterconnexion 0 28 
+926 CoutExtremiteVersOrigineDeLInterconnexion 0 28 
+927 ValeurDeNTCOrigineVersExtremite 0 1 28 
+928 ValeurDeNTCOrigineVersExtremite 0 2 28 
+929 ValeurDeNTCOrigineVersExtremite 1 3 28 
+930 ValeurDeNTCOrigineVersExtremite 1 4 28 
+931 ValeurDeNTCOrigineVersExtremite 2 5 28 
+932 ValeurDeNTCOrigineVersExtremite 2 6 28 
+933 PalierThermique 0 0 28 
+934 PalierThermique 0 1 28 
+935 PalierThermique 0 2 28 
+936 DefaillancePositive 0 28 
+937 DefaillanceNegative 0 28 
+938 PalierThermique 1 3 28 
+939 PalierThermique 1 4 28 
+940 PalierThermique 1 5 28 
+941 DefaillancePositive 1 28 
+942 DefaillanceNegative 1 28 
+943 DefaillancePositive 2 28 
+944 DefaillanceNegative 2 28 
+945 PalierThermique 3 6 28 
+946 DefaillancePositive 3 28 
+947 DefaillanceNegative 3 28 
+948 DefaillancePositive 4 28 
+949 DefaillanceNegative 4 28 
+950 PalierThermique 5 7 28 
+951 DefaillancePositive 5 28 
+952 DefaillanceNegative 5 28 
+953 DefaillancePositive 6 28 
+954 DefaillanceNegative 6 28 
+955 DefaillancePositive 7 28 
+956 DefaillanceNegative 7 28 
+957 ValeurDeNTCOrigineVersExtremite 0 0 29 
+958 CoutOrigineVersExtremiteDeLInterconnexion 0 29 
+959 CoutExtremiteVersOrigineDeLInterconnexion 0 29 
+960 ValeurDeNTCOrigineVersExtremite 0 1 29 
+961 ValeurDeNTCOrigineVersExtremite 0 2 29 
+962 ValeurDeNTCOrigineVersExtremite 1 3 29 
+963 ValeurDeNTCOrigineVersExtremite 1 4 29 
+964 ValeurDeNTCOrigineVersExtremite 2 5 29 
+965 ValeurDeNTCOrigineVersExtremite 2 6 29 
+966 PalierThermique 0 0 29 
+967 PalierThermique 0 1 29 
+968 PalierThermique 0 2 29 
+969 DefaillancePositive 0 29 
+970 DefaillanceNegative 0 29 
+971 PalierThermique 1 3 29 
+972 PalierThermique 1 4 29 
+973 PalierThermique 1 5 29 
+974 DefaillancePositive 1 29 
+975 DefaillanceNegative 1 29 
+976 DefaillancePositive 2 29 
+977 DefaillanceNegative 2 29 
+978 PalierThermique 3 6 29 
+979 DefaillancePositive 3 29 
+980 DefaillanceNegative 3 29 
+981 DefaillancePositive 4 29 
+982 DefaillanceNegative 4 29 
+983 PalierThermique 5 7 29 
+984 DefaillancePositive 5 29 
+985 DefaillanceNegative 5 29 
+986 DefaillancePositive 6 29 
+987 DefaillanceNegative 6 29 
+988 DefaillancePositive 7 29 
+989 DefaillanceNegative 7 29 
+990 ValeurDeNTCOrigineVersExtremite 0 0 30 
+991 CoutOrigineVersExtremiteDeLInterconnexion 0 30 
+992 CoutExtremiteVersOrigineDeLInterconnexion 0 30 
+993 ValeurDeNTCOrigineVersExtremite 0 1 30 
+994 ValeurDeNTCOrigineVersExtremite 0 2 30 
+995 ValeurDeNTCOrigineVersExtremite 1 3 30 
+996 ValeurDeNTCOrigineVersExtremite 1 4 30 
+997 ValeurDeNTCOrigineVersExtremite 2 5 30 
+998 ValeurDeNTCOrigineVersExtremite 2 6 30 
+999 PalierThermique 0 0 30 
+1000 PalierThermique 0 1 30 
+1001 PalierThermique 0 2 30 
+1002 DefaillancePositive 0 30 
+1003 DefaillanceNegative 0 30 
+1004 PalierThermique 1 3 30 
+1005 PalierThermique 1 4 30 
+1006 PalierThermique 1 5 30 
+1007 DefaillancePositive 1 30 
+1008 DefaillanceNegative 1 30 
+1009 DefaillancePositive 2 30 
+1010 DefaillanceNegative 2 30 
+1011 PalierThermique 3 6 30 
+1012 DefaillancePositive 3 30 
+1013 DefaillanceNegative 3 30 
+1014 DefaillancePositive 4 30 
+1015 DefaillanceNegative 4 30 
+1016 PalierThermique 5 7 30 
+1017 DefaillancePositive 5 30 
+1018 DefaillanceNegative 5 30 
+1019 DefaillancePositive 6 30 
+1020 DefaillanceNegative 6 30 
+1021 DefaillancePositive 7 30 
+1022 DefaillanceNegative 7 30 
+1023 ValeurDeNTCOrigineVersExtremite 0 0 31 
+1024 CoutOrigineVersExtremiteDeLInterconnexion 0 31 
+1025 CoutExtremiteVersOrigineDeLInterconnexion 0 31 
+1026 ValeurDeNTCOrigineVersExtremite 0 1 31 
+1027 ValeurDeNTCOrigineVersExtremite 0 2 31 
+1028 ValeurDeNTCOrigineVersExtremite 1 3 31 
+1029 ValeurDeNTCOrigineVersExtremite 1 4 31 
+1030 ValeurDeNTCOrigineVersExtremite 2 5 31 
+1031 ValeurDeNTCOrigineVersExtremite 2 6 31 
+1032 PalierThermique 0 0 31 
+1033 PalierThermique 0 1 31 
+1034 PalierThermique 0 2 31 
+1035 DefaillancePositive 0 31 
+1036 DefaillanceNegative 0 31 
+1037 PalierThermique 1 3 31 
+1038 PalierThermique 1 4 31 
+1039 PalierThermique 1 5 31 
+1040 DefaillancePositive 1 31 
+1041 DefaillanceNegative 1 31 
+1042 DefaillancePositive 2 31 
+1043 DefaillanceNegative 2 31 
+1044 PalierThermique 3 6 31 
+1045 DefaillancePositive 3 31 
+1046 DefaillanceNegative 3 31 
+1047 DefaillancePositive 4 31 
+1048 DefaillanceNegative 4 31 
+1049 PalierThermique 5 7 31 
+1050 DefaillancePositive 5 31 
+1051 DefaillanceNegative 5 31 
+1052 DefaillancePositive 6 31 
+1053 DefaillanceNegative 6 31 
+1054 DefaillancePositive 7 31 
+1055 DefaillanceNegative 7 31 
+1056 ValeurDeNTCOrigineVersExtremite 0 0 32 
+1057 CoutOrigineVersExtremiteDeLInterconnexion 0 32 
+1058 CoutExtremiteVersOrigineDeLInterconnexion 0 32 
+1059 ValeurDeNTCOrigineVersExtremite 0 1 32 
+1060 ValeurDeNTCOrigineVersExtremite 0 2 32 
+1061 ValeurDeNTCOrigineVersExtremite 1 3 32 
+1062 ValeurDeNTCOrigineVersExtremite 1 4 32 
+1063 ValeurDeNTCOrigineVersExtremite 2 5 32 
+1064 ValeurDeNTCOrigineVersExtremite 2 6 32 
+1065 PalierThermique 0 0 32 
+1066 PalierThermique 0 1 32 
+1067 PalierThermique 0 2 32 
+1068 DefaillancePositive 0 32 
+1069 DefaillanceNegative 0 32 
+1070 PalierThermique 1 3 32 
+1071 PalierThermique 1 4 32 
+1072 PalierThermique 1 5 32 
+1073 DefaillancePositive 1 32 
+1074 DefaillanceNegative 1 32 
+1075 DefaillancePositive 2 32 
+1076 DefaillanceNegative 2 32 
+1077 PalierThermique 3 6 32 
+1078 DefaillancePositive 3 32 
+1079 DefaillanceNegative 3 32 
+1080 DefaillancePositive 4 32 
+1081 DefaillanceNegative 4 32 
+1082 PalierThermique 5 7 32 
+1083 DefaillancePositive 5 32 
+1084 DefaillanceNegative 5 32 
+1085 DefaillancePositive 6 32 
+1086 DefaillanceNegative 6 32 
+1087 DefaillancePositive 7 32 
+1088 DefaillanceNegative 7 32 
+1089 ValeurDeNTCOrigineVersExtremite 0 0 33 
+1090 CoutOrigineVersExtremiteDeLInterconnexion 0 33 
+1091 CoutExtremiteVersOrigineDeLInterconnexion 0 33 
+1092 ValeurDeNTCOrigineVersExtremite 0 1 33 
+1093 ValeurDeNTCOrigineVersExtremite 0 2 33 
+1094 ValeurDeNTCOrigineVersExtremite 1 3 33 
+1095 ValeurDeNTCOrigineVersExtremite 1 4 33 
+1096 ValeurDeNTCOrigineVersExtremite 2 5 33 
+1097 ValeurDeNTCOrigineVersExtremite 2 6 33 
+1098 PalierThermique 0 0 33 
+1099 PalierThermique 0 1 33 
+1100 PalierThermique 0 2 33 
+1101 DefaillancePositive 0 33 
+1102 DefaillanceNegative 0 33 
+1103 PalierThermique 1 3 33 
+1104 PalierThermique 1 4 33 
+1105 PalierThermique 1 5 33 
+1106 DefaillancePositive 1 33 
+1107 DefaillanceNegative 1 33 
+1108 DefaillancePositive 2 33 
+1109 DefaillanceNegative 2 33 
+1110 PalierThermique 3 6 33 
+1111 DefaillancePositive 3 33 
+1112 DefaillanceNegative 3 33 
+1113 DefaillancePositive 4 33 
+1114 DefaillanceNegative 4 33 
+1115 PalierThermique 5 7 33 
+1116 DefaillancePositive 5 33 
+1117 DefaillanceNegative 5 33 
+1118 DefaillancePositive 6 33 
+1119 DefaillanceNegative 6 33 
+1120 DefaillancePositive 7 33 
+1121 DefaillanceNegative 7 33 
+1122 ValeurDeNTCOrigineVersExtremite 0 0 34 
+1123 CoutOrigineVersExtremiteDeLInterconnexion 0 34 
+1124 CoutExtremiteVersOrigineDeLInterconnexion 0 34 
+1125 ValeurDeNTCOrigineVersExtremite 0 1 34 
+1126 ValeurDeNTCOrigineVersExtremite 0 2 34 
+1127 ValeurDeNTCOrigineVersExtremite 1 3 34 
+1128 ValeurDeNTCOrigineVersExtremite 1 4 34 
+1129 ValeurDeNTCOrigineVersExtremite 2 5 34 
+1130 ValeurDeNTCOrigineVersExtremite 2 6 34 
+1131 PalierThermique 0 0 34 
+1132 PalierThermique 0 1 34 
+1133 PalierThermique 0 2 34 
+1134 DefaillancePositive 0 34 
+1135 DefaillanceNegative 0 34 
+1136 PalierThermique 1 3 34 
+1137 PalierThermique 1 4 34 
+1138 PalierThermique 1 5 34 
+1139 DefaillancePositive 1 34 
+1140 DefaillanceNegative 1 34 
+1141 DefaillancePositive 2 34 
+1142 DefaillanceNegative 2 34 
+1143 PalierThermique 3 6 34 
+1144 DefaillancePositive 3 34 
+1145 DefaillanceNegative 3 34 
+1146 DefaillancePositive 4 34 
+1147 DefaillanceNegative 4 34 
+1148 PalierThermique 5 7 34 
+1149 DefaillancePositive 5 34 
+1150 DefaillanceNegative 5 34 
+1151 DefaillancePositive 6 34 
+1152 DefaillanceNegative 6 34 
+1153 DefaillancePositive 7 34 
+1154 DefaillanceNegative 7 34 
+1155 ValeurDeNTCOrigineVersExtremite 0 0 35 
+1156 CoutOrigineVersExtremiteDeLInterconnexion 0 35 
+1157 CoutExtremiteVersOrigineDeLInterconnexion 0 35 
+1158 ValeurDeNTCOrigineVersExtremite 0 1 35 
+1159 ValeurDeNTCOrigineVersExtremite 0 2 35 
+1160 ValeurDeNTCOrigineVersExtremite 1 3 35 
+1161 ValeurDeNTCOrigineVersExtremite 1 4 35 
+1162 ValeurDeNTCOrigineVersExtremite 2 5 35 
+1163 ValeurDeNTCOrigineVersExtremite 2 6 35 
+1164 PalierThermique 0 0 35 
+1165 PalierThermique 0 1 35 
+1166 PalierThermique 0 2 35 
+1167 DefaillancePositive 0 35 
+1168 DefaillanceNegative 0 35 
+1169 PalierThermique 1 3 35 
+1170 PalierThermique 1 4 35 
+1171 PalierThermique 1 5 35 
+1172 DefaillancePositive 1 35 
+1173 DefaillanceNegative 1 35 
+1174 DefaillancePositive 2 35 
+1175 DefaillanceNegative 2 35 
+1176 PalierThermique 3 6 35 
+1177 DefaillancePositive 3 35 
+1178 DefaillanceNegative 3 35 
+1179 DefaillancePositive 4 35 
+1180 DefaillanceNegative 4 35 
+1181 PalierThermique 5 7 35 
+1182 DefaillancePositive 5 35 
+1183 DefaillanceNegative 5 35 
+1184 DefaillancePositive 6 35 
+1185 DefaillanceNegative 6 35 
+1186 DefaillancePositive 7 35 
+1187 DefaillanceNegative 7 35 
+1188 ValeurDeNTCOrigineVersExtremite 0 0 36 
+1189 CoutOrigineVersExtremiteDeLInterconnexion 0 36 
+1190 CoutExtremiteVersOrigineDeLInterconnexion 0 36 
+1191 ValeurDeNTCOrigineVersExtremite 0 1 36 
+1192 ValeurDeNTCOrigineVersExtremite 0 2 36 
+1193 ValeurDeNTCOrigineVersExtremite 1 3 36 
+1194 ValeurDeNTCOrigineVersExtremite 1 4 36 
+1195 ValeurDeNTCOrigineVersExtremite 2 5 36 
+1196 ValeurDeNTCOrigineVersExtremite 2 6 36 
+1197 PalierThermique 0 0 36 
+1198 PalierThermique 0 1 36 
+1199 PalierThermique 0 2 36 
+1200 DefaillancePositive 0 36 
+1201 DefaillanceNegative 0 36 
+1202 PalierThermique 1 3 36 
+1203 PalierThermique 1 4 36 
+1204 PalierThermique 1 5 36 
+1205 DefaillancePositive 1 36 
+1206 DefaillanceNegative 1 36 
+1207 DefaillancePositive 2 36 
+1208 DefaillanceNegative 2 36 
+1209 PalierThermique 3 6 36 
+1210 DefaillancePositive 3 36 
+1211 DefaillanceNegative 3 36 
+1212 DefaillancePositive 4 36 
+1213 DefaillanceNegative 4 36 
+1214 PalierThermique 5 7 36 
+1215 DefaillancePositive 5 36 
+1216 DefaillanceNegative 5 36 
+1217 DefaillancePositive 6 36 
+1218 DefaillanceNegative 6 36 
+1219 DefaillancePositive 7 36 
+1220 DefaillanceNegative 7 36 
+1221 ValeurDeNTCOrigineVersExtremite 0 0 37 
+1222 CoutOrigineVersExtremiteDeLInterconnexion 0 37 
+1223 CoutExtremiteVersOrigineDeLInterconnexion 0 37 
+1224 ValeurDeNTCOrigineVersExtremite 0 1 37 
+1225 ValeurDeNTCOrigineVersExtremite 0 2 37 
+1226 ValeurDeNTCOrigineVersExtremite 1 3 37 
+1227 ValeurDeNTCOrigineVersExtremite 1 4 37 
+1228 ValeurDeNTCOrigineVersExtremite 2 5 37 
+1229 ValeurDeNTCOrigineVersExtremite 2 6 37 
+1230 PalierThermique 0 0 37 
+1231 PalierThermique 0 1 37 
+1232 PalierThermique 0 2 37 
+1233 DefaillancePositive 0 37 
+1234 DefaillanceNegative 0 37 
+1235 PalierThermique 1 3 37 
+1236 PalierThermique 1 4 37 
+1237 PalierThermique 1 5 37 
+1238 DefaillancePositive 1 37 
+1239 DefaillanceNegative 1 37 
+1240 DefaillancePositive 2 37 
+1241 DefaillanceNegative 2 37 
+1242 PalierThermique 3 6 37 
+1243 DefaillancePositive 3 37 
+1244 DefaillanceNegative 3 37 
+1245 DefaillancePositive 4 37 
+1246 DefaillanceNegative 4 37 
+1247 PalierThermique 5 7 37 
+1248 DefaillancePositive 5 37 
+1249 DefaillanceNegative 5 37 
+1250 DefaillancePositive 6 37 
+1251 DefaillanceNegative 6 37 
+1252 DefaillancePositive 7 37 
+1253 DefaillanceNegative 7 37 
+1254 ValeurDeNTCOrigineVersExtremite 0 0 38 
+1255 CoutOrigineVersExtremiteDeLInterconnexion 0 38 
+1256 CoutExtremiteVersOrigineDeLInterconnexion 0 38 
+1257 ValeurDeNTCOrigineVersExtremite 0 1 38 
+1258 ValeurDeNTCOrigineVersExtremite 0 2 38 
+1259 ValeurDeNTCOrigineVersExtremite 1 3 38 
+1260 ValeurDeNTCOrigineVersExtremite 1 4 38 
+1261 ValeurDeNTCOrigineVersExtremite 2 5 38 
+1262 ValeurDeNTCOrigineVersExtremite 2 6 38 
+1263 PalierThermique 0 0 38 
+1264 PalierThermique 0 1 38 
+1265 PalierThermique 0 2 38 
+1266 DefaillancePositive 0 38 
+1267 DefaillanceNegative 0 38 
+1268 PalierThermique 1 3 38 
+1269 PalierThermique 1 4 38 
+1270 PalierThermique 1 5 38 
+1271 DefaillancePositive 1 38 
+1272 DefaillanceNegative 1 38 
+1273 DefaillancePositive 2 38 
+1274 DefaillanceNegative 2 38 
+1275 PalierThermique 3 6 38 
+1276 DefaillancePositive 3 38 
+1277 DefaillanceNegative 3 38 
+1278 DefaillancePositive 4 38 
+1279 DefaillanceNegative 4 38 
+1280 PalierThermique 5 7 38 
+1281 DefaillancePositive 5 38 
+1282 DefaillanceNegative 5 38 
+1283 DefaillancePositive 6 38 
+1284 DefaillanceNegative 6 38 
+1285 DefaillancePositive 7 38 
+1286 DefaillanceNegative 7 38 
+1287 ValeurDeNTCOrigineVersExtremite 0 0 39 
+1288 CoutOrigineVersExtremiteDeLInterconnexion 0 39 
+1289 CoutExtremiteVersOrigineDeLInterconnexion 0 39 
+1290 ValeurDeNTCOrigineVersExtremite 0 1 39 
+1291 ValeurDeNTCOrigineVersExtremite 0 2 39 
+1292 ValeurDeNTCOrigineVersExtremite 1 3 39 
+1293 ValeurDeNTCOrigineVersExtremite 1 4 39 
+1294 ValeurDeNTCOrigineVersExtremite 2 5 39 
+1295 ValeurDeNTCOrigineVersExtremite 2 6 39 
+1296 PalierThermique 0 0 39 
+1297 PalierThermique 0 1 39 
+1298 PalierThermique 0 2 39 
+1299 DefaillancePositive 0 39 
+1300 DefaillanceNegative 0 39 
+1301 PalierThermique 1 3 39 
+1302 PalierThermique 1 4 39 
+1303 PalierThermique 1 5 39 
+1304 DefaillancePositive 1 39 
+1305 DefaillanceNegative 1 39 
+1306 DefaillancePositive 2 39 
+1307 DefaillanceNegative 2 39 
+1308 PalierThermique 3 6 39 
+1309 DefaillancePositive 3 39 
+1310 DefaillanceNegative 3 39 
+1311 DefaillancePositive 4 39 
+1312 DefaillanceNegative 4 39 
+1313 PalierThermique 5 7 39 
+1314 DefaillancePositive 5 39 
+1315 DefaillanceNegative 5 39 
+1316 DefaillancePositive 6 39 
+1317 DefaillanceNegative 6 39 
+1318 DefaillancePositive 7 39 
+1319 DefaillanceNegative 7 39 
+1320 ValeurDeNTCOrigineVersExtremite 0 0 40 
+1321 CoutOrigineVersExtremiteDeLInterconnexion 0 40 
+1322 CoutExtremiteVersOrigineDeLInterconnexion 0 40 
+1323 ValeurDeNTCOrigineVersExtremite 0 1 40 
+1324 ValeurDeNTCOrigineVersExtremite 0 2 40 
+1325 ValeurDeNTCOrigineVersExtremite 1 3 40 
+1326 ValeurDeNTCOrigineVersExtremite 1 4 40 
+1327 ValeurDeNTCOrigineVersExtremite 2 5 40 
+1328 ValeurDeNTCOrigineVersExtremite 2 6 40 
+1329 PalierThermique 0 0 40 
+1330 PalierThermique 0 1 40 
+1331 PalierThermique 0 2 40 
+1332 DefaillancePositive 0 40 
+1333 DefaillanceNegative 0 40 
+1334 PalierThermique 1 3 40 
+1335 PalierThermique 1 4 40 
+1336 PalierThermique 1 5 40 
+1337 DefaillancePositive 1 40 
+1338 DefaillanceNegative 1 40 
+1339 DefaillancePositive 2 40 
+1340 DefaillanceNegative 2 40 
+1341 PalierThermique 3 6 40 
+1342 DefaillancePositive 3 40 
+1343 DefaillanceNegative 3 40 
+1344 DefaillancePositive 4 40 
+1345 DefaillanceNegative 4 40 
+1346 PalierThermique 5 7 40 
+1347 DefaillancePositive 5 40 
+1348 DefaillanceNegative 5 40 
+1349 DefaillancePositive 6 40 
+1350 DefaillanceNegative 6 40 
+1351 DefaillancePositive 7 40 
+1352 DefaillanceNegative 7 40 
+1353 ValeurDeNTCOrigineVersExtremite 0 0 41 
+1354 CoutOrigineVersExtremiteDeLInterconnexion 0 41 
+1355 CoutExtremiteVersOrigineDeLInterconnexion 0 41 
+1356 ValeurDeNTCOrigineVersExtremite 0 1 41 
+1357 ValeurDeNTCOrigineVersExtremite 0 2 41 
+1358 ValeurDeNTCOrigineVersExtremite 1 3 41 
+1359 ValeurDeNTCOrigineVersExtremite 1 4 41 
+1360 ValeurDeNTCOrigineVersExtremite 2 5 41 
+1361 ValeurDeNTCOrigineVersExtremite 2 6 41 
+1362 PalierThermique 0 0 41 
+1363 PalierThermique 0 1 41 
+1364 PalierThermique 0 2 41 
+1365 DefaillancePositive 0 41 
+1366 DefaillanceNegative 0 41 
+1367 PalierThermique 1 3 41 
+1368 PalierThermique 1 4 41 
+1369 PalierThermique 1 5 41 
+1370 DefaillancePositive 1 41 
+1371 DefaillanceNegative 1 41 
+1372 DefaillancePositive 2 41 
+1373 DefaillanceNegative 2 41 
+1374 PalierThermique 3 6 41 
+1375 DefaillancePositive 3 41 
+1376 DefaillanceNegative 3 41 
+1377 DefaillancePositive 4 41 
+1378 DefaillanceNegative 4 41 
+1379 PalierThermique 5 7 41 
+1380 DefaillancePositive 5 41 
+1381 DefaillanceNegative 5 41 
+1382 DefaillancePositive 6 41 
+1383 DefaillanceNegative 6 41 
+1384 DefaillancePositive 7 41 
+1385 DefaillanceNegative 7 41 
+1386 ValeurDeNTCOrigineVersExtremite 0 0 42 
+1387 CoutOrigineVersExtremiteDeLInterconnexion 0 42 
+1388 CoutExtremiteVersOrigineDeLInterconnexion 0 42 
+1389 ValeurDeNTCOrigineVersExtremite 0 1 42 
+1390 ValeurDeNTCOrigineVersExtremite 0 2 42 
+1391 ValeurDeNTCOrigineVersExtremite 1 3 42 
+1392 ValeurDeNTCOrigineVersExtremite 1 4 42 
+1393 ValeurDeNTCOrigineVersExtremite 2 5 42 
+1394 ValeurDeNTCOrigineVersExtremite 2 6 42 
+1395 PalierThermique 0 0 42 
+1396 PalierThermique 0 1 42 
+1397 PalierThermique 0 2 42 
+1398 DefaillancePositive 0 42 
+1399 DefaillanceNegative 0 42 
+1400 PalierThermique 1 3 42 
+1401 PalierThermique 1 4 42 
+1402 PalierThermique 1 5 42 
+1403 DefaillancePositive 1 42 
+1404 DefaillanceNegative 1 42 
+1405 DefaillancePositive 2 42 
+1406 DefaillanceNegative 2 42 
+1407 PalierThermique 3 6 42 
+1408 DefaillancePositive 3 42 
+1409 DefaillanceNegative 3 42 
+1410 DefaillancePositive 4 42 
+1411 DefaillanceNegative 4 42 
+1412 PalierThermique 5 7 42 
+1413 DefaillancePositive 5 42 
+1414 DefaillanceNegative 5 42 
+1415 DefaillancePositive 6 42 
+1416 DefaillanceNegative 6 42 
+1417 DefaillancePositive 7 42 
+1418 DefaillanceNegative 7 42 
+1419 ValeurDeNTCOrigineVersExtremite 0 0 43 
+1420 CoutOrigineVersExtremiteDeLInterconnexion 0 43 
+1421 CoutExtremiteVersOrigineDeLInterconnexion 0 43 
+1422 ValeurDeNTCOrigineVersExtremite 0 1 43 
+1423 ValeurDeNTCOrigineVersExtremite 0 2 43 
+1424 ValeurDeNTCOrigineVersExtremite 1 3 43 
+1425 ValeurDeNTCOrigineVersExtremite 1 4 43 
+1426 ValeurDeNTCOrigineVersExtremite 2 5 43 
+1427 ValeurDeNTCOrigineVersExtremite 2 6 43 
+1428 PalierThermique 0 0 43 
+1429 PalierThermique 0 1 43 
+1430 PalierThermique 0 2 43 
+1431 DefaillancePositive 0 43 
+1432 DefaillanceNegative 0 43 
+1433 PalierThermique 1 3 43 
+1434 PalierThermique 1 4 43 
+1435 PalierThermique 1 5 43 
+1436 DefaillancePositive 1 43 
+1437 DefaillanceNegative 1 43 
+1438 DefaillancePositive 2 43 
+1439 DefaillanceNegative 2 43 
+1440 PalierThermique 3 6 43 
+1441 DefaillancePositive 3 43 
+1442 DefaillanceNegative 3 43 
+1443 DefaillancePositive 4 43 
+1444 DefaillanceNegative 4 43 
+1445 PalierThermique 5 7 43 
+1446 DefaillancePositive 5 43 
+1447 DefaillanceNegative 5 43 
+1448 DefaillancePositive 6 43 
+1449 DefaillanceNegative 6 43 
+1450 DefaillancePositive 7 43 
+1451 DefaillanceNegative 7 43 
+1452 ValeurDeNTCOrigineVersExtremite 0 0 44 
+1453 CoutOrigineVersExtremiteDeLInterconnexion 0 44 
+1454 CoutExtremiteVersOrigineDeLInterconnexion 0 44 
+1455 ValeurDeNTCOrigineVersExtremite 0 1 44 
+1456 ValeurDeNTCOrigineVersExtremite 0 2 44 
+1457 ValeurDeNTCOrigineVersExtremite 1 3 44 
+1458 ValeurDeNTCOrigineVersExtremite 1 4 44 
+1459 ValeurDeNTCOrigineVersExtremite 2 5 44 
+1460 ValeurDeNTCOrigineVersExtremite 2 6 44 
+1461 PalierThermique 0 0 44 
+1462 PalierThermique 0 1 44 
+1463 PalierThermique 0 2 44 
+1464 DefaillancePositive 0 44 
+1465 DefaillanceNegative 0 44 
+1466 PalierThermique 1 3 44 
+1467 PalierThermique 1 4 44 
+1468 PalierThermique 1 5 44 
+1469 DefaillancePositive 1 44 
+1470 DefaillanceNegative 1 44 
+1471 DefaillancePositive 2 44 
+1472 DefaillanceNegative 2 44 
+1473 PalierThermique 3 6 44 
+1474 DefaillancePositive 3 44 
+1475 DefaillanceNegative 3 44 
+1476 DefaillancePositive 4 44 
+1477 DefaillanceNegative 4 44 
+1478 PalierThermique 5 7 44 
+1479 DefaillancePositive 5 44 
+1480 DefaillanceNegative 5 44 
+1481 DefaillancePositive 6 44 
+1482 DefaillanceNegative 6 44 
+1483 DefaillancePositive 7 44 
+1484 DefaillanceNegative 7 44 
+1485 ValeurDeNTCOrigineVersExtremite 0 0 45 
+1486 CoutOrigineVersExtremiteDeLInterconnexion 0 45 
+1487 CoutExtremiteVersOrigineDeLInterconnexion 0 45 
+1488 ValeurDeNTCOrigineVersExtremite 0 1 45 
+1489 ValeurDeNTCOrigineVersExtremite 0 2 45 
+1490 ValeurDeNTCOrigineVersExtremite 1 3 45 
+1491 ValeurDeNTCOrigineVersExtremite 1 4 45 
+1492 ValeurDeNTCOrigineVersExtremite 2 5 45 
+1493 ValeurDeNTCOrigineVersExtremite 2 6 45 
+1494 PalierThermique 0 0 45 
+1495 PalierThermique 0 1 45 
+1496 PalierThermique 0 2 45 
+1497 DefaillancePositive 0 45 
+1498 DefaillanceNegative 0 45 
+1499 PalierThermique 1 3 45 
+1500 PalierThermique 1 4 45 
+1501 PalierThermique 1 5 45 
+1502 DefaillancePositive 1 45 
+1503 DefaillanceNegative 1 45 
+1504 DefaillancePositive 2 45 
+1505 DefaillanceNegative 2 45 
+1506 PalierThermique 3 6 45 
+1507 DefaillancePositive 3 45 
+1508 DefaillanceNegative 3 45 
+1509 DefaillancePositive 4 45 
+1510 DefaillanceNegative 4 45 
+1511 PalierThermique 5 7 45 
+1512 DefaillancePositive 5 45 
+1513 DefaillanceNegative 5 45 
+1514 DefaillancePositive 6 45 
+1515 DefaillanceNegative 6 45 
+1516 DefaillancePositive 7 45 
+1517 DefaillanceNegative 7 45 
+1518 ValeurDeNTCOrigineVersExtremite 0 0 46 
+1519 CoutOrigineVersExtremiteDeLInterconnexion 0 46 
+1520 CoutExtremiteVersOrigineDeLInterconnexion 0 46 
+1521 ValeurDeNTCOrigineVersExtremite 0 1 46 
+1522 ValeurDeNTCOrigineVersExtremite 0 2 46 
+1523 ValeurDeNTCOrigineVersExtremite 1 3 46 
+1524 ValeurDeNTCOrigineVersExtremite 1 4 46 
+1525 ValeurDeNTCOrigineVersExtremite 2 5 46 
+1526 ValeurDeNTCOrigineVersExtremite 2 6 46 
+1527 PalierThermique 0 0 46 
+1528 PalierThermique 0 1 46 
+1529 PalierThermique 0 2 46 
+1530 DefaillancePositive 0 46 
+1531 DefaillanceNegative 0 46 
+1532 PalierThermique 1 3 46 
+1533 PalierThermique 1 4 46 
+1534 PalierThermique 1 5 46 
+1535 DefaillancePositive 1 46 
+1536 DefaillanceNegative 1 46 
+1537 DefaillancePositive 2 46 
+1538 DefaillanceNegative 2 46 
+1539 PalierThermique 3 6 46 
+1540 DefaillancePositive 3 46 
+1541 DefaillanceNegative 3 46 
+1542 DefaillancePositive 4 46 
+1543 DefaillanceNegative 4 46 
+1544 PalierThermique 5 7 46 
+1545 DefaillancePositive 5 46 
+1546 DefaillanceNegative 5 46 
+1547 DefaillancePositive 6 46 
+1548 DefaillanceNegative 6 46 
+1549 DefaillancePositive 7 46 
+1550 DefaillanceNegative 7 46 
+1551 ValeurDeNTCOrigineVersExtremite 0 0 47 
+1552 CoutOrigineVersExtremiteDeLInterconnexion 0 47 
+1553 CoutExtremiteVersOrigineDeLInterconnexion 0 47 
+1554 ValeurDeNTCOrigineVersExtremite 0 1 47 
+1555 ValeurDeNTCOrigineVersExtremite 0 2 47 
+1556 ValeurDeNTCOrigineVersExtremite 1 3 47 
+1557 ValeurDeNTCOrigineVersExtremite 1 4 47 
+1558 ValeurDeNTCOrigineVersExtremite 2 5 47 
+1559 ValeurDeNTCOrigineVersExtremite 2 6 47 
+1560 PalierThermique 0 0 47 
+1561 PalierThermique 0 1 47 
+1562 PalierThermique 0 2 47 
+1563 DefaillancePositive 0 47 
+1564 DefaillanceNegative 0 47 
+1565 PalierThermique 1 3 47 
+1566 PalierThermique 1 4 47 
+1567 PalierThermique 1 5 47 
+1568 DefaillancePositive 1 47 
+1569 DefaillanceNegative 1 47 
+1570 DefaillancePositive 2 47 
+1571 DefaillanceNegative 2 47 
+1572 PalierThermique 3 6 47 
+1573 DefaillancePositive 3 47 
+1574 DefaillanceNegative 3 47 
+1575 DefaillancePositive 4 47 
+1576 DefaillanceNegative 4 47 
+1577 PalierThermique 5 7 47 
+1578 DefaillancePositive 5 47 
+1579 DefaillanceNegative 5 47 
+1580 DefaillancePositive 6 47 
+1581 DefaillanceNegative 6 47 
+1582 DefaillancePositive 7 47 
+1583 DefaillanceNegative 7 47 
+1584 ValeurDeNTCOrigineVersExtremite 0 0 48 
+1585 CoutOrigineVersExtremiteDeLInterconnexion 0 48 
+1586 CoutExtremiteVersOrigineDeLInterconnexion 0 48 
+1587 ValeurDeNTCOrigineVersExtremite 0 1 48 
+1588 ValeurDeNTCOrigineVersExtremite 0 2 48 
+1589 ValeurDeNTCOrigineVersExtremite 1 3 48 
+1590 ValeurDeNTCOrigineVersExtremite 1 4 48 
+1591 ValeurDeNTCOrigineVersExtremite 2 5 48 
+1592 ValeurDeNTCOrigineVersExtremite 2 6 48 
+1593 PalierThermique 0 0 48 
+1594 PalierThermique 0 1 48 
+1595 PalierThermique 0 2 48 
+1596 DefaillancePositive 0 48 
+1597 DefaillanceNegative 0 48 
+1598 PalierThermique 1 3 48 
+1599 PalierThermique 1 4 48 
+1600 PalierThermique 1 5 48 
+1601 DefaillancePositive 1 48 
+1602 DefaillanceNegative 1 48 
+1603 DefaillancePositive 2 48 
+1604 DefaillanceNegative 2 48 
+1605 PalierThermique 3 6 48 
+1606 DefaillancePositive 3 48 
+1607 DefaillanceNegative 3 48 
+1608 DefaillancePositive 4 48 
+1609 DefaillanceNegative 4 48 
+1610 PalierThermique 5 7 48 
+1611 DefaillancePositive 5 48 
+1612 DefaillanceNegative 5 48 
+1613 DefaillancePositive 6 48 
+1614 DefaillanceNegative 6 48 
+1615 DefaillancePositive 7 48 
+1616 DefaillanceNegative 7 48 
+1617 ValeurDeNTCOrigineVersExtremite 0 0 49 
+1618 CoutOrigineVersExtremiteDeLInterconnexion 0 49 
+1619 CoutExtremiteVersOrigineDeLInterconnexion 0 49 
+1620 ValeurDeNTCOrigineVersExtremite 0 1 49 
+1621 ValeurDeNTCOrigineVersExtremite 0 2 49 
+1622 ValeurDeNTCOrigineVersExtremite 1 3 49 
+1623 ValeurDeNTCOrigineVersExtremite 1 4 49 
+1624 ValeurDeNTCOrigineVersExtremite 2 5 49 
+1625 ValeurDeNTCOrigineVersExtremite 2 6 49 
+1626 PalierThermique 0 0 49 
+1627 PalierThermique 0 1 49 
+1628 PalierThermique 0 2 49 
+1629 DefaillancePositive 0 49 
+1630 DefaillanceNegative 0 49 
+1631 PalierThermique 1 3 49 
+1632 PalierThermique 1 4 49 
+1633 PalierThermique 1 5 49 
+1634 DefaillancePositive 1 49 
+1635 DefaillanceNegative 1 49 
+1636 DefaillancePositive 2 49 
+1637 DefaillanceNegative 2 49 
+1638 PalierThermique 3 6 49 
+1639 DefaillancePositive 3 49 
+1640 DefaillanceNegative 3 49 
+1641 DefaillancePositive 4 49 
+1642 DefaillanceNegative 4 49 
+1643 PalierThermique 5 7 49 
+1644 DefaillancePositive 5 49 
+1645 DefaillanceNegative 5 49 
+1646 DefaillancePositive 6 49 
+1647 DefaillanceNegative 6 49 
+1648 DefaillancePositive 7 49 
+1649 DefaillanceNegative 7 49 
+1650 ValeurDeNTCOrigineVersExtremite 0 0 50 
+1651 CoutOrigineVersExtremiteDeLInterconnexion 0 50 
+1652 CoutExtremiteVersOrigineDeLInterconnexion 0 50 
+1653 ValeurDeNTCOrigineVersExtremite 0 1 50 
+1654 ValeurDeNTCOrigineVersExtremite 0 2 50 
+1655 ValeurDeNTCOrigineVersExtremite 1 3 50 
+1656 ValeurDeNTCOrigineVersExtremite 1 4 50 
+1657 ValeurDeNTCOrigineVersExtremite 2 5 50 
+1658 ValeurDeNTCOrigineVersExtremite 2 6 50 
+1659 PalierThermique 0 0 50 
+1660 PalierThermique 0 1 50 
+1661 PalierThermique 0 2 50 
+1662 DefaillancePositive 0 50 
+1663 DefaillanceNegative 0 50 
+1664 PalierThermique 1 3 50 
+1665 PalierThermique 1 4 50 
+1666 PalierThermique 1 5 50 
+1667 DefaillancePositive 1 50 
+1668 DefaillanceNegative 1 50 
+1669 DefaillancePositive 2 50 
+1670 DefaillanceNegative 2 50 
+1671 PalierThermique 3 6 50 
+1672 DefaillancePositive 3 50 
+1673 DefaillanceNegative 3 50 
+1674 DefaillancePositive 4 50 
+1675 DefaillanceNegative 4 50 
+1676 PalierThermique 5 7 50 
+1677 DefaillancePositive 5 50 
+1678 DefaillanceNegative 5 50 
+1679 DefaillancePositive 6 50 
+1680 DefaillanceNegative 6 50 
+1681 DefaillancePositive 7 50 
+1682 DefaillanceNegative 7 50 
+1683 ValeurDeNTCOrigineVersExtremite 0 0 51 
+1684 CoutOrigineVersExtremiteDeLInterconnexion 0 51 
+1685 CoutExtremiteVersOrigineDeLInterconnexion 0 51 
+1686 ValeurDeNTCOrigineVersExtremite 0 1 51 
+1687 ValeurDeNTCOrigineVersExtremite 0 2 51 
+1688 ValeurDeNTCOrigineVersExtremite 1 3 51 
+1689 ValeurDeNTCOrigineVersExtremite 1 4 51 
+1690 ValeurDeNTCOrigineVersExtremite 2 5 51 
+1691 ValeurDeNTCOrigineVersExtremite 2 6 51 
+1692 PalierThermique 0 0 51 
+1693 PalierThermique 0 1 51 
+1694 PalierThermique 0 2 51 
+1695 DefaillancePositive 0 51 
+1696 DefaillanceNegative 0 51 
+1697 PalierThermique 1 3 51 
+1698 PalierThermique 1 4 51 
+1699 PalierThermique 1 5 51 
+1700 DefaillancePositive 1 51 
+1701 DefaillanceNegative 1 51 
+1702 DefaillancePositive 2 51 
+1703 DefaillanceNegative 2 51 
+1704 PalierThermique 3 6 51 
+1705 DefaillancePositive 3 51 
+1706 DefaillanceNegative 3 51 
+1707 DefaillancePositive 4 51 
+1708 DefaillanceNegative 4 51 
+1709 PalierThermique 5 7 51 
+1710 DefaillancePositive 5 51 
+1711 DefaillanceNegative 5 51 
+1712 DefaillancePositive 6 51 
+1713 DefaillanceNegative 6 51 
+1714 DefaillancePositive 7 51 
+1715 DefaillanceNegative 7 51 
+1716 ValeurDeNTCOrigineVersExtremite 0 0 52 
+1717 CoutOrigineVersExtremiteDeLInterconnexion 0 52 
+1718 CoutExtremiteVersOrigineDeLInterconnexion 0 52 
+1719 ValeurDeNTCOrigineVersExtremite 0 1 52 
+1720 ValeurDeNTCOrigineVersExtremite 0 2 52 
+1721 ValeurDeNTCOrigineVersExtremite 1 3 52 
+1722 ValeurDeNTCOrigineVersExtremite 1 4 52 
+1723 ValeurDeNTCOrigineVersExtremite 2 5 52 
+1724 ValeurDeNTCOrigineVersExtremite 2 6 52 
+1725 PalierThermique 0 0 52 
+1726 PalierThermique 0 1 52 
+1727 PalierThermique 0 2 52 
+1728 DefaillancePositive 0 52 
+1729 DefaillanceNegative 0 52 
+1730 PalierThermique 1 3 52 
+1731 PalierThermique 1 4 52 
+1732 PalierThermique 1 5 52 
+1733 DefaillancePositive 1 52 
+1734 DefaillanceNegative 1 52 
+1735 DefaillancePositive 2 52 
+1736 DefaillanceNegative 2 52 
+1737 PalierThermique 3 6 52 
+1738 DefaillancePositive 3 52 
+1739 DefaillanceNegative 3 52 
+1740 DefaillancePositive 4 52 
+1741 DefaillanceNegative 4 52 
+1742 PalierThermique 5 7 52 
+1743 DefaillancePositive 5 52 
+1744 DefaillanceNegative 5 52 
+1745 DefaillancePositive 6 52 
+1746 DefaillanceNegative 6 52 
+1747 DefaillancePositive 7 52 
+1748 DefaillanceNegative 7 52 
+1749 ValeurDeNTCOrigineVersExtremite 0 0 53 
+1750 CoutOrigineVersExtremiteDeLInterconnexion 0 53 
+1751 CoutExtremiteVersOrigineDeLInterconnexion 0 53 
+1752 ValeurDeNTCOrigineVersExtremite 0 1 53 
+1753 ValeurDeNTCOrigineVersExtremite 0 2 53 
+1754 ValeurDeNTCOrigineVersExtremite 1 3 53 
+1755 ValeurDeNTCOrigineVersExtremite 1 4 53 
+1756 ValeurDeNTCOrigineVersExtremite 2 5 53 
+1757 ValeurDeNTCOrigineVersExtremite 2 6 53 
+1758 PalierThermique 0 0 53 
+1759 PalierThermique 0 1 53 
+1760 PalierThermique 0 2 53 
+1761 DefaillancePositive 0 53 
+1762 DefaillanceNegative 0 53 
+1763 PalierThermique 1 3 53 
+1764 PalierThermique 1 4 53 
+1765 PalierThermique 1 5 53 
+1766 DefaillancePositive 1 53 
+1767 DefaillanceNegative 1 53 
+1768 DefaillancePositive 2 53 
+1769 DefaillanceNegative 2 53 
+1770 PalierThermique 3 6 53 
+1771 DefaillancePositive 3 53 
+1772 DefaillanceNegative 3 53 
+1773 DefaillancePositive 4 53 
+1774 DefaillanceNegative 4 53 
+1775 PalierThermique 5 7 53 
+1776 DefaillancePositive 5 53 
+1777 DefaillanceNegative 5 53 
+1778 DefaillancePositive 6 53 
+1779 DefaillanceNegative 6 53 
+1780 DefaillancePositive 7 53 
+1781 DefaillanceNegative 7 53 
+1782 ValeurDeNTCOrigineVersExtremite 0 0 54 
+1783 CoutOrigineVersExtremiteDeLInterconnexion 0 54 
+1784 CoutExtremiteVersOrigineDeLInterconnexion 0 54 
+1785 ValeurDeNTCOrigineVersExtremite 0 1 54 
+1786 ValeurDeNTCOrigineVersExtremite 0 2 54 
+1787 ValeurDeNTCOrigineVersExtremite 1 3 54 
+1788 ValeurDeNTCOrigineVersExtremite 1 4 54 
+1789 ValeurDeNTCOrigineVersExtremite 2 5 54 
+1790 ValeurDeNTCOrigineVersExtremite 2 6 54 
+1791 PalierThermique 0 0 54 
+1792 PalierThermique 0 1 54 
+1793 PalierThermique 0 2 54 
+1794 DefaillancePositive 0 54 
+1795 DefaillanceNegative 0 54 
+1796 PalierThermique 1 3 54 
+1797 PalierThermique 1 4 54 
+1798 PalierThermique 1 5 54 
+1799 DefaillancePositive 1 54 
+1800 DefaillanceNegative 1 54 
+1801 DefaillancePositive 2 54 
+1802 DefaillanceNegative 2 54 
+1803 PalierThermique 3 6 54 
+1804 DefaillancePositive 3 54 
+1805 DefaillanceNegative 3 54 
+1806 DefaillancePositive 4 54 
+1807 DefaillanceNegative 4 54 
+1808 PalierThermique 5 7 54 
+1809 DefaillancePositive 5 54 
+1810 DefaillanceNegative 5 54 
+1811 DefaillancePositive 6 54 
+1812 DefaillanceNegative 6 54 
+1813 DefaillancePositive 7 54 
+1814 DefaillanceNegative 7 54 
+1815 ValeurDeNTCOrigineVersExtremite 0 0 55 
+1816 CoutOrigineVersExtremiteDeLInterconnexion 0 55 
+1817 CoutExtremiteVersOrigineDeLInterconnexion 0 55 
+1818 ValeurDeNTCOrigineVersExtremite 0 1 55 
+1819 ValeurDeNTCOrigineVersExtremite 0 2 55 
+1820 ValeurDeNTCOrigineVersExtremite 1 3 55 
+1821 ValeurDeNTCOrigineVersExtremite 1 4 55 
+1822 ValeurDeNTCOrigineVersExtremite 2 5 55 
+1823 ValeurDeNTCOrigineVersExtremite 2 6 55 
+1824 PalierThermique 0 0 55 
+1825 PalierThermique 0 1 55 
+1826 PalierThermique 0 2 55 
+1827 DefaillancePositive 0 55 
+1828 DefaillanceNegative 0 55 
+1829 PalierThermique 1 3 55 
+1830 PalierThermique 1 4 55 
+1831 PalierThermique 1 5 55 
+1832 DefaillancePositive 1 55 
+1833 DefaillanceNegative 1 55 
+1834 DefaillancePositive 2 55 
+1835 DefaillanceNegative 2 55 
+1836 PalierThermique 3 6 55 
+1837 DefaillancePositive 3 55 
+1838 DefaillanceNegative 3 55 
+1839 DefaillancePositive 4 55 
+1840 DefaillanceNegative 4 55 
+1841 PalierThermique 5 7 55 
+1842 DefaillancePositive 5 55 
+1843 DefaillanceNegative 5 55 
+1844 DefaillancePositive 6 55 
+1845 DefaillanceNegative 6 55 
+1846 DefaillancePositive 7 55 
+1847 DefaillanceNegative 7 55 
+1848 ValeurDeNTCOrigineVersExtremite 0 0 56 
+1849 CoutOrigineVersExtremiteDeLInterconnexion 0 56 
+1850 CoutExtremiteVersOrigineDeLInterconnexion 0 56 
+1851 ValeurDeNTCOrigineVersExtremite 0 1 56 
+1852 ValeurDeNTCOrigineVersExtremite 0 2 56 
+1853 ValeurDeNTCOrigineVersExtremite 1 3 56 
+1854 ValeurDeNTCOrigineVersExtremite 1 4 56 
+1855 ValeurDeNTCOrigineVersExtremite 2 5 56 
+1856 ValeurDeNTCOrigineVersExtremite 2 6 56 
+1857 PalierThermique 0 0 56 
+1858 PalierThermique 0 1 56 
+1859 PalierThermique 0 2 56 
+1860 DefaillancePositive 0 56 
+1861 DefaillanceNegative 0 56 
+1862 PalierThermique 1 3 56 
+1863 PalierThermique 1 4 56 
+1864 PalierThermique 1 5 56 
+1865 DefaillancePositive 1 56 
+1866 DefaillanceNegative 1 56 
+1867 DefaillancePositive 2 56 
+1868 DefaillanceNegative 2 56 
+1869 PalierThermique 3 6 56 
+1870 DefaillancePositive 3 56 
+1871 DefaillanceNegative 3 56 
+1872 DefaillancePositive 4 56 
+1873 DefaillanceNegative 4 56 
+1874 PalierThermique 5 7 56 
+1875 DefaillancePositive 5 56 
+1876 DefaillanceNegative 5 56 
+1877 DefaillancePositive 6 56 
+1878 DefaillanceNegative 6 56 
+1879 DefaillancePositive 7 56 
+1880 DefaillanceNegative 7 56 
+1881 ValeurDeNTCOrigineVersExtremite 0 0 57 
+1882 CoutOrigineVersExtremiteDeLInterconnexion 0 57 
+1883 CoutExtremiteVersOrigineDeLInterconnexion 0 57 
+1884 ValeurDeNTCOrigineVersExtremite 0 1 57 
+1885 ValeurDeNTCOrigineVersExtremite 0 2 57 
+1886 ValeurDeNTCOrigineVersExtremite 1 3 57 
+1887 ValeurDeNTCOrigineVersExtremite 1 4 57 
+1888 ValeurDeNTCOrigineVersExtremite 2 5 57 
+1889 ValeurDeNTCOrigineVersExtremite 2 6 57 
+1890 PalierThermique 0 0 57 
+1891 PalierThermique 0 1 57 
+1892 PalierThermique 0 2 57 
+1893 DefaillancePositive 0 57 
+1894 DefaillanceNegative 0 57 
+1895 PalierThermique 1 3 57 
+1896 PalierThermique 1 4 57 
+1897 PalierThermique 1 5 57 
+1898 DefaillancePositive 1 57 
+1899 DefaillanceNegative 1 57 
+1900 DefaillancePositive 2 57 
+1901 DefaillanceNegative 2 57 
+1902 PalierThermique 3 6 57 
+1903 DefaillancePositive 3 57 
+1904 DefaillanceNegative 3 57 
+1905 DefaillancePositive 4 57 
+1906 DefaillanceNegative 4 57 
+1907 PalierThermique 5 7 57 
+1908 DefaillancePositive 5 57 
+1909 DefaillanceNegative 5 57 
+1910 DefaillancePositive 6 57 
+1911 DefaillanceNegative 6 57 
+1912 DefaillancePositive 7 57 
+1913 DefaillanceNegative 7 57 
+1914 ValeurDeNTCOrigineVersExtremite 0 0 58 
+1915 CoutOrigineVersExtremiteDeLInterconnexion 0 58 
+1916 CoutExtremiteVersOrigineDeLInterconnexion 0 58 
+1917 ValeurDeNTCOrigineVersExtremite 0 1 58 
+1918 ValeurDeNTCOrigineVersExtremite 0 2 58 
+1919 ValeurDeNTCOrigineVersExtremite 1 3 58 
+1920 ValeurDeNTCOrigineVersExtremite 1 4 58 
+1921 ValeurDeNTCOrigineVersExtremite 2 5 58 
+1922 ValeurDeNTCOrigineVersExtremite 2 6 58 
+1923 PalierThermique 0 0 58 
+1924 PalierThermique 0 1 58 
+1925 PalierThermique 0 2 58 
+1926 DefaillancePositive 0 58 
+1927 DefaillanceNegative 0 58 
+1928 PalierThermique 1 3 58 
+1929 PalierThermique 1 4 58 
+1930 PalierThermique 1 5 58 
+1931 DefaillancePositive 1 58 
+1932 DefaillanceNegative 1 58 
+1933 DefaillancePositive 2 58 
+1934 DefaillanceNegative 2 58 
+1935 PalierThermique 3 6 58 
+1936 DefaillancePositive 3 58 
+1937 DefaillanceNegative 3 58 
+1938 DefaillancePositive 4 58 
+1939 DefaillanceNegative 4 58 
+1940 PalierThermique 5 7 58 
+1941 DefaillancePositive 5 58 
+1942 DefaillanceNegative 5 58 
+1943 DefaillancePositive 6 58 
+1944 DefaillanceNegative 6 58 
+1945 DefaillancePositive 7 58 
+1946 DefaillanceNegative 7 58 
+1947 ValeurDeNTCOrigineVersExtremite 0 0 59 
+1948 CoutOrigineVersExtremiteDeLInterconnexion 0 59 
+1949 CoutExtremiteVersOrigineDeLInterconnexion 0 59 
+1950 ValeurDeNTCOrigineVersExtremite 0 1 59 
+1951 ValeurDeNTCOrigineVersExtremite 0 2 59 
+1952 ValeurDeNTCOrigineVersExtremite 1 3 59 
+1953 ValeurDeNTCOrigineVersExtremite 1 4 59 
+1954 ValeurDeNTCOrigineVersExtremite 2 5 59 
+1955 ValeurDeNTCOrigineVersExtremite 2 6 59 
+1956 PalierThermique 0 0 59 
+1957 PalierThermique 0 1 59 
+1958 PalierThermique 0 2 59 
+1959 DefaillancePositive 0 59 
+1960 DefaillanceNegative 0 59 
+1961 PalierThermique 1 3 59 
+1962 PalierThermique 1 4 59 
+1963 PalierThermique 1 5 59 
+1964 DefaillancePositive 1 59 
+1965 DefaillanceNegative 1 59 
+1966 DefaillancePositive 2 59 
+1967 DefaillanceNegative 2 59 
+1968 PalierThermique 3 6 59 
+1969 DefaillancePositive 3 59 
+1970 DefaillanceNegative 3 59 
+1971 DefaillancePositive 4 59 
+1972 DefaillanceNegative 4 59 
+1973 PalierThermique 5 7 59 
+1974 DefaillancePositive 5 59 
+1975 DefaillanceNegative 5 59 
+1976 DefaillancePositive 6 59 
+1977 DefaillanceNegative 6 59 
+1978 DefaillancePositive 7 59 
+1979 DefaillanceNegative 7 59 
+1980 ValeurDeNTCOrigineVersExtremite 0 0 60 
+1981 CoutOrigineVersExtremiteDeLInterconnexion 0 60 
+1982 CoutExtremiteVersOrigineDeLInterconnexion 0 60 
+1983 ValeurDeNTCOrigineVersExtremite 0 1 60 
+1984 ValeurDeNTCOrigineVersExtremite 0 2 60 
+1985 ValeurDeNTCOrigineVersExtremite 1 3 60 
+1986 ValeurDeNTCOrigineVersExtremite 1 4 60 
+1987 ValeurDeNTCOrigineVersExtremite 2 5 60 
+1988 ValeurDeNTCOrigineVersExtremite 2 6 60 
+1989 PalierThermique 0 0 60 
+1990 PalierThermique 0 1 60 
+1991 PalierThermique 0 2 60 
+1992 DefaillancePositive 0 60 
+1993 DefaillanceNegative 0 60 
+1994 PalierThermique 1 3 60 
+1995 PalierThermique 1 4 60 
+1996 PalierThermique 1 5 60 
+1997 DefaillancePositive 1 60 
+1998 DefaillanceNegative 1 60 
+1999 DefaillancePositive 2 60 
+2000 DefaillanceNegative 2 60 
+2001 PalierThermique 3 6 60 
+2002 DefaillancePositive 3 60 
+2003 DefaillanceNegative 3 60 
+2004 DefaillancePositive 4 60 
+2005 DefaillanceNegative 4 60 
+2006 PalierThermique 5 7 60 
+2007 DefaillancePositive 5 60 
+2008 DefaillanceNegative 5 60 
+2009 DefaillancePositive 6 60 
+2010 DefaillanceNegative 6 60 
+2011 DefaillancePositive 7 60 
+2012 DefaillanceNegative 7 60 
+2013 ValeurDeNTCOrigineVersExtremite 0 0 61 
+2014 CoutOrigineVersExtremiteDeLInterconnexion 0 61 
+2015 CoutExtremiteVersOrigineDeLInterconnexion 0 61 
+2016 ValeurDeNTCOrigineVersExtremite 0 1 61 
+2017 ValeurDeNTCOrigineVersExtremite 0 2 61 
+2018 ValeurDeNTCOrigineVersExtremite 1 3 61 
+2019 ValeurDeNTCOrigineVersExtremite 1 4 61 
+2020 ValeurDeNTCOrigineVersExtremite 2 5 61 
+2021 ValeurDeNTCOrigineVersExtremite 2 6 61 
+2022 PalierThermique 0 0 61 
+2023 PalierThermique 0 1 61 
+2024 PalierThermique 0 2 61 
+2025 DefaillancePositive 0 61 
+2026 DefaillanceNegative 0 61 
+2027 PalierThermique 1 3 61 
+2028 PalierThermique 1 4 61 
+2029 PalierThermique 1 5 61 
+2030 DefaillancePositive 1 61 
+2031 DefaillanceNegative 1 61 
+2032 DefaillancePositive 2 61 
+2033 DefaillanceNegative 2 61 
+2034 PalierThermique 3 6 61 
+2035 DefaillancePositive 3 61 
+2036 DefaillanceNegative 3 61 
+2037 DefaillancePositive 4 61 
+2038 DefaillanceNegative 4 61 
+2039 PalierThermique 5 7 61 
+2040 DefaillancePositive 5 61 
+2041 DefaillanceNegative 5 61 
+2042 DefaillancePositive 6 61 
+2043 DefaillanceNegative 6 61 
+2044 DefaillancePositive 7 61 
+2045 DefaillanceNegative 7 61 
+2046 ValeurDeNTCOrigineVersExtremite 0 0 62 
+2047 CoutOrigineVersExtremiteDeLInterconnexion 0 62 
+2048 CoutExtremiteVersOrigineDeLInterconnexion 0 62 
+2049 ValeurDeNTCOrigineVersExtremite 0 1 62 
+2050 ValeurDeNTCOrigineVersExtremite 0 2 62 
+2051 ValeurDeNTCOrigineVersExtremite 1 3 62 
+2052 ValeurDeNTCOrigineVersExtremite 1 4 62 
+2053 ValeurDeNTCOrigineVersExtremite 2 5 62 
+2054 ValeurDeNTCOrigineVersExtremite 2 6 62 
+2055 PalierThermique 0 0 62 
+2056 PalierThermique 0 1 62 
+2057 PalierThermique 0 2 62 
+2058 DefaillancePositive 0 62 
+2059 DefaillanceNegative 0 62 
+2060 PalierThermique 1 3 62 
+2061 PalierThermique 1 4 62 
+2062 PalierThermique 1 5 62 
+2063 DefaillancePositive 1 62 
+2064 DefaillanceNegative 1 62 
+2065 DefaillancePositive 2 62 
+2066 DefaillanceNegative 2 62 
+2067 PalierThermique 3 6 62 
+2068 DefaillancePositive 3 62 
+2069 DefaillanceNegative 3 62 
+2070 DefaillancePositive 4 62 
+2071 DefaillanceNegative 4 62 
+2072 PalierThermique 5 7 62 
+2073 DefaillancePositive 5 62 
+2074 DefaillanceNegative 5 62 
+2075 DefaillancePositive 6 62 
+2076 DefaillanceNegative 6 62 
+2077 DefaillancePositive 7 62 
+2078 DefaillanceNegative 7 62 
+2079 ValeurDeNTCOrigineVersExtremite 0 0 63 
+2080 CoutOrigineVersExtremiteDeLInterconnexion 0 63 
+2081 CoutExtremiteVersOrigineDeLInterconnexion 0 63 
+2082 ValeurDeNTCOrigineVersExtremite 0 1 63 
+2083 ValeurDeNTCOrigineVersExtremite 0 2 63 
+2084 ValeurDeNTCOrigineVersExtremite 1 3 63 
+2085 ValeurDeNTCOrigineVersExtremite 1 4 63 
+2086 ValeurDeNTCOrigineVersExtremite 2 5 63 
+2087 ValeurDeNTCOrigineVersExtremite 2 6 63 
+2088 PalierThermique 0 0 63 
+2089 PalierThermique 0 1 63 
+2090 PalierThermique 0 2 63 
+2091 DefaillancePositive 0 63 
+2092 DefaillanceNegative 0 63 
+2093 PalierThermique 1 3 63 
+2094 PalierThermique 1 4 63 
+2095 PalierThermique 1 5 63 
+2096 DefaillancePositive 1 63 
+2097 DefaillanceNegative 1 63 
+2098 DefaillancePositive 2 63 
+2099 DefaillanceNegative 2 63 
+2100 PalierThermique 3 6 63 
+2101 DefaillancePositive 3 63 
+2102 DefaillanceNegative 3 63 
+2103 DefaillancePositive 4 63 
+2104 DefaillanceNegative 4 63 
+2105 PalierThermique 5 7 63 
+2106 DefaillancePositive 5 63 
+2107 DefaillanceNegative 5 63 
+2108 DefaillancePositive 6 63 
+2109 DefaillanceNegative 6 63 
+2110 DefaillancePositive 7 63 
+2111 DefaillanceNegative 7 63 
+2112 ValeurDeNTCOrigineVersExtremite 0 0 64 
+2113 CoutOrigineVersExtremiteDeLInterconnexion 0 64 
+2114 CoutExtremiteVersOrigineDeLInterconnexion 0 64 
+2115 ValeurDeNTCOrigineVersExtremite 0 1 64 
+2116 ValeurDeNTCOrigineVersExtremite 0 2 64 
+2117 ValeurDeNTCOrigineVersExtremite 1 3 64 
+2118 ValeurDeNTCOrigineVersExtremite 1 4 64 
+2119 ValeurDeNTCOrigineVersExtremite 2 5 64 
+2120 ValeurDeNTCOrigineVersExtremite 2 6 64 
+2121 PalierThermique 0 0 64 
+2122 PalierThermique 0 1 64 
+2123 PalierThermique 0 2 64 
+2124 DefaillancePositive 0 64 
+2125 DefaillanceNegative 0 64 
+2126 PalierThermique 1 3 64 
+2127 PalierThermique 1 4 64 
+2128 PalierThermique 1 5 64 
+2129 DefaillancePositive 1 64 
+2130 DefaillanceNegative 1 64 
+2131 DefaillancePositive 2 64 
+2132 DefaillanceNegative 2 64 
+2133 PalierThermique 3 6 64 
+2134 DefaillancePositive 3 64 
+2135 DefaillanceNegative 3 64 
+2136 DefaillancePositive 4 64 
+2137 DefaillanceNegative 4 64 
+2138 PalierThermique 5 7 64 
+2139 DefaillancePositive 5 64 
+2140 DefaillanceNegative 5 64 
+2141 DefaillancePositive 6 64 
+2142 DefaillanceNegative 6 64 
+2143 DefaillancePositive 7 64 
+2144 DefaillanceNegative 7 64 
+2145 ValeurDeNTCOrigineVersExtremite 0 0 65 
+2146 CoutOrigineVersExtremiteDeLInterconnexion 0 65 
+2147 CoutExtremiteVersOrigineDeLInterconnexion 0 65 
+2148 ValeurDeNTCOrigineVersExtremite 0 1 65 
+2149 ValeurDeNTCOrigineVersExtremite 0 2 65 
+2150 ValeurDeNTCOrigineVersExtremite 1 3 65 
+2151 ValeurDeNTCOrigineVersExtremite 1 4 65 
+2152 ValeurDeNTCOrigineVersExtremite 2 5 65 
+2153 ValeurDeNTCOrigineVersExtremite 2 6 65 
+2154 PalierThermique 0 0 65 
+2155 PalierThermique 0 1 65 
+2156 PalierThermique 0 2 65 
+2157 DefaillancePositive 0 65 
+2158 DefaillanceNegative 0 65 
+2159 PalierThermique 1 3 65 
+2160 PalierThermique 1 4 65 
+2161 PalierThermique 1 5 65 
+2162 DefaillancePositive 1 65 
+2163 DefaillanceNegative 1 65 
+2164 DefaillancePositive 2 65 
+2165 DefaillanceNegative 2 65 
+2166 PalierThermique 3 6 65 
+2167 DefaillancePositive 3 65 
+2168 DefaillanceNegative 3 65 
+2169 DefaillancePositive 4 65 
+2170 DefaillanceNegative 4 65 
+2171 PalierThermique 5 7 65 
+2172 DefaillancePositive 5 65 
+2173 DefaillanceNegative 5 65 
+2174 DefaillancePositive 6 65 
+2175 DefaillanceNegative 6 65 
+2176 DefaillancePositive 7 65 
+2177 DefaillanceNegative 7 65 
+2178 ValeurDeNTCOrigineVersExtremite 0 0 66 
+2179 CoutOrigineVersExtremiteDeLInterconnexion 0 66 
+2180 CoutExtremiteVersOrigineDeLInterconnexion 0 66 
+2181 ValeurDeNTCOrigineVersExtremite 0 1 66 
+2182 ValeurDeNTCOrigineVersExtremite 0 2 66 
+2183 ValeurDeNTCOrigineVersExtremite 1 3 66 
+2184 ValeurDeNTCOrigineVersExtremite 1 4 66 
+2185 ValeurDeNTCOrigineVersExtremite 2 5 66 
+2186 ValeurDeNTCOrigineVersExtremite 2 6 66 
+2187 PalierThermique 0 0 66 
+2188 PalierThermique 0 1 66 
+2189 PalierThermique 0 2 66 
+2190 DefaillancePositive 0 66 
+2191 DefaillanceNegative 0 66 
+2192 PalierThermique 1 3 66 
+2193 PalierThermique 1 4 66 
+2194 PalierThermique 1 5 66 
+2195 DefaillancePositive 1 66 
+2196 DefaillanceNegative 1 66 
+2197 DefaillancePositive 2 66 
+2198 DefaillanceNegative 2 66 
+2199 PalierThermique 3 6 66 
+2200 DefaillancePositive 3 66 
+2201 DefaillanceNegative 3 66 
+2202 DefaillancePositive 4 66 
+2203 DefaillanceNegative 4 66 
+2204 PalierThermique 5 7 66 
+2205 DefaillancePositive 5 66 
+2206 DefaillanceNegative 5 66 
+2207 DefaillancePositive 6 66 
+2208 DefaillanceNegative 6 66 
+2209 DefaillancePositive 7 66 
+2210 DefaillanceNegative 7 66 
+2211 ValeurDeNTCOrigineVersExtremite 0 0 67 
+2212 CoutOrigineVersExtremiteDeLInterconnexion 0 67 
+2213 CoutExtremiteVersOrigineDeLInterconnexion 0 67 
+2214 ValeurDeNTCOrigineVersExtremite 0 1 67 
+2215 ValeurDeNTCOrigineVersExtremite 0 2 67 
+2216 ValeurDeNTCOrigineVersExtremite 1 3 67 
+2217 ValeurDeNTCOrigineVersExtremite 1 4 67 
+2218 ValeurDeNTCOrigineVersExtremite 2 5 67 
+2219 ValeurDeNTCOrigineVersExtremite 2 6 67 
+2220 PalierThermique 0 0 67 
+2221 PalierThermique 0 1 67 
+2222 PalierThermique 0 2 67 
+2223 DefaillancePositive 0 67 
+2224 DefaillanceNegative 0 67 
+2225 PalierThermique 1 3 67 
+2226 PalierThermique 1 4 67 
+2227 PalierThermique 1 5 67 
+2228 DefaillancePositive 1 67 
+2229 DefaillanceNegative 1 67 
+2230 DefaillancePositive 2 67 
+2231 DefaillanceNegative 2 67 
+2232 PalierThermique 3 6 67 
+2233 DefaillancePositive 3 67 
+2234 DefaillanceNegative 3 67 
+2235 DefaillancePositive 4 67 
+2236 DefaillanceNegative 4 67 
+2237 PalierThermique 5 7 67 
+2238 DefaillancePositive 5 67 
+2239 DefaillanceNegative 5 67 
+2240 DefaillancePositive 6 67 
+2241 DefaillanceNegative 6 67 
+2242 DefaillancePositive 7 67 
+2243 DefaillanceNegative 7 67 
+2244 ValeurDeNTCOrigineVersExtremite 0 0 68 
+2245 CoutOrigineVersExtremiteDeLInterconnexion 0 68 
+2246 CoutExtremiteVersOrigineDeLInterconnexion 0 68 
+2247 ValeurDeNTCOrigineVersExtremite 0 1 68 
+2248 ValeurDeNTCOrigineVersExtremite 0 2 68 
+2249 ValeurDeNTCOrigineVersExtremite 1 3 68 
+2250 ValeurDeNTCOrigineVersExtremite 1 4 68 
+2251 ValeurDeNTCOrigineVersExtremite 2 5 68 
+2252 ValeurDeNTCOrigineVersExtremite 2 6 68 
+2253 PalierThermique 0 0 68 
+2254 PalierThermique 0 1 68 
+2255 PalierThermique 0 2 68 
+2256 DefaillancePositive 0 68 
+2257 DefaillanceNegative 0 68 
+2258 PalierThermique 1 3 68 
+2259 PalierThermique 1 4 68 
+2260 PalierThermique 1 5 68 
+2261 DefaillancePositive 1 68 
+2262 DefaillanceNegative 1 68 
+2263 DefaillancePositive 2 68 
+2264 DefaillanceNegative 2 68 
+2265 PalierThermique 3 6 68 
+2266 DefaillancePositive 3 68 
+2267 DefaillanceNegative 3 68 
+2268 DefaillancePositive 4 68 
+2269 DefaillanceNegative 4 68 
+2270 PalierThermique 5 7 68 
+2271 DefaillancePositive 5 68 
+2272 DefaillanceNegative 5 68 
+2273 DefaillancePositive 6 68 
+2274 DefaillanceNegative 6 68 
+2275 DefaillancePositive 7 68 
+2276 DefaillanceNegative 7 68 
+2277 ValeurDeNTCOrigineVersExtremite 0 0 69 
+2278 CoutOrigineVersExtremiteDeLInterconnexion 0 69 
+2279 CoutExtremiteVersOrigineDeLInterconnexion 0 69 
+2280 ValeurDeNTCOrigineVersExtremite 0 1 69 
+2281 ValeurDeNTCOrigineVersExtremite 0 2 69 
+2282 ValeurDeNTCOrigineVersExtremite 1 3 69 
+2283 ValeurDeNTCOrigineVersExtremite 1 4 69 
+2284 ValeurDeNTCOrigineVersExtremite 2 5 69 
+2285 ValeurDeNTCOrigineVersExtremite 2 6 69 
+2286 PalierThermique 0 0 69 
+2287 PalierThermique 0 1 69 
+2288 PalierThermique 0 2 69 
+2289 DefaillancePositive 0 69 
+2290 DefaillanceNegative 0 69 
+2291 PalierThermique 1 3 69 
+2292 PalierThermique 1 4 69 
+2293 PalierThermique 1 5 69 
+2294 DefaillancePositive 1 69 
+2295 DefaillanceNegative 1 69 
+2296 DefaillancePositive 2 69 
+2297 DefaillanceNegative 2 69 
+2298 PalierThermique 3 6 69 
+2299 DefaillancePositive 3 69 
+2300 DefaillanceNegative 3 69 
+2301 DefaillancePositive 4 69 
+2302 DefaillanceNegative 4 69 
+2303 PalierThermique 5 7 69 
+2304 DefaillancePositive 5 69 
+2305 DefaillanceNegative 5 69 
+2306 DefaillancePositive 6 69 
+2307 DefaillanceNegative 6 69 
+2308 DefaillancePositive 7 69 
+2309 DefaillanceNegative 7 69 
+2310 ValeurDeNTCOrigineVersExtremite 0 0 70 
+2311 CoutOrigineVersExtremiteDeLInterconnexion 0 70 
+2312 CoutExtremiteVersOrigineDeLInterconnexion 0 70 
+2313 ValeurDeNTCOrigineVersExtremite 0 1 70 
+2314 ValeurDeNTCOrigineVersExtremite 0 2 70 
+2315 ValeurDeNTCOrigineVersExtremite 1 3 70 
+2316 ValeurDeNTCOrigineVersExtremite 1 4 70 
+2317 ValeurDeNTCOrigineVersExtremite 2 5 70 
+2318 ValeurDeNTCOrigineVersExtremite 2 6 70 
+2319 PalierThermique 0 0 70 
+2320 PalierThermique 0 1 70 
+2321 PalierThermique 0 2 70 
+2322 DefaillancePositive 0 70 
+2323 DefaillanceNegative 0 70 
+2324 PalierThermique 1 3 70 
+2325 PalierThermique 1 4 70 
+2326 PalierThermique 1 5 70 
+2327 DefaillancePositive 1 70 
+2328 DefaillanceNegative 1 70 
+2329 DefaillancePositive 2 70 
+2330 DefaillanceNegative 2 70 
+2331 PalierThermique 3 6 70 
+2332 DefaillancePositive 3 70 
+2333 DefaillanceNegative 3 70 
+2334 DefaillancePositive 4 70 
+2335 DefaillanceNegative 4 70 
+2336 PalierThermique 5 7 70 
+2337 DefaillancePositive 5 70 
+2338 DefaillanceNegative 5 70 
+2339 DefaillancePositive 6 70 
+2340 DefaillanceNegative 6 70 
+2341 DefaillancePositive 7 70 
+2342 DefaillanceNegative 7 70 
+2343 ValeurDeNTCOrigineVersExtremite 0 0 71 
+2344 CoutOrigineVersExtremiteDeLInterconnexion 0 71 
+2345 CoutExtremiteVersOrigineDeLInterconnexion 0 71 
+2346 ValeurDeNTCOrigineVersExtremite 0 1 71 
+2347 ValeurDeNTCOrigineVersExtremite 0 2 71 
+2348 ValeurDeNTCOrigineVersExtremite 1 3 71 
+2349 ValeurDeNTCOrigineVersExtremite 1 4 71 
+2350 ValeurDeNTCOrigineVersExtremite 2 5 71 
+2351 ValeurDeNTCOrigineVersExtremite 2 6 71 
+2352 PalierThermique 0 0 71 
+2353 PalierThermique 0 1 71 
+2354 PalierThermique 0 2 71 
+2355 DefaillancePositive 0 71 
+2356 DefaillanceNegative 0 71 
+2357 PalierThermique 1 3 71 
+2358 PalierThermique 1 4 71 
+2359 PalierThermique 1 5 71 
+2360 DefaillancePositive 1 71 
+2361 DefaillanceNegative 1 71 
+2362 DefaillancePositive 2 71 
+2363 DefaillanceNegative 2 71 
+2364 PalierThermique 3 6 71 
+2365 DefaillancePositive 3 71 
+2366 DefaillanceNegative 3 71 
+2367 DefaillancePositive 4 71 
+2368 DefaillanceNegative 4 71 
+2369 PalierThermique 5 7 71 
+2370 DefaillancePositive 5 71 
+2371 DefaillanceNegative 5 71 
+2372 DefaillancePositive 6 71 
+2373 DefaillanceNegative 6 71 
+2374 DefaillancePositive 7 71 
+2375 DefaillanceNegative 7 71 
+2376 ValeurDeNTCOrigineVersExtremite 0 0 72 
+2377 CoutOrigineVersExtremiteDeLInterconnexion 0 72 
+2378 CoutExtremiteVersOrigineDeLInterconnexion 0 72 
+2379 ValeurDeNTCOrigineVersExtremite 0 1 72 
+2380 ValeurDeNTCOrigineVersExtremite 0 2 72 
+2381 ValeurDeNTCOrigineVersExtremite 1 3 72 
+2382 ValeurDeNTCOrigineVersExtremite 1 4 72 
+2383 ValeurDeNTCOrigineVersExtremite 2 5 72 
+2384 ValeurDeNTCOrigineVersExtremite 2 6 72 
+2385 PalierThermique 0 0 72 
+2386 PalierThermique 0 1 72 
+2387 PalierThermique 0 2 72 
+2388 DefaillancePositive 0 72 
+2389 DefaillanceNegative 0 72 
+2390 PalierThermique 1 3 72 
+2391 PalierThermique 1 4 72 
+2392 PalierThermique 1 5 72 
+2393 DefaillancePositive 1 72 
+2394 DefaillanceNegative 1 72 
+2395 DefaillancePositive 2 72 
+2396 DefaillanceNegative 2 72 
+2397 PalierThermique 3 6 72 
+2398 DefaillancePositive 3 72 
+2399 DefaillanceNegative 3 72 
+2400 DefaillancePositive 4 72 
+2401 DefaillanceNegative 4 72 
+2402 PalierThermique 5 7 72 
+2403 DefaillancePositive 5 72 
+2404 DefaillanceNegative 5 72 
+2405 DefaillancePositive 6 72 
+2406 DefaillanceNegative 6 72 
+2407 DefaillancePositive 7 72 
+2408 DefaillanceNegative 7 72 
+2409 ValeurDeNTCOrigineVersExtremite 0 0 73 
+2410 CoutOrigineVersExtremiteDeLInterconnexion 0 73 
+2411 CoutExtremiteVersOrigineDeLInterconnexion 0 73 
+2412 ValeurDeNTCOrigineVersExtremite 0 1 73 
+2413 ValeurDeNTCOrigineVersExtremite 0 2 73 
+2414 ValeurDeNTCOrigineVersExtremite 1 3 73 
+2415 ValeurDeNTCOrigineVersExtremite 1 4 73 
+2416 ValeurDeNTCOrigineVersExtremite 2 5 73 
+2417 ValeurDeNTCOrigineVersExtremite 2 6 73 
+2418 PalierThermique 0 0 73 
+2419 PalierThermique 0 1 73 
+2420 PalierThermique 0 2 73 
+2421 DefaillancePositive 0 73 
+2422 DefaillanceNegative 0 73 
+2423 PalierThermique 1 3 73 
+2424 PalierThermique 1 4 73 
+2425 PalierThermique 1 5 73 
+2426 DefaillancePositive 1 73 
+2427 DefaillanceNegative 1 73 
+2428 DefaillancePositive 2 73 
+2429 DefaillanceNegative 2 73 
+2430 PalierThermique 3 6 73 
+2431 DefaillancePositive 3 73 
+2432 DefaillanceNegative 3 73 
+2433 DefaillancePositive 4 73 
+2434 DefaillanceNegative 4 73 
+2435 PalierThermique 5 7 73 
+2436 DefaillancePositive 5 73 
+2437 DefaillanceNegative 5 73 
+2438 DefaillancePositive 6 73 
+2439 DefaillanceNegative 6 73 
+2440 DefaillancePositive 7 73 
+2441 DefaillanceNegative 7 73 
+2442 ValeurDeNTCOrigineVersExtremite 0 0 74 
+2443 CoutOrigineVersExtremiteDeLInterconnexion 0 74 
+2444 CoutExtremiteVersOrigineDeLInterconnexion 0 74 
+2445 ValeurDeNTCOrigineVersExtremite 0 1 74 
+2446 ValeurDeNTCOrigineVersExtremite 0 2 74 
+2447 ValeurDeNTCOrigineVersExtremite 1 3 74 
+2448 ValeurDeNTCOrigineVersExtremite 1 4 74 
+2449 ValeurDeNTCOrigineVersExtremite 2 5 74 
+2450 ValeurDeNTCOrigineVersExtremite 2 6 74 
+2451 PalierThermique 0 0 74 
+2452 PalierThermique 0 1 74 
+2453 PalierThermique 0 2 74 
+2454 DefaillancePositive 0 74 
+2455 DefaillanceNegative 0 74 
+2456 PalierThermique 1 3 74 
+2457 PalierThermique 1 4 74 
+2458 PalierThermique 1 5 74 
+2459 DefaillancePositive 1 74 
+2460 DefaillanceNegative 1 74 
+2461 DefaillancePositive 2 74 
+2462 DefaillanceNegative 2 74 
+2463 PalierThermique 3 6 74 
+2464 DefaillancePositive 3 74 
+2465 DefaillanceNegative 3 74 
+2466 DefaillancePositive 4 74 
+2467 DefaillanceNegative 4 74 
+2468 PalierThermique 5 7 74 
+2469 DefaillancePositive 5 74 
+2470 DefaillanceNegative 5 74 
+2471 DefaillancePositive 6 74 
+2472 DefaillanceNegative 6 74 
+2473 DefaillancePositive 7 74 
+2474 DefaillanceNegative 7 74 
+2475 ValeurDeNTCOrigineVersExtremite 0 0 75 
+2476 CoutOrigineVersExtremiteDeLInterconnexion 0 75 
+2477 CoutExtremiteVersOrigineDeLInterconnexion 0 75 
+2478 ValeurDeNTCOrigineVersExtremite 0 1 75 
+2479 ValeurDeNTCOrigineVersExtremite 0 2 75 
+2480 ValeurDeNTCOrigineVersExtremite 1 3 75 
+2481 ValeurDeNTCOrigineVersExtremite 1 4 75 
+2482 ValeurDeNTCOrigineVersExtremite 2 5 75 
+2483 ValeurDeNTCOrigineVersExtremite 2 6 75 
+2484 PalierThermique 0 0 75 
+2485 PalierThermique 0 1 75 
+2486 PalierThermique 0 2 75 
+2487 DefaillancePositive 0 75 
+2488 DefaillanceNegative 0 75 
+2489 PalierThermique 1 3 75 
+2490 PalierThermique 1 4 75 
+2491 PalierThermique 1 5 75 
+2492 DefaillancePositive 1 75 
+2493 DefaillanceNegative 1 75 
+2494 DefaillancePositive 2 75 
+2495 DefaillanceNegative 2 75 
+2496 PalierThermique 3 6 75 
+2497 DefaillancePositive 3 75 
+2498 DefaillanceNegative 3 75 
+2499 DefaillancePositive 4 75 
+2500 DefaillanceNegative 4 75 
+2501 PalierThermique 5 7 75 
+2502 DefaillancePositive 5 75 
+2503 DefaillanceNegative 5 75 
+2504 DefaillancePositive 6 75 
+2505 DefaillanceNegative 6 75 
+2506 DefaillancePositive 7 75 
+2507 DefaillanceNegative 7 75 
+2508 ValeurDeNTCOrigineVersExtremite 0 0 76 
+2509 CoutOrigineVersExtremiteDeLInterconnexion 0 76 
+2510 CoutExtremiteVersOrigineDeLInterconnexion 0 76 
+2511 ValeurDeNTCOrigineVersExtremite 0 1 76 
+2512 ValeurDeNTCOrigineVersExtremite 0 2 76 
+2513 ValeurDeNTCOrigineVersExtremite 1 3 76 
+2514 ValeurDeNTCOrigineVersExtremite 1 4 76 
+2515 ValeurDeNTCOrigineVersExtremite 2 5 76 
+2516 ValeurDeNTCOrigineVersExtremite 2 6 76 
+2517 PalierThermique 0 0 76 
+2518 PalierThermique 0 1 76 
+2519 PalierThermique 0 2 76 
+2520 DefaillancePositive 0 76 
+2521 DefaillanceNegative 0 76 
+2522 PalierThermique 1 3 76 
+2523 PalierThermique 1 4 76 
+2524 PalierThermique 1 5 76 
+2525 DefaillancePositive 1 76 
+2526 DefaillanceNegative 1 76 
+2527 DefaillancePositive 2 76 
+2528 DefaillanceNegative 2 76 
+2529 PalierThermique 3 6 76 
+2530 DefaillancePositive 3 76 
+2531 DefaillanceNegative 3 76 
+2532 DefaillancePositive 4 76 
+2533 DefaillanceNegative 4 76 
+2534 PalierThermique 5 7 76 
+2535 DefaillancePositive 5 76 
+2536 DefaillanceNegative 5 76 
+2537 DefaillancePositive 6 76 
+2538 DefaillanceNegative 6 76 
+2539 DefaillancePositive 7 76 
+2540 DefaillanceNegative 7 76 
+2541 ValeurDeNTCOrigineVersExtremite 0 0 77 
+2542 CoutOrigineVersExtremiteDeLInterconnexion 0 77 
+2543 CoutExtremiteVersOrigineDeLInterconnexion 0 77 
+2544 ValeurDeNTCOrigineVersExtremite 0 1 77 
+2545 ValeurDeNTCOrigineVersExtremite 0 2 77 
+2546 ValeurDeNTCOrigineVersExtremite 1 3 77 
+2547 ValeurDeNTCOrigineVersExtremite 1 4 77 
+2548 ValeurDeNTCOrigineVersExtremite 2 5 77 
+2549 ValeurDeNTCOrigineVersExtremite 2 6 77 
+2550 PalierThermique 0 0 77 
+2551 PalierThermique 0 1 77 
+2552 PalierThermique 0 2 77 
+2553 DefaillancePositive 0 77 
+2554 DefaillanceNegative 0 77 
+2555 PalierThermique 1 3 77 
+2556 PalierThermique 1 4 77 
+2557 PalierThermique 1 5 77 
+2558 DefaillancePositive 1 77 
+2559 DefaillanceNegative 1 77 
+2560 DefaillancePositive 2 77 
+2561 DefaillanceNegative 2 77 
+2562 PalierThermique 3 6 77 
+2563 DefaillancePositive 3 77 
+2564 DefaillanceNegative 3 77 
+2565 DefaillancePositive 4 77 
+2566 DefaillanceNegative 4 77 
+2567 PalierThermique 5 7 77 
+2568 DefaillancePositive 5 77 
+2569 DefaillanceNegative 5 77 
+2570 DefaillancePositive 6 77 
+2571 DefaillanceNegative 6 77 
+2572 DefaillancePositive 7 77 
+2573 DefaillanceNegative 7 77 
+2574 ValeurDeNTCOrigineVersExtremite 0 0 78 
+2575 CoutOrigineVersExtremiteDeLInterconnexion 0 78 
+2576 CoutExtremiteVersOrigineDeLInterconnexion 0 78 
+2577 ValeurDeNTCOrigineVersExtremite 0 1 78 
+2578 ValeurDeNTCOrigineVersExtremite 0 2 78 
+2579 ValeurDeNTCOrigineVersExtremite 1 3 78 
+2580 ValeurDeNTCOrigineVersExtremite 1 4 78 
+2581 ValeurDeNTCOrigineVersExtremite 2 5 78 
+2582 ValeurDeNTCOrigineVersExtremite 2 6 78 
+2583 PalierThermique 0 0 78 
+2584 PalierThermique 0 1 78 
+2585 PalierThermique 0 2 78 
+2586 DefaillancePositive 0 78 
+2587 DefaillanceNegative 0 78 
+2588 PalierThermique 1 3 78 
+2589 PalierThermique 1 4 78 
+2590 PalierThermique 1 5 78 
+2591 DefaillancePositive 1 78 
+2592 DefaillanceNegative 1 78 
+2593 DefaillancePositive 2 78 
+2594 DefaillanceNegative 2 78 
+2595 PalierThermique 3 6 78 
+2596 DefaillancePositive 3 78 
+2597 DefaillanceNegative 3 78 
+2598 DefaillancePositive 4 78 
+2599 DefaillanceNegative 4 78 
+2600 PalierThermique 5 7 78 
+2601 DefaillancePositive 5 78 
+2602 DefaillanceNegative 5 78 
+2603 DefaillancePositive 6 78 
+2604 DefaillanceNegative 6 78 
+2605 DefaillancePositive 7 78 
+2606 DefaillanceNegative 7 78 
+2607 ValeurDeNTCOrigineVersExtremite 0 0 79 
+2608 CoutOrigineVersExtremiteDeLInterconnexion 0 79 
+2609 CoutExtremiteVersOrigineDeLInterconnexion 0 79 
+2610 ValeurDeNTCOrigineVersExtremite 0 1 79 
+2611 ValeurDeNTCOrigineVersExtremite 0 2 79 
+2612 ValeurDeNTCOrigineVersExtremite 1 3 79 
+2613 ValeurDeNTCOrigineVersExtremite 1 4 79 
+2614 ValeurDeNTCOrigineVersExtremite 2 5 79 
+2615 ValeurDeNTCOrigineVersExtremite 2 6 79 
+2616 PalierThermique 0 0 79 
+2617 PalierThermique 0 1 79 
+2618 PalierThermique 0 2 79 
+2619 DefaillancePositive 0 79 
+2620 DefaillanceNegative 0 79 
+2621 PalierThermique 1 3 79 
+2622 PalierThermique 1 4 79 
+2623 PalierThermique 1 5 79 
+2624 DefaillancePositive 1 79 
+2625 DefaillanceNegative 1 79 
+2626 DefaillancePositive 2 79 
+2627 DefaillanceNegative 2 79 
+2628 PalierThermique 3 6 79 
+2629 DefaillancePositive 3 79 
+2630 DefaillanceNegative 3 79 
+2631 DefaillancePositive 4 79 
+2632 DefaillanceNegative 4 79 
+2633 PalierThermique 5 7 79 
+2634 DefaillancePositive 5 79 
+2635 DefaillanceNegative 5 79 
+2636 DefaillancePositive 6 79 
+2637 DefaillanceNegative 6 79 
+2638 DefaillancePositive 7 79 
+2639 DefaillanceNegative 7 79 
+2640 ValeurDeNTCOrigineVersExtremite 0 0 80 
+2641 CoutOrigineVersExtremiteDeLInterconnexion 0 80 
+2642 CoutExtremiteVersOrigineDeLInterconnexion 0 80 
+2643 ValeurDeNTCOrigineVersExtremite 0 1 80 
+2644 ValeurDeNTCOrigineVersExtremite 0 2 80 
+2645 ValeurDeNTCOrigineVersExtremite 1 3 80 
+2646 ValeurDeNTCOrigineVersExtremite 1 4 80 
+2647 ValeurDeNTCOrigineVersExtremite 2 5 80 
+2648 ValeurDeNTCOrigineVersExtremite 2 6 80 
+2649 PalierThermique 0 0 80 
+2650 PalierThermique 0 1 80 
+2651 PalierThermique 0 2 80 
+2652 DefaillancePositive 0 80 
+2653 DefaillanceNegative 0 80 
+2654 PalierThermique 1 3 80 
+2655 PalierThermique 1 4 80 
+2656 PalierThermique 1 5 80 
+2657 DefaillancePositive 1 80 
+2658 DefaillanceNegative 1 80 
+2659 DefaillancePositive 2 80 
+2660 DefaillanceNegative 2 80 
+2661 PalierThermique 3 6 80 
+2662 DefaillancePositive 3 80 
+2663 DefaillanceNegative 3 80 
+2664 DefaillancePositive 4 80 
+2665 DefaillanceNegative 4 80 
+2666 PalierThermique 5 7 80 
+2667 DefaillancePositive 5 80 
+2668 DefaillanceNegative 5 80 
+2669 DefaillancePositive 6 80 
+2670 DefaillanceNegative 6 80 
+2671 DefaillancePositive 7 80 
+2672 DefaillanceNegative 7 80 
+2673 ValeurDeNTCOrigineVersExtremite 0 0 81 
+2674 CoutOrigineVersExtremiteDeLInterconnexion 0 81 
+2675 CoutExtremiteVersOrigineDeLInterconnexion 0 81 
+2676 ValeurDeNTCOrigineVersExtremite 0 1 81 
+2677 ValeurDeNTCOrigineVersExtremite 0 2 81 
+2678 ValeurDeNTCOrigineVersExtremite 1 3 81 
+2679 ValeurDeNTCOrigineVersExtremite 1 4 81 
+2680 ValeurDeNTCOrigineVersExtremite 2 5 81 
+2681 ValeurDeNTCOrigineVersExtremite 2 6 81 
+2682 PalierThermique 0 0 81 
+2683 PalierThermique 0 1 81 
+2684 PalierThermique 0 2 81 
+2685 DefaillancePositive 0 81 
+2686 DefaillanceNegative 0 81 
+2687 PalierThermique 1 3 81 
+2688 PalierThermique 1 4 81 
+2689 PalierThermique 1 5 81 
+2690 DefaillancePositive 1 81 
+2691 DefaillanceNegative 1 81 
+2692 DefaillancePositive 2 81 
+2693 DefaillanceNegative 2 81 
+2694 PalierThermique 3 6 81 
+2695 DefaillancePositive 3 81 
+2696 DefaillanceNegative 3 81 
+2697 DefaillancePositive 4 81 
+2698 DefaillanceNegative 4 81 
+2699 PalierThermique 5 7 81 
+2700 DefaillancePositive 5 81 
+2701 DefaillanceNegative 5 81 
+2702 DefaillancePositive 6 81 
+2703 DefaillanceNegative 6 81 
+2704 DefaillancePositive 7 81 
+2705 DefaillanceNegative 7 81 
+2706 ValeurDeNTCOrigineVersExtremite 0 0 82 
+2707 CoutOrigineVersExtremiteDeLInterconnexion 0 82 
+2708 CoutExtremiteVersOrigineDeLInterconnexion 0 82 
+2709 ValeurDeNTCOrigineVersExtremite 0 1 82 
+2710 ValeurDeNTCOrigineVersExtremite 0 2 82 
+2711 ValeurDeNTCOrigineVersExtremite 1 3 82 
+2712 ValeurDeNTCOrigineVersExtremite 1 4 82 
+2713 ValeurDeNTCOrigineVersExtremite 2 5 82 
+2714 ValeurDeNTCOrigineVersExtremite 2 6 82 
+2715 PalierThermique 0 0 82 
+2716 PalierThermique 0 1 82 
+2717 PalierThermique 0 2 82 
+2718 DefaillancePositive 0 82 
+2719 DefaillanceNegative 0 82 
+2720 PalierThermique 1 3 82 
+2721 PalierThermique 1 4 82 
+2722 PalierThermique 1 5 82 
+2723 DefaillancePositive 1 82 
+2724 DefaillanceNegative 1 82 
+2725 DefaillancePositive 2 82 
+2726 DefaillanceNegative 2 82 
+2727 PalierThermique 3 6 82 
+2728 DefaillancePositive 3 82 
+2729 DefaillanceNegative 3 82 
+2730 DefaillancePositive 4 82 
+2731 DefaillanceNegative 4 82 
+2732 PalierThermique 5 7 82 
+2733 DefaillancePositive 5 82 
+2734 DefaillanceNegative 5 82 
+2735 DefaillancePositive 6 82 
+2736 DefaillanceNegative 6 82 
+2737 DefaillancePositive 7 82 
+2738 DefaillanceNegative 7 82 
+2739 ValeurDeNTCOrigineVersExtremite 0 0 83 
+2740 CoutOrigineVersExtremiteDeLInterconnexion 0 83 
+2741 CoutExtremiteVersOrigineDeLInterconnexion 0 83 
+2742 ValeurDeNTCOrigineVersExtremite 0 1 83 
+2743 ValeurDeNTCOrigineVersExtremite 0 2 83 
+2744 ValeurDeNTCOrigineVersExtremite 1 3 83 
+2745 ValeurDeNTCOrigineVersExtremite 1 4 83 
+2746 ValeurDeNTCOrigineVersExtremite 2 5 83 
+2747 ValeurDeNTCOrigineVersExtremite 2 6 83 
+2748 PalierThermique 0 0 83 
+2749 PalierThermique 0 1 83 
+2750 PalierThermique 0 2 83 
+2751 DefaillancePositive 0 83 
+2752 DefaillanceNegative 0 83 
+2753 PalierThermique 1 3 83 
+2754 PalierThermique 1 4 83 
+2755 PalierThermique 1 5 83 
+2756 DefaillancePositive 1 83 
+2757 DefaillanceNegative 1 83 
+2758 DefaillancePositive 2 83 
+2759 DefaillanceNegative 2 83 
+2760 PalierThermique 3 6 83 
+2761 DefaillancePositive 3 83 
+2762 DefaillanceNegative 3 83 
+2763 DefaillancePositive 4 83 
+2764 DefaillanceNegative 4 83 
+2765 PalierThermique 5 7 83 
+2766 DefaillancePositive 5 83 
+2767 DefaillanceNegative 5 83 
+2768 DefaillancePositive 6 83 
+2769 DefaillanceNegative 6 83 
+2770 DefaillancePositive 7 83 
+2771 DefaillanceNegative 7 83 
+2772 ValeurDeNTCOrigineVersExtremite 0 0 84 
+2773 CoutOrigineVersExtremiteDeLInterconnexion 0 84 
+2774 CoutExtremiteVersOrigineDeLInterconnexion 0 84 
+2775 ValeurDeNTCOrigineVersExtremite 0 1 84 
+2776 ValeurDeNTCOrigineVersExtremite 0 2 84 
+2777 ValeurDeNTCOrigineVersExtremite 1 3 84 
+2778 ValeurDeNTCOrigineVersExtremite 1 4 84 
+2779 ValeurDeNTCOrigineVersExtremite 2 5 84 
+2780 ValeurDeNTCOrigineVersExtremite 2 6 84 
+2781 PalierThermique 0 0 84 
+2782 PalierThermique 0 1 84 
+2783 PalierThermique 0 2 84 
+2784 DefaillancePositive 0 84 
+2785 DefaillanceNegative 0 84 
+2786 PalierThermique 1 3 84 
+2787 PalierThermique 1 4 84 
+2788 PalierThermique 1 5 84 
+2789 DefaillancePositive 1 84 
+2790 DefaillanceNegative 1 84 
+2791 DefaillancePositive 2 84 
+2792 DefaillanceNegative 2 84 
+2793 PalierThermique 3 6 84 
+2794 DefaillancePositive 3 84 
+2795 DefaillanceNegative 3 84 
+2796 DefaillancePositive 4 84 
+2797 DefaillanceNegative 4 84 
+2798 PalierThermique 5 7 84 
+2799 DefaillancePositive 5 84 
+2800 DefaillanceNegative 5 84 
+2801 DefaillancePositive 6 84 
+2802 DefaillanceNegative 6 84 
+2803 DefaillancePositive 7 84 
+2804 DefaillanceNegative 7 84 
+2805 ValeurDeNTCOrigineVersExtremite 0 0 85 
+2806 CoutOrigineVersExtremiteDeLInterconnexion 0 85 
+2807 CoutExtremiteVersOrigineDeLInterconnexion 0 85 
+2808 ValeurDeNTCOrigineVersExtremite 0 1 85 
+2809 ValeurDeNTCOrigineVersExtremite 0 2 85 
+2810 ValeurDeNTCOrigineVersExtremite 1 3 85 
+2811 ValeurDeNTCOrigineVersExtremite 1 4 85 
+2812 ValeurDeNTCOrigineVersExtremite 2 5 85 
+2813 ValeurDeNTCOrigineVersExtremite 2 6 85 
+2814 PalierThermique 0 0 85 
+2815 PalierThermique 0 1 85 
+2816 PalierThermique 0 2 85 
+2817 DefaillancePositive 0 85 
+2818 DefaillanceNegative 0 85 
+2819 PalierThermique 1 3 85 
+2820 PalierThermique 1 4 85 
+2821 PalierThermique 1 5 85 
+2822 DefaillancePositive 1 85 
+2823 DefaillanceNegative 1 85 
+2824 DefaillancePositive 2 85 
+2825 DefaillanceNegative 2 85 
+2826 PalierThermique 3 6 85 
+2827 DefaillancePositive 3 85 
+2828 DefaillanceNegative 3 85 
+2829 DefaillancePositive 4 85 
+2830 DefaillanceNegative 4 85 
+2831 PalierThermique 5 7 85 
+2832 DefaillancePositive 5 85 
+2833 DefaillanceNegative 5 85 
+2834 DefaillancePositive 6 85 
+2835 DefaillanceNegative 6 85 
+2836 DefaillancePositive 7 85 
+2837 DefaillanceNegative 7 85 
+2838 ValeurDeNTCOrigineVersExtremite 0 0 86 
+2839 CoutOrigineVersExtremiteDeLInterconnexion 0 86 
+2840 CoutExtremiteVersOrigineDeLInterconnexion 0 86 
+2841 ValeurDeNTCOrigineVersExtremite 0 1 86 
+2842 ValeurDeNTCOrigineVersExtremite 0 2 86 
+2843 ValeurDeNTCOrigineVersExtremite 1 3 86 
+2844 ValeurDeNTCOrigineVersExtremite 1 4 86 
+2845 ValeurDeNTCOrigineVersExtremite 2 5 86 
+2846 ValeurDeNTCOrigineVersExtremite 2 6 86 
+2847 PalierThermique 0 0 86 
+2848 PalierThermique 0 1 86 
+2849 PalierThermique 0 2 86 
+2850 DefaillancePositive 0 86 
+2851 DefaillanceNegative 0 86 
+2852 PalierThermique 1 3 86 
+2853 PalierThermique 1 4 86 
+2854 PalierThermique 1 5 86 
+2855 DefaillancePositive 1 86 
+2856 DefaillanceNegative 1 86 
+2857 DefaillancePositive 2 86 
+2858 DefaillanceNegative 2 86 
+2859 PalierThermique 3 6 86 
+2860 DefaillancePositive 3 86 
+2861 DefaillanceNegative 3 86 
+2862 DefaillancePositive 4 86 
+2863 DefaillanceNegative 4 86 
+2864 PalierThermique 5 7 86 
+2865 DefaillancePositive 5 86 
+2866 DefaillanceNegative 5 86 
+2867 DefaillancePositive 6 86 
+2868 DefaillanceNegative 6 86 
+2869 DefaillancePositive 7 86 
+2870 DefaillanceNegative 7 86 
+2871 ValeurDeNTCOrigineVersExtremite 0 0 87 
+2872 CoutOrigineVersExtremiteDeLInterconnexion 0 87 
+2873 CoutExtremiteVersOrigineDeLInterconnexion 0 87 
+2874 ValeurDeNTCOrigineVersExtremite 0 1 87 
+2875 ValeurDeNTCOrigineVersExtremite 0 2 87 
+2876 ValeurDeNTCOrigineVersExtremite 1 3 87 
+2877 ValeurDeNTCOrigineVersExtremite 1 4 87 
+2878 ValeurDeNTCOrigineVersExtremite 2 5 87 
+2879 ValeurDeNTCOrigineVersExtremite 2 6 87 
+2880 PalierThermique 0 0 87 
+2881 PalierThermique 0 1 87 
+2882 PalierThermique 0 2 87 
+2883 DefaillancePositive 0 87 
+2884 DefaillanceNegative 0 87 
+2885 PalierThermique 1 3 87 
+2886 PalierThermique 1 4 87 
+2887 PalierThermique 1 5 87 
+2888 DefaillancePositive 1 87 
+2889 DefaillanceNegative 1 87 
+2890 DefaillancePositive 2 87 
+2891 DefaillanceNegative 2 87 
+2892 PalierThermique 3 6 87 
+2893 DefaillancePositive 3 87 
+2894 DefaillanceNegative 3 87 
+2895 DefaillancePositive 4 87 
+2896 DefaillanceNegative 4 87 
+2897 PalierThermique 5 7 87 
+2898 DefaillancePositive 5 87 
+2899 DefaillanceNegative 5 87 
+2900 DefaillancePositive 6 87 
+2901 DefaillanceNegative 6 87 
+2902 DefaillancePositive 7 87 
+2903 DefaillanceNegative 7 87 
+2904 ValeurDeNTCOrigineVersExtremite 0 0 88 
+2905 CoutOrigineVersExtremiteDeLInterconnexion 0 88 
+2906 CoutExtremiteVersOrigineDeLInterconnexion 0 88 
+2907 ValeurDeNTCOrigineVersExtremite 0 1 88 
+2908 ValeurDeNTCOrigineVersExtremite 0 2 88 
+2909 ValeurDeNTCOrigineVersExtremite 1 3 88 
+2910 ValeurDeNTCOrigineVersExtremite 1 4 88 
+2911 ValeurDeNTCOrigineVersExtremite 2 5 88 
+2912 ValeurDeNTCOrigineVersExtremite 2 6 88 
+2913 PalierThermique 0 0 88 
+2914 PalierThermique 0 1 88 
+2915 PalierThermique 0 2 88 
+2916 DefaillancePositive 0 88 
+2917 DefaillanceNegative 0 88 
+2918 PalierThermique 1 3 88 
+2919 PalierThermique 1 4 88 
+2920 PalierThermique 1 5 88 
+2921 DefaillancePositive 1 88 
+2922 DefaillanceNegative 1 88 
+2923 DefaillancePositive 2 88 
+2924 DefaillanceNegative 2 88 
+2925 PalierThermique 3 6 88 
+2926 DefaillancePositive 3 88 
+2927 DefaillanceNegative 3 88 
+2928 DefaillancePositive 4 88 
+2929 DefaillanceNegative 4 88 
+2930 PalierThermique 5 7 88 
+2931 DefaillancePositive 5 88 
+2932 DefaillanceNegative 5 88 
+2933 DefaillancePositive 6 88 
+2934 DefaillanceNegative 6 88 
+2935 DefaillancePositive 7 88 
+2936 DefaillanceNegative 7 88 
+2937 ValeurDeNTCOrigineVersExtremite 0 0 89 
+2938 CoutOrigineVersExtremiteDeLInterconnexion 0 89 
+2939 CoutExtremiteVersOrigineDeLInterconnexion 0 89 
+2940 ValeurDeNTCOrigineVersExtremite 0 1 89 
+2941 ValeurDeNTCOrigineVersExtremite 0 2 89 
+2942 ValeurDeNTCOrigineVersExtremite 1 3 89 
+2943 ValeurDeNTCOrigineVersExtremite 1 4 89 
+2944 ValeurDeNTCOrigineVersExtremite 2 5 89 
+2945 ValeurDeNTCOrigineVersExtremite 2 6 89 
+2946 PalierThermique 0 0 89 
+2947 PalierThermique 0 1 89 
+2948 PalierThermique 0 2 89 
+2949 DefaillancePositive 0 89 
+2950 DefaillanceNegative 0 89 
+2951 PalierThermique 1 3 89 
+2952 PalierThermique 1 4 89 
+2953 PalierThermique 1 5 89 
+2954 DefaillancePositive 1 89 
+2955 DefaillanceNegative 1 89 
+2956 DefaillancePositive 2 89 
+2957 DefaillanceNegative 2 89 
+2958 PalierThermique 3 6 89 
+2959 DefaillancePositive 3 89 
+2960 DefaillanceNegative 3 89 
+2961 DefaillancePositive 4 89 
+2962 DefaillanceNegative 4 89 
+2963 PalierThermique 5 7 89 
+2964 DefaillancePositive 5 89 
+2965 DefaillanceNegative 5 89 
+2966 DefaillancePositive 6 89 
+2967 DefaillanceNegative 6 89 
+2968 DefaillancePositive 7 89 
+2969 DefaillanceNegative 7 89 
+2970 ValeurDeNTCOrigineVersExtremite 0 0 90 
+2971 CoutOrigineVersExtremiteDeLInterconnexion 0 90 
+2972 CoutExtremiteVersOrigineDeLInterconnexion 0 90 
+2973 ValeurDeNTCOrigineVersExtremite 0 1 90 
+2974 ValeurDeNTCOrigineVersExtremite 0 2 90 
+2975 ValeurDeNTCOrigineVersExtremite 1 3 90 
+2976 ValeurDeNTCOrigineVersExtremite 1 4 90 
+2977 ValeurDeNTCOrigineVersExtremite 2 5 90 
+2978 ValeurDeNTCOrigineVersExtremite 2 6 90 
+2979 PalierThermique 0 0 90 
+2980 PalierThermique 0 1 90 
+2981 PalierThermique 0 2 90 
+2982 DefaillancePositive 0 90 
+2983 DefaillanceNegative 0 90 
+2984 PalierThermique 1 3 90 
+2985 PalierThermique 1 4 90 
+2986 PalierThermique 1 5 90 
+2987 DefaillancePositive 1 90 
+2988 DefaillanceNegative 1 90 
+2989 DefaillancePositive 2 90 
+2990 DefaillanceNegative 2 90 
+2991 PalierThermique 3 6 90 
+2992 DefaillancePositive 3 90 
+2993 DefaillanceNegative 3 90 
+2994 DefaillancePositive 4 90 
+2995 DefaillanceNegative 4 90 
+2996 PalierThermique 5 7 90 
+2997 DefaillancePositive 5 90 
+2998 DefaillanceNegative 5 90 
+2999 DefaillancePositive 6 90 
+3000 DefaillanceNegative 6 90 
+3001 DefaillancePositive 7 90 
+3002 DefaillanceNegative 7 90 
+3003 ValeurDeNTCOrigineVersExtremite 0 0 91 
+3004 CoutOrigineVersExtremiteDeLInterconnexion 0 91 
+3005 CoutExtremiteVersOrigineDeLInterconnexion 0 91 
+3006 ValeurDeNTCOrigineVersExtremite 0 1 91 
+3007 ValeurDeNTCOrigineVersExtremite 0 2 91 
+3008 ValeurDeNTCOrigineVersExtremite 1 3 91 
+3009 ValeurDeNTCOrigineVersExtremite 1 4 91 
+3010 ValeurDeNTCOrigineVersExtremite 2 5 91 
+3011 ValeurDeNTCOrigineVersExtremite 2 6 91 
+3012 PalierThermique 0 0 91 
+3013 PalierThermique 0 1 91 
+3014 PalierThermique 0 2 91 
+3015 DefaillancePositive 0 91 
+3016 DefaillanceNegative 0 91 
+3017 PalierThermique 1 3 91 
+3018 PalierThermique 1 4 91 
+3019 PalierThermique 1 5 91 
+3020 DefaillancePositive 1 91 
+3021 DefaillanceNegative 1 91 
+3022 DefaillancePositive 2 91 
+3023 DefaillanceNegative 2 91 
+3024 PalierThermique 3 6 91 
+3025 DefaillancePositive 3 91 
+3026 DefaillanceNegative 3 91 
+3027 DefaillancePositive 4 91 
+3028 DefaillanceNegative 4 91 
+3029 PalierThermique 5 7 91 
+3030 DefaillancePositive 5 91 
+3031 DefaillanceNegative 5 91 
+3032 DefaillancePositive 6 91 
+3033 DefaillanceNegative 6 91 
+3034 DefaillancePositive 7 91 
+3035 DefaillanceNegative 7 91 
+3036 ValeurDeNTCOrigineVersExtremite 0 0 92 
+3037 CoutOrigineVersExtremiteDeLInterconnexion 0 92 
+3038 CoutExtremiteVersOrigineDeLInterconnexion 0 92 
+3039 ValeurDeNTCOrigineVersExtremite 0 1 92 
+3040 ValeurDeNTCOrigineVersExtremite 0 2 92 
+3041 ValeurDeNTCOrigineVersExtremite 1 3 92 
+3042 ValeurDeNTCOrigineVersExtremite 1 4 92 
+3043 ValeurDeNTCOrigineVersExtremite 2 5 92 
+3044 ValeurDeNTCOrigineVersExtremite 2 6 92 
+3045 PalierThermique 0 0 92 
+3046 PalierThermique 0 1 92 
+3047 PalierThermique 0 2 92 
+3048 DefaillancePositive 0 92 
+3049 DefaillanceNegative 0 92 
+3050 PalierThermique 1 3 92 
+3051 PalierThermique 1 4 92 
+3052 PalierThermique 1 5 92 
+3053 DefaillancePositive 1 92 
+3054 DefaillanceNegative 1 92 
+3055 DefaillancePositive 2 92 
+3056 DefaillanceNegative 2 92 
+3057 PalierThermique 3 6 92 
+3058 DefaillancePositive 3 92 
+3059 DefaillanceNegative 3 92 
+3060 DefaillancePositive 4 92 
+3061 DefaillanceNegative 4 92 
+3062 PalierThermique 5 7 92 
+3063 DefaillancePositive 5 92 
+3064 DefaillanceNegative 5 92 
+3065 DefaillancePositive 6 92 
+3066 DefaillanceNegative 6 92 
+3067 DefaillancePositive 7 92 
+3068 DefaillanceNegative 7 92 
+3069 ValeurDeNTCOrigineVersExtremite 0 0 93 
+3070 CoutOrigineVersExtremiteDeLInterconnexion 0 93 
+3071 CoutExtremiteVersOrigineDeLInterconnexion 0 93 
+3072 ValeurDeNTCOrigineVersExtremite 0 1 93 
+3073 ValeurDeNTCOrigineVersExtremite 0 2 93 
+3074 ValeurDeNTCOrigineVersExtremite 1 3 93 
+3075 ValeurDeNTCOrigineVersExtremite 1 4 93 
+3076 ValeurDeNTCOrigineVersExtremite 2 5 93 
+3077 ValeurDeNTCOrigineVersExtremite 2 6 93 
+3078 PalierThermique 0 0 93 
+3079 PalierThermique 0 1 93 
+3080 PalierThermique 0 2 93 
+3081 DefaillancePositive 0 93 
+3082 DefaillanceNegative 0 93 
+3083 PalierThermique 1 3 93 
+3084 PalierThermique 1 4 93 
+3085 PalierThermique 1 5 93 
+3086 DefaillancePositive 1 93 
+3087 DefaillanceNegative 1 93 
+3088 DefaillancePositive 2 93 
+3089 DefaillanceNegative 2 93 
+3090 PalierThermique 3 6 93 
+3091 DefaillancePositive 3 93 
+3092 DefaillanceNegative 3 93 
+3093 DefaillancePositive 4 93 
+3094 DefaillanceNegative 4 93 
+3095 PalierThermique 5 7 93 
+3096 DefaillancePositive 5 93 
+3097 DefaillanceNegative 5 93 
+3098 DefaillancePositive 6 93 
+3099 DefaillanceNegative 6 93 
+3100 DefaillancePositive 7 93 
+3101 DefaillanceNegative 7 93 
+3102 ValeurDeNTCOrigineVersExtremite 0 0 94 
+3103 CoutOrigineVersExtremiteDeLInterconnexion 0 94 
+3104 CoutExtremiteVersOrigineDeLInterconnexion 0 94 
+3105 ValeurDeNTCOrigineVersExtremite 0 1 94 
+3106 ValeurDeNTCOrigineVersExtremite 0 2 94 
+3107 ValeurDeNTCOrigineVersExtremite 1 3 94 
+3108 ValeurDeNTCOrigineVersExtremite 1 4 94 
+3109 ValeurDeNTCOrigineVersExtremite 2 5 94 
+3110 ValeurDeNTCOrigineVersExtremite 2 6 94 
+3111 PalierThermique 0 0 94 
+3112 PalierThermique 0 1 94 
+3113 PalierThermique 0 2 94 
+3114 DefaillancePositive 0 94 
+3115 DefaillanceNegative 0 94 
+3116 PalierThermique 1 3 94 
+3117 PalierThermique 1 4 94 
+3118 PalierThermique 1 5 94 
+3119 DefaillancePositive 1 94 
+3120 DefaillanceNegative 1 94 
+3121 DefaillancePositive 2 94 
+3122 DefaillanceNegative 2 94 
+3123 PalierThermique 3 6 94 
+3124 DefaillancePositive 3 94 
+3125 DefaillanceNegative 3 94 
+3126 DefaillancePositive 4 94 
+3127 DefaillanceNegative 4 94 
+3128 PalierThermique 5 7 94 
+3129 DefaillancePositive 5 94 
+3130 DefaillanceNegative 5 94 
+3131 DefaillancePositive 6 94 
+3132 DefaillanceNegative 6 94 
+3133 DefaillancePositive 7 94 
+3134 DefaillanceNegative 7 94 
+3135 ValeurDeNTCOrigineVersExtremite 0 0 95 
+3136 CoutOrigineVersExtremiteDeLInterconnexion 0 95 
+3137 CoutExtremiteVersOrigineDeLInterconnexion 0 95 
+3138 ValeurDeNTCOrigineVersExtremite 0 1 95 
+3139 ValeurDeNTCOrigineVersExtremite 0 2 95 
+3140 ValeurDeNTCOrigineVersExtremite 1 3 95 
+3141 ValeurDeNTCOrigineVersExtremite 1 4 95 
+3142 ValeurDeNTCOrigineVersExtremite 2 5 95 
+3143 ValeurDeNTCOrigineVersExtremite 2 6 95 
+3144 PalierThermique 0 0 95 
+3145 PalierThermique 0 1 95 
+3146 PalierThermique 0 2 95 
+3147 DefaillancePositive 0 95 
+3148 DefaillanceNegative 0 95 
+3149 PalierThermique 1 3 95 
+3150 PalierThermique 1 4 95 
+3151 PalierThermique 1 5 95 
+3152 DefaillancePositive 1 95 
+3153 DefaillanceNegative 1 95 
+3154 DefaillancePositive 2 95 
+3155 DefaillanceNegative 2 95 
+3156 PalierThermique 3 6 95 
+3157 DefaillancePositive 3 95 
+3158 DefaillanceNegative 3 95 
+3159 DefaillancePositive 4 95 
+3160 DefaillanceNegative 4 95 
+3161 PalierThermique 5 7 95 
+3162 DefaillancePositive 5 95 
+3163 DefaillanceNegative 5 95 
+3164 DefaillancePositive 6 95 
+3165 DefaillanceNegative 6 95 
+3166 DefaillancePositive 7 95 
+3167 DefaillanceNegative 7 95 
+3168 ValeurDeNTCOrigineVersExtremite 0 0 96 
+3169 CoutOrigineVersExtremiteDeLInterconnexion 0 96 
+3170 CoutExtremiteVersOrigineDeLInterconnexion 0 96 
+3171 ValeurDeNTCOrigineVersExtremite 0 1 96 
+3172 ValeurDeNTCOrigineVersExtremite 0 2 96 
+3173 ValeurDeNTCOrigineVersExtremite 1 3 96 
+3174 ValeurDeNTCOrigineVersExtremite 1 4 96 
+3175 ValeurDeNTCOrigineVersExtremite 2 5 96 
+3176 ValeurDeNTCOrigineVersExtremite 2 6 96 
+3177 PalierThermique 0 0 96 
+3178 PalierThermique 0 1 96 
+3179 PalierThermique 0 2 96 
+3180 DefaillancePositive 0 96 
+3181 DefaillanceNegative 0 96 
+3182 PalierThermique 1 3 96 
+3183 PalierThermique 1 4 96 
+3184 PalierThermique 1 5 96 
+3185 DefaillancePositive 1 96 
+3186 DefaillanceNegative 1 96 
+3187 DefaillancePositive 2 96 
+3188 DefaillanceNegative 2 96 
+3189 PalierThermique 3 6 96 
+3190 DefaillancePositive 3 96 
+3191 DefaillanceNegative 3 96 
+3192 DefaillancePositive 4 96 
+3193 DefaillanceNegative 4 96 
+3194 PalierThermique 5 7 96 
+3195 DefaillancePositive 5 96 
+3196 DefaillanceNegative 5 96 
+3197 DefaillancePositive 6 96 
+3198 DefaillanceNegative 6 96 
+3199 DefaillancePositive 7 96 
+3200 DefaillanceNegative 7 96 
+3201 ValeurDeNTCOrigineVersExtremite 0 0 97 
+3202 CoutOrigineVersExtremiteDeLInterconnexion 0 97 
+3203 CoutExtremiteVersOrigineDeLInterconnexion 0 97 
+3204 ValeurDeNTCOrigineVersExtremite 0 1 97 
+3205 ValeurDeNTCOrigineVersExtremite 0 2 97 
+3206 ValeurDeNTCOrigineVersExtremite 1 3 97 
+3207 ValeurDeNTCOrigineVersExtremite 1 4 97 
+3208 ValeurDeNTCOrigineVersExtremite 2 5 97 
+3209 ValeurDeNTCOrigineVersExtremite 2 6 97 
+3210 PalierThermique 0 0 97 
+3211 PalierThermique 0 1 97 
+3212 PalierThermique 0 2 97 
+3213 DefaillancePositive 0 97 
+3214 DefaillanceNegative 0 97 
+3215 PalierThermique 1 3 97 
+3216 PalierThermique 1 4 97 
+3217 PalierThermique 1 5 97 
+3218 DefaillancePositive 1 97 
+3219 DefaillanceNegative 1 97 
+3220 DefaillancePositive 2 97 
+3221 DefaillanceNegative 2 97 
+3222 PalierThermique 3 6 97 
+3223 DefaillancePositive 3 97 
+3224 DefaillanceNegative 3 97 
+3225 DefaillancePositive 4 97 
+3226 DefaillanceNegative 4 97 
+3227 PalierThermique 5 7 97 
+3228 DefaillancePositive 5 97 
+3229 DefaillanceNegative 5 97 
+3230 DefaillancePositive 6 97 
+3231 DefaillanceNegative 6 97 
+3232 DefaillancePositive 7 97 
+3233 DefaillanceNegative 7 97 
+3234 ValeurDeNTCOrigineVersExtremite 0 0 98 
+3235 CoutOrigineVersExtremiteDeLInterconnexion 0 98 
+3236 CoutExtremiteVersOrigineDeLInterconnexion 0 98 
+3237 ValeurDeNTCOrigineVersExtremite 0 1 98 
+3238 ValeurDeNTCOrigineVersExtremite 0 2 98 
+3239 ValeurDeNTCOrigineVersExtremite 1 3 98 
+3240 ValeurDeNTCOrigineVersExtremite 1 4 98 
+3241 ValeurDeNTCOrigineVersExtremite 2 5 98 
+3242 ValeurDeNTCOrigineVersExtremite 2 6 98 
+3243 PalierThermique 0 0 98 
+3244 PalierThermique 0 1 98 
+3245 PalierThermique 0 2 98 
+3246 DefaillancePositive 0 98 
+3247 DefaillanceNegative 0 98 
+3248 PalierThermique 1 3 98 
+3249 PalierThermique 1 4 98 
+3250 PalierThermique 1 5 98 
+3251 DefaillancePositive 1 98 
+3252 DefaillanceNegative 1 98 
+3253 DefaillancePositive 2 98 
+3254 DefaillanceNegative 2 98 
+3255 PalierThermique 3 6 98 
+3256 DefaillancePositive 3 98 
+3257 DefaillanceNegative 3 98 
+3258 DefaillancePositive 4 98 
+3259 DefaillanceNegative 4 98 
+3260 PalierThermique 5 7 98 
+3261 DefaillancePositive 5 98 
+3262 DefaillanceNegative 5 98 
+3263 DefaillancePositive 6 98 
+3264 DefaillanceNegative 6 98 
+3265 DefaillancePositive 7 98 
+3266 DefaillanceNegative 7 98 
+3267 ValeurDeNTCOrigineVersExtremite 0 0 99 
+3268 CoutOrigineVersExtremiteDeLInterconnexion 0 99 
+3269 CoutExtremiteVersOrigineDeLInterconnexion 0 99 
+3270 ValeurDeNTCOrigineVersExtremite 0 1 99 
+3271 ValeurDeNTCOrigineVersExtremite 0 2 99 
+3272 ValeurDeNTCOrigineVersExtremite 1 3 99 
+3273 ValeurDeNTCOrigineVersExtremite 1 4 99 
+3274 ValeurDeNTCOrigineVersExtremite 2 5 99 
+3275 ValeurDeNTCOrigineVersExtremite 2 6 99 
+3276 PalierThermique 0 0 99 
+3277 PalierThermique 0 1 99 
+3278 PalierThermique 0 2 99 
+3279 DefaillancePositive 0 99 
+3280 DefaillanceNegative 0 99 
+3281 PalierThermique 1 3 99 
+3282 PalierThermique 1 4 99 
+3283 PalierThermique 1 5 99 
+3284 DefaillancePositive 1 99 
+3285 DefaillanceNegative 1 99 
+3286 DefaillancePositive 2 99 
+3287 DefaillanceNegative 2 99 
+3288 PalierThermique 3 6 99 
+3289 DefaillancePositive 3 99 
+3290 DefaillanceNegative 3 99 
+3291 DefaillancePositive 4 99 
+3292 DefaillanceNegative 4 99 
+3293 PalierThermique 5 7 99 
+3294 DefaillancePositive 5 99 
+3295 DefaillanceNegative 5 99 
+3296 DefaillancePositive 6 99 
+3297 DefaillanceNegative 6 99 
+3298 DefaillancePositive 7 99 
+3299 DefaillanceNegative 7 99 
+3300 ValeurDeNTCOrigineVersExtremite 0 0 100 
+3301 CoutOrigineVersExtremiteDeLInterconnexion 0 100 
+3302 CoutExtremiteVersOrigineDeLInterconnexion 0 100 
+3303 ValeurDeNTCOrigineVersExtremite 0 1 100 
+3304 ValeurDeNTCOrigineVersExtremite 0 2 100 
+3305 ValeurDeNTCOrigineVersExtremite 1 3 100 
+3306 ValeurDeNTCOrigineVersExtremite 1 4 100 
+3307 ValeurDeNTCOrigineVersExtremite 2 5 100 
+3308 ValeurDeNTCOrigineVersExtremite 2 6 100 
+3309 PalierThermique 0 0 100 
+3310 PalierThermique 0 1 100 
+3311 PalierThermique 0 2 100 
+3312 DefaillancePositive 0 100 
+3313 DefaillanceNegative 0 100 
+3314 PalierThermique 1 3 100 
+3315 PalierThermique 1 4 100 
+3316 PalierThermique 1 5 100 
+3317 DefaillancePositive 1 100 
+3318 DefaillanceNegative 1 100 
+3319 DefaillancePositive 2 100 
+3320 DefaillanceNegative 2 100 
+3321 PalierThermique 3 6 100 
+3322 DefaillancePositive 3 100 
+3323 DefaillanceNegative 3 100 
+3324 DefaillancePositive 4 100 
+3325 DefaillanceNegative 4 100 
+3326 PalierThermique 5 7 100 
+3327 DefaillancePositive 5 100 
+3328 DefaillanceNegative 5 100 
+3329 DefaillancePositive 6 100 
+3330 DefaillanceNegative 6 100 
+3331 DefaillancePositive 7 100 
+3332 DefaillanceNegative 7 100 
+3333 ValeurDeNTCOrigineVersExtremite 0 0 101 
+3334 CoutOrigineVersExtremiteDeLInterconnexion 0 101 
+3335 CoutExtremiteVersOrigineDeLInterconnexion 0 101 
+3336 ValeurDeNTCOrigineVersExtremite 0 1 101 
+3337 ValeurDeNTCOrigineVersExtremite 0 2 101 
+3338 ValeurDeNTCOrigineVersExtremite 1 3 101 
+3339 ValeurDeNTCOrigineVersExtremite 1 4 101 
+3340 ValeurDeNTCOrigineVersExtremite 2 5 101 
+3341 ValeurDeNTCOrigineVersExtremite 2 6 101 
+3342 PalierThermique 0 0 101 
+3343 PalierThermique 0 1 101 
+3344 PalierThermique 0 2 101 
+3345 DefaillancePositive 0 101 
+3346 DefaillanceNegative 0 101 
+3347 PalierThermique 1 3 101 
+3348 PalierThermique 1 4 101 
+3349 PalierThermique 1 5 101 
+3350 DefaillancePositive 1 101 
+3351 DefaillanceNegative 1 101 
+3352 DefaillancePositive 2 101 
+3353 DefaillanceNegative 2 101 
+3354 PalierThermique 3 6 101 
+3355 DefaillancePositive 3 101 
+3356 DefaillanceNegative 3 101 
+3357 DefaillancePositive 4 101 
+3358 DefaillanceNegative 4 101 
+3359 PalierThermique 5 7 101 
+3360 DefaillancePositive 5 101 
+3361 DefaillanceNegative 5 101 
+3362 DefaillancePositive 6 101 
+3363 DefaillanceNegative 6 101 
+3364 DefaillancePositive 7 101 
+3365 DefaillanceNegative 7 101 
+3366 ValeurDeNTCOrigineVersExtremite 0 0 102 
+3367 CoutOrigineVersExtremiteDeLInterconnexion 0 102 
+3368 CoutExtremiteVersOrigineDeLInterconnexion 0 102 
+3369 ValeurDeNTCOrigineVersExtremite 0 1 102 
+3370 ValeurDeNTCOrigineVersExtremite 0 2 102 
+3371 ValeurDeNTCOrigineVersExtremite 1 3 102 
+3372 ValeurDeNTCOrigineVersExtremite 1 4 102 
+3373 ValeurDeNTCOrigineVersExtremite 2 5 102 
+3374 ValeurDeNTCOrigineVersExtremite 2 6 102 
+3375 PalierThermique 0 0 102 
+3376 PalierThermique 0 1 102 
+3377 PalierThermique 0 2 102 
+3378 DefaillancePositive 0 102 
+3379 DefaillanceNegative 0 102 
+3380 PalierThermique 1 3 102 
+3381 PalierThermique 1 4 102 
+3382 PalierThermique 1 5 102 
+3383 DefaillancePositive 1 102 
+3384 DefaillanceNegative 1 102 
+3385 DefaillancePositive 2 102 
+3386 DefaillanceNegative 2 102 
+3387 PalierThermique 3 6 102 
+3388 DefaillancePositive 3 102 
+3389 DefaillanceNegative 3 102 
+3390 DefaillancePositive 4 102 
+3391 DefaillanceNegative 4 102 
+3392 PalierThermique 5 7 102 
+3393 DefaillancePositive 5 102 
+3394 DefaillanceNegative 5 102 
+3395 DefaillancePositive 6 102 
+3396 DefaillanceNegative 6 102 
+3397 DefaillancePositive 7 102 
+3398 DefaillanceNegative 7 102 
+3399 ValeurDeNTCOrigineVersExtremite 0 0 103 
+3400 CoutOrigineVersExtremiteDeLInterconnexion 0 103 
+3401 CoutExtremiteVersOrigineDeLInterconnexion 0 103 
+3402 ValeurDeNTCOrigineVersExtremite 0 1 103 
+3403 ValeurDeNTCOrigineVersExtremite 0 2 103 
+3404 ValeurDeNTCOrigineVersExtremite 1 3 103 
+3405 ValeurDeNTCOrigineVersExtremite 1 4 103 
+3406 ValeurDeNTCOrigineVersExtremite 2 5 103 
+3407 ValeurDeNTCOrigineVersExtremite 2 6 103 
+3408 PalierThermique 0 0 103 
+3409 PalierThermique 0 1 103 
+3410 PalierThermique 0 2 103 
+3411 DefaillancePositive 0 103 
+3412 DefaillanceNegative 0 103 
+3413 PalierThermique 1 3 103 
+3414 PalierThermique 1 4 103 
+3415 PalierThermique 1 5 103 
+3416 DefaillancePositive 1 103 
+3417 DefaillanceNegative 1 103 
+3418 DefaillancePositive 2 103 
+3419 DefaillanceNegative 2 103 
+3420 PalierThermique 3 6 103 
+3421 DefaillancePositive 3 103 
+3422 DefaillanceNegative 3 103 
+3423 DefaillancePositive 4 103 
+3424 DefaillanceNegative 4 103 
+3425 PalierThermique 5 7 103 
+3426 DefaillancePositive 5 103 
+3427 DefaillanceNegative 5 103 
+3428 DefaillancePositive 6 103 
+3429 DefaillanceNegative 6 103 
+3430 DefaillancePositive 7 103 
+3431 DefaillanceNegative 7 103 
+3432 ValeurDeNTCOrigineVersExtremite 0 0 104 
+3433 CoutOrigineVersExtremiteDeLInterconnexion 0 104 
+3434 CoutExtremiteVersOrigineDeLInterconnexion 0 104 
+3435 ValeurDeNTCOrigineVersExtremite 0 1 104 
+3436 ValeurDeNTCOrigineVersExtremite 0 2 104 
+3437 ValeurDeNTCOrigineVersExtremite 1 3 104 
+3438 ValeurDeNTCOrigineVersExtremite 1 4 104 
+3439 ValeurDeNTCOrigineVersExtremite 2 5 104 
+3440 ValeurDeNTCOrigineVersExtremite 2 6 104 
+3441 PalierThermique 0 0 104 
+3442 PalierThermique 0 1 104 
+3443 PalierThermique 0 2 104 
+3444 DefaillancePositive 0 104 
+3445 DefaillanceNegative 0 104 
+3446 PalierThermique 1 3 104 
+3447 PalierThermique 1 4 104 
+3448 PalierThermique 1 5 104 
+3449 DefaillancePositive 1 104 
+3450 DefaillanceNegative 1 104 
+3451 DefaillancePositive 2 104 
+3452 DefaillanceNegative 2 104 
+3453 PalierThermique 3 6 104 
+3454 DefaillancePositive 3 104 
+3455 DefaillanceNegative 3 104 
+3456 DefaillancePositive 4 104 
+3457 DefaillanceNegative 4 104 
+3458 PalierThermique 5 7 104 
+3459 DefaillancePositive 5 104 
+3460 DefaillanceNegative 5 104 
+3461 DefaillancePositive 6 104 
+3462 DefaillanceNegative 6 104 
+3463 DefaillancePositive 7 104 
+3464 DefaillanceNegative 7 104 
+3465 ValeurDeNTCOrigineVersExtremite 0 0 105 
+3466 CoutOrigineVersExtremiteDeLInterconnexion 0 105 
+3467 CoutExtremiteVersOrigineDeLInterconnexion 0 105 
+3468 ValeurDeNTCOrigineVersExtremite 0 1 105 
+3469 ValeurDeNTCOrigineVersExtremite 0 2 105 
+3470 ValeurDeNTCOrigineVersExtremite 1 3 105 
+3471 ValeurDeNTCOrigineVersExtremite 1 4 105 
+3472 ValeurDeNTCOrigineVersExtremite 2 5 105 
+3473 ValeurDeNTCOrigineVersExtremite 2 6 105 
+3474 PalierThermique 0 0 105 
+3475 PalierThermique 0 1 105 
+3476 PalierThermique 0 2 105 
+3477 DefaillancePositive 0 105 
+3478 DefaillanceNegative 0 105 
+3479 PalierThermique 1 3 105 
+3480 PalierThermique 1 4 105 
+3481 PalierThermique 1 5 105 
+3482 DefaillancePositive 1 105 
+3483 DefaillanceNegative 1 105 
+3484 DefaillancePositive 2 105 
+3485 DefaillanceNegative 2 105 
+3486 PalierThermique 3 6 105 
+3487 DefaillancePositive 3 105 
+3488 DefaillanceNegative 3 105 
+3489 DefaillancePositive 4 105 
+3490 DefaillanceNegative 4 105 
+3491 PalierThermique 5 7 105 
+3492 DefaillancePositive 5 105 
+3493 DefaillanceNegative 5 105 
+3494 DefaillancePositive 6 105 
+3495 DefaillanceNegative 6 105 
+3496 DefaillancePositive 7 105 
+3497 DefaillanceNegative 7 105 
+3498 ValeurDeNTCOrigineVersExtremite 0 0 106 
+3499 CoutOrigineVersExtremiteDeLInterconnexion 0 106 
+3500 CoutExtremiteVersOrigineDeLInterconnexion 0 106 
+3501 ValeurDeNTCOrigineVersExtremite 0 1 106 
+3502 ValeurDeNTCOrigineVersExtremite 0 2 106 
+3503 ValeurDeNTCOrigineVersExtremite 1 3 106 
+3504 ValeurDeNTCOrigineVersExtremite 1 4 106 
+3505 ValeurDeNTCOrigineVersExtremite 2 5 106 
+3506 ValeurDeNTCOrigineVersExtremite 2 6 106 
+3507 PalierThermique 0 0 106 
+3508 PalierThermique 0 1 106 
+3509 PalierThermique 0 2 106 
+3510 DefaillancePositive 0 106 
+3511 DefaillanceNegative 0 106 
+3512 PalierThermique 1 3 106 
+3513 PalierThermique 1 4 106 
+3514 PalierThermique 1 5 106 
+3515 DefaillancePositive 1 106 
+3516 DefaillanceNegative 1 106 
+3517 DefaillancePositive 2 106 
+3518 DefaillanceNegative 2 106 
+3519 PalierThermique 3 6 106 
+3520 DefaillancePositive 3 106 
+3521 DefaillanceNegative 3 106 
+3522 DefaillancePositive 4 106 
+3523 DefaillanceNegative 4 106 
+3524 PalierThermique 5 7 106 
+3525 DefaillancePositive 5 106 
+3526 DefaillanceNegative 5 106 
+3527 DefaillancePositive 6 106 
+3528 DefaillanceNegative 6 106 
+3529 DefaillancePositive 7 106 
+3530 DefaillanceNegative 7 106 
+3531 ValeurDeNTCOrigineVersExtremite 0 0 107 
+3532 CoutOrigineVersExtremiteDeLInterconnexion 0 107 
+3533 CoutExtremiteVersOrigineDeLInterconnexion 0 107 
+3534 ValeurDeNTCOrigineVersExtremite 0 1 107 
+3535 ValeurDeNTCOrigineVersExtremite 0 2 107 
+3536 ValeurDeNTCOrigineVersExtremite 1 3 107 
+3537 ValeurDeNTCOrigineVersExtremite 1 4 107 
+3538 ValeurDeNTCOrigineVersExtremite 2 5 107 
+3539 ValeurDeNTCOrigineVersExtremite 2 6 107 
+3540 PalierThermique 0 0 107 
+3541 PalierThermique 0 1 107 
+3542 PalierThermique 0 2 107 
+3543 DefaillancePositive 0 107 
+3544 DefaillanceNegative 0 107 
+3545 PalierThermique 1 3 107 
+3546 PalierThermique 1 4 107 
+3547 PalierThermique 1 5 107 
+3548 DefaillancePositive 1 107 
+3549 DefaillanceNegative 1 107 
+3550 DefaillancePositive 2 107 
+3551 DefaillanceNegative 2 107 
+3552 PalierThermique 3 6 107 
+3553 DefaillancePositive 3 107 
+3554 DefaillanceNegative 3 107 
+3555 DefaillancePositive 4 107 
+3556 DefaillanceNegative 4 107 
+3557 PalierThermique 5 7 107 
+3558 DefaillancePositive 5 107 
+3559 DefaillanceNegative 5 107 
+3560 DefaillancePositive 6 107 
+3561 DefaillanceNegative 6 107 
+3562 DefaillancePositive 7 107 
+3563 DefaillanceNegative 7 107 
+3564 ValeurDeNTCOrigineVersExtremite 0 0 108 
+3565 CoutOrigineVersExtremiteDeLInterconnexion 0 108 
+3566 CoutExtremiteVersOrigineDeLInterconnexion 0 108 
+3567 ValeurDeNTCOrigineVersExtremite 0 1 108 
+3568 ValeurDeNTCOrigineVersExtremite 0 2 108 
+3569 ValeurDeNTCOrigineVersExtremite 1 3 108 
+3570 ValeurDeNTCOrigineVersExtremite 1 4 108 
+3571 ValeurDeNTCOrigineVersExtremite 2 5 108 
+3572 ValeurDeNTCOrigineVersExtremite 2 6 108 
+3573 PalierThermique 0 0 108 
+3574 PalierThermique 0 1 108 
+3575 PalierThermique 0 2 108 
+3576 DefaillancePositive 0 108 
+3577 DefaillanceNegative 0 108 
+3578 PalierThermique 1 3 108 
+3579 PalierThermique 1 4 108 
+3580 PalierThermique 1 5 108 
+3581 DefaillancePositive 1 108 
+3582 DefaillanceNegative 1 108 
+3583 DefaillancePositive 2 108 
+3584 DefaillanceNegative 2 108 
+3585 PalierThermique 3 6 108 
+3586 DefaillancePositive 3 108 
+3587 DefaillanceNegative 3 108 
+3588 DefaillancePositive 4 108 
+3589 DefaillanceNegative 4 108 
+3590 PalierThermique 5 7 108 
+3591 DefaillancePositive 5 108 
+3592 DefaillanceNegative 5 108 
+3593 DefaillancePositive 6 108 
+3594 DefaillanceNegative 6 108 
+3595 DefaillancePositive 7 108 
+3596 DefaillanceNegative 7 108 
+3597 ValeurDeNTCOrigineVersExtremite 0 0 109 
+3598 CoutOrigineVersExtremiteDeLInterconnexion 0 109 
+3599 CoutExtremiteVersOrigineDeLInterconnexion 0 109 
+3600 ValeurDeNTCOrigineVersExtremite 0 1 109 
+3601 ValeurDeNTCOrigineVersExtremite 0 2 109 
+3602 ValeurDeNTCOrigineVersExtremite 1 3 109 
+3603 ValeurDeNTCOrigineVersExtremite 1 4 109 
+3604 ValeurDeNTCOrigineVersExtremite 2 5 109 
+3605 ValeurDeNTCOrigineVersExtremite 2 6 109 
+3606 PalierThermique 0 0 109 
+3607 PalierThermique 0 1 109 
+3608 PalierThermique 0 2 109 
+3609 DefaillancePositive 0 109 
+3610 DefaillanceNegative 0 109 
+3611 PalierThermique 1 3 109 
+3612 PalierThermique 1 4 109 
+3613 PalierThermique 1 5 109 
+3614 DefaillancePositive 1 109 
+3615 DefaillanceNegative 1 109 
+3616 DefaillancePositive 2 109 
+3617 DefaillanceNegative 2 109 
+3618 PalierThermique 3 6 109 
+3619 DefaillancePositive 3 109 
+3620 DefaillanceNegative 3 109 
+3621 DefaillancePositive 4 109 
+3622 DefaillanceNegative 4 109 
+3623 PalierThermique 5 7 109 
+3624 DefaillancePositive 5 109 
+3625 DefaillanceNegative 5 109 
+3626 DefaillancePositive 6 109 
+3627 DefaillanceNegative 6 109 
+3628 DefaillancePositive 7 109 
+3629 DefaillanceNegative 7 109 
+3630 ValeurDeNTCOrigineVersExtremite 0 0 110 
+3631 CoutOrigineVersExtremiteDeLInterconnexion 0 110 
+3632 CoutExtremiteVersOrigineDeLInterconnexion 0 110 
+3633 ValeurDeNTCOrigineVersExtremite 0 1 110 
+3634 ValeurDeNTCOrigineVersExtremite 0 2 110 
+3635 ValeurDeNTCOrigineVersExtremite 1 3 110 
+3636 ValeurDeNTCOrigineVersExtremite 1 4 110 
+3637 ValeurDeNTCOrigineVersExtremite 2 5 110 
+3638 ValeurDeNTCOrigineVersExtremite 2 6 110 
+3639 PalierThermique 0 0 110 
+3640 PalierThermique 0 1 110 
+3641 PalierThermique 0 2 110 
+3642 DefaillancePositive 0 110 
+3643 DefaillanceNegative 0 110 
+3644 PalierThermique 1 3 110 
+3645 PalierThermique 1 4 110 
+3646 PalierThermique 1 5 110 
+3647 DefaillancePositive 1 110 
+3648 DefaillanceNegative 1 110 
+3649 DefaillancePositive 2 110 
+3650 DefaillanceNegative 2 110 
+3651 PalierThermique 3 6 110 
+3652 DefaillancePositive 3 110 
+3653 DefaillanceNegative 3 110 
+3654 DefaillancePositive 4 110 
+3655 DefaillanceNegative 4 110 
+3656 PalierThermique 5 7 110 
+3657 DefaillancePositive 5 110 
+3658 DefaillanceNegative 5 110 
+3659 DefaillancePositive 6 110 
+3660 DefaillanceNegative 6 110 
+3661 DefaillancePositive 7 110 
+3662 DefaillanceNegative 7 110 
+3663 ValeurDeNTCOrigineVersExtremite 0 0 111 
+3664 CoutOrigineVersExtremiteDeLInterconnexion 0 111 
+3665 CoutExtremiteVersOrigineDeLInterconnexion 0 111 
+3666 ValeurDeNTCOrigineVersExtremite 0 1 111 
+3667 ValeurDeNTCOrigineVersExtremite 0 2 111 
+3668 ValeurDeNTCOrigineVersExtremite 1 3 111 
+3669 ValeurDeNTCOrigineVersExtremite 1 4 111 
+3670 ValeurDeNTCOrigineVersExtremite 2 5 111 
+3671 ValeurDeNTCOrigineVersExtremite 2 6 111 
+3672 PalierThermique 0 0 111 
+3673 PalierThermique 0 1 111 
+3674 PalierThermique 0 2 111 
+3675 DefaillancePositive 0 111 
+3676 DefaillanceNegative 0 111 
+3677 PalierThermique 1 3 111 
+3678 PalierThermique 1 4 111 
+3679 PalierThermique 1 5 111 
+3680 DefaillancePositive 1 111 
+3681 DefaillanceNegative 1 111 
+3682 DefaillancePositive 2 111 
+3683 DefaillanceNegative 2 111 
+3684 PalierThermique 3 6 111 
+3685 DefaillancePositive 3 111 
+3686 DefaillanceNegative 3 111 
+3687 DefaillancePositive 4 111 
+3688 DefaillanceNegative 4 111 
+3689 PalierThermique 5 7 111 
+3690 DefaillancePositive 5 111 
+3691 DefaillanceNegative 5 111 
+3692 DefaillancePositive 6 111 
+3693 DefaillanceNegative 6 111 
+3694 DefaillancePositive 7 111 
+3695 DefaillanceNegative 7 111 
+3696 ValeurDeNTCOrigineVersExtremite 0 0 112 
+3697 CoutOrigineVersExtremiteDeLInterconnexion 0 112 
+3698 CoutExtremiteVersOrigineDeLInterconnexion 0 112 
+3699 ValeurDeNTCOrigineVersExtremite 0 1 112 
+3700 ValeurDeNTCOrigineVersExtremite 0 2 112 
+3701 ValeurDeNTCOrigineVersExtremite 1 3 112 
+3702 ValeurDeNTCOrigineVersExtremite 1 4 112 
+3703 ValeurDeNTCOrigineVersExtremite 2 5 112 
+3704 ValeurDeNTCOrigineVersExtremite 2 6 112 
+3705 PalierThermique 0 0 112 
+3706 PalierThermique 0 1 112 
+3707 PalierThermique 0 2 112 
+3708 DefaillancePositive 0 112 
+3709 DefaillanceNegative 0 112 
+3710 PalierThermique 1 3 112 
+3711 PalierThermique 1 4 112 
+3712 PalierThermique 1 5 112 
+3713 DefaillancePositive 1 112 
+3714 DefaillanceNegative 1 112 
+3715 DefaillancePositive 2 112 
+3716 DefaillanceNegative 2 112 
+3717 PalierThermique 3 6 112 
+3718 DefaillancePositive 3 112 
+3719 DefaillanceNegative 3 112 
+3720 DefaillancePositive 4 112 
+3721 DefaillanceNegative 4 112 
+3722 PalierThermique 5 7 112 
+3723 DefaillancePositive 5 112 
+3724 DefaillanceNegative 5 112 
+3725 DefaillancePositive 6 112 
+3726 DefaillanceNegative 6 112 
+3727 DefaillancePositive 7 112 
+3728 DefaillanceNegative 7 112 
+3729 ValeurDeNTCOrigineVersExtremite 0 0 113 
+3730 CoutOrigineVersExtremiteDeLInterconnexion 0 113 
+3731 CoutExtremiteVersOrigineDeLInterconnexion 0 113 
+3732 ValeurDeNTCOrigineVersExtremite 0 1 113 
+3733 ValeurDeNTCOrigineVersExtremite 0 2 113 
+3734 ValeurDeNTCOrigineVersExtremite 1 3 113 
+3735 ValeurDeNTCOrigineVersExtremite 1 4 113 
+3736 ValeurDeNTCOrigineVersExtremite 2 5 113 
+3737 ValeurDeNTCOrigineVersExtremite 2 6 113 
+3738 PalierThermique 0 0 113 
+3739 PalierThermique 0 1 113 
+3740 PalierThermique 0 2 113 
+3741 DefaillancePositive 0 113 
+3742 DefaillanceNegative 0 113 
+3743 PalierThermique 1 3 113 
+3744 PalierThermique 1 4 113 
+3745 PalierThermique 1 5 113 
+3746 DefaillancePositive 1 113 
+3747 DefaillanceNegative 1 113 
+3748 DefaillancePositive 2 113 
+3749 DefaillanceNegative 2 113 
+3750 PalierThermique 3 6 113 
+3751 DefaillancePositive 3 113 
+3752 DefaillanceNegative 3 113 
+3753 DefaillancePositive 4 113 
+3754 DefaillanceNegative 4 113 
+3755 PalierThermique 5 7 113 
+3756 DefaillancePositive 5 113 
+3757 DefaillanceNegative 5 113 
+3758 DefaillancePositive 6 113 
+3759 DefaillanceNegative 6 113 
+3760 DefaillancePositive 7 113 
+3761 DefaillanceNegative 7 113 
+3762 ValeurDeNTCOrigineVersExtremite 0 0 114 
+3763 CoutOrigineVersExtremiteDeLInterconnexion 0 114 
+3764 CoutExtremiteVersOrigineDeLInterconnexion 0 114 
+3765 ValeurDeNTCOrigineVersExtremite 0 1 114 
+3766 ValeurDeNTCOrigineVersExtremite 0 2 114 
+3767 ValeurDeNTCOrigineVersExtremite 1 3 114 
+3768 ValeurDeNTCOrigineVersExtremite 1 4 114 
+3769 ValeurDeNTCOrigineVersExtremite 2 5 114 
+3770 ValeurDeNTCOrigineVersExtremite 2 6 114 
+3771 PalierThermique 0 0 114 
+3772 PalierThermique 0 1 114 
+3773 PalierThermique 0 2 114 
+3774 DefaillancePositive 0 114 
+3775 DefaillanceNegative 0 114 
+3776 PalierThermique 1 3 114 
+3777 PalierThermique 1 4 114 
+3778 PalierThermique 1 5 114 
+3779 DefaillancePositive 1 114 
+3780 DefaillanceNegative 1 114 
+3781 DefaillancePositive 2 114 
+3782 DefaillanceNegative 2 114 
+3783 PalierThermique 3 6 114 
+3784 DefaillancePositive 3 114 
+3785 DefaillanceNegative 3 114 
+3786 DefaillancePositive 4 114 
+3787 DefaillanceNegative 4 114 
+3788 PalierThermique 5 7 114 
+3789 DefaillancePositive 5 114 
+3790 DefaillanceNegative 5 114 
+3791 DefaillancePositive 6 114 
+3792 DefaillanceNegative 6 114 
+3793 DefaillancePositive 7 114 
+3794 DefaillanceNegative 7 114 
+3795 ValeurDeNTCOrigineVersExtremite 0 0 115 
+3796 CoutOrigineVersExtremiteDeLInterconnexion 0 115 
+3797 CoutExtremiteVersOrigineDeLInterconnexion 0 115 
+3798 ValeurDeNTCOrigineVersExtremite 0 1 115 
+3799 ValeurDeNTCOrigineVersExtremite 0 2 115 
+3800 ValeurDeNTCOrigineVersExtremite 1 3 115 
+3801 ValeurDeNTCOrigineVersExtremite 1 4 115 
+3802 ValeurDeNTCOrigineVersExtremite 2 5 115 
+3803 ValeurDeNTCOrigineVersExtremite 2 6 115 
+3804 PalierThermique 0 0 115 
+3805 PalierThermique 0 1 115 
+3806 PalierThermique 0 2 115 
+3807 DefaillancePositive 0 115 
+3808 DefaillanceNegative 0 115 
+3809 PalierThermique 1 3 115 
+3810 PalierThermique 1 4 115 
+3811 PalierThermique 1 5 115 
+3812 DefaillancePositive 1 115 
+3813 DefaillanceNegative 1 115 
+3814 DefaillancePositive 2 115 
+3815 DefaillanceNegative 2 115 
+3816 PalierThermique 3 6 115 
+3817 DefaillancePositive 3 115 
+3818 DefaillanceNegative 3 115 
+3819 DefaillancePositive 4 115 
+3820 DefaillanceNegative 4 115 
+3821 PalierThermique 5 7 115 
+3822 DefaillancePositive 5 115 
+3823 DefaillanceNegative 5 115 
+3824 DefaillancePositive 6 115 
+3825 DefaillanceNegative 6 115 
+3826 DefaillancePositive 7 115 
+3827 DefaillanceNegative 7 115 
+3828 ValeurDeNTCOrigineVersExtremite 0 0 116 
+3829 CoutOrigineVersExtremiteDeLInterconnexion 0 116 
+3830 CoutExtremiteVersOrigineDeLInterconnexion 0 116 
+3831 ValeurDeNTCOrigineVersExtremite 0 1 116 
+3832 ValeurDeNTCOrigineVersExtremite 0 2 116 
+3833 ValeurDeNTCOrigineVersExtremite 1 3 116 
+3834 ValeurDeNTCOrigineVersExtremite 1 4 116 
+3835 ValeurDeNTCOrigineVersExtremite 2 5 116 
+3836 ValeurDeNTCOrigineVersExtremite 2 6 116 
+3837 PalierThermique 0 0 116 
+3838 PalierThermique 0 1 116 
+3839 PalierThermique 0 2 116 
+3840 DefaillancePositive 0 116 
+3841 DefaillanceNegative 0 116 
+3842 PalierThermique 1 3 116 
+3843 PalierThermique 1 4 116 
+3844 PalierThermique 1 5 116 
+3845 DefaillancePositive 1 116 
+3846 DefaillanceNegative 1 116 
+3847 DefaillancePositive 2 116 
+3848 DefaillanceNegative 2 116 
+3849 PalierThermique 3 6 116 
+3850 DefaillancePositive 3 116 
+3851 DefaillanceNegative 3 116 
+3852 DefaillancePositive 4 116 
+3853 DefaillanceNegative 4 116 
+3854 PalierThermique 5 7 116 
+3855 DefaillancePositive 5 116 
+3856 DefaillanceNegative 5 116 
+3857 DefaillancePositive 6 116 
+3858 DefaillanceNegative 6 116 
+3859 DefaillancePositive 7 116 
+3860 DefaillanceNegative 7 116 
+3861 ValeurDeNTCOrigineVersExtremite 0 0 117 
+3862 CoutOrigineVersExtremiteDeLInterconnexion 0 117 
+3863 CoutExtremiteVersOrigineDeLInterconnexion 0 117 
+3864 ValeurDeNTCOrigineVersExtremite 0 1 117 
+3865 ValeurDeNTCOrigineVersExtremite 0 2 117 
+3866 ValeurDeNTCOrigineVersExtremite 1 3 117 
+3867 ValeurDeNTCOrigineVersExtremite 1 4 117 
+3868 ValeurDeNTCOrigineVersExtremite 2 5 117 
+3869 ValeurDeNTCOrigineVersExtremite 2 6 117 
+3870 PalierThermique 0 0 117 
+3871 PalierThermique 0 1 117 
+3872 PalierThermique 0 2 117 
+3873 DefaillancePositive 0 117 
+3874 DefaillanceNegative 0 117 
+3875 PalierThermique 1 3 117 
+3876 PalierThermique 1 4 117 
+3877 PalierThermique 1 5 117 
+3878 DefaillancePositive 1 117 
+3879 DefaillanceNegative 1 117 
+3880 DefaillancePositive 2 117 
+3881 DefaillanceNegative 2 117 
+3882 PalierThermique 3 6 117 
+3883 DefaillancePositive 3 117 
+3884 DefaillanceNegative 3 117 
+3885 DefaillancePositive 4 117 
+3886 DefaillanceNegative 4 117 
+3887 PalierThermique 5 7 117 
+3888 DefaillancePositive 5 117 
+3889 DefaillanceNegative 5 117 
+3890 DefaillancePositive 6 117 
+3891 DefaillanceNegative 6 117 
+3892 DefaillancePositive 7 117 
+3893 DefaillanceNegative 7 117 
+3894 ValeurDeNTCOrigineVersExtremite 0 0 118 
+3895 CoutOrigineVersExtremiteDeLInterconnexion 0 118 
+3896 CoutExtremiteVersOrigineDeLInterconnexion 0 118 
+3897 ValeurDeNTCOrigineVersExtremite 0 1 118 
+3898 ValeurDeNTCOrigineVersExtremite 0 2 118 
+3899 ValeurDeNTCOrigineVersExtremite 1 3 118 
+3900 ValeurDeNTCOrigineVersExtremite 1 4 118 
+3901 ValeurDeNTCOrigineVersExtremite 2 5 118 
+3902 ValeurDeNTCOrigineVersExtremite 2 6 118 
+3903 PalierThermique 0 0 118 
+3904 PalierThermique 0 1 118 
+3905 PalierThermique 0 2 118 
+3906 DefaillancePositive 0 118 
+3907 DefaillanceNegative 0 118 
+3908 PalierThermique 1 3 118 
+3909 PalierThermique 1 4 118 
+3910 PalierThermique 1 5 118 
+3911 DefaillancePositive 1 118 
+3912 DefaillanceNegative 1 118 
+3913 DefaillancePositive 2 118 
+3914 DefaillanceNegative 2 118 
+3915 PalierThermique 3 6 118 
+3916 DefaillancePositive 3 118 
+3917 DefaillanceNegative 3 118 
+3918 DefaillancePositive 4 118 
+3919 DefaillanceNegative 4 118 
+3920 PalierThermique 5 7 118 
+3921 DefaillancePositive 5 118 
+3922 DefaillanceNegative 5 118 
+3923 DefaillancePositive 6 118 
+3924 DefaillanceNegative 6 118 
+3925 DefaillancePositive 7 118 
+3926 DefaillanceNegative 7 118 
+3927 ValeurDeNTCOrigineVersExtremite 0 0 119 
+3928 CoutOrigineVersExtremiteDeLInterconnexion 0 119 
+3929 CoutExtremiteVersOrigineDeLInterconnexion 0 119 
+3930 ValeurDeNTCOrigineVersExtremite 0 1 119 
+3931 ValeurDeNTCOrigineVersExtremite 0 2 119 
+3932 ValeurDeNTCOrigineVersExtremite 1 3 119 
+3933 ValeurDeNTCOrigineVersExtremite 1 4 119 
+3934 ValeurDeNTCOrigineVersExtremite 2 5 119 
+3935 ValeurDeNTCOrigineVersExtremite 2 6 119 
+3936 PalierThermique 0 0 119 
+3937 PalierThermique 0 1 119 
+3938 PalierThermique 0 2 119 
+3939 DefaillancePositive 0 119 
+3940 DefaillanceNegative 0 119 
+3941 PalierThermique 1 3 119 
+3942 PalierThermique 1 4 119 
+3943 PalierThermique 1 5 119 
+3944 DefaillancePositive 1 119 
+3945 DefaillanceNegative 1 119 
+3946 DefaillancePositive 2 119 
+3947 DefaillanceNegative 2 119 
+3948 PalierThermique 3 6 119 
+3949 DefaillancePositive 3 119 
+3950 DefaillanceNegative 3 119 
+3951 DefaillancePositive 4 119 
+3952 DefaillanceNegative 4 119 
+3953 PalierThermique 5 7 119 
+3954 DefaillancePositive 5 119 
+3955 DefaillanceNegative 5 119 
+3956 DefaillancePositive 6 119 
+3957 DefaillanceNegative 6 119 
+3958 DefaillancePositive 7 119 
+3959 DefaillanceNegative 7 119 
+3960 ValeurDeNTCOrigineVersExtremite 0 0 120 
+3961 CoutOrigineVersExtremiteDeLInterconnexion 0 120 
+3962 CoutExtremiteVersOrigineDeLInterconnexion 0 120 
+3963 ValeurDeNTCOrigineVersExtremite 0 1 120 
+3964 ValeurDeNTCOrigineVersExtremite 0 2 120 
+3965 ValeurDeNTCOrigineVersExtremite 1 3 120 
+3966 ValeurDeNTCOrigineVersExtremite 1 4 120 
+3967 ValeurDeNTCOrigineVersExtremite 2 5 120 
+3968 ValeurDeNTCOrigineVersExtremite 2 6 120 
+3969 PalierThermique 0 0 120 
+3970 PalierThermique 0 1 120 
+3971 PalierThermique 0 2 120 
+3972 DefaillancePositive 0 120 
+3973 DefaillanceNegative 0 120 
+3974 PalierThermique 1 3 120 
+3975 PalierThermique 1 4 120 
+3976 PalierThermique 1 5 120 
+3977 DefaillancePositive 1 120 
+3978 DefaillanceNegative 1 120 
+3979 DefaillancePositive 2 120 
+3980 DefaillanceNegative 2 120 
+3981 PalierThermique 3 6 120 
+3982 DefaillancePositive 3 120 
+3983 DefaillanceNegative 3 120 
+3984 DefaillancePositive 4 120 
+3985 DefaillanceNegative 4 120 
+3986 PalierThermique 5 7 120 
+3987 DefaillancePositive 5 120 
+3988 DefaillanceNegative 5 120 
+3989 DefaillancePositive 6 120 
+3990 DefaillanceNegative 6 120 
+3991 DefaillancePositive 7 120 
+3992 DefaillanceNegative 7 120 
+3993 ValeurDeNTCOrigineVersExtremite 0 0 121 
+3994 CoutOrigineVersExtremiteDeLInterconnexion 0 121 
+3995 CoutExtremiteVersOrigineDeLInterconnexion 0 121 
+3996 ValeurDeNTCOrigineVersExtremite 0 1 121 
+3997 ValeurDeNTCOrigineVersExtremite 0 2 121 
+3998 ValeurDeNTCOrigineVersExtremite 1 3 121 
+3999 ValeurDeNTCOrigineVersExtremite 1 4 121 
+4000 ValeurDeNTCOrigineVersExtremite 2 5 121 
+4001 ValeurDeNTCOrigineVersExtremite 2 6 121 
+4002 PalierThermique 0 0 121 
+4003 PalierThermique 0 1 121 
+4004 PalierThermique 0 2 121 
+4005 DefaillancePositive 0 121 
+4006 DefaillanceNegative 0 121 
+4007 PalierThermique 1 3 121 
+4008 PalierThermique 1 4 121 
+4009 PalierThermique 1 5 121 
+4010 DefaillancePositive 1 121 
+4011 DefaillanceNegative 1 121 
+4012 DefaillancePositive 2 121 
+4013 DefaillanceNegative 2 121 
+4014 PalierThermique 3 6 121 
+4015 DefaillancePositive 3 121 
+4016 DefaillanceNegative 3 121 
+4017 DefaillancePositive 4 121 
+4018 DefaillanceNegative 4 121 
+4019 PalierThermique 5 7 121 
+4020 DefaillancePositive 5 121 
+4021 DefaillanceNegative 5 121 
+4022 DefaillancePositive 6 121 
+4023 DefaillanceNegative 6 121 
+4024 DefaillancePositive 7 121 
+4025 DefaillanceNegative 7 121 
+4026 ValeurDeNTCOrigineVersExtremite 0 0 122 
+4027 CoutOrigineVersExtremiteDeLInterconnexion 0 122 
+4028 CoutExtremiteVersOrigineDeLInterconnexion 0 122 
+4029 ValeurDeNTCOrigineVersExtremite 0 1 122 
+4030 ValeurDeNTCOrigineVersExtremite 0 2 122 
+4031 ValeurDeNTCOrigineVersExtremite 1 3 122 
+4032 ValeurDeNTCOrigineVersExtremite 1 4 122 
+4033 ValeurDeNTCOrigineVersExtremite 2 5 122 
+4034 ValeurDeNTCOrigineVersExtremite 2 6 122 
+4035 PalierThermique 0 0 122 
+4036 PalierThermique 0 1 122 
+4037 PalierThermique 0 2 122 
+4038 DefaillancePositive 0 122 
+4039 DefaillanceNegative 0 122 
+4040 PalierThermique 1 3 122 
+4041 PalierThermique 1 4 122 
+4042 PalierThermique 1 5 122 
+4043 DefaillancePositive 1 122 
+4044 DefaillanceNegative 1 122 
+4045 DefaillancePositive 2 122 
+4046 DefaillanceNegative 2 122 
+4047 PalierThermique 3 6 122 
+4048 DefaillancePositive 3 122 
+4049 DefaillanceNegative 3 122 
+4050 DefaillancePositive 4 122 
+4051 DefaillanceNegative 4 122 
+4052 PalierThermique 5 7 122 
+4053 DefaillancePositive 5 122 
+4054 DefaillanceNegative 5 122 
+4055 DefaillancePositive 6 122 
+4056 DefaillanceNegative 6 122 
+4057 DefaillancePositive 7 122 
+4058 DefaillanceNegative 7 122 
+4059 ValeurDeNTCOrigineVersExtremite 0 0 123 
+4060 CoutOrigineVersExtremiteDeLInterconnexion 0 123 
+4061 CoutExtremiteVersOrigineDeLInterconnexion 0 123 
+4062 ValeurDeNTCOrigineVersExtremite 0 1 123 
+4063 ValeurDeNTCOrigineVersExtremite 0 2 123 
+4064 ValeurDeNTCOrigineVersExtremite 1 3 123 
+4065 ValeurDeNTCOrigineVersExtremite 1 4 123 
+4066 ValeurDeNTCOrigineVersExtremite 2 5 123 
+4067 ValeurDeNTCOrigineVersExtremite 2 6 123 
+4068 PalierThermique 0 0 123 
+4069 PalierThermique 0 1 123 
+4070 PalierThermique 0 2 123 
+4071 DefaillancePositive 0 123 
+4072 DefaillanceNegative 0 123 
+4073 PalierThermique 1 3 123 
+4074 PalierThermique 1 4 123 
+4075 PalierThermique 1 5 123 
+4076 DefaillancePositive 1 123 
+4077 DefaillanceNegative 1 123 
+4078 DefaillancePositive 2 123 
+4079 DefaillanceNegative 2 123 
+4080 PalierThermique 3 6 123 
+4081 DefaillancePositive 3 123 
+4082 DefaillanceNegative 3 123 
+4083 DefaillancePositive 4 123 
+4084 DefaillanceNegative 4 123 
+4085 PalierThermique 5 7 123 
+4086 DefaillancePositive 5 123 
+4087 DefaillanceNegative 5 123 
+4088 DefaillancePositive 6 123 
+4089 DefaillanceNegative 6 123 
+4090 DefaillancePositive 7 123 
+4091 DefaillanceNegative 7 123 
+4092 ValeurDeNTCOrigineVersExtremite 0 0 124 
+4093 CoutOrigineVersExtremiteDeLInterconnexion 0 124 
+4094 CoutExtremiteVersOrigineDeLInterconnexion 0 124 
+4095 ValeurDeNTCOrigineVersExtremite 0 1 124 
+4096 ValeurDeNTCOrigineVersExtremite 0 2 124 
+4097 ValeurDeNTCOrigineVersExtremite 1 3 124 
+4098 ValeurDeNTCOrigineVersExtremite 1 4 124 
+4099 ValeurDeNTCOrigineVersExtremite 2 5 124 
+4100 ValeurDeNTCOrigineVersExtremite 2 6 124 
+4101 PalierThermique 0 0 124 
+4102 PalierThermique 0 1 124 
+4103 PalierThermique 0 2 124 
+4104 DefaillancePositive 0 124 
+4105 DefaillanceNegative 0 124 
+4106 PalierThermique 1 3 124 
+4107 PalierThermique 1 4 124 
+4108 PalierThermique 1 5 124 
+4109 DefaillancePositive 1 124 
+4110 DefaillanceNegative 1 124 
+4111 DefaillancePositive 2 124 
+4112 DefaillanceNegative 2 124 
+4113 PalierThermique 3 6 124 
+4114 DefaillancePositive 3 124 
+4115 DefaillanceNegative 3 124 
+4116 DefaillancePositive 4 124 
+4117 DefaillanceNegative 4 124 
+4118 PalierThermique 5 7 124 
+4119 DefaillancePositive 5 124 
+4120 DefaillanceNegative 5 124 
+4121 DefaillancePositive 6 124 
+4122 DefaillanceNegative 6 124 
+4123 DefaillancePositive 7 124 
+4124 DefaillanceNegative 7 124 
+4125 ValeurDeNTCOrigineVersExtremite 0 0 125 
+4126 CoutOrigineVersExtremiteDeLInterconnexion 0 125 
+4127 CoutExtremiteVersOrigineDeLInterconnexion 0 125 
+4128 ValeurDeNTCOrigineVersExtremite 0 1 125 
+4129 ValeurDeNTCOrigineVersExtremite 0 2 125 
+4130 ValeurDeNTCOrigineVersExtremite 1 3 125 
+4131 ValeurDeNTCOrigineVersExtremite 1 4 125 
+4132 ValeurDeNTCOrigineVersExtremite 2 5 125 
+4133 ValeurDeNTCOrigineVersExtremite 2 6 125 
+4134 PalierThermique 0 0 125 
+4135 PalierThermique 0 1 125 
+4136 PalierThermique 0 2 125 
+4137 DefaillancePositive 0 125 
+4138 DefaillanceNegative 0 125 
+4139 PalierThermique 1 3 125 
+4140 PalierThermique 1 4 125 
+4141 PalierThermique 1 5 125 
+4142 DefaillancePositive 1 125 
+4143 DefaillanceNegative 1 125 
+4144 DefaillancePositive 2 125 
+4145 DefaillanceNegative 2 125 
+4146 PalierThermique 3 6 125 
+4147 DefaillancePositive 3 125 
+4148 DefaillanceNegative 3 125 
+4149 DefaillancePositive 4 125 
+4150 DefaillanceNegative 4 125 
+4151 PalierThermique 5 7 125 
+4152 DefaillancePositive 5 125 
+4153 DefaillanceNegative 5 125 
+4154 DefaillancePositive 6 125 
+4155 DefaillanceNegative 6 125 
+4156 DefaillancePositive 7 125 
+4157 DefaillanceNegative 7 125 
+4158 ValeurDeNTCOrigineVersExtremite 0 0 126 
+4159 CoutOrigineVersExtremiteDeLInterconnexion 0 126 
+4160 CoutExtremiteVersOrigineDeLInterconnexion 0 126 
+4161 ValeurDeNTCOrigineVersExtremite 0 1 126 
+4162 ValeurDeNTCOrigineVersExtremite 0 2 126 
+4163 ValeurDeNTCOrigineVersExtremite 1 3 126 
+4164 ValeurDeNTCOrigineVersExtremite 1 4 126 
+4165 ValeurDeNTCOrigineVersExtremite 2 5 126 
+4166 ValeurDeNTCOrigineVersExtremite 2 6 126 
+4167 PalierThermique 0 0 126 
+4168 PalierThermique 0 1 126 
+4169 PalierThermique 0 2 126 
+4170 DefaillancePositive 0 126 
+4171 DefaillanceNegative 0 126 
+4172 PalierThermique 1 3 126 
+4173 PalierThermique 1 4 126 
+4174 PalierThermique 1 5 126 
+4175 DefaillancePositive 1 126 
+4176 DefaillanceNegative 1 126 
+4177 DefaillancePositive 2 126 
+4178 DefaillanceNegative 2 126 
+4179 PalierThermique 3 6 126 
+4180 DefaillancePositive 3 126 
+4181 DefaillanceNegative 3 126 
+4182 DefaillancePositive 4 126 
+4183 DefaillanceNegative 4 126 
+4184 PalierThermique 5 7 126 
+4185 DefaillancePositive 5 126 
+4186 DefaillanceNegative 5 126 
+4187 DefaillancePositive 6 126 
+4188 DefaillanceNegative 6 126 
+4189 DefaillancePositive 7 126 
+4190 DefaillanceNegative 7 126 
+4191 ValeurDeNTCOrigineVersExtremite 0 0 127 
+4192 CoutOrigineVersExtremiteDeLInterconnexion 0 127 
+4193 CoutExtremiteVersOrigineDeLInterconnexion 0 127 
+4194 ValeurDeNTCOrigineVersExtremite 0 1 127 
+4195 ValeurDeNTCOrigineVersExtremite 0 2 127 
+4196 ValeurDeNTCOrigineVersExtremite 1 3 127 
+4197 ValeurDeNTCOrigineVersExtremite 1 4 127 
+4198 ValeurDeNTCOrigineVersExtremite 2 5 127 
+4199 ValeurDeNTCOrigineVersExtremite 2 6 127 
+4200 PalierThermique 0 0 127 
+4201 PalierThermique 0 1 127 
+4202 PalierThermique 0 2 127 
+4203 DefaillancePositive 0 127 
+4204 DefaillanceNegative 0 127 
+4205 PalierThermique 1 3 127 
+4206 PalierThermique 1 4 127 
+4207 PalierThermique 1 5 127 
+4208 DefaillancePositive 1 127 
+4209 DefaillanceNegative 1 127 
+4210 DefaillancePositive 2 127 
+4211 DefaillanceNegative 2 127 
+4212 PalierThermique 3 6 127 
+4213 DefaillancePositive 3 127 
+4214 DefaillanceNegative 3 127 
+4215 DefaillancePositive 4 127 
+4216 DefaillanceNegative 4 127 
+4217 PalierThermique 5 7 127 
+4218 DefaillancePositive 5 127 
+4219 DefaillanceNegative 5 127 
+4220 DefaillancePositive 6 127 
+4221 DefaillanceNegative 6 127 
+4222 DefaillancePositive 7 127 
+4223 DefaillanceNegative 7 127 
+4224 ValeurDeNTCOrigineVersExtremite 0 0 128 
+4225 CoutOrigineVersExtremiteDeLInterconnexion 0 128 
+4226 CoutExtremiteVersOrigineDeLInterconnexion 0 128 
+4227 ValeurDeNTCOrigineVersExtremite 0 1 128 
+4228 ValeurDeNTCOrigineVersExtremite 0 2 128 
+4229 ValeurDeNTCOrigineVersExtremite 1 3 128 
+4230 ValeurDeNTCOrigineVersExtremite 1 4 128 
+4231 ValeurDeNTCOrigineVersExtremite 2 5 128 
+4232 ValeurDeNTCOrigineVersExtremite 2 6 128 
+4233 PalierThermique 0 0 128 
+4234 PalierThermique 0 1 128 
+4235 PalierThermique 0 2 128 
+4236 DefaillancePositive 0 128 
+4237 DefaillanceNegative 0 128 
+4238 PalierThermique 1 3 128 
+4239 PalierThermique 1 4 128 
+4240 PalierThermique 1 5 128 
+4241 DefaillancePositive 1 128 
+4242 DefaillanceNegative 1 128 
+4243 DefaillancePositive 2 128 
+4244 DefaillanceNegative 2 128 
+4245 PalierThermique 3 6 128 
+4246 DefaillancePositive 3 128 
+4247 DefaillanceNegative 3 128 
+4248 DefaillancePositive 4 128 
+4249 DefaillanceNegative 4 128 
+4250 PalierThermique 5 7 128 
+4251 DefaillancePositive 5 128 
+4252 DefaillanceNegative 5 128 
+4253 DefaillancePositive 6 128 
+4254 DefaillanceNegative 6 128 
+4255 DefaillancePositive 7 128 
+4256 DefaillanceNegative 7 128 
+4257 ValeurDeNTCOrigineVersExtremite 0 0 129 
+4258 CoutOrigineVersExtremiteDeLInterconnexion 0 129 
+4259 CoutExtremiteVersOrigineDeLInterconnexion 0 129 
+4260 ValeurDeNTCOrigineVersExtremite 0 1 129 
+4261 ValeurDeNTCOrigineVersExtremite 0 2 129 
+4262 ValeurDeNTCOrigineVersExtremite 1 3 129 
+4263 ValeurDeNTCOrigineVersExtremite 1 4 129 
+4264 ValeurDeNTCOrigineVersExtremite 2 5 129 
+4265 ValeurDeNTCOrigineVersExtremite 2 6 129 
+4266 PalierThermique 0 0 129 
+4267 PalierThermique 0 1 129 
+4268 PalierThermique 0 2 129 
+4269 DefaillancePositive 0 129 
+4270 DefaillanceNegative 0 129 
+4271 PalierThermique 1 3 129 
+4272 PalierThermique 1 4 129 
+4273 PalierThermique 1 5 129 
+4274 DefaillancePositive 1 129 
+4275 DefaillanceNegative 1 129 
+4276 DefaillancePositive 2 129 
+4277 DefaillanceNegative 2 129 
+4278 PalierThermique 3 6 129 
+4279 DefaillancePositive 3 129 
+4280 DefaillanceNegative 3 129 
+4281 DefaillancePositive 4 129 
+4282 DefaillanceNegative 4 129 
+4283 PalierThermique 5 7 129 
+4284 DefaillancePositive 5 129 
+4285 DefaillanceNegative 5 129 
+4286 DefaillancePositive 6 129 
+4287 DefaillanceNegative 6 129 
+4288 DefaillancePositive 7 129 
+4289 DefaillanceNegative 7 129 
+4290 ValeurDeNTCOrigineVersExtremite 0 0 130 
+4291 CoutOrigineVersExtremiteDeLInterconnexion 0 130 
+4292 CoutExtremiteVersOrigineDeLInterconnexion 0 130 
+4293 ValeurDeNTCOrigineVersExtremite 0 1 130 
+4294 ValeurDeNTCOrigineVersExtremite 0 2 130 
+4295 ValeurDeNTCOrigineVersExtremite 1 3 130 
+4296 ValeurDeNTCOrigineVersExtremite 1 4 130 
+4297 ValeurDeNTCOrigineVersExtremite 2 5 130 
+4298 ValeurDeNTCOrigineVersExtremite 2 6 130 
+4299 PalierThermique 0 0 130 
+4300 PalierThermique 0 1 130 
+4301 PalierThermique 0 2 130 
+4302 DefaillancePositive 0 130 
+4303 DefaillanceNegative 0 130 
+4304 PalierThermique 1 3 130 
+4305 PalierThermique 1 4 130 
+4306 PalierThermique 1 5 130 
+4307 DefaillancePositive 1 130 
+4308 DefaillanceNegative 1 130 
+4309 DefaillancePositive 2 130 
+4310 DefaillanceNegative 2 130 
+4311 PalierThermique 3 6 130 
+4312 DefaillancePositive 3 130 
+4313 DefaillanceNegative 3 130 
+4314 DefaillancePositive 4 130 
+4315 DefaillanceNegative 4 130 
+4316 PalierThermique 5 7 130 
+4317 DefaillancePositive 5 130 
+4318 DefaillanceNegative 5 130 
+4319 DefaillancePositive 6 130 
+4320 DefaillanceNegative 6 130 
+4321 DefaillancePositive 7 130 
+4322 DefaillanceNegative 7 130 
+4323 ValeurDeNTCOrigineVersExtremite 0 0 131 
+4324 CoutOrigineVersExtremiteDeLInterconnexion 0 131 
+4325 CoutExtremiteVersOrigineDeLInterconnexion 0 131 
+4326 ValeurDeNTCOrigineVersExtremite 0 1 131 
+4327 ValeurDeNTCOrigineVersExtremite 0 2 131 
+4328 ValeurDeNTCOrigineVersExtremite 1 3 131 
+4329 ValeurDeNTCOrigineVersExtremite 1 4 131 
+4330 ValeurDeNTCOrigineVersExtremite 2 5 131 
+4331 ValeurDeNTCOrigineVersExtremite 2 6 131 
+4332 PalierThermique 0 0 131 
+4333 PalierThermique 0 1 131 
+4334 PalierThermique 0 2 131 
+4335 DefaillancePositive 0 131 
+4336 DefaillanceNegative 0 131 
+4337 PalierThermique 1 3 131 
+4338 PalierThermique 1 4 131 
+4339 PalierThermique 1 5 131 
+4340 DefaillancePositive 1 131 
+4341 DefaillanceNegative 1 131 
+4342 DefaillancePositive 2 131 
+4343 DefaillanceNegative 2 131 
+4344 PalierThermique 3 6 131 
+4345 DefaillancePositive 3 131 
+4346 DefaillanceNegative 3 131 
+4347 DefaillancePositive 4 131 
+4348 DefaillanceNegative 4 131 
+4349 PalierThermique 5 7 131 
+4350 DefaillancePositive 5 131 
+4351 DefaillanceNegative 5 131 
+4352 DefaillancePositive 6 131 
+4353 DefaillanceNegative 6 131 
+4354 DefaillancePositive 7 131 
+4355 DefaillanceNegative 7 131 
+4356 ValeurDeNTCOrigineVersExtremite 0 0 132 
+4357 CoutOrigineVersExtremiteDeLInterconnexion 0 132 
+4358 CoutExtremiteVersOrigineDeLInterconnexion 0 132 
+4359 ValeurDeNTCOrigineVersExtremite 0 1 132 
+4360 ValeurDeNTCOrigineVersExtremite 0 2 132 
+4361 ValeurDeNTCOrigineVersExtremite 1 3 132 
+4362 ValeurDeNTCOrigineVersExtremite 1 4 132 
+4363 ValeurDeNTCOrigineVersExtremite 2 5 132 
+4364 ValeurDeNTCOrigineVersExtremite 2 6 132 
+4365 PalierThermique 0 0 132 
+4366 PalierThermique 0 1 132 
+4367 PalierThermique 0 2 132 
+4368 DefaillancePositive 0 132 
+4369 DefaillanceNegative 0 132 
+4370 PalierThermique 1 3 132 
+4371 PalierThermique 1 4 132 
+4372 PalierThermique 1 5 132 
+4373 DefaillancePositive 1 132 
+4374 DefaillanceNegative 1 132 
+4375 DefaillancePositive 2 132 
+4376 DefaillanceNegative 2 132 
+4377 PalierThermique 3 6 132 
+4378 DefaillancePositive 3 132 
+4379 DefaillanceNegative 3 132 
+4380 DefaillancePositive 4 132 
+4381 DefaillanceNegative 4 132 
+4382 PalierThermique 5 7 132 
+4383 DefaillancePositive 5 132 
+4384 DefaillanceNegative 5 132 
+4385 DefaillancePositive 6 132 
+4386 DefaillanceNegative 6 132 
+4387 DefaillancePositive 7 132 
+4388 DefaillanceNegative 7 132 
+4389 ValeurDeNTCOrigineVersExtremite 0 0 133 
+4390 CoutOrigineVersExtremiteDeLInterconnexion 0 133 
+4391 CoutExtremiteVersOrigineDeLInterconnexion 0 133 
+4392 ValeurDeNTCOrigineVersExtremite 0 1 133 
+4393 ValeurDeNTCOrigineVersExtremite 0 2 133 
+4394 ValeurDeNTCOrigineVersExtremite 1 3 133 
+4395 ValeurDeNTCOrigineVersExtremite 1 4 133 
+4396 ValeurDeNTCOrigineVersExtremite 2 5 133 
+4397 ValeurDeNTCOrigineVersExtremite 2 6 133 
+4398 PalierThermique 0 0 133 
+4399 PalierThermique 0 1 133 
+4400 PalierThermique 0 2 133 
+4401 DefaillancePositive 0 133 
+4402 DefaillanceNegative 0 133 
+4403 PalierThermique 1 3 133 
+4404 PalierThermique 1 4 133 
+4405 PalierThermique 1 5 133 
+4406 DefaillancePositive 1 133 
+4407 DefaillanceNegative 1 133 
+4408 DefaillancePositive 2 133 
+4409 DefaillanceNegative 2 133 
+4410 PalierThermique 3 6 133 
+4411 DefaillancePositive 3 133 
+4412 DefaillanceNegative 3 133 
+4413 DefaillancePositive 4 133 
+4414 DefaillanceNegative 4 133 
+4415 PalierThermique 5 7 133 
+4416 DefaillancePositive 5 133 
+4417 DefaillanceNegative 5 133 
+4418 DefaillancePositive 6 133 
+4419 DefaillanceNegative 6 133 
+4420 DefaillancePositive 7 133 
+4421 DefaillanceNegative 7 133 
+4422 ValeurDeNTCOrigineVersExtremite 0 0 134 
+4423 CoutOrigineVersExtremiteDeLInterconnexion 0 134 
+4424 CoutExtremiteVersOrigineDeLInterconnexion 0 134 
+4425 ValeurDeNTCOrigineVersExtremite 0 1 134 
+4426 ValeurDeNTCOrigineVersExtremite 0 2 134 
+4427 ValeurDeNTCOrigineVersExtremite 1 3 134 
+4428 ValeurDeNTCOrigineVersExtremite 1 4 134 
+4429 ValeurDeNTCOrigineVersExtremite 2 5 134 
+4430 ValeurDeNTCOrigineVersExtremite 2 6 134 
+4431 PalierThermique 0 0 134 
+4432 PalierThermique 0 1 134 
+4433 PalierThermique 0 2 134 
+4434 DefaillancePositive 0 134 
+4435 DefaillanceNegative 0 134 
+4436 PalierThermique 1 3 134 
+4437 PalierThermique 1 4 134 
+4438 PalierThermique 1 5 134 
+4439 DefaillancePositive 1 134 
+4440 DefaillanceNegative 1 134 
+4441 DefaillancePositive 2 134 
+4442 DefaillanceNegative 2 134 
+4443 PalierThermique 3 6 134 
+4444 DefaillancePositive 3 134 
+4445 DefaillanceNegative 3 134 
+4446 DefaillancePositive 4 134 
+4447 DefaillanceNegative 4 134 
+4448 PalierThermique 5 7 134 
+4449 DefaillancePositive 5 134 
+4450 DefaillanceNegative 5 134 
+4451 DefaillancePositive 6 134 
+4452 DefaillanceNegative 6 134 
+4453 DefaillancePositive 7 134 
+4454 DefaillanceNegative 7 134 
+4455 ValeurDeNTCOrigineVersExtremite 0 0 135 
+4456 CoutOrigineVersExtremiteDeLInterconnexion 0 135 
+4457 CoutExtremiteVersOrigineDeLInterconnexion 0 135 
+4458 ValeurDeNTCOrigineVersExtremite 0 1 135 
+4459 ValeurDeNTCOrigineVersExtremite 0 2 135 
+4460 ValeurDeNTCOrigineVersExtremite 1 3 135 
+4461 ValeurDeNTCOrigineVersExtremite 1 4 135 
+4462 ValeurDeNTCOrigineVersExtremite 2 5 135 
+4463 ValeurDeNTCOrigineVersExtremite 2 6 135 
+4464 PalierThermique 0 0 135 
+4465 PalierThermique 0 1 135 
+4466 PalierThermique 0 2 135 
+4467 DefaillancePositive 0 135 
+4468 DefaillanceNegative 0 135 
+4469 PalierThermique 1 3 135 
+4470 PalierThermique 1 4 135 
+4471 PalierThermique 1 5 135 
+4472 DefaillancePositive 1 135 
+4473 DefaillanceNegative 1 135 
+4474 DefaillancePositive 2 135 
+4475 DefaillanceNegative 2 135 
+4476 PalierThermique 3 6 135 
+4477 DefaillancePositive 3 135 
+4478 DefaillanceNegative 3 135 
+4479 DefaillancePositive 4 135 
+4480 DefaillanceNegative 4 135 
+4481 PalierThermique 5 7 135 
+4482 DefaillancePositive 5 135 
+4483 DefaillanceNegative 5 135 
+4484 DefaillancePositive 6 135 
+4485 DefaillanceNegative 6 135 
+4486 DefaillancePositive 7 135 
+4487 DefaillanceNegative 7 135 
+4488 ValeurDeNTCOrigineVersExtremite 0 0 136 
+4489 CoutOrigineVersExtremiteDeLInterconnexion 0 136 
+4490 CoutExtremiteVersOrigineDeLInterconnexion 0 136 
+4491 ValeurDeNTCOrigineVersExtremite 0 1 136 
+4492 ValeurDeNTCOrigineVersExtremite 0 2 136 
+4493 ValeurDeNTCOrigineVersExtremite 1 3 136 
+4494 ValeurDeNTCOrigineVersExtremite 1 4 136 
+4495 ValeurDeNTCOrigineVersExtremite 2 5 136 
+4496 ValeurDeNTCOrigineVersExtremite 2 6 136 
+4497 PalierThermique 0 0 136 
+4498 PalierThermique 0 1 136 
+4499 PalierThermique 0 2 136 
+4500 DefaillancePositive 0 136 
+4501 DefaillanceNegative 0 136 
+4502 PalierThermique 1 3 136 
+4503 PalierThermique 1 4 136 
+4504 PalierThermique 1 5 136 
+4505 DefaillancePositive 1 136 
+4506 DefaillanceNegative 1 136 
+4507 DefaillancePositive 2 136 
+4508 DefaillanceNegative 2 136 
+4509 PalierThermique 3 6 136 
+4510 DefaillancePositive 3 136 
+4511 DefaillanceNegative 3 136 
+4512 DefaillancePositive 4 136 
+4513 DefaillanceNegative 4 136 
+4514 PalierThermique 5 7 136 
+4515 DefaillancePositive 5 136 
+4516 DefaillanceNegative 5 136 
+4517 DefaillancePositive 6 136 
+4518 DefaillanceNegative 6 136 
+4519 DefaillancePositive 7 136 
+4520 DefaillanceNegative 7 136 
+4521 ValeurDeNTCOrigineVersExtremite 0 0 137 
+4522 CoutOrigineVersExtremiteDeLInterconnexion 0 137 
+4523 CoutExtremiteVersOrigineDeLInterconnexion 0 137 
+4524 ValeurDeNTCOrigineVersExtremite 0 1 137 
+4525 ValeurDeNTCOrigineVersExtremite 0 2 137 
+4526 ValeurDeNTCOrigineVersExtremite 1 3 137 
+4527 ValeurDeNTCOrigineVersExtremite 1 4 137 
+4528 ValeurDeNTCOrigineVersExtremite 2 5 137 
+4529 ValeurDeNTCOrigineVersExtremite 2 6 137 
+4530 PalierThermique 0 0 137 
+4531 PalierThermique 0 1 137 
+4532 PalierThermique 0 2 137 
+4533 DefaillancePositive 0 137 
+4534 DefaillanceNegative 0 137 
+4535 PalierThermique 1 3 137 
+4536 PalierThermique 1 4 137 
+4537 PalierThermique 1 5 137 
+4538 DefaillancePositive 1 137 
+4539 DefaillanceNegative 1 137 
+4540 DefaillancePositive 2 137 
+4541 DefaillanceNegative 2 137 
+4542 PalierThermique 3 6 137 
+4543 DefaillancePositive 3 137 
+4544 DefaillanceNegative 3 137 
+4545 DefaillancePositive 4 137 
+4546 DefaillanceNegative 4 137 
+4547 PalierThermique 5 7 137 
+4548 DefaillancePositive 5 137 
+4549 DefaillanceNegative 5 137 
+4550 DefaillancePositive 6 137 
+4551 DefaillanceNegative 6 137 
+4552 DefaillancePositive 7 137 
+4553 DefaillanceNegative 7 137 
+4554 ValeurDeNTCOrigineVersExtremite 0 0 138 
+4555 CoutOrigineVersExtremiteDeLInterconnexion 0 138 
+4556 CoutExtremiteVersOrigineDeLInterconnexion 0 138 
+4557 ValeurDeNTCOrigineVersExtremite 0 1 138 
+4558 ValeurDeNTCOrigineVersExtremite 0 2 138 
+4559 ValeurDeNTCOrigineVersExtremite 1 3 138 
+4560 ValeurDeNTCOrigineVersExtremite 1 4 138 
+4561 ValeurDeNTCOrigineVersExtremite 2 5 138 
+4562 ValeurDeNTCOrigineVersExtremite 2 6 138 
+4563 PalierThermique 0 0 138 
+4564 PalierThermique 0 1 138 
+4565 PalierThermique 0 2 138 
+4566 DefaillancePositive 0 138 
+4567 DefaillanceNegative 0 138 
+4568 PalierThermique 1 3 138 
+4569 PalierThermique 1 4 138 
+4570 PalierThermique 1 5 138 
+4571 DefaillancePositive 1 138 
+4572 DefaillanceNegative 1 138 
+4573 DefaillancePositive 2 138 
+4574 DefaillanceNegative 2 138 
+4575 PalierThermique 3 6 138 
+4576 DefaillancePositive 3 138 
+4577 DefaillanceNegative 3 138 
+4578 DefaillancePositive 4 138 
+4579 DefaillanceNegative 4 138 
+4580 PalierThermique 5 7 138 
+4581 DefaillancePositive 5 138 
+4582 DefaillanceNegative 5 138 
+4583 DefaillancePositive 6 138 
+4584 DefaillanceNegative 6 138 
+4585 DefaillancePositive 7 138 
+4586 DefaillanceNegative 7 138 
+4587 ValeurDeNTCOrigineVersExtremite 0 0 139 
+4588 CoutOrigineVersExtremiteDeLInterconnexion 0 139 
+4589 CoutExtremiteVersOrigineDeLInterconnexion 0 139 
+4590 ValeurDeNTCOrigineVersExtremite 0 1 139 
+4591 ValeurDeNTCOrigineVersExtremite 0 2 139 
+4592 ValeurDeNTCOrigineVersExtremite 1 3 139 
+4593 ValeurDeNTCOrigineVersExtremite 1 4 139 
+4594 ValeurDeNTCOrigineVersExtremite 2 5 139 
+4595 ValeurDeNTCOrigineVersExtremite 2 6 139 
+4596 PalierThermique 0 0 139 
+4597 PalierThermique 0 1 139 
+4598 PalierThermique 0 2 139 
+4599 DefaillancePositive 0 139 
+4600 DefaillanceNegative 0 139 
+4601 PalierThermique 1 3 139 
+4602 PalierThermique 1 4 139 
+4603 PalierThermique 1 5 139 
+4604 DefaillancePositive 1 139 
+4605 DefaillanceNegative 1 139 
+4606 DefaillancePositive 2 139 
+4607 DefaillanceNegative 2 139 
+4608 PalierThermique 3 6 139 
+4609 DefaillancePositive 3 139 
+4610 DefaillanceNegative 3 139 
+4611 DefaillancePositive 4 139 
+4612 DefaillanceNegative 4 139 
+4613 PalierThermique 5 7 139 
+4614 DefaillancePositive 5 139 
+4615 DefaillanceNegative 5 139 
+4616 DefaillancePositive 6 139 
+4617 DefaillanceNegative 6 139 
+4618 DefaillancePositive 7 139 
+4619 DefaillanceNegative 7 139 
+4620 ValeurDeNTCOrigineVersExtremite 0 0 140 
+4621 CoutOrigineVersExtremiteDeLInterconnexion 0 140 
+4622 CoutExtremiteVersOrigineDeLInterconnexion 0 140 
+4623 ValeurDeNTCOrigineVersExtremite 0 1 140 
+4624 ValeurDeNTCOrigineVersExtremite 0 2 140 
+4625 ValeurDeNTCOrigineVersExtremite 1 3 140 
+4626 ValeurDeNTCOrigineVersExtremite 1 4 140 
+4627 ValeurDeNTCOrigineVersExtremite 2 5 140 
+4628 ValeurDeNTCOrigineVersExtremite 2 6 140 
+4629 PalierThermique 0 0 140 
+4630 PalierThermique 0 1 140 
+4631 PalierThermique 0 2 140 
+4632 DefaillancePositive 0 140 
+4633 DefaillanceNegative 0 140 
+4634 PalierThermique 1 3 140 
+4635 PalierThermique 1 4 140 
+4636 PalierThermique 1 5 140 
+4637 DefaillancePositive 1 140 
+4638 DefaillanceNegative 1 140 
+4639 DefaillancePositive 2 140 
+4640 DefaillanceNegative 2 140 
+4641 PalierThermique 3 6 140 
+4642 DefaillancePositive 3 140 
+4643 DefaillanceNegative 3 140 
+4644 DefaillancePositive 4 140 
+4645 DefaillanceNegative 4 140 
+4646 PalierThermique 5 7 140 
+4647 DefaillancePositive 5 140 
+4648 DefaillanceNegative 5 140 
+4649 DefaillancePositive 6 140 
+4650 DefaillanceNegative 6 140 
+4651 DefaillancePositive 7 140 
+4652 DefaillanceNegative 7 140 
+4653 ValeurDeNTCOrigineVersExtremite 0 0 141 
+4654 CoutOrigineVersExtremiteDeLInterconnexion 0 141 
+4655 CoutExtremiteVersOrigineDeLInterconnexion 0 141 
+4656 ValeurDeNTCOrigineVersExtremite 0 1 141 
+4657 ValeurDeNTCOrigineVersExtremite 0 2 141 
+4658 ValeurDeNTCOrigineVersExtremite 1 3 141 
+4659 ValeurDeNTCOrigineVersExtremite 1 4 141 
+4660 ValeurDeNTCOrigineVersExtremite 2 5 141 
+4661 ValeurDeNTCOrigineVersExtremite 2 6 141 
+4662 PalierThermique 0 0 141 
+4663 PalierThermique 0 1 141 
+4664 PalierThermique 0 2 141 
+4665 DefaillancePositive 0 141 
+4666 DefaillanceNegative 0 141 
+4667 PalierThermique 1 3 141 
+4668 PalierThermique 1 4 141 
+4669 PalierThermique 1 5 141 
+4670 DefaillancePositive 1 141 
+4671 DefaillanceNegative 1 141 
+4672 DefaillancePositive 2 141 
+4673 DefaillanceNegative 2 141 
+4674 PalierThermique 3 6 141 
+4675 DefaillancePositive 3 141 
+4676 DefaillanceNegative 3 141 
+4677 DefaillancePositive 4 141 
+4678 DefaillanceNegative 4 141 
+4679 PalierThermique 5 7 141 
+4680 DefaillancePositive 5 141 
+4681 DefaillanceNegative 5 141 
+4682 DefaillancePositive 6 141 
+4683 DefaillanceNegative 6 141 
+4684 DefaillancePositive 7 141 
+4685 DefaillanceNegative 7 141 
+4686 ValeurDeNTCOrigineVersExtremite 0 0 142 
+4687 CoutOrigineVersExtremiteDeLInterconnexion 0 142 
+4688 CoutExtremiteVersOrigineDeLInterconnexion 0 142 
+4689 ValeurDeNTCOrigineVersExtremite 0 1 142 
+4690 ValeurDeNTCOrigineVersExtremite 0 2 142 
+4691 ValeurDeNTCOrigineVersExtremite 1 3 142 
+4692 ValeurDeNTCOrigineVersExtremite 1 4 142 
+4693 ValeurDeNTCOrigineVersExtremite 2 5 142 
+4694 ValeurDeNTCOrigineVersExtremite 2 6 142 
+4695 PalierThermique 0 0 142 
+4696 PalierThermique 0 1 142 
+4697 PalierThermique 0 2 142 
+4698 DefaillancePositive 0 142 
+4699 DefaillanceNegative 0 142 
+4700 PalierThermique 1 3 142 
+4701 PalierThermique 1 4 142 
+4702 PalierThermique 1 5 142 
+4703 DefaillancePositive 1 142 
+4704 DefaillanceNegative 1 142 
+4705 DefaillancePositive 2 142 
+4706 DefaillanceNegative 2 142 
+4707 PalierThermique 3 6 142 
+4708 DefaillancePositive 3 142 
+4709 DefaillanceNegative 3 142 
+4710 DefaillancePositive 4 142 
+4711 DefaillanceNegative 4 142 
+4712 PalierThermique 5 7 142 
+4713 DefaillancePositive 5 142 
+4714 DefaillanceNegative 5 142 
+4715 DefaillancePositive 6 142 
+4716 DefaillanceNegative 6 142 
+4717 DefaillancePositive 7 142 
+4718 DefaillanceNegative 7 142 
+4719 ValeurDeNTCOrigineVersExtremite 0 0 143 
+4720 CoutOrigineVersExtremiteDeLInterconnexion 0 143 
+4721 CoutExtremiteVersOrigineDeLInterconnexion 0 143 
+4722 ValeurDeNTCOrigineVersExtremite 0 1 143 
+4723 ValeurDeNTCOrigineVersExtremite 0 2 143 
+4724 ValeurDeNTCOrigineVersExtremite 1 3 143 
+4725 ValeurDeNTCOrigineVersExtremite 1 4 143 
+4726 ValeurDeNTCOrigineVersExtremite 2 5 143 
+4727 ValeurDeNTCOrigineVersExtremite 2 6 143 
+4728 PalierThermique 0 0 143 
+4729 PalierThermique 0 1 143 
+4730 PalierThermique 0 2 143 
+4731 DefaillancePositive 0 143 
+4732 DefaillanceNegative 0 143 
+4733 PalierThermique 1 3 143 
+4734 PalierThermique 1 4 143 
+4735 PalierThermique 1 5 143 
+4736 DefaillancePositive 1 143 
+4737 DefaillanceNegative 1 143 
+4738 DefaillancePositive 2 143 
+4739 DefaillanceNegative 2 143 
+4740 PalierThermique 3 6 143 
+4741 DefaillancePositive 3 143 
+4742 DefaillanceNegative 3 143 
+4743 DefaillancePositive 4 143 
+4744 DefaillanceNegative 4 143 
+4745 PalierThermique 5 7 143 
+4746 DefaillancePositive 5 143 
+4747 DefaillanceNegative 5 143 
+4748 DefaillancePositive 6 143 
+4749 DefaillanceNegative 6 143 
+4750 DefaillancePositive 7 143 
+4751 DefaillanceNegative 7 143 
+4752 ValeurDeNTCOrigineVersExtremite 0 0 144 
+4753 CoutOrigineVersExtremiteDeLInterconnexion 0 144 
+4754 CoutExtremiteVersOrigineDeLInterconnexion 0 144 
+4755 ValeurDeNTCOrigineVersExtremite 0 1 144 
+4756 ValeurDeNTCOrigineVersExtremite 0 2 144 
+4757 ValeurDeNTCOrigineVersExtremite 1 3 144 
+4758 ValeurDeNTCOrigineVersExtremite 1 4 144 
+4759 ValeurDeNTCOrigineVersExtremite 2 5 144 
+4760 ValeurDeNTCOrigineVersExtremite 2 6 144 
+4761 PalierThermique 0 0 144 
+4762 PalierThermique 0 1 144 
+4763 PalierThermique 0 2 144 
+4764 DefaillancePositive 0 144 
+4765 DefaillanceNegative 0 144 
+4766 PalierThermique 1 3 144 
+4767 PalierThermique 1 4 144 
+4768 PalierThermique 1 5 144 
+4769 DefaillancePositive 1 144 
+4770 DefaillanceNegative 1 144 
+4771 DefaillancePositive 2 144 
+4772 DefaillanceNegative 2 144 
+4773 PalierThermique 3 6 144 
+4774 DefaillancePositive 3 144 
+4775 DefaillanceNegative 3 144 
+4776 DefaillancePositive 4 144 
+4777 DefaillanceNegative 4 144 
+4778 PalierThermique 5 7 144 
+4779 DefaillancePositive 5 144 
+4780 DefaillanceNegative 5 144 
+4781 DefaillancePositive 6 144 
+4782 DefaillanceNegative 6 144 
+4783 DefaillancePositive 7 144 
+4784 DefaillanceNegative 7 144 
+4785 ValeurDeNTCOrigineVersExtremite 0 0 145 
+4786 CoutOrigineVersExtremiteDeLInterconnexion 0 145 
+4787 CoutExtremiteVersOrigineDeLInterconnexion 0 145 
+4788 ValeurDeNTCOrigineVersExtremite 0 1 145 
+4789 ValeurDeNTCOrigineVersExtremite 0 2 145 
+4790 ValeurDeNTCOrigineVersExtremite 1 3 145 
+4791 ValeurDeNTCOrigineVersExtremite 1 4 145 
+4792 ValeurDeNTCOrigineVersExtremite 2 5 145 
+4793 ValeurDeNTCOrigineVersExtremite 2 6 145 
+4794 PalierThermique 0 0 145 
+4795 PalierThermique 0 1 145 
+4796 PalierThermique 0 2 145 
+4797 DefaillancePositive 0 145 
+4798 DefaillanceNegative 0 145 
+4799 PalierThermique 1 3 145 
+4800 PalierThermique 1 4 145 
+4801 PalierThermique 1 5 145 
+4802 DefaillancePositive 1 145 
+4803 DefaillanceNegative 1 145 
+4804 DefaillancePositive 2 145 
+4805 DefaillanceNegative 2 145 
+4806 PalierThermique 3 6 145 
+4807 DefaillancePositive 3 145 
+4808 DefaillanceNegative 3 145 
+4809 DefaillancePositive 4 145 
+4810 DefaillanceNegative 4 145 
+4811 PalierThermique 5 7 145 
+4812 DefaillancePositive 5 145 
+4813 DefaillanceNegative 5 145 
+4814 DefaillancePositive 6 145 
+4815 DefaillanceNegative 6 145 
+4816 DefaillancePositive 7 145 
+4817 DefaillanceNegative 7 145 
+4818 ValeurDeNTCOrigineVersExtremite 0 0 146 
+4819 CoutOrigineVersExtremiteDeLInterconnexion 0 146 
+4820 CoutExtremiteVersOrigineDeLInterconnexion 0 146 
+4821 ValeurDeNTCOrigineVersExtremite 0 1 146 
+4822 ValeurDeNTCOrigineVersExtremite 0 2 146 
+4823 ValeurDeNTCOrigineVersExtremite 1 3 146 
+4824 ValeurDeNTCOrigineVersExtremite 1 4 146 
+4825 ValeurDeNTCOrigineVersExtremite 2 5 146 
+4826 ValeurDeNTCOrigineVersExtremite 2 6 146 
+4827 PalierThermique 0 0 146 
+4828 PalierThermique 0 1 146 
+4829 PalierThermique 0 2 146 
+4830 DefaillancePositive 0 146 
+4831 DefaillanceNegative 0 146 
+4832 PalierThermique 1 3 146 
+4833 PalierThermique 1 4 146 
+4834 PalierThermique 1 5 146 
+4835 DefaillancePositive 1 146 
+4836 DefaillanceNegative 1 146 
+4837 DefaillancePositive 2 146 
+4838 DefaillanceNegative 2 146 
+4839 PalierThermique 3 6 146 
+4840 DefaillancePositive 3 146 
+4841 DefaillanceNegative 3 146 
+4842 DefaillancePositive 4 146 
+4843 DefaillanceNegative 4 146 
+4844 PalierThermique 5 7 146 
+4845 DefaillancePositive 5 146 
+4846 DefaillanceNegative 5 146 
+4847 DefaillancePositive 6 146 
+4848 DefaillanceNegative 6 146 
+4849 DefaillancePositive 7 146 
+4850 DefaillanceNegative 7 146 
+4851 ValeurDeNTCOrigineVersExtremite 0 0 147 
+4852 CoutOrigineVersExtremiteDeLInterconnexion 0 147 
+4853 CoutExtremiteVersOrigineDeLInterconnexion 0 147 
+4854 ValeurDeNTCOrigineVersExtremite 0 1 147 
+4855 ValeurDeNTCOrigineVersExtremite 0 2 147 
+4856 ValeurDeNTCOrigineVersExtremite 1 3 147 
+4857 ValeurDeNTCOrigineVersExtremite 1 4 147 
+4858 ValeurDeNTCOrigineVersExtremite 2 5 147 
+4859 ValeurDeNTCOrigineVersExtremite 2 6 147 
+4860 PalierThermique 0 0 147 
+4861 PalierThermique 0 1 147 
+4862 PalierThermique 0 2 147 
+4863 DefaillancePositive 0 147 
+4864 DefaillanceNegative 0 147 
+4865 PalierThermique 1 3 147 
+4866 PalierThermique 1 4 147 
+4867 PalierThermique 1 5 147 
+4868 DefaillancePositive 1 147 
+4869 DefaillanceNegative 1 147 
+4870 DefaillancePositive 2 147 
+4871 DefaillanceNegative 2 147 
+4872 PalierThermique 3 6 147 
+4873 DefaillancePositive 3 147 
+4874 DefaillanceNegative 3 147 
+4875 DefaillancePositive 4 147 
+4876 DefaillanceNegative 4 147 
+4877 PalierThermique 5 7 147 
+4878 DefaillancePositive 5 147 
+4879 DefaillanceNegative 5 147 
+4880 DefaillancePositive 6 147 
+4881 DefaillanceNegative 6 147 
+4882 DefaillancePositive 7 147 
+4883 DefaillanceNegative 7 147 
+4884 ValeurDeNTCOrigineVersExtremite 0 0 148 
+4885 CoutOrigineVersExtremiteDeLInterconnexion 0 148 
+4886 CoutExtremiteVersOrigineDeLInterconnexion 0 148 
+4887 ValeurDeNTCOrigineVersExtremite 0 1 148 
+4888 ValeurDeNTCOrigineVersExtremite 0 2 148 
+4889 ValeurDeNTCOrigineVersExtremite 1 3 148 
+4890 ValeurDeNTCOrigineVersExtremite 1 4 148 
+4891 ValeurDeNTCOrigineVersExtremite 2 5 148 
+4892 ValeurDeNTCOrigineVersExtremite 2 6 148 
+4893 PalierThermique 0 0 148 
+4894 PalierThermique 0 1 148 
+4895 PalierThermique 0 2 148 
+4896 DefaillancePositive 0 148 
+4897 DefaillanceNegative 0 148 
+4898 PalierThermique 1 3 148 
+4899 PalierThermique 1 4 148 
+4900 PalierThermique 1 5 148 
+4901 DefaillancePositive 1 148 
+4902 DefaillanceNegative 1 148 
+4903 DefaillancePositive 2 148 
+4904 DefaillanceNegative 2 148 
+4905 PalierThermique 3 6 148 
+4906 DefaillancePositive 3 148 
+4907 DefaillanceNegative 3 148 
+4908 DefaillancePositive 4 148 
+4909 DefaillanceNegative 4 148 
+4910 PalierThermique 5 7 148 
+4911 DefaillancePositive 5 148 
+4912 DefaillanceNegative 5 148 
+4913 DefaillancePositive 6 148 
+4914 DefaillanceNegative 6 148 
+4915 DefaillancePositive 7 148 
+4916 DefaillanceNegative 7 148 
+4917 ValeurDeNTCOrigineVersExtremite 0 0 149 
+4918 CoutOrigineVersExtremiteDeLInterconnexion 0 149 
+4919 CoutExtremiteVersOrigineDeLInterconnexion 0 149 
+4920 ValeurDeNTCOrigineVersExtremite 0 1 149 
+4921 ValeurDeNTCOrigineVersExtremite 0 2 149 
+4922 ValeurDeNTCOrigineVersExtremite 1 3 149 
+4923 ValeurDeNTCOrigineVersExtremite 1 4 149 
+4924 ValeurDeNTCOrigineVersExtremite 2 5 149 
+4925 ValeurDeNTCOrigineVersExtremite 2 6 149 
+4926 PalierThermique 0 0 149 
+4927 PalierThermique 0 1 149 
+4928 PalierThermique 0 2 149 
+4929 DefaillancePositive 0 149 
+4930 DefaillanceNegative 0 149 
+4931 PalierThermique 1 3 149 
+4932 PalierThermique 1 4 149 
+4933 PalierThermique 1 5 149 
+4934 DefaillancePositive 1 149 
+4935 DefaillanceNegative 1 149 
+4936 DefaillancePositive 2 149 
+4937 DefaillanceNegative 2 149 
+4938 PalierThermique 3 6 149 
+4939 DefaillancePositive 3 149 
+4940 DefaillanceNegative 3 149 
+4941 DefaillancePositive 4 149 
+4942 DefaillanceNegative 4 149 
+4943 PalierThermique 5 7 149 
+4944 DefaillancePositive 5 149 
+4945 DefaillanceNegative 5 149 
+4946 DefaillancePositive 6 149 
+4947 DefaillanceNegative 6 149 
+4948 DefaillancePositive 7 149 
+4949 DefaillanceNegative 7 149 
+4950 ValeurDeNTCOrigineVersExtremite 0 0 150 
+4951 CoutOrigineVersExtremiteDeLInterconnexion 0 150 
+4952 CoutExtremiteVersOrigineDeLInterconnexion 0 150 
+4953 ValeurDeNTCOrigineVersExtremite 0 1 150 
+4954 ValeurDeNTCOrigineVersExtremite 0 2 150 
+4955 ValeurDeNTCOrigineVersExtremite 1 3 150 
+4956 ValeurDeNTCOrigineVersExtremite 1 4 150 
+4957 ValeurDeNTCOrigineVersExtremite 2 5 150 
+4958 ValeurDeNTCOrigineVersExtremite 2 6 150 
+4959 PalierThermique 0 0 150 
+4960 PalierThermique 0 1 150 
+4961 PalierThermique 0 2 150 
+4962 DefaillancePositive 0 150 
+4963 DefaillanceNegative 0 150 
+4964 PalierThermique 1 3 150 
+4965 PalierThermique 1 4 150 
+4966 PalierThermique 1 5 150 
+4967 DefaillancePositive 1 150 
+4968 DefaillanceNegative 1 150 
+4969 DefaillancePositive 2 150 
+4970 DefaillanceNegative 2 150 
+4971 PalierThermique 3 6 150 
+4972 DefaillancePositive 3 150 
+4973 DefaillanceNegative 3 150 
+4974 DefaillancePositive 4 150 
+4975 DefaillanceNegative 4 150 
+4976 PalierThermique 5 7 150 
+4977 DefaillancePositive 5 150 
+4978 DefaillanceNegative 5 150 
+4979 DefaillancePositive 6 150 
+4980 DefaillanceNegative 6 150 
+4981 DefaillancePositive 7 150 
+4982 DefaillanceNegative 7 150 
+4983 ValeurDeNTCOrigineVersExtremite 0 0 151 
+4984 CoutOrigineVersExtremiteDeLInterconnexion 0 151 
+4985 CoutExtremiteVersOrigineDeLInterconnexion 0 151 
+4986 ValeurDeNTCOrigineVersExtremite 0 1 151 
+4987 ValeurDeNTCOrigineVersExtremite 0 2 151 
+4988 ValeurDeNTCOrigineVersExtremite 1 3 151 
+4989 ValeurDeNTCOrigineVersExtremite 1 4 151 
+4990 ValeurDeNTCOrigineVersExtremite 2 5 151 
+4991 ValeurDeNTCOrigineVersExtremite 2 6 151 
+4992 PalierThermique 0 0 151 
+4993 PalierThermique 0 1 151 
+4994 PalierThermique 0 2 151 
+4995 DefaillancePositive 0 151 
+4996 DefaillanceNegative 0 151 
+4997 PalierThermique 1 3 151 
+4998 PalierThermique 1 4 151 
+4999 PalierThermique 1 5 151 
+5000 DefaillancePositive 1 151 
+5001 DefaillanceNegative 1 151 
+5002 DefaillancePositive 2 151 
+5003 DefaillanceNegative 2 151 
+5004 PalierThermique 3 6 151 
+5005 DefaillancePositive 3 151 
+5006 DefaillanceNegative 3 151 
+5007 DefaillancePositive 4 151 
+5008 DefaillanceNegative 4 151 
+5009 PalierThermique 5 7 151 
+5010 DefaillancePositive 5 151 
+5011 DefaillanceNegative 5 151 
+5012 DefaillancePositive 6 151 
+5013 DefaillanceNegative 6 151 
+5014 DefaillancePositive 7 151 
+5015 DefaillanceNegative 7 151 
+5016 ValeurDeNTCOrigineVersExtremite 0 0 152 
+5017 CoutOrigineVersExtremiteDeLInterconnexion 0 152 
+5018 CoutExtremiteVersOrigineDeLInterconnexion 0 152 
+5019 ValeurDeNTCOrigineVersExtremite 0 1 152 
+5020 ValeurDeNTCOrigineVersExtremite 0 2 152 
+5021 ValeurDeNTCOrigineVersExtremite 1 3 152 
+5022 ValeurDeNTCOrigineVersExtremite 1 4 152 
+5023 ValeurDeNTCOrigineVersExtremite 2 5 152 
+5024 ValeurDeNTCOrigineVersExtremite 2 6 152 
+5025 PalierThermique 0 0 152 
+5026 PalierThermique 0 1 152 
+5027 PalierThermique 0 2 152 
+5028 DefaillancePositive 0 152 
+5029 DefaillanceNegative 0 152 
+5030 PalierThermique 1 3 152 
+5031 PalierThermique 1 4 152 
+5032 PalierThermique 1 5 152 
+5033 DefaillancePositive 1 152 
+5034 DefaillanceNegative 1 152 
+5035 DefaillancePositive 2 152 
+5036 DefaillanceNegative 2 152 
+5037 PalierThermique 3 6 152 
+5038 DefaillancePositive 3 152 
+5039 DefaillanceNegative 3 152 
+5040 DefaillancePositive 4 152 
+5041 DefaillanceNegative 4 152 
+5042 PalierThermique 5 7 152 
+5043 DefaillancePositive 5 152 
+5044 DefaillanceNegative 5 152 
+5045 DefaillancePositive 6 152 
+5046 DefaillanceNegative 6 152 
+5047 DefaillancePositive 7 152 
+5048 DefaillanceNegative 7 152 
+5049 ValeurDeNTCOrigineVersExtremite 0 0 153 
+5050 CoutOrigineVersExtremiteDeLInterconnexion 0 153 
+5051 CoutExtremiteVersOrigineDeLInterconnexion 0 153 
+5052 ValeurDeNTCOrigineVersExtremite 0 1 153 
+5053 ValeurDeNTCOrigineVersExtremite 0 2 153 
+5054 ValeurDeNTCOrigineVersExtremite 1 3 153 
+5055 ValeurDeNTCOrigineVersExtremite 1 4 153 
+5056 ValeurDeNTCOrigineVersExtremite 2 5 153 
+5057 ValeurDeNTCOrigineVersExtremite 2 6 153 
+5058 PalierThermique 0 0 153 
+5059 PalierThermique 0 1 153 
+5060 PalierThermique 0 2 153 
+5061 DefaillancePositive 0 153 
+5062 DefaillanceNegative 0 153 
+5063 PalierThermique 1 3 153 
+5064 PalierThermique 1 4 153 
+5065 PalierThermique 1 5 153 
+5066 DefaillancePositive 1 153 
+5067 DefaillanceNegative 1 153 
+5068 DefaillancePositive 2 153 
+5069 DefaillanceNegative 2 153 
+5070 PalierThermique 3 6 153 
+5071 DefaillancePositive 3 153 
+5072 DefaillanceNegative 3 153 
+5073 DefaillancePositive 4 153 
+5074 DefaillanceNegative 4 153 
+5075 PalierThermique 5 7 153 
+5076 DefaillancePositive 5 153 
+5077 DefaillanceNegative 5 153 
+5078 DefaillancePositive 6 153 
+5079 DefaillanceNegative 6 153 
+5080 DefaillancePositive 7 153 
+5081 DefaillanceNegative 7 153 
+5082 ValeurDeNTCOrigineVersExtremite 0 0 154 
+5083 CoutOrigineVersExtremiteDeLInterconnexion 0 154 
+5084 CoutExtremiteVersOrigineDeLInterconnexion 0 154 
+5085 ValeurDeNTCOrigineVersExtremite 0 1 154 
+5086 ValeurDeNTCOrigineVersExtremite 0 2 154 
+5087 ValeurDeNTCOrigineVersExtremite 1 3 154 
+5088 ValeurDeNTCOrigineVersExtremite 1 4 154 
+5089 ValeurDeNTCOrigineVersExtremite 2 5 154 
+5090 ValeurDeNTCOrigineVersExtremite 2 6 154 
+5091 PalierThermique 0 0 154 
+5092 PalierThermique 0 1 154 
+5093 PalierThermique 0 2 154 
+5094 DefaillancePositive 0 154 
+5095 DefaillanceNegative 0 154 
+5096 PalierThermique 1 3 154 
+5097 PalierThermique 1 4 154 
+5098 PalierThermique 1 5 154 
+5099 DefaillancePositive 1 154 
+5100 DefaillanceNegative 1 154 
+5101 DefaillancePositive 2 154 
+5102 DefaillanceNegative 2 154 
+5103 PalierThermique 3 6 154 
+5104 DefaillancePositive 3 154 
+5105 DefaillanceNegative 3 154 
+5106 DefaillancePositive 4 154 
+5107 DefaillanceNegative 4 154 
+5108 PalierThermique 5 7 154 
+5109 DefaillancePositive 5 154 
+5110 DefaillanceNegative 5 154 
+5111 DefaillancePositive 6 154 
+5112 DefaillanceNegative 6 154 
+5113 DefaillancePositive 7 154 
+5114 DefaillanceNegative 7 154 
+5115 ValeurDeNTCOrigineVersExtremite 0 0 155 
+5116 CoutOrigineVersExtremiteDeLInterconnexion 0 155 
+5117 CoutExtremiteVersOrigineDeLInterconnexion 0 155 
+5118 ValeurDeNTCOrigineVersExtremite 0 1 155 
+5119 ValeurDeNTCOrigineVersExtremite 0 2 155 
+5120 ValeurDeNTCOrigineVersExtremite 1 3 155 
+5121 ValeurDeNTCOrigineVersExtremite 1 4 155 
+5122 ValeurDeNTCOrigineVersExtremite 2 5 155 
+5123 ValeurDeNTCOrigineVersExtremite 2 6 155 
+5124 PalierThermique 0 0 155 
+5125 PalierThermique 0 1 155 
+5126 PalierThermique 0 2 155 
+5127 DefaillancePositive 0 155 
+5128 DefaillanceNegative 0 155 
+5129 PalierThermique 1 3 155 
+5130 PalierThermique 1 4 155 
+5131 PalierThermique 1 5 155 
+5132 DefaillancePositive 1 155 
+5133 DefaillanceNegative 1 155 
+5134 DefaillancePositive 2 155 
+5135 DefaillanceNegative 2 155 
+5136 PalierThermique 3 6 155 
+5137 DefaillancePositive 3 155 
+5138 DefaillanceNegative 3 155 
+5139 DefaillancePositive 4 155 
+5140 DefaillanceNegative 4 155 
+5141 PalierThermique 5 7 155 
+5142 DefaillancePositive 5 155 
+5143 DefaillanceNegative 5 155 
+5144 DefaillancePositive 6 155 
+5145 DefaillanceNegative 6 155 
+5146 DefaillancePositive 7 155 
+5147 DefaillanceNegative 7 155 
+5148 ValeurDeNTCOrigineVersExtremite 0 0 156 
+5149 CoutOrigineVersExtremiteDeLInterconnexion 0 156 
+5150 CoutExtremiteVersOrigineDeLInterconnexion 0 156 
+5151 ValeurDeNTCOrigineVersExtremite 0 1 156 
+5152 ValeurDeNTCOrigineVersExtremite 0 2 156 
+5153 ValeurDeNTCOrigineVersExtremite 1 3 156 
+5154 ValeurDeNTCOrigineVersExtremite 1 4 156 
+5155 ValeurDeNTCOrigineVersExtremite 2 5 156 
+5156 ValeurDeNTCOrigineVersExtremite 2 6 156 
+5157 PalierThermique 0 0 156 
+5158 PalierThermique 0 1 156 
+5159 PalierThermique 0 2 156 
+5160 DefaillancePositive 0 156 
+5161 DefaillanceNegative 0 156 
+5162 PalierThermique 1 3 156 
+5163 PalierThermique 1 4 156 
+5164 PalierThermique 1 5 156 
+5165 DefaillancePositive 1 156 
+5166 DefaillanceNegative 1 156 
+5167 DefaillancePositive 2 156 
+5168 DefaillanceNegative 2 156 
+5169 PalierThermique 3 6 156 
+5170 DefaillancePositive 3 156 
+5171 DefaillanceNegative 3 156 
+5172 DefaillancePositive 4 156 
+5173 DefaillanceNegative 4 156 
+5174 PalierThermique 5 7 156 
+5175 DefaillancePositive 5 156 
+5176 DefaillanceNegative 5 156 
+5177 DefaillancePositive 6 156 
+5178 DefaillanceNegative 6 156 
+5179 DefaillancePositive 7 156 
+5180 DefaillanceNegative 7 156 
+5181 ValeurDeNTCOrigineVersExtremite 0 0 157 
+5182 CoutOrigineVersExtremiteDeLInterconnexion 0 157 
+5183 CoutExtremiteVersOrigineDeLInterconnexion 0 157 
+5184 ValeurDeNTCOrigineVersExtremite 0 1 157 
+5185 ValeurDeNTCOrigineVersExtremite 0 2 157 
+5186 ValeurDeNTCOrigineVersExtremite 1 3 157 
+5187 ValeurDeNTCOrigineVersExtremite 1 4 157 
+5188 ValeurDeNTCOrigineVersExtremite 2 5 157 
+5189 ValeurDeNTCOrigineVersExtremite 2 6 157 
+5190 PalierThermique 0 0 157 
+5191 PalierThermique 0 1 157 
+5192 PalierThermique 0 2 157 
+5193 DefaillancePositive 0 157 
+5194 DefaillanceNegative 0 157 
+5195 PalierThermique 1 3 157 
+5196 PalierThermique 1 4 157 
+5197 PalierThermique 1 5 157 
+5198 DefaillancePositive 1 157 
+5199 DefaillanceNegative 1 157 
+5200 DefaillancePositive 2 157 
+5201 DefaillanceNegative 2 157 
+5202 PalierThermique 3 6 157 
+5203 DefaillancePositive 3 157 
+5204 DefaillanceNegative 3 157 
+5205 DefaillancePositive 4 157 
+5206 DefaillanceNegative 4 157 
+5207 PalierThermique 5 7 157 
+5208 DefaillancePositive 5 157 
+5209 DefaillanceNegative 5 157 
+5210 DefaillancePositive 6 157 
+5211 DefaillanceNegative 6 157 
+5212 DefaillancePositive 7 157 
+5213 DefaillanceNegative 7 157 
+5214 ValeurDeNTCOrigineVersExtremite 0 0 158 
+5215 CoutOrigineVersExtremiteDeLInterconnexion 0 158 
+5216 CoutExtremiteVersOrigineDeLInterconnexion 0 158 
+5217 ValeurDeNTCOrigineVersExtremite 0 1 158 
+5218 ValeurDeNTCOrigineVersExtremite 0 2 158 
+5219 ValeurDeNTCOrigineVersExtremite 1 3 158 
+5220 ValeurDeNTCOrigineVersExtremite 1 4 158 
+5221 ValeurDeNTCOrigineVersExtremite 2 5 158 
+5222 ValeurDeNTCOrigineVersExtremite 2 6 158 
+5223 PalierThermique 0 0 158 
+5224 PalierThermique 0 1 158 
+5225 PalierThermique 0 2 158 
+5226 DefaillancePositive 0 158 
+5227 DefaillanceNegative 0 158 
+5228 PalierThermique 1 3 158 
+5229 PalierThermique 1 4 158 
+5230 PalierThermique 1 5 158 
+5231 DefaillancePositive 1 158 
+5232 DefaillanceNegative 1 158 
+5233 DefaillancePositive 2 158 
+5234 DefaillanceNegative 2 158 
+5235 PalierThermique 3 6 158 
+5236 DefaillancePositive 3 158 
+5237 DefaillanceNegative 3 158 
+5238 DefaillancePositive 4 158 
+5239 DefaillanceNegative 4 158 
+5240 PalierThermique 5 7 158 
+5241 DefaillancePositive 5 158 
+5242 DefaillanceNegative 5 158 
+5243 DefaillancePositive 6 158 
+5244 DefaillanceNegative 6 158 
+5245 DefaillancePositive 7 158 
+5246 DefaillanceNegative 7 158 
+5247 ValeurDeNTCOrigineVersExtremite 0 0 159 
+5248 CoutOrigineVersExtremiteDeLInterconnexion 0 159 
+5249 CoutExtremiteVersOrigineDeLInterconnexion 0 159 
+5250 ValeurDeNTCOrigineVersExtremite 0 1 159 
+5251 ValeurDeNTCOrigineVersExtremite 0 2 159 
+5252 ValeurDeNTCOrigineVersExtremite 1 3 159 
+5253 ValeurDeNTCOrigineVersExtremite 1 4 159 
+5254 ValeurDeNTCOrigineVersExtremite 2 5 159 
+5255 ValeurDeNTCOrigineVersExtremite 2 6 159 
+5256 PalierThermique 0 0 159 
+5257 PalierThermique 0 1 159 
+5258 PalierThermique 0 2 159 
+5259 DefaillancePositive 0 159 
+5260 DefaillanceNegative 0 159 
+5261 PalierThermique 1 3 159 
+5262 PalierThermique 1 4 159 
+5263 PalierThermique 1 5 159 
+5264 DefaillancePositive 1 159 
+5265 DefaillanceNegative 1 159 
+5266 DefaillancePositive 2 159 
+5267 DefaillanceNegative 2 159 
+5268 PalierThermique 3 6 159 
+5269 DefaillancePositive 3 159 
+5270 DefaillanceNegative 3 159 
+5271 DefaillancePositive 4 159 
+5272 DefaillanceNegative 4 159 
+5273 PalierThermique 5 7 159 
+5274 DefaillancePositive 5 159 
+5275 DefaillanceNegative 5 159 
+5276 DefaillancePositive 6 159 
+5277 DefaillanceNegative 6 159 
+5278 DefaillancePositive 7 159 
+5279 DefaillanceNegative 7 159 
+5280 ValeurDeNTCOrigineVersExtremite 0 0 160 
+5281 CoutOrigineVersExtremiteDeLInterconnexion 0 160 
+5282 CoutExtremiteVersOrigineDeLInterconnexion 0 160 
+5283 ValeurDeNTCOrigineVersExtremite 0 1 160 
+5284 ValeurDeNTCOrigineVersExtremite 0 2 160 
+5285 ValeurDeNTCOrigineVersExtremite 1 3 160 
+5286 ValeurDeNTCOrigineVersExtremite 1 4 160 
+5287 ValeurDeNTCOrigineVersExtremite 2 5 160 
+5288 ValeurDeNTCOrigineVersExtremite 2 6 160 
+5289 PalierThermique 0 0 160 
+5290 PalierThermique 0 1 160 
+5291 PalierThermique 0 2 160 
+5292 DefaillancePositive 0 160 
+5293 DefaillanceNegative 0 160 
+5294 PalierThermique 1 3 160 
+5295 PalierThermique 1 4 160 
+5296 PalierThermique 1 5 160 
+5297 DefaillancePositive 1 160 
+5298 DefaillanceNegative 1 160 
+5299 DefaillancePositive 2 160 
+5300 DefaillanceNegative 2 160 
+5301 PalierThermique 3 6 160 
+5302 DefaillancePositive 3 160 
+5303 DefaillanceNegative 3 160 
+5304 DefaillancePositive 4 160 
+5305 DefaillanceNegative 4 160 
+5306 PalierThermique 5 7 160 
+5307 DefaillancePositive 5 160 
+5308 DefaillanceNegative 5 160 
+5309 DefaillancePositive 6 160 
+5310 DefaillanceNegative 6 160 
+5311 DefaillancePositive 7 160 
+5312 DefaillanceNegative 7 160 
+5313 ValeurDeNTCOrigineVersExtremite 0 0 161 
+5314 CoutOrigineVersExtremiteDeLInterconnexion 0 161 
+5315 CoutExtremiteVersOrigineDeLInterconnexion 0 161 
+5316 ValeurDeNTCOrigineVersExtremite 0 1 161 
+5317 ValeurDeNTCOrigineVersExtremite 0 2 161 
+5318 ValeurDeNTCOrigineVersExtremite 1 3 161 
+5319 ValeurDeNTCOrigineVersExtremite 1 4 161 
+5320 ValeurDeNTCOrigineVersExtremite 2 5 161 
+5321 ValeurDeNTCOrigineVersExtremite 2 6 161 
+5322 PalierThermique 0 0 161 
+5323 PalierThermique 0 1 161 
+5324 PalierThermique 0 2 161 
+5325 DefaillancePositive 0 161 
+5326 DefaillanceNegative 0 161 
+5327 PalierThermique 1 3 161 
+5328 PalierThermique 1 4 161 
+5329 PalierThermique 1 5 161 
+5330 DefaillancePositive 1 161 
+5331 DefaillanceNegative 1 161 
+5332 DefaillancePositive 2 161 
+5333 DefaillanceNegative 2 161 
+5334 PalierThermique 3 6 161 
+5335 DefaillancePositive 3 161 
+5336 DefaillanceNegative 3 161 
+5337 DefaillancePositive 4 161 
+5338 DefaillanceNegative 4 161 
+5339 PalierThermique 5 7 161 
+5340 DefaillancePositive 5 161 
+5341 DefaillanceNegative 5 161 
+5342 DefaillancePositive 6 161 
+5343 DefaillanceNegative 6 161 
+5344 DefaillancePositive 7 161 
+5345 DefaillanceNegative 7 161 
+5346 ValeurDeNTCOrigineVersExtremite 0 0 162 
+5347 CoutOrigineVersExtremiteDeLInterconnexion 0 162 
+5348 CoutExtremiteVersOrigineDeLInterconnexion 0 162 
+5349 ValeurDeNTCOrigineVersExtremite 0 1 162 
+5350 ValeurDeNTCOrigineVersExtremite 0 2 162 
+5351 ValeurDeNTCOrigineVersExtremite 1 3 162 
+5352 ValeurDeNTCOrigineVersExtremite 1 4 162 
+5353 ValeurDeNTCOrigineVersExtremite 2 5 162 
+5354 ValeurDeNTCOrigineVersExtremite 2 6 162 
+5355 PalierThermique 0 0 162 
+5356 PalierThermique 0 1 162 
+5357 PalierThermique 0 2 162 
+5358 DefaillancePositive 0 162 
+5359 DefaillanceNegative 0 162 
+5360 PalierThermique 1 3 162 
+5361 PalierThermique 1 4 162 
+5362 PalierThermique 1 5 162 
+5363 DefaillancePositive 1 162 
+5364 DefaillanceNegative 1 162 
+5365 DefaillancePositive 2 162 
+5366 DefaillanceNegative 2 162 
+5367 PalierThermique 3 6 162 
+5368 DefaillancePositive 3 162 
+5369 DefaillanceNegative 3 162 
+5370 DefaillancePositive 4 162 
+5371 DefaillanceNegative 4 162 
+5372 PalierThermique 5 7 162 
+5373 DefaillancePositive 5 162 
+5374 DefaillanceNegative 5 162 
+5375 DefaillancePositive 6 162 
+5376 DefaillanceNegative 6 162 
+5377 DefaillancePositive 7 162 
+5378 DefaillanceNegative 7 162 
+5379 ValeurDeNTCOrigineVersExtremite 0 0 163 
+5380 CoutOrigineVersExtremiteDeLInterconnexion 0 163 
+5381 CoutExtremiteVersOrigineDeLInterconnexion 0 163 
+5382 ValeurDeNTCOrigineVersExtremite 0 1 163 
+5383 ValeurDeNTCOrigineVersExtremite 0 2 163 
+5384 ValeurDeNTCOrigineVersExtremite 1 3 163 
+5385 ValeurDeNTCOrigineVersExtremite 1 4 163 
+5386 ValeurDeNTCOrigineVersExtremite 2 5 163 
+5387 ValeurDeNTCOrigineVersExtremite 2 6 163 
+5388 PalierThermique 0 0 163 
+5389 PalierThermique 0 1 163 
+5390 PalierThermique 0 2 163 
+5391 DefaillancePositive 0 163 
+5392 DefaillanceNegative 0 163 
+5393 PalierThermique 1 3 163 
+5394 PalierThermique 1 4 163 
+5395 PalierThermique 1 5 163 
+5396 DefaillancePositive 1 163 
+5397 DefaillanceNegative 1 163 
+5398 DefaillancePositive 2 163 
+5399 DefaillanceNegative 2 163 
+5400 PalierThermique 3 6 163 
+5401 DefaillancePositive 3 163 
+5402 DefaillanceNegative 3 163 
+5403 DefaillancePositive 4 163 
+5404 DefaillanceNegative 4 163 
+5405 PalierThermique 5 7 163 
+5406 DefaillancePositive 5 163 
+5407 DefaillanceNegative 5 163 
+5408 DefaillancePositive 6 163 
+5409 DefaillanceNegative 6 163 
+5410 DefaillancePositive 7 163 
+5411 DefaillanceNegative 7 163 
+5412 ValeurDeNTCOrigineVersExtremite 0 0 164 
+5413 CoutOrigineVersExtremiteDeLInterconnexion 0 164 
+5414 CoutExtremiteVersOrigineDeLInterconnexion 0 164 
+5415 ValeurDeNTCOrigineVersExtremite 0 1 164 
+5416 ValeurDeNTCOrigineVersExtremite 0 2 164 
+5417 ValeurDeNTCOrigineVersExtremite 1 3 164 
+5418 ValeurDeNTCOrigineVersExtremite 1 4 164 
+5419 ValeurDeNTCOrigineVersExtremite 2 5 164 
+5420 ValeurDeNTCOrigineVersExtremite 2 6 164 
+5421 PalierThermique 0 0 164 
+5422 PalierThermique 0 1 164 
+5423 PalierThermique 0 2 164 
+5424 DefaillancePositive 0 164 
+5425 DefaillanceNegative 0 164 
+5426 PalierThermique 1 3 164 
+5427 PalierThermique 1 4 164 
+5428 PalierThermique 1 5 164 
+5429 DefaillancePositive 1 164 
+5430 DefaillanceNegative 1 164 
+5431 DefaillancePositive 2 164 
+5432 DefaillanceNegative 2 164 
+5433 PalierThermique 3 6 164 
+5434 DefaillancePositive 3 164 
+5435 DefaillanceNegative 3 164 
+5436 DefaillancePositive 4 164 
+5437 DefaillanceNegative 4 164 
+5438 PalierThermique 5 7 164 
+5439 DefaillancePositive 5 164 
+5440 DefaillanceNegative 5 164 
+5441 DefaillancePositive 6 164 
+5442 DefaillanceNegative 6 164 
+5443 DefaillancePositive 7 164 
+5444 DefaillanceNegative 7 164 
+5445 ValeurDeNTCOrigineVersExtremite 0 0 165 
+5446 CoutOrigineVersExtremiteDeLInterconnexion 0 165 
+5447 CoutExtremiteVersOrigineDeLInterconnexion 0 165 
+5448 ValeurDeNTCOrigineVersExtremite 0 1 165 
+5449 ValeurDeNTCOrigineVersExtremite 0 2 165 
+5450 ValeurDeNTCOrigineVersExtremite 1 3 165 
+5451 ValeurDeNTCOrigineVersExtremite 1 4 165 
+5452 ValeurDeNTCOrigineVersExtremite 2 5 165 
+5453 ValeurDeNTCOrigineVersExtremite 2 6 165 
+5454 PalierThermique 0 0 165 
+5455 PalierThermique 0 1 165 
+5456 PalierThermique 0 2 165 
+5457 DefaillancePositive 0 165 
+5458 DefaillanceNegative 0 165 
+5459 PalierThermique 1 3 165 
+5460 PalierThermique 1 4 165 
+5461 PalierThermique 1 5 165 
+5462 DefaillancePositive 1 165 
+5463 DefaillanceNegative 1 165 
+5464 DefaillancePositive 2 165 
+5465 DefaillanceNegative 2 165 
+5466 PalierThermique 3 6 165 
+5467 DefaillancePositive 3 165 
+5468 DefaillanceNegative 3 165 
+5469 DefaillancePositive 4 165 
+5470 DefaillanceNegative 4 165 
+5471 PalierThermique 5 7 165 
+5472 DefaillancePositive 5 165 
+5473 DefaillanceNegative 5 165 
+5474 DefaillancePositive 6 165 
+5475 DefaillanceNegative 6 165 
+5476 DefaillancePositive 7 165 
+5477 DefaillanceNegative 7 165 
+5478 ValeurDeNTCOrigineVersExtremite 0 0 166 
+5479 CoutOrigineVersExtremiteDeLInterconnexion 0 166 
+5480 CoutExtremiteVersOrigineDeLInterconnexion 0 166 
+5481 ValeurDeNTCOrigineVersExtremite 0 1 166 
+5482 ValeurDeNTCOrigineVersExtremite 0 2 166 
+5483 ValeurDeNTCOrigineVersExtremite 1 3 166 
+5484 ValeurDeNTCOrigineVersExtremite 1 4 166 
+5485 ValeurDeNTCOrigineVersExtremite 2 5 166 
+5486 ValeurDeNTCOrigineVersExtremite 2 6 166 
+5487 PalierThermique 0 0 166 
+5488 PalierThermique 0 1 166 
+5489 PalierThermique 0 2 166 
+5490 DefaillancePositive 0 166 
+5491 DefaillanceNegative 0 166 
+5492 PalierThermique 1 3 166 
+5493 PalierThermique 1 4 166 
+5494 PalierThermique 1 5 166 
+5495 DefaillancePositive 1 166 
+5496 DefaillanceNegative 1 166 
+5497 DefaillancePositive 2 166 
+5498 DefaillanceNegative 2 166 
+5499 PalierThermique 3 6 166 
+5500 DefaillancePositive 3 166 
+5501 DefaillanceNegative 3 166 
+5502 DefaillancePositive 4 166 
+5503 DefaillanceNegative 4 166 
+5504 PalierThermique 5 7 166 
+5505 DefaillancePositive 5 166 
+5506 DefaillanceNegative 5 166 
+5507 DefaillancePositive 6 166 
+5508 DefaillanceNegative 6 166 
+5509 DefaillancePositive 7 166 
+5510 DefaillanceNegative 7 166 
+5511 ValeurDeNTCOrigineVersExtremite 0 0 167 
+5512 CoutOrigineVersExtremiteDeLInterconnexion 0 167 
+5513 CoutExtremiteVersOrigineDeLInterconnexion 0 167 
+5514 ValeurDeNTCOrigineVersExtremite 0 1 167 
+5515 ValeurDeNTCOrigineVersExtremite 0 2 167 
+5516 ValeurDeNTCOrigineVersExtremite 1 3 167 
+5517 ValeurDeNTCOrigineVersExtremite 1 4 167 
+5518 ValeurDeNTCOrigineVersExtremite 2 5 167 
+5519 ValeurDeNTCOrigineVersExtremite 2 6 167 
+5520 PalierThermique 0 0 167 
+5521 PalierThermique 0 1 167 
+5522 PalierThermique 0 2 167 
+5523 DefaillancePositive 0 167 
+5524 DefaillanceNegative 0 167 
+5525 PalierThermique 1 3 167 
+5526 PalierThermique 1 4 167 
+5527 PalierThermique 1 5 167 
+5528 DefaillancePositive 1 167 
+5529 DefaillanceNegative 1 167 
+5530 DefaillancePositive 2 167 
+5531 DefaillanceNegative 2 167 
+5532 PalierThermique 3 6 167 
+5533 DefaillancePositive 3 167 
+5534 DefaillanceNegative 3 167 
+5535 DefaillancePositive 4 167 
+5536 DefaillanceNegative 4 167 
+5537 PalierThermique 5 7 167 
+5538 DefaillancePositive 5 167 
+5539 DefaillanceNegative 5 167 
+5540 DefaillancePositive 6 167 
+5541 DefaillanceNegative 6 167 
+5542 DefaillancePositive 7 167 
+5543 DefaillanceNegative 7 167 

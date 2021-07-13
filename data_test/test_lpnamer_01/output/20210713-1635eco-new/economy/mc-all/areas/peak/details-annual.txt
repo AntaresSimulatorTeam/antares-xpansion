@@ -1,0 +1,8 @@
+peak	area	de	annual
+	VARIABLES	BEGIN	END
+	3	1	1
+
+peak	annual	Peak_unit1	Peak_unit1	Peak_unit1
+		MWh	NP Cost - Euro	NODU
+		EXP	EXP	EXP
+	Annual	2339	0	14
