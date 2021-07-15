@@ -396,4 +396,3 @@ if (ANTARES_XPANSION_RC)
 endif()
 
 include(CPack)
-
