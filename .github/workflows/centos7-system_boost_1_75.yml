@@ -22,7 +22,7 @@ jobs:
       run: |
            yum update -y
            yum install -y python3 python3-pip
-           pip3 install --upgrade pip
+           sudo -H pip3 install --upgrade pip
 
     - name: Install libraries
       run: |
@@ -75,8 +75,7 @@ jobs:
     - name: Install dependencies
       run: |
           python3 -m venv .venv
-          source .venv/bin/activate
-          pip3 install -r requirements-tests.txt
+          sudo -H pip3 install -r requirements-tests.txt
 
     - name: Install Boost 1_75_0
       run: |
@@ -92,7 +91,6 @@ jobs:
 
     - name: Configure
       run: |
-           source .venv/bin/activate
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH           
@@ -100,7 +98,6 @@ jobs:
 
     - name: Build
       run: |
-           source .venv/bin/activate
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH

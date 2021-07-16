@@ -22,7 +22,7 @@ jobs:
       run: |
            yum update -y
            yum install -y python3 python3-pip
-           pip install --upgrade pip
+           sudo -H pip3 install --upgrade pip
 
     - name: Install libraries
       run: |
@@ -76,7 +76,8 @@ jobs:
     - name: Install dependencies
       run: |
           source .venv/bin/activate
-          pip3 install -r requirements-tests.txt
+          sudo -H pip3 install --upgrade pip
+          sudo -H pip3 install -r requirements-tests.txt
 
     - name: Configure
       run: |
