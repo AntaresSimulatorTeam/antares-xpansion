@@ -74,11 +74,12 @@ jobs:
           
     - name: Install dependencies
       run: |
-          pip3 install wheel
+          source .venv/bin/activate
           pip3 install -r requirements-tests.txt
 
     - name: Configure
       run: |
+           source .venv/bin/activate
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH           
@@ -86,6 +87,7 @@ jobs:
 
     - name: Build
       run: |
+           source .venv/bin/activate
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
@@ -93,6 +95,7 @@ jobs:
            
     - name: Running unit tests
       run: |
+           source .venv/bin/activate
            cd _build
            ctest3 -C Release --output-on-failure -L "unit|benders"
            
