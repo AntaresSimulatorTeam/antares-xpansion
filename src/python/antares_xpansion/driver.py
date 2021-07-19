@@ -94,7 +94,6 @@ class XpansionDriver:
         elif self.config.step == "lp":
             if self.config.simulationName:
                 self.lp_step()
-                self._set_options()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
