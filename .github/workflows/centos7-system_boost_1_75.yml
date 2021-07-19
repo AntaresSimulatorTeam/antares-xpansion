@@ -74,7 +74,6 @@ jobs:
           
     - name: Install dependencies
       run: |
-          python3 -m venv .venv
           pip3 install -r requirements-tests.txt
 
     - name: Install Boost 1_75_0
