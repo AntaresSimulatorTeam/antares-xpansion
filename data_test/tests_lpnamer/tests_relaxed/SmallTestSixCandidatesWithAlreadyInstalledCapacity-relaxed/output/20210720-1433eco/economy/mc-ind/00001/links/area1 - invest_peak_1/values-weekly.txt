@@ -1,0 +1,11 @@
+area1	link	va	weekly
+invest_peak_1	VARIABLES	BEGIN	END
+	10	1	4
+
+area1	weekly	FLOW LIN.	UCAP LIN.	LOOP FLOW	FLOW QUAD.	CONG. FEE (ALG.)	CONG. FEE (ABS.)	MARG. COST	CONG. PROB +	CONG. PROB -	HURDLE COST
+		MWh	MWh	MWh	MWh	Euro	Euro	Euro/MW	%	%	Euro
+	week										
+	1	0	0	0	0	0	0	0	0	0	0
+	2	0	0	0	0	0	0	0	0	0	0
+	3	-4380	4380	0	0	2297	2297	5.00	0	100.00	0
+	4	0	0	0	0	0	0	0	0	0	0

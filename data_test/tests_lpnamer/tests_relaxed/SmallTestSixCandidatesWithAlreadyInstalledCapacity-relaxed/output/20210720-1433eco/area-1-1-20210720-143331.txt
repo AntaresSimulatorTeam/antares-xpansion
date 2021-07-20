@@ -1,0 +1,10 @@
+area1
+area2
+flex_2
+invest_peak_1
+invest_peak_2
+invest_semibase_1
+invest_semibase_2
+pv
+Store_in
+store_out
