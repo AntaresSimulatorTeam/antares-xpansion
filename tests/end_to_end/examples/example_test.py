@@ -89,8 +89,8 @@ def verify_study_update(study_path, expected_investment_solution):
         np.testing.assert_allclose(link_capacity,expected_link_capacity, rtol=1e-4)
 
 
-def test_full_study(installDir, study_path, expected_values, expected_investment_solution, solver : str):
-    launch_xpansion(installDir, study_path, solver)
+def test_full_study(install_dir, study_path, expected_values, expected_investment_solution, solver : str):
+    launch_xpansion(install_dir, study_path, solver)
     verify_solution(study_path, expected_values, expected_investment_solution)
     verify_study_update(study_path, expected_investment_solution)
     remove_outputs(study_path)
@@ -119,9 +119,9 @@ def test_full_study(installDir, study_path, expected_values, expected_investment
     ],
 )
 @pytest.mark.long
-def test_full_study_long(installDir, study_path, expected_values, expected_investment_solution):
-    test_full_study(installDir, study_path, expected_values, expected_investment_solution, "sequential")
-    test_full_study(installDir, study_path, expected_values, expected_investment_solution, "mpibenders")
+def test_full_study_long(install_dir, study_path, expected_values, expected_investment_solution):
+    test_full_study(install_dir, study_path, expected_values, expected_investment_solution, "sequential")
+    test_full_study(install_dir, study_path, expected_values, expected_investment_solution, "mpibenders")
 
 @pytest.mark.parametrize(
         "study_path, expected_values, expected_investment_solution",
@@ -146,6 +146,6 @@ def test_full_study_long(installDir, study_path, expected_values, expected_inves
         ],
     )
 @pytest.mark.medium
-def test_full_study_medium(installDir, study_path, expected_values,expected_investment_solution):
-    test_full_study(installDir, study_path, expected_values, expected_investment_solution, "sequential")
-    test_full_study(installDir, study_path, expected_values, expected_investment_solution, "mpibenders")
+def test_full_study_medium(install_dir, study_path, expected_values, expected_investment_solution):
+    test_full_study(install_dir, study_path, expected_values, expected_investment_solution, "sequential")
+    test_full_study(install_dir, study_path, expected_values, expected_investment_solution, "mpibenders")

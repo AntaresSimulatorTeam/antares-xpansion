@@ -8,5 +8,5 @@ def pytest_addoption(parser):
 
 
 @pytest.fixture()
-def installDir(request):
+def install_dir(request):
     return request.config.getoption("--installDir")
