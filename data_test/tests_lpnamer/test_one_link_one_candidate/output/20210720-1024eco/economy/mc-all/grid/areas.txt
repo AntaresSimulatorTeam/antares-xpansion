@@ -1,0 +1,3 @@
+id	name
+area1	area1
+area2	area2
