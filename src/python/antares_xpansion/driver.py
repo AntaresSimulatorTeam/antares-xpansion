@@ -296,7 +296,7 @@ class XpansionDriver:
             if returned_l.returncode != 0:
                 print("ERROR: exited study-updater with status %d" % returned_l.returncode)
                 sys.exit(1)
-            else:
+            elif not self.config.keep_mps:
                 StudyOutputCleaner.clean_study_update_step(output_path)
 
     def antares_output(self):
