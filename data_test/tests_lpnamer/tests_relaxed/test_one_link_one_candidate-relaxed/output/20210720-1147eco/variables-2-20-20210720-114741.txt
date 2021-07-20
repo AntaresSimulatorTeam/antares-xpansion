@@ -1,0 +1,1848 @@
+0 ValeurDeNTCOrigineVersExtremite 0 0 3192 
+1 PalierThermique 0 0 3192 
+2 PalierThermique 0 1 3192 
+3 PalierThermique 0 2 3192 
+4 DefaillancePositive 0 3192 
+5 DefaillanceNegative 0 3192 
+6 PalierThermique 1 3 3192 
+7 PalierThermique 1 4 3192 
+8 PalierThermique 1 5 3192 
+9 DefaillancePositive 1 3192 
+10 DefaillanceNegative 1 3192 
+11 ValeurDeNTCOrigineVersExtremite 0 0 3193 
+12 PalierThermique 0 0 3193 
+13 PalierThermique 0 1 3193 
+14 PalierThermique 0 2 3193 
+15 DefaillancePositive 0 3193 
+16 DefaillanceNegative 0 3193 
+17 PalierThermique 1 3 3193 
+18 PalierThermique 1 4 3193 
+19 PalierThermique 1 5 3193 
+20 DefaillancePositive 1 3193 
+21 DefaillanceNegative 1 3193 
+22 ValeurDeNTCOrigineVersExtremite 0 0 3194 
+23 PalierThermique 0 0 3194 
+24 PalierThermique 0 1 3194 
+25 PalierThermique 0 2 3194 
+26 DefaillancePositive 0 3194 
+27 DefaillanceNegative 0 3194 
+28 PalierThermique 1 3 3194 
+29 PalierThermique 1 4 3194 
+30 PalierThermique 1 5 3194 
+31 DefaillancePositive 1 3194 
+32 DefaillanceNegative 1 3194 
+33 ValeurDeNTCOrigineVersExtremite 0 0 3195 
+34 PalierThermique 0 0 3195 
+35 PalierThermique 0 1 3195 
+36 PalierThermique 0 2 3195 
+37 DefaillancePositive 0 3195 
+38 DefaillanceNegative 0 3195 
+39 PalierThermique 1 3 3195 
+40 PalierThermique 1 4 3195 
+41 PalierThermique 1 5 3195 
+42 DefaillancePositive 1 3195 
+43 DefaillanceNegative 1 3195 
+44 ValeurDeNTCOrigineVersExtremite 0 0 3196 
+45 PalierThermique 0 0 3196 
+46 PalierThermique 0 1 3196 
+47 PalierThermique 0 2 3196 
+48 DefaillancePositive 0 3196 
+49 DefaillanceNegative 0 3196 
+50 PalierThermique 1 3 3196 
+51 PalierThermique 1 4 3196 
+52 PalierThermique 1 5 3196 
+53 DefaillancePositive 1 3196 
+54 DefaillanceNegative 1 3196 
+55 ValeurDeNTCOrigineVersExtremite 0 0 3197 
+56 PalierThermique 0 0 3197 
+57 PalierThermique 0 1 3197 
+58 PalierThermique 0 2 3197 
+59 DefaillancePositive 0 3197 
+60 DefaillanceNegative 0 3197 
+61 PalierThermique 1 3 3197 
+62 PalierThermique 1 4 3197 
+63 PalierThermique 1 5 3197 
+64 DefaillancePositive 1 3197 
+65 DefaillanceNegative 1 3197 
+66 ValeurDeNTCOrigineVersExtremite 0 0 3198 
+67 PalierThermique 0 0 3198 
+68 PalierThermique 0 1 3198 
+69 PalierThermique 0 2 3198 
+70 DefaillancePositive 0 3198 
+71 DefaillanceNegative 0 3198 
+72 PalierThermique 1 3 3198 
+73 PalierThermique 1 4 3198 
+74 PalierThermique 1 5 3198 
+75 DefaillancePositive 1 3198 
+76 DefaillanceNegative 1 3198 
+77 ValeurDeNTCOrigineVersExtremite 0 0 3199 
+78 PalierThermique 0 0 3199 
+79 PalierThermique 0 1 3199 
+80 PalierThermique 0 2 3199 
+81 DefaillancePositive 0 3199 
+82 DefaillanceNegative 0 3199 
+83 PalierThermique 1 3 3199 
+84 PalierThermique 1 4 3199 
+85 PalierThermique 1 5 3199 
+86 DefaillancePositive 1 3199 
+87 DefaillanceNegative 1 3199 
+88 ValeurDeNTCOrigineVersExtremite 0 0 3200 
+89 PalierThermique 0 0 3200 
+90 PalierThermique 0 1 3200 
+91 PalierThermique 0 2 3200 
+92 DefaillancePositive 0 3200 
+93 DefaillanceNegative 0 3200 
+94 PalierThermique 1 3 3200 
+95 PalierThermique 1 4 3200 
+96 PalierThermique 1 5 3200 
+97 DefaillancePositive 1 3200 
+98 DefaillanceNegative 1 3200 
+99 ValeurDeNTCOrigineVersExtremite 0 0 3201 
+100 PalierThermique 0 0 3201 
+101 PalierThermique 0 1 3201 
+102 PalierThermique 0 2 3201 
+103 DefaillancePositive 0 3201 
+104 DefaillanceNegative 0 3201 
+105 PalierThermique 1 3 3201 
+106 PalierThermique 1 4 3201 
+107 PalierThermique 1 5 3201 
+108 DefaillancePositive 1 3201 
+109 DefaillanceNegative 1 3201 
+110 ValeurDeNTCOrigineVersExtremite 0 0 3202 
+111 PalierThermique 0 0 3202 
+112 PalierThermique 0 1 3202 
+113 PalierThermique 0 2 3202 
+114 DefaillancePositive 0 3202 
+115 DefaillanceNegative 0 3202 
+116 PalierThermique 1 3 3202 
+117 PalierThermique 1 4 3202 
+118 PalierThermique 1 5 3202 
+119 DefaillancePositive 1 3202 
+120 DefaillanceNegative 1 3202 
+121 ValeurDeNTCOrigineVersExtremite 0 0 3203 
+122 PalierThermique 0 0 3203 
+123 PalierThermique 0 1 3203 
+124 PalierThermique 0 2 3203 
+125 DefaillancePositive 0 3203 
+126 DefaillanceNegative 0 3203 
+127 PalierThermique 1 3 3203 
+128 PalierThermique 1 4 3203 
+129 PalierThermique 1 5 3203 
+130 DefaillancePositive 1 3203 
+131 DefaillanceNegative 1 3203 
+132 ValeurDeNTCOrigineVersExtremite 0 0 3204 
+133 PalierThermique 0 0 3204 
+134 PalierThermique 0 1 3204 
+135 PalierThermique 0 2 3204 
+136 DefaillancePositive 0 3204 
+137 DefaillanceNegative 0 3204 
+138 PalierThermique 1 3 3204 
+139 PalierThermique 1 4 3204 
+140 PalierThermique 1 5 3204 
+141 DefaillancePositive 1 3204 
+142 DefaillanceNegative 1 3204 
+143 ValeurDeNTCOrigineVersExtremite 0 0 3205 
+144 PalierThermique 0 0 3205 
+145 PalierThermique 0 1 3205 
+146 PalierThermique 0 2 3205 
+147 DefaillancePositive 0 3205 
+148 DefaillanceNegative 0 3205 
+149 PalierThermique 1 3 3205 
+150 PalierThermique 1 4 3205 
+151 PalierThermique 1 5 3205 
+152 DefaillancePositive 1 3205 
+153 DefaillanceNegative 1 3205 
+154 ValeurDeNTCOrigineVersExtremite 0 0 3206 
+155 PalierThermique 0 0 3206 
+156 PalierThermique 0 1 3206 
+157 PalierThermique 0 2 3206 
+158 DefaillancePositive 0 3206 
+159 DefaillanceNegative 0 3206 
+160 PalierThermique 1 3 3206 
+161 PalierThermique 1 4 3206 
+162 PalierThermique 1 5 3206 
+163 DefaillancePositive 1 3206 
+164 DefaillanceNegative 1 3206 
+165 ValeurDeNTCOrigineVersExtremite 0 0 3207 
+166 PalierThermique 0 0 3207 
+167 PalierThermique 0 1 3207 
+168 PalierThermique 0 2 3207 
+169 DefaillancePositive 0 3207 
+170 DefaillanceNegative 0 3207 
+171 PalierThermique 1 3 3207 
+172 PalierThermique 1 4 3207 
+173 PalierThermique 1 5 3207 
+174 DefaillancePositive 1 3207 
+175 DefaillanceNegative 1 3207 
+176 ValeurDeNTCOrigineVersExtremite 0 0 3208 
+177 PalierThermique 0 0 3208 
+178 PalierThermique 0 1 3208 
+179 PalierThermique 0 2 3208 
+180 DefaillancePositive 0 3208 
+181 DefaillanceNegative 0 3208 
+182 PalierThermique 1 3 3208 
+183 PalierThermique 1 4 3208 
+184 PalierThermique 1 5 3208 
+185 DefaillancePositive 1 3208 
+186 DefaillanceNegative 1 3208 
+187 ValeurDeNTCOrigineVersExtremite 0 0 3209 
+188 PalierThermique 0 0 3209 
+189 PalierThermique 0 1 3209 
+190 PalierThermique 0 2 3209 
+191 DefaillancePositive 0 3209 
+192 DefaillanceNegative 0 3209 
+193 PalierThermique 1 3 3209 
+194 PalierThermique 1 4 3209 
+195 PalierThermique 1 5 3209 
+196 DefaillancePositive 1 3209 
+197 DefaillanceNegative 1 3209 
+198 ValeurDeNTCOrigineVersExtremite 0 0 3210 
+199 PalierThermique 0 0 3210 
+200 PalierThermique 0 1 3210 
+201 PalierThermique 0 2 3210 
+202 DefaillancePositive 0 3210 
+203 DefaillanceNegative 0 3210 
+204 PalierThermique 1 3 3210 
+205 PalierThermique 1 4 3210 
+206 PalierThermique 1 5 3210 
+207 DefaillancePositive 1 3210 
+208 DefaillanceNegative 1 3210 
+209 ValeurDeNTCOrigineVersExtremite 0 0 3211 
+210 PalierThermique 0 0 3211 
+211 PalierThermique 0 1 3211 
+212 PalierThermique 0 2 3211 
+213 DefaillancePositive 0 3211 
+214 DefaillanceNegative 0 3211 
+215 PalierThermique 1 3 3211 
+216 PalierThermique 1 4 3211 
+217 PalierThermique 1 5 3211 
+218 DefaillancePositive 1 3211 
+219 DefaillanceNegative 1 3211 
+220 ValeurDeNTCOrigineVersExtremite 0 0 3212 
+221 PalierThermique 0 0 3212 
+222 PalierThermique 0 1 3212 
+223 PalierThermique 0 2 3212 
+224 DefaillancePositive 0 3212 
+225 DefaillanceNegative 0 3212 
+226 PalierThermique 1 3 3212 
+227 PalierThermique 1 4 3212 
+228 PalierThermique 1 5 3212 
+229 DefaillancePositive 1 3212 
+230 DefaillanceNegative 1 3212 
+231 ValeurDeNTCOrigineVersExtremite 0 0 3213 
+232 PalierThermique 0 0 3213 
+233 PalierThermique 0 1 3213 
+234 PalierThermique 0 2 3213 
+235 DefaillancePositive 0 3213 
+236 DefaillanceNegative 0 3213 
+237 PalierThermique 1 3 3213 
+238 PalierThermique 1 4 3213 
+239 PalierThermique 1 5 3213 
+240 DefaillancePositive 1 3213 
+241 DefaillanceNegative 1 3213 
+242 ValeurDeNTCOrigineVersExtremite 0 0 3214 
+243 PalierThermique 0 0 3214 
+244 PalierThermique 0 1 3214 
+245 PalierThermique 0 2 3214 
+246 DefaillancePositive 0 3214 
+247 DefaillanceNegative 0 3214 
+248 PalierThermique 1 3 3214 
+249 PalierThermique 1 4 3214 
+250 PalierThermique 1 5 3214 
+251 DefaillancePositive 1 3214 
+252 DefaillanceNegative 1 3214 
+253 ValeurDeNTCOrigineVersExtremite 0 0 3215 
+254 PalierThermique 0 0 3215 
+255 PalierThermique 0 1 3215 
+256 PalierThermique 0 2 3215 
+257 DefaillancePositive 0 3215 
+258 DefaillanceNegative 0 3215 
+259 PalierThermique 1 3 3215 
+260 PalierThermique 1 4 3215 
+261 PalierThermique 1 5 3215 
+262 DefaillancePositive 1 3215 
+263 DefaillanceNegative 1 3215 
+264 ValeurDeNTCOrigineVersExtremite 0 0 3216 
+265 PalierThermique 0 0 3216 
+266 PalierThermique 0 1 3216 
+267 PalierThermique 0 2 3216 
+268 DefaillancePositive 0 3216 
+269 DefaillanceNegative 0 3216 
+270 PalierThermique 1 3 3216 
+271 PalierThermique 1 4 3216 
+272 PalierThermique 1 5 3216 
+273 DefaillancePositive 1 3216 
+274 DefaillanceNegative 1 3216 
+275 ValeurDeNTCOrigineVersExtremite 0 0 3217 
+276 PalierThermique 0 0 3217 
+277 PalierThermique 0 1 3217 
+278 PalierThermique 0 2 3217 
+279 DefaillancePositive 0 3217 
+280 DefaillanceNegative 0 3217 
+281 PalierThermique 1 3 3217 
+282 PalierThermique 1 4 3217 
+283 PalierThermique 1 5 3217 
+284 DefaillancePositive 1 3217 
+285 DefaillanceNegative 1 3217 
+286 ValeurDeNTCOrigineVersExtremite 0 0 3218 
+287 PalierThermique 0 0 3218 
+288 PalierThermique 0 1 3218 
+289 PalierThermique 0 2 3218 
+290 DefaillancePositive 0 3218 
+291 DefaillanceNegative 0 3218 
+292 PalierThermique 1 3 3218 
+293 PalierThermique 1 4 3218 
+294 PalierThermique 1 5 3218 
+295 DefaillancePositive 1 3218 
+296 DefaillanceNegative 1 3218 
+297 ValeurDeNTCOrigineVersExtremite 0 0 3219 
+298 PalierThermique 0 0 3219 
+299 PalierThermique 0 1 3219 
+300 PalierThermique 0 2 3219 
+301 DefaillancePositive 0 3219 
+302 DefaillanceNegative 0 3219 
+303 PalierThermique 1 3 3219 
+304 PalierThermique 1 4 3219 
+305 PalierThermique 1 5 3219 
+306 DefaillancePositive 1 3219 
+307 DefaillanceNegative 1 3219 
+308 ValeurDeNTCOrigineVersExtremite 0 0 3220 
+309 PalierThermique 0 0 3220 
+310 PalierThermique 0 1 3220 
+311 PalierThermique 0 2 3220 
+312 DefaillancePositive 0 3220 
+313 DefaillanceNegative 0 3220 
+314 PalierThermique 1 3 3220 
+315 PalierThermique 1 4 3220 
+316 PalierThermique 1 5 3220 
+317 DefaillancePositive 1 3220 
+318 DefaillanceNegative 1 3220 
+319 ValeurDeNTCOrigineVersExtremite 0 0 3221 
+320 PalierThermique 0 0 3221 
+321 PalierThermique 0 1 3221 
+322 PalierThermique 0 2 3221 
+323 DefaillancePositive 0 3221 
+324 DefaillanceNegative 0 3221 
+325 PalierThermique 1 3 3221 
+326 PalierThermique 1 4 3221 
+327 PalierThermique 1 5 3221 
+328 DefaillancePositive 1 3221 
+329 DefaillanceNegative 1 3221 
+330 ValeurDeNTCOrigineVersExtremite 0 0 3222 
+331 PalierThermique 0 0 3222 
+332 PalierThermique 0 1 3222 
+333 PalierThermique 0 2 3222 
+334 DefaillancePositive 0 3222 
+335 DefaillanceNegative 0 3222 
+336 PalierThermique 1 3 3222 
+337 PalierThermique 1 4 3222 
+338 PalierThermique 1 5 3222 
+339 DefaillancePositive 1 3222 
+340 DefaillanceNegative 1 3222 
+341 ValeurDeNTCOrigineVersExtremite 0 0 3223 
+342 PalierThermique 0 0 3223 
+343 PalierThermique 0 1 3223 
+344 PalierThermique 0 2 3223 
+345 DefaillancePositive 0 3223 
+346 DefaillanceNegative 0 3223 
+347 PalierThermique 1 3 3223 
+348 PalierThermique 1 4 3223 
+349 PalierThermique 1 5 3223 
+350 DefaillancePositive 1 3223 
+351 DefaillanceNegative 1 3223 
+352 ValeurDeNTCOrigineVersExtremite 0 0 3224 
+353 PalierThermique 0 0 3224 
+354 PalierThermique 0 1 3224 
+355 PalierThermique 0 2 3224 
+356 DefaillancePositive 0 3224 
+357 DefaillanceNegative 0 3224 
+358 PalierThermique 1 3 3224 
+359 PalierThermique 1 4 3224 
+360 PalierThermique 1 5 3224 
+361 DefaillancePositive 1 3224 
+362 DefaillanceNegative 1 3224 
+363 ValeurDeNTCOrigineVersExtremite 0 0 3225 
+364 PalierThermique 0 0 3225 
+365 PalierThermique 0 1 3225 
+366 PalierThermique 0 2 3225 
+367 DefaillancePositive 0 3225 
+368 DefaillanceNegative 0 3225 
+369 PalierThermique 1 3 3225 
+370 PalierThermique 1 4 3225 
+371 PalierThermique 1 5 3225 
+372 DefaillancePositive 1 3225 
+373 DefaillanceNegative 1 3225 
+374 ValeurDeNTCOrigineVersExtremite 0 0 3226 
+375 PalierThermique 0 0 3226 
+376 PalierThermique 0 1 3226 
+377 PalierThermique 0 2 3226 
+378 DefaillancePositive 0 3226 
+379 DefaillanceNegative 0 3226 
+380 PalierThermique 1 3 3226 
+381 PalierThermique 1 4 3226 
+382 PalierThermique 1 5 3226 
+383 DefaillancePositive 1 3226 
+384 DefaillanceNegative 1 3226 
+385 ValeurDeNTCOrigineVersExtremite 0 0 3227 
+386 PalierThermique 0 0 3227 
+387 PalierThermique 0 1 3227 
+388 PalierThermique 0 2 3227 
+389 DefaillancePositive 0 3227 
+390 DefaillanceNegative 0 3227 
+391 PalierThermique 1 3 3227 
+392 PalierThermique 1 4 3227 
+393 PalierThermique 1 5 3227 
+394 DefaillancePositive 1 3227 
+395 DefaillanceNegative 1 3227 
+396 ValeurDeNTCOrigineVersExtremite 0 0 3228 
+397 PalierThermique 0 0 3228 
+398 PalierThermique 0 1 3228 
+399 PalierThermique 0 2 3228 
+400 DefaillancePositive 0 3228 
+401 DefaillanceNegative 0 3228 
+402 PalierThermique 1 3 3228 
+403 PalierThermique 1 4 3228 
+404 PalierThermique 1 5 3228 
+405 DefaillancePositive 1 3228 
+406 DefaillanceNegative 1 3228 
+407 ValeurDeNTCOrigineVersExtremite 0 0 3229 
+408 PalierThermique 0 0 3229 
+409 PalierThermique 0 1 3229 
+410 PalierThermique 0 2 3229 
+411 DefaillancePositive 0 3229 
+412 DefaillanceNegative 0 3229 
+413 PalierThermique 1 3 3229 
+414 PalierThermique 1 4 3229 
+415 PalierThermique 1 5 3229 
+416 DefaillancePositive 1 3229 
+417 DefaillanceNegative 1 3229 
+418 ValeurDeNTCOrigineVersExtremite 0 0 3230 
+419 PalierThermique 0 0 3230 
+420 PalierThermique 0 1 3230 
+421 PalierThermique 0 2 3230 
+422 DefaillancePositive 0 3230 
+423 DefaillanceNegative 0 3230 
+424 PalierThermique 1 3 3230 
+425 PalierThermique 1 4 3230 
+426 PalierThermique 1 5 3230 
+427 DefaillancePositive 1 3230 
+428 DefaillanceNegative 1 3230 
+429 ValeurDeNTCOrigineVersExtremite 0 0 3231 
+430 PalierThermique 0 0 3231 
+431 PalierThermique 0 1 3231 
+432 PalierThermique 0 2 3231 
+433 DefaillancePositive 0 3231 
+434 DefaillanceNegative 0 3231 
+435 PalierThermique 1 3 3231 
+436 PalierThermique 1 4 3231 
+437 PalierThermique 1 5 3231 
+438 DefaillancePositive 1 3231 
+439 DefaillanceNegative 1 3231 
+440 ValeurDeNTCOrigineVersExtremite 0 0 3232 
+441 PalierThermique 0 0 3232 
+442 PalierThermique 0 1 3232 
+443 PalierThermique 0 2 3232 
+444 DefaillancePositive 0 3232 
+445 DefaillanceNegative 0 3232 
+446 PalierThermique 1 3 3232 
+447 PalierThermique 1 4 3232 
+448 PalierThermique 1 5 3232 
+449 DefaillancePositive 1 3232 
+450 DefaillanceNegative 1 3232 
+451 ValeurDeNTCOrigineVersExtremite 0 0 3233 
+452 PalierThermique 0 0 3233 
+453 PalierThermique 0 1 3233 
+454 PalierThermique 0 2 3233 
+455 DefaillancePositive 0 3233 
+456 DefaillanceNegative 0 3233 
+457 PalierThermique 1 3 3233 
+458 PalierThermique 1 4 3233 
+459 PalierThermique 1 5 3233 
+460 DefaillancePositive 1 3233 
+461 DefaillanceNegative 1 3233 
+462 ValeurDeNTCOrigineVersExtremite 0 0 3234 
+463 PalierThermique 0 0 3234 
+464 PalierThermique 0 1 3234 
+465 PalierThermique 0 2 3234 
+466 DefaillancePositive 0 3234 
+467 DefaillanceNegative 0 3234 
+468 PalierThermique 1 3 3234 
+469 PalierThermique 1 4 3234 
+470 PalierThermique 1 5 3234 
+471 DefaillancePositive 1 3234 
+472 DefaillanceNegative 1 3234 
+473 ValeurDeNTCOrigineVersExtremite 0 0 3235 
+474 PalierThermique 0 0 3235 
+475 PalierThermique 0 1 3235 
+476 PalierThermique 0 2 3235 
+477 DefaillancePositive 0 3235 
+478 DefaillanceNegative 0 3235 
+479 PalierThermique 1 3 3235 
+480 PalierThermique 1 4 3235 
+481 PalierThermique 1 5 3235 
+482 DefaillancePositive 1 3235 
+483 DefaillanceNegative 1 3235 
+484 ValeurDeNTCOrigineVersExtremite 0 0 3236 
+485 PalierThermique 0 0 3236 
+486 PalierThermique 0 1 3236 
+487 PalierThermique 0 2 3236 
+488 DefaillancePositive 0 3236 
+489 DefaillanceNegative 0 3236 
+490 PalierThermique 1 3 3236 
+491 PalierThermique 1 4 3236 
+492 PalierThermique 1 5 3236 
+493 DefaillancePositive 1 3236 
+494 DefaillanceNegative 1 3236 
+495 ValeurDeNTCOrigineVersExtremite 0 0 3237 
+496 PalierThermique 0 0 3237 
+497 PalierThermique 0 1 3237 
+498 PalierThermique 0 2 3237 
+499 DefaillancePositive 0 3237 
+500 DefaillanceNegative 0 3237 
+501 PalierThermique 1 3 3237 
+502 PalierThermique 1 4 3237 
+503 PalierThermique 1 5 3237 
+504 DefaillancePositive 1 3237 
+505 DefaillanceNegative 1 3237 
+506 ValeurDeNTCOrigineVersExtremite 0 0 3238 
+507 PalierThermique 0 0 3238 
+508 PalierThermique 0 1 3238 
+509 PalierThermique 0 2 3238 
+510 DefaillancePositive 0 3238 
+511 DefaillanceNegative 0 3238 
+512 PalierThermique 1 3 3238 
+513 PalierThermique 1 4 3238 
+514 PalierThermique 1 5 3238 
+515 DefaillancePositive 1 3238 
+516 DefaillanceNegative 1 3238 
+517 ValeurDeNTCOrigineVersExtremite 0 0 3239 
+518 PalierThermique 0 0 3239 
+519 PalierThermique 0 1 3239 
+520 PalierThermique 0 2 3239 
+521 DefaillancePositive 0 3239 
+522 DefaillanceNegative 0 3239 
+523 PalierThermique 1 3 3239 
+524 PalierThermique 1 4 3239 
+525 PalierThermique 1 5 3239 
+526 DefaillancePositive 1 3239 
+527 DefaillanceNegative 1 3239 
+528 ValeurDeNTCOrigineVersExtremite 0 0 3240 
+529 PalierThermique 0 0 3240 
+530 PalierThermique 0 1 3240 
+531 PalierThermique 0 2 3240 
+532 DefaillancePositive 0 3240 
+533 DefaillanceNegative 0 3240 
+534 PalierThermique 1 3 3240 
+535 PalierThermique 1 4 3240 
+536 PalierThermique 1 5 3240 
+537 DefaillancePositive 1 3240 
+538 DefaillanceNegative 1 3240 
+539 ValeurDeNTCOrigineVersExtremite 0 0 3241 
+540 PalierThermique 0 0 3241 
+541 PalierThermique 0 1 3241 
+542 PalierThermique 0 2 3241 
+543 DefaillancePositive 0 3241 
+544 DefaillanceNegative 0 3241 
+545 PalierThermique 1 3 3241 
+546 PalierThermique 1 4 3241 
+547 PalierThermique 1 5 3241 
+548 DefaillancePositive 1 3241 
+549 DefaillanceNegative 1 3241 
+550 ValeurDeNTCOrigineVersExtremite 0 0 3242 
+551 PalierThermique 0 0 3242 
+552 PalierThermique 0 1 3242 
+553 PalierThermique 0 2 3242 
+554 DefaillancePositive 0 3242 
+555 DefaillanceNegative 0 3242 
+556 PalierThermique 1 3 3242 
+557 PalierThermique 1 4 3242 
+558 PalierThermique 1 5 3242 
+559 DefaillancePositive 1 3242 
+560 DefaillanceNegative 1 3242 
+561 ValeurDeNTCOrigineVersExtremite 0 0 3243 
+562 PalierThermique 0 0 3243 
+563 PalierThermique 0 1 3243 
+564 PalierThermique 0 2 3243 
+565 DefaillancePositive 0 3243 
+566 DefaillanceNegative 0 3243 
+567 PalierThermique 1 3 3243 
+568 PalierThermique 1 4 3243 
+569 PalierThermique 1 5 3243 
+570 DefaillancePositive 1 3243 
+571 DefaillanceNegative 1 3243 
+572 ValeurDeNTCOrigineVersExtremite 0 0 3244 
+573 PalierThermique 0 0 3244 
+574 PalierThermique 0 1 3244 
+575 PalierThermique 0 2 3244 
+576 DefaillancePositive 0 3244 
+577 DefaillanceNegative 0 3244 
+578 PalierThermique 1 3 3244 
+579 PalierThermique 1 4 3244 
+580 PalierThermique 1 5 3244 
+581 DefaillancePositive 1 3244 
+582 DefaillanceNegative 1 3244 
+583 ValeurDeNTCOrigineVersExtremite 0 0 3245 
+584 PalierThermique 0 0 3245 
+585 PalierThermique 0 1 3245 
+586 PalierThermique 0 2 3245 
+587 DefaillancePositive 0 3245 
+588 DefaillanceNegative 0 3245 
+589 PalierThermique 1 3 3245 
+590 PalierThermique 1 4 3245 
+591 PalierThermique 1 5 3245 
+592 DefaillancePositive 1 3245 
+593 DefaillanceNegative 1 3245 
+594 ValeurDeNTCOrigineVersExtremite 0 0 3246 
+595 PalierThermique 0 0 3246 
+596 PalierThermique 0 1 3246 
+597 PalierThermique 0 2 3246 
+598 DefaillancePositive 0 3246 
+599 DefaillanceNegative 0 3246 
+600 PalierThermique 1 3 3246 
+601 PalierThermique 1 4 3246 
+602 PalierThermique 1 5 3246 
+603 DefaillancePositive 1 3246 
+604 DefaillanceNegative 1 3246 
+605 ValeurDeNTCOrigineVersExtremite 0 0 3247 
+606 PalierThermique 0 0 3247 
+607 PalierThermique 0 1 3247 
+608 PalierThermique 0 2 3247 
+609 DefaillancePositive 0 3247 
+610 DefaillanceNegative 0 3247 
+611 PalierThermique 1 3 3247 
+612 PalierThermique 1 4 3247 
+613 PalierThermique 1 5 3247 
+614 DefaillancePositive 1 3247 
+615 DefaillanceNegative 1 3247 
+616 ValeurDeNTCOrigineVersExtremite 0 0 3248 
+617 PalierThermique 0 0 3248 
+618 PalierThermique 0 1 3248 
+619 PalierThermique 0 2 3248 
+620 DefaillancePositive 0 3248 
+621 DefaillanceNegative 0 3248 
+622 PalierThermique 1 3 3248 
+623 PalierThermique 1 4 3248 
+624 PalierThermique 1 5 3248 
+625 DefaillancePositive 1 3248 
+626 DefaillanceNegative 1 3248 
+627 ValeurDeNTCOrigineVersExtremite 0 0 3249 
+628 PalierThermique 0 0 3249 
+629 PalierThermique 0 1 3249 
+630 PalierThermique 0 2 3249 
+631 DefaillancePositive 0 3249 
+632 DefaillanceNegative 0 3249 
+633 PalierThermique 1 3 3249 
+634 PalierThermique 1 4 3249 
+635 PalierThermique 1 5 3249 
+636 DefaillancePositive 1 3249 
+637 DefaillanceNegative 1 3249 
+638 ValeurDeNTCOrigineVersExtremite 0 0 3250 
+639 PalierThermique 0 0 3250 
+640 PalierThermique 0 1 3250 
+641 PalierThermique 0 2 3250 
+642 DefaillancePositive 0 3250 
+643 DefaillanceNegative 0 3250 
+644 PalierThermique 1 3 3250 
+645 PalierThermique 1 4 3250 
+646 PalierThermique 1 5 3250 
+647 DefaillancePositive 1 3250 
+648 DefaillanceNegative 1 3250 
+649 ValeurDeNTCOrigineVersExtremite 0 0 3251 
+650 PalierThermique 0 0 3251 
+651 PalierThermique 0 1 3251 
+652 PalierThermique 0 2 3251 
+653 DefaillancePositive 0 3251 
+654 DefaillanceNegative 0 3251 
+655 PalierThermique 1 3 3251 
+656 PalierThermique 1 4 3251 
+657 PalierThermique 1 5 3251 
+658 DefaillancePositive 1 3251 
+659 DefaillanceNegative 1 3251 
+660 ValeurDeNTCOrigineVersExtremite 0 0 3252 
+661 PalierThermique 0 0 3252 
+662 PalierThermique 0 1 3252 
+663 PalierThermique 0 2 3252 
+664 DefaillancePositive 0 3252 
+665 DefaillanceNegative 0 3252 
+666 PalierThermique 1 3 3252 
+667 PalierThermique 1 4 3252 
+668 PalierThermique 1 5 3252 
+669 DefaillancePositive 1 3252 
+670 DefaillanceNegative 1 3252 
+671 ValeurDeNTCOrigineVersExtremite 0 0 3253 
+672 PalierThermique 0 0 3253 
+673 PalierThermique 0 1 3253 
+674 PalierThermique 0 2 3253 
+675 DefaillancePositive 0 3253 
+676 DefaillanceNegative 0 3253 
+677 PalierThermique 1 3 3253 
+678 PalierThermique 1 4 3253 
+679 PalierThermique 1 5 3253 
+680 DefaillancePositive 1 3253 
+681 DefaillanceNegative 1 3253 
+682 ValeurDeNTCOrigineVersExtremite 0 0 3254 
+683 PalierThermique 0 0 3254 
+684 PalierThermique 0 1 3254 
+685 PalierThermique 0 2 3254 
+686 DefaillancePositive 0 3254 
+687 DefaillanceNegative 0 3254 
+688 PalierThermique 1 3 3254 
+689 PalierThermique 1 4 3254 
+690 PalierThermique 1 5 3254 
+691 DefaillancePositive 1 3254 
+692 DefaillanceNegative 1 3254 
+693 ValeurDeNTCOrigineVersExtremite 0 0 3255 
+694 PalierThermique 0 0 3255 
+695 PalierThermique 0 1 3255 
+696 PalierThermique 0 2 3255 
+697 DefaillancePositive 0 3255 
+698 DefaillanceNegative 0 3255 
+699 PalierThermique 1 3 3255 
+700 PalierThermique 1 4 3255 
+701 PalierThermique 1 5 3255 
+702 DefaillancePositive 1 3255 
+703 DefaillanceNegative 1 3255 
+704 ValeurDeNTCOrigineVersExtremite 0 0 3256 
+705 PalierThermique 0 0 3256 
+706 PalierThermique 0 1 3256 
+707 PalierThermique 0 2 3256 
+708 DefaillancePositive 0 3256 
+709 DefaillanceNegative 0 3256 
+710 PalierThermique 1 3 3256 
+711 PalierThermique 1 4 3256 
+712 PalierThermique 1 5 3256 
+713 DefaillancePositive 1 3256 
+714 DefaillanceNegative 1 3256 
+715 ValeurDeNTCOrigineVersExtremite 0 0 3257 
+716 PalierThermique 0 0 3257 
+717 PalierThermique 0 1 3257 
+718 PalierThermique 0 2 3257 
+719 DefaillancePositive 0 3257 
+720 DefaillanceNegative 0 3257 
+721 PalierThermique 1 3 3257 
+722 PalierThermique 1 4 3257 
+723 PalierThermique 1 5 3257 
+724 DefaillancePositive 1 3257 
+725 DefaillanceNegative 1 3257 
+726 ValeurDeNTCOrigineVersExtremite 0 0 3258 
+727 PalierThermique 0 0 3258 
+728 PalierThermique 0 1 3258 
+729 PalierThermique 0 2 3258 
+730 DefaillancePositive 0 3258 
+731 DefaillanceNegative 0 3258 
+732 PalierThermique 1 3 3258 
+733 PalierThermique 1 4 3258 
+734 PalierThermique 1 5 3258 
+735 DefaillancePositive 1 3258 
+736 DefaillanceNegative 1 3258 
+737 ValeurDeNTCOrigineVersExtremite 0 0 3259 
+738 PalierThermique 0 0 3259 
+739 PalierThermique 0 1 3259 
+740 PalierThermique 0 2 3259 
+741 DefaillancePositive 0 3259 
+742 DefaillanceNegative 0 3259 
+743 PalierThermique 1 3 3259 
+744 PalierThermique 1 4 3259 
+745 PalierThermique 1 5 3259 
+746 DefaillancePositive 1 3259 
+747 DefaillanceNegative 1 3259 
+748 ValeurDeNTCOrigineVersExtremite 0 0 3260 
+749 PalierThermique 0 0 3260 
+750 PalierThermique 0 1 3260 
+751 PalierThermique 0 2 3260 
+752 DefaillancePositive 0 3260 
+753 DefaillanceNegative 0 3260 
+754 PalierThermique 1 3 3260 
+755 PalierThermique 1 4 3260 
+756 PalierThermique 1 5 3260 
+757 DefaillancePositive 1 3260 
+758 DefaillanceNegative 1 3260 
+759 ValeurDeNTCOrigineVersExtremite 0 0 3261 
+760 PalierThermique 0 0 3261 
+761 PalierThermique 0 1 3261 
+762 PalierThermique 0 2 3261 
+763 DefaillancePositive 0 3261 
+764 DefaillanceNegative 0 3261 
+765 PalierThermique 1 3 3261 
+766 PalierThermique 1 4 3261 
+767 PalierThermique 1 5 3261 
+768 DefaillancePositive 1 3261 
+769 DefaillanceNegative 1 3261 
+770 ValeurDeNTCOrigineVersExtremite 0 0 3262 
+771 PalierThermique 0 0 3262 
+772 PalierThermique 0 1 3262 
+773 PalierThermique 0 2 3262 
+774 DefaillancePositive 0 3262 
+775 DefaillanceNegative 0 3262 
+776 PalierThermique 1 3 3262 
+777 PalierThermique 1 4 3262 
+778 PalierThermique 1 5 3262 
+779 DefaillancePositive 1 3262 
+780 DefaillanceNegative 1 3262 
+781 ValeurDeNTCOrigineVersExtremite 0 0 3263 
+782 PalierThermique 0 0 3263 
+783 PalierThermique 0 1 3263 
+784 PalierThermique 0 2 3263 
+785 DefaillancePositive 0 3263 
+786 DefaillanceNegative 0 3263 
+787 PalierThermique 1 3 3263 
+788 PalierThermique 1 4 3263 
+789 PalierThermique 1 5 3263 
+790 DefaillancePositive 1 3263 
+791 DefaillanceNegative 1 3263 
+792 ValeurDeNTCOrigineVersExtremite 0 0 3264 
+793 PalierThermique 0 0 3264 
+794 PalierThermique 0 1 3264 
+795 PalierThermique 0 2 3264 
+796 DefaillancePositive 0 3264 
+797 DefaillanceNegative 0 3264 
+798 PalierThermique 1 3 3264 
+799 PalierThermique 1 4 3264 
+800 PalierThermique 1 5 3264 
+801 DefaillancePositive 1 3264 
+802 DefaillanceNegative 1 3264 
+803 ValeurDeNTCOrigineVersExtremite 0 0 3265 
+804 PalierThermique 0 0 3265 
+805 PalierThermique 0 1 3265 
+806 PalierThermique 0 2 3265 
+807 DefaillancePositive 0 3265 
+808 DefaillanceNegative 0 3265 
+809 PalierThermique 1 3 3265 
+810 PalierThermique 1 4 3265 
+811 PalierThermique 1 5 3265 
+812 DefaillancePositive 1 3265 
+813 DefaillanceNegative 1 3265 
+814 ValeurDeNTCOrigineVersExtremite 0 0 3266 
+815 PalierThermique 0 0 3266 
+816 PalierThermique 0 1 3266 
+817 PalierThermique 0 2 3266 
+818 DefaillancePositive 0 3266 
+819 DefaillanceNegative 0 3266 
+820 PalierThermique 1 3 3266 
+821 PalierThermique 1 4 3266 
+822 PalierThermique 1 5 3266 
+823 DefaillancePositive 1 3266 
+824 DefaillanceNegative 1 3266 
+825 ValeurDeNTCOrigineVersExtremite 0 0 3267 
+826 PalierThermique 0 0 3267 
+827 PalierThermique 0 1 3267 
+828 PalierThermique 0 2 3267 
+829 DefaillancePositive 0 3267 
+830 DefaillanceNegative 0 3267 
+831 PalierThermique 1 3 3267 
+832 PalierThermique 1 4 3267 
+833 PalierThermique 1 5 3267 
+834 DefaillancePositive 1 3267 
+835 DefaillanceNegative 1 3267 
+836 ValeurDeNTCOrigineVersExtremite 0 0 3268 
+837 PalierThermique 0 0 3268 
+838 PalierThermique 0 1 3268 
+839 PalierThermique 0 2 3268 
+840 DefaillancePositive 0 3268 
+841 DefaillanceNegative 0 3268 
+842 PalierThermique 1 3 3268 
+843 PalierThermique 1 4 3268 
+844 PalierThermique 1 5 3268 
+845 DefaillancePositive 1 3268 
+846 DefaillanceNegative 1 3268 
+847 ValeurDeNTCOrigineVersExtremite 0 0 3269 
+848 PalierThermique 0 0 3269 
+849 PalierThermique 0 1 3269 
+850 PalierThermique 0 2 3269 
+851 DefaillancePositive 0 3269 
+852 DefaillanceNegative 0 3269 
+853 PalierThermique 1 3 3269 
+854 PalierThermique 1 4 3269 
+855 PalierThermique 1 5 3269 
+856 DefaillancePositive 1 3269 
+857 DefaillanceNegative 1 3269 
+858 ValeurDeNTCOrigineVersExtremite 0 0 3270 
+859 PalierThermique 0 0 3270 
+860 PalierThermique 0 1 3270 
+861 PalierThermique 0 2 3270 
+862 DefaillancePositive 0 3270 
+863 DefaillanceNegative 0 3270 
+864 PalierThermique 1 3 3270 
+865 PalierThermique 1 4 3270 
+866 PalierThermique 1 5 3270 
+867 DefaillancePositive 1 3270 
+868 DefaillanceNegative 1 3270 
+869 ValeurDeNTCOrigineVersExtremite 0 0 3271 
+870 PalierThermique 0 0 3271 
+871 PalierThermique 0 1 3271 
+872 PalierThermique 0 2 3271 
+873 DefaillancePositive 0 3271 
+874 DefaillanceNegative 0 3271 
+875 PalierThermique 1 3 3271 
+876 PalierThermique 1 4 3271 
+877 PalierThermique 1 5 3271 
+878 DefaillancePositive 1 3271 
+879 DefaillanceNegative 1 3271 
+880 ValeurDeNTCOrigineVersExtremite 0 0 3272 
+881 PalierThermique 0 0 3272 
+882 PalierThermique 0 1 3272 
+883 PalierThermique 0 2 3272 
+884 DefaillancePositive 0 3272 
+885 DefaillanceNegative 0 3272 
+886 PalierThermique 1 3 3272 
+887 PalierThermique 1 4 3272 
+888 PalierThermique 1 5 3272 
+889 DefaillancePositive 1 3272 
+890 DefaillanceNegative 1 3272 
+891 ValeurDeNTCOrigineVersExtremite 0 0 3273 
+892 PalierThermique 0 0 3273 
+893 PalierThermique 0 1 3273 
+894 PalierThermique 0 2 3273 
+895 DefaillancePositive 0 3273 
+896 DefaillanceNegative 0 3273 
+897 PalierThermique 1 3 3273 
+898 PalierThermique 1 4 3273 
+899 PalierThermique 1 5 3273 
+900 DefaillancePositive 1 3273 
+901 DefaillanceNegative 1 3273 
+902 ValeurDeNTCOrigineVersExtremite 0 0 3274 
+903 PalierThermique 0 0 3274 
+904 PalierThermique 0 1 3274 
+905 PalierThermique 0 2 3274 
+906 DefaillancePositive 0 3274 
+907 DefaillanceNegative 0 3274 
+908 PalierThermique 1 3 3274 
+909 PalierThermique 1 4 3274 
+910 PalierThermique 1 5 3274 
+911 DefaillancePositive 1 3274 
+912 DefaillanceNegative 1 3274 
+913 ValeurDeNTCOrigineVersExtremite 0 0 3275 
+914 PalierThermique 0 0 3275 
+915 PalierThermique 0 1 3275 
+916 PalierThermique 0 2 3275 
+917 DefaillancePositive 0 3275 
+918 DefaillanceNegative 0 3275 
+919 PalierThermique 1 3 3275 
+920 PalierThermique 1 4 3275 
+921 PalierThermique 1 5 3275 
+922 DefaillancePositive 1 3275 
+923 DefaillanceNegative 1 3275 
+924 ValeurDeNTCOrigineVersExtremite 0 0 3276 
+925 PalierThermique 0 0 3276 
+926 PalierThermique 0 1 3276 
+927 PalierThermique 0 2 3276 
+928 DefaillancePositive 0 3276 
+929 DefaillanceNegative 0 3276 
+930 PalierThermique 1 3 3276 
+931 PalierThermique 1 4 3276 
+932 PalierThermique 1 5 3276 
+933 DefaillancePositive 1 3276 
+934 DefaillanceNegative 1 3276 
+935 ValeurDeNTCOrigineVersExtremite 0 0 3277 
+936 PalierThermique 0 0 3277 
+937 PalierThermique 0 1 3277 
+938 PalierThermique 0 2 3277 
+939 DefaillancePositive 0 3277 
+940 DefaillanceNegative 0 3277 
+941 PalierThermique 1 3 3277 
+942 PalierThermique 1 4 3277 
+943 PalierThermique 1 5 3277 
+944 DefaillancePositive 1 3277 
+945 DefaillanceNegative 1 3277 
+946 ValeurDeNTCOrigineVersExtremite 0 0 3278 
+947 PalierThermique 0 0 3278 
+948 PalierThermique 0 1 3278 
+949 PalierThermique 0 2 3278 
+950 DefaillancePositive 0 3278 
+951 DefaillanceNegative 0 3278 
+952 PalierThermique 1 3 3278 
+953 PalierThermique 1 4 3278 
+954 PalierThermique 1 5 3278 
+955 DefaillancePositive 1 3278 
+956 DefaillanceNegative 1 3278 
+957 ValeurDeNTCOrigineVersExtremite 0 0 3279 
+958 PalierThermique 0 0 3279 
+959 PalierThermique 0 1 3279 
+960 PalierThermique 0 2 3279 
+961 DefaillancePositive 0 3279 
+962 DefaillanceNegative 0 3279 
+963 PalierThermique 1 3 3279 
+964 PalierThermique 1 4 3279 
+965 PalierThermique 1 5 3279 
+966 DefaillancePositive 1 3279 
+967 DefaillanceNegative 1 3279 
+968 ValeurDeNTCOrigineVersExtremite 0 0 3280 
+969 PalierThermique 0 0 3280 
+970 PalierThermique 0 1 3280 
+971 PalierThermique 0 2 3280 
+972 DefaillancePositive 0 3280 
+973 DefaillanceNegative 0 3280 
+974 PalierThermique 1 3 3280 
+975 PalierThermique 1 4 3280 
+976 PalierThermique 1 5 3280 
+977 DefaillancePositive 1 3280 
+978 DefaillanceNegative 1 3280 
+979 ValeurDeNTCOrigineVersExtremite 0 0 3281 
+980 PalierThermique 0 0 3281 
+981 PalierThermique 0 1 3281 
+982 PalierThermique 0 2 3281 
+983 DefaillancePositive 0 3281 
+984 DefaillanceNegative 0 3281 
+985 PalierThermique 1 3 3281 
+986 PalierThermique 1 4 3281 
+987 PalierThermique 1 5 3281 
+988 DefaillancePositive 1 3281 
+989 DefaillanceNegative 1 3281 
+990 ValeurDeNTCOrigineVersExtremite 0 0 3282 
+991 PalierThermique 0 0 3282 
+992 PalierThermique 0 1 3282 
+993 PalierThermique 0 2 3282 
+994 DefaillancePositive 0 3282 
+995 DefaillanceNegative 0 3282 
+996 PalierThermique 1 3 3282 
+997 PalierThermique 1 4 3282 
+998 PalierThermique 1 5 3282 
+999 DefaillancePositive 1 3282 
+1000 DefaillanceNegative 1 3282 
+1001 ValeurDeNTCOrigineVersExtremite 0 0 3283 
+1002 PalierThermique 0 0 3283 
+1003 PalierThermique 0 1 3283 
+1004 PalierThermique 0 2 3283 
+1005 DefaillancePositive 0 3283 
+1006 DefaillanceNegative 0 3283 
+1007 PalierThermique 1 3 3283 
+1008 PalierThermique 1 4 3283 
+1009 PalierThermique 1 5 3283 
+1010 DefaillancePositive 1 3283 
+1011 DefaillanceNegative 1 3283 
+1012 ValeurDeNTCOrigineVersExtremite 0 0 3284 
+1013 PalierThermique 0 0 3284 
+1014 PalierThermique 0 1 3284 
+1015 PalierThermique 0 2 3284 
+1016 DefaillancePositive 0 3284 
+1017 DefaillanceNegative 0 3284 
+1018 PalierThermique 1 3 3284 
+1019 PalierThermique 1 4 3284 
+1020 PalierThermique 1 5 3284 
+1021 DefaillancePositive 1 3284 
+1022 DefaillanceNegative 1 3284 
+1023 ValeurDeNTCOrigineVersExtremite 0 0 3285 
+1024 PalierThermique 0 0 3285 
+1025 PalierThermique 0 1 3285 
+1026 PalierThermique 0 2 3285 
+1027 DefaillancePositive 0 3285 
+1028 DefaillanceNegative 0 3285 
+1029 PalierThermique 1 3 3285 
+1030 PalierThermique 1 4 3285 
+1031 PalierThermique 1 5 3285 
+1032 DefaillancePositive 1 3285 
+1033 DefaillanceNegative 1 3285 
+1034 ValeurDeNTCOrigineVersExtremite 0 0 3286 
+1035 PalierThermique 0 0 3286 
+1036 PalierThermique 0 1 3286 
+1037 PalierThermique 0 2 3286 
+1038 DefaillancePositive 0 3286 
+1039 DefaillanceNegative 0 3286 
+1040 PalierThermique 1 3 3286 
+1041 PalierThermique 1 4 3286 
+1042 PalierThermique 1 5 3286 
+1043 DefaillancePositive 1 3286 
+1044 DefaillanceNegative 1 3286 
+1045 ValeurDeNTCOrigineVersExtremite 0 0 3287 
+1046 PalierThermique 0 0 3287 
+1047 PalierThermique 0 1 3287 
+1048 PalierThermique 0 2 3287 
+1049 DefaillancePositive 0 3287 
+1050 DefaillanceNegative 0 3287 
+1051 PalierThermique 1 3 3287 
+1052 PalierThermique 1 4 3287 
+1053 PalierThermique 1 5 3287 
+1054 DefaillancePositive 1 3287 
+1055 DefaillanceNegative 1 3287 
+1056 ValeurDeNTCOrigineVersExtremite 0 0 3288 
+1057 PalierThermique 0 0 3288 
+1058 PalierThermique 0 1 3288 
+1059 PalierThermique 0 2 3288 
+1060 DefaillancePositive 0 3288 
+1061 DefaillanceNegative 0 3288 
+1062 PalierThermique 1 3 3288 
+1063 PalierThermique 1 4 3288 
+1064 PalierThermique 1 5 3288 
+1065 DefaillancePositive 1 3288 
+1066 DefaillanceNegative 1 3288 
+1067 ValeurDeNTCOrigineVersExtremite 0 0 3289 
+1068 PalierThermique 0 0 3289 
+1069 PalierThermique 0 1 3289 
+1070 PalierThermique 0 2 3289 
+1071 DefaillancePositive 0 3289 
+1072 DefaillanceNegative 0 3289 
+1073 PalierThermique 1 3 3289 
+1074 PalierThermique 1 4 3289 
+1075 PalierThermique 1 5 3289 
+1076 DefaillancePositive 1 3289 
+1077 DefaillanceNegative 1 3289 
+1078 ValeurDeNTCOrigineVersExtremite 0 0 3290 
+1079 PalierThermique 0 0 3290 
+1080 PalierThermique 0 1 3290 
+1081 PalierThermique 0 2 3290 
+1082 DefaillancePositive 0 3290 
+1083 DefaillanceNegative 0 3290 
+1084 PalierThermique 1 3 3290 
+1085 PalierThermique 1 4 3290 
+1086 PalierThermique 1 5 3290 
+1087 DefaillancePositive 1 3290 
+1088 DefaillanceNegative 1 3290 
+1089 ValeurDeNTCOrigineVersExtremite 0 0 3291 
+1090 PalierThermique 0 0 3291 
+1091 PalierThermique 0 1 3291 
+1092 PalierThermique 0 2 3291 
+1093 DefaillancePositive 0 3291 
+1094 DefaillanceNegative 0 3291 
+1095 PalierThermique 1 3 3291 
+1096 PalierThermique 1 4 3291 
+1097 PalierThermique 1 5 3291 
+1098 DefaillancePositive 1 3291 
+1099 DefaillanceNegative 1 3291 
+1100 ValeurDeNTCOrigineVersExtremite 0 0 3292 
+1101 PalierThermique 0 0 3292 
+1102 PalierThermique 0 1 3292 
+1103 PalierThermique 0 2 3292 
+1104 DefaillancePositive 0 3292 
+1105 DefaillanceNegative 0 3292 
+1106 PalierThermique 1 3 3292 
+1107 PalierThermique 1 4 3292 
+1108 PalierThermique 1 5 3292 
+1109 DefaillancePositive 1 3292 
+1110 DefaillanceNegative 1 3292 
+1111 ValeurDeNTCOrigineVersExtremite 0 0 3293 
+1112 PalierThermique 0 0 3293 
+1113 PalierThermique 0 1 3293 
+1114 PalierThermique 0 2 3293 
+1115 DefaillancePositive 0 3293 
+1116 DefaillanceNegative 0 3293 
+1117 PalierThermique 1 3 3293 
+1118 PalierThermique 1 4 3293 
+1119 PalierThermique 1 5 3293 
+1120 DefaillancePositive 1 3293 
+1121 DefaillanceNegative 1 3293 
+1122 ValeurDeNTCOrigineVersExtremite 0 0 3294 
+1123 PalierThermique 0 0 3294 
+1124 PalierThermique 0 1 3294 
+1125 PalierThermique 0 2 3294 
+1126 DefaillancePositive 0 3294 
+1127 DefaillanceNegative 0 3294 
+1128 PalierThermique 1 3 3294 
+1129 PalierThermique 1 4 3294 
+1130 PalierThermique 1 5 3294 
+1131 DefaillancePositive 1 3294 
+1132 DefaillanceNegative 1 3294 
+1133 ValeurDeNTCOrigineVersExtremite 0 0 3295 
+1134 PalierThermique 0 0 3295 
+1135 PalierThermique 0 1 3295 
+1136 PalierThermique 0 2 3295 
+1137 DefaillancePositive 0 3295 
+1138 DefaillanceNegative 0 3295 
+1139 PalierThermique 1 3 3295 
+1140 PalierThermique 1 4 3295 
+1141 PalierThermique 1 5 3295 
+1142 DefaillancePositive 1 3295 
+1143 DefaillanceNegative 1 3295 
+1144 ValeurDeNTCOrigineVersExtremite 0 0 3296 
+1145 PalierThermique 0 0 3296 
+1146 PalierThermique 0 1 3296 
+1147 PalierThermique 0 2 3296 
+1148 DefaillancePositive 0 3296 
+1149 DefaillanceNegative 0 3296 
+1150 PalierThermique 1 3 3296 
+1151 PalierThermique 1 4 3296 
+1152 PalierThermique 1 5 3296 
+1153 DefaillancePositive 1 3296 
+1154 DefaillanceNegative 1 3296 
+1155 ValeurDeNTCOrigineVersExtremite 0 0 3297 
+1156 PalierThermique 0 0 3297 
+1157 PalierThermique 0 1 3297 
+1158 PalierThermique 0 2 3297 
+1159 DefaillancePositive 0 3297 
+1160 DefaillanceNegative 0 3297 
+1161 PalierThermique 1 3 3297 
+1162 PalierThermique 1 4 3297 
+1163 PalierThermique 1 5 3297 
+1164 DefaillancePositive 1 3297 
+1165 DefaillanceNegative 1 3297 
+1166 ValeurDeNTCOrigineVersExtremite 0 0 3298 
+1167 PalierThermique 0 0 3298 
+1168 PalierThermique 0 1 3298 
+1169 PalierThermique 0 2 3298 
+1170 DefaillancePositive 0 3298 
+1171 DefaillanceNegative 0 3298 
+1172 PalierThermique 1 3 3298 
+1173 PalierThermique 1 4 3298 
+1174 PalierThermique 1 5 3298 
+1175 DefaillancePositive 1 3298 
+1176 DefaillanceNegative 1 3298 
+1177 ValeurDeNTCOrigineVersExtremite 0 0 3299 
+1178 PalierThermique 0 0 3299 
+1179 PalierThermique 0 1 3299 
+1180 PalierThermique 0 2 3299 
+1181 DefaillancePositive 0 3299 
+1182 DefaillanceNegative 0 3299 
+1183 PalierThermique 1 3 3299 
+1184 PalierThermique 1 4 3299 
+1185 PalierThermique 1 5 3299 
+1186 DefaillancePositive 1 3299 
+1187 DefaillanceNegative 1 3299 
+1188 ValeurDeNTCOrigineVersExtremite 0 0 3300 
+1189 PalierThermique 0 0 3300 
+1190 PalierThermique 0 1 3300 
+1191 PalierThermique 0 2 3300 
+1192 DefaillancePositive 0 3300 
+1193 DefaillanceNegative 0 3300 
+1194 PalierThermique 1 3 3300 
+1195 PalierThermique 1 4 3300 
+1196 PalierThermique 1 5 3300 
+1197 DefaillancePositive 1 3300 
+1198 DefaillanceNegative 1 3300 
+1199 ValeurDeNTCOrigineVersExtremite 0 0 3301 
+1200 PalierThermique 0 0 3301 
+1201 PalierThermique 0 1 3301 
+1202 PalierThermique 0 2 3301 
+1203 DefaillancePositive 0 3301 
+1204 DefaillanceNegative 0 3301 
+1205 PalierThermique 1 3 3301 
+1206 PalierThermique 1 4 3301 
+1207 PalierThermique 1 5 3301 
+1208 DefaillancePositive 1 3301 
+1209 DefaillanceNegative 1 3301 
+1210 ValeurDeNTCOrigineVersExtremite 0 0 3302 
+1211 PalierThermique 0 0 3302 
+1212 PalierThermique 0 1 3302 
+1213 PalierThermique 0 2 3302 
+1214 DefaillancePositive 0 3302 
+1215 DefaillanceNegative 0 3302 
+1216 PalierThermique 1 3 3302 
+1217 PalierThermique 1 4 3302 
+1218 PalierThermique 1 5 3302 
+1219 DefaillancePositive 1 3302 
+1220 DefaillanceNegative 1 3302 
+1221 ValeurDeNTCOrigineVersExtremite 0 0 3303 
+1222 PalierThermique 0 0 3303 
+1223 PalierThermique 0 1 3303 
+1224 PalierThermique 0 2 3303 
+1225 DefaillancePositive 0 3303 
+1226 DefaillanceNegative 0 3303 
+1227 PalierThermique 1 3 3303 
+1228 PalierThermique 1 4 3303 
+1229 PalierThermique 1 5 3303 
+1230 DefaillancePositive 1 3303 
+1231 DefaillanceNegative 1 3303 
+1232 ValeurDeNTCOrigineVersExtremite 0 0 3304 
+1233 PalierThermique 0 0 3304 
+1234 PalierThermique 0 1 3304 
+1235 PalierThermique 0 2 3304 
+1236 DefaillancePositive 0 3304 
+1237 DefaillanceNegative 0 3304 
+1238 PalierThermique 1 3 3304 
+1239 PalierThermique 1 4 3304 
+1240 PalierThermique 1 5 3304 
+1241 DefaillancePositive 1 3304 
+1242 DefaillanceNegative 1 3304 
+1243 ValeurDeNTCOrigineVersExtremite 0 0 3305 
+1244 PalierThermique 0 0 3305 
+1245 PalierThermique 0 1 3305 
+1246 PalierThermique 0 2 3305 
+1247 DefaillancePositive 0 3305 
+1248 DefaillanceNegative 0 3305 
+1249 PalierThermique 1 3 3305 
+1250 PalierThermique 1 4 3305 
+1251 PalierThermique 1 5 3305 
+1252 DefaillancePositive 1 3305 
+1253 DefaillanceNegative 1 3305 
+1254 ValeurDeNTCOrigineVersExtremite 0 0 3306 
+1255 PalierThermique 0 0 3306 
+1256 PalierThermique 0 1 3306 
+1257 PalierThermique 0 2 3306 
+1258 DefaillancePositive 0 3306 
+1259 DefaillanceNegative 0 3306 
+1260 PalierThermique 1 3 3306 
+1261 PalierThermique 1 4 3306 
+1262 PalierThermique 1 5 3306 
+1263 DefaillancePositive 1 3306 
+1264 DefaillanceNegative 1 3306 
+1265 ValeurDeNTCOrigineVersExtremite 0 0 3307 
+1266 PalierThermique 0 0 3307 
+1267 PalierThermique 0 1 3307 
+1268 PalierThermique 0 2 3307 
+1269 DefaillancePositive 0 3307 
+1270 DefaillanceNegative 0 3307 
+1271 PalierThermique 1 3 3307 
+1272 PalierThermique 1 4 3307 
+1273 PalierThermique 1 5 3307 
+1274 DefaillancePositive 1 3307 
+1275 DefaillanceNegative 1 3307 
+1276 ValeurDeNTCOrigineVersExtremite 0 0 3308 
+1277 PalierThermique 0 0 3308 
+1278 PalierThermique 0 1 3308 
+1279 PalierThermique 0 2 3308 
+1280 DefaillancePositive 0 3308 
+1281 DefaillanceNegative 0 3308 
+1282 PalierThermique 1 3 3308 
+1283 PalierThermique 1 4 3308 
+1284 PalierThermique 1 5 3308 
+1285 DefaillancePositive 1 3308 
+1286 DefaillanceNegative 1 3308 
+1287 ValeurDeNTCOrigineVersExtremite 0 0 3309 
+1288 PalierThermique 0 0 3309 
+1289 PalierThermique 0 1 3309 
+1290 PalierThermique 0 2 3309 
+1291 DefaillancePositive 0 3309 
+1292 DefaillanceNegative 0 3309 
+1293 PalierThermique 1 3 3309 
+1294 PalierThermique 1 4 3309 
+1295 PalierThermique 1 5 3309 
+1296 DefaillancePositive 1 3309 
+1297 DefaillanceNegative 1 3309 
+1298 ValeurDeNTCOrigineVersExtremite 0 0 3310 
+1299 PalierThermique 0 0 3310 
+1300 PalierThermique 0 1 3310 
+1301 PalierThermique 0 2 3310 
+1302 DefaillancePositive 0 3310 
+1303 DefaillanceNegative 0 3310 
+1304 PalierThermique 1 3 3310 
+1305 PalierThermique 1 4 3310 
+1306 PalierThermique 1 5 3310 
+1307 DefaillancePositive 1 3310 
+1308 DefaillanceNegative 1 3310 
+1309 ValeurDeNTCOrigineVersExtremite 0 0 3311 
+1310 PalierThermique 0 0 3311 
+1311 PalierThermique 0 1 3311 
+1312 PalierThermique 0 2 3311 
+1313 DefaillancePositive 0 3311 
+1314 DefaillanceNegative 0 3311 
+1315 PalierThermique 1 3 3311 
+1316 PalierThermique 1 4 3311 
+1317 PalierThermique 1 5 3311 
+1318 DefaillancePositive 1 3311 
+1319 DefaillanceNegative 1 3311 
+1320 ValeurDeNTCOrigineVersExtremite 0 0 3312 
+1321 PalierThermique 0 0 3312 
+1322 PalierThermique 0 1 3312 
+1323 PalierThermique 0 2 3312 
+1324 DefaillancePositive 0 3312 
+1325 DefaillanceNegative 0 3312 
+1326 PalierThermique 1 3 3312 
+1327 PalierThermique 1 4 3312 
+1328 PalierThermique 1 5 3312 
+1329 DefaillancePositive 1 3312 
+1330 DefaillanceNegative 1 3312 
+1331 ValeurDeNTCOrigineVersExtremite 0 0 3313 
+1332 PalierThermique 0 0 3313 
+1333 PalierThermique 0 1 3313 
+1334 PalierThermique 0 2 3313 
+1335 DefaillancePositive 0 3313 
+1336 DefaillanceNegative 0 3313 
+1337 PalierThermique 1 3 3313 
+1338 PalierThermique 1 4 3313 
+1339 PalierThermique 1 5 3313 
+1340 DefaillancePositive 1 3313 
+1341 DefaillanceNegative 1 3313 
+1342 ValeurDeNTCOrigineVersExtremite 0 0 3314 
+1343 PalierThermique 0 0 3314 
+1344 PalierThermique 0 1 3314 
+1345 PalierThermique 0 2 3314 
+1346 DefaillancePositive 0 3314 
+1347 DefaillanceNegative 0 3314 
+1348 PalierThermique 1 3 3314 
+1349 PalierThermique 1 4 3314 
+1350 PalierThermique 1 5 3314 
+1351 DefaillancePositive 1 3314 
+1352 DefaillanceNegative 1 3314 
+1353 ValeurDeNTCOrigineVersExtremite 0 0 3315 
+1354 PalierThermique 0 0 3315 
+1355 PalierThermique 0 1 3315 
+1356 PalierThermique 0 2 3315 
+1357 DefaillancePositive 0 3315 
+1358 DefaillanceNegative 0 3315 
+1359 PalierThermique 1 3 3315 
+1360 PalierThermique 1 4 3315 
+1361 PalierThermique 1 5 3315 
+1362 DefaillancePositive 1 3315 
+1363 DefaillanceNegative 1 3315 
+1364 ValeurDeNTCOrigineVersExtremite 0 0 3316 
+1365 PalierThermique 0 0 3316 
+1366 PalierThermique 0 1 3316 
+1367 PalierThermique 0 2 3316 
+1368 DefaillancePositive 0 3316 
+1369 DefaillanceNegative 0 3316 
+1370 PalierThermique 1 3 3316 
+1371 PalierThermique 1 4 3316 
+1372 PalierThermique 1 5 3316 
+1373 DefaillancePositive 1 3316 
+1374 DefaillanceNegative 1 3316 
+1375 ValeurDeNTCOrigineVersExtremite 0 0 3317 
+1376 PalierThermique 0 0 3317 
+1377 PalierThermique 0 1 3317 
+1378 PalierThermique 0 2 3317 
+1379 DefaillancePositive 0 3317 
+1380 DefaillanceNegative 0 3317 
+1381 PalierThermique 1 3 3317 
+1382 PalierThermique 1 4 3317 
+1383 PalierThermique 1 5 3317 
+1384 DefaillancePositive 1 3317 
+1385 DefaillanceNegative 1 3317 
+1386 ValeurDeNTCOrigineVersExtremite 0 0 3318 
+1387 PalierThermique 0 0 3318 
+1388 PalierThermique 0 1 3318 
+1389 PalierThermique 0 2 3318 
+1390 DefaillancePositive 0 3318 
+1391 DefaillanceNegative 0 3318 
+1392 PalierThermique 1 3 3318 
+1393 PalierThermique 1 4 3318 
+1394 PalierThermique 1 5 3318 
+1395 DefaillancePositive 1 3318 
+1396 DefaillanceNegative 1 3318 
+1397 ValeurDeNTCOrigineVersExtremite 0 0 3319 
+1398 PalierThermique 0 0 3319 
+1399 PalierThermique 0 1 3319 
+1400 PalierThermique 0 2 3319 
+1401 DefaillancePositive 0 3319 
+1402 DefaillanceNegative 0 3319 
+1403 PalierThermique 1 3 3319 
+1404 PalierThermique 1 4 3319 
+1405 PalierThermique 1 5 3319 
+1406 DefaillancePositive 1 3319 
+1407 DefaillanceNegative 1 3319 
+1408 ValeurDeNTCOrigineVersExtremite 0 0 3320 
+1409 PalierThermique 0 0 3320 
+1410 PalierThermique 0 1 3320 
+1411 PalierThermique 0 2 3320 
+1412 DefaillancePositive 0 3320 
+1413 DefaillanceNegative 0 3320 
+1414 PalierThermique 1 3 3320 
+1415 PalierThermique 1 4 3320 
+1416 PalierThermique 1 5 3320 
+1417 DefaillancePositive 1 3320 
+1418 DefaillanceNegative 1 3320 
+1419 ValeurDeNTCOrigineVersExtremite 0 0 3321 
+1420 PalierThermique 0 0 3321 
+1421 PalierThermique 0 1 3321 
+1422 PalierThermique 0 2 3321 
+1423 DefaillancePositive 0 3321 
+1424 DefaillanceNegative 0 3321 
+1425 PalierThermique 1 3 3321 
+1426 PalierThermique 1 4 3321 
+1427 PalierThermique 1 5 3321 
+1428 DefaillancePositive 1 3321 
+1429 DefaillanceNegative 1 3321 
+1430 ValeurDeNTCOrigineVersExtremite 0 0 3322 
+1431 PalierThermique 0 0 3322 
+1432 PalierThermique 0 1 3322 
+1433 PalierThermique 0 2 3322 
+1434 DefaillancePositive 0 3322 
+1435 DefaillanceNegative 0 3322 
+1436 PalierThermique 1 3 3322 
+1437 PalierThermique 1 4 3322 
+1438 PalierThermique 1 5 3322 
+1439 DefaillancePositive 1 3322 
+1440 DefaillanceNegative 1 3322 
+1441 ValeurDeNTCOrigineVersExtremite 0 0 3323 
+1442 PalierThermique 0 0 3323 
+1443 PalierThermique 0 1 3323 
+1444 PalierThermique 0 2 3323 
+1445 DefaillancePositive 0 3323 
+1446 DefaillanceNegative 0 3323 
+1447 PalierThermique 1 3 3323 
+1448 PalierThermique 1 4 3323 
+1449 PalierThermique 1 5 3323 
+1450 DefaillancePositive 1 3323 
+1451 DefaillanceNegative 1 3323 
+1452 ValeurDeNTCOrigineVersExtremite 0 0 3324 
+1453 PalierThermique 0 0 3324 
+1454 PalierThermique 0 1 3324 
+1455 PalierThermique 0 2 3324 
+1456 DefaillancePositive 0 3324 
+1457 DefaillanceNegative 0 3324 
+1458 PalierThermique 1 3 3324 
+1459 PalierThermique 1 4 3324 
+1460 PalierThermique 1 5 3324 
+1461 DefaillancePositive 1 3324 
+1462 DefaillanceNegative 1 3324 
+1463 ValeurDeNTCOrigineVersExtremite 0 0 3325 
+1464 PalierThermique 0 0 3325 
+1465 PalierThermique 0 1 3325 
+1466 PalierThermique 0 2 3325 
+1467 DefaillancePositive 0 3325 
+1468 DefaillanceNegative 0 3325 
+1469 PalierThermique 1 3 3325 
+1470 PalierThermique 1 4 3325 
+1471 PalierThermique 1 5 3325 
+1472 DefaillancePositive 1 3325 
+1473 DefaillanceNegative 1 3325 
+1474 ValeurDeNTCOrigineVersExtremite 0 0 3326 
+1475 PalierThermique 0 0 3326 
+1476 PalierThermique 0 1 3326 
+1477 PalierThermique 0 2 3326 
+1478 DefaillancePositive 0 3326 
+1479 DefaillanceNegative 0 3326 
+1480 PalierThermique 1 3 3326 
+1481 PalierThermique 1 4 3326 
+1482 PalierThermique 1 5 3326 
+1483 DefaillancePositive 1 3326 
+1484 DefaillanceNegative 1 3326 
+1485 ValeurDeNTCOrigineVersExtremite 0 0 3327 
+1486 PalierThermique 0 0 3327 
+1487 PalierThermique 0 1 3327 
+1488 PalierThermique 0 2 3327 
+1489 DefaillancePositive 0 3327 
+1490 DefaillanceNegative 0 3327 
+1491 PalierThermique 1 3 3327 
+1492 PalierThermique 1 4 3327 
+1493 PalierThermique 1 5 3327 
+1494 DefaillancePositive 1 3327 
+1495 DefaillanceNegative 1 3327 
+1496 ValeurDeNTCOrigineVersExtremite 0 0 3328 
+1497 PalierThermique 0 0 3328 
+1498 PalierThermique 0 1 3328 
+1499 PalierThermique 0 2 3328 
+1500 DefaillancePositive 0 3328 
+1501 DefaillanceNegative 0 3328 
+1502 PalierThermique 1 3 3328 
+1503 PalierThermique 1 4 3328 
+1504 PalierThermique 1 5 3328 
+1505 DefaillancePositive 1 3328 
+1506 DefaillanceNegative 1 3328 
+1507 ValeurDeNTCOrigineVersExtremite 0 0 3329 
+1508 PalierThermique 0 0 3329 
+1509 PalierThermique 0 1 3329 
+1510 PalierThermique 0 2 3329 
+1511 DefaillancePositive 0 3329 
+1512 DefaillanceNegative 0 3329 
+1513 PalierThermique 1 3 3329 
+1514 PalierThermique 1 4 3329 
+1515 PalierThermique 1 5 3329 
+1516 DefaillancePositive 1 3329 
+1517 DefaillanceNegative 1 3329 
+1518 ValeurDeNTCOrigineVersExtremite 0 0 3330 
+1519 PalierThermique 0 0 3330 
+1520 PalierThermique 0 1 3330 
+1521 PalierThermique 0 2 3330 
+1522 DefaillancePositive 0 3330 
+1523 DefaillanceNegative 0 3330 
+1524 PalierThermique 1 3 3330 
+1525 PalierThermique 1 4 3330 
+1526 PalierThermique 1 5 3330 
+1527 DefaillancePositive 1 3330 
+1528 DefaillanceNegative 1 3330 
+1529 ValeurDeNTCOrigineVersExtremite 0 0 3331 
+1530 PalierThermique 0 0 3331 
+1531 PalierThermique 0 1 3331 
+1532 PalierThermique 0 2 3331 
+1533 DefaillancePositive 0 3331 
+1534 DefaillanceNegative 0 3331 
+1535 PalierThermique 1 3 3331 
+1536 PalierThermique 1 4 3331 
+1537 PalierThermique 1 5 3331 
+1538 DefaillancePositive 1 3331 
+1539 DefaillanceNegative 1 3331 
+1540 ValeurDeNTCOrigineVersExtremite 0 0 3332 
+1541 PalierThermique 0 0 3332 
+1542 PalierThermique 0 1 3332 
+1543 PalierThermique 0 2 3332 
+1544 DefaillancePositive 0 3332 
+1545 DefaillanceNegative 0 3332 
+1546 PalierThermique 1 3 3332 
+1547 PalierThermique 1 4 3332 
+1548 PalierThermique 1 5 3332 
+1549 DefaillancePositive 1 3332 
+1550 DefaillanceNegative 1 3332 
+1551 ValeurDeNTCOrigineVersExtremite 0 0 3333 
+1552 PalierThermique 0 0 3333 
+1553 PalierThermique 0 1 3333 
+1554 PalierThermique 0 2 3333 
+1555 DefaillancePositive 0 3333 
+1556 DefaillanceNegative 0 3333 
+1557 PalierThermique 1 3 3333 
+1558 PalierThermique 1 4 3333 
+1559 PalierThermique 1 5 3333 
+1560 DefaillancePositive 1 3333 
+1561 DefaillanceNegative 1 3333 
+1562 ValeurDeNTCOrigineVersExtremite 0 0 3334 
+1563 PalierThermique 0 0 3334 
+1564 PalierThermique 0 1 3334 
+1565 PalierThermique 0 2 3334 
+1566 DefaillancePositive 0 3334 
+1567 DefaillanceNegative 0 3334 
+1568 PalierThermique 1 3 3334 
+1569 PalierThermique 1 4 3334 
+1570 PalierThermique 1 5 3334 
+1571 DefaillancePositive 1 3334 
+1572 DefaillanceNegative 1 3334 
+1573 ValeurDeNTCOrigineVersExtremite 0 0 3335 
+1574 PalierThermique 0 0 3335 
+1575 PalierThermique 0 1 3335 
+1576 PalierThermique 0 2 3335 
+1577 DefaillancePositive 0 3335 
+1578 DefaillanceNegative 0 3335 
+1579 PalierThermique 1 3 3335 
+1580 PalierThermique 1 4 3335 
+1581 PalierThermique 1 5 3335 
+1582 DefaillancePositive 1 3335 
+1583 DefaillanceNegative 1 3335 
+1584 ValeurDeNTCOrigineVersExtremite 0 0 3336 
+1585 PalierThermique 0 0 3336 
+1586 PalierThermique 0 1 3336 
+1587 PalierThermique 0 2 3336 
+1588 DefaillancePositive 0 3336 
+1589 DefaillanceNegative 0 3336 
+1590 PalierThermique 1 3 3336 
+1591 PalierThermique 1 4 3336 
+1592 PalierThermique 1 5 3336 
+1593 DefaillancePositive 1 3336 
+1594 DefaillanceNegative 1 3336 
+1595 ValeurDeNTCOrigineVersExtremite 0 0 3337 
+1596 PalierThermique 0 0 3337 
+1597 PalierThermique 0 1 3337 
+1598 PalierThermique 0 2 3337 
+1599 DefaillancePositive 0 3337 
+1600 DefaillanceNegative 0 3337 
+1601 PalierThermique 1 3 3337 
+1602 PalierThermique 1 4 3337 
+1603 PalierThermique 1 5 3337 
+1604 DefaillancePositive 1 3337 
+1605 DefaillanceNegative 1 3337 
+1606 ValeurDeNTCOrigineVersExtremite 0 0 3338 
+1607 PalierThermique 0 0 3338 
+1608 PalierThermique 0 1 3338 
+1609 PalierThermique 0 2 3338 
+1610 DefaillancePositive 0 3338 
+1611 DefaillanceNegative 0 3338 
+1612 PalierThermique 1 3 3338 
+1613 PalierThermique 1 4 3338 
+1614 PalierThermique 1 5 3338 
+1615 DefaillancePositive 1 3338 
+1616 DefaillanceNegative 1 3338 
+1617 ValeurDeNTCOrigineVersExtremite 0 0 3339 
+1618 PalierThermique 0 0 3339 
+1619 PalierThermique 0 1 3339 
+1620 PalierThermique 0 2 3339 
+1621 DefaillancePositive 0 3339 
+1622 DefaillanceNegative 0 3339 
+1623 PalierThermique 1 3 3339 
+1624 PalierThermique 1 4 3339 
+1625 PalierThermique 1 5 3339 
+1626 DefaillancePositive 1 3339 
+1627 DefaillanceNegative 1 3339 
+1628 ValeurDeNTCOrigineVersExtremite 0 0 3340 
+1629 PalierThermique 0 0 3340 
+1630 PalierThermique 0 1 3340 
+1631 PalierThermique 0 2 3340 
+1632 DefaillancePositive 0 3340 
+1633 DefaillanceNegative 0 3340 
+1634 PalierThermique 1 3 3340 
+1635 PalierThermique 1 4 3340 
+1636 PalierThermique 1 5 3340 
+1637 DefaillancePositive 1 3340 
+1638 DefaillanceNegative 1 3340 
+1639 ValeurDeNTCOrigineVersExtremite 0 0 3341 
+1640 PalierThermique 0 0 3341 
+1641 PalierThermique 0 1 3341 
+1642 PalierThermique 0 2 3341 
+1643 DefaillancePositive 0 3341 
+1644 DefaillanceNegative 0 3341 
+1645 PalierThermique 1 3 3341 
+1646 PalierThermique 1 4 3341 
+1647 PalierThermique 1 5 3341 
+1648 DefaillancePositive 1 3341 
+1649 DefaillanceNegative 1 3341 
+1650 ValeurDeNTCOrigineVersExtremite 0 0 3342 
+1651 PalierThermique 0 0 3342 
+1652 PalierThermique 0 1 3342 
+1653 PalierThermique 0 2 3342 
+1654 DefaillancePositive 0 3342 
+1655 DefaillanceNegative 0 3342 
+1656 PalierThermique 1 3 3342 
+1657 PalierThermique 1 4 3342 
+1658 PalierThermique 1 5 3342 
+1659 DefaillancePositive 1 3342 
+1660 DefaillanceNegative 1 3342 
+1661 ValeurDeNTCOrigineVersExtremite 0 0 3343 
+1662 PalierThermique 0 0 3343 
+1663 PalierThermique 0 1 3343 
+1664 PalierThermique 0 2 3343 
+1665 DefaillancePositive 0 3343 
+1666 DefaillanceNegative 0 3343 
+1667 PalierThermique 1 3 3343 
+1668 PalierThermique 1 4 3343 
+1669 PalierThermique 1 5 3343 
+1670 DefaillancePositive 1 3343 
+1671 DefaillanceNegative 1 3343 
+1672 ValeurDeNTCOrigineVersExtremite 0 0 3344 
+1673 PalierThermique 0 0 3344 
+1674 PalierThermique 0 1 3344 
+1675 PalierThermique 0 2 3344 
+1676 DefaillancePositive 0 3344 
+1677 DefaillanceNegative 0 3344 
+1678 PalierThermique 1 3 3344 
+1679 PalierThermique 1 4 3344 
+1680 PalierThermique 1 5 3344 
+1681 DefaillancePositive 1 3344 
+1682 DefaillanceNegative 1 3344 
+1683 ValeurDeNTCOrigineVersExtremite 0 0 3345 
+1684 PalierThermique 0 0 3345 
+1685 PalierThermique 0 1 3345 
+1686 PalierThermique 0 2 3345 
+1687 DefaillancePositive 0 3345 
+1688 DefaillanceNegative 0 3345 
+1689 PalierThermique 1 3 3345 
+1690 PalierThermique 1 4 3345 
+1691 PalierThermique 1 5 3345 
+1692 DefaillancePositive 1 3345 
+1693 DefaillanceNegative 1 3345 
+1694 ValeurDeNTCOrigineVersExtremite 0 0 3346 
+1695 PalierThermique 0 0 3346 
+1696 PalierThermique 0 1 3346 
+1697 PalierThermique 0 2 3346 
+1698 DefaillancePositive 0 3346 
+1699 DefaillanceNegative 0 3346 
+1700 PalierThermique 1 3 3346 
+1701 PalierThermique 1 4 3346 
+1702 PalierThermique 1 5 3346 
+1703 DefaillancePositive 1 3346 
+1704 DefaillanceNegative 1 3346 
+1705 ValeurDeNTCOrigineVersExtremite 0 0 3347 
+1706 PalierThermique 0 0 3347 
+1707 PalierThermique 0 1 3347 
+1708 PalierThermique 0 2 3347 
+1709 DefaillancePositive 0 3347 
+1710 DefaillanceNegative 0 3347 
+1711 PalierThermique 1 3 3347 
+1712 PalierThermique 1 4 3347 
+1713 PalierThermique 1 5 3347 
+1714 DefaillancePositive 1 3347 
+1715 DefaillanceNegative 1 3347 
+1716 ValeurDeNTCOrigineVersExtremite 0 0 3348 
+1717 PalierThermique 0 0 3348 
+1718 PalierThermique 0 1 3348 
+1719 PalierThermique 0 2 3348 
+1720 DefaillancePositive 0 3348 
+1721 DefaillanceNegative 0 3348 
+1722 PalierThermique 1 3 3348 
+1723 PalierThermique 1 4 3348 
+1724 PalierThermique 1 5 3348 
+1725 DefaillancePositive 1 3348 
+1726 DefaillanceNegative 1 3348 
+1727 ValeurDeNTCOrigineVersExtremite 0 0 3349 
+1728 PalierThermique 0 0 3349 
+1729 PalierThermique 0 1 3349 
+1730 PalierThermique 0 2 3349 
+1731 DefaillancePositive 0 3349 
+1732 DefaillanceNegative 0 3349 
+1733 PalierThermique 1 3 3349 
+1734 PalierThermique 1 4 3349 
+1735 PalierThermique 1 5 3349 
+1736 DefaillancePositive 1 3349 
+1737 DefaillanceNegative 1 3349 
+1738 ValeurDeNTCOrigineVersExtremite 0 0 3350 
+1739 PalierThermique 0 0 3350 
+1740 PalierThermique 0 1 3350 
+1741 PalierThermique 0 2 3350 
+1742 DefaillancePositive 0 3350 
+1743 DefaillanceNegative 0 3350 
+1744 PalierThermique 1 3 3350 
+1745 PalierThermique 1 4 3350 
+1746 PalierThermique 1 5 3350 
+1747 DefaillancePositive 1 3350 
+1748 DefaillanceNegative 1 3350 
+1749 ValeurDeNTCOrigineVersExtremite 0 0 3351 
+1750 PalierThermique 0 0 3351 
+1751 PalierThermique 0 1 3351 
+1752 PalierThermique 0 2 3351 
+1753 DefaillancePositive 0 3351 
+1754 DefaillanceNegative 0 3351 
+1755 PalierThermique 1 3 3351 
+1756 PalierThermique 1 4 3351 
+1757 PalierThermique 1 5 3351 
+1758 DefaillancePositive 1 3351 
+1759 DefaillanceNegative 1 3351 
+1760 ValeurDeNTCOrigineVersExtremite 0 0 3352 
+1761 PalierThermique 0 0 3352 
+1762 PalierThermique 0 1 3352 
+1763 PalierThermique 0 2 3352 
+1764 DefaillancePositive 0 3352 
+1765 DefaillanceNegative 0 3352 
+1766 PalierThermique 1 3 3352 
+1767 PalierThermique 1 4 3352 
+1768 PalierThermique 1 5 3352 
+1769 DefaillancePositive 1 3352 
+1770 DefaillanceNegative 1 3352 
+1771 ValeurDeNTCOrigineVersExtremite 0 0 3353 
+1772 PalierThermique 0 0 3353 
+1773 PalierThermique 0 1 3353 
+1774 PalierThermique 0 2 3353 
+1775 DefaillancePositive 0 3353 
+1776 DefaillanceNegative 0 3353 
+1777 PalierThermique 1 3 3353 
+1778 PalierThermique 1 4 3353 
+1779 PalierThermique 1 5 3353 
+1780 DefaillancePositive 1 3353 
+1781 DefaillanceNegative 1 3353 
+1782 ValeurDeNTCOrigineVersExtremite 0 0 3354 
+1783 PalierThermique 0 0 3354 
+1784 PalierThermique 0 1 3354 
+1785 PalierThermique 0 2 3354 
+1786 DefaillancePositive 0 3354 
+1787 DefaillanceNegative 0 3354 
+1788 PalierThermique 1 3 3354 
+1789 PalierThermique 1 4 3354 
+1790 PalierThermique 1 5 3354 
+1791 DefaillancePositive 1 3354 
+1792 DefaillanceNegative 1 3354 
+1793 ValeurDeNTCOrigineVersExtremite 0 0 3355 
+1794 PalierThermique 0 0 3355 
+1795 PalierThermique 0 1 3355 
+1796 PalierThermique 0 2 3355 
+1797 DefaillancePositive 0 3355 
+1798 DefaillanceNegative 0 3355 
+1799 PalierThermique 1 3 3355 
+1800 PalierThermique 1 4 3355 
+1801 PalierThermique 1 5 3355 
+1802 DefaillancePositive 1 3355 
+1803 DefaillanceNegative 1 3355 
+1804 ValeurDeNTCOrigineVersExtremite 0 0 3356 
+1805 PalierThermique 0 0 3356 
+1806 PalierThermique 0 1 3356 
+1807 PalierThermique 0 2 3356 
+1808 DefaillancePositive 0 3356 
+1809 DefaillanceNegative 0 3356 
+1810 PalierThermique 1 3 3356 
+1811 PalierThermique 1 4 3356 
+1812 PalierThermique 1 5 3356 
+1813 DefaillancePositive 1 3356 
+1814 DefaillanceNegative 1 3356 
+1815 ValeurDeNTCOrigineVersExtremite 0 0 3357 
+1816 PalierThermique 0 0 3357 
+1817 PalierThermique 0 1 3357 
+1818 PalierThermique 0 2 3357 
+1819 DefaillancePositive 0 3357 
+1820 DefaillanceNegative 0 3357 
+1821 PalierThermique 1 3 3357 
+1822 PalierThermique 1 4 3357 
+1823 PalierThermique 1 5 3357 
+1824 DefaillancePositive 1 3357 
+1825 DefaillanceNegative 1 3357 
+1826 ValeurDeNTCOrigineVersExtremite 0 0 3358 
+1827 PalierThermique 0 0 3358 
+1828 PalierThermique 0 1 3358 
+1829 PalierThermique 0 2 3358 
+1830 DefaillancePositive 0 3358 
+1831 DefaillanceNegative 0 3358 
+1832 PalierThermique 1 3 3358 
+1833 PalierThermique 1 4 3358 
+1834 PalierThermique 1 5 3358 
+1835 DefaillancePositive 1 3358 
+1836 DefaillanceNegative 1 3358 
+1837 ValeurDeNTCOrigineVersExtremite 0 0 3359 
+1838 PalierThermique 0 0 3359 
+1839 PalierThermique 0 1 3359 
+1840 PalierThermique 0 2 3359 
+1841 DefaillancePositive 0 3359 
+1842 DefaillanceNegative 0 3359 
+1843 PalierThermique 1 3 3359 
+1844 PalierThermique 1 4 3359 
+1845 PalierThermique 1 5 3359 
+1846 DefaillancePositive 1 3359 
+1847 DefaillanceNegative 1 3359 

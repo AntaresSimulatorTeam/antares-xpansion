@@ -1,0 +1,9081 @@
+NAME          Pb        FREE
+ROWS
+ N  OBJROW
+ E  R0000000
+ L  R0000001
+ E  R0000002
+ L  R0000003
+ E  R0000004
+ L  R0000005
+ E  R0000006
+ L  R0000007
+ E  R0000008
+ L  R0000009
+ E  R0000010
+ L  R0000011
+ E  R0000012
+ L  R0000013
+ E  R0000014
+ L  R0000015
+ E  R0000016
+ L  R0000017
+ E  R0000018
+ L  R0000019
+ E  R0000020
+ L  R0000021
+ E  R0000022
+ L  R0000023
+ E  R0000024
+ L  R0000025
+ E  R0000026
+ L  R0000027
+ E  R0000028
+ L  R0000029
+ E  R0000030
+ L  R0000031
+ E  R0000032
+ L  R0000033
+ E  R0000034
+ L  R0000035
+ E  R0000036
+ L  R0000037
+ E  R0000038
+ L  R0000039
+ E  R0000040
+ L  R0000041
+ E  R0000042
+ L  R0000043
+ E  R0000044
+ L  R0000045
+ E  R0000046
+ L  R0000047
+ E  R0000048
+ L  R0000049
+ E  R0000050
+ L  R0000051
+ E  R0000052
+ L  R0000053
+ E  R0000054
+ L  R0000055
+ E  R0000056
+ L  R0000057
+ E  R0000058
+ L  R0000059
+ E  R0000060
+ L  R0000061
+ E  R0000062
+ L  R0000063
+ E  R0000064
+ L  R0000065
+ E  R0000066
+ L  R0000067
+ E  R0000068
+ L  R0000069
+ E  R0000070
+ L  R0000071
+ E  R0000072
+ L  R0000073
+ E  R0000074
+ L  R0000075
+ E  R0000076
+ L  R0000077
+ E  R0000078
+ L  R0000079
+ E  R0000080
+ L  R0000081
+ E  R0000082
+ L  R0000083
+ E  R0000084
+ L  R0000085
+ E  R0000086
+ L  R0000087
+ E  R0000088
+ L  R0000089
+ E  R0000090
+ L  R0000091
+ E  R0000092
+ L  R0000093
+ E  R0000094
+ L  R0000095
+ E  R0000096
+ L  R0000097
+ E  R0000098
+ L  R0000099
+ E  R0000100
+ L  R0000101
+ E  R0000102
+ L  R0000103
+ E  R0000104
+ L  R0000105
+ E  R0000106
+ L  R0000107
+ E  R0000108
+ L  R0000109
+ E  R0000110
+ L  R0000111
+ E  R0000112
+ L  R0000113
+ E  R0000114
+ L  R0000115
+ E  R0000116
+ L  R0000117
+ E  R0000118
+ L  R0000119
+ E  R0000120
+ L  R0000121
+ E  R0000122
+ L  R0000123
+ E  R0000124
+ L  R0000125
+ E  R0000126
+ L  R0000127
+ E  R0000128
+ L  R0000129
+ E  R0000130
+ L  R0000131
+ E  R0000132
+ L  R0000133
+ E  R0000134
+ L  R0000135
+ E  R0000136
+ L  R0000137
+ E  R0000138
+ L  R0000139
+ E  R0000140
+ L  R0000141
+ E  R0000142
+ L  R0000143
+ E  R0000144
+ L  R0000145
+ E  R0000146
+ L  R0000147
+ E  R0000148
+ L  R0000149
+ E  R0000150
+ L  R0000151
+ E  R0000152
+ L  R0000153
+ E  R0000154
+ L  R0000155
+ E  R0000156
+ L  R0000157
+ E  R0000158
+ L  R0000159
+ E  R0000160
+ L  R0000161
+ E  R0000162
+ L  R0000163
+ E  R0000164
+ L  R0000165
+ E  R0000166
+ L  R0000167
+ E  R0000168
+ L  R0000169
+ E  R0000170
+ L  R0000171
+ E  R0000172
+ L  R0000173
+ E  R0000174
+ L  R0000175
+ E  R0000176
+ L  R0000177
+ E  R0000178
+ L  R0000179
+ E  R0000180
+ L  R0000181
+ E  R0000182
+ L  R0000183
+ E  R0000184
+ L  R0000185
+ E  R0000186
+ L  R0000187
+ E  R0000188
+ L  R0000189
+ E  R0000190
+ L  R0000191
+ E  R0000192
+ L  R0000193
+ E  R0000194
+ L  R0000195
+ E  R0000196
+ L  R0000197
+ E  R0000198
+ L  R0000199
+ E  R0000200
+ L  R0000201
+ E  R0000202
+ L  R0000203
+ E  R0000204
+ L  R0000205
+ E  R0000206
+ L  R0000207
+ E  R0000208
+ L  R0000209
+ E  R0000210
+ L  R0000211
+ E  R0000212
+ L  R0000213
+ E  R0000214
+ L  R0000215
+ E  R0000216
+ L  R0000217
+ E  R0000218
+ L  R0000219
+ E  R0000220
+ L  R0000221
+ E  R0000222
+ L  R0000223
+ E  R0000224
+ L  R0000225
+ E  R0000226
+ L  R0000227
+ E  R0000228
+ L  R0000229
+ E  R0000230
+ L  R0000231
+ E  R0000232
+ L  R0000233
+ E  R0000234
+ L  R0000235
+ E  R0000236
+ L  R0000237
+ E  R0000238
+ L  R0000239
+ E  R0000240
+ L  R0000241
+ E  R0000242
+ L  R0000243
+ E  R0000244
+ L  R0000245
+ E  R0000246
+ L  R0000247
+ E  R0000248
+ L  R0000249
+ E  R0000250
+ L  R0000251
+ E  R0000252
+ L  R0000253
+ E  R0000254
+ L  R0000255
+ E  R0000256
+ L  R0000257
+ E  R0000258
+ L  R0000259
+ E  R0000260
+ L  R0000261
+ E  R0000262
+ L  R0000263
+ E  R0000264
+ L  R0000265
+ E  R0000266
+ L  R0000267
+ E  R0000268
+ L  R0000269
+ E  R0000270
+ L  R0000271
+ E  R0000272
+ L  R0000273
+ E  R0000274
+ L  R0000275
+ E  R0000276
+ L  R0000277
+ E  R0000278
+ L  R0000279
+ E  R0000280
+ L  R0000281
+ E  R0000282
+ L  R0000283
+ E  R0000284
+ L  R0000285
+ E  R0000286
+ L  R0000287
+ E  R0000288
+ L  R0000289
+ E  R0000290
+ L  R0000291
+ E  R0000292
+ L  R0000293
+ E  R0000294
+ L  R0000295
+ E  R0000296
+ L  R0000297
+ E  R0000298
+ L  R0000299
+ E  R0000300
+ L  R0000301
+ E  R0000302
+ L  R0000303
+ E  R0000304
+ L  R0000305
+ E  R0000306
+ L  R0000307
+ E  R0000308
+ L  R0000309
+ E  R0000310
+ L  R0000311
+ E  R0000312
+ L  R0000313
+ E  R0000314
+ L  R0000315
+ E  R0000316
+ L  R0000317
+ E  R0000318
+ L  R0000319
+ E  R0000320
+ L  R0000321
+ E  R0000322
+ L  R0000323
+ E  R0000324
+ L  R0000325
+ E  R0000326
+ L  R0000327
+ E  R0000328
+ L  R0000329
+ E  R0000330
+ L  R0000331
+ E  R0000332
+ L  R0000333
+ E  R0000334
+ L  R0000335
+ E  R0000336
+ L  R0000337
+ E  R0000338
+ L  R0000339
+ E  R0000340
+ L  R0000341
+ E  R0000342
+ L  R0000343
+ E  R0000344
+ L  R0000345
+ E  R0000346
+ L  R0000347
+ E  R0000348
+ L  R0000349
+ E  R0000350
+ L  R0000351
+ E  R0000352
+ L  R0000353
+ E  R0000354
+ L  R0000355
+ E  R0000356
+ L  R0000357
+ E  R0000358
+ L  R0000359
+ E  R0000360
+ L  R0000361
+ E  R0000362
+ L  R0000363
+ E  R0000364
+ L  R0000365
+ E  R0000366
+ L  R0000367
+ E  R0000368
+ L  R0000369
+ E  R0000370
+ L  R0000371
+ E  R0000372
+ L  R0000373
+ E  R0000374
+ L  R0000375
+ E  R0000376
+ L  R0000377
+ E  R0000378
+ L  R0000379
+ E  R0000380
+ L  R0000381
+ E  R0000382
+ L  R0000383
+ E  R0000384
+ L  R0000385
+ E  R0000386
+ L  R0000387
+ E  R0000388
+ L  R0000389
+ E  R0000390
+ L  R0000391
+ E  R0000392
+ L  R0000393
+ E  R0000394
+ L  R0000395
+ E  R0000396
+ L  R0000397
+ E  R0000398
+ L  R0000399
+ E  R0000400
+ L  R0000401
+ E  R0000402
+ L  R0000403
+ E  R0000404
+ L  R0000405
+ E  R0000406
+ L  R0000407
+ E  R0000408
+ L  R0000409
+ E  R0000410
+ L  R0000411
+ E  R0000412
+ L  R0000413
+ E  R0000414
+ L  R0000415
+ E  R0000416
+ L  R0000417
+ E  R0000418
+ L  R0000419
+ E  R0000420
+ L  R0000421
+ E  R0000422
+ L  R0000423
+ E  R0000424
+ L  R0000425
+ E  R0000426
+ L  R0000427
+ E  R0000428
+ L  R0000429
+ E  R0000430
+ L  R0000431
+ E  R0000432
+ L  R0000433
+ E  R0000434
+ L  R0000435
+ E  R0000436
+ L  R0000437
+ E  R0000438
+ L  R0000439
+ E  R0000440
+ L  R0000441
+ E  R0000442
+ L  R0000443
+ E  R0000444
+ L  R0000445
+ E  R0000446
+ L  R0000447
+ E  R0000448
+ L  R0000449
+ E  R0000450
+ L  R0000451
+ E  R0000452
+ L  R0000453
+ E  R0000454
+ L  R0000455
+ E  R0000456
+ L  R0000457
+ E  R0000458
+ L  R0000459
+ E  R0000460
+ L  R0000461
+ E  R0000462
+ L  R0000463
+ E  R0000464
+ L  R0000465
+ E  R0000466
+ L  R0000467
+ E  R0000468
+ L  R0000469
+ E  R0000470
+ L  R0000471
+ E  R0000472
+ L  R0000473
+ E  R0000474
+ L  R0000475
+ E  R0000476
+ L  R0000477
+ E  R0000478
+ L  R0000479
+ E  R0000480
+ L  R0000481
+ E  R0000482
+ L  R0000483
+ E  R0000484
+ L  R0000485
+ E  R0000486
+ L  R0000487
+ E  R0000488
+ L  R0000489
+ E  R0000490
+ L  R0000491
+ E  R0000492
+ L  R0000493
+ E  R0000494
+ L  R0000495
+ E  R0000496
+ L  R0000497
+ E  R0000498
+ L  R0000499
+ E  R0000500
+ L  R0000501
+ E  R0000502
+ L  R0000503
+ E  R0000504
+ L  R0000505
+ E  R0000506
+ L  R0000507
+ E  R0000508
+ L  R0000509
+ E  R0000510
+ L  R0000511
+ E  R0000512
+ L  R0000513
+ E  R0000514
+ L  R0000515
+ E  R0000516
+ L  R0000517
+ E  R0000518
+ L  R0000519
+ E  R0000520
+ L  R0000521
+ E  R0000522
+ L  R0000523
+ E  R0000524
+ L  R0000525
+ E  R0000526
+ L  R0000527
+ E  R0000528
+ L  R0000529
+ E  R0000530
+ L  R0000531
+ E  R0000532
+ L  R0000533
+ E  R0000534
+ L  R0000535
+ E  R0000536
+ L  R0000537
+ E  R0000538
+ L  R0000539
+ E  R0000540
+ L  R0000541
+ E  R0000542
+ L  R0000543
+ E  R0000544
+ L  R0000545
+ E  R0000546
+ L  R0000547
+ E  R0000548
+ L  R0000549
+ E  R0000550
+ L  R0000551
+ E  R0000552
+ L  R0000553
+ E  R0000554
+ L  R0000555
+ E  R0000556
+ L  R0000557
+ E  R0000558
+ L  R0000559
+ E  R0000560
+ L  R0000561
+ E  R0000562
+ L  R0000563
+ E  R0000564
+ L  R0000565
+ E  R0000566
+ L  R0000567
+ E  R0000568
+ L  R0000569
+ E  R0000570
+ L  R0000571
+ E  R0000572
+ L  R0000573
+ E  R0000574
+ L  R0000575
+ E  R0000576
+ L  R0000577
+ E  R0000578
+ L  R0000579
+ E  R0000580
+ L  R0000581
+ E  R0000582
+ L  R0000583
+ E  R0000584
+ L  R0000585
+ E  R0000586
+ L  R0000587
+ E  R0000588
+ L  R0000589
+ E  R0000590
+ L  R0000591
+ E  R0000592
+ L  R0000593
+ E  R0000594
+ L  R0000595
+ E  R0000596
+ L  R0000597
+ E  R0000598
+ L  R0000599
+ E  R0000600
+ L  R0000601
+ E  R0000602
+ L  R0000603
+ E  R0000604
+ L  R0000605
+ E  R0000606
+ L  R0000607
+ E  R0000608
+ L  R0000609
+ E  R0000610
+ L  R0000611
+ E  R0000612
+ L  R0000613
+ E  R0000614
+ L  R0000615
+ E  R0000616
+ L  R0000617
+ E  R0000618
+ L  R0000619
+ E  R0000620
+ L  R0000621
+ E  R0000622
+ L  R0000623
+ E  R0000624
+ L  R0000625
+ E  R0000626
+ L  R0000627
+ E  R0000628
+ L  R0000629
+ E  R0000630
+ L  R0000631
+ E  R0000632
+ L  R0000633
+ E  R0000634
+ L  R0000635
+ E  R0000636
+ L  R0000637
+ E  R0000638
+ L  R0000639
+ E  R0000640
+ L  R0000641
+ E  R0000642
+ L  R0000643
+ E  R0000644
+ L  R0000645
+ E  R0000646
+ L  R0000647
+ E  R0000648
+ L  R0000649
+ E  R0000650
+ L  R0000651
+ E  R0000652
+ L  R0000653
+ E  R0000654
+ L  R0000655
+ E  R0000656
+ L  R0000657
+ E  R0000658
+ L  R0000659
+ E  R0000660
+ L  R0000661
+ E  R0000662
+ L  R0000663
+ E  R0000664
+ L  R0000665
+ E  R0000666
+ L  R0000667
+ E  R0000668
+ L  R0000669
+ E  R0000670
+ L  R0000671
+ L  R0000672
+ G  R0000673
+ L  R0000674
+ G  R0000675
+ L  R0000676
+ G  R0000677
+ L  R0000678
+ G  R0000679
+ L  R0000680
+ G  R0000681
+ L  R0000682
+ G  R0000683
+ L  R0000684
+ G  R0000685
+ L  R0000686
+ G  R0000687
+ L  R0000688
+ G  R0000689
+ L  R0000690
+ G  R0000691
+ L  R0000692
+ G  R0000693
+ L  R0000694
+ G  R0000695
+ L  R0000696
+ G  R0000697
+ L  R0000698
+ G  R0000699
+ L  R0000700
+ G  R0000701
+ L  R0000702
+ G  R0000703
+ L  R0000704
+ G  R0000705
+ L  R0000706
+ G  R0000707
+ L  R0000708
+ G  R0000709
+ L  R0000710
+ G  R0000711
+ L  R0000712
+ G  R0000713
+ L  R0000714
+ G  R0000715
+ L  R0000716
+ G  R0000717
+ L  R0000718
+ G  R0000719
+ L  R0000720
+ G  R0000721
+ L  R0000722
+ G  R0000723
+ L  R0000724
+ G  R0000725
+ L  R0000726
+ G  R0000727
+ L  R0000728
+ G  R0000729
+ L  R0000730
+ G  R0000731
+ L  R0000732
+ G  R0000733
+ L  R0000734
+ G  R0000735
+ L  R0000736
+ G  R0000737
+ L  R0000738
+ G  R0000739
+ L  R0000740
+ G  R0000741
+ L  R0000742
+ G  R0000743
+ L  R0000744
+ G  R0000745
+ L  R0000746
+ G  R0000747
+ L  R0000748
+ G  R0000749
+ L  R0000750
+ G  R0000751
+ L  R0000752
+ G  R0000753
+ L  R0000754
+ G  R0000755
+ L  R0000756
+ G  R0000757
+ L  R0000758
+ G  R0000759
+ L  R0000760
+ G  R0000761
+ L  R0000762
+ G  R0000763
+ L  R0000764
+ G  R0000765
+ L  R0000766
+ G  R0000767
+ L  R0000768
+ G  R0000769
+ L  R0000770
+ G  R0000771
+ L  R0000772
+ G  R0000773
+ L  R0000774
+ G  R0000775
+ L  R0000776
+ G  R0000777
+ L  R0000778
+ G  R0000779
+ L  R0000780
+ G  R0000781
+ L  R0000782
+ G  R0000783
+ L  R0000784
+ G  R0000785
+ L  R0000786
+ G  R0000787
+ L  R0000788
+ G  R0000789
+ L  R0000790
+ G  R0000791
+ L  R0000792
+ G  R0000793
+ L  R0000794
+ G  R0000795
+ L  R0000796
+ G  R0000797
+ L  R0000798
+ G  R0000799
+ L  R0000800
+ G  R0000801
+ L  R0000802
+ G  R0000803
+ L  R0000804
+ G  R0000805
+ L  R0000806
+ G  R0000807
+ L  R0000808
+ G  R0000809
+ L  R0000810
+ G  R0000811
+ L  R0000812
+ G  R0000813
+ L  R0000814
+ G  R0000815
+ L  R0000816
+ G  R0000817
+ L  R0000818
+ G  R0000819
+ L  R0000820
+ G  R0000821
+ L  R0000822
+ G  R0000823
+ L  R0000824
+ G  R0000825
+ L  R0000826
+ G  R0000827
+ L  R0000828
+ G  R0000829
+ L  R0000830
+ G  R0000831
+ L  R0000832
+ G  R0000833
+ L  R0000834
+ G  R0000835
+ L  R0000836
+ G  R0000837
+ L  R0000838
+ G  R0000839
+ L  R0000840
+ G  R0000841
+ L  R0000842
+ G  R0000843
+ L  R0000844
+ G  R0000845
+ L  R0000846
+ G  R0000847
+ L  R0000848
+ G  R0000849
+ L  R0000850
+ G  R0000851
+ L  R0000852
+ G  R0000853
+ L  R0000854
+ G  R0000855
+ L  R0000856
+ G  R0000857
+ L  R0000858
+ G  R0000859
+ L  R0000860
+ G  R0000861
+ L  R0000862
+ G  R0000863
+ L  R0000864
+ G  R0000865
+ L  R0000866
+ G  R0000867
+ L  R0000868
+ G  R0000869
+ L  R0000870
+ G  R0000871
+ L  R0000872
+ G  R0000873
+ L  R0000874
+ G  R0000875
+ L  R0000876
+ G  R0000877
+ L  R0000878
+ G  R0000879
+ L  R0000880
+ G  R0000881
+ L  R0000882
+ G  R0000883
+ L  R0000884
+ G  R0000885
+ L  R0000886
+ G  R0000887
+ L  R0000888
+ G  R0000889
+ L  R0000890
+ G  R0000891
+ L  R0000892
+ G  R0000893
+ L  R0000894
+ G  R0000895
+ L  R0000896
+ G  R0000897
+ L  R0000898
+ G  R0000899
+ L  R0000900
+ G  R0000901
+ L  R0000902
+ G  R0000903
+ L  R0000904
+ G  R0000905
+ L  R0000906
+ G  R0000907
+ L  R0000908
+ G  R0000909
+ L  R0000910
+ G  R0000911
+ L  R0000912
+ G  R0000913
+ L  R0000914
+ G  R0000915
+ L  R0000916
+ G  R0000917
+ L  R0000918
+ G  R0000919
+ L  R0000920
+ G  R0000921
+ L  R0000922
+ G  R0000923
+ L  R0000924
+ G  R0000925
+ L  R0000926
+ G  R0000927
+ L  R0000928
+ G  R0000929
+ L  R0000930
+ G  R0000931
+ L  R0000932
+ G  R0000933
+ L  R0000934
+ G  R0000935
+ L  R0000936
+ G  R0000937
+ L  R0000938
+ G  R0000939
+ L  R0000940
+ G  R0000941
+ L  R0000942
+ G  R0000943
+ L  R0000944
+ G  R0000945
+ L  R0000946
+ G  R0000947
+ L  R0000948
+ G  R0000949
+ L  R0000950
+ G  R0000951
+ L  R0000952
+ G  R0000953
+ L  R0000954
+ G  R0000955
+ L  R0000956
+ G  R0000957
+ L  R0000958
+ G  R0000959
+ L  R0000960
+ G  R0000961
+ L  R0000962
+ G  R0000963
+ L  R0000964
+ G  R0000965
+ L  R0000966
+ G  R0000967
+ L  R0000968
+ G  R0000969
+ L  R0000970
+ G  R0000971
+ L  R0000972
+ G  R0000973
+ L  R0000974
+ G  R0000975
+ L  R0000976
+ G  R0000977
+ L  R0000978
+ G  R0000979
+ L  R0000980
+ G  R0000981
+ L  R0000982
+ G  R0000983
+ L  R0000984
+ G  R0000985
+ L  R0000986
+ G  R0000987
+ L  R0000988
+ G  R0000989
+ L  R0000990
+ G  R0000991
+ L  R0000992
+ G  R0000993
+ L  R0000994
+ G  R0000995
+ L  R0000996
+ G  R0000997
+ L  R0000998
+ G  R0000999
+ L  R0001000
+ G  R0001001
+ L  R0001002
+ G  R0001003
+ L  R0001004
+ G  R0001005
+ L  R0001006
+ G  R0001007
+COLUMNS
+    ValeurDeNTCOrigineVersExtremite_0_0_6720_ R0000000 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6720_ R0000002 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6720_ R0000672 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6720_ R0000673 1
+    PalierThermique_0_0_6720_ OBJROW 19.9994564001
+    PalierThermique_0_0_6720_ R0000000 -1
+    PalierThermique_0_0_6720_ R0000001 -1
+    PalierThermique_0_1_6720_ OBJROW 99.9994934354
+    PalierThermique_0_1_6720_ R0000000 -1
+    PalierThermique_0_1_6720_ R0000001 -1
+    PalierThermique_0_2_6720_ OBJROW 45.0005703639
+    PalierThermique_0_2_6720_ R0000000 -1
+    PalierThermique_0_2_6720_ R0000001 -1
+    DefaillancePositive_0_6720_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6720_ R0000000 -1
+    DefaillanceNegative_0_6720_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6720_ R0000000 1
+    DefaillanceNegative_0_6720_ R0000001 1
+    PalierThermique_1_3_6720_ OBJROW 19.9994823148
+    PalierThermique_1_3_6720_ R0000002 -1
+    PalierThermique_1_3_6720_ R0000003 -1
+    PalierThermique_1_4_6720_ OBJROW 100.0005620376
+    PalierThermique_1_4_6720_ R0000002 -1
+    PalierThermique_1_4_6720_ R0000003 -1
+    PalierThermique_1_5_6720_ OBJROW 44.9994768068
+    PalierThermique_1_5_6720_ R0000002 -1
+    PalierThermique_1_5_6720_ R0000003 -1
+    DefaillancePositive_1_6720_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6720_ R0000002 -1
+    DefaillanceNegative_1_6720_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6720_ R0000002 1
+    DefaillanceNegative_1_6720_ R0000003 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6721_ R0000004 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6721_ R0000006 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6721_ R0000674 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6721_ R0000675 1
+    PalierThermique_0_0_6721_ OBJROW 19.9994564001
+    PalierThermique_0_0_6721_ R0000004 -1
+    PalierThermique_0_0_6721_ R0000005 -1
+    PalierThermique_0_1_6721_ OBJROW 99.9994934354
+    PalierThermique_0_1_6721_ R0000004 -1
+    PalierThermique_0_1_6721_ R0000005 -1
+    PalierThermique_0_2_6721_ OBJROW 45.0005703639
+    PalierThermique_0_2_6721_ R0000004 -1
+    PalierThermique_0_2_6721_ R0000005 -1
+    DefaillancePositive_0_6721_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6721_ R0000004 -1
+    DefaillanceNegative_0_6721_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6721_ R0000004 1
+    DefaillanceNegative_0_6721_ R0000005 1
+    PalierThermique_1_3_6721_ OBJROW 19.9994823148
+    PalierThermique_1_3_6721_ R0000006 -1
+    PalierThermique_1_3_6721_ R0000007 -1
+    PalierThermique_1_4_6721_ OBJROW 100.0005620376
+    PalierThermique_1_4_6721_ R0000006 -1
+    PalierThermique_1_4_6721_ R0000007 -1
+    PalierThermique_1_5_6721_ OBJROW 44.9994768068
+    PalierThermique_1_5_6721_ R0000006 -1
+    PalierThermique_1_5_6721_ R0000007 -1
+    DefaillancePositive_1_6721_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6721_ R0000006 -1
+    DefaillanceNegative_1_6721_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6721_ R0000006 1
+    DefaillanceNegative_1_6721_ R0000007 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6722_ R0000008 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6722_ R0000010 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6722_ R0000676 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6722_ R0000677 1
+    PalierThermique_0_0_6722_ OBJROW 19.9994564001
+    PalierThermique_0_0_6722_ R0000008 -1
+    PalierThermique_0_0_6722_ R0000009 -1
+    PalierThermique_0_1_6722_ OBJROW 99.9994934354
+    PalierThermique_0_1_6722_ R0000008 -1
+    PalierThermique_0_1_6722_ R0000009 -1
+    PalierThermique_0_2_6722_ OBJROW 45.0005703639
+    PalierThermique_0_2_6722_ R0000008 -1
+    PalierThermique_0_2_6722_ R0000009 -1
+    DefaillancePositive_0_6722_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6722_ R0000008 -1
+    DefaillanceNegative_0_6722_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6722_ R0000008 1
+    DefaillanceNegative_0_6722_ R0000009 1
+    PalierThermique_1_3_6722_ OBJROW 19.9994823148
+    PalierThermique_1_3_6722_ R0000010 -1
+    PalierThermique_1_3_6722_ R0000011 -1
+    PalierThermique_1_4_6722_ OBJROW 100.0005620376
+    PalierThermique_1_4_6722_ R0000010 -1
+    PalierThermique_1_4_6722_ R0000011 -1
+    PalierThermique_1_5_6722_ OBJROW 44.9994768068
+    PalierThermique_1_5_6722_ R0000010 -1
+    PalierThermique_1_5_6722_ R0000011 -1
+    DefaillancePositive_1_6722_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6722_ R0000010 -1
+    DefaillanceNegative_1_6722_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6722_ R0000010 1
+    DefaillanceNegative_1_6722_ R0000011 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6723_ R0000012 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6723_ R0000014 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6723_ R0000678 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6723_ R0000679 1
+    PalierThermique_0_0_6723_ OBJROW 19.9994564001
+    PalierThermique_0_0_6723_ R0000012 -1
+    PalierThermique_0_0_6723_ R0000013 -1
+    PalierThermique_0_1_6723_ OBJROW 99.9994934354
+    PalierThermique_0_1_6723_ R0000012 -1
+    PalierThermique_0_1_6723_ R0000013 -1
+    PalierThermique_0_2_6723_ OBJROW 45.0005703639
+    PalierThermique_0_2_6723_ R0000012 -1
+    PalierThermique_0_2_6723_ R0000013 -1
+    DefaillancePositive_0_6723_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6723_ R0000012 -1
+    DefaillanceNegative_0_6723_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6723_ R0000012 1
+    DefaillanceNegative_0_6723_ R0000013 1
+    PalierThermique_1_3_6723_ OBJROW 19.9994823148
+    PalierThermique_1_3_6723_ R0000014 -1
+    PalierThermique_1_3_6723_ R0000015 -1
+    PalierThermique_1_4_6723_ OBJROW 100.0005620376
+    PalierThermique_1_4_6723_ R0000014 -1
+    PalierThermique_1_4_6723_ R0000015 -1
+    PalierThermique_1_5_6723_ OBJROW 44.9994768068
+    PalierThermique_1_5_6723_ R0000014 -1
+    PalierThermique_1_5_6723_ R0000015 -1
+    DefaillancePositive_1_6723_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6723_ R0000014 -1
+    DefaillanceNegative_1_6723_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6723_ R0000014 1
+    DefaillanceNegative_1_6723_ R0000015 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6724_ R0000016 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6724_ R0000018 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6724_ R0000680 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6724_ R0000681 1
+    PalierThermique_0_0_6724_ OBJROW 19.9994564001
+    PalierThermique_0_0_6724_ R0000016 -1
+    PalierThermique_0_0_6724_ R0000017 -1
+    PalierThermique_0_1_6724_ OBJROW 99.9994934354
+    PalierThermique_0_1_6724_ R0000016 -1
+    PalierThermique_0_1_6724_ R0000017 -1
+    PalierThermique_0_2_6724_ OBJROW 45.0005703639
+    PalierThermique_0_2_6724_ R0000016 -1
+    PalierThermique_0_2_6724_ R0000017 -1
+    DefaillancePositive_0_6724_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6724_ R0000016 -1
+    DefaillanceNegative_0_6724_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6724_ R0000016 1
+    DefaillanceNegative_0_6724_ R0000017 1
+    PalierThermique_1_3_6724_ OBJROW 19.9994823148
+    PalierThermique_1_3_6724_ R0000018 -1
+    PalierThermique_1_3_6724_ R0000019 -1
+    PalierThermique_1_4_6724_ OBJROW 100.0005620376
+    PalierThermique_1_4_6724_ R0000018 -1
+    PalierThermique_1_4_6724_ R0000019 -1
+    PalierThermique_1_5_6724_ OBJROW 44.9994768068
+    PalierThermique_1_5_6724_ R0000018 -1
+    PalierThermique_1_5_6724_ R0000019 -1
+    DefaillancePositive_1_6724_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6724_ R0000018 -1
+    DefaillanceNegative_1_6724_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6724_ R0000018 1
+    DefaillanceNegative_1_6724_ R0000019 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6725_ R0000020 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6725_ R0000022 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6725_ R0000682 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6725_ R0000683 1
+    PalierThermique_0_0_6725_ OBJROW 19.9994564001
+    PalierThermique_0_0_6725_ R0000020 -1
+    PalierThermique_0_0_6725_ R0000021 -1
+    PalierThermique_0_1_6725_ OBJROW 99.9994934354
+    PalierThermique_0_1_6725_ R0000020 -1
+    PalierThermique_0_1_6725_ R0000021 -1
+    PalierThermique_0_2_6725_ OBJROW 45.0005703639
+    PalierThermique_0_2_6725_ R0000020 -1
+    PalierThermique_0_2_6725_ R0000021 -1
+    DefaillancePositive_0_6725_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6725_ R0000020 -1
+    DefaillanceNegative_0_6725_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6725_ R0000020 1
+    DefaillanceNegative_0_6725_ R0000021 1
+    PalierThermique_1_3_6725_ OBJROW 19.9994823148
+    PalierThermique_1_3_6725_ R0000022 -1
+    PalierThermique_1_3_6725_ R0000023 -1
+    PalierThermique_1_4_6725_ OBJROW 100.0005620376
+    PalierThermique_1_4_6725_ R0000022 -1
+    PalierThermique_1_4_6725_ R0000023 -1
+    PalierThermique_1_5_6725_ OBJROW 44.9994768068
+    PalierThermique_1_5_6725_ R0000022 -1
+    PalierThermique_1_5_6725_ R0000023 -1
+    DefaillancePositive_1_6725_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6725_ R0000022 -1
+    DefaillanceNegative_1_6725_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6725_ R0000022 1
+    DefaillanceNegative_1_6725_ R0000023 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6726_ R0000024 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6726_ R0000026 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6726_ R0000684 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6726_ R0000685 1
+    PalierThermique_0_0_6726_ OBJROW 19.9994564001
+    PalierThermique_0_0_6726_ R0000024 -1
+    PalierThermique_0_0_6726_ R0000025 -1
+    PalierThermique_0_1_6726_ OBJROW 99.9994934354
+    PalierThermique_0_1_6726_ R0000024 -1
+    PalierThermique_0_1_6726_ R0000025 -1
+    PalierThermique_0_2_6726_ OBJROW 45.0005703639
+    PalierThermique_0_2_6726_ R0000024 -1
+    PalierThermique_0_2_6726_ R0000025 -1
+    DefaillancePositive_0_6726_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6726_ R0000024 -1
+    DefaillanceNegative_0_6726_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6726_ R0000024 1
+    DefaillanceNegative_0_6726_ R0000025 1
+    PalierThermique_1_3_6726_ OBJROW 19.9994823148
+    PalierThermique_1_3_6726_ R0000026 -1
+    PalierThermique_1_3_6726_ R0000027 -1
+    PalierThermique_1_4_6726_ OBJROW 100.0005620376
+    PalierThermique_1_4_6726_ R0000026 -1
+    PalierThermique_1_4_6726_ R0000027 -1
+    PalierThermique_1_5_6726_ OBJROW 44.9994768068
+    PalierThermique_1_5_6726_ R0000026 -1
+    PalierThermique_1_5_6726_ R0000027 -1
+    DefaillancePositive_1_6726_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6726_ R0000026 -1
+    DefaillanceNegative_1_6726_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6726_ R0000026 1
+    DefaillanceNegative_1_6726_ R0000027 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6727_ R0000028 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6727_ R0000030 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6727_ R0000686 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6727_ R0000687 1
+    PalierThermique_0_0_6727_ OBJROW 19.9994564001
+    PalierThermique_0_0_6727_ R0000028 -1
+    PalierThermique_0_0_6727_ R0000029 -1
+    PalierThermique_0_1_6727_ OBJROW 99.9994934354
+    PalierThermique_0_1_6727_ R0000028 -1
+    PalierThermique_0_1_6727_ R0000029 -1
+    PalierThermique_0_2_6727_ OBJROW 45.0005703639
+    PalierThermique_0_2_6727_ R0000028 -1
+    PalierThermique_0_2_6727_ R0000029 -1
+    DefaillancePositive_0_6727_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6727_ R0000028 -1
+    DefaillanceNegative_0_6727_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6727_ R0000028 1
+    DefaillanceNegative_0_6727_ R0000029 1
+    PalierThermique_1_3_6727_ OBJROW 19.9994823148
+    PalierThermique_1_3_6727_ R0000030 -1
+    PalierThermique_1_3_6727_ R0000031 -1
+    PalierThermique_1_4_6727_ OBJROW 100.0005620376
+    PalierThermique_1_4_6727_ R0000030 -1
+    PalierThermique_1_4_6727_ R0000031 -1
+    PalierThermique_1_5_6727_ OBJROW 44.9994768068
+    PalierThermique_1_5_6727_ R0000030 -1
+    PalierThermique_1_5_6727_ R0000031 -1
+    DefaillancePositive_1_6727_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6727_ R0000030 -1
+    DefaillanceNegative_1_6727_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6727_ R0000030 1
+    DefaillanceNegative_1_6727_ R0000031 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6728_ R0000032 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6728_ R0000034 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6728_ R0000688 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6728_ R0000689 1
+    PalierThermique_0_0_6728_ OBJROW 19.9994564001
+    PalierThermique_0_0_6728_ R0000032 -1
+    PalierThermique_0_0_6728_ R0000033 -1
+    PalierThermique_0_1_6728_ OBJROW 99.9994934354
+    PalierThermique_0_1_6728_ R0000032 -1
+    PalierThermique_0_1_6728_ R0000033 -1
+    PalierThermique_0_2_6728_ OBJROW 45.0005703639
+    PalierThermique_0_2_6728_ R0000032 -1
+    PalierThermique_0_2_6728_ R0000033 -1
+    DefaillancePositive_0_6728_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6728_ R0000032 -1
+    DefaillanceNegative_0_6728_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6728_ R0000032 1
+    DefaillanceNegative_0_6728_ R0000033 1
+    PalierThermique_1_3_6728_ OBJROW 19.9994823148
+    PalierThermique_1_3_6728_ R0000034 -1
+    PalierThermique_1_3_6728_ R0000035 -1
+    PalierThermique_1_4_6728_ OBJROW 100.0005620376
+    PalierThermique_1_4_6728_ R0000034 -1
+    PalierThermique_1_4_6728_ R0000035 -1
+    PalierThermique_1_5_6728_ OBJROW 44.9994768068
+    PalierThermique_1_5_6728_ R0000034 -1
+    PalierThermique_1_5_6728_ R0000035 -1
+    DefaillancePositive_1_6728_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6728_ R0000034 -1
+    DefaillanceNegative_1_6728_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6728_ R0000034 1
+    DefaillanceNegative_1_6728_ R0000035 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6729_ R0000036 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6729_ R0000038 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6729_ R0000690 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6729_ R0000691 1
+    PalierThermique_0_0_6729_ OBJROW 19.9994564001
+    PalierThermique_0_0_6729_ R0000036 -1
+    PalierThermique_0_0_6729_ R0000037 -1
+    PalierThermique_0_1_6729_ OBJROW 99.9994934354
+    PalierThermique_0_1_6729_ R0000036 -1
+    PalierThermique_0_1_6729_ R0000037 -1
+    PalierThermique_0_2_6729_ OBJROW 45.0005703639
+    PalierThermique_0_2_6729_ R0000036 -1
+    PalierThermique_0_2_6729_ R0000037 -1
+    DefaillancePositive_0_6729_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6729_ R0000036 -1
+    DefaillanceNegative_0_6729_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6729_ R0000036 1
+    DefaillanceNegative_0_6729_ R0000037 1
+    PalierThermique_1_3_6729_ OBJROW 19.9994823148
+    PalierThermique_1_3_6729_ R0000038 -1
+    PalierThermique_1_3_6729_ R0000039 -1
+    PalierThermique_1_4_6729_ OBJROW 100.0005620376
+    PalierThermique_1_4_6729_ R0000038 -1
+    PalierThermique_1_4_6729_ R0000039 -1
+    PalierThermique_1_5_6729_ OBJROW 44.9994768068
+    PalierThermique_1_5_6729_ R0000038 -1
+    PalierThermique_1_5_6729_ R0000039 -1
+    DefaillancePositive_1_6729_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6729_ R0000038 -1
+    DefaillanceNegative_1_6729_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6729_ R0000038 1
+    DefaillanceNegative_1_6729_ R0000039 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6730_ R0000040 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6730_ R0000042 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6730_ R0000692 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6730_ R0000693 1
+    PalierThermique_0_0_6730_ OBJROW 19.9994564001
+    PalierThermique_0_0_6730_ R0000040 -1
+    PalierThermique_0_0_6730_ R0000041 -1
+    PalierThermique_0_1_6730_ OBJROW 99.9994934354
+    PalierThermique_0_1_6730_ R0000040 -1
+    PalierThermique_0_1_6730_ R0000041 -1
+    PalierThermique_0_2_6730_ OBJROW 45.0005703639
+    PalierThermique_0_2_6730_ R0000040 -1
+    PalierThermique_0_2_6730_ R0000041 -1
+    DefaillancePositive_0_6730_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6730_ R0000040 -1
+    DefaillanceNegative_0_6730_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6730_ R0000040 1
+    DefaillanceNegative_0_6730_ R0000041 1
+    PalierThermique_1_3_6730_ OBJROW 19.9994823148
+    PalierThermique_1_3_6730_ R0000042 -1
+    PalierThermique_1_3_6730_ R0000043 -1
+    PalierThermique_1_4_6730_ OBJROW 100.0005620376
+    PalierThermique_1_4_6730_ R0000042 -1
+    PalierThermique_1_4_6730_ R0000043 -1
+    PalierThermique_1_5_6730_ OBJROW 44.9994768068
+    PalierThermique_1_5_6730_ R0000042 -1
+    PalierThermique_1_5_6730_ R0000043 -1
+    DefaillancePositive_1_6730_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6730_ R0000042 -1
+    DefaillanceNegative_1_6730_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6730_ R0000042 1
+    DefaillanceNegative_1_6730_ R0000043 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6731_ R0000044 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6731_ R0000046 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6731_ R0000694 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6731_ R0000695 1
+    PalierThermique_0_0_6731_ OBJROW 19.9994564001
+    PalierThermique_0_0_6731_ R0000044 -1
+    PalierThermique_0_0_6731_ R0000045 -1
+    PalierThermique_0_1_6731_ OBJROW 99.9994934354
+    PalierThermique_0_1_6731_ R0000044 -1
+    PalierThermique_0_1_6731_ R0000045 -1
+    PalierThermique_0_2_6731_ OBJROW 45.0005703639
+    PalierThermique_0_2_6731_ R0000044 -1
+    PalierThermique_0_2_6731_ R0000045 -1
+    DefaillancePositive_0_6731_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6731_ R0000044 -1
+    DefaillanceNegative_0_6731_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6731_ R0000044 1
+    DefaillanceNegative_0_6731_ R0000045 1
+    PalierThermique_1_3_6731_ OBJROW 19.9994823148
+    PalierThermique_1_3_6731_ R0000046 -1
+    PalierThermique_1_3_6731_ R0000047 -1
+    PalierThermique_1_4_6731_ OBJROW 100.0005620376
+    PalierThermique_1_4_6731_ R0000046 -1
+    PalierThermique_1_4_6731_ R0000047 -1
+    PalierThermique_1_5_6731_ OBJROW 44.9994768068
+    PalierThermique_1_5_6731_ R0000046 -1
+    PalierThermique_1_5_6731_ R0000047 -1
+    DefaillancePositive_1_6731_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6731_ R0000046 -1
+    DefaillanceNegative_1_6731_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6731_ R0000046 1
+    DefaillanceNegative_1_6731_ R0000047 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6732_ R0000048 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6732_ R0000050 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6732_ R0000696 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6732_ R0000697 1
+    PalierThermique_0_0_6732_ OBJROW 19.9994564001
+    PalierThermique_0_0_6732_ R0000048 -1
+    PalierThermique_0_0_6732_ R0000049 -1
+    PalierThermique_0_1_6732_ OBJROW 99.9994934354
+    PalierThermique_0_1_6732_ R0000048 -1
+    PalierThermique_0_1_6732_ R0000049 -1
+    PalierThermique_0_2_6732_ OBJROW 45.0005703639
+    PalierThermique_0_2_6732_ R0000048 -1
+    PalierThermique_0_2_6732_ R0000049 -1
+    DefaillancePositive_0_6732_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6732_ R0000048 -1
+    DefaillanceNegative_0_6732_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6732_ R0000048 1
+    DefaillanceNegative_0_6732_ R0000049 1
+    PalierThermique_1_3_6732_ OBJROW 19.9994823148
+    PalierThermique_1_3_6732_ R0000050 -1
+    PalierThermique_1_3_6732_ R0000051 -1
+    PalierThermique_1_4_6732_ OBJROW 100.0005620376
+    PalierThermique_1_4_6732_ R0000050 -1
+    PalierThermique_1_4_6732_ R0000051 -1
+    PalierThermique_1_5_6732_ OBJROW 44.9994768068
+    PalierThermique_1_5_6732_ R0000050 -1
+    PalierThermique_1_5_6732_ R0000051 -1
+    DefaillancePositive_1_6732_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6732_ R0000050 -1
+    DefaillanceNegative_1_6732_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6732_ R0000050 1
+    DefaillanceNegative_1_6732_ R0000051 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6733_ R0000052 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6733_ R0000054 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6733_ R0000698 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6733_ R0000699 1
+    PalierThermique_0_0_6733_ OBJROW 19.9994564001
+    PalierThermique_0_0_6733_ R0000052 -1
+    PalierThermique_0_0_6733_ R0000053 -1
+    PalierThermique_0_1_6733_ OBJROW 99.9994934354
+    PalierThermique_0_1_6733_ R0000052 -1
+    PalierThermique_0_1_6733_ R0000053 -1
+    PalierThermique_0_2_6733_ OBJROW 45.0005703639
+    PalierThermique_0_2_6733_ R0000052 -1
+    PalierThermique_0_2_6733_ R0000053 -1
+    DefaillancePositive_0_6733_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6733_ R0000052 -1
+    DefaillanceNegative_0_6733_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6733_ R0000052 1
+    DefaillanceNegative_0_6733_ R0000053 1
+    PalierThermique_1_3_6733_ OBJROW 19.9994823148
+    PalierThermique_1_3_6733_ R0000054 -1
+    PalierThermique_1_3_6733_ R0000055 -1
+    PalierThermique_1_4_6733_ OBJROW 100.0005620376
+    PalierThermique_1_4_6733_ R0000054 -1
+    PalierThermique_1_4_6733_ R0000055 -1
+    PalierThermique_1_5_6733_ OBJROW 44.9994768068
+    PalierThermique_1_5_6733_ R0000054 -1
+    PalierThermique_1_5_6733_ R0000055 -1
+    DefaillancePositive_1_6733_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6733_ R0000054 -1
+    DefaillanceNegative_1_6733_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6733_ R0000054 1
+    DefaillanceNegative_1_6733_ R0000055 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6734_ R0000056 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6734_ R0000058 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6734_ R0000700 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6734_ R0000701 1
+    PalierThermique_0_0_6734_ OBJROW 19.9994564001
+    PalierThermique_0_0_6734_ R0000056 -1
+    PalierThermique_0_0_6734_ R0000057 -1
+    PalierThermique_0_1_6734_ OBJROW 99.9994934354
+    PalierThermique_0_1_6734_ R0000056 -1
+    PalierThermique_0_1_6734_ R0000057 -1
+    PalierThermique_0_2_6734_ OBJROW 45.0005703639
+    PalierThermique_0_2_6734_ R0000056 -1
+    PalierThermique_0_2_6734_ R0000057 -1
+    DefaillancePositive_0_6734_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6734_ R0000056 -1
+    DefaillanceNegative_0_6734_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6734_ R0000056 1
+    DefaillanceNegative_0_6734_ R0000057 1
+    PalierThermique_1_3_6734_ OBJROW 19.9994823148
+    PalierThermique_1_3_6734_ R0000058 -1
+    PalierThermique_1_3_6734_ R0000059 -1
+    PalierThermique_1_4_6734_ OBJROW 100.0005620376
+    PalierThermique_1_4_6734_ R0000058 -1
+    PalierThermique_1_4_6734_ R0000059 -1
+    PalierThermique_1_5_6734_ OBJROW 44.9994768068
+    PalierThermique_1_5_6734_ R0000058 -1
+    PalierThermique_1_5_6734_ R0000059 -1
+    DefaillancePositive_1_6734_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6734_ R0000058 -1
+    DefaillanceNegative_1_6734_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6734_ R0000058 1
+    DefaillanceNegative_1_6734_ R0000059 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6735_ R0000060 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6735_ R0000062 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6735_ R0000702 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6735_ R0000703 1
+    PalierThermique_0_0_6735_ OBJROW 19.9994564001
+    PalierThermique_0_0_6735_ R0000060 -1
+    PalierThermique_0_0_6735_ R0000061 -1
+    PalierThermique_0_1_6735_ OBJROW 99.9994934354
+    PalierThermique_0_1_6735_ R0000060 -1
+    PalierThermique_0_1_6735_ R0000061 -1
+    PalierThermique_0_2_6735_ OBJROW 45.0005703639
+    PalierThermique_0_2_6735_ R0000060 -1
+    PalierThermique_0_2_6735_ R0000061 -1
+    DefaillancePositive_0_6735_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6735_ R0000060 -1
+    DefaillanceNegative_0_6735_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6735_ R0000060 1
+    DefaillanceNegative_0_6735_ R0000061 1
+    PalierThermique_1_3_6735_ OBJROW 19.9994823148
+    PalierThermique_1_3_6735_ R0000062 -1
+    PalierThermique_1_3_6735_ R0000063 -1
+    PalierThermique_1_4_6735_ OBJROW 100.0005620376
+    PalierThermique_1_4_6735_ R0000062 -1
+    PalierThermique_1_4_6735_ R0000063 -1
+    PalierThermique_1_5_6735_ OBJROW 44.9994768068
+    PalierThermique_1_5_6735_ R0000062 -1
+    PalierThermique_1_5_6735_ R0000063 -1
+    DefaillancePositive_1_6735_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6735_ R0000062 -1
+    DefaillanceNegative_1_6735_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6735_ R0000062 1
+    DefaillanceNegative_1_6735_ R0000063 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6736_ R0000064 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6736_ R0000066 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6736_ R0000704 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6736_ R0000705 1
+    PalierThermique_0_0_6736_ OBJROW 19.9994564001
+    PalierThermique_0_0_6736_ R0000064 -1
+    PalierThermique_0_0_6736_ R0000065 -1
+    PalierThermique_0_1_6736_ OBJROW 99.9994934354
+    PalierThermique_0_1_6736_ R0000064 -1
+    PalierThermique_0_1_6736_ R0000065 -1
+    PalierThermique_0_2_6736_ OBJROW 45.0005703639
+    PalierThermique_0_2_6736_ R0000064 -1
+    PalierThermique_0_2_6736_ R0000065 -1
+    DefaillancePositive_0_6736_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6736_ R0000064 -1
+    DefaillanceNegative_0_6736_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6736_ R0000064 1
+    DefaillanceNegative_0_6736_ R0000065 1
+    PalierThermique_1_3_6736_ OBJROW 19.9994823148
+    PalierThermique_1_3_6736_ R0000066 -1
+    PalierThermique_1_3_6736_ R0000067 -1
+    PalierThermique_1_4_6736_ OBJROW 100.0005620376
+    PalierThermique_1_4_6736_ R0000066 -1
+    PalierThermique_1_4_6736_ R0000067 -1
+    PalierThermique_1_5_6736_ OBJROW 44.9994768068
+    PalierThermique_1_5_6736_ R0000066 -1
+    PalierThermique_1_5_6736_ R0000067 -1
+    DefaillancePositive_1_6736_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6736_ R0000066 -1
+    DefaillanceNegative_1_6736_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6736_ R0000066 1
+    DefaillanceNegative_1_6736_ R0000067 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6737_ R0000068 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6737_ R0000070 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6737_ R0000706 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6737_ R0000707 1
+    PalierThermique_0_0_6737_ OBJROW 19.9994564001
+    PalierThermique_0_0_6737_ R0000068 -1
+    PalierThermique_0_0_6737_ R0000069 -1
+    PalierThermique_0_1_6737_ OBJROW 99.9994934354
+    PalierThermique_0_1_6737_ R0000068 -1
+    PalierThermique_0_1_6737_ R0000069 -1
+    PalierThermique_0_2_6737_ OBJROW 45.0005703639
+    PalierThermique_0_2_6737_ R0000068 -1
+    PalierThermique_0_2_6737_ R0000069 -1
+    DefaillancePositive_0_6737_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6737_ R0000068 -1
+    DefaillanceNegative_0_6737_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6737_ R0000068 1
+    DefaillanceNegative_0_6737_ R0000069 1
+    PalierThermique_1_3_6737_ OBJROW 19.9994823148
+    PalierThermique_1_3_6737_ R0000070 -1
+    PalierThermique_1_3_6737_ R0000071 -1
+    PalierThermique_1_4_6737_ OBJROW 100.0005620376
+    PalierThermique_1_4_6737_ R0000070 -1
+    PalierThermique_1_4_6737_ R0000071 -1
+    PalierThermique_1_5_6737_ OBJROW 44.9994768068
+    PalierThermique_1_5_6737_ R0000070 -1
+    PalierThermique_1_5_6737_ R0000071 -1
+    DefaillancePositive_1_6737_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6737_ R0000070 -1
+    DefaillanceNegative_1_6737_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6737_ R0000070 1
+    DefaillanceNegative_1_6737_ R0000071 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6738_ R0000072 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6738_ R0000074 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6738_ R0000708 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6738_ R0000709 1
+    PalierThermique_0_0_6738_ OBJROW 19.9994564001
+    PalierThermique_0_0_6738_ R0000072 -1
+    PalierThermique_0_0_6738_ R0000073 -1
+    PalierThermique_0_1_6738_ OBJROW 99.9994934354
+    PalierThermique_0_1_6738_ R0000072 -1
+    PalierThermique_0_1_6738_ R0000073 -1
+    PalierThermique_0_2_6738_ OBJROW 45.0005703639
+    PalierThermique_0_2_6738_ R0000072 -1
+    PalierThermique_0_2_6738_ R0000073 -1
+    DefaillancePositive_0_6738_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6738_ R0000072 -1
+    DefaillanceNegative_0_6738_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6738_ R0000072 1
+    DefaillanceNegative_0_6738_ R0000073 1
+    PalierThermique_1_3_6738_ OBJROW 19.9994823148
+    PalierThermique_1_3_6738_ R0000074 -1
+    PalierThermique_1_3_6738_ R0000075 -1
+    PalierThermique_1_4_6738_ OBJROW 100.0005620376
+    PalierThermique_1_4_6738_ R0000074 -1
+    PalierThermique_1_4_6738_ R0000075 -1
+    PalierThermique_1_5_6738_ OBJROW 44.9994768068
+    PalierThermique_1_5_6738_ R0000074 -1
+    PalierThermique_1_5_6738_ R0000075 -1
+    DefaillancePositive_1_6738_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6738_ R0000074 -1
+    DefaillanceNegative_1_6738_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6738_ R0000074 1
+    DefaillanceNegative_1_6738_ R0000075 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6739_ R0000076 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6739_ R0000078 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6739_ R0000710 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6739_ R0000711 1
+    PalierThermique_0_0_6739_ OBJROW 19.9994564001
+    PalierThermique_0_0_6739_ R0000076 -1
+    PalierThermique_0_0_6739_ R0000077 -1
+    PalierThermique_0_1_6739_ OBJROW 99.9994934354
+    PalierThermique_0_1_6739_ R0000076 -1
+    PalierThermique_0_1_6739_ R0000077 -1
+    PalierThermique_0_2_6739_ OBJROW 45.0005703639
+    PalierThermique_0_2_6739_ R0000076 -1
+    PalierThermique_0_2_6739_ R0000077 -1
+    DefaillancePositive_0_6739_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6739_ R0000076 -1
+    DefaillanceNegative_0_6739_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6739_ R0000076 1
+    DefaillanceNegative_0_6739_ R0000077 1
+    PalierThermique_1_3_6739_ OBJROW 19.9994823148
+    PalierThermique_1_3_6739_ R0000078 -1
+    PalierThermique_1_3_6739_ R0000079 -1
+    PalierThermique_1_4_6739_ OBJROW 100.0005620376
+    PalierThermique_1_4_6739_ R0000078 -1
+    PalierThermique_1_4_6739_ R0000079 -1
+    PalierThermique_1_5_6739_ OBJROW 44.9994768068
+    PalierThermique_1_5_6739_ R0000078 -1
+    PalierThermique_1_5_6739_ R0000079 -1
+    DefaillancePositive_1_6739_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6739_ R0000078 -1
+    DefaillanceNegative_1_6739_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6739_ R0000078 1
+    DefaillanceNegative_1_6739_ R0000079 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6740_ R0000080 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6740_ R0000082 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6740_ R0000712 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6740_ R0000713 1
+    PalierThermique_0_0_6740_ OBJROW 19.9994564001
+    PalierThermique_0_0_6740_ R0000080 -1
+    PalierThermique_0_0_6740_ R0000081 -1
+    PalierThermique_0_1_6740_ OBJROW 99.9994934354
+    PalierThermique_0_1_6740_ R0000080 -1
+    PalierThermique_0_1_6740_ R0000081 -1
+    PalierThermique_0_2_6740_ OBJROW 45.0005703639
+    PalierThermique_0_2_6740_ R0000080 -1
+    PalierThermique_0_2_6740_ R0000081 -1
+    DefaillancePositive_0_6740_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6740_ R0000080 -1
+    DefaillanceNegative_0_6740_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6740_ R0000080 1
+    DefaillanceNegative_0_6740_ R0000081 1
+    PalierThermique_1_3_6740_ OBJROW 19.9994823148
+    PalierThermique_1_3_6740_ R0000082 -1
+    PalierThermique_1_3_6740_ R0000083 -1
+    PalierThermique_1_4_6740_ OBJROW 100.0005620376
+    PalierThermique_1_4_6740_ R0000082 -1
+    PalierThermique_1_4_6740_ R0000083 -1
+    PalierThermique_1_5_6740_ OBJROW 44.9994768068
+    PalierThermique_1_5_6740_ R0000082 -1
+    PalierThermique_1_5_6740_ R0000083 -1
+    DefaillancePositive_1_6740_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6740_ R0000082 -1
+    DefaillanceNegative_1_6740_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6740_ R0000082 1
+    DefaillanceNegative_1_6740_ R0000083 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6741_ R0000084 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6741_ R0000086 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6741_ R0000714 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6741_ R0000715 1
+    PalierThermique_0_0_6741_ OBJROW 19.9994564001
+    PalierThermique_0_0_6741_ R0000084 -1
+    PalierThermique_0_0_6741_ R0000085 -1
+    PalierThermique_0_1_6741_ OBJROW 99.9994934354
+    PalierThermique_0_1_6741_ R0000084 -1
+    PalierThermique_0_1_6741_ R0000085 -1
+    PalierThermique_0_2_6741_ OBJROW 45.0005703639
+    PalierThermique_0_2_6741_ R0000084 -1
+    PalierThermique_0_2_6741_ R0000085 -1
+    DefaillancePositive_0_6741_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6741_ R0000084 -1
+    DefaillanceNegative_0_6741_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6741_ R0000084 1
+    DefaillanceNegative_0_6741_ R0000085 1
+    PalierThermique_1_3_6741_ OBJROW 19.9994823148
+    PalierThermique_1_3_6741_ R0000086 -1
+    PalierThermique_1_3_6741_ R0000087 -1
+    PalierThermique_1_4_6741_ OBJROW 100.0005620376
+    PalierThermique_1_4_6741_ R0000086 -1
+    PalierThermique_1_4_6741_ R0000087 -1
+    PalierThermique_1_5_6741_ OBJROW 44.9994768068
+    PalierThermique_1_5_6741_ R0000086 -1
+    PalierThermique_1_5_6741_ R0000087 -1
+    DefaillancePositive_1_6741_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6741_ R0000086 -1
+    DefaillanceNegative_1_6741_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6741_ R0000086 1
+    DefaillanceNegative_1_6741_ R0000087 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6742_ R0000088 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6742_ R0000090 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6742_ R0000716 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6742_ R0000717 1
+    PalierThermique_0_0_6742_ OBJROW 19.9994564001
+    PalierThermique_0_0_6742_ R0000088 -1
+    PalierThermique_0_0_6742_ R0000089 -1
+    PalierThermique_0_1_6742_ OBJROW 99.9994934354
+    PalierThermique_0_1_6742_ R0000088 -1
+    PalierThermique_0_1_6742_ R0000089 -1
+    PalierThermique_0_2_6742_ OBJROW 45.0005703639
+    PalierThermique_0_2_6742_ R0000088 -1
+    PalierThermique_0_2_6742_ R0000089 -1
+    DefaillancePositive_0_6742_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6742_ R0000088 -1
+    DefaillanceNegative_0_6742_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6742_ R0000088 1
+    DefaillanceNegative_0_6742_ R0000089 1
+    PalierThermique_1_3_6742_ OBJROW 19.9994823148
+    PalierThermique_1_3_6742_ R0000090 -1
+    PalierThermique_1_3_6742_ R0000091 -1
+    PalierThermique_1_4_6742_ OBJROW 100.0005620376
+    PalierThermique_1_4_6742_ R0000090 -1
+    PalierThermique_1_4_6742_ R0000091 -1
+    PalierThermique_1_5_6742_ OBJROW 44.9994768068
+    PalierThermique_1_5_6742_ R0000090 -1
+    PalierThermique_1_5_6742_ R0000091 -1
+    DefaillancePositive_1_6742_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6742_ R0000090 -1
+    DefaillanceNegative_1_6742_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6742_ R0000090 1
+    DefaillanceNegative_1_6742_ R0000091 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6743_ R0000092 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6743_ R0000094 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6743_ R0000718 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6743_ R0000719 1
+    PalierThermique_0_0_6743_ OBJROW 19.9994564001
+    PalierThermique_0_0_6743_ R0000092 -1
+    PalierThermique_0_0_6743_ R0000093 -1
+    PalierThermique_0_1_6743_ OBJROW 99.9994934354
+    PalierThermique_0_1_6743_ R0000092 -1
+    PalierThermique_0_1_6743_ R0000093 -1
+    PalierThermique_0_2_6743_ OBJROW 45.0005703639
+    PalierThermique_0_2_6743_ R0000092 -1
+    PalierThermique_0_2_6743_ R0000093 -1
+    DefaillancePositive_0_6743_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6743_ R0000092 -1
+    DefaillanceNegative_0_6743_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6743_ R0000092 1
+    DefaillanceNegative_0_6743_ R0000093 1
+    PalierThermique_1_3_6743_ OBJROW 19.9994823148
+    PalierThermique_1_3_6743_ R0000094 -1
+    PalierThermique_1_3_6743_ R0000095 -1
+    PalierThermique_1_4_6743_ OBJROW 100.0005620376
+    PalierThermique_1_4_6743_ R0000094 -1
+    PalierThermique_1_4_6743_ R0000095 -1
+    PalierThermique_1_5_6743_ OBJROW 44.9994768068
+    PalierThermique_1_5_6743_ R0000094 -1
+    PalierThermique_1_5_6743_ R0000095 -1
+    DefaillancePositive_1_6743_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6743_ R0000094 -1
+    DefaillanceNegative_1_6743_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6743_ R0000094 1
+    DefaillanceNegative_1_6743_ R0000095 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6744_ R0000096 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6744_ R0000098 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6744_ R0000720 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6744_ R0000721 1
+    PalierThermique_0_0_6744_ OBJROW 19.9994564001
+    PalierThermique_0_0_6744_ R0000096 -1
+    PalierThermique_0_0_6744_ R0000097 -1
+    PalierThermique_0_1_6744_ OBJROW 99.9994934354
+    PalierThermique_0_1_6744_ R0000096 -1
+    PalierThermique_0_1_6744_ R0000097 -1
+    PalierThermique_0_2_6744_ OBJROW 45.0005703639
+    PalierThermique_0_2_6744_ R0000096 -1
+    PalierThermique_0_2_6744_ R0000097 -1
+    DefaillancePositive_0_6744_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6744_ R0000096 -1
+    DefaillanceNegative_0_6744_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6744_ R0000096 1
+    DefaillanceNegative_0_6744_ R0000097 1
+    PalierThermique_1_3_6744_ OBJROW 19.9994823148
+    PalierThermique_1_3_6744_ R0000098 -1
+    PalierThermique_1_3_6744_ R0000099 -1
+    PalierThermique_1_4_6744_ OBJROW 100.0005620376
+    PalierThermique_1_4_6744_ R0000098 -1
+    PalierThermique_1_4_6744_ R0000099 -1
+    PalierThermique_1_5_6744_ OBJROW 44.9994768068
+    PalierThermique_1_5_6744_ R0000098 -1
+    PalierThermique_1_5_6744_ R0000099 -1
+    DefaillancePositive_1_6744_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6744_ R0000098 -1
+    DefaillanceNegative_1_6744_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6744_ R0000098 1
+    DefaillanceNegative_1_6744_ R0000099 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6745_ R0000100 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6745_ R0000102 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6745_ R0000722 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6745_ R0000723 1
+    PalierThermique_0_0_6745_ OBJROW 19.9994564001
+    PalierThermique_0_0_6745_ R0000100 -1
+    PalierThermique_0_0_6745_ R0000101 -1
+    PalierThermique_0_1_6745_ OBJROW 99.9994934354
+    PalierThermique_0_1_6745_ R0000100 -1
+    PalierThermique_0_1_6745_ R0000101 -1
+    PalierThermique_0_2_6745_ OBJROW 45.0005703639
+    PalierThermique_0_2_6745_ R0000100 -1
+    PalierThermique_0_2_6745_ R0000101 -1
+    DefaillancePositive_0_6745_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6745_ R0000100 -1
+    DefaillanceNegative_0_6745_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6745_ R0000100 1
+    DefaillanceNegative_0_6745_ R0000101 1
+    PalierThermique_1_3_6745_ OBJROW 19.9994823148
+    PalierThermique_1_3_6745_ R0000102 -1
+    PalierThermique_1_3_6745_ R0000103 -1
+    PalierThermique_1_4_6745_ OBJROW 100.0005620376
+    PalierThermique_1_4_6745_ R0000102 -1
+    PalierThermique_1_4_6745_ R0000103 -1
+    PalierThermique_1_5_6745_ OBJROW 44.9994768068
+    PalierThermique_1_5_6745_ R0000102 -1
+    PalierThermique_1_5_6745_ R0000103 -1
+    DefaillancePositive_1_6745_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6745_ R0000102 -1
+    DefaillanceNegative_1_6745_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6745_ R0000102 1
+    DefaillanceNegative_1_6745_ R0000103 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6746_ R0000104 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6746_ R0000106 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6746_ R0000724 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6746_ R0000725 1
+    PalierThermique_0_0_6746_ OBJROW 19.9994564001
+    PalierThermique_0_0_6746_ R0000104 -1
+    PalierThermique_0_0_6746_ R0000105 -1
+    PalierThermique_0_1_6746_ OBJROW 99.9994934354
+    PalierThermique_0_1_6746_ R0000104 -1
+    PalierThermique_0_1_6746_ R0000105 -1
+    PalierThermique_0_2_6746_ OBJROW 45.0005703639
+    PalierThermique_0_2_6746_ R0000104 -1
+    PalierThermique_0_2_6746_ R0000105 -1
+    DefaillancePositive_0_6746_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6746_ R0000104 -1
+    DefaillanceNegative_0_6746_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6746_ R0000104 1
+    DefaillanceNegative_0_6746_ R0000105 1
+    PalierThermique_1_3_6746_ OBJROW 19.9994823148
+    PalierThermique_1_3_6746_ R0000106 -1
+    PalierThermique_1_3_6746_ R0000107 -1
+    PalierThermique_1_4_6746_ OBJROW 100.0005620376
+    PalierThermique_1_4_6746_ R0000106 -1
+    PalierThermique_1_4_6746_ R0000107 -1
+    PalierThermique_1_5_6746_ OBJROW 44.9994768068
+    PalierThermique_1_5_6746_ R0000106 -1
+    PalierThermique_1_5_6746_ R0000107 -1
+    DefaillancePositive_1_6746_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6746_ R0000106 -1
+    DefaillanceNegative_1_6746_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6746_ R0000106 1
+    DefaillanceNegative_1_6746_ R0000107 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6747_ R0000108 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6747_ R0000110 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6747_ R0000726 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6747_ R0000727 1
+    PalierThermique_0_0_6747_ OBJROW 19.9994564001
+    PalierThermique_0_0_6747_ R0000108 -1
+    PalierThermique_0_0_6747_ R0000109 -1
+    PalierThermique_0_1_6747_ OBJROW 99.9994934354
+    PalierThermique_0_1_6747_ R0000108 -1
+    PalierThermique_0_1_6747_ R0000109 -1
+    PalierThermique_0_2_6747_ OBJROW 45.0005703639
+    PalierThermique_0_2_6747_ R0000108 -1
+    PalierThermique_0_2_6747_ R0000109 -1
+    DefaillancePositive_0_6747_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6747_ R0000108 -1
+    DefaillanceNegative_0_6747_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6747_ R0000108 1
+    DefaillanceNegative_0_6747_ R0000109 1
+    PalierThermique_1_3_6747_ OBJROW 19.9994823148
+    PalierThermique_1_3_6747_ R0000110 -1
+    PalierThermique_1_3_6747_ R0000111 -1
+    PalierThermique_1_4_6747_ OBJROW 100.0005620376
+    PalierThermique_1_4_6747_ R0000110 -1
+    PalierThermique_1_4_6747_ R0000111 -1
+    PalierThermique_1_5_6747_ OBJROW 44.9994768068
+    PalierThermique_1_5_6747_ R0000110 -1
+    PalierThermique_1_5_6747_ R0000111 -1
+    DefaillancePositive_1_6747_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6747_ R0000110 -1
+    DefaillanceNegative_1_6747_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6747_ R0000110 1
+    DefaillanceNegative_1_6747_ R0000111 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6748_ R0000112 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6748_ R0000114 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6748_ R0000728 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6748_ R0000729 1
+    PalierThermique_0_0_6748_ OBJROW 19.9994564001
+    PalierThermique_0_0_6748_ R0000112 -1
+    PalierThermique_0_0_6748_ R0000113 -1
+    PalierThermique_0_1_6748_ OBJROW 99.9994934354
+    PalierThermique_0_1_6748_ R0000112 -1
+    PalierThermique_0_1_6748_ R0000113 -1
+    PalierThermique_0_2_6748_ OBJROW 45.0005703639
+    PalierThermique_0_2_6748_ R0000112 -1
+    PalierThermique_0_2_6748_ R0000113 -1
+    DefaillancePositive_0_6748_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6748_ R0000112 -1
+    DefaillanceNegative_0_6748_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6748_ R0000112 1
+    DefaillanceNegative_0_6748_ R0000113 1
+    PalierThermique_1_3_6748_ OBJROW 19.9994823148
+    PalierThermique_1_3_6748_ R0000114 -1
+    PalierThermique_1_3_6748_ R0000115 -1
+    PalierThermique_1_4_6748_ OBJROW 100.0005620376
+    PalierThermique_1_4_6748_ R0000114 -1
+    PalierThermique_1_4_6748_ R0000115 -1
+    PalierThermique_1_5_6748_ OBJROW 44.9994768068
+    PalierThermique_1_5_6748_ R0000114 -1
+    PalierThermique_1_5_6748_ R0000115 -1
+    DefaillancePositive_1_6748_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6748_ R0000114 -1
+    DefaillanceNegative_1_6748_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6748_ R0000114 1
+    DefaillanceNegative_1_6748_ R0000115 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6749_ R0000116 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6749_ R0000118 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6749_ R0000730 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6749_ R0000731 1
+    PalierThermique_0_0_6749_ OBJROW 19.9994564001
+    PalierThermique_0_0_6749_ R0000116 -1
+    PalierThermique_0_0_6749_ R0000117 -1
+    PalierThermique_0_1_6749_ OBJROW 99.9994934354
+    PalierThermique_0_1_6749_ R0000116 -1
+    PalierThermique_0_1_6749_ R0000117 -1
+    PalierThermique_0_2_6749_ OBJROW 45.0005703639
+    PalierThermique_0_2_6749_ R0000116 -1
+    PalierThermique_0_2_6749_ R0000117 -1
+    DefaillancePositive_0_6749_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6749_ R0000116 -1
+    DefaillanceNegative_0_6749_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6749_ R0000116 1
+    DefaillanceNegative_0_6749_ R0000117 1
+    PalierThermique_1_3_6749_ OBJROW 19.9994823148
+    PalierThermique_1_3_6749_ R0000118 -1
+    PalierThermique_1_3_6749_ R0000119 -1
+    PalierThermique_1_4_6749_ OBJROW 100.0005620376
+    PalierThermique_1_4_6749_ R0000118 -1
+    PalierThermique_1_4_6749_ R0000119 -1
+    PalierThermique_1_5_6749_ OBJROW 44.9994768068
+    PalierThermique_1_5_6749_ R0000118 -1
+    PalierThermique_1_5_6749_ R0000119 -1
+    DefaillancePositive_1_6749_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6749_ R0000118 -1
+    DefaillanceNegative_1_6749_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6749_ R0000118 1
+    DefaillanceNegative_1_6749_ R0000119 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6750_ R0000120 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6750_ R0000122 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6750_ R0000732 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6750_ R0000733 1
+    PalierThermique_0_0_6750_ OBJROW 19.9994564001
+    PalierThermique_0_0_6750_ R0000120 -1
+    PalierThermique_0_0_6750_ R0000121 -1
+    PalierThermique_0_1_6750_ OBJROW 99.9994934354
+    PalierThermique_0_1_6750_ R0000120 -1
+    PalierThermique_0_1_6750_ R0000121 -1
+    PalierThermique_0_2_6750_ OBJROW 45.0005703639
+    PalierThermique_0_2_6750_ R0000120 -1
+    PalierThermique_0_2_6750_ R0000121 -1
+    DefaillancePositive_0_6750_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6750_ R0000120 -1
+    DefaillanceNegative_0_6750_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6750_ R0000120 1
+    DefaillanceNegative_0_6750_ R0000121 1
+    PalierThermique_1_3_6750_ OBJROW 19.9994823148
+    PalierThermique_1_3_6750_ R0000122 -1
+    PalierThermique_1_3_6750_ R0000123 -1
+    PalierThermique_1_4_6750_ OBJROW 100.0005620376
+    PalierThermique_1_4_6750_ R0000122 -1
+    PalierThermique_1_4_6750_ R0000123 -1
+    PalierThermique_1_5_6750_ OBJROW 44.9994768068
+    PalierThermique_1_5_6750_ R0000122 -1
+    PalierThermique_1_5_6750_ R0000123 -1
+    DefaillancePositive_1_6750_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6750_ R0000122 -1
+    DefaillanceNegative_1_6750_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6750_ R0000122 1
+    DefaillanceNegative_1_6750_ R0000123 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6751_ R0000124 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6751_ R0000126 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6751_ R0000734 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6751_ R0000735 1
+    PalierThermique_0_0_6751_ OBJROW 19.9994564001
+    PalierThermique_0_0_6751_ R0000124 -1
+    PalierThermique_0_0_6751_ R0000125 -1
+    PalierThermique_0_1_6751_ OBJROW 99.9994934354
+    PalierThermique_0_1_6751_ R0000124 -1
+    PalierThermique_0_1_6751_ R0000125 -1
+    PalierThermique_0_2_6751_ OBJROW 45.0005703639
+    PalierThermique_0_2_6751_ R0000124 -1
+    PalierThermique_0_2_6751_ R0000125 -1
+    DefaillancePositive_0_6751_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6751_ R0000124 -1
+    DefaillanceNegative_0_6751_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6751_ R0000124 1
+    DefaillanceNegative_0_6751_ R0000125 1
+    PalierThermique_1_3_6751_ OBJROW 19.9994823148
+    PalierThermique_1_3_6751_ R0000126 -1
+    PalierThermique_1_3_6751_ R0000127 -1
+    PalierThermique_1_4_6751_ OBJROW 100.0005620376
+    PalierThermique_1_4_6751_ R0000126 -1
+    PalierThermique_1_4_6751_ R0000127 -1
+    PalierThermique_1_5_6751_ OBJROW 44.9994768068
+    PalierThermique_1_5_6751_ R0000126 -1
+    PalierThermique_1_5_6751_ R0000127 -1
+    DefaillancePositive_1_6751_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6751_ R0000126 -1
+    DefaillanceNegative_1_6751_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6751_ R0000126 1
+    DefaillanceNegative_1_6751_ R0000127 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6752_ R0000128 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6752_ R0000130 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6752_ R0000736 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6752_ R0000737 1
+    PalierThermique_0_0_6752_ OBJROW 19.9994564001
+    PalierThermique_0_0_6752_ R0000128 -1
+    PalierThermique_0_0_6752_ R0000129 -1
+    PalierThermique_0_1_6752_ OBJROW 99.9994934354
+    PalierThermique_0_1_6752_ R0000128 -1
+    PalierThermique_0_1_6752_ R0000129 -1
+    PalierThermique_0_2_6752_ OBJROW 45.0005703639
+    PalierThermique_0_2_6752_ R0000128 -1
+    PalierThermique_0_2_6752_ R0000129 -1
+    DefaillancePositive_0_6752_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6752_ R0000128 -1
+    DefaillanceNegative_0_6752_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6752_ R0000128 1
+    DefaillanceNegative_0_6752_ R0000129 1
+    PalierThermique_1_3_6752_ OBJROW 19.9994823148
+    PalierThermique_1_3_6752_ R0000130 -1
+    PalierThermique_1_3_6752_ R0000131 -1
+    PalierThermique_1_4_6752_ OBJROW 100.0005620376
+    PalierThermique_1_4_6752_ R0000130 -1
+    PalierThermique_1_4_6752_ R0000131 -1
+    PalierThermique_1_5_6752_ OBJROW 44.9994768068
+    PalierThermique_1_5_6752_ R0000130 -1
+    PalierThermique_1_5_6752_ R0000131 -1
+    DefaillancePositive_1_6752_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6752_ R0000130 -1
+    DefaillanceNegative_1_6752_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6752_ R0000130 1
+    DefaillanceNegative_1_6752_ R0000131 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6753_ R0000132 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6753_ R0000134 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6753_ R0000738 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6753_ R0000739 1
+    PalierThermique_0_0_6753_ OBJROW 19.9994564001
+    PalierThermique_0_0_6753_ R0000132 -1
+    PalierThermique_0_0_6753_ R0000133 -1
+    PalierThermique_0_1_6753_ OBJROW 99.9994934354
+    PalierThermique_0_1_6753_ R0000132 -1
+    PalierThermique_0_1_6753_ R0000133 -1
+    PalierThermique_0_2_6753_ OBJROW 45.0005703639
+    PalierThermique_0_2_6753_ R0000132 -1
+    PalierThermique_0_2_6753_ R0000133 -1
+    DefaillancePositive_0_6753_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6753_ R0000132 -1
+    DefaillanceNegative_0_6753_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6753_ R0000132 1
+    DefaillanceNegative_0_6753_ R0000133 1
+    PalierThermique_1_3_6753_ OBJROW 19.9994823148
+    PalierThermique_1_3_6753_ R0000134 -1
+    PalierThermique_1_3_6753_ R0000135 -1
+    PalierThermique_1_4_6753_ OBJROW 100.0005620376
+    PalierThermique_1_4_6753_ R0000134 -1
+    PalierThermique_1_4_6753_ R0000135 -1
+    PalierThermique_1_5_6753_ OBJROW 44.9994768068
+    PalierThermique_1_5_6753_ R0000134 -1
+    PalierThermique_1_5_6753_ R0000135 -1
+    DefaillancePositive_1_6753_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6753_ R0000134 -1
+    DefaillanceNegative_1_6753_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6753_ R0000134 1
+    DefaillanceNegative_1_6753_ R0000135 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6754_ R0000136 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6754_ R0000138 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6754_ R0000740 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6754_ R0000741 1
+    PalierThermique_0_0_6754_ OBJROW 19.9994564001
+    PalierThermique_0_0_6754_ R0000136 -1
+    PalierThermique_0_0_6754_ R0000137 -1
+    PalierThermique_0_1_6754_ OBJROW 99.9994934354
+    PalierThermique_0_1_6754_ R0000136 -1
+    PalierThermique_0_1_6754_ R0000137 -1
+    PalierThermique_0_2_6754_ OBJROW 45.0005703639
+    PalierThermique_0_2_6754_ R0000136 -1
+    PalierThermique_0_2_6754_ R0000137 -1
+    DefaillancePositive_0_6754_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6754_ R0000136 -1
+    DefaillanceNegative_0_6754_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6754_ R0000136 1
+    DefaillanceNegative_0_6754_ R0000137 1
+    PalierThermique_1_3_6754_ OBJROW 19.9994823148
+    PalierThermique_1_3_6754_ R0000138 -1
+    PalierThermique_1_3_6754_ R0000139 -1
+    PalierThermique_1_4_6754_ OBJROW 100.0005620376
+    PalierThermique_1_4_6754_ R0000138 -1
+    PalierThermique_1_4_6754_ R0000139 -1
+    PalierThermique_1_5_6754_ OBJROW 44.9994768068
+    PalierThermique_1_5_6754_ R0000138 -1
+    PalierThermique_1_5_6754_ R0000139 -1
+    DefaillancePositive_1_6754_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6754_ R0000138 -1
+    DefaillanceNegative_1_6754_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6754_ R0000138 1
+    DefaillanceNegative_1_6754_ R0000139 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6755_ R0000140 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6755_ R0000142 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6755_ R0000742 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6755_ R0000743 1
+    PalierThermique_0_0_6755_ OBJROW 19.9994564001
+    PalierThermique_0_0_6755_ R0000140 -1
+    PalierThermique_0_0_6755_ R0000141 -1
+    PalierThermique_0_1_6755_ OBJROW 99.9994934354
+    PalierThermique_0_1_6755_ R0000140 -1
+    PalierThermique_0_1_6755_ R0000141 -1
+    PalierThermique_0_2_6755_ OBJROW 45.0005703639
+    PalierThermique_0_2_6755_ R0000140 -1
+    PalierThermique_0_2_6755_ R0000141 -1
+    DefaillancePositive_0_6755_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6755_ R0000140 -1
+    DefaillanceNegative_0_6755_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6755_ R0000140 1
+    DefaillanceNegative_0_6755_ R0000141 1
+    PalierThermique_1_3_6755_ OBJROW 19.9994823148
+    PalierThermique_1_3_6755_ R0000142 -1
+    PalierThermique_1_3_6755_ R0000143 -1
+    PalierThermique_1_4_6755_ OBJROW 100.0005620376
+    PalierThermique_1_4_6755_ R0000142 -1
+    PalierThermique_1_4_6755_ R0000143 -1
+    PalierThermique_1_5_6755_ OBJROW 44.9994768068
+    PalierThermique_1_5_6755_ R0000142 -1
+    PalierThermique_1_5_6755_ R0000143 -1
+    DefaillancePositive_1_6755_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6755_ R0000142 -1
+    DefaillanceNegative_1_6755_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6755_ R0000142 1
+    DefaillanceNegative_1_6755_ R0000143 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6756_ R0000144 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6756_ R0000146 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6756_ R0000744 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6756_ R0000745 1
+    PalierThermique_0_0_6756_ OBJROW 19.9994564001
+    PalierThermique_0_0_6756_ R0000144 -1
+    PalierThermique_0_0_6756_ R0000145 -1
+    PalierThermique_0_1_6756_ OBJROW 99.9994934354
+    PalierThermique_0_1_6756_ R0000144 -1
+    PalierThermique_0_1_6756_ R0000145 -1
+    PalierThermique_0_2_6756_ OBJROW 45.0005703639
+    PalierThermique_0_2_6756_ R0000144 -1
+    PalierThermique_0_2_6756_ R0000145 -1
+    DefaillancePositive_0_6756_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6756_ R0000144 -1
+    DefaillanceNegative_0_6756_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6756_ R0000144 1
+    DefaillanceNegative_0_6756_ R0000145 1
+    PalierThermique_1_3_6756_ OBJROW 19.9994823148
+    PalierThermique_1_3_6756_ R0000146 -1
+    PalierThermique_1_3_6756_ R0000147 -1
+    PalierThermique_1_4_6756_ OBJROW 100.0005620376
+    PalierThermique_1_4_6756_ R0000146 -1
+    PalierThermique_1_4_6756_ R0000147 -1
+    PalierThermique_1_5_6756_ OBJROW 44.9994768068
+    PalierThermique_1_5_6756_ R0000146 -1
+    PalierThermique_1_5_6756_ R0000147 -1
+    DefaillancePositive_1_6756_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6756_ R0000146 -1
+    DefaillanceNegative_1_6756_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6756_ R0000146 1
+    DefaillanceNegative_1_6756_ R0000147 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6757_ R0000148 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6757_ R0000150 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6757_ R0000746 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6757_ R0000747 1
+    PalierThermique_0_0_6757_ OBJROW 19.9994564001
+    PalierThermique_0_0_6757_ R0000148 -1
+    PalierThermique_0_0_6757_ R0000149 -1
+    PalierThermique_0_1_6757_ OBJROW 99.9994934354
+    PalierThermique_0_1_6757_ R0000148 -1
+    PalierThermique_0_1_6757_ R0000149 -1
+    PalierThermique_0_2_6757_ OBJROW 45.0005703639
+    PalierThermique_0_2_6757_ R0000148 -1
+    PalierThermique_0_2_6757_ R0000149 -1
+    DefaillancePositive_0_6757_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6757_ R0000148 -1
+    DefaillanceNegative_0_6757_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6757_ R0000148 1
+    DefaillanceNegative_0_6757_ R0000149 1
+    PalierThermique_1_3_6757_ OBJROW 19.9994823148
+    PalierThermique_1_3_6757_ R0000150 -1
+    PalierThermique_1_3_6757_ R0000151 -1
+    PalierThermique_1_4_6757_ OBJROW 100.0005620376
+    PalierThermique_1_4_6757_ R0000150 -1
+    PalierThermique_1_4_6757_ R0000151 -1
+    PalierThermique_1_5_6757_ OBJROW 44.9994768068
+    PalierThermique_1_5_6757_ R0000150 -1
+    PalierThermique_1_5_6757_ R0000151 -1
+    DefaillancePositive_1_6757_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6757_ R0000150 -1
+    DefaillanceNegative_1_6757_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6757_ R0000150 1
+    DefaillanceNegative_1_6757_ R0000151 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6758_ R0000152 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6758_ R0000154 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6758_ R0000748 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6758_ R0000749 1
+    PalierThermique_0_0_6758_ OBJROW 19.9994564001
+    PalierThermique_0_0_6758_ R0000152 -1
+    PalierThermique_0_0_6758_ R0000153 -1
+    PalierThermique_0_1_6758_ OBJROW 99.9994934354
+    PalierThermique_0_1_6758_ R0000152 -1
+    PalierThermique_0_1_6758_ R0000153 -1
+    PalierThermique_0_2_6758_ OBJROW 45.0005703639
+    PalierThermique_0_2_6758_ R0000152 -1
+    PalierThermique_0_2_6758_ R0000153 -1
+    DefaillancePositive_0_6758_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6758_ R0000152 -1
+    DefaillanceNegative_0_6758_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6758_ R0000152 1
+    DefaillanceNegative_0_6758_ R0000153 1
+    PalierThermique_1_3_6758_ OBJROW 19.9994823148
+    PalierThermique_1_3_6758_ R0000154 -1
+    PalierThermique_1_3_6758_ R0000155 -1
+    PalierThermique_1_4_6758_ OBJROW 100.0005620376
+    PalierThermique_1_4_6758_ R0000154 -1
+    PalierThermique_1_4_6758_ R0000155 -1
+    PalierThermique_1_5_6758_ OBJROW 44.9994768068
+    PalierThermique_1_5_6758_ R0000154 -1
+    PalierThermique_1_5_6758_ R0000155 -1
+    DefaillancePositive_1_6758_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6758_ R0000154 -1
+    DefaillanceNegative_1_6758_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6758_ R0000154 1
+    DefaillanceNegative_1_6758_ R0000155 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6759_ R0000156 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6759_ R0000158 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6759_ R0000750 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6759_ R0000751 1
+    PalierThermique_0_0_6759_ OBJROW 19.9994564001
+    PalierThermique_0_0_6759_ R0000156 -1
+    PalierThermique_0_0_6759_ R0000157 -1
+    PalierThermique_0_1_6759_ OBJROW 99.9994934354
+    PalierThermique_0_1_6759_ R0000156 -1
+    PalierThermique_0_1_6759_ R0000157 -1
+    PalierThermique_0_2_6759_ OBJROW 45.0005703639
+    PalierThermique_0_2_6759_ R0000156 -1
+    PalierThermique_0_2_6759_ R0000157 -1
+    DefaillancePositive_0_6759_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6759_ R0000156 -1
+    DefaillanceNegative_0_6759_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6759_ R0000156 1
+    DefaillanceNegative_0_6759_ R0000157 1
+    PalierThermique_1_3_6759_ OBJROW 19.9994823148
+    PalierThermique_1_3_6759_ R0000158 -1
+    PalierThermique_1_3_6759_ R0000159 -1
+    PalierThermique_1_4_6759_ OBJROW 100.0005620376
+    PalierThermique_1_4_6759_ R0000158 -1
+    PalierThermique_1_4_6759_ R0000159 -1
+    PalierThermique_1_5_6759_ OBJROW 44.9994768068
+    PalierThermique_1_5_6759_ R0000158 -1
+    PalierThermique_1_5_6759_ R0000159 -1
+    DefaillancePositive_1_6759_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6759_ R0000158 -1
+    DefaillanceNegative_1_6759_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6759_ R0000158 1
+    DefaillanceNegative_1_6759_ R0000159 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6760_ R0000160 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6760_ R0000162 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6760_ R0000752 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6760_ R0000753 1
+    PalierThermique_0_0_6760_ OBJROW 19.9994564001
+    PalierThermique_0_0_6760_ R0000160 -1
+    PalierThermique_0_0_6760_ R0000161 -1
+    PalierThermique_0_1_6760_ OBJROW 99.9994934354
+    PalierThermique_0_1_6760_ R0000160 -1
+    PalierThermique_0_1_6760_ R0000161 -1
+    PalierThermique_0_2_6760_ OBJROW 45.0005703639
+    PalierThermique_0_2_6760_ R0000160 -1
+    PalierThermique_0_2_6760_ R0000161 -1
+    DefaillancePositive_0_6760_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6760_ R0000160 -1
+    DefaillanceNegative_0_6760_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6760_ R0000160 1
+    DefaillanceNegative_0_6760_ R0000161 1
+    PalierThermique_1_3_6760_ OBJROW 19.9994823148
+    PalierThermique_1_3_6760_ R0000162 -1
+    PalierThermique_1_3_6760_ R0000163 -1
+    PalierThermique_1_4_6760_ OBJROW 100.0005620376
+    PalierThermique_1_4_6760_ R0000162 -1
+    PalierThermique_1_4_6760_ R0000163 -1
+    PalierThermique_1_5_6760_ OBJROW 44.9994768068
+    PalierThermique_1_5_6760_ R0000162 -1
+    PalierThermique_1_5_6760_ R0000163 -1
+    DefaillancePositive_1_6760_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6760_ R0000162 -1
+    DefaillanceNegative_1_6760_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6760_ R0000162 1
+    DefaillanceNegative_1_6760_ R0000163 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6761_ R0000164 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6761_ R0000166 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6761_ R0000754 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6761_ R0000755 1
+    PalierThermique_0_0_6761_ OBJROW 19.9994564001
+    PalierThermique_0_0_6761_ R0000164 -1
+    PalierThermique_0_0_6761_ R0000165 -1
+    PalierThermique_0_1_6761_ OBJROW 99.9994934354
+    PalierThermique_0_1_6761_ R0000164 -1
+    PalierThermique_0_1_6761_ R0000165 -1
+    PalierThermique_0_2_6761_ OBJROW 45.0005703639
+    PalierThermique_0_2_6761_ R0000164 -1
+    PalierThermique_0_2_6761_ R0000165 -1
+    DefaillancePositive_0_6761_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6761_ R0000164 -1
+    DefaillanceNegative_0_6761_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6761_ R0000164 1
+    DefaillanceNegative_0_6761_ R0000165 1
+    PalierThermique_1_3_6761_ OBJROW 19.9994823148
+    PalierThermique_1_3_6761_ R0000166 -1
+    PalierThermique_1_3_6761_ R0000167 -1
+    PalierThermique_1_4_6761_ OBJROW 100.0005620376
+    PalierThermique_1_4_6761_ R0000166 -1
+    PalierThermique_1_4_6761_ R0000167 -1
+    PalierThermique_1_5_6761_ OBJROW 44.9994768068
+    PalierThermique_1_5_6761_ R0000166 -1
+    PalierThermique_1_5_6761_ R0000167 -1
+    DefaillancePositive_1_6761_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6761_ R0000166 -1
+    DefaillanceNegative_1_6761_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6761_ R0000166 1
+    DefaillanceNegative_1_6761_ R0000167 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6762_ R0000168 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6762_ R0000170 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6762_ R0000756 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6762_ R0000757 1
+    PalierThermique_0_0_6762_ OBJROW 19.9994564001
+    PalierThermique_0_0_6762_ R0000168 -1
+    PalierThermique_0_0_6762_ R0000169 -1
+    PalierThermique_0_1_6762_ OBJROW 99.9994934354
+    PalierThermique_0_1_6762_ R0000168 -1
+    PalierThermique_0_1_6762_ R0000169 -1
+    PalierThermique_0_2_6762_ OBJROW 45.0005703639
+    PalierThermique_0_2_6762_ R0000168 -1
+    PalierThermique_0_2_6762_ R0000169 -1
+    DefaillancePositive_0_6762_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6762_ R0000168 -1
+    DefaillanceNegative_0_6762_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6762_ R0000168 1
+    DefaillanceNegative_0_6762_ R0000169 1
+    PalierThermique_1_3_6762_ OBJROW 19.9994823148
+    PalierThermique_1_3_6762_ R0000170 -1
+    PalierThermique_1_3_6762_ R0000171 -1
+    PalierThermique_1_4_6762_ OBJROW 100.0005620376
+    PalierThermique_1_4_6762_ R0000170 -1
+    PalierThermique_1_4_6762_ R0000171 -1
+    PalierThermique_1_5_6762_ OBJROW 44.9994768068
+    PalierThermique_1_5_6762_ R0000170 -1
+    PalierThermique_1_5_6762_ R0000171 -1
+    DefaillancePositive_1_6762_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6762_ R0000170 -1
+    DefaillanceNegative_1_6762_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6762_ R0000170 1
+    DefaillanceNegative_1_6762_ R0000171 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6763_ R0000172 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6763_ R0000174 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6763_ R0000758 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6763_ R0000759 1
+    PalierThermique_0_0_6763_ OBJROW 19.9994564001
+    PalierThermique_0_0_6763_ R0000172 -1
+    PalierThermique_0_0_6763_ R0000173 -1
+    PalierThermique_0_1_6763_ OBJROW 99.9994934354
+    PalierThermique_0_1_6763_ R0000172 -1
+    PalierThermique_0_1_6763_ R0000173 -1
+    PalierThermique_0_2_6763_ OBJROW 45.0005703639
+    PalierThermique_0_2_6763_ R0000172 -1
+    PalierThermique_0_2_6763_ R0000173 -1
+    DefaillancePositive_0_6763_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6763_ R0000172 -1
+    DefaillanceNegative_0_6763_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6763_ R0000172 1
+    DefaillanceNegative_0_6763_ R0000173 1
+    PalierThermique_1_3_6763_ OBJROW 19.9994823148
+    PalierThermique_1_3_6763_ R0000174 -1
+    PalierThermique_1_3_6763_ R0000175 -1
+    PalierThermique_1_4_6763_ OBJROW 100.0005620376
+    PalierThermique_1_4_6763_ R0000174 -1
+    PalierThermique_1_4_6763_ R0000175 -1
+    PalierThermique_1_5_6763_ OBJROW 44.9994768068
+    PalierThermique_1_5_6763_ R0000174 -1
+    PalierThermique_1_5_6763_ R0000175 -1
+    DefaillancePositive_1_6763_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6763_ R0000174 -1
+    DefaillanceNegative_1_6763_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6763_ R0000174 1
+    DefaillanceNegative_1_6763_ R0000175 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6764_ R0000176 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6764_ R0000178 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6764_ R0000760 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6764_ R0000761 1
+    PalierThermique_0_0_6764_ OBJROW 19.9994564001
+    PalierThermique_0_0_6764_ R0000176 -1
+    PalierThermique_0_0_6764_ R0000177 -1
+    PalierThermique_0_1_6764_ OBJROW 99.9994934354
+    PalierThermique_0_1_6764_ R0000176 -1
+    PalierThermique_0_1_6764_ R0000177 -1
+    PalierThermique_0_2_6764_ OBJROW 45.0005703639
+    PalierThermique_0_2_6764_ R0000176 -1
+    PalierThermique_0_2_6764_ R0000177 -1
+    DefaillancePositive_0_6764_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6764_ R0000176 -1
+    DefaillanceNegative_0_6764_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6764_ R0000176 1
+    DefaillanceNegative_0_6764_ R0000177 1
+    PalierThermique_1_3_6764_ OBJROW 19.9994823148
+    PalierThermique_1_3_6764_ R0000178 -1
+    PalierThermique_1_3_6764_ R0000179 -1
+    PalierThermique_1_4_6764_ OBJROW 100.0005620376
+    PalierThermique_1_4_6764_ R0000178 -1
+    PalierThermique_1_4_6764_ R0000179 -1
+    PalierThermique_1_5_6764_ OBJROW 44.9994768068
+    PalierThermique_1_5_6764_ R0000178 -1
+    PalierThermique_1_5_6764_ R0000179 -1
+    DefaillancePositive_1_6764_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6764_ R0000178 -1
+    DefaillanceNegative_1_6764_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6764_ R0000178 1
+    DefaillanceNegative_1_6764_ R0000179 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6765_ R0000180 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6765_ R0000182 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6765_ R0000762 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6765_ R0000763 1
+    PalierThermique_0_0_6765_ OBJROW 19.9994564001
+    PalierThermique_0_0_6765_ R0000180 -1
+    PalierThermique_0_0_6765_ R0000181 -1
+    PalierThermique_0_1_6765_ OBJROW 99.9994934354
+    PalierThermique_0_1_6765_ R0000180 -1
+    PalierThermique_0_1_6765_ R0000181 -1
+    PalierThermique_0_2_6765_ OBJROW 45.0005703639
+    PalierThermique_0_2_6765_ R0000180 -1
+    PalierThermique_0_2_6765_ R0000181 -1
+    DefaillancePositive_0_6765_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6765_ R0000180 -1
+    DefaillanceNegative_0_6765_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6765_ R0000180 1
+    DefaillanceNegative_0_6765_ R0000181 1
+    PalierThermique_1_3_6765_ OBJROW 19.9994823148
+    PalierThermique_1_3_6765_ R0000182 -1
+    PalierThermique_1_3_6765_ R0000183 -1
+    PalierThermique_1_4_6765_ OBJROW 100.0005620376
+    PalierThermique_1_4_6765_ R0000182 -1
+    PalierThermique_1_4_6765_ R0000183 -1
+    PalierThermique_1_5_6765_ OBJROW 44.9994768068
+    PalierThermique_1_5_6765_ R0000182 -1
+    PalierThermique_1_5_6765_ R0000183 -1
+    DefaillancePositive_1_6765_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6765_ R0000182 -1
+    DefaillanceNegative_1_6765_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6765_ R0000182 1
+    DefaillanceNegative_1_6765_ R0000183 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6766_ R0000184 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6766_ R0000186 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6766_ R0000764 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6766_ R0000765 1
+    PalierThermique_0_0_6766_ OBJROW 19.9994564001
+    PalierThermique_0_0_6766_ R0000184 -1
+    PalierThermique_0_0_6766_ R0000185 -1
+    PalierThermique_0_1_6766_ OBJROW 99.9994934354
+    PalierThermique_0_1_6766_ R0000184 -1
+    PalierThermique_0_1_6766_ R0000185 -1
+    PalierThermique_0_2_6766_ OBJROW 45.0005703639
+    PalierThermique_0_2_6766_ R0000184 -1
+    PalierThermique_0_2_6766_ R0000185 -1
+    DefaillancePositive_0_6766_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6766_ R0000184 -1
+    DefaillanceNegative_0_6766_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6766_ R0000184 1
+    DefaillanceNegative_0_6766_ R0000185 1
+    PalierThermique_1_3_6766_ OBJROW 19.9994823148
+    PalierThermique_1_3_6766_ R0000186 -1
+    PalierThermique_1_3_6766_ R0000187 -1
+    PalierThermique_1_4_6766_ OBJROW 100.0005620376
+    PalierThermique_1_4_6766_ R0000186 -1
+    PalierThermique_1_4_6766_ R0000187 -1
+    PalierThermique_1_5_6766_ OBJROW 44.9994768068
+    PalierThermique_1_5_6766_ R0000186 -1
+    PalierThermique_1_5_6766_ R0000187 -1
+    DefaillancePositive_1_6766_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6766_ R0000186 -1
+    DefaillanceNegative_1_6766_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6766_ R0000186 1
+    DefaillanceNegative_1_6766_ R0000187 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6767_ R0000188 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6767_ R0000190 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6767_ R0000766 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6767_ R0000767 1
+    PalierThermique_0_0_6767_ OBJROW 19.9994564001
+    PalierThermique_0_0_6767_ R0000188 -1
+    PalierThermique_0_0_6767_ R0000189 -1
+    PalierThermique_0_1_6767_ OBJROW 99.9994934354
+    PalierThermique_0_1_6767_ R0000188 -1
+    PalierThermique_0_1_6767_ R0000189 -1
+    PalierThermique_0_2_6767_ OBJROW 45.0005703639
+    PalierThermique_0_2_6767_ R0000188 -1
+    PalierThermique_0_2_6767_ R0000189 -1
+    DefaillancePositive_0_6767_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6767_ R0000188 -1
+    DefaillanceNegative_0_6767_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6767_ R0000188 1
+    DefaillanceNegative_0_6767_ R0000189 1
+    PalierThermique_1_3_6767_ OBJROW 19.9994823148
+    PalierThermique_1_3_6767_ R0000190 -1
+    PalierThermique_1_3_6767_ R0000191 -1
+    PalierThermique_1_4_6767_ OBJROW 100.0005620376
+    PalierThermique_1_4_6767_ R0000190 -1
+    PalierThermique_1_4_6767_ R0000191 -1
+    PalierThermique_1_5_6767_ OBJROW 44.9994768068
+    PalierThermique_1_5_6767_ R0000190 -1
+    PalierThermique_1_5_6767_ R0000191 -1
+    DefaillancePositive_1_6767_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6767_ R0000190 -1
+    DefaillanceNegative_1_6767_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6767_ R0000190 1
+    DefaillanceNegative_1_6767_ R0000191 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6768_ R0000192 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6768_ R0000194 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6768_ R0000768 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6768_ R0000769 1
+    PalierThermique_0_0_6768_ OBJROW 19.9994564001
+    PalierThermique_0_0_6768_ R0000192 -1
+    PalierThermique_0_0_6768_ R0000193 -1
+    PalierThermique_0_1_6768_ OBJROW 99.9994934354
+    PalierThermique_0_1_6768_ R0000192 -1
+    PalierThermique_0_1_6768_ R0000193 -1
+    PalierThermique_0_2_6768_ OBJROW 45.0005703639
+    PalierThermique_0_2_6768_ R0000192 -1
+    PalierThermique_0_2_6768_ R0000193 -1
+    DefaillancePositive_0_6768_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6768_ R0000192 -1
+    DefaillanceNegative_0_6768_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6768_ R0000192 1
+    DefaillanceNegative_0_6768_ R0000193 1
+    PalierThermique_1_3_6768_ OBJROW 19.9994823148
+    PalierThermique_1_3_6768_ R0000194 -1
+    PalierThermique_1_3_6768_ R0000195 -1
+    PalierThermique_1_4_6768_ OBJROW 100.0005620376
+    PalierThermique_1_4_6768_ R0000194 -1
+    PalierThermique_1_4_6768_ R0000195 -1
+    PalierThermique_1_5_6768_ OBJROW 44.9994768068
+    PalierThermique_1_5_6768_ R0000194 -1
+    PalierThermique_1_5_6768_ R0000195 -1
+    DefaillancePositive_1_6768_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6768_ R0000194 -1
+    DefaillanceNegative_1_6768_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6768_ R0000194 1
+    DefaillanceNegative_1_6768_ R0000195 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6769_ R0000196 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6769_ R0000198 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6769_ R0000770 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6769_ R0000771 1
+    PalierThermique_0_0_6769_ OBJROW 19.9994564001
+    PalierThermique_0_0_6769_ R0000196 -1
+    PalierThermique_0_0_6769_ R0000197 -1
+    PalierThermique_0_1_6769_ OBJROW 99.9994934354
+    PalierThermique_0_1_6769_ R0000196 -1
+    PalierThermique_0_1_6769_ R0000197 -1
+    PalierThermique_0_2_6769_ OBJROW 45.0005703639
+    PalierThermique_0_2_6769_ R0000196 -1
+    PalierThermique_0_2_6769_ R0000197 -1
+    DefaillancePositive_0_6769_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6769_ R0000196 -1
+    DefaillanceNegative_0_6769_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6769_ R0000196 1
+    DefaillanceNegative_0_6769_ R0000197 1
+    PalierThermique_1_3_6769_ OBJROW 19.9994823148
+    PalierThermique_1_3_6769_ R0000198 -1
+    PalierThermique_1_3_6769_ R0000199 -1
+    PalierThermique_1_4_6769_ OBJROW 100.0005620376
+    PalierThermique_1_4_6769_ R0000198 -1
+    PalierThermique_1_4_6769_ R0000199 -1
+    PalierThermique_1_5_6769_ OBJROW 44.9994768068
+    PalierThermique_1_5_6769_ R0000198 -1
+    PalierThermique_1_5_6769_ R0000199 -1
+    DefaillancePositive_1_6769_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6769_ R0000198 -1
+    DefaillanceNegative_1_6769_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6769_ R0000198 1
+    DefaillanceNegative_1_6769_ R0000199 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6770_ R0000200 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6770_ R0000202 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6770_ R0000772 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6770_ R0000773 1
+    PalierThermique_0_0_6770_ OBJROW 19.9994564001
+    PalierThermique_0_0_6770_ R0000200 -1
+    PalierThermique_0_0_6770_ R0000201 -1
+    PalierThermique_0_1_6770_ OBJROW 99.9994934354
+    PalierThermique_0_1_6770_ R0000200 -1
+    PalierThermique_0_1_6770_ R0000201 -1
+    PalierThermique_0_2_6770_ OBJROW 45.0005703639
+    PalierThermique_0_2_6770_ R0000200 -1
+    PalierThermique_0_2_6770_ R0000201 -1
+    DefaillancePositive_0_6770_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6770_ R0000200 -1
+    DefaillanceNegative_0_6770_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6770_ R0000200 1
+    DefaillanceNegative_0_6770_ R0000201 1
+    PalierThermique_1_3_6770_ OBJROW 19.9994823148
+    PalierThermique_1_3_6770_ R0000202 -1
+    PalierThermique_1_3_6770_ R0000203 -1
+    PalierThermique_1_4_6770_ OBJROW 100.0005620376
+    PalierThermique_1_4_6770_ R0000202 -1
+    PalierThermique_1_4_6770_ R0000203 -1
+    PalierThermique_1_5_6770_ OBJROW 44.9994768068
+    PalierThermique_1_5_6770_ R0000202 -1
+    PalierThermique_1_5_6770_ R0000203 -1
+    DefaillancePositive_1_6770_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6770_ R0000202 -1
+    DefaillanceNegative_1_6770_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6770_ R0000202 1
+    DefaillanceNegative_1_6770_ R0000203 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6771_ R0000204 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6771_ R0000206 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6771_ R0000774 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6771_ R0000775 1
+    PalierThermique_0_0_6771_ OBJROW 19.9994564001
+    PalierThermique_0_0_6771_ R0000204 -1
+    PalierThermique_0_0_6771_ R0000205 -1
+    PalierThermique_0_1_6771_ OBJROW 99.9994934354
+    PalierThermique_0_1_6771_ R0000204 -1
+    PalierThermique_0_1_6771_ R0000205 -1
+    PalierThermique_0_2_6771_ OBJROW 45.0005703639
+    PalierThermique_0_2_6771_ R0000204 -1
+    PalierThermique_0_2_6771_ R0000205 -1
+    DefaillancePositive_0_6771_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6771_ R0000204 -1
+    DefaillanceNegative_0_6771_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6771_ R0000204 1
+    DefaillanceNegative_0_6771_ R0000205 1
+    PalierThermique_1_3_6771_ OBJROW 19.9994823148
+    PalierThermique_1_3_6771_ R0000206 -1
+    PalierThermique_1_3_6771_ R0000207 -1
+    PalierThermique_1_4_6771_ OBJROW 100.0005620376
+    PalierThermique_1_4_6771_ R0000206 -1
+    PalierThermique_1_4_6771_ R0000207 -1
+    PalierThermique_1_5_6771_ OBJROW 44.9994768068
+    PalierThermique_1_5_6771_ R0000206 -1
+    PalierThermique_1_5_6771_ R0000207 -1
+    DefaillancePositive_1_6771_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6771_ R0000206 -1
+    DefaillanceNegative_1_6771_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6771_ R0000206 1
+    DefaillanceNegative_1_6771_ R0000207 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6772_ R0000208 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6772_ R0000210 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6772_ R0000776 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6772_ R0000777 1
+    PalierThermique_0_0_6772_ OBJROW 19.9994564001
+    PalierThermique_0_0_6772_ R0000208 -1
+    PalierThermique_0_0_6772_ R0000209 -1
+    PalierThermique_0_1_6772_ OBJROW 99.9994934354
+    PalierThermique_0_1_6772_ R0000208 -1
+    PalierThermique_0_1_6772_ R0000209 -1
+    PalierThermique_0_2_6772_ OBJROW 45.0005703639
+    PalierThermique_0_2_6772_ R0000208 -1
+    PalierThermique_0_2_6772_ R0000209 -1
+    DefaillancePositive_0_6772_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6772_ R0000208 -1
+    DefaillanceNegative_0_6772_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6772_ R0000208 1
+    DefaillanceNegative_0_6772_ R0000209 1
+    PalierThermique_1_3_6772_ OBJROW 19.9994823148
+    PalierThermique_1_3_6772_ R0000210 -1
+    PalierThermique_1_3_6772_ R0000211 -1
+    PalierThermique_1_4_6772_ OBJROW 100.0005620376
+    PalierThermique_1_4_6772_ R0000210 -1
+    PalierThermique_1_4_6772_ R0000211 -1
+    PalierThermique_1_5_6772_ OBJROW 44.9994768068
+    PalierThermique_1_5_6772_ R0000210 -1
+    PalierThermique_1_5_6772_ R0000211 -1
+    DefaillancePositive_1_6772_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6772_ R0000210 -1
+    DefaillanceNegative_1_6772_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6772_ R0000210 1
+    DefaillanceNegative_1_6772_ R0000211 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6773_ R0000212 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6773_ R0000214 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6773_ R0000778 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6773_ R0000779 1
+    PalierThermique_0_0_6773_ OBJROW 19.9994564001
+    PalierThermique_0_0_6773_ R0000212 -1
+    PalierThermique_0_0_6773_ R0000213 -1
+    PalierThermique_0_1_6773_ OBJROW 99.9994934354
+    PalierThermique_0_1_6773_ R0000212 -1
+    PalierThermique_0_1_6773_ R0000213 -1
+    PalierThermique_0_2_6773_ OBJROW 45.0005703639
+    PalierThermique_0_2_6773_ R0000212 -1
+    PalierThermique_0_2_6773_ R0000213 -1
+    DefaillancePositive_0_6773_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6773_ R0000212 -1
+    DefaillanceNegative_0_6773_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6773_ R0000212 1
+    DefaillanceNegative_0_6773_ R0000213 1
+    PalierThermique_1_3_6773_ OBJROW 19.9994823148
+    PalierThermique_1_3_6773_ R0000214 -1
+    PalierThermique_1_3_6773_ R0000215 -1
+    PalierThermique_1_4_6773_ OBJROW 100.0005620376
+    PalierThermique_1_4_6773_ R0000214 -1
+    PalierThermique_1_4_6773_ R0000215 -1
+    PalierThermique_1_5_6773_ OBJROW 44.9994768068
+    PalierThermique_1_5_6773_ R0000214 -1
+    PalierThermique_1_5_6773_ R0000215 -1
+    DefaillancePositive_1_6773_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6773_ R0000214 -1
+    DefaillanceNegative_1_6773_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6773_ R0000214 1
+    DefaillanceNegative_1_6773_ R0000215 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6774_ R0000216 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6774_ R0000218 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6774_ R0000780 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6774_ R0000781 1
+    PalierThermique_0_0_6774_ OBJROW 19.9994564001
+    PalierThermique_0_0_6774_ R0000216 -1
+    PalierThermique_0_0_6774_ R0000217 -1
+    PalierThermique_0_1_6774_ OBJROW 99.9994934354
+    PalierThermique_0_1_6774_ R0000216 -1
+    PalierThermique_0_1_6774_ R0000217 -1
+    PalierThermique_0_2_6774_ OBJROW 45.0005703639
+    PalierThermique_0_2_6774_ R0000216 -1
+    PalierThermique_0_2_6774_ R0000217 -1
+    DefaillancePositive_0_6774_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6774_ R0000216 -1
+    DefaillanceNegative_0_6774_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6774_ R0000216 1
+    DefaillanceNegative_0_6774_ R0000217 1
+    PalierThermique_1_3_6774_ OBJROW 19.9994823148
+    PalierThermique_1_3_6774_ R0000218 -1
+    PalierThermique_1_3_6774_ R0000219 -1
+    PalierThermique_1_4_6774_ OBJROW 100.0005620376
+    PalierThermique_1_4_6774_ R0000218 -1
+    PalierThermique_1_4_6774_ R0000219 -1
+    PalierThermique_1_5_6774_ OBJROW 44.9994768068
+    PalierThermique_1_5_6774_ R0000218 -1
+    PalierThermique_1_5_6774_ R0000219 -1
+    DefaillancePositive_1_6774_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6774_ R0000218 -1
+    DefaillanceNegative_1_6774_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6774_ R0000218 1
+    DefaillanceNegative_1_6774_ R0000219 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6775_ R0000220 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6775_ R0000222 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6775_ R0000782 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6775_ R0000783 1
+    PalierThermique_0_0_6775_ OBJROW 19.9994564001
+    PalierThermique_0_0_6775_ R0000220 -1
+    PalierThermique_0_0_6775_ R0000221 -1
+    PalierThermique_0_1_6775_ OBJROW 99.9994934354
+    PalierThermique_0_1_6775_ R0000220 -1
+    PalierThermique_0_1_6775_ R0000221 -1
+    PalierThermique_0_2_6775_ OBJROW 45.0005703639
+    PalierThermique_0_2_6775_ R0000220 -1
+    PalierThermique_0_2_6775_ R0000221 -1
+    DefaillancePositive_0_6775_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6775_ R0000220 -1
+    DefaillanceNegative_0_6775_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6775_ R0000220 1
+    DefaillanceNegative_0_6775_ R0000221 1
+    PalierThermique_1_3_6775_ OBJROW 19.9994823148
+    PalierThermique_1_3_6775_ R0000222 -1
+    PalierThermique_1_3_6775_ R0000223 -1
+    PalierThermique_1_4_6775_ OBJROW 100.0005620376
+    PalierThermique_1_4_6775_ R0000222 -1
+    PalierThermique_1_4_6775_ R0000223 -1
+    PalierThermique_1_5_6775_ OBJROW 44.9994768068
+    PalierThermique_1_5_6775_ R0000222 -1
+    PalierThermique_1_5_6775_ R0000223 -1
+    DefaillancePositive_1_6775_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6775_ R0000222 -1
+    DefaillanceNegative_1_6775_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6775_ R0000222 1
+    DefaillanceNegative_1_6775_ R0000223 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6776_ R0000224 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6776_ R0000226 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6776_ R0000784 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6776_ R0000785 1
+    PalierThermique_0_0_6776_ OBJROW 19.9994564001
+    PalierThermique_0_0_6776_ R0000224 -1
+    PalierThermique_0_0_6776_ R0000225 -1
+    PalierThermique_0_1_6776_ OBJROW 99.9994934354
+    PalierThermique_0_1_6776_ R0000224 -1
+    PalierThermique_0_1_6776_ R0000225 -1
+    PalierThermique_0_2_6776_ OBJROW 45.0005703639
+    PalierThermique_0_2_6776_ R0000224 -1
+    PalierThermique_0_2_6776_ R0000225 -1
+    DefaillancePositive_0_6776_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6776_ R0000224 -1
+    DefaillanceNegative_0_6776_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6776_ R0000224 1
+    DefaillanceNegative_0_6776_ R0000225 1
+    PalierThermique_1_3_6776_ OBJROW 19.9994823148
+    PalierThermique_1_3_6776_ R0000226 -1
+    PalierThermique_1_3_6776_ R0000227 -1
+    PalierThermique_1_4_6776_ OBJROW 100.0005620376
+    PalierThermique_1_4_6776_ R0000226 -1
+    PalierThermique_1_4_6776_ R0000227 -1
+    PalierThermique_1_5_6776_ OBJROW 44.9994768068
+    PalierThermique_1_5_6776_ R0000226 -1
+    PalierThermique_1_5_6776_ R0000227 -1
+    DefaillancePositive_1_6776_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6776_ R0000226 -1
+    DefaillanceNegative_1_6776_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6776_ R0000226 1
+    DefaillanceNegative_1_6776_ R0000227 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6777_ R0000228 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6777_ R0000230 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6777_ R0000786 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6777_ R0000787 1
+    PalierThermique_0_0_6777_ OBJROW 19.9994564001
+    PalierThermique_0_0_6777_ R0000228 -1
+    PalierThermique_0_0_6777_ R0000229 -1
+    PalierThermique_0_1_6777_ OBJROW 99.9994934354
+    PalierThermique_0_1_6777_ R0000228 -1
+    PalierThermique_0_1_6777_ R0000229 -1
+    PalierThermique_0_2_6777_ OBJROW 45.0005703639
+    PalierThermique_0_2_6777_ R0000228 -1
+    PalierThermique_0_2_6777_ R0000229 -1
+    DefaillancePositive_0_6777_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6777_ R0000228 -1
+    DefaillanceNegative_0_6777_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6777_ R0000228 1
+    DefaillanceNegative_0_6777_ R0000229 1
+    PalierThermique_1_3_6777_ OBJROW 19.9994823148
+    PalierThermique_1_3_6777_ R0000230 -1
+    PalierThermique_1_3_6777_ R0000231 -1
+    PalierThermique_1_4_6777_ OBJROW 100.0005620376
+    PalierThermique_1_4_6777_ R0000230 -1
+    PalierThermique_1_4_6777_ R0000231 -1
+    PalierThermique_1_5_6777_ OBJROW 44.9994768068
+    PalierThermique_1_5_6777_ R0000230 -1
+    PalierThermique_1_5_6777_ R0000231 -1
+    DefaillancePositive_1_6777_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6777_ R0000230 -1
+    DefaillanceNegative_1_6777_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6777_ R0000230 1
+    DefaillanceNegative_1_6777_ R0000231 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6778_ R0000232 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6778_ R0000234 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6778_ R0000788 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6778_ R0000789 1
+    PalierThermique_0_0_6778_ OBJROW 19.9994564001
+    PalierThermique_0_0_6778_ R0000232 -1
+    PalierThermique_0_0_6778_ R0000233 -1
+    PalierThermique_0_1_6778_ OBJROW 99.9994934354
+    PalierThermique_0_1_6778_ R0000232 -1
+    PalierThermique_0_1_6778_ R0000233 -1
+    PalierThermique_0_2_6778_ OBJROW 45.0005703639
+    PalierThermique_0_2_6778_ R0000232 -1
+    PalierThermique_0_2_6778_ R0000233 -1
+    DefaillancePositive_0_6778_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6778_ R0000232 -1
+    DefaillanceNegative_0_6778_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6778_ R0000232 1
+    DefaillanceNegative_0_6778_ R0000233 1
+    PalierThermique_1_3_6778_ OBJROW 19.9994823148
+    PalierThermique_1_3_6778_ R0000234 -1
+    PalierThermique_1_3_6778_ R0000235 -1
+    PalierThermique_1_4_6778_ OBJROW 100.0005620376
+    PalierThermique_1_4_6778_ R0000234 -1
+    PalierThermique_1_4_6778_ R0000235 -1
+    PalierThermique_1_5_6778_ OBJROW 44.9994768068
+    PalierThermique_1_5_6778_ R0000234 -1
+    PalierThermique_1_5_6778_ R0000235 -1
+    DefaillancePositive_1_6778_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6778_ R0000234 -1
+    DefaillanceNegative_1_6778_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6778_ R0000234 1
+    DefaillanceNegative_1_6778_ R0000235 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6779_ R0000236 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6779_ R0000238 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6779_ R0000790 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6779_ R0000791 1
+    PalierThermique_0_0_6779_ OBJROW 19.9994564001
+    PalierThermique_0_0_6779_ R0000236 -1
+    PalierThermique_0_0_6779_ R0000237 -1
+    PalierThermique_0_1_6779_ OBJROW 99.9994934354
+    PalierThermique_0_1_6779_ R0000236 -1
+    PalierThermique_0_1_6779_ R0000237 -1
+    PalierThermique_0_2_6779_ OBJROW 45.0005703639
+    PalierThermique_0_2_6779_ R0000236 -1
+    PalierThermique_0_2_6779_ R0000237 -1
+    DefaillancePositive_0_6779_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6779_ R0000236 -1
+    DefaillanceNegative_0_6779_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6779_ R0000236 1
+    DefaillanceNegative_0_6779_ R0000237 1
+    PalierThermique_1_3_6779_ OBJROW 19.9994823148
+    PalierThermique_1_3_6779_ R0000238 -1
+    PalierThermique_1_3_6779_ R0000239 -1
+    PalierThermique_1_4_6779_ OBJROW 100.0005620376
+    PalierThermique_1_4_6779_ R0000238 -1
+    PalierThermique_1_4_6779_ R0000239 -1
+    PalierThermique_1_5_6779_ OBJROW 44.9994768068
+    PalierThermique_1_5_6779_ R0000238 -1
+    PalierThermique_1_5_6779_ R0000239 -1
+    DefaillancePositive_1_6779_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6779_ R0000238 -1
+    DefaillanceNegative_1_6779_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6779_ R0000238 1
+    DefaillanceNegative_1_6779_ R0000239 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6780_ R0000240 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6780_ R0000242 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6780_ R0000792 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6780_ R0000793 1
+    PalierThermique_0_0_6780_ OBJROW 19.9994564001
+    PalierThermique_0_0_6780_ R0000240 -1
+    PalierThermique_0_0_6780_ R0000241 -1
+    PalierThermique_0_1_6780_ OBJROW 99.9994934354
+    PalierThermique_0_1_6780_ R0000240 -1
+    PalierThermique_0_1_6780_ R0000241 -1
+    PalierThermique_0_2_6780_ OBJROW 45.0005703639
+    PalierThermique_0_2_6780_ R0000240 -1
+    PalierThermique_0_2_6780_ R0000241 -1
+    DefaillancePositive_0_6780_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6780_ R0000240 -1
+    DefaillanceNegative_0_6780_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6780_ R0000240 1
+    DefaillanceNegative_0_6780_ R0000241 1
+    PalierThermique_1_3_6780_ OBJROW 19.9994823148
+    PalierThermique_1_3_6780_ R0000242 -1
+    PalierThermique_1_3_6780_ R0000243 -1
+    PalierThermique_1_4_6780_ OBJROW 100.0005620376
+    PalierThermique_1_4_6780_ R0000242 -1
+    PalierThermique_1_4_6780_ R0000243 -1
+    PalierThermique_1_5_6780_ OBJROW 44.9994768068
+    PalierThermique_1_5_6780_ R0000242 -1
+    PalierThermique_1_5_6780_ R0000243 -1
+    DefaillancePositive_1_6780_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6780_ R0000242 -1
+    DefaillanceNegative_1_6780_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6780_ R0000242 1
+    DefaillanceNegative_1_6780_ R0000243 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6781_ R0000244 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6781_ R0000246 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6781_ R0000794 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6781_ R0000795 1
+    PalierThermique_0_0_6781_ OBJROW 19.9994564001
+    PalierThermique_0_0_6781_ R0000244 -1
+    PalierThermique_0_0_6781_ R0000245 -1
+    PalierThermique_0_1_6781_ OBJROW 99.9994934354
+    PalierThermique_0_1_6781_ R0000244 -1
+    PalierThermique_0_1_6781_ R0000245 -1
+    PalierThermique_0_2_6781_ OBJROW 45.0005703639
+    PalierThermique_0_2_6781_ R0000244 -1
+    PalierThermique_0_2_6781_ R0000245 -1
+    DefaillancePositive_0_6781_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6781_ R0000244 -1
+    DefaillanceNegative_0_6781_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6781_ R0000244 1
+    DefaillanceNegative_0_6781_ R0000245 1
+    PalierThermique_1_3_6781_ OBJROW 19.9994823148
+    PalierThermique_1_3_6781_ R0000246 -1
+    PalierThermique_1_3_6781_ R0000247 -1
+    PalierThermique_1_4_6781_ OBJROW 100.0005620376
+    PalierThermique_1_4_6781_ R0000246 -1
+    PalierThermique_1_4_6781_ R0000247 -1
+    PalierThermique_1_5_6781_ OBJROW 44.9994768068
+    PalierThermique_1_5_6781_ R0000246 -1
+    PalierThermique_1_5_6781_ R0000247 -1
+    DefaillancePositive_1_6781_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6781_ R0000246 -1
+    DefaillanceNegative_1_6781_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6781_ R0000246 1
+    DefaillanceNegative_1_6781_ R0000247 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6782_ R0000248 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6782_ R0000250 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6782_ R0000796 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6782_ R0000797 1
+    PalierThermique_0_0_6782_ OBJROW 19.9994564001
+    PalierThermique_0_0_6782_ R0000248 -1
+    PalierThermique_0_0_6782_ R0000249 -1
+    PalierThermique_0_1_6782_ OBJROW 99.9994934354
+    PalierThermique_0_1_6782_ R0000248 -1
+    PalierThermique_0_1_6782_ R0000249 -1
+    PalierThermique_0_2_6782_ OBJROW 45.0005703639
+    PalierThermique_0_2_6782_ R0000248 -1
+    PalierThermique_0_2_6782_ R0000249 -1
+    DefaillancePositive_0_6782_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6782_ R0000248 -1
+    DefaillanceNegative_0_6782_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6782_ R0000248 1
+    DefaillanceNegative_0_6782_ R0000249 1
+    PalierThermique_1_3_6782_ OBJROW 19.9994823148
+    PalierThermique_1_3_6782_ R0000250 -1
+    PalierThermique_1_3_6782_ R0000251 -1
+    PalierThermique_1_4_6782_ OBJROW 100.0005620376
+    PalierThermique_1_4_6782_ R0000250 -1
+    PalierThermique_1_4_6782_ R0000251 -1
+    PalierThermique_1_5_6782_ OBJROW 44.9994768068
+    PalierThermique_1_5_6782_ R0000250 -1
+    PalierThermique_1_5_6782_ R0000251 -1
+    DefaillancePositive_1_6782_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6782_ R0000250 -1
+    DefaillanceNegative_1_6782_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6782_ R0000250 1
+    DefaillanceNegative_1_6782_ R0000251 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6783_ R0000252 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6783_ R0000254 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6783_ R0000798 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6783_ R0000799 1
+    PalierThermique_0_0_6783_ OBJROW 19.9994564001
+    PalierThermique_0_0_6783_ R0000252 -1
+    PalierThermique_0_0_6783_ R0000253 -1
+    PalierThermique_0_1_6783_ OBJROW 99.9994934354
+    PalierThermique_0_1_6783_ R0000252 -1
+    PalierThermique_0_1_6783_ R0000253 -1
+    PalierThermique_0_2_6783_ OBJROW 45.0005703639
+    PalierThermique_0_2_6783_ R0000252 -1
+    PalierThermique_0_2_6783_ R0000253 -1
+    DefaillancePositive_0_6783_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6783_ R0000252 -1
+    DefaillanceNegative_0_6783_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6783_ R0000252 1
+    DefaillanceNegative_0_6783_ R0000253 1
+    PalierThermique_1_3_6783_ OBJROW 19.9994823148
+    PalierThermique_1_3_6783_ R0000254 -1
+    PalierThermique_1_3_6783_ R0000255 -1
+    PalierThermique_1_4_6783_ OBJROW 100.0005620376
+    PalierThermique_1_4_6783_ R0000254 -1
+    PalierThermique_1_4_6783_ R0000255 -1
+    PalierThermique_1_5_6783_ OBJROW 44.9994768068
+    PalierThermique_1_5_6783_ R0000254 -1
+    PalierThermique_1_5_6783_ R0000255 -1
+    DefaillancePositive_1_6783_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6783_ R0000254 -1
+    DefaillanceNegative_1_6783_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6783_ R0000254 1
+    DefaillanceNegative_1_6783_ R0000255 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6784_ R0000256 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6784_ R0000258 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6784_ R0000800 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6784_ R0000801 1
+    PalierThermique_0_0_6784_ OBJROW 19.9994564001
+    PalierThermique_0_0_6784_ R0000256 -1
+    PalierThermique_0_0_6784_ R0000257 -1
+    PalierThermique_0_1_6784_ OBJROW 99.9994934354
+    PalierThermique_0_1_6784_ R0000256 -1
+    PalierThermique_0_1_6784_ R0000257 -1
+    PalierThermique_0_2_6784_ OBJROW 45.0005703639
+    PalierThermique_0_2_6784_ R0000256 -1
+    PalierThermique_0_2_6784_ R0000257 -1
+    DefaillancePositive_0_6784_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6784_ R0000256 -1
+    DefaillanceNegative_0_6784_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6784_ R0000256 1
+    DefaillanceNegative_0_6784_ R0000257 1
+    PalierThermique_1_3_6784_ OBJROW 19.9994823148
+    PalierThermique_1_3_6784_ R0000258 -1
+    PalierThermique_1_3_6784_ R0000259 -1
+    PalierThermique_1_4_6784_ OBJROW 100.0005620376
+    PalierThermique_1_4_6784_ R0000258 -1
+    PalierThermique_1_4_6784_ R0000259 -1
+    PalierThermique_1_5_6784_ OBJROW 44.9994768068
+    PalierThermique_1_5_6784_ R0000258 -1
+    PalierThermique_1_5_6784_ R0000259 -1
+    DefaillancePositive_1_6784_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6784_ R0000258 -1
+    DefaillanceNegative_1_6784_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6784_ R0000258 1
+    DefaillanceNegative_1_6784_ R0000259 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6785_ R0000260 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6785_ R0000262 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6785_ R0000802 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6785_ R0000803 1
+    PalierThermique_0_0_6785_ OBJROW 19.9994564001
+    PalierThermique_0_0_6785_ R0000260 -1
+    PalierThermique_0_0_6785_ R0000261 -1
+    PalierThermique_0_1_6785_ OBJROW 99.9994934354
+    PalierThermique_0_1_6785_ R0000260 -1
+    PalierThermique_0_1_6785_ R0000261 -1
+    PalierThermique_0_2_6785_ OBJROW 45.0005703639
+    PalierThermique_0_2_6785_ R0000260 -1
+    PalierThermique_0_2_6785_ R0000261 -1
+    DefaillancePositive_0_6785_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6785_ R0000260 -1
+    DefaillanceNegative_0_6785_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6785_ R0000260 1
+    DefaillanceNegative_0_6785_ R0000261 1
+    PalierThermique_1_3_6785_ OBJROW 19.9994823148
+    PalierThermique_1_3_6785_ R0000262 -1
+    PalierThermique_1_3_6785_ R0000263 -1
+    PalierThermique_1_4_6785_ OBJROW 100.0005620376
+    PalierThermique_1_4_6785_ R0000262 -1
+    PalierThermique_1_4_6785_ R0000263 -1
+    PalierThermique_1_5_6785_ OBJROW 44.9994768068
+    PalierThermique_1_5_6785_ R0000262 -1
+    PalierThermique_1_5_6785_ R0000263 -1
+    DefaillancePositive_1_6785_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6785_ R0000262 -1
+    DefaillanceNegative_1_6785_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6785_ R0000262 1
+    DefaillanceNegative_1_6785_ R0000263 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6786_ R0000264 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6786_ R0000266 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6786_ R0000804 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6786_ R0000805 1
+    PalierThermique_0_0_6786_ OBJROW 19.9994564001
+    PalierThermique_0_0_6786_ R0000264 -1
+    PalierThermique_0_0_6786_ R0000265 -1
+    PalierThermique_0_1_6786_ OBJROW 99.9994934354
+    PalierThermique_0_1_6786_ R0000264 -1
+    PalierThermique_0_1_6786_ R0000265 -1
+    PalierThermique_0_2_6786_ OBJROW 45.0005703639
+    PalierThermique_0_2_6786_ R0000264 -1
+    PalierThermique_0_2_6786_ R0000265 -1
+    DefaillancePositive_0_6786_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6786_ R0000264 -1
+    DefaillanceNegative_0_6786_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6786_ R0000264 1
+    DefaillanceNegative_0_6786_ R0000265 1
+    PalierThermique_1_3_6786_ OBJROW 19.9994823148
+    PalierThermique_1_3_6786_ R0000266 -1
+    PalierThermique_1_3_6786_ R0000267 -1
+    PalierThermique_1_4_6786_ OBJROW 100.0005620376
+    PalierThermique_1_4_6786_ R0000266 -1
+    PalierThermique_1_4_6786_ R0000267 -1
+    PalierThermique_1_5_6786_ OBJROW 44.9994768068
+    PalierThermique_1_5_6786_ R0000266 -1
+    PalierThermique_1_5_6786_ R0000267 -1
+    DefaillancePositive_1_6786_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6786_ R0000266 -1
+    DefaillanceNegative_1_6786_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6786_ R0000266 1
+    DefaillanceNegative_1_6786_ R0000267 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6787_ R0000268 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6787_ R0000270 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6787_ R0000806 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6787_ R0000807 1
+    PalierThermique_0_0_6787_ OBJROW 19.9994564001
+    PalierThermique_0_0_6787_ R0000268 -1
+    PalierThermique_0_0_6787_ R0000269 -1
+    PalierThermique_0_1_6787_ OBJROW 99.9994934354
+    PalierThermique_0_1_6787_ R0000268 -1
+    PalierThermique_0_1_6787_ R0000269 -1
+    PalierThermique_0_2_6787_ OBJROW 45.0005703639
+    PalierThermique_0_2_6787_ R0000268 -1
+    PalierThermique_0_2_6787_ R0000269 -1
+    DefaillancePositive_0_6787_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6787_ R0000268 -1
+    DefaillanceNegative_0_6787_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6787_ R0000268 1
+    DefaillanceNegative_0_6787_ R0000269 1
+    PalierThermique_1_3_6787_ OBJROW 19.9994823148
+    PalierThermique_1_3_6787_ R0000270 -1
+    PalierThermique_1_3_6787_ R0000271 -1
+    PalierThermique_1_4_6787_ OBJROW 100.0005620376
+    PalierThermique_1_4_6787_ R0000270 -1
+    PalierThermique_1_4_6787_ R0000271 -1
+    PalierThermique_1_5_6787_ OBJROW 44.9994768068
+    PalierThermique_1_5_6787_ R0000270 -1
+    PalierThermique_1_5_6787_ R0000271 -1
+    DefaillancePositive_1_6787_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6787_ R0000270 -1
+    DefaillanceNegative_1_6787_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6787_ R0000270 1
+    DefaillanceNegative_1_6787_ R0000271 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6788_ R0000272 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6788_ R0000274 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6788_ R0000808 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6788_ R0000809 1
+    PalierThermique_0_0_6788_ OBJROW 19.9994564001
+    PalierThermique_0_0_6788_ R0000272 -1
+    PalierThermique_0_0_6788_ R0000273 -1
+    PalierThermique_0_1_6788_ OBJROW 99.9994934354
+    PalierThermique_0_1_6788_ R0000272 -1
+    PalierThermique_0_1_6788_ R0000273 -1
+    PalierThermique_0_2_6788_ OBJROW 45.0005703639
+    PalierThermique_0_2_6788_ R0000272 -1
+    PalierThermique_0_2_6788_ R0000273 -1
+    DefaillancePositive_0_6788_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6788_ R0000272 -1
+    DefaillanceNegative_0_6788_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6788_ R0000272 1
+    DefaillanceNegative_0_6788_ R0000273 1
+    PalierThermique_1_3_6788_ OBJROW 19.9994823148
+    PalierThermique_1_3_6788_ R0000274 -1
+    PalierThermique_1_3_6788_ R0000275 -1
+    PalierThermique_1_4_6788_ OBJROW 100.0005620376
+    PalierThermique_1_4_6788_ R0000274 -1
+    PalierThermique_1_4_6788_ R0000275 -1
+    PalierThermique_1_5_6788_ OBJROW 44.9994768068
+    PalierThermique_1_5_6788_ R0000274 -1
+    PalierThermique_1_5_6788_ R0000275 -1
+    DefaillancePositive_1_6788_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6788_ R0000274 -1
+    DefaillanceNegative_1_6788_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6788_ R0000274 1
+    DefaillanceNegative_1_6788_ R0000275 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6789_ R0000276 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6789_ R0000278 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6789_ R0000810 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6789_ R0000811 1
+    PalierThermique_0_0_6789_ OBJROW 19.9994564001
+    PalierThermique_0_0_6789_ R0000276 -1
+    PalierThermique_0_0_6789_ R0000277 -1
+    PalierThermique_0_1_6789_ OBJROW 99.9994934354
+    PalierThermique_0_1_6789_ R0000276 -1
+    PalierThermique_0_1_6789_ R0000277 -1
+    PalierThermique_0_2_6789_ OBJROW 45.0005703639
+    PalierThermique_0_2_6789_ R0000276 -1
+    PalierThermique_0_2_6789_ R0000277 -1
+    DefaillancePositive_0_6789_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6789_ R0000276 -1
+    DefaillanceNegative_0_6789_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6789_ R0000276 1
+    DefaillanceNegative_0_6789_ R0000277 1
+    PalierThermique_1_3_6789_ OBJROW 19.9994823148
+    PalierThermique_1_3_6789_ R0000278 -1
+    PalierThermique_1_3_6789_ R0000279 -1
+    PalierThermique_1_4_6789_ OBJROW 100.0005620376
+    PalierThermique_1_4_6789_ R0000278 -1
+    PalierThermique_1_4_6789_ R0000279 -1
+    PalierThermique_1_5_6789_ OBJROW 44.9994768068
+    PalierThermique_1_5_6789_ R0000278 -1
+    PalierThermique_1_5_6789_ R0000279 -1
+    DefaillancePositive_1_6789_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6789_ R0000278 -1
+    DefaillanceNegative_1_6789_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6789_ R0000278 1
+    DefaillanceNegative_1_6789_ R0000279 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6790_ R0000280 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6790_ R0000282 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6790_ R0000812 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6790_ R0000813 1
+    PalierThermique_0_0_6790_ OBJROW 19.9994564001
+    PalierThermique_0_0_6790_ R0000280 -1
+    PalierThermique_0_0_6790_ R0000281 -1
+    PalierThermique_0_1_6790_ OBJROW 99.9994934354
+    PalierThermique_0_1_6790_ R0000280 -1
+    PalierThermique_0_1_6790_ R0000281 -1
+    PalierThermique_0_2_6790_ OBJROW 45.0005703639
+    PalierThermique_0_2_6790_ R0000280 -1
+    PalierThermique_0_2_6790_ R0000281 -1
+    DefaillancePositive_0_6790_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6790_ R0000280 -1
+    DefaillanceNegative_0_6790_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6790_ R0000280 1
+    DefaillanceNegative_0_6790_ R0000281 1
+    PalierThermique_1_3_6790_ OBJROW 19.9994823148
+    PalierThermique_1_3_6790_ R0000282 -1
+    PalierThermique_1_3_6790_ R0000283 -1
+    PalierThermique_1_4_6790_ OBJROW 100.0005620376
+    PalierThermique_1_4_6790_ R0000282 -1
+    PalierThermique_1_4_6790_ R0000283 -1
+    PalierThermique_1_5_6790_ OBJROW 44.9994768068
+    PalierThermique_1_5_6790_ R0000282 -1
+    PalierThermique_1_5_6790_ R0000283 -1
+    DefaillancePositive_1_6790_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6790_ R0000282 -1
+    DefaillanceNegative_1_6790_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6790_ R0000282 1
+    DefaillanceNegative_1_6790_ R0000283 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6791_ R0000284 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6791_ R0000286 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6791_ R0000814 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6791_ R0000815 1
+    PalierThermique_0_0_6791_ OBJROW 19.9994564001
+    PalierThermique_0_0_6791_ R0000284 -1
+    PalierThermique_0_0_6791_ R0000285 -1
+    PalierThermique_0_1_6791_ OBJROW 99.9994934354
+    PalierThermique_0_1_6791_ R0000284 -1
+    PalierThermique_0_1_6791_ R0000285 -1
+    PalierThermique_0_2_6791_ OBJROW 45.0005703639
+    PalierThermique_0_2_6791_ R0000284 -1
+    PalierThermique_0_2_6791_ R0000285 -1
+    DefaillancePositive_0_6791_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6791_ R0000284 -1
+    DefaillanceNegative_0_6791_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6791_ R0000284 1
+    DefaillanceNegative_0_6791_ R0000285 1
+    PalierThermique_1_3_6791_ OBJROW 19.9994823148
+    PalierThermique_1_3_6791_ R0000286 -1
+    PalierThermique_1_3_6791_ R0000287 -1
+    PalierThermique_1_4_6791_ OBJROW 100.0005620376
+    PalierThermique_1_4_6791_ R0000286 -1
+    PalierThermique_1_4_6791_ R0000287 -1
+    PalierThermique_1_5_6791_ OBJROW 44.9994768068
+    PalierThermique_1_5_6791_ R0000286 -1
+    PalierThermique_1_5_6791_ R0000287 -1
+    DefaillancePositive_1_6791_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6791_ R0000286 -1
+    DefaillanceNegative_1_6791_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6791_ R0000286 1
+    DefaillanceNegative_1_6791_ R0000287 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6792_ R0000288 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6792_ R0000290 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6792_ R0000816 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6792_ R0000817 1
+    PalierThermique_0_0_6792_ OBJROW 19.9994564001
+    PalierThermique_0_0_6792_ R0000288 -1
+    PalierThermique_0_0_6792_ R0000289 -1
+    PalierThermique_0_1_6792_ OBJROW 99.9994934354
+    PalierThermique_0_1_6792_ R0000288 -1
+    PalierThermique_0_1_6792_ R0000289 -1
+    PalierThermique_0_2_6792_ OBJROW 45.0005703639
+    PalierThermique_0_2_6792_ R0000288 -1
+    PalierThermique_0_2_6792_ R0000289 -1
+    DefaillancePositive_0_6792_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6792_ R0000288 -1
+    DefaillanceNegative_0_6792_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6792_ R0000288 1
+    DefaillanceNegative_0_6792_ R0000289 1
+    PalierThermique_1_3_6792_ OBJROW 19.9994823148
+    PalierThermique_1_3_6792_ R0000290 -1
+    PalierThermique_1_3_6792_ R0000291 -1
+    PalierThermique_1_4_6792_ OBJROW 100.0005620376
+    PalierThermique_1_4_6792_ R0000290 -1
+    PalierThermique_1_4_6792_ R0000291 -1
+    PalierThermique_1_5_6792_ OBJROW 44.9994768068
+    PalierThermique_1_5_6792_ R0000290 -1
+    PalierThermique_1_5_6792_ R0000291 -1
+    DefaillancePositive_1_6792_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6792_ R0000290 -1
+    DefaillanceNegative_1_6792_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6792_ R0000290 1
+    DefaillanceNegative_1_6792_ R0000291 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6793_ R0000292 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6793_ R0000294 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6793_ R0000818 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6793_ R0000819 1
+    PalierThermique_0_0_6793_ OBJROW 19.9994564001
+    PalierThermique_0_0_6793_ R0000292 -1
+    PalierThermique_0_0_6793_ R0000293 -1
+    PalierThermique_0_1_6793_ OBJROW 99.9994934354
+    PalierThermique_0_1_6793_ R0000292 -1
+    PalierThermique_0_1_6793_ R0000293 -1
+    PalierThermique_0_2_6793_ OBJROW 45.0005703639
+    PalierThermique_0_2_6793_ R0000292 -1
+    PalierThermique_0_2_6793_ R0000293 -1
+    DefaillancePositive_0_6793_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6793_ R0000292 -1
+    DefaillanceNegative_0_6793_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6793_ R0000292 1
+    DefaillanceNegative_0_6793_ R0000293 1
+    PalierThermique_1_3_6793_ OBJROW 19.9994823148
+    PalierThermique_1_3_6793_ R0000294 -1
+    PalierThermique_1_3_6793_ R0000295 -1
+    PalierThermique_1_4_6793_ OBJROW 100.0005620376
+    PalierThermique_1_4_6793_ R0000294 -1
+    PalierThermique_1_4_6793_ R0000295 -1
+    PalierThermique_1_5_6793_ OBJROW 44.9994768068
+    PalierThermique_1_5_6793_ R0000294 -1
+    PalierThermique_1_5_6793_ R0000295 -1
+    DefaillancePositive_1_6793_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6793_ R0000294 -1
+    DefaillanceNegative_1_6793_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6793_ R0000294 1
+    DefaillanceNegative_1_6793_ R0000295 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6794_ R0000296 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6794_ R0000298 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6794_ R0000820 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6794_ R0000821 1
+    PalierThermique_0_0_6794_ OBJROW 19.9994564001
+    PalierThermique_0_0_6794_ R0000296 -1
+    PalierThermique_0_0_6794_ R0000297 -1
+    PalierThermique_0_1_6794_ OBJROW 99.9994934354
+    PalierThermique_0_1_6794_ R0000296 -1
+    PalierThermique_0_1_6794_ R0000297 -1
+    PalierThermique_0_2_6794_ OBJROW 45.0005703639
+    PalierThermique_0_2_6794_ R0000296 -1
+    PalierThermique_0_2_6794_ R0000297 -1
+    DefaillancePositive_0_6794_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6794_ R0000296 -1
+    DefaillanceNegative_0_6794_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6794_ R0000296 1
+    DefaillanceNegative_0_6794_ R0000297 1
+    PalierThermique_1_3_6794_ OBJROW 19.9994823148
+    PalierThermique_1_3_6794_ R0000298 -1
+    PalierThermique_1_3_6794_ R0000299 -1
+    PalierThermique_1_4_6794_ OBJROW 100.0005620376
+    PalierThermique_1_4_6794_ R0000298 -1
+    PalierThermique_1_4_6794_ R0000299 -1
+    PalierThermique_1_5_6794_ OBJROW 44.9994768068
+    PalierThermique_1_5_6794_ R0000298 -1
+    PalierThermique_1_5_6794_ R0000299 -1
+    DefaillancePositive_1_6794_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6794_ R0000298 -1
+    DefaillanceNegative_1_6794_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6794_ R0000298 1
+    DefaillanceNegative_1_6794_ R0000299 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6795_ R0000300 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6795_ R0000302 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6795_ R0000822 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6795_ R0000823 1
+    PalierThermique_0_0_6795_ OBJROW 19.9994564001
+    PalierThermique_0_0_6795_ R0000300 -1
+    PalierThermique_0_0_6795_ R0000301 -1
+    PalierThermique_0_1_6795_ OBJROW 99.9994934354
+    PalierThermique_0_1_6795_ R0000300 -1
+    PalierThermique_0_1_6795_ R0000301 -1
+    PalierThermique_0_2_6795_ OBJROW 45.0005703639
+    PalierThermique_0_2_6795_ R0000300 -1
+    PalierThermique_0_2_6795_ R0000301 -1
+    DefaillancePositive_0_6795_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6795_ R0000300 -1
+    DefaillanceNegative_0_6795_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6795_ R0000300 1
+    DefaillanceNegative_0_6795_ R0000301 1
+    PalierThermique_1_3_6795_ OBJROW 19.9994823148
+    PalierThermique_1_3_6795_ R0000302 -1
+    PalierThermique_1_3_6795_ R0000303 -1
+    PalierThermique_1_4_6795_ OBJROW 100.0005620376
+    PalierThermique_1_4_6795_ R0000302 -1
+    PalierThermique_1_4_6795_ R0000303 -1
+    PalierThermique_1_5_6795_ OBJROW 44.9994768068
+    PalierThermique_1_5_6795_ R0000302 -1
+    PalierThermique_1_5_6795_ R0000303 -1
+    DefaillancePositive_1_6795_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6795_ R0000302 -1
+    DefaillanceNegative_1_6795_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6795_ R0000302 1
+    DefaillanceNegative_1_6795_ R0000303 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6796_ R0000304 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6796_ R0000306 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6796_ R0000824 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6796_ R0000825 1
+    PalierThermique_0_0_6796_ OBJROW 19.9994564001
+    PalierThermique_0_0_6796_ R0000304 -1
+    PalierThermique_0_0_6796_ R0000305 -1
+    PalierThermique_0_1_6796_ OBJROW 99.9994934354
+    PalierThermique_0_1_6796_ R0000304 -1
+    PalierThermique_0_1_6796_ R0000305 -1
+    PalierThermique_0_2_6796_ OBJROW 45.0005703639
+    PalierThermique_0_2_6796_ R0000304 -1
+    PalierThermique_0_2_6796_ R0000305 -1
+    DefaillancePositive_0_6796_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6796_ R0000304 -1
+    DefaillanceNegative_0_6796_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6796_ R0000304 1
+    DefaillanceNegative_0_6796_ R0000305 1
+    PalierThermique_1_3_6796_ OBJROW 19.9994823148
+    PalierThermique_1_3_6796_ R0000306 -1
+    PalierThermique_1_3_6796_ R0000307 -1
+    PalierThermique_1_4_6796_ OBJROW 100.0005620376
+    PalierThermique_1_4_6796_ R0000306 -1
+    PalierThermique_1_4_6796_ R0000307 -1
+    PalierThermique_1_5_6796_ OBJROW 44.9994768068
+    PalierThermique_1_5_6796_ R0000306 -1
+    PalierThermique_1_5_6796_ R0000307 -1
+    DefaillancePositive_1_6796_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6796_ R0000306 -1
+    DefaillanceNegative_1_6796_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6796_ R0000306 1
+    DefaillanceNegative_1_6796_ R0000307 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6797_ R0000308 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6797_ R0000310 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6797_ R0000826 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6797_ R0000827 1
+    PalierThermique_0_0_6797_ OBJROW 19.9994564001
+    PalierThermique_0_0_6797_ R0000308 -1
+    PalierThermique_0_0_6797_ R0000309 -1
+    PalierThermique_0_1_6797_ OBJROW 99.9994934354
+    PalierThermique_0_1_6797_ R0000308 -1
+    PalierThermique_0_1_6797_ R0000309 -1
+    PalierThermique_0_2_6797_ OBJROW 45.0005703639
+    PalierThermique_0_2_6797_ R0000308 -1
+    PalierThermique_0_2_6797_ R0000309 -1
+    DefaillancePositive_0_6797_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6797_ R0000308 -1
+    DefaillanceNegative_0_6797_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6797_ R0000308 1
+    DefaillanceNegative_0_6797_ R0000309 1
+    PalierThermique_1_3_6797_ OBJROW 19.9994823148
+    PalierThermique_1_3_6797_ R0000310 -1
+    PalierThermique_1_3_6797_ R0000311 -1
+    PalierThermique_1_4_6797_ OBJROW 100.0005620376
+    PalierThermique_1_4_6797_ R0000310 -1
+    PalierThermique_1_4_6797_ R0000311 -1
+    PalierThermique_1_5_6797_ OBJROW 44.9994768068
+    PalierThermique_1_5_6797_ R0000310 -1
+    PalierThermique_1_5_6797_ R0000311 -1
+    DefaillancePositive_1_6797_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6797_ R0000310 -1
+    DefaillanceNegative_1_6797_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6797_ R0000310 1
+    DefaillanceNegative_1_6797_ R0000311 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6798_ R0000312 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6798_ R0000314 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6798_ R0000828 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6798_ R0000829 1
+    PalierThermique_0_0_6798_ OBJROW 19.9994564001
+    PalierThermique_0_0_6798_ R0000312 -1
+    PalierThermique_0_0_6798_ R0000313 -1
+    PalierThermique_0_1_6798_ OBJROW 99.9994934354
+    PalierThermique_0_1_6798_ R0000312 -1
+    PalierThermique_0_1_6798_ R0000313 -1
+    PalierThermique_0_2_6798_ OBJROW 45.0005703639
+    PalierThermique_0_2_6798_ R0000312 -1
+    PalierThermique_0_2_6798_ R0000313 -1
+    DefaillancePositive_0_6798_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6798_ R0000312 -1
+    DefaillanceNegative_0_6798_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6798_ R0000312 1
+    DefaillanceNegative_0_6798_ R0000313 1
+    PalierThermique_1_3_6798_ OBJROW 19.9994823148
+    PalierThermique_1_3_6798_ R0000314 -1
+    PalierThermique_1_3_6798_ R0000315 -1
+    PalierThermique_1_4_6798_ OBJROW 100.0005620376
+    PalierThermique_1_4_6798_ R0000314 -1
+    PalierThermique_1_4_6798_ R0000315 -1
+    PalierThermique_1_5_6798_ OBJROW 44.9994768068
+    PalierThermique_1_5_6798_ R0000314 -1
+    PalierThermique_1_5_6798_ R0000315 -1
+    DefaillancePositive_1_6798_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6798_ R0000314 -1
+    DefaillanceNegative_1_6798_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6798_ R0000314 1
+    DefaillanceNegative_1_6798_ R0000315 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6799_ R0000316 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6799_ R0000318 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6799_ R0000830 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6799_ R0000831 1
+    PalierThermique_0_0_6799_ OBJROW 19.9994564001
+    PalierThermique_0_0_6799_ R0000316 -1
+    PalierThermique_0_0_6799_ R0000317 -1
+    PalierThermique_0_1_6799_ OBJROW 99.9994934354
+    PalierThermique_0_1_6799_ R0000316 -1
+    PalierThermique_0_1_6799_ R0000317 -1
+    PalierThermique_0_2_6799_ OBJROW 45.0005703639
+    PalierThermique_0_2_6799_ R0000316 -1
+    PalierThermique_0_2_6799_ R0000317 -1
+    DefaillancePositive_0_6799_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6799_ R0000316 -1
+    DefaillanceNegative_0_6799_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6799_ R0000316 1
+    DefaillanceNegative_0_6799_ R0000317 1
+    PalierThermique_1_3_6799_ OBJROW 19.9994823148
+    PalierThermique_1_3_6799_ R0000318 -1
+    PalierThermique_1_3_6799_ R0000319 -1
+    PalierThermique_1_4_6799_ OBJROW 100.0005620376
+    PalierThermique_1_4_6799_ R0000318 -1
+    PalierThermique_1_4_6799_ R0000319 -1
+    PalierThermique_1_5_6799_ OBJROW 44.9994768068
+    PalierThermique_1_5_6799_ R0000318 -1
+    PalierThermique_1_5_6799_ R0000319 -1
+    DefaillancePositive_1_6799_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6799_ R0000318 -1
+    DefaillanceNegative_1_6799_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6799_ R0000318 1
+    DefaillanceNegative_1_6799_ R0000319 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6800_ R0000320 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6800_ R0000322 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6800_ R0000832 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6800_ R0000833 1
+    PalierThermique_0_0_6800_ OBJROW 19.9994564001
+    PalierThermique_0_0_6800_ R0000320 -1
+    PalierThermique_0_0_6800_ R0000321 -1
+    PalierThermique_0_1_6800_ OBJROW 99.9994934354
+    PalierThermique_0_1_6800_ R0000320 -1
+    PalierThermique_0_1_6800_ R0000321 -1
+    PalierThermique_0_2_6800_ OBJROW 45.0005703639
+    PalierThermique_0_2_6800_ R0000320 -1
+    PalierThermique_0_2_6800_ R0000321 -1
+    DefaillancePositive_0_6800_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6800_ R0000320 -1
+    DefaillanceNegative_0_6800_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6800_ R0000320 1
+    DefaillanceNegative_0_6800_ R0000321 1
+    PalierThermique_1_3_6800_ OBJROW 19.9994823148
+    PalierThermique_1_3_6800_ R0000322 -1
+    PalierThermique_1_3_6800_ R0000323 -1
+    PalierThermique_1_4_6800_ OBJROW 100.0005620376
+    PalierThermique_1_4_6800_ R0000322 -1
+    PalierThermique_1_4_6800_ R0000323 -1
+    PalierThermique_1_5_6800_ OBJROW 44.9994768068
+    PalierThermique_1_5_6800_ R0000322 -1
+    PalierThermique_1_5_6800_ R0000323 -1
+    DefaillancePositive_1_6800_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6800_ R0000322 -1
+    DefaillanceNegative_1_6800_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6800_ R0000322 1
+    DefaillanceNegative_1_6800_ R0000323 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6801_ R0000324 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6801_ R0000326 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6801_ R0000834 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6801_ R0000835 1
+    PalierThermique_0_0_6801_ OBJROW 19.9994564001
+    PalierThermique_0_0_6801_ R0000324 -1
+    PalierThermique_0_0_6801_ R0000325 -1
+    PalierThermique_0_1_6801_ OBJROW 99.9994934354
+    PalierThermique_0_1_6801_ R0000324 -1
+    PalierThermique_0_1_6801_ R0000325 -1
+    PalierThermique_0_2_6801_ OBJROW 45.0005703639
+    PalierThermique_0_2_6801_ R0000324 -1
+    PalierThermique_0_2_6801_ R0000325 -1
+    DefaillancePositive_0_6801_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6801_ R0000324 -1
+    DefaillanceNegative_0_6801_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6801_ R0000324 1
+    DefaillanceNegative_0_6801_ R0000325 1
+    PalierThermique_1_3_6801_ OBJROW 19.9994823148
+    PalierThermique_1_3_6801_ R0000326 -1
+    PalierThermique_1_3_6801_ R0000327 -1
+    PalierThermique_1_4_6801_ OBJROW 100.0005620376
+    PalierThermique_1_4_6801_ R0000326 -1
+    PalierThermique_1_4_6801_ R0000327 -1
+    PalierThermique_1_5_6801_ OBJROW 44.9994768068
+    PalierThermique_1_5_6801_ R0000326 -1
+    PalierThermique_1_5_6801_ R0000327 -1
+    DefaillancePositive_1_6801_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6801_ R0000326 -1
+    DefaillanceNegative_1_6801_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6801_ R0000326 1
+    DefaillanceNegative_1_6801_ R0000327 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6802_ R0000328 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6802_ R0000330 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6802_ R0000836 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6802_ R0000837 1
+    PalierThermique_0_0_6802_ OBJROW 19.9994564001
+    PalierThermique_0_0_6802_ R0000328 -1
+    PalierThermique_0_0_6802_ R0000329 -1
+    PalierThermique_0_1_6802_ OBJROW 99.9994934354
+    PalierThermique_0_1_6802_ R0000328 -1
+    PalierThermique_0_1_6802_ R0000329 -1
+    PalierThermique_0_2_6802_ OBJROW 45.0005703639
+    PalierThermique_0_2_6802_ R0000328 -1
+    PalierThermique_0_2_6802_ R0000329 -1
+    DefaillancePositive_0_6802_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6802_ R0000328 -1
+    DefaillanceNegative_0_6802_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6802_ R0000328 1
+    DefaillanceNegative_0_6802_ R0000329 1
+    PalierThermique_1_3_6802_ OBJROW 19.9994823148
+    PalierThermique_1_3_6802_ R0000330 -1
+    PalierThermique_1_3_6802_ R0000331 -1
+    PalierThermique_1_4_6802_ OBJROW 100.0005620376
+    PalierThermique_1_4_6802_ R0000330 -1
+    PalierThermique_1_4_6802_ R0000331 -1
+    PalierThermique_1_5_6802_ OBJROW 44.9994768068
+    PalierThermique_1_5_6802_ R0000330 -1
+    PalierThermique_1_5_6802_ R0000331 -1
+    DefaillancePositive_1_6802_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6802_ R0000330 -1
+    DefaillanceNegative_1_6802_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6802_ R0000330 1
+    DefaillanceNegative_1_6802_ R0000331 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6803_ R0000332 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6803_ R0000334 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6803_ R0000838 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6803_ R0000839 1
+    PalierThermique_0_0_6803_ OBJROW 19.9994564001
+    PalierThermique_0_0_6803_ R0000332 -1
+    PalierThermique_0_0_6803_ R0000333 -1
+    PalierThermique_0_1_6803_ OBJROW 99.9994934354
+    PalierThermique_0_1_6803_ R0000332 -1
+    PalierThermique_0_1_6803_ R0000333 -1
+    PalierThermique_0_2_6803_ OBJROW 45.0005703639
+    PalierThermique_0_2_6803_ R0000332 -1
+    PalierThermique_0_2_6803_ R0000333 -1
+    DefaillancePositive_0_6803_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6803_ R0000332 -1
+    DefaillanceNegative_0_6803_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6803_ R0000332 1
+    DefaillanceNegative_0_6803_ R0000333 1
+    PalierThermique_1_3_6803_ OBJROW 19.9994823148
+    PalierThermique_1_3_6803_ R0000334 -1
+    PalierThermique_1_3_6803_ R0000335 -1
+    PalierThermique_1_4_6803_ OBJROW 100.0005620376
+    PalierThermique_1_4_6803_ R0000334 -1
+    PalierThermique_1_4_6803_ R0000335 -1
+    PalierThermique_1_5_6803_ OBJROW 44.9994768068
+    PalierThermique_1_5_6803_ R0000334 -1
+    PalierThermique_1_5_6803_ R0000335 -1
+    DefaillancePositive_1_6803_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6803_ R0000334 -1
+    DefaillanceNegative_1_6803_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6803_ R0000334 1
+    DefaillanceNegative_1_6803_ R0000335 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6804_ R0000336 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6804_ R0000338 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6804_ R0000840 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6804_ R0000841 1
+    PalierThermique_0_0_6804_ OBJROW 19.9994564001
+    PalierThermique_0_0_6804_ R0000336 -1
+    PalierThermique_0_0_6804_ R0000337 -1
+    PalierThermique_0_1_6804_ OBJROW 99.9994934354
+    PalierThermique_0_1_6804_ R0000336 -1
+    PalierThermique_0_1_6804_ R0000337 -1
+    PalierThermique_0_2_6804_ OBJROW 45.0005703639
+    PalierThermique_0_2_6804_ R0000336 -1
+    PalierThermique_0_2_6804_ R0000337 -1
+    DefaillancePositive_0_6804_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6804_ R0000336 -1
+    DefaillanceNegative_0_6804_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6804_ R0000336 1
+    DefaillanceNegative_0_6804_ R0000337 1
+    PalierThermique_1_3_6804_ OBJROW 19.9994823148
+    PalierThermique_1_3_6804_ R0000338 -1
+    PalierThermique_1_3_6804_ R0000339 -1
+    PalierThermique_1_4_6804_ OBJROW 100.0005620376
+    PalierThermique_1_4_6804_ R0000338 -1
+    PalierThermique_1_4_6804_ R0000339 -1
+    PalierThermique_1_5_6804_ OBJROW 44.9994768068
+    PalierThermique_1_5_6804_ R0000338 -1
+    PalierThermique_1_5_6804_ R0000339 -1
+    DefaillancePositive_1_6804_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6804_ R0000338 -1
+    DefaillanceNegative_1_6804_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6804_ R0000338 1
+    DefaillanceNegative_1_6804_ R0000339 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6805_ R0000340 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6805_ R0000342 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6805_ R0000842 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6805_ R0000843 1
+    PalierThermique_0_0_6805_ OBJROW 19.9994564001
+    PalierThermique_0_0_6805_ R0000340 -1
+    PalierThermique_0_0_6805_ R0000341 -1
+    PalierThermique_0_1_6805_ OBJROW 99.9994934354
+    PalierThermique_0_1_6805_ R0000340 -1
+    PalierThermique_0_1_6805_ R0000341 -1
+    PalierThermique_0_2_6805_ OBJROW 45.0005703639
+    PalierThermique_0_2_6805_ R0000340 -1
+    PalierThermique_0_2_6805_ R0000341 -1
+    DefaillancePositive_0_6805_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6805_ R0000340 -1
+    DefaillanceNegative_0_6805_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6805_ R0000340 1
+    DefaillanceNegative_0_6805_ R0000341 1
+    PalierThermique_1_3_6805_ OBJROW 19.9994823148
+    PalierThermique_1_3_6805_ R0000342 -1
+    PalierThermique_1_3_6805_ R0000343 -1
+    PalierThermique_1_4_6805_ OBJROW 100.0005620376
+    PalierThermique_1_4_6805_ R0000342 -1
+    PalierThermique_1_4_6805_ R0000343 -1
+    PalierThermique_1_5_6805_ OBJROW 44.9994768068
+    PalierThermique_1_5_6805_ R0000342 -1
+    PalierThermique_1_5_6805_ R0000343 -1
+    DefaillancePositive_1_6805_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6805_ R0000342 -1
+    DefaillanceNegative_1_6805_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6805_ R0000342 1
+    DefaillanceNegative_1_6805_ R0000343 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6806_ R0000344 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6806_ R0000346 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6806_ R0000844 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6806_ R0000845 1
+    PalierThermique_0_0_6806_ OBJROW 19.9994564001
+    PalierThermique_0_0_6806_ R0000344 -1
+    PalierThermique_0_0_6806_ R0000345 -1
+    PalierThermique_0_1_6806_ OBJROW 99.9994934354
+    PalierThermique_0_1_6806_ R0000344 -1
+    PalierThermique_0_1_6806_ R0000345 -1
+    PalierThermique_0_2_6806_ OBJROW 45.0005703639
+    PalierThermique_0_2_6806_ R0000344 -1
+    PalierThermique_0_2_6806_ R0000345 -1
+    DefaillancePositive_0_6806_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6806_ R0000344 -1
+    DefaillanceNegative_0_6806_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6806_ R0000344 1
+    DefaillanceNegative_0_6806_ R0000345 1
+    PalierThermique_1_3_6806_ OBJROW 19.9994823148
+    PalierThermique_1_3_6806_ R0000346 -1
+    PalierThermique_1_3_6806_ R0000347 -1
+    PalierThermique_1_4_6806_ OBJROW 100.0005620376
+    PalierThermique_1_4_6806_ R0000346 -1
+    PalierThermique_1_4_6806_ R0000347 -1
+    PalierThermique_1_5_6806_ OBJROW 44.9994768068
+    PalierThermique_1_5_6806_ R0000346 -1
+    PalierThermique_1_5_6806_ R0000347 -1
+    DefaillancePositive_1_6806_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6806_ R0000346 -1
+    DefaillanceNegative_1_6806_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6806_ R0000346 1
+    DefaillanceNegative_1_6806_ R0000347 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6807_ R0000348 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6807_ R0000350 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6807_ R0000846 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6807_ R0000847 1
+    PalierThermique_0_0_6807_ OBJROW 19.9994564001
+    PalierThermique_0_0_6807_ R0000348 -1
+    PalierThermique_0_0_6807_ R0000349 -1
+    PalierThermique_0_1_6807_ OBJROW 99.9994934354
+    PalierThermique_0_1_6807_ R0000348 -1
+    PalierThermique_0_1_6807_ R0000349 -1
+    PalierThermique_0_2_6807_ OBJROW 45.0005703639
+    PalierThermique_0_2_6807_ R0000348 -1
+    PalierThermique_0_2_6807_ R0000349 -1
+    DefaillancePositive_0_6807_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6807_ R0000348 -1
+    DefaillanceNegative_0_6807_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6807_ R0000348 1
+    DefaillanceNegative_0_6807_ R0000349 1
+    PalierThermique_1_3_6807_ OBJROW 19.9994823148
+    PalierThermique_1_3_6807_ R0000350 -1
+    PalierThermique_1_3_6807_ R0000351 -1
+    PalierThermique_1_4_6807_ OBJROW 100.0005620376
+    PalierThermique_1_4_6807_ R0000350 -1
+    PalierThermique_1_4_6807_ R0000351 -1
+    PalierThermique_1_5_6807_ OBJROW 44.9994768068
+    PalierThermique_1_5_6807_ R0000350 -1
+    PalierThermique_1_5_6807_ R0000351 -1
+    DefaillancePositive_1_6807_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6807_ R0000350 -1
+    DefaillanceNegative_1_6807_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6807_ R0000350 1
+    DefaillanceNegative_1_6807_ R0000351 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6808_ R0000352 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6808_ R0000354 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6808_ R0000848 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6808_ R0000849 1
+    PalierThermique_0_0_6808_ OBJROW 19.9994564001
+    PalierThermique_0_0_6808_ R0000352 -1
+    PalierThermique_0_0_6808_ R0000353 -1
+    PalierThermique_0_1_6808_ OBJROW 99.9994934354
+    PalierThermique_0_1_6808_ R0000352 -1
+    PalierThermique_0_1_6808_ R0000353 -1
+    PalierThermique_0_2_6808_ OBJROW 45.0005703639
+    PalierThermique_0_2_6808_ R0000352 -1
+    PalierThermique_0_2_6808_ R0000353 -1
+    DefaillancePositive_0_6808_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6808_ R0000352 -1
+    DefaillanceNegative_0_6808_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6808_ R0000352 1
+    DefaillanceNegative_0_6808_ R0000353 1
+    PalierThermique_1_3_6808_ OBJROW 19.9994823148
+    PalierThermique_1_3_6808_ R0000354 -1
+    PalierThermique_1_3_6808_ R0000355 -1
+    PalierThermique_1_4_6808_ OBJROW 100.0005620376
+    PalierThermique_1_4_6808_ R0000354 -1
+    PalierThermique_1_4_6808_ R0000355 -1
+    PalierThermique_1_5_6808_ OBJROW 44.9994768068
+    PalierThermique_1_5_6808_ R0000354 -1
+    PalierThermique_1_5_6808_ R0000355 -1
+    DefaillancePositive_1_6808_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6808_ R0000354 -1
+    DefaillanceNegative_1_6808_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6808_ R0000354 1
+    DefaillanceNegative_1_6808_ R0000355 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6809_ R0000356 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6809_ R0000358 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6809_ R0000850 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6809_ R0000851 1
+    PalierThermique_0_0_6809_ OBJROW 19.9994564001
+    PalierThermique_0_0_6809_ R0000356 -1
+    PalierThermique_0_0_6809_ R0000357 -1
+    PalierThermique_0_1_6809_ OBJROW 99.9994934354
+    PalierThermique_0_1_6809_ R0000356 -1
+    PalierThermique_0_1_6809_ R0000357 -1
+    PalierThermique_0_2_6809_ OBJROW 45.0005703639
+    PalierThermique_0_2_6809_ R0000356 -1
+    PalierThermique_0_2_6809_ R0000357 -1
+    DefaillancePositive_0_6809_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6809_ R0000356 -1
+    DefaillanceNegative_0_6809_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6809_ R0000356 1
+    DefaillanceNegative_0_6809_ R0000357 1
+    PalierThermique_1_3_6809_ OBJROW 19.9994823148
+    PalierThermique_1_3_6809_ R0000358 -1
+    PalierThermique_1_3_6809_ R0000359 -1
+    PalierThermique_1_4_6809_ OBJROW 100.0005620376
+    PalierThermique_1_4_6809_ R0000358 -1
+    PalierThermique_1_4_6809_ R0000359 -1
+    PalierThermique_1_5_6809_ OBJROW 44.9994768068
+    PalierThermique_1_5_6809_ R0000358 -1
+    PalierThermique_1_5_6809_ R0000359 -1
+    DefaillancePositive_1_6809_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6809_ R0000358 -1
+    DefaillanceNegative_1_6809_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6809_ R0000358 1
+    DefaillanceNegative_1_6809_ R0000359 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6810_ R0000360 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6810_ R0000362 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6810_ R0000852 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6810_ R0000853 1
+    PalierThermique_0_0_6810_ OBJROW 19.9994564001
+    PalierThermique_0_0_6810_ R0000360 -1
+    PalierThermique_0_0_6810_ R0000361 -1
+    PalierThermique_0_1_6810_ OBJROW 99.9994934354
+    PalierThermique_0_1_6810_ R0000360 -1
+    PalierThermique_0_1_6810_ R0000361 -1
+    PalierThermique_0_2_6810_ OBJROW 45.0005703639
+    PalierThermique_0_2_6810_ R0000360 -1
+    PalierThermique_0_2_6810_ R0000361 -1
+    DefaillancePositive_0_6810_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6810_ R0000360 -1
+    DefaillanceNegative_0_6810_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6810_ R0000360 1
+    DefaillanceNegative_0_6810_ R0000361 1
+    PalierThermique_1_3_6810_ OBJROW 19.9994823148
+    PalierThermique_1_3_6810_ R0000362 -1
+    PalierThermique_1_3_6810_ R0000363 -1
+    PalierThermique_1_4_6810_ OBJROW 100.0005620376
+    PalierThermique_1_4_6810_ R0000362 -1
+    PalierThermique_1_4_6810_ R0000363 -1
+    PalierThermique_1_5_6810_ OBJROW 44.9994768068
+    PalierThermique_1_5_6810_ R0000362 -1
+    PalierThermique_1_5_6810_ R0000363 -1
+    DefaillancePositive_1_6810_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6810_ R0000362 -1
+    DefaillanceNegative_1_6810_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6810_ R0000362 1
+    DefaillanceNegative_1_6810_ R0000363 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6811_ R0000364 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6811_ R0000366 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6811_ R0000854 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6811_ R0000855 1
+    PalierThermique_0_0_6811_ OBJROW 19.9994564001
+    PalierThermique_0_0_6811_ R0000364 -1
+    PalierThermique_0_0_6811_ R0000365 -1
+    PalierThermique_0_1_6811_ OBJROW 99.9994934354
+    PalierThermique_0_1_6811_ R0000364 -1
+    PalierThermique_0_1_6811_ R0000365 -1
+    PalierThermique_0_2_6811_ OBJROW 45.0005703639
+    PalierThermique_0_2_6811_ R0000364 -1
+    PalierThermique_0_2_6811_ R0000365 -1
+    DefaillancePositive_0_6811_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6811_ R0000364 -1
+    DefaillanceNegative_0_6811_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6811_ R0000364 1
+    DefaillanceNegative_0_6811_ R0000365 1
+    PalierThermique_1_3_6811_ OBJROW 19.9994823148
+    PalierThermique_1_3_6811_ R0000366 -1
+    PalierThermique_1_3_6811_ R0000367 -1
+    PalierThermique_1_4_6811_ OBJROW 100.0005620376
+    PalierThermique_1_4_6811_ R0000366 -1
+    PalierThermique_1_4_6811_ R0000367 -1
+    PalierThermique_1_5_6811_ OBJROW 44.9994768068
+    PalierThermique_1_5_6811_ R0000366 -1
+    PalierThermique_1_5_6811_ R0000367 -1
+    DefaillancePositive_1_6811_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6811_ R0000366 -1
+    DefaillanceNegative_1_6811_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6811_ R0000366 1
+    DefaillanceNegative_1_6811_ R0000367 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6812_ R0000368 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6812_ R0000370 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6812_ R0000856 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6812_ R0000857 1
+    PalierThermique_0_0_6812_ OBJROW 19.9994564001
+    PalierThermique_0_0_6812_ R0000368 -1
+    PalierThermique_0_0_6812_ R0000369 -1
+    PalierThermique_0_1_6812_ OBJROW 99.9994934354
+    PalierThermique_0_1_6812_ R0000368 -1
+    PalierThermique_0_1_6812_ R0000369 -1
+    PalierThermique_0_2_6812_ OBJROW 45.0005703639
+    PalierThermique_0_2_6812_ R0000368 -1
+    PalierThermique_0_2_6812_ R0000369 -1
+    DefaillancePositive_0_6812_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6812_ R0000368 -1
+    DefaillanceNegative_0_6812_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6812_ R0000368 1
+    DefaillanceNegative_0_6812_ R0000369 1
+    PalierThermique_1_3_6812_ OBJROW 19.9994823148
+    PalierThermique_1_3_6812_ R0000370 -1
+    PalierThermique_1_3_6812_ R0000371 -1
+    PalierThermique_1_4_6812_ OBJROW 100.0005620376
+    PalierThermique_1_4_6812_ R0000370 -1
+    PalierThermique_1_4_6812_ R0000371 -1
+    PalierThermique_1_5_6812_ OBJROW 44.9994768068
+    PalierThermique_1_5_6812_ R0000370 -1
+    PalierThermique_1_5_6812_ R0000371 -1
+    DefaillancePositive_1_6812_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6812_ R0000370 -1
+    DefaillanceNegative_1_6812_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6812_ R0000370 1
+    DefaillanceNegative_1_6812_ R0000371 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6813_ R0000372 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6813_ R0000374 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6813_ R0000858 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6813_ R0000859 1
+    PalierThermique_0_0_6813_ OBJROW 19.9994564001
+    PalierThermique_0_0_6813_ R0000372 -1
+    PalierThermique_0_0_6813_ R0000373 -1
+    PalierThermique_0_1_6813_ OBJROW 99.9994934354
+    PalierThermique_0_1_6813_ R0000372 -1
+    PalierThermique_0_1_6813_ R0000373 -1
+    PalierThermique_0_2_6813_ OBJROW 45.0005703639
+    PalierThermique_0_2_6813_ R0000372 -1
+    PalierThermique_0_2_6813_ R0000373 -1
+    DefaillancePositive_0_6813_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6813_ R0000372 -1
+    DefaillanceNegative_0_6813_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6813_ R0000372 1
+    DefaillanceNegative_0_6813_ R0000373 1
+    PalierThermique_1_3_6813_ OBJROW 19.9994823148
+    PalierThermique_1_3_6813_ R0000374 -1
+    PalierThermique_1_3_6813_ R0000375 -1
+    PalierThermique_1_4_6813_ OBJROW 100.0005620376
+    PalierThermique_1_4_6813_ R0000374 -1
+    PalierThermique_1_4_6813_ R0000375 -1
+    PalierThermique_1_5_6813_ OBJROW 44.9994768068
+    PalierThermique_1_5_6813_ R0000374 -1
+    PalierThermique_1_5_6813_ R0000375 -1
+    DefaillancePositive_1_6813_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6813_ R0000374 -1
+    DefaillanceNegative_1_6813_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6813_ R0000374 1
+    DefaillanceNegative_1_6813_ R0000375 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6814_ R0000376 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6814_ R0000378 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6814_ R0000860 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6814_ R0000861 1
+    PalierThermique_0_0_6814_ OBJROW 19.9994564001
+    PalierThermique_0_0_6814_ R0000376 -1
+    PalierThermique_0_0_6814_ R0000377 -1
+    PalierThermique_0_1_6814_ OBJROW 99.9994934354
+    PalierThermique_0_1_6814_ R0000376 -1
+    PalierThermique_0_1_6814_ R0000377 -1
+    PalierThermique_0_2_6814_ OBJROW 45.0005703639
+    PalierThermique_0_2_6814_ R0000376 -1
+    PalierThermique_0_2_6814_ R0000377 -1
+    DefaillancePositive_0_6814_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6814_ R0000376 -1
+    DefaillanceNegative_0_6814_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6814_ R0000376 1
+    DefaillanceNegative_0_6814_ R0000377 1
+    PalierThermique_1_3_6814_ OBJROW 19.9994823148
+    PalierThermique_1_3_6814_ R0000378 -1
+    PalierThermique_1_3_6814_ R0000379 -1
+    PalierThermique_1_4_6814_ OBJROW 100.0005620376
+    PalierThermique_1_4_6814_ R0000378 -1
+    PalierThermique_1_4_6814_ R0000379 -1
+    PalierThermique_1_5_6814_ OBJROW 44.9994768068
+    PalierThermique_1_5_6814_ R0000378 -1
+    PalierThermique_1_5_6814_ R0000379 -1
+    DefaillancePositive_1_6814_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6814_ R0000378 -1
+    DefaillanceNegative_1_6814_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6814_ R0000378 1
+    DefaillanceNegative_1_6814_ R0000379 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6815_ R0000380 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6815_ R0000382 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6815_ R0000862 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6815_ R0000863 1
+    PalierThermique_0_0_6815_ OBJROW 19.9994564001
+    PalierThermique_0_0_6815_ R0000380 -1
+    PalierThermique_0_0_6815_ R0000381 -1
+    PalierThermique_0_1_6815_ OBJROW 99.9994934354
+    PalierThermique_0_1_6815_ R0000380 -1
+    PalierThermique_0_1_6815_ R0000381 -1
+    PalierThermique_0_2_6815_ OBJROW 45.0005703639
+    PalierThermique_0_2_6815_ R0000380 -1
+    PalierThermique_0_2_6815_ R0000381 -1
+    DefaillancePositive_0_6815_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6815_ R0000380 -1
+    DefaillanceNegative_0_6815_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6815_ R0000380 1
+    DefaillanceNegative_0_6815_ R0000381 1
+    PalierThermique_1_3_6815_ OBJROW 19.9994823148
+    PalierThermique_1_3_6815_ R0000382 -1
+    PalierThermique_1_3_6815_ R0000383 -1
+    PalierThermique_1_4_6815_ OBJROW 100.0005620376
+    PalierThermique_1_4_6815_ R0000382 -1
+    PalierThermique_1_4_6815_ R0000383 -1
+    PalierThermique_1_5_6815_ OBJROW 44.9994768068
+    PalierThermique_1_5_6815_ R0000382 -1
+    PalierThermique_1_5_6815_ R0000383 -1
+    DefaillancePositive_1_6815_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6815_ R0000382 -1
+    DefaillanceNegative_1_6815_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6815_ R0000382 1
+    DefaillanceNegative_1_6815_ R0000383 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6816_ R0000384 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6816_ R0000386 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6816_ R0000864 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6816_ R0000865 1
+    PalierThermique_0_0_6816_ OBJROW 19.9994564001
+    PalierThermique_0_0_6816_ R0000384 -1
+    PalierThermique_0_0_6816_ R0000385 -1
+    PalierThermique_0_1_6816_ OBJROW 99.9994934354
+    PalierThermique_0_1_6816_ R0000384 -1
+    PalierThermique_0_1_6816_ R0000385 -1
+    PalierThermique_0_2_6816_ OBJROW 45.0005703639
+    PalierThermique_0_2_6816_ R0000384 -1
+    PalierThermique_0_2_6816_ R0000385 -1
+    DefaillancePositive_0_6816_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6816_ R0000384 -1
+    DefaillanceNegative_0_6816_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6816_ R0000384 1
+    DefaillanceNegative_0_6816_ R0000385 1
+    PalierThermique_1_3_6816_ OBJROW 19.9994823148
+    PalierThermique_1_3_6816_ R0000386 -1
+    PalierThermique_1_3_6816_ R0000387 -1
+    PalierThermique_1_4_6816_ OBJROW 100.0005620376
+    PalierThermique_1_4_6816_ R0000386 -1
+    PalierThermique_1_4_6816_ R0000387 -1
+    PalierThermique_1_5_6816_ OBJROW 44.9994768068
+    PalierThermique_1_5_6816_ R0000386 -1
+    PalierThermique_1_5_6816_ R0000387 -1
+    DefaillancePositive_1_6816_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6816_ R0000386 -1
+    DefaillanceNegative_1_6816_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6816_ R0000386 1
+    DefaillanceNegative_1_6816_ R0000387 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6817_ R0000388 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6817_ R0000390 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6817_ R0000866 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6817_ R0000867 1
+    PalierThermique_0_0_6817_ OBJROW 19.9994564001
+    PalierThermique_0_0_6817_ R0000388 -1
+    PalierThermique_0_0_6817_ R0000389 -1
+    PalierThermique_0_1_6817_ OBJROW 99.9994934354
+    PalierThermique_0_1_6817_ R0000388 -1
+    PalierThermique_0_1_6817_ R0000389 -1
+    PalierThermique_0_2_6817_ OBJROW 45.0005703639
+    PalierThermique_0_2_6817_ R0000388 -1
+    PalierThermique_0_2_6817_ R0000389 -1
+    DefaillancePositive_0_6817_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6817_ R0000388 -1
+    DefaillanceNegative_0_6817_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6817_ R0000388 1
+    DefaillanceNegative_0_6817_ R0000389 1
+    PalierThermique_1_3_6817_ OBJROW 19.9994823148
+    PalierThermique_1_3_6817_ R0000390 -1
+    PalierThermique_1_3_6817_ R0000391 -1
+    PalierThermique_1_4_6817_ OBJROW 100.0005620376
+    PalierThermique_1_4_6817_ R0000390 -1
+    PalierThermique_1_4_6817_ R0000391 -1
+    PalierThermique_1_5_6817_ OBJROW 44.9994768068
+    PalierThermique_1_5_6817_ R0000390 -1
+    PalierThermique_1_5_6817_ R0000391 -1
+    DefaillancePositive_1_6817_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6817_ R0000390 -1
+    DefaillanceNegative_1_6817_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6817_ R0000390 1
+    DefaillanceNegative_1_6817_ R0000391 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6818_ R0000392 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6818_ R0000394 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6818_ R0000868 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6818_ R0000869 1
+    PalierThermique_0_0_6818_ OBJROW 19.9994564001
+    PalierThermique_0_0_6818_ R0000392 -1
+    PalierThermique_0_0_6818_ R0000393 -1
+    PalierThermique_0_1_6818_ OBJROW 99.9994934354
+    PalierThermique_0_1_6818_ R0000392 -1
+    PalierThermique_0_1_6818_ R0000393 -1
+    PalierThermique_0_2_6818_ OBJROW 45.0005703639
+    PalierThermique_0_2_6818_ R0000392 -1
+    PalierThermique_0_2_6818_ R0000393 -1
+    DefaillancePositive_0_6818_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6818_ R0000392 -1
+    DefaillanceNegative_0_6818_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6818_ R0000392 1
+    DefaillanceNegative_0_6818_ R0000393 1
+    PalierThermique_1_3_6818_ OBJROW 19.9994823148
+    PalierThermique_1_3_6818_ R0000394 -1
+    PalierThermique_1_3_6818_ R0000395 -1
+    PalierThermique_1_4_6818_ OBJROW 100.0005620376
+    PalierThermique_1_4_6818_ R0000394 -1
+    PalierThermique_1_4_6818_ R0000395 -1
+    PalierThermique_1_5_6818_ OBJROW 44.9994768068
+    PalierThermique_1_5_6818_ R0000394 -1
+    PalierThermique_1_5_6818_ R0000395 -1
+    DefaillancePositive_1_6818_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6818_ R0000394 -1
+    DefaillanceNegative_1_6818_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6818_ R0000394 1
+    DefaillanceNegative_1_6818_ R0000395 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6819_ R0000396 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6819_ R0000398 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6819_ R0000870 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6819_ R0000871 1
+    PalierThermique_0_0_6819_ OBJROW 19.9994564001
+    PalierThermique_0_0_6819_ R0000396 -1
+    PalierThermique_0_0_6819_ R0000397 -1
+    PalierThermique_0_1_6819_ OBJROW 99.9994934354
+    PalierThermique_0_1_6819_ R0000396 -1
+    PalierThermique_0_1_6819_ R0000397 -1
+    PalierThermique_0_2_6819_ OBJROW 45.0005703639
+    PalierThermique_0_2_6819_ R0000396 -1
+    PalierThermique_0_2_6819_ R0000397 -1
+    DefaillancePositive_0_6819_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6819_ R0000396 -1
+    DefaillanceNegative_0_6819_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6819_ R0000396 1
+    DefaillanceNegative_0_6819_ R0000397 1
+    PalierThermique_1_3_6819_ OBJROW 19.9994823148
+    PalierThermique_1_3_6819_ R0000398 -1
+    PalierThermique_1_3_6819_ R0000399 -1
+    PalierThermique_1_4_6819_ OBJROW 100.0005620376
+    PalierThermique_1_4_6819_ R0000398 -1
+    PalierThermique_1_4_6819_ R0000399 -1
+    PalierThermique_1_5_6819_ OBJROW 44.9994768068
+    PalierThermique_1_5_6819_ R0000398 -1
+    PalierThermique_1_5_6819_ R0000399 -1
+    DefaillancePositive_1_6819_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6819_ R0000398 -1
+    DefaillanceNegative_1_6819_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6819_ R0000398 1
+    DefaillanceNegative_1_6819_ R0000399 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6820_ R0000400 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6820_ R0000402 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6820_ R0000872 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6820_ R0000873 1
+    PalierThermique_0_0_6820_ OBJROW 19.9994564001
+    PalierThermique_0_0_6820_ R0000400 -1
+    PalierThermique_0_0_6820_ R0000401 -1
+    PalierThermique_0_1_6820_ OBJROW 99.9994934354
+    PalierThermique_0_1_6820_ R0000400 -1
+    PalierThermique_0_1_6820_ R0000401 -1
+    PalierThermique_0_2_6820_ OBJROW 45.0005703639
+    PalierThermique_0_2_6820_ R0000400 -1
+    PalierThermique_0_2_6820_ R0000401 -1
+    DefaillancePositive_0_6820_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6820_ R0000400 -1
+    DefaillanceNegative_0_6820_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6820_ R0000400 1
+    DefaillanceNegative_0_6820_ R0000401 1
+    PalierThermique_1_3_6820_ OBJROW 19.9994823148
+    PalierThermique_1_3_6820_ R0000402 -1
+    PalierThermique_1_3_6820_ R0000403 -1
+    PalierThermique_1_4_6820_ OBJROW 100.0005620376
+    PalierThermique_1_4_6820_ R0000402 -1
+    PalierThermique_1_4_6820_ R0000403 -1
+    PalierThermique_1_5_6820_ OBJROW 44.9994768068
+    PalierThermique_1_5_6820_ R0000402 -1
+    PalierThermique_1_5_6820_ R0000403 -1
+    DefaillancePositive_1_6820_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6820_ R0000402 -1
+    DefaillanceNegative_1_6820_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6820_ R0000402 1
+    DefaillanceNegative_1_6820_ R0000403 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6821_ R0000404 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6821_ R0000406 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6821_ R0000874 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6821_ R0000875 1
+    PalierThermique_0_0_6821_ OBJROW 19.9994564001
+    PalierThermique_0_0_6821_ R0000404 -1
+    PalierThermique_0_0_6821_ R0000405 -1
+    PalierThermique_0_1_6821_ OBJROW 99.9994934354
+    PalierThermique_0_1_6821_ R0000404 -1
+    PalierThermique_0_1_6821_ R0000405 -1
+    PalierThermique_0_2_6821_ OBJROW 45.0005703639
+    PalierThermique_0_2_6821_ R0000404 -1
+    PalierThermique_0_2_6821_ R0000405 -1
+    DefaillancePositive_0_6821_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6821_ R0000404 -1
+    DefaillanceNegative_0_6821_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6821_ R0000404 1
+    DefaillanceNegative_0_6821_ R0000405 1
+    PalierThermique_1_3_6821_ OBJROW 19.9994823148
+    PalierThermique_1_3_6821_ R0000406 -1
+    PalierThermique_1_3_6821_ R0000407 -1
+    PalierThermique_1_4_6821_ OBJROW 100.0005620376
+    PalierThermique_1_4_6821_ R0000406 -1
+    PalierThermique_1_4_6821_ R0000407 -1
+    PalierThermique_1_5_6821_ OBJROW 44.9994768068
+    PalierThermique_1_5_6821_ R0000406 -1
+    PalierThermique_1_5_6821_ R0000407 -1
+    DefaillancePositive_1_6821_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6821_ R0000406 -1
+    DefaillanceNegative_1_6821_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6821_ R0000406 1
+    DefaillanceNegative_1_6821_ R0000407 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6822_ R0000408 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6822_ R0000410 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6822_ R0000876 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6822_ R0000877 1
+    PalierThermique_0_0_6822_ OBJROW 19.9994564001
+    PalierThermique_0_0_6822_ R0000408 -1
+    PalierThermique_0_0_6822_ R0000409 -1
+    PalierThermique_0_1_6822_ OBJROW 99.9994934354
+    PalierThermique_0_1_6822_ R0000408 -1
+    PalierThermique_0_1_6822_ R0000409 -1
+    PalierThermique_0_2_6822_ OBJROW 45.0005703639
+    PalierThermique_0_2_6822_ R0000408 -1
+    PalierThermique_0_2_6822_ R0000409 -1
+    DefaillancePositive_0_6822_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6822_ R0000408 -1
+    DefaillanceNegative_0_6822_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6822_ R0000408 1
+    DefaillanceNegative_0_6822_ R0000409 1
+    PalierThermique_1_3_6822_ OBJROW 19.9994823148
+    PalierThermique_1_3_6822_ R0000410 -1
+    PalierThermique_1_3_6822_ R0000411 -1
+    PalierThermique_1_4_6822_ OBJROW 100.0005620376
+    PalierThermique_1_4_6822_ R0000410 -1
+    PalierThermique_1_4_6822_ R0000411 -1
+    PalierThermique_1_5_6822_ OBJROW 44.9994768068
+    PalierThermique_1_5_6822_ R0000410 -1
+    PalierThermique_1_5_6822_ R0000411 -1
+    DefaillancePositive_1_6822_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6822_ R0000410 -1
+    DefaillanceNegative_1_6822_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6822_ R0000410 1
+    DefaillanceNegative_1_6822_ R0000411 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6823_ R0000412 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6823_ R0000414 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6823_ R0000878 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6823_ R0000879 1
+    PalierThermique_0_0_6823_ OBJROW 19.9994564001
+    PalierThermique_0_0_6823_ R0000412 -1
+    PalierThermique_0_0_6823_ R0000413 -1
+    PalierThermique_0_1_6823_ OBJROW 99.9994934354
+    PalierThermique_0_1_6823_ R0000412 -1
+    PalierThermique_0_1_6823_ R0000413 -1
+    PalierThermique_0_2_6823_ OBJROW 45.0005703639
+    PalierThermique_0_2_6823_ R0000412 -1
+    PalierThermique_0_2_6823_ R0000413 -1
+    DefaillancePositive_0_6823_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6823_ R0000412 -1
+    DefaillanceNegative_0_6823_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6823_ R0000412 1
+    DefaillanceNegative_0_6823_ R0000413 1
+    PalierThermique_1_3_6823_ OBJROW 19.9994823148
+    PalierThermique_1_3_6823_ R0000414 -1
+    PalierThermique_1_3_6823_ R0000415 -1
+    PalierThermique_1_4_6823_ OBJROW 100.0005620376
+    PalierThermique_1_4_6823_ R0000414 -1
+    PalierThermique_1_4_6823_ R0000415 -1
+    PalierThermique_1_5_6823_ OBJROW 44.9994768068
+    PalierThermique_1_5_6823_ R0000414 -1
+    PalierThermique_1_5_6823_ R0000415 -1
+    DefaillancePositive_1_6823_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6823_ R0000414 -1
+    DefaillanceNegative_1_6823_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6823_ R0000414 1
+    DefaillanceNegative_1_6823_ R0000415 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6824_ R0000416 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6824_ R0000418 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6824_ R0000880 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6824_ R0000881 1
+    PalierThermique_0_0_6824_ OBJROW 19.9994564001
+    PalierThermique_0_0_6824_ R0000416 -1
+    PalierThermique_0_0_6824_ R0000417 -1
+    PalierThermique_0_1_6824_ OBJROW 99.9994934354
+    PalierThermique_0_1_6824_ R0000416 -1
+    PalierThermique_0_1_6824_ R0000417 -1
+    PalierThermique_0_2_6824_ OBJROW 45.0005703639
+    PalierThermique_0_2_6824_ R0000416 -1
+    PalierThermique_0_2_6824_ R0000417 -1
+    DefaillancePositive_0_6824_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6824_ R0000416 -1
+    DefaillanceNegative_0_6824_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6824_ R0000416 1
+    DefaillanceNegative_0_6824_ R0000417 1
+    PalierThermique_1_3_6824_ OBJROW 19.9994823148
+    PalierThermique_1_3_6824_ R0000418 -1
+    PalierThermique_1_3_6824_ R0000419 -1
+    PalierThermique_1_4_6824_ OBJROW 100.0005620376
+    PalierThermique_1_4_6824_ R0000418 -1
+    PalierThermique_1_4_6824_ R0000419 -1
+    PalierThermique_1_5_6824_ OBJROW 44.9994768068
+    PalierThermique_1_5_6824_ R0000418 -1
+    PalierThermique_1_5_6824_ R0000419 -1
+    DefaillancePositive_1_6824_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6824_ R0000418 -1
+    DefaillanceNegative_1_6824_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6824_ R0000418 1
+    DefaillanceNegative_1_6824_ R0000419 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6825_ R0000420 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6825_ R0000422 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6825_ R0000882 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6825_ R0000883 1
+    PalierThermique_0_0_6825_ OBJROW 19.9994564001
+    PalierThermique_0_0_6825_ R0000420 -1
+    PalierThermique_0_0_6825_ R0000421 -1
+    PalierThermique_0_1_6825_ OBJROW 99.9994934354
+    PalierThermique_0_1_6825_ R0000420 -1
+    PalierThermique_0_1_6825_ R0000421 -1
+    PalierThermique_0_2_6825_ OBJROW 45.0005703639
+    PalierThermique_0_2_6825_ R0000420 -1
+    PalierThermique_0_2_6825_ R0000421 -1
+    DefaillancePositive_0_6825_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6825_ R0000420 -1
+    DefaillanceNegative_0_6825_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6825_ R0000420 1
+    DefaillanceNegative_0_6825_ R0000421 1
+    PalierThermique_1_3_6825_ OBJROW 19.9994823148
+    PalierThermique_1_3_6825_ R0000422 -1
+    PalierThermique_1_3_6825_ R0000423 -1
+    PalierThermique_1_4_6825_ OBJROW 100.0005620376
+    PalierThermique_1_4_6825_ R0000422 -1
+    PalierThermique_1_4_6825_ R0000423 -1
+    PalierThermique_1_5_6825_ OBJROW 44.9994768068
+    PalierThermique_1_5_6825_ R0000422 -1
+    PalierThermique_1_5_6825_ R0000423 -1
+    DefaillancePositive_1_6825_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6825_ R0000422 -1
+    DefaillanceNegative_1_6825_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6825_ R0000422 1
+    DefaillanceNegative_1_6825_ R0000423 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6826_ R0000424 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6826_ R0000426 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6826_ R0000884 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6826_ R0000885 1
+    PalierThermique_0_0_6826_ OBJROW 19.9994564001
+    PalierThermique_0_0_6826_ R0000424 -1
+    PalierThermique_0_0_6826_ R0000425 -1
+    PalierThermique_0_1_6826_ OBJROW 99.9994934354
+    PalierThermique_0_1_6826_ R0000424 -1
+    PalierThermique_0_1_6826_ R0000425 -1
+    PalierThermique_0_2_6826_ OBJROW 45.0005703639
+    PalierThermique_0_2_6826_ R0000424 -1
+    PalierThermique_0_2_6826_ R0000425 -1
+    DefaillancePositive_0_6826_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6826_ R0000424 -1
+    DefaillanceNegative_0_6826_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6826_ R0000424 1
+    DefaillanceNegative_0_6826_ R0000425 1
+    PalierThermique_1_3_6826_ OBJROW 19.9994823148
+    PalierThermique_1_3_6826_ R0000426 -1
+    PalierThermique_1_3_6826_ R0000427 -1
+    PalierThermique_1_4_6826_ OBJROW 100.0005620376
+    PalierThermique_1_4_6826_ R0000426 -1
+    PalierThermique_1_4_6826_ R0000427 -1
+    PalierThermique_1_5_6826_ OBJROW 44.9994768068
+    PalierThermique_1_5_6826_ R0000426 -1
+    PalierThermique_1_5_6826_ R0000427 -1
+    DefaillancePositive_1_6826_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6826_ R0000426 -1
+    DefaillanceNegative_1_6826_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6826_ R0000426 1
+    DefaillanceNegative_1_6826_ R0000427 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6827_ R0000428 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6827_ R0000430 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6827_ R0000886 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6827_ R0000887 1
+    PalierThermique_0_0_6827_ OBJROW 19.9994564001
+    PalierThermique_0_0_6827_ R0000428 -1
+    PalierThermique_0_0_6827_ R0000429 -1
+    PalierThermique_0_1_6827_ OBJROW 99.9994934354
+    PalierThermique_0_1_6827_ R0000428 -1
+    PalierThermique_0_1_6827_ R0000429 -1
+    PalierThermique_0_2_6827_ OBJROW 45.0005703639
+    PalierThermique_0_2_6827_ R0000428 -1
+    PalierThermique_0_2_6827_ R0000429 -1
+    DefaillancePositive_0_6827_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6827_ R0000428 -1
+    DefaillanceNegative_0_6827_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6827_ R0000428 1
+    DefaillanceNegative_0_6827_ R0000429 1
+    PalierThermique_1_3_6827_ OBJROW 19.9994823148
+    PalierThermique_1_3_6827_ R0000430 -1
+    PalierThermique_1_3_6827_ R0000431 -1
+    PalierThermique_1_4_6827_ OBJROW 100.0005620376
+    PalierThermique_1_4_6827_ R0000430 -1
+    PalierThermique_1_4_6827_ R0000431 -1
+    PalierThermique_1_5_6827_ OBJROW 44.9994768068
+    PalierThermique_1_5_6827_ R0000430 -1
+    PalierThermique_1_5_6827_ R0000431 -1
+    DefaillancePositive_1_6827_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6827_ R0000430 -1
+    DefaillanceNegative_1_6827_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6827_ R0000430 1
+    DefaillanceNegative_1_6827_ R0000431 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6828_ R0000432 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6828_ R0000434 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6828_ R0000888 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6828_ R0000889 1
+    PalierThermique_0_0_6828_ OBJROW 19.9994564001
+    PalierThermique_0_0_6828_ R0000432 -1
+    PalierThermique_0_0_6828_ R0000433 -1
+    PalierThermique_0_1_6828_ OBJROW 99.9994934354
+    PalierThermique_0_1_6828_ R0000432 -1
+    PalierThermique_0_1_6828_ R0000433 -1
+    PalierThermique_0_2_6828_ OBJROW 45.0005703639
+    PalierThermique_0_2_6828_ R0000432 -1
+    PalierThermique_0_2_6828_ R0000433 -1
+    DefaillancePositive_0_6828_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6828_ R0000432 -1
+    DefaillanceNegative_0_6828_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6828_ R0000432 1
+    DefaillanceNegative_0_6828_ R0000433 1
+    PalierThermique_1_3_6828_ OBJROW 19.9994823148
+    PalierThermique_1_3_6828_ R0000434 -1
+    PalierThermique_1_3_6828_ R0000435 -1
+    PalierThermique_1_4_6828_ OBJROW 100.0005620376
+    PalierThermique_1_4_6828_ R0000434 -1
+    PalierThermique_1_4_6828_ R0000435 -1
+    PalierThermique_1_5_6828_ OBJROW 44.9994768068
+    PalierThermique_1_5_6828_ R0000434 -1
+    PalierThermique_1_5_6828_ R0000435 -1
+    DefaillancePositive_1_6828_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6828_ R0000434 -1
+    DefaillanceNegative_1_6828_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6828_ R0000434 1
+    DefaillanceNegative_1_6828_ R0000435 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6829_ R0000436 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6829_ R0000438 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6829_ R0000890 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6829_ R0000891 1
+    PalierThermique_0_0_6829_ OBJROW 19.9994564001
+    PalierThermique_0_0_6829_ R0000436 -1
+    PalierThermique_0_0_6829_ R0000437 -1
+    PalierThermique_0_1_6829_ OBJROW 99.9994934354
+    PalierThermique_0_1_6829_ R0000436 -1
+    PalierThermique_0_1_6829_ R0000437 -1
+    PalierThermique_0_2_6829_ OBJROW 45.0005703639
+    PalierThermique_0_2_6829_ R0000436 -1
+    PalierThermique_0_2_6829_ R0000437 -1
+    DefaillancePositive_0_6829_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6829_ R0000436 -1
+    DefaillanceNegative_0_6829_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6829_ R0000436 1
+    DefaillanceNegative_0_6829_ R0000437 1
+    PalierThermique_1_3_6829_ OBJROW 19.9994823148
+    PalierThermique_1_3_6829_ R0000438 -1
+    PalierThermique_1_3_6829_ R0000439 -1
+    PalierThermique_1_4_6829_ OBJROW 100.0005620376
+    PalierThermique_1_4_6829_ R0000438 -1
+    PalierThermique_1_4_6829_ R0000439 -1
+    PalierThermique_1_5_6829_ OBJROW 44.9994768068
+    PalierThermique_1_5_6829_ R0000438 -1
+    PalierThermique_1_5_6829_ R0000439 -1
+    DefaillancePositive_1_6829_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6829_ R0000438 -1
+    DefaillanceNegative_1_6829_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6829_ R0000438 1
+    DefaillanceNegative_1_6829_ R0000439 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6830_ R0000440 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6830_ R0000442 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6830_ R0000892 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6830_ R0000893 1
+    PalierThermique_0_0_6830_ OBJROW 19.9994564001
+    PalierThermique_0_0_6830_ R0000440 -1
+    PalierThermique_0_0_6830_ R0000441 -1
+    PalierThermique_0_1_6830_ OBJROW 99.9994934354
+    PalierThermique_0_1_6830_ R0000440 -1
+    PalierThermique_0_1_6830_ R0000441 -1
+    PalierThermique_0_2_6830_ OBJROW 45.0005703639
+    PalierThermique_0_2_6830_ R0000440 -1
+    PalierThermique_0_2_6830_ R0000441 -1
+    DefaillancePositive_0_6830_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6830_ R0000440 -1
+    DefaillanceNegative_0_6830_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6830_ R0000440 1
+    DefaillanceNegative_0_6830_ R0000441 1
+    PalierThermique_1_3_6830_ OBJROW 19.9994823148
+    PalierThermique_1_3_6830_ R0000442 -1
+    PalierThermique_1_3_6830_ R0000443 -1
+    PalierThermique_1_4_6830_ OBJROW 100.0005620376
+    PalierThermique_1_4_6830_ R0000442 -1
+    PalierThermique_1_4_6830_ R0000443 -1
+    PalierThermique_1_5_6830_ OBJROW 44.9994768068
+    PalierThermique_1_5_6830_ R0000442 -1
+    PalierThermique_1_5_6830_ R0000443 -1
+    DefaillancePositive_1_6830_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6830_ R0000442 -1
+    DefaillanceNegative_1_6830_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6830_ R0000442 1
+    DefaillanceNegative_1_6830_ R0000443 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6831_ R0000444 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6831_ R0000446 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6831_ R0000894 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6831_ R0000895 1
+    PalierThermique_0_0_6831_ OBJROW 19.9994564001
+    PalierThermique_0_0_6831_ R0000444 -1
+    PalierThermique_0_0_6831_ R0000445 -1
+    PalierThermique_0_1_6831_ OBJROW 99.9994934354
+    PalierThermique_0_1_6831_ R0000444 -1
+    PalierThermique_0_1_6831_ R0000445 -1
+    PalierThermique_0_2_6831_ OBJROW 45.0005703639
+    PalierThermique_0_2_6831_ R0000444 -1
+    PalierThermique_0_2_6831_ R0000445 -1
+    DefaillancePositive_0_6831_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6831_ R0000444 -1
+    DefaillanceNegative_0_6831_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6831_ R0000444 1
+    DefaillanceNegative_0_6831_ R0000445 1
+    PalierThermique_1_3_6831_ OBJROW 19.9994823148
+    PalierThermique_1_3_6831_ R0000446 -1
+    PalierThermique_1_3_6831_ R0000447 -1
+    PalierThermique_1_4_6831_ OBJROW 100.0005620376
+    PalierThermique_1_4_6831_ R0000446 -1
+    PalierThermique_1_4_6831_ R0000447 -1
+    PalierThermique_1_5_6831_ OBJROW 44.9994768068
+    PalierThermique_1_5_6831_ R0000446 -1
+    PalierThermique_1_5_6831_ R0000447 -1
+    DefaillancePositive_1_6831_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6831_ R0000446 -1
+    DefaillanceNegative_1_6831_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6831_ R0000446 1
+    DefaillanceNegative_1_6831_ R0000447 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6832_ R0000448 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6832_ R0000450 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6832_ R0000896 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6832_ R0000897 1
+    PalierThermique_0_0_6832_ OBJROW 19.9994564001
+    PalierThermique_0_0_6832_ R0000448 -1
+    PalierThermique_0_0_6832_ R0000449 -1
+    PalierThermique_0_1_6832_ OBJROW 99.9994934354
+    PalierThermique_0_1_6832_ R0000448 -1
+    PalierThermique_0_1_6832_ R0000449 -1
+    PalierThermique_0_2_6832_ OBJROW 45.0005703639
+    PalierThermique_0_2_6832_ R0000448 -1
+    PalierThermique_0_2_6832_ R0000449 -1
+    DefaillancePositive_0_6832_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6832_ R0000448 -1
+    DefaillanceNegative_0_6832_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6832_ R0000448 1
+    DefaillanceNegative_0_6832_ R0000449 1
+    PalierThermique_1_3_6832_ OBJROW 19.9994823148
+    PalierThermique_1_3_6832_ R0000450 -1
+    PalierThermique_1_3_6832_ R0000451 -1
+    PalierThermique_1_4_6832_ OBJROW 100.0005620376
+    PalierThermique_1_4_6832_ R0000450 -1
+    PalierThermique_1_4_6832_ R0000451 -1
+    PalierThermique_1_5_6832_ OBJROW 44.9994768068
+    PalierThermique_1_5_6832_ R0000450 -1
+    PalierThermique_1_5_6832_ R0000451 -1
+    DefaillancePositive_1_6832_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6832_ R0000450 -1
+    DefaillanceNegative_1_6832_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6832_ R0000450 1
+    DefaillanceNegative_1_6832_ R0000451 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6833_ R0000452 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6833_ R0000454 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6833_ R0000898 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6833_ R0000899 1
+    PalierThermique_0_0_6833_ OBJROW 19.9994564001
+    PalierThermique_0_0_6833_ R0000452 -1
+    PalierThermique_0_0_6833_ R0000453 -1
+    PalierThermique_0_1_6833_ OBJROW 99.9994934354
+    PalierThermique_0_1_6833_ R0000452 -1
+    PalierThermique_0_1_6833_ R0000453 -1
+    PalierThermique_0_2_6833_ OBJROW 45.0005703639
+    PalierThermique_0_2_6833_ R0000452 -1
+    PalierThermique_0_2_6833_ R0000453 -1
+    DefaillancePositive_0_6833_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6833_ R0000452 -1
+    DefaillanceNegative_0_6833_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6833_ R0000452 1
+    DefaillanceNegative_0_6833_ R0000453 1
+    PalierThermique_1_3_6833_ OBJROW 19.9994823148
+    PalierThermique_1_3_6833_ R0000454 -1
+    PalierThermique_1_3_6833_ R0000455 -1
+    PalierThermique_1_4_6833_ OBJROW 100.0005620376
+    PalierThermique_1_4_6833_ R0000454 -1
+    PalierThermique_1_4_6833_ R0000455 -1
+    PalierThermique_1_5_6833_ OBJROW 44.9994768068
+    PalierThermique_1_5_6833_ R0000454 -1
+    PalierThermique_1_5_6833_ R0000455 -1
+    DefaillancePositive_1_6833_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6833_ R0000454 -1
+    DefaillanceNegative_1_6833_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6833_ R0000454 1
+    DefaillanceNegative_1_6833_ R0000455 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6834_ R0000456 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6834_ R0000458 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6834_ R0000900 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6834_ R0000901 1
+    PalierThermique_0_0_6834_ OBJROW 19.9994564001
+    PalierThermique_0_0_6834_ R0000456 -1
+    PalierThermique_0_0_6834_ R0000457 -1
+    PalierThermique_0_1_6834_ OBJROW 99.9994934354
+    PalierThermique_0_1_6834_ R0000456 -1
+    PalierThermique_0_1_6834_ R0000457 -1
+    PalierThermique_0_2_6834_ OBJROW 45.0005703639
+    PalierThermique_0_2_6834_ R0000456 -1
+    PalierThermique_0_2_6834_ R0000457 -1
+    DefaillancePositive_0_6834_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6834_ R0000456 -1
+    DefaillanceNegative_0_6834_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6834_ R0000456 1
+    DefaillanceNegative_0_6834_ R0000457 1
+    PalierThermique_1_3_6834_ OBJROW 19.9994823148
+    PalierThermique_1_3_6834_ R0000458 -1
+    PalierThermique_1_3_6834_ R0000459 -1
+    PalierThermique_1_4_6834_ OBJROW 100.0005620376
+    PalierThermique_1_4_6834_ R0000458 -1
+    PalierThermique_1_4_6834_ R0000459 -1
+    PalierThermique_1_5_6834_ OBJROW 44.9994768068
+    PalierThermique_1_5_6834_ R0000458 -1
+    PalierThermique_1_5_6834_ R0000459 -1
+    DefaillancePositive_1_6834_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6834_ R0000458 -1
+    DefaillanceNegative_1_6834_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6834_ R0000458 1
+    DefaillanceNegative_1_6834_ R0000459 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6835_ R0000460 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6835_ R0000462 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6835_ R0000902 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6835_ R0000903 1
+    PalierThermique_0_0_6835_ OBJROW 19.9994564001
+    PalierThermique_0_0_6835_ R0000460 -1
+    PalierThermique_0_0_6835_ R0000461 -1
+    PalierThermique_0_1_6835_ OBJROW 99.9994934354
+    PalierThermique_0_1_6835_ R0000460 -1
+    PalierThermique_0_1_6835_ R0000461 -1
+    PalierThermique_0_2_6835_ OBJROW 45.0005703639
+    PalierThermique_0_2_6835_ R0000460 -1
+    PalierThermique_0_2_6835_ R0000461 -1
+    DefaillancePositive_0_6835_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6835_ R0000460 -1
+    DefaillanceNegative_0_6835_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6835_ R0000460 1
+    DefaillanceNegative_0_6835_ R0000461 1
+    PalierThermique_1_3_6835_ OBJROW 19.9994823148
+    PalierThermique_1_3_6835_ R0000462 -1
+    PalierThermique_1_3_6835_ R0000463 -1
+    PalierThermique_1_4_6835_ OBJROW 100.0005620376
+    PalierThermique_1_4_6835_ R0000462 -1
+    PalierThermique_1_4_6835_ R0000463 -1
+    PalierThermique_1_5_6835_ OBJROW 44.9994768068
+    PalierThermique_1_5_6835_ R0000462 -1
+    PalierThermique_1_5_6835_ R0000463 -1
+    DefaillancePositive_1_6835_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6835_ R0000462 -1
+    DefaillanceNegative_1_6835_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6835_ R0000462 1
+    DefaillanceNegative_1_6835_ R0000463 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6836_ R0000464 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6836_ R0000466 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6836_ R0000904 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6836_ R0000905 1
+    PalierThermique_0_0_6836_ OBJROW 19.9994564001
+    PalierThermique_0_0_6836_ R0000464 -1
+    PalierThermique_0_0_6836_ R0000465 -1
+    PalierThermique_0_1_6836_ OBJROW 99.9994934354
+    PalierThermique_0_1_6836_ R0000464 -1
+    PalierThermique_0_1_6836_ R0000465 -1
+    PalierThermique_0_2_6836_ OBJROW 45.0005703639
+    PalierThermique_0_2_6836_ R0000464 -1
+    PalierThermique_0_2_6836_ R0000465 -1
+    DefaillancePositive_0_6836_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6836_ R0000464 -1
+    DefaillanceNegative_0_6836_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6836_ R0000464 1
+    DefaillanceNegative_0_6836_ R0000465 1
+    PalierThermique_1_3_6836_ OBJROW 19.9994823148
+    PalierThermique_1_3_6836_ R0000466 -1
+    PalierThermique_1_3_6836_ R0000467 -1
+    PalierThermique_1_4_6836_ OBJROW 100.0005620376
+    PalierThermique_1_4_6836_ R0000466 -1
+    PalierThermique_1_4_6836_ R0000467 -1
+    PalierThermique_1_5_6836_ OBJROW 44.9994768068
+    PalierThermique_1_5_6836_ R0000466 -1
+    PalierThermique_1_5_6836_ R0000467 -1
+    DefaillancePositive_1_6836_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6836_ R0000466 -1
+    DefaillanceNegative_1_6836_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6836_ R0000466 1
+    DefaillanceNegative_1_6836_ R0000467 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6837_ R0000468 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6837_ R0000470 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6837_ R0000906 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6837_ R0000907 1
+    PalierThermique_0_0_6837_ OBJROW 19.9994564001
+    PalierThermique_0_0_6837_ R0000468 -1
+    PalierThermique_0_0_6837_ R0000469 -1
+    PalierThermique_0_1_6837_ OBJROW 99.9994934354
+    PalierThermique_0_1_6837_ R0000468 -1
+    PalierThermique_0_1_6837_ R0000469 -1
+    PalierThermique_0_2_6837_ OBJROW 45.0005703639
+    PalierThermique_0_2_6837_ R0000468 -1
+    PalierThermique_0_2_6837_ R0000469 -1
+    DefaillancePositive_0_6837_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6837_ R0000468 -1
+    DefaillanceNegative_0_6837_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6837_ R0000468 1
+    DefaillanceNegative_0_6837_ R0000469 1
+    PalierThermique_1_3_6837_ OBJROW 19.9994823148
+    PalierThermique_1_3_6837_ R0000470 -1
+    PalierThermique_1_3_6837_ R0000471 -1
+    PalierThermique_1_4_6837_ OBJROW 100.0005620376
+    PalierThermique_1_4_6837_ R0000470 -1
+    PalierThermique_1_4_6837_ R0000471 -1
+    PalierThermique_1_5_6837_ OBJROW 44.9994768068
+    PalierThermique_1_5_6837_ R0000470 -1
+    PalierThermique_1_5_6837_ R0000471 -1
+    DefaillancePositive_1_6837_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6837_ R0000470 -1
+    DefaillanceNegative_1_6837_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6837_ R0000470 1
+    DefaillanceNegative_1_6837_ R0000471 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6838_ R0000472 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6838_ R0000474 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6838_ R0000908 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6838_ R0000909 1
+    PalierThermique_0_0_6838_ OBJROW 19.9994564001
+    PalierThermique_0_0_6838_ R0000472 -1
+    PalierThermique_0_0_6838_ R0000473 -1
+    PalierThermique_0_1_6838_ OBJROW 99.9994934354
+    PalierThermique_0_1_6838_ R0000472 -1
+    PalierThermique_0_1_6838_ R0000473 -1
+    PalierThermique_0_2_6838_ OBJROW 45.0005703639
+    PalierThermique_0_2_6838_ R0000472 -1
+    PalierThermique_0_2_6838_ R0000473 -1
+    DefaillancePositive_0_6838_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6838_ R0000472 -1
+    DefaillanceNegative_0_6838_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6838_ R0000472 1
+    DefaillanceNegative_0_6838_ R0000473 1
+    PalierThermique_1_3_6838_ OBJROW 19.9994823148
+    PalierThermique_1_3_6838_ R0000474 -1
+    PalierThermique_1_3_6838_ R0000475 -1
+    PalierThermique_1_4_6838_ OBJROW 100.0005620376
+    PalierThermique_1_4_6838_ R0000474 -1
+    PalierThermique_1_4_6838_ R0000475 -1
+    PalierThermique_1_5_6838_ OBJROW 44.9994768068
+    PalierThermique_1_5_6838_ R0000474 -1
+    PalierThermique_1_5_6838_ R0000475 -1
+    DefaillancePositive_1_6838_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6838_ R0000474 -1
+    DefaillanceNegative_1_6838_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6838_ R0000474 1
+    DefaillanceNegative_1_6838_ R0000475 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6839_ R0000476 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6839_ R0000478 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6839_ R0000910 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6839_ R0000911 1
+    PalierThermique_0_0_6839_ OBJROW 19.9994564001
+    PalierThermique_0_0_6839_ R0000476 -1
+    PalierThermique_0_0_6839_ R0000477 -1
+    PalierThermique_0_1_6839_ OBJROW 99.9994934354
+    PalierThermique_0_1_6839_ R0000476 -1
+    PalierThermique_0_1_6839_ R0000477 -1
+    PalierThermique_0_2_6839_ OBJROW 45.0005703639
+    PalierThermique_0_2_6839_ R0000476 -1
+    PalierThermique_0_2_6839_ R0000477 -1
+    DefaillancePositive_0_6839_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6839_ R0000476 -1
+    DefaillanceNegative_0_6839_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6839_ R0000476 1
+    DefaillanceNegative_0_6839_ R0000477 1
+    PalierThermique_1_3_6839_ OBJROW 19.9994823148
+    PalierThermique_1_3_6839_ R0000478 -1
+    PalierThermique_1_3_6839_ R0000479 -1
+    PalierThermique_1_4_6839_ OBJROW 100.0005620376
+    PalierThermique_1_4_6839_ R0000478 -1
+    PalierThermique_1_4_6839_ R0000479 -1
+    PalierThermique_1_5_6839_ OBJROW 44.9994768068
+    PalierThermique_1_5_6839_ R0000478 -1
+    PalierThermique_1_5_6839_ R0000479 -1
+    DefaillancePositive_1_6839_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6839_ R0000478 -1
+    DefaillanceNegative_1_6839_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6839_ R0000478 1
+    DefaillanceNegative_1_6839_ R0000479 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6840_ R0000480 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6840_ R0000482 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6840_ R0000912 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6840_ R0000913 1
+    PalierThermique_0_0_6840_ OBJROW 19.9994564001
+    PalierThermique_0_0_6840_ R0000480 -1
+    PalierThermique_0_0_6840_ R0000481 -1
+    PalierThermique_0_1_6840_ OBJROW 99.9994934354
+    PalierThermique_0_1_6840_ R0000480 -1
+    PalierThermique_0_1_6840_ R0000481 -1
+    PalierThermique_0_2_6840_ OBJROW 45.0005703639
+    PalierThermique_0_2_6840_ R0000480 -1
+    PalierThermique_0_2_6840_ R0000481 -1
+    DefaillancePositive_0_6840_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6840_ R0000480 -1
+    DefaillanceNegative_0_6840_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6840_ R0000480 1
+    DefaillanceNegative_0_6840_ R0000481 1
+    PalierThermique_1_3_6840_ OBJROW 19.9994823148
+    PalierThermique_1_3_6840_ R0000482 -1
+    PalierThermique_1_3_6840_ R0000483 -1
+    PalierThermique_1_4_6840_ OBJROW 100.0005620376
+    PalierThermique_1_4_6840_ R0000482 -1
+    PalierThermique_1_4_6840_ R0000483 -1
+    PalierThermique_1_5_6840_ OBJROW 44.9994768068
+    PalierThermique_1_5_6840_ R0000482 -1
+    PalierThermique_1_5_6840_ R0000483 -1
+    DefaillancePositive_1_6840_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6840_ R0000482 -1
+    DefaillanceNegative_1_6840_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6840_ R0000482 1
+    DefaillanceNegative_1_6840_ R0000483 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6841_ R0000484 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6841_ R0000486 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6841_ R0000914 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6841_ R0000915 1
+    PalierThermique_0_0_6841_ OBJROW 19.9994564001
+    PalierThermique_0_0_6841_ R0000484 -1
+    PalierThermique_0_0_6841_ R0000485 -1
+    PalierThermique_0_1_6841_ OBJROW 99.9994934354
+    PalierThermique_0_1_6841_ R0000484 -1
+    PalierThermique_0_1_6841_ R0000485 -1
+    PalierThermique_0_2_6841_ OBJROW 45.0005703639
+    PalierThermique_0_2_6841_ R0000484 -1
+    PalierThermique_0_2_6841_ R0000485 -1
+    DefaillancePositive_0_6841_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6841_ R0000484 -1
+    DefaillanceNegative_0_6841_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6841_ R0000484 1
+    DefaillanceNegative_0_6841_ R0000485 1
+    PalierThermique_1_3_6841_ OBJROW 19.9994823148
+    PalierThermique_1_3_6841_ R0000486 -1
+    PalierThermique_1_3_6841_ R0000487 -1
+    PalierThermique_1_4_6841_ OBJROW 100.0005620376
+    PalierThermique_1_4_6841_ R0000486 -1
+    PalierThermique_1_4_6841_ R0000487 -1
+    PalierThermique_1_5_6841_ OBJROW 44.9994768068
+    PalierThermique_1_5_6841_ R0000486 -1
+    PalierThermique_1_5_6841_ R0000487 -1
+    DefaillancePositive_1_6841_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6841_ R0000486 -1
+    DefaillanceNegative_1_6841_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6841_ R0000486 1
+    DefaillanceNegative_1_6841_ R0000487 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6842_ R0000488 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6842_ R0000490 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6842_ R0000916 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6842_ R0000917 1
+    PalierThermique_0_0_6842_ OBJROW 19.9994564001
+    PalierThermique_0_0_6842_ R0000488 -1
+    PalierThermique_0_0_6842_ R0000489 -1
+    PalierThermique_0_1_6842_ OBJROW 99.9994934354
+    PalierThermique_0_1_6842_ R0000488 -1
+    PalierThermique_0_1_6842_ R0000489 -1
+    PalierThermique_0_2_6842_ OBJROW 45.0005703639
+    PalierThermique_0_2_6842_ R0000488 -1
+    PalierThermique_0_2_6842_ R0000489 -1
+    DefaillancePositive_0_6842_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6842_ R0000488 -1
+    DefaillanceNegative_0_6842_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6842_ R0000488 1
+    DefaillanceNegative_0_6842_ R0000489 1
+    PalierThermique_1_3_6842_ OBJROW 19.9994823148
+    PalierThermique_1_3_6842_ R0000490 -1
+    PalierThermique_1_3_6842_ R0000491 -1
+    PalierThermique_1_4_6842_ OBJROW 100.0005620376
+    PalierThermique_1_4_6842_ R0000490 -1
+    PalierThermique_1_4_6842_ R0000491 -1
+    PalierThermique_1_5_6842_ OBJROW 44.9994768068
+    PalierThermique_1_5_6842_ R0000490 -1
+    PalierThermique_1_5_6842_ R0000491 -1
+    DefaillancePositive_1_6842_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6842_ R0000490 -1
+    DefaillanceNegative_1_6842_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6842_ R0000490 1
+    DefaillanceNegative_1_6842_ R0000491 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6843_ R0000492 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6843_ R0000494 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6843_ R0000918 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6843_ R0000919 1
+    PalierThermique_0_0_6843_ OBJROW 19.9994564001
+    PalierThermique_0_0_6843_ R0000492 -1
+    PalierThermique_0_0_6843_ R0000493 -1
+    PalierThermique_0_1_6843_ OBJROW 99.9994934354
+    PalierThermique_0_1_6843_ R0000492 -1
+    PalierThermique_0_1_6843_ R0000493 -1
+    PalierThermique_0_2_6843_ OBJROW 45.0005703639
+    PalierThermique_0_2_6843_ R0000492 -1
+    PalierThermique_0_2_6843_ R0000493 -1
+    DefaillancePositive_0_6843_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6843_ R0000492 -1
+    DefaillanceNegative_0_6843_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6843_ R0000492 1
+    DefaillanceNegative_0_6843_ R0000493 1
+    PalierThermique_1_3_6843_ OBJROW 19.9994823148
+    PalierThermique_1_3_6843_ R0000494 -1
+    PalierThermique_1_3_6843_ R0000495 -1
+    PalierThermique_1_4_6843_ OBJROW 100.0005620376
+    PalierThermique_1_4_6843_ R0000494 -1
+    PalierThermique_1_4_6843_ R0000495 -1
+    PalierThermique_1_5_6843_ OBJROW 44.9994768068
+    PalierThermique_1_5_6843_ R0000494 -1
+    PalierThermique_1_5_6843_ R0000495 -1
+    DefaillancePositive_1_6843_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6843_ R0000494 -1
+    DefaillanceNegative_1_6843_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6843_ R0000494 1
+    DefaillanceNegative_1_6843_ R0000495 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6844_ R0000496 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6844_ R0000498 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6844_ R0000920 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6844_ R0000921 1
+    PalierThermique_0_0_6844_ OBJROW 19.9994564001
+    PalierThermique_0_0_6844_ R0000496 -1
+    PalierThermique_0_0_6844_ R0000497 -1
+    PalierThermique_0_1_6844_ OBJROW 99.9994934354
+    PalierThermique_0_1_6844_ R0000496 -1
+    PalierThermique_0_1_6844_ R0000497 -1
+    PalierThermique_0_2_6844_ OBJROW 45.0005703639
+    PalierThermique_0_2_6844_ R0000496 -1
+    PalierThermique_0_2_6844_ R0000497 -1
+    DefaillancePositive_0_6844_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6844_ R0000496 -1
+    DefaillanceNegative_0_6844_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6844_ R0000496 1
+    DefaillanceNegative_0_6844_ R0000497 1
+    PalierThermique_1_3_6844_ OBJROW 19.9994823148
+    PalierThermique_1_3_6844_ R0000498 -1
+    PalierThermique_1_3_6844_ R0000499 -1
+    PalierThermique_1_4_6844_ OBJROW 100.0005620376
+    PalierThermique_1_4_6844_ R0000498 -1
+    PalierThermique_1_4_6844_ R0000499 -1
+    PalierThermique_1_5_6844_ OBJROW 44.9994768068
+    PalierThermique_1_5_6844_ R0000498 -1
+    PalierThermique_1_5_6844_ R0000499 -1
+    DefaillancePositive_1_6844_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6844_ R0000498 -1
+    DefaillanceNegative_1_6844_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6844_ R0000498 1
+    DefaillanceNegative_1_6844_ R0000499 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6845_ R0000500 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6845_ R0000502 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6845_ R0000922 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6845_ R0000923 1
+    PalierThermique_0_0_6845_ OBJROW 19.9994564001
+    PalierThermique_0_0_6845_ R0000500 -1
+    PalierThermique_0_0_6845_ R0000501 -1
+    PalierThermique_0_1_6845_ OBJROW 99.9994934354
+    PalierThermique_0_1_6845_ R0000500 -1
+    PalierThermique_0_1_6845_ R0000501 -1
+    PalierThermique_0_2_6845_ OBJROW 45.0005703639
+    PalierThermique_0_2_6845_ R0000500 -1
+    PalierThermique_0_2_6845_ R0000501 -1
+    DefaillancePositive_0_6845_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6845_ R0000500 -1
+    DefaillanceNegative_0_6845_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6845_ R0000500 1
+    DefaillanceNegative_0_6845_ R0000501 1
+    PalierThermique_1_3_6845_ OBJROW 19.9994823148
+    PalierThermique_1_3_6845_ R0000502 -1
+    PalierThermique_1_3_6845_ R0000503 -1
+    PalierThermique_1_4_6845_ OBJROW 100.0005620376
+    PalierThermique_1_4_6845_ R0000502 -1
+    PalierThermique_1_4_6845_ R0000503 -1
+    PalierThermique_1_5_6845_ OBJROW 44.9994768068
+    PalierThermique_1_5_6845_ R0000502 -1
+    PalierThermique_1_5_6845_ R0000503 -1
+    DefaillancePositive_1_6845_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6845_ R0000502 -1
+    DefaillanceNegative_1_6845_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6845_ R0000502 1
+    DefaillanceNegative_1_6845_ R0000503 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6846_ R0000504 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6846_ R0000506 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6846_ R0000924 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6846_ R0000925 1
+    PalierThermique_0_0_6846_ OBJROW 19.9994564001
+    PalierThermique_0_0_6846_ R0000504 -1
+    PalierThermique_0_0_6846_ R0000505 -1
+    PalierThermique_0_1_6846_ OBJROW 99.9994934354
+    PalierThermique_0_1_6846_ R0000504 -1
+    PalierThermique_0_1_6846_ R0000505 -1
+    PalierThermique_0_2_6846_ OBJROW 45.0005703639
+    PalierThermique_0_2_6846_ R0000504 -1
+    PalierThermique_0_2_6846_ R0000505 -1
+    DefaillancePositive_0_6846_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6846_ R0000504 -1
+    DefaillanceNegative_0_6846_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6846_ R0000504 1
+    DefaillanceNegative_0_6846_ R0000505 1
+    PalierThermique_1_3_6846_ OBJROW 19.9994823148
+    PalierThermique_1_3_6846_ R0000506 -1
+    PalierThermique_1_3_6846_ R0000507 -1
+    PalierThermique_1_4_6846_ OBJROW 100.0005620376
+    PalierThermique_1_4_6846_ R0000506 -1
+    PalierThermique_1_4_6846_ R0000507 -1
+    PalierThermique_1_5_6846_ OBJROW 44.9994768068
+    PalierThermique_1_5_6846_ R0000506 -1
+    PalierThermique_1_5_6846_ R0000507 -1
+    DefaillancePositive_1_6846_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6846_ R0000506 -1
+    DefaillanceNegative_1_6846_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6846_ R0000506 1
+    DefaillanceNegative_1_6846_ R0000507 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6847_ R0000508 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6847_ R0000510 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6847_ R0000926 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6847_ R0000927 1
+    PalierThermique_0_0_6847_ OBJROW 19.9994564001
+    PalierThermique_0_0_6847_ R0000508 -1
+    PalierThermique_0_0_6847_ R0000509 -1
+    PalierThermique_0_1_6847_ OBJROW 99.9994934354
+    PalierThermique_0_1_6847_ R0000508 -1
+    PalierThermique_0_1_6847_ R0000509 -1
+    PalierThermique_0_2_6847_ OBJROW 45.0005703639
+    PalierThermique_0_2_6847_ R0000508 -1
+    PalierThermique_0_2_6847_ R0000509 -1
+    DefaillancePositive_0_6847_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6847_ R0000508 -1
+    DefaillanceNegative_0_6847_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6847_ R0000508 1
+    DefaillanceNegative_0_6847_ R0000509 1
+    PalierThermique_1_3_6847_ OBJROW 19.9994823148
+    PalierThermique_1_3_6847_ R0000510 -1
+    PalierThermique_1_3_6847_ R0000511 -1
+    PalierThermique_1_4_6847_ OBJROW 100.0005620376
+    PalierThermique_1_4_6847_ R0000510 -1
+    PalierThermique_1_4_6847_ R0000511 -1
+    PalierThermique_1_5_6847_ OBJROW 44.9994768068
+    PalierThermique_1_5_6847_ R0000510 -1
+    PalierThermique_1_5_6847_ R0000511 -1
+    DefaillancePositive_1_6847_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6847_ R0000510 -1
+    DefaillanceNegative_1_6847_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6847_ R0000510 1
+    DefaillanceNegative_1_6847_ R0000511 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6848_ R0000512 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6848_ R0000514 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6848_ R0000928 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6848_ R0000929 1
+    PalierThermique_0_0_6848_ OBJROW 19.9994564001
+    PalierThermique_0_0_6848_ R0000512 -1
+    PalierThermique_0_0_6848_ R0000513 -1
+    PalierThermique_0_1_6848_ OBJROW 99.9994934354
+    PalierThermique_0_1_6848_ R0000512 -1
+    PalierThermique_0_1_6848_ R0000513 -1
+    PalierThermique_0_2_6848_ OBJROW 45.0005703639
+    PalierThermique_0_2_6848_ R0000512 -1
+    PalierThermique_0_2_6848_ R0000513 -1
+    DefaillancePositive_0_6848_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6848_ R0000512 -1
+    DefaillanceNegative_0_6848_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6848_ R0000512 1
+    DefaillanceNegative_0_6848_ R0000513 1
+    PalierThermique_1_3_6848_ OBJROW 19.9994823148
+    PalierThermique_1_3_6848_ R0000514 -1
+    PalierThermique_1_3_6848_ R0000515 -1
+    PalierThermique_1_4_6848_ OBJROW 100.0005620376
+    PalierThermique_1_4_6848_ R0000514 -1
+    PalierThermique_1_4_6848_ R0000515 -1
+    PalierThermique_1_5_6848_ OBJROW 44.9994768068
+    PalierThermique_1_5_6848_ R0000514 -1
+    PalierThermique_1_5_6848_ R0000515 -1
+    DefaillancePositive_1_6848_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6848_ R0000514 -1
+    DefaillanceNegative_1_6848_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6848_ R0000514 1
+    DefaillanceNegative_1_6848_ R0000515 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6849_ R0000516 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6849_ R0000518 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6849_ R0000930 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6849_ R0000931 1
+    PalierThermique_0_0_6849_ OBJROW 19.9994564001
+    PalierThermique_0_0_6849_ R0000516 -1
+    PalierThermique_0_0_6849_ R0000517 -1
+    PalierThermique_0_1_6849_ OBJROW 99.9994934354
+    PalierThermique_0_1_6849_ R0000516 -1
+    PalierThermique_0_1_6849_ R0000517 -1
+    PalierThermique_0_2_6849_ OBJROW 45.0005703639
+    PalierThermique_0_2_6849_ R0000516 -1
+    PalierThermique_0_2_6849_ R0000517 -1
+    DefaillancePositive_0_6849_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6849_ R0000516 -1
+    DefaillanceNegative_0_6849_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6849_ R0000516 1
+    DefaillanceNegative_0_6849_ R0000517 1
+    PalierThermique_1_3_6849_ OBJROW 19.9994823148
+    PalierThermique_1_3_6849_ R0000518 -1
+    PalierThermique_1_3_6849_ R0000519 -1
+    PalierThermique_1_4_6849_ OBJROW 100.0005620376
+    PalierThermique_1_4_6849_ R0000518 -1
+    PalierThermique_1_4_6849_ R0000519 -1
+    PalierThermique_1_5_6849_ OBJROW 44.9994768068
+    PalierThermique_1_5_6849_ R0000518 -1
+    PalierThermique_1_5_6849_ R0000519 -1
+    DefaillancePositive_1_6849_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6849_ R0000518 -1
+    DefaillanceNegative_1_6849_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6849_ R0000518 1
+    DefaillanceNegative_1_6849_ R0000519 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6850_ R0000520 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6850_ R0000522 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6850_ R0000932 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6850_ R0000933 1
+    PalierThermique_0_0_6850_ OBJROW 19.9994564001
+    PalierThermique_0_0_6850_ R0000520 -1
+    PalierThermique_0_0_6850_ R0000521 -1
+    PalierThermique_0_1_6850_ OBJROW 99.9994934354
+    PalierThermique_0_1_6850_ R0000520 -1
+    PalierThermique_0_1_6850_ R0000521 -1
+    PalierThermique_0_2_6850_ OBJROW 45.0005703639
+    PalierThermique_0_2_6850_ R0000520 -1
+    PalierThermique_0_2_6850_ R0000521 -1
+    DefaillancePositive_0_6850_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6850_ R0000520 -1
+    DefaillanceNegative_0_6850_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6850_ R0000520 1
+    DefaillanceNegative_0_6850_ R0000521 1
+    PalierThermique_1_3_6850_ OBJROW 19.9994823148
+    PalierThermique_1_3_6850_ R0000522 -1
+    PalierThermique_1_3_6850_ R0000523 -1
+    PalierThermique_1_4_6850_ OBJROW 100.0005620376
+    PalierThermique_1_4_6850_ R0000522 -1
+    PalierThermique_1_4_6850_ R0000523 -1
+    PalierThermique_1_5_6850_ OBJROW 44.9994768068
+    PalierThermique_1_5_6850_ R0000522 -1
+    PalierThermique_1_5_6850_ R0000523 -1
+    DefaillancePositive_1_6850_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6850_ R0000522 -1
+    DefaillanceNegative_1_6850_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6850_ R0000522 1
+    DefaillanceNegative_1_6850_ R0000523 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6851_ R0000524 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6851_ R0000526 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6851_ R0000934 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6851_ R0000935 1
+    PalierThermique_0_0_6851_ OBJROW 19.9994564001
+    PalierThermique_0_0_6851_ R0000524 -1
+    PalierThermique_0_0_6851_ R0000525 -1
+    PalierThermique_0_1_6851_ OBJROW 99.9994934354
+    PalierThermique_0_1_6851_ R0000524 -1
+    PalierThermique_0_1_6851_ R0000525 -1
+    PalierThermique_0_2_6851_ OBJROW 45.0005703639
+    PalierThermique_0_2_6851_ R0000524 -1
+    PalierThermique_0_2_6851_ R0000525 -1
+    DefaillancePositive_0_6851_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6851_ R0000524 -1
+    DefaillanceNegative_0_6851_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6851_ R0000524 1
+    DefaillanceNegative_0_6851_ R0000525 1
+    PalierThermique_1_3_6851_ OBJROW 19.9994823148
+    PalierThermique_1_3_6851_ R0000526 -1
+    PalierThermique_1_3_6851_ R0000527 -1
+    PalierThermique_1_4_6851_ OBJROW 100.0005620376
+    PalierThermique_1_4_6851_ R0000526 -1
+    PalierThermique_1_4_6851_ R0000527 -1
+    PalierThermique_1_5_6851_ OBJROW 44.9994768068
+    PalierThermique_1_5_6851_ R0000526 -1
+    PalierThermique_1_5_6851_ R0000527 -1
+    DefaillancePositive_1_6851_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6851_ R0000526 -1
+    DefaillanceNegative_1_6851_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6851_ R0000526 1
+    DefaillanceNegative_1_6851_ R0000527 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6852_ R0000528 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6852_ R0000530 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6852_ R0000936 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6852_ R0000937 1
+    PalierThermique_0_0_6852_ OBJROW 19.9994564001
+    PalierThermique_0_0_6852_ R0000528 -1
+    PalierThermique_0_0_6852_ R0000529 -1
+    PalierThermique_0_1_6852_ OBJROW 99.9994934354
+    PalierThermique_0_1_6852_ R0000528 -1
+    PalierThermique_0_1_6852_ R0000529 -1
+    PalierThermique_0_2_6852_ OBJROW 45.0005703639
+    PalierThermique_0_2_6852_ R0000528 -1
+    PalierThermique_0_2_6852_ R0000529 -1
+    DefaillancePositive_0_6852_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6852_ R0000528 -1
+    DefaillanceNegative_0_6852_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6852_ R0000528 1
+    DefaillanceNegative_0_6852_ R0000529 1
+    PalierThermique_1_3_6852_ OBJROW 19.9994823148
+    PalierThermique_1_3_6852_ R0000530 -1
+    PalierThermique_1_3_6852_ R0000531 -1
+    PalierThermique_1_4_6852_ OBJROW 100.0005620376
+    PalierThermique_1_4_6852_ R0000530 -1
+    PalierThermique_1_4_6852_ R0000531 -1
+    PalierThermique_1_5_6852_ OBJROW 44.9994768068
+    PalierThermique_1_5_6852_ R0000530 -1
+    PalierThermique_1_5_6852_ R0000531 -1
+    DefaillancePositive_1_6852_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6852_ R0000530 -1
+    DefaillanceNegative_1_6852_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6852_ R0000530 1
+    DefaillanceNegative_1_6852_ R0000531 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6853_ R0000532 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6853_ R0000534 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6853_ R0000938 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6853_ R0000939 1
+    PalierThermique_0_0_6853_ OBJROW 19.9994564001
+    PalierThermique_0_0_6853_ R0000532 -1
+    PalierThermique_0_0_6853_ R0000533 -1
+    PalierThermique_0_1_6853_ OBJROW 99.9994934354
+    PalierThermique_0_1_6853_ R0000532 -1
+    PalierThermique_0_1_6853_ R0000533 -1
+    PalierThermique_0_2_6853_ OBJROW 45.0005703639
+    PalierThermique_0_2_6853_ R0000532 -1
+    PalierThermique_0_2_6853_ R0000533 -1
+    DefaillancePositive_0_6853_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6853_ R0000532 -1
+    DefaillanceNegative_0_6853_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6853_ R0000532 1
+    DefaillanceNegative_0_6853_ R0000533 1
+    PalierThermique_1_3_6853_ OBJROW 19.9994823148
+    PalierThermique_1_3_6853_ R0000534 -1
+    PalierThermique_1_3_6853_ R0000535 -1
+    PalierThermique_1_4_6853_ OBJROW 100.0005620376
+    PalierThermique_1_4_6853_ R0000534 -1
+    PalierThermique_1_4_6853_ R0000535 -1
+    PalierThermique_1_5_6853_ OBJROW 44.9994768068
+    PalierThermique_1_5_6853_ R0000534 -1
+    PalierThermique_1_5_6853_ R0000535 -1
+    DefaillancePositive_1_6853_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6853_ R0000534 -1
+    DefaillanceNegative_1_6853_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6853_ R0000534 1
+    DefaillanceNegative_1_6853_ R0000535 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6854_ R0000536 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6854_ R0000538 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6854_ R0000940 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6854_ R0000941 1
+    PalierThermique_0_0_6854_ OBJROW 19.9994564001
+    PalierThermique_0_0_6854_ R0000536 -1
+    PalierThermique_0_0_6854_ R0000537 -1
+    PalierThermique_0_1_6854_ OBJROW 99.9994934354
+    PalierThermique_0_1_6854_ R0000536 -1
+    PalierThermique_0_1_6854_ R0000537 -1
+    PalierThermique_0_2_6854_ OBJROW 45.0005703639
+    PalierThermique_0_2_6854_ R0000536 -1
+    PalierThermique_0_2_6854_ R0000537 -1
+    DefaillancePositive_0_6854_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6854_ R0000536 -1
+    DefaillanceNegative_0_6854_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6854_ R0000536 1
+    DefaillanceNegative_0_6854_ R0000537 1
+    PalierThermique_1_3_6854_ OBJROW 19.9994823148
+    PalierThermique_1_3_6854_ R0000538 -1
+    PalierThermique_1_3_6854_ R0000539 -1
+    PalierThermique_1_4_6854_ OBJROW 100.0005620376
+    PalierThermique_1_4_6854_ R0000538 -1
+    PalierThermique_1_4_6854_ R0000539 -1
+    PalierThermique_1_5_6854_ OBJROW 44.9994768068
+    PalierThermique_1_5_6854_ R0000538 -1
+    PalierThermique_1_5_6854_ R0000539 -1
+    DefaillancePositive_1_6854_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6854_ R0000538 -1
+    DefaillanceNegative_1_6854_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6854_ R0000538 1
+    DefaillanceNegative_1_6854_ R0000539 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6855_ R0000540 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6855_ R0000542 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6855_ R0000942 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6855_ R0000943 1
+    PalierThermique_0_0_6855_ OBJROW 19.9994564001
+    PalierThermique_0_0_6855_ R0000540 -1
+    PalierThermique_0_0_6855_ R0000541 -1
+    PalierThermique_0_1_6855_ OBJROW 99.9994934354
+    PalierThermique_0_1_6855_ R0000540 -1
+    PalierThermique_0_1_6855_ R0000541 -1
+    PalierThermique_0_2_6855_ OBJROW 45.0005703639
+    PalierThermique_0_2_6855_ R0000540 -1
+    PalierThermique_0_2_6855_ R0000541 -1
+    DefaillancePositive_0_6855_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6855_ R0000540 -1
+    DefaillanceNegative_0_6855_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6855_ R0000540 1
+    DefaillanceNegative_0_6855_ R0000541 1
+    PalierThermique_1_3_6855_ OBJROW 19.9994823148
+    PalierThermique_1_3_6855_ R0000542 -1
+    PalierThermique_1_3_6855_ R0000543 -1
+    PalierThermique_1_4_6855_ OBJROW 100.0005620376
+    PalierThermique_1_4_6855_ R0000542 -1
+    PalierThermique_1_4_6855_ R0000543 -1
+    PalierThermique_1_5_6855_ OBJROW 44.9994768068
+    PalierThermique_1_5_6855_ R0000542 -1
+    PalierThermique_1_5_6855_ R0000543 -1
+    DefaillancePositive_1_6855_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6855_ R0000542 -1
+    DefaillanceNegative_1_6855_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6855_ R0000542 1
+    DefaillanceNegative_1_6855_ R0000543 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6856_ R0000544 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6856_ R0000546 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6856_ R0000944 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6856_ R0000945 1
+    PalierThermique_0_0_6856_ OBJROW 19.9994564001
+    PalierThermique_0_0_6856_ R0000544 -1
+    PalierThermique_0_0_6856_ R0000545 -1
+    PalierThermique_0_1_6856_ OBJROW 99.9994934354
+    PalierThermique_0_1_6856_ R0000544 -1
+    PalierThermique_0_1_6856_ R0000545 -1
+    PalierThermique_0_2_6856_ OBJROW 45.0005703639
+    PalierThermique_0_2_6856_ R0000544 -1
+    PalierThermique_0_2_6856_ R0000545 -1
+    DefaillancePositive_0_6856_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6856_ R0000544 -1
+    DefaillanceNegative_0_6856_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6856_ R0000544 1
+    DefaillanceNegative_0_6856_ R0000545 1
+    PalierThermique_1_3_6856_ OBJROW 19.9994823148
+    PalierThermique_1_3_6856_ R0000546 -1
+    PalierThermique_1_3_6856_ R0000547 -1
+    PalierThermique_1_4_6856_ OBJROW 100.0005620376
+    PalierThermique_1_4_6856_ R0000546 -1
+    PalierThermique_1_4_6856_ R0000547 -1
+    PalierThermique_1_5_6856_ OBJROW 44.9994768068
+    PalierThermique_1_5_6856_ R0000546 -1
+    PalierThermique_1_5_6856_ R0000547 -1
+    DefaillancePositive_1_6856_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6856_ R0000546 -1
+    DefaillanceNegative_1_6856_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6856_ R0000546 1
+    DefaillanceNegative_1_6856_ R0000547 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6857_ R0000548 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6857_ R0000550 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6857_ R0000946 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6857_ R0000947 1
+    PalierThermique_0_0_6857_ OBJROW 19.9994564001
+    PalierThermique_0_0_6857_ R0000548 -1
+    PalierThermique_0_0_6857_ R0000549 -1
+    PalierThermique_0_1_6857_ OBJROW 99.9994934354
+    PalierThermique_0_1_6857_ R0000548 -1
+    PalierThermique_0_1_6857_ R0000549 -1
+    PalierThermique_0_2_6857_ OBJROW 45.0005703639
+    PalierThermique_0_2_6857_ R0000548 -1
+    PalierThermique_0_2_6857_ R0000549 -1
+    DefaillancePositive_0_6857_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6857_ R0000548 -1
+    DefaillanceNegative_0_6857_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6857_ R0000548 1
+    DefaillanceNegative_0_6857_ R0000549 1
+    PalierThermique_1_3_6857_ OBJROW 19.9994823148
+    PalierThermique_1_3_6857_ R0000550 -1
+    PalierThermique_1_3_6857_ R0000551 -1
+    PalierThermique_1_4_6857_ OBJROW 100.0005620376
+    PalierThermique_1_4_6857_ R0000550 -1
+    PalierThermique_1_4_6857_ R0000551 -1
+    PalierThermique_1_5_6857_ OBJROW 44.9994768068
+    PalierThermique_1_5_6857_ R0000550 -1
+    PalierThermique_1_5_6857_ R0000551 -1
+    DefaillancePositive_1_6857_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6857_ R0000550 -1
+    DefaillanceNegative_1_6857_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6857_ R0000550 1
+    DefaillanceNegative_1_6857_ R0000551 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6858_ R0000552 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6858_ R0000554 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6858_ R0000948 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6858_ R0000949 1
+    PalierThermique_0_0_6858_ OBJROW 19.9994564001
+    PalierThermique_0_0_6858_ R0000552 -1
+    PalierThermique_0_0_6858_ R0000553 -1
+    PalierThermique_0_1_6858_ OBJROW 99.9994934354
+    PalierThermique_0_1_6858_ R0000552 -1
+    PalierThermique_0_1_6858_ R0000553 -1
+    PalierThermique_0_2_6858_ OBJROW 45.0005703639
+    PalierThermique_0_2_6858_ R0000552 -1
+    PalierThermique_0_2_6858_ R0000553 -1
+    DefaillancePositive_0_6858_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6858_ R0000552 -1
+    DefaillanceNegative_0_6858_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6858_ R0000552 1
+    DefaillanceNegative_0_6858_ R0000553 1
+    PalierThermique_1_3_6858_ OBJROW 19.9994823148
+    PalierThermique_1_3_6858_ R0000554 -1
+    PalierThermique_1_3_6858_ R0000555 -1
+    PalierThermique_1_4_6858_ OBJROW 100.0005620376
+    PalierThermique_1_4_6858_ R0000554 -1
+    PalierThermique_1_4_6858_ R0000555 -1
+    PalierThermique_1_5_6858_ OBJROW 44.9994768068
+    PalierThermique_1_5_6858_ R0000554 -1
+    PalierThermique_1_5_6858_ R0000555 -1
+    DefaillancePositive_1_6858_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6858_ R0000554 -1
+    DefaillanceNegative_1_6858_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6858_ R0000554 1
+    DefaillanceNegative_1_6858_ R0000555 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6859_ R0000556 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6859_ R0000558 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6859_ R0000950 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6859_ R0000951 1
+    PalierThermique_0_0_6859_ OBJROW 19.9994564001
+    PalierThermique_0_0_6859_ R0000556 -1
+    PalierThermique_0_0_6859_ R0000557 -1
+    PalierThermique_0_1_6859_ OBJROW 99.9994934354
+    PalierThermique_0_1_6859_ R0000556 -1
+    PalierThermique_0_1_6859_ R0000557 -1
+    PalierThermique_0_2_6859_ OBJROW 45.0005703639
+    PalierThermique_0_2_6859_ R0000556 -1
+    PalierThermique_0_2_6859_ R0000557 -1
+    DefaillancePositive_0_6859_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6859_ R0000556 -1
+    DefaillanceNegative_0_6859_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6859_ R0000556 1
+    DefaillanceNegative_0_6859_ R0000557 1
+    PalierThermique_1_3_6859_ OBJROW 19.9994823148
+    PalierThermique_1_3_6859_ R0000558 -1
+    PalierThermique_1_3_6859_ R0000559 -1
+    PalierThermique_1_4_6859_ OBJROW 100.0005620376
+    PalierThermique_1_4_6859_ R0000558 -1
+    PalierThermique_1_4_6859_ R0000559 -1
+    PalierThermique_1_5_6859_ OBJROW 44.9994768068
+    PalierThermique_1_5_6859_ R0000558 -1
+    PalierThermique_1_5_6859_ R0000559 -1
+    DefaillancePositive_1_6859_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6859_ R0000558 -1
+    DefaillanceNegative_1_6859_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6859_ R0000558 1
+    DefaillanceNegative_1_6859_ R0000559 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6860_ R0000560 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6860_ R0000562 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6860_ R0000952 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6860_ R0000953 1
+    PalierThermique_0_0_6860_ OBJROW 19.9994564001
+    PalierThermique_0_0_6860_ R0000560 -1
+    PalierThermique_0_0_6860_ R0000561 -1
+    PalierThermique_0_1_6860_ OBJROW 99.9994934354
+    PalierThermique_0_1_6860_ R0000560 -1
+    PalierThermique_0_1_6860_ R0000561 -1
+    PalierThermique_0_2_6860_ OBJROW 45.0005703639
+    PalierThermique_0_2_6860_ R0000560 -1
+    PalierThermique_0_2_6860_ R0000561 -1
+    DefaillancePositive_0_6860_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6860_ R0000560 -1
+    DefaillanceNegative_0_6860_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6860_ R0000560 1
+    DefaillanceNegative_0_6860_ R0000561 1
+    PalierThermique_1_3_6860_ OBJROW 19.9994823148
+    PalierThermique_1_3_6860_ R0000562 -1
+    PalierThermique_1_3_6860_ R0000563 -1
+    PalierThermique_1_4_6860_ OBJROW 100.0005620376
+    PalierThermique_1_4_6860_ R0000562 -1
+    PalierThermique_1_4_6860_ R0000563 -1
+    PalierThermique_1_5_6860_ OBJROW 44.9994768068
+    PalierThermique_1_5_6860_ R0000562 -1
+    PalierThermique_1_5_6860_ R0000563 -1
+    DefaillancePositive_1_6860_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6860_ R0000562 -1
+    DefaillanceNegative_1_6860_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6860_ R0000562 1
+    DefaillanceNegative_1_6860_ R0000563 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6861_ R0000564 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6861_ R0000566 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6861_ R0000954 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6861_ R0000955 1
+    PalierThermique_0_0_6861_ OBJROW 19.9994564001
+    PalierThermique_0_0_6861_ R0000564 -1
+    PalierThermique_0_0_6861_ R0000565 -1
+    PalierThermique_0_1_6861_ OBJROW 99.9994934354
+    PalierThermique_0_1_6861_ R0000564 -1
+    PalierThermique_0_1_6861_ R0000565 -1
+    PalierThermique_0_2_6861_ OBJROW 45.0005703639
+    PalierThermique_0_2_6861_ R0000564 -1
+    PalierThermique_0_2_6861_ R0000565 -1
+    DefaillancePositive_0_6861_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6861_ R0000564 -1
+    DefaillanceNegative_0_6861_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6861_ R0000564 1
+    DefaillanceNegative_0_6861_ R0000565 1
+    PalierThermique_1_3_6861_ OBJROW 19.9994823148
+    PalierThermique_1_3_6861_ R0000566 -1
+    PalierThermique_1_3_6861_ R0000567 -1
+    PalierThermique_1_4_6861_ OBJROW 100.0005620376
+    PalierThermique_1_4_6861_ R0000566 -1
+    PalierThermique_1_4_6861_ R0000567 -1
+    PalierThermique_1_5_6861_ OBJROW 44.9994768068
+    PalierThermique_1_5_6861_ R0000566 -1
+    PalierThermique_1_5_6861_ R0000567 -1
+    DefaillancePositive_1_6861_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6861_ R0000566 -1
+    DefaillanceNegative_1_6861_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6861_ R0000566 1
+    DefaillanceNegative_1_6861_ R0000567 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6862_ R0000568 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6862_ R0000570 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6862_ R0000956 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6862_ R0000957 1
+    PalierThermique_0_0_6862_ OBJROW 19.9994564001
+    PalierThermique_0_0_6862_ R0000568 -1
+    PalierThermique_0_0_6862_ R0000569 -1
+    PalierThermique_0_1_6862_ OBJROW 99.9994934354
+    PalierThermique_0_1_6862_ R0000568 -1
+    PalierThermique_0_1_6862_ R0000569 -1
+    PalierThermique_0_2_6862_ OBJROW 45.0005703639
+    PalierThermique_0_2_6862_ R0000568 -1
+    PalierThermique_0_2_6862_ R0000569 -1
+    DefaillancePositive_0_6862_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6862_ R0000568 -1
+    DefaillanceNegative_0_6862_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6862_ R0000568 1
+    DefaillanceNegative_0_6862_ R0000569 1
+    PalierThermique_1_3_6862_ OBJROW 19.9994823148
+    PalierThermique_1_3_6862_ R0000570 -1
+    PalierThermique_1_3_6862_ R0000571 -1
+    PalierThermique_1_4_6862_ OBJROW 100.0005620376
+    PalierThermique_1_4_6862_ R0000570 -1
+    PalierThermique_1_4_6862_ R0000571 -1
+    PalierThermique_1_5_6862_ OBJROW 44.9994768068
+    PalierThermique_1_5_6862_ R0000570 -1
+    PalierThermique_1_5_6862_ R0000571 -1
+    DefaillancePositive_1_6862_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6862_ R0000570 -1
+    DefaillanceNegative_1_6862_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6862_ R0000570 1
+    DefaillanceNegative_1_6862_ R0000571 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6863_ R0000572 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6863_ R0000574 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6863_ R0000958 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6863_ R0000959 1
+    PalierThermique_0_0_6863_ OBJROW 19.9994564001
+    PalierThermique_0_0_6863_ R0000572 -1
+    PalierThermique_0_0_6863_ R0000573 -1
+    PalierThermique_0_1_6863_ OBJROW 99.9994934354
+    PalierThermique_0_1_6863_ R0000572 -1
+    PalierThermique_0_1_6863_ R0000573 -1
+    PalierThermique_0_2_6863_ OBJROW 45.0005703639
+    PalierThermique_0_2_6863_ R0000572 -1
+    PalierThermique_0_2_6863_ R0000573 -1
+    DefaillancePositive_0_6863_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6863_ R0000572 -1
+    DefaillanceNegative_0_6863_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6863_ R0000572 1
+    DefaillanceNegative_0_6863_ R0000573 1
+    PalierThermique_1_3_6863_ OBJROW 19.9994823148
+    PalierThermique_1_3_6863_ R0000574 -1
+    PalierThermique_1_3_6863_ R0000575 -1
+    PalierThermique_1_4_6863_ OBJROW 100.0005620376
+    PalierThermique_1_4_6863_ R0000574 -1
+    PalierThermique_1_4_6863_ R0000575 -1
+    PalierThermique_1_5_6863_ OBJROW 44.9994768068
+    PalierThermique_1_5_6863_ R0000574 -1
+    PalierThermique_1_5_6863_ R0000575 -1
+    DefaillancePositive_1_6863_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6863_ R0000574 -1
+    DefaillanceNegative_1_6863_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6863_ R0000574 1
+    DefaillanceNegative_1_6863_ R0000575 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6864_ R0000576 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6864_ R0000578 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6864_ R0000960 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6864_ R0000961 1
+    PalierThermique_0_0_6864_ OBJROW 19.9994564001
+    PalierThermique_0_0_6864_ R0000576 -1
+    PalierThermique_0_0_6864_ R0000577 -1
+    PalierThermique_0_1_6864_ OBJROW 99.9994934354
+    PalierThermique_0_1_6864_ R0000576 -1
+    PalierThermique_0_1_6864_ R0000577 -1
+    PalierThermique_0_2_6864_ OBJROW 45.0005703639
+    PalierThermique_0_2_6864_ R0000576 -1
+    PalierThermique_0_2_6864_ R0000577 -1
+    DefaillancePositive_0_6864_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6864_ R0000576 -1
+    DefaillanceNegative_0_6864_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6864_ R0000576 1
+    DefaillanceNegative_0_6864_ R0000577 1
+    PalierThermique_1_3_6864_ OBJROW 19.9994823148
+    PalierThermique_1_3_6864_ R0000578 -1
+    PalierThermique_1_3_6864_ R0000579 -1
+    PalierThermique_1_4_6864_ OBJROW 100.0005620376
+    PalierThermique_1_4_6864_ R0000578 -1
+    PalierThermique_1_4_6864_ R0000579 -1
+    PalierThermique_1_5_6864_ OBJROW 44.9994768068
+    PalierThermique_1_5_6864_ R0000578 -1
+    PalierThermique_1_5_6864_ R0000579 -1
+    DefaillancePositive_1_6864_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6864_ R0000578 -1
+    DefaillanceNegative_1_6864_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6864_ R0000578 1
+    DefaillanceNegative_1_6864_ R0000579 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6865_ R0000580 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6865_ R0000582 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6865_ R0000962 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6865_ R0000963 1
+    PalierThermique_0_0_6865_ OBJROW 19.9994564001
+    PalierThermique_0_0_6865_ R0000580 -1
+    PalierThermique_0_0_6865_ R0000581 -1
+    PalierThermique_0_1_6865_ OBJROW 99.9994934354
+    PalierThermique_0_1_6865_ R0000580 -1
+    PalierThermique_0_1_6865_ R0000581 -1
+    PalierThermique_0_2_6865_ OBJROW 45.0005703639
+    PalierThermique_0_2_6865_ R0000580 -1
+    PalierThermique_0_2_6865_ R0000581 -1
+    DefaillancePositive_0_6865_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6865_ R0000580 -1
+    DefaillanceNegative_0_6865_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6865_ R0000580 1
+    DefaillanceNegative_0_6865_ R0000581 1
+    PalierThermique_1_3_6865_ OBJROW 19.9994823148
+    PalierThermique_1_3_6865_ R0000582 -1
+    PalierThermique_1_3_6865_ R0000583 -1
+    PalierThermique_1_4_6865_ OBJROW 100.0005620376
+    PalierThermique_1_4_6865_ R0000582 -1
+    PalierThermique_1_4_6865_ R0000583 -1
+    PalierThermique_1_5_6865_ OBJROW 44.9994768068
+    PalierThermique_1_5_6865_ R0000582 -1
+    PalierThermique_1_5_6865_ R0000583 -1
+    DefaillancePositive_1_6865_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6865_ R0000582 -1
+    DefaillanceNegative_1_6865_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6865_ R0000582 1
+    DefaillanceNegative_1_6865_ R0000583 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6866_ R0000584 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6866_ R0000586 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6866_ R0000964 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6866_ R0000965 1
+    PalierThermique_0_0_6866_ OBJROW 19.9994564001
+    PalierThermique_0_0_6866_ R0000584 -1
+    PalierThermique_0_0_6866_ R0000585 -1
+    PalierThermique_0_1_6866_ OBJROW 99.9994934354
+    PalierThermique_0_1_6866_ R0000584 -1
+    PalierThermique_0_1_6866_ R0000585 -1
+    PalierThermique_0_2_6866_ OBJROW 45.0005703639
+    PalierThermique_0_2_6866_ R0000584 -1
+    PalierThermique_0_2_6866_ R0000585 -1
+    DefaillancePositive_0_6866_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6866_ R0000584 -1
+    DefaillanceNegative_0_6866_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6866_ R0000584 1
+    DefaillanceNegative_0_6866_ R0000585 1
+    PalierThermique_1_3_6866_ OBJROW 19.9994823148
+    PalierThermique_1_3_6866_ R0000586 -1
+    PalierThermique_1_3_6866_ R0000587 -1
+    PalierThermique_1_4_6866_ OBJROW 100.0005620376
+    PalierThermique_1_4_6866_ R0000586 -1
+    PalierThermique_1_4_6866_ R0000587 -1
+    PalierThermique_1_5_6866_ OBJROW 44.9994768068
+    PalierThermique_1_5_6866_ R0000586 -1
+    PalierThermique_1_5_6866_ R0000587 -1
+    DefaillancePositive_1_6866_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6866_ R0000586 -1
+    DefaillanceNegative_1_6866_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6866_ R0000586 1
+    DefaillanceNegative_1_6866_ R0000587 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6867_ R0000588 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6867_ R0000590 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6867_ R0000966 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6867_ R0000967 1
+    PalierThermique_0_0_6867_ OBJROW 19.9994564001
+    PalierThermique_0_0_6867_ R0000588 -1
+    PalierThermique_0_0_6867_ R0000589 -1
+    PalierThermique_0_1_6867_ OBJROW 99.9994934354
+    PalierThermique_0_1_6867_ R0000588 -1
+    PalierThermique_0_1_6867_ R0000589 -1
+    PalierThermique_0_2_6867_ OBJROW 45.0005703639
+    PalierThermique_0_2_6867_ R0000588 -1
+    PalierThermique_0_2_6867_ R0000589 -1
+    DefaillancePositive_0_6867_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6867_ R0000588 -1
+    DefaillanceNegative_0_6867_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6867_ R0000588 1
+    DefaillanceNegative_0_6867_ R0000589 1
+    PalierThermique_1_3_6867_ OBJROW 19.9994823148
+    PalierThermique_1_3_6867_ R0000590 -1
+    PalierThermique_1_3_6867_ R0000591 -1
+    PalierThermique_1_4_6867_ OBJROW 100.0005620376
+    PalierThermique_1_4_6867_ R0000590 -1
+    PalierThermique_1_4_6867_ R0000591 -1
+    PalierThermique_1_5_6867_ OBJROW 44.9994768068
+    PalierThermique_1_5_6867_ R0000590 -1
+    PalierThermique_1_5_6867_ R0000591 -1
+    DefaillancePositive_1_6867_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6867_ R0000590 -1
+    DefaillanceNegative_1_6867_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6867_ R0000590 1
+    DefaillanceNegative_1_6867_ R0000591 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6868_ R0000592 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6868_ R0000594 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6868_ R0000968 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6868_ R0000969 1
+    PalierThermique_0_0_6868_ OBJROW 19.9994564001
+    PalierThermique_0_0_6868_ R0000592 -1
+    PalierThermique_0_0_6868_ R0000593 -1
+    PalierThermique_0_1_6868_ OBJROW 99.9994934354
+    PalierThermique_0_1_6868_ R0000592 -1
+    PalierThermique_0_1_6868_ R0000593 -1
+    PalierThermique_0_2_6868_ OBJROW 45.0005703639
+    PalierThermique_0_2_6868_ R0000592 -1
+    PalierThermique_0_2_6868_ R0000593 -1
+    DefaillancePositive_0_6868_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6868_ R0000592 -1
+    DefaillanceNegative_0_6868_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6868_ R0000592 1
+    DefaillanceNegative_0_6868_ R0000593 1
+    PalierThermique_1_3_6868_ OBJROW 19.9994823148
+    PalierThermique_1_3_6868_ R0000594 -1
+    PalierThermique_1_3_6868_ R0000595 -1
+    PalierThermique_1_4_6868_ OBJROW 100.0005620376
+    PalierThermique_1_4_6868_ R0000594 -1
+    PalierThermique_1_4_6868_ R0000595 -1
+    PalierThermique_1_5_6868_ OBJROW 44.9994768068
+    PalierThermique_1_5_6868_ R0000594 -1
+    PalierThermique_1_5_6868_ R0000595 -1
+    DefaillancePositive_1_6868_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6868_ R0000594 -1
+    DefaillanceNegative_1_6868_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6868_ R0000594 1
+    DefaillanceNegative_1_6868_ R0000595 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6869_ R0000596 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6869_ R0000598 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6869_ R0000970 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6869_ R0000971 1
+    PalierThermique_0_0_6869_ OBJROW 19.9994564001
+    PalierThermique_0_0_6869_ R0000596 -1
+    PalierThermique_0_0_6869_ R0000597 -1
+    PalierThermique_0_1_6869_ OBJROW 99.9994934354
+    PalierThermique_0_1_6869_ R0000596 -1
+    PalierThermique_0_1_6869_ R0000597 -1
+    PalierThermique_0_2_6869_ OBJROW 45.0005703639
+    PalierThermique_0_2_6869_ R0000596 -1
+    PalierThermique_0_2_6869_ R0000597 -1
+    DefaillancePositive_0_6869_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6869_ R0000596 -1
+    DefaillanceNegative_0_6869_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6869_ R0000596 1
+    DefaillanceNegative_0_6869_ R0000597 1
+    PalierThermique_1_3_6869_ OBJROW 19.9994823148
+    PalierThermique_1_3_6869_ R0000598 -1
+    PalierThermique_1_3_6869_ R0000599 -1
+    PalierThermique_1_4_6869_ OBJROW 100.0005620376
+    PalierThermique_1_4_6869_ R0000598 -1
+    PalierThermique_1_4_6869_ R0000599 -1
+    PalierThermique_1_5_6869_ OBJROW 44.9994768068
+    PalierThermique_1_5_6869_ R0000598 -1
+    PalierThermique_1_5_6869_ R0000599 -1
+    DefaillancePositive_1_6869_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6869_ R0000598 -1
+    DefaillanceNegative_1_6869_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6869_ R0000598 1
+    DefaillanceNegative_1_6869_ R0000599 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6870_ R0000600 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6870_ R0000602 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6870_ R0000972 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6870_ R0000973 1
+    PalierThermique_0_0_6870_ OBJROW 19.9994564001
+    PalierThermique_0_0_6870_ R0000600 -1
+    PalierThermique_0_0_6870_ R0000601 -1
+    PalierThermique_0_1_6870_ OBJROW 99.9994934354
+    PalierThermique_0_1_6870_ R0000600 -1
+    PalierThermique_0_1_6870_ R0000601 -1
+    PalierThermique_0_2_6870_ OBJROW 45.0005703639
+    PalierThermique_0_2_6870_ R0000600 -1
+    PalierThermique_0_2_6870_ R0000601 -1
+    DefaillancePositive_0_6870_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6870_ R0000600 -1
+    DefaillanceNegative_0_6870_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6870_ R0000600 1
+    DefaillanceNegative_0_6870_ R0000601 1
+    PalierThermique_1_3_6870_ OBJROW 19.9994823148
+    PalierThermique_1_3_6870_ R0000602 -1
+    PalierThermique_1_3_6870_ R0000603 -1
+    PalierThermique_1_4_6870_ OBJROW 100.0005620376
+    PalierThermique_1_4_6870_ R0000602 -1
+    PalierThermique_1_4_6870_ R0000603 -1
+    PalierThermique_1_5_6870_ OBJROW 44.9994768068
+    PalierThermique_1_5_6870_ R0000602 -1
+    PalierThermique_1_5_6870_ R0000603 -1
+    DefaillancePositive_1_6870_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6870_ R0000602 -1
+    DefaillanceNegative_1_6870_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6870_ R0000602 1
+    DefaillanceNegative_1_6870_ R0000603 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6871_ R0000604 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6871_ R0000606 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6871_ R0000974 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6871_ R0000975 1
+    PalierThermique_0_0_6871_ OBJROW 19.9994564001
+    PalierThermique_0_0_6871_ R0000604 -1
+    PalierThermique_0_0_6871_ R0000605 -1
+    PalierThermique_0_1_6871_ OBJROW 99.9994934354
+    PalierThermique_0_1_6871_ R0000604 -1
+    PalierThermique_0_1_6871_ R0000605 -1
+    PalierThermique_0_2_6871_ OBJROW 45.0005703639
+    PalierThermique_0_2_6871_ R0000604 -1
+    PalierThermique_0_2_6871_ R0000605 -1
+    DefaillancePositive_0_6871_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6871_ R0000604 -1
+    DefaillanceNegative_0_6871_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6871_ R0000604 1
+    DefaillanceNegative_0_6871_ R0000605 1
+    PalierThermique_1_3_6871_ OBJROW 19.9994823148
+    PalierThermique_1_3_6871_ R0000606 -1
+    PalierThermique_1_3_6871_ R0000607 -1
+    PalierThermique_1_4_6871_ OBJROW 100.0005620376
+    PalierThermique_1_4_6871_ R0000606 -1
+    PalierThermique_1_4_6871_ R0000607 -1
+    PalierThermique_1_5_6871_ OBJROW 44.9994768068
+    PalierThermique_1_5_6871_ R0000606 -1
+    PalierThermique_1_5_6871_ R0000607 -1
+    DefaillancePositive_1_6871_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6871_ R0000606 -1
+    DefaillanceNegative_1_6871_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6871_ R0000606 1
+    DefaillanceNegative_1_6871_ R0000607 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6872_ R0000608 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6872_ R0000610 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6872_ R0000976 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6872_ R0000977 1
+    PalierThermique_0_0_6872_ OBJROW 19.9994564001
+    PalierThermique_0_0_6872_ R0000608 -1
+    PalierThermique_0_0_6872_ R0000609 -1
+    PalierThermique_0_1_6872_ OBJROW 99.9994934354
+    PalierThermique_0_1_6872_ R0000608 -1
+    PalierThermique_0_1_6872_ R0000609 -1
+    PalierThermique_0_2_6872_ OBJROW 45.0005703639
+    PalierThermique_0_2_6872_ R0000608 -1
+    PalierThermique_0_2_6872_ R0000609 -1
+    DefaillancePositive_0_6872_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6872_ R0000608 -1
+    DefaillanceNegative_0_6872_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6872_ R0000608 1
+    DefaillanceNegative_0_6872_ R0000609 1
+    PalierThermique_1_3_6872_ OBJROW 19.9994823148
+    PalierThermique_1_3_6872_ R0000610 -1
+    PalierThermique_1_3_6872_ R0000611 -1
+    PalierThermique_1_4_6872_ OBJROW 100.0005620376
+    PalierThermique_1_4_6872_ R0000610 -1
+    PalierThermique_1_4_6872_ R0000611 -1
+    PalierThermique_1_5_6872_ OBJROW 44.9994768068
+    PalierThermique_1_5_6872_ R0000610 -1
+    PalierThermique_1_5_6872_ R0000611 -1
+    DefaillancePositive_1_6872_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6872_ R0000610 -1
+    DefaillanceNegative_1_6872_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6872_ R0000610 1
+    DefaillanceNegative_1_6872_ R0000611 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6873_ R0000612 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6873_ R0000614 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6873_ R0000978 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6873_ R0000979 1
+    PalierThermique_0_0_6873_ OBJROW 19.9994564001
+    PalierThermique_0_0_6873_ R0000612 -1
+    PalierThermique_0_0_6873_ R0000613 -1
+    PalierThermique_0_1_6873_ OBJROW 99.9994934354
+    PalierThermique_0_1_6873_ R0000612 -1
+    PalierThermique_0_1_6873_ R0000613 -1
+    PalierThermique_0_2_6873_ OBJROW 45.0005703639
+    PalierThermique_0_2_6873_ R0000612 -1
+    PalierThermique_0_2_6873_ R0000613 -1
+    DefaillancePositive_0_6873_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6873_ R0000612 -1
+    DefaillanceNegative_0_6873_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6873_ R0000612 1
+    DefaillanceNegative_0_6873_ R0000613 1
+    PalierThermique_1_3_6873_ OBJROW 19.9994823148
+    PalierThermique_1_3_6873_ R0000614 -1
+    PalierThermique_1_3_6873_ R0000615 -1
+    PalierThermique_1_4_6873_ OBJROW 100.0005620376
+    PalierThermique_1_4_6873_ R0000614 -1
+    PalierThermique_1_4_6873_ R0000615 -1
+    PalierThermique_1_5_6873_ OBJROW 44.9994768068
+    PalierThermique_1_5_6873_ R0000614 -1
+    PalierThermique_1_5_6873_ R0000615 -1
+    DefaillancePositive_1_6873_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6873_ R0000614 -1
+    DefaillanceNegative_1_6873_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6873_ R0000614 1
+    DefaillanceNegative_1_6873_ R0000615 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6874_ R0000616 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6874_ R0000618 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6874_ R0000980 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6874_ R0000981 1
+    PalierThermique_0_0_6874_ OBJROW 19.9994564001
+    PalierThermique_0_0_6874_ R0000616 -1
+    PalierThermique_0_0_6874_ R0000617 -1
+    PalierThermique_0_1_6874_ OBJROW 99.9994934354
+    PalierThermique_0_1_6874_ R0000616 -1
+    PalierThermique_0_1_6874_ R0000617 -1
+    PalierThermique_0_2_6874_ OBJROW 45.0005703639
+    PalierThermique_0_2_6874_ R0000616 -1
+    PalierThermique_0_2_6874_ R0000617 -1
+    DefaillancePositive_0_6874_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6874_ R0000616 -1
+    DefaillanceNegative_0_6874_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6874_ R0000616 1
+    DefaillanceNegative_0_6874_ R0000617 1
+    PalierThermique_1_3_6874_ OBJROW 19.9994823148
+    PalierThermique_1_3_6874_ R0000618 -1
+    PalierThermique_1_3_6874_ R0000619 -1
+    PalierThermique_1_4_6874_ OBJROW 100.0005620376
+    PalierThermique_1_4_6874_ R0000618 -1
+    PalierThermique_1_4_6874_ R0000619 -1
+    PalierThermique_1_5_6874_ OBJROW 44.9994768068
+    PalierThermique_1_5_6874_ R0000618 -1
+    PalierThermique_1_5_6874_ R0000619 -1
+    DefaillancePositive_1_6874_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6874_ R0000618 -1
+    DefaillanceNegative_1_6874_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6874_ R0000618 1
+    DefaillanceNegative_1_6874_ R0000619 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6875_ R0000620 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6875_ R0000622 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6875_ R0000982 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6875_ R0000983 1
+    PalierThermique_0_0_6875_ OBJROW 19.9994564001
+    PalierThermique_0_0_6875_ R0000620 -1
+    PalierThermique_0_0_6875_ R0000621 -1
+    PalierThermique_0_1_6875_ OBJROW 99.9994934354
+    PalierThermique_0_1_6875_ R0000620 -1
+    PalierThermique_0_1_6875_ R0000621 -1
+    PalierThermique_0_2_6875_ OBJROW 45.0005703639
+    PalierThermique_0_2_6875_ R0000620 -1
+    PalierThermique_0_2_6875_ R0000621 -1
+    DefaillancePositive_0_6875_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6875_ R0000620 -1
+    DefaillanceNegative_0_6875_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6875_ R0000620 1
+    DefaillanceNegative_0_6875_ R0000621 1
+    PalierThermique_1_3_6875_ OBJROW 19.9994823148
+    PalierThermique_1_3_6875_ R0000622 -1
+    PalierThermique_1_3_6875_ R0000623 -1
+    PalierThermique_1_4_6875_ OBJROW 100.0005620376
+    PalierThermique_1_4_6875_ R0000622 -1
+    PalierThermique_1_4_6875_ R0000623 -1
+    PalierThermique_1_5_6875_ OBJROW 44.9994768068
+    PalierThermique_1_5_6875_ R0000622 -1
+    PalierThermique_1_5_6875_ R0000623 -1
+    DefaillancePositive_1_6875_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6875_ R0000622 -1
+    DefaillanceNegative_1_6875_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6875_ R0000622 1
+    DefaillanceNegative_1_6875_ R0000623 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6876_ R0000624 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6876_ R0000626 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6876_ R0000984 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6876_ R0000985 1
+    PalierThermique_0_0_6876_ OBJROW 19.9994564001
+    PalierThermique_0_0_6876_ R0000624 -1
+    PalierThermique_0_0_6876_ R0000625 -1
+    PalierThermique_0_1_6876_ OBJROW 99.9994934354
+    PalierThermique_0_1_6876_ R0000624 -1
+    PalierThermique_0_1_6876_ R0000625 -1
+    PalierThermique_0_2_6876_ OBJROW 45.0005703639
+    PalierThermique_0_2_6876_ R0000624 -1
+    PalierThermique_0_2_6876_ R0000625 -1
+    DefaillancePositive_0_6876_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6876_ R0000624 -1
+    DefaillanceNegative_0_6876_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6876_ R0000624 1
+    DefaillanceNegative_0_6876_ R0000625 1
+    PalierThermique_1_3_6876_ OBJROW 19.9994823148
+    PalierThermique_1_3_6876_ R0000626 -1
+    PalierThermique_1_3_6876_ R0000627 -1
+    PalierThermique_1_4_6876_ OBJROW 100.0005620376
+    PalierThermique_1_4_6876_ R0000626 -1
+    PalierThermique_1_4_6876_ R0000627 -1
+    PalierThermique_1_5_6876_ OBJROW 44.9994768068
+    PalierThermique_1_5_6876_ R0000626 -1
+    PalierThermique_1_5_6876_ R0000627 -1
+    DefaillancePositive_1_6876_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6876_ R0000626 -1
+    DefaillanceNegative_1_6876_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6876_ R0000626 1
+    DefaillanceNegative_1_6876_ R0000627 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6877_ R0000628 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6877_ R0000630 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6877_ R0000986 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6877_ R0000987 1
+    PalierThermique_0_0_6877_ OBJROW 19.9994564001
+    PalierThermique_0_0_6877_ R0000628 -1
+    PalierThermique_0_0_6877_ R0000629 -1
+    PalierThermique_0_1_6877_ OBJROW 99.9994934354
+    PalierThermique_0_1_6877_ R0000628 -1
+    PalierThermique_0_1_6877_ R0000629 -1
+    PalierThermique_0_2_6877_ OBJROW 45.0005703639
+    PalierThermique_0_2_6877_ R0000628 -1
+    PalierThermique_0_2_6877_ R0000629 -1
+    DefaillancePositive_0_6877_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6877_ R0000628 -1
+    DefaillanceNegative_0_6877_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6877_ R0000628 1
+    DefaillanceNegative_0_6877_ R0000629 1
+    PalierThermique_1_3_6877_ OBJROW 19.9994823148
+    PalierThermique_1_3_6877_ R0000630 -1
+    PalierThermique_1_3_6877_ R0000631 -1
+    PalierThermique_1_4_6877_ OBJROW 100.0005620376
+    PalierThermique_1_4_6877_ R0000630 -1
+    PalierThermique_1_4_6877_ R0000631 -1
+    PalierThermique_1_5_6877_ OBJROW 44.9994768068
+    PalierThermique_1_5_6877_ R0000630 -1
+    PalierThermique_1_5_6877_ R0000631 -1
+    DefaillancePositive_1_6877_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6877_ R0000630 -1
+    DefaillanceNegative_1_6877_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6877_ R0000630 1
+    DefaillanceNegative_1_6877_ R0000631 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6878_ R0000632 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6878_ R0000634 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6878_ R0000988 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6878_ R0000989 1
+    PalierThermique_0_0_6878_ OBJROW 19.9994564001
+    PalierThermique_0_0_6878_ R0000632 -1
+    PalierThermique_0_0_6878_ R0000633 -1
+    PalierThermique_0_1_6878_ OBJROW 99.9994934354
+    PalierThermique_0_1_6878_ R0000632 -1
+    PalierThermique_0_1_6878_ R0000633 -1
+    PalierThermique_0_2_6878_ OBJROW 45.0005703639
+    PalierThermique_0_2_6878_ R0000632 -1
+    PalierThermique_0_2_6878_ R0000633 -1
+    DefaillancePositive_0_6878_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6878_ R0000632 -1
+    DefaillanceNegative_0_6878_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6878_ R0000632 1
+    DefaillanceNegative_0_6878_ R0000633 1
+    PalierThermique_1_3_6878_ OBJROW 19.9994823148
+    PalierThermique_1_3_6878_ R0000634 -1
+    PalierThermique_1_3_6878_ R0000635 -1
+    PalierThermique_1_4_6878_ OBJROW 100.0005620376
+    PalierThermique_1_4_6878_ R0000634 -1
+    PalierThermique_1_4_6878_ R0000635 -1
+    PalierThermique_1_5_6878_ OBJROW 44.9994768068
+    PalierThermique_1_5_6878_ R0000634 -1
+    PalierThermique_1_5_6878_ R0000635 -1
+    DefaillancePositive_1_6878_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6878_ R0000634 -1
+    DefaillanceNegative_1_6878_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6878_ R0000634 1
+    DefaillanceNegative_1_6878_ R0000635 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6879_ R0000636 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6879_ R0000638 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6879_ R0000990 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6879_ R0000991 1
+    PalierThermique_0_0_6879_ OBJROW 19.9994564001
+    PalierThermique_0_0_6879_ R0000636 -1
+    PalierThermique_0_0_6879_ R0000637 -1
+    PalierThermique_0_1_6879_ OBJROW 99.9994934354
+    PalierThermique_0_1_6879_ R0000636 -1
+    PalierThermique_0_1_6879_ R0000637 -1
+    PalierThermique_0_2_6879_ OBJROW 45.0005703639
+    PalierThermique_0_2_6879_ R0000636 -1
+    PalierThermique_0_2_6879_ R0000637 -1
+    DefaillancePositive_0_6879_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6879_ R0000636 -1
+    DefaillanceNegative_0_6879_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6879_ R0000636 1
+    DefaillanceNegative_0_6879_ R0000637 1
+    PalierThermique_1_3_6879_ OBJROW 19.9994823148
+    PalierThermique_1_3_6879_ R0000638 -1
+    PalierThermique_1_3_6879_ R0000639 -1
+    PalierThermique_1_4_6879_ OBJROW 100.0005620376
+    PalierThermique_1_4_6879_ R0000638 -1
+    PalierThermique_1_4_6879_ R0000639 -1
+    PalierThermique_1_5_6879_ OBJROW 44.9994768068
+    PalierThermique_1_5_6879_ R0000638 -1
+    PalierThermique_1_5_6879_ R0000639 -1
+    DefaillancePositive_1_6879_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6879_ R0000638 -1
+    DefaillanceNegative_1_6879_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6879_ R0000638 1
+    DefaillanceNegative_1_6879_ R0000639 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6880_ R0000640 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6880_ R0000642 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6880_ R0000992 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6880_ R0000993 1
+    PalierThermique_0_0_6880_ OBJROW 19.9994564001
+    PalierThermique_0_0_6880_ R0000640 -1
+    PalierThermique_0_0_6880_ R0000641 -1
+    PalierThermique_0_1_6880_ OBJROW 99.9994934354
+    PalierThermique_0_1_6880_ R0000640 -1
+    PalierThermique_0_1_6880_ R0000641 -1
+    PalierThermique_0_2_6880_ OBJROW 45.0005703639
+    PalierThermique_0_2_6880_ R0000640 -1
+    PalierThermique_0_2_6880_ R0000641 -1
+    DefaillancePositive_0_6880_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6880_ R0000640 -1
+    DefaillanceNegative_0_6880_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6880_ R0000640 1
+    DefaillanceNegative_0_6880_ R0000641 1
+    PalierThermique_1_3_6880_ OBJROW 19.9994823148
+    PalierThermique_1_3_6880_ R0000642 -1
+    PalierThermique_1_3_6880_ R0000643 -1
+    PalierThermique_1_4_6880_ OBJROW 100.0005620376
+    PalierThermique_1_4_6880_ R0000642 -1
+    PalierThermique_1_4_6880_ R0000643 -1
+    PalierThermique_1_5_6880_ OBJROW 44.9994768068
+    PalierThermique_1_5_6880_ R0000642 -1
+    PalierThermique_1_5_6880_ R0000643 -1
+    DefaillancePositive_1_6880_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6880_ R0000642 -1
+    DefaillanceNegative_1_6880_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6880_ R0000642 1
+    DefaillanceNegative_1_6880_ R0000643 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6881_ R0000644 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6881_ R0000646 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6881_ R0000994 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6881_ R0000995 1
+    PalierThermique_0_0_6881_ OBJROW 19.9994564001
+    PalierThermique_0_0_6881_ R0000644 -1
+    PalierThermique_0_0_6881_ R0000645 -1
+    PalierThermique_0_1_6881_ OBJROW 99.9994934354
+    PalierThermique_0_1_6881_ R0000644 -1
+    PalierThermique_0_1_6881_ R0000645 -1
+    PalierThermique_0_2_6881_ OBJROW 45.0005703639
+    PalierThermique_0_2_6881_ R0000644 -1
+    PalierThermique_0_2_6881_ R0000645 -1
+    DefaillancePositive_0_6881_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6881_ R0000644 -1
+    DefaillanceNegative_0_6881_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6881_ R0000644 1
+    DefaillanceNegative_0_6881_ R0000645 1
+    PalierThermique_1_3_6881_ OBJROW 19.9994823148
+    PalierThermique_1_3_6881_ R0000646 -1
+    PalierThermique_1_3_6881_ R0000647 -1
+    PalierThermique_1_4_6881_ OBJROW 100.0005620376
+    PalierThermique_1_4_6881_ R0000646 -1
+    PalierThermique_1_4_6881_ R0000647 -1
+    PalierThermique_1_5_6881_ OBJROW 44.9994768068
+    PalierThermique_1_5_6881_ R0000646 -1
+    PalierThermique_1_5_6881_ R0000647 -1
+    DefaillancePositive_1_6881_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6881_ R0000646 -1
+    DefaillanceNegative_1_6881_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6881_ R0000646 1
+    DefaillanceNegative_1_6881_ R0000647 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6882_ R0000648 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6882_ R0000650 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6882_ R0000996 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6882_ R0000997 1
+    PalierThermique_0_0_6882_ OBJROW 19.9994564001
+    PalierThermique_0_0_6882_ R0000648 -1
+    PalierThermique_0_0_6882_ R0000649 -1
+    PalierThermique_0_1_6882_ OBJROW 99.9994934354
+    PalierThermique_0_1_6882_ R0000648 -1
+    PalierThermique_0_1_6882_ R0000649 -1
+    PalierThermique_0_2_6882_ OBJROW 45.0005703639
+    PalierThermique_0_2_6882_ R0000648 -1
+    PalierThermique_0_2_6882_ R0000649 -1
+    DefaillancePositive_0_6882_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6882_ R0000648 -1
+    DefaillanceNegative_0_6882_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6882_ R0000648 1
+    DefaillanceNegative_0_6882_ R0000649 1
+    PalierThermique_1_3_6882_ OBJROW 19.9994823148
+    PalierThermique_1_3_6882_ R0000650 -1
+    PalierThermique_1_3_6882_ R0000651 -1
+    PalierThermique_1_4_6882_ OBJROW 100.0005620376
+    PalierThermique_1_4_6882_ R0000650 -1
+    PalierThermique_1_4_6882_ R0000651 -1
+    PalierThermique_1_5_6882_ OBJROW 44.9994768068
+    PalierThermique_1_5_6882_ R0000650 -1
+    PalierThermique_1_5_6882_ R0000651 -1
+    DefaillancePositive_1_6882_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6882_ R0000650 -1
+    DefaillanceNegative_1_6882_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6882_ R0000650 1
+    DefaillanceNegative_1_6882_ R0000651 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6883_ R0000652 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6883_ R0000654 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6883_ R0000998 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6883_ R0000999 1
+    PalierThermique_0_0_6883_ OBJROW 19.9994564001
+    PalierThermique_0_0_6883_ R0000652 -1
+    PalierThermique_0_0_6883_ R0000653 -1
+    PalierThermique_0_1_6883_ OBJROW 99.9994934354
+    PalierThermique_0_1_6883_ R0000652 -1
+    PalierThermique_0_1_6883_ R0000653 -1
+    PalierThermique_0_2_6883_ OBJROW 45.0005703639
+    PalierThermique_0_2_6883_ R0000652 -1
+    PalierThermique_0_2_6883_ R0000653 -1
+    DefaillancePositive_0_6883_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6883_ R0000652 -1
+    DefaillanceNegative_0_6883_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6883_ R0000652 1
+    DefaillanceNegative_0_6883_ R0000653 1
+    PalierThermique_1_3_6883_ OBJROW 19.9994823148
+    PalierThermique_1_3_6883_ R0000654 -1
+    PalierThermique_1_3_6883_ R0000655 -1
+    PalierThermique_1_4_6883_ OBJROW 100.0005620376
+    PalierThermique_1_4_6883_ R0000654 -1
+    PalierThermique_1_4_6883_ R0000655 -1
+    PalierThermique_1_5_6883_ OBJROW 44.9994768068
+    PalierThermique_1_5_6883_ R0000654 -1
+    PalierThermique_1_5_6883_ R0000655 -1
+    DefaillancePositive_1_6883_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6883_ R0000654 -1
+    DefaillanceNegative_1_6883_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6883_ R0000654 1
+    DefaillanceNegative_1_6883_ R0000655 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6884_ R0000656 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6884_ R0000658 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6884_ R0001000 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6884_ R0001001 1
+    PalierThermique_0_0_6884_ OBJROW 19.9994564001
+    PalierThermique_0_0_6884_ R0000656 -1
+    PalierThermique_0_0_6884_ R0000657 -1
+    PalierThermique_0_1_6884_ OBJROW 99.9994934354
+    PalierThermique_0_1_6884_ R0000656 -1
+    PalierThermique_0_1_6884_ R0000657 -1
+    PalierThermique_0_2_6884_ OBJROW 45.0005703639
+    PalierThermique_0_2_6884_ R0000656 -1
+    PalierThermique_0_2_6884_ R0000657 -1
+    DefaillancePositive_0_6884_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6884_ R0000656 -1
+    DefaillanceNegative_0_6884_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6884_ R0000656 1
+    DefaillanceNegative_0_6884_ R0000657 1
+    PalierThermique_1_3_6884_ OBJROW 19.9994823148
+    PalierThermique_1_3_6884_ R0000658 -1
+    PalierThermique_1_3_6884_ R0000659 -1
+    PalierThermique_1_4_6884_ OBJROW 100.0005620376
+    PalierThermique_1_4_6884_ R0000658 -1
+    PalierThermique_1_4_6884_ R0000659 -1
+    PalierThermique_1_5_6884_ OBJROW 44.9994768068
+    PalierThermique_1_5_6884_ R0000658 -1
+    PalierThermique_1_5_6884_ R0000659 -1
+    DefaillancePositive_1_6884_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6884_ R0000658 -1
+    DefaillanceNegative_1_6884_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6884_ R0000658 1
+    DefaillanceNegative_1_6884_ R0000659 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6885_ R0000660 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6885_ R0000662 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6885_ R0001002 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6885_ R0001003 1
+    PalierThermique_0_0_6885_ OBJROW 19.9994564001
+    PalierThermique_0_0_6885_ R0000660 -1
+    PalierThermique_0_0_6885_ R0000661 -1
+    PalierThermique_0_1_6885_ OBJROW 99.9994934354
+    PalierThermique_0_1_6885_ R0000660 -1
+    PalierThermique_0_1_6885_ R0000661 -1
+    PalierThermique_0_2_6885_ OBJROW 45.0005703639
+    PalierThermique_0_2_6885_ R0000660 -1
+    PalierThermique_0_2_6885_ R0000661 -1
+    DefaillancePositive_0_6885_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6885_ R0000660 -1
+    DefaillanceNegative_0_6885_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6885_ R0000660 1
+    DefaillanceNegative_0_6885_ R0000661 1
+    PalierThermique_1_3_6885_ OBJROW 19.9994823148
+    PalierThermique_1_3_6885_ R0000662 -1
+    PalierThermique_1_3_6885_ R0000663 -1
+    PalierThermique_1_4_6885_ OBJROW 100.0005620376
+    PalierThermique_1_4_6885_ R0000662 -1
+    PalierThermique_1_4_6885_ R0000663 -1
+    PalierThermique_1_5_6885_ OBJROW 44.9994768068
+    PalierThermique_1_5_6885_ R0000662 -1
+    PalierThermique_1_5_6885_ R0000663 -1
+    DefaillancePositive_1_6885_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6885_ R0000662 -1
+    DefaillanceNegative_1_6885_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6885_ R0000662 1
+    DefaillanceNegative_1_6885_ R0000663 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6886_ R0000664 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6886_ R0000666 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6886_ R0001004 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6886_ R0001005 1
+    PalierThermique_0_0_6886_ OBJROW 19.9994564001
+    PalierThermique_0_0_6886_ R0000664 -1
+    PalierThermique_0_0_6886_ R0000665 -1
+    PalierThermique_0_1_6886_ OBJROW 99.9994934354
+    PalierThermique_0_1_6886_ R0000664 -1
+    PalierThermique_0_1_6886_ R0000665 -1
+    PalierThermique_0_2_6886_ OBJROW 45.0005703639
+    PalierThermique_0_2_6886_ R0000664 -1
+    PalierThermique_0_2_6886_ R0000665 -1
+    DefaillancePositive_0_6886_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6886_ R0000664 -1
+    DefaillanceNegative_0_6886_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6886_ R0000664 1
+    DefaillanceNegative_0_6886_ R0000665 1
+    PalierThermique_1_3_6886_ OBJROW 19.9994823148
+    PalierThermique_1_3_6886_ R0000666 -1
+    PalierThermique_1_3_6886_ R0000667 -1
+    PalierThermique_1_4_6886_ OBJROW 100.0005620376
+    PalierThermique_1_4_6886_ R0000666 -1
+    PalierThermique_1_4_6886_ R0000667 -1
+    PalierThermique_1_5_6886_ OBJROW 44.9994768068
+    PalierThermique_1_5_6886_ R0000666 -1
+    PalierThermique_1_5_6886_ R0000667 -1
+    DefaillancePositive_1_6886_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6886_ R0000666 -1
+    DefaillanceNegative_1_6886_ OBJROW 0.0005669392
+    DefaillanceNegative_1_6886_ R0000666 1
+    DefaillanceNegative_1_6886_ R0000667 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6887_ R0000668 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6887_ R0000670 -1
+    ValeurDeNTCOrigineVersExtremite_0_0_6887_ R0001006 1
+    ValeurDeNTCOrigineVersExtremite_0_0_6887_ R0001007 1
+    PalierThermique_0_0_6887_ OBJROW 19.9994564001
+    PalierThermique_0_0_6887_ R0000668 -1
+    PalierThermique_0_0_6887_ R0000669 -1
+    PalierThermique_0_1_6887_ OBJROW 99.9994934354
+    PalierThermique_0_1_6887_ R0000668 -1
+    PalierThermique_0_1_6887_ R0000669 -1
+    PalierThermique_0_2_6887_ OBJROW 45.0005703639
+    PalierThermique_0_2_6887_ R0000668 -1
+    PalierThermique_0_2_6887_ R0000669 -1
+    DefaillancePositive_0_6887_ OBJROW 19999.9994124378
+    DefaillancePositive_0_6887_ R0000668 -1
+    DefaillanceNegative_0_6887_ OBJROW -0.0005875622
+    DefaillanceNegative_0_6887_ R0000668 1
+    DefaillanceNegative_0_6887_ R0000669 1
+    PalierThermique_1_3_6887_ OBJROW 19.9994823148
+    PalierThermique_1_3_6887_ R0000670 -1
+    PalierThermique_1_3_6887_ R0000671 -1
+    PalierThermique_1_4_6887_ OBJROW 100.0005620376
+    PalierThermique_1_4_6887_ R0000670 -1
+    PalierThermique_1_4_6887_ R0000671 -1
+    PalierThermique_1_5_6887_ OBJROW 44.9994768068
+    PalierThermique_1_5_6887_ R0000670 -1
+    PalierThermique_1_5_6887_ R0000671 -1
+    DefaillancePositive_1_6887_ OBJROW 20000.0005669392
+    DefaillancePositive_1_6887_ R0000670 -1
+    C0001847 OBJROW 0.0005669392
+    C0001847 R0000670 1
+    C0001847 R0000671 1
+    transmission_line R0000672 -0.95
+    transmission_line R0000673 0.93
+    transmission_line R0000674 -0.95
+    transmission_line R0000675 0.93
+    transmission_line R0000676 -0.95
+    transmission_line R0000677 0.93
+    transmission_line R0000678 -0.95
+    transmission_line R0000679 0.93
+    transmission_line R0000680 -0.95
+    transmission_line R0000681 0.93
+    transmission_line R0000682 -0.95
+    transmission_line R0000683 0.93
+    transmission_line R0000684 -0.95
+    transmission_line R0000685 0.93
+    transmission_line R0000686 -0.95
+    transmission_line R0000687 0.9399999999999999
+    transmission_line R0000688 -0.95
+    transmission_line R0000689 0.9399999999999999
+    transmission_line R0000690 -0.95
+    transmission_line R0000691 0.9399999999999999
+    transmission_line R0000692 -0.95
+    transmission_line R0000693 0.9399999999999999
+    transmission_line R0000694 -0.95
+    transmission_line R0000695 0.9399999999999999
+    transmission_line R0000696 -0.95
+    transmission_line R0000697 0.9399999999999999
+    transmission_line R0000698 -0.95
+    transmission_line R0000699 0.9399999999999999
+    transmission_line R0000700 -0.95
+    transmission_line R0000701 0.9399999999999999
+    transmission_line R0000702 -0.95
+    transmission_line R0000703 0.9399999999999999
+    transmission_line R0000704 -0.95
+    transmission_line R0000705 0.9399999999999999
+    transmission_line R0000706 -0.95
+    transmission_line R0000707 0.9399999999999999
+    transmission_line R0000708 -0.95
+    transmission_line R0000709 0.9399999999999999
+    transmission_line R0000710 -0.95
+    transmission_line R0000711 0.9399999999999999
+    transmission_line R0000712 -0.95
+    transmission_line R0000713 0.93
+    transmission_line R0000714 -0.95
+    transmission_line R0000715 0.93
+    transmission_line R0000716 -0.95
+    transmission_line R0000717 0.93
+    transmission_line R0000718 -0.95
+    transmission_line R0000719 0.93
+    transmission_line R0000720 -0.95
+    transmission_line R0000721 0.93
+    transmission_line R0000722 -0.95
+    transmission_line R0000723 0.93
+    transmission_line R0000724 -0.95
+    transmission_line R0000725 0.93
+    transmission_line R0000726 -0.95
+    transmission_line R0000727 0.93
+    transmission_line R0000728 -0.95
+    transmission_line R0000729 0.93
+    transmission_line R0000730 -0.95
+    transmission_line R0000731 0.93
+    transmission_line R0000732 -0.95
+    transmission_line R0000733 0.93
+    transmission_line R0000734 -0.95
+    transmission_line R0000735 0.9399999999999999
+    transmission_line R0000736 -0.95
+    transmission_line R0000737 0.9399999999999999
+    transmission_line R0000738 -0.95
+    transmission_line R0000739 0.9399999999999999
+    transmission_line R0000740 -0.95
+    transmission_line R0000741 0.9399999999999999
+    transmission_line R0000742 -0.95
+    transmission_line R0000743 0.9399999999999999
+    transmission_line R0000744 -0.95
+    transmission_line R0000745 0.9399999999999999
+    transmission_line R0000746 -0.95
+    transmission_line R0000747 0.9399999999999999
+    transmission_line R0000748 -0.95
+    transmission_line R0000749 0.9399999999999999
+    transmission_line R0000750 -0.95
+    transmission_line R0000751 0.9399999999999999
+    transmission_line R0000752 -0.95
+    transmission_line R0000753 0.9399999999999999
+    transmission_line R0000754 -0.95
+    transmission_line R0000755 0.9399999999999999
+    transmission_line R0000756 -0.95
+    transmission_line R0000757 0.9399999999999999
+    transmission_line R0000758 -0.95
+    transmission_line R0000759 0.9399999999999999
+    transmission_line R0000760 -0.95
+    transmission_line R0000761 0.93
+    transmission_line R0000762 -0.95
+    transmission_line R0000763 0.93
+    transmission_line R0000764 -0.95
+    transmission_line R0000765 0.93
+    transmission_line R0000766 -0.95
+    transmission_line R0000767 0.93
+    transmission_line R0000768 -0.95
+    transmission_line R0000769 0.93
+    transmission_line R0000770 -0.95
+    transmission_line R0000771 0.93
+    transmission_line R0000772 -0.95
+    transmission_line R0000773 0.93
+    transmission_line R0000774 -0.95
+    transmission_line R0000775 0.93
+    transmission_line R0000776 -0.95
+    transmission_line R0000777 0.93
+    transmission_line R0000778 -0.95
+    transmission_line R0000779 0.93
+    transmission_line R0000780 -0.95
+    transmission_line R0000781 0.93
+    transmission_line R0000782 -0.95
+    transmission_line R0000783 0.9399999999999999
+    transmission_line R0000784 -0.95
+    transmission_line R0000785 0.9399999999999999
+    transmission_line R0000786 -0.95
+    transmission_line R0000787 0.9399999999999999
+    transmission_line R0000788 -0.95
+    transmission_line R0000789 0.9399999999999999
+    transmission_line R0000790 -0.95
+    transmission_line R0000791 0.9399999999999999
+    transmission_line R0000792 -0.95
+    transmission_line R0000793 0.9399999999999999
+    transmission_line R0000794 -0.95
+    transmission_line R0000795 0.9399999999999999
+    transmission_line R0000796 -0.95
+    transmission_line R0000797 0.9399999999999999
+    transmission_line R0000798 -0.95
+    transmission_line R0000799 0.9399999999999999
+    transmission_line R0000800 -0.95
+    transmission_line R0000801 0.9399999999999999
+    transmission_line R0000802 -0.95
+    transmission_line R0000803 0.9399999999999999
+    transmission_line R0000804 -0.95
+    transmission_line R0000805 0.9399999999999999
+    transmission_line R0000806 -0.95
+    transmission_line R0000807 0.9399999999999999
+    transmission_line R0000808 -0.95
+    transmission_line R0000809 0.93
+    transmission_line R0000810 -0.95
+    transmission_line R0000811 0.93
+    transmission_line R0000812 -0.95
+    transmission_line R0000813 0.93
+    transmission_line R0000814 -0.95
+    transmission_line R0000815 0.93
+    transmission_line R0000816 -0.95
+    transmission_line R0000817 0.93
+    transmission_line R0000818 -0.95
+    transmission_line R0000819 0.93
+    transmission_line R0000820 -0.95
+    transmission_line R0000821 0.93
+    transmission_line R0000822 -0.95
+    transmission_line R0000823 0.93
+    transmission_line R0000824 -0.95
+    transmission_line R0000825 0.93
+    transmission_line R0000826 -0.95
+    transmission_line R0000827 0.93
+    transmission_line R0000828 -0.95
+    transmission_line R0000829 0.93
+    transmission_line R0000830 -0.95
+    transmission_line R0000831 0.9399999999999999
+    transmission_line R0000832 -0.95
+    transmission_line R0000833 0.9399999999999999
+    transmission_line R0000834 -0.95
+    transmission_line R0000835 0.9399999999999999
+    transmission_line R0000836 -0.95
+    transmission_line R0000837 0.9399999999999999
+    transmission_line R0000838 -0.95
+    transmission_line R0000839 0.9399999999999999
+    transmission_line R0000840 -0.95
+    transmission_line R0000841 0.9399999999999999
+    transmission_line R0000842 -0.95
+    transmission_line R0000843 0.9399999999999999
+    transmission_line R0000844 -0.95
+    transmission_line R0000845 0.9399999999999999
+    transmission_line R0000846 -0.95
+    transmission_line R0000847 0.9399999999999999
+    transmission_line R0000848 -0.95
+    transmission_line R0000849 0.9399999999999999
+    transmission_line R0000850 -0.95
+    transmission_line R0000851 0.9399999999999999
+    transmission_line R0000852 -0.95
+    transmission_line R0000853 0.9399999999999999
+    transmission_line R0000854 -0.95
+    transmission_line R0000855 0.9399999999999999
+    transmission_line R0000856 -0.95
+    transmission_line R0000857 0.93
+    transmission_line R0000858 -0.95
+    transmission_line R0000859 0.93
+    transmission_line R0000860 -0.95
+    transmission_line R0000861 0.93
+    transmission_line R0000862 -0.95
+    transmission_line R0000863 0.93
+    transmission_line R0000864 -0.95
+    transmission_line R0000865 0.93
+    transmission_line R0000866 -0.95
+    transmission_line R0000867 0.93
+    transmission_line R0000868 -0.95
+    transmission_line R0000869 0.93
+    transmission_line R0000870 -0.95
+    transmission_line R0000871 0.93
+    transmission_line R0000872 -0.95
+    transmission_line R0000873 0.93
+    transmission_line R0000874 -0.95
+    transmission_line R0000875 0.93
+    transmission_line R0000876 -0.95
+    transmission_line R0000877 0.93
+    transmission_line R0000878 -0.95
+    transmission_line R0000879 0.9399999999999999
+    transmission_line R0000880 -0.95
+    transmission_line R0000881 0.9399999999999999
+    transmission_line R0000882 -0.95
+    transmission_line R0000883 0.9399999999999999
+    transmission_line R0000884 -0.95
+    transmission_line R0000885 0.9399999999999999
+    transmission_line R0000886 -0.95
+    transmission_line R0000887 0.9399999999999999
+    transmission_line R0000888 -0.95
+    transmission_line R0000889 0.9399999999999999
+    transmission_line R0000890 -0.95
+    transmission_line R0000891 0.9399999999999999
+    transmission_line R0000892 -0.95
+    transmission_line R0000893 0.9399999999999999
+    transmission_line R0000894 -0.95
+    transmission_line R0000895 0.9399999999999999
+    transmission_line R0000896 -0.95
+    transmission_line R0000897 0.9399999999999999
+    transmission_line R0000898 -0.95
+    transmission_line R0000899 0.9399999999999999
+    transmission_line R0000900 -0.95
+    transmission_line R0000901 0.9399999999999999
+    transmission_line R0000902 -0.95
+    transmission_line R0000903 0.9399999999999999
+    transmission_line R0000904 -0.95
+    transmission_line R0000905 0.93
+    transmission_line R0000906 -0.95
+    transmission_line R0000907 0.93
+    transmission_line R0000908 -0.95
+    transmission_line R0000909 0.93
+    transmission_line R0000910 -0.95
+    transmission_line R0000911 0.93
+    transmission_line R0000912 -0.95
+    transmission_line R0000913 0.93
+    transmission_line R0000914 -0.95
+    transmission_line R0000915 0.93
+    transmission_line R0000916 -0.95
+    transmission_line R0000917 0.93
+    transmission_line R0000918 -0.95
+    transmission_line R0000919 0.93
+    transmission_line R0000920 -0.95
+    transmission_line R0000921 0.93
+    transmission_line R0000922 -0.95
+    transmission_line R0000923 0.93
+    transmission_line R0000924 -0.95
+    transmission_line R0000925 0.93
+    transmission_line R0000926 -0.95
+    transmission_line R0000927 0.9399999999999999
+    transmission_line R0000928 -0.95
+    transmission_line R0000929 0.9399999999999999
+    transmission_line R0000930 -0.95
+    transmission_line R0000931 0.9399999999999999
+    transmission_line R0000932 -0.95
+    transmission_line R0000933 0.9399999999999999
+    transmission_line R0000934 -0.95
+    transmission_line R0000935 0.9399999999999999
+    transmission_line R0000936 -0.95
+    transmission_line R0000937 0.9399999999999999
+    transmission_line R0000938 -0.95
+    transmission_line R0000939 0.9399999999999999
+    transmission_line R0000940 -0.95
+    transmission_line R0000941 0.9399999999999999
+    transmission_line R0000942 -0.95
+    transmission_line R0000943 0.9399999999999999
+    transmission_line R0000944 -0.95
+    transmission_line R0000945 0.9399999999999999
+    transmission_line R0000946 -0.95
+    transmission_line R0000947 0.9399999999999999
+    transmission_line R0000948 -0.95
+    transmission_line R0000949 0.9399999999999999
+    transmission_line R0000950 -0.95
+    transmission_line R0000951 0.9399999999999999
+    transmission_line R0000952 -0.95
+    transmission_line R0000953 0.93
+    transmission_line R0000954 -0.95
+    transmission_line R0000955 0.93
+    transmission_line R0000956 -0.95
+    transmission_line R0000957 0.93
+    transmission_line R0000958 -0.95
+    transmission_line R0000959 0.93
+    transmission_line R0000960 -0.95
+    transmission_line R0000961 0.93
+    transmission_line R0000962 -0.95
+    transmission_line R0000963 0.93
+    transmission_line R0000964 -0.95
+    transmission_line R0000965 0.93
+    transmission_line R0000966 -0.95
+    transmission_line R0000967 0.93
+    transmission_line R0000968 -0.95
+    transmission_line R0000969 0.93
+    transmission_line R0000970 -0.95
+    transmission_line R0000971 0.93
+    transmission_line R0000972 -0.95
+    transmission_line R0000973 0.93
+    transmission_line R0000974 -0.95
+    transmission_line R0000975 0.9399999999999999
+    transmission_line R0000976 -0.95
+    transmission_line R0000977 0.9399999999999999
+    transmission_line R0000978 -0.95
+    transmission_line R0000979 0.9399999999999999
+    transmission_line R0000980 -0.95
+    transmission_line R0000981 0.9399999999999999
+    transmission_line R0000982 -0.95
+    transmission_line R0000983 0.9399999999999999
+    transmission_line R0000984 -0.95
+    transmission_line R0000985 0.9399999999999999
+    transmission_line R0000986 -0.95
+    transmission_line R0000987 0.9399999999999999
+    transmission_line R0000988 -0.95
+    transmission_line R0000989 0.9399999999999999
+    transmission_line R0000990 -0.95
+    transmission_line R0000991 0.9399999999999999
+    transmission_line R0000992 -0.95
+    transmission_line R0000993 0.9399999999999999
+    transmission_line R0000994 -0.95
+    transmission_line R0000995 0.9399999999999999
+    transmission_line R0000996 -0.95
+    transmission_line R0000997 0.9399999999999999
+    transmission_line R0000998 -0.95
+    transmission_line R0000999 0.9399999999999999
+    transmission_line R0001000 -0.95
+    transmission_line R0001001 0.93
+    transmission_line R0001002 -0.95
+    transmission_line R0001003 0.93
+    transmission_line R0001004 -0.95
+    transmission_line R0001005 0.93
+    transmission_line R0001006 -0.95
+    transmission_line R0001007 0.93
+RHS
+    RHS R0000000 -1522
+    RHS R0000001 770
+    RHS R0000002 -1679
+    RHS R0000003 643
+    RHS R0000004 -1301
+    RHS R0000005 790
+    RHS R0000006 -1441
+    RHS R0000007 712
+    RHS R0000008 -1069
+    RHS R0000009 849
+    RHS R0000010 -1146
+    RHS R0000011 795
+    RHS R0000012 -1036
+    RHS R0000013 846
+    RHS R0000014 -1090
+    RHS R0000015 817
+    RHS R0000016 -1019
+    RHS R0000017 854
+    RHS R0000018 -1076
+    RHS R0000019 834
+    RHS R0000020 -1113
+    RHS R0000021 876
+    RHS R0000022 -1204
+    RHS R0000023 836
+    RHS R0000024 -1430
+    RHS R0000025 861
+    RHS R0000026 -1523
+    RHS R0000027 774
+    RHS R0000028 -1567
+    RHS R0000029 827
+    RHS R0000030 -1689
+    RHS R0000031 708
+    RHS R0000032 -1444
+    RHS R0000033 783
+    RHS R0000034 -1653
+    RHS R0000035 593
+    RHS R0000036 -1452
+    RHS R0000037 793
+    RHS R0000038 -1766
+    RHS R0000039 512
+    RHS R0000040 -1279
+    RHS R0000041 941
+    RHS R0000042 -1733
+    RHS R0000043 544
+    RHS R0000044 -1171
+    RHS R0000045 1148
+    RHS R0000046 -1736
+    RHS R0000047 615
+    RHS R0000048 -1083
+    RHS R0000049 1305
+    RHS R0000050 -1806
+    RHS R0000051 627
+    RHS R0000052 -1004
+    RHS R0000053 1270
+    RHS R0000054 -1791
+    RHS R0000055 566
+    RHS R0000056 -1160
+    RHS R0000057 1050
+    RHS R0000058 -1824
+    RHS R0000059 416
+    RHS R0000060 -1354
+    RHS R0000061 814
+    RHS R0000062 -1892
+    RHS R0000063 234
+    RHS R0000064 -1589
+    RHS R0000065 622
+    RHS R0000066 -2018
+    RHS R0000067 161
+    RHS R0000068 -1693
+    RHS R0000069 642
+    RHS R0000070 -2193
+    RHS R0000071 142
+    RHS R0000072 -1767
+    RHS R0000073 758
+    RHS R0000074 -2355
+    RHS R0000075 188
+    RHS R0000076 -1737
+    RHS R0000077 894
+    RHS R0000078 -2446
+    RHS R0000079 252
+    RHS R0000080 -1376
+    RHS R0000081 1106
+    RHS R0000082 -2222
+    RHS R0000083 276
+    RHS R0000084 -1185
+    RHS R0000085 1207
+    RHS R0000086 -2074
+    RHS R0000087 365
+    RHS R0000088 -1393
+    RHS R0000089 1262
+    RHS R0000090 -2339
+    RHS R0000091 420
+    RHS R0000092 -1307
+    RHS R0000093 1351
+    RHS R0000094 -2374
+    RHS R0000095 452
+    RHS R0000096 -1127
+    RHS R0000097 1271
+    RHS R0000098 -2107
+    RHS R0000099 494
+    RHS R0000100 -1000
+    RHS R0000101 1223
+    RHS R0000102 -1957
+    RHS R0000103 522
+    RHS R0000104 -761
+    RHS R0000105 1193
+    RHS R0000106 -1735
+    RHS R0000107 546
+    RHS R0000108 -849
+    RHS R0000109 1069
+    RHS R0000110 -1668
+    RHS R0000111 547
+    RHS R0000112 -850
+    RHS R0000113 1039
+    RHS R0000114 -1590
+    RHS R0000115 589
+    RHS R0000116 -1059
+    RHS R0000117 938
+    RHS R0000118 -1699
+    RHS R0000119 574
+    RHS R0000120 -1407
+    RHS R0000121 819
+    RHS R0000122 -1886
+    RHS R0000123 604
+    RHS R0000124 -1561
+    RHS R0000125 719
+    RHS R0000126 -1900
+    RHS R0000127 667
+    RHS R0000128 -1495
+    RHS R0000129 651
+    RHS R0000130 -1746
+    RHS R0000131 709
+    RHS R0000132 -1451
+    RHS R0000133 694
+    RHS R0000134 -1580
+    RHS R0000135 863
+    RHS R0000136 -1344
+    RHS R0000137 796
+    RHS R0000138 -1399
+    RHS R0000139 1043
+    RHS R0000140 -1355
+    RHS R0000141 887
+    RHS R0000142 -1245
+    RHS R0000143 1256
+    RHS R0000144 -1353
+    RHS R0000145 959
+    RHS R0000146 -1094
+    RHS R0000147 1463
+    RHS R0000148 -1186
+    RHS R0000149 994
+    RHS R0000150 -904
+    RHS R0000151 1528
+    RHS R0000152 -1117
+    RHS R0000153 989
+    RHS R0000154 -878
+    RHS R0000155 1493
+    RHS R0000156 -1007
+    RHS R0000157 1013
+    RHS R0000158 -864
+    RHS R0000159 1461
+    RHS R0000160 -1010
+    RHS R0000161 1007
+    RHS R0000162 -993
+    RHS R0000163 1370
+    RHS R0000164 -1196
+    RHS R0000165 950
+    RHS R0000166 -1156
+    RHS R0000167 1305
+    RHS R0000168 -1444
+    RHS R0000169 842
+    RHS R0000170 -1381
+    RHS R0000171 1278
+    RHS R0000172 -1628
+    RHS R0000173 804
+    RHS R0000174 -1500
+    RHS R0000175 1300
+    RHS R0000176 -1565
+    RHS R0000177 734
+    RHS R0000178 -1334
+    RHS R0000179 1334
+    RHS R0000180 -1570
+    RHS R0000181 622
+    RHS R0000182 -1219
+    RHS R0000183 1327
+    RHS R0000184 -1889
+    RHS R0000185 556
+    RHS R0000186 -1566
+    RHS R0000187 1307
+    RHS R0000188 -2079
+    RHS R0000189 438
+    RHS R0000190 -1725
+    RHS R0000191 1218
+    RHS R0000192 -1937
+    RHS R0000193 335
+    RHS R0000194 -1591
+    RHS R0000195 1105
+    RHS R0000196 -1860
+    RHS R0000197 255
+    RHS R0000198 -1520
+    RHS R0000199 1012
+    RHS R0000200 -1682
+    RHS R0000201 219
+    RHS R0000202 -1294
+    RHS R0000203 996
+    RHS R0000204 -1696
+    RHS R0000205 155
+    RHS R0000206 -1294
+    RHS R0000207 969
+    RHS R0000208 -1760
+    RHS R0000209 94
+    RHS R0000210 -1304
+    RHS R0000211 986
+    RHS R0000212 -1942
+    RHS R0000213 97
+    RHS R0000214 -1386
+    RHS R0000215 1031
+    RHS R0000216 -2206
+    RHS R0000217 113
+    RHS R0000218 -1612
+    RHS R0000219 1087
+    RHS R0000220 -2213
+    RHS R0000221 150
+    RHS R0000222 -1663
+    RHS R0000223 1098
+    RHS R0000224 -1975
+    RHS R0000225 238
+    RHS R0000226 -1577
+    RHS R0000227 1084
+    RHS R0000228 -1867
+    RHS R0000229 359
+    RHS R0000230 -1505
+    RHS R0000231 1128
+    RHS R0000232 -1717
+    RHS R0000233 470
+    RHS R0000234 -1504
+    RHS R0000235 1141
+    RHS R0000236 -1684
+    RHS R0000237 563
+    RHS R0000238 -1567
+    RHS R0000239 1129
+    RHS R0000240 -1730
+    RHS R0000241 610
+    RHS R0000242 -1664
+    RHS R0000243 1076
+    RHS R0000244 -1611
+    RHS R0000245 588
+    RHS R0000246 -1686
+    RHS R0000247 917
+    RHS R0000248 -1543
+    RHS R0000249 565
+    RHS R0000250 -1682
+    RHS R0000251 848
+    RHS R0000252 -1455
+    RHS R0000253 611
+    RHS R0000254 -1604
+    RHS R0000255 870
+    RHS R0000256 -1474
+    RHS R0000257 638
+    RHS R0000258 -1621
+    RHS R0000259 878
+    RHS R0000260 -1621
+    RHS R0000261 630
+    RHS R0000262 -1782
+    RHS R0000263 824
+    RHS R0000264 -1705
+    RHS R0000265 731
+    RHS R0000266 -1910
+    RHS R0000267 852
+    RHS R0000268 -1737
+    RHS R0000269 836
+    RHS R0000270 -1980
+    RHS R0000271 901
+    RHS R0000272 -1490
+    RHS R0000273 968
+    RHS R0000274 -1806
+    RHS R0000275 953
+    RHS R0000276 -1244
+    RHS R0000277 1100
+    RHS R0000278 -1609
+    RHS R0000279 1013
+    RHS R0000280 -1516
+    RHS R0000281 1124
+    RHS R0000282 -1987
+    RHS R0000283 963
+    RHS R0000284 -1547
+    RHS R0000285 1175
+    RHS R0000286 -2056
+    RHS R0000287 907
+    RHS R0000288 -1283
+    RHS R0000289 1167
+    RHS R0000290 -1915
+    RHS R0000291 836
+    RHS R0000292 -1152
+    RHS R0000293 1145
+    RHS R0000294 -1722
+    RHS R0000295 839
+    RHS R0000296 -924
+    RHS R0000297 1207
+    RHS R0000298 -1507
+    RHS R0000299 877
+    RHS R0000300 -941
+    RHS R0000301 1146
+    RHS R0000302 -1430
+    RHS R0000303 893
+    RHS R0000304 -916
+    RHS R0000305 1125
+    RHS R0000306 -1336
+    RHS R0000307 975
+    RHS R0000308 -1062
+    RHS R0000309 1143
+    RHS R0000310 -1449
+    RHS R0000311 1011
+    RHS R0000312 -1423
+    RHS R0000313 1045
+    RHS R0000314 -1698
+    RHS R0000315 1056
+    RHS R0000316 -1563
+    RHS R0000317 947
+    RHS R0000318 -1753
+    RHS R0000319 1053
+    RHS R0000320 -1579
+    RHS R0000321 805
+    RHS R0000322 -1634
+    RHS R0000323 1008
+    RHS R0000324 -1667
+    RHS R0000325 683
+    RHS R0000326 -1657
+    RHS R0000327 955
+    RHS R0000328 -1540
+    RHS R0000329 761
+    RHS R0000330 -1636
+    RHS R0000331 963
+    RHS R0000332 -1476
+    RHS R0000333 880
+    RHS R0000334 -1642
+    RHS R0000335 992
+    RHS R0000336 -1482
+    RHS R0000337 955
+    RHS R0000338 -1723
+    RHS R0000339 978
+    RHS R0000340 -1344
+    RHS R0000341 962
+    RHS R0000342 -1683
+    RHS R0000343 911
+    RHS R0000344 -1345
+    RHS R0000345 886
+    RHS R0000346 -1622
+    RHS R0000347 844
+    RHS R0000348 -1349
+    RHS R0000349 804
+    RHS R0000350 -1680
+    RHS R0000351 752
+    RHS R0000352 -1391
+    RHS R0000353 783
+    RHS R0000354 -1876
+    RHS R0000355 645
+    RHS R0000356 -1491
+    RHS R0000357 818
+    RHS R0000358 -2019
+    RHS R0000359 594
+    RHS R0000360 -1621
+    RHS R0000361 881
+    RHS R0000362 -2192
+    RHS R0000363 574
+    RHS R0000364 -1641
+    RHS R0000365 964
+    RHS R0000366 -2287
+    RHS R0000367 609
+    RHS R0000368 -1438
+    RHS R0000369 997
+    RHS R0000370 -2027
+    RHS R0000371 696
+    RHS R0000372 -1364
+    RHS R0000373 966
+    RHS R0000374 -1935
+    RHS R0000375 667
+    RHS R0000376 -1759
+    RHS R0000377 890
+    RHS R0000378 -2350
+    RHS R0000379 602
+    RHS R0000380 -1992
+    RHS R0000381 742
+    RHS R0000382 -2472
+    RHS R0000383 543
+    RHS R0000384 -1940
+    RHS R0000385 590
+    RHS R0000386 -2297
+    RHS R0000387 476
+    RHS R0000388 -1906
+    RHS R0000389 447
+    RHS R0000390 -2064
+    RHS R0000391 500
+    RHS R0000392 -1828
+    RHS R0000393 314
+    RHS R0000394 -1948
+    RHS R0000395 461
+    RHS R0000396 -1885
+    RHS R0000397 220
+    RHS R0000398 -2010
+    RHS R0000399 372
+    RHS R0000400 -1916
+    RHS R0000401 201
+    RHS R0000402 -2088
+    RHS R0000403 270
+    RHS R0000404 -2065
+    RHS R0000405 226
+    RHS R0000406 -2305
+    RHS R0000407 196
+    RHS R0000408 -2308
+    RHS R0000409 230
+    RHS R0000410 -2561
+    RHS R0000411 199
+    RHS R0000412 -2365
+    RHS R0000413 263
+    RHS R0000414 -2614
+    RHS R0000415 223
+    RHS R0000416 -2204
+    RHS R0000417 235
+    RHS R0000418 -2453
+    RHS R0000419 219
+    RHS R0000420 -2265
+    RHS R0000421 177
+    RHS R0000422 -2451
+    RHS R0000423 216
+    RHS R0000424 -2300
+    RHS R0000425 123
+    RHS R0000426 -2460
+    RHS R0000427 192
+    RHS R0000428 -2400
+    RHS R0000429 70
+    RHS R0000430 -2517
+    RHS R0000431 155
+    RHS R0000432 -2462
+    RHS R0000433 69
+    RHS R0000434 -2641
+    RHS R0000435 130
+    RHS R0000436 -2309
+    RHS R0000437 115
+    RHS R0000438 -2529
+    RHS R0000439 107
+    RHS R0000440 -2108
+    RHS R0000441 204
+    RHS R0000442 -2398
+    RHS R0000443 165
+    RHS R0000444 -2045
+    RHS R0000445 220
+    RHS R0000446 -2291
+    RHS R0000447 205
+    RHS R0000448 -2035
+    RHS R0000449 259
+    RHS R0000450 -2220
+    RHS R0000451 282
+    RHS R0000452 -2136
+    RHS R0000453 306
+    RHS R0000454 -2289
+    RHS R0000455 372
+    RHS R0000456 -2257
+    RHS R0000457 326
+    RHS R0000458 -2443
+    RHS R0000459 354
+    RHS R0000460 -2395
+    RHS R0000461 343
+    RHS R0000462 -2482
+    RHS R0000463 405
+    RHS R0000464 -2258
+    RHS R0000465 338
+    RHS R0000466 -2277
+    RHS R0000467 432
+    RHS R0000468 -2198
+    RHS R0000469 264
+    RHS R0000470 -2169
+    RHS R0000471 442
+    RHS R0000472 -2465
+    RHS R0000473 271
+    RHS R0000474 -2352
+    RHS R0000475 574
+    RHS R0000476 -2439
+    RHS R0000477 355
+    RHS R0000478 -2317
+    RHS R0000479 660
+    RHS R0000480 -2388
+    RHS R0000481 382
+    RHS R0000482 -2170
+    RHS R0000483 715
+    RHS R0000484 -2198
+    RHS R0000485 428
+    RHS R0000486 -1924
+    RHS R0000487 795
+    RHS R0000488 -1980
+    RHS R0000489 419
+    RHS R0000490 -1689
+    RHS R0000491 820
+    RHS R0000492 -1798
+    RHS R0000493 387
+    RHS R0000494 -1480
+    RHS R0000495 828
+    RHS R0000496 -1643
+    RHS R0000497 454
+    RHS R0000498 -1294
+    RHS R0000499 953
+    RHS R0000500 -1560
+    RHS R0000501 574
+    RHS R0000502 -1166
+    RHS R0000503 1103
+    RHS R0000504 -1532
+    RHS R0000505 691
+    RHS R0000506 -1130
+    RHS R0000507 1212
+    RHS R0000508 -1355
+    RHS R0000509 796
+    RHS R0000510 -958
+    RHS R0000511 1311
+    RHS R0000512 -1222
+    RHS R0000513 925
+    RHS R0000514 -979
+    RHS R0000515 1330
+    RHS R0000516 -1166
+    RHS R0000517 1059
+    RHS R0000518 -1051
+    RHS R0000519 1302
+    RHS R0000520 -993
+    RHS R0000521 1260
+    RHS R0000522 -938
+    RHS R0000523 1363
+    RHS R0000524 -846
+    RHS R0000525 1538
+    RHS R0000526 -852
+    RHS R0000527 1533
+    RHS R0000528 -771
+    RHS R0000529 1713
+    RHS R0000530 -810
+    RHS R0000531 1671
+    RHS R0000532 -494
+    RHS R0000533 1775
+    RHS R0000534 -578
+    RHS R0000535 1763
+    RHS R0000536 -433
+    RHS R0000537 1746
+    RHS R0000538 -396
+    RHS R0000539 1799
+    RHS R0000540 -407
+    RHS R0000541 1705
+    RHS R0000542 -381
+    RHS R0000543 1764
+    RHS R0000544 -545
+    RHS R0000545 1650
+    RHS R0000546 -493
+    RHS R0000547 1706
+    RHS R0000548 -767
+    RHS R0000549 1584
+    RHS R0000550 -727
+    RHS R0000551 1627
+    RHS R0000552 -953
+    RHS R0000553 1571
+    RHS R0000554 -981
+    RHS R0000555 1580
+    RHS R0000556 -1062
+    RHS R0000557 1563
+    RHS R0000558 -1200
+    RHS R0000559 1523
+    RHS R0000560 -982
+    RHS R0000561 1530
+    RHS R0000562 -1182
+    RHS R0000563 1462
+    RHS R0000564 -932
+    RHS R0000565 1541
+    RHS R0000566 -1203
+    RHS R0000567 1407
+    RHS R0000568 -1275
+    RHS R0000569 1547
+    RHS R0000570 -1620
+    RHS R0000571 1349
+    RHS R0000572 -1397
+    RHS R0000573 1533
+    RHS R0000574 -1777
+    RHS R0000575 1278
+    RHS R0000576 -1212
+    RHS R0000577 1531
+    RHS R0000578 -1636
+    RHS R0000579 1209
+    RHS R0000580 -1183
+    RHS R0000581 1426
+    RHS R0000582 -1676
+    RHS R0000583 1022
+    RHS R0000584 -944
+    RHS R0000585 1407
+    RHS R0000586 -1581
+    RHS R0000587 867
+    RHS R0000588 -879
+    RHS R0000589 1303
+    RHS R0000590 -1541
+    RHS R0000591 705
+    RHS R0000592 -933
+    RHS R0000593 1219
+    RHS R0000594 -1519
+    RHS R0000595 563
+    RHS R0000596 -997
+    RHS R0000597 1222
+    RHS R0000598 -1529
+    RHS R0000599 547
+    RHS R0000600 -1155
+    RHS R0000601 1128
+    RHS R0000602 -1635
+    RHS R0000603 508
+    RHS R0000604 -1074
+    RHS R0000605 1110
+    RHS R0000606 -1509
+    RHS R0000607 498
+    RHS R0000608 -1150
+    RHS R0000609 1028
+    RHS R0000610 -1533
+    RHS R0000611 476
+    RHS R0000612 -1301
+    RHS R0000613 961
+    RHS R0000614 -1609
+    RHS R0000615 462
+    RHS R0000616 -1242
+    RHS R0000617 1003
+    RHS R0000618 -1579
+    RHS R0000619 524
+    RHS R0000620 -1327
+    RHS R0000621 1011
+    RHS R0000622 -1546
+    RHS R0000623 626
+    RHS R0000624 -1387
+    RHS R0000625 1057
+    RHS R0000626 -1534
+    RHS R0000627 734
+    RHS R0000628 -1179
+    RHS R0000629 1062
+    RHS R0000630 -1192
+    RHS R0000631 855
+    RHS R0000632 -978
+    RHS R0000633 1121
+    RHS R0000634 -956
+    RHS R0000635 964
+    RHS R0000636 -887
+    RHS R0000637 1131
+    RHS R0000638 -827
+    RHS R0000639 982
+    RHS R0000640 -1007
+    RHS R0000641 1049
+    RHS R0000642 -878
+    RHS R0000643 965
+    RHS R0000644 -1296
+    RHS R0000645 962
+    RHS R0000646 -1254
+    RHS R0000647 815
+    RHS R0000648 -1616
+    RHS R0000649 810
+    RHS R0000650 -1588
+    RHS R0000651 696
+    RHS R0000652 -1920
+    RHS R0000653 687
+    RHS R0000654 -1833
+    RHS R0000655 663
+    RHS R0000656 -1944
+    RHS R0000657 610
+    RHS R0000658 -1797
+    RHS R0000659 603
+    RHS R0000660 -1980
+    RHS R0000661 552
+    RHS R0000662 -1650
+    RHS R0000663 680
+    RHS R0000664 -2398
+    RHS R0000665 451
+    RHS R0000666 -1891
+    RHS R0000667 732
+    RHS R0000668 -2549
+    RHS R0000669 385
+    RHS R0000670 -1953
+    RHS R0000671 759
+BOUNDS
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6720_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6720_ 1e+20
+ UP BOUND PalierThermique_0_0_6720_ 2700
+ UP BOUND PalierThermique_0_1_6720_ 900
+ UP BOUND PalierThermique_0_2_6720_ 450
+ UP BOUND DefaillancePositive_0_6720_ 2292.00001
+ UP BOUND PalierThermique_1_3_6720_ 2700
+ UP BOUND PalierThermique_1_4_6720_ 200
+ UP BOUND PalierThermique_1_5_6720_ 450
+ UP BOUND DefaillancePositive_1_6720_ 2322.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6721_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6721_ 1e+20
+ UP BOUND PalierThermique_0_0_6721_ 2700
+ UP BOUND PalierThermique_0_1_6721_ 900
+ UP BOUND PalierThermique_0_2_6721_ 450
+ UP BOUND DefaillancePositive_0_6721_ 2091.00001
+ UP BOUND PalierThermique_1_3_6721_ 2700
+ UP BOUND PalierThermique_1_4_6721_ 200
+ UP BOUND PalierThermique_1_5_6721_ 450
+ UP BOUND DefaillancePositive_1_6721_ 2153.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6722_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6722_ 1e+20
+ UP BOUND PalierThermique_0_0_6722_ 2700
+ UP BOUND PalierThermique_0_1_6722_ 900
+ UP BOUND PalierThermique_0_2_6722_ 450
+ UP BOUND DefaillancePositive_0_6722_ 1918.00001
+ UP BOUND PalierThermique_1_3_6722_ 2700
+ UP BOUND PalierThermique_1_4_6722_ 200
+ UP BOUND PalierThermique_1_5_6722_ 450
+ UP BOUND DefaillancePositive_1_6722_ 1941.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6723_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6723_ 1e+20
+ UP BOUND PalierThermique_0_0_6723_ 2700
+ UP BOUND PalierThermique_0_1_6723_ 900
+ UP BOUND PalierThermique_0_2_6723_ 450
+ UP BOUND DefaillancePositive_0_6723_ 1882.00001
+ UP BOUND PalierThermique_1_3_6723_ 2700
+ UP BOUND PalierThermique_1_4_6723_ 200
+ UP BOUND PalierThermique_1_5_6723_ 450
+ UP BOUND DefaillancePositive_1_6723_ 1907.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6724_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6724_ 1e+20
+ UP BOUND PalierThermique_0_0_6724_ 2700
+ UP BOUND PalierThermique_0_1_6724_ 900
+ UP BOUND PalierThermique_0_2_6724_ 450
+ UP BOUND DefaillancePositive_0_6724_ 1873.00001
+ UP BOUND PalierThermique_1_3_6724_ 2700
+ UP BOUND PalierThermique_1_4_6724_ 200
+ UP BOUND PalierThermique_1_5_6724_ 450
+ UP BOUND DefaillancePositive_1_6724_ 1910.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6725_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6725_ 1e+20
+ UP BOUND PalierThermique_0_0_6725_ 2700
+ UP BOUND PalierThermique_0_1_6725_ 900
+ UP BOUND PalierThermique_0_2_6725_ 450
+ UP BOUND DefaillancePositive_0_6725_ 1989.00001
+ UP BOUND PalierThermique_1_3_6725_ 2700
+ UP BOUND PalierThermique_1_4_6725_ 200
+ UP BOUND PalierThermique_1_5_6725_ 450
+ UP BOUND DefaillancePositive_1_6725_ 2040.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6726_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6726_ 1e+20
+ UP BOUND PalierThermique_0_0_6726_ 2700
+ UP BOUND PalierThermique_0_1_6726_ 900
+ UP BOUND PalierThermique_0_2_6726_ 450
+ UP BOUND DefaillancePositive_0_6726_ 2291.00001
+ UP BOUND PalierThermique_1_3_6726_ 2700
+ UP BOUND PalierThermique_1_4_6726_ 200
+ UP BOUND PalierThermique_1_5_6726_ 450
+ UP BOUND DefaillancePositive_1_6726_ 2297.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6727_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6727_ 1e+20
+ UP BOUND PalierThermique_0_0_6727_ 2700
+ UP BOUND PalierThermique_0_1_6727_ 900
+ UP BOUND PalierThermique_0_2_6727_ 450
+ UP BOUND DefaillancePositive_0_6727_ 2394.00001
+ UP BOUND PalierThermique_1_3_6727_ 2700
+ UP BOUND PalierThermique_1_4_6727_ 200
+ UP BOUND PalierThermique_1_5_6727_ 450
+ UP BOUND DefaillancePositive_1_6727_ 2397.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6728_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6728_ 1e+20
+ UP BOUND PalierThermique_0_0_6728_ 2700
+ UP BOUND PalierThermique_0_1_6728_ 900
+ UP BOUND PalierThermique_0_2_6728_ 450
+ UP BOUND DefaillancePositive_0_6728_ 2227.00001
+ UP BOUND PalierThermique_1_3_6728_ 2700
+ UP BOUND PalierThermique_1_4_6728_ 200
+ UP BOUND PalierThermique_1_5_6728_ 450
+ UP BOUND DefaillancePositive_1_6728_ 2246.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6729_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6729_ 1e+20
+ UP BOUND PalierThermique_0_0_6729_ 2700
+ UP BOUND PalierThermique_0_1_6729_ 900
+ UP BOUND PalierThermique_0_2_6729_ 450
+ UP BOUND DefaillancePositive_0_6729_ 2245.00001
+ UP BOUND PalierThermique_1_3_6729_ 2700
+ UP BOUND PalierThermique_1_4_6729_ 200
+ UP BOUND PalierThermique_1_5_6729_ 450
+ UP BOUND DefaillancePositive_1_6729_ 2278.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6730_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6730_ 1e+20
+ UP BOUND PalierThermique_0_0_6730_ 2700
+ UP BOUND PalierThermique_0_1_6730_ 900
+ UP BOUND PalierThermique_0_2_6730_ 450
+ UP BOUND DefaillancePositive_0_6730_ 2220.00001
+ UP BOUND PalierThermique_1_3_6730_ 2700
+ UP BOUND PalierThermique_1_4_6730_ 200
+ UP BOUND PalierThermique_1_5_6730_ 450
+ UP BOUND DefaillancePositive_1_6730_ 2277.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6731_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6731_ 1e+20
+ UP BOUND PalierThermique_0_0_6731_ 2700
+ UP BOUND PalierThermique_0_1_6731_ 900
+ UP BOUND PalierThermique_0_2_6731_ 450
+ UP BOUND DefaillancePositive_0_6731_ 2319.00001
+ UP BOUND PalierThermique_1_3_6731_ 2700
+ UP BOUND PalierThermique_1_4_6731_ 200
+ UP BOUND PalierThermique_1_5_6731_ 450
+ UP BOUND DefaillancePositive_1_6731_ 2351.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6732_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6732_ 1e+20
+ UP BOUND PalierThermique_0_0_6732_ 2700
+ UP BOUND PalierThermique_0_1_6732_ 900
+ UP BOUND PalierThermique_0_2_6732_ 450
+ UP BOUND DefaillancePositive_0_6732_ 2388.00001
+ UP BOUND PalierThermique_1_3_6732_ 2700
+ UP BOUND PalierThermique_1_4_6732_ 200
+ UP BOUND PalierThermique_1_5_6732_ 450
+ UP BOUND DefaillancePositive_1_6732_ 2433.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6733_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6733_ 1e+20
+ UP BOUND PalierThermique_0_0_6733_ 2700
+ UP BOUND PalierThermique_0_1_6733_ 900
+ UP BOUND PalierThermique_0_2_6733_ 450
+ UP BOUND DefaillancePositive_0_6733_ 2274.00001
+ UP BOUND PalierThermique_1_3_6733_ 2700
+ UP BOUND PalierThermique_1_4_6733_ 200
+ UP BOUND PalierThermique_1_5_6733_ 450
+ UP BOUND DefaillancePositive_1_6733_ 2357.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6734_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6734_ 1e+20
+ UP BOUND PalierThermique_0_0_6734_ 2700
+ UP BOUND PalierThermique_0_1_6734_ 900
+ UP BOUND PalierThermique_0_2_6734_ 450
+ UP BOUND DefaillancePositive_0_6734_ 2210.00001
+ UP BOUND PalierThermique_1_3_6734_ 2700
+ UP BOUND PalierThermique_1_4_6734_ 200
+ UP BOUND PalierThermique_1_5_6734_ 450
+ UP BOUND DefaillancePositive_1_6734_ 2240.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6735_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6735_ 1e+20
+ UP BOUND PalierThermique_0_0_6735_ 2700
+ UP BOUND PalierThermique_0_1_6735_ 900
+ UP BOUND PalierThermique_0_2_6735_ 450
+ UP BOUND DefaillancePositive_0_6735_ 2168.00001
+ UP BOUND PalierThermique_1_3_6735_ 2700
+ UP BOUND PalierThermique_1_4_6735_ 200
+ UP BOUND PalierThermique_1_5_6735_ 450
+ UP BOUND DefaillancePositive_1_6735_ 2126.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6736_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6736_ 1e+20
+ UP BOUND PalierThermique_0_0_6736_ 2700
+ UP BOUND PalierThermique_0_1_6736_ 900
+ UP BOUND PalierThermique_0_2_6736_ 450
+ UP BOUND DefaillancePositive_0_6736_ 2211.00001
+ UP BOUND PalierThermique_1_3_6736_ 2700
+ UP BOUND PalierThermique_1_4_6736_ 200
+ UP BOUND PalierThermique_1_5_6736_ 450
+ UP BOUND DefaillancePositive_1_6736_ 2179.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6737_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6737_ 1e+20
+ UP BOUND PalierThermique_0_0_6737_ 2700
+ UP BOUND PalierThermique_0_1_6737_ 900
+ UP BOUND PalierThermique_0_2_6737_ 450
+ UP BOUND DefaillancePositive_0_6737_ 2335.00001
+ UP BOUND PalierThermique_1_3_6737_ 2700
+ UP BOUND PalierThermique_1_4_6737_ 200
+ UP BOUND PalierThermique_1_5_6737_ 450
+ UP BOUND DefaillancePositive_1_6737_ 2335.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6738_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6738_ 1e+20
+ UP BOUND PalierThermique_0_0_6738_ 2700
+ UP BOUND PalierThermique_0_1_6738_ 900
+ UP BOUND PalierThermique_0_2_6738_ 450
+ UP BOUND DefaillancePositive_0_6738_ 2525.00001
+ UP BOUND PalierThermique_1_3_6738_ 2700
+ UP BOUND PalierThermique_1_4_6738_ 200
+ UP BOUND PalierThermique_1_5_6738_ 450
+ UP BOUND DefaillancePositive_1_6738_ 2543.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6739_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6739_ 1e+20
+ UP BOUND PalierThermique_0_0_6739_ 2700
+ UP BOUND PalierThermique_0_1_6739_ 900
+ UP BOUND PalierThermique_0_2_6739_ 450
+ UP BOUND DefaillancePositive_0_6739_ 2631.00001
+ UP BOUND PalierThermique_1_3_6739_ 2700
+ UP BOUND PalierThermique_1_4_6739_ 200
+ UP BOUND PalierThermique_1_5_6739_ 450
+ UP BOUND DefaillancePositive_1_6739_ 2698.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6740_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6740_ 1e+20
+ UP BOUND PalierThermique_0_0_6740_ 2700
+ UP BOUND PalierThermique_0_1_6740_ 900
+ UP BOUND PalierThermique_0_2_6740_ 450
+ UP BOUND DefaillancePositive_0_6740_ 2482.00001
+ UP BOUND PalierThermique_1_3_6740_ 2700
+ UP BOUND PalierThermique_1_4_6740_ 200
+ UP BOUND PalierThermique_1_5_6740_ 450
+ UP BOUND DefaillancePositive_1_6740_ 2498.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6741_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6741_ 1e+20
+ UP BOUND PalierThermique_0_0_6741_ 2700
+ UP BOUND PalierThermique_0_1_6741_ 900
+ UP BOUND PalierThermique_0_2_6741_ 450
+ UP BOUND DefaillancePositive_0_6741_ 2392.00001
+ UP BOUND PalierThermique_1_3_6741_ 2700
+ UP BOUND PalierThermique_1_4_6741_ 200
+ UP BOUND PalierThermique_1_5_6741_ 450
+ UP BOUND DefaillancePositive_1_6741_ 2439.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6742_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6742_ 1e+20
+ UP BOUND PalierThermique_0_0_6742_ 2700
+ UP BOUND PalierThermique_0_1_6742_ 900
+ UP BOUND PalierThermique_0_2_6742_ 450
+ UP BOUND DefaillancePositive_0_6742_ 2655.00001
+ UP BOUND PalierThermique_1_3_6742_ 2700
+ UP BOUND PalierThermique_1_4_6742_ 200
+ UP BOUND PalierThermique_1_5_6742_ 450
+ UP BOUND DefaillancePositive_1_6742_ 2759.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6743_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6743_ 1e+20
+ UP BOUND PalierThermique_0_0_6743_ 2700
+ UP BOUND PalierThermique_0_1_6743_ 900
+ UP BOUND PalierThermique_0_2_6743_ 450
+ UP BOUND DefaillancePositive_0_6743_ 2658.00001
+ UP BOUND PalierThermique_1_3_6743_ 2700
+ UP BOUND PalierThermique_1_4_6743_ 200
+ UP BOUND PalierThermique_1_5_6743_ 450
+ UP BOUND DefaillancePositive_1_6743_ 2826.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6744_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6744_ 1e+20
+ UP BOUND PalierThermique_0_0_6744_ 1800
+ UP BOUND PalierThermique_0_1_6744_ 1000
+ UP BOUND PalierThermique_0_2_6744_ 900
+ UP BOUND DefaillancePositive_0_6744_ 2398.00001
+ UP BOUND PalierThermique_1_3_6744_ 2700
+ UP BOUND PalierThermique_1_4_6744_ 200
+ UP BOUND PalierThermique_1_5_6744_ 900
+ UP BOUND DefaillancePositive_1_6744_ 2601.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6745_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6745_ 1e+20
+ UP BOUND PalierThermique_0_0_6745_ 1800
+ UP BOUND PalierThermique_0_1_6745_ 1000
+ UP BOUND PalierThermique_0_2_6745_ 900
+ UP BOUND DefaillancePositive_0_6745_ 2223.00001
+ UP BOUND PalierThermique_1_3_6745_ 2700
+ UP BOUND PalierThermique_1_4_6745_ 200
+ UP BOUND PalierThermique_1_5_6745_ 900
+ UP BOUND DefaillancePositive_1_6745_ 2479.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6746_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6746_ 1e+20
+ UP BOUND PalierThermique_0_0_6746_ 1800
+ UP BOUND PalierThermique_0_1_6746_ 1000
+ UP BOUND PalierThermique_0_2_6746_ 900
+ UP BOUND DefaillancePositive_0_6746_ 1954.00001
+ UP BOUND PalierThermique_1_3_6746_ 2700
+ UP BOUND PalierThermique_1_4_6746_ 200
+ UP BOUND PalierThermique_1_5_6746_ 900
+ UP BOUND DefaillancePositive_1_6746_ 2281.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6747_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6747_ 1e+20
+ UP BOUND PalierThermique_0_0_6747_ 1800
+ UP BOUND PalierThermique_0_1_6747_ 1000
+ UP BOUND PalierThermique_0_2_6747_ 900
+ UP BOUND DefaillancePositive_0_6747_ 1918.00001
+ UP BOUND PalierThermique_1_3_6747_ 2700
+ UP BOUND PalierThermique_1_4_6747_ 200
+ UP BOUND PalierThermique_1_5_6747_ 900
+ UP BOUND DefaillancePositive_1_6747_ 2215.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6748_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6748_ 1e+20
+ UP BOUND PalierThermique_0_0_6748_ 1800
+ UP BOUND PalierThermique_0_1_6748_ 1000
+ UP BOUND PalierThermique_0_2_6748_ 900
+ UP BOUND DefaillancePositive_0_6748_ 1889.00001
+ UP BOUND PalierThermique_1_3_6748_ 2700
+ UP BOUND PalierThermique_1_4_6748_ 200
+ UP BOUND PalierThermique_1_5_6748_ 900
+ UP BOUND DefaillancePositive_1_6748_ 2179.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6749_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6749_ 1e+20
+ UP BOUND PalierThermique_0_0_6749_ 1800
+ UP BOUND PalierThermique_0_1_6749_ 1000
+ UP BOUND PalierThermique_0_2_6749_ 900
+ UP BOUND DefaillancePositive_0_6749_ 1997.00001
+ UP BOUND PalierThermique_1_3_6749_ 2700
+ UP BOUND PalierThermique_1_4_6749_ 200
+ UP BOUND PalierThermique_1_5_6749_ 900
+ UP BOUND DefaillancePositive_1_6749_ 2273.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6750_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6750_ 1e+20
+ UP BOUND PalierThermique_0_0_6750_ 1800
+ UP BOUND PalierThermique_0_1_6750_ 1000
+ UP BOUND PalierThermique_0_2_6750_ 900
+ UP BOUND DefaillancePositive_0_6750_ 2226.00001
+ UP BOUND PalierThermique_1_3_6750_ 2700
+ UP BOUND PalierThermique_1_4_6750_ 200
+ UP BOUND PalierThermique_1_5_6750_ 900
+ UP BOUND DefaillancePositive_1_6750_ 2490.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6751_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6751_ 1e+20
+ UP BOUND PalierThermique_0_0_6751_ 1800
+ UP BOUND PalierThermique_0_1_6751_ 1000
+ UP BOUND PalierThermique_0_2_6751_ 900
+ UP BOUND DefaillancePositive_0_6751_ 2280.00001
+ UP BOUND PalierThermique_1_3_6751_ 2700
+ UP BOUND PalierThermique_1_4_6751_ 200
+ UP BOUND PalierThermique_1_5_6751_ 900
+ UP BOUND DefaillancePositive_1_6751_ 2567.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6752_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6752_ 1e+20
+ UP BOUND PalierThermique_0_0_6752_ 1800
+ UP BOUND PalierThermique_0_1_6752_ 1000
+ UP BOUND PalierThermique_0_2_6752_ 900
+ UP BOUND DefaillancePositive_0_6752_ 2146.00001
+ UP BOUND PalierThermique_1_3_6752_ 2700
+ UP BOUND PalierThermique_1_4_6752_ 200
+ UP BOUND PalierThermique_1_5_6752_ 900
+ UP BOUND DefaillancePositive_1_6752_ 2455.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6753_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6753_ 1e+20
+ UP BOUND PalierThermique_0_0_6753_ 1800
+ UP BOUND PalierThermique_0_1_6753_ 1000
+ UP BOUND PalierThermique_0_2_6753_ 900
+ UP BOUND DefaillancePositive_0_6753_ 2145.00001
+ UP BOUND PalierThermique_1_3_6753_ 2700
+ UP BOUND PalierThermique_1_4_6753_ 200
+ UP BOUND PalierThermique_1_5_6753_ 900
+ UP BOUND DefaillancePositive_1_6753_ 2443.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6754_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6754_ 1e+20
+ UP BOUND PalierThermique_0_0_6754_ 1800
+ UP BOUND PalierThermique_0_1_6754_ 1000
+ UP BOUND PalierThermique_0_2_6754_ 900
+ UP BOUND DefaillancePositive_0_6754_ 2140.00001
+ UP BOUND PalierThermique_1_3_6754_ 2700
+ UP BOUND PalierThermique_1_4_6754_ 200
+ UP BOUND PalierThermique_1_5_6754_ 900
+ UP BOUND DefaillancePositive_1_6754_ 2442.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6755_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6755_ 1e+20
+ UP BOUND PalierThermique_0_0_6755_ 1800
+ UP BOUND PalierThermique_0_1_6755_ 1000
+ UP BOUND PalierThermique_0_2_6755_ 900
+ UP BOUND DefaillancePositive_0_6755_ 2242.00001
+ UP BOUND PalierThermique_1_3_6755_ 2700
+ UP BOUND PalierThermique_1_4_6755_ 200
+ UP BOUND PalierThermique_1_5_6755_ 900
+ UP BOUND DefaillancePositive_1_6755_ 2501.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6756_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6756_ 1e+20
+ UP BOUND PalierThermique_0_0_6756_ 1800
+ UP BOUND PalierThermique_0_1_6756_ 1000
+ UP BOUND PalierThermique_0_2_6756_ 900
+ UP BOUND DefaillancePositive_0_6756_ 2312.00001
+ UP BOUND PalierThermique_1_3_6756_ 2700
+ UP BOUND PalierThermique_1_4_6756_ 200
+ UP BOUND PalierThermique_1_5_6756_ 900
+ UP BOUND DefaillancePositive_1_6756_ 2557.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6757_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6757_ 1e+20
+ UP BOUND PalierThermique_0_0_6757_ 1800
+ UP BOUND PalierThermique_0_1_6757_ 1000
+ UP BOUND PalierThermique_0_2_6757_ 900
+ UP BOUND DefaillancePositive_0_6757_ 2180.00001
+ UP BOUND PalierThermique_1_3_6757_ 2700
+ UP BOUND PalierThermique_1_4_6757_ 200
+ UP BOUND PalierThermique_1_5_6757_ 900
+ UP BOUND DefaillancePositive_1_6757_ 2432.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6758_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6758_ 1e+20
+ UP BOUND PalierThermique_0_0_6758_ 1800
+ UP BOUND PalierThermique_0_1_6758_ 1000
+ UP BOUND PalierThermique_0_2_6758_ 900
+ UP BOUND DefaillancePositive_0_6758_ 2106.00001
+ UP BOUND PalierThermique_1_3_6758_ 2700
+ UP BOUND PalierThermique_1_4_6758_ 200
+ UP BOUND PalierThermique_1_5_6758_ 900
+ UP BOUND DefaillancePositive_1_6758_ 2371.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6759_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6759_ 1e+20
+ UP BOUND PalierThermique_0_0_6759_ 1800
+ UP BOUND PalierThermique_0_1_6759_ 1000
+ UP BOUND PalierThermique_0_2_6759_ 900
+ UP BOUND DefaillancePositive_0_6759_ 2020.00001
+ UP BOUND PalierThermique_1_3_6759_ 2700
+ UP BOUND PalierThermique_1_4_6759_ 200
+ UP BOUND PalierThermique_1_5_6759_ 900
+ UP BOUND DefaillancePositive_1_6759_ 2325.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6760_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6760_ 1e+20
+ UP BOUND PalierThermique_0_0_6760_ 1800
+ UP BOUND PalierThermique_0_1_6760_ 1000
+ UP BOUND PalierThermique_0_2_6760_ 900
+ UP BOUND DefaillancePositive_0_6760_ 2017.00001
+ UP BOUND PalierThermique_1_3_6760_ 2700
+ UP BOUND PalierThermique_1_4_6760_ 200
+ UP BOUND PalierThermique_1_5_6760_ 900
+ UP BOUND DefaillancePositive_1_6760_ 2363.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6761_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6761_ 1e+20
+ UP BOUND PalierThermique_0_0_6761_ 1800
+ UP BOUND PalierThermique_0_1_6761_ 1000
+ UP BOUND PalierThermique_0_2_6761_ 900
+ UP BOUND DefaillancePositive_0_6761_ 2146.00001
+ UP BOUND PalierThermique_1_3_6761_ 2700
+ UP BOUND PalierThermique_1_4_6761_ 200
+ UP BOUND PalierThermique_1_5_6761_ 900
+ UP BOUND DefaillancePositive_1_6761_ 2461.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6762_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6762_ 1e+20
+ UP BOUND PalierThermique_0_0_6762_ 1800
+ UP BOUND PalierThermique_0_1_6762_ 1000
+ UP BOUND PalierThermique_0_2_6762_ 900
+ UP BOUND DefaillancePositive_0_6762_ 2286.00001
+ UP BOUND PalierThermique_1_3_6762_ 2700
+ UP BOUND PalierThermique_1_4_6762_ 200
+ UP BOUND PalierThermique_1_5_6762_ 900
+ UP BOUND DefaillancePositive_1_6762_ 2659.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6763_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6763_ 1e+20
+ UP BOUND PalierThermique_0_0_6763_ 1800
+ UP BOUND PalierThermique_0_1_6763_ 1000
+ UP BOUND PalierThermique_0_2_6763_ 900
+ UP BOUND DefaillancePositive_0_6763_ 2432.00001
+ UP BOUND PalierThermique_1_3_6763_ 2700
+ UP BOUND PalierThermique_1_4_6763_ 200
+ UP BOUND PalierThermique_1_5_6763_ 900
+ UP BOUND DefaillancePositive_1_6763_ 2800.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6764_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6764_ 1e+20
+ UP BOUND PalierThermique_0_0_6764_ 1800
+ UP BOUND PalierThermique_0_1_6764_ 1000
+ UP BOUND PalierThermique_0_2_6764_ 900
+ UP BOUND DefaillancePositive_0_6764_ 2299.00001
+ UP BOUND PalierThermique_1_3_6764_ 2700
+ UP BOUND PalierThermique_1_4_6764_ 200
+ UP BOUND PalierThermique_1_5_6764_ 900
+ UP BOUND DefaillancePositive_1_6764_ 2668.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6765_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6765_ 1e+20
+ UP BOUND PalierThermique_0_0_6765_ 1800
+ UP BOUND PalierThermique_0_1_6765_ 1000
+ UP BOUND PalierThermique_0_2_6765_ 900
+ UP BOUND DefaillancePositive_0_6765_ 2192.00001
+ UP BOUND PalierThermique_1_3_6765_ 2700
+ UP BOUND PalierThermique_1_4_6765_ 200
+ UP BOUND PalierThermique_1_5_6765_ 900
+ UP BOUND DefaillancePositive_1_6765_ 2546.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6766_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6766_ 1e+20
+ UP BOUND PalierThermique_0_0_6766_ 1800
+ UP BOUND PalierThermique_0_1_6766_ 1000
+ UP BOUND PalierThermique_0_2_6766_ 900
+ UP BOUND DefaillancePositive_0_6766_ 2445.00001
+ UP BOUND PalierThermique_1_3_6766_ 2700
+ UP BOUND PalierThermique_1_4_6766_ 200
+ UP BOUND PalierThermique_1_5_6766_ 900
+ UP BOUND DefaillancePositive_1_6766_ 2873.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6767_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6767_ 1e+20
+ UP BOUND PalierThermique_0_0_6767_ 1800
+ UP BOUND PalierThermique_0_1_6767_ 1000
+ UP BOUND PalierThermique_0_2_6767_ 900
+ UP BOUND DefaillancePositive_0_6767_ 2517.00001
+ UP BOUND PalierThermique_1_3_6767_ 2700
+ UP BOUND PalierThermique_1_4_6767_ 200
+ UP BOUND PalierThermique_1_5_6767_ 900
+ UP BOUND DefaillancePositive_1_6767_ 2943.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6768_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6768_ 1e+20
+ UP BOUND PalierThermique_0_0_6768_ 1800
+ UP BOUND PalierThermique_0_1_6768_ 1000
+ UP BOUND PalierThermique_0_2_6768_ 900
+ UP BOUND DefaillancePositive_0_6768_ 2272.00001
+ UP BOUND PalierThermique_1_3_6768_ 2700
+ UP BOUND PalierThermique_1_4_6768_ 200
+ UP BOUND PalierThermique_1_5_6768_ 900
+ UP BOUND DefaillancePositive_1_6768_ 2696.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6769_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6769_ 1e+20
+ UP BOUND PalierThermique_0_0_6769_ 1800
+ UP BOUND PalierThermique_0_1_6769_ 1000
+ UP BOUND PalierThermique_0_2_6769_ 900
+ UP BOUND DefaillancePositive_0_6769_ 2115.00001
+ UP BOUND PalierThermique_1_3_6769_ 2700
+ UP BOUND PalierThermique_1_4_6769_ 200
+ UP BOUND PalierThermique_1_5_6769_ 900
+ UP BOUND DefaillancePositive_1_6769_ 2532.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6770_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6770_ 1e+20
+ UP BOUND PalierThermique_0_0_6770_ 1800
+ UP BOUND PalierThermique_0_1_6770_ 1000
+ UP BOUND PalierThermique_0_2_6770_ 900
+ UP BOUND DefaillancePositive_0_6770_ 1901.00001
+ UP BOUND PalierThermique_1_3_6770_ 2700
+ UP BOUND PalierThermique_1_4_6770_ 200
+ UP BOUND PalierThermique_1_5_6770_ 900
+ UP BOUND DefaillancePositive_1_6770_ 2290.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6771_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6771_ 1e+20
+ UP BOUND PalierThermique_0_0_6771_ 1800
+ UP BOUND PalierThermique_0_1_6771_ 1000
+ UP BOUND PalierThermique_0_2_6771_ 900
+ UP BOUND DefaillancePositive_0_6771_ 1851.00001
+ UP BOUND PalierThermique_1_3_6771_ 2700
+ UP BOUND PalierThermique_1_4_6771_ 200
+ UP BOUND PalierThermique_1_5_6771_ 900
+ UP BOUND DefaillancePositive_1_6771_ 2263.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6772_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6772_ 1e+20
+ UP BOUND PalierThermique_0_0_6772_ 1800
+ UP BOUND PalierThermique_0_1_6772_ 1000
+ UP BOUND PalierThermique_0_2_6772_ 900
+ UP BOUND DefaillancePositive_0_6772_ 1854.00001
+ UP BOUND PalierThermique_1_3_6772_ 2700
+ UP BOUND PalierThermique_1_4_6772_ 200
+ UP BOUND PalierThermique_1_5_6772_ 900
+ UP BOUND DefaillancePositive_1_6772_ 2290.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6773_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6773_ 1e+20
+ UP BOUND PalierThermique_0_0_6773_ 1800
+ UP BOUND PalierThermique_0_1_6773_ 1000
+ UP BOUND PalierThermique_0_2_6773_ 900
+ UP BOUND DefaillancePositive_0_6773_ 2039.00001
+ UP BOUND PalierThermique_1_3_6773_ 2700
+ UP BOUND PalierThermique_1_4_6773_ 200
+ UP BOUND PalierThermique_1_5_6773_ 900
+ UP BOUND DefaillancePositive_1_6773_ 2417.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6774_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6774_ 1e+20
+ UP BOUND PalierThermique_0_0_6774_ 1800
+ UP BOUND PalierThermique_0_1_6774_ 1000
+ UP BOUND PalierThermique_0_2_6774_ 900
+ UP BOUND DefaillancePositive_0_6774_ 2319.00001
+ UP BOUND PalierThermique_1_3_6774_ 2700
+ UP BOUND PalierThermique_1_4_6774_ 200
+ UP BOUND PalierThermique_1_5_6774_ 900
+ UP BOUND DefaillancePositive_1_6774_ 2699.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6775_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6775_ 1e+20
+ UP BOUND PalierThermique_0_0_6775_ 1800
+ UP BOUND PalierThermique_0_1_6775_ 1000
+ UP BOUND PalierThermique_0_2_6775_ 900
+ UP BOUND DefaillancePositive_0_6775_ 2363.00001
+ UP BOUND PalierThermique_1_3_6775_ 2700
+ UP BOUND PalierThermique_1_4_6775_ 200
+ UP BOUND PalierThermique_1_5_6775_ 900
+ UP BOUND DefaillancePositive_1_6775_ 2761.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6776_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6776_ 1e+20
+ UP BOUND PalierThermique_0_0_6776_ 1800
+ UP BOUND PalierThermique_0_1_6776_ 1000
+ UP BOUND PalierThermique_0_2_6776_ 900
+ UP BOUND DefaillancePositive_0_6776_ 2213.00001
+ UP BOUND PalierThermique_1_3_6776_ 2700
+ UP BOUND PalierThermique_1_4_6776_ 200
+ UP BOUND PalierThermique_1_5_6776_ 900
+ UP BOUND DefaillancePositive_1_6776_ 2661.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6777_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6777_ 1e+20
+ UP BOUND PalierThermique_0_0_6777_ 1800
+ UP BOUND PalierThermique_0_1_6777_ 1000
+ UP BOUND PalierThermique_0_2_6777_ 900
+ UP BOUND DefaillancePositive_0_6777_ 2226.00001
+ UP BOUND PalierThermique_1_3_6777_ 2700
+ UP BOUND PalierThermique_1_4_6777_ 200
+ UP BOUND PalierThermique_1_5_6777_ 900
+ UP BOUND DefaillancePositive_1_6777_ 2633.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6778_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6778_ 1e+20
+ UP BOUND PalierThermique_0_0_6778_ 1800
+ UP BOUND PalierThermique_0_1_6778_ 1000
+ UP BOUND PalierThermique_0_2_6778_ 900
+ UP BOUND DefaillancePositive_0_6778_ 2187.00001
+ UP BOUND PalierThermique_1_3_6778_ 2700
+ UP BOUND PalierThermique_1_4_6778_ 200
+ UP BOUND PalierThermique_1_5_6778_ 900
+ UP BOUND DefaillancePositive_1_6778_ 2645.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6779_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6779_ 1e+20
+ UP BOUND PalierThermique_0_0_6779_ 1800
+ UP BOUND PalierThermique_0_1_6779_ 1000
+ UP BOUND PalierThermique_0_2_6779_ 900
+ UP BOUND DefaillancePositive_0_6779_ 2247.00001
+ UP BOUND PalierThermique_1_3_6779_ 2700
+ UP BOUND PalierThermique_1_4_6779_ 200
+ UP BOUND PalierThermique_1_5_6779_ 900
+ UP BOUND DefaillancePositive_1_6779_ 2696.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6780_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6780_ 1e+20
+ UP BOUND PalierThermique_0_0_6780_ 1800
+ UP BOUND PalierThermique_0_1_6780_ 1000
+ UP BOUND PalierThermique_0_2_6780_ 900
+ UP BOUND DefaillancePositive_0_6780_ 2340.00001
+ UP BOUND PalierThermique_1_3_6780_ 2700
+ UP BOUND PalierThermique_1_4_6780_ 200
+ UP BOUND PalierThermique_1_5_6780_ 900
+ UP BOUND DefaillancePositive_1_6780_ 2740.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6781_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6781_ 1e+20
+ UP BOUND PalierThermique_0_0_6781_ 1800
+ UP BOUND PalierThermique_0_1_6781_ 1000
+ UP BOUND PalierThermique_0_2_6781_ 900
+ UP BOUND DefaillancePositive_0_6781_ 2199.00001
+ UP BOUND PalierThermique_1_3_6781_ 2700
+ UP BOUND PalierThermique_1_4_6781_ 200
+ UP BOUND PalierThermique_1_5_6781_ 900
+ UP BOUND DefaillancePositive_1_6781_ 2603.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6782_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6782_ 1e+20
+ UP BOUND PalierThermique_0_0_6782_ 1800
+ UP BOUND PalierThermique_0_1_6782_ 1000
+ UP BOUND PalierThermique_0_2_6782_ 900
+ UP BOUND DefaillancePositive_0_6782_ 2108.00001
+ UP BOUND PalierThermique_1_3_6782_ 2700
+ UP BOUND PalierThermique_1_4_6782_ 200
+ UP BOUND PalierThermique_1_5_6782_ 900
+ UP BOUND DefaillancePositive_1_6782_ 2530.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6783_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6783_ 1e+20
+ UP BOUND PalierThermique_0_0_6783_ 1800
+ UP BOUND PalierThermique_0_1_6783_ 1000
+ UP BOUND PalierThermique_0_2_6783_ 900
+ UP BOUND DefaillancePositive_0_6783_ 2066.00001
+ UP BOUND PalierThermique_1_3_6783_ 2700
+ UP BOUND PalierThermique_1_4_6783_ 200
+ UP BOUND PalierThermique_1_5_6783_ 900
+ UP BOUND DefaillancePositive_1_6783_ 2474.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6784_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6784_ 1e+20
+ UP BOUND PalierThermique_0_0_6784_ 1800
+ UP BOUND PalierThermique_0_1_6784_ 1000
+ UP BOUND PalierThermique_0_2_6784_ 900
+ UP BOUND DefaillancePositive_0_6784_ 2112.00001
+ UP BOUND PalierThermique_1_3_6784_ 2700
+ UP BOUND PalierThermique_1_4_6784_ 200
+ UP BOUND PalierThermique_1_5_6784_ 900
+ UP BOUND DefaillancePositive_1_6784_ 2499.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6785_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6785_ 1e+20
+ UP BOUND PalierThermique_0_0_6785_ 1800
+ UP BOUND PalierThermique_0_1_6785_ 1000
+ UP BOUND PalierThermique_0_2_6785_ 900
+ UP BOUND DefaillancePositive_0_6785_ 2251.00001
+ UP BOUND PalierThermique_1_3_6785_ 2700
+ UP BOUND PalierThermique_1_4_6785_ 200
+ UP BOUND PalierThermique_1_5_6785_ 900
+ UP BOUND DefaillancePositive_1_6785_ 2606.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6786_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6786_ 1e+20
+ UP BOUND PalierThermique_0_0_6786_ 1800
+ UP BOUND PalierThermique_0_1_6786_ 1000
+ UP BOUND PalierThermique_0_2_6786_ 900
+ UP BOUND DefaillancePositive_0_6786_ 2436.00001
+ UP BOUND PalierThermique_1_3_6786_ 2700
+ UP BOUND PalierThermique_1_4_6786_ 200
+ UP BOUND PalierThermique_1_5_6786_ 900
+ UP BOUND DefaillancePositive_1_6786_ 2762.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6787_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6787_ 1e+20
+ UP BOUND PalierThermique_0_0_6787_ 1800
+ UP BOUND PalierThermique_0_1_6787_ 1000
+ UP BOUND PalierThermique_0_2_6787_ 900
+ UP BOUND DefaillancePositive_0_6787_ 2573.00001
+ UP BOUND PalierThermique_1_3_6787_ 2700
+ UP BOUND PalierThermique_1_4_6787_ 200
+ UP BOUND PalierThermique_1_5_6787_ 900
+ UP BOUND DefaillancePositive_1_6787_ 2881.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6788_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6788_ 1e+20
+ UP BOUND PalierThermique_0_0_6788_ 1800
+ UP BOUND PalierThermique_0_1_6788_ 1000
+ UP BOUND PalierThermique_0_2_6788_ 900
+ UP BOUND DefaillancePositive_0_6788_ 2458.00001
+ UP BOUND PalierThermique_1_3_6788_ 2700
+ UP BOUND PalierThermique_1_4_6788_ 200
+ UP BOUND PalierThermique_1_5_6788_ 900
+ UP BOUND DefaillancePositive_1_6788_ 2759.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6789_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6789_ 1e+20
+ UP BOUND PalierThermique_0_0_6789_ 1800
+ UP BOUND PalierThermique_0_1_6789_ 1000
+ UP BOUND PalierThermique_0_2_6789_ 900
+ UP BOUND DefaillancePositive_0_6789_ 2344.00001
+ UP BOUND PalierThermique_1_3_6789_ 2700
+ UP BOUND PalierThermique_1_4_6789_ 200
+ UP BOUND PalierThermique_1_5_6789_ 900
+ UP BOUND DefaillancePositive_1_6789_ 2622.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6790_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6790_ 1e+20
+ UP BOUND PalierThermique_0_0_6790_ 1800
+ UP BOUND PalierThermique_0_1_6790_ 1000
+ UP BOUND PalierThermique_0_2_6790_ 900
+ UP BOUND DefaillancePositive_0_6790_ 2640.00001
+ UP BOUND PalierThermique_1_3_6790_ 2700
+ UP BOUND PalierThermique_1_4_6790_ 200
+ UP BOUND PalierThermique_1_5_6790_ 900
+ UP BOUND DefaillancePositive_1_6790_ 2950.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6791_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6791_ 1e+20
+ UP BOUND PalierThermique_0_0_6791_ 1800
+ UP BOUND PalierThermique_0_1_6791_ 1000
+ UP BOUND PalierThermique_0_2_6791_ 900
+ UP BOUND DefaillancePositive_0_6791_ 2722.00001
+ UP BOUND PalierThermique_1_3_6791_ 2700
+ UP BOUND PalierThermique_1_4_6791_ 200
+ UP BOUND PalierThermique_1_5_6791_ 900
+ UP BOUND DefaillancePositive_1_6791_ 2963.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6792_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6792_ 1e+20
+ UP BOUND PalierThermique_0_0_6792_ 1800
+ UP BOUND PalierThermique_0_1_6792_ 1000
+ UP BOUND PalierThermique_0_2_6792_ 900
+ UP BOUND DefaillancePositive_0_6792_ 2450.00001
+ UP BOUND PalierThermique_1_3_6792_ 2700
+ UP BOUND PalierThermique_1_4_6792_ 200
+ UP BOUND PalierThermique_1_5_6792_ 900
+ UP BOUND DefaillancePositive_1_6792_ 2751.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6793_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6793_ 1e+20
+ UP BOUND PalierThermique_0_0_6793_ 1800
+ UP BOUND PalierThermique_0_1_6793_ 1000
+ UP BOUND PalierThermique_0_2_6793_ 900
+ UP BOUND DefaillancePositive_0_6793_ 2297.00001
+ UP BOUND PalierThermique_1_3_6793_ 2700
+ UP BOUND PalierThermique_1_4_6793_ 200
+ UP BOUND PalierThermique_1_5_6793_ 900
+ UP BOUND DefaillancePositive_1_6793_ 2561.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6794_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6794_ 1e+20
+ UP BOUND PalierThermique_0_0_6794_ 1800
+ UP BOUND PalierThermique_0_1_6794_ 1000
+ UP BOUND PalierThermique_0_2_6794_ 900
+ UP BOUND DefaillancePositive_0_6794_ 2131.00001
+ UP BOUND PalierThermique_1_3_6794_ 2700
+ UP BOUND PalierThermique_1_4_6794_ 200
+ UP BOUND PalierThermique_1_5_6794_ 900
+ UP BOUND DefaillancePositive_1_6794_ 2384.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6795_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6795_ 1e+20
+ UP BOUND PalierThermique_0_0_6795_ 1800
+ UP BOUND PalierThermique_0_1_6795_ 1000
+ UP BOUND PalierThermique_0_2_6795_ 900
+ UP BOUND DefaillancePositive_0_6795_ 2087.00001
+ UP BOUND PalierThermique_1_3_6795_ 2700
+ UP BOUND PalierThermique_1_4_6795_ 200
+ UP BOUND PalierThermique_1_5_6795_ 900
+ UP BOUND DefaillancePositive_1_6795_ 2323.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6796_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6796_ 1e+20
+ UP BOUND PalierThermique_0_0_6796_ 1800
+ UP BOUND PalierThermique_0_1_6796_ 1000
+ UP BOUND PalierThermique_0_2_6796_ 900
+ UP BOUND DefaillancePositive_0_6796_ 2041.00001
+ UP BOUND PalierThermique_1_3_6796_ 2700
+ UP BOUND PalierThermique_1_4_6796_ 200
+ UP BOUND PalierThermique_1_5_6796_ 900
+ UP BOUND DefaillancePositive_1_6796_ 2311.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6797_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6797_ 1e+20
+ UP BOUND PalierThermique_0_0_6797_ 1800
+ UP BOUND PalierThermique_0_1_6797_ 1000
+ UP BOUND PalierThermique_0_2_6797_ 900
+ UP BOUND DefaillancePositive_0_6797_ 2205.00001
+ UP BOUND PalierThermique_1_3_6797_ 2700
+ UP BOUND PalierThermique_1_4_6797_ 200
+ UP BOUND PalierThermique_1_5_6797_ 900
+ UP BOUND DefaillancePositive_1_6797_ 2460.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6798_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6798_ 1e+20
+ UP BOUND PalierThermique_0_0_6798_ 1800
+ UP BOUND PalierThermique_0_1_6798_ 1000
+ UP BOUND PalierThermique_0_2_6798_ 900
+ UP BOUND DefaillancePositive_0_6798_ 2468.00001
+ UP BOUND PalierThermique_1_3_6798_ 2700
+ UP BOUND PalierThermique_1_4_6798_ 200
+ UP BOUND PalierThermique_1_5_6798_ 900
+ UP BOUND DefaillancePositive_1_6798_ 2754.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6799_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6799_ 1e+20
+ UP BOUND PalierThermique_0_0_6799_ 1800
+ UP BOUND PalierThermique_0_1_6799_ 1000
+ UP BOUND PalierThermique_0_2_6799_ 900
+ UP BOUND DefaillancePositive_0_6799_ 2510.00001
+ UP BOUND PalierThermique_1_3_6799_ 2700
+ UP BOUND PalierThermique_1_4_6799_ 200
+ UP BOUND PalierThermique_1_5_6799_ 900
+ UP BOUND DefaillancePositive_1_6799_ 2806.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6800_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6800_ 1e+20
+ UP BOUND PalierThermique_0_0_6800_ 1800
+ UP BOUND PalierThermique_0_1_6800_ 1000
+ UP BOUND PalierThermique_0_2_6800_ 900
+ UP BOUND DefaillancePositive_0_6800_ 2384.00001
+ UP BOUND PalierThermique_1_3_6800_ 2700
+ UP BOUND PalierThermique_1_4_6800_ 200
+ UP BOUND PalierThermique_1_5_6800_ 900
+ UP BOUND DefaillancePositive_1_6800_ 2642.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6801_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6801_ 1e+20
+ UP BOUND PalierThermique_0_0_6801_ 1800
+ UP BOUND PalierThermique_0_1_6801_ 1000
+ UP BOUND PalierThermique_0_2_6801_ 900
+ UP BOUND DefaillancePositive_0_6801_ 2350.00001
+ UP BOUND PalierThermique_1_3_6801_ 2700
+ UP BOUND PalierThermique_1_4_6801_ 200
+ UP BOUND PalierThermique_1_5_6801_ 900
+ UP BOUND DefaillancePositive_1_6801_ 2612.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6802_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6802_ 1e+20
+ UP BOUND PalierThermique_0_0_6802_ 1800
+ UP BOUND PalierThermique_0_1_6802_ 1000
+ UP BOUND PalierThermique_0_2_6802_ 900
+ UP BOUND DefaillancePositive_0_6802_ 2301.00001
+ UP BOUND PalierThermique_1_3_6802_ 2700
+ UP BOUND PalierThermique_1_4_6802_ 200
+ UP BOUND PalierThermique_1_5_6802_ 900
+ UP BOUND DefaillancePositive_1_6802_ 2599.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6803_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6803_ 1e+20
+ UP BOUND PalierThermique_0_0_6803_ 1800
+ UP BOUND PalierThermique_0_1_6803_ 1000
+ UP BOUND PalierThermique_0_2_6803_ 900
+ UP BOUND DefaillancePositive_0_6803_ 2356.00001
+ UP BOUND PalierThermique_1_3_6803_ 2700
+ UP BOUND PalierThermique_1_4_6803_ 200
+ UP BOUND PalierThermique_1_5_6803_ 900
+ UP BOUND DefaillancePositive_1_6803_ 2634.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6804_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6804_ 1e+20
+ UP BOUND PalierThermique_0_0_6804_ 1800
+ UP BOUND PalierThermique_0_1_6804_ 1000
+ UP BOUND PalierThermique_0_2_6804_ 900
+ UP BOUND DefaillancePositive_0_6804_ 2437.00001
+ UP BOUND PalierThermique_1_3_6804_ 2700
+ UP BOUND PalierThermique_1_4_6804_ 200
+ UP BOUND PalierThermique_1_5_6804_ 900
+ UP BOUND DefaillancePositive_1_6804_ 2701.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6805_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6805_ 1e+20
+ UP BOUND PalierThermique_0_0_6805_ 1800
+ UP BOUND PalierThermique_0_1_6805_ 1000
+ UP BOUND PalierThermique_0_2_6805_ 900
+ UP BOUND DefaillancePositive_0_6805_ 2306.00001
+ UP BOUND PalierThermique_1_3_6805_ 2700
+ UP BOUND PalierThermique_1_4_6805_ 200
+ UP BOUND PalierThermique_1_5_6805_ 900
+ UP BOUND DefaillancePositive_1_6805_ 2594.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6806_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6806_ 1e+20
+ UP BOUND PalierThermique_0_0_6806_ 1800
+ UP BOUND PalierThermique_0_1_6806_ 1000
+ UP BOUND PalierThermique_0_2_6806_ 900
+ UP BOUND DefaillancePositive_0_6806_ 2231.00001
+ UP BOUND PalierThermique_1_3_6806_ 2700
+ UP BOUND PalierThermique_1_4_6806_ 200
+ UP BOUND PalierThermique_1_5_6806_ 900
+ UP BOUND DefaillancePositive_1_6806_ 2466.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6807_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6807_ 1e+20
+ UP BOUND PalierThermique_0_0_6807_ 1800
+ UP BOUND PalierThermique_0_1_6807_ 1000
+ UP BOUND PalierThermique_0_2_6807_ 900
+ UP BOUND DefaillancePositive_0_6807_ 2153.00001
+ UP BOUND PalierThermique_1_3_6807_ 2700
+ UP BOUND PalierThermique_1_4_6807_ 200
+ UP BOUND PalierThermique_1_5_6807_ 900
+ UP BOUND DefaillancePositive_1_6807_ 2432.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6808_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6808_ 1e+20
+ UP BOUND PalierThermique_0_0_6808_ 1800
+ UP BOUND PalierThermique_0_1_6808_ 1000
+ UP BOUND PalierThermique_0_2_6808_ 900
+ UP BOUND DefaillancePositive_0_6808_ 2174.00001
+ UP BOUND PalierThermique_1_3_6808_ 2700
+ UP BOUND PalierThermique_1_4_6808_ 200
+ UP BOUND PalierThermique_1_5_6808_ 900
+ UP BOUND DefaillancePositive_1_6808_ 2521.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6809_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6809_ 1e+20
+ UP BOUND PalierThermique_0_0_6809_ 1800
+ UP BOUND PalierThermique_0_1_6809_ 1000
+ UP BOUND PalierThermique_0_2_6809_ 900
+ UP BOUND DefaillancePositive_0_6809_ 2309.00001
+ UP BOUND PalierThermique_1_3_6809_ 2700
+ UP BOUND PalierThermique_1_4_6809_ 200
+ UP BOUND PalierThermique_1_5_6809_ 900
+ UP BOUND DefaillancePositive_1_6809_ 2613.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6810_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6810_ 1e+20
+ UP BOUND PalierThermique_0_0_6810_ 1800
+ UP BOUND PalierThermique_0_1_6810_ 1000
+ UP BOUND PalierThermique_0_2_6810_ 900
+ UP BOUND DefaillancePositive_0_6810_ 2502.00001
+ UP BOUND PalierThermique_1_3_6810_ 2700
+ UP BOUND PalierThermique_1_4_6810_ 200
+ UP BOUND PalierThermique_1_5_6810_ 900
+ UP BOUND DefaillancePositive_1_6810_ 2766.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6811_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6811_ 1e+20
+ UP BOUND PalierThermique_0_0_6811_ 1800
+ UP BOUND PalierThermique_0_1_6811_ 1000
+ UP BOUND PalierThermique_0_2_6811_ 900
+ UP BOUND DefaillancePositive_0_6811_ 2605.00001
+ UP BOUND PalierThermique_1_3_6811_ 2700
+ UP BOUND PalierThermique_1_4_6811_ 200
+ UP BOUND PalierThermique_1_5_6811_ 900
+ UP BOUND DefaillancePositive_1_6811_ 2896.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6812_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6812_ 1e+20
+ UP BOUND PalierThermique_0_0_6812_ 1800
+ UP BOUND PalierThermique_0_1_6812_ 1000
+ UP BOUND PalierThermique_0_2_6812_ 900
+ UP BOUND DefaillancePositive_0_6812_ 2435.00001
+ UP BOUND PalierThermique_1_3_6812_ 2700
+ UP BOUND PalierThermique_1_4_6812_ 200
+ UP BOUND PalierThermique_1_5_6812_ 900
+ UP BOUND DefaillancePositive_1_6812_ 2723.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6813_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6813_ 1e+20
+ UP BOUND PalierThermique_0_0_6813_ 1800
+ UP BOUND PalierThermique_0_1_6813_ 1000
+ UP BOUND PalierThermique_0_2_6813_ 900
+ UP BOUND DefaillancePositive_0_6813_ 2330.00001
+ UP BOUND PalierThermique_1_3_6813_ 2700
+ UP BOUND PalierThermique_1_4_6813_ 200
+ UP BOUND PalierThermique_1_5_6813_ 900
+ UP BOUND DefaillancePositive_1_6813_ 2602.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6814_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6814_ 1e+20
+ UP BOUND PalierThermique_0_0_6814_ 1800
+ UP BOUND PalierThermique_0_1_6814_ 1000
+ UP BOUND PalierThermique_0_2_6814_ 900
+ UP BOUND DefaillancePositive_0_6814_ 2649.00001
+ UP BOUND PalierThermique_1_3_6814_ 2700
+ UP BOUND PalierThermique_1_4_6814_ 200
+ UP BOUND PalierThermique_1_5_6814_ 900
+ UP BOUND DefaillancePositive_1_6814_ 2952.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6815_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6815_ 1e+20
+ UP BOUND PalierThermique_0_0_6815_ 1800
+ UP BOUND PalierThermique_0_1_6815_ 1000
+ UP BOUND PalierThermique_0_2_6815_ 900
+ UP BOUND DefaillancePositive_0_6815_ 2734.00001
+ UP BOUND PalierThermique_1_3_6815_ 2700
+ UP BOUND PalierThermique_1_4_6815_ 200
+ UP BOUND PalierThermique_1_5_6815_ 900
+ UP BOUND DefaillancePositive_1_6815_ 3015.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6816_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6816_ 1e+20
+ UP BOUND PalierThermique_0_0_6816_ 1800
+ UP BOUND PalierThermique_0_1_6816_ 900
+ FX BOUND PalierThermique_0_2_6816_ 0
+ UP BOUND DefaillancePositive_0_6816_ 2530.00001
+ UP BOUND PalierThermique_1_3_6816_ 2700
+ UP BOUND PalierThermique_1_4_6816_ 200
+ UP BOUND PalierThermique_1_5_6816_ 900
+ UP BOUND DefaillancePositive_1_6816_ 2773.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6817_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6817_ 1e+20
+ UP BOUND PalierThermique_0_0_6817_ 1800
+ UP BOUND PalierThermique_0_1_6817_ 900
+ FX BOUND PalierThermique_0_2_6817_ 0
+ UP BOUND DefaillancePositive_0_6817_ 2353.00001
+ UP BOUND PalierThermique_1_3_6817_ 2700
+ UP BOUND PalierThermique_1_4_6817_ 200
+ UP BOUND PalierThermique_1_5_6817_ 900
+ UP BOUND DefaillancePositive_1_6817_ 2564.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6818_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6818_ 1e+20
+ UP BOUND PalierThermique_0_0_6818_ 1800
+ UP BOUND PalierThermique_0_1_6818_ 900
+ FX BOUND PalierThermique_0_2_6818_ 0
+ UP BOUND DefaillancePositive_0_6818_ 2142.00001
+ UP BOUND PalierThermique_1_3_6818_ 2700
+ UP BOUND PalierThermique_1_4_6818_ 200
+ UP BOUND PalierThermique_1_5_6818_ 900
+ UP BOUND DefaillancePositive_1_6818_ 2409.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6819_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6819_ 1e+20
+ UP BOUND PalierThermique_0_0_6819_ 1800
+ UP BOUND PalierThermique_0_1_6819_ 900
+ FX BOUND PalierThermique_0_2_6819_ 0
+ UP BOUND DefaillancePositive_0_6819_ 2105.00001
+ UP BOUND PalierThermique_1_3_6819_ 2700
+ UP BOUND PalierThermique_1_4_6819_ 200
+ UP BOUND PalierThermique_1_5_6819_ 900
+ UP BOUND DefaillancePositive_1_6819_ 2382.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6820_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6820_ 1e+20
+ UP BOUND PalierThermique_0_0_6820_ 1800
+ UP BOUND PalierThermique_0_1_6820_ 900
+ FX BOUND PalierThermique_0_2_6820_ 0
+ UP BOUND DefaillancePositive_0_6820_ 2117.00001
+ UP BOUND PalierThermique_1_3_6820_ 2700
+ UP BOUND PalierThermique_1_4_6820_ 200
+ UP BOUND PalierThermique_1_5_6820_ 900
+ UP BOUND DefaillancePositive_1_6820_ 2358.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6821_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6821_ 1e+20
+ UP BOUND PalierThermique_0_0_6821_ 1800
+ UP BOUND PalierThermique_0_1_6821_ 900
+ FX BOUND PalierThermique_0_2_6821_ 0
+ UP BOUND DefaillancePositive_0_6821_ 2291.00001
+ UP BOUND PalierThermique_1_3_6821_ 2700
+ UP BOUND PalierThermique_1_4_6821_ 200
+ UP BOUND PalierThermique_1_5_6821_ 900
+ UP BOUND DefaillancePositive_1_6821_ 2501.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6822_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6822_ 1e+20
+ UP BOUND PalierThermique_0_0_6822_ 1800
+ UP BOUND PalierThermique_0_1_6822_ 900
+ FX BOUND PalierThermique_0_2_6822_ 0
+ UP BOUND DefaillancePositive_0_6822_ 2538.00001
+ UP BOUND PalierThermique_1_3_6822_ 2700
+ UP BOUND PalierThermique_1_4_6822_ 200
+ UP BOUND PalierThermique_1_5_6822_ 900
+ UP BOUND DefaillancePositive_1_6822_ 2760.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6823_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6823_ 1e+20
+ UP BOUND PalierThermique_0_0_6823_ 1800
+ UP BOUND PalierThermique_0_1_6823_ 900
+ FX BOUND PalierThermique_0_2_6823_ 0
+ UP BOUND DefaillancePositive_0_6823_ 2628.00001
+ UP BOUND PalierThermique_1_3_6823_ 2700
+ UP BOUND PalierThermique_1_4_6823_ 200
+ UP BOUND PalierThermique_1_5_6823_ 900
+ UP BOUND DefaillancePositive_1_6823_ 2837.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6824_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6824_ 1e+20
+ UP BOUND PalierThermique_0_0_6824_ 1800
+ UP BOUND PalierThermique_0_1_6824_ 900
+ FX BOUND PalierThermique_0_2_6824_ 0
+ UP BOUND DefaillancePositive_0_6824_ 2439.00001
+ UP BOUND PalierThermique_1_3_6824_ 2700
+ UP BOUND PalierThermique_1_4_6824_ 200
+ UP BOUND PalierThermique_1_5_6824_ 900
+ UP BOUND DefaillancePositive_1_6824_ 2672.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6825_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6825_ 1e+20
+ UP BOUND PalierThermique_0_0_6825_ 1800
+ UP BOUND PalierThermique_0_1_6825_ 900
+ FX BOUND PalierThermique_0_2_6825_ 0
+ UP BOUND DefaillancePositive_0_6825_ 2442.00001
+ UP BOUND PalierThermique_1_3_6825_ 2700
+ UP BOUND PalierThermique_1_4_6825_ 200
+ UP BOUND PalierThermique_1_5_6825_ 900
+ UP BOUND DefaillancePositive_1_6825_ 2667.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6826_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6826_ 1e+20
+ UP BOUND PalierThermique_0_0_6826_ 1800
+ UP BOUND PalierThermique_0_1_6826_ 900
+ FX BOUND PalierThermique_0_2_6826_ 0
+ UP BOUND DefaillancePositive_0_6826_ 2423.00001
+ UP BOUND PalierThermique_1_3_6826_ 2700
+ UP BOUND PalierThermique_1_4_6826_ 200
+ UP BOUND PalierThermique_1_5_6826_ 900
+ UP BOUND DefaillancePositive_1_6826_ 2652.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6827_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6827_ 1e+20
+ UP BOUND PalierThermique_0_0_6827_ 1800
+ UP BOUND PalierThermique_0_1_6827_ 900
+ FX BOUND PalierThermique_0_2_6827_ 0
+ UP BOUND DefaillancePositive_0_6827_ 2470.00001
+ UP BOUND PalierThermique_1_3_6827_ 2700
+ UP BOUND PalierThermique_1_4_6827_ 200
+ UP BOUND PalierThermique_1_5_6827_ 900
+ UP BOUND DefaillancePositive_1_6827_ 2672.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6828_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6828_ 1e+20
+ UP BOUND PalierThermique_0_0_6828_ 1800
+ UP BOUND PalierThermique_0_1_6828_ 900
+ FX BOUND PalierThermique_0_2_6828_ 0
+ UP BOUND DefaillancePositive_0_6828_ 2531.00001
+ UP BOUND PalierThermique_1_3_6828_ 2700
+ UP BOUND PalierThermique_1_4_6828_ 200
+ UP BOUND PalierThermique_1_5_6828_ 900
+ UP BOUND DefaillancePositive_1_6828_ 2771.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6829_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6829_ 1e+20
+ UP BOUND PalierThermique_0_0_6829_ 1800
+ UP BOUND PalierThermique_0_1_6829_ 900
+ FX BOUND PalierThermique_0_2_6829_ 0
+ UP BOUND DefaillancePositive_0_6829_ 2424.00001
+ UP BOUND PalierThermique_1_3_6829_ 2700
+ UP BOUND PalierThermique_1_4_6829_ 200
+ UP BOUND PalierThermique_1_5_6829_ 900
+ UP BOUND DefaillancePositive_1_6829_ 2636.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6830_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6830_ 1e+20
+ UP BOUND PalierThermique_0_0_6830_ 1800
+ UP BOUND PalierThermique_0_1_6830_ 900
+ FX BOUND PalierThermique_0_2_6830_ 0
+ UP BOUND DefaillancePositive_0_6830_ 2312.00001
+ UP BOUND PalierThermique_1_3_6830_ 2700
+ UP BOUND PalierThermique_1_4_6830_ 200
+ UP BOUND PalierThermique_1_5_6830_ 900
+ UP BOUND DefaillancePositive_1_6830_ 2563.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6831_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6831_ 1e+20
+ UP BOUND PalierThermique_0_0_6831_ 1800
+ UP BOUND PalierThermique_0_1_6831_ 900
+ FX BOUND PalierThermique_0_2_6831_ 0
+ UP BOUND DefaillancePositive_0_6831_ 2265.00001
+ UP BOUND PalierThermique_1_3_6831_ 2700
+ UP BOUND PalierThermique_1_4_6831_ 200
+ UP BOUND PalierThermique_1_5_6831_ 900
+ UP BOUND DefaillancePositive_1_6831_ 2496.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6832_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6832_ 1e+20
+ UP BOUND PalierThermique_0_0_6832_ 1800
+ UP BOUND PalierThermique_0_1_6832_ 900
+ FX BOUND PalierThermique_0_2_6832_ 0
+ UP BOUND DefaillancePositive_0_6832_ 2294.00001
+ UP BOUND PalierThermique_1_3_6832_ 2700
+ UP BOUND PalierThermique_1_4_6832_ 200
+ UP BOUND PalierThermique_1_5_6832_ 900
+ UP BOUND DefaillancePositive_1_6832_ 2502.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6833_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6833_ 1e+20
+ UP BOUND PalierThermique_0_0_6833_ 1800
+ UP BOUND PalierThermique_0_1_6833_ 900
+ FX BOUND PalierThermique_0_2_6833_ 0
+ UP BOUND DefaillancePositive_0_6833_ 2442.00001
+ UP BOUND PalierThermique_1_3_6833_ 2700
+ UP BOUND PalierThermique_1_4_6833_ 200
+ UP BOUND PalierThermique_1_5_6833_ 900
+ UP BOUND DefaillancePositive_1_6833_ 2661.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6834_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6834_ 1e+20
+ UP BOUND PalierThermique_0_0_6834_ 1800
+ UP BOUND PalierThermique_0_1_6834_ 900
+ FX BOUND PalierThermique_0_2_6834_ 0
+ UP BOUND DefaillancePositive_0_6834_ 2583.00001
+ UP BOUND PalierThermique_1_3_6834_ 2700
+ UP BOUND PalierThermique_1_4_6834_ 200
+ UP BOUND PalierThermique_1_5_6834_ 900
+ UP BOUND DefaillancePositive_1_6834_ 2797.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6835_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6835_ 1e+20
+ UP BOUND PalierThermique_0_0_6835_ 1800
+ UP BOUND PalierThermique_0_1_6835_ 900
+ FX BOUND PalierThermique_0_2_6835_ 0
+ UP BOUND DefaillancePositive_0_6835_ 2738.00001
+ UP BOUND PalierThermique_1_3_6835_ 2700
+ UP BOUND PalierThermique_1_4_6835_ 200
+ UP BOUND PalierThermique_1_5_6835_ 900
+ UP BOUND DefaillancePositive_1_6835_ 2887.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6836_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6836_ 1e+20
+ UP BOUND PalierThermique_0_0_6836_ 1800
+ UP BOUND PalierThermique_0_1_6836_ 900
+ FX BOUND PalierThermique_0_2_6836_ 0
+ UP BOUND DefaillancePositive_0_6836_ 2596.00001
+ UP BOUND PalierThermique_1_3_6836_ 2700
+ UP BOUND PalierThermique_1_4_6836_ 200
+ UP BOUND PalierThermique_1_5_6836_ 900
+ UP BOUND DefaillancePositive_1_6836_ 2709.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6837_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6837_ 1e+20
+ UP BOUND PalierThermique_0_0_6837_ 1800
+ UP BOUND PalierThermique_0_1_6837_ 900
+ FX BOUND PalierThermique_0_2_6837_ 0
+ UP BOUND DefaillancePositive_0_6837_ 2462.00001
+ UP BOUND PalierThermique_1_3_6837_ 2700
+ UP BOUND PalierThermique_1_4_6837_ 200
+ UP BOUND PalierThermique_1_5_6837_ 900
+ UP BOUND DefaillancePositive_1_6837_ 2611.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6838_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6838_ 1e+20
+ UP BOUND PalierThermique_0_0_6838_ 1800
+ UP BOUND PalierThermique_0_1_6838_ 900
+ FX BOUND PalierThermique_0_2_6838_ 0
+ UP BOUND DefaillancePositive_0_6838_ 2736.00001
+ UP BOUND PalierThermique_1_3_6838_ 2700
+ UP BOUND PalierThermique_1_4_6838_ 200
+ UP BOUND PalierThermique_1_5_6838_ 900
+ UP BOUND DefaillancePositive_1_6838_ 2926.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6839_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6839_ 1e+20
+ UP BOUND PalierThermique_0_0_6839_ 1800
+ UP BOUND PalierThermique_0_1_6839_ 900
+ FX BOUND PalierThermique_0_2_6839_ 0
+ UP BOUND DefaillancePositive_0_6839_ 2794.00001
+ UP BOUND PalierThermique_1_3_6839_ 2700
+ UP BOUND PalierThermique_1_4_6839_ 200
+ UP BOUND PalierThermique_1_5_6839_ 900
+ UP BOUND DefaillancePositive_1_6839_ 2977.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6840_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6840_ 1e+20
+ UP BOUND PalierThermique_0_0_6840_ 1800
+ UP BOUND PalierThermique_0_1_6840_ 1000
+ UP BOUND PalierThermique_0_2_6840_ 900
+ UP BOUND DefaillancePositive_0_6840_ 2770.00001
+ UP BOUND PalierThermique_1_3_6840_ 2700
+ UP BOUND PalierThermique_1_4_6840_ 200
+ UP BOUND PalierThermique_1_5_6840_ 900
+ UP BOUND DefaillancePositive_1_6840_ 2885.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6841_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6841_ 1e+20
+ UP BOUND PalierThermique_0_0_6841_ 1800
+ UP BOUND PalierThermique_0_1_6841_ 1000
+ UP BOUND PalierThermique_0_2_6841_ 900
+ UP BOUND DefaillancePositive_0_6841_ 2626.00001
+ UP BOUND PalierThermique_1_3_6841_ 2700
+ UP BOUND PalierThermique_1_4_6841_ 200
+ UP BOUND PalierThermique_1_5_6841_ 900
+ UP BOUND DefaillancePositive_1_6841_ 2719.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6842_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6842_ 1e+20
+ UP BOUND PalierThermique_0_0_6842_ 1800
+ UP BOUND PalierThermique_0_1_6842_ 1000
+ UP BOUND PalierThermique_0_2_6842_ 900
+ UP BOUND DefaillancePositive_0_6842_ 2399.00001
+ UP BOUND PalierThermique_1_3_6842_ 2700
+ UP BOUND PalierThermique_1_4_6842_ 200
+ UP BOUND PalierThermique_1_5_6842_ 900
+ UP BOUND DefaillancePositive_1_6842_ 2509.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6843_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6843_ 1e+20
+ UP BOUND PalierThermique_0_0_6843_ 1800
+ UP BOUND PalierThermique_0_1_6843_ 1000
+ UP BOUND PalierThermique_0_2_6843_ 900
+ UP BOUND DefaillancePositive_0_6843_ 2185.00001
+ UP BOUND PalierThermique_1_3_6843_ 2700
+ UP BOUND PalierThermique_1_4_6843_ 200
+ UP BOUND PalierThermique_1_5_6843_ 900
+ UP BOUND DefaillancePositive_1_6843_ 2308.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6844_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6844_ 1e+20
+ UP BOUND PalierThermique_0_0_6844_ 1800
+ UP BOUND PalierThermique_0_1_6844_ 1000
+ UP BOUND PalierThermique_0_2_6844_ 900
+ UP BOUND DefaillancePositive_0_6844_ 2097.00001
+ UP BOUND PalierThermique_1_3_6844_ 2700
+ UP BOUND PalierThermique_1_4_6844_ 200
+ UP BOUND PalierThermique_1_5_6844_ 900
+ UP BOUND DefaillancePositive_1_6844_ 2247.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6845_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6845_ 1e+20
+ UP BOUND PalierThermique_0_0_6845_ 1800
+ UP BOUND PalierThermique_0_1_6845_ 1000
+ UP BOUND PalierThermique_0_2_6845_ 900
+ UP BOUND DefaillancePositive_0_6845_ 2134.00001
+ UP BOUND PalierThermique_1_3_6845_ 2700
+ UP BOUND PalierThermique_1_4_6845_ 200
+ UP BOUND PalierThermique_1_5_6845_ 900
+ UP BOUND DefaillancePositive_1_6845_ 2269.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6846_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6846_ 1e+20
+ UP BOUND PalierThermique_0_0_6846_ 1800
+ UP BOUND PalierThermique_0_1_6846_ 1000
+ UP BOUND PalierThermique_0_2_6846_ 900
+ UP BOUND DefaillancePositive_0_6846_ 2223.00001
+ UP BOUND PalierThermique_1_3_6846_ 2700
+ UP BOUND PalierThermique_1_4_6846_ 200
+ UP BOUND PalierThermique_1_5_6846_ 900
+ UP BOUND DefaillancePositive_1_6846_ 2342.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6847_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6847_ 1e+20
+ UP BOUND PalierThermique_0_0_6847_ 1800
+ UP BOUND PalierThermique_0_1_6847_ 1000
+ UP BOUND PalierThermique_0_2_6847_ 900
+ UP BOUND DefaillancePositive_0_6847_ 2151.00001
+ UP BOUND PalierThermique_1_3_6847_ 2700
+ UP BOUND PalierThermique_1_4_6847_ 200
+ UP BOUND PalierThermique_1_5_6847_ 900
+ UP BOUND DefaillancePositive_1_6847_ 2269.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6848_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6848_ 1e+20
+ UP BOUND PalierThermique_0_0_6848_ 1800
+ UP BOUND PalierThermique_0_1_6848_ 1000
+ UP BOUND PalierThermique_0_2_6848_ 900
+ UP BOUND DefaillancePositive_0_6848_ 2147.00001
+ UP BOUND PalierThermique_1_3_6848_ 2700
+ UP BOUND PalierThermique_1_4_6848_ 200
+ UP BOUND PalierThermique_1_5_6848_ 900
+ UP BOUND DefaillancePositive_1_6848_ 2309.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6849_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6849_ 1e+20
+ UP BOUND PalierThermique_0_0_6849_ 1800
+ UP BOUND PalierThermique_0_1_6849_ 1000
+ UP BOUND PalierThermique_0_2_6849_ 900
+ UP BOUND DefaillancePositive_0_6849_ 2225.00001
+ UP BOUND PalierThermique_1_3_6849_ 2700
+ UP BOUND PalierThermique_1_4_6849_ 200
+ UP BOUND PalierThermique_1_5_6849_ 900
+ UP BOUND DefaillancePositive_1_6849_ 2353.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6850_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6850_ 1e+20
+ UP BOUND PalierThermique_0_0_6850_ 1800
+ UP BOUND PalierThermique_0_1_6850_ 1000
+ UP BOUND PalierThermique_0_2_6850_ 900
+ UP BOUND DefaillancePositive_0_6850_ 2253.00001
+ UP BOUND PalierThermique_1_3_6850_ 2700
+ UP BOUND PalierThermique_1_4_6850_ 200
+ UP BOUND PalierThermique_1_5_6850_ 900
+ UP BOUND DefaillancePositive_1_6850_ 2301.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6851_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6851_ 1e+20
+ UP BOUND PalierThermique_0_0_6851_ 1800
+ UP BOUND PalierThermique_0_1_6851_ 1000
+ UP BOUND PalierThermique_0_2_6851_ 900
+ UP BOUND DefaillancePositive_0_6851_ 2384.00001
+ UP BOUND PalierThermique_1_3_6851_ 2700
+ UP BOUND PalierThermique_1_4_6851_ 200
+ UP BOUND PalierThermique_1_5_6851_ 900
+ UP BOUND DefaillancePositive_1_6851_ 2385.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6852_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6852_ 1e+20
+ UP BOUND PalierThermique_0_0_6852_ 1800
+ UP BOUND PalierThermique_0_1_6852_ 1000
+ UP BOUND PalierThermique_0_2_6852_ 900
+ UP BOUND DefaillancePositive_0_6852_ 2484.00001
+ UP BOUND PalierThermique_1_3_6852_ 2700
+ UP BOUND PalierThermique_1_4_6852_ 200
+ UP BOUND PalierThermique_1_5_6852_ 900
+ UP BOUND DefaillancePositive_1_6852_ 2481.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6853_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6853_ 1e+20
+ UP BOUND PalierThermique_0_0_6853_ 1800
+ UP BOUND PalierThermique_0_1_6853_ 1000
+ UP BOUND PalierThermique_0_2_6853_ 900
+ UP BOUND DefaillancePositive_0_6853_ 2269.00001
+ UP BOUND PalierThermique_1_3_6853_ 2700
+ UP BOUND PalierThermique_1_4_6853_ 200
+ UP BOUND PalierThermique_1_5_6853_ 900
+ UP BOUND DefaillancePositive_1_6853_ 2341.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6854_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6854_ 1e+20
+ UP BOUND PalierThermique_0_0_6854_ 1800
+ UP BOUND PalierThermique_0_1_6854_ 1000
+ UP BOUND PalierThermique_0_2_6854_ 900
+ UP BOUND DefaillancePositive_0_6854_ 2179.00001
+ UP BOUND PalierThermique_1_3_6854_ 2700
+ UP BOUND PalierThermique_1_4_6854_ 200
+ UP BOUND PalierThermique_1_5_6854_ 900
+ UP BOUND DefaillancePositive_1_6854_ 2195.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6855_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6855_ 1e+20
+ UP BOUND PalierThermique_0_0_6855_ 1800
+ UP BOUND PalierThermique_0_1_6855_ 1000
+ UP BOUND PalierThermique_0_2_6855_ 900
+ UP BOUND DefaillancePositive_0_6855_ 2112.00001
+ UP BOUND PalierThermique_1_3_6855_ 2700
+ UP BOUND PalierThermique_1_4_6855_ 200
+ UP BOUND PalierThermique_1_5_6855_ 900
+ UP BOUND DefaillancePositive_1_6855_ 2145.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6856_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6856_ 1e+20
+ UP BOUND PalierThermique_0_0_6856_ 1800
+ UP BOUND PalierThermique_0_1_6856_ 1000
+ UP BOUND PalierThermique_0_2_6856_ 900
+ UP BOUND DefaillancePositive_0_6856_ 2195.00001
+ UP BOUND PalierThermique_1_3_6856_ 2700
+ UP BOUND PalierThermique_1_4_6856_ 200
+ UP BOUND PalierThermique_1_5_6856_ 900
+ UP BOUND DefaillancePositive_1_6856_ 2199.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6857_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6857_ 1e+20
+ UP BOUND PalierThermique_0_0_6857_ 1800
+ UP BOUND PalierThermique_0_1_6857_ 1000
+ UP BOUND PalierThermique_0_2_6857_ 900
+ UP BOUND DefaillancePositive_0_6857_ 2351.00001
+ UP BOUND PalierThermique_1_3_6857_ 2700
+ UP BOUND PalierThermique_1_4_6857_ 200
+ UP BOUND PalierThermique_1_5_6857_ 900
+ UP BOUND DefaillancePositive_1_6857_ 2354.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6858_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6858_ 1e+20
+ UP BOUND PalierThermique_0_0_6858_ 1800
+ UP BOUND PalierThermique_0_1_6858_ 1000
+ UP BOUND PalierThermique_0_2_6858_ 900
+ UP BOUND DefaillancePositive_0_6858_ 2524.00001
+ UP BOUND PalierThermique_1_3_6858_ 2700
+ UP BOUND PalierThermique_1_4_6858_ 200
+ UP BOUND PalierThermique_1_5_6858_ 900
+ UP BOUND DefaillancePositive_1_6858_ 2561.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6859_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6859_ 1e+20
+ UP BOUND PalierThermique_0_0_6859_ 1800
+ UP BOUND PalierThermique_0_1_6859_ 1000
+ UP BOUND PalierThermique_0_2_6859_ 900
+ UP BOUND DefaillancePositive_0_6859_ 2625.00001
+ UP BOUND PalierThermique_1_3_6859_ 2700
+ UP BOUND PalierThermique_1_4_6859_ 200
+ UP BOUND PalierThermique_1_5_6859_ 900
+ UP BOUND DefaillancePositive_1_6859_ 2723.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6860_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6860_ 1e+20
+ UP BOUND PalierThermique_0_0_6860_ 1800
+ UP BOUND PalierThermique_0_1_6860_ 1000
+ UP BOUND PalierThermique_0_2_6860_ 900
+ UP BOUND DefaillancePositive_0_6860_ 2512.00001
+ UP BOUND PalierThermique_1_3_6860_ 2700
+ UP BOUND PalierThermique_1_4_6860_ 200
+ UP BOUND PalierThermique_1_5_6860_ 900
+ UP BOUND DefaillancePositive_1_6860_ 2644.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6861_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6861_ 1e+20
+ UP BOUND PalierThermique_0_0_6861_ 1800
+ UP BOUND PalierThermique_0_1_6861_ 1000
+ UP BOUND PalierThermique_0_2_6861_ 900
+ UP BOUND DefaillancePositive_0_6861_ 2473.00001
+ UP BOUND PalierThermique_1_3_6861_ 2700
+ UP BOUND PalierThermique_1_4_6861_ 200
+ UP BOUND PalierThermique_1_5_6861_ 900
+ UP BOUND DefaillancePositive_1_6861_ 2610.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6862_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6862_ 1e+20
+ UP BOUND PalierThermique_0_0_6862_ 1800
+ UP BOUND PalierThermique_0_1_6862_ 1000
+ UP BOUND PalierThermique_0_2_6862_ 900
+ UP BOUND DefaillancePositive_0_6862_ 2822.00001
+ UP BOUND PalierThermique_1_3_6862_ 2700
+ UP BOUND PalierThermique_1_4_6862_ 200
+ UP BOUND PalierThermique_1_5_6862_ 900
+ UP BOUND DefaillancePositive_1_6862_ 2969.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6863_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6863_ 1e+20
+ UP BOUND PalierThermique_0_0_6863_ 1800
+ UP BOUND PalierThermique_0_1_6863_ 1000
+ UP BOUND PalierThermique_0_2_6863_ 900
+ UP BOUND DefaillancePositive_0_6863_ 2930.00001
+ UP BOUND PalierThermique_1_3_6863_ 2700
+ UP BOUND PalierThermique_1_4_6863_ 200
+ UP BOUND PalierThermique_1_5_6863_ 900
+ UP BOUND DefaillancePositive_1_6863_ 3055.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6864_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6864_ 1e+20
+ UP BOUND PalierThermique_0_0_6864_ 1800
+ UP BOUND PalierThermique_0_1_6864_ 900
+ UP BOUND PalierThermique_0_2_6864_ 450
+ UP BOUND DefaillancePositive_0_6864_ 2743.00001
+ UP BOUND PalierThermique_1_3_6864_ 2700
+ UP BOUND PalierThermique_1_4_6864_ 100
+ UP BOUND PalierThermique_1_5_6864_ 900
+ UP BOUND DefaillancePositive_1_6864_ 2845.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6865_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6865_ 1e+20
+ UP BOUND PalierThermique_0_0_6865_ 1800
+ UP BOUND PalierThermique_0_1_6865_ 900
+ UP BOUND PalierThermique_0_2_6865_ 450
+ UP BOUND DefaillancePositive_0_6865_ 2609.00001
+ UP BOUND PalierThermique_1_3_6865_ 2700
+ UP BOUND PalierThermique_1_4_6865_ 100
+ UP BOUND PalierThermique_1_5_6865_ 900
+ UP BOUND DefaillancePositive_1_6865_ 2698.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6866_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6866_ 1e+20
+ UP BOUND PalierThermique_0_0_6866_ 1800
+ UP BOUND PalierThermique_0_1_6866_ 900
+ UP BOUND PalierThermique_0_2_6866_ 450
+ UP BOUND DefaillancePositive_0_6866_ 2351.00001
+ UP BOUND PalierThermique_1_3_6866_ 2700
+ UP BOUND PalierThermique_1_4_6866_ 100
+ UP BOUND PalierThermique_1_5_6866_ 900
+ UP BOUND DefaillancePositive_1_6866_ 2448.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6867_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6867_ 1e+20
+ UP BOUND PalierThermique_0_0_6867_ 1800
+ UP BOUND PalierThermique_0_1_6867_ 900
+ UP BOUND PalierThermique_0_2_6867_ 450
+ UP BOUND DefaillancePositive_0_6867_ 2182.00001
+ UP BOUND PalierThermique_1_3_6867_ 2700
+ UP BOUND PalierThermique_1_4_6867_ 100
+ UP BOUND PalierThermique_1_5_6867_ 900
+ UP BOUND DefaillancePositive_1_6867_ 2246.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6868_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6868_ 1e+20
+ UP BOUND PalierThermique_0_0_6868_ 1800
+ UP BOUND PalierThermique_0_1_6868_ 900
+ UP BOUND PalierThermique_0_2_6868_ 450
+ UP BOUND DefaillancePositive_0_6868_ 2152.00001
+ UP BOUND PalierThermique_1_3_6868_ 2700
+ UP BOUND PalierThermique_1_4_6868_ 100
+ UP BOUND PalierThermique_1_5_6868_ 900
+ UP BOUND DefaillancePositive_1_6868_ 2082.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6869_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6869_ 1e+20
+ UP BOUND PalierThermique_0_0_6869_ 1800
+ UP BOUND PalierThermique_0_1_6869_ 900
+ UP BOUND PalierThermique_0_2_6869_ 450
+ UP BOUND DefaillancePositive_0_6869_ 2219.00001
+ UP BOUND PalierThermique_1_3_6869_ 2700
+ UP BOUND PalierThermique_1_4_6869_ 100
+ UP BOUND PalierThermique_1_5_6869_ 900
+ UP BOUND DefaillancePositive_1_6869_ 2076.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6870_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6870_ 1e+20
+ UP BOUND PalierThermique_0_0_6870_ 1800
+ UP BOUND PalierThermique_0_1_6870_ 900
+ UP BOUND PalierThermique_0_2_6870_ 450
+ UP BOUND DefaillancePositive_0_6870_ 2283.00001
+ UP BOUND PalierThermique_1_3_6870_ 2700
+ UP BOUND PalierThermique_1_4_6870_ 100
+ UP BOUND PalierThermique_1_5_6870_ 900
+ UP BOUND DefaillancePositive_1_6870_ 2143.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6871_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6871_ 1e+20
+ UP BOUND PalierThermique_0_0_6871_ 1800
+ UP BOUND PalierThermique_0_1_6871_ 900
+ UP BOUND PalierThermique_0_2_6871_ 450
+ UP BOUND DefaillancePositive_0_6871_ 2184.00001
+ UP BOUND PalierThermique_1_3_6871_ 2700
+ UP BOUND PalierThermique_1_4_6871_ 100
+ UP BOUND PalierThermique_1_5_6871_ 900
+ UP BOUND DefaillancePositive_1_6871_ 2007.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6872_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6872_ 1e+20
+ UP BOUND PalierThermique_0_0_6872_ 1800
+ UP BOUND PalierThermique_0_1_6872_ 900
+ UP BOUND PalierThermique_0_2_6872_ 450
+ UP BOUND DefaillancePositive_0_6872_ 2178.00001
+ UP BOUND PalierThermique_1_3_6872_ 2700
+ UP BOUND PalierThermique_1_4_6872_ 100
+ UP BOUND PalierThermique_1_5_6872_ 900
+ UP BOUND DefaillancePositive_1_6872_ 2009.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6873_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6873_ 1e+20
+ UP BOUND PalierThermique_0_0_6873_ 1800
+ UP BOUND PalierThermique_0_1_6873_ 900
+ UP BOUND PalierThermique_0_2_6873_ 450
+ UP BOUND DefaillancePositive_0_6873_ 2262.00001
+ UP BOUND PalierThermique_1_3_6873_ 2700
+ UP BOUND PalierThermique_1_4_6873_ 100
+ UP BOUND PalierThermique_1_5_6873_ 900
+ UP BOUND DefaillancePositive_1_6873_ 2071.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6874_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6874_ 1e+20
+ UP BOUND PalierThermique_0_0_6874_ 1800
+ UP BOUND PalierThermique_0_1_6874_ 900
+ UP BOUND PalierThermique_0_2_6874_ 450
+ UP BOUND DefaillancePositive_0_6874_ 2245.00001
+ UP BOUND PalierThermique_1_3_6874_ 2700
+ UP BOUND PalierThermique_1_4_6874_ 100
+ UP BOUND PalierThermique_1_5_6874_ 900
+ UP BOUND DefaillancePositive_1_6874_ 2103.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6875_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6875_ 1e+20
+ UP BOUND PalierThermique_0_0_6875_ 1800
+ UP BOUND PalierThermique_0_1_6875_ 900
+ UP BOUND PalierThermique_0_2_6875_ 450
+ UP BOUND DefaillancePositive_0_6875_ 2338.00001
+ UP BOUND PalierThermique_1_3_6875_ 2700
+ UP BOUND PalierThermique_1_4_6875_ 100
+ UP BOUND PalierThermique_1_5_6875_ 900
+ UP BOUND DefaillancePositive_1_6875_ 2172.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6876_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6876_ 1e+20
+ UP BOUND PalierThermique_0_0_6876_ 1800
+ UP BOUND PalierThermique_0_1_6876_ 900
+ UP BOUND PalierThermique_0_2_6876_ 450
+ UP BOUND DefaillancePositive_0_6876_ 2444.00001
+ UP BOUND PalierThermique_1_3_6876_ 2700
+ UP BOUND PalierThermique_1_4_6876_ 100
+ UP BOUND PalierThermique_1_5_6876_ 900
+ UP BOUND DefaillancePositive_1_6876_ 2268.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6877_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6877_ 1e+20
+ UP BOUND PalierThermique_0_0_6877_ 1800
+ UP BOUND PalierThermique_0_1_6877_ 900
+ UP BOUND PalierThermique_0_2_6877_ 450
+ UP BOUND DefaillancePositive_0_6877_ 2241.00001
+ UP BOUND PalierThermique_1_3_6877_ 2700
+ UP BOUND PalierThermique_1_4_6877_ 100
+ UP BOUND PalierThermique_1_5_6877_ 900
+ UP BOUND DefaillancePositive_1_6877_ 2047.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6878_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6878_ 1e+20
+ UP BOUND PalierThermique_0_0_6878_ 1800
+ UP BOUND PalierThermique_0_1_6878_ 900
+ UP BOUND PalierThermique_0_2_6878_ 450
+ UP BOUND DefaillancePositive_0_6878_ 2099.00001
+ UP BOUND PalierThermique_1_3_6878_ 2700
+ UP BOUND PalierThermique_1_4_6878_ 100
+ UP BOUND PalierThermique_1_5_6878_ 900
+ UP BOUND DefaillancePositive_1_6878_ 1920.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6879_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6879_ 1e+20
+ UP BOUND PalierThermique_0_0_6879_ 1800
+ UP BOUND PalierThermique_0_1_6879_ 900
+ UP BOUND PalierThermique_0_2_6879_ 450
+ UP BOUND DefaillancePositive_0_6879_ 2018.00001
+ UP BOUND PalierThermique_1_3_6879_ 2700
+ UP BOUND PalierThermique_1_4_6879_ 100
+ UP BOUND PalierThermique_1_5_6879_ 900
+ UP BOUND DefaillancePositive_1_6879_ 1809.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6880_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6880_ 1e+20
+ UP BOUND PalierThermique_0_0_6880_ 1800
+ UP BOUND PalierThermique_0_1_6880_ 900
+ UP BOUND PalierThermique_0_2_6880_ 450
+ UP BOUND DefaillancePositive_0_6880_ 2056.00001
+ UP BOUND PalierThermique_1_3_6880_ 2700
+ UP BOUND PalierThermique_1_4_6880_ 100
+ UP BOUND PalierThermique_1_5_6880_ 900
+ UP BOUND DefaillancePositive_1_6880_ 1843.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6881_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6881_ 1e+20
+ UP BOUND PalierThermique_0_0_6881_ 1800
+ UP BOUND PalierThermique_0_1_6881_ 900
+ UP BOUND PalierThermique_0_2_6881_ 450
+ UP BOUND DefaillancePositive_0_6881_ 2258.00001
+ UP BOUND PalierThermique_1_3_6881_ 2700
+ UP BOUND PalierThermique_1_4_6881_ 100
+ UP BOUND PalierThermique_1_5_6881_ 900
+ UP BOUND DefaillancePositive_1_6881_ 2069.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6882_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6882_ 1e+20
+ UP BOUND PalierThermique_0_0_6882_ 1800
+ UP BOUND PalierThermique_0_1_6882_ 900
+ UP BOUND PalierThermique_0_2_6882_ 450
+ UP BOUND DefaillancePositive_0_6882_ 2426.00001
+ UP BOUND PalierThermique_1_3_6882_ 2700
+ UP BOUND PalierThermique_1_4_6882_ 100
+ UP BOUND PalierThermique_1_5_6882_ 900
+ UP BOUND DefaillancePositive_1_6882_ 2284.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6883_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6883_ 1e+20
+ UP BOUND PalierThermique_0_0_6883_ 1800
+ UP BOUND PalierThermique_0_1_6883_ 900
+ UP BOUND PalierThermique_0_2_6883_ 450
+ UP BOUND DefaillancePositive_0_6883_ 2607.00001
+ UP BOUND PalierThermique_1_3_6883_ 2700
+ UP BOUND PalierThermique_1_4_6883_ 100
+ UP BOUND PalierThermique_1_5_6883_ 900
+ UP BOUND DefaillancePositive_1_6883_ 2496.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6884_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6884_ 1e+20
+ UP BOUND PalierThermique_0_0_6884_ 1800
+ UP BOUND PalierThermique_0_1_6884_ 900
+ UP BOUND PalierThermique_0_2_6884_ 450
+ UP BOUND DefaillancePositive_0_6884_ 2554.00001
+ UP BOUND PalierThermique_1_3_6884_ 2700
+ UP BOUND PalierThermique_1_4_6884_ 100
+ UP BOUND PalierThermique_1_5_6884_ 900
+ UP BOUND DefaillancePositive_1_6884_ 2400.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6885_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6885_ 1e+20
+ UP BOUND PalierThermique_0_0_6885_ 1800
+ UP BOUND PalierThermique_0_1_6885_ 900
+ UP BOUND PalierThermique_0_2_6885_ 450
+ UP BOUND DefaillancePositive_0_6885_ 2532.00001
+ UP BOUND PalierThermique_1_3_6885_ 2700
+ UP BOUND PalierThermique_1_4_6885_ 100
+ UP BOUND PalierThermique_1_5_6885_ 900
+ UP BOUND DefaillancePositive_1_6885_ 2330.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6886_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6886_ 1e+20
+ UP BOUND PalierThermique_0_0_6886_ 1800
+ UP BOUND PalierThermique_0_1_6886_ 900
+ UP BOUND PalierThermique_0_2_6886_ 450
+ UP BOUND DefaillancePositive_0_6886_ 2849.00001
+ UP BOUND PalierThermique_1_3_6886_ 2700
+ UP BOUND PalierThermique_1_4_6886_ 100
+ UP BOUND PalierThermique_1_5_6886_ 900
+ UP BOUND DefaillancePositive_1_6886_ 2623.00001
+ LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_6887_ -1e+20
+ UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_6887_ 1e+20
+ UP BOUND PalierThermique_0_0_6887_ 1800
+ UP BOUND PalierThermique_0_1_6887_ 900
+ UP BOUND PalierThermique_0_2_6887_ 450
+ UP BOUND DefaillancePositive_0_6887_ 2934.00001
+ UP BOUND PalierThermique_1_3_6887_ 2700
+ UP BOUND PalierThermique_1_4_6887_ 100
+ UP BOUND PalierThermique_1_5_6887_ 900
+ UP BOUND DefaillancePositive_1_6887_ 2712.00001
+ LO BOUND transmission_line -1e+20
+ UP BOUND transmission_line 1e+20
+ENDATA

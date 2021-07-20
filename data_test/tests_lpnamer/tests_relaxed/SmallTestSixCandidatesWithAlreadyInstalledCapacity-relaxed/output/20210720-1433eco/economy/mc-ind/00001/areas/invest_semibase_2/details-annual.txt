@@ -1,0 +1,8 @@
+invest_semibase_2	area	de	annual
+	VARIABLES	BEGIN	END
+	3	1	1
+
+invest_semibase_2	annual	SemiBase 2	SemiBase 2	SemiBase 2
+		MWh	NP Cost - Euro	NODU
+				
+	Annual	13554	350000	109
