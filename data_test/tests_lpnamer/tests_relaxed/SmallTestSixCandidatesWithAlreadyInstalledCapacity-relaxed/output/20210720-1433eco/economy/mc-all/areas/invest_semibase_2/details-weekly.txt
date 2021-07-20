@@ -1,0 +1,11 @@
+invest_semibase_2	area	de	weekly
+	VARIABLES	BEGIN	END
+	3	1	4
+
+invest_semibase_2	weekly	SemiBase 2	SemiBase 2	SemiBase 2
+		MWh	NP Cost - Euro	NODU
+	week	EXP	EXP	EXP
+	1	0	0	0
+	2	1730	50000	14
+	3	11373	250000	91
+	4	451	50000	4
