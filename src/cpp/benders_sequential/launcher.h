@@ -62,12 +62,11 @@ public:
 	raw_standard_lp_data _data;
 	static size_t appendCNT;
 public:
-	void init() {
-		std::get<Attribute::INT_VALUE>(_data).assign(IntAttribute::MAX_INT_ATTRIBUTE, 0);
-
-		std::get<Attribute::INT_VECTOR>(_data).assign(IntVectorAttribute::MAX_INT_VECTOR_ATTRIBUTE, IntVector());
-		std::get<Attribute::CHAR_VECTOR>(_data).assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE, CharVector());
-		std::get<Attribute::DBL_VECTOR>(_data).assign(DblVectorAttribute::MAX_DBL_VECTOR_ATTRIBUTE, DblVector());
+    void init() {
+        initialise_int_values_with_zeros();
+        initialise_int_vectors();
+        initialise_char_vectors();
+        initialise_dbl_vectors();
 	}
 
 
@@ -103,7 +102,7 @@ public:
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].clear();
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].resize(nrows);
 
-		// Range constraint don't exist in a sparse matrix formualtion
+		// Range constraint don't exist in a sparse matrix formulation
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].clear();
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].resize(nrows);
 
@@ -133,7 +132,7 @@ public:
                       0,
                       std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-		// Range constraint don't exist in a sparse matrix formualtion
+		// Range constraint don't exist in a sparse matrix formulation
 		/*solver_getrhsrange(solver_p,
 						std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE],
 						0,
@@ -151,7 +150,7 @@ public:
                       0,
                       std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
-		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
+		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == 1 + std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
 		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
 		assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
@@ -202,4 +201,20 @@ public:
 
 		return nbExistingCols;
 	}
+
+private:
+    void initialise_int_values_with_zeros(){
+        std::get<Attribute::INT_VALUE>(_data).assign(IntAttribute::MAX_INT_ATTRIBUTE, 0);
+    }
+    void initialise_int_vectors() {
+        std::get<Attribute::INT_VECTOR>(_data).assign(IntVectorAttribute::MAX_INT_VECTOR_ATTRIBUTE, IntVector());
+    }
+    void initialise_char_vectors() {
+        std::get<Attribute::CHAR_VECTOR>(_data).assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE, CharVector());
+    }
+    void initialise_dbl_vectors() {
+        std::get<Attribute::DBL_VECTOR>(_data).assign(DblVectorAttribute::MAX_DBL_VECTOR_ATTRIBUTE, DblVector());
+    }
+
+
 };
