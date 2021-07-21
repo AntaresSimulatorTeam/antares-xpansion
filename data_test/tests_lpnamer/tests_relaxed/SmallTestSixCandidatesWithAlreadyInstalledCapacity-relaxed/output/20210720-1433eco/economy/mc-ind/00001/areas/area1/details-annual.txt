@@ -1,8 +1,0 @@
-area1	area	de	annual
-	VARIABLES	BEGIN	END
-	9	1	1
-
-area1	annual	Base	Peak	SemiBase	Base	Peak	SemiBase	Base	Peak	SemiBase
-		MWh	MWh	MWh	NP Cost - Euro	NP Cost - Euro	NP Cost - Euro	NODU	NODU	NODU
-										
-	Annual	1653105	7462	392612	0	80000	1325000	1848	78	1224
