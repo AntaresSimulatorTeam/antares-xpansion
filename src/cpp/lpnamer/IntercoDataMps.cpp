@@ -129,7 +129,7 @@ Candidates::Candidates(std::string  const & ini_file) {
  * \param key_paysor_paysex map of candidate using the pair of string origin country and destination country as a key
  * \return void
  */
-void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::string>, Candidate *> & key_paysor_paysex) {
+void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::string>, std::list<Candidate *>> & key_paysor_paysex) {
 	for (std::pair<std::string const, Candidate> & pairNameCandidate : *this) {
 		Candidate const & interco(pairNameCandidate.second);
 
@@ -145,7 +145,8 @@ void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::stri
 			std::cout << "reverse interco already defined : " << paysex << " - " << paysor << std::endl;
 			std::exit(1);
 		}
-		key_paysor_paysex[{paysor, paysex }] = &pairNameCandidate.second;
+
+		key_paysor_paysex[{paysor, paysex }].push_back(&pairNameCandidate.second);
 	}
 }
 
@@ -202,7 +203,7 @@ void Candidates::readVarfiles(std::string const filePath,
 							size_t & sizeVarList,
 							std::map<int, std::vector<int> > & interco_data,
 							std::map<std::vector<int>, int> & interco_id,
-							map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex)
+							map<std::pair<std::string, std::string>, std::list <Candidate *>> key_paysor_paysex)
 {
 	std::string line;
 	std::ifstream file(filePath.c_str());
@@ -282,7 +283,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::map<int, std::vector<int> > interco_data,
 											std::map<std::vector<int>, int> interco_id,
 											std::map< std::pair<std::string, std::string>, int> & couplings,
-											map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex,
+											map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex,
 											std::string study_path,
 											std::string const lp_mps_name,
 											std::string const& solver_name)
@@ -388,7 +389,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		std::string const & paysor(Candidates::area_names[id_paysor]);
 		std::string const & paysex(Candidates::area_names[id_paysex]);
 
-		Candidate & candidate(*(key_paysor_paysex.find({ paysor, paysex })->second));
+		const auto& candidates = key_paysor_paysex[{ paysor, paysex }];
+		//TO DO SFR
 		// p[t] - alpha[t].pMax - alpha0[t].pMax0 <= 0
 		double already_installed_capacity( candidate.already_installed_capacity());
 		rstart.push_back(dmatval.size());
@@ -428,7 +430,7 @@ void Candidates::treat(std::string const & root,
 	ProblemData const & problemData,
 	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
 
-	std::map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex;
+	std::map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex;
 	std::string const study_path = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
 
 	getListOfIntercoCandidates(key_paysor_paysex);

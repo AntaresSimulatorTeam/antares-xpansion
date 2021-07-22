@@ -204,14 +204,14 @@ struct Candidates : public std::map<std::string, Candidate> {
 		std::string>, int>& couplings, std::string const& solver_name);
 	void getCandidatesFromFile(std::string  const & dataPath);
 	void getListOfIntercoCandidates(map<std::pair<std::string, std::string>, 
-		Candidate *> & key_paysor_paysex);
+		std::list<Candidate *>> & key_paysor_paysex);
 	void readCstrfiles(std::string const filePath, std::list<std::string> & list, size_t & sizeList);
 	void readVarfiles(std::string const filePath,
 			          std::list<std::string> & list,
 					  size_t & sizeList,
 					  std::map<int, std::vector<int> > & interco_data ,
 					  std::map<std::vector<int>, int> & interco_id,
-					  map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex);
+					  map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex);
 	void createMpsFileAndFillCouplings(std::string const & mps_name,
 									   std::list<std::string> var,
 									   size_t vsize,
@@ -220,7 +220,7 @@ struct Candidates : public std::map<std::string, Candidate> {
 									   std::map<int, std::vector<int> > interco_data,
 									   std::map<std::vector<int>, int> interco_id,
 									   std::map< std::pair<std::string, std::string>, int> & couplings,
-									   map<std::pair<std::string, std::string>, Candidate *>  key_paysor_paysex,
+									   map<std::pair<std::string, std::string>, std::list<Candidate *>>  key_paysor_paysex,
 									   std::string study_path,
 									   std::string const lp_mps_name,
 									   std::string const& solver_name);
