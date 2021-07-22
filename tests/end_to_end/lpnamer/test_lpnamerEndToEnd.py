@@ -10,6 +10,8 @@ TEST_LP_INTEGER_01 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_lpnam
                      / "20210713-1635eco/"
 TEST_LP_INTEGER_02 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_one_candidate" / "output" \
                      / "20210720-1024eco/"
+TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_two_candidates" \
+                                      / "output" / "20210721-1451eco"
 TEST_LP_RELAXED_01 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" / "test_one_link_one_candidate-relaxed" / "output" \
                      / "20210720-1147eco/"
 TEST_LP_RELAXED_02 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" \
@@ -20,6 +22,10 @@ test_data = [
     (TEST_LP_INTEGER_02, "integer"),
     (TEST_LP_RELAXED_01, "relaxed"),
     (TEST_LP_RELAXED_02, "relaxed")
+]
+
+test_data_multiple_candidates = [
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer")
 ]
 
 
@@ -52,4 +58,22 @@ def test_lp_directory_files(install_dir, test_dir, master, setup_and_teardown_lp
     match, mismatch, errors = filecmp.cmpfiles(reference_lp_dir, lp_dir, files_to_compare)
     assert len(match) == len(files_to_compare)
     assert len(mismatch) == 0
+    assert returned_l.returncode == 0
+
+
+@pytest.mark.parametrize("test_dir,master", test_data_multiple_candidates)
+def test_lp_multiple_candidates(install_dir, test_dir, master, setup_and_teardown_lp_directory):
+    # given
+    old_path = os.getcwd()
+
+    lp_namer_exe = Path(install_dir) / "lp_namer"
+    os.chdir(test_dir.parent)
+
+    launch_command = [str(lp_namer_exe), "-o", str(test_dir.name), "-e", "contraintes.txt", "-f", master]
+    # when
+    returned_l = subprocess.run(launch_command, shell=False)
+
+    # then
+    os.chdir(old_path)
+
     assert returned_l.returncode == 0
