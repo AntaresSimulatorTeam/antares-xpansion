@@ -15,12 +15,18 @@ void initMPSList(std::string const & mps_filePath_p)
 	while (std::getline(mps_filestream, line)) {
 		std::stringstream buffer(line);
 		if (!line.empty() && line.front() != '#') {
-			std::vector<std::string> data;
-			std::string str;
-			while (buffer >> str) {
-				data.push_back(str);
-			}
-			Candidates::MPS_LIST.push_back(data);
+			
+			std::string ProblemMps;
+			std::string VariablesTxt;
+			std::string ConstraintsTxt;
+
+			buffer >> ProblemMps;
+			buffer >> VariablesTxt;
+			buffer >> ConstraintsTxt;
+
+			ProblemData problemData(ProblemMps, VariablesTxt, ConstraintsTxt);
+			
+			Candidates::MPS_LIST.push_back(problemData);
 		}
 	}
 }

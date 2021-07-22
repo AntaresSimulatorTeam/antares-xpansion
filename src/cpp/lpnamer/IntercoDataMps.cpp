@@ -6,7 +6,7 @@
 #include "solver_utils.h"
 #include "helpers/StringUtils.h"
 
-std::vector<std::vector<std::string> > Candidates::MPS_LIST = {
+std::vector<ProblemData> Candidates::MPS_LIST = {
 };
 
 std::vector<std::tuple<int, int, int> > Candidates::intercos_map = {
@@ -425,7 +425,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
  * \return void
  */
 void Candidates::treat(std::string const & root,
-	std::vector<std::string> const & mps,
+	ProblemData const & problemData,
 	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
 
 	std::map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex;
@@ -434,12 +434,12 @@ void Candidates::treat(std::string const & root,
 	getListOfIntercoCandidates(key_paysor_paysex);
 
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
-	std::string const mps_name(root + PATH_SEPARATOR + mps[0]);
-	std::string const var_name(root + PATH_SEPARATOR + mps[1]);
-	std::string const cstr_name(root + PATH_SEPARATOR + mps[2]);
+	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
+	std::string const var_name(root + PATH_SEPARATOR + problemData._variables_txt);
+	std::string const cstr_name(root + PATH_SEPARATOR + problemData._contraintes_txt);
 
 	// new mps file in the new lp directory
-	std::string const lp_name = mps[0].substr(0, mps[0].size() - 4);
+	std::string const lp_name = problemData._problem_mps.substr(0, problemData._problem_mps.size() - 4);
 	std::string const lp_mps_name = root + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps";
 
 	// List of variables
@@ -557,4 +557,9 @@ bool Candidates::checkArea(std::string const & areaName_p) const
 {
 	bool found_l = std::find(Candidates::area_names.cbegin(), Candidates::area_names.cend(), areaName_p) != Candidates::area_names.cend();
 	return found_l;
+}
+
+ProblemData::ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt):
+	_problem_mps(problem_mps), _variables_txt(variables_txt), _contraintes_txt(contraintes_txt)
+{
 }

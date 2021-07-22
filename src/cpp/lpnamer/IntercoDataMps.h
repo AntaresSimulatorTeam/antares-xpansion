@@ -164,6 +164,14 @@ struct Candidate {
 
 };
 
+struct ProblemData
+{
+	ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt);
+	std::string _problem_mps;
+	std::string _variables_txt;
+	std::string _contraintes_txt;
+};
+
 
 /*!
  *  \struct Candidates
@@ -172,7 +180,7 @@ struct Candidate {
  */
 struct Candidates : public std::map<std::string, Candidate> {
 
-	static std::vector<std::vector<std::string> > MPS_LIST;			/*!< vector of 3 strings in a vector corresponding to the name of a mps , variable and constraint file */
+	static std::vector<ProblemData> MPS_LIST;			/*!< vector of 3 strings in a vector corresponding to the name of a mps , variable and constraint file */
 	static std::vector<std::tuple<int, int, int> >  intercos_map;	/*!< vector of 3 int in tuple which correspond to interconnections */
 
 	static std::map<std::tuple<std::string, std::string>, int> or_ex_id; /*!< map of tuple < origin country, destination country> associated to the int id of the interconnection */
@@ -190,7 +198,7 @@ struct Candidates : public std::map<std::string, Candidate> {
 	}
 	explicit Candidates(std::string  const & datas);
 
-	void treat(std::string const& root, std::vector<std::string> const&, 
+	void treat(std::string const& root, ProblemData const&, 
 		std::map< std::pair<std::string, std::string>, int>& couplings, std::string const& solver_name);
 	void treatloop(std::string const & root, std::map< std::pair<std::string, 
 		std::string>, int>& couplings, std::string const& solver_name);
