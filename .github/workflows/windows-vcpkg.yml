@@ -44,6 +44,7 @@ jobs:
         # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
         path: |
           ${{ env.CMAKE_BUILD_DIR }}/vcpkg_installed
+          ${{ github.workspace }}/vcpkg_installed
           ${{ env.VCPKG_ROOT }}
           !${{ env.VCPKG_ROOT }}/buildtrees
           !${{ env.VCPKG_ROOT }}/packages
@@ -101,6 +102,13 @@ jobs:
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip
            Expand-Archive rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip -DestinationPath .
            rm rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip
+           
+           
+    - name : Install deps with VCPKG
+      run: |
+          cd vcpkg
+          .\bootstrap-vcpkg.bat
+          .\vcpkg.exe install --triplet ${{matrix.triplet}}
         
     - name: Configure
       run: |
