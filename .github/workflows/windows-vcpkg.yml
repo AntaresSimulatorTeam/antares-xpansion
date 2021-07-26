@@ -65,8 +65,9 @@ jobs:
     - name : Install deps with VCPKG
       run: |
           cd vcpkg
-          .\vcpkg.exe install --triplet ${{matrix.triplet}}
-          
+          vcpkg install --triplet ${{matrix.triplet}}
+      shell: bash
+      
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
