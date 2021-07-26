@@ -60,7 +60,7 @@ jobs:
       id: runvcpkg
       with:
         setupOnly: true
-        vcpkgDirectory: '${{ runner.workspace }}/b/vcpkg'
+        vcpkgDirectory: '${{ runner.workspace }}/vcpkg'
           
     - name : Install deps with VCPKG
       run: |
