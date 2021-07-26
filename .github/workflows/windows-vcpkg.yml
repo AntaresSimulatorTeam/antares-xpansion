@@ -107,7 +107,7 @@ jobs:
     - name : Install deps with VCPKG
       run: |
           cd vcpkg
-          .\bootstrap-vcpkg.bat
+          .\bootstrap-vcpkg.bat -disableMetrics
           .\vcpkg.exe install --triplet ${{matrix.triplet}}
         
     - name: Configure
