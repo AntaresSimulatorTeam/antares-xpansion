@@ -62,11 +62,7 @@ jobs:
         setupOnly: true
         vcpkgDirectory: '${{ github.workspace }}/vcpkg'
           
-    - name : Install deps with VCPKG
-      run: |
-          cd vcpkg
-          vcpkg install --triplet ${{matrix.triplet}}
-      shell: bash
+
       
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -105,6 +101,12 @@ jobs:
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_deps_version'
+        
+    - name : Install deps with VCPKG
+      run: |
+          cd vcpkg
+          vcpkg install --triplet ${{matrix.triplet}}
+      shell: bash
         
     - name: Download pre-compiled librairies
       run: |
