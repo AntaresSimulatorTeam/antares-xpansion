@@ -8,9 +8,10 @@ from pathlib import Path
 DATA_TEST = Path("../../../data_test/")
 TEST_LP_INTEGER_01 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_lpnamer_01" / "output" \
                      / "20210713-1635eco/"
-TEST_LP_INTEGER_02 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_one_candidate" / "output" \
+TEST_LP_INTEGER_02 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_one_candidate_1week" / "output" \
                      / "20210720-1024eco/"
-TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_two_candidates" \
+TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST / "tests_lpnamer" / "tests_integer" \
+                                      / "test_one_link_two_candidates_1week" \
                                       / "output" / "20210721-1451eco"
 TEST_LP_RELAXED_01 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" / "test_one_link_one_candidate-relaxed" / "output" \
                      / "20210720-1147eco/"
@@ -33,9 +34,11 @@ test_data_multiple_candidates = [
 def setup_and_teardown_lp_directory(request):
     test_dir = request.getfixturevalue('test_dir')
     lp_dir = test_dir / "lp"
-    lp_dir.mkdir()
+    if Path(lp_dir).is_dir():
+        shutil.rmtree(lp_dir)
+    Path(lp_dir).mkdir(exist_ok=True)
     yield
-    shutil.rmtree(lp_dir)
+    # shutil.rmtree(lp_dir)
 
 
 @pytest.mark.parametrize("test_dir,master", test_data)

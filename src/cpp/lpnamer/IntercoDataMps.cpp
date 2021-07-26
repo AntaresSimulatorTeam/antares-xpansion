@@ -133,17 +133,21 @@ void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::stri
 	for (std::pair<std::string const, Candidate> & pairNameCandidate : *this) {
 		Candidate const & interco(pairNameCandidate.second);
 
-		std::string const & paysor(interco.str("linkor"));
-		std::string const & paysex(interco.str("linkex"));
+		std::string paysor(interco.str("linkor"));
+		std::string paysex(interco.str("linkex"));
 
 		// Check if duplicate or reverse interco does already exist
 		if (key_paysor_paysex.find({ paysor, paysex }) != key_paysor_paysex.end()) {
 			std::cout << "duplicate interco : " << paysor << " - " << paysex << std::endl;
-			std::exit(1);
+			//std::exit(1);
 		}
 		if (key_paysor_paysex.find({ paysex, paysor }) != key_paysor_paysex.end()) {
 			std::cout << "reverse interco already defined : " << paysex << " - " << paysor << std::endl;
-			std::exit(1);
+			auto buff = paysex;
+			paysex = paysor;
+			paysor = buff;
+
+			//std::exit(1);
 		}
 
 		key_paysor_paysex[{paysor, paysex }].push_back(&pairNameCandidate.second);
@@ -390,25 +394,28 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		std::string const & paysex(Candidates::area_names[id_paysex]);
 
 		const auto& candidates = key_paysor_paysex[{ paysor, paysex }];
-		//TO DO SFR
-		// p[t] - alpha[t].pMax - alpha0[t].pMax0 <= 0
-		double already_installed_capacity( candidate.already_installed_capacity());
-		rstart.push_back(dmatval.size());
-		rhs.push_back(already_installed_capacity*candidate.already_installed_profile(timestep, study_path, true));
-		rowtype.push_back('L');
-		colind.push_back(i_interco_p);
-		dmatval.push_back(1);
-		colind.push_back(ncols + i_interco_pmax);
-		dmatval.push_back(-candidate.profile(timestep, study_path, true));
-		// p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
-		rstart.push_back(dmatval.size());
-		rhs.push_back(-already_installed_capacity*candidate.already_installed_profile(timestep, study_path, false));
-		rowtype.push_back('G');
-		colind.push_back(i_interco_p);
-		dmatval.push_back(1);
-		colind.push_back(ncols + i_interco_pmax);
-		dmatval.push_back(candidate.profile(timestep, study_path, false));
+        Candidate& candidate(*candidates.front());
+        //TO DO SFR
+        // p[t] - alpha[t].pMax - alpha0[t].pMax0 <= 0
+        double already_installed_capacity( candidate.already_installed_capacity());
+        rstart.push_back(dmatval.size());
+        rhs.push_back(already_installed_capacity*candidate.already_installed_profile(timestep, study_path, true));
+        rowtype.push_back('L');
+        colind.push_back(i_interco_p);
+        dmatval.push_back(1);
+        colind.push_back(ncols + i_interco_pmax);
+        dmatval.push_back(-candidate.profile(timestep, study_path, true));
+        // p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
+        rstart.push_back(dmatval.size());
+        rhs.push_back(-already_installed_capacity*candidate.already_installed_profile(timestep, study_path, false));
+        rowtype.push_back('G');
+        colind.push_back(i_interco_p);
+        dmatval.push_back(1);
+        colind.push_back(ncols + i_interco_pmax);
+        dmatval.push_back(candidate.profile(timestep, study_path, false));
 	}
+
+
 	rstart.push_back(dmatval.size());
 
     solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
