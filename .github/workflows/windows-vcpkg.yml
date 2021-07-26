@@ -34,7 +34,12 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9.1
+
     # Restore both vcpkg and its artifacts from the GitHub cache service.
     - name: Restore vcpkg and its artifacts.
       uses: actions/cache@v2
@@ -53,22 +58,15 @@ jobs:
         # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
         # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
         key: |
-          ${{ hashFiles( 'vcpkg_manifest/vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
+          ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
 
     - name: run-vcpkg action to install vcpkg
       uses: lukka/run-vcpkg@main
       id: runvcpkg
       with:
         setupOnly: true
-        vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          
-
-      
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9.1
-          
+        vcpkgDirectory: '${{ env.VCPKG_ROOT }}'
+        
     - name: Install dependencies
       run: |
           python -m pip install --upgrade pip
@@ -122,7 +120,7 @@ jobs:
     - name: Configure
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
+           cmake -B _build -S . -DVCPKG_MANIFEST_MODE=OFF -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_antares_solver=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
     
     - name: Build
       run: |
