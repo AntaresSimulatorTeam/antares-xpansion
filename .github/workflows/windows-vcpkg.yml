@@ -65,7 +65,6 @@ jobs:
     - name : Install deps with VCPKG
       run: |
           cd vcpkg
-          .\bootstrap-vcpkg.bat -disableMetrics
           .\vcpkg.exe install --triplet ${{matrix.triplet}}
           
     - name: Set up Python
