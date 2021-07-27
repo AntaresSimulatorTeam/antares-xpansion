@@ -40,7 +40,7 @@ The install procedure can be done
 
 ### VCPKG
 
-For Windows we will use [vcpkg](https://github.com/microsoft/vcpkg) to download and compile the libraries.
+For Windows we will use [vcpkg](https://github.com/microsoft/vcpkg) to download and compile the libraries. vcpkg is available as a submodule in antares-xpansion.
 
 You must install the corresponding [vcpkg-triplet](https://vcpkg.readthedocs.io/en/latest/users/integration/#triplet-selection) depending on Antares version and libraries load:
 
@@ -51,12 +51,10 @@ You must install the corresponding [vcpkg-triplet](https://vcpkg.readthedocs.io/
 
 The vcpkg-triplet used will be named [vcpg-triplet] later in this document.
 
-#### 1 Install vcpkg 
-
-vcpkg can be installed anywhere on your computer :
+#### 1 Init submodule and install vcpkg 
 
 ```
-git clone https://github.com/Microsoft/vcpkg.git
+git submodule update --init vcpkg
 cd vcpkg
 .\bootstrap-vcpkg.bat
 ```
@@ -67,13 +65,8 @@ Note :
 
 #### 2 Install dependencies
 ```
-cd [vcpkg_root]
-vcpkg install jsoncpp:[vcpg-triplet] 
-vcpkg install gtest:[vcpg-triplet] 
-vcpkg install boost-mpi:[vcpg-triplet]
-vcpkg install boost-program-options:[vcpg-triplet]
-vcpkg install openssl:[vcpg-triplet] 
-vcpkg install curl:[vcpg-triplet]
+cd vcpkg
+vcpkg install jsoncpp gtest boost-mpi boost-program-options --triplet [vcpg-triplet] 
 ```
 
 Note :
