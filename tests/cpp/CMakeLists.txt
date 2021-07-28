@@ -24,7 +24,7 @@ add_executable (unit_tests
 		lp_namer/LinkdataRecordTest.cc
 		lp_namer/StudyUpdateTest.cc
         helpers/JsonXpansionReaderTest.cc
-)
+        lp_namer/IntercoINIReaderTest.cpp)
 
 target_include_directories (unit_tests
 	SYSTEM PRIVATE

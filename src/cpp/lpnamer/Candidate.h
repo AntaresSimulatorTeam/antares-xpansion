@@ -88,6 +88,26 @@ public:
     }
 };
 
+struct CandidateData {
+
+    std::string name;
+    //TODO : value not used
+    std::string investment_type;
+    std::string link;
+    int         link_id;
+
+    std::string linkor;
+    std::string linkex;
+    std::string link_profile;
+    std::string already_installed_link_profile;
+
+    double annual_cost_per_mw;
+    double max_investment;
+    double unit_size;
+    double max_units;
+    double already_installed_capacity;
+};
+
 /*!
  *  \class Candidate
  *  \brief Candidate class
@@ -108,8 +128,6 @@ public:
 
     LinkProfile _profile;
     LinkProfile _already_installed_profile;
-
-    int _id;
 
     /**
      * \fn dbl(std::string const & key)
