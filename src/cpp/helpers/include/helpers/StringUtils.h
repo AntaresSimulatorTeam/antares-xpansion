@@ -1,10 +1,7 @@
-//
-// Created by jmkerloch on 26/04/2021.
-//
-
 #ifndef ANTARESXPANSION_STRINGUTILS_H
 #define ANTARESXPANSION_STRINGUTILS_H
 
+#include <string>
 
 class StringUtils {
 
