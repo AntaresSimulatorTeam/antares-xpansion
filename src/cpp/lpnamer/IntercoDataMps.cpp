@@ -166,6 +166,7 @@ void Candidates::readCstrfiles(std::string const filePath,
 							std::list<std::string> & cstrList,
 							size_t & sizeCstrList)
 {
+    return;
 	std::string line;
 	std::ifstream file(filePath.c_str());
 	if (!file.good()) {
@@ -396,7 +397,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		const auto& candidates = key_paysor_paysex[{ paysor, paysex }];
         Candidate& candidate(*candidates.front());
         //TO DO SFR
-        // p[t] - alpha[t].pMax - alpha0[t].pMax0 <= 0
+        // p[t] - alpha[t].(pMax_1 + pMax_2 + ...)  <= alpha0[t].pMax0
         double already_installed_capacity( candidate.already_installed_capacity());
         rstart.push_back(dmatval.size());
         rhs.push_back(already_installed_capacity*candidate.already_installed_profile(timestep, study_path, true));
