@@ -92,6 +92,9 @@ jobs:
           cd vcpkg
           ./bootstrap-vcpkg.sh
           vcpkg install jsoncpp gtest boost-mpi boost-program-options --triplet ${{matrix.triplet}}
+          rm -rf buildtrees
+          rm -rf packages
+          rm -rf downloads
       shell: bash
       
     - name: Download pre-compiled librairies
@@ -102,7 +105,7 @@ jobs:
            
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip
            Expand-Archive rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip -DestinationPath .
-           rm rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip         
+           rm rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits.zip
 
     - name: Configure with VCPKG
       run: |

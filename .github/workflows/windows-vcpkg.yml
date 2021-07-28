@@ -93,6 +93,9 @@ jobs:
           cd vcpkg
           ./bootstrap-vcpkg.sh
           vcpkg install jsoncpp gtest boost-mpi boost-program-options --triplet ${{matrix.triplet}}
+          rm -rf buildtrees
+          rm -rf packages
+          rm -rf downloads
       shell: bash
         
     - name: Download pre-compiled librairies
