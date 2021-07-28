@@ -30,7 +30,7 @@ std::vector<IntercoFileData> IntercoINIReader::ReadAntaresIntercoFile(const std:
     std::ifstream interco_filestream(antaresIntercoFile);
     if (!interco_filestream.good()) {
         std::string message = "unable to open " + antaresIntercoFile;
-        throw std::exception(message.c_str());
+        throw std::runtime_error(message);
     }
 
     std::string line;
@@ -55,7 +55,7 @@ std::vector<std::string> IntercoINIReader::ReadAreaFile(const std::string areaFi
     std::ifstream area_filestream(areaFile);
     if (!area_filestream.good()) {
         std::string message =  "unable to open " +  areaFile;
-        throw std::exception(message.c_str());
+        throw std::runtime_error(message);
     }
 
     std::string line;
@@ -121,12 +121,12 @@ CandidateData IntercoINIReader::readCandidateSection(const std::string &candidat
         if(!checkArea(candidateData.linkor))
         {
             std::string message = "Unrecognized area " + candidateData.linkor + " in section " + sectionName + " in " + candidateFile + ".";
-            throw std::exception(message.c_str());
+            throw std::runtime_error(message);
         }
         if(!checkArea(candidateData.linkex ))
         {
             std::string message = "Unrecognized area " + candidateData.linkex + " in section " + sectionName + " in " + candidateFile + ".";
-            throw std::exception(message.c_str());
+            throw std::runtime_error(message);
         }
     }
 
@@ -134,7 +134,7 @@ CandidateData IntercoINIReader::readCandidateSection(const std::string &candidat
     auto it = _intercoIndexMap.find(candidateData.link);
     if (it == _intercoIndexMap.end()) {
         std::string message = "cannot link candidate " + candidateData.name + " to interco id";
-        throw std::exception(message.c_str());
+        throw std::runtime_error(message);
     }
     candidateData.link_id = it->second;
     candidateData.link_profile = getStrVal(reader,sectionName,"link-profile");
