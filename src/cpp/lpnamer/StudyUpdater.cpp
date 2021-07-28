@@ -142,7 +142,7 @@ int StudyUpdater::update(Candidates const & candidates_p, std::map<std::string, 
     int updateFailures_l(0);
 	for(auto pairStrCandidate : candidates_p)
 	{
-		updateFailures_l += updateLinkdataFile(pairStrCandidate.second, investments_p[pairStrCandidate.second.str("name")]);
+		updateFailures_l += updateLinkdataFile(pairStrCandidate, investments_p[pairStrCandidate.str("name")]);
 	}
 
     return updateFailures_l;

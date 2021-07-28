@@ -90,8 +90,7 @@ void masterGeneration(std::string rootPath,
 	std::vector<double> unit_size;
 	std::vector<double> max_unit;
 
-	for (auto const & interco : candidates) {
-		Candidate const & candidate_i = interco.second;
+	for (auto const & candidate_i : candidates) {
 		obj_interco[i] = candidate_i.obj();
 		lb_interco[i] = candidate_i.lb();
 		ub_interco[i] = candidate_i.ub();

@@ -6,7 +6,7 @@
 #include "solver_utils.h"
 #include "helpers/StringUtils.h"
 
-std::vector<std::vector<std::string> > Candidates::MPS_LIST = {
+std::vector<ProblemData> Candidates::MPS_LIST = {
 };
 
 std::vector<std::tuple<int, int, int> > Candidates::intercos_map = {
@@ -20,23 +20,7 @@ std::vector<std::tuple<int, int, int> > Candidates::intercos_map = {
 std::map<int, std::string> Candidates::id_name = std::map<int, std::string>();
 
 std::map<std::tuple<std::string, std::string>, int> Candidates::or_ex_id = std::map<std::tuple<std::string, std::string>, int>();
-std::set<std::string> Candidates::str_fields = std::set<std::string>({
-	"name",
-	"investment_type",
-	"link",
-	"linkor",
-	"linkex",
-	"link-profile",
-	"already-installed-link-profile"
-	});
 
-std::set<std::string> Candidates::dbl_fields = std::set<std::string>({
-	"annual-cost-per-mw",
-	"max-investment",
-	"unit-size",
-	"max-units",
-	"already-installed-capacity"
-	});
 
 std::vector<std::string> Candidates::area_names = {
 };
@@ -129,23 +113,27 @@ Candidates::Candidates(std::string  const & ini_file) {
  * \param key_paysor_paysex map of candidate using the pair of string origin country and destination country as a key
  * \return void
  */
-void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::string>, Candidate *> & key_paysor_paysex) {
-	for (std::pair<std::string const, Candidate> & pairNameCandidate : *this) {
-		Candidate const & interco(pairNameCandidate.second);
+void Candidates::getListOfIntercoCandidates(std::map<std::pair<std::string, std::string>, std::list<Candidate *>> & key_paysor_paysex) {
+	for (Candidate & interco : *this) {
 
-		std::string const & paysor(interco.str("linkor"));
-		std::string const & paysex(interco.str("linkex"));
+		std::string paysor(interco.str("linkor"));
+		std::string paysex(interco.str("linkex"));
 
 		// Check if duplicate or reverse interco does already exist
 		if (key_paysor_paysex.find({ paysor, paysex }) != key_paysor_paysex.end()) {
 			std::cout << "duplicate interco : " << paysor << " - " << paysex << std::endl;
-			std::exit(1);
+			//std::exit(1);
 		}
 		if (key_paysor_paysex.find({ paysex, paysor }) != key_paysor_paysex.end()) {
 			std::cout << "reverse interco already defined : " << paysex << " - " << paysor << std::endl;
-			std::exit(1);
+			auto buff = paysex;
+			paysex = paysor;
+			paysor = buff;
+
+			//std::exit(1);
 		}
-		key_paysor_paysex[{paysor, paysex }] = &pairNameCandidate.second;
+
+		key_paysor_paysex[{paysor, paysex }].push_back(&interco);
 	}
 }
 
@@ -161,6 +149,7 @@ void Candidates::readCstrfiles(std::string const filePath,
 							std::list<std::string> & cstrList,
 							size_t & sizeCstrList)
 {
+    return;
 	std::string line;
 	std::ifstream file(filePath.c_str());
 	if (!file.good()) {
@@ -202,7 +191,7 @@ void Candidates::readVarfiles(std::string const filePath,
 							size_t & sizeVarList,
 							std::map<int, std::vector<int> > & interco_data,
 							std::map<std::vector<int>, int> & interco_id,
-							map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex)
+							std::map<std::pair<std::string, std::string>, std::list <Candidate *>> key_paysor_paysex)
 {
 	std::string line;
 	std::ifstream file(filePath.c_str());
@@ -282,7 +271,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::map<int, std::vector<int> > interco_data,
 											std::map<std::vector<int>, int> interco_id,
 											std::map< std::pair<std::string, std::string>, int> & couplings,
-											map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex,
+											std::map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex,
 											std::string study_path,
 											std::string const lp_mps_name,
 											std::string const& solver_name)
@@ -388,25 +377,29 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 		std::string const & paysor(Candidates::area_names[id_paysor]);
 		std::string const & paysex(Candidates::area_names[id_paysex]);
 
-		Candidate & candidate(*(key_paysor_paysex.find({ paysor, paysex })->second));
-		// p[t] - alpha[t].pMax - alpha0[t].pMax0 <= 0
-		double already_installed_capacity( candidate.already_installed_capacity());
-		rstart.push_back(dmatval.size());
-		rhs.push_back(already_installed_capacity*candidate.already_installed_profile(timestep, study_path, true));
-		rowtype.push_back('L');
-		colind.push_back(i_interco_p);
-		dmatval.push_back(1);
-		colind.push_back(ncols + i_interco_pmax);
-		dmatval.push_back(-candidate.profile(timestep, study_path, true));
-		// p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
-		rstart.push_back(dmatval.size());
-		rhs.push_back(-already_installed_capacity*candidate.already_installed_profile(timestep, study_path, false));
-		rowtype.push_back('G');
-		colind.push_back(i_interco_p);
-		dmatval.push_back(1);
-		colind.push_back(ncols + i_interco_pmax);
-		dmatval.push_back(candidate.profile(timestep, study_path, false));
+		const auto& candidates = key_paysor_paysex[{ paysor, paysex }];
+        Candidate& candidate(*candidates.front());
+        //TO DO SFR
+        // p[t] - alpha[t].(pMax_1 + pMax_2 + ...)  <= alpha0[t].pMax0
+        double already_installed_capacity( candidate.already_installed_capacity());
+        rstart.push_back(dmatval.size());
+        rhs.push_back(already_installed_capacity*candidate.already_installed_profile(timestep, study_path, true));
+        rowtype.push_back('L');
+        colind.push_back(i_interco_p);
+        dmatval.push_back(1);
+        colind.push_back(ncols + i_interco_pmax);
+        dmatval.push_back(-candidate.profile(timestep, study_path, true));
+        // p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
+        rstart.push_back(dmatval.size());
+        rhs.push_back(-already_installed_capacity*candidate.already_installed_profile(timestep, study_path, false));
+        rowtype.push_back('G');
+        colind.push_back(i_interco_p);
+        dmatval.push_back(1);
+        colind.push_back(ncols + i_interco_pmax);
+        dmatval.push_back(candidate.profile(timestep, study_path, false));
 	}
+
+
 	rstart.push_back(dmatval.size());
 
     solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
@@ -425,21 +418,21 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
  * \return void
  */
 void Candidates::treat(std::string const & root,
-	std::vector<std::string> const & mps,
+	ProblemData const & problemData,
 	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
 
-	std::map<std::pair<std::string, std::string>, Candidate *> key_paysor_paysex;
+	std::map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex;
 	std::string const study_path = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
 
 	getListOfIntercoCandidates(key_paysor_paysex);
 
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
-	std::string const mps_name(root + PATH_SEPARATOR + mps[0]);
-	std::string const var_name(root + PATH_SEPARATOR + mps[1]);
-	std::string const cstr_name(root + PATH_SEPARATOR + mps[2]);
+	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
+	std::string const var_name(root + PATH_SEPARATOR + problemData._variables_txt);
+	std::string const cstr_name(root + PATH_SEPARATOR + problemData._contraintes_txt);
 
 	// new mps file in the new lp directory
-	std::string const lp_name = mps[0].substr(0, mps[0].size() - 4);
+	std::string const lp_name = problemData._problem_mps.substr(0, problemData._problem_mps.size() - 4);
 	std::string const lp_mps_name = root + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps";
 
 	// List of variables
@@ -488,8 +481,10 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 	std::stringstream ss;
 	std::set<std::string> sections = reader.Sections();
 	for (auto const & sectionName : sections) {
-		std::cout << "-------------------------------------------" << std::endl;
-		for (auto const & str : Candidates::str_fields) {
+
+	    Candidate candidate;
+
+		for (auto const & str : Candidate::str_fields) {
 			std::string val = reader.Get(sectionName, str, "NA");
 			if ((val != "NA") && (val != "na")) {
 				std::cout << sectionName << " : " << str << " = " << val << std::endl;
@@ -499,8 +494,9 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 						std::string s1 = StringUtils::ToLowercase(val.substr(0, i));
 						std::string s2 = StringUtils::ToLowercase(val.substr(i + 3, val.size()));
 						std::cout << s1 << " and " << s2 << std::endl;
-						(*this)[sectionName]._str["linkor"] = s1;
-						(*this)[sectionName]._str["linkex"] = s2;
+                        candidate._str["linkor"] = s1;
+                        candidate._str["linkex"] = s2;
+
 						if(!this->checkArea(s1))
 						{
 							std::cout << "Unrecognized area " << s1
@@ -518,31 +514,34 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 				else if (str == "name")
 				{
 					std::string candidateName = StringUtils::ToLowercase(val);
-					(*this)[sectionName]._str["name"] = candidateName;
+                    candidate._str["name"] = candidateName;
 				}
 				else {
-					(*this)[sectionName]._str[str] = val;
+                    candidate._str[str] = val;
 				}
 			}
 		}
-		for (auto const & str : Candidates::dbl_fields) {
+		for (auto const & str : Candidate::dbl_fields) {
 			std::string val = reader.Get(sectionName, str, "NA");
 			if (val != "NA") {
 				std::stringstream buffer(val);
 				double d_val(0);
 				buffer >> d_val;
-				(*this)[sectionName]._dbl[str] = d_val;
+                candidate._dbl[str] = d_val;
 			}
 		}
 
-		auto it = or_ex_id.find({ (*this)[sectionName]._str["linkor"], (*this)[sectionName]._str["linkex"] });
+		auto it = or_ex_id.find({ candidate._str["linkor"], candidate._str["linkex"] });
 		if (it == or_ex_id.end()) {
 			std::cout << "cannot link candidate to interco id" << std::endl;
 		}
 		else {
-			id_name[it->second] = StringUtils::ToLowercase((*this)[sectionName]._str["name"]);
+			id_name[it->second] = StringUtils::ToLowercase(candidate._str["name"]);
 			std::cout << "index is " << it->second << " and name is " << id_name[it->second] << std::endl;
 		}
+
+		//TODO : check if candidate is valid
+        (*this).push_back(candidate);
 	}
 	std::cout << "-------------------------------------------" << std::endl;
 }
@@ -557,4 +556,9 @@ bool Candidates::checkArea(std::string const & areaName_p) const
 {
 	bool found_l = std::find(Candidates::area_names.cbegin(), Candidates::area_names.cend(), areaName_p) != Candidates::area_names.cend();
 	return found_l;
+}
+
+ProblemData::ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt):
+	_problem_mps(problem_mps), _variables_txt(variables_txt), _contraintes_txt(contraintes_txt)
+{
 }
