@@ -20,23 +20,7 @@ std::vector<std::tuple<int, int, int> > Candidates::intercos_map = {
 std::map<int, std::string> Candidates::id_name = std::map<int, std::string>();
 
 std::map<std::tuple<std::string, std::string>, int> Candidates::or_ex_id = std::map<std::tuple<std::string, std::string>, int>();
-std::set<std::string> Candidates::str_fields = std::set<std::string>({
-	"name",
-	"investment_type",
-	"link",
-	"linkor",
-	"linkex",
-	"link-profile",
-	"already-installed-link-profile"
-	});
 
-std::set<std::string> Candidates::dbl_fields = std::set<std::string>({
-	"annual-cost-per-mw",
-	"max-investment",
-	"unit-size",
-	"max-units",
-	"already-installed-capacity"
-	});
 
 std::vector<std::string> Candidates::area_names = {
 };
@@ -129,9 +113,8 @@ Candidates::Candidates(std::string  const & ini_file) {
  * \param key_paysor_paysex map of candidate using the pair of string origin country and destination country as a key
  * \return void
  */
-void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::string>, std::list<Candidate *>> & key_paysor_paysex) {
-	for (std::pair<std::string const, Candidate> & pairNameCandidate : *this) {
-		Candidate const & interco(pairNameCandidate.second);
+void Candidates::getListOfIntercoCandidates(std::map<std::pair<std::string, std::string>, std::list<Candidate *>> & key_paysor_paysex) {
+	for (Candidate & interco : *this) {
 
 		std::string paysor(interco.str("linkor"));
 		std::string paysex(interco.str("linkex"));
@@ -150,7 +133,7 @@ void Candidates::getListOfIntercoCandidates(map<std::pair<std::string, std::stri
 			//std::exit(1);
 		}
 
-		key_paysor_paysex[{paysor, paysex }].push_back(&pairNameCandidate.second);
+		key_paysor_paysex[{paysor, paysex }].push_back(&interco);
 	}
 }
 
@@ -208,7 +191,7 @@ void Candidates::readVarfiles(std::string const filePath,
 							size_t & sizeVarList,
 							std::map<int, std::vector<int> > & interco_data,
 							std::map<std::vector<int>, int> & interco_id,
-							map<std::pair<std::string, std::string>, std::list <Candidate *>> key_paysor_paysex)
+							std::map<std::pair<std::string, std::string>, std::list <Candidate *>> key_paysor_paysex)
 {
 	std::string line;
 	std::ifstream file(filePath.c_str());
@@ -288,7 +271,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::map<int, std::vector<int> > interco_data,
 											std::map<std::vector<int>, int> interco_id,
 											std::map< std::pair<std::string, std::string>, int> & couplings,
-											map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex,
+											std::map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex,
 											std::string study_path,
 											std::string const lp_mps_name,
 											std::string const& solver_name)
@@ -498,8 +481,10 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 	std::stringstream ss;
 	std::set<std::string> sections = reader.Sections();
 	for (auto const & sectionName : sections) {
-		std::cout << "-------------------------------------------" << std::endl;
-		for (auto const & str : Candidates::str_fields) {
+
+	    Candidate candidate;
+
+		for (auto const & str : Candidate::str_fields) {
 			std::string val = reader.Get(sectionName, str, "NA");
 			if ((val != "NA") && (val != "na")) {
 				std::cout << sectionName << " : " << str << " = " << val << std::endl;
@@ -509,8 +494,9 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 						std::string s1 = StringUtils::ToLowercase(val.substr(0, i));
 						std::string s2 = StringUtils::ToLowercase(val.substr(i + 3, val.size()));
 						std::cout << s1 << " and " << s2 << std::endl;
-						(*this)[sectionName]._str["linkor"] = s1;
-						(*this)[sectionName]._str["linkex"] = s2;
+                        candidate._str["linkor"] = s1;
+                        candidate._str["linkex"] = s2;
+
 						if(!this->checkArea(s1))
 						{
 							std::cout << "Unrecognized area " << s1
@@ -528,31 +514,34 @@ void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
 				else if (str == "name")
 				{
 					std::string candidateName = StringUtils::ToLowercase(val);
-					(*this)[sectionName]._str["name"] = candidateName;
+                    candidate._str["name"] = candidateName;
 				}
 				else {
-					(*this)[sectionName]._str[str] = val;
+                    candidate._str[str] = val;
 				}
 			}
 		}
-		for (auto const & str : Candidates::dbl_fields) {
+		for (auto const & str : Candidate::dbl_fields) {
 			std::string val = reader.Get(sectionName, str, "NA");
 			if (val != "NA") {
 				std::stringstream buffer(val);
 				double d_val(0);
 				buffer >> d_val;
-				(*this)[sectionName]._dbl[str] = d_val;
+                candidate._dbl[str] = d_val;
 			}
 		}
 
-		auto it = or_ex_id.find({ (*this)[sectionName]._str["linkor"], (*this)[sectionName]._str["linkex"] });
+		auto it = or_ex_id.find({ candidate._str["linkor"], candidate._str["linkex"] });
 		if (it == or_ex_id.end()) {
 			std::cout << "cannot link candidate to interco id" << std::endl;
 		}
 		else {
-			id_name[it->second] = StringUtils::ToLowercase((*this)[sectionName]._str["name"]);
+			id_name[it->second] = StringUtils::ToLowercase(candidate._str["name"]);
 			std::cout << "index is " << it->second << " and name is " << id_name[it->second] << std::endl;
 		}
+
+		//TODO : check if candidate is valid
+        (*this).push_back(candidate);
 	}
 	std::cout << "-------------------------------------------" << std::endl;
 }
