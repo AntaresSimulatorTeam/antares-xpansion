@@ -94,7 +94,6 @@ void masterGeneration(std::string rootPath,
 		obj_interco[i] = candidate_i.obj();
 		lb_interco[i] = candidate_i.lb();
 		ub_interco[i] = candidate_i.ub();
-		int interco_id = candidate_i._data.link_id;
 		interco_names[i] = candidate_i._data.name;
 
 		if (candidate_i.is_integer()) {
@@ -145,16 +144,12 @@ void masterGeneration(std::string rootPath,
 		}
 		rstart.push_back(dmatval.size());
 
-		int n_row_interco(rowtype.size());
-		int n_coeff_interco(dmatval.size());
         solver_addrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
 
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
 	std::string const lp_name = "master";
-	// writelp is useless no ?
-	//master_l->write_prob_lp(rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
 	master_l->write_prob_mps((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps"));
 
 	std::map<std::string, std::map<std::string, int> > output;

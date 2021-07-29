@@ -130,9 +130,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	in_prblm->read_prob_mps(mps_name);
 
 	int ncols = in_prblm->get_ncols();
-
 	int ninterco_pdt = interco_data.size();
-	std::cout << "ninterco_pdt " << ninterco_pdt << std::endl;
 
 	std::vector<double> lb(ncols);
 	std::vector<double> ub(ncols);
@@ -160,7 +158,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 	// copy in_prblm with the changed bounds and rename its variables
     solver_copyandrenamevars(out_prblm, in_prblm, vnames, solver_name);
-	size_t cnt_l = 0;
 	// All the names are retrieved before the loop.
 	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
 	// but it could be longer.
@@ -232,9 +229,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	rstart.push_back(dmatval.size());
 
     solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
-
 	out_prblm->write_prob_mps(lp_mps_name);
-	std::cout << "mps_name : " << lp_mps_name << " done" << std::endl;
 }
 
 
