@@ -97,40 +97,6 @@ Candidates::Candidates(std::string  const & ini_file) {
 }
 
 /**
- * \brief fill a map of interconnection candidate using the pair of string origin country and destination country as a key
- *
- * \param key_paysor_paysex map of candidate using the pair of string origin country and destination country as a key
- * \return void
- */
-void Candidates::getListOfIntercoCandidates(std::map<std::pair<std::string, std::string>, std::list<Candidate *>> & key_paysor_paysex) {
-	for (Candidate & interco : *this) {
-
-	    /*
-        std::string paysor(interco.str("linkor"));
-        std::string paysex(interco.str("linkex"));
-        */
-        std::string paysor(interco._data.linkor);
-        std::string paysex(interco._data.linkex);
-
-		// Check if duplicate or reverse interco does already exist
-		if (key_paysor_paysex.find({ paysor, paysex }) != key_paysor_paysex.end()) {
-			std::cout << "duplicate interco : " << paysor << " - " << paysex << std::endl;
-			//std::exit(1);
-		}
-		if (key_paysor_paysex.find({ paysex, paysor }) != key_paysor_paysex.end()) {
-			std::cout << "reverse interco already defined : " << paysex << " - " << paysor << std::endl;
-			auto buff = paysex;
-			paysex = paysor;
-			paysor = buff;
-
-			//std::exit(1);
-		}
-
-		key_paysor_paysex[{paysor, paysex }].push_back(&interco);
-	}
-}
-
-/**
  * \brief Read variable***.txt file and fill the list of variables varList
  *
  * \param filePath String corresponding to the variable***.txt file path
@@ -226,7 +192,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::map<int, std::vector<int> > interco_data,
 											std::map<std::vector<int>, int> interco_id,
 											std::map< std::pair<std::string, std::string>, int> & couplings,
-											std::map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex,
 											std::string study_path,
 											std::string const lp_mps_name,
 											std::string const& solver_name)
@@ -360,10 +325,8 @@ void Candidates::treat(std::string const & root,
 	ProblemData const & problemData,
 	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
 
-	std::map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex;
 	std::string const study_path = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
 
-	getListOfIntercoCandidates(key_paysor_paysex);
 
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
 	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
@@ -389,7 +352,7 @@ void Candidates::treat(std::string const & root,
 
 	readVarfiles(var_name, var, vsize, interco_data,interco_id);
 	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data,interco_id,
-		couplings, key_paysor_paysex, study_path, lp_mps_name, solver_name);
+		couplings, study_path, lp_mps_name, solver_name);
 }
 
 

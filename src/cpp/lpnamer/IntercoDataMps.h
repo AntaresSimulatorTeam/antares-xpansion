@@ -49,8 +49,6 @@ struct Candidates : public std::vector<Candidate> {
 	void treatloop(std::string const & root, std::map< std::pair<std::string, 
 		std::string>, int>& couplings, std::string const& solver_name);
 	void getCandidatesFromFile(std::string  const & dataPath);
-	void getListOfIntercoCandidates(std::map<std::pair<std::string, std::string>,
-		std::list<Candidate *>> & key_paysor_paysex);
 	void readVarfiles(std::string const filePath,
 			          std::list<std::string> & list,
 					  size_t & sizeList,
@@ -64,7 +62,6 @@ struct Candidates : public std::vector<Candidate> {
 									   std::map<int, std::vector<int> > interco_data,
 									   std::map<std::vector<int>, int> interco_id,
 									   std::map< std::pair<std::string, std::string>, int> & couplings,
-									   std::map<std::pair<std::string, std::string>, std::list<Candidate *>>  key_paysor_paysex,
 									   std::string study_path,
 									   std::string const lp_mps_name,
 									   std::string const& solver_name);
