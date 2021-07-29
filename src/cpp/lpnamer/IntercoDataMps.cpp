@@ -109,8 +109,7 @@ Candidates::Candidates(std::string  const & ini_file) {
 void Candidates::readVarfiles(std::string const filePath,
 							std::list<std::string> & varList,
 							size_t & sizeVarList,
-							std::map<int, std::vector<int> > & interco_data,
-							std::map<std::vector<int>, int> & interco_id)
+							std::map<int, std::vector<int> > & interco_data)
 {
 	std::string line;
 	std::ifstream file(filePath.c_str());
@@ -152,11 +151,7 @@ void Candidates::readVarfiles(std::string const filePath,
 			});
 
 			if (it != end()){
-                interco_data[id] = { pays, interco, time_step};
-                if (interco_id.find({ pays, interco }) == interco_id.end()) {
-					int new_id = interco_id.size();
-					interco_id[{pays, interco }] = new_id;
-				}
+                interco_data[id] = { interco, time_step};
 			}
 		}
 		varList.push_back(name.str());
@@ -190,7 +185,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::list<std::string> cstr,
 											size_t csize,
 											std::map<int, std::vector<int> > interco_data,
-											std::map<std::vector<int>, int> interco_id,
 											std::map< std::pair<std::string, std::string>, int> & couplings,
 											std::string study_path,
 											std::string const lp_mps_name,
@@ -239,7 +233,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
     std::vector<std::string> outVarNames = out_prblm->get_col_names(0, out_prblm->get_ncols() - 1);
 
 	// create pMax variable
-	int ninterco = interco_id.size();
+	int ninterco = size();
 	std::vector<double> obj_interco(ninterco, 0);
 	// Setting bounds to +-1e20
 	std::vector<double> lb_interco(ninterco, -1e20);
@@ -248,18 +242,14 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<int> mstart_interco(ninterco, 0);
 	std::vector<std::string> colnames_l;
 
-	for (auto const & interco : interco_id) {
-		std::stringstream buffer;
-		int interco_i = interco.first[1];
-		int pays_or = std::get<1>(intercos_map[interco_i]);
-		int pays_ex = std::get<2>(intercos_map[interco_i]);
-		int pays = interco.first[0];
-		//buffer << "INVEST_INTERCO_" << interco_i;
-		buffer << id_name.find(interco_i)->second;
+	std::map<std::string ,int> interco_id;
+	for (int i = 0 ; i < ninterco ; i++) {
+	    const Candidate& candidate = at(i);
 
-		colnames_l.push_back(buffer.str());
+		colnames_l.push_back(candidate._data.name);
 
-		couplings[{buffer.str(), mps_name}] = interco.second + ncols;
+		couplings[{candidate._data.name, mps_name}] = i + ncols;
+        interco_id[candidate._data.name] = i + ncols;
 	}
 
     solver_addcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
@@ -270,7 +260,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<int> rstart;
 	// create plower and upper constraint
 	for (auto const & pairIdvarntcIntercodata : interco_data) {
-	    int link_id = pairIdvarntcIntercodata.second[1];
+	    int link_id = pairIdvarntcIntercodata.second[0];
 
         //TODO : adapt for multicandidate
         auto candidate = std::find_if(begin(), end(), [link_id] (const Candidate& candidate){
@@ -279,8 +269,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 		int const i_interco_p(pairIdvarntcIntercodata.first);
 
-		size_t timestep = pairIdvarntcIntercodata.second[2];
-		int const i_interco_pmax(interco_id.find({ pairIdvarntcIntercodata.second[0], pairIdvarntcIntercodata.second[1] })->second);
+		size_t timestep = pairIdvarntcIntercodata.second[1];
 
 
         //TO DO SFR
@@ -291,7 +280,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         rowtype.push_back('L');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
-        colind.push_back(ncols + i_interco_pmax);
+        colind.push_back(interco_id[candidate->_data.name]);
         dmatval.push_back(-candidate->profile(timestep, study_path, true));
         // p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
         rstart.push_back(dmatval.size());
@@ -299,7 +288,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         rowtype.push_back('G');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
-        colind.push_back(ncols + i_interco_pmax);
+        colind.push_back(interco_id[candidate->_data.name]);
         dmatval.push_back(candidate->profile(timestep, study_path, false));
 	}
 
@@ -348,10 +337,9 @@ void Candidates::treat(std::string const & root,
 	size_t csize(0);
 
 	std::map<int, std::vector<int> > interco_data;
-	std::map<std::vector<int>, int> interco_id;
 
-	readVarfiles(var_name, var, vsize, interco_data,interco_id);
-	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data,interco_id,
+	readVarfiles(var_name, var, vsize, interco_data);
+	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data,
 		couplings, study_path, lp_mps_name, solver_name);
 }
 

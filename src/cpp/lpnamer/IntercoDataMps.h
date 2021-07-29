@@ -52,15 +52,13 @@ struct Candidates : public std::vector<Candidate> {
 	void readVarfiles(std::string const filePath,
 			          std::list<std::string> & list,
 					  size_t & sizeList,
-					  std::map<int, std::vector<int> > & interco_data,
-					  std::map<std::vector<int>, int> & interco_id);
+					  std::map<int, std::vector<int> > & interco_data);
 	void createMpsFileAndFillCouplings(std::string const & mps_name,
 									   std::list<std::string> var,
 									   size_t vsize,
 									   std::list<std::string> cstr,
 									   size_t csize,
 									   std::map<int, std::vector<int> > interco_data,
-									   std::map<std::vector<int>, int> interco_id,
 									   std::map< std::pair<std::string, std::string>, int> & couplings,
 									   std::string study_path,
 									   std::string const lp_mps_name,
