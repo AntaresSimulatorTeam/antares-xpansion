@@ -10,10 +10,9 @@
 
 struct ProblemData
 {
-	ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt);
+	ProblemData(const std::string& problem_mps, const std::string& variables_txt);
 	std::string _problem_mps;
 	std::string _variables_txt;
-	std::string _contraintes_txt;
 };
 
 

@@ -6,8 +6,8 @@
 #include "solver_utils.h"
 #include "helpers/StringUtils.h"
 
-ProblemData::ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt):
-        _problem_mps(problem_mps), _variables_txt(variables_txt), _contraintes_txt(contraintes_txt)
+ProblemData::ProblemData(const std::string& problem_mps, const std::string& variables_txt):
+        _problem_mps(problem_mps), _variables_txt(variables_txt)
 {
 }
 
@@ -31,7 +31,7 @@ std::vector<ProblemData> Candidates::readMPSList(std::string const & mps_filePat
             buffer >> VariablesTxt;
             buffer >> ConstraintsTxt;
 
-            ProblemData problemData(ProblemMps, VariablesTxt, ConstraintsTxt);
+            ProblemData problemData(ProblemMps, VariablesTxt);
 
             result.push_back(problemData);
         }
@@ -176,14 +176,14 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<int> mstart_interco(ninterco, 0);
 	std::vector<std::string> colnames_l;
 
-	std::map<std::string ,int> interco_id;
+	std::map<std::string ,int> candidate_id;
 	for (int i = 0 ; i < ninterco ; i++) {
 	    const Candidate& candidate = at(i);
 
 		colnames_l.push_back(candidate._data.name);
 
 		couplings[{candidate._data.name, mps_name}] = i + ncols;
-        interco_id[candidate._data.name] = i + ncols;
+        candidate_id[candidate._data.name] = i + ncols;
 	}
 
     solver_addcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
@@ -205,24 +205,26 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 		size_t timestep = pairIdvarntcIntercodata.second[1];
 
-
         //TO DO SFR
-        // p[t] - alpha[t].(pMax_1 + pMax_2 + ...)  <= alpha0[t].pMax0
+        // p[t] - (alpha_1[t]*pMax1 + alpha_2[t]*pMax2 + ...)  <= alpha0[t].pMax0
         double already_installed_capacity( candidate->already_installed_capacity());
         rstart.push_back(dmatval.size());
         rhs.push_back(already_installed_capacity*candidate->already_installed_profile(timestep, study_path, true));
         rowtype.push_back('L');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
-        colind.push_back(interco_id[candidate->_data.name]);
+        //TODO for each candidate as same link
+        colind.push_back(candidate_id[candidate->_data.name]);
         dmatval.push_back(-candidate->profile(timestep, study_path, true));
-        // p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
+
+        // p[t] + alpha_1[t].pMax1 + alpha_2[t].pMax2 + ...  >=  - beta0[t].pMax0
         rstart.push_back(dmatval.size());
         rhs.push_back(-already_installed_capacity*candidate->already_installed_profile(timestep, study_path, false));
         rowtype.push_back('G');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
-        colind.push_back(interco_id[candidate->_data.name]);
+        //TODO for each candidate as same link
+        colind.push_back(candidate_id[candidate->_data.name]);
         dmatval.push_back(candidate->profile(timestep, study_path, false));
 	}
 
@@ -254,9 +256,6 @@ void Candidates::treat(std::string const & root,
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
 	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
 	std::string const var_name(root + PATH_SEPARATOR + problemData._variables_txt);
-
-	//TODO : remove constraint use
-	std::string const cstr_name(root + PATH_SEPARATOR + problemData._contraintes_txt);
 
 	// new mps file in the new lp directory
 	std::string const lp_name = problemData._problem_mps.substr(0, problemData._problem_mps.size() - 4);
