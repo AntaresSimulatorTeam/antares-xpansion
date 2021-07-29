@@ -8,8 +8,6 @@
 #define MPS_TXT "mps.txt"
 #define STUDY_FILE "study.antares"
 
-
-
 struct ProblemData
 {
 	ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt);
@@ -24,20 +22,21 @@ struct ProblemData
  *  \brief Candidates structure
  *
  */
-struct Candidates : public std::vector<Candidate> {
+class Candidates : public std::vector<Candidate> {
 
-	static std::vector<ProblemData> MPS_LIST;			/*!< vector of 3 strings in a vector corresponding to the name of a mps , variable and constraint file */
+public:
 
+	Candidates() {}
+    void treatloop(std::string const & root, std::map< std::pair<std::string,
+            std::string>, int>& couplings, std::string const& solver_name);
 
-	Candidates() {
+private:
 
-	}
-	explicit Candidates(std::string  const & datas);
+    std::vector<ProblemData> readMPSList(std::string const & mps_filePath_p);
 
 	void treat(std::string const& root, ProblemData const&, 
 		std::map< std::pair<std::string, std::string>, int>& couplings, std::string const& solver_name);
-	void treatloop(std::string const & root, std::map< std::pair<std::string, 
-		std::string>, int>& couplings, std::string const& solver_name);
+
 	void readVarfiles(std::string const filePath,
 			          std::list<std::string> & list,
 					  std::map<int, std::vector<int> > & interco_data);

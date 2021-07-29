@@ -6,21 +6,39 @@
 #include "solver_utils.h"
 #include "helpers/StringUtils.h"
 
-std::vector<ProblemData> Candidates::MPS_LIST = {
-};
-
-
-
-/*!
- *  \brief Constructor
- *
- *  Construct the structure Candidates
- *
- *  \param ini_file path to the file candidate.ini
- */
-Candidates::Candidates(std::string  const & ini_file) {
+ProblemData::ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt):
+        _problem_mps(problem_mps), _variables_txt(variables_txt), _contraintes_txt(contraintes_txt)
+{
 }
 
+std::vector<ProblemData> Candidates::readMPSList(std::string const & mps_filePath_p){
+    std::string line;
+    std::vector<ProblemData> result;
+    std::ifstream mps_filestream(mps_filePath_p.c_str());
+    if (!mps_filestream.good()) {
+        std::cout << "unable to open " << mps_filePath_p << std::endl;
+        std::exit(1);
+    }
+    while (std::getline(mps_filestream, line)) {
+        std::stringstream buffer(line);
+        if (!line.empty() && line.front() != '#') {
+
+            std::string ProblemMps;
+            std::string VariablesTxt;
+            std::string ConstraintsTxt;
+
+            buffer >> ProblemMps;
+            buffer >> VariablesTxt;
+            buffer >> ConstraintsTxt;
+
+            ProblemData problemData(ProblemMps, VariablesTxt, ConstraintsTxt);
+
+            result.push_back(problemData);
+        }
+    }
+
+    return result;
+}
 /**
  * \brief Read variable***.txt file and fill the list of variables varList
  *
@@ -255,7 +273,7 @@ void Candidates::treat(std::string const & root,
 
 
 /**
- * \brief Execute the treat function for each mps elements in the candidates MPS_LIST
+ * \brief Execute the treat function for each mps elements
  *
  * \param root String corresponding to the path where are located input data
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
@@ -263,14 +281,11 @@ void Candidates::treat(std::string const & root,
  */
 void Candidates::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
 	int>& couplings, std::string const& solver_name) {
-	int n_mps(0);
-	for (auto const & mps : Candidates::MPS_LIST) {
+
+    std::string const mps_file_name			= root + PATH_SEPARATOR + MPS_TXT;
+
+	for (auto const & mps : readMPSList(mps_file_name)) {
 		treat(root, mps, couplings, solver_name);
-		n_mps += 1;
 	}
 }
 
-ProblemData::ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt):
-	_problem_mps(problem_mps), _variables_txt(variables_txt), _contraintes_txt(contraintes_txt)
-{
-}
