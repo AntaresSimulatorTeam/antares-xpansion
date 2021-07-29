@@ -6,6 +6,7 @@
 #include "common_lpnamer.h"
 #include "CandidatesInitializer.h"
 #include "StudyUpdater.h"
+#include "IntercoINIReader.h"
 
 class StudyUpdateTest : public ::testing::Test
 {
@@ -83,10 +84,14 @@ already-installed-capacity = 100\n\
         file_l.close();
 
 
-        //Uninitialized mpslist //initMPSList(mps_file_name);
-        initIntercoMap("temp_interco.txt");
-        initAreas("temp_area.txt");
-        StudyUpdateTest::candidates_->getCandidatesFromFile("temp_candidates.ini");
+        IntercoINIReader reader("temp_interco.txt","temp_area.txt");
+        std::vector<CandidateData> candidateList = reader.readCandidateData("temp_candidates.ini");
+
+        for (const CandidateData& candidateData : candidateList){
+            Candidate candidate;
+            candidate._data = candidateData;
+            StudyUpdateTest::candidates_->push_back(candidate);
+        }
     }
 
 	static void TearDownTestCase()
@@ -125,8 +130,8 @@ Candidates * StudyUpdateTest::candidates_ = nullptr;
 TEST_F(StudyUpdateTest, candidatesInit)
 {
 	ASSERT_EQ(candidates_->size(), 2);
-    ASSERT_EQ((*candidates_)[0].str("name"), "peak");
-    ASSERT_EQ((*candidates_)[1].str("name"), "transmission_line");
+    ASSERT_EQ((*candidates_)[0]._data.name, "peak");
+    ASSERT_EQ((*candidates_)[1]._data.name, "transmission_line");
 }
 
 
@@ -140,7 +145,7 @@ TEST_F(StudyUpdateTest, candidatesInit)
 TEST_F(StudyUpdateTest, linkprofile)
 {
     //filename
-    ASSERT_EQ(candidates_->begin()->str("link-profile"), "temp_profile.ini");
+    ASSERT_EQ(candidates_->begin()->_data.link_profile, "temp_profile.ini");
 
     //direct profile
 	ASSERT_EQ(candidates_->begin()->profile(0, ".", true), 0);

@@ -95,10 +95,7 @@ void masterGeneration(std::string rootPath,
 		lb_interco[i] = candidate_i.lb();
 		ub_interco[i] = candidate_i.ub();
 		int interco_id = candidate_i._data.link_id;
-		std::stringstream buffer;
-		//buffer << "INVEST_INTERCO_" << interco_id;
-		buffer << Candidates::id_name.find(interco_id)->second;
-		interco_names[i] = buffer.str();
+		interco_names[i] = candidate_i._data.name;
 
 		if (candidate_i.is_integer()) {
 			pallier.push_back(i);

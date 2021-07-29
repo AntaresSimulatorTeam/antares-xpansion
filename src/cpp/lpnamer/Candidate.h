@@ -117,54 +117,12 @@ class Candidate {
 
 public:
 
-    static std::set<std::string> str_fields;
-    static std::set<std::string> dbl_fields;
-
     //! folder containing the linkprofile files indicated in the candidates ini file
     static std::string _capacitySubfolder;
-
-    std::map<std::string, std::string> _str; /*!<  map of string , string associated type of link (origin, destination) and the country */
-    std::map<std::string, double> _dbl;
 
     CandidateData _data;
     LinkProfile _profile;
     LinkProfile _already_installed_profile;
-
-    /**
-     * \fn dbl(std::string const & key)
-     * \brief Get the element of _dbl associated to the key "key" or 0.0 if the key doe not exist
-     *
-     * \param key String corresponding to the key
-     * \return string
-     */
-    double dbl(std::string const & key)const {
-        auto const it(_dbl.find(key));
-        return it == _dbl.end() ? 0.0 : it->second;
-    }
-
-    /**
-     * \fn str(std::string const & key)
-     * \brief Get the element of _str associated to the key "key"
-     *
-     * \param key String corresponding to the key
-     * \return string
-     */
-    std::string str(std::string const & key)const {
-        auto const it(_str.find(key));
-        return it->second;
-    }
-
-    /**
-     * \fn has(std::string const & key)
-     * \brief Check if the key "key" is present in _str
-     *
-     * \param key String corresponding to the key
-     * \return bool
-     */
-    bool has(std::string const & key)const {
-        auto const it(_str.find(key));
-        return it != _str.end();
-    }
 
     double profile(size_t i, std::string const & study_path, bool is_direct);
     double already_installed_profile(size_t i, std::string const & study_path, bool is_direct);

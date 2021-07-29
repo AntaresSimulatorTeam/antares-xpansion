@@ -9,81 +9,7 @@
 std::vector<ProblemData> Candidates::MPS_LIST = {
 };
 
-std::vector<std::tuple<int, int, int> > Candidates::intercos_map = {
-};
 
-
-std::map<int, std::string> Candidates::id_name = std::map<int, std::string>();
-
-std::map<std::tuple<std::string, std::string>, int> Candidates::or_ex_id = std::map<std::tuple<std::string, std::string>, int>();
-
-
-std::vector<std::string> Candidates::area_names = {
-};
-
-std::string Candidate::_capacitySubfolder = std::string(PATH_SEPARATOR) + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + "capa";
-
-double Candidate::profile(size_t i, std::string const & study_path, bool is_direct) {
-	if (_profile.empty()) {
-        if(!_data.link_profile.empty()){
-            std::string const file_name = _data.link_profile;
-            std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
-            _profile.read(profile_path);
-
-        }
-	}
-	return _profile.get(i, is_direct);
-}
-
-double Candidate::already_installed_profile(size_t i, std::string const & study_path, bool is_direct) {
-	if (_already_installed_profile.empty()) {
-	    if(!_data.already_installed_link_profile.empty()){
-            std::string const file_name = _data.already_installed_link_profile;
-            std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
-            _already_installed_profile.read(profile_path);
-	    }
-	}
-	return _already_installed_profile.get(i, is_direct);
-}
-
-double Candidate::obj()const {
-	return _data.annual_cost_per_mw;
-}
-
-double Candidate::lb() const {
-	return 0;
-}
-
-double Candidate::ub() const {
-	double val = _data.max_investment;
-	if(val == 0.0) {
-	    val = unit_size() * max_unit();
-	}
-	return val;
-}
-
-bool Candidate::has_already_installed_capacity() const {
-	return _dbl.find("already-installed-capacity") != _dbl.end();
-}
-
-bool Candidate::has_already_installed_link_profile() const {
-	return _str.find("already-installed-link-profile") != _str.end();
-}
-double Candidate::already_installed_capacity() const {
-    return _data.already_installed_capacity;
-}
-
-
-double Candidate::unit_size() const {
-	return _data.unit_size;
-}
-double Candidate::max_unit() const {
-	return _data.max_units;
-}
-
-bool Candidate::is_integer()const {
-	return _data.unit_size!=0.0;
-}
 
 /*!
  *  \brief Constructor
@@ -93,7 +19,6 @@ bool Candidate::is_integer()const {
  *  \param ini_file path to the file candidate.ini
  */
 Candidates::Candidates(std::string  const & ini_file) {
-	getCandidatesFromFile(ini_file);
 }
 
 /**
@@ -101,14 +26,12 @@ Candidates::Candidates(std::string  const & ini_file) {
  *
  * \param filePath String corresponding to the variable***.txt file path
  * \param varList list of strings which contain variables
- * \param sizeVarList size_t correspond to the list size
  * \param interco_data map of NTC interconnections...
  * \param interco_id map of NTC interconnections IDs...
  * \return void
  */
 void Candidates::readVarfiles(std::string const filePath,
 							std::list<std::string> & varList,
-							size_t & sizeVarList,
 							std::map<int, std::vector<int> > & interco_data)
 {
 	std::string line;
@@ -155,7 +78,6 @@ void Candidates::readVarfiles(std::string const filePath,
 			}
 		}
 		varList.push_back(name.str());
-		sizeVarList += name.str().size() + 1;
 	}
 	file.close();
 }
@@ -172,18 +94,12 @@ void Candidates::readVarfiles(std::string const filePath,
  *
  * \param mps_name is the path to the current mps file
  * \param var list of variables
- * \param vsize correspond to the var list size
- * \param cstr list of constraints
- * \param csize correspond to the cstr list size
  * \param interco_data list of NTC interco
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
 void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::list<std::string> var,
-											size_t vsize,
-											std::list<std::string> cstr,
-											size_t csize,
 											std::map<int, std::vector<int> > interco_data,
 											std::map< std::pair<std::string, std::string>, int> & couplings,
 											std::string study_path,
@@ -330,16 +246,10 @@ void Candidates::treat(std::string const & root,
 
 	// List of variables
 	std::list<std::string> var;
-	size_t vsize(0);
-
-	// list of constraints
-	std::list<std::string> cstr;
-	size_t csize(0);
-
 	std::map<int, std::vector<int> > interco_data;
 
-	readVarfiles(var_name, var, vsize, interco_data);
-	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data,
+	readVarfiles(var_name, var,  interco_data);
+	createMpsFileAndFillCouplings(mps_name, var, interco_data,
 		couplings, study_path, lp_mps_name, solver_name);
 }
 
@@ -358,95 +268,6 @@ void Candidates::treatloop(std::string const & root, std::map< std::pair<std::st
 		treat(root, mps, couplings, solver_name);
 		n_mps += 1;
 	}
-}
-
-
-/**
- * \brief Fill the map of candidate from the file candidate.ini
- *
- * \param dataPath String corresponding to the "candidate.ini" file path
- * \return void
- */
-void Candidates::getCandidatesFromFile(std::string  const & dataPath) {
-	INIReader reader(dataPath.c_str());
-	std::stringstream ss;
-	std::set<std::string> sections = reader.Sections();
-	for (auto const & sectionName : sections) {
-
-	    Candidate candidate;
-
-		for (auto const & str : Candidate::str_fields) {
-			std::string val = reader.Get(sectionName, str, "NA");
-			if ((val != "NA") && (val != "na")) {
-				std::cout << sectionName << " : " << str << " = " << val << std::endl;
-				if (str == "link") {
-					size_t i = val.find(" - ");
-					if (i != std::string::npos) {
-						std::string s1 = StringUtils::ToLowercase(val.substr(0, i));
-						std::string s2 = StringUtils::ToLowercase(val.substr(i + 3, val.size()));
-						std::cout << s1 << " and " << s2 << std::endl;
-                        candidate._str["linkor"] = s1;
-                        candidate._str["linkex"] = s2;
-
-						if(!this->checkArea(s1))
-						{
-							std::cout << "Unrecognized area " << s1
-										<< " in section " << sectionName << " in " << dataPath << ".";
-							std::exit(1);
-						}
-						if(!this->checkArea(s2))
-						{
-							std::cout << "Unrecognized area " << s2
-										<< " in section " << sectionName << " in " << dataPath << ".";
-							std::exit(1);
-						}
-					}
-				}
-				else if (str == "name")
-				{
-					std::string candidateName = StringUtils::ToLowercase(val);
-                    candidate._str["name"] = candidateName;
-				}
-				else {
-                    candidate._str[str] = val;
-				}
-			}
-		}
-		for (auto const & str : Candidate::dbl_fields) {
-			std::string val = reader.Get(sectionName, str, "NA");
-			if (val != "NA") {
-				std::stringstream buffer(val);
-				double d_val(0);
-				buffer >> d_val;
-                candidate._dbl[str] = d_val;
-			}
-		}
-
-		auto it = or_ex_id.find({ candidate._str["linkor"], candidate._str["linkex"] });
-		if (it == or_ex_id.end()) {
-			std::cout << "cannot link candidate to interco id" << std::endl;
-		}
-		else {
-			id_name[it->second] = StringUtils::ToLowercase(candidate._str["name"]);
-			std::cout << "index is " << it->second << " and name is " << id_name[it->second] << std::endl;
-		}
-
-		//TODO : check if candidate is valid
-        (*this).push_back(candidate);
-	}
-	std::cout << "-------------------------------------------" << std::endl;
-}
-
-/**
- * \brief checks if a given areaname is in the list of areas of candidates
- *
- * \param areaName_p String corresponding to the area name to verify
- * \return bool : True if the area exists in Candidates::area_names
- */
-bool Candidates::checkArea(std::string const & areaName_p) const
-{
-	bool found_l = std::find(Candidates::area_names.cbegin(), Candidates::area_names.cend(), areaName_p) != Candidates::area_names.cend();
-	return found_l;
 }
 
 ProblemData::ProblemData(const std::string& problem_mps, const std::string& variables_txt, const std::string& contraintes_txt):
