@@ -10,12 +10,8 @@ std::vector<ProblemData> Candidates::MPS_LIST = {
 };
 
 std::vector<std::tuple<int, int, int> > Candidates::intercos_map = {
-	//#include "interco.txt"
 };
 
-//std::vector<std::vector<std::string>> Candidates::candidates_map = {
-//#include "candidates.txt"
-//};
 
 std::map<int, std::string> Candidates::id_name = std::map<int, std::string>();
 
@@ -29,28 +25,29 @@ std::string Candidate::_capacitySubfolder = std::string(PATH_SEPARATOR) + "user"
 
 double Candidate::profile(size_t i, std::string const & study_path, bool is_direct) {
 	if (_profile.empty()) {
-		if (has("link-profile")) {
-			std::string const file_name = str("link-profile");
-			std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
-			_profile.read(profile_path);
-		}
+        if(!_data.link_profile.empty()){
+            std::string const file_name = _data.link_profile;
+            std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
+            _profile.read(profile_path);
+
+        }
 	}
 	return _profile.get(i, is_direct);
 }
 
 double Candidate::already_installed_profile(size_t i, std::string const & study_path, bool is_direct) {
 	if (_already_installed_profile.empty()) {
-		if (has("already-installed-link-profile")) {
-			std::string const file_name = str("already-installed-link-profile");
-			std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
-			_already_installed_profile.read(profile_path);
-		}
+	    if(!_data.already_installed_link_profile.empty()){
+            std::string const file_name = _data.already_installed_link_profile;
+            std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
+            _already_installed_profile.read(profile_path);
+	    }
 	}
 	return _already_installed_profile.get(i, is_direct);
 }
 
 double Candidate::obj()const {
-	return _dbl.find("annual-cost-per-mw")->second;
+	return _data.annual_cost_per_mw;
 }
 
 double Candidate::lb() const {
@@ -58,13 +55,11 @@ double Candidate::lb() const {
 }
 
 double Candidate::ub() const {
-	auto it(_dbl.find("max-investment"));
-	if (it != _dbl.end()) {
-		return it->second;
+	double val = _data.max_investment;
+	if(val == 0.0) {
+	    val = unit_size() * max_unit();
 	}
-	else {
-		return unit_size()*max_unit();
-	}
+	return val;
 }
 
 bool Candidate::has_already_installed_capacity() const {
@@ -75,25 +70,19 @@ bool Candidate::has_already_installed_link_profile() const {
 	return _str.find("already-installed-link-profile") != _str.end();
 }
 double Candidate::already_installed_capacity() const {
-	auto it = _dbl.find("already-installed-capacity");
-	if (it != _dbl.end()) {
-		return it->second;
-	}
-	else {
-		return 0;
-	}
+    return _data.already_installed_capacity;
 }
 
 
 double Candidate::unit_size() const {
-	return _dbl.find("unit-size")->second;
+	return _data.unit_size;
 }
 double Candidate::max_unit() const {
-	return _dbl.find("max-units")->second;
+	return _data.max_units;
 }
 
 bool Candidate::is_integer()const {
-	return _dbl.find("unit-size") != _dbl.end();
+	return _data.unit_size!=0.0;
 }
 
 /*!
@@ -116,8 +105,12 @@ Candidates::Candidates(std::string  const & ini_file) {
 void Candidates::getListOfIntercoCandidates(std::map<std::pair<std::string, std::string>, std::list<Candidate *>> & key_paysor_paysex) {
 	for (Candidate & interco : *this) {
 
-		std::string paysor(interco.str("linkor"));
-		std::string paysex(interco.str("linkex"));
+	    /*
+        std::string paysor(interco.str("linkor"));
+        std::string paysex(interco.str("linkex"));
+        */
+        std::string paysor(interco._data.linkor);
+        std::string paysex(interco._data.linkex);
 
 		// Check if duplicate or reverse interco does already exist
 		if (key_paysor_paysex.find({ paysor, paysex }) != key_paysor_paysex.end()) {
@@ -138,44 +131,6 @@ void Candidates::getListOfIntercoCandidates(std::map<std::pair<std::string, std:
 }
 
 /**
- * \brief Read constraints***.txt file and fill the list of constraints cstrList
- *
- * \param filePath String corresponding to the constraints***.txt file path
- * \param cstrList list of strings which contain constraints
- * \param sizeCstrList size_t correspond to the list size
- * \return void
- */
-void Candidates::readCstrfiles(std::string const filePath,
-							std::list<std::string> & cstrList,
-							size_t & sizeCstrList)
-{
-    return;
-	std::string line;
-	std::ifstream file(filePath.c_str());
-	if (!file.good()) {
-		std::cout << "unable to open " << filePath << std::endl;
-		std::exit(1);
-	}
-	while (std::getline(file, line)) {
-		std::istringstream buffer(line);
-		std::ostringstream name;
-		std::string part;
-		bool is_first(true);
-		while (std::getline(buffer, part)) {
-			if (!is_first) {
-				name << part << "_";
-			}
-			else {
-				is_first = false;
-			}
-		}
-		cstrList.push_back(name.str());
-		sizeCstrList += name.str().size() + 1;
-	}
-	file.close();
-}
-
-/**
  * \brief Read variable***.txt file and fill the list of variables varList
  *
  * \param filePath String corresponding to the variable***.txt file path
@@ -183,15 +138,13 @@ void Candidates::readCstrfiles(std::string const filePath,
  * \param sizeVarList size_t correspond to the list size
  * \param interco_data map of NTC interconnections...
  * \param interco_id map of NTC interconnections IDs...
- * \param key_paysor_paysex map of interco candidates
  * \return void
  */
 void Candidates::readVarfiles(std::string const filePath,
 							std::list<std::string> & varList,
 							size_t & sizeVarList,
 							std::map<int, std::vector<int> > & interco_data,
-							std::map<std::vector<int>, int> & interco_id,
-							std::map<std::pair<std::string, std::string>, std::list <Candidate *>> key_paysor_paysex)
+							std::map<std::vector<int>, int> & interco_id)
 {
 	std::string line;
 	std::ifstream file(filePath.c_str());
@@ -214,25 +167,27 @@ void Candidates::readVarfiles(std::string const filePath,
 				}
 			}
 		}
-		if (contains(name.str(), "ValeurDeNTC")) {
+            if (contains(name.str(), "ValeurDeNTC")) {
 			std::istringstream buffer(line);
 			int id;
 			int pays;
 			int interco;
-			int pdt;
+			int time_step;
 			std::string trash;
 			buffer >> id;
 			buffer >> trash;
 			buffer >> pays;
 			buffer >> interco;
-			buffer >> pdt;
+			buffer >> time_step;
 
-			std::string const & paysor(Candidates::area_names[std::get<1>(intercos_map[interco])]);
-			std::string const & paysex(Candidates::area_names[std::get<2>(intercos_map[interco])]);
-			//add one variable index for each interco ==> for each canddidate
-			if (key_paysor_paysex.find({ paysor, paysex }) != key_paysor_paysex.end()) {
-				interco_data[id] = { pays, interco, pdt };
-				if (interco_id.find({ pays, interco }) == interco_id.end()) {
+			//TODO : adapt for multicandidate
+			auto it = std::find_if(begin(), end(), [interco] (const Candidate& candidate){
+                return candidate._data.link_id == interco;
+			});
+
+			if (it != end()){
+                interco_data[id] = { pays, interco, time_step};
+                if (interco_id.find({ pays, interco }) == interco_id.end()) {
 					int new_id = interco_id.size();
 					interco_id[{pays, interco }] = new_id;
 				}
@@ -276,18 +231,15 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 											std::string const lp_mps_name,
 											std::string const& solver_name)
 {
-	// XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
-	//XPRSsetintcontrol(xpr, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-	// XPRSsetcbmessage(xpr, optimizermsg, NULL);
 	SolverFactory factory;
 	SolverAbstract::Ptr in_prblm;
 	in_prblm = factory.create_solver(solver_name);
 	in_prblm->read_prob_mps(mps_name);
 
 	int ncols = in_prblm->get_ncols();
-	int nrows = in_prblm->get_nrows();
 
 	int ninterco_pdt = interco_data.size();
+	std::cout << "ninterco_pdt " << ninterco_pdt << std::endl;
 
 	std::vector<double> lb(ncols);
 	std::vector<double> ub(ncols);
@@ -321,20 +273,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// but it could be longer.
     std::vector<std::string> outVarNames = out_prblm->get_col_names(0, out_prblm->get_ncols() - 1);
 
-	/* Xavier : This check is useless as the names are not necessary and seem to be 
-	* no present in "in_prblm"
-	for(int outVarIndex_l = 0; outVarIndex_l < out_prblm->get_ncols(); outVarIndex_l++){
-		int originalIndex_l = in_prblm->get_col_index(outVarNames[outVarIndex_l]);
-
-		if (originalIndex_l != outVarIndex_l) {
-			std::cout << "WARNING : Variables names in subproblems may not be representative."
-				<< " expected index " << originalIndex_l
-				<< " for variable " << outVarNames[outVarIndex_l] << " but index "
-				<< outVarIndex_l << " retrieved\n";
-		}
-		++cnt_l;
-	}*/
-
 	// create pMax variable
 	int ninterco = interco_id.size();
 	std::vector<double> obj_interco(ninterco, 0);
@@ -367,36 +305,37 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<int> rstart;
 	// create plower and upper constraint
 	for (auto const & pairIdvarntcIntercodata : interco_data) {
-		int const i_interco_pmax(interco_id.find({ pairIdvarntcIntercodata.second[0], pairIdvarntcIntercodata.second[1] })->second);
+	    int link_id = pairIdvarntcIntercodata.second[1];
+
+        //TODO : adapt for multicandidate
+        auto candidate = std::find_if(begin(), end(), [link_id] (const Candidate& candidate){
+            return candidate._data.link_id == link_id;
+        });
+
 		int const i_interco_p(pairIdvarntcIntercodata.first);
 
 		size_t timestep = pairIdvarntcIntercodata.second[2];
+		int const i_interco_pmax(interco_id.find({ pairIdvarntcIntercodata.second[0], pairIdvarntcIntercodata.second[1] })->second);
 
-		int id_paysor(std::get<1>(intercos_map[pairIdvarntcIntercodata.second[1]]));
-		int id_paysex(std::get<2>(intercos_map[pairIdvarntcIntercodata.second[1]]));
-		std::string const & paysor(Candidates::area_names[id_paysor]);
-		std::string const & paysex(Candidates::area_names[id_paysex]);
 
-		const auto& candidates = key_paysor_paysex[{ paysor, paysex }];
-        Candidate& candidate(*candidates.front());
         //TO DO SFR
         // p[t] - alpha[t].(pMax_1 + pMax_2 + ...)  <= alpha0[t].pMax0
-        double already_installed_capacity( candidate.already_installed_capacity());
+        double already_installed_capacity( candidate->already_installed_capacity());
         rstart.push_back(dmatval.size());
-        rhs.push_back(already_installed_capacity*candidate.already_installed_profile(timestep, study_path, true));
+        rhs.push_back(already_installed_capacity*candidate->already_installed_profile(timestep, study_path, true));
         rowtype.push_back('L');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
         colind.push_back(ncols + i_interco_pmax);
-        dmatval.push_back(-candidate.profile(timestep, study_path, true));
+        dmatval.push_back(-candidate->profile(timestep, study_path, true));
         // p[t] + alpha[t].pMax + beta0[t].pMax0 >= 0
         rstart.push_back(dmatval.size());
-        rhs.push_back(-already_installed_capacity*candidate.already_installed_profile(timestep, study_path, false));
+        rhs.push_back(-already_installed_capacity*candidate->already_installed_profile(timestep, study_path, false));
         rowtype.push_back('G');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
         colind.push_back(ncols + i_interco_pmax);
-        dmatval.push_back(candidate.profile(timestep, study_path, false));
+        dmatval.push_back(candidate->profile(timestep, study_path, false));
 	}
 
 
@@ -429,6 +368,8 @@ void Candidates::treat(std::string const & root,
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
 	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
 	std::string const var_name(root + PATH_SEPARATOR + problemData._variables_txt);
+
+	//TODO : remove constraint use
 	std::string const cstr_name(root + PATH_SEPARATOR + problemData._contraintes_txt);
 
 	// new mps file in the new lp directory
@@ -446,9 +387,8 @@ void Candidates::treat(std::string const & root,
 	std::map<int, std::vector<int> > interco_data;
 	std::map<std::vector<int>, int> interco_id;
 
-	readCstrfiles(cstr_name, cstr, csize);
-	readVarfiles(var_name, var, vsize, interco_data, interco_id, key_paysor_paysex);
-	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data, interco_id, 
+	readVarfiles(var_name, var, vsize, interco_data,interco_id);
+	createMpsFileAndFillCouplings(mps_name, var, vsize, cstr, csize, interco_data,interco_id,
 		couplings, key_paysor_paysex, study_path, lp_mps_name, solver_name);
 }
 

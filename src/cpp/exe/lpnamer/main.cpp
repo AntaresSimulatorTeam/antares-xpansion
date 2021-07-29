@@ -94,7 +94,7 @@ void masterGeneration(std::string rootPath,
 		obj_interco[i] = candidate_i.obj();
 		lb_interco[i] = candidate_i.lb();
 		ub_interco[i] = candidate_i.ub();
-		int interco_id = Candidates::or_ex_id.find(std::make_tuple(candidate_i.str("linkor"), candidate_i.str("linkex")))->second;
+		int interco_id = candidate_i._data.link_id;
 		std::stringstream buffer;
 		//buffer << "INVEST_INTERCO_" << interco_id;
 		buffer << Candidates::id_name.find(interco_id)->second;

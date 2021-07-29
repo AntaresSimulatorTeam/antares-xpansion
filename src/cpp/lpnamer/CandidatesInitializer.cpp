@@ -1,4 +1,5 @@
 #include "CandidatesInitializer.h"
+#include "IntercoINIReader.h"
 
 #include "helpers/StringUtils.h"
 
@@ -99,4 +100,15 @@ void initializedCandidates(std::string const & rootPath, Candidates & candidates
 
     //read the candidates from file
 	candidates.getCandidatesFromFile(candidates_file_name);
+
+    candidates.clear();
+
+    IntercoINIReader reader(interco_file_name,area_file_name);
+    std::vector<CandidateData> candidateList = reader.readCandidateData(candidates_file_name);
+
+    for (const CandidateData& candidateData : candidateList){
+        Candidate candidate;
+        candidate._data = candidateData;
+        candidates.push_back(candidate);
+    }
 }

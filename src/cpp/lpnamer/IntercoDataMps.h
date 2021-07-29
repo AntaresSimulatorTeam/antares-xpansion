@@ -51,13 +51,11 @@ struct Candidates : public std::vector<Candidate> {
 	void getCandidatesFromFile(std::string  const & dataPath);
 	void getListOfIntercoCandidates(std::map<std::pair<std::string, std::string>,
 		std::list<Candidate *>> & key_paysor_paysex);
-	void readCstrfiles(std::string const filePath, std::list<std::string> & list, size_t & sizeList);
 	void readVarfiles(std::string const filePath,
 			          std::list<std::string> & list,
 					  size_t & sizeList,
-					  std::map<int, std::vector<int> > & interco_data ,
-					  std::map<std::vector<int>, int> & interco_id,
-					  std::map<std::pair<std::string, std::string>, std::list<Candidate *>> key_paysor_paysex);
+					  std::map<int, std::vector<int> > & interco_data,
+					  std::map<std::vector<int>, int> & interco_id);
 	void createMpsFileAndFillCouplings(std::string const & mps_name,
 									   std::list<std::string> var,
 									   size_t vsize,

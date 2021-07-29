@@ -126,6 +126,7 @@ public:
     std::map<std::string, std::string> _str; /*!<  map of string , string associated type of link (origin, destination) and the country */
     std::map<std::string, double> _dbl;
 
+    CandidateData _data;
     LinkProfile _profile;
     LinkProfile _already_installed_profile;
 
