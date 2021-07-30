@@ -43,14 +43,14 @@ std::vector<ProblemData> Candidates::readMPSList(std::string const & mps_filePat
  * \brief Read variable***.txt file and fill the list of variables varList
  *
  * \param filePath String corresponding to the variable***.txt file path
- * \param varList list of strings which contain variables
+ * \param var_names list of strings which contain variables
  * \param interco_data map of NTC interconnections...
  * \param interco_id map of NTC interconnections IDs...
  * \return void
  */
 void Candidates::readVarfiles(std::string const filePath,
-							std::list<std::string> & varList,
-							std::map<int, std::vector<int> > & interco_data)
+                              std::vector <std::string> &var_names,
+                              std::map<int, std::vector<int> > & interco_data)
 {
 	std::string line;
 	std::ifstream file(filePath.c_str());
@@ -59,21 +59,8 @@ void Candidates::readVarfiles(std::string const filePath,
 		std::exit(1);
 	}
 	while (std::getline(file, line)) {
-		std::ostringstream name;
-		{
-			std::istringstream buffer(line);
-			std::string part;
-			bool is_first(true);
-			while (buffer >> part) {
-				if (!is_first) {
-					name << part << "_";
-				}
-				else {
-					is_first = false;
-				}
-			}
-		}
-            if (contains(name.str(), "ValeurDeNTC")) {
+        std::string name = getVarNameFromLine(line);
+        if (contains(name, "ValeurDeNTC")) {
 			std::istringstream buffer(line);
 			int id;
 			int pays;
@@ -95,11 +82,28 @@ void Candidates::readVarfiles(std::string const filePath,
                 interco_data[id] = { interco, time_step};
 			}
 		}
-		varList.push_back(name.str());
+		var_names.push_back(name);
 	}
 	file.close();
 }
 
+std::string Candidates::getVarNameFromLine(const std::string &line) const {
+    std::ostringstream name;
+    {
+        std::istringstream buffer(line);
+        std::string part;
+        bool is_first(true);
+        while (buffer >> part) {
+            if (!is_first) {
+                name << part << "_";
+            }
+            else {
+                is_first = false;
+            }
+        }
+    }
+    return name.str();
+}
 
 
 /**
@@ -117,12 +121,12 @@ void Candidates::readVarfiles(std::string const filePath,
  * \return void
  */
 void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
-											std::list<std::string> var,
-											std::map<int, std::vector<int> > interco_data,
-											std::map< std::pair<std::string, std::string>, int> & couplings,
-											std::string study_path,
-											std::string const lp_mps_name,
-											std::string const& solver_name)
+                                               std::vector <std::string> var,
+                                               std::map<int, std::vector<int> > interco_data,
+                                               std::map< std::pair<std::string, std::string>, int> & couplings,
+                                               std::string study_path,
+                                               std::string const lp_mps_name,
+                                               std::string const& solver_name)
 {
 	SolverFactory factory;
 	SolverAbstract::Ptr in_prblm;
@@ -149,7 +153,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// remove bounds on interco
     solver_chgbounds(in_prblm, indexes, lb_char, neginf);
     solver_chgbounds(in_prblm, indexes, ub_char, posinf);
-	std::vector<std::string> vnames(var.begin(), var.end());
+	std::vector<std::string> var_names(var.begin(), var.end());
 	SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
 
 	// Xavier : Why do we need to copy the problem ?
@@ -157,7 +161,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// This copy is just time consuming and useless for me
 
 	// copy in_prblm with the changed bounds and rename its variables
-    solver_copyandrenamevars(out_prblm, in_prblm, vnames, solver_name);
+    solver_rename_vars(out_prblm, var_names, solver_name);
 	// All the names are retrieved before the loop.
 	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
 	// but it could be longer.
@@ -258,10 +262,11 @@ void Candidates::treat(std::string const & root,
 
 	// List of variables
 	std::list<std::string> var;
+    std::vector<std::string> var_names;
 	std::map<int, std::vector<int> > interco_data;
 
-	readVarfiles(var_name, var,  interco_data);
-	createMpsFileAndFillCouplings(mps_name, var, interco_data,
+	readVarfiles(var_name, var_names,  interco_data);
+	createMpsFileAndFillCouplings(mps_name, var_names, interco_data,
 		couplings, study_path, lp_mps_name, solver_name);
 }
 

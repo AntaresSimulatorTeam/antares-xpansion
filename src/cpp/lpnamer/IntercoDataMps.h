@@ -37,14 +37,15 @@ private:
 		std::map< std::pair<std::string, std::string>, int>& couplings, std::string const& solver_name);
 
 	void readVarfiles(std::string const filePath,
-			          std::list<std::string> & list,
-					  std::map<int, std::vector<int> > & interco_data);
+                      std::vector <std::string> &var_names,
+                      std::map<int, std::vector<int> > & interco_data);
 	void createMpsFileAndFillCouplings(std::string const & mps_name,
-									   std::list<std::string> var,
-									   std::map<int, std::vector<int> > interco_data,
-									   std::map< std::pair<std::string, std::string>, int> & couplings,
-									   std::string study_path,
-									   std::string const lp_mps_name,
-									   std::string const& solver_name);
+                                       std::vector <std::string> var,
+                                       std::map<int, std::vector<int> > interco_data,
+                                       std::map< std::pair<std::string, std::string>, int> & couplings,
+                                       std::string study_path,
+                                       std::string const lp_mps_name,
+                                       std::string const& solver_name);
 
+    std::string getVarNameFromLine(const std::string &line) const;
 };
