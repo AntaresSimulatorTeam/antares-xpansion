@@ -99,15 +99,16 @@ TEST_F(IntercoINIReaderTest, testReadCandidate)
 {
     IntercoINIReader reader("temp_interco.txt","temp_area.txt");
 
-    std::vector<CandidateData> result = reader.readCandidateData("temp_candidate.ini");
+    std::vector<CandidateData> candidates_data = reader.readCandidateData("temp_candidate.ini");
 
-    ASSERT_EQ(result[0].name, "semibase");
-    ASSERT_EQ(result[0].investment_type, "semibase");
-    ASSERT_EQ(result[0].link, "area1 - semibase");
-    ASSERT_EQ(result[0].link_id, 2);
+    ASSERT_EQ(candidates_data.size(), 2);
+    ASSERT_EQ(candidates_data[0].name, "semibase");
+    ASSERT_EQ(candidates_data[0].investment_type, "semibase");
+    ASSERT_EQ(candidates_data[0].link, "area1 - semibase");
+    ASSERT_EQ(candidates_data[0].link_id, 2);
 
-    ASSERT_EQ(result[1].name, "peak");
-    ASSERT_EQ(result[1].investment_type, "peak");
-    ASSERT_EQ(result[1].link, "area1 - peak");
-    ASSERT_EQ(result[1].link_id, 1);
+    ASSERT_EQ(candidates_data[1].name, "peak");
+    ASSERT_EQ(candidates_data[1].investment_type, "peak");
+    ASSERT_EQ(candidates_data[1].link, "area1 - peak");
+    ASSERT_EQ(candidates_data[1].link_id, 1);
 }
