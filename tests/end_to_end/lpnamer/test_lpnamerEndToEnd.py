@@ -10,9 +10,14 @@ TEST_LP_INTEGER_01 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_lpnam
                      / "economy/"
 TEST_LP_INTEGER_02 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_one_candidate_1week" / "output" \
                      / "20210720-1024eco/"
+TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB = DATA_TEST / "tests_lpnamer" / "tests_integer" \
+                                      / "test_one_link_two_candidates_simple_prob" \
+                                      / "output" / "economy"
+
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST / "tests_lpnamer" / "tests_integer" \
-                                      / "test_one_link_two_candidates_1week_MR" \
-                                      / "output" / "20210721-1451eco"
+                                      / "test_one_link_two_candidates_1week" \
+                                      / "output" / "economy"
+
 TEST_LP_RELAXED_01 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" / "test_one_link_one_candidate-relaxed" / "output" \
                      / "20210720-1147eco/"
 TEST_LP_RELAXED_02 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" \
@@ -26,6 +31,7 @@ test_data = [
 ]
 
 test_data_multiple_candidates = [
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer"),
     (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer")
 ]
 
