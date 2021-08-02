@@ -1,7 +1,10 @@
 #pragma once
 
+#include <memory>
+#include <multisolver_interface/SolverAbstract.h>
 #include "common_lpnamer.h"
 #include "Candidate.h"
+
 
 #define CANDIDATES_INI "candidates.ini"
 #define STRUCTURE_FILE "structure.txt"
@@ -48,4 +51,8 @@ private:
                                        std::string const& solver_name);
 
     std::string getVarNameFromLine(const std::string &line) const;
+
+
+    std::map<std::string, int>
+    add_candidates_to_problem_and_get_candidates_col_id(std::shared_ptr<SolverAbstract> &out_prblm);
 };
