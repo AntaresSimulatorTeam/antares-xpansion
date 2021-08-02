@@ -6,18 +6,17 @@ import pytest
 from pathlib import Path
 
 DATA_TEST = Path("../../../data_test/")
-TEST_LP_INTEGER_01 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_lpnamer_01" / "output" \
-                     / "20210713-1635eco/"
-TEST_LP_INTEGER_02 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_one_candidate_1week" / "output" \
-                     / "20210720-1024eco/"
-TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST / "tests_lpnamer" / "tests_integer" \
-                                      / "test_one_link_two_candidates_1week_MR" \
-                                      / "output" / "20210721-1451eco"
-TEST_LP_RELAXED_01 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" / "test_one_link_one_candidate-relaxed" / "output" \
-                     / "20210720-1147eco/"
-TEST_LP_RELAXED_02 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" \
-                     / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" / "20210720-1433eco/"
+DATA_TEST_INTEGER = DATA_TEST / "tests_lpnamer" / "tests_integer"
+DATA_TEST_RELAXED = DATA_TEST / "tests_lpnamer" / "tests_relaxed"
+TEST_LP_INTEGER_01 = DATA_TEST_INTEGER / "test_lpnamer_01" / "output" / "economy"
+TEST_LP_INTEGER_02 = DATA_TEST_INTEGER / "test_one_link_one_candidate_1week" / "output" / "economy/"
+TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob" \
+                                                  / "output" / "economy"
+TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST_INTEGER / "test_one_link_two_candidates_1week" / "output" / "economy"
 
+TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / "test_one_link_one_candidate-relaxed" / "output" / "economy/"
+TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
+                     / "economy"
 test_data = [
     (TEST_LP_INTEGER_01, "integer"),
     (TEST_LP_INTEGER_02, "integer"),
@@ -26,6 +25,7 @@ test_data = [
 ]
 
 test_data_multiple_candidates = [
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer"),
     (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer")
 ]
 
