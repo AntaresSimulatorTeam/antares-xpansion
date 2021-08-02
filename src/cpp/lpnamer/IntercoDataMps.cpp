@@ -181,15 +181,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         int const link_id = pairIdvarntcIntercodata.second[0];
         int const timestep = pairIdvarntcIntercodata.second[1];
 
-        //TODO change into const: when already_installed_profile is read on initialisation !
-        std::vector<Candidate*> link_candidates;
-        for(auto& cand: *this){
-            if (cand._data.link_id == link_id){
-                link_candidates.push_back(&cand);
-            }
-        }
-
-
+        // TODO change into const: need to change already_installed_profile function
+        std::vector<Candidate *> link_candidates = get_link_candidates(link_id);
 
         // p[t] - (alpha_1[t]*pMax1 + alpha_2[t]*pMax2 + ...)  <= alpha0[t].pMax0
         double already_installed_capacity( link_candidates.front()->already_installed_capacity());
@@ -221,6 +214,16 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
     solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 	out_prblm->write_prob_mps(lp_mps_name);
+}
+
+std::vector<Candidate *> Candidates::get_link_candidates(const int link_id) {
+    vector<Candidate*> link_candidates;
+    for(auto& cand: *this){
+        if (cand._data.link_id == link_id){
+            link_candidates.push_back(&cand);
+        }
+    }
+    return link_candidates;
 }
 
 std::map<std::string, int> Candidates::add_candidates_to_problem_and_get_candidates_col_id(SolverAbstract::Ptr &out_prblm) {

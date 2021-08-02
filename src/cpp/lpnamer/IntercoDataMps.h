@@ -55,4 +55,6 @@ private:
 
     std::map<std::string, int>
     add_candidates_to_problem_and_get_candidates_col_id(std::shared_ptr<SolverAbstract> &out_prblm);
+
+    vector<Candidate *> get_link_candidates(const int link_id);
 };
