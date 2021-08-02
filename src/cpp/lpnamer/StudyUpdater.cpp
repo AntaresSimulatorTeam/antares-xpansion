@@ -50,7 +50,7 @@ void StudyUpdater::readAntaresVersion()
 
 std::string StudyUpdater::getLinkdataFilepath(Candidate const & candidate_p) const
 {
-    std::string result_l = linksPath_ + PATH_SEPARATOR + candidate_p.str("linkor") + PATH_SEPARATOR + candidate_p.str("linkex") + ".txt";
+    std::string result_l = linksPath_ + PATH_SEPARATOR + candidate_p._data.linkor + PATH_SEPARATOR + candidate_p._data.linkex + ".txt";
 	return result_l;
 }
 
@@ -142,7 +142,7 @@ int StudyUpdater::update(Candidates const & candidates_p, std::map<std::string, 
     int updateFailures_l(0);
 	for(auto pairStrCandidate : candidates_p)
 	{
-		updateFailures_l += updateLinkdataFile(pairStrCandidate, investments_p[pairStrCandidate.str("name")]);
+		updateFailures_l += updateLinkdataFile(pairStrCandidate, investments_p[pairStrCandidate._data.name]);
 	}
 
     return updateFailures_l;

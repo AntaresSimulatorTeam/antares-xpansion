@@ -94,11 +94,7 @@ void masterGeneration(std::string rootPath,
 		obj_interco[i] = candidate_i.obj();
 		lb_interco[i] = candidate_i.lb();
 		ub_interco[i] = candidate_i.ub();
-		int interco_id = Candidates::or_ex_id.find(std::make_tuple(candidate_i.str("linkor"), candidate_i.str("linkex")))->second;
-		std::stringstream buffer;
-		//buffer << "INVEST_INTERCO_" << interco_id;
-		buffer << Candidates::id_name.find(interco_id)->second;
-		interco_names[i] = buffer.str();
+		interco_names[i] = candidate_i._data.name;
 
 		if (candidate_i.is_integer()) {
 			pallier.push_back(i);
@@ -148,16 +144,12 @@ void masterGeneration(std::string rootPath,
 		}
 		rstart.push_back(dmatval.size());
 
-		int n_row_interco(rowtype.size());
-		int n_coeff_interco(dmatval.size());
         solver_addrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
 
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
 	std::string const lp_name = "master";
-	// writelp is useless no ?
-	//master_l->write_prob_lp(rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".lp");
 	master_l->write_prob_mps((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps"));
 
 	std::map<std::string, std::map<std::string, int> > output;

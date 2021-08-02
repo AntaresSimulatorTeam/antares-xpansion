@@ -148,37 +148,7 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
     solver_p->chg_bounds(mindex_p, qbtype_p, bnd_p);
 }
 
-void solver_copyandrenamevars(SolverAbstract::Ptr outSolver_p,
-                              SolverAbstract::Ptr const inSolver_p,
-                              std::vector<std::string>& names_p,
-                              std::string const& solver_name){
-
-    //outSolver_p.reset();
-
-    //copy and rename columns
-    /*std::vector<double> obj_l;
-	ORTgetobj(inSolver_p, obj_l, 0, inSolver_p->get_ncols() - 1);
-    std::vector<double> lb_l;
-	std::vector<double> ub_l;
-	std::vector<char> coltype_l;
-	ORTgetcolinfo(inSolver_p, coltype_l, lb_l, ub_l, 0, inSolver_p->get_ncols() - 1);
-	ORTaddcols(outSolver_p, obj_l, {}, {}, {}, lb_l, ub_l, coltype_l, names_p);
-
-    //const std::vector<operations_research::MPVariable*> & outVariables_l = outSolver_p.variables();
-    assert( inSolver_p->get_ncols() == outSolver_p->get_ncols() );
-
-    //copy constraints
-    for(auto inConstraint_l : inSolver_p.constraints())
-    {
-        operations_research::MPConstraint* outConstraint_l = outSolver_p.MakeRowConstraint(inConstraint_l->lb(), inConstraint_l->ub(), inConstraint_l->name());
-        for(auto pairVarCoeff_l : inConstraint_l->terms())
-        {
-            outConstraint_l->SetCoefficient(outVariables_l[pairVarCoeff_l.first->index()], pairVarCoeff_l.second);
-        }
-    }*/
-
-    //SolverFactory factory;
-    //outSolver_p = factory.create_solver(solver_name, inSolver_p);
+void solver_rename_vars(SolverAbstract::Ptr outSolver_p, std::vector<std::string> &names_p, std::string const &solver_name) {
 
     for (int i = 0; i < outSolver_p->get_ncols() - 1; i++) {
         outSolver_p->chg_col_name(i, names_p[i]);
