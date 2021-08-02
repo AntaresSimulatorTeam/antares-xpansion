@@ -121,7 +121,7 @@ std::string Candidates::getVarNameFromLine(const std::string &line) const {
  * \return void
  */
 void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
-                                               std::vector <std::string> var,
+                                               std::vector <std::string> var_names,
                                                std::map<int, std::vector<int> > interco_data,
                                                std::map< std::pair<std::string, std::string>, int> & couplings,
                                                std::string study_path,
@@ -153,7 +153,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// remove bounds on interco
     solver_chgbounds(in_prblm, indexes, lb_char, neginf);
     solver_chgbounds(in_prblm, indexes, ub_char, posinf);
-	std::vector<std::string> var_names(var.begin(), var.end());
 	SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
 
 	// Xavier : Why do we need to copy the problem ?
@@ -165,29 +164,12 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// All the names are retrieved before the loop.
 	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
 	// but it could be longer.
-    std::vector<std::string> outVarNames = out_prblm->get_col_names(0, out_prblm->get_ncols() - 1);
 
-	// create pMax variable
-	int ninterco = size();
-	std::vector<double> obj_interco(ninterco, 0);
-	// Setting bounds to +-1e20
-	std::vector<double> lb_interco(ninterco, -1e20);
-	std::vector<double> ub_interco(ninterco,  1e20);
-	std::vector<char> coltypes_interco(ninterco, 'C');
-	std::vector<int> mstart_interco(ninterco, 0);
-	std::vector<std::string> colnames_l;
+    std::map<std::string, int> col_id = add_candidates_to_problem_and_get_candidates_col_id(out_prblm);
 
-	std::map<std::string ,int> candidate_id;
-	for (int i = 0 ; i < ninterco ; i++) {
-	    const Candidate& candidate = at(i);
-
-		colnames_l.push_back(candidate._data.name);
-
-		couplings[{candidate._data.name, mps_name}] = i + ncols;
-        candidate_id[candidate._data.name] = i + ncols;
+    for(const Candidate& candidate :*this){
+        couplings[{candidate._data.name, mps_name}] = col_id[candidate._data.name];
 	}
-
-    solver_addcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, colnames_l);
 	std::vector<double> dmatval;
 	std::vector<int> colind;
 	std::vector<char> rowtype;
@@ -195,38 +177,36 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	std::vector<int> rstart;
 	// create plower and upper constraint
 	for (auto const & pairIdvarntcIntercodata : interco_data) {
-	    int link_id = pairIdvarntcIntercodata.second[0];
+        int const i_interco_p(pairIdvarntcIntercodata.first);
+        int const link_id = pairIdvarntcIntercodata.second[0];
+        int const timestep = pairIdvarntcIntercodata.second[1];
 
-        //TODO : adapt for multicandidate
-        auto candidate = std::find_if(begin(), end(), [link_id] (const Candidate& candidate){
-            return candidate._data.link_id == link_id;
-        });
+        // TODO change into const: need to change already_installed_profile function
+        std::vector<Candidate *> link_candidates = get_link_candidates(link_id);
 
-		int const i_interco_p(pairIdvarntcIntercodata.first);
-
-		size_t timestep = pairIdvarntcIntercodata.second[1];
-
-        //TO DO SFR
         // p[t] - (alpha_1[t]*pMax1 + alpha_2[t]*pMax2 + ...)  <= alpha0[t].pMax0
-        double already_installed_capacity( candidate->already_installed_capacity());
+        double already_installed_capacity( link_candidates.front()->already_installed_capacity());
+        double direct_already_installed_profile_at_timestep = link_candidates.front()->already_installed_profile(timestep, study_path, true);
         rstart.push_back(dmatval.size());
-        rhs.push_back(already_installed_capacity*candidate->already_installed_profile(timestep, study_path, true));
+        rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
         rowtype.push_back('L');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
-        //TODO for each candidate as same link
-        colind.push_back(candidate_id[candidate->_data.name]);
-        dmatval.push_back(-candidate->profile(timestep, study_path, true));
-
+        for (auto candidate:link_candidates){
+            colind.push_back(col_id[candidate->_data.name]);
+            dmatval.push_back(-candidate->profile(timestep, study_path, true));
+        }
         // p[t] + alpha_1[t].pMax1 + alpha_2[t].pMax2 + ...  >=  - beta0[t].pMax0
+        double indirect_already_installed_profile_at_timestep = link_candidates.front()->already_installed_profile(timestep, study_path, false);
         rstart.push_back(dmatval.size());
-        rhs.push_back(-already_installed_capacity*candidate->already_installed_profile(timestep, study_path, false));
+        rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
         rowtype.push_back('G');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
-        //TODO for each candidate as same link
-        colind.push_back(candidate_id[candidate->_data.name]);
-        dmatval.push_back(candidate->profile(timestep, study_path, false));
+        for (auto candidate:link_candidates){
+            colind.push_back(col_id[candidate->_data.name]);
+            dmatval.push_back(candidate->profile(timestep, study_path, false));
+        }
 	}
 
 
@@ -234,6 +214,37 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
     solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 	out_prblm->write_prob_mps(lp_mps_name);
+}
+
+std::vector<Candidate *> Candidates::get_link_candidates(const int link_id) {
+    vector<Candidate*> link_candidates;
+    for(auto& cand: *this){
+        if (cand._data.link_id == link_id){
+            link_candidates.push_back(&cand);
+        }
+    }
+    return link_candidates;
+}
+
+std::map<std::string, int> Candidates::add_candidates_to_problem_and_get_candidates_col_id(SolverAbstract::Ptr &out_prblm) {
+    int n_candidates = size();
+    int n_cols = out_prblm->get_ncols();
+    vector<double> obj_interco(n_candidates, 0);
+    // Setting bounds to +-1e20
+    vector<double> lb_interco(n_candidates, -1e20);
+    vector<double> ub_interco(n_candidates, 1e20);
+    vector<char> coltypes_interco(n_candidates, 'C');
+    vector<int> mstart_interco(n_candidates, 0);
+    vector<std::string> candidates_colnames;
+
+    std::map<std::string ,int> candidate_id;
+    for (int i = 0 ; i < n_candidates ; i++) {
+        const Candidate& candidate = at(i);
+        candidates_colnames.push_back(candidate._data.name);
+        candidate_id[candidate._data.name] = i + n_cols;
+    }
+    solver_addcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, candidates_colnames);
+    return candidate_id;
 }
 
 
