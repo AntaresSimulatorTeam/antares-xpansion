@@ -11,7 +11,7 @@ TEST_LP_INTEGER_01 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_lpnam
 TEST_LP_INTEGER_02 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_one_candidate_1week" / "output" \
                      / "20210720-1024eco/"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST / "tests_lpnamer" / "tests_integer" \
-                                      / "test_one_link_two_candidates_1week" \
+                                      / "test_one_link_two_candidates_1week_MR" \
                                       / "output" / "20210721-1451eco"
 TEST_LP_RELAXED_01 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" / "test_one_link_one_candidate-relaxed" / "output" \
                      / "20210720-1147eco/"
@@ -38,8 +38,7 @@ def setup_and_teardown_lp_directory(request):
         shutil.rmtree(lp_dir)
     Path(lp_dir).mkdir(exist_ok=True)
     yield
-    shutil.rmtree(lp_dir)
-
+    #shutil.rmtree(lp_dir)
 
 @pytest.mark.parametrize("test_dir,master", test_data)
 def test_lp_directory_files(install_dir, test_dir, master, setup_and_teardown_lp_directory):

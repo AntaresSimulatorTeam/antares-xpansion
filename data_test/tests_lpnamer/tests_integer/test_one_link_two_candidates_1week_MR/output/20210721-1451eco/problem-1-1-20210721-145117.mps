@@ -1,5 +1,3 @@
-* Number of variables:   1848
-* Number of constraints: 672
 NAME          Pb Solve
 ROWS
  N  OBJECTIF

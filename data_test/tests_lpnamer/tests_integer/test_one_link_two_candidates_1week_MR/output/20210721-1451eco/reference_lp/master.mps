@@ -6,7 +6,7 @@ ROWS
 COLUMNS
     transmission_line_1 OBJROW 10000
     transmission_line_1 R0000000 1
-    transmission_line_2 OBJROW 10000
+    transmission_line_2 OBJROW 20000
     transmission_line_2 R0000001 1
     C0000002 R0000000 -200
     C0000003 R0000001 -200
