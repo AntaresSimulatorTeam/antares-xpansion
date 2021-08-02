@@ -9,7 +9,7 @@ DATA_TEST = Path("../../../data_test/")
 TEST_LP_INTEGER_01 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_lpnamer_01" / "output" \
                      / "economy/"
 TEST_LP_INTEGER_02 = DATA_TEST / "tests_lpnamer" / "tests_integer" / "test_one_link_one_candidate_1week" / "output" \
-                     / "20210720-1024eco/"
+                     / "economy/"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB = DATA_TEST / "tests_lpnamer" / "tests_integer" \
                                       / "test_one_link_two_candidates_simple_prob" \
                                       / "output" / "economy"
