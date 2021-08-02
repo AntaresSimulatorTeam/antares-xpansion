@@ -20,7 +20,7 @@ add_executable (lp_namer_tests
         LinkdataRecordTest.cc
         StudyUpdateTest.cc
         IntercoINIReaderTest.cpp
-        ActiveLinkTest.cpp)
+        ActiveLinkTest.cpp LinkProfileReaderTest.cpp)
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main

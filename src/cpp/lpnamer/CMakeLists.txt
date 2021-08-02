@@ -20,7 +20,7 @@ add_library (lp_namer_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.h
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReader.h
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
-        Candidate.cpp Candidate.h IntercoINIReader.cpp IntercoINIReader.h Interco.cpp Interco.h ActiveLinks.cpp ActiveLinks.h)
+        Candidate.cpp Candidate.h IntercoINIReader.cpp IntercoINIReader.h Interco.cpp Interco.h ActiveLinks.cpp ActiveLinks.h LinkProfileReader.cpp LinkProfileReader.h LinkProfile.cpp LinkProfile.h)
 
 target_include_directories (lp_namer_core
 	PUBLIC
