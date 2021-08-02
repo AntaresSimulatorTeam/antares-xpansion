@@ -7,6 +7,8 @@ class LinkProfileReader {
 
 public:
 
+    LinkProfileReader(){}
+
     static LinkProfile ReadLinkProfile(const std::string& filename);
 
 };

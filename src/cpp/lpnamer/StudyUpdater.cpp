@@ -58,12 +58,12 @@ std::string StudyUpdater::getLinkdataFilepath(Candidate const & candidate_p) con
 std::pair<double, double> StudyUpdater::computeNewCapacities(double investment_p, Candidate & candidate_p, int timepoint_p) const
 {
     //direct capacity
-    double direct_l =  candidate_p.already_installed_capacity() * candidate_p.already_installed_profile(timepoint_p, studyPath_, true)
-                    + investment_p * candidate_p.profile(timepoint_p, studyPath_, true);
+    double direct_l =  candidate_p.already_installed_capacity() * candidate_p.already_installed_direct_profile(timepoint_p)
+                    + investment_p * candidate_p.direct_profile(timepoint_p);
 
     //indirect capacity
-    double indirect_l =  candidate_p.already_installed_capacity() * candidate_p.already_installed_profile(timepoint_p, studyPath_, false)
-                    + investment_p * candidate_p.profile(timepoint_p, studyPath_, false);
+    double indirect_l =  candidate_p.already_installed_capacity() * candidate_p.already_installed_indirect_profile(timepoint_p)
+                    + investment_p * candidate_p.indirect_profile(timepoint_p);
 
 
     return std::make_pair(direct_l, indirect_l);

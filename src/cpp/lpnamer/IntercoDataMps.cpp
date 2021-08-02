@@ -181,12 +181,11 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         int const link_id = pairIdvarntcIntercodata.second[0];
         int const timestep = pairIdvarntcIntercodata.second[1];
 
-        // TODO change into const: need to change already_installed_profile function
-        std::vector<Candidate *> link_candidates = get_link_candidates(link_id);
+        std::vector<const Candidate *> link_candidates = get_link_candidates(link_id);
 
         // p[t] - (alpha_1[t]*pMax1 + alpha_2[t]*pMax2 + ...)  <= alpha0[t].pMax0
         double already_installed_capacity( link_candidates.front()->already_installed_capacity());
-        double direct_already_installed_profile_at_timestep = link_candidates.front()->already_installed_profile(timestep, study_path, true);
+        double direct_already_installed_profile_at_timestep = link_candidates.front()->already_installed_direct_profile(timestep);
         rstart.push_back(dmatval.size());
         rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
         rowtype.push_back('L');
@@ -194,10 +193,10 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         dmatval.push_back(1);
         for (auto candidate:link_candidates){
             colind.push_back(col_id[candidate->_data.name]);
-            dmatval.push_back(-candidate->profile(timestep, study_path, true));
+            dmatval.push_back(-candidate->direct_profile(timestep));
         }
         // p[t] + alpha_1[t].pMax1 + alpha_2[t].pMax2 + ...  >=  - beta0[t].pMax0
-        double indirect_already_installed_profile_at_timestep = link_candidates.front()->already_installed_profile(timestep, study_path, false);
+        double indirect_already_installed_profile_at_timestep = link_candidates.front()->already_installed_indirect_profile(timestep);
         rstart.push_back(dmatval.size());
         rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
         rowtype.push_back('G');
@@ -205,7 +204,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         dmatval.push_back(1);
         for (auto candidate:link_candidates){
             colind.push_back(col_id[candidate->_data.name]);
-            dmatval.push_back(candidate->profile(timestep, study_path, false));
+            dmatval.push_back(candidate->indirect_profile(timestep));
         }
 	}
 
@@ -216,9 +215,9 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	out_prblm->write_prob_mps(lp_mps_name);
 }
 
-std::vector<Candidate *> Candidates::get_link_candidates(const int link_id) {
-    vector<Candidate*> link_candidates;
-    for(auto& cand: *this){
+std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) {
+    vector<const Candidate*> link_candidates;
+    for(const auto& cand: *this){
         if (cand._data.link_id == link_id){
             link_candidates.push_back(&cand);
         }

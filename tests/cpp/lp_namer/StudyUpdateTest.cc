@@ -7,6 +7,7 @@
 #include "CandidatesInitializer.h"
 #include "StudyUpdater.h"
 #include "IntercoINIReader.h"
+#include "LinkProfileReader.h"
 
 class StudyUpdateTest : public ::testing::Test
 {
@@ -14,10 +15,20 @@ protected:
 
     static Candidates* candidates_;
 
+    static LinkProfile getOrImportProfile(const std::string &profile_name, const LinkProfileReader &linkProfileReader,
+                                   std::map<std::string, LinkProfile> &mapLinkProfile) {
+        LinkProfile profile;
+
+        if (!profile_name.empty() && mapLinkProfile.find(profile_name) == mapLinkProfile.end()) {
+            mapLinkProfile[profile_name] = linkProfileReader.ReadLinkProfile(profile_name);
+        }
+        profile = mapLinkProfile[profile_name];
+        return profile;
+    }
+
 	static void SetUpTestCase()
 	{
         //Change capacity folder to retrieve temp_profile.ini in the current location
-        Candidate::_capacitySubfolder = "";
         candidates_ = new Candidates();
 
         // called before 1st test
@@ -84,12 +95,20 @@ already-installed-capacity = 100\n\
         file_l.close();
 
 
+
         IntercoINIReader reader("temp_interco.txt","temp_area.txt");
         std::vector<CandidateData> candidateList = reader.readCandidateData("temp_candidates.ini");
+
+        LinkProfileReader linkProfileReader;
+        std::map<std::string, LinkProfile> mapLinkProfile;
 
         for (const CandidateData& candidateData : candidateList){
             Candidate candidate;
             candidate._data = candidateData;
+
+            candidate._already_installed_profile = getOrImportProfile(candidateData.already_installed_link_profile, linkProfileReader, mapLinkProfile );
+            candidate._profile = getOrImportProfile(candidateData.link_profile, linkProfileReader, mapLinkProfile);
+
             StudyUpdateTest::candidates_->push_back(candidate);
         }
     }
@@ -148,16 +167,16 @@ TEST_F(StudyUpdateTest, linkprofile)
     ASSERT_EQ(candidates_->begin()->_data.link_profile, "temp_profile.ini");
 
     //direct profile
-	ASSERT_EQ(candidates_->begin()->profile(0, ".", true), 0);
-    ASSERT_EQ(candidates_->begin()->profile(1, ".", true), 0.5);
-    ASSERT_EQ(candidates_->begin()->profile(2, ".", true), 1);
-    ASSERT_EQ(candidates_->begin()->profile(8759, ".", true), 1);
+	ASSERT_EQ(candidates_->begin()->direct_profile(0), 0);
+    ASSERT_EQ(candidates_->begin()->direct_profile(1), 0.5);
+    ASSERT_EQ(candidates_->begin()->direct_profile(2), 1);
+    ASSERT_EQ(candidates_->begin()->direct_profile(8759), 1);
 
     //indirect profile
-	ASSERT_EQ(candidates_->begin()->profile(0, ".", false), 0.25);
-    ASSERT_EQ(candidates_->begin()->profile(1, ".", false), 0.75);
-    ASSERT_EQ(candidates_->begin()->profile(2, ".", false), 1);
-    ASSERT_EQ(candidates_->begin()->profile(8759, ".", false), 1);
+	ASSERT_EQ(candidates_->begin()->indirect_profile(0), 0.25);
+    ASSERT_EQ(candidates_->begin()->indirect_profile(1), 0.75);
+    ASSERT_EQ(candidates_->begin()->indirect_profile(2), 1);
+    ASSERT_EQ(candidates_->begin()->indirect_profile(8759), 1);
 }
 
 

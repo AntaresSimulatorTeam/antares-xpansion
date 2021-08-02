@@ -33,15 +33,14 @@ class Candidate {
 
 public:
 
-    //! folder containing the linkprofile files indicated in the candidates ini file
-    static std::string _capacitySubfolder;
-
     CandidateData _data;
     LinkProfile _profile;
     LinkProfile _already_installed_profile;
 
-    double profile(size_t i, std::string const & study_path, bool is_direct);
-    double already_installed_profile(size_t i, std::string const & study_path, bool is_direct);
+    double direct_profile(size_t i) const;
+    double indirect_profile(size_t i) const;
+    double already_installed_direct_profile(size_t i) const;
+    double already_installed_indirect_profile(size_t i) const;
 
     double obj()const;
     double lb()const;
