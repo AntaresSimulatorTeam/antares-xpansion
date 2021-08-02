@@ -19,9 +19,9 @@ TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST / "tests_lpnamer" / "tests_integ
                                       / "output" / "economy"
 
 TEST_LP_RELAXED_01 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" / "test_one_link_one_candidate-relaxed" / "output" \
-                     / "20210720-1147eco/"
+                     / "economy/"
 TEST_LP_RELAXED_02 = DATA_TEST / "tests_lpnamer" / "tests_relaxed" \
-                     / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" / "20210720-1433eco/"
+                     / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" / "economy/"
 
 test_data = [
     (TEST_LP_INTEGER_01, "integer"),
