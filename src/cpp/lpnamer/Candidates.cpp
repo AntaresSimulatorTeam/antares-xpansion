@@ -1,8 +1,6 @@
 #include <algorithm>
 
-#include "IntercoDataMps.h"
-#include "INIReader.h"
-
+#include "Candidates.h"
 #include "solver_utils.h"
 #include "helpers/StringUtils.h"
 
@@ -124,7 +122,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
                                                std::vector <std::string> var_names,
                                                std::map<int, std::vector<int> > interco_data,
                                                std::map< std::pair<std::string, std::string>, int> & couplings,
-                                               std::string study_path,
                                                std::string const lp_mps_name,
                                                std::string const& solver_name)
 {
@@ -181,12 +178,11 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         int const link_id = pairIdvarntcIntercodata.second[0];
         int const timestep = pairIdvarntcIntercodata.second[1];
 
-        // TODO change into const: need to change already_installed_profile function
-        std::vector<Candidate *> link_candidates = get_link_candidates(link_id);
+        std::vector<const Candidate *> link_candidates = get_link_candidates(link_id);
 
         // p[t] - (alpha_1[t]*pMax1 + alpha_2[t]*pMax2 + ...)  <= alpha0[t].pMax0
         double already_installed_capacity( link_candidates.front()->already_installed_capacity());
-        double direct_already_installed_profile_at_timestep = link_candidates.front()->already_installed_profile(timestep, study_path, true);
+        double direct_already_installed_profile_at_timestep = link_candidates.front()->already_installed_direct_profile(timestep);
         rstart.push_back(dmatval.size());
         rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
         rowtype.push_back('L');
@@ -194,10 +190,10 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         dmatval.push_back(1);
         for (auto candidate:link_candidates){
             colind.push_back(col_id[candidate->_data.name]);
-            dmatval.push_back(-candidate->profile(timestep, study_path, true));
+            dmatval.push_back(-candidate->direct_profile(timestep));
         }
         // p[t] + alpha_1[t].pMax1 + alpha_2[t].pMax2 + ...  >=  - beta0[t].pMax0
-        double indirect_already_installed_profile_at_timestep = link_candidates.front()->already_installed_profile(timestep, study_path, false);
+        double indirect_already_installed_profile_at_timestep = link_candidates.front()->already_installed_indirect_profile(timestep);
         rstart.push_back(dmatval.size());
         rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
         rowtype.push_back('G');
@@ -205,7 +201,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         dmatval.push_back(1);
         for (auto candidate:link_candidates){
             colind.push_back(col_id[candidate->_data.name]);
-            dmatval.push_back(candidate->profile(timestep, study_path, false));
+            dmatval.push_back(candidate->indirect_profile(timestep));
         }
 	}
 
@@ -216,9 +212,9 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	out_prblm->write_prob_mps(lp_mps_name);
 }
 
-std::vector<Candidate *> Candidates::get_link_candidates(const int link_id) {
-    vector<Candidate*> link_candidates;
-    for(auto& cand: *this){
+std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) const {
+    vector<const Candidate*> link_candidates;
+    for(const auto& cand: *this){
         if (cand._data.link_id == link_id){
             link_candidates.push_back(&cand);
         }
@@ -260,9 +256,6 @@ void Candidates::treat(std::string const & root,
 	ProblemData const & problemData,
 	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
 
-	std::string const study_path = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
-
-
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
 	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
 	std::string const var_name(root + PATH_SEPARATOR + problemData._variables_txt);
@@ -272,13 +265,12 @@ void Candidates::treat(std::string const & root,
 	std::string const lp_mps_name = root + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps";
 
 	// List of variables
-	std::list<std::string> var;
     std::vector<std::string> var_names;
 	std::map<int, std::vector<int> > interco_data;
 
 	readVarfiles(var_name, var_names,  interco_data);
 	createMpsFileAndFillCouplings(mps_name, var_names, interco_data,
-		couplings, study_path, lp_mps_name, solver_name);
+		couplings, lp_mps_name, solver_name);
 }
 
 

@@ -3,9 +3,9 @@
 #include <sstream>
 #include <fstream>
 
-#include "IntercoINIReader.h"
+#include "CandidatesINIReader.h"
 
-class IntercoINIReaderTest : public ::testing::Test
+class CandidatesINIReaderTest : public ::testing::Test
 {
 protected:
     static void SetUpTestCase()
@@ -77,27 +77,27 @@ protected:
     }
 };
 
-TEST_F(IntercoINIReaderTest, testReadIntero) {
+TEST_F(CandidatesINIReaderTest, testReadIntero) {
 
-    std::vector<IntercoFileData> intercoDataList = IntercoINIReader::ReadAntaresIntercoFile("temp_interco.txt");
+    std::vector<IntercoFileData> intercoDataList = CandidatesINIReader::ReadAntaresIntercoFile("temp_interco.txt");
 
     ASSERT_EQ(intercoDataList[0].index_interco, 0);
     ASSERT_EQ(intercoDataList[0].index_pays_origine, 0);
     ASSERT_EQ(intercoDataList[0].index_pays_extremite, 1);
 }
 
-TEST_F(IntercoINIReaderTest, testReadArea) {
+TEST_F(CandidatesINIReaderTest, testReadArea) {
 
-    std::vector<std::string> areaList = IntercoINIReader::ReadAreaFile("temp_area.txt");
+    std::vector<std::string> areaList = CandidatesINIReader::ReadAreaFile("temp_area.txt");
 
     ASSERT_EQ(areaList[0], "area1");
     ASSERT_EQ(areaList[1], "area2");
     ASSERT_EQ(areaList[2], "flex");
 }
 
-TEST_F(IntercoINIReaderTest, testReadCandidate)
+TEST_F(CandidatesINIReaderTest, testReadCandidate)
 {
-    IntercoINIReader reader("temp_interco.txt","temp_area.txt");
+    CandidatesINIReader reader("temp_interco.txt","temp_area.txt");
 
     std::vector<CandidateData> candidates_data = reader.readCandidateData("temp_candidate.ini");
 

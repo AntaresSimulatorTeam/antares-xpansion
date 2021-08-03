@@ -1,30 +1,19 @@
-//
-
 #include "Candidate.h"
 
-std::string Candidate::_capacitySubfolder = std::string(PATH_SEPARATOR) + "user" + PATH_SEPARATOR + "expansion" + PATH_SEPARATOR + "capa";
-
-double Candidate::profile(size_t i, std::string const & study_path, bool is_direct) {
-    if (_profile.empty()) {
-        if(!_data.link_profile.empty()){
-            std::string const file_name = _data.link_profile;
-            std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
-            _profile.read(profile_path);
-
-        }
-    }
-    return _profile.get(i, is_direct);
+double Candidate::direct_profile(size_t i) const{
+    return _profile.getDirectProfile(i);
 }
 
-double Candidate::already_installed_profile(size_t i, std::string const & study_path, bool is_direct) {
-    if (_already_installed_profile.empty()) {
-        if(!_data.already_installed_link_profile.empty()){
-            std::string const file_name = _data.already_installed_link_profile;
-            std::string const profile_path(study_path + _capacitySubfolder + PATH_SEPARATOR + file_name);
-            _already_installed_profile.read(profile_path);
-        }
-    }
-    return _already_installed_profile.get(i, is_direct);
+double Candidate::indirect_profile(size_t i) const{
+    return _profile.getIndirectProfile(i);
+}
+
+double Candidate::already_installed_direct_profile(size_t i) const{
+    return _already_installed_profile.getDirectProfile(i);
+}
+
+double Candidate::already_installed_indirect_profile(size_t i) const{
+    return _already_installed_profile.getIndirectProfile(i);
 }
 
 double Candidate::obj()const {

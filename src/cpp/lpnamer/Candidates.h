@@ -46,7 +46,6 @@ private:
                                        std::vector <std::string> var,
                                        std::map<int, std::vector<int> > interco_data,
                                        std::map< std::pair<std::string, std::string>, int> & couplings,
-                                       std::string study_path,
                                        std::string const lp_mps_name,
                                        std::string const& solver_name);
 
@@ -56,5 +55,5 @@ private:
     std::map<std::string, int>
     add_candidates_to_problem_and_get_candidates_col_id(std::shared_ptr<SolverAbstract> &out_prblm);
 
-    vector<Candidate *> get_link_candidates(const int link_id);
+    vector<const Candidate *> get_link_candidates(const int link_id) const;
 };

@@ -1,7 +1,7 @@
 //
 
-#ifndef ANTARESXPANSION_INTERCOINIREADER_H
-#define ANTARESXPANSION_INTERCOINIREADER_H
+#ifndef ANTARESXPANSION_CANDIDATESINIREADER_H
+#define ANTARESXPANSION_CANDIDATESINIREADER_H
 
 #include <string>
 #include <vector>
@@ -16,11 +16,11 @@ struct IntercoFileData {
     int index_pays_extremite;
 };
 
-class IntercoINIReader {
+class CandidatesINIReader {
 
 public:
 
-    IntercoINIReader(const std::string& antaresIntercoFile, const std::string& areaFile);
+    CandidatesINIReader(const std::string& antaresIntercoFile, const std::string& areaFile);
 
     static std::vector<IntercoFileData> ReadAntaresIntercoFile(const std::string& antaresIntercoFile);
     static std::vector<std::string> ReadAreaFile(const std::string areaFile);
@@ -38,4 +38,4 @@ private:
 };
 
 
-#endif //ANTARESXPANSION_INTERCOINIREADER_H
+#endif //ANTARESXPANSION_CANDIDATESINIREADER_H

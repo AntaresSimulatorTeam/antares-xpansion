@@ -1,11 +1,24 @@
-#include "IntercoDataMps.h"
+#include "Candidates.h"
 
-/*!
- * \fn void initializedCandidates(string rootPath, Candidates & candidates)
- * \brief Initialize the candidates structure with input data located in the directory given in argument
- *
- * \param rootPath :  String corresponding to the path where are located input data
- * \param candidates : Structure which is initialized
- * \return void
- */
-void initializedCandidates(std::string const & rootPath, Candidates & candidates);
+#include "Candidates.h"
+#include "Candidate.h"
+#include "LinkProfileReader.h"
+#include "CandidatesINIReader.h"
+
+class CandidatesInitializer {
+
+public:
+
+    CandidatesInitializer(LinkProfileReader& linkProfileReader, CandidatesINIReader& candidatesIniReader);
+
+    Candidates initializedCandidates(std::string const & candidates_file_name, std::string const & capacity_folder);
+
+private:
+
+    LinkProfile getOrImportProfile(const std::string &capacitySubfolder, const std::string &profile_name);
+
+    std::map<std::string, LinkProfile> _mapLinkProfile;
+    LinkProfileReader& _linkProfileReader;
+    CandidatesINIReader&  _candidatesIniReader;
+};
+

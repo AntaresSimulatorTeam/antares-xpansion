@@ -19,8 +19,8 @@ add_executable (lp_namer_tests
         AdditionalConstraintsReaderTest.cc
         LinkdataRecordTest.cc
         StudyUpdateTest.cc
-        IntercoINIReaderTest.cpp
-        ActiveLinkTest.cpp)
+        CandidatesINIReaderTest.cpp
+        ActiveLinkTest.cpp LinkProfileReaderTest.cpp)
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main

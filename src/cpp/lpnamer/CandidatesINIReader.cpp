@@ -5,10 +5,10 @@
 #include "helpers/StringUtils.h"
 
 #include "INIReader.h"
-#include "IntercoINIReader.h"
+#include "CandidatesINIReader.h"
 
 
-IntercoINIReader::IntercoINIReader(const std::string& antaresIntercoFile, const std::string& areaFile) {
+CandidatesINIReader::CandidatesINIReader(const std::string& antaresIntercoFile, const std::string& areaFile) {
 
     _intercoFileData = ReadAntaresIntercoFile(antaresIntercoFile);
     _areaNames = ReadAreaFile(areaFile);
@@ -23,7 +23,7 @@ IntercoINIReader::IntercoINIReader(const std::string& antaresIntercoFile, const 
 
 }
 
-std::vector<IntercoFileData> IntercoINIReader::ReadAntaresIntercoFile(const std::string& antaresIntercoFile) {
+std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(const std::string& antaresIntercoFile) {
 
     std::vector<IntercoFileData> result;
 
@@ -48,7 +48,7 @@ std::vector<IntercoFileData> IntercoINIReader::ReadAntaresIntercoFile(const std:
     }
     return result;
 }
-std::vector<std::string> IntercoINIReader::ReadAreaFile(const std::string areaFile){
+std::vector<std::string> CandidatesINIReader::ReadAreaFile(const std::string areaFile){
 
     std::vector<std::string> result;
 
@@ -87,13 +87,13 @@ double getDblVal(const INIReader &reader, const std::string &sectionName, const 
     return d_val;
 }
 
-bool IntercoINIReader::checkArea(std::string const & areaName_p) const
+bool CandidatesINIReader::checkArea(std::string const & areaName_p) const
 {
     bool found_l = std::find(_areaNames.cbegin(), _areaNames.cend(), areaName_p) != _areaNames.cend();
     return found_l;
 }
 
-std::vector<CandidateData> IntercoINIReader::readCandidateData(const std::string& candidateFile){
+std::vector<CandidateData> CandidatesINIReader::readCandidateData(const std::string& candidateFile){
     std::vector<CandidateData> result;
 
     INIReader reader(candidateFile);
@@ -108,7 +108,7 @@ std::vector<CandidateData> IntercoINIReader::readCandidateData(const std::string
     return result;
 }
 
-CandidateData IntercoINIReader::readCandidateSection(const std::string &candidateFile, const INIReader &reader,
+CandidateData CandidatesINIReader::readCandidateSection(const std::string &candidateFile, const INIReader &reader,
                                                      const std::string &sectionName) {
     CandidateData candidateData;
     candidateData.name = StringUtils::ToLowercase(getStrVal(reader,sectionName,"name"));
