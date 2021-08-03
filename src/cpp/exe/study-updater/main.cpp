@@ -66,9 +66,21 @@ int main(int argc, char** argv) {
 
 		po::notify(opts);
 
-		// Instantiation of candidates
-		Candidates candidates;
-		initializedCandidates(root, candidates);
+        std::string const area_file_name	= root + PATH_SEPARATOR + "area.txt";
+        std::string const interco_file_name	= root + PATH_SEPARATOR + "interco.txt";
+
+        CandidatesINIReader candidateReader(interco_file_name,area_file_name);
+        LinkProfileReader profileReader;
+
+        CandidatesInitializer initializer = CandidatesInitializer(profileReader,candidateReader);
+
+        // Get all mandatory path
+        std::string const xpansion_user_dir = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion";
+        std::string const candidates_file_name = xpansion_user_dir + PATH_SEPARATOR + CANDIDATES_INI;
+        std::string const capacity_folder = xpansion_user_dir + PATH_SEPARATOR + "capa";
+
+        // Instantiation of candidates
+        Candidates candidates = initializer.initializedCandidates(candidates_file_name, capacity_folder);
 
 		updateStudy(root, candidates, solutionFile_l);
 
