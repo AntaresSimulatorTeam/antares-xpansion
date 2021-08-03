@@ -1,5 +1,6 @@
 //
 
+#include <exception>
 #include "LinkProfile.h"
 
 LinkProfile::LinkProfile() {
@@ -15,10 +16,8 @@ bool LinkProfile::empty() const{
 }
 
 double LinkProfile::getDirectProfile(size_t i) const {
-    if (i > 8759)
-    {
-        std::cerr << "Link profiles can be requested between point 0 and 8759." << std::endl;
-        std::exit(1);
+    if (i > 8759){
+        throw std::runtime_error( "Link profiles can be requested between point 0 and 8759.");
     }
 
     if (_directLinkProfile.empty()) {
@@ -29,10 +28,8 @@ double LinkProfile::getDirectProfile(size_t i) const {
 }
 
 double LinkProfile::getIndirectProfile(size_t i) const {
-    if (i > 8759)
-    {
-        std::cerr << "Link profiles can be requested between point 0 and 8759." << std::endl;
-        std::exit(1);
+    if (i > 8759){
+        throw std::runtime_error( "Link profiles can be requested between point 0 and 8759.");
     }
 
     if (_directLinkProfile.empty() && _indirectLinkProfile.empty()) {
