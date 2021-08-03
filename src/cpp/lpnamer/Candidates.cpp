@@ -1,8 +1,6 @@
 #include <algorithm>
 
 #include "Candidates.h"
-#include "INIReader.h"
-
 #include "solver_utils.h"
 #include "helpers/StringUtils.h"
 
@@ -124,7 +122,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
                                                std::vector <std::string> var_names,
                                                std::map<int, std::vector<int> > interco_data,
                                                std::map< std::pair<std::string, std::string>, int> & couplings,
-                                               std::string study_path,
                                                std::string const lp_mps_name,
                                                std::string const& solver_name)
 {
@@ -215,7 +212,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	out_prblm->write_prob_mps(lp_mps_name);
 }
 
-std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) {
+std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) const {
     vector<const Candidate*> link_candidates;
     for(const auto& cand: *this){
         if (cand._data.link_id == link_id){
@@ -259,9 +256,6 @@ void Candidates::treat(std::string const & root,
 	ProblemData const & problemData,
 	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
 
-	std::string const study_path = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
-
-
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
 	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
 	std::string const var_name(root + PATH_SEPARATOR + problemData._variables_txt);
@@ -271,13 +265,12 @@ void Candidates::treat(std::string const & root,
 	std::string const lp_mps_name = root + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps";
 
 	// List of variables
-	std::list<std::string> var;
     std::vector<std::string> var_names;
 	std::map<int, std::vector<int> > interco_data;
 
 	readVarfiles(var_name, var_names,  interco_data);
 	createMpsFileAndFillCouplings(mps_name, var_names, interco_data,
-		couplings, study_path, lp_mps_name, solver_name);
+		couplings, lp_mps_name, solver_name);
 }
 
 
