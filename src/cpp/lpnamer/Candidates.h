@@ -51,9 +51,8 @@ private:
 
     std::string getVarNameFromLine(const std::string &line) const;
 
-
-    std::map<std::string, int>
-    add_candidates_to_problem_and_get_candidates_col_id(std::shared_ptr<SolverAbstract> &out_prblm);
+    std::map<std::string, int> add_candidates_to_problem_and_get_candidates_col_id(SolverAbstract::Ptr& out_prblm);
 
     vector<const Candidate *> get_link_candidates(const int link_id) const;
+    
 };

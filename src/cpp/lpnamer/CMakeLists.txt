@@ -16,11 +16,11 @@ add_library (lp_namer_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/CandidatesInitializer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/common_lpnamer.h
 	${CMAKE_CURRENT_SOURCE_DIR}/INIReader.h
-		${CMAKE_CURRENT_SOURCE_DIR}/Candidates.h
+	${CMAKE_CURRENT_SOURCE_DIR}/Candidates.h
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.h
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReader.h
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
-        Candidate.cpp Candidate.h CandidatesINIReader.cpp CandidatesINIReader.h Interco.cpp Interco.h ActiveLinks.cpp ActiveLinks.h LinkProfileReader.cpp LinkProfileReader.h LinkProfile.cpp LinkProfile.h)
+        Candidate.cpp Candidate.h CandidatesINIReader.cpp CandidatesINIReader.h Interconnexion.cpp Interconnexion.h Interco.cpp Interco.h ActiveLinks.cpp ActiveLinks.h LinkProfileReader.cpp LinkProfileReader.h LinkProfile.cpp LinkProfile.h)
 
 target_include_directories (lp_namer_core
 	PUBLIC
