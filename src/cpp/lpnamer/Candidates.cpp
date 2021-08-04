@@ -133,10 +133,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	int ncols = in_prblm->get_ncols();
 	int ninterco_pdt = interco_data.size();
 
-	std::vector<double> lb(ncols);
-	std::vector<double> ub(ncols);
-	std::vector<char> coltype(ncols);
-    solver_getcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
 	// Setting bounds to +-1e20
 	std::vector<double> posinf(ninterco_pdt, 1e20);
 	std::vector<double> neginf(ninterco_pdt, -1e20);
@@ -152,11 +148,6 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
     solver_chgbounds(in_prblm, indexes, ub_char, posinf);
 	SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
 
-	// Xavier : Why do we need to copy the problem ?
-	// We could just change the names in "in_prblm" and continuing modif it
-	// This copy is just time consuming and useless for me
-
-	// copy in_prblm with the changed bounds and rename its variables
     solver_rename_vars(out_prblm, var_names, solver_name);
 	// All the names are retrieved before the loop.
 	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
