@@ -45,7 +45,7 @@ double Interconnexion::already_installed_direct_profile(size_t i) const
 
 double Interconnexion::already_installed_indirect_profile(size_t i) const
 {
-    _already_installed_profile.getIndirectProfile(i);
+    return _already_installed_profile.getIndirectProfile(i);
 }
 
 void Interconnexion::setAlreadyInstalledLinkProfile(const LinkProfile& already_installed_profile)
