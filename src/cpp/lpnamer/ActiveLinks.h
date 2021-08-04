@@ -3,12 +3,34 @@
 #define ANTARESXPANSION_ACTIVELINKS_H
 
 #include <Candidate.h>
+#include <unordered_map>
 
 class ActiveLink {
 
 public:
+	ActiveLink() {};
+	ActiveLink(int idInterco, const std::string& origin, const std::string& end);
+	void setName(const std::string& nameInterco);
+	void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
-    ActiveLink(){};
+	void addCandidate(const Candidate& candidate);
+	bool hasCandidate(const Candidate& candidate) const;
+
+	double direct_profile(size_t i) const;
+	double indirect_profile(size_t i) const;
+	double already_installed_direct_profile(size_t i) const;
+	double already_installed_indirect_profile(size_t i) const;
+
+private:
+	int _idInterco;
+	std::string _Origin;
+	std::string _End;
+
+	std::string _name;
+	LinkProfile _profile;
+	LinkProfile _already_installed_profile;
+
+	std::vector<Candidate> _candidates;
 };
 
 class ActiveLinks {
@@ -17,13 +39,12 @@ public:
 
     ActiveLinks(){};
 
-    const std::vector<ActiveLink>& getLink() const {return _links;}
-
     void addCandidate(const CandidateData& data, const LinkProfile& already_install_link_profile, const LinkProfile& link_profile);
+	int size() const;
 
 private:
-
-    std::vector<ActiveLink> _links;
+	bool hasCandidate(const Candidate& candidate) const;
+    std::unordered_map <int, ActiveLink> _linksHashMap;
 };
 
 class ActiveLinksInitializer {
