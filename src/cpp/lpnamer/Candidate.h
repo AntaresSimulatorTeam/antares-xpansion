@@ -55,6 +55,7 @@ public:
     double already_installed_capacity() const;
 
     bool has_already_installed_link_profile() const;
+    bool has_link_profile() const;
 
 };
 

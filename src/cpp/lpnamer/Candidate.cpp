@@ -39,6 +39,10 @@ bool Candidate::has_already_installed_capacity() const {
 bool Candidate::has_already_installed_link_profile() const {
     return !_data.already_installed_link_profile.empty();
 }
+bool Candidate::has_link_profile() const
+{
+    return !_data.link_profile.empty();
+}
 double Candidate::already_installed_capacity() const {
     return _data.already_installed_capacity;
 }
