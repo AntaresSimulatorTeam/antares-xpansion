@@ -72,17 +72,19 @@ def verify_solution(study_path, expected_values, expected_investment_solution):
 
 def verify_study_update(study_path, expected_investment_solution):
     candidate_reader = CandidatesReader(study_path / "user" / "expansion" / "candidates.ini")
-    for candidate in expected_investment_solution.keys():
-        investment = expected_investment_solution[candidate]
-        already_installed_capacity = candidate_reader.get_candidate_already_install_capacity(candidate)
+    for link in candidate_reader.get_link_list():
+        candidate_name_list = candidate_reader.get_link_candidate(link)
+        already_installed_capacity = candidate_reader.get_candidate_already_install_capacity(candidate_name_list[0])
+        already_installed_link_profile_array = candidate_reader.get_candidate_already_installed_link_profile_array(study_path, candidate_name_list[0])
+        expected_link_capacity = already_installed_capacity * already_installed_link_profile_array
 
-        link_profile_array = candidate_reader.get_candidate_link_profile_array(study_path,candidate)
-        already_installed_link_profile_array = candidate_reader.get_candidate_already_installed_link_profile_array(study_path,candidate)
-        assert link_profile_array.shape == already_installed_link_profile_array.shape
+        for candidate in candidate_name_list:
+            investment = expected_investment_solution[candidate]
+            link_profile_array = candidate_reader.get_candidate_link_profile_array(study_path, candidate)
+            assert link_profile_array.shape == already_installed_link_profile_array.shape
+            expected_link_capacity += investment * link_profile_array
 
-        expected_link_capacity = already_installed_capacity * already_installed_link_profile_array + investment * link_profile_array
-
-        study_link = candidate_reader.get_candidate_antares_link_file(study_path, candidate)
+        study_link = candidate_reader.get_link_antares_link_file(study_path, link)
         study_link_array = np.loadtxt(study_link, delimiter="\t")
         link_capacity = study_link_array[:, [0,1]]
 
@@ -129,7 +131,7 @@ def test_full_study_long(install_dir, study_path, expected_values, expected_inve
             (ALL_STUDIES_PATH / "xpansion-test-01",
              {"gap": -1.1444091796875e-05, "investment_cost": 224599999.99999237,
               "operational_cost": 22513656189.121899, "overall_cost": 22738256189.121891},
-             {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02}
+             {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02, "transmission_line": 0.0}
              ),
             (ALL_STUDIES_PATH / "xpansion-test-03",
              {"gap": 241262.43024921417, "investment_cost": 185999999.99999905, "operational_cost": 5777590545.5126762, "overall_cost": 5963590545.5126753},
