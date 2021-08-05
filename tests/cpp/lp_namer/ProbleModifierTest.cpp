@@ -62,15 +62,17 @@ TEST_F(ProblemModifierTest, ResetBounds) {
     ColumnsToChange columns_to_change= {column};
 
     auto problem_modifier = ProblemModifier();
-    problem_modifier.setProblem(math_problem);
-    problem_modifier.changeProblem(columns_to_change);
+    //problem_modifier.setProblem(math_problem);
+    SolverAbstract::Ptr out_math_problem;
 
-    int n_cols = math_problem->get_ncols();
+    out_math_problem = problem_modifier.changeProblem(math_problem, columns_to_change);
+
+    int n_cols = out_math_problem->get_ncols();
     auto *upper_bounds=new double[n_cols];
-    math_problem->get_ub(upper_bounds, 0, 0);
+    out_math_problem->get_ub(upper_bounds, 0, 0);
     ASSERT_DOUBLE_EQ(upper_bounds[0], 1e20);
     auto *lower_bounds=new double[n_cols];
-    math_problem->get_lb(lower_bounds, 0, 0);
+    out_math_problem->get_lb(lower_bounds, 0, 0);
     ASSERT_DOUBLE_EQ(lower_bounds[0], -1e20);
 }
 
@@ -78,26 +80,43 @@ TEST_F(ProblemModifierTest, ResetBounds) {
 TEST_F(ProblemModifierTest, TestName) {
     const ColumnToChange column = {0, 0};
     const ColumnsToChange columns_to_change = {column};
-    const Cand candidate = {"candy1"};
-    const Cands candidates_link_0 = {candidate};
+    const Cands candidates_link_0 = {{"candy1"}, {"candy2"}};
     const ActiveLink active_link= {0, "tot", candidates_link_0, columns_to_change};
 
     ActiveLinks active_links;
     active_links.add_link(active_link);
 
-
-
     auto problem_modifier = ProblemModifier();
-    problem_modifier.setProblem(math_problem);
-    problem_modifier.changeProblem(active_links);
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links);
 
     int n_cols = math_problem->get_ncols();
-    auto *upper_bounds=new double[n_cols];
-    math_problem->get_ub(upper_bounds, 0, 0);
-    ASSERT_DOUBLE_EQ(upper_bounds[0], 1e20);
-    auto *lower_bounds=new double[n_cols];
-    math_problem->get_lb(lower_bounds, 0, 0);
-    ASSERT_DOUBLE_EQ(lower_bounds[0], -1e20);
+    ASSERT_EQ(n_cols, 3);
+
+    std::vector<char> coltypes(n_cols, '0');
+    std::vector<double> objectives(n_cols, 777);
+    std::vector<double> upper_bounds(n_cols, 777);
+    std::vector<double> lower_bounds(n_cols, 777);
+
+    auto col_names = math_problem->get_col_names(0, n_cols-1);
+    math_problem->get_col_type(coltypes.data(), 0, n_cols-1);
+    math_problem->get_obj(objectives.data(), 0, n_cols-1);
+    math_problem->get_ub(upper_bounds.data(), 0, n_cols-1);
+    math_problem->get_lb(lower_bounds.data(), 0, n_cols-1);
+
+    ASSERT_DOUBLE_EQ(upper_bounds.at(0), 1e20);
+    ASSERT_DOUBLE_EQ(lower_bounds.at(0), -1e+20);
+
+    ASSERT_DOUBLE_EQ(upper_bounds.at(1), 1e20);
+    ASSERT_EQ(col_names.at(1), "candy1");
+    ASSERT_EQ(coltypes.at(1), 'C');
+    ASSERT_DOUBLE_EQ(objectives.at(1), 0);
+    ASSERT_DOUBLE_EQ(lower_bounds.at(1), -1e+20);
+
+    ASSERT_DOUBLE_EQ(upper_bounds.at(2), 1e20);
+    ASSERT_EQ(col_names.at(2), "candy2");
+    ASSERT_EQ(coltypes.at(2), 'C');
+    ASSERT_DOUBLE_EQ(objectives.at(2), 0);
+    ASSERT_DOUBLE_EQ(lower_bounds.at(2), -1e+20);
 }
 
 
