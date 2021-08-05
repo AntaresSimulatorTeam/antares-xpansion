@@ -13,6 +13,7 @@ void ActiveLinks::addCandidate(const CandidateData& data, const LinkProfile& alr
     {
         ActiveLink link(data.link_id, data.linkor, data.linkex);
         link.setName(data.link);
+        _linksHashMap[data.link_id] = link;
     }
 
     if (hasCandidate(candidate))
@@ -44,8 +45,6 @@ ActiveLinks ActiveLinksInitializer::createActiveLinkFromCandidates(const std::ve
     ActiveLinks activeLinks;
 
     for (const CandidateData& candidateData : candidateList) {
-        Candidate candidate;
-        candidate._data = candidateData;
         LinkProfile already_installed_link_profile = getProfile(profileMap, candidateData.already_installed_link_profile);
         LinkProfile link_profile = getProfile(profileMap, candidateData.link_profile);
 
@@ -85,10 +84,19 @@ void ActiveLink::addCandidate(const Candidate& candidate)
     {
         _profile = candidate._profile;
     }
+    // TODO : partir du principe que le candidat n'a plus de already_installed_link_profile
     if (_already_installed_profile.empty() && candidate.has_already_installed_link_profile())
     {
         _already_installed_profile = candidate._already_installed_profile;
+        _already_installed_profile_name = candidate._data.already_installed_link_profile;
     }
+
+    if (!_already_installed_profile_name.empty() && _already_installed_profile_name != candidate._data.already_installed_link_profile)
+    {
+        std::string message = "Multiple already_installed_profile detected for link " + _name;
+        throw std::runtime_error(message);
+    }
+
     _candidates.push_back(candidate);
 }
 

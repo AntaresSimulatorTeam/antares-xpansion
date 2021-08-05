@@ -29,6 +29,7 @@ private:
 	std::string _name;
 	LinkProfile _profile;
 	LinkProfile _already_installed_profile;
+	std::string _already_installed_profile_name;
 
 	std::vector<Candidate> _candidates;
 };
