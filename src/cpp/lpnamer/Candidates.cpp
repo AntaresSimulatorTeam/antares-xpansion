@@ -133,27 +133,31 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	int ncols = in_prblm->get_ncols();
 	int ninterco_pdt = interco_data.size();
 
-	// Setting bounds to +-1e20
-	std::vector<double> posinf(ninterco_pdt, 1e20);
-	std::vector<double> neginf(ninterco_pdt, -1e20);
-	std::vector<char> lb_char(ninterco_pdt, 'L');
-	std::vector<char> ub_char(ninterco_pdt, 'U');
-	std::vector<int> indexes;
-	indexes.reserve(ninterco_pdt);
-	for (auto const & id : interco_data) {
-		indexes.push_back(id.first);
-	}
-	// remove bounds on interco
+
+
+    //SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
+
+    solver_rename_vars(in_prblm, var_names, solver_name);
+    // Setting bounds to +-1e20
+    std::vector<double> posinf(ninterco_pdt, 1e20);
+    std::vector<double> neginf(ninterco_pdt, -1e20);
+    std::vector<char> lb_char(ninterco_pdt, 'L');
+    std::vector<char> ub_char(ninterco_pdt, 'U');
+    std::vector<int> indexes;
+    indexes.reserve(ninterco_pdt);
+    for (auto const & id : interco_data) {
+        indexes.push_back(id.first);
+    }
+    // remove bounds on interco
     solver_chgbounds(in_prblm, indexes, lb_char, neginf);
     solver_chgbounds(in_prblm, indexes, ub_char, posinf);
-	SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
 
-    solver_rename_vars(out_prblm, var_names, solver_name);
-	// All the names are retrieved before the loop.
+    // All the names are retrieved before the loop.
 	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
 	// but it could be longer.
 
-    std::map<std::string, int> col_id = add_candidates_to_problem_and_get_candidates_col_id(out_prblm);
+    std::map<std::string, int> col_id = add_candidates_to_problem_and_get_candidates_col_id(in_prblm);
+
 
     for(const Candidate& candidate :*this){
         couplings[{candidate._data.name, mps_name}] = col_id[candidate._data.name];
@@ -199,8 +203,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 	rstart.push_back(dmatval.size());
 
-    solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
-	out_prblm->write_prob_mps(lp_mps_name);
+    solver_addrows(in_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
+	in_prblm->write_prob_mps(lp_mps_name);
 }
 
 std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) const {

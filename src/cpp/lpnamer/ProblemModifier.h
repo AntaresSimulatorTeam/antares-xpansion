@@ -40,10 +40,6 @@ class ProblemModifier {
 public:
     ProblemModifier();
 
-    void setProblem(const std::shared_ptr<SolverAbstract> &mathProblem);
-
-    std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> &mathProblem, const ColumnsToChange &columns_to_change);
-
     void remove_bounds_for(const ColumnsToChange &columns_to_change);
 
     void changeProblem(const ActiveLinks& active_links);
@@ -61,7 +57,7 @@ private:
 
     void add_new_columns(const Cands &candidates);
 
-    Cands collect_candidates_from_all_links(const ActiveLinks &active_links) const;
+    Cands candidates_from_all_links(const ActiveLinks &active_links) const;
 };
 
 
