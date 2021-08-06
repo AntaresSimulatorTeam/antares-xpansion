@@ -133,6 +133,15 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	int ninterco_pdt = interco_data.size();
 
     solver_rename_vars(in_prblm, var_names, solver_name);
+
+#define new_method
+#ifdef new_method
+    ActiveLinks_AS active_links = generate_active_links(interco_data);
+    auto problem_modifier = ProblemModifier();
+    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), active_links);
+    std::map<std::string, unsigned int> col_id = problem_modifier.get_candidate_col_id();
+#else
+
     // Setting bounds to +-1e20
     std::vector<double> posinf(ninterco_pdt, 1e20);
     std::vector<double> neginf(ninterco_pdt, -1e20);
@@ -141,6 +150,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
     std::vector<int> indexes;
     indexes.reserve(ninterco_pdt);
     for (auto const & id : interco_data) {
+
         indexes.push_back(id.first);
     }
     // remove bounds on interco
@@ -152,7 +162,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	// but it could be longer.
 
     std::map<std::string, int> col_id = add_candidates_to_problem_and_get_candidates_col_id(in_prblm);
-
+#endif
 
     for(const Candidate& candidate :*this){
         couplings[{candidate._data.name, mps_name}] = col_id[candidate._data.name];
@@ -200,6 +210,27 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
     solver_addrows(in_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 	in_prblm->write_prob_mps(lp_mps_name);
+}
+
+ActiveLinks_AS Candidates::generate_active_links(const std::map<int, std::vector<int>> &interco_data) const {
+    std::map<unsigned int, ColumnsToChange> links_columns_to_change;
+    for (auto const & pairIdvarntcIntercodata : interco_data) {
+        int const i_interco_p(pairIdvarntcIntercodata.first);
+        int const link_id = pairIdvarntcIntercodata.second[0];
+        int const timestep = pairIdvarntcIntercodata.second[1];
+        links_columns_to_change[link_id].push_back({i_interco_p, timestep});
+    }
+    ActiveLinks_AS active_links;
+    for(auto const & item: links_columns_to_change){
+        unsigned int const link_id = item.first;
+        vector<const Candidate *> link_candidates = get_link_candidates(link_id);
+        Cands candidates;
+        for (auto c : link_candidates){
+            candidates.push_back({c->_data.name});
+        }
+        active_links.add_link({link_id, candidates, links_columns_to_change[link_id]});
+    }
+    return active_links;
 }
 
 std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) const {

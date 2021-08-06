@@ -83,9 +83,9 @@ TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) 
     const ColumnToChange column = {0, 0};
     const ColumnsToChange columns_to_change = {column};
     const Cands candidates_link_0 = {};
-    const ActiveLink active_link= {0, candidates_link_0, columns_to_change};
+    const ActiveLink_AS active_link= {0, candidates_link_0, columns_to_change};
 
-    ActiveLinks active_links;
+    ActiveLinks_AS active_links;
     active_links.add_link(active_link);
 
     auto problem_modifier = ProblemModifier();
@@ -108,9 +108,9 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     const ColumnToChange column = {0, 0};
     const ColumnsToChange columns_to_change = {column};
     const Cands candidates_link_0 = {{"candy1"}, {"candy2"}};
-    const ActiveLink active_link_0= {0, candidates_link_0, columns_to_change};
+    const ActiveLink_AS active_link_0= {0, candidates_link_0, columns_to_change};
 
-    ActiveLinks active_links;
+    ActiveLinks_AS active_links;
     active_links.add_link(active_link_0);
 
     auto problem_modifier = ProblemModifier();

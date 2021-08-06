@@ -4,12 +4,14 @@
 #include <multisolver_interface/SolverAbstract.h>
 #include "common_lpnamer.h"
 #include "Candidate.h"
+#include "ActiveLinks.h"
 
 
 #define CANDIDATES_INI "candidates.ini"
 #define STRUCTURE_FILE "structure.txt"
 #define MPS_TXT "mps.txt"
 #define STUDY_FILE "study.antares"
+#include "ProblemModifier.h"
 
 struct ProblemData
 {
@@ -51,8 +53,11 @@ private:
 
     std::string getVarNameFromLine(const std::string &line) const;
 
-    std::map<std::string, int> add_candidates_to_problem_and_get_candidates_col_id(SolverAbstract::Ptr& out_prblm);
+
+    std::map<std::string, int>
+    add_candidates_to_problem_and_get_candidates_col_id(std::shared_ptr<SolverAbstract> &out_prblm);
 
     vector<const Candidate *> get_link_candidates(const int link_id) const;
-    
+
+    ActiveLinks_AS generate_active_links(const std::map<int, std::vector<int>> &interco_data) const;
 };
