@@ -130,12 +130,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	in_prblm = factory.create_solver(solver_name);
 	in_prblm->read_prob_mps(mps_name);
 
-	int ncols = in_prblm->get_ncols();
 	int ninterco_pdt = interco_data.size();
-
-
-
-    //SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
 
     solver_rename_vars(in_prblm, var_names, solver_name);
     // Setting bounds to +-1e20
