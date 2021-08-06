@@ -22,7 +22,6 @@ using Cands=std::vector<Cand>;
 
 struct ActiveLink{
     unsigned int id;
-    std::string name;
     Cands candidates;
     ColumnsToChange columns;
 };
