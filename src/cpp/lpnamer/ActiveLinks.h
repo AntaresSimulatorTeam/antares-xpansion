@@ -13,8 +13,8 @@ public:
 	void setName(const std::string& nameInterco);
 	void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
-	void addCandidate(const Candidate& candidate);
-	bool hasCandidate(const Candidate& candidate) const;
+	void addCandidate(const CandidateData& candidate, const std::map<std::string, LinkProfile>& profile_map);
+	bool hasCandidate(const CandidateData& candidate) const;
 
 	int getId() const;
 	double direct_profile(size_t i) const;
@@ -41,12 +41,12 @@ public:
 
     ActiveLinks(){};
 
-    void addCandidate(const CandidateData& data, const LinkProfile& already_install_link_profile, const LinkProfile& link_profile);
+    void addCandidate(const CandidateData& data, const std::map<std::string, LinkProfile>& profile_map);
 	int getIndexOf(int link_id) const;
 	int size() const;
 
 private:
-	bool hasCandidate(const Candidate& candidate) const;
+	bool hasCandidate(const CandidateData& candidate_data) const;
     std::vector <ActiveLink> _links;
 };
 
@@ -55,7 +55,7 @@ class ActiveLinksInitializer {
 public:
     ActiveLinksInitializer();
 
-    ActiveLinks createActiveLinkFromCandidates(const std::vector<CandidateData>& candidateList,const std::map<std::string, LinkProfile>& profileMap);
+    ActiveLinks createActiveLinkFromCandidates(const std::vector<CandidateData>& candidateList, const std::map<std::string, LinkProfile>& profile_map);
 
     LinkProfile
     getProfile(const std::map<std::string, LinkProfile> &profileMap, const std::string &link_profile_name) const;

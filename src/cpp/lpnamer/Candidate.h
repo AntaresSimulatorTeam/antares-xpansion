@@ -32,6 +32,8 @@ struct CandidateData {
 class Candidate {
 
 public:
+    Candidate(){};
+    Candidate(CandidateData data, const std::map<std::string, LinkProfile>& profile_map);
 
     CandidateData _data;
     LinkProfile _profile;

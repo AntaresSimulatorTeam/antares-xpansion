@@ -1,31 +1,28 @@
 
 #include "ActiveLinks.h"
+#include "LinkProfileReader.h"
+#include "Candidate.h"
 
 
-void ActiveLinks::addCandidate(const CandidateData& data, const LinkProfile& already_install_link_profile, const LinkProfile& link_profile){
+void ActiveLinks::addCandidate(const CandidateData& candidate_data, const std::map<std::string, LinkProfile>& profile_map){
 
-    Candidate candidate;
-    candidate._data = data;
-    candidate._already_installed_profile = already_install_link_profile;
-    candidate._profile = link_profile;
-
-    if (hasCandidate(candidate))
+    if (hasCandidate(candidate_data))
     {
-        std::string message = "Candidate " + candidate._data.name + " duplication detected";
+        std::string message = "Candidate " + candidate_data.name + " duplication detected";
         throw std::runtime_error(message);
     }
 
-    int indexLink = getIndexOf(data.link_id);
+    int indexLink = getIndexOf(candidate_data.link_id);
 
     if (indexLink == -1)
     {
-        ActiveLink link(data.link_id, data.linkor, data.linkex);
-        link.setName(data.link);
+        ActiveLink link(candidate_data.link_id, candidate_data.linkor, candidate_data.linkex);
+        link.setName(candidate_data.link);
         _links.push_back(link);
         indexLink = _links.size() - 1;
     }
 
-    _links[indexLink].addCandidate(candidate);
+    _links[indexLink].addCandidate(candidate_data, profile_map);
 }
 
 int ActiveLinks::getIndexOf(int link_id) const
@@ -42,12 +39,12 @@ int ActiveLinks::getIndexOf(int link_id) const
     return index;
 }
 
-bool ActiveLinks::hasCandidate(const Candidate& candidate) const
+bool ActiveLinks::hasCandidate(const CandidateData& candidate_data) const
 {
     bool hasCandidate = false;
     for (int i = 0; i < _links.size() && !hasCandidate; i++)
     {
-        hasCandidate = _links.at(i).hasCandidate(candidate);
+        hasCandidate = _links.at(i).hasCandidate(candidate_data);
     }
     
     return hasCandidate;
@@ -62,14 +59,11 @@ ActiveLinksInitializer::ActiveLinksInitializer(){
 
 };
 
-ActiveLinks ActiveLinksInitializer::createActiveLinkFromCandidates(const std::vector<CandidateData>& candidateList,const std::map<std::string, LinkProfile>& profileMap){
+ActiveLinks ActiveLinksInitializer::createActiveLinkFromCandidates(const std::vector<CandidateData>& candidateList, const std::map<std::string, LinkProfile>& profile_map){
     ActiveLinks activeLinks;
 
     for (const CandidateData& candidateData : candidateList) {
-        LinkProfile already_installed_link_profile = getProfile(profileMap, candidateData.already_installed_link_profile);
-        LinkProfile link_profile = getProfile(profileMap, candidateData.link_profile);
-
-        activeLinks.addCandidate(candidateData, already_installed_link_profile, link_profile);
+        activeLinks.addCandidate(candidateData, profile_map);
     }
 
     return  activeLinks;
@@ -99,20 +93,23 @@ void ActiveLink::setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile)
     _already_installed_profile = linkProfile;
 }
 
-void ActiveLink::addCandidate(const Candidate& candidate)
+void ActiveLink::addCandidate(const CandidateData& candidate_data, const std::map<std::string, LinkProfile>& profile_map)
 {
+    Candidate candidate(candidate_data, profile_map);
+    auto it_already_installed_link_profile = profile_map.find(candidate_data.already_installed_link_profile);
+
     if (_profile.empty() && candidate.has_link_profile())
     {
         _profile = candidate._profile;
     }
     // TODO : partir du principe que le candidat n'a plus de already_installed_link_profile
-    if (_already_installed_profile.empty() && candidate.has_already_installed_link_profile())
+    if (_already_installed_profile.empty() && it_already_installed_link_profile != profile_map.end())
     {
-        _already_installed_profile = candidate._already_installed_profile;
-        _already_installed_profile_name = candidate._data.already_installed_link_profile;
+        _already_installed_profile = it_already_installed_link_profile->second;
+        _already_installed_profile_name = it_already_installed_link_profile->first;
     }
 
-    if (!_already_installed_profile_name.empty() && _already_installed_profile_name != candidate._data.already_installed_link_profile)
+    if (!_already_installed_profile_name.empty() && _already_installed_profile_name != it_already_installed_link_profile->first)
     {
         std::string message = "Multiple already_installed_profile detected for link " + _name;
         throw std::runtime_error(message);
@@ -121,12 +118,10 @@ void ActiveLink::addCandidate(const Candidate& candidate)
     _candidates.push_back(candidate);
 }
 
-bool ActiveLink::hasCandidate(const Candidate& candidate) const
+bool ActiveLink::hasCandidate(const CandidateData& candidate_data) const
 {
-    //return std::find(_candidates.begin(), _candidates.end())
-    //return std::find_if(_candidates.begin(), _candidates.end(), [candidate](const Candidate& candidate2) -> bool {return candidate._data.name == candidate2._data.name; }) != _candidates.end();
     for(const auto & cand: _candidates){
-        if(cand._data.name == candidate._data.name){
+        if(cand._data.name == candidate_data.name){
             return true;
         }
     }

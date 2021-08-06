@@ -1,4 +1,15 @@
 #include "Candidate.h"
+#include "LinkProfileReader.h"
+
+Candidate::Candidate(CandidateData data, const std::map<std::string, LinkProfile>& profile_map)
+{
+    _data = data;
+    auto it = profile_map.find(data.name);
+    if (it != profile_map.end())
+    {
+        _profile = it->second;
+    }
+}
 
 double Candidate::direct_profile(size_t i) const{
     return _profile.getDirectProfile(i);
