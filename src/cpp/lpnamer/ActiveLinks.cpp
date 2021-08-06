@@ -102,7 +102,14 @@ void ActiveLink::addCandidate(const Candidate& candidate)
 
 bool ActiveLink::hasCandidate(const Candidate& candidate) const
 {
-    return std::find_if(_candidates.begin(), _candidates.end(), [candidate](const Candidate& candidate2) -> bool {return candidate._data.name == candidate2._data.name; }) != _candidates.end();
+    //return std::find(_candidates.begin(), _candidates.end())
+    //return std::find_if(_candidates.begin(), _candidates.end(), [candidate](const Candidate& candidate2) -> bool {return candidate._data.name == candidate2._data.name; }) != _candidates.end();
+    for(const auto & cand: _candidates){
+        if(cand._data.name == candidate._data.name){
+            return true;
+        }
+    }
+    return false;
 }
 
 double ActiveLink::direct_profile(size_t i) const

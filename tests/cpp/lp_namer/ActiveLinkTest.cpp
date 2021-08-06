@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 #include "ActiveLinks.h"
-#include "ActiveLinkTest.h"
 
 
 TEST(ActiveLinkTests, valid_candidate_data)

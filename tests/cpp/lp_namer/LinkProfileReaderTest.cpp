@@ -3,6 +3,10 @@
 #include <fstream>
 #include "LinkProfileReader.h"
 
+const auto valid_profile_name= "temp_profile.txt";
+const auto invalid_profile_name = "temp_invalid_profile.txt";
+
+
 class LinkProfileReaderTest : public ::testing::Test
 {
 protected:
@@ -22,7 +26,6 @@ protected:
     static void SetUpTestCase()
     {
 
-        std::string temp_profile_name = "temp_profile.txt";
         std::vector<double> directLinkprofile_l(8760, 1);
         std::vector<double> indirectLinkprofile_l(8760, 1);
 
@@ -31,12 +34,11 @@ protected:
         indirectLinkprofile_l[0] = 0.25;
         indirectLinkprofile_l[1] = 0.75;
 
-        createProfileFile(temp_profile_name, directLinkprofile_l, indirectLinkprofile_l);
+        createProfileFile(valid_profile_name, directLinkprofile_l, indirectLinkprofile_l);
 
-        std::string temp_invalid_profile_name = "temp_invalid_profile.txt";
         std::vector<double> invalid_directLinkprofile_l(100, 1);
         std::vector<double> invalid_indirectLinkprofile_l(100, 1);
-        createProfileFile(temp_invalid_profile_name, invalid_directLinkprofile_l, invalid_directLinkprofile_l);
+        createProfileFile(invalid_profile_name, invalid_directLinkprofile_l, invalid_directLinkprofile_l);
     }
 
     static void TearDownTestCase()
@@ -44,8 +46,8 @@ protected:
         // called after last test
 
         //delete the created tmp file
-        std::remove("temp_profile.txt");
-        std::remove("temp_invalid_profile.txt");
+        std::remove(valid_profile_name);
+        std::remove(invalid_profile_name);
     }
 
     void SetUp()
@@ -59,9 +61,9 @@ protected:
     }
 };
 
-TEST_F(LinkProfileReaderTest, testReadProfile) {
+TEST_F(LinkProfileReaderTest, ReadValidProfile) {
 
-    LinkProfile profile = LinkProfileReader::ReadLinkProfile("temp_profile.txt");
+    LinkProfile profile = LinkProfileReader::ReadLinkProfile(valid_profile_name);
 
     ASSERT_EQ(profile.getDirectProfile(0), 0);
     ASSERT_EQ(profile.getIndirectProfile(0), 0.25);
@@ -69,10 +71,10 @@ TEST_F(LinkProfileReaderTest, testReadProfile) {
     ASSERT_EQ(profile.getIndirectProfile(1), 0.75);
 }
 
-TEST_F(LinkProfileReaderTest, testReadInvalidProfile) {
+TEST_F(LinkProfileReaderTest, ReadInvalidProfile) {
 
     try {
-        LinkProfile profile = LinkProfileReader::ReadLinkProfile("temp_invalid_profile.txt");
+        LinkProfile profile = LinkProfileReader::ReadLinkProfile(invalid_profile_name);
         FAIL();
     }
     catch(const std::runtime_error& expected) {
@@ -80,9 +82,9 @@ TEST_F(LinkProfileReaderTest, testReadInvalidProfile) {
     }
 }
 
-TEST_F(LinkProfileReaderTest, testReadProfileInvalidStep) {
+TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760) {
 
-    LinkProfile profile = LinkProfileReader::ReadLinkProfile("temp_profile.txt");
+    LinkProfile profile = LinkProfileReader::ReadLinkProfile(valid_profile_name);
 
     try {
         profile.getDirectProfile(8790);

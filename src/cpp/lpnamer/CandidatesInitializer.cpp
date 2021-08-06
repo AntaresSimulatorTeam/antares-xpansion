@@ -29,31 +29,6 @@ Candidates CandidatesInitializer::initializedCandidates(std::string const & cand
     return candidates;
 }
 
-Interconnexions CandidatesInitializer::initializedInterconnexions(std::string const& candidates_file_name, std::string const& capacity_folder)
-{
-    Interconnexions interconnexions;
-
-    const std::vector<CandidateData>& candidateList = _candidatesIniReader.readCandidateData(candidates_file_name);
-
-    for (const CandidateData& candidateData : candidateList) {
-        Candidate candidate;
-        candidate._data = candidateData;
-
-        candidate._already_installed_profile = getOrImportProfile(capacity_folder, candidateData.already_installed_link_profile);
-        candidate._profile = getOrImportProfile(capacity_folder, candidateData.link_profile);
-
-        if (interconnexions.find(candidateData.link_id) == interconnexions.end())
-        {
-            Interconnexion interconnexion(candidateData.link_id, candidateData.linkor, candidateData.linkex);
-            interconnexions[candidateData.link_id] = interconnexion;
-        }
-        
-        interconnexions[candidateData.link_id].addCandidate(candidate);
-    }
-
-    return interconnexions;
-}
-
 LinkProfile CandidatesInitializer::getOrImportProfile(const std::string &capacity_folder, const std::string &profile_name) {
     LinkProfile profile;
 
