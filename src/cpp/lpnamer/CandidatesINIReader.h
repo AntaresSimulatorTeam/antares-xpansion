@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "INIReader.h"
-#include "Interco.h"
 #include "Candidate.h"
 
 struct IntercoFileData {

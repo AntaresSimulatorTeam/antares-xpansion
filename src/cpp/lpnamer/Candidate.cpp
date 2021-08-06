@@ -1,9 +1,9 @@
 #include "Candidate.h"
-#include "LinkProfileReader.h"
 
 Candidate::Candidate(CandidateData data, const std::map<std::string, LinkProfile>& profile_map)
 {
     _data = data;
+    _name = _data.name;
     auto it = profile_map.find(data.name);
     if (it != profile_map.end())
     {
@@ -19,11 +19,13 @@ double Candidate::indirect_profile(size_t i) const{
     return _profile.getIndirectProfile(i);
 }
 
-double Candidate::already_installed_direct_profile(size_t i) const{
+double Candidate::already_installed_direct_profile(size_t i) const
+{
     return _already_installed_profile.getDirectProfile(i);
 }
 
-double Candidate::already_installed_indirect_profile(size_t i) const{
+double Candidate::already_installed_indirect_profile(size_t i) const
+{
     return _already_installed_profile.getIndirectProfile(i);
 }
 
@@ -53,6 +55,10 @@ bool Candidate::has_already_installed_link_profile() const {
 bool Candidate::has_link_profile() const
 {
     return !_data.link_profile.empty();
+}
+const std::string& Candidate::getName()
+{
+    return _name;
 }
 double Candidate::already_installed_capacity() const {
     return _data.already_installed_capacity;

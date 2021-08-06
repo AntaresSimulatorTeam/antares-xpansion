@@ -59,6 +59,10 @@ public:
     bool has_already_installed_link_profile() const;
     bool has_link_profile() const;
 
+    const std::string& getName();
+
+    std::string _name;
+
 };
 
 #endif //ANTARESXPANSION_CANDIDATE_H
