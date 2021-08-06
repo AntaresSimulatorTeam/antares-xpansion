@@ -20,17 +20,17 @@ struct Cand {
 };
 using Cands=std::vector<Cand>;
 
-struct ActiveLink{
+struct ActiveLink_AS{
     unsigned int id;
     Cands candidates;
     ColumnsToChange columns;
 };
-struct ActiveLinks {
-    std::vector<ActiveLink> _links;
+struct ActiveLinks_AS {
+    std::vector<ActiveLink_AS> _links;
 
-    void add_link(const ActiveLink link);
+    void add_link(const ActiveLink_AS link);
 
-    std::vector<ActiveLink> getItems() const;
+    std::vector<ActiveLink_AS> getItems() const;
 };
 
 
@@ -41,9 +41,11 @@ public:
 
     void remove_bounds_for(const ColumnsToChange &columns_to_change);
 
-    void changeProblem(const ActiveLinks& active_links);
-    std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const ActiveLinks& active_links);
+    void changeProblem(const ActiveLinks_AS& active_links);
+    std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const ActiveLinks_AS& active_links);
 
+
+    std::map<std::string, unsigned int> get_candidate_col_id();
 
 private:
     std::shared_ptr<SolverAbstract> _math_problem;
@@ -56,7 +58,7 @@ private:
 
     void add_new_columns(const Cands &candidates);
 
-    Cands candidates_from_all_links(const ActiveLinks &active_links) const;
+    Cands candidates_from_all_links(const ActiveLinks_AS &active_links) const;
 };
 
 

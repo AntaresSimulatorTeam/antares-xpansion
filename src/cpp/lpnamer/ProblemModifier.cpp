@@ -14,7 +14,7 @@ void ProblemModifier::remove_bounds_for(const ColumnsToChange &columns_to_change
     change_lower_bounds_to_neg_inf(col_ids);
 }
 
-void ProblemModifier::changeProblem(const ActiveLinks &active_links) {
+void ProblemModifier::changeProblem(const ActiveLinks_AS &active_links) {
     for (const auto& link : active_links.getItems()) {
         remove_bounds_for(link.columns);
     }
@@ -22,7 +22,7 @@ void ProblemModifier::changeProblem(const ActiveLinks &active_links) {
 
 }
 
-Cands ProblemModifier::candidates_from_all_links(const ActiveLinks &active_links) const {
+Cands ProblemModifier::candidates_from_all_links(const ActiveLinks_AS &active_links) const {
     Cands all_candidates;
     for (const auto& link : active_links.getItems()){
         auto candidates = link.candidates;
@@ -50,7 +50,7 @@ void ProblemModifier::add_new_columns(const Cands &candidates) {
 }
 
 std::shared_ptr<SolverAbstract>
-ProblemModifier::changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const ActiveLinks& active_links) {
+ProblemModifier::changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const ActiveLinks_AS& active_links) {
     _math_problem = std::move(mathProblem);
     _n_cols_at_start = _math_problem->get_ncols();
 
@@ -70,15 +70,15 @@ void ProblemModifier::change_upper_bounds_to_pos_inf(const std::vector<int> &col
     _math_problem->chg_bounds(col_ids, ub_char, pos_inf);
 }
 
-
-
-
-
-void ActiveLinks::add_link(const ActiveLink link) {
-    _links.push_back(link);
-
+std::map<std::string, unsigned int> ProblemModifier::get_candidate_col_id() {
+    return _candidate_col_id;
 }
 
-std::vector<ActiveLink> ActiveLinks::getItems() const {
+
+void ActiveLinks_AS::add_link(const ActiveLink_AS link) {
+    _links.push_back(link);
+}
+
+std::vector<ActiveLink_AS> ActiveLinks_AS::getItems() const {
     return _links;
 }
