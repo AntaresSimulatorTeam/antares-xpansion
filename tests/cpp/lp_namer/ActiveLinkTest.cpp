@@ -169,7 +169,7 @@ TEST(ActiveLinkTests, multiple_candidate_different_already_installed_profile_on_
 }
 
 
-TEST(ActiveLinkTests, DISABLED_same_candidate_name_on_two_links)
+TEST(ActiveLinkTests, same_candidate_name_on_two_links)
 {
     CandidateData cand1;
     cand1.link_id = 1;

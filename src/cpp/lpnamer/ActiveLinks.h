@@ -16,6 +16,7 @@ public:
 	void addCandidate(const Candidate& candidate);
 	bool hasCandidate(const Candidate& candidate) const;
 
+	int getId() const;
 	double direct_profile(size_t i) const;
 	double indirect_profile(size_t i) const;
 	double already_installed_direct_profile(size_t i) const;
@@ -41,11 +42,12 @@ public:
     ActiveLinks(){};
 
     void addCandidate(const CandidateData& data, const LinkProfile& already_install_link_profile, const LinkProfile& link_profile);
+	int getIndexOf(int link_id) const;
 	int size() const;
 
 private:
 	bool hasCandidate(const Candidate& candidate) const;
-    std::unordered_map <int, ActiveLink> _linksHashMap;
+    std::vector <ActiveLink> _links;
 };
 
 class ActiveLinksInitializer {

@@ -9,32 +9,53 @@ void ActiveLinks::addCandidate(const CandidateData& data, const LinkProfile& alr
     candidate._already_installed_profile = already_install_link_profile;
     candidate._profile = link_profile;
 
-    if (_linksHashMap.find(data.link_id) == _linksHashMap.end())
-    {
-        ActiveLink link(data.link_id, data.linkor, data.linkex);
-        link.setName(data.link);
-        _linksHashMap[data.link_id] = link;
-    }
-
     if (hasCandidate(candidate))
     {
         std::string message = "Candidate " + candidate._data.name + " duplication detected";
         throw std::runtime_error(message);
     }
 
-    _linksHashMap[data.link_id].addCandidate(candidate);
+    int indexLink = getIndexOf(data.link_id);
+
+    if (indexLink == -1)
+    {
+        ActiveLink link(data.link_id, data.linkor, data.linkex);
+        link.setName(data.link);
+        _links.push_back(link);
+        indexLink = _links.size() - 1;
+    }
+
+    _links[indexLink].addCandidate(candidate);
+}
+
+int ActiveLinks::getIndexOf(int link_id) const
+{
+    int index = -1;
+    for (int i = 0; i <_links.size(); i++)
+    {
+        if (_links.at(i).getId() == link_id)
+        {
+            index = i;
+            break;
+        }
+    }
+    return index;
 }
 
 bool ActiveLinks::hasCandidate(const Candidate& candidate) const
 {
-    const auto& it = _linksHashMap.find(candidate._data.link_id);
-    bool linkExist = (it == _linksHashMap.end());
-    return !linkExist && it->second.hasCandidate(candidate);
+    bool hasCandidate = false;
+    for (int i = 0; i < _links.size() && !hasCandidate; i++)
+    {
+        hasCandidate = _links.at(i).hasCandidate(candidate);
+    }
+    
+    return hasCandidate;
 }
 
 int ActiveLinks::size() const
 {
-    return _linksHashMap.size();
+    return _links.size();
 }
 
 ActiveLinksInitializer::ActiveLinksInitializer(){
@@ -110,6 +131,11 @@ bool ActiveLink::hasCandidate(const Candidate& candidate) const
         }
     }
     return false;
+}
+
+int ActiveLink::getId() const
+{
+    return _idInterco;
 }
 
 double ActiveLink::direct_profile(size_t i) const
