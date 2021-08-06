@@ -167,3 +167,35 @@ TEST(ActiveLinkTests, multiple_candidate_different_already_installed_profile_on_
     }
 
 }
+
+
+TEST(ActiveLinkTests, DISABLED_same_candidate_name_on_two_links)
+{
+    CandidateData cand1;
+    cand1.link_id = 1;
+    cand1.name = "transmission_line_1";
+    cand1.link = "area1 - area2";
+    cand1.linkor = "area1";
+    cand1.linkex = "area2";
+
+    CandidateData cand2;
+    cand2.link_id = 2;
+    cand2.name = "transmission_line_1";
+    cand2.link = "area2 - area3";
+    cand2.linkor = "area2";
+    cand2.linkex = "area3";
+
+    std::vector<CandidateData> cand_data_list;
+    cand_data_list.push_back(cand1);
+    cand_data_list.push_back(cand2);
+
+    std::map<std::string, LinkProfile> profile_map;
+
+    try {
+        ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(cand_data_list, profile_map);
+        FAIL() << "duplicate not detected";
+    }
+    catch (const std::runtime_error&  err) {
+        ASSERT_STREQ(err.what(), "Candidate transmission_line_1 duplication detected");
+    }
+}
