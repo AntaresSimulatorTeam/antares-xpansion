@@ -64,7 +64,7 @@ int ActiveLinks::size() const
 }
 
 ActiveLink::ActiveLink(const CandidateData& candidate_data):
-    _idInterco(candidate_data.link_id), _Origin(candidate_data.linkor), _End(candidate_data.linkex),
+    _idInterco(candidate_data.link_id), _origin(candidate_data.linkor), _end(candidate_data.linkex),
     _name(candidate_data.link)
 {
     

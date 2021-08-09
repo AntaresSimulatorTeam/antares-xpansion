@@ -3,7 +3,6 @@
 #define ANTARESXPANSION_ACTIVELINKS_H
 
 #include <Candidate.h>
-#include <unordered_map>
 
 class ActiveLink {
 
@@ -21,8 +20,8 @@ public:
 
 private:
 	int _idInterco;
-	std::string _Origin;
-	std::string _End;
+	std::string _origin;
+	std::string _end;
 
 	std::string _name;
 	LinkProfile _already_installed_profile;
