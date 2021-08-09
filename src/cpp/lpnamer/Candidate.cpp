@@ -4,7 +4,7 @@ Candidate::Candidate(CandidateData data, const std::map<std::string, LinkProfile
 {
     _data = data;
     _name = _data.name;
-    auto it = profile_map.find(data.name);
+    auto it = profile_map.find(data.link_profile);
     if (it != profile_map.end())
     {
         _profile = it->second;

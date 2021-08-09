@@ -12,6 +12,7 @@ void ActiveLinks::addCandidate(const CandidateData& candidate_data, const std::m
         throw std::runtime_error(message);
     }
 
+    //Check Profile Map utile ?
     int indexLink = getIndexOf(candidate_data.link_id);
 
     if (indexLink == -1)
@@ -67,15 +68,6 @@ ActiveLinks ActiveLinksInitializer::createActiveLinkFromCandidates(const std::ve
     }
 
     return  activeLinks;
-}
-
-LinkProfile ActiveLinksInitializer::getProfile(const std::map<std::string, LinkProfile> &profileMap,
-                                               const std::string &link_profile_name) const {
-    LinkProfile link_profile;
-    if(!link_profile_name.empty()){
-        link_profile = profileMap.at(link_profile_name);
-    }
-    return link_profile;
 }
 
 ActiveLink::ActiveLink(int idInterco, const std::string& origin, const std::string& end):
@@ -143,12 +135,12 @@ double ActiveLink::indirect_profile(size_t i) const
     return _profile.getIndirectProfile(i);
 }
 
-double ActiveLink::already_installed_direct_profile(size_t i) const
+double ActiveLink::already_installed_direct_profile(size_t timeStep) const
 {
-    return _already_installed_profile.getDirectProfile(i);
+    return _already_installed_profile.getDirectProfile(timeStep);
 }
 
-double ActiveLink::already_installed_indirect_profile(size_t i) const
+double ActiveLink::already_installed_indirect_profile(size_t timeStep) const
 {
-    return _already_installed_profile.getIndirectProfile(i);
+    return _already_installed_profile.getIndirectProfile(timeStep);
 }

@@ -19,8 +19,8 @@ public:
 	int getId() const;
 	double direct_profile(size_t i) const;
 	double indirect_profile(size_t i) const;
-	double already_installed_direct_profile(size_t i) const;
-	double already_installed_indirect_profile(size_t i) const;
+	double already_installed_direct_profile(size_t timeStep) const;
+	double already_installed_indirect_profile(size_t timeStep) const;
 
 private:
 	int _idInterco;
@@ -56,9 +56,6 @@ public:
     ActiveLinksInitializer();
 
     ActiveLinks createActiveLinkFromCandidates(const std::vector<CandidateData>& candidateList, const std::map<std::string, LinkProfile>& profile_map);
-
-    LinkProfile
-    getProfile(const std::map<std::string, LinkProfile> &profileMap, const std::string &link_profile_name) const;
 };
 
 

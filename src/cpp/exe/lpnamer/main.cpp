@@ -14,6 +14,7 @@
 #include <sstream>
 #include <boost/program_options.hpp>
 
+#include "ActiveLinks.h"
 #include "Candidates.h"
 #include "AdditionalConstraints.h"
 #include "LauncherHelpers.h"
@@ -224,6 +225,13 @@ int main(int argc, char** argv) {
 
         // Instantiation of candidates
 		Candidates candidates = initializer.initializedCandidates(candidates_file_name, capacity_folder);
+
+		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
+		const auto& mapLinkProfile	= LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
+
+		ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(candidatesDatas, mapLinkProfile);
+
+		//TODO : A continuer
 		
 		if ((master_formulation != "relaxed") && (master_formulation != "integer"))
 		{
