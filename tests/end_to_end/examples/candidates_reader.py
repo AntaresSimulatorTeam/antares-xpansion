@@ -47,7 +47,7 @@ class CandidatesReader:
     def get_candidate_already_install_link_profile(self, study_path: Path, candidate : str):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
-        if self.config.getboolean(index, "has-link-profile", fallback=False) and self.config.has_option(index, "already-installed-link-profile"):
+        if self.config.has_option(index, "already-installed-link-profile"):
             link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["already-installed-link-profile"])
         return link_profile_path
 
@@ -58,7 +58,7 @@ class CandidatesReader:
     def get_candidate_link_profile(self, study_path: Path, candidate : str) -> str:
         index = self._get_candidate_index(candidate)
         link_profile_path =""
-        if self.config.getboolean(index,"has-link-profile", fallback=False) :
+        if self.config.has_option(index, "link-profile"):
             link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["link-profile"])
         return link_profile_path
 

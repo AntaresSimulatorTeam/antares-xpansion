@@ -98,7 +98,6 @@ link = area1 - invest_semibase
 annual-cost-per-mw = 126000
 unit-size = 200
 max-units = 5
-has-link-profile = False
 already_installed_capacity = 200
 
 [2]
@@ -107,7 +106,6 @@ link = area1 - area2
 annual-cost-per-mw = 3000
 unit-size = 500
 max-units = 4
-has-link-profile = False
 ```
 
 ### Distributed generation
@@ -126,7 +124,6 @@ name = solar_power
 link = area1 - pv1
 annual-cost-per-mw = 100000
 max-investment = 10000
-has-link-profile = True
 link-profile = pv1.txt
 ```
 
