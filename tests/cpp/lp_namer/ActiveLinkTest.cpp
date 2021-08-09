@@ -16,7 +16,9 @@ TEST(ActiveLinkTests, valid_candidate_data)
 
     std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(cand_data_list, profile_map);
+    ActiveLinks links;
+
+    links.addCandidates(cand_data_list, profile_map);
 
     ASSERT_EQ(links.size(), 1);
 
@@ -44,7 +46,9 @@ TEST(ActiveLinkTests, multiple_valid_candidates_data_on_same_link)
 
     std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(cand_data_list, profile_map);
+    ActiveLinks links;
+
+    links.addCandidates(cand_data_list, profile_map);
 
     ASSERT_EQ(links.size(), 1);
 
@@ -72,7 +76,9 @@ TEST(ActiveLinkTests, multiple_valid_candidates_data_on_different_link)
 
     std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(cand_data_list, profile_map);
+    ActiveLinks links;
+
+    links.addCandidates(cand_data_list, profile_map);
 
     ASSERT_EQ(links.size(), 2);
 
@@ -101,7 +107,8 @@ TEST(ActiveLinkTests, multiple_candidate_same_name_on_same_link)
     std::map<std::string, LinkProfile> profile_map;
 
     try {
-        ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(cand_data_list, profile_map);
+        ActiveLinks links;
+        links.addCandidates(cand_data_list, profile_map);
         FAIL() << "duplicate not detected";
     }
     catch (const std::runtime_error&  err) {
@@ -159,7 +166,8 @@ TEST(ActiveLinkTests, multiple_candidate_different_already_installed_profile_on_
     profile_map[temp_already_installed_profile2_name] = alreadyInstalledProfile;
 
     try {
-        ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(cand_data_list, profile_map);
+        ActiveLinks links;
+        links.addCandidates(cand_data_list, profile_map);
         FAIL() << "Candidate of the same links have different already_installed_links_profile and it's not detected";
     }
     catch (const std::runtime_error& err) {
@@ -192,7 +200,8 @@ TEST(ActiveLinkTests, same_candidate_name_on_two_links)
     std::map<std::string, LinkProfile> profile_map;
 
     try {
-        ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(cand_data_list, profile_map);
+        ActiveLinks links;
+        links.addCandidates(cand_data_list, profile_map);
         FAIL() << "duplicate not detected";
     }
     catch (const std::runtime_error&  err) {

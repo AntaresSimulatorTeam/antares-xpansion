@@ -229,9 +229,8 @@ int main(int argc, char** argv) {
 		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
 		const auto& mapLinkProfile	= LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
 
-		ActiveLinks links = ActiveLinksInitializer().createActiveLinkFromCandidates(candidatesDatas, mapLinkProfile);
-
-		//TODO : A continuer
+		ActiveLinks links;
+		links.addCandidates(candidatesDatas, mapLinkProfile);
 		
 		if ((master_formulation != "relaxed") && (master_formulation != "integer"))
 		{

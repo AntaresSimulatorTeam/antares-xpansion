@@ -8,9 +8,7 @@
 class ActiveLink {
 
 public:
-	ActiveLink() {};
-	ActiveLink(int idInterco, const std::string& origin, const std::string& end);
-	void setName(const std::string& nameInterco);
+	ActiveLink(const CandidateData& candidate_data);
 	void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
 	void addCandidate(const CandidateData& candidate, const std::map<std::string, LinkProfile>& profile_map);
@@ -40,6 +38,7 @@ public:
     ActiveLinks(){};
 
     void addCandidate(const CandidateData& data, const std::map<std::string, LinkProfile>& profile_map);
+	void addCandidates(const std::vector<CandidateData>& candidateList, const std::map<std::string, LinkProfile>& profile_map);
 	int getIndexOf(int link_id) const;
 	int size() const;
 
@@ -47,14 +46,5 @@ private:
 	bool hasCandidate(const CandidateData& candidate_data) const;
     std::vector <ActiveLink> _links;
 };
-
-class ActiveLinksInitializer {
-
-public:
-    ActiveLinksInitializer();
-
-    ActiveLinks createActiveLinkFromCandidates(const std::vector<CandidateData>& candidateList, const std::map<std::string, LinkProfile>& profile_map);
-};
-
 
 #endif //ANTARESXPANSION_ACTIVELINKS_H
