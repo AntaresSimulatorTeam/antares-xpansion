@@ -119,7 +119,7 @@ def check_candidate_option_value(option, value):
     antares_links_list = None
     options_legal_values = {'name': None,
                             'enable': ["true", "false"],
-                            'candidate-type': ["investment", "decommissioning"],
+                            'candidate-type': None,
                             'investment-type': None,
                             'link': antares_links_list,
                             'annual-cost-per-mw': None,
