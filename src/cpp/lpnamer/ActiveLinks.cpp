@@ -90,10 +90,6 @@ void ActiveLink::addCandidate(const CandidateData& candidate_data, const std::ma
     Candidate candidate(candidate_data, profile_map);
     auto it_already_installed_link_profile = profile_map.find(candidate_data.already_installed_link_profile);
 
-    if (_profile.empty() && candidate.has_link_profile())
-    {
-        _profile = candidate._profile;
-    }
     // TODO : partir du principe que le candidat n'a plus de already_installed_link_profile
     if (_already_installed_profile.empty() && it_already_installed_link_profile != profile_map.end())
     {
@@ -123,16 +119,6 @@ bool ActiveLink::hasCandidate(const CandidateData& candidate_data) const
 int ActiveLink::getId() const
 {
     return _idInterco;
-}
-
-double ActiveLink::direct_profile(size_t i) const
-{
-    return _profile.getDirectProfile(i);
-}
-
-double ActiveLink::indirect_profile(size_t i) const
-{
-    return _profile.getIndirectProfile(i);
 }
 
 double ActiveLink::already_installed_direct_profile(size_t timeStep) const

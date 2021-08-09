@@ -17,8 +17,7 @@ public:
 	bool hasCandidate(const CandidateData& candidate) const;
 
 	int getId() const;
-	double direct_profile(size_t i) const;
-	double indirect_profile(size_t i) const;
+	
 	double already_installed_direct_profile(size_t timeStep) const;
 	double already_installed_indirect_profile(size_t timeStep) const;
 
@@ -28,7 +27,6 @@ private:
 	std::string _End;
 
 	std::string _name;
-	LinkProfile _profile;
 	LinkProfile _already_installed_profile;
 	std::string _already_installed_profile_name;
 
