@@ -136,9 +136,10 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
 #define new_method
 #ifdef new_method
-    ActiveLinks_AS active_links = generate_active_links(interco_data);
+    std::map<colId , ColumnsToChange> p_var_columns = generate_p_var_columns(interco_data);
+    ActiveLinks_AS active_links = generate_active_links(p_var_columns);
     auto problem_modifier = ProblemModifier();
-    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), active_links);
+    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), active_links, p_var_columns);
     std::map<std::string, unsigned int> col_id = problem_modifier.get_candidate_col_id();
 #else
 
@@ -212,14 +213,7 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	in_prblm->write_prob_mps(lp_mps_name);
 }
 
-ActiveLinks_AS Candidates::generate_active_links(const std::map<int, std::vector<int>> &interco_data) const {
-    std::map<unsigned int, ColumnsToChange> links_columns_to_change;
-    for (auto const & pairIdvarntcIntercodata : interco_data) {
-        int const i_interco_p(pairIdvarntcIntercodata.first);
-        int const link_id = pairIdvarntcIntercodata.second[0];
-        int const timestep = pairIdvarntcIntercodata.second[1];
-        links_columns_to_change[link_id].push_back({i_interco_p, timestep});
-    }
+ActiveLinks_AS Candidates::generate_active_links(const std::map<colId, ColumnsToChange> &links_columns_to_change) const {
     ActiveLinks_AS active_links;
     for(auto const & item: links_columns_to_change){
         unsigned int const link_id = item.first;
@@ -228,9 +222,21 @@ ActiveLinks_AS Candidates::generate_active_links(const std::map<int, std::vector
         for (auto c : link_candidates){
             candidates.push_back({c->_data.name});
         }
-        active_links.add_link({link_id, candidates, links_columns_to_change[link_id]});
+        active_links.add_link({link_id, candidates});
     }
     return active_links;
+}
+
+std::map<colId, ColumnsToChange>
+Candidates::generate_p_var_columns(const std::map<int, std::vector<int>> &interco_data) const {
+    std::map<unsigned int, ColumnsToChange> links_columns_to_change;
+    for (auto const & pairIdvarntcIntercodata : interco_data) {
+        colId const i_interco_p = pairIdvarntcIntercodata.first;
+        int const link_id = pairIdvarntcIntercodata.second[0];
+        int const timestep = pairIdvarntcIntercodata.second[1];
+        links_columns_to_change[link_id].push_back({i_interco_p, timestep});
+    }
+    return links_columns_to_change;
 }
 
 std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) const {

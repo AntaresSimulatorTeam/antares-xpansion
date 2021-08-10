@@ -59,5 +59,7 @@ private:
 
     vector<const Candidate *> get_link_candidates(const int link_id) const;
 
-    ActiveLinks_AS generate_active_links(const std::map<int, std::vector<int>> &interco_data) const;
+    std::map<colId, ColumnsToChange> generate_p_var_columns(const std::map<int, std::vector<int>> &interco_data) const;
+
+    ActiveLinks_AS generate_active_links(const std::map<colId, ColumnsToChange> &links_columns_to_change) const;
 };

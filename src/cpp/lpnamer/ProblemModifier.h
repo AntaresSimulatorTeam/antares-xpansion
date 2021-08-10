@@ -6,9 +6,9 @@
 #include <memory>
 #include <multisolver_interface/SolverAbstract.h>
 #include <map>
-
+using colId= unsigned int;
 struct ColumnToChange{
-    int id;
+    colId id;
     int time_step;
 };
 
@@ -20,10 +20,10 @@ struct Cand {
 };
 using Cands=std::vector<Cand>;
 
+using linkId=unsigned int;
 struct ActiveLink_AS{
-    unsigned int id;
+    linkId id;
     Cands candidates;
-    ColumnsToChange columns;
 };
 struct ActiveLinks_AS {
     std::vector<ActiveLink_AS> _links;
@@ -41,15 +41,17 @@ public:
 
     void remove_bounds_for(const ColumnsToChange &columns_to_change);
 
-    void changeProblem(const ActiveLinks_AS& active_links);
-    std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const ActiveLinks_AS& active_links);
-
+    void changeProblem(const ActiveLinks_AS &active_links,
+                       const std::map<linkId, ColumnsToChange> &p_var_columns);
+    std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const ActiveLinks_AS &active_links,
+                                                  const std::map<linkId,  ColumnsToChange> &p_var_columns);
 
     std::map<std::string, unsigned int> get_candidate_col_id();
 
 private:
     std::shared_ptr<SolverAbstract> _math_problem;
     std::map<std::string ,unsigned int> _candidate_col_id;
+    std::map<linkId , ColumnsToChange> _p_var_columns;
     unsigned int _n_cols_at_start;
 
     void change_upper_bounds_to_pos_inf(const std::vector<int> &col_id);
