@@ -107,7 +107,7 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 	else {
         lp_status = _solver->solve_lp();
 	}
-	
+
 
 	if (lp_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
@@ -122,6 +122,15 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 		_solver->write_prob_mps(buffer.str());
 
 		throw InvalidSolverStatusException("Invalid solver status " + ORT_LP_STATUS[lp_status]  + " optimality expected");
+	}
+
+	if (_is_master) {
+        std::string suffix = ".mps";
+        std::stringstream buffer;
+        buffer << options.OUTPUTROOT << PATH_SEPARATOR;
+        buffer << _path_to_mps.substr(0, _path_to_mps.length() - suffix.length()) << "_last_iteration";
+        buffer<< ".mps";
+        _solver->write_prob_mps(buffer.str());
 	}
 }
 
