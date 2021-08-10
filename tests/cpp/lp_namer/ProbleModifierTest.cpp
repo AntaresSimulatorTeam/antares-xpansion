@@ -81,15 +81,15 @@ TEST_F(ProblemModifierTest, empty_test_the_multisolver_interface)
 
 TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) {
     const ColumnToChange column = {0, 0};
-    const ColumnsToChange columns_to_change = {column};
+    const std::map<linkId , ColumnsToChange> p_var_columns = {{0,{column}}};
     const Cands candidates_link_0 = {};
-    const ActiveLink_AS active_link= {0, candidates_link_0, columns_to_change};
+    const ActiveLink_AS active_link= {0, candidates_link_0};
 
     ActiveLinks_AS active_links;
     active_links.add_link(active_link);
 
     auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links);
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links, p_var_columns);
 
     int n_cols = math_problem->get_ncols();
     std::vector<double> upper_bounds(n_cols, 777);
@@ -106,15 +106,15 @@ TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) 
 
 TEST_F(ProblemModifierTest, One_link_two_candidates) {
     const ColumnToChange column = {0, 0};
-    const ColumnsToChange columns_to_change = {column};
+    const std::map<linkId , ColumnsToChange> p_var_columns = {{0,{column}}};
     const Cands candidates_link_0 = {{"candy1"}, {"candy2"}};
-    const ActiveLink_AS active_link_0= {0, candidates_link_0, columns_to_change};
+    const ActiveLink_AS active_link_0= {0, candidates_link_0};
 
     ActiveLinks_AS active_links;
     active_links.add_link(active_link_0);
 
     auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links);
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links, p_var_columns);
 
     int n_cols = math_problem->get_ncols();
     ASSERT_EQ(n_cols, 3);
