@@ -14,12 +14,12 @@ runs:
   using: "composite"
   steps: 
   - id: download-extract
-    shell: powershell
+    shell: bash
     run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{inputs.antares-deps-version}}/rte-antares-deps-${{inputs.os}}-Release-solver-no-ortools.zip
-           Expand-Archive ./rte-antares-deps-${{inputs.os}}-Release-solver-no-ortools.zip -DestinationPath .
-           rm rte-antares-deps-${{inputs.os}}-Release-solver-no-ortools.zip
+           unzip rte-antares-deps-${{inputs.os}}-Release-solver-no-ortools.zip
+           rm -rf rte-antares-deps-${{inputs.os}}-Release-solver-no-ortools.zip
            
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}-installer-64bits.zip
-           Expand-Archive rte-antares-${{inputs.antares-version}}-installer-64bits.zip -DestinationPath .
-           rm rte-antares-${{inputs.antares-version}}-installer-64bits.zip
+           unzip rte-antares-${{inputs.antares-version}}-installer-64bits.zip
+           rm -rf rte-antares-${{inputs.antares-version}}-installer-64bits.zip
