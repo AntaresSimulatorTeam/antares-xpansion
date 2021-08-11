@@ -1,104 +1,5 @@
 #include "gtest/gtest.h"
 #include "ActiveLinks.h"
-#include <unordered_set>
-#include <unordered_map>
-
-struct LinkRef {
-    LinkRef(int id, const std::string& name, double already_installed_capacity)
-        :_id(id),_name(name), _already_installed_capacity(already_installed_capacity){};
-    LinkRef() {};
-    int _id;
-    std::string _name;
-    double _already_installed_capacity;
-};
-
-void checkLinksProfiles(const std::vector<ActiveLink>& links, 
-                  const std::unordered_map<std::string, std::vector<double>>& linkToReferenceDirectProfileMap,
-                  const std::unordered_map<std::string, std::vector<double>>& linkToReferenceIndirectProfileMap)
-{
-    ASSERT_EQ(links.size(), linkToReferenceDirectProfileMap.size());
-    ASSERT_EQ(links.size(), linkToReferenceIndirectProfileMap.size());
-
-    for (const auto& link : links)
-    {
-        ASSERT_EQ(linkToReferenceDirectProfileMap.at(link._name).size(), 8760);
-        ASSERT_EQ(linkToReferenceIndirectProfileMap.at(link._name).size(), 8760);
-        for (int timeStep = 0; timeStep < 8760; timeStep++)
-        {
-            ASSERT_DOUBLE_EQ(link.already_installed_direct_profile(timeStep), linkToReferenceDirectProfileMap.at(link._name).at(timeStep));
-            ASSERT_DOUBLE_EQ(link.already_installed_indirect_profile(timeStep), linkToReferenceIndirectProfileMap.at(link._name).at(timeStep));
-        }
-    }
-}
-
-void checkLinksData(const std::vector<ActiveLink>& links, const std::vector<CandidateData>& candidatesDatas)
-{
-    std::unordered_map<std::string, LinkRef> linkNameToLinkDataRefMap;
-
-    for (const auto& candidateData : candidatesDatas)
-    {
-        if (linkNameToLinkDataRefMap.find(candidateData.link) == linkNameToLinkDataRefMap.end())
-        {
-            LinkRef linkRef(candidateData.link_id, candidateData.link, candidateData.already_installed_capacity);
-            
-            linkNameToLinkDataRefMap[candidateData.link] = linkRef;
-        }
-    }
-    ASSERT_EQ(links.size(), linkNameToLinkDataRefMap.size());
-
-    for (int indexLink = 0; indexLink < links.size(); indexLink++)
-    {
-        const auto& link = links.at(indexLink);
-        ASSERT_TRUE(linkNameToLinkDataRefMap.find(link._name) != linkNameToLinkDataRefMap.end());
-        ASSERT_EQ(linkNameToLinkDataRefMap.at(link._name)._id, link._idInterco);
-        ASSERT_EQ(linkNameToLinkDataRefMap.at(link._name)._already_installed_capacity, link._already_installed_capacity);
-    }
-}
-
-void checkLinks(const std::vector<ActiveLink>& links,
-    const std::vector<CandidateData>& candidatesDatas,
-    const std::unordered_map<std::string, std::vector<double>>& linkToReferenceDirectProfileMap,
-    const std::unordered_map<std::string, std::vector<double>>& linkToReferenceIndirectProfileMap)
-{
-    checkLinksData(links, candidatesDatas);
-    checkLinksProfiles(links, linkToReferenceDirectProfileMap, linkToReferenceIndirectProfileMap);
-}
-
-void checkCandidates(const std::vector<ActiveLink>& links,
-                     const std::vector<CandidateData>& candidatesDatas,
-                     const std::unordered_map<std::string, std::vector<double>>& CandidateToReferenceDirectProfileMap,
-                     const std::unordered_map<std::string, std::vector<double>>& CandidateToReferenceIndirectProfileMap
-    )
-{
-    std::unordered_map<std::string, Candidate> candidatesMap;
-    
-    for (const auto& link : links)
-    {
-        const std::vector<Candidate>& candidates = link.getCandidates();
-        for (const auto& candidate : candidates)
-        {
-            candidatesMap[candidate._name] = candidate;
-        }
-
-    }
-    ASSERT_EQ(candidatesDatas.size(), candidatesMap.size());
-    ASSERT_EQ(candidatesDatas.size(), CandidateToReferenceDirectProfileMap.size());
-    ASSERT_EQ(candidatesDatas.size(), CandidateToReferenceIndirectProfileMap.size());
-
-    for (const auto& candidateData : candidatesDatas)
-    {
-        ASSERT_TRUE(candidatesMap.find(candidateData.name) != candidatesMap.end());
-        const auto& candidate = candidatesMap.at(candidateData.name);
-        
-        ASSERT_EQ(CandidateToReferenceDirectProfileMap.at(candidate._name).size(), 8760);
-        ASSERT_EQ(CandidateToReferenceIndirectProfileMap.at(candidate._name).size(), 8760);
-        for (int timeStep = 0; timeStep < 8760; timeStep++)
-        {
-            ASSERT_DOUBLE_EQ(candidate.direct_profile(timeStep), CandidateToReferenceDirectProfileMap.at(candidate._name).at(timeStep));
-            ASSERT_DOUBLE_EQ(candidate.indirect_profile(timeStep), CandidateToReferenceIndirectProfileMap.at(candidate._name).at(timeStep));
-        }
-    }
-}
 
 TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
 {
@@ -115,23 +16,24 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
     ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-    std::vector<double> directLinkprofile_l(8760, 1);
-    std::vector<double> indirectLinkprofile_l(8760, 1);
-
-    std::unordered_map<std::string, std::vector<double>> linkToReferenceDirectProfileMap;
-    std::unordered_map<std::string, std::vector<double>> linkToReferenceIndirectProfileMap;
-
-    linkToReferenceDirectProfileMap[cand1.link]     = directLinkprofile_l;
-    linkToReferenceIndirectProfileMap[cand1.link]   = indirectLinkprofile_l;
-
-    std::unordered_map<std::string, std::vector<double>> candidateToReferenceDirectProfileMap;
-    std::unordered_map<std::string, std::vector<double>> candidateToReferenceIndirectProfileMap;
-
-    candidateToReferenceDirectProfileMap[cand1.name]    = directLinkprofile_l;
-    candidateToReferenceIndirectProfileMap[cand1.name]  = indirectLinkprofile_l;
+    ASSERT_EQ(links.size(), 1);
+    ASSERT_EQ(links[0]._idInterco, 1);
+    ASSERT_EQ(links[0]._name, "area1 - area2");
+    ASSERT_EQ(links[0]._already_installed_capacity, 0);
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(links[0].already_installed_indirect_profile(timeStep), 1);
+    }
     
-    checkLinks(links, cand_data_list, linkToReferenceDirectProfileMap, linkToReferenceIndirectProfileMap);
-    checkCandidates(links, cand_data_list, candidateToReferenceDirectProfileMap, candidateToReferenceIndirectProfileMap);
+    const auto& candidates = links[0].getCandidates();
+    ASSERT_EQ(candidates.size(), 1);
+    ASSERT_EQ(candidates[0]._name, "transmission_line_1");
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(candidates[0].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(candidates[0].already_installed_indirect_profile(timeStep), 1);
+    }
 }
 
 TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity)
@@ -149,23 +51,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity)
     ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-    std::vector<double> directLinkprofile_l(8760, 1);
-    std::vector<double> indirectLinkprofile_l(8760, 1);
-
-    std::unordered_map<std::string, std::vector<double>> linkToReferenceDirectProfileMap;
-    std::unordered_map<std::string, std::vector<double>> linkToReferenceIndirectProfileMap;
-
-    linkToReferenceDirectProfileMap[cand1.link] = directLinkprofile_l;
-    linkToReferenceIndirectProfileMap[cand1.link] = indirectLinkprofile_l;
-
-    std::unordered_map<std::string, std::vector<double>> candidateToReferenceDirectProfileMap;
-    std::unordered_map<std::string, std::vector<double>> candidateToReferenceIndirectProfileMap;
-
-    candidateToReferenceDirectProfileMap[cand1.name] = directLinkprofile_l;
-    candidateToReferenceIndirectProfileMap[cand1.name] = indirectLinkprofile_l;
-
-    checkLinks(links, cand_data_list, linkToReferenceDirectProfileMap, linkToReferenceIndirectProfileMap);
-    checkCandidates(links, cand_data_list, candidateToReferenceDirectProfileMap, candidateToReferenceIndirectProfileMap);
+    ASSERT_EQ(links[0]._already_installed_capacity, 20);
 
 }
 
@@ -190,25 +76,32 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
     ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-    std::vector<double> directLinkprofile_l(8760, 1);
-    std::vector<double> indirectLinkprofile_l(8760, 1);
+    ASSERT_EQ(links.size(), 1);
+    ASSERT_EQ(links[0]._idInterco, 1);
+    ASSERT_EQ(links[0]._name, "area1 - area2");
+    ASSERT_EQ(links[0]._already_installed_capacity, 20);
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(links[0].already_installed_indirect_profile(timeStep), 1);
+    }
 
-    std::unordered_map<std::string, std::vector<double>> linkToReferenceDirectProfileMap;
-    std::unordered_map<std::string, std::vector<double>> linkToReferenceIndirectProfileMap;
+    const auto& candidates = links[0].getCandidates();
+    ASSERT_EQ(candidates.size(), 2);
 
-    linkToReferenceDirectProfileMap[cand1.link] = directLinkprofile_l;
-    linkToReferenceIndirectProfileMap[cand1.link] = indirectLinkprofile_l;
+    ASSERT_EQ(candidates[0]._name, "transmission_line_1");
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(candidates[0].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(candidates[0].already_installed_indirect_profile(timeStep), 1);
+    }
 
-    std::unordered_map<std::string, std::vector<double>> candidateToReferenceDirectProfileMap;
-    std::unordered_map<std::string, std::vector<double>> candidateToReferenceIndirectProfileMap;
-
-    candidateToReferenceDirectProfileMap[cand1.name] = directLinkprofile_l;
-    candidateToReferenceIndirectProfileMap[cand1.name] = indirectLinkprofile_l;
-    candidateToReferenceDirectProfileMap[cand2.name] = directLinkprofile_l;
-    candidateToReferenceIndirectProfileMap[cand2.name] = indirectLinkprofile_l;
-
-    checkLinks(links, cand_data_list, linkToReferenceDirectProfileMap, linkToReferenceIndirectProfileMap);
-    checkCandidates(links, cand_data_list, candidateToReferenceDirectProfileMap, candidateToReferenceIndirectProfileMap);
+    ASSERT_EQ(candidates[1]._name, "transmission_line_2");
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(candidates[1].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(candidates[1].already_installed_indirect_profile(timeStep), 1);
+    }
 
 }
 
@@ -235,27 +128,44 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
     ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-    std::vector<double> directLinkprofile_l(8760, 1);
-    std::vector<double> indirectLinkprofile_l(8760, 1);
+    ASSERT_EQ(links.size(), 2);
+    ASSERT_EQ(links[0]._idInterco, 1);
+    ASSERT_EQ(links[0]._name, "area1 - area2");
+    ASSERT_EQ(links[0]._already_installed_capacity, 0);
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(links[0].already_installed_indirect_profile(timeStep), 1);
+    }
 
-    std::unordered_map<std::string, std::vector<double>> linkToReferenceDirectProfileMap;
-    std::unordered_map<std::string, std::vector<double>> linkToReferenceIndirectProfileMap;
+    const auto& candidatesLink0 = links[0].getCandidates();
+    ASSERT_EQ(candidatesLink0.size(), 1);
 
-    linkToReferenceDirectProfileMap[cand1.link] = directLinkprofile_l;
-    linkToReferenceIndirectProfileMap[cand1.link] = indirectLinkprofile_l;
-    linkToReferenceDirectProfileMap[cand2.link] = directLinkprofile_l;
-    linkToReferenceIndirectProfileMap[cand2.link] = indirectLinkprofile_l;
+    ASSERT_EQ(candidatesLink0[0]._name, "transmission_line_1");
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(candidatesLink0[0].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(candidatesLink0[0].already_installed_indirect_profile(timeStep), 1);
+    }
 
-    std::unordered_map<std::string, std::vector<double>> candidateToReferenceDirectProfileMap;
-    std::unordered_map<std::string, std::vector<double>> candidateToReferenceIndirectProfileMap;
+    ASSERT_EQ(links[1]._idInterco, 2);
+    ASSERT_EQ(links[1]._name, "area1 - pv");
+    ASSERT_EQ(links[1]._already_installed_capacity, 0);
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(links[1].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(links[1].already_installed_indirect_profile(timeStep), 1);
+    }
 
-    candidateToReferenceDirectProfileMap[cand1.name] = directLinkprofile_l;
-    candidateToReferenceIndirectProfileMap[cand1.name] = indirectLinkprofile_l;
-    candidateToReferenceDirectProfileMap[cand2.name] = directLinkprofile_l;
-    candidateToReferenceIndirectProfileMap[cand2.name] = indirectLinkprofile_l;
+    const auto& candidatesLink1 = links[1].getCandidates();
+    ASSERT_EQ(candidatesLink1.size(), 1);
 
-    checkLinks(links, cand_data_list, linkToReferenceDirectProfileMap, linkToReferenceIndirectProfileMap);
-    checkCandidates(links, cand_data_list, candidateToReferenceDirectProfileMap, candidateToReferenceIndirectProfileMap);
+    ASSERT_EQ(candidatesLink1[0]._name, "pv");
+    for (int timeStep = 0; timeStep < 8760; timeStep++)
+    {
+        ASSERT_DOUBLE_EQ(candidatesLink1[0].already_installed_direct_profile(timeStep), 1);
+        ASSERT_DOUBLE_EQ(candidatesLink1[0].already_installed_indirect_profile(timeStep), 1);
+    }
 
 }
 
