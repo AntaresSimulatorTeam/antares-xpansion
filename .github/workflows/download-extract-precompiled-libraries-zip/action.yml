@@ -14,6 +14,7 @@ runs:
   using: "composite"
   steps: 
   - id: download-extract
+    shell: powershell
     run: |
            wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{inputs.antares-deps-version}}/rte-antares-deps-${{inputs.os}}-Release-solver-no-ortools.zip
            Expand-Archive ./rte-antares-deps-${{inputs.os}}-Release-solver-no-ortools.zip -DestinationPath .
