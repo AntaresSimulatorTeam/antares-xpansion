@@ -35,16 +35,16 @@ class Candidate {
 
 public:
     Candidate(){};
-    Candidate(CandidateData data, const std::map<std::string, LinkProfile>& profile_map);
+    Candidate(CandidateData data, const LinkProfile& profile);
 
     CandidateData _data;
     LinkProfile _profile;
     LinkProfile _already_installed_profile;
 
-    double direct_profile(size_t i) const;
-    double indirect_profile(size_t i) const;
-    double already_installed_direct_profile(size_t i) const;
-    double already_installed_indirect_profile(size_t i) const;
+    double direct_profile(size_t timeStep) const;
+    double indirect_profile(size_t timeStep) const;
+    double already_installed_direct_profile(size_t timeStep) const;
+    double already_installed_indirect_profile(size_t timeStep) const;
 
     double obj()const;
     double lb()const;
@@ -60,8 +60,6 @@ public:
 
     bool has_already_installed_link_profile() const;
     bool has_link_profile() const;
-
-    const std::string& getName();
 
     std::string _name;
 

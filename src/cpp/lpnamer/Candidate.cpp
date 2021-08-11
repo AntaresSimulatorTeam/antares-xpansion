@@ -1,32 +1,29 @@
 #include "Candidate.h"
 
-Candidate::Candidate(CandidateData data, const std::map<std::string, LinkProfile>& profile_map)
+Candidate::Candidate(CandidateData data, const LinkProfile& profile)
 {
     _data = data;
     _name = _data.name;
-    auto it = profile_map.find(data.link_profile);
-    if (it != profile_map.end())
-    {
-        _profile = it->second;
-    }
+    _profile = profile;
+    
 }
 
-double Candidate::direct_profile(size_t i) const{
-    return _profile.getDirectProfile(i);
+double Candidate::direct_profile(size_t timeStep) const{
+    return _profile.getDirectProfile(timeStep);
 }
 
-double Candidate::indirect_profile(size_t i) const{
-    return _profile.getIndirectProfile(i);
+double Candidate::indirect_profile(size_t timeStep) const{
+    return _profile.getIndirectProfile(timeStep);
 }
 
-double Candidate::already_installed_direct_profile(size_t i) const
+double Candidate::already_installed_direct_profile(size_t timeStep) const
 {
-    return _already_installed_profile.getDirectProfile(i);
+    return _already_installed_profile.getDirectProfile(timeStep);
 }
 
-double Candidate::already_installed_indirect_profile(size_t i) const
+double Candidate::already_installed_indirect_profile(size_t timeStep) const
 {
-    return _already_installed_profile.getIndirectProfile(i);
+    return _already_installed_profile.getIndirectProfile(timeStep);
 }
 
 double Candidate::obj()const {
@@ -56,10 +53,7 @@ bool Candidate::has_link_profile() const
 {
     return !_data.link_profile.empty();
 }
-const std::string& Candidate::getName()
-{
-    return _name;
-}
+
 double Candidate::already_installed_capacity() const {
     return _data.already_installed_capacity;
 }
