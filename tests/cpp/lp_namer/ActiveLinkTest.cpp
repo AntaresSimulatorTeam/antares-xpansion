@@ -1,6 +1,9 @@
 #include "gtest/gtest.h"
 #include "ActiveLinks.h"
 
+const double DEFAULT_CAPACITY = 0;
+const double DEFAULT_PROFILE_VALUE = 1;
+
 LinkProfile createProfile(std::vector<double>& directAlreadyInstalledLinkprofile_l, std::vector<double>& indirectAlreadyInstalledLinkprofile_l)
 {
     LinkProfile profile;
@@ -27,7 +30,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
     ASSERT_EQ(links.size(), 1);
     ASSERT_EQ(links[0]._idInterco, 1);
     ASSERT_EQ(links[0]._name, "area1 - area2");
-    ASSERT_EQ(links[0]._already_installed_capacity, 0);
+    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, DEFAULT_CAPACITY);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
@@ -42,6 +45,25 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
         ASSERT_DOUBLE_EQ(candidates[0].direct_profile(timeStep), 1);
         ASSERT_DOUBLE_EQ(candidates[0].indirect_profile(timeStep), 1);
     }
+}
+
+TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity)
+{
+    CandidateData cand1;
+    cand1.link_id = 1;
+    cand1.name = "transmission_line_1";
+    cand1.link = "area1 - area2";
+    cand1.already_installed_capacity = 20;
+
+    std::vector<CandidateData> cand_data_list = { cand1 };
+
+    std::map<std::string, LinkProfile> profile_map;
+
+    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
+    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+
+    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, 20);
+
 }
 
 TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity)
@@ -77,7 +99,7 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity)
     ASSERT_EQ(links.size(), 1);
     ASSERT_EQ(links[0]._idInterco, 1);
     ASSERT_EQ(links[0]._name, "area1 - area2");
-    ASSERT_EQ(links[0]._already_installed_capacity, 0);
+    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, DEFAULT_CAPACITY);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
@@ -96,25 +118,6 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity)
         ASSERT_DOUBLE_EQ(candidates[0].direct_profile(timeStep), 1);
         ASSERT_DOUBLE_EQ(candidates[0].indirect_profile(timeStep), 1);
     }
-}
-
-TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity)
-{
-    CandidateData cand1;
-    cand1.link_id = 1;
-    cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
-    cand1.already_installed_capacity = 20;
-
-    std::vector<CandidateData> cand_data_list = { cand1 };
-
-    std::map<std::string, LinkProfile> profile_map;
-
-    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
-    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
-
-    ASSERT_EQ(links[0]._already_installed_capacity, 20);
-
 }
 
 TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
@@ -141,7 +144,7 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
     ASSERT_EQ(links.size(), 1);
     ASSERT_EQ(links[0]._idInterco, 1);
     ASSERT_EQ(links[0]._name, "area1 - area2");
-    ASSERT_EQ(links[0]._already_installed_capacity, 20);
+    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, 20);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
@@ -169,17 +172,20 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
 
 TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile_no_capacity)
 {
+    const double installed_capacity_link_0 = 0;
+    const double installed_capacity_link_1 = 0;
+
     CandidateData cand1;
-    cand1.link_id = 1;
+    cand1.link_id = 11;
     cand1.name = "transmission_line_1";
     cand1.link = "area1 - area2";
-    cand1.already_installed_capacity = 0;
+    cand1.already_installed_capacity = installed_capacity_link_0;
 
     CandidateData cand2;
-    cand2.link_id = 2;
+    cand2.link_id = 12;
     cand2.name = "pv";
     cand2.link = "area1 - pv";
-    cand2.already_installed_capacity = 0;
+    cand2.already_installed_capacity = installed_capacity_link_1;
 
     std::vector<CandidateData> cand_data_list;
     cand_data_list.push_back(cand1);
@@ -191,9 +197,9 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 2);
-    ASSERT_EQ(links[0]._idInterco, 1);
+    ASSERT_EQ(links[0]._idInterco, 11);
     ASSERT_EQ(links[0]._name, "area1 - area2");
-    ASSERT_EQ(links[0]._already_installed_capacity, 0);
+    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, installed_capacity_link_0);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
@@ -210,9 +216,9 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
         ASSERT_DOUBLE_EQ(candidatesLink0[0].indirect_profile(timeStep), 1);
     }
 
-    ASSERT_EQ(links[1]._idInterco, 2);
+    ASSERT_EQ(links[1]._idInterco, 12);
     ASSERT_EQ(links[1]._name, "area1 - pv");
-    ASSERT_EQ(links[1]._already_installed_capacity, 0);
+    ASSERT_DOUBLE_EQ(links[1]._already_installed_capacity, installed_capacity_link_1);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[1].already_installed_direct_profile(timeStep), 1);
@@ -232,7 +238,7 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
 }
 
 
-TEST(LinkBuilderTest, two_candidates_same_name_on_same_link)
+TEST(LinkBuilderTest, two_candidates_same_name)
 {
     CandidateData cand1;
     cand1.link_id = 1;
@@ -240,9 +246,9 @@ TEST(LinkBuilderTest, two_candidates_same_name_on_same_link)
     cand1.link = "area1 - area2";
 
     CandidateData cand2;
-    cand2.link_id = 1;
+    cand2.link_id = 2;
     cand2.name = "transmission_line_1";
-    cand2.link = "area1 - area2";
+    cand2.link = "area1 - area3";
 
     std::vector<CandidateData> cand_data_list;
     cand_data_list.push_back(cand1);
@@ -308,33 +314,6 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile)
 }
 
 
-TEST(LinkBuilderTest, two_candidates_with_same_name_on_two_different_links)
-{
-    CandidateData cand1;
-    cand1.link_id = 1;
-    cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
-
-    CandidateData cand2;
-    cand2.link_id = 2;
-    cand2.name = "transmission_line_1";
-    cand2.link = "area2 - area3";
-
-    std::vector<CandidateData> cand_data_list;
-    cand_data_list.push_back(cand1);
-    cand_data_list.push_back(cand2);
-
-    std::map<std::string, LinkProfile> profile_map;
-
-    try {
-        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
-        FAIL() << "duplicate not detected";
-    }
-    catch (const std::runtime_error&  err) {
-        ASSERT_STREQ(err.what(), "Candidate transmission_line_1 duplication detected");
-    }
-}
-
 TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity)
 {
     CandidateData cand1;
@@ -361,5 +340,29 @@ TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity)
     }
     catch (const std::runtime_error& err) {
         ASSERT_STREQ(err.what(), "Multiple already installed capacity detected for link area1 - area2");
+    }
+}
+
+TEST(LinkBuilderTest, missing_link_profile_in_profile_map)
+{
+    std::string cand_profile1_name = "cand1Profile.txt";
+    CandidateData cand1;
+    cand1.link_id = 1;
+    cand1.name = "transmission_line_1";
+    cand1.link = "area1 - area2";
+    cand1.link_profile = cand_profile1_name;
+    cand1.already_installed_capacity = 20;
+
+    std::vector<CandidateData> cand_data_list;
+    cand_data_list.push_back(cand1);
+
+    std::map<std::string, LinkProfile> profile_map;
+
+    try {
+        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
+        FAIL() << "Missing link profile : not detected";
+    }
+    catch (const std::runtime_error& err) {
+        ASSERT_STREQ(err.what(), "There is no linkProfile associated with cand1Profile.txt");
     }
 }
