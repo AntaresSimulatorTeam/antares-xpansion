@@ -1,5 +1,3 @@
-//
-
 #include "LinkProfileReader.h"
 
 LinkProfile LinkProfileReader::ReadLinkProfile(const std::string& filename){
