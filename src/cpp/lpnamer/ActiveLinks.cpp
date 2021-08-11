@@ -5,19 +5,22 @@
 #include <unordered_set>
 
 
-void ActiveLinksBuilder::addCandidate(const CandidateData& candidate_data, const std::map<std::string, LinkProfile>& profile_map){
+void ActiveLinksBuilder::createLinkAndAddCandidate(const CandidateData& candidate_data,
+                                                   const LinkProfile& candidate_profile,
+                                                   const LinkProfile& already_installed_link_profile){
 
     int indexLink = getIndexOf(candidate_data.link_id);
 
     if (indexLink == -1)
     {
         ActiveLink link(candidate_data.link_id, candidate_data.link);
+        link.setAlreadyInstalledLinkProfile(already_installed_link_profile);
         link._already_installed_capacity = linkToAlreadyInstalledCapacity[candidate_data.link];
         _links.push_back(link);
         indexLink = _links.size() - 1;
     }
 
-    _links[indexLink].addCandidate(candidate_data, profile_map);
+    _links[indexLink].addCandidate(candidate_data, candidate_profile);
 }
 
 ActiveLinksBuilder::ActiveLinksBuilder(const std::vector<CandidateData>& candidateList, const std::map<std::string, LinkProfile>& profile_map):
@@ -104,8 +107,20 @@ void ActiveLinksBuilder::checkCandidateNameDuplication()
 const std::vector<ActiveLink>& ActiveLinksBuilder::getLinks()
 {
     if (_links.empty()){
-        for (const auto& candidateData : _candidateDatas) {
-            addCandidate(candidateData, _profile_map);
+        for (const CandidateData& candidateData : _candidateDatas) {
+            LinkProfile already_installed_link_profile;
+            if (linkToAlreadyInstalledProfileName.find(candidateData.link) != linkToAlreadyInstalledProfileName.end())
+            {
+                const std::string& already_installed_link_profile_name = linkToAlreadyInstalledProfileName[candidateData.link];
+                already_installed_link_profile = _profile_map.at(already_installed_link_profile_name);
+            }
+            
+            LinkProfile candidateProfile;
+            if (!candidateData.link_profile.empty())
+            {
+                candidateProfile = _profile_map.at(candidateData.link_profile);
+            }
+            createLinkAndAddCandidate(candidateData, candidateProfile, already_installed_link_profile);
         }
     }
 
@@ -136,21 +151,9 @@ void ActiveLink::setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile)
     _already_installed_profile = linkProfile;
 }
 
-void ActiveLink::addCandidate(const CandidateData& candidate_data, const std::map<std::string, LinkProfile>& profile_map)
+void ActiveLink::addCandidate(const CandidateData& candidate_data, const LinkProfile& candidate_profile)
 {
-    auto it = profile_map.find(candidate_data.link_profile);
-    LinkProfile linkprofile;
-    if (it != profile_map.end())
-    {
-        linkprofile = it->second;
-    }
-    Candidate candidate(candidate_data, linkprofile);
-    auto it_already_installed_link_profile = profile_map.find(candidate_data.already_installed_link_profile);
-
-    if (_already_installed_profile.empty() && it_already_installed_link_profile != profile_map.end())
-    {
-        _already_installed_profile = it_already_installed_link_profile->second;
-    }
+    Candidate candidate(candidate_data, candidate_profile);
 
     _candidates.push_back(candidate);
 }

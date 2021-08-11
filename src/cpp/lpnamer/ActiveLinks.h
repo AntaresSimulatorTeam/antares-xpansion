@@ -11,7 +11,7 @@ public:
 	ActiveLink(int idInterco, const std::string& linkName);
 	void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
-	void addCandidate(const CandidateData& candidate, const std::map<std::string, LinkProfile>& profile_map);
+	void addCandidate(const CandidateData& candidate_data, const LinkProfile& candidate_profile);
 	const std::vector<Candidate>& getCandidates() const;
 	
 	double already_installed_direct_profile(size_t timeStep) const;
@@ -40,13 +40,15 @@ private:
 	void checkLinksValidity();
 
 	int getIndexOf(int link_id) const;
-	void addCandidate(const CandidateData& data, const std::map<std::string, LinkProfile>& profile_map);
+	void createLinkAndAddCandidate(const CandidateData& candidate_data,
+								   const LinkProfile& candidate_profile,
+								   const LinkProfile& already_installed_link_profile);
 	void launchExceptionIfNoLinkProfileAssociated(const std::string& profileName);
 	void launchExceptionIfLinkHasAnotherAlreadyInstalledLinkProfile(const std::string& link_name, const std::string& already_installed_link_profile_name);
 	void launchExceptionIfLinkHasAnotherAlreadyInstalledCapacity(const std::string& link, const double& already_installed_link_capacity);
 	
 	std::unordered_map<std::string, std::string> linkToAlreadyInstalledProfileName;
-	std::unordered_map<std::string, int> linkToAlreadyInstalledCapacity;
+	std::unordered_map<std::string, double> linkToAlreadyInstalledCapacity;
 	const std::vector<CandidateData> _candidateDatas;
 	const std::map<std::string, LinkProfile> _profile_map;
     std::vector <ActiveLink> _links;
