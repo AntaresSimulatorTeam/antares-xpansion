@@ -112,7 +112,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
 
     std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinks linkBuilder{ cand_data_list, profile_map };
+    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     std::vector<double> directLinkprofile_l(8760, 1);
@@ -146,7 +146,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity)
 
     std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinks linkBuilder{ cand_data_list, profile_map };
+    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     std::vector<double> directLinkprofile_l(8760, 1);
@@ -187,7 +187,7 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
 
     std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinks linkBuilder{ cand_data_list, profile_map };
+    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     std::vector<double> directLinkprofile_l(8760, 1);
@@ -232,7 +232,7 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
 
     std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinks linkBuilder{ cand_data_list, profile_map };
+    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     std::vector<double> directLinkprofile_l(8760, 1);
@@ -278,7 +278,7 @@ TEST(LinkBuilderTest, two_candidates_same_name_on_same_link)
     std::map<std::string, LinkProfile> profile_map;
 
     try {
-        ActiveLinks linkBuilder{ cand_data_list, profile_map };
+        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
         FAIL() << "duplicate not detected";
     }
     catch (const std::runtime_error& err) {
@@ -334,7 +334,7 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile)
     profile_map[temp_already_installed_profile2_name] = alreadyInstalledProfile;
 
     try {
-        ActiveLinks linkBuilder{ cand_data_list, profile_map };
+        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
         FAIL() << "Candidate of the same links have different already_installed_links_profile and it's not detected";
     }
     catch (const std::runtime_error& err) {
@@ -363,7 +363,7 @@ TEST(LinkBuilderTest, two_candidates_with_same_name_on_two_different_links)
     std::map<std::string, LinkProfile> profile_map;
 
     try {
-        ActiveLinks linkBuilder{ cand_data_list, profile_map };
+        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
         FAIL() << "duplicate not detected";
     }
     catch (const std::runtime_error&  err) {
@@ -392,7 +392,7 @@ TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity)
     std::map<std::string, LinkProfile> profile_map;
 
     try {
-        ActiveLinks linkBuilder{ cand_data_list, profile_map };
+        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
         FAIL() << "Same alreadyInstalledCapacity : not detected";
     }
     catch (const std::runtime_error& err) {
