@@ -8,7 +8,7 @@
 class ActiveLink {
 
 public:
-	ActiveLink(int idInterco, const std::string& linkName);
+	ActiveLink(int idInterco, const std::string linkName);
 	void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
 	void addCandidate(const CandidateData& candidate_data, const LinkProfile& candidate_profile);
@@ -40,18 +40,31 @@ private:
 	void checkLinksValidity();
 
 	int getIndexOf(int link_id) const;
-	void createLinkAndAddCandidate(const CandidateData& candidate_data,
-								   const LinkProfile& candidate_profile,
-								   const LinkProfile& already_installed_link_profile);
+	void addCandidate(const CandidateData &candidate_data);
 	void launchExceptionIfNoLinkProfileAssociated(const std::string& profileName);
-	void launchExceptionIfLinkHasAnotherAlreadyInstalledLinkProfile(const std::string& link_name, const std::string& already_installed_link_profile_name);
-	void launchExceptionIfLinkHasAnotherAlreadyInstalledCapacity(const std::string& link, const double& already_installed_link_capacity);
-	
-	std::unordered_map<std::string, std::string> linkToAlreadyInstalledProfileName;
+
+    std::unordered_map<std::string, std::string> linkToAlreadyInstalledProfileName;
 	std::unordered_map<std::string, double> linkToAlreadyInstalledCapacity;
 	const std::vector<CandidateData> _candidateDatas;
 	const std::map<std::string, LinkProfile> _profile_map;
     std::vector <ActiveLink> _links;
+
+    using linkName = std::string;
+    struct LinkData{
+        int id;
+        double installed_capacity;
+        std::string profile_name;
+    };
+    std::map<linkName, LinkData> _links_data;
+
+    void record_link_data(const CandidateData &candidateData);
+
+    void raise_errors_if_link_data_differs_from_existing_link(const LinkData &link_data,
+                                                              const linkName &link_name) const;
+
+    void create_links();
+
+    LinkProfile getProfileFromProfileMap(const std::string &profile_name) const;
 };
 
 #endif //ANTARESXPANSION_ACTIVELINKS_H

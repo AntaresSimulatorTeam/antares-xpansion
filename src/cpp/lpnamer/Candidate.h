@@ -9,12 +9,12 @@ struct CandidateData {
     //TODO : value not used
     std::string investment_type;
 
-    std::string link;
+    std::string link_name;
     int         link_id;
     std::string linkor;
     std::string linkex;
-    std::string already_installed_link_profile;
-    double already_installed_capacity;
+    std::string installed_link_profile_name;
+    double already_installed_capacity = 1.0;
 
     std::string name;
     std::string link_profile;

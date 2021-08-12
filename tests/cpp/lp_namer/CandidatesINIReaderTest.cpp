@@ -104,11 +104,11 @@ TEST_F(CandidatesINIReaderTest, testReadCandidate)
     ASSERT_EQ(candidates_data.size(), 2);
     ASSERT_EQ(candidates_data[0].name, "semibase");
     ASSERT_EQ(candidates_data[0].investment_type, "semibase");
-    ASSERT_EQ(candidates_data[0].link, "area1 - semibase");
+    ASSERT_EQ(candidates_data[0].link_name, "area1 - semibase");
     ASSERT_EQ(candidates_data[0].link_id, 2);
 
     ASSERT_EQ(candidates_data[1].name, "peak");
     ASSERT_EQ(candidates_data[1].investment_type, "peak");
-    ASSERT_EQ(candidates_data[1].link, "area1 - peak");
+    ASSERT_EQ(candidates_data[1].link_name, "area1 - peak");
     ASSERT_EQ(candidates_data[1].link_id, 1);
 }

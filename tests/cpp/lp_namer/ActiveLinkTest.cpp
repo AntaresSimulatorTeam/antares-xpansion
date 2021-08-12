@@ -17,7 +17,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
     CandidateData cand1;
     cand1.link_id =1;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
     cand1.already_installed_capacity = 0;
     
     std::vector<CandidateData> cand_data_list = {cand1};
@@ -52,7 +52,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity)
     CandidateData cand1;
     cand1.link_id = 1;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
     cand1.already_installed_capacity = 20;
 
     std::vector<CandidateData> cand_data_list = { cand1 };
@@ -73,7 +73,7 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity)
     CandidateData cand1;
     cand1.link_id = 1;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
     cand1.link_profile = link_profile_cand1;
     cand1.already_installed_capacity = 0;
 
@@ -125,13 +125,13 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
     CandidateData cand1;
     cand1.link_id = 1;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
     cand1.already_installed_capacity = 20;
 
     CandidateData cand2;
     cand2.link_id = 1;
     cand2.name = "transmission_line_2";
-    cand2.link = "area1 - area2";
+    cand2.link_name = "area1 - area2";
     cand2.already_installed_capacity = 20;
 
     std::vector<CandidateData> cand_data_list = { cand1, cand2 };
@@ -170,6 +170,7 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
 
 }
 
+
 TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile_no_capacity)
 {
     const double installed_capacity_link_0 = 0;
@@ -178,13 +179,13 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
     CandidateData cand1;
     cand1.link_id = 11;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
     cand1.already_installed_capacity = installed_capacity_link_0;
 
     CandidateData cand2;
     cand2.link_id = 12;
     cand2.name = "pv";
-    cand2.link = "area1 - pv";
+    cand2.link_name = "area1 - pv";
     cand2.already_installed_capacity = installed_capacity_link_1;
 
     std::vector<CandidateData> cand_data_list;
@@ -238,17 +239,73 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
 }
 
 
+TEST(LinkBuilderTest, error_if_two_candidates_on_same_link_only_one_with_installed_profile)
+{
+    CandidateData cand1;
+    cand1.link_id = 1;
+    cand1.name = "transmission_line_1";
+    cand1.link_name = "area1 - area2";
+
+    CandidateData cand2;
+    cand2.link_id = 1;
+    cand2.name = "transmission_line_2";
+    cand2.link_name = "area1 - area2";
+    cand2.installed_link_profile_name = "dummy";
+
+    std::vector<CandidateData> cand_data_list;
+    cand_data_list.push_back(cand1);
+    cand_data_list.push_back(cand2);
+    std::map<std::string, LinkProfile> profile_map = {{"dummy", LinkProfile()}};
+
+    try {
+        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
+        FAIL() << "duplicate not detected";
+    }
+    catch (const std::runtime_error& err) {
+        ASSERT_STREQ(err.what(), "Multiple already_installed_profile detected for link area1 - area2");
+    }
+
+}
+
+TEST(LinkBuilderTest, error_if_two_candidates_on_same_link_with_different_linkid)
+{
+    CandidateData cand1;
+    cand1.link_id = 1;
+    cand1.name = "transmission_line_1";
+    cand1.link_name = "area1 - area2";
+
+    CandidateData cand2;
+    cand2.link_id = 2;
+    cand2.name = "transmission_line_2";
+    cand2.link_name = "area1 - area2";
+
+    std::vector<CandidateData> cand_data_list;
+    cand_data_list.push_back(cand1);
+    cand_data_list.push_back(cand2);
+    std::map<std::string, LinkProfile> profile_map ;
+
+    try {
+        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
+        FAIL() << "incompatibility of link_id not detected";
+    }
+    catch (const std::runtime_error& err) {
+        ASSERT_STREQ(err.what(), "Multiple link_id detected for link area1 - area2");
+    }
+
+}
+
+
 TEST(LinkBuilderTest, two_candidates_same_name)
 {
     CandidateData cand1;
     cand1.link_id = 1;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
 
     CandidateData cand2;
     cand2.link_id = 2;
     cand2.name = "transmission_line_1";
-    cand2.link = "area1 - area3";
+    cand2.link_name = "area1 - area3";
 
     std::vector<CandidateData> cand_data_list;
     cand_data_list.push_back(cand1);
@@ -273,16 +330,16 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile)
     CandidateData cand1;
     cand1.link_id = 1;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
     cand1.already_installed_capacity = 0;
-    cand1.already_installed_link_profile = temp_already_installed_profile1_name;
+    cand1.installed_link_profile_name = temp_already_installed_profile1_name;
 
     CandidateData cand2;
     cand2.link_id = 1;
     cand2.name = "transmission_line_2";
-    cand2.link = "area1 - area2";
+    cand2.link_name = "area1 - area2";
     cand2.already_installed_capacity = 0;
-    cand2.already_installed_link_profile = temp_already_installed_profile2_name;
+    cand2.installed_link_profile_name = temp_already_installed_profile2_name;
 
     std::vector<CandidateData> cand_data_list;
     cand_data_list.push_back(cand1);
@@ -319,13 +376,13 @@ TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity)
     CandidateData cand1;
     cand1.link_id = 1;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
     cand1.already_installed_capacity = 20;
 
     CandidateData cand2;
     cand2.link_id = 1;
     cand2.name = "transmission_line_2";
-    cand2.link = "area1 - area2";
+    cand2.link_name = "area1 - area2";
     cand2.already_installed_capacity = 30;
 
     std::vector<CandidateData> cand_data_list;
@@ -349,7 +406,7 @@ TEST(LinkBuilderTest, missing_link_profile_in_profile_map)
     CandidateData cand1;
     cand1.link_id = 1;
     cand1.name = "transmission_line_1";
-    cand1.link = "area1 - area2";
+    cand1.link_name = "area1 - area2";
     cand1.link_profile = cand_profile1_name;
     cand1.already_installed_capacity = 20;
 

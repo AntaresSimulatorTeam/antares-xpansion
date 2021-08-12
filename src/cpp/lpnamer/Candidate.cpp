@@ -43,7 +43,7 @@ double Candidate::ub() const {
 }
 
 bool Candidate::has_already_installed_link_profile() const {
-    return !_data.already_installed_link_profile.empty();
+    return !_data.installed_link_profile_name.empty();
 }
 
 double Candidate::already_installed_capacity() const {

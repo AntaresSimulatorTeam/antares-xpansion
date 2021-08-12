@@ -34,7 +34,7 @@ const std::map<std::string, LinkProfile> LinkProfileReader::getLinkProfileMap(co
     std::map<std::string, LinkProfile> mapLinkProfile;
     for (const auto& candidate_data : candidateList)
     {
-        importProfile(mapLinkProfile, capacity_folder, candidate_data.already_installed_link_profile);
+        importProfile(mapLinkProfile, capacity_folder, candidate_data.installed_link_profile_name);
         importProfile(mapLinkProfile, capacity_folder, candidate_data.link_profile);
     }
     return mapLinkProfile;

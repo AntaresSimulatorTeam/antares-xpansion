@@ -4,23 +4,17 @@
 #include "Candidate.h"
 #include <unordered_set>
 
+bool doubles_are_different(const double a,
+                           const double b) {
+    const double MACHINE_EPSILON = std::numeric_limits<double>::epsilon();
+    return std::abs(a - b) > MACHINE_EPSILON;
+}
 
-void ActiveLinksBuilder::createLinkAndAddCandidate(const CandidateData& candidate_data,
-                                                   const LinkProfile& candidate_profile,
-                                                   const LinkProfile& already_installed_link_profile){
 
-    int indexLink = getIndexOf(candidate_data.link_id);
+void ActiveLinksBuilder::addCandidate(const CandidateData &candidate_data) {
 
-    if (indexLink == -1)
-    {
-        ActiveLink link(candidate_data.link_id, candidate_data.link);
-        link.setAlreadyInstalledLinkProfile(already_installed_link_profile);
-        link._already_installed_capacity = linkToAlreadyInstalledCapacity[candidate_data.link];
-        _links.push_back(link);
-        indexLink = _links.size() - 1;
-    }
-
-    _links[indexLink].addCandidate(candidate_data, candidate_profile);
+    unsigned int indexLink = getIndexOf(candidate_data.link_id);
+    _links[indexLink].addCandidate(candidate_data, getProfileFromProfileMap(candidate_data.link_profile));
 }
 
 ActiveLinksBuilder::ActiveLinksBuilder(const std::vector<CandidateData>& candidateList, const std::map<std::string, LinkProfile>& profile_map):
@@ -34,31 +28,41 @@ void ActiveLinksBuilder::checkLinksValidity()
 {
     for (const auto& candidateData : _candidateDatas)
     {
-        const std::string& link = candidateData.link;
-        const std::string& link_profile = candidateData.link_profile;
-        const std::string& already_installed_link_profile = candidateData.already_installed_link_profile;
-        const double already_installed_link_capacity = candidateData.already_installed_capacity;
+        launchExceptionIfNoLinkProfileAssociated(candidateData.link_profile);
+        launchExceptionIfNoLinkProfileAssociated(candidateData.installed_link_profile_name);
 
-        launchExceptionIfNoLinkProfileAssociated(link_profile);
-        launchExceptionIfNoLinkProfileAssociated(already_installed_link_profile);
-        launchExceptionIfLinkHasAnotherAlreadyInstalledLinkProfile(link, already_installed_link_profile);
-        launchExceptionIfLinkHasAnotherAlreadyInstalledCapacity(link, already_installed_link_capacity);
+        record_link_data(candidateData);
     }
 }
 
-void ActiveLinksBuilder::launchExceptionIfLinkHasAnotherAlreadyInstalledCapacity(const std::string& link, const double& already_installed_link_capacity)
-{
-    const auto& it_linkToAlreadyInstalledCapacity = linkToAlreadyInstalledCapacity.find(link);
-    if (it_linkToAlreadyInstalledCapacity != linkToAlreadyInstalledCapacity.end() && it_linkToAlreadyInstalledCapacity->second != already_installed_link_capacity)
-    {
-        std::string message = "Multiple already installed capacity detected for link " + link;
+void ActiveLinksBuilder::record_link_data(const CandidateData &candidateData) {
+    LinkData link_data = {candidateData.link_id, candidateData.already_installed_capacity, candidateData.installed_link_profile_name};
+    const auto & it = _links_data.find(candidateData.link_name);
+    if(it == _links_data.end()){
+        _links_data[candidateData.link_name] = link_data;
+    } else{
+        const linkName link_name = it->first;
+        raise_errors_if_link_data_differs_from_existing_link(link_data, link_name);
+    }
+}
+
+void ActiveLinksBuilder::raise_errors_if_link_data_differs_from_existing_link(const ActiveLinksBuilder::LinkData &link_data,
+                                                                              const linkName &link_name) const {
+    const LinkData & old_link_data =  _links_data.at(link_name);
+    if(doubles_are_different(link_data.installed_capacity, old_link_data.installed_capacity)){
+        std::string message = "Multiple already installed capacity detected for link " + link_name;
         throw std::runtime_error(message);
     }
-    else if (already_installed_link_capacity > 0)
-    {
-        linkToAlreadyInstalledCapacity[link] = already_installed_link_capacity;
+    if(old_link_data.profile_name != link_data.profile_name){
+        std::string message = "Multiple already_installed_profile detected for link " + link_name;
+        throw std::runtime_error(message);
+    }
+    if(old_link_data.id != link_data.id){
+        std::string message = "Multiple link_id detected for link " + link_name;
+        throw std::runtime_error(message);
     }
 }
+
 
 void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(const std::string& profileName)
 {
@@ -74,21 +78,6 @@ void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(const std::str
     }
     
 }
-
-void ActiveLinksBuilder::launchExceptionIfLinkHasAnotherAlreadyInstalledLinkProfile(const std::string& link_name, const std::string& already_installed_link_profile_name)
-{
-    const auto& it_linkToAlreadyInstalledProfileName = linkToAlreadyInstalledProfileName.find(link_name);
-    if (it_linkToAlreadyInstalledProfileName == linkToAlreadyInstalledProfileName.end() && !already_installed_link_profile_name.empty())
-    {
-        linkToAlreadyInstalledProfileName[link_name] = already_installed_link_profile_name;
-    }
-    else if (it_linkToAlreadyInstalledProfileName != linkToAlreadyInstalledProfileName.end() && it_linkToAlreadyInstalledProfileName->second != already_installed_link_profile_name)
-    {
-        std::string message = "Multiple already_installed_profile detected for link " + link_name;
-        throw std::runtime_error(message);
-    }
-}
-
 
 void ActiveLinksBuilder::checkCandidateNameDuplication()
 {
@@ -107,23 +96,11 @@ void ActiveLinksBuilder::checkCandidateNameDuplication()
 const std::vector<ActiveLink>& ActiveLinksBuilder::getLinks()
 {
     if (_links.empty()){
+        create_links();
         for (const CandidateData& candidateData : _candidateDatas) {
-            LinkProfile already_installed_link_profile;
-            if (linkToAlreadyInstalledProfileName.find(candidateData.link) != linkToAlreadyInstalledProfileName.end())
-            {
-                const std::string& already_installed_link_profile_name = linkToAlreadyInstalledProfileName[candidateData.link];
-                already_installed_link_profile = _profile_map.at(already_installed_link_profile_name);
-            }
-            
-            LinkProfile candidateProfile;
-            if (!candidateData.link_profile.empty())
-            {
-                candidateProfile = _profile_map.at(candidateData.link_profile);
-            }
-            createLinkAndAddCandidate(candidateData, candidateProfile, already_installed_link_profile);
+            addCandidate(candidateData);
         }
     }
-
     return _links;
 }
 
@@ -141,7 +118,26 @@ int ActiveLinksBuilder::getIndexOf(int link_id) const
     return index;
 }
 
-ActiveLink::ActiveLink(int idInterco, const std::string& linkName):
+void ActiveLinksBuilder::create_links() {
+    for( auto const & it: _links_data){
+        linkName name = it.first;
+        LinkData data = it.second;
+        ActiveLink link(data.id, name);
+        link.setAlreadyInstalledLinkProfile(getProfileFromProfileMap(data.profile_name));
+        link._already_installed_capacity =data.installed_capacity;
+        _links.push_back(link);
+    }
+}
+
+LinkProfile ActiveLinksBuilder::getProfileFromProfileMap(const std::string &profile_name) const {
+    LinkProfile already_installed_link_profile;
+    if(_profile_map.find(profile_name) != _profile_map.end()){
+        already_installed_link_profile = _profile_map.at(profile_name);
+    }
+    return already_installed_link_profile;
+}
+
+ActiveLink::ActiveLink(int idInterco, const std::string linkName):
     _idInterco(idInterco), _name(linkName), _already_installed_capacity(1)
 {
 }
