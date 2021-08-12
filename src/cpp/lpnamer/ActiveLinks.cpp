@@ -1,5 +1,6 @@
 #include "ActiveLinks.h"
 #include <unordered_set>
+#include <limits>
 
 bool doubles_are_different(const double a,
                            const double b) {
