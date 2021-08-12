@@ -113,11 +113,11 @@ CandidateData CandidatesINIReader::readCandidateSection(const std::string &candi
     CandidateData candidateData;
     candidateData.name = StringUtils::ToLowercase(getStrVal(reader,sectionName,"name"));
     candidateData.investment_type = getStrVal(reader,sectionName,"investment-type");
-    candidateData.link = StringUtils::ToLowercase(getStrVal(reader,sectionName,"link"));
-    size_t i = candidateData.link.find(" - ");
+    candidateData.link_name = StringUtils::ToLowercase(getStrVal(reader, sectionName, "link"));
+    size_t i = candidateData.link_name.find(" - ");
     if (i != std::string::npos) {
-        candidateData.linkor = candidateData.link.substr(0, i);
-        candidateData.linkex = candidateData.link.substr(i + 3, candidateData.link.size());
+        candidateData.linkor = candidateData.link_name.substr(0, i);
+        candidateData.linkex = candidateData.link_name.substr(i + 3, candidateData.link_name.size());
         if(!checkArea(candidateData.linkor))
         {
             std::string message = "Unrecognized area " + candidateData.linkor + " in section " + sectionName + " in " + candidateFile + ".";
@@ -131,14 +131,14 @@ CandidateData CandidatesINIReader::readCandidateSection(const std::string &candi
     }
 
     //Check if interco is available
-    auto it = _intercoIndexMap.find(candidateData.link);
+    auto it = _intercoIndexMap.find(candidateData.link_name);
     if (it == _intercoIndexMap.end()) {
         std::string message = "cannot link candidate " + candidateData.name + " to interco id";
         throw std::runtime_error(message);
     }
     candidateData.link_id = it->second;
     candidateData.link_profile = getStrVal(reader,sectionName,"link-profile");
-    candidateData.already_installed_link_profile = getStrVal(reader,sectionName,"already-installed-link-profile");
+    candidateData.installed_link_profile_name = getStrVal(reader, sectionName, "already-installed-link-profile");
 
     candidateData.annual_cost_per_mw = getDblVal(reader,sectionName,"annual-cost-per-mw");
     candidateData.max_investment = getDblVal(reader,sectionName,"max-investment");

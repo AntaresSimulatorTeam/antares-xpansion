@@ -20,7 +20,7 @@ Candidates CandidatesInitializer::initializedCandidates(std::string const & cand
         Candidate candidate;
         candidate._data = candidateData;
 
-        candidate._already_installed_profile = getOrImportProfile(capacity_folder, candidateData.already_installed_link_profile);
+        candidate._already_installed_profile = getOrImportProfile(capacity_folder, candidateData.installed_link_profile_name);
         candidate._profile = getOrImportProfile(capacity_folder,  candidateData.link_profile);
 
         candidates.push_back(candidate);

@@ -1,5 +1,3 @@
-//
-
 #include "LinkProfileReader.h"
 
 LinkProfile LinkProfileReader::ReadLinkProfile(const std::string& filename){
@@ -29,4 +27,24 @@ LinkProfile LinkProfileReader::ReadLinkProfile(const std::string& filename){
     infile.close();
 
     return result;
+}
+
+const std::map<std::string, LinkProfile> LinkProfileReader::getLinkProfileMap(const std::string& capacity_folder, const std::vector<CandidateData>& candidateList)
+{
+    std::map<std::string, LinkProfile> mapLinkProfile;
+    for (const auto& candidate_data : candidateList)
+    {
+        importProfile(mapLinkProfile, capacity_folder, candidate_data.installed_link_profile_name);
+        importProfile(mapLinkProfile, capacity_folder, candidate_data.link_profile);
+    }
+    return mapLinkProfile;
+}
+
+void LinkProfileReader::importProfile(std::map<std::string, LinkProfile>& mapLinkProfile, const std::string& capacitySubfolder, const std::string& profile_name)
+{
+    if (!profile_name.empty()) {
+        if (mapLinkProfile.find(profile_name) == mapLinkProfile.end()) {
+            mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile(capacitySubfolder + PATH_SEPARATOR + profile_name);
+        }
+    }
 }

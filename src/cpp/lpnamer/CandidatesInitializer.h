@@ -13,6 +13,7 @@ public:
 
     Candidates initializedCandidates(std::string const & candidates_file_name, std::string const & capacity_folder);
 
+
 private:
 
     LinkProfile getOrImportProfile(const std::string &capacitySubfolder, const std::string &profile_name);

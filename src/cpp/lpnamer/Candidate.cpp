@@ -1,19 +1,29 @@
 #include "Candidate.h"
 
-double Candidate::direct_profile(size_t i) const{
-    return _profile.getDirectProfile(i);
+Candidate::Candidate(CandidateData data, const LinkProfile& profile)
+{
+    _data = data;
+    _name = _data.name;
+    _profile = profile;
+    
 }
 
-double Candidate::indirect_profile(size_t i) const{
-    return _profile.getIndirectProfile(i);
+double Candidate::direct_profile(size_t timeStep) const{
+    return _profile.getDirectProfile(timeStep);
 }
 
-double Candidate::already_installed_direct_profile(size_t i) const{
-    return _already_installed_profile.getDirectProfile(i);
+double Candidate::indirect_profile(size_t timeStep) const{
+    return _profile.getIndirectProfile(timeStep);
 }
 
-double Candidate::already_installed_indirect_profile(size_t i) const{
-    return _already_installed_profile.getIndirectProfile(i);
+double Candidate::already_installed_direct_profile(size_t timeStep) const
+{
+    return _already_installed_profile.getDirectProfile(timeStep);
+}
+
+double Candidate::already_installed_indirect_profile(size_t timeStep) const
+{
+    return _already_installed_profile.getIndirectProfile(timeStep);
 }
 
 double Candidate::obj()const {
@@ -32,17 +42,9 @@ double Candidate::ub() const {
     return val;
 }
 
-bool Candidate::has_already_installed_capacity() const {
-    return _data.already_installed_capacity != 0.0;
-}
-
-bool Candidate::has_already_installed_link_profile() const {
-    return !_data.already_installed_link_profile.empty();
-}
 double Candidate::already_installed_capacity() const {
     return _data.already_installed_capacity;
 }
-
 
 double Candidate::unit_size() const {
     return _data.unit_size;
