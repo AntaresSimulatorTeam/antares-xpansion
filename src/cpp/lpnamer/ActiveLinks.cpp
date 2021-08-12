@@ -10,8 +10,8 @@ bool doubles_are_different(const double a,
 
 void ActiveLinksBuilder::addCandidate(const CandidateData &candidate_data) {
 
-    unsigned int indexLink = getIndexOf(candidate_data.link_id);
-    _links[indexLink].addCandidate(candidate_data, getProfileFromProfileMap(candidate_data.link_profile));
+    unsigned int indexLink = getLinkIndexOf(candidate_data.link_id);
+    _links.at(indexLink).addCandidate(candidate_data, getProfileFromProfileMap(candidate_data.link_profile));
 }
 
 ActiveLinksBuilder::ActiveLinksBuilder(const std::vector<CandidateData>& candidateList, const std::map<std::string, LinkProfile>& profile_map):
@@ -63,8 +63,7 @@ void ActiveLinksBuilder::raise_errors_if_link_data_differs_from_existing_link(co
 
 void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(const std::string& profileName)
 {
-    if (!profileName.empty())
-    {
+    if (!profileName.empty()){
         const auto& it_profile = _profile_map.find(profileName);
 
         if (it_profile == _profile_map.end())
@@ -79,11 +78,9 @@ void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(const std::str
 void ActiveLinksBuilder::checkCandidateNameDuplication()
 {
     std::unordered_set<std::string> setCandidatesNames;
-    for (const auto& candidateData : _candidateDatas)
-    {
+    for (const auto& candidateData : _candidateDatas){
         auto it_inserted = setCandidatesNames.insert(candidateData.name);
-        if (!it_inserted.second)
-        {
+        if (!it_inserted.second){
             std::string message = "Candidate " + candidateData.name + " duplication detected";
             throw std::runtime_error(message);
         }
@@ -101,13 +98,11 @@ const std::vector<ActiveLink>& ActiveLinksBuilder::getLinks()
     return _links;
 }
 
-int ActiveLinksBuilder::getIndexOf(int link_id) const
+int ActiveLinksBuilder::getLinkIndexOf(int link_id) const
 {
     int index = -1;
-    for (int i = 0; i <_links.size(); i++)
-    {
-        if (_links.at(i)._idLink == link_id)
-        {
+    for (int i = 0; i <_links.size(); i++) {
+        if (_links.at(i)._idLink == link_id){
             index = i;
             break;
         }

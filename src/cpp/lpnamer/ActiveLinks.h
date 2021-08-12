@@ -47,7 +47,7 @@ private:
 	void checkCandidateNameDuplication();
 	void checkLinksValidity();
 
-	int getIndexOf(int link_id) const;
+	int getLinkIndexOf(int link_id) const;
 	void addCandidate(const CandidateData &candidate_data);
 	void launchExceptionIfNoLinkProfileAssociated(const std::string& profileName);
 
