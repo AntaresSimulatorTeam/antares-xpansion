@@ -28,7 +28,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 1);
-    ASSERT_EQ(links[0]._idInterco, 1);
+    ASSERT_EQ(links[0]._idLink, 1);
     ASSERT_EQ(links[0]._name, "area1 - area2");
     ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, DEFAULT_CAPACITY);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
@@ -97,7 +97,7 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity)
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 1);
-    ASSERT_EQ(links[0]._idInterco, 1);
+    ASSERT_EQ(links[0]._idLink, 1);
     ASSERT_EQ(links[0]._name, "area1 - area2");
     ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, DEFAULT_CAPACITY);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
@@ -142,7 +142,7 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 1);
-    ASSERT_EQ(links[0]._idInterco, 1);
+    ASSERT_EQ(links[0]._idLink, 1);
     ASSERT_EQ(links[0]._name, "area1 - area2");
     ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, 20);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
@@ -198,7 +198,7 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 2);
-    ASSERT_EQ(links[0]._idInterco, 11);
+    ASSERT_EQ(links[0]._idLink, 11);
     ASSERT_EQ(links[0]._name, "area1 - area2");
     ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, installed_capacity_link_0);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
@@ -217,7 +217,7 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
         ASSERT_DOUBLE_EQ(candidatesLink0[0].indirect_profile(timeStep), 1);
     }
 
-    ASSERT_EQ(links[1]._idInterco, 12);
+    ASSERT_EQ(links[1]._idLink, 12);
     ASSERT_EQ(links[1]._name, "area1 - pv");
     ASSERT_DOUBLE_EQ(links[1]._already_installed_capacity, installed_capacity_link_1);
     for (int timeStep = 0; timeStep < 8760; timeStep++)

@@ -5,10 +5,12 @@
 #include <Candidate.h>
 #include <unordered_map>
 
+using LinkName = std::string;
+
 class ActiveLink {
 
 public:
-	ActiveLink(int idInterco, const std::string linkName);
+	ActiveLink(int idLink, const std::string linkName);
 	void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
 	void addCandidate(const CandidateData& candidate_data, const LinkProfile& candidate_profile);
@@ -18,8 +20,8 @@ public:
 	double already_installed_indirect_profile(size_t timeStep) const;
 
 public:
-	int _idInterco;
-	std::string _name;
+	int _idLink;
+	LinkName _name;
 	double _already_installed_capacity;
 
 private:
@@ -36,6 +38,12 @@ public:
 	const std::vector<ActiveLink>& getLinks();
 
 private:
+	struct LinkData {
+		int id;
+		double installed_capacity;
+		std::string profile_name;
+	};
+
 	void checkCandidateNameDuplication();
 	void checkLinksValidity();
 
@@ -43,28 +51,23 @@ private:
 	void addCandidate(const CandidateData &candidate_data);
 	void launchExceptionIfNoLinkProfileAssociated(const std::string& profileName);
 
-    std::unordered_map<std::string, std::string> linkToAlreadyInstalledProfileName;
-	std::unordered_map<std::string, double> linkToAlreadyInstalledCapacity;
+	void record_link_data(const CandidateData& candidateData);
+	void raise_errors_if_link_data_differs_from_existing_link(const LinkData& link_data,
+		const LinkName& link_name) const;
+	void create_links();
+
+	LinkProfile getProfileFromProfileMap(const std::string& profile_name) const;
+
+	std::map<LinkName, LinkData> _links_data;
+    std::unordered_map<LinkName, std::string> linkToAlreadyInstalledProfileName;
+	std::unordered_map<LinkName, double> linkToAlreadyInstalledCapacity;
 	const std::vector<CandidateData> _candidateDatas;
 	const std::map<std::string, LinkProfile> _profile_map;
     std::vector <ActiveLink> _links;
 
-    using linkName = std::string;
-    struct LinkData{
-        int id;
-        double installed_capacity;
-        std::string profile_name;
-    };
-    std::map<linkName, LinkData> _links_data;
+    
 
-    void record_link_data(const CandidateData &candidateData);
-
-    void raise_errors_if_link_data_differs_from_existing_link(const LinkData &link_data,
-                                                              const linkName &link_name) const;
-
-    void create_links();
-
-    LinkProfile getProfileFromProfileMap(const std::string &profile_name) const;
+    
 };
 
 #endif //ANTARESXPANSION_ACTIVELINKS_H
