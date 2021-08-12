@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Candidates.h"
+#include "ActiveLinks.h"
 
 
 /*!
@@ -60,6 +61,17 @@ public:
  * \return a pair of the computed direct and indirect capacities
  */
     std::pair<double, double> computeNewCapacities(double investment_p, Candidate & candidate_p, int timepoint_p) const;
+
+    /*!
+     * \brief computes the new capacities of related to a candidate
+     *
+     * \param investment_p : investment to consider for the candidate
+     * \param link_p : link for which the capacities will be computed
+     * \param timepoint_p : timepoint where the capcities will be computed
+     *
+     * \return a pair of the computed direct and indirect capacities
+     */
+    std::pair<double, double> computeNewCapacities(double investment_p, ActiveLink& link_p, int timepoint_p) const;
 
 /*!
  * \brief updates the linkdata file for a given candidate based on a given investment
