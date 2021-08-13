@@ -62,6 +62,8 @@ private:
     void add_new_columns(const std::vector<Candidate> &candidates);
 
     std::vector<Candidate> candidates_from_all_links(const std::vector<ActiveLink> &active_links) const;
+
+    void add_new_constraints(const std::vector<ActiveLink> &active_links);
 };
 
 

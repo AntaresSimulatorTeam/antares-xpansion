@@ -47,8 +47,41 @@ void ProblemModifier::changeProblem(const std::vector<ActiveLink> &active_links,
         remove_bounds_for(p_var_columns.at(link._idLink));
     }
     add_new_columns(candidates_from_all_links(active_links));
-    int a=1;
 
+    add_new_constraints(active_links);
+
+}
+
+void ProblemModifier::add_new_constraints(const std::vector<ActiveLink> &active_links) {
+    std::vector<double> dmatval;
+    std::vector<int> colind;
+    std::vector<char> rowtype;
+    std::vector<double> rhs;
+    std::vector<int> rstart;
+
+    for (const auto& link : active_links) {
+        rstart.push_back(dmatval.size());
+        rhs.push_back(0);
+        rowtype.push_back('L');
+        colind.push_back(0);
+        dmatval.push_back(1);
+        for (const auto& candidate:link.getCandidates()){
+            colind.push_back(_candidate_col_id[candidate._name]);
+            dmatval.push_back(-candidate.direct_profile(0));
+        }
+        rstart.push_back(dmatval.size());
+        rhs.push_back(0);
+        rowtype.push_back('G');
+        colind.push_back(0);
+        dmatval.push_back(1);
+        for (const auto& candidate:link.getCandidates()){
+            colind.push_back(_candidate_col_id[candidate._name]);
+            dmatval.push_back(+candidate.direct_profile(0));
+        }
+    }
+    rstart.push_back(dmatval.size());
+
+    solver_addrows(_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
 }
 
 void ProblemModifier::add_new_columns(const std::vector<Candidate> &candidates) {

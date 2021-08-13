@@ -205,7 +205,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     verify_column_lower_bound_is(2, -1e20);
     verify_column_upper_bound_is(2, 1e20);
 
-    verify_rows_are(0);
+    verify_rows_are(2);
 
 }
 
