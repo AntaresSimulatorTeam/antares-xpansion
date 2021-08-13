@@ -18,10 +18,10 @@ TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / "test_one_link_one_candidate-relaxed" /
 TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
                      / "economy"
 test_data = [
-    (TEST_LP_INTEGER_01, "integer"),
+    #(TEST_LP_INTEGER_01, "integer"),
     (TEST_LP_INTEGER_02, "integer"),
     (TEST_LP_RELAXED_01, "relaxed"),
-    (TEST_LP_RELAXED_02, "relaxed")
+    #(TEST_LP_RELAXED_02, "relaxed")
 ]
 
 test_data_multiple_candidates = [
