@@ -48,11 +48,12 @@ void ProblemModifier::changeProblem(const std::vector<ActiveLink> &active_links,
     }
     add_new_columns(candidates_from_all_links(active_links));
 
-    add_new_constraints(active_links);
+    add_new_constraints(active_links, p_var_columns);
 
 }
 
-void ProblemModifier::add_new_constraints(const std::vector<ActiveLink> &active_links) {
+void ProblemModifier::add_new_constraints(const std::vector<ActiveLink> &active_links,
+                                          const std::map<linkId, ColumnsToChange> &p_var_columns) {
     std::vector<double> dmatval;
     std::vector<int> colind;
     std::vector<char> rowtype;
@@ -60,23 +61,26 @@ void ProblemModifier::add_new_constraints(const std::vector<ActiveLink> &active_
     std::vector<int> rstart;
 
     for (const auto& link : active_links) {
-        rstart.push_back(dmatval.size());
-        rhs.push_back(0);
-        rowtype.push_back('L');
-        colind.push_back(0);
-        dmatval.push_back(1);
-        for (const auto& candidate:link.getCandidates()){
-            colind.push_back(_candidate_col_id[candidate._name]);
-            dmatval.push_back(-candidate.direct_profile(0));
-        }
-        rstart.push_back(dmatval.size());
-        rhs.push_back(0);
-        rowtype.push_back('G');
-        colind.push_back(0);
-        dmatval.push_back(1);
-        for (const auto& candidate:link.getCandidates()){
-            colind.push_back(_candidate_col_id[candidate._name]);
-            dmatval.push_back(+candidate.direct_profile(0));
+        for(auto column : p_var_columns.at(link._idLink)){
+            rstart.push_back(dmatval.size());
+            rhs.push_back(0);
+            rowtype.push_back('L');
+            colind.push_back(column.id);
+            dmatval.push_back(1);
+            for (const auto& candidate:link.getCandidates()){
+                colind.push_back(_candidate_col_id[candidate._name]);
+                dmatval.push_back(-candidate.direct_profile(column.time_step));
+            }
+            rstart.push_back(dmatval.size());
+            rhs.push_back(0);
+            rowtype.push_back('G');
+            colind.push_back(column.id);
+            dmatval.push_back(1);
+            for (const auto& candidate:link.getCandidates()){
+                colind.push_back(_candidate_col_id[candidate._name]);
+                dmatval.push_back(+candidate.direct_profile(column.time_step));
+            }
+
         }
     }
     rstart.push_back(dmatval.size());

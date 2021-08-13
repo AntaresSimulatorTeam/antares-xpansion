@@ -63,7 +63,8 @@ private:
 
     std::vector<Candidate> candidates_from_all_links(const std::vector<ActiveLink> &active_links) const;
 
-    void add_new_constraints(const std::vector<ActiveLink> &active_links);
+    void add_new_constraints(const std::vector<ActiveLink> &active_links,
+                             const std::map<linkId, ColumnsToChange> &p_var_columns);
 };
 
 

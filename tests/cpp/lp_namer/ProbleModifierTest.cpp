@@ -39,7 +39,9 @@ protected:
 
     void TearDown()
     {
-        // tear down
+        n_cols=-1;
+        n_rows=-1;
+
     }
 
     void update_n_cols(){
@@ -163,8 +165,8 @@ TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) 
 
 TEST_F(ProblemModifierTest, One_link_two_candidates) {
     const int link_id = 0;
-    const ColumnToChange column = {0, 0};
-    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{column}}};
+    const ColumnsToChange columns = {{0, 0}};
+    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,columns}};
 
     CandidateData cand1;
     cand1.link_id = link_id;
@@ -206,6 +208,54 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     verify_column_upper_bound_is(2, 1e20);
 
     verify_rows_are(2);
+    std::vector<char> row_type(n_rows, '0');
+    math_problem->get_row_type(row_type.data(), 0, n_rows - 1);
+    ASSERT_EQ(row_type.at(0), 'L');
+    ASSERT_EQ(row_type.at(1), 'G');
+
+    int max_size = 10;
+    std::vector<double> dmatval(max_size);
+    std::vector<int> colind(max_size);
+    std::vector<char> rowtype(max_size);
+    std::vector<double> rhs(max_size);
+    std::vector<int> rstart(max_size);
+    std::vector<int> mclind(max_size);
+    std::vector<int> nels(max_size);
+    math_problem->get_rows(rstart.data(), mclind.data(), dmatval.data(), max_size, nels.data(),
+            0, n_rows-1);
+
+    //TODO check the rest of
+
+}
+
+
+TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
+    const int link_id = 0;
+    const ColumnsToChange columns = {{0, 0}, {0, 1}};
+    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,columns}};
+
+    CandidateData cand1;
+    cand1.link_id = link_id;
+    cand1.name = "candy1";
+    cand1.link_name = "dummy_link";
+    CandidateData cand2;
+    cand2.link_id = link_id;
+    cand2.name = "candy2";
+    cand2.link_name = "dummy_link";
+
+    std::vector<CandidateData> cand_data_list = { cand1, cand2 };
+    std::map<std::string, LinkProfile> profile_map;
+
+    const std::vector<ActiveLink>& links = ActiveLinksBuilder(cand_data_list, profile_map).getLinks();
+
+
+    auto problem_modifier = ProblemModifier();
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns);
+
+    verify_columns_are(3);
+
+    verify_rows_are(4);
+
 
 }
 
