@@ -1,5 +1,6 @@
 
 #include <ProblemModifier.h>
+#include <ActiveLinks.h>
 #include <multisolver_interface/SolverFactory.h>
 #include <fstream>
 #include <solver_utils.h>
@@ -140,13 +141,12 @@ TEST_F(ProblemModifierTest, empty_test_the_multisolver_interface)
 
 
 TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) {
+    const int link_id = 0;
     const ColumnToChange column = {0, 0};
-    const std::map<linkId , ColumnsToChange> p_var_columns = {{0,{column}}};
+    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{column}}};
     const Cands candidates_link_0 = {};
-    const ActiveLink_AS active_link= {0, candidates_link_0};
+    const std::vector<ActiveLink> active_links= {ActiveLink(link_id, "dummy_link")};
 
-    ActiveLinks_AS active_links;
-    active_links.add_link(active_link);
 
     auto problem_modifier = ProblemModifier();
     math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links, p_var_columns);
@@ -162,16 +162,27 @@ TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) 
 
 
 TEST_F(ProblemModifierTest, One_link_two_candidates) {
+    const int link_id = 0;
     const ColumnToChange column = {0, 0};
-    const std::map<linkId , ColumnsToChange> p_var_columns = {{0,{column}}};
-    const Cands candidates_link_0 = {{"candy1"}, {"candy2"}};
-    const ActiveLink_AS active_link_0= {0, candidates_link_0};
+    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{column}}};
 
-    ActiveLinks_AS active_links;
-    active_links.add_link(active_link_0);
+    CandidateData cand1;
+    cand1.link_id = link_id;
+    cand1.name = "candy1";
+    cand1.link_name = "dummy_link";
+    CandidateData cand2;
+    cand2.link_id = link_id;
+    cand2.name = "candy2";
+    cand2.link_name = "dummy_link";
+
+    std::vector<CandidateData> cand_data_list = { cand1, cand2 };
+    std::map<std::string, LinkProfile> profile_map;
+
+    const std::vector<ActiveLink>& links = ActiveLinksBuilder(cand_data_list, profile_map).getLinks();
+
 
     auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links, p_var_columns);
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns);
 
     verify_columns_are(3);
 
@@ -194,6 +205,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     verify_column_lower_bound_is(2, -1e20);
     verify_column_upper_bound_is(2, 1e20);
 
+    verify_rows_are(0);
 
 }
 

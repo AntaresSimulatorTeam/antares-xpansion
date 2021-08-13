@@ -14,42 +14,6 @@ void ProblemModifier::remove_bounds_for(const ColumnsToChange &columns_to_change
     change_lower_bounds_to_neg_inf(col_ids);
 }
 
-void ProblemModifier::changeProblem(const ActiveLinks_AS &active_links,
-                                    const std::map<linkId, ColumnsToChange> &p_var_columns) {
-    for (const auto& link : active_links.getItems()) {
-        remove_bounds_for(p_var_columns.at(link.id));
-    }
-    add_new_columns(candidates_from_all_links(active_links));
-
-}
-
-Cands ProblemModifier::candidates_from_all_links(const ActiveLinks_AS &active_links) const {
-    Cands all_candidates;
-    for (const auto& link : active_links.getItems()){
-        auto candidates = link.candidates;
-        all_candidates.insert(all_candidates.end(),candidates.begin(), candidates.end());
-    }
-    return all_candidates;
-}
-
-void ProblemModifier::add_new_columns(const Cands &candidates) {
-    if(!candidates.empty()){
-        unsigned int n_candidates = candidates.size();
-        std::vector<double> objectives(n_candidates, 0);
-        std::vector<double> lb(n_candidates, -1e20);
-        std::vector<double> ub(n_candidates, 1e20);
-        std::vector<char> coltypes(n_candidates, 'C');
-        std::vector<int> mstart(n_candidates, 0);
-        std::vector<std::string> candidates_colnames;
-
-        for (const auto& candidate : candidates) {
-            candidates_colnames.push_back(candidate.name);
-            _candidate_col_id[candidate.name] = _candidate_col_id.size() + _n_cols_at_start;
-        }
-        solver_addcols(_math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
-    }
-}
-
 void ProblemModifier::change_lower_bounds_to_neg_inf(const std::vector<int> &col_ids) {
     std::vector<char> lb_char(col_ids.size(), 'L');
     std::vector<double> neg_inf(col_ids.size(), -1e20);
@@ -63,17 +27,55 @@ void ProblemModifier::change_upper_bounds_to_pos_inf(const std::vector<int> &col
 }
 
 std::map<std::string, unsigned int> ProblemModifier::get_candidate_col_id() {
+    // TODO this method should be removed
     return _candidate_col_id;
 }
 
 std::shared_ptr<SolverAbstract>
-ProblemModifier::changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const ActiveLinks_AS &active_links,
+ProblemModifier::changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const std::vector<ActiveLink> &active_links,
                                const std::map<linkId,  ColumnsToChange> &p_var_columns) {
     _math_problem = std::move(mathProblem);
     _n_cols_at_start = _math_problem->get_ncols();
 
     changeProblem(active_links, p_var_columns);
     return std::move(_math_problem);
+}
+
+void ProblemModifier::changeProblem(const std::vector<ActiveLink> &active_links,
+                                    const std::map<linkId, ColumnsToChange> &p_var_columns) {
+    for (const auto& link : active_links) {
+        remove_bounds_for(p_var_columns.at(link._idLink));
+    }
+    add_new_columns(candidates_from_all_links(active_links));
+    int a=1;
+
+}
+
+void ProblemModifier::add_new_columns(const std::vector<Candidate> &candidates) {
+    if(!candidates.empty()){
+        unsigned int n_candidates = candidates.size();
+        std::vector<double> objectives(n_candidates, 0);
+        std::vector<double> lb(n_candidates, -1e20);
+        std::vector<double> ub(n_candidates, 1e20);
+        std::vector<char> coltypes(n_candidates, 'C');
+        std::vector<int> mstart(n_candidates, 0);
+        std::vector<std::string> candidates_colnames;
+
+        for (const auto& candidate : candidates) {
+            candidates_colnames.push_back(candidate._name);
+            _candidate_col_id[candidate._name] = _candidate_col_id.size() + _n_cols_at_start;
+        }
+        solver_addcols(_math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
+    }
+}
+
+std::vector<Candidate> ProblemModifier::candidates_from_all_links(const std::vector<ActiveLink> &active_links) const {
+    std::vector<Candidate> all_candidates;
+    for (const auto& link : active_links){
+        std::vector<Candidate> candidates = link.getCandidates();
+        all_candidates.insert(all_candidates.end(),candidates.begin(), candidates.end());
+    }
+    return all_candidates;
 }
 
 

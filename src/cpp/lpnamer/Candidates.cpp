@@ -134,12 +134,12 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 
     solver_rename_vars(in_prblm, var_names, solver_name);
 
-#define new_method
+//#define new_method
 #ifdef new_method
     std::map<colId , ColumnsToChange> p_var_columns = generate_p_var_columns(interco_data);
-    ActiveLinks_AS active_links = generate_active_links(p_var_columns);
+    const std::vector<ActiveLink>& links = generate_active_links();;
     auto problem_modifier = ProblemModifier();
-    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), active_links, p_var_columns);
+    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), links, p_var_columns);
     std::map<std::string, unsigned int> col_id = problem_modifier.get_candidate_col_id();
 #else
 
@@ -213,18 +213,20 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	in_prblm->write_prob_mps(lp_mps_name);
 }
 
-ActiveLinks_AS Candidates::generate_active_links(const std::map<colId, ColumnsToChange> &links_columns_to_change) const {
-    ActiveLinks_AS active_links;
-    for(auto const & item: links_columns_to_change){
-        unsigned int const link_id = item.first;
-        vector<const Candidate *> link_candidates = get_link_candidates(link_id);
-        Cands candidates;
-        for (auto c : link_candidates){
-            candidates.push_back({c->_data.name});
+const std::vector<ActiveLink> &Candidates::generate_active_links() {
+    std::vector<CandidateData> cand_data_list;
+    std::map<std::string, LinkProfile> profile_map;
+    for(const auto& candidate: *this) {
+        cand_data_list.push_back(candidate._data);
+        if (!candidate._data.installed_link_profile_name.empty()) {
+            profile_map[candidate._data.installed_link_profile_name] = candidate._already_installed_profile;
         }
-        active_links.add_link({link_id, candidates});
+        if (!candidate._data.link_profile.empty()) {
+            profile_map[candidate._data.link_profile] = candidate._profile;
+        }
     }
-    return active_links;
+    const std::vector<ActiveLink> links = ActiveLinksBuilder(cand_data_list, profile_map).getLinks();
+    return links;
 }
 
 std::map<colId, ColumnsToChange>

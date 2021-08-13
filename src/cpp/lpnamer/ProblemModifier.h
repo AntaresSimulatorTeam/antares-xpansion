@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include <multisolver_interface/SolverAbstract.h>
+#include "ActiveLinks.h"
 #include <map>
 using colId= unsigned int;
 struct ColumnToChange{
@@ -39,16 +40,16 @@ class ProblemModifier {
 public:
     ProblemModifier();
 
-    void remove_bounds_for(const ColumnsToChange &columns_to_change);
-
-    void changeProblem(const ActiveLinks_AS &active_links,
-                       const std::map<linkId, ColumnsToChange> &p_var_columns);
-    std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const ActiveLinks_AS &active_links,
+    std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const std::vector<ActiveLink> &active_links,
                                                   const std::map<linkId,  ColumnsToChange> &p_var_columns);
 
     std::map<std::string, unsigned int> get_candidate_col_id();
-
 private:
+
+    void changeProblem(const std::vector<ActiveLink> &active_links,
+                       const std::map<linkId, ColumnsToChange> &p_var_columns);
+
+    void remove_bounds_for(const ColumnsToChange &columns_to_change);
     std::shared_ptr<SolverAbstract> _math_problem;
     std::map<std::string ,unsigned int> _candidate_col_id;
     std::map<linkId , ColumnsToChange> _p_var_columns;
@@ -58,9 +59,9 @@ private:
 
     void change_lower_bounds_to_neg_inf(const std::vector<int> &col_id);
 
-    void add_new_columns(const Cands &candidates);
+    void add_new_columns(const std::vector<Candidate> &candidates);
 
-    Cands candidates_from_all_links(const ActiveLinks_AS &active_links) const;
+    std::vector<Candidate> candidates_from_all_links(const std::vector<ActiveLink> &active_links) const;
 };
 
 
