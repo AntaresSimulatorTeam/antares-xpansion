@@ -72,17 +72,15 @@ std::pair<double, double> StudyUpdater::computeNewCapacities(double investment_p
 
 std::pair<double, double> StudyUpdater::computeNewCapacities(double investment_p, ActiveLink& link_p, int timepoint_p) const
 {
-    double direct_l = 0.0;
-    double indirect_l = 0.0;
+    double direct_l = link_p._already_installed_capacity * link_p.already_installed_direct_profile(timepoint_p);
+    double indirect_l = link_p._already_installed_capacity * link_p.already_installed_direct_profile(timepoint_p);
 
     const auto& candidates = link_p.getCandidates();
     for (const auto& candidate : candidates)
     {
-        direct_l += link_p._already_installed_capacity * link_p.already_installed_direct_profile(timepoint_p)
-            + investment_p * candidate.direct_profile(timepoint_p);
+        direct_l += investment_p * candidate.direct_profile(timepoint_p);
 
-        indirect_l += link_p._already_installed_capacity * link_p.already_installed_indirect_profile(timepoint_p)
-            + investment_p * candidate.indirect_profile(timepoint_p);
+        indirect_l += investment_p * candidate.indirect_profile(timepoint_p);
     }
     return std::make_pair(direct_l, indirect_l);
 }
