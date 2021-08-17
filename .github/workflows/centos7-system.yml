@@ -58,16 +58,13 @@ jobs:
         path: 'antares-version.json'
         prop_path: 'antares_deps_version'
         
-               
     - name: Download pre-compiled librairies
-      run: |
-           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{steps.antares-deps-version.outputs.prop}}/rte-antares-deps-centos7-Release-solver-no-ortools.tar.gz
-           tar -xvf rte-antares-deps-centos7-Release-solver-no-ortools.tar.gz
-           rm -rf rte-antares-deps-centos7-Release-solver-no-ortools.tar.gz
-           
-           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{steps.antares-version.outputs.prop}}/antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
-           tar -xvf antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz -C rte-antares-deps-Release --strip-components=1
-           rm -rf antares-${{steps.antares-version.outputs.prop}}-CentOS-7.9.2009.tar.gz
+      uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
+      with:
+        antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
+        antares-version: ${{steps.antares-version.outputs.prop}}
+        os: centos7
+        os-full-name: CentOS-7.9.2009
     
     - name: Init submodule
       run: |
