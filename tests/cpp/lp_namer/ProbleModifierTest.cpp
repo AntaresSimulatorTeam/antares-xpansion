@@ -180,8 +180,8 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     std::vector<CandidateData> cand_data_list = { cand1, cand2 };
     std::map<std::string, LinkProfile> profile_map;
 
-    const std::vector<ActiveLink>& links = ActiveLinksBuilder(cand_data_list, profile_map).getLinks();
-
+    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
+    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     auto problem_modifier = ProblemModifier();
     math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns);
@@ -246,7 +246,8 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
     std::vector<CandidateData> cand_data_list = { cand1, cand2 };
     std::map<std::string, LinkProfile> profile_map;
 
-    const std::vector<ActiveLink>& links = ActiveLinksBuilder(cand_data_list, profile_map).getLinks();
+    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
+    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
 
     auto problem_modifier = ProblemModifier();
