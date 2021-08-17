@@ -5,6 +5,7 @@ v0.5.0 (xx/2021)
 ### Features
 
  - In benders optimization, master problem .mps is written after each resolution
+ - Review of candidates.ini file content (remove of has-link-profile)
  
 ### Bug fixes
 
