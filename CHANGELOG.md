@@ -1,5 +1,21 @@
 Antares-Xpansion Changelog
 =================
+v0.5.0 (xx/2021)
+--------------------
+### Features
+
+ - In benders optimization, master problem .mps is written after each resolution
+ 
+### Bug fixes
+
+ - option keepMps was still removing some files needed for lp step
+ - correction of lp step call if it was the only step asked by user
+
+### For developers
+ - fix mergemps optimization in debug mode
+ - Fix vcpkg on Github Actions
+ - Add build cache for Github Actions (Ubuntu only) to speed up the build
+ 
 v0.4.0 (07/2021)
 -------------------- 
 ### Features
