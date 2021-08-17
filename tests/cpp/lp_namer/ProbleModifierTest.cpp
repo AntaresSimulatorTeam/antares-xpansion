@@ -79,7 +79,7 @@ protected:
     void update_row_type(){
         update_n_rows();
         if(rowtypes.size()!= n_rows){
-            std::vector<char> buffer(n_cols, '0');
+            std::vector<char> buffer(n_rows, '0');
             rowtypes.insert(rowtypes.begin(), buffer.begin(), buffer.end());
             math_problem->get_row_type(rowtypes.data(), 0, n_rows-1);
         }
@@ -260,14 +260,14 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
 
     verify_elems_are(6);
     verify_mat_val_is(0, 1);
-    verify_mat_val_is(1, -links[0].getCandidates().at(0).direct_profile(0));
-    verify_mat_val_is(2, -links[0].getCandidates().at(1).direct_profile(0));
+    verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
+    verify_mat_val_is(2, -links.at(0).getCandidates().at(1).direct_profile(0));
     verify_mat_val_is(3, 1);
-    verify_mat_val_is(4, links[0].getCandidates().at(0).indirect_profile(0));
-    verify_mat_val_is(5, links[0].getCandidates().at(1).indirect_profile(0));
+    verify_mat_val_is(4, links.at(0).getCandidates().at(0).indirect_profile(0));
+    verify_mat_val_is(5, links.at(0).getCandidates().at(1).indirect_profile(0));
 
-    verify_rhs_is(0, links[0]._already_installed_capacity * links[0].already_installed_direct_profile(0));
-    verify_rhs_is(1, -links[0]._already_installed_capacity* links[0].already_installed_indirect_profile(0));
+    verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
+    verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
@@ -305,22 +305,22 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
     verify_elems_are(12);
 
     verify_mat_val_is(0, 1);
-    verify_mat_val_is(1, -links[0].getCandidates().at(0).direct_profile(0));
-    verify_mat_val_is(2, -links[0].getCandidates().at(1).direct_profile(0));
+    verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
+    verify_mat_val_is(2, -links.at(0).getCandidates().at(1).direct_profile(0));
     verify_mat_val_is(3, 1);
-    verify_mat_val_is(4, links[0].getCandidates().at(0).indirect_profile(0));
-    verify_mat_val_is(5, links[0].getCandidates().at(1).indirect_profile(0));
+    verify_mat_val_is(4, links.at(0).getCandidates().at(0).indirect_profile(0));
+    verify_mat_val_is(5, links.at(0).getCandidates().at(1).indirect_profile(0));
     verify_mat_val_is(6, 1);
-    verify_mat_val_is(7, -links[0].getCandidates().at(0).direct_profile(1));
-    verify_mat_val_is(8, -links[0].getCandidates().at(1).direct_profile(1));
+    verify_mat_val_is(7, -links.at(0).getCandidates().at(0).direct_profile(1));
+    verify_mat_val_is(8, -links.at(0).getCandidates().at(1).direct_profile(1));
     verify_mat_val_is(9, 1);
-    verify_mat_val_is(10, links[0].getCandidates().at(0).indirect_profile(1));
-    verify_mat_val_is(11, links[0].getCandidates().at(1).indirect_profile(1));
+    verify_mat_val_is(10, links.at(0).getCandidates().at(0).indirect_profile(1));
+    verify_mat_val_is(11, links.at(0).getCandidates().at(1).indirect_profile(1));
 
-    verify_rhs_is(0, links[0]._already_installed_capacity * links[0].already_installed_direct_profile(0));
-    verify_rhs_is(1, -links[0]._already_installed_capacity* links[0].already_installed_indirect_profile(0));
-    verify_rhs_is(2, links[0]._already_installed_capacity * links[0].already_installed_direct_profile(1));
-    verify_rhs_is(3, -links[0]._already_installed_capacity* links[0].already_installed_indirect_profile(1));
+    verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
+    verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
+    verify_rhs_is(2, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
+    verify_rhs_is(3, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
@@ -374,22 +374,22 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
     verify_elems_are(12);
 
     verify_mat_val_is(0, 1);
-    verify_mat_val_is(1, -links[0].getCandidates().at(0).direct_profile(0));
-    verify_mat_val_is(2, -links[0].getCandidates().at(1).direct_profile(0));
+    verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
+    verify_mat_val_is(2, -links.at(0).getCandidates().at(1).direct_profile(0));
     verify_mat_val_is(3, 1);
-    verify_mat_val_is(4, links[0].getCandidates().at(0).indirect_profile(0));
-    verify_mat_val_is(5, links[0].getCandidates().at(1).indirect_profile(0));
+    verify_mat_val_is(4, links.at(0).getCandidates().at(0).indirect_profile(0));
+    verify_mat_val_is(5, links.at(0).getCandidates().at(1).indirect_profile(0));
     verify_mat_val_is(6, 1);
-    verify_mat_val_is(7, -links[0].getCandidates().at(0).direct_profile(1));
-    verify_mat_val_is(8, -links[0].getCandidates().at(1).direct_profile(1));
+    verify_mat_val_is(7, -links.at(0).getCandidates().at(0).direct_profile(1));
+    verify_mat_val_is(8, -links.at(0).getCandidates().at(1).direct_profile(1));
     verify_mat_val_is(9, 1);
-    verify_mat_val_is(10, links[0].getCandidates().at(0).indirect_profile(1));
-    verify_mat_val_is(11, links[0].getCandidates().at(1).indirect_profile(1));
+    verify_mat_val_is(10, links.at(0).getCandidates().at(0).indirect_profile(1));
+    verify_mat_val_is(11, links.at(0).getCandidates().at(1).indirect_profile(1));
 
-    verify_rhs_is(0, links[0]._already_installed_capacity * links[0].already_installed_direct_profile(0));
-    verify_rhs_is(1, -links[0]._already_installed_capacity* links[0].already_installed_indirect_profile(0));
-    verify_rhs_is(2, links[0]._already_installed_capacity * links[0].already_installed_direct_profile(1));
-    verify_rhs_is(3, -links[0]._already_installed_capacity* links[0].already_installed_indirect_profile(1));
+    verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
+    verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
+    verify_rhs_is(2, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
+    verify_rhs_is(3, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
 }
 
 
