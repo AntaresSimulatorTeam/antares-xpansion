@@ -63,15 +63,15 @@ public:
     std::pair<double, double> computeNewCapacities(double investment_p, Candidate & candidate_p, int timepoint_p) const;
 
     /*!
-     * \brief computes the new capacities of related to a candidate
+     * \brief computes the new capacities of related to a link
      *
-     * \param investment_p : investment to consider for the candidate
+     * \param investment_p : investment to consider for the candidates of the link
      * \param link_p : link for which the capacities will be computed
      * \param timepoint_p : timepoint where the capcities will be computed
      *
      * \return a pair of the computed direct and indirect capacities
      */
-    std::pair<double, double> computeNewCapacities(double investment_p, ActiveLink& link_p, int timepoint_p) const;
+    std::pair<double, double> computeNewCapacities(std::vector<double> investments_p, ActiveLink& link_p, int timepoint_p) const;
 
 /*!
  * \brief updates the linkdata file for a given candidate based on a given investment
@@ -83,6 +83,8 @@ public:
  */
     int updateLinkdataFile(Candidate candidate_p, double investment_p) const;
 
+    int updateLinkdataFile(ActiveLink link_p, std::vector<double> investment_from_candidates_p) const;
+
 /*!
  * \brief updates the linkdata files for multiple candidates from a solution Point
  *
@@ -93,6 +95,8 @@ public:
  */
     int update(Candidates const & candidates_p, std::map<std::string, double> investments_p) const;
 
+    int update(std::vector<ActiveLink> const& links_p, std::map<std::string, double> investments_p) const;
+
 /*!
  * \brief updates the linkdata files for multiple candidates from a json file
  *
@@ -102,6 +106,8 @@ public:
  * \return number of candidates we failed to update
  */
     int update(Candidates const & candidates_p, std::string const & jsonPath_p) const;
+
+    int update(std::vector<ActiveLink> const& links_p, std::string const& jsonPath_p) const;
 };
 
 /*!

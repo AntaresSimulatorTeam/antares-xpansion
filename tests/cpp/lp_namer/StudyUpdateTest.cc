@@ -236,16 +236,19 @@ TEST_F(StudyUpdateTest, computeNewCapacities2)
     StudyUpdater studyupdater(".");
 
     //candidate 1 has a link profile
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, _links[1], 0), std::make_pair(0., 250.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, _links[1], 1), std::make_pair(500., 750.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, _links[1], 2), std::make_pair(1000., 1000.));
+    std::vector<double> investissments0ForOneCandidate = { 0 };
+    std::vector<double> investissments1000ForOneCandidate = { 1000 };
+
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments1000ForOneCandidate, _links[1], 0), std::make_pair(0., 250.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments1000ForOneCandidate, _links[1], 1), std::make_pair(500., 750.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments1000ForOneCandidate, _links[1], 2), std::make_pair(1000., 1000.));
 
     //candidate 2 has an already installed capacity of 100
-    ASSERT_EQ(studyupdater.computeNewCapacities(0, _links[0], 0), std::make_pair(100., 100.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(0, _links[0], 1), std::make_pair(100., 100.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(0, _links[0], 2), std::make_pair(100., 100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments0ForOneCandidate, _links[0], 0), std::make_pair(100., 100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments0ForOneCandidate, _links[0], 1), std::make_pair(100., 100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments0ForOneCandidate, _links[0], 2), std::make_pair(100., 100.));
 
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, _links[0], 0), std::make_pair(1100., 1100.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, _links[0], 1), std::make_pair(1100., 1100.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, _links[0], 2), std::make_pair(1100., 1100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments1000ForOneCandidate, _links[0], 0), std::make_pair(1100., 1100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments1000ForOneCandidate, _links[0], 1), std::make_pair(1100., 1100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments1000ForOneCandidate, _links[0], 2), std::make_pair(1100., 1100.));
 }

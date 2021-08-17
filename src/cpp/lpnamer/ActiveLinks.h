@@ -23,6 +23,8 @@ public:
 	int _idLink;
 	LinkName _name;
 	double _already_installed_capacity;
+	std::string _linkor;
+	std::string _linkex;
 
 private:
 	LinkProfile _already_installed_profile;
@@ -42,6 +44,8 @@ private:
 		int id;
 		double installed_capacity;
 		std::string profile_name;
+		std::string _linkor;
+		std::string _linkex;
 	};
 
 	void checkCandidateNameDuplication();
