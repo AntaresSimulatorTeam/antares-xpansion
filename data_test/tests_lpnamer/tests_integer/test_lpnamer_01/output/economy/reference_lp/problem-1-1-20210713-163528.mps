@@ -20502,9 +20502,9 @@ COLUMNS
     DefaillanceNegative_6_167_ R0002852 1
     DefaillancePositive_7_167_ OBJROW 0.0005020082
     DefaillancePositive_7_167_ R0002853 -1
-    C0005543 OBJROW 0.0005020082
-    C0005543 R0002853 1
-    C0005543 R0002854 1
+    DefaillanceNegative_7_167_ OBJROW 0.0005020082
+    DefaillanceNegative_7_167_ R0002853 1
+    DefaillanceNegative_7_167_ R0002854 1
     semibase R0002867 -1
     semibase R0002868 1
     semibase R0002877 -1

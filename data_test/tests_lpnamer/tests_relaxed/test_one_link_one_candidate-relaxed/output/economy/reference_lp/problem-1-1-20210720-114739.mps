@@ -6383,9 +6383,9 @@ COLUMNS
     PalierThermique_1_5_167_ R0000671 -1
     DefaillancePositive_1_167_ OBJROW 20000.0005669392
     DefaillancePositive_1_167_ R0000670 -1
-    C0001847 OBJROW 0.0005669392
-    C0001847 R0000670 1
-    C0001847 R0000671 1
+    DefaillanceNegative_1_167_ OBJROW 0.0005669392
+    DefaillanceNegative_1_167_ R0000670 1
+    DefaillanceNegative_1_167_ R0000671 1
     transmission_line R0000672 -0.95
     transmission_line R0000673 0.93
     transmission_line R0000674 -0.95
