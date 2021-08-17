@@ -18,9 +18,10 @@
 #include "Candidates.h"
 #include "AdditionalConstraints.h"
 #include "LauncherHelpers.h"
-#include "CandidatesInitializer.h"
 
 #include "solver_utils.h"
+#include "CandidatesINIReader.h"
+#include "LinkProfileReader.h"
 
 namespace po = boost::program_options;
 
@@ -214,9 +215,6 @@ int main(int argc, char** argv) {
         std::string const interco_file_name	= root + PATH_SEPARATOR + "interco.txt";
 
         CandidatesINIReader candidateReader(interco_file_name,area_file_name);
-        LinkProfileReader profileReader;
-
-        CandidatesInitializer initializer = CandidatesInitializer(profileReader,candidateReader);
 
         // Get all mandatory path
         std::string const xpansion_user_dir = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion";
@@ -224,12 +222,10 @@ int main(int argc, char** argv) {
         std::string const capacity_folder = xpansion_user_dir + PATH_SEPARATOR + "capa";
 
         // Instantiation of candidates
-		Candidates candidates = initializer.initializedCandidates(candidates_file_name, capacity_folder);
-
 		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
 		const auto& mapLinkProfile	= LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
 
-		ActiveLinksBuilder links(candidatesDatas, mapLinkProfile);
+		ActiveLinksBuilder linkBuilder(candidatesDatas, mapLinkProfile);
 		
 		if ((master_formulation != "relaxed") && (master_formulation != "integer"))
 		{
@@ -247,7 +243,14 @@ int main(int argc, char** argv) {
 
 		std::map< std::pair<std::string, std::string>, int> couplings;
 		std::string solver_name = "CBC";
-		candidates.treatloop(root, couplings, solver_name);
+		std::vector<ActiveLink> links = linkBuilder.getLinks();
+        LinkProblemsGenerator linkProblemsGenerator(links);
+        linkProblemsGenerator.treatloop(root, couplings, solver_name);
+
+        Candidates candidates;
+        for (const ActiveLink& link : links){
+            candidates.insert(candidates.end(),link.getCandidates().begin(), link.getCandidates().end());
+        }
 		masterGeneration(root, candidates, additionalConstraints, couplings, 
 			master_formulation, solver_name);
 

@@ -9,7 +9,7 @@ ProblemData::ProblemData(const std::string& problem_mps, const std::string& vari
 {
 }
 
-std::vector<ProblemData> Candidates::readMPSList(std::string const & mps_filePath_p){
+std::vector<ProblemData> LinkProblemsGenerator::readMPSList(std::string const & mps_filePath_p){
     std::string line;
     std::vector<ProblemData> result;
     std::ifstream mps_filestream(mps_filePath_p.c_str());
@@ -46,7 +46,7 @@ std::vector<ProblemData> Candidates::readMPSList(std::string const & mps_filePat
  * \param interco_id map of NTC interconnections IDs...
  * \return void
  */
-void Candidates::readVarfiles(std::string const filePath,
+void LinkProblemsGenerator::readVarfiles(std::string const filePath,
                               std::vector <std::string> &var_names,
                               std::map<int, std::vector<int> > & interco_data)
 {
@@ -71,12 +71,11 @@ void Candidates::readVarfiles(std::string const filePath,
 			buffer >> interco;
 			buffer >> time_step;
 
-			//TODO : adapt for multicandidate
-			auto it = std::find_if(begin(), end(), [interco] (const Candidate& candidate){
-                return candidate._data.link_id == interco;
+			auto it = std::find_if(_links.begin(), _links.end(), [interco] (const ActiveLink& link){
+                return link._idLink == interco;
 			});
 
-			if (it != end()){
+			if (it != _links.end()){
                 interco_data[id] = { interco, time_step};
 			}
 		}
@@ -85,7 +84,7 @@ void Candidates::readVarfiles(std::string const filePath,
 	file.close();
 }
 
-std::string Candidates::getVarNameFromLine(const std::string &line) const {
+std::string LinkProblemsGenerator::getVarNameFromLine(const std::string &line) const {
     std::ostringstream name;
     {
         std::istringstream buffer(line);
@@ -118,7 +117,7 @@ std::string Candidates::getVarNameFromLine(const std::string &line) const {
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
+void LinkProblemsGenerator::createMpsFileAndFillCouplings(std::string const & mps_name,
                                                std::vector <std::string> var_names,
                                                std::map<int, std::vector<int> > interco_data,
                                                std::map< std::pair<std::string, std::string>, int> & couplings,
@@ -137,9 +136,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 //#define new_method
 #ifdef new_method
     std::map<colId , ColumnsToChange> p_var_columns = generate_p_var_columns(interco_data);
-    const std::vector<ActiveLink>& links = generate_active_links();;
     auto problem_modifier = ProblemModifier();
-    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), links, p_var_columns);
+    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_var_columns);
     std::map<std::string, unsigned int> col_id = problem_modifier.get_candidate_col_id();
 #else
 
@@ -165,7 +163,13 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
     std::map<std::string, int> col_id = add_candidates_to_problem_and_get_candidates_col_id(in_prblm);
 #endif
 
-    for(const Candidate& candidate :*this){
+    //TODO : update couplings creation
+    Candidates candidates;
+    for (const ActiveLink& link : _links){
+        candidates.insert(candidates.end(),link.getCandidates().begin(), link.getCandidates().end());
+    }
+
+    for(const Candidate& candidate : candidates){
         couplings[{candidate._data.name, mps_name}] = col_id[candidate._data.name];
 	}
 	std::vector<double> dmatval;
@@ -179,30 +183,34 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
         int const link_id = pairIdvarntcIntercodata.second[0];
         int const timestep = pairIdvarntcIntercodata.second[1];
 
-        std::vector<const Candidate *> link_candidates = get_link_candidates(link_id);
+        auto link = std::find_if(_links.begin(),_links.end(), [link_id](const ActiveLink& link){
+            return link._idLink == link_id;
+        });
+
+        const std::vector<Candidate>& link_candidates = link->getCandidates();
 
         // p[t] - (alpha_1[t]*pMax1 + alpha_2[t]*pMax2 + ...)  <= alpha0[t].pMax0
-        double already_installed_capacity( link_candidates.front()->already_installed_capacity());
-        double direct_already_installed_profile_at_timestep = link_candidates.front()->already_installed_direct_profile(timestep);
+        double already_installed_capacity( link->_already_installed_capacity);
+        double direct_already_installed_profile_at_timestep = link->already_installed_direct_profile(timestep);
         rstart.push_back(dmatval.size());
         rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
         rowtype.push_back('L');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
         for (auto candidate:link_candidates){
-            colind.push_back(col_id[candidate->_data.name]);
-            dmatval.push_back(-candidate->direct_profile(timestep));
+            colind.push_back(col_id[candidate._data.name]);
+            dmatval.push_back(-candidate.direct_profile(timestep));
         }
         // p[t] + alpha_1[t].pMax1 + alpha_2[t].pMax2 + ...  >=  - beta0[t].pMax0
-        double indirect_already_installed_profile_at_timestep = link_candidates.front()->already_installed_indirect_profile(timestep);
+        double indirect_already_installed_profile_at_timestep = link->already_installed_indirect_profile(timestep);
         rstart.push_back(dmatval.size());
         rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
         rowtype.push_back('G');
         colind.push_back(i_interco_p);
         dmatval.push_back(1);
         for (auto candidate:link_candidates){
-            colind.push_back(col_id[candidate->_data.name]);
-            dmatval.push_back(candidate->indirect_profile(timestep));
+            colind.push_back(col_id[candidate._data.name]);
+            dmatval.push_back(candidate.indirect_profile(timestep));
         }
 	}
 
@@ -213,24 +221,8 @@ void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
 	in_prblm->write_prob_mps(lp_mps_name);
 }
 
-const std::vector<ActiveLink> &Candidates::generate_active_links() {
-    std::vector<CandidateData> cand_data_list;
-    std::map<std::string, LinkProfile> profile_map;
-    for(const auto& candidate: *this) {
-        cand_data_list.push_back(candidate._data);
-        if (!candidate._data.installed_link_profile_name.empty()) {
-            profile_map[candidate._data.installed_link_profile_name] = candidate._already_installed_profile;
-        }
-        if (!candidate._data.link_profile.empty()) {
-            profile_map[candidate._data.link_profile] = candidate._profile;
-        }
-    }
-    const std::vector<ActiveLink> links = ActiveLinksBuilder(cand_data_list, profile_map).getLinks();
-    return links;
-}
-
 std::map<colId, ColumnsToChange>
-Candidates::generate_p_var_columns(const std::map<int, std::vector<int>> &interco_data) const {
+LinkProblemsGenerator::generate_p_var_columns(const std::map<int, std::vector<int>> &interco_data) const {
     std::map<unsigned int, ColumnsToChange> links_columns_to_change;
     for (auto const & pairIdvarntcIntercodata : interco_data) {
         colId const i_interco_p = pairIdvarntcIntercodata.first;
@@ -241,30 +233,26 @@ Candidates::generate_p_var_columns(const std::map<int, std::vector<int>> &interc
     return links_columns_to_change;
 }
 
-std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) const {
-    vector<const Candidate*> link_candidates;
-    for(const auto& cand: *this){
-        if (cand._data.link_id == link_id){
-            link_candidates.push_back(&cand);
-        }
+std::map<std::string, int> LinkProblemsGenerator::add_candidates_to_problem_and_get_candidates_col_id(SolverAbstract::Ptr &out_prblm) {
+    //TODO : update candidate col creation
+    Candidates candidates;
+    for (const ActiveLink& link : _links){
+        candidates.insert(candidates.end(),link.getCandidates().begin(), link.getCandidates().end());
     }
-    return link_candidates;
-}
 
-std::map<std::string, int> Candidates::add_candidates_to_problem_and_get_candidates_col_id(SolverAbstract::Ptr &out_prblm) {
-    int n_candidates = size();
+    int n_candidates = candidates.size();
     int n_cols = out_prblm->get_ncols();
-    vector<double> obj_interco(n_candidates, 0);
+    std::vector<double> obj_interco(n_candidates, 0);
     // Setting bounds to +-1e20
-    vector<double> lb_interco(n_candidates, -1e20);
-    vector<double> ub_interco(n_candidates, 1e20);
-    vector<char> coltypes_interco(n_candidates, 'C');
-    vector<int> mstart_interco(n_candidates, 0);
-    vector<std::string> candidates_colnames;
+    std::vector<double> lb_interco(n_candidates, -1e20);
+    std::vector<double> ub_interco(n_candidates, 1e20);
+    std::vector<char> coltypes_interco(n_candidates, 'C');
+    std::vector<int> mstart_interco(n_candidates, 0);
+    std::vector<std::string> candidates_colnames;
 
     std::map<std::string ,int> candidate_id;
     for (int i = 0 ; i < n_candidates ; i++) {
-        const Candidate& candidate = at(i);
+        const Candidate& candidate = candidates.at(i);
         candidates_colnames.push_back(candidate._data.name);
         candidate_id[candidate._data.name] = i + n_cols;
     }
@@ -281,7 +269,7 @@ std::map<std::string, int> Candidates::add_candidates_to_problem_and_get_candida
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::treat(std::string const & root,
+void LinkProblemsGenerator::treat(std::string const & root,
 	ProblemData const & problemData,
 	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
 
@@ -310,7 +298,7 @@ void Candidates::treat(std::string const & root,
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
+void LinkProblemsGenerator::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
 	int>& couplings, std::string const& solver_name) {
 
     std::string const mps_file_name			= root + PATH_SEPARATOR + MPS_TXT;

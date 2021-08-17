@@ -13,6 +13,8 @@
 #define STUDY_FILE "study.antares"
 #include "ProblemModifier.h"
 
+using Candidates = std::vector<Candidate>;
+
 struct ProblemData
 {
 	ProblemData(const std::string& problem_mps, const std::string& variables_txt);
@@ -20,17 +22,13 @@ struct ProblemData
 	std::string _variables_txt;
 };
 
-
-/*!
- *  \struct Candidates
- *  \brief Candidates structure
- *
- */
-class Candidates : public std::vector<Candidate> {
+class LinkProblemsGenerator {
 
 public:
 
-	Candidates() {}
+	LinkProblemsGenerator(const std::vector<ActiveLink>& links):_links(links)
+	{}
+
     void treatloop(std::string const & root, std::map< std::pair<std::string,
             std::string>, int>& couplings, std::string const& solver_name);
 
@@ -57,9 +55,7 @@ private:
     std::map<std::string, int>
     add_candidates_to_problem_and_get_candidates_col_id(std::shared_ptr<SolverAbstract> &out_prblm);
 
-    vector<const Candidate *> get_link_candidates(const int link_id) const;
-
     std::map<colId, ColumnsToChange> generate_p_var_columns(const std::map<int, std::vector<int>> &interco_data) const;
 
-    const std::vector<ActiveLink> &generate_active_links();
+    const std::vector<ActiveLink>& _links;
 };
