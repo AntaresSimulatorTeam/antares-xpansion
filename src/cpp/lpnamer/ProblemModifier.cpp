@@ -63,7 +63,11 @@ void ProblemModifier::add_new_constraints(const std::vector<ActiveLink> &active_
     for (const auto& link : active_links) {
         for(auto column : p_var_columns.at(link._idLink)){
             rstart.push_back(dmatval.size());
-            rhs.push_back(0);
+
+            double already_installed_capacity( link._already_installed_capacity);
+            double direct_already_installed_profile_at_timestep = link.already_installed_direct_profile(column.time_step);
+
+            rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
             rowtype.push_back('L');
             colind.push_back(column.id);
             dmatval.push_back(1);
@@ -71,14 +75,16 @@ void ProblemModifier::add_new_constraints(const std::vector<ActiveLink> &active_
                 colind.push_back(_candidate_col_id[candidate._name]);
                 dmatval.push_back(-candidate.direct_profile(column.time_step));
             }
+            double indirect_already_installed_profile_at_timestep = link.already_installed_indirect_profile(column.time_step);
+
             rstart.push_back(dmatval.size());
-            rhs.push_back(0);
+            rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
             rowtype.push_back('G');
             colind.push_back(column.id);
             dmatval.push_back(1);
             for (const auto& candidate:link.getCandidates()){
                 colind.push_back(_candidate_col_id[candidate._name]);
-                dmatval.push_back(+candidate.direct_profile(column.time_step));
+                dmatval.push_back(+candidate.indirect_profile(column.time_step));
             }
 
         }
@@ -113,14 +119,4 @@ std::vector<Candidate> ProblemModifier::candidates_from_all_links(const std::vec
         all_candidates.insert(all_candidates.end(),candidates.begin(), candidates.end());
     }
     return all_candidates;
-}
-
-
-
-void ActiveLinks_AS::add_link(const ActiveLink_AS link) {
-    _links.push_back(link);
-}
-
-std::vector<ActiveLink_AS> ActiveLinks_AS::getItems() const {
-    return _links;
 }

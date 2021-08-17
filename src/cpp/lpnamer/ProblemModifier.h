@@ -14,27 +14,7 @@ struct ColumnToChange{
 };
 
 using ColumnsToChange = std::vector<ColumnToChange>;
-
-
-struct Cand {
-    std::string name;
-};
-using Cands=std::vector<Cand>;
-
 using linkId=unsigned int;
-struct ActiveLink_AS{
-    linkId id;
-    Cands candidates;
-};
-struct ActiveLinks_AS {
-    std::vector<ActiveLink_AS> _links;
-
-    void add_link(const ActiveLink_AS link);
-
-    std::vector<ActiveLink_AS> getItems() const;
-};
-
-
 
 class ProblemModifier {
 public:
