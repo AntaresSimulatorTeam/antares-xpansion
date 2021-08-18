@@ -21,11 +21,10 @@ class TestCandidateReader:
         return content
 
     @staticmethod
-    def _create_link_profile_content(link_profile : str) -> str:
+    def _create_link_profile_content(link_profile: str) -> str:
         content = ""
         if link_profile:
-            content = "has-link-profile = True\n" \
-                      f"link-profile = {link_profile}\n"
+            content = f"link-profile = {link_profile}\n"
         return content
 
     @staticmethod
