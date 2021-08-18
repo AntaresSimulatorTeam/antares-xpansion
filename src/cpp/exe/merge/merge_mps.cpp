@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 
         int ncols(0);
         int nslaves = input.size() - 1;
-        CouplingMap x_mps_id;
+        std::map<std::string,std::map<std::string, int>> x_mps_id;
         int cntProblems_l(0);
 
         LOG(INFO) << "Merging problems..." << std::endl;
@@ -85,15 +85,15 @@ int main(int argc, char** argv)
             lpData.append_in(mergedSolver_l, varPrefix_l);
 
             for (auto const & x : kvp.second) {
-                int col_index = mergedSolver_l->get_col_index(varPrefix_l + x.first);
+                int col_index = mergedSolver_l->get_col_index(varPrefix_l + x);
                 if (col_index == -1){
-                    std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
+                    std::cerr << "missing variable " << x << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x << ".";
                     mergedSolver_l->write_prob_lp(options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
                     mergedSolver_l->write_prob_mps(options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps");
                     std::exit(1);
                 }
                 else{
-                    x_mps_id[x.first][kvp.first] = col_index;
+                    x_mps_id[x][kvp.first] = col_index;
                 }
             }
 
@@ -184,9 +184,9 @@ int main(int argc, char** argv)
         std::vector<double> obj_coef(mergedSolver_l->get_ncols());
         mergedSolver_l->get_obj(obj_coef.data(), 0, mergedSolver_l->get_ncols() - 1);
         for (auto const & pairNameId : input[options.MASTER_NAME]) {
-            int varIndexInMerged_l = x_mps_id[pairNameId.first][options.MASTER_NAME];
-            x0[pairNameId.first] = ptr[varIndexInMerged_l];
-            investCost_l += x0[pairNameId.first] * obj_coef[varIndexInMerged_l];
+            int varIndexInMerged_l = x_mps_id[pairNameId][options.MASTER_NAME];
+            x0[pairNameId] = ptr[varIndexInMerged_l];
+            investCost_l += x0[pairNameId] * obj_coef[varIndexInMerged_l];
         }
 
         double overallCost_l;

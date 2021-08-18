@@ -53,7 +53,7 @@ CouplingMap build_input(BendersOptions const & options) {
 		buffer >> problem_name;
 		buffer >> variable_name;
 		buffer >> variable_id;
-		coupling_map[problem_name][variable_name] = variable_id;
+		coupling_map[problem_name].push_back(variable_name);	
 	}
 
 	if (options.SLAVE_NUMBER >= 0) {

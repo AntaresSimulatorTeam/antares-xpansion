@@ -44,7 +44,7 @@ typedef std::vector<int> IntVector;
 typedef std::vector<char> CharVector;
 typedef std::vector<double> DblVector;
 typedef std::vector<std::string> StrVector;
-typedef std::map < std::string, Str2Int> CouplingMap;
+typedef std::map < std::string, StrVector> CouplingMap;
 
 typedef std::map <std::string, IntVector> SlaveCutId;
 typedef std::tuple <int, std::string, int, bool> ActiveCut;

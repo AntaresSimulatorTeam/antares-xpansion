@@ -16,7 +16,7 @@ public:
 	std::vector<int> _id_alpha_i;
 
 	WorkerMaster();
-	WorkerMaster(Str2Int const & variable_map, std::string const & problem_name, BendersOptions const & options, int nslaves = 1);
+	WorkerMaster(StrVector const & variable_name, std::string const & problem_name, BendersOptions const & options, int nslaves = 1);
 	virtual ~WorkerMaster();
 
 	void get(Point & x0, double & alpha, DblVector & alpha_i);

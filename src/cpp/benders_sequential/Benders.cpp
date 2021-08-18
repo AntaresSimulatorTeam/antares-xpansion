@@ -33,7 +33,7 @@ void Benders::initialise_problems(const CouplingMap &problem_list) {
         auto it(problem_list.begin());
 
         auto const it_master = problem_list.find(_options.MASTER_NAME);
-        Str2Int const & master_variable(it_master->second);
+        StrVector const & master_variable(it_master->second);
         for(int i(0); i < _data.nslaves; ++it) {
             if (it != it_master) {
                 _problem_to_id[it->first] = i;

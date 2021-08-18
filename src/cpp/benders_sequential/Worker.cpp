@@ -46,7 +46,7 @@ void Worker::get_value(double & lb) {
 *
 *  \param problem_name : name of the problem
 */
-void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
+void Worker::init(StrVector const & variable_name, std::string const & path_to_mps,
 	std::string const& solver_name, int log_level) {
 	_path_to_mps = path_to_mps;
 
@@ -77,10 +77,10 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 	_solver->read_prob_mps(path_to_mps);
 	
 	int var_index;
-	for(auto const & kvp : variable_map) {
-		var_index = _solver->get_col_index(kvp.first);
-		_id_to_name[var_index] = kvp.first;
-		_name_to_id[kvp.first] = var_index;
+	for(auto const & var_name : variable_name) {
+		var_index = _solver->get_col_index(var_name);
+		_id_to_name[var_index] = var_name;
+		_name_to_id[var_name] = var_index;
 	}
 }
 
