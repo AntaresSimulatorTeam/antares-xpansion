@@ -5566,24 +5566,24 @@ COLUMNS
     ValeurDeNTCOrigineVersExtremite_0_1_336_ R0003536 1
     ValeurDeNTCOrigineVersExtremite_0_2_336_ R0000000 1
     ValeurDeNTCOrigineVersExtremite_0_2_336_ R0000010 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_336_ R0003537 1
-    ValeurDeNTCOrigineVersExtremite_0_2_336_ R0003538 1
+    ValeurDeNTCOrigineVersExtremite_0_2_336_ R0003871 1
+    ValeurDeNTCOrigineVersExtremite_0_2_336_ R0003872 1
     ValeurDeNTCOrigineVersExtremite_0_3_336_ R0000000 1
     ValeurDeNTCOrigineVersExtremite_0_3_336_ R0000014 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_336_ R0003539 1
-    ValeurDeNTCOrigineVersExtremite_0_3_336_ R0003540 1
+    ValeurDeNTCOrigineVersExtremite_0_3_336_ R0004207 1
+    ValeurDeNTCOrigineVersExtremite_0_3_336_ R0004208 1
     ValeurDeNTCOrigineVersExtremite_1_4_336_ R0000002 1
     ValeurDeNTCOrigineVersExtremite_1_4_336_ R0000004 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_336_ R0003541 1
-    ValeurDeNTCOrigineVersExtremite_1_4_336_ R0003542 1
+    ValeurDeNTCOrigineVersExtremite_1_4_336_ R0004543 1
+    ValeurDeNTCOrigineVersExtremite_1_4_336_ R0004544 1
     ValeurDeNTCOrigineVersExtremite_1_5_336_ R0000002 1
     ValeurDeNTCOrigineVersExtremite_1_5_336_ R0000008 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_336_ R0003543 1
-    ValeurDeNTCOrigineVersExtremite_1_5_336_ R0003544 1
+    ValeurDeNTCOrigineVersExtremite_1_5_336_ R0004879 1
+    ValeurDeNTCOrigineVersExtremite_1_5_336_ R0004880 1
     ValeurDeNTCOrigineVersExtremite_1_6_336_ R0000002 1
     ValeurDeNTCOrigineVersExtremite_1_6_336_ R0000012 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_336_ R0003545 1
-    ValeurDeNTCOrigineVersExtremite_1_6_336_ R0003546 1
+    ValeurDeNTCOrigineVersExtremite_1_6_336_ R0005215 1
+    ValeurDeNTCOrigineVersExtremite_1_6_336_ R0005216 1
     ValeurDeNTCOrigineVersExtremite_2_7_336_ R0000004 1
     ValeurDeNTCOrigineVersExtremite_2_7_336_ R0000016 -1
     ValeurDeNTCOrigineVersExtremite_2_7_336_ R0003528 0.8
@@ -5679,28 +5679,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_337_ R0000041 1
     ValeurDeNTCOrigineVersExtremite_0_1_337_ R0000021 1
     ValeurDeNTCOrigineVersExtremite_0_1_337_ R0000027 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_337_ R0003547 1
-    ValeurDeNTCOrigineVersExtremite_0_1_337_ R0003548 1
+    ValeurDeNTCOrigineVersExtremite_0_1_337_ R0003537 1
+    ValeurDeNTCOrigineVersExtremite_0_1_337_ R0003538 1
     ValeurDeNTCOrigineVersExtremite_0_2_337_ R0000021 1
     ValeurDeNTCOrigineVersExtremite_0_2_337_ R0000031 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_337_ R0003549 1
-    ValeurDeNTCOrigineVersExtremite_0_2_337_ R0003550 1
+    ValeurDeNTCOrigineVersExtremite_0_2_337_ R0003873 1
+    ValeurDeNTCOrigineVersExtremite_0_2_337_ R0003874 1
     ValeurDeNTCOrigineVersExtremite_0_3_337_ R0000021 1
     ValeurDeNTCOrigineVersExtremite_0_3_337_ R0000035 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_337_ R0003551 1
-    ValeurDeNTCOrigineVersExtremite_0_3_337_ R0003552 1
+    ValeurDeNTCOrigineVersExtremite_0_3_337_ R0004209 1
+    ValeurDeNTCOrigineVersExtremite_0_3_337_ R0004210 1
     ValeurDeNTCOrigineVersExtremite_1_4_337_ R0000023 1
     ValeurDeNTCOrigineVersExtremite_1_4_337_ R0000025 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_337_ R0003553 1
-    ValeurDeNTCOrigineVersExtremite_1_4_337_ R0003554 1
+    ValeurDeNTCOrigineVersExtremite_1_4_337_ R0004545 1
+    ValeurDeNTCOrigineVersExtremite_1_4_337_ R0004546 1
     ValeurDeNTCOrigineVersExtremite_1_5_337_ R0000023 1
     ValeurDeNTCOrigineVersExtremite_1_5_337_ R0000029 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_337_ R0003555 1
-    ValeurDeNTCOrigineVersExtremite_1_5_337_ R0003556 1
+    ValeurDeNTCOrigineVersExtremite_1_5_337_ R0004881 1
+    ValeurDeNTCOrigineVersExtremite_1_5_337_ R0004882 1
     ValeurDeNTCOrigineVersExtremite_1_6_337_ R0000023 1
     ValeurDeNTCOrigineVersExtremite_1_6_337_ R0000033 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_337_ R0003557 1
-    ValeurDeNTCOrigineVersExtremite_1_6_337_ R0003558 1
+    ValeurDeNTCOrigineVersExtremite_1_6_337_ R0005217 1
+    ValeurDeNTCOrigineVersExtremite_1_6_337_ R0005218 1
     ValeurDeNTCOrigineVersExtremite_2_7_337_ R0000025 1
     ValeurDeNTCOrigineVersExtremite_2_7_337_ R0000037 -1
     ValeurDeNTCOrigineVersExtremite_2_7_337_ R0003528 0.8
@@ -5796,28 +5796,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_338_ R0000062 1
     ValeurDeNTCOrigineVersExtremite_0_1_338_ R0000042 1
     ValeurDeNTCOrigineVersExtremite_0_1_338_ R0000048 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_338_ R0003559 1
-    ValeurDeNTCOrigineVersExtremite_0_1_338_ R0003560 1
+    ValeurDeNTCOrigineVersExtremite_0_1_338_ R0003539 1
+    ValeurDeNTCOrigineVersExtremite_0_1_338_ R0003540 1
     ValeurDeNTCOrigineVersExtremite_0_2_338_ R0000042 1
     ValeurDeNTCOrigineVersExtremite_0_2_338_ R0000052 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_338_ R0003561 1
-    ValeurDeNTCOrigineVersExtremite_0_2_338_ R0003562 1
+    ValeurDeNTCOrigineVersExtremite_0_2_338_ R0003875 1
+    ValeurDeNTCOrigineVersExtremite_0_2_338_ R0003876 1
     ValeurDeNTCOrigineVersExtremite_0_3_338_ R0000042 1
     ValeurDeNTCOrigineVersExtremite_0_3_338_ R0000056 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_338_ R0003563 1
-    ValeurDeNTCOrigineVersExtremite_0_3_338_ R0003564 1
+    ValeurDeNTCOrigineVersExtremite_0_3_338_ R0004211 1
+    ValeurDeNTCOrigineVersExtremite_0_3_338_ R0004212 1
     ValeurDeNTCOrigineVersExtremite_1_4_338_ R0000044 1
     ValeurDeNTCOrigineVersExtremite_1_4_338_ R0000046 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_338_ R0003565 1
-    ValeurDeNTCOrigineVersExtremite_1_4_338_ R0003566 1
+    ValeurDeNTCOrigineVersExtremite_1_4_338_ R0004547 1
+    ValeurDeNTCOrigineVersExtremite_1_4_338_ R0004548 1
     ValeurDeNTCOrigineVersExtremite_1_5_338_ R0000044 1
     ValeurDeNTCOrigineVersExtremite_1_5_338_ R0000050 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_338_ R0003567 1
-    ValeurDeNTCOrigineVersExtremite_1_5_338_ R0003568 1
+    ValeurDeNTCOrigineVersExtremite_1_5_338_ R0004883 1
+    ValeurDeNTCOrigineVersExtremite_1_5_338_ R0004884 1
     ValeurDeNTCOrigineVersExtremite_1_6_338_ R0000044 1
     ValeurDeNTCOrigineVersExtremite_1_6_338_ R0000054 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_338_ R0003569 1
-    ValeurDeNTCOrigineVersExtremite_1_6_338_ R0003570 1
+    ValeurDeNTCOrigineVersExtremite_1_6_338_ R0005219 1
+    ValeurDeNTCOrigineVersExtremite_1_6_338_ R0005220 1
     ValeurDeNTCOrigineVersExtremite_2_7_338_ R0000046 1
     ValeurDeNTCOrigineVersExtremite_2_7_338_ R0000058 -1
     ValeurDeNTCOrigineVersExtremite_2_7_338_ R0003528 0.8
@@ -5913,28 +5913,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_339_ R0000083 1
     ValeurDeNTCOrigineVersExtremite_0_1_339_ R0000063 1
     ValeurDeNTCOrigineVersExtremite_0_1_339_ R0000069 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_339_ R0003571 1
-    ValeurDeNTCOrigineVersExtremite_0_1_339_ R0003572 1
+    ValeurDeNTCOrigineVersExtremite_0_1_339_ R0003541 1
+    ValeurDeNTCOrigineVersExtremite_0_1_339_ R0003542 1
     ValeurDeNTCOrigineVersExtremite_0_2_339_ R0000063 1
     ValeurDeNTCOrigineVersExtremite_0_2_339_ R0000073 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_339_ R0003573 1
-    ValeurDeNTCOrigineVersExtremite_0_2_339_ R0003574 1
+    ValeurDeNTCOrigineVersExtremite_0_2_339_ R0003877 1
+    ValeurDeNTCOrigineVersExtremite_0_2_339_ R0003878 1
     ValeurDeNTCOrigineVersExtremite_0_3_339_ R0000063 1
     ValeurDeNTCOrigineVersExtremite_0_3_339_ R0000077 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_339_ R0003575 1
-    ValeurDeNTCOrigineVersExtremite_0_3_339_ R0003576 1
+    ValeurDeNTCOrigineVersExtremite_0_3_339_ R0004213 1
+    ValeurDeNTCOrigineVersExtremite_0_3_339_ R0004214 1
     ValeurDeNTCOrigineVersExtremite_1_4_339_ R0000065 1
     ValeurDeNTCOrigineVersExtremite_1_4_339_ R0000067 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_339_ R0003577 1
-    ValeurDeNTCOrigineVersExtremite_1_4_339_ R0003578 1
+    ValeurDeNTCOrigineVersExtremite_1_4_339_ R0004549 1
+    ValeurDeNTCOrigineVersExtremite_1_4_339_ R0004550 1
     ValeurDeNTCOrigineVersExtremite_1_5_339_ R0000065 1
     ValeurDeNTCOrigineVersExtremite_1_5_339_ R0000071 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_339_ R0003579 1
-    ValeurDeNTCOrigineVersExtremite_1_5_339_ R0003580 1
+    ValeurDeNTCOrigineVersExtremite_1_5_339_ R0004885 1
+    ValeurDeNTCOrigineVersExtremite_1_5_339_ R0004886 1
     ValeurDeNTCOrigineVersExtremite_1_6_339_ R0000065 1
     ValeurDeNTCOrigineVersExtremite_1_6_339_ R0000075 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_339_ R0003581 1
-    ValeurDeNTCOrigineVersExtremite_1_6_339_ R0003582 1
+    ValeurDeNTCOrigineVersExtremite_1_6_339_ R0005221 1
+    ValeurDeNTCOrigineVersExtremite_1_6_339_ R0005222 1
     ValeurDeNTCOrigineVersExtremite_2_7_339_ R0000067 1
     ValeurDeNTCOrigineVersExtremite_2_7_339_ R0000079 -1
     ValeurDeNTCOrigineVersExtremite_2_7_339_ R0003528 0.8
@@ -6030,28 +6030,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_340_ R0000104 1
     ValeurDeNTCOrigineVersExtremite_0_1_340_ R0000084 1
     ValeurDeNTCOrigineVersExtremite_0_1_340_ R0000090 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_340_ R0003583 1
-    ValeurDeNTCOrigineVersExtremite_0_1_340_ R0003584 1
+    ValeurDeNTCOrigineVersExtremite_0_1_340_ R0003543 1
+    ValeurDeNTCOrigineVersExtremite_0_1_340_ R0003544 1
     ValeurDeNTCOrigineVersExtremite_0_2_340_ R0000084 1
     ValeurDeNTCOrigineVersExtremite_0_2_340_ R0000094 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_340_ R0003585 1
-    ValeurDeNTCOrigineVersExtremite_0_2_340_ R0003586 1
+    ValeurDeNTCOrigineVersExtremite_0_2_340_ R0003879 1
+    ValeurDeNTCOrigineVersExtremite_0_2_340_ R0003880 1
     ValeurDeNTCOrigineVersExtremite_0_3_340_ R0000084 1
     ValeurDeNTCOrigineVersExtremite_0_3_340_ R0000098 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_340_ R0003587 1
-    ValeurDeNTCOrigineVersExtremite_0_3_340_ R0003588 1
+    ValeurDeNTCOrigineVersExtremite_0_3_340_ R0004215 1
+    ValeurDeNTCOrigineVersExtremite_0_3_340_ R0004216 1
     ValeurDeNTCOrigineVersExtremite_1_4_340_ R0000086 1
     ValeurDeNTCOrigineVersExtremite_1_4_340_ R0000088 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_340_ R0003589 1
-    ValeurDeNTCOrigineVersExtremite_1_4_340_ R0003590 1
+    ValeurDeNTCOrigineVersExtremite_1_4_340_ R0004551 1
+    ValeurDeNTCOrigineVersExtremite_1_4_340_ R0004552 1
     ValeurDeNTCOrigineVersExtremite_1_5_340_ R0000086 1
     ValeurDeNTCOrigineVersExtremite_1_5_340_ R0000092 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_340_ R0003591 1
-    ValeurDeNTCOrigineVersExtremite_1_5_340_ R0003592 1
+    ValeurDeNTCOrigineVersExtremite_1_5_340_ R0004887 1
+    ValeurDeNTCOrigineVersExtremite_1_5_340_ R0004888 1
     ValeurDeNTCOrigineVersExtremite_1_6_340_ R0000086 1
     ValeurDeNTCOrigineVersExtremite_1_6_340_ R0000096 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_340_ R0003593 1
-    ValeurDeNTCOrigineVersExtremite_1_6_340_ R0003594 1
+    ValeurDeNTCOrigineVersExtremite_1_6_340_ R0005223 1
+    ValeurDeNTCOrigineVersExtremite_1_6_340_ R0005224 1
     ValeurDeNTCOrigineVersExtremite_2_7_340_ R0000088 1
     ValeurDeNTCOrigineVersExtremite_2_7_340_ R0000100 -1
     ValeurDeNTCOrigineVersExtremite_2_7_340_ R0003528 0.8
@@ -6147,28 +6147,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_341_ R0000125 1
     ValeurDeNTCOrigineVersExtremite_0_1_341_ R0000105 1
     ValeurDeNTCOrigineVersExtremite_0_1_341_ R0000111 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_341_ R0003595 1
-    ValeurDeNTCOrigineVersExtremite_0_1_341_ R0003596 1
+    ValeurDeNTCOrigineVersExtremite_0_1_341_ R0003545 1
+    ValeurDeNTCOrigineVersExtremite_0_1_341_ R0003546 1
     ValeurDeNTCOrigineVersExtremite_0_2_341_ R0000105 1
     ValeurDeNTCOrigineVersExtremite_0_2_341_ R0000115 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_341_ R0003597 1
-    ValeurDeNTCOrigineVersExtremite_0_2_341_ R0003598 1
+    ValeurDeNTCOrigineVersExtremite_0_2_341_ R0003881 1
+    ValeurDeNTCOrigineVersExtremite_0_2_341_ R0003882 1
     ValeurDeNTCOrigineVersExtremite_0_3_341_ R0000105 1
     ValeurDeNTCOrigineVersExtremite_0_3_341_ R0000119 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_341_ R0003599 1
-    ValeurDeNTCOrigineVersExtremite_0_3_341_ R0003600 1
+    ValeurDeNTCOrigineVersExtremite_0_3_341_ R0004217 1
+    ValeurDeNTCOrigineVersExtremite_0_3_341_ R0004218 1
     ValeurDeNTCOrigineVersExtremite_1_4_341_ R0000107 1
     ValeurDeNTCOrigineVersExtremite_1_4_341_ R0000109 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_341_ R0003601 1
-    ValeurDeNTCOrigineVersExtremite_1_4_341_ R0003602 1
+    ValeurDeNTCOrigineVersExtremite_1_4_341_ R0004553 1
+    ValeurDeNTCOrigineVersExtremite_1_4_341_ R0004554 1
     ValeurDeNTCOrigineVersExtremite_1_5_341_ R0000107 1
     ValeurDeNTCOrigineVersExtremite_1_5_341_ R0000113 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_341_ R0003603 1
-    ValeurDeNTCOrigineVersExtremite_1_5_341_ R0003604 1
+    ValeurDeNTCOrigineVersExtremite_1_5_341_ R0004889 1
+    ValeurDeNTCOrigineVersExtremite_1_5_341_ R0004890 1
     ValeurDeNTCOrigineVersExtremite_1_6_341_ R0000107 1
     ValeurDeNTCOrigineVersExtremite_1_6_341_ R0000117 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_341_ R0003605 1
-    ValeurDeNTCOrigineVersExtremite_1_6_341_ R0003606 1
+    ValeurDeNTCOrigineVersExtremite_1_6_341_ R0005225 1
+    ValeurDeNTCOrigineVersExtremite_1_6_341_ R0005226 1
     ValeurDeNTCOrigineVersExtremite_2_7_341_ R0000109 1
     ValeurDeNTCOrigineVersExtremite_2_7_341_ R0000121 -1
     ValeurDeNTCOrigineVersExtremite_2_7_341_ R0003528 0.8
@@ -6264,28 +6264,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_342_ R0000146 1
     ValeurDeNTCOrigineVersExtremite_0_1_342_ R0000126 1
     ValeurDeNTCOrigineVersExtremite_0_1_342_ R0000132 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_342_ R0003607 1
-    ValeurDeNTCOrigineVersExtremite_0_1_342_ R0003608 1
+    ValeurDeNTCOrigineVersExtremite_0_1_342_ R0003547 1
+    ValeurDeNTCOrigineVersExtremite_0_1_342_ R0003548 1
     ValeurDeNTCOrigineVersExtremite_0_2_342_ R0000126 1
     ValeurDeNTCOrigineVersExtremite_0_2_342_ R0000136 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_342_ R0003609 1
-    ValeurDeNTCOrigineVersExtremite_0_2_342_ R0003610 1
+    ValeurDeNTCOrigineVersExtremite_0_2_342_ R0003883 1
+    ValeurDeNTCOrigineVersExtremite_0_2_342_ R0003884 1
     ValeurDeNTCOrigineVersExtremite_0_3_342_ R0000126 1
     ValeurDeNTCOrigineVersExtremite_0_3_342_ R0000140 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_342_ R0003611 1
-    ValeurDeNTCOrigineVersExtremite_0_3_342_ R0003612 1
+    ValeurDeNTCOrigineVersExtremite_0_3_342_ R0004219 1
+    ValeurDeNTCOrigineVersExtremite_0_3_342_ R0004220 1
     ValeurDeNTCOrigineVersExtremite_1_4_342_ R0000128 1
     ValeurDeNTCOrigineVersExtremite_1_4_342_ R0000130 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_342_ R0003613 1
-    ValeurDeNTCOrigineVersExtremite_1_4_342_ R0003614 1
+    ValeurDeNTCOrigineVersExtremite_1_4_342_ R0004555 1
+    ValeurDeNTCOrigineVersExtremite_1_4_342_ R0004556 1
     ValeurDeNTCOrigineVersExtremite_1_5_342_ R0000128 1
     ValeurDeNTCOrigineVersExtremite_1_5_342_ R0000134 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_342_ R0003615 1
-    ValeurDeNTCOrigineVersExtremite_1_5_342_ R0003616 1
+    ValeurDeNTCOrigineVersExtremite_1_5_342_ R0004891 1
+    ValeurDeNTCOrigineVersExtremite_1_5_342_ R0004892 1
     ValeurDeNTCOrigineVersExtremite_1_6_342_ R0000128 1
     ValeurDeNTCOrigineVersExtremite_1_6_342_ R0000138 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_342_ R0003617 1
-    ValeurDeNTCOrigineVersExtremite_1_6_342_ R0003618 1
+    ValeurDeNTCOrigineVersExtremite_1_6_342_ R0005227 1
+    ValeurDeNTCOrigineVersExtremite_1_6_342_ R0005228 1
     ValeurDeNTCOrigineVersExtremite_2_7_342_ R0000130 1
     ValeurDeNTCOrigineVersExtremite_2_7_342_ R0000142 -1
     ValeurDeNTCOrigineVersExtremite_2_7_342_ R0003528 0.8
@@ -6381,28 +6381,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_343_ R0000167 1
     ValeurDeNTCOrigineVersExtremite_0_1_343_ R0000147 1
     ValeurDeNTCOrigineVersExtremite_0_1_343_ R0000153 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_343_ R0003619 1
-    ValeurDeNTCOrigineVersExtremite_0_1_343_ R0003620 1
+    ValeurDeNTCOrigineVersExtremite_0_1_343_ R0003549 1
+    ValeurDeNTCOrigineVersExtremite_0_1_343_ R0003550 1
     ValeurDeNTCOrigineVersExtremite_0_2_343_ R0000147 1
     ValeurDeNTCOrigineVersExtremite_0_2_343_ R0000157 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_343_ R0003621 1
-    ValeurDeNTCOrigineVersExtremite_0_2_343_ R0003622 1
+    ValeurDeNTCOrigineVersExtremite_0_2_343_ R0003885 1
+    ValeurDeNTCOrigineVersExtremite_0_2_343_ R0003886 1
     ValeurDeNTCOrigineVersExtremite_0_3_343_ R0000147 1
     ValeurDeNTCOrigineVersExtremite_0_3_343_ R0000161 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_343_ R0003623 1
-    ValeurDeNTCOrigineVersExtremite_0_3_343_ R0003624 1
+    ValeurDeNTCOrigineVersExtremite_0_3_343_ R0004221 1
+    ValeurDeNTCOrigineVersExtremite_0_3_343_ R0004222 1
     ValeurDeNTCOrigineVersExtremite_1_4_343_ R0000149 1
     ValeurDeNTCOrigineVersExtremite_1_4_343_ R0000151 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_343_ R0003625 1
-    ValeurDeNTCOrigineVersExtremite_1_4_343_ R0003626 1
+    ValeurDeNTCOrigineVersExtremite_1_4_343_ R0004557 1
+    ValeurDeNTCOrigineVersExtremite_1_4_343_ R0004558 1
     ValeurDeNTCOrigineVersExtremite_1_5_343_ R0000149 1
     ValeurDeNTCOrigineVersExtremite_1_5_343_ R0000155 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_343_ R0003627 1
-    ValeurDeNTCOrigineVersExtremite_1_5_343_ R0003628 1
+    ValeurDeNTCOrigineVersExtremite_1_5_343_ R0004893 1
+    ValeurDeNTCOrigineVersExtremite_1_5_343_ R0004894 1
     ValeurDeNTCOrigineVersExtremite_1_6_343_ R0000149 1
     ValeurDeNTCOrigineVersExtremite_1_6_343_ R0000159 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_343_ R0003629 1
-    ValeurDeNTCOrigineVersExtremite_1_6_343_ R0003630 1
+    ValeurDeNTCOrigineVersExtremite_1_6_343_ R0005229 1
+    ValeurDeNTCOrigineVersExtremite_1_6_343_ R0005230 1
     ValeurDeNTCOrigineVersExtremite_2_7_343_ R0000151 1
     ValeurDeNTCOrigineVersExtremite_2_7_343_ R0000163 -1
     ValeurDeNTCOrigineVersExtremite_2_7_343_ R0003528 0.8
@@ -6498,28 +6498,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_344_ R0000188 1
     ValeurDeNTCOrigineVersExtremite_0_1_344_ R0000168 1
     ValeurDeNTCOrigineVersExtremite_0_1_344_ R0000174 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_344_ R0003631 1
-    ValeurDeNTCOrigineVersExtremite_0_1_344_ R0003632 1
+    ValeurDeNTCOrigineVersExtremite_0_1_344_ R0003551 1
+    ValeurDeNTCOrigineVersExtremite_0_1_344_ R0003552 1
     ValeurDeNTCOrigineVersExtremite_0_2_344_ R0000168 1
     ValeurDeNTCOrigineVersExtremite_0_2_344_ R0000178 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_344_ R0003633 1
-    ValeurDeNTCOrigineVersExtremite_0_2_344_ R0003634 1
+    ValeurDeNTCOrigineVersExtremite_0_2_344_ R0003887 1
+    ValeurDeNTCOrigineVersExtremite_0_2_344_ R0003888 1
     ValeurDeNTCOrigineVersExtremite_0_3_344_ R0000168 1
     ValeurDeNTCOrigineVersExtremite_0_3_344_ R0000182 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_344_ R0003635 1
-    ValeurDeNTCOrigineVersExtremite_0_3_344_ R0003636 1
+    ValeurDeNTCOrigineVersExtremite_0_3_344_ R0004223 1
+    ValeurDeNTCOrigineVersExtremite_0_3_344_ R0004224 1
     ValeurDeNTCOrigineVersExtremite_1_4_344_ R0000170 1
     ValeurDeNTCOrigineVersExtremite_1_4_344_ R0000172 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_344_ R0003637 1
-    ValeurDeNTCOrigineVersExtremite_1_4_344_ R0003638 1
+    ValeurDeNTCOrigineVersExtremite_1_4_344_ R0004559 1
+    ValeurDeNTCOrigineVersExtremite_1_4_344_ R0004560 1
     ValeurDeNTCOrigineVersExtremite_1_5_344_ R0000170 1
     ValeurDeNTCOrigineVersExtremite_1_5_344_ R0000176 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_344_ R0003639 1
-    ValeurDeNTCOrigineVersExtremite_1_5_344_ R0003640 1
+    ValeurDeNTCOrigineVersExtremite_1_5_344_ R0004895 1
+    ValeurDeNTCOrigineVersExtremite_1_5_344_ R0004896 1
     ValeurDeNTCOrigineVersExtremite_1_6_344_ R0000170 1
     ValeurDeNTCOrigineVersExtremite_1_6_344_ R0000180 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_344_ R0003641 1
-    ValeurDeNTCOrigineVersExtremite_1_6_344_ R0003642 1
+    ValeurDeNTCOrigineVersExtremite_1_6_344_ R0005231 1
+    ValeurDeNTCOrigineVersExtremite_1_6_344_ R0005232 1
     ValeurDeNTCOrigineVersExtremite_2_7_344_ R0000172 1
     ValeurDeNTCOrigineVersExtremite_2_7_344_ R0000184 -1
     ValeurDeNTCOrigineVersExtremite_2_7_344_ R0003528 0.8
@@ -6615,28 +6615,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_345_ R0000209 1
     ValeurDeNTCOrigineVersExtremite_0_1_345_ R0000189 1
     ValeurDeNTCOrigineVersExtremite_0_1_345_ R0000195 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_345_ R0003643 1
-    ValeurDeNTCOrigineVersExtremite_0_1_345_ R0003644 1
+    ValeurDeNTCOrigineVersExtremite_0_1_345_ R0003553 1
+    ValeurDeNTCOrigineVersExtremite_0_1_345_ R0003554 1
     ValeurDeNTCOrigineVersExtremite_0_2_345_ R0000189 1
     ValeurDeNTCOrigineVersExtremite_0_2_345_ R0000199 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_345_ R0003645 1
-    ValeurDeNTCOrigineVersExtremite_0_2_345_ R0003646 1
+    ValeurDeNTCOrigineVersExtremite_0_2_345_ R0003889 1
+    ValeurDeNTCOrigineVersExtremite_0_2_345_ R0003890 1
     ValeurDeNTCOrigineVersExtremite_0_3_345_ R0000189 1
     ValeurDeNTCOrigineVersExtremite_0_3_345_ R0000203 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_345_ R0003647 1
-    ValeurDeNTCOrigineVersExtremite_0_3_345_ R0003648 1
+    ValeurDeNTCOrigineVersExtremite_0_3_345_ R0004225 1
+    ValeurDeNTCOrigineVersExtremite_0_3_345_ R0004226 1
     ValeurDeNTCOrigineVersExtremite_1_4_345_ R0000191 1
     ValeurDeNTCOrigineVersExtremite_1_4_345_ R0000193 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_345_ R0003649 1
-    ValeurDeNTCOrigineVersExtremite_1_4_345_ R0003650 1
+    ValeurDeNTCOrigineVersExtremite_1_4_345_ R0004561 1
+    ValeurDeNTCOrigineVersExtremite_1_4_345_ R0004562 1
     ValeurDeNTCOrigineVersExtremite_1_5_345_ R0000191 1
     ValeurDeNTCOrigineVersExtremite_1_5_345_ R0000197 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_345_ R0003651 1
-    ValeurDeNTCOrigineVersExtremite_1_5_345_ R0003652 1
+    ValeurDeNTCOrigineVersExtremite_1_5_345_ R0004897 1
+    ValeurDeNTCOrigineVersExtremite_1_5_345_ R0004898 1
     ValeurDeNTCOrigineVersExtremite_1_6_345_ R0000191 1
     ValeurDeNTCOrigineVersExtremite_1_6_345_ R0000201 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_345_ R0003653 1
-    ValeurDeNTCOrigineVersExtremite_1_6_345_ R0003654 1
+    ValeurDeNTCOrigineVersExtremite_1_6_345_ R0005233 1
+    ValeurDeNTCOrigineVersExtremite_1_6_345_ R0005234 1
     ValeurDeNTCOrigineVersExtremite_2_7_345_ R0000193 1
     ValeurDeNTCOrigineVersExtremite_2_7_345_ R0000205 -1
     ValeurDeNTCOrigineVersExtremite_2_7_345_ R0003528 0.8
@@ -6732,28 +6732,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_346_ R0000230 1
     ValeurDeNTCOrigineVersExtremite_0_1_346_ R0000210 1
     ValeurDeNTCOrigineVersExtremite_0_1_346_ R0000216 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_346_ R0003655 1
-    ValeurDeNTCOrigineVersExtremite_0_1_346_ R0003656 1
+    ValeurDeNTCOrigineVersExtremite_0_1_346_ R0003555 1
+    ValeurDeNTCOrigineVersExtremite_0_1_346_ R0003556 1
     ValeurDeNTCOrigineVersExtremite_0_2_346_ R0000210 1
     ValeurDeNTCOrigineVersExtremite_0_2_346_ R0000220 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_346_ R0003657 1
-    ValeurDeNTCOrigineVersExtremite_0_2_346_ R0003658 1
+    ValeurDeNTCOrigineVersExtremite_0_2_346_ R0003891 1
+    ValeurDeNTCOrigineVersExtremite_0_2_346_ R0003892 1
     ValeurDeNTCOrigineVersExtremite_0_3_346_ R0000210 1
     ValeurDeNTCOrigineVersExtremite_0_3_346_ R0000224 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_346_ R0003659 1
-    ValeurDeNTCOrigineVersExtremite_0_3_346_ R0003660 1
+    ValeurDeNTCOrigineVersExtremite_0_3_346_ R0004227 1
+    ValeurDeNTCOrigineVersExtremite_0_3_346_ R0004228 1
     ValeurDeNTCOrigineVersExtremite_1_4_346_ R0000212 1
     ValeurDeNTCOrigineVersExtremite_1_4_346_ R0000214 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_346_ R0003661 1
-    ValeurDeNTCOrigineVersExtremite_1_4_346_ R0003662 1
+    ValeurDeNTCOrigineVersExtremite_1_4_346_ R0004563 1
+    ValeurDeNTCOrigineVersExtremite_1_4_346_ R0004564 1
     ValeurDeNTCOrigineVersExtremite_1_5_346_ R0000212 1
     ValeurDeNTCOrigineVersExtremite_1_5_346_ R0000218 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_346_ R0003663 1
-    ValeurDeNTCOrigineVersExtremite_1_5_346_ R0003664 1
+    ValeurDeNTCOrigineVersExtremite_1_5_346_ R0004899 1
+    ValeurDeNTCOrigineVersExtremite_1_5_346_ R0004900 1
     ValeurDeNTCOrigineVersExtremite_1_6_346_ R0000212 1
     ValeurDeNTCOrigineVersExtremite_1_6_346_ R0000222 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_346_ R0003665 1
-    ValeurDeNTCOrigineVersExtremite_1_6_346_ R0003666 1
+    ValeurDeNTCOrigineVersExtremite_1_6_346_ R0005235 1
+    ValeurDeNTCOrigineVersExtremite_1_6_346_ R0005236 1
     ValeurDeNTCOrigineVersExtremite_2_7_346_ R0000214 1
     ValeurDeNTCOrigineVersExtremite_2_7_346_ R0000226 -1
     ValeurDeNTCOrigineVersExtremite_2_7_346_ R0003528 0.8
@@ -6849,28 +6849,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_347_ R0000251 1
     ValeurDeNTCOrigineVersExtremite_0_1_347_ R0000231 1
     ValeurDeNTCOrigineVersExtremite_0_1_347_ R0000237 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_347_ R0003667 1
-    ValeurDeNTCOrigineVersExtremite_0_1_347_ R0003668 1
+    ValeurDeNTCOrigineVersExtremite_0_1_347_ R0003557 1
+    ValeurDeNTCOrigineVersExtremite_0_1_347_ R0003558 1
     ValeurDeNTCOrigineVersExtremite_0_2_347_ R0000231 1
     ValeurDeNTCOrigineVersExtremite_0_2_347_ R0000241 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_347_ R0003669 1
-    ValeurDeNTCOrigineVersExtremite_0_2_347_ R0003670 1
+    ValeurDeNTCOrigineVersExtremite_0_2_347_ R0003893 1
+    ValeurDeNTCOrigineVersExtremite_0_2_347_ R0003894 1
     ValeurDeNTCOrigineVersExtremite_0_3_347_ R0000231 1
     ValeurDeNTCOrigineVersExtremite_0_3_347_ R0000245 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_347_ R0003671 1
-    ValeurDeNTCOrigineVersExtremite_0_3_347_ R0003672 1
+    ValeurDeNTCOrigineVersExtremite_0_3_347_ R0004229 1
+    ValeurDeNTCOrigineVersExtremite_0_3_347_ R0004230 1
     ValeurDeNTCOrigineVersExtremite_1_4_347_ R0000233 1
     ValeurDeNTCOrigineVersExtremite_1_4_347_ R0000235 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_347_ R0003673 1
-    ValeurDeNTCOrigineVersExtremite_1_4_347_ R0003674 1
+    ValeurDeNTCOrigineVersExtremite_1_4_347_ R0004565 1
+    ValeurDeNTCOrigineVersExtremite_1_4_347_ R0004566 1
     ValeurDeNTCOrigineVersExtremite_1_5_347_ R0000233 1
     ValeurDeNTCOrigineVersExtremite_1_5_347_ R0000239 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_347_ R0003675 1
-    ValeurDeNTCOrigineVersExtremite_1_5_347_ R0003676 1
+    ValeurDeNTCOrigineVersExtremite_1_5_347_ R0004901 1
+    ValeurDeNTCOrigineVersExtremite_1_5_347_ R0004902 1
     ValeurDeNTCOrigineVersExtremite_1_6_347_ R0000233 1
     ValeurDeNTCOrigineVersExtremite_1_6_347_ R0000243 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_347_ R0003677 1
-    ValeurDeNTCOrigineVersExtremite_1_6_347_ R0003678 1
+    ValeurDeNTCOrigineVersExtremite_1_6_347_ R0005237 1
+    ValeurDeNTCOrigineVersExtremite_1_6_347_ R0005238 1
     ValeurDeNTCOrigineVersExtremite_2_7_347_ R0000235 1
     ValeurDeNTCOrigineVersExtremite_2_7_347_ R0000247 -1
     ValeurDeNTCOrigineVersExtremite_2_7_347_ R0003528 0.8
@@ -6966,28 +6966,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_348_ R0000272 1
     ValeurDeNTCOrigineVersExtremite_0_1_348_ R0000252 1
     ValeurDeNTCOrigineVersExtremite_0_1_348_ R0000258 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_348_ R0003679 1
-    ValeurDeNTCOrigineVersExtremite_0_1_348_ R0003680 1
+    ValeurDeNTCOrigineVersExtremite_0_1_348_ R0003559 1
+    ValeurDeNTCOrigineVersExtremite_0_1_348_ R0003560 1
     ValeurDeNTCOrigineVersExtremite_0_2_348_ R0000252 1
     ValeurDeNTCOrigineVersExtremite_0_2_348_ R0000262 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_348_ R0003681 1
-    ValeurDeNTCOrigineVersExtremite_0_2_348_ R0003682 1
+    ValeurDeNTCOrigineVersExtremite_0_2_348_ R0003895 1
+    ValeurDeNTCOrigineVersExtremite_0_2_348_ R0003896 1
     ValeurDeNTCOrigineVersExtremite_0_3_348_ R0000252 1
     ValeurDeNTCOrigineVersExtremite_0_3_348_ R0000266 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_348_ R0003683 1
-    ValeurDeNTCOrigineVersExtremite_0_3_348_ R0003684 1
+    ValeurDeNTCOrigineVersExtremite_0_3_348_ R0004231 1
+    ValeurDeNTCOrigineVersExtremite_0_3_348_ R0004232 1
     ValeurDeNTCOrigineVersExtremite_1_4_348_ R0000254 1
     ValeurDeNTCOrigineVersExtremite_1_4_348_ R0000256 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_348_ R0003685 1
-    ValeurDeNTCOrigineVersExtremite_1_4_348_ R0003686 1
+    ValeurDeNTCOrigineVersExtremite_1_4_348_ R0004567 1
+    ValeurDeNTCOrigineVersExtremite_1_4_348_ R0004568 1
     ValeurDeNTCOrigineVersExtremite_1_5_348_ R0000254 1
     ValeurDeNTCOrigineVersExtremite_1_5_348_ R0000260 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_348_ R0003687 1
-    ValeurDeNTCOrigineVersExtremite_1_5_348_ R0003688 1
+    ValeurDeNTCOrigineVersExtremite_1_5_348_ R0004903 1
+    ValeurDeNTCOrigineVersExtremite_1_5_348_ R0004904 1
     ValeurDeNTCOrigineVersExtremite_1_6_348_ R0000254 1
     ValeurDeNTCOrigineVersExtremite_1_6_348_ R0000264 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_348_ R0003689 1
-    ValeurDeNTCOrigineVersExtremite_1_6_348_ R0003690 1
+    ValeurDeNTCOrigineVersExtremite_1_6_348_ R0005239 1
+    ValeurDeNTCOrigineVersExtremite_1_6_348_ R0005240 1
     ValeurDeNTCOrigineVersExtremite_2_7_348_ R0000256 1
     ValeurDeNTCOrigineVersExtremite_2_7_348_ R0000268 -1
     ValeurDeNTCOrigineVersExtremite_2_7_348_ R0003528 0.8
@@ -7083,28 +7083,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_349_ R0000293 1
     ValeurDeNTCOrigineVersExtremite_0_1_349_ R0000273 1
     ValeurDeNTCOrigineVersExtremite_0_1_349_ R0000279 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_349_ R0003691 1
-    ValeurDeNTCOrigineVersExtremite_0_1_349_ R0003692 1
+    ValeurDeNTCOrigineVersExtremite_0_1_349_ R0003561 1
+    ValeurDeNTCOrigineVersExtremite_0_1_349_ R0003562 1
     ValeurDeNTCOrigineVersExtremite_0_2_349_ R0000273 1
     ValeurDeNTCOrigineVersExtremite_0_2_349_ R0000283 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_349_ R0003693 1
-    ValeurDeNTCOrigineVersExtremite_0_2_349_ R0003694 1
+    ValeurDeNTCOrigineVersExtremite_0_2_349_ R0003897 1
+    ValeurDeNTCOrigineVersExtremite_0_2_349_ R0003898 1
     ValeurDeNTCOrigineVersExtremite_0_3_349_ R0000273 1
     ValeurDeNTCOrigineVersExtremite_0_3_349_ R0000287 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_349_ R0003695 1
-    ValeurDeNTCOrigineVersExtremite_0_3_349_ R0003696 1
+    ValeurDeNTCOrigineVersExtremite_0_3_349_ R0004233 1
+    ValeurDeNTCOrigineVersExtremite_0_3_349_ R0004234 1
     ValeurDeNTCOrigineVersExtremite_1_4_349_ R0000275 1
     ValeurDeNTCOrigineVersExtremite_1_4_349_ R0000277 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_349_ R0003697 1
-    ValeurDeNTCOrigineVersExtremite_1_4_349_ R0003698 1
+    ValeurDeNTCOrigineVersExtremite_1_4_349_ R0004569 1
+    ValeurDeNTCOrigineVersExtremite_1_4_349_ R0004570 1
     ValeurDeNTCOrigineVersExtremite_1_5_349_ R0000275 1
     ValeurDeNTCOrigineVersExtremite_1_5_349_ R0000281 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_349_ R0003699 1
-    ValeurDeNTCOrigineVersExtremite_1_5_349_ R0003700 1
+    ValeurDeNTCOrigineVersExtremite_1_5_349_ R0004905 1
+    ValeurDeNTCOrigineVersExtremite_1_5_349_ R0004906 1
     ValeurDeNTCOrigineVersExtremite_1_6_349_ R0000275 1
     ValeurDeNTCOrigineVersExtremite_1_6_349_ R0000285 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_349_ R0003701 1
-    ValeurDeNTCOrigineVersExtremite_1_6_349_ R0003702 1
+    ValeurDeNTCOrigineVersExtremite_1_6_349_ R0005241 1
+    ValeurDeNTCOrigineVersExtremite_1_6_349_ R0005242 1
     ValeurDeNTCOrigineVersExtremite_2_7_349_ R0000277 1
     ValeurDeNTCOrigineVersExtremite_2_7_349_ R0000289 -1
     ValeurDeNTCOrigineVersExtremite_2_7_349_ R0003528 0.8
@@ -7200,28 +7200,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_350_ R0000314 1
     ValeurDeNTCOrigineVersExtremite_0_1_350_ R0000294 1
     ValeurDeNTCOrigineVersExtremite_0_1_350_ R0000300 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_350_ R0003703 1
-    ValeurDeNTCOrigineVersExtremite_0_1_350_ R0003704 1
+    ValeurDeNTCOrigineVersExtremite_0_1_350_ R0003563 1
+    ValeurDeNTCOrigineVersExtremite_0_1_350_ R0003564 1
     ValeurDeNTCOrigineVersExtremite_0_2_350_ R0000294 1
     ValeurDeNTCOrigineVersExtremite_0_2_350_ R0000304 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_350_ R0003705 1
-    ValeurDeNTCOrigineVersExtremite_0_2_350_ R0003706 1
+    ValeurDeNTCOrigineVersExtremite_0_2_350_ R0003899 1
+    ValeurDeNTCOrigineVersExtremite_0_2_350_ R0003900 1
     ValeurDeNTCOrigineVersExtremite_0_3_350_ R0000294 1
     ValeurDeNTCOrigineVersExtremite_0_3_350_ R0000308 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_350_ R0003707 1
-    ValeurDeNTCOrigineVersExtremite_0_3_350_ R0003708 1
+    ValeurDeNTCOrigineVersExtremite_0_3_350_ R0004235 1
+    ValeurDeNTCOrigineVersExtremite_0_3_350_ R0004236 1
     ValeurDeNTCOrigineVersExtremite_1_4_350_ R0000296 1
     ValeurDeNTCOrigineVersExtremite_1_4_350_ R0000298 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_350_ R0003709 1
-    ValeurDeNTCOrigineVersExtremite_1_4_350_ R0003710 1
+    ValeurDeNTCOrigineVersExtremite_1_4_350_ R0004571 1
+    ValeurDeNTCOrigineVersExtremite_1_4_350_ R0004572 1
     ValeurDeNTCOrigineVersExtremite_1_5_350_ R0000296 1
     ValeurDeNTCOrigineVersExtremite_1_5_350_ R0000302 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_350_ R0003711 1
-    ValeurDeNTCOrigineVersExtremite_1_5_350_ R0003712 1
+    ValeurDeNTCOrigineVersExtremite_1_5_350_ R0004907 1
+    ValeurDeNTCOrigineVersExtremite_1_5_350_ R0004908 1
     ValeurDeNTCOrigineVersExtremite_1_6_350_ R0000296 1
     ValeurDeNTCOrigineVersExtremite_1_6_350_ R0000306 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_350_ R0003713 1
-    ValeurDeNTCOrigineVersExtremite_1_6_350_ R0003714 1
+    ValeurDeNTCOrigineVersExtremite_1_6_350_ R0005243 1
+    ValeurDeNTCOrigineVersExtremite_1_6_350_ R0005244 1
     ValeurDeNTCOrigineVersExtremite_2_7_350_ R0000298 1
     ValeurDeNTCOrigineVersExtremite_2_7_350_ R0000310 -1
     ValeurDeNTCOrigineVersExtremite_2_7_350_ R0003528 0.8
@@ -7317,28 +7317,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_351_ R0000335 1
     ValeurDeNTCOrigineVersExtremite_0_1_351_ R0000315 1
     ValeurDeNTCOrigineVersExtremite_0_1_351_ R0000321 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_351_ R0003715 1
-    ValeurDeNTCOrigineVersExtremite_0_1_351_ R0003716 1
+    ValeurDeNTCOrigineVersExtremite_0_1_351_ R0003565 1
+    ValeurDeNTCOrigineVersExtremite_0_1_351_ R0003566 1
     ValeurDeNTCOrigineVersExtremite_0_2_351_ R0000315 1
     ValeurDeNTCOrigineVersExtremite_0_2_351_ R0000325 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_351_ R0003717 1
-    ValeurDeNTCOrigineVersExtremite_0_2_351_ R0003718 1
+    ValeurDeNTCOrigineVersExtremite_0_2_351_ R0003901 1
+    ValeurDeNTCOrigineVersExtremite_0_2_351_ R0003902 1
     ValeurDeNTCOrigineVersExtremite_0_3_351_ R0000315 1
     ValeurDeNTCOrigineVersExtremite_0_3_351_ R0000329 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_351_ R0003719 1
-    ValeurDeNTCOrigineVersExtremite_0_3_351_ R0003720 1
+    ValeurDeNTCOrigineVersExtremite_0_3_351_ R0004237 1
+    ValeurDeNTCOrigineVersExtremite_0_3_351_ R0004238 1
     ValeurDeNTCOrigineVersExtremite_1_4_351_ R0000317 1
     ValeurDeNTCOrigineVersExtremite_1_4_351_ R0000319 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_351_ R0003721 1
-    ValeurDeNTCOrigineVersExtremite_1_4_351_ R0003722 1
+    ValeurDeNTCOrigineVersExtremite_1_4_351_ R0004573 1
+    ValeurDeNTCOrigineVersExtremite_1_4_351_ R0004574 1
     ValeurDeNTCOrigineVersExtremite_1_5_351_ R0000317 1
     ValeurDeNTCOrigineVersExtremite_1_5_351_ R0000323 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_351_ R0003723 1
-    ValeurDeNTCOrigineVersExtremite_1_5_351_ R0003724 1
+    ValeurDeNTCOrigineVersExtremite_1_5_351_ R0004909 1
+    ValeurDeNTCOrigineVersExtremite_1_5_351_ R0004910 1
     ValeurDeNTCOrigineVersExtremite_1_6_351_ R0000317 1
     ValeurDeNTCOrigineVersExtremite_1_6_351_ R0000327 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_351_ R0003725 1
-    ValeurDeNTCOrigineVersExtremite_1_6_351_ R0003726 1
+    ValeurDeNTCOrigineVersExtremite_1_6_351_ R0005245 1
+    ValeurDeNTCOrigineVersExtremite_1_6_351_ R0005246 1
     ValeurDeNTCOrigineVersExtremite_2_7_351_ R0000319 1
     ValeurDeNTCOrigineVersExtremite_2_7_351_ R0000331 -1
     ValeurDeNTCOrigineVersExtremite_2_7_351_ R0003528 0.8
@@ -7434,28 +7434,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_352_ R0000356 1
     ValeurDeNTCOrigineVersExtremite_0_1_352_ R0000336 1
     ValeurDeNTCOrigineVersExtremite_0_1_352_ R0000342 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_352_ R0003727 1
-    ValeurDeNTCOrigineVersExtremite_0_1_352_ R0003728 1
+    ValeurDeNTCOrigineVersExtremite_0_1_352_ R0003567 1
+    ValeurDeNTCOrigineVersExtremite_0_1_352_ R0003568 1
     ValeurDeNTCOrigineVersExtremite_0_2_352_ R0000336 1
     ValeurDeNTCOrigineVersExtremite_0_2_352_ R0000346 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_352_ R0003729 1
-    ValeurDeNTCOrigineVersExtremite_0_2_352_ R0003730 1
+    ValeurDeNTCOrigineVersExtremite_0_2_352_ R0003903 1
+    ValeurDeNTCOrigineVersExtremite_0_2_352_ R0003904 1
     ValeurDeNTCOrigineVersExtremite_0_3_352_ R0000336 1
     ValeurDeNTCOrigineVersExtremite_0_3_352_ R0000350 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_352_ R0003731 1
-    ValeurDeNTCOrigineVersExtremite_0_3_352_ R0003732 1
+    ValeurDeNTCOrigineVersExtremite_0_3_352_ R0004239 1
+    ValeurDeNTCOrigineVersExtremite_0_3_352_ R0004240 1
     ValeurDeNTCOrigineVersExtremite_1_4_352_ R0000338 1
     ValeurDeNTCOrigineVersExtremite_1_4_352_ R0000340 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_352_ R0003733 1
-    ValeurDeNTCOrigineVersExtremite_1_4_352_ R0003734 1
+    ValeurDeNTCOrigineVersExtremite_1_4_352_ R0004575 1
+    ValeurDeNTCOrigineVersExtremite_1_4_352_ R0004576 1
     ValeurDeNTCOrigineVersExtremite_1_5_352_ R0000338 1
     ValeurDeNTCOrigineVersExtremite_1_5_352_ R0000344 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_352_ R0003735 1
-    ValeurDeNTCOrigineVersExtremite_1_5_352_ R0003736 1
+    ValeurDeNTCOrigineVersExtremite_1_5_352_ R0004911 1
+    ValeurDeNTCOrigineVersExtremite_1_5_352_ R0004912 1
     ValeurDeNTCOrigineVersExtremite_1_6_352_ R0000338 1
     ValeurDeNTCOrigineVersExtremite_1_6_352_ R0000348 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_352_ R0003737 1
-    ValeurDeNTCOrigineVersExtremite_1_6_352_ R0003738 1
+    ValeurDeNTCOrigineVersExtremite_1_6_352_ R0005247 1
+    ValeurDeNTCOrigineVersExtremite_1_6_352_ R0005248 1
     ValeurDeNTCOrigineVersExtremite_2_7_352_ R0000340 1
     ValeurDeNTCOrigineVersExtremite_2_7_352_ R0000352 -1
     ValeurDeNTCOrigineVersExtremite_2_7_352_ R0003528 0.8
@@ -7551,28 +7551,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_353_ R0000377 1
     ValeurDeNTCOrigineVersExtremite_0_1_353_ R0000357 1
     ValeurDeNTCOrigineVersExtremite_0_1_353_ R0000363 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_353_ R0003739 1
-    ValeurDeNTCOrigineVersExtremite_0_1_353_ R0003740 1
+    ValeurDeNTCOrigineVersExtremite_0_1_353_ R0003569 1
+    ValeurDeNTCOrigineVersExtremite_0_1_353_ R0003570 1
     ValeurDeNTCOrigineVersExtremite_0_2_353_ R0000357 1
     ValeurDeNTCOrigineVersExtremite_0_2_353_ R0000367 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_353_ R0003741 1
-    ValeurDeNTCOrigineVersExtremite_0_2_353_ R0003742 1
+    ValeurDeNTCOrigineVersExtremite_0_2_353_ R0003905 1
+    ValeurDeNTCOrigineVersExtremite_0_2_353_ R0003906 1
     ValeurDeNTCOrigineVersExtremite_0_3_353_ R0000357 1
     ValeurDeNTCOrigineVersExtremite_0_3_353_ R0000371 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_353_ R0003743 1
-    ValeurDeNTCOrigineVersExtremite_0_3_353_ R0003744 1
+    ValeurDeNTCOrigineVersExtremite_0_3_353_ R0004241 1
+    ValeurDeNTCOrigineVersExtremite_0_3_353_ R0004242 1
     ValeurDeNTCOrigineVersExtremite_1_4_353_ R0000359 1
     ValeurDeNTCOrigineVersExtremite_1_4_353_ R0000361 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_353_ R0003745 1
-    ValeurDeNTCOrigineVersExtremite_1_4_353_ R0003746 1
+    ValeurDeNTCOrigineVersExtremite_1_4_353_ R0004577 1
+    ValeurDeNTCOrigineVersExtremite_1_4_353_ R0004578 1
     ValeurDeNTCOrigineVersExtremite_1_5_353_ R0000359 1
     ValeurDeNTCOrigineVersExtremite_1_5_353_ R0000365 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_353_ R0003747 1
-    ValeurDeNTCOrigineVersExtremite_1_5_353_ R0003748 1
+    ValeurDeNTCOrigineVersExtremite_1_5_353_ R0004913 1
+    ValeurDeNTCOrigineVersExtremite_1_5_353_ R0004914 1
     ValeurDeNTCOrigineVersExtremite_1_6_353_ R0000359 1
     ValeurDeNTCOrigineVersExtremite_1_6_353_ R0000369 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_353_ R0003749 1
-    ValeurDeNTCOrigineVersExtremite_1_6_353_ R0003750 1
+    ValeurDeNTCOrigineVersExtremite_1_6_353_ R0005249 1
+    ValeurDeNTCOrigineVersExtremite_1_6_353_ R0005250 1
     ValeurDeNTCOrigineVersExtremite_2_7_353_ R0000361 1
     ValeurDeNTCOrigineVersExtremite_2_7_353_ R0000373 -1
     ValeurDeNTCOrigineVersExtremite_2_7_353_ R0003528 0.8
@@ -7668,28 +7668,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_354_ R0000398 1
     ValeurDeNTCOrigineVersExtremite_0_1_354_ R0000378 1
     ValeurDeNTCOrigineVersExtremite_0_1_354_ R0000384 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_354_ R0003751 1
-    ValeurDeNTCOrigineVersExtremite_0_1_354_ R0003752 1
+    ValeurDeNTCOrigineVersExtremite_0_1_354_ R0003571 1
+    ValeurDeNTCOrigineVersExtremite_0_1_354_ R0003572 1
     ValeurDeNTCOrigineVersExtremite_0_2_354_ R0000378 1
     ValeurDeNTCOrigineVersExtremite_0_2_354_ R0000388 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_354_ R0003753 1
-    ValeurDeNTCOrigineVersExtremite_0_2_354_ R0003754 1
+    ValeurDeNTCOrigineVersExtremite_0_2_354_ R0003907 1
+    ValeurDeNTCOrigineVersExtremite_0_2_354_ R0003908 1
     ValeurDeNTCOrigineVersExtremite_0_3_354_ R0000378 1
     ValeurDeNTCOrigineVersExtremite_0_3_354_ R0000392 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_354_ R0003755 1
-    ValeurDeNTCOrigineVersExtremite_0_3_354_ R0003756 1
+    ValeurDeNTCOrigineVersExtremite_0_3_354_ R0004243 1
+    ValeurDeNTCOrigineVersExtremite_0_3_354_ R0004244 1
     ValeurDeNTCOrigineVersExtremite_1_4_354_ R0000380 1
     ValeurDeNTCOrigineVersExtremite_1_4_354_ R0000382 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_354_ R0003757 1
-    ValeurDeNTCOrigineVersExtremite_1_4_354_ R0003758 1
+    ValeurDeNTCOrigineVersExtremite_1_4_354_ R0004579 1
+    ValeurDeNTCOrigineVersExtremite_1_4_354_ R0004580 1
     ValeurDeNTCOrigineVersExtremite_1_5_354_ R0000380 1
     ValeurDeNTCOrigineVersExtremite_1_5_354_ R0000386 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_354_ R0003759 1
-    ValeurDeNTCOrigineVersExtremite_1_5_354_ R0003760 1
+    ValeurDeNTCOrigineVersExtremite_1_5_354_ R0004915 1
+    ValeurDeNTCOrigineVersExtremite_1_5_354_ R0004916 1
     ValeurDeNTCOrigineVersExtremite_1_6_354_ R0000380 1
     ValeurDeNTCOrigineVersExtremite_1_6_354_ R0000390 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_354_ R0003761 1
-    ValeurDeNTCOrigineVersExtremite_1_6_354_ R0003762 1
+    ValeurDeNTCOrigineVersExtremite_1_6_354_ R0005251 1
+    ValeurDeNTCOrigineVersExtremite_1_6_354_ R0005252 1
     ValeurDeNTCOrigineVersExtremite_2_7_354_ R0000382 1
     ValeurDeNTCOrigineVersExtremite_2_7_354_ R0000394 -1
     ValeurDeNTCOrigineVersExtremite_2_7_354_ R0003528 0.8
@@ -7785,28 +7785,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_355_ R0000419 1
     ValeurDeNTCOrigineVersExtremite_0_1_355_ R0000399 1
     ValeurDeNTCOrigineVersExtremite_0_1_355_ R0000405 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_355_ R0003763 1
-    ValeurDeNTCOrigineVersExtremite_0_1_355_ R0003764 1
+    ValeurDeNTCOrigineVersExtremite_0_1_355_ R0003573 1
+    ValeurDeNTCOrigineVersExtremite_0_1_355_ R0003574 1
     ValeurDeNTCOrigineVersExtremite_0_2_355_ R0000399 1
     ValeurDeNTCOrigineVersExtremite_0_2_355_ R0000409 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_355_ R0003765 1
-    ValeurDeNTCOrigineVersExtremite_0_2_355_ R0003766 1
+    ValeurDeNTCOrigineVersExtremite_0_2_355_ R0003909 1
+    ValeurDeNTCOrigineVersExtremite_0_2_355_ R0003910 1
     ValeurDeNTCOrigineVersExtremite_0_3_355_ R0000399 1
     ValeurDeNTCOrigineVersExtremite_0_3_355_ R0000413 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_355_ R0003767 1
-    ValeurDeNTCOrigineVersExtremite_0_3_355_ R0003768 1
+    ValeurDeNTCOrigineVersExtremite_0_3_355_ R0004245 1
+    ValeurDeNTCOrigineVersExtremite_0_3_355_ R0004246 1
     ValeurDeNTCOrigineVersExtremite_1_4_355_ R0000401 1
     ValeurDeNTCOrigineVersExtremite_1_4_355_ R0000403 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_355_ R0003769 1
-    ValeurDeNTCOrigineVersExtremite_1_4_355_ R0003770 1
+    ValeurDeNTCOrigineVersExtremite_1_4_355_ R0004581 1
+    ValeurDeNTCOrigineVersExtremite_1_4_355_ R0004582 1
     ValeurDeNTCOrigineVersExtremite_1_5_355_ R0000401 1
     ValeurDeNTCOrigineVersExtremite_1_5_355_ R0000407 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_355_ R0003771 1
-    ValeurDeNTCOrigineVersExtremite_1_5_355_ R0003772 1
+    ValeurDeNTCOrigineVersExtremite_1_5_355_ R0004917 1
+    ValeurDeNTCOrigineVersExtremite_1_5_355_ R0004918 1
     ValeurDeNTCOrigineVersExtremite_1_6_355_ R0000401 1
     ValeurDeNTCOrigineVersExtremite_1_6_355_ R0000411 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_355_ R0003773 1
-    ValeurDeNTCOrigineVersExtremite_1_6_355_ R0003774 1
+    ValeurDeNTCOrigineVersExtremite_1_6_355_ R0005253 1
+    ValeurDeNTCOrigineVersExtremite_1_6_355_ R0005254 1
     ValeurDeNTCOrigineVersExtremite_2_7_355_ R0000403 1
     ValeurDeNTCOrigineVersExtremite_2_7_355_ R0000415 -1
     ValeurDeNTCOrigineVersExtremite_2_7_355_ R0003528 0.8
@@ -7902,28 +7902,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_356_ R0000440 1
     ValeurDeNTCOrigineVersExtremite_0_1_356_ R0000420 1
     ValeurDeNTCOrigineVersExtremite_0_1_356_ R0000426 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_356_ R0003775 1
-    ValeurDeNTCOrigineVersExtremite_0_1_356_ R0003776 1
+    ValeurDeNTCOrigineVersExtremite_0_1_356_ R0003575 1
+    ValeurDeNTCOrigineVersExtremite_0_1_356_ R0003576 1
     ValeurDeNTCOrigineVersExtremite_0_2_356_ R0000420 1
     ValeurDeNTCOrigineVersExtremite_0_2_356_ R0000430 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_356_ R0003777 1
-    ValeurDeNTCOrigineVersExtremite_0_2_356_ R0003778 1
+    ValeurDeNTCOrigineVersExtremite_0_2_356_ R0003911 1
+    ValeurDeNTCOrigineVersExtremite_0_2_356_ R0003912 1
     ValeurDeNTCOrigineVersExtremite_0_3_356_ R0000420 1
     ValeurDeNTCOrigineVersExtremite_0_3_356_ R0000434 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_356_ R0003779 1
-    ValeurDeNTCOrigineVersExtremite_0_3_356_ R0003780 1
+    ValeurDeNTCOrigineVersExtremite_0_3_356_ R0004247 1
+    ValeurDeNTCOrigineVersExtremite_0_3_356_ R0004248 1
     ValeurDeNTCOrigineVersExtremite_1_4_356_ R0000422 1
     ValeurDeNTCOrigineVersExtremite_1_4_356_ R0000424 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_356_ R0003781 1
-    ValeurDeNTCOrigineVersExtremite_1_4_356_ R0003782 1
+    ValeurDeNTCOrigineVersExtremite_1_4_356_ R0004583 1
+    ValeurDeNTCOrigineVersExtremite_1_4_356_ R0004584 1
     ValeurDeNTCOrigineVersExtremite_1_5_356_ R0000422 1
     ValeurDeNTCOrigineVersExtremite_1_5_356_ R0000428 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_356_ R0003783 1
-    ValeurDeNTCOrigineVersExtremite_1_5_356_ R0003784 1
+    ValeurDeNTCOrigineVersExtremite_1_5_356_ R0004919 1
+    ValeurDeNTCOrigineVersExtremite_1_5_356_ R0004920 1
     ValeurDeNTCOrigineVersExtremite_1_6_356_ R0000422 1
     ValeurDeNTCOrigineVersExtremite_1_6_356_ R0000432 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_356_ R0003785 1
-    ValeurDeNTCOrigineVersExtremite_1_6_356_ R0003786 1
+    ValeurDeNTCOrigineVersExtremite_1_6_356_ R0005255 1
+    ValeurDeNTCOrigineVersExtremite_1_6_356_ R0005256 1
     ValeurDeNTCOrigineVersExtremite_2_7_356_ R0000424 1
     ValeurDeNTCOrigineVersExtremite_2_7_356_ R0000436 -1
     ValeurDeNTCOrigineVersExtremite_2_7_356_ R0003528 0.8
@@ -8019,28 +8019,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_357_ R0000461 1
     ValeurDeNTCOrigineVersExtremite_0_1_357_ R0000441 1
     ValeurDeNTCOrigineVersExtremite_0_1_357_ R0000447 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_357_ R0003787 1
-    ValeurDeNTCOrigineVersExtremite_0_1_357_ R0003788 1
+    ValeurDeNTCOrigineVersExtremite_0_1_357_ R0003577 1
+    ValeurDeNTCOrigineVersExtremite_0_1_357_ R0003578 1
     ValeurDeNTCOrigineVersExtremite_0_2_357_ R0000441 1
     ValeurDeNTCOrigineVersExtremite_0_2_357_ R0000451 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_357_ R0003789 1
-    ValeurDeNTCOrigineVersExtremite_0_2_357_ R0003790 1
+    ValeurDeNTCOrigineVersExtremite_0_2_357_ R0003913 1
+    ValeurDeNTCOrigineVersExtremite_0_2_357_ R0003914 1
     ValeurDeNTCOrigineVersExtremite_0_3_357_ R0000441 1
     ValeurDeNTCOrigineVersExtremite_0_3_357_ R0000455 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_357_ R0003791 1
-    ValeurDeNTCOrigineVersExtremite_0_3_357_ R0003792 1
+    ValeurDeNTCOrigineVersExtremite_0_3_357_ R0004249 1
+    ValeurDeNTCOrigineVersExtremite_0_3_357_ R0004250 1
     ValeurDeNTCOrigineVersExtremite_1_4_357_ R0000443 1
     ValeurDeNTCOrigineVersExtremite_1_4_357_ R0000445 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_357_ R0003793 1
-    ValeurDeNTCOrigineVersExtremite_1_4_357_ R0003794 1
+    ValeurDeNTCOrigineVersExtremite_1_4_357_ R0004585 1
+    ValeurDeNTCOrigineVersExtremite_1_4_357_ R0004586 1
     ValeurDeNTCOrigineVersExtremite_1_5_357_ R0000443 1
     ValeurDeNTCOrigineVersExtremite_1_5_357_ R0000449 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_357_ R0003795 1
-    ValeurDeNTCOrigineVersExtremite_1_5_357_ R0003796 1
+    ValeurDeNTCOrigineVersExtremite_1_5_357_ R0004921 1
+    ValeurDeNTCOrigineVersExtremite_1_5_357_ R0004922 1
     ValeurDeNTCOrigineVersExtremite_1_6_357_ R0000443 1
     ValeurDeNTCOrigineVersExtremite_1_6_357_ R0000453 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_357_ R0003797 1
-    ValeurDeNTCOrigineVersExtremite_1_6_357_ R0003798 1
+    ValeurDeNTCOrigineVersExtremite_1_6_357_ R0005257 1
+    ValeurDeNTCOrigineVersExtremite_1_6_357_ R0005258 1
     ValeurDeNTCOrigineVersExtremite_2_7_357_ R0000445 1
     ValeurDeNTCOrigineVersExtremite_2_7_357_ R0000457 -1
     ValeurDeNTCOrigineVersExtremite_2_7_357_ R0003528 0.8
@@ -8136,28 +8136,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_358_ R0000482 1
     ValeurDeNTCOrigineVersExtremite_0_1_358_ R0000462 1
     ValeurDeNTCOrigineVersExtremite_0_1_358_ R0000468 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_358_ R0003799 1
-    ValeurDeNTCOrigineVersExtremite_0_1_358_ R0003800 1
+    ValeurDeNTCOrigineVersExtremite_0_1_358_ R0003579 1
+    ValeurDeNTCOrigineVersExtremite_0_1_358_ R0003580 1
     ValeurDeNTCOrigineVersExtremite_0_2_358_ R0000462 1
     ValeurDeNTCOrigineVersExtremite_0_2_358_ R0000472 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_358_ R0003801 1
-    ValeurDeNTCOrigineVersExtremite_0_2_358_ R0003802 1
+    ValeurDeNTCOrigineVersExtremite_0_2_358_ R0003915 1
+    ValeurDeNTCOrigineVersExtremite_0_2_358_ R0003916 1
     ValeurDeNTCOrigineVersExtremite_0_3_358_ R0000462 1
     ValeurDeNTCOrigineVersExtremite_0_3_358_ R0000476 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_358_ R0003803 1
-    ValeurDeNTCOrigineVersExtremite_0_3_358_ R0003804 1
+    ValeurDeNTCOrigineVersExtremite_0_3_358_ R0004251 1
+    ValeurDeNTCOrigineVersExtremite_0_3_358_ R0004252 1
     ValeurDeNTCOrigineVersExtremite_1_4_358_ R0000464 1
     ValeurDeNTCOrigineVersExtremite_1_4_358_ R0000466 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_358_ R0003805 1
-    ValeurDeNTCOrigineVersExtremite_1_4_358_ R0003806 1
+    ValeurDeNTCOrigineVersExtremite_1_4_358_ R0004587 1
+    ValeurDeNTCOrigineVersExtremite_1_4_358_ R0004588 1
     ValeurDeNTCOrigineVersExtremite_1_5_358_ R0000464 1
     ValeurDeNTCOrigineVersExtremite_1_5_358_ R0000470 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_358_ R0003807 1
-    ValeurDeNTCOrigineVersExtremite_1_5_358_ R0003808 1
+    ValeurDeNTCOrigineVersExtremite_1_5_358_ R0004923 1
+    ValeurDeNTCOrigineVersExtremite_1_5_358_ R0004924 1
     ValeurDeNTCOrigineVersExtremite_1_6_358_ R0000464 1
     ValeurDeNTCOrigineVersExtremite_1_6_358_ R0000474 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_358_ R0003809 1
-    ValeurDeNTCOrigineVersExtremite_1_6_358_ R0003810 1
+    ValeurDeNTCOrigineVersExtremite_1_6_358_ R0005259 1
+    ValeurDeNTCOrigineVersExtremite_1_6_358_ R0005260 1
     ValeurDeNTCOrigineVersExtremite_2_7_358_ R0000466 1
     ValeurDeNTCOrigineVersExtremite_2_7_358_ R0000478 -1
     ValeurDeNTCOrigineVersExtremite_2_7_358_ R0003528 0.8
@@ -8253,28 +8253,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_359_ R0000503 1
     ValeurDeNTCOrigineVersExtremite_0_1_359_ R0000483 1
     ValeurDeNTCOrigineVersExtremite_0_1_359_ R0000489 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_359_ R0003811 1
-    ValeurDeNTCOrigineVersExtremite_0_1_359_ R0003812 1
+    ValeurDeNTCOrigineVersExtremite_0_1_359_ R0003581 1
+    ValeurDeNTCOrigineVersExtremite_0_1_359_ R0003582 1
     ValeurDeNTCOrigineVersExtremite_0_2_359_ R0000483 1
     ValeurDeNTCOrigineVersExtremite_0_2_359_ R0000493 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_359_ R0003813 1
-    ValeurDeNTCOrigineVersExtremite_0_2_359_ R0003814 1
+    ValeurDeNTCOrigineVersExtremite_0_2_359_ R0003917 1
+    ValeurDeNTCOrigineVersExtremite_0_2_359_ R0003918 1
     ValeurDeNTCOrigineVersExtremite_0_3_359_ R0000483 1
     ValeurDeNTCOrigineVersExtremite_0_3_359_ R0000497 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_359_ R0003815 1
-    ValeurDeNTCOrigineVersExtremite_0_3_359_ R0003816 1
+    ValeurDeNTCOrigineVersExtremite_0_3_359_ R0004253 1
+    ValeurDeNTCOrigineVersExtremite_0_3_359_ R0004254 1
     ValeurDeNTCOrigineVersExtremite_1_4_359_ R0000485 1
     ValeurDeNTCOrigineVersExtremite_1_4_359_ R0000487 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_359_ R0003817 1
-    ValeurDeNTCOrigineVersExtremite_1_4_359_ R0003818 1
+    ValeurDeNTCOrigineVersExtremite_1_4_359_ R0004589 1
+    ValeurDeNTCOrigineVersExtremite_1_4_359_ R0004590 1
     ValeurDeNTCOrigineVersExtremite_1_5_359_ R0000485 1
     ValeurDeNTCOrigineVersExtremite_1_5_359_ R0000491 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_359_ R0003819 1
-    ValeurDeNTCOrigineVersExtremite_1_5_359_ R0003820 1
+    ValeurDeNTCOrigineVersExtremite_1_5_359_ R0004925 1
+    ValeurDeNTCOrigineVersExtremite_1_5_359_ R0004926 1
     ValeurDeNTCOrigineVersExtremite_1_6_359_ R0000485 1
     ValeurDeNTCOrigineVersExtremite_1_6_359_ R0000495 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_359_ R0003821 1
-    ValeurDeNTCOrigineVersExtremite_1_6_359_ R0003822 1
+    ValeurDeNTCOrigineVersExtremite_1_6_359_ R0005261 1
+    ValeurDeNTCOrigineVersExtremite_1_6_359_ R0005262 1
     ValeurDeNTCOrigineVersExtremite_2_7_359_ R0000487 1
     ValeurDeNTCOrigineVersExtremite_2_7_359_ R0000499 -1
     ValeurDeNTCOrigineVersExtremite_2_7_359_ R0003528 0.8
@@ -8370,28 +8370,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_360_ R0000524 1
     ValeurDeNTCOrigineVersExtremite_0_1_360_ R0000504 1
     ValeurDeNTCOrigineVersExtremite_0_1_360_ R0000510 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_360_ R0003823 1
-    ValeurDeNTCOrigineVersExtremite_0_1_360_ R0003824 1
+    ValeurDeNTCOrigineVersExtremite_0_1_360_ R0003583 1
+    ValeurDeNTCOrigineVersExtremite_0_1_360_ R0003584 1
     ValeurDeNTCOrigineVersExtremite_0_2_360_ R0000504 1
     ValeurDeNTCOrigineVersExtremite_0_2_360_ R0000514 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_360_ R0003825 1
-    ValeurDeNTCOrigineVersExtremite_0_2_360_ R0003826 1
+    ValeurDeNTCOrigineVersExtremite_0_2_360_ R0003919 1
+    ValeurDeNTCOrigineVersExtremite_0_2_360_ R0003920 1
     ValeurDeNTCOrigineVersExtremite_0_3_360_ R0000504 1
     ValeurDeNTCOrigineVersExtremite_0_3_360_ R0000518 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_360_ R0003827 1
-    ValeurDeNTCOrigineVersExtremite_0_3_360_ R0003828 1
+    ValeurDeNTCOrigineVersExtremite_0_3_360_ R0004255 1
+    ValeurDeNTCOrigineVersExtremite_0_3_360_ R0004256 1
     ValeurDeNTCOrigineVersExtremite_1_4_360_ R0000506 1
     ValeurDeNTCOrigineVersExtremite_1_4_360_ R0000508 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_360_ R0003829 1
-    ValeurDeNTCOrigineVersExtremite_1_4_360_ R0003830 1
+    ValeurDeNTCOrigineVersExtremite_1_4_360_ R0004591 1
+    ValeurDeNTCOrigineVersExtremite_1_4_360_ R0004592 1
     ValeurDeNTCOrigineVersExtremite_1_5_360_ R0000506 1
     ValeurDeNTCOrigineVersExtremite_1_5_360_ R0000512 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_360_ R0003831 1
-    ValeurDeNTCOrigineVersExtremite_1_5_360_ R0003832 1
+    ValeurDeNTCOrigineVersExtremite_1_5_360_ R0004927 1
+    ValeurDeNTCOrigineVersExtremite_1_5_360_ R0004928 1
     ValeurDeNTCOrigineVersExtremite_1_6_360_ R0000506 1
     ValeurDeNTCOrigineVersExtremite_1_6_360_ R0000516 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_360_ R0003833 1
-    ValeurDeNTCOrigineVersExtremite_1_6_360_ R0003834 1
+    ValeurDeNTCOrigineVersExtremite_1_6_360_ R0005263 1
+    ValeurDeNTCOrigineVersExtremite_1_6_360_ R0005264 1
     ValeurDeNTCOrigineVersExtremite_2_7_360_ R0000508 1
     ValeurDeNTCOrigineVersExtremite_2_7_360_ R0000520 -1
     ValeurDeNTCOrigineVersExtremite_2_7_360_ R0003529 0.8
@@ -8487,28 +8487,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_361_ R0000545 1
     ValeurDeNTCOrigineVersExtremite_0_1_361_ R0000525 1
     ValeurDeNTCOrigineVersExtremite_0_1_361_ R0000531 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_361_ R0003835 1
-    ValeurDeNTCOrigineVersExtremite_0_1_361_ R0003836 1
+    ValeurDeNTCOrigineVersExtremite_0_1_361_ R0003585 1
+    ValeurDeNTCOrigineVersExtremite_0_1_361_ R0003586 1
     ValeurDeNTCOrigineVersExtremite_0_2_361_ R0000525 1
     ValeurDeNTCOrigineVersExtremite_0_2_361_ R0000535 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_361_ R0003837 1
-    ValeurDeNTCOrigineVersExtremite_0_2_361_ R0003838 1
+    ValeurDeNTCOrigineVersExtremite_0_2_361_ R0003921 1
+    ValeurDeNTCOrigineVersExtremite_0_2_361_ R0003922 1
     ValeurDeNTCOrigineVersExtremite_0_3_361_ R0000525 1
     ValeurDeNTCOrigineVersExtremite_0_3_361_ R0000539 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_361_ R0003839 1
-    ValeurDeNTCOrigineVersExtremite_0_3_361_ R0003840 1
+    ValeurDeNTCOrigineVersExtremite_0_3_361_ R0004257 1
+    ValeurDeNTCOrigineVersExtremite_0_3_361_ R0004258 1
     ValeurDeNTCOrigineVersExtremite_1_4_361_ R0000527 1
     ValeurDeNTCOrigineVersExtremite_1_4_361_ R0000529 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_361_ R0003841 1
-    ValeurDeNTCOrigineVersExtremite_1_4_361_ R0003842 1
+    ValeurDeNTCOrigineVersExtremite_1_4_361_ R0004593 1
+    ValeurDeNTCOrigineVersExtremite_1_4_361_ R0004594 1
     ValeurDeNTCOrigineVersExtremite_1_5_361_ R0000527 1
     ValeurDeNTCOrigineVersExtremite_1_5_361_ R0000533 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_361_ R0003843 1
-    ValeurDeNTCOrigineVersExtremite_1_5_361_ R0003844 1
+    ValeurDeNTCOrigineVersExtremite_1_5_361_ R0004929 1
+    ValeurDeNTCOrigineVersExtremite_1_5_361_ R0004930 1
     ValeurDeNTCOrigineVersExtremite_1_6_361_ R0000527 1
     ValeurDeNTCOrigineVersExtremite_1_6_361_ R0000537 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_361_ R0003845 1
-    ValeurDeNTCOrigineVersExtremite_1_6_361_ R0003846 1
+    ValeurDeNTCOrigineVersExtremite_1_6_361_ R0005265 1
+    ValeurDeNTCOrigineVersExtremite_1_6_361_ R0005266 1
     ValeurDeNTCOrigineVersExtremite_2_7_361_ R0000529 1
     ValeurDeNTCOrigineVersExtremite_2_7_361_ R0000541 -1
     ValeurDeNTCOrigineVersExtremite_2_7_361_ R0003529 0.8
@@ -8604,28 +8604,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_362_ R0000566 1
     ValeurDeNTCOrigineVersExtremite_0_1_362_ R0000546 1
     ValeurDeNTCOrigineVersExtremite_0_1_362_ R0000552 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_362_ R0003847 1
-    ValeurDeNTCOrigineVersExtremite_0_1_362_ R0003848 1
+    ValeurDeNTCOrigineVersExtremite_0_1_362_ R0003587 1
+    ValeurDeNTCOrigineVersExtremite_0_1_362_ R0003588 1
     ValeurDeNTCOrigineVersExtremite_0_2_362_ R0000546 1
     ValeurDeNTCOrigineVersExtremite_0_2_362_ R0000556 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_362_ R0003849 1
-    ValeurDeNTCOrigineVersExtremite_0_2_362_ R0003850 1
+    ValeurDeNTCOrigineVersExtremite_0_2_362_ R0003923 1
+    ValeurDeNTCOrigineVersExtremite_0_2_362_ R0003924 1
     ValeurDeNTCOrigineVersExtremite_0_3_362_ R0000546 1
     ValeurDeNTCOrigineVersExtremite_0_3_362_ R0000560 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_362_ R0003851 1
-    ValeurDeNTCOrigineVersExtremite_0_3_362_ R0003852 1
+    ValeurDeNTCOrigineVersExtremite_0_3_362_ R0004259 1
+    ValeurDeNTCOrigineVersExtremite_0_3_362_ R0004260 1
     ValeurDeNTCOrigineVersExtremite_1_4_362_ R0000548 1
     ValeurDeNTCOrigineVersExtremite_1_4_362_ R0000550 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_362_ R0003853 1
-    ValeurDeNTCOrigineVersExtremite_1_4_362_ R0003854 1
+    ValeurDeNTCOrigineVersExtremite_1_4_362_ R0004595 1
+    ValeurDeNTCOrigineVersExtremite_1_4_362_ R0004596 1
     ValeurDeNTCOrigineVersExtremite_1_5_362_ R0000548 1
     ValeurDeNTCOrigineVersExtremite_1_5_362_ R0000554 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_362_ R0003855 1
-    ValeurDeNTCOrigineVersExtremite_1_5_362_ R0003856 1
+    ValeurDeNTCOrigineVersExtremite_1_5_362_ R0004931 1
+    ValeurDeNTCOrigineVersExtremite_1_5_362_ R0004932 1
     ValeurDeNTCOrigineVersExtremite_1_6_362_ R0000548 1
     ValeurDeNTCOrigineVersExtremite_1_6_362_ R0000558 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_362_ R0003857 1
-    ValeurDeNTCOrigineVersExtremite_1_6_362_ R0003858 1
+    ValeurDeNTCOrigineVersExtremite_1_6_362_ R0005267 1
+    ValeurDeNTCOrigineVersExtremite_1_6_362_ R0005268 1
     ValeurDeNTCOrigineVersExtremite_2_7_362_ R0000550 1
     ValeurDeNTCOrigineVersExtremite_2_7_362_ R0000562 -1
     ValeurDeNTCOrigineVersExtremite_2_7_362_ R0003529 0.8
@@ -8721,28 +8721,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_363_ R0000587 1
     ValeurDeNTCOrigineVersExtremite_0_1_363_ R0000567 1
     ValeurDeNTCOrigineVersExtremite_0_1_363_ R0000573 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_363_ R0003859 1
-    ValeurDeNTCOrigineVersExtremite_0_1_363_ R0003860 1
+    ValeurDeNTCOrigineVersExtremite_0_1_363_ R0003589 1
+    ValeurDeNTCOrigineVersExtremite_0_1_363_ R0003590 1
     ValeurDeNTCOrigineVersExtremite_0_2_363_ R0000567 1
     ValeurDeNTCOrigineVersExtremite_0_2_363_ R0000577 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_363_ R0003861 1
-    ValeurDeNTCOrigineVersExtremite_0_2_363_ R0003862 1
+    ValeurDeNTCOrigineVersExtremite_0_2_363_ R0003925 1
+    ValeurDeNTCOrigineVersExtremite_0_2_363_ R0003926 1
     ValeurDeNTCOrigineVersExtremite_0_3_363_ R0000567 1
     ValeurDeNTCOrigineVersExtremite_0_3_363_ R0000581 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_363_ R0003863 1
-    ValeurDeNTCOrigineVersExtremite_0_3_363_ R0003864 1
+    ValeurDeNTCOrigineVersExtremite_0_3_363_ R0004261 1
+    ValeurDeNTCOrigineVersExtremite_0_3_363_ R0004262 1
     ValeurDeNTCOrigineVersExtremite_1_4_363_ R0000569 1
     ValeurDeNTCOrigineVersExtremite_1_4_363_ R0000571 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_363_ R0003865 1
-    ValeurDeNTCOrigineVersExtremite_1_4_363_ R0003866 1
+    ValeurDeNTCOrigineVersExtremite_1_4_363_ R0004597 1
+    ValeurDeNTCOrigineVersExtremite_1_4_363_ R0004598 1
     ValeurDeNTCOrigineVersExtremite_1_5_363_ R0000569 1
     ValeurDeNTCOrigineVersExtremite_1_5_363_ R0000575 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_363_ R0003867 1
-    ValeurDeNTCOrigineVersExtremite_1_5_363_ R0003868 1
+    ValeurDeNTCOrigineVersExtremite_1_5_363_ R0004933 1
+    ValeurDeNTCOrigineVersExtremite_1_5_363_ R0004934 1
     ValeurDeNTCOrigineVersExtremite_1_6_363_ R0000569 1
     ValeurDeNTCOrigineVersExtremite_1_6_363_ R0000579 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_363_ R0003869 1
-    ValeurDeNTCOrigineVersExtremite_1_6_363_ R0003870 1
+    ValeurDeNTCOrigineVersExtremite_1_6_363_ R0005269 1
+    ValeurDeNTCOrigineVersExtremite_1_6_363_ R0005270 1
     ValeurDeNTCOrigineVersExtremite_2_7_363_ R0000571 1
     ValeurDeNTCOrigineVersExtremite_2_7_363_ R0000583 -1
     ValeurDeNTCOrigineVersExtremite_2_7_363_ R0003529 0.8
@@ -8838,28 +8838,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_364_ R0000608 1
     ValeurDeNTCOrigineVersExtremite_0_1_364_ R0000588 1
     ValeurDeNTCOrigineVersExtremite_0_1_364_ R0000594 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_364_ R0003871 1
-    ValeurDeNTCOrigineVersExtremite_0_1_364_ R0003872 1
+    ValeurDeNTCOrigineVersExtremite_0_1_364_ R0003591 1
+    ValeurDeNTCOrigineVersExtremite_0_1_364_ R0003592 1
     ValeurDeNTCOrigineVersExtremite_0_2_364_ R0000588 1
     ValeurDeNTCOrigineVersExtremite_0_2_364_ R0000598 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_364_ R0003873 1
-    ValeurDeNTCOrigineVersExtremite_0_2_364_ R0003874 1
+    ValeurDeNTCOrigineVersExtremite_0_2_364_ R0003927 1
+    ValeurDeNTCOrigineVersExtremite_0_2_364_ R0003928 1
     ValeurDeNTCOrigineVersExtremite_0_3_364_ R0000588 1
     ValeurDeNTCOrigineVersExtremite_0_3_364_ R0000602 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_364_ R0003875 1
-    ValeurDeNTCOrigineVersExtremite_0_3_364_ R0003876 1
+    ValeurDeNTCOrigineVersExtremite_0_3_364_ R0004263 1
+    ValeurDeNTCOrigineVersExtremite_0_3_364_ R0004264 1
     ValeurDeNTCOrigineVersExtremite_1_4_364_ R0000590 1
     ValeurDeNTCOrigineVersExtremite_1_4_364_ R0000592 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_364_ R0003877 1
-    ValeurDeNTCOrigineVersExtremite_1_4_364_ R0003878 1
+    ValeurDeNTCOrigineVersExtremite_1_4_364_ R0004599 1
+    ValeurDeNTCOrigineVersExtremite_1_4_364_ R0004600 1
     ValeurDeNTCOrigineVersExtremite_1_5_364_ R0000590 1
     ValeurDeNTCOrigineVersExtremite_1_5_364_ R0000596 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_364_ R0003879 1
-    ValeurDeNTCOrigineVersExtremite_1_5_364_ R0003880 1
+    ValeurDeNTCOrigineVersExtremite_1_5_364_ R0004935 1
+    ValeurDeNTCOrigineVersExtremite_1_5_364_ R0004936 1
     ValeurDeNTCOrigineVersExtremite_1_6_364_ R0000590 1
     ValeurDeNTCOrigineVersExtremite_1_6_364_ R0000600 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_364_ R0003881 1
-    ValeurDeNTCOrigineVersExtremite_1_6_364_ R0003882 1
+    ValeurDeNTCOrigineVersExtremite_1_6_364_ R0005271 1
+    ValeurDeNTCOrigineVersExtremite_1_6_364_ R0005272 1
     ValeurDeNTCOrigineVersExtremite_2_7_364_ R0000592 1
     ValeurDeNTCOrigineVersExtremite_2_7_364_ R0000604 -1
     ValeurDeNTCOrigineVersExtremite_2_7_364_ R0003529 0.8
@@ -8955,28 +8955,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_365_ R0000629 1
     ValeurDeNTCOrigineVersExtremite_0_1_365_ R0000609 1
     ValeurDeNTCOrigineVersExtremite_0_1_365_ R0000615 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_365_ R0003883 1
-    ValeurDeNTCOrigineVersExtremite_0_1_365_ R0003884 1
+    ValeurDeNTCOrigineVersExtremite_0_1_365_ R0003593 1
+    ValeurDeNTCOrigineVersExtremite_0_1_365_ R0003594 1
     ValeurDeNTCOrigineVersExtremite_0_2_365_ R0000609 1
     ValeurDeNTCOrigineVersExtremite_0_2_365_ R0000619 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_365_ R0003885 1
-    ValeurDeNTCOrigineVersExtremite_0_2_365_ R0003886 1
+    ValeurDeNTCOrigineVersExtremite_0_2_365_ R0003929 1
+    ValeurDeNTCOrigineVersExtremite_0_2_365_ R0003930 1
     ValeurDeNTCOrigineVersExtremite_0_3_365_ R0000609 1
     ValeurDeNTCOrigineVersExtremite_0_3_365_ R0000623 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_365_ R0003887 1
-    ValeurDeNTCOrigineVersExtremite_0_3_365_ R0003888 1
+    ValeurDeNTCOrigineVersExtremite_0_3_365_ R0004265 1
+    ValeurDeNTCOrigineVersExtremite_0_3_365_ R0004266 1
     ValeurDeNTCOrigineVersExtremite_1_4_365_ R0000611 1
     ValeurDeNTCOrigineVersExtremite_1_4_365_ R0000613 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_365_ R0003889 1
-    ValeurDeNTCOrigineVersExtremite_1_4_365_ R0003890 1
+    ValeurDeNTCOrigineVersExtremite_1_4_365_ R0004601 1
+    ValeurDeNTCOrigineVersExtremite_1_4_365_ R0004602 1
     ValeurDeNTCOrigineVersExtremite_1_5_365_ R0000611 1
     ValeurDeNTCOrigineVersExtremite_1_5_365_ R0000617 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_365_ R0003891 1
-    ValeurDeNTCOrigineVersExtremite_1_5_365_ R0003892 1
+    ValeurDeNTCOrigineVersExtremite_1_5_365_ R0004937 1
+    ValeurDeNTCOrigineVersExtremite_1_5_365_ R0004938 1
     ValeurDeNTCOrigineVersExtremite_1_6_365_ R0000611 1
     ValeurDeNTCOrigineVersExtremite_1_6_365_ R0000621 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_365_ R0003893 1
-    ValeurDeNTCOrigineVersExtremite_1_6_365_ R0003894 1
+    ValeurDeNTCOrigineVersExtremite_1_6_365_ R0005273 1
+    ValeurDeNTCOrigineVersExtremite_1_6_365_ R0005274 1
     ValeurDeNTCOrigineVersExtremite_2_7_365_ R0000613 1
     ValeurDeNTCOrigineVersExtremite_2_7_365_ R0000625 -1
     ValeurDeNTCOrigineVersExtremite_2_7_365_ R0003529 0.8
@@ -9072,28 +9072,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_366_ R0000650 1
     ValeurDeNTCOrigineVersExtremite_0_1_366_ R0000630 1
     ValeurDeNTCOrigineVersExtremite_0_1_366_ R0000636 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_366_ R0003895 1
-    ValeurDeNTCOrigineVersExtremite_0_1_366_ R0003896 1
+    ValeurDeNTCOrigineVersExtremite_0_1_366_ R0003595 1
+    ValeurDeNTCOrigineVersExtremite_0_1_366_ R0003596 1
     ValeurDeNTCOrigineVersExtremite_0_2_366_ R0000630 1
     ValeurDeNTCOrigineVersExtremite_0_2_366_ R0000640 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_366_ R0003897 1
-    ValeurDeNTCOrigineVersExtremite_0_2_366_ R0003898 1
+    ValeurDeNTCOrigineVersExtremite_0_2_366_ R0003931 1
+    ValeurDeNTCOrigineVersExtremite_0_2_366_ R0003932 1
     ValeurDeNTCOrigineVersExtremite_0_3_366_ R0000630 1
     ValeurDeNTCOrigineVersExtremite_0_3_366_ R0000644 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_366_ R0003899 1
-    ValeurDeNTCOrigineVersExtremite_0_3_366_ R0003900 1
+    ValeurDeNTCOrigineVersExtremite_0_3_366_ R0004267 1
+    ValeurDeNTCOrigineVersExtremite_0_3_366_ R0004268 1
     ValeurDeNTCOrigineVersExtremite_1_4_366_ R0000632 1
     ValeurDeNTCOrigineVersExtremite_1_4_366_ R0000634 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_366_ R0003901 1
-    ValeurDeNTCOrigineVersExtremite_1_4_366_ R0003902 1
+    ValeurDeNTCOrigineVersExtremite_1_4_366_ R0004603 1
+    ValeurDeNTCOrigineVersExtremite_1_4_366_ R0004604 1
     ValeurDeNTCOrigineVersExtremite_1_5_366_ R0000632 1
     ValeurDeNTCOrigineVersExtremite_1_5_366_ R0000638 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_366_ R0003903 1
-    ValeurDeNTCOrigineVersExtremite_1_5_366_ R0003904 1
+    ValeurDeNTCOrigineVersExtremite_1_5_366_ R0004939 1
+    ValeurDeNTCOrigineVersExtremite_1_5_366_ R0004940 1
     ValeurDeNTCOrigineVersExtremite_1_6_366_ R0000632 1
     ValeurDeNTCOrigineVersExtremite_1_6_366_ R0000642 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_366_ R0003905 1
-    ValeurDeNTCOrigineVersExtremite_1_6_366_ R0003906 1
+    ValeurDeNTCOrigineVersExtremite_1_6_366_ R0005275 1
+    ValeurDeNTCOrigineVersExtremite_1_6_366_ R0005276 1
     ValeurDeNTCOrigineVersExtremite_2_7_366_ R0000634 1
     ValeurDeNTCOrigineVersExtremite_2_7_366_ R0000646 -1
     ValeurDeNTCOrigineVersExtremite_2_7_366_ R0003529 0.8
@@ -9189,28 +9189,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_367_ R0000671 1
     ValeurDeNTCOrigineVersExtremite_0_1_367_ R0000651 1
     ValeurDeNTCOrigineVersExtremite_0_1_367_ R0000657 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_367_ R0003907 1
-    ValeurDeNTCOrigineVersExtremite_0_1_367_ R0003908 1
+    ValeurDeNTCOrigineVersExtremite_0_1_367_ R0003597 1
+    ValeurDeNTCOrigineVersExtremite_0_1_367_ R0003598 1
     ValeurDeNTCOrigineVersExtremite_0_2_367_ R0000651 1
     ValeurDeNTCOrigineVersExtremite_0_2_367_ R0000661 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_367_ R0003909 1
-    ValeurDeNTCOrigineVersExtremite_0_2_367_ R0003910 1
+    ValeurDeNTCOrigineVersExtremite_0_2_367_ R0003933 1
+    ValeurDeNTCOrigineVersExtremite_0_2_367_ R0003934 1
     ValeurDeNTCOrigineVersExtremite_0_3_367_ R0000651 1
     ValeurDeNTCOrigineVersExtremite_0_3_367_ R0000665 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_367_ R0003911 1
-    ValeurDeNTCOrigineVersExtremite_0_3_367_ R0003912 1
+    ValeurDeNTCOrigineVersExtremite_0_3_367_ R0004269 1
+    ValeurDeNTCOrigineVersExtremite_0_3_367_ R0004270 1
     ValeurDeNTCOrigineVersExtremite_1_4_367_ R0000653 1
     ValeurDeNTCOrigineVersExtremite_1_4_367_ R0000655 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_367_ R0003913 1
-    ValeurDeNTCOrigineVersExtremite_1_4_367_ R0003914 1
+    ValeurDeNTCOrigineVersExtremite_1_4_367_ R0004605 1
+    ValeurDeNTCOrigineVersExtremite_1_4_367_ R0004606 1
     ValeurDeNTCOrigineVersExtremite_1_5_367_ R0000653 1
     ValeurDeNTCOrigineVersExtremite_1_5_367_ R0000659 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_367_ R0003915 1
-    ValeurDeNTCOrigineVersExtremite_1_5_367_ R0003916 1
+    ValeurDeNTCOrigineVersExtremite_1_5_367_ R0004941 1
+    ValeurDeNTCOrigineVersExtremite_1_5_367_ R0004942 1
     ValeurDeNTCOrigineVersExtremite_1_6_367_ R0000653 1
     ValeurDeNTCOrigineVersExtremite_1_6_367_ R0000663 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_367_ R0003917 1
-    ValeurDeNTCOrigineVersExtremite_1_6_367_ R0003918 1
+    ValeurDeNTCOrigineVersExtremite_1_6_367_ R0005277 1
+    ValeurDeNTCOrigineVersExtremite_1_6_367_ R0005278 1
     ValeurDeNTCOrigineVersExtremite_2_7_367_ R0000655 1
     ValeurDeNTCOrigineVersExtremite_2_7_367_ R0000667 -1
     ValeurDeNTCOrigineVersExtremite_2_7_367_ R0003529 0.8
@@ -9306,28 +9306,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_368_ R0000692 1
     ValeurDeNTCOrigineVersExtremite_0_1_368_ R0000672 1
     ValeurDeNTCOrigineVersExtremite_0_1_368_ R0000678 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_368_ R0003919 1
-    ValeurDeNTCOrigineVersExtremite_0_1_368_ R0003920 1
+    ValeurDeNTCOrigineVersExtremite_0_1_368_ R0003599 1
+    ValeurDeNTCOrigineVersExtremite_0_1_368_ R0003600 1
     ValeurDeNTCOrigineVersExtremite_0_2_368_ R0000672 1
     ValeurDeNTCOrigineVersExtremite_0_2_368_ R0000682 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_368_ R0003921 1
-    ValeurDeNTCOrigineVersExtremite_0_2_368_ R0003922 1
+    ValeurDeNTCOrigineVersExtremite_0_2_368_ R0003935 1
+    ValeurDeNTCOrigineVersExtremite_0_2_368_ R0003936 1
     ValeurDeNTCOrigineVersExtremite_0_3_368_ R0000672 1
     ValeurDeNTCOrigineVersExtremite_0_3_368_ R0000686 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_368_ R0003923 1
-    ValeurDeNTCOrigineVersExtremite_0_3_368_ R0003924 1
+    ValeurDeNTCOrigineVersExtremite_0_3_368_ R0004271 1
+    ValeurDeNTCOrigineVersExtremite_0_3_368_ R0004272 1
     ValeurDeNTCOrigineVersExtremite_1_4_368_ R0000674 1
     ValeurDeNTCOrigineVersExtremite_1_4_368_ R0000676 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_368_ R0003925 1
-    ValeurDeNTCOrigineVersExtremite_1_4_368_ R0003926 1
+    ValeurDeNTCOrigineVersExtremite_1_4_368_ R0004607 1
+    ValeurDeNTCOrigineVersExtremite_1_4_368_ R0004608 1
     ValeurDeNTCOrigineVersExtremite_1_5_368_ R0000674 1
     ValeurDeNTCOrigineVersExtremite_1_5_368_ R0000680 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_368_ R0003927 1
-    ValeurDeNTCOrigineVersExtremite_1_5_368_ R0003928 1
+    ValeurDeNTCOrigineVersExtremite_1_5_368_ R0004943 1
+    ValeurDeNTCOrigineVersExtremite_1_5_368_ R0004944 1
     ValeurDeNTCOrigineVersExtremite_1_6_368_ R0000674 1
     ValeurDeNTCOrigineVersExtremite_1_6_368_ R0000684 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_368_ R0003929 1
-    ValeurDeNTCOrigineVersExtremite_1_6_368_ R0003930 1
+    ValeurDeNTCOrigineVersExtremite_1_6_368_ R0005279 1
+    ValeurDeNTCOrigineVersExtremite_1_6_368_ R0005280 1
     ValeurDeNTCOrigineVersExtremite_2_7_368_ R0000676 1
     ValeurDeNTCOrigineVersExtremite_2_7_368_ R0000688 -1
     ValeurDeNTCOrigineVersExtremite_2_7_368_ R0003529 0.8
@@ -9423,28 +9423,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_369_ R0000713 1
     ValeurDeNTCOrigineVersExtremite_0_1_369_ R0000693 1
     ValeurDeNTCOrigineVersExtremite_0_1_369_ R0000699 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_369_ R0003931 1
-    ValeurDeNTCOrigineVersExtremite_0_1_369_ R0003932 1
+    ValeurDeNTCOrigineVersExtremite_0_1_369_ R0003601 1
+    ValeurDeNTCOrigineVersExtremite_0_1_369_ R0003602 1
     ValeurDeNTCOrigineVersExtremite_0_2_369_ R0000693 1
     ValeurDeNTCOrigineVersExtremite_0_2_369_ R0000703 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_369_ R0003933 1
-    ValeurDeNTCOrigineVersExtremite_0_2_369_ R0003934 1
+    ValeurDeNTCOrigineVersExtremite_0_2_369_ R0003937 1
+    ValeurDeNTCOrigineVersExtremite_0_2_369_ R0003938 1
     ValeurDeNTCOrigineVersExtremite_0_3_369_ R0000693 1
     ValeurDeNTCOrigineVersExtremite_0_3_369_ R0000707 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_369_ R0003935 1
-    ValeurDeNTCOrigineVersExtremite_0_3_369_ R0003936 1
+    ValeurDeNTCOrigineVersExtremite_0_3_369_ R0004273 1
+    ValeurDeNTCOrigineVersExtremite_0_3_369_ R0004274 1
     ValeurDeNTCOrigineVersExtremite_1_4_369_ R0000695 1
     ValeurDeNTCOrigineVersExtremite_1_4_369_ R0000697 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_369_ R0003937 1
-    ValeurDeNTCOrigineVersExtremite_1_4_369_ R0003938 1
+    ValeurDeNTCOrigineVersExtremite_1_4_369_ R0004609 1
+    ValeurDeNTCOrigineVersExtremite_1_4_369_ R0004610 1
     ValeurDeNTCOrigineVersExtremite_1_5_369_ R0000695 1
     ValeurDeNTCOrigineVersExtremite_1_5_369_ R0000701 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_369_ R0003939 1
-    ValeurDeNTCOrigineVersExtremite_1_5_369_ R0003940 1
+    ValeurDeNTCOrigineVersExtremite_1_5_369_ R0004945 1
+    ValeurDeNTCOrigineVersExtremite_1_5_369_ R0004946 1
     ValeurDeNTCOrigineVersExtremite_1_6_369_ R0000695 1
     ValeurDeNTCOrigineVersExtremite_1_6_369_ R0000705 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_369_ R0003941 1
-    ValeurDeNTCOrigineVersExtremite_1_6_369_ R0003942 1
+    ValeurDeNTCOrigineVersExtremite_1_6_369_ R0005281 1
+    ValeurDeNTCOrigineVersExtremite_1_6_369_ R0005282 1
     ValeurDeNTCOrigineVersExtremite_2_7_369_ R0000697 1
     ValeurDeNTCOrigineVersExtremite_2_7_369_ R0000709 -1
     ValeurDeNTCOrigineVersExtremite_2_7_369_ R0003529 0.8
@@ -9540,28 +9540,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_370_ R0000734 1
     ValeurDeNTCOrigineVersExtremite_0_1_370_ R0000714 1
     ValeurDeNTCOrigineVersExtremite_0_1_370_ R0000720 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_370_ R0003943 1
-    ValeurDeNTCOrigineVersExtremite_0_1_370_ R0003944 1
+    ValeurDeNTCOrigineVersExtremite_0_1_370_ R0003603 1
+    ValeurDeNTCOrigineVersExtremite_0_1_370_ R0003604 1
     ValeurDeNTCOrigineVersExtremite_0_2_370_ R0000714 1
     ValeurDeNTCOrigineVersExtremite_0_2_370_ R0000724 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_370_ R0003945 1
-    ValeurDeNTCOrigineVersExtremite_0_2_370_ R0003946 1
+    ValeurDeNTCOrigineVersExtremite_0_2_370_ R0003939 1
+    ValeurDeNTCOrigineVersExtremite_0_2_370_ R0003940 1
     ValeurDeNTCOrigineVersExtremite_0_3_370_ R0000714 1
     ValeurDeNTCOrigineVersExtremite_0_3_370_ R0000728 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_370_ R0003947 1
-    ValeurDeNTCOrigineVersExtremite_0_3_370_ R0003948 1
+    ValeurDeNTCOrigineVersExtremite_0_3_370_ R0004275 1
+    ValeurDeNTCOrigineVersExtremite_0_3_370_ R0004276 1
     ValeurDeNTCOrigineVersExtremite_1_4_370_ R0000716 1
     ValeurDeNTCOrigineVersExtremite_1_4_370_ R0000718 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_370_ R0003949 1
-    ValeurDeNTCOrigineVersExtremite_1_4_370_ R0003950 1
+    ValeurDeNTCOrigineVersExtremite_1_4_370_ R0004611 1
+    ValeurDeNTCOrigineVersExtremite_1_4_370_ R0004612 1
     ValeurDeNTCOrigineVersExtremite_1_5_370_ R0000716 1
     ValeurDeNTCOrigineVersExtremite_1_5_370_ R0000722 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_370_ R0003951 1
-    ValeurDeNTCOrigineVersExtremite_1_5_370_ R0003952 1
+    ValeurDeNTCOrigineVersExtremite_1_5_370_ R0004947 1
+    ValeurDeNTCOrigineVersExtremite_1_5_370_ R0004948 1
     ValeurDeNTCOrigineVersExtremite_1_6_370_ R0000716 1
     ValeurDeNTCOrigineVersExtremite_1_6_370_ R0000726 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_370_ R0003953 1
-    ValeurDeNTCOrigineVersExtremite_1_6_370_ R0003954 1
+    ValeurDeNTCOrigineVersExtremite_1_6_370_ R0005283 1
+    ValeurDeNTCOrigineVersExtremite_1_6_370_ R0005284 1
     ValeurDeNTCOrigineVersExtremite_2_7_370_ R0000718 1
     ValeurDeNTCOrigineVersExtremite_2_7_370_ R0000730 -1
     ValeurDeNTCOrigineVersExtremite_2_7_370_ R0003529 0.8
@@ -9657,28 +9657,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_371_ R0000755 1
     ValeurDeNTCOrigineVersExtremite_0_1_371_ R0000735 1
     ValeurDeNTCOrigineVersExtremite_0_1_371_ R0000741 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_371_ R0003955 1
-    ValeurDeNTCOrigineVersExtremite_0_1_371_ R0003956 1
+    ValeurDeNTCOrigineVersExtremite_0_1_371_ R0003605 1
+    ValeurDeNTCOrigineVersExtremite_0_1_371_ R0003606 1
     ValeurDeNTCOrigineVersExtremite_0_2_371_ R0000735 1
     ValeurDeNTCOrigineVersExtremite_0_2_371_ R0000745 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_371_ R0003957 1
-    ValeurDeNTCOrigineVersExtremite_0_2_371_ R0003958 1
+    ValeurDeNTCOrigineVersExtremite_0_2_371_ R0003941 1
+    ValeurDeNTCOrigineVersExtremite_0_2_371_ R0003942 1
     ValeurDeNTCOrigineVersExtremite_0_3_371_ R0000735 1
     ValeurDeNTCOrigineVersExtremite_0_3_371_ R0000749 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_371_ R0003959 1
-    ValeurDeNTCOrigineVersExtremite_0_3_371_ R0003960 1
+    ValeurDeNTCOrigineVersExtremite_0_3_371_ R0004277 1
+    ValeurDeNTCOrigineVersExtremite_0_3_371_ R0004278 1
     ValeurDeNTCOrigineVersExtremite_1_4_371_ R0000737 1
     ValeurDeNTCOrigineVersExtremite_1_4_371_ R0000739 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_371_ R0003961 1
-    ValeurDeNTCOrigineVersExtremite_1_4_371_ R0003962 1
+    ValeurDeNTCOrigineVersExtremite_1_4_371_ R0004613 1
+    ValeurDeNTCOrigineVersExtremite_1_4_371_ R0004614 1
     ValeurDeNTCOrigineVersExtremite_1_5_371_ R0000737 1
     ValeurDeNTCOrigineVersExtremite_1_5_371_ R0000743 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_371_ R0003963 1
-    ValeurDeNTCOrigineVersExtremite_1_5_371_ R0003964 1
+    ValeurDeNTCOrigineVersExtremite_1_5_371_ R0004949 1
+    ValeurDeNTCOrigineVersExtremite_1_5_371_ R0004950 1
     ValeurDeNTCOrigineVersExtremite_1_6_371_ R0000737 1
     ValeurDeNTCOrigineVersExtremite_1_6_371_ R0000747 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_371_ R0003965 1
-    ValeurDeNTCOrigineVersExtremite_1_6_371_ R0003966 1
+    ValeurDeNTCOrigineVersExtremite_1_6_371_ R0005285 1
+    ValeurDeNTCOrigineVersExtremite_1_6_371_ R0005286 1
     ValeurDeNTCOrigineVersExtremite_2_7_371_ R0000739 1
     ValeurDeNTCOrigineVersExtremite_2_7_371_ R0000751 -1
     ValeurDeNTCOrigineVersExtremite_2_7_371_ R0003529 0.8
@@ -9774,28 +9774,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_372_ R0000776 1
     ValeurDeNTCOrigineVersExtremite_0_1_372_ R0000756 1
     ValeurDeNTCOrigineVersExtremite_0_1_372_ R0000762 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_372_ R0003967 1
-    ValeurDeNTCOrigineVersExtremite_0_1_372_ R0003968 1
+    ValeurDeNTCOrigineVersExtremite_0_1_372_ R0003607 1
+    ValeurDeNTCOrigineVersExtremite_0_1_372_ R0003608 1
     ValeurDeNTCOrigineVersExtremite_0_2_372_ R0000756 1
     ValeurDeNTCOrigineVersExtremite_0_2_372_ R0000766 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_372_ R0003969 1
-    ValeurDeNTCOrigineVersExtremite_0_2_372_ R0003970 1
+    ValeurDeNTCOrigineVersExtremite_0_2_372_ R0003943 1
+    ValeurDeNTCOrigineVersExtremite_0_2_372_ R0003944 1
     ValeurDeNTCOrigineVersExtremite_0_3_372_ R0000756 1
     ValeurDeNTCOrigineVersExtremite_0_3_372_ R0000770 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_372_ R0003971 1
-    ValeurDeNTCOrigineVersExtremite_0_3_372_ R0003972 1
+    ValeurDeNTCOrigineVersExtremite_0_3_372_ R0004279 1
+    ValeurDeNTCOrigineVersExtremite_0_3_372_ R0004280 1
     ValeurDeNTCOrigineVersExtremite_1_4_372_ R0000758 1
     ValeurDeNTCOrigineVersExtremite_1_4_372_ R0000760 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_372_ R0003973 1
-    ValeurDeNTCOrigineVersExtremite_1_4_372_ R0003974 1
+    ValeurDeNTCOrigineVersExtremite_1_4_372_ R0004615 1
+    ValeurDeNTCOrigineVersExtremite_1_4_372_ R0004616 1
     ValeurDeNTCOrigineVersExtremite_1_5_372_ R0000758 1
     ValeurDeNTCOrigineVersExtremite_1_5_372_ R0000764 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_372_ R0003975 1
-    ValeurDeNTCOrigineVersExtremite_1_5_372_ R0003976 1
+    ValeurDeNTCOrigineVersExtremite_1_5_372_ R0004951 1
+    ValeurDeNTCOrigineVersExtremite_1_5_372_ R0004952 1
     ValeurDeNTCOrigineVersExtremite_1_6_372_ R0000758 1
     ValeurDeNTCOrigineVersExtremite_1_6_372_ R0000768 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_372_ R0003977 1
-    ValeurDeNTCOrigineVersExtremite_1_6_372_ R0003978 1
+    ValeurDeNTCOrigineVersExtremite_1_6_372_ R0005287 1
+    ValeurDeNTCOrigineVersExtremite_1_6_372_ R0005288 1
     ValeurDeNTCOrigineVersExtremite_2_7_372_ R0000760 1
     ValeurDeNTCOrigineVersExtremite_2_7_372_ R0000772 -1
     ValeurDeNTCOrigineVersExtremite_2_7_372_ R0003529 0.8
@@ -9891,28 +9891,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_373_ R0000797 1
     ValeurDeNTCOrigineVersExtremite_0_1_373_ R0000777 1
     ValeurDeNTCOrigineVersExtremite_0_1_373_ R0000783 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_373_ R0003979 1
-    ValeurDeNTCOrigineVersExtremite_0_1_373_ R0003980 1
+    ValeurDeNTCOrigineVersExtremite_0_1_373_ R0003609 1
+    ValeurDeNTCOrigineVersExtremite_0_1_373_ R0003610 1
     ValeurDeNTCOrigineVersExtremite_0_2_373_ R0000777 1
     ValeurDeNTCOrigineVersExtremite_0_2_373_ R0000787 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_373_ R0003981 1
-    ValeurDeNTCOrigineVersExtremite_0_2_373_ R0003982 1
+    ValeurDeNTCOrigineVersExtremite_0_2_373_ R0003945 1
+    ValeurDeNTCOrigineVersExtremite_0_2_373_ R0003946 1
     ValeurDeNTCOrigineVersExtremite_0_3_373_ R0000777 1
     ValeurDeNTCOrigineVersExtremite_0_3_373_ R0000791 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_373_ R0003983 1
-    ValeurDeNTCOrigineVersExtremite_0_3_373_ R0003984 1
+    ValeurDeNTCOrigineVersExtremite_0_3_373_ R0004281 1
+    ValeurDeNTCOrigineVersExtremite_0_3_373_ R0004282 1
     ValeurDeNTCOrigineVersExtremite_1_4_373_ R0000779 1
     ValeurDeNTCOrigineVersExtremite_1_4_373_ R0000781 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_373_ R0003985 1
-    ValeurDeNTCOrigineVersExtremite_1_4_373_ R0003986 1
+    ValeurDeNTCOrigineVersExtremite_1_4_373_ R0004617 1
+    ValeurDeNTCOrigineVersExtremite_1_4_373_ R0004618 1
     ValeurDeNTCOrigineVersExtremite_1_5_373_ R0000779 1
     ValeurDeNTCOrigineVersExtremite_1_5_373_ R0000785 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_373_ R0003987 1
-    ValeurDeNTCOrigineVersExtremite_1_5_373_ R0003988 1
+    ValeurDeNTCOrigineVersExtremite_1_5_373_ R0004953 1
+    ValeurDeNTCOrigineVersExtremite_1_5_373_ R0004954 1
     ValeurDeNTCOrigineVersExtremite_1_6_373_ R0000779 1
     ValeurDeNTCOrigineVersExtremite_1_6_373_ R0000789 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_373_ R0003989 1
-    ValeurDeNTCOrigineVersExtremite_1_6_373_ R0003990 1
+    ValeurDeNTCOrigineVersExtremite_1_6_373_ R0005289 1
+    ValeurDeNTCOrigineVersExtremite_1_6_373_ R0005290 1
     ValeurDeNTCOrigineVersExtremite_2_7_373_ R0000781 1
     ValeurDeNTCOrigineVersExtremite_2_7_373_ R0000793 -1
     ValeurDeNTCOrigineVersExtremite_2_7_373_ R0003529 0.8
@@ -10008,28 +10008,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_374_ R0000818 1
     ValeurDeNTCOrigineVersExtremite_0_1_374_ R0000798 1
     ValeurDeNTCOrigineVersExtremite_0_1_374_ R0000804 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_374_ R0003991 1
-    ValeurDeNTCOrigineVersExtremite_0_1_374_ R0003992 1
+    ValeurDeNTCOrigineVersExtremite_0_1_374_ R0003611 1
+    ValeurDeNTCOrigineVersExtremite_0_1_374_ R0003612 1
     ValeurDeNTCOrigineVersExtremite_0_2_374_ R0000798 1
     ValeurDeNTCOrigineVersExtremite_0_2_374_ R0000808 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_374_ R0003993 1
-    ValeurDeNTCOrigineVersExtremite_0_2_374_ R0003994 1
+    ValeurDeNTCOrigineVersExtremite_0_2_374_ R0003947 1
+    ValeurDeNTCOrigineVersExtremite_0_2_374_ R0003948 1
     ValeurDeNTCOrigineVersExtremite_0_3_374_ R0000798 1
     ValeurDeNTCOrigineVersExtremite_0_3_374_ R0000812 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_374_ R0003995 1
-    ValeurDeNTCOrigineVersExtremite_0_3_374_ R0003996 1
+    ValeurDeNTCOrigineVersExtremite_0_3_374_ R0004283 1
+    ValeurDeNTCOrigineVersExtremite_0_3_374_ R0004284 1
     ValeurDeNTCOrigineVersExtremite_1_4_374_ R0000800 1
     ValeurDeNTCOrigineVersExtremite_1_4_374_ R0000802 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_374_ R0003997 1
-    ValeurDeNTCOrigineVersExtremite_1_4_374_ R0003998 1
+    ValeurDeNTCOrigineVersExtremite_1_4_374_ R0004619 1
+    ValeurDeNTCOrigineVersExtremite_1_4_374_ R0004620 1
     ValeurDeNTCOrigineVersExtremite_1_5_374_ R0000800 1
     ValeurDeNTCOrigineVersExtremite_1_5_374_ R0000806 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_374_ R0003999 1
-    ValeurDeNTCOrigineVersExtremite_1_5_374_ R0004000 1
+    ValeurDeNTCOrigineVersExtremite_1_5_374_ R0004955 1
+    ValeurDeNTCOrigineVersExtremite_1_5_374_ R0004956 1
     ValeurDeNTCOrigineVersExtremite_1_6_374_ R0000800 1
     ValeurDeNTCOrigineVersExtremite_1_6_374_ R0000810 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_374_ R0004001 1
-    ValeurDeNTCOrigineVersExtremite_1_6_374_ R0004002 1
+    ValeurDeNTCOrigineVersExtremite_1_6_374_ R0005291 1
+    ValeurDeNTCOrigineVersExtremite_1_6_374_ R0005292 1
     ValeurDeNTCOrigineVersExtremite_2_7_374_ R0000802 1
     ValeurDeNTCOrigineVersExtremite_2_7_374_ R0000814 -1
     ValeurDeNTCOrigineVersExtremite_2_7_374_ R0003529 0.8
@@ -10125,28 +10125,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_375_ R0000839 1
     ValeurDeNTCOrigineVersExtremite_0_1_375_ R0000819 1
     ValeurDeNTCOrigineVersExtremite_0_1_375_ R0000825 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_375_ R0004003 1
-    ValeurDeNTCOrigineVersExtremite_0_1_375_ R0004004 1
+    ValeurDeNTCOrigineVersExtremite_0_1_375_ R0003613 1
+    ValeurDeNTCOrigineVersExtremite_0_1_375_ R0003614 1
     ValeurDeNTCOrigineVersExtremite_0_2_375_ R0000819 1
     ValeurDeNTCOrigineVersExtremite_0_2_375_ R0000829 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_375_ R0004005 1
-    ValeurDeNTCOrigineVersExtremite_0_2_375_ R0004006 1
+    ValeurDeNTCOrigineVersExtremite_0_2_375_ R0003949 1
+    ValeurDeNTCOrigineVersExtremite_0_2_375_ R0003950 1
     ValeurDeNTCOrigineVersExtremite_0_3_375_ R0000819 1
     ValeurDeNTCOrigineVersExtremite_0_3_375_ R0000833 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_375_ R0004007 1
-    ValeurDeNTCOrigineVersExtremite_0_3_375_ R0004008 1
+    ValeurDeNTCOrigineVersExtremite_0_3_375_ R0004285 1
+    ValeurDeNTCOrigineVersExtremite_0_3_375_ R0004286 1
     ValeurDeNTCOrigineVersExtremite_1_4_375_ R0000821 1
     ValeurDeNTCOrigineVersExtremite_1_4_375_ R0000823 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_375_ R0004009 1
-    ValeurDeNTCOrigineVersExtremite_1_4_375_ R0004010 1
+    ValeurDeNTCOrigineVersExtremite_1_4_375_ R0004621 1
+    ValeurDeNTCOrigineVersExtremite_1_4_375_ R0004622 1
     ValeurDeNTCOrigineVersExtremite_1_5_375_ R0000821 1
     ValeurDeNTCOrigineVersExtremite_1_5_375_ R0000827 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_375_ R0004011 1
-    ValeurDeNTCOrigineVersExtremite_1_5_375_ R0004012 1
+    ValeurDeNTCOrigineVersExtremite_1_5_375_ R0004957 1
+    ValeurDeNTCOrigineVersExtremite_1_5_375_ R0004958 1
     ValeurDeNTCOrigineVersExtremite_1_6_375_ R0000821 1
     ValeurDeNTCOrigineVersExtremite_1_6_375_ R0000831 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_375_ R0004013 1
-    ValeurDeNTCOrigineVersExtremite_1_6_375_ R0004014 1
+    ValeurDeNTCOrigineVersExtremite_1_6_375_ R0005293 1
+    ValeurDeNTCOrigineVersExtremite_1_6_375_ R0005294 1
     ValeurDeNTCOrigineVersExtremite_2_7_375_ R0000823 1
     ValeurDeNTCOrigineVersExtremite_2_7_375_ R0000835 -1
     ValeurDeNTCOrigineVersExtremite_2_7_375_ R0003529 0.8
@@ -10242,28 +10242,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_376_ R0000860 1
     ValeurDeNTCOrigineVersExtremite_0_1_376_ R0000840 1
     ValeurDeNTCOrigineVersExtremite_0_1_376_ R0000846 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_376_ R0004015 1
-    ValeurDeNTCOrigineVersExtremite_0_1_376_ R0004016 1
+    ValeurDeNTCOrigineVersExtremite_0_1_376_ R0003615 1
+    ValeurDeNTCOrigineVersExtremite_0_1_376_ R0003616 1
     ValeurDeNTCOrigineVersExtremite_0_2_376_ R0000840 1
     ValeurDeNTCOrigineVersExtremite_0_2_376_ R0000850 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_376_ R0004017 1
-    ValeurDeNTCOrigineVersExtremite_0_2_376_ R0004018 1
+    ValeurDeNTCOrigineVersExtremite_0_2_376_ R0003951 1
+    ValeurDeNTCOrigineVersExtremite_0_2_376_ R0003952 1
     ValeurDeNTCOrigineVersExtremite_0_3_376_ R0000840 1
     ValeurDeNTCOrigineVersExtremite_0_3_376_ R0000854 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_376_ R0004019 1
-    ValeurDeNTCOrigineVersExtremite_0_3_376_ R0004020 1
+    ValeurDeNTCOrigineVersExtremite_0_3_376_ R0004287 1
+    ValeurDeNTCOrigineVersExtremite_0_3_376_ R0004288 1
     ValeurDeNTCOrigineVersExtremite_1_4_376_ R0000842 1
     ValeurDeNTCOrigineVersExtremite_1_4_376_ R0000844 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_376_ R0004021 1
-    ValeurDeNTCOrigineVersExtremite_1_4_376_ R0004022 1
+    ValeurDeNTCOrigineVersExtremite_1_4_376_ R0004623 1
+    ValeurDeNTCOrigineVersExtremite_1_4_376_ R0004624 1
     ValeurDeNTCOrigineVersExtremite_1_5_376_ R0000842 1
     ValeurDeNTCOrigineVersExtremite_1_5_376_ R0000848 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_376_ R0004023 1
-    ValeurDeNTCOrigineVersExtremite_1_5_376_ R0004024 1
+    ValeurDeNTCOrigineVersExtremite_1_5_376_ R0004959 1
+    ValeurDeNTCOrigineVersExtremite_1_5_376_ R0004960 1
     ValeurDeNTCOrigineVersExtremite_1_6_376_ R0000842 1
     ValeurDeNTCOrigineVersExtremite_1_6_376_ R0000852 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_376_ R0004025 1
-    ValeurDeNTCOrigineVersExtremite_1_6_376_ R0004026 1
+    ValeurDeNTCOrigineVersExtremite_1_6_376_ R0005295 1
+    ValeurDeNTCOrigineVersExtremite_1_6_376_ R0005296 1
     ValeurDeNTCOrigineVersExtremite_2_7_376_ R0000844 1
     ValeurDeNTCOrigineVersExtremite_2_7_376_ R0000856 -1
     ValeurDeNTCOrigineVersExtremite_2_7_376_ R0003529 0.8
@@ -10359,28 +10359,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_377_ R0000881 1
     ValeurDeNTCOrigineVersExtremite_0_1_377_ R0000861 1
     ValeurDeNTCOrigineVersExtremite_0_1_377_ R0000867 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_377_ R0004027 1
-    ValeurDeNTCOrigineVersExtremite_0_1_377_ R0004028 1
+    ValeurDeNTCOrigineVersExtremite_0_1_377_ R0003617 1
+    ValeurDeNTCOrigineVersExtremite_0_1_377_ R0003618 1
     ValeurDeNTCOrigineVersExtremite_0_2_377_ R0000861 1
     ValeurDeNTCOrigineVersExtremite_0_2_377_ R0000871 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_377_ R0004029 1
-    ValeurDeNTCOrigineVersExtremite_0_2_377_ R0004030 1
+    ValeurDeNTCOrigineVersExtremite_0_2_377_ R0003953 1
+    ValeurDeNTCOrigineVersExtremite_0_2_377_ R0003954 1
     ValeurDeNTCOrigineVersExtremite_0_3_377_ R0000861 1
     ValeurDeNTCOrigineVersExtremite_0_3_377_ R0000875 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_377_ R0004031 1
-    ValeurDeNTCOrigineVersExtremite_0_3_377_ R0004032 1
+    ValeurDeNTCOrigineVersExtremite_0_3_377_ R0004289 1
+    ValeurDeNTCOrigineVersExtremite_0_3_377_ R0004290 1
     ValeurDeNTCOrigineVersExtremite_1_4_377_ R0000863 1
     ValeurDeNTCOrigineVersExtremite_1_4_377_ R0000865 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_377_ R0004033 1
-    ValeurDeNTCOrigineVersExtremite_1_4_377_ R0004034 1
+    ValeurDeNTCOrigineVersExtremite_1_4_377_ R0004625 1
+    ValeurDeNTCOrigineVersExtremite_1_4_377_ R0004626 1
     ValeurDeNTCOrigineVersExtremite_1_5_377_ R0000863 1
     ValeurDeNTCOrigineVersExtremite_1_5_377_ R0000869 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_377_ R0004035 1
-    ValeurDeNTCOrigineVersExtremite_1_5_377_ R0004036 1
+    ValeurDeNTCOrigineVersExtremite_1_5_377_ R0004961 1
+    ValeurDeNTCOrigineVersExtremite_1_5_377_ R0004962 1
     ValeurDeNTCOrigineVersExtremite_1_6_377_ R0000863 1
     ValeurDeNTCOrigineVersExtremite_1_6_377_ R0000873 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_377_ R0004037 1
-    ValeurDeNTCOrigineVersExtremite_1_6_377_ R0004038 1
+    ValeurDeNTCOrigineVersExtremite_1_6_377_ R0005297 1
+    ValeurDeNTCOrigineVersExtremite_1_6_377_ R0005298 1
     ValeurDeNTCOrigineVersExtremite_2_7_377_ R0000865 1
     ValeurDeNTCOrigineVersExtremite_2_7_377_ R0000877 -1
     ValeurDeNTCOrigineVersExtremite_2_7_377_ R0003529 0.8
@@ -10476,28 +10476,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_378_ R0000902 1
     ValeurDeNTCOrigineVersExtremite_0_1_378_ R0000882 1
     ValeurDeNTCOrigineVersExtremite_0_1_378_ R0000888 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_378_ R0004039 1
-    ValeurDeNTCOrigineVersExtremite_0_1_378_ R0004040 1
+    ValeurDeNTCOrigineVersExtremite_0_1_378_ R0003619 1
+    ValeurDeNTCOrigineVersExtremite_0_1_378_ R0003620 1
     ValeurDeNTCOrigineVersExtremite_0_2_378_ R0000882 1
     ValeurDeNTCOrigineVersExtremite_0_2_378_ R0000892 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_378_ R0004041 1
-    ValeurDeNTCOrigineVersExtremite_0_2_378_ R0004042 1
+    ValeurDeNTCOrigineVersExtremite_0_2_378_ R0003955 1
+    ValeurDeNTCOrigineVersExtremite_0_2_378_ R0003956 1
     ValeurDeNTCOrigineVersExtremite_0_3_378_ R0000882 1
     ValeurDeNTCOrigineVersExtremite_0_3_378_ R0000896 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_378_ R0004043 1
-    ValeurDeNTCOrigineVersExtremite_0_3_378_ R0004044 1
+    ValeurDeNTCOrigineVersExtremite_0_3_378_ R0004291 1
+    ValeurDeNTCOrigineVersExtremite_0_3_378_ R0004292 1
     ValeurDeNTCOrigineVersExtremite_1_4_378_ R0000884 1
     ValeurDeNTCOrigineVersExtremite_1_4_378_ R0000886 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_378_ R0004045 1
-    ValeurDeNTCOrigineVersExtremite_1_4_378_ R0004046 1
+    ValeurDeNTCOrigineVersExtremite_1_4_378_ R0004627 1
+    ValeurDeNTCOrigineVersExtremite_1_4_378_ R0004628 1
     ValeurDeNTCOrigineVersExtremite_1_5_378_ R0000884 1
     ValeurDeNTCOrigineVersExtremite_1_5_378_ R0000890 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_378_ R0004047 1
-    ValeurDeNTCOrigineVersExtremite_1_5_378_ R0004048 1
+    ValeurDeNTCOrigineVersExtremite_1_5_378_ R0004963 1
+    ValeurDeNTCOrigineVersExtremite_1_5_378_ R0004964 1
     ValeurDeNTCOrigineVersExtremite_1_6_378_ R0000884 1
     ValeurDeNTCOrigineVersExtremite_1_6_378_ R0000894 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_378_ R0004049 1
-    ValeurDeNTCOrigineVersExtremite_1_6_378_ R0004050 1
+    ValeurDeNTCOrigineVersExtremite_1_6_378_ R0005299 1
+    ValeurDeNTCOrigineVersExtremite_1_6_378_ R0005300 1
     ValeurDeNTCOrigineVersExtremite_2_7_378_ R0000886 1
     ValeurDeNTCOrigineVersExtremite_2_7_378_ R0000898 -1
     ValeurDeNTCOrigineVersExtremite_2_7_378_ R0003529 0.8
@@ -10593,28 +10593,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_379_ R0000923 1
     ValeurDeNTCOrigineVersExtremite_0_1_379_ R0000903 1
     ValeurDeNTCOrigineVersExtremite_0_1_379_ R0000909 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_379_ R0004051 1
-    ValeurDeNTCOrigineVersExtremite_0_1_379_ R0004052 1
+    ValeurDeNTCOrigineVersExtremite_0_1_379_ R0003621 1
+    ValeurDeNTCOrigineVersExtremite_0_1_379_ R0003622 1
     ValeurDeNTCOrigineVersExtremite_0_2_379_ R0000903 1
     ValeurDeNTCOrigineVersExtremite_0_2_379_ R0000913 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_379_ R0004053 1
-    ValeurDeNTCOrigineVersExtremite_0_2_379_ R0004054 1
+    ValeurDeNTCOrigineVersExtremite_0_2_379_ R0003957 1
+    ValeurDeNTCOrigineVersExtremite_0_2_379_ R0003958 1
     ValeurDeNTCOrigineVersExtremite_0_3_379_ R0000903 1
     ValeurDeNTCOrigineVersExtremite_0_3_379_ R0000917 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_379_ R0004055 1
-    ValeurDeNTCOrigineVersExtremite_0_3_379_ R0004056 1
+    ValeurDeNTCOrigineVersExtremite_0_3_379_ R0004293 1
+    ValeurDeNTCOrigineVersExtremite_0_3_379_ R0004294 1
     ValeurDeNTCOrigineVersExtremite_1_4_379_ R0000905 1
     ValeurDeNTCOrigineVersExtremite_1_4_379_ R0000907 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_379_ R0004057 1
-    ValeurDeNTCOrigineVersExtremite_1_4_379_ R0004058 1
+    ValeurDeNTCOrigineVersExtremite_1_4_379_ R0004629 1
+    ValeurDeNTCOrigineVersExtremite_1_4_379_ R0004630 1
     ValeurDeNTCOrigineVersExtremite_1_5_379_ R0000905 1
     ValeurDeNTCOrigineVersExtremite_1_5_379_ R0000911 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_379_ R0004059 1
-    ValeurDeNTCOrigineVersExtremite_1_5_379_ R0004060 1
+    ValeurDeNTCOrigineVersExtremite_1_5_379_ R0004965 1
+    ValeurDeNTCOrigineVersExtremite_1_5_379_ R0004966 1
     ValeurDeNTCOrigineVersExtremite_1_6_379_ R0000905 1
     ValeurDeNTCOrigineVersExtremite_1_6_379_ R0000915 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_379_ R0004061 1
-    ValeurDeNTCOrigineVersExtremite_1_6_379_ R0004062 1
+    ValeurDeNTCOrigineVersExtremite_1_6_379_ R0005301 1
+    ValeurDeNTCOrigineVersExtremite_1_6_379_ R0005302 1
     ValeurDeNTCOrigineVersExtremite_2_7_379_ R0000907 1
     ValeurDeNTCOrigineVersExtremite_2_7_379_ R0000919 -1
     ValeurDeNTCOrigineVersExtremite_2_7_379_ R0003529 0.8
@@ -10710,28 +10710,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_380_ R0000944 1
     ValeurDeNTCOrigineVersExtremite_0_1_380_ R0000924 1
     ValeurDeNTCOrigineVersExtremite_0_1_380_ R0000930 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_380_ R0004063 1
-    ValeurDeNTCOrigineVersExtremite_0_1_380_ R0004064 1
+    ValeurDeNTCOrigineVersExtremite_0_1_380_ R0003623 1
+    ValeurDeNTCOrigineVersExtremite_0_1_380_ R0003624 1
     ValeurDeNTCOrigineVersExtremite_0_2_380_ R0000924 1
     ValeurDeNTCOrigineVersExtremite_0_2_380_ R0000934 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_380_ R0004065 1
-    ValeurDeNTCOrigineVersExtremite_0_2_380_ R0004066 1
+    ValeurDeNTCOrigineVersExtremite_0_2_380_ R0003959 1
+    ValeurDeNTCOrigineVersExtremite_0_2_380_ R0003960 1
     ValeurDeNTCOrigineVersExtremite_0_3_380_ R0000924 1
     ValeurDeNTCOrigineVersExtremite_0_3_380_ R0000938 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_380_ R0004067 1
-    ValeurDeNTCOrigineVersExtremite_0_3_380_ R0004068 1
+    ValeurDeNTCOrigineVersExtremite_0_3_380_ R0004295 1
+    ValeurDeNTCOrigineVersExtremite_0_3_380_ R0004296 1
     ValeurDeNTCOrigineVersExtremite_1_4_380_ R0000926 1
     ValeurDeNTCOrigineVersExtremite_1_4_380_ R0000928 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_380_ R0004069 1
-    ValeurDeNTCOrigineVersExtremite_1_4_380_ R0004070 1
+    ValeurDeNTCOrigineVersExtremite_1_4_380_ R0004631 1
+    ValeurDeNTCOrigineVersExtremite_1_4_380_ R0004632 1
     ValeurDeNTCOrigineVersExtremite_1_5_380_ R0000926 1
     ValeurDeNTCOrigineVersExtremite_1_5_380_ R0000932 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_380_ R0004071 1
-    ValeurDeNTCOrigineVersExtremite_1_5_380_ R0004072 1
+    ValeurDeNTCOrigineVersExtremite_1_5_380_ R0004967 1
+    ValeurDeNTCOrigineVersExtremite_1_5_380_ R0004968 1
     ValeurDeNTCOrigineVersExtremite_1_6_380_ R0000926 1
     ValeurDeNTCOrigineVersExtremite_1_6_380_ R0000936 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_380_ R0004073 1
-    ValeurDeNTCOrigineVersExtremite_1_6_380_ R0004074 1
+    ValeurDeNTCOrigineVersExtremite_1_6_380_ R0005303 1
+    ValeurDeNTCOrigineVersExtremite_1_6_380_ R0005304 1
     ValeurDeNTCOrigineVersExtremite_2_7_380_ R0000928 1
     ValeurDeNTCOrigineVersExtremite_2_7_380_ R0000940 -1
     ValeurDeNTCOrigineVersExtremite_2_7_380_ R0003529 0.8
@@ -10827,28 +10827,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_381_ R0000965 1
     ValeurDeNTCOrigineVersExtremite_0_1_381_ R0000945 1
     ValeurDeNTCOrigineVersExtremite_0_1_381_ R0000951 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_381_ R0004075 1
-    ValeurDeNTCOrigineVersExtremite_0_1_381_ R0004076 1
+    ValeurDeNTCOrigineVersExtremite_0_1_381_ R0003625 1
+    ValeurDeNTCOrigineVersExtremite_0_1_381_ R0003626 1
     ValeurDeNTCOrigineVersExtremite_0_2_381_ R0000945 1
     ValeurDeNTCOrigineVersExtremite_0_2_381_ R0000955 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_381_ R0004077 1
-    ValeurDeNTCOrigineVersExtremite_0_2_381_ R0004078 1
+    ValeurDeNTCOrigineVersExtremite_0_2_381_ R0003961 1
+    ValeurDeNTCOrigineVersExtremite_0_2_381_ R0003962 1
     ValeurDeNTCOrigineVersExtremite_0_3_381_ R0000945 1
     ValeurDeNTCOrigineVersExtremite_0_3_381_ R0000959 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_381_ R0004079 1
-    ValeurDeNTCOrigineVersExtremite_0_3_381_ R0004080 1
+    ValeurDeNTCOrigineVersExtremite_0_3_381_ R0004297 1
+    ValeurDeNTCOrigineVersExtremite_0_3_381_ R0004298 1
     ValeurDeNTCOrigineVersExtremite_1_4_381_ R0000947 1
     ValeurDeNTCOrigineVersExtremite_1_4_381_ R0000949 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_381_ R0004081 1
-    ValeurDeNTCOrigineVersExtremite_1_4_381_ R0004082 1
+    ValeurDeNTCOrigineVersExtremite_1_4_381_ R0004633 1
+    ValeurDeNTCOrigineVersExtremite_1_4_381_ R0004634 1
     ValeurDeNTCOrigineVersExtremite_1_5_381_ R0000947 1
     ValeurDeNTCOrigineVersExtremite_1_5_381_ R0000953 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_381_ R0004083 1
-    ValeurDeNTCOrigineVersExtremite_1_5_381_ R0004084 1
+    ValeurDeNTCOrigineVersExtremite_1_5_381_ R0004969 1
+    ValeurDeNTCOrigineVersExtremite_1_5_381_ R0004970 1
     ValeurDeNTCOrigineVersExtremite_1_6_381_ R0000947 1
     ValeurDeNTCOrigineVersExtremite_1_6_381_ R0000957 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_381_ R0004085 1
-    ValeurDeNTCOrigineVersExtremite_1_6_381_ R0004086 1
+    ValeurDeNTCOrigineVersExtremite_1_6_381_ R0005305 1
+    ValeurDeNTCOrigineVersExtremite_1_6_381_ R0005306 1
     ValeurDeNTCOrigineVersExtremite_2_7_381_ R0000949 1
     ValeurDeNTCOrigineVersExtremite_2_7_381_ R0000961 -1
     ValeurDeNTCOrigineVersExtremite_2_7_381_ R0003529 0.8
@@ -10944,28 +10944,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_382_ R0000986 1
     ValeurDeNTCOrigineVersExtremite_0_1_382_ R0000966 1
     ValeurDeNTCOrigineVersExtremite_0_1_382_ R0000972 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_382_ R0004087 1
-    ValeurDeNTCOrigineVersExtremite_0_1_382_ R0004088 1
+    ValeurDeNTCOrigineVersExtremite_0_1_382_ R0003627 1
+    ValeurDeNTCOrigineVersExtremite_0_1_382_ R0003628 1
     ValeurDeNTCOrigineVersExtremite_0_2_382_ R0000966 1
     ValeurDeNTCOrigineVersExtremite_0_2_382_ R0000976 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_382_ R0004089 1
-    ValeurDeNTCOrigineVersExtremite_0_2_382_ R0004090 1
+    ValeurDeNTCOrigineVersExtremite_0_2_382_ R0003963 1
+    ValeurDeNTCOrigineVersExtremite_0_2_382_ R0003964 1
     ValeurDeNTCOrigineVersExtremite_0_3_382_ R0000966 1
     ValeurDeNTCOrigineVersExtremite_0_3_382_ R0000980 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_382_ R0004091 1
-    ValeurDeNTCOrigineVersExtremite_0_3_382_ R0004092 1
+    ValeurDeNTCOrigineVersExtremite_0_3_382_ R0004299 1
+    ValeurDeNTCOrigineVersExtremite_0_3_382_ R0004300 1
     ValeurDeNTCOrigineVersExtremite_1_4_382_ R0000968 1
     ValeurDeNTCOrigineVersExtremite_1_4_382_ R0000970 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_382_ R0004093 1
-    ValeurDeNTCOrigineVersExtremite_1_4_382_ R0004094 1
+    ValeurDeNTCOrigineVersExtremite_1_4_382_ R0004635 1
+    ValeurDeNTCOrigineVersExtremite_1_4_382_ R0004636 1
     ValeurDeNTCOrigineVersExtremite_1_5_382_ R0000968 1
     ValeurDeNTCOrigineVersExtremite_1_5_382_ R0000974 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_382_ R0004095 1
-    ValeurDeNTCOrigineVersExtremite_1_5_382_ R0004096 1
+    ValeurDeNTCOrigineVersExtremite_1_5_382_ R0004971 1
+    ValeurDeNTCOrigineVersExtremite_1_5_382_ R0004972 1
     ValeurDeNTCOrigineVersExtremite_1_6_382_ R0000968 1
     ValeurDeNTCOrigineVersExtremite_1_6_382_ R0000978 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_382_ R0004097 1
-    ValeurDeNTCOrigineVersExtremite_1_6_382_ R0004098 1
+    ValeurDeNTCOrigineVersExtremite_1_6_382_ R0005307 1
+    ValeurDeNTCOrigineVersExtremite_1_6_382_ R0005308 1
     ValeurDeNTCOrigineVersExtremite_2_7_382_ R0000970 1
     ValeurDeNTCOrigineVersExtremite_2_7_382_ R0000982 -1
     ValeurDeNTCOrigineVersExtremite_2_7_382_ R0003529 0.8
@@ -11061,28 +11061,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_383_ R0001007 1
     ValeurDeNTCOrigineVersExtremite_0_1_383_ R0000987 1
     ValeurDeNTCOrigineVersExtremite_0_1_383_ R0000993 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_383_ R0004099 1
-    ValeurDeNTCOrigineVersExtremite_0_1_383_ R0004100 1
+    ValeurDeNTCOrigineVersExtremite_0_1_383_ R0003629 1
+    ValeurDeNTCOrigineVersExtremite_0_1_383_ R0003630 1
     ValeurDeNTCOrigineVersExtremite_0_2_383_ R0000987 1
     ValeurDeNTCOrigineVersExtremite_0_2_383_ R0000997 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_383_ R0004101 1
-    ValeurDeNTCOrigineVersExtremite_0_2_383_ R0004102 1
+    ValeurDeNTCOrigineVersExtremite_0_2_383_ R0003965 1
+    ValeurDeNTCOrigineVersExtremite_0_2_383_ R0003966 1
     ValeurDeNTCOrigineVersExtremite_0_3_383_ R0000987 1
     ValeurDeNTCOrigineVersExtremite_0_3_383_ R0001001 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_383_ R0004103 1
-    ValeurDeNTCOrigineVersExtremite_0_3_383_ R0004104 1
+    ValeurDeNTCOrigineVersExtremite_0_3_383_ R0004301 1
+    ValeurDeNTCOrigineVersExtremite_0_3_383_ R0004302 1
     ValeurDeNTCOrigineVersExtremite_1_4_383_ R0000989 1
     ValeurDeNTCOrigineVersExtremite_1_4_383_ R0000991 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_383_ R0004105 1
-    ValeurDeNTCOrigineVersExtremite_1_4_383_ R0004106 1
+    ValeurDeNTCOrigineVersExtremite_1_4_383_ R0004637 1
+    ValeurDeNTCOrigineVersExtremite_1_4_383_ R0004638 1
     ValeurDeNTCOrigineVersExtremite_1_5_383_ R0000989 1
     ValeurDeNTCOrigineVersExtremite_1_5_383_ R0000995 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_383_ R0004107 1
-    ValeurDeNTCOrigineVersExtremite_1_5_383_ R0004108 1
+    ValeurDeNTCOrigineVersExtremite_1_5_383_ R0004973 1
+    ValeurDeNTCOrigineVersExtremite_1_5_383_ R0004974 1
     ValeurDeNTCOrigineVersExtremite_1_6_383_ R0000989 1
     ValeurDeNTCOrigineVersExtremite_1_6_383_ R0000999 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_383_ R0004109 1
-    ValeurDeNTCOrigineVersExtremite_1_6_383_ R0004110 1
+    ValeurDeNTCOrigineVersExtremite_1_6_383_ R0005309 1
+    ValeurDeNTCOrigineVersExtremite_1_6_383_ R0005310 1
     ValeurDeNTCOrigineVersExtremite_2_7_383_ R0000991 1
     ValeurDeNTCOrigineVersExtremite_2_7_383_ R0001003 -1
     ValeurDeNTCOrigineVersExtremite_2_7_383_ R0003529 0.8
@@ -11178,28 +11178,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_384_ R0001028 1
     ValeurDeNTCOrigineVersExtremite_0_1_384_ R0001008 1
     ValeurDeNTCOrigineVersExtremite_0_1_384_ R0001014 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_384_ R0004111 1
-    ValeurDeNTCOrigineVersExtremite_0_1_384_ R0004112 1
+    ValeurDeNTCOrigineVersExtremite_0_1_384_ R0003631 1
+    ValeurDeNTCOrigineVersExtremite_0_1_384_ R0003632 1
     ValeurDeNTCOrigineVersExtremite_0_2_384_ R0001008 1
     ValeurDeNTCOrigineVersExtremite_0_2_384_ R0001018 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_384_ R0004113 1
-    ValeurDeNTCOrigineVersExtremite_0_2_384_ R0004114 1
+    ValeurDeNTCOrigineVersExtremite_0_2_384_ R0003967 1
+    ValeurDeNTCOrigineVersExtremite_0_2_384_ R0003968 1
     ValeurDeNTCOrigineVersExtremite_0_3_384_ R0001008 1
     ValeurDeNTCOrigineVersExtremite_0_3_384_ R0001022 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_384_ R0004115 1
-    ValeurDeNTCOrigineVersExtremite_0_3_384_ R0004116 1
+    ValeurDeNTCOrigineVersExtremite_0_3_384_ R0004303 1
+    ValeurDeNTCOrigineVersExtremite_0_3_384_ R0004304 1
     ValeurDeNTCOrigineVersExtremite_1_4_384_ R0001010 1
     ValeurDeNTCOrigineVersExtremite_1_4_384_ R0001012 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_384_ R0004117 1
-    ValeurDeNTCOrigineVersExtremite_1_4_384_ R0004118 1
+    ValeurDeNTCOrigineVersExtremite_1_4_384_ R0004639 1
+    ValeurDeNTCOrigineVersExtremite_1_4_384_ R0004640 1
     ValeurDeNTCOrigineVersExtremite_1_5_384_ R0001010 1
     ValeurDeNTCOrigineVersExtremite_1_5_384_ R0001016 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_384_ R0004119 1
-    ValeurDeNTCOrigineVersExtremite_1_5_384_ R0004120 1
+    ValeurDeNTCOrigineVersExtremite_1_5_384_ R0004975 1
+    ValeurDeNTCOrigineVersExtremite_1_5_384_ R0004976 1
     ValeurDeNTCOrigineVersExtremite_1_6_384_ R0001010 1
     ValeurDeNTCOrigineVersExtremite_1_6_384_ R0001020 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_384_ R0004121 1
-    ValeurDeNTCOrigineVersExtremite_1_6_384_ R0004122 1
+    ValeurDeNTCOrigineVersExtremite_1_6_384_ R0005311 1
+    ValeurDeNTCOrigineVersExtremite_1_6_384_ R0005312 1
     ValeurDeNTCOrigineVersExtremite_2_7_384_ R0001012 1
     ValeurDeNTCOrigineVersExtremite_2_7_384_ R0001024 -1
     ValeurDeNTCOrigineVersExtremite_2_7_384_ R0003530 0.8
@@ -11295,28 +11295,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_385_ R0001049 1
     ValeurDeNTCOrigineVersExtremite_0_1_385_ R0001029 1
     ValeurDeNTCOrigineVersExtremite_0_1_385_ R0001035 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_385_ R0004123 1
-    ValeurDeNTCOrigineVersExtremite_0_1_385_ R0004124 1
+    ValeurDeNTCOrigineVersExtremite_0_1_385_ R0003633 1
+    ValeurDeNTCOrigineVersExtremite_0_1_385_ R0003634 1
     ValeurDeNTCOrigineVersExtremite_0_2_385_ R0001029 1
     ValeurDeNTCOrigineVersExtremite_0_2_385_ R0001039 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_385_ R0004125 1
-    ValeurDeNTCOrigineVersExtremite_0_2_385_ R0004126 1
+    ValeurDeNTCOrigineVersExtremite_0_2_385_ R0003969 1
+    ValeurDeNTCOrigineVersExtremite_0_2_385_ R0003970 1
     ValeurDeNTCOrigineVersExtremite_0_3_385_ R0001029 1
     ValeurDeNTCOrigineVersExtremite_0_3_385_ R0001043 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_385_ R0004127 1
-    ValeurDeNTCOrigineVersExtremite_0_3_385_ R0004128 1
+    ValeurDeNTCOrigineVersExtremite_0_3_385_ R0004305 1
+    ValeurDeNTCOrigineVersExtremite_0_3_385_ R0004306 1
     ValeurDeNTCOrigineVersExtremite_1_4_385_ R0001031 1
     ValeurDeNTCOrigineVersExtremite_1_4_385_ R0001033 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_385_ R0004129 1
-    ValeurDeNTCOrigineVersExtremite_1_4_385_ R0004130 1
+    ValeurDeNTCOrigineVersExtremite_1_4_385_ R0004641 1
+    ValeurDeNTCOrigineVersExtremite_1_4_385_ R0004642 1
     ValeurDeNTCOrigineVersExtremite_1_5_385_ R0001031 1
     ValeurDeNTCOrigineVersExtremite_1_5_385_ R0001037 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_385_ R0004131 1
-    ValeurDeNTCOrigineVersExtremite_1_5_385_ R0004132 1
+    ValeurDeNTCOrigineVersExtremite_1_5_385_ R0004977 1
+    ValeurDeNTCOrigineVersExtremite_1_5_385_ R0004978 1
     ValeurDeNTCOrigineVersExtremite_1_6_385_ R0001031 1
     ValeurDeNTCOrigineVersExtremite_1_6_385_ R0001041 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_385_ R0004133 1
-    ValeurDeNTCOrigineVersExtremite_1_6_385_ R0004134 1
+    ValeurDeNTCOrigineVersExtremite_1_6_385_ R0005313 1
+    ValeurDeNTCOrigineVersExtremite_1_6_385_ R0005314 1
     ValeurDeNTCOrigineVersExtremite_2_7_385_ R0001033 1
     ValeurDeNTCOrigineVersExtremite_2_7_385_ R0001045 -1
     ValeurDeNTCOrigineVersExtremite_2_7_385_ R0003530 0.8
@@ -11412,28 +11412,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_386_ R0001070 1
     ValeurDeNTCOrigineVersExtremite_0_1_386_ R0001050 1
     ValeurDeNTCOrigineVersExtremite_0_1_386_ R0001056 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_386_ R0004135 1
-    ValeurDeNTCOrigineVersExtremite_0_1_386_ R0004136 1
+    ValeurDeNTCOrigineVersExtremite_0_1_386_ R0003635 1
+    ValeurDeNTCOrigineVersExtremite_0_1_386_ R0003636 1
     ValeurDeNTCOrigineVersExtremite_0_2_386_ R0001050 1
     ValeurDeNTCOrigineVersExtremite_0_2_386_ R0001060 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_386_ R0004137 1
-    ValeurDeNTCOrigineVersExtremite_0_2_386_ R0004138 1
+    ValeurDeNTCOrigineVersExtremite_0_2_386_ R0003971 1
+    ValeurDeNTCOrigineVersExtremite_0_2_386_ R0003972 1
     ValeurDeNTCOrigineVersExtremite_0_3_386_ R0001050 1
     ValeurDeNTCOrigineVersExtremite_0_3_386_ R0001064 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_386_ R0004139 1
-    ValeurDeNTCOrigineVersExtremite_0_3_386_ R0004140 1
+    ValeurDeNTCOrigineVersExtremite_0_3_386_ R0004307 1
+    ValeurDeNTCOrigineVersExtremite_0_3_386_ R0004308 1
     ValeurDeNTCOrigineVersExtremite_1_4_386_ R0001052 1
     ValeurDeNTCOrigineVersExtremite_1_4_386_ R0001054 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_386_ R0004141 1
-    ValeurDeNTCOrigineVersExtremite_1_4_386_ R0004142 1
+    ValeurDeNTCOrigineVersExtremite_1_4_386_ R0004643 1
+    ValeurDeNTCOrigineVersExtremite_1_4_386_ R0004644 1
     ValeurDeNTCOrigineVersExtremite_1_5_386_ R0001052 1
     ValeurDeNTCOrigineVersExtremite_1_5_386_ R0001058 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_386_ R0004143 1
-    ValeurDeNTCOrigineVersExtremite_1_5_386_ R0004144 1
+    ValeurDeNTCOrigineVersExtremite_1_5_386_ R0004979 1
+    ValeurDeNTCOrigineVersExtremite_1_5_386_ R0004980 1
     ValeurDeNTCOrigineVersExtremite_1_6_386_ R0001052 1
     ValeurDeNTCOrigineVersExtremite_1_6_386_ R0001062 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_386_ R0004145 1
-    ValeurDeNTCOrigineVersExtremite_1_6_386_ R0004146 1
+    ValeurDeNTCOrigineVersExtremite_1_6_386_ R0005315 1
+    ValeurDeNTCOrigineVersExtremite_1_6_386_ R0005316 1
     ValeurDeNTCOrigineVersExtremite_2_7_386_ R0001054 1
     ValeurDeNTCOrigineVersExtremite_2_7_386_ R0001066 -1
     ValeurDeNTCOrigineVersExtremite_2_7_386_ R0003530 0.8
@@ -11529,28 +11529,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_387_ R0001091 1
     ValeurDeNTCOrigineVersExtremite_0_1_387_ R0001071 1
     ValeurDeNTCOrigineVersExtremite_0_1_387_ R0001077 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_387_ R0004147 1
-    ValeurDeNTCOrigineVersExtremite_0_1_387_ R0004148 1
+    ValeurDeNTCOrigineVersExtremite_0_1_387_ R0003637 1
+    ValeurDeNTCOrigineVersExtremite_0_1_387_ R0003638 1
     ValeurDeNTCOrigineVersExtremite_0_2_387_ R0001071 1
     ValeurDeNTCOrigineVersExtremite_0_2_387_ R0001081 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_387_ R0004149 1
-    ValeurDeNTCOrigineVersExtremite_0_2_387_ R0004150 1
+    ValeurDeNTCOrigineVersExtremite_0_2_387_ R0003973 1
+    ValeurDeNTCOrigineVersExtremite_0_2_387_ R0003974 1
     ValeurDeNTCOrigineVersExtremite_0_3_387_ R0001071 1
     ValeurDeNTCOrigineVersExtremite_0_3_387_ R0001085 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_387_ R0004151 1
-    ValeurDeNTCOrigineVersExtremite_0_3_387_ R0004152 1
+    ValeurDeNTCOrigineVersExtremite_0_3_387_ R0004309 1
+    ValeurDeNTCOrigineVersExtremite_0_3_387_ R0004310 1
     ValeurDeNTCOrigineVersExtremite_1_4_387_ R0001073 1
     ValeurDeNTCOrigineVersExtremite_1_4_387_ R0001075 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_387_ R0004153 1
-    ValeurDeNTCOrigineVersExtremite_1_4_387_ R0004154 1
+    ValeurDeNTCOrigineVersExtremite_1_4_387_ R0004645 1
+    ValeurDeNTCOrigineVersExtremite_1_4_387_ R0004646 1
     ValeurDeNTCOrigineVersExtremite_1_5_387_ R0001073 1
     ValeurDeNTCOrigineVersExtremite_1_5_387_ R0001079 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_387_ R0004155 1
-    ValeurDeNTCOrigineVersExtremite_1_5_387_ R0004156 1
+    ValeurDeNTCOrigineVersExtremite_1_5_387_ R0004981 1
+    ValeurDeNTCOrigineVersExtremite_1_5_387_ R0004982 1
     ValeurDeNTCOrigineVersExtremite_1_6_387_ R0001073 1
     ValeurDeNTCOrigineVersExtremite_1_6_387_ R0001083 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_387_ R0004157 1
-    ValeurDeNTCOrigineVersExtremite_1_6_387_ R0004158 1
+    ValeurDeNTCOrigineVersExtremite_1_6_387_ R0005317 1
+    ValeurDeNTCOrigineVersExtremite_1_6_387_ R0005318 1
     ValeurDeNTCOrigineVersExtremite_2_7_387_ R0001075 1
     ValeurDeNTCOrigineVersExtremite_2_7_387_ R0001087 -1
     ValeurDeNTCOrigineVersExtremite_2_7_387_ R0003530 0.8
@@ -11646,28 +11646,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_388_ R0001112 1
     ValeurDeNTCOrigineVersExtremite_0_1_388_ R0001092 1
     ValeurDeNTCOrigineVersExtremite_0_1_388_ R0001098 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_388_ R0004159 1
-    ValeurDeNTCOrigineVersExtremite_0_1_388_ R0004160 1
+    ValeurDeNTCOrigineVersExtremite_0_1_388_ R0003639 1
+    ValeurDeNTCOrigineVersExtremite_0_1_388_ R0003640 1
     ValeurDeNTCOrigineVersExtremite_0_2_388_ R0001092 1
     ValeurDeNTCOrigineVersExtremite_0_2_388_ R0001102 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_388_ R0004161 1
-    ValeurDeNTCOrigineVersExtremite_0_2_388_ R0004162 1
+    ValeurDeNTCOrigineVersExtremite_0_2_388_ R0003975 1
+    ValeurDeNTCOrigineVersExtremite_0_2_388_ R0003976 1
     ValeurDeNTCOrigineVersExtremite_0_3_388_ R0001092 1
     ValeurDeNTCOrigineVersExtremite_0_3_388_ R0001106 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_388_ R0004163 1
-    ValeurDeNTCOrigineVersExtremite_0_3_388_ R0004164 1
+    ValeurDeNTCOrigineVersExtremite_0_3_388_ R0004311 1
+    ValeurDeNTCOrigineVersExtremite_0_3_388_ R0004312 1
     ValeurDeNTCOrigineVersExtremite_1_4_388_ R0001094 1
     ValeurDeNTCOrigineVersExtremite_1_4_388_ R0001096 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_388_ R0004165 1
-    ValeurDeNTCOrigineVersExtremite_1_4_388_ R0004166 1
+    ValeurDeNTCOrigineVersExtremite_1_4_388_ R0004647 1
+    ValeurDeNTCOrigineVersExtremite_1_4_388_ R0004648 1
     ValeurDeNTCOrigineVersExtremite_1_5_388_ R0001094 1
     ValeurDeNTCOrigineVersExtremite_1_5_388_ R0001100 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_388_ R0004167 1
-    ValeurDeNTCOrigineVersExtremite_1_5_388_ R0004168 1
+    ValeurDeNTCOrigineVersExtremite_1_5_388_ R0004983 1
+    ValeurDeNTCOrigineVersExtremite_1_5_388_ R0004984 1
     ValeurDeNTCOrigineVersExtremite_1_6_388_ R0001094 1
     ValeurDeNTCOrigineVersExtremite_1_6_388_ R0001104 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_388_ R0004169 1
-    ValeurDeNTCOrigineVersExtremite_1_6_388_ R0004170 1
+    ValeurDeNTCOrigineVersExtremite_1_6_388_ R0005319 1
+    ValeurDeNTCOrigineVersExtremite_1_6_388_ R0005320 1
     ValeurDeNTCOrigineVersExtremite_2_7_388_ R0001096 1
     ValeurDeNTCOrigineVersExtremite_2_7_388_ R0001108 -1
     ValeurDeNTCOrigineVersExtremite_2_7_388_ R0003530 0.8
@@ -11763,28 +11763,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_389_ R0001133 1
     ValeurDeNTCOrigineVersExtremite_0_1_389_ R0001113 1
     ValeurDeNTCOrigineVersExtremite_0_1_389_ R0001119 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_389_ R0004171 1
-    ValeurDeNTCOrigineVersExtremite_0_1_389_ R0004172 1
+    ValeurDeNTCOrigineVersExtremite_0_1_389_ R0003641 1
+    ValeurDeNTCOrigineVersExtremite_0_1_389_ R0003642 1
     ValeurDeNTCOrigineVersExtremite_0_2_389_ R0001113 1
     ValeurDeNTCOrigineVersExtremite_0_2_389_ R0001123 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_389_ R0004173 1
-    ValeurDeNTCOrigineVersExtremite_0_2_389_ R0004174 1
+    ValeurDeNTCOrigineVersExtremite_0_2_389_ R0003977 1
+    ValeurDeNTCOrigineVersExtremite_0_2_389_ R0003978 1
     ValeurDeNTCOrigineVersExtremite_0_3_389_ R0001113 1
     ValeurDeNTCOrigineVersExtremite_0_3_389_ R0001127 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_389_ R0004175 1
-    ValeurDeNTCOrigineVersExtremite_0_3_389_ R0004176 1
+    ValeurDeNTCOrigineVersExtremite_0_3_389_ R0004313 1
+    ValeurDeNTCOrigineVersExtremite_0_3_389_ R0004314 1
     ValeurDeNTCOrigineVersExtremite_1_4_389_ R0001115 1
     ValeurDeNTCOrigineVersExtremite_1_4_389_ R0001117 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_389_ R0004177 1
-    ValeurDeNTCOrigineVersExtremite_1_4_389_ R0004178 1
+    ValeurDeNTCOrigineVersExtremite_1_4_389_ R0004649 1
+    ValeurDeNTCOrigineVersExtremite_1_4_389_ R0004650 1
     ValeurDeNTCOrigineVersExtremite_1_5_389_ R0001115 1
     ValeurDeNTCOrigineVersExtremite_1_5_389_ R0001121 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_389_ R0004179 1
-    ValeurDeNTCOrigineVersExtremite_1_5_389_ R0004180 1
+    ValeurDeNTCOrigineVersExtremite_1_5_389_ R0004985 1
+    ValeurDeNTCOrigineVersExtremite_1_5_389_ R0004986 1
     ValeurDeNTCOrigineVersExtremite_1_6_389_ R0001115 1
     ValeurDeNTCOrigineVersExtremite_1_6_389_ R0001125 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_389_ R0004181 1
-    ValeurDeNTCOrigineVersExtremite_1_6_389_ R0004182 1
+    ValeurDeNTCOrigineVersExtremite_1_6_389_ R0005321 1
+    ValeurDeNTCOrigineVersExtremite_1_6_389_ R0005322 1
     ValeurDeNTCOrigineVersExtremite_2_7_389_ R0001117 1
     ValeurDeNTCOrigineVersExtremite_2_7_389_ R0001129 -1
     ValeurDeNTCOrigineVersExtremite_2_7_389_ R0003530 0.8
@@ -11880,28 +11880,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_390_ R0001154 1
     ValeurDeNTCOrigineVersExtremite_0_1_390_ R0001134 1
     ValeurDeNTCOrigineVersExtremite_0_1_390_ R0001140 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_390_ R0004183 1
-    ValeurDeNTCOrigineVersExtremite_0_1_390_ R0004184 1
+    ValeurDeNTCOrigineVersExtremite_0_1_390_ R0003643 1
+    ValeurDeNTCOrigineVersExtremite_0_1_390_ R0003644 1
     ValeurDeNTCOrigineVersExtremite_0_2_390_ R0001134 1
     ValeurDeNTCOrigineVersExtremite_0_2_390_ R0001144 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_390_ R0004185 1
-    ValeurDeNTCOrigineVersExtremite_0_2_390_ R0004186 1
+    ValeurDeNTCOrigineVersExtremite_0_2_390_ R0003979 1
+    ValeurDeNTCOrigineVersExtremite_0_2_390_ R0003980 1
     ValeurDeNTCOrigineVersExtremite_0_3_390_ R0001134 1
     ValeurDeNTCOrigineVersExtremite_0_3_390_ R0001148 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_390_ R0004187 1
-    ValeurDeNTCOrigineVersExtremite_0_3_390_ R0004188 1
+    ValeurDeNTCOrigineVersExtremite_0_3_390_ R0004315 1
+    ValeurDeNTCOrigineVersExtremite_0_3_390_ R0004316 1
     ValeurDeNTCOrigineVersExtremite_1_4_390_ R0001136 1
     ValeurDeNTCOrigineVersExtremite_1_4_390_ R0001138 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_390_ R0004189 1
-    ValeurDeNTCOrigineVersExtremite_1_4_390_ R0004190 1
+    ValeurDeNTCOrigineVersExtremite_1_4_390_ R0004651 1
+    ValeurDeNTCOrigineVersExtremite_1_4_390_ R0004652 1
     ValeurDeNTCOrigineVersExtremite_1_5_390_ R0001136 1
     ValeurDeNTCOrigineVersExtremite_1_5_390_ R0001142 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_390_ R0004191 1
-    ValeurDeNTCOrigineVersExtremite_1_5_390_ R0004192 1
+    ValeurDeNTCOrigineVersExtremite_1_5_390_ R0004987 1
+    ValeurDeNTCOrigineVersExtremite_1_5_390_ R0004988 1
     ValeurDeNTCOrigineVersExtremite_1_6_390_ R0001136 1
     ValeurDeNTCOrigineVersExtremite_1_6_390_ R0001146 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_390_ R0004193 1
-    ValeurDeNTCOrigineVersExtremite_1_6_390_ R0004194 1
+    ValeurDeNTCOrigineVersExtremite_1_6_390_ R0005323 1
+    ValeurDeNTCOrigineVersExtremite_1_6_390_ R0005324 1
     ValeurDeNTCOrigineVersExtremite_2_7_390_ R0001138 1
     ValeurDeNTCOrigineVersExtremite_2_7_390_ R0001150 -1
     ValeurDeNTCOrigineVersExtremite_2_7_390_ R0003530 0.8
@@ -11997,28 +11997,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_391_ R0001175 1
     ValeurDeNTCOrigineVersExtremite_0_1_391_ R0001155 1
     ValeurDeNTCOrigineVersExtremite_0_1_391_ R0001161 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_391_ R0004195 1
-    ValeurDeNTCOrigineVersExtremite_0_1_391_ R0004196 1
+    ValeurDeNTCOrigineVersExtremite_0_1_391_ R0003645 1
+    ValeurDeNTCOrigineVersExtremite_0_1_391_ R0003646 1
     ValeurDeNTCOrigineVersExtremite_0_2_391_ R0001155 1
     ValeurDeNTCOrigineVersExtremite_0_2_391_ R0001165 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_391_ R0004197 1
-    ValeurDeNTCOrigineVersExtremite_0_2_391_ R0004198 1
+    ValeurDeNTCOrigineVersExtremite_0_2_391_ R0003981 1
+    ValeurDeNTCOrigineVersExtremite_0_2_391_ R0003982 1
     ValeurDeNTCOrigineVersExtremite_0_3_391_ R0001155 1
     ValeurDeNTCOrigineVersExtremite_0_3_391_ R0001169 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_391_ R0004199 1
-    ValeurDeNTCOrigineVersExtremite_0_3_391_ R0004200 1
+    ValeurDeNTCOrigineVersExtremite_0_3_391_ R0004317 1
+    ValeurDeNTCOrigineVersExtremite_0_3_391_ R0004318 1
     ValeurDeNTCOrigineVersExtremite_1_4_391_ R0001157 1
     ValeurDeNTCOrigineVersExtremite_1_4_391_ R0001159 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_391_ R0004201 1
-    ValeurDeNTCOrigineVersExtremite_1_4_391_ R0004202 1
+    ValeurDeNTCOrigineVersExtremite_1_4_391_ R0004653 1
+    ValeurDeNTCOrigineVersExtremite_1_4_391_ R0004654 1
     ValeurDeNTCOrigineVersExtremite_1_5_391_ R0001157 1
     ValeurDeNTCOrigineVersExtremite_1_5_391_ R0001163 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_391_ R0004203 1
-    ValeurDeNTCOrigineVersExtremite_1_5_391_ R0004204 1
+    ValeurDeNTCOrigineVersExtremite_1_5_391_ R0004989 1
+    ValeurDeNTCOrigineVersExtremite_1_5_391_ R0004990 1
     ValeurDeNTCOrigineVersExtremite_1_6_391_ R0001157 1
     ValeurDeNTCOrigineVersExtremite_1_6_391_ R0001167 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_391_ R0004205 1
-    ValeurDeNTCOrigineVersExtremite_1_6_391_ R0004206 1
+    ValeurDeNTCOrigineVersExtremite_1_6_391_ R0005325 1
+    ValeurDeNTCOrigineVersExtremite_1_6_391_ R0005326 1
     ValeurDeNTCOrigineVersExtremite_2_7_391_ R0001159 1
     ValeurDeNTCOrigineVersExtremite_2_7_391_ R0001171 -1
     ValeurDeNTCOrigineVersExtremite_2_7_391_ R0003530 0.8
@@ -12114,28 +12114,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_392_ R0001196 1
     ValeurDeNTCOrigineVersExtremite_0_1_392_ R0001176 1
     ValeurDeNTCOrigineVersExtremite_0_1_392_ R0001182 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_392_ R0004207 1
-    ValeurDeNTCOrigineVersExtremite_0_1_392_ R0004208 1
+    ValeurDeNTCOrigineVersExtremite_0_1_392_ R0003647 1
+    ValeurDeNTCOrigineVersExtremite_0_1_392_ R0003648 1
     ValeurDeNTCOrigineVersExtremite_0_2_392_ R0001176 1
     ValeurDeNTCOrigineVersExtremite_0_2_392_ R0001186 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_392_ R0004209 1
-    ValeurDeNTCOrigineVersExtremite_0_2_392_ R0004210 1
+    ValeurDeNTCOrigineVersExtremite_0_2_392_ R0003983 1
+    ValeurDeNTCOrigineVersExtremite_0_2_392_ R0003984 1
     ValeurDeNTCOrigineVersExtremite_0_3_392_ R0001176 1
     ValeurDeNTCOrigineVersExtremite_0_3_392_ R0001190 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_392_ R0004211 1
-    ValeurDeNTCOrigineVersExtremite_0_3_392_ R0004212 1
+    ValeurDeNTCOrigineVersExtremite_0_3_392_ R0004319 1
+    ValeurDeNTCOrigineVersExtremite_0_3_392_ R0004320 1
     ValeurDeNTCOrigineVersExtremite_1_4_392_ R0001178 1
     ValeurDeNTCOrigineVersExtremite_1_4_392_ R0001180 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_392_ R0004213 1
-    ValeurDeNTCOrigineVersExtremite_1_4_392_ R0004214 1
+    ValeurDeNTCOrigineVersExtremite_1_4_392_ R0004655 1
+    ValeurDeNTCOrigineVersExtremite_1_4_392_ R0004656 1
     ValeurDeNTCOrigineVersExtremite_1_5_392_ R0001178 1
     ValeurDeNTCOrigineVersExtremite_1_5_392_ R0001184 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_392_ R0004215 1
-    ValeurDeNTCOrigineVersExtremite_1_5_392_ R0004216 1
+    ValeurDeNTCOrigineVersExtremite_1_5_392_ R0004991 1
+    ValeurDeNTCOrigineVersExtremite_1_5_392_ R0004992 1
     ValeurDeNTCOrigineVersExtremite_1_6_392_ R0001178 1
     ValeurDeNTCOrigineVersExtremite_1_6_392_ R0001188 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_392_ R0004217 1
-    ValeurDeNTCOrigineVersExtremite_1_6_392_ R0004218 1
+    ValeurDeNTCOrigineVersExtremite_1_6_392_ R0005327 1
+    ValeurDeNTCOrigineVersExtremite_1_6_392_ R0005328 1
     ValeurDeNTCOrigineVersExtremite_2_7_392_ R0001180 1
     ValeurDeNTCOrigineVersExtremite_2_7_392_ R0001192 -1
     ValeurDeNTCOrigineVersExtremite_2_7_392_ R0003530 0.8
@@ -12231,28 +12231,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_393_ R0001217 1
     ValeurDeNTCOrigineVersExtremite_0_1_393_ R0001197 1
     ValeurDeNTCOrigineVersExtremite_0_1_393_ R0001203 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_393_ R0004219 1
-    ValeurDeNTCOrigineVersExtremite_0_1_393_ R0004220 1
+    ValeurDeNTCOrigineVersExtremite_0_1_393_ R0003649 1
+    ValeurDeNTCOrigineVersExtremite_0_1_393_ R0003650 1
     ValeurDeNTCOrigineVersExtremite_0_2_393_ R0001197 1
     ValeurDeNTCOrigineVersExtremite_0_2_393_ R0001207 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_393_ R0004221 1
-    ValeurDeNTCOrigineVersExtremite_0_2_393_ R0004222 1
+    ValeurDeNTCOrigineVersExtremite_0_2_393_ R0003985 1
+    ValeurDeNTCOrigineVersExtremite_0_2_393_ R0003986 1
     ValeurDeNTCOrigineVersExtremite_0_3_393_ R0001197 1
     ValeurDeNTCOrigineVersExtremite_0_3_393_ R0001211 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_393_ R0004223 1
-    ValeurDeNTCOrigineVersExtremite_0_3_393_ R0004224 1
+    ValeurDeNTCOrigineVersExtremite_0_3_393_ R0004321 1
+    ValeurDeNTCOrigineVersExtremite_0_3_393_ R0004322 1
     ValeurDeNTCOrigineVersExtremite_1_4_393_ R0001199 1
     ValeurDeNTCOrigineVersExtremite_1_4_393_ R0001201 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_393_ R0004225 1
-    ValeurDeNTCOrigineVersExtremite_1_4_393_ R0004226 1
+    ValeurDeNTCOrigineVersExtremite_1_4_393_ R0004657 1
+    ValeurDeNTCOrigineVersExtremite_1_4_393_ R0004658 1
     ValeurDeNTCOrigineVersExtremite_1_5_393_ R0001199 1
     ValeurDeNTCOrigineVersExtremite_1_5_393_ R0001205 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_393_ R0004227 1
-    ValeurDeNTCOrigineVersExtremite_1_5_393_ R0004228 1
+    ValeurDeNTCOrigineVersExtremite_1_5_393_ R0004993 1
+    ValeurDeNTCOrigineVersExtremite_1_5_393_ R0004994 1
     ValeurDeNTCOrigineVersExtremite_1_6_393_ R0001199 1
     ValeurDeNTCOrigineVersExtremite_1_6_393_ R0001209 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_393_ R0004229 1
-    ValeurDeNTCOrigineVersExtremite_1_6_393_ R0004230 1
+    ValeurDeNTCOrigineVersExtremite_1_6_393_ R0005329 1
+    ValeurDeNTCOrigineVersExtremite_1_6_393_ R0005330 1
     ValeurDeNTCOrigineVersExtremite_2_7_393_ R0001201 1
     ValeurDeNTCOrigineVersExtremite_2_7_393_ R0001213 -1
     ValeurDeNTCOrigineVersExtremite_2_7_393_ R0003530 0.8
@@ -12348,28 +12348,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_394_ R0001238 1
     ValeurDeNTCOrigineVersExtremite_0_1_394_ R0001218 1
     ValeurDeNTCOrigineVersExtremite_0_1_394_ R0001224 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_394_ R0004231 1
-    ValeurDeNTCOrigineVersExtremite_0_1_394_ R0004232 1
+    ValeurDeNTCOrigineVersExtremite_0_1_394_ R0003651 1
+    ValeurDeNTCOrigineVersExtremite_0_1_394_ R0003652 1
     ValeurDeNTCOrigineVersExtremite_0_2_394_ R0001218 1
     ValeurDeNTCOrigineVersExtremite_0_2_394_ R0001228 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_394_ R0004233 1
-    ValeurDeNTCOrigineVersExtremite_0_2_394_ R0004234 1
+    ValeurDeNTCOrigineVersExtremite_0_2_394_ R0003987 1
+    ValeurDeNTCOrigineVersExtremite_0_2_394_ R0003988 1
     ValeurDeNTCOrigineVersExtremite_0_3_394_ R0001218 1
     ValeurDeNTCOrigineVersExtremite_0_3_394_ R0001232 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_394_ R0004235 1
-    ValeurDeNTCOrigineVersExtremite_0_3_394_ R0004236 1
+    ValeurDeNTCOrigineVersExtremite_0_3_394_ R0004323 1
+    ValeurDeNTCOrigineVersExtremite_0_3_394_ R0004324 1
     ValeurDeNTCOrigineVersExtremite_1_4_394_ R0001220 1
     ValeurDeNTCOrigineVersExtremite_1_4_394_ R0001222 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_394_ R0004237 1
-    ValeurDeNTCOrigineVersExtremite_1_4_394_ R0004238 1
+    ValeurDeNTCOrigineVersExtremite_1_4_394_ R0004659 1
+    ValeurDeNTCOrigineVersExtremite_1_4_394_ R0004660 1
     ValeurDeNTCOrigineVersExtremite_1_5_394_ R0001220 1
     ValeurDeNTCOrigineVersExtremite_1_5_394_ R0001226 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_394_ R0004239 1
-    ValeurDeNTCOrigineVersExtremite_1_5_394_ R0004240 1
+    ValeurDeNTCOrigineVersExtremite_1_5_394_ R0004995 1
+    ValeurDeNTCOrigineVersExtremite_1_5_394_ R0004996 1
     ValeurDeNTCOrigineVersExtremite_1_6_394_ R0001220 1
     ValeurDeNTCOrigineVersExtremite_1_6_394_ R0001230 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_394_ R0004241 1
-    ValeurDeNTCOrigineVersExtremite_1_6_394_ R0004242 1
+    ValeurDeNTCOrigineVersExtremite_1_6_394_ R0005331 1
+    ValeurDeNTCOrigineVersExtremite_1_6_394_ R0005332 1
     ValeurDeNTCOrigineVersExtremite_2_7_394_ R0001222 1
     ValeurDeNTCOrigineVersExtremite_2_7_394_ R0001234 -1
     ValeurDeNTCOrigineVersExtremite_2_7_394_ R0003530 0.8
@@ -12465,28 +12465,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_395_ R0001259 1
     ValeurDeNTCOrigineVersExtremite_0_1_395_ R0001239 1
     ValeurDeNTCOrigineVersExtremite_0_1_395_ R0001245 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_395_ R0004243 1
-    ValeurDeNTCOrigineVersExtremite_0_1_395_ R0004244 1
+    ValeurDeNTCOrigineVersExtremite_0_1_395_ R0003653 1
+    ValeurDeNTCOrigineVersExtremite_0_1_395_ R0003654 1
     ValeurDeNTCOrigineVersExtremite_0_2_395_ R0001239 1
     ValeurDeNTCOrigineVersExtremite_0_2_395_ R0001249 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_395_ R0004245 1
-    ValeurDeNTCOrigineVersExtremite_0_2_395_ R0004246 1
+    ValeurDeNTCOrigineVersExtremite_0_2_395_ R0003989 1
+    ValeurDeNTCOrigineVersExtremite_0_2_395_ R0003990 1
     ValeurDeNTCOrigineVersExtremite_0_3_395_ R0001239 1
     ValeurDeNTCOrigineVersExtremite_0_3_395_ R0001253 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_395_ R0004247 1
-    ValeurDeNTCOrigineVersExtremite_0_3_395_ R0004248 1
+    ValeurDeNTCOrigineVersExtremite_0_3_395_ R0004325 1
+    ValeurDeNTCOrigineVersExtremite_0_3_395_ R0004326 1
     ValeurDeNTCOrigineVersExtremite_1_4_395_ R0001241 1
     ValeurDeNTCOrigineVersExtremite_1_4_395_ R0001243 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_395_ R0004249 1
-    ValeurDeNTCOrigineVersExtremite_1_4_395_ R0004250 1
+    ValeurDeNTCOrigineVersExtremite_1_4_395_ R0004661 1
+    ValeurDeNTCOrigineVersExtremite_1_4_395_ R0004662 1
     ValeurDeNTCOrigineVersExtremite_1_5_395_ R0001241 1
     ValeurDeNTCOrigineVersExtremite_1_5_395_ R0001247 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_395_ R0004251 1
-    ValeurDeNTCOrigineVersExtremite_1_5_395_ R0004252 1
+    ValeurDeNTCOrigineVersExtremite_1_5_395_ R0004997 1
+    ValeurDeNTCOrigineVersExtremite_1_5_395_ R0004998 1
     ValeurDeNTCOrigineVersExtremite_1_6_395_ R0001241 1
     ValeurDeNTCOrigineVersExtremite_1_6_395_ R0001251 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_395_ R0004253 1
-    ValeurDeNTCOrigineVersExtremite_1_6_395_ R0004254 1
+    ValeurDeNTCOrigineVersExtremite_1_6_395_ R0005333 1
+    ValeurDeNTCOrigineVersExtremite_1_6_395_ R0005334 1
     ValeurDeNTCOrigineVersExtremite_2_7_395_ R0001243 1
     ValeurDeNTCOrigineVersExtremite_2_7_395_ R0001255 -1
     ValeurDeNTCOrigineVersExtremite_2_7_395_ R0003530 0.8
@@ -12582,28 +12582,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_396_ R0001280 1
     ValeurDeNTCOrigineVersExtremite_0_1_396_ R0001260 1
     ValeurDeNTCOrigineVersExtremite_0_1_396_ R0001266 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_396_ R0004255 1
-    ValeurDeNTCOrigineVersExtremite_0_1_396_ R0004256 1
+    ValeurDeNTCOrigineVersExtremite_0_1_396_ R0003655 1
+    ValeurDeNTCOrigineVersExtremite_0_1_396_ R0003656 1
     ValeurDeNTCOrigineVersExtremite_0_2_396_ R0001260 1
     ValeurDeNTCOrigineVersExtremite_0_2_396_ R0001270 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_396_ R0004257 1
-    ValeurDeNTCOrigineVersExtremite_0_2_396_ R0004258 1
+    ValeurDeNTCOrigineVersExtremite_0_2_396_ R0003991 1
+    ValeurDeNTCOrigineVersExtremite_0_2_396_ R0003992 1
     ValeurDeNTCOrigineVersExtremite_0_3_396_ R0001260 1
     ValeurDeNTCOrigineVersExtremite_0_3_396_ R0001274 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_396_ R0004259 1
-    ValeurDeNTCOrigineVersExtremite_0_3_396_ R0004260 1
+    ValeurDeNTCOrigineVersExtremite_0_3_396_ R0004327 1
+    ValeurDeNTCOrigineVersExtremite_0_3_396_ R0004328 1
     ValeurDeNTCOrigineVersExtremite_1_4_396_ R0001262 1
     ValeurDeNTCOrigineVersExtremite_1_4_396_ R0001264 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_396_ R0004261 1
-    ValeurDeNTCOrigineVersExtremite_1_4_396_ R0004262 1
+    ValeurDeNTCOrigineVersExtremite_1_4_396_ R0004663 1
+    ValeurDeNTCOrigineVersExtremite_1_4_396_ R0004664 1
     ValeurDeNTCOrigineVersExtremite_1_5_396_ R0001262 1
     ValeurDeNTCOrigineVersExtremite_1_5_396_ R0001268 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_396_ R0004263 1
-    ValeurDeNTCOrigineVersExtremite_1_5_396_ R0004264 1
+    ValeurDeNTCOrigineVersExtremite_1_5_396_ R0004999 1
+    ValeurDeNTCOrigineVersExtremite_1_5_396_ R0005000 1
     ValeurDeNTCOrigineVersExtremite_1_6_396_ R0001262 1
     ValeurDeNTCOrigineVersExtremite_1_6_396_ R0001272 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_396_ R0004265 1
-    ValeurDeNTCOrigineVersExtremite_1_6_396_ R0004266 1
+    ValeurDeNTCOrigineVersExtremite_1_6_396_ R0005335 1
+    ValeurDeNTCOrigineVersExtremite_1_6_396_ R0005336 1
     ValeurDeNTCOrigineVersExtremite_2_7_396_ R0001264 1
     ValeurDeNTCOrigineVersExtremite_2_7_396_ R0001276 -1
     ValeurDeNTCOrigineVersExtremite_2_7_396_ R0003530 0.8
@@ -12699,28 +12699,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_397_ R0001301 1
     ValeurDeNTCOrigineVersExtremite_0_1_397_ R0001281 1
     ValeurDeNTCOrigineVersExtremite_0_1_397_ R0001287 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_397_ R0004267 1
-    ValeurDeNTCOrigineVersExtremite_0_1_397_ R0004268 1
+    ValeurDeNTCOrigineVersExtremite_0_1_397_ R0003657 1
+    ValeurDeNTCOrigineVersExtremite_0_1_397_ R0003658 1
     ValeurDeNTCOrigineVersExtremite_0_2_397_ R0001281 1
     ValeurDeNTCOrigineVersExtremite_0_2_397_ R0001291 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_397_ R0004269 1
-    ValeurDeNTCOrigineVersExtremite_0_2_397_ R0004270 1
+    ValeurDeNTCOrigineVersExtremite_0_2_397_ R0003993 1
+    ValeurDeNTCOrigineVersExtremite_0_2_397_ R0003994 1
     ValeurDeNTCOrigineVersExtremite_0_3_397_ R0001281 1
     ValeurDeNTCOrigineVersExtremite_0_3_397_ R0001295 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_397_ R0004271 1
-    ValeurDeNTCOrigineVersExtremite_0_3_397_ R0004272 1
+    ValeurDeNTCOrigineVersExtremite_0_3_397_ R0004329 1
+    ValeurDeNTCOrigineVersExtremite_0_3_397_ R0004330 1
     ValeurDeNTCOrigineVersExtremite_1_4_397_ R0001283 1
     ValeurDeNTCOrigineVersExtremite_1_4_397_ R0001285 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_397_ R0004273 1
-    ValeurDeNTCOrigineVersExtremite_1_4_397_ R0004274 1
+    ValeurDeNTCOrigineVersExtremite_1_4_397_ R0004665 1
+    ValeurDeNTCOrigineVersExtremite_1_4_397_ R0004666 1
     ValeurDeNTCOrigineVersExtremite_1_5_397_ R0001283 1
     ValeurDeNTCOrigineVersExtremite_1_5_397_ R0001289 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_397_ R0004275 1
-    ValeurDeNTCOrigineVersExtremite_1_5_397_ R0004276 1
+    ValeurDeNTCOrigineVersExtremite_1_5_397_ R0005001 1
+    ValeurDeNTCOrigineVersExtremite_1_5_397_ R0005002 1
     ValeurDeNTCOrigineVersExtremite_1_6_397_ R0001283 1
     ValeurDeNTCOrigineVersExtremite_1_6_397_ R0001293 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_397_ R0004277 1
-    ValeurDeNTCOrigineVersExtremite_1_6_397_ R0004278 1
+    ValeurDeNTCOrigineVersExtremite_1_6_397_ R0005337 1
+    ValeurDeNTCOrigineVersExtremite_1_6_397_ R0005338 1
     ValeurDeNTCOrigineVersExtremite_2_7_397_ R0001285 1
     ValeurDeNTCOrigineVersExtremite_2_7_397_ R0001297 -1
     ValeurDeNTCOrigineVersExtremite_2_7_397_ R0003530 0.8
@@ -12816,28 +12816,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_398_ R0001322 1
     ValeurDeNTCOrigineVersExtremite_0_1_398_ R0001302 1
     ValeurDeNTCOrigineVersExtremite_0_1_398_ R0001308 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_398_ R0004279 1
-    ValeurDeNTCOrigineVersExtremite_0_1_398_ R0004280 1
+    ValeurDeNTCOrigineVersExtremite_0_1_398_ R0003659 1
+    ValeurDeNTCOrigineVersExtremite_0_1_398_ R0003660 1
     ValeurDeNTCOrigineVersExtremite_0_2_398_ R0001302 1
     ValeurDeNTCOrigineVersExtremite_0_2_398_ R0001312 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_398_ R0004281 1
-    ValeurDeNTCOrigineVersExtremite_0_2_398_ R0004282 1
+    ValeurDeNTCOrigineVersExtremite_0_2_398_ R0003995 1
+    ValeurDeNTCOrigineVersExtremite_0_2_398_ R0003996 1
     ValeurDeNTCOrigineVersExtremite_0_3_398_ R0001302 1
     ValeurDeNTCOrigineVersExtremite_0_3_398_ R0001316 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_398_ R0004283 1
-    ValeurDeNTCOrigineVersExtremite_0_3_398_ R0004284 1
+    ValeurDeNTCOrigineVersExtremite_0_3_398_ R0004331 1
+    ValeurDeNTCOrigineVersExtremite_0_3_398_ R0004332 1
     ValeurDeNTCOrigineVersExtremite_1_4_398_ R0001304 1
     ValeurDeNTCOrigineVersExtremite_1_4_398_ R0001306 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_398_ R0004285 1
-    ValeurDeNTCOrigineVersExtremite_1_4_398_ R0004286 1
+    ValeurDeNTCOrigineVersExtremite_1_4_398_ R0004667 1
+    ValeurDeNTCOrigineVersExtremite_1_4_398_ R0004668 1
     ValeurDeNTCOrigineVersExtremite_1_5_398_ R0001304 1
     ValeurDeNTCOrigineVersExtremite_1_5_398_ R0001310 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_398_ R0004287 1
-    ValeurDeNTCOrigineVersExtremite_1_5_398_ R0004288 1
+    ValeurDeNTCOrigineVersExtremite_1_5_398_ R0005003 1
+    ValeurDeNTCOrigineVersExtremite_1_5_398_ R0005004 1
     ValeurDeNTCOrigineVersExtremite_1_6_398_ R0001304 1
     ValeurDeNTCOrigineVersExtremite_1_6_398_ R0001314 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_398_ R0004289 1
-    ValeurDeNTCOrigineVersExtremite_1_6_398_ R0004290 1
+    ValeurDeNTCOrigineVersExtremite_1_6_398_ R0005339 1
+    ValeurDeNTCOrigineVersExtremite_1_6_398_ R0005340 1
     ValeurDeNTCOrigineVersExtremite_2_7_398_ R0001306 1
     ValeurDeNTCOrigineVersExtremite_2_7_398_ R0001318 -1
     ValeurDeNTCOrigineVersExtremite_2_7_398_ R0003530 0.8
@@ -12933,28 +12933,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_399_ R0001343 1
     ValeurDeNTCOrigineVersExtremite_0_1_399_ R0001323 1
     ValeurDeNTCOrigineVersExtremite_0_1_399_ R0001329 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_399_ R0004291 1
-    ValeurDeNTCOrigineVersExtremite_0_1_399_ R0004292 1
+    ValeurDeNTCOrigineVersExtremite_0_1_399_ R0003661 1
+    ValeurDeNTCOrigineVersExtremite_0_1_399_ R0003662 1
     ValeurDeNTCOrigineVersExtremite_0_2_399_ R0001323 1
     ValeurDeNTCOrigineVersExtremite_0_2_399_ R0001333 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_399_ R0004293 1
-    ValeurDeNTCOrigineVersExtremite_0_2_399_ R0004294 1
+    ValeurDeNTCOrigineVersExtremite_0_2_399_ R0003997 1
+    ValeurDeNTCOrigineVersExtremite_0_2_399_ R0003998 1
     ValeurDeNTCOrigineVersExtremite_0_3_399_ R0001323 1
     ValeurDeNTCOrigineVersExtremite_0_3_399_ R0001337 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_399_ R0004295 1
-    ValeurDeNTCOrigineVersExtremite_0_3_399_ R0004296 1
+    ValeurDeNTCOrigineVersExtremite_0_3_399_ R0004333 1
+    ValeurDeNTCOrigineVersExtremite_0_3_399_ R0004334 1
     ValeurDeNTCOrigineVersExtremite_1_4_399_ R0001325 1
     ValeurDeNTCOrigineVersExtremite_1_4_399_ R0001327 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_399_ R0004297 1
-    ValeurDeNTCOrigineVersExtremite_1_4_399_ R0004298 1
+    ValeurDeNTCOrigineVersExtremite_1_4_399_ R0004669 1
+    ValeurDeNTCOrigineVersExtremite_1_4_399_ R0004670 1
     ValeurDeNTCOrigineVersExtremite_1_5_399_ R0001325 1
     ValeurDeNTCOrigineVersExtremite_1_5_399_ R0001331 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_399_ R0004299 1
-    ValeurDeNTCOrigineVersExtremite_1_5_399_ R0004300 1
+    ValeurDeNTCOrigineVersExtremite_1_5_399_ R0005005 1
+    ValeurDeNTCOrigineVersExtremite_1_5_399_ R0005006 1
     ValeurDeNTCOrigineVersExtremite_1_6_399_ R0001325 1
     ValeurDeNTCOrigineVersExtremite_1_6_399_ R0001335 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_399_ R0004301 1
-    ValeurDeNTCOrigineVersExtremite_1_6_399_ R0004302 1
+    ValeurDeNTCOrigineVersExtremite_1_6_399_ R0005341 1
+    ValeurDeNTCOrigineVersExtremite_1_6_399_ R0005342 1
     ValeurDeNTCOrigineVersExtremite_2_7_399_ R0001327 1
     ValeurDeNTCOrigineVersExtremite_2_7_399_ R0001339 -1
     ValeurDeNTCOrigineVersExtremite_2_7_399_ R0003530 0.8
@@ -13050,28 +13050,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_400_ R0001364 1
     ValeurDeNTCOrigineVersExtremite_0_1_400_ R0001344 1
     ValeurDeNTCOrigineVersExtremite_0_1_400_ R0001350 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_400_ R0004303 1
-    ValeurDeNTCOrigineVersExtremite_0_1_400_ R0004304 1
+    ValeurDeNTCOrigineVersExtremite_0_1_400_ R0003663 1
+    ValeurDeNTCOrigineVersExtremite_0_1_400_ R0003664 1
     ValeurDeNTCOrigineVersExtremite_0_2_400_ R0001344 1
     ValeurDeNTCOrigineVersExtremite_0_2_400_ R0001354 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_400_ R0004305 1
-    ValeurDeNTCOrigineVersExtremite_0_2_400_ R0004306 1
+    ValeurDeNTCOrigineVersExtremite_0_2_400_ R0003999 1
+    ValeurDeNTCOrigineVersExtremite_0_2_400_ R0004000 1
     ValeurDeNTCOrigineVersExtremite_0_3_400_ R0001344 1
     ValeurDeNTCOrigineVersExtremite_0_3_400_ R0001358 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_400_ R0004307 1
-    ValeurDeNTCOrigineVersExtremite_0_3_400_ R0004308 1
+    ValeurDeNTCOrigineVersExtremite_0_3_400_ R0004335 1
+    ValeurDeNTCOrigineVersExtremite_0_3_400_ R0004336 1
     ValeurDeNTCOrigineVersExtremite_1_4_400_ R0001346 1
     ValeurDeNTCOrigineVersExtremite_1_4_400_ R0001348 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_400_ R0004309 1
-    ValeurDeNTCOrigineVersExtremite_1_4_400_ R0004310 1
+    ValeurDeNTCOrigineVersExtremite_1_4_400_ R0004671 1
+    ValeurDeNTCOrigineVersExtremite_1_4_400_ R0004672 1
     ValeurDeNTCOrigineVersExtremite_1_5_400_ R0001346 1
     ValeurDeNTCOrigineVersExtremite_1_5_400_ R0001352 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_400_ R0004311 1
-    ValeurDeNTCOrigineVersExtremite_1_5_400_ R0004312 1
+    ValeurDeNTCOrigineVersExtremite_1_5_400_ R0005007 1
+    ValeurDeNTCOrigineVersExtremite_1_5_400_ R0005008 1
     ValeurDeNTCOrigineVersExtremite_1_6_400_ R0001346 1
     ValeurDeNTCOrigineVersExtremite_1_6_400_ R0001356 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_400_ R0004313 1
-    ValeurDeNTCOrigineVersExtremite_1_6_400_ R0004314 1
+    ValeurDeNTCOrigineVersExtremite_1_6_400_ R0005343 1
+    ValeurDeNTCOrigineVersExtremite_1_6_400_ R0005344 1
     ValeurDeNTCOrigineVersExtremite_2_7_400_ R0001348 1
     ValeurDeNTCOrigineVersExtremite_2_7_400_ R0001360 -1
     ValeurDeNTCOrigineVersExtremite_2_7_400_ R0003530 0.8
@@ -13167,28 +13167,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_401_ R0001385 1
     ValeurDeNTCOrigineVersExtremite_0_1_401_ R0001365 1
     ValeurDeNTCOrigineVersExtremite_0_1_401_ R0001371 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_401_ R0004315 1
-    ValeurDeNTCOrigineVersExtremite_0_1_401_ R0004316 1
+    ValeurDeNTCOrigineVersExtremite_0_1_401_ R0003665 1
+    ValeurDeNTCOrigineVersExtremite_0_1_401_ R0003666 1
     ValeurDeNTCOrigineVersExtremite_0_2_401_ R0001365 1
     ValeurDeNTCOrigineVersExtremite_0_2_401_ R0001375 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_401_ R0004317 1
-    ValeurDeNTCOrigineVersExtremite_0_2_401_ R0004318 1
+    ValeurDeNTCOrigineVersExtremite_0_2_401_ R0004001 1
+    ValeurDeNTCOrigineVersExtremite_0_2_401_ R0004002 1
     ValeurDeNTCOrigineVersExtremite_0_3_401_ R0001365 1
     ValeurDeNTCOrigineVersExtremite_0_3_401_ R0001379 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_401_ R0004319 1
-    ValeurDeNTCOrigineVersExtremite_0_3_401_ R0004320 1
+    ValeurDeNTCOrigineVersExtremite_0_3_401_ R0004337 1
+    ValeurDeNTCOrigineVersExtremite_0_3_401_ R0004338 1
     ValeurDeNTCOrigineVersExtremite_1_4_401_ R0001367 1
     ValeurDeNTCOrigineVersExtremite_1_4_401_ R0001369 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_401_ R0004321 1
-    ValeurDeNTCOrigineVersExtremite_1_4_401_ R0004322 1
+    ValeurDeNTCOrigineVersExtremite_1_4_401_ R0004673 1
+    ValeurDeNTCOrigineVersExtremite_1_4_401_ R0004674 1
     ValeurDeNTCOrigineVersExtremite_1_5_401_ R0001367 1
     ValeurDeNTCOrigineVersExtremite_1_5_401_ R0001373 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_401_ R0004323 1
-    ValeurDeNTCOrigineVersExtremite_1_5_401_ R0004324 1
+    ValeurDeNTCOrigineVersExtremite_1_5_401_ R0005009 1
+    ValeurDeNTCOrigineVersExtremite_1_5_401_ R0005010 1
     ValeurDeNTCOrigineVersExtremite_1_6_401_ R0001367 1
     ValeurDeNTCOrigineVersExtremite_1_6_401_ R0001377 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_401_ R0004325 1
-    ValeurDeNTCOrigineVersExtremite_1_6_401_ R0004326 1
+    ValeurDeNTCOrigineVersExtremite_1_6_401_ R0005345 1
+    ValeurDeNTCOrigineVersExtremite_1_6_401_ R0005346 1
     ValeurDeNTCOrigineVersExtremite_2_7_401_ R0001369 1
     ValeurDeNTCOrigineVersExtremite_2_7_401_ R0001381 -1
     ValeurDeNTCOrigineVersExtremite_2_7_401_ R0003530 0.8
@@ -13284,28 +13284,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_402_ R0001406 1
     ValeurDeNTCOrigineVersExtremite_0_1_402_ R0001386 1
     ValeurDeNTCOrigineVersExtremite_0_1_402_ R0001392 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_402_ R0004327 1
-    ValeurDeNTCOrigineVersExtremite_0_1_402_ R0004328 1
+    ValeurDeNTCOrigineVersExtremite_0_1_402_ R0003667 1
+    ValeurDeNTCOrigineVersExtremite_0_1_402_ R0003668 1
     ValeurDeNTCOrigineVersExtremite_0_2_402_ R0001386 1
     ValeurDeNTCOrigineVersExtremite_0_2_402_ R0001396 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_402_ R0004329 1
-    ValeurDeNTCOrigineVersExtremite_0_2_402_ R0004330 1
+    ValeurDeNTCOrigineVersExtremite_0_2_402_ R0004003 1
+    ValeurDeNTCOrigineVersExtremite_0_2_402_ R0004004 1
     ValeurDeNTCOrigineVersExtremite_0_3_402_ R0001386 1
     ValeurDeNTCOrigineVersExtremite_0_3_402_ R0001400 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_402_ R0004331 1
-    ValeurDeNTCOrigineVersExtremite_0_3_402_ R0004332 1
+    ValeurDeNTCOrigineVersExtremite_0_3_402_ R0004339 1
+    ValeurDeNTCOrigineVersExtremite_0_3_402_ R0004340 1
     ValeurDeNTCOrigineVersExtremite_1_4_402_ R0001388 1
     ValeurDeNTCOrigineVersExtremite_1_4_402_ R0001390 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_402_ R0004333 1
-    ValeurDeNTCOrigineVersExtremite_1_4_402_ R0004334 1
+    ValeurDeNTCOrigineVersExtremite_1_4_402_ R0004675 1
+    ValeurDeNTCOrigineVersExtremite_1_4_402_ R0004676 1
     ValeurDeNTCOrigineVersExtremite_1_5_402_ R0001388 1
     ValeurDeNTCOrigineVersExtremite_1_5_402_ R0001394 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_402_ R0004335 1
-    ValeurDeNTCOrigineVersExtremite_1_5_402_ R0004336 1
+    ValeurDeNTCOrigineVersExtremite_1_5_402_ R0005011 1
+    ValeurDeNTCOrigineVersExtremite_1_5_402_ R0005012 1
     ValeurDeNTCOrigineVersExtremite_1_6_402_ R0001388 1
     ValeurDeNTCOrigineVersExtremite_1_6_402_ R0001398 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_402_ R0004337 1
-    ValeurDeNTCOrigineVersExtremite_1_6_402_ R0004338 1
+    ValeurDeNTCOrigineVersExtremite_1_6_402_ R0005347 1
+    ValeurDeNTCOrigineVersExtremite_1_6_402_ R0005348 1
     ValeurDeNTCOrigineVersExtremite_2_7_402_ R0001390 1
     ValeurDeNTCOrigineVersExtremite_2_7_402_ R0001402 -1
     ValeurDeNTCOrigineVersExtremite_2_7_402_ R0003530 0.8
@@ -13401,28 +13401,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_403_ R0001427 1
     ValeurDeNTCOrigineVersExtremite_0_1_403_ R0001407 1
     ValeurDeNTCOrigineVersExtremite_0_1_403_ R0001413 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_403_ R0004339 1
-    ValeurDeNTCOrigineVersExtremite_0_1_403_ R0004340 1
+    ValeurDeNTCOrigineVersExtremite_0_1_403_ R0003669 1
+    ValeurDeNTCOrigineVersExtremite_0_1_403_ R0003670 1
     ValeurDeNTCOrigineVersExtremite_0_2_403_ R0001407 1
     ValeurDeNTCOrigineVersExtremite_0_2_403_ R0001417 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_403_ R0004341 1
-    ValeurDeNTCOrigineVersExtremite_0_2_403_ R0004342 1
+    ValeurDeNTCOrigineVersExtremite_0_2_403_ R0004005 1
+    ValeurDeNTCOrigineVersExtremite_0_2_403_ R0004006 1
     ValeurDeNTCOrigineVersExtremite_0_3_403_ R0001407 1
     ValeurDeNTCOrigineVersExtremite_0_3_403_ R0001421 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_403_ R0004343 1
-    ValeurDeNTCOrigineVersExtremite_0_3_403_ R0004344 1
+    ValeurDeNTCOrigineVersExtremite_0_3_403_ R0004341 1
+    ValeurDeNTCOrigineVersExtremite_0_3_403_ R0004342 1
     ValeurDeNTCOrigineVersExtremite_1_4_403_ R0001409 1
     ValeurDeNTCOrigineVersExtremite_1_4_403_ R0001411 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_403_ R0004345 1
-    ValeurDeNTCOrigineVersExtremite_1_4_403_ R0004346 1
+    ValeurDeNTCOrigineVersExtremite_1_4_403_ R0004677 1
+    ValeurDeNTCOrigineVersExtremite_1_4_403_ R0004678 1
     ValeurDeNTCOrigineVersExtremite_1_5_403_ R0001409 1
     ValeurDeNTCOrigineVersExtremite_1_5_403_ R0001415 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_403_ R0004347 1
-    ValeurDeNTCOrigineVersExtremite_1_5_403_ R0004348 1
+    ValeurDeNTCOrigineVersExtremite_1_5_403_ R0005013 1
+    ValeurDeNTCOrigineVersExtremite_1_5_403_ R0005014 1
     ValeurDeNTCOrigineVersExtremite_1_6_403_ R0001409 1
     ValeurDeNTCOrigineVersExtremite_1_6_403_ R0001419 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_403_ R0004349 1
-    ValeurDeNTCOrigineVersExtremite_1_6_403_ R0004350 1
+    ValeurDeNTCOrigineVersExtremite_1_6_403_ R0005349 1
+    ValeurDeNTCOrigineVersExtremite_1_6_403_ R0005350 1
     ValeurDeNTCOrigineVersExtremite_2_7_403_ R0001411 1
     ValeurDeNTCOrigineVersExtremite_2_7_403_ R0001423 -1
     ValeurDeNTCOrigineVersExtremite_2_7_403_ R0003530 0.8
@@ -13518,28 +13518,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_404_ R0001448 1
     ValeurDeNTCOrigineVersExtremite_0_1_404_ R0001428 1
     ValeurDeNTCOrigineVersExtremite_0_1_404_ R0001434 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_404_ R0004351 1
-    ValeurDeNTCOrigineVersExtremite_0_1_404_ R0004352 1
+    ValeurDeNTCOrigineVersExtremite_0_1_404_ R0003671 1
+    ValeurDeNTCOrigineVersExtremite_0_1_404_ R0003672 1
     ValeurDeNTCOrigineVersExtremite_0_2_404_ R0001428 1
     ValeurDeNTCOrigineVersExtremite_0_2_404_ R0001438 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_404_ R0004353 1
-    ValeurDeNTCOrigineVersExtremite_0_2_404_ R0004354 1
+    ValeurDeNTCOrigineVersExtremite_0_2_404_ R0004007 1
+    ValeurDeNTCOrigineVersExtremite_0_2_404_ R0004008 1
     ValeurDeNTCOrigineVersExtremite_0_3_404_ R0001428 1
     ValeurDeNTCOrigineVersExtremite_0_3_404_ R0001442 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_404_ R0004355 1
-    ValeurDeNTCOrigineVersExtremite_0_3_404_ R0004356 1
+    ValeurDeNTCOrigineVersExtremite_0_3_404_ R0004343 1
+    ValeurDeNTCOrigineVersExtremite_0_3_404_ R0004344 1
     ValeurDeNTCOrigineVersExtremite_1_4_404_ R0001430 1
     ValeurDeNTCOrigineVersExtremite_1_4_404_ R0001432 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_404_ R0004357 1
-    ValeurDeNTCOrigineVersExtremite_1_4_404_ R0004358 1
+    ValeurDeNTCOrigineVersExtremite_1_4_404_ R0004679 1
+    ValeurDeNTCOrigineVersExtremite_1_4_404_ R0004680 1
     ValeurDeNTCOrigineVersExtremite_1_5_404_ R0001430 1
     ValeurDeNTCOrigineVersExtremite_1_5_404_ R0001436 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_404_ R0004359 1
-    ValeurDeNTCOrigineVersExtremite_1_5_404_ R0004360 1
+    ValeurDeNTCOrigineVersExtremite_1_5_404_ R0005015 1
+    ValeurDeNTCOrigineVersExtremite_1_5_404_ R0005016 1
     ValeurDeNTCOrigineVersExtremite_1_6_404_ R0001430 1
     ValeurDeNTCOrigineVersExtremite_1_6_404_ R0001440 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_404_ R0004361 1
-    ValeurDeNTCOrigineVersExtremite_1_6_404_ R0004362 1
+    ValeurDeNTCOrigineVersExtremite_1_6_404_ R0005351 1
+    ValeurDeNTCOrigineVersExtremite_1_6_404_ R0005352 1
     ValeurDeNTCOrigineVersExtremite_2_7_404_ R0001432 1
     ValeurDeNTCOrigineVersExtremite_2_7_404_ R0001444 -1
     ValeurDeNTCOrigineVersExtremite_2_7_404_ R0003530 0.8
@@ -13635,28 +13635,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_405_ R0001469 1
     ValeurDeNTCOrigineVersExtremite_0_1_405_ R0001449 1
     ValeurDeNTCOrigineVersExtremite_0_1_405_ R0001455 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_405_ R0004363 1
-    ValeurDeNTCOrigineVersExtremite_0_1_405_ R0004364 1
+    ValeurDeNTCOrigineVersExtremite_0_1_405_ R0003673 1
+    ValeurDeNTCOrigineVersExtremite_0_1_405_ R0003674 1
     ValeurDeNTCOrigineVersExtremite_0_2_405_ R0001449 1
     ValeurDeNTCOrigineVersExtremite_0_2_405_ R0001459 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_405_ R0004365 1
-    ValeurDeNTCOrigineVersExtremite_0_2_405_ R0004366 1
+    ValeurDeNTCOrigineVersExtremite_0_2_405_ R0004009 1
+    ValeurDeNTCOrigineVersExtremite_0_2_405_ R0004010 1
     ValeurDeNTCOrigineVersExtremite_0_3_405_ R0001449 1
     ValeurDeNTCOrigineVersExtremite_0_3_405_ R0001463 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_405_ R0004367 1
-    ValeurDeNTCOrigineVersExtremite_0_3_405_ R0004368 1
+    ValeurDeNTCOrigineVersExtremite_0_3_405_ R0004345 1
+    ValeurDeNTCOrigineVersExtremite_0_3_405_ R0004346 1
     ValeurDeNTCOrigineVersExtremite_1_4_405_ R0001451 1
     ValeurDeNTCOrigineVersExtremite_1_4_405_ R0001453 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_405_ R0004369 1
-    ValeurDeNTCOrigineVersExtremite_1_4_405_ R0004370 1
+    ValeurDeNTCOrigineVersExtremite_1_4_405_ R0004681 1
+    ValeurDeNTCOrigineVersExtremite_1_4_405_ R0004682 1
     ValeurDeNTCOrigineVersExtremite_1_5_405_ R0001451 1
     ValeurDeNTCOrigineVersExtremite_1_5_405_ R0001457 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_405_ R0004371 1
-    ValeurDeNTCOrigineVersExtremite_1_5_405_ R0004372 1
+    ValeurDeNTCOrigineVersExtremite_1_5_405_ R0005017 1
+    ValeurDeNTCOrigineVersExtremite_1_5_405_ R0005018 1
     ValeurDeNTCOrigineVersExtremite_1_6_405_ R0001451 1
     ValeurDeNTCOrigineVersExtremite_1_6_405_ R0001461 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_405_ R0004373 1
-    ValeurDeNTCOrigineVersExtremite_1_6_405_ R0004374 1
+    ValeurDeNTCOrigineVersExtremite_1_6_405_ R0005353 1
+    ValeurDeNTCOrigineVersExtremite_1_6_405_ R0005354 1
     ValeurDeNTCOrigineVersExtremite_2_7_405_ R0001453 1
     ValeurDeNTCOrigineVersExtremite_2_7_405_ R0001465 -1
     ValeurDeNTCOrigineVersExtremite_2_7_405_ R0003530 0.8
@@ -13752,28 +13752,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_406_ R0001490 1
     ValeurDeNTCOrigineVersExtremite_0_1_406_ R0001470 1
     ValeurDeNTCOrigineVersExtremite_0_1_406_ R0001476 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_406_ R0004375 1
-    ValeurDeNTCOrigineVersExtremite_0_1_406_ R0004376 1
+    ValeurDeNTCOrigineVersExtremite_0_1_406_ R0003675 1
+    ValeurDeNTCOrigineVersExtremite_0_1_406_ R0003676 1
     ValeurDeNTCOrigineVersExtremite_0_2_406_ R0001470 1
     ValeurDeNTCOrigineVersExtremite_0_2_406_ R0001480 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_406_ R0004377 1
-    ValeurDeNTCOrigineVersExtremite_0_2_406_ R0004378 1
+    ValeurDeNTCOrigineVersExtremite_0_2_406_ R0004011 1
+    ValeurDeNTCOrigineVersExtremite_0_2_406_ R0004012 1
     ValeurDeNTCOrigineVersExtremite_0_3_406_ R0001470 1
     ValeurDeNTCOrigineVersExtremite_0_3_406_ R0001484 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_406_ R0004379 1
-    ValeurDeNTCOrigineVersExtremite_0_3_406_ R0004380 1
+    ValeurDeNTCOrigineVersExtremite_0_3_406_ R0004347 1
+    ValeurDeNTCOrigineVersExtremite_0_3_406_ R0004348 1
     ValeurDeNTCOrigineVersExtremite_1_4_406_ R0001472 1
     ValeurDeNTCOrigineVersExtremite_1_4_406_ R0001474 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_406_ R0004381 1
-    ValeurDeNTCOrigineVersExtremite_1_4_406_ R0004382 1
+    ValeurDeNTCOrigineVersExtremite_1_4_406_ R0004683 1
+    ValeurDeNTCOrigineVersExtremite_1_4_406_ R0004684 1
     ValeurDeNTCOrigineVersExtremite_1_5_406_ R0001472 1
     ValeurDeNTCOrigineVersExtremite_1_5_406_ R0001478 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_406_ R0004383 1
-    ValeurDeNTCOrigineVersExtremite_1_5_406_ R0004384 1
+    ValeurDeNTCOrigineVersExtremite_1_5_406_ R0005019 1
+    ValeurDeNTCOrigineVersExtremite_1_5_406_ R0005020 1
     ValeurDeNTCOrigineVersExtremite_1_6_406_ R0001472 1
     ValeurDeNTCOrigineVersExtremite_1_6_406_ R0001482 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_406_ R0004385 1
-    ValeurDeNTCOrigineVersExtremite_1_6_406_ R0004386 1
+    ValeurDeNTCOrigineVersExtremite_1_6_406_ R0005355 1
+    ValeurDeNTCOrigineVersExtremite_1_6_406_ R0005356 1
     ValeurDeNTCOrigineVersExtremite_2_7_406_ R0001474 1
     ValeurDeNTCOrigineVersExtremite_2_7_406_ R0001486 -1
     ValeurDeNTCOrigineVersExtremite_2_7_406_ R0003530 0.8
@@ -13869,28 +13869,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_407_ R0001511 1
     ValeurDeNTCOrigineVersExtremite_0_1_407_ R0001491 1
     ValeurDeNTCOrigineVersExtremite_0_1_407_ R0001497 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_407_ R0004387 1
-    ValeurDeNTCOrigineVersExtremite_0_1_407_ R0004388 1
+    ValeurDeNTCOrigineVersExtremite_0_1_407_ R0003677 1
+    ValeurDeNTCOrigineVersExtremite_0_1_407_ R0003678 1
     ValeurDeNTCOrigineVersExtremite_0_2_407_ R0001491 1
     ValeurDeNTCOrigineVersExtremite_0_2_407_ R0001501 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_407_ R0004389 1
-    ValeurDeNTCOrigineVersExtremite_0_2_407_ R0004390 1
+    ValeurDeNTCOrigineVersExtremite_0_2_407_ R0004013 1
+    ValeurDeNTCOrigineVersExtremite_0_2_407_ R0004014 1
     ValeurDeNTCOrigineVersExtremite_0_3_407_ R0001491 1
     ValeurDeNTCOrigineVersExtremite_0_3_407_ R0001505 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_407_ R0004391 1
-    ValeurDeNTCOrigineVersExtremite_0_3_407_ R0004392 1
+    ValeurDeNTCOrigineVersExtremite_0_3_407_ R0004349 1
+    ValeurDeNTCOrigineVersExtremite_0_3_407_ R0004350 1
     ValeurDeNTCOrigineVersExtremite_1_4_407_ R0001493 1
     ValeurDeNTCOrigineVersExtremite_1_4_407_ R0001495 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_407_ R0004393 1
-    ValeurDeNTCOrigineVersExtremite_1_4_407_ R0004394 1
+    ValeurDeNTCOrigineVersExtremite_1_4_407_ R0004685 1
+    ValeurDeNTCOrigineVersExtremite_1_4_407_ R0004686 1
     ValeurDeNTCOrigineVersExtremite_1_5_407_ R0001493 1
     ValeurDeNTCOrigineVersExtremite_1_5_407_ R0001499 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_407_ R0004395 1
-    ValeurDeNTCOrigineVersExtremite_1_5_407_ R0004396 1
+    ValeurDeNTCOrigineVersExtremite_1_5_407_ R0005021 1
+    ValeurDeNTCOrigineVersExtremite_1_5_407_ R0005022 1
     ValeurDeNTCOrigineVersExtremite_1_6_407_ R0001493 1
     ValeurDeNTCOrigineVersExtremite_1_6_407_ R0001503 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_407_ R0004397 1
-    ValeurDeNTCOrigineVersExtremite_1_6_407_ R0004398 1
+    ValeurDeNTCOrigineVersExtremite_1_6_407_ R0005357 1
+    ValeurDeNTCOrigineVersExtremite_1_6_407_ R0005358 1
     ValeurDeNTCOrigineVersExtremite_2_7_407_ R0001495 1
     ValeurDeNTCOrigineVersExtremite_2_7_407_ R0001507 -1
     ValeurDeNTCOrigineVersExtremite_2_7_407_ R0003530 0.8
@@ -13986,28 +13986,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_408_ R0001532 1
     ValeurDeNTCOrigineVersExtremite_0_1_408_ R0001512 1
     ValeurDeNTCOrigineVersExtremite_0_1_408_ R0001518 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_408_ R0004399 1
-    ValeurDeNTCOrigineVersExtremite_0_1_408_ R0004400 1
+    ValeurDeNTCOrigineVersExtremite_0_1_408_ R0003679 1
+    ValeurDeNTCOrigineVersExtremite_0_1_408_ R0003680 1
     ValeurDeNTCOrigineVersExtremite_0_2_408_ R0001512 1
     ValeurDeNTCOrigineVersExtremite_0_2_408_ R0001522 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_408_ R0004401 1
-    ValeurDeNTCOrigineVersExtremite_0_2_408_ R0004402 1
+    ValeurDeNTCOrigineVersExtremite_0_2_408_ R0004015 1
+    ValeurDeNTCOrigineVersExtremite_0_2_408_ R0004016 1
     ValeurDeNTCOrigineVersExtremite_0_3_408_ R0001512 1
     ValeurDeNTCOrigineVersExtremite_0_3_408_ R0001526 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_408_ R0004403 1
-    ValeurDeNTCOrigineVersExtremite_0_3_408_ R0004404 1
+    ValeurDeNTCOrigineVersExtremite_0_3_408_ R0004351 1
+    ValeurDeNTCOrigineVersExtremite_0_3_408_ R0004352 1
     ValeurDeNTCOrigineVersExtremite_1_4_408_ R0001514 1
     ValeurDeNTCOrigineVersExtremite_1_4_408_ R0001516 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_408_ R0004405 1
-    ValeurDeNTCOrigineVersExtremite_1_4_408_ R0004406 1
+    ValeurDeNTCOrigineVersExtremite_1_4_408_ R0004687 1
+    ValeurDeNTCOrigineVersExtremite_1_4_408_ R0004688 1
     ValeurDeNTCOrigineVersExtremite_1_5_408_ R0001514 1
     ValeurDeNTCOrigineVersExtremite_1_5_408_ R0001520 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_408_ R0004407 1
-    ValeurDeNTCOrigineVersExtremite_1_5_408_ R0004408 1
+    ValeurDeNTCOrigineVersExtremite_1_5_408_ R0005023 1
+    ValeurDeNTCOrigineVersExtremite_1_5_408_ R0005024 1
     ValeurDeNTCOrigineVersExtremite_1_6_408_ R0001514 1
     ValeurDeNTCOrigineVersExtremite_1_6_408_ R0001524 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_408_ R0004409 1
-    ValeurDeNTCOrigineVersExtremite_1_6_408_ R0004410 1
+    ValeurDeNTCOrigineVersExtremite_1_6_408_ R0005359 1
+    ValeurDeNTCOrigineVersExtremite_1_6_408_ R0005360 1
     ValeurDeNTCOrigineVersExtremite_2_7_408_ R0001516 1
     ValeurDeNTCOrigineVersExtremite_2_7_408_ R0001528 -1
     ValeurDeNTCOrigineVersExtremite_2_7_408_ R0003531 0.8
@@ -14103,28 +14103,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_409_ R0001553 1
     ValeurDeNTCOrigineVersExtremite_0_1_409_ R0001533 1
     ValeurDeNTCOrigineVersExtremite_0_1_409_ R0001539 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_409_ R0004411 1
-    ValeurDeNTCOrigineVersExtremite_0_1_409_ R0004412 1
+    ValeurDeNTCOrigineVersExtremite_0_1_409_ R0003681 1
+    ValeurDeNTCOrigineVersExtremite_0_1_409_ R0003682 1
     ValeurDeNTCOrigineVersExtremite_0_2_409_ R0001533 1
     ValeurDeNTCOrigineVersExtremite_0_2_409_ R0001543 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_409_ R0004413 1
-    ValeurDeNTCOrigineVersExtremite_0_2_409_ R0004414 1
+    ValeurDeNTCOrigineVersExtremite_0_2_409_ R0004017 1
+    ValeurDeNTCOrigineVersExtremite_0_2_409_ R0004018 1
     ValeurDeNTCOrigineVersExtremite_0_3_409_ R0001533 1
     ValeurDeNTCOrigineVersExtremite_0_3_409_ R0001547 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_409_ R0004415 1
-    ValeurDeNTCOrigineVersExtremite_0_3_409_ R0004416 1
+    ValeurDeNTCOrigineVersExtremite_0_3_409_ R0004353 1
+    ValeurDeNTCOrigineVersExtremite_0_3_409_ R0004354 1
     ValeurDeNTCOrigineVersExtremite_1_4_409_ R0001535 1
     ValeurDeNTCOrigineVersExtremite_1_4_409_ R0001537 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_409_ R0004417 1
-    ValeurDeNTCOrigineVersExtremite_1_4_409_ R0004418 1
+    ValeurDeNTCOrigineVersExtremite_1_4_409_ R0004689 1
+    ValeurDeNTCOrigineVersExtremite_1_4_409_ R0004690 1
     ValeurDeNTCOrigineVersExtremite_1_5_409_ R0001535 1
     ValeurDeNTCOrigineVersExtremite_1_5_409_ R0001541 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_409_ R0004419 1
-    ValeurDeNTCOrigineVersExtremite_1_5_409_ R0004420 1
+    ValeurDeNTCOrigineVersExtremite_1_5_409_ R0005025 1
+    ValeurDeNTCOrigineVersExtremite_1_5_409_ R0005026 1
     ValeurDeNTCOrigineVersExtremite_1_6_409_ R0001535 1
     ValeurDeNTCOrigineVersExtremite_1_6_409_ R0001545 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_409_ R0004421 1
-    ValeurDeNTCOrigineVersExtremite_1_6_409_ R0004422 1
+    ValeurDeNTCOrigineVersExtremite_1_6_409_ R0005361 1
+    ValeurDeNTCOrigineVersExtremite_1_6_409_ R0005362 1
     ValeurDeNTCOrigineVersExtremite_2_7_409_ R0001537 1
     ValeurDeNTCOrigineVersExtremite_2_7_409_ R0001549 -1
     ValeurDeNTCOrigineVersExtremite_2_7_409_ R0003531 0.8
@@ -14220,28 +14220,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_410_ R0001574 1
     ValeurDeNTCOrigineVersExtremite_0_1_410_ R0001554 1
     ValeurDeNTCOrigineVersExtremite_0_1_410_ R0001560 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_410_ R0004423 1
-    ValeurDeNTCOrigineVersExtremite_0_1_410_ R0004424 1
+    ValeurDeNTCOrigineVersExtremite_0_1_410_ R0003683 1
+    ValeurDeNTCOrigineVersExtremite_0_1_410_ R0003684 1
     ValeurDeNTCOrigineVersExtremite_0_2_410_ R0001554 1
     ValeurDeNTCOrigineVersExtremite_0_2_410_ R0001564 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_410_ R0004425 1
-    ValeurDeNTCOrigineVersExtremite_0_2_410_ R0004426 1
+    ValeurDeNTCOrigineVersExtremite_0_2_410_ R0004019 1
+    ValeurDeNTCOrigineVersExtremite_0_2_410_ R0004020 1
     ValeurDeNTCOrigineVersExtremite_0_3_410_ R0001554 1
     ValeurDeNTCOrigineVersExtremite_0_3_410_ R0001568 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_410_ R0004427 1
-    ValeurDeNTCOrigineVersExtremite_0_3_410_ R0004428 1
+    ValeurDeNTCOrigineVersExtremite_0_3_410_ R0004355 1
+    ValeurDeNTCOrigineVersExtremite_0_3_410_ R0004356 1
     ValeurDeNTCOrigineVersExtremite_1_4_410_ R0001556 1
     ValeurDeNTCOrigineVersExtremite_1_4_410_ R0001558 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_410_ R0004429 1
-    ValeurDeNTCOrigineVersExtremite_1_4_410_ R0004430 1
+    ValeurDeNTCOrigineVersExtremite_1_4_410_ R0004691 1
+    ValeurDeNTCOrigineVersExtremite_1_4_410_ R0004692 1
     ValeurDeNTCOrigineVersExtremite_1_5_410_ R0001556 1
     ValeurDeNTCOrigineVersExtremite_1_5_410_ R0001562 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_410_ R0004431 1
-    ValeurDeNTCOrigineVersExtremite_1_5_410_ R0004432 1
+    ValeurDeNTCOrigineVersExtremite_1_5_410_ R0005027 1
+    ValeurDeNTCOrigineVersExtremite_1_5_410_ R0005028 1
     ValeurDeNTCOrigineVersExtremite_1_6_410_ R0001556 1
     ValeurDeNTCOrigineVersExtremite_1_6_410_ R0001566 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_410_ R0004433 1
-    ValeurDeNTCOrigineVersExtremite_1_6_410_ R0004434 1
+    ValeurDeNTCOrigineVersExtremite_1_6_410_ R0005363 1
+    ValeurDeNTCOrigineVersExtremite_1_6_410_ R0005364 1
     ValeurDeNTCOrigineVersExtremite_2_7_410_ R0001558 1
     ValeurDeNTCOrigineVersExtremite_2_7_410_ R0001570 -1
     ValeurDeNTCOrigineVersExtremite_2_7_410_ R0003531 0.8
@@ -14337,28 +14337,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_411_ R0001595 1
     ValeurDeNTCOrigineVersExtremite_0_1_411_ R0001575 1
     ValeurDeNTCOrigineVersExtremite_0_1_411_ R0001581 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_411_ R0004435 1
-    ValeurDeNTCOrigineVersExtremite_0_1_411_ R0004436 1
+    ValeurDeNTCOrigineVersExtremite_0_1_411_ R0003685 1
+    ValeurDeNTCOrigineVersExtremite_0_1_411_ R0003686 1
     ValeurDeNTCOrigineVersExtremite_0_2_411_ R0001575 1
     ValeurDeNTCOrigineVersExtremite_0_2_411_ R0001585 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_411_ R0004437 1
-    ValeurDeNTCOrigineVersExtremite_0_2_411_ R0004438 1
+    ValeurDeNTCOrigineVersExtremite_0_2_411_ R0004021 1
+    ValeurDeNTCOrigineVersExtremite_0_2_411_ R0004022 1
     ValeurDeNTCOrigineVersExtremite_0_3_411_ R0001575 1
     ValeurDeNTCOrigineVersExtremite_0_3_411_ R0001589 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_411_ R0004439 1
-    ValeurDeNTCOrigineVersExtremite_0_3_411_ R0004440 1
+    ValeurDeNTCOrigineVersExtremite_0_3_411_ R0004357 1
+    ValeurDeNTCOrigineVersExtremite_0_3_411_ R0004358 1
     ValeurDeNTCOrigineVersExtremite_1_4_411_ R0001577 1
     ValeurDeNTCOrigineVersExtremite_1_4_411_ R0001579 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_411_ R0004441 1
-    ValeurDeNTCOrigineVersExtremite_1_4_411_ R0004442 1
+    ValeurDeNTCOrigineVersExtremite_1_4_411_ R0004693 1
+    ValeurDeNTCOrigineVersExtremite_1_4_411_ R0004694 1
     ValeurDeNTCOrigineVersExtremite_1_5_411_ R0001577 1
     ValeurDeNTCOrigineVersExtremite_1_5_411_ R0001583 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_411_ R0004443 1
-    ValeurDeNTCOrigineVersExtremite_1_5_411_ R0004444 1
+    ValeurDeNTCOrigineVersExtremite_1_5_411_ R0005029 1
+    ValeurDeNTCOrigineVersExtremite_1_5_411_ R0005030 1
     ValeurDeNTCOrigineVersExtremite_1_6_411_ R0001577 1
     ValeurDeNTCOrigineVersExtremite_1_6_411_ R0001587 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_411_ R0004445 1
-    ValeurDeNTCOrigineVersExtremite_1_6_411_ R0004446 1
+    ValeurDeNTCOrigineVersExtremite_1_6_411_ R0005365 1
+    ValeurDeNTCOrigineVersExtremite_1_6_411_ R0005366 1
     ValeurDeNTCOrigineVersExtremite_2_7_411_ R0001579 1
     ValeurDeNTCOrigineVersExtremite_2_7_411_ R0001591 -1
     ValeurDeNTCOrigineVersExtremite_2_7_411_ R0003531 0.8
@@ -14454,28 +14454,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_412_ R0001616 1
     ValeurDeNTCOrigineVersExtremite_0_1_412_ R0001596 1
     ValeurDeNTCOrigineVersExtremite_0_1_412_ R0001602 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_412_ R0004447 1
-    ValeurDeNTCOrigineVersExtremite_0_1_412_ R0004448 1
+    ValeurDeNTCOrigineVersExtremite_0_1_412_ R0003687 1
+    ValeurDeNTCOrigineVersExtremite_0_1_412_ R0003688 1
     ValeurDeNTCOrigineVersExtremite_0_2_412_ R0001596 1
     ValeurDeNTCOrigineVersExtremite_0_2_412_ R0001606 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_412_ R0004449 1
-    ValeurDeNTCOrigineVersExtremite_0_2_412_ R0004450 1
+    ValeurDeNTCOrigineVersExtremite_0_2_412_ R0004023 1
+    ValeurDeNTCOrigineVersExtremite_0_2_412_ R0004024 1
     ValeurDeNTCOrigineVersExtremite_0_3_412_ R0001596 1
     ValeurDeNTCOrigineVersExtremite_0_3_412_ R0001610 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_412_ R0004451 1
-    ValeurDeNTCOrigineVersExtremite_0_3_412_ R0004452 1
+    ValeurDeNTCOrigineVersExtremite_0_3_412_ R0004359 1
+    ValeurDeNTCOrigineVersExtremite_0_3_412_ R0004360 1
     ValeurDeNTCOrigineVersExtremite_1_4_412_ R0001598 1
     ValeurDeNTCOrigineVersExtremite_1_4_412_ R0001600 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_412_ R0004453 1
-    ValeurDeNTCOrigineVersExtremite_1_4_412_ R0004454 1
+    ValeurDeNTCOrigineVersExtremite_1_4_412_ R0004695 1
+    ValeurDeNTCOrigineVersExtremite_1_4_412_ R0004696 1
     ValeurDeNTCOrigineVersExtremite_1_5_412_ R0001598 1
     ValeurDeNTCOrigineVersExtremite_1_5_412_ R0001604 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_412_ R0004455 1
-    ValeurDeNTCOrigineVersExtremite_1_5_412_ R0004456 1
+    ValeurDeNTCOrigineVersExtremite_1_5_412_ R0005031 1
+    ValeurDeNTCOrigineVersExtremite_1_5_412_ R0005032 1
     ValeurDeNTCOrigineVersExtremite_1_6_412_ R0001598 1
     ValeurDeNTCOrigineVersExtremite_1_6_412_ R0001608 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_412_ R0004457 1
-    ValeurDeNTCOrigineVersExtremite_1_6_412_ R0004458 1
+    ValeurDeNTCOrigineVersExtremite_1_6_412_ R0005367 1
+    ValeurDeNTCOrigineVersExtremite_1_6_412_ R0005368 1
     ValeurDeNTCOrigineVersExtremite_2_7_412_ R0001600 1
     ValeurDeNTCOrigineVersExtremite_2_7_412_ R0001612 -1
     ValeurDeNTCOrigineVersExtremite_2_7_412_ R0003531 0.8
@@ -14571,28 +14571,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_413_ R0001637 1
     ValeurDeNTCOrigineVersExtremite_0_1_413_ R0001617 1
     ValeurDeNTCOrigineVersExtremite_0_1_413_ R0001623 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_413_ R0004459 1
-    ValeurDeNTCOrigineVersExtremite_0_1_413_ R0004460 1
+    ValeurDeNTCOrigineVersExtremite_0_1_413_ R0003689 1
+    ValeurDeNTCOrigineVersExtremite_0_1_413_ R0003690 1
     ValeurDeNTCOrigineVersExtremite_0_2_413_ R0001617 1
     ValeurDeNTCOrigineVersExtremite_0_2_413_ R0001627 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_413_ R0004461 1
-    ValeurDeNTCOrigineVersExtremite_0_2_413_ R0004462 1
+    ValeurDeNTCOrigineVersExtremite_0_2_413_ R0004025 1
+    ValeurDeNTCOrigineVersExtremite_0_2_413_ R0004026 1
     ValeurDeNTCOrigineVersExtremite_0_3_413_ R0001617 1
     ValeurDeNTCOrigineVersExtremite_0_3_413_ R0001631 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_413_ R0004463 1
-    ValeurDeNTCOrigineVersExtremite_0_3_413_ R0004464 1
+    ValeurDeNTCOrigineVersExtremite_0_3_413_ R0004361 1
+    ValeurDeNTCOrigineVersExtremite_0_3_413_ R0004362 1
     ValeurDeNTCOrigineVersExtremite_1_4_413_ R0001619 1
     ValeurDeNTCOrigineVersExtremite_1_4_413_ R0001621 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_413_ R0004465 1
-    ValeurDeNTCOrigineVersExtremite_1_4_413_ R0004466 1
+    ValeurDeNTCOrigineVersExtremite_1_4_413_ R0004697 1
+    ValeurDeNTCOrigineVersExtremite_1_4_413_ R0004698 1
     ValeurDeNTCOrigineVersExtremite_1_5_413_ R0001619 1
     ValeurDeNTCOrigineVersExtremite_1_5_413_ R0001625 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_413_ R0004467 1
-    ValeurDeNTCOrigineVersExtremite_1_5_413_ R0004468 1
+    ValeurDeNTCOrigineVersExtremite_1_5_413_ R0005033 1
+    ValeurDeNTCOrigineVersExtremite_1_5_413_ R0005034 1
     ValeurDeNTCOrigineVersExtremite_1_6_413_ R0001619 1
     ValeurDeNTCOrigineVersExtremite_1_6_413_ R0001629 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_413_ R0004469 1
-    ValeurDeNTCOrigineVersExtremite_1_6_413_ R0004470 1
+    ValeurDeNTCOrigineVersExtremite_1_6_413_ R0005369 1
+    ValeurDeNTCOrigineVersExtremite_1_6_413_ R0005370 1
     ValeurDeNTCOrigineVersExtremite_2_7_413_ R0001621 1
     ValeurDeNTCOrigineVersExtremite_2_7_413_ R0001633 -1
     ValeurDeNTCOrigineVersExtremite_2_7_413_ R0003531 0.8
@@ -14688,28 +14688,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_414_ R0001658 1
     ValeurDeNTCOrigineVersExtremite_0_1_414_ R0001638 1
     ValeurDeNTCOrigineVersExtremite_0_1_414_ R0001644 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_414_ R0004471 1
-    ValeurDeNTCOrigineVersExtremite_0_1_414_ R0004472 1
+    ValeurDeNTCOrigineVersExtremite_0_1_414_ R0003691 1
+    ValeurDeNTCOrigineVersExtremite_0_1_414_ R0003692 1
     ValeurDeNTCOrigineVersExtremite_0_2_414_ R0001638 1
     ValeurDeNTCOrigineVersExtremite_0_2_414_ R0001648 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_414_ R0004473 1
-    ValeurDeNTCOrigineVersExtremite_0_2_414_ R0004474 1
+    ValeurDeNTCOrigineVersExtremite_0_2_414_ R0004027 1
+    ValeurDeNTCOrigineVersExtremite_0_2_414_ R0004028 1
     ValeurDeNTCOrigineVersExtremite_0_3_414_ R0001638 1
     ValeurDeNTCOrigineVersExtremite_0_3_414_ R0001652 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_414_ R0004475 1
-    ValeurDeNTCOrigineVersExtremite_0_3_414_ R0004476 1
+    ValeurDeNTCOrigineVersExtremite_0_3_414_ R0004363 1
+    ValeurDeNTCOrigineVersExtremite_0_3_414_ R0004364 1
     ValeurDeNTCOrigineVersExtremite_1_4_414_ R0001640 1
     ValeurDeNTCOrigineVersExtremite_1_4_414_ R0001642 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_414_ R0004477 1
-    ValeurDeNTCOrigineVersExtremite_1_4_414_ R0004478 1
+    ValeurDeNTCOrigineVersExtremite_1_4_414_ R0004699 1
+    ValeurDeNTCOrigineVersExtremite_1_4_414_ R0004700 1
     ValeurDeNTCOrigineVersExtremite_1_5_414_ R0001640 1
     ValeurDeNTCOrigineVersExtremite_1_5_414_ R0001646 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_414_ R0004479 1
-    ValeurDeNTCOrigineVersExtremite_1_5_414_ R0004480 1
+    ValeurDeNTCOrigineVersExtremite_1_5_414_ R0005035 1
+    ValeurDeNTCOrigineVersExtremite_1_5_414_ R0005036 1
     ValeurDeNTCOrigineVersExtremite_1_6_414_ R0001640 1
     ValeurDeNTCOrigineVersExtremite_1_6_414_ R0001650 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_414_ R0004481 1
-    ValeurDeNTCOrigineVersExtremite_1_6_414_ R0004482 1
+    ValeurDeNTCOrigineVersExtremite_1_6_414_ R0005371 1
+    ValeurDeNTCOrigineVersExtremite_1_6_414_ R0005372 1
     ValeurDeNTCOrigineVersExtremite_2_7_414_ R0001642 1
     ValeurDeNTCOrigineVersExtremite_2_7_414_ R0001654 -1
     ValeurDeNTCOrigineVersExtremite_2_7_414_ R0003531 0.8
@@ -14805,28 +14805,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_415_ R0001679 1
     ValeurDeNTCOrigineVersExtremite_0_1_415_ R0001659 1
     ValeurDeNTCOrigineVersExtremite_0_1_415_ R0001665 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_415_ R0004483 1
-    ValeurDeNTCOrigineVersExtremite_0_1_415_ R0004484 1
+    ValeurDeNTCOrigineVersExtremite_0_1_415_ R0003693 1
+    ValeurDeNTCOrigineVersExtremite_0_1_415_ R0003694 1
     ValeurDeNTCOrigineVersExtremite_0_2_415_ R0001659 1
     ValeurDeNTCOrigineVersExtremite_0_2_415_ R0001669 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_415_ R0004485 1
-    ValeurDeNTCOrigineVersExtremite_0_2_415_ R0004486 1
+    ValeurDeNTCOrigineVersExtremite_0_2_415_ R0004029 1
+    ValeurDeNTCOrigineVersExtremite_0_2_415_ R0004030 1
     ValeurDeNTCOrigineVersExtremite_0_3_415_ R0001659 1
     ValeurDeNTCOrigineVersExtremite_0_3_415_ R0001673 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_415_ R0004487 1
-    ValeurDeNTCOrigineVersExtremite_0_3_415_ R0004488 1
+    ValeurDeNTCOrigineVersExtremite_0_3_415_ R0004365 1
+    ValeurDeNTCOrigineVersExtremite_0_3_415_ R0004366 1
     ValeurDeNTCOrigineVersExtremite_1_4_415_ R0001661 1
     ValeurDeNTCOrigineVersExtremite_1_4_415_ R0001663 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_415_ R0004489 1
-    ValeurDeNTCOrigineVersExtremite_1_4_415_ R0004490 1
+    ValeurDeNTCOrigineVersExtremite_1_4_415_ R0004701 1
+    ValeurDeNTCOrigineVersExtremite_1_4_415_ R0004702 1
     ValeurDeNTCOrigineVersExtremite_1_5_415_ R0001661 1
     ValeurDeNTCOrigineVersExtremite_1_5_415_ R0001667 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_415_ R0004491 1
-    ValeurDeNTCOrigineVersExtremite_1_5_415_ R0004492 1
+    ValeurDeNTCOrigineVersExtremite_1_5_415_ R0005037 1
+    ValeurDeNTCOrigineVersExtremite_1_5_415_ R0005038 1
     ValeurDeNTCOrigineVersExtremite_1_6_415_ R0001661 1
     ValeurDeNTCOrigineVersExtremite_1_6_415_ R0001671 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_415_ R0004493 1
-    ValeurDeNTCOrigineVersExtremite_1_6_415_ R0004494 1
+    ValeurDeNTCOrigineVersExtremite_1_6_415_ R0005373 1
+    ValeurDeNTCOrigineVersExtremite_1_6_415_ R0005374 1
     ValeurDeNTCOrigineVersExtremite_2_7_415_ R0001663 1
     ValeurDeNTCOrigineVersExtremite_2_7_415_ R0001675 -1
     ValeurDeNTCOrigineVersExtremite_2_7_415_ R0003531 0.8
@@ -14922,28 +14922,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_416_ R0001700 1
     ValeurDeNTCOrigineVersExtremite_0_1_416_ R0001680 1
     ValeurDeNTCOrigineVersExtremite_0_1_416_ R0001686 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_416_ R0004495 1
-    ValeurDeNTCOrigineVersExtremite_0_1_416_ R0004496 1
+    ValeurDeNTCOrigineVersExtremite_0_1_416_ R0003695 1
+    ValeurDeNTCOrigineVersExtremite_0_1_416_ R0003696 1
     ValeurDeNTCOrigineVersExtremite_0_2_416_ R0001680 1
     ValeurDeNTCOrigineVersExtremite_0_2_416_ R0001690 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_416_ R0004497 1
-    ValeurDeNTCOrigineVersExtremite_0_2_416_ R0004498 1
+    ValeurDeNTCOrigineVersExtremite_0_2_416_ R0004031 1
+    ValeurDeNTCOrigineVersExtremite_0_2_416_ R0004032 1
     ValeurDeNTCOrigineVersExtremite_0_3_416_ R0001680 1
     ValeurDeNTCOrigineVersExtremite_0_3_416_ R0001694 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_416_ R0004499 1
-    ValeurDeNTCOrigineVersExtremite_0_3_416_ R0004500 1
+    ValeurDeNTCOrigineVersExtremite_0_3_416_ R0004367 1
+    ValeurDeNTCOrigineVersExtremite_0_3_416_ R0004368 1
     ValeurDeNTCOrigineVersExtremite_1_4_416_ R0001682 1
     ValeurDeNTCOrigineVersExtremite_1_4_416_ R0001684 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_416_ R0004501 1
-    ValeurDeNTCOrigineVersExtremite_1_4_416_ R0004502 1
+    ValeurDeNTCOrigineVersExtremite_1_4_416_ R0004703 1
+    ValeurDeNTCOrigineVersExtremite_1_4_416_ R0004704 1
     ValeurDeNTCOrigineVersExtremite_1_5_416_ R0001682 1
     ValeurDeNTCOrigineVersExtremite_1_5_416_ R0001688 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_416_ R0004503 1
-    ValeurDeNTCOrigineVersExtremite_1_5_416_ R0004504 1
+    ValeurDeNTCOrigineVersExtremite_1_5_416_ R0005039 1
+    ValeurDeNTCOrigineVersExtremite_1_5_416_ R0005040 1
     ValeurDeNTCOrigineVersExtremite_1_6_416_ R0001682 1
     ValeurDeNTCOrigineVersExtremite_1_6_416_ R0001692 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_416_ R0004505 1
-    ValeurDeNTCOrigineVersExtremite_1_6_416_ R0004506 1
+    ValeurDeNTCOrigineVersExtremite_1_6_416_ R0005375 1
+    ValeurDeNTCOrigineVersExtremite_1_6_416_ R0005376 1
     ValeurDeNTCOrigineVersExtremite_2_7_416_ R0001684 1
     ValeurDeNTCOrigineVersExtremite_2_7_416_ R0001696 -1
     ValeurDeNTCOrigineVersExtremite_2_7_416_ R0003531 0.8
@@ -15039,28 +15039,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_417_ R0001721 1
     ValeurDeNTCOrigineVersExtremite_0_1_417_ R0001701 1
     ValeurDeNTCOrigineVersExtremite_0_1_417_ R0001707 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_417_ R0004507 1
-    ValeurDeNTCOrigineVersExtremite_0_1_417_ R0004508 1
+    ValeurDeNTCOrigineVersExtremite_0_1_417_ R0003697 1
+    ValeurDeNTCOrigineVersExtremite_0_1_417_ R0003698 1
     ValeurDeNTCOrigineVersExtremite_0_2_417_ R0001701 1
     ValeurDeNTCOrigineVersExtremite_0_2_417_ R0001711 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_417_ R0004509 1
-    ValeurDeNTCOrigineVersExtremite_0_2_417_ R0004510 1
+    ValeurDeNTCOrigineVersExtremite_0_2_417_ R0004033 1
+    ValeurDeNTCOrigineVersExtremite_0_2_417_ R0004034 1
     ValeurDeNTCOrigineVersExtremite_0_3_417_ R0001701 1
     ValeurDeNTCOrigineVersExtremite_0_3_417_ R0001715 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_417_ R0004511 1
-    ValeurDeNTCOrigineVersExtremite_0_3_417_ R0004512 1
+    ValeurDeNTCOrigineVersExtremite_0_3_417_ R0004369 1
+    ValeurDeNTCOrigineVersExtremite_0_3_417_ R0004370 1
     ValeurDeNTCOrigineVersExtremite_1_4_417_ R0001703 1
     ValeurDeNTCOrigineVersExtremite_1_4_417_ R0001705 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_417_ R0004513 1
-    ValeurDeNTCOrigineVersExtremite_1_4_417_ R0004514 1
+    ValeurDeNTCOrigineVersExtremite_1_4_417_ R0004705 1
+    ValeurDeNTCOrigineVersExtremite_1_4_417_ R0004706 1
     ValeurDeNTCOrigineVersExtremite_1_5_417_ R0001703 1
     ValeurDeNTCOrigineVersExtremite_1_5_417_ R0001709 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_417_ R0004515 1
-    ValeurDeNTCOrigineVersExtremite_1_5_417_ R0004516 1
+    ValeurDeNTCOrigineVersExtremite_1_5_417_ R0005041 1
+    ValeurDeNTCOrigineVersExtremite_1_5_417_ R0005042 1
     ValeurDeNTCOrigineVersExtremite_1_6_417_ R0001703 1
     ValeurDeNTCOrigineVersExtremite_1_6_417_ R0001713 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_417_ R0004517 1
-    ValeurDeNTCOrigineVersExtremite_1_6_417_ R0004518 1
+    ValeurDeNTCOrigineVersExtremite_1_6_417_ R0005377 1
+    ValeurDeNTCOrigineVersExtremite_1_6_417_ R0005378 1
     ValeurDeNTCOrigineVersExtremite_2_7_417_ R0001705 1
     ValeurDeNTCOrigineVersExtremite_2_7_417_ R0001717 -1
     ValeurDeNTCOrigineVersExtremite_2_7_417_ R0003531 0.8
@@ -15156,28 +15156,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_418_ R0001742 1
     ValeurDeNTCOrigineVersExtremite_0_1_418_ R0001722 1
     ValeurDeNTCOrigineVersExtremite_0_1_418_ R0001728 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_418_ R0004519 1
-    ValeurDeNTCOrigineVersExtremite_0_1_418_ R0004520 1
+    ValeurDeNTCOrigineVersExtremite_0_1_418_ R0003699 1
+    ValeurDeNTCOrigineVersExtremite_0_1_418_ R0003700 1
     ValeurDeNTCOrigineVersExtremite_0_2_418_ R0001722 1
     ValeurDeNTCOrigineVersExtremite_0_2_418_ R0001732 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_418_ R0004521 1
-    ValeurDeNTCOrigineVersExtremite_0_2_418_ R0004522 1
+    ValeurDeNTCOrigineVersExtremite_0_2_418_ R0004035 1
+    ValeurDeNTCOrigineVersExtremite_0_2_418_ R0004036 1
     ValeurDeNTCOrigineVersExtremite_0_3_418_ R0001722 1
     ValeurDeNTCOrigineVersExtremite_0_3_418_ R0001736 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_418_ R0004523 1
-    ValeurDeNTCOrigineVersExtremite_0_3_418_ R0004524 1
+    ValeurDeNTCOrigineVersExtremite_0_3_418_ R0004371 1
+    ValeurDeNTCOrigineVersExtremite_0_3_418_ R0004372 1
     ValeurDeNTCOrigineVersExtremite_1_4_418_ R0001724 1
     ValeurDeNTCOrigineVersExtremite_1_4_418_ R0001726 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_418_ R0004525 1
-    ValeurDeNTCOrigineVersExtremite_1_4_418_ R0004526 1
+    ValeurDeNTCOrigineVersExtremite_1_4_418_ R0004707 1
+    ValeurDeNTCOrigineVersExtremite_1_4_418_ R0004708 1
     ValeurDeNTCOrigineVersExtremite_1_5_418_ R0001724 1
     ValeurDeNTCOrigineVersExtremite_1_5_418_ R0001730 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_418_ R0004527 1
-    ValeurDeNTCOrigineVersExtremite_1_5_418_ R0004528 1
+    ValeurDeNTCOrigineVersExtremite_1_5_418_ R0005043 1
+    ValeurDeNTCOrigineVersExtremite_1_5_418_ R0005044 1
     ValeurDeNTCOrigineVersExtremite_1_6_418_ R0001724 1
     ValeurDeNTCOrigineVersExtremite_1_6_418_ R0001734 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_418_ R0004529 1
-    ValeurDeNTCOrigineVersExtremite_1_6_418_ R0004530 1
+    ValeurDeNTCOrigineVersExtremite_1_6_418_ R0005379 1
+    ValeurDeNTCOrigineVersExtremite_1_6_418_ R0005380 1
     ValeurDeNTCOrigineVersExtremite_2_7_418_ R0001726 1
     ValeurDeNTCOrigineVersExtremite_2_7_418_ R0001738 -1
     ValeurDeNTCOrigineVersExtremite_2_7_418_ R0003531 0.8
@@ -15273,28 +15273,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_419_ R0001763 1
     ValeurDeNTCOrigineVersExtremite_0_1_419_ R0001743 1
     ValeurDeNTCOrigineVersExtremite_0_1_419_ R0001749 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_419_ R0004531 1
-    ValeurDeNTCOrigineVersExtremite_0_1_419_ R0004532 1
+    ValeurDeNTCOrigineVersExtremite_0_1_419_ R0003701 1
+    ValeurDeNTCOrigineVersExtremite_0_1_419_ R0003702 1
     ValeurDeNTCOrigineVersExtremite_0_2_419_ R0001743 1
     ValeurDeNTCOrigineVersExtremite_0_2_419_ R0001753 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_419_ R0004533 1
-    ValeurDeNTCOrigineVersExtremite_0_2_419_ R0004534 1
+    ValeurDeNTCOrigineVersExtremite_0_2_419_ R0004037 1
+    ValeurDeNTCOrigineVersExtremite_0_2_419_ R0004038 1
     ValeurDeNTCOrigineVersExtremite_0_3_419_ R0001743 1
     ValeurDeNTCOrigineVersExtremite_0_3_419_ R0001757 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_419_ R0004535 1
-    ValeurDeNTCOrigineVersExtremite_0_3_419_ R0004536 1
+    ValeurDeNTCOrigineVersExtremite_0_3_419_ R0004373 1
+    ValeurDeNTCOrigineVersExtremite_0_3_419_ R0004374 1
     ValeurDeNTCOrigineVersExtremite_1_4_419_ R0001745 1
     ValeurDeNTCOrigineVersExtremite_1_4_419_ R0001747 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_419_ R0004537 1
-    ValeurDeNTCOrigineVersExtremite_1_4_419_ R0004538 1
+    ValeurDeNTCOrigineVersExtremite_1_4_419_ R0004709 1
+    ValeurDeNTCOrigineVersExtremite_1_4_419_ R0004710 1
     ValeurDeNTCOrigineVersExtremite_1_5_419_ R0001745 1
     ValeurDeNTCOrigineVersExtremite_1_5_419_ R0001751 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_419_ R0004539 1
-    ValeurDeNTCOrigineVersExtremite_1_5_419_ R0004540 1
+    ValeurDeNTCOrigineVersExtremite_1_5_419_ R0005045 1
+    ValeurDeNTCOrigineVersExtremite_1_5_419_ R0005046 1
     ValeurDeNTCOrigineVersExtremite_1_6_419_ R0001745 1
     ValeurDeNTCOrigineVersExtremite_1_6_419_ R0001755 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_419_ R0004541 1
-    ValeurDeNTCOrigineVersExtremite_1_6_419_ R0004542 1
+    ValeurDeNTCOrigineVersExtremite_1_6_419_ R0005381 1
+    ValeurDeNTCOrigineVersExtremite_1_6_419_ R0005382 1
     ValeurDeNTCOrigineVersExtremite_2_7_419_ R0001747 1
     ValeurDeNTCOrigineVersExtremite_2_7_419_ R0001759 -1
     ValeurDeNTCOrigineVersExtremite_2_7_419_ R0003531 0.8
@@ -15390,28 +15390,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_420_ R0001784 1
     ValeurDeNTCOrigineVersExtremite_0_1_420_ R0001764 1
     ValeurDeNTCOrigineVersExtremite_0_1_420_ R0001770 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_420_ R0004543 1
-    ValeurDeNTCOrigineVersExtremite_0_1_420_ R0004544 1
+    ValeurDeNTCOrigineVersExtremite_0_1_420_ R0003703 1
+    ValeurDeNTCOrigineVersExtremite_0_1_420_ R0003704 1
     ValeurDeNTCOrigineVersExtremite_0_2_420_ R0001764 1
     ValeurDeNTCOrigineVersExtremite_0_2_420_ R0001774 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_420_ R0004545 1
-    ValeurDeNTCOrigineVersExtremite_0_2_420_ R0004546 1
+    ValeurDeNTCOrigineVersExtremite_0_2_420_ R0004039 1
+    ValeurDeNTCOrigineVersExtremite_0_2_420_ R0004040 1
     ValeurDeNTCOrigineVersExtremite_0_3_420_ R0001764 1
     ValeurDeNTCOrigineVersExtremite_0_3_420_ R0001778 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_420_ R0004547 1
-    ValeurDeNTCOrigineVersExtremite_0_3_420_ R0004548 1
+    ValeurDeNTCOrigineVersExtremite_0_3_420_ R0004375 1
+    ValeurDeNTCOrigineVersExtremite_0_3_420_ R0004376 1
     ValeurDeNTCOrigineVersExtremite_1_4_420_ R0001766 1
     ValeurDeNTCOrigineVersExtremite_1_4_420_ R0001768 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_420_ R0004549 1
-    ValeurDeNTCOrigineVersExtremite_1_4_420_ R0004550 1
+    ValeurDeNTCOrigineVersExtremite_1_4_420_ R0004711 1
+    ValeurDeNTCOrigineVersExtremite_1_4_420_ R0004712 1
     ValeurDeNTCOrigineVersExtremite_1_5_420_ R0001766 1
     ValeurDeNTCOrigineVersExtremite_1_5_420_ R0001772 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_420_ R0004551 1
-    ValeurDeNTCOrigineVersExtremite_1_5_420_ R0004552 1
+    ValeurDeNTCOrigineVersExtremite_1_5_420_ R0005047 1
+    ValeurDeNTCOrigineVersExtremite_1_5_420_ R0005048 1
     ValeurDeNTCOrigineVersExtremite_1_6_420_ R0001766 1
     ValeurDeNTCOrigineVersExtremite_1_6_420_ R0001776 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_420_ R0004553 1
-    ValeurDeNTCOrigineVersExtremite_1_6_420_ R0004554 1
+    ValeurDeNTCOrigineVersExtremite_1_6_420_ R0005383 1
+    ValeurDeNTCOrigineVersExtremite_1_6_420_ R0005384 1
     ValeurDeNTCOrigineVersExtremite_2_7_420_ R0001768 1
     ValeurDeNTCOrigineVersExtremite_2_7_420_ R0001780 -1
     ValeurDeNTCOrigineVersExtremite_2_7_420_ R0003531 0.8
@@ -15507,28 +15507,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_421_ R0001805 1
     ValeurDeNTCOrigineVersExtremite_0_1_421_ R0001785 1
     ValeurDeNTCOrigineVersExtremite_0_1_421_ R0001791 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_421_ R0004555 1
-    ValeurDeNTCOrigineVersExtremite_0_1_421_ R0004556 1
+    ValeurDeNTCOrigineVersExtremite_0_1_421_ R0003705 1
+    ValeurDeNTCOrigineVersExtremite_0_1_421_ R0003706 1
     ValeurDeNTCOrigineVersExtremite_0_2_421_ R0001785 1
     ValeurDeNTCOrigineVersExtremite_0_2_421_ R0001795 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_421_ R0004557 1
-    ValeurDeNTCOrigineVersExtremite_0_2_421_ R0004558 1
+    ValeurDeNTCOrigineVersExtremite_0_2_421_ R0004041 1
+    ValeurDeNTCOrigineVersExtremite_0_2_421_ R0004042 1
     ValeurDeNTCOrigineVersExtremite_0_3_421_ R0001785 1
     ValeurDeNTCOrigineVersExtremite_0_3_421_ R0001799 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_421_ R0004559 1
-    ValeurDeNTCOrigineVersExtremite_0_3_421_ R0004560 1
+    ValeurDeNTCOrigineVersExtremite_0_3_421_ R0004377 1
+    ValeurDeNTCOrigineVersExtremite_0_3_421_ R0004378 1
     ValeurDeNTCOrigineVersExtremite_1_4_421_ R0001787 1
     ValeurDeNTCOrigineVersExtremite_1_4_421_ R0001789 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_421_ R0004561 1
-    ValeurDeNTCOrigineVersExtremite_1_4_421_ R0004562 1
+    ValeurDeNTCOrigineVersExtremite_1_4_421_ R0004713 1
+    ValeurDeNTCOrigineVersExtremite_1_4_421_ R0004714 1
     ValeurDeNTCOrigineVersExtremite_1_5_421_ R0001787 1
     ValeurDeNTCOrigineVersExtremite_1_5_421_ R0001793 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_421_ R0004563 1
-    ValeurDeNTCOrigineVersExtremite_1_5_421_ R0004564 1
+    ValeurDeNTCOrigineVersExtremite_1_5_421_ R0005049 1
+    ValeurDeNTCOrigineVersExtremite_1_5_421_ R0005050 1
     ValeurDeNTCOrigineVersExtremite_1_6_421_ R0001787 1
     ValeurDeNTCOrigineVersExtremite_1_6_421_ R0001797 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_421_ R0004565 1
-    ValeurDeNTCOrigineVersExtremite_1_6_421_ R0004566 1
+    ValeurDeNTCOrigineVersExtremite_1_6_421_ R0005385 1
+    ValeurDeNTCOrigineVersExtremite_1_6_421_ R0005386 1
     ValeurDeNTCOrigineVersExtremite_2_7_421_ R0001789 1
     ValeurDeNTCOrigineVersExtremite_2_7_421_ R0001801 -1
     ValeurDeNTCOrigineVersExtremite_2_7_421_ R0003531 0.8
@@ -15624,28 +15624,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_422_ R0001826 1
     ValeurDeNTCOrigineVersExtremite_0_1_422_ R0001806 1
     ValeurDeNTCOrigineVersExtremite_0_1_422_ R0001812 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_422_ R0004567 1
-    ValeurDeNTCOrigineVersExtremite_0_1_422_ R0004568 1
+    ValeurDeNTCOrigineVersExtremite_0_1_422_ R0003707 1
+    ValeurDeNTCOrigineVersExtremite_0_1_422_ R0003708 1
     ValeurDeNTCOrigineVersExtremite_0_2_422_ R0001806 1
     ValeurDeNTCOrigineVersExtremite_0_2_422_ R0001816 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_422_ R0004569 1
-    ValeurDeNTCOrigineVersExtremite_0_2_422_ R0004570 1
+    ValeurDeNTCOrigineVersExtremite_0_2_422_ R0004043 1
+    ValeurDeNTCOrigineVersExtremite_0_2_422_ R0004044 1
     ValeurDeNTCOrigineVersExtremite_0_3_422_ R0001806 1
     ValeurDeNTCOrigineVersExtremite_0_3_422_ R0001820 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_422_ R0004571 1
-    ValeurDeNTCOrigineVersExtremite_0_3_422_ R0004572 1
+    ValeurDeNTCOrigineVersExtremite_0_3_422_ R0004379 1
+    ValeurDeNTCOrigineVersExtremite_0_3_422_ R0004380 1
     ValeurDeNTCOrigineVersExtremite_1_4_422_ R0001808 1
     ValeurDeNTCOrigineVersExtremite_1_4_422_ R0001810 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_422_ R0004573 1
-    ValeurDeNTCOrigineVersExtremite_1_4_422_ R0004574 1
+    ValeurDeNTCOrigineVersExtremite_1_4_422_ R0004715 1
+    ValeurDeNTCOrigineVersExtremite_1_4_422_ R0004716 1
     ValeurDeNTCOrigineVersExtremite_1_5_422_ R0001808 1
     ValeurDeNTCOrigineVersExtremite_1_5_422_ R0001814 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_422_ R0004575 1
-    ValeurDeNTCOrigineVersExtremite_1_5_422_ R0004576 1
+    ValeurDeNTCOrigineVersExtremite_1_5_422_ R0005051 1
+    ValeurDeNTCOrigineVersExtremite_1_5_422_ R0005052 1
     ValeurDeNTCOrigineVersExtremite_1_6_422_ R0001808 1
     ValeurDeNTCOrigineVersExtremite_1_6_422_ R0001818 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_422_ R0004577 1
-    ValeurDeNTCOrigineVersExtremite_1_6_422_ R0004578 1
+    ValeurDeNTCOrigineVersExtremite_1_6_422_ R0005387 1
+    ValeurDeNTCOrigineVersExtremite_1_6_422_ R0005388 1
     ValeurDeNTCOrigineVersExtremite_2_7_422_ R0001810 1
     ValeurDeNTCOrigineVersExtremite_2_7_422_ R0001822 -1
     ValeurDeNTCOrigineVersExtremite_2_7_422_ R0003531 0.8
@@ -15741,28 +15741,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_423_ R0001847 1
     ValeurDeNTCOrigineVersExtremite_0_1_423_ R0001827 1
     ValeurDeNTCOrigineVersExtremite_0_1_423_ R0001833 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_423_ R0004579 1
-    ValeurDeNTCOrigineVersExtremite_0_1_423_ R0004580 1
+    ValeurDeNTCOrigineVersExtremite_0_1_423_ R0003709 1
+    ValeurDeNTCOrigineVersExtremite_0_1_423_ R0003710 1
     ValeurDeNTCOrigineVersExtremite_0_2_423_ R0001827 1
     ValeurDeNTCOrigineVersExtremite_0_2_423_ R0001837 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_423_ R0004581 1
-    ValeurDeNTCOrigineVersExtremite_0_2_423_ R0004582 1
+    ValeurDeNTCOrigineVersExtremite_0_2_423_ R0004045 1
+    ValeurDeNTCOrigineVersExtremite_0_2_423_ R0004046 1
     ValeurDeNTCOrigineVersExtremite_0_3_423_ R0001827 1
     ValeurDeNTCOrigineVersExtremite_0_3_423_ R0001841 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_423_ R0004583 1
-    ValeurDeNTCOrigineVersExtremite_0_3_423_ R0004584 1
+    ValeurDeNTCOrigineVersExtremite_0_3_423_ R0004381 1
+    ValeurDeNTCOrigineVersExtremite_0_3_423_ R0004382 1
     ValeurDeNTCOrigineVersExtremite_1_4_423_ R0001829 1
     ValeurDeNTCOrigineVersExtremite_1_4_423_ R0001831 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_423_ R0004585 1
-    ValeurDeNTCOrigineVersExtremite_1_4_423_ R0004586 1
+    ValeurDeNTCOrigineVersExtremite_1_4_423_ R0004717 1
+    ValeurDeNTCOrigineVersExtremite_1_4_423_ R0004718 1
     ValeurDeNTCOrigineVersExtremite_1_5_423_ R0001829 1
     ValeurDeNTCOrigineVersExtremite_1_5_423_ R0001835 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_423_ R0004587 1
-    ValeurDeNTCOrigineVersExtremite_1_5_423_ R0004588 1
+    ValeurDeNTCOrigineVersExtremite_1_5_423_ R0005053 1
+    ValeurDeNTCOrigineVersExtremite_1_5_423_ R0005054 1
     ValeurDeNTCOrigineVersExtremite_1_6_423_ R0001829 1
     ValeurDeNTCOrigineVersExtremite_1_6_423_ R0001839 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_423_ R0004589 1
-    ValeurDeNTCOrigineVersExtremite_1_6_423_ R0004590 1
+    ValeurDeNTCOrigineVersExtremite_1_6_423_ R0005389 1
+    ValeurDeNTCOrigineVersExtremite_1_6_423_ R0005390 1
     ValeurDeNTCOrigineVersExtremite_2_7_423_ R0001831 1
     ValeurDeNTCOrigineVersExtremite_2_7_423_ R0001843 -1
     ValeurDeNTCOrigineVersExtremite_2_7_423_ R0003531 0.8
@@ -15858,28 +15858,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_424_ R0001868 1
     ValeurDeNTCOrigineVersExtremite_0_1_424_ R0001848 1
     ValeurDeNTCOrigineVersExtremite_0_1_424_ R0001854 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_424_ R0004591 1
-    ValeurDeNTCOrigineVersExtremite_0_1_424_ R0004592 1
+    ValeurDeNTCOrigineVersExtremite_0_1_424_ R0003711 1
+    ValeurDeNTCOrigineVersExtremite_0_1_424_ R0003712 1
     ValeurDeNTCOrigineVersExtremite_0_2_424_ R0001848 1
     ValeurDeNTCOrigineVersExtremite_0_2_424_ R0001858 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_424_ R0004593 1
-    ValeurDeNTCOrigineVersExtremite_0_2_424_ R0004594 1
+    ValeurDeNTCOrigineVersExtremite_0_2_424_ R0004047 1
+    ValeurDeNTCOrigineVersExtremite_0_2_424_ R0004048 1
     ValeurDeNTCOrigineVersExtremite_0_3_424_ R0001848 1
     ValeurDeNTCOrigineVersExtremite_0_3_424_ R0001862 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_424_ R0004595 1
-    ValeurDeNTCOrigineVersExtremite_0_3_424_ R0004596 1
+    ValeurDeNTCOrigineVersExtremite_0_3_424_ R0004383 1
+    ValeurDeNTCOrigineVersExtremite_0_3_424_ R0004384 1
     ValeurDeNTCOrigineVersExtremite_1_4_424_ R0001850 1
     ValeurDeNTCOrigineVersExtremite_1_4_424_ R0001852 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_424_ R0004597 1
-    ValeurDeNTCOrigineVersExtremite_1_4_424_ R0004598 1
+    ValeurDeNTCOrigineVersExtremite_1_4_424_ R0004719 1
+    ValeurDeNTCOrigineVersExtremite_1_4_424_ R0004720 1
     ValeurDeNTCOrigineVersExtremite_1_5_424_ R0001850 1
     ValeurDeNTCOrigineVersExtremite_1_5_424_ R0001856 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_424_ R0004599 1
-    ValeurDeNTCOrigineVersExtremite_1_5_424_ R0004600 1
+    ValeurDeNTCOrigineVersExtremite_1_5_424_ R0005055 1
+    ValeurDeNTCOrigineVersExtremite_1_5_424_ R0005056 1
     ValeurDeNTCOrigineVersExtremite_1_6_424_ R0001850 1
     ValeurDeNTCOrigineVersExtremite_1_6_424_ R0001860 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_424_ R0004601 1
-    ValeurDeNTCOrigineVersExtremite_1_6_424_ R0004602 1
+    ValeurDeNTCOrigineVersExtremite_1_6_424_ R0005391 1
+    ValeurDeNTCOrigineVersExtremite_1_6_424_ R0005392 1
     ValeurDeNTCOrigineVersExtremite_2_7_424_ R0001852 1
     ValeurDeNTCOrigineVersExtremite_2_7_424_ R0001864 -1
     ValeurDeNTCOrigineVersExtremite_2_7_424_ R0003531 0.8
@@ -15975,28 +15975,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_425_ R0001889 1
     ValeurDeNTCOrigineVersExtremite_0_1_425_ R0001869 1
     ValeurDeNTCOrigineVersExtremite_0_1_425_ R0001875 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_425_ R0004603 1
-    ValeurDeNTCOrigineVersExtremite_0_1_425_ R0004604 1
+    ValeurDeNTCOrigineVersExtremite_0_1_425_ R0003713 1
+    ValeurDeNTCOrigineVersExtremite_0_1_425_ R0003714 1
     ValeurDeNTCOrigineVersExtremite_0_2_425_ R0001869 1
     ValeurDeNTCOrigineVersExtremite_0_2_425_ R0001879 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_425_ R0004605 1
-    ValeurDeNTCOrigineVersExtremite_0_2_425_ R0004606 1
+    ValeurDeNTCOrigineVersExtremite_0_2_425_ R0004049 1
+    ValeurDeNTCOrigineVersExtremite_0_2_425_ R0004050 1
     ValeurDeNTCOrigineVersExtremite_0_3_425_ R0001869 1
     ValeurDeNTCOrigineVersExtremite_0_3_425_ R0001883 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_425_ R0004607 1
-    ValeurDeNTCOrigineVersExtremite_0_3_425_ R0004608 1
+    ValeurDeNTCOrigineVersExtremite_0_3_425_ R0004385 1
+    ValeurDeNTCOrigineVersExtremite_0_3_425_ R0004386 1
     ValeurDeNTCOrigineVersExtremite_1_4_425_ R0001871 1
     ValeurDeNTCOrigineVersExtremite_1_4_425_ R0001873 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_425_ R0004609 1
-    ValeurDeNTCOrigineVersExtremite_1_4_425_ R0004610 1
+    ValeurDeNTCOrigineVersExtremite_1_4_425_ R0004721 1
+    ValeurDeNTCOrigineVersExtremite_1_4_425_ R0004722 1
     ValeurDeNTCOrigineVersExtremite_1_5_425_ R0001871 1
     ValeurDeNTCOrigineVersExtremite_1_5_425_ R0001877 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_425_ R0004611 1
-    ValeurDeNTCOrigineVersExtremite_1_5_425_ R0004612 1
+    ValeurDeNTCOrigineVersExtremite_1_5_425_ R0005057 1
+    ValeurDeNTCOrigineVersExtremite_1_5_425_ R0005058 1
     ValeurDeNTCOrigineVersExtremite_1_6_425_ R0001871 1
     ValeurDeNTCOrigineVersExtremite_1_6_425_ R0001881 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_425_ R0004613 1
-    ValeurDeNTCOrigineVersExtremite_1_6_425_ R0004614 1
+    ValeurDeNTCOrigineVersExtremite_1_6_425_ R0005393 1
+    ValeurDeNTCOrigineVersExtremite_1_6_425_ R0005394 1
     ValeurDeNTCOrigineVersExtremite_2_7_425_ R0001873 1
     ValeurDeNTCOrigineVersExtremite_2_7_425_ R0001885 -1
     ValeurDeNTCOrigineVersExtremite_2_7_425_ R0003531 0.8
@@ -16092,28 +16092,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_426_ R0001910 1
     ValeurDeNTCOrigineVersExtremite_0_1_426_ R0001890 1
     ValeurDeNTCOrigineVersExtremite_0_1_426_ R0001896 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_426_ R0004615 1
-    ValeurDeNTCOrigineVersExtremite_0_1_426_ R0004616 1
+    ValeurDeNTCOrigineVersExtremite_0_1_426_ R0003715 1
+    ValeurDeNTCOrigineVersExtremite_0_1_426_ R0003716 1
     ValeurDeNTCOrigineVersExtremite_0_2_426_ R0001890 1
     ValeurDeNTCOrigineVersExtremite_0_2_426_ R0001900 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_426_ R0004617 1
-    ValeurDeNTCOrigineVersExtremite_0_2_426_ R0004618 1
+    ValeurDeNTCOrigineVersExtremite_0_2_426_ R0004051 1
+    ValeurDeNTCOrigineVersExtremite_0_2_426_ R0004052 1
     ValeurDeNTCOrigineVersExtremite_0_3_426_ R0001890 1
     ValeurDeNTCOrigineVersExtremite_0_3_426_ R0001904 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_426_ R0004619 1
-    ValeurDeNTCOrigineVersExtremite_0_3_426_ R0004620 1
+    ValeurDeNTCOrigineVersExtremite_0_3_426_ R0004387 1
+    ValeurDeNTCOrigineVersExtremite_0_3_426_ R0004388 1
     ValeurDeNTCOrigineVersExtremite_1_4_426_ R0001892 1
     ValeurDeNTCOrigineVersExtremite_1_4_426_ R0001894 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_426_ R0004621 1
-    ValeurDeNTCOrigineVersExtremite_1_4_426_ R0004622 1
+    ValeurDeNTCOrigineVersExtremite_1_4_426_ R0004723 1
+    ValeurDeNTCOrigineVersExtremite_1_4_426_ R0004724 1
     ValeurDeNTCOrigineVersExtremite_1_5_426_ R0001892 1
     ValeurDeNTCOrigineVersExtremite_1_5_426_ R0001898 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_426_ R0004623 1
-    ValeurDeNTCOrigineVersExtremite_1_5_426_ R0004624 1
+    ValeurDeNTCOrigineVersExtremite_1_5_426_ R0005059 1
+    ValeurDeNTCOrigineVersExtremite_1_5_426_ R0005060 1
     ValeurDeNTCOrigineVersExtremite_1_6_426_ R0001892 1
     ValeurDeNTCOrigineVersExtremite_1_6_426_ R0001902 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_426_ R0004625 1
-    ValeurDeNTCOrigineVersExtremite_1_6_426_ R0004626 1
+    ValeurDeNTCOrigineVersExtremite_1_6_426_ R0005395 1
+    ValeurDeNTCOrigineVersExtremite_1_6_426_ R0005396 1
     ValeurDeNTCOrigineVersExtremite_2_7_426_ R0001894 1
     ValeurDeNTCOrigineVersExtremite_2_7_426_ R0001906 -1
     ValeurDeNTCOrigineVersExtremite_2_7_426_ R0003531 0.8
@@ -16209,28 +16209,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_427_ R0001931 1
     ValeurDeNTCOrigineVersExtremite_0_1_427_ R0001911 1
     ValeurDeNTCOrigineVersExtremite_0_1_427_ R0001917 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_427_ R0004627 1
-    ValeurDeNTCOrigineVersExtremite_0_1_427_ R0004628 1
+    ValeurDeNTCOrigineVersExtremite_0_1_427_ R0003717 1
+    ValeurDeNTCOrigineVersExtremite_0_1_427_ R0003718 1
     ValeurDeNTCOrigineVersExtremite_0_2_427_ R0001911 1
     ValeurDeNTCOrigineVersExtremite_0_2_427_ R0001921 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_427_ R0004629 1
-    ValeurDeNTCOrigineVersExtremite_0_2_427_ R0004630 1
+    ValeurDeNTCOrigineVersExtremite_0_2_427_ R0004053 1
+    ValeurDeNTCOrigineVersExtremite_0_2_427_ R0004054 1
     ValeurDeNTCOrigineVersExtremite_0_3_427_ R0001911 1
     ValeurDeNTCOrigineVersExtremite_0_3_427_ R0001925 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_427_ R0004631 1
-    ValeurDeNTCOrigineVersExtremite_0_3_427_ R0004632 1
+    ValeurDeNTCOrigineVersExtremite_0_3_427_ R0004389 1
+    ValeurDeNTCOrigineVersExtremite_0_3_427_ R0004390 1
     ValeurDeNTCOrigineVersExtremite_1_4_427_ R0001913 1
     ValeurDeNTCOrigineVersExtremite_1_4_427_ R0001915 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_427_ R0004633 1
-    ValeurDeNTCOrigineVersExtremite_1_4_427_ R0004634 1
+    ValeurDeNTCOrigineVersExtremite_1_4_427_ R0004725 1
+    ValeurDeNTCOrigineVersExtremite_1_4_427_ R0004726 1
     ValeurDeNTCOrigineVersExtremite_1_5_427_ R0001913 1
     ValeurDeNTCOrigineVersExtremite_1_5_427_ R0001919 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_427_ R0004635 1
-    ValeurDeNTCOrigineVersExtremite_1_5_427_ R0004636 1
+    ValeurDeNTCOrigineVersExtremite_1_5_427_ R0005061 1
+    ValeurDeNTCOrigineVersExtremite_1_5_427_ R0005062 1
     ValeurDeNTCOrigineVersExtremite_1_6_427_ R0001913 1
     ValeurDeNTCOrigineVersExtremite_1_6_427_ R0001923 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_427_ R0004637 1
-    ValeurDeNTCOrigineVersExtremite_1_6_427_ R0004638 1
+    ValeurDeNTCOrigineVersExtremite_1_6_427_ R0005397 1
+    ValeurDeNTCOrigineVersExtremite_1_6_427_ R0005398 1
     ValeurDeNTCOrigineVersExtremite_2_7_427_ R0001915 1
     ValeurDeNTCOrigineVersExtremite_2_7_427_ R0001927 -1
     ValeurDeNTCOrigineVersExtremite_2_7_427_ R0003531 0.8
@@ -16326,28 +16326,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_428_ R0001952 1
     ValeurDeNTCOrigineVersExtremite_0_1_428_ R0001932 1
     ValeurDeNTCOrigineVersExtremite_0_1_428_ R0001938 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_428_ R0004639 1
-    ValeurDeNTCOrigineVersExtremite_0_1_428_ R0004640 1
+    ValeurDeNTCOrigineVersExtremite_0_1_428_ R0003719 1
+    ValeurDeNTCOrigineVersExtremite_0_1_428_ R0003720 1
     ValeurDeNTCOrigineVersExtremite_0_2_428_ R0001932 1
     ValeurDeNTCOrigineVersExtremite_0_2_428_ R0001942 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_428_ R0004641 1
-    ValeurDeNTCOrigineVersExtremite_0_2_428_ R0004642 1
+    ValeurDeNTCOrigineVersExtremite_0_2_428_ R0004055 1
+    ValeurDeNTCOrigineVersExtremite_0_2_428_ R0004056 1
     ValeurDeNTCOrigineVersExtremite_0_3_428_ R0001932 1
     ValeurDeNTCOrigineVersExtremite_0_3_428_ R0001946 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_428_ R0004643 1
-    ValeurDeNTCOrigineVersExtremite_0_3_428_ R0004644 1
+    ValeurDeNTCOrigineVersExtremite_0_3_428_ R0004391 1
+    ValeurDeNTCOrigineVersExtremite_0_3_428_ R0004392 1
     ValeurDeNTCOrigineVersExtremite_1_4_428_ R0001934 1
     ValeurDeNTCOrigineVersExtremite_1_4_428_ R0001936 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_428_ R0004645 1
-    ValeurDeNTCOrigineVersExtremite_1_4_428_ R0004646 1
+    ValeurDeNTCOrigineVersExtremite_1_4_428_ R0004727 1
+    ValeurDeNTCOrigineVersExtremite_1_4_428_ R0004728 1
     ValeurDeNTCOrigineVersExtremite_1_5_428_ R0001934 1
     ValeurDeNTCOrigineVersExtremite_1_5_428_ R0001940 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_428_ R0004647 1
-    ValeurDeNTCOrigineVersExtremite_1_5_428_ R0004648 1
+    ValeurDeNTCOrigineVersExtremite_1_5_428_ R0005063 1
+    ValeurDeNTCOrigineVersExtremite_1_5_428_ R0005064 1
     ValeurDeNTCOrigineVersExtremite_1_6_428_ R0001934 1
     ValeurDeNTCOrigineVersExtremite_1_6_428_ R0001944 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_428_ R0004649 1
-    ValeurDeNTCOrigineVersExtremite_1_6_428_ R0004650 1
+    ValeurDeNTCOrigineVersExtremite_1_6_428_ R0005399 1
+    ValeurDeNTCOrigineVersExtremite_1_6_428_ R0005400 1
     ValeurDeNTCOrigineVersExtremite_2_7_428_ R0001936 1
     ValeurDeNTCOrigineVersExtremite_2_7_428_ R0001948 -1
     ValeurDeNTCOrigineVersExtremite_2_7_428_ R0003531 0.8
@@ -16443,28 +16443,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_429_ R0001973 1
     ValeurDeNTCOrigineVersExtremite_0_1_429_ R0001953 1
     ValeurDeNTCOrigineVersExtremite_0_1_429_ R0001959 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_429_ R0004651 1
-    ValeurDeNTCOrigineVersExtremite_0_1_429_ R0004652 1
+    ValeurDeNTCOrigineVersExtremite_0_1_429_ R0003721 1
+    ValeurDeNTCOrigineVersExtremite_0_1_429_ R0003722 1
     ValeurDeNTCOrigineVersExtremite_0_2_429_ R0001953 1
     ValeurDeNTCOrigineVersExtremite_0_2_429_ R0001963 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_429_ R0004653 1
-    ValeurDeNTCOrigineVersExtremite_0_2_429_ R0004654 1
+    ValeurDeNTCOrigineVersExtremite_0_2_429_ R0004057 1
+    ValeurDeNTCOrigineVersExtremite_0_2_429_ R0004058 1
     ValeurDeNTCOrigineVersExtremite_0_3_429_ R0001953 1
     ValeurDeNTCOrigineVersExtremite_0_3_429_ R0001967 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_429_ R0004655 1
-    ValeurDeNTCOrigineVersExtremite_0_3_429_ R0004656 1
+    ValeurDeNTCOrigineVersExtremite_0_3_429_ R0004393 1
+    ValeurDeNTCOrigineVersExtremite_0_3_429_ R0004394 1
     ValeurDeNTCOrigineVersExtremite_1_4_429_ R0001955 1
     ValeurDeNTCOrigineVersExtremite_1_4_429_ R0001957 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_429_ R0004657 1
-    ValeurDeNTCOrigineVersExtremite_1_4_429_ R0004658 1
+    ValeurDeNTCOrigineVersExtremite_1_4_429_ R0004729 1
+    ValeurDeNTCOrigineVersExtremite_1_4_429_ R0004730 1
     ValeurDeNTCOrigineVersExtremite_1_5_429_ R0001955 1
     ValeurDeNTCOrigineVersExtremite_1_5_429_ R0001961 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_429_ R0004659 1
-    ValeurDeNTCOrigineVersExtremite_1_5_429_ R0004660 1
+    ValeurDeNTCOrigineVersExtremite_1_5_429_ R0005065 1
+    ValeurDeNTCOrigineVersExtremite_1_5_429_ R0005066 1
     ValeurDeNTCOrigineVersExtremite_1_6_429_ R0001955 1
     ValeurDeNTCOrigineVersExtremite_1_6_429_ R0001965 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_429_ R0004661 1
-    ValeurDeNTCOrigineVersExtremite_1_6_429_ R0004662 1
+    ValeurDeNTCOrigineVersExtremite_1_6_429_ R0005401 1
+    ValeurDeNTCOrigineVersExtremite_1_6_429_ R0005402 1
     ValeurDeNTCOrigineVersExtremite_2_7_429_ R0001957 1
     ValeurDeNTCOrigineVersExtremite_2_7_429_ R0001969 -1
     ValeurDeNTCOrigineVersExtremite_2_7_429_ R0003531 0.8
@@ -16560,28 +16560,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_430_ R0001994 1
     ValeurDeNTCOrigineVersExtremite_0_1_430_ R0001974 1
     ValeurDeNTCOrigineVersExtremite_0_1_430_ R0001980 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_430_ R0004663 1
-    ValeurDeNTCOrigineVersExtremite_0_1_430_ R0004664 1
+    ValeurDeNTCOrigineVersExtremite_0_1_430_ R0003723 1
+    ValeurDeNTCOrigineVersExtremite_0_1_430_ R0003724 1
     ValeurDeNTCOrigineVersExtremite_0_2_430_ R0001974 1
     ValeurDeNTCOrigineVersExtremite_0_2_430_ R0001984 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_430_ R0004665 1
-    ValeurDeNTCOrigineVersExtremite_0_2_430_ R0004666 1
+    ValeurDeNTCOrigineVersExtremite_0_2_430_ R0004059 1
+    ValeurDeNTCOrigineVersExtremite_0_2_430_ R0004060 1
     ValeurDeNTCOrigineVersExtremite_0_3_430_ R0001974 1
     ValeurDeNTCOrigineVersExtremite_0_3_430_ R0001988 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_430_ R0004667 1
-    ValeurDeNTCOrigineVersExtremite_0_3_430_ R0004668 1
+    ValeurDeNTCOrigineVersExtremite_0_3_430_ R0004395 1
+    ValeurDeNTCOrigineVersExtremite_0_3_430_ R0004396 1
     ValeurDeNTCOrigineVersExtremite_1_4_430_ R0001976 1
     ValeurDeNTCOrigineVersExtremite_1_4_430_ R0001978 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_430_ R0004669 1
-    ValeurDeNTCOrigineVersExtremite_1_4_430_ R0004670 1
+    ValeurDeNTCOrigineVersExtremite_1_4_430_ R0004731 1
+    ValeurDeNTCOrigineVersExtremite_1_4_430_ R0004732 1
     ValeurDeNTCOrigineVersExtremite_1_5_430_ R0001976 1
     ValeurDeNTCOrigineVersExtremite_1_5_430_ R0001982 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_430_ R0004671 1
-    ValeurDeNTCOrigineVersExtremite_1_5_430_ R0004672 1
+    ValeurDeNTCOrigineVersExtremite_1_5_430_ R0005067 1
+    ValeurDeNTCOrigineVersExtremite_1_5_430_ R0005068 1
     ValeurDeNTCOrigineVersExtremite_1_6_430_ R0001976 1
     ValeurDeNTCOrigineVersExtremite_1_6_430_ R0001986 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_430_ R0004673 1
-    ValeurDeNTCOrigineVersExtremite_1_6_430_ R0004674 1
+    ValeurDeNTCOrigineVersExtremite_1_6_430_ R0005403 1
+    ValeurDeNTCOrigineVersExtremite_1_6_430_ R0005404 1
     ValeurDeNTCOrigineVersExtremite_2_7_430_ R0001978 1
     ValeurDeNTCOrigineVersExtremite_2_7_430_ R0001990 -1
     ValeurDeNTCOrigineVersExtremite_2_7_430_ R0003531 0.8
@@ -16677,28 +16677,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_431_ R0002015 1
     ValeurDeNTCOrigineVersExtremite_0_1_431_ R0001995 1
     ValeurDeNTCOrigineVersExtremite_0_1_431_ R0002001 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_431_ R0004675 1
-    ValeurDeNTCOrigineVersExtremite_0_1_431_ R0004676 1
+    ValeurDeNTCOrigineVersExtremite_0_1_431_ R0003725 1
+    ValeurDeNTCOrigineVersExtremite_0_1_431_ R0003726 1
     ValeurDeNTCOrigineVersExtremite_0_2_431_ R0001995 1
     ValeurDeNTCOrigineVersExtremite_0_2_431_ R0002005 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_431_ R0004677 1
-    ValeurDeNTCOrigineVersExtremite_0_2_431_ R0004678 1
+    ValeurDeNTCOrigineVersExtremite_0_2_431_ R0004061 1
+    ValeurDeNTCOrigineVersExtremite_0_2_431_ R0004062 1
     ValeurDeNTCOrigineVersExtremite_0_3_431_ R0001995 1
     ValeurDeNTCOrigineVersExtremite_0_3_431_ R0002009 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_431_ R0004679 1
-    ValeurDeNTCOrigineVersExtremite_0_3_431_ R0004680 1
+    ValeurDeNTCOrigineVersExtremite_0_3_431_ R0004397 1
+    ValeurDeNTCOrigineVersExtremite_0_3_431_ R0004398 1
     ValeurDeNTCOrigineVersExtremite_1_4_431_ R0001997 1
     ValeurDeNTCOrigineVersExtremite_1_4_431_ R0001999 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_431_ R0004681 1
-    ValeurDeNTCOrigineVersExtremite_1_4_431_ R0004682 1
+    ValeurDeNTCOrigineVersExtremite_1_4_431_ R0004733 1
+    ValeurDeNTCOrigineVersExtremite_1_4_431_ R0004734 1
     ValeurDeNTCOrigineVersExtremite_1_5_431_ R0001997 1
     ValeurDeNTCOrigineVersExtremite_1_5_431_ R0002003 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_431_ R0004683 1
-    ValeurDeNTCOrigineVersExtremite_1_5_431_ R0004684 1
+    ValeurDeNTCOrigineVersExtremite_1_5_431_ R0005069 1
+    ValeurDeNTCOrigineVersExtremite_1_5_431_ R0005070 1
     ValeurDeNTCOrigineVersExtremite_1_6_431_ R0001997 1
     ValeurDeNTCOrigineVersExtremite_1_6_431_ R0002007 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_431_ R0004685 1
-    ValeurDeNTCOrigineVersExtremite_1_6_431_ R0004686 1
+    ValeurDeNTCOrigineVersExtremite_1_6_431_ R0005405 1
+    ValeurDeNTCOrigineVersExtremite_1_6_431_ R0005406 1
     ValeurDeNTCOrigineVersExtremite_2_7_431_ R0001999 1
     ValeurDeNTCOrigineVersExtremite_2_7_431_ R0002011 -1
     ValeurDeNTCOrigineVersExtremite_2_7_431_ R0003531 0.8
@@ -16794,28 +16794,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_432_ R0002036 1
     ValeurDeNTCOrigineVersExtremite_0_1_432_ R0002016 1
     ValeurDeNTCOrigineVersExtremite_0_1_432_ R0002022 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_432_ R0004687 1
-    ValeurDeNTCOrigineVersExtremite_0_1_432_ R0004688 1
+    ValeurDeNTCOrigineVersExtremite_0_1_432_ R0003727 1
+    ValeurDeNTCOrigineVersExtremite_0_1_432_ R0003728 1
     ValeurDeNTCOrigineVersExtremite_0_2_432_ R0002016 1
     ValeurDeNTCOrigineVersExtremite_0_2_432_ R0002026 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_432_ R0004689 1
-    ValeurDeNTCOrigineVersExtremite_0_2_432_ R0004690 1
+    ValeurDeNTCOrigineVersExtremite_0_2_432_ R0004063 1
+    ValeurDeNTCOrigineVersExtremite_0_2_432_ R0004064 1
     ValeurDeNTCOrigineVersExtremite_0_3_432_ R0002016 1
     ValeurDeNTCOrigineVersExtremite_0_3_432_ R0002030 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_432_ R0004691 1
-    ValeurDeNTCOrigineVersExtremite_0_3_432_ R0004692 1
+    ValeurDeNTCOrigineVersExtremite_0_3_432_ R0004399 1
+    ValeurDeNTCOrigineVersExtremite_0_3_432_ R0004400 1
     ValeurDeNTCOrigineVersExtremite_1_4_432_ R0002018 1
     ValeurDeNTCOrigineVersExtremite_1_4_432_ R0002020 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_432_ R0004693 1
-    ValeurDeNTCOrigineVersExtremite_1_4_432_ R0004694 1
+    ValeurDeNTCOrigineVersExtremite_1_4_432_ R0004735 1
+    ValeurDeNTCOrigineVersExtremite_1_4_432_ R0004736 1
     ValeurDeNTCOrigineVersExtremite_1_5_432_ R0002018 1
     ValeurDeNTCOrigineVersExtremite_1_5_432_ R0002024 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_432_ R0004695 1
-    ValeurDeNTCOrigineVersExtremite_1_5_432_ R0004696 1
+    ValeurDeNTCOrigineVersExtremite_1_5_432_ R0005071 1
+    ValeurDeNTCOrigineVersExtremite_1_5_432_ R0005072 1
     ValeurDeNTCOrigineVersExtremite_1_6_432_ R0002018 1
     ValeurDeNTCOrigineVersExtremite_1_6_432_ R0002028 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_432_ R0004697 1
-    ValeurDeNTCOrigineVersExtremite_1_6_432_ R0004698 1
+    ValeurDeNTCOrigineVersExtremite_1_6_432_ R0005407 1
+    ValeurDeNTCOrigineVersExtremite_1_6_432_ R0005408 1
     ValeurDeNTCOrigineVersExtremite_2_7_432_ R0002020 1
     ValeurDeNTCOrigineVersExtremite_2_7_432_ R0002032 -1
     ValeurDeNTCOrigineVersExtremite_2_7_432_ R0003532 0.8
@@ -16911,28 +16911,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_433_ R0002057 1
     ValeurDeNTCOrigineVersExtremite_0_1_433_ R0002037 1
     ValeurDeNTCOrigineVersExtremite_0_1_433_ R0002043 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_433_ R0004699 1
-    ValeurDeNTCOrigineVersExtremite_0_1_433_ R0004700 1
+    ValeurDeNTCOrigineVersExtremite_0_1_433_ R0003729 1
+    ValeurDeNTCOrigineVersExtremite_0_1_433_ R0003730 1
     ValeurDeNTCOrigineVersExtremite_0_2_433_ R0002037 1
     ValeurDeNTCOrigineVersExtremite_0_2_433_ R0002047 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_433_ R0004701 1
-    ValeurDeNTCOrigineVersExtremite_0_2_433_ R0004702 1
+    ValeurDeNTCOrigineVersExtremite_0_2_433_ R0004065 1
+    ValeurDeNTCOrigineVersExtremite_0_2_433_ R0004066 1
     ValeurDeNTCOrigineVersExtremite_0_3_433_ R0002037 1
     ValeurDeNTCOrigineVersExtremite_0_3_433_ R0002051 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_433_ R0004703 1
-    ValeurDeNTCOrigineVersExtremite_0_3_433_ R0004704 1
+    ValeurDeNTCOrigineVersExtremite_0_3_433_ R0004401 1
+    ValeurDeNTCOrigineVersExtremite_0_3_433_ R0004402 1
     ValeurDeNTCOrigineVersExtremite_1_4_433_ R0002039 1
     ValeurDeNTCOrigineVersExtremite_1_4_433_ R0002041 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_433_ R0004705 1
-    ValeurDeNTCOrigineVersExtremite_1_4_433_ R0004706 1
+    ValeurDeNTCOrigineVersExtremite_1_4_433_ R0004737 1
+    ValeurDeNTCOrigineVersExtremite_1_4_433_ R0004738 1
     ValeurDeNTCOrigineVersExtremite_1_5_433_ R0002039 1
     ValeurDeNTCOrigineVersExtremite_1_5_433_ R0002045 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_433_ R0004707 1
-    ValeurDeNTCOrigineVersExtremite_1_5_433_ R0004708 1
+    ValeurDeNTCOrigineVersExtremite_1_5_433_ R0005073 1
+    ValeurDeNTCOrigineVersExtremite_1_5_433_ R0005074 1
     ValeurDeNTCOrigineVersExtremite_1_6_433_ R0002039 1
     ValeurDeNTCOrigineVersExtremite_1_6_433_ R0002049 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_433_ R0004709 1
-    ValeurDeNTCOrigineVersExtremite_1_6_433_ R0004710 1
+    ValeurDeNTCOrigineVersExtremite_1_6_433_ R0005409 1
+    ValeurDeNTCOrigineVersExtremite_1_6_433_ R0005410 1
     ValeurDeNTCOrigineVersExtremite_2_7_433_ R0002041 1
     ValeurDeNTCOrigineVersExtremite_2_7_433_ R0002053 -1
     ValeurDeNTCOrigineVersExtremite_2_7_433_ R0003532 0.8
@@ -17028,28 +17028,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_434_ R0002078 1
     ValeurDeNTCOrigineVersExtremite_0_1_434_ R0002058 1
     ValeurDeNTCOrigineVersExtremite_0_1_434_ R0002064 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_434_ R0004711 1
-    ValeurDeNTCOrigineVersExtremite_0_1_434_ R0004712 1
+    ValeurDeNTCOrigineVersExtremite_0_1_434_ R0003731 1
+    ValeurDeNTCOrigineVersExtremite_0_1_434_ R0003732 1
     ValeurDeNTCOrigineVersExtremite_0_2_434_ R0002058 1
     ValeurDeNTCOrigineVersExtremite_0_2_434_ R0002068 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_434_ R0004713 1
-    ValeurDeNTCOrigineVersExtremite_0_2_434_ R0004714 1
+    ValeurDeNTCOrigineVersExtremite_0_2_434_ R0004067 1
+    ValeurDeNTCOrigineVersExtremite_0_2_434_ R0004068 1
     ValeurDeNTCOrigineVersExtremite_0_3_434_ R0002058 1
     ValeurDeNTCOrigineVersExtremite_0_3_434_ R0002072 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_434_ R0004715 1
-    ValeurDeNTCOrigineVersExtremite_0_3_434_ R0004716 1
+    ValeurDeNTCOrigineVersExtremite_0_3_434_ R0004403 1
+    ValeurDeNTCOrigineVersExtremite_0_3_434_ R0004404 1
     ValeurDeNTCOrigineVersExtremite_1_4_434_ R0002060 1
     ValeurDeNTCOrigineVersExtremite_1_4_434_ R0002062 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_434_ R0004717 1
-    ValeurDeNTCOrigineVersExtremite_1_4_434_ R0004718 1
+    ValeurDeNTCOrigineVersExtremite_1_4_434_ R0004739 1
+    ValeurDeNTCOrigineVersExtremite_1_4_434_ R0004740 1
     ValeurDeNTCOrigineVersExtremite_1_5_434_ R0002060 1
     ValeurDeNTCOrigineVersExtremite_1_5_434_ R0002066 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_434_ R0004719 1
-    ValeurDeNTCOrigineVersExtremite_1_5_434_ R0004720 1
+    ValeurDeNTCOrigineVersExtremite_1_5_434_ R0005075 1
+    ValeurDeNTCOrigineVersExtremite_1_5_434_ R0005076 1
     ValeurDeNTCOrigineVersExtremite_1_6_434_ R0002060 1
     ValeurDeNTCOrigineVersExtremite_1_6_434_ R0002070 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_434_ R0004721 1
-    ValeurDeNTCOrigineVersExtremite_1_6_434_ R0004722 1
+    ValeurDeNTCOrigineVersExtremite_1_6_434_ R0005411 1
+    ValeurDeNTCOrigineVersExtremite_1_6_434_ R0005412 1
     ValeurDeNTCOrigineVersExtremite_2_7_434_ R0002062 1
     ValeurDeNTCOrigineVersExtremite_2_7_434_ R0002074 -1
     ValeurDeNTCOrigineVersExtremite_2_7_434_ R0003532 0.8
@@ -17145,28 +17145,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_435_ R0002099 1
     ValeurDeNTCOrigineVersExtremite_0_1_435_ R0002079 1
     ValeurDeNTCOrigineVersExtremite_0_1_435_ R0002085 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_435_ R0004723 1
-    ValeurDeNTCOrigineVersExtremite_0_1_435_ R0004724 1
+    ValeurDeNTCOrigineVersExtremite_0_1_435_ R0003733 1
+    ValeurDeNTCOrigineVersExtremite_0_1_435_ R0003734 1
     ValeurDeNTCOrigineVersExtremite_0_2_435_ R0002079 1
     ValeurDeNTCOrigineVersExtremite_0_2_435_ R0002089 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_435_ R0004725 1
-    ValeurDeNTCOrigineVersExtremite_0_2_435_ R0004726 1
+    ValeurDeNTCOrigineVersExtremite_0_2_435_ R0004069 1
+    ValeurDeNTCOrigineVersExtremite_0_2_435_ R0004070 1
     ValeurDeNTCOrigineVersExtremite_0_3_435_ R0002079 1
     ValeurDeNTCOrigineVersExtremite_0_3_435_ R0002093 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_435_ R0004727 1
-    ValeurDeNTCOrigineVersExtremite_0_3_435_ R0004728 1
+    ValeurDeNTCOrigineVersExtremite_0_3_435_ R0004405 1
+    ValeurDeNTCOrigineVersExtremite_0_3_435_ R0004406 1
     ValeurDeNTCOrigineVersExtremite_1_4_435_ R0002081 1
     ValeurDeNTCOrigineVersExtremite_1_4_435_ R0002083 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_435_ R0004729 1
-    ValeurDeNTCOrigineVersExtremite_1_4_435_ R0004730 1
+    ValeurDeNTCOrigineVersExtremite_1_4_435_ R0004741 1
+    ValeurDeNTCOrigineVersExtremite_1_4_435_ R0004742 1
     ValeurDeNTCOrigineVersExtremite_1_5_435_ R0002081 1
     ValeurDeNTCOrigineVersExtremite_1_5_435_ R0002087 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_435_ R0004731 1
-    ValeurDeNTCOrigineVersExtremite_1_5_435_ R0004732 1
+    ValeurDeNTCOrigineVersExtremite_1_5_435_ R0005077 1
+    ValeurDeNTCOrigineVersExtremite_1_5_435_ R0005078 1
     ValeurDeNTCOrigineVersExtremite_1_6_435_ R0002081 1
     ValeurDeNTCOrigineVersExtremite_1_6_435_ R0002091 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_435_ R0004733 1
-    ValeurDeNTCOrigineVersExtremite_1_6_435_ R0004734 1
+    ValeurDeNTCOrigineVersExtremite_1_6_435_ R0005413 1
+    ValeurDeNTCOrigineVersExtremite_1_6_435_ R0005414 1
     ValeurDeNTCOrigineVersExtremite_2_7_435_ R0002083 1
     ValeurDeNTCOrigineVersExtremite_2_7_435_ R0002095 -1
     ValeurDeNTCOrigineVersExtremite_2_7_435_ R0003532 0.8
@@ -17262,28 +17262,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_436_ R0002120 1
     ValeurDeNTCOrigineVersExtremite_0_1_436_ R0002100 1
     ValeurDeNTCOrigineVersExtremite_0_1_436_ R0002106 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_436_ R0004735 1
-    ValeurDeNTCOrigineVersExtremite_0_1_436_ R0004736 1
+    ValeurDeNTCOrigineVersExtremite_0_1_436_ R0003735 1
+    ValeurDeNTCOrigineVersExtremite_0_1_436_ R0003736 1
     ValeurDeNTCOrigineVersExtremite_0_2_436_ R0002100 1
     ValeurDeNTCOrigineVersExtremite_0_2_436_ R0002110 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_436_ R0004737 1
-    ValeurDeNTCOrigineVersExtremite_0_2_436_ R0004738 1
+    ValeurDeNTCOrigineVersExtremite_0_2_436_ R0004071 1
+    ValeurDeNTCOrigineVersExtremite_0_2_436_ R0004072 1
     ValeurDeNTCOrigineVersExtremite_0_3_436_ R0002100 1
     ValeurDeNTCOrigineVersExtremite_0_3_436_ R0002114 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_436_ R0004739 1
-    ValeurDeNTCOrigineVersExtremite_0_3_436_ R0004740 1
+    ValeurDeNTCOrigineVersExtremite_0_3_436_ R0004407 1
+    ValeurDeNTCOrigineVersExtremite_0_3_436_ R0004408 1
     ValeurDeNTCOrigineVersExtremite_1_4_436_ R0002102 1
     ValeurDeNTCOrigineVersExtremite_1_4_436_ R0002104 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_436_ R0004741 1
-    ValeurDeNTCOrigineVersExtremite_1_4_436_ R0004742 1
+    ValeurDeNTCOrigineVersExtremite_1_4_436_ R0004743 1
+    ValeurDeNTCOrigineVersExtremite_1_4_436_ R0004744 1
     ValeurDeNTCOrigineVersExtremite_1_5_436_ R0002102 1
     ValeurDeNTCOrigineVersExtremite_1_5_436_ R0002108 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_436_ R0004743 1
-    ValeurDeNTCOrigineVersExtremite_1_5_436_ R0004744 1
+    ValeurDeNTCOrigineVersExtremite_1_5_436_ R0005079 1
+    ValeurDeNTCOrigineVersExtremite_1_5_436_ R0005080 1
     ValeurDeNTCOrigineVersExtremite_1_6_436_ R0002102 1
     ValeurDeNTCOrigineVersExtremite_1_6_436_ R0002112 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_436_ R0004745 1
-    ValeurDeNTCOrigineVersExtremite_1_6_436_ R0004746 1
+    ValeurDeNTCOrigineVersExtremite_1_6_436_ R0005415 1
+    ValeurDeNTCOrigineVersExtremite_1_6_436_ R0005416 1
     ValeurDeNTCOrigineVersExtremite_2_7_436_ R0002104 1
     ValeurDeNTCOrigineVersExtremite_2_7_436_ R0002116 -1
     ValeurDeNTCOrigineVersExtremite_2_7_436_ R0003532 0.8
@@ -17379,28 +17379,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_437_ R0002141 1
     ValeurDeNTCOrigineVersExtremite_0_1_437_ R0002121 1
     ValeurDeNTCOrigineVersExtremite_0_1_437_ R0002127 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_437_ R0004747 1
-    ValeurDeNTCOrigineVersExtremite_0_1_437_ R0004748 1
+    ValeurDeNTCOrigineVersExtremite_0_1_437_ R0003737 1
+    ValeurDeNTCOrigineVersExtremite_0_1_437_ R0003738 1
     ValeurDeNTCOrigineVersExtremite_0_2_437_ R0002121 1
     ValeurDeNTCOrigineVersExtremite_0_2_437_ R0002131 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_437_ R0004749 1
-    ValeurDeNTCOrigineVersExtremite_0_2_437_ R0004750 1
+    ValeurDeNTCOrigineVersExtremite_0_2_437_ R0004073 1
+    ValeurDeNTCOrigineVersExtremite_0_2_437_ R0004074 1
     ValeurDeNTCOrigineVersExtremite_0_3_437_ R0002121 1
     ValeurDeNTCOrigineVersExtremite_0_3_437_ R0002135 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_437_ R0004751 1
-    ValeurDeNTCOrigineVersExtremite_0_3_437_ R0004752 1
+    ValeurDeNTCOrigineVersExtremite_0_3_437_ R0004409 1
+    ValeurDeNTCOrigineVersExtremite_0_3_437_ R0004410 1
     ValeurDeNTCOrigineVersExtremite_1_4_437_ R0002123 1
     ValeurDeNTCOrigineVersExtremite_1_4_437_ R0002125 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_437_ R0004753 1
-    ValeurDeNTCOrigineVersExtremite_1_4_437_ R0004754 1
+    ValeurDeNTCOrigineVersExtremite_1_4_437_ R0004745 1
+    ValeurDeNTCOrigineVersExtremite_1_4_437_ R0004746 1
     ValeurDeNTCOrigineVersExtremite_1_5_437_ R0002123 1
     ValeurDeNTCOrigineVersExtremite_1_5_437_ R0002129 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_437_ R0004755 1
-    ValeurDeNTCOrigineVersExtremite_1_5_437_ R0004756 1
+    ValeurDeNTCOrigineVersExtremite_1_5_437_ R0005081 1
+    ValeurDeNTCOrigineVersExtremite_1_5_437_ R0005082 1
     ValeurDeNTCOrigineVersExtremite_1_6_437_ R0002123 1
     ValeurDeNTCOrigineVersExtremite_1_6_437_ R0002133 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_437_ R0004757 1
-    ValeurDeNTCOrigineVersExtremite_1_6_437_ R0004758 1
+    ValeurDeNTCOrigineVersExtremite_1_6_437_ R0005417 1
+    ValeurDeNTCOrigineVersExtremite_1_6_437_ R0005418 1
     ValeurDeNTCOrigineVersExtremite_2_7_437_ R0002125 1
     ValeurDeNTCOrigineVersExtremite_2_7_437_ R0002137 -1
     ValeurDeNTCOrigineVersExtremite_2_7_437_ R0003532 0.8
@@ -17496,28 +17496,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_438_ R0002162 1
     ValeurDeNTCOrigineVersExtremite_0_1_438_ R0002142 1
     ValeurDeNTCOrigineVersExtremite_0_1_438_ R0002148 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_438_ R0004759 1
-    ValeurDeNTCOrigineVersExtremite_0_1_438_ R0004760 1
+    ValeurDeNTCOrigineVersExtremite_0_1_438_ R0003739 1
+    ValeurDeNTCOrigineVersExtremite_0_1_438_ R0003740 1
     ValeurDeNTCOrigineVersExtremite_0_2_438_ R0002142 1
     ValeurDeNTCOrigineVersExtremite_0_2_438_ R0002152 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_438_ R0004761 1
-    ValeurDeNTCOrigineVersExtremite_0_2_438_ R0004762 1
+    ValeurDeNTCOrigineVersExtremite_0_2_438_ R0004075 1
+    ValeurDeNTCOrigineVersExtremite_0_2_438_ R0004076 1
     ValeurDeNTCOrigineVersExtremite_0_3_438_ R0002142 1
     ValeurDeNTCOrigineVersExtremite_0_3_438_ R0002156 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_438_ R0004763 1
-    ValeurDeNTCOrigineVersExtremite_0_3_438_ R0004764 1
+    ValeurDeNTCOrigineVersExtremite_0_3_438_ R0004411 1
+    ValeurDeNTCOrigineVersExtremite_0_3_438_ R0004412 1
     ValeurDeNTCOrigineVersExtremite_1_4_438_ R0002144 1
     ValeurDeNTCOrigineVersExtremite_1_4_438_ R0002146 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_438_ R0004765 1
-    ValeurDeNTCOrigineVersExtremite_1_4_438_ R0004766 1
+    ValeurDeNTCOrigineVersExtremite_1_4_438_ R0004747 1
+    ValeurDeNTCOrigineVersExtremite_1_4_438_ R0004748 1
     ValeurDeNTCOrigineVersExtremite_1_5_438_ R0002144 1
     ValeurDeNTCOrigineVersExtremite_1_5_438_ R0002150 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_438_ R0004767 1
-    ValeurDeNTCOrigineVersExtremite_1_5_438_ R0004768 1
+    ValeurDeNTCOrigineVersExtremite_1_5_438_ R0005083 1
+    ValeurDeNTCOrigineVersExtremite_1_5_438_ R0005084 1
     ValeurDeNTCOrigineVersExtremite_1_6_438_ R0002144 1
     ValeurDeNTCOrigineVersExtremite_1_6_438_ R0002154 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_438_ R0004769 1
-    ValeurDeNTCOrigineVersExtremite_1_6_438_ R0004770 1
+    ValeurDeNTCOrigineVersExtremite_1_6_438_ R0005419 1
+    ValeurDeNTCOrigineVersExtremite_1_6_438_ R0005420 1
     ValeurDeNTCOrigineVersExtremite_2_7_438_ R0002146 1
     ValeurDeNTCOrigineVersExtremite_2_7_438_ R0002158 -1
     ValeurDeNTCOrigineVersExtremite_2_7_438_ R0003532 0.8
@@ -17613,28 +17613,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_439_ R0002183 1
     ValeurDeNTCOrigineVersExtremite_0_1_439_ R0002163 1
     ValeurDeNTCOrigineVersExtremite_0_1_439_ R0002169 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_439_ R0004771 1
-    ValeurDeNTCOrigineVersExtremite_0_1_439_ R0004772 1
+    ValeurDeNTCOrigineVersExtremite_0_1_439_ R0003741 1
+    ValeurDeNTCOrigineVersExtremite_0_1_439_ R0003742 1
     ValeurDeNTCOrigineVersExtremite_0_2_439_ R0002163 1
     ValeurDeNTCOrigineVersExtremite_0_2_439_ R0002173 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_439_ R0004773 1
-    ValeurDeNTCOrigineVersExtremite_0_2_439_ R0004774 1
+    ValeurDeNTCOrigineVersExtremite_0_2_439_ R0004077 1
+    ValeurDeNTCOrigineVersExtremite_0_2_439_ R0004078 1
     ValeurDeNTCOrigineVersExtremite_0_3_439_ R0002163 1
     ValeurDeNTCOrigineVersExtremite_0_3_439_ R0002177 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_439_ R0004775 1
-    ValeurDeNTCOrigineVersExtremite_0_3_439_ R0004776 1
+    ValeurDeNTCOrigineVersExtremite_0_3_439_ R0004413 1
+    ValeurDeNTCOrigineVersExtremite_0_3_439_ R0004414 1
     ValeurDeNTCOrigineVersExtremite_1_4_439_ R0002165 1
     ValeurDeNTCOrigineVersExtremite_1_4_439_ R0002167 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_439_ R0004777 1
-    ValeurDeNTCOrigineVersExtremite_1_4_439_ R0004778 1
+    ValeurDeNTCOrigineVersExtremite_1_4_439_ R0004749 1
+    ValeurDeNTCOrigineVersExtremite_1_4_439_ R0004750 1
     ValeurDeNTCOrigineVersExtremite_1_5_439_ R0002165 1
     ValeurDeNTCOrigineVersExtremite_1_5_439_ R0002171 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_439_ R0004779 1
-    ValeurDeNTCOrigineVersExtremite_1_5_439_ R0004780 1
+    ValeurDeNTCOrigineVersExtremite_1_5_439_ R0005085 1
+    ValeurDeNTCOrigineVersExtremite_1_5_439_ R0005086 1
     ValeurDeNTCOrigineVersExtremite_1_6_439_ R0002165 1
     ValeurDeNTCOrigineVersExtremite_1_6_439_ R0002175 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_439_ R0004781 1
-    ValeurDeNTCOrigineVersExtremite_1_6_439_ R0004782 1
+    ValeurDeNTCOrigineVersExtremite_1_6_439_ R0005421 1
+    ValeurDeNTCOrigineVersExtremite_1_6_439_ R0005422 1
     ValeurDeNTCOrigineVersExtremite_2_7_439_ R0002167 1
     ValeurDeNTCOrigineVersExtremite_2_7_439_ R0002179 -1
     ValeurDeNTCOrigineVersExtremite_2_7_439_ R0003532 0.8
@@ -17730,28 +17730,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_440_ R0002204 1
     ValeurDeNTCOrigineVersExtremite_0_1_440_ R0002184 1
     ValeurDeNTCOrigineVersExtremite_0_1_440_ R0002190 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_440_ R0004783 1
-    ValeurDeNTCOrigineVersExtremite_0_1_440_ R0004784 1
+    ValeurDeNTCOrigineVersExtremite_0_1_440_ R0003743 1
+    ValeurDeNTCOrigineVersExtremite_0_1_440_ R0003744 1
     ValeurDeNTCOrigineVersExtremite_0_2_440_ R0002184 1
     ValeurDeNTCOrigineVersExtremite_0_2_440_ R0002194 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_440_ R0004785 1
-    ValeurDeNTCOrigineVersExtremite_0_2_440_ R0004786 1
+    ValeurDeNTCOrigineVersExtremite_0_2_440_ R0004079 1
+    ValeurDeNTCOrigineVersExtremite_0_2_440_ R0004080 1
     ValeurDeNTCOrigineVersExtremite_0_3_440_ R0002184 1
     ValeurDeNTCOrigineVersExtremite_0_3_440_ R0002198 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_440_ R0004787 1
-    ValeurDeNTCOrigineVersExtremite_0_3_440_ R0004788 1
+    ValeurDeNTCOrigineVersExtremite_0_3_440_ R0004415 1
+    ValeurDeNTCOrigineVersExtremite_0_3_440_ R0004416 1
     ValeurDeNTCOrigineVersExtremite_1_4_440_ R0002186 1
     ValeurDeNTCOrigineVersExtremite_1_4_440_ R0002188 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_440_ R0004789 1
-    ValeurDeNTCOrigineVersExtremite_1_4_440_ R0004790 1
+    ValeurDeNTCOrigineVersExtremite_1_4_440_ R0004751 1
+    ValeurDeNTCOrigineVersExtremite_1_4_440_ R0004752 1
     ValeurDeNTCOrigineVersExtremite_1_5_440_ R0002186 1
     ValeurDeNTCOrigineVersExtremite_1_5_440_ R0002192 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_440_ R0004791 1
-    ValeurDeNTCOrigineVersExtremite_1_5_440_ R0004792 1
+    ValeurDeNTCOrigineVersExtremite_1_5_440_ R0005087 1
+    ValeurDeNTCOrigineVersExtremite_1_5_440_ R0005088 1
     ValeurDeNTCOrigineVersExtremite_1_6_440_ R0002186 1
     ValeurDeNTCOrigineVersExtremite_1_6_440_ R0002196 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_440_ R0004793 1
-    ValeurDeNTCOrigineVersExtremite_1_6_440_ R0004794 1
+    ValeurDeNTCOrigineVersExtremite_1_6_440_ R0005423 1
+    ValeurDeNTCOrigineVersExtremite_1_6_440_ R0005424 1
     ValeurDeNTCOrigineVersExtremite_2_7_440_ R0002188 1
     ValeurDeNTCOrigineVersExtremite_2_7_440_ R0002200 -1
     ValeurDeNTCOrigineVersExtremite_2_7_440_ R0003532 0.8
@@ -17847,28 +17847,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_441_ R0002225 1
     ValeurDeNTCOrigineVersExtremite_0_1_441_ R0002205 1
     ValeurDeNTCOrigineVersExtremite_0_1_441_ R0002211 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_441_ R0004795 1
-    ValeurDeNTCOrigineVersExtremite_0_1_441_ R0004796 1
+    ValeurDeNTCOrigineVersExtremite_0_1_441_ R0003745 1
+    ValeurDeNTCOrigineVersExtremite_0_1_441_ R0003746 1
     ValeurDeNTCOrigineVersExtremite_0_2_441_ R0002205 1
     ValeurDeNTCOrigineVersExtremite_0_2_441_ R0002215 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_441_ R0004797 1
-    ValeurDeNTCOrigineVersExtremite_0_2_441_ R0004798 1
+    ValeurDeNTCOrigineVersExtremite_0_2_441_ R0004081 1
+    ValeurDeNTCOrigineVersExtremite_0_2_441_ R0004082 1
     ValeurDeNTCOrigineVersExtremite_0_3_441_ R0002205 1
     ValeurDeNTCOrigineVersExtremite_0_3_441_ R0002219 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_441_ R0004799 1
-    ValeurDeNTCOrigineVersExtremite_0_3_441_ R0004800 1
+    ValeurDeNTCOrigineVersExtremite_0_3_441_ R0004417 1
+    ValeurDeNTCOrigineVersExtremite_0_3_441_ R0004418 1
     ValeurDeNTCOrigineVersExtremite_1_4_441_ R0002207 1
     ValeurDeNTCOrigineVersExtremite_1_4_441_ R0002209 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_441_ R0004801 1
-    ValeurDeNTCOrigineVersExtremite_1_4_441_ R0004802 1
+    ValeurDeNTCOrigineVersExtremite_1_4_441_ R0004753 1
+    ValeurDeNTCOrigineVersExtremite_1_4_441_ R0004754 1
     ValeurDeNTCOrigineVersExtremite_1_5_441_ R0002207 1
     ValeurDeNTCOrigineVersExtremite_1_5_441_ R0002213 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_441_ R0004803 1
-    ValeurDeNTCOrigineVersExtremite_1_5_441_ R0004804 1
+    ValeurDeNTCOrigineVersExtremite_1_5_441_ R0005089 1
+    ValeurDeNTCOrigineVersExtremite_1_5_441_ R0005090 1
     ValeurDeNTCOrigineVersExtremite_1_6_441_ R0002207 1
     ValeurDeNTCOrigineVersExtremite_1_6_441_ R0002217 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_441_ R0004805 1
-    ValeurDeNTCOrigineVersExtremite_1_6_441_ R0004806 1
+    ValeurDeNTCOrigineVersExtremite_1_6_441_ R0005425 1
+    ValeurDeNTCOrigineVersExtremite_1_6_441_ R0005426 1
     ValeurDeNTCOrigineVersExtremite_2_7_441_ R0002209 1
     ValeurDeNTCOrigineVersExtremite_2_7_441_ R0002221 -1
     ValeurDeNTCOrigineVersExtremite_2_7_441_ R0003532 0.8
@@ -17964,28 +17964,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_442_ R0002246 1
     ValeurDeNTCOrigineVersExtremite_0_1_442_ R0002226 1
     ValeurDeNTCOrigineVersExtremite_0_1_442_ R0002232 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_442_ R0004807 1
-    ValeurDeNTCOrigineVersExtremite_0_1_442_ R0004808 1
+    ValeurDeNTCOrigineVersExtremite_0_1_442_ R0003747 1
+    ValeurDeNTCOrigineVersExtremite_0_1_442_ R0003748 1
     ValeurDeNTCOrigineVersExtremite_0_2_442_ R0002226 1
     ValeurDeNTCOrigineVersExtremite_0_2_442_ R0002236 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_442_ R0004809 1
-    ValeurDeNTCOrigineVersExtremite_0_2_442_ R0004810 1
+    ValeurDeNTCOrigineVersExtremite_0_2_442_ R0004083 1
+    ValeurDeNTCOrigineVersExtremite_0_2_442_ R0004084 1
     ValeurDeNTCOrigineVersExtremite_0_3_442_ R0002226 1
     ValeurDeNTCOrigineVersExtremite_0_3_442_ R0002240 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_442_ R0004811 1
-    ValeurDeNTCOrigineVersExtremite_0_3_442_ R0004812 1
+    ValeurDeNTCOrigineVersExtremite_0_3_442_ R0004419 1
+    ValeurDeNTCOrigineVersExtremite_0_3_442_ R0004420 1
     ValeurDeNTCOrigineVersExtremite_1_4_442_ R0002228 1
     ValeurDeNTCOrigineVersExtremite_1_4_442_ R0002230 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_442_ R0004813 1
-    ValeurDeNTCOrigineVersExtremite_1_4_442_ R0004814 1
+    ValeurDeNTCOrigineVersExtremite_1_4_442_ R0004755 1
+    ValeurDeNTCOrigineVersExtremite_1_4_442_ R0004756 1
     ValeurDeNTCOrigineVersExtremite_1_5_442_ R0002228 1
     ValeurDeNTCOrigineVersExtremite_1_5_442_ R0002234 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_442_ R0004815 1
-    ValeurDeNTCOrigineVersExtremite_1_5_442_ R0004816 1
+    ValeurDeNTCOrigineVersExtremite_1_5_442_ R0005091 1
+    ValeurDeNTCOrigineVersExtremite_1_5_442_ R0005092 1
     ValeurDeNTCOrigineVersExtremite_1_6_442_ R0002228 1
     ValeurDeNTCOrigineVersExtremite_1_6_442_ R0002238 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_442_ R0004817 1
-    ValeurDeNTCOrigineVersExtremite_1_6_442_ R0004818 1
+    ValeurDeNTCOrigineVersExtremite_1_6_442_ R0005427 1
+    ValeurDeNTCOrigineVersExtremite_1_6_442_ R0005428 1
     ValeurDeNTCOrigineVersExtremite_2_7_442_ R0002230 1
     ValeurDeNTCOrigineVersExtremite_2_7_442_ R0002242 -1
     ValeurDeNTCOrigineVersExtremite_2_7_442_ R0003532 0.8
@@ -18081,28 +18081,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_443_ R0002267 1
     ValeurDeNTCOrigineVersExtremite_0_1_443_ R0002247 1
     ValeurDeNTCOrigineVersExtremite_0_1_443_ R0002253 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_443_ R0004819 1
-    ValeurDeNTCOrigineVersExtremite_0_1_443_ R0004820 1
+    ValeurDeNTCOrigineVersExtremite_0_1_443_ R0003749 1
+    ValeurDeNTCOrigineVersExtremite_0_1_443_ R0003750 1
     ValeurDeNTCOrigineVersExtremite_0_2_443_ R0002247 1
     ValeurDeNTCOrigineVersExtremite_0_2_443_ R0002257 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_443_ R0004821 1
-    ValeurDeNTCOrigineVersExtremite_0_2_443_ R0004822 1
+    ValeurDeNTCOrigineVersExtremite_0_2_443_ R0004085 1
+    ValeurDeNTCOrigineVersExtremite_0_2_443_ R0004086 1
     ValeurDeNTCOrigineVersExtremite_0_3_443_ R0002247 1
     ValeurDeNTCOrigineVersExtremite_0_3_443_ R0002261 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_443_ R0004823 1
-    ValeurDeNTCOrigineVersExtremite_0_3_443_ R0004824 1
+    ValeurDeNTCOrigineVersExtremite_0_3_443_ R0004421 1
+    ValeurDeNTCOrigineVersExtremite_0_3_443_ R0004422 1
     ValeurDeNTCOrigineVersExtremite_1_4_443_ R0002249 1
     ValeurDeNTCOrigineVersExtremite_1_4_443_ R0002251 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_443_ R0004825 1
-    ValeurDeNTCOrigineVersExtremite_1_4_443_ R0004826 1
+    ValeurDeNTCOrigineVersExtremite_1_4_443_ R0004757 1
+    ValeurDeNTCOrigineVersExtremite_1_4_443_ R0004758 1
     ValeurDeNTCOrigineVersExtremite_1_5_443_ R0002249 1
     ValeurDeNTCOrigineVersExtremite_1_5_443_ R0002255 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_443_ R0004827 1
-    ValeurDeNTCOrigineVersExtremite_1_5_443_ R0004828 1
+    ValeurDeNTCOrigineVersExtremite_1_5_443_ R0005093 1
+    ValeurDeNTCOrigineVersExtremite_1_5_443_ R0005094 1
     ValeurDeNTCOrigineVersExtremite_1_6_443_ R0002249 1
     ValeurDeNTCOrigineVersExtremite_1_6_443_ R0002259 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_443_ R0004829 1
-    ValeurDeNTCOrigineVersExtremite_1_6_443_ R0004830 1
+    ValeurDeNTCOrigineVersExtremite_1_6_443_ R0005429 1
+    ValeurDeNTCOrigineVersExtremite_1_6_443_ R0005430 1
     ValeurDeNTCOrigineVersExtremite_2_7_443_ R0002251 1
     ValeurDeNTCOrigineVersExtremite_2_7_443_ R0002263 -1
     ValeurDeNTCOrigineVersExtremite_2_7_443_ R0003532 0.8
@@ -18198,28 +18198,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_444_ R0002288 1
     ValeurDeNTCOrigineVersExtremite_0_1_444_ R0002268 1
     ValeurDeNTCOrigineVersExtremite_0_1_444_ R0002274 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_444_ R0004831 1
-    ValeurDeNTCOrigineVersExtremite_0_1_444_ R0004832 1
+    ValeurDeNTCOrigineVersExtremite_0_1_444_ R0003751 1
+    ValeurDeNTCOrigineVersExtremite_0_1_444_ R0003752 1
     ValeurDeNTCOrigineVersExtremite_0_2_444_ R0002268 1
     ValeurDeNTCOrigineVersExtremite_0_2_444_ R0002278 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_444_ R0004833 1
-    ValeurDeNTCOrigineVersExtremite_0_2_444_ R0004834 1
+    ValeurDeNTCOrigineVersExtremite_0_2_444_ R0004087 1
+    ValeurDeNTCOrigineVersExtremite_0_2_444_ R0004088 1
     ValeurDeNTCOrigineVersExtremite_0_3_444_ R0002268 1
     ValeurDeNTCOrigineVersExtremite_0_3_444_ R0002282 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_444_ R0004835 1
-    ValeurDeNTCOrigineVersExtremite_0_3_444_ R0004836 1
+    ValeurDeNTCOrigineVersExtremite_0_3_444_ R0004423 1
+    ValeurDeNTCOrigineVersExtremite_0_3_444_ R0004424 1
     ValeurDeNTCOrigineVersExtremite_1_4_444_ R0002270 1
     ValeurDeNTCOrigineVersExtremite_1_4_444_ R0002272 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_444_ R0004837 1
-    ValeurDeNTCOrigineVersExtremite_1_4_444_ R0004838 1
+    ValeurDeNTCOrigineVersExtremite_1_4_444_ R0004759 1
+    ValeurDeNTCOrigineVersExtremite_1_4_444_ R0004760 1
     ValeurDeNTCOrigineVersExtremite_1_5_444_ R0002270 1
     ValeurDeNTCOrigineVersExtremite_1_5_444_ R0002276 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_444_ R0004839 1
-    ValeurDeNTCOrigineVersExtremite_1_5_444_ R0004840 1
+    ValeurDeNTCOrigineVersExtremite_1_5_444_ R0005095 1
+    ValeurDeNTCOrigineVersExtremite_1_5_444_ R0005096 1
     ValeurDeNTCOrigineVersExtremite_1_6_444_ R0002270 1
     ValeurDeNTCOrigineVersExtremite_1_6_444_ R0002280 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_444_ R0004841 1
-    ValeurDeNTCOrigineVersExtremite_1_6_444_ R0004842 1
+    ValeurDeNTCOrigineVersExtremite_1_6_444_ R0005431 1
+    ValeurDeNTCOrigineVersExtremite_1_6_444_ R0005432 1
     ValeurDeNTCOrigineVersExtremite_2_7_444_ R0002272 1
     ValeurDeNTCOrigineVersExtremite_2_7_444_ R0002284 -1
     ValeurDeNTCOrigineVersExtremite_2_7_444_ R0003532 0.8
@@ -18315,28 +18315,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_445_ R0002309 1
     ValeurDeNTCOrigineVersExtremite_0_1_445_ R0002289 1
     ValeurDeNTCOrigineVersExtremite_0_1_445_ R0002295 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_445_ R0004843 1
-    ValeurDeNTCOrigineVersExtremite_0_1_445_ R0004844 1
+    ValeurDeNTCOrigineVersExtremite_0_1_445_ R0003753 1
+    ValeurDeNTCOrigineVersExtremite_0_1_445_ R0003754 1
     ValeurDeNTCOrigineVersExtremite_0_2_445_ R0002289 1
     ValeurDeNTCOrigineVersExtremite_0_2_445_ R0002299 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_445_ R0004845 1
-    ValeurDeNTCOrigineVersExtremite_0_2_445_ R0004846 1
+    ValeurDeNTCOrigineVersExtremite_0_2_445_ R0004089 1
+    ValeurDeNTCOrigineVersExtremite_0_2_445_ R0004090 1
     ValeurDeNTCOrigineVersExtremite_0_3_445_ R0002289 1
     ValeurDeNTCOrigineVersExtremite_0_3_445_ R0002303 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_445_ R0004847 1
-    ValeurDeNTCOrigineVersExtremite_0_3_445_ R0004848 1
+    ValeurDeNTCOrigineVersExtremite_0_3_445_ R0004425 1
+    ValeurDeNTCOrigineVersExtremite_0_3_445_ R0004426 1
     ValeurDeNTCOrigineVersExtremite_1_4_445_ R0002291 1
     ValeurDeNTCOrigineVersExtremite_1_4_445_ R0002293 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_445_ R0004849 1
-    ValeurDeNTCOrigineVersExtremite_1_4_445_ R0004850 1
+    ValeurDeNTCOrigineVersExtremite_1_4_445_ R0004761 1
+    ValeurDeNTCOrigineVersExtremite_1_4_445_ R0004762 1
     ValeurDeNTCOrigineVersExtremite_1_5_445_ R0002291 1
     ValeurDeNTCOrigineVersExtremite_1_5_445_ R0002297 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_445_ R0004851 1
-    ValeurDeNTCOrigineVersExtremite_1_5_445_ R0004852 1
+    ValeurDeNTCOrigineVersExtremite_1_5_445_ R0005097 1
+    ValeurDeNTCOrigineVersExtremite_1_5_445_ R0005098 1
     ValeurDeNTCOrigineVersExtremite_1_6_445_ R0002291 1
     ValeurDeNTCOrigineVersExtremite_1_6_445_ R0002301 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_445_ R0004853 1
-    ValeurDeNTCOrigineVersExtremite_1_6_445_ R0004854 1
+    ValeurDeNTCOrigineVersExtremite_1_6_445_ R0005433 1
+    ValeurDeNTCOrigineVersExtremite_1_6_445_ R0005434 1
     ValeurDeNTCOrigineVersExtremite_2_7_445_ R0002293 1
     ValeurDeNTCOrigineVersExtremite_2_7_445_ R0002305 -1
     ValeurDeNTCOrigineVersExtremite_2_7_445_ R0003532 0.8
@@ -18432,28 +18432,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_446_ R0002330 1
     ValeurDeNTCOrigineVersExtremite_0_1_446_ R0002310 1
     ValeurDeNTCOrigineVersExtremite_0_1_446_ R0002316 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_446_ R0004855 1
-    ValeurDeNTCOrigineVersExtremite_0_1_446_ R0004856 1
+    ValeurDeNTCOrigineVersExtremite_0_1_446_ R0003755 1
+    ValeurDeNTCOrigineVersExtremite_0_1_446_ R0003756 1
     ValeurDeNTCOrigineVersExtremite_0_2_446_ R0002310 1
     ValeurDeNTCOrigineVersExtremite_0_2_446_ R0002320 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_446_ R0004857 1
-    ValeurDeNTCOrigineVersExtremite_0_2_446_ R0004858 1
+    ValeurDeNTCOrigineVersExtremite_0_2_446_ R0004091 1
+    ValeurDeNTCOrigineVersExtremite_0_2_446_ R0004092 1
     ValeurDeNTCOrigineVersExtremite_0_3_446_ R0002310 1
     ValeurDeNTCOrigineVersExtremite_0_3_446_ R0002324 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_446_ R0004859 1
-    ValeurDeNTCOrigineVersExtremite_0_3_446_ R0004860 1
+    ValeurDeNTCOrigineVersExtremite_0_3_446_ R0004427 1
+    ValeurDeNTCOrigineVersExtremite_0_3_446_ R0004428 1
     ValeurDeNTCOrigineVersExtremite_1_4_446_ R0002312 1
     ValeurDeNTCOrigineVersExtremite_1_4_446_ R0002314 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_446_ R0004861 1
-    ValeurDeNTCOrigineVersExtremite_1_4_446_ R0004862 1
+    ValeurDeNTCOrigineVersExtremite_1_4_446_ R0004763 1
+    ValeurDeNTCOrigineVersExtremite_1_4_446_ R0004764 1
     ValeurDeNTCOrigineVersExtremite_1_5_446_ R0002312 1
     ValeurDeNTCOrigineVersExtremite_1_5_446_ R0002318 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_446_ R0004863 1
-    ValeurDeNTCOrigineVersExtremite_1_5_446_ R0004864 1
+    ValeurDeNTCOrigineVersExtremite_1_5_446_ R0005099 1
+    ValeurDeNTCOrigineVersExtremite_1_5_446_ R0005100 1
     ValeurDeNTCOrigineVersExtremite_1_6_446_ R0002312 1
     ValeurDeNTCOrigineVersExtremite_1_6_446_ R0002322 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_446_ R0004865 1
-    ValeurDeNTCOrigineVersExtremite_1_6_446_ R0004866 1
+    ValeurDeNTCOrigineVersExtremite_1_6_446_ R0005435 1
+    ValeurDeNTCOrigineVersExtremite_1_6_446_ R0005436 1
     ValeurDeNTCOrigineVersExtremite_2_7_446_ R0002314 1
     ValeurDeNTCOrigineVersExtremite_2_7_446_ R0002326 -1
     ValeurDeNTCOrigineVersExtremite_2_7_446_ R0003532 0.8
@@ -18549,28 +18549,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_447_ R0002351 1
     ValeurDeNTCOrigineVersExtremite_0_1_447_ R0002331 1
     ValeurDeNTCOrigineVersExtremite_0_1_447_ R0002337 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_447_ R0004867 1
-    ValeurDeNTCOrigineVersExtremite_0_1_447_ R0004868 1
+    ValeurDeNTCOrigineVersExtremite_0_1_447_ R0003757 1
+    ValeurDeNTCOrigineVersExtremite_0_1_447_ R0003758 1
     ValeurDeNTCOrigineVersExtremite_0_2_447_ R0002331 1
     ValeurDeNTCOrigineVersExtremite_0_2_447_ R0002341 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_447_ R0004869 1
-    ValeurDeNTCOrigineVersExtremite_0_2_447_ R0004870 1
+    ValeurDeNTCOrigineVersExtremite_0_2_447_ R0004093 1
+    ValeurDeNTCOrigineVersExtremite_0_2_447_ R0004094 1
     ValeurDeNTCOrigineVersExtremite_0_3_447_ R0002331 1
     ValeurDeNTCOrigineVersExtremite_0_3_447_ R0002345 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_447_ R0004871 1
-    ValeurDeNTCOrigineVersExtremite_0_3_447_ R0004872 1
+    ValeurDeNTCOrigineVersExtremite_0_3_447_ R0004429 1
+    ValeurDeNTCOrigineVersExtremite_0_3_447_ R0004430 1
     ValeurDeNTCOrigineVersExtremite_1_4_447_ R0002333 1
     ValeurDeNTCOrigineVersExtremite_1_4_447_ R0002335 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_447_ R0004873 1
-    ValeurDeNTCOrigineVersExtremite_1_4_447_ R0004874 1
+    ValeurDeNTCOrigineVersExtremite_1_4_447_ R0004765 1
+    ValeurDeNTCOrigineVersExtremite_1_4_447_ R0004766 1
     ValeurDeNTCOrigineVersExtremite_1_5_447_ R0002333 1
     ValeurDeNTCOrigineVersExtremite_1_5_447_ R0002339 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_447_ R0004875 1
-    ValeurDeNTCOrigineVersExtremite_1_5_447_ R0004876 1
+    ValeurDeNTCOrigineVersExtremite_1_5_447_ R0005101 1
+    ValeurDeNTCOrigineVersExtremite_1_5_447_ R0005102 1
     ValeurDeNTCOrigineVersExtremite_1_6_447_ R0002333 1
     ValeurDeNTCOrigineVersExtremite_1_6_447_ R0002343 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_447_ R0004877 1
-    ValeurDeNTCOrigineVersExtremite_1_6_447_ R0004878 1
+    ValeurDeNTCOrigineVersExtremite_1_6_447_ R0005437 1
+    ValeurDeNTCOrigineVersExtremite_1_6_447_ R0005438 1
     ValeurDeNTCOrigineVersExtremite_2_7_447_ R0002335 1
     ValeurDeNTCOrigineVersExtremite_2_7_447_ R0002347 -1
     ValeurDeNTCOrigineVersExtremite_2_7_447_ R0003532 0.8
@@ -18666,28 +18666,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_448_ R0002372 1
     ValeurDeNTCOrigineVersExtremite_0_1_448_ R0002352 1
     ValeurDeNTCOrigineVersExtremite_0_1_448_ R0002358 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_448_ R0004879 1
-    ValeurDeNTCOrigineVersExtremite_0_1_448_ R0004880 1
+    ValeurDeNTCOrigineVersExtremite_0_1_448_ R0003759 1
+    ValeurDeNTCOrigineVersExtremite_0_1_448_ R0003760 1
     ValeurDeNTCOrigineVersExtremite_0_2_448_ R0002352 1
     ValeurDeNTCOrigineVersExtremite_0_2_448_ R0002362 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_448_ R0004881 1
-    ValeurDeNTCOrigineVersExtremite_0_2_448_ R0004882 1
+    ValeurDeNTCOrigineVersExtremite_0_2_448_ R0004095 1
+    ValeurDeNTCOrigineVersExtremite_0_2_448_ R0004096 1
     ValeurDeNTCOrigineVersExtremite_0_3_448_ R0002352 1
     ValeurDeNTCOrigineVersExtremite_0_3_448_ R0002366 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_448_ R0004883 1
-    ValeurDeNTCOrigineVersExtremite_0_3_448_ R0004884 1
+    ValeurDeNTCOrigineVersExtremite_0_3_448_ R0004431 1
+    ValeurDeNTCOrigineVersExtremite_0_3_448_ R0004432 1
     ValeurDeNTCOrigineVersExtremite_1_4_448_ R0002354 1
     ValeurDeNTCOrigineVersExtremite_1_4_448_ R0002356 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_448_ R0004885 1
-    ValeurDeNTCOrigineVersExtremite_1_4_448_ R0004886 1
+    ValeurDeNTCOrigineVersExtremite_1_4_448_ R0004767 1
+    ValeurDeNTCOrigineVersExtremite_1_4_448_ R0004768 1
     ValeurDeNTCOrigineVersExtremite_1_5_448_ R0002354 1
     ValeurDeNTCOrigineVersExtremite_1_5_448_ R0002360 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_448_ R0004887 1
-    ValeurDeNTCOrigineVersExtremite_1_5_448_ R0004888 1
+    ValeurDeNTCOrigineVersExtremite_1_5_448_ R0005103 1
+    ValeurDeNTCOrigineVersExtremite_1_5_448_ R0005104 1
     ValeurDeNTCOrigineVersExtremite_1_6_448_ R0002354 1
     ValeurDeNTCOrigineVersExtremite_1_6_448_ R0002364 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_448_ R0004889 1
-    ValeurDeNTCOrigineVersExtremite_1_6_448_ R0004890 1
+    ValeurDeNTCOrigineVersExtremite_1_6_448_ R0005439 1
+    ValeurDeNTCOrigineVersExtremite_1_6_448_ R0005440 1
     ValeurDeNTCOrigineVersExtremite_2_7_448_ R0002356 1
     ValeurDeNTCOrigineVersExtremite_2_7_448_ R0002368 -1
     ValeurDeNTCOrigineVersExtremite_2_7_448_ R0003532 0.8
@@ -18783,28 +18783,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_449_ R0002393 1
     ValeurDeNTCOrigineVersExtremite_0_1_449_ R0002373 1
     ValeurDeNTCOrigineVersExtremite_0_1_449_ R0002379 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_449_ R0004891 1
-    ValeurDeNTCOrigineVersExtremite_0_1_449_ R0004892 1
+    ValeurDeNTCOrigineVersExtremite_0_1_449_ R0003761 1
+    ValeurDeNTCOrigineVersExtremite_0_1_449_ R0003762 1
     ValeurDeNTCOrigineVersExtremite_0_2_449_ R0002373 1
     ValeurDeNTCOrigineVersExtremite_0_2_449_ R0002383 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_449_ R0004893 1
-    ValeurDeNTCOrigineVersExtremite_0_2_449_ R0004894 1
+    ValeurDeNTCOrigineVersExtremite_0_2_449_ R0004097 1
+    ValeurDeNTCOrigineVersExtremite_0_2_449_ R0004098 1
     ValeurDeNTCOrigineVersExtremite_0_3_449_ R0002373 1
     ValeurDeNTCOrigineVersExtremite_0_3_449_ R0002387 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_449_ R0004895 1
-    ValeurDeNTCOrigineVersExtremite_0_3_449_ R0004896 1
+    ValeurDeNTCOrigineVersExtremite_0_3_449_ R0004433 1
+    ValeurDeNTCOrigineVersExtremite_0_3_449_ R0004434 1
     ValeurDeNTCOrigineVersExtremite_1_4_449_ R0002375 1
     ValeurDeNTCOrigineVersExtremite_1_4_449_ R0002377 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_449_ R0004897 1
-    ValeurDeNTCOrigineVersExtremite_1_4_449_ R0004898 1
+    ValeurDeNTCOrigineVersExtremite_1_4_449_ R0004769 1
+    ValeurDeNTCOrigineVersExtremite_1_4_449_ R0004770 1
     ValeurDeNTCOrigineVersExtremite_1_5_449_ R0002375 1
     ValeurDeNTCOrigineVersExtremite_1_5_449_ R0002381 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_449_ R0004899 1
-    ValeurDeNTCOrigineVersExtremite_1_5_449_ R0004900 1
+    ValeurDeNTCOrigineVersExtremite_1_5_449_ R0005105 1
+    ValeurDeNTCOrigineVersExtremite_1_5_449_ R0005106 1
     ValeurDeNTCOrigineVersExtremite_1_6_449_ R0002375 1
     ValeurDeNTCOrigineVersExtremite_1_6_449_ R0002385 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_449_ R0004901 1
-    ValeurDeNTCOrigineVersExtremite_1_6_449_ R0004902 1
+    ValeurDeNTCOrigineVersExtremite_1_6_449_ R0005441 1
+    ValeurDeNTCOrigineVersExtremite_1_6_449_ R0005442 1
     ValeurDeNTCOrigineVersExtremite_2_7_449_ R0002377 1
     ValeurDeNTCOrigineVersExtremite_2_7_449_ R0002389 -1
     ValeurDeNTCOrigineVersExtremite_2_7_449_ R0003532 0.8
@@ -18900,28 +18900,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_450_ R0002414 1
     ValeurDeNTCOrigineVersExtremite_0_1_450_ R0002394 1
     ValeurDeNTCOrigineVersExtremite_0_1_450_ R0002400 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_450_ R0004903 1
-    ValeurDeNTCOrigineVersExtremite_0_1_450_ R0004904 1
+    ValeurDeNTCOrigineVersExtremite_0_1_450_ R0003763 1
+    ValeurDeNTCOrigineVersExtremite_0_1_450_ R0003764 1
     ValeurDeNTCOrigineVersExtremite_0_2_450_ R0002394 1
     ValeurDeNTCOrigineVersExtremite_0_2_450_ R0002404 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_450_ R0004905 1
-    ValeurDeNTCOrigineVersExtremite_0_2_450_ R0004906 1
+    ValeurDeNTCOrigineVersExtremite_0_2_450_ R0004099 1
+    ValeurDeNTCOrigineVersExtremite_0_2_450_ R0004100 1
     ValeurDeNTCOrigineVersExtremite_0_3_450_ R0002394 1
     ValeurDeNTCOrigineVersExtremite_0_3_450_ R0002408 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_450_ R0004907 1
-    ValeurDeNTCOrigineVersExtremite_0_3_450_ R0004908 1
+    ValeurDeNTCOrigineVersExtremite_0_3_450_ R0004435 1
+    ValeurDeNTCOrigineVersExtremite_0_3_450_ R0004436 1
     ValeurDeNTCOrigineVersExtremite_1_4_450_ R0002396 1
     ValeurDeNTCOrigineVersExtremite_1_4_450_ R0002398 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_450_ R0004909 1
-    ValeurDeNTCOrigineVersExtremite_1_4_450_ R0004910 1
+    ValeurDeNTCOrigineVersExtremite_1_4_450_ R0004771 1
+    ValeurDeNTCOrigineVersExtremite_1_4_450_ R0004772 1
     ValeurDeNTCOrigineVersExtremite_1_5_450_ R0002396 1
     ValeurDeNTCOrigineVersExtremite_1_5_450_ R0002402 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_450_ R0004911 1
-    ValeurDeNTCOrigineVersExtremite_1_5_450_ R0004912 1
+    ValeurDeNTCOrigineVersExtremite_1_5_450_ R0005107 1
+    ValeurDeNTCOrigineVersExtremite_1_5_450_ R0005108 1
     ValeurDeNTCOrigineVersExtremite_1_6_450_ R0002396 1
     ValeurDeNTCOrigineVersExtremite_1_6_450_ R0002406 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_450_ R0004913 1
-    ValeurDeNTCOrigineVersExtremite_1_6_450_ R0004914 1
+    ValeurDeNTCOrigineVersExtremite_1_6_450_ R0005443 1
+    ValeurDeNTCOrigineVersExtremite_1_6_450_ R0005444 1
     ValeurDeNTCOrigineVersExtremite_2_7_450_ R0002398 1
     ValeurDeNTCOrigineVersExtremite_2_7_450_ R0002410 -1
     ValeurDeNTCOrigineVersExtremite_2_7_450_ R0003532 0.8
@@ -19017,28 +19017,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_451_ R0002435 1
     ValeurDeNTCOrigineVersExtremite_0_1_451_ R0002415 1
     ValeurDeNTCOrigineVersExtremite_0_1_451_ R0002421 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_451_ R0004915 1
-    ValeurDeNTCOrigineVersExtremite_0_1_451_ R0004916 1
+    ValeurDeNTCOrigineVersExtremite_0_1_451_ R0003765 1
+    ValeurDeNTCOrigineVersExtremite_0_1_451_ R0003766 1
     ValeurDeNTCOrigineVersExtremite_0_2_451_ R0002415 1
     ValeurDeNTCOrigineVersExtremite_0_2_451_ R0002425 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_451_ R0004917 1
-    ValeurDeNTCOrigineVersExtremite_0_2_451_ R0004918 1
+    ValeurDeNTCOrigineVersExtremite_0_2_451_ R0004101 1
+    ValeurDeNTCOrigineVersExtremite_0_2_451_ R0004102 1
     ValeurDeNTCOrigineVersExtremite_0_3_451_ R0002415 1
     ValeurDeNTCOrigineVersExtremite_0_3_451_ R0002429 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_451_ R0004919 1
-    ValeurDeNTCOrigineVersExtremite_0_3_451_ R0004920 1
+    ValeurDeNTCOrigineVersExtremite_0_3_451_ R0004437 1
+    ValeurDeNTCOrigineVersExtremite_0_3_451_ R0004438 1
     ValeurDeNTCOrigineVersExtremite_1_4_451_ R0002417 1
     ValeurDeNTCOrigineVersExtremite_1_4_451_ R0002419 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_451_ R0004921 1
-    ValeurDeNTCOrigineVersExtremite_1_4_451_ R0004922 1
+    ValeurDeNTCOrigineVersExtremite_1_4_451_ R0004773 1
+    ValeurDeNTCOrigineVersExtremite_1_4_451_ R0004774 1
     ValeurDeNTCOrigineVersExtremite_1_5_451_ R0002417 1
     ValeurDeNTCOrigineVersExtremite_1_5_451_ R0002423 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_451_ R0004923 1
-    ValeurDeNTCOrigineVersExtremite_1_5_451_ R0004924 1
+    ValeurDeNTCOrigineVersExtremite_1_5_451_ R0005109 1
+    ValeurDeNTCOrigineVersExtremite_1_5_451_ R0005110 1
     ValeurDeNTCOrigineVersExtremite_1_6_451_ R0002417 1
     ValeurDeNTCOrigineVersExtremite_1_6_451_ R0002427 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_451_ R0004925 1
-    ValeurDeNTCOrigineVersExtremite_1_6_451_ R0004926 1
+    ValeurDeNTCOrigineVersExtremite_1_6_451_ R0005445 1
+    ValeurDeNTCOrigineVersExtremite_1_6_451_ R0005446 1
     ValeurDeNTCOrigineVersExtremite_2_7_451_ R0002419 1
     ValeurDeNTCOrigineVersExtremite_2_7_451_ R0002431 -1
     ValeurDeNTCOrigineVersExtremite_2_7_451_ R0003532 0.8
@@ -19134,28 +19134,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_452_ R0002456 1
     ValeurDeNTCOrigineVersExtremite_0_1_452_ R0002436 1
     ValeurDeNTCOrigineVersExtremite_0_1_452_ R0002442 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_452_ R0004927 1
-    ValeurDeNTCOrigineVersExtremite_0_1_452_ R0004928 1
+    ValeurDeNTCOrigineVersExtremite_0_1_452_ R0003767 1
+    ValeurDeNTCOrigineVersExtremite_0_1_452_ R0003768 1
     ValeurDeNTCOrigineVersExtremite_0_2_452_ R0002436 1
     ValeurDeNTCOrigineVersExtremite_0_2_452_ R0002446 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_452_ R0004929 1
-    ValeurDeNTCOrigineVersExtremite_0_2_452_ R0004930 1
+    ValeurDeNTCOrigineVersExtremite_0_2_452_ R0004103 1
+    ValeurDeNTCOrigineVersExtremite_0_2_452_ R0004104 1
     ValeurDeNTCOrigineVersExtremite_0_3_452_ R0002436 1
     ValeurDeNTCOrigineVersExtremite_0_3_452_ R0002450 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_452_ R0004931 1
-    ValeurDeNTCOrigineVersExtremite_0_3_452_ R0004932 1
+    ValeurDeNTCOrigineVersExtremite_0_3_452_ R0004439 1
+    ValeurDeNTCOrigineVersExtremite_0_3_452_ R0004440 1
     ValeurDeNTCOrigineVersExtremite_1_4_452_ R0002438 1
     ValeurDeNTCOrigineVersExtremite_1_4_452_ R0002440 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_452_ R0004933 1
-    ValeurDeNTCOrigineVersExtremite_1_4_452_ R0004934 1
+    ValeurDeNTCOrigineVersExtremite_1_4_452_ R0004775 1
+    ValeurDeNTCOrigineVersExtremite_1_4_452_ R0004776 1
     ValeurDeNTCOrigineVersExtremite_1_5_452_ R0002438 1
     ValeurDeNTCOrigineVersExtremite_1_5_452_ R0002444 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_452_ R0004935 1
-    ValeurDeNTCOrigineVersExtremite_1_5_452_ R0004936 1
+    ValeurDeNTCOrigineVersExtremite_1_5_452_ R0005111 1
+    ValeurDeNTCOrigineVersExtremite_1_5_452_ R0005112 1
     ValeurDeNTCOrigineVersExtremite_1_6_452_ R0002438 1
     ValeurDeNTCOrigineVersExtremite_1_6_452_ R0002448 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_452_ R0004937 1
-    ValeurDeNTCOrigineVersExtremite_1_6_452_ R0004938 1
+    ValeurDeNTCOrigineVersExtremite_1_6_452_ R0005447 1
+    ValeurDeNTCOrigineVersExtremite_1_6_452_ R0005448 1
     ValeurDeNTCOrigineVersExtremite_2_7_452_ R0002440 1
     ValeurDeNTCOrigineVersExtremite_2_7_452_ R0002452 -1
     ValeurDeNTCOrigineVersExtremite_2_7_452_ R0003532 0.8
@@ -19251,28 +19251,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_453_ R0002477 1
     ValeurDeNTCOrigineVersExtremite_0_1_453_ R0002457 1
     ValeurDeNTCOrigineVersExtremite_0_1_453_ R0002463 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_453_ R0004939 1
-    ValeurDeNTCOrigineVersExtremite_0_1_453_ R0004940 1
+    ValeurDeNTCOrigineVersExtremite_0_1_453_ R0003769 1
+    ValeurDeNTCOrigineVersExtremite_0_1_453_ R0003770 1
     ValeurDeNTCOrigineVersExtremite_0_2_453_ R0002457 1
     ValeurDeNTCOrigineVersExtremite_0_2_453_ R0002467 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_453_ R0004941 1
-    ValeurDeNTCOrigineVersExtremite_0_2_453_ R0004942 1
+    ValeurDeNTCOrigineVersExtremite_0_2_453_ R0004105 1
+    ValeurDeNTCOrigineVersExtremite_0_2_453_ R0004106 1
     ValeurDeNTCOrigineVersExtremite_0_3_453_ R0002457 1
     ValeurDeNTCOrigineVersExtremite_0_3_453_ R0002471 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_453_ R0004943 1
-    ValeurDeNTCOrigineVersExtremite_0_3_453_ R0004944 1
+    ValeurDeNTCOrigineVersExtremite_0_3_453_ R0004441 1
+    ValeurDeNTCOrigineVersExtremite_0_3_453_ R0004442 1
     ValeurDeNTCOrigineVersExtremite_1_4_453_ R0002459 1
     ValeurDeNTCOrigineVersExtremite_1_4_453_ R0002461 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_453_ R0004945 1
-    ValeurDeNTCOrigineVersExtremite_1_4_453_ R0004946 1
+    ValeurDeNTCOrigineVersExtremite_1_4_453_ R0004777 1
+    ValeurDeNTCOrigineVersExtremite_1_4_453_ R0004778 1
     ValeurDeNTCOrigineVersExtremite_1_5_453_ R0002459 1
     ValeurDeNTCOrigineVersExtremite_1_5_453_ R0002465 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_453_ R0004947 1
-    ValeurDeNTCOrigineVersExtremite_1_5_453_ R0004948 1
+    ValeurDeNTCOrigineVersExtremite_1_5_453_ R0005113 1
+    ValeurDeNTCOrigineVersExtremite_1_5_453_ R0005114 1
     ValeurDeNTCOrigineVersExtremite_1_6_453_ R0002459 1
     ValeurDeNTCOrigineVersExtremite_1_6_453_ R0002469 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_453_ R0004949 1
-    ValeurDeNTCOrigineVersExtremite_1_6_453_ R0004950 1
+    ValeurDeNTCOrigineVersExtremite_1_6_453_ R0005449 1
+    ValeurDeNTCOrigineVersExtremite_1_6_453_ R0005450 1
     ValeurDeNTCOrigineVersExtremite_2_7_453_ R0002461 1
     ValeurDeNTCOrigineVersExtremite_2_7_453_ R0002473 -1
     ValeurDeNTCOrigineVersExtremite_2_7_453_ R0003532 0.8
@@ -19368,28 +19368,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_454_ R0002498 1
     ValeurDeNTCOrigineVersExtremite_0_1_454_ R0002478 1
     ValeurDeNTCOrigineVersExtremite_0_1_454_ R0002484 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_454_ R0004951 1
-    ValeurDeNTCOrigineVersExtremite_0_1_454_ R0004952 1
+    ValeurDeNTCOrigineVersExtremite_0_1_454_ R0003771 1
+    ValeurDeNTCOrigineVersExtremite_0_1_454_ R0003772 1
     ValeurDeNTCOrigineVersExtremite_0_2_454_ R0002478 1
     ValeurDeNTCOrigineVersExtremite_0_2_454_ R0002488 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_454_ R0004953 1
-    ValeurDeNTCOrigineVersExtremite_0_2_454_ R0004954 1
+    ValeurDeNTCOrigineVersExtremite_0_2_454_ R0004107 1
+    ValeurDeNTCOrigineVersExtremite_0_2_454_ R0004108 1
     ValeurDeNTCOrigineVersExtremite_0_3_454_ R0002478 1
     ValeurDeNTCOrigineVersExtremite_0_3_454_ R0002492 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_454_ R0004955 1
-    ValeurDeNTCOrigineVersExtremite_0_3_454_ R0004956 1
+    ValeurDeNTCOrigineVersExtremite_0_3_454_ R0004443 1
+    ValeurDeNTCOrigineVersExtremite_0_3_454_ R0004444 1
     ValeurDeNTCOrigineVersExtremite_1_4_454_ R0002480 1
     ValeurDeNTCOrigineVersExtremite_1_4_454_ R0002482 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_454_ R0004957 1
-    ValeurDeNTCOrigineVersExtremite_1_4_454_ R0004958 1
+    ValeurDeNTCOrigineVersExtremite_1_4_454_ R0004779 1
+    ValeurDeNTCOrigineVersExtremite_1_4_454_ R0004780 1
     ValeurDeNTCOrigineVersExtremite_1_5_454_ R0002480 1
     ValeurDeNTCOrigineVersExtremite_1_5_454_ R0002486 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_454_ R0004959 1
-    ValeurDeNTCOrigineVersExtremite_1_5_454_ R0004960 1
+    ValeurDeNTCOrigineVersExtremite_1_5_454_ R0005115 1
+    ValeurDeNTCOrigineVersExtremite_1_5_454_ R0005116 1
     ValeurDeNTCOrigineVersExtremite_1_6_454_ R0002480 1
     ValeurDeNTCOrigineVersExtremite_1_6_454_ R0002490 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_454_ R0004961 1
-    ValeurDeNTCOrigineVersExtremite_1_6_454_ R0004962 1
+    ValeurDeNTCOrigineVersExtremite_1_6_454_ R0005451 1
+    ValeurDeNTCOrigineVersExtremite_1_6_454_ R0005452 1
     ValeurDeNTCOrigineVersExtremite_2_7_454_ R0002482 1
     ValeurDeNTCOrigineVersExtremite_2_7_454_ R0002494 -1
     ValeurDeNTCOrigineVersExtremite_2_7_454_ R0003532 0.8
@@ -19485,28 +19485,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_455_ R0002519 1
     ValeurDeNTCOrigineVersExtremite_0_1_455_ R0002499 1
     ValeurDeNTCOrigineVersExtremite_0_1_455_ R0002505 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_455_ R0004963 1
-    ValeurDeNTCOrigineVersExtremite_0_1_455_ R0004964 1
+    ValeurDeNTCOrigineVersExtremite_0_1_455_ R0003773 1
+    ValeurDeNTCOrigineVersExtremite_0_1_455_ R0003774 1
     ValeurDeNTCOrigineVersExtremite_0_2_455_ R0002499 1
     ValeurDeNTCOrigineVersExtremite_0_2_455_ R0002509 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_455_ R0004965 1
-    ValeurDeNTCOrigineVersExtremite_0_2_455_ R0004966 1
+    ValeurDeNTCOrigineVersExtremite_0_2_455_ R0004109 1
+    ValeurDeNTCOrigineVersExtremite_0_2_455_ R0004110 1
     ValeurDeNTCOrigineVersExtremite_0_3_455_ R0002499 1
     ValeurDeNTCOrigineVersExtremite_0_3_455_ R0002513 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_455_ R0004967 1
-    ValeurDeNTCOrigineVersExtremite_0_3_455_ R0004968 1
+    ValeurDeNTCOrigineVersExtremite_0_3_455_ R0004445 1
+    ValeurDeNTCOrigineVersExtremite_0_3_455_ R0004446 1
     ValeurDeNTCOrigineVersExtremite_1_4_455_ R0002501 1
     ValeurDeNTCOrigineVersExtremite_1_4_455_ R0002503 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_455_ R0004969 1
-    ValeurDeNTCOrigineVersExtremite_1_4_455_ R0004970 1
+    ValeurDeNTCOrigineVersExtremite_1_4_455_ R0004781 1
+    ValeurDeNTCOrigineVersExtremite_1_4_455_ R0004782 1
     ValeurDeNTCOrigineVersExtremite_1_5_455_ R0002501 1
     ValeurDeNTCOrigineVersExtremite_1_5_455_ R0002507 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_455_ R0004971 1
-    ValeurDeNTCOrigineVersExtremite_1_5_455_ R0004972 1
+    ValeurDeNTCOrigineVersExtremite_1_5_455_ R0005117 1
+    ValeurDeNTCOrigineVersExtremite_1_5_455_ R0005118 1
     ValeurDeNTCOrigineVersExtremite_1_6_455_ R0002501 1
     ValeurDeNTCOrigineVersExtremite_1_6_455_ R0002511 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_455_ R0004973 1
-    ValeurDeNTCOrigineVersExtremite_1_6_455_ R0004974 1
+    ValeurDeNTCOrigineVersExtremite_1_6_455_ R0005453 1
+    ValeurDeNTCOrigineVersExtremite_1_6_455_ R0005454 1
     ValeurDeNTCOrigineVersExtremite_2_7_455_ R0002503 1
     ValeurDeNTCOrigineVersExtremite_2_7_455_ R0002515 -1
     ValeurDeNTCOrigineVersExtremite_2_7_455_ R0003532 0.8
@@ -19602,28 +19602,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_456_ R0002540 1
     ValeurDeNTCOrigineVersExtremite_0_1_456_ R0002520 1
     ValeurDeNTCOrigineVersExtremite_0_1_456_ R0002526 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_456_ R0004975 1
-    ValeurDeNTCOrigineVersExtremite_0_1_456_ R0004976 1
+    ValeurDeNTCOrigineVersExtremite_0_1_456_ R0003775 1
+    ValeurDeNTCOrigineVersExtremite_0_1_456_ R0003776 1
     ValeurDeNTCOrigineVersExtremite_0_2_456_ R0002520 1
     ValeurDeNTCOrigineVersExtremite_0_2_456_ R0002530 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_456_ R0004977 1
-    ValeurDeNTCOrigineVersExtremite_0_2_456_ R0004978 1
+    ValeurDeNTCOrigineVersExtremite_0_2_456_ R0004111 1
+    ValeurDeNTCOrigineVersExtremite_0_2_456_ R0004112 1
     ValeurDeNTCOrigineVersExtremite_0_3_456_ R0002520 1
     ValeurDeNTCOrigineVersExtremite_0_3_456_ R0002534 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_456_ R0004979 1
-    ValeurDeNTCOrigineVersExtremite_0_3_456_ R0004980 1
+    ValeurDeNTCOrigineVersExtremite_0_3_456_ R0004447 1
+    ValeurDeNTCOrigineVersExtremite_0_3_456_ R0004448 1
     ValeurDeNTCOrigineVersExtremite_1_4_456_ R0002522 1
     ValeurDeNTCOrigineVersExtremite_1_4_456_ R0002524 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_456_ R0004981 1
-    ValeurDeNTCOrigineVersExtremite_1_4_456_ R0004982 1
+    ValeurDeNTCOrigineVersExtremite_1_4_456_ R0004783 1
+    ValeurDeNTCOrigineVersExtremite_1_4_456_ R0004784 1
     ValeurDeNTCOrigineVersExtremite_1_5_456_ R0002522 1
     ValeurDeNTCOrigineVersExtremite_1_5_456_ R0002528 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_456_ R0004983 1
-    ValeurDeNTCOrigineVersExtremite_1_5_456_ R0004984 1
+    ValeurDeNTCOrigineVersExtremite_1_5_456_ R0005119 1
+    ValeurDeNTCOrigineVersExtremite_1_5_456_ R0005120 1
     ValeurDeNTCOrigineVersExtremite_1_6_456_ R0002522 1
     ValeurDeNTCOrigineVersExtremite_1_6_456_ R0002532 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_456_ R0004985 1
-    ValeurDeNTCOrigineVersExtremite_1_6_456_ R0004986 1
+    ValeurDeNTCOrigineVersExtremite_1_6_456_ R0005455 1
+    ValeurDeNTCOrigineVersExtremite_1_6_456_ R0005456 1
     ValeurDeNTCOrigineVersExtremite_2_7_456_ R0002524 1
     ValeurDeNTCOrigineVersExtremite_2_7_456_ R0002536 -1
     ValeurDeNTCOrigineVersExtremite_2_7_456_ R0003533 0.8
@@ -19719,28 +19719,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_457_ R0002561 1
     ValeurDeNTCOrigineVersExtremite_0_1_457_ R0002541 1
     ValeurDeNTCOrigineVersExtremite_0_1_457_ R0002547 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_457_ R0004987 1
-    ValeurDeNTCOrigineVersExtremite_0_1_457_ R0004988 1
+    ValeurDeNTCOrigineVersExtremite_0_1_457_ R0003777 1
+    ValeurDeNTCOrigineVersExtremite_0_1_457_ R0003778 1
     ValeurDeNTCOrigineVersExtremite_0_2_457_ R0002541 1
     ValeurDeNTCOrigineVersExtremite_0_2_457_ R0002551 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_457_ R0004989 1
-    ValeurDeNTCOrigineVersExtremite_0_2_457_ R0004990 1
+    ValeurDeNTCOrigineVersExtremite_0_2_457_ R0004113 1
+    ValeurDeNTCOrigineVersExtremite_0_2_457_ R0004114 1
     ValeurDeNTCOrigineVersExtremite_0_3_457_ R0002541 1
     ValeurDeNTCOrigineVersExtremite_0_3_457_ R0002555 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_457_ R0004991 1
-    ValeurDeNTCOrigineVersExtremite_0_3_457_ R0004992 1
+    ValeurDeNTCOrigineVersExtremite_0_3_457_ R0004449 1
+    ValeurDeNTCOrigineVersExtremite_0_3_457_ R0004450 1
     ValeurDeNTCOrigineVersExtremite_1_4_457_ R0002543 1
     ValeurDeNTCOrigineVersExtremite_1_4_457_ R0002545 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_457_ R0004993 1
-    ValeurDeNTCOrigineVersExtremite_1_4_457_ R0004994 1
+    ValeurDeNTCOrigineVersExtremite_1_4_457_ R0004785 1
+    ValeurDeNTCOrigineVersExtremite_1_4_457_ R0004786 1
     ValeurDeNTCOrigineVersExtremite_1_5_457_ R0002543 1
     ValeurDeNTCOrigineVersExtremite_1_5_457_ R0002549 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_457_ R0004995 1
-    ValeurDeNTCOrigineVersExtremite_1_5_457_ R0004996 1
+    ValeurDeNTCOrigineVersExtremite_1_5_457_ R0005121 1
+    ValeurDeNTCOrigineVersExtremite_1_5_457_ R0005122 1
     ValeurDeNTCOrigineVersExtremite_1_6_457_ R0002543 1
     ValeurDeNTCOrigineVersExtremite_1_6_457_ R0002553 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_457_ R0004997 1
-    ValeurDeNTCOrigineVersExtremite_1_6_457_ R0004998 1
+    ValeurDeNTCOrigineVersExtremite_1_6_457_ R0005457 1
+    ValeurDeNTCOrigineVersExtremite_1_6_457_ R0005458 1
     ValeurDeNTCOrigineVersExtremite_2_7_457_ R0002545 1
     ValeurDeNTCOrigineVersExtremite_2_7_457_ R0002557 -1
     ValeurDeNTCOrigineVersExtremite_2_7_457_ R0003533 0.8
@@ -19836,28 +19836,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_458_ R0002582 1
     ValeurDeNTCOrigineVersExtremite_0_1_458_ R0002562 1
     ValeurDeNTCOrigineVersExtremite_0_1_458_ R0002568 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_458_ R0004999 1
-    ValeurDeNTCOrigineVersExtremite_0_1_458_ R0005000 1
+    ValeurDeNTCOrigineVersExtremite_0_1_458_ R0003779 1
+    ValeurDeNTCOrigineVersExtremite_0_1_458_ R0003780 1
     ValeurDeNTCOrigineVersExtremite_0_2_458_ R0002562 1
     ValeurDeNTCOrigineVersExtremite_0_2_458_ R0002572 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_458_ R0005001 1
-    ValeurDeNTCOrigineVersExtremite_0_2_458_ R0005002 1
+    ValeurDeNTCOrigineVersExtremite_0_2_458_ R0004115 1
+    ValeurDeNTCOrigineVersExtremite_0_2_458_ R0004116 1
     ValeurDeNTCOrigineVersExtremite_0_3_458_ R0002562 1
     ValeurDeNTCOrigineVersExtremite_0_3_458_ R0002576 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_458_ R0005003 1
-    ValeurDeNTCOrigineVersExtremite_0_3_458_ R0005004 1
+    ValeurDeNTCOrigineVersExtremite_0_3_458_ R0004451 1
+    ValeurDeNTCOrigineVersExtremite_0_3_458_ R0004452 1
     ValeurDeNTCOrigineVersExtremite_1_4_458_ R0002564 1
     ValeurDeNTCOrigineVersExtremite_1_4_458_ R0002566 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_458_ R0005005 1
-    ValeurDeNTCOrigineVersExtremite_1_4_458_ R0005006 1
+    ValeurDeNTCOrigineVersExtremite_1_4_458_ R0004787 1
+    ValeurDeNTCOrigineVersExtremite_1_4_458_ R0004788 1
     ValeurDeNTCOrigineVersExtremite_1_5_458_ R0002564 1
     ValeurDeNTCOrigineVersExtremite_1_5_458_ R0002570 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_458_ R0005007 1
-    ValeurDeNTCOrigineVersExtremite_1_5_458_ R0005008 1
+    ValeurDeNTCOrigineVersExtremite_1_5_458_ R0005123 1
+    ValeurDeNTCOrigineVersExtremite_1_5_458_ R0005124 1
     ValeurDeNTCOrigineVersExtremite_1_6_458_ R0002564 1
     ValeurDeNTCOrigineVersExtremite_1_6_458_ R0002574 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_458_ R0005009 1
-    ValeurDeNTCOrigineVersExtremite_1_6_458_ R0005010 1
+    ValeurDeNTCOrigineVersExtremite_1_6_458_ R0005459 1
+    ValeurDeNTCOrigineVersExtremite_1_6_458_ R0005460 1
     ValeurDeNTCOrigineVersExtremite_2_7_458_ R0002566 1
     ValeurDeNTCOrigineVersExtremite_2_7_458_ R0002578 -1
     ValeurDeNTCOrigineVersExtremite_2_7_458_ R0003533 0.8
@@ -19953,28 +19953,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_459_ R0002603 1
     ValeurDeNTCOrigineVersExtremite_0_1_459_ R0002583 1
     ValeurDeNTCOrigineVersExtremite_0_1_459_ R0002589 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_459_ R0005011 1
-    ValeurDeNTCOrigineVersExtremite_0_1_459_ R0005012 1
+    ValeurDeNTCOrigineVersExtremite_0_1_459_ R0003781 1
+    ValeurDeNTCOrigineVersExtremite_0_1_459_ R0003782 1
     ValeurDeNTCOrigineVersExtremite_0_2_459_ R0002583 1
     ValeurDeNTCOrigineVersExtremite_0_2_459_ R0002593 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_459_ R0005013 1
-    ValeurDeNTCOrigineVersExtremite_0_2_459_ R0005014 1
+    ValeurDeNTCOrigineVersExtremite_0_2_459_ R0004117 1
+    ValeurDeNTCOrigineVersExtremite_0_2_459_ R0004118 1
     ValeurDeNTCOrigineVersExtremite_0_3_459_ R0002583 1
     ValeurDeNTCOrigineVersExtremite_0_3_459_ R0002597 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_459_ R0005015 1
-    ValeurDeNTCOrigineVersExtremite_0_3_459_ R0005016 1
+    ValeurDeNTCOrigineVersExtremite_0_3_459_ R0004453 1
+    ValeurDeNTCOrigineVersExtremite_0_3_459_ R0004454 1
     ValeurDeNTCOrigineVersExtremite_1_4_459_ R0002585 1
     ValeurDeNTCOrigineVersExtremite_1_4_459_ R0002587 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_459_ R0005017 1
-    ValeurDeNTCOrigineVersExtremite_1_4_459_ R0005018 1
+    ValeurDeNTCOrigineVersExtremite_1_4_459_ R0004789 1
+    ValeurDeNTCOrigineVersExtremite_1_4_459_ R0004790 1
     ValeurDeNTCOrigineVersExtremite_1_5_459_ R0002585 1
     ValeurDeNTCOrigineVersExtremite_1_5_459_ R0002591 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_459_ R0005019 1
-    ValeurDeNTCOrigineVersExtremite_1_5_459_ R0005020 1
+    ValeurDeNTCOrigineVersExtremite_1_5_459_ R0005125 1
+    ValeurDeNTCOrigineVersExtremite_1_5_459_ R0005126 1
     ValeurDeNTCOrigineVersExtremite_1_6_459_ R0002585 1
     ValeurDeNTCOrigineVersExtremite_1_6_459_ R0002595 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_459_ R0005021 1
-    ValeurDeNTCOrigineVersExtremite_1_6_459_ R0005022 1
+    ValeurDeNTCOrigineVersExtremite_1_6_459_ R0005461 1
+    ValeurDeNTCOrigineVersExtremite_1_6_459_ R0005462 1
     ValeurDeNTCOrigineVersExtremite_2_7_459_ R0002587 1
     ValeurDeNTCOrigineVersExtremite_2_7_459_ R0002599 -1
     ValeurDeNTCOrigineVersExtremite_2_7_459_ R0003533 0.8
@@ -20070,28 +20070,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_460_ R0002624 1
     ValeurDeNTCOrigineVersExtremite_0_1_460_ R0002604 1
     ValeurDeNTCOrigineVersExtremite_0_1_460_ R0002610 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_460_ R0005023 1
-    ValeurDeNTCOrigineVersExtremite_0_1_460_ R0005024 1
+    ValeurDeNTCOrigineVersExtremite_0_1_460_ R0003783 1
+    ValeurDeNTCOrigineVersExtremite_0_1_460_ R0003784 1
     ValeurDeNTCOrigineVersExtremite_0_2_460_ R0002604 1
     ValeurDeNTCOrigineVersExtremite_0_2_460_ R0002614 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_460_ R0005025 1
-    ValeurDeNTCOrigineVersExtremite_0_2_460_ R0005026 1
+    ValeurDeNTCOrigineVersExtremite_0_2_460_ R0004119 1
+    ValeurDeNTCOrigineVersExtremite_0_2_460_ R0004120 1
     ValeurDeNTCOrigineVersExtremite_0_3_460_ R0002604 1
     ValeurDeNTCOrigineVersExtremite_0_3_460_ R0002618 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_460_ R0005027 1
-    ValeurDeNTCOrigineVersExtremite_0_3_460_ R0005028 1
+    ValeurDeNTCOrigineVersExtremite_0_3_460_ R0004455 1
+    ValeurDeNTCOrigineVersExtremite_0_3_460_ R0004456 1
     ValeurDeNTCOrigineVersExtremite_1_4_460_ R0002606 1
     ValeurDeNTCOrigineVersExtremite_1_4_460_ R0002608 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_460_ R0005029 1
-    ValeurDeNTCOrigineVersExtremite_1_4_460_ R0005030 1
+    ValeurDeNTCOrigineVersExtremite_1_4_460_ R0004791 1
+    ValeurDeNTCOrigineVersExtremite_1_4_460_ R0004792 1
     ValeurDeNTCOrigineVersExtremite_1_5_460_ R0002606 1
     ValeurDeNTCOrigineVersExtremite_1_5_460_ R0002612 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_460_ R0005031 1
-    ValeurDeNTCOrigineVersExtremite_1_5_460_ R0005032 1
+    ValeurDeNTCOrigineVersExtremite_1_5_460_ R0005127 1
+    ValeurDeNTCOrigineVersExtremite_1_5_460_ R0005128 1
     ValeurDeNTCOrigineVersExtremite_1_6_460_ R0002606 1
     ValeurDeNTCOrigineVersExtremite_1_6_460_ R0002616 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_460_ R0005033 1
-    ValeurDeNTCOrigineVersExtremite_1_6_460_ R0005034 1
+    ValeurDeNTCOrigineVersExtremite_1_6_460_ R0005463 1
+    ValeurDeNTCOrigineVersExtremite_1_6_460_ R0005464 1
     ValeurDeNTCOrigineVersExtremite_2_7_460_ R0002608 1
     ValeurDeNTCOrigineVersExtremite_2_7_460_ R0002620 -1
     ValeurDeNTCOrigineVersExtremite_2_7_460_ R0003533 0.8
@@ -20187,28 +20187,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_461_ R0002645 1
     ValeurDeNTCOrigineVersExtremite_0_1_461_ R0002625 1
     ValeurDeNTCOrigineVersExtremite_0_1_461_ R0002631 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_461_ R0005035 1
-    ValeurDeNTCOrigineVersExtremite_0_1_461_ R0005036 1
+    ValeurDeNTCOrigineVersExtremite_0_1_461_ R0003785 1
+    ValeurDeNTCOrigineVersExtremite_0_1_461_ R0003786 1
     ValeurDeNTCOrigineVersExtremite_0_2_461_ R0002625 1
     ValeurDeNTCOrigineVersExtremite_0_2_461_ R0002635 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_461_ R0005037 1
-    ValeurDeNTCOrigineVersExtremite_0_2_461_ R0005038 1
+    ValeurDeNTCOrigineVersExtremite_0_2_461_ R0004121 1
+    ValeurDeNTCOrigineVersExtremite_0_2_461_ R0004122 1
     ValeurDeNTCOrigineVersExtremite_0_3_461_ R0002625 1
     ValeurDeNTCOrigineVersExtremite_0_3_461_ R0002639 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_461_ R0005039 1
-    ValeurDeNTCOrigineVersExtremite_0_3_461_ R0005040 1
+    ValeurDeNTCOrigineVersExtremite_0_3_461_ R0004457 1
+    ValeurDeNTCOrigineVersExtremite_0_3_461_ R0004458 1
     ValeurDeNTCOrigineVersExtremite_1_4_461_ R0002627 1
     ValeurDeNTCOrigineVersExtremite_1_4_461_ R0002629 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_461_ R0005041 1
-    ValeurDeNTCOrigineVersExtremite_1_4_461_ R0005042 1
+    ValeurDeNTCOrigineVersExtremite_1_4_461_ R0004793 1
+    ValeurDeNTCOrigineVersExtremite_1_4_461_ R0004794 1
     ValeurDeNTCOrigineVersExtremite_1_5_461_ R0002627 1
     ValeurDeNTCOrigineVersExtremite_1_5_461_ R0002633 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_461_ R0005043 1
-    ValeurDeNTCOrigineVersExtremite_1_5_461_ R0005044 1
+    ValeurDeNTCOrigineVersExtremite_1_5_461_ R0005129 1
+    ValeurDeNTCOrigineVersExtremite_1_5_461_ R0005130 1
     ValeurDeNTCOrigineVersExtremite_1_6_461_ R0002627 1
     ValeurDeNTCOrigineVersExtremite_1_6_461_ R0002637 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_461_ R0005045 1
-    ValeurDeNTCOrigineVersExtremite_1_6_461_ R0005046 1
+    ValeurDeNTCOrigineVersExtremite_1_6_461_ R0005465 1
+    ValeurDeNTCOrigineVersExtremite_1_6_461_ R0005466 1
     ValeurDeNTCOrigineVersExtremite_2_7_461_ R0002629 1
     ValeurDeNTCOrigineVersExtremite_2_7_461_ R0002641 -1
     ValeurDeNTCOrigineVersExtremite_2_7_461_ R0003533 0.8
@@ -20304,28 +20304,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_462_ R0002666 1
     ValeurDeNTCOrigineVersExtremite_0_1_462_ R0002646 1
     ValeurDeNTCOrigineVersExtremite_0_1_462_ R0002652 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_462_ R0005047 1
-    ValeurDeNTCOrigineVersExtremite_0_1_462_ R0005048 1
+    ValeurDeNTCOrigineVersExtremite_0_1_462_ R0003787 1
+    ValeurDeNTCOrigineVersExtremite_0_1_462_ R0003788 1
     ValeurDeNTCOrigineVersExtremite_0_2_462_ R0002646 1
     ValeurDeNTCOrigineVersExtremite_0_2_462_ R0002656 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_462_ R0005049 1
-    ValeurDeNTCOrigineVersExtremite_0_2_462_ R0005050 1
+    ValeurDeNTCOrigineVersExtremite_0_2_462_ R0004123 1
+    ValeurDeNTCOrigineVersExtremite_0_2_462_ R0004124 1
     ValeurDeNTCOrigineVersExtremite_0_3_462_ R0002646 1
     ValeurDeNTCOrigineVersExtremite_0_3_462_ R0002660 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_462_ R0005051 1
-    ValeurDeNTCOrigineVersExtremite_0_3_462_ R0005052 1
+    ValeurDeNTCOrigineVersExtremite_0_3_462_ R0004459 1
+    ValeurDeNTCOrigineVersExtremite_0_3_462_ R0004460 1
     ValeurDeNTCOrigineVersExtremite_1_4_462_ R0002648 1
     ValeurDeNTCOrigineVersExtremite_1_4_462_ R0002650 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_462_ R0005053 1
-    ValeurDeNTCOrigineVersExtremite_1_4_462_ R0005054 1
+    ValeurDeNTCOrigineVersExtremite_1_4_462_ R0004795 1
+    ValeurDeNTCOrigineVersExtremite_1_4_462_ R0004796 1
     ValeurDeNTCOrigineVersExtremite_1_5_462_ R0002648 1
     ValeurDeNTCOrigineVersExtremite_1_5_462_ R0002654 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_462_ R0005055 1
-    ValeurDeNTCOrigineVersExtremite_1_5_462_ R0005056 1
+    ValeurDeNTCOrigineVersExtremite_1_5_462_ R0005131 1
+    ValeurDeNTCOrigineVersExtremite_1_5_462_ R0005132 1
     ValeurDeNTCOrigineVersExtremite_1_6_462_ R0002648 1
     ValeurDeNTCOrigineVersExtremite_1_6_462_ R0002658 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_462_ R0005057 1
-    ValeurDeNTCOrigineVersExtremite_1_6_462_ R0005058 1
+    ValeurDeNTCOrigineVersExtremite_1_6_462_ R0005467 1
+    ValeurDeNTCOrigineVersExtremite_1_6_462_ R0005468 1
     ValeurDeNTCOrigineVersExtremite_2_7_462_ R0002650 1
     ValeurDeNTCOrigineVersExtremite_2_7_462_ R0002662 -1
     ValeurDeNTCOrigineVersExtremite_2_7_462_ R0003533 0.8
@@ -20421,28 +20421,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_463_ R0002687 1
     ValeurDeNTCOrigineVersExtremite_0_1_463_ R0002667 1
     ValeurDeNTCOrigineVersExtremite_0_1_463_ R0002673 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_463_ R0005059 1
-    ValeurDeNTCOrigineVersExtremite_0_1_463_ R0005060 1
+    ValeurDeNTCOrigineVersExtremite_0_1_463_ R0003789 1
+    ValeurDeNTCOrigineVersExtremite_0_1_463_ R0003790 1
     ValeurDeNTCOrigineVersExtremite_0_2_463_ R0002667 1
     ValeurDeNTCOrigineVersExtremite_0_2_463_ R0002677 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_463_ R0005061 1
-    ValeurDeNTCOrigineVersExtremite_0_2_463_ R0005062 1
+    ValeurDeNTCOrigineVersExtremite_0_2_463_ R0004125 1
+    ValeurDeNTCOrigineVersExtremite_0_2_463_ R0004126 1
     ValeurDeNTCOrigineVersExtremite_0_3_463_ R0002667 1
     ValeurDeNTCOrigineVersExtremite_0_3_463_ R0002681 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_463_ R0005063 1
-    ValeurDeNTCOrigineVersExtremite_0_3_463_ R0005064 1
+    ValeurDeNTCOrigineVersExtremite_0_3_463_ R0004461 1
+    ValeurDeNTCOrigineVersExtremite_0_3_463_ R0004462 1
     ValeurDeNTCOrigineVersExtremite_1_4_463_ R0002669 1
     ValeurDeNTCOrigineVersExtremite_1_4_463_ R0002671 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_463_ R0005065 1
-    ValeurDeNTCOrigineVersExtremite_1_4_463_ R0005066 1
+    ValeurDeNTCOrigineVersExtremite_1_4_463_ R0004797 1
+    ValeurDeNTCOrigineVersExtremite_1_4_463_ R0004798 1
     ValeurDeNTCOrigineVersExtremite_1_5_463_ R0002669 1
     ValeurDeNTCOrigineVersExtremite_1_5_463_ R0002675 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_463_ R0005067 1
-    ValeurDeNTCOrigineVersExtremite_1_5_463_ R0005068 1
+    ValeurDeNTCOrigineVersExtremite_1_5_463_ R0005133 1
+    ValeurDeNTCOrigineVersExtremite_1_5_463_ R0005134 1
     ValeurDeNTCOrigineVersExtremite_1_6_463_ R0002669 1
     ValeurDeNTCOrigineVersExtremite_1_6_463_ R0002679 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_463_ R0005069 1
-    ValeurDeNTCOrigineVersExtremite_1_6_463_ R0005070 1
+    ValeurDeNTCOrigineVersExtremite_1_6_463_ R0005469 1
+    ValeurDeNTCOrigineVersExtremite_1_6_463_ R0005470 1
     ValeurDeNTCOrigineVersExtremite_2_7_463_ R0002671 1
     ValeurDeNTCOrigineVersExtremite_2_7_463_ R0002683 -1
     ValeurDeNTCOrigineVersExtremite_2_7_463_ R0003533 0.8
@@ -20538,28 +20538,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_464_ R0002708 1
     ValeurDeNTCOrigineVersExtremite_0_1_464_ R0002688 1
     ValeurDeNTCOrigineVersExtremite_0_1_464_ R0002694 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_464_ R0005071 1
-    ValeurDeNTCOrigineVersExtremite_0_1_464_ R0005072 1
+    ValeurDeNTCOrigineVersExtremite_0_1_464_ R0003791 1
+    ValeurDeNTCOrigineVersExtremite_0_1_464_ R0003792 1
     ValeurDeNTCOrigineVersExtremite_0_2_464_ R0002688 1
     ValeurDeNTCOrigineVersExtremite_0_2_464_ R0002698 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_464_ R0005073 1
-    ValeurDeNTCOrigineVersExtremite_0_2_464_ R0005074 1
+    ValeurDeNTCOrigineVersExtremite_0_2_464_ R0004127 1
+    ValeurDeNTCOrigineVersExtremite_0_2_464_ R0004128 1
     ValeurDeNTCOrigineVersExtremite_0_3_464_ R0002688 1
     ValeurDeNTCOrigineVersExtremite_0_3_464_ R0002702 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_464_ R0005075 1
-    ValeurDeNTCOrigineVersExtremite_0_3_464_ R0005076 1
+    ValeurDeNTCOrigineVersExtremite_0_3_464_ R0004463 1
+    ValeurDeNTCOrigineVersExtremite_0_3_464_ R0004464 1
     ValeurDeNTCOrigineVersExtremite_1_4_464_ R0002690 1
     ValeurDeNTCOrigineVersExtremite_1_4_464_ R0002692 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_464_ R0005077 1
-    ValeurDeNTCOrigineVersExtremite_1_4_464_ R0005078 1
+    ValeurDeNTCOrigineVersExtremite_1_4_464_ R0004799 1
+    ValeurDeNTCOrigineVersExtremite_1_4_464_ R0004800 1
     ValeurDeNTCOrigineVersExtremite_1_5_464_ R0002690 1
     ValeurDeNTCOrigineVersExtremite_1_5_464_ R0002696 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_464_ R0005079 1
-    ValeurDeNTCOrigineVersExtremite_1_5_464_ R0005080 1
+    ValeurDeNTCOrigineVersExtremite_1_5_464_ R0005135 1
+    ValeurDeNTCOrigineVersExtremite_1_5_464_ R0005136 1
     ValeurDeNTCOrigineVersExtremite_1_6_464_ R0002690 1
     ValeurDeNTCOrigineVersExtremite_1_6_464_ R0002700 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_464_ R0005081 1
-    ValeurDeNTCOrigineVersExtremite_1_6_464_ R0005082 1
+    ValeurDeNTCOrigineVersExtremite_1_6_464_ R0005471 1
+    ValeurDeNTCOrigineVersExtremite_1_6_464_ R0005472 1
     ValeurDeNTCOrigineVersExtremite_2_7_464_ R0002692 1
     ValeurDeNTCOrigineVersExtremite_2_7_464_ R0002704 -1
     ValeurDeNTCOrigineVersExtremite_2_7_464_ R0003533 0.8
@@ -20655,28 +20655,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_465_ R0002729 1
     ValeurDeNTCOrigineVersExtremite_0_1_465_ R0002709 1
     ValeurDeNTCOrigineVersExtremite_0_1_465_ R0002715 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_465_ R0005083 1
-    ValeurDeNTCOrigineVersExtremite_0_1_465_ R0005084 1
+    ValeurDeNTCOrigineVersExtremite_0_1_465_ R0003793 1
+    ValeurDeNTCOrigineVersExtremite_0_1_465_ R0003794 1
     ValeurDeNTCOrigineVersExtremite_0_2_465_ R0002709 1
     ValeurDeNTCOrigineVersExtremite_0_2_465_ R0002719 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_465_ R0005085 1
-    ValeurDeNTCOrigineVersExtremite_0_2_465_ R0005086 1
+    ValeurDeNTCOrigineVersExtremite_0_2_465_ R0004129 1
+    ValeurDeNTCOrigineVersExtremite_0_2_465_ R0004130 1
     ValeurDeNTCOrigineVersExtremite_0_3_465_ R0002709 1
     ValeurDeNTCOrigineVersExtremite_0_3_465_ R0002723 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_465_ R0005087 1
-    ValeurDeNTCOrigineVersExtremite_0_3_465_ R0005088 1
+    ValeurDeNTCOrigineVersExtremite_0_3_465_ R0004465 1
+    ValeurDeNTCOrigineVersExtremite_0_3_465_ R0004466 1
     ValeurDeNTCOrigineVersExtremite_1_4_465_ R0002711 1
     ValeurDeNTCOrigineVersExtremite_1_4_465_ R0002713 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_465_ R0005089 1
-    ValeurDeNTCOrigineVersExtremite_1_4_465_ R0005090 1
+    ValeurDeNTCOrigineVersExtremite_1_4_465_ R0004801 1
+    ValeurDeNTCOrigineVersExtremite_1_4_465_ R0004802 1
     ValeurDeNTCOrigineVersExtremite_1_5_465_ R0002711 1
     ValeurDeNTCOrigineVersExtremite_1_5_465_ R0002717 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_465_ R0005091 1
-    ValeurDeNTCOrigineVersExtremite_1_5_465_ R0005092 1
+    ValeurDeNTCOrigineVersExtremite_1_5_465_ R0005137 1
+    ValeurDeNTCOrigineVersExtremite_1_5_465_ R0005138 1
     ValeurDeNTCOrigineVersExtremite_1_6_465_ R0002711 1
     ValeurDeNTCOrigineVersExtremite_1_6_465_ R0002721 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_465_ R0005093 1
-    ValeurDeNTCOrigineVersExtremite_1_6_465_ R0005094 1
+    ValeurDeNTCOrigineVersExtremite_1_6_465_ R0005473 1
+    ValeurDeNTCOrigineVersExtremite_1_6_465_ R0005474 1
     ValeurDeNTCOrigineVersExtremite_2_7_465_ R0002713 1
     ValeurDeNTCOrigineVersExtremite_2_7_465_ R0002725 -1
     ValeurDeNTCOrigineVersExtremite_2_7_465_ R0003533 0.8
@@ -20772,28 +20772,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_466_ R0002750 1
     ValeurDeNTCOrigineVersExtremite_0_1_466_ R0002730 1
     ValeurDeNTCOrigineVersExtremite_0_1_466_ R0002736 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_466_ R0005095 1
-    ValeurDeNTCOrigineVersExtremite_0_1_466_ R0005096 1
+    ValeurDeNTCOrigineVersExtremite_0_1_466_ R0003795 1
+    ValeurDeNTCOrigineVersExtremite_0_1_466_ R0003796 1
     ValeurDeNTCOrigineVersExtremite_0_2_466_ R0002730 1
     ValeurDeNTCOrigineVersExtremite_0_2_466_ R0002740 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_466_ R0005097 1
-    ValeurDeNTCOrigineVersExtremite_0_2_466_ R0005098 1
+    ValeurDeNTCOrigineVersExtremite_0_2_466_ R0004131 1
+    ValeurDeNTCOrigineVersExtremite_0_2_466_ R0004132 1
     ValeurDeNTCOrigineVersExtremite_0_3_466_ R0002730 1
     ValeurDeNTCOrigineVersExtremite_0_3_466_ R0002744 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_466_ R0005099 1
-    ValeurDeNTCOrigineVersExtremite_0_3_466_ R0005100 1
+    ValeurDeNTCOrigineVersExtremite_0_3_466_ R0004467 1
+    ValeurDeNTCOrigineVersExtremite_0_3_466_ R0004468 1
     ValeurDeNTCOrigineVersExtremite_1_4_466_ R0002732 1
     ValeurDeNTCOrigineVersExtremite_1_4_466_ R0002734 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_466_ R0005101 1
-    ValeurDeNTCOrigineVersExtremite_1_4_466_ R0005102 1
+    ValeurDeNTCOrigineVersExtremite_1_4_466_ R0004803 1
+    ValeurDeNTCOrigineVersExtremite_1_4_466_ R0004804 1
     ValeurDeNTCOrigineVersExtremite_1_5_466_ R0002732 1
     ValeurDeNTCOrigineVersExtremite_1_5_466_ R0002738 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_466_ R0005103 1
-    ValeurDeNTCOrigineVersExtremite_1_5_466_ R0005104 1
+    ValeurDeNTCOrigineVersExtremite_1_5_466_ R0005139 1
+    ValeurDeNTCOrigineVersExtremite_1_5_466_ R0005140 1
     ValeurDeNTCOrigineVersExtremite_1_6_466_ R0002732 1
     ValeurDeNTCOrigineVersExtremite_1_6_466_ R0002742 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_466_ R0005105 1
-    ValeurDeNTCOrigineVersExtremite_1_6_466_ R0005106 1
+    ValeurDeNTCOrigineVersExtremite_1_6_466_ R0005475 1
+    ValeurDeNTCOrigineVersExtremite_1_6_466_ R0005476 1
     ValeurDeNTCOrigineVersExtremite_2_7_466_ R0002734 1
     ValeurDeNTCOrigineVersExtremite_2_7_466_ R0002746 -1
     ValeurDeNTCOrigineVersExtremite_2_7_466_ R0003533 0.8
@@ -20889,28 +20889,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_467_ R0002771 1
     ValeurDeNTCOrigineVersExtremite_0_1_467_ R0002751 1
     ValeurDeNTCOrigineVersExtremite_0_1_467_ R0002757 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_467_ R0005107 1
-    ValeurDeNTCOrigineVersExtremite_0_1_467_ R0005108 1
+    ValeurDeNTCOrigineVersExtremite_0_1_467_ R0003797 1
+    ValeurDeNTCOrigineVersExtremite_0_1_467_ R0003798 1
     ValeurDeNTCOrigineVersExtremite_0_2_467_ R0002751 1
     ValeurDeNTCOrigineVersExtremite_0_2_467_ R0002761 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_467_ R0005109 1
-    ValeurDeNTCOrigineVersExtremite_0_2_467_ R0005110 1
+    ValeurDeNTCOrigineVersExtremite_0_2_467_ R0004133 1
+    ValeurDeNTCOrigineVersExtremite_0_2_467_ R0004134 1
     ValeurDeNTCOrigineVersExtremite_0_3_467_ R0002751 1
     ValeurDeNTCOrigineVersExtremite_0_3_467_ R0002765 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_467_ R0005111 1
-    ValeurDeNTCOrigineVersExtremite_0_3_467_ R0005112 1
+    ValeurDeNTCOrigineVersExtremite_0_3_467_ R0004469 1
+    ValeurDeNTCOrigineVersExtremite_0_3_467_ R0004470 1
     ValeurDeNTCOrigineVersExtremite_1_4_467_ R0002753 1
     ValeurDeNTCOrigineVersExtremite_1_4_467_ R0002755 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_467_ R0005113 1
-    ValeurDeNTCOrigineVersExtremite_1_4_467_ R0005114 1
+    ValeurDeNTCOrigineVersExtremite_1_4_467_ R0004805 1
+    ValeurDeNTCOrigineVersExtremite_1_4_467_ R0004806 1
     ValeurDeNTCOrigineVersExtremite_1_5_467_ R0002753 1
     ValeurDeNTCOrigineVersExtremite_1_5_467_ R0002759 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_467_ R0005115 1
-    ValeurDeNTCOrigineVersExtremite_1_5_467_ R0005116 1
+    ValeurDeNTCOrigineVersExtremite_1_5_467_ R0005141 1
+    ValeurDeNTCOrigineVersExtremite_1_5_467_ R0005142 1
     ValeurDeNTCOrigineVersExtremite_1_6_467_ R0002753 1
     ValeurDeNTCOrigineVersExtremite_1_6_467_ R0002763 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_467_ R0005117 1
-    ValeurDeNTCOrigineVersExtremite_1_6_467_ R0005118 1
+    ValeurDeNTCOrigineVersExtremite_1_6_467_ R0005477 1
+    ValeurDeNTCOrigineVersExtremite_1_6_467_ R0005478 1
     ValeurDeNTCOrigineVersExtremite_2_7_467_ R0002755 1
     ValeurDeNTCOrigineVersExtremite_2_7_467_ R0002767 -1
     ValeurDeNTCOrigineVersExtremite_2_7_467_ R0003533 0.8
@@ -21006,28 +21006,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_468_ R0002792 1
     ValeurDeNTCOrigineVersExtremite_0_1_468_ R0002772 1
     ValeurDeNTCOrigineVersExtremite_0_1_468_ R0002778 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_468_ R0005119 1
-    ValeurDeNTCOrigineVersExtremite_0_1_468_ R0005120 1
+    ValeurDeNTCOrigineVersExtremite_0_1_468_ R0003799 1
+    ValeurDeNTCOrigineVersExtremite_0_1_468_ R0003800 1
     ValeurDeNTCOrigineVersExtremite_0_2_468_ R0002772 1
     ValeurDeNTCOrigineVersExtremite_0_2_468_ R0002782 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_468_ R0005121 1
-    ValeurDeNTCOrigineVersExtremite_0_2_468_ R0005122 1
+    ValeurDeNTCOrigineVersExtremite_0_2_468_ R0004135 1
+    ValeurDeNTCOrigineVersExtremite_0_2_468_ R0004136 1
     ValeurDeNTCOrigineVersExtremite_0_3_468_ R0002772 1
     ValeurDeNTCOrigineVersExtremite_0_3_468_ R0002786 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_468_ R0005123 1
-    ValeurDeNTCOrigineVersExtremite_0_3_468_ R0005124 1
+    ValeurDeNTCOrigineVersExtremite_0_3_468_ R0004471 1
+    ValeurDeNTCOrigineVersExtremite_0_3_468_ R0004472 1
     ValeurDeNTCOrigineVersExtremite_1_4_468_ R0002774 1
     ValeurDeNTCOrigineVersExtremite_1_4_468_ R0002776 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_468_ R0005125 1
-    ValeurDeNTCOrigineVersExtremite_1_4_468_ R0005126 1
+    ValeurDeNTCOrigineVersExtremite_1_4_468_ R0004807 1
+    ValeurDeNTCOrigineVersExtremite_1_4_468_ R0004808 1
     ValeurDeNTCOrigineVersExtremite_1_5_468_ R0002774 1
     ValeurDeNTCOrigineVersExtremite_1_5_468_ R0002780 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_468_ R0005127 1
-    ValeurDeNTCOrigineVersExtremite_1_5_468_ R0005128 1
+    ValeurDeNTCOrigineVersExtremite_1_5_468_ R0005143 1
+    ValeurDeNTCOrigineVersExtremite_1_5_468_ R0005144 1
     ValeurDeNTCOrigineVersExtremite_1_6_468_ R0002774 1
     ValeurDeNTCOrigineVersExtremite_1_6_468_ R0002784 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_468_ R0005129 1
-    ValeurDeNTCOrigineVersExtremite_1_6_468_ R0005130 1
+    ValeurDeNTCOrigineVersExtremite_1_6_468_ R0005479 1
+    ValeurDeNTCOrigineVersExtremite_1_6_468_ R0005480 1
     ValeurDeNTCOrigineVersExtremite_2_7_468_ R0002776 1
     ValeurDeNTCOrigineVersExtremite_2_7_468_ R0002788 -1
     ValeurDeNTCOrigineVersExtremite_2_7_468_ R0003533 0.8
@@ -21123,28 +21123,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_469_ R0002813 1
     ValeurDeNTCOrigineVersExtremite_0_1_469_ R0002793 1
     ValeurDeNTCOrigineVersExtremite_0_1_469_ R0002799 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_469_ R0005131 1
-    ValeurDeNTCOrigineVersExtremite_0_1_469_ R0005132 1
+    ValeurDeNTCOrigineVersExtremite_0_1_469_ R0003801 1
+    ValeurDeNTCOrigineVersExtremite_0_1_469_ R0003802 1
     ValeurDeNTCOrigineVersExtremite_0_2_469_ R0002793 1
     ValeurDeNTCOrigineVersExtremite_0_2_469_ R0002803 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_469_ R0005133 1
-    ValeurDeNTCOrigineVersExtremite_0_2_469_ R0005134 1
+    ValeurDeNTCOrigineVersExtremite_0_2_469_ R0004137 1
+    ValeurDeNTCOrigineVersExtremite_0_2_469_ R0004138 1
     ValeurDeNTCOrigineVersExtremite_0_3_469_ R0002793 1
     ValeurDeNTCOrigineVersExtremite_0_3_469_ R0002807 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_469_ R0005135 1
-    ValeurDeNTCOrigineVersExtremite_0_3_469_ R0005136 1
+    ValeurDeNTCOrigineVersExtremite_0_3_469_ R0004473 1
+    ValeurDeNTCOrigineVersExtremite_0_3_469_ R0004474 1
     ValeurDeNTCOrigineVersExtremite_1_4_469_ R0002795 1
     ValeurDeNTCOrigineVersExtremite_1_4_469_ R0002797 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_469_ R0005137 1
-    ValeurDeNTCOrigineVersExtremite_1_4_469_ R0005138 1
+    ValeurDeNTCOrigineVersExtremite_1_4_469_ R0004809 1
+    ValeurDeNTCOrigineVersExtremite_1_4_469_ R0004810 1
     ValeurDeNTCOrigineVersExtremite_1_5_469_ R0002795 1
     ValeurDeNTCOrigineVersExtremite_1_5_469_ R0002801 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_469_ R0005139 1
-    ValeurDeNTCOrigineVersExtremite_1_5_469_ R0005140 1
+    ValeurDeNTCOrigineVersExtremite_1_5_469_ R0005145 1
+    ValeurDeNTCOrigineVersExtremite_1_5_469_ R0005146 1
     ValeurDeNTCOrigineVersExtremite_1_6_469_ R0002795 1
     ValeurDeNTCOrigineVersExtremite_1_6_469_ R0002805 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_469_ R0005141 1
-    ValeurDeNTCOrigineVersExtremite_1_6_469_ R0005142 1
+    ValeurDeNTCOrigineVersExtremite_1_6_469_ R0005481 1
+    ValeurDeNTCOrigineVersExtremite_1_6_469_ R0005482 1
     ValeurDeNTCOrigineVersExtremite_2_7_469_ R0002797 1
     ValeurDeNTCOrigineVersExtremite_2_7_469_ R0002809 -1
     ValeurDeNTCOrigineVersExtremite_2_7_469_ R0003533 0.8
@@ -21240,28 +21240,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_470_ R0002834 1
     ValeurDeNTCOrigineVersExtremite_0_1_470_ R0002814 1
     ValeurDeNTCOrigineVersExtremite_0_1_470_ R0002820 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_470_ R0005143 1
-    ValeurDeNTCOrigineVersExtremite_0_1_470_ R0005144 1
+    ValeurDeNTCOrigineVersExtremite_0_1_470_ R0003803 1
+    ValeurDeNTCOrigineVersExtremite_0_1_470_ R0003804 1
     ValeurDeNTCOrigineVersExtremite_0_2_470_ R0002814 1
     ValeurDeNTCOrigineVersExtremite_0_2_470_ R0002824 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_470_ R0005145 1
-    ValeurDeNTCOrigineVersExtremite_0_2_470_ R0005146 1
+    ValeurDeNTCOrigineVersExtremite_0_2_470_ R0004139 1
+    ValeurDeNTCOrigineVersExtremite_0_2_470_ R0004140 1
     ValeurDeNTCOrigineVersExtremite_0_3_470_ R0002814 1
     ValeurDeNTCOrigineVersExtremite_0_3_470_ R0002828 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_470_ R0005147 1
-    ValeurDeNTCOrigineVersExtremite_0_3_470_ R0005148 1
+    ValeurDeNTCOrigineVersExtremite_0_3_470_ R0004475 1
+    ValeurDeNTCOrigineVersExtremite_0_3_470_ R0004476 1
     ValeurDeNTCOrigineVersExtremite_1_4_470_ R0002816 1
     ValeurDeNTCOrigineVersExtremite_1_4_470_ R0002818 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_470_ R0005149 1
-    ValeurDeNTCOrigineVersExtremite_1_4_470_ R0005150 1
+    ValeurDeNTCOrigineVersExtremite_1_4_470_ R0004811 1
+    ValeurDeNTCOrigineVersExtremite_1_4_470_ R0004812 1
     ValeurDeNTCOrigineVersExtremite_1_5_470_ R0002816 1
     ValeurDeNTCOrigineVersExtremite_1_5_470_ R0002822 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_470_ R0005151 1
-    ValeurDeNTCOrigineVersExtremite_1_5_470_ R0005152 1
+    ValeurDeNTCOrigineVersExtremite_1_5_470_ R0005147 1
+    ValeurDeNTCOrigineVersExtremite_1_5_470_ R0005148 1
     ValeurDeNTCOrigineVersExtremite_1_6_470_ R0002816 1
     ValeurDeNTCOrigineVersExtremite_1_6_470_ R0002826 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_470_ R0005153 1
-    ValeurDeNTCOrigineVersExtremite_1_6_470_ R0005154 1
+    ValeurDeNTCOrigineVersExtremite_1_6_470_ R0005483 1
+    ValeurDeNTCOrigineVersExtremite_1_6_470_ R0005484 1
     ValeurDeNTCOrigineVersExtremite_2_7_470_ R0002818 1
     ValeurDeNTCOrigineVersExtremite_2_7_470_ R0002830 -1
     ValeurDeNTCOrigineVersExtremite_2_7_470_ R0003533 0.8
@@ -21357,28 +21357,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_471_ R0002855 1
     ValeurDeNTCOrigineVersExtremite_0_1_471_ R0002835 1
     ValeurDeNTCOrigineVersExtremite_0_1_471_ R0002841 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_471_ R0005155 1
-    ValeurDeNTCOrigineVersExtremite_0_1_471_ R0005156 1
+    ValeurDeNTCOrigineVersExtremite_0_1_471_ R0003805 1
+    ValeurDeNTCOrigineVersExtremite_0_1_471_ R0003806 1
     ValeurDeNTCOrigineVersExtremite_0_2_471_ R0002835 1
     ValeurDeNTCOrigineVersExtremite_0_2_471_ R0002845 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_471_ R0005157 1
-    ValeurDeNTCOrigineVersExtremite_0_2_471_ R0005158 1
+    ValeurDeNTCOrigineVersExtremite_0_2_471_ R0004141 1
+    ValeurDeNTCOrigineVersExtremite_0_2_471_ R0004142 1
     ValeurDeNTCOrigineVersExtremite_0_3_471_ R0002835 1
     ValeurDeNTCOrigineVersExtremite_0_3_471_ R0002849 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_471_ R0005159 1
-    ValeurDeNTCOrigineVersExtremite_0_3_471_ R0005160 1
+    ValeurDeNTCOrigineVersExtremite_0_3_471_ R0004477 1
+    ValeurDeNTCOrigineVersExtremite_0_3_471_ R0004478 1
     ValeurDeNTCOrigineVersExtremite_1_4_471_ R0002837 1
     ValeurDeNTCOrigineVersExtremite_1_4_471_ R0002839 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_471_ R0005161 1
-    ValeurDeNTCOrigineVersExtremite_1_4_471_ R0005162 1
+    ValeurDeNTCOrigineVersExtremite_1_4_471_ R0004813 1
+    ValeurDeNTCOrigineVersExtremite_1_4_471_ R0004814 1
     ValeurDeNTCOrigineVersExtremite_1_5_471_ R0002837 1
     ValeurDeNTCOrigineVersExtremite_1_5_471_ R0002843 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_471_ R0005163 1
-    ValeurDeNTCOrigineVersExtremite_1_5_471_ R0005164 1
+    ValeurDeNTCOrigineVersExtremite_1_5_471_ R0005149 1
+    ValeurDeNTCOrigineVersExtremite_1_5_471_ R0005150 1
     ValeurDeNTCOrigineVersExtremite_1_6_471_ R0002837 1
     ValeurDeNTCOrigineVersExtremite_1_6_471_ R0002847 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_471_ R0005165 1
-    ValeurDeNTCOrigineVersExtremite_1_6_471_ R0005166 1
+    ValeurDeNTCOrigineVersExtremite_1_6_471_ R0005485 1
+    ValeurDeNTCOrigineVersExtremite_1_6_471_ R0005486 1
     ValeurDeNTCOrigineVersExtremite_2_7_471_ R0002839 1
     ValeurDeNTCOrigineVersExtremite_2_7_471_ R0002851 -1
     ValeurDeNTCOrigineVersExtremite_2_7_471_ R0003533 0.8
@@ -21474,28 +21474,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_472_ R0002876 1
     ValeurDeNTCOrigineVersExtremite_0_1_472_ R0002856 1
     ValeurDeNTCOrigineVersExtremite_0_1_472_ R0002862 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_472_ R0005167 1
-    ValeurDeNTCOrigineVersExtremite_0_1_472_ R0005168 1
+    ValeurDeNTCOrigineVersExtremite_0_1_472_ R0003807 1
+    ValeurDeNTCOrigineVersExtremite_0_1_472_ R0003808 1
     ValeurDeNTCOrigineVersExtremite_0_2_472_ R0002856 1
     ValeurDeNTCOrigineVersExtremite_0_2_472_ R0002866 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_472_ R0005169 1
-    ValeurDeNTCOrigineVersExtremite_0_2_472_ R0005170 1
+    ValeurDeNTCOrigineVersExtremite_0_2_472_ R0004143 1
+    ValeurDeNTCOrigineVersExtremite_0_2_472_ R0004144 1
     ValeurDeNTCOrigineVersExtremite_0_3_472_ R0002856 1
     ValeurDeNTCOrigineVersExtremite_0_3_472_ R0002870 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_472_ R0005171 1
-    ValeurDeNTCOrigineVersExtremite_0_3_472_ R0005172 1
+    ValeurDeNTCOrigineVersExtremite_0_3_472_ R0004479 1
+    ValeurDeNTCOrigineVersExtremite_0_3_472_ R0004480 1
     ValeurDeNTCOrigineVersExtremite_1_4_472_ R0002858 1
     ValeurDeNTCOrigineVersExtremite_1_4_472_ R0002860 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_472_ R0005173 1
-    ValeurDeNTCOrigineVersExtremite_1_4_472_ R0005174 1
+    ValeurDeNTCOrigineVersExtremite_1_4_472_ R0004815 1
+    ValeurDeNTCOrigineVersExtremite_1_4_472_ R0004816 1
     ValeurDeNTCOrigineVersExtremite_1_5_472_ R0002858 1
     ValeurDeNTCOrigineVersExtremite_1_5_472_ R0002864 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_472_ R0005175 1
-    ValeurDeNTCOrigineVersExtremite_1_5_472_ R0005176 1
+    ValeurDeNTCOrigineVersExtremite_1_5_472_ R0005151 1
+    ValeurDeNTCOrigineVersExtremite_1_5_472_ R0005152 1
     ValeurDeNTCOrigineVersExtremite_1_6_472_ R0002858 1
     ValeurDeNTCOrigineVersExtremite_1_6_472_ R0002868 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_472_ R0005177 1
-    ValeurDeNTCOrigineVersExtremite_1_6_472_ R0005178 1
+    ValeurDeNTCOrigineVersExtremite_1_6_472_ R0005487 1
+    ValeurDeNTCOrigineVersExtremite_1_6_472_ R0005488 1
     ValeurDeNTCOrigineVersExtremite_2_7_472_ R0002860 1
     ValeurDeNTCOrigineVersExtremite_2_7_472_ R0002872 -1
     ValeurDeNTCOrigineVersExtremite_2_7_472_ R0003533 0.8
@@ -21591,28 +21591,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_473_ R0002897 1
     ValeurDeNTCOrigineVersExtremite_0_1_473_ R0002877 1
     ValeurDeNTCOrigineVersExtremite_0_1_473_ R0002883 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_473_ R0005179 1
-    ValeurDeNTCOrigineVersExtremite_0_1_473_ R0005180 1
+    ValeurDeNTCOrigineVersExtremite_0_1_473_ R0003809 1
+    ValeurDeNTCOrigineVersExtremite_0_1_473_ R0003810 1
     ValeurDeNTCOrigineVersExtremite_0_2_473_ R0002877 1
     ValeurDeNTCOrigineVersExtremite_0_2_473_ R0002887 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_473_ R0005181 1
-    ValeurDeNTCOrigineVersExtremite_0_2_473_ R0005182 1
+    ValeurDeNTCOrigineVersExtremite_0_2_473_ R0004145 1
+    ValeurDeNTCOrigineVersExtremite_0_2_473_ R0004146 1
     ValeurDeNTCOrigineVersExtremite_0_3_473_ R0002877 1
     ValeurDeNTCOrigineVersExtremite_0_3_473_ R0002891 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_473_ R0005183 1
-    ValeurDeNTCOrigineVersExtremite_0_3_473_ R0005184 1
+    ValeurDeNTCOrigineVersExtremite_0_3_473_ R0004481 1
+    ValeurDeNTCOrigineVersExtremite_0_3_473_ R0004482 1
     ValeurDeNTCOrigineVersExtremite_1_4_473_ R0002879 1
     ValeurDeNTCOrigineVersExtremite_1_4_473_ R0002881 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_473_ R0005185 1
-    ValeurDeNTCOrigineVersExtremite_1_4_473_ R0005186 1
+    ValeurDeNTCOrigineVersExtremite_1_4_473_ R0004817 1
+    ValeurDeNTCOrigineVersExtremite_1_4_473_ R0004818 1
     ValeurDeNTCOrigineVersExtremite_1_5_473_ R0002879 1
     ValeurDeNTCOrigineVersExtremite_1_5_473_ R0002885 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_473_ R0005187 1
-    ValeurDeNTCOrigineVersExtremite_1_5_473_ R0005188 1
+    ValeurDeNTCOrigineVersExtremite_1_5_473_ R0005153 1
+    ValeurDeNTCOrigineVersExtremite_1_5_473_ R0005154 1
     ValeurDeNTCOrigineVersExtremite_1_6_473_ R0002879 1
     ValeurDeNTCOrigineVersExtremite_1_6_473_ R0002889 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_473_ R0005189 1
-    ValeurDeNTCOrigineVersExtremite_1_6_473_ R0005190 1
+    ValeurDeNTCOrigineVersExtremite_1_6_473_ R0005489 1
+    ValeurDeNTCOrigineVersExtremite_1_6_473_ R0005490 1
     ValeurDeNTCOrigineVersExtremite_2_7_473_ R0002881 1
     ValeurDeNTCOrigineVersExtremite_2_7_473_ R0002893 -1
     ValeurDeNTCOrigineVersExtremite_2_7_473_ R0003533 0.8
@@ -21708,28 +21708,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_474_ R0002918 1
     ValeurDeNTCOrigineVersExtremite_0_1_474_ R0002898 1
     ValeurDeNTCOrigineVersExtremite_0_1_474_ R0002904 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_474_ R0005191 1
-    ValeurDeNTCOrigineVersExtremite_0_1_474_ R0005192 1
+    ValeurDeNTCOrigineVersExtremite_0_1_474_ R0003811 1
+    ValeurDeNTCOrigineVersExtremite_0_1_474_ R0003812 1
     ValeurDeNTCOrigineVersExtremite_0_2_474_ R0002898 1
     ValeurDeNTCOrigineVersExtremite_0_2_474_ R0002908 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_474_ R0005193 1
-    ValeurDeNTCOrigineVersExtremite_0_2_474_ R0005194 1
+    ValeurDeNTCOrigineVersExtremite_0_2_474_ R0004147 1
+    ValeurDeNTCOrigineVersExtremite_0_2_474_ R0004148 1
     ValeurDeNTCOrigineVersExtremite_0_3_474_ R0002898 1
     ValeurDeNTCOrigineVersExtremite_0_3_474_ R0002912 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_474_ R0005195 1
-    ValeurDeNTCOrigineVersExtremite_0_3_474_ R0005196 1
+    ValeurDeNTCOrigineVersExtremite_0_3_474_ R0004483 1
+    ValeurDeNTCOrigineVersExtremite_0_3_474_ R0004484 1
     ValeurDeNTCOrigineVersExtremite_1_4_474_ R0002900 1
     ValeurDeNTCOrigineVersExtremite_1_4_474_ R0002902 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_474_ R0005197 1
-    ValeurDeNTCOrigineVersExtremite_1_4_474_ R0005198 1
+    ValeurDeNTCOrigineVersExtremite_1_4_474_ R0004819 1
+    ValeurDeNTCOrigineVersExtremite_1_4_474_ R0004820 1
     ValeurDeNTCOrigineVersExtremite_1_5_474_ R0002900 1
     ValeurDeNTCOrigineVersExtremite_1_5_474_ R0002906 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_474_ R0005199 1
-    ValeurDeNTCOrigineVersExtremite_1_5_474_ R0005200 1
+    ValeurDeNTCOrigineVersExtremite_1_5_474_ R0005155 1
+    ValeurDeNTCOrigineVersExtremite_1_5_474_ R0005156 1
     ValeurDeNTCOrigineVersExtremite_1_6_474_ R0002900 1
     ValeurDeNTCOrigineVersExtremite_1_6_474_ R0002910 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_474_ R0005201 1
-    ValeurDeNTCOrigineVersExtremite_1_6_474_ R0005202 1
+    ValeurDeNTCOrigineVersExtremite_1_6_474_ R0005491 1
+    ValeurDeNTCOrigineVersExtremite_1_6_474_ R0005492 1
     ValeurDeNTCOrigineVersExtremite_2_7_474_ R0002902 1
     ValeurDeNTCOrigineVersExtremite_2_7_474_ R0002914 -1
     ValeurDeNTCOrigineVersExtremite_2_7_474_ R0003533 0.8
@@ -21825,28 +21825,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_475_ R0002939 1
     ValeurDeNTCOrigineVersExtremite_0_1_475_ R0002919 1
     ValeurDeNTCOrigineVersExtremite_0_1_475_ R0002925 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_475_ R0005203 1
-    ValeurDeNTCOrigineVersExtremite_0_1_475_ R0005204 1
+    ValeurDeNTCOrigineVersExtremite_0_1_475_ R0003813 1
+    ValeurDeNTCOrigineVersExtremite_0_1_475_ R0003814 1
     ValeurDeNTCOrigineVersExtremite_0_2_475_ R0002919 1
     ValeurDeNTCOrigineVersExtremite_0_2_475_ R0002929 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_475_ R0005205 1
-    ValeurDeNTCOrigineVersExtremite_0_2_475_ R0005206 1
+    ValeurDeNTCOrigineVersExtremite_0_2_475_ R0004149 1
+    ValeurDeNTCOrigineVersExtremite_0_2_475_ R0004150 1
     ValeurDeNTCOrigineVersExtremite_0_3_475_ R0002919 1
     ValeurDeNTCOrigineVersExtremite_0_3_475_ R0002933 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_475_ R0005207 1
-    ValeurDeNTCOrigineVersExtremite_0_3_475_ R0005208 1
+    ValeurDeNTCOrigineVersExtremite_0_3_475_ R0004485 1
+    ValeurDeNTCOrigineVersExtremite_0_3_475_ R0004486 1
     ValeurDeNTCOrigineVersExtremite_1_4_475_ R0002921 1
     ValeurDeNTCOrigineVersExtremite_1_4_475_ R0002923 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_475_ R0005209 1
-    ValeurDeNTCOrigineVersExtremite_1_4_475_ R0005210 1
+    ValeurDeNTCOrigineVersExtremite_1_4_475_ R0004821 1
+    ValeurDeNTCOrigineVersExtremite_1_4_475_ R0004822 1
     ValeurDeNTCOrigineVersExtremite_1_5_475_ R0002921 1
     ValeurDeNTCOrigineVersExtremite_1_5_475_ R0002927 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_475_ R0005211 1
-    ValeurDeNTCOrigineVersExtremite_1_5_475_ R0005212 1
+    ValeurDeNTCOrigineVersExtremite_1_5_475_ R0005157 1
+    ValeurDeNTCOrigineVersExtremite_1_5_475_ R0005158 1
     ValeurDeNTCOrigineVersExtremite_1_6_475_ R0002921 1
     ValeurDeNTCOrigineVersExtremite_1_6_475_ R0002931 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_475_ R0005213 1
-    ValeurDeNTCOrigineVersExtremite_1_6_475_ R0005214 1
+    ValeurDeNTCOrigineVersExtremite_1_6_475_ R0005493 1
+    ValeurDeNTCOrigineVersExtremite_1_6_475_ R0005494 1
     ValeurDeNTCOrigineVersExtremite_2_7_475_ R0002923 1
     ValeurDeNTCOrigineVersExtremite_2_7_475_ R0002935 -1
     ValeurDeNTCOrigineVersExtremite_2_7_475_ R0003533 0.8
@@ -21942,28 +21942,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_476_ R0002960 1
     ValeurDeNTCOrigineVersExtremite_0_1_476_ R0002940 1
     ValeurDeNTCOrigineVersExtremite_0_1_476_ R0002946 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_476_ R0005215 1
-    ValeurDeNTCOrigineVersExtremite_0_1_476_ R0005216 1
+    ValeurDeNTCOrigineVersExtremite_0_1_476_ R0003815 1
+    ValeurDeNTCOrigineVersExtremite_0_1_476_ R0003816 1
     ValeurDeNTCOrigineVersExtremite_0_2_476_ R0002940 1
     ValeurDeNTCOrigineVersExtremite_0_2_476_ R0002950 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_476_ R0005217 1
-    ValeurDeNTCOrigineVersExtremite_0_2_476_ R0005218 1
+    ValeurDeNTCOrigineVersExtremite_0_2_476_ R0004151 1
+    ValeurDeNTCOrigineVersExtremite_0_2_476_ R0004152 1
     ValeurDeNTCOrigineVersExtremite_0_3_476_ R0002940 1
     ValeurDeNTCOrigineVersExtremite_0_3_476_ R0002954 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_476_ R0005219 1
-    ValeurDeNTCOrigineVersExtremite_0_3_476_ R0005220 1
+    ValeurDeNTCOrigineVersExtremite_0_3_476_ R0004487 1
+    ValeurDeNTCOrigineVersExtremite_0_3_476_ R0004488 1
     ValeurDeNTCOrigineVersExtremite_1_4_476_ R0002942 1
     ValeurDeNTCOrigineVersExtremite_1_4_476_ R0002944 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_476_ R0005221 1
-    ValeurDeNTCOrigineVersExtremite_1_4_476_ R0005222 1
+    ValeurDeNTCOrigineVersExtremite_1_4_476_ R0004823 1
+    ValeurDeNTCOrigineVersExtremite_1_4_476_ R0004824 1
     ValeurDeNTCOrigineVersExtremite_1_5_476_ R0002942 1
     ValeurDeNTCOrigineVersExtremite_1_5_476_ R0002948 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_476_ R0005223 1
-    ValeurDeNTCOrigineVersExtremite_1_5_476_ R0005224 1
+    ValeurDeNTCOrigineVersExtremite_1_5_476_ R0005159 1
+    ValeurDeNTCOrigineVersExtremite_1_5_476_ R0005160 1
     ValeurDeNTCOrigineVersExtremite_1_6_476_ R0002942 1
     ValeurDeNTCOrigineVersExtremite_1_6_476_ R0002952 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_476_ R0005225 1
-    ValeurDeNTCOrigineVersExtremite_1_6_476_ R0005226 1
+    ValeurDeNTCOrigineVersExtremite_1_6_476_ R0005495 1
+    ValeurDeNTCOrigineVersExtremite_1_6_476_ R0005496 1
     ValeurDeNTCOrigineVersExtremite_2_7_476_ R0002944 1
     ValeurDeNTCOrigineVersExtremite_2_7_476_ R0002956 -1
     ValeurDeNTCOrigineVersExtremite_2_7_476_ R0003533 0.8
@@ -22059,28 +22059,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_477_ R0002981 1
     ValeurDeNTCOrigineVersExtremite_0_1_477_ R0002961 1
     ValeurDeNTCOrigineVersExtremite_0_1_477_ R0002967 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_477_ R0005227 1
-    ValeurDeNTCOrigineVersExtremite_0_1_477_ R0005228 1
+    ValeurDeNTCOrigineVersExtremite_0_1_477_ R0003817 1
+    ValeurDeNTCOrigineVersExtremite_0_1_477_ R0003818 1
     ValeurDeNTCOrigineVersExtremite_0_2_477_ R0002961 1
     ValeurDeNTCOrigineVersExtremite_0_2_477_ R0002971 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_477_ R0005229 1
-    ValeurDeNTCOrigineVersExtremite_0_2_477_ R0005230 1
+    ValeurDeNTCOrigineVersExtremite_0_2_477_ R0004153 1
+    ValeurDeNTCOrigineVersExtremite_0_2_477_ R0004154 1
     ValeurDeNTCOrigineVersExtremite_0_3_477_ R0002961 1
     ValeurDeNTCOrigineVersExtremite_0_3_477_ R0002975 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_477_ R0005231 1
-    ValeurDeNTCOrigineVersExtremite_0_3_477_ R0005232 1
+    ValeurDeNTCOrigineVersExtremite_0_3_477_ R0004489 1
+    ValeurDeNTCOrigineVersExtremite_0_3_477_ R0004490 1
     ValeurDeNTCOrigineVersExtremite_1_4_477_ R0002963 1
     ValeurDeNTCOrigineVersExtremite_1_4_477_ R0002965 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_477_ R0005233 1
-    ValeurDeNTCOrigineVersExtremite_1_4_477_ R0005234 1
+    ValeurDeNTCOrigineVersExtremite_1_4_477_ R0004825 1
+    ValeurDeNTCOrigineVersExtremite_1_4_477_ R0004826 1
     ValeurDeNTCOrigineVersExtremite_1_5_477_ R0002963 1
     ValeurDeNTCOrigineVersExtremite_1_5_477_ R0002969 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_477_ R0005235 1
-    ValeurDeNTCOrigineVersExtremite_1_5_477_ R0005236 1
+    ValeurDeNTCOrigineVersExtremite_1_5_477_ R0005161 1
+    ValeurDeNTCOrigineVersExtremite_1_5_477_ R0005162 1
     ValeurDeNTCOrigineVersExtremite_1_6_477_ R0002963 1
     ValeurDeNTCOrigineVersExtremite_1_6_477_ R0002973 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_477_ R0005237 1
-    ValeurDeNTCOrigineVersExtremite_1_6_477_ R0005238 1
+    ValeurDeNTCOrigineVersExtremite_1_6_477_ R0005497 1
+    ValeurDeNTCOrigineVersExtremite_1_6_477_ R0005498 1
     ValeurDeNTCOrigineVersExtremite_2_7_477_ R0002965 1
     ValeurDeNTCOrigineVersExtremite_2_7_477_ R0002977 -1
     ValeurDeNTCOrigineVersExtremite_2_7_477_ R0003533 0.8
@@ -22176,28 +22176,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_478_ R0003002 1
     ValeurDeNTCOrigineVersExtremite_0_1_478_ R0002982 1
     ValeurDeNTCOrigineVersExtremite_0_1_478_ R0002988 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_478_ R0005239 1
-    ValeurDeNTCOrigineVersExtremite_0_1_478_ R0005240 1
+    ValeurDeNTCOrigineVersExtremite_0_1_478_ R0003819 1
+    ValeurDeNTCOrigineVersExtremite_0_1_478_ R0003820 1
     ValeurDeNTCOrigineVersExtremite_0_2_478_ R0002982 1
     ValeurDeNTCOrigineVersExtremite_0_2_478_ R0002992 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_478_ R0005241 1
-    ValeurDeNTCOrigineVersExtremite_0_2_478_ R0005242 1
+    ValeurDeNTCOrigineVersExtremite_0_2_478_ R0004155 1
+    ValeurDeNTCOrigineVersExtremite_0_2_478_ R0004156 1
     ValeurDeNTCOrigineVersExtremite_0_3_478_ R0002982 1
     ValeurDeNTCOrigineVersExtremite_0_3_478_ R0002996 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_478_ R0005243 1
-    ValeurDeNTCOrigineVersExtremite_0_3_478_ R0005244 1
+    ValeurDeNTCOrigineVersExtremite_0_3_478_ R0004491 1
+    ValeurDeNTCOrigineVersExtremite_0_3_478_ R0004492 1
     ValeurDeNTCOrigineVersExtremite_1_4_478_ R0002984 1
     ValeurDeNTCOrigineVersExtremite_1_4_478_ R0002986 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_478_ R0005245 1
-    ValeurDeNTCOrigineVersExtremite_1_4_478_ R0005246 1
+    ValeurDeNTCOrigineVersExtremite_1_4_478_ R0004827 1
+    ValeurDeNTCOrigineVersExtremite_1_4_478_ R0004828 1
     ValeurDeNTCOrigineVersExtremite_1_5_478_ R0002984 1
     ValeurDeNTCOrigineVersExtremite_1_5_478_ R0002990 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_478_ R0005247 1
-    ValeurDeNTCOrigineVersExtremite_1_5_478_ R0005248 1
+    ValeurDeNTCOrigineVersExtremite_1_5_478_ R0005163 1
+    ValeurDeNTCOrigineVersExtremite_1_5_478_ R0005164 1
     ValeurDeNTCOrigineVersExtremite_1_6_478_ R0002984 1
     ValeurDeNTCOrigineVersExtremite_1_6_478_ R0002994 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_478_ R0005249 1
-    ValeurDeNTCOrigineVersExtremite_1_6_478_ R0005250 1
+    ValeurDeNTCOrigineVersExtremite_1_6_478_ R0005499 1
+    ValeurDeNTCOrigineVersExtremite_1_6_478_ R0005500 1
     ValeurDeNTCOrigineVersExtremite_2_7_478_ R0002986 1
     ValeurDeNTCOrigineVersExtremite_2_7_478_ R0002998 -1
     ValeurDeNTCOrigineVersExtremite_2_7_478_ R0003533 0.8
@@ -22293,28 +22293,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_479_ R0003023 1
     ValeurDeNTCOrigineVersExtremite_0_1_479_ R0003003 1
     ValeurDeNTCOrigineVersExtremite_0_1_479_ R0003009 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_479_ R0005251 1
-    ValeurDeNTCOrigineVersExtremite_0_1_479_ R0005252 1
+    ValeurDeNTCOrigineVersExtremite_0_1_479_ R0003821 1
+    ValeurDeNTCOrigineVersExtremite_0_1_479_ R0003822 1
     ValeurDeNTCOrigineVersExtremite_0_2_479_ R0003003 1
     ValeurDeNTCOrigineVersExtremite_0_2_479_ R0003013 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_479_ R0005253 1
-    ValeurDeNTCOrigineVersExtremite_0_2_479_ R0005254 1
+    ValeurDeNTCOrigineVersExtremite_0_2_479_ R0004157 1
+    ValeurDeNTCOrigineVersExtremite_0_2_479_ R0004158 1
     ValeurDeNTCOrigineVersExtremite_0_3_479_ R0003003 1
     ValeurDeNTCOrigineVersExtremite_0_3_479_ R0003017 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_479_ R0005255 1
-    ValeurDeNTCOrigineVersExtremite_0_3_479_ R0005256 1
+    ValeurDeNTCOrigineVersExtremite_0_3_479_ R0004493 1
+    ValeurDeNTCOrigineVersExtremite_0_3_479_ R0004494 1
     ValeurDeNTCOrigineVersExtremite_1_4_479_ R0003005 1
     ValeurDeNTCOrigineVersExtremite_1_4_479_ R0003007 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_479_ R0005257 1
-    ValeurDeNTCOrigineVersExtremite_1_4_479_ R0005258 1
+    ValeurDeNTCOrigineVersExtremite_1_4_479_ R0004829 1
+    ValeurDeNTCOrigineVersExtremite_1_4_479_ R0004830 1
     ValeurDeNTCOrigineVersExtremite_1_5_479_ R0003005 1
     ValeurDeNTCOrigineVersExtremite_1_5_479_ R0003011 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_479_ R0005259 1
-    ValeurDeNTCOrigineVersExtremite_1_5_479_ R0005260 1
+    ValeurDeNTCOrigineVersExtremite_1_5_479_ R0005165 1
+    ValeurDeNTCOrigineVersExtremite_1_5_479_ R0005166 1
     ValeurDeNTCOrigineVersExtremite_1_6_479_ R0003005 1
     ValeurDeNTCOrigineVersExtremite_1_6_479_ R0003015 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_479_ R0005261 1
-    ValeurDeNTCOrigineVersExtremite_1_6_479_ R0005262 1
+    ValeurDeNTCOrigineVersExtremite_1_6_479_ R0005501 1
+    ValeurDeNTCOrigineVersExtremite_1_6_479_ R0005502 1
     ValeurDeNTCOrigineVersExtremite_2_7_479_ R0003007 1
     ValeurDeNTCOrigineVersExtremite_2_7_479_ R0003019 -1
     ValeurDeNTCOrigineVersExtremite_2_7_479_ R0003533 0.8
@@ -22410,28 +22410,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_480_ R0003044 1
     ValeurDeNTCOrigineVersExtremite_0_1_480_ R0003024 1
     ValeurDeNTCOrigineVersExtremite_0_1_480_ R0003030 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_480_ R0005263 1
-    ValeurDeNTCOrigineVersExtremite_0_1_480_ R0005264 1
+    ValeurDeNTCOrigineVersExtremite_0_1_480_ R0003823 1
+    ValeurDeNTCOrigineVersExtremite_0_1_480_ R0003824 1
     ValeurDeNTCOrigineVersExtremite_0_2_480_ R0003024 1
     ValeurDeNTCOrigineVersExtremite_0_2_480_ R0003034 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_480_ R0005265 1
-    ValeurDeNTCOrigineVersExtremite_0_2_480_ R0005266 1
+    ValeurDeNTCOrigineVersExtremite_0_2_480_ R0004159 1
+    ValeurDeNTCOrigineVersExtremite_0_2_480_ R0004160 1
     ValeurDeNTCOrigineVersExtremite_0_3_480_ R0003024 1
     ValeurDeNTCOrigineVersExtremite_0_3_480_ R0003038 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_480_ R0005267 1
-    ValeurDeNTCOrigineVersExtremite_0_3_480_ R0005268 1
+    ValeurDeNTCOrigineVersExtremite_0_3_480_ R0004495 1
+    ValeurDeNTCOrigineVersExtremite_0_3_480_ R0004496 1
     ValeurDeNTCOrigineVersExtremite_1_4_480_ R0003026 1
     ValeurDeNTCOrigineVersExtremite_1_4_480_ R0003028 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_480_ R0005269 1
-    ValeurDeNTCOrigineVersExtremite_1_4_480_ R0005270 1
+    ValeurDeNTCOrigineVersExtremite_1_4_480_ R0004831 1
+    ValeurDeNTCOrigineVersExtremite_1_4_480_ R0004832 1
     ValeurDeNTCOrigineVersExtremite_1_5_480_ R0003026 1
     ValeurDeNTCOrigineVersExtremite_1_5_480_ R0003032 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_480_ R0005271 1
-    ValeurDeNTCOrigineVersExtremite_1_5_480_ R0005272 1
+    ValeurDeNTCOrigineVersExtremite_1_5_480_ R0005167 1
+    ValeurDeNTCOrigineVersExtremite_1_5_480_ R0005168 1
     ValeurDeNTCOrigineVersExtremite_1_6_480_ R0003026 1
     ValeurDeNTCOrigineVersExtremite_1_6_480_ R0003036 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_480_ R0005273 1
-    ValeurDeNTCOrigineVersExtremite_1_6_480_ R0005274 1
+    ValeurDeNTCOrigineVersExtremite_1_6_480_ R0005503 1
+    ValeurDeNTCOrigineVersExtremite_1_6_480_ R0005504 1
     ValeurDeNTCOrigineVersExtremite_2_7_480_ R0003028 1
     ValeurDeNTCOrigineVersExtremite_2_7_480_ R0003040 -1
     ValeurDeNTCOrigineVersExtremite_2_7_480_ R0003534 0.8
@@ -22527,28 +22527,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_481_ R0003065 1
     ValeurDeNTCOrigineVersExtremite_0_1_481_ R0003045 1
     ValeurDeNTCOrigineVersExtremite_0_1_481_ R0003051 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_481_ R0005275 1
-    ValeurDeNTCOrigineVersExtremite_0_1_481_ R0005276 1
+    ValeurDeNTCOrigineVersExtremite_0_1_481_ R0003825 1
+    ValeurDeNTCOrigineVersExtremite_0_1_481_ R0003826 1
     ValeurDeNTCOrigineVersExtremite_0_2_481_ R0003045 1
     ValeurDeNTCOrigineVersExtremite_0_2_481_ R0003055 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_481_ R0005277 1
-    ValeurDeNTCOrigineVersExtremite_0_2_481_ R0005278 1
+    ValeurDeNTCOrigineVersExtremite_0_2_481_ R0004161 1
+    ValeurDeNTCOrigineVersExtremite_0_2_481_ R0004162 1
     ValeurDeNTCOrigineVersExtremite_0_3_481_ R0003045 1
     ValeurDeNTCOrigineVersExtremite_0_3_481_ R0003059 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_481_ R0005279 1
-    ValeurDeNTCOrigineVersExtremite_0_3_481_ R0005280 1
+    ValeurDeNTCOrigineVersExtremite_0_3_481_ R0004497 1
+    ValeurDeNTCOrigineVersExtremite_0_3_481_ R0004498 1
     ValeurDeNTCOrigineVersExtremite_1_4_481_ R0003047 1
     ValeurDeNTCOrigineVersExtremite_1_4_481_ R0003049 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_481_ R0005281 1
-    ValeurDeNTCOrigineVersExtremite_1_4_481_ R0005282 1
+    ValeurDeNTCOrigineVersExtremite_1_4_481_ R0004833 1
+    ValeurDeNTCOrigineVersExtremite_1_4_481_ R0004834 1
     ValeurDeNTCOrigineVersExtremite_1_5_481_ R0003047 1
     ValeurDeNTCOrigineVersExtremite_1_5_481_ R0003053 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_481_ R0005283 1
-    ValeurDeNTCOrigineVersExtremite_1_5_481_ R0005284 1
+    ValeurDeNTCOrigineVersExtremite_1_5_481_ R0005169 1
+    ValeurDeNTCOrigineVersExtremite_1_5_481_ R0005170 1
     ValeurDeNTCOrigineVersExtremite_1_6_481_ R0003047 1
     ValeurDeNTCOrigineVersExtremite_1_6_481_ R0003057 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_481_ R0005285 1
-    ValeurDeNTCOrigineVersExtremite_1_6_481_ R0005286 1
+    ValeurDeNTCOrigineVersExtremite_1_6_481_ R0005505 1
+    ValeurDeNTCOrigineVersExtremite_1_6_481_ R0005506 1
     ValeurDeNTCOrigineVersExtremite_2_7_481_ R0003049 1
     ValeurDeNTCOrigineVersExtremite_2_7_481_ R0003061 -1
     ValeurDeNTCOrigineVersExtremite_2_7_481_ R0003534 0.8
@@ -22644,28 +22644,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_482_ R0003086 1
     ValeurDeNTCOrigineVersExtremite_0_1_482_ R0003066 1
     ValeurDeNTCOrigineVersExtremite_0_1_482_ R0003072 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_482_ R0005287 1
-    ValeurDeNTCOrigineVersExtremite_0_1_482_ R0005288 1
+    ValeurDeNTCOrigineVersExtremite_0_1_482_ R0003827 1
+    ValeurDeNTCOrigineVersExtremite_0_1_482_ R0003828 1
     ValeurDeNTCOrigineVersExtremite_0_2_482_ R0003066 1
     ValeurDeNTCOrigineVersExtremite_0_2_482_ R0003076 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_482_ R0005289 1
-    ValeurDeNTCOrigineVersExtremite_0_2_482_ R0005290 1
+    ValeurDeNTCOrigineVersExtremite_0_2_482_ R0004163 1
+    ValeurDeNTCOrigineVersExtremite_0_2_482_ R0004164 1
     ValeurDeNTCOrigineVersExtremite_0_3_482_ R0003066 1
     ValeurDeNTCOrigineVersExtremite_0_3_482_ R0003080 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_482_ R0005291 1
-    ValeurDeNTCOrigineVersExtremite_0_3_482_ R0005292 1
+    ValeurDeNTCOrigineVersExtremite_0_3_482_ R0004499 1
+    ValeurDeNTCOrigineVersExtremite_0_3_482_ R0004500 1
     ValeurDeNTCOrigineVersExtremite_1_4_482_ R0003068 1
     ValeurDeNTCOrigineVersExtremite_1_4_482_ R0003070 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_482_ R0005293 1
-    ValeurDeNTCOrigineVersExtremite_1_4_482_ R0005294 1
+    ValeurDeNTCOrigineVersExtremite_1_4_482_ R0004835 1
+    ValeurDeNTCOrigineVersExtremite_1_4_482_ R0004836 1
     ValeurDeNTCOrigineVersExtremite_1_5_482_ R0003068 1
     ValeurDeNTCOrigineVersExtremite_1_5_482_ R0003074 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_482_ R0005295 1
-    ValeurDeNTCOrigineVersExtremite_1_5_482_ R0005296 1
+    ValeurDeNTCOrigineVersExtremite_1_5_482_ R0005171 1
+    ValeurDeNTCOrigineVersExtremite_1_5_482_ R0005172 1
     ValeurDeNTCOrigineVersExtremite_1_6_482_ R0003068 1
     ValeurDeNTCOrigineVersExtremite_1_6_482_ R0003078 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_482_ R0005297 1
-    ValeurDeNTCOrigineVersExtremite_1_6_482_ R0005298 1
+    ValeurDeNTCOrigineVersExtremite_1_6_482_ R0005507 1
+    ValeurDeNTCOrigineVersExtremite_1_6_482_ R0005508 1
     ValeurDeNTCOrigineVersExtremite_2_7_482_ R0003070 1
     ValeurDeNTCOrigineVersExtremite_2_7_482_ R0003082 -1
     ValeurDeNTCOrigineVersExtremite_2_7_482_ R0003534 0.8
@@ -22761,28 +22761,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_483_ R0003107 1
     ValeurDeNTCOrigineVersExtremite_0_1_483_ R0003087 1
     ValeurDeNTCOrigineVersExtremite_0_1_483_ R0003093 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_483_ R0005299 1
-    ValeurDeNTCOrigineVersExtremite_0_1_483_ R0005300 1
+    ValeurDeNTCOrigineVersExtremite_0_1_483_ R0003829 1
+    ValeurDeNTCOrigineVersExtremite_0_1_483_ R0003830 1
     ValeurDeNTCOrigineVersExtremite_0_2_483_ R0003087 1
     ValeurDeNTCOrigineVersExtremite_0_2_483_ R0003097 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_483_ R0005301 1
-    ValeurDeNTCOrigineVersExtremite_0_2_483_ R0005302 1
+    ValeurDeNTCOrigineVersExtremite_0_2_483_ R0004165 1
+    ValeurDeNTCOrigineVersExtremite_0_2_483_ R0004166 1
     ValeurDeNTCOrigineVersExtremite_0_3_483_ R0003087 1
     ValeurDeNTCOrigineVersExtremite_0_3_483_ R0003101 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_483_ R0005303 1
-    ValeurDeNTCOrigineVersExtremite_0_3_483_ R0005304 1
+    ValeurDeNTCOrigineVersExtremite_0_3_483_ R0004501 1
+    ValeurDeNTCOrigineVersExtremite_0_3_483_ R0004502 1
     ValeurDeNTCOrigineVersExtremite_1_4_483_ R0003089 1
     ValeurDeNTCOrigineVersExtremite_1_4_483_ R0003091 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_483_ R0005305 1
-    ValeurDeNTCOrigineVersExtremite_1_4_483_ R0005306 1
+    ValeurDeNTCOrigineVersExtremite_1_4_483_ R0004837 1
+    ValeurDeNTCOrigineVersExtremite_1_4_483_ R0004838 1
     ValeurDeNTCOrigineVersExtremite_1_5_483_ R0003089 1
     ValeurDeNTCOrigineVersExtremite_1_5_483_ R0003095 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_483_ R0005307 1
-    ValeurDeNTCOrigineVersExtremite_1_5_483_ R0005308 1
+    ValeurDeNTCOrigineVersExtremite_1_5_483_ R0005173 1
+    ValeurDeNTCOrigineVersExtremite_1_5_483_ R0005174 1
     ValeurDeNTCOrigineVersExtremite_1_6_483_ R0003089 1
     ValeurDeNTCOrigineVersExtremite_1_6_483_ R0003099 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_483_ R0005309 1
-    ValeurDeNTCOrigineVersExtremite_1_6_483_ R0005310 1
+    ValeurDeNTCOrigineVersExtremite_1_6_483_ R0005509 1
+    ValeurDeNTCOrigineVersExtremite_1_6_483_ R0005510 1
     ValeurDeNTCOrigineVersExtremite_2_7_483_ R0003091 1
     ValeurDeNTCOrigineVersExtremite_2_7_483_ R0003103 -1
     ValeurDeNTCOrigineVersExtremite_2_7_483_ R0003534 0.8
@@ -22878,28 +22878,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_484_ R0003128 1
     ValeurDeNTCOrigineVersExtremite_0_1_484_ R0003108 1
     ValeurDeNTCOrigineVersExtremite_0_1_484_ R0003114 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_484_ R0005311 1
-    ValeurDeNTCOrigineVersExtremite_0_1_484_ R0005312 1
+    ValeurDeNTCOrigineVersExtremite_0_1_484_ R0003831 1
+    ValeurDeNTCOrigineVersExtremite_0_1_484_ R0003832 1
     ValeurDeNTCOrigineVersExtremite_0_2_484_ R0003108 1
     ValeurDeNTCOrigineVersExtremite_0_2_484_ R0003118 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_484_ R0005313 1
-    ValeurDeNTCOrigineVersExtremite_0_2_484_ R0005314 1
+    ValeurDeNTCOrigineVersExtremite_0_2_484_ R0004167 1
+    ValeurDeNTCOrigineVersExtremite_0_2_484_ R0004168 1
     ValeurDeNTCOrigineVersExtremite_0_3_484_ R0003108 1
     ValeurDeNTCOrigineVersExtremite_0_3_484_ R0003122 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_484_ R0005315 1
-    ValeurDeNTCOrigineVersExtremite_0_3_484_ R0005316 1
+    ValeurDeNTCOrigineVersExtremite_0_3_484_ R0004503 1
+    ValeurDeNTCOrigineVersExtremite_0_3_484_ R0004504 1
     ValeurDeNTCOrigineVersExtremite_1_4_484_ R0003110 1
     ValeurDeNTCOrigineVersExtremite_1_4_484_ R0003112 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_484_ R0005317 1
-    ValeurDeNTCOrigineVersExtremite_1_4_484_ R0005318 1
+    ValeurDeNTCOrigineVersExtremite_1_4_484_ R0004839 1
+    ValeurDeNTCOrigineVersExtremite_1_4_484_ R0004840 1
     ValeurDeNTCOrigineVersExtremite_1_5_484_ R0003110 1
     ValeurDeNTCOrigineVersExtremite_1_5_484_ R0003116 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_484_ R0005319 1
-    ValeurDeNTCOrigineVersExtremite_1_5_484_ R0005320 1
+    ValeurDeNTCOrigineVersExtremite_1_5_484_ R0005175 1
+    ValeurDeNTCOrigineVersExtremite_1_5_484_ R0005176 1
     ValeurDeNTCOrigineVersExtremite_1_6_484_ R0003110 1
     ValeurDeNTCOrigineVersExtremite_1_6_484_ R0003120 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_484_ R0005321 1
-    ValeurDeNTCOrigineVersExtremite_1_6_484_ R0005322 1
+    ValeurDeNTCOrigineVersExtremite_1_6_484_ R0005511 1
+    ValeurDeNTCOrigineVersExtremite_1_6_484_ R0005512 1
     ValeurDeNTCOrigineVersExtremite_2_7_484_ R0003112 1
     ValeurDeNTCOrigineVersExtremite_2_7_484_ R0003124 -1
     ValeurDeNTCOrigineVersExtremite_2_7_484_ R0003534 0.8
@@ -22995,28 +22995,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_485_ R0003149 1
     ValeurDeNTCOrigineVersExtremite_0_1_485_ R0003129 1
     ValeurDeNTCOrigineVersExtremite_0_1_485_ R0003135 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_485_ R0005323 1
-    ValeurDeNTCOrigineVersExtremite_0_1_485_ R0005324 1
+    ValeurDeNTCOrigineVersExtremite_0_1_485_ R0003833 1
+    ValeurDeNTCOrigineVersExtremite_0_1_485_ R0003834 1
     ValeurDeNTCOrigineVersExtremite_0_2_485_ R0003129 1
     ValeurDeNTCOrigineVersExtremite_0_2_485_ R0003139 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_485_ R0005325 1
-    ValeurDeNTCOrigineVersExtremite_0_2_485_ R0005326 1
+    ValeurDeNTCOrigineVersExtremite_0_2_485_ R0004169 1
+    ValeurDeNTCOrigineVersExtremite_0_2_485_ R0004170 1
     ValeurDeNTCOrigineVersExtremite_0_3_485_ R0003129 1
     ValeurDeNTCOrigineVersExtremite_0_3_485_ R0003143 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_485_ R0005327 1
-    ValeurDeNTCOrigineVersExtremite_0_3_485_ R0005328 1
+    ValeurDeNTCOrigineVersExtremite_0_3_485_ R0004505 1
+    ValeurDeNTCOrigineVersExtremite_0_3_485_ R0004506 1
     ValeurDeNTCOrigineVersExtremite_1_4_485_ R0003131 1
     ValeurDeNTCOrigineVersExtremite_1_4_485_ R0003133 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_485_ R0005329 1
-    ValeurDeNTCOrigineVersExtremite_1_4_485_ R0005330 1
+    ValeurDeNTCOrigineVersExtremite_1_4_485_ R0004841 1
+    ValeurDeNTCOrigineVersExtremite_1_4_485_ R0004842 1
     ValeurDeNTCOrigineVersExtremite_1_5_485_ R0003131 1
     ValeurDeNTCOrigineVersExtremite_1_5_485_ R0003137 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_485_ R0005331 1
-    ValeurDeNTCOrigineVersExtremite_1_5_485_ R0005332 1
+    ValeurDeNTCOrigineVersExtremite_1_5_485_ R0005177 1
+    ValeurDeNTCOrigineVersExtremite_1_5_485_ R0005178 1
     ValeurDeNTCOrigineVersExtremite_1_6_485_ R0003131 1
     ValeurDeNTCOrigineVersExtremite_1_6_485_ R0003141 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_485_ R0005333 1
-    ValeurDeNTCOrigineVersExtremite_1_6_485_ R0005334 1
+    ValeurDeNTCOrigineVersExtremite_1_6_485_ R0005513 1
+    ValeurDeNTCOrigineVersExtremite_1_6_485_ R0005514 1
     ValeurDeNTCOrigineVersExtremite_2_7_485_ R0003133 1
     ValeurDeNTCOrigineVersExtremite_2_7_485_ R0003145 -1
     ValeurDeNTCOrigineVersExtremite_2_7_485_ R0003534 0.8
@@ -23112,28 +23112,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_486_ R0003170 1
     ValeurDeNTCOrigineVersExtremite_0_1_486_ R0003150 1
     ValeurDeNTCOrigineVersExtremite_0_1_486_ R0003156 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_486_ R0005335 1
-    ValeurDeNTCOrigineVersExtremite_0_1_486_ R0005336 1
+    ValeurDeNTCOrigineVersExtremite_0_1_486_ R0003835 1
+    ValeurDeNTCOrigineVersExtremite_0_1_486_ R0003836 1
     ValeurDeNTCOrigineVersExtremite_0_2_486_ R0003150 1
     ValeurDeNTCOrigineVersExtremite_0_2_486_ R0003160 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_486_ R0005337 1
-    ValeurDeNTCOrigineVersExtremite_0_2_486_ R0005338 1
+    ValeurDeNTCOrigineVersExtremite_0_2_486_ R0004171 1
+    ValeurDeNTCOrigineVersExtremite_0_2_486_ R0004172 1
     ValeurDeNTCOrigineVersExtremite_0_3_486_ R0003150 1
     ValeurDeNTCOrigineVersExtremite_0_3_486_ R0003164 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_486_ R0005339 1
-    ValeurDeNTCOrigineVersExtremite_0_3_486_ R0005340 1
+    ValeurDeNTCOrigineVersExtremite_0_3_486_ R0004507 1
+    ValeurDeNTCOrigineVersExtremite_0_3_486_ R0004508 1
     ValeurDeNTCOrigineVersExtremite_1_4_486_ R0003152 1
     ValeurDeNTCOrigineVersExtremite_1_4_486_ R0003154 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_486_ R0005341 1
-    ValeurDeNTCOrigineVersExtremite_1_4_486_ R0005342 1
+    ValeurDeNTCOrigineVersExtremite_1_4_486_ R0004843 1
+    ValeurDeNTCOrigineVersExtremite_1_4_486_ R0004844 1
     ValeurDeNTCOrigineVersExtremite_1_5_486_ R0003152 1
     ValeurDeNTCOrigineVersExtremite_1_5_486_ R0003158 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_486_ R0005343 1
-    ValeurDeNTCOrigineVersExtremite_1_5_486_ R0005344 1
+    ValeurDeNTCOrigineVersExtremite_1_5_486_ R0005179 1
+    ValeurDeNTCOrigineVersExtremite_1_5_486_ R0005180 1
     ValeurDeNTCOrigineVersExtremite_1_6_486_ R0003152 1
     ValeurDeNTCOrigineVersExtremite_1_6_486_ R0003162 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_486_ R0005345 1
-    ValeurDeNTCOrigineVersExtremite_1_6_486_ R0005346 1
+    ValeurDeNTCOrigineVersExtremite_1_6_486_ R0005515 1
+    ValeurDeNTCOrigineVersExtremite_1_6_486_ R0005516 1
     ValeurDeNTCOrigineVersExtremite_2_7_486_ R0003154 1
     ValeurDeNTCOrigineVersExtremite_2_7_486_ R0003166 -1
     ValeurDeNTCOrigineVersExtremite_2_7_486_ R0003534 0.8
@@ -23229,28 +23229,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_487_ R0003191 1
     ValeurDeNTCOrigineVersExtremite_0_1_487_ R0003171 1
     ValeurDeNTCOrigineVersExtremite_0_1_487_ R0003177 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_487_ R0005347 1
-    ValeurDeNTCOrigineVersExtremite_0_1_487_ R0005348 1
+    ValeurDeNTCOrigineVersExtremite_0_1_487_ R0003837 1
+    ValeurDeNTCOrigineVersExtremite_0_1_487_ R0003838 1
     ValeurDeNTCOrigineVersExtremite_0_2_487_ R0003171 1
     ValeurDeNTCOrigineVersExtremite_0_2_487_ R0003181 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_487_ R0005349 1
-    ValeurDeNTCOrigineVersExtremite_0_2_487_ R0005350 1
+    ValeurDeNTCOrigineVersExtremite_0_2_487_ R0004173 1
+    ValeurDeNTCOrigineVersExtremite_0_2_487_ R0004174 1
     ValeurDeNTCOrigineVersExtremite_0_3_487_ R0003171 1
     ValeurDeNTCOrigineVersExtremite_0_3_487_ R0003185 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_487_ R0005351 1
-    ValeurDeNTCOrigineVersExtremite_0_3_487_ R0005352 1
+    ValeurDeNTCOrigineVersExtremite_0_3_487_ R0004509 1
+    ValeurDeNTCOrigineVersExtremite_0_3_487_ R0004510 1
     ValeurDeNTCOrigineVersExtremite_1_4_487_ R0003173 1
     ValeurDeNTCOrigineVersExtremite_1_4_487_ R0003175 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_487_ R0005353 1
-    ValeurDeNTCOrigineVersExtremite_1_4_487_ R0005354 1
+    ValeurDeNTCOrigineVersExtremite_1_4_487_ R0004845 1
+    ValeurDeNTCOrigineVersExtremite_1_4_487_ R0004846 1
     ValeurDeNTCOrigineVersExtremite_1_5_487_ R0003173 1
     ValeurDeNTCOrigineVersExtremite_1_5_487_ R0003179 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_487_ R0005355 1
-    ValeurDeNTCOrigineVersExtremite_1_5_487_ R0005356 1
+    ValeurDeNTCOrigineVersExtremite_1_5_487_ R0005181 1
+    ValeurDeNTCOrigineVersExtremite_1_5_487_ R0005182 1
     ValeurDeNTCOrigineVersExtremite_1_6_487_ R0003173 1
     ValeurDeNTCOrigineVersExtremite_1_6_487_ R0003183 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_487_ R0005357 1
-    ValeurDeNTCOrigineVersExtremite_1_6_487_ R0005358 1
+    ValeurDeNTCOrigineVersExtremite_1_6_487_ R0005517 1
+    ValeurDeNTCOrigineVersExtremite_1_6_487_ R0005518 1
     ValeurDeNTCOrigineVersExtremite_2_7_487_ R0003175 1
     ValeurDeNTCOrigineVersExtremite_2_7_487_ R0003187 -1
     ValeurDeNTCOrigineVersExtremite_2_7_487_ R0003534 0.8
@@ -23346,28 +23346,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_488_ R0003212 1
     ValeurDeNTCOrigineVersExtremite_0_1_488_ R0003192 1
     ValeurDeNTCOrigineVersExtremite_0_1_488_ R0003198 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_488_ R0005359 1
-    ValeurDeNTCOrigineVersExtremite_0_1_488_ R0005360 1
+    ValeurDeNTCOrigineVersExtremite_0_1_488_ R0003839 1
+    ValeurDeNTCOrigineVersExtremite_0_1_488_ R0003840 1
     ValeurDeNTCOrigineVersExtremite_0_2_488_ R0003192 1
     ValeurDeNTCOrigineVersExtremite_0_2_488_ R0003202 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_488_ R0005361 1
-    ValeurDeNTCOrigineVersExtremite_0_2_488_ R0005362 1
+    ValeurDeNTCOrigineVersExtremite_0_2_488_ R0004175 1
+    ValeurDeNTCOrigineVersExtremite_0_2_488_ R0004176 1
     ValeurDeNTCOrigineVersExtremite_0_3_488_ R0003192 1
     ValeurDeNTCOrigineVersExtremite_0_3_488_ R0003206 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_488_ R0005363 1
-    ValeurDeNTCOrigineVersExtremite_0_3_488_ R0005364 1
+    ValeurDeNTCOrigineVersExtremite_0_3_488_ R0004511 1
+    ValeurDeNTCOrigineVersExtremite_0_3_488_ R0004512 1
     ValeurDeNTCOrigineVersExtremite_1_4_488_ R0003194 1
     ValeurDeNTCOrigineVersExtremite_1_4_488_ R0003196 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_488_ R0005365 1
-    ValeurDeNTCOrigineVersExtremite_1_4_488_ R0005366 1
+    ValeurDeNTCOrigineVersExtremite_1_4_488_ R0004847 1
+    ValeurDeNTCOrigineVersExtremite_1_4_488_ R0004848 1
     ValeurDeNTCOrigineVersExtremite_1_5_488_ R0003194 1
     ValeurDeNTCOrigineVersExtremite_1_5_488_ R0003200 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_488_ R0005367 1
-    ValeurDeNTCOrigineVersExtremite_1_5_488_ R0005368 1
+    ValeurDeNTCOrigineVersExtremite_1_5_488_ R0005183 1
+    ValeurDeNTCOrigineVersExtremite_1_5_488_ R0005184 1
     ValeurDeNTCOrigineVersExtremite_1_6_488_ R0003194 1
     ValeurDeNTCOrigineVersExtremite_1_6_488_ R0003204 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_488_ R0005369 1
-    ValeurDeNTCOrigineVersExtremite_1_6_488_ R0005370 1
+    ValeurDeNTCOrigineVersExtremite_1_6_488_ R0005519 1
+    ValeurDeNTCOrigineVersExtremite_1_6_488_ R0005520 1
     ValeurDeNTCOrigineVersExtremite_2_7_488_ R0003196 1
     ValeurDeNTCOrigineVersExtremite_2_7_488_ R0003208 -1
     ValeurDeNTCOrigineVersExtremite_2_7_488_ R0003534 0.8
@@ -23463,28 +23463,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_489_ R0003233 1
     ValeurDeNTCOrigineVersExtremite_0_1_489_ R0003213 1
     ValeurDeNTCOrigineVersExtremite_0_1_489_ R0003219 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_489_ R0005371 1
-    ValeurDeNTCOrigineVersExtremite_0_1_489_ R0005372 1
+    ValeurDeNTCOrigineVersExtremite_0_1_489_ R0003841 1
+    ValeurDeNTCOrigineVersExtremite_0_1_489_ R0003842 1
     ValeurDeNTCOrigineVersExtremite_0_2_489_ R0003213 1
     ValeurDeNTCOrigineVersExtremite_0_2_489_ R0003223 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_489_ R0005373 1
-    ValeurDeNTCOrigineVersExtremite_0_2_489_ R0005374 1
+    ValeurDeNTCOrigineVersExtremite_0_2_489_ R0004177 1
+    ValeurDeNTCOrigineVersExtremite_0_2_489_ R0004178 1
     ValeurDeNTCOrigineVersExtremite_0_3_489_ R0003213 1
     ValeurDeNTCOrigineVersExtremite_0_3_489_ R0003227 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_489_ R0005375 1
-    ValeurDeNTCOrigineVersExtremite_0_3_489_ R0005376 1
+    ValeurDeNTCOrigineVersExtremite_0_3_489_ R0004513 1
+    ValeurDeNTCOrigineVersExtremite_0_3_489_ R0004514 1
     ValeurDeNTCOrigineVersExtremite_1_4_489_ R0003215 1
     ValeurDeNTCOrigineVersExtremite_1_4_489_ R0003217 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_489_ R0005377 1
-    ValeurDeNTCOrigineVersExtremite_1_4_489_ R0005378 1
+    ValeurDeNTCOrigineVersExtremite_1_4_489_ R0004849 1
+    ValeurDeNTCOrigineVersExtremite_1_4_489_ R0004850 1
     ValeurDeNTCOrigineVersExtremite_1_5_489_ R0003215 1
     ValeurDeNTCOrigineVersExtremite_1_5_489_ R0003221 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_489_ R0005379 1
-    ValeurDeNTCOrigineVersExtremite_1_5_489_ R0005380 1
+    ValeurDeNTCOrigineVersExtremite_1_5_489_ R0005185 1
+    ValeurDeNTCOrigineVersExtremite_1_5_489_ R0005186 1
     ValeurDeNTCOrigineVersExtremite_1_6_489_ R0003215 1
     ValeurDeNTCOrigineVersExtremite_1_6_489_ R0003225 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_489_ R0005381 1
-    ValeurDeNTCOrigineVersExtremite_1_6_489_ R0005382 1
+    ValeurDeNTCOrigineVersExtremite_1_6_489_ R0005521 1
+    ValeurDeNTCOrigineVersExtremite_1_6_489_ R0005522 1
     ValeurDeNTCOrigineVersExtremite_2_7_489_ R0003217 1
     ValeurDeNTCOrigineVersExtremite_2_7_489_ R0003229 -1
     ValeurDeNTCOrigineVersExtremite_2_7_489_ R0003534 0.8
@@ -23580,28 +23580,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_490_ R0003254 1
     ValeurDeNTCOrigineVersExtremite_0_1_490_ R0003234 1
     ValeurDeNTCOrigineVersExtremite_0_1_490_ R0003240 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_490_ R0005383 1
-    ValeurDeNTCOrigineVersExtremite_0_1_490_ R0005384 1
+    ValeurDeNTCOrigineVersExtremite_0_1_490_ R0003843 1
+    ValeurDeNTCOrigineVersExtremite_0_1_490_ R0003844 1
     ValeurDeNTCOrigineVersExtremite_0_2_490_ R0003234 1
     ValeurDeNTCOrigineVersExtremite_0_2_490_ R0003244 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_490_ R0005385 1
-    ValeurDeNTCOrigineVersExtremite_0_2_490_ R0005386 1
+    ValeurDeNTCOrigineVersExtremite_0_2_490_ R0004179 1
+    ValeurDeNTCOrigineVersExtremite_0_2_490_ R0004180 1
     ValeurDeNTCOrigineVersExtremite_0_3_490_ R0003234 1
     ValeurDeNTCOrigineVersExtremite_0_3_490_ R0003248 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_490_ R0005387 1
-    ValeurDeNTCOrigineVersExtremite_0_3_490_ R0005388 1
+    ValeurDeNTCOrigineVersExtremite_0_3_490_ R0004515 1
+    ValeurDeNTCOrigineVersExtremite_0_3_490_ R0004516 1
     ValeurDeNTCOrigineVersExtremite_1_4_490_ R0003236 1
     ValeurDeNTCOrigineVersExtremite_1_4_490_ R0003238 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_490_ R0005389 1
-    ValeurDeNTCOrigineVersExtremite_1_4_490_ R0005390 1
+    ValeurDeNTCOrigineVersExtremite_1_4_490_ R0004851 1
+    ValeurDeNTCOrigineVersExtremite_1_4_490_ R0004852 1
     ValeurDeNTCOrigineVersExtremite_1_5_490_ R0003236 1
     ValeurDeNTCOrigineVersExtremite_1_5_490_ R0003242 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_490_ R0005391 1
-    ValeurDeNTCOrigineVersExtremite_1_5_490_ R0005392 1
+    ValeurDeNTCOrigineVersExtremite_1_5_490_ R0005187 1
+    ValeurDeNTCOrigineVersExtremite_1_5_490_ R0005188 1
     ValeurDeNTCOrigineVersExtremite_1_6_490_ R0003236 1
     ValeurDeNTCOrigineVersExtremite_1_6_490_ R0003246 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_490_ R0005393 1
-    ValeurDeNTCOrigineVersExtremite_1_6_490_ R0005394 1
+    ValeurDeNTCOrigineVersExtremite_1_6_490_ R0005523 1
+    ValeurDeNTCOrigineVersExtremite_1_6_490_ R0005524 1
     ValeurDeNTCOrigineVersExtremite_2_7_490_ R0003238 1
     ValeurDeNTCOrigineVersExtremite_2_7_490_ R0003250 -1
     ValeurDeNTCOrigineVersExtremite_2_7_490_ R0003534 0.8
@@ -23697,28 +23697,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_491_ R0003275 1
     ValeurDeNTCOrigineVersExtremite_0_1_491_ R0003255 1
     ValeurDeNTCOrigineVersExtremite_0_1_491_ R0003261 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_491_ R0005395 1
-    ValeurDeNTCOrigineVersExtremite_0_1_491_ R0005396 1
+    ValeurDeNTCOrigineVersExtremite_0_1_491_ R0003845 1
+    ValeurDeNTCOrigineVersExtremite_0_1_491_ R0003846 1
     ValeurDeNTCOrigineVersExtremite_0_2_491_ R0003255 1
     ValeurDeNTCOrigineVersExtremite_0_2_491_ R0003265 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_491_ R0005397 1
-    ValeurDeNTCOrigineVersExtremite_0_2_491_ R0005398 1
+    ValeurDeNTCOrigineVersExtremite_0_2_491_ R0004181 1
+    ValeurDeNTCOrigineVersExtremite_0_2_491_ R0004182 1
     ValeurDeNTCOrigineVersExtremite_0_3_491_ R0003255 1
     ValeurDeNTCOrigineVersExtremite_0_3_491_ R0003269 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_491_ R0005399 1
-    ValeurDeNTCOrigineVersExtremite_0_3_491_ R0005400 1
+    ValeurDeNTCOrigineVersExtremite_0_3_491_ R0004517 1
+    ValeurDeNTCOrigineVersExtremite_0_3_491_ R0004518 1
     ValeurDeNTCOrigineVersExtremite_1_4_491_ R0003257 1
     ValeurDeNTCOrigineVersExtremite_1_4_491_ R0003259 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_491_ R0005401 1
-    ValeurDeNTCOrigineVersExtremite_1_4_491_ R0005402 1
+    ValeurDeNTCOrigineVersExtremite_1_4_491_ R0004853 1
+    ValeurDeNTCOrigineVersExtremite_1_4_491_ R0004854 1
     ValeurDeNTCOrigineVersExtremite_1_5_491_ R0003257 1
     ValeurDeNTCOrigineVersExtremite_1_5_491_ R0003263 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_491_ R0005403 1
-    ValeurDeNTCOrigineVersExtremite_1_5_491_ R0005404 1
+    ValeurDeNTCOrigineVersExtremite_1_5_491_ R0005189 1
+    ValeurDeNTCOrigineVersExtremite_1_5_491_ R0005190 1
     ValeurDeNTCOrigineVersExtremite_1_6_491_ R0003257 1
     ValeurDeNTCOrigineVersExtremite_1_6_491_ R0003267 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_491_ R0005405 1
-    ValeurDeNTCOrigineVersExtremite_1_6_491_ R0005406 1
+    ValeurDeNTCOrigineVersExtremite_1_6_491_ R0005525 1
+    ValeurDeNTCOrigineVersExtremite_1_6_491_ R0005526 1
     ValeurDeNTCOrigineVersExtremite_2_7_491_ R0003259 1
     ValeurDeNTCOrigineVersExtremite_2_7_491_ R0003271 -1
     ValeurDeNTCOrigineVersExtremite_2_7_491_ R0003534 0.8
@@ -23814,28 +23814,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_492_ R0003296 1
     ValeurDeNTCOrigineVersExtremite_0_1_492_ R0003276 1
     ValeurDeNTCOrigineVersExtremite_0_1_492_ R0003282 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_492_ R0005407 1
-    ValeurDeNTCOrigineVersExtremite_0_1_492_ R0005408 1
+    ValeurDeNTCOrigineVersExtremite_0_1_492_ R0003847 1
+    ValeurDeNTCOrigineVersExtremite_0_1_492_ R0003848 1
     ValeurDeNTCOrigineVersExtremite_0_2_492_ R0003276 1
     ValeurDeNTCOrigineVersExtremite_0_2_492_ R0003286 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_492_ R0005409 1
-    ValeurDeNTCOrigineVersExtremite_0_2_492_ R0005410 1
+    ValeurDeNTCOrigineVersExtremite_0_2_492_ R0004183 1
+    ValeurDeNTCOrigineVersExtremite_0_2_492_ R0004184 1
     ValeurDeNTCOrigineVersExtremite_0_3_492_ R0003276 1
     ValeurDeNTCOrigineVersExtremite_0_3_492_ R0003290 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_492_ R0005411 1
-    ValeurDeNTCOrigineVersExtremite_0_3_492_ R0005412 1
+    ValeurDeNTCOrigineVersExtremite_0_3_492_ R0004519 1
+    ValeurDeNTCOrigineVersExtremite_0_3_492_ R0004520 1
     ValeurDeNTCOrigineVersExtremite_1_4_492_ R0003278 1
     ValeurDeNTCOrigineVersExtremite_1_4_492_ R0003280 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_492_ R0005413 1
-    ValeurDeNTCOrigineVersExtremite_1_4_492_ R0005414 1
+    ValeurDeNTCOrigineVersExtremite_1_4_492_ R0004855 1
+    ValeurDeNTCOrigineVersExtremite_1_4_492_ R0004856 1
     ValeurDeNTCOrigineVersExtremite_1_5_492_ R0003278 1
     ValeurDeNTCOrigineVersExtremite_1_5_492_ R0003284 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_492_ R0005415 1
-    ValeurDeNTCOrigineVersExtremite_1_5_492_ R0005416 1
+    ValeurDeNTCOrigineVersExtremite_1_5_492_ R0005191 1
+    ValeurDeNTCOrigineVersExtremite_1_5_492_ R0005192 1
     ValeurDeNTCOrigineVersExtremite_1_6_492_ R0003278 1
     ValeurDeNTCOrigineVersExtremite_1_6_492_ R0003288 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_492_ R0005417 1
-    ValeurDeNTCOrigineVersExtremite_1_6_492_ R0005418 1
+    ValeurDeNTCOrigineVersExtremite_1_6_492_ R0005527 1
+    ValeurDeNTCOrigineVersExtremite_1_6_492_ R0005528 1
     ValeurDeNTCOrigineVersExtremite_2_7_492_ R0003280 1
     ValeurDeNTCOrigineVersExtremite_2_7_492_ R0003292 -1
     ValeurDeNTCOrigineVersExtremite_2_7_492_ R0003534 0.8
@@ -23931,28 +23931,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_493_ R0003317 1
     ValeurDeNTCOrigineVersExtremite_0_1_493_ R0003297 1
     ValeurDeNTCOrigineVersExtremite_0_1_493_ R0003303 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_493_ R0005419 1
-    ValeurDeNTCOrigineVersExtremite_0_1_493_ R0005420 1
+    ValeurDeNTCOrigineVersExtremite_0_1_493_ R0003849 1
+    ValeurDeNTCOrigineVersExtremite_0_1_493_ R0003850 1
     ValeurDeNTCOrigineVersExtremite_0_2_493_ R0003297 1
     ValeurDeNTCOrigineVersExtremite_0_2_493_ R0003307 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_493_ R0005421 1
-    ValeurDeNTCOrigineVersExtremite_0_2_493_ R0005422 1
+    ValeurDeNTCOrigineVersExtremite_0_2_493_ R0004185 1
+    ValeurDeNTCOrigineVersExtremite_0_2_493_ R0004186 1
     ValeurDeNTCOrigineVersExtremite_0_3_493_ R0003297 1
     ValeurDeNTCOrigineVersExtremite_0_3_493_ R0003311 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_493_ R0005423 1
-    ValeurDeNTCOrigineVersExtremite_0_3_493_ R0005424 1
+    ValeurDeNTCOrigineVersExtremite_0_3_493_ R0004521 1
+    ValeurDeNTCOrigineVersExtremite_0_3_493_ R0004522 1
     ValeurDeNTCOrigineVersExtremite_1_4_493_ R0003299 1
     ValeurDeNTCOrigineVersExtremite_1_4_493_ R0003301 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_493_ R0005425 1
-    ValeurDeNTCOrigineVersExtremite_1_4_493_ R0005426 1
+    ValeurDeNTCOrigineVersExtremite_1_4_493_ R0004857 1
+    ValeurDeNTCOrigineVersExtremite_1_4_493_ R0004858 1
     ValeurDeNTCOrigineVersExtremite_1_5_493_ R0003299 1
     ValeurDeNTCOrigineVersExtremite_1_5_493_ R0003305 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_493_ R0005427 1
-    ValeurDeNTCOrigineVersExtremite_1_5_493_ R0005428 1
+    ValeurDeNTCOrigineVersExtremite_1_5_493_ R0005193 1
+    ValeurDeNTCOrigineVersExtremite_1_5_493_ R0005194 1
     ValeurDeNTCOrigineVersExtremite_1_6_493_ R0003299 1
     ValeurDeNTCOrigineVersExtremite_1_6_493_ R0003309 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_493_ R0005429 1
-    ValeurDeNTCOrigineVersExtremite_1_6_493_ R0005430 1
+    ValeurDeNTCOrigineVersExtremite_1_6_493_ R0005529 1
+    ValeurDeNTCOrigineVersExtremite_1_6_493_ R0005530 1
     ValeurDeNTCOrigineVersExtremite_2_7_493_ R0003301 1
     ValeurDeNTCOrigineVersExtremite_2_7_493_ R0003313 -1
     ValeurDeNTCOrigineVersExtremite_2_7_493_ R0003534 0.8
@@ -24048,28 +24048,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_494_ R0003338 1
     ValeurDeNTCOrigineVersExtremite_0_1_494_ R0003318 1
     ValeurDeNTCOrigineVersExtremite_0_1_494_ R0003324 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_494_ R0005431 1
-    ValeurDeNTCOrigineVersExtremite_0_1_494_ R0005432 1
+    ValeurDeNTCOrigineVersExtremite_0_1_494_ R0003851 1
+    ValeurDeNTCOrigineVersExtremite_0_1_494_ R0003852 1
     ValeurDeNTCOrigineVersExtremite_0_2_494_ R0003318 1
     ValeurDeNTCOrigineVersExtremite_0_2_494_ R0003328 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_494_ R0005433 1
-    ValeurDeNTCOrigineVersExtremite_0_2_494_ R0005434 1
+    ValeurDeNTCOrigineVersExtremite_0_2_494_ R0004187 1
+    ValeurDeNTCOrigineVersExtremite_0_2_494_ R0004188 1
     ValeurDeNTCOrigineVersExtremite_0_3_494_ R0003318 1
     ValeurDeNTCOrigineVersExtremite_0_3_494_ R0003332 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_494_ R0005435 1
-    ValeurDeNTCOrigineVersExtremite_0_3_494_ R0005436 1
+    ValeurDeNTCOrigineVersExtremite_0_3_494_ R0004523 1
+    ValeurDeNTCOrigineVersExtremite_0_3_494_ R0004524 1
     ValeurDeNTCOrigineVersExtremite_1_4_494_ R0003320 1
     ValeurDeNTCOrigineVersExtremite_1_4_494_ R0003322 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_494_ R0005437 1
-    ValeurDeNTCOrigineVersExtremite_1_4_494_ R0005438 1
+    ValeurDeNTCOrigineVersExtremite_1_4_494_ R0004859 1
+    ValeurDeNTCOrigineVersExtremite_1_4_494_ R0004860 1
     ValeurDeNTCOrigineVersExtremite_1_5_494_ R0003320 1
     ValeurDeNTCOrigineVersExtremite_1_5_494_ R0003326 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_494_ R0005439 1
-    ValeurDeNTCOrigineVersExtremite_1_5_494_ R0005440 1
+    ValeurDeNTCOrigineVersExtremite_1_5_494_ R0005195 1
+    ValeurDeNTCOrigineVersExtremite_1_5_494_ R0005196 1
     ValeurDeNTCOrigineVersExtremite_1_6_494_ R0003320 1
     ValeurDeNTCOrigineVersExtremite_1_6_494_ R0003330 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_494_ R0005441 1
-    ValeurDeNTCOrigineVersExtremite_1_6_494_ R0005442 1
+    ValeurDeNTCOrigineVersExtremite_1_6_494_ R0005531 1
+    ValeurDeNTCOrigineVersExtremite_1_6_494_ R0005532 1
     ValeurDeNTCOrigineVersExtremite_2_7_494_ R0003322 1
     ValeurDeNTCOrigineVersExtremite_2_7_494_ R0003334 -1
     ValeurDeNTCOrigineVersExtremite_2_7_494_ R0003534 0.8
@@ -24165,28 +24165,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_495_ R0003359 1
     ValeurDeNTCOrigineVersExtremite_0_1_495_ R0003339 1
     ValeurDeNTCOrigineVersExtremite_0_1_495_ R0003345 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_495_ R0005443 1
-    ValeurDeNTCOrigineVersExtremite_0_1_495_ R0005444 1
+    ValeurDeNTCOrigineVersExtremite_0_1_495_ R0003853 1
+    ValeurDeNTCOrigineVersExtremite_0_1_495_ R0003854 1
     ValeurDeNTCOrigineVersExtremite_0_2_495_ R0003339 1
     ValeurDeNTCOrigineVersExtremite_0_2_495_ R0003349 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_495_ R0005445 1
-    ValeurDeNTCOrigineVersExtremite_0_2_495_ R0005446 1
+    ValeurDeNTCOrigineVersExtremite_0_2_495_ R0004189 1
+    ValeurDeNTCOrigineVersExtremite_0_2_495_ R0004190 1
     ValeurDeNTCOrigineVersExtremite_0_3_495_ R0003339 1
     ValeurDeNTCOrigineVersExtremite_0_3_495_ R0003353 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_495_ R0005447 1
-    ValeurDeNTCOrigineVersExtremite_0_3_495_ R0005448 1
+    ValeurDeNTCOrigineVersExtremite_0_3_495_ R0004525 1
+    ValeurDeNTCOrigineVersExtremite_0_3_495_ R0004526 1
     ValeurDeNTCOrigineVersExtremite_1_4_495_ R0003341 1
     ValeurDeNTCOrigineVersExtremite_1_4_495_ R0003343 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_495_ R0005449 1
-    ValeurDeNTCOrigineVersExtremite_1_4_495_ R0005450 1
+    ValeurDeNTCOrigineVersExtremite_1_4_495_ R0004861 1
+    ValeurDeNTCOrigineVersExtremite_1_4_495_ R0004862 1
     ValeurDeNTCOrigineVersExtremite_1_5_495_ R0003341 1
     ValeurDeNTCOrigineVersExtremite_1_5_495_ R0003347 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_495_ R0005451 1
-    ValeurDeNTCOrigineVersExtremite_1_5_495_ R0005452 1
+    ValeurDeNTCOrigineVersExtremite_1_5_495_ R0005197 1
+    ValeurDeNTCOrigineVersExtremite_1_5_495_ R0005198 1
     ValeurDeNTCOrigineVersExtremite_1_6_495_ R0003341 1
     ValeurDeNTCOrigineVersExtremite_1_6_495_ R0003351 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_495_ R0005453 1
-    ValeurDeNTCOrigineVersExtremite_1_6_495_ R0005454 1
+    ValeurDeNTCOrigineVersExtremite_1_6_495_ R0005533 1
+    ValeurDeNTCOrigineVersExtremite_1_6_495_ R0005534 1
     ValeurDeNTCOrigineVersExtremite_2_7_495_ R0003343 1
     ValeurDeNTCOrigineVersExtremite_2_7_495_ R0003355 -1
     ValeurDeNTCOrigineVersExtremite_2_7_495_ R0003534 0.8
@@ -24282,28 +24282,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_496_ R0003380 1
     ValeurDeNTCOrigineVersExtremite_0_1_496_ R0003360 1
     ValeurDeNTCOrigineVersExtremite_0_1_496_ R0003366 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_496_ R0005455 1
-    ValeurDeNTCOrigineVersExtremite_0_1_496_ R0005456 1
+    ValeurDeNTCOrigineVersExtremite_0_1_496_ R0003855 1
+    ValeurDeNTCOrigineVersExtremite_0_1_496_ R0003856 1
     ValeurDeNTCOrigineVersExtremite_0_2_496_ R0003360 1
     ValeurDeNTCOrigineVersExtremite_0_2_496_ R0003370 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_496_ R0005457 1
-    ValeurDeNTCOrigineVersExtremite_0_2_496_ R0005458 1
+    ValeurDeNTCOrigineVersExtremite_0_2_496_ R0004191 1
+    ValeurDeNTCOrigineVersExtremite_0_2_496_ R0004192 1
     ValeurDeNTCOrigineVersExtremite_0_3_496_ R0003360 1
     ValeurDeNTCOrigineVersExtremite_0_3_496_ R0003374 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_496_ R0005459 1
-    ValeurDeNTCOrigineVersExtremite_0_3_496_ R0005460 1
+    ValeurDeNTCOrigineVersExtremite_0_3_496_ R0004527 1
+    ValeurDeNTCOrigineVersExtremite_0_3_496_ R0004528 1
     ValeurDeNTCOrigineVersExtremite_1_4_496_ R0003362 1
     ValeurDeNTCOrigineVersExtremite_1_4_496_ R0003364 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_496_ R0005461 1
-    ValeurDeNTCOrigineVersExtremite_1_4_496_ R0005462 1
+    ValeurDeNTCOrigineVersExtremite_1_4_496_ R0004863 1
+    ValeurDeNTCOrigineVersExtremite_1_4_496_ R0004864 1
     ValeurDeNTCOrigineVersExtremite_1_5_496_ R0003362 1
     ValeurDeNTCOrigineVersExtremite_1_5_496_ R0003368 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_496_ R0005463 1
-    ValeurDeNTCOrigineVersExtremite_1_5_496_ R0005464 1
+    ValeurDeNTCOrigineVersExtremite_1_5_496_ R0005199 1
+    ValeurDeNTCOrigineVersExtremite_1_5_496_ R0005200 1
     ValeurDeNTCOrigineVersExtremite_1_6_496_ R0003362 1
     ValeurDeNTCOrigineVersExtremite_1_6_496_ R0003372 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_496_ R0005465 1
-    ValeurDeNTCOrigineVersExtremite_1_6_496_ R0005466 1
+    ValeurDeNTCOrigineVersExtremite_1_6_496_ R0005535 1
+    ValeurDeNTCOrigineVersExtremite_1_6_496_ R0005536 1
     ValeurDeNTCOrigineVersExtremite_2_7_496_ R0003364 1
     ValeurDeNTCOrigineVersExtremite_2_7_496_ R0003376 -1
     ValeurDeNTCOrigineVersExtremite_2_7_496_ R0003534 0.8
@@ -24399,28 +24399,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_497_ R0003401 1
     ValeurDeNTCOrigineVersExtremite_0_1_497_ R0003381 1
     ValeurDeNTCOrigineVersExtremite_0_1_497_ R0003387 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_497_ R0005467 1
-    ValeurDeNTCOrigineVersExtremite_0_1_497_ R0005468 1
+    ValeurDeNTCOrigineVersExtremite_0_1_497_ R0003857 1
+    ValeurDeNTCOrigineVersExtremite_0_1_497_ R0003858 1
     ValeurDeNTCOrigineVersExtremite_0_2_497_ R0003381 1
     ValeurDeNTCOrigineVersExtremite_0_2_497_ R0003391 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_497_ R0005469 1
-    ValeurDeNTCOrigineVersExtremite_0_2_497_ R0005470 1
+    ValeurDeNTCOrigineVersExtremite_0_2_497_ R0004193 1
+    ValeurDeNTCOrigineVersExtremite_0_2_497_ R0004194 1
     ValeurDeNTCOrigineVersExtremite_0_3_497_ R0003381 1
     ValeurDeNTCOrigineVersExtremite_0_3_497_ R0003395 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_497_ R0005471 1
-    ValeurDeNTCOrigineVersExtremite_0_3_497_ R0005472 1
+    ValeurDeNTCOrigineVersExtremite_0_3_497_ R0004529 1
+    ValeurDeNTCOrigineVersExtremite_0_3_497_ R0004530 1
     ValeurDeNTCOrigineVersExtremite_1_4_497_ R0003383 1
     ValeurDeNTCOrigineVersExtremite_1_4_497_ R0003385 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_497_ R0005473 1
-    ValeurDeNTCOrigineVersExtremite_1_4_497_ R0005474 1
+    ValeurDeNTCOrigineVersExtremite_1_4_497_ R0004865 1
+    ValeurDeNTCOrigineVersExtremite_1_4_497_ R0004866 1
     ValeurDeNTCOrigineVersExtremite_1_5_497_ R0003383 1
     ValeurDeNTCOrigineVersExtremite_1_5_497_ R0003389 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_497_ R0005475 1
-    ValeurDeNTCOrigineVersExtremite_1_5_497_ R0005476 1
+    ValeurDeNTCOrigineVersExtremite_1_5_497_ R0005201 1
+    ValeurDeNTCOrigineVersExtremite_1_5_497_ R0005202 1
     ValeurDeNTCOrigineVersExtremite_1_6_497_ R0003383 1
     ValeurDeNTCOrigineVersExtremite_1_6_497_ R0003393 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_497_ R0005477 1
-    ValeurDeNTCOrigineVersExtremite_1_6_497_ R0005478 1
+    ValeurDeNTCOrigineVersExtremite_1_6_497_ R0005537 1
+    ValeurDeNTCOrigineVersExtremite_1_6_497_ R0005538 1
     ValeurDeNTCOrigineVersExtremite_2_7_497_ R0003385 1
     ValeurDeNTCOrigineVersExtremite_2_7_497_ R0003397 -1
     ValeurDeNTCOrigineVersExtremite_2_7_497_ R0003534 0.8
@@ -24516,28 +24516,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_498_ R0003422 1
     ValeurDeNTCOrigineVersExtremite_0_1_498_ R0003402 1
     ValeurDeNTCOrigineVersExtremite_0_1_498_ R0003408 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_498_ R0005479 1
-    ValeurDeNTCOrigineVersExtremite_0_1_498_ R0005480 1
+    ValeurDeNTCOrigineVersExtremite_0_1_498_ R0003859 1
+    ValeurDeNTCOrigineVersExtremite_0_1_498_ R0003860 1
     ValeurDeNTCOrigineVersExtremite_0_2_498_ R0003402 1
     ValeurDeNTCOrigineVersExtremite_0_2_498_ R0003412 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_498_ R0005481 1
-    ValeurDeNTCOrigineVersExtremite_0_2_498_ R0005482 1
+    ValeurDeNTCOrigineVersExtremite_0_2_498_ R0004195 1
+    ValeurDeNTCOrigineVersExtremite_0_2_498_ R0004196 1
     ValeurDeNTCOrigineVersExtremite_0_3_498_ R0003402 1
     ValeurDeNTCOrigineVersExtremite_0_3_498_ R0003416 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_498_ R0005483 1
-    ValeurDeNTCOrigineVersExtremite_0_3_498_ R0005484 1
+    ValeurDeNTCOrigineVersExtremite_0_3_498_ R0004531 1
+    ValeurDeNTCOrigineVersExtremite_0_3_498_ R0004532 1
     ValeurDeNTCOrigineVersExtremite_1_4_498_ R0003404 1
     ValeurDeNTCOrigineVersExtremite_1_4_498_ R0003406 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_498_ R0005485 1
-    ValeurDeNTCOrigineVersExtremite_1_4_498_ R0005486 1
+    ValeurDeNTCOrigineVersExtremite_1_4_498_ R0004867 1
+    ValeurDeNTCOrigineVersExtremite_1_4_498_ R0004868 1
     ValeurDeNTCOrigineVersExtremite_1_5_498_ R0003404 1
     ValeurDeNTCOrigineVersExtremite_1_5_498_ R0003410 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_498_ R0005487 1
-    ValeurDeNTCOrigineVersExtremite_1_5_498_ R0005488 1
+    ValeurDeNTCOrigineVersExtremite_1_5_498_ R0005203 1
+    ValeurDeNTCOrigineVersExtremite_1_5_498_ R0005204 1
     ValeurDeNTCOrigineVersExtremite_1_6_498_ R0003404 1
     ValeurDeNTCOrigineVersExtremite_1_6_498_ R0003414 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_498_ R0005489 1
-    ValeurDeNTCOrigineVersExtremite_1_6_498_ R0005490 1
+    ValeurDeNTCOrigineVersExtremite_1_6_498_ R0005539 1
+    ValeurDeNTCOrigineVersExtremite_1_6_498_ R0005540 1
     ValeurDeNTCOrigineVersExtremite_2_7_498_ R0003406 1
     ValeurDeNTCOrigineVersExtremite_2_7_498_ R0003418 -1
     ValeurDeNTCOrigineVersExtremite_2_7_498_ R0003534 0.8
@@ -24633,28 +24633,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_499_ R0003443 1
     ValeurDeNTCOrigineVersExtremite_0_1_499_ R0003423 1
     ValeurDeNTCOrigineVersExtremite_0_1_499_ R0003429 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_499_ R0005491 1
-    ValeurDeNTCOrigineVersExtremite_0_1_499_ R0005492 1
+    ValeurDeNTCOrigineVersExtremite_0_1_499_ R0003861 1
+    ValeurDeNTCOrigineVersExtremite_0_1_499_ R0003862 1
     ValeurDeNTCOrigineVersExtremite_0_2_499_ R0003423 1
     ValeurDeNTCOrigineVersExtremite_0_2_499_ R0003433 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_499_ R0005493 1
-    ValeurDeNTCOrigineVersExtremite_0_2_499_ R0005494 1
+    ValeurDeNTCOrigineVersExtremite_0_2_499_ R0004197 1
+    ValeurDeNTCOrigineVersExtremite_0_2_499_ R0004198 1
     ValeurDeNTCOrigineVersExtremite_0_3_499_ R0003423 1
     ValeurDeNTCOrigineVersExtremite_0_3_499_ R0003437 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_499_ R0005495 1
-    ValeurDeNTCOrigineVersExtremite_0_3_499_ R0005496 1
+    ValeurDeNTCOrigineVersExtremite_0_3_499_ R0004533 1
+    ValeurDeNTCOrigineVersExtremite_0_3_499_ R0004534 1
     ValeurDeNTCOrigineVersExtremite_1_4_499_ R0003425 1
     ValeurDeNTCOrigineVersExtremite_1_4_499_ R0003427 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_499_ R0005497 1
-    ValeurDeNTCOrigineVersExtremite_1_4_499_ R0005498 1
+    ValeurDeNTCOrigineVersExtremite_1_4_499_ R0004869 1
+    ValeurDeNTCOrigineVersExtremite_1_4_499_ R0004870 1
     ValeurDeNTCOrigineVersExtremite_1_5_499_ R0003425 1
     ValeurDeNTCOrigineVersExtremite_1_5_499_ R0003431 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_499_ R0005499 1
-    ValeurDeNTCOrigineVersExtremite_1_5_499_ R0005500 1
+    ValeurDeNTCOrigineVersExtremite_1_5_499_ R0005205 1
+    ValeurDeNTCOrigineVersExtremite_1_5_499_ R0005206 1
     ValeurDeNTCOrigineVersExtremite_1_6_499_ R0003425 1
     ValeurDeNTCOrigineVersExtremite_1_6_499_ R0003435 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_499_ R0005501 1
-    ValeurDeNTCOrigineVersExtremite_1_6_499_ R0005502 1
+    ValeurDeNTCOrigineVersExtremite_1_6_499_ R0005541 1
+    ValeurDeNTCOrigineVersExtremite_1_6_499_ R0005542 1
     ValeurDeNTCOrigineVersExtremite_2_7_499_ R0003427 1
     ValeurDeNTCOrigineVersExtremite_2_7_499_ R0003439 -1
     ValeurDeNTCOrigineVersExtremite_2_7_499_ R0003534 0.8
@@ -24750,28 +24750,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_500_ R0003464 1
     ValeurDeNTCOrigineVersExtremite_0_1_500_ R0003444 1
     ValeurDeNTCOrigineVersExtremite_0_1_500_ R0003450 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_500_ R0005503 1
-    ValeurDeNTCOrigineVersExtremite_0_1_500_ R0005504 1
+    ValeurDeNTCOrigineVersExtremite_0_1_500_ R0003863 1
+    ValeurDeNTCOrigineVersExtremite_0_1_500_ R0003864 1
     ValeurDeNTCOrigineVersExtremite_0_2_500_ R0003444 1
     ValeurDeNTCOrigineVersExtremite_0_2_500_ R0003454 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_500_ R0005505 1
-    ValeurDeNTCOrigineVersExtremite_0_2_500_ R0005506 1
+    ValeurDeNTCOrigineVersExtremite_0_2_500_ R0004199 1
+    ValeurDeNTCOrigineVersExtremite_0_2_500_ R0004200 1
     ValeurDeNTCOrigineVersExtremite_0_3_500_ R0003444 1
     ValeurDeNTCOrigineVersExtremite_0_3_500_ R0003458 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_500_ R0005507 1
-    ValeurDeNTCOrigineVersExtremite_0_3_500_ R0005508 1
+    ValeurDeNTCOrigineVersExtremite_0_3_500_ R0004535 1
+    ValeurDeNTCOrigineVersExtremite_0_3_500_ R0004536 1
     ValeurDeNTCOrigineVersExtremite_1_4_500_ R0003446 1
     ValeurDeNTCOrigineVersExtremite_1_4_500_ R0003448 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_500_ R0005509 1
-    ValeurDeNTCOrigineVersExtremite_1_4_500_ R0005510 1
+    ValeurDeNTCOrigineVersExtremite_1_4_500_ R0004871 1
+    ValeurDeNTCOrigineVersExtremite_1_4_500_ R0004872 1
     ValeurDeNTCOrigineVersExtremite_1_5_500_ R0003446 1
     ValeurDeNTCOrigineVersExtremite_1_5_500_ R0003452 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_500_ R0005511 1
-    ValeurDeNTCOrigineVersExtremite_1_5_500_ R0005512 1
+    ValeurDeNTCOrigineVersExtremite_1_5_500_ R0005207 1
+    ValeurDeNTCOrigineVersExtremite_1_5_500_ R0005208 1
     ValeurDeNTCOrigineVersExtremite_1_6_500_ R0003446 1
     ValeurDeNTCOrigineVersExtremite_1_6_500_ R0003456 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_500_ R0005513 1
-    ValeurDeNTCOrigineVersExtremite_1_6_500_ R0005514 1
+    ValeurDeNTCOrigineVersExtremite_1_6_500_ R0005543 1
+    ValeurDeNTCOrigineVersExtremite_1_6_500_ R0005544 1
     ValeurDeNTCOrigineVersExtremite_2_7_500_ R0003448 1
     ValeurDeNTCOrigineVersExtremite_2_7_500_ R0003460 -1
     ValeurDeNTCOrigineVersExtremite_2_7_500_ R0003534 0.8
@@ -24867,28 +24867,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_501_ R0003485 1
     ValeurDeNTCOrigineVersExtremite_0_1_501_ R0003465 1
     ValeurDeNTCOrigineVersExtremite_0_1_501_ R0003471 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_501_ R0005515 1
-    ValeurDeNTCOrigineVersExtremite_0_1_501_ R0005516 1
+    ValeurDeNTCOrigineVersExtremite_0_1_501_ R0003865 1
+    ValeurDeNTCOrigineVersExtremite_0_1_501_ R0003866 1
     ValeurDeNTCOrigineVersExtremite_0_2_501_ R0003465 1
     ValeurDeNTCOrigineVersExtremite_0_2_501_ R0003475 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_501_ R0005517 1
-    ValeurDeNTCOrigineVersExtremite_0_2_501_ R0005518 1
+    ValeurDeNTCOrigineVersExtremite_0_2_501_ R0004201 1
+    ValeurDeNTCOrigineVersExtremite_0_2_501_ R0004202 1
     ValeurDeNTCOrigineVersExtremite_0_3_501_ R0003465 1
     ValeurDeNTCOrigineVersExtremite_0_3_501_ R0003479 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_501_ R0005519 1
-    ValeurDeNTCOrigineVersExtremite_0_3_501_ R0005520 1
+    ValeurDeNTCOrigineVersExtremite_0_3_501_ R0004537 1
+    ValeurDeNTCOrigineVersExtremite_0_3_501_ R0004538 1
     ValeurDeNTCOrigineVersExtremite_1_4_501_ R0003467 1
     ValeurDeNTCOrigineVersExtremite_1_4_501_ R0003469 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_501_ R0005521 1
-    ValeurDeNTCOrigineVersExtremite_1_4_501_ R0005522 1
+    ValeurDeNTCOrigineVersExtremite_1_4_501_ R0004873 1
+    ValeurDeNTCOrigineVersExtremite_1_4_501_ R0004874 1
     ValeurDeNTCOrigineVersExtremite_1_5_501_ R0003467 1
     ValeurDeNTCOrigineVersExtremite_1_5_501_ R0003473 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_501_ R0005523 1
-    ValeurDeNTCOrigineVersExtremite_1_5_501_ R0005524 1
+    ValeurDeNTCOrigineVersExtremite_1_5_501_ R0005209 1
+    ValeurDeNTCOrigineVersExtremite_1_5_501_ R0005210 1
     ValeurDeNTCOrigineVersExtremite_1_6_501_ R0003467 1
     ValeurDeNTCOrigineVersExtremite_1_6_501_ R0003477 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_501_ R0005525 1
-    ValeurDeNTCOrigineVersExtremite_1_6_501_ R0005526 1
+    ValeurDeNTCOrigineVersExtremite_1_6_501_ R0005545 1
+    ValeurDeNTCOrigineVersExtremite_1_6_501_ R0005546 1
     ValeurDeNTCOrigineVersExtremite_2_7_501_ R0003469 1
     ValeurDeNTCOrigineVersExtremite_2_7_501_ R0003481 -1
     ValeurDeNTCOrigineVersExtremite_2_7_501_ R0003534 0.8
@@ -24984,28 +24984,28 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_502_ R0003506 1
     ValeurDeNTCOrigineVersExtremite_0_1_502_ R0003486 1
     ValeurDeNTCOrigineVersExtremite_0_1_502_ R0003492 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_502_ R0005527 1
-    ValeurDeNTCOrigineVersExtremite_0_1_502_ R0005528 1
+    ValeurDeNTCOrigineVersExtremite_0_1_502_ R0003867 1
+    ValeurDeNTCOrigineVersExtremite_0_1_502_ R0003868 1
     ValeurDeNTCOrigineVersExtremite_0_2_502_ R0003486 1
     ValeurDeNTCOrigineVersExtremite_0_2_502_ R0003496 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_502_ R0005529 1
-    ValeurDeNTCOrigineVersExtremite_0_2_502_ R0005530 1
+    ValeurDeNTCOrigineVersExtremite_0_2_502_ R0004203 1
+    ValeurDeNTCOrigineVersExtremite_0_2_502_ R0004204 1
     ValeurDeNTCOrigineVersExtremite_0_3_502_ R0003486 1
     ValeurDeNTCOrigineVersExtremite_0_3_502_ R0003500 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_502_ R0005531 1
-    ValeurDeNTCOrigineVersExtremite_0_3_502_ R0005532 1
+    ValeurDeNTCOrigineVersExtremite_0_3_502_ R0004539 1
+    ValeurDeNTCOrigineVersExtremite_0_3_502_ R0004540 1
     ValeurDeNTCOrigineVersExtremite_1_4_502_ R0003488 1
     ValeurDeNTCOrigineVersExtremite_1_4_502_ R0003490 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_502_ R0005533 1
-    ValeurDeNTCOrigineVersExtremite_1_4_502_ R0005534 1
+    ValeurDeNTCOrigineVersExtremite_1_4_502_ R0004875 1
+    ValeurDeNTCOrigineVersExtremite_1_4_502_ R0004876 1
     ValeurDeNTCOrigineVersExtremite_1_5_502_ R0003488 1
     ValeurDeNTCOrigineVersExtremite_1_5_502_ R0003494 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_502_ R0005535 1
-    ValeurDeNTCOrigineVersExtremite_1_5_502_ R0005536 1
+    ValeurDeNTCOrigineVersExtremite_1_5_502_ R0005211 1
+    ValeurDeNTCOrigineVersExtremite_1_5_502_ R0005212 1
     ValeurDeNTCOrigineVersExtremite_1_6_502_ R0003488 1
     ValeurDeNTCOrigineVersExtremite_1_6_502_ R0003498 -1
-    ValeurDeNTCOrigineVersExtremite_1_6_502_ R0005537 1
-    ValeurDeNTCOrigineVersExtremite_1_6_502_ R0005538 1
+    ValeurDeNTCOrigineVersExtremite_1_6_502_ R0005547 1
+    ValeurDeNTCOrigineVersExtremite_1_6_502_ R0005548 1
     ValeurDeNTCOrigineVersExtremite_2_7_502_ R0003490 1
     ValeurDeNTCOrigineVersExtremite_2_7_502_ R0003502 -1
     ValeurDeNTCOrigineVersExtremite_2_7_502_ R0003534 0.8
@@ -25101,24 +25101,24 @@ COLUMNS
     CoutExtremiteVersOrigineDeLInterconnexion_0_503_ R0003527 1
     ValeurDeNTCOrigineVersExtremite_0_1_503_ R0003507 1
     ValeurDeNTCOrigineVersExtremite_0_1_503_ R0003513 -1
-    ValeurDeNTCOrigineVersExtremite_0_1_503_ R0005539 1
-    ValeurDeNTCOrigineVersExtremite_0_1_503_ R0005540 1
+    ValeurDeNTCOrigineVersExtremite_0_1_503_ R0003869 1
+    ValeurDeNTCOrigineVersExtremite_0_1_503_ R0003870 1
     ValeurDeNTCOrigineVersExtremite_0_2_503_ R0003507 1
     ValeurDeNTCOrigineVersExtremite_0_2_503_ R0003517 -1
-    ValeurDeNTCOrigineVersExtremite_0_2_503_ R0005541 1
-    ValeurDeNTCOrigineVersExtremite_0_2_503_ R0005542 1
+    ValeurDeNTCOrigineVersExtremite_0_2_503_ R0004205 1
+    ValeurDeNTCOrigineVersExtremite_0_2_503_ R0004206 1
     ValeurDeNTCOrigineVersExtremite_0_3_503_ R0003507 1
     ValeurDeNTCOrigineVersExtremite_0_3_503_ R0003521 -1
-    ValeurDeNTCOrigineVersExtremite_0_3_503_ R0005543 1
-    ValeurDeNTCOrigineVersExtremite_0_3_503_ R0005544 1
+    ValeurDeNTCOrigineVersExtremite_0_3_503_ R0004541 1
+    ValeurDeNTCOrigineVersExtremite_0_3_503_ R0004542 1
     ValeurDeNTCOrigineVersExtremite_1_4_503_ R0003509 1
     ValeurDeNTCOrigineVersExtremite_1_4_503_ R0003511 -1
-    ValeurDeNTCOrigineVersExtremite_1_4_503_ R0005545 1
-    ValeurDeNTCOrigineVersExtremite_1_4_503_ R0005546 1
+    ValeurDeNTCOrigineVersExtremite_1_4_503_ R0004877 1
+    ValeurDeNTCOrigineVersExtremite_1_4_503_ R0004878 1
     ValeurDeNTCOrigineVersExtremite_1_5_503_ R0003509 1
     ValeurDeNTCOrigineVersExtremite_1_5_503_ R0003515 -1
-    ValeurDeNTCOrigineVersExtremite_1_5_503_ R0005547 1
-    ValeurDeNTCOrigineVersExtremite_1_5_503_ R0005548 1
+    ValeurDeNTCOrigineVersExtremite_1_5_503_ R0005213 1
+    ValeurDeNTCOrigineVersExtremite_1_5_503_ R0005214 1
     ValeurDeNTCOrigineVersExtremite_1_6_503_ R0003509 1
     ValeurDeNTCOrigineVersExtremite_1_6_503_ R0003519 -1
     ValeurDeNTCOrigineVersExtremite_1_6_503_ R0005549 1
@@ -25209,1756 +25209,1756 @@ COLUMNS
     DefaillanceNegative_9_503_ OBJROW -0.0005348672
     DefaillanceNegative_9_503_ R0003525 1
     DefaillanceNegative_9_503_ R0003526 1
-    pv R0003599 -0.00365029761904536
-    pv R0003600 0.00365029761904536
-    pv R0003611 -0.0261410714285646
-    pv R0003612 0.0261410714285646
-    pv R0003623 -0.0861836309523929
-    pv R0003624 0.0861836309523929
-    pv R0003635 -0.191885416666668
-    pv R0003636 0.191885416666668
-    pv R0003647 -0.311545833333218
-    pv R0003648 0.311545833333218
-    pv R0003659 -0.425662499999964
-    pv R0003660 0.425662499999964
-    pv R0003671 -0.48738928571425
-    pv R0003672 0.48738928571425
-    pv R0003683 -0.5052044642856069
-    pv R0003684 0.5052044642856069
-    pv R0003695 -0.551641369047607
-    pv R0003696 0.551641369047607
-    pv R0003707 -0.567586011904714
-    pv R0003708 0.567586011904714
-    pv R0003719 -0.530602380952393
-    pv R0003720 0.530602380952393
-    pv R0003731 -0.460927678571536
-    pv R0003732 0.460927678571536
-    pv R0003743 -0.366443749999929
-    pv R0003744 0.366443749999929
-    pv R0003755 -0.246217261904857
-    pv R0003756 0.246217261904857
-    pv R0003767 -0.124988392857107
-    pv R0003768 0.124988392857107
-    pv R0003779 -0.0415547619047621
-    pv R0003780 0.0415547619047621
-    pv R0003791 -0.00641875000000072
-    pv R0003792 0.00641875000000072
-    pv R0003887 -0.0013657738095225
-    pv R0003888 0.0013657738095225
-    pv R0003899 -0.0134026785714211
-    pv R0003900 0.0134026785714211
-    pv R0003911 -0.0589958333333464
-    pv R0003912 0.0589958333333464
-    pv R0003923 -0.146937500000071
-    pv R0003924 0.146937500000071
-    pv R0003935 -0.240569047619071
-    pv R0003936 0.240569047619071
-    pv R0003947 -0.337899107142929
-    pv R0003948 0.337899107142929
-    pv R0003959 -0.406669940476179
-    pv R0003960 0.406669940476179
-    pv R0003971 -0.44173601190475
-    pv R0003972 0.44173601190475
-    pv R0003983 -0.47317916666675
-    pv R0003984 0.47317916666675
-    pv R0003995 -0.480538392857143
-    pv R0003996 0.480538392857143
-    pv R0004007 -0.437591964285607
-    pv R0004008 0.437591964285607
-    pv R0004019 -0.364398214285714
-    pv R0004020 0.364398214285714
-    pv R0004031 -0.283849107142857
-    pv R0004032 0.283849107142857
-    pv R0004043 -0.168185119047611
-    pv R0004044 0.168185119047611
-    pv R0004055 -0.07371815476188361
-    pv R0004056 0.07371815476188361
-    pv R0004067 -0.0238303571428687
-    pv R0004068 0.0238303571428687
-    pv R0004079 -0.00302410714285757
-    pv R0004080 0.00302410714285757
-    pv R0004175 -0.003402678571425
-    pv R0004176 0.003402678571425
-    pv R0004187 -0.0245717261904654
-    pv R0004188 0.0245717261904654
-    pv R0004199 -0.08017261904762819
-    pv R0004200 0.08017261904762819
-    pv R0004211 -0.180100297619064
-    pv R0004212 0.180100297619064
-    pv R0004223 -0.298280952380929
-    pv R0004224 0.298280952380929
-    pv R0004235 -0.395785119047714
-    pv R0004236 0.395785119047714
-    pv R0004247 -0.495136904762107
-    pv R0004248 0.495136904762107
-    pv R0004259 -0.547222619047714
-    pv R0004260 0.547222619047714
-    pv R0004271 -0.585444345238107
-    pv R0004272 0.585444345238107
-    pv R0004283 -0.565870238095036
-    pv R0004284 0.565870238095036
-    pv R0004295 -0.5313919642856429
-    pv R0004296 0.5313919642856429
-    pv R0004307 -0.436356845238107
-    pv R0004308 0.436356845238107
-    pv R0004319 -0.309977678571454
-    pv R0004320 0.309977678571454
-    pv R0004331 -0.206843154761896
-    pv R0004332 0.206843154761896
-    pv R0004343 -0.0998702380953071
-    pv R0004344 0.0998702380953071
-    pv R0004355 -0.0341470238095163
-    pv R0004356 0.0341470238095163
-    pv R0004367 -0.00467321428571325
-    pv R0004368 0.00467321428571325
-    pv R0004463 -0.00262053571428679
-    pv R0004464 0.00262053571428679
-    pv R0004475 -0.0196053571428629
-    pv R0004476 0.0196053571428629
-    pv R0004487 -0.06647529761905389
-    pv R0004488 0.06647529761905389
-    pv R0004499 -0.154416964285675
-    pv R0004500 0.154416964285675
-    pv R0004511 -0.272748809523714
-    pv R0004512 0.272748809523714
-    pv R0004523 -0.390765773809571
-    pv R0004524 0.390765773809571
-    pv R0004535 -0.475502678571429
-    pv R0004536 0.475502678571429
-    pv R0004547 -0.489320833333214
-    pv R0004548 0.489320833333214
-    pv R0004559 -0.529211309523786
-    pv R0004560 0.529211309523786
-    pv R0004571 -0.536317559523857
-    pv R0004572 0.536317559523857
-    pv R0004583 -0.485275595238107
-    pv R0004584 0.485275595238107
-    pv R0004595 -0.396693452380857
-    pv R0004596 0.396693452380857
-    pv R0004607 -0.318779166666571
-    pv R0004608 0.318779166666571
-    pv R0004619 -0.205017559523739
-    pv R0004620 0.205017559523739
-    pv R0004631 -0.0932229166666714
-    pv R0004632 0.0932229166666714
-    pv R0004643 -0.0304752976190513
-    pv R0004644 0.0304752976190513
-    pv R0004655 -0.00378303571428611
-    pv R0004656 0.00378303571428611
-    pv R0004751 -0.0024714285714275
-    pv R0004752 0.0024714285714275
-    pv R0004763 -0.0191720238095218
-    pv R0004764 0.0191720238095218
-    pv R0004775 -0.0710011904762179
-    pv R0004776 0.0710011904762179
-    pv R0004787 -0.171102083333429
-    pv R0004788 0.171102083333429
-    pv R0004799 -0.286129761904821
-    pv R0004800 0.286129761904821
-    pv R0004811 -0.402493154761893
-    pv R0004812 0.402493154761893
-    pv R0004823 -0.496895833333429
-    pv R0004824 0.496895833333429
-    pv R0004835 -0.554408035714321
-    pv R0004836 0.554408035714321
-    pv R0004847 -0.53800535714275
-    pv R0004848 0.53800535714275
-    pv R0004859 -0.475658035714286
-    pv R0004860 0.475658035714286
-    pv R0004871 -0.411748214285714
-    pv R0004872 0.411748214285714
-    pv R0004883 -0.384415178571429
-    pv R0004884 0.384415178571429
-    pv R0004895 -0.306816666666654
-    pv R0004896 0.306816666666654
-    pv R0004907 -0.191129166666654
-    pv R0004908 0.191129166666654
-    pv R0004919 -0.0914735119048381
-    pv R0004920 0.0914735119048381
-    pv R0004931 -0.0319452380952307
-    pv R0004932 0.0319452380952307
-    pv R0004943 -0.003976785714285
-    pv R0004944 0.003976785714285
-    pv R0005039 -0.00265267857142989
-    pv R0005040 0.00265267857142989
-    pv R0005051 -0.0216101190476218
-    pv R0005052 0.0216101190476218
-    pv R0005063 -0.07523809523812861
-    pv R0005064 0.07523809523812861
-    pv R0005075 -0.170593750000086
-    pv R0005076 0.170593750000086
-    pv R0005087 -0.294189880952318
-    pv R0005088 0.294189880952318
-    pv R0005099 -0.386706250000036
-    pv R0005100 0.386706250000036
-    pv R0005111 -0.458667857142821
-    pv R0005112 0.458667857142821
-    pv R0005123 -0.469680654761786
-    pv R0005124 0.469680654761786
-    pv R0005135 -0.47548928571425
-    pv R0005136 0.47548928571425
-    pv R0005147 -0.46277648809525
-    pv R0005148 0.46277648809525
-    pv R0005159 -0.399993750000071
-    pv R0005160 0.399993750000071
-    pv R0005171 -0.349415178571536
-    pv R0005172 0.349415178571536
-    pv R0005183 -0.284383928571393
-    pv R0005184 0.284383928571393
-    pv R0005195 -0.198149404761782
-    pv R0005196 0.198149404761782
-    pv R0005207 -0.0865904761904321
-    pv R0005208 0.0865904761904321
-    pv R0005219 -0.0259476190476259
-    pv R0005220 0.0259476190476259
-    pv R0005231 -0.002706249999999
-    pv R0005232 0.002706249999999
-    pv R0005327 -0.00263660714285964
-    pv R0005328 0.00263660714285964
-    pv R0005339 -0.0213428571428646
-    pv R0005340 0.0213428571428646
-    pv R0005351 -0.077086011904725
-    pv R0005352 0.077086011904725
-    pv R0005363 -0.183325297618925
-    pv R0005364 0.183325297618925
-    pv R0005375 -0.327012202380857
-    pv R0005376 0.327012202380857
-    pv R0005387 -0.440074702380786
-    pv R0005388 0.440074702380786
-    pv R0005399 -0.459656845238143
-    pv R0005400 0.459656845238143
-    pv R0005411 -0.461926785714286
-    pv R0005412 0.461926785714286
-    pv R0005423 -0.487716071428464
-    pv R0005424 0.487716071428464
-    pv R0005435 -0.444374107142821
-    pv R0005436 0.444374107142821
-    pv R0005447 -0.398241369047536
-    pv R0005448 0.398241369047536
-    pv R0005459 -0.361457738095321
-    pv R0005460 0.361457738095321
-    pv R0005471 -0.280801785714311
-    pv R0005472 0.280801785714311
-    pv R0005483 -0.178701190476146
-    pv R0005484 0.178701190476146
-    pv R0005495 -0.0857169642856785
-    pv R0005496 0.0857169642856785
-    pv R0005507 -0.0245991071428569
-    pv R0005508 0.0245991071428569
-    pv R0005519 -0.00235178571428604
-    pv R0005520 0.00235178571428604
-    battery R0003541 -1
-    battery R0003542 1
-    battery R0003553 -1
-    battery R0003554 1
-    battery R0003565 -1
-    battery R0003566 1
-    battery R0003577 -1
-    battery R0003578 1
-    battery R0003589 -1
-    battery R0003590 1
-    battery R0003601 -1
-    battery R0003602 1
-    battery R0003613 -1
-    battery R0003614 1
-    battery R0003625 -1
-    battery R0003626 1
-    battery R0003637 -1
-    battery R0003638 1
-    battery R0003649 -1
-    battery R0003650 1
-    battery R0003661 -1
-    battery R0003662 1
-    battery R0003673 -1
-    battery R0003674 1
-    battery R0003685 -1
-    battery R0003686 1
-    battery R0003697 -1
-    battery R0003698 1
-    battery R0003709 -1
-    battery R0003710 1
-    battery R0003721 -1
-    battery R0003722 1
-    battery R0003733 -1
-    battery R0003734 1
-    battery R0003745 -1
-    battery R0003746 1
-    battery R0003757 -1
-    battery R0003758 1
-    battery R0003769 -1
-    battery R0003770 1
-    battery R0003781 -1
-    battery R0003782 1
-    battery R0003793 -1
-    battery R0003794 1
-    battery R0003805 -1
-    battery R0003806 1
-    battery R0003817 -1
-    battery R0003818 1
-    battery R0003829 -1
-    battery R0003830 1
-    battery R0003841 -1
-    battery R0003842 1
-    battery R0003853 -1
-    battery R0003854 1
-    battery R0003865 -1
-    battery R0003866 1
-    battery R0003877 -1
-    battery R0003878 1
-    battery R0003889 -1
-    battery R0003890 1
-    battery R0003901 -1
-    battery R0003902 1
-    battery R0003913 -1
-    battery R0003914 1
-    battery R0003925 -1
-    battery R0003926 1
-    battery R0003937 -1
-    battery R0003938 1
-    battery R0003949 -1
-    battery R0003950 1
-    battery R0003961 -1
-    battery R0003962 1
-    battery R0003973 -1
-    battery R0003974 1
-    battery R0003985 -1
-    battery R0003986 1
-    battery R0003997 -1
-    battery R0003998 1
-    battery R0004009 -1
-    battery R0004010 1
-    battery R0004021 -1
-    battery R0004022 1
-    battery R0004033 -1
-    battery R0004034 1
-    battery R0004045 -1
-    battery R0004046 1
-    battery R0004057 -1
-    battery R0004058 1
-    battery R0004069 -1
-    battery R0004070 1
-    battery R0004081 -1
-    battery R0004082 1
-    battery R0004093 -1
-    battery R0004094 1
-    battery R0004105 -1
-    battery R0004106 1
-    battery R0004117 -1
-    battery R0004118 1
-    battery R0004129 -1
-    battery R0004130 1
-    battery R0004141 -1
-    battery R0004142 1
-    battery R0004153 -1
-    battery R0004154 1
-    battery R0004165 -1
-    battery R0004166 1
-    battery R0004177 -1
-    battery R0004178 1
-    battery R0004189 -1
-    battery R0004190 1
-    battery R0004201 -1
-    battery R0004202 1
-    battery R0004213 -1
-    battery R0004214 1
-    battery R0004225 -1
-    battery R0004226 1
-    battery R0004237 -1
-    battery R0004238 1
-    battery R0004249 -1
-    battery R0004250 1
-    battery R0004261 -1
-    battery R0004262 1
-    battery R0004273 -1
-    battery R0004274 1
-    battery R0004285 -1
-    battery R0004286 1
-    battery R0004297 -1
-    battery R0004298 1
-    battery R0004309 -1
-    battery R0004310 1
-    battery R0004321 -1
-    battery R0004322 1
-    battery R0004333 -1
-    battery R0004334 1
-    battery R0004345 -1
-    battery R0004346 1
-    battery R0004357 -1
-    battery R0004358 1
-    battery R0004369 -1
-    battery R0004370 1
-    battery R0004381 -1
-    battery R0004382 1
-    battery R0004393 -1
-    battery R0004394 1
-    battery R0004405 -1
-    battery R0004406 1
-    battery R0004417 -1
-    battery R0004418 1
-    battery R0004429 -1
-    battery R0004430 1
-    battery R0004441 -1
-    battery R0004442 1
-    battery R0004453 -1
-    battery R0004454 1
-    battery R0004465 -1
-    battery R0004466 1
-    battery R0004477 -1
-    battery R0004478 1
-    battery R0004489 -1
-    battery R0004490 1
-    battery R0004501 -1
-    battery R0004502 1
-    battery R0004513 -1
-    battery R0004514 1
-    battery R0004525 -1
-    battery R0004526 1
-    battery R0004537 -1
-    battery R0004538 1
-    battery R0004549 -1
-    battery R0004550 1
-    battery R0004561 -1
-    battery R0004562 1
-    battery R0004573 -1
-    battery R0004574 1
-    battery R0004585 -1
-    battery R0004586 1
-    battery R0004597 -1
-    battery R0004598 1
-    battery R0004609 -1
-    battery R0004610 1
-    battery R0004621 -1
-    battery R0004622 1
-    battery R0004633 -1
-    battery R0004634 1
-    battery R0004645 -1
-    battery R0004646 1
-    battery R0004657 -1
-    battery R0004658 1
-    battery R0004669 -1
-    battery R0004670 1
-    battery R0004681 -1
-    battery R0004682 1
-    battery R0004693 -1
-    battery R0004694 1
-    battery R0004705 -1
-    battery R0004706 1
-    battery R0004717 -1
-    battery R0004718 1
-    battery R0004729 -1
-    battery R0004730 1
-    battery R0004741 -1
-    battery R0004742 1
-    battery R0004753 -1
-    battery R0004754 1
-    battery R0004765 -1
-    battery R0004766 1
-    battery R0004777 -1
-    battery R0004778 1
-    battery R0004789 -1
-    battery R0004790 1
-    battery R0004801 -1
-    battery R0004802 1
-    battery R0004813 -1
-    battery R0004814 1
-    battery R0004825 -1
-    battery R0004826 1
-    battery R0004837 -1
-    battery R0004838 1
-    battery R0004849 -1
-    battery R0004850 1
-    battery R0004861 -1
-    battery R0004862 1
-    battery R0004873 -1
-    battery R0004874 1
-    battery R0004885 -1
-    battery R0004886 1
-    battery R0004897 -1
-    battery R0004898 1
-    battery R0004909 -1
-    battery R0004910 1
-    battery R0004921 -1
-    battery R0004922 1
-    battery R0004933 -1
-    battery R0004934 1
-    battery R0004945 -1
-    battery R0004946 1
-    battery R0004957 -1
-    battery R0004958 1
-    battery R0004969 -1
-    battery R0004970 1
-    battery R0004981 -1
-    battery R0004982 1
-    battery R0004993 -1
-    battery R0004994 1
-    battery R0005005 -1
-    battery R0005006 1
-    battery R0005017 -1
-    battery R0005018 1
-    battery R0005029 -1
-    battery R0005030 1
-    battery R0005041 -1
-    battery R0005042 1
-    battery R0005053 -1
-    battery R0005054 1
-    battery R0005065 -1
-    battery R0005066 1
-    battery R0005077 -1
-    battery R0005078 1
-    battery R0005089 -1
-    battery R0005090 1
-    battery R0005101 -1
-    battery R0005102 1
-    battery R0005113 -1
-    battery R0005114 1
-    battery R0005125 -1
-    battery R0005126 1
-    battery R0005137 -1
-    battery R0005138 1
-    battery R0005149 -1
-    battery R0005150 1
-    battery R0005161 -1
-    battery R0005162 1
-    battery R0005173 -1
-    battery R0005174 1
-    battery R0005185 -1
-    battery R0005186 1
-    battery R0005197 -1
-    battery R0005198 1
-    battery R0005209 -1
-    battery R0005210 1
-    battery R0005221 -1
-    battery R0005222 1
-    battery R0005233 -1
-    battery R0005234 1
-    battery R0005245 -1
-    battery R0005246 1
-    battery R0005257 -1
-    battery R0005258 1
-    battery R0005269 -1
-    battery R0005270 1
-    battery R0005281 -1
-    battery R0005282 1
-    battery R0005293 -1
-    battery R0005294 1
-    battery R0005305 -1
-    battery R0005306 1
-    battery R0005317 -1
-    battery R0005318 1
-    battery R0005329 -1
-    battery R0005330 1
-    battery R0005341 -1
-    battery R0005342 1
-    battery R0005353 -1
-    battery R0005354 1
-    battery R0005365 -1
-    battery R0005366 1
-    battery R0005377 -1
-    battery R0005378 1
-    battery R0005389 -1
-    battery R0005390 1
-    battery R0005401 -1
-    battery R0005402 1
-    battery R0005413 -1
-    battery R0005414 1
-    battery R0005425 -1
-    battery R0005426 1
-    battery R0005437 -1
-    battery R0005438 1
-    battery R0005449 -1
-    battery R0005450 1
-    battery R0005461 -1
-    battery R0005462 1
-    battery R0005473 -1
-    battery R0005474 1
-    battery R0005485 -1
-    battery R0005486 1
-    battery R0005497 -1
-    battery R0005498 1
-    battery R0005509 -1
-    battery R0005510 1
-    battery R0005521 -1
-    battery R0005522 1
-    battery R0005533 -1
-    battery R0005534 1
-    battery R0005545 -1
-    battery R0005546 1
-    semibase1 R0003538 1
-    semibase1 R0003550 1
-    semibase1 R0003562 1
-    semibase1 R0003574 1
-    semibase1 R0003586 1
-    semibase1 R0003598 1
-    semibase1 R0003610 1
-    semibase1 R0003622 1
-    semibase1 R0003634 1
-    semibase1 R0003646 1
-    semibase1 R0003658 1
-    semibase1 R0003670 1
-    semibase1 R0003682 1
-    semibase1 R0003694 1
-    semibase1 R0003706 1
-    semibase1 R0003718 1
-    semibase1 R0003730 1
-    semibase1 R0003742 1
-    semibase1 R0003754 1
-    semibase1 R0003766 1
-    semibase1 R0003778 1
-    semibase1 R0003790 1
-    semibase1 R0003802 1
-    semibase1 R0003814 1
-    semibase1 R0003826 1
-    semibase1 R0003838 1
-    semibase1 R0003850 1
-    semibase1 R0003862 1
-    semibase1 R0003874 1
-    semibase1 R0003886 1
-    semibase1 R0003898 1
-    semibase1 R0003910 1
-    semibase1 R0003922 1
-    semibase1 R0003934 1
-    semibase1 R0003946 1
-    semibase1 R0003958 1
-    semibase1 R0003970 1
-    semibase1 R0003982 1
-    semibase1 R0003994 1
-    semibase1 R0004006 1
-    semibase1 R0004018 1
-    semibase1 R0004030 1
-    semibase1 R0004042 1
-    semibase1 R0004054 1
-    semibase1 R0004066 1
-    semibase1 R0004078 1
-    semibase1 R0004090 1
-    semibase1 R0004102 1
-    semibase1 R0004114 1
-    semibase1 R0004126 1
-    semibase1 R0004138 1
-    semibase1 R0004150 1
-    semibase1 R0004162 1
-    semibase1 R0004174 1
-    semibase1 R0004186 1
-    semibase1 R0004198 1
-    semibase1 R0004210 1
-    semibase1 R0004222 1
-    semibase1 R0004234 1
-    semibase1 R0004246 1
-    semibase1 R0004258 1
-    semibase1 R0004270 1
-    semibase1 R0004282 1
-    semibase1 R0004294 1
-    semibase1 R0004306 1
-    semibase1 R0004318 1
-    semibase1 R0004330 1
-    semibase1 R0004342 1
-    semibase1 R0004354 1
-    semibase1 R0004366 1
-    semibase1 R0004378 1
-    semibase1 R0004390 1
-    semibase1 R0004402 1
-    semibase1 R0004414 1
-    semibase1 R0004426 1
-    semibase1 R0004438 1
-    semibase1 R0004450 1
-    semibase1 R0004462 1
-    semibase1 R0004474 1
-    semibase1 R0004486 1
-    semibase1 R0004498 1
-    semibase1 R0004510 1
-    semibase1 R0004522 1
-    semibase1 R0004534 1
-    semibase1 R0004546 1
-    semibase1 R0004558 1
-    semibase1 R0004570 1
-    semibase1 R0004582 1
-    semibase1 R0004594 1
-    semibase1 R0004606 1
-    semibase1 R0004618 1
-    semibase1 R0004630 1
-    semibase1 R0004642 1
-    semibase1 R0004654 1
-    semibase1 R0004666 1
-    semibase1 R0004678 1
-    semibase1 R0004690 1
-    semibase1 R0004702 1
-    semibase1 R0004714 1
-    semibase1 R0004726 1
-    semibase1 R0004738 1
-    semibase1 R0004750 1
-    semibase1 R0004762 1
-    semibase1 R0004774 1
-    semibase1 R0004786 1
-    semibase1 R0004798 1
-    semibase1 R0004810 1
-    semibase1 R0004822 1
-    semibase1 R0004834 1
-    semibase1 R0004846 1
-    semibase1 R0004858 1
-    semibase1 R0004870 1
-    semibase1 R0004882 1
-    semibase1 R0004894 1
-    semibase1 R0004906 1
-    semibase1 R0004918 1
-    semibase1 R0004930 1
-    semibase1 R0004942 1
-    semibase1 R0004954 1
-    semibase1 R0004966 1
-    semibase1 R0004978 1
-    semibase1 R0004990 1
-    semibase1 R0005002 1
-    semibase1 R0005014 1
-    semibase1 R0005026 1
-    semibase1 R0005038 1
-    semibase1 R0005050 1
-    semibase1 R0005062 1
-    semibase1 R0005074 1
-    semibase1 R0005086 1
-    semibase1 R0005098 1
-    semibase1 R0005110 1
-    semibase1 R0005122 1
-    semibase1 R0005134 1
-    semibase1 R0005146 1
-    semibase1 R0005158 1
-    semibase1 R0005170 1
-    semibase1 R0005182 1
-    semibase1 R0005194 1
-    semibase1 R0005206 1
-    semibase1 R0005218 1
-    semibase1 R0005230 1
-    semibase1 R0005242 1
-    semibase1 R0005254 1
-    semibase1 R0005266 1
-    semibase1 R0005278 1
-    semibase1 R0005290 1
-    semibase1 R0005302 1
-    semibase1 R0005314 1
-    semibase1 R0005326 1
-    semibase1 R0005338 1
-    semibase1 R0005350 1
-    semibase1 R0005362 1
-    semibase1 R0005374 1
-    semibase1 R0005386 1
-    semibase1 R0005398 1
-    semibase1 R0005410 1
-    semibase1 R0005422 1
-    semibase1 R0005434 1
-    semibase1 R0005446 1
-    semibase1 R0005458 1
-    semibase1 R0005470 1
-    semibase1 R0005482 1
-    semibase1 R0005494 1
-    semibase1 R0005506 1
-    semibase1 R0005518 1
-    semibase1 R0005530 1
-    semibase1 R0005542 1
-    semibase2 R0003545 -1
-    semibase2 R0003546 1
-    semibase2 R0003557 -1
-    semibase2 R0003558 1
-    semibase2 R0003569 -1
-    semibase2 R0003570 1
-    semibase2 R0003581 -1
-    semibase2 R0003582 1
-    semibase2 R0003593 -1
-    semibase2 R0003594 1
-    semibase2 R0003605 -1
-    semibase2 R0003606 1
-    semibase2 R0003617 -1
-    semibase2 R0003618 1
-    semibase2 R0003629 -1
-    semibase2 R0003630 1
-    semibase2 R0003641 -1
-    semibase2 R0003642 1
-    semibase2 R0003653 -1
-    semibase2 R0003654 1
-    semibase2 R0003665 -1
-    semibase2 R0003666 1
-    semibase2 R0003677 -1
-    semibase2 R0003678 1
-    semibase2 R0003689 -1
-    semibase2 R0003690 1
-    semibase2 R0003701 -1
-    semibase2 R0003702 1
-    semibase2 R0003713 -1
-    semibase2 R0003714 1
-    semibase2 R0003725 -1
-    semibase2 R0003726 1
-    semibase2 R0003737 -1
-    semibase2 R0003738 1
-    semibase2 R0003749 -1
-    semibase2 R0003750 1
-    semibase2 R0003761 -1
-    semibase2 R0003762 1
-    semibase2 R0003773 -1
-    semibase2 R0003774 1
-    semibase2 R0003785 -1
-    semibase2 R0003786 1
-    semibase2 R0003797 -1
-    semibase2 R0003798 1
-    semibase2 R0003809 -1
-    semibase2 R0003810 1
-    semibase2 R0003821 -1
-    semibase2 R0003822 1
-    semibase2 R0003833 -1
-    semibase2 R0003834 1
-    semibase2 R0003845 -1
-    semibase2 R0003846 1
-    semibase2 R0003857 -1
-    semibase2 R0003858 1
-    semibase2 R0003869 -1
-    semibase2 R0003870 1
-    semibase2 R0003881 -1
-    semibase2 R0003882 1
-    semibase2 R0003893 -1
-    semibase2 R0003894 1
-    semibase2 R0003905 -1
-    semibase2 R0003906 1
-    semibase2 R0003917 -1
-    semibase2 R0003918 1
-    semibase2 R0003929 -1
-    semibase2 R0003930 1
-    semibase2 R0003941 -1
-    semibase2 R0003942 1
-    semibase2 R0003953 -1
-    semibase2 R0003954 1
-    semibase2 R0003965 -1
-    semibase2 R0003966 1
-    semibase2 R0003977 -1
-    semibase2 R0003978 1
-    semibase2 R0003989 -1
-    semibase2 R0003990 1
-    semibase2 R0004001 -1
-    semibase2 R0004002 1
-    semibase2 R0004013 -1
-    semibase2 R0004014 1
-    semibase2 R0004025 -1
-    semibase2 R0004026 1
-    semibase2 R0004037 -1
-    semibase2 R0004038 1
-    semibase2 R0004049 -1
-    semibase2 R0004050 1
-    semibase2 R0004061 -1
-    semibase2 R0004062 1
-    semibase2 R0004073 -1
-    semibase2 R0004074 1
-    semibase2 R0004085 -1
-    semibase2 R0004086 1
-    semibase2 R0004097 -1
-    semibase2 R0004098 1
-    semibase2 R0004109 -1
-    semibase2 R0004110 1
-    semibase2 R0004121 -1
-    semibase2 R0004122 1
-    semibase2 R0004133 -1
-    semibase2 R0004134 1
-    semibase2 R0004145 -1
-    semibase2 R0004146 1
-    semibase2 R0004157 -1
-    semibase2 R0004158 1
-    semibase2 R0004169 -1
-    semibase2 R0004170 1
-    semibase2 R0004181 -1
-    semibase2 R0004182 1
-    semibase2 R0004193 -1
-    semibase2 R0004194 1
-    semibase2 R0004205 -1
-    semibase2 R0004206 1
-    semibase2 R0004217 -1
-    semibase2 R0004218 1
-    semibase2 R0004229 -1
-    semibase2 R0004230 1
-    semibase2 R0004241 -1
-    semibase2 R0004242 1
-    semibase2 R0004253 -1
-    semibase2 R0004254 1
-    semibase2 R0004265 -1
-    semibase2 R0004266 1
-    semibase2 R0004277 -1
-    semibase2 R0004278 1
-    semibase2 R0004289 -1
-    semibase2 R0004290 1
-    semibase2 R0004301 -1
-    semibase2 R0004302 1
-    semibase2 R0004313 -1
-    semibase2 R0004314 1
-    semibase2 R0004325 -1
-    semibase2 R0004326 1
-    semibase2 R0004337 -1
-    semibase2 R0004338 1
-    semibase2 R0004349 -1
-    semibase2 R0004350 1
-    semibase2 R0004361 -1
-    semibase2 R0004362 1
-    semibase2 R0004373 -1
-    semibase2 R0004374 1
-    semibase2 R0004385 -1
-    semibase2 R0004386 1
-    semibase2 R0004397 -1
-    semibase2 R0004398 1
-    semibase2 R0004409 -1
-    semibase2 R0004410 1
-    semibase2 R0004421 -1
-    semibase2 R0004422 1
-    semibase2 R0004433 -1
-    semibase2 R0004434 1
-    semibase2 R0004445 -1
-    semibase2 R0004446 1
-    semibase2 R0004457 -1
-    semibase2 R0004458 1
-    semibase2 R0004469 -1
-    semibase2 R0004470 1
-    semibase2 R0004481 -1
-    semibase2 R0004482 1
-    semibase2 R0004493 -1
-    semibase2 R0004494 1
-    semibase2 R0004505 -1
-    semibase2 R0004506 1
-    semibase2 R0004517 -1
-    semibase2 R0004518 1
-    semibase2 R0004529 -1
-    semibase2 R0004530 1
-    semibase2 R0004541 -1
-    semibase2 R0004542 1
-    semibase2 R0004553 -1
-    semibase2 R0004554 1
-    semibase2 R0004565 -1
-    semibase2 R0004566 1
-    semibase2 R0004577 -1
-    semibase2 R0004578 1
-    semibase2 R0004589 -1
-    semibase2 R0004590 1
-    semibase2 R0004601 -1
-    semibase2 R0004602 1
-    semibase2 R0004613 -1
-    semibase2 R0004614 1
-    semibase2 R0004625 -1
-    semibase2 R0004626 1
-    semibase2 R0004637 -1
-    semibase2 R0004638 1
-    semibase2 R0004649 -1
-    semibase2 R0004650 1
-    semibase2 R0004661 -1
-    semibase2 R0004662 1
-    semibase2 R0004673 -1
-    semibase2 R0004674 1
-    semibase2 R0004685 -1
-    semibase2 R0004686 1
-    semibase2 R0004697 -1
-    semibase2 R0004698 1
-    semibase2 R0004709 -1
-    semibase2 R0004710 1
-    semibase2 R0004721 -1
-    semibase2 R0004722 1
-    semibase2 R0004733 -1
-    semibase2 R0004734 1
-    semibase2 R0004745 -1
-    semibase2 R0004746 1
-    semibase2 R0004757 -1
-    semibase2 R0004758 1
-    semibase2 R0004769 -1
-    semibase2 R0004770 1
-    semibase2 R0004781 -1
-    semibase2 R0004782 1
-    semibase2 R0004793 -1
-    semibase2 R0004794 1
-    semibase2 R0004805 -1
-    semibase2 R0004806 1
-    semibase2 R0004817 -1
-    semibase2 R0004818 1
-    semibase2 R0004829 -1
-    semibase2 R0004830 1
-    semibase2 R0004841 -1
-    semibase2 R0004842 1
-    semibase2 R0004853 -1
-    semibase2 R0004854 1
-    semibase2 R0004865 -1
-    semibase2 R0004866 1
-    semibase2 R0004877 -1
-    semibase2 R0004878 1
-    semibase2 R0004889 -1
-    semibase2 R0004890 1
-    semibase2 R0004901 -1
-    semibase2 R0004902 1
-    semibase2 R0004913 -1
-    semibase2 R0004914 1
-    semibase2 R0004925 -1
-    semibase2 R0004926 1
-    semibase2 R0004937 -1
-    semibase2 R0004938 1
-    semibase2 R0004949 -1
-    semibase2 R0004950 1
-    semibase2 R0004961 -1
-    semibase2 R0004962 1
-    semibase2 R0004973 -1
-    semibase2 R0004974 1
-    semibase2 R0004985 -1
-    semibase2 R0004986 1
-    semibase2 R0004997 -1
-    semibase2 R0004998 1
-    semibase2 R0005009 -1
-    semibase2 R0005010 1
-    semibase2 R0005021 -1
-    semibase2 R0005022 1
-    semibase2 R0005033 -1
-    semibase2 R0005034 1
-    semibase2 R0005045 -1
-    semibase2 R0005046 1
-    semibase2 R0005057 -1
-    semibase2 R0005058 1
-    semibase2 R0005069 -1
-    semibase2 R0005070 1
-    semibase2 R0005081 -1
-    semibase2 R0005082 1
-    semibase2 R0005093 -1
-    semibase2 R0005094 1
-    semibase2 R0005105 -1
-    semibase2 R0005106 1
-    semibase2 R0005117 -1
-    semibase2 R0005118 1
-    semibase2 R0005129 -1
-    semibase2 R0005130 1
-    semibase2 R0005141 -1
-    semibase2 R0005142 1
-    semibase2 R0005153 -1
-    semibase2 R0005154 1
-    semibase2 R0005165 -1
-    semibase2 R0005166 1
-    semibase2 R0005177 -1
-    semibase2 R0005178 1
-    semibase2 R0005189 -1
-    semibase2 R0005190 1
-    semibase2 R0005201 -1
-    semibase2 R0005202 1
-    semibase2 R0005213 -1
-    semibase2 R0005214 1
-    semibase2 R0005225 -1
-    semibase2 R0005226 1
-    semibase2 R0005237 -1
-    semibase2 R0005238 1
-    semibase2 R0005249 -1
-    semibase2 R0005250 1
-    semibase2 R0005261 -1
-    semibase2 R0005262 1
-    semibase2 R0005273 -1
-    semibase2 R0005274 1
-    semibase2 R0005285 -1
-    semibase2 R0005286 1
-    semibase2 R0005297 -1
-    semibase2 R0005298 1
-    semibase2 R0005309 -1
-    semibase2 R0005310 1
-    semibase2 R0005321 -1
-    semibase2 R0005322 1
-    semibase2 R0005333 -1
-    semibase2 R0005334 1
-    semibase2 R0005345 -1
-    semibase2 R0005346 1
-    semibase2 R0005357 -1
-    semibase2 R0005358 1
-    semibase2 R0005369 -1
-    semibase2 R0005370 1
-    semibase2 R0005381 -1
-    semibase2 R0005382 1
-    semibase2 R0005393 -1
-    semibase2 R0005394 1
-    semibase2 R0005405 -1
-    semibase2 R0005406 1
-    semibase2 R0005417 -1
-    semibase2 R0005418 1
-    semibase2 R0005429 -1
-    semibase2 R0005430 1
-    semibase2 R0005441 -1
-    semibase2 R0005442 1
-    semibase2 R0005453 -1
-    semibase2 R0005454 1
-    semibase2 R0005465 -1
-    semibase2 R0005466 1
-    semibase2 R0005477 -1
-    semibase2 R0005478 1
-    semibase2 R0005489 -1
-    semibase2 R0005490 1
-    semibase2 R0005501 -1
-    semibase2 R0005502 1
-    semibase2 R0005513 -1
-    semibase2 R0005514 1
-    semibase2 R0005525 -1
-    semibase2 R0005526 1
-    semibase2 R0005537 -1
-    semibase2 R0005538 1
-    semibase2 R0005549 -1
-    semibase2 R0005550 1
     peak1 R0003535 -1
     peak1 R0003536 1
+    peak1 R0003537 -1
+    peak1 R0003538 1
+    peak1 R0003539 -1
+    peak1 R0003540 1
+    peak1 R0003541 -1
+    peak1 R0003542 1
+    peak1 R0003543 -1
+    peak1 R0003544 1
+    peak1 R0003545 -1
+    peak1 R0003546 1
     peak1 R0003547 -1
     peak1 R0003548 1
+    peak1 R0003549 -1
+    peak1 R0003550 1
+    peak1 R0003551 -1
+    peak1 R0003552 1
+    peak1 R0003553 -1
+    peak1 R0003554 1
+    peak1 R0003555 -1
+    peak1 R0003556 1
+    peak1 R0003557 -1
+    peak1 R0003558 1
     peak1 R0003559 -1
     peak1 R0003560 1
+    peak1 R0003561 -1
+    peak1 R0003562 1
+    peak1 R0003563 -1
+    peak1 R0003564 1
+    peak1 R0003565 -1
+    peak1 R0003566 1
+    peak1 R0003567 -1
+    peak1 R0003568 1
+    peak1 R0003569 -1
+    peak1 R0003570 1
     peak1 R0003571 -1
     peak1 R0003572 1
+    peak1 R0003573 -1
+    peak1 R0003574 1
+    peak1 R0003575 -1
+    peak1 R0003576 1
+    peak1 R0003577 -1
+    peak1 R0003578 1
+    peak1 R0003579 -1
+    peak1 R0003580 1
+    peak1 R0003581 -1
+    peak1 R0003582 1
     peak1 R0003583 -1
     peak1 R0003584 1
+    peak1 R0003585 -1
+    peak1 R0003586 1
+    peak1 R0003587 -1
+    peak1 R0003588 1
+    peak1 R0003589 -1
+    peak1 R0003590 1
+    peak1 R0003591 -1
+    peak1 R0003592 1
+    peak1 R0003593 -1
+    peak1 R0003594 1
     peak1 R0003595 -1
     peak1 R0003596 1
+    peak1 R0003597 -1
+    peak1 R0003598 1
+    peak1 R0003599 -1
+    peak1 R0003600 1
+    peak1 R0003601 -1
+    peak1 R0003602 1
+    peak1 R0003603 -1
+    peak1 R0003604 1
+    peak1 R0003605 -1
+    peak1 R0003606 1
     peak1 R0003607 -1
     peak1 R0003608 1
+    peak1 R0003609 -1
+    peak1 R0003610 1
+    peak1 R0003611 -1
+    peak1 R0003612 1
+    peak1 R0003613 -1
+    peak1 R0003614 1
+    peak1 R0003615 -1
+    peak1 R0003616 1
+    peak1 R0003617 -1
+    peak1 R0003618 1
     peak1 R0003619 -1
     peak1 R0003620 1
+    peak1 R0003621 -1
+    peak1 R0003622 1
+    peak1 R0003623 -1
+    peak1 R0003624 1
+    peak1 R0003625 -1
+    peak1 R0003626 1
+    peak1 R0003627 -1
+    peak1 R0003628 1
+    peak1 R0003629 -1
+    peak1 R0003630 1
     peak1 R0003631 -1
     peak1 R0003632 1
+    peak1 R0003633 -1
+    peak1 R0003634 1
+    peak1 R0003635 -1
+    peak1 R0003636 1
+    peak1 R0003637 -1
+    peak1 R0003638 1
+    peak1 R0003639 -1
+    peak1 R0003640 1
+    peak1 R0003641 -1
+    peak1 R0003642 1
     peak1 R0003643 -1
     peak1 R0003644 1
+    peak1 R0003645 -1
+    peak1 R0003646 1
+    peak1 R0003647 -1
+    peak1 R0003648 1
+    peak1 R0003649 -1
+    peak1 R0003650 1
+    peak1 R0003651 -1
+    peak1 R0003652 1
+    peak1 R0003653 -1
+    peak1 R0003654 1
     peak1 R0003655 -1
     peak1 R0003656 1
+    peak1 R0003657 -1
+    peak1 R0003658 1
+    peak1 R0003659 -1
+    peak1 R0003660 1
+    peak1 R0003661 -1
+    peak1 R0003662 1
+    peak1 R0003663 -1
+    peak1 R0003664 1
+    peak1 R0003665 -1
+    peak1 R0003666 1
     peak1 R0003667 -1
     peak1 R0003668 1
+    peak1 R0003669 -1
+    peak1 R0003670 1
+    peak1 R0003671 -1
+    peak1 R0003672 1
+    peak1 R0003673 -1
+    peak1 R0003674 1
+    peak1 R0003675 -1
+    peak1 R0003676 1
+    peak1 R0003677 -1
+    peak1 R0003678 1
     peak1 R0003679 -1
     peak1 R0003680 1
+    peak1 R0003681 -1
+    peak1 R0003682 1
+    peak1 R0003683 -1
+    peak1 R0003684 1
+    peak1 R0003685 -1
+    peak1 R0003686 1
+    peak1 R0003687 -1
+    peak1 R0003688 1
+    peak1 R0003689 -1
+    peak1 R0003690 1
     peak1 R0003691 -1
     peak1 R0003692 1
+    peak1 R0003693 -1
+    peak1 R0003694 1
+    peak1 R0003695 -1
+    peak1 R0003696 1
+    peak1 R0003697 -1
+    peak1 R0003698 1
+    peak1 R0003699 -1
+    peak1 R0003700 1
+    peak1 R0003701 -1
+    peak1 R0003702 1
     peak1 R0003703 -1
     peak1 R0003704 1
+    peak1 R0003705 -1
+    peak1 R0003706 1
+    peak1 R0003707 -1
+    peak1 R0003708 1
+    peak1 R0003709 -1
+    peak1 R0003710 1
+    peak1 R0003711 -1
+    peak1 R0003712 1
+    peak1 R0003713 -1
+    peak1 R0003714 1
     peak1 R0003715 -1
     peak1 R0003716 1
+    peak1 R0003717 -1
+    peak1 R0003718 1
+    peak1 R0003719 -1
+    peak1 R0003720 1
+    peak1 R0003721 -1
+    peak1 R0003722 1
+    peak1 R0003723 -1
+    peak1 R0003724 1
+    peak1 R0003725 -1
+    peak1 R0003726 1
     peak1 R0003727 -1
     peak1 R0003728 1
+    peak1 R0003729 -1
+    peak1 R0003730 1
+    peak1 R0003731 -1
+    peak1 R0003732 1
+    peak1 R0003733 -1
+    peak1 R0003734 1
+    peak1 R0003735 -1
+    peak1 R0003736 1
+    peak1 R0003737 -1
+    peak1 R0003738 1
     peak1 R0003739 -1
     peak1 R0003740 1
+    peak1 R0003741 -1
+    peak1 R0003742 1
+    peak1 R0003743 -1
+    peak1 R0003744 1
+    peak1 R0003745 -1
+    peak1 R0003746 1
+    peak1 R0003747 -1
+    peak1 R0003748 1
+    peak1 R0003749 -1
+    peak1 R0003750 1
     peak1 R0003751 -1
     peak1 R0003752 1
+    peak1 R0003753 -1
+    peak1 R0003754 1
+    peak1 R0003755 -1
+    peak1 R0003756 1
+    peak1 R0003757 -1
+    peak1 R0003758 1
+    peak1 R0003759 -1
+    peak1 R0003760 1
+    peak1 R0003761 -1
+    peak1 R0003762 1
     peak1 R0003763 -1
     peak1 R0003764 1
+    peak1 R0003765 -1
+    peak1 R0003766 1
+    peak1 R0003767 -1
+    peak1 R0003768 1
+    peak1 R0003769 -1
+    peak1 R0003770 1
+    peak1 R0003771 -1
+    peak1 R0003772 1
+    peak1 R0003773 -1
+    peak1 R0003774 1
     peak1 R0003775 -1
     peak1 R0003776 1
+    peak1 R0003777 -1
+    peak1 R0003778 1
+    peak1 R0003779 -1
+    peak1 R0003780 1
+    peak1 R0003781 -1
+    peak1 R0003782 1
+    peak1 R0003783 -1
+    peak1 R0003784 1
+    peak1 R0003785 -1
+    peak1 R0003786 1
     peak1 R0003787 -1
     peak1 R0003788 1
+    peak1 R0003789 -1
+    peak1 R0003790 1
+    peak1 R0003791 -1
+    peak1 R0003792 1
+    peak1 R0003793 -1
+    peak1 R0003794 1
+    peak1 R0003795 -1
+    peak1 R0003796 1
+    peak1 R0003797 -1
+    peak1 R0003798 1
     peak1 R0003799 -1
     peak1 R0003800 1
+    peak1 R0003801 -1
+    peak1 R0003802 1
+    peak1 R0003803 -1
+    peak1 R0003804 1
+    peak1 R0003805 -1
+    peak1 R0003806 1
+    peak1 R0003807 -1
+    peak1 R0003808 1
+    peak1 R0003809 -1
+    peak1 R0003810 1
     peak1 R0003811 -1
     peak1 R0003812 1
+    peak1 R0003813 -1
+    peak1 R0003814 1
+    peak1 R0003815 -1
+    peak1 R0003816 1
+    peak1 R0003817 -1
+    peak1 R0003818 1
+    peak1 R0003819 -1
+    peak1 R0003820 1
+    peak1 R0003821 -1
+    peak1 R0003822 1
     peak1 R0003823 -1
     peak1 R0003824 1
+    peak1 R0003825 -1
+    peak1 R0003826 1
+    peak1 R0003827 -1
+    peak1 R0003828 1
+    peak1 R0003829 -1
+    peak1 R0003830 1
+    peak1 R0003831 -1
+    peak1 R0003832 1
+    peak1 R0003833 -1
+    peak1 R0003834 1
     peak1 R0003835 -1
     peak1 R0003836 1
+    peak1 R0003837 -1
+    peak1 R0003838 1
+    peak1 R0003839 -1
+    peak1 R0003840 1
+    peak1 R0003841 -1
+    peak1 R0003842 1
+    peak1 R0003843 -1
+    peak1 R0003844 1
+    peak1 R0003845 -1
+    peak1 R0003846 1
     peak1 R0003847 -1
     peak1 R0003848 1
+    peak1 R0003849 -1
+    peak1 R0003850 1
+    peak1 R0003851 -1
+    peak1 R0003852 1
+    peak1 R0003853 -1
+    peak1 R0003854 1
+    peak1 R0003855 -1
+    peak1 R0003856 1
+    peak1 R0003857 -1
+    peak1 R0003858 1
     peak1 R0003859 -1
     peak1 R0003860 1
-    peak1 R0003871 -1
-    peak1 R0003872 1
-    peak1 R0003883 -1
-    peak1 R0003884 1
-    peak1 R0003895 -1
-    peak1 R0003896 1
-    peak1 R0003907 -1
-    peak1 R0003908 1
-    peak1 R0003919 -1
-    peak1 R0003920 1
-    peak1 R0003931 -1
-    peak1 R0003932 1
-    peak1 R0003943 -1
-    peak1 R0003944 1
-    peak1 R0003955 -1
-    peak1 R0003956 1
-    peak1 R0003967 -1
-    peak1 R0003968 1
-    peak1 R0003979 -1
-    peak1 R0003980 1
-    peak1 R0003991 -1
-    peak1 R0003992 1
-    peak1 R0004003 -1
-    peak1 R0004004 1
-    peak1 R0004015 -1
-    peak1 R0004016 1
-    peak1 R0004027 -1
-    peak1 R0004028 1
-    peak1 R0004039 -1
-    peak1 R0004040 1
-    peak1 R0004051 -1
-    peak1 R0004052 1
-    peak1 R0004063 -1
-    peak1 R0004064 1
-    peak1 R0004075 -1
-    peak1 R0004076 1
-    peak1 R0004087 -1
-    peak1 R0004088 1
-    peak1 R0004099 -1
-    peak1 R0004100 1
-    peak1 R0004111 -1
-    peak1 R0004112 1
-    peak1 R0004123 -1
-    peak1 R0004124 1
-    peak1 R0004135 -1
-    peak1 R0004136 1
-    peak1 R0004147 -1
-    peak1 R0004148 1
-    peak1 R0004159 -1
-    peak1 R0004160 1
-    peak1 R0004171 -1
-    peak1 R0004172 1
-    peak1 R0004183 -1
-    peak1 R0004184 1
-    peak1 R0004195 -1
-    peak1 R0004196 1
-    peak1 R0004207 -1
-    peak1 R0004208 1
-    peak1 R0004219 -1
-    peak1 R0004220 1
-    peak1 R0004231 -1
-    peak1 R0004232 1
-    peak1 R0004243 -1
-    peak1 R0004244 1
-    peak1 R0004255 -1
-    peak1 R0004256 1
-    peak1 R0004267 -1
-    peak1 R0004268 1
-    peak1 R0004279 -1
-    peak1 R0004280 1
-    peak1 R0004291 -1
-    peak1 R0004292 1
-    peak1 R0004303 -1
-    peak1 R0004304 1
-    peak1 R0004315 -1
-    peak1 R0004316 1
-    peak1 R0004327 -1
-    peak1 R0004328 1
-    peak1 R0004339 -1
-    peak1 R0004340 1
-    peak1 R0004351 -1
-    peak1 R0004352 1
-    peak1 R0004363 -1
-    peak1 R0004364 1
-    peak1 R0004375 -1
-    peak1 R0004376 1
-    peak1 R0004387 -1
-    peak1 R0004388 1
-    peak1 R0004399 -1
-    peak1 R0004400 1
-    peak1 R0004411 -1
-    peak1 R0004412 1
-    peak1 R0004423 -1
-    peak1 R0004424 1
-    peak1 R0004435 -1
-    peak1 R0004436 1
-    peak1 R0004447 -1
-    peak1 R0004448 1
-    peak1 R0004459 -1
-    peak1 R0004460 1
-    peak1 R0004471 -1
-    peak1 R0004472 1
-    peak1 R0004483 -1
-    peak1 R0004484 1
-    peak1 R0004495 -1
-    peak1 R0004496 1
-    peak1 R0004507 -1
-    peak1 R0004508 1
-    peak1 R0004519 -1
-    peak1 R0004520 1
-    peak1 R0004531 -1
-    peak1 R0004532 1
-    peak1 R0004543 -1
-    peak1 R0004544 1
-    peak1 R0004555 -1
-    peak1 R0004556 1
-    peak1 R0004567 -1
-    peak1 R0004568 1
-    peak1 R0004579 -1
-    peak1 R0004580 1
-    peak1 R0004591 -1
-    peak1 R0004592 1
-    peak1 R0004603 -1
-    peak1 R0004604 1
-    peak1 R0004615 -1
-    peak1 R0004616 1
-    peak1 R0004627 -1
-    peak1 R0004628 1
-    peak1 R0004639 -1
-    peak1 R0004640 1
-    peak1 R0004651 -1
-    peak1 R0004652 1
-    peak1 R0004663 -1
-    peak1 R0004664 1
-    peak1 R0004675 -1
-    peak1 R0004676 1
-    peak1 R0004687 -1
-    peak1 R0004688 1
-    peak1 R0004699 -1
-    peak1 R0004700 1
-    peak1 R0004711 -1
-    peak1 R0004712 1
-    peak1 R0004723 -1
-    peak1 R0004724 1
-    peak1 R0004735 -1
-    peak1 R0004736 1
-    peak1 R0004747 -1
-    peak1 R0004748 1
-    peak1 R0004759 -1
-    peak1 R0004760 1
-    peak1 R0004771 -1
-    peak1 R0004772 1
-    peak1 R0004783 -1
-    peak1 R0004784 1
-    peak1 R0004795 -1
-    peak1 R0004796 1
-    peak1 R0004807 -1
-    peak1 R0004808 1
-    peak1 R0004819 -1
-    peak1 R0004820 1
-    peak1 R0004831 -1
-    peak1 R0004832 1
-    peak1 R0004843 -1
-    peak1 R0004844 1
-    peak1 R0004855 -1
-    peak1 R0004856 1
-    peak1 R0004867 -1
-    peak1 R0004868 1
-    peak1 R0004879 -1
-    peak1 R0004880 1
-    peak1 R0004891 -1
-    peak1 R0004892 1
-    peak1 R0004903 -1
-    peak1 R0004904 1
-    peak1 R0004915 -1
-    peak1 R0004916 1
-    peak1 R0004927 -1
-    peak1 R0004928 1
-    peak1 R0004939 -1
-    peak1 R0004940 1
-    peak1 R0004951 -1
-    peak1 R0004952 1
-    peak1 R0004963 -1
-    peak1 R0004964 1
-    peak1 R0004975 -1
-    peak1 R0004976 1
-    peak1 R0004987 -1
-    peak1 R0004988 1
-    peak1 R0004999 -1
-    peak1 R0005000 1
-    peak1 R0005011 -1
-    peak1 R0005012 1
-    peak1 R0005023 -1
-    peak1 R0005024 1
-    peak1 R0005035 -1
-    peak1 R0005036 1
-    peak1 R0005047 -1
-    peak1 R0005048 1
-    peak1 R0005059 -1
-    peak1 R0005060 1
-    peak1 R0005071 -1
-    peak1 R0005072 1
-    peak1 R0005083 -1
-    peak1 R0005084 1
-    peak1 R0005095 -1
-    peak1 R0005096 1
-    peak1 R0005107 -1
-    peak1 R0005108 1
-    peak1 R0005119 -1
-    peak1 R0005120 1
-    peak1 R0005131 -1
-    peak1 R0005132 1
-    peak1 R0005143 -1
-    peak1 R0005144 1
-    peak1 R0005155 -1
-    peak1 R0005156 1
-    peak1 R0005167 -1
-    peak1 R0005168 1
-    peak1 R0005179 -1
-    peak1 R0005180 1
-    peak1 R0005191 -1
-    peak1 R0005192 1
-    peak1 R0005203 -1
-    peak1 R0005204 1
-    peak1 R0005215 -1
-    peak1 R0005216 1
-    peak1 R0005227 -1
-    peak1 R0005228 1
-    peak1 R0005239 -1
-    peak1 R0005240 1
-    peak1 R0005251 -1
-    peak1 R0005252 1
-    peak1 R0005263 -1
-    peak1 R0005264 1
-    peak1 R0005275 -1
-    peak1 R0005276 1
-    peak1 R0005287 -1
-    peak1 R0005288 1
-    peak1 R0005299 -1
-    peak1 R0005300 1
-    peak1 R0005311 -1
-    peak1 R0005312 1
-    peak1 R0005323 -1
-    peak1 R0005324 1
-    peak1 R0005335 -1
-    peak1 R0005336 1
-    peak1 R0005347 -1
-    peak1 R0005348 1
-    peak1 R0005359 -1
-    peak1 R0005360 1
-    peak1 R0005371 -1
-    peak1 R0005372 1
-    peak1 R0005383 -1
-    peak1 R0005384 1
-    peak1 R0005395 -1
-    peak1 R0005396 1
-    peak1 R0005407 -1
-    peak1 R0005408 1
-    peak1 R0005419 -1
-    peak1 R0005420 1
-    peak1 R0005431 -1
-    peak1 R0005432 1
-    peak1 R0005443 -1
-    peak1 R0005444 1
-    peak1 R0005455 -1
-    peak1 R0005456 1
-    peak1 R0005467 -1
-    peak1 R0005468 1
-    peak1 R0005479 -1
-    peak1 R0005480 1
-    peak1 R0005491 -1
-    peak1 R0005492 1
-    peak1 R0005503 -1
-    peak1 R0005504 1
-    peak1 R0005515 -1
-    peak1 R0005516 1
-    peak1 R0005527 -1
-    peak1 R0005528 1
-    peak1 R0005539 -1
-    peak1 R0005540 1
-    peak2 R0003543 -1
-    peak2 R0003544 1
-    peak2 R0003555 -1
-    peak2 R0003556 1
-    peak2 R0003567 -1
-    peak2 R0003568 1
-    peak2 R0003579 -1
-    peak2 R0003580 1
-    peak2 R0003591 -1
-    peak2 R0003592 1
-    peak2 R0003603 -1
-    peak2 R0003604 1
-    peak2 R0003615 -1
-    peak2 R0003616 1
-    peak2 R0003627 -1
-    peak2 R0003628 1
-    peak2 R0003639 -1
-    peak2 R0003640 1
-    peak2 R0003651 -1
-    peak2 R0003652 1
-    peak2 R0003663 -1
-    peak2 R0003664 1
-    peak2 R0003675 -1
-    peak2 R0003676 1
-    peak2 R0003687 -1
-    peak2 R0003688 1
-    peak2 R0003699 -1
-    peak2 R0003700 1
-    peak2 R0003711 -1
-    peak2 R0003712 1
-    peak2 R0003723 -1
-    peak2 R0003724 1
-    peak2 R0003735 -1
-    peak2 R0003736 1
-    peak2 R0003747 -1
-    peak2 R0003748 1
-    peak2 R0003759 -1
-    peak2 R0003760 1
-    peak2 R0003771 -1
-    peak2 R0003772 1
-    peak2 R0003783 -1
-    peak2 R0003784 1
-    peak2 R0003795 -1
-    peak2 R0003796 1
-    peak2 R0003807 -1
-    peak2 R0003808 1
-    peak2 R0003819 -1
-    peak2 R0003820 1
-    peak2 R0003831 -1
-    peak2 R0003832 1
-    peak2 R0003843 -1
-    peak2 R0003844 1
-    peak2 R0003855 -1
-    peak2 R0003856 1
-    peak2 R0003867 -1
-    peak2 R0003868 1
-    peak2 R0003879 -1
-    peak2 R0003880 1
-    peak2 R0003891 -1
-    peak2 R0003892 1
-    peak2 R0003903 -1
-    peak2 R0003904 1
-    peak2 R0003915 -1
-    peak2 R0003916 1
-    peak2 R0003927 -1
-    peak2 R0003928 1
-    peak2 R0003939 -1
-    peak2 R0003940 1
-    peak2 R0003951 -1
-    peak2 R0003952 1
-    peak2 R0003963 -1
-    peak2 R0003964 1
-    peak2 R0003975 -1
-    peak2 R0003976 1
-    peak2 R0003987 -1
-    peak2 R0003988 1
-    peak2 R0003999 -1
-    peak2 R0004000 1
-    peak2 R0004011 -1
-    peak2 R0004012 1
-    peak2 R0004023 -1
-    peak2 R0004024 1
-    peak2 R0004035 -1
-    peak2 R0004036 1
-    peak2 R0004047 -1
-    peak2 R0004048 1
-    peak2 R0004059 -1
-    peak2 R0004060 1
-    peak2 R0004071 -1
-    peak2 R0004072 1
-    peak2 R0004083 -1
-    peak2 R0004084 1
-    peak2 R0004095 -1
-    peak2 R0004096 1
-    peak2 R0004107 -1
-    peak2 R0004108 1
-    peak2 R0004119 -1
-    peak2 R0004120 1
-    peak2 R0004131 -1
-    peak2 R0004132 1
-    peak2 R0004143 -1
-    peak2 R0004144 1
-    peak2 R0004155 -1
-    peak2 R0004156 1
-    peak2 R0004167 -1
-    peak2 R0004168 1
-    peak2 R0004179 -1
-    peak2 R0004180 1
-    peak2 R0004191 -1
-    peak2 R0004192 1
-    peak2 R0004203 -1
-    peak2 R0004204 1
-    peak2 R0004215 -1
-    peak2 R0004216 1
-    peak2 R0004227 -1
-    peak2 R0004228 1
-    peak2 R0004239 -1
-    peak2 R0004240 1
-    peak2 R0004251 -1
-    peak2 R0004252 1
-    peak2 R0004263 -1
-    peak2 R0004264 1
-    peak2 R0004275 -1
-    peak2 R0004276 1
-    peak2 R0004287 -1
-    peak2 R0004288 1
-    peak2 R0004299 -1
-    peak2 R0004300 1
-    peak2 R0004311 -1
-    peak2 R0004312 1
-    peak2 R0004323 -1
-    peak2 R0004324 1
-    peak2 R0004335 -1
-    peak2 R0004336 1
-    peak2 R0004347 -1
-    peak2 R0004348 1
-    peak2 R0004359 -1
-    peak2 R0004360 1
-    peak2 R0004371 -1
-    peak2 R0004372 1
-    peak2 R0004383 -1
-    peak2 R0004384 1
-    peak2 R0004395 -1
-    peak2 R0004396 1
-    peak2 R0004407 -1
-    peak2 R0004408 1
-    peak2 R0004419 -1
-    peak2 R0004420 1
-    peak2 R0004431 -1
-    peak2 R0004432 1
-    peak2 R0004443 -1
-    peak2 R0004444 1
-    peak2 R0004455 -1
-    peak2 R0004456 1
-    peak2 R0004467 -1
-    peak2 R0004468 1
-    peak2 R0004479 -1
-    peak2 R0004480 1
-    peak2 R0004491 -1
-    peak2 R0004492 1
-    peak2 R0004503 -1
-    peak2 R0004504 1
-    peak2 R0004515 -1
-    peak2 R0004516 1
-    peak2 R0004527 -1
-    peak2 R0004528 1
-    peak2 R0004539 -1
-    peak2 R0004540 1
-    peak2 R0004551 -1
-    peak2 R0004552 1
-    peak2 R0004563 -1
-    peak2 R0004564 1
-    peak2 R0004575 -1
-    peak2 R0004576 1
-    peak2 R0004587 -1
-    peak2 R0004588 1
-    peak2 R0004599 -1
-    peak2 R0004600 1
-    peak2 R0004611 -1
-    peak2 R0004612 1
-    peak2 R0004623 -1
-    peak2 R0004624 1
-    peak2 R0004635 -1
-    peak2 R0004636 1
-    peak2 R0004647 -1
-    peak2 R0004648 1
-    peak2 R0004659 -1
-    peak2 R0004660 1
-    peak2 R0004671 -1
-    peak2 R0004672 1
-    peak2 R0004683 -1
-    peak2 R0004684 1
-    peak2 R0004695 -1
-    peak2 R0004696 1
-    peak2 R0004707 -1
-    peak2 R0004708 1
-    peak2 R0004719 -1
-    peak2 R0004720 1
-    peak2 R0004731 -1
-    peak2 R0004732 1
-    peak2 R0004743 -1
-    peak2 R0004744 1
-    peak2 R0004755 -1
-    peak2 R0004756 1
-    peak2 R0004767 -1
-    peak2 R0004768 1
-    peak2 R0004779 -1
-    peak2 R0004780 1
-    peak2 R0004791 -1
-    peak2 R0004792 1
-    peak2 R0004803 -1
-    peak2 R0004804 1
-    peak2 R0004815 -1
-    peak2 R0004816 1
-    peak2 R0004827 -1
-    peak2 R0004828 1
-    peak2 R0004839 -1
-    peak2 R0004840 1
-    peak2 R0004851 -1
-    peak2 R0004852 1
-    peak2 R0004863 -1
-    peak2 R0004864 1
-    peak2 R0004875 -1
-    peak2 R0004876 1
+    peak1 R0003861 -1
+    peak1 R0003862 1
+    peak1 R0003863 -1
+    peak1 R0003864 1
+    peak1 R0003865 -1
+    peak1 R0003866 1
+    peak1 R0003867 -1
+    peak1 R0003868 1
+    peak1 R0003869 -1
+    peak1 R0003870 1
+    semibase1 R0003872 1
+    semibase1 R0003874 1
+    semibase1 R0003876 1
+    semibase1 R0003878 1
+    semibase1 R0003880 1
+    semibase1 R0003882 1
+    semibase1 R0003884 1
+    semibase1 R0003886 1
+    semibase1 R0003888 1
+    semibase1 R0003890 1
+    semibase1 R0003892 1
+    semibase1 R0003894 1
+    semibase1 R0003896 1
+    semibase1 R0003898 1
+    semibase1 R0003900 1
+    semibase1 R0003902 1
+    semibase1 R0003904 1
+    semibase1 R0003906 1
+    semibase1 R0003908 1
+    semibase1 R0003910 1
+    semibase1 R0003912 1
+    semibase1 R0003914 1
+    semibase1 R0003916 1
+    semibase1 R0003918 1
+    semibase1 R0003920 1
+    semibase1 R0003922 1
+    semibase1 R0003924 1
+    semibase1 R0003926 1
+    semibase1 R0003928 1
+    semibase1 R0003930 1
+    semibase1 R0003932 1
+    semibase1 R0003934 1
+    semibase1 R0003936 1
+    semibase1 R0003938 1
+    semibase1 R0003940 1
+    semibase1 R0003942 1
+    semibase1 R0003944 1
+    semibase1 R0003946 1
+    semibase1 R0003948 1
+    semibase1 R0003950 1
+    semibase1 R0003952 1
+    semibase1 R0003954 1
+    semibase1 R0003956 1
+    semibase1 R0003958 1
+    semibase1 R0003960 1
+    semibase1 R0003962 1
+    semibase1 R0003964 1
+    semibase1 R0003966 1
+    semibase1 R0003968 1
+    semibase1 R0003970 1
+    semibase1 R0003972 1
+    semibase1 R0003974 1
+    semibase1 R0003976 1
+    semibase1 R0003978 1
+    semibase1 R0003980 1
+    semibase1 R0003982 1
+    semibase1 R0003984 1
+    semibase1 R0003986 1
+    semibase1 R0003988 1
+    semibase1 R0003990 1
+    semibase1 R0003992 1
+    semibase1 R0003994 1
+    semibase1 R0003996 1
+    semibase1 R0003998 1
+    semibase1 R0004000 1
+    semibase1 R0004002 1
+    semibase1 R0004004 1
+    semibase1 R0004006 1
+    semibase1 R0004008 1
+    semibase1 R0004010 1
+    semibase1 R0004012 1
+    semibase1 R0004014 1
+    semibase1 R0004016 1
+    semibase1 R0004018 1
+    semibase1 R0004020 1
+    semibase1 R0004022 1
+    semibase1 R0004024 1
+    semibase1 R0004026 1
+    semibase1 R0004028 1
+    semibase1 R0004030 1
+    semibase1 R0004032 1
+    semibase1 R0004034 1
+    semibase1 R0004036 1
+    semibase1 R0004038 1
+    semibase1 R0004040 1
+    semibase1 R0004042 1
+    semibase1 R0004044 1
+    semibase1 R0004046 1
+    semibase1 R0004048 1
+    semibase1 R0004050 1
+    semibase1 R0004052 1
+    semibase1 R0004054 1
+    semibase1 R0004056 1
+    semibase1 R0004058 1
+    semibase1 R0004060 1
+    semibase1 R0004062 1
+    semibase1 R0004064 1
+    semibase1 R0004066 1
+    semibase1 R0004068 1
+    semibase1 R0004070 1
+    semibase1 R0004072 1
+    semibase1 R0004074 1
+    semibase1 R0004076 1
+    semibase1 R0004078 1
+    semibase1 R0004080 1
+    semibase1 R0004082 1
+    semibase1 R0004084 1
+    semibase1 R0004086 1
+    semibase1 R0004088 1
+    semibase1 R0004090 1
+    semibase1 R0004092 1
+    semibase1 R0004094 1
+    semibase1 R0004096 1
+    semibase1 R0004098 1
+    semibase1 R0004100 1
+    semibase1 R0004102 1
+    semibase1 R0004104 1
+    semibase1 R0004106 1
+    semibase1 R0004108 1
+    semibase1 R0004110 1
+    semibase1 R0004112 1
+    semibase1 R0004114 1
+    semibase1 R0004116 1
+    semibase1 R0004118 1
+    semibase1 R0004120 1
+    semibase1 R0004122 1
+    semibase1 R0004124 1
+    semibase1 R0004126 1
+    semibase1 R0004128 1
+    semibase1 R0004130 1
+    semibase1 R0004132 1
+    semibase1 R0004134 1
+    semibase1 R0004136 1
+    semibase1 R0004138 1
+    semibase1 R0004140 1
+    semibase1 R0004142 1
+    semibase1 R0004144 1
+    semibase1 R0004146 1
+    semibase1 R0004148 1
+    semibase1 R0004150 1
+    semibase1 R0004152 1
+    semibase1 R0004154 1
+    semibase1 R0004156 1
+    semibase1 R0004158 1
+    semibase1 R0004160 1
+    semibase1 R0004162 1
+    semibase1 R0004164 1
+    semibase1 R0004166 1
+    semibase1 R0004168 1
+    semibase1 R0004170 1
+    semibase1 R0004172 1
+    semibase1 R0004174 1
+    semibase1 R0004176 1
+    semibase1 R0004178 1
+    semibase1 R0004180 1
+    semibase1 R0004182 1
+    semibase1 R0004184 1
+    semibase1 R0004186 1
+    semibase1 R0004188 1
+    semibase1 R0004190 1
+    semibase1 R0004192 1
+    semibase1 R0004194 1
+    semibase1 R0004196 1
+    semibase1 R0004198 1
+    semibase1 R0004200 1
+    semibase1 R0004202 1
+    semibase1 R0004204 1
+    semibase1 R0004206 1
+    pv R0004217 -0.00365029761904536
+    pv R0004218 0.00365029761904536
+    pv R0004219 -0.0261410714285646
+    pv R0004220 0.0261410714285646
+    pv R0004221 -0.0861836309523929
+    pv R0004222 0.0861836309523929
+    pv R0004223 -0.191885416666668
+    pv R0004224 0.191885416666668
+    pv R0004225 -0.311545833333218
+    pv R0004226 0.311545833333218
+    pv R0004227 -0.425662499999964
+    pv R0004228 0.425662499999964
+    pv R0004229 -0.48738928571425
+    pv R0004230 0.48738928571425
+    pv R0004231 -0.5052044642856069
+    pv R0004232 0.5052044642856069
+    pv R0004233 -0.551641369047607
+    pv R0004234 0.551641369047607
+    pv R0004235 -0.567586011904714
+    pv R0004236 0.567586011904714
+    pv R0004237 -0.530602380952393
+    pv R0004238 0.530602380952393
+    pv R0004239 -0.460927678571536
+    pv R0004240 0.460927678571536
+    pv R0004241 -0.366443749999929
+    pv R0004242 0.366443749999929
+    pv R0004243 -0.246217261904857
+    pv R0004244 0.246217261904857
+    pv R0004245 -0.124988392857107
+    pv R0004246 0.124988392857107
+    pv R0004247 -0.0415547619047621
+    pv R0004248 0.0415547619047621
+    pv R0004249 -0.00641875000000072
+    pv R0004250 0.00641875000000072
+    pv R0004265 -0.0013657738095225
+    pv R0004266 0.0013657738095225
+    pv R0004267 -0.0134026785714211
+    pv R0004268 0.0134026785714211
+    pv R0004269 -0.0589958333333464
+    pv R0004270 0.0589958333333464
+    pv R0004271 -0.146937500000071
+    pv R0004272 0.146937500000071
+    pv R0004273 -0.240569047619071
+    pv R0004274 0.240569047619071
+    pv R0004275 -0.337899107142929
+    pv R0004276 0.337899107142929
+    pv R0004277 -0.406669940476179
+    pv R0004278 0.406669940476179
+    pv R0004279 -0.44173601190475
+    pv R0004280 0.44173601190475
+    pv R0004281 -0.47317916666675
+    pv R0004282 0.47317916666675
+    pv R0004283 -0.480538392857143
+    pv R0004284 0.480538392857143
+    pv R0004285 -0.437591964285607
+    pv R0004286 0.437591964285607
+    pv R0004287 -0.364398214285714
+    pv R0004288 0.364398214285714
+    pv R0004289 -0.283849107142857
+    pv R0004290 0.283849107142857
+    pv R0004291 -0.168185119047611
+    pv R0004292 0.168185119047611
+    pv R0004293 -0.07371815476188361
+    pv R0004294 0.07371815476188361
+    pv R0004295 -0.0238303571428687
+    pv R0004296 0.0238303571428687
+    pv R0004297 -0.00302410714285757
+    pv R0004298 0.00302410714285757
+    pv R0004313 -0.003402678571425
+    pv R0004314 0.003402678571425
+    pv R0004315 -0.0245717261904654
+    pv R0004316 0.0245717261904654
+    pv R0004317 -0.08017261904762819
+    pv R0004318 0.08017261904762819
+    pv R0004319 -0.180100297619064
+    pv R0004320 0.180100297619064
+    pv R0004321 -0.298280952380929
+    pv R0004322 0.298280952380929
+    pv R0004323 -0.395785119047714
+    pv R0004324 0.395785119047714
+    pv R0004325 -0.495136904762107
+    pv R0004326 0.495136904762107
+    pv R0004327 -0.547222619047714
+    pv R0004328 0.547222619047714
+    pv R0004329 -0.585444345238107
+    pv R0004330 0.585444345238107
+    pv R0004331 -0.565870238095036
+    pv R0004332 0.565870238095036
+    pv R0004333 -0.5313919642856429
+    pv R0004334 0.5313919642856429
+    pv R0004335 -0.436356845238107
+    pv R0004336 0.436356845238107
+    pv R0004337 -0.309977678571454
+    pv R0004338 0.309977678571454
+    pv R0004339 -0.206843154761896
+    pv R0004340 0.206843154761896
+    pv R0004341 -0.0998702380953071
+    pv R0004342 0.0998702380953071
+    pv R0004343 -0.0341470238095163
+    pv R0004344 0.0341470238095163
+    pv R0004345 -0.00467321428571325
+    pv R0004346 0.00467321428571325
+    pv R0004361 -0.00262053571428679
+    pv R0004362 0.00262053571428679
+    pv R0004363 -0.0196053571428629
+    pv R0004364 0.0196053571428629
+    pv R0004365 -0.06647529761905389
+    pv R0004366 0.06647529761905389
+    pv R0004367 -0.154416964285675
+    pv R0004368 0.154416964285675
+    pv R0004369 -0.272748809523714
+    pv R0004370 0.272748809523714
+    pv R0004371 -0.390765773809571
+    pv R0004372 0.390765773809571
+    pv R0004373 -0.475502678571429
+    pv R0004374 0.475502678571429
+    pv R0004375 -0.489320833333214
+    pv R0004376 0.489320833333214
+    pv R0004377 -0.529211309523786
+    pv R0004378 0.529211309523786
+    pv R0004379 -0.536317559523857
+    pv R0004380 0.536317559523857
+    pv R0004381 -0.485275595238107
+    pv R0004382 0.485275595238107
+    pv R0004383 -0.396693452380857
+    pv R0004384 0.396693452380857
+    pv R0004385 -0.318779166666571
+    pv R0004386 0.318779166666571
+    pv R0004387 -0.205017559523739
+    pv R0004388 0.205017559523739
+    pv R0004389 -0.0932229166666714
+    pv R0004390 0.0932229166666714
+    pv R0004391 -0.0304752976190513
+    pv R0004392 0.0304752976190513
+    pv R0004393 -0.00378303571428611
+    pv R0004394 0.00378303571428611
+    pv R0004409 -0.0024714285714275
+    pv R0004410 0.0024714285714275
+    pv R0004411 -0.0191720238095218
+    pv R0004412 0.0191720238095218
+    pv R0004413 -0.0710011904762179
+    pv R0004414 0.0710011904762179
+    pv R0004415 -0.171102083333429
+    pv R0004416 0.171102083333429
+    pv R0004417 -0.286129761904821
+    pv R0004418 0.286129761904821
+    pv R0004419 -0.402493154761893
+    pv R0004420 0.402493154761893
+    pv R0004421 -0.496895833333429
+    pv R0004422 0.496895833333429
+    pv R0004423 -0.554408035714321
+    pv R0004424 0.554408035714321
+    pv R0004425 -0.53800535714275
+    pv R0004426 0.53800535714275
+    pv R0004427 -0.475658035714286
+    pv R0004428 0.475658035714286
+    pv R0004429 -0.411748214285714
+    pv R0004430 0.411748214285714
+    pv R0004431 -0.384415178571429
+    pv R0004432 0.384415178571429
+    pv R0004433 -0.306816666666654
+    pv R0004434 0.306816666666654
+    pv R0004435 -0.191129166666654
+    pv R0004436 0.191129166666654
+    pv R0004437 -0.0914735119048381
+    pv R0004438 0.0914735119048381
+    pv R0004439 -0.0319452380952307
+    pv R0004440 0.0319452380952307
+    pv R0004441 -0.003976785714285
+    pv R0004442 0.003976785714285
+    pv R0004457 -0.00265267857142989
+    pv R0004458 0.00265267857142989
+    pv R0004459 -0.0216101190476218
+    pv R0004460 0.0216101190476218
+    pv R0004461 -0.07523809523812861
+    pv R0004462 0.07523809523812861
+    pv R0004463 -0.170593750000086
+    pv R0004464 0.170593750000086
+    pv R0004465 -0.294189880952318
+    pv R0004466 0.294189880952318
+    pv R0004467 -0.386706250000036
+    pv R0004468 0.386706250000036
+    pv R0004469 -0.458667857142821
+    pv R0004470 0.458667857142821
+    pv R0004471 -0.469680654761786
+    pv R0004472 0.469680654761786
+    pv R0004473 -0.47548928571425
+    pv R0004474 0.47548928571425
+    pv R0004475 -0.46277648809525
+    pv R0004476 0.46277648809525
+    pv R0004477 -0.399993750000071
+    pv R0004478 0.399993750000071
+    pv R0004479 -0.349415178571536
+    pv R0004480 0.349415178571536
+    pv R0004481 -0.284383928571393
+    pv R0004482 0.284383928571393
+    pv R0004483 -0.198149404761782
+    pv R0004484 0.198149404761782
+    pv R0004485 -0.0865904761904321
+    pv R0004486 0.0865904761904321
+    pv R0004487 -0.0259476190476259
+    pv R0004488 0.0259476190476259
+    pv R0004489 -0.002706249999999
+    pv R0004490 0.002706249999999
+    pv R0004505 -0.00263660714285964
+    pv R0004506 0.00263660714285964
+    pv R0004507 -0.0213428571428646
+    pv R0004508 0.0213428571428646
+    pv R0004509 -0.077086011904725
+    pv R0004510 0.077086011904725
+    pv R0004511 -0.183325297618925
+    pv R0004512 0.183325297618925
+    pv R0004513 -0.327012202380857
+    pv R0004514 0.327012202380857
+    pv R0004515 -0.440074702380786
+    pv R0004516 0.440074702380786
+    pv R0004517 -0.459656845238143
+    pv R0004518 0.459656845238143
+    pv R0004519 -0.461926785714286
+    pv R0004520 0.461926785714286
+    pv R0004521 -0.487716071428464
+    pv R0004522 0.487716071428464
+    pv R0004523 -0.444374107142821
+    pv R0004524 0.444374107142821
+    pv R0004525 -0.398241369047536
+    pv R0004526 0.398241369047536
+    pv R0004527 -0.361457738095321
+    pv R0004528 0.361457738095321
+    pv R0004529 -0.280801785714311
+    pv R0004530 0.280801785714311
+    pv R0004531 -0.178701190476146
+    pv R0004532 0.178701190476146
+    pv R0004533 -0.0857169642856785
+    pv R0004534 0.0857169642856785
+    pv R0004535 -0.0245991071428569
+    pv R0004536 0.0245991071428569
+    pv R0004537 -0.00235178571428604
+    pv R0004538 0.00235178571428604
+    battery R0004543 -1
+    battery R0004544 1
+    battery R0004545 -1
+    battery R0004546 1
+    battery R0004547 -1
+    battery R0004548 1
+    battery R0004549 -1
+    battery R0004550 1
+    battery R0004551 -1
+    battery R0004552 1
+    battery R0004553 -1
+    battery R0004554 1
+    battery R0004555 -1
+    battery R0004556 1
+    battery R0004557 -1
+    battery R0004558 1
+    battery R0004559 -1
+    battery R0004560 1
+    battery R0004561 -1
+    battery R0004562 1
+    battery R0004563 -1
+    battery R0004564 1
+    battery R0004565 -1
+    battery R0004566 1
+    battery R0004567 -1
+    battery R0004568 1
+    battery R0004569 -1
+    battery R0004570 1
+    battery R0004571 -1
+    battery R0004572 1
+    battery R0004573 -1
+    battery R0004574 1
+    battery R0004575 -1
+    battery R0004576 1
+    battery R0004577 -1
+    battery R0004578 1
+    battery R0004579 -1
+    battery R0004580 1
+    battery R0004581 -1
+    battery R0004582 1
+    battery R0004583 -1
+    battery R0004584 1
+    battery R0004585 -1
+    battery R0004586 1
+    battery R0004587 -1
+    battery R0004588 1
+    battery R0004589 -1
+    battery R0004590 1
+    battery R0004591 -1
+    battery R0004592 1
+    battery R0004593 -1
+    battery R0004594 1
+    battery R0004595 -1
+    battery R0004596 1
+    battery R0004597 -1
+    battery R0004598 1
+    battery R0004599 -1
+    battery R0004600 1
+    battery R0004601 -1
+    battery R0004602 1
+    battery R0004603 -1
+    battery R0004604 1
+    battery R0004605 -1
+    battery R0004606 1
+    battery R0004607 -1
+    battery R0004608 1
+    battery R0004609 -1
+    battery R0004610 1
+    battery R0004611 -1
+    battery R0004612 1
+    battery R0004613 -1
+    battery R0004614 1
+    battery R0004615 -1
+    battery R0004616 1
+    battery R0004617 -1
+    battery R0004618 1
+    battery R0004619 -1
+    battery R0004620 1
+    battery R0004621 -1
+    battery R0004622 1
+    battery R0004623 -1
+    battery R0004624 1
+    battery R0004625 -1
+    battery R0004626 1
+    battery R0004627 -1
+    battery R0004628 1
+    battery R0004629 -1
+    battery R0004630 1
+    battery R0004631 -1
+    battery R0004632 1
+    battery R0004633 -1
+    battery R0004634 1
+    battery R0004635 -1
+    battery R0004636 1
+    battery R0004637 -1
+    battery R0004638 1
+    battery R0004639 -1
+    battery R0004640 1
+    battery R0004641 -1
+    battery R0004642 1
+    battery R0004643 -1
+    battery R0004644 1
+    battery R0004645 -1
+    battery R0004646 1
+    battery R0004647 -1
+    battery R0004648 1
+    battery R0004649 -1
+    battery R0004650 1
+    battery R0004651 -1
+    battery R0004652 1
+    battery R0004653 -1
+    battery R0004654 1
+    battery R0004655 -1
+    battery R0004656 1
+    battery R0004657 -1
+    battery R0004658 1
+    battery R0004659 -1
+    battery R0004660 1
+    battery R0004661 -1
+    battery R0004662 1
+    battery R0004663 -1
+    battery R0004664 1
+    battery R0004665 -1
+    battery R0004666 1
+    battery R0004667 -1
+    battery R0004668 1
+    battery R0004669 -1
+    battery R0004670 1
+    battery R0004671 -1
+    battery R0004672 1
+    battery R0004673 -1
+    battery R0004674 1
+    battery R0004675 -1
+    battery R0004676 1
+    battery R0004677 -1
+    battery R0004678 1
+    battery R0004679 -1
+    battery R0004680 1
+    battery R0004681 -1
+    battery R0004682 1
+    battery R0004683 -1
+    battery R0004684 1
+    battery R0004685 -1
+    battery R0004686 1
+    battery R0004687 -1
+    battery R0004688 1
+    battery R0004689 -1
+    battery R0004690 1
+    battery R0004691 -1
+    battery R0004692 1
+    battery R0004693 -1
+    battery R0004694 1
+    battery R0004695 -1
+    battery R0004696 1
+    battery R0004697 -1
+    battery R0004698 1
+    battery R0004699 -1
+    battery R0004700 1
+    battery R0004701 -1
+    battery R0004702 1
+    battery R0004703 -1
+    battery R0004704 1
+    battery R0004705 -1
+    battery R0004706 1
+    battery R0004707 -1
+    battery R0004708 1
+    battery R0004709 -1
+    battery R0004710 1
+    battery R0004711 -1
+    battery R0004712 1
+    battery R0004713 -1
+    battery R0004714 1
+    battery R0004715 -1
+    battery R0004716 1
+    battery R0004717 -1
+    battery R0004718 1
+    battery R0004719 -1
+    battery R0004720 1
+    battery R0004721 -1
+    battery R0004722 1
+    battery R0004723 -1
+    battery R0004724 1
+    battery R0004725 -1
+    battery R0004726 1
+    battery R0004727 -1
+    battery R0004728 1
+    battery R0004729 -1
+    battery R0004730 1
+    battery R0004731 -1
+    battery R0004732 1
+    battery R0004733 -1
+    battery R0004734 1
+    battery R0004735 -1
+    battery R0004736 1
+    battery R0004737 -1
+    battery R0004738 1
+    battery R0004739 -1
+    battery R0004740 1
+    battery R0004741 -1
+    battery R0004742 1
+    battery R0004743 -1
+    battery R0004744 1
+    battery R0004745 -1
+    battery R0004746 1
+    battery R0004747 -1
+    battery R0004748 1
+    battery R0004749 -1
+    battery R0004750 1
+    battery R0004751 -1
+    battery R0004752 1
+    battery R0004753 -1
+    battery R0004754 1
+    battery R0004755 -1
+    battery R0004756 1
+    battery R0004757 -1
+    battery R0004758 1
+    battery R0004759 -1
+    battery R0004760 1
+    battery R0004761 -1
+    battery R0004762 1
+    battery R0004763 -1
+    battery R0004764 1
+    battery R0004765 -1
+    battery R0004766 1
+    battery R0004767 -1
+    battery R0004768 1
+    battery R0004769 -1
+    battery R0004770 1
+    battery R0004771 -1
+    battery R0004772 1
+    battery R0004773 -1
+    battery R0004774 1
+    battery R0004775 -1
+    battery R0004776 1
+    battery R0004777 -1
+    battery R0004778 1
+    battery R0004779 -1
+    battery R0004780 1
+    battery R0004781 -1
+    battery R0004782 1
+    battery R0004783 -1
+    battery R0004784 1
+    battery R0004785 -1
+    battery R0004786 1
+    battery R0004787 -1
+    battery R0004788 1
+    battery R0004789 -1
+    battery R0004790 1
+    battery R0004791 -1
+    battery R0004792 1
+    battery R0004793 -1
+    battery R0004794 1
+    battery R0004795 -1
+    battery R0004796 1
+    battery R0004797 -1
+    battery R0004798 1
+    battery R0004799 -1
+    battery R0004800 1
+    battery R0004801 -1
+    battery R0004802 1
+    battery R0004803 -1
+    battery R0004804 1
+    battery R0004805 -1
+    battery R0004806 1
+    battery R0004807 -1
+    battery R0004808 1
+    battery R0004809 -1
+    battery R0004810 1
+    battery R0004811 -1
+    battery R0004812 1
+    battery R0004813 -1
+    battery R0004814 1
+    battery R0004815 -1
+    battery R0004816 1
+    battery R0004817 -1
+    battery R0004818 1
+    battery R0004819 -1
+    battery R0004820 1
+    battery R0004821 -1
+    battery R0004822 1
+    battery R0004823 -1
+    battery R0004824 1
+    battery R0004825 -1
+    battery R0004826 1
+    battery R0004827 -1
+    battery R0004828 1
+    battery R0004829 -1
+    battery R0004830 1
+    battery R0004831 -1
+    battery R0004832 1
+    battery R0004833 -1
+    battery R0004834 1
+    battery R0004835 -1
+    battery R0004836 1
+    battery R0004837 -1
+    battery R0004838 1
+    battery R0004839 -1
+    battery R0004840 1
+    battery R0004841 -1
+    battery R0004842 1
+    battery R0004843 -1
+    battery R0004844 1
+    battery R0004845 -1
+    battery R0004846 1
+    battery R0004847 -1
+    battery R0004848 1
+    battery R0004849 -1
+    battery R0004850 1
+    battery R0004851 -1
+    battery R0004852 1
+    battery R0004853 -1
+    battery R0004854 1
+    battery R0004855 -1
+    battery R0004856 1
+    battery R0004857 -1
+    battery R0004858 1
+    battery R0004859 -1
+    battery R0004860 1
+    battery R0004861 -1
+    battery R0004862 1
+    battery R0004863 -1
+    battery R0004864 1
+    battery R0004865 -1
+    battery R0004866 1
+    battery R0004867 -1
+    battery R0004868 1
+    battery R0004869 -1
+    battery R0004870 1
+    battery R0004871 -1
+    battery R0004872 1
+    battery R0004873 -1
+    battery R0004874 1
+    battery R0004875 -1
+    battery R0004876 1
+    battery R0004877 -1
+    battery R0004878 1
+    peak2 R0004879 -1
+    peak2 R0004880 1
+    peak2 R0004881 -1
+    peak2 R0004882 1
+    peak2 R0004883 -1
+    peak2 R0004884 1
+    peak2 R0004885 -1
+    peak2 R0004886 1
     peak2 R0004887 -1
     peak2 R0004888 1
+    peak2 R0004889 -1
+    peak2 R0004890 1
+    peak2 R0004891 -1
+    peak2 R0004892 1
+    peak2 R0004893 -1
+    peak2 R0004894 1
+    peak2 R0004895 -1
+    peak2 R0004896 1
+    peak2 R0004897 -1
+    peak2 R0004898 1
     peak2 R0004899 -1
     peak2 R0004900 1
+    peak2 R0004901 -1
+    peak2 R0004902 1
+    peak2 R0004903 -1
+    peak2 R0004904 1
+    peak2 R0004905 -1
+    peak2 R0004906 1
+    peak2 R0004907 -1
+    peak2 R0004908 1
+    peak2 R0004909 -1
+    peak2 R0004910 1
     peak2 R0004911 -1
     peak2 R0004912 1
+    peak2 R0004913 -1
+    peak2 R0004914 1
+    peak2 R0004915 -1
+    peak2 R0004916 1
+    peak2 R0004917 -1
+    peak2 R0004918 1
+    peak2 R0004919 -1
+    peak2 R0004920 1
+    peak2 R0004921 -1
+    peak2 R0004922 1
     peak2 R0004923 -1
     peak2 R0004924 1
+    peak2 R0004925 -1
+    peak2 R0004926 1
+    peak2 R0004927 -1
+    peak2 R0004928 1
+    peak2 R0004929 -1
+    peak2 R0004930 1
+    peak2 R0004931 -1
+    peak2 R0004932 1
+    peak2 R0004933 -1
+    peak2 R0004934 1
     peak2 R0004935 -1
     peak2 R0004936 1
+    peak2 R0004937 -1
+    peak2 R0004938 1
+    peak2 R0004939 -1
+    peak2 R0004940 1
+    peak2 R0004941 -1
+    peak2 R0004942 1
+    peak2 R0004943 -1
+    peak2 R0004944 1
+    peak2 R0004945 -1
+    peak2 R0004946 1
     peak2 R0004947 -1
     peak2 R0004948 1
+    peak2 R0004949 -1
+    peak2 R0004950 1
+    peak2 R0004951 -1
+    peak2 R0004952 1
+    peak2 R0004953 -1
+    peak2 R0004954 1
+    peak2 R0004955 -1
+    peak2 R0004956 1
+    peak2 R0004957 -1
+    peak2 R0004958 1
     peak2 R0004959 -1
     peak2 R0004960 1
+    peak2 R0004961 -1
+    peak2 R0004962 1
+    peak2 R0004963 -1
+    peak2 R0004964 1
+    peak2 R0004965 -1
+    peak2 R0004966 1
+    peak2 R0004967 -1
+    peak2 R0004968 1
+    peak2 R0004969 -1
+    peak2 R0004970 1
     peak2 R0004971 -1
     peak2 R0004972 1
+    peak2 R0004973 -1
+    peak2 R0004974 1
+    peak2 R0004975 -1
+    peak2 R0004976 1
+    peak2 R0004977 -1
+    peak2 R0004978 1
+    peak2 R0004979 -1
+    peak2 R0004980 1
+    peak2 R0004981 -1
+    peak2 R0004982 1
     peak2 R0004983 -1
     peak2 R0004984 1
+    peak2 R0004985 -1
+    peak2 R0004986 1
+    peak2 R0004987 -1
+    peak2 R0004988 1
+    peak2 R0004989 -1
+    peak2 R0004990 1
+    peak2 R0004991 -1
+    peak2 R0004992 1
+    peak2 R0004993 -1
+    peak2 R0004994 1
     peak2 R0004995 -1
     peak2 R0004996 1
+    peak2 R0004997 -1
+    peak2 R0004998 1
+    peak2 R0004999 -1
+    peak2 R0005000 1
+    peak2 R0005001 -1
+    peak2 R0005002 1
+    peak2 R0005003 -1
+    peak2 R0005004 1
+    peak2 R0005005 -1
+    peak2 R0005006 1
     peak2 R0005007 -1
     peak2 R0005008 1
+    peak2 R0005009 -1
+    peak2 R0005010 1
+    peak2 R0005011 -1
+    peak2 R0005012 1
+    peak2 R0005013 -1
+    peak2 R0005014 1
+    peak2 R0005015 -1
+    peak2 R0005016 1
+    peak2 R0005017 -1
+    peak2 R0005018 1
     peak2 R0005019 -1
     peak2 R0005020 1
+    peak2 R0005021 -1
+    peak2 R0005022 1
+    peak2 R0005023 -1
+    peak2 R0005024 1
+    peak2 R0005025 -1
+    peak2 R0005026 1
+    peak2 R0005027 -1
+    peak2 R0005028 1
+    peak2 R0005029 -1
+    peak2 R0005030 1
     peak2 R0005031 -1
     peak2 R0005032 1
+    peak2 R0005033 -1
+    peak2 R0005034 1
+    peak2 R0005035 -1
+    peak2 R0005036 1
+    peak2 R0005037 -1
+    peak2 R0005038 1
+    peak2 R0005039 -1
+    peak2 R0005040 1
+    peak2 R0005041 -1
+    peak2 R0005042 1
     peak2 R0005043 -1
     peak2 R0005044 1
+    peak2 R0005045 -1
+    peak2 R0005046 1
+    peak2 R0005047 -1
+    peak2 R0005048 1
+    peak2 R0005049 -1
+    peak2 R0005050 1
+    peak2 R0005051 -1
+    peak2 R0005052 1
+    peak2 R0005053 -1
+    peak2 R0005054 1
     peak2 R0005055 -1
     peak2 R0005056 1
+    peak2 R0005057 -1
+    peak2 R0005058 1
+    peak2 R0005059 -1
+    peak2 R0005060 1
+    peak2 R0005061 -1
+    peak2 R0005062 1
+    peak2 R0005063 -1
+    peak2 R0005064 1
+    peak2 R0005065 -1
+    peak2 R0005066 1
     peak2 R0005067 -1
     peak2 R0005068 1
+    peak2 R0005069 -1
+    peak2 R0005070 1
+    peak2 R0005071 -1
+    peak2 R0005072 1
+    peak2 R0005073 -1
+    peak2 R0005074 1
+    peak2 R0005075 -1
+    peak2 R0005076 1
+    peak2 R0005077 -1
+    peak2 R0005078 1
     peak2 R0005079 -1
     peak2 R0005080 1
+    peak2 R0005081 -1
+    peak2 R0005082 1
+    peak2 R0005083 -1
+    peak2 R0005084 1
+    peak2 R0005085 -1
+    peak2 R0005086 1
+    peak2 R0005087 -1
+    peak2 R0005088 1
+    peak2 R0005089 -1
+    peak2 R0005090 1
     peak2 R0005091 -1
     peak2 R0005092 1
+    peak2 R0005093 -1
+    peak2 R0005094 1
+    peak2 R0005095 -1
+    peak2 R0005096 1
+    peak2 R0005097 -1
+    peak2 R0005098 1
+    peak2 R0005099 -1
+    peak2 R0005100 1
+    peak2 R0005101 -1
+    peak2 R0005102 1
     peak2 R0005103 -1
     peak2 R0005104 1
+    peak2 R0005105 -1
+    peak2 R0005106 1
+    peak2 R0005107 -1
+    peak2 R0005108 1
+    peak2 R0005109 -1
+    peak2 R0005110 1
+    peak2 R0005111 -1
+    peak2 R0005112 1
+    peak2 R0005113 -1
+    peak2 R0005114 1
     peak2 R0005115 -1
     peak2 R0005116 1
+    peak2 R0005117 -1
+    peak2 R0005118 1
+    peak2 R0005119 -1
+    peak2 R0005120 1
+    peak2 R0005121 -1
+    peak2 R0005122 1
+    peak2 R0005123 -1
+    peak2 R0005124 1
+    peak2 R0005125 -1
+    peak2 R0005126 1
     peak2 R0005127 -1
     peak2 R0005128 1
+    peak2 R0005129 -1
+    peak2 R0005130 1
+    peak2 R0005131 -1
+    peak2 R0005132 1
+    peak2 R0005133 -1
+    peak2 R0005134 1
+    peak2 R0005135 -1
+    peak2 R0005136 1
+    peak2 R0005137 -1
+    peak2 R0005138 1
     peak2 R0005139 -1
     peak2 R0005140 1
+    peak2 R0005141 -1
+    peak2 R0005142 1
+    peak2 R0005143 -1
+    peak2 R0005144 1
+    peak2 R0005145 -1
+    peak2 R0005146 1
+    peak2 R0005147 -1
+    peak2 R0005148 1
+    peak2 R0005149 -1
+    peak2 R0005150 1
     peak2 R0005151 -1
     peak2 R0005152 1
+    peak2 R0005153 -1
+    peak2 R0005154 1
+    peak2 R0005155 -1
+    peak2 R0005156 1
+    peak2 R0005157 -1
+    peak2 R0005158 1
+    peak2 R0005159 -1
+    peak2 R0005160 1
+    peak2 R0005161 -1
+    peak2 R0005162 1
     peak2 R0005163 -1
     peak2 R0005164 1
+    peak2 R0005165 -1
+    peak2 R0005166 1
+    peak2 R0005167 -1
+    peak2 R0005168 1
+    peak2 R0005169 -1
+    peak2 R0005170 1
+    peak2 R0005171 -1
+    peak2 R0005172 1
+    peak2 R0005173 -1
+    peak2 R0005174 1
     peak2 R0005175 -1
     peak2 R0005176 1
+    peak2 R0005177 -1
+    peak2 R0005178 1
+    peak2 R0005179 -1
+    peak2 R0005180 1
+    peak2 R0005181 -1
+    peak2 R0005182 1
+    peak2 R0005183 -1
+    peak2 R0005184 1
+    peak2 R0005185 -1
+    peak2 R0005186 1
     peak2 R0005187 -1
     peak2 R0005188 1
+    peak2 R0005189 -1
+    peak2 R0005190 1
+    peak2 R0005191 -1
+    peak2 R0005192 1
+    peak2 R0005193 -1
+    peak2 R0005194 1
+    peak2 R0005195 -1
+    peak2 R0005196 1
+    peak2 R0005197 -1
+    peak2 R0005198 1
     peak2 R0005199 -1
     peak2 R0005200 1
+    peak2 R0005201 -1
+    peak2 R0005202 1
+    peak2 R0005203 -1
+    peak2 R0005204 1
+    peak2 R0005205 -1
+    peak2 R0005206 1
+    peak2 R0005207 -1
+    peak2 R0005208 1
+    peak2 R0005209 -1
+    peak2 R0005210 1
     peak2 R0005211 -1
     peak2 R0005212 1
-    peak2 R0005223 -1
-    peak2 R0005224 1
-    peak2 R0005235 -1
-    peak2 R0005236 1
-    peak2 R0005247 -1
-    peak2 R0005248 1
-    peak2 R0005259 -1
-    peak2 R0005260 1
-    peak2 R0005271 -1
-    peak2 R0005272 1
-    peak2 R0005283 -1
-    peak2 R0005284 1
-    peak2 R0005295 -1
-    peak2 R0005296 1
-    peak2 R0005307 -1
-    peak2 R0005308 1
-    peak2 R0005319 -1
-    peak2 R0005320 1
-    peak2 R0005331 -1
-    peak2 R0005332 1
-    peak2 R0005343 -1
-    peak2 R0005344 1
-    peak2 R0005355 -1
-    peak2 R0005356 1
-    peak2 R0005367 -1
-    peak2 R0005368 1
-    peak2 R0005379 -1
-    peak2 R0005380 1
-    peak2 R0005391 -1
-    peak2 R0005392 1
-    peak2 R0005403 -1
-    peak2 R0005404 1
-    peak2 R0005415 -1
-    peak2 R0005416 1
-    peak2 R0005427 -1
-    peak2 R0005428 1
-    peak2 R0005439 -1
-    peak2 R0005440 1
-    peak2 R0005451 -1
-    peak2 R0005452 1
-    peak2 R0005463 -1
-    peak2 R0005464 1
-    peak2 R0005475 -1
-    peak2 R0005476 1
-    peak2 R0005487 -1
-    peak2 R0005488 1
-    peak2 R0005499 -1
-    peak2 R0005500 1
-    peak2 R0005511 -1
-    peak2 R0005512 1
-    peak2 R0005523 -1
-    peak2 R0005524 1
-    peak2 R0005535 -1
-    peak2 R0005536 1
-    peak2 R0005547 -1
-    peak2 R0005548 1
+    peak2 R0005213 -1
+    peak2 R0005214 1
+    semibase2 R0005215 -1
+    semibase2 R0005216 1
+    semibase2 R0005217 -1
+    semibase2 R0005218 1
+    semibase2 R0005219 -1
+    semibase2 R0005220 1
+    semibase2 R0005221 -1
+    semibase2 R0005222 1
+    semibase2 R0005223 -1
+    semibase2 R0005224 1
+    semibase2 R0005225 -1
+    semibase2 R0005226 1
+    semibase2 R0005227 -1
+    semibase2 R0005228 1
+    semibase2 R0005229 -1
+    semibase2 R0005230 1
+    semibase2 R0005231 -1
+    semibase2 R0005232 1
+    semibase2 R0005233 -1
+    semibase2 R0005234 1
+    semibase2 R0005235 -1
+    semibase2 R0005236 1
+    semibase2 R0005237 -1
+    semibase2 R0005238 1
+    semibase2 R0005239 -1
+    semibase2 R0005240 1
+    semibase2 R0005241 -1
+    semibase2 R0005242 1
+    semibase2 R0005243 -1
+    semibase2 R0005244 1
+    semibase2 R0005245 -1
+    semibase2 R0005246 1
+    semibase2 R0005247 -1
+    semibase2 R0005248 1
+    semibase2 R0005249 -1
+    semibase2 R0005250 1
+    semibase2 R0005251 -1
+    semibase2 R0005252 1
+    semibase2 R0005253 -1
+    semibase2 R0005254 1
+    semibase2 R0005255 -1
+    semibase2 R0005256 1
+    semibase2 R0005257 -1
+    semibase2 R0005258 1
+    semibase2 R0005259 -1
+    semibase2 R0005260 1
+    semibase2 R0005261 -1
+    semibase2 R0005262 1
+    semibase2 R0005263 -1
+    semibase2 R0005264 1
+    semibase2 R0005265 -1
+    semibase2 R0005266 1
+    semibase2 R0005267 -1
+    semibase2 R0005268 1
+    semibase2 R0005269 -1
+    semibase2 R0005270 1
+    semibase2 R0005271 -1
+    semibase2 R0005272 1
+    semibase2 R0005273 -1
+    semibase2 R0005274 1
+    semibase2 R0005275 -1
+    semibase2 R0005276 1
+    semibase2 R0005277 -1
+    semibase2 R0005278 1
+    semibase2 R0005279 -1
+    semibase2 R0005280 1
+    semibase2 R0005281 -1
+    semibase2 R0005282 1
+    semibase2 R0005283 -1
+    semibase2 R0005284 1
+    semibase2 R0005285 -1
+    semibase2 R0005286 1
+    semibase2 R0005287 -1
+    semibase2 R0005288 1
+    semibase2 R0005289 -1
+    semibase2 R0005290 1
+    semibase2 R0005291 -1
+    semibase2 R0005292 1
+    semibase2 R0005293 -1
+    semibase2 R0005294 1
+    semibase2 R0005295 -1
+    semibase2 R0005296 1
+    semibase2 R0005297 -1
+    semibase2 R0005298 1
+    semibase2 R0005299 -1
+    semibase2 R0005300 1
+    semibase2 R0005301 -1
+    semibase2 R0005302 1
+    semibase2 R0005303 -1
+    semibase2 R0005304 1
+    semibase2 R0005305 -1
+    semibase2 R0005306 1
+    semibase2 R0005307 -1
+    semibase2 R0005308 1
+    semibase2 R0005309 -1
+    semibase2 R0005310 1
+    semibase2 R0005311 -1
+    semibase2 R0005312 1
+    semibase2 R0005313 -1
+    semibase2 R0005314 1
+    semibase2 R0005315 -1
+    semibase2 R0005316 1
+    semibase2 R0005317 -1
+    semibase2 R0005318 1
+    semibase2 R0005319 -1
+    semibase2 R0005320 1
+    semibase2 R0005321 -1
+    semibase2 R0005322 1
+    semibase2 R0005323 -1
+    semibase2 R0005324 1
+    semibase2 R0005325 -1
+    semibase2 R0005326 1
+    semibase2 R0005327 -1
+    semibase2 R0005328 1
+    semibase2 R0005329 -1
+    semibase2 R0005330 1
+    semibase2 R0005331 -1
+    semibase2 R0005332 1
+    semibase2 R0005333 -1
+    semibase2 R0005334 1
+    semibase2 R0005335 -1
+    semibase2 R0005336 1
+    semibase2 R0005337 -1
+    semibase2 R0005338 1
+    semibase2 R0005339 -1
+    semibase2 R0005340 1
+    semibase2 R0005341 -1
+    semibase2 R0005342 1
+    semibase2 R0005343 -1
+    semibase2 R0005344 1
+    semibase2 R0005345 -1
+    semibase2 R0005346 1
+    semibase2 R0005347 -1
+    semibase2 R0005348 1
+    semibase2 R0005349 -1
+    semibase2 R0005350 1
+    semibase2 R0005351 -1
+    semibase2 R0005352 1
+    semibase2 R0005353 -1
+    semibase2 R0005354 1
+    semibase2 R0005355 -1
+    semibase2 R0005356 1
+    semibase2 R0005357 -1
+    semibase2 R0005358 1
+    semibase2 R0005359 -1
+    semibase2 R0005360 1
+    semibase2 R0005361 -1
+    semibase2 R0005362 1
+    semibase2 R0005363 -1
+    semibase2 R0005364 1
+    semibase2 R0005365 -1
+    semibase2 R0005366 1
+    semibase2 R0005367 -1
+    semibase2 R0005368 1
+    semibase2 R0005369 -1
+    semibase2 R0005370 1
+    semibase2 R0005371 -1
+    semibase2 R0005372 1
+    semibase2 R0005373 -1
+    semibase2 R0005374 1
+    semibase2 R0005375 -1
+    semibase2 R0005376 1
+    semibase2 R0005377 -1
+    semibase2 R0005378 1
+    semibase2 R0005379 -1
+    semibase2 R0005380 1
+    semibase2 R0005381 -1
+    semibase2 R0005382 1
+    semibase2 R0005383 -1
+    semibase2 R0005384 1
+    semibase2 R0005385 -1
+    semibase2 R0005386 1
+    semibase2 R0005387 -1
+    semibase2 R0005388 1
+    semibase2 R0005389 -1
+    semibase2 R0005390 1
+    semibase2 R0005391 -1
+    semibase2 R0005392 1
+    semibase2 R0005393 -1
+    semibase2 R0005394 1
+    semibase2 R0005395 -1
+    semibase2 R0005396 1
+    semibase2 R0005397 -1
+    semibase2 R0005398 1
+    semibase2 R0005399 -1
+    semibase2 R0005400 1
+    semibase2 R0005401 -1
+    semibase2 R0005402 1
+    semibase2 R0005403 -1
+    semibase2 R0005404 1
+    semibase2 R0005405 -1
+    semibase2 R0005406 1
+    semibase2 R0005407 -1
+    semibase2 R0005408 1
+    semibase2 R0005409 -1
+    semibase2 R0005410 1
+    semibase2 R0005411 -1
+    semibase2 R0005412 1
+    semibase2 R0005413 -1
+    semibase2 R0005414 1
+    semibase2 R0005415 -1
+    semibase2 R0005416 1
+    semibase2 R0005417 -1
+    semibase2 R0005418 1
+    semibase2 R0005419 -1
+    semibase2 R0005420 1
+    semibase2 R0005421 -1
+    semibase2 R0005422 1
+    semibase2 R0005423 -1
+    semibase2 R0005424 1
+    semibase2 R0005425 -1
+    semibase2 R0005426 1
+    semibase2 R0005427 -1
+    semibase2 R0005428 1
+    semibase2 R0005429 -1
+    semibase2 R0005430 1
+    semibase2 R0005431 -1
+    semibase2 R0005432 1
+    semibase2 R0005433 -1
+    semibase2 R0005434 1
+    semibase2 R0005435 -1
+    semibase2 R0005436 1
+    semibase2 R0005437 -1
+    semibase2 R0005438 1
+    semibase2 R0005439 -1
+    semibase2 R0005440 1
+    semibase2 R0005441 -1
+    semibase2 R0005442 1
+    semibase2 R0005443 -1
+    semibase2 R0005444 1
+    semibase2 R0005445 -1
+    semibase2 R0005446 1
+    semibase2 R0005447 -1
+    semibase2 R0005448 1
+    semibase2 R0005449 -1
+    semibase2 R0005450 1
+    semibase2 R0005451 -1
+    semibase2 R0005452 1
+    semibase2 R0005453 -1
+    semibase2 R0005454 1
+    semibase2 R0005455 -1
+    semibase2 R0005456 1
+    semibase2 R0005457 -1
+    semibase2 R0005458 1
+    semibase2 R0005459 -1
+    semibase2 R0005460 1
+    semibase2 R0005461 -1
+    semibase2 R0005462 1
+    semibase2 R0005463 -1
+    semibase2 R0005464 1
+    semibase2 R0005465 -1
+    semibase2 R0005466 1
+    semibase2 R0005467 -1
+    semibase2 R0005468 1
+    semibase2 R0005469 -1
+    semibase2 R0005470 1
+    semibase2 R0005471 -1
+    semibase2 R0005472 1
+    semibase2 R0005473 -1
+    semibase2 R0005474 1
+    semibase2 R0005475 -1
+    semibase2 R0005476 1
+    semibase2 R0005477 -1
+    semibase2 R0005478 1
+    semibase2 R0005479 -1
+    semibase2 R0005480 1
+    semibase2 R0005481 -1
+    semibase2 R0005482 1
+    semibase2 R0005483 -1
+    semibase2 R0005484 1
+    semibase2 R0005485 -1
+    semibase2 R0005486 1
+    semibase2 R0005487 -1
+    semibase2 R0005488 1
+    semibase2 R0005489 -1
+    semibase2 R0005490 1
+    semibase2 R0005491 -1
+    semibase2 R0005492 1
+    semibase2 R0005493 -1
+    semibase2 R0005494 1
+    semibase2 R0005495 -1
+    semibase2 R0005496 1
+    semibase2 R0005497 -1
+    semibase2 R0005498 1
+    semibase2 R0005499 -1
+    semibase2 R0005500 1
+    semibase2 R0005501 -1
+    semibase2 R0005502 1
+    semibase2 R0005503 -1
+    semibase2 R0005504 1
+    semibase2 R0005505 -1
+    semibase2 R0005506 1
+    semibase2 R0005507 -1
+    semibase2 R0005508 1
+    semibase2 R0005509 -1
+    semibase2 R0005510 1
+    semibase2 R0005511 -1
+    semibase2 R0005512 1
+    semibase2 R0005513 -1
+    semibase2 R0005514 1
+    semibase2 R0005515 -1
+    semibase2 R0005516 1
+    semibase2 R0005517 -1
+    semibase2 R0005518 1
+    semibase2 R0005519 -1
+    semibase2 R0005520 1
+    semibase2 R0005521 -1
+    semibase2 R0005522 1
+    semibase2 R0005523 -1
+    semibase2 R0005524 1
+    semibase2 R0005525 -1
+    semibase2 R0005526 1
+    semibase2 R0005527 -1
+    semibase2 R0005528 1
+    semibase2 R0005529 -1
+    semibase2 R0005530 1
+    semibase2 R0005531 -1
+    semibase2 R0005532 1
+    semibase2 R0005533 -1
+    semibase2 R0005534 1
+    semibase2 R0005535 -1
+    semibase2 R0005536 1
+    semibase2 R0005537 -1
+    semibase2 R0005538 1
+    semibase2 R0005539 -1
+    semibase2 R0005540 1
+    semibase2 R0005541 -1
+    semibase2 R0005542 1
+    semibase2 R0005543 -1
+    semibase2 R0005544 1
+    semibase2 R0005545 -1
+    semibase2 R0005546 1
+    semibase2 R0005547 -1
+    semibase2 R0005548 1
+    semibase2 R0005549 -1
+    semibase2 R0005550 1
 RHS
     RHS R0000000 -3320
     RHS R0000001 988
@@ -28472,580 +28472,580 @@ RHS
     RHS R0003523 -1000
     RHS R0003525 1000
     RHS R0003526 1000
-    RHS R0003537 200
-    RHS R0003538 -200
-    RHS R0003549 200
-    RHS R0003550 -200
-    RHS R0003561 200
-    RHS R0003562 -200
-    RHS R0003573 200
-    RHS R0003574 -200
-    RHS R0003585 200
-    RHS R0003586 -200
-    RHS R0003597 200
-    RHS R0003598 -200
-    RHS R0003599 0.1460119
-    RHS R0003600 -0.1460119
-    RHS R0003609 200
-    RHS R0003610 -200
-    RHS R0003611 1.04564285
-    RHS R0003612 -1.04564285
-    RHS R0003621 200
-    RHS R0003622 -200
-    RHS R0003623 3.44734525
-    RHS R0003624 -3.44734525
-    RHS R0003633 200
-    RHS R0003634 -200
-    RHS R0003635 7.67541665
-    RHS R0003636 -7.67541665
-    RHS R0003645 200
-    RHS R0003646 -200
-    RHS R0003647 12.46183335
-    RHS R0003648 -12.46183335
-    RHS R0003657 200
-    RHS R0003658 -200
-    RHS R0003659 17.0265
-    RHS R0003660 -17.0265
-    RHS R0003669 200
-    RHS R0003670 -200
-    RHS R0003671 19.49557145
-    RHS R0003672 -19.49557145
-    RHS R0003681 200
-    RHS R0003682 -200
-    RHS R0003683 20.20817855
-    RHS R0003684 -20.20817855
-    RHS R0003693 200
-    RHS R0003694 -200
-    RHS R0003695 22.06565475
-    RHS R0003696 -22.06565475
-    RHS R0003705 200
-    RHS R0003706 -200
-    RHS R0003707 22.7034405
-    RHS R0003708 -22.7034405
-    RHS R0003717 200
-    RHS R0003718 -200
-    RHS R0003719 21.22409525
-    RHS R0003720 -21.22409525
-    RHS R0003729 200
-    RHS R0003730 -200
-    RHS R0003731 18.43710715
-    RHS R0003732 -18.43710715
-    RHS R0003741 200
-    RHS R0003742 -200
-    RHS R0003743 14.65775
-    RHS R0003744 -14.65775
-    RHS R0003753 200
-    RHS R0003754 -200
-    RHS R0003755 9.8486905
-    RHS R0003756 -9.8486905
-    RHS R0003765 200
-    RHS R0003766 -200
-    RHS R0003767 4.9995357
-    RHS R0003768 -4.9995357
-    RHS R0003777 200
-    RHS R0003778 -200
-    RHS R0003779 1.6621905
-    RHS R0003780 -1.6621905
-    RHS R0003789 200
-    RHS R0003790 -200
-    RHS R0003791 0.25675
-    RHS R0003792 -0.25675
-    RHS R0003801 200
-    RHS R0003802 -200
-    RHS R0003813 200
-    RHS R0003814 -200
-    RHS R0003825 200
-    RHS R0003826 -200
-    RHS R0003837 200
-    RHS R0003838 -200
-    RHS R0003849 200
-    RHS R0003850 -200
-    RHS R0003861 200
-    RHS R0003862 -200
+    RHS R0003871 200
+    RHS R0003872 -200
     RHS R0003873 200
     RHS R0003874 -200
+    RHS R0003875 200
+    RHS R0003876 -200
+    RHS R0003877 200
+    RHS R0003878 -200
+    RHS R0003879 200
+    RHS R0003880 -200
+    RHS R0003881 200
+    RHS R0003882 -200
+    RHS R0003883 200
+    RHS R0003884 -200
     RHS R0003885 200
     RHS R0003886 -200
-    RHS R0003887 0.05463095
-    RHS R0003888 -0.05463095
+    RHS R0003887 200
+    RHS R0003888 -200
+    RHS R0003889 200
+    RHS R0003890 -200
+    RHS R0003891 200
+    RHS R0003892 -200
+    RHS R0003893 200
+    RHS R0003894 -200
+    RHS R0003895 200
+    RHS R0003896 -200
     RHS R0003897 200
     RHS R0003898 -200
-    RHS R0003899 0.53610715
-    RHS R0003900 -0.53610715
+    RHS R0003899 200
+    RHS R0003900 -200
+    RHS R0003901 200
+    RHS R0003902 -200
+    RHS R0003903 200
+    RHS R0003904 -200
+    RHS R0003905 200
+    RHS R0003906 -200
+    RHS R0003907 200
+    RHS R0003908 -200
     RHS R0003909 200
     RHS R0003910 -200
-    RHS R0003911 2.35983335
-    RHS R0003912 -2.35983335
+    RHS R0003911 200
+    RHS R0003912 -200
+    RHS R0003913 200
+    RHS R0003914 -200
+    RHS R0003915 200
+    RHS R0003916 -200
+    RHS R0003917 200
+    RHS R0003918 -200
+    RHS R0003919 200
+    RHS R0003920 -200
     RHS R0003921 200
     RHS R0003922 -200
-    RHS R0003923 5.8775
-    RHS R0003924 -5.8775
+    RHS R0003923 200
+    RHS R0003924 -200
+    RHS R0003925 200
+    RHS R0003926 -200
+    RHS R0003927 200
+    RHS R0003928 -200
+    RHS R0003929 200
+    RHS R0003930 -200
+    RHS R0003931 200
+    RHS R0003932 -200
     RHS R0003933 200
     RHS R0003934 -200
-    RHS R0003935 9.6227619
-    RHS R0003936 -9.6227619
+    RHS R0003935 200
+    RHS R0003936 -200
+    RHS R0003937 200
+    RHS R0003938 -200
+    RHS R0003939 200
+    RHS R0003940 -200
+    RHS R0003941 200
+    RHS R0003942 -200
+    RHS R0003943 200
+    RHS R0003944 -200
     RHS R0003945 200
     RHS R0003946 -200
-    RHS R0003947 13.5159643
-    RHS R0003948 -13.5159643
+    RHS R0003947 200
+    RHS R0003948 -200
+    RHS R0003949 200
+    RHS R0003950 -200
+    RHS R0003951 200
+    RHS R0003952 -200
+    RHS R0003953 200
+    RHS R0003954 -200
+    RHS R0003955 200
+    RHS R0003956 -200
     RHS R0003957 200
     RHS R0003958 -200
-    RHS R0003959 16.2667976
-    RHS R0003960 -16.2667976
+    RHS R0003959 200
+    RHS R0003960 -200
+    RHS R0003961 200
+    RHS R0003962 -200
+    RHS R0003963 200
+    RHS R0003964 -200
+    RHS R0003965 200
+    RHS R0003966 -200
+    RHS R0003967 200
+    RHS R0003968 -200
     RHS R0003969 200
     RHS R0003970 -200
-    RHS R0003971 17.6694405
-    RHS R0003972 -17.6694405
+    RHS R0003971 200
+    RHS R0003972 -200
+    RHS R0003973 200
+    RHS R0003974 -200
+    RHS R0003975 200
+    RHS R0003976 -200
+    RHS R0003977 200
+    RHS R0003978 -200
+    RHS R0003979 200
+    RHS R0003980 -200
     RHS R0003981 200
     RHS R0003982 -200
-    RHS R0003983 18.92716665
-    RHS R0003984 -18.92716665
+    RHS R0003983 200
+    RHS R0003984 -200
+    RHS R0003985 200
+    RHS R0003986 -200
+    RHS R0003987 200
+    RHS R0003988 -200
+    RHS R0003989 200
+    RHS R0003990 -200
+    RHS R0003991 200
+    RHS R0003992 -200
     RHS R0003993 200
     RHS R0003994 -200
-    RHS R0003995 19.2215357
-    RHS R0003996 -19.2215357
+    RHS R0003995 200
+    RHS R0003996 -200
+    RHS R0003997 200
+    RHS R0003998 -200
+    RHS R0003999 200
+    RHS R0004000 -200
+    RHS R0004001 200
+    RHS R0004002 -200
+    RHS R0004003 200
+    RHS R0004004 -200
     RHS R0004005 200
     RHS R0004006 -200
-    RHS R0004007 17.50367855
-    RHS R0004008 -17.50367855
+    RHS R0004007 200
+    RHS R0004008 -200
+    RHS R0004009 200
+    RHS R0004010 -200
+    RHS R0004011 200
+    RHS R0004012 -200
+    RHS R0004013 200
+    RHS R0004014 -200
+    RHS R0004015 200
+    RHS R0004016 -200
     RHS R0004017 200
     RHS R0004018 -200
-    RHS R0004019 14.57592855
-    RHS R0004020 -14.57592855
+    RHS R0004019 200
+    RHS R0004020 -200
+    RHS R0004021 200
+    RHS R0004022 -200
+    RHS R0004023 200
+    RHS R0004024 -200
+    RHS R0004025 200
+    RHS R0004026 -200
+    RHS R0004027 200
+    RHS R0004028 -200
     RHS R0004029 200
     RHS R0004030 -200
-    RHS R0004031 11.3539643
-    RHS R0004032 -11.3539643
+    RHS R0004031 200
+    RHS R0004032 -200
+    RHS R0004033 200
+    RHS R0004034 -200
+    RHS R0004035 200
+    RHS R0004036 -200
+    RHS R0004037 200
+    RHS R0004038 -200
+    RHS R0004039 200
+    RHS R0004040 -200
     RHS R0004041 200
     RHS R0004042 -200
-    RHS R0004043 6.727404750000001
-    RHS R0004044 -6.727404750000001
+    RHS R0004043 200
+    RHS R0004044 -200
+    RHS R0004045 200
+    RHS R0004046 -200
+    RHS R0004047 200
+    RHS R0004048 -200
+    RHS R0004049 200
+    RHS R0004050 -200
+    RHS R0004051 200
+    RHS R0004052 -200
     RHS R0004053 200
     RHS R0004054 -200
-    RHS R0004055 2.9487262
-    RHS R0004056 -2.9487262
+    RHS R0004055 200
+    RHS R0004056 -200
+    RHS R0004057 200
+    RHS R0004058 -200
+    RHS R0004059 200
+    RHS R0004060 -200
+    RHS R0004061 200
+    RHS R0004062 -200
+    RHS R0004063 200
+    RHS R0004064 -200
     RHS R0004065 200
     RHS R0004066 -200
-    RHS R0004067 0.9532143
-    RHS R0004068 -0.9532143
+    RHS R0004067 200
+    RHS R0004068 -200
+    RHS R0004069 200
+    RHS R0004070 -200
+    RHS R0004071 200
+    RHS R0004072 -200
+    RHS R0004073 200
+    RHS R0004074 -200
+    RHS R0004075 200
+    RHS R0004076 -200
     RHS R0004077 200
     RHS R0004078 -200
-    RHS R0004079 0.1209643
-    RHS R0004080 -0.1209643
+    RHS R0004079 200
+    RHS R0004080 -200
+    RHS R0004081 200
+    RHS R0004082 -200
+    RHS R0004083 200
+    RHS R0004084 -200
+    RHS R0004085 200
+    RHS R0004086 -200
+    RHS R0004087 200
+    RHS R0004088 -200
     RHS R0004089 200
     RHS R0004090 -200
+    RHS R0004091 200
+    RHS R0004092 -200
+    RHS R0004093 200
+    RHS R0004094 -200
+    RHS R0004095 200
+    RHS R0004096 -200
+    RHS R0004097 200
+    RHS R0004098 -200
+    RHS R0004099 200
+    RHS R0004100 -200
     RHS R0004101 200
     RHS R0004102 -200
+    RHS R0004103 200
+    RHS R0004104 -200
+    RHS R0004105 200
+    RHS R0004106 -200
+    RHS R0004107 200
+    RHS R0004108 -200
+    RHS R0004109 200
+    RHS R0004110 -200
+    RHS R0004111 200
+    RHS R0004112 -200
     RHS R0004113 200
     RHS R0004114 -200
+    RHS R0004115 200
+    RHS R0004116 -200
+    RHS R0004117 200
+    RHS R0004118 -200
+    RHS R0004119 200
+    RHS R0004120 -200
+    RHS R0004121 200
+    RHS R0004122 -200
+    RHS R0004123 200
+    RHS R0004124 -200
     RHS R0004125 200
     RHS R0004126 -200
+    RHS R0004127 200
+    RHS R0004128 -200
+    RHS R0004129 200
+    RHS R0004130 -200
+    RHS R0004131 200
+    RHS R0004132 -200
+    RHS R0004133 200
+    RHS R0004134 -200
+    RHS R0004135 200
+    RHS R0004136 -200
     RHS R0004137 200
     RHS R0004138 -200
+    RHS R0004139 200
+    RHS R0004140 -200
+    RHS R0004141 200
+    RHS R0004142 -200
+    RHS R0004143 200
+    RHS R0004144 -200
+    RHS R0004145 200
+    RHS R0004146 -200
+    RHS R0004147 200
+    RHS R0004148 -200
     RHS R0004149 200
     RHS R0004150 -200
+    RHS R0004151 200
+    RHS R0004152 -200
+    RHS R0004153 200
+    RHS R0004154 -200
+    RHS R0004155 200
+    RHS R0004156 -200
+    RHS R0004157 200
+    RHS R0004158 -200
+    RHS R0004159 200
+    RHS R0004160 -200
     RHS R0004161 200
     RHS R0004162 -200
+    RHS R0004163 200
+    RHS R0004164 -200
+    RHS R0004165 200
+    RHS R0004166 -200
+    RHS R0004167 200
+    RHS R0004168 -200
+    RHS R0004169 200
+    RHS R0004170 -200
+    RHS R0004171 200
+    RHS R0004172 -200
     RHS R0004173 200
     RHS R0004174 -200
-    RHS R0004175 0.13610715
-    RHS R0004176 -0.13610715
+    RHS R0004175 200
+    RHS R0004176 -200
+    RHS R0004177 200
+    RHS R0004178 -200
+    RHS R0004179 200
+    RHS R0004180 -200
+    RHS R0004181 200
+    RHS R0004182 -200
+    RHS R0004183 200
+    RHS R0004184 -200
     RHS R0004185 200
     RHS R0004186 -200
-    RHS R0004187 0.9828690500000001
-    RHS R0004188 -0.9828690500000001
+    RHS R0004187 200
+    RHS R0004188 -200
+    RHS R0004189 200
+    RHS R0004190 -200
+    RHS R0004191 200
+    RHS R0004192 -200
+    RHS R0004193 200
+    RHS R0004194 -200
+    RHS R0004195 200
+    RHS R0004196 -200
     RHS R0004197 200
     RHS R0004198 -200
-    RHS R0004199 3.206904750000001
-    RHS R0004200 -3.206904750000001
-    RHS R0004209 200
-    RHS R0004210 -200
-    RHS R0004211 7.2040119
-    RHS R0004212 -7.2040119
-    RHS R0004221 200
-    RHS R0004222 -200
-    RHS R0004223 11.9312381
-    RHS R0004224 -11.9312381
-    RHS R0004233 200
-    RHS R0004234 -200
-    RHS R0004235 15.83140475
-    RHS R0004236 -15.83140475
-    RHS R0004245 200
-    RHS R0004246 -200
-    RHS R0004247 19.8054762
-    RHS R0004248 -19.8054762
-    RHS R0004257 200
-    RHS R0004258 -200
-    RHS R0004259 21.88890475
-    RHS R0004260 -21.88890475
-    RHS R0004269 200
-    RHS R0004270 -200
-    RHS R0004271 23.4177738
-    RHS R0004272 -23.4177738
-    RHS R0004281 200
-    RHS R0004282 -200
-    RHS R0004283 22.6348095
-    RHS R0004284 -22.6348095
-    RHS R0004293 200
-    RHS R0004294 -200
-    RHS R0004295 21.25567855
-    RHS R0004296 -21.25567855
-    RHS R0004305 200
-    RHS R0004306 -200
-    RHS R0004307 17.4542738
-    RHS R0004308 -17.4542738
-    RHS R0004317 200
-    RHS R0004318 -200
-    RHS R0004319 12.39910715
-    RHS R0004320 -12.39910715
-    RHS R0004329 200
-    RHS R0004330 -200
-    RHS R0004331 8.2737262
-    RHS R0004332 -8.2737262
-    RHS R0004341 200
-    RHS R0004342 -200
-    RHS R0004343 3.9948095
-    RHS R0004344 -3.9948095
-    RHS R0004353 200
-    RHS R0004354 -200
-    RHS R0004355 1.36588095
-    RHS R0004356 -1.36588095
-    RHS R0004365 200
-    RHS R0004366 -200
-    RHS R0004367 0.18692855
-    RHS R0004368 -0.18692855
-    RHS R0004377 200
-    RHS R0004378 -200
-    RHS R0004389 200
-    RHS R0004390 -200
-    RHS R0004401 200
-    RHS R0004402 -200
-    RHS R0004413 200
-    RHS R0004414 -200
-    RHS R0004425 200
-    RHS R0004426 -200
-    RHS R0004437 200
-    RHS R0004438 -200
-    RHS R0004449 200
-    RHS R0004450 -200
-    RHS R0004461 200
-    RHS R0004462 -200
-    RHS R0004463 0.10482145
-    RHS R0004464 -0.10482145
-    RHS R0004473 200
-    RHS R0004474 -200
-    RHS R0004475 0.7842142999999999
-    RHS R0004476 -0.7842142999999999
-    RHS R0004485 200
-    RHS R0004486 -200
-    RHS R0004487 2.6590119
-    RHS R0004488 -2.6590119
-    RHS R0004497 200
-    RHS R0004498 -200
-    RHS R0004499 6.17667855
-    RHS R0004500 -6.17667855
-    RHS R0004509 200
-    RHS R0004510 -200
-    RHS R0004511 10.9099524
-    RHS R0004512 -10.9099524
-    RHS R0004521 200
-    RHS R0004522 -200
-    RHS R0004523 15.63063095
-    RHS R0004524 -15.63063095
-    RHS R0004533 200
-    RHS R0004534 -200
-    RHS R0004535 19.02010715
-    RHS R0004536 -19.02010715
-    RHS R0004545 200
-    RHS R0004546 -200
-    RHS R0004547 19.57283335
-    RHS R0004548 -19.57283335
-    RHS R0004557 200
-    RHS R0004558 -200
-    RHS R0004559 21.1684524
-    RHS R0004560 -21.1684524
-    RHS R0004569 200
-    RHS R0004570 -200
-    RHS R0004571 21.4527024
-    RHS R0004572 -21.4527024
-    RHS R0004581 200
-    RHS R0004582 -200
-    RHS R0004583 19.4110238
-    RHS R0004584 -19.4110238
-    RHS R0004593 200
-    RHS R0004594 -200
-    RHS R0004595 15.8677381
-    RHS R0004596 -15.8677381
-    RHS R0004605 200
-    RHS R0004606 -200
-    RHS R0004607 12.75116665
-    RHS R0004608 -12.75116665
-    RHS R0004617 200
-    RHS R0004618 -200
-    RHS R0004619 8.200702399999999
-    RHS R0004620 -8.200702399999999
-    RHS R0004629 200
-    RHS R0004630 -200
-    RHS R0004631 3.72891665
-    RHS R0004632 -3.72891665
-    RHS R0004641 200
-    RHS R0004642 -200
-    RHS R0004643 1.2190119
-    RHS R0004644 -1.2190119
-    RHS R0004653 200
-    RHS R0004654 -200
-    RHS R0004655 0.15132145
-    RHS R0004656 -0.15132145
-    RHS R0004665 200
-    RHS R0004666 -200
-    RHS R0004677 200
-    RHS R0004678 -200
-    RHS R0004689 200
-    RHS R0004690 -200
-    RHS R0004701 200
-    RHS R0004702 -200
-    RHS R0004713 200
-    RHS R0004714 -200
-    RHS R0004725 200
-    RHS R0004726 -200
-    RHS R0004737 200
-    RHS R0004738 -200
-    RHS R0004749 200
-    RHS R0004750 -200
-    RHS R0004751 0.09885715
-    RHS R0004752 -0.09885715
-    RHS R0004761 200
-    RHS R0004762 -200
-    RHS R0004763 0.76688095
-    RHS R0004764 -0.76688095
-    RHS R0004773 200
-    RHS R0004774 -200
-    RHS R0004775 2.8400476
-    RHS R0004776 -2.8400476
-    RHS R0004785 200
-    RHS R0004786 -200
-    RHS R0004787 6.844083350000001
-    RHS R0004788 -6.844083350000001
-    RHS R0004797 200
-    RHS R0004798 -200
-    RHS R0004799 11.4451905
-    RHS R0004800 -11.4451905
-    RHS R0004809 200
-    RHS R0004810 -200
-    RHS R0004811 16.0997262
-    RHS R0004812 -16.0997262
-    RHS R0004821 200
-    RHS R0004822 -200
-    RHS R0004823 19.87583335
-    RHS R0004824 -19.87583335
-    RHS R0004833 200
-    RHS R0004834 -200
-    RHS R0004835 22.17632145
-    RHS R0004836 -22.17632145
-    RHS R0004845 200
-    RHS R0004846 -200
-    RHS R0004847 21.5202143
-    RHS R0004848 -21.5202143
-    RHS R0004857 200
-    RHS R0004858 -200
-    RHS R0004859 19.02632145
-    RHS R0004860 -19.02632145
-    RHS R0004869 200
-    RHS R0004870 -200
-    RHS R0004871 16.46992855
-    RHS R0004872 -16.46992855
-    RHS R0004881 200
-    RHS R0004882 -200
-    RHS R0004883 15.37660715
-    RHS R0004884 -15.37660715
-    RHS R0004893 200
-    RHS R0004894 -200
-    RHS R0004895 12.27266665
-    RHS R0004896 -12.27266665
-    RHS R0004905 200
-    RHS R0004906 -200
-    RHS R0004907 7.64516665
-    RHS R0004908 -7.64516665
-    RHS R0004917 200
-    RHS R0004918 -200
-    RHS R0004919 3.6589405
-    RHS R0004920 -3.6589405
-    RHS R0004929 200
-    RHS R0004930 -200
-    RHS R0004931 1.2778095
-    RHS R0004932 -1.2778095
-    RHS R0004941 200
-    RHS R0004942 -200
-    RHS R0004943 0.15907145
-    RHS R0004944 -0.15907145
-    RHS R0004953 200
-    RHS R0004954 -200
-    RHS R0004965 200
-    RHS R0004966 -200
-    RHS R0004977 200
-    RHS R0004978 -200
-    RHS R0004989 200
-    RHS R0004990 -200
-    RHS R0005001 200
-    RHS R0005002 -200
-    RHS R0005013 200
-    RHS R0005014 -200
-    RHS R0005025 200
-    RHS R0005026 -200
-    RHS R0005037 200
-    RHS R0005038 -200
-    RHS R0005039 0.10610715
-    RHS R0005040 -0.10610715
-    RHS R0005049 200
-    RHS R0005050 -200
-    RHS R0005051 0.8644047499999999
-    RHS R0005052 -0.8644047499999999
-    RHS R0005061 200
-    RHS R0005062 -200
-    RHS R0005063 3.0095238
-    RHS R0005064 -3.0095238
-    RHS R0005073 200
-    RHS R0005074 -200
-    RHS R0005075 6.82375
-    RHS R0005076 -6.82375
-    RHS R0005085 200
-    RHS R0005086 -200
-    RHS R0005087 11.76759525
-    RHS R0005088 -11.76759525
-    RHS R0005097 200
-    RHS R0005098 -200
-    RHS R0005099 15.46825
-    RHS R0005100 -15.46825
-    RHS R0005109 200
-    RHS R0005110 -200
-    RHS R0005111 18.3467143
-    RHS R0005112 -18.3467143
-    RHS R0005121 200
-    RHS R0005122 -200
-    RHS R0005123 18.7872262
-    RHS R0005124 -18.7872262
-    RHS R0005133 200
-    RHS R0005134 -200
-    RHS R0005135 19.01957145
-    RHS R0005136 -19.01957145
-    RHS R0005145 200
-    RHS R0005146 -200
-    RHS R0005147 18.5110595
-    RHS R0005148 -18.5110595
-    RHS R0005157 200
-    RHS R0005158 -200
-    RHS R0005159 15.99975
-    RHS R0005160 -15.99975
-    RHS R0005169 200
-    RHS R0005170 -200
-    RHS R0005171 13.97660715
-    RHS R0005172 -13.97660715
-    RHS R0005181 200
-    RHS R0005182 -200
-    RHS R0005183 11.37535715
-    RHS R0005184 -11.37535715
-    RHS R0005193 200
-    RHS R0005194 -200
-    RHS R0005195 7.9259762
-    RHS R0005196 -7.9259762
-    RHS R0005205 200
-    RHS R0005206 -200
-    RHS R0005207 3.46361905
-    RHS R0005208 -3.46361905
-    RHS R0005217 200
-    RHS R0005218 -200
-    RHS R0005219 1.03790475
-    RHS R0005220 -1.03790475
-    RHS R0005229 200
-    RHS R0005230 -200
-    RHS R0005231 0.10825
-    RHS R0005232 -0.10825
-    RHS R0005241 200
-    RHS R0005242 -200
-    RHS R0005253 200
-    RHS R0005254 -200
-    RHS R0005265 200
-    RHS R0005266 -200
-    RHS R0005277 200
-    RHS R0005278 -200
-    RHS R0005289 200
-    RHS R0005290 -200
-    RHS R0005301 200
-    RHS R0005302 -200
-    RHS R0005313 200
-    RHS R0005314 -200
-    RHS R0005325 200
-    RHS R0005326 -200
-    RHS R0005327 0.1054643
-    RHS R0005328 -0.1054643
-    RHS R0005337 200
-    RHS R0005338 -200
-    RHS R0005339 0.8537143
-    RHS R0005340 -0.8537143
-    RHS R0005349 200
-    RHS R0005350 -200
-    RHS R0005351 3.0834405
-    RHS R0005352 -3.0834405
-    RHS R0005361 200
-    RHS R0005362 -200
-    RHS R0005363 7.3330119
-    RHS R0005364 -7.3330119
-    RHS R0005373 200
-    RHS R0005374 -200
-    RHS R0005375 13.0804881
-    RHS R0005376 -13.0804881
-    RHS R0005385 200
-    RHS R0005386 -200
-    RHS R0005387 17.6029881
-    RHS R0005388 -17.6029881
-    RHS R0005397 200
-    RHS R0005398 -200
-    RHS R0005399 18.3862738
-    RHS R0005400 -18.3862738
-    RHS R0005409 200
-    RHS R0005410 -200
-    RHS R0005411 18.47707145
-    RHS R0005412 -18.47707145
-    RHS R0005421 200
-    RHS R0005422 -200
-    RHS R0005423 19.50864285
-    RHS R0005424 -19.50864285
-    RHS R0005433 200
-    RHS R0005434 -200
-    RHS R0005435 17.7749643
-    RHS R0005436 -17.7749643
-    RHS R0005445 200
-    RHS R0005446 -200
-    RHS R0005447 15.92965475
-    RHS R0005448 -15.92965475
-    RHS R0005457 200
-    RHS R0005458 -200
-    RHS R0005459 14.4583095
-    RHS R0005460 -14.4583095
-    RHS R0005469 200
-    RHS R0005470 -200
-    RHS R0005471 11.23207145
-    RHS R0005472 -11.23207145
-    RHS R0005481 200
-    RHS R0005482 -200
-    RHS R0005483 7.1480476
-    RHS R0005484 -7.1480476
-    RHS R0005493 200
-    RHS R0005494 -200
-    RHS R0005495 3.42867855
-    RHS R0005496 -3.42867855
-    RHS R0005505 200
-    RHS R0005506 -200
-    RHS R0005507 0.9839643
-    RHS R0005508 -0.9839643
-    RHS R0005517 200
-    RHS R0005518 -200
-    RHS R0005519 0.09407145
-    RHS R0005520 -0.09407145
-    RHS R0005529 200
-    RHS R0005530 -200
-    RHS R0005541 200
-    RHS R0005542 -200
+    RHS R0004199 200
+    RHS R0004200 -200
+    RHS R0004201 200
+    RHS R0004202 -200
+    RHS R0004203 200
+    RHS R0004204 -200
+    RHS R0004205 200
+    RHS R0004206 -200
+    RHS R0004217 0.1460119
+    RHS R0004218 -0.1460119
+    RHS R0004219 1.04564285
+    RHS R0004220 -1.04564285
+    RHS R0004221 3.44734525
+    RHS R0004222 -3.44734525
+    RHS R0004223 7.67541665
+    RHS R0004224 -7.67541665
+    RHS R0004225 12.46183335
+    RHS R0004226 -12.46183335
+    RHS R0004227 17.0265
+    RHS R0004228 -17.0265
+    RHS R0004229 19.49557145
+    RHS R0004230 -19.49557145
+    RHS R0004231 20.20817855
+    RHS R0004232 -20.20817855
+    RHS R0004233 22.06565475
+    RHS R0004234 -22.06565475
+    RHS R0004235 22.7034405
+    RHS R0004236 -22.7034405
+    RHS R0004237 21.22409525
+    RHS R0004238 -21.22409525
+    RHS R0004239 18.43710715
+    RHS R0004240 -18.43710715
+    RHS R0004241 14.65775
+    RHS R0004242 -14.65775
+    RHS R0004243 9.8486905
+    RHS R0004244 -9.8486905
+    RHS R0004245 4.9995357
+    RHS R0004246 -4.9995357
+    RHS R0004247 1.6621905
+    RHS R0004248 -1.6621905
+    RHS R0004249 0.25675
+    RHS R0004250 -0.25675
+    RHS R0004265 0.05463095
+    RHS R0004266 -0.05463095
+    RHS R0004267 0.53610715
+    RHS R0004268 -0.53610715
+    RHS R0004269 2.35983335
+    RHS R0004270 -2.35983335
+    RHS R0004271 5.8775
+    RHS R0004272 -5.8775
+    RHS R0004273 9.6227619
+    RHS R0004274 -9.6227619
+    RHS R0004275 13.5159643
+    RHS R0004276 -13.5159643
+    RHS R0004277 16.2667976
+    RHS R0004278 -16.2667976
+    RHS R0004279 17.6694405
+    RHS R0004280 -17.6694405
+    RHS R0004281 18.92716665
+    RHS R0004282 -18.92716665
+    RHS R0004283 19.2215357
+    RHS R0004284 -19.2215357
+    RHS R0004285 17.50367855
+    RHS R0004286 -17.50367855
+    RHS R0004287 14.57592855
+    RHS R0004288 -14.57592855
+    RHS R0004289 11.3539643
+    RHS R0004290 -11.3539643
+    RHS R0004291 6.727404750000001
+    RHS R0004292 -6.727404750000001
+    RHS R0004293 2.9487262
+    RHS R0004294 -2.9487262
+    RHS R0004295 0.9532143
+    RHS R0004296 -0.9532143
+    RHS R0004297 0.1209643
+    RHS R0004298 -0.1209643
+    RHS R0004313 0.13610715
+    RHS R0004314 -0.13610715
+    RHS R0004315 0.9828690500000001
+    RHS R0004316 -0.9828690500000001
+    RHS R0004317 3.206904750000001
+    RHS R0004318 -3.206904750000001
+    RHS R0004319 7.2040119
+    RHS R0004320 -7.2040119
+    RHS R0004321 11.9312381
+    RHS R0004322 -11.9312381
+    RHS R0004323 15.83140475
+    RHS R0004324 -15.83140475
+    RHS R0004325 19.8054762
+    RHS R0004326 -19.8054762
+    RHS R0004327 21.88890475
+    RHS R0004328 -21.88890475
+    RHS R0004329 23.4177738
+    RHS R0004330 -23.4177738
+    RHS R0004331 22.6348095
+    RHS R0004332 -22.6348095
+    RHS R0004333 21.25567855
+    RHS R0004334 -21.25567855
+    RHS R0004335 17.4542738
+    RHS R0004336 -17.4542738
+    RHS R0004337 12.39910715
+    RHS R0004338 -12.39910715
+    RHS R0004339 8.2737262
+    RHS R0004340 -8.2737262
+    RHS R0004341 3.9948095
+    RHS R0004342 -3.9948095
+    RHS R0004343 1.36588095
+    RHS R0004344 -1.36588095
+    RHS R0004345 0.18692855
+    RHS R0004346 -0.18692855
+    RHS R0004361 0.10482145
+    RHS R0004362 -0.10482145
+    RHS R0004363 0.7842142999999999
+    RHS R0004364 -0.7842142999999999
+    RHS R0004365 2.6590119
+    RHS R0004366 -2.6590119
+    RHS R0004367 6.17667855
+    RHS R0004368 -6.17667855
+    RHS R0004369 10.9099524
+    RHS R0004370 -10.9099524
+    RHS R0004371 15.63063095
+    RHS R0004372 -15.63063095
+    RHS R0004373 19.02010715
+    RHS R0004374 -19.02010715
+    RHS R0004375 19.57283335
+    RHS R0004376 -19.57283335
+    RHS R0004377 21.1684524
+    RHS R0004378 -21.1684524
+    RHS R0004379 21.4527024
+    RHS R0004380 -21.4527024
+    RHS R0004381 19.4110238
+    RHS R0004382 -19.4110238
+    RHS R0004383 15.8677381
+    RHS R0004384 -15.8677381
+    RHS R0004385 12.75116665
+    RHS R0004386 -12.75116665
+    RHS R0004387 8.200702399999999
+    RHS R0004388 -8.200702399999999
+    RHS R0004389 3.72891665
+    RHS R0004390 -3.72891665
+    RHS R0004391 1.2190119
+    RHS R0004392 -1.2190119
+    RHS R0004393 0.15132145
+    RHS R0004394 -0.15132145
+    RHS R0004409 0.09885715
+    RHS R0004410 -0.09885715
+    RHS R0004411 0.76688095
+    RHS R0004412 -0.76688095
+    RHS R0004413 2.8400476
+    RHS R0004414 -2.8400476
+    RHS R0004415 6.844083350000001
+    RHS R0004416 -6.844083350000001
+    RHS R0004417 11.4451905
+    RHS R0004418 -11.4451905
+    RHS R0004419 16.0997262
+    RHS R0004420 -16.0997262
+    RHS R0004421 19.87583335
+    RHS R0004422 -19.87583335
+    RHS R0004423 22.17632145
+    RHS R0004424 -22.17632145
+    RHS R0004425 21.5202143
+    RHS R0004426 -21.5202143
+    RHS R0004427 19.02632145
+    RHS R0004428 -19.02632145
+    RHS R0004429 16.46992855
+    RHS R0004430 -16.46992855
+    RHS R0004431 15.37660715
+    RHS R0004432 -15.37660715
+    RHS R0004433 12.27266665
+    RHS R0004434 -12.27266665
+    RHS R0004435 7.64516665
+    RHS R0004436 -7.64516665
+    RHS R0004437 3.6589405
+    RHS R0004438 -3.6589405
+    RHS R0004439 1.2778095
+    RHS R0004440 -1.2778095
+    RHS R0004441 0.15907145
+    RHS R0004442 -0.15907145
+    RHS R0004457 0.10610715
+    RHS R0004458 -0.10610715
+    RHS R0004459 0.8644047499999999
+    RHS R0004460 -0.8644047499999999
+    RHS R0004461 3.0095238
+    RHS R0004462 -3.0095238
+    RHS R0004463 6.82375
+    RHS R0004464 -6.82375
+    RHS R0004465 11.76759525
+    RHS R0004466 -11.76759525
+    RHS R0004467 15.46825
+    RHS R0004468 -15.46825
+    RHS R0004469 18.3467143
+    RHS R0004470 -18.3467143
+    RHS R0004471 18.7872262
+    RHS R0004472 -18.7872262
+    RHS R0004473 19.01957145
+    RHS R0004474 -19.01957145
+    RHS R0004475 18.5110595
+    RHS R0004476 -18.5110595
+    RHS R0004477 15.99975
+    RHS R0004478 -15.99975
+    RHS R0004479 13.97660715
+    RHS R0004480 -13.97660715
+    RHS R0004481 11.37535715
+    RHS R0004482 -11.37535715
+    RHS R0004483 7.9259762
+    RHS R0004484 -7.9259762
+    RHS R0004485 3.46361905
+    RHS R0004486 -3.46361905
+    RHS R0004487 1.03790475
+    RHS R0004488 -1.03790475
+    RHS R0004489 0.10825
+    RHS R0004490 -0.10825
+    RHS R0004505 0.1054643
+    RHS R0004506 -0.1054643
+    RHS R0004507 0.8537143
+    RHS R0004508 -0.8537143
+    RHS R0004509 3.0834405
+    RHS R0004510 -3.0834405
+    RHS R0004511 7.3330119
+    RHS R0004512 -7.3330119
+    RHS R0004513 13.0804881
+    RHS R0004514 -13.0804881
+    RHS R0004515 17.6029881
+    RHS R0004516 -17.6029881
+    RHS R0004517 18.3862738
+    RHS R0004518 -18.3862738
+    RHS R0004519 18.47707145
+    RHS R0004520 -18.47707145
+    RHS R0004521 19.50864285
+    RHS R0004522 -19.50864285
+    RHS R0004523 17.7749643
+    RHS R0004524 -17.7749643
+    RHS R0004525 15.92965475
+    RHS R0004526 -15.92965475
+    RHS R0004527 14.4583095
+    RHS R0004528 -14.4583095
+    RHS R0004529 11.23207145
+    RHS R0004530 -11.23207145
+    RHS R0004531 7.1480476
+    RHS R0004532 -7.1480476
+    RHS R0004533 3.42867855
+    RHS R0004534 -3.42867855
+    RHS R0004535 0.9839643
+    RHS R0004536 -0.9839643
+    RHS R0004537 0.09407145
+    RHS R0004538 -0.09407145
 BOUNDS
  LO BOUND ValeurDeNTCOrigineVersExtremite_0_0_336_ -2000
  UP BOUND ValeurDeNTCOrigineVersExtremite_0_0_336_ 2000
@@ -35431,16 +35431,16 @@ BOUNDS
  UP BOUND DefaillancePositive_7_503_ 1e-05
  UP BOUND DefaillancePositive_8_503_ 1000.00001
  UP BOUND DefaillancePositive_9_503_ 1e-05
+ LO BOUND peak1 -1e+20
+ UP BOUND peak1 1e+20
+ LO BOUND semibase1 -1e+20
+ UP BOUND semibase1 1e+20
  LO BOUND pv -1e+20
  UP BOUND pv 1e+20
  LO BOUND battery -1e+20
  UP BOUND battery 1e+20
- LO BOUND semibase1 -1e+20
- UP BOUND semibase1 1e+20
- LO BOUND semibase2 -1e+20
- UP BOUND semibase2 1e+20
- LO BOUND peak1 -1e+20
- UP BOUND peak1 1e+20
  LO BOUND peak2 -1e+20
  UP BOUND peak2 1e+20
+ LO BOUND semibase2 -1e+20
+ UP BOUND semibase2 1e+20
 ENDATA

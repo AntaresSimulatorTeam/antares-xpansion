@@ -232,4 +232,4 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
  * @note duplicate/empty names will be named automatically by ortools
  */
 void
-solver_rename_vars(SolverAbstract::Ptr outSolver_p, std::vector<std::string> &names_p, std::string const &solver_name);
+solver_rename_vars(SolverAbstract::Ptr outSolver_p,const std::vector<std::string> &names_p);

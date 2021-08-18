@@ -9,7 +9,7 @@ ProblemData::ProblemData(const std::string& problem_mps, const std::string& vari
 {
 }
 
-std::vector<ProblemData> Candidates::readMPSList(std::string const & mps_filePath_p){
+std::vector<ProblemData> LinkProblemsGenerator::readMPSList(std::string const & mps_filePath_p){
     std::string line;
     std::vector<ProblemData> result;
     std::ifstream mps_filestream(mps_filePath_p.c_str());
@@ -46,9 +46,9 @@ std::vector<ProblemData> Candidates::readMPSList(std::string const & mps_filePat
  * \param interco_id map of NTC interconnections IDs...
  * \return void
  */
-void Candidates::readVarfiles(std::string const filePath,
+void LinkProblemsGenerator::readVarfiles(std::string const filePath,
                               std::vector <std::string> &var_names,
-                              std::map<int, std::vector<int> > & interco_data)
+                              std::map<colId, ColumnsToChange>& p_var_columns)
 {
 	std::string line;
 	std::ifstream file(filePath.c_str());
@@ -60,24 +60,23 @@ void Candidates::readVarfiles(std::string const filePath,
         std::string name = getVarNameFromLine(line);
         if (contains(name, "ValeurDeNTC")) {
 			std::istringstream buffer(line);
-			int id;
+            colId id;
 			int pays;
-			int interco;
+			int link_id;
 			int time_step;
 			std::string trash;
 			buffer >> id;
 			buffer >> trash;
 			buffer >> pays;
-			buffer >> interco;
+			buffer >> link_id;
 			buffer >> time_step;
 
-			//TODO : adapt for multicandidate
-			auto it = std::find_if(begin(), end(), [interco] (const Candidate& candidate){
-                return candidate._data.link_id == interco;
+			auto it = std::find_if(_links.begin(), _links.end(), [link_id] (const ActiveLink& link){
+                return link._idLink == link_id;
 			});
 
-			if (it != end()){
-                interco_data[id] = { interco, time_step};
+			if (it != _links.end()){
+                p_var_columns[link_id].push_back({id, time_step});
 			}
 		}
 		var_names.push_back(name);
@@ -85,7 +84,7 @@ void Candidates::readVarfiles(std::string const filePath,
 	file.close();
 }
 
-std::string Candidates::getVarNameFromLine(const std::string &line) const {
+std::string LinkProblemsGenerator::getVarNameFromLine(const std::string &line) const {
     std::ostringstream name;
     {
         std::istringstream buffer(line);
@@ -105,146 +104,6 @@ std::string Candidates::getVarNameFromLine(const std::string &line) const {
 
 
 /**
- * \brief This function redefine the optimization problem with new variables
- *
- * The function remove constraints on maximal capacity on interconnections candidates and create new variables which correspond to the capacity.
- * Write mps file in new lp directory and write couplings file.
- *
- *
- *
- * \param mps_name is the path to the current mps file
- * \param var list of variables
- * \param interco_data list of NTC interco
- * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
- * \return void
- */
-void Candidates::createMpsFileAndFillCouplings(std::string const & mps_name,
-                                               std::vector <std::string> var_names,
-                                               std::map<int, std::vector<int> > interco_data,
-                                               std::map< std::pair<std::string, std::string>, int> & couplings,
-                                               std::string const lp_mps_name,
-                                               std::string const& solver_name)
-{
-	SolverFactory factory;
-	SolverAbstract::Ptr in_prblm;
-	in_prblm = factory.create_solver(solver_name);
-	in_prblm->read_prob_mps(mps_name);
-
-	int ncols = in_prblm->get_ncols();
-	int ninterco_pdt = interco_data.size();
-
-	std::vector<double> lb(ncols);
-	std::vector<double> ub(ncols);
-	std::vector<char> coltype(ncols);
-    solver_getcolinfo(in_prblm, coltype, lb, ub, 0, ncols - 1);
-	// Setting bounds to +-1e20
-	std::vector<double> posinf(ninterco_pdt, 1e20);
-	std::vector<double> neginf(ninterco_pdt, -1e20);
-	std::vector<char> lb_char(ninterco_pdt, 'L');
-	std::vector<char> ub_char(ninterco_pdt, 'U');
-	std::vector<int> indexes;
-	indexes.reserve(ninterco_pdt);
-	for (auto const & id : interco_data) {
-		indexes.push_back(id.first);
-	}
-	// remove bounds on interco
-    solver_chgbounds(in_prblm, indexes, lb_char, neginf);
-    solver_chgbounds(in_prblm, indexes, ub_char, posinf);
-	SolverAbstract::Ptr out_prblm = factory.create_solver(in_prblm);
-
-	// Xavier : Why do we need to copy the problem ?
-	// We could just change the names in "in_prblm" and continuing modif it
-	// This copy is just time consuming and useless for me
-
-	// copy in_prblm with the changed bounds and rename its variables
-    solver_rename_vars(out_prblm, var_names, solver_name);
-	// All the names are retrieved before the loop.
-	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
-	// but it could be longer.
-
-    std::map<std::string, int> col_id = add_candidates_to_problem_and_get_candidates_col_id(out_prblm);
-
-    for(const Candidate& candidate :*this){
-        couplings[{candidate._data.name, mps_name}] = col_id[candidate._data.name];
-	}
-	std::vector<double> dmatval;
-	std::vector<int> colind;
-	std::vector<char> rowtype;
-	std::vector<double> rhs;
-	std::vector<int> rstart;
-	// create plower and upper constraint
-	for (auto const & pairIdvarntcIntercodata : interco_data) {
-        int const i_interco_p(pairIdvarntcIntercodata.first);
-        int const link_id = pairIdvarntcIntercodata.second[0];
-        int const timestep = pairIdvarntcIntercodata.second[1];
-
-        std::vector<const Candidate *> link_candidates = get_link_candidates(link_id);
-
-        // p[t] - (alpha_1[t]*pMax1 + alpha_2[t]*pMax2 + ...)  <= alpha0[t].pMax0
-        double already_installed_capacity( link_candidates.front()->already_installed_capacity());
-        double direct_already_installed_profile_at_timestep = link_candidates.front()->already_installed_direct_profile(timestep);
-        rstart.push_back(dmatval.size());
-        rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
-        rowtype.push_back('L');
-        colind.push_back(i_interco_p);
-        dmatval.push_back(1);
-        for (auto candidate:link_candidates){
-            colind.push_back(col_id[candidate->_data.name]);
-            dmatval.push_back(-candidate->direct_profile(timestep));
-        }
-        // p[t] + alpha_1[t].pMax1 + alpha_2[t].pMax2 + ...  >=  - beta0[t].pMax0
-        double indirect_already_installed_profile_at_timestep = link_candidates.front()->already_installed_indirect_profile(timestep);
-        rstart.push_back(dmatval.size());
-        rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
-        rowtype.push_back('G');
-        colind.push_back(i_interco_p);
-        dmatval.push_back(1);
-        for (auto candidate:link_candidates){
-            colind.push_back(col_id[candidate->_data.name]);
-            dmatval.push_back(candidate->indirect_profile(timestep));
-        }
-	}
-
-
-	rstart.push_back(dmatval.size());
-
-    solver_addrows(out_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
-	out_prblm->write_prob_mps(lp_mps_name);
-}
-
-std::vector<const Candidate *> Candidates::get_link_candidates(const int link_id) const {
-    vector<const Candidate*> link_candidates;
-    for(const auto& cand: *this){
-        if (cand._data.link_id == link_id){
-            link_candidates.push_back(&cand);
-        }
-    }
-    return link_candidates;
-}
-
-std::map<std::string, int> Candidates::add_candidates_to_problem_and_get_candidates_col_id(SolverAbstract::Ptr &out_prblm) {
-    int n_candidates = size();
-    int n_cols = out_prblm->get_ncols();
-    vector<double> obj_interco(n_candidates, 0);
-    // Setting bounds to +-1e20
-    vector<double> lb_interco(n_candidates, -1e20);
-    vector<double> ub_interco(n_candidates, 1e20);
-    vector<char> coltypes_interco(n_candidates, 'C');
-    vector<int> mstart_interco(n_candidates, 0);
-    vector<std::string> candidates_colnames;
-
-    std::map<std::string ,int> candidate_id;
-    for (int i = 0 ; i < n_candidates ; i++) {
-        const Candidate& candidate = at(i);
-        candidates_colnames.push_back(candidate._data.name);
-        candidate_id[candidate._data.name] = i + n_cols;
-    }
-    solver_addcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, candidates_colnames);
-    return candidate_id;
-}
-
-
-/**
  * \brief That function create new optimization problems with new candidates
  *
  * \param root String corresponding to the path where are located input data
@@ -252,9 +111,9 @@ std::map<std::string, int> Candidates::add_candidates_to_problem_and_get_candida
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::treat(std::string const & root,
+void LinkProblemsGenerator::treat(std::string const & root,
 	ProblemData const & problemData,
-	std::map< std::pair<std::string, std::string>, int> & couplings, std::string const& solver_name) {
+	std::map< std::pair<std::string, std::string>, int> & couplings) {
 
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
 	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
@@ -266,11 +125,28 @@ void Candidates::treat(std::string const & root,
 
 	// List of variables
     std::vector<std::string> var_names;
-	std::map<int, std::vector<int> > interco_data;
+    std::map<colId , ColumnsToChange> p_var_columns;
 
-	readVarfiles(var_name, var_names,  interco_data);
-	createMpsFileAndFillCouplings(mps_name, var_names, interco_data,
-		couplings, lp_mps_name, solver_name);
+	readVarfiles(var_name, var_names,  p_var_columns);
+
+    SolverFactory factory;
+    SolverAbstract::Ptr in_prblm;
+    in_prblm = factory.create_solver(_solver_name);
+    in_prblm->read_prob_mps(mps_name);
+
+    solver_rename_vars(in_prblm, var_names);
+
+    auto problem_modifier = ProblemModifier();
+    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_var_columns);
+
+    //couplings creation
+    for (const ActiveLink& link : _links){
+        for(const Candidate& candidate : link.getCandidates()){
+            couplings[{candidate._name, mps_name}] = problem_modifier.get_candidate_col_id(candidate._name);
+        }
+    }
+
+    in_prblm->write_prob_mps(lp_mps_name);
 }
 
 
@@ -281,13 +157,13 @@ void Candidates::treat(std::string const & root,
  * \param couplings map of pair of strings associated to an int. Determine the correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void Candidates::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
-	int>& couplings, std::string const& solver_name) {
+void LinkProblemsGenerator::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
+	int>& couplings) {
 
     std::string const mps_file_name			= root + PATH_SEPARATOR + MPS_TXT;
 
 	for (auto const & mps : readMPSList(mps_file_name)) {
-		treat(root, mps, couplings, solver_name);
+		treat(root, mps, couplings);
 	}
 }
 
