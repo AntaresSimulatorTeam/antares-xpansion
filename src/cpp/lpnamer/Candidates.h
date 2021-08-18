@@ -41,17 +41,16 @@ private:
 
 	void readVarfiles(std::string const filePath,
                       std::vector <std::string> &var_names,
-                      std::map<int, std::vector<int> > & interco_data);
+                      std::map<colId, ColumnsToChange>& p_var_columns);
+
 	void createMpsFileAndFillCouplings(std::string const & mps_name,
-                                       std::vector <std::string> var,
-                                       std::map<int, std::vector<int> > interco_data,
+                                       const std::vector <std::string>& var,
+                                       const std::map<colId , ColumnsToChange>& p_var_columns,
                                        std::map< std::pair<std::string, std::string>, int> & couplings,
                                        std::string const lp_mps_name,
                                        std::string const& solver_name);
 
     std::string getVarNameFromLine(const std::string &line) const;
-
-    std::map<colId, ColumnsToChange> generate_p_var_columns(const std::map<int, std::vector<int>> &interco_data) const;
 
     const std::vector<ActiveLink>& _links;
 };

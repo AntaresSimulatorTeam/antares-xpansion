@@ -48,7 +48,7 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(std::string const & 
  */
 void LinkProblemsGenerator::readVarfiles(std::string const filePath,
                               std::vector <std::string> &var_names,
-                              std::map<int, std::vector<int> > & interco_data)
+                              std::map<colId, ColumnsToChange>& p_var_columns)
 {
 	std::string line;
 	std::ifstream file(filePath.c_str());
@@ -60,23 +60,23 @@ void LinkProblemsGenerator::readVarfiles(std::string const filePath,
         std::string name = getVarNameFromLine(line);
         if (contains(name, "ValeurDeNTC")) {
 			std::istringstream buffer(line);
-			int id;
+            colId id;
 			int pays;
-			int interco;
+			int link_id;
 			int time_step;
 			std::string trash;
 			buffer >> id;
 			buffer >> trash;
 			buffer >> pays;
-			buffer >> interco;
+			buffer >> link_id;
 			buffer >> time_step;
 
-			auto it = std::find_if(_links.begin(), _links.end(), [interco] (const ActiveLink& link){
-                return link._idLink == interco;
+			auto it = std::find_if(_links.begin(), _links.end(), [link_id] (const ActiveLink& link){
+                return link._idLink == link_id;
 			});
 
 			if (it != _links.end()){
-                interco_data[id] = { interco, time_step};
+                p_var_columns[link_id].push_back({id, time_step});
 			}
 		}
 		var_names.push_back(name);
@@ -118,8 +118,8 @@ std::string LinkProblemsGenerator::getVarNameFromLine(const std::string &line) c
  * \return void
  */
 void LinkProblemsGenerator::createMpsFileAndFillCouplings(std::string const & mps_name,
-                                               std::vector <std::string> var_names,
-                                               std::map<int, std::vector<int> > interco_data,
+                                               const std::vector<std::string>& var_names,
+                                               const std::map<colId , ColumnsToChange>& p_var_columns,
                                                std::map< std::pair<std::string, std::string>, int> & couplings,
                                                std::string const lp_mps_name,
                                                std::string const& solver_name)
@@ -131,7 +131,6 @@ void LinkProblemsGenerator::createMpsFileAndFillCouplings(std::string const & mp
 
     solver_rename_vars(in_prblm, var_names, solver_name);
 
-    std::map<colId , ColumnsToChange> p_var_columns = generate_p_var_columns(interco_data);
     auto problem_modifier = ProblemModifier();
     in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_var_columns);
     std::map<std::string, unsigned int> col_id = problem_modifier.get_candidate_col_id();
@@ -146,18 +145,6 @@ void LinkProblemsGenerator::createMpsFileAndFillCouplings(std::string const & mp
         couplings[{candidate._data.name, mps_name}] = col_id[candidate._data.name];
 	}
 	in_prblm->write_prob_mps(lp_mps_name);
-}
-
-std::map<colId, ColumnsToChange>
-LinkProblemsGenerator::generate_p_var_columns(const std::map<int, std::vector<int>> &interco_data) const {
-    std::map<unsigned int, ColumnsToChange> links_columns_to_change;
-    for (auto const & pairIdvarntcIntercodata : interco_data) {
-        colId const i_interco_p = pairIdvarntcIntercodata.first;
-        int const link_id = pairIdvarntcIntercodata.second[0];
-        int const timestep = pairIdvarntcIntercodata.second[1];
-        links_columns_to_change[link_id].push_back({i_interco_p, timestep});
-    }
-    return links_columns_to_change;
 }
 
 /**
@@ -182,10 +169,10 @@ void LinkProblemsGenerator::treat(std::string const & root,
 
 	// List of variables
     std::vector<std::string> var_names;
-	std::map<int, std::vector<int> > interco_data;
+    std::map<colId , ColumnsToChange> p_var_columns;
 
-	readVarfiles(var_name, var_names,  interco_data);
-	createMpsFileAndFillCouplings(mps_name, var_names, interco_data,
+	readVarfiles(var_name, var_names,  p_var_columns);
+	createMpsFileAndFillCouplings(mps_name, var_names, p_var_columns,
 		couplings, lp_mps_name, solver_name);
 }
 
