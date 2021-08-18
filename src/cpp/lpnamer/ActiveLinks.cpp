@@ -34,7 +34,7 @@ void ActiveLinksBuilder::checkLinksValidity()
 }
 
 void ActiveLinksBuilder::record_link_data(const CandidateData &candidateData) {
-    LinkData link_data = {candidateData.link_id, candidateData.already_installed_capacity, candidateData.installed_link_profile_name};
+    LinkData link_data = {candidateData.link_id, candidateData.already_installed_capacity, candidateData.installed_link_profile_name, candidateData.linkor, candidateData.linkex};
     const auto & it = _links_data.find(candidateData.link_name);
     if(it == _links_data.end()){
         _links_data[candidateData.link_name] = link_data;
@@ -116,6 +116,8 @@ void ActiveLinksBuilder::create_links() {
         LinkName name = it.first;
         LinkData data = it.second;
         ActiveLink link(data.id, name);
+        link._linkor = data._linkor;
+        link._linkex = data._linkex;
         link.setAlreadyInstalledLinkProfile(getProfileFromProfileMap(data.profile_name));
         link._already_installed_capacity =data.installed_capacity;
         _links.push_back(link);
