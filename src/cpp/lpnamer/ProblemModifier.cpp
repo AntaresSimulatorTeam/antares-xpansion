@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "solver_utils.h"
 #include "ProblemModifier.h"
 
@@ -7,9 +8,7 @@ ProblemModifier::ProblemModifier() = default;
 void ProblemModifier::remove_bounds_for(const ColumnsToChange &columns_to_change) {
     std::vector<int> col_ids;
     col_ids.reserve(columns_to_change.size());
-    for(auto col:columns_to_change){
-        col_ids.push_back(col.id);
-    }
+    std::transform(columns_to_change.begin(),columns_to_change.end(), std::back_inserter(col_ids),[](const auto& col){return col.id;});
     change_upper_bounds_to_pos_inf(col_ids);
     change_lower_bounds_to_neg_inf(col_ids);
 }
