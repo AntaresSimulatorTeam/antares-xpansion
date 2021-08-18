@@ -26,31 +26,26 @@ class LinkProblemsGenerator {
 
 public:
 
-	LinkProblemsGenerator(const std::vector<ActiveLink>& links):_links(links)
+	LinkProblemsGenerator(const std::vector<ActiveLink>& links, const std::string& solver_name):
+	_links(links),_solver_name(solver_name)
 	{}
 
     void treatloop(std::string const & root, std::map< std::pair<std::string,
-            std::string>, int>& couplings, std::string const& solver_name);
+            std::string>, int>& couplings);
 
 private:
 
     std::vector<ProblemData> readMPSList(std::string const & mps_filePath_p);
 
 	void treat(std::string const& root, ProblemData const&, 
-		std::map< std::pair<std::string, std::string>, int>& couplings, std::string const& solver_name);
+		std::map< std::pair<std::string, std::string>, int>& couplings);
 
 	void readVarfiles(std::string const filePath,
                       std::vector <std::string> &var_names,
                       std::map<colId, ColumnsToChange>& p_var_columns);
 
-	void createMpsFileAndFillCouplings(std::string const & mps_name,
-                                       const std::vector <std::string>& var,
-                                       const std::map<colId , ColumnsToChange>& p_var_columns,
-                                       std::map< std::pair<std::string, std::string>, int> & couplings,
-                                       std::string const lp_mps_name,
-                                       std::string const& solver_name);
-
     std::string getVarNameFromLine(const std::string &line) const;
 
     const std::vector<ActiveLink>& _links;
+    std::string _solver_name;
 };

@@ -244,8 +244,8 @@ int main(int argc, char** argv) {
 		std::map< std::pair<std::string, std::string>, int> couplings;
 		std::string solver_name = "CBC";
 		std::vector<ActiveLink> links = linkBuilder.getLinks();
-        LinkProblemsGenerator linkProblemsGenerator(links);
-        linkProblemsGenerator.treatloop(root, couplings, solver_name);
+        LinkProblemsGenerator linkProblemsGenerator(links, solver_name);
+        linkProblemsGenerator.treatloop(root, couplings);
 
         Candidates candidates;
         for (const ActiveLink& link : links){
