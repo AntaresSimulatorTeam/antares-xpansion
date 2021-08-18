@@ -129,39 +129,12 @@ void LinkProblemsGenerator::createMpsFileAndFillCouplings(std::string const & mp
 	in_prblm = factory.create_solver(solver_name);
 	in_prblm->read_prob_mps(mps_name);
 
-	int ninterco_pdt = interco_data.size();
-
     solver_rename_vars(in_prblm, var_names, solver_name);
 
-//#define new_method
-#ifdef new_method
     std::map<colId , ColumnsToChange> p_var_columns = generate_p_var_columns(interco_data);
     auto problem_modifier = ProblemModifier();
     in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_var_columns);
     std::map<std::string, unsigned int> col_id = problem_modifier.get_candidate_col_id();
-#else
-
-    // Setting bounds to +-1e20
-    std::vector<double> posinf(ninterco_pdt, 1e20);
-    std::vector<double> neginf(ninterco_pdt, -1e20);
-    std::vector<char> lb_char(ninterco_pdt, 'L');
-    std::vector<char> ub_char(ninterco_pdt, 'U');
-    std::vector<int> indexes;
-    indexes.reserve(ninterco_pdt);
-    for (auto const & id : interco_data) {
-
-        indexes.push_back(id.first);
-    }
-    // remove bounds on interco
-    solver_chgbounds(in_prblm, indexes, lb_char, neginf);
-    solver_chgbounds(in_prblm, indexes, ub_char, posinf);
-
-    // All the names are retrieved before the loop.
-	// The vector might be huge. The names can be retrieved one by one from the solver in the loop
-	// but it could be longer.
-
-    std::map<std::string, int> col_id = add_candidates_to_problem_and_get_candidates_col_id(in_prblm);
-#endif
 
     //TODO : update couplings creation
     Candidates candidates;
@@ -172,52 +145,6 @@ void LinkProblemsGenerator::createMpsFileAndFillCouplings(std::string const & mp
     for(const Candidate& candidate : candidates){
         couplings[{candidate._data.name, mps_name}] = col_id[candidate._data.name];
 	}
-	std::vector<double> dmatval;
-	std::vector<int> colind;
-	std::vector<char> rowtype;
-	std::vector<double> rhs;
-	std::vector<int> rstart;
-	// create plower and upper constraint
-	for (auto const & pairIdvarntcIntercodata : interco_data) {
-        int const i_interco_p(pairIdvarntcIntercodata.first);
-        int const link_id = pairIdvarntcIntercodata.second[0];
-        int const timestep = pairIdvarntcIntercodata.second[1];
-
-        auto link = std::find_if(_links.begin(),_links.end(), [link_id](const ActiveLink& link){
-            return link._idLink == link_id;
-        });
-
-        const std::vector<Candidate>& link_candidates = link->getCandidates();
-
-        // p[t] - (alpha_1[t]*pMax1 + alpha_2[t]*pMax2 + ...)  <= alpha0[t].pMax0
-        double already_installed_capacity( link->_already_installed_capacity);
-        double direct_already_installed_profile_at_timestep = link->already_installed_direct_profile(timestep);
-        rstart.push_back(dmatval.size());
-        rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
-        rowtype.push_back('L');
-        colind.push_back(i_interco_p);
-        dmatval.push_back(1);
-        for (auto candidate:link_candidates){
-            colind.push_back(col_id[candidate._data.name]);
-            dmatval.push_back(-candidate.direct_profile(timestep));
-        }
-        // p[t] + alpha_1[t].pMax1 + alpha_2[t].pMax2 + ...  >=  - beta0[t].pMax0
-        double indirect_already_installed_profile_at_timestep = link->already_installed_indirect_profile(timestep);
-        rstart.push_back(dmatval.size());
-        rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
-        rowtype.push_back('G');
-        colind.push_back(i_interco_p);
-        dmatval.push_back(1);
-        for (auto candidate:link_candidates){
-            colind.push_back(col_id[candidate._data.name]);
-            dmatval.push_back(candidate.indirect_profile(timestep));
-        }
-	}
-
-
-	rstart.push_back(dmatval.size());
-
-    solver_addrows(in_prblm, rowtype, rhs, {}, rstart, colind, dmatval);
 	in_prblm->write_prob_mps(lp_mps_name);
 }
 
@@ -232,34 +159,6 @@ LinkProblemsGenerator::generate_p_var_columns(const std::map<int, std::vector<in
     }
     return links_columns_to_change;
 }
-
-std::map<std::string, int> LinkProblemsGenerator::add_candidates_to_problem_and_get_candidates_col_id(SolverAbstract::Ptr &out_prblm) {
-    //TODO : update candidate col creation
-    Candidates candidates;
-    for (const ActiveLink& link : _links){
-        candidates.insert(candidates.end(),link.getCandidates().begin(), link.getCandidates().end());
-    }
-
-    int n_candidates = candidates.size();
-    int n_cols = out_prblm->get_ncols();
-    std::vector<double> obj_interco(n_candidates, 0);
-    // Setting bounds to +-1e20
-    std::vector<double> lb_interco(n_candidates, -1e20);
-    std::vector<double> ub_interco(n_candidates, 1e20);
-    std::vector<char> coltypes_interco(n_candidates, 'C');
-    std::vector<int> mstart_interco(n_candidates, 0);
-    std::vector<std::string> candidates_colnames;
-
-    std::map<std::string ,int> candidate_id;
-    for (int i = 0 ; i < n_candidates ; i++) {
-        const Candidate& candidate = candidates.at(i);
-        candidates_colnames.push_back(candidate._data.name);
-        candidate_id[candidate._data.name] = i + n_cols;
-    }
-    solver_addcols(out_prblm, obj_interco, mstart_interco, {}, {}, lb_interco, ub_interco, coltypes_interco, candidates_colnames);
-    return candidate_id;
-}
-
 
 /**
  * \brief That function create new optimization problems with new candidates

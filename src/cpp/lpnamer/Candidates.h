@@ -51,10 +51,6 @@ private:
 
     std::string getVarNameFromLine(const std::string &line) const;
 
-
-    std::map<std::string, int>
-    add_candidates_to_problem_and_get_candidates_col_id(std::shared_ptr<SolverAbstract> &out_prblm);
-
     std::map<colId, ColumnsToChange> generate_p_var_columns(const std::map<int, std::vector<int>> &interco_data) const;
 
     const std::vector<ActiveLink>& _links;

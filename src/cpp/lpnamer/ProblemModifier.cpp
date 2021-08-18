@@ -106,7 +106,8 @@ void ProblemModifier::add_new_columns(const std::vector<Candidate> &candidates) 
 
         for (const auto& candidate : candidates) {
             candidates_colnames.push_back(candidate._name);
-            _candidate_col_id[candidate._name] = _candidate_col_id.size() + _n_cols_at_start;
+            int new_index = _candidate_col_id.size() + _n_cols_at_start;
+            _candidate_col_id[candidate._name] = new_index;
         }
         solver_addcols(_math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
     }
