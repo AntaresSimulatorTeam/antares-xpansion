@@ -10,7 +10,6 @@
 class ProblemModifierTest : public ::testing::Test
 {
 public:
-    const std::string mps_name = "dummy.mps";
     SolverAbstract::Ptr math_problem;
     int n_cols=-1;
     int n_rows=-1;
