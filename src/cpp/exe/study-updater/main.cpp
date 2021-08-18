@@ -6,8 +6,9 @@
 #include <boost/program_options.hpp>
 
 #include "StudyUpdater.h"
-#include "CandidatesInitializer.h"
 #include "ActiveLinks.h"
+#include "CandidatesINIReader.h"
+#include "LinkProfileReader.h"
 
 namespace po = boost::program_options;
 
@@ -15,30 +16,7 @@ namespace po = boost::program_options;
  * \brief update links in the antares study directory
  *
  * \param rootPath_p path corresponding to the path to the simulation output directory containing the lp directory
- * \param candidates_p Structure which contains the list of candidates
- * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
- * \return void
- */
-void updateStudy(std::string const & rootPath_p, Candidates const & candidates_p, std::string const & solutionFilename_p)
-{
-	std::string linksPath_l = rootPath_p + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
-	std::string jsonPath_l  = rootPath_p + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + solutionFilename_p;
-
-	StudyUpdater studyUpdater(linksPath_l);
-	int updateFailures_l = studyUpdater.update(candidates_p, jsonPath_l);
-
-	if (updateFailures_l)
-	{
-        std::cout << "Error : Failed to update " << updateFailures_l << " files."
-				<< candidates_p.size() - updateFailures_l << " files were updated\n";
-    }
-}
-
-/*!
- * \brief update links in the antares study directory
- *
- * \param rootPath_p path corresponding to the path to the simulation output directory containing the lp directory
- * \param candidates_p Structure which contains the list of candidates
+ * \param links_p Structure which contains the list of links
  * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
  * \return void
  */
@@ -49,6 +27,12 @@ void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& l
 
 	StudyUpdater studyUpdater(linksPath_l);
 	int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);
+
+	if (updateFailures_l)
+	{
+		std::cout << "Error : Failed to update " << updateFailures_l << " files."
+			<< links_p.size() - updateFailures_l << " files were updated\n";
+	}
 }
 
 /**
@@ -90,15 +74,10 @@ int main(int argc, char** argv) {
         CandidatesINIReader candidateReader(interco_file_name,area_file_name);
         LinkProfileReader profileReader;
 
-        CandidatesInitializer initializer = CandidatesInitializer(profileReader,candidateReader);
-
         // Get all mandatory path
         std::string const xpansion_user_dir = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion";
         std::string const candidates_file_name = xpansion_user_dir + PATH_SEPARATOR + CANDIDATES_INI;
         std::string const capacity_folder = xpansion_user_dir + PATH_SEPARATOR + "capa";
-
-        // Instantiation of candidates SFR : A SUPPRIMER APRES CABLAGE DES LINKS
-        Candidates candidates = initializer.initializedCandidates(candidates_file_name, capacity_folder);
 
 		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
 		const auto& mapLinkProfile = LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
