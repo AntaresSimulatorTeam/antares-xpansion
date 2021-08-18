@@ -26,9 +26,11 @@ void ProblemModifier::change_upper_bounds_to_pos_inf(const std::vector<int> &col
     _math_problem->chg_bounds(col_ids, ub_char, pos_inf);
 }
 
-std::map<std::string, unsigned int> ProblemModifier::get_candidate_col_id() {
-    // TODO this method should be removed
-    return _candidate_col_id;
+unsigned int ProblemModifier::get_candidate_col_id(const std::string& cand_name) const {
+    if (_candidate_col_id.find(cand_name) == _candidate_col_id.end()){
+        throw std::runtime_error("Candidate '" + cand_name + "' not added in problem");
+    }
+    return _candidate_col_id.at(cand_name);
 }
 
 std::shared_ptr<SolverAbstract>

@@ -206,6 +206,14 @@ TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) 
     verify_column_objective_is(0, 1);
     verify_column_lower_bound_is(0, -1e20);
     verify_column_upper_bound_is(0, 1e20);
+
+    try {
+        problem_modifier.get_candidate_col_id("invalid_cand_name");
+        FAIL();
+    }
+    catch(const std::runtime_error& expected) {
+        ASSERT_STREQ(expected.what(), "Candidate 'invalid_cand_name' not added in problem");
+    }
 }
 
 
@@ -268,6 +276,9 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
 
     verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
     verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
+
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 1);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 2);
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
@@ -321,6 +332,9 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
     verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
     verify_rhs_is(2, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
     verify_rhs_is(3, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
+
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 1);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 2);
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
@@ -390,6 +404,9 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
     verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
     verify_rhs_is(2, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
     verify_rhs_is(3, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
+
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 1);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 2);
 }
 
 

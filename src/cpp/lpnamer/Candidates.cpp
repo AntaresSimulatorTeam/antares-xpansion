@@ -138,12 +138,11 @@ void LinkProblemsGenerator::treat(std::string const & root,
 
     auto problem_modifier = ProblemModifier();
     in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_var_columns);
-    std::map<std::string, unsigned int> col_id = problem_modifier.get_candidate_col_id();
 
     //couplings creation
     for (const ActiveLink& link : _links){
         for(const Candidate& candidate : link.getCandidates()){
-            couplings[{candidate._data.name, mps_name}] = col_id[candidate._data.name];
+            couplings[{candidate._name, mps_name}] = problem_modifier.get_candidate_col_id(candidate._name);
         }
     }
 
