@@ -77,7 +77,7 @@ std::pair<double, double> StudyUpdater::computeNewCapacities(const std::map<std:
 
 int StudyUpdater::updateLinkdataFile(const ActiveLink& link_p, const std::map<std::string, double>& investments_p) const
 {
-    std::string linkdataFilename_l = linksPath_ + PATH_SEPARATOR + link_p._linkor + PATH_SEPARATOR + link_p._linkex + ".txt";
+    std::string linkdataFilename_l = getLinkdataFilepath(link_p);
 
     std::ifstream inputCsv_l(linkdataFilename_l);
     std::ofstream tempOutCsvFile(linkdataFilename_l + ".tmp");
@@ -142,7 +142,7 @@ int StudyUpdater::update(std::vector<ActiveLink> const& links_p, std::string con
 }
 
 
-int StudyUpdater::update(std::vector<ActiveLink> const& links_p, std::map<std::string, double> investments_p) const
+int StudyUpdater::update(std::vector<ActiveLink> const& links_p, const std::map<std::string, double>& investments_p) const
 {
     int updateFailures_l(0);
     

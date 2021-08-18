@@ -83,7 +83,7 @@ public:
  *
  * \return number of candidates we failed to update
  */
-    int update(std::vector<ActiveLink> const& links_p, std::map<std::string, double> investments_p) const;
+    int update(std::vector<ActiveLink> const& links_p, const std::map<std::string, double>& investments_p) const;
 
 /*!
  * \brief updates the linkdata files for multiple candidates from a json file
