@@ -423,3 +423,28 @@ TEST(LinkBuilderTest, missing_link_profile_in_profile_map)
         ASSERT_STREQ(err.what(), "There is no linkProfile associated with cand1Profile.txt");
     }
 }
+
+TEST(LinkBuilderTest, candidate_not_enable)
+{
+    CandidateData cand1;
+    cand1.link_id = 1;
+    cand1.name = "transmission_line_1";
+    cand1.link_name = "area1 - area2";
+    cand1.enable = true;
+
+    CandidateData cand2;
+    cand2.link_id = 1;
+    cand2.name = "transmission_line_2";
+    cand2.link_name = "area1 - area2";
+    cand2.enable = false;
+
+    std::vector<CandidateData> cand_data_list;
+    cand_data_list.push_back(cand1);
+    cand_data_list.push_back(cand2);
+    std::map<std::string, LinkProfile> profile_map ;
+
+    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
+    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+    const auto& candidates = links[0].getCandidates();
+    ASSERT_EQ(candidates.size(), 1);
+}
