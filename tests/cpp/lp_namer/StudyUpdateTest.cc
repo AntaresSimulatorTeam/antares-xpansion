@@ -1,10 +1,8 @@
 #include "gtest/gtest.h"
 
-#include <sstream>
 #include <fstream>
 
 #include "common_lpnamer.h"
-#include "CandidatesInitializer.h"
 #include "StudyUpdater.h"
 #include "CandidatesINIReader.h"
 #include "LinkProfileReader.h"
@@ -48,7 +46,6 @@ peak\n\
         content_l = "\
 [1]\n\
 name = peak\n\
-investment-type = peak\n\
 link = area1 - peak\n\
 annual-cost-per-mw = 60000\n\
 unit-size = 100\n\

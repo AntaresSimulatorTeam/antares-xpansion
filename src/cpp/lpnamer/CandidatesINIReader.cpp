@@ -87,6 +87,12 @@ double getDblVal(const INIReader &reader, const std::string &sectionName, const 
     return d_val;
 }
 
+bool getBoolVal(const INIReader &reader, const std::string &sectionName, const std::string& key) {
+
+    bool result = reader.GetBoolean(sectionName, key, true);
+    return result;
+}
+
 bool CandidatesINIReader::checkArea(std::string const & areaName_p) const
 {
     bool found_l = std::find(_areaNames.cbegin(), _areaNames.cend(), areaName_p) != _areaNames.cend();
@@ -112,7 +118,6 @@ CandidateData CandidatesINIReader::readCandidateSection(const std::string &candi
                                                      const std::string &sectionName) {
     CandidateData candidateData;
     candidateData.name = StringUtils::ToLowercase(getStrVal(reader,sectionName,"name"));
-    candidateData.investment_type = getStrVal(reader,sectionName,"investment-type");
     candidateData.link_name = StringUtils::ToLowercase(getStrVal(reader, sectionName, "link"));
     size_t i = candidateData.link_name.find(" - ");
     if (i != std::string::npos) {
@@ -145,5 +150,6 @@ CandidateData CandidatesINIReader::readCandidateSection(const std::string &candi
     candidateData.unit_size = getDblVal(reader,sectionName,"unit-size");
     candidateData.max_units = getDblVal(reader,sectionName,"max-units");
     candidateData.already_installed_capacity = getDblVal(reader,sectionName,"already-installed-capacity");
+    candidateData.enable = getBoolVal(reader,sectionName, "enable");
     return candidateData;
 }

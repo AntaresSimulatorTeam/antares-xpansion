@@ -2,10 +2,12 @@
 
 Candidate::Candidate(CandidateData data, const LinkProfile& profile)
 {
-    _data = data;
-    _name = _data.name;
+    _annual_cost_per_mw = data.annual_cost_per_mw;
+    _max_investment = data.max_investment;
+    _unit_size = data.unit_size;
+    _max_units = data.max_units;
+    _name = data.name;
     _profile = profile;
-    
 }
 
 double Candidate::direct_profile(size_t timeStep) const{
@@ -16,18 +18,8 @@ double Candidate::indirect_profile(size_t timeStep) const{
     return _profile.getIndirectProfile(timeStep);
 }
 
-double Candidate::already_installed_direct_profile(size_t timeStep) const
-{
-    return _already_installed_profile.getDirectProfile(timeStep);
-}
-
-double Candidate::already_installed_indirect_profile(size_t timeStep) const
-{
-    return _already_installed_profile.getIndirectProfile(timeStep);
-}
-
 double Candidate::obj()const {
-    return _data.annual_cost_per_mw;
+    return _annual_cost_per_mw;
 }
 
 double Candidate::lb() const {
@@ -35,24 +27,20 @@ double Candidate::lb() const {
 }
 
 double Candidate::ub() const {
-    double val = _data.max_investment;
+    double val = _max_investment;
     if(val == 0.0) {
         val = unit_size() * max_unit();
     }
     return val;
 }
 
-double Candidate::already_installed_capacity() const {
-    return _data.already_installed_capacity;
-}
-
 double Candidate::unit_size() const {
-    return _data.unit_size;
+    return _unit_size;
 }
 double Candidate::max_unit() const {
-    return _data.max_units;
+    return _max_units;
 }
 
 bool Candidate::is_integer()const {
-    return _data.unit_size!=0.0;
+    return _unit_size!=0.0;
 }
