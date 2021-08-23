@@ -6,7 +6,7 @@
 
 struct CandidateData {
 
-    bool enable;
+    bool enable = true;
 
     std::string link_name;
     int         link_id;
@@ -34,9 +34,7 @@ class Candidate {
 
 public:
     Candidate(){};
-    Candidate(CandidateData data, const LinkProfile& profile);
-
-    LinkProfile _profile;
+    Candidate(const CandidateData& data, const LinkProfile& profile);
 
     double direct_profile(size_t timeStep) const;
     double indirect_profile(size_t timeStep) const;
@@ -53,6 +51,8 @@ public:
     std::string _name;
 
 private:
+
+    LinkProfile _profile;
     double _annual_cost_per_mw;
     double _max_investment;
     double _unit_size;

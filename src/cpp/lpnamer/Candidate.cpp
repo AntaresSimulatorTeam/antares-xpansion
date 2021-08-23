@@ -1,6 +1,6 @@
 #include "Candidate.h"
 
-Candidate::Candidate(CandidateData data, const LinkProfile& profile)
+Candidate::Candidate(const CandidateData& data, const LinkProfile& profile)
 {
     _annual_cost_per_mw = data.annual_cost_per_mw;
     _max_investment = data.max_investment;
