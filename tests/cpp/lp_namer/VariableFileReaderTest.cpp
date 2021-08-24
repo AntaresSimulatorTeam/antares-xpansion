@@ -153,9 +153,7 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithoutActiveLink) {
     VariableFileReader varReader(TEMP_FILE_NAME, links,"var_ntc");
 
     std::map<linkId,  ColumnsToChange> ntcVarColumns = varReader.getNtcVarColumns();
-    std::map<linkId , ColumnsToChange> expectedNtcVarColumns;
-
-    ASSERT_EQ(ntcVarColumns.size(), expectedNtcVarColumns.size());
+    ASSERT_EQ(ntcVarColumns.size(), 0);
 }
 
 TEST_F(VariableFileReaderTest, ReadNtcColumnsWithOneActiveLink) {

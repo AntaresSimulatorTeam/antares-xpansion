@@ -62,11 +62,11 @@ std::string VariableFileReader::getVarNameFromLine(const std::string &line) cons
     return name.str();
 }
 
-std::vector<std::string> VariableFileReader::getVariables() const {
+const std::vector<std::string>& VariableFileReader::getVariables() const {
 
     return _variables;
 }
 
-std::map<linkId,  ColumnsToChange> VariableFileReader::getNtcVarColumns() const{
+const std::map<linkId,  ColumnsToChange>& VariableFileReader::getNtcVarColumns() const{
     return _ntc_p_var_columns;
 }

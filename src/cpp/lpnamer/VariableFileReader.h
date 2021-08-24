@@ -16,8 +16,8 @@ public:
     VariableFileReader(const std::string& fileName, const std::vector<ActiveLink>& links,
                        const std::string& ntc_variable_name);
 
-    std::vector<std::string> getVariables() const;
-    std::map<linkId,  ColumnsToChange> getNtcVarColumns() const;
+    const std::vector<std::string>& getVariables() const;
+    const std::map<linkId,  ColumnsToChange>& getNtcVarColumns() const;
 
 
 private:
