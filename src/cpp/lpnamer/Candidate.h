@@ -6,8 +6,7 @@
 
 struct CandidateData {
 
-    //TODO : value not used
-    std::string investment_type;
+    bool enable = true;
 
     std::string link_name;
     int         link_id;
@@ -35,16 +34,10 @@ class Candidate {
 
 public:
     Candidate(){};
-    Candidate(CandidateData data, const LinkProfile& profile);
-
-    CandidateData _data;
-    LinkProfile _profile;
-    LinkProfile _already_installed_profile;
+    Candidate(const CandidateData& data, const LinkProfile& profile);
 
     double direct_profile(size_t timeStep) const;
     double indirect_profile(size_t timeStep) const;
-    double already_installed_direct_profile(size_t timeStep) const;
-    double already_installed_indirect_profile(size_t timeStep) const;
 
     double obj()const;
     double lb()const;
@@ -55,9 +48,15 @@ public:
 
     bool is_integer()const;
 
-    double already_installed_capacity() const;
-
     std::string _name;
+
+private:
+
+    LinkProfile _profile;
+    double _annual_cost_per_mw;
+    double _max_investment;
+    double _unit_size;
+    double _max_units;
 
 };
 

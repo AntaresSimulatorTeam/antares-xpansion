@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 
-#include <sstream>
 #include <fstream>
 
 #include "CandidatesINIReader.h"
@@ -36,17 +35,24 @@ protected:
 
         std::string candidate_content_l = "[1]\n"
                                      "name = semibase\n"
-                                     "investment-type = semibase\n"
                                      "link = area1 - semibase\n"
                                      "annual-cost-per-mw = 126000\n"
                                      "unit-size = 200\n"
                                      "max-units = 10\n"
+                                     "enable = true\n"
                                      "\n"
                                      "[2]\n"
                                      "name = peak\n"
-                                     "investment-type = peak\n"
                                      "link = area1 - peak\n"
                                      "annual-cost-per-mw = 60000\n"
+                                     "unit-size = 100\n"
+                                     "max-units = 20\n"
+                                     "enable = false\n"
+                                     "\n"
+                                     "[3]\n"
+                                     "name = peak2\n"
+                                     "link = area1 - peak\n"
+                                     "annual-cost-per-mw = 30000\n"
                                      "unit-size = 100\n"
                                      "max-units = 20";
 
@@ -101,14 +107,23 @@ TEST_F(CandidatesINIReaderTest, testReadCandidate)
 
     std::vector<CandidateData> candidates_data = reader.readCandidateData("temp_candidate.ini");
 
-    ASSERT_EQ(candidates_data.size(), 2);
+    ASSERT_EQ(candidates_data.size(), 3);
+
     ASSERT_EQ(candidates_data[0].name, "semibase");
-    ASSERT_EQ(candidates_data[0].investment_type, "semibase");
     ASSERT_EQ(candidates_data[0].link_name, "area1 - semibase");
     ASSERT_EQ(candidates_data[0].link_id, 2);
+    ASSERT_EQ(candidates_data[0].enable, true);
+    ASSERT_DOUBLE_EQ(candidates_data[0].annual_cost_per_mw, 126000);
 
     ASSERT_EQ(candidates_data[1].name, "peak");
-    ASSERT_EQ(candidates_data[1].investment_type, "peak");
     ASSERT_EQ(candidates_data[1].link_name, "area1 - peak");
     ASSERT_EQ(candidates_data[1].link_id, 1);
+    ASSERT_EQ(candidates_data[1].enable, false);
+    ASSERT_DOUBLE_EQ(candidates_data[1].annual_cost_per_mw, 60000);
+
+    ASSERT_EQ(candidates_data[2].name, "peak2");
+    ASSERT_EQ(candidates_data[2].link_name, "area1 - peak");
+    ASSERT_EQ(candidates_data[2].link_id, 1);
+    ASSERT_EQ(candidates_data[2].enable, true);
+    ASSERT_DOUBLE_EQ(candidates_data[2].annual_cost_per_mw, 30000);
 }

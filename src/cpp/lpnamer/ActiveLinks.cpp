@@ -93,7 +93,9 @@ const std::vector<ActiveLink>& ActiveLinksBuilder::getLinks()
     if (_links.empty()){
         create_links();
         for (const CandidateData& candidateData : _candidateDatas) {
-            addCandidate(candidateData);
+            if  (candidateData.enable){
+                addCandidate(candidateData);
+            }
         }
     }
     return _links;

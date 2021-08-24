@@ -96,7 +96,7 @@ void masterGeneration(std::string rootPath,
 		obj_interco[i] = candidate_i.obj();
 		lb_interco[i] = candidate_i.lb();
 		ub_interco[i] = candidate_i.ub();
-		interco_names[i] = candidate_i._data.name;
+		interco_names[i] = candidate_i._name;
 
 		if (candidate_i.is_integer()) {
 			pallier.push_back(i);
