@@ -1,5 +1,5 @@
 //
-
+#include <algorithm>
 #include <sstream>
 
 #include "VariableFileReader.h"
