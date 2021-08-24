@@ -5,7 +5,7 @@
 #include "VariableFileReader.h"
 
 VariableFileReader::VariableFileReader(const std::string& fileName, const std::vector<ActiveLink>& links,
-                                       const std::string& ntc_variable_name) {
+                                       const VariableFileReadNameConfiguration& variable_name_config) {
 
     std::string line;
     std::ifstream file(fileName.c_str());
@@ -23,7 +23,7 @@ VariableFileReader::VariableFileReader(const std::string& fileName, const std::v
         buffer >> id;
         buffer >> variable;
 
-        if (variable == ntc_variable_name) {
+        if (variable == variable_name_config.ntc_variable_name) {
             int pays;
             int link_id;
             int time_step;
@@ -37,6 +37,20 @@ VariableFileReader::VariableFileReader(const std::string& fileName, const std::v
 
             if (it != links.end()){
                 _ntc_p_var_columns[link_id].push_back({id, time_step});
+            }
+        }else if(variable == variable_name_config.cost_extremite_variable_name
+              || variable == variable_name_config.cost_origin_variable_name){
+            int link_id;
+            int time_step;
+            buffer >> link_id;
+            buffer >> time_step;
+
+            auto it = std::find_if(links.begin(), links.end(), [link_id] (const ActiveLink& link){
+                return link._idLink == link_id;
+            });
+
+            if (it != links.end()){
+                _cost_p_var_columns[link_id].push_back({id, time_step});
             }
         }
     }
@@ -69,4 +83,8 @@ const std::vector<std::string>& VariableFileReader::getVariables() const {
 
 const std::map<linkId,  ColumnsToChange>& VariableFileReader::getNtcVarColumns() const{
     return _ntc_p_var_columns;
+}
+
+const std::map<linkId, ColumnsToChange>& VariableFileReader::getCostVarColumns() const {
+    return _cost_p_var_columns;
 }
