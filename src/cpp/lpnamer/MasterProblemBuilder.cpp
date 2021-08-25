@@ -5,44 +5,10 @@
 #include "MasterProblemBuilder.h"
 #include <unordered_map>
 
-std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& solverName, const std::vector<ActiveLink>& links)
-{
-	_indexOfNvar.clear();
-	_indexOfPvar.clear();
-
-	SolverFactory factory;
-	auto master_l = factory.create_solver(solverName);
-
-	std::vector<Candidate> candidates;
-
-	for (const auto& link : links)
-	{
-		const auto& candidateFromLink = link.getCandidates();
-		candidates.insert(candidates.end(), candidateFromLink.begin(), candidateFromLink.end());
-	}
-
-	addVariablesPmaxOnEachCandidate(candidates, master_l);
-
-	std::vector<Candidate> candidatesInteger;
-	for (int i = 0; i < candidates.size(); i++)
-	{
-		const auto& candidate = candidates.at(i);
-		if (candidate.is_integer()) {
-			candidatesInteger.push_back(candidate);
-		}
-	}
-
-	addNvarForIntegerCandidate(candidatesInteger, master_l);
-
-	addPmaxConstraint(candidatesInteger, candidates, master_l);
-
-	return master_l;
-}
-
 std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& solverName, const std::vector<Candidate>& candidates)
 {
 	_indexOfNvar.clear();
-	_indexOfPvar.clear();
+	_indexOfPmaxVar.clear();
 
 	SolverFactory factory;
 	auto master_l = factory.create_solver(solverName);
@@ -58,7 +24,7 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& s
 		}
 	}
 
-	addNvarForIntegerCandidate(candidatesInteger, master_l);
+	addNvarOnEachIntegerCandidate(candidatesInteger, master_l);
 
 	addPmaxConstraint(candidatesInteger, candidates, master_l);
 
@@ -79,12 +45,14 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 	rowtype.reserve(n_integer);
 	rhs.reserve(n_integer);
 	rstart.reserve(n_integer + 1);
-	int index(0);
+
+	int positionInIntegerCandidadeList(0);
+	int nbColPmaxVar = candidates.size();
 
 	for (const auto& candidate : candidatesInteger)
 	{
 		int pmaxVarColumNumber = getPmaxVarColumnNumberFor(candidate);
-		int nVarColumNumber = candidates.size() + index;
+		int nVarColumNumber = nbColPmaxVar + positionInIntegerCandidadeList;
 
 		// pMax  - n unit_size = 0
 		rstart.push_back(dmatval.size());
@@ -97,7 +65,7 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 		colind.push_back(nVarColumNumber);
 		dmatval.push_back(-candidate.unit_size());
 
-		index++;
+		positionInIntegerCandidadeList++;
 	}
 	rstart.push_back(dmatval.size());
 
@@ -106,8 +74,8 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 
 int MasterProblemBuilder::getPmaxVarColumnNumberFor(const Candidate& candidate)
 {
-	const auto& it = _indexOfPvar.find(candidate._name);
-	if (it == _indexOfPvar.end())
+	const auto& it = _indexOfPmaxVar.find(candidate._name);
+	if (it == _indexOfPmaxVar.end())
 	{
 		std::string message = "There is no Pvar for the candidate " + candidate._name;
 		throw std::runtime_error(message);
@@ -115,7 +83,7 @@ int MasterProblemBuilder::getPmaxVarColumnNumberFor(const Candidate& candidate)
 	return it->second;
 }
 
-void MasterProblemBuilder::addNvarForIntegerCandidate(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l)
+void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l)
 {
 	
 	int nbNvar = candidatesInteger.size();
@@ -149,12 +117,12 @@ void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(const std::vector<Can
 	std::vector<std::string> candidate_names(nbCandidates);
 
 	for (int i = 0; i < candidates.size(); i++) {
-		const auto& candidate = candidates.at(i);
-		obj_candidate[i] = candidate.obj();
-		lb_candidate[i] = candidate.lb();
-		ub_candidate[i] = candidate.ub();
-		candidate_names[i] = candidate._data.name;
-		_indexOfPvar[candidate._data.name] = i;
+		const auto& candidate	= candidates.at(i);
+		obj_candidate[i]	= candidate.obj();
+		lb_candidate[i]		= candidate.lb();
+		ub_candidate[i]		= candidate.ub();
+		candidate_names[i]	= candidate._name;
+		_indexOfPmaxVar[candidate._name] = i;
 	}
 
 	solver_addcols(master_l, obj_candidate, mstart, {}, {}, lb_candidate, ub_candidate, coltypes_candidate, candidate_names);

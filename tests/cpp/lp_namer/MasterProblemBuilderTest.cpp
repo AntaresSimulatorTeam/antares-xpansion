@@ -5,19 +5,7 @@
 #include <solver_utils.h>
 #include "gtest/gtest.h"
 
-class MasterProblemBuilderTest : public ::testing::Test
-{
-public:
-    SolverAbstract::Ptr math_problem;
-
-protected:
-    void SetUp()
-    {
-        
-    }
-};
-
-TEST_F(MasterProblemBuilderTest, test_one_candidate_continue)
+TEST(MasterProblemBuilderTest, test_one_candidate_continue)
 {
     std::string solver_name = "CBC";
 
@@ -34,7 +22,15 @@ TEST_F(MasterProblemBuilderTest, test_one_candidate_continue)
     ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-    auto master_problem = MasterProblemBuilder().build(solver_name, links);
+    std::vector<Candidate> candidates;
+
+    for (const auto& link : links)
+    {
+        const auto& candidateFromLink = link.getCandidates();
+        candidates.insert(candidates.end(), candidateFromLink.begin(), candidateFromLink.end());
+    }
+
+    auto master_problem = MasterProblemBuilder().build(solver_name, candidates);
     ASSERT_EQ(master_problem->get_ncols(), 1);
     ASSERT_EQ(master_problem->get_col_names(0, master_problem->get_ncols()-1)[0], cand1.name);
 
@@ -57,7 +53,7 @@ TEST_F(MasterProblemBuilderTest, test_one_candidate_continue)
 
 }
 
-TEST_F(MasterProblemBuilderTest, test_one_candidate_integer)
+TEST(MasterProblemBuilderTest, test_one_candidate_integer)
 {
     std::string solver_name = "CBC";
 
@@ -76,7 +72,15 @@ TEST_F(MasterProblemBuilderTest, test_one_candidate_integer)
     ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-    auto master_problem = MasterProblemBuilder().build(solver_name, links);
+    std::vector<Candidate> candidates;
+
+    for (const auto& link : links)
+    {
+        const auto& candidateFromLink = link.getCandidates();
+        candidates.insert(candidates.end(), candidateFromLink.begin(), candidateFromLink.end());
+    }
+
+    auto master_problem = MasterProblemBuilder().build(solver_name, candidates);
     ASSERT_EQ(master_problem->get_ncols(), 2);
 
     std::vector<char> colTypeArray(master_problem->get_ncols());
