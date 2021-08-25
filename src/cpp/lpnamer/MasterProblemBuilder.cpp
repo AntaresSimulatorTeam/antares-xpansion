@@ -26,12 +26,12 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& s
 
 	addNvarOnEachIntegerCandidate(candidatesInteger, master_l);
 
-	addPmaxConstraint(candidatesInteger, candidates, master_l);
+	addPmaxConstraint(candidatesInteger, master_l);
 
 	return master_l;
 }
 
-void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candidatesInteger, const std::vector<Candidate>& candidates, SolverAbstract::Ptr& master_l)
+void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l)
 {
 	std::vector<double> dmatval;
 	std::vector<int> colind;
@@ -47,7 +47,7 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 	rstart.reserve(n_integer + 1);
 
 	int positionInIntegerCandidadeList(0);
-	int nbColPmaxVar = candidates.size();
+	int nbColPmaxVar = _indexOfPmaxVar.size();
 
 	for (const auto& candidate : candidatesInteger)
 	{
