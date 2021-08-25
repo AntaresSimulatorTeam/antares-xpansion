@@ -1,8 +1,8 @@
-                                            master                                           battery         3
-                                            master                                             peak1         0
-                                            master                                             peak2         4
-                                            master                                                pv         2
-                                            master                                         semibase1         1
+                                            master                                           battery         0
+                                            master                                             peak1         1
+                                            master                                             peak2         2
+                                            master                                                pv         3
+                                            master                                         semibase1         4
                                             master                                         semibase2         5
                        problem-1-1-20210720-143331                                           battery      6891
                        problem-1-1-20210720-143331                                             peak1      6888

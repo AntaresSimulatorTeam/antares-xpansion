@@ -82,6 +82,12 @@ void masterGeneration(const std::string& rootPath,
 		const auto& candidateFromLink = link.getCandidates();
 		candidates.insert(candidates.end(), candidateFromLink.begin(), candidateFromLink.end());
 	}
+
+	std::sort(candidates.begin(), candidates.end(),
+		[](const Candidate& cand1, const Candidate& cand2) -> bool
+		{
+			return cand1._name < cand2._name;
+		});
 	
 	SolverAbstract::Ptr master_l = MasterProblemBuilder().build(solver_name, candidates);
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
