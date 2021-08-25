@@ -53,6 +53,8 @@ TEST_F(MasterProblemBuilderTest, test_one_candidate_continue)
 
     ASSERT_EQ(varUbArray[0], 0);
 
+    ASSERT_EQ(master_problem->get_nrows(), 0);
+
 }
 
 TEST_F(MasterProblemBuilderTest, test_one_candidate_integer)
@@ -92,4 +94,12 @@ TEST_F(MasterProblemBuilderTest, test_one_candidate_integer)
 
     ASSERT_EQ(varUbArray[1], 17);
 
+    ASSERT_EQ(master_problem->get_nrows(), 1);
+
+    std::vector<char> rowTypeArray(master_problem->get_nrows());
+    master_problem->get_row_type(rowTypeArray.data(), 0, master_problem->get_nrows() - 1);
+
+    ASSERT_EQ(rowTypeArray[0], 'E');
+
 }
+
