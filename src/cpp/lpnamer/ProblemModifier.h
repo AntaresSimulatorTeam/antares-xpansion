@@ -30,16 +30,18 @@ public:
     ProblemModifier();
 
     std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const std::vector<ActiveLink> &active_links,
-                                                  const std::map<linkId,  ColumnsToChange> &p_var_columns);
+                                                  const std::map<linkId,  ColumnsToChange> &ntc_p_var_columns,
+                                                  const std::map<linkId, ColumnsToChange> &cost_p_var_columns);
 
     unsigned int get_candidate_col_id(const std::string& cand_name) const;
 
 private:
 
     void changeProblem(const std::vector<ActiveLink> &active_links,
-                       const std::map<linkId, ColumnsToChange> &p_var_columns);
+                       const std::map<linkId, ColumnsToChange> &p_var_columns,
+                       const std::map<linkId, ColumnsToChange> &cost_p_var_columns);
 
-    void remove_bounds_for(const ColumnsToChange &columns_to_change);
+    void remove_bounds_for(const std::vector<int> &col_ids);
 
     void change_upper_bounds_to_pos_inf(const std::vector<int> &col_id);
 
@@ -50,6 +52,9 @@ private:
     std::vector<Candidate> candidates_from_all_links(const std::vector<ActiveLink> &active_links) const;
 
     void add_new_constraints(const std::vector<ActiveLink> &active_links,
+                             const std::map<linkId, ColumnsToChange> &p_var_columns);
+
+    void add_new_cost_constraints(const std::vector<ActiveLink> &active_links,
                              const std::map<linkId, ColumnsToChange> &p_var_columns);
 
     std::shared_ptr<SolverAbstract> _math_problem;

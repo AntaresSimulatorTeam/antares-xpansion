@@ -122,11 +122,6 @@ def test_full_study(install_dir, study_path, expected_values, expected_investmen
           "overall_cost": 1781879860.732024},
          {"elec_grid": 526.32217750589962, "h2_grid": 600.00000026293719, "p2g_marg_area1": 1124.9999998864932,
           "p2g_marg_area2": 2000.0}
-         ),
-        (ALL_STUDIES_PATH / "xpansion-test-one-link-two-candidates",
-         {"gap": -1.9073486328125e-06, "investment_cost": 15999999.999994278, "operational_cost": 11800333780.786646,
-          "overall_cost": 11816333780.78664},
-         {"transmission_line": 800.0, "transmission_line_2": 800.0}
          )
     ],
 )
@@ -145,9 +140,9 @@ def test_full_study_long(install_dir, study_path, expected_values, expected_inve
          {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02, "transmission_line": 0.0}
          ),
         (ALL_STUDIES_PATH / "xpansion-test-03",
-         {"gap": 241262.43024921417, "investment_cost": 185999999.99999905, "operational_cost": 5777590545.5126762,
-          "overall_cost": 5963590545.5126753},
-         {"peak": 1599.9999999999998, "transmission_line": 0.0, "semibase": 1000.0000000000002}
+         {"gap": 241262.43024921417, "investment_cost": 202000000.00000119, "operational_cost": 2084477775.2309604,
+          "overall_cost": 2286477775.2309618},
+         {"peak": 2500.0, "transmission_line": 1600.0, "semibase": 400.0}
          ),
         (ALL_STUDIES_PATH / "xpansion-test-04-mps-rounding",
          {"gap": -0.000560760498046875, "investment_cost": 115399999.99998856, "operational_cost": 21942457893.943958,
@@ -158,6 +153,16 @@ def test_full_study_long(install_dir, study_path, expected_values, expected_inve
          {"gap": 3.814697265625e-06, "investment_cost": 230600000.00002289, "operational_cost": 24001577891.450424,
           "overall_cost": 24232177891.450447},
          {"battery": 1000.0, "peak": 1500.0, "pv": 1000.0, "semibase": 200.0, "transmission_line": 0.0}
+         ),
+        (ALL_STUDIES_PATH / "xpansion-test-one-link-two-candidates",
+         {"gap": -1.9073486328125e-06, "investment_cost": 15999999.999994278, "operational_cost": 11800333780.786646,
+          "overall_cost": 11816333780.78664},
+         {"transmission_line": 800.0, "transmission_line_2": 800.0}
+         ),
+        (ALL_STUDIES_PATH / "xpansion-test-01-hurdles-cost",
+         {"gap": -7.62939453125e-06, "investment_cost": 224599999.99996948,
+          "operational_cost": 22516674015.060184, "overall_cost": 22741274015.060154},
+         {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02, "transmission_line": 0.0}
          )
     ],
 )

@@ -4,11 +4,14 @@
 
 ProblemModifier::ProblemModifier() = default;
 
-
-void ProblemModifier::remove_bounds_for(const ColumnsToChange &columns_to_change) {
+std::vector<int> extract_col_ids(const ColumnsToChange &columns_to_change) {
     std::vector<int> col_ids;
     col_ids.reserve(columns_to_change.size());
     std::transform(columns_to_change.begin(),columns_to_change.end(), std::back_inserter(col_ids),[](const ColumnToChange& col){return col.id;});
+    return col_ids;
+}
+
+void ProblemModifier::remove_bounds_for(const std::vector<int> &col_ids) {
     change_upper_bounds_to_pos_inf(col_ids);
     change_lower_bounds_to_neg_inf(col_ids);
 }
@@ -34,22 +37,29 @@ unsigned int ProblemModifier::get_candidate_col_id(const std::string& cand_name)
 
 std::shared_ptr<SolverAbstract>
 ProblemModifier::changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const std::vector<ActiveLink> &active_links,
-                               const std::map<linkId,  ColumnsToChange> &p_var_columns) {
+                               const std::map<linkId,  ColumnsToChange> &ntc_p_var_columns,
+                               const std::map<linkId, ColumnsToChange> &cost_p_var_columns) {
     _math_problem = std::move(mathProblem);
     _n_cols_at_start = _math_problem->get_ncols();
 
-    changeProblem(active_links, p_var_columns);
+    changeProblem(active_links, ntc_p_var_columns,cost_p_var_columns);
     return std::move(_math_problem);
 }
 
 void ProblemModifier::changeProblem(const std::vector<ActiveLink> &active_links,
-                                    const std::map<linkId, ColumnsToChange> &p_var_columns) {
+                                    const std::map<linkId, ColumnsToChange> &p_var_columns,
+                                    const std::map<linkId, ColumnsToChange> &cost_p_var_columns) {
     for (const auto& link : active_links) {
-        remove_bounds_for(p_var_columns.at(link._idLink));
+        remove_bounds_for(extract_col_ids(p_var_columns.at(link._idLink)));
+
+        if (cost_p_var_columns.find(link._idLink) != cost_p_var_columns.end()) {
+            change_upper_bounds_to_pos_inf(extract_col_ids(cost_p_var_columns.at(link._idLink)));
+        }
     }
     add_new_columns(candidates_from_all_links(active_links));
 
     add_new_constraints(active_links, p_var_columns);
+    add_new_cost_constraints(active_links, cost_p_var_columns);
 
 }
 
@@ -93,6 +103,37 @@ void ProblemModifier::add_new_constraints(const std::vector<ActiveLink> &active_
     rstart.push_back(dmatval.size());
 
     solver_addrows(_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
+}
+
+void ProblemModifier::add_new_cost_constraints(const std::vector<ActiveLink> &active_links,
+                              const std::map<linkId, ColumnsToChange> &p_var_columns){
+
+    std::vector<double> dmatval;
+    std::vector<int> colind;
+    std::vector<char> rowtype;
+    std::vector<double> rhs;
+    std::vector<int> rstart;
+
+    for (const auto& link : active_links) {
+        if (p_var_columns.find(link._idLink) != p_var_columns.end()) {
+            for (auto column : p_var_columns.at(link._idLink)) {
+
+                rstart.push_back(dmatval.size());
+                rhs.push_back(0);
+                rowtype.push_back('L');
+                colind.push_back(column.id);
+                dmatval.push_back(1);
+                for (const auto &candidate:link.getCandidates()) {
+                    colind.push_back(_candidate_col_id[candidate._name]);
+                    dmatval.push_back(-1);
+                }
+            }
+        }
+    }
+    rstart.push_back(dmatval.size());
+
+    solver_addrows(_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
+
 }
 
 void ProblemModifier::add_new_columns(const std::vector<Candidate> &candidates) {

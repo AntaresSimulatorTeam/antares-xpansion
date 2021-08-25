@@ -14,6 +14,9 @@ TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB = DATA_TEST_INTEGER / "test_one_
                                                   / "output" / "economy"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST_INTEGER / "test_one_link_two_candidates_1week" / "output" / "economy"
 
+TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob_hurdle_cost" \
+                                                  / "output" / "economy"
+
 TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / "test_one_link_one_candidate-relaxed" / "output" / "economy/"
 TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
                      / "economy"
@@ -26,7 +29,8 @@ test_data = [
 
 test_data_multiple_candidates = [
     (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer"),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer")
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer"),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer")
 ]
 
 
