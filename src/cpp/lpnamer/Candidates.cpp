@@ -60,9 +60,16 @@ void LinkProblemsGenerator::treat(std::string const & root,
 	std::string const lp_mps_name = root + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps";
 
 	// List of variables
-	VariableFileReader variableReader = VariableFileReader(var_name,_links, "ValeurDeNTCOrigineVersExtremite");
+    VariableFileReadNameConfiguration variable_name_config;
+    variable_name_config.ntc_variable_name = "ValeurDeNTCOrigineVersExtremite";
+    variable_name_config.cost_origin_variable_name = "CoutOrigineVersExtremiteDeLInterconnexion";
+    variable_name_config.cost_extremite_variable_name = "CoutExtremiteVersOrigineDeLInterconnexion";
+
+	VariableFileReader variableReader = VariableFileReader(var_name,_links,variable_name_config);
+
     std::vector<std::string> var_names = variableReader.getVariables();
-    std::map<colId , ColumnsToChange> p_var_columns = variableReader.getNtcVarColumns();
+    std::map<colId , ColumnsToChange> p_ntc_columns = variableReader.getNtcVarColumns();
+    std::map<colId , ColumnsToChange> p_cost_columns = variableReader.getCostVarColumns();
 
     SolverFactory factory;
     SolverAbstract::Ptr in_prblm;
@@ -72,7 +79,7 @@ void LinkProblemsGenerator::treat(std::string const & root,
     solver_rename_vars(in_prblm, var_names);
 
     auto problem_modifier = ProblemModifier();
-    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_var_columns);
+    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_ntc_columns, p_cost_columns);
 
     //couplings creation
     for (const ActiveLink& link : _links){

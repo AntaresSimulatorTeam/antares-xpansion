@@ -31,13 +31,28 @@ protected:
         std::string solver_name = "CBC";
         SolverFactory factory;
         math_problem = factory.create_solver(solver_name);
-        std::vector<double> objectives(1, 1);
-        std::vector<double> lb(1, -1000);
-        std::vector<double> ub(1, 1000);
-        std::vector<char> coltypes(1, 'C');
-        std::vector<int> mstart(1, 0);
-        std::vector<std::string> candidates_colnames(1, "C0000000");
-        solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
+
+        //Add NTC variable column
+        {
+            std::vector<double> objectives(1, 1);
+            std::vector<double> lb(1, -1000);
+            std::vector<double> ub(1, 1000);
+            std::vector<char> coltypes(1, 'C');
+            std::vector<int> mstart(1, 0);
+            std::vector<std::string> candidates_colnames(1, "C0000000");
+            solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
+        }
+
+        //Add cost variable column
+        {
+            std::vector<double> objectives(1, 1);
+            std::vector<double> lb(1, 0);
+            std::vector<double> ub(1, 1);
+            std::vector<char> coltypes(1, 'C');
+            std::vector<int> mstart(1, 0);
+            std::vector<std::string> candidates_colnames(1, "C0000001");
+            solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
+        }
     }
 
     void TearDown()
@@ -174,18 +189,23 @@ protected:
         update_rhs_val();
         ASSERT_DOUBLE_EQ(rhs.at(rhs_id), rhs_value);
     }
+
+    void verify_column(const int col_id, std::basic_string<char> name, char type,double obj_value,double lower_value,double upper_value ){
+        verify_column_name_is(col_id, name);
+        verify_column_is_of_type(col_id, type);
+        verify_column_objective_is(col_id, obj_value);
+        verify_column_lower_bound_is(col_id, lower_value);
+        verify_column_upper_bound_is(col_id, upper_value);
+    }
 };
 
 TEST_F(ProblemModifierTest, empty_test_the_multisolver_interface)
 {
-    verify_columns_are(1);
+    verify_columns_are(2);
     verify_rows_are(0);
 
-    verify_column_name_is(0, "C0000000");
-    verify_column_is_of_type(0, 'C');
-    verify_column_objective_is(0, 1);
-    verify_column_lower_bound_is(0, -1000);
-    verify_column_upper_bound_is(0, 1000);
+    verify_column(0,"C0000000",'C',1,-1000,1000);
+    verify_column(1,"C0000001",'C',1,0,1);
 }
 
 
@@ -193,18 +213,17 @@ TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) 
     const int link_id = 0;
     const ColumnToChange column = {0, 0};
     const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{column}}};
+    const ColumnsToChange columnCost = {{1, 0}};
+    const std::map<linkId , ColumnsToChange> p_cost_columns= {{link_id,{columnCost}}};
     const std::vector<ActiveLink> active_links= {ActiveLink(link_id, "dummy_link")};
 
     auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links, p_var_columns);
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links, p_var_columns,p_cost_columns);
 
-    verify_columns_are(1);
+    verify_columns_are(2);
 
-    verify_column_name_is(0, "C0000000");
-    verify_column_is_of_type(0, 'C');
-    verify_column_objective_is(0, 1);
-    verify_column_lower_bound_is(0, -1e20);
-    verify_column_upper_bound_is(0, 1e20);
+    verify_column(0,"C0000000",'C',1,-1e20,1e20);
+    verify_column(1,"C0000001",'C',1,0,1e20);
 
     try {
         problem_modifier.get_candidate_col_id("invalid_cand_name");
@@ -220,6 +239,8 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     const int link_id = 0;
     const ColumnsToChange columns = {{0, 0}};
     const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,columns}};
+    const ColumnsToChange columnsCost = {{1, 0}};
+    const std::map<linkId , ColumnsToChange> p_cost_columns= {{link_id,columnsCost}};
 
     CandidateData cand1;
     cand1.link_id = link_id;
@@ -239,51 +260,46 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns);
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_cost_columns);
 
-    verify_columns_are(3);
+    verify_columns_are(4);
 
-    verify_column_name_is(0, "C0000000");
-    verify_column_is_of_type(0, 'C');
-    verify_column_objective_is(0, 1);
-    verify_column_lower_bound_is(0, -1e20);
-    verify_column_upper_bound_is(0, 1e20);
+    verify_column(0,"C0000000",'C',1,-1e20,1e20);
+    verify_column(1,"C0000001",'C',1,0,1e20);
 
-    verify_column_name_is(1, "candy1");
-    verify_column_is_of_type(1, 'C');
-    verify_column_objective_is(1, 0);
-    verify_column_lower_bound_is(1, -1e20);
-    verify_column_upper_bound_is(1, 1e20);
+    verify_column(2,"candy1",'C',0,-1e20,1e20);
+    verify_column(3,"candy2",'C',0,-1e20,1e20);
 
-    verify_column_name_is(2, "candy2");
-    verify_column_is_of_type(2, 'C');
-    verify_column_objective_is(2, 0);
-    verify_column_lower_bound_is(2, -1e20);
-    verify_column_upper_bound_is(2, 1e20);
-
-    verify_rows_are(2);
+    verify_rows_are(3);
     verify_row_is_of_type(0, 'L');
     verify_row_is_of_type(1, 'G');
+    verify_row_is_of_type(2, 'L');
 
-    verify_elems_are(6);
+    verify_elems_are(9);
     verify_mat_val_is(0, 1);
     verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
     verify_mat_val_is(2, -links.at(0).getCandidates().at(1).direct_profile(0));
     verify_mat_val_is(3, 1);
     verify_mat_val_is(4, links.at(0).getCandidates().at(0).indirect_profile(0));
     verify_mat_val_is(5, links.at(0).getCandidates().at(1).indirect_profile(0));
+    verify_mat_val_is(6, 1);
+    verify_mat_val_is(7, -1);
+    verify_mat_val_is(8, -1);
 
     verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
     verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
+    verify_rhs_is(2, 0);
 
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 1);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 2);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 2);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 3);
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
     const int link_id = 0;
     const ColumnsToChange columns = {{0, 0}, {0, 1}};
     const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,columns}};
+    const ColumnsToChange columnsCost = {{1, 0}};
+    const std::map<linkId , ColumnsToChange> p_cost_columns= {{link_id,columnsCost}};
 
     CandidateData cand1;
     cand1.link_id = link_id;
@@ -303,16 +319,17 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns);
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_cost_columns);
 
-    verify_columns_are(3);
-    verify_rows_are(4);
+    verify_columns_are(4);
+    verify_rows_are(5);
     verify_row_is_of_type(0, 'L');
     verify_row_is_of_type(1, 'G');
     verify_row_is_of_type(2, 'L');
     verify_row_is_of_type(3, 'G');
+    verify_row_is_of_type(4, 'L');
 
-    verify_elems_are(12);
+    verify_elems_are(15);
 
     verify_mat_val_is(0, 1);
     verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
@@ -326,20 +343,26 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
     verify_mat_val_is(9, 1);
     verify_mat_val_is(10, links.at(0).getCandidates().at(0).indirect_profile(1));
     verify_mat_val_is(11, links.at(0).getCandidates().at(1).indirect_profile(1));
+    verify_mat_val_is(12, 1);
+    verify_mat_val_is(13, -1);
+    verify_mat_val_is(14, -1);
 
     verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
     verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
     verify_rhs_is(2, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
     verify_rhs_is(3, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
+    verify_rhs_is(4, 0);
 
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 1);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 2);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 2);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 3);
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
     const int link_id = 0;
     const ColumnsToChange columns = {{0, 0}, {0, 1}};
     const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,columns}};
+    const ColumnsToChange columnsCost = {{1, 0}};
+    const std::map<linkId , ColumnsToChange> p_cost_columns= {{link_id,columnsCost}};
 
     CandidateData cand1;
     cand1.link_id = link_id;
@@ -375,16 +398,17 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns);
+    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_cost_columns);
 
-    verify_columns_are(3);
-    verify_rows_are(4);
+    verify_columns_are(4);
+    verify_rows_are(5);
     verify_row_is_of_type(0, 'L');
     verify_row_is_of_type(1, 'G');
     verify_row_is_of_type(2, 'L');
     verify_row_is_of_type(3, 'G');
+    verify_row_is_of_type(4, 'L');
 
-    verify_elems_are(12);
+    verify_elems_are(15);
 
     verify_mat_val_is(0, 1);
     verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
@@ -398,14 +422,18 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
     verify_mat_val_is(9, 1);
     verify_mat_val_is(10, links.at(0).getCandidates().at(0).indirect_profile(1));
     verify_mat_val_is(11, links.at(0).getCandidates().at(1).indirect_profile(1));
+    verify_mat_val_is(12, 1);
+    verify_mat_val_is(13, -1);
+    verify_mat_val_is(14, -1);
 
     verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
     verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
     verify_rhs_is(2, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
     verify_rhs_is(3, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
+    verify_rhs_is(4, 0);
 
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 1);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 2);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 2);
+    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 3);
 }
 
 

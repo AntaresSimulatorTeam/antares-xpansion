@@ -44,7 +44,11 @@ protected:
         std::ofstream file(temp_variable_name);
 
         for (const auto& fileLine : variableFileLineVec) {
-            file << fileLine.id << " " << fileLine.variable << " " <<fileLine.id_pays <<" " <<fileLine.id_link<<" "<<fileLine.time_step << "\n";
+            file << fileLine.id << " " << fileLine.variable;
+            if (fileLine.id_pays != -1) {
+                file << " " << fileLine.id_pays;
+            }
+            file <<" " <<fileLine.id_link<<" "<<fileLine.time_step << "\n";
         }
         file.close();
     }
@@ -72,7 +76,9 @@ protected:
         for (int i = 0; i< variable.size();i++) {
             std::ostringstream name;
             name << variable.at(i) << "_";
-            name << id_pays.at(i) << "_";
+            if (id_pays.at(i) != -1) {
+                name << id_pays.at(i) << "_";
+            }
             name << id_link.at(i) << "_";
             name << time_step.at(i) << "_";
             result.push_back(name.str());
@@ -114,7 +120,8 @@ protected:
 TEST_F(VariableFileReaderTest, FileNotAvailable) {
     try {
         std::vector<ActiveLink> links;
-        VariableFileReader varReader("not_available_file.txt", links, "");
+        VariableFileReadNameConfiguration variable_name_config;
+        VariableFileReader varReader("not_available_file.txt", links, variable_name_config);
         FAIL();
     }
     catch(const std::runtime_error& expected) {
@@ -126,13 +133,14 @@ TEST_F(VariableFileReaderTest, ReadVariable) {
 
     _ids = {0,1,2,3,4,5,6};
     _variable = {"var_1", "var_2", "var_3", "var_4", "var_5", "var_6", "var_7"};
-    _id_pays = {0,0,0,0,0,0,00};
+    _id_pays = std::vector<int>(_variable.size(), 0);
     _id_link = {7,8,9,10,11,12,13};
     _time_step = {14,15,16,17,18,19,20};
     createVariableFile(TEMP_FILE_NAME, _ids,_variable,_id_pays,_id_link,_time_step);
 
     std::vector<ActiveLink> links;
-    VariableFileReader varReader(TEMP_FILE_NAME, links,"");
+    VariableFileReadNameConfiguration variable_name_config;
+    VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config);
 
     std::vector<std::string> expectedVariable = createExpectedVariableName(_variable,_id_pays, _id_link,_time_step);
     std::vector<std::string> variable = varReader.getVariables();
@@ -144,13 +152,16 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithoutActiveLink) {
 
     _ids = {0,1,2,3,4,5,6};
     _variable = {"var_ntc", "var_ntc", "var_3", "var_4", "var_5", "var_6", "var_7"};
-    _id_pays = {0,0,0,0,0,0,00};
+    _id_pays = std::vector<int>(_variable.size(), 0);
     _id_link = {7,8,9,10,11,12,13};
     _time_step = {14,15,16,17,18,19,20};
     createVariableFile(TEMP_FILE_NAME, _ids,_variable,_id_pays,_id_link,_time_step);
 
+    VariableFileReadNameConfiguration variable_name_config;
+    variable_name_config.ntc_variable_name = "var_ntc";
+
     std::vector<ActiveLink> links;
-    VariableFileReader varReader(TEMP_FILE_NAME, links,"var_ntc");
+    VariableFileReader varReader(TEMP_FILE_NAME, links,variable_name_config);
 
     std::map<linkId,  ColumnsToChange> ntcVarColumns = varReader.getNtcVarColumns();
     ASSERT_EQ(ntcVarColumns.size(), 0);
@@ -160,14 +171,16 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithOneActiveLink) {
 
     _ids = {0,1,2,3,4,5,6};
     _variable = {"var_ntc", "var_ntc", "var_3", "var_4", "var_5", "var_6", "var_7"};
-    _id_pays = {0,0,0,0,0,0,00};
+    _id_pays = std::vector<int>(_variable.size(), 0);
     _id_link = {1,1,9,10,11,12,13};
     _time_step = {14,15,16,17,18,19,20};
     createVariableFile(TEMP_FILE_NAME, _ids,_variable,_id_pays,_id_link,_time_step);
 
     std::vector<ActiveLink> links;
     links.push_back(ActiveLink(1,"link"));
-    VariableFileReader varReader(TEMP_FILE_NAME, links,"var_ntc");
+    VariableFileReadNameConfiguration variable_name_config;
+    variable_name_config.ntc_variable_name = "var_ntc";
+    VariableFileReader varReader(TEMP_FILE_NAME, links,variable_name_config);
 
     std::map<linkId,  ColumnsToChange> ntcVarColumns = varReader.getNtcVarColumns();
     std::map<linkId , ColumnsToChange> expectedNtcVarColumns;
@@ -180,7 +193,7 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithMultipleActiveLink) {
 
     _ids = {0,1,2,3,4,5,6};
     _variable = {"var_ntc", "var_ntc", "var_3", "var_4", "var_5", "var_ntc", "var_ntc"};
-    _id_pays = {0,0,0,0,0,0,00};
+    _id_pays = std::vector<int>(_variable.size(), 0);
     _id_link = {1,1,9,10,11,2,2};
     _time_step = {14,15,16,17,18,19,20};
     createVariableFile(TEMP_FILE_NAME, _ids,_variable,_id_pays,_id_link,_time_step);
@@ -188,7 +201,9 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithMultipleActiveLink) {
     std::vector<ActiveLink> links;
     links.push_back(ActiveLink(1,"link"));
     links.push_back(ActiveLink(2,"link2"));
-    VariableFileReader varReader(TEMP_FILE_NAME, links,"var_ntc");
+    VariableFileReadNameConfiguration variable_name_config;
+    variable_name_config.ntc_variable_name = "var_ntc";
+    VariableFileReader varReader(TEMP_FILE_NAME, links,variable_name_config);
 
     std::map<linkId,  ColumnsToChange> ntcVarColumns = varReader.getNtcVarColumns();
     std::map<linkId , ColumnsToChange> expectedNtcVarColumns;
@@ -196,6 +211,32 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithMultipleActiveLink) {
     expectedNtcVarColumns[2] = { ColumnToChange(5,19), ColumnToChange(6,20)};
 
     ASSERT_EQ(ntcVarColumns,expectedNtcVarColumns);
+}
+
+TEST_F(VariableFileReaderTest, ReadCostColumnsWithMultipleActiveLink) {
+
+    _ids = {0,1,2,3,4,5,6};
+    _variable = {"cost_ori", "cost_ori", "cost_ext", "var_4", "cost_ext", "cost_ori", "cost_ori"};
+    _id_pays = std::vector<int>(_variable.size(), -1);
+    _id_link = {1,1,1,10,2,2,2};
+    _time_step = {14,15,16,17,18,19,20};
+    createVariableFile(TEMP_FILE_NAME, _ids,_variable,_id_pays,_id_link,_time_step);
+
+    std::vector<ActiveLink> links;
+    links.push_back(ActiveLink(1,"link"));
+    links.push_back(ActiveLink(2,"link2"));
+
+    VariableFileReadNameConfiguration variable_name_config;
+    variable_name_config.cost_origin_variable_name = "cost_ori";
+    variable_name_config.cost_extremite_variable_name = "cost_ext";
+    VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config);
+
+    std::map<linkId,  ColumnsToChange> costVarColumns = varReader.getCostVarColumns();
+    std::map<linkId , ColumnsToChange> expectedCostVarColumns;
+    expectedCostVarColumns[1] = {{0,14}, {1,15}, {2,16}};
+    expectedCostVarColumns[2] = {{4,18}, {5,19}, {6,20}};
+
+    ASSERT_EQ(costVarColumns,expectedCostVarColumns);
 }
 
 
