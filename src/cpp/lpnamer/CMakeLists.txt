@@ -7,7 +7,7 @@
 # ===========================================================================
 
 add_library (lp_namer_core STATIC
-		${CMAKE_CURRENT_SOURCE_DIR}/Candidates.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReader.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.cpp
@@ -15,7 +15,7 @@ add_library (lp_namer_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/common_lpnamer.h
 	${CMAKE_CURRENT_SOURCE_DIR}/INIReader.h
-	${CMAKE_CURRENT_SOURCE_DIR}/Candidates.h
+		${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.h
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.h
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReader.h
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h

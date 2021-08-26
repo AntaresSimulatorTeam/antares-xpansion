@@ -1,6 +1,6 @@
 #include <algorithm>
 
-#include "Candidates.h"
+#include "LinkProblemsGenerator.h"
 #include "VariableFileReader.h"
 #include "solver_utils.h"
 #include "helpers/StringUtils.h"
