@@ -89,7 +89,7 @@ void masterGeneration(const std::string& rootPath,
 			return cand1._name < cand2._name;
 		});
 	
-	SolverAbstract::Ptr master_l = MasterProblemBuilder().build(solver_name, candidates);
+	SolverAbstract::Ptr master_l = MasterProblemBuilder(master_formulation).build(solver_name, candidates);
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
 	std::string const& lp_name = "master";

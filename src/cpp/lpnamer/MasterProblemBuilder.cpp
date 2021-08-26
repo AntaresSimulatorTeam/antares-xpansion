@@ -5,6 +5,11 @@
 #include "MasterProblemBuilder.h"
 #include <unordered_map>
 
+MasterProblemBuilder::MasterProblemBuilder(const std::string& master_formulation)
+{
+	_master_formulation = master_formulation;
+}
+
 std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& solverName, const std::vector<Candidate>& candidates)
 {
 	_indexOfNvar.clear();
@@ -24,9 +29,12 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& s
 		}
 	}
 
-	addNvarOnEachIntegerCandidate(candidatesInteger, master_l);
+	if (_master_formulation != "relaxed")
+	{
+		addNvarOnEachIntegerCandidate(candidatesInteger, master_l);
 
-	addPmaxConstraint(candidatesInteger, master_l);
+		addPmaxConstraint(candidatesInteger, master_l);
+	}
 
 	return master_l;
 }

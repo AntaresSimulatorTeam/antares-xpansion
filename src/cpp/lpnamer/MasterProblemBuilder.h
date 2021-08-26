@@ -11,6 +11,7 @@
 
 class MasterProblemBuilder {
 public:
+	MasterProblemBuilder(const std::string& master_formulation);
 	std::shared_ptr<SolverAbstract> build(const std::string& solverName, const std::vector<Candidate>& candidates);
 
 private :
@@ -21,6 +22,7 @@ private :
 
 	std::unordered_map<std::string, int> _indexOfPmaxVar;
 	std::unordered_map<std::string, int> _indexOfNvar;
+	std::string _master_formulation;
 
 };
 
