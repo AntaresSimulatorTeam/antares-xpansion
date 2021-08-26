@@ -7,20 +7,19 @@
 # ===========================================================================
 
 add_library (lp_namer_core STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/IntercoDataMps.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Candidates.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReader.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdater.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/CandidatesInitializer.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/common_lpnamer.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/common_lpnamer.h
 	${CMAKE_CURRENT_SOURCE_DIR}/INIReader.h
-	${CMAKE_CURRENT_SOURCE_DIR}/IntercoDataMps.h
+	${CMAKE_CURRENT_SOURCE_DIR}/Candidates.h
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.h
 	${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraintsReader.h
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
-)
+Candidate.cpp Candidate.h CandidatesINIReader.cpp CandidatesINIReader.h ActiveLinks.cpp ActiveLinks.h LinkProfileReader.cpp LinkProfileReader.h LinkProfile.cpp LinkProfile.h ProblemModifier.cpp ProblemModifier.h VariableFileReader.cpp VariableFileReader.h MasterProblemBuilder.cpp MasterProblemBuilder.h)
 
 target_include_directories (lp_namer_core
 	PUBLIC

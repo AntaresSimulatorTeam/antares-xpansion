@@ -120,17 +120,17 @@ def run_solver(installDir, solver : str):
 ## TESTS ##
 @pytest.mark.optim
 @pytest.mark.benderssequential
-def test_001_sequential(installDir):
-    run_solver(installDir, 'BENDERS_SEQUENTIAL')
+def test_001_sequential(install_dir):
+    run_solver(install_dir, 'BENDERS_SEQUENTIAL')
 
 
 @pytest.mark.optim
 @pytest.mark.mergemps
-def test_001_mergemps(installDir):
-    run_solver(installDir, 'MERGE_MPS')
+def test_001_mergemps(install_dir):
+    run_solver(install_dir, 'MERGE_MPS')
 
 
 @pytest.mark.optim
 @pytest.mark.bendersmpi
-def test_001_mpibenders(installDir):
-    run_solver(installDir, 'BENDERS_MPI')
+def test_001_mpibenders(install_dir):
+    run_solver(install_dir, 'BENDERS_MPI')

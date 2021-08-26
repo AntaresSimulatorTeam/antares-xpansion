@@ -207,7 +207,7 @@ def check_candidates_file(driver):
         driver.candidates_list.append(ini_file[each_section]['name'].strip().lower())
 
     # check some attributes unicity : name and links
-    unique_attributes = ["name", "link"]
+    unique_attributes = ["name"]
     for verified_attribute in unique_attributes:
         unique_values = set()
         for each_section in ini_file.sections():

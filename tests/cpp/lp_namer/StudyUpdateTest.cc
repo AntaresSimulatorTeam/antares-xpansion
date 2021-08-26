@@ -1,23 +1,22 @@
 #include "gtest/gtest.h"
 
-#include <sstream>
 #include <fstream>
 
 #include "common_lpnamer.h"
-#include "CandidatesInitializer.h"
 #include "StudyUpdater.h"
+#include "CandidatesINIReader.h"
+#include "LinkProfileReader.h"
+#include "ActiveLinks.h"
 
 class StudyUpdateTest : public ::testing::Test
 {
 protected:
 
-    static Candidates* candidates_;
+    static std::vector<ActiveLink> _links;
 
 	static void SetUpTestCase()
 	{
         //Change capacity folder to retrieve temp_profile.ini in the current location
-        Candidate::_capacitySubfolder = "";
-        candidates_ = new Candidates();
 
         // called before 1st test
         std::string content_l;
@@ -47,7 +46,6 @@ peak\n\
         content_l = "\
 [1]\n\
 name = peak\n\
-investment-type = peak\n\
 link = area1 - peak\n\
 annual-cost-per-mw = 60000\n\
 unit-size = 100\n\
@@ -82,11 +80,15 @@ already-installed-capacity = 100\n\
         file_l << directLinkprofile_l.back() << "\t" << indirectLinkprofile_l.back();
         file_l.close();
 
+        CandidatesINIReader candidateReader("temp_interco.txt","temp_area.txt");
+        LinkProfileReader profileReader;
 
-        //Uninitialized mpslist //initMPSList(mps_file_name);
-        initIntercoMap("temp_interco.txt");
-        initAreas("temp_area.txt");
-        StudyUpdateTest::candidates_->getCandidatesFromFile("temp_candidates.ini");
+        std::vector<CandidateData> cand_data_list = candidateReader.readCandidateData("temp_candidates.ini");
+
+        std::map<std::string, LinkProfile> profile_map = profileReader.getLinkProfileMap(".", cand_data_list);
+
+        ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
+        StudyUpdateTest::_links = linkBuilder.getLinks();
     }
 
 	static void TearDownTestCase()
@@ -98,9 +100,6 @@ already-installed-capacity = 100\n\
         std::remove("temp_area.txt");
         std::remove("temp_candidates.ini");
         std::remove("temp_profile.ini");
-
-        delete candidates_;
-        candidates_ = nullptr;
 	}
 
 	void SetUp()
@@ -114,19 +113,26 @@ already-installed-capacity = 100\n\
 	}
 };
 
-Candidates * StudyUpdateTest::candidates_ = nullptr;
+std::vector<ActiveLink> StudyUpdateTest::_links;
 
 /***
  Verify :
-    * two candidates created :
+    * two link created
+    * two candidates created (one on each link):
     *   - peak
     *   - transmission_line
 ***/
-TEST_F(StudyUpdateTest, candidatesInit)
+TEST_F(StudyUpdateTest, linksInit)
 {
-	ASSERT_EQ(candidates_->size(), 2);
-    ASSERT_EQ((*candidates_)["1"].str("name"), "peak");
-    ASSERT_EQ((*candidates_)["2"].str("name"), "transmission_line");
+	ASSERT_EQ(_links.size(), 2);
+
+    const auto& candidatesLink0 = _links[0].getCandidates();
+    const auto& candidatesLink1 = _links[1].getCandidates();
+    ASSERT_EQ(candidatesLink0.size(), 1);
+    ASSERT_EQ(candidatesLink1.size(), 1);
+
+    ASSERT_EQ(candidatesLink0[0]._name, "transmission_line");
+    ASSERT_EQ(candidatesLink1[0]._name, "peak");
 }
 
 
@@ -139,20 +145,22 @@ TEST_F(StudyUpdateTest, candidatesInit)
 ***/
 TEST_F(StudyUpdateTest, linkprofile)
 {
-    //filename
-    ASSERT_EQ(candidates_->begin()->second.str("link-profile"), "temp_profile.ini");
+    ASSERT_EQ(_links.size(), 2);
+    const auto& link1candidates = _links[1].getCandidates();
+    
+    ASSERT_EQ(link1candidates.size(), 1);
 
     //direct profile
-	ASSERT_EQ(candidates_->begin()->second.profile(0, ".", true), 0);
-    ASSERT_EQ(candidates_->begin()->second.profile(1, ".", true), 0.5);
-    ASSERT_EQ(candidates_->begin()->second.profile(2, ".", true), 1);
-    ASSERT_EQ(candidates_->begin()->second.profile(8759, ".", true), 1);
+    ASSERT_EQ(link1candidates[0].direct_profile(0), 0);
+    ASSERT_EQ(link1candidates[0].direct_profile(1), 0.5);
+    ASSERT_EQ(link1candidates[0].direct_profile(2), 1);
+    ASSERT_EQ(link1candidates[0].direct_profile(8759), 1);
 
     //indirect profile
-	ASSERT_EQ(candidates_->begin()->second.profile(0, ".", false), 0.25);
-    ASSERT_EQ(candidates_->begin()->second.profile(1, ".", false), 0.75);
-    ASSERT_EQ(candidates_->begin()->second.profile(2, ".", false), 1);
-    ASSERT_EQ(candidates_->begin()->second.profile(8759, ".", false), 1);
+    ASSERT_EQ(link1candidates[0].indirect_profile(0), 0.25);
+    ASSERT_EQ(link1candidates[0].indirect_profile(1), 0.75);
+    ASSERT_EQ(link1candidates[0].indirect_profile(2), 1);
+    ASSERT_EQ(link1candidates[0].indirect_profile(8759), 1);
 }
 
 
@@ -193,30 +201,40 @@ author = Unknown\n\
 TEST_F(StudyUpdateTest, LinkFilenames)
 {
     StudyUpdater studyupdater(".");
-    ASSERT_EQ(studyupdater.getLinkdataFilepath((*candidates_)["1"]), std::string(".") + PATH_SEPARATOR + "input" + PATH_SEPARATOR + "links" + PATH_SEPARATOR + "area1" + PATH_SEPARATOR + "peak.txt");
-    ASSERT_EQ(studyupdater.getLinkdataFilepath((*candidates_)["2"]), std::string(".") + PATH_SEPARATOR + "input" + PATH_SEPARATOR + "links" + PATH_SEPARATOR + "area1" + PATH_SEPARATOR + "area2.txt");
+    ASSERT_EQ(studyupdater.getLinkdataFilepath(_links[0]), std::string(".") + PATH_SEPARATOR + "input" + PATH_SEPARATOR + "links" + PATH_SEPARATOR + "area1" + PATH_SEPARATOR + "area2.txt");
+    ASSERT_EQ(studyupdater.getLinkdataFilepath(_links[1]), std::string(".") + PATH_SEPARATOR + "input" + PATH_SEPARATOR + "links" + PATH_SEPARATOR + "area1" + PATH_SEPARATOR + "peak.txt");
 }
 
-
-/***
- Verify that the computed capacities are correct:
-    * candidate 1 has no already-installed capacity
-***/
 TEST_F(StudyUpdateTest, computeNewCapacities)
 {
     StudyUpdater studyupdater(".");
 
-    //candidate 1 has a link profile
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, (*candidates_)["1"], 0), std::make_pair(0.,250.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, (*candidates_)["1"], 1), std::make_pair(500.,750.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, (*candidates_)["1"], 2), std::make_pair(1000.,1000.));
+    //candidate peak has a link profile
+    const std::map<std::string, double>& investissments = { {"peak",1000}, {"transmission_line",0} };
 
-    //candidate 2 has an already installed capacity of 100
-    ASSERT_EQ(studyupdater.computeNewCapacities(0, (*candidates_)["2"], 0), std::make_pair(100.,100.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(0, (*candidates_)["2"], 1), std::make_pair(100.,100.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(0, (*candidates_)["2"], 2), std::make_pair(100.,100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[1], 0), std::make_pair(0., 250.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[1], 1), std::make_pair(500., 750.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[1], 2), std::make_pair(1000., 1000.));
 
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, (*candidates_)["2"], 0), std::make_pair(1100.,1100.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, (*candidates_)["2"], 1), std::make_pair(1100.,1100.));
-    ASSERT_EQ(studyupdater.computeNewCapacities(1000, (*candidates_)["2"], 2), std::make_pair(1100.,1100.));
+    //link 0 : area1 - area2 has an already installed capacity of 100
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[0], 0), std::make_pair(100., 100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[0], 1), std::make_pair(100., 100.));
+    ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[0], 2), std::make_pair(100., 100.));
+}
+
+TEST_F(StudyUpdateTest, no_computed_investment_for_candidate_peak)
+{
+    StudyUpdater studyupdater(".");
+
+    //candidate peak has no computed investments
+    const std::map<std::string, double>& investissments = {{"transmission_line",0} };
+
+    try {
+        studyupdater.computeNewCapacities(investissments, _links[1], 0);
+        FAIL() << "Missing investment not detected for candidate peak on link area1 - peak";
+    }
+    catch (const std::runtime_error& err) {
+        ASSERT_STREQ(err.what(), "No investment computed for the candidate peak on the link area1 - peak");
+    }
+
 }

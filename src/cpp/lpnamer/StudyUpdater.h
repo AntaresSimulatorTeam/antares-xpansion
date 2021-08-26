@@ -1,6 +1,7 @@
 #pragma once
 
-#include "IntercoDataMps.h"
+#include "Candidates.h"
+#include "ActiveLinks.h"
 
 
 /*!
@@ -44,32 +45,35 @@ public:
     void readAntaresVersion();
 
 /*!
- * \brief returns the path to the linkdata file related to a candidate
+ * \brief returns the path to the linkdata file related to a link
  *
- * \param candidate_p : candidate for which the datalink file path will be returned
+ * \param link_p : link for which the datalink file path will be returned
  */
-    std::string getLinkdataFilepath(Candidate const & candidate_p) const;
+
+    std::string getLinkdataFilepath(ActiveLink const& link_p) const;
+
+
+    /*!
+     * \brief computes the new capacities of related to a link
+     *
+     * \param investment_p : investment to consider for the candidates of the link
+     * \param link_p : link for which the capacities will be computed
+     * \param timepoint_p : timepoint where the capcities will be computed
+     *
+     * \return a pair of the computed direct and indirect capacities
+     */
+    std::pair<double, double> computeNewCapacities(const std::map<std::string, double>& investments_p, const ActiveLink& link_p, int timepoint_p) const;
 
 /*!
- * \brief computes the new capacities of related to a candidate
+ * \brief updates the linkdata file for a given link according to the investments of its candidates
  *
- * \param investment_p : investment to consider for the candidate
- * \param candidate_p : candidate for which the capacities will be computed
- * \param timepoint_p : timepoint where the capcities will be computed
- *
- * \return a pair of the computed direct and indirect capacities
- */
-    std::pair<double, double> computeNewCapacities(double investment_p, Candidate & candidate_p, int timepoint_p) const;
-
-/*!
- * \brief updates the linkdata file for a given candidate based on a given investment
- *
- * \param candidate_p : candidate for which the linkdata file will be updated
+ * \param link_p : link for which the linkdata file will be updated
  * \param investment_p : value of investment to consider for the update
  *
  * \return 1 if the update fails, 0 otherwise
  */
-    int updateLinkdataFile(Candidate candidate_p, double investment_p) const;
+
+    int updateLinkdataFile(const ActiveLink& link_p, const std::map<std::string, double>& investments_p) const;
 
 /*!
  * \brief updates the linkdata files for multiple candidates from a solution Point
@@ -79,7 +83,7 @@ public:
  *
  * \return number of candidates we failed to update
  */
-    int update(Candidates const & candidates_p, std::map<std::string, double> investments_p) const;
+    int update(std::vector<ActiveLink> const& links_p, const std::map<std::string, double>& investments_p) const;
 
 /*!
  * \brief updates the linkdata files for multiple candidates from a json file
@@ -89,7 +93,7 @@ public:
  *
  * \return number of candidates we failed to update
  */
-    int update(Candidates const & candidates_p, std::string const & jsonPath_p) const;
+    int update(std::vector<ActiveLink> const& links_p, std::string const& jsonPath_p) const;
 };
 
 /*!

@@ -64,7 +64,12 @@ class TestCandidateReader:
             {"name" : "peak3", "area1" : "area1", "area2" : "peak", "link-profile" : "capa_pv.ini", "already-installed-capacity" : "" , "already-installed-link-profile" : "link-profile-one-col.txt",
              "link-profile-array" : np.array([1.0, 2.0, 3.0])},
             {"name" : "peak4", "area1" : "area1", "area2" : "peak", "link-profile" : "capa_pv.ini", "already-installed-capacity" : "" , "already-installed-link-profile" : "link-profile-two-col.txt",
-             "link-profile-array" : np.array([[1.0, 2.0, 3.0],[0.0, 1.0, 2.0]])}
+             "link-profile-array" : np.array([[1.0, 2.0, 3.0],[0.0, 1.0, 2.0]])},
+        ]
+
+        links = [
+            {"name" : "area1 - semibase", "candidates" : ["semibase"] , "area1" : "area1", "area2" : "semibase"},
+            {"name" : "area1 - peak", "candidates" : ["peak", "peak2", "peak3", "peak4"], "area1" : "area1", "area2" : "peak"}
         ]
 
         index = 0
@@ -72,17 +77,28 @@ class TestCandidateReader:
         candidate_name_list = []
         for candidate in candidates:
             candidate_name_list.append(candidate["name"])
-            content += self._create_candidate_content(index,candidate["name"],candidate["area1"],candidate["area2"])
+            content += self._create_candidate_content(index, candidate["name"], candidate["area1"], candidate["area2"])
             content += self._create_link_profile_content(candidate["link-profile"])
             content += self._create_already_installed_capacity_content(candidate["already-installed-capacity"])
             content += self._create_already_installed_link_profile_content(candidate["already-installed-link-profile"])
-            index +=1
+            index += 1
+
+        link_name_list = []
+        for link in links:
+            link_name_list.append(link["name"])
 
         self._create_reader(tmp_path, content)
 
+        assert self.ini_reader.get_link_list() == link_name_list
         assert self.ini_reader.get_candidates_list() == candidate_name_list
 
         study_path = Path(tmp_path)
+
+        for link in links:
+            link_name = link["name"]
+            assert self.ini_reader._get_link_areas(link_name) == (link["area1"], link["area2"])
+            assert self.ini_reader.get_link_candidate(link_name) == link["candidates"]
+            assert self.ini_reader.get_link_antares_link_file(study_path, link_name ) == study_path / "input"/ "links" / link["area1"] / str(link["area2"] + ".txt")
 
         for candidate in candidates:
             candidate_name = candidate["name"]
