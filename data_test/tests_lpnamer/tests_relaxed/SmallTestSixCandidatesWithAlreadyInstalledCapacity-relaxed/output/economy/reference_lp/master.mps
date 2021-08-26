@@ -2,18 +2,18 @@ NAME          ClpDefau  FREE
 ROWS
  N  OBJROW
 COLUMNS
-    peak1 OBJROW 100000
-    semibase1 OBJROW 126000
-    pv OBJROW 46000
     battery OBJROW 60000
+    peak1 OBJROW 100000
     peak2 OBJROW 100000
+    pv OBJROW 46000
+    semibase1 OBJROW 126000
     semibase2 OBJROW 126000
 RHS
 BOUNDS
- UP BOUND peak1 1000
- UP BOUND semibase1 1000
- UP BOUND pv 1000
  UP BOUND battery 1000
+ UP BOUND peak1 1000
  UP BOUND peak2 1000
+ UP BOUND pv 1000
+ UP BOUND semibase1 1000
  UP BOUND semibase2 1000
 ENDATA

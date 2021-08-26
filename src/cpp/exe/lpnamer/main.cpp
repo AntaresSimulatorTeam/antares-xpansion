@@ -22,6 +22,7 @@
 #include "solver_utils.h"
 #include "CandidatesINIReader.h"
 #include "LinkProfileReader.h"
+#include "MasterProblemBuilder.h"
 
 namespace po = boost::program_options;
 
@@ -63,110 +64,50 @@ std::string get_name(std::string const & path) {
  * \brief Generate the master ob the optimization problem
  *
  * \param rootPath String corresponding to the path where are located input data
- * \param candidates Structure which contains the list of candidates
+ * \param links Structure which contains the list of Activelink
  * \param couplings map pairs and integer which give the correspondence between optim variable and antares variable
  * \return void
  */
-void masterGeneration(std::string rootPath,
-					Candidates candidates,
-					AdditionalConstraints additionalConstraints_p,
-					std::map< std::pair<std::string, std::string>, int> couplings,
-					std::string const &master_formulation,
-					std::string const& solver_name)
+void masterGeneration(const std::string& rootPath,
+	const std::vector<ActiveLink>& links,
+	AdditionalConstraints additionalConstraints_p,
+	std::map< std::pair<std::string, std::string>, int>& couplings,
+	std::string const& master_formulation,
+	std::string const& solver_name)
 {
-	SolverFactory factory;
-	SolverAbstract::Ptr master_l = factory.create_solver(solver_name);
+	std::vector<Candidate> candidates;
 
-	int ninterco = candidates.size();
-	std::vector<int> mstart(ninterco, 0);
-	std::vector<double> obj_interco(ninterco, 0);
-	std::vector<double> lb_interco(ninterco, -1e20);
-	std::vector<double> ub_interco(ninterco, 1e20);
-	std::vector<char> coltypes_interco(ninterco, 'C');
-	std::vector<std::string> interco_names(ninterco);
-
-	int i(0);
-	std::vector<std::string> pallier_names;
-	std::vector<int> pallier; //capacity variables indices
-	std::vector<int> pallier_i; //number of units variables indices
-	std::vector<double> unit_size;
-	std::vector<double> max_unit;
-
-	for (auto const & candidate_i : candidates) {
-		obj_interco[i] = candidate_i.obj();
-		lb_interco[i] = candidate_i.lb();
-		ub_interco[i] = candidate_i.ub();
-		interco_names[i] = candidate_i._name;
-
-		if (candidate_i.is_integer()) {
-			pallier.push_back(i);
-			int new_id = ninterco + pallier_i.size();
-			pallier_i.push_back(new_id);
-			unit_size.push_back(candidate_i.unit_size());
-			max_unit.push_back(candidate_i.max_unit());
-		}
-		++i;
+	for (const auto& link : links)
+	{
+		const auto& candidateFromLink = link.getCandidates();
+		candidates.insert(candidates.end(), candidateFromLink.begin(), candidateFromLink.end());
 	}
 
-    solver_addcols(master_l, obj_interco, mstart, {}, {}, lb_interco, ub_interco, coltypes_interco, interco_names);
-
-	// integer constraints
-	int n_integer = pallier.size();
-	if(n_integer>0 && master_formulation=="integer"){
-		std::vector<double> zeros(n_integer, 0.0);
-		std::vector<int> mstart(n_integer, 0);
-		std::vector<char> integer_type(n_integer, 'I');
-		// Empty colNames
-		std::vector<std::string> colNames(0);
-        solver_addcols(master_l, zeros, mstart, {}, {}, zeros, max_unit, integer_type, colNames);
-
-		std::vector<double> dmatval;
-		std::vector<int> colind;
-		std::vector<char> rowtype;
-		std::vector<double> rhs;
-		std::vector<int> rstart;
-
-		dmatval.reserve(2*n_integer);
-		colind.reserve(2 * n_integer);
-		rowtype.reserve(n_integer);
-		rhs.reserve(n_integer);
-		rstart.reserve(n_integer + 1);
-
-		for (i = 0; i < n_integer; ++i) {
-			// pMax  - n unit_size = 0
-			rstart.push_back(dmatval.size());
-			rhs.push_back(0);
-			rowtype.push_back('E');
-
-			colind.push_back(pallier[i]);
-			dmatval.push_back(1);
-
-			colind.push_back(pallier_i[i]);
-			dmatval.push_back(-unit_size[i]);
-		}
-		rstart.push_back(dmatval.size());
-
-        solver_addrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
-	}
-
+	std::sort(candidates.begin(), candidates.end(),
+		[](const Candidate& cand1, const Candidate& cand2) -> bool
+		{
+			return cand1._name < cand2._name;
+		});
+	
+	SolverAbstract::Ptr master_l = MasterProblemBuilder(master_formulation).build(solver_name, candidates);
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
-	std::string const lp_name = "master";
+	std::string const& lp_name = "master";
 	master_l->write_prob_mps((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps"));
 
 	std::map<std::string, std::map<std::string, int> > output;
-	for (auto const & coupling : couplings) {
+	for (auto const& coupling : couplings) {
 		output[get_name(coupling.first.second)][coupling.first.first] = coupling.second;
 	}
-	i = 0;
-	for (auto const & name : interco_names) {
-		output["master"][name] = i;
+	int i = 0;
+	for (auto const& candidate : candidates) {
+		output["master"][candidate._name] = i;
 		++i;
 	}
 
 	std::ofstream coupling_file((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + STRUCTURE_FILE).c_str());
-	for (auto const & mps : output) {
-		for (auto const & pmax : mps.second) {
+	for (auto const& mps : output) {
+		for (auto const& pmax : mps.second) {
 			coupling_file << std::setw(50) << mps.first;
 			coupling_file << std::setw(50) << pmax.first;
 			coupling_file << std::setw(10) << pmax.second;
@@ -247,11 +188,7 @@ int main(int argc, char** argv) {
         LinkProblemsGenerator linkProblemsGenerator(links, solver_name);
         linkProblemsGenerator.treatloop(root, couplings);
 
-        Candidates candidates;
-        for (const ActiveLink& link : links){
-            candidates.insert(candidates.end(),link.getCandidates().begin(), link.getCandidates().end());
-        }
-		masterGeneration(root, candidates, additionalConstraints, couplings, 
+		masterGeneration(root, links, additionalConstraints, couplings, 
 			master_formulation, solver_name);
 
 		return 0;		

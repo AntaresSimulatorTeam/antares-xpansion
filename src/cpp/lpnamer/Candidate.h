@@ -17,10 +17,10 @@ struct CandidateData {
 
     std::string name;
     std::string link_profile;
-    double annual_cost_per_mw;
-    double max_investment;
-    double unit_size;
-    double max_units;
+    double annual_cost_per_mw = 0.0;
+    double max_investment = 0.0;
+    double unit_size = 0.0;
+    double max_units = 0.0;
 
     
 };

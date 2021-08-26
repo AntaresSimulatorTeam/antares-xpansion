@@ -22,7 +22,9 @@ add_executable (lp_namer_tests
         CandidatesINIReaderTest.cpp
         ActiveLinkTest.cpp
         LinkProfileReaderTest.cpp
-        ProblemModifierTest.cpp VariableFileReaderTest.cpp)
+        ProblemModifierTest.cpp
+        VariableFileReaderTest.cpp
+        MasterProblemBuilderTest.cpp)
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main
