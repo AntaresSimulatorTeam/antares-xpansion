@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Candidates.h"
+#include "LinkProblemsGenerator.h"
 #include "ActiveLinks.h"
 
 

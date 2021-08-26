@@ -15,7 +15,7 @@
 #include <boost/program_options.hpp>
 
 #include "ActiveLinks.h"
-#include "Candidates.h"
+#include "LinkProblemsGenerator.h"
 #include "AdditionalConstraints.h"
 #include "LauncherHelpers.h"
 

@@ -13,8 +13,6 @@
 #define STUDY_FILE "study.antares"
 #include "ProblemModifier.h"
 
-using Candidates = std::vector<Candidate>;
-
 struct ProblemData
 {
 	ProblemData(const std::string& problem_mps, const std::string& variables_txt);
@@ -39,12 +37,6 @@ private:
 
 	void treat(std::string const& root, ProblemData const&, 
 		std::map< std::pair<std::string, std::string>, int>& couplings);
-
-	void readVarfiles(std::string const filePath,
-                      std::vector <std::string> &var_names,
-                      std::map<colId, ColumnsToChange>& p_var_columns);
-
-    std::string getVarNameFromLine(const std::string &line) const;
 
     const std::vector<ActiveLink>& _links;
     std::string _solver_name;
