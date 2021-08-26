@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.4.0)
+PROJECT (antaresXpansion VERSION 0.5.0)
 
 # ===========================================================================
 # Default parameters
@@ -41,7 +41,7 @@ else ()
 endif()
 
 
-# set(ANTARES_XPANSION_RC 1)
+set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -83,13 +83,6 @@ if (MSVC)
     
 
 else ()
-#   set (CMAKE_BUILD_TYPE "RELEASE")
-#	set (CMAKE_BUILD_TYPE "DEBUG")
-#	IF (WITH_DEBUG)
-#		set (CMAKE_BUILD_TYPE "DEBUG")
-#	ELSE (WITH_DEBUG)GENDIOR
-#		set (CMAKE_BUILD_TYPE "RELEASE")
-#	ENDIF (WITH_DEBUG)
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -fmessage-length=0 -fPIC")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-conversion -Wno-sign-compare")
