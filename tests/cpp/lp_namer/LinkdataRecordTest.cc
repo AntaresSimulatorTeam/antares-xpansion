@@ -8,8 +8,6 @@ class LinkdataRecordTest : public ::testing::Test
 {
 protected:
 
-    static Candidates* candidates_;
-
 	static void SetUpTestCase()
 	{
         // called before first test
