@@ -20,6 +20,7 @@ jobs:
       run: |
            yum update -y
            yum install -y python3 python3-pip
+           pip3 install --upgrade pip
           
     - name: Install mandatory system libraries
       run: |
