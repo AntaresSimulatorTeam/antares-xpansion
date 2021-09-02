@@ -77,7 +77,7 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string,
 
 		master_p->add_cols(1, 0, std::vector<double>(1, 0.0).data(), std::vector<int>(2, 0).data(),
 			std::vector<int>(0).data(), std::vector<double>(0).data(),
-			std::vector<double>(1, -1e20).data(), std::vector<double>(1, 1e20).data());
+			std::vector<double>(1, 0).data(), std::vector<double>(1, 1e20).data());
 
 		// Changing column type to binary
 		master_p->chg_col_type(std::vector<int>(1, master_p->get_ncols() - 1),
@@ -89,7 +89,7 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string,
 		// Add linking constraint
 		std::vector<int> matstart(2);
 		matstart[0] = 0;
-		matstart[0] = 2;
+		matstart[1] = 2;
 		
 		std::vector<int> matind(2);
 		matind[0] = col_index;
@@ -99,9 +99,9 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string,
 		std::vector<double> oldVarUb(1);
 		master_p->get_ub(oldVarUb.data(), col_index, col_index);
 		matval[0] = 1;
-		matval[1] = oldVarUb[0];
+		matval[1] = -oldVarUb[0];
 
-		master_p->add_rows(1, 2, std::vector<char>(1, 'E').data(), std::vector<double>(1, 0.0).data(),
+		master_p->add_rows(1, 2, std::vector<char>(1, 'L').data(), std::vector<double>(1, 0.0).data(),
 			NULL, matstart.data(), matind.data(), matval.data());
 		master_p->chg_row_name(master_p->get_nrows() - 1, 
 			"link_" + pairOldNewVarnames.first + "_" + pairOldNewVarnames.second);
