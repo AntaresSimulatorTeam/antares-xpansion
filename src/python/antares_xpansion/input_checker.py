@@ -87,12 +87,17 @@ def check_candidate_option_type(option, value):
                      'relaxed': 'string',
                      'link-profile': 'string',
                      'already-installed-capacity': 'non-negative',
-                     'already-installed-link-profile': 'string'}
+                     'already-installed-link-profile': 'string',
+                     'has-link-profile': 'string'}
+    obsolete_options = ["has-link-profile"]
     option_type = options_types.get(option)
     if option_type is None:
         print('check_candidate_option_type: %s option not recognized in candidates file.' % option)
         sys.exit(1)
     else:
+        if obsolete_options.count(option):
+            print('%s option is no longer used by antares-xpansion' % option)
+            return True
         if option_type == 'string':
             return True
         elif option_type == 'numeric':
