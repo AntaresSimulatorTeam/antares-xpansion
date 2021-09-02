@@ -163,6 +163,16 @@ def test_full_study_long(install_dir, study_path, expected_values, expected_inve
          {"gap": -7.62939453125e-06, "investment_cost": 224599999.99996948,
           "operational_cost": 22516674015.060184, "overall_cost": 22741274015.060154},
          {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02, "transmission_line": 0.0}
+         ),
+        (ALL_STUDIES_PATH / "additionnal-constraints",
+         {"gap": 3.0517578125e-05, "investment_cost": 224600000.00003052,
+          "operational_cost": 22513655727.899261, "overall_cost": 22738255727.899292},
+         {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02, "transmission_line": 0.0}
+         ),
+        (ALL_STUDIES_PATH / "additionnal-constraints-binary",
+         {"gap": -7.62939453125e-06, "investment_cost": 220499999.99999809,
+          "operational_cost": 13501512886.702877, "overall_cost": 13722012886.702875},
+         {"battery": 885, "peak": 1800, "pv": 1.0e+03, "semibase": 0.0, "transmission_line": 400.0}
          )
     ],
 )
