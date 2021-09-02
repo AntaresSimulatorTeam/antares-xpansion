@@ -11,6 +11,8 @@ v0.5.0 (xx/2021)
 
  - option keepMps was still removing some files needed for lp step
  - correction of lp step call if it was the only step asked by user
+ - correction of optimization if hurdles cost were used in antares-simulator
+ - correction of optimization with binary additionnal constraint between investment candidates
 
 ### For developers
  - fix mergemps optimization in debug mode
