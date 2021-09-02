@@ -1,11 +1,12 @@
 Antares-Xpansion Changelog
 =================
-v0.5.0 (xx/2021)
+v0.5.0 (09/2021)
 --------------------
 ### Features
 
  - In benders optimization, master problem .mps is written after each resolution
- - Review of candidates.ini file content (remove of has-link-profile)
+ - Several investment candidates on the same link  
+ - Review of candidates.ini file content (remove of has-link-profile and add enable feature)
  
 ### Bug fixes
 
