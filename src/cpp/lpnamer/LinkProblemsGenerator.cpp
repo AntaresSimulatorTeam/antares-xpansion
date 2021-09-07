@@ -85,7 +85,9 @@ void LinkProblemsGenerator::treat(std::string const & root,
     //couplings creation
     for (const ActiveLink& link : _links){
         for(const Candidate& candidate : link.getCandidates()){
-            couplings[{candidate._name, mps_name}] = problem_modifier.get_candidate_col_id(candidate._name);
+            if (problem_modifier.has_candidate_col_id(candidate._name)){
+                couplings[{candidate._name, mps_name}] = problem_modifier.get_candidate_col_id(candidate._name);
+            }
         }
     }
 

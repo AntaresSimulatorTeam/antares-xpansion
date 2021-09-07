@@ -35,6 +35,7 @@ public:
                                                   const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns);
 
     unsigned int get_candidate_col_id(const std::string& cand_name) const;
+    bool has_candidate_col_id(const std::string& cand_name) const;
 
 private:
 
@@ -52,6 +53,8 @@ private:
     void add_new_columns(const std::vector<Candidate> &candidates);
 
     std::vector<Candidate> candidates_from_all_links(const std::vector<ActiveLink> &active_links) const;
+    std::set<int> extract_time_steps(const std::map<linkId, ColumnsToChange> &p_columns) const;
+    std::vector<Candidate> candidates_with_not_null_profile(const std::vector<ActiveLink> &active_links, const std::set<int>& time_steps) const;
 
     void add_new_ntc_constraints(const std::vector<ActiveLink> &active_links,
                                  const std::map<linkId, ColumnsToChange> &p_ntc_columns);
