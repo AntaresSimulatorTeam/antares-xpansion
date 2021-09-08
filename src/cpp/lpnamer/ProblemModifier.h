@@ -31,7 +31,8 @@ public:
 
     std::shared_ptr<SolverAbstract> changeProblem(std::shared_ptr<SolverAbstract> mathProblem, const std::vector<ActiveLink> &active_links,
                                                   const std::map<linkId,  ColumnsToChange> &p_ntc_columns,
-                                                  const std::map<linkId, ColumnsToChange> &p_cost_columns);
+                                                  const std::map<linkId, ColumnsToChange> &p_direct_cost_columns,
+                                                  const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns);
 
     unsigned int get_candidate_col_id(const std::string& cand_name) const;
 
@@ -39,7 +40,8 @@ private:
 
     void changeProblem(const std::vector<ActiveLink> &active_links,
                        const std::map<linkId, ColumnsToChange> &p_ntc_columns,
-                       const std::map<linkId, ColumnsToChange> &p_cost_columns);
+                       const std::map<linkId, ColumnsToChange> &p_direct_cost_columns,
+                       const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns);
 
     void remove_bounds_for(const std::vector<int> &col_ids);
 
@@ -54,8 +56,11 @@ private:
     void add_new_ntc_constraints(const std::vector<ActiveLink> &active_links,
                                  const std::map<linkId, ColumnsToChange> &p_ntc_columns);
 
-    void add_new_cost_constraints(const std::vector<ActiveLink> &active_links,
+    void add_new_direct_cost_constraints(const std::vector<ActiveLink> &active_links,
                              const std::map<linkId, ColumnsToChange> &p_cost_columns);
+
+    void add_new_indirect_cost_constraints(const std::vector<ActiveLink> &active_links,
+                                         const std::map<linkId, ColumnsToChange> &p_cost_columns);
 
     std::shared_ptr<SolverAbstract> _math_problem;
     std::map<std::string ,unsigned int> _candidate_col_id;

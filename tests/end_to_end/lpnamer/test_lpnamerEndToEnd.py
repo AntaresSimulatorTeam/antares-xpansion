@@ -42,7 +42,7 @@ def setup_and_teardown_lp_directory(request):
         shutil.rmtree(lp_dir)
     Path(lp_dir).mkdir(exist_ok=True)
     yield
-    shutil.rmtree(lp_dir)
+    #shutil.rmtree(lp_dir)
 
 
 @pytest.mark.parametrize("test_dir,master_mode", test_data)
