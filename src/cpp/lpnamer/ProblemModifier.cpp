@@ -168,7 +168,7 @@ void ProblemModifier::add_new_indirect_cost_constraints(const std::vector<Active
             double already_installed_capacity( link._already_installed_capacity);
             for (auto column : p_cost_columns.at(link._idLink)) {
                 double indirect_already_installed_profile_at_timestep = link.already_installed_indirect_profile(column.time_step);
-                rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
+                rhs.push_back(already_installed_capacity*indirect_already_installed_profile_at_timestep);
 
                 rowtype.push_back('L');
                 colind.push_back(column.id);

@@ -210,10 +210,6 @@ protected:
         update_row_type();
         ASSERT_EQ(rowtypes.at(row_id), type);
     }
-    void verify_mat_val_is(const int mat_id, double mat_value){
-        update_mat_val();
-        ASSERT_DOUBLE_EQ(mat_val.at(mat_id), mat_value);
-    }
     void verify_rhs_is(const int rhs_id, double rhs_value){
         update_rhs_val();
         ASSERT_DOUBLE_EQ(rhs.at(rhs_id), rhs_value);
@@ -331,7 +327,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     verify_row(3, 'L',
                {1,-1,-1},
                {P_MINUS_id,cand1_id,cand2_id},
-               -link_capacity);
+               link_capacity);
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_no_profile) {
@@ -405,11 +401,11 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_no_profile) {
     verify_row(6, 'L',
                {1,-1,-1},
                {P_MINUS_id,cand1_id,cand2_id},
-               -link_capacity);
+               link_capacity);
     verify_row(7, 'L',
                {1,-1,-1},
                {P_MINUS_id,cand1_id,cand2_id},
-               -link_capacity);
+               link_capacity);
 
 }
 
@@ -505,12 +501,12 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
     verify_row(6, 'L',
                {1,-profile_cand1.getIndirectProfile(0),-profile_cand2.getIndirectProfile(0)},
                {P_MINUS_id,cand1_id,cand2_id},
-               -link_capacity* profile_link.getIndirectProfile(0));
+               link_capacity* profile_link.getIndirectProfile(0));
 
     verify_row(7, 'L',
                {1,-profile_cand1.getIndirectProfile(1),-profile_cand2.getIndirectProfile(1)},
                {P_MINUS_id,cand1_id,cand2_id},
-               -link_capacity* profile_link.getIndirectProfile(1));
+               link_capacity* profile_link.getIndirectProfile(1));
 
 }
 
