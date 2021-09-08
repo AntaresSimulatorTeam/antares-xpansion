@@ -21,6 +21,8 @@ public:
     std::vector<double> lower_bounds;
     std::vector<double> rhs;
     std::vector<double> mat_val;
+    std::vector<int> col_indexes;
+    std::vector<int> start_indexes;
     std::vector<std::basic_string<char>> col_names;
 
 
@@ -130,13 +132,30 @@ protected:
             std::vector<double> buffer(n_elems, -777);
             mat_val.insert(mat_val.begin(), buffer.begin(), buffer.end());
 
-            std::vector<int>	mstart(n_rows + 1);
-            std::vector<int>	mind(n_elems);
+            start_indexes.clear();
+            start_indexes = std::vector<int>(n_rows+1);
+            col_indexes.clear();
+            col_indexes = std::vector<int>(n_elems);
             int n_returned(0);
-            math_problem->get_rows(mstart.data(), mind.data(), mat_val.data(),
+            math_problem->get_rows(start_indexes.data(), col_indexes.data(), mat_val.data(),
                                    n_elems, &n_returned, 0, n_rows - 1);
         }
     }
+
+    std::vector<double> getRowCoefficients(int index_row){
+        update_mat_val();
+        std::vector<double> row;
+        row.insert(row.begin(), mat_val.begin() + start_indexes.at(index_row), mat_val.begin() + start_indexes.at(index_row+1));
+        return row;
+    }
+
+    std::vector<int> getRowColIndexes(int index_row){
+        update_mat_val();
+        std::vector<int> index;
+        index.insert(index.begin(), col_indexes.begin() + start_indexes.at(index_row), col_indexes.begin() + start_indexes.at(index_row+1));
+        return index;
+    }
+
     void update_rhs_val(){
         update_n_rows();
         if (rhs.size() != n_rows){
@@ -196,6 +215,13 @@ protected:
         verify_column_objective_is(col_id, obj_value);
         verify_column_lower_bound_is(col_id, lower_value);
         verify_column_upper_bound_is(col_id, upper_value);
+    }
+
+    void verify_row(int row, char type, const std::vector<double>& coeff,const std::vector<int>& col_indexes, double rhs){
+        verify_row_is_of_type(row, type);
+        ASSERT_EQ(getRowCoefficients(row), coeff);
+        ASSERT_EQ(getRowColIndexes(row), col_indexes);
+        verify_rhs_is(row, rhs);
     }
 };
 
@@ -266,32 +292,29 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
 
     verify_column(0,"C0000000",'C',1,-1e20,1e20);
     verify_column(1,"C0000001",'C',1,0,1e20);
-
-    verify_column(2,"candy1",'C',0,-1e20,1e20);
-    verify_column(3,"candy2",'C',0,-1e20,1e20);
-
-    verify_rows_are(3);
-    verify_row_is_of_type(0, 'L');
-    verify_row_is_of_type(1, 'G');
-    verify_row_is_of_type(2, 'L');
-
-    verify_elems_are(9);
-    verify_mat_val_is(0, 1);
-    verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
-    verify_mat_val_is(2, -links.at(0).getCandidates().at(1).direct_profile(0));
-    verify_mat_val_is(3, 1);
-    verify_mat_val_is(4, links.at(0).getCandidates().at(0).indirect_profile(0));
-    verify_mat_val_is(5, links.at(0).getCandidates().at(1).indirect_profile(0));
-    verify_mat_val_is(6, 1);
-    verify_mat_val_is(7, -1);
-    verify_mat_val_is(8, -1);
-
-    verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
-    verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
-    verify_rhs_is(2, 0);
+    verify_column(2,cand1.name,'C',0,-1e20,1e20);
+    verify_column(3,cand2.name,'C',0,-1e20,1e20);
 
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 2);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 3);
+
+    verify_rows_are(3);
+    verify_elems_are(9);
+
+    verify_row(0,'L',
+               {1,-links.at(0).getCandidates().at(0).direct_profile(0),-links.at(0).getCandidates().at(1).direct_profile(0)},
+               {0,2,3},
+               links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
+
+    verify_row(1 , 'G',
+               {1,links.at(0).getCandidates().at(0).indirect_profile(0),links.at(0).getCandidates().at(1).indirect_profile(0) },
+               {0,2,3},
+               -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
+
+    verify_row(2, 'L',
+               {1,-1,-1},
+               {1,2,3},
+               0);
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
@@ -320,41 +343,43 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep) {
 
     auto problem_modifier = ProblemModifier();
     math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_cost_columns);
-
     verify_columns_are(4);
-    verify_rows_are(5);
-    verify_row_is_of_type(0, 'L');
-    verify_row_is_of_type(1, 'G');
-    verify_row_is_of_type(2, 'L');
-    verify_row_is_of_type(3, 'G');
-    verify_row_is_of_type(4, 'L');
 
-    verify_elems_are(15);
-
-    verify_mat_val_is(0, 1);
-    verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
-    verify_mat_val_is(2, -links.at(0).getCandidates().at(1).direct_profile(0));
-    verify_mat_val_is(3, 1);
-    verify_mat_val_is(4, links.at(0).getCandidates().at(0).indirect_profile(0));
-    verify_mat_val_is(5, links.at(0).getCandidates().at(1).indirect_profile(0));
-    verify_mat_val_is(6, 1);
-    verify_mat_val_is(7, -links.at(0).getCandidates().at(0).direct_profile(1));
-    verify_mat_val_is(8, -links.at(0).getCandidates().at(1).direct_profile(1));
-    verify_mat_val_is(9, 1);
-    verify_mat_val_is(10, links.at(0).getCandidates().at(0).indirect_profile(1));
-    verify_mat_val_is(11, links.at(0).getCandidates().at(1).indirect_profile(1));
-    verify_mat_val_is(12, 1);
-    verify_mat_val_is(13, -1);
-    verify_mat_val_is(14, -1);
-
-    verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
-    verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
-    verify_rhs_is(2, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
-    verify_rhs_is(3, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
-    verify_rhs_is(4, 0);
-
+    verify_column(0,"C0000000",'C',1,-1e20,1e20);
+    verify_column(1,"C0000001",'C',1,0,1e20);
+    verify_column(2,cand1.name,'C',0,-1e20,1e20);
+    verify_column(3,cand2.name,'C',0,-1e20,1e20);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 2);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 3);
+
+    verify_rows_are(5);
+    verify_elems_are(15);
+
+    verify_row(0,'L',
+               {1,-links.at(0).getCandidates().at(0).direct_profile(0),-links.at(0).getCandidates().at(1).direct_profile(0)},
+               {0,2,3},
+               links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
+
+    verify_row(1 , 'G',
+               {1,links.at(0).getCandidates().at(0).indirect_profile(0),links.at(0).getCandidates().at(1).indirect_profile(0) },
+               {0,2,3},
+               -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
+
+    verify_row(2,'L',
+               {1,-links.at(0).getCandidates().at(0).direct_profile(0),-links.at(0).getCandidates().at(1).direct_profile(1)},
+               {0,2,3},
+               links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
+
+    verify_row(3 , 'G',
+               {1,links.at(0).getCandidates().at(0).indirect_profile(0),links.at(0).getCandidates().at(1).indirect_profile(1) },
+               {0,2,3},
+               -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
+
+    verify_row(4, 'L',
+               {1,-1,-1},
+               {1,2,3},
+               0);
+
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
@@ -401,39 +426,41 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
     math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_cost_columns);
 
     verify_columns_are(4);
-    verify_rows_are(5);
-    verify_row_is_of_type(0, 'L');
-    verify_row_is_of_type(1, 'G');
-    verify_row_is_of_type(2, 'L');
-    verify_row_is_of_type(3, 'G');
-    verify_row_is_of_type(4, 'L');
-
-    verify_elems_are(15);
-
-    verify_mat_val_is(0, 1);
-    verify_mat_val_is(1, -links.at(0).getCandidates().at(0).direct_profile(0));
-    verify_mat_val_is(2, -links.at(0).getCandidates().at(1).direct_profile(0));
-    verify_mat_val_is(3, 1);
-    verify_mat_val_is(4, links.at(0).getCandidates().at(0).indirect_profile(0));
-    verify_mat_val_is(5, links.at(0).getCandidates().at(1).indirect_profile(0));
-    verify_mat_val_is(6, 1);
-    verify_mat_val_is(7, -links.at(0).getCandidates().at(0).direct_profile(1));
-    verify_mat_val_is(8, -links.at(0).getCandidates().at(1).direct_profile(1));
-    verify_mat_val_is(9, 1);
-    verify_mat_val_is(10, links.at(0).getCandidates().at(0).indirect_profile(1));
-    verify_mat_val_is(11, links.at(0).getCandidates().at(1).indirect_profile(1));
-    verify_mat_val_is(12, 1);
-    verify_mat_val_is(13, -1);
-    verify_mat_val_is(14, -1);
-
-    verify_rhs_is(0, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
-    verify_rhs_is(1, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
-    verify_rhs_is(2, links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
-    verify_rhs_is(3, -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
-    verify_rhs_is(4, 0);
-
+    verify_column(0,"C0000000",'C',1,-1e20,1e20);
+    verify_column(1,"C0000001",'C',1,0,1e20);
+    verify_column(2,cand1.name,'C',0,-1e20,1e20);
+    verify_column(3,cand2.name,'C',0,-1e20,1e20);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , 2);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , 3);
+
+    verify_rows_are(5);
+    verify_elems_are(15);
+
+    verify_row(0,'L',
+               {1,-links.at(0).getCandidates().at(0).direct_profile(0),-links.at(0).getCandidates().at(1).direct_profile(0)},
+               {0,2,3},
+               links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(0));
+
+    verify_row(1 , 'G',
+               {1,links.at(0).getCandidates().at(0).indirect_profile(0),links.at(0).getCandidates().at(1).indirect_profile(0) },
+               {0,2,3},
+               -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(0));
+
+    verify_row(2,'L',
+               {1,-links.at(0).getCandidates().at(0).direct_profile(0),-links.at(0).getCandidates().at(1).direct_profile(1)},
+               {0,2,3},
+               links.at(0)._already_installed_capacity * links.at(0).already_installed_direct_profile(1));
+
+    verify_row(3 , 'G',
+               {1,links.at(0).getCandidates().at(0).indirect_profile(0),links.at(0).getCandidates().at(1).indirect_profile(1) },
+               {0,2,3},
+               -links.at(0)._already_installed_capacity* links.at(0).already_installed_indirect_profile(1));
+
+    verify_row(4, 'L',
+               {1,-1,-1},
+               {1,2,3},
+               0);
+
 }
 
 
