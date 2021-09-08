@@ -140,8 +140,8 @@ def test_full_study_long(install_dir, study_path, expected_values, expected_inve
          {"battery": 1.0e+03, "peak": 1.4e+03, "pv": 1.0e+03, "semibase": 2.0e+02, "transmission_line": 0.0}
          ),
         (ALL_STUDIES_PATH / "xpansion-test-03",
-         {"gap": 241262.43024921417, "investment_cost": 202000000.00000119, "operational_cost": 2084477775.2309604,
-          "overall_cost": 2286477775.2309618},
+         {"gap": -1.1920928955078125e-06, "investment_cost": 201999999.99999976, "operational_cost": 1161894495.7433052,
+          "overall_cost": 1363894495.743305},
          {"peak": 2500.0, "transmission_line": 1600.0, "semibase": 400.0}
          ),
         (ALL_STUDIES_PATH / "xpansion-test-04-mps-rounding",
