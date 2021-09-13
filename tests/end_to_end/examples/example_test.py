@@ -177,7 +177,7 @@ def test_full_study_long(install_dir, study_path, expected_values, expected_inve
         (ALL_STUDIES_PATH / "hurdles-cost-profile-value-over-one",
          {"gap": 239316.41654706001, "investment_cost": 231999999.99999976,
           "operational_cost": 1089603112.1225781, "overall_cost": 1321603112.1225779},
-         {"battery": 0.0, "peak": 1300.0, "pv": 1.0e+03, "semibase": 1600.0, "transmission_line": 1000.0}
+         {"peak": 1300.0, "semibase": 1600.0, "transmission_line": 1000.0}
          )
     ],
 )
