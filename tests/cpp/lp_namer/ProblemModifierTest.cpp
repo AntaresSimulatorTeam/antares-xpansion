@@ -9,6 +9,10 @@
 const std::string P_LINK = "p_link";
 const std::string P_PLUS = "p_plus";
 const std::string P_MINUS = "p_minus";
+const double ZERO = 0.0;
+const double PLUS_INF = PLUS_INF;
+const double MINUS_INF = MINUS_INF;
+
 
 class ProblemModifierTest : public ::testing::Test
 {
@@ -252,9 +256,9 @@ TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) 
 
     verify_columns_are(3);
 
-    verify_column(0,P_LINK,'C',1,-1e20,1e20);
-    verify_column(1,P_PLUS,'C',1,0,1e20);
-    verify_column(2,P_MINUS,'C',1,0,1e20);
+    verify_column(0,P_LINK,'C',1,MINUS_INF, PLUS_INF);
+    verify_column(1,P_PLUS,'C',1,ZERO, PLUS_INF);
+    verify_column(2,P_MINUS,'C',1,ZERO, PLUS_INF);
 
     try {
         problem_modifier.get_candidate_col_id("invalid_cand_name");
@@ -302,11 +306,11 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
     const int cand1_id= 3;
     const int cand2_id= 4;
 
-    verify_column(P_LINK_id,P_LINK,'C',1,-1e20,1e20);
-    verify_column(P_PLUS_id,P_PLUS,'C',1,0,1e20);
-    verify_column(P_MINUS_id,P_MINUS,'C',1,0,1e20);
-    verify_column(cand1_id,cand1.name,'C',0,-1e20,1e20);
-    verify_column(cand2_id,cand2.name,'C',0,-1e20,1e20);
+    verify_column(P_LINK_id,P_LINK,'C',1,MINUS_INF,PLUS_INF);
+    verify_column(P_PLUS_id,P_PLUS,'C',1,0,PLUS_INF);
+    verify_column(P_MINUS_id,P_MINUS,'C',1,0,PLUS_INF);
+    verify_column(cand1_id,cand1.name,'C',0,MINUS_INF,PLUS_INF);
+    verify_column(cand2_id,cand2.name,'C',0,MINUS_INF,PLUS_INF);
 
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , cand1_id);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , cand2_id);
@@ -364,11 +368,11 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_no_profile) {
     const int cand1_id= 3;
     const int cand2_id= 4;
 
-    verify_column(P_LINK_id,P_LINK,'C',1,-1e20,1e20);
-    verify_column(P_PLUS_id,P_PLUS,'C',1,0,1e20);
-    verify_column(P_MINUS_id,P_MINUS,'C',1,0,1e20);
-    verify_column(cand1_id,cand1.name,'C',0,-1e20,1e20);
-    verify_column(cand2_id,cand2.name,'C',0,-1e20,1e20);
+    verify_column(P_LINK_id,P_LINK,'C',1,MINUS_INF,PLUS_INF);
+    verify_column(P_PLUS_id,P_PLUS,'C',1,0,PLUS_INF);
+    verify_column(P_MINUS_id,P_MINUS,'C',1,0,PLUS_INF);
+    verify_column(cand1_id,cand1.name,'C',0,MINUS_INF,PLUS_INF);
+    verify_column(cand2_id,cand2.name,'C',0,MINUS_INF,PLUS_INF);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , cand1_id);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , cand2_id);
 
@@ -458,11 +462,11 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
     const int cand1_id = 3;
     const int cand2_id = 4;
 
-    verify_column(P_LINK_id,P_LINK,'C',1,-1e20,1e20);
-    verify_column(P_PLUS_id,P_PLUS,'C',1,0,1e20);
-    verify_column(P_MINUS_id,P_MINUS,'C',1,0,1e20);
-    verify_column(cand1_id,cand1.name,'C',0,-1e20,1e20);
-    verify_column(cand2_id,cand2.name,'C',0,-1e20,1e20);
+    verify_column(P_LINK_id,P_LINK,'C',1,MINUS_INF,PLUS_INF);
+    verify_column(P_PLUS_id,P_PLUS,'C',1,0,PLUS_INF);
+    verify_column(P_MINUS_id,P_MINUS,'C',1,0,PLUS_INF);
+    verify_column(cand1_id,cand1.name,'C',0,MINUS_INF,PLUS_INF);
+    verify_column(cand2_id,cand2.name,'C',0,MINUS_INF,PLUS_INF);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , cand1_id);
     ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , cand2_id);
 
