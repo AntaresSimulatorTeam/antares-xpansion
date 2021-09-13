@@ -24,7 +24,8 @@ public:
 
     const std::vector<std::string>& getVariables() const;
     const std::map<linkId,  ColumnsToChange>& getNtcVarColumns() const;
-    const std::map<linkId, ColumnsToChange>& getCostVarColumns() const;
+    const std::map<linkId, ColumnsToChange>& getDirectCostVarColumns() const;
+    const std::map<linkId, ColumnsToChange>& getIndirectCostVarColumns() const;
 
 private:
 
@@ -32,7 +33,8 @@ private:
 
     std::vector<std::string> _variables;
     std::map<linkId,  ColumnsToChange> _ntc_p_var_columns;
-    std::map<linkId,  ColumnsToChange> _cost_p_var_columns;
+    std::map<linkId,  ColumnsToChange> _indirect_cost_p_var_columns;
+    std::map<linkId,  ColumnsToChange> _direct_cost_p_var_columns;
 };
 
 

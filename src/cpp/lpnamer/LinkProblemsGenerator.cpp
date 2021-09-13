@@ -69,7 +69,8 @@ void LinkProblemsGenerator::treat(std::string const & root,
 
     std::vector<std::string> var_names = variableReader.getVariables();
     std::map<colId , ColumnsToChange> p_ntc_columns = variableReader.getNtcVarColumns();
-    std::map<colId , ColumnsToChange> p_cost_columns = variableReader.getCostVarColumns();
+    std::map<colId , ColumnsToChange> p_direct_cost_columns = variableReader.getDirectCostVarColumns();
+    std::map<colId , ColumnsToChange> p_indirect_cost_columns = variableReader.getIndirectCostVarColumns();
 
     SolverFactory factory;
     SolverAbstract::Ptr in_prblm;
@@ -79,7 +80,7 @@ void LinkProblemsGenerator::treat(std::string const & root,
     solver_rename_vars(in_prblm, var_names);
 
     auto problem_modifier = ProblemModifier();
-    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_ntc_columns, p_cost_columns);
+    in_prblm = problem_modifier.changeProblem(std::move(in_prblm), _links, p_ntc_columns, p_direct_cost_columns,p_indirect_cost_columns);
 
     //couplings creation
     for (const ActiveLink& link : _links){

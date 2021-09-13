@@ -231,12 +231,18 @@ TEST_F(VariableFileReaderTest, ReadCostColumnsWithMultipleActiveLink) {
     variable_name_config.cost_extremite_variable_name = "cost_ext";
     VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config);
 
-    std::map<linkId,  ColumnsToChange> costVarColumns = varReader.getCostVarColumns();
-    std::map<linkId , ColumnsToChange> expectedCostVarColumns;
-    expectedCostVarColumns[1] = {{0,14}, {1,15}, {2,16}};
-    expectedCostVarColumns[2] = {{4,18}, {5,19}, {6,20}};
+    std::map<linkId,  ColumnsToChange> directCostVarColumns = varReader.getDirectCostVarColumns();
+    std::map<linkId , ColumnsToChange> expectedDirectCostVarColumns;
+    expectedDirectCostVarColumns[1] = {{0,14}, {1,15}};
+    expectedDirectCostVarColumns[2] = {{5,19}, {6,20}};
+    ASSERT_EQ(directCostVarColumns,expectedDirectCostVarColumns);
 
-    ASSERT_EQ(costVarColumns,expectedCostVarColumns);
+    std::map<linkId,  ColumnsToChange> indirectCostVarColumns = varReader.getIndirectCostVarColumns();
+    std::map<linkId , ColumnsToChange> expectedIndirectCostVarColumns;
+
+    expectedIndirectCostVarColumns[1] = { {2,16}};
+    expectedIndirectCostVarColumns[2] = {{4,18}};
+    ASSERT_EQ(indirectCostVarColumns,expectedIndirectCostVarColumns);
 }
 
 
