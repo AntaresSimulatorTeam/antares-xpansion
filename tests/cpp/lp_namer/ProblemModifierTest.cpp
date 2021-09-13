@@ -10,8 +10,8 @@ const std::string P_LINK = "p_link";
 const std::string P_PLUS = "p_plus";
 const std::string P_MINUS = "p_minus";
 const double ZERO = 0.0;
-const double PLUS_INF = PLUS_INF;
-const double MINUS_INF = MINUS_INF;
+const double PLUS_INF = 1e20;
+const double MINUS_INF = -1e20;
 
 
 class ProblemModifierTest : public ::testing::Test
