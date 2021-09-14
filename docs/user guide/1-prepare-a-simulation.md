@@ -72,14 +72,14 @@ in increasing capacity is being studied.
 <span class="underline">Investment in thermal generation
 capacity</span>: The generation capacity subject to expansion,
 physically located for the example in **Figure 4 (b)** in *area1*, must
-be moved to a virtual node (here *invest\_semibase*) connected to the
+be moved to a virtual node (here *`invest_semibase`*) connected to the
 physical node *area1*. The ANTARES link of the investment candidate is
 the link between these two nodes.
 
 The generation unit of the investment candidate must be defined, with
 its technical and economic parameters, by a thermal cluster:
 
-- located in the virtual node (here *invest\_semibase*),
+- located in the virtual node (here *`invest_semibase`*),
 
 - created before executing the benders decomposition,
 
@@ -217,7 +217,7 @@ will be modified by **Antares-Xpansion**. The syntax of the link name
 includes the names of the two ANTARES nodes that the link connects,
 separated by "-", for example:
 ```
-origin\_area – destination\_area
+origin_area – destination_area
 ```
 
 Note that node names that include spaces or dashes are not compatible
@@ -241,7 +241,7 @@ the fixed cost annuity can include:
 The value to be entered is numerical. It represents the candidate's
 potential, i.e. the maximum capacity (in MW) that can be invested in
 this candidate. If the candidate has this parameter, the set of values
-that its capacity can take is the interval \[0, max-investment\].
+that its capacity can take is the interval \\([0, max-investment]\\).
 
 The definition of an investment candidate must necessarily include
 either (i) a maximum potential in MW (max-investment) or (ii) a unit
@@ -260,7 +260,7 @@ potential in terms of number of installable units. If the candidate has
 the max-units and unit-size parameters, then the set of values that its
 capacity can take is the finite set of the first multiples of unit-size:
 
-{0, unit-size, 2 x unit-size, … , max-units \* unit-size}
+$$[0, unit-size, 2 \cdot unit-size, … , max-units \cdot unit-size]$$
 
 #### **already-installed-capacity**
 
@@ -316,8 +316,8 @@ and one in network capacity, is given below.
 ![https://github.com/rte-antares-rpackage/antaresXpansion/raw/master/vignettes/example2nodes.png](../assets/media/image12.png)
 
 The invested semi-base generation in *area 1* is shifted in the "virtual
-node" *invest\_semibase*. Within the optimization process, the capacity
-of the link between area 1 and *invest\_semibase* will be updated with
+node" *`invest_semibase`*. Within the optimization process, the capacity
+of the link between area 1 and *`invest_semibase`* will be updated with
 the new invested capacity.
 
 The candidates.ini file for this example will be the following one. This
@@ -326,7 +326,7 @@ file has to be saved in the folder ./user/expansion/:
 ```ini
 [1]
 name = semibase
-link = area1 - invest\_semibase
+link = area1 - invest_semibase
 annual-cost-per-mw = 126000
 unit-size = 200
 max-units = 5
@@ -398,7 +398,7 @@ The parameter link-profile is conventionally used for:
 The investment problem, at this stage of development, makes it possible
 to manage the fact of investing in a capacity, whose availability varies
 during the year with an average availability over all Monte-Carlo years
-via the link\_profile. However, it is not possible to manage an hourly
+via the `link_profile`. However, it is not possible to manage an hourly
 availability <span class="underline">per Monte-Carlo year</span>, which
 would make it possible to represent more realistically the intermittency
 of RES from one year to another or the impact of outages and maintenance
@@ -408,7 +408,7 @@ on an entire unit of thermal power plants (see **Figure 8**).
 
 **Figure** **8 –** Available hourly capacity of different types of power
 plants due to outages. **Antares-Xpansion** allows taking into account
-an average hourly availability (purple line) via the link\_profile,
+an average hourly availability (purple line) via the `link_profile`,
 which is still very different from the actual hourly availability over a
 year.
 
@@ -481,7 +481,7 @@ the same link from an ANTARES study*
 > :warning: Warnings : the hourly availability time series of thermal generation CCG
 in ANTARES should be higher than the sum of the availability currently
 installed with the new potential buildable (availability of CCG cluster
-in the virtual node *fr\_ccg* \> 330 x 19 + 330 x 50 with this example).
+in the virtual node \\(fr_ccg > 330 \cdot 19 + 330 \cdot 50\\) with this example).
 
 At the end, for the candidate for decommissioning, the result is inverse
 than for the investment candidate: if the result displayed in the
@@ -496,10 +496,10 @@ The simulation options and algorithmic parameters for solving the
 investment problem must be entered in the settings.ini located in the
 folder ./user/expansion/ with the appropriate syntax is given below:
 ```ini
-uc\_type = expansion\_fast
+uc_type = expansion_fast
 master = integer
-optimality\_gap = 0
-max\_iteration = 100
+optimality_gap = 0
+max_iteration = 100
 additional-constraints = constraint.txt
 ```
 
@@ -528,14 +528,14 @@ difference from the optimum is less than the `optimality_gap`.
 solutions that can be returned by the package when the gap is strictly
 positive.
 
-The minus infinity (-Inf)value of the optimality\_gap is theoretically
-equivalent to a null optimality\_gap, except that it covers numerical
+The minus infinity (-Inf)value of the `optimality_gap` is theoretically
+equivalent to a null `optimality_gap`, except that it covers numerical
 errors which in practice can lead to an underestimation of the distance
 of a solution to the optimum. With this default value,
 **Antares-Xpansion** determines the investment combination that
 minimizes the cost function.
 
-The interest of a strictly positive optimality\_gap is that it speeds up
+The interest of a strictly positive `optimality_gap` is that it speeds up
 research by stopping as soon as a "good" solution is found.
 
 The interpretation of this stopping criterion is not always obvious. It
@@ -547,7 +547,7 @@ around the optimum, solutions whose costs are close may have
 significantly different installed capacities (see for example **Figure
 8**).
 
-**Which settings should I use the** optimality\_gap**?**
+**Which settings should I use the** `optimality_gap`?
 
 - If I have to run several expansion optimizations of different
   variants of a study and compare them. In that case, if the optimal
@@ -558,7 +558,7 @@ significantly different installed capacities (see for example **Figure
   the optimum of the expansion problem. To do so, the following
   condition should necessarily be fulfilled:
 
-    - set the optimality\_gap to zero.
+    - set the `optimality_gap` to zero.
 
 > Note: even with the conditions mentioned above, the result might be
 > slightly different from the optimum due to numeric approximations,
@@ -569,24 +569,24 @@ significantly different installed capacities (see for example **Figure
   solution of the modelled expansion problem. The settings can be less
   constraining with:
 
-    - an optimality\_gap of a few million euros.
+    - an `optimality_gap` of a few million euros.
 
 #### **`uc_type`**
 
-Possible values: expansion\_fast and expansion\_accurate. By default:
-expansion\_fast.
+Possible values: `expansion_fast` and `expansion_accurate`. By default:
+`expansion_fast`.
 
 The uc-type (unit-commitment type) parameter specifies the simulation
 mode used by Antares to evaluate the operating costs of the electrical
 system:
 
-- If uc\_type = expansion\_fast: the *fast* mode of ANTARES is used,
+- If `uc_type = expansion_fast`: the *fast* mode of ANTARES is used,
   deactivating the flexibility constraints of the thermal units (Pmin
   constraints and minimum up and down times), and not taking into
   account either the start-up costs or the impact of the day-ahead
   reserve.
 
-- If uc\_type = expansion\_accurate: the *expansion* mode of ANTARES
+- If `uc_type = expansion_accurate`: the *expansion* mode of ANTARES
   is used. This simulation mode corresponds to the *accurate* mode of
   ANTARES in which the unit-commitment variables are relaxed. The
   flexibility constraints of the thermal units as well as the start-up
@@ -646,7 +646,7 @@ less representative. The yearly-weights points to a vector
 of Monte-Carlo years in the study, which is used to evaluate the
 expected production costs.
 
-\[\mathbb{E}\left\lbrack \text{cost} \right\rbrack = \ \frac{\sum_{i = 1}^{n}{\omega_{i}\text{cost}_{i}}}{\sum_{i = 1}^{n}\omega_{i}}\]
+$$[\mathbb{E}\left\lbrack \text{cost} \right\rbrack = \ \frac{\sum_{i = 1}^{n}{\omega_{i}\text{cost}_{i}}}{\sum_{i = 1}^{n}\omega_{i}}$$
 
 With \(\text{cost}_{i}\) the production cost of the \(i\)-th Monte Carlo
 year.
