@@ -260,7 +260,7 @@ potential in terms of number of installable units. If the candidate has
 the max-units and unit-size parameters, then the set of values that its
 capacity can take is the finite set of the first multiples of unit-size:
 
-$$[0, unit-size, 2 \cdot unit-size, … , max-units \cdot unit-size]$$
+$$[0, \textt{unit-size}, 2 \cdot unit-size, … , max-units \cdot unit-size]$$
 
 #### **already-installed-capacity**
 
@@ -642,20 +642,20 @@ yearly-weights offers the possibility of assuming that the Monte Carlo
 years simulated in the ANTARES study are not equally probable. The most
 representative years may be given greater weight than those that are
 less representative. The yearly-weights points to a vector
-\(\left( \omega_{1},\ldots,\omega_{n} \right)\), with \(n\) the number
+\\(\left( \omega_{1},\ldots,\omega_{n} \right)\\), with \\(n\\) the number
 of Monte-Carlo years in the study, which is used to evaluate the
 expected production costs.
 
 $$[\mathbb{E}\left\lbrack \text{cost} \right\rbrack = \ \frac{\sum_{i = 1}^{n}{\omega_{i}\text{cost}_{i}}}{\sum_{i = 1}^{n}\omega_{i}}$$
 
-With \(\text{cost}_{i}\) the production cost of the \(i\)-th Monte Carlo
+With \\(\text{cost}_{i}\\) the production cost of the \\(i\\)-th Monte Carlo
 year.
 
 The value to be filled is a string specifying the name of a file. This
 file must be located in the *user/expansion/* folder of the ANTARES
 study. It must contain a column with as many numerical values as there
-are Monte-Carlo years in the ANTARES study. The value of the \(i\)-th
-row is the weight of the \(i\)-th Monte Carlo year.
+are Monte-Carlo years in the ANTARES study. The value of the \\(i\\)-th
+row is the weight of the \\(i\\)-th Monte Carlo year.
 
 ![](../assets/media/image17.png)
 
