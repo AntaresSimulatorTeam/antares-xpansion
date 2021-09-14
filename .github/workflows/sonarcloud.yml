@@ -16,7 +16,6 @@ jobs:
       SONAR_SCANNER_VERSION: 4.6.1.2450 # Find the latest version in the "Linux" link on this page:
       # https://sonarcloud.io/documentation/analysis/scan/sonarscanner/
       SONAR_SERVER_URL: "https://sonarcloud.io"
-      BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
 
     steps:
     
@@ -60,6 +59,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8
+
+      - name: Install gcovr
+        run: sudo pip install gcovr
 
       - name: Install dependencies
         run: |
@@ -109,13 +111,23 @@ jobs:
 
       - name: Configure
         run: |
-             cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
+             cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCODE_COVERAGE=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
 
       - name: Build
-        run: build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build _build --config Release -j2
+        run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Release -j2
+
+      - name: Test and generate coverage
+        continue-on-error: true
+        run: |
+          cd $GITHUB_WORKSPACE/_build
+           ctest -C Release --output-on-failure -L "unit"
+
+      - name: Compile coverage reports
+        run: |
+          cmake --build $GITHUB_WORKSPACE/_build --target code-coverage
 
       - name: Run sonar-scanner
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR info, if any
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
+        run: sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}"
