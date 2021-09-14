@@ -171,7 +171,7 @@ The selection of expansion capacities is left to the user and is defined
 in the *candidates.ini* file. Each investment candidate is characterized
 with the following properties:
 
-- **name**: name of the investment candidate (warnings : must not
+- **name**: name of the investment candidate (:warning: must not
   contains spaces)
 
 - **link**: link whose capacity will be invested
@@ -207,7 +207,7 @@ The value to be entered is a string. It specifies the name of the
 investment applicant. This name is reused in the logs and outputs of
 **Antares-Xpansion**.
 
-> :warning: Warnings: This field must not contain spaces!
+> :warning: This field must not contain spaces!
 
 #### **link** (mandatory parameter)
 
@@ -260,7 +260,7 @@ potential in terms of number of installable units. If the candidate has
 the max-units and unit-size parameters, then the set of values that its
 capacity can take is the finite set of the first multiples of unit-size:
 
-$$[0, \textt{unit-size}, 2 \cdot unit-size, … , max-units \cdot unit-size]$$
+$$[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \text{unit-size}]$$
 
 #### **already-installed-capacity**
 
@@ -478,7 +478,7 @@ expanded is given in the following figure.
 ***Figure*** ***9** - Candidates for investment and decommissioning on
 the same link from an ANTARES study*
 
-> :warning: Warnings : the hourly availability time series of thermal generation CCG
+> :warning: : the hourly availability time series of thermal generation CCG
 in ANTARES should be higher than the sum of the availability currently
 installed with the new potential buildable (availability of CCG cluster
 in the virtual node \\(fr_ccg > 330 \cdot 19 + 330 \cdot 50\\) with this example).
