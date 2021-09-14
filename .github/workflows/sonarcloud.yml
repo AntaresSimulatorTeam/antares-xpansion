@@ -56,9 +56,6 @@ jobs:
           echo "$HOME/.sonar/build-wrapper-linux-x86" >> $GITHUB_PATH
           echo "$HOME/.sonar/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
 
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -112,10 +109,10 @@ jobs:
 
       - name: Configure
         run: |
-             cmake -B _build -S . -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
+             cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
 
       - name: Build
-        run: build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build _build --config Release -j2
+        run: build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} cmake --build _build --config Debug -j2
 
       - name: Run sonar-scanner
         env:
