@@ -209,7 +209,7 @@ investment applicant. This name is reused in the logs and outputs of
 
 > :warning: This field must not contain spaces!
 
-#### **link** (mandatory parameter)
+#### link (mandatory parameter)
 
 The value to be entered is a string. It defines the link of the ANTARES
 study candidate for investment, whose capacities (direct and indirect)
@@ -225,7 +225,7 @@ with **Antares-Xpansion**. The origin area corresponds to the first in
 the spelling order. The same link may contain several investment
 candidates (see section later).
 
-#### **annual-cost-per-mw** (mandatory)
+#### annual-cost-per-mw (mandatory)
 
 The value to be filled in is numeric (the decimal separator is the
 point). It defines the investment candidate's fixed cost annuity (in
@@ -236,7 +236,7 @@ the fixed cost annuity can include:
 
 - an investment cost annuity
 
-#### **max-investment
+#### max-investment
 
 The value to be entered is numerical. It represents the candidate's
 potential, i.e. the maximum capacity (in MW) that can be invested in
@@ -253,7 +253,7 @@ size in MW (unit-size) and a maximum potential in number of units
 The value to be entered is numerical. It defines the nominal capacity
 (in MW) of the investment candidate's installable units.
 
-#### **max-units**
+#### max-units
 
 The value to be entered is an integer. It corresponds to the candidate's
 potential in terms of number of installable units. If the candidate has
@@ -262,7 +262,7 @@ capacity can take is the finite set of the first multiples of unit-size:
 
 $$[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \text{unit-size}]$$
 
-#### **already-installed-capacity**
+#### already-installed-capacity
 
 The value to be entered is numerical. It corresponds to a capacity
 already installed on the investment candidate's link. If
@@ -273,11 +273,11 @@ initially indicated in the ANTARES study are not considered in the
 already-installed-capacity parameter and will be overwritten by
 **Antares-Xpansion**.
 
-#### **has-link-profile**
+#### has-link-profile
 
 The value to be entered is True if the candidate has a link profile.
 
-#### **link-profile**
+#### link-profile
 
 The value to be filled is a string specifying the name of a file. This
 file must be located in the *user/expansion/capa/* directory of the
@@ -297,7 +297,7 @@ all Monte-Carlo years of the ANTARES study and all capacity tested.
 **Figure 6** – Example of a file containing a load factor profile in
 the **Antares-Xpansion** format
 
-#### already-installed-link-profile**
+#### already-installed-link-profile
 
 The value to be filled is a string specifying the name of a file. This
 file must be located in the *user/expansion/capa/* directory of the
