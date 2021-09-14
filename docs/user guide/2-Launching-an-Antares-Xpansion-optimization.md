@@ -1,4 +1,4 @@
-## Launching an optimization
+# Launching an optimization
 
 First, create an ANTARES study with the description of the candidates
 and create the candidates.ini and settings.ini files as explained above
