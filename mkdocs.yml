@@ -1,3 +1,4 @@
+docs_dir: docs
 site_name: Antares Xpansion Docs
 repo_url: https://github.com/AntaresSimulatorTeam/antares-xpansion
 theme:
