@@ -16,6 +16,9 @@ PROJECT (antaresXpansion VERSION 0.5.0)
 
 set(DEFAULT_BUILD_TYPE Release)
 
+#Policy for no warning if RelWithDebInfo not available
+cmake_policy(SET CMP0111 OLD)
+
 # Set Build Type
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
@@ -282,11 +285,12 @@ endif()
 
 find_package(antares-solver REQUIRED)
 
-if (${CMAKE_BUILD_TYPE} STREQUAL  "Release")
+#Default RELEASE antares-solver use
 get_target_property( ANTARES_SOLVER_PATH antares-${ANTARES_VERSION}-solver IMPORTED_LOCATION_RELEASE )
-else()
-get_target_property( ANTARES_SOLVER_PATH antares-${ANTARES_VERSION}-solver IMPORTED_LOCATION_DEBUG )
+if (NOT ANTARES_SOLVER_PATH)
+	get_target_property( ANTARES_SOLVER_PATH antares-${ANTARES_VERSION}-solver IMPORTED_LOCATION_DEBUG )
 endif()
+
 get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)
 get_filename_component(ANTARES_SOLVER_APP ${ANTARES_SOLVER_PATH} NAME)
 
