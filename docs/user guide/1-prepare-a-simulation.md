@@ -475,13 +475,15 @@ expanded is given in the following figure.
 
 ![](../assets/media/image15.png)
 
-***Figure*** ***9** - Candidates for investment and decommissioning on
+**Figure 9** - Candidates for investment and decommissioning on
 the same link from an ANTARES study*
 
-> :warning: : the hourly availability time series of thermal generation CCG
-in ANTARES should be higher than the sum of the availability currently
-installed with the new potential buildable (availability of CCG cluster
-in the virtual node \\(fr_ccg > 330 \cdot 19 + 330 \cdot 50\\) with this example).
+!!! warning
+    the hourly availability time series of thermal generation CCG
+    in ANTARES should be higher than the sum of the availability currently
+    installed with the new potential buildable  
+    (availability of CCG cluster
+    in the virtual node \\(fr_ccg > 330 \cdot 19 + 330 \cdot 50\\) with this example).
 
 At the end, for the candidate for decommissioning, the result is inverse
 than for the investment candidate: if the result displayed in the

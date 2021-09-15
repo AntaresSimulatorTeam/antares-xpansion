@@ -6,6 +6,7 @@
 This package works along with RTE's adequacy software ANTARES:
 <https://antares.rte-france.com/>
 
+
 **Antares-Xpansion** is the package which optimizes the installed
 capacities of an ANTARES study.
 
