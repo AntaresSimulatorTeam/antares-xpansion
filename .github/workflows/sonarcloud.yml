@@ -1,6 +1,14 @@
 name: SonarCloud
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - features/*
+      - feature/*
+      - fix/*
+      - release/*
 
 jobs:
   sonarcloud:
@@ -121,7 +129,7 @@ jobs:
         continue-on-error: true
         run: |
           cd $GITHUB_WORKSPACE/_build
-           ctest -C Release --output-on-failure -L "unit"
+          ctest -C Release --output-on-failure -L "unit"
 
       - name: Compile coverage reports
         run: |
