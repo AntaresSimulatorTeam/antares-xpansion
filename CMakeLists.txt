@@ -16,9 +16,6 @@ PROJECT (antaresXpansion VERSION 0.5.0)
 
 set(DEFAULT_BUILD_TYPE Release)
 
-#Policy for no warning if RelWithDebInfo not available
-cmake_policy(SET CMP0111 OLD)
-
 # Set Build Type
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
