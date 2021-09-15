@@ -104,6 +104,7 @@ jobs:
           antares-version: ${{steps.antares-version.outputs.prop}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
+          buildtype: Debug
 
       - name: Init submodule
         run: |
@@ -111,10 +112,10 @@ jobs:
 
       - name: Configure
         run: |
-             cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCODE_COVERAGE=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
+             cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Debug -DCODE_COVERAGE=ON -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Debug -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
 
       - name: Build
-        run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Release -j2
+        run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Debug -j2
 
       - name: Test and generate coverage
         continue-on-error: true
