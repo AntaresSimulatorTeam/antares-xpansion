@@ -128,7 +128,6 @@ jobs:
       - name: Test and generate coverage
         continue-on-error: true
         run: |
-          pip3 install pytest-cov
           cd $GITHUB_WORKSPACE/_build
           ctest -C Release --output-on-failure -L "unit"
 
