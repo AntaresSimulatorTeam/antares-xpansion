@@ -1,0 +1,39 @@
+docs_dir: docs
+site_name: Antares Xpansion Docs
+repo_url: https://github.com/AntaresSimulatorTeam/antares-xpansion
+theme:
+  name: material
+  logo: assets/logo.png
+  favicon: assets/Icone.png
+  prev_next_buttons_location: none
+  features:
+    - navigation.instant
+    - navigation.top
+  #  - navigation.sections
+  #   - header.autohide
+  #   - toc.separate
+
+extra:
+  generator: false
+
+plugins:
+  - search
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - https://code.jquery.com/jquery-3.6.0.min.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+markdown_extensions:
+  - attr_list
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+copyright: Copyright &copy; 2007 - 2021 RTE
