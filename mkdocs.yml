@@ -1,5 +1,5 @@
 docs_dir: docs
-site_name: Antares Xpansion Docs
+site_name: Antares Xpansion Documentation
 repo_url: https://github.com/AntaresSimulatorTeam/antares-xpansion
 theme:
   name: material

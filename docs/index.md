@@ -1,9 +1,8 @@
-# Antares-Xpansion 
-[Antares-Xpansion](https://antares-simulator.org/) 
+# Introduction
 
 ![](assets/antares.png)
 
-This package works along with RTE's adequacy software ANTARES:
+[Antares-Xpansion](https://antares-simulator.org/)  package works along with RTE's adequacy software ANTARES:
 <https://antares.rte-france.com/>
 
 
