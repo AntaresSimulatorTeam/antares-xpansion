@@ -9,6 +9,7 @@ theme:
   features:
     - navigation.instant
     - navigation.top
+    - navigation.expand
   #  - navigation.sections
   #   - header.autohide
   #   - toc.separate
@@ -19,6 +20,10 @@ extra:
     provider: mike
 plugins:
   - search
+  #- pdf-export:
+  #    verbose: false
+      #combined: true
+      #combined_output_path: combined.pdf
 
 extra_css:
   - stylesheets/extra.css
