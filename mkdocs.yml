@@ -20,10 +20,8 @@ extra:
     provider: mike
 plugins:
   - search
-  #- pdf-export:
-  #    verbose: false
-      #combined: true
-      #combined_output_path: combined.pdf
+  - pdf-export:
+#      combined : true
 
 extra_css:
   - stylesheets/extra.css
