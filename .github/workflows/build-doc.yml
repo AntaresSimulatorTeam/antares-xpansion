@@ -42,9 +42,9 @@ jobs:
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
         
-    - name: copy mkdocs into sphinx directory
+    - name: copy mkdocs and build sphinx latexpdf
       run: |
-            cd sphinx-pdf-generation
+            cd pdf-doc-generation-with-sphinx
             cp ../docs/index.md source/intro.md
             cp -r ../docs/assets/ source/
             cp -r ../docs/user-guide source/
@@ -55,5 +55,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-user-guide
-        path: sphinx-pdf-generation/build/latex/antaresxpansionuserguide.pdf
+        path: pdf-doc-generation-with-sphinx/build/latex/antaresxpansionuserguide.pdf
 
