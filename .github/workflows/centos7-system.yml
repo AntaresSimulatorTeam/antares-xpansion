@@ -12,12 +12,7 @@ on:
 jobs:
 
   docker_publish:
-  
-    strategy:
-      matrix:
-        dockerfile:
-        - 'centos7'
-        
+          
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -46,9 +41,9 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
         workdir: docker
-        dockerfile: ${{ matrix.dockerfile }}
+        dockerfile: centos7
         cache: true
-        tags: ${{ matrix.dockerfile }}-xpansion
+        tags: centos7-xpansion
         buildargs: ANTARES_DEPS_VERSION, ANTARES_VERSION
 
   build:

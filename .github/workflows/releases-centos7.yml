@@ -9,31 +9,12 @@ env:
   
 jobs:
 
-  windows:
-
+  docker_publish:
+  
     runs-on: ubuntu-latest
-    container: 'centos:7'
-
     steps:
+    - uses: actions/checkout@master 
     
-    - name: Set up Python
-      run: |
-           yum update -y
-           yum install -y python3 python3-pip
-           pip3 install --upgrade pip
-          
-    - name: Install mandatory system libraries
-      run: |
-           yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
-           yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options
-           yum install -y cmake3 devtoolset-7 environment-modules rpm-build zlib-devel
-           
-    - uses: nelonoel/branch-name@v1.0.1
-    
-    - name: Checkout
-      run: |
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
-          
     - name: Read antares-solver version
       id: antares-version
       uses: notiz-dev/github-action-json-property@release
@@ -41,36 +22,58 @@ jobs:
         path: 'antares-version.json'
         prop_path: 'antares_version'
         
-    - name: Read antares-xpansion version
-      id: antares-xpansion-version
-      uses: notiz-dev/github-action-json-property@release
-      with: 
-        path: 'antares-version.json'
-        prop_path: 'antares_xpansion_version'
-        
     - name: Read antares-deps version
       id: antares-deps-version
       uses: notiz-dev/github-action-json-property@release
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_deps_version'
-        
+    
     - name: Get release
       id: get_release
-      uses: bruceadams/get-release@v1.2.0
-      
-    - name: Download pre-compiled librairies
-      uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
+      uses: bruceadams/get-release@v1.2.3
+        
+    - name: Docker file push
+      uses: elgohr/Publish-Docker-Github-Action@master
+      env:
+        ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
+        ANTARES_VERSION: ${{steps.antares-version.outputs.prop}}
+        ANTARES_TAG: ${{steps.get_release.outputs.tag_name}}
       with:
-        antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
-        antares-version: ${{steps.antares-version.outputs.prop}}
-        os: centos7
-        os-full-name: CentOS-7.9.2009
+        name: antaresrte/rte-antares
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        workdir: docker
+        dockerfile: centos7-src
+        cache: true
+        tags: centos7-xpansion-${{ steps.get_release.outputs.tag_name}}
+        buildargs: ANTARES_DEPS_VERSION, ANTARES_VERSION, ANTARES_TAG
+
+  build:
+
+    runs-on: ubuntu-latest
+    needs: docker_publish
+    container: 'antaresrte/rte-antares:centos7-xpansion'
+
+    steps:
            
-    - name: Init submodule
+    - uses: nelonoel/branch-name@v1.0.1
+    
+    - name: Checkout
       run: |
-           git submodule update --init --recursive .
-          
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+        
+    - name: Read antares-xpansion version
+      id: antares-xpansion-version
+      uses: notiz-dev/github-action-json-property@release
+      with: 
+        path: 'antares-version.json'
+        prop_path: 'antares_xpansion_version'
+         
+    - name: Get release
+      id: get_release
+      uses: bruceadams/get-release@v1.2.3
+                
     - name: Install dependencies
       run: |
           pip3 install -r requirements-tests.txt
@@ -80,7 +83,7 @@ jobs:
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
-           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
+           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=/rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
     
     - name: Build
       run: |
