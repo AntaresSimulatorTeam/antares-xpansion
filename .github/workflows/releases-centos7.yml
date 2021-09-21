@@ -29,16 +29,18 @@ jobs:
         path: 'antares-version.json'
         prop_path: 'antares_deps_version'
     
-    - name: Get release
-      id: get_release
-      uses: bruceadams/get-release@v1.2.3
+    - uses: nelonoel/branch-name@v1.0.1
+    
+    - name: Echo branch name
+      run: |
+          echo ${BRANCH_NAME}
         
     - name: Docker file push
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
         ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
         ANTARES_VERSION: ${{steps.antares-version.outputs.prop}}
-        ANTARES_TAG: ${{steps.get_release.outputs.tag_name}}
+        ANTARES_TAG: ${BRANCH_NAME}
       with:
         name: antaresrte/rte-antares
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -46,7 +48,7 @@ jobs:
         workdir: docker
         dockerfile: centos7-src
         cache: true
-        tags: centos7-xpansion-${{ steps.get_release.outputs.tag_name}}
+        tags: centos7-xpansion-${BRANCH_NAME}
         buildargs: ANTARES_DEPS_VERSION, ANTARES_VERSION, ANTARES_TAG
 
   build:
