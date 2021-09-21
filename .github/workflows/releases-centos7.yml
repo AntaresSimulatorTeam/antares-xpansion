@@ -29,18 +29,17 @@ jobs:
         path: 'antares-version.json'
         prop_path: 'antares_deps_version'
     
-    - uses: nelonoel/branch-name@v1.0.1
-    
-    - name: Echo branch name
-      run: |
-          echo ${BRANCH_NAME}
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
         
     - name: Docker file push
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
         ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
         ANTARES_VERSION: ${{steps.antares-version.outputs.prop}}
-        ANTARES_TAG: ${BRANCH_NAME}
+        ANTARES_TAG: ${{ steps.extract_branch.outputs.branch }}
       with:
         name: antaresrte/rte-antares
         username: ${{ secrets.DOCKER_USERNAME }}
@@ -48,7 +47,7 @@ jobs:
         workdir: docker
         dockerfile: centos7-src
         cache: true
-        tags: centos7-xpansion-${BRANCH_NAME}
+        tags: centos7-xpansion-${{ steps.extract_branch.outputs.branch }}
         buildargs: ANTARES_DEPS_VERSION, ANTARES_VERSION, ANTARES_TAG
 
   build:
