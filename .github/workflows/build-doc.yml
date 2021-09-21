@@ -1,4 +1,4 @@
-name: Ubuntu CI (system libs)
+name: Build DOC pdf (ubuntu)
 
 on:
   push:
@@ -44,10 +44,10 @@ jobs:
         
     - name: copy mkdocs and build sphinx latexpdf
       run: |
-            cd pdf-doc-generation-with-sphinx
-            cp ../docs/index.md source/intro.md
-            cp -r ../docs/assets/ source/
-            cp -r ../docs/user-guide source/
+            cd docs/pdf-doc-generation-with-sphinx
+            cp ../index.md source/intro.md
+            cp -r ../assets/ source/
+            cp -r ../user-guide source/
             make latexpdf
 
 
@@ -55,5 +55,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-user-guide
-        path: pdf-doc-generation-with-sphinx/build/latex/antaresxpansionuserguide.pdf
+        path: docs/pdf-doc-generation-with-sphinx/build/latex/antaresxpansionuserguide.pdf
 
