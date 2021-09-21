@@ -74,6 +74,15 @@ jobs:
     
     - name: Init submodule
       run: |
+           echo "CUR DIR"
+           ls
+           echo "CUR DIR .."
+           ls ..
+           echo "CUR DIR ../.."
+           ls ../..
+           echo "CUR DIR ../../.."
+           ls ../../..
+           
            git submodule update --init --recursive antares-deps
           
     - name: Install dependencies
