@@ -1,4 +1,4 @@
-name: Centos7 CI (system libs)
+name: Centos7 CI (docker image)
 
 on:
   push:
@@ -74,8 +74,6 @@ jobs:
     
     - name: Init submodule
       run: |
-           ls
-           ls ..
            git submodule update --init --recursive antares-deps
           
     - name: Install dependencies
@@ -87,7 +85,7 @@ jobs:
            source /opt/rh/devtoolset-7/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH           
-           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=../rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
+           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=../../rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF
 
     - name: Build
       run: |
