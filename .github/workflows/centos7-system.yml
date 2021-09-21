@@ -9,6 +9,11 @@ on:
       - feature/*
       - fix/*
       - release/*
+      
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+  
 jobs:
 
   docker_publish:
