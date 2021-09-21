@@ -6,15 +6,16 @@ and store them in the directory *study\_path/user/expansion/*. Once the
 candidates.ini and settings.ini files are set up, investment
 optimization can be done with the package.
 
-Antares-Xpansion does not include a human-machine interface.
+Antares-Xpansion does not include a human-machine interface,
+and it is used by a command line prompt:
 
-1.  ![](../assets/media/image20.png)![](../assets/media/image21.png)Open
-    a Command Prompt in the “*\\antaresXpansion-x.y.z-win64\\* folder :
+1.  Open a Command Prompt in the `antaresXpansion-x.y.z-win64` folder:
+    ![](../assets/media/image20.png)
+    ![](../assets/media/image21.png)
 
-2.  Run the antares-xpansion-launcher.exe and set the path to the
-    Antares study with --*dataDir* parameter :
+2.  Run the `antares-xpansion-launcher.exe` and chose the path to the
+    Antares study with `--dataDir` parameter:
 
-<!-- end list -->
 
   - antares-xpansion-launcher.exe --dataDir
     « D:\\Users\\franconmat\\Documents\\TP\\example\\xpansion-test-01 »
@@ -24,7 +25,7 @@ Antares-Xpansion does not include a human-machine interface.
 Other non-mandatory parameters other than *--dataDir* are available:
 *--step , --method , --simulationName ,* *--installDir and –n* options.
 
-**<span class="underline">--step</span>**
+**--step**
 
 The python script does several operations one after the other. The
 --step option allows to execute only one step or all the steps
@@ -39,18 +40,18 @@ The python script does several operations one after the other. The
 
 Default value: full.
 
-**<span class="underline">--dataDir (-i)</span>**
+**--dataDir (-i)**
 
 Indicate the ANTARES simulation path. The specified path must be an
 explicit path. Use quotes “” in case of a space in the path.
 
-**<span class="underline">--simulationName</span>**
+**--simulationName**
 
 This option enables to give a name to an ANTARES simulation. It is
 necessary if you only run one of the following steps: getnames, lp,
 optim without restarting the antares step.
 
-**<span class="underline">--method (-m)</span>**
+**--method (-m)**
 
 This option enables to set the type of resolution to be used for
 **Antares-Xpansion**
@@ -76,12 +77,12 @@ package:
     **Antares-Xpansion** optimization, gives the capacities, the costs
     of the optimal solution and the time of resolution, as well as the
     path of the iterations of the Benders decomposition. The results are
-    also displayed in the command prompt :
+    also displayed in the command prompt:
 
   - Updates the ANTARES study by replacing the capacities of investment
     candidate links with their optimal value taking into account the
     link-profile, the already-installed-capacity and the
-    already-installed-link-profile :
+    already-installed-link-profile:
 
 ![](../assets/media/image23.png)
 

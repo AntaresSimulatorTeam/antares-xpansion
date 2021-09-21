@@ -14,7 +14,7 @@ Typical uses of the package are for:
 > **long-term scenario building**: build an economically consistent
 > long-term generation mix
 
-> **transmission expansion planning** : compute the network
+> **transmission expansion planning**: compute the network
 > development which maximizes social welfare
 
 The investment decisions are optimized by running ANTARES' simulations
@@ -112,8 +112,8 @@ corridor parallel to another A-D-C corridor.
 The definition of the investment variables in **Antares-Xpansion** is
 detailed later in this note. For example, it may include:
 
-- > <span class="underline">Investable capacity values limited to a
-  > finite set rather than a whole interval</span>. This allows for
+- > Investable capacity values limited to a
+  > finite set rather than a whole interval. This allows for
   > example to make the hypothesis that the investment is made in unit
   > steps of 200 MW and to constrain the search for
   > **Antares-Xpansion** to the discrete set {0 MW, 200 MW, 400 MW,
@@ -124,8 +124,8 @@ detailed later in this note. For example, it may include:
   > interval \[0, maximum potential\], and discrete variables, valid
   > only over a finite set of values (see later).
 
-- <span class="underline">Linear constraints between investable
-  capacities</span>. Linear constraints between variables can be
+- Linear constraints between investable
+  capacities. Linear constraints between variables can be
   defined in investment problems. For example, they may require the
   sum of the capacities of two investment candidates to be greater or
   less than a given limit.

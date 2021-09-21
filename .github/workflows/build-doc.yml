@@ -45,7 +45,7 @@ jobs:
     - name: copy mkdocs and build sphinx latexpdf
       run: |
             cd docs/pdf-doc-generation-with-sphinx
-            cp ../index.md source/intro.md
+            cp ../index.md source/intro.md && cp -r ../assets/ source/ && cp -r ../user-guide source/
             cp -r ../assets/ source/
             cp -r ../user-guide source/
             make latexpdf
