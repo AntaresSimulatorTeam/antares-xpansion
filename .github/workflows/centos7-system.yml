@@ -38,13 +38,13 @@ jobs:
           done
           
           if [[ ${{ steps.changed-files.outputs.modified_files }} == "" ]]; then
-              echo "Docker file modified."
-              echo "::set-output name=docker_changed::true"
-              break
-            else
-              echo "Docker file NOT modified."
-              echo "::set-output name=docker_changed::false"
-            fi
+            echo "Docker file modified."
+            echo "::set-output name=docker_changed::true"
+            break
+          else
+            echo "Docker file NOT modified."
+            echo "::set-output name=docker_changed::false"
+          fi
           
     - name: Read antares-solver version
       if: ${{steps.changed-files.outputs.modified_files}} != ' '
