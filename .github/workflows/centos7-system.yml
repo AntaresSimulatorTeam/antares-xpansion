@@ -41,6 +41,10 @@ jobs:
             echo "::set-output name=docker_changed::false"
           fi
           
+    - name: Echo
+      run: |
+          echo "${{steps.check_changes.outputs.docker_changed}}"
+          
     - name: Read antares-solver version
       if: steps.check_changes.outputs.docker_changed
       id: antares-version
