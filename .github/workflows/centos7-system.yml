@@ -15,7 +15,9 @@ jobs:
   docker_publish:
           
     runs-on: ubuntu-latest
+    
     steps:
+    
     - uses: actions/checkout@master
       with:
         fetch-depth: 0
