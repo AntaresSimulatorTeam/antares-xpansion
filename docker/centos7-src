@@ -32,6 +32,6 @@ RUN tar -xvf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz -C rte-antares-de
 RUN rm -rf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz
 
 RUN git clone https://github.com/AntaresSimulatorTeam/antares-xpansion -b ${ANTARES_TAG} --single-branch
-RUN cd antares-xpansion
-RUN git submodule update --init antares-deps
+RUN cd antares-xpansion &&\
+    git submodule update --init antares-deps
 
