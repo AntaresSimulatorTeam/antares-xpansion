@@ -29,4 +29,3 @@ RUN rm -rf rte-antares-deps-centos7-Release-solver-no-ortools.tar.gz
 RUN wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${ANTARES_SOLVER_VERSION}/antares-${ANTARES_SOLVER_VERSION}-CentOS-7.9.2009.tar.gz
 RUN tar -xvf antares-${ANTARES_SOLVER_VERSION}-CentOS-7.9.2009.tar.gz -C rte-antares-deps-Release --strip-components=1
 RUN rm -rf antares-${ANTARES_SOLVER_VERSION}-CentOS-7.9.2009.tar.gz
-
