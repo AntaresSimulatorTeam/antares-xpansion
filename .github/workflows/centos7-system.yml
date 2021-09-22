@@ -31,8 +31,8 @@ jobs:
       run: |
           echo "${{steps.changed-files-specific.outputs.any_changed}}"
           
-          for file in "${{ steps.changed-files.outputs.all_changed_and_modified_files }}"; do
-            echo "$file was all_changed_and_modified_files"
+          for file in "${{ steps.changed-files.outputs.modified_files }}"; do
+            echo "$file was modified_files"
           done
           
     - name: Read antares-solver version
