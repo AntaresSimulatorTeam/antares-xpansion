@@ -71,6 +71,10 @@ jobs:
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
+
+    - name: Init submodule
+      run: |
+           git submodule update --init --recursive antares-deps
          
     - name: Get release
       id: get_release
