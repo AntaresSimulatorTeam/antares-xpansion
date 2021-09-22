@@ -33,12 +33,12 @@ jobs:
           echo "${{steps.changed-files-specific.outputs.any_changed}}"
           echo "${{steps.changed-files.outputs.modified_files}}"
           
-          if [[ "${{ steps.changed-files.outputs.modified_files }}" == " " ]]; then
-            echo "Docker file modified."
-            echo "::set-output name=docker_changed::true"
-          else
+          if [[ "${{ steps.changed-files.outputs.modified_files }}" == "" ]]; then
             echo "Docker file NOT modified."
             echo "::set-output name=docker_changed::false"
+          else
+            echo "Docker file modified."
+            echo "::set-output name=docker_changed::true"
           fi
           
     - name: Echo
@@ -48,7 +48,7 @@ jobs:
           
     - name: Read antares-solver version
       id: antares-version
-      if: steps.check_changes.outputs.docker_changed == 'true'
+      if: steps.changed-files.outputs.modified_files != ''
       uses: notiz-dev/github-action-json-property@release
       with: 
         path: 'antares-version.json'
