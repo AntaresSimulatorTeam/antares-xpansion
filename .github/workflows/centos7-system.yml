@@ -37,7 +37,7 @@ jobs:
             echo "$file was modified_files"
           done
           
-          if [[ ${{ steps.changed-files.outputs.modified_files }} == "" ]]; then
+          if [[ ${{ steps.changed-files.outputs.modified_files }} = " " ]]; then
             echo "Docker file modified."
             echo "::set-output name=docker_changed::true"
             break
