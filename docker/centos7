@@ -11,7 +11,7 @@ RUN yum install -y epel-release
 
 # Install requirements
 RUN yum install -y git redhat-lsb-core gcc gcc-c++ make wget centos-release-scl scl-utils rpm-build &&\
-    yum install -y cmake3 devtoolset-7
+    yum install -y cmake3 devtoolset-7 
 
 # Install xpansion requirements
 RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options environment-modules rpm-build zlib-devel
