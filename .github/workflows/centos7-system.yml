@@ -46,7 +46,7 @@ jobs:
             fi
           
     - name: Read antares-solver version
-      if: ${{steps.check_changes.outputs.docker_changed}} == 'true'
+      if: ${{steps.changed-files.outputs.modified_files}} != ' '
       id: antares-version
       uses: notiz-dev/github-action-json-property@release
       with: 
@@ -54,7 +54,7 @@ jobs:
         prop_path: 'antares_version'
         
     - name: Read antares-deps version
-      if: ${{steps.check_changes.outputs.docker_changed}} == 'true'
+      if: ${{steps.changed-files.outputs.modified_files}} != ' '
       id: antares-deps-version
       uses: notiz-dev/github-action-json-property@release
       with: 
@@ -62,7 +62,7 @@ jobs:
         prop_path: 'antares_deps_version'
         
     - name: Docker file push
-      if: ${{steps.check_changes.outputs.docker_changed}} == 'true'
+      if: ${{steps.changed-files.outputs.modified_files}} != ' '
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
         ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
