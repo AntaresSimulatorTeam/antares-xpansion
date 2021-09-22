@@ -27,14 +27,6 @@ jobs:
         files: |
           docker/centos7
           
-    - name: Echo changed files
-      run: |
-          echo "${{steps.changed-files-specific.outputs.any_changed}}"
-          
-          for file in "${{ steps.changed-files.outputs.modified_files }}"; do
-            echo "$file was modified_files"
-          done
-          
     - name: Read antares-solver version
       if: ${{steps.changed-files-specific.outputs.any_changed}} == 'true'
       id: antares-version
@@ -44,7 +36,7 @@ jobs:
         prop_path: 'antares_version'
         
     - name: Read antares-deps version
-      if: ${{steps.changed-files-specific.outputs.modified_files}} != ''
+      if: ${{steps.changed-files-specific.outputs.any_changed}} == 'true'
       id: antares-deps-version
       uses: notiz-dev/github-action-json-property@release
       with: 
@@ -52,7 +44,7 @@ jobs:
         prop_path: 'antares_deps_version'
         
     - name: Docker file push
-      if: ${{steps.changed-files-specific.outputs.modified_files}} != ''
+      if: ${{steps.changed-files-specific.outputs.any_changed}} == 'true'
       uses: elgohr/Publish-Docker-Github-Action@master
       env:
         ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
