@@ -26,7 +26,15 @@ jobs:
       with:
         files: |
           docker/centos7
-    
+          
+    - name: Echo changed files
+      run: |
+          echo ${{steps.changed-files-specific.outputs.any_changed}}
+          
+          for file in "${{ steps.changed-files.outputs.all_changed_and_modified_files }}"; do
+            echo "$file was all_changed_and_modified_files"
+          done
+          
     - name: Read antares-solver version
       if: steps.changed-files-specific.outputs.any_changed == 'true'
       id: antares-version
