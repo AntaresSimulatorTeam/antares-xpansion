@@ -42,7 +42,7 @@ jobs:
           fi
           
     - name: Read antares-solver version
-      if: "${{ steps.changed-files.outputs.modified_files }}" == " "
+      if: ${{ steps.changed-files.outputs.modified_files }} == " "
       id: antares-version
       uses: notiz-dev/github-action-json-property@release
       with: 
