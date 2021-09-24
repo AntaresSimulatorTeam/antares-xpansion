@@ -1,0 +1,6 @@
+ARG ANTARES_XPANSION_TAG
+
+RUN git clone https://github.com/AntaresSimulatorTeam/antares-xpansion -b ${ANTARES_XPANSION_TAG} --single-branch
+RUN cd antares-xpansion &&\
+    git submodule update --init antares-deps
+
