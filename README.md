@@ -7,7 +7,7 @@
 
 ![antares logo](./media/AntaresSimulator_Logo.png)
 
-This package works along with RTE's adequacy software [ANTARES][antareswebsite] also [hosted on github][antares-github]
+This package works along with RTE's adequacy software [ANTARES][antareswebsite] that is also [hosted on github][antares-github]
 
 Please see the [Antares-Xpansion Documentation][readthedocs] for an introductory tutorial,
 and a full user guide and [Antares-Simulator Documentation][readthedocs-antares] 
@@ -18,18 +18,16 @@ and a full user guide and [Antares-Simulator Documentation][readthedocs-antares]
 
 Typical uses of Antares-Xpansion are for example:
 
- - **long-term scenario building**: build an economically consistent long-term generation mix
-
- - **transmission expansion planning** : compute the network development which maximizes social welfare
+> - **long-term scenario building**: build an economically consistent long-term generation mix
+>
+> - **transmission expansion planning** : compute the network development which maximizes social welfare
 
 
 ### Antares simulation
 
-In an ANTARES simulation the user builds a power system with a network of areas
-characterised by
-- power plants (with their constraints e.g., max power etc. and costs)
-- power consumption (1-hour time- scale variations)
-- power transfer (with the import-export transfer capacity and costs)
+In an ANTARES simulation, the user builds a power system with a network of zones
+characterised by power plants (with their constraints e.g., max power etc. and costs),
+power consumption and power transfer between zones(with the import-export transfer capacity and costs).
 
 Antares performs probabilistic simulations of the system
 throughout many year-long scenarios made of 8760 hourly
@@ -39,9 +37,9 @@ The goal of the simulation is to minimize the
 
 ### Antares-Xpansion simulation
 Given an ANTARES simulation the user can define some
-_investment candidates_ in the power network as:
-- increase the transfer capacity between to areas or
-- increase the maximum power of a generation facility
+_investment candidates_ in the power network such as
+- (increase or create) transfer capacity between to areas
+- (increase or create) maximum power of a generation facility
 
 Each _investment candidate_ can potentially lower the operational cost
 of the power system, but is also characterised by one or more costs as:
@@ -62,10 +60,39 @@ and the **investment annuity**.
 - [Antares github][antares-github]
 - [Antares documentation][readthedocs-antares]
 
-## Installation
+## Installation and use
 Antares-Xpansion is currently released as standalone-portable solution.
 It can be run either using the single file executable or
 an archive including multiple binaries called by a driver.
+
+The user should first create an Antares study 
+that allows for the definition of investment candidates
+(see the [doc][readthedocs] for detailed informations)
+and create the `candidates.ini` and `settings.ini` files
+in the directory `study_path/user/expansion`.
+
+Antares Xpansion does not have a GUI, the entry point to run Antares Xpansion is in the executable
+`/antares-xpansion-install-dir/antares-xpansion-launcher.exe`.
+This binary should be run from a command prompt or unix terminal:
+
+For example by runnin the following command inside the `/antares-xpansion-install-dir/`
+Antares-Xpansion runs one of the examples
+```shell
+./antares-xpansion-launcher.exe -i examples/SmallTestFiveCandidates
+```
+
+##### step
+
+The python script does several operations one after the other. The step option allows to execute only one step or all the steps (Interaction between the different bricks).
+
+|     name         |     action                                                                 |
+|------------------|----------------------------------------------------------------------------|
+|     antares      |     Launch antares one time to   get the Antares problem                   |
+|     getnames     |     Launch getnamer one time to   get the name of Antares variables        |
+|     lp           |     Launch lpnamer one time to   create the master problem of expansion    |
+|     optim        |     Launch the resolution of   Antares Xpansion                            |
+|     update       |     Update antares study with investment solution                          |
+|     full         |     Launch all steps in order   (antares > getnames > lp > optim > update) |
 
 ## Technologies
 Antares-Xpansion is developed mainly in **C++** and uses a **Python** runner
@@ -209,55 +236,6 @@ It is therefore advised to be as closed as possile from the optimum of the expan
 As the optimal solution is not more realistic than an approximate solution of the modelled expansion problem. The settings can be less constraining with:
  - an `optimality_gap` of a few million euros
 
-## How to use the package?
-
-First, create an Antares study with the description of the candidates and create the `candidates.ini` and `settings.ini` files as explained above and store them in the directory `study_path/user/expansion`.
-
-Antares Xpansion does not have a GUI, the entry point to run Antares Xpansion is in the executable
-`/antares-xpansion-install-dir/xpansion-launcher/antares-xpansion-launcher.exe`.
-This binary should be run from a command prompt or unix terminal:
-
-TODO code snippet with the shell command and output 
-
-To run, the script needs to fill the `--step, --dataDir and --installDir` options.
-
-##### step
-
-The python script does several operations one after the other. The step option allows to execute only one step or all the steps (Interaction between the different bricks).
-
-|     name         |     action                                                                 |
-|------------------|----------------------------------------------------------------------------|
-|     antares      |     Launch antares one time to   get the Antares problem                   |
-|     getnames     |     Launch getnamer one time to   get the name of Antares variables        |
-|     lp           |     Launch lpnamer one time to   create the master problem of expansion    |
-|     optim        |     Launch the resolution of   Antares Xpansion                            |
-|     update       |     Update antares study with investment solution                          |
-|     full         |     Launch all steps in order   (antares > getnames > lp > optim > update) |
-
-##### dataDir
-Indicate the Antares simulation path. The specified path must be an explicit path. 
-
-##### simulationName
-This option enables to give a name to an Antares simulation. It is necessary if you only run one of the following steps: getnames, lp, optim without restarting the antares step.
-
-##### installDir
-This option, not optional, is used to define the directory containing the different executables that the script can launch. The path specified must be an explicit path. The directory must contain the following executables:
- 
-##### method
-This option enables to set the type of resolution to be used for Antares Xpansion :
-
-- mpibenders : Launch the MPI version of the Benders decomposition if the user has MPI
-- mergeMPS : Not implemented. Launch frontal resolution without decomposition
-- sequential : Launch Benders decomposition
- 
-
-#### Results
-The user can find the final solution in *benderssequential.log* file, which is in the Antares study, in the *output/simulation-name/lp directory*.
-
-#### Errors
-
-Xpansion will not work if the initial Antares study is not running. The user must therefore check beforehand that the Antares simulations do not contain any errors.
-Sometimes Xpansion needs to be restarted.
 
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
