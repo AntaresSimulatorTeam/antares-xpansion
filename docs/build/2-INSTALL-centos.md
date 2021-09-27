@@ -1,13 +1,9 @@
-# *antares-xpansion* CMake Build Instructions
+# Centos 7
 
- [CMake version](#cmake-version) | [GCC version](#gcc-version) [Dependencies](#dependencies) | [Building](#building-antares-solution) | [Tests](#tests) | [Installer creation](#installer)
+[CMake version](#cmake-version) | [GCC version](#gcc-version) | [Dependencies](#dependencies) | [Building](#building) | [Tests](#tests) | [Installer creation](#installer-creation)
 
 ## C/I status
 [![Status][centos_system_svg]][centos_system_link]
-
-[centos_system_svg]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/workflows/Centos7%20CI%20(system%20libs)/badge.svg
-
-[centos_system_link]: https://github.com/AntaresSimulatorTeam/Antares_Simulator/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)"
 
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
@@ -44,8 +40,9 @@ Required python modules can be installed with :
 pip3 install -r requirements-tests.txt
 ```
 
-## [Dependencies](#deps)
+## [Dependencies](#dependencies)
 *antares-xpansion* depends on several mandatory libraries. 
+
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
@@ -55,6 +52,7 @@ pip3 install -r requirements-tests.txt
 
 This section describes the install procedures for the third-party Open source libraries used by *antares-xpansion*.
 The install procedure can be done
+
 - by compiling the sources after cloning the official git repository
 - by using yum
 
@@ -66,12 +64,20 @@ sudo yum install openssl-devel curl-devel libuuid-devel
 ```
 
 Note :
-> Some external repositories must be enabled : EPEL and PowerTools (for boost-mpi-devel on centos8)
-> ```
-> sudo yum install epel-release
-> sudo yum install dnf-plugins-core
-> sudo yum config-manager --set-enabled PowerTools
-> ``` 
+> Some external repositories must be enabled
+
+=== "Centos 7 (EPEL)"
+
+    ``` 
+    sudo yum install epel-release
+    ```
+
+=== "Centos 8 (PowerTools)"
+
+    ```
+    sudo yum install dnf-plugins-core
+    sudo yum config-manager --set-enabled PowerTools
+    ```
 
 ### Automatic libraries compilation from git
 [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic libraries compilation from git.
@@ -94,7 +100,7 @@ Note :
 > `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
 ### Pre-compiled libraries download : release version only
-You can download pre-compiled antares-deps archive from [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps/releases/tag/v1.1.0). Only release versions are available.
+You can download pre-compiled antares-deps archive from [Antares dependencies compilation repository][antares-deps-url]. Only release versions are available.
 
 There are still some system libraries that must be installed :
 
@@ -102,7 +108,7 @@ There are still some system libraries that must be installed :
 sudo yum install libuuid-devel libidn2-devel redhat-lsb-core
 ```
 
-## [Building *antares-xpansion*](#build)
+## [Building](#building)
 - Enable `devtoolset-7` and load mpi module:
 ```
 scl enable devtoolset-7 bash
@@ -115,24 +121,26 @@ git submodule update --init antares-deps
 
 - Configure build with cmake
 
+```
+cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON
+```
+
 Here is a list of available CMake configure option :
 
-|Option | Description |
-|:-------|-------|
-|`CMAKE_BUILD_TYPE` | Define build type. Available values are `Release` and `Debug`  |
-|`USE_SEQUENTIAL`|Enable build of sequential executable (default `OFF`)|
-|`USE_MPI`|Enable build of bendersmpi executable (default `OFF`)|
-|`DBUILD_antares_solver`|Enable build of antares-solver (default `ON`)|
-|`BUILD_not_system`|Enable build of external librairies not available on system package manager (default `ON`)|
-|`BUILD_ALL`|Enable build of ALL external librairies (default `OFF`)|
-|`DEPS_INSTALL_DIR`|Define dependencies libraries install directory|
-|`BUILD_TESTING`| Enable test build (default `OFF`)| 
+|Option | Default|Description |
+|:-------|-------|-------|
+|`CMAKE_BUILD_TYPE` |`Release`| Define build type. Available values are `Release` and `Debug`  |
+|`USE_SEQUENTIAL`|`ON`|Enable build of sequential executable|
+|`USE_MPI`|`OFF`|Enable build of bendersmpi executable |
+|`DBUILD_antares_solver`|`ON`|Enable build of antares-solver|
+|`BUILD_not_system`|`ON`|Enable build of external librairies not available on system package manager|
+|`BUILD_ALL`|`ON`|Enable build of ALL external librairies|
+|`DEPS_INSTALL_DIR`|`../rte-antares-deps-<CMAKE_BUILD_TYPE>`|Define dependencies libraries install directory|
+|`BUILD_TESTING`|`OFF`|Enable test build|
+
+- Build
 
 ```
-cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
-```
-- Build
- ```
 cmake3 --build _build --config Release -j8
 ```
 Note :
@@ -143,7 +151,7 @@ Note :
 Tests compilation  can be enabled at configure time using the option `-DBUILD_TESTING=ON` (`OFF` by default)
 
 After build, tests can be run with ``ctest`` :
- ```
+```
 cd _build
 ctest3 -C Release --output-on-failure
 ```
@@ -159,39 +167,42 @@ This is the list of the available labels :
 | `examples_medium`  | `medium`  |End to end tests with examples antares study (medium duration)|
 | `examples_long`  | `long`  |End to end tests with examples antares study (long duration)|
 | `benders_end_to_end`  | `benders`  |End to end tests for benders optimization|
+
 Note :
 > Use `ctest3 -N` to see all available tests
 
 Here is an example for running only examples_medium tests (use of `Name` with `-R` option):
 ```
 ctest3 -C Release --output-on-failure -R examples_medium
-```` 
+```
 Here is an example for running only units tests (use of `Label` with `-L` option):
 ```
 ctest3 -C Release --output-on-failure -L unit
-```` 
+``` 
 
 To run all test, don't indicate any label or name:
 ```
 ctest3 -C Release --output-on-failure
-```` 
+```
 
 ## [Installer creation](#installer)
 CPack can be used to create the installer after the build phase :
 
-## RHEL .rpm (Experimental)
- ```
+### RHEL .rpm (Experimental)
+```
 cd _build
 cpack3 -G RPM .
 ```
 Note :
 > `rpm-build` must be installed for RPM creation :  `sudo yum install rpm-build`
 
-## Linux .tar.gz
- ```
+### Linux .tar.gz
+```
 cd _build
 cpack3 -G TGZ
 ```
+
+### Required system libraries
 There are still some system libraries that must be installed if you want to use *antares-xpansion*:
 
 ```
@@ -207,3 +218,7 @@ module load mpi
 
 Note :
 > `mpirun` can't be used as root on Centos7. Be sure to launch antares-xpansion without root user.
+
+[antares-deps-url]: https://github.com/AntaresSimulatorTeam/antares-deps/releases/tag/v2.0.0-rc2
+[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Centos7%20CI%20(system%20libs)/badge.svg
+[centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)"

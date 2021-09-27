@@ -1,19 +1,23 @@
-# *antares-xpansion* CMake Build Instructions
+# Ubuntu
 
-[Build tools](#build-tools) | [Dependencies](#dependencies) | [Building](#building-antares-solution) | [Tests](#tests) | [Installer creation](#installer)
+[CMake version](#cmake-version) | [GCC version](#gcc-version) | [Dependencies](#dependencies) | [Building](#building) | [Tests](#tests) | [Installer creation](#installer-creation)
 
 ## C/I status
 
 [![Status][ubuntu_system_svg]][ubuntu_system_link]
 
-[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml/badge.svg
 
-[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml
-
-## [Build tools](#build-tools)
-
+## [CMake version](#cmake-version)
+CMake 3.x must be used.
 ```
-sudo apt install build-essential libssl-dev cmake
+sudo apt install cmake
+```
+
+## [GCC version](#gcc-version)
+The compilation of  *antares-xpansion* requires C++17 support.
+Default version of ubuntu 20.04 can be used :
+```
+sudo apt install build-essential
 ```
 
 ## [Python version](#python-version)
@@ -29,7 +33,8 @@ pip3 install -r requirements-tests.txt
 ```
 
 ## [Dependencies](#deps)
-*antares-xpansion* depends on several mandatory libraries. 
+*antares-xpansion* depends on several mandatory libraries.
+
  - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
  - [Google Test](https://github.com/google/googletest)
  - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
@@ -39,13 +44,12 @@ pip3 install -r requirements-tests.txt
 
 This section describes the install procedures for the third-party Open source libraries used by *antares-xpansion*.
 The install procedure can be done
+
 - by compiling the sources after cloning the official git repository
-- by using a package manager. Depending on the OS we propose a solution
-  - using VCPKG (Only tested on windows)
-  - using the official package manager of the linux distribution
+- by using apt-get
 
 
-#### Ubuntu
+### apt-get command
 
 ```
 sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev
@@ -88,33 +92,33 @@ There are still some system libraries that must be installed :
 ```
 sudo apt-get install libuuid1 uuid-dev libssh2-1 libssh2-1-dev libidn2-0 libidn2-dev libidn11 libidn11-dev gtk2.0 libb64-dev libjpeg-dev libtiff-dev libsecret-1-dev
 ```
-## [Building *antares-xpansion* V2](#build)
+## [Building](#build)
 - update git submodule for dependency build :
 ```
 git submodule update --init antares-deps
 ```
 
-- Configure build with cmake
+- Configure build with CMake
+
+```
+cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON
+```
 
 Here is a list of available CMake configure option :
 
-|Option | Description |
-|:-------|-------|
-|`CMAKE_BUILD_TYPE` | Define build type. Available values are `Release` and `Debug`  |
-|`USE_SEQUENTIAL`|Enable build of sequential executable (default `OFF`)|
-|`USE_MPI`|Enable build of bendersmpi executable (default `OFF`)|
-|`DBUILD_antares_solver`|Enable build of antares-solver (default `ON`)|
-|`BUILD_not_system`|Enable build of external librairies not available on system package manager (default `ON`)|
-|`BUILD_ALL`|Enable build of ALL external librairies (default `OFF`)|
-|`DEPS_INSTALL_DIR`|Define dependencies libraries install directory|
-|`BUILD_TESTING`| Enable test build (default `OFF`)| 
+|Option | Default|Description |
+|:-------|-------|-------|
+|`CMAKE_BUILD_TYPE` |`Release`| Define build type. Available values are `Release` and `Debug`  |
+|`USE_SEQUENTIAL`|`ON`|Enable build of sequential executable|
+|`USE_MPI`|`OFF`|Enable build of bendersmpi executable |
+|`DBUILD_antares_solver`|`ON`|Enable build of antares-solver|
+|`BUILD_not_system`|`ON`|Enable build of external librairies not available on system package manager|
+|`BUILD_ALL`|`ON`|Enable build of ALL external librairies|
+|`DEPS_INSTALL_DIR`|`../rte-antares-deps-<CMAKE_BUILD_TYPE>`|Define dependencies libraries install directory|
+|`BUILD_TESTING`|`OFF`|Enable test build|
 
-
-```
-cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_SEQUENTIAL=true -DUSE_MPI=true
-```
 - Build
- ```
+```
 cmake --build _build --config Release -j8
 ```
 Note :
@@ -125,7 +129,7 @@ Note :
 Tests compilation can be enabled at configure time using the option `-DBUILD_TESTING=ON` (`OFF` by default)
 
 After build, tests can be run with ``ctest`` :
- ```
+```
 cd _build
 ctest -C Release --output-on-failure
 ```
@@ -141,40 +145,44 @@ This is the list of the available labels :
 | `examples_medium`  | `medium`  |End to end tests with examples antares study (medium duration)|
 | `examples_long`  | `long`  |End to end tests with examples antares study (long duration)|
 | `benders_end_to_end`  | `benders`  |End to end tests for benders optimization|
+
 Note :
 > Use `ctest -N` to see all available tests
 
 Here is an example for running only examples_medium tests (use of `Name` with `-R` option):
 ```
 ctest -C Release --output-on-failure -R examples_medium
-```` 
+``` 
 Here is an example for running only units tests (use of `Label` with `-L` option):
 ```
 ctest -C Release --output-on-failure -L unit
-```` 
+```
 
 To run all test, don't indicate any label or name:
 ```
 ctest -C Release --output-on-failure
-```` 
-## [Installer creation](#installer)
+```
+## [Installer creation](#installer-creation)
 CPack can be used to create the installer after the build phase :
 
-## Ubuntu .deb (Experimental)
- ```
+### Ubuntu .deb (Experimental)
+```
 cd _build
 cpack -G DEB .
 ```
 
-## Linux .tar.gz
- ```
+### Linux .tar.gz
+```
 cd _build
 cpack -G TGZ
 ```
-There are still some system libraries that must be installed if you want to use *antares-xpansion*:
 
+### Required system libraries
+There are still some system libraries that must be installed if you want to use *antares-xpansion*:
 ```
 sudo apt-get install libcurl4 libjsoncpp1 libboost-mpi-dev
 ```
-Note :
->These libraries Compilation can be done on several processor with ```-j``` option.
+
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml/badge.svg
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml
+[antares-deps-url]: https://github.com/AntaresSimulatorTeam/antares-deps/releases/tag/v2.0.0-rc2

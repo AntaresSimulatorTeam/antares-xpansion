@@ -105,14 +105,14 @@ This software suite has been tested under:
 *   Centos 7 [![Status][centos_system_svg]][centos_system_link] 
 
 Antares XPansion is built using CMake.
-For build and installation instructions, please visit [INSTALL.md](INSTALL.md)
+For build and installation instructions, please visit [doc/build/0-INSTALL.md](docs/build/0-INSTALL.md)
 
 ## Source Code Content
 
-* [INSTALL](INSTALL.md)           - Installation and building instructions.
 * [README](README.md)             - This file.
 * [cmake/](cmake)        - files for initializing a solution ready for compilation. 
 * [conception/](conception)        - json output description 
+* [docs/](docs) - Markdown files for documentation generation  
 * [data_test/](data_test)	 - Free sample data sets. 
 * [documentation/](documentation)	 - Documentation generation with doxygen
 * [src/cpp/](src/cpp)      - source code for cpp application (lpnamer, benders with mpi, benders without MPI, merge)

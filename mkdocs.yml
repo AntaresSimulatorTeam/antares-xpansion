@@ -40,5 +40,6 @@ markdown_extensions:
   - admonition
   - pymdownx.details
   - pymdownx.superfences
+  - pymdownx.tabbed
 
 copyright: Copyright &copy; 2007 - 2021 RTE
