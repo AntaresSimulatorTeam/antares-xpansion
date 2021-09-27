@@ -1,47 +1,18 @@
 # Introduction
- [Supported OS](#supported-os)| [C++ version](#c-version) | [CMake version](#cmake-version) | [Python version](#python-version) | [Git version](#git-version) | [Dependencies](#dependencies) |
-
-## C/I status
-| OS     | Status|
-|:-------|--------|
-| Ubuntu  | [![Status][ubuntu_system_svg]][ubuntu_system_link] |
-| Windows  | [![Status][windows_vcpkg_svg]][windows_vcpkg_link] |
-| Centos7  | [![Status][centos_system_svg]][centos_system_link] |
-
+ [Supported OS](#supported-os) | [Development requirements](#development-requirements) | [Dependencies](#dependencies) |
 
 ## [Supported OS](#supported-os)
 *antares-xpansion* compilation is tested on :
 
-- Windows see [INSTALL-windows.md](1-INSTALL-windows.md)
-- Ubuntu see [INSTALL-ubuntu.md](3-INSTALL-ubuntu.md)
-- Centos7 see [INSTALL-centos.md](2-INSTALL-centos.md)
+- Windows : [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
+- Centos7 : [![Status][centos_system_svg]][centos_system_link]
+- Ubuntu : [![Status][ubuntu_system_svg]][ubuntu_system_link]
 
-## [C++ version](#c++-version)
-The compilation of  *antares-xpansion* requires C++17 support.
+## [Development requirements](#development-requirements)
+Development requirements are described [here](1-Development-requirements.md)
 
-## [CMake version](#cmake-version)
-CMake 3.x must be used.
-
-## [Python version](#python-version)
-Python 3.x must be used.
-
-## [Git version](#git-version)
-Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see https://github.com/google/or-tools/issues/1193).
-
-## [Dependencies](#deps)
-*antares-xpansion* depends on severals mandatory libraries. 
-
- - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
- - [Google Test](https://github.com/google/googletest)
- - [OR-Tools](https://github.com/AntaresSimulatorTeam/or-tools/tree/rte_dev_sirius)
- - Boost : mpi, serialization (Only for MPI benders compilation)
- - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
- - [GraphViz](https://graphviz.org/) for doxygen use
- - [OpenSSL](https://github.com/openssl/openssl)
- - [CURL](https://github.com/curl/curl)
- - [Sirius Solver](https://github.com/AntaresSimulatorTeam/sirius-solver/tree/Antares_VCPKG) (fork from [RTE](https://github.com/rte-france/sirius-solver/tree/Antares_VCPKG))
- 
- Installation of these dependencies is described in OS specific *antares-xpansion* install procedure.
+## [Dependencies](#dependencies)
+*antares-xpansion* dependencies and install procedure are described [here](2-Dependencies-install.md)
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml/badge.svg
 [ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml
