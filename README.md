@@ -10,7 +10,7 @@
 This package works along with RTE's adequacy software [ANTARES][antareswebsite] that is also [hosted on github][antares-github]
 
 Please see the [Antares-Xpansion Documentation][readthedocs] for an introductory tutorial,
-and a full user guide and [Antares-Simulator Documentation][readthedocs-antares] 
+and a full user guide. Visit the [Antares-Simulator Documentation][readthedocs-antares] for more insights on ANTARES.
 
 ## Introduction
 

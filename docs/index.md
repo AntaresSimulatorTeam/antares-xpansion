@@ -1,15 +1,14 @@
-> Investment simulations for [ANTARES][antareswebsite] studies
-
 [![Status][ubuntu_system_svg]][ubuntu_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link] [![Status][centos_system_svg]][centos_system_link] [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 ![antares logo](assets/antares.png)
+> Investment simulations for [ANTARES][antareswebsite] studies
 
 This package works along with RTE's adequacy software [ANTARES][antareswebsite] that is also [hosted on github][antares-github]
 
 Please see the [Antares-Xpansion Documentation][readthedocs] for an introductory tutorial,
-and a full user guide and [Antares-Simulator Documentation][readthedocs-antares]
+and a full user guide. Visit the [Antares-Simulator Documentation][readthedocs-antares] for more insights on ANTARES. 
 
 ## Introduction
 
