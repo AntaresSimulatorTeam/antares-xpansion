@@ -22,7 +22,7 @@ runs:
         make latexpdf
         cd ../../
         PDF_NAME=antaresXpansion-UserGuide-${{ inputs.antares-xpansion-version }}.pdf
-        PDF_PATH=docs/pdf-doc-generation-with-sphinx/build/latex/$PDF_NAME
+        PDF_PATH=./$PDF_NAME
         mv docs/pdf-doc-generation-with-sphinx/build/latex/antaresxpansionuserguide.pdf $PDF_NAME
         echo "::set-output name=pdf-path::$PDF_PATH"
         echo "::set-output name=pdf-name::$PDF_NAME"
