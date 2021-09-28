@@ -13,6 +13,17 @@ theme:
   #  - navigation.sections
   #   - header.autohide
   #   - toc.separate
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: antares
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 extra:
   generator: false
