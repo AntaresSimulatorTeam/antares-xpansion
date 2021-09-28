@@ -20,7 +20,7 @@ runs:
         cd docs/pdf-doc-generation-with-sphinx
         cp -r ../assets/ source/ && cp -r ../user-guide source/
         make latexpdf
-        LSB_RELEASE_ID_SHORT=$(lsb_release --short --id)
+        cd ../../
         PDF_NAME=antaresXpansion-UserGuide-${{ inputs.antares-xpansion-version }}.pdf
         PDF_PATH=docs/pdf-doc-generation-with-sphinx/build/latex/$PDF_NAME
         mv docs/pdf-doc-generation-with-sphinx/build/latex/antaresxpansionuserguide.pdf $PDF_NAME
