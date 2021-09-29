@@ -68,14 +68,9 @@ endif()
 
 # XPRESS
 if(XPRESS)
-	target_include_directories (solvers
-		PUBLIC
-			${XPRESS_INCLUDE_FILES}
-	)
 	target_link_libraries (solvers
 		PUBLIC
-			debug		${XPRESS_DEBUG_LIB}
-			optimized	${XPRESS_OPT_LIB}
+			XPRESS::XPRESS
 	)
 endif()
 
