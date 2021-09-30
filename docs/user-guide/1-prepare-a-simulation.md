@@ -436,8 +436,10 @@ The same link in an ANTARES study can be the subject of several investment candi
 
 The example in the following figure shows the case of an investment in photovoltaic production with three potentials of increasing cost.
 
-![](../assets/media/image15.png)
-**Figure 8** - Three potentials of increasing investment cost applying to the same link in the ANTARES study*
+![](../assets/media/several_candidates.PNG)
+**Figure 8** - Three potentials of increasing investment cost applying to the same link in the ANTARES study
+
+Note that this only works with Benders if the costs are increasing and that investment candidates with the same link must also necessarily have the same `already-installed-capacity` and  `already-installed-link-profile`. 
 
 ## Investment Candidates and Decommissioning Candidates
 
@@ -494,7 +496,7 @@ expanded is given in the following figure.
 
 ![](../assets/media/image15.png)
 
-**Figure 8** - Candidates for investment and decommissioning on
+**Figure 9** - Candidates for investment and decommissioning on
 the same link from an ANTARES study*
 
 !!! warning
@@ -544,7 +546,7 @@ difference from the optimum is less than the `optimality_gap`.
 
 ![](../assets/media/image16.png)
 
-**Figure 9** – Illustration of the optimality-gap and the set of
+**Figure 10** – Illustration of the optimality-gap and the set of
 solutions that can be returned by the package when the gap is strictly
 positive.
 
@@ -668,7 +670,7 @@ row is the weight of the \\(i\\)-th Monte Carlo year.
 
 ![](../assets/media/image17.png)
 
-**Figure 10** – Example of a setting of Antares-Xpansion with
+**Figure 11** – Example of a setting of Antares-Xpansion with
 Monte-Carlo years that are not equally-weighted.
 
 If the `yearly-weights` parameter is not used, the Monte-Carlo years of
@@ -694,7 +696,7 @@ the following figure:
 
 ![](../assets/media/image18.png)
 
-**Figure 11** – Example of an additional constraint file
+**Figure 12** – Example of an additional constraint file
 
 - `name`: the constraint name must be unique and must not contain any
   special symbols or space
@@ -711,7 +713,7 @@ time, it can also invest in neither:
 
 ![](../assets/media/image19.png)
 
-**Figure 12** – Example of an additional constraint file
+**Figure 13** – Example of an additional constraint file
 
 The use of binary variables is not recommended as it greatly increases
 the calculation time.
