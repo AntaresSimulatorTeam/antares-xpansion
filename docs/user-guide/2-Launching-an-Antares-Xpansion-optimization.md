@@ -100,8 +100,7 @@ Xpansion will not work if the initial ANTARES study is not running. The
 user must therefore check beforehand that the Antares simulations do not
 contain any errors.
 
-Be careful to use the has-link-profile=True parameter in the case of a
-use of link-profile, to check the consistency between the names of the
+Be careful to check the consistency between the names of the
 links in the candidates.ini file and in the Antares study and to use a
 unique index and name per candidate.
 

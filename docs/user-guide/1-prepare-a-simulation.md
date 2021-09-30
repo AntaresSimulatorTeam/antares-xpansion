@@ -278,9 +278,6 @@ initially indicated in the ANTARES study are not considered in the
 `already-installed-capacity` parameter and will be overwritten by
 **Antares-Xpansion**.
 
-#### `has-link-profile`
-
-The value to be entered is True if the candidate has a link profile.
 
 #### `link-profile`
 
@@ -353,7 +350,6 @@ name = solar_power
 link = area1 - pv1
 annual-cost-per-mw = 100000
 max-investment = 10000
-has-link-profile = True
 link-profile = pv1.txt
 ```
 Where `pv1.txt` is a text file, located in the `./user/expansion/capa/`
