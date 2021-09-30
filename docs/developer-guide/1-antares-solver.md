@@ -1,6 +1,10 @@
-# antares-solver
-antares-solver study must be updated to be used by antares-xpansion.
-`settings/generaldata.ini` file must be changed and :
+# Optimization problems generation
+`antares-solver` is run using xpansion options. The weekly optimization problems (1st and 2nd optimization) are written as .mps files.
+
+## Specific antares-xpansion configuration
+`antares-solver` study must be updated to be used by antares-xpansion.
+
+`settings/generaldata.ini` file must be changed :
 
 ```ini
 [optimization]
@@ -25,6 +29,9 @@ unit-commitment-mode = fast
 |`[general]mode`| TODO| 
 |`[other preferences]unit-commitment-mode`| TODO| 
 
+>Note :
+>The modifications of these parameters is not done by user but by the python orchestrator.
+
 ## Output files
 
 ### .mps file for the weekly optimization problems
@@ -35,7 +42,7 @@ For example `problem-1-1-20210928-155703.mps` represents the weekly problem for 
 
 ### variables.txt file for each .mps file
 
-variable file name formatting `variables-<mc_year>-<week>-<timestamp>.txt`
+File name formatting :`variables-<mc_year>-<week>-<timestamp>.txt`
 
 For example `variables-1-1-20210928-155703.txt` represents the variables name of problem for MC year 1 and week 1 generated in 2021/09/28 at 15h57 03s.
 
@@ -55,7 +62,9 @@ Example for `462 ValeurDeNTCOrigineVersExtremite 0 0 14`
 
 ### area.txt
 
-Only one file describing area is produce by antares-solver. File name formatting `area-<mc_year>-<week>-<timestamp>.txt`.
+Only one file describing area is produce by `antares-solver`.
+
+File name formatting `area-<mc_year>-<week>-<timestamp>.txt`.
 
 Because area doesn't change in each MC-year or week, the file is created only for the firsts MC-year and week simulated.
 
@@ -73,16 +82,20 @@ semibase
 
 ### interco.txt
 
-Only one file describing the link is produced by antares-solver. File name formatting `interco-<mc_year>-<week>-<timestamp>.txt`.
+Only one file describing the link is produced by antares-solver. 
+
+File name formatting `interco-<mc_year>-<week>-<timestamp>.txt`.
+
 Because links doesn't change in each MC-year or week, the file is created only for the firsts MC-year and week simulated.
 
 The file contains one line for each link used in simulation.
 
 Example :
-`3 1 2`
-link_id : 3
+``` 
+3 1 2
+link_id : 3 
 index_pays_origin : 1
 index_pays_extremite : 2
+```
 
-The index is a match to the index in the area.txt file. So for this example this means that link_id 3 match to link `area2-flex` 
-
+The index is a match to the index in the area.txt file. So for this example this means that link_id `3` match to link `area2-flex` 
