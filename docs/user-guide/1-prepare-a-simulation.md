@@ -270,7 +270,6 @@ The value to be entered is an integer. It corresponds to the candidate's
 potential in terms of number of installable units. If the candidate has
 the max-units and `unit-size` parameters, then the set of values that its
 capacity can take is the finite set of the first multiples of `unit-size`:
-
 $$[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \text{unit-size}]$$
 
 #### `already-installed-capacity`
@@ -643,9 +642,7 @@ representative years may be given greater weight than those that are
 less representative. The `yearly-weights` points to a vector
 \\(\left( \omega_{1},\ldots,\omega_{n} \right)\\), with \\(n\\) the number
 of Monte-Carlo years in the study, which is used to evaluate the
-expected production costs.
-
-$$[\mathbb{E}\left\lbrack \text{cost} \right\rbrack = \ \frac{\sum_{i = 1}^{n}{\omega_{i}\text{cost}_{i}}}{\sum_{i = 1}^{n}\omega_{i}}$$
+expected production costs.  $$ \mathbb{E}\left(\text{cost}\right) = \frac{\sum_{i = 1}^{n}{\omega_i\text{cost}\_i}}{\sum\_{i = 1}^{n}\omega_{i}} $$
 
 With \\(\text{cost}_{i}\\) the production cost of the \\(i\\)-th Monte Carlo
 year.

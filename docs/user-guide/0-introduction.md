@@ -31,7 +31,7 @@ any issue.
 
 The cost function that **Antares-Xpansion** minimizes is as follows:
 
-*Min (expected operating costs for one year + a fixed cost annuity)*
+$$\min (\text{expected operating costs for one year} + \text{fixed cost annuity})$$
 
 In which the expected operating costs for one year, calculated by
 ANTARES, includes the variable costs of thermal generation (fuel and CO2
@@ -98,7 +98,7 @@ input data of **Antares-Xpansion**.
 
 In the more general case with several investment candidates,
 **Antares-Xpansion** determines one optimal investment combination, that
-is, one combination \((c_{1},c_{2},\ldots,c_{n})\) of the capacities of
+is, one combination \\((c_{1},c_{2},\ldots,c_{n})\\) of the capacities of
 the n investment candidates that minimizes the cost function.
 
 The search for this optimal combination is done "at the same time" on
