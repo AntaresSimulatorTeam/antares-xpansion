@@ -426,6 +426,19 @@ obtained by antaresXpansion in order to obtain the real production
 program with outages and RES intermittence varying according to the
 scenarios.
 
+## Several investment candidates on the same link
+
+The same link in an ANTARES study can be the subject of several investment candidates. The interest of such an approach can be :
+
+- to define several potentials with different fixed cost annuities
+
+- to define several investment opportunities of different unit size.
+
+The example in the following figure shows the case of an investment in photovoltaic production with three potentials of increasing cost.
+
+![](../assets/media/image15.png)
+**Figure 8** - Three potentials of increasing investment cost applying to the same link in the ANTARES study*
+
 ## Investment Candidates and Decommissioning Candidates
 
 The difference between _investment candidates_ and _decommissioning candidates_ is the fixed-cost-annuity.
