@@ -446,7 +446,7 @@ The annuity of the _investment candidates_ includes the sum of:
 > costs (mainly fuel costs and penalties associated with loss of load)
 > made possible by the new investment.
 
-### decomisioning costs
+### decommissioning costs
 
 The annuity for _decommissioning candidates_,
 on the other hand, only includes the fixed annual
