@@ -112,20 +112,20 @@ corridor parallel to another A-D-C corridor.
 The definition of the investment variables in **Antares-Xpansion** is
 detailed later in this note. For example, it may include:
 
-- > Investable capacity values limited to a
-  > finite set rather than a whole interval. This allows for
-  > example to make the hypothesis that the investment is made in unit
-  > steps of 200 MW and to constrain the search for
-  > **Antares-Xpansion** to the discrete set {0 MW, 200 MW, 400 MW,
-  > 600 MW…}. Or to adopt an all-or-nothing approach in which only two
-  > choices are possible: not to invest or to invest up to an imposed
-  > unit capacity. Note that **Antares-Xpansion** can manage a mix of
-  > continuous investment variables, i.e. valid over the whole
-  > interval \[0, maximum potential\], and discrete variables, valid
-  > only over a finite set of values (see later).
+-  **Investable capacity values limited to a
+   finite set rather than a whole interval.** This allows for
+   example to make the hypothesis that the investment is made in unit
+   steps of 200 MW and to constrain the search for
+   **Antares-Xpansion** to the discrete set {0 MW, 200 MW, 400 MW,
+   600 MW…}. Or to adopt an all-or-nothing approach in which only two
+   choices are possible: not to invest or to invest up to an imposed
+   unit capacity. Note that **Antares-Xpansion** can manage a mix of
+   continuous investment variables, i.e. valid over the whole
+   interval \[0, maximum potential\], and discrete variables, valid
+   only over a finite set of values (see later).
 
-- Linear constraints between investable
-  capacities. Linear constraints between variables can be
+- **Linear constraints between investable
+  capacities.** Linear constraints between variables can be
   defined in investment problems. For example, they may require the
   sum of the capacities of two investment candidates to be greater or
   less than a given limit.
