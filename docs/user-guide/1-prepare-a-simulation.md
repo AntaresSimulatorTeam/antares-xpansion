@@ -198,7 +198,7 @@ The `candidates.ini` must be placed inside the Antares study folder
 The format is a standard `.ini` and should follow this template:
 
 
-![](../assets/media/image10.png)
+![](../assets/media/candidate.PNG)
 
 **Figure 4** – Example of a candidates.ini file
 
