@@ -27,6 +27,21 @@ theme:
         icon: material/toggle-switch
         name: Switch to light mode
 
+nav:
+  - Home: index.md
+  - 'User guide':
+      - 'Introduction': 'user-guide/0-introduction.md'
+      - 'Prepare a simulation': 'user-guide/1-prepare-a-simulation.md'
+      - 'Launching an optimization': 'user-guide/2Launching-an-Antares-Xpansion-optimization.md'
+  - 'Build':
+    - 'Introduction': 'build/0-introduction.md'
+    - 'Development requirements': 'build/1-Development-requirements.md'
+    - 'Dependencies install': 'build/2-Dependencies-install.md'
+    - 'Build': 'build/3-Build.md'
+    - 'Tests': 'build/4-Tests.md'
+    - 'Installer creation': 'build/5-Installer-creation.md'
+  - 'Changelog': 'CHANGELOG.md'
+
 extra:
   generator: false
   version:

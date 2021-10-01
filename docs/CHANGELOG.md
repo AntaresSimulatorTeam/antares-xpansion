@@ -1,6 +1,6 @@
 Antares-Xpansion Changelog
 =================
-v0.5.0 (09/2021)
+v0.5.0 (10/2021)
 --------------------
 ### Features
 
@@ -19,6 +19,11 @@ v0.5.0 (09/2021)
  - fix mergemps optimization in debug mode
  - Fix vcpkg on Github Actions
  - Add build cache for Github Actions (Ubuntu only) to speed up the build
+ - add sonarcloud analysis
+ - use of docker image for build on centos7
+ - add read-the-docs documentation
+ - generation of pdf user guide from read-the-docs documentation
+ - update Cmake to support Xpress on centos7
  
 v0.4.0 (07/2021)
 -------------------- 
