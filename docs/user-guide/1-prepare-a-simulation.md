@@ -681,6 +681,13 @@ line with the ANTARES study playlist by the user**: years with
 zero weights must be removed from the ANTARES study playlist in order
 not to be simulated unnecessarily.
 
+### **`solver`**
+
+Value: String specifying the name of a solver. Default value: Cbc.
+
+To use another solver than Coin, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.
+
+
 ### **`additional-constraints`**
 
 Value: string specifying the name of a file.
