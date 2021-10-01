@@ -228,12 +228,17 @@ find_package(jsoncpp CONFIG REQUIRED)
 ## Xpress
 if(XPRESS)
 	message("XPRESS is ${XPRESS}")
-	set ( XPRESS_INCLUDE_FILES	$ENV{XPRESSDIR}/include )
-	set ( XPRESS_DEBUG_LIB  	$ENV{XPRESSDIR}/lib/xprs.lib )
-	set ( XPRESS_OPT_LIB 		$ENV{XPRESSDIR}/lib/xprs.lib )
-	message("XPRESS include directory is ${XPRESS_INCLUDE_FILES}")
-	message("XPRESS debug library is ${XPRESS_DEBUG_LIB}")
-	message("XPRESS optim library is ${XPRESS_OPT_LIB}")
+
+	#Default xpress install dir
+	if (NOT XPRESS_ROOT)
+		if (MSVC)
+			set(XPRESS_ROOT "C:/xpressmp")
+		elseif(UNIX)
+			set(XPRESS_ROOT "/opt/xpressmp")
+		endif()
+	endif()
+
+	find_package(XPRESS REQUIRED)
 
 	# Add solver variables for usage in C++ source code
 	# There are already some variables defined by SOLVER, -DUSE_XPRESS, -DUSE_CBC
