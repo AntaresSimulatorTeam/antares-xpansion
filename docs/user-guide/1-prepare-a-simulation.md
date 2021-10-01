@@ -299,7 +299,7 @@ at hourly intervals. It should be noted that the `link-profile` is
 deterministic: the same profile will be used by **Antares-Xpansion** for
 all Monte-Carlo years of the ANTARES study and all capacity tested.
 
-![](../assets/media/image11.png)
+![](../assets/media/link_profile.PNG)
 
 **Figure 5** – Example of a file containing a load factor profile in
 the **Antares-Xpansion** format
