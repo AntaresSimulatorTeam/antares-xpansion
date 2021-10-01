@@ -198,7 +198,7 @@ The `candidates.ini` must be placed inside the Antares study folder
 The format is a standard `.ini` and should follow this template:
 
 
-![](../assets/media/image10.png)
+![](../assets/media/candidate.PNG)
 
 **Figure 4** – Example of a candidates.ini file
 
@@ -299,7 +299,7 @@ at hourly intervals. It should be noted that the `link-profile` is
 deterministic: the same profile will be used by **Antares-Xpansion** for
 all Monte-Carlo years of the ANTARES study and all capacity tested.
 
-![](../assets/media/image11.png)
+![](../assets/media/link_profile.PNG)
 
 **Figure 5** – Example of a file containing a load factor profile in
 the **Antares-Xpansion** format
@@ -680,6 +680,13 @@ The `yearly-weights` parameter **must be set in
 line with the ANTARES study playlist by the user**: years with
 zero weights must be removed from the ANTARES study playlist in order
 not to be simulated unnecessarily.
+
+### **`solver`**
+
+Value: String specifying the name of a solver. Default value: Cbc.
+
+To use another solver than Coin, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.
+
 
 ### **`additional-constraints`**
 
