@@ -1,17 +1,12 @@
 #include "gtest/gtest.h"
 
-#include <sstream>
 #include <fstream>
 
-#include "common_lpnamer.h"
-#include "CandidatesInitializer.h"
 #include "StudyUpdater.h"
 
 class LinkdataRecordTest : public ::testing::Test
 {
 protected:
-
-    static Candidates* candidates_;
 
 	static void SetUpTestCase()
 	{

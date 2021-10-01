@@ -231,7 +231,5 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
  * @note care when copying between solvers of different types : no special verifications are done (eg. infinity values correspondance)
  * @note duplicate/empty names will be named automatically by ortools
  */
-void solver_copyandrenamevars(SolverAbstract::Ptr outSolver_p,
-                              SolverAbstract::Ptr const inSolver_p,
-                              std::vector<std::string> & names_p,
-                              std::string const& solver_name);
+void
+solver_rename_vars(SolverAbstract::Ptr outSolver_p,const std::vector<std::string> &names_p);

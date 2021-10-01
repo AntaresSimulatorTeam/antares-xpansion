@@ -17,7 +17,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 	# Python unit test
 	add_test(
         NAME unit_launcher
-        COMMAND Python3::Interpreter -m pytest
+        COMMAND Python3::Interpreter -m pytest --cov=antares_xpansion --cov-report xml:coverage-reports/coverage-antares_xpansion.xml
         WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/python"
     )
     set_property(TEST unit_launcher PROPERTY LABELS unit) 
@@ -44,7 +44,14 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
     set_property(TEST benders_end_to_end PROPERTY LABELS benders)
-    
+
+    add_test(
+            NAME lpnamer_end_to_end
+            COMMAND Python3::Interpreter -m pytest  --installDir=$<TARGET_FILE_DIR:lp_namer> test_lpnamerEndToEnd.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/lpnamer
+    )
+    set_property(TEST lpnamer_end_to_end PROPERTY LABELS lpnamer)
+
 else()   
   message(FATAL "Module pytest or numpy not installed : can't run python scripts for end to end tests" )
 endif()

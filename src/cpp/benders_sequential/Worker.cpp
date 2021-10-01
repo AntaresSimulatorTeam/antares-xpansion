@@ -84,15 +84,6 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 	}
 }
 
-StrVector ORT_LP_STATUS = {
-	"ORT_OPTIMAL",
-    "ORT_FEASIBLE",
-    "ORT_INFEASIBLE",
-    "ORT_UNBOUNDED",
-    "ORT_ABNORMAL",
-    "ORT_MODEL_INVALID",
-    "ORT_NOT_SOLVED"
-};
 
 /*!
 *  \brief Method to solve a problem
@@ -107,7 +98,7 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 	else {
         lp_status = _solver->solve_lp();
 	}
-	
+
 
 	if (lp_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
@@ -115,13 +106,22 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 
 		buffer << options.OUTPUTROOT << PATH_SEPARATOR;
 		buffer << _path_to_mps << "_lp_status_";
-		buffer << ORT_LP_STATUS[lp_status];
+		buffer << _solver->SOLVER_STRING_STATUS[lp_status];
 		buffer<< ".mps";
-		LOG(INFO) << "lp_status is : " << ORT_LP_STATUS[lp_status] << std::endl;
+		LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status] << std::endl;
 		LOG(INFO) << "written in " << buffer.str() << std::endl;
 		_solver->write_prob_mps(buffer.str());
 
-		throw InvalidSolverStatusException("Invalid solver status " + ORT_LP_STATUS[lp_status]  + " optimality expected");
+		throw InvalidSolverStatusException("Invalid solver status " + _solver->SOLVER_STRING_STATUS[lp_status]  + " optimality expected");
+	}
+
+	if (_is_master) {
+        std::string suffix = ".mps";
+        std::stringstream buffer;
+        buffer << options.OUTPUTROOT << PATH_SEPARATOR;
+        buffer << _path_to_mps.substr(0, _path_to_mps.length() - suffix.length()) << "_last_iteration";
+        buffer<< ".mps";
+        _solver->write_prob_mps(buffer.str());
 	}
 }
 

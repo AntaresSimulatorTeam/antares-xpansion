@@ -6,5 +6,5 @@ def pytest_addoption(parser):
     parser.addoption("--installDir", action="store", default = build_config_reader.get_install_dir())
     
 @pytest.fixture()
-def installDir(request):
+def install_dir(request):
     return request.config.getoption("--installDir")

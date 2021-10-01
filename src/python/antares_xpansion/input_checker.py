@@ -85,15 +85,19 @@ def check_candidate_option_type(option, value):
                      'max-units': 'non-negative',
                      'max-investment': 'non-negative',
                      'relaxed': 'string',
-                     'has-link-profile': 'string',
                      'link-profile': 'string',
                      'already-installed-capacity': 'non-negative',
-                     'already-installed-link-profile': 'string'}
+                     'already-installed-link-profile': 'string',
+                     'has-link-profile': 'string'}
+    obsolete_options = ["has-link-profile"]
     option_type = options_types.get(option)
     if option_type is None:
         print('check_candidate_option_type: %s option not recognized in candidates file.' % option)
         sys.exit(1)
     else:
+        if obsolete_options.count(option):
+            print('%s option is no longer used by antares-xpansion' % option)
+            return True
         if option_type == 'string':
             return True
         elif option_type == 'numeric':
@@ -120,7 +124,7 @@ def check_candidate_option_value(option, value):
     antares_links_list = None
     options_legal_values = {'name': None,
                             'enable': ["true", "false"],
-                            'candidate-type': ["investment", "decommissioning"],
+                            'candidate-type': None,
                             'investment-type': None,
                             'link': antares_links_list,
                             'annual-cost-per-mw': None,
@@ -128,7 +132,6 @@ def check_candidate_option_value(option, value):
                             'max-units': None,
                             'max-investment': None,
                             'relaxed': ["true", "false"],
-                            'has-link-profile': ["true", "false"],
                             'link-profile': None,
                             'already-installed-capacity': None,
                             'already-installed-link-profile': None}
@@ -185,7 +188,6 @@ def check_candidates_file(driver):
                       'max-units': '0',
                       'max-investment': '0',
                       'Relaxed': 'false',
-                      'has-link-profile': 'false',
                       'link-profile': '1',
                       'already-installed-capacity': '0',
                       'already-installed-link-profile': '1'}
@@ -210,7 +212,7 @@ def check_candidates_file(driver):
         driver.candidates_list.append(ini_file[each_section]['name'].strip().lower())
 
     # check some attributes unicity : name and links
-    unique_attributes = ["name", "link"]
+    unique_attributes = ["name"]
     for verified_attribute in unique_attributes:
         unique_values = set()
         for each_section in ini_file.sections():
@@ -255,20 +257,6 @@ def check_candidates_file(driver):
             print("candidate %s will be removed!" % ini_file[each_section]["name"])
             ini_file.remove_section(each_section)
             config_changed = True
-
-    # check coherence between has-link-profile and link-profile values
-    for each_section in ini_file.sections():
-        has_link_value = ini_file[each_section]["has-link-profile"].strip()
-        link_profile_value = ini_file[each_section]["link-profile"].strip()
-        profile_exists = os.path.isfile(driver.capacity_file(link_profile_value))
-        if (has_link_value == "true") and (not profile_exists):
-            print('Incoherence in candidate %s: has-link-profile set to true while '
-                  'no link-profile file was specified' % ini_file[each_section]["name"].strip())
-            sys.exit(1)
-        if (has_link_value == "false") and (profile_exists):
-            print('Incoherence in candidate %s: has-link-profile set to false while a valid '
-                  'link-profile file was specified' % ini_file[each_section]["name"].strip())
-            sys.exit(1)
 
     if config_changed:
         shutil.copyfile(driver.candidates_ini_filepath(), driver.candidates_ini_filepath() + ".bak")

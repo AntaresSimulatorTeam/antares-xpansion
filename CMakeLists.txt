@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.4.0)
+PROJECT (antaresXpansion VERSION 0.5.0)
 
 # ===========================================================================
 # Default parameters
@@ -41,7 +41,7 @@ else ()
 endif()
 
 
-# set(ANTARES_XPANSION_RC 1)
+#set(ANTARES_XPANSION_RC 3)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES
@@ -83,13 +83,6 @@ if (MSVC)
     
 
 else ()
-#   set (CMAKE_BUILD_TYPE "RELEASE")
-#	set (CMAKE_BUILD_TYPE "DEBUG")
-#	IF (WITH_DEBUG)
-#		set (CMAKE_BUILD_TYPE "DEBUG")
-#	ELSE (WITH_DEBUG)GENDIOR
-#		set (CMAKE_BUILD_TYPE "RELEASE")
-#	ENDIF (WITH_DEBUG)
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -fmessage-length=0 -fPIC")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wno-conversion -Wno-sign-compare")
@@ -111,15 +104,6 @@ if (CODE_COVERAGE)
 	code_coverage(NAME code-coverage
 			OUTPUT_DIR coverage
 			EXCLUDE_DIRS tests)
-endif ()
-
-# ----------------------------------------------------------------------------
-# Coverage build type definition
-# ----------------------------------------------------------------------------
-option (${PROJECT_NAME}_WITH_COVERAGE "enable coverage" OFF)
-if (${PROJECT_NAME}_WITH_COVERAGE)
-	include(SetUpCoverage)
-	SetUpCoverage()
 endif ()
 
 # ===========================================================================
@@ -244,12 +228,17 @@ find_package(jsoncpp CONFIG REQUIRED)
 ## Xpress
 if(XPRESS)
 	message("XPRESS is ${XPRESS}")
-	set ( XPRESS_INCLUDE_FILES	$ENV{XPRESSDIR}/include )
-	set ( XPRESS_DEBUG_LIB  	$ENV{XPRESSDIR}/lib/xprs.lib )
-	set ( XPRESS_OPT_LIB 		$ENV{XPRESSDIR}/lib/xprs.lib )
-	message("XPRESS include directory is ${XPRESS_INCLUDE_FILES}")
-	message("XPRESS debug library is ${XPRESS_DEBUG_LIB}")
-	message("XPRESS optim library is ${XPRESS_OPT_LIB}")
+
+	#Default xpress install dir
+	if (NOT XPRESS_ROOT)
+		if (MSVC)
+			set(XPRESS_ROOT "C:/xpressmp")
+		elseif(UNIX)
+			set(XPRESS_ROOT "/opt/xpressmp")
+		endif()
+	endif()
+
+	find_package(XPRESS REQUIRED)
 
 	# Add solver variables for usage in C++ source code
 	# There are already some variables defined by SOLVER, -DUSE_XPRESS, -DUSE_CBC
@@ -337,9 +326,6 @@ endif()
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/documentation/antares-xpansion-user-guide-0.3.0.pdf
-        DESTINATION documentation)
-        
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 
 if (WIN32)
