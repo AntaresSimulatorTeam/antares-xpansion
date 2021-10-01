@@ -1,5 +1,5 @@
 docs_dir: docs
-site_name: Antares Xpansion Docs
+site_name: Antares Xpansion Documentation
 repo_url: https://github.com/AntaresSimulatorTeam/antares-xpansion
 theme:
   name: material
@@ -9,13 +9,26 @@ theme:
   features:
     - navigation.instant
     - navigation.top
+    - navigation.expand
   #  - navigation.sections
   #   - header.autohide
   #   - toc.separate
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: antares
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 extra:
   generator: false
-
+  version:
+    provider: mike
 plugins:
   - search
 
@@ -35,5 +48,9 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed
 
 copyright: Copyright &copy; 2007 - 2021 RTE

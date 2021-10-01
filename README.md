@@ -1,40 +1,102 @@
-# Antares-Xpansion
+# Antares-Xpansion 
+> Investment simulations for [ANTARES][antareswebsite] studies
 
-[![Status][ubuntu_system_svg]][ubuntu_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link] [![Status][centos_system_svg]][centos_system_link]  
+[![Status][ubuntu_system_svg]][ubuntu_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link] [![Status][centos_system_svg]][centos_system_link] [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AntaresSimulatorTeam_antares-xpansion&metric=alert_status)](https://sonarcloud.io/dashboard?id=AntaresSimulatorTeam_antares-xpansion)
+
+![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+
 ![antares logo](./media/AntaresSimulator_Logo.png)
 
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+This package works along with RTE's adequacy software [ANTARES][antareswebsite] that is also [hosted on github][antares-github]
 
-[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
+Please see the [Antares-Xpansion Documentation][readthedocs] for an introductory tutorial,
+and a full user guide. Visit the [Antares-Simulator Documentation][readthedocs-antares] for more insights on ANTARES.
 
-[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Ubuntu%20CI%20(system%20libs)"
+## Introduction
 
-[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Windows%20CI%20(VCPKG)/badge.svg
+`Antares-Xpansion` optimizes the installed capacities of an ANTARES study.
 
-[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Windows%20CI%20(VCPKG)"
+Typical uses of Antares-Xpansion are for example:
 
-[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Centos7%20CI%20(system%20libs)/badge.svg
+> - **long-term scenario building**: build an economically consistent long-term generation mix
+>
+> - **transmission expansion planning** : compute the network development which maximizes social welfare
 
-[centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)"
- 
-This package works along with RTE's adequacy software ANTARES : https://antares.rte-france.com/
 
-`Antares-Xpansion` is the package which optimizes the installed capacities of an ANTARES study. 
-Typical uses of the package are for:
+### Antares simulation
 
- - **long-term scenario building**: build an economically consistent long-term generation mix
+In an ANTARES simulation, the user builds a power system with a network of zones
+characterised by power plants (with their constraints e.g., max power etc. and costs),
+power consumption and power transfer between zones(with the import-export transfer capacity and costs).
 
- - **transmission expansion planning** : compute the network development which maximizes social welfare
+Antares performs probabilistic simulations of the system
+throughout many year-long scenarios made of 8760 hourly
+time-frames each.
+The goal of the simulation is to minimize the 
+**expected operation cost during one year**.
 
-The investment decisions are optimized by running ANTARES' simulations
-iteratively. At each iteration, the installed capacity of the investments are
-updated, and the simulations are repeated until the total costs have converged to
-a minimum. The total cost evaluated in this problem are the sum of the
-**expected operation cost during one year** and the **investment annuity**.
+### Antares-Xpansion simulation
+Given an ANTARES simulation the user can define some
+_investment candidates_ in the power network such as
+- (increase or create) transfer capacity between to areas
+- (increase or create) maximum power of a generation facility
+
+Each _investment candidate_ can potentially lower the operational cost
+of the power system, but is also characterised by one or more costs as:
+- annualized investment costs to physically build it in real life
+- operational costs and maintenance costs to sustain the operation
+  
+>Antares-Xpansion optimises the values of the _investments_
+to minimize the global costs, that is the sum of the
+**expected operation cost during one year**
+and the **investment annuity**.
 
 `Antares-Xpansion` is currently under development. Feel free to submit any issue.
 
-## Installation
+## Links:
+
+- [Official Documentation][readthedocs]
+- [Antares website][antareswebsite]
+- [Antares github][antares-github]
+- [Antares documentation][readthedocs-antares]
+
+## Installation and use
+Antares-Xpansion is currently released as standalone-portable solution.
+It can be run either using the single file executable or
+an archive including multiple binaries called by a driver.
+
+The user should first create an Antares study 
+that allows for the definition of investment candidates
+(see the [doc][readthedocs] for detailed informations)
+and create the `candidates.ini` and `settings.ini` files
+in the directory `study_path/user/expansion`.
+
+Antares Xpansion does not have a GUI, the entry point to run Antares Xpansion is in the executable
+`/antares-xpansion-install-dir/antares-xpansion-launcher.exe`.
+This binary should be run from a command prompt or unix terminal:
+
+For example by runnin the following command inside the `/antares-xpansion-install-dir/`
+Antares-Xpansion runs one of the examples
+```shell
+./antares-xpansion-launcher.exe -i examples/SmallTestFiveCandidates
+```
+
+##### step
+
+The python script does several operations one after the other. The step option allows to execute only one step or all the steps (Interaction between the different bricks).
+
+|     name         |     action                                                                 |
+|------------------|----------------------------------------------------------------------------|
+|     antares      |     Launch antares one time to   get the Antares problem                   |
+|     getnames     |     Launch getnamer one time to   get the name of Antares variables        |
+|     lp           |     Launch lpnamer one time to   create the master problem of expansion    |
+|     optim        |     Launch the resolution of   Antares Xpansion                            |
+|     update       |     Update antares study with investment solution                          |
+|     full         |     Launch all steps in order   (antares > getnames > lp > optim > update) |
+
+## Technologies
+Antares-Xpansion is developed mainly in **C++** and uses a **Python** runner
+to drive the execution of multiple executables.
 
 This software suite has been tested under:
 
@@ -43,18 +105,19 @@ This software suite has been tested under:
 *   Centos 7 [![Status][centos_system_svg]][centos_system_link] 
 
 Antares XPansion is built using CMake.
-For installation instructions, please visit [INSTALL.md](INSTALL.md)
+For build and installation instructions, please visit [doc/build/0-INSTALL.md](docs/build/0-INSTALL.md)
 
 ## Source Code Content
 
-* [INSTALL](INSTALL.md)           - Installation and building instructions.
 * [README](README.md)             - This file.
 * [cmake/](cmake)        - files for initializing a solution ready for compilation. 
 * [conception/](conception)        - json output description 
+* [docs/](docs) - Markdown files for documentation generation  
 * [data_test/](data_test)	 - Free sample data sets. 
 * [documentation/](documentation)	 - Documentation generation with doxygen
 * [src/cpp/](src/cpp)      - source code for cpp application (lpnamer, benders with mpi, benders without MPI, merge)
 * [src/python/](src/python)       - python script for Antares XPansion launch.
+
 
 ## Definition of investment candidates
 
@@ -173,52 +236,16 @@ It is therefore advised to be as closed as possile from the optimum of the expan
 As the optimal solution is not more realistic than an approximate solution of the modelled expansion problem. The settings can be less constraining with:
  - an `optimality_gap` of a few million euros
 
-## How to use the package?
 
-First, create an Antares study with the description of the candidates and create the `candidates.ini` and `settings.ini` files as explained above and store them in the directory `study_path/user/expansion`.
 
-Antares Xpansion does not have a GUI, the entry point to run Antares Xpansion is in the executable
-`/antares-xpansion-install-dir/xpansion-launcher/antares-xpansion-launcher.exe`.
-This binary should be run from a command prompt or unix terminal:
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Ubuntu%20CI%20(system%20libs)"
+[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Windows%20CI%20(VCPKG)/badge.svg
+[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Windows%20CI%20(VCPKG)"
+[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Centos7%20CI%20(system%20libs)/badge.svg
+[centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)"
 
-TODO code snippet with the shell command and output 
-
-To run, the script needs to fill the `--step, --dataDir and --installDir` options.
-
-##### step
-
-The python script does several operations one after the other. The step option allows to execute only one step or all the steps (Interaction between the different bricks).
-
-|     name         |     action                                                                 |
-|------------------|----------------------------------------------------------------------------|
-|     antares      |     Launch antares one time to   get the Antares problem                   |
-|     getnames     |     Launch getnamer one time to   get the name of Antares variables        |
-|     lp           |     Launch lpnamer one time to   create the master problem of expansion    |
-|     optim        |     Launch the resolution of   Antares Xpansion                            |
-|     update       |     Update antares study with investment solution                          |
-|     full         |     Launch all steps in order   (antares > getnames > lp > optim > update) |
-
-##### dataDir
-Indicate the Antares simulation path. The specified path must be an explicit path. 
-
-##### simulationName
-This option enables to give a name to an Antares simulation. It is necessary if you only run one of the following steps: getnames, lp, optim without restarting the antares step.
-
-##### installDir
-This option, not optional, is used to define the directory containing the different executables that the script can launch. The path specified must be an explicit path. The directory must contain the following executables:
- 
-##### method
-This option enables to set the type of resolution to be used for Antares Xpansion :
-
-- mpibenders : Launch the MPI version of the Benders decomposition if the user has MPI
-- mergeMPS : Not implemented. Launch frontal resolution without decomposition
-- sequential : Launch Benders decomposition
- 
-
-#### Results
-The user can find the final solution in *benderssequential.log* file, which is in the Antares study, in the *output/simulation-name/lp directory*.
-
-#### Errors
-
-Xpansion will not work if the initial Antares study is not running. The user must therefore check beforehand that the Antares simulations do not contain any errors.
-Sometimes Xpansion needs to be restarted.
+[antares-github]: https://github.com/AntaresSimulatorTeam/Antares_Simulator
+[readthedocs]: https://antares-xpansion.readthedocs.io/
+[readthedocs-antares]: https://antares-doc.readthedocs.io/
+[antareswebsite]: https://antares-simulator.org
