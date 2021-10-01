@@ -1,5 +1,4 @@
 # Development requirements
-[C++ version](#c-version) | [CMake version](#cmake-version) | [Python version](#python-version) | [Git version](#git-version)
 
 ## [C++ version](#c++-version)
 The compilation of  *antares-xpansion* requires C++11 support.

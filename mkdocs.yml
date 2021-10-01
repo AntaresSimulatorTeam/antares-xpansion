@@ -32,9 +32,9 @@ nav:
   - 'User guide':
       - 'Introduction': 'user-guide/0-introduction.md'
       - 'Prepare a simulation': 'user-guide/1-prepare-a-simulation.md'
-      - 'Launching an optimization': 'user-guide/2Launching-an-Antares-Xpansion-optimization.md'
+      - 'Launching an optimization': 'user-guide/2-Launching-an-Antares-Xpansion-optimization.md'
   - 'Build':
-    - 'Introduction': 'build/0-introduction.md'
+    - 'Introduction': 'build/0-INSTALL.md'
     - 'Development requirements': 'build/1-Development-requirements.md'
     - 'Dependencies install': 'build/2-Dependencies-install.md'
     - 'Build': 'build/3-Build.md'
