@@ -1,3 +1,4 @@
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QTextEdit, QApplication, QLabel, QLineEdit, QComboBox, QPushButton, QVBoxLayout , QHBoxLayout, QWidget, QFileDialog, QRadioButton, QSpacerItem, QSizePolicy
 from PyQt5.QtCore import  Qt, QThread
 from pathlib import Path
@@ -49,6 +50,9 @@ class MainWidget(QWidget):
         logLayout = QHBoxLayout()
         self.logTextEdit = QTextEdit()
         self.logTextEdit.setReadOnly(True)
+        font = QFont()
+        font.setFamily(u"DejaVu Sans Mono")
+        self.logTextEdit.setCurrentFont(font)
         logLayout.addWidget(self.logTextEdit)
 
         mainLayout.addLayout(logLayout)
@@ -98,14 +102,11 @@ class MainWidget(QWidget):
 
         process = subprocess.Popen(command, stdout=subprocess.PIPE)
         while process.poll() is None:
-            QThread.msleep(100)
-            QApplication.processEvents()
             output = process.stdout.readline()
             if output:
                 self.logTextEdit.append(str(output.decode('UTF-8')).rstrip('\r\n'))
                 print (output)
-        rc = process.poll()
-
+                QApplication.processEvents()
         QApplication.restoreOverrideCursor()
     
 app = QApplication([])
