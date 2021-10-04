@@ -1,13 +1,19 @@
+import os
+
 from PyQt5.QtGui import QFont, QMovie, QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
-    QHBoxLayout, QWidget, QFileDialog, QRadioButton, QSpacerItem, QSizePolicy, QPlainTextEdit, QMessageBox
+    QHBoxLayout, QWidget, QFileDialog, QRadioButton, QSpacerItem, QSizePolicy, QPlainTextEdit, QMessageBox, QGridLayout, \
+    QComboBox, QGroupBox
 from PyQt5.QtCore import QProcess, QByteArray
 from pathlib import Path
 
 import resources
 
+STEP_WITH_SIMULATION_NAME = ["getnames", "lp", "optim", "update"]
+NEW_SIMULATION_NAME = "New"
 
 class MainWidget(QWidget):
+
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
@@ -18,6 +24,7 @@ class MainWidget(QWidget):
         self._initInstallDirSelectionWidget()
         self._initAntaresStudySelectionWidget()
         self._initAntaresXpansionRunWidget()
+        self._initStepSelectionWidget()
         self._initLogWidget()
 
         self.setLayout(self.mainLayout)
@@ -35,6 +42,8 @@ class MainWidget(QWidget):
         self.mainLayout.addLayout(logLayout)
 
     def _initAntaresXpansionRunWidget(self):
+
+        runLayout = QHBoxLayout()
         methodLayout = QHBoxLayout()
 
         self.mpibendersRadioButton = QRadioButton('mpibenders')
@@ -44,13 +53,14 @@ class MainWidget(QWidget):
         methodLayout.addWidget(self.sequentialRadioButton)
 
         methodLayout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
+        runLayout.addLayout(methodLayout)
 
         self.runningLabel = QLabel()
         self.movie = QMovie(":/images/loading.gif", QByteArray())
         self.runningLabel.setMovie(self.movie)
         self.movie.start()
         self.runningLabel.setVisible(False)
-        methodLayout.addWidget(self.runningLabel)
+        runLayout.addWidget(self.runningLabel)
 
         self.p = QProcess()
         self.p.readyReadStandardOutput.connect(self.handle_stdout)
@@ -61,19 +71,42 @@ class MainWidget(QWidget):
         self.runButton = QPushButton('Run')
         self._set_run_label()
         self.runButton.clicked.connect(self.run_or_stop)
-        methodLayout.addWidget(self.runButton)
+        runLayout.addWidget(self.runButton)
 
-        self.mainLayout.addLayout(methodLayout)
+        self.mainLayout.addLayout(runLayout)
 
     def _initAntaresStudySelectionWidget(self):
-        layoutStudyPath = QHBoxLayout()
-        layoutStudyPath.addWidget(QLabel('Antares study path'))
+        layoutStudyPath = QGridLayout()
+
+        layoutStudyPath.addWidget(QLabel('Antares study path'), 0, 0)
         self.studyPathTextEdit = QLineEdit()
-        layoutStudyPath.addWidget(self.studyPathTextEdit)
+        layoutStudyPath.addWidget(self.studyPathTextEdit, 0, 1)
         selectButton = QPushButton('...')
         selectButton.clicked.connect(self.select_study_path)
-        layoutStudyPath.addWidget(selectButton)
+        layoutStudyPath.addWidget(selectButton, 0, 2)
+
+        self.comboSimulationName = QComboBox()
+        self.comboSimulationName.currentTextChanged.connect(self.simulation_name_changed)
+        layoutStudyPath.addWidget(QLabel('Simulation name'), 1, 0)
+        layoutStudyPath.addWidget(self.comboSimulationName, 1, 1)
+
         self.mainLayout.addLayout(layoutStudyPath)
+
+    def _initStepSelectionWidget(self):
+        stepLayout = QHBoxLayout()
+
+        steps = ["full", "antares", "getnames", "lp", "optim", "update"]
+        self.step_buttons = {}
+        for step in steps:
+            self.step_buttons[step] = QRadioButton(step)
+            stepLayout.addWidget(self.step_buttons[step])
+
+        self.step_buttons["full"].setChecked(True)
+
+        stepLayout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
+        self.step_gb = QGroupBox("Steps")
+        self.step_gb.setLayout(stepLayout)
+        self.mainLayout.addWidget(self.step_gb)
 
     def _initInstallDirSelectionWidget(self):
         layoutInstallDir = QHBoxLayout()
@@ -87,7 +120,16 @@ class MainWidget(QWidget):
 
     def set_study_path(self, study_path: str):
         self.studyPathTextEdit.setText(study_path)
+        self._initSimulationNameCombo(study_path)
         self._check_run_availability()
+
+    def _initSimulationNameCombo(self, study_path):
+        output_path = Path(study_path) / 'output'
+        self.comboSimulationName.clear()
+        self.comboSimulationName.addItem(NEW_SIMULATION_NAME)
+        for dir in sorted(output_path.iterdir(), key=os.path.getmtime, reverse=True):
+            if (output_path / dir).is_dir():
+                self.comboSimulationName.addItem(dir.name)
 
     def set_install_dir(self, install_dir: str):
         self.installDirTextEdit.setText(install_dir)
@@ -104,13 +146,20 @@ class MainWidget(QWidget):
     def _check_run_availability(self):
         install_dir = self.installDirTextEdit.text()
         study_path = self.studyPathTextEdit.text()
-        self.runButton.setEnabled(len(install_dir) and len(study_path))
+        run_available = len(install_dir) and len(study_path)
+        self.runButton.setEnabled(run_available)
+        self.step_gb.setEnabled(run_available)
 
     def _get_method(self):
         if self.mpibendersRadioButton.isChecked():
             return self.mpibendersRadioButton.text()
         if self.sequentialRadioButton.isChecked():
             return self.sequentialRadioButton.text()
+
+    def _get_step(self):
+        for step in self.step_buttons:
+            if self.step_buttons[step].isChecked():
+                return step
 
     def handle_stdout(self):
         data = self.p.readAllStandardOutput()
@@ -125,6 +174,8 @@ class MainWidget(QWidget):
     def handle_state(self, state):
         if state == QProcess.NotRunning:
             self._set_run_label()
+            if self._get_step() not in STEP_WITH_SIMULATION_NAME:
+                self._initSimulationNameCombo(self.studyPathTextEdit.text())
         else:
             self._set_stop_label()
 
@@ -137,6 +188,14 @@ class MainWidget(QWidget):
         self.runButton.setText("Run")
         self.runButton.setIcon(QIcon(":/images/play-48.png"))
         self.runningLabel.setVisible(False)
+
+    def simulation_name_changed(self, text):
+
+        for step in self.step_buttons:
+            if text == NEW_SIMULATION_NAME:
+                self.step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
+            else:
+                self.step_buttons[step].setEnabled(step in STEP_WITH_SIMULATION_NAME)
 
     def message(self, s):
         self.logTextEdit.appendPlainText(s.rstrip('\r\n'))
@@ -158,10 +217,16 @@ class MainWidget(QWidget):
         study_path = self.studyPathTextEdit.text()
         install_dir = self.installDirTextEdit.text()
         install_dir_full = str(Path(install_dir).resolve())
-        method = self._get_method()
-        self.p.start("python", ["launch.py", "--installDir", install_dir_full, "--dataDir",
-                                str(study_path), "--method", method, "--step", "full", "-n", "2"])
+        commands = ["launch.py", "--installDir", install_dir_full, "--dataDir",
+                    str(study_path), "--method", self._get_method(), "--step", self._get_step(), "-n", "2"]
+
+        if not self.step_buttons["full"].isChecked():
+            commands.append("--simulationName")
+            commands.append(self.comboSimulationName.currentText())
+
+        self.p.start("python", commands)
         self._set_stop_label()
+
 
 app = QApplication([])
 
