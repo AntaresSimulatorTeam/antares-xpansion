@@ -4,13 +4,15 @@ from PyQt5.QtGui import QFont, QMovie, QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
     QHBoxLayout, QWidget, QFileDialog, QRadioButton, QSpacerItem, QSizePolicy, QPlainTextEdit, QMessageBox, QGridLayout, \
     QComboBox, QGroupBox
-from PyQt5.QtCore import QProcess, QByteArray
+from PyQt5.QtCore import QProcess, QByteArray, QSettings
 from pathlib import Path
 
 import resources
 
 STEP_WITH_SIMULATION_NAME = ["getnames", "lp", "optim", "update"]
 NEW_SIMULATION_NAME = "New"
+LAST_INSTALL_DIR = "last_install_dir"
+LAST_ANTARES_STUDY_DIR = "last_antares_study_dir"
 
 class MainWidget(QWidget):
 
@@ -19,12 +21,14 @@ class MainWidget(QWidget):
 
         self.setWindowTitle('antares-xpansion-launcher-gui')
 
+        self.settings = QSettings("pyqt_settings.ini", QSettings.IniFormat)
+
         self.mainLayout = QVBoxLayout()
 
         self._initInstallDirSelectionWidget()
         self._initAntaresStudySelectionWidget()
-        self._initAntaresXpansionRunWidget()
         self._initStepSelectionWidget()
+        self._initAntaresXpansionRunWidget()
         self._initLogWidget()
 
         self.setLayout(self.mainLayout)
@@ -79,7 +83,7 @@ class MainWidget(QWidget):
         layoutStudyPath = QGridLayout()
 
         layoutStudyPath.addWidget(QLabel('Antares study path'), 0, 0)
-        self.studyPathTextEdit = QLineEdit()
+        self.studyPathTextEdit = QLineEdit(self.settings.value(LAST_ANTARES_STUDY_DIR))
         layoutStudyPath.addWidget(self.studyPathTextEdit, 0, 1)
         selectButton = QPushButton('...')
         selectButton.clicked.connect(self.select_study_path)
@@ -89,6 +93,7 @@ class MainWidget(QWidget):
         self.comboSimulationName.currentTextChanged.connect(self.simulation_name_changed)
         layoutStudyPath.addWidget(QLabel('Simulation name'), 1, 0)
         layoutStudyPath.addWidget(self.comboSimulationName, 1, 1)
+        self._initSimulationNameCombo(self.settings.value(LAST_ANTARES_STUDY_DIR))
 
         self.mainLayout.addLayout(layoutStudyPath)
 
@@ -111,7 +116,7 @@ class MainWidget(QWidget):
     def _initInstallDirSelectionWidget(self):
         layoutInstallDir = QHBoxLayout()
         layoutInstallDir.addWidget(QLabel('AntaresXpansion install directory'))
-        self.installDirTextEdit = QLineEdit('../bin')
+        self.installDirTextEdit = QLineEdit(self.settings.value(LAST_INSTALL_DIR))
         layoutInstallDir.addWidget(self.installDirTextEdit)
         selectInstallDirButton = QPushButton('...')
         selectInstallDirButton.clicked.connect(self.select_install_dir)
@@ -119,19 +124,23 @@ class MainWidget(QWidget):
         self.mainLayout.addLayout(layoutInstallDir)
 
     def set_study_path(self, study_path: str):
+        self.settings.setValue(LAST_ANTARES_STUDY_DIR, study_path)
         self.studyPathTextEdit.setText(study_path)
         self._initSimulationNameCombo(study_path)
         self._check_run_availability()
 
     def _initSimulationNameCombo(self, study_path):
         output_path = Path(study_path) / 'output'
+        self.comboSimulationName.blockSignals(True)
         self.comboSimulationName.clear()
         self.comboSimulationName.addItem(NEW_SIMULATION_NAME)
         for dir in sorted(output_path.iterdir(), key=os.path.getmtime, reverse=True):
             if (output_path / dir).is_dir():
                 self.comboSimulationName.addItem(dir.name)
+        self.comboSimulationName.blockSignals(False)
 
     def set_install_dir(self, install_dir: str):
+        self.settings.setValue(LAST_INSTALL_DIR, install_dir)
         self.installDirTextEdit.setText(install_dir)
         self._check_run_availability()
 
