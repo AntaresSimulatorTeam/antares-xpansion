@@ -169,7 +169,7 @@ sbeClearJson(antares_version)
 option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
-if (BUILD_antares_solver)
+if (${BUILD_antares_solver})
 	set(BUILD_sirius ON)
 	set(BUILD_ortools ON)
 endif()
