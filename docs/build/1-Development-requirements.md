@@ -81,3 +81,19 @@ pip install -r requirements-tests.txt
 
 ## [Git version](#git-version)
 Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see https://github.com/google/or-tools/issues/1193).
+
+=== "Windows"
+
+    You can download latest Windows version directly from [Git website](https://gitforwindows.org/).
+=== "Centos"
+    We need to install a repository for git2 install.
+
+    ```
+    sudo yum install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.9-1.x86_64.rpm
+    sudo yum install git
+    ```
+=== "Ubuntu"
+
+    ```
+    sudo apt-get install git
+    ```
