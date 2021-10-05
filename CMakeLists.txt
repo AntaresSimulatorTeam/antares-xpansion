@@ -14,10 +14,14 @@ PROJECT (antaresXpansion VERSION 0.5.0)
 # Default parameters
 # ===========================================================================
 
-cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
+if (MSVC)
+	cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
+endif()
 
-if(NOT IS_ABSOLUTE ${CMAKE_TOOLCHAIN_FILE})
-	SET(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
+if (CMAKE_TOOLCHAIN_FILE)
+	if(NOT IS_ABSOLUTE ${CMAKE_TOOLCHAIN_FILE})
+		SET(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
+	endif()
 endif()
 
 set(DEFAULT_BUILD_TYPE Release)
