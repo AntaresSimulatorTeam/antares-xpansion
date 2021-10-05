@@ -16,6 +16,7 @@ The compilation of  *antares-xpansion* requires C++11 support.
     === "Centos 7 (EPEL)"    
         ``` 
         sudo yum install epel-release
+        sudo yum install centos-release-scl
         ```
     
     === "Centos 8 (PowerTools)"    
