@@ -34,7 +34,7 @@ Here is a list of available CMake configure option :
 |`USE_MPI`|`OFF`|Enable build of bendersmpi executable |
 |`DBUILD_antares_solver`|`ON`|Enable build of antares-solver|
 |`BUILD_not_system`|`ON`|Enable build of external librairies not available on system package manager|
-|`BUILD_ALL`|`ON`|Enable build of ALL external librairies|
+|`BUILD_ALL`|`OFF`|Enable build of ALL external librairies|
 |`DEPS_INSTALL_DIR`|`../rte-antares-deps-<CMAKE_BUILD_TYPE>`|Define dependencies libraries install directory|
 |`BUILD_TESTING`|`OFF`|Enable test build|
 
