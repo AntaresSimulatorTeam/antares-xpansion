@@ -28,6 +28,7 @@ jobs:
       with:
         files: |
           docker/centos7
+          antares-version.json
           
     - name: Read antares-solver version
       id: antares-version
