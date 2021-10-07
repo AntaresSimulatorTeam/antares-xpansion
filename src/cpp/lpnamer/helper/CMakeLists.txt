@@ -5,7 +5,17 @@
 # ===========================================================================
 # Targets
 # ===========================================================================
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/model")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/input_reader")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/problem_modifier")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/helper")
+
+add_library (lp_namer_helper STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/common_lpnamer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ColumnToChange.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ColumnToChange.h
+    )
+
+target_include_directories (lp_namer_helper
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+
+add_library (${PROJECT_NAME}::lp_namer_helper ALIAS lp_namer_helper)

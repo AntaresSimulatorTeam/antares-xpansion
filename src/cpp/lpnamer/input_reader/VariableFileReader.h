@@ -7,7 +7,7 @@
 #include <vector>
 
 #include <ActiveLinks.h>
-#include <ProblemModifier.h>
+#include <ColumnToChange.h>
 
 struct VariableFileReadNameConfiguration {
     std::string ntc_variable_name;

@@ -34,7 +34,10 @@ target_include_directories (unit_tests
 target_link_libraries (unit_tests PRIVATE
 		GTest::Main
 		helpers
-		lp_namer_core
+		lp_namer_helper
+		lp_namer_model
+		lp_namer_input_reader
+		lp_namer_problem_modifier
 		${PROJECT_NAME}::benders_sequential_core
 		)
 
