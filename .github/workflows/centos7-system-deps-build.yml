@@ -24,10 +24,10 @@ jobs:
 
     - name: Install libraries
       run: |
-           yum install -y https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.9-1.x86_64.rpm
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
            yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options
            yum install -y cmake3 devtoolset-7 environment-modules rpm-build zlib-devel
+           yum install -y rh-git227-git
            yum install -y libuuid-devel
            
     - uses: nelonoel/branch-name@v1.0.1
@@ -54,6 +54,7 @@ jobs:
     - name: Configure
       run: |
            source /opt/rh/devtoolset-7/enable
+           source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
            cmake3 -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install
@@ -61,6 +62,7 @@ jobs:
     - name: Build
       run: |
            source /opt/rh/devtoolset-7/enable
+           source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
            cmake3 --build _build --config Release -j2  --target install
