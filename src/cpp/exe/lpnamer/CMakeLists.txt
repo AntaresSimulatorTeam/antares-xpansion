@@ -16,7 +16,10 @@ add_executable (lp_namer
 
 target_link_libraries (lp_namer 
 	PRIVATE 
-		${PROJECT_NAME}::lp_namer_core
+		${PROJECT_NAME}::lp_namer_helper
+		${PROJECT_NAME}::lp_namer_model
+		${PROJECT_NAME}::lp_namer_input_reader
+		${PROJECT_NAME}::lp_namer_problem_modifier
 		Boost::boost Boost::program_options)
 
 install(TARGETS lp_namer DESTINATION bin)

@@ -28,8 +28,11 @@ add_executable (lp_namer_tests
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main
-        helpers
-        lp_namer_core
+        helpers 
+        lp_namer_helper
+        lp_namer_model
+        lp_namer_input_reader
+        lp_namer_problem_modifier
         )
 
 if (USE_MPI)

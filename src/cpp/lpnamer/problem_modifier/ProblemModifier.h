@@ -6,24 +6,9 @@
 #include <memory>
 #include <multisolver_interface/SolverAbstract.h>
 #include "ActiveLinks.h"
+#include "ColumnToChange.h"
 #include <map>
-using colId= unsigned int;
-struct ColumnToChange{
 
-    ColumnToChange(colId id, int time_step):id(id),time_step(time_step){};
-
-    bool operator==(const ColumnToChange& other) const{
-        bool result = id == other.id;
-        result &= time_step == other.time_step;
-        return result;
-    };
-
-    colId id;
-    int time_step;
-};
-
-using ColumnsToChange = std::vector<ColumnToChange>;
-using linkId=unsigned int;
 
 class ProblemModifier {
 public:
