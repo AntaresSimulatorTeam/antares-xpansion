@@ -6,8 +6,8 @@ using colId= unsigned int;
 struct ColumnToChange{
 
     ColumnToChange(colId id, int time_step):id(id),time_step(time_step){};
-    bool ColumnToChange::operator==(const ColumnToChange& other) const;
-    
+    bool operator==(const ColumnToChange& other) const;
+
     colId id;
     int time_step;
 };
