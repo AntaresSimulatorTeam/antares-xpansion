@@ -86,12 +86,17 @@ Git version must be above 2.15 for external dependencies build because `--ignore
 
     You can download latest Windows version directly from [Git website](https://gitforwindows.org/).
 === "Centos"
-    We need to install a repository for git2 install.
 
     ```
-    sudo yum install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.9-1.x86_64.rpm
+    sudo yum install rh-git227-git
     sudo yum install git
     ```
+    
+    Sometimes we need a 2.x version of git. To enable to git 2.27 :
+    ```
+    source /opt/rh/rh-git227/enable
+    ```
+    
 === "Ubuntu"
 
     ```

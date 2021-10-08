@@ -2,9 +2,10 @@
 Before build, make sure that dependencies are installed (see [here](2-Dependencies-install.md) for more informations)
 
 ## Environnement settings
-On Centos enable `devtoolset-7` and load mpi module:
+On Centos enable `devtoolset-7` and `rh-git227` and load mpi module:
 ```
 scl enable devtoolset-7 bash
+source /opt/rh/rh-git227/enable
 module load mpi
 ```
 ## Update git submodule
