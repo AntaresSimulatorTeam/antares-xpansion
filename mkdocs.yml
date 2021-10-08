@@ -43,10 +43,6 @@ nav:
     - 'Installer creation': 'build/5-Installer-creation.md'
   - 'Changelog': 'CHANGELOG.md'
 
-extra:
-  generator: false
-  version:
-    provider: mike
 plugins:
   - search
 
