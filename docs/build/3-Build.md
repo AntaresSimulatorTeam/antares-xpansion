@@ -14,14 +14,17 @@ git submodule update --init antares-deps
 ```
 ## Configure build with CMake
 === "Windows"
+
     ```
     cmake -B _build -S . -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
     ```
 === "Centos"
+
     ```
     cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON
     ```
 === "Ubuntu"
+
     ```
     cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON
     ```

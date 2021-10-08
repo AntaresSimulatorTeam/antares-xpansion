@@ -7,6 +7,7 @@ CPack can be used to create the installer after the build phase :
     cpack -G ZIP
     ```
 === "Centos"
+
     ### RHEL .rpm (Experimental)
     ```
     cd _build
@@ -39,6 +40,7 @@ CPack can be used to create the installer after the build phase :
     > `mpirun` can't be used as root on Centos7. Be sure to launch antares-xpansion without root user.
 
 === "Ubuntu"
+
     ### Ubuntu .deb (Experimental)
     ```
     cd _build
