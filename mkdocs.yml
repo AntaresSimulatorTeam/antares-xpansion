@@ -29,6 +29,7 @@ theme:
 
 nav:
   - Home: index.md
+  - 'Antares ecosystem' : 'https://antares-doc.readthedocs.io'
   - 'User guide':
       - 'Introduction': 'user-guide/0-introduction.md'
       - 'Prepare a simulation': 'user-guide/1-prepare-a-simulation.md'
@@ -42,10 +43,6 @@ nav:
     - 'Installer creation': 'build/5-Installer-creation.md'
   - 'Changelog': 'CHANGELOG.md'
 
-extra:
-  generator: false
-  version:
-    provider: mike
 plugins:
   - search
 

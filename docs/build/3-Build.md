@@ -2,9 +2,10 @@
 Before build, make sure that dependencies are installed (see [here](2-Dependencies-install.md) for more informations)
 
 ## Environnement settings
-On Centos enable `devtoolset-7` and load mpi module:
+On Centos enable `devtoolset-7` and `rh-git227` and load mpi module:
 ```
 scl enable devtoolset-7 bash
+source /opt/rh/rh-git227/enable
 module load mpi
 ```
 ## Update git submodule
@@ -13,14 +14,17 @@ git submodule update --init antares-deps
 ```
 ## Configure build with CMake
 === "Windows"
+
     ```
     cmake -B _build -S . -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
     ```
 === "Centos"
+
     ```
     cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON
     ```
 === "Ubuntu"
+
     ```
     cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON
     ```
@@ -34,7 +38,7 @@ Here is a list of available CMake configure option :
 |`USE_MPI`|`OFF`|Enable build of bendersmpi executable |
 |`DBUILD_antares_solver`|`ON`|Enable build of antares-solver|
 |`BUILD_not_system`|`ON`|Enable build of external librairies not available on system package manager|
-|`BUILD_ALL`|`ON`|Enable build of ALL external librairies|
+|`BUILD_ALL`|`OFF`|Enable build of ALL external librairies|
 |`DEPS_INSTALL_DIR`|`../rte-antares-deps-<CMAKE_BUILD_TYPE>`|Define dependencies libraries install directory|
 |`BUILD_TESTING`|`OFF`|Enable test build|
 

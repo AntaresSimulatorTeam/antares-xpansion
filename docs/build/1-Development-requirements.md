@@ -16,6 +16,7 @@ The compilation of  *antares-xpansion* requires C++11 support.
     === "Centos 7 (EPEL)"    
         ``` 
         sudo yum install epel-release
+        sudo yum install centos-release-scl
         ```
     
     === "Centos 8 (PowerTools)"    
@@ -80,3 +81,24 @@ pip install -r requirements-tests.txt
 
 ## [Git version](#git-version)
 Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see https://github.com/google/or-tools/issues/1193).
+
+=== "Windows"
+
+    You can download latest Windows version directly from [Git website](https://gitforwindows.org/).
+=== "Centos"
+
+    ```
+    sudo yum install rh-git227-git
+    sudo yum install git
+    ```
+    
+    Sometimes we need a 2.x version of git. To enable to git 2.27 :
+    ```
+    source /opt/rh/rh-git227/enable
+    ```
+    
+=== "Ubuntu"
+
+    ```
+    sudo apt-get install git
+    ```
