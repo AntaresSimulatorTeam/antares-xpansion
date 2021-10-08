@@ -17,7 +17,8 @@ The install procedure can be done
 
 ## Install with package manager
 
-=== "Windows (VCPKG)"    
+=== "Windows (VCPKG)"
+
     For Windows we will use [vcpkg](https://github.com/microsoft/vcpkg) to download and compile the libraries. vcpkg is available as a submodule in antares-xpansion.
     
     You must install the corresponding [vcpkg-triplet](https://vcpkg.readthedocs.io/en/latest/users/integration/#triplet-selection) depending on Antares version and libraries load:
@@ -55,7 +56,8 @@ The install procedure can be done
     >      [vcpkg_root]/downloads/msmpisetup-10.0.12498.exe
     > ``` 
 
-=== "Centos (yum)"   
+=== "Centos (yum)"
+
     ```
     sudo yum install 
     sudo yum install environment-modules jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel boost-program-options doxygen graphviz redhat-lsb-core

@@ -657,7 +657,9 @@ representative years may be given greater weight than those that are
 less representative. The `yearly-weights` points to a vector
 \\(\left( \omega_{1},\ldots,\omega_{n} \right)\\), with \\(n\\) the number
 of Monte-Carlo years in the study, which is used to evaluate the
-expected production costs.  $$ \mathbb{E}\left(\text{cost}\right) = \frac{\sum_{i = 1}^{n}{\omega_i\text{cost}\_i}}{\sum\_{i = 1}^{n}\omega_{i}} $$
+expected production costs. 
+
+$$ \mathbb{E}\left(\text{cost}\right) = \frac{\sum_{i = 1}^{n}{\omega_i\text{cost}\_i}}{\sum\_{i = 1}^{n}\omega_{i}} $$
 
 With \\(\text{cost}_{i}\\) the production cost of the \\(i\\)-th Monte Carlo
 year.
