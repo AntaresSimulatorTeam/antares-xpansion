@@ -129,15 +129,16 @@ class MainWidget(QWidget):
         self._initSimulationNameCombo(study_path)
         self._check_run_availability()
 
-    def _initSimulationNameCombo(self, study_path):
-        output_path = Path(study_path) / 'output'
-        self.comboSimulationName.blockSignals(True)
-        self.comboSimulationName.clear()
-        self.comboSimulationName.addItem(NEW_SIMULATION_NAME)
-        for dir in sorted(output_path.iterdir(), key=os.path.getmtime, reverse=True):
-            if (output_path / dir).is_dir():
-                self.comboSimulationName.addItem(dir.name)
-        self.comboSimulationName.blockSignals(False)
+    def _initSimulationNameCombo(self, study_path: str):
+        if study_path:
+            output_path = Path(study_path) / 'output'
+            self.comboSimulationName.blockSignals(True)
+            self.comboSimulationName.clear()
+            self.comboSimulationName.addItem(NEW_SIMULATION_NAME)
+            for dir in sorted(output_path.iterdir(), key=os.path.getmtime, reverse=True):
+                if (output_path / dir).is_dir():
+                    self.comboSimulationName.addItem(dir.name)
+            self.comboSimulationName.blockSignals(False)
 
     def set_install_dir(self, install_dir: str):
         self.settings.setValue(LAST_INSTALL_DIR, install_dir)
