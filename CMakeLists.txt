@@ -14,6 +14,18 @@ PROJECT (antaresXpansion VERSION 0.5.0)
 # Default parameters
 # ===========================================================================
 
+if (MSVC)
+	cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
+endif()
+
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) #To force OR-Tools build and set option for antares-deps
+
+if (CMAKE_TOOLCHAIN_FILE)
+	if(NOT IS_ABSOLUTE ${CMAKE_TOOLCHAIN_FILE})
+		SET(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
+	endif()
+endif()
+
 set(DEFAULT_BUILD_TYPE Release)
 
 # Set Build Type
@@ -116,7 +128,6 @@ include("cmake/json-cmake-1.1.0/JSONParser.cmake")
 #Define install directory
 if (NOT DEPS_INSTALL_DIR)
     SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
-
 else()
     if(NOT IS_ABSOLUTE ${DEPS_INSTALL_DIR})
         SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${DEPS_INSTALL_DIR})
@@ -156,11 +167,16 @@ SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
 
 sbeClearJson(antares_version)
 
-add_subdirectory(antares-deps)
-
 # Build dependencies not handled by antares-deps repository
 option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+
+if (${BUILD_antares_solver})
+	set(BUILD_sirius ON)
+	set(BUILD_ortools ON)
+endif()
+
+add_subdirectory(antares-deps)
 
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 

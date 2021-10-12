@@ -1,13 +1,10 @@
-name: Centos7 CI (boost 1_75)
+name: Centos7 CI (system libs + deps. build)
 
 on:
   push:
     branches:
       - main
       - develop
-      - features/*
-      - feature/*
-      - fix/*
       - release/*
 jobs:
 
@@ -27,22 +24,16 @@ jobs:
     - name: Install libraries
       run: |
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
-           yum install -y jsoncpp-devel gtest-devel openmpi-devel doxygen graphviz
+           yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options
            yum install -y cmake3 devtoolset-7 environment-modules rpm-build zlib-devel
-                      
-    
+           yum install -y rh-git227-git
+           yum install -y libuuid-devel
+           
     - uses: nelonoel/branch-name@v1.0.1
     
     - name: Checkout
       run: |
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
-          
-    - name: Read antares-solver version
-      id: antares-version
-      uses: notiz-dev/github-action-json-property@release
-      with: 
-        path: 'antares-version.json'
-        prop_path: 'antares_version'
         
     - name: Read antares-xpansion version
       id: antares-xpansion-version
@@ -50,21 +41,6 @@ jobs:
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
-        
-    - name: Read antares-deps version
-      id: antares-deps-version
-      uses: notiz-dev/github-action-json-property@release
-      with: 
-        path: 'antares-version.json'
-        prop_path: 'antares_deps_version'
-        
-    - name: Download pre-compiled librairies
-      uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
-      with:
-        antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
-        antares-version: ${{steps.antares-version.outputs.prop}}
-        os: centos7
-        os-full-name: CentOS-7.9.2009
     
     - name: Init submodule
       run: |
@@ -74,28 +50,19 @@ jobs:
       run: |
           pip3 install -r requirements-tests.txt
 
-    - name: Install Boost 1_75_0
-      run: |
-          source /opt/rh/devtoolset-7/enable
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          wget https://boostorg.jfrog.io/artifactory/main/release/1.75.0/source/boost_1_75_0.tar.gz
-          tar xvfz boost_1_75_0.tar.gz
-          cd boost_1_75_0/
-          ./bootstrap.sh --prefix=../opt/boost_1_75_0 --without-libraries=python
-          echo "using mpi ;" >>project-config.jam
-          ./b2 install
-
     - name: Configure
       run: |
            source /opt/rh/devtoolset-7/enable
+           #git 2.x must be enabled for Coin compilation with CMake ExternalProject_Add
+           source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-           export PATH=/usr/lib64/openmpi/bin:$PATH           
-           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_PREFIX_PATH=./opt/boost_1_75_0 -DCMAKE_INSTALL_PREFIX=_install -DBUILD_not_system=OFF -DBUILD_antares_solver=OFF
+           export PATH=/usr/lib64/openmpi/bin:$PATH
+           cmake3 -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install
 
     - name: Build
       run: |
            source /opt/rh/devtoolset-7/enable
+           source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
            cmake3 --build _build --config Release -j2  --target install
