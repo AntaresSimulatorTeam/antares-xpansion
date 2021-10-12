@@ -11,6 +11,8 @@ from datetime import datetime
 
 from pathlib import Path
 
+import re
+
 from antares_xpansion.general_data_reader import GeneralDataIniReader, IniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.xpansion_utils import read_and_write_mps
@@ -183,8 +185,11 @@ class XpansionDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
         print("-- get names")
-
-        output_path = self.simulation_output_path()
+        
+        if(self.simulation_name == "last"):
+            output_path = self.get_last_simulation_name()
+        else :    
+            output_path = self.simulation_output_path()
         mps_txt = read_and_write_mps(output_path)
         with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
             for line in mps_txt.items():
@@ -533,3 +538,21 @@ class XpansionDriver:
         with open(options_path, 'w') as options_file:
             options_file.writelines(["%30s%30s\n" % (kvp[0], kvp[1])
                                      for kvp in options_values.items()])
+
+    def get_last_simulation_name(self):
+        """
+            return last simulation name    
+        """
+        
+        # simulations_list =  sorted(os.listdir(self.antares_output()))
+        # simulation name folder YYYYMMDD-HHMMeco
+        classic_simulation_name_regex = re.compile("^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-([0-1]?[0-9]|2[0-3])[0-5][0-9]eco$")
+        
+        simulations_list = []
+        for file in os.listdir(self.antares_output()) :
+            if (os.path.isdir(os.path.normpath(os.path.join(self.antares_output(),file))) and re.fullmatch(classic_simulation_name_regex, file)):
+                simulations_list.append(file)
+        sorted_simulations_list =  sorted(simulations_list)
+        assert len(sorted_simulations_list) != 0 
+        last_simulation = sorted_simulations_list[-1]
+        return last_simulation
