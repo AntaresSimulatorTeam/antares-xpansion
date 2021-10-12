@@ -23,7 +23,7 @@ class MainWidget(QWidget):
 
         self.settings = QSettings("pyqt_settings.ini", QSettings.IniFormat)
 
-        self.mainLayout = QVBoxLayout()
+        self.main_layout = QVBoxLayout()
 
         self._initInstallDirSelectionWidget()
         self._initAntaresStudySelectionWidget()
@@ -31,40 +31,40 @@ class MainWidget(QWidget):
         self._initAntaresXpansionRunWidget()
         self._initLogWidget()
 
-        self.setLayout(self.mainLayout)
+        self.setLayout(self.main_layout)
 
         self._check_run_availability()
 
     def _initLogWidget(self):
-        logLayout = QHBoxLayout()
+        log_layout = QHBoxLayout()
         self.logTextEdit = QPlainTextEdit()
         self.logTextEdit.setReadOnly(True)
         font = QFont()
         font.setFamily(u"DejaVu Sans Mono")
         self.logTextEdit.setFont(font)
-        logLayout.addWidget(self.logTextEdit)
-        self.mainLayout.addLayout(logLayout)
+        log_layout.addWidget(self.logTextEdit)
+        self.main_layout.addLayout(log_layout)
 
     def _initAntaresXpansionRunWidget(self):
 
-        runLayout = QHBoxLayout()
-        methodLayout = QHBoxLayout()
+        run_layout = QHBoxLayout()
+        method_layout = QHBoxLayout()
 
         self.mpibendersRadioButton = QRadioButton('mpibenders')
-        methodLayout.addWidget(self.mpibendersRadioButton)
+        method_layout.addWidget(self.mpibendersRadioButton)
         self.sequentialRadioButton = QRadioButton('sequential')
         self.sequentialRadioButton.setChecked(True)
-        methodLayout.addWidget(self.sequentialRadioButton)
+        method_layout.addWidget(self.sequentialRadioButton)
 
-        methodLayout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
-        runLayout.addLayout(methodLayout)
+        method_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
+        run_layout.addLayout(method_layout)
 
         self.runningLabel = QLabel()
         self.movie = QMovie(":/images/loading.gif", QByteArray())
         self.runningLabel.setMovie(self.movie)
         self.movie.start()
         self.runningLabel.setVisible(False)
-        runLayout.addWidget(self.runningLabel)
+        run_layout.addWidget(self.runningLabel)
 
         self.p = QProcess()
         self.p.readyReadStandardOutput.connect(self.handle_stdout)
@@ -75,53 +75,53 @@ class MainWidget(QWidget):
         self.runButton = QPushButton('Run')
         self._set_run_label()
         self.runButton.clicked.connect(self.run_or_stop)
-        runLayout.addWidget(self.runButton)
+        run_layout.addWidget(self.runButton)
 
-        self.mainLayout.addLayout(runLayout)
+        self.main_layout.addLayout(run_layout)
 
     def _initAntaresStudySelectionWidget(self):
-        layoutStudyPath = QGridLayout()
+        layout_study_path = QGridLayout()
 
-        layoutStudyPath.addWidget(QLabel('Antares study path'), 0, 0)
+        layout_study_path.addWidget(QLabel('Antares study path'), 0, 0)
         self.studyPathTextEdit = QLineEdit(self.settings.value(LAST_ANTARES_STUDY_DIR))
-        layoutStudyPath.addWidget(self.studyPathTextEdit, 0, 1)
-        selectButton = QPushButton('...')
-        selectButton.clicked.connect(self.select_study_path)
-        layoutStudyPath.addWidget(selectButton, 0, 2)
+        layout_study_path.addWidget(self.studyPathTextEdit, 0, 1)
+        select_button = QPushButton('...')
+        select_button.clicked.connect(self.select_study_path)
+        layout_study_path.addWidget(select_button, 0, 2)
 
         self.comboSimulationName = QComboBox()
         self.comboSimulationName.currentTextChanged.connect(self.simulation_name_changed)
-        layoutStudyPath.addWidget(QLabel('Simulation name'), 1, 0)
-        layoutStudyPath.addWidget(self.comboSimulationName, 1, 1)
+        layout_study_path.addWidget(QLabel('Simulation name'), 1, 0)
+        layout_study_path.addWidget(self.comboSimulationName, 1, 1)
         self._initSimulationNameCombo(self.settings.value(LAST_ANTARES_STUDY_DIR))
 
-        self.mainLayout.addLayout(layoutStudyPath)
+        self.main_layout.addLayout(layout_study_path)
 
     def _initStepSelectionWidget(self):
-        stepLayout = QHBoxLayout()
+        step_layout = QHBoxLayout()
 
         steps = ["full", "antares", "getnames", "lp", "optim", "update"]
         self.step_buttons = {}
         for step in steps:
             self.step_buttons[step] = QRadioButton(step)
-            stepLayout.addWidget(self.step_buttons[step])
+            step_layout.addWidget(self.step_buttons[step])
 
         self.step_buttons["full"].setChecked(True)
 
-        stepLayout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
+        step_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
         self.step_gb = QGroupBox("Steps")
-        self.step_gb.setLayout(stepLayout)
-        self.mainLayout.addWidget(self.step_gb)
+        self.step_gb.setLayout(step_layout)
+        self.main_layout.addWidget(self.step_gb)
 
     def _initInstallDirSelectionWidget(self):
-        layoutInstallDir = QHBoxLayout()
-        layoutInstallDir.addWidget(QLabel('AntaresXpansion install directory'))
+        layout_install_dir = QHBoxLayout()
+        layout_install_dir.addWidget(QLabel('AntaresXpansion install directory'))
         self.installDirTextEdit = QLineEdit(self.settings.value(LAST_INSTALL_DIR))
-        layoutInstallDir.addWidget(self.installDirTextEdit)
-        selectInstallDirButton = QPushButton('...')
-        selectInstallDirButton.clicked.connect(self.select_install_dir)
-        layoutInstallDir.addWidget(selectInstallDirButton)
-        self.mainLayout.addLayout(layoutInstallDir)
+        layout_install_dir.addWidget(self.installDirTextEdit)
+        select_install_dir_button = QPushButton('...')
+        select_install_dir_button.clicked.connect(self.select_install_dir)
+        layout_install_dir.addWidget(select_install_dir_button)
+        self.main_layout.addLayout(layout_install_dir)
 
     def set_study_path(self, study_path: str):
         self.settings.setValue(LAST_ANTARES_STUDY_DIR, study_path)
