@@ -1,5 +1,6 @@
 import os
 
+import yaml
 from PyQt5.QtGui import QFont, QMovie, QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
     QHBoxLayout, QWidget, QFileDialog, QRadioButton, QSpacerItem, QSizePolicy, QPlainTextEdit, QMessageBox, QGridLayout, \
@@ -11,7 +12,7 @@ import resources
 
 STEP_WITH_SIMULATION_NAME = ["getnames", "lp", "optim", "update"]
 NEW_SIMULATION_NAME = "New"
-LAST_INSTALL_DIR = "last_install_dir"
+INSTALL_DIR = "install_dir"
 LAST_ANTARES_STUDY_DIR = "last_antares_study_dir"
 
 class MainWidget(QWidget):
@@ -19,13 +20,14 @@ class MainWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
-        self.setWindowTitle('antares-xpansion-launcher-gui')
+        self.setWindowTitle('antares-xpansion-ui')
+
+        self._define_install_dir()
 
         self.settings = QSettings("pyqt_settings.ini", QSettings.IniFormat)
 
         self.main_layout = QVBoxLayout()
 
-        self._initInstallDirSelectionWidget()
         self._initAntaresStudySelectionWidget()
         self._initStepSelectionWidget()
         self._initAntaresXpansionRunWidget()
@@ -35,12 +37,20 @@ class MainWidget(QWidget):
 
         self._check_run_availability()
 
+    def _define_install_dir(self):
+        self.INSTALL_DIR = Path("bin")
+        if Path('config-ui.yaml').is_file():
+            with open('config-ui.yaml') as file:
+                content = yaml.full_load(file)
+                if content is not None:
+                    self.INSTALL_DIR = content.get('INSTALL_DIR', "bin")
+
     def _initLogWidget(self):
         log_layout = QHBoxLayout()
         self.logTextEdit = QPlainTextEdit()
         self.logTextEdit.setReadOnly(True)
         font = QFont()
-        font.setFamily(u"DejaVu Sans Mono")
+        font.setFamily("DejaVu Sans Mono")
         self.logTextEdit.setFont(font)
         log_layout.addWidget(self.logTextEdit)
         self.main_layout.addLayout(log_layout)
@@ -113,16 +123,6 @@ class MainWidget(QWidget):
         self.step_gb.setLayout(step_layout)
         self.main_layout.addWidget(self.step_gb)
 
-    def _initInstallDirSelectionWidget(self):
-        layout_install_dir = QHBoxLayout()
-        layout_install_dir.addWidget(QLabel('AntaresXpansion install directory'))
-        self.installDirTextEdit = QLineEdit(self.settings.value(LAST_INSTALL_DIR))
-        layout_install_dir.addWidget(self.installDirTextEdit)
-        select_install_dir_button = QPushButton('...')
-        select_install_dir_button.clicked.connect(self.select_install_dir)
-        layout_install_dir.addWidget(select_install_dir_button)
-        self.main_layout.addLayout(layout_install_dir)
-
     def set_study_path(self, study_path: str):
         self.settings.setValue(LAST_ANTARES_STUDY_DIR, study_path)
         self.studyPathTextEdit.setText(study_path)
@@ -140,23 +140,13 @@ class MainWidget(QWidget):
                     self.comboSimulationName.addItem(dir.name)
             self.comboSimulationName.blockSignals(False)
 
-    def set_install_dir(self, install_dir: str):
-        self.settings.setValue(LAST_INSTALL_DIR, install_dir)
-        self.installDirTextEdit.setText(install_dir)
-        self._check_run_availability()
-
     def select_study_path(self):
         self.set_study_path(
             QFileDialog.getExistingDirectory(self, 'Select study folder', self.studyPathTextEdit.text()))
 
-    def select_install_dir(self):
-        self.set_install_dir(
-            QFileDialog.getExistingDirectory(self, 'Select install folder', self.installDirTextEdit.text()))
-
     def _check_run_availability(self):
-        install_dir = self.installDirTextEdit.text()
         study_path = self.studyPathTextEdit.text()
-        run_available = len(install_dir) and len(study_path)
+        run_available = len(study_path)
         self.runButton.setEnabled(run_available)
         self.step_gb.setEnabled(run_available)
 
@@ -200,7 +190,6 @@ class MainWidget(QWidget):
         self.runningLabel.setVisible(False)
 
     def simulation_name_changed(self, text):
-
         for step in self.step_buttons:
             if text == NEW_SIMULATION_NAME:
                 self.step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
@@ -225,16 +214,22 @@ class MainWidget(QWidget):
     def run(self):
         self.logTextEdit.clear()
         study_path = self.studyPathTextEdit.text()
-        install_dir = self.installDirTextEdit.text()
+        install_dir = self.INSTALL_DIR
         install_dir_full = str(Path(install_dir).resolve())
-        commands = ["launch.py", "--installDir", install_dir_full, "--dataDir",
+
+        program = "antares-xpansion-launcher.exe"
+        commands = ["--installDir", install_dir_full, "--dataDir",
                     str(study_path), "--method", self._get_method(), "--step", self._get_step(), "-n", "2"]
 
         if not self.step_buttons["full"].isChecked():
             commands.append("--simulationName")
             commands.append(self.comboSimulationName.currentText())
 
-        self.p.start("python", commands)
+        if Path("launch.py").is_file():
+            commands.insert(0, "launch.py")
+            program = "python"
+
+        self.p.start(program, commands)
         self._set_stop_label()
 
 
