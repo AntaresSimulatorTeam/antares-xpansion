@@ -46,7 +46,8 @@ class XpansionConfig():
                             default="full")
         parser.add_argument("--simulationName",
                             dest="simulationName",
-                            help="Name of the antares simulation to use. Must be present in the output directory")
+                            help="Name of the antares simulation to use. Must be present in the output directory",
+                            default="last")
         parser.add_argument("-i", "--dataDir",
                             dest="dataDir",
                             help="Antares study data directory",
