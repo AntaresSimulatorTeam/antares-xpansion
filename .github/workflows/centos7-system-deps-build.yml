@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - develop
-      - feature/review_build_option
       - release/*
 jobs:
 
@@ -54,6 +53,7 @@ jobs:
     - name: Configure
       run: |
            source /opt/rh/devtoolset-7/enable
+           #git 2.x must be enabled for Coin compilation with CMake ExternalProject_Add
            source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
