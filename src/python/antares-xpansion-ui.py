@@ -1,10 +1,11 @@
 import os
 
 import yaml
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QMovie, QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
     QHBoxLayout, QWidget, QFileDialog, QRadioButton, QSpacerItem, QSizePolicy, QPlainTextEdit, QMessageBox, QGridLayout, \
-    QComboBox, QGroupBox
+    QComboBox, QGroupBox, QSpinBox
 from PyQt5.QtCore import QProcess, QByteArray, QSettings
 from pathlib import Path
 
@@ -57,17 +58,36 @@ class MainWidget(QWidget):
 
     def _initAntaresXpansionRunWidget(self):
 
-        run_layout = QHBoxLayout()
         method_layout = QHBoxLayout()
 
-        self.mpibendersRadioButton = QRadioButton('mpibenders')
-        method_layout.addWidget(self.mpibendersRadioButton)
-        self.sequentialRadioButton = QRadioButton('sequential')
+        self.sequentialRadioButton = QRadioButton('Sequential')
         self.sequentialRadioButton.setChecked(True)
+        self.sequentialRadioButton.toggled.connect(self._method_changed)
         method_layout.addWidget(self.sequentialRadioButton)
 
+        self.mpibendersRadioButton = QRadioButton('Parallel')
+        self.mpibendersRadioButton.toggled.connect(self._method_changed)
+
+        method_layout.addWidget(self.mpibendersRadioButton)
+        method_layout.addWidget(QLabel("core number"))
+        self.nb_core_edit = QSpinBox()
+        self.nb_core_edit.setMinimum(2)
+        self.nb_core_edit.setMaximum(128)
+        self.nb_core_edit.setValue(os.cpu_count())
+        method_layout.addWidget(self.nb_core_edit)
+
+        nb_cpu_label = QLabel("<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available core {nb_cpu}</span></a>".format(nb_cpu=os.cpu_count()))
+        nb_cpu_label.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
+        nb_cpu_label.linkActivated.connect(self._use_available_core)
+        method_layout.addWidget(nb_cpu_label)
+
         method_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
-        run_layout.addLayout(method_layout)
+
+        method_gb = QGroupBox("Method")
+        method_gb.setLayout(method_layout)
+
+        run_layout = QHBoxLayout()
+        run_layout.addWidget(method_gb)
 
         self.runningLabel = QLabel()
         self.movie = QMovie(":/images/loading.gif", QByteArray())
@@ -152,14 +172,17 @@ class MainWidget(QWidget):
 
     def _get_method(self):
         if self.mpibendersRadioButton.isChecked():
-            return self.mpibendersRadioButton.text()
+            return "mpibenders"
         if self.sequentialRadioButton.isChecked():
-            return self.sequentialRadioButton.text()
+            return "sequential"
 
     def _get_step(self):
         for step in self.step_buttons:
             if self.step_buttons[step].isChecked():
                 return step
+
+    def _get_nb_core(self):
+        return self.nb_core_edit.value()
 
     def handle_stdout(self):
         data = self.p.readAllStandardOutput()
@@ -178,6 +201,12 @@ class MainWidget(QWidget):
                 self._initSimulationNameCombo(self.studyPathTextEdit.text())
         else:
             self._set_stop_label()
+
+    def _method_changed(self):
+        self.nb_core_edit.setEnabled(self.mpibendersRadioButton.isChecked())
+
+    def _use_available_core(self):
+        self.nb_core_edit.setValue(os.cpu_count())
 
     def _set_stop_label(self):
         self.runButton.setText("Stop")
@@ -218,8 +247,11 @@ class MainWidget(QWidget):
         install_dir_full = str(Path(install_dir).resolve())
 
         program = "antares-xpansion-launcher.exe"
-        commands = ["--installDir", install_dir_full, "--dataDir",
-                    str(study_path), "--method", self._get_method(), "--step", self._get_step(), "-n", "2"]
+        commands = ["--installDir", install_dir_full,
+                    "--dataDir", str(study_path),
+                    "--method", self._get_method(),
+                    "--step", self._get_step(),
+                    "-n", str(self._get_nb_core())]
 
         if not self.step_buttons["full"].isChecked():
             commands.append("--simulationName")
