@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QMovie, QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
     QHBoxLayout, QWidget, QFileDialog, QRadioButton, QSpacerItem, QSizePolicy, QPlainTextEdit, QMessageBox, QGridLayout, \
-    QComboBox, QGroupBox, QSpinBox
+    QComboBox, QGroupBox, QSpinBox, QCheckBox
 from PyQt5.QtCore import QProcess, QByteArray, QSettings
 from pathlib import Path
 
@@ -82,6 +82,7 @@ class MainWidget(QWidget):
         self.nb_core_edit.setMinimum(2)
         self.nb_core_edit.setMaximum(128)
         self.nb_core_edit.setValue(os.cpu_count())
+        self.nb_core_edit.setEnabled(False)
         method_layout.addWidget(self.nb_core_edit)
         nb_cpu_label = QLabel(
             "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available core {nb_cpu}</span></a>".format(
@@ -92,6 +93,14 @@ class MainWidget(QWidget):
         method_gb = QGroupBox("Method")
         method_gb.setLayout(method_layout)
         self.xpansion_config_layout.addWidget(method_gb)
+
+        option_gb = QGroupBox("Options")
+        option_layout = QVBoxLayout()
+        self.keep_mps_checkbox = QCheckBox("Keep intermediate files")
+        self.keep_mps_checkbox.setChecked(False)
+        option_layout.addWidget(self.keep_mps_checkbox)
+        option_gb.setLayout(option_layout)
+        self.xpansion_config_layout.addWidget(option_gb)
 
     def _initXpansionRunWidget(self):
         self.runningLabel = QLabel()
@@ -135,6 +144,7 @@ class MainWidget(QWidget):
         self.step_buttons = {}
         for step in steps:
             self.step_buttons[step] = QRadioButton(step)
+            self.step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
             step_layout.addWidget(self.step_buttons[step])
 
         self.step_buttons["full"].setChecked(True)
@@ -183,6 +193,12 @@ class MainWidget(QWidget):
 
     def _get_nb_core(self):
         return self.nb_core_edit.value()
+
+    def _get_keep_mps_option(self):
+        if self.keep_mps_checkbox.isChecked():
+            return "--keepMps"
+        else:
+            return ""
 
     def handle_stdout(self):
         data = self.p.readAllStandardOutput()
@@ -251,7 +267,8 @@ class MainWidget(QWidget):
                     "--dataDir", str(study_path),
                     "--method", self._get_method(),
                     "--step", self._get_step(),
-                    "-n", str(self._get_nb_core())]
+                    "-n", str(self._get_nb_core()),
+                    self._get_keep_mps_option()]
 
         if not self.step_buttons["full"].isChecked():
             commands.append("--simulationName")
