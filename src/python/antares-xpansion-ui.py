@@ -30,7 +30,6 @@ class MainWidget(QWidget):
         self.main_layout = QVBoxLayout()
 
         self._initAntaresStudySelectionWidget()
-        self._initStepSelectionWidget()
         self._initAntaresXpansionRunWidget()
         self._initLogWidget()
 
@@ -58,16 +57,25 @@ class MainWidget(QWidget):
 
     def _initAntaresXpansionRunWidget(self):
 
-        method_layout = QHBoxLayout()
+        self.xpansion_config_layout = QHBoxLayout()
 
+        self._initStepSelectionWidget()
+        self._initXpansionConfigWidget()
+
+        self.xpansion_config_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
+        self._initXpansionRunWidget()
+
+        self.main_layout.addLayout(self.xpansion_config_layout)
+
+    def _initXpansionConfigWidget(self):
+
+        method_layout = QHBoxLayout()
         self.sequentialRadioButton = QRadioButton('Sequential')
         self.sequentialRadioButton.setChecked(True)
         self.sequentialRadioButton.toggled.connect(self._method_changed)
         method_layout.addWidget(self.sequentialRadioButton)
-
         self.mpibendersRadioButton = QRadioButton('Parallel')
         self.mpibendersRadioButton.toggled.connect(self._method_changed)
-
         method_layout.addWidget(self.mpibendersRadioButton)
         method_layout.addWidget(QLabel("core number"))
         self.nb_core_edit = QSpinBox()
@@ -75,39 +83,32 @@ class MainWidget(QWidget):
         self.nb_core_edit.setMaximum(128)
         self.nb_core_edit.setValue(os.cpu_count())
         method_layout.addWidget(self.nb_core_edit)
-
-        nb_cpu_label = QLabel("<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available core {nb_cpu}</span></a>".format(nb_cpu=os.cpu_count()))
+        nb_cpu_label = QLabel(
+            "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available core {nb_cpu}</span></a>".format(
+                nb_cpu=os.cpu_count()))
         nb_cpu_label.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
         nb_cpu_label.linkActivated.connect(self._use_available_core)
         method_layout.addWidget(nb_cpu_label)
-
-        method_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
-
         method_gb = QGroupBox("Method")
         method_gb.setLayout(method_layout)
+        self.xpansion_config_layout.addWidget(method_gb)
 
-        run_layout = QHBoxLayout()
-        run_layout.addWidget(method_gb)
-
+    def _initXpansionRunWidget(self):
         self.runningLabel = QLabel()
         self.movie = QMovie(":/images/loading.gif", QByteArray())
         self.runningLabel.setMovie(self.movie)
         self.movie.start()
         self.runningLabel.setVisible(False)
-        run_layout.addWidget(self.runningLabel)
-
+        self.xpansion_config_layout.addWidget(self.runningLabel)
         self.p = QProcess()
         self.p.readyReadStandardOutput.connect(self.handle_stdout)
         self.p.readyReadStandardError.connect(self.handle_stderr)
         self.p.stateChanged.connect(self.handle_state)
         self.p.finished.connect(self.cleanup_process)
-
         self.runButton = QPushButton('Run')
         self._set_run_label()
         self.runButton.clicked.connect(self.run_or_stop)
-        run_layout.addWidget(self.runButton)
-
-        self.main_layout.addLayout(run_layout)
+        self.xpansion_config_layout.addWidget(self.runButton)
 
     def _initAntaresStudySelectionWidget(self):
         layout_study_path = QGridLayout()
@@ -138,10 +139,9 @@ class MainWidget(QWidget):
 
         self.step_buttons["full"].setChecked(True)
 
-        step_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
         self.step_gb = QGroupBox("Steps")
         self.step_gb.setLayout(step_layout)
-        self.main_layout.addWidget(self.step_gb)
+        self.xpansion_config_layout.addWidget(self.step_gb)
 
     def set_study_path(self, study_path: str):
         self.settings.setValue(LAST_ANTARES_STUDY_DIR, study_path)
