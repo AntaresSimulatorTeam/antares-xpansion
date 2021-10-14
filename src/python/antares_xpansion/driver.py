@@ -185,10 +185,10 @@ class XpansionDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
         print("-- get names")
-        
-        if(self.simulation_name == "last"):
+
+        if self.simulation_name == "last":
             output_path = self.get_last_simulation_name()
-        else :    
+        else:
             output_path = self.simulation_output_path()
         mps_txt = read_and_write_mps(output_path)
         with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
@@ -211,9 +211,9 @@ class XpansionDriver:
         """
         print("-- lp")
 
-        if(self.simulation_name == "last"):
+        if (self.simulation_name == "last"):
             output_path = self.get_last_simulation_name()
-        else :
+        else:
             output_path = self.simulation_output_path()
 
         lp_path = self._simulation_lp_path()
@@ -533,7 +533,8 @@ class XpansionDriver:
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
         options_values["GAP"] = self.optimality_gap()
         options_values["MAX_ITERATIONS"] = self.max_iterations()
-        options_values["SOLVER_NAME"] = XpansionStudyReader.convert_study_solver_to_option_solver(self.options.get('solver', "Cbc"))
+        options_values["SOLVER_NAME"] = XpansionStudyReader.convert_study_solver_to_option_solver(
+            self.options.get('solver', "Cbc"))
         if self.weight_file_name():
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         # generate options file for the solver
@@ -546,16 +547,17 @@ class XpansionDriver:
         """
             return last simulation name    
         """
-        
 
         # simulation name folder YYYYMMDD-HHMMeco
-        classic_simulation_name_regex = re.compile("^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-([0-1]?[0-9]|2[0-3])[0-5][0-9]eco$")
-        
+        classic_simulation_name_regex = re.compile(
+            "^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-([0-1]?[0-9]|2[0-3])[0-5][0-9]eco$")
+
         simulations_list = []
-        for file in os.listdir(self.antares_output()) :
-            if (os.path.isdir(os.path.normpath(os.path.join(self.antares_output(),file))) and re.fullmatch(classic_simulation_name_regex, file)):
+        for file in os.listdir(self.antares_output()):
+            if (os.path.isdir(os.path.normpath(os.path.join(self.antares_output(), file))) and re.fullmatch(
+                    classic_simulation_name_regex, file)):
                 simulations_list.append(file)
-        sorted_simulations_list =  sorted(simulations_list)
-        assert len(sorted_simulations_list) != 0 
+        sorted_simulations_list = sorted(simulations_list)
+        assert len(sorted_simulations_list) != 0
         last_simulation = sorted_simulations_list[-1]
-        return Path(os.path.normpath(os.path.join(self.antares_output(),last_simulation)))
+        return Path(os.path.normpath(os.path.join(self.antares_output(), last_simulation)))
