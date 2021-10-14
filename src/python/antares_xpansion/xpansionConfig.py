@@ -1,15 +1,25 @@
 """
     parameters for an AntaresXpansion session
 """
-
+from dataclasses import dataclass
 from pathlib import Path
 import os
 import sys
 import yaml
-import argparse
 
 
-class XpansionConfig():
+@dataclass
+class InputParameters:
+    step: str
+    simulationName: str
+    dataDir: str
+    installDir: str
+    method: str
+    n_mpi: int
+    keep_mps: bool
+
+
+class XpansionConfig:
     """
         Class defininf the parameters for an AntaresXpansion session
     """
@@ -17,8 +27,9 @@ class XpansionConfig():
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, configfile: Path):
+    def __init__(self, input_parameters: InputParameters, configfile: Path):
 
+        self.input_parameters = input_parameters
         self.ANTARES: str = ""
         self.MERGE_MPS: str = ""
         self.BENDERS_MPI: str = ""
@@ -38,50 +49,13 @@ class XpansionConfig():
         self._initialize_default_values()
 
     def _get_parameters_from_arguments(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument("--step",
-                            dest="step",
-                            choices=["full", "antares", "getnames", "lp", "optim", "update"],
-                            help='Step to execute ("full", "antares", "getnames", "lp", "optim", "update")',
-                            default="full")
-        parser.add_argument("--simulationName",
-                            dest="simulationName",
-                            help="Name of the antares simulation to use. Must be present in the output directory",
-                            default="last")
-        parser.add_argument("-i", "--dataDir",
-                            dest="dataDir",
-                            help="Antares study data directory",
-                            required=True)
-        parser.add_argument("--installDir",
-                            dest="installDir",
-                            help="The directory where all binaries are located",
-                            default=None)
-        parser.add_argument("-m", "--method",
-                            dest="method",
-                            type=str,
-                            choices=["mpibenders", "mergeMPS", "sequential"],
-                            help="Choose the optimization method",
-                            default="sequential")
-        parser.add_argument("-n", "--np",
-                            dest="n_mpi",
-                            default=4,
-                            type=lambda x: (int(x) > 1) and int(x) or sys.exit("Minimum of MPI processes is 1"),
-                            help='Number of MPI processes')
-
-        parser.add_argument("--keepMps",
-                            dest="keep_mps",
-                            default=False,
-                            action='store_true',
-                            help='Keep .mps from lp_namer and benders steps')
-
-        args = parser.parse_args()
-        self.step = args.step
-        self.simulationName = args.simulationName
-        self.dataDir = str(Path(args.dataDir).absolute())
-        self.installDir = self._get_install_dir(args.installDir)
-        self.method = args.method
-        self.n_mpi = args.n_mpi
-        self.keep_mps = args.keep_mps
+        self.step = self.input_parameters.step
+        self.simulationName = self.input_parameters.simulationName
+        self.dataDir = str(Path(self.input_parameters.dataDir).absolute())
+        self.installDir = self._get_install_dir(self.input_parameters.installDir)
+        self.method = self.input_parameters.method
+        self.n_mpi = self.input_parameters.n_mpi
+        self.keep_mps = self.input_parameters.keep_mps
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
