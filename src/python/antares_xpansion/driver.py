@@ -211,7 +211,10 @@ class XpansionDriver:
         """
         print("-- lp")
 
-        output_path = self.simulation_output_path()
+        if(self.simulation_name == "last"):
+            output_path = self.get_last_simulation_name()
+        else :
+            output_path = self.simulation_output_path()
 
         lp_path = self._simulation_lp_path()
         if os.path.isdir(lp_path):
@@ -544,7 +547,7 @@ class XpansionDriver:
             return last simulation name    
         """
         
-        # simulations_list =  sorted(os.listdir(self.antares_output()))
+
         # simulation name folder YYYYMMDD-HHMMeco
         classic_simulation_name_regex = re.compile("^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-([0-1]?[0-9]|2[0-3])[0-5][0-9]eco$")
         
@@ -555,4 +558,4 @@ class XpansionDriver:
         sorted_simulations_list =  sorted(simulations_list)
         assert len(sorted_simulations_list) != 0 
         last_simulation = sorted_simulations_list[-1]
-        return last_simulation
+        return Path(os.path.normpath(os.path.join(self.antares_output(),last_simulation)))
