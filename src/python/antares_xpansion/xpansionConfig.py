@@ -17,7 +17,7 @@ class ConfigParameters:
     BENDERS_SEQUENTIAL: str
     LP_NAMER: str
     STUDY_UPDATER: str
-    AVAILABLE_SOLVERS: list[str]
+    AVAILABLE_SOLVERS: List[str]
 
 @dataclass
 class InputParameters:
