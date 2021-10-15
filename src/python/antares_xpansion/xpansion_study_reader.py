@@ -66,17 +66,18 @@ class XpansionStudyReader:
         return True
 
     @staticmethod
-    def check_solver(solver_str: str, config: XpansionConfig):
+    def check_solver(solver_str: str, AVAILABLE_SOLVERS: List[str]):
         """
         check that solver is available in XpansionConfig
+        if solver_str is empty then solver_str is set to Cbc
         :param solver_str: solver obtained from the settings.ini file
-        :param config: xpansionConfig with list of available solver
+        :param AVAILABLE_SOLVERS: List of available solvers
         :return:
         """
         if not solver_str:
             print("No solver defined in user/expansion/settings.ini. Cbc used")
             solver_str = "Cbc"
-        if not config.AVAILABLE_SOLVER.count(solver_str):
+        if not AVAILABLE_SOLVERS.count(solver_str):
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {solver_str} not available. Please use one of these solver in user/expansion/settings.ini : {str(config.AVAILABLE_SOLVER)}')
 
