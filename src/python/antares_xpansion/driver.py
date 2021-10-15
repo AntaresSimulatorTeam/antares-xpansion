@@ -186,10 +186,7 @@ class XpansionDriver:
         """
         print("-- get names")
 
-        if self.simulation_name == "last":
-            output_path = self.get_last_simulation_name()
-        else:
-            output_path = self.simulation_output_path()
+        output_path = self.simulation_output_path()
         mps_txt = read_and_write_mps(output_path)
         with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
             for line in mps_txt.items():
@@ -211,10 +208,7 @@ class XpansionDriver:
         """
         print("-- lp")
 
-        if (self.simulation_name == "last"):
-            output_path = self.get_last_simulation_name()
-        else:
-            output_path = self.simulation_output_path()
+        output_path = self.simulation_output_path()
 
         lp_path = self._simulation_lp_path()
         if os.path.isdir(lp_path):
@@ -494,6 +488,8 @@ class XpansionDriver:
                 }
 
     def simulation_output_path(self) -> Path:
+        if (self.simulation_name == "last"):
+            self._set_last_simulation_name()
         return Path(os.path.normpath(os.path.join(self.antares_output(), self.simulation_name)))
 
     def get_lp_namer_log_filename(self, lp_path):
@@ -543,7 +539,7 @@ class XpansionDriver:
             options_file.writelines(["%30s%30s\n" % (kvp[0], kvp[1])
                                      for kvp in options_values.items()])
 
-    def get_last_simulation_name(self):
+    def _set_last_simulation_name(self):
         """
             return last simulation name    
         """
@@ -559,5 +555,5 @@ class XpansionDriver:
                 simulations_list.append(file)
         sorted_simulations_list = sorted(simulations_list)
         assert len(sorted_simulations_list) != 0
-        last_simulation = sorted_simulations_list[-1]
-        return Path(os.path.normpath(os.path.join(self.antares_output(), last_simulation)))
+        self.simulation_name = sorted_simulations_list[-1]
+        

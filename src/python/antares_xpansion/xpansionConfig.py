@@ -9,6 +9,16 @@ import yaml
 
 
 @dataclass
+class ConfigParameters:
+    ANTARES: str
+    MERGE_MPS: str
+    BENDERS_MPI: str
+    BENDERS_SEQUENTIAL: str
+    LP_NAMER: str
+    STUDY_UPDATER: str
+    AVAILABLE_SOLVER: str
+
+@dataclass
 class InputParameters:
     step: str
     simulationName: str
@@ -27,9 +37,10 @@ class XpansionConfig:
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, input_parameters: InputParameters, configfile: Path):
+    def __init__(self, input_parameters: InputParameters, config_parameters: ConfigParameters):
 
         self.input_parameters = input_parameters
+        self.config_parameters = config_parameters
         self.ANTARES: str = ""
         self.MERGE_MPS: str = ""
         self.BENDERS_MPI: str = ""
@@ -40,7 +51,7 @@ class XpansionConfig:
         self.MPI_N: str = ""
         self.AVAILABLE_SOLVER: list[str] = {}
 
-        self._initialize_values_from_config_file(configfile)
+        self._get_config_values()
 
         self._initialise_system_specific_mpi_vars()
 
@@ -156,16 +167,13 @@ class XpansionConfig:
         else:
             print("WARN: No mpi launcher was defined!")
 
-    def _initialize_values_from_config_file(self, configfile):
-        with open(configfile) as file:
-            content = yaml.full_load(file)
-            if content is not None:
-                self.ANTARES = content.get('ANTARES', "antares-solver")
-                self.MERGE_MPS = content.get('MERGE_MPS', "merge_mps")
-                self.BENDERS_MPI = content.get('BENDERS_MPI', "bender_mpi")
-                self.BENDERS_SEQUENTIAL = content.get('BENDERS_SEQUENTIAL', "benders_sequential")
-                self.LP_NAMER = content.get('LP_NAMER', "lp_namer")
-                self.STUDY_UPDATER = content.get('STUDY_UPDATER', "study_updater")
-                self.AVAILABLE_SOLVER = content.get('AVAILABLE_SOLVER')
-            else:
-                raise RuntimeError("Please check file config.yaml, content is empty")
+    def _get_config_values(self):
+        
+        self.ANTARES = self.config_parameters.ANTARES
+        self.MERGE_MPS = self.config_parameters.MERGE_MPS
+        self.BENDERS_MPI = self.config_parameters.BENDERS_MPI
+        self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
+        self.LP_NAMER = self.config_parameters.LP_NAMER
+        self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
+        self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVER
+    
