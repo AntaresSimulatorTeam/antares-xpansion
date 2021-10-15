@@ -6,6 +6,7 @@ from pathlib import Path
 import os
 import sys
 import yaml
+from typing import List
 
 
 @dataclass
@@ -16,7 +17,7 @@ class ConfigParameters:
     BENDERS_SEQUENTIAL: str
     LP_NAMER: str
     STUDY_UPDATER: str
-    AVAILABLE_SOLVER: str
+    AVAILABLE_SOLVERS: list[str]
 
 @dataclass
 class InputParameters:
@@ -49,7 +50,7 @@ class XpansionConfig:
         self.STUDY_UPDATER: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
-        self.AVAILABLE_SOLVER: list[str] = {}
+        self.AVAILABLE_SOLVER: List[str]
 
         self._get_config_values()
 
@@ -175,5 +176,5 @@ class XpansionConfig:
         self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
-        self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVER
+        self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS
     

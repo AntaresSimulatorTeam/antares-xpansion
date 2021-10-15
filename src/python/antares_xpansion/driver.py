@@ -453,7 +453,7 @@ class XpansionDriver:
 
     def _verify_solver(self):
         try:
-            XpansionStudyReader.check_solver(self.options.get('solver', ""), self.config)
+            XpansionStudyReader.check_solver(self.options.get('solver', ""), self.config.AVAILABLE_SOLVER)
         except XpansionStudyReader.BaseException as e:
             print(e)
             sys.exit(1)
@@ -556,4 +556,4 @@ class XpansionDriver:
         sorted_simulations_list = sorted(simulations_list)
         assert len(sorted_simulations_list) != 0
         self.simulation_name = sorted_simulations_list[-1]
-        
+
