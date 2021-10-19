@@ -14,6 +14,6 @@ A `resource.py` python module is created when configuring CMake.
 To force the regeneration of this file if images are changed, use `pyrcc5`
 ```
 cd src\python
-pyrcc5 images.qrc > resource.py
+pyrcc5 images.qrc > resources.py
 ```
 
