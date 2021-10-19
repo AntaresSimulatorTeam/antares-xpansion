@@ -161,14 +161,18 @@ class MainWidget(QWidget):
 
     def _init_simulation_name_combo(self, study_path: str):
         if study_path:
-            output_path = Path(study_path) / 'output'
             self._combo_simulation_name.blockSignals(True)
             self._combo_simulation_name.clear()
             self._combo_simulation_name.addItem(NEW_SIMULATION_NAME)
+            self._insert_study_simulation_in_combobox(study_path)
+            self._combo_simulation_name.blockSignals(False)
+
+    def _insert_study_simulation_in_combobox(self, study_path):
+        output_path = Path(study_path) / 'output'
+        if output_path.is_dir():
             for directory in sorted(output_path.iterdir(), key=os.path.getmtime, reverse=True):
                 if (output_path / directory).is_dir():
                     self._combo_simulation_name.addItem(directory.name)
-            self._combo_simulation_name.blockSignals(False)
 
     def _select_study_path(self):
         self.set_study_path(
@@ -176,7 +180,7 @@ class MainWidget(QWidget):
 
     def _check_run_availability(self):
         study_path = self._study_path_text_edit.text()
-        run_available = len(study_path)
+        run_available = Path(study_path).is_dir()
         self._run_button.setEnabled(run_available)
         self._step_gb.setEnabled(run_available)
 
@@ -194,11 +198,8 @@ class MainWidget(QWidget):
     def _get_nb_core(self):
         return self._nb_core_edit.value()
 
-    def _get_keep_mps_option(self):
-        if self._keep_mps_checkbox.isChecked():
-            return "--keepMps"
-        else:
-            return ""
+    def _get_keep_mps(self):
+        return self._keep_mps_checkbox.isChecked()
 
     def _handle_stdout(self):
         data = self._run_process.readAllStandardOutput()
@@ -259,27 +260,37 @@ class MainWidget(QWidget):
     def _run(self):
         self._log_text_edit.clear()
         study_path = self._study_path_text_edit.text()
+        if study_path:
+            if Path(study_path).is_dir():
+                self._run_study(study_path)
+            else:
+                self._add_text_to_log("Study path is not a directory")
+        else:
+            self._add_text_to_log("No study path defined")
+
+    def _run_study(self, study_path):
         install_dir = self._install_dir
-        install_dir_full = str(Path(install_dir).resolve())
-
-        program = "antares-xpansion-launcher.exe"
-        commands = ["--installDir", install_dir_full,
-                    "--dataDir", str(study_path),
-                    "--method", self._get_method(),
-                    "--step", self._get_step(),
-                    "-n", str(self._get_nb_core()),
-                    self._get_keep_mps_option()]
-
-        if not self._step_buttons["full"].isChecked():
-            commands.append("--simulationName")
-            commands.append(self._combo_simulation_name.currentText())
-
-        if Path("launch.py").is_file():
-            commands.insert(0, "launch.py")
-            program = "python"
-
-        self._run_process.start(program, commands)
-        self._set_stop_label()
+        install_dir_path = Path(install_dir)
+        if install_dir_path.is_dir():
+            install_dir_full = str(install_dir_path.resolve())
+            program = "antares-xpansion-launcher.exe"
+            commands = ["--installDir", install_dir_full,
+                        "--dataDir", str(study_path),
+                        "--method", self._get_method(),
+                        "--step", self._get_step(),
+                        "-n", str(self._get_nb_core())]
+            if self._get_keep_mps():
+                commands.append("--keepMps")
+            if not self._step_buttons["full"].isChecked():
+                commands.append("--simulationName")
+                commands.append(self._combo_simulation_name.currentText())
+            if Path("launch.py").is_file():
+                commands.insert(0, "launch.py")
+                program = "python"
+            self._run_process.start(program, commands)
+            self._set_stop_label()
+        else:
+            self._add_text_to_log("Error in install directory definition.")
 
 
 app = QApplication([])
