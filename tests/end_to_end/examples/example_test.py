@@ -187,7 +187,7 @@ def test_full_study_long(install_dir, study_path, expected_values, expected_inve
         (ALL_STUDIES_PATH / "empty-link-profile",
          {"gap": 0.0098419189453125, "investment_cost": 27585000000.000114,
           "operational_cost": 10629896636.068903, "overall_cost": 38214896636.069016},
-         {"base": 51150.0, "pointe": 33500, "semibase_winter": 0.0}
+         {"base": 51150.0, "pointe": 33500, "semibase_empty": 0.0}
          )
     ],
 )
