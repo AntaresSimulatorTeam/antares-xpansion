@@ -7,6 +7,8 @@
 #include <multisolver_interface/SolverAbstract.h>
 #include "ActiveLinks.h"
 #include <map>
+#include <boost/concept_check.hpp>
+
 using colId= unsigned int;
 struct ColumnToChange{
 
@@ -68,6 +70,22 @@ private:
     std::shared_ptr<SolverAbstract> _math_problem;
     std::map<std::string ,unsigned int> _candidate_col_id;
     unsigned int _n_cols_at_start;
+
+    void add_ntc_column_constraints(std::vector<double> &dmatval, std::vector<int> &colind, std::vector<char> &rowtype,
+                                    std::vector<double> &rhs, std::vector<int> &rstart, const ActiveLink &link,
+                                    const ColumnToChange &column);
+
+    void
+    add_direct_cost_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
+                                      std::vector<char> &rowtype,
+                                      std::vector<double> &rhs, std::vector<int> &rstart, const ActiveLink &link,
+                                      const ColumnToChange &column);
+
+    void
+    add_indirect_cost_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
+                                        std::vector<char> &rowtype,
+                                        std::vector<double> &rhs, std::vector<int> &rstart, const ActiveLink &link,
+                                        const ColumnToChange &column);
 };
 
 
