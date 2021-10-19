@@ -30,4 +30,14 @@ public:
 	void delete_constraint(int const nrows);
 	void fix_alpha(double const & bestUB);
 
+private:
+
+    void define_matval_mclind(const Point &s, std::vector<double> &matval, std::vector<int> &mclind);
+
+    void define_rhs_with_master_variable(const Point &s, const Point &x0, const double &rhs, std::vector<double> &rowrhs);
+
+    void define_rhs_from_sx0(const double &sx0, const double &rhs, std::vector<double> &rowrhs) const;
+
+    void
+    define_matval_mclind_for_index(const int i, const Point &s, std::vector<double> &matval, std::vector<int> &mclind);
 };
