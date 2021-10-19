@@ -13,8 +13,8 @@ import resources
 
 STEP_WITH_SIMULATION_NAME = ["getnames", "lp", "optim", "update"]
 NEW_SIMULATION_NAME = "New"
-INSTALL_DIR = "install_dir"
 LAST_ANTARES_STUDY_DIR = "last_antares_study_dir"
+
 
 class MainWidget(QWidget):
 
@@ -25,65 +25,65 @@ class MainWidget(QWidget):
 
         self._define_install_dir()
 
-        self.settings = QSettings("pyqt_settings.ini", QSettings.IniFormat)
+        self._settings = QSettings("pyqt_settings.ini", QSettings.IniFormat)
 
-        self.main_layout = QVBoxLayout()
+        self._main_layout = QVBoxLayout()
 
-        self._initAntaresStudySelectionWidget()
-        self._initAntaresXpansionRunWidget()
-        self._initLogWidget()
+        self._init_antares_study_selection_widget()
+        self._init_antares_xpansion_run_widget()
+        self._init_log_widget()
 
-        self.setLayout(self.main_layout)
+        self.setLayout(self._main_layout)
 
         self._check_run_availability()
 
     def _define_install_dir(self):
-        self.INSTALL_DIR = Path("bin")
+        self._install_dir = Path("bin")
         if Path('config-ui.yaml').is_file():
             with open('config-ui.yaml') as file:
                 content = yaml.full_load(file)
                 if content is not None:
-                    self.INSTALL_DIR = content.get('INSTALL_DIR', "bin")
+                    self._install_dir = content.get('INSTALL_DIR', "bin")
 
-    def _initLogWidget(self):
+    def _init_log_widget(self):
         log_layout = QHBoxLayout()
-        self.logTextEdit = QPlainTextEdit()
-        self.logTextEdit.setReadOnly(True)
+        self._log_text_edit = QPlainTextEdit()
+        self._log_text_edit.setReadOnly(True)
         font = QFont()
         font.setFamily("DejaVu Sans Mono")
-        self.logTextEdit.setFont(font)
-        log_layout.addWidget(self.logTextEdit)
-        self.main_layout.addLayout(log_layout)
+        self._log_text_edit.setFont(font)
+        log_layout.addWidget(self._log_text_edit)
+        self._main_layout.addLayout(log_layout)
 
-    def _initAntaresXpansionRunWidget(self):
+    def _init_antares_xpansion_run_widget(self):
 
-        self.xpansion_config_layout = QHBoxLayout()
+        self._xpansion_config_layout = QHBoxLayout()
 
-        self._initStepSelectionWidget()
-        self._initXpansionConfigWidget()
+        self._init_step_selection_widget()
+        self._init_xpansion_config_widget()
 
-        self.xpansion_config_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
-        self._initXpansionRunWidget()
+        self._xpansion_config_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
+        self._init_xpansion_run_widget()
 
-        self.main_layout.addLayout(self.xpansion_config_layout)
+        self._main_layout.addLayout(self._xpansion_config_layout)
 
-    def _initXpansionConfigWidget(self):
+    def _init_xpansion_config_widget(self):
 
         method_layout = QHBoxLayout()
-        self.sequentialRadioButton = QRadioButton('Sequential')
-        self.sequentialRadioButton.setChecked(True)
-        self.sequentialRadioButton.toggled.connect(self._method_changed)
-        method_layout.addWidget(self.sequentialRadioButton)
-        self.mpibendersRadioButton = QRadioButton('Parallel')
-        self.mpibendersRadioButton.toggled.connect(self._method_changed)
-        method_layout.addWidget(self.mpibendersRadioButton)
+        self._sequential_radio_button = QRadioButton('Sequential')
+        self._sequential_radio_button.setChecked(True)
+        self._sequential_radio_button.toggled.connect(self._method_changed)
+        method_layout.addWidget(self._sequential_radio_button)
+        self._mpibenders_radio_button = QRadioButton('Parallel')
+        self._mpibenders_radio_button.toggled.connect(self._method_changed)
+        method_layout.addWidget(self._mpibenders_radio_button)
         method_layout.addWidget(QLabel("core number"))
-        self.nb_core_edit = QSpinBox()
-        self.nb_core_edit.setMinimum(2)
-        self.nb_core_edit.setMaximum(128)
-        self.nb_core_edit.setValue(os.cpu_count())
-        self.nb_core_edit.setEnabled(False)
-        method_layout.addWidget(self.nb_core_edit)
+        self._nb_core_edit = QSpinBox()
+        self._nb_core_edit.setMinimum(2)
+        self._nb_core_edit.setMaximum(128)
+        self._nb_core_edit.setValue(os.cpu_count())
+        self._nb_core_edit.setEnabled(False)
+        method_layout.addWidget(self._nb_core_edit)
         nb_cpu_label = QLabel(
             "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available core {nb_cpu}</span></a>".format(
                 nb_cpu=os.cpu_count()))
@@ -92,174 +92,174 @@ class MainWidget(QWidget):
         method_layout.addWidget(nb_cpu_label)
         method_gb = QGroupBox("Method")
         method_gb.setLayout(method_layout)
-        self.xpansion_config_layout.addWidget(method_gb)
+        self._xpansion_config_layout.addWidget(method_gb)
 
         option_gb = QGroupBox("Options")
         option_layout = QVBoxLayout()
-        self.keep_mps_checkbox = QCheckBox("Keep intermediate files")
-        self.keep_mps_checkbox.setChecked(False)
-        option_layout.addWidget(self.keep_mps_checkbox)
+        self._keep_mps_checkbox = QCheckBox("Keep intermediate files")
+        self._keep_mps_checkbox.setChecked(False)
+        option_layout.addWidget(self._keep_mps_checkbox)
         option_gb.setLayout(option_layout)
-        self.xpansion_config_layout.addWidget(option_gb)
+        self._xpansion_config_layout.addWidget(option_gb)
 
-    def _initXpansionRunWidget(self):
-        self.runningLabel = QLabel()
+    def _init_xpansion_run_widget(self):
+        self._running_label = QLabel()
         self.movie = QMovie(":/images/loading.gif", QByteArray())
-        self.runningLabel.setMovie(self.movie)
+        self._running_label.setMovie(self.movie)
         self.movie.start()
-        self.runningLabel.setVisible(False)
-        self.xpansion_config_layout.addWidget(self.runningLabel)
-        self.p = QProcess()
-        self.p.readyReadStandardOutput.connect(self.handle_stdout)
-        self.p.readyReadStandardError.connect(self.handle_stderr)
-        self.p.stateChanged.connect(self.handle_state)
-        self.p.finished.connect(self.cleanup_process)
-        self.runButton = QPushButton('Run')
+        self._running_label.setVisible(False)
+        self._xpansion_config_layout.addWidget(self._running_label)
+        self._run_process = QProcess()
+        self._run_process.readyReadStandardOutput.connect(self._handle_stdout)
+        self._run_process.readyReadStandardError.connect(self._handle_stderr)
+        self._run_process.stateChanged.connect(self._handle_state)
+        self._run_process.finished.connect(self._cleanup_run_process)
+        self._run_button = QPushButton('Run')
         self._set_run_label()
-        self.runButton.clicked.connect(self.run_or_stop)
-        self.xpansion_config_layout.addWidget(self.runButton)
+        self._run_button.clicked.connect(self._run_or_stop)
+        self._xpansion_config_layout.addWidget(self._run_button)
 
-    def _initAntaresStudySelectionWidget(self):
+    def _init_antares_study_selection_widget(self):
         layout_study_path = QGridLayout()
 
         layout_study_path.addWidget(QLabel('Antares study path'), 0, 0)
-        self.studyPathTextEdit = QLineEdit(self.settings.value(LAST_ANTARES_STUDY_DIR))
-        layout_study_path.addWidget(self.studyPathTextEdit, 0, 1)
+        self._study_path_text_edit = QLineEdit(self._settings.value(LAST_ANTARES_STUDY_DIR))
+        layout_study_path.addWidget(self._study_path_text_edit, 0, 1)
         select_button = QPushButton('...')
-        select_button.clicked.connect(self.select_study_path)
+        select_button.clicked.connect(self._select_study_path)
         layout_study_path.addWidget(select_button, 0, 2)
 
-        self.comboSimulationName = QComboBox()
-        self.comboSimulationName.currentTextChanged.connect(self.simulation_name_changed)
+        self._combo_simulation_name = QComboBox()
+        self._combo_simulation_name.currentTextChanged.connect(self._simulation_name_changed)
         layout_study_path.addWidget(QLabel('Simulation name'), 1, 0)
-        layout_study_path.addWidget(self.comboSimulationName, 1, 1)
-        self._initSimulationNameCombo(self.settings.value(LAST_ANTARES_STUDY_DIR))
+        layout_study_path.addWidget(self._combo_simulation_name, 1, 1)
+        self._init_simulation_name_combo(self._settings.value(LAST_ANTARES_STUDY_DIR))
 
-        self.main_layout.addLayout(layout_study_path)
+        self._main_layout.addLayout(layout_study_path)
 
-    def _initStepSelectionWidget(self):
+    def _init_step_selection_widget(self):
         step_layout = QHBoxLayout()
 
         steps = ["full", "antares", "getnames", "lp", "optim", "update"]
-        self.step_buttons = {}
+        self._step_buttons = {}
         for step in steps:
-            self.step_buttons[step] = QRadioButton(step)
-            self.step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
-            step_layout.addWidget(self.step_buttons[step])
+            self._step_buttons[step] = QRadioButton(step)
+            self._step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
+            step_layout.addWidget(self._step_buttons[step])
 
-        self.step_buttons["full"].setChecked(True)
+        self._step_buttons["full"].setChecked(True)
 
-        self.step_gb = QGroupBox("Steps")
-        self.step_gb.setLayout(step_layout)
-        self.xpansion_config_layout.addWidget(self.step_gb)
+        self._step_gb = QGroupBox("Steps")
+        self._step_gb.setLayout(step_layout)
+        self._xpansion_config_layout.addWidget(self._step_gb)
 
     def set_study_path(self, study_path: str):
-        self.settings.setValue(LAST_ANTARES_STUDY_DIR, study_path)
-        self.studyPathTextEdit.setText(study_path)
-        self._initSimulationNameCombo(study_path)
+        self._settings.setValue(LAST_ANTARES_STUDY_DIR, study_path)
+        self._study_path_text_edit.setText(study_path)
+        self._init_simulation_name_combo(study_path)
         self._check_run_availability()
 
-    def _initSimulationNameCombo(self, study_path: str):
+    def _init_simulation_name_combo(self, study_path: str):
         if study_path:
             output_path = Path(study_path) / 'output'
-            self.comboSimulationName.blockSignals(True)
-            self.comboSimulationName.clear()
-            self.comboSimulationName.addItem(NEW_SIMULATION_NAME)
-            for dir in sorted(output_path.iterdir(), key=os.path.getmtime, reverse=True):
-                if (output_path / dir).is_dir():
-                    self.comboSimulationName.addItem(dir.name)
-            self.comboSimulationName.blockSignals(False)
+            self._combo_simulation_name.blockSignals(True)
+            self._combo_simulation_name.clear()
+            self._combo_simulation_name.addItem(NEW_SIMULATION_NAME)
+            for directory in sorted(output_path.iterdir(), key=os.path.getmtime, reverse=True):
+                if (output_path / directory).is_dir():
+                    self._combo_simulation_name.addItem(directory.name)
+            self._combo_simulation_name.blockSignals(False)
 
-    def select_study_path(self):
+    def _select_study_path(self):
         self.set_study_path(
-            QFileDialog.getExistingDirectory(self, 'Select study folder', self.studyPathTextEdit.text()))
+            QFileDialog.getExistingDirectory(self, 'Select study folder', self._study_path_text_edit.text()))
 
     def _check_run_availability(self):
-        study_path = self.studyPathTextEdit.text()
+        study_path = self._study_path_text_edit.text()
         run_available = len(study_path)
-        self.runButton.setEnabled(run_available)
-        self.step_gb.setEnabled(run_available)
+        self._run_button.setEnabled(run_available)
+        self._step_gb.setEnabled(run_available)
 
     def _get_method(self):
-        if self.mpibendersRadioButton.isChecked():
+        if self._mpibenders_radio_button.isChecked():
             return "mpibenders"
-        if self.sequentialRadioButton.isChecked():
+        if self._sequential_radio_button.isChecked():
             return "sequential"
 
     def _get_step(self):
-        for step in self.step_buttons:
-            if self.step_buttons[step].isChecked():
+        for step in self._step_buttons:
+            if self._step_buttons[step].isChecked():
                 return step
 
     def _get_nb_core(self):
-        return self.nb_core_edit.value()
+        return self._nb_core_edit.value()
 
     def _get_keep_mps_option(self):
-        if self.keep_mps_checkbox.isChecked():
+        if self._keep_mps_checkbox.isChecked():
             return "--keepMps"
         else:
             return ""
 
-    def handle_stdout(self):
-        data = self.p.readAllStandardOutput()
+    def _handle_stdout(self):
+        data = self._run_process.readAllStandardOutput()
         stdout = bytes(data).decode("utf8")
-        self.message(stdout)
+        self._add_text_to_log(stdout)
 
-    def handle_stderr(self):
-        data = self.p.readAllStandardError()
+    def _handle_stderr(self):
+        data = self._run_process.readAllStandardError()
         stderr = bytes(data).decode("utf8")
-        self.message(stderr)
+        self._add_text_to_log(stderr)
 
-    def handle_state(self, state):
+    def _handle_state(self, state):
         if state == QProcess.NotRunning:
             self._set_run_label()
             if self._get_step() not in STEP_WITH_SIMULATION_NAME:
-                self._initSimulationNameCombo(self.studyPathTextEdit.text())
+                self._init_simulation_name_combo(self._study_path_text_edit.text())
         else:
             self._set_stop_label()
 
     def _method_changed(self):
-        self.nb_core_edit.setEnabled(self.mpibendersRadioButton.isChecked())
+        self._nb_core_edit.setEnabled(self._mpibenders_radio_button.isChecked())
 
     def _use_available_core(self):
-        self.nb_core_edit.setValue(os.cpu_count())
+        self._nb_core_edit.setValue(os.cpu_count())
 
     def _set_stop_label(self):
-        self.runButton.setText("Stop")
-        self.runButton.setIcon(QIcon(":/images/stop-48.png"))
-        self.runningLabel.setVisible(True)
+        self._run_button.setText("Stop")
+        self._run_button.setIcon(QIcon(":/images/stop-48.png"))
+        self._running_label.setVisible(True)
 
     def _set_run_label(self):
-        self.runButton.setText("Run")
-        self.runButton.setIcon(QIcon(":/images/play-48.png"))
-        self.runningLabel.setVisible(False)
+        self._run_button.setText("Run")
+        self._run_button.setIcon(QIcon(":/images/play-48.png"))
+        self._running_label.setVisible(False)
 
-    def simulation_name_changed(self, text):
-        for step in self.step_buttons:
+    def _simulation_name_changed(self, text):
+        for step in self._step_buttons:
             if text == NEW_SIMULATION_NAME:
-                self.step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
+                self._step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
             else:
-                self.step_buttons[step].setEnabled(step in STEP_WITH_SIMULATION_NAME)
+                self._step_buttons[step].setEnabled(step in STEP_WITH_SIMULATION_NAME)
 
-    def message(self, s):
-        self.logTextEdit.appendPlainText(s.rstrip('\r\n'))
+    def _add_text_to_log(self, s):
+        self._log_text_edit.appendPlainText(s.rstrip('\r\n'))
 
-    def cleanup_process(self):
-        self.p.close();
+    def _cleanup_run_process(self):
+        self._run_process.close();
 
-    def run_or_stop(self):
-        if self.p and self.p.isOpen():
+    def _run_or_stop(self):
+        if self._run_process and self._run_process.isOpen():
             qm = QMessageBox()
             ret = qm.question(self, "Stop simulation", "Do you want to stop current simulation ?")
             if ret == qm.Yes:
-                self.p.close()
+                self._run_process.close()
         else:
-            self.run()
+            self._run()
 
-    def run(self):
-        self.logTextEdit.clear()
-        study_path = self.studyPathTextEdit.text()
-        install_dir = self.INSTALL_DIR
+    def _run(self):
+        self._log_text_edit.clear()
+        study_path = self._study_path_text_edit.text()
+        install_dir = self._install_dir
         install_dir_full = str(Path(install_dir).resolve())
 
         program = "antares-xpansion-launcher.exe"
@@ -270,15 +270,15 @@ class MainWidget(QWidget):
                     "-n", str(self._get_nb_core()),
                     self._get_keep_mps_option()]
 
-        if not self.step_buttons["full"].isChecked():
+        if not self._step_buttons["full"].isChecked():
             commands.append("--simulationName")
-            commands.append(self.comboSimulationName.currentText())
+            commands.append(self._combo_simulation_name.currentText())
 
         if Path("launch.py").is_file():
             commands.insert(0, "launch.py")
             program = "python"
 
-        self.p.start(program, commands)
+        self._run_process.start(program, commands)
         self._set_stop_label()
 
 
