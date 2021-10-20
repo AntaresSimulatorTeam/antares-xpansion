@@ -40,6 +40,7 @@ nav:
     - 'Dependencies install': 'build/2-Dependencies-install.md'
     - 'Build': 'build/3-Build.md'
     - 'Tests': 'build/4-Tests.md'
+    - 'UI creation': 'build/6-ui-creation.md'
     - 'Installer creation': 'build/5-Installer-creation.md'
   - 'Changelog': 'CHANGELOG.md'
 

@@ -41,6 +41,7 @@ Here is a list of available CMake configure option :
 |`BUILD_ALL`|`OFF`|Enable build of ALL external librairies|
 |`DEPS_INSTALL_DIR`|`../rte-antares-deps-<CMAKE_BUILD_TYPE>`|Define dependencies libraries install directory|
 |`BUILD_TESTING`|`OFF`|Enable test build|
+|`BUILD_UI`|`OFF`|Enable UI build|
 
 Additionnal options for windows
 
