@@ -16,7 +16,7 @@ class ConfigFileParser:
         self.STUDY_UPDATER_DEFAULT = "study_updater"
         self.AVAILABLE_SOLVERS_DEFAULT = []
         
-    def get_config_Parameters(self) -> ConfigParameters :
+    def get_config_parameters(self) -> ConfigParameters :
         with open(self.config_file) as file:
             content = yaml.full_load(file)
             if content is None:

@@ -35,7 +35,7 @@ class XpansionDriver:
         """
         self.platform = sys.platform
         self.config = config
-        self.simulation_name = self.config.simulationName
+        self.simulation_name = self.config.simulation_name
 
         self.candidates_list = []
         self._verify_settings_ini_file_exists()
@@ -88,25 +88,25 @@ class XpansionDriver:
         elif self.config.step == "antares":
             self._antares_step()
         elif self.config.step == "getnames":
-            if self.config.simulationName:
+            if self.config.simulation_name:
                 self.get_names()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
         elif self.config.step == "lp":
-            if self.config.simulationName:
+            if self.config.simulation_name:
                 self.lp_step()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
         elif self.config.step == "update":
-            if self.config.simulationName:
+            if self.config.simulation_name:
                 self.update_step()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
         elif self.config.step == "optim":
-            if self.config.simulationName:
+            if self.config.simulation_name:
                 self.launch_optimization()
             else:
                 print("Missing argument simulationName")
@@ -324,13 +324,13 @@ class XpansionDriver:
 
             :return: path to specified executable
         """
-        return os.path.normpath(os.path.join(self.config.installDir, exe))
+        return os.path.normpath(os.path.join(self.config.install_dir, exe))
 
     def data_dir(self):
         """
             returns path to the data directory
         """
-        return self.config.dataDir
+        return self.config.data_dir
 
     def weight_file_name(self):
         return self.options.get('yearly-weights', self.config.settings_default["yearly-weights"])
@@ -554,6 +554,8 @@ class XpansionDriver:
                     classic_simulation_name_regex, file)):
                 simulations_list.append(file)
         sorted_simulations_list = sorted(simulations_list)
-        assert len(sorted_simulations_list) != 0
+        if len(sorted_simulations_list) == 0:
+            msg = f"no suitable simulation directory found in {self.antares_output()}, simulation directory name must be in this format: YYYYMMDD-HHMMeco "
+            raise Exception(msg)
         self.simulation_name = sorted_simulations_list[-1]
 

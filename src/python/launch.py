@@ -11,7 +11,7 @@ import os
 
 conf_file = Path(os.path.abspath(__file__)).parent / "config.yaml"
 config_parser = ConfigFileParser(conf_file)
-configuration_data = config_parser.get_config_Parameters()
+configuration_data = config_parser.get_config_parameters()
 
 parser = InputParser()
 

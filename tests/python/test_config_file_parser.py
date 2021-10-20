@@ -11,7 +11,7 @@ class TestConfigFileParser:
         config_file = ""
         my_config_file_parser = ConfigFileParser(config_file)
         with pytest.raises(FileNotFoundError):
-            my_config_file_parser.get_config_Parameters()
+            my_config_file_parser.get_config_parameters()
             
 
     def test_config_file_empty(self, tmp_path):
@@ -20,7 +20,7 @@ class TestConfigFileParser:
         content = "" 
         temp_config_file_path.write_text(content)
         my_config_file_parser = ConfigFileParser(temp_config_file_path)
-        config_param =  my_config_file_parser.get_config_Parameters()
+        config_param =  my_config_file_parser.get_config_parameters()
         assert config_param.ANTARES == "antares-solver"
         assert config_param.MERGE_MPS == "merge_mps"
         assert config_param.BENDERS_MPI == "benders_mpi"
@@ -44,7 +44,7 @@ class TestConfigFileParser:
                     
         temp_config_file_path.write_text(content)
         my_config_file_parser = ConfigFileParser(temp_config_file_path)
-        config_param =  my_config_file_parser.get_config_Parameters()
+        config_param =  my_config_file_parser.get_config_parameters()
         assert config_param.ANTARES == "antares-8.0-solver.exe"
         assert config_param.MERGE_MPS == "merge_mps.exe"
         assert config_param.BENDERS_MPI == "bendersmpi.exe"

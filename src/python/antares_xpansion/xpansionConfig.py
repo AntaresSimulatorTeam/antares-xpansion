@@ -22,9 +22,9 @@ class ConfigParameters:
 @dataclass
 class InputParameters:
     step: str
-    simulationName: str
-    dataDir: str
-    installDir: str
+    simulation_name: str
+    data_dir: str
+    install_dir: str
     method: str
     n_mpi: int
     keep_mps: bool
@@ -62,9 +62,9 @@ class XpansionConfig:
 
     def _get_parameters_from_arguments(self):
         self.step = self.input_parameters.step
-        self.simulationName = self.input_parameters.simulationName
-        self.dataDir = str(Path(self.input_parameters.dataDir).absolute())
-        self.installDir = self._get_install_dir(self.input_parameters.installDir)
+        self.simulation_name = self.input_parameters.simulation_name
+        self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
+        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
         self.keep_mps = self.input_parameters.keep_mps

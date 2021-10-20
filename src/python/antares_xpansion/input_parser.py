@@ -50,9 +50,9 @@ class InputParser:
         params = self.parser.parse_args(args)
         my_parameters = InputParameters(
             step=params.step,
-            simulationName=params.simulationName,
-            dataDir=params.dataDir,
-            installDir=params.installDir,
+            simulation_name=params.simulationName,
+            data_dir=params.dataDir,
+            install_dir=params.installDir,
             method=params.method,
             n_mpi=params.n_mpi,
             keep_mps=params.keep_mps,
