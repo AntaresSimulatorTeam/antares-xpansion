@@ -86,46 +86,12 @@ void ProblemModifier::add_new_ntc_constraints(const std::vector<ActiveLink> &act
 
     for (const auto& link : active_links) {
         for(const ColumnToChange& column : p_ntc_columns.at(link._idLink)){
-            add_ntc_column_constraints(dmatval, colind, rowtype, rhs, rstart, link, column);
+            add_direct_profile_column_constraint(dmatval,colind,rowtype,rhs,rstart,link,column);
+            add_indirect_profile_ntc_column_constraint(dmatval, colind, rowtype, rhs, rstart, link, column);
         }
     }
 
     solver_addrows(_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
-}
-
-void ProblemModifier::add_ntc_column_constraints(std::vector<double> &dmatval, std::vector<int> &colind,
-                                                 std::vector<char> &rowtype, std::vector<double> &rhs,
-                                                 std::vector<int> &rstart, const ActiveLink &link,
-                                                 const ColumnToChange &column) {
-    double already_installed_capacity(link._already_installed_capacity);
-
-    double direct_already_installed_profile_at_timestep = link.already_installed_direct_profile(column.time_step);
-
-    rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
-    rowtype.push_back('L');
-    colind.push_back(column.id);
-    dmatval.push_back(1);
-    for (const auto& candidate:link.getCandidates()){
-        if (candidate.direct_profile(column.time_step) != 0.0) {
-            colind.push_back(_candidate_col_id[candidate._name]);
-            dmatval.push_back(-candidate.direct_profile(column.time_step));
-        }
-    }
-    rstart.push_back(dmatval.size());
-
-    double indirect_already_installed_profile_at_timestep = link.already_installed_indirect_profile(column.time_step);
-
-    rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
-    rowtype.push_back('G');
-    colind.push_back(column.id);
-    dmatval.push_back(1);
-    for (const auto& candidate:link.getCandidates()){
-        if (candidate.indirect_profile(column.time_step) != 0.0) {
-            colind.push_back(_candidate_col_id[candidate._name]);
-            dmatval.push_back(+candidate.indirect_profile(column.time_step));
-        }
-    }
-    rstart.push_back(dmatval.size());
 }
 
 void ProblemModifier::add_new_direct_cost_constraints(const std::vector<ActiveLink> &active_links,
@@ -142,7 +108,7 @@ void ProblemModifier::add_new_direct_cost_constraints(const std::vector<ActiveLi
     for (const ActiveLink& link : active_links) {
         if (p_cost_columns.find(link._idLink) != p_cost_columns.end()) {
             for (const ColumnToChange& column : p_cost_columns.at(link._idLink)) {
-                add_direct_cost_column_constraint(dmatval, colind, rowtype, rhs, rstart, link, column);
+                add_direct_profile_column_constraint(dmatval, colind, rowtype, rhs, rstart, link, column);
             }
         }
     }
@@ -151,25 +117,6 @@ void ProblemModifier::add_new_direct_cost_constraints(const std::vector<ActiveLi
 
 }
 
-void ProblemModifier::add_direct_cost_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
-                                                        std::vector<char> &rowtype, std::vector<double> &rhs,
-                                                        std::vector<int> &rstart, const ActiveLink &link,
-                                                        const ColumnToChange &column) {
-    double already_installed_capacity(link._already_installed_capacity);
-    double direct_already_installed_profile_at_timestep = link.already_installed_direct_profile(column.time_step);
-    rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
-
-    rowtype.push_back('L');
-    colind.push_back(column.id);
-    dmatval.push_back(1);
-    for (const auto &candidate:link.getCandidates()) {
-        if (candidate.direct_profile(column.time_step) != 0.0) {
-            colind.push_back(_candidate_col_id[candidate._name]);
-            dmatval.push_back(-candidate.direct_profile(column.time_step));
-        }
-    }
-    rstart.push_back(dmatval.size());
-}
 
 void ProblemModifier::add_new_indirect_cost_constraints(const std::vector<ActiveLink> &active_links,
                                                       const std::map<linkId, ColumnsToChange> &p_cost_columns){
@@ -191,7 +138,46 @@ void ProblemModifier::add_new_indirect_cost_constraints(const std::vector<Active
     }
 
     solver_addrows(_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
+}
 
+void ProblemModifier::add_direct_profile_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
+                                                           std::vector<char> &rowtype, std::vector<double> &rhs,
+                                                           std::vector<int> &rstart, const ActiveLink &link,
+                                                           const ColumnToChange &column) {
+    double already_installed_capacity(link._already_installed_capacity);
+    double direct_already_installed_profile_at_timestep = link.already_installed_direct_profile(column.time_step);
+    rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
+
+    rowtype.push_back('L');
+    colind.push_back(column.id);
+    dmatval.push_back(1);
+    for (const auto &candidate:link.getCandidates()) {
+        if (candidate.direct_profile(column.time_step) != 0.0) {
+            colind.push_back(_candidate_col_id[candidate._name]);
+            dmatval.push_back(-candidate.direct_profile(column.time_step));
+        }
+    }
+    rstart.push_back(dmatval.size());
+}
+
+void ProblemModifier::add_indirect_profile_ntc_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
+                                                                 std::vector<char> &rowtype, std::vector<double> &rhs,
+                                                                 std::vector<int> &rstart, const ActiveLink &link,
+                                                                 const ColumnToChange &column) {
+    double already_installed_capacity(link._already_installed_capacity);
+    double indirect_already_installed_profile_at_timestep = link.already_installed_indirect_profile(column.time_step);
+    rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
+
+    rowtype.push_back('G');
+    colind.push_back(column.id);
+    dmatval.push_back(1);
+    for (const auto &candidate:link.getCandidates()) {
+        if (candidate.indirect_profile(column.time_step) != 0.0) {
+            colind.push_back(_candidate_col_id[candidate._name]);
+            dmatval.push_back(candidate.indirect_profile(column.time_step));
+        }
+    }
+    rstart.push_back(dmatval.size());
 }
 
 void ProblemModifier::add_indirect_cost_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
@@ -206,8 +192,10 @@ void ProblemModifier::add_indirect_cost_column_constraint(std::vector<double> &d
     colind.push_back(column.id);
     dmatval.push_back(1);
     for (const auto &candidate:link.getCandidates()) {
-        colind.push_back(_candidate_col_id[candidate._name]);
-        dmatval.push_back(-candidate.indirect_profile(column.time_step));
+        if (candidate.indirect_profile(column.time_step) != 0.0) {
+            colind.push_back(_candidate_col_id[candidate._name]);
+            dmatval.push_back(-candidate.indirect_profile(column.time_step));
+        }
     }
     rstart.push_back(dmatval.size());
 }
@@ -251,18 +239,14 @@ std::set<int> ProblemModifier::extract_time_steps(const std::map<linkId, Columns
 
 std::vector<Candidate> ProblemModifier::candidates_with_not_null_profile(const std::vector<ActiveLink> &active_links, const std::set<int>& time_steps) const{
     std::vector<Candidate> candidates = candidates_from_all_links(active_links);
-    std::map<std::string, bool> candidateHasNotNullProfile;
-    for (auto& cand : candidates) {
-        candidateHasNotNullProfile[cand._name] = false;
 
+    candidates.erase(std::remove_if(candidates.begin(), candidates.end(), [time_steps](const Candidate& cand) {
+        bool hasOnlyNullProfile = true;
         for (int time_step : time_steps) {
-            candidateHasNotNullProfile[cand._name] |= cand.direct_profile(time_step) != 0.0 ||
-                                                      cand.indirect_profile(time_step) != 0.0;
+            hasOnlyNullProfile &= cand.direct_profile(time_step) == 0.0;
+            hasOnlyNullProfile &= cand.indirect_profile(time_step) == 0.0;
         }
-    }
-
-    candidates.erase(std::remove_if(candidates.begin(), candidates.end(), [candidateHasNotNullProfile](const Candidate& cand) {
-        return !candidateHasNotNullProfile.at(cand._name);
+        return hasOnlyNullProfile;
     }), candidates.end());
 
     return candidates;
