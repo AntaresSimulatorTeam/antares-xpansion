@@ -441,11 +441,9 @@ void compute_cut_aggregate(AllCutPackage const & all_package, WorkerMasterPtr & 
 			SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
 			data.ub += handler->get_dbl(SLAVE_COST);
 			rhs += handler->get_dbl(SLAVE_COST);
-			for (auto const & var : data.x0) {
-			    if (handler->get_subgradient().find(var.first)!=handler->get_subgradient().end()){
-			        s[var.first] += handler->get_subgradient().find(var.first)->second;
-			    }
-			}
+
+            compute_cut_val(handler,data.x0,s);
+
 			SlaveCutTrimmer cut(handler, data.x0);
 			if (options.DELETE_CUT && !(all_cuts_storage[itmap.first].find(cut) == all_cuts_storage[itmap.first].end())) {
 				data.deletedcut++;
@@ -457,6 +455,14 @@ void compute_cut_aggregate(AllCutPackage const & all_package, WorkerMasterPtr & 
 		}
 	}
 	master->add_cut(s, data.x0, rhs);
+}
+
+void compute_cut_val(const SlaveCutDataHandlerPtr& handler, const Point & x0, Point& s){
+    for (auto const & var : x0) {
+        if (handler->get_subgradient().find(var.first)!=handler->get_subgradient().end()){
+            s[var.first] += handler->get_subgradient().find(var.first)->second;
+        }
+    }
 }
 
 
@@ -630,15 +636,19 @@ void store_current_aggregate_cut(DynamicAggregateCuts & dynamic_cuts, AllCutPack
 		for (auto const & itmap : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
-			for (auto const & kvp : data.x0) {
-			    if (handler->get_subgradient().find(kvp.first)!=handler->get_subgradient().end()){
-                    std::get<0>(dynamic_cuts[nite])[kvp.first] += handler->get_subgradient()[kvp.first];
-                    std::get<1>(dynamic_cuts[nite]) += handler->get_subgradient()[kvp.first] * kvp.second;
-			    }
-			}
-			std::get<2>(dynamic_cuts[nite]) += handler->get_dbl(SLAVE_COST);
+            compute_dynamic_cut_at_iter(handler,nite,data.x0,dynamic_cuts);
 		}
 	}
+}
+
+void compute_dynamic_cut_at_iter(const SlaveCutDataHandlerPtr& handler,int const nite, const Point& x0,DynamicAggregateCuts & dynamic_cuts ){
+    for (auto const & kvp : x0) {
+        if (handler->get_subgradient().find(kvp.first)!=handler->get_subgradient().end()){
+            std::get<0>(dynamic_cuts[nite])[kvp.first] += handler->get_subgradient()[kvp.first];
+            std::get<1>(dynamic_cuts[nite]) += handler->get_subgradient()[kvp.first] * kvp.second;
+        }
+    }
+    std::get<2>(dynamic_cuts[nite]) += handler->get_dbl(SLAVE_COST);
 }
 
 /*!

@@ -4,10 +4,9 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 #include <multisolver_interface/SolverAbstract.h>
 #include "ActiveLinks.h"
-#include <map>
-#include <boost/concept_check.hpp>
 
 using colId= unsigned int;
 struct ColumnToChange{

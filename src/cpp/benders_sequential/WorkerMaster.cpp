@@ -96,7 +96,7 @@ void WorkerMaster::add_cut(Point const & s, Point const & x0, double const & rhs
 }
 
 void WorkerMaster::define_rhs_with_master_variable(const Point &s, const Point &x0, const double &rhs,
-                                                   std::vector<double> &rowrhs) {
+                                                   std::vector<double> &rowrhs) const {
     rowrhs.front() -= rhs;
     for (auto const & kvp : _name_to_id) {
         if (s.find(kvp.first)!=s.end()){
@@ -105,7 +105,7 @@ void WorkerMaster::define_rhs_with_master_variable(const Point &s, const Point &
     }
 }
 
-void WorkerMaster::define_matval_mclind(const Point &s, std::vector<double> &matval, std::vector<int> &mclind) {
+void WorkerMaster::define_matval_mclind(const Point &s, std::vector<double> &matval, std::vector<int> &mclind) const {
     size_t mclindCnt_l(0);
     for (auto const & kvp : _name_to_id) {
         if (s.find(kvp.first)!=s.end()){
@@ -168,7 +168,7 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const & s, double const & 
 }
 
 void WorkerMaster::define_matval_mclind_for_index(const int i, const Point &s, std::vector<double> &matval,
-                                                  std::vector<int> &mclind) {
+                                                  std::vector<int> &mclind) const{
     size_t mclindCnt_l(0);
     for (auto const & kvp : _name_to_id) {
         if (s.find(kvp.first)!=s.end()) {
