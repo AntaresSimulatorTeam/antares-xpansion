@@ -556,6 +556,6 @@ class XpansionDriver:
         sorted_simulations_list = sorted(simulations_list)
         if len(sorted_simulations_list) == 0:
             msg = f"no suitable simulation directory found in {self.antares_output()}, simulation directory name must be in this format: YYYYMMDD-HHMMeco "
-            raise Exception(msg)
+            raise XpansionStudyReader.NoSimulationDirectory(msg)
         self.simulation_name = sorted_simulations_list[-1]
 

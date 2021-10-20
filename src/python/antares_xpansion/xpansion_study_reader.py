@@ -22,6 +22,9 @@ class XpansionStudyReader:
     class SolverNotAvailable(BaseException):
         pass
 
+    class NoSimulationDirectory(BaseException):
+        pass
+    
     @staticmethod
     def convert_study_solver_to_option_solver(study_solver: str) -> str:
         keys = {
