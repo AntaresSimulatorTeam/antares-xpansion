@@ -1,7 +1,4 @@
 import pytest
-import uuid
-import touch
-from pathlib import Path
 
 from antares_xpansion.config_file_parser import ConfigFileParser
 

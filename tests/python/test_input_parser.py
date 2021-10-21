@@ -29,6 +29,39 @@ class TestInputParser:
         my_parser = InputParser()
         with pytest.raises(SystemExit):
             my_parser.parse_args(["--dataDir=hello", "--step=fully"])
+            
+    def test_problem_generation_step_is_accepted(self):
+        my_parser = InputParser()
+        my_parser.parse_args(["--dataDir=hello", "--step=problem_generation"])
+
+    def test_benders_step_is_accepted(self):
+        my_parser = InputParser()
+        my_parser.parse_args(["--dataDir=hello", "--step=benders"])
+
+    def test_study_update_step_is_accepted(self):
+        my_parser = InputParser()
+        my_parser.parse_args(["--dataDir=hello", "--step=study_update"])
+        
+    def test_getnames_step_is_no_longer_accepted(self):
+        my_parser = InputParser()
+        with pytest.raises(SystemExit):
+            my_parser.parse_args(["--dataDir=hello", "--step=getnames"])
+        
+    def test_lp_step_is_no_longer_accepted(self):
+        my_parser = InputParser()
+        with pytest.raises(SystemExit):
+            my_parser.parse_args(["--dataDir=hello", "--step=lp"])
+        
+    def test_optim_step_is_no_longer_accepted(self):
+        my_parser = InputParser()
+        with pytest.raises(SystemExit):
+            my_parser.parse_args(["--dataDir=hello", "--step=optim"])
+        
+    def test_update_step_is_no_longer_accepted(self):
+        my_parser = InputParser()
+        with pytest.raises(SystemExit):
+            my_parser.parse_args(["--dataDir=hello", "--step=update"])
+
 
 
 
