@@ -11,6 +11,8 @@ from datetime import datetime
 
 from pathlib import Path
 
+import re
+
 from antares_xpansion.general_data_reader import GeneralDataIniReader, IniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.xpansion_utils import read_and_write_mps
@@ -33,7 +35,7 @@ class XpansionDriver:
         """
         self.platform = sys.platform
         self.config = config
-        self.simulation_name = self.config.simulationName
+        self.simulation_name = self.config.simulation_name
 
         self.candidates_list = []
         self._verify_settings_ini_file_exists()
@@ -86,25 +88,25 @@ class XpansionDriver:
         elif self.config.step == "antares":
             self._antares_step()
         elif self.config.step == "getnames":
-            if self.config.simulationName:
+            if self.config.simulation_name:
                 self.get_names()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
         elif self.config.step == "lp":
-            if self.config.simulationName:
+            if self.config.simulation_name:
                 self.lp_step()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
         elif self.config.step == "update":
-            if self.config.simulationName:
+            if self.config.simulation_name:
                 self.update_step()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
         elif self.config.step == "optim":
-            if self.config.simulationName:
+            if self.config.simulation_name:
                 self.launch_optimization()
             else:
                 print("Missing argument simulationName")
@@ -322,13 +324,13 @@ class XpansionDriver:
 
             :return: path to specified executable
         """
-        return os.path.normpath(os.path.join(self.config.installDir, exe))
+        return os.path.normpath(os.path.join(self.config.install_dir, exe))
 
     def data_dir(self):
         """
             returns path to the data directory
         """
-        return self.config.dataDir
+        return self.config.data_dir
 
     def weight_file_name(self):
         return self.options.get('yearly-weights', self.config.settings_default["yearly-weights"])
@@ -451,7 +453,7 @@ class XpansionDriver:
 
     def _verify_solver(self):
         try:
-            XpansionStudyReader.check_solver(self.options.get('solver', ""), self.config)
+            XpansionStudyReader.check_solver(self.options.get('solver', ""), self.config.AVAILABLE_SOLVER)
         except XpansionStudyReader.BaseException as e:
             print(e)
             sys.exit(1)
@@ -486,6 +488,8 @@ class XpansionDriver:
                 }
 
     def simulation_output_path(self) -> Path:
+        if (self.simulation_name == "last"):
+            self._set_last_simulation_name()
         return Path(os.path.normpath(os.path.join(self.antares_output(), self.simulation_name)))
 
     def get_lp_namer_log_filename(self, lp_path):
@@ -525,7 +529,8 @@ class XpansionDriver:
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
         options_values["GAP"] = self.optimality_gap()
         options_values["MAX_ITERATIONS"] = self.max_iterations()
-        options_values["SOLVER_NAME"] = XpansionStudyReader.convert_study_solver_to_option_solver(self.options.get('solver', "Cbc"))
+        options_values["SOLVER_NAME"] = XpansionStudyReader.convert_study_solver_to_option_solver(
+            self.options.get('solver', "Cbc"))
         if self.weight_file_name():
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         # generate options file for the solver
@@ -533,3 +538,24 @@ class XpansionDriver:
         with open(options_path, 'w') as options_file:
             options_file.writelines(["%30s%30s\n" % (kvp[0], kvp[1])
                                      for kvp in options_values.items()])
+
+    def _set_last_simulation_name(self):
+        """
+            return last simulation name    
+        """
+
+        # simulation name folder YYYYMMDD-HHMMeco
+        classic_simulation_name_regex = re.compile(
+            "^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-([0-1]?[0-9]|2[0-3])[0-5][0-9]eco$")
+
+        simulations_list = []
+        for file in os.listdir(self.antares_output()):
+            if (os.path.isdir(os.path.normpath(os.path.join(self.antares_output(), file))) and re.fullmatch(
+                    classic_simulation_name_regex, file)):
+                simulations_list.append(file)
+        sorted_simulations_list = sorted(simulations_list)
+        if len(sorted_simulations_list) == 0:
+            msg = f"no suitable simulation directory found in {self.antares_output()}, simulation directory name must be in this format: YYYYMMDD-HHMMeco "
+            raise XpansionStudyReader.NoSimulationDirectory(msg)
+        self.simulation_name = sorted_simulations_list[-1]
+
