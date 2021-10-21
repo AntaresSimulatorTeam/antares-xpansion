@@ -49,6 +49,7 @@ jobs:
     - name: Install dependencies
       run: |
           pip3 install -r requirements-tests.txt
+          pip3 install -r requirements-ui.txt
 
     - name: Configure
       run: |
@@ -57,7 +58,7 @@ jobs:
            source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
-           cmake3 -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install
+           cmake3 -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON
 
     - name: Build
       run: |

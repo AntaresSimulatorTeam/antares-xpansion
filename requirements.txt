@@ -1,3 +1,0 @@
-pyinstaller>=4.3
-pyyaml
-dataclasses
