@@ -82,29 +82,40 @@ void WorkerMaster::delete_constraint(int const nrows) {
 */
 void WorkerMaster::add_cut(Point const & s, Point const & x0, double const & rhs) {
 	// cut is -rhs >= alpha  + s^(x-x0)
-	// int nrows(1);
-	int ncoeffs(1 + (int)_name_to_id.size());
+	int ncoeffs(1 + (int)s.size());
 	std::vector<char> rowtype(1, 'L');
 	std::vector<double> rowrhs(1, 0);
 	std::vector<double> matval(ncoeffs, 1);
-	// std::vector<int> mstart(nrows + 1, 0);
 	std::vector<int> mstart = {0, ncoeffs};
 	std::vector<int> mclind(ncoeffs);
 
-	rowrhs.front() -= rhs;
-
-	size_t mclindCnt_l(0);
-	for (auto const & kvp : _name_to_id) {
-		rowrhs.front() += (s.find(kvp.first)->second * x0.find(kvp.first)->second);
-		mclind[mclindCnt_l] = kvp.second;
-		matval[mclindCnt_l] = s.find(kvp.first)->second;
-		++mclindCnt_l;
-	}
-
-	mclind.back() = _id_alpha;
-	matval.back() = -1;
+    define_rhs_with_master_variable(s, x0, rhs, rowrhs);
+    define_matval_mclind(s, matval, mclind);
 
     solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+}
+
+void WorkerMaster::define_rhs_with_master_variable(const Point &s, const Point &x0, const double &rhs,
+                                                   std::vector<double> &rowrhs) const {
+    rowrhs.front() -= rhs;
+    for (auto const & kvp : _name_to_id) {
+        if (s.find(kvp.first)!=s.end()){
+            rowrhs.front() += (s.find(kvp.first)->second * x0.find(kvp.first)->second);
+        }
+    }
+}
+
+void WorkerMaster::define_matval_mclind(const Point &s, std::vector<double> &matval, std::vector<int> &mclind) const {
+    size_t mclindCnt_l(0);
+    for (auto const & kvp : _name_to_id) {
+        if (s.find(kvp.first)!=s.end()){
+            mclind[mclindCnt_l] = kvp.second;
+            matval[mclindCnt_l] = s.find(kvp.first)->second;
+            ++mclindCnt_l;
+        }
+    }
+    mclind.back() = _id_alpha;
+    matval.back() = -1;
 }
 
 /*!
@@ -116,29 +127,21 @@ void WorkerMaster::add_cut(Point const & s, Point const & x0, double const & rhs
 */
 void WorkerMaster::add_dynamic_cut(Point const & s, double const & sx0, double const & rhs) {
 	// cut is -rhs >= alpha  + s^(x-x0)
-	// int nrows(1);
-	int ncoeffs(1 + (int)_name_to_id.size());
+	int ncoeffs(1 + (int)s.size());
 	std::vector<char> rowtype(1, 'L');
 	std::vector<double> rowrhs(1, 0);
 	std::vector<double> matval(ncoeffs, 1);
-	// std::vector<int> mstart(nrows + 1, 0);
 	std::vector<int> mstart = {0, ncoeffs};
 	std::vector<int> mclind(ncoeffs);
 
-	rowrhs.front() -= rhs;
-	rowrhs.front() += sx0;
-
-	size_t mclindCnt_l(0);
-	for (auto const & kvp : _name_to_id) {
-		mclind[mclindCnt_l] = kvp.second;
-		matval[mclindCnt_l] = s.find(kvp.first)->second;
-		++mclindCnt_l;
-	}
-
-	mclind.back() = _id_alpha;
-	matval.back() = -1;
-
+    define_rhs_from_sx0(sx0, rhs, rowrhs);
+    define_matval_mclind(s, matval, mclind);
     solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+}
+
+void WorkerMaster::define_rhs_from_sx0(const double &sx0, const double &rhs, std::vector<double> &rowrhs) const {
+    rowrhs.front() -= rhs;
+    rowrhs.front() += sx0;
 }
 
 /*!
@@ -151,28 +154,31 @@ void WorkerMaster::add_dynamic_cut(Point const & s, double const & sx0, double c
 */
 void WorkerMaster::add_cut_by_iter(int const i, Point const & s, double const & sx0, double const & rhs) {
 	// cut is -rhs >= alpha  + s^(x-x0)
-	// int nrows(1);
-	int ncoeffs(1 + (int)_name_to_id.size());
+	int ncoeffs(1 + (int)s.size());
 	std::vector<char> rowtype(1, 'L');
 	std::vector<double> rowrhs(1, 0);
 	std::vector<double> matval(ncoeffs, 1);
-	// std::vector<int> mstart(nrows + 1, 0);
 	std::vector<int> mstart = {0, ncoeffs};
 	std::vector<int> mclind(ncoeffs);
 
-	rowrhs.front() -= rhs;
-	rowrhs.front() += sx0;
-
-	size_t mclindCnt_l(0);
-	for (auto const & kvp : _name_to_id) {
-		mclind[mclindCnt_l] = kvp.second;
-		matval[mclindCnt_l] = s.find(kvp.first)->second;
-		++mclindCnt_l;
-	}
-	mclind.back() = _id_alpha_i[i];
-	matval.back() = -1;
+    define_rhs_from_sx0(sx0, rhs, rowrhs);
+    define_matval_mclind_for_index(i, s, matval, mclind);
 
     solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+}
+
+void WorkerMaster::define_matval_mclind_for_index(const int i, const Point &s, std::vector<double> &matval,
+                                                  std::vector<int> &mclind) const{
+    size_t mclindCnt_l(0);
+    for (auto const & kvp : _name_to_id) {
+        if (s.find(kvp.first)!=s.end()) {
+            mclind[mclindCnt_l] = kvp.second;
+            matval[mclindCnt_l] = s.find(kvp.first)->second;
+            ++mclindCnt_l;
+        }
+    }
+    mclind.back() = _id_alpha_i[i];
+    matval.back() = -1;
 }
 
 
@@ -186,25 +192,15 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const & s, double const & 
 */
 void WorkerMaster::add_cut_slave(int i, Point const & s, Point const & x0, double const & rhs) {
 	// cut is -rhs >= alpha  + s^(x-x0)
-	int ncoeffs(1 + (int)_name_to_id.size());
+	int ncoeffs(1 + (int)s.size());
 	std::vector<char> rowtype(1, 'L');
 	std::vector<double> rowrhs(1, 0);
 	std::vector<double> matval(ncoeffs, 1);
-	// std::vector<int> mstart(nrows + 1, 0);
 	std::vector<int> mstart = {0, ncoeffs};
 	std::vector<int> mclind(ncoeffs);
 
-	rowrhs.front() -= rhs;
-
-	size_t mclindCnt_l(0);
-	for (auto const & kvp : _name_to_id) {
-		rowrhs.front() += s.find(kvp.first)->second * x0.find(kvp.first)->second;
-		mclind[mclindCnt_l] = kvp.second;
-		matval[mclindCnt_l] = s.find(kvp.first)->second;
-		++mclindCnt_l;
-	}
-	mclind.back() = _id_alpha_i[i];
-	matval.back() = -1;
+    define_rhs_with_master_variable(s, x0, rhs, rowrhs);
+    define_matval_mclind_for_index(i, s, matval, mclind);
 
     solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }

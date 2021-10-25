@@ -47,6 +47,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options (unit_tests PUBLIC -Wno-covered-switch-default)
 endif ()
 
-add_test(NAME unit_cpp COMMAND lp_namer_tests)
-set_property(TEST unit_cpp PROPERTY LABELS unit)
+add_test(NAME unit_lpnamer COMMAND lp_namer_tests)
+set_property(TEST unit_lpnamer PROPERTY LABELS unit)
 

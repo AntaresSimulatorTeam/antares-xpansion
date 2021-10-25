@@ -178,6 +178,16 @@ def test_full_study_long(install_dir, study_path, expected_values, expected_inve
          {"gap": 239316.41654706001, "investment_cost": 231999999.99999976,
           "operational_cost": 1089603112.1225781, "overall_cost": 1321603112.1225779},
          {"peak": 1300.0, "semibase": 1600.0, "transmission_line": 1000.0}
+         ),
+        (ALL_STUDIES_PATH / "link-profile-with-empty-week",
+         {"gap": 0.00983428955078125, "investment_cost": 27585000000.000111,
+          "operational_cost": 10629896636.068903, "overall_cost": 38214896636.069016},
+         {"base": 51150.0, "pointe": 33500, "semibase_winter": 0.0}
+         ),
+        (ALL_STUDIES_PATH / "empty-link-profile",
+         {"gap": 0.0098419189453125, "investment_cost": 27585000000.000114,
+          "operational_cost": 10629896636.068903, "overall_cost": 38214896636.069016},
+         {"base": 51150.0, "pointe": 33500, "semibase_empty": 0.0}
          )
     ],
 )

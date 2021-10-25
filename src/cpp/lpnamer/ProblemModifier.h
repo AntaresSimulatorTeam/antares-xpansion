@@ -4,9 +4,10 @@
 
 #include <vector>
 #include <memory>
+#include <map>
 #include <multisolver_interface/SolverAbstract.h>
 #include "ActiveLinks.h"
-#include <map>
+
 using colId= unsigned int;
 struct ColumnToChange{
 
@@ -35,6 +36,7 @@ public:
                                                   const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns);
 
     unsigned int get_candidate_col_id(const std::string& cand_name) const;
+    bool has_candidate_col_id(const std::string& cand_name) const;
 
 private:
 
@@ -52,6 +54,8 @@ private:
     void add_new_columns(const std::vector<Candidate> &candidates);
 
     std::vector<Candidate> candidates_from_all_links(const std::vector<ActiveLink> &active_links) const;
+    std::set<int> extract_time_steps(const std::map<linkId, ColumnsToChange> &p_columns) const;
+    std::vector<Candidate> candidates_with_not_null_profile(const std::vector<ActiveLink> &active_links, const std::set<int>& time_steps) const;
 
     void add_new_ntc_constraints(const std::vector<ActiveLink> &active_links,
                                  const std::map<linkId, ColumnsToChange> &p_ntc_columns);
@@ -65,6 +69,23 @@ private:
     std::shared_ptr<SolverAbstract> _math_problem;
     std::map<std::string ,unsigned int> _candidate_col_id;
     unsigned int _n_cols_at_start;
+
+    void
+    add_direct_profile_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
+                                         std::vector<char> &rowtype,
+                                         std::vector<double> &rhs, std::vector<int> &rstart, const ActiveLink &link,
+                                         const ColumnToChange &column);
+
+    void
+    add_indirect_profile_ntc_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
+                                               std::vector<char> &rowtype,
+                                               std::vector<double> &rhs, std::vector<int> &rstart, const ActiveLink &link,
+                                               const ColumnToChange &column);
+    void
+    add_indirect_cost_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
+                                        std::vector<char> &rowtype,
+                                        std::vector<double> &rhs, std::vector<int> &rstart, const ActiveLink &link,
+                                        const ColumnToChange &column);
 };
 
 

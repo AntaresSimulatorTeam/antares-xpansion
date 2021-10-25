@@ -388,7 +388,7 @@ void get_random_slave_cut(SlaveCutPackage & slave_cut_package, SlavesMapPtr & ma
 *  \param options : set of parameters
 *
 */
-void sort_cut_slave(AllCutPackage const & all_package, WorkerMasterPtr & master, Str2Int & problem_to_id, BendersTrace & trace, AllCutStorage & all_cuts_storage, BendersData & data, BendersOptions const & options, SlaveCutId & slave_cut_id) {
+void compute_cut(AllCutPackage const & all_package, WorkerMasterPtr & master, Str2Int & problem_to_id, BendersTrace & trace, AllCutStorage & all_cuts_storage, BendersData & data, BendersOptions const & options, SlaveCutId & slave_cut_id) {
 	for (int i(0); i < all_package.size(); i++) {
 		for (auto const & itmap : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
@@ -432,7 +432,7 @@ void sort_cut_slave(AllCutPackage const & all_package, WorkerMasterPtr & master,
 *
 *  \param options : set of parameters
 */
-void sort_cut_slave_aggregate(AllCutPackage const & all_package, WorkerMasterPtr & master, Str2Int & problem_to_id, BendersTrace & trace, AllCutStorage & all_cuts_storage, BendersData & data, BendersOptions const & options) {
+void compute_cut_aggregate(AllCutPackage const & all_package, WorkerMasterPtr & master, Str2Int & problem_to_id, BendersTrace & trace, AllCutStorage & all_cuts_storage, BendersData & data, BendersOptions const & options) {
 	Point s;
 	double rhs(0);
 	for (int i(0); i < all_package.size(); i++) {
@@ -441,9 +441,9 @@ void sort_cut_slave_aggregate(AllCutPackage const & all_package, WorkerMasterPtr
 			SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
 			data.ub += handler->get_dbl(SLAVE_COST);
 			rhs += handler->get_dbl(SLAVE_COST);
-			for (auto const & var : data.x0) {
-				s[var.first] += handler->get_subgradient()[var.first];
-			}
+
+            compute_cut_val(handler,data.x0,s);
+
 			SlaveCutTrimmer cut(handler, data.x0);
 			if (options.DELETE_CUT && !(all_cuts_storage[itmap.first].find(cut) == all_cuts_storage[itmap.first].end())) {
 				data.deletedcut++;
@@ -455,6 +455,14 @@ void sort_cut_slave_aggregate(AllCutPackage const & all_package, WorkerMasterPtr
 		}
 	}
 	master->add_cut(s, data.x0, rhs);
+}
+
+void compute_cut_val(const SlaveCutDataHandlerPtr& handler, const Point & x0, Point& s){
+    for (auto const & var : x0) {
+        if (handler->get_subgradient().find(var.first)!=handler->get_subgradient().end()){
+            s[var.first] += handler->get_subgradient().find(var.first)->second;
+        }
+    }
 }
 
 
@@ -522,10 +530,10 @@ void add_random_cuts(WorkerMasterPtr & master, AllCutPackage const & all_package
 void build_cut_full(WorkerMasterPtr & master, AllCutPackage const & all_package, Str2Int & problem_to_id, BendersTrace & trace, SlaveCutId & slave_cut_id, AllCutStorage & all_cuts_storage, DynamicAggregateCuts & dynamic_aggregate_cuts, BendersData & data, BendersOptions & options) {
 	check_status(all_package, data);
 	if (!options.AGGREGATION && !options.RAND_AGGREGATION) {
-		sort_cut_slave(all_package, master, problem_to_id, trace, all_cuts_storage, data, options, slave_cut_id);
+        compute_cut(all_package, master, problem_to_id, trace, all_cuts_storage, data, options, slave_cut_id);
 	}
 	else if (options.AGGREGATION) {
-		sort_cut_slave_aggregate(all_package, master, problem_to_id, trace, all_cuts_storage, data, options);
+        compute_cut_aggregate(all_package, master, problem_to_id, trace, all_cuts_storage, data, options);
 	}
 	else if (options.RAND_AGGREGATION) {
 		add_random_cuts(master, all_package, problem_to_id, trace, options, data);
@@ -628,13 +636,19 @@ void store_current_aggregate_cut(DynamicAggregateCuts & dynamic_cuts, AllCutPack
 		for (auto const & itmap : all_package[i]) {
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
-			for (auto const & kvp : data.x0) {
-				std::get<0>(dynamic_cuts[nite])[kvp.first] += handler->get_subgradient()[kvp.first];
-				std::get<1>(dynamic_cuts[nite]) += handler->get_subgradient()[kvp.first] * kvp.second;
-			}
-			std::get<2>(dynamic_cuts[nite]) += handler->get_dbl(SLAVE_COST);
+            compute_dynamic_cut_at_iter(handler,nite,data.x0,dynamic_cuts);
 		}
 	}
+}
+
+void compute_dynamic_cut_at_iter(const SlaveCutDataHandlerPtr& handler,int const nite, const Point& x0,DynamicAggregateCuts & dynamic_cuts ){
+    for (auto const & kvp : x0) {
+        if (handler->get_subgradient().find(kvp.first)!=handler->get_subgradient().end()){
+            std::get<0>(dynamic_cuts[nite])[kvp.first] += handler->get_subgradient()[kvp.first];
+            std::get<1>(dynamic_cuts[nite]) += handler->get_subgradient()[kvp.first] * kvp.second;
+        }
+    }
+    std::get<2>(dynamic_cuts[nite]) += handler->get_dbl(SLAVE_COST);
 }
 
 /*!
