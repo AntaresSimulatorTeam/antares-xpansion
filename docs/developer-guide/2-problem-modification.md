@@ -1,14 +1,14 @@
 # Modification of problems to introduce investment variables
 
 ## Python orchestrator `get_names` 
-Before changing .mps file, a post processing of `antares-solver` created files must be done.
+Before changing the .mps file, a post-processing of the files created by `antares-solver` must be done.
 
 The goal is to produce a file `mps.txt` file containing each .mps with his associated variables.txt file (containing the column ID for variable at specific time step).
 ```
 problem-1-1-20210713-163528.mps variables-1-1-20210713-163528.txt constraints-1-1-20210713-163528.txt
 ```
 >Note:
-> constraints.txt file are stil defined in the file but not used in later steps
+> `constraints.txt` file are still defined in the file but not used in later steps
 
 `area-<mc_year>-<week>-<timestamp>.txt` file produced by `antares-solver` is also copied as `area.txt`.
 
@@ -22,7 +22,7 @@ Here are the main steps of problem modification with `lp_namer`
 - Candidates defined in `user/expansion/candidates.ini` and the associated link profile (if defined) are read.
 
 ### 2- Modification of .mps file
-Each .mps file is changed to :
+Each `.mps` file is changed to:
 
 - remove bounds for `ValeurDeNTCOrigineVersExtremite` variable (only for link with candidate)
 - remove bounds for `ValeurDeNTCOrigineVersExtremite` variable (only for link with candidate)
@@ -32,16 +32,17 @@ Each .mps file is changed to :
 - add constraint on `CoutOrigineVersExtremiteDeLInterconnexion`
 - add constraint on `CoutExtremiteVersOrigineDeLInterconnexion`
 
-### 3- Read additionnal candidate constrains
+### 3- Read additional candidate constrains
 antares-xpansion setting file can contains `additional-constraints` parameter.
 
-In this case the file is used to define additional constraints for candidate. For more information on file format see corresponding user guide (TODO : add reference ?)
+In this case the file is used to define additional constraints for each candidate.
+For more information on file format see corresponding user guide (TODO : add reference ?)
 
 ### 4- Creation of master problem
 The master problem is created with the list of candidate.
 
-- add new columns for each candidates with lower bound 0 and upper bound max. investment
-- if the candidate represent integer contraint (use of `unit-size` parameter) : 
+- add new columns for each candidate with lower bound 0 and upper bound max. investment
+- if the candidate represent integer constraint (use of `unit-size` parameter) : 
   * add new column for unit size
   * add constraint with maximum unit size
     

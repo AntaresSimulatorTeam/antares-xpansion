@@ -2,7 +2,8 @@
 `antares-solver` is run using xpansion options. The weekly optimization problems (1st and 2nd optimization) are written as .mps files.
 
 ## Specific antares-xpansion configuration
-`antares-solver` study must be updated to be used by antares-xpansion.
+In order to run the `antares-solver` study correctly, some 
+specific simulation option are required.
 
 `settings/generaldata.ini` file must be changed :
 
