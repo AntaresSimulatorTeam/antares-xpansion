@@ -40,7 +40,7 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& s
 void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l)
 {
 	
-	int n_integer = (int)candidatesInteger.size();
+	auto n_integer = (int)candidatesInteger.size();
 	if (n_integer > 0)
 	{
 		std::vector<double> dmatval;
@@ -55,7 +55,7 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 		rstart.reserve(n_integer + 1);
 
 		int positionInIntegerCandidadeList(0);
-		int nbColPmaxVar = (int)_indexOfPmaxVar.size();
+		auto nbColPmaxVar = (int)_indexOfPmaxVar.size();
 
 		for (const auto& candidate : candidatesInteger)
 		{
@@ -95,7 +95,7 @@ int MasterProblemBuilder::getPmaxVarColumnNumberFor(const Candidate& candidate)
 void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l) const
 {
 	
-	int nbNvar = (int) candidatesInteger.size();
+	auto nbNvar = (int) candidatesInteger.size();
 	if (nbNvar > 0)
 	{
 		std::vector<double> zeros(nbNvar, 0.0);
@@ -116,7 +116,7 @@ void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candi
 
 void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(const std::vector<Candidate>& candidates, SolverAbstract::Ptr& master_l)
 {
-	int nbCandidates = (int) candidates.size();
+	auto nbCandidates = (int) candidates.size();
 
 	if (nbCandidates > 0)
 	{

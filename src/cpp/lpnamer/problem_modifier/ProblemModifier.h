@@ -30,7 +30,7 @@ private:
                        const std::map<linkId, ColumnsToChange> &p_direct_cost_columns,
                        const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns);
 
-    void remove_bounds_for(const std::vector<int> &col_ids);
+    void remove_bounds_for(const std::vector<int> &col_ids) const;
 
     void change_upper_bounds_to_pos_inf(const std::vector<int> &col_id) const;
 

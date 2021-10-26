@@ -138,7 +138,7 @@ struct LinkdataRecord
  *
  * \param fileColumns : LinkdataRecord::FileColumns object that hold columns infos of the file
  */
-    explicit LinkdataRecord(FileColumns afileColumns);
+    explicit LinkdataRecord(const FileColumns& afileColumns);
 
 
 /*!

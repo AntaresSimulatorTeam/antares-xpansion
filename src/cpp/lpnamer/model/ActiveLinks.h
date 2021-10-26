@@ -20,19 +20,19 @@ public:
 	double already_installed_indirect_profile(size_t timeStep) const;
 
 	int get_idLink() const ;
-	void set_idLink(const int idLink) ;
+	void set_idLink(const int& idLink) ;
 
 	LinkName get_LinkName() const;
-	void set_LinkName(const LinkName name) ;
+	void set_LinkName(const LinkName& name) ;
 
 	double get_already_installed_capacity() const;
-	void set_already_installed_capacity(const double already_installed_capacity) ;
+	void set_already_installed_capacity(const double& already_installed_capacity) ;
 
 	std::string get_linkor() const;
-	void set_linkor(const std::string linkor) ;
+	void set_linkor(const std::string& linkor) ;
 
 	std::string get_linkex() const;
-	void set_linkex(const std::string linkex) ;
+	void set_linkex(const std::string& linkex) ;
 
 private:
 	int _idLink;

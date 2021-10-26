@@ -48,6 +48,6 @@ std::string Candidate::get_name() const{
     return _name;
 }
 
-void Candidate::set_name(const std::string name){
+void Candidate::set_name(const std::string& name){
     _name = name;
 }

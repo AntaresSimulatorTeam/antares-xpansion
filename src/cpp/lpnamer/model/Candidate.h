@@ -49,7 +49,7 @@ public:
     bool is_integer()const;
 
     std::string get_name() const;
-    void set_name(const std::string name);
+    void set_name(const std::string& name);
     
 
 private:

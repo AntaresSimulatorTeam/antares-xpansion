@@ -11,7 +11,7 @@ std::vector<int> extract_col_ids(const ColumnsToChange &columns_to_change) {
     return col_ids;
 }
 
-void ProblemModifier::remove_bounds_for(const std::vector<int> &col_ids) {
+void ProblemModifier::remove_bounds_for(const std::vector<int> &col_ids) const {
     change_upper_bounds_to_pos_inf(col_ids);
     change_lower_bounds_to_neg_inf(col_ids);
 }

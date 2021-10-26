@@ -171,14 +171,14 @@ int ActiveLink::get_idLink() const {
     return _idLink; 	
 } 
 
-void ActiveLink::set_idLink(const int idLink) {
+void ActiveLink::set_idLink(const int& idLink) {
     _idLink = idLink;
 }
 LinkName ActiveLink::get_LinkName() const{
     return _name;
 }
 
-void ActiveLink::set_LinkName(const LinkName name) {
+void ActiveLink::set_LinkName(const LinkName& name) {
     _name = name;
 }
 
@@ -186,7 +186,7 @@ double ActiveLink::get_already_installed_capacity() const{
     return _already_installed_capacity;
 }
 	
-void ActiveLink::set_already_installed_capacity(const double already_installed_capacity) {
+void ActiveLink::set_already_installed_capacity(const double& already_installed_capacity) {
     _already_installed_capacity = already_installed_capacity;
 }
 
@@ -194,7 +194,7 @@ std::string ActiveLink::get_linkor() const{
     return _linkor;
 }
 
-void ActiveLink::set_linkor(const std::string linkor) {
+void ActiveLink::set_linkor(const std::string& linkor) {
     _linkor = linkor;
 }
 
@@ -202,6 +202,6 @@ std::string ActiveLink::get_linkex() const{
     return _linkex;
 }
 
-void ActiveLink::set_linkex(const std::string linkex) {
+void ActiveLink::set_linkex(const std::string& linkex) {
     _linkex = linkex;
 }

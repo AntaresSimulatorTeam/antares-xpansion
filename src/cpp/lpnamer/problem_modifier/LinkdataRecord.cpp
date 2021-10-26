@@ -20,7 +20,7 @@ fileColumns{
 
 
 
-LinkdataRecord::LinkdataRecord(FileColumns afileColumns):
+LinkdataRecord::LinkdataRecord(const FileColumns& afileColumns):
 modernAntaresVersion_(true),
 fileColumns(afileColumns)
 {
