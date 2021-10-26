@@ -201,7 +201,6 @@ class ConfigLoader:
             print(e)
             sys.exit(1)
 
-
     def simulation_output_path(self) -> Path:
         if (self.simulation_name == "last"):
             self._set_last_simulation_name()
@@ -236,7 +235,7 @@ class ConfigLoader:
 
         # simulation name folder YYYYMMDD-HHMMeco
         classic_simulation_name_regex = re.compile(
-            "^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-([0-1]?[0-9]|2[0-3])[0-5][0-9]eco$")
+            "^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-([0-1]?[0-9]|2[0-3])[0-5][0-9]eco([-][-0-9]+?)?$")
 
         simulations_list = []
         for file in os.listdir(self.antares_output()):
@@ -248,4 +247,3 @@ class ConfigLoader:
             msg = f"no suitable simulation directory found in {self.antares_output()}, simulation directory name must be in this format: YYYYMMDD-HHMMeco "
             raise XpansionStudyReader.NoSimulationDirectory(msg)
         self.simulation_name = sorted_simulations_list[-1]
-
