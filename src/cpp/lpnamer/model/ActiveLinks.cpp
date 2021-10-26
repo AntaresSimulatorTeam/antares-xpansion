@@ -62,7 +62,7 @@ void ActiveLinksBuilder::raise_errors_if_link_data_differs_from_existing_link(co
 }
 
 
-void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(const std::string& profileName)
+void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(const std::string& profileName) const
 {
     if (!profileName.empty()){
         const auto& it_profile = _profile_map.find(profileName);
@@ -76,7 +76,7 @@ void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(const std::str
     
 }
 
-void ActiveLinksBuilder::checkCandidateNameDuplication()
+void ActiveLinksBuilder::checkCandidateNameDuplication() const
 {
     std::unordered_set<std::string> setCandidatesNames;
     for (const auto& candidateData : _candidateDatas){
@@ -105,7 +105,7 @@ int ActiveLinksBuilder::getLinkIndexOf(int link_id) const
 {
     int index = -1;
     for (int i = 0; i <_links.size(); i++) {
-        if (_links.at(i)._idLink == link_id){
+        if (_links.at(i).get_idLink() == link_id){
             index = i;
             break;
         }
@@ -118,10 +118,10 @@ void ActiveLinksBuilder::create_links() {
         LinkName name = it.first;
         LinkData data = it.second;
         ActiveLink link(data.id, name);
-        link._linkor = data._linkor;
-        link._linkex = data._linkex;
+        link.set_linkor(data._linkor);
+        link.set_linkex(data._linkex);
         link.setAlreadyInstalledLinkProfile(getProfileFromProfileMap(data.profile_name));
-        link._already_installed_capacity =data.installed_capacity;
+        link.set_already_installed_capacity (data.installed_capacity);
         _links.push_back(link);
     }
 }
@@ -134,8 +134,8 @@ LinkProfile ActiveLinksBuilder::getProfileFromProfileMap(const std::string &prof
     return already_installed_link_profile;
 }
 
-ActiveLink::ActiveLink(int idLink, const std::string linkName):
-    _idLink(idLink), _name(linkName), _already_installed_capacity(1)
+ActiveLink::ActiveLink(int idLink, const std::string& linkName):
+    _idLink(idLink), _name(linkName)
 {
 }
 
@@ -164,4 +164,44 @@ double ActiveLink::already_installed_direct_profile(size_t timeStep) const
 double ActiveLink::already_installed_indirect_profile(size_t timeStep) const
 {
     return _already_installed_profile.getIndirectProfile(timeStep);
+}
+
+
+int ActiveLink::get_idLink() const {
+    return _idLink; 	
+} 
+
+void ActiveLink::set_idLink(const int idLink) {
+    _idLink = idLink;
+}
+LinkName ActiveLink::get_LinkName() const{
+    return _name;
+}
+
+void ActiveLink::set_LinkName(const LinkName name) {
+    _name = name;
+}
+
+double ActiveLink::get_already_installed_capacity() const{
+    return _already_installed_capacity;
+}
+	
+void ActiveLink::set_already_installed_capacity(const double already_installed_capacity) {
+    _already_installed_capacity = already_installed_capacity;
+}
+
+std::string ActiveLink::get_linkor() const{
+    return _linkor;
+}
+
+void ActiveLink::set_linkor(const std::string linkor) {
+    _linkor = linkor;
+}
+
+std::string ActiveLink::get_linkex() const{
+    return _linkex;
+}
+
+void ActiveLink::set_linkex(const std::string linkex) {
+    _linkex = linkex;
 }

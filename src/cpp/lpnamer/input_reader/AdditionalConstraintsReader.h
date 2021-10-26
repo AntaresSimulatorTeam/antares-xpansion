@@ -25,23 +25,18 @@ private:
     std::map<std::string, std::map<std::string, std::string>> _values;
 
     //! the section that is being currently processed
-    std::string _section;
+    std::string _section = "";
     //! line string that is being currently processed
-    std::string _line;
+    std::string _line = "" ;
     //! number of the line that is being currently processed
-    int _lineNb;
+    int _lineNb = 0;
 
 public:
 
 /*!
  *  default constructor for struct AdditionalConstraintsReader
  */
-	AdditionalConstraintsReader():
-    _section(""),
-    _line(""),
-    _lineNb(0)
-    {
-	}
+	AdditionalConstraintsReader() = default;
 
 /*!
  * \brief AdditionalConstraintsReader from an inifile

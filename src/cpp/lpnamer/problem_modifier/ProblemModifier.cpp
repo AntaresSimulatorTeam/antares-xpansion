@@ -16,13 +16,13 @@ void ProblemModifier::remove_bounds_for(const std::vector<int> &col_ids) {
     change_lower_bounds_to_neg_inf(col_ids);
 }
 
-void ProblemModifier::change_lower_bounds_to_neg_inf(const std::vector<int> &col_ids) {
+void ProblemModifier::change_lower_bounds_to_neg_inf(const std::vector<int> &col_ids) const {
     std::vector<char> lb_char(col_ids.size(), 'L');
     std::vector<double> neg_inf(col_ids.size(), -1e20);
     _math_problem->chg_bounds(col_ids, lb_char, neg_inf);
 }
 
-void ProblemModifier::change_upper_bounds_to_pos_inf(const std::vector<int> &col_ids) {
+void ProblemModifier::change_upper_bounds_to_pos_inf(const std::vector<int> &col_ids) const{
     std::vector<char> ub_char(col_ids.size(), 'U');
     std::vector<double> pos_inf(col_ids.size(), 1e20);
     _math_problem->chg_bounds(col_ids, ub_char, pos_inf);
@@ -56,13 +56,13 @@ void ProblemModifier::changeProblem(const std::vector<ActiveLink> &active_links,
                                     const std::map<linkId, ColumnsToChange> &p_direct_cost_columns,
                                     const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns) {
     for (const auto& link : active_links) {
-        remove_bounds_for(extract_col_ids(p_ntc_columns.at(link._idLink)));
+        remove_bounds_for(extract_col_ids(p_ntc_columns.at(link.get_idLink())));
 
-        if (p_direct_cost_columns.find(link._idLink) != p_direct_cost_columns.end()) {
-            change_upper_bounds_to_pos_inf(extract_col_ids(p_direct_cost_columns.at(link._idLink)));
+        if (p_direct_cost_columns.find(link.get_idLink()) != p_direct_cost_columns.end()) {
+            change_upper_bounds_to_pos_inf(extract_col_ids(p_direct_cost_columns.at(link.get_idLink())));
         }
-        if (p_indirect_cost_columns.find(link._idLink) != p_indirect_cost_columns.end()) {
-            change_upper_bounds_to_pos_inf(extract_col_ids(p_indirect_cost_columns.at(link._idLink)));
+        if (p_indirect_cost_columns.find(link.get_idLink()) != p_indirect_cost_columns.end()) {
+            change_upper_bounds_to_pos_inf(extract_col_ids(p_indirect_cost_columns.at(link.get_idLink())));
         }
     }
 
@@ -85,7 +85,7 @@ void ProblemModifier::add_new_ntc_constraints(const std::vector<ActiveLink> &act
     rstart.push_back(0);
 
     for (const auto& link : active_links) {
-        for(const ColumnToChange& column : p_ntc_columns.at(link._idLink)){
+        for(const ColumnToChange& column : p_ntc_columns.at(link.get_idLink())){
             add_direct_profile_column_constraint(dmatval,colind,rowtype,rhs,rstart,link,column);
             add_indirect_profile_ntc_column_constraint(dmatval, colind, rowtype, rhs, rstart, link, column);
         }
@@ -106,8 +106,8 @@ void ProblemModifier::add_new_direct_cost_constraints(const std::vector<ActiveLi
     rstart.push_back(0);
 
     for (const ActiveLink& link : active_links) {
-        if (p_cost_columns.find(link._idLink) != p_cost_columns.end()) {
-            for (const ColumnToChange& column : p_cost_columns.at(link._idLink)) {
+        if (p_cost_columns.find(link.get_idLink()) != p_cost_columns.end()) {
+            for (const ColumnToChange& column : p_cost_columns.at(link.get_idLink())) {
                 add_direct_profile_column_constraint(dmatval, colind, rowtype, rhs, rstart, link, column);
             }
         }
@@ -130,8 +130,8 @@ void ProblemModifier::add_new_indirect_cost_constraints(const std::vector<Active
     rstart.push_back(0);
 
     for (const auto& link : active_links) {
-        if (p_cost_columns.find(link._idLink) != p_cost_columns.end()) {
-            for (const ColumnToChange& column : p_cost_columns.at(link._idLink)) {
+        if (p_cost_columns.find(link.get_idLink()) != p_cost_columns.end()) {
+            for (const ColumnToChange& column : p_cost_columns.at(link.get_idLink())) {
                 add_indirect_cost_column_constraint(dmatval, colind, rowtype, rhs, rstart, link, column);
             }
         }
@@ -144,7 +144,7 @@ void ProblemModifier::add_direct_profile_column_constraint(std::vector<double> &
                                                            std::vector<char> &rowtype, std::vector<double> &rhs,
                                                            std::vector<int> &rstart, const ActiveLink &link,
                                                            const ColumnToChange &column) {
-    double already_installed_capacity(link._already_installed_capacity);
+    double already_installed_capacity(link.get_already_installed_capacity());
     double direct_already_installed_profile_at_timestep = link.already_installed_direct_profile(column.time_step);
     rhs.push_back(already_installed_capacity * direct_already_installed_profile_at_timestep);
 
@@ -153,18 +153,18 @@ void ProblemModifier::add_direct_profile_column_constraint(std::vector<double> &
     dmatval.push_back(1);
     for (const auto &candidate:link.getCandidates()) {
         if (candidate.direct_profile(column.time_step) != 0.0) {
-            colind.push_back(_candidate_col_id[candidate._name]);
+            colind.push_back(_candidate_col_id[candidate.get_name()]);
             dmatval.push_back(-candidate.direct_profile(column.time_step));
         }
     }
-    rstart.push_back(dmatval.size());
+    rstart.push_back( (int) dmatval.size());
 }
 
 void ProblemModifier::add_indirect_profile_ntc_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
                                                                  std::vector<char> &rowtype, std::vector<double> &rhs,
                                                                  std::vector<int> &rstart, const ActiveLink &link,
                                                                  const ColumnToChange &column) {
-    double already_installed_capacity(link._already_installed_capacity);
+    double already_installed_capacity(link.get_already_installed_capacity());
     double indirect_already_installed_profile_at_timestep = link.already_installed_indirect_profile(column.time_step);
     rhs.push_back(-already_installed_capacity*indirect_already_installed_profile_at_timestep);
 
@@ -173,18 +173,18 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(std::vector<dou
     dmatval.push_back(1);
     for (const auto &candidate:link.getCandidates()) {
         if (candidate.indirect_profile(column.time_step) != 0.0) {
-            colind.push_back(_candidate_col_id[candidate._name]);
+            colind.push_back(_candidate_col_id[candidate.get_name()]);
             dmatval.push_back(candidate.indirect_profile(column.time_step));
         }
     }
-    rstart.push_back(dmatval.size());
+    rstart.push_back((int) dmatval.size());
 }
 
 void ProblemModifier::add_indirect_cost_column_constraint(std::vector<double> &dmatval, std::vector<int> &colind,
                                                           std::vector<char> &rowtype, std::vector<double> &rhs,
                                                           std::vector<int> &rstart, const ActiveLink &link,
                                                           const ColumnToChange &column) {
-    double already_installed_capacity(link._already_installed_capacity);
+    double already_installed_capacity(link.get_already_installed_capacity());
     double indirect_already_installed_profile_at_timestep = link.already_installed_indirect_profile(column.time_step);
     rhs.push_back(already_installed_capacity*indirect_already_installed_profile_at_timestep);
 
@@ -193,16 +193,16 @@ void ProblemModifier::add_indirect_cost_column_constraint(std::vector<double> &d
     dmatval.push_back(1);
     for (const auto &candidate:link.getCandidates()) {
         if (candidate.indirect_profile(column.time_step) != 0.0) {
-            colind.push_back(_candidate_col_id[candidate._name]);
+            colind.push_back(_candidate_col_id[candidate.get_name()]);
             dmatval.push_back(-candidate.indirect_profile(column.time_step));
         }
     }
-    rstart.push_back(dmatval.size());
+    rstart.push_back((int) dmatval.size());
 }
 
 void ProblemModifier::add_new_columns(const std::vector<Candidate> &candidates) {
     if(!candidates.empty()){
-        unsigned int n_candidates = candidates.size();
+        unsigned int n_candidates = (int) candidates.size();
         std::vector<double> objectives(n_candidates, 0);
         std::vector<double> lb(n_candidates, -1e20);
         std::vector<double> ub(n_candidates, 1e20);
@@ -211,9 +211,9 @@ void ProblemModifier::add_new_columns(const std::vector<Candidate> &candidates) 
         std::vector<std::string> candidates_colnames;
 
         for (const auto& candidate : candidates) {
-            candidates_colnames.push_back(candidate._name);
-            int new_index = _candidate_col_id.size() + _n_cols_at_start;
-            _candidate_col_id[candidate._name] = new_index;
+            candidates_colnames.push_back(candidate.get_name());
+            int new_index = (int)_candidate_col_id.size() + (int) _n_cols_at_start;
+            _candidate_col_id[candidate.get_name()] = new_index;
         }
         solver_addcols(_math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
     }

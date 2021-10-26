@@ -2,7 +2,7 @@
 
 
 void treatAdditionalConstraints(SolverAbstract::Ptr master_p, 
-	AdditionalConstraints additionalConstraints_p)
+	const AdditionalConstraints& additionalConstraints_p)
 {
 	//add requested binary variables
 	addBinaryVariables(master_p, additionalConstraints_p.getVariablesToBinarise());
@@ -16,7 +16,7 @@ void treatAdditionalConstraints(SolverAbstract::Ptr master_p,
 
 void addAdditionalConstraint(SolverAbstract::Ptr master_p, 
 	AdditionalConstraint & additionalConstraint_p){
-	int newnz = additionalConstraint_p.size();
+	int newnz = (int)additionalConstraint_p.size();
 	int newrows = 1;
 	std::vector<char> rtype(newrows);
 	std::vector<double> rhs(newrows, additionalConstraint_p.getRHS());
@@ -62,8 +62,8 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
 }
 
 
-void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string, 
-	std::string> const & variablesToBinarise_p){
+void addBinaryVariables(SolverAbstract::Ptr master_p, const std::map<std::string, 
+	std::string>& variablesToBinarise_p){
 
 	for(auto pairOldNewVarnames : variablesToBinarise_p){
 	    int col_index = master_p->get_col_index(pairOldNewVarnames.first);

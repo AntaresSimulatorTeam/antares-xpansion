@@ -28,9 +28,9 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 1);
-    ASSERT_EQ(links[0]._idLink, 1);
-    ASSERT_EQ(links[0]._name, "area1 - area2");
-    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, DEFAULT_CAPACITY);
+    ASSERT_EQ(links[0].get_idLink(), 1);
+    ASSERT_EQ(links[0].get_LinkName(), "area1 - area2");
+    ASSERT_DOUBLE_EQ(links[0].get_already_installed_capacity(), DEFAULT_CAPACITY);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
@@ -39,7 +39,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity)
     
     const auto& candidates = links[0].getCandidates();
     ASSERT_EQ(candidates.size(), 1);
-    ASSERT_EQ(candidates[0]._name, "transmission_line_1");
+    ASSERT_EQ(candidates[0].get_name(), "transmission_line_1");
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(candidates[0].direct_profile(timeStep), 1);
@@ -62,7 +62,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity)
     ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, 20);
+    ASSERT_DOUBLE_EQ(links[0].get_already_installed_capacity(), 20);
 
 }
 
@@ -97,9 +97,9 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity)
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 1);
-    ASSERT_EQ(links[0]._idLink, 1);
-    ASSERT_EQ(links[0]._name, "area1 - area2");
-    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, DEFAULT_CAPACITY);
+    ASSERT_EQ(links[0].get_idLink(), 1);
+    ASSERT_EQ(links[0].get_LinkName(), "area1 - area2");
+    ASSERT_DOUBLE_EQ(links[0].get_already_installed_capacity(), DEFAULT_CAPACITY);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
@@ -108,7 +108,7 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity)
 
     const auto& candidates = links[0].getCandidates();
     ASSERT_EQ(candidates.size(), 1);
-    ASSERT_EQ(candidates[0]._name, "transmission_line_1");
+    ASSERT_EQ(candidates[0].get_name(), "transmission_line_1");
     ASSERT_EQ(candidates[0].direct_profile(0), 0);
     ASSERT_EQ(candidates[0].direct_profile(1), 0.5);
     ASSERT_EQ(candidates[0].indirect_profile(0), 0.25);
@@ -142,9 +142,9 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 1);
-    ASSERT_EQ(links[0]._idLink, 1);
-    ASSERT_EQ(links[0]._name, "area1 - area2");
-    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, 20);
+    ASSERT_EQ(links[0].get_idLink(), 1);
+    ASSERT_EQ(links[0].get_LinkName(), "area1 - area2");
+    ASSERT_DOUBLE_EQ(links[0].get_already_installed_capacity(), 20);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
@@ -154,14 +154,14 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity)
     const auto& candidates = links[0].getCandidates();
     ASSERT_EQ(candidates.size(), 2);
 
-    ASSERT_EQ(candidates[0]._name, "transmission_line_1");
+    ASSERT_EQ(candidates[0].get_name(), "transmission_line_1");
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(candidates[0].direct_profile(timeStep), 1);
         ASSERT_DOUBLE_EQ(candidates[0].indirect_profile(timeStep), 1);
     }
 
-    ASSERT_EQ(candidates[1]._name, "transmission_line_2");
+    ASSERT_EQ(candidates[1].get_name(), "transmission_line_2");
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(candidates[1].direct_profile(timeStep), 1);
@@ -198,9 +198,9 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
     const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
     ASSERT_EQ(links.size(), 2);
-    ASSERT_EQ(links[0]._idLink, 11);
-    ASSERT_EQ(links[0]._name, "area1 - area2");
-    ASSERT_DOUBLE_EQ(links[0]._already_installed_capacity, installed_capacity_link_0);
+    ASSERT_EQ(links[0].get_idLink(), 11);
+    ASSERT_EQ(links[0].get_LinkName(), "area1 - area2");
+    ASSERT_DOUBLE_EQ(links[0].get_already_installed_capacity(), installed_capacity_link_0);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[0].already_installed_direct_profile(timeStep), 1);
@@ -210,16 +210,16 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
     const auto& candidatesLink0 = links[0].getCandidates();
     ASSERT_EQ(candidatesLink0.size(), 1);
 
-    ASSERT_EQ(candidatesLink0[0]._name, "transmission_line_1");
+    ASSERT_EQ(candidatesLink0[0].get_name(), "transmission_line_1");
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(candidatesLink0[0].direct_profile(timeStep), 1);
         ASSERT_DOUBLE_EQ(candidatesLink0[0].indirect_profile(timeStep), 1);
     }
 
-    ASSERT_EQ(links[1]._idLink, 12);
-    ASSERT_EQ(links[1]._name, "area1 - pv");
-    ASSERT_DOUBLE_EQ(links[1]._already_installed_capacity, installed_capacity_link_1);
+    ASSERT_EQ(links[1].get_idLink(), 12);
+    ASSERT_EQ(links[1].get_LinkName(), "area1 - pv");
+    ASSERT_DOUBLE_EQ(links[1].get_already_installed_capacity(), installed_capacity_link_1);
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(links[1].already_installed_direct_profile(timeStep), 1);
@@ -229,7 +229,7 @@ TEST(LinkBuilderTest, two_valid_candidates_data_on_two_different_link_no_profile
     const auto& candidatesLink1 = links[1].getCandidates();
     ASSERT_EQ(candidatesLink1.size(), 1);
 
-    ASSERT_EQ(candidatesLink1[0]._name, "pv");
+    ASSERT_EQ(candidatesLink1[0].get_name(), "pv");
     for (int timeStep = 0; timeStep < 8760; timeStep++)
     {
         ASSERT_DOUBLE_EQ(candidatesLink1[0].direct_profile(timeStep), 1);

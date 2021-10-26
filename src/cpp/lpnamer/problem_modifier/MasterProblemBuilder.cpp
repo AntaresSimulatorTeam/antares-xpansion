@@ -7,9 +7,8 @@
 #include <algorithm>
 #include <unordered_map>
 
-MasterProblemBuilder::MasterProblemBuilder(const std::string& master_formulation)
+MasterProblemBuilder::MasterProblemBuilder(const std::string& master_formulation):_master_formulation (master_formulation)
 {
-	_master_formulation = master_formulation;
 }
 
 std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& solverName, const std::vector<Candidate>& candidates)
@@ -26,7 +25,7 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& s
 
 	std::copy_if(candidates.begin(), candidates.end(),
 		back_inserter(candidatesInteger),
-		[](Candidate cand) { return cand.is_integer(); });
+		[](const Candidate& cand) { return cand.is_integer(); });
 
 	if (_master_formulation == "integer")
 	{
@@ -41,7 +40,7 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& s
 void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l)
 {
 	
-	int n_integer = candidatesInteger.size();
+	int n_integer = (int)candidatesInteger.size();
 	if (n_integer > 0)
 	{
 		std::vector<double> dmatval;
@@ -56,7 +55,7 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 		rstart.reserve(n_integer + 1);
 
 		int positionInIntegerCandidadeList(0);
-		int nbColPmaxVar = _indexOfPmaxVar.size();
+		int nbColPmaxVar = (int)_indexOfPmaxVar.size();
 
 		for (const auto& candidate : candidatesInteger)
 		{
@@ -64,7 +63,7 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 			int nVarColumNumber = nbColPmaxVar + positionInIntegerCandidadeList;
 
 			// pMax  - n unit_size = 0
-			rstart.push_back(dmatval.size());
+			rstart.push_back((int)dmatval.size());
 			rhs.push_back(0);
 			rowtype.push_back('E');
 
@@ -76,7 +75,7 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 
 			positionInIntegerCandidadeList++;
 		}
-		rstart.push_back(dmatval.size());
+		rstart.push_back((int)dmatval.size());
 
 		solver_addrows(master_l, rowtype, rhs, {}, rstart, colind, dmatval);
 	}
@@ -84,19 +83,19 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 
 int MasterProblemBuilder::getPmaxVarColumnNumberFor(const Candidate& candidate)
 {
-	const auto& it = _indexOfPmaxVar.find(candidate._name);
+	const auto& it = _indexOfPmaxVar.find(candidate.get_name());
 	if (it == _indexOfPmaxVar.end())
 	{
-		std::string message = "There is no Pvar for the candidate " + candidate._name;
+		std::string message = "There is no Pvar for the candidate " + candidate.get_name();
 		throw std::runtime_error(message);
 	}
 	return it->second;
 }
 
-void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l)
+void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l) const
 {
 	
-	int nbNvar = candidatesInteger.size();
+	int nbNvar = (int) candidatesInteger.size();
 	if (nbNvar > 0)
 	{
 		std::vector<double> zeros(nbNvar, 0.0);
@@ -117,7 +116,7 @@ void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candi
 
 void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(const std::vector<Candidate>& candidates, SolverAbstract::Ptr& master_l)
 {
-	int nbCandidates = candidates.size();
+	int nbCandidates = (int) candidates.size();
 
 	if (nbCandidates > 0)
 	{
@@ -133,8 +132,8 @@ void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(const std::vector<Can
 			obj_candidate[i] = candidate.obj();
 			lb_candidate[i] = candidate.lb();
 			ub_candidate[i] = candidate.ub();
-			candidate_names[i] = candidate._name;
-			_indexOfPmaxVar[candidate._name] = i;
+			candidate_names[i] = candidate.get_name();
+			_indexOfPmaxVar[candidate.get_name()] = i;
 		}
 
 		solver_addcols(master_l, obj_candidate, mstart, {}, {}, lb_candidate, ub_candidate, coltypes_candidate, candidate_names);

@@ -25,7 +25,7 @@ AdditionalConstraints::AdditionalConstraints(std::string  const & constraints_fi
 
 }
 
-void AdditionalConstraints::addVariableToBinarise(std::string oldVarName_p, std::string binVarName_p)
+void AdditionalConstraints::addVariableToBinarise(const std::string& oldVarName_p, const std::string& binVarName_p)
 {
     if(!_binaryVariables.insert(binVarName_p).second)
     {
@@ -36,7 +36,7 @@ void AdditionalConstraints::addVariableToBinarise(std::string oldVarName_p, std:
 }
 void AdditionalConstraints::addVariablesToBinarise(std::map<std::string, std::string> const & variables_section)
 {
-    for(auto pairOldvarNewvar_l : variables_section)
+    for(const auto& pairOldvarNewvar_l : variables_section)
     {
         addVariableToBinarise(pairOldvarNewvar_l.first, pairOldvarNewvar_l.second);
     }
@@ -47,7 +47,7 @@ std::map<std::string, std::string> const & AdditionalConstraints::getVariablesTo
     return _variablesToBinarise;
 }
 
-void AdditionalConstraints::constructAdditionalConstraints(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l)
+void AdditionalConstraints::constructAdditionalConstraints(const std::string& sectionName_l, const std::map<std::string, std::string>& constarintsSection_l)
 {
 
     std::string constraintName_l = "";
@@ -66,7 +66,7 @@ void AdditionalConstraints::constructAdditionalConstraints(std::string sectionNa
     //create and fill the constraint
     AdditionalConstraint constraint_l(sectionName_l, constraintName_l, constraintSign_l, constraintRHS_l);
     bool emptyCstr_l = true;
-    for(auto pairAttributeValue_l : constarintsSection_l)
+    for(const auto& pairAttributeValue_l : constarintsSection_l)
     {
         if(pairAttributeValue_l.first == "name" || pairAttributeValue_l.first == "rhs" || pairAttributeValue_l.first == "sign")
         {
@@ -102,7 +102,7 @@ void AdditionalConstraints::constructAdditionalConstraints(std::string sectionNa
     (*this)[constraintName_l] = constraint_l;
 }
 
-std::string AdditionalConstraints::checkAndReturnConstraintName(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l)
+std::string AdditionalConstraints::checkAndReturnConstraintName(const std::string& sectionName_l, const std::map<std::string, std::string> & constarintsSection_l) const
 {    
 
     std::string constraintName_l = "";
@@ -125,7 +125,7 @@ std::string AdditionalConstraints::checkAndReturnConstraintName(std::string sect
     return constraintName_l;
 }
 
-std::string AdditionalConstraints::checkAndReturnSectionSign(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l)
+std::string AdditionalConstraints::checkAndReturnSectionSign(const std::string& sectionName_l, const std::map<std::string, std::string>& constarintsSection_l) const
 {    
 
     //check that section has defined a sign
@@ -144,7 +144,7 @@ std::string AdditionalConstraints::checkAndReturnSectionSign(std::string section
     return constraintSign_l;
 }
 
-double AdditionalConstraints::checkAndReturnSectionRhs(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l)
+double AdditionalConstraints::checkAndReturnSectionRhs(const std::string& sectionName_l, const std::map<std::string, std::string>& constarintsSection_l) const
 {    
 
     //check that section has defined a rhs

@@ -48,11 +48,14 @@ public:
 
     bool is_integer()const;
 
-    std::string _name;
+    std::string get_name() const;
+    void set_name(const std::string name);
+    
 
 private:
 
     LinkProfile _profile;
+    std::string _name;
     double _annual_cost_per_mw;
     double _max_investment;
     double _unit_size;

@@ -32,9 +32,9 @@ private:
 
     void remove_bounds_for(const std::vector<int> &col_ids);
 
-    void change_upper_bounds_to_pos_inf(const std::vector<int> &col_id);
+    void change_upper_bounds_to_pos_inf(const std::vector<int> &col_id) const;
 
-    void change_lower_bounds_to_neg_inf(const std::vector<int> &col_id);
+    void change_lower_bounds_to_neg_inf(const std::vector<int> &col_id) const;
 
     void add_new_columns(const std::vector<Candidate> &candidates);
 

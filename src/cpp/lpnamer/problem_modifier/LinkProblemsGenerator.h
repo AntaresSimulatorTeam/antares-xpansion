@@ -5,13 +5,13 @@
 #include "common_lpnamer.h"
 #include "Candidate.h"
 #include "ActiveLinks.h"
+#include "ProblemModifier.h"
 
 
 const std::string CANDIDATES_INI {"candidates.ini"};
 const std::string STRUCTURE_FILE {"structure.txt"};
 const std::string MPS_TXT {"mps.txt"};
 const std::string STUDY_FILE {"study.antares"};
-#include "ProblemModifier.h"
 
 struct ProblemData
 {
@@ -29,14 +29,14 @@ public:
 	{}
 
     void treatloop(std::string const & root, std::map< std::pair<std::string,
-            std::string>, int>& couplings);
+            std::string>, int>& couplings) const;
 
 private:
 
-    std::vector<ProblemData> readMPSList(std::string const & mps_filePath_p);
+    std::vector<ProblemData> readMPSList(std::string const & mps_filePath_p) const;
 
 	void treat(std::string const& root, ProblemData const&, 
-		std::map< std::pair<std::string, std::string>, int>& couplings);
+		std::map< std::pair<std::string, std::string>, int>& couplings) const ;
 
     const std::vector<ActiveLink>& _links;
     std::string _solver_name;

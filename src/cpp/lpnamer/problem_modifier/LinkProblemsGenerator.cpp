@@ -10,7 +10,7 @@ ProblemData::ProblemData(const std::string& problem_mps, const std::string& vari
 {
 }
 
-std::vector<ProblemData> LinkProblemsGenerator::readMPSList(std::string const & mps_filePath_p){
+std::vector<ProblemData> LinkProblemsGenerator::readMPSList(std::string const & mps_filePath_p) const {
     std::string line;
     std::vector<ProblemData> result;
     std::ifstream mps_filestream(mps_filePath_p.c_str());
@@ -49,7 +49,7 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(std::string const & 
  */
 void LinkProblemsGenerator::treat(std::string const & root,
 	ProblemData const & problemData,
-	std::map< std::pair<std::string, std::string>, int> & couplings) {
+	std::map< std::pair<std::string, std::string>, int> & couplings) const {
 
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
 	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
@@ -65,7 +65,7 @@ void LinkProblemsGenerator::treat(std::string const & root,
     variable_name_config.cost_origin_variable_name = "CoutOrigineVersExtremiteDeLInterconnexion";
     variable_name_config.cost_extremite_variable_name = "CoutExtremiteVersOrigineDeLInterconnexion";
 
-	VariableFileReader variableReader = VariableFileReader(var_name,_links,variable_name_config);
+	auto variableReader = VariableFileReader(var_name,_links,variable_name_config);
 
     std::vector<std::string> var_names = variableReader.getVariables();
     std::map<colId , ColumnsToChange> p_ntc_columns = variableReader.getNtcVarColumns();
@@ -85,8 +85,8 @@ void LinkProblemsGenerator::treat(std::string const & root,
     //couplings creation
     for (const ActiveLink& link : _links){
         for(const Candidate& candidate : link.getCandidates()){
-            if (problem_modifier.has_candidate_col_id(candidate._name)){
-                couplings[{candidate._name, mps_name}] = problem_modifier.get_candidate_col_id(candidate._name);
+            if (problem_modifier.has_candidate_col_id(candidate.get_name())){
+                couplings[{candidate.get_name(), mps_name}] = problem_modifier.get_candidate_col_id(candidate.get_name());
             }
         }
     }
@@ -103,7 +103,7 @@ void LinkProblemsGenerator::treat(std::string const & root,
  * \return void
  */
 void LinkProblemsGenerator::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
-	int>& couplings) {
+	int>& couplings) const {
 
     std::string const mps_file_name			= root + PATH_SEPARATOR + MPS_TXT;
 

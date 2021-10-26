@@ -43,23 +43,23 @@ void StudyUpdater::readAntaresVersion()
 
 std::string StudyUpdater::getLinkdataFilepath(ActiveLink const& link_p) const
 {
-    std::string linkDataFilePath = linksPath_ + PATH_SEPARATOR + link_p._linkor + PATH_SEPARATOR + link_p._linkex + ".txt";
+    std::string linkDataFilePath = linksPath_ + PATH_SEPARATOR + link_p.get_linkor() + PATH_SEPARATOR + link_p.get_linkex() + ".txt";
     return linkDataFilePath;
 }
 
 
 std::pair<double, double> StudyUpdater::computeNewCapacities(const std::map<std::string, double>& investments_p, const ActiveLink& link_p, int timepoint_p) const
 {
-    double direct_l = link_p._already_installed_capacity * link_p.already_installed_direct_profile(timepoint_p);
-    double indirect_l = link_p._already_installed_capacity * link_p.already_installed_direct_profile(timepoint_p);
+    double direct_l = link_p.get_already_installed_capacity() * link_p.already_installed_direct_profile(timepoint_p);
+    double indirect_l = link_p.get_already_installed_capacity() * link_p.already_installed_direct_profile(timepoint_p);
 
     const auto& candidates = link_p.getCandidates();
     for (const auto& candidate : candidates)
     {
-        const auto& it_candidate = investments_p.find(candidate._name);
+        const auto& it_candidate = investments_p.find(candidate.get_name());
         if (it_candidate == investments_p.end())
         {
-            std::string message = "No investment computed for the candidate " + candidate._name + " on the link "+ link_p._name;
+            std::string message = "No investment computed for the candidate " + candidate.get_name() + " on the link "+ link_p.get_LinkName();
             throw std::runtime_error(message);
         }
         double candidate_investment = it_candidate->second;
@@ -141,7 +141,7 @@ int StudyUpdater::update(std::vector<ActiveLink> const& links_p, const std::map<
 {
     int updateFailures_l(0);
     
-    for (auto link : links_p)
+    for (const auto& link : links_p)
     {
         updateFailures_l += updateLinkdataFile(link, investments_p);
     }

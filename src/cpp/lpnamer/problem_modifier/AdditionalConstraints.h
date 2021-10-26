@@ -88,7 +88,7 @@ public:
  * @param varName_p  : string value : name of the variable concerned
  * @param varCoeff_p  : double value : coefficient of the variable concerned
  */
-    void setCoeff(std::string varName_p, double varCoeff_p)
+    void setCoeff(const std::string& varName_p, const double varCoeff_p)
     {
         (*this)[varName_p] = varCoeff_p;
     }
@@ -128,7 +128,7 @@ public:
  *
  * adds an entry to the AdditionalConstraints::_variablesToBinarise
  */
-    void addVariableToBinarise(std::string oldVarName_p, std::string binVarName_p);
+    void addVariableToBinarise(const std::string& oldVarName_p, const std::string& binVarName_p);
 
 /*!
  * \brief adds a binary variable to be created and links it to the corresponding variable
@@ -153,7 +153,7 @@ public:
  * \param std::string sectionName_l the section name
  * \param constarintsSection_l is a std::map<std::string, std::string> where keys are the constraints entries ("name", "sign", "rhs") 
  */
-    void constructAdditionalConstraints(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l);
+    void constructAdditionalConstraints(const std::string& sectionName_l, const std::map<std::string, std::string>& constarintsSection_l);
 
 /*!
  * \brief the method is responsible for checking that section has defined a unique constraint name
@@ -161,7 +161,7 @@ public:
  * \param constarintsSection_l is a std::map<std::string, std::string> where keys are the constraints entries ("name", "sign", "rhs") 
  * \return std::string the constraint name
  */    
-    std::string checkAndReturnConstraintName(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l);
+    std::string checkAndReturnConstraintName(const std::string& sectionName_l, const std::map<std::string, std::string> & constarintsSection_l) const;
 
 /*!
  * \brief the method is responsible for checking that section has defined a sign
@@ -169,7 +169,7 @@ public:
  * \param constarintsSection_l is a std::map<std::string, std::string> where keys are the constraints entries ("name", "sign", "rhs") 
  * \return std::string the constraint sign
  */    
-    std::string checkAndReturnSectionSign(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l);
+    std::string checkAndReturnSectionSign(const std::string& sectionName_l, const std::map<std::string, std::string>& constarintsSection_l) const;
 
 /*!
  * \brief the method is responsible for checking that section has defined a rhs
@@ -177,6 +177,6 @@ public:
  * \param constarintsSection_l is a std::map<std::string, std::string> where keys are the constraints entries ("name", "sign", "rhs") 
  * \return std::string the rhs
  */    
-    double checkAndReturnSectionRhs(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l);
+    double checkAndReturnSectionRhs(const std::string& sectionName_l, const std::map<std::string, std::string>& constarintsSection_l) const ;
 
 };

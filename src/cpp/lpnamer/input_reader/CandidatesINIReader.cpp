@@ -48,7 +48,7 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(const s
     }
     return result;
 }
-std::vector<std::string> CandidatesINIReader::ReadAreaFile(const std::string areaFile){
+std::vector<std::string> CandidatesINIReader::ReadAreaFile(const std::string& areaFile){
 
     std::vector<std::string> result;
 

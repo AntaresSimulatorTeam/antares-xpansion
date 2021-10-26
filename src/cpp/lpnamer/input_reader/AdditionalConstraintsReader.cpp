@@ -53,7 +53,7 @@ void AdditionalConstraintsReader::processSectionLine()
 void AdditionalConstraintsReader::processEntryLine()
 {
     size_t delimiterIt_l = _line.find(" = ");
-    if ((delimiterIt_l == std::string::npos))
+    if (delimiterIt_l == std::string::npos)
     {
         std::cout << "line " << _lineNb << " : incorrect entry line format. Expected format 'attribute = value'!\n";
         std::exit(1);
@@ -100,8 +100,7 @@ void AdditionalConstraintsReader::processEntryLine()
     }
 }
 
-AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & constraints_file_path):
-    AdditionalConstraintsReader()
+AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & constraints_file_path)
 {
     std::ifstream file_l(constraints_file_path);
 

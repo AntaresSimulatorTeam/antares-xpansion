@@ -12,7 +12,7 @@
  * \param master_p solver to which the constraints and variables will be added
  * \param additionalConstraints_p the additional constraints to add
  */
-void treatAdditionalConstraints(SolverAbstract::Ptr master_p, AdditionalConstraints additionalConstraints_p);
+void treatAdditionalConstraints(SolverAbstract::Ptr master_p, const AdditionalConstraints& additionalConstraints_p);
 
 /**
  * \brief adds an additional constraint to an existent solver

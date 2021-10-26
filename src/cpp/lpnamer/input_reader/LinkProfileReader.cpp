@@ -42,9 +42,8 @@ const std::map<std::string, LinkProfile> LinkProfileReader::getLinkProfileMap(co
 
 void LinkProfileReader::importProfile(std::map<std::string, LinkProfile>& mapLinkProfile, const std::string& capacitySubfolder, const std::string& profile_name)
 {
-    if (!profile_name.empty()) {
-        if (mapLinkProfile.find(profile_name) == mapLinkProfile.end()) {
-            mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile(capacitySubfolder + PATH_SEPARATOR + profile_name);
-        }
+    if (!profile_name.empty() && mapLinkProfile.find(profile_name) == mapLinkProfile.end()) {
+
+        mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile(capacitySubfolder + PATH_SEPARATOR + profile_name);      
     }
 }

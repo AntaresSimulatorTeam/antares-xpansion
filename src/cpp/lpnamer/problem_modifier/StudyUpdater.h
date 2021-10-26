@@ -104,24 +104,26 @@ struct LinkdataRecord
 {
     //! should be set to true if antares version is 700 or more recent
     const bool modernAntaresVersion_;
-
-    //! 1st column of the file : direct capacity of the link
-    double directCapacity_;
-    //! 2nd column of the file : indirect capacity of the link
-    double indirectCapacity_;
-    //! 3rd column of the file : direct hurdles cost
-    double directHurdlesCost_;
-    //! 4th column of the file : indirect hurdles cost
-    double indirectHurdlesCost_;
-    //! 5th column of the file : impedances
-    double impedances_;
-    //! 6th column of the file : loop flow
-    double loopFlow_;
-    //! 7th column of the file : power shift min.
-    double pShiftMin_;
-    //! 8th column of the file : power shift max.
-    double pShiftMax_;
-
+    struct FileColumns
+    {
+        double directCapacity_;
+        //! 2nd column of the file : indirect capacity of the link
+        double indirectCapacity_;
+        //! 3rd column of the file : direct hurdles cost
+        double directHurdlesCost_;
+        //! 4th column of the file : indirect hurdles cost
+        double indirectHurdlesCost_;
+        //! 5th column of the file : impedances
+        double impedances_;
+        //! 6th column of the file : loop flow
+        double loopFlow_; 
+        //! 7th column of the file : power shift min.
+        double pShiftMin_;
+        //! 8th column of the file : power shift max.
+        double pShiftMax_ ;
+    };
+    
+    FileColumns fileColumns;
 /*!
  * \brief LinkdataRecord constructor
  *
@@ -130,30 +132,23 @@ struct LinkdataRecord
     explicit LinkdataRecord(bool modernAntaresVersion_p);
 
 
+
 /*!
  * \brief LinkdataRecord constructor to use with modern antares studies versions
  *
- * \param directCapacity_p : value to set to directCapacity_
- * \param indirectCapacity_p : value to set to indirectCapacity_
- * \param directHurdlesCost_p : value to set to directHurdlesCost_
- * \param indirectHurdlesCost_p : value to set to indirectHurdlesCost_
- * \param impedances_p : value to set to impedances_
- * \param loopFlow_p : value to set to loopFlow_
- * \param pShiftMin_p : value to set to pShiftMin_
- * \param pShiftMax_p : value to set to pShiftMax_
+ * \param fileColumns : LinkdataRecord::FileColumns object that hold columns infos of the file
  */
-    LinkdataRecord(double directCapacity_p, double indirectCapacity_p,
-        double directHurdlesCost_p, double indirectHurdlesCost_p, double impedances_p,
-        double loopFlow_p, double pShiftMin_p, double pShiftMax_p);
+    LinkdataRecord(FileColumns afileColumns);
+
 
 /*!
  * \brief LinkdataRecord constructor to use with old antares studies versions
  *
- * \param directCapacity_p : value to set to directCapacity_
- * \param indirectCapacity_p : value to set to indirectCapacity_
- * \param directHurdlesCost_p : value to set to directHurdlesCost_
- * \param indirectHurdlesCost_p : value to set to indirectHurdlesCost_
- * \param impedances_p : value to set to impedances_
+ * \param directCapacity_p : value to set to fileColumns.directCapacity_
+ * \param indirectCapacity_p : value to set to fileColumns.indirectCapacity_
+ * \param directHurdlesCost_p : value to set to fileColumns.directHurdlesCost_
+ * \param indirectHurdlesCost_p : value to set to fileColumns.indirectHurdlesCost_
+ * \param impedances_p : value to set to fileColumns.impedances_
  */
     LinkdataRecord(double directCapacity_p, double indirectCapacity_p,
         double directHurdlesCost_p, double indirectHurdlesCost_p, double impedances_p);
@@ -168,8 +163,8 @@ struct LinkdataRecord
 /*!
  * \brief update the capacities of the LinkdataRecord
  *
- * \param directCapacity_p : value to set to directCapacity_
- * \param indirectCapacity_p : value to set to indirectCapacity_
+ * \param directCapacity_p : value to set to fileColumns.directCapacity_
+ * \param indirectCapacity_p : value to set to fileColumns.indirectCapacity_
  */
     void updateCapacities(double directCapacity_p, double indirectCapacity_p);
 

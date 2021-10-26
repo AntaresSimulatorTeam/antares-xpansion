@@ -6,7 +6,7 @@
 
 void updateMapColumn(const std::vector<ActiveLink>& links, int link_id, colId id, int time_step,std::map<linkId,  ColumnsToChange>& mapColumn ){
     auto it = std::find_if(links.begin(), links.end(), [link_id] (const ActiveLink& link){
-        return link._idLink == link_id;
+        return link.get_idLink() == link_id;
     });
 
     if (it != links.end()){

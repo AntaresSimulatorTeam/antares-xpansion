@@ -22,7 +22,7 @@ public:
     CandidatesINIReader(const std::string& antaresIntercoFile, const std::string& areaFile);
 
     static std::vector<IntercoFileData> ReadAntaresIntercoFile(const std::string& antaresIntercoFile);
-    static std::vector<std::string> ReadAreaFile(const std::string areaFile);
+    static std::vector<std::string> ReadAreaFile(const std::string& areaFile);
 
     std::vector<CandidateData> readCandidateData(const std::string& candidateFile);
 
