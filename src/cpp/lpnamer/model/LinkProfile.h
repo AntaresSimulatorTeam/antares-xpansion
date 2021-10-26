@@ -17,7 +17,7 @@ public:
  *  \brief LinkProfile default constructor
  *
  */
-    LinkProfile();
+    LinkProfile() = default;
 
 /*!
  *  \brief returns true if the direct link profile column is empty

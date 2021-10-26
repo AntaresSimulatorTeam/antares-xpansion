@@ -14,11 +14,6 @@ studyPath_(studyPath_p)
     readAntaresVersion();
 }
 
-
-StudyUpdater::~StudyUpdater()
-{
-}
-
 int StudyUpdater::getAntaresVersion() const
 {
     return antaresVersion_;

@@ -8,7 +8,7 @@ class LinkProfileReader {
 
 public:
 
-    LinkProfileReader(){}
+    LinkProfileReader() = default;
 
     static LinkProfile ReadLinkProfile(const std::string& filename);
     static const std::map<std::string, LinkProfile> getLinkProfileMap(const std::string& capacity_folder, const std::vector<CandidateData>& candidateList);

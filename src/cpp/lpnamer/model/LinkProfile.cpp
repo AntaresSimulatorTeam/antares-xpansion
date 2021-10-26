@@ -3,9 +3,7 @@
 #include <exception>
 #include "LinkProfile.h"
 
-LinkProfile::LinkProfile() {
 
-}
 
 /*!
  *  \brief returns true if the direct link profile column is empty

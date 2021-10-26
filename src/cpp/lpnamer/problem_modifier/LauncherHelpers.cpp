@@ -57,7 +57,7 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
 		i++;
 	}
 
-	master_p->add_rows(1, newnz, rtype.data(), rhs.data(), NULL, matstart.data(), 
+	master_p->add_rows(1, newnz, rtype.data(), rhs.data(), nullptr, matstart.data(), 
 		mindex.data(), matval.data());
 }
 
@@ -102,7 +102,7 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string,
 		matval[1] = -oldVarUb[0];
 
 		master_p->add_rows(1, 2, std::vector<char>(1, 'L').data(), std::vector<double>(1, 0.0).data(),
-			NULL, matstart.data(), matind.data(), matval.data());
+			nullptr, matstart.data(), matind.data(), matval.data());
 		master_p->chg_row_name(master_p->get_nrows() - 1, 
 			"link_" + pairOldNewVarnames.first + "_" + pairOldNewVarnames.second);
 	}

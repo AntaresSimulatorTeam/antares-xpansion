@@ -50,9 +50,7 @@ public:
 /**
  * @brief AdditionalConstraint destructor
  */
-    virtual ~AdditionalConstraint()
-    {
-    }
+    virtual ~AdditionalConstraint() = default;
 
 /**
  * @brief AdditionalConstraint::_name getter
@@ -113,9 +111,7 @@ public:
 /*!
 *  \brief default constructor for struct AdditionalConstraints
 */
-	AdditionalConstraints()
-    {
-	}
+	AdditionalConstraints() = default;
 
 /*!
  * \brief AdditionalConstraints constructor from an ini file path
@@ -135,10 +131,52 @@ public:
     void addVariableToBinarise(std::string oldVarName_p, std::string binVarName_p);
 
 /*!
+ * \brief adds a binary variable to be created and links it to the corresponding variable
+ *
+ * \param variables_section std::map<std::string, std::string> whose value is the name of the binary variables to create
+ * and whose key is the corresponding existing variable to link toe
+ *
+ * adds entries to the AdditionalConstraints::_variablesToBinarise
+ */
+    void addVariablesToBinarise(std::map<std::string, std::string> const & variables_section);
+
+/*!
  * \brief getter for AdditionalConstraints::_variablesToBinarise
  *
  * \return std::map<std::string, std::string> whose value is the name of the binary variables to create
  * and whose key is the corresponding existing variable to link to
  */
     std::map<std::string, std::string> const & getVariablesToBinarise() const;
+
+/*!
+ * \brief the method is responsible for creating and filling constraints
+ * \param std::string sectionName_l the section name
+ * \param constarintsSection_l is a std::map<std::string, std::string> where keys are the constraints entries ("name", "sign", "rhs") 
+ */
+    void constructAdditionalConstraints(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l);
+
+/*!
+ * \brief the method is responsible for checking that section has defined a unique constraint name
+ * \param std::string sectionName_l the section name
+ * \param constarintsSection_l is a std::map<std::string, std::string> where keys are the constraints entries ("name", "sign", "rhs") 
+ * \return std::string the constraint name
+ */    
+    std::string checkAndReturnConstraintName(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l);
+
+/*!
+ * \brief the method is responsible for checking that section has defined a sign
+ * \param std::string sectionName_l the section name
+ * \param constarintsSection_l is a std::map<std::string, std::string> where keys are the constraints entries ("name", "sign", "rhs") 
+ * \return std::string the constraint sign
+ */    
+    std::string checkAndReturnSectionSign(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l);
+
+/*!
+ * \brief the method is responsible for checking that section has defined a rhs
+ * \param std::string sectionName_l the section name
+ * \param constarintsSection_l is a std::map<std::string, std::string> where keys are the constraints entries ("name", "sign", "rhs") 
+ * \return std::string the rhs
+ */    
+    double checkAndReturnSectionRhs(std::string sectionName_l, std::map<std::string, std::string> const & constarintsSection_l);
+
 };

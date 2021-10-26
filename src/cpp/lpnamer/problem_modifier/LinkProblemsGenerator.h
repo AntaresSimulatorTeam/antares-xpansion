@@ -7,10 +7,10 @@
 #include "ActiveLinks.h"
 
 
-#define CANDIDATES_INI "candidates.ini"
-#define STRUCTURE_FILE "structure.txt"
-#define MPS_TXT "mps.txt"
-#define STUDY_FILE "study.antares"
+const std::string CANDIDATES_INI {"candidates.ini"};
+const std::string STRUCTURE_FILE {"structure.txt"};
+const std::string MPS_TXT {"mps.txt"};
+const std::string STUDY_FILE {"study.antares"};
 #include "ProblemModifier.h"
 
 struct ProblemData

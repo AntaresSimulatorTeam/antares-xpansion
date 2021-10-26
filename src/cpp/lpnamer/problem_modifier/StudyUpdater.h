@@ -32,7 +32,7 @@ public:
 /*!
  * \brief default destructor of calass StudyUpdater
  */
-    virtual ~StudyUpdater();
+    virtual ~StudyUpdater() = default;
 
 /*!
  * \brief getter for attribute StudyUpdater::antaresVersion_

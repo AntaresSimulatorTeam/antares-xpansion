@@ -11,7 +11,7 @@
 
 class MasterProblemBuilder {
 public:
-	MasterProblemBuilder(const std::string& master_formulation);
+	explicit MasterProblemBuilder(const std::string& master_formulation);
 	std::shared_ptr<SolverAbstract> build(const std::string& solverName, const std::vector<Candidate>& candidates);
 
 private :

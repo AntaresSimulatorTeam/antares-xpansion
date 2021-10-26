@@ -33,7 +33,7 @@ struct CandidateData {
 class Candidate {
 
 public:
-    Candidate(){};
+    Candidate() = default;
     Candidate(const CandidateData& data, const LinkProfile& profile);
 
     double direct_profile(size_t timeStep) const;
