@@ -9,6 +9,11 @@ import yaml
 from typing import List
 
 
+import functools
+
+print = functools.partial(print, flush=True)
+
+
 @dataclass
 class ConfigParameters:
     ANTARES: str

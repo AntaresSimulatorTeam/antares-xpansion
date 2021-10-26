@@ -10,6 +10,11 @@ from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
 from antares_xpansion.benders_driver import BendersDriver
 from antares_xpansion.study_updater_driver import StudyUpdaterDriver
 
+import functools
+
+print = functools.partial(print, flush=True)
+
+
 class XpansionDriver:
     """
         Class to control the execution of the optimization session

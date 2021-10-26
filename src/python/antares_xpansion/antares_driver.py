@@ -13,6 +13,11 @@ from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.config_loader import ConfigLoader
 
+import functools
+
+print = functools.partial(print, flush=True)
+
+
 class AntaresDriver:
     def __init__(self, config_loader : ConfigLoader) -> None:
         self.config_loader = config_loader
@@ -27,11 +32,11 @@ class AntaresDriver:
         """
             returns antares binaries location
         """
-        return self.config_loader.exe_path(self.config.ANTARES)     
+        return self.config_loader.exe_path(self.config.ANTARES)
 
     def _antares_step(self):
         self._change_general_data_file_to_configure_antares_execution()
-        self.launch_antares()   
+        self.launch_antares()
 
     def launch(self):
         self._antares_step()
@@ -51,7 +56,7 @@ class AntaresDriver:
                     current_section = line.strip()
 
                 if line:
-                    writer.write(line)      
+                    writer.write(line)
 
     def _get_new_line(self, line, section, key):
         changed_val = self._get_values_to_change_general_data_file()
@@ -89,7 +94,7 @@ class AntaresDriver:
         uc_type = self.options.get(self.config.UC_TYPE,
                                    self.config.settings_default[self.config.UC_TYPE])
         assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
-        return uc_type == self.config.EXPANSION_ACCURATE  
+        return uc_type == self.config.EXPANSION_ACCURATE
 
 
     def launch_antares(self):

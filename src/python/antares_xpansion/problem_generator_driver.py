@@ -10,12 +10,16 @@ from datetime import datetime
 
 from pathlib import Path
 
-
 from antares_xpansion.xpansion_utils import read_and_write_mps
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.config_loader import ConfigLoader
+
+import functools
+
+print = functools.partial(print, flush=True)
+
 
 class ProblemGeneratorDriver:
     def __init__(self, config_loader : ConfigLoader ) -> None:
@@ -46,7 +50,7 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        
+
         output_path = self.config_loader.simulation_output_path()
         mps_txt = read_and_write_mps(output_path)
         with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
@@ -68,7 +72,7 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        
+
         output_path = self.config_loader.simulation_output_path()
 
         lp_path = self.config_loader.simulation_lp_path()

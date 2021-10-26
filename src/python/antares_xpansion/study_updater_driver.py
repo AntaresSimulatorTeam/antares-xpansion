@@ -9,6 +9,10 @@ import sys
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.config_loader import ConfigLoader
 
+import functools
+
+print = functools.partial(print, flush=True)
+
 
 class StudyUpdaterDriver:
     def __init__(self, config_loader : ConfigLoader) -> None:

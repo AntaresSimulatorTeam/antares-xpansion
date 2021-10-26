@@ -13,6 +13,10 @@ from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
+import functools
+
+print = functools.partial(print, flush=True)
+
 
 class ConfigLoader:
     """
