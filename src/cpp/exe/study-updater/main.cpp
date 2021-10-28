@@ -72,7 +72,6 @@ int main(int argc, char** argv) {
         std::string const interco_file_name	= root + PATH_SEPARATOR + "interco.txt";
 
         CandidatesINIReader candidateReader(interco_file_name,area_file_name);
-        LinkProfileReader profileReader;
 
         // Get all mandatory path
         std::string const xpansion_user_dir = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion";

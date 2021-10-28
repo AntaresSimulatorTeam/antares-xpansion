@@ -99,6 +99,7 @@ jobs:
     - name: Installer .zip creation
       run: |
            cd _build
+           rm "C:\ProgramData\Chocolatey\bin\cpack.exe"
            cpack -G ZIP
            
     - id: create-single-file

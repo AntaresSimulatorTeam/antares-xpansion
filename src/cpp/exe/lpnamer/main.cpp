@@ -86,7 +86,7 @@ void masterGeneration(const std::string& rootPath,
 	std::sort(candidates.begin(), candidates.end(),
 		[](const Candidate& cand1, const Candidate& cand2) -> bool
 		{
-			return cand1._name < cand2._name;
+			return cand1.get_name() < cand2.get_name();
 		});
 	
 	SolverAbstract::Ptr master_l = MasterProblemBuilder(master_formulation).build(solver_name, candidates);
@@ -101,7 +101,7 @@ void masterGeneration(const std::string& rootPath,
 	}
 	int i = 0;
 	for (auto const& candidate : candidates) {
-		output["master"][candidate._name] = i;
+		output["master"][candidate.get_name()] = i;
 		++i;
 	}
 

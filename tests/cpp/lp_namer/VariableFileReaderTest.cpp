@@ -177,7 +177,7 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithOneActiveLink) {
     createVariableFile(TEMP_FILE_NAME, _ids,_variable,_id_pays,_id_link,_time_step);
 
     std::vector<ActiveLink> links;
-    links.push_back(ActiveLink(1,"link"));
+    links.push_back(ActiveLink(1, "link", "from", "to", 0));
     VariableFileReadNameConfiguration variable_name_config;
     variable_name_config.ntc_variable_name = "var_ntc";
     VariableFileReader varReader(TEMP_FILE_NAME, links,variable_name_config);
@@ -199,8 +199,8 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithMultipleActiveLink) {
     createVariableFile(TEMP_FILE_NAME, _ids,_variable,_id_pays,_id_link,_time_step);
 
     std::vector<ActiveLink> links;
-    links.push_back(ActiveLink(1,"link"));
-    links.push_back(ActiveLink(2,"link2"));
+    links.push_back(ActiveLink(1, "link", "from1", "to1", 0));
+    links.push_back(ActiveLink(2, "link2", "from2", "to2", 0));
     VariableFileReadNameConfiguration variable_name_config;
     variable_name_config.ntc_variable_name = "var_ntc";
     VariableFileReader varReader(TEMP_FILE_NAME, links,variable_name_config);
@@ -223,8 +223,8 @@ TEST_F(VariableFileReaderTest, ReadCostColumnsWithMultipleActiveLink) {
     createVariableFile(TEMP_FILE_NAME, _ids,_variable,_id_pays,_id_link,_time_step);
 
     std::vector<ActiveLink> links;
-    links.push_back(ActiveLink(1,"link"));
-    links.push_back(ActiveLink(2,"link2"));
+    links.push_back(ActiveLink(1, "link", "from", "to", 0));
+    links.push_back(ActiveLink(2, "link2", "from", "to", 0));
 
     VariableFileReadNameConfiguration variable_name_config;
     variable_name_config.cost_origin_variable_name = "cost_ori";

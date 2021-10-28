@@ -249,7 +249,7 @@ TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) 
     const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{{0, 0}}}};
     const std::map<linkId , ColumnsToChange> p_direct_cost_columns= {{link_id,{{{1, 0}}}}};
     const std::map<linkId , ColumnsToChange> p_indirect_cost_columns= {{link_id,{{{2, 0}}}}};
-    const std::vector<ActiveLink> active_links= {ActiveLink(link_id, "dummy_link")};
+    const std::vector<ActiveLink> active_links= {ActiveLink(link_id, "dummy_link", "from", "to", 0)};
 
     auto problem_modifier = ProblemModifier();
     math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links, p_var_columns,p_direct_cost_columns,p_indirect_cost_columns);

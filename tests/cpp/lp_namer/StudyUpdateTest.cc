@@ -131,8 +131,8 @@ TEST_F(StudyUpdateTest, linksInit)
     ASSERT_EQ(candidatesLink0.size(), 1);
     ASSERT_EQ(candidatesLink1.size(), 1);
 
-    ASSERT_EQ(candidatesLink0[0]._name, "transmission_line");
-    ASSERT_EQ(candidatesLink1[0]._name, "peak");
+    ASSERT_EQ(candidatesLink0[0].get_name(), "transmission_line");
+    ASSERT_EQ(candidatesLink1[0].get_name(), "peak");
 }
 
 
