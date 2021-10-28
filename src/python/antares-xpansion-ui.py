@@ -11,7 +11,8 @@ from pathlib import Path
 
 import resources
 
-STEP_WITH_SIMULATION_NAME = ["getnames", "lp", "optim", "update"]
+STEPS = ["full", "antares", "problem_generation", "benders", "study_update"]
+STEP_WITH_SIMULATION_NAME = ["problem_generation", "benders", "study_update"]
 NEW_SIMULATION_NAME = "New"
 LAST_ANTARES_STUDY_DIR = "last_antares_study_dir"
 
@@ -140,9 +141,8 @@ class MainWidget(QWidget):
     def _init_step_selection_widget(self):
         step_layout = QHBoxLayout()
 
-        steps = ["full", "antares", "getnames", "lp", "optim", "update"]
         self._step_buttons = {}
-        for step in steps:
+        for step in STEPS:
             self._step_buttons[step] = QRadioButton(step)
             self._step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
             step_layout.addWidget(self._step_buttons[step])

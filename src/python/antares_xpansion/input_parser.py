@@ -14,8 +14,8 @@ class InputParser:
     def _initialize_parser(self):
         self.parser.add_argument("--step",
                                  dest="step",
-                                 choices=["full", "antares", "getnames", "lp", "optim", "update"],
-                                 help='Step to execute ("full", "antares", "getnames", "lp", "optim", "update")',
+                                 choices=["full", "antares", "problem_generation", "benders", "study_update"],
+                                 help='Step to execute ("full", "antares", "problem_generation", "benders", "study_update")',
                                  default="full")
         self.parser.add_argument("--simulationName",
                                  dest="simulationName",

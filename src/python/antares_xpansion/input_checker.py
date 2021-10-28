@@ -7,10 +7,10 @@ import sys
 import os
 import shutil
 
+import functools
 
-##########################################
-# Checks related to profile/capacity files
-##########################################
+print = functools.partial(print, flush=True)
+
 
 def check_profile_file(filename_path):
     """
