@@ -102,25 +102,20 @@ class XpansionConfig:
         self._set_default_settings()
 
     def _set_constants(self):
-        self.SETTINGS = 'settings'
+        #TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
+        self.SETTINGS = 'settings' 
+        self.GENERAL_DATA_INI = 'generaldata.ini'
+        self.OUTPUT = 'output'
+
         self.USER = 'user'
         self.EXPANSION = 'expansion'
         self.CAPADIR = 'capa'
-        self.GENERAL_DATA_INI = 'generaldata.ini'
         self.NB_YEARS = 'nbyears'
         self.SETTINGS_INI = 'settings.ini'
         self.CANDIDATES_INI = 'candidates.ini'
         self.UC_TYPE = 'uc_type'
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
-        self.OPTIMIZATION = 'optimization'
-        self.EXPORT_STRUCTURE = 'include-exportstructure'
-        self.EXPORT_MPS = 'include-exportmps'
-        self.TRACE = 'include-trace'
-        self.USE_XPRS = 'include-usexprs'
-        self.INBASIS = 'include-inbasis'
-        self.OUTBASIS = 'include-outbasis'
-        self.OUTPUT = 'output'
         self.OPTIONS_TXT = 'options.txt'
         self.MPS_TXT = "mps.txt"
 
