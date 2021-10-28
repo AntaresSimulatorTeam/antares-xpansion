@@ -2,6 +2,7 @@
     Class to control the execution of the optimization session
 """
 import sys
+from pathlib import Path
 
 from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.antares_driver import AntaresDriver
@@ -30,7 +31,8 @@ class XpansionDriver:
         self.config = config
 
         self.config_loader = ConfigLoader(self.config)
-        self.antares_driver = AntaresDriver(self.config_loader)
+
+        self.antares_driver = AntaresDriver(self.config_loader.exe_path(self.config.ANTARES))
         self.problem_generator_driver = ProblemGeneratorDriver(self.config_loader)
         self.benders_driver = BendersDriver(self.config_loader)
         self.study_update_driver = StudyUpdaterDriver(self.config_loader)
@@ -42,13 +44,13 @@ class XpansionDriver:
         self._clear_old_log()
 
         if self.config.step == "full":
-            self.antares_driver.launch()
+            self.launch_antares_step(self.config_loader.data_dir())  
             print("-- post antares")
             self.problem_generator_driver.launch()
             self.benders_driver.launch()
             self.study_update_driver.launch()
         elif self.config.step == "antares":
-            self.antares_driver.launch()
+            self.launch_antares_step(self.config_loader.data_dir())  
         elif self.config.step == "problem_generation":
             if self.config.simulation_name:
                 self.problem_generator_driver.launch()
@@ -72,6 +74,13 @@ class XpansionDriver:
             sys.exit(1)
 
     def _clear_old_log(self):
-        self.antares_driver.clear_old_log()
+
         self.problem_generator_driver.clear_old_log()
         self.study_update_driver.clear_old_log()
+
+    def launch_antares_step(self, antares_study_path  : Path ):
+    
+        if self.config_loader.is_accurate() :
+            self.antares_driver.launch_accurate(antares_study_path)
+        else  :
+            self.antares_driver.launch_inaccurate(antares_study_path)

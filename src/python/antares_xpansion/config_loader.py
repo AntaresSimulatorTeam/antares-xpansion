@@ -247,3 +247,12 @@ class ConfigLoader:
             msg = f"no suitable simulation directory found in {self.antares_output()}, simulation directory name must be in this format: YYYYMMDD-HHMMeco "
             raise XpansionStudyReader.NoSimulationDirectory(msg)
         self.simulation_name = sorted_simulations_list[-1]
+                
+    def is_accurate(self):
+        """
+            indicates if method to use is accurate by reading the uc_type in the settings file
+        """
+        uc_type = self.options.get(self.config.UC_TYPE,
+                                   self.config.settings_default[self.config.UC_TYPE])
+        assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
+        return uc_type == self.config.EXPANSION_ACCURATE
