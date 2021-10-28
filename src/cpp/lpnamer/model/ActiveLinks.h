@@ -10,7 +10,8 @@ using LinkName = std::string;
 class ActiveLink {
 
 public:
-	ActiveLink(int idLink, const std::string& linkName);
+	ActiveLink(int idLink, const std::string &linkName, const std::string &linkor, const std::string &linkex,
+               const double &already_installed_capacity);
 	void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
 	void addCandidate(const CandidateData& candidate_data, const LinkProfile& candidate_profile);
@@ -20,27 +21,18 @@ public:
 	double already_installed_indirect_profile(size_t timeStep) const;
 
 	int get_idLink() const ;
-	void set_idLink(const int& idLink) ;
-
-	LinkName get_LinkName() const;
-	void set_LinkName(const LinkName& name) ;
-
-	double get_already_installed_capacity() const;
-	void set_already_installed_capacity(const double& already_installed_capacity) ;
-
-	std::string get_linkor() const;
-	void set_linkor(const std::string& linkor) ;
-
-	std::string get_linkex() const;
-	void set_linkex(const std::string& linkex) ;
+    LinkName get_LinkName() const;
+    std::string get_linkor() const;
+    std::string get_linkex() const;
+    double get_already_installed_capacity() const;
 
 private:
 	int _idLink;
 	LinkName _name;
-	double _already_installed_capacity = 1;
 	std::string _linkor;
-	std::string _linkex;
-	LinkProfile _already_installed_profile;
+    std::string _linkex;
+    double _already_installed_capacity = 1;
+    LinkProfile _already_installed_profile;
 	std::vector<Candidate> _candidates;
 };
 

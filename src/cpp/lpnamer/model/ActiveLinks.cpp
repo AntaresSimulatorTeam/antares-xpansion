@@ -117,11 +117,8 @@ void ActiveLinksBuilder::create_links() {
     for( auto const & it: _links_data){
         LinkName name = it.first;
         LinkData data = it.second;
-        ActiveLink link(data.id, name);
-        link.set_linkor(data._linkor);
-        link.set_linkex(data._linkex);
+        ActiveLink link(data.id, name, data._linkor, data._linkex, data.installed_capacity);
         link.setAlreadyInstalledLinkProfile(getProfileFromProfileMap(data.profile_name));
-        link.set_already_installed_capacity (data.installed_capacity);
         _links.push_back(link);
     }
 }
@@ -134,8 +131,11 @@ LinkProfile ActiveLinksBuilder::getProfileFromProfileMap(const std::string &prof
     return already_installed_link_profile;
 }
 
-ActiveLink::ActiveLink(int idLink, const std::string& linkName):
-    _idLink(idLink), _name(linkName)
+ActiveLink::ActiveLink(int idLink, const std::string &linkName, const std::string &linkor, const std::string &linkex,
+                       const double &already_installed_capacity) :
+    _idLink(idLink), _name(linkName),
+    _linkor(linkor), _linkex(linkex),
+    _already_installed_capacity(already_installed_capacity)
 {
 }
 
@@ -169,39 +169,21 @@ double ActiveLink::already_installed_indirect_profile(size_t timeStep) const
 
 int ActiveLink::get_idLink() const {
     return _idLink; 	
-} 
-
-void ActiveLink::set_idLink(const int& idLink) {
-    _idLink = idLink;
 }
+
 LinkName ActiveLink::get_LinkName() const{
     return _name;
 }
 
-void ActiveLink::set_LinkName(const LinkName& name) {
-    _name = name;
-}
-
 double ActiveLink::get_already_installed_capacity() const{
     return _already_installed_capacity;
-}
-	
-void ActiveLink::set_already_installed_capacity(const double& already_installed_capacity) {
-    _already_installed_capacity = already_installed_capacity;
 }
 
 std::string ActiveLink::get_linkor() const{
     return _linkor;
 }
 
-void ActiveLink::set_linkor(const std::string& linkor) {
-    _linkor = linkor;
-}
-
 std::string ActiveLink::get_linkex() const{
     return _linkex;
 }
 
-void ActiveLink::set_linkex(const std::string& linkex) {
-    _linkex = linkex;
-}
