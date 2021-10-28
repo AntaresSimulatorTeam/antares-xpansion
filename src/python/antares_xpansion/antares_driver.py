@@ -26,21 +26,14 @@ class AntaresDriver:
         self.settings = 'settings'
         self.general_data_ini = 'generaldata.ini'
         self.output = 'output'
-        self.optimization = 'optimization'
-        self.export_structure = 'include-exportstructure'
-        self.export_mps = 'include-exportmps'
-        self.trace = 'include-trace'
-        self.use_xprs = 'include-usexprs'
-        self.inbasis = 'include-inbasis'
-        self.outbasis = 'include-outbasis'
 
         self.is_accurate = False
         
-    def launch_accurate(self, antares_study_path):
+    def launch_accurate_mode(self, antares_study_path):
         self.is_accurate = True
         self._launch(antares_study_path)  
 
-    def launch_inaccurate(self, antares_study_path):
+    def launch_fast_mode(self, antares_study_path):
         self.is_accurate = False
         self._launch(antares_study_path)  
 
@@ -48,7 +41,7 @@ class AntaresDriver:
         self._clear_old_log()
         self.data_dir = antares_study_path
         self._change_general_data_file_to_configure_antares_execution()
-        self.launch_antares(antares_study_path)
+        self.launch_antares()
 
     def _clear_old_log(self):
         if os.path.isfile(self.antares_exe_path + '.log'):
@@ -56,10 +49,10 @@ class AntaresDriver:
 
     def _change_general_data_file_to_configure_antares_execution(self):
         print("-- pre antares")
-        with open(self._general_data(), 'r') as reader:
+        with open(self._general_data_ini_file_path(), 'r') as reader:
             lines = reader.readlines()
 
-        with open(self._general_data(), 'w') as writer:
+        with open(self._general_data_ini_file_path(), 'w') as writer:
             current_section = ""
             for line in lines:
                 if IniReader.line_is_not_a_section_header(line):
@@ -71,14 +64,14 @@ class AntaresDriver:
                 if line:
                     writer.write(line)
 
-    def _general_data(self):
+    def _general_data_ini_file_path(self):
         """
             returns path to general data ini file
         """
         return os.path.normpath(os.path.join(self.data_dir,
                                              self.settings, self.general_data_ini))
 
-    def antares_output(self):
+    def antares_output_dir(self):
         """
             returns path to antares output data directory
         """
@@ -96,18 +89,17 @@ class AntaresDriver:
 
 
     def _get_values_to_change_general_data_file(self):
-        return {('[' + self.optimization + ']', self.export_mps): 'true',
-                ('[' + self.optimization + ']', self.export_structure): 'true',
-                ('[' + self.optimization + ']',
-                 'include-tc-minstablepower'): 'true' if self.is_accurate else 'false',
-                ('[' + self.optimization + ']',
-                 'include-tc-min-ud-time'): 'true' if self.is_accurate else 'false',
-                ('[' + self.optimization + ']',
-                 'include-dayahead'): 'true' if self.is_accurate else 'false',
-                ('[' + self.optimization + ']', self.use_xprs): None,
-                ('[' + self.optimization + ']', self.inbasis):  None,
-                ('[' + self.optimization + ']', self.outbasis): None,
-                ('[' + self.optimization + ']', self.trace):    None,
+        optimization = '[optimization]'
+
+        return {(optimization, 'include-exportmps'): 'true',
+                (optimization, 'include-exportstructure'): 'true',
+                (optimization, 'include-tc-minstablepower'): 'true' if self.is_accurate else 'false',
+                (optimization,'include-tc-min-ud-time'): 'true' if self.is_accurate else 'false',
+                (optimization,'include-dayahead'): 'true' if self.is_accurate else 'false',
+                (optimization, 'include-usexprs'): None,
+                (optimization, 'include-inbasis'):  None,
+                (optimization, 'include-outbasis'): None,
+                (optimization, 'include-trace'):    None,
                 ('[general]', 'mode'): 'expansion' if self.is_accurate else 'Economy',
                 (
                     '[other preferences]',
@@ -116,13 +108,13 @@ class AntaresDriver:
 
 
 
-    def launch_antares(self, antares_study_path : Path):
+    def launch_antares(self):
         print("-- launching antares")
         simulation_name = ""
 
-        if not os.path.isdir(self.antares_output()):
-            os.mkdir(self.antares_output())
-        old_output = os.listdir(self.antares_output())
+        if not os.path.isdir(self.antares_output_dir()):
+            os.mkdir(self.antares_output_dir())
+        old_output = os.listdir(self.antares_output_dir())
 
         start_time = datetime.now()
 
@@ -136,11 +128,11 @@ class AntaresDriver:
         if returned_l.returncode != 0:
             print("WARNING: exited antares with status %d" % returned_l.returncode)
         else:
-            new_output = os.listdir(self.antares_output())
+            new_output = os.listdir(self.antares_output_dir())
             assert len(old_output) + 1 == len(new_output)
             diff = list(set(new_output) - set(old_output))
             simulation_name = str(diff[0])
-            StudyOutputCleaner.clean_antares_step((Path(self.antares_output()) / simulation_name))
+            StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / simulation_name))
 
         self.simulation_name = simulation_name
 
