@@ -37,8 +37,13 @@ class InputParser:
                                  default="sequential")
         self.parser.add_argument("-n", "--np",
                                  dest="n_mpi",
-                                 default=4,
-                                 type=lambda x: (int(x) > 1) and int(x) or sys.exit("Minimum of MPI processes is 1"),
+                                 default=2,
+                                 type=lambda x: (int(x) > 1) and int(x) or sys.exit("Minimum of MPI processes is 2"),
+                                 help='Number of MPI processes')
+        self.parser.add_argument("--antares-n-cpu",
+                                 dest="antares_n_cpu",
+                                 default=1,
+                                 type=lambda x: (int(x) > 0) and int(x) or sys.exit("Minimum of Antares Thread is 1"),
                                  help='Number of MPI processes')
         self.parser.add_argument("--keepMps",
                                  dest="keep_mps",
@@ -48,6 +53,8 @@ class InputParser:
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
+        self._check_antares_cpu_option(params)
+
         my_parameters = InputParameters(
             step=params.step,
             simulation_name=params.simulationName,
@@ -55,6 +62,12 @@ class InputParser:
             install_dir=params.installDir,
             method=params.method,
             n_mpi=params.n_mpi,
+            antares_n_cpu = params.antares_n_cpu,
             keep_mps=params.keep_mps,
         )
         return my_parameters
+
+    def _check_antares_cpu_option(self, params ):
+        
+        if (params.antares_n_cpu == 1) and (params.n_mpi > 2)  :
+            params.antares_n_cpu = params.n_mpi
