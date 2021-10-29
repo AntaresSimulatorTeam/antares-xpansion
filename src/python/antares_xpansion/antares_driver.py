@@ -8,103 +8,68 @@ from datetime import datetime
 from pathlib import Path
 
 
-from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-
+from antares_xpansion.general_data_processor import GeneralDataProcessor
 import functools
 
 print = functools.partial(print, flush=True)
 
-    
+
 class AntaresDriver:
+    """
+        Initialize Antares Driver with given binary path to Antares solver
+    """
     def __init__(self, antares_exe_path: Path) -> None:
         
         self.antares_exe_path = antares_exe_path
-        #antares study dir given at launch time 
+        #antares study dir is just before launch 
         self.data_dir =  "" 
 
         self.settings = 'settings'
         self.general_data_ini = 'generaldata.ini'
         self.output = 'output'
-
+        self.ANTARES_N_CPU_OPTION = "--force-parallel"
+        self.antares_n_cpu = 1 # default
         self.is_accurate = False
         
-    def launch_accurate_mode(self, antares_study_path):
+    def launch_accurate_mode(self, antares_study_path, antares_n_cpu : int):
         self.is_accurate = True
+        self._set_antares_n_cpu(antares_n_cpu)
         self._launch(antares_study_path)  
 
-    def launch_fast_mode(self, antares_study_path):
+    def launch_fast_mode(self, antares_study_path, antares_n_cpu : int):
         self.is_accurate = False
+        self._set_antares_n_cpu(antares_n_cpu)
         self._launch(antares_study_path)  
+
+    def _set_antares_n_cpu(self, antares_n_cpu : int):
+        if antares_n_cpu >= 1 :
+            self.antares_n_cpu = antares_n_cpu 
+        else :
+            print(f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
+
 
     def _launch(self, antares_study_path):
         self._clear_old_log()
-        self.data_dir = antares_study_path
-        self._change_general_data_file_to_configure_antares_execution()
+        self.data_dir = antares_study_path      
+        self._update_general_data_ini()                                  
         self.launch_antares()
+
+    def _update_general_data_ini(self):
+        settings_dir = os.path.normpath(os.path.join(self.data_dir, self.settings))
+        gen_data_proc = GeneralDataProcessor(settings_dir, self.is_accurate)
+        gen_data_proc.change_general_data_file_to_configure_antares_execution() 
 
     def _clear_old_log(self):
         if os.path.isfile(self.antares_exe_path + '.log'):
             os.remove(self.antares_exe_path + '.log')
 
-    def _change_general_data_file_to_configure_antares_execution(self):
-        print("-- pre antares")
-        with open(self._general_data_ini_file_path(), 'r') as reader:
-            lines = reader.readlines()
-
-        with open(self._general_data_ini_file_path(), 'w') as writer:
-            current_section = ""
-            for line in lines:
-                if IniReader.line_is_not_a_section_header(line):
-                    key = line.split('=')[0].strip()
-                    line = self._get_new_line(line, current_section, key)
-                else:
-                    current_section = line.strip()
-
-                if line:
-                    writer.write(line)
-
-    def _general_data_ini_file_path(self):
-        """
-            returns path to general data ini file
-        """
-        return os.path.normpath(os.path.join(self.data_dir,
-                                             self.settings, self.general_data_ini))
 
     def antares_output_dir(self):
         """
             returns path to antares output data directory
         """
         return os.path.normpath(os.path.join(self.data_dir, self.output))                                             
-
-    def _get_new_line(self, line, section, key):
-        changed_val = self._get_values_to_change_general_data_file()
-        if (section, key) in changed_val:
-            new_val = changed_val[(section, key)]
-            if new_val:
-                line = key + ' = ' + new_val + '\n'
-            else:
-                line = None
-        return line
-
-
-    def _get_values_to_change_general_data_file(self):
-        optimization = '[optimization]'
-
-        return {(optimization, 'include-exportmps'): 'true',
-                (optimization, 'include-exportstructure'): 'true',
-                (optimization, 'include-tc-minstablepower'): 'true' if self.is_accurate else 'false',
-                (optimization,'include-tc-min-ud-time'): 'true' if self.is_accurate else 'false',
-                (optimization,'include-dayahead'): 'true' if self.is_accurate else 'false',
-                (optimization, 'include-usexprs'): None,
-                (optimization, 'include-inbasis'):  None,
-                (optimization, 'include-outbasis'): None,
-                (optimization, 'include-trace'):    None,
-                ('[general]', 'mode'): 'expansion' if self.is_accurate else 'Economy',
-                (
-                    '[other preferences]',
-                    'unit-commitment-mode'): 'accurate' if self.is_accurate else 'fast'
-                }
 
 
 
@@ -138,5 +103,6 @@ class AntaresDriver:
 
 
     def get_antares_cmd(self):
-        return [self.antares_exe_path, self.data_dir]
+        return [self.antares_exe_path, self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu)]
+        
 

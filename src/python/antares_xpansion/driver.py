@@ -81,6 +81,6 @@ class XpansionDriver:
     def launch_antares_step(self, antares_study_path  : Path ):
     
         if self.config_loader.is_accurate() :
-            self.antares_driver.launch_accurate_mode(antares_study_path)
+            self.antares_driver.launch_accurate_mode(antares_study_path, self.config.antares_n_cpu)
         else  :
-            self.antares_driver.launch_fast_mode(antares_study_path)
+            self.antares_driver.launch_fast_mode(antares_study_path, self.config.antares_n_cpu)

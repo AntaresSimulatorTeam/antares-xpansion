@@ -32,6 +32,7 @@ class InputParameters:
     install_dir: str
     method: str
     n_mpi: int
+    antares_n_cpu : int
     keep_mps: bool
 
 
@@ -72,6 +73,7 @@ class XpansionConfig:
         self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
+        self.antares_n_cpu = self.input_parameters.antares_n_cpu
         self.keep_mps = self.input_parameters.keep_mps
 
     def _get_install_dir(self, install_dir):

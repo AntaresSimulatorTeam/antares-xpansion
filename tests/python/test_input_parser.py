@@ -61,6 +61,23 @@ class TestInputParser:
         my_parser = InputParser()
         with pytest.raises(SystemExit):
             my_parser.parse_args(["--dataDir=hello", "--step=update"])
+    
+    def test_antares_n_cpu_default_value_is_one(self):
+        my_parser = InputParser()
+        result = my_parser.parse_args(["--dataDir=hello", ])
+        assert result.antares_n_cpu == 1
+    
+    def test_antares_n_cpu_default_value_is_equal_to_np_if_np_is_given(self):
+        my_parser = InputParser()
+        result = my_parser.parse_args(["--dataDir=hello","--np=4" ])
+        assert result.antares_n_cpu == 4
+
+    def test_antares_n_cpu_default_value_is_1_if_np_is_2(self):
+        my_parser = InputParser()
+        result = my_parser.parse_args(["--dataDir=hello","--np=2" ])
+        assert result.antares_n_cpu == 2
+
+
 
 
 
