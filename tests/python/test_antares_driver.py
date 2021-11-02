@@ -161,24 +161,13 @@ class TestAntaresDriver:
     
     def test_empty_antares_dir(self):
         antares_driver =  AntaresDriver("")
-
-        #${EMPTY_ANTARES_DIR}/settings//generaldata.ini not Found
         with pytest.raises(GeneralDataFileExceptions.GeneralDataFileNotFound):
             antares_driver.launch_accurate_mode(EMPTY_ANTARES_DIR, 1)
     
     def test_empty_settings_dir(self):
         antares_driver =  AntaresDriver("")
-
-        #${ANTARES_STUDY_WITH_EMPTY_SETTINGS_DIR}/settings//generaldata.ini not Found
         with pytest.raises(GeneralDataFileExceptions.GeneralDataFileNotFound):
             antares_driver.launch_accurate_mode(ANTARES_STUDY_WITH_EMPTY_SETTINGS_DIR, 1)
     
-    # def test_empty_general_data_file(self):
-    #     antares_driver =  AntaresDriver("")
-
-    #     #${TestEmptyGeneralDataFile}/settings//generaldata.ini not Found
-    #     # with pytest.raises(FileNotFoundError):
-    #     antares_driver.launch_accurate_mode(ANTARES_STUDY_WITH_EMPTY_EMPTY_GENERAL_DATA_FILE, 1)
-
 
 
