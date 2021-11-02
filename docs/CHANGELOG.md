@@ -1,5 +1,12 @@
 Antares-Xpansion Changelog
 =================
+
+Unreleased
+--------------------
+
+### Features
+
+- add option *antares-n-cpu* to use Antares parallelism
 v0.5.0 (10/2021)
 --------------------
 ### Features
