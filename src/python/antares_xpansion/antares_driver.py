@@ -22,11 +22,10 @@ class AntaresDriver:
     def __init__(self, antares_exe_path: Path) -> None:
         
         self.antares_exe_path = antares_exe_path
-        #antares study dir is just before launch 
+        #antares study dir is set just before launch 
         self.data_dir =  "" 
 
         self.settings = 'settings'
-        self.general_data_ini = 'generaldata.ini'
         self.output = 'output'
         self.ANTARES_N_CPU_OPTION = "--force-parallel"
         self.antares_n_cpu = 1 # default
@@ -75,11 +74,6 @@ class AntaresDriver:
 
     def launch_antares(self):
         print("-- launching antares")
-        simulation_name = ""
-
-        if not os.path.isdir(self.antares_output_dir()):
-            os.mkdir(self.antares_output_dir())
-        old_output = os.listdir(self.antares_output_dir())
 
         start_time = datetime.now()
 
@@ -93,14 +87,21 @@ class AntaresDriver:
         if returned_l.returncode != 0:
             print("WARNING: exited antares with status %d" % returned_l.returncode)
         else:
-            new_output = os.listdir(self.antares_output_dir())
-            assert len(old_output) + 1 == len(new_output)
-            diff = list(set(new_output) - set(old_output))
-            simulation_name = str(diff[0])
-            StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / simulation_name))
+            self._set_simulation_name()
+            StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / self.simulation_name))
 
-        self.simulation_name = simulation_name
+        
 
+    def _set_simulation_name(self):
+
+            # Get list of all dirs only in the given directory
+            list_of_dirs_filter = filter( lambda x: os.path.isdir(os.path.join(self.antares_output_dir(), x)),
+                                    os.listdir(self.antares_output_dir()) )
+            # Sort list of files based on last modification time in ascending order
+            list_of_dirs = sorted( list_of_dirs_filter,
+                        key = lambda x: os.path.getmtime(os.path.join(self.antares_output_dir(), x))
+                        )
+            self.simulation_name = list_of_dirs[-1]
 
     def get_antares_cmd(self):
         return [self.antares_exe_path, self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu)]
