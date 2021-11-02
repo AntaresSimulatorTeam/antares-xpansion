@@ -75,7 +75,7 @@ class TestInputParser:
     def test_antares_n_cpu_default_value_is_1_if_np_is_2(self):
         my_parser = InputParser()
         result = my_parser.parse_args(["--dataDir=hello","--np=2" ])
-        assert result.antares_n_cpu == 2
+        assert result.antares_n_cpu == 1
 
 
 
