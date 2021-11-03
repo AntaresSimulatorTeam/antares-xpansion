@@ -94,7 +94,7 @@ class TestGeneralDataProcessor:
     
     def test_values_change_in_general_file_fast_mode(self):
 
-        SETTINGS_DIR = TestGeneralDataProcessor.get_settings_dir(ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_ACCURATE_MODE)
+        SETTINGS_DIR = TestGeneralDataProcessor.get_settings_dir(ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE)
         gen_data_path = SETTINGS_DIR / self.generaldata
 
         is_accurate = False
@@ -169,5 +169,72 @@ class TestAntaresDriver:
         with pytest.raises(GeneralDataFileExceptions.GeneralDataFileNotFound):
             antares_driver.launch_accurate_mode(ANTARES_STUDY_WITH_EMPTY_SETTINGS_DIR, 1)
     
+    
+    def test_antares_cmd_without_exe_path_and_study_path(self):
+        antares_driver =  AntaresDriver("")
+        antares_cmd = antares_driver.get_antares_cmd()
+        
+        #antares_exe
+        assert antares_cmd[0] == "" 
+        #antares study path
+        assert antares_cmd[1] == ""
+        #antares --force-parallel option
+        assert antares_cmd[2] == "--force-parallel"
+        #antares --force-parallel option default value
+        assert antares_cmd[3] == "1"
+    
+    def test_antares_cmd_exe_path(self):
+        expected_exe_path = "/Path/to/exe"
+        antares_driver =  AntaresDriver(expected_exe_path)
+        antares_cmd = antares_driver.get_antares_cmd()
+        
+        #antares_exe
+        assert antares_cmd[0] == expected_exe_path 
+        #antares study path
+        assert antares_cmd[1] == ""
+        #antares --force-parallel option
+        assert antares_cmd[2] == "--force-parallel"
+        #antares --force-parallel option default value
+        assert antares_cmd[3] == "1"
+    
+    def test_antares_cmd_study_path(self):
+        expected_exe_path = "/Path/to/exe/"
+        antares_driver =  AntaresDriver(expected_exe_path)
+
+        #due to the expected_exe_path 
+        with pytest.raises(FileNotFoundError):
+            antares_driver.launch_fast_mode(ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE, 1)
+        
+        antares_cmd = antares_driver.get_antares_cmd()
+        
+        #antares_exe
+        assert antares_cmd[0] == expected_exe_path 
+        #antares study path
+        assert antares_cmd[1] == ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE
+        #antares --force-parallel option
+        assert antares_cmd[2] == "--force-parallel"
+        #antares --force-parallel option default value
+        assert antares_cmd[3] == "1"
+
+    
+    def test_antares_cmd__force_parallel_option(self):
+        expected_exe_path = "/Path/to/bin"
+        antares_driver =  AntaresDriver(expected_exe_path)
+
+        #due to the expected_exe_path 
+        with pytest.raises(FileNotFoundError):
+            antares_driver.launch_fast_mode(ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE, 3)
+        
+        antares_cmd = antares_driver.get_antares_cmd()
+        
+        #antares_exe
+        assert antares_cmd[0] == expected_exe_path 
+        #antares study path
+        assert antares_cmd[1] == ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE
+        #antares --force-parallel option
+        assert antares_cmd[2] == "--force-parallel"
+        #antares --force-parallel option default value
+        assert antares_cmd[3] == "3"  
+
 
 
