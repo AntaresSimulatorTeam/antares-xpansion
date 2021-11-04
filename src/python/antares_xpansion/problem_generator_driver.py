@@ -30,6 +30,8 @@ class ProblemGeneratorException:
         pass
     class LPNamerExeError(BaseException):
         pass
+    class LPNamerPathError(BaseException):
+        pass
 @dataclass
 class ProblemGeneratorData:
     LP_NAMER : str
@@ -49,25 +51,32 @@ class ProblemGeneratorDriver:
         self.install_dir = problem_generator_data.install_dir
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
-
+        self._lp_path = None
 
     def launch(self, output_path : Path, is_relaxed: bool):
         """
             problem generation step : getnames + lp_namer
         """
         self._clear_old_log()
+        print("-- Problem Generation")
+        self.output_path = output_path
+
+        self._get_names()
+
+        self.is_relaxed = is_relaxed
+        self._lp_step()
+
+    def set_output_path(self, output_path):
+
         if output_path.exists():
-            print("-- Problem Generation")
-            self.output_path = output_path
-
-            self._get_names()
-
-            self.lp_path = os.path.normpath(os.path.join(self.output_path, 'lp'))
-            self.is_relaxed = is_relaxed
-            self._lp_step()
+            self._output_path = output_path
+            self._lp_path = os.path.normpath(os.path.join(self._output_path, 'lp'))
         else :
             raise ProblemGeneratorException.OutputPathError(f"{output_path} not found")
-
+    
+    def get_output_path(self):
+        return self._output_path
+    
     def _clear_old_log(self):
         if (os.path.isfile(self._exe_path(self.LP_NAMER) + '.log')):
             os.remove(self._exe_path(self.LP_NAMER) + '.log')
@@ -130,9 +139,9 @@ class ProblemGeneratorDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
 
-        if os.path.isdir(self.lp_path):
-            shutil.rmtree(self.lp_path)
-        os.makedirs(self.lp_path)
+        if os.path.isdir(self._lp_path):
+            shutil.rmtree(self._lp_path)
+        os.makedirs(self._lp_path)
 
         
         if self.weight_file_name:
@@ -157,13 +166,15 @@ class ProblemGeneratorDriver:
 
 
     def get_lp_namer_log_filename(self):
-        return os.path.join(self.lp_path, self.LP_NAMER + '.log')
+        if not self._lp_path :
+            raise ProblemGeneratorException.LPNamerPathError("Error output path is not given")
+        return os.path.join(self._lp_path, self.LP_NAMER + '.log')
 
     def get_lp_namer_command(self):
         
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
         lp_namer_exe = Path(self._exe_path(self.LP_NAMER))
-        if not isinstance(self.output_path, Path):
+        if not self.output_path and not isinstance(self.output_path, Path):
             raise ProblemGeneratorException.OutputPathError(f"Error {self.output_path} is not a valid Path")
         elif not self.output_path.exists() :
             raise ProblemGeneratorException.OutputPathError(f"Error {self.output_path} not Found")
@@ -173,4 +184,4 @@ class ProblemGeneratorDriver:
         return [lp_namer_exe, "-o", self.output_path, "-f", is_relaxed, "-e",
                 self.additional_constraints]
 
-
+    output_path = property(get_output_path, set_output_path)
