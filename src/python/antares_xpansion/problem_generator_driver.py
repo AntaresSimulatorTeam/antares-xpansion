@@ -7,39 +7,65 @@ import os
 import subprocess
 import sys
 from datetime import datetime
-
+from dataclasses import dataclass
 from pathlib import Path
 
 from antares_xpansion.xpansion_utils import read_and_write_mps
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.config_loader import ConfigLoader
 
 import functools
 
 print = functools.partial(print, flush=True)
 
-
+@dataclass
+class ProblemGeneratorData:
+    LP_NAMER : str
+    keep_mps : bool
+    additional_constraints : str
+    weights_file_path : Path
+    weight_file_name : str
+    install_dir : Path
 class ProblemGeneratorDriver:
-    def __init__(self, config_loader : ConfigLoader ) -> None:
-        self.config_loader = config_loader
-        self.config = self.config_loader.config
-        self.options = self.config_loader.options
+    def __init__(self, problem_generator_data : ProblemGeneratorData) -> None:
 
-    def clear_old_log(self):
-        if (self.config.step in ["full", "problem_generation"]) \
-                and (os.path.isfile(self.config_loader.exe_path(self.config.LP_NAMER) + '.log')):
-            os.remove(self.config_loader.exe_path(self.config.LP_NAMER) + '.log')
+        self.LP_NAMER = problem_generator_data.LP_NAMER
+        self.keep_mps = problem_generator_data.keep_mps
+        self.additional_constraints = problem_generator_data.additional_constraints
+        self.weights_file_path = problem_generator_data.weights_file_path
+        self.weight_file_name = problem_generator_data.weight_file_name
+        self.install_dir = problem_generator_data.install_dir
+        self.MPS_TXT = "mps.txt"
+        self.is_relaxed = False
 
-    def launch(self):
+
+    def launch(self, output_path : Path, is_relaxed: bool):
         """
             problem generation step : getnames + lp_namer
         """
+        self._clear_old_log()
+        self.output_path = output_path
+        self.lp_path = os.path.normpath(os.path.join(self.output_path, 'lp'))
+        self.is_relaxed = is_relaxed
         print("-- Problem Generation")
         self.get_names()
         self.lp_step()
 
+    def _clear_old_log(self):
+        if (os.path.isfile(self._exe_path(self.LP_NAMER) + '.log')):
+            os.remove(self._exe_path(self.LP_NAMER) + '.log')
+
+    def _exe_path(self, exe):
+        """
+            prefixes the input exe with the install directory containing the binaries
+
+            :param exe: executable name
+
+            :return: path to specified executable
+        """
+        return os.path.normpath(os.path.join(self.install_dir, exe))
+   
     def get_names(self):
         """
             produces a .txt file describing the weekly problems:
@@ -51,19 +77,19 @@ class ProblemGeneratorDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
 
-        output_path = self.config_loader.simulation_output_path()
-        mps_txt = read_and_write_mps(output_path)
-        with open(os.path.normpath(os.path.join(output_path, self.config.MPS_TXT)), 'w') as file_l:
+        
+        mps_txt = read_and_write_mps(self.output_path)
+        with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l:
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
 
-        glob_path = Path(output_path)
+        glob_path = Path(self.output_path)
         area_files = [str(pp) for pp in glob_path.glob("area*.txt")]
         interco_files = [str(pp) for pp in glob_path.glob("interco*.txt")]
         assert len(area_files) == 1
         assert len(interco_files) == 1
-        shutil.copy(area_files[0], os.path.normpath(os.path.join(output_path, 'area.txt')))
-        shutil.copy(interco_files[0], os.path.normpath(os.path.join(output_path, 'interco.txt')))
+        shutil.copy(area_files[0], os.path.normpath(os.path.join(self.output_path, 'area.txt')))
+        shutil.copy(interco_files[0], os.path.normpath(os.path.join(self.output_path, 'interco.txt')))
 
 
     def lp_step(self):
@@ -72,23 +98,20 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
+                
+        if os.path.isdir(self.lp_path):
+            shutil.rmtree(self.lp_path)
+        os.makedirs(self.lp_path)
 
-        output_path = self.config_loader.simulation_output_path()
+        
+        if self.weight_file_name:
+            weight_list = XpansionStudyReader.get_years_weight_from_file(self.weights_file_path)
+            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name)
 
-        lp_path = self.config_loader.simulation_lp_path()
-        if os.path.isdir(lp_path):
-            shutil.rmtree(lp_path)
-        os.makedirs(lp_path)
-
-        weight_file_name = self.config_loader.weight_file_name()
-        if weight_file_name:
-            weight_list = XpansionStudyReader.get_years_weight_from_file(self.config_loader.weights_file_path())
-            YearlyWeightWriter(Path(output_path)).create_weight_file(weight_list, weight_file_name)
-
-        with open(self.get_lp_namer_log_filename(lp_path), 'w') as output_file:
+        with open(self.get_lp_namer_log_filename(), 'w') as output_file:
 
             start_time = datetime.now()
-            returned_l = subprocess.run(self.get_lp_namer_command(output_path), shell=False,
+            returned_l = subprocess.run(self.get_lp_namer_command(), shell=False,
                                         stdout=output_file,
                                         stderr=output_file)
 
@@ -98,26 +121,16 @@ class ProblemGeneratorDriver:
             if returned_l.returncode != 0:
                 print("ERROR: exited lpnamer with status %d" % returned_l.returncode)
                 sys.exit(1)
-            elif not self.config.keep_mps:
-                StudyOutputCleaner.clean_lpnamer_step(Path(output_path))
-        self.config_loader.set_options_for_benders_solver()
+            elif not self.keep_mps:
+                StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
 
 
-    def get_lp_namer_log_filename(self, lp_path):
-        return os.path.join(lp_path, self.config.LP_NAMER + '.log')
+    def get_lp_namer_log_filename(self):
+        return os.path.join(self.lp_path, self.LP_NAMER + '.log')
 
-    def get_lp_namer_command(self, output_path):
-        is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
-        return [self.config_loader.exe_path(self.config.LP_NAMER), "-o", str(output_path), "-f", is_relaxed, "-e",
-                self.config_loader.additional_constraints()]
+    def get_lp_namer_command(self):
+        is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
+        return [self._exe_path(self.LP_NAMER), "-o", str(self.output_path), "-f", is_relaxed, "-e",
+                self.additional_constraints]
 
-    def is_relaxed(self):
-        """
-            indicates if method to use is relaxed by reading the relaxation_type
-            from the settings file
-        """
-        relaxation_type = self.options.get('master',
-                                           self.config.settings_default["master"])
-        assert relaxation_type in ['integer', 'relaxed', 'full_integer']
-        return relaxation_type == 'relaxed'
 

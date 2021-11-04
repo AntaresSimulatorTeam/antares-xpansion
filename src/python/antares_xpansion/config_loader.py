@@ -232,7 +232,6 @@ class ConfigLoader:
         """
             return last simulation name    
         """
-
         # Get list of all dirs only in the given directory
         list_of_dirs_filter = filter( lambda x: os.path.isdir(os.path.join(self.antares_output(), x)),
                                 os.listdir(self.antares_output()) )
@@ -253,3 +252,12 @@ class ConfigLoader:
 
     class MissingFile(Exception):
         pass
+    def is_relaxed(self):
+        """
+            indicates if method to use is relaxed by reading the relaxation_type
+            from the settings file
+        """
+        relaxation_type = self.options.get('master',
+                                           self.config.settings_default["master"])
+        assert relaxation_type in ['integer', 'relaxed', 'full_integer']
+        return relaxation_type == 'relaxed'
