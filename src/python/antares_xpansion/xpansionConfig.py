@@ -122,7 +122,6 @@ class XpansionConfig:
         self.OUTBASIS = 'include-outbasis'
         self.OUTPUT = 'output'
         self.OPTIONS_TXT = 'options.txt'
-        self.MPS_TXT = "mps.txt"
 
     def _set_default_settings(self):
         self.settings_default = {'method': 'benders_decomposition',

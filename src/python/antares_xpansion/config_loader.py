@@ -247,3 +247,13 @@ class ConfigLoader:
             msg = f"no suitable simulation directory found in {self.antares_output()}, simulation directory name must be in this format: YYYYMMDD-HHMMeco "
             raise XpansionStudyReader.NoSimulationDirectory(msg)
         self.simulation_name = sorted_simulations_list[-1]
+
+    def is_relaxed(self):
+        """
+            indicates if method to use is relaxed by reading the relaxation_type
+            from the settings file
+        """
+        relaxation_type = self.options.get('master',
+                                           self.config.settings_default["master"])
+        assert relaxation_type in ['integer', 'relaxed', 'full_integer']
+        return relaxation_type == 'relaxed'
