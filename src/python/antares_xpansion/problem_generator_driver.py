@@ -19,6 +19,17 @@ import functools
 
 print = functools.partial(print, flush=True)
 
+class ProblemGeneratorException:
+    class BaseException(Exception):
+        pass
+    class AreaFileException(BaseException):
+        pass
+    class IntercoFilesException(BaseException):
+        pass
+    class OutputPathError(BaseException):
+        pass
+    class LPNamerExeError(BaseException):
+        pass
 @dataclass
 class ProblemGeneratorData:
     LP_NAMER : str
@@ -45,12 +56,17 @@ class ProblemGeneratorDriver:
             problem generation step : getnames + lp_namer
         """
         self._clear_old_log()
-        self.output_path = output_path
-        self.lp_path = os.path.normpath(os.path.join(self.output_path, 'lp'))
-        self.is_relaxed = is_relaxed
-        print("-- Problem Generation")
-        self.get_names()
-        self.lp_step()
+        if output_path.exists():
+            print("-- Problem Generation")
+            self.output_path = output_path
+
+            self._get_names()
+
+            self.lp_path = os.path.normpath(os.path.join(self.output_path, 'lp'))
+            self.is_relaxed = is_relaxed
+            self._lp_step()
+        else :
+            raise ProblemGeneratorException.OutputPathError(f"{output_path} not found")
 
     def _clear_old_log(self):
         if (os.path.isfile(self._exe_path(self.LP_NAMER) + '.log')):
@@ -66,7 +82,7 @@ class ProblemGeneratorDriver:
         """
         return os.path.normpath(os.path.join(self.install_dir, exe))
    
-    def get_names(self):
+    def _get_names(self):
         """
             produces a .txt file describing the weekly problems:
             each line of the file contains :
@@ -83,22 +99,37 @@ class ProblemGeneratorDriver:
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
 
+        self._check_and_copy_area_file()
+        self._check_and_copy_interco_file()
+
+
+    def _check_and_copy_area_file(self):
+        self._check_and_copy_txt_file("area", ProblemGeneratorException.AreaFileException)
+
+    def _check_and_copy_interco_file(self):
+        self._check_and_copy_txt_file("interco", ProblemGeneratorException.IntercoFilesException)
+
+    def _check_and_copy_txt_file(self, prefix, exception_to_raise: ProblemGeneratorException.BaseException):
+        self._check_and_copy_file(prefix, "txt", exception_to_raise)
+
+    def _check_and_copy_file(self, prefix, extension, exception_to_raise : ProblemGeneratorException.BaseException):
         glob_path = Path(self.output_path)
-        area_files = [str(pp) for pp in glob_path.glob("area*.txt")]
-        interco_files = [str(pp) for pp in glob_path.glob("interco*.txt")]
-        assert len(area_files) == 1
-        assert len(interco_files) == 1
-        shutil.copy(area_files[0], os.path.normpath(os.path.join(self.output_path, 'area.txt')))
-        shutil.copy(interco_files[0], os.path.normpath(os.path.join(self.output_path, 'interco.txt')))
+        files = [str(pp) for pp in glob_path.glob(prefix+"*"+extension)]
+        if len(files) == 0 :
+            raise exception_to_raise("No %s*.txt file found"%prefix)
 
+        elif len(files) > 1 :
+            raise exception_to_raise("More than one %s*.txt file found"%prefix)
 
-    def lp_step(self):
+        shutil.copy(files[0], os.path.normpath(os.path.join(self.output_path, prefix+'.'+extension)))
+
+    def _lp_step(self):
         """
             copies area and interco files and launches the lp_namer
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-                
+
         if os.path.isdir(self.lp_path):
             shutil.rmtree(self.lp_path)
         os.makedirs(self.lp_path)
@@ -129,8 +160,17 @@ class ProblemGeneratorDriver:
         return os.path.join(self.lp_path, self.LP_NAMER + '.log')
 
     def get_lp_namer_command(self):
+        
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
-        return [self._exe_path(self.LP_NAMER), "-o", str(self.output_path), "-f", is_relaxed, "-e",
+        lp_namer_exe = Path(self._exe_path(self.LP_NAMER))
+        if not isinstance(self.output_path, Path):
+            raise ProblemGeneratorException.OutputPathError(f"Error {self.output_path} is not a valid Path")
+        elif not self.output_path.exists() :
+            raise ProblemGeneratorException.OutputPathError(f"Error {self.output_path} not Found")
+        elif  not lp_namer_exe.is_file():
+            raise ProblemGeneratorException.LPNamerExeError(f"LP namer exe : {lp_namer_exe} not found")
+        
+        return [lp_namer_exe, "-o", str(self.output_path), "-f", is_relaxed, "-e",
                 self.additional_constraints]
 
 
