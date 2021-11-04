@@ -1,5 +1,6 @@
 from typing import Text
 import pytest
+import os
 from pathlib import Path
 from datetime import date, datetime
 
@@ -110,8 +111,51 @@ class TestProblemGeneratorDriver:
                 my_list = line.strip().split(" ")
                 assert my_list in expected_results
 
+
+    def test_lp_namer_command(self, tmp_path):
+
         
-   
+        lp_exe = "lp_namer.exe"
+        lp_exe_file = tmp_path / lp_exe
+        lp_exe_file.write_text("") 
+        additional_constraints = "my additionals constraints"
+        self.pblm_gen_data = ProblemGeneratorData(LP_NAMER= lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints=additional_constraints,
+                                                      weights_file_path=Path(""),
+                                                      weight_file_name="",
+                                                      install_dir=tmp_path)
+        
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
+        problem_generator_driver = ProblemGeneratorDriver(self.pblm_gen_data)
+        is_relaxed = False
+        output_path = Path("")
+        problem_generator_driver.output_path = output_path
+        assert problem_generator_driver.is_relaxed == is_relaxed
+        relaxed_value = 'integer'
+        assert problem_generator_driver.get_lp_namer_command() == [lp_exe_file, "-o", output_path, "-f", relaxed_value, "-e",
+                additional_constraints]
+
+    def test_lp_namer_log_filename(self, tmp_path):
+
+        
+        lp_exe = "lp_namer.exe"
+        lp_exe_file = tmp_path / lp_exe
+        lp_exe_file.write_text("") 
+        additional_constraints = "my additionals constraints"
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER= lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints=additional_constraints,
+                                                      weights_file_path=Path(""),
+                                                      weight_file_name="",
+                                                      install_dir=tmp_path)
+        
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        problem_generator_driver.set_output_path(tmp_path)
+        assert problem_generator_driver.get_lp_namer_log_filename() == os.path.join(tmp_path,"lp", pblm_gen_data.LP_NAMER+ '.log') 
 
     def _get_expected_mps_txt(self, tmp_path):
 
