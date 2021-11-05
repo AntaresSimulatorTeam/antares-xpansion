@@ -59,8 +59,6 @@ class XpansionConfig:
 
         self._get_config_values()
 
-        self._initialise_system_specific_mpi_vars()
-
         self._get_parameters_from_arguments()
 
         self._initialize_default_values()
@@ -163,15 +161,6 @@ class XpansionConfig:
             'BOUND_ALPHA': '1',
         }
 
-    def _initialise_system_specific_mpi_vars(self):
-        if sys.platform.startswith("win32"):
-            self.MPI_LAUNCHER = "mpiexec"
-            self.MPI_N = "-n"
-        elif sys.platform.startswith("linux"):
-            self.MPI_LAUNCHER = "mpirun"
-            self.MPI_N = "-np"
-        else:
-            print("WARN: No mpi launcher was defined!")
 
     def _get_config_values(self):
         
