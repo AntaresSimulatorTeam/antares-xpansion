@@ -108,7 +108,7 @@ class ProblemGeneratorDriver:
 
     def get_lp_namer_command(self, output_path):
         is_relaxed = 'relaxed' if self.is_relaxed() else 'integer'
-        return [self.config_loader.exe_path(self.config.LP_NAMER), "-o", output_path, "-f", is_relaxed, "-e",
+        return [self.config_loader.exe_path(self.config.LP_NAMER), "-o", str(output_path), "-f", is_relaxed, "-e",
                 self.config_loader.additional_constraints()]
 
     def is_relaxed(self):
