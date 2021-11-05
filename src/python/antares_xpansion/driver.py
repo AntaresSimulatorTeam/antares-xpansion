@@ -9,7 +9,7 @@ from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 from antares_xpansion.benders_driver import BendersDriver
-from antares_xpansion.study_updater_driver import StudyUpdaterDriver
+from antares_xpansion.study_updater_driver import StudyUpdaterDriver, StudyUpdaterData
 from antares_xpansion.general_data_processor import GeneralDataProcessor
 from antares_xpansion.flushed_print import flushed_print
 
@@ -51,10 +51,14 @@ class XpansionDriver:
             benders_sequential_exe_path,
             benders_merge_mps_exe_path,
         )
-        self.study_update_driver = StudyUpdaterDriver(self.config_loader)
 
-        self.settings = "settings"
+        self.study_update_driver = StudyUpdaterDriver(StudyUpdaterData(study_updater_exe = self.config_loader.exe_path(self.config.STUDY_UPDATER),
+                                                                       simulation_output_path = self.config_loader.simulation_output_path(),
+                                                                       JSON_NAME = self.config.options_default["JSON_NAME"],
+                                                                       keep_mps = self.config.keep_mps))
 
+        self.settings = 'settings'
+        
     def launch(self):
         """
         launch antares xpansion steps
