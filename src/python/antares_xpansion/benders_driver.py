@@ -24,7 +24,7 @@ class BendersDriverException :
         pass
     class BendersUnsupportedPlatform(BaseException):
         pass
-    class BendersLp_PathError(BaseException):
+    class BendersLpPathError(BaseException):
         pass
 @dataclass
 class BendersDriverData:
@@ -91,7 +91,7 @@ class BendersDriver:
         if(lp_path.is_dir()):
             return lp_path
         else :
-            raise BendersDriverException.BendersLp_PathError(f"Error in lp path: {lp_path} not found")
+            raise BendersDriverException.BendersLpPathError(f"Error in lp path: {lp_path} not found")
 
 
     def get_solver(self):
