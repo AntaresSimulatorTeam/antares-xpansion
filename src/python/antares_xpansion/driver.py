@@ -63,7 +63,6 @@ class XpansionDriver:
         """
         launch antares xpansion steps
         """
-        self._clear_old_log()
 
         if self.config.step == "full":
             self.launch_antares_step()
@@ -95,8 +94,6 @@ class XpansionDriver:
             flushed_print("Launching failed")
             sys.exit(1)
 
-    def _clear_old_log(self):
-        self.study_update_driver.clear_old_log()
 
     def launch_antares_step(self):
         self._update_general_data_ini()
