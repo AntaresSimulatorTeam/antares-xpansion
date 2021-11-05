@@ -79,7 +79,7 @@ class TestBendersDriver:
                                                             keep_mps = False)
 
         a_benders_driver = BendersDriver(benders_driver_data)
-        with pytest.raises(BendersDriverException.BendersLp_PathError):
+        with pytest.raises(BendersDriverException.BendersLpPathError):
             a_benders_driver.launch(tmp_path)
 
     
