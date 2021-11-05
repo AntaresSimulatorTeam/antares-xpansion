@@ -50,6 +50,6 @@ class StudyUpdaterDriver:
         return os.path.join(self.config_loader.simulation_output_path(), self.config.STUDY_UPDATER + '.log')
 
     def get_study_updater_command(self, output_path):
-        return [self.config_loader.exe_path(self.config.STUDY_UPDATER), "-o", output_path, "-s",
+        return [self.config_loader.exe_path(self.config.STUDY_UPDATER), "-o", str(output_path), "-s",
                 self.config.options_default["JSON_NAME"] + ".json"]
                 
