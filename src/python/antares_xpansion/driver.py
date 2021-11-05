@@ -8,7 +8,7 @@ from pathlib import Path
 from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
-from antares_xpansion.benders_driver import BendersDriver
+from antares_xpansion.benders_driver import BendersDriver, BendersDriverData
 from antares_xpansion.study_updater_driver import StudyUpdaterDriver
 from antares_xpansion.general_data_processor import GeneralDataProcessor
 
@@ -42,7 +42,13 @@ class XpansionDriver:
                                                                                     lp_namer_exe_path  = self.config_loader.exe_path(self.config.LP_NAMER),
                                                                                     nb_active_years = self.config_loader.nb_active_years      
                                                                 ))
-        self.benders_driver = BendersDriver(self.config_loader)
+        self.benders_driver = BendersDriver(BendersDriverData(install_dir = self.config.install_dir,
+                                                              BENDERS_MPI = self.config.BENDERS_MPI,
+                                                              method = self.config.method,
+                                                              MERGE_MPS  = self.config.MERGE_MPS,
+                                                              BENDERS_SEQUENTIAL = self.config.BENDERS_SEQUENTIAL,
+                                                              n_mpi = self.config.n_mpi,
+                                                              keep_mps = self.config.keep_mps))
         self.study_update_driver = StudyUpdaterDriver(self.config_loader)
         
         self.settings = 'settings'
@@ -57,7 +63,7 @@ class XpansionDriver:
             self.launch_antares_step()  
             print("-- post antares")
             self.launch_problem_generation_step()
-            self.benders_driver.launch()
+            self.launch_benders_step()
             self.study_update_driver.launch()
         elif self.config.step == "antares":
             self.launch_antares_step()  
@@ -71,7 +77,7 @@ class XpansionDriver:
                 sys.exit(1)
         elif self.config.step == "benders":
             if self.config.simulation_name:
-                self.benders_driver.launch()
+                self.launch_benders_step()
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
@@ -85,8 +91,7 @@ class XpansionDriver:
     def launch_antares_step(self):
         self._update_general_data_ini()
         self.antares_driver.launch(self.config.data_dir, self.config.antares_n_cpu)
-
-    
+        
     def _update_general_data_ini(self):
         settings_dir = os.path.normpath(os.path.join(self.config_loader.data_dir(), self.settings))
         gen_data_proc = GeneralDataProcessor(settings_dir, self.config_loader.is_accurate())
@@ -103,3 +108,6 @@ class XpansionDriver:
     class MissingSimulationName(BasicException):
         pass
 
+    def launch_benders_step(self):
+        self.config_loader.set_options_for_benders_solver()
+        self.benders_driver.launch(self.config_loader.simulation_output_path())
