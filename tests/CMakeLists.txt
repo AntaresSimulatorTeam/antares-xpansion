@@ -39,11 +39,23 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 	
 	# benders end to end tests
     add_test(
-        NAME benders_end_to_end
-        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersEndToEnd.py
+        NAME sequential_benders_end_to_end
+        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersSequentialEndToEnd.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
-    set_property(TEST benders_end_to_end PROPERTY LABELS benders)
+    set_property(TEST sequential_benders_end_to_end PROPERTY LABELS sequential)
+    add_test(
+        NAME mpibenders_benders_end_to_end
+        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersmpibendersEndToEnd.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
+    )
+    set_property(TEST mpibenders_benders_end_to_end PROPERTY LABELS mpibenders)
+    add_test(
+        NAME merge_mps_benders_end_to_end
+        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersMergeMpsEndToEnd.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
+    )
+    set_property(TEST merge_mps_benders_end_to_end PROPERTY LABELS merge_mps)
 
     add_test(
             NAME lpnamer_end_to_end
