@@ -79,7 +79,11 @@ class XpansionDriver:
         self.study_update_driver.clear_old_log()
 
     def launch_antares_step(self, antares_study_path  : Path ):
-    
+
+        #self.general_data_processor(antares_study_path, self.config_loader.is_accurate())
+        #self.antares_driver.launch_antares(antares_study_path, self.config.antares_n_cpu)
+
+
         if self.config_loader.is_accurate() :
             self.antares_driver.launch_accurate_mode(antares_study_path, self.config.antares_n_cpu)
         else  :
