@@ -38,14 +38,13 @@ int main(int argc, char** argv)
 
     auto masterLogger = std::make_shared<xpansion::logger::Master>();
     Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
-    std::string loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbendersmpi";
+    std::string loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbendersmpi.txt";
     if (world.rank() == 0)
     {
-        loggerFileName += "-" + std::to_string(world.rank());
+        Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
+        masterLogger->addLogger(loggerFile);
     }
-    Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
     masterLogger->addLogger(loggerUser);
-    masterLogger->addLogger(loggerFile);
 
     Logger logger = masterLogger;
 
