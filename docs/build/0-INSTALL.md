@@ -18,6 +18,7 @@ Antares-Xpansion is built using CMake.
 - [Build](3-Build.md)
 - [Tests](4-Tests.md)
 - [Installer creation](5-Installer-creation.md)
+- [UI creation](6-ui-creation.md)
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml/badge.svg
 [ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml

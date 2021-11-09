@@ -75,7 +75,7 @@ Antares Xpansion does not have a GUI, the entry point to run Antares Xpansion is
 `/antares-xpansion-install-dir/antares-xpansion-launcher.exe`.
 This binary should be run from a command prompt or unix terminal:
 
-For example by runnin the following command inside the `/antares-xpansion-install-dir/`
+For example by running the following command inside the `/antares-xpansion-install-dir/`
 Antares-Xpansion runs one of the examples
 ```shell
 ./antares-xpansion-launcher.exe -i examples/SmallTestFiveCandidates
@@ -104,7 +104,7 @@ This software suite has been tested under:
 *   Microsoft Windows with Visual Studio 2019 (64-bit) [![Status][windows_vcpkg_svg]][windows_vcpkg_link]
 *   Centos 7 [![Status][centos_system_svg]][centos_system_link] 
 
-Antares XPansion is built using CMake.
+Antares Xpansion is built using CMake.
 For build and installation instructions, please visit [doc/build/0-INSTALL.md](docs/build/0-INSTALL.md)
 
 ## Source Code Content
