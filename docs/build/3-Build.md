@@ -71,7 +71,7 @@ Additionnal options for Xpress use
 === "Ubuntu"
 
     ```
-    cmake3 --build _build --config Release -j8
+    cmake --build _build --config Release -j8
     ```
 Note :
 > Compilation can be done on several processor with ```-j``` option.

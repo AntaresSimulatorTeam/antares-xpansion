@@ -43,7 +43,7 @@ nav:
     - 'UI creation': 'build/6-ui-creation.md'
     - 'Installer creation': 'build/5-Installer-creation.md'
   - 'Developer guide': 
-    - 'antares-xpansion simulation procedure' : 'developer-guide/0-Process.md'
+    - 'Antares-Xpansion simulation procedure' : 'developer-guide/0-Process.md'
     - 'Optimization problems generation' : 'developer-guide/1-antares-solver.md'
     - 'Modification of problems to introduce investment variables' : 'developer-guide/2-problem-modification.md'
   - 'Changelog': 'CHANGELOG.md'
