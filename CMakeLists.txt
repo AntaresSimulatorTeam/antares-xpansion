@@ -410,4 +410,6 @@ if (ANTARES_XPANSION_RC)
 	set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}")
 endif()
 
+#version file to define Xpansion and Antares-simulator versions
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py.in ${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py)
 include(CPack)
