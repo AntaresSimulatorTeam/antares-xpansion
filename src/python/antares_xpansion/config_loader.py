@@ -46,8 +46,8 @@ class ConfigLoader:
 
     def _verify_settings_ini_file_exists(self):
         if not os.path.isfile(self._get_settings_ini_filepath()):
-            print('Missing file : %s was not retrieved.' % self._get_settings_ini_filepath())
-            sys.exit(1)
+            raise ConfigLoader.MissingFile(' %s was not retrieved.' % self._get_settings_ini_filepath())
+            
 
     def _get_options_from_settings_inifile(self):
         with open(self._get_settings_ini_filepath(), 'r') as file_l:
@@ -58,8 +58,8 @@ class ConfigLoader:
 
     def check_candidates_file_format(self):
         if not os.path.isfile(self.candidates_ini_filepath()):
-            print('Missing file : %s was not retrieved.' % self.candidates_ini_filepath())
-            sys.exit(1)
+            raise ConfigLoader.MissingFile(' %s was not retrieved.' % self.candidates_ini_filepath())
+            
 
         check_candidates_file(self)
 
@@ -233,17 +233,23 @@ class ConfigLoader:
             return last simulation name    
         """
 
-        # simulation name folder YYYYMMDD-HHMMeco
-        classic_simulation_name_regex = re.compile(
-            "^\d{4}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-([0-1]?[0-9]|2[0-3])[0-5][0-9]eco([-][-0-9]+?)?$")
+        # Get list of all dirs only in the given directory
+        list_of_dirs_filter = filter( lambda x: os.path.isdir(os.path.join(self.antares_output(), x)),
+                                os.listdir(self.antares_output()) )
+        # Sort list of files based on last modification time in ascending order
+        list_of_dirs = sorted( list_of_dirs_filter,
+                    key = lambda x: os.path.getmtime(os.path.join(self.antares_output(), x))
+                    )
+        self.simulation_name = list_of_dirs[-1]
+                
+    def is_accurate(self):
+        """
+            indicates if method to use is accurate by reading the uc_type in the settings file
+        """
+        uc_type = self.options.get(self.config.UC_TYPE,
+                                   self.config.settings_default[self.config.UC_TYPE])
+        assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
+        return uc_type == self.config.EXPANSION_ACCURATE
 
-        simulations_list = []
-        for file in os.listdir(self.antares_output()):
-            if (os.path.isdir(os.path.normpath(os.path.join(self.antares_output(), file))) and re.fullmatch(
-                    classic_simulation_name_regex, file)):
-                simulations_list.append(file)
-        sorted_simulations_list = sorted(simulations_list)
-        if len(sorted_simulations_list) == 0:
-            msg = f"no suitable simulation directory found in {self.antares_output()}, simulation directory name must be in this format: YYYYMMDD-HHMMeco "
-            raise XpansionStudyReader.NoSimulationDirectory(msg)
-        self.simulation_name = sorted_simulations_list[-1]
+    class MissingFile(Exception):
+        pass
