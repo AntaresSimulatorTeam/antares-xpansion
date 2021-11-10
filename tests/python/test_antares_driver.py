@@ -1,49 +1,55 @@
-from unittest.mock import patch
+from unittest.mock import ANY, patch
+from _pytest import config
 
 import pytest
 import os
 from pathlib import Path
+import yaml
+
 from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import GeneralDataFileExceptions, GeneralDataProcessor
 
-RESSOURCES_DIR = Path(os.path.dirname(__file__)) / "ressources" / "general_data_processor_data"
-EMPTY_ANTARES_DIR = RESSOURCES_DIR / "TestEmptyDir"
-ANTARES_STUDY_WITH_EMPTY_SETTINGS_DIR = RESSOURCES_DIR / "TestEmptySettingsDir"
-ANTARES_STUDY_WITH_EMPTY_EMPTY_GENERAL_DATA_FILE = RESSOURCES_DIR / "TestEmptyGeneralDataFile"
-ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_ACCURATE_MODE = RESSOURCES_DIR / "Test_Accurate_Mode"
-ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE = RESSOURCES_DIR / "Test_Fast_Mode"
-
+ANTARES_DRIVER_SUBPROCESS_RUN =  "antares_xpansion.antares_driver.subprocess.run"
 
 class TestGeneralDataProcessor:
 
     def setup_method(self):
         self.generaldata_filename = "generaldata.ini"
 
-    def test_with_no_existing_general_data_file(self):
+    def test_with_non_existing_general_data_file(self, tmp_path):
+
+        settings_dir = self.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
         with pytest.raises(GeneralDataFileExceptions.GeneralDataFileNotFound):
-            GeneralDataProcessor(ANTARES_STUDY_WITH_EMPTY_SETTINGS_DIR, True)
+            GeneralDataProcessor(settings_dir, True)
 
-    def test_general_data_file_path(self):
-        SETTINGS_DIR = TestGeneralDataProcessor.get_settings_dir(ANTARES_STUDY_WITH_EMPTY_EMPTY_GENERAL_DATA_FILE)
-        expected_path = SETTINGS_DIR / self.generaldata_filename
-        gen_data_proc = GeneralDataProcessor(SETTINGS_DIR, True)
-        assert gen_data_proc.get_general_data_ini_file() == expected_path
+    def test_general_data_file_path(self, tmp_path):
 
-    def test_no_changes_in_empty_file(self):
-        SETTINGS_DIR = TestGeneralDataProcessor.get_settings_dir(ANTARES_STUDY_WITH_EMPTY_EMPTY_GENERAL_DATA_FILE)
-        gen_data_proc = GeneralDataProcessor(SETTINGS_DIR, True)
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        expected_path = settings_dir / self.generaldata_filename
+        expected_path.touch()
+        gen_data_proc = GeneralDataProcessor(settings_dir, True)
+        assert gen_data_proc.general_data_ini_file == expected_path
+
+    def test_no_changes_in_empty_file(self, tmp_path):
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / self.generaldata_filename
+        gen_data_path.touch()
+        gen_data_proc = GeneralDataProcessor(settings_dir, True)
 
         with open(gen_data_proc.general_data_ini_file, "r") as reader:
             lines = reader.readlines()
 
         assert len(lines) == 0
 
-    def test_values_change_in_general_file_accurate_mode(self):
+    def test_values_change_in_general_file_accurate_mode(self, tmp_path):
 
-        SETTINGS_DIR = TestGeneralDataProcessor.get_settings_dir(
-            ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_ACCURATE_MODE)
-        gen_data_path = SETTINGS_DIR / self.generaldata_filename
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / self.generaldata_filename
 
         is_accurate = True
         optimization = '[optimization]'
@@ -79,7 +85,7 @@ class TestGeneralDataProcessor:
                         (random_section, "key2"): "value2"
                         }
 
-        gen_data_proc = GeneralDataProcessor(SETTINGS_DIR, is_accurate)
+        gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
 
         gen_data_proc.change_general_data_file_to_configure_antares_execution()
         general_data_ini_file = gen_data_proc.general_data_ini_file
@@ -151,32 +157,143 @@ class TestGeneralDataProcessor:
 
 class TestAntaresDriver:
 
-    def test_empty_antares_dir(self, tmp_path):
+    
+    def test_antares_cmd(self, tmp_path):
         study_dir = tmp_path
-        antares_driver = AntaresDriver("")
-        with pytest.raises(GeneralDataFileExceptions.GeneralDataFileNotFound):
-            antares_driver.launch_accurate_mode(study_dir, 1)
+        exe_path = "/Path/to/bin1"
+        antares_driver = AntaresDriver(exe_path)
+        #catching execution error 
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            # mock subprocess.run
+            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+                antares_driver.launch(study_dir, 1)
+                expected_cmd = [exe_path, study_dir, "--force-parallel","1"]
+                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
 
-    def test_empty_settings_dir(self, tmp_path):
+    def test_antares_cmd_force_parallel_option(self, tmp_path):
+        study_dir = tmp_path
+        exe_path = "/Path/to/bin2"
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        #catching execution error 
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+                antares_driver.launch(study_dir, n_cpu)
+                expected_cmd = [exe_path, study_dir, "--force-parallel", str(n_cpu)]
+                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
+    
+    def test_invalid_n_cpu(self, tmp_path):
+        study_dir = tmp_path
+        exe_path = "/Path/to/bin"
+        n_cpu = -1
+        expected_n_cpu = 1
+        antares_driver = AntaresDriver(exe_path)
+        #catching execution error 
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+                antares_driver.launch(study_dir, n_cpu)
+                expected_cmd = [exe_path, study_dir, "--force-parallel", str(expected_n_cpu)]
+                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
+    
+    def test_remove_log_file(self, tmp_path):
+        study_dir = tmp_path
+        exe_path = tmp_path
+        log_file = str(exe_path) + '.log'
+        log_file = Path(log_file).touch()
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        #catching execution error 
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+                antares_driver.launch(study_dir, n_cpu)
+                expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu)]
+                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
+
+
+    def test_non_valid_exe_empty(self, tmp_path):
         study_dir = tmp_path
         settings_dir = study_dir / "settings"
         settings_dir.mkdir()
         antares_driver = AntaresDriver("")
-        with pytest.raises(GeneralDataFileExceptions.GeneralDataFileNotFound):
-            antares_driver.launch_accurate_mode(study_dir, 1)
+        with pytest.raises(OSError):
+            antares_driver.launch(study_dir, 1)
 
-    @patch("antares_xpansion.antares_driver.subprocess.run", autospec=True)
-    def test_launch_execute_the_antares_command(self, run_function_patch, tmp_path):
+    def test_empty_study_dir(self, tmp_path):
+        
+        study_dir = tmp_path
+        # study_dir.mkdir()
+        antares_driver = AntaresDriver(self.get_antares_exe())
+
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            antares_driver.launch(study_dir, 1)
+
+            
+    def test_launch_execute_the_antares_command(self, tmp_path):
         study_dir = tmp_path
         self.initialize_dummy_study_dir(study_dir)
 
         exe_path = Path("/Path/to/exe")
         antares_driver = AntaresDriver(exe_path)
+        #catching execution error 
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+                antares_driver.launch(study_dir, 1)
 
-        antares_driver.launch_fast_mode(study_dir, 1)
+                expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]
+                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3)
 
-        expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]
-        run_function_patch.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3)
+    def tests_additionnal_constraints(self):
+        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+        project_dir_to_additionnal_constraints = Path("examples") / "additionnal-constraints"
+        study_dir =   project_dir / project_dir_to_additionnal_constraints
+
+        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver.launch(study_dir, 1)
+    
+    def tests_additionnal_constraints_binary(self):
+        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+        project_dir_to_additionnal_constraints_binary = Path("examples") / "additionnal-constraints-binary"
+        study_dir =   project_dir / project_dir_to_additionnal_constraints_binary
+
+        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver.launch(study_dir, 1)
+    
+    def tests_small_test_five_candidates_with_weights(self):
+        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+        project_dir_to_small_test_five_candidates_with_weights = Path("examples") / "SmallTestFiveCandidatesWithWeights"
+        study_dir =   project_dir / project_dir_to_small_test_five_candidates_with_weights
+
+        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver.launch(study_dir, 1)
+
+    def tests_small_test_five_candidates(self):
+        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+        project_dir_to_small_test_five_candidates = Path("examples") / "SmallTestFiveCandidates"
+        study_dir =   project_dir / project_dir_to_small_test_five_candidates
+
+        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver.launch(study_dir, 1)
+
+    def tests_small_test_six_candidates_with_already_installed_capacity(self):
+        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+        project_dir_to_small_test_six_candidates_with_already_installed_capacity = Path("examples") / "SmallTestSixCandidatesWithAlreadyInstalledCapacity"
+        study_dir =   project_dir / project_dir_to_small_test_six_candidates_with_already_installed_capacity
+
+        #catching execution error 
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            antares_driver = AntaresDriver(self.get_antares_exe())
+            antares_driver.launch(study_dir, 1)
+
+    def tests_small_test_six_candidates_with_playlist(self):
+        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+        project_dir_to_small_test_six_candidates_with_playlist = Path("examples") / "SmallTestSixCandidatesWithPlaylist"
+        study_dir =   project_dir / project_dir_to_small_test_six_candidates_with_playlist
+
+        #catching execution error 
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            antares_driver = AntaresDriver(self.get_antares_exe())
+            antares_driver.launch(study_dir, 1)
+            
 
     def initialize_dummy_study_dir(self, study_dir):
         settings_dir = study_dir / "settings"
@@ -199,67 +316,13 @@ class TestAntaresDriver:
                       "key2 = value2\n"
         general_data_path.write_text(default_val)
 
-    def test_antares_cmd_without_exe_path_and_study_path(self):
-        antares_driver = AntaresDriver("")
-        antares_cmd = antares_driver.get_antares_cmd()
+    @staticmethod
+    def get_antares_exe():
+        bin_paths_file = Path(os.path.abspath(__file__)).parent.parent  / "bin_paths.yaml"
+        with open(bin_paths_file) as file:
+            content = yaml.full_load(file)
+        
+        if content is None :
+            content = {}
 
-        # antares_exe
-        assert antares_cmd[0] == ""
-        # antares study path
-        assert antares_cmd[1] == ""
-        # antares --force-parallel option
-        assert antares_cmd[2] == "--force-parallel"
-        # antares --force-parallel option default value
-        assert antares_cmd[3] == "1"
-
-    def test_antares_cmd_exe_path(self):
-        expected_exe_path = "/Path/to/exe"
-        antares_driver = AntaresDriver(expected_exe_path)
-        antares_cmd = antares_driver.get_antares_cmd()
-
-        # antares_exe
-        assert antares_cmd[0] == expected_exe_path
-        # antares study path
-        assert antares_cmd[1] == ""
-        # antares --force-parallel option
-        assert antares_cmd[2] == "--force-parallel"
-        # antares --force-parallel option default value
-        assert antares_cmd[3] == "1"
-
-    def test_antares_cmd_study_path(self):
-        expected_exe_path = "/Path/to/exe/"
-        antares_driver = AntaresDriver(expected_exe_path)
-
-        # due to the expected_exe_path
-        with pytest.raises(FileNotFoundError):
-            antares_driver.launch_fast_mode(ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE, 1)
-
-        antares_cmd = antares_driver.get_antares_cmd()
-
-        # antares_exe
-        assert antares_cmd[0] == expected_exe_path
-        # antares study path
-        assert antares_cmd[1] == ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE
-        # antares --force-parallel option
-        assert antares_cmd[2] == "--force-parallel"
-        # antares --force-parallel option default value
-        assert antares_cmd[3] == "1"
-
-    def test_antares_cmd__force_parallel_option(self):
-        expected_exe_path = "/Path/to/bin"
-        antares_driver = AntaresDriver(expected_exe_path)
-
-        # due to the expected_exe_path
-        with pytest.raises(FileNotFoundError):
-            antares_driver.launch_fast_mode(ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE, 3)
-
-        antares_cmd = antares_driver.get_antares_cmd()
-
-        # antares_exe
-        assert antares_cmd[0] == expected_exe_path
-        # antares study path
-        assert antares_cmd[1] == ANTARES_STUDY_TO_TEST_GENERAL_DATA_FILE_VALUES_IN_FAST_MODE
-        # antares --force-parallel option
-        assert antares_cmd[2] == "--force-parallel"
-        # antares --force-parallel option default value
-        assert antares_cmd[3] == "3"
+        return content.get('antares-solver')
