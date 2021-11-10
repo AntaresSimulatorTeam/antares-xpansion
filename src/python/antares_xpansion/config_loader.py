@@ -46,8 +46,8 @@ class ConfigLoader:
 
     def _verify_settings_ini_file_exists(self):
         if not os.path.isfile(self._get_settings_ini_filepath()):
-            print('Missing file : %s was not retrieved.' % self._get_settings_ini_filepath())
-            sys.exit(1)
+            raise ConfigLoader.MissingFile(' %s was not retrieved.' % self._get_settings_ini_filepath())
+            
 
     def _get_options_from_settings_inifile(self):
         with open(self._get_settings_ini_filepath(), 'r') as file_l:
@@ -58,8 +58,8 @@ class ConfigLoader:
 
     def check_candidates_file_format(self):
         if not os.path.isfile(self.candidates_ini_filepath()):
-            print('Missing file : %s was not retrieved.' % self.candidates_ini_filepath())
-            sys.exit(1)
+            raise ConfigLoader.MissingFile(' %s was not retrieved.' % self.candidates_ini_filepath())
+            
 
         check_candidates_file(self)
 
@@ -250,3 +250,6 @@ class ConfigLoader:
                                    self.config.settings_default[self.config.UC_TYPE])
         assert uc_type in [self.config.EXPANSION_ACCURATE, self.config.EXPANSION_FAST]
         return uc_type == self.config.EXPANSION_ACCURATE
+
+    class MissingFile(Exception):
+        pass
