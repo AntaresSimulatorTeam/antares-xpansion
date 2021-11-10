@@ -4,6 +4,7 @@ from typing import List
 import sys
 
 from antares_xpansion.xpansionConfig import InputParameters
+from antares_xpansion.__version__ import __version__, __antares_simulator_version__
 
 
 class InputParser:
@@ -45,6 +46,14 @@ class InputParser:
                                  default=False,
                                  action='store_true',
                                  help='Keep .mps from lp_namer and benders steps')
+        self.parser.add_argument("-v","--version",
+                                 action='version',
+                                 version=__version__,
+                                 help='show antares-xpansion version and exit ')
+        self.parser.add_argument("--antares-version",
+                                 action='version',
+                                 version=__antares_simulator_version__,
+                                 help='show Antares_Simulator version and exit ')
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
