@@ -42,7 +42,6 @@ class XpansionDriver:
                                                                                     weight_file_name= self.config_loader.weight_file_name(),
                                                                                     install_dir  = self.config.install_dir      
                                                                 ))
-
         self.benders_driver = BendersDriver(self.config_loader)
         self.study_update_driver = StudyUpdaterDriver(self.config_loader)
         
