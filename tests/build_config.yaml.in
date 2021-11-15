@@ -1,1 +1,2 @@
 installDir : ${XPANSION_INSTALL_DIR}
+antares_solver : @ANTARES_SOLVER_APP@

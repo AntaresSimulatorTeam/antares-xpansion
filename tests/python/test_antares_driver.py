@@ -9,6 +9,7 @@ import yaml
 from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import GeneralDataFileExceptions, GeneralDataProcessor
+from tests import build_config_reader
 
 ANTARES_DRIVER_SUBPROCESS_RUN =  "antares_xpansion.antares_driver.subprocess.run"
 
@@ -157,7 +158,9 @@ class TestGeneralDataProcessor:
 
 class TestAntaresDriver:
 
-    
+    def setup_method(self):
+        self.install_dir =  build_config_reader.get_antares_solver_path()
+
     def test_antares_cmd(self, tmp_path):
         study_dir = tmp_path
         exe_path = "/Path/to/bin1"
@@ -222,7 +225,7 @@ class TestAntaresDriver:
         
         study_dir = tmp_path
         # study_dir.mkdir()
-        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver = AntaresDriver(self.install_dir)
 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
             antares_driver.launch(study_dir, 1)
@@ -247,7 +250,7 @@ class TestAntaresDriver:
         project_dir_to_additionnal_constraints = Path("examples") / "additionnal-constraints"
         study_dir =   project_dir / project_dir_to_additionnal_constraints
 
-        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver = AntaresDriver(self.install_dir)
         antares_driver.launch(study_dir, 1)
     
     def tests_additionnal_constraints_binary(self):
@@ -255,7 +258,7 @@ class TestAntaresDriver:
         project_dir_to_additionnal_constraints_binary = Path("examples") / "additionnal-constraints-binary"
         study_dir =   project_dir / project_dir_to_additionnal_constraints_binary
 
-        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver = AntaresDriver(self.install_dir)
         antares_driver.launch(study_dir, 1)
     
     def tests_small_test_five_candidates_with_weights(self):
@@ -263,7 +266,7 @@ class TestAntaresDriver:
         project_dir_to_small_test_five_candidates_with_weights = Path("examples") / "SmallTestFiveCandidatesWithWeights"
         study_dir =   project_dir / project_dir_to_small_test_five_candidates_with_weights
 
-        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver = AntaresDriver(self.install_dir)
         antares_driver.launch(study_dir, 1)
 
     def tests_small_test_five_candidates(self):
@@ -271,7 +274,7 @@ class TestAntaresDriver:
         project_dir_to_small_test_five_candidates = Path("examples") / "SmallTestFiveCandidates"
         study_dir =   project_dir / project_dir_to_small_test_five_candidates
 
-        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver = AntaresDriver(self.install_dir)
         antares_driver.launch(study_dir, 1)
 
     def tests_small_test_six_candidates_with_already_installed_capacity(self):
@@ -281,7 +284,7 @@ class TestAntaresDriver:
 
         #catching execution error 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
-            antares_driver = AntaresDriver(self.get_antares_exe())
+            antares_driver = AntaresDriver(self.install_dir)
             antares_driver.launch(study_dir, 1)
 
     def tests_small_test_six_candidates_with_playlist(self):
@@ -291,7 +294,7 @@ class TestAntaresDriver:
 
         #catching execution error 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
-            antares_driver = AntaresDriver(self.get_antares_exe())
+            antares_driver = AntaresDriver(self.install_dir)
             antares_driver.launch(study_dir, 1)
             
 
@@ -315,14 +318,3 @@ class TestAntaresDriver:
                       "key1 = value1\n" \
                       "key2 = value2\n"
         general_data_path.write_text(default_val)
-
-    @staticmethod
-    def get_antares_exe():
-        bin_paths_file = Path(os.path.abspath(__file__)).parent.parent  / "bin_paths.yaml"
-        with open(bin_paths_file) as file:
-            content = yaml.full_load(file)
-        
-        if content is None :
-            content = {}
-
-        return content.get('antares-solver')
