@@ -134,7 +134,7 @@ class TestProblemGeneratorDriver:
         problem_generator_driver.output_path = output_path
         assert problem_generator_driver.is_relaxed == is_relaxed
         relaxed_value = 'integer'
-        assert problem_generator_driver.get_lp_namer_command() == [lp_exe_file, "-o", output_path, "-f", relaxed_value, "-e",
+        assert problem_generator_driver.get_lp_namer_command() == [lp_exe_file, "-o", str(output_path), "-f", relaxed_value, "-e",
                 additional_constraints]
 
     def test_lp_namer_log_filename(self, tmp_path):
