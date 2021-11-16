@@ -40,7 +40,8 @@ class XpansionDriver:
                                                                                     additional_constraints = self.config_loader.additional_constraints(),
                                                                                     weights_file_path  = self.config_loader.weights_file_path(),
                                                                                     weight_file_name= self.config_loader.weight_file_name(),
-                                                                                    install_dir  = self.config.install_dir      
+                                                                                    install_dir  = self.config.install_dir,
+                                                                                    nb_active_years = self.config_loader.nb_active_years      
                                                                 ))
         self.benders_driver = BendersDriver(self.config_loader)
         self.study_update_driver = StudyUpdaterDriver(self.config_loader)

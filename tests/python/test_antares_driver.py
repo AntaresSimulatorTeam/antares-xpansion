@@ -10,7 +10,7 @@ from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import GeneralDataFileExceptions, GeneralDataProcessor
 
-ANTARES_DRIVER_SUBPROCESS_RUN =  "antares_xpansion.antares_driver.subprocess.run"
+SUBPROCESS_RUN =  "antares_xpansion.antares_driver.subprocess.run"
 
 class TestGeneralDataProcessor:
 
@@ -165,7 +165,7 @@ class TestAntaresDriver:
         #catching execution error 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
             # mock subprocess.run
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+            with patch(SUBPROCESS_RUN, autospec=True) as run_function :
                 antares_driver.launch(study_dir, 1)
                 expected_cmd = [exe_path, study_dir, "--force-parallel","1"]
                 run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
@@ -177,7 +177,7 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         #catching execution error 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+            with patch(SUBPROCESS_RUN, autospec=True) as run_function :
                 antares_driver.launch(study_dir, n_cpu)
                 expected_cmd = [exe_path, study_dir, "--force-parallel", str(n_cpu)]
                 run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
@@ -190,7 +190,7 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         #catching execution error 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+            with patch(SUBPROCESS_RUN, autospec=True) as run_function :
                 antares_driver.launch(study_dir, n_cpu)
                 expected_cmd = [exe_path, study_dir, "--force-parallel", str(expected_n_cpu)]
                 run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
@@ -204,7 +204,7 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         #catching execution error 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+            with patch(SUBPROCESS_RUN, autospec=True) as run_function :
                 antares_driver.launch(study_dir, n_cpu)
                 expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu)]
                 run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
@@ -236,7 +236,7 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         #catching execution error 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
+            with patch(SUBPROCESS_RUN, autospec=True) as run_function :
                 antares_driver.launch(study_dir, 1)
 
                 expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]

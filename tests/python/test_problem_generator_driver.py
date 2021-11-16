@@ -3,19 +3,29 @@ import pytest
 import os
 from pathlib import Path
 from datetime import date, datetime
+from unittest.mock import ANY, mock_open, patch
 
 
-from antares_xpansion.problem_generator_driver import ProblemGeneratorData, ProblemGeneratorDriver, ProblemGeneratorException
+from .file_creation import _create_weight_file
+from antares_xpansion.problem_generator_driver import ProblemGeneratorData, ProblemGeneratorDriver
+from antares_xpansion.antares_driver import AntaresDriver
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
+from antares_xpansion.general_data_reader import GeneralDataIniReader
 
+from tests.build_config_reader import get_install_dir, get_lp_namer_exe, get_antares_solver_path
+
+SUBPROCESS_RUN =  "antares_xpansion.problem_generator_driver.subprocess.run"
 class TestProblemGeneratorDriver:
     number = 0
     def setup_method(self):
+        self.lp_exe = "lp_namer.exe"
         self.empty_pblm_gen_data = ProblemGeneratorData(LP_NAMER="",
                                                       keep_mps = False,
                                                       additional_constraints="",
                                                       weights_file_path=Path(""),
                                                       weight_file_name="",
-                                                      install_dir=Path(""))
+                                                      install_dir=Path(""),
+                                                      nb_active_years= 0)
 
     def test_problem_generator_data(self):
 
@@ -30,13 +40,13 @@ class TestProblemGeneratorDriver:
 
     def test_output_path(self, tmp_path):
         problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorException.OutputPathError):
+        with pytest.raises(ProblemGeneratorDriver.OutputPathError):
             problem_generator_driver.launch(tmp_path/ "i_don_t_exist", False)
 
     def test_no_area_file(self, tmp_path):
     
         problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorException.AreaFileException):
+        with pytest.raises(ProblemGeneratorDriver.AreaFileException):
             problem_generator_driver.launch(tmp_path, False)
 
     def test_more_than_1_area_file(self, tmp_path):
@@ -46,7 +56,7 @@ class TestProblemGeneratorDriver:
 
 
         problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorException.AreaFileException):
+        with pytest.raises(ProblemGeneratorDriver.AreaFileException):
             problem_generator_driver.launch(tmp_path, False)
 
 
@@ -54,7 +64,7 @@ class TestProblemGeneratorDriver:
     
         self._create_empty_area_file(tmp_path)
         problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorException.IntercoFilesException):
+        with pytest.raises(ProblemGeneratorDriver.IntercoFilesException):
             problem_generator_driver.launch(tmp_path, False)
 
     def test_more_than_1_interco_file(self, tmp_path):
@@ -64,7 +74,7 @@ class TestProblemGeneratorDriver:
         self._create_empty_interco_file(tmp_path)
 
         problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorException.IntercoFilesException):
+        with pytest.raises(ProblemGeneratorDriver.IntercoFilesException):
             problem_generator_driver.launch(tmp_path, False)
 
 
@@ -74,7 +84,7 @@ class TestProblemGeneratorDriver:
         self._create_empty_interco_file(tmp_path)
 
         problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorException.LPNamerExeError):
+        with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
             problem_generator_driver.launch(tmp_path, False)
 
 
@@ -84,7 +94,7 @@ class TestProblemGeneratorDriver:
         self._create_empty_interco_file(tmp_path)
 
         problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorException.LPNamerExeError):
+        with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
             problem_generator_driver.launch(tmp_path, False)
 
         
@@ -99,7 +109,7 @@ class TestProblemGeneratorDriver:
         self._create_empty_interco_file(tmp_path)
 
         problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorException.LPNamerExeError):
+        with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
             problem_generator_driver.launch(tmp_path, False)
 
         
@@ -112,50 +122,223 @@ class TestProblemGeneratorDriver:
                 assert my_list in expected_results
 
 
-    def test_lp_namer_command(self, tmp_path):
-
-        
-        lp_exe = "lp_namer.exe"
-        lp_exe_file = tmp_path / lp_exe
-        lp_exe_file.write_text("") 
-        additional_constraints = "my additionals constraints"
-        self.pblm_gen_data = ProblemGeneratorData(LP_NAMER= lp_exe,
-                                                      keep_mps = False,
-                                                      additional_constraints=additional_constraints,
-                                                      weights_file_path=Path(""),
-                                                      weight_file_name="",
-                                                      install_dir=tmp_path)
-        
-        self._create_empty_area_file(tmp_path)
-        self._create_empty_interco_file(tmp_path)
-        problem_generator_driver = ProblemGeneratorDriver(self.pblm_gen_data)
-        is_relaxed = False
-        output_path = Path("")
-        problem_generator_driver.output_path = output_path
-        assert problem_generator_driver.is_relaxed == is_relaxed
-        relaxed_value = 'integer'
-        assert problem_generator_driver.get_lp_namer_command() == [lp_exe_file, "-o", str(output_path), "-f", relaxed_value, "-e",
-                additional_constraints]
-
     def test_lp_namer_log_filename(self, tmp_path):
 
         
-        lp_exe = "lp_namer.exe"
-        lp_exe_file = tmp_path / lp_exe
+        lp_exe_file = tmp_path / self.lp_exe
         lp_exe_file.write_text("") 
         additional_constraints = "my additionals constraints"
-        pblm_gen_data = ProblemGeneratorData(LP_NAMER= lp_exe,
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER= self.lp_exe,
                                                       keep_mps = False,
                                                       additional_constraints=additional_constraints,
                                                       weights_file_path=Path(""),
                                                       weight_file_name="",
-                                                      install_dir=tmp_path)
+                                                      install_dir=tmp_path,
+                                                      nb_active_years= 1)
         
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
-        problem_generator_driver.set_output_path(tmp_path)
+        problem_generator_driver.output_path = tmp_path
         assert problem_generator_driver.get_lp_namer_log_filename() == os.path.join(tmp_path,"lp", pblm_gen_data.LP_NAMER+ '.log') 
+
+    def test_lp_namer_log_filename_with_non_existing_lp_dir(self):
+
+        
+        additional_constraints = "my additionals constraints"
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER= self.lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints=additional_constraints,
+                                                      weights_file_path=Path(""),
+                                                      weight_file_name="",
+                                                      install_dir="",
+                                                      nb_active_years= 1)
+        
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        with pytest.raises(ProblemGeneratorDriver.LPNamerPathError):
+            problem_generator_driver.get_lp_namer_log_filename()
+
+    def test_clear_old_log(self, tmp_path):
+        
+        lp_namer_file = tmp_path / self.lp_exe
+        lp_namer_file.write_text("")
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints="",
+                                                      weights_file_path=Path(""),
+                                                      weight_file_name="",
+                                                      install_dir= tmp_path,
+                                                      nb_active_years= 1)
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
+        
+        log_file_name = self.lp_exe +".log" 
+        log_file = tmp_path / log_file_name
+        log_file.write_text("bla bla")
+        assert log_file.exists()
+
+        pblm_gen = ProblemGeneratorDriver(pblm_gen_data)
+        with patch(SUBPROCESS_RUN, autospec=True):
+            with pytest.raises(ProblemGeneratorDriver.LPNamerExecutionError):
+                pblm_gen.launch(tmp_path, False)
+
+        assert not log_file.exists()
+
+    def test_clean_lp_dir_before_run(self, tmp_path):
+        
+        lp_namer_file = tmp_path / self.lp_exe
+        lp_namer_file.write_text("")
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints="",
+                                                      weights_file_path=Path(""),
+                                                      weight_file_name="",
+                                                      install_dir= tmp_path,
+                                                      nb_active_years= 1)
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
+        
+        log_file_name = self.lp_exe +".log" 
+        log_file = tmp_path / log_file_name
+        log_file.write_text("bla bla")
+
+        lp_dir = tmp_path / "lp"
+        lp_dir.mkdir()
+        lp_dir_sub_file_1 = lp_dir / "file1"
+        lp_dir_sub_file_1.write_text("")
+        lp_dir_sub_file_2 = lp_dir / "file2"
+        lp_dir_sub_file_2.write_text("")
+
+        assert lp_dir.exists()
+        assert lp_dir_sub_file_1.exists()
+        assert lp_dir_sub_file_2.exists()
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+            run_function.return_value.returncode = 0
+            problem_generator_driver.launch(tmp_path, False)
+
+        assert lp_dir.exists()
+        assert not lp_dir_sub_file_1.exists()
+        assert not lp_dir_sub_file_2.exists()
+
+
+    def test_weight_file_name_fails_if_file_does_not_exist(self, tmp_path):
+        
+        lp_namer_file = tmp_path / self.lp_exe
+        lp_namer_file.write_text("")
+        file_path: Path = tmp_path / "toto_file"
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints="",
+                                                      weights_file_path=file_path,
+                                                      weight_file_name=Path(""),
+                                                      install_dir= tmp_path,
+                                                      nb_active_years= 1)
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
+        
+        expected_message = f'Illegal value : {str(file_path)} is not an existent yearly-weights file'
+
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        with pytest.raises(FileNotFoundError) as expect:
+            problem_generator_driver.launch(tmp_path, False)
+            assert str(expect.value) == expected_message
+
+    def test_weight_file_name_fails_if_there_is_one_negative_value(self, tmp_path):
+        
+        lp_namer_file = tmp_path / self.lp_exe
+        lp_namer_file.write_text("")
+        weight_file_name = "weight_file.txt"
+        file_path: Path = tmp_path / weight_file_name
+        weight_list = [1, -1]
+        _create_weight_file(file_path, weight_list)
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints="",
+                                                      weights_file_path=file_path,
+                                                      weight_file_name=weight_file_name,
+                                                      install_dir= tmp_path,
+                                                      nb_active_years= 2)
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
+        
+        expected_message = f'Line 2 in file {str(file_path)} indicates a negative value'
+
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        with pytest.raises(XpansionStudyReader.InvalidYearsWeightValue) as expect:
+            problem_generator_driver.launch(tmp_path, False)
+            assert str(expect.value) == expected_message
+
+    def test_weight_file_name_fails_if_all_values_are_zero(self, tmp_path):
+        
+        lp_namer_file = tmp_path / self.lp_exe
+        lp_namer_file.write_text("")
+        weight_file_name = "weight_file.txt"
+        file_path: Path = tmp_path / weight_file_name
+        weight_list = [0, 0]
+        _create_weight_file(file_path, weight_list)
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints="",
+                                                      weights_file_path=file_path,
+                                                      weight_file_name=weight_file_name,
+                                                      install_dir= tmp_path,
+                                                      nb_active_years= 2)
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
+        expected_message = f'file {str(file_path)} : all values are null'
+
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        with pytest.raises(XpansionStudyReader.OnlyNullYearsWeightValue) as expect:
+            problem_generator_driver.launch(tmp_path, False)
+            assert str(expect.value) == expected_message
+
+    def test_fails_if_nb_activated_years_different_from_content(self, tmp_path):
+        
+        lp_namer_file = tmp_path / self.lp_exe
+        lp_namer_file.write_text("")
+        weight_file_name = "weight_file.txt"
+        file_path: Path = tmp_path / weight_file_name
+        weight_list = [1, 2, 3, 4]
+        _create_weight_file(file_path, weight_list)
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
+                                                      keep_mps = False,
+                                                      additional_constraints="",
+                                                      weights_file_path=file_path,
+                                                      weight_file_name=weight_file_name,
+                                                      install_dir= tmp_path,
+                                                      nb_active_years= 5)
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
+        expected_message = f'file {str(file_path)} : invalid weight number : 4 values / 5 expected'
+
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        with pytest.raises(XpansionStudyReader.InvalidYearsWeightNumber) as expect:
+            problem_generator_driver.launch(tmp_path, False)
+            assert str(expect.value) == expected_message
+
+    def tests_additionnal_constraints(self):
+        study_dir  = TestProblemGeneratorDriver.run_antares_step_in_examples("additionnal-constraints")
+        problem_generator_driver, simu_abs_path, is_relaxed = TestProblemGeneratorDriver._get_problem_generator_for_study(study_dir)
+        problem_generator_driver.launch(simu_abs_path, is_relaxed)
+    
+    def tests_additionnal_constraints_binary(self):
+        study_dir  = TestProblemGeneratorDriver.run_antares_step_in_examples("additionnal-constraints-binary")
+        problem_generator_driver, simu_abs_path, is_relaxed = TestProblemGeneratorDriver._get_problem_generator_for_study(study_dir)
+        problem_generator_driver.launch(simu_abs_path, is_relaxed)
+        
+    
+    def tests_small_test_five_candidates_with_weights(self):
+        study_dir  = TestProblemGeneratorDriver.run_antares_step_in_examples("SmallTestFiveCandidatesWithWeights")
+        problem_generator_driver, simu_abs_path, is_relaxed = TestProblemGeneratorDriver._get_problem_generator_for_study(study_dir)
+        problem_generator_driver.launch(simu_abs_path, is_relaxed)
+
+    def tests_small_test_five_candidates(self):
+        study_dir  = TestProblemGeneratorDriver.run_antares_step_in_examples("SmallTestFiveCandidates")
+        problem_generator_driver, simu_abs_path, is_relaxed = TestProblemGeneratorDriver._get_problem_generator_for_study(study_dir)
+        problem_generator_driver.launch(simu_abs_path, is_relaxed)
+
+
 
     def _get_expected_mps_txt(self, tmp_path):
 
@@ -206,3 +389,103 @@ class TestProblemGeneratorDriver:
         fname = prefix+ str(TestProblemGeneratorDriver.number) +"."+ extension
         file = tmp_path / fname
         file.write_text("")
+
+    @staticmethod
+    def _get_options_from_settings_inifile(settings_ini_filepath):
+        with open(settings_ini_filepath, 'r') as file_l:
+            options = dict(
+                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
+                 for line in file_l.readlines() if line.strip()})
+        return options
+    
+    @staticmethod
+    def _get_additional_constraints_from_settings(settings_ini_filepath):
+        options = TestProblemGeneratorDriver._get_options_from_settings_inifile(settings_ini_filepath)
+        return options.get("additional-constraints", "")
+    
+    @staticmethod
+    def _get_weight_file_name(settings_ini_filepath):
+        options =  TestProblemGeneratorDriver._get_options_from_settings_inifile(settings_ini_filepath)
+        return options.get('yearly-weights', "")
+        
+    @staticmethod
+    def _get_weights_file_path(study_dir):
+        """
+            returns the path to a yearly-weights file
+
+            :return: path to input yearly-weights file
+        """
+        settings_ini_filepath = Path(study_dir) / "user" / "expansion" / "settings.ini"
+        yearly_weights_filename = TestProblemGeneratorDriver._get_weight_file_name(settings_ini_filepath)
+        if yearly_weights_filename:
+            return Path(study_dir) / "user" / "expansion" / yearly_weights_filename
+        else:
+            return ""
+
+    @staticmethod
+    def _get_nb_active_years(study_dir):
+        general_data = Path(study_dir) / "settings" / "generaldata.ini"
+        return GeneralDataIniReader(Path(general_data)).get_nb_activated_year()
+
+    @staticmethod
+    def _get_last_simulation_name(antares_output):
+        """
+            return last simulation name    
+        """
+        # Get list of all dirs only in the given directory
+        list_of_dirs_filter = filter( lambda x: os.path.isdir(os.path.join(antares_output, x)),
+                                os.listdir(antares_output) )
+        # Sort list of files based on last modification time in ascending order
+        list_of_dirs = sorted( list_of_dirs_filter,
+                    key = lambda x: os.path.getmtime(os.path.join(antares_output, x))
+                    )
+        return list_of_dirs[-1]
+    
+    @staticmethod
+    def _is_relaxed(settings_ini_filepath):
+        """
+            indicates if method to use is relaxed by reading the relaxation_type
+            from the settings file
+        """
+        options =  TestProblemGeneratorDriver._get_options_from_settings_inifile(settings_ini_filepath)
+        relaxation_type = options.get('master', "integer")
+        assert relaxation_type in ['integer', 'relaxed', 'full_integer']
+        return relaxation_type == 'relaxed'
+
+    @staticmethod
+    def run_antares_step_in_examples(example_name):
+        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+        project_dir_to_additionnal_constraints = Path("examples") / example_name
+        study_dir =   project_dir / project_dir_to_additionnal_constraints
+        TestProblemGeneratorDriver._launch_antares_step(study_dir)
+        return study_dir
+
+    @staticmethod
+    def _launch_antares_step(study_dir):
+        # Running Antares Driver
+        antares_driver = AntaresDriver(get_antares_solver_path())
+        antares_driver.launch(study_dir, 1)
+
+    @staticmethod
+    def _get_problem_generator_for_study(study_dir):
+
+        settings_dir = study_dir / "user" / "expansion"/ "settings.ini"
+        addi_constraints = TestProblemGeneratorDriver._get_additional_constraints_from_settings(settings_dir)
+        file_path =  TestProblemGeneratorDriver._get_weights_file_path(study_dir)
+        file_name = TestProblemGeneratorDriver._get_weight_file_name(settings_dir)
+        nb_act_yrs = TestProblemGeneratorDriver._get_nb_active_years(study_dir)
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER=get_lp_namer_exe(),
+                                                      keep_mps = False,
+                                                      additional_constraints=addi_constraints,
+                                                      weights_file_path=file_path,
+                                                      weight_file_name=file_name,
+                                                      install_dir= get_install_dir(),
+                                                      nb_active_years = nb_act_yrs)
+
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        antares_output_dir = study_dir / "output"
+        antares_simulation = TestProblemGeneratorDriver._get_last_simulation_name(antares_output_dir)
+        simu_abs_path = Path(os.path.normpath(os.path.join(antares_output_dir, antares_simulation)))
+        is_relaxed = TestProblemGeneratorDriver._is_relaxed(settings_dir)
+
+        return (problem_generator_driver, simu_abs_path, is_relaxed)
