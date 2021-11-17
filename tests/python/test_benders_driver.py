@@ -411,8 +411,6 @@ class TestBendersDriver:
         my_benders_mpi = "something"
         my_install_dir = Path("Dummy/Path/to/")
         my_n_mpi = 13
-        exe_path =  os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
-
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
         benders_driver_data  = BendersDriverData(install_dir = my_install_dir,
