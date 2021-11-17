@@ -17,15 +17,8 @@ import functools
 
 print = functools.partial(print, flush=True)
 
-class BendersDriverException :
-    class BaseException(Exception):
-        pass
-    class BendersOutputPathError(BaseException):
-        pass
-    class BendersUnsupportedPlatform(BaseException):
-        pass
-    class BendersLpPathError(BaseException):
-        pass
+class BaseException(Exception):
+    pass
 @dataclass
 class BendersDriverData:
     install_dir        : Path
@@ -61,18 +54,17 @@ class BendersDriver:
         old_cwd = os.getcwd()
         lp_path =  self.get_lp_path()
         os.chdir(lp_path)
-        print('Current directory is now : ', os.getcwd())
+        print('Current directory is now: ', os.getcwd())
 
         solver = self.get_solver()
 
         # delete execution logs
         self.clean_log_files(solver)
-        returned_l = subprocess.run(self.get_solver_cmd(solver), shell=False,
+        returned_l = subprocess.run(self._get_solver_cmd(solver), shell=False,
                                     stdout=sys.stdout,
                                     stderr=sys.stderr)
         if returned_l.returncode != 0:
-            print("ERROR: exited solver with status %d" % returned_l.returncode)
-            sys.exit(1)
+            raise BendersDriver.BendersExecutionError("ERROR: exited solver with status %d" % returned_l.returncode)
         elif not self.keep_mps:
             StudyOutputCleaner.clean_benders_step(self.simulation_output_path)
         os.chdir(old_cwd)
@@ -81,7 +73,7 @@ class BendersDriver:
         if simulation_output_path.is_dir():
             self._simulation_output_path = simulation_output_path
         else : 
-            raise BendersDriverException.BendersOutputPathError(f"Benders Error: {simulation_output_path} not found ")
+            raise BendersDriver.BendersOutputPathError(f"Benders Error: {simulation_output_path} not found ")
 
     def get_simulation_output_path(self):
         return self._simulation_output_path
@@ -91,7 +83,7 @@ class BendersDriver:
         if(lp_path.is_dir()):
             return lp_path
         else :
-            raise BendersDriverException.BendersLpPathError(f"Error in lp path: {lp_path} not found")
+            raise BendersDriver.BendersLpPathError(f"Error in lp path: {lp_path} not found")
 
 
     def get_solver(self):
@@ -107,7 +99,7 @@ class BendersDriver:
             sys.exit(1)
         else:
             print("Illegal optim method")
-            sys.exit(1) 
+            raise BendersDriver.BendersSolverError(f" {self.method} method is unavailable !") 
 
         return solver
 
@@ -121,13 +113,15 @@ class BendersDriver:
         if os.path.isfile(solver + '.log'):
             os.remove(solver + '.log')    
 
-    def get_solver_cmd(self, solver):
+    def _get_solver_cmd(self, solver):
         """
             returns a list consisting of the path to the required solver and its launching options
         """
-        assert solver in [self.MERGE_MPS,
+        if solver not in [self.MERGE_MPS,
                           self.BENDERS_MPI,
-                          self.BENDERS_SEQUENTIAL]
+                          self.BENDERS_SEQUENTIAL] :
+            raise BendersDriver.BendersSolverError(f"{solver} is unavailable !")
+
         if solver == self.BENDERS_MPI:
             return [self.MPI_LAUNCHER, self.MPI_N, str(self.n_mpi), self._exe_path(solver),
                     self.OPTIONS_TXT]
@@ -153,6 +147,18 @@ class BendersDriver:
             self.MPI_LAUNCHER = "mpirun"
             self.MPI_N = "-np"
         else:
-            raise(BendersDriverException.BendersUnsupportedPlatform(f"Error {sys.platform} platform is not supported \n"))
+            raise(BendersDriver.BendersUnsupportedPlatform(f"Error {sys.platform} platform is not supported \n"))
     
     simulation_output_path = property(get_simulation_output_path, set_simulation_output_path)
+    
+    class BendersOutputPathError(BaseException):
+        pass
+    class BendersUnsupportedPlatform(BaseException):
+        pass
+    class BendersLpPathError(BaseException):
+        pass
+    class BendersSolverError(BaseException):
+        pass
+    class BendersExecutionError(BaseException):
+        pass
+
