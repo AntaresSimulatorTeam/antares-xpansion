@@ -25,34 +25,26 @@ class StudyUpdaterDriverException :
 @dataclass
 class StudyUpdaterData:
     study_updater_exe : str
-    simulation_output_path : Path
     JSON_NAME : str
     keep_mps : bool
 
 class StudyUpdaterDriver:
     def __init__(self, study_updater_data: StudyUpdaterData) -> None:
         
-        self.simulation_output_path =  study_updater_data.simulation_output_path
-        self.study_updater_exe =  study_updater_data.study_updater_exe
+        self.set_study_updater_exe(study_updater_data.study_updater_exe)
         self.JSON_NAME         =  study_updater_data.JSON_NAME
         self.keep_mps          =  study_updater_data.keep_mps
 
 
     def set_simulation_output_path(self, simulation_output_path : Path):
         if simulation_output_path.is_dir():
-            self._simulation_output_path = simulation_output_path
+            self.simulation_output_path = simulation_output_path
         else : 
             raise StudyUpdaterDriverException.StudyUpdaterOutputPathError(f"Study Updater Error: {simulation_output_path} not found ")
 
-    def get_simulation_output_path(self):
-        return self._simulation_output_path
-
-    def get_study_updater_exe(self):
-        return self._study_updater_exe
-
     def set_study_updater_exe(self, study_updater_exe : str):
         if Path(study_updater_exe).is_file():
-            self._study_updater_exe = study_updater_exe
+            self.study_updater_exe = study_updater_exe
         else : 
             raise StudyUpdaterDriverException.StudyUpdaterOutputPathError(f"Study Updater Error: {study_updater_exe} not found ")
 
@@ -61,11 +53,12 @@ class StudyUpdaterDriver:
             os.remove(self.study_updater_exe + '.log')
 
 
-    def launch(self):
+    def launch(self, simulation_output_path):
         """
             updates the antares study using the candidates file and the json solution output
 
         """
+        self.set_simulation_output_path(simulation_output_path)
         print ("-- Study Update")
         self._clear_old_log()
 
@@ -87,5 +80,3 @@ class StudyUpdaterDriver:
                 self.JSON_NAME + ".json"]
                 
     
-    simulation_output_path = property(get_simulation_output_path, set_simulation_output_path)            
-    study_updater_exe      = property(get_study_updater_exe, set_study_updater_exe)            

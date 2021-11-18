@@ -38,7 +38,6 @@ class XpansionDriver:
         self.problem_generator_driver = ProblemGeneratorDriver(self.config_loader)
         self.benders_driver = BendersDriver(self.config_loader)
         self.study_update_driver = StudyUpdaterDriver(StudyUpdaterData(study_updater_exe = self.config_loader.exe_path(self.config.STUDY_UPDATER),
-                                                                       simulation_output_path = self.config_loader.simulation_output_path(),
                                                                        JSON_NAME = self.config.options_default["JSON_NAME"],
                                                                        keep_mps = self.config.keep_mps))
 
@@ -55,7 +54,7 @@ class XpansionDriver:
             print("-- post antares")
             self.problem_generator_driver.launch()
             self.benders_driver.launch()
-            self.study_update_driver.launch()
+            self.study_update_driver.launch(self.config_loader.simulation_output_path())
         elif self.config.step == "antares":
             self.launch_antares_step()  
         elif self.config.step == "problem_generation":
@@ -66,7 +65,7 @@ class XpansionDriver:
                 sys.exit(1)
         elif self.config.step == "study_update":
             if self.config.simulation_name:
-                self.study_update_driver.launch()
+                self.study_update_driver.launch(self.config_loader.simulation_output_path())
             else:
                 print("Missing argument simulationName")
                 sys.exit(1)
@@ -81,9 +80,7 @@ class XpansionDriver:
             sys.exit(1)
 
     def _clear_old_log(self):
-
         self.problem_generator_driver.clear_old_log()
-        self.study_update_driver.clear_old_log()
 
     def launch_antares_step(self):
 
