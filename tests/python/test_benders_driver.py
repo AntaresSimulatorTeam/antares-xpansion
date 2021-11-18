@@ -173,7 +173,8 @@ class TestBendersDriver:
             expected_cmd = [MPI_LAUNCHER, MPI_N, str(my_n_mpi), exe_path, "options.txt" ]
             run_function.return_value.returncode = 0
             benders_driver.launch(simulation_output_path)
-            assert run_function.call_args.args[0] == expected_cmd
+            args, _ = run_function.call_args_list[0]
+            assert args[0] == expected_cmd
                         
     def test_benders_cmd_sequential(self, tmp_path):
         my_sequential = "something"
@@ -200,9 +201,10 @@ class TestBendersDriver:
             expected_cmd = [exe_path, "options.txt" ]
             run_function.return_value.returncode = 0
             benders_driver.launch(simulation_output_path)
-            assert run_function.call_args.args[0] == expected_cmd
+            args, _ = run_function.call_args_list[0]
+            assert args[0] == expected_cmd
                         
-    def test_benders_cmd_sequential(self, tmp_path):
+    def test_benders_cmd_merge_mps(self, tmp_path):
         my_merges_mps = "something"
         my_install_dir = Path("Dummy/Path/to/")
         my_n_mpi = 13
@@ -227,8 +229,8 @@ class TestBendersDriver:
             expected_cmd = [exe_path, "options.txt" ]
             run_function.return_value.returncode = 0
             benders_driver.launch(simulation_output_path)
-            assert run_function.call_args.args[0] == expected_cmd
-
+            args, _ = run_function.call_args_list[0]
+            assert args[0] == expected_cmd
     def test_raise_execution_error(self, tmp_path):
 
         my_benders_mpi = "something"
