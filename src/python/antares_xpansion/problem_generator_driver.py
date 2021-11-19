@@ -18,19 +18,25 @@ from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 import functools
 
 print = functools.partial(print, flush=True)
+
+
 class BaseException(Exception):
-        pass
+    pass
+
+
 @dataclass
 class ProblemGeneratorData:
-    LP_NAMER : str
-    keep_mps : bool
-    additional_constraints : str
-    weights_file_path : Path
-    weight_file_name : str
-    install_dir : Path
-    nb_active_years : int
+    LP_NAMER: str
+    keep_mps: bool
+    additional_constraints: str
+    weights_file_path: Path
+    weight_file_name: str
+    install_dir: Path
+    nb_active_years: int
+
+
 class ProblemGeneratorDriver:
-    def __init__(self, problem_generator_data : ProblemGeneratorData) -> None:
+    def __init__(self, problem_generator_data: ProblemGeneratorData) -> None:
 
         self.LP_NAMER = problem_generator_data.LP_NAMER
         self.keep_mps = problem_generator_data.keep_mps
@@ -43,7 +49,7 @@ class ProblemGeneratorDriver:
         self.is_relaxed = False
         self._lp_path = None
 
-    def launch(self, output_path : Path, is_relaxed: bool):
+    def launch(self, output_path: Path, is_relaxed: bool):
         """
             problem generation step : getnames + lp_namer
         """
@@ -61,12 +67,12 @@ class ProblemGeneratorDriver:
         if output_path.exists():
             self._output_path = output_path
             self._lp_path = os.path.normpath(os.path.join(self._output_path, 'lp'))
-        else :
+        else:
             raise ProblemGeneratorDriver.OutputPathError(f"{output_path} not found")
-    
+
     def get_output_path(self):
         return self._output_path
-    
+
     def _clear_old_log(self):
         if (os.path.isfile(self._exe_path(self.LP_NAMER) + '.log')):
             os.remove(self._exe_path(self.LP_NAMER) + '.log')
@@ -80,7 +86,7 @@ class ProblemGeneratorDriver:
             :return: path to specified executable
         """
         return os.path.normpath(os.path.join(self.install_dir, exe))
-   
+
     def _get_names(self):
         """
             produces a .txt file describing the weekly problems:
@@ -92,7 +98,6 @@ class ProblemGeneratorDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
 
-        
         mps_txt = read_and_write_mps(self.output_path)
         with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l:
             for line in mps_txt.items():
@@ -100,7 +105,6 @@ class ProblemGeneratorDriver:
 
         self._check_and_copy_area_file()
         self._check_and_copy_interco_file()
-
 
     def _check_and_copy_area_file(self):
         self._check_and_copy_txt_file("area", ProblemGeneratorDriver.AreaFileException)
@@ -111,16 +115,16 @@ class ProblemGeneratorDriver:
     def _check_and_copy_txt_file(self, prefix, exception_to_raise: BaseException):
         self._check_and_copy_file(prefix, "txt", exception_to_raise)
 
-    def _check_and_copy_file(self, prefix, extension, exception_to_raise : BaseException):
+    def _check_and_copy_file(self, prefix, extension, exception_to_raise: BaseException):
         glob_path = Path(self.output_path)
-        files = [str(pp) for pp in glob_path.glob(prefix+"*"+extension)]
-        if len(files) == 0 :
-            raise exception_to_raise("No %s*.txt file found"%prefix)
+        files = [str(pp) for pp in glob_path.glob(prefix + "*" + extension)]
+        if len(files) == 0:
+            raise exception_to_raise("No %s*.txt file found" % prefix)
 
-        elif len(files) > 1 :
-            raise exception_to_raise("More than one %s*.txt file found"%prefix)
+        elif len(files) > 1:
+            raise exception_to_raise("More than one %s*.txt file found" % prefix)
 
-        shutil.copy(files[0], os.path.normpath(os.path.join(self.output_path, prefix+'.'+extension)))
+        shutil.copy(files[0], os.path.normpath(os.path.join(self.output_path, prefix + '.' + extension)))
 
     def _lp_step(self):
         """
@@ -133,7 +137,6 @@ class ProblemGeneratorDriver:
             shutil.rmtree(self._lp_path)
         os.makedirs(self._lp_path)
 
-        
         if self.weight_file_name:
             XpansionStudyReader.check_weights_file(self.weights_file_path, self.nb_active_years)
             weight_list = XpansionStudyReader.get_years_weight_from_file(self.weights_file_path)
@@ -150,35 +153,41 @@ class ProblemGeneratorDriver:
             print('Post antares step duration: {}'.format(end_time - start_time))
 
             if returned_l.returncode != 0:
-                raise ProblemGeneratorDriver.LPNamerExecutionError("ERROR: exited lpnamer with status %d" % returned_l.returncode)
+                raise ProblemGeneratorDriver.LPNamerExecutionError(
+                    "ERROR: exited lpnamer with status %d" % returned_l.returncode)
             elif not self.keep_mps:
                 StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
 
     def get_lp_namer_log_filename(self):
-        if not self._lp_path :
+        if not self._lp_path:
             raise ProblemGeneratorDriver.LPNamerPathError("Error output path is not given")
         return os.path.join(self._lp_path, self.LP_NAMER + '.log')
 
     def _get_lp_namer_command(self):
-        
+
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
         lp_namer_exe = Path(self._exe_path(self.LP_NAMER))
         if not lp_namer_exe.is_file():
             raise ProblemGeneratorDriver.LPNamerExeError(f"LP namer exe: {lp_namer_exe} not found")
-        
+
         return [lp_namer_exe, "-o", str(self.output_path), "-f", is_relaxed, "-e",
                 self.additional_constraints]
-    
+
     class AreaFileException(BaseException):
         pass
+
     class IntercoFilesException(BaseException):
         pass
+
     class OutputPathError(BaseException):
         pass
+
     class LPNamerExeError(BaseException):
         pass
+
     class LPNamerPathError(BaseException):
         pass
+
     class LPNamerExecutionError(BaseException):
         pass
 
