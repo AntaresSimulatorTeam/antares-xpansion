@@ -270,7 +270,9 @@ The value to be entered is an integer. It corresponds to the candidate's
 potential in terms of number of installable units. If the candidate has
 the max-units and `unit-size` parameters, then the set of values that its
 capacity can take is the finite set of the first multiples of `unit-size`:
-$$[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \text{unit-size}]$$
+$$
+[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \text{unit-size}]
+$$
 
 #### `already-installed-capacity`
 

@@ -35,12 +35,14 @@ The goal of the simulation is to minimize the
 
 ### Antares-Xpansion simulation
 Given an ANTARES simulation the user can define some
-_investment candidates_ in the power network such as
+_investment candidates_ in the power network such as:
+
 - (increase or create) transfer capacity between to areas
 - (increase or create) maximum power of a generation facility
 
 Each _investment candidate_ can potentially lower the operational cost
 of the power system, but is also characterised by one or more costs as:
+
 - annualized investment costs to physically build it in real life
 - operational costs and maintenance costs to sustain the operation
 

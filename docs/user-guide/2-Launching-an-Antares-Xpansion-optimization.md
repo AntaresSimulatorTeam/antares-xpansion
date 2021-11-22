@@ -6,9 +6,8 @@ and store them in the directory `study_path/user/expansion/`. Once the
 `candidates.ini` and `settings.ini` files are set up, investment
 optimization can be done with the package.
 
-Antares-Xpansion does not include a human-machine interface,
-and it is used by a command line prompt:
-
+Antares-Xpansion include an experimental human-machine interface but it's optimatly used as a command line prompt. 
+# Command line usages
 1.  Open a Command Prompt in the `antaresXpansion-x.y.z-win64` folder
 
 > Note:
@@ -23,37 +22,35 @@ antares-xpansion-launcher.exe -i .examples\SmallTestFiveCandidates
 ```
 > `-i` parameter can also be replaced by `-–dataDir`
 
-## Command line parameters
+### Command line parameters
 Here is a description of other available parameters.
 
-### **`--step`**
+#### **`--step`**
 
 The python script does several operations one after the other. The
---step option allows to execute only one step or all the steps
+--step option allows to execute only one step or all steps
 (interaction between the different bricks).
 
-| step  | Description                    |
-| -------- | ------------------------------------------------------------------------ |
-| `antares`  | Launch ANTARES one time to get the ANTARES problem
-| `getnames` | Launch getnamer one time to get the name of ANTARES variables            |
-| `lp `      | Launch lpnamer one time to create the master problem of Antares-Xpansion |
-| `optim`    | Launch the resolution of Antares-Xpansion                                |
-| `full`     | Launch all steps in order (antares \> getnames \> lp \> optim)           |
+| step                 | Description                    |
+| --------             | ------------------------------------------------------------------------ |
+| `antares`            | Launch ANTARES one time to get the ANTARES problem
+| `problem_generation` | Generate problem i.e launch getnamer one time to get the name of ANTARES variables and lpnamer one time to create the master problem of Antares-Xpansion       |
+| `benders`            | Launch the resolution of Antares-Xpansion                                |
+| `study_update`       | updates the study                            |
+| `full`               | Launch all steps in order (antares \> getnames \> lp \> optim)           |
 
 Default value: `full`.
 
-### **`-i` `--dataDir`**
+#### **`-i` `--dataDir`**
 
 Indicate the ANTARES simulation path. The specified path must be an
 explicit path. Use quotes “” in case of a space in the path.
 
-### **`--simulationName`**
+#### **`--simulationName`**
 
-This option enables to give a name to an ANTARES simulation. It is
-necessary if you only run one of the following steps: `getnames`, `lp`,
-`optim` without restarting the antares step.
+This option enables to give a name to an ANTARES simulation. In the case of step-by-step running default value is `last`. This value indicate last ANTARES simulation.
 
-### **`-m` `--method`**
+#### **`-m` `--method`**
 
 This option enables to set the type of resolution to be used for
 **Antares-Xpansion**
@@ -66,9 +63,19 @@ This option enables to set the type of resolution to be used for
 
 Defaut value: sequential
 
-## Results and logs
+#### **--antares-n-cpu**
+Number of Threads for Antares_Simulator
+#### **`-v, --version`**
+show **Antares-Xpansion** version.
 
-### Logs
+#### **`--antares-version`**
+show **Antares_Simulator** version.
+# Human machine Interface usages
+Since v0.6.0, AntaresXpansion came with an GUI in order to simplify AntaresXpansion utilization. For now this GUI is in the experimental phase. 
+> ![](../assets/media/ui.png)
+# Results and logs
+
+## Logs
 During the simulation logs are displayed on the console to indicate current iteration :
 
 ```cmd
@@ -117,7 +124,7 @@ Problem ran in 8.13665 s
 Optimization results available in : C:\\antaresXpansion-x.y.z-win64\examples\SmallTestFiveCandidates\output\20210930-1056eco\lp\.\out.json
 ```
 
-### Results
+## Results
 When the search for **Antares-Xpansion** ends, i.e. when the optimal
 investment combination has been found or a stop criterion has been
 reached - which can take several hours or even days in some cases - the

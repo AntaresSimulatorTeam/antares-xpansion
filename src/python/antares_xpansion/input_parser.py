@@ -44,8 +44,8 @@ class InputParser:
         self.parser.add_argument("--antares-n-cpu",
                                  dest="antares_n_cpu",
                                  default=1,
-                                 type=lambda x: (int(x) > 0) and int(x) or sys.exit("Minimum of Antares Thread is 1"),
-                                 help='Number of MPI processes')
+                                 type=lambda x: (int(x) > 0) and int(x) or sys.exit("Minimum of Antares_Simulator Thread is 1"),
+                                 help='Number of Threads for Antares_Simulator')
         self.parser.add_argument("--keepMps",
                                  dest="keep_mps",
                                  default=False,

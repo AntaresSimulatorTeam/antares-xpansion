@@ -31,7 +31,9 @@ any issue.
 
 The cost function that **Antares-Xpansion** minimizes is as follows:
 
-$$\min (\text{expected operating costs for one year} + \text{fixed cost annuity})$$
+$$
+\min (\text{expected operating costs for one year} + \text{fixed cost annuity})
+$$
 
 In which the expected operating costs for one year, calculated by
 ANTARES, includes the variable costs of thermal generation (fuel and CO2
