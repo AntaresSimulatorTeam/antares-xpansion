@@ -270,6 +270,7 @@ The value to be entered is an integer. It corresponds to the candidate's
 potential in terms of number of installable units. If the candidate has
 the `max-units` and `unit-size` parameters, then the set of values that its
 capacity can take is the finite set of the first multiples of `unit-size`:
+
 $$[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \text{unit-size}]$$
 
 #### `already-installed-capacity`
@@ -537,7 +538,7 @@ value: `1`.
 The `optimality_gap` parameter, defined in euros, is the tolerance on the absolute gap for the
 Antares-Xpansion algorithm. 
 
-At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `best_upper_bound - best_lower_bound` falls below `optimality_gap`. The current best solution has a cost equal to `best_upper_bound`, therefore the cost of the solution returned by the algorithm is ensured to be within `optimality_gap` euros of the optimal cost.
+At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `best_upper_bound - best_lower_bound` falls below `optimality_gap`. The solution returned by the algorithm has a cost equal to `best_upper_bound`, which is guaranteed to be within `optimality_gap` euros of the optimal cost.
 
 * If `optimality_gap = 0`, Antares-Xpansion will continue its
 search until the optimal solution of the investment-optimization problem
