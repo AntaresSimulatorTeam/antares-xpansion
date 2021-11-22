@@ -11,11 +11,11 @@ capacities of an Antares study.
 
 Typical uses of the package are for:
 
-> **long-term scenario building**: build an economically consistent
-> long-term generation mix
+- **long-term scenario building**: build an economically consistent
+long-term generation mix
 
-> **transmission expansion planning**: compute the network
-> development which maximizes social welfare
+- **transmission expansion planning**: compute the network
+development which maximizes social welfare
 
 The investment decisions are optimized by running Antares' simulations
 iteratively. At each iteration, the installed capacity of the
@@ -31,7 +31,9 @@ any issue.
 
 The cost function that Antares-Xpansion minimizes is as follows:
 
-$$\min (\text{expected operating costs for one year} + \text{fixed cost annuity})$$
+$$
+\min (\text{expected operating costs for one year} + \text{fixed cost annuity})
+$$
 
 In which the expected operating costs for one year, calculated by
 Antares, includes the variable costs of thermal generation (fuel and CO2
