@@ -1,28 +1,28 @@
 # Prepare a simulation
 
-## The `user/expansion/` folder of the ANTARES study
+## The `user/expansion/` folder of the Antares study
 
-The **Antares-Xpansion** package is based on the ANTARES software and
+The Antares-Xpansion package is based on the Antares software and
 its data format.
 
-**Antares-Xpansion** is based on an already existing ANTARES study. Some
-of the capacities of this study, usually fixed as input in the ANTARES
+Antares-Xpansion is based on an already existing Antares study. Some
+of the capacities of this study, usually fixed as input in the Antares
 paradigm, will be optimized by the investment optimization module of the
-**Antares-Xpansion** package.
+Antares-Xpansion package.
 
-In order to run the investment optimization module, the ANTARES dataset
+In order to run the investment optimization module, the Antares dataset
 must be enriched with - at least - two new files:
 
 - a `candidates.ini` file which contains the definition of
-  investment candidates (which capacities of the ANTARES study are
+  investment candidates (which capacities of the Antares study are
   expandable? at what cost? with what limits? etc.);
 
 - a `settings.ini` file which contains the settings of the
-  **Antares-Xpansion** algorithm.
+  Antares-Xpansion algorithm.
 
 These two files must be located in the **user/expansion/** directory of
-the ANTARES study (see ***Figure 3***). To date, the data they contain
-are neither visible nor modifiable in the ANTARES man-machine interface.
+the Antares study (see ***Figure 3***). To date, the data they contain
+are neither visible nor modifiable in the Antares man-machine interface.
 These two files must therefore be built "by hand".
 
 ```
@@ -39,11 +39,11 @@ xpansion-study
 │       │   ...
 ```
 
-## Definition of investment candidates in the ANTARES study
+## Definition of investment candidates in the Antares study
 
 The user of the package defines investment candidates.
 **Candidate capacities for investment are
-necessarily links from an ANTARES study**. During the iterative
+necessarily links from an Antares study**. During the iterative
 process described later, the hourly capacities (direct and indirect) of
 the investment candidate links will be modified until the Benders
 decomposition converges towards the optimum or one of the shutoff
@@ -56,32 +56,32 @@ flexibilities, by adopting a virtual node logic as described below.
 | ------------------------------------- | ------------------------------------- | ------------------------------------- |
 | **(a)**                               | **(b)**                               | **(c)**                               |
 
-***Figure 3*** - Configuration of the ANTARES study for an
+***Figure 3*** - Configuration of the Antares study for an
 investment in **(a)** transmission capacity (new line or grid
 reinforcement), **(b)** generation units and **(c)** storage.
 
 ### Investment in transmission capacity between two areas 
-The ANTARES link candidate for investment, shown in red in
+The Antares link candidate for investment, shown in red in
 **Figure 3 (a)**, is directly the interconnection for which the interest
 in increasing capacity is being studied.
 
 - In the case of the construction of a new line, a link must be added
-  in the ANTARES study between the two areas concerned.
+  in the Antares study between the two areas concerned.
 
 - In the case of a grid reinforcement between two already
   interconnected areas, the link between these two areas already
-  existed in the ANTARES study. The parameter
+  existed in the Antares study. The parameter
   `already-installed-capacity` is then used in the definition of the
   investment candidate to specify the capacity value of the grid
   structures already present between the two zones. In this way,
-  **Antares-Xpansion** will assess the economic interest of increasing
+  Antares-Xpansion will assess the economic interest of increasing
   this capacity beyond what is already installed.
 
 ### Investment in thermal generation capacity
 The generation capacity subject to expansion,
 physically located for the example in **Figure 3 (b)** in *area1*, must
 be moved to a virtual node (here `invest_semibase`) connected to the
-physical node *area1*. The ANTARES link of the investment candidate is
+physical node *area1*. The Antares link of the investment candidate is
 the link between these two nodes.
 
 The generation unit of the investment candidate must be defined, with
@@ -99,10 +99,10 @@ its technical and economic parameters, by a thermal cluster:
   **always higher than the potential**
   (max-investment) of the investment candidate (if the hourly
   availability time series of thermal generation are "*ready-made*” in
-  ANTARES, then the values of the time series must be filled in such a
+  Antares, then the values of the time series must be filled in such a
   way that they **are always higher**
   than the candidate's potential. If the times series of thermal
-  generation are “*stochastic*” i.e. generated by ANTARES, then the
+  generation are “*stochastic*” i.e. generated by Antares, then the
   parameters for the generation of series must be defined in such a
   way that the availability is always higher than the potential
   (*number of units* \* *nominal capacity* \> *potential*, no outages
@@ -110,17 +110,17 @@ its technical and economic parameters, by a thermal cluster:
 
 Other cluster parameters (*pmin*, *start-up costs*, etc.) can also be
 defined. However, they will only be taken into account by
-**Antares-Xpansion** if the expansion-accurate mode is used (see later).
+Antares-Xpansion if the expansion-accurate mode is used (see later).
 
 ### Investment in renewable generation capacity
 As in the case of thermal generation, the renewable
 generation capacity subject to expansion, physically located for the
 example in **Figure 4 (b)** in *area1*, must be moved to a virtual node
 connected to the physical *area1* node. The investment candidate's
-ANTARES link is the link between these two nodes.
+Antares link is the link between these two nodes.
 
 For the type of renewable production concerned (wind or solar), a
-production time-series (ANTARES wind or solar tab) must be defined in
+production time-series (Antares wind or solar tab) must be defined in
 the virtual node. The production time-series must be deterministic,
 constant, and **higher than the
 potential** (max-investment) of the investment candidate. The
@@ -130,17 +130,17 @@ deterministic and that the new renewable generation capacities cannot
 have differentiated production time-series for each Monte-Carlo year.
 
 ### Investment in flexibility
-The modeling of flexibilities, such as Pumped storage, is generally based in ANTARES
+The modeling of flexibilities, such as Pumped storage, is generally based in Antares
 on a set of virtual nodes/links and coupling constraints. To make
 flexibility an investment candidate, a link must be identified in the
-ANTARES modelling whose transmission capacity corresponds to the
+Antares modelling whose transmission capacity corresponds to the
 capacity of the flexibility (at its maximum power for example, the size
 of a stock, etc.). For example, in the case of the Pumped storage in
 **Figure 3 (c)**, the capacity of the Pumped storage (equal to its pump
 and turbine capacity) is defined by the maximum possible flow on the
 link between *area2* and *hub*: it is by this link that the investment
 in this flexibility will be characterized. The classical binding
-constraints must be added in the ANTARES simulation to represents the
+constraints must be added in the Antares simulation to represents the
 storage (for example: with a negative ROW Balance in psp-in and a
 positive ROW Balance in psp-out and the following constraint).
 
@@ -154,9 +154,9 @@ candidates (in red in **Figure 4**):
   infinite* »,
 
 - may have a *hurdle cost*, which will then be well taken into account
-  in the economic optimization of **Antares-Xpansion**,
+  in the economic optimization of Antares-Xpansion,
 
-- may be subject to binding constraints - provided that the ANTARES
+- may be subject to binding constraints - provided that the Antares
   version used is at least v6.1.3 - which will be well taken into
   account in the simulations of system operation. These constraints
   can possibly be constructed by the Kirchhoff constraint generator
@@ -164,17 +164,17 @@ candidates (in red in **Figure 4**):
   shift columns of the link.
 
 The direct and indirect transmission capacities of the link will be
-modified by **Antares-Xpansion**. The values initially entered in the
+modified by Antares-Xpansion. The values initially entered in the
 *Trans.* *Capacity Direct* and *Trans. Capacity Indirect* columns do not
 matter since they will be overwritten when the expansion problem is
 solved. Note that the capacities of existing structures must be filled
 in with the `already-installed-capacity` parameter in the *candidates.ini*
-file (see later) and not in the definition of the links in the ANTARES
+file (see later) and not in the definition of the links in the Antares
 study.
 
 ## Definition of investment candidates in the *candidates.ini* file
 
-Not all links in the ANTARES study are by default investment candidates.
+Not all links in the Antares study are by default investment candidates.
 The user selects the investments candidates by specifying them in the
 `candidates.ini` file. Each investment candidate is characterized
 with the following properties:
@@ -194,7 +194,7 @@ with the following properties:
 ### The `candidates.ini` file
 
 The `candidates.ini` must be placed inside the Antares study folder  
-`ANTARES-STUDY-FOLDER/user/expansion/candidates.ini`.
+`Antares-STUDY-FOLDER/user/expansion/candidates.ini`.
 The format is a standard `.ini` and should follow this template:
 
 
@@ -203,9 +203,9 @@ The format is a standard `.ini` and should follow this template:
 **Figure 4** – Example of a candidates.ini file
 
 Concretely, the investment decision will affect only the capacity of the
-ANTARES' links. Investing in interconnections can be made directly with
+Antares' links. Investing in interconnections can be made directly with
 the package, while investing in generation capacity or storage capacity
-can be made using the so-called concept of "virtual nodes" with ANTARES.
+can be made using the so-called concept of "virtual nodes" with Antares.
 The definition of all the investment candidates is given in a new input
 file, located in the user folder of the study:
 `./user/expansion/candidates.ini`.
@@ -215,24 +215,24 @@ The parameters that characterize the candidates are as follows:
 #### `name` (mandatory parameter)
 
 The value to be entered is a string. It specifies the name of the
-investment applicant. **Antares-Xpansion** will use this name
+investment applicant. Antares-Xpansion will use this name
 in the output and the logs.
 
 > :warning: This field must not contain spaces!
 
 #### `link` (mandatory parameter)
 
-The value to be entered is a string. It defines the link of the ANTARES
+The value to be entered is a string. It defines the link of the Antares
 study candidate for investment, whose capacities (direct and indirect)
-will be modified by **Antares-Xpansion**. The syntax of the link name
-includes the names of the two ANTARES nodes that the link connects,
+will be modified by Antares-Xpansion. The syntax of the link name
+includes the names of the two Antares nodes that the link connects,
 separated by "-", for example:
 ```
 origin_area – destination_area
 ```
 
 Note that node names that include spaces or dashes are not compatible
-with **Antares-Xpansion**. The origin area corresponds to the first in
+with Antares-Xpansion. The origin area corresponds to the first in
 the spelling order. The same link may contain several investment
 candidates (see section later).
 
@@ -252,12 +252,12 @@ the fixed cost annuity can include:
 The value to be entered is numerical. It represents the candidate's
 potential, i.e. the maximum capacity (in MW) that can be invested in
 this candidate. If the candidate has this parameter, the set of values
-that its capacity can take is the interval \\([0, max-investment]\\).
+that its capacity can take is the interval \\([0, \texttt{max-investment}]\\).
 
 The definition of an investment candidate must necessarily include
-either (i) a maximum potential in MW (max-investment) or (ii) a unit
+either (i) a maximum potential in MW (`max-investment`) or (ii) a unit
 size in MW (`unit-size`) and a maximum potential in number of units
-(max-units).
+(`max-units`).
 
 #### `unit-size`
 
@@ -268,7 +268,7 @@ The value to be entered is numerical. It defines the nominal capacity
 
 The value to be entered is an integer. It corresponds to the candidate's
 potential in terms of number of installable units. If the candidate has
-the max-units and `unit-size` parameters, then the set of values that its
+the `max-units` and `unit-size` parameters, then the set of values that its
 capacity can take is the finite set of the first multiples of `unit-size`:
 $$[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \text{unit-size}]$$
 
@@ -276,39 +276,39 @@ $$[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \
 
 The value to be entered is numerical. It corresponds to a capacity
 already installed on the investment candidate's link. If
-**Antares-Xpansion** considers the investment in this investment
+Antares-Xpansion considers the investment in this investment
 candidate to be economically relevant, the new capacity invested will be
 added to the already installed capacity. The transmission capacities
-initially indicated in the ANTARES study are not considered in the
+initially indicated in the Antares study are not considered in the
 `already-installed-capacity` parameter and will be overwritten by
-**Antares-Xpansion**.
+Antares-Xpansion.
 
 
 #### `link-profile`
 
 The value to be filled is a string specifying the name of a file. This
 file must be located in the `user/expansion/capa/` directory of the
-ANTARES study. It must contain one or two columns of 8760 numerical
+Antares study. It must contain one or two columns of 8760 numerical
 values (the decimal separator is the point). The `link-profile` makes the
 link between the capacity invested and the capacity actually available,
-in the direct and indirect directions of the ANTARES link for the 8760
+in the direct and indirect directions of the Antares link for the 8760
 hours of the year. The `link-profile` can for example be used to represent
 the maintenance of a generation asset via a seasonalized power outage,
 or the average load factor of intermittent renewable generation, defined
 at hourly intervals. It should be noted that the `link-profile` is
-deterministic: the same profile will be used by **Antares-Xpansion** for
-all Monte-Carlo years of the ANTARES study and all capacity tested.
+deterministic: the same profile will be used by Antares-Xpansion for
+all Monte-Carlo years of the Antares study and all capacity tested.
 
 ![](../assets/media/link_profile.PNG)
 
 **Figure 5** – Example of a file containing a load factor profile in
-the **Antares-Xpansion** format
+the Antares-Xpansion format
 
 #### `already-installed-link-profile`
 
 The value to be filled is a string specifying the name of a file. This
 file must be located in the `user/expansion/capa/` directory of the
-ANTARES study and have the same format as a `link-profile` (see ***Figure
+Antares study and have the same format as a `link-profile` (see ***Figure
 5***). The `already-installed-link-profile` makes the link between the
 capacity invested and the hourly capacity actually available, in the
 direct and indirect way of the Antares link for the 8760 hours of the
@@ -328,7 +328,7 @@ of the link between area 1 and *`invest_semibase`* will be updated with
 the new invested capacity.
 
 The candidates.ini file for this example will be the following one. This
-file has to be saved in the folder ./user/expansion/:
+file has to be saved in the folder `./user/expansion/`:
 
 ```ini
 [1]
@@ -370,9 +370,9 @@ pv1.txt.
 The parameters `link-profile`, `already-installed-capacity` and
 `already-installed-link-profile` are used to define the link between:
 
-- the capacity installed by **Antares-Xpansion**, and
+- the capacity installed by Antares-Xpansion, and
 
-- the capacity actually available in the ANTARES study, hour by hour
+- the capacity actually available in the Antares study, hour by hour
   and in both directions of the link concerned.
 
 - Note that these parameters are only useful if the candidates are
@@ -381,7 +381,7 @@ The parameters `link-profile`, `already-installed-capacity` and
 ![](../assets/media/image13.png)
 
 **Figure 6** – Link between the capacity invested by
-**Antares-Xpansion**, and the capacity available in the ANTARES study
+Antares-Xpansion, and the capacity available in the Antares study
 
 Note that by default, the parameters `link-profile` and
 `already-installed-link-profile` contain only 1's, thus assuming "perfect"
@@ -413,7 +413,7 @@ on an entire unit of thermal power plants (see **Figure 7**).
 ![](../assets/media/image14.png)
 
 **Figure 7** Available hourly capacity of different types of power
-plants due to outages. **Antares-Xpansion** allows taking into account
+plants due to outages. Antares-Xpansion allows taking into account
 an average hourly availability (purple line) via the `link_profile`,
 which is still very different from the actual hourly availability over a
 year.
@@ -421,14 +421,14 @@ year.
 To validate the results, after having run the benders decomposition a
 first time with a deterministic average hourly availability curve, it is
 preferable to re-simulate these outages according to a stochastic
-process by relaunching an ANTARES simulation with the capacities
+process by relaunching an Antares simulation with the capacities
 obtained by antaresXpansion in order to obtain the real production
 program with outages and RES intermittence varying according to the
 scenarios.
 
 ## Several investment candidates on the same link
 
-The same link in an ANTARES study can be the subject of several investment candidates. The interest of such an approach can be :
+The same link in an Antares study can be the subject of several investment candidates. The interest of such an approach can be :
 
 - to define several potentials with different fixed cost annuities
 
@@ -437,7 +437,7 @@ The same link in an ANTARES study can be the subject of several investment candi
 The example in the following figure shows the case of an investment in photovoltaic production with three potentials of increasing cost.
 
 ![](../assets/media/several_candidates.PNG)
-**Figure 8** - Three potentials of increasing investment cost applying to the same link in the ANTARES study
+**Figure 8** - Three potentials of increasing investment cost applying to the same link in the Antares study
 
 Note that this only works with Benders if the costs are increasing and that investment candidates with the same link must also necessarily have the same `already-installed-capacity` and  `already-installed-link-profile`. 
 
@@ -456,7 +456,7 @@ The annuity of the _investment candidates_ includes the sum of:
 
   - annualized investment costs
 
-> In this configuration, **Antares-Xpansion** makes an economic choice
+> In this configuration, Antares-Xpansion makes an economic choice
 > between the sum of these costs and the reduction in variable operating
 > costs (mainly fuel costs and penalties associated with loss of load)
 > made possible by the new investment.
@@ -466,7 +466,7 @@ The annuity of the _investment candidates_ includes the sum of:
 The annuity for _decommissioning candidates_,
 on the other hand, only includes the fixed annual
 operation and maintenance costs. In this configuration,
-**Antares-Xpansion** makes an economic choice between the operation
+Antares-Xpansion makes an economic choice between the operation
 and maintenance costs of a generation or transmission asset, and the
 savings it makes on the variable costs of power system operation.
 The annualized investment costs are in this case considered as
@@ -477,9 +477,9 @@ i.e. the candidate's already installed capacity that could be shut
 down if it is no longer profitable for the power system.
 
 Candidates for decommissioning should be explicitly specified in
-**Antares-Xpansion** in the `name` (although this is not required by the tool).
-Note that **Antares-Xpansion** is able to decommission neither the generation
-units already installed in the ANTARES study, nor the capacities covered by the
+Antares-Xpansion in the `name` (although this is not required by the tool).
+Note that Antares-Xpansion is able to decommission neither the generation
+units already installed in the Antares study, nor the capacities covered by the
 `already-installed-capacity` parameter of the investment candidates.
 
 By using the functionality presented in the last part, it is possible to
@@ -497,14 +497,14 @@ expanded is given in the following figure.
 ![](../assets/media/image15.png)
 
 **Figure 9** - Candidates for investment and decommissioning on
-the same link from an ANTARES study*
+the same link from an Antares study*
 
 !!! warning
-    the hourly availability time series of thermal generation CCG
-    in ANTARES should be higher than the sum of the availability currently
+    The hourly availability time series of thermal generation CCG
+    in Antares should be higher than the sum of the availability currently
     installed with the new potential buildable  
     (availability of CCG cluster
-    in the virtual node \\(fr_ccg > 330 \cdot 19 + 330 \cdot 50\\) with this example).
+    in the virtual node \\(fr_{ccg} > 330 \cdot 19 + 330 \cdot 50\\) with this example).
 
 At the end, for the candidate for decommissioning, the result is inverse
 than for the investment candidate: if the result displayed in the
@@ -516,8 +516,8 @@ result displayed in the console is: 0 MW invested it means that
 ## Parameterization of the algorithm for solving the investment problem
 
 The simulation options and algorithmic parameters for solving the
-investment problem must be entered in the `settings.ini` located in the
-folder `./user/expansion/` with the appropriate syntax is given below:
+investment problem must be entered in `settings.ini` located in the
+folder `./user/expansion/` with the syntax given below:
 ```ini
 uc_type = expansion_fast
 master = integer
@@ -529,69 +529,69 @@ additional-constraints = constraint.txt
 This section lists the configurable parameters.
 If the user does not specify the value of a parameter, its default value will be used.
 
-### **`optimality-gap`**
+### **`optimality_gap`**
 
-Possible values: numeric (ex: `optimality_gap = 1e6`) in euros. Default
-value: `1e-6`.
+Possible values: positive numeric values in euros (ex: `optimality_gap = 1e6`). Default
+value: `1`.
 
-The `optimality-gap` parameter is a stopping criterion of the
-**Antares-Xpansion** algorithm, expressed as a distance to the optimum
-of the optimization problem, defined in euros.
+The `optimality_gap` parameter, defined in euros, is the tolerance on the absolute gap for the
+Antares-Xpansion algorithm. 
 
-If the `optimality_gap` is zero, **Antares-Xpansion** will continue its
-search until the optimal solution to the investment-optimization-problem
-is found. If the `optimality_gap` is strictly positive, search will stop
-as soon as **Antares-Xpansion** finds a solution where the cost
-difference from the optimum is less than the `optimality_gap`.
+At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `best_upper_bound - best_lower_bound` falls below `optimality_gap`. The current best solution has a cost equal to `best_upper_bound`, therefore the cost of the solution returned by the algorithm is ensured to be within `optimality_gap` euros of the optimal cost.
+
+* If `optimality_gap = 0`, Antares-Xpansion will continue its
+search until the optimal solution of the investment-optimization problem
+is found. 
+* If `optimality_gap > 0`, the search will stop
+as soon as `best_upper_bound - best_lower_bound < optimality_gap`.
 
 ![](../assets/media/image16.png)
 
-**Figure 10** – Illustration of the optimality-gap and the set of
+**Figure 10** – Illustration of the optimality gap and the set of
 solutions that can be returned by the package when the gap is strictly
 positive.
 
-The minus infinity (-Inf)value of the `optimality_gap` is theoretically
-equivalent to a null `optimality_gap`, except that it covers numerical
-errors which in practice can lead to an underestimation of the distance
-of a solution to the optimum. With this default value,
-**Antares-Xpansion** determines the investment combination that
-minimizes the cost function.
-
 The interest of a strictly positive `optimality_gap` is that it speeds up
-research by stopping as soon as a "good" solution is found.
+the search by stopping as soon as a "good" solution is found.
 
 The interpretation of this stopping criterion is not always obvious. It
-certainly guarantees that a solution will be found whose cost is close
+certainly guarantees that a solution found by the algorithm has a cost that is close
 to the optimum, but it does not provide any information on the distance
 (in MW) between the installed capacities of this solution and those of
-the optimum solution. However, if the cost function is relatively flat
+the optimal solution: if the cost function is relatively flat
 around the optimum, solutions whose costs are close may have
 significantly different installed capacities (see for example **Figure
 8**).
 
 **Which settings should I use the** `optimality_gap`?
 
-- If I have to run several expansion optimizations of different
+1. I have to run several expansion optimizations of different
   variants of a study and compare them. In that case, if the optimal
   solutions are not returned by the package, the comparison of several
-  variants can be tricky as the imprecision of the method might be in
+  variants can be tricky. The imprecision of the method might indeed be of
   the same order of magnitude as the changes brought by the input
   variations. It is therefore advised to be as closed as possible from
-  the optimum of the expansion problem. To do so, the following
-  condition should necessarily be fulfilled:
+  the optimum of the expansion problem. To do so, we advise to set the `optimality_gap` to zero.
 
-    - set the `optimality_gap` to zero.
-
-> Note: even with the conditions mentioned above, the result might be
-> slightly different from the optimum due to numeric approximations,
-> this can be partly solved by putting to optimality gap to –Inf.
-
-- If I'm building one consistent generation/transmission scenario. As
+2. I am building one consistent generation/transmission scenario. As
   the optimal solution is not more realistic than an approximate
-  solution of the modelled expansion problem. The settings can be less
-  constraining with:
+  solution of the modelled expansion problem, the settings can be less
+  constraining with an `optimality_gap` of a few million euros.
 
-    - an `optimality_gap` of a few million euros.
+### **`relative_gap`**
+
+Possible values: positive numeric values (ex: `relative_gap = 1e-6`). Default
+value: `1e-12`.
+
+The `relative_gap` parameter is the tolerance on the relative gap for the
+Antares-Xpansion algorithm. 
+
+At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm statisfies:
+
+$$\frac{\texttt{xpansion\_solution\_cost}}{\texttt{optimal\_cost}} < \alpha .$$
+
+!!! Remark
+    The algorithm stops as soon as the first criterion among `optimality_gap` and `relative_gap` is met. Keep in mind that if either parameter is not specified by the user, the default value is used. 
 
 ### **`uc_type`**
 
@@ -602,15 +602,15 @@ The `uc-type` (unit-commitment type) parameter specifies the simulation
 mode used by Antares to evaluate the operating costs of the electrical
 system:
 
-- If `uc_type = expansion_fast`: the *fast* mode of ANTARES is used,
+- If `uc_type = expansion_fast`: the *fast* mode of Antares is used,
   deactivating the flexibility constraints of the thermal units (Pmin
   constraints and minimum up and down times), and not taking into
   account either the start-up costs or the impact of the day-ahead
   reserve.
 
-- If `uc_type = expansion_accurate`: the *expansion* mode of ANTARES
+- If `uc_type = expansion_accurate`: the *expansion* mode of Antares
   is used. This simulation mode corresponds to the *accurate* mode of
-  ANTARES in which the unit-commitment variables are relaxed. The
+  Antares in which the unit-commitment variables are relaxed. The
   flexibility constraints of the thermal units as well as the start-up
   costs are taken into account.
 
@@ -627,13 +627,9 @@ taken into account in the antaresXpansion master problem.
 
 - If `master = integer`: the problem of optimizing investments is solved
   by taking into account `unit-size` constraints of the candidates.
-  However, to speed up the search for the optimal solution, these
-  constraints are not taken into account during the first iterations
-  of the Benders decomposition: they are relaxed until the
-  relaxed-optimality-gap is reached.
 
 For problems with several investment candidates with large max-units,
-the master = relaxed can accelerate the search for **Antares-Xpansion**
+using `master = relaxed` can accelerate the Antares-Xpansion algorithm
 very significantly.
 
 ### **`max-iteration`**
@@ -643,7 +639,7 @@ Inf.
 
 Benders decomposition stop criterion defined in maximum number of
 iterations. Once this number of iterations is reached, the search for
-**Antares-Xpansion** ends, regardless of the quality of the solution
+Antares-Xpansion ends, regardless of the quality of the solution
 found.
 
 
@@ -652,7 +648,7 @@ found.
 Value: string specifying the name of a file.
 
 `yearly-weights` offers the possibility of assuming that the Monte Carlo
-years simulated in the ANTARES study are not equally probable. The most
+years simulated in the Antares study are not equally probable. The most
 representative years may be given greater weight than those that are
 less representative. The `yearly-weights` points to a vector
 \\(\left( \omega_{1},\ldots,\omega_{n} \right)\\), with \\(n\\) the number
@@ -665,9 +661,9 @@ With \\(\text{cost}_{i}\\) the production cost of the \\(i\\)-th Monte Carlo
 year.
 
 The value to be filled is a string specifying the name of a file. This
-file must be located in the `user/expansion/` folder of the ANTARES
+file must be located in the `user/expansion/` folder of the Antares
 study. It must contain a column with as many numerical values as there
-are Monte-Carlo years in the ANTARES study. The value of the \\(i\\)-th
+are Monte-Carlo years in the Antares study. The value of the \\(i\\)-th
 row is the weight of the \\(i\\)-th Monte Carlo year.
 
 ![](../assets/media/image17.png)
@@ -676,11 +672,11 @@ row is the weight of the \\(i\\)-th Monte Carlo year.
 Monte-Carlo years that are not equally-weighted.
 
 If the `yearly-weights` parameter is not used, the Monte-Carlo years of
-the ANTARES study are considered to be equally-weighted.
+the Antares study are considered to be equally-weighted.
 
 The `yearly-weights` parameter **must be set in
-line with the ANTARES study playlist by the user**: years with
-zero weights must be removed from the ANTARES study playlist in order
+line with the Antares study playlist by the user**: years with
+zero weights must be removed from the Antares study playlist in order
 not to be simulated unnecessarily.
 
 ### **`solver`**
@@ -697,7 +693,7 @@ Value: string specifying the name of a file.
 The additional-constraint argument makes it possible to impose linear
 constraints between the invested capacities of investment candidates.
 The value of this parameter is the name of a file to be located in the
-user/expansion/ folder of the ANTARES study. This file must be written
+user/expansion/ folder of the Antares study. This file must be written
 in a particular syntax and complements the master problem with new
 linear constraints between investment candidates. The format is inspired
 by Antares' binding constraints. An example of such a file is given in
@@ -717,7 +713,7 @@ the following figure:
 
 The user can also optionally use binary constraints to represent, for
 example, exclusion constraints. In the following figure,
-**Antares-Xpansion** cannot invest in semibase and peak at the same
+Antares-Xpansion cannot invest in semibase and peak at the same
 time, it can also invest in neither:
 
 ![](../assets/media/image19.png)

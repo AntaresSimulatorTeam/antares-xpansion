@@ -1,5 +1,5 @@
 # Optimization problems generation
-`antares-solver` is run using *xpansion* options. The weekly optimization problems (1st and 2nd optimization) are written as `.mps` files.
+`antares-solver` is run using Antares-Xpansion options. The weekly optimization problems (1st and 2nd optimization) are written as `.mps` files.
 
 ## Specific Antares-Xpansion configuration
 In order to run the `antares-solver` study correctly, some 

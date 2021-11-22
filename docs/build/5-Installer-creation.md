@@ -23,21 +23,21 @@ CPack can be used to create the installer after the build phase :
     ```
     
     ### Required system libraries
-    There are still some system libraries that must be installed if you want to use *antares-xpansion*:
+    There are still some system libraries that must be installed if you want to use Antares-Xpansion:
     
     ```
     sudo yum install epel-release
     sudo yum install openmpi jsoncpp boost-openmpi
     ```
     
-    Before launching *antares-xpansion* with mpi for parallel launch (method `mpibenders`), you must load mpi module :
+    Before launching Antares-Xpansion with mpi for parallel launch (method `mpibenders`), you must load mpi module :
     ```
     scl enable devtoolset-7 bash
     module load mpi
     ```
     
     Note :
-    > `mpirun` can't be used as root on Centos7. Be sure to launch antares-xpansion without root user.
+    > `mpirun` can't be used as root on Centos7. Be sure to launch Antares-Xpansion without root user.
 
 === "Ubuntu"
 
@@ -53,7 +53,7 @@ CPack can be used to create the installer after the build phase :
     ```
     
     ### Required system libraries
-    There are still some system libraries that must be installed if you want to use *antares-xpansion*:
+    There are still some system libraries that must be installed if you want to use Antares-Xpansion:
     ```
     sudo apt-get install libcurl4 libjsoncpp1 libboost-mpi-dev libboost-program-options-dev
     ```

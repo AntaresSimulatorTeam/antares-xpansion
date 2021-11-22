@@ -3,16 +3,16 @@
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
 ![antares logo](assets/antares.png)
-> Investment simulations for [ANTARES][antareswebsite] studies
+> Investment simulations for [Antares][antareswebsite] studies
 
-This package works along with RTE's adequacy software [ANTARES][antareswebsite] that is also [hosted on github][antares-github]
+This package works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]
 
 Please see the [Antares-Xpansion Documentation][readthedocs] for an introductory tutorial,
-and a full user guide. Visit the [Antares-Simulator Documentation][readthedocs-antares] for more insights on ANTARES. 
+and a full user guide. Visit the [Antares-Simulator Documentation][readthedocs-antares] for more insights on Antares. 
 
 ## Introduction
 
-`Antares-Xpansion` optimizes the installed capacities of an ANTARES study.
+Antares-Xpansion optimizes the installed capacities of an Antares study.
 
 Typical uses of Antares-Xpansion are for example:
 
@@ -23,7 +23,7 @@ Typical uses of Antares-Xpansion are for example:
 
 ### Antares simulation
 
-In an ANTARES simulation, the user builds a power system with a network of zones
+In an Antares simulation, the user builds a power system with a network of zones
 characterised by power plants (with their constraints e.g., max power etc. and costs),
 power consumption and power transfer between zones(with the import-export transfer capacity and costs).
 
@@ -34,7 +34,7 @@ The goal of the simulation is to minimize the
 **expected operation cost during one year**.
 
 ### Antares-Xpansion simulation
-Given an ANTARES simulation the user can define some
+Given an Antares simulation the user can define some
 _investment candidates_ in the power network such as
 - (increase or create) transfer capacity between to areas
 - (increase or create) maximum power of a generation facility
@@ -49,7 +49,7 @@ to minimize the global costs, that is the sum of the
 **expected operation cost during one year**
 and the **investment annuity**.
 
-`Antares-Xpansion` is currently under development. Feel free to submit any issue.
+Antares-Xpansion is currently under development. Feel free to submit any issue.
 
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg

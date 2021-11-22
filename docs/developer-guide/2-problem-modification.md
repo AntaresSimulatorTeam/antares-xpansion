@@ -33,7 +33,7 @@ Each `.mps` file is changed to:
 - add constraint on `CoutExtremiteVersOrigineDeLInterconnexion`
 
 ### 3- Read additional candidate constrains
-antares-xpansion setting file can contains `additional-constraints` parameter.
+Antares-Xpansion setting file can contains `additional-constraints` parameter.
 
 In this case the file is used to define additional constraints for each candidate.
 For more information on file format see corresponding user guide (TODO : add reference ?)

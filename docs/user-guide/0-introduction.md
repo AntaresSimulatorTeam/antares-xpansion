@@ -2,12 +2,12 @@
 
 ![](../assets/antares.png)
 
-[Antares-Xpansion](https://antares-simulator.org/)  package works along with RTE's adequacy software ANTARES:
+[Antares-Xpansion](https://antares-simulator.org/)  package works along with RTE's adequacy software Antares:
 <https://antares.rte-france.com/>
 
 
-**Antares-Xpansion** is the package which optimizes the installed
-capacities of an ANTARES study.
+Antares-Xpansion is the package which optimizes the installed
+capacities of an Antares study.
 
 Typical uses of the package are for:
 
@@ -17,28 +17,28 @@ Typical uses of the package are for:
 > **transmission expansion planning**: compute the network
 > development which maximizes social welfare
 
-The investment decisions are optimized by running ANTARES' simulations
+The investment decisions are optimized by running Antares' simulations
 iteratively. At each iteration, the installed capacity of the
 investments are updated, and the simulations are repeated until the
 total costs have converged to a minimum. The total cost evaluated in
 this problem are the sum of **the expected operation cost during one
 year** and **the investment annuity**.
 
-**Antares-Xpansion** is currently under development. Feel free to submit
+Antares-Xpansion is currently under development. Feel free to submit
 any issue.
 
 ## Optimal dimensioning of generation and transport capacities: the optimization problem solved by Antares-Xpansion
 
-The cost function that **Antares-Xpansion** minimizes is as follows:
+The cost function that Antares-Xpansion minimizes is as follows:
 
 $$\min (\text{expected operating costs for one year} + \text{fixed cost annuity})$$
 
 In which the expected operating costs for one year, calculated by
-ANTARES, includes the variable costs of thermal generation (fuel and CO2
+Antares, includes the variable costs of thermal generation (fuel and CO2
 costs), penalties in case of unsupplied energy, line transit costs (if
 any), and, if the expansion-accurate mode is used, the start-up costs of
 the thermal generation units. The production costs are calculated over
-the entire geographical perimeter of the ANTARES study, and in
+the entire geographical perimeter of the Antares study, and in
 expectation over the probabilistic scenarios defined in the study. The
 expected operating costs for one year include the fixed operating and
 maintenance costs of the generation and transit costs and, in the case
@@ -51,7 +51,7 @@ cost function can be represented by the graph in ***Figure 1***.
 
 ![](../assets/media/image3.png)
 
-**Figure** **1** – Objective function of the **Antares-Xpansion**
+**Figure** **1** – Objective function of the Antares-Xpansion
 optimization problem for one candidate
 
 The expected operating costs for one year decreases as installed
@@ -64,7 +64,7 @@ first MW installed take the most interesting economic potential and have
 a greater impact on generation costs than the "last" MW installed, which
 have a lower economic utility, or even none in the case of overcapacity.
 
-In **Antares-Xpansion**, fixed cost annuities are considered piecewise
+In Antares-Xpansion, fixed cost annuities are considered piecewise
 linear. Different potentials are defined, each of which is characterized
 by a fixed cost annuity in €/MW installed, and corresponds to one of the
 slopes of the function. A particular case of this commonly used
@@ -75,7 +75,7 @@ The final cost result - which will be called the total cost later in
 this document - is a convex function. It therefore has a minimum
 solution plateau (see ***Figure 2***) which in most applications on real
 data sets is reduced to a single point (see ***Figure 1***), but it can
-be more than one point of equal value. **Antares-Xpansion** determines
+be more than one point of equal value. Antares-Xpansion determines
 this point which minimizes the total cost, or any point of the minimum
 plateau in the case of a so-called degenerate problem. This is the
 optimal solution to the cost minimization problem.
@@ -83,43 +83,43 @@ optimal solution to the cost minimization problem.
 ![](../assets/media/image4.png)
 
 **Figure** **2** – Generic case (but uncommon in practical
-**Antares-Xpansion** cases) with a set of optimal solutions (a plateau).
+Antares-Xpansion cases) with a set of optimal solutions (a plateau).
 
 The investment variables are the installed capacities (in MW) of the
 generation and/or transmission assets defined at the input of
-**Antares-Xpansion** as candidates for investment.
+Antares-Xpansion as candidates for investment.
 
 The cases shown in ***Figure 1*** and ***Figure 2*** contain only one
 investment variable. The search for the optimal solution is then carried
 out over the interval \[0, available potential\], bounded on the left by
 zero and on the right by the maximum available potential of the
 investment under consideration. The available potential is one of the
-input data of **Antares-Xpansion**.
+input data of Antares-Xpansion.
 
 In the more general case with several investment candidates,
-**Antares-Xpansion** determines one optimal investment combination, that
+Antares-Xpansion determines one optimal investment combination, that
 is, one combination \\((c_{1},c_{2},\ldots,c_{n})\\) of the capacities of
 the n investment candidates that minimizes the cost function.
 
 The search for this optimal combination is done "at the same time" on
 the capacities of all investment candidates, and not candidate by
-candidate. In doing this, the **Antares-Xpansion** algorithm is able to
+candidate. In doing this, the Antares-Xpansion algorithm is able to
 identify and take into account the impact of synergies between
 structures - for example an A-B line which only becomes interesting once
 the B-C line is built - or of competitions - for example an A-B-C
 corridor parallel to another A-D-C corridor.
 
-The definition of the investment variables in **Antares-Xpansion** is
+The definition of the investment variables in Antares-Xpansion is
 detailed later in this note. For example, it may include:
 
 -  **Investable capacity values limited to a
    finite set rather than a whole interval.** This allows for
    example to make the hypothesis that the investment is made in unit
    steps of 200 MW and to constrain the search for
-   **Antares-Xpansion** to the discrete set {0 MW, 200 MW, 400 MW,
+   Antares-Xpansion to the discrete set {0 MW, 200 MW, 400 MW,
    600 MW…}. Or to adopt an all-or-nothing approach in which only two
    choices are possible: not to invest or to invest up to an imposed
-   unit capacity. Note that **Antares-Xpansion** can manage a mix of
+   unit capacity. Note that Antares-Xpansion can manage a mix of
    continuous investment variables, i.e. valid over the whole
    interval \[0, maximum potential\], and discrete variables, valid
    only over a finite set of values (see later).
@@ -130,10 +130,10 @@ detailed later in this note. For example, it may include:
   sum of the capacities of two investment candidates to be greater or
   less than a given limit.
 
-The resolution method used by **Antares-Xpansion** - called Benders
+The resolution method used by Antares-Xpansion - called Benders
 decomposition - is an iterative method, which for each iteration:
 
-- performs an ANTARES simulation to evaluate the expected annual
+- performs an Antares simulation to evaluate the expected annual
   production costs of a combination of investments,
 
 - determines a new investment combination by solving a "master
@@ -158,17 +158,17 @@ increases strongly with the number of defined investment variables.
 | 100                                 | 800                                                |
 
 **Table** **1 -** Order of magnitude of the number of iterations
-required to reach the optimum with **Antares-Xpansion** v0.12. Note that
+required to reach the optimum with Antares-Xpansion v0.12. Note that
 the number of iterations is also highly dependent on the structure of
-the ANTARES study and investment candidates, as well as the algorithmic
-parameters of **Antares-Xpansion**.
+the Antares study and investment candidates, as well as the algorithmic
+parameters of Antares-Xpansion.
 
-Each iteration of the **Antares-Xpansion** algorithm includes an ANTARES
+Each iteration of the Antares-Xpansion algorithm includes an Antares
 simulation. However, the simulation of "operational" studies of several
 tens of nodes and with several hundred Monte-Carlo scenarios (TYNDP,
 Generation adequacy report on the electricity supply-demand, etc.)
 requires a significant amount of computing time, sometimes several
 hours. The search for the optimal solution to the problem solved by
-**Antares-Xpansion** can therefore be relatively long, and in some cases
+Antares-Xpansion can therefore be relatively long, and in some cases
 requires simplifying the problem being solved.
 
