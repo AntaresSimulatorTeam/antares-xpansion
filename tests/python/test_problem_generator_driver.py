@@ -308,30 +308,43 @@ class TestProblemGeneratorDriver:
             problem_generator_driver.launch(tmp_path, False)
             assert str(expect.value) == expected_message
 
-    def tests_additionnal_constraints(self):
-        study_dir = TestProblemGeneratorDriver.run_antares_step_in_examples("additionnal-constraints")
-        problem_generator_driver, simu_abs_path, is_relaxed = TestProblemGeneratorDriver._get_problem_generator_for_study(
-            study_dir)
-        problem_generator_driver.launch(simu_abs_path, is_relaxed)
+    def test_weight_file_is_created(self, tmp_path):
 
-    def tests_additionnal_constraints_binary(self):
-        study_dir = TestProblemGeneratorDriver.run_antares_step_in_examples("additionnal-constraints-binary")
-        problem_generator_driver, simu_abs_path, is_relaxed = TestProblemGeneratorDriver._get_problem_generator_for_study(
-            study_dir)
-        problem_generator_driver.launch(simu_abs_path, is_relaxed)
+        lp_namer_file = tmp_path / self.lp_exe
+        lp_namer_file.write_text("")
+        weight_file_name = "weight_file.txt"
+        file_path: Path = tmp_path / weight_file_name
+        weight_list = [1, 2]
+        _create_weight_file(file_path, weight_list)
+        pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
+                                             keep_mps=False,
+                                             additional_constraints="",
+                                             weights_file_path=file_path,
+                                             weight_file_name=weight_file_name,
+                                             install_dir=tmp_path,
+                                             nb_active_years=2)
 
-    def tests_small_test_five_candidates_with_weights(self):
-        study_dir = TestProblemGeneratorDriver.run_antares_step_in_examples("SmallTestFiveCandidatesWithWeights")
-        problem_generator_driver, simu_abs_path, is_relaxed = TestProblemGeneratorDriver._get_problem_generator_for_study(
-            study_dir)
-        problem_generator_driver.launch(simu_abs_path, is_relaxed)
+        list_generated_files = self._get_expected_mps_txt(tmp_path)
+        mps_files = [week_files[0] for week_files in list_generated_files]
+        expected_weight_file_content = []
+        for file in mps_files:
+            year = self._get_year_index_from_name(file)
+            expected_weight_file_content.append(Path(file).with_suffix('').name + " " + str(float(weight_list[year - 1])) + "\n") 
+        expected_weight_file_content.append("WEIGHT_SUM " + str(float(sum(weight_list))))
+        self._create_empty_area_file(tmp_path)
+        self._create_empty_interco_file(tmp_path)
 
-    def tests_small_test_five_candidates(self):
-        study_dir = TestProblemGeneratorDriver.run_antares_step_in_examples("SmallTestFiveCandidates")
-        problem_generator_driver, simu_abs_path, is_relaxed = TestProblemGeneratorDriver._get_problem_generator_for_study(
-            study_dir)
-        problem_generator_driver.launch(simu_abs_path, is_relaxed)
+        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            run_function.return_value.returncode = 0
 
+            problem_generator_driver.launch(tmp_path, False)
+        
+        assert file_path.exists()
+        with open(tmp_path / "lp" / weight_file_name , "r") as file:
+            lines = file.readlines()
+        
+        assert lines == expected_weight_file_content
     def _get_expected_mps_txt(self, tmp_path):
 
         weeks = [1, 2, 3]
@@ -382,101 +395,7 @@ class TestProblemGeneratorDriver:
         file.write_text("")
 
     @staticmethod
-    def _get_options_from_settings_inifile(settings_ini_filepath):
-        with open(settings_ini_filepath, 'r') as file_l:
-            options = dict(
-                {line.strip().split('=')[0].strip(): line.strip().split('=')[1].strip()
-                 for line in file_l.readlines() if line.strip()})
-        return options
-
-    @staticmethod
-    def _get_additional_constraints_from_settings(settings_ini_filepath):
-        options = TestProblemGeneratorDriver._get_options_from_settings_inifile(settings_ini_filepath)
-        return options.get("additional-constraints", "")
-
-    @staticmethod
-    def _get_weight_file_name(settings_ini_filepath):
-        options = TestProblemGeneratorDriver._get_options_from_settings_inifile(settings_ini_filepath)
-        return options.get('yearly-weights', "")
-
-    @staticmethod
-    def _get_weights_file_path(study_dir):
-        """
-            returns the path to a yearly-weights file
-
-            :return: path to input yearly-weights file
-        """
-        settings_ini_filepath = Path(study_dir) / "user" / "expansion" / "settings.ini"
-        yearly_weights_filename = TestProblemGeneratorDriver._get_weight_file_name(settings_ini_filepath)
-        if yearly_weights_filename:
-            return Path(study_dir) / "user" / "expansion" / yearly_weights_filename
-        else:
-            return ""
-
-    @staticmethod
-    def _get_nb_active_years(study_dir):
-        general_data = Path(study_dir) / "settings" / "generaldata.ini"
-        return GeneralDataIniReader(Path(general_data)).get_nb_activated_year()
-
-    @staticmethod
-    def _get_last_simulation_name(antares_output):
-        """
-            return last simulation name    
-        """
-        # Get list of all dirs only in the given directory
-        list_of_dirs_filter = filter(lambda x: os.path.isdir(os.path.join(antares_output, x)),
-                                     os.listdir(antares_output))
-        # Sort list of files based on last modification time in ascending order
-        list_of_dirs = sorted(list_of_dirs_filter,
-                              key=lambda x: os.path.getmtime(os.path.join(antares_output, x))
-                              )
-        return list_of_dirs[-1]
-
-    @staticmethod
-    def _is_relaxed(settings_ini_filepath):
-        """
-            indicates if method to use is relaxed by reading the relaxation_type
-            from the settings file
-        """
-        options = TestProblemGeneratorDriver._get_options_from_settings_inifile(settings_ini_filepath)
-        relaxation_type = options.get('master', "integer")
-        assert relaxation_type in ['integer', 'relaxed', 'full_integer']
-        return relaxation_type == 'relaxed'
-
-    @staticmethod
-    def run_antares_step_in_examples(example_name):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_additionnal_constraints = Path("examples") / example_name
-        study_dir = project_dir / project_dir_to_additionnal_constraints
-        TestProblemGeneratorDriver._launch_antares_step(study_dir)
-        return study_dir
-
-    @staticmethod
-    def _launch_antares_step(study_dir):
-        # Running Antares Driver
-        antares_driver = AntaresDriver(get_antares_solver_path())
-        antares_driver.launch(study_dir, 1)
-
-    @staticmethod
-    def _get_problem_generator_for_study(study_dir):
-
-        settings_dir = study_dir / "user" / "expansion" / "settings.ini"
-        addi_constraints = TestProblemGeneratorDriver._get_additional_constraints_from_settings(settings_dir)
-        file_path = TestProblemGeneratorDriver._get_weights_file_path(study_dir)
-        file_name = TestProblemGeneratorDriver._get_weight_file_name(settings_dir)
-        nb_act_yrs = TestProblemGeneratorDriver._get_nb_active_years(study_dir)
-        pblm_gen_data = ProblemGeneratorData(LP_NAMER=get_lp_namer_exe(),
-                                             keep_mps=False,
-                                             additional_constraints=addi_constraints,
-                                             weights_file_path=file_path,
-                                             weight_file_name=file_name,
-                                             install_dir=get_install_dir(),
-                                             nb_active_years=nb_act_yrs)
-
-        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
-        antares_output_dir = study_dir / "output"
-        antares_simulation = TestProblemGeneratorDriver._get_last_simulation_name(antares_output_dir)
-        simu_abs_path = Path(os.path.normpath(os.path.join(antares_output_dir, antares_simulation)))
-        is_relaxed = TestProblemGeneratorDriver._is_relaxed(settings_dir)
-
-        return (problem_generator_driver, simu_abs_path, is_relaxed)
+    def _get_year_index_from_name(file_name):
+        buffer_l = file_name.strip().split("-")
+        year = int(buffer_l[1])
+        return year
