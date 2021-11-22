@@ -10,7 +10,7 @@ from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import GeneralDataFileExceptions, GeneralDataProcessor
 
-ANTARES_DRIVER_SUBPROCESS_RUN =  "antares_xpansion.antares_driver.subprocess.run"
+SUBPROCESS_RUN =  "antares_xpansion.antares_driver.subprocess.run"
 
 class TestGeneralDataProcessor:
 
@@ -162,25 +162,21 @@ class TestAntaresDriver:
         study_dir = tmp_path
         exe_path = "/Path/to/bin1"
         antares_driver = AntaresDriver(exe_path)
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
             # mock subprocess.run
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
-                antares_driver.launch(study_dir, 1)
-                expected_cmd = [exe_path, study_dir, "--force-parallel","1"]
-                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+            antares_driver.launch(study_dir, 1)
+            expected_cmd = [exe_path, study_dir, "--force-parallel","1"]
+            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
 
     def test_antares_cmd_force_parallel_option(self, tmp_path):
         study_dir = tmp_path
         exe_path = "/Path/to/bin2"
         n_cpu = 13
         antares_driver = AntaresDriver(exe_path)
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
-                antares_driver.launch(study_dir, n_cpu)
-                expected_cmd = [exe_path, study_dir, "--force-parallel", str(n_cpu)]
-                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [exe_path, study_dir, "--force-parallel", str(n_cpu)]
+            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
     
     def test_invalid_n_cpu(self, tmp_path):
         study_dir = tmp_path
@@ -188,12 +184,10 @@ class TestAntaresDriver:
         n_cpu = -1
         expected_n_cpu = 1
         antares_driver = AntaresDriver(exe_path)
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
-                antares_driver.launch(study_dir, n_cpu)
-                expected_cmd = [exe_path, study_dir, "--force-parallel", str(expected_n_cpu)]
-                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [exe_path, study_dir, "--force-parallel", str(expected_n_cpu)]
+            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
     
     def test_remove_log_file(self, tmp_path):
         study_dir = tmp_path
@@ -202,12 +196,10 @@ class TestAntaresDriver:
         log_file = Path(log_file).touch()
         n_cpu = 13
         antares_driver = AntaresDriver(exe_path)
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
-                antares_driver.launch(study_dir, n_cpu)
-                expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu)]
-                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu)]
+            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
 
 
     def test_non_valid_exe_empty(self, tmp_path):
@@ -221,79 +213,37 @@ class TestAntaresDriver:
     def test_empty_study_dir(self, tmp_path):
         
         study_dir = tmp_path
-        # study_dir.mkdir()
         antares_driver = AntaresDriver(self.get_antares_exe())
 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
             antares_driver.launch(study_dir, 1)
 
             
-    def test_launch_execute_the_antares_command(self, tmp_path):
+    def test_clean_antares_step(self, tmp_path):
         study_dir = tmp_path
         self.initialize_dummy_study_dir(study_dir)
 
         exe_path = Path("/Path/to/exe")
+        output_dir = study_dir / "output"
+        output_dir.mkdir()
+        simulation_dir = output_dir / "my_simu"
+        simulation_dir.mkdir()
+        fnames = ["something_criterion_other.ext", "-1.mps", "-1.txt"]
+        files_to_remove = [ simulation_dir / fname for fname in fnames]
+        for file in files_to_remove:
+            file.write_text("")
+            assert file.exists()
+
         antares_driver = AntaresDriver(exe_path)
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            with patch(ANTARES_DRIVER_SUBPROCESS_RUN, autospec=True) as run_function :
-                antares_driver.launch(study_dir, 1)
-
-                expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]
-                run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3)
-
-    def tests_additionnal_constraints(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_additionnal_constraints = Path("examples") / "additionnal-constraints"
-        study_dir =   project_dir / project_dir_to_additionnal_constraints
-
-        antares_driver = AntaresDriver(self.get_antares_exe())
-        antares_driver.launch(study_dir, 1)
-    
-    def tests_additionnal_constraints_binary(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_additionnal_constraints_binary = Path("examples") / "additionnal-constraints-binary"
-        study_dir =   project_dir / project_dir_to_additionnal_constraints_binary
-
-        antares_driver = AntaresDriver(self.get_antares_exe())
-        antares_driver.launch(study_dir, 1)
-    
-    def tests_small_test_five_candidates_with_weights(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_small_test_five_candidates_with_weights = Path("examples") / "SmallTestFiveCandidatesWithWeights"
-        study_dir =   project_dir / project_dir_to_small_test_five_candidates_with_weights
-
-        antares_driver = AntaresDriver(self.get_antares_exe())
-        antares_driver.launch(study_dir, 1)
-
-    def tests_small_test_five_candidates(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_small_test_five_candidates = Path("examples") / "SmallTestFiveCandidates"
-        study_dir =   project_dir / project_dir_to_small_test_five_candidates
-
-        antares_driver = AntaresDriver(self.get_antares_exe())
-        antares_driver.launch(study_dir, 1)
-
-    def tests_small_test_six_candidates_with_already_installed_capacity(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_small_test_six_candidates_with_already_installed_capacity = Path("examples") / "SmallTestSixCandidatesWithAlreadyInstalledCapacity"
-        study_dir =   project_dir / project_dir_to_small_test_six_candidates_with_already_installed_capacity
-
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            antares_driver = AntaresDriver(self.get_antares_exe())
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+            run_function.return_value.returncode = 0
             antares_driver.launch(study_dir, 1)
 
-    def tests_small_test_six_candidates_with_playlist(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_small_test_six_candidates_with_playlist = Path("examples") / "SmallTestSixCandidatesWithPlaylist"
-        study_dir =   project_dir / project_dir_to_small_test_six_candidates_with_playlist
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]
+            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3)
 
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            antares_driver = AntaresDriver(self.get_antares_exe())
-            antares_driver.launch(study_dir, 1)
-            
+        for file in files_to_remove:
+            assert not file.exists()
 
     def initialize_dummy_study_dir(self, study_dir):
         settings_dir = study_dir / "settings"
