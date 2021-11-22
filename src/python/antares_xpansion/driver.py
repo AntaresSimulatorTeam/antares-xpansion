@@ -35,12 +35,11 @@ class XpansionDriver:
         self.config_loader = ConfigLoader(self.config)
 
         self.antares_driver = AntaresDriver(self.config_loader.exe_path(self.config.ANTARES))
-        self.problem_generator_driver = ProblemGeneratorDriver(ProblemGeneratorData(LP_NAMER = self.config.LP_NAMER,
-                                                                                    keep_mps = self.config.keep_mps,
+        self.problem_generator_driver = ProblemGeneratorDriver(ProblemGeneratorData(keep_mps = self.config.keep_mps,
                                                                                     additional_constraints = self.config_loader.additional_constraints(),
                                                                                     user_weights_file_path  = self.config_loader.weights_file_path(),
                                                                                     weight_file_name_for_lp= self.config_loader.weight_file_name(),
-                                                                                    install_dir  = self.config.install_dir,
+                                                                                    lp_namer_exe_path  = self.config_loader.exe_path(self.config.LP_NAMER),
                                                                                     nb_active_years = self.config_loader.nb_active_years      
                                                                 ))
         self.benders_driver = BendersDriver(self.config_loader)
@@ -97,5 +96,10 @@ class XpansionDriver:
         if self.config.simulation_name:
             self.problem_generator_driver.launch(self.config_loader.simulation_output_path(), self.config_loader.is_relaxed())
         else:
-            print("Missing argument simulationName")
-            sys.exit(1)
+            raise XpansionDriver.MissingSimulationName("Missing argument simulationName")
+    class BasicException(Exception):
+        pass
+    
+    class MissingSimulationName(BasicException):
+        pass
+

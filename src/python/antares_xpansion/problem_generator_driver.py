@@ -20,30 +20,47 @@ import functools
 print = functools.partial(print, flush=True)
 
 
-class BaseException(Exception):
-    pass
-
-
 @dataclass
 class ProblemGeneratorData:
-    LP_NAMER: str
     keep_mps: bool
     additional_constraints: str
     user_weights_file_path: Path
     weight_file_name_for_lp: str
-    install_dir: Path
+    lp_namer_exe_path : Path
     nb_active_years: int
 
 
 class ProblemGeneratorDriver:
+
+    class BasicException(Exception):
+        pass
+    class AreaFileException(BasicException):
+        pass
+
+    class IntercoFilesException(BasicException):
+        pass
+
+    class OutputPathError(BasicException):
+        pass
+
+    class LPNamerExeError(BasicException):
+        pass
+
+    class LPNamerPathError(BasicException):
+        pass
+
+    class LPNamerExecutionError(BasicException):
+        pass
+
+
     def __init__(self, problem_generator_data: ProblemGeneratorData) -> None:
 
-        self.LP_NAMER = problem_generator_data.LP_NAMER
+        self.lp_namer_exe_path = Path(problem_generator_data.lp_namer_exe_path)
+        self.LP_NAMER = self.lp_namer_exe_path.name
         self.keep_mps = problem_generator_data.keep_mps
         self.additional_constraints = problem_generator_data.additional_constraints
         self.user_weights_file_path = problem_generator_data.user_weights_file_path
         self.weight_file_name_for_lp = problem_generator_data.weight_file_name_for_lp
-        self.install_dir = problem_generator_data.install_dir
         self.nb_active_years = problem_generator_data.nb_active_years
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
@@ -74,18 +91,8 @@ class ProblemGeneratorDriver:
         return self._output_path
 
     def _clear_old_log(self):
-        if (os.path.isfile(self._exe_path(self.LP_NAMER) + '.log')):
-            os.remove(self._exe_path(self.LP_NAMER) + '.log')
-
-    def _exe_path(self, exe):
-        """
-            prefixes the input exe with the install directory containing the binaries
-
-            :param exe: executable name
-
-            :return: path to specified executable
-        """
-        return os.path.normpath(os.path.join(self.install_dir, exe))
+        if (os.path.isfile(str(self.lp_namer_exe_path) + '.log')):
+            os.remove(str(self.lp_namer_exe_path) + '.log')
 
     def _get_names(self):
         """
@@ -112,10 +119,10 @@ class ProblemGeneratorDriver:
     def _check_and_copy_interco_file(self):
         self._check_and_copy_txt_file("interco", ProblemGeneratorDriver.IntercoFilesException)
 
-    def _check_and_copy_txt_file(self, prefix, exception_to_raise: BaseException):
+    def _check_and_copy_txt_file(self, prefix, exception_to_raise: BasicException):
         self._check_and_copy_file(prefix, "txt", exception_to_raise)
 
-    def _check_and_copy_file(self, prefix, extension, exception_to_raise: BaseException):
+    def _check_and_copy_file(self, prefix, extension, exception_to_raise: BasicException):
         glob_path = Path(self.output_path)
         files = [str(pp) for pp in glob_path.glob(prefix + "*" + extension)]
         if len(files) == 0:
@@ -166,29 +173,11 @@ class ProblemGeneratorDriver:
     def _get_lp_namer_command(self):
 
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
-        lp_namer_exe = Path(self._exe_path(self.LP_NAMER))
-        if not lp_namer_exe.is_file():
-            raise ProblemGeneratorDriver.LPNamerExeError(f"LP namer exe: {lp_namer_exe} not found")
+        if not self.lp_namer_exe_path.is_file():
+            raise ProblemGeneratorDriver.LPNamerExeError(f"LP namer exe: {self.lp_namer_exe_path} not found")
 
-        return [lp_namer_exe, "-o", str(self.output_path), "-f", is_relaxed, "-e",
+        return [self.lp_namer_exe_path, "-o", str(self.output_path), "-f", is_relaxed, "-e",
                 self.additional_constraints]
 
-    class AreaFileException(BaseException):
-        pass
-
-    class IntercoFilesException(BaseException):
-        pass
-
-    class OutputPathError(BaseException):
-        pass
-
-    class LPNamerExeError(BaseException):
-        pass
-
-    class LPNamerPathError(BaseException):
-        pass
-
-    class LPNamerExecutionError(BaseException):
-        pass
 
     output_path = property(get_output_path, set_output_path)
