@@ -24,8 +24,8 @@ class TestProblemGeneratorDriver:
         self.empty_pblm_gen_data = ProblemGeneratorData(LP_NAMER="",
                                                         keep_mps=False,
                                                         additional_constraints="",
-                                                        weights_file_path=Path(""),
-                                                        weight_file_name="",
+                                                        user_weights_file_path=Path(""),
+                                                        weight_file_name_for_lp="",
                                                         install_dir=Path(""),
                                                         nb_active_years=0)
 
@@ -36,7 +36,7 @@ class TestProblemGeneratorDriver:
         assert problem_generator_driver.LP_NAMER == self.empty_pblm_gen_data.LP_NAMER
         assert problem_generator_driver.keep_mps == self.empty_pblm_gen_data.keep_mps
         assert problem_generator_driver.additional_constraints == self.empty_pblm_gen_data.additional_constraints
-        assert problem_generator_driver.weights_file_path == self.empty_pblm_gen_data.weights_file_path
+        assert problem_generator_driver.user_weights_file_path == self.empty_pblm_gen_data.user_weights_file_path
         assert problem_generator_driver.install_dir == self.empty_pblm_gen_data.install_dir
 
     def test_output_path(self, tmp_path):
@@ -123,8 +123,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints=additional_constraints,
-                                             weights_file_path=Path(""),
-                                             weight_file_name="",
+                                             user_weights_file_path=Path(""),
+                                             weight_file_name_for_lp="",
                                              install_dir=tmp_path,
                                              nb_active_years=1)
 
@@ -141,8 +141,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints=additional_constraints,
-                                             weights_file_path=Path(""),
-                                             weight_file_name="",
+                                             user_weights_file_path=Path(""),
+                                             weight_file_name_for_lp="",
                                              install_dir="",
                                              nb_active_years=1)
 
@@ -157,8 +157,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints="",
-                                             weights_file_path=Path(""),
-                                             weight_file_name="",
+                                             user_weights_file_path=Path(""),
+                                             weight_file_name_for_lp="",
                                              install_dir=tmp_path,
                                              nb_active_years=1)
         self._create_empty_area_file(tmp_path)
@@ -183,8 +183,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints="",
-                                             weights_file_path=Path(""),
-                                             weight_file_name="",
+                                             user_weights_file_path=Path(""),
+                                             weight_file_name_for_lp="",
                                              install_dir=tmp_path,
                                              nb_active_years=1)
         self._create_empty_area_file(tmp_path)
@@ -221,8 +221,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints="",
-                                             weights_file_path=file_path,
-                                             weight_file_name=Path(""),
+                                             user_weights_file_path=file_path,
+                                             weight_file_name_for_lp=Path(""),
                                              install_dir=tmp_path,
                                              nb_active_years=1)
         self._create_empty_area_file(tmp_path)
@@ -246,8 +246,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints="",
-                                             weights_file_path=file_path,
-                                             weight_file_name=weight_file_name,
+                                             user_weights_file_path=file_path,
+                                             weight_file_name_for_lp=weight_file_name,
                                              install_dir=tmp_path,
                                              nb_active_years=2)
         self._create_empty_area_file(tmp_path)
@@ -271,8 +271,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints="",
-                                             weights_file_path=file_path,
-                                             weight_file_name=weight_file_name,
+                                             user_weights_file_path=file_path,
+                                             weight_file_name_for_lp=weight_file_name,
                                              install_dir=tmp_path,
                                              nb_active_years=2)
         self._create_empty_area_file(tmp_path)
@@ -295,8 +295,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints="",
-                                             weights_file_path=file_path,
-                                             weight_file_name=weight_file_name,
+                                             user_weights_file_path=file_path,
+                                             weight_file_name_for_lp=weight_file_name,
                                              install_dir=tmp_path,
                                              nb_active_years=5)
         self._create_empty_area_file(tmp_path)
@@ -319,8 +319,8 @@ class TestProblemGeneratorDriver:
         pblm_gen_data = ProblemGeneratorData(LP_NAMER=self.lp_exe,
                                              keep_mps=False,
                                              additional_constraints="",
-                                             weights_file_path=file_path,
-                                             weight_file_name=weight_file_name,
+                                             user_weights_file_path=file_path,
+                                             weight_file_name_for_lp=weight_file_name,
                                              install_dir=tmp_path,
                                              nb_active_years=2)
 

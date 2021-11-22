@@ -29,8 +29,8 @@ class ProblemGeneratorData:
     LP_NAMER: str
     keep_mps: bool
     additional_constraints: str
-    weights_file_path: Path
-    weight_file_name: str
+    user_weights_file_path: Path
+    weight_file_name_for_lp: str
     install_dir: Path
     nb_active_years: int
 
@@ -41,8 +41,8 @@ class ProblemGeneratorDriver:
         self.LP_NAMER = problem_generator_data.LP_NAMER
         self.keep_mps = problem_generator_data.keep_mps
         self.additional_constraints = problem_generator_data.additional_constraints
-        self.weights_file_path = problem_generator_data.weights_file_path
-        self.weight_file_name = problem_generator_data.weight_file_name
+        self.user_weights_file_path = problem_generator_data.user_weights_file_path
+        self.weight_file_name_for_lp = problem_generator_data.weight_file_name_for_lp
         self.install_dir = problem_generator_data.install_dir
         self.nb_active_years = problem_generator_data.nb_active_years
         self.MPS_TXT = "mps.txt"
@@ -137,10 +137,10 @@ class ProblemGeneratorDriver:
             shutil.rmtree(self._lp_path)
         os.makedirs(self._lp_path)
 
-        if self.weight_file_name:
-            XpansionStudyReader.check_weights_file(self.weights_file_path, self.nb_active_years)
-            weight_list = XpansionStudyReader.get_years_weight_from_file(self.weights_file_path)
-            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name)
+        if self.weight_file_name_for_lp:
+            XpansionStudyReader.check_weights_file(self.user_weights_file_path, self.nb_active_years)
+            weight_list = XpansionStudyReader.get_years_weight_from_file(self.user_weights_file_path)
+            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name_for_lp)
 
         with open(self.get_lp_namer_log_filename(), 'w') as output_file:
 
