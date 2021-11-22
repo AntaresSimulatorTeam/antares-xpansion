@@ -38,8 +38,8 @@ class XpansionDriver:
         self.problem_generator_driver = ProblemGeneratorDriver(ProblemGeneratorData(LP_NAMER = self.config.LP_NAMER,
                                                                                     keep_mps = self.config.keep_mps,
                                                                                     additional_constraints = self.config_loader.additional_constraints(),
-                                                                                    weights_file_path  = self.config_loader.weights_file_path(),
-                                                                                    weight_file_name= self.config_loader.weight_file_name(),
+                                                                                    user_weights_file_path  = self.config_loader.weights_file_path(),
+                                                                                    weight_file_name_for_lp= self.config_loader.weight_file_name(),
                                                                                     install_dir  = self.config.install_dir,
                                                                                     nb_active_years = self.config_loader.nb_active_years      
                                                                 ))
