@@ -5,7 +5,18 @@ Unreleased
 --------------------
 ### Features
 
-- add option *antares-n-cpu* to use Antares parallelism
+- added option *antares-n-cpu* to use Antares parallelism
+- added option *-v, --version* to show AntaresXpansion version
+- added option *--antares-version* to show Antares_Simulator version
+- Set default value of *--simulationName* to *last* in order to use the last antares simulation
+
+### Bug fixes
+- Path to binaries directory was not found in some situations with python launcher and in python exclusive package
+- Correction bug when there are too many zeros in a link-profile 
+
+### For developpers
+- cpp Lp namer library is splited into smaller and consistents libraries
+- Each AntaresXpansion step has its own driver (python class) instead of the all-in driver
 
 v0.5.0 (10/2021)
 --------------------

@@ -27,6 +27,7 @@ The goal of the simulation is to minimize the
 **expected operation cost during one year**.
 
 ### Antares-Xpansion simulation
+
 Given an Antares simulation the user can define some
 _investment candidates_ in the power network such as:
 
