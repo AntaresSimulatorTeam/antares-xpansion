@@ -1,7 +1,7 @@
 # Development requirements
 
 ## [C++ version](#c++-version)
-The compilation of  *antares-xpansion* requires C++11 support.
+The compilation of  Antares-Xpansion requires C++11 support.
 
 === "Windows"
 
@@ -30,7 +30,7 @@ The compilation of  *antares-xpansion* requires C++11 support.
     sudo yum install devtoolset-7
     ```
     
-    Before compiling *antares-xpansion* we must launch a new shell with `scl` tool :
+    Before compiling Antares-Xpansion we must launch a new shell with `scl` tool :
     ```
     scl enable devtoolset-7 bash
     ```

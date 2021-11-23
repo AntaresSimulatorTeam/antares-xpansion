@@ -80,10 +80,10 @@ v0.2.0 (04/2021)
 v0.1.0 (03/2021)
 -------------------- 
 We’re happy to announce the first open-source version v0.1.0 of Antares-Xpansion.
-**Antares-Xpansion** optimizes the installed capacities of an ANTARES study.
+Antares-Xpansion optimizes the installed capacities of an Antares study.
 
-The investment decisions are optimized by running ANTARES' simulations iteratively. At each iteration, the installed capacity of the investments are updated, and the simulations are repeated until the total costs have converged to a minimum. The total cost evaluated in this problem are the sum of the **expected operation cost during one year** and **the investment annuity**. 
-The user defines investment candidates. Candidate capacities for investment are necessarily links from an ANTARES study.  Investment candidates can be:
+The investment decisions are optimized by running Antares' simulations iteratively. At each iteration, the installed capacity of the investments are updated, and the simulations are repeated until the total costs have converged to a minimum. The total cost evaluated in this problem are the sum of the **expected operation cost during one year** and **the investment annuity**. 
+The user defines investment candidates. Candidate capacities for investment are necessarily links from an Antares study.  Investment candidates can be:
  - transmission capacity between two areas
  - thermal generation capacity (located in a virtual node)
  - renewable generation capacity (located in a virtual node)

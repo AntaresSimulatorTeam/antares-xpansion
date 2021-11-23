@@ -1,6 +1,6 @@
 # Launching an optimization
 
-First, create an ANTARES study with the description of the candidates
+First, create an Antares study with the description of the candidates
 and create the candidates.ini and settings.ini files as explained above
 and store them in the directory `study_path/user/expansion/`. Once the
 `candidates.ini` and `settings.ini` files are set up, investment
@@ -34,8 +34,8 @@ The python script does several operations one after the other. The
 
 | step  | Description                    |
 | -------- | ------------------------------------------------------------------------ |
-| `antares`  | Launch ANTARES one time to get the ANTARES problem
-| `getnames` | Launch getnamer one time to get the name of ANTARES variables            |
+| `antares`  | Launch Antares one time to get the Antares problem
+| `getnames` | Launch getnamer one time to get the name of Antares variables            |
 | `lp `      | Launch lpnamer one time to create the master problem of Antares-Xpansion |
 | `optim`    | Launch the resolution of Antares-Xpansion                                |
 | `full`     | Launch all steps in order (antares \> getnames \> lp \> optim)           |
@@ -44,19 +44,19 @@ Default value: `full`.
 
 ### **`-i` `--dataDir`**
 
-Indicate the ANTARES simulation path. The specified path must be an
+Indicate the Antares simulation path. The specified path must be an
 explicit path. Use quotes “” in case of a space in the path.
 
 ### **`--simulationName`**
 
-This option enables to give a name to an ANTARES simulation. It is
+This option enables to give a name to an Antares simulation. It is
 necessary if you only run one of the following steps: `getnames`, `lp`,
 `optim` without restarting the antares step.
 
 ### **`-m` `--method`**
 
 This option enables to set the type of resolution to be used for
-**Antares-Xpansion**
+Antares-Xpansion
 
 | Option | Description                           |
 | ---------- | ----------------------------------------------------------------------- |
@@ -118,37 +118,37 @@ Optimization results available in : C:\\antaresXpansion-x.y.z-win64\examples\Sma
 ```
 
 ### Results
-When the search for **Antares-Xpansion** ends, i.e. when the optimal
+When the search for Antares-Xpansion ends, i.e. when the optimal
 investment combination has been found or a stop criterion has been
 reached - which can take several hours or even days in some cases - the
 package:
 
   - Writes the outputs in the
     `reportbenderssequential` text file and in the `out.json` text file, which
-    are in the ANTARES study `/output/simulation-name/lp/` folder. This
+    are in the Antares study `/output/simulation-name/lp/` folder. This
     report gives the parameters used in the `settings.ini` file for the
-    **Antares-Xpansion** optimization, gives the capacities, the costs
+    Antares-Xpansion optimization, gives the capacities, the costs
     of the optimal solution and the time of resolution, as well as the
     path of the iterations of the Benders decomposition.
 
-  - Updates the ANTARES study by replacing the capacities of investment
+  - Updates the Antares study by replacing the capacities of investment
     candidate links with their optimal value taking into account the
     link-profile, the already-installed-capacity and the
     already-installed-link-profile:
 
 ![](../assets/media/image23.png)
 
-**Figure** **15** – Example of update on the ANTARES study
+**Figure** **15** – Example of update on the Antares study
 
 The user can therefore relaunch the simulation corresponding to the last
-iteration. However, it is recommended to relaunch a real ANTARES
-post-**Antares-Xpansion** study for further analysis because
-**Antares-Xpansion** relaxes certain constraints (see `link-profile` and
+iteration. However, it is recommended to relaunch a real Antares
+post-Antares-Xpansion study for further analysis because
+Antares-Xpansion relaxes certain constraints (see `link-profile` and
 `uc_type` parameters) and the total costs could be a bit different.
 
 ## Errors
 
-Xpansion will not work if the initial ANTARES study is not running. The
+Xpansion will not work if the initial Antares study is not running. The
 user must therefore check beforehand that the Antares simulations do not
 contain any errors.
 
