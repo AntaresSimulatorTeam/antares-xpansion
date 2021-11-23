@@ -11,10 +11,7 @@ import sys
 
 
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-
-import functools
-
-flushed_print = functools.partial(print, flush=True)
+from antares_xpansion.flushed_print import flushed_print
 
 
 class BendersDriver:

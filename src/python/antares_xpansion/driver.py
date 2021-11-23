@@ -11,10 +11,7 @@ from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, Pr
 from antares_xpansion.benders_driver import BendersDriver
 from antares_xpansion.study_updater_driver import StudyUpdaterDriver
 from antares_xpansion.general_data_processor import GeneralDataProcessor
-
-import functools
-
-print = functools.partial(print, flush=True)
+from antares_xpansion.flushed_print import flushed_print
 
 
 class XpansionDriver:
@@ -66,28 +63,32 @@ class XpansionDriver:
 
         if self.config.step == "full":
             self.launch_antares_step()
-            print("-- post antares")
+            flushed_print("-- post antares")
             self.launch_problem_generation_step()
             self.launch_benders_step()
             self.study_update_driver.launch()
         elif self.config.step == "antares":
             self.launch_antares_step()
         elif self.config.step == "problem_generation":
-            self.launch_problem_generation_step()
+            if self.config.simulation_name:
+                self.launch_problem_generation_step()
+            else:
+                flushed_print("Missing argument simulationName")
+                sys.exit(1)
         elif self.config.step == "study_update":
             if self.config.simulation_name:
                 self.study_update_driver.launch()
             else:
-                print("Missing argument simulationName")
+                flushed_print("Missing argument simulationName")
                 sys.exit(1)
         elif self.config.step == "benders":
             if self.config.simulation_name:
                 self.launch_benders_step()
             else:
-                print("Missing argument simulationName")
+                flushed_print("Missing argument simulationName")
                 sys.exit(1)
         else:
-            print("Launching failed")
+            flushed_print("Launching failed")
             sys.exit(1)
 
     def _clear_old_log(self):
