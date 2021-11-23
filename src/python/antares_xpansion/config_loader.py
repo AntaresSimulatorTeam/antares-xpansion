@@ -12,10 +12,7 @@ import re
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-
-import functools
-
-print = functools.partial(print, flush=True)
+from antares_xpansion.flushed_print import flushed_print
 
 
 class ConfigLoader:
@@ -183,14 +180,14 @@ class ConfigLoader:
             try:
                 XpansionStudyReader.check_weights_file(self.weights_file_path(), self.nb_active_years)
             except XpansionStudyReader.BaseException as e:
-                print(e)
+                flushed_print(e)
                 sys.exit(1)
 
     def _verify_additional_constraints_file(self):
         if self.options.get('additional-constraints', "") != "":
             additional_constraints_path = self.additional_constraints()
             if not os.path.isfile(additional_constraints_path):
-                print('Illegal value: %s is not an existent additional-constraints file'
+                flushed_print('Illegal value: %s is not an existent additional-constraints file'
                       % additional_constraints_path)
                 sys.exit(1)
 
@@ -198,7 +195,7 @@ class ConfigLoader:
         try:
             XpansionStudyReader.check_solver(self.options.get('solver', ""), self.config.AVAILABLE_SOLVER)
         except XpansionStudyReader.BaseException as e:
-            print(e)
+            flushed_print(e)
             sys.exit(1)
 
     def simulation_output_path(self) -> Path:

@@ -15,10 +15,7 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.config_loader import ConfigLoader
-
-import functools
-
-flushed_print = functools.partial(print, flush=True)
+from antares_xpansion.flushed_print import flushed_print
 
 
 class ProblemGeneratorDriver:

@@ -8,10 +8,7 @@ import sys
 
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.config_loader import ConfigLoader
-
-import functools
-
-print = functools.partial(print, flush=True)
+from antares_xpansion.flushed_print import flushed_print
 
 
 class StudyUpdaterDriver:
