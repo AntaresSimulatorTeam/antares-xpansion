@@ -17,7 +17,7 @@ from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 import functools
 
-print = functools.partial(print, flush=True)
+print_flushed = functools.partial(print, flush=True)
 
 
 @dataclass
@@ -71,7 +71,7 @@ class ProblemGeneratorDriver:
             problem generation step : getnames + lp_namer
         """
         self._clear_old_log()
-        print("-- Problem Generation")
+        print_flushed("-- Problem Generation")
         self.output_path = output_path
 
         self._get_names()
@@ -157,7 +157,7 @@ class ProblemGeneratorDriver:
                                         stderr=output_file)
 
             end_time = datetime.now()
-            print('Post antares step duration: {}'.format(end_time - start_time))
+            print_flushed('Post antares step duration: {}'.format(end_time - start_time))
 
             if returned_l.returncode != 0:
                 raise ProblemGeneratorDriver.LPNamerExecutionError(
