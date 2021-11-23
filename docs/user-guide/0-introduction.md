@@ -1,4 +1,4 @@
-# Introduction
+# Type of problems addressed by Antares-Xpansion
 
 [Antares-Xpansion](https://antares-simulator.org/)  package works along with RTE's adequacy software Antares:
 <https://antares.rte-france.com/>

@@ -30,7 +30,7 @@ This stage actually solves the Antares-Xpansion problem composed by
 the **master problem** and the **satellite problems**.
 The [Benders decomposition](https://en.wikipedia.org/wiki/Benders_decomposition) is a well-suited algorithm for the resolution of two-stage problems
 like the Antares-Xpansion problem. We will not discuss the details of the algorithm, 
-some elements are given in the [user guide](../user-guide/get-started/0-introduction.md).
+some elements are given in the [user guide](../user-guide/0-introduction.md).
 
 
 ## 4- Update of antares study
