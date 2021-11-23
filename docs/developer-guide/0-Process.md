@@ -2,7 +2,7 @@
 
 An Antares-Xpansion simulation is currently run in 4 separate steps.
 
-The basic idea behind an Antares-Xpansion simulation is to let Antares_Simulator do the work of
+The basic idea behind an Antares-Xpansion simulation is to let Antares-Simulator do the work of
 reading the Antares study and building the mathematical optimisation problems without knowledge of the 
 investment candidates then build and solve the Antares-Xpansion problem.
 
@@ -10,7 +10,7 @@ There are 4 steps in a full Antares-Xpansion simulation.
 
 ## 1- Optimization problems generation
 `antares-solver` is run using Antares-Xpansion options. The weekly optimization problems (1st and 2nd optimization) are written as `.mps` files.
-In this mode Antares_Simulator write some additional files that add a business context of the linear problems
+In this mode Antares-Simulator write some additional files that add a business context of the linear problems
 (column id and variable map for example).
 
 ## 2- Modification of problems to introduce investment variables
@@ -36,8 +36,8 @@ some elements are given in the [user guide](../user-guide/0-introduction.md).
 ## 4- Update of antares study
 The resolution stage provides the investment values for each candidate that minimizes the
 global cost of both the **master problem** and the **satellite problems**. However, it does not allow
-access to the details provided by an Antares_Simulator simulation.
-In order to access these details, a "standard" Antares_Simulator simulation
+access to the details provided by an Antares-Simulator simulation.
+In order to access these details, a "standard" Antares-Simulator simulation
 is prepared by updating the original study with the values obtained for the resolution stage.
 Each investment is associated to a link and its investment value is added to the link direct and indirect
 transfer capacity.

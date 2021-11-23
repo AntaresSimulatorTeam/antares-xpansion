@@ -33,10 +33,10 @@ The python script does several operations one after the other. The
 
 | step                 | Description                    |
 | --------             | ------------------------------------------------------------------------ |
-| `antares`            | Launch Antares_Simulator one time to get the ANTARES problem
-| `problem_generation` | Generate the full xpansion problem using and the user input and the results of the Antares_Simulator output  |
+| `antares`            | Launch Antares-Simulator one time to get the ANTARES problem
+| `problem_generation` | Generate the full xpansion problem using and the user input and the results of the Antares-Simulator output  |
 | `benders`            | Launch the resolution of Antares-Xpansion                                |
-| `study_update`       | updates the Antares_Simulator study                            |
+| `study_update`       | updates the Antares-Simulator study                            |
 | `full`               | Launch all steps in order (antares \> getnames \> lp \> optim)           |
 
 Default value: `full`.
@@ -48,7 +48,7 @@ explicit path. Use quotes “” in case of a space in the path.
 
 #### **`--simulationName`**
 
-This option set the Antares_Simulator output directory that Antares-Xpansion should use to generate the xpansion problem.
+This option set the Antares-Simulator output directory that Antares-Xpansion should use to generate the xpansion problem.
 The default value is `last`, which means that the most recent run will be used.
 
 #### **`-m` `--method`**
@@ -65,14 +65,14 @@ Antares-Xpansion
 Defaut value: sequential
 
 #### **--antares-n-cpu**
-Number of Threads for Antares_Simulator
+Number of Threads for Antares-Simulator
 #### **`-v, --version`**
 show **Antares-Xpansion** version.
 
 #### **`--antares-version`**
-show **Antares_Simulator** version.
+show Antares-Simulator version.
 # Human machine Interface usages
-Since v0.6.0, AntaresXpansion came with an GUI in order to simplify AntaresXpansion utilization. For now this GUI is in the experimental phase. 
+Since v0.6.0, Antares-Xpansion came with an GUI in order to simplify Antares-Xpansion utilization. For now this GUI is in the experimental phase. 
 > ![](../assets/media/ui.png)
 # Results and logs
 

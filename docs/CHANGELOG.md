@@ -5,18 +5,20 @@ Unreleased
 --------------------
 ### Features
 
-- added option *antares-n-cpu* to use Antares parallelism
-- added option *-v, --version* to show AntaresXpansion version
-- added option *--antares-version* to show Antares_Simulator version
-- Set default value of *--simulationName* to *last* in order to use the last antares simulation
+- Antares-Xpansion is now compatible with Antares v8.1 studies
+- Add `relative_gap` option as a stopping criterion for the Antares-Xpansion algorithm 
+- Add option `antares-n-cpu` to use Antares parallelism
+- Add option `-v, --version` to show Antares-Xpansion version
+- Add option `--antares-version` to show Antares-Simulator version
+- Set default value of `--simulationName` to `last` in order to use the last Antares simulation
 
 ### Bug fixes
 - Path to binaries directory was not found in some situations with python launcher and in python exclusive package
-- Correction bug when there are too many zeros in a link-profile 
+- Correct bug when there are too many zeros in a link-profile 
 
 ### For developpers
-- cpp Lp namer library is splited into smaller and consistents libraries
-- Each AntaresXpansion step has its own driver (python class) instead of the all-in driver
+- cpp `lpnamer` library is splited into smaller and consistent libraries
+- Each Antares-Xpansion step has its own driver (python class) instead of the all-in driver
 
 v0.5.0 (10/2021)
 --------------------
@@ -24,24 +26,24 @@ v0.5.0 (10/2021)
 
  - In benders optimization, master problem .mps is written after each resolution
  - Several investment candidates on the same link  
- - Review of candidates.ini file content (remove of has-link-profile and add enable feature)
+ - Review of `candidates.ini` file content (remove `has-link-profile` and add `enable` feature)
  
 ### Bug fixes
 
- - option keepMps was still removing some files needed for lp step
- - correction of lp step call if it was the only step asked by user
- - correction of optimization if hurdles cost were used in antares-simulator
- - correction of optimization with binary additionnal constraint between investment candidates
+ - Option `keepMps` was still removing some files needed for lp step
+ - Correction of lp step call if it was the only step asked by user
+ - Correction of optimization if hurdles cost were used in Antares-Simulator
+ - Correction of optimization with binary additionnal constraint between investment candidates
 
 ### For developers
- - fix mergemps optimization in debug mode
+ - Fix mergemps optimization in debug mode
  - Fix vcpkg on Github Actions
  - Add build cache for Github Actions (Ubuntu only) to speed up the build
- - add sonarcloud analysis
- - use of docker image for build on centos7
- - add read-the-docs documentation
- - generation of pdf user guide from read-the-docs documentation
- - update Cmake to support Xpress on centos7
+ - Add sonarcloud analysis
+ - Use of docker image for build on centos7
+ - Add read-the-docs documentation
+ - Generation of pdf user guide from read-the-docs documentation
+ - Update Cmake to support Xpress on centos7
  
 v0.4.0 (07/2021)
 -------------------- 
@@ -50,14 +52,14 @@ v0.4.0 (07/2021)
  - A new multi solver interface is introduced, we no longer use OR-tools
  - The user can choose different solvers
  - The optimality gap is no longer hard-coded and the user can define it in the inputs
- - in case of unfeaseable problems, the program now prints a console and file outputs
- - solver traces can be activated by specific option in benders/bendersmpi console applications
+ - In case of unfeasible problems, the program now prints a console and file outputs
+ - Solver traces can be activated by specific option in benders/bendersmpi console applications
  - Benders console information are now also printed on a specific file
  
 ### Bug fixes
 
- - remove erroneus value from the `"problem_status"` entry  of the output json file
- - fix display of overall cost of the best solutions
+ - Remove erroneus value from the `"problem_status"` entry  of the output json file
+ - Fix display of overall cost of the best solutions
 
 v0.3.0 (05/2021)
 -------------------- 
@@ -82,10 +84,10 @@ v0.2.0 (04/2021)
 ### Bug fixes
 
  - Invalid best iteration display in logs
- - Rounding problem in writing MPS with or-tools
+ - Rounding problem in writing MPS with OR-tools
  - Antares-Xpansion can't be launched twice at the same time
  - Windows: Add Microsoft Visual Studio needed redistribuable to installer
- - Linux: wrong antares-solver executable permission and install directory
+ - Linux: wrong `antares-solver` executable permission and install directory
 
 
 v0.1.0 (03/2021)
@@ -101,10 +103,10 @@ The user defines investment candidates. Candidate capacities for investment are 
  - or even flexibilities (located in virtual nodes)
 
 ## Notes
-This version is only compatible with Antares v8.0 [Antares-Simulator](https://antares-simulator.org). The Antares binaries needed by Antares-Xpansion are available in the installation package of AntaresXpansion
+This version is only compatible with Antares v8.0 [Antares-Simulator](https://antares-simulator.org). The Antares binaries needed by Antares-Xpansion are available in the installation package of Antares-Xpansion.
 
-An annual cost, a potential, a link-profile or an already-installed-capacity can be defined for each candidate. Linear constraints between the invested capacities of investment candidates can also be imposed
+An annual cost, a potential, a link-profile or an already-installed-capacity can be defined for each candidate. Linear constraints between the invested capacities of investment candidates can also be imposed.
 
-The optimization is launched from the command prompt, where the details of the iterations are displayed
+The optimization is launched from the command prompt, where the details of the iterations are displayed.
 
 The optimization can be launched on large studies. Computing performance can be improved by using MPI.
