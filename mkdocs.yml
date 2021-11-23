@@ -33,7 +33,8 @@ nav:
   - 'User guide':
     - 'Problems addressed by Antares-Xpansion': 'user-guide/0-introduction.md'
     - 'Get started':
-      - 'Introduction': 'user-guide/get-started/1-prepare-a-simulation.md'
+      - 'Installation': 'user-guide/get-started/0-installation.md'
+      - 'Prepare a simulation': 'user-guide/get-started/1-prepare-a-simulation.md'
       - 'Candidates definition': 'user-guide/get-started/2-candidate-definition.md'
       - 'Settings of the algorithm': 'user-guide/get-started/3-settings-definition.md'
       - 'Launch the optimization': 'user-guide/get-started/4-launching-optimization.md'

@@ -2,7 +2,7 @@
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-The Antares-Xpansion package works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]. Antares-Xpansion aims at performing investment simulations for Antares studies. Visit the [Antares-Simulator Documentation][readthedocs-antares] for more insights on Antares. 
+The Antares-Xpansion package works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]. Antares-Xpansion aims at performing investment simulations for Antares studies. Visit the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares. 
 
 ## Introduction
 
