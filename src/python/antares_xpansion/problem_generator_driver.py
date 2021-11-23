@@ -18,7 +18,7 @@ from antares_xpansion.config_loader import ConfigLoader
 
 import functools
 
-print = functools.partial(print, flush=True)
+print_flushed = functools.partial(print, flush=True)
 
 
 class ProblemGeneratorDriver:
@@ -36,7 +36,7 @@ class ProblemGeneratorDriver:
         """
             problem generation step : getnames + lp_namer
         """
-        print("-- Problem Generation")
+        print_flushed("-- Problem Generation")
         self.get_names()
         self.lp_step()
 
@@ -93,10 +93,10 @@ class ProblemGeneratorDriver:
                                         stderr=output_file)
 
             end_time = datetime.now()
-            print('Post antares step duration: {}'.format(end_time - start_time))
+            print_flushed('Post antares step duration: {}'.format(end_time - start_time))
 
             if returned_l.returncode != 0:
-                print("ERROR: exited lpnamer with status %d" % returned_l.returncode)
+                print_flushed("ERROR: exited lpnamer with status %d" % returned_l.returncode)
                 sys.exit(1)
             elif not self.config.keep_mps:
                 StudyOutputCleaner.clean_lpnamer_step(Path(output_path))

@@ -242,57 +242,57 @@ class TestAntaresDriver:
                 expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]
                 run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3)
 
-    def tests_additionnal_constraints(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_additionnal_constraints = Path("examples") / "additionnal-constraints"
-        study_dir =   project_dir / project_dir_to_additionnal_constraints
+    # def tests_additionnal_constraints(self):
+    #     project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+    #     project_dir_to_additionnal_constraints = Path("examples") / "additionnal-constraints"
+    #     study_dir =   project_dir / project_dir_to_additionnal_constraints
 
-        antares_driver = AntaresDriver(self.get_antares_exe())
-        antares_driver.launch(study_dir, 1)
+    #     antares_driver = AntaresDriver(self.get_antares_exe())
+    #     antares_driver.launch(study_dir, 1)
     
-    def tests_additionnal_constraints_binary(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_additionnal_constraints_binary = Path("examples") / "additionnal-constraints-binary"
-        study_dir =   project_dir / project_dir_to_additionnal_constraints_binary
+    # def tests_additionnal_constraints_binary(self):
+    #     project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+    #     project_dir_to_additionnal_constraints_binary = Path("examples") / "additionnal-constraints-binary"
+    #     study_dir =   project_dir / project_dir_to_additionnal_constraints_binary
 
-        antares_driver = AntaresDriver(self.get_antares_exe())
-        antares_driver.launch(study_dir, 1)
+    #     antares_driver = AntaresDriver(self.get_antares_exe())
+    #     antares_driver.launch(study_dir, 1)
     
-    def tests_small_test_five_candidates_with_weights(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_small_test_five_candidates_with_weights = Path("examples") / "SmallTestFiveCandidatesWithWeights"
-        study_dir =   project_dir / project_dir_to_small_test_five_candidates_with_weights
+    # def tests_small_test_five_candidates_with_weights(self):
+    #     project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+    #     project_dir_to_small_test_five_candidates_with_weights = Path("examples") / "SmallTestFiveCandidatesWithWeights"
+    #     study_dir =   project_dir / project_dir_to_small_test_five_candidates_with_weights
 
-        antares_driver = AntaresDriver(self.get_antares_exe())
-        antares_driver.launch(study_dir, 1)
+    #     antares_driver = AntaresDriver(self.get_antares_exe())
+    #     antares_driver.launch(study_dir, 1)
 
-    def tests_small_test_five_candidates(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_small_test_five_candidates = Path("examples") / "SmallTestFiveCandidates"
-        study_dir =   project_dir / project_dir_to_small_test_five_candidates
+    # def tests_small_test_five_candidates(self):
+    #     project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+    #     project_dir_to_small_test_five_candidates = Path("examples") / "SmallTestFiveCandidates"
+    #     study_dir =   project_dir / project_dir_to_small_test_five_candidates
 
-        antares_driver = AntaresDriver(self.get_antares_exe())
-        antares_driver.launch(study_dir, 1)
+    #     antares_driver = AntaresDriver(self.get_antares_exe())
+    #     antares_driver.launch(study_dir, 1)
 
-    def tests_small_test_six_candidates_with_already_installed_capacity(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_small_test_six_candidates_with_already_installed_capacity = Path("examples") / "SmallTestSixCandidatesWithAlreadyInstalledCapacity"
-        study_dir =   project_dir / project_dir_to_small_test_six_candidates_with_already_installed_capacity
+    # def tests_small_test_six_candidates_with_already_installed_capacity(self):
+    #     project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+    #     project_dir_to_small_test_six_candidates_with_already_installed_capacity = Path("examples") / "SmallTestSixCandidatesWithAlreadyInstalledCapacity"
+    #     study_dir =   project_dir / project_dir_to_small_test_six_candidates_with_already_installed_capacity
 
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            antares_driver = AntaresDriver(self.get_antares_exe())
-            antares_driver.launch(study_dir, 1)
+    #     #catching execution error 
+    #     with pytest.raises(AntaresDriver.AntaresExecutionError):
+    #         antares_driver = AntaresDriver(self.get_antares_exe())
+    #         antares_driver.launch(study_dir, 1)
 
-    def tests_small_test_six_candidates_with_playlist(self):
-        project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
-        project_dir_to_small_test_six_candidates_with_playlist = Path("examples") / "SmallTestSixCandidatesWithPlaylist"
-        study_dir =   project_dir / project_dir_to_small_test_six_candidates_with_playlist
+    # def tests_small_test_six_candidates_with_playlist(self):
+    #     project_dir = Path(os.path.abspath(__file__)).parent.parent.parent
+    #     project_dir_to_small_test_six_candidates_with_playlist = Path("examples") / "SmallTestSixCandidatesWithPlaylist"
+    #     study_dir =   project_dir / project_dir_to_small_test_six_candidates_with_playlist
 
-        #catching execution error 
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            antares_driver = AntaresDriver(self.get_antares_exe())
-            antares_driver.launch(study_dir, 1)
+    #     #catching execution error 
+    #     with pytest.raises(AntaresDriver.AntaresExecutionError):
+    #         antares_driver = AntaresDriver(self.get_antares_exe())
+    #         antares_driver.launch(study_dir, 1)
             
 
     def initialize_dummy_study_dir(self, study_dir):
