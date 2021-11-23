@@ -34,8 +34,8 @@ nav:
     - 'Problems addressed by Antares-Xpansion': 'user-guide/0-introduction.md'
     - 'Get started':
       - 'Installation': 'user-guide/get-started/0-installation.md'
-      - 'Prepare a simulation': 'user-guide/get-started/1-prepare-a-simulation.md'
-      - 'Candidates definition': 'user-guide/get-started/2-candidate-definition.md'
+      - 'Prepare a study': 'user-guide/get-started/1-prepare-a-simulation.md'
+      - 'Definition of the candidates': 'user-guide/get-started/2-candidate-definition.md'
       - 'Settings of the algorithm': 'user-guide/get-started/3-settings-definition.md'
       - 'Launch the optimization': 'user-guide/get-started/4-launching-optimization.md'
     - 'The optimization problem in Antares-Xpansion':

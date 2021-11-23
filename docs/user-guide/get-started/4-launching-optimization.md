@@ -1,4 +1,4 @@
-# Launching an optimization
+# Launch the optimization
 
 First, create an Antares study with the description of the candidates
 and create the candidates.ini and settings.ini files as explained above

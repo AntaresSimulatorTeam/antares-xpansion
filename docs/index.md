@@ -4,29 +4,24 @@
 
 The Antares-Xpansion package works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]. Antares-Xpansion aims at performing investment simulations for Antares studies. Visit the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares. 
 
-## Introduction
-
-Antares-Xpansion optimizes the installed capacities of an Antares study.
-
-Typical uses of Antares-Xpansion are for example:
+Antares-Xpansion optimizes the installed capacities of an Antares study. Typical uses of Antares-Xpansion are for example:
 
 - **long-term scenario building**: build an economically consistent long-term generation mix,
 - **transmission expansion planning** : compute the network development which maximizes social welfare.
 
-
-### Antares study
+## Antares study
 
 In an Antares study, the user builds a power system with a network of zones
-characterised by power plants (with their constraints e.g., max power etc. and costs),
+characterised by power plants (with their constraints e.g. max power and costs),
 power consumption and power transfer between zones (with the import-export transfer capacity and costs).
 
 Antares performs probabilistic simulations of the system
 throughout many year-long scenarios made of 8760 hourly
-time-frames each.
+time frames each.
 The goal of the simulation is to minimize the
 **expected operation cost during one year**.
 
-### Antares-Xpansion simulation
+## Antares-Xpansion simulation
 
 Given an Antares simulation the user can define some
 _investment candidates_ in the power network such as:
@@ -37,11 +32,11 @@ _investment candidates_ in the power network such as:
 Each _investment candidate_ can potentially decrease the operational cost
 of the power system, but is also characterised by one or more costs such as:
 
-- annualized investment costs to physically build it the facility,
-- operational costs and maintenance costs to sustain the operation.
+- Annualized investment costs to physically build the facility,
+- Operational costs and maintenance costs to sustain the operation.
 
 >Antares-Xpansion optimizes the _investments_ in order
->to minimize the global cost, that is the sum of the
+>to minimize the global cost, which is the sum of the
 >**expected operation cost during one year**
 >and the **investment annuity**.
 
