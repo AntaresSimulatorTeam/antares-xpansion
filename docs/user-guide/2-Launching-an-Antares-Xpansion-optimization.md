@@ -6,7 +6,7 @@ and store them in the directory `study_path/user/expansion/`. Once the
 `candidates.ini` and `settings.ini` files are set up, investment
 optimization can be done with the package.
 
-Antares-Xpansion include an experimental human-machine interface but it's optimatly used as a command line prompt. 
+Antares-Xpansion include an experimental graphical interface but it's optimatly used as a command line prompt. 
 # Command line usages
 1.  Open a Command Prompt in the `antaresXpansion-x.y.z-win64` folder
 
@@ -28,15 +28,15 @@ Here is a description of other available parameters.
 #### **`--step`**
 
 The python script does several operations one after the other. The
---step option allows to execute only one step or all steps
+`--step` option allows executing only one step or all steps
 (interaction between the different bricks).
 
 | step                 | Description                    |
 | --------             | ------------------------------------------------------------------------ |
-| `antares`            | Launch ANTARES one time to get the ANTARES problem
-| `problem_generation` | Generate problem i.e launch getnamer one time to get the name of ANTARES variables and lpnamer one time to create the master problem of Antares-Xpansion       |
+| `antares`            | Launch Antares_Simulator one time to get the ANTARES problem
+| `problem_generation` | Generate the full xpansion problem using and the user input and the results of the Antares_Simulator output  |
 | `benders`            | Launch the resolution of Antares-Xpansion                                |
-| `study_update`       | updates the study                            |
+| `study_update`       | updates the Antares_Simulator study                            |
 | `full`               | Launch all steps in order (antares \> getnames \> lp \> optim)           |
 
 Default value: `full`.
@@ -48,7 +48,8 @@ explicit path. Use quotes “” in case of a space in the path.
 
 #### **`--simulationName`**
 
-This option enables to give a name to an ANTARES simulation. In the case of step-by-step running default value is `last`. This value indicate last ANTARES simulation.
+This option set the Antares_Simulator output directory that Antares-Xpansion should use to generate the xpansion problem.
+The default value is `last`, which means that the most recent run will be used.
 
 #### **`-m` `--method`**
 
