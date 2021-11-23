@@ -29,20 +29,25 @@ theme:
 
 nav:
   - Home: index.md
-  - 'Antares ecosystem' : 'https://antares-doc.readthedocs.io'
+  - 'Antares ecosystem': 'https://antares-doc.readthedocs.io'
   - 'User guide':
-      - 'Introduction': 'user-guide/0-introduction.md'
-      - 'Prepare a simulation': 'user-guide/1-prepare-a-simulation.md'
-      - 'Launching an optimization': 'user-guide/2-Launching-an-Antares-Xpansion-optimization.md'
-  - 'Build':
-    - 'Introduction': 'build/0-INSTALL.md'
-    - 'Development requirements': 'build/1-Development-requirements.md'
-    - 'Dependencies install': 'build/2-Dependencies-install.md'
-    - 'Build': 'build/3-Build.md'
-    - 'Tests': 'build/4-Tests.md'
-    - 'UI creation': 'build/6-ui-creation.md'
-    - 'Installer creation': 'build/5-Installer-creation.md'
+    - 'Get started':
+      - 'Problems addressed by Antares-Xpansion': 'user-guide/get-started/0-introduction.md'
+      - 'Introduction': 'user-guide/get-started/0-introduction.md'
+      - 'Prepare a simulation': 'user-guide/get-started/1-prepare-a-simulation.md'
+      - 'Launching an optimization': 'user-guide/get-started/2-launching-optimization.md'
+    - 'The optimization problem in Antares-Xpansion':
+      - 'General principles': 'user-guide/optimization-principles/0-optimization-principles.md'
+      - 'Formulation of the problem': 'user-guide/optimization-principles/1-problem-formalization.md'
   - 'Developer guide': 
+    - 'Install from sources':
+      - 'Introduction': 'developer-guide/build/0-INSTALL.md'
+      - 'Development requirements': 'developer-guide/build/1-Development-requirements.md'
+      - 'Dependencies install': 'developer-guide/build/2-Dependencies-install.md'
+      - 'Build': 'developer-guide/build/3-Build.md'
+      - 'Tests': 'developer-guide/build/4-Tests.md'
+      - 'UI creation': 'developer-guide/build/6-ui-creation.md'
+      - 'Installer creation': 'developer-guide/build/5-Installer-creation.md'
     - 'Antares-Xpansion simulation procedure' : 'developer-guide/0-Process.md'
     - 'Optimization problems generation' : 'developer-guide/1-antares-solver.md'
     - 'Modification of problems to introduce investment variables' : 'developer-guide/2-problem-modification.md'

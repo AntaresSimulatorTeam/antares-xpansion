@@ -52,7 +52,7 @@ parameter is reached.
 Investment candidates can also be generation assets, or even
 flexibilities, by adopting a virtual node logic as described below.
 
-| ![](../assets/media/image6.png) | ![](../assets/media/image7.png) | ![](../assets/media/image8.png) |
+| ![](../../assets/media/image6.png) | ![](../../assets/media/image7.png) | ![](../../assets/media/image8.png) |
 | ------------------------------------- | ------------------------------------- | ------------------------------------- |
 | **(a)**                               | **(b)**                               | **(c)**                               |
 
@@ -144,7 +144,7 @@ constraints must be added in the Antares simulation to represents the
 storage (for example: with a negative ROW Balance in psp-in and a
 positive ROW Balance in psp-out and the following constraint).
 
-![](../assets/media/image9.png)
+![](../../assets/media/image9.png)
 
 In the 4 cases presented above, the link used to define investment
 candidates (in red in **Figure 4**):
@@ -198,7 +198,7 @@ The `candidates.ini` must be placed inside the Antares study folder
 The format is a standard `.ini` and should follow this template:
 
 
-![](../assets/media/candidate.PNG)
+![](../../assets/media/candidate.PNG)
 
 **Figure 4** – Example of a candidates.ini file
 
@@ -301,7 +301,7 @@ at hourly intervals. It should be noted that the `link-profile` is
 deterministic: the same profile will be used by Antares-Xpansion for
 all Monte-Carlo years of the Antares study and all capacity tested.
 
-![](../assets/media/link_profile.PNG)
+![](../../assets/media/link_profile.PNG)
 
 **Figure 5** – Example of a file containing a load factor profile in
 the Antares-Xpansion format
@@ -322,7 +322,7 @@ and `already-installed-link-profile` of one or more candidates.
 An example with two investments candidates, one in semi-base generation
 and one in network capacity, is given below.
 
-![https://github.com/rte-antares-rpackage/antaresXpansion/raw/master/vignettes/example2nodes.png](../assets/media/image12.png)
+![https://github.com/rte-antares-rpackage/antaresXpansion/raw/master/vignettes/example2nodes.png](../../assets/media/image12.png)
 
 The invested semi-base generation in *area 1* is shifted in the "virtual
 node" *`invest_semibase`*. Within the optimization process, the capacity
@@ -380,7 +380,7 @@ The parameters `link-profile`, `already-installed-capacity` and
 - Note that these parameters are only useful if the candidates are
   grid reinforcement.
 
-![](../assets/media/image13.png)
+![](../../assets/media/image13.png)
 
 **Figure 6** – Link between the capacity invested by
 Antares-Xpansion, and the capacity available in the Antares study
@@ -412,7 +412,7 @@ would make it possible to represent more realistically the intermittency
 of RES from one year to another or the impact of outages and maintenance
 on an entire unit of thermal power plants (see **Figure 7**).
 
-![](../assets/media/image14.png)
+![](../../assets/media/image14.png)
 
 **Figure 7** Available hourly capacity of different types of power
 plants due to outages. Antares-Xpansion allows taking into account
@@ -438,7 +438,7 @@ The same link in an Antares study can be the subject of several investment candi
 
 The example in the following figure shows the case of an investment in photovoltaic production with three potentials of increasing cost.
 
-![](../assets/media/several_candidates.PNG)
+![](../../assets/media/several_candidates.PNG)
 **Figure 8** - Three potentials of increasing investment cost applying to the same link in the Antares study
 
 Note that this only works with Benders if the costs are increasing and that investment candidates with the same link must also necessarily have the same `already-installed-capacity` and  `already-installed-link-profile`. 
@@ -496,7 +496,7 @@ make on the same link:
 An example of a production process that can be decommissioned or
 expanded is given in the following figure.
 
-![](../assets/media/image15.png)
+![](../../assets/media/image15.png)
 
 **Figure 9** - Candidates for investment and decommissioning on
 the same link from an Antares study*
@@ -547,7 +547,7 @@ is found.
 * If `optimality_gap > 0`, the search will stop
 as soon as `best_upper_bound - best_lower_bound < optimality_gap`.
 
-![](../assets/media/image16.png)
+![](../../assets/media/image16.png)
 
 **Figure 10** – Illustration of the optimality gap and the set of
 solutions that can be returned by the package when the gap is strictly
@@ -668,7 +668,7 @@ study. It must contain a column with as many numerical values as there
 are Monte-Carlo years in the Antares study. The value of the \\(i\\)-th
 row is the weight of the \\(i\\)-th Monte Carlo year.
 
-![](../assets/media/image17.png)
+![](../../assets/media/image17.png)
 
 **Figure 11** – Example of a setting of Antares-Xpansion with
 Monte-Carlo years that are not equally-weighted.
@@ -701,7 +701,7 @@ linear constraints between investment candidates. The format is inspired
 by Antares' binding constraints. An example of such a file is given in
 the following figure:
 
-![](../assets/media/image18.png)
+![](../../assets/media/image18.png)
 
 **Figure 12** – Example of an additional constraint file
 
@@ -718,7 +718,7 @@ example, exclusion constraints. In the following figure,
 Antares-Xpansion cannot invest in semibase and peak at the same
 time, it can also invest in neither:
 
-![](../assets/media/image19.png)
+![](../../assets/media/image19.png)
 
 **Figure 13** – Example of an additional constraint file
 

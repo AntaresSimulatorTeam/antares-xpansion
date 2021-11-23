@@ -12,7 +12,7 @@ Antares-Xpansion include an experimental graphical interface but it's optimatly 
 
 > Note:
 > You can launch a command line prompt by typing `cmd` in the path
-> ![](../assets/media/image21.png)
+> ![](../../assets/media/image21.png)
 
 2.  Run the `antares-xpansion-launcher.exe` and chose the path to the
     Antares study with `-i` parameter:
@@ -73,7 +73,7 @@ show **Antares-Xpansion** version.
 show Antares-Simulator version.
 # Human machine Interface usages
 Since v0.6.0, Antares-Xpansion came with an GUI in order to simplify Antares-Xpansion utilization. For now this GUI is in the experimental phase. 
-> ![](../assets/media/ui.png)
+> ![](../../assets/media/ui.png)
 # Results and logs
 
 ## Logs
@@ -144,7 +144,7 @@ package:
     link-profile, the already-installed-capacity and the
     already-installed-link-profile:
 
-![](../assets/media/image23.png)
+![](../../assets/media/image23.png)
 
 **Figure** **15** – Example of update on the Antares study
 

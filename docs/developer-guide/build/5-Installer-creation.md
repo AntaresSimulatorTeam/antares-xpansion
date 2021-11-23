@@ -13,8 +13,8 @@ CPack can be used to create the installer after the build phase :
     cd _build
     cpack3 -G RPM .
     ```
-    Note :
-    > `rpm-build` must be installed for RPM creation :  `sudo yum install rpm-build`
+    !!! Note
+        `rpm-build` must be installed for RPM creation :  `sudo yum install rpm-build`
 
     ### Linux .tar.gz
     ```
@@ -36,8 +36,8 @@ CPack can be used to create the installer after the build phase :
     module load mpi
     ```
     
-    Note :
-    > `mpirun` can't be used as root on Centos7. Be sure to launch Antares-Xpansion without root user.
+    !!! Note
+        `mpirun` can't be used as root on Centos7. Be sure to launch Antares-Xpansion without root user.
 
 === "Ubuntu"
 

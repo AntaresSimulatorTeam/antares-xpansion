@@ -7,8 +7,8 @@ The goal is to produce a file `mps.txt` file containing each .mps with his assoc
 ```
 problem-1-1-20210713-163528.mps variables-1-1-20210713-163528.txt constraints-1-1-20210713-163528.txt
 ```
->Note:
-> `constraints.txt` file are still defined in the file but not used in later steps
+!!! Note
+    `constraints.txt` file are still defined in the file but not used in later steps.
 
 `area-<mc_year>-<week>-<timestamp>.txt` file produced by `antares-solver` is also copied as `area.txt`.
 
@@ -67,8 +67,8 @@ A file (`structure.txt`) is created, containing for each .mps file the associate
 For this example:
 
 `master.mps` candidate `battery` has column ID `0`
-`problem-1-1-20210713-163528`candidate `peak` has column ID `5545`
+`problem-1-1-20210713-163528`candidate `peak` has column ID `5545`.
 
->Note :
-> It seems that the column ID is no longer used by benders.
-> This file must still be created so benders can know the list of candidate for each problem.
+!!! Note
+    It seems that the column ID is no longer used by benders.
+    This file must still be created so benders can know the list of candidate for each problem.

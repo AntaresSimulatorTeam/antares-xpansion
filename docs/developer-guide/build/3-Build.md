@@ -73,5 +73,5 @@ Additionnal options for Xpress use
     ```
     cmake --build _build --config Release -j8
     ```
-Note :
-> Compilation can be done on several processor with ```-j``` option.
+!!! Note
+    Compilation can be done on several processor with ```-j``` option.

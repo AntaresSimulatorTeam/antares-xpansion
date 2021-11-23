@@ -22,8 +22,8 @@ This is the list of the available labels :
 | `examples_long`  | `long`  |End to end tests with examples antares study (long duration)|
 | `benders_end_to_end`  | `benders`  |End to end tests for benders optimization|
 
-Note :
-> Use `ctest -N` to see all available tests
+!!! Note
+    Use `ctest -N` to see all available tests.
 
 Here is an example for running only examples_medium tests (use of `Name` with `-R` option):
 

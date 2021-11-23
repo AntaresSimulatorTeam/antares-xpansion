@@ -30,8 +30,8 @@ unit-commitment-mode = fast
 |`[general]mode`| TODO| 
 |`[other preferences]unit-commitment-mode`| TODO| 
 
->Note :
->The modifications of these parameters is not done by user but by the python orchestrator.
+!!! Note
+    The modifications of these parameters is not done by user but by the python orchestrator.
 
 ## Output files
 

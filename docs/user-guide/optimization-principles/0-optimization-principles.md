@@ -1,33 +1,6 @@
-# Introduction
+# The optimization problem in Antares-Xpansion
 
-![](../assets/antares.png)
-
-[Antares-Xpansion](https://antares-simulator.org/)  package works along with RTE's adequacy software Antares:
-<https://antares.rte-france.com/>
-
-
-Antares-Xpansion is the package which optimizes the installed
-capacities of an Antares study.
-
-Typical uses of the package are for:
-
-- **long-term scenario building**: build an economically consistent
-long-term generation mix
-
-- **transmission expansion planning**: compute the network
-development which maximizes social welfare
-
-The investment decisions are optimized by running Antares' simulations
-iteratively. At each iteration, the installed capacity of the
-investments are updated, and the simulations are repeated until the
-total costs have converged to a minimum. The total cost evaluated in
-this problem are the sum of **the expected operation cost during one
-year** and **the investment annuity**.
-
-Antares-Xpansion is currently under development. Feel free to submit
-any issue.
-
-## Optimal dimensioning of generation and transport capacities: the optimization problem solved by Antares-Xpansion
+## The problem of optimal dimensioning of generation and transport capacities
 
 The cost function that Antares-Xpansion minimizes is as follows:
 
@@ -49,9 +22,9 @@ of new units, the fixed cost annuity.
 In the case of a problem with a single investment variable, the above
 cost function can be represented by the graph in ***Figure 1***.
 
-![](../assets/media/image2.png)
+![](../../assets/media/image2.png)
 
-![](../assets/media/image3.png)
+![](../../assets/media/image3.png)
 
 **Figure** **1** – Objective function of the Antares-Xpansion
 optimization problem for one candidate
@@ -82,7 +55,7 @@ this point which minimizes the total cost, or any point of the minimum
 plateau in the case of a so-called degenerate problem. This is the
 optimal solution to the cost minimization problem.
 
-![](../assets/media/image4.png)
+![](../../assets/media/image4.png)
 
 **Figure** **2** – Generic case (but uncommon in practical
 Antares-Xpansion cases) with a set of optimal solutions (a plateau).

@@ -38,8 +38,8 @@ The install procedure can be done
     .\bootstrap-vcpkg.bat
     ```
     
-    Note :
-    > all vcpkg command further described must be run from vcpkg folder. This folder will be named [vcpkg_root] later in this document.
+    !!! Note
+        all vcpkg command further described must be run from vcpkg folder. This folder will be named [vcpkg_root] later in this document.
     
     
     - Install dependencies
@@ -48,13 +48,13 @@ The install procedure can be done
     vcpkg install jsoncpp gtest boost-mpi boost-program-options --triplet [vcpg-triplet] 
     ```
     
-    Note :
-    > On boost-mpi compilation depends on MSMPI redistributable package. Please follow VCPKG procedure :
-    > ```
-    > Please install the MSMPI redistributable package before trying to install this port.
-    >     The appropriate installer has been downloaded to:
-    >      [vcpkg_root]/downloads/msmpisetup-10.0.12498.exe
-    > ``` 
+    !!! Note
+        On boost-mpi compilation depends on MSMPI redistributable package. Please follow VCPKG procedure :
+        ```
+        Please install the MSMPI redistributable package before trying to install this port.
+        The appropriate installer has been downloaded to:
+        [vcpkg_root]/downloads/msmpisetup-10.0.12498.exe
+        ``` 
 
 === "Centos (yum)"
 
@@ -69,13 +69,13 @@ The install procedure can be done
     sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev
     sudo apt-get install unzip uuid-dev
     ```
-    Note :
-    > Depending on Ubuntu version you might need to compile google test :
-    > ```
-    > cd /usr/src/googletest/
-    > sudo cmake .
-    > sudo cmake --build . --target install
-    > ```
+    !!! Note
+        Depending on Ubuntu version you might need to compile google test :
+        ```
+        cd /usr/src/googletest/
+        sudo cmake .
+        sudo cmake --build . --target install
+        ```
 
 ## Automatic libraries compilation from git
 [Antares dependencies compilation repository](https://github.com/AntaresSimulatorTeam/antares-deps) is used as a git submodule for automatic libraries compilation from git.
@@ -84,22 +84,22 @@ ALL dependencies can be built at configure time using the option `-DBUILD_ALL=ON
 
 Some dependencies can't be installed with a package manager. They can be built at configure step with a cmake option  : `-DBUILD_not_system=ON` (`ON` by default):
 
-**Warning :**
-> boost-mpi is not compiled with this repository. On windows, VCPKG use is mandatory or you must compile boost-mpi by yourself.
+!!! warning 
+    boost-mpi is not compiled with this repository. On windows, VCPKG use is mandatory or you must compile boost-mpi by yourself.
 
 ### Defining dependency install directory
 When using multiple directories for antares development with multiple branches it can be useful to have a common dependency install directory.
 
 Dependency install directory can be specified with `DEPS_INSTALL_DIR`. By default install directory is `<antares_xpansion_checkout_dir>/../rte-antares-deps-<build_type>`
 
-Note :
-> `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
+!!! Note
+    `DEPS_INSTALL_DIR` is added to `CMAKE_PREFIX_PATH`
 
 ### Pre-compiled libraries download : release version only
 You can download pre-compiled antares-deps archive from [Antares dependencies compilation repository][antares-deps-url]. Only release versions are available.
 
-Note:
-> For windows, you must you use a MSVC version compatible with MSVC version used in GitHub Action.
+!!! Note
+    For windows, you must you use a MSVC version compatible with MSVC version used in GitHub Action.
 
 [antares-deps-url]: https://github.com/AntaresSimulatorTeam/antares-deps/releases/tag/v2.0.0-rc2
 
