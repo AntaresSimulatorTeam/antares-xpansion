@@ -2,12 +2,10 @@ import os
 from pathlib import Path
 import psutil
 
-class BaseException(Exception):
-    pass
 
 class StudyLocker:
     """
-        class resposible for locking a study already launched
+        class responsible for locking a study
     """
     def __init__(self, study_dir: Path) -> None:
         if not study_dir.is_dir():
@@ -54,12 +52,12 @@ class StudyLocker:
             locker.write(self.PID_ATTRIBUT+ " = " +str(os.getpid()) )
         print(f"{self.study_dir} is locked")
 
-    class NotAValidDirectory(BaseException):
+    class NotAValidDirectory(Exception):
         pass
 
-    class CorruptedLockerFile(BaseException):
+    class CorruptedLockerFile(Exception):
         pass
-    class Locked(BaseException):
+    class Locked(Exception):
         pass
 
     
