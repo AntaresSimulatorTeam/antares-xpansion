@@ -14,7 +14,7 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 import functools
 
-print_flushed = functools.partial(print, flush=True)
+flushed_print = functools.partial(print, flush=True)
 
 
 class BendersDriver:
@@ -32,14 +32,14 @@ class BendersDriver:
         launch the optimization of the antaresXpansion problem using the specified solver
 
         """
-        print_flushed("-- Benders")
+        flushed_print("-- Benders")
         self.method = method
         self.n_mpi = n_mpi
         self.simulation_output_path = simulation_output_path
         old_cwd = os.getcwd()
         lp_path = self.get_lp_path()
         os.chdir(lp_path)
-        print_flushed("Current directory is now: ", os.getcwd())
+        flushed_print("Current directory is now: ", os.getcwd())
 
         self.set_solver()
 
@@ -86,7 +86,7 @@ class BendersDriver:
         elif self.method == "sequential":
             self.solver = self.benders_sequential
         else:
-            print_flushed("Illegal optim method")
+            flushed_print("Illegal optim method")
             raise BendersDriver.BendersSolverError(
                 f" {self.method} method is unavailable !"
             )
@@ -98,7 +98,7 @@ class BendersDriver:
             try:
                 os.remove(file_path)
             except OSError:
-                print_flushed("Error while deleting file : ", file_path)
+                flushed_print("Error while deleting file : ", file_path)
         if os.path.isfile(solver_name + ".log"):
             os.remove(solver_name + ".log")
 

@@ -10,7 +10,7 @@ from pathlib import Path
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 import functools
 
-print_flushed = functools.partial(print, flush=True)
+flushed_print = functools.partial(print, flush=True)
 
 
 class AntaresDriver:
@@ -37,7 +37,7 @@ class AntaresDriver:
         if antares_n_cpu >= 1:
             self.antares_n_cpu = antares_n_cpu
         else:
-            print_flushed(f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
+            flushed_print(f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
 
     def _launch(self, antares_study_path):
         self._clear_old_log()
@@ -56,7 +56,7 @@ class AntaresDriver:
         return os.path.normpath(os.path.join(self.data_dir, self.output))
 
     def _run_antares(self):
-        print_flushed("-- launching antares")
+        flushed_print("-- launching antares")
 
         start_time = datetime.now()
 
@@ -65,7 +65,7 @@ class AntaresDriver:
                                     stderr=subprocess.DEVNULL)
 
         end_time = datetime.now()
-        print_flushed('Antares simulation duration : {}'.format(end_time - start_time))
+        flushed_print('Antares simulation duration : {}'.format(end_time - start_time))
 
         if returned_l.returncode != 0:
             raise AntaresDriver.AntaresExecutionError("Exited antares with status %d" % returned_l.returncode)
