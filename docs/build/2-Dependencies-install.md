@@ -1,6 +1,6 @@
 # Dependencies install
 
-*antares-xpansion* depends on several mandatory libraries.
+Antares-Xpansion depends on several mandatory libraries.
 
 - [JsonCpp](https://github.com/open-source-parsers/jsoncpp)
 - [Google Test](https://github.com/google/googletest)
@@ -9,7 +9,7 @@
 - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation
 - [GraphViz](https://graphviz.org/) for doxygen use
 
-This section describes the install procedures for the third-party Open source libraries used by *antares-xpansion*.
+This section describes the install procedures for the third-party Open source libraries used by Antares-Xpansion.
 The install procedure can be done
 
 - by compiling the sources after cloning the official git repository
@@ -19,7 +19,7 @@ The install procedure can be done
 
 === "Windows (VCPKG)"
 
-    For Windows we will use [vcpkg](https://github.com/microsoft/vcpkg) to download and compile the libraries. vcpkg is available as a submodule in antares-xpansion.
+    For Windows we will use [vcpkg](https://github.com/microsoft/vcpkg) to download and compile the libraries. vcpkg is available as a submodule in Antares-Xpansion.
     
     You must install the corresponding [vcpkg-triplet](https://vcpkg.readthedocs.io/en/latest/users/integration/#triplet-selection) depending on Antares version and libraries load:
     

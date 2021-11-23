@@ -119,7 +119,6 @@ class XpansionConfig:
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_TXT = 'options.txt'
-        self.MPS_TXT = "mps.txt"
 
     def _set_default_settings(self):
         self.settings_default = {'method': 'benders_decomposition',
