@@ -32,7 +32,6 @@ class StudyUpdaterDriver:
         """
         self._set_simulation_output_path(simulation_output_path)
         flushed_print("-- Study Update")
-        self._clear_old_log()
 
         with open(self.get_study_updater_log_filename(), 'w') as output_file:
             returned_l = subprocess.run(self.get_study_updater_command(), shell=False,
@@ -53,12 +52,8 @@ class StudyUpdaterDriver:
             raise StudyUpdaterDriver.StudyUpdaterOutputPathError(
                 f"Study Updater Error: {simulation_output_path} not found ")
 
-    def _clear_old_log(self):
-        if os.path.isfile(self.study_updater_exe + '.log'):
-            os.remove(self.study_updater_exe + '.log')
-
     def get_study_updater_log_filename(self):
-        return os.path.join(self.simulation_output_path, self.study_updater_exe + '.log')
+        return os.path.join(self.simulation_output_path, Path(self.study_updater_exe).name + '.log')
 
     def get_study_updater_command(self):
         return [self.study_updater_exe, "-o", str(self.simulation_output_path), "-s",

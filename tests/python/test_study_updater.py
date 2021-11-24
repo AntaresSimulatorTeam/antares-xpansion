@@ -29,12 +29,14 @@ class TestStudyUpdater:
     def test_updater_is_called_with_proper_argument_logfile_is_overwritten(self, tmp_path ):
         study_updater_exe = tmp_path / "dummy"
         open(study_updater_exe, "a").close()
-        logfile = Path(str(study_updater_exe)+".log")
-        with open(logfile, "a") as f:
-            f.write("hello")
-        study_updater = StudyUpdaterDriver(study_updater_exe=str(study_updater_exe), json_name="titi")
         simulation_output_path = tmp_path / "simulation"
         os.mkdir(simulation_output_path)
+        logfile = simulation_output_path / (study_updater_exe.name+".log")
+        with open(logfile, "a") as f:
+            f.write("hello")
+        assert os.stat(logfile).st_size == 5
+
+        study_updater = StudyUpdaterDriver(study_updater_exe=str(study_updater_exe), json_name="titi")
 
         with mock.patch("antares_xpansion.study_updater_driver.subprocess.run", autospec=True) as run_function:
             run_function.return_value.returncode = 0
@@ -45,7 +47,6 @@ class TestStudyUpdater:
 
         assert args[0] == expected_cmd
         assert os.stat(logfile).st_size == 0
-        assert os.stat(simulation_output_path/logfile.name).st_size == 0
 
     def test_todo_test_call_of_study_cleaner(self):
         pass
