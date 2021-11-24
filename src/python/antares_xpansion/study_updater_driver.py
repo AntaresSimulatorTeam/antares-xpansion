@@ -12,19 +12,11 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.flushed_print import flushed_print
 
 
-@dataclass
-class StudyUpdaterData:
-    study_updater_exe: str
-    JSON_NAME: str
-    keep_mps: bool
-
-
 class StudyUpdaterDriver:
-    def __init__(self, study_updater_data: StudyUpdaterData) -> None:
+    def __init__(self, study_updater_exe, json_name) -> None:
 
-        self.set_study_updater_exe(study_updater_data.study_updater_exe)
-        self.JSON_NAME = study_updater_data.JSON_NAME
-        self.keep_mps = study_updater_data.keep_mps
+        self.set_study_updater_exe(study_updater_exe)
+        self.JSON_NAME = json_name
 
     def set_simulation_output_path(self, simulation_output_path: Path):
         if simulation_output_path.is_dir():
@@ -44,7 +36,7 @@ class StudyUpdaterDriver:
         if os.path.isfile(self.study_updater_exe + '.log'):
             os.remove(self.study_updater_exe + '.log')
 
-    def launch(self, simulation_output_path):
+    def launch(self, simulation_output_path, keep_mps=False):
         """
             updates the antares study using the candidates file and the json solution output
 
@@ -58,10 +50,12 @@ class StudyUpdaterDriver:
                                         stdout=output_file,
                                         stderr=output_file)
             if returned_l.returncode != 0:
-                flushed_print("ERROR: exited study-updater with status %d" % returned_l.returncode)
+                flushed_print(
+                    "ERROR: exited study-updater with status %d" % returned_l.returncode)
                 sys.exit(1)
-            elif not self.keep_mps:
-                StudyOutputCleaner.clean_study_update_step(self.simulation_output_path)
+            elif not keep_mps:
+                StudyOutputCleaner.clean_study_update_step(
+                    self.simulation_output_path)
 
     def get_study_updater_log_filename(self):
         return os.path.join(self.simulation_output_path, self.study_updater_exe + '.log')
@@ -69,7 +63,6 @@ class StudyUpdaterDriver:
     def get_study_updater_command(self):
         return [self.study_updater_exe, "-o", str(self.simulation_output_path), "-s",
                 self.JSON_NAME + ".json"]
-
 
     class StudyUpdaterOutputPathError(Exception):
         pass
