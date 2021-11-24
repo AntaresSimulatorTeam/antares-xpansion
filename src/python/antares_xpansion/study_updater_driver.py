@@ -26,14 +26,6 @@ class StudyUpdaterData:
     JSON_NAME : str
     keep_mps : bool
 
-class StudyUpdaterDriverException:
-    class BaseException(Exception):
-        pass
-
-    class StudyUpdaterOutputPathError(BaseException):
-        pass
-
-
 @dataclass
 class StudyUpdaterData:
     study_updater_exe: str
@@ -52,14 +44,14 @@ class StudyUpdaterDriver:
         if simulation_output_path.is_dir():
             self.simulation_output_path = simulation_output_path
         else:
-            raise StudyUpdaterDriverException.StudyUpdaterOutputPathError(
+            raise StudyUpdaterDriver.StudyUpdaterOutputPathError(
                 f"Study Updater Error: {simulation_output_path} not found ")
 
     def set_study_updater_exe(self, study_updater_exe: str):
         if Path(study_updater_exe).is_file():
             self.study_updater_exe = study_updater_exe
         else:
-            raise StudyUpdaterDriverException.StudyUpdaterOutputPathError(
+            raise StudyUpdaterDriver.StudyUpdaterOutputPathError(
                 f"Study Updater Error: {study_updater_exe} not found ")
 
     def _clear_old_log(self):
@@ -91,3 +83,7 @@ class StudyUpdaterDriver:
     def get_study_updater_command(self):
         return [self.study_updater_exe, "-o", str(self.simulation_output_path), "-s",
                 self.JSON_NAME + ".json"]
+
+
+    class StudyUpdaterOutputPathError(Exception):
+        pass
