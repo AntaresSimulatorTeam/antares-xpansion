@@ -9,22 +9,8 @@ from pathlib import Path
 from dataclasses import dataclass
 
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.flushed_print import flushed_print
 
-
-class StudyUpdaterDriverException :
-    class BaseException(Exception):
-        pass
-    class StudyUpdaterOutputPathError(BaseException):
-        pass
-
-@dataclass
-class StudyUpdaterData:
-    study_updater_exe : str
-    simulation_output_path : Path
-    JSON_NAME : str
-    keep_mps : bool
 
 @dataclass
 class StudyUpdaterData:
