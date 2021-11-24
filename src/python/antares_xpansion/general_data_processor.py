@@ -2,10 +2,7 @@ import os
 from pathlib import Path
 
 from antares_xpansion.general_data_reader import IniReader
-
-import functools
-
-print = functools.partial(print, flush=True)
+from antares_xpansion.flushed_print import flushed_print
 
 
 class GeneralDataFileExceptions:
@@ -35,7 +32,7 @@ class GeneralDataProcessor:
         return self._general_data_ini_file
 
     def change_general_data_file_to_configure_antares_execution(self):
-        print("-- pre antares")
+        flushed_print("-- pre antares")
         with open(self._general_data_ini_file, 'r') as reader:
             lines = reader.readlines()
 
