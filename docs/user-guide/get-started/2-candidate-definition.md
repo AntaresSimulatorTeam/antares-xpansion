@@ -75,7 +75,7 @@ the fixed cost annuity can include:
 
 - an investment cost annuity
 
-#### `max-investment`
+#### `max-investment` {#max-invest}
 
 The value to be entered is numerical. It represents the candidate's
 potential, i.e. the maximum capacity (in MW) that can be invested in
@@ -114,7 +114,7 @@ initially indicated in the Antares study are not considered in the
 Antares-Xpansion.
 
 
-#### `link-profile`
+#### `link-profile` {#link-profile}
 
 The value to be filled is a string specifying the name of a file. This
 file must be located in the `user/expansion/capa/` directory of the

@@ -78,12 +78,12 @@ $$\frac{\texttt{xpansion\_solution\_cost}}{\texttt{optimal\_cost}} < \alpha .$$
 !!! Remark
     The algorithm stops as soon as the first criterion among `optimality_gap` and `relative_gap` is met. Keep in mind that if either parameter is not specified by the user, the default value is used. 
 
-### **`uc_type`**
+### **`uc_type`** {#uc_type}
 
 Possible values: `expansion_fast` and `expansion_accurate`. By default:
 `expansion_fast`.
 
-The `uc-type` (unit-commitment type) parameter specifies the simulation
+The `uc_type` (unit-commitment type) parameter specifies the simulation
 mode used by Antares to evaluate the operating costs of the electrical
 system:
 

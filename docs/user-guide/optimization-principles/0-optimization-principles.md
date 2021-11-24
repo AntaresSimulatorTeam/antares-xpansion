@@ -11,7 +11,7 @@ $$
 In which the expected operating costs for one year, calculated by
 Antares, includes the variable costs of thermal generation (fuel and CO2
 costs), penalties in case of unsupplied energy, line transit costs (if
-any), and, if the expansion-accurate mode is used, the start-up costs of
+any), and, if the `expansion_accurate` mode is used, the start-up costs of
 the thermal generation units. The production costs are calculated over
 the entire geographical perimeter of the Antares study, and in
 expectation over the probabilistic scenarios defined in the study. The
