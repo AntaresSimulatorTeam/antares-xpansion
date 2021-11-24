@@ -5,48 +5,62 @@
 import os
 import subprocess
 import sys
+from pathlib import Path
+from dataclasses import dataclass
 
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.flushed_print import flushed_print
 
 
 class StudyUpdaterDriver:
-    def __init__(self, config_loader : ConfigLoader) -> None:
-        self.config_loader = config_loader
-        self.config = self.config_loader.config
-        self.options = self.config_loader.options
+    def __init__(self, study_updater_exe, json_name) -> None:
 
-    def clear_old_log(self):
-        if (self.config.step in ["full", "study_update"]) \
-                and (os.path.isfile(self.config_loader.exe_path(self.config.STUDY_UPDATER) + '.log')):
-            os.remove(self.config_loader.exe_path(self.config.STUDY_UPDATER) + '.log')
+        self._set_study_updater_exe(study_updater_exe)
+        self.JSON_NAME = json_name
 
-    def launch(self):
-        self.update_step()
+    def _set_study_updater_exe(self, study_updater_exe: str):
+        if Path(study_updater_exe).is_file():
+            self.study_updater_exe = study_updater_exe
+        else:
+            raise StudyUpdaterDriver.StudyUpdaterOutputPathError(
+                f"Study Updater Error: {study_updater_exe} not found ")
 
-    def update_step(self):
+    def launch(self, simulation_output_path, keep_mps=False):
         """
             updates the antares study using the candidates file and the json solution output
 
         """
-        print ("-- Study Update")
-        output_path = self.config_loader.simulation_output_path()
+        self._set_simulation_output_path(simulation_output_path)
+        flushed_print("-- Study Update")
 
         with open(self.get_study_updater_log_filename(), 'w') as output_file:
-            returned_l = subprocess.run(self.get_study_updater_command(output_path), shell=False,
+            returned_l = subprocess.run(self.get_study_updater_command(), shell=False,
                                         stdout=output_file,
                                         stderr=output_file)
             if returned_l.returncode != 0:
-                print("ERROR: exited study-updater with status %d" % returned_l.returncode)
-                sys.exit(1)
-            elif not self.config.keep_mps:
-                StudyOutputCleaner.clean_study_update_step(output_path)
+                raise StudyUpdaterDriver.UpdaterExecutionError(
+                    f"ERROR: exited study-updater with status {returned_l.returncode}")
+
+            elif not keep_mps:
+                StudyOutputCleaner.clean_study_update_step(
+                    self.simulation_output_path)
+
+    def _set_simulation_output_path(self, simulation_output_path: Path):
+        if simulation_output_path.is_dir():
+            self.simulation_output_path = simulation_output_path
+        else:
+            raise StudyUpdaterDriver.StudyUpdaterOutputPathError(
+                f"Study Updater Error: {simulation_output_path} not found ")
 
     def get_study_updater_log_filename(self):
-        return os.path.join(self.config_loader.simulation_output_path(), self.config.STUDY_UPDATER + '.log')
+        return os.path.join(self.simulation_output_path, Path(self.study_updater_exe).name + '.log')
 
-    def get_study_updater_command(self, output_path):
-        return [self.config_loader.exe_path(self.config.STUDY_UPDATER), "-o", str(output_path), "-s",
-                self.config.options_default["JSON_NAME"] + ".json"]
-                
+    def get_study_updater_command(self):
+        return [self.study_updater_exe, "-o", str(self.simulation_output_path), "-s",
+                self.JSON_NAME + ".json"]
+
+    class UpdaterExecutionError(Exception):
+        pass
+
+    class StudyUpdaterOutputPathError(Exception):
+        pass

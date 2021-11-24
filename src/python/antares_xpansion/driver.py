@@ -26,7 +26,6 @@ class XpansionDriver:
         :param config: configuration to use for the optimization
         :type config: XpansionConfig object
         """
-        self.platform = sys.platform
         self.config = config
 
         self.config_loader = ConfigLoader(self.config)
@@ -34,39 +33,45 @@ class XpansionDriver:
         self.antares_driver = AntaresDriver(
             self.config_loader.exe_path(self.config.ANTARES)
         )
-        self.problem_generator_driver = ProblemGeneratorDriver(ProblemGeneratorData(keep_mps = self.config.keep_mps,
-                                                                                    additional_constraints = self.config_loader.additional_constraints(),
-                                                                                    user_weights_file_path  = self.config_loader.weights_file_path(),
-                                                                                    weight_file_name_for_lp= self.config_loader.weight_file_name(),
-                                                                                    lp_namer_exe_path  = self.config_loader.exe_path(self.config.LP_NAMER),
-                                                                                    nb_active_years = self.config_loader.nb_active_years      
-                                                                ))
-        benders_mpi_exe_path = self.config_loader.exe_path(self.config.BENDERS_MPI)
+        self.problem_generator_driver = ProblemGeneratorDriver(ProblemGeneratorData(keep_mps=self.config.keep_mps,
+                                                                                    additional_constraints=self.config_loader.additional_constraints(),
+                                                                                    user_weights_file_path=self.config_loader.weights_file_path(),
+                                                                                    weight_file_name_for_lp=self.config_loader.weight_file_name(),
+                                                                                    lp_namer_exe_path=self.config_loader.exe_path(
+                                                                                        self.config.LP_NAMER),
+                                                                                    nb_active_years=self.config_loader.nb_active_years
+                                                                                    ))
+        benders_mpi_exe_path = self.config_loader.exe_path(
+            self.config.BENDERS_MPI)
         benders_sequential_exe_path = self.config_loader.exe_path(
             self.config.BENDERS_SEQUENTIAL
         )
-        benders_merge_mps_exe_path = self.config_loader.exe_path(self.config.MERGE_MPS)
+        benders_merge_mps_exe_path = self.config_loader.exe_path(
+            self.config.MERGE_MPS)
         self.benders_driver = BendersDriver(
             benders_mpi_exe_path,
             benders_sequential_exe_path,
             benders_merge_mps_exe_path,
         )
-        self.study_update_driver = StudyUpdaterDriver(self.config_loader)
 
-        self.settings = "settings"
+        self.study_update_driver = StudyUpdaterDriver(self.config_loader.exe_path(self.config.STUDY_UPDATER),
+                                                      self.config.options_default["JSON_NAME"],
+                                                      )
+
+        self.settings = 'settings'
 
     def launch(self):
         """
         launch antares xpansion steps
         """
-        self._clear_old_log()
 
         if self.config.step == "full":
             self.launch_antares_step()
             flushed_print("-- post antares")
             self.launch_problem_generation_step()
             self.launch_benders_step()
-            self.study_update_driver.launch()
+            self.study_update_driver.launch(
+                self.config_loader.simulation_output_path(), self.config.keep_mps)
         elif self.config.step == "antares":
             self.launch_antares_step()
         elif self.config.step == "problem_generation":
@@ -77,7 +82,8 @@ class XpansionDriver:
                 sys.exit(1)
         elif self.config.step == "study_update":
             if self.config.simulation_name:
-                self.study_update_driver.launch()
+                self.study_update_driver.launch(
+                    self.config_loader.simulation_output_path(), self.config.keep_mps)
             else:
                 flushed_print("Missing argument simulationName")
                 sys.exit(1)
@@ -91,12 +97,10 @@ class XpansionDriver:
             flushed_print("Launching failed")
             sys.exit(1)
 
-    def _clear_old_log(self):
-        self.study_update_driver.clear_old_log()
-
     def launch_antares_step(self):
         self._update_general_data_ini()
-        self.antares_driver.launch(self.config.data_dir, self.config.antares_n_cpu)
+        self.antares_driver.launch(
+            self.config.data_dir, self.config.antares_n_cpu)
 
     def _update_general_data_ini(self):
         settings_dir = os.path.normpath(
@@ -109,13 +113,13 @@ class XpansionDriver:
 
     def launch_problem_generation_step(self):
         if self.config.simulation_name:
-            self.problem_generator_driver.launch(self.config_loader.simulation_output_path(), self.config_loader.is_relaxed())
+            self.problem_generator_driver.launch(
+                self.config_loader.simulation_output_path(), self.config_loader.is_relaxed())
         else:
-            raise XpansionDriver.MissingSimulationName("Missing argument simulationName")
-    class BasicException(Exception):
-        pass
-    
-    class MissingSimulationName(BasicException):
+            raise XpansionDriver.MissingSimulationName(
+                "Missing argument simulationName")
+
+    class MissingSimulationName(Exception):
         pass
 
     def launch_benders_step(self):
