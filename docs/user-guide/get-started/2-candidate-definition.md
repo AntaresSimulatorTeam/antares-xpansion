@@ -102,7 +102,7 @@ capacity can take is the finite set of the first multiples of `unit-size`:
 $$[0, \text{unit-size}, 2 \cdot \text{unit-size}, … , \text{max-units} \cdot \text{unit-size}]$$
 
 
-#### `already-installed-capacity`
+#### `already-installed-capacity` {#already-installed-capa}
 
 The value to be entered is numerical. It corresponds to a capacity
 already installed on the investment candidate's link. If

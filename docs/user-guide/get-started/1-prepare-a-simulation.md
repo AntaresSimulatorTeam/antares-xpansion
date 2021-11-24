@@ -40,51 +40,55 @@ antares-study
 ```
 **Figure 1** - Structure of an Antares study folder ready for an Antares-Xpansion optimization
 
+Depending on the type of investment considered in the study, some modifications of the Antares study are necessary before filling the `candidates.ini` and `settings.ini` files.
+
 ## Prepare the Antares study
 
-Before launching an Antares-Xpansion study, the user must define investment candidates.
+The first step to set up an Antares-Xpansion study consists in defining investment candidates.
 **Candidate capacities for investment are
 necessarily links from an Antares study**. Investment candidates can be generation assets, or even
 flexibilities, by adopting a virtual node logic as described below.
 
 | ![](../../assets/media/image6.png) | ![](../../assets/media/image7.png) | ![](../../assets/media/image8.png) |
-| ------------------------------------- | ------------------------------------- | ------------------------------------- |
+| :--------------------------------: | :--------------------------------: | :----------------------------------: |
 | **(a)**                               | **(b)**                               | **(c)**                               |
 
 **Figure 3** - Configuration of the Antares study for an
 investment in **(a)** transmission capacity (new line or grid
 reinforcement), **(b)** generation units and **(c)** storage.
 
-### Investment in transmission capacity between two areas 
+The following sections describe the Antares modelling for different types of investment:
+
+  - [Transmission capcity between two areas](#transmission)
+  - [Thermal generation capacity](#thermal)
+  - [Renewable generation capacity](#renewable)
+  - [Flexibility](#flexibility)
+
+### Investment in transmission capacity between two areas {#transmission}
+
 The Antares link candidate for investment, shown in red in
 **Figure 3 (a)**, is directly the interconnection for which the interest
 in increasing capacity is being studied.
 
 - In the case of the construction of a new line, a link must be added
-  in the Antares study between the two areas concerned.
+  in the Antares study between the two involved areas.
 
 - In the case of a grid reinforcement between two already
   interconnected areas, the link between these two areas already
-  existed in the Antares study. The parameter
-  `already-installed-capacity` is then used in the definition of the
-  investment candidate to specify the capacity value of the grid
-  structures already present between the two zones. In this way,
-  Antares-Xpansion will assess the economic interest of increasing
-  this capacity beyond what is already installed.
+  exists in the Antares study. The parameter
+  `already-installed-capacity` will be used in the `candidates.ini` file to specify the capacity of the grid that already exists between the two zones (see [here](2-candidate-definition.md#already-installed-capa) for more details). In this way, Antares-Xpansion will assess the economic interest of increasing this capacity beyond what is already installed.
 
-### Investment in thermal generation capacity
-The generation capacity subject to expansion,
-physically located for the example in **Figure 3 (b)** in *area1*, must
-be moved to a virtual node (here `invest_semibase`) connected to the
-physical node *area1*. The Antares link of the investment candidate is
-the link between these two nodes.
+### Investment in thermal generation capacity {#thermal}
+
+Suppose that the thermal generation capacity subject to expansion is 
+physically located in `area1` for the example in **Figure 3 (b)**. As Antares-Xpansion only performs investment on links of the study, the modelling trick consists in creating a virtual node, here `invest_semibase`, connected to the physical node `area1`. The Antares link of the investment candidate is the link between these two nodes.
 
 The generation unit of the investment candidate must be defined, with
 its technical and economic parameters, by a thermal cluster:
 
-- located in the virtual node (here `invest_semibase`),
+- located in the virtual node `invest_semibase`,
 
-- created before executing the benders decomposition,
+- created before executing the Benders decomposition,
 
 - which has a *market bid* equal to its *marginal cost*, which is
   equal to the variable operating cost (in €/MWh) of the generation
@@ -107,11 +111,12 @@ Other cluster parameters (*pmin*, *start-up costs*, etc.) can also be
 defined. However, they will only be taken into account by
 Antares-Xpansion if the expansion-accurate mode is used (see later).
 
-### Investment in renewable generation capacity
+### Investment in renewable generation capacity {#renewable}
+
 As in the case of thermal generation, the renewable
 generation capacity subject to expansion, physically located for the
-example in **Figure 4 (b)** in *area1*, must be moved to a virtual node
-connected to the physical *area1* node. The investment candidate's
+example in **Figure 4 (b)** in `area1`, must be moved to a virtual node
+connected to the physical `area1` node. The investment candidate's
 Antares link is the link between these two nodes.
 
 For the type of renewable production concerned (wind or solar), a
@@ -124,7 +129,8 @@ hourly load factor. It should be noted that this profile is necessarily
 deterministic and that the new renewable generation capacities cannot
 have differentiated production time-series for each Monte-Carlo year.
 
-### Investment in flexibility
+### Investment in flexibility {#flexibility}
+
 The modeling of flexibilities, such as Pumped storage, is generally based in Antares
 on a set of virtual nodes/links and coupling constraints. To make
 flexibility an investment candidate, a link must be identified in the
@@ -133,7 +139,7 @@ capacity of the flexibility (at its maximum power for example, the size
 of a stock, etc.). For example, in the case of the Pumped storage in
 **Figure 3 (c)**, the capacity of the Pumped storage (equal to its pump
 and turbine capacity) is defined by the maximum possible flow on the
-link between *area2* and *hub*: it is by this link that the investment
+link between `area1` and *hub*: it is by this link that the investment
 in this flexibility will be characterized. The classical binding
 constraints must be added in the Antares simulation to represents the
 storage (for example: with a negative ROW Balance in psp-in and a
