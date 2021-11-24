@@ -26,7 +26,6 @@ class XpansionDriver:
         :param config: configuration to use for the optimization
         :type config: XpansionConfig object
         """
-        self.platform = sys.platform
         self.config = config
 
         self.config_loader = ConfigLoader(self.config)
@@ -120,10 +119,7 @@ class XpansionDriver:
             raise XpansionDriver.MissingSimulationName(
                 "Missing argument simulationName")
 
-    class BasicException(Exception):
-        pass
-
-    class MissingSimulationName(BasicException):
+    class MissingSimulationName(Exception):
         pass
 
     def launch_benders_step(self):
