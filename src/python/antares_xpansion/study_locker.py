@@ -11,7 +11,7 @@ class StudyLocker:
     """
 
     def __init__(self, study_dir: Path) -> None:
-        self.study_dir: Path = None
+        self.study_dir = Path("")
         self._set_study_dir(study_dir)
         self.PID_ATTRIBUTE: str = "PID"
         self.LOCK_FILE_NAME: str = ".xpansion_locker"
@@ -20,18 +20,21 @@ class StudyLocker:
 
     def _set_study_dir(self, study_dir):
         if not study_dir.is_dir():
-            raise StudyLocker.NotAValidDirectory("%s is not a valid directory" % study_dir)
+            raise StudyLocker.NotAValidDirectory(
+                "%s is not a valid directory" % study_dir)
         self.study_dir = study_dir
 
     def lock(self):
         if self._is_locked():
-            raise StudyLocker.Locked(f"{self.study_dir} is locked by an antares-xpansion process")
+            raise StudyLocker.Locked(
+                f"{self.study_dir} is locked by an antares-xpansion process")
 
         self._lock()
 
     def unlock(self):
         if self._is_locked_by_another_process():
-            raise StudyLocker.Locked(f"{self.study_dir} is locked by another xpansion instance")
+            raise StudyLocker.Locked(
+                f"{self.study_dir} is locked by another xpansion instance")
 
         if self.locker_file.exists():
             self.locker_file.unlink()
@@ -51,7 +54,7 @@ class StudyLocker:
         return not pid == os.getpid()
 
     def locker_file_missing_or_empty(self):
-        return not self.locker_file.exists() or os.stat(self.locker_file).st_size is 0
+        return not self.locker_file.exists() or os.stat(self.locker_file).st_size == 0
 
     def _get_pid_from_locker_file(self):
         with open(self.locker_file, "r") as locker:
