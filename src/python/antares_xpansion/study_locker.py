@@ -11,12 +11,12 @@ class StudyLocker:
     """
 
     def __init__(self, study_dir: Path) -> None:
-        self.study_dir = None
+        self.study_dir: Path = None
         self._set_study_dir(study_dir)
-        self.PID_ATTRIBUTE = "PID"
-        self.LOCK_FILE_NAME = ".xpansion_locker"
+        self.PID_ATTRIBUTE: str = "PID"
+        self.LOCK_FILE_NAME: str = ".xpansion_locker"
 
-        self.locker_file = self.study_dir / self.LOCK_FILE_NAME
+        self.locker_file: Path = self.study_dir / self.LOCK_FILE_NAME
 
     def _set_study_dir(self, study_dir):
         if not study_dir.is_dir():
@@ -24,27 +24,45 @@ class StudyLocker:
         self.study_dir = study_dir
 
     def lock(self):
-        if self.is_unlocked():
-            self._lock()
-        else:
+        if self._is_locked():
+            raise StudyLocker.Locked(f"{self.study_dir} is locked by an antares-xpansion process")
+
+        self._lock()
+
+    def unlock(self):
+        if self._is_locked_by_another_process():
             raise StudyLocker.Locked(f"{self.study_dir} is locked by another xpansion instance")
 
-    def is_unlocked(self):
-        if not self.locker_file.exists():
-            return True
+        self.locker_file.unlink(missing_ok=True)
 
+    def _is_locked(self):
+        if self.locker_file_missing_or_empty():
+            return False
+
+        pid = self._get_pid_from_locker_file()
+        return psutil.pid_exists(pid)
+
+    def _is_locked_by_another_process(self):
+        if self.locker_file_missing_or_empty():
+            return False
+
+        pid = self._get_pid_from_locker_file()
+        return not pid == os.getpid()
+
+    def locker_file_missing_or_empty(self):
+        return not self.locker_file.exists() or os.stat(self.locker_file).st_size is 0
+
+    def _get_pid_from_locker_file(self):
         with open(self.locker_file, "r") as locker:
             lines = [line.rstrip() for line in locker.readlines()]
             non_blank_lines = [line for line in lines if line]
             if len(non_blank_lines) > 1:
                 self.raise_corrupted_file_exception()
-            elif len(non_blank_lines) == 0:
-                return True
             else:
-                pid = self._get_pid_from_lock_file(non_blank_lines[0])
-                return not psutil.pid_exists(pid)
+                pid = self._get_pid_from_non_blank_line(non_blank_lines[0])
+        return pid
 
-    def _get_pid_from_lock_file(self, line: str):
+    def _get_pid_from_non_blank_line(self, line: str):
         if line.split('=')[0].strip() != self.PID_ATTRIBUTE:
             self.raise_corrupted_file_exception()
         try:

@@ -2,6 +2,8 @@ import os
 import shutil
 import tempfile
 from pathlib import Path
+
+import psutil
 import pytest
 
 from antares_xpansion.study_locker import StudyLocker
@@ -55,6 +57,22 @@ class TestStudyLocker:
 
         with pytest.raises(StudyLocker.CorruptedLockerFile):
             TestStudyLocker.lock_study(self.study_dir)
+
+    def test_after_unlock_the_study_can_be_locked_again(self):
+        TestStudyLocker.lock_study(self.study_dir)
+
+        study_locker = StudyLocker(self.study_dir)
+        study_locker.unlock()
+        assert not self.lock_file.exists()
+
+    def test_unlock_fails_if_study_was_locked_by_another_pid(self):
+        first_running_pid = psutil.pids()[0]
+        with open(self.lock_file, "w") as file:
+            line = ["PID = " + str(first_running_pid)]
+            file.writelines(line)
+        study_locker = StudyLocker(self.study_dir)
+        with pytest.raises(StudyLocker.Locked):
+            study_locker.unlock()
 
     @staticmethod
     def lock_study(study_dir: Path):

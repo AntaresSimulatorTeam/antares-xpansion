@@ -32,3 +32,4 @@ CONFIG = XpansionConfig(input_parameters, configuration_data)
 DRIVER = XpansionDriver(CONFIG)
 
 DRIVER.launch()
+locker.unlock()
