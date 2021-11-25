@@ -42,7 +42,7 @@ antares-study
 
 Depending on the type of investment considered in the study, some modifications of the Antares study are necessary before filling the `candidates.ini` and `settings.ini` files.
 
-## Prepare the Antares study
+## Prepare the Antares study {#prepare-study}
 
 The first step to set up an Antares-Xpansion study consists in defining investment candidates.
 **Candidate capacities for investment are

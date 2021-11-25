@@ -2,7 +2,7 @@
 
 The simulation options and algorithmic parameters for solving the
 investment problem must be entered in `settings.ini` located in the
-folder `./user/expansion/` with the syntax given below:
+folder `user/expansion/` with the syntax given below:
 ```ini
 uc_type = expansion_fast
 master = integer
