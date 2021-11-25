@@ -33,7 +33,8 @@ class StudyLocker:
         if self._is_locked_by_another_process():
             raise StudyLocker.Locked(f"{self.study_dir} is locked by another xpansion instance")
 
-        self.locker_file.unlink(missing_ok=True)
+        if self.locker_file.exists():
+            self.locker_file.unlink()
 
     def _is_locked(self):
         if self.locker_file_missing_or_empty():
