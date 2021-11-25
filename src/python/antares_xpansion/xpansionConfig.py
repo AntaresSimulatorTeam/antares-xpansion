@@ -88,8 +88,12 @@ class XpansionConfig:
     def _initialize_install_dir_with_default_value(self):
 
         if getattr(sys, 'frozen', False):
-            application_path = os.path.dirname(sys.executable)
-            return Path(application_path) / "bin"
+            install_dir_inside_package = Path(os.path.abspath(__file__)).parent.parent / "bin"
+            install_dir_next_to_package = Path(sys.executable).parent / "bin"
+            if Path.is_dir(install_dir_inside_package):
+                return install_dir_inside_package
+            else:
+                return install_dir_next_to_package
         elif __file__:
             return self.default_install_dir
             
