@@ -11,12 +11,12 @@ The candidates are defined in the
 Each investment candidate is characterized
 by the following properties:
 
-- `name`: name of the investment candidate (:warning: must not
+- `name` (mandatory): name of the investment candidate (:warning: must not
   contain spaces and unique),
 
-- `link`: link on which there is a capacity investment,
+- `link` (mandatory): link on which there is a capacity investment,
 
-- `annual-cost-per-mw`: investment cost, per year and per MW,
+- `annual-cost-per-mw` (mandatory): investment cost, per year and per MW,
 
 - `unit-size`: size, in MW, of a single investment unit (e.g. one group
   of 300 MW),
@@ -81,12 +81,12 @@ Float. Represents the candidate's
 potential, i.e. the maximum capacity (in MW) that can be invested in
 this candidate. If this parameter is set, the invested capacity can take any value in the interval \\(\small [0, \texttt{max-investment}]\\).
 
-#### `unit-size`
+#### `unit-size` {#unit-size}
 
 Float. Defines the nominal capacity
 (in MW) of the investment candidate's units.
 
-#### `max-units`
+#### `max-units` {#max-units}
 
 Integer. Corresponds to the candidate's
 potential in terms of number of installable units. If
