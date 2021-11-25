@@ -24,9 +24,12 @@ class TestStudyLocker:
         assert self.lock_file.exists()
         assert os.stat(self.lock_file).st_size > 0
 
-    def test_fail_to_unlock_already_locked_dir(self):
+    def test_study_with_empty_locker_file_can_be_locked(self, tmp_path):
+        self.lock_file.write_text("")
         TestStudyLocker.lock_study(self.study_dir)
 
+    def test_fail_to_unlock_already_locked_dir(self):
+        TestStudyLocker.lock_study(self.study_dir)
         with pytest.raises(StudyLocker.Locked):
             TestStudyLocker.lock_study(self.study_dir)
 
@@ -34,7 +37,6 @@ class TestStudyLocker:
         with open(self.lock_file, "w") as file:
             lines = ["line 1 \n", "\n line 2 \n"]
             file.writelines(lines)
-
         with pytest.raises(StudyLocker.CorruptedLockerFile):
             TestStudyLocker.lock_study(self.study_dir)
 
@@ -53,11 +55,6 @@ class TestStudyLocker:
 
         with pytest.raises(StudyLocker.CorruptedLockerFile):
             TestStudyLocker.lock_study(self.study_dir)
-
-    def test_empty_locker_file(self, tmp_path):
-        self.lock_file.write_text("")
-
-        TestStudyLocker.lock_study(self.study_dir)
 
     @staticmethod
     def lock_study(study_dir: Path):

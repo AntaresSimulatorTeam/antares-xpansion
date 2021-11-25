@@ -37,24 +37,25 @@ class StudyLocker:
             lines = [line.rstrip() for line in locker.readlines()]
             non_blank_lines = [line for line in lines if line]
             if len(non_blank_lines) > 1:
-                raise StudyLocker.CorruptedLockerFile(
-                    f"{self.study_dir} could not be locked, try to stop Xpansion instances and delete {self.locker_file}")
+                self.raise_corrupted_file_exception()
             elif len(non_blank_lines) == 0:
                 return True
             else:
-                pid = self._check_lock_info_consistency(non_blank_lines[0])
+                pid = self._get_pid_from_lock_file(non_blank_lines[0])
                 return not psutil.pid_exists(pid)
 
-    def _check_lock_info_consistency(self, line: str):
+    def _get_pid_from_lock_file(self, line: str):
         if line.split('=')[0].strip() != self.PID_ATTRIBUTE:
-            raise StudyLocker.CorruptedLockerFile(
-                f"{self.study_dir} could not be locked, try to stop Xpansion instances and delete {self.locker_file}")
-        pid = line.split('=')[1].strip()
-        if not pid.isdigit():
-            raise StudyLocker.CorruptedLockerFile(
-                f"{self.study_dir} could not be locked, try to stop Xpansion instances and delete {self.locker_file}")
+            self.raise_corrupted_file_exception()
+        try:
+            pid = int(line.split('=')[1].strip())
+        except ValueError:
+            self.raise_corrupted_file_exception()
+        return pid
 
-        return int(pid)
+    def raise_corrupted_file_exception(self):
+        raise StudyLocker.CorruptedLockerFile(
+            f"{self.study_dir} could not be locked, try to stop Xpansion instances and delete {self.locker_file}")
 
     def _lock(self):
         with open(self.locker_file, "w") as locker:
