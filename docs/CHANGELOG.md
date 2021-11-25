@@ -5,7 +5,18 @@ Unreleased
 --------------------
 ### Features
 
-- add option *antares-n-cpu* to use Antares parallelism
+- added option *antares-n-cpu* to use Antares parallelism
+- added option *-v, --version* to show AntaresXpansion version
+- added option *--antares-version* to show Antares_Simulator version
+- Set default value of *--simulationName* to *last* in order to use the last antares simulation
+
+### Bug fixes
+- Path to binaries directory was not found in some situations with python launcher and in python exclusive package
+- Correction bug when there are too many zeros in a link-profile 
+
+### For developpers
+- cpp Lp namer library is splited into smaller and consistents libraries
+- Each AntaresXpansion step has its own driver (python class) instead of the all-in driver
 
 v0.5.0 (10/2021)
 --------------------
@@ -80,10 +91,10 @@ v0.2.0 (04/2021)
 v0.1.0 (03/2021)
 -------------------- 
 We’re happy to announce the first open-source version v0.1.0 of Antares-Xpansion.
-**Antares-Xpansion** optimizes the installed capacities of an ANTARES study.
+Antares-Xpansion optimizes the installed capacities of an Antares study.
 
-The investment decisions are optimized by running ANTARES' simulations iteratively. At each iteration, the installed capacity of the investments are updated, and the simulations are repeated until the total costs have converged to a minimum. The total cost evaluated in this problem are the sum of the **expected operation cost during one year** and **the investment annuity**. 
-The user defines investment candidates. Candidate capacities for investment are necessarily links from an ANTARES study.  Investment candidates can be:
+The investment decisions are optimized by running Antares' simulations iteratively. At each iteration, the installed capacity of the investments are updated, and the simulations are repeated until the total costs have converged to a minimum. The total cost evaluated in this problem are the sum of the **expected operation cost during one year** and **the investment annuity**. 
+The user defines investment candidates. Candidate capacities for investment are necessarily links from an Antares study.  Investment candidates can be:
  - transmission capacity between two areas
  - thermal generation capacity (located in a virtual node)
  - renewable generation capacity (located in a virtual node)

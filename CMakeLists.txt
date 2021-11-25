@@ -172,8 +172,12 @@ option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
 if (${BUILD_antares_solver})
-	set(BUILD_sirius ON)
-	set(BUILD_ortools ON)
+	#check if antares_solver available before asking for sirius and ortools build
+	find_package(antares-solver)
+	if (NOT antares-solver_FOUND)
+		set(BUILD_sirius ON)
+		set(BUILD_ortools ON)
+	endif()
 endif()
 
 add_subdirectory(antares-deps)
@@ -334,6 +338,8 @@ add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 if(BUILD_TESTING)
 	enable_testing()
 	add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
+	FILE(WRITE "${PROJECT_SOURCE_DIR}/tests/bin_paths.yaml"
+	"antares-solver : "${ANTARES_SOLVER_PATH})
 endif()
 
 

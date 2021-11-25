@@ -6,8 +6,8 @@ else()
 endif()
 
 #configure file to define xpansion installDir
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml)
-
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml )
+file(GENERATE OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml INPUT ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml )
 #check if pytest and numpy are installed
 find_python_module(pytest)
 find_python_module(numpy)
@@ -39,11 +39,23 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 	
 	# benders end to end tests
     add_test(
-        NAME benders_end_to_end
-        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersEndToEnd.py
+        NAME sequential
+        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersSequentialEndToEnd.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
-    set_property(TEST benders_end_to_end PROPERTY LABELS benders)
+    set_property(TEST sequential PROPERTY LABELS "benders;benders-sequential")
+    add_test(
+        NAME mpibenders
+        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersmpibendersEndToEnd.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
+    )
+    set_property(TEST mpibenders PROPERTY LABELS "benders;benders-mpi")
+    add_test(
+        NAME merge_mps
+        COMMAND Python3::Interpreter -m pytest --installDir=$<TARGET_FILE_DIR:lp_namer> test_bendersMergeMpsEndToEnd.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
+    )
+    set_property(TEST merge_mps PROPERTY LABELS "benders;merge-mps")
 
     add_test(
             NAME lpnamer_end_to_end

@@ -8,9 +8,7 @@ from datetime import datetime
 from pathlib import Path
 
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-import functools
-
-print = functools.partial(print, flush=True)
+from antares_xpansion.flushed_print import flushed_print
 
 
 class AntaresDriver:
@@ -37,7 +35,7 @@ class AntaresDriver:
         if antares_n_cpu >= 1:
             self.antares_n_cpu = antares_n_cpu
         else:
-            print(f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
+            flushed_print(f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
 
     def _launch(self, antares_study_path):
         self._clear_old_log()
@@ -56,7 +54,7 @@ class AntaresDriver:
         return os.path.normpath(os.path.join(self.data_dir, self.output))
 
     def _run_antares(self):
-        print("-- launching antares")
+        flushed_print("-- launching antares")
 
         start_time = datetime.now()
 
@@ -65,16 +63,19 @@ class AntaresDriver:
                                     stderr=subprocess.DEVNULL)
 
         end_time = datetime.now()
-        print('Antares simulation duration : {}'.format(end_time - start_time))
+        flushed_print('Antares simulation duration : {}'.format(end_time - start_time))
 
-        if returned_l.returncode != 0:
-            raise AntaresDriver.AntaresExecutionError("Exited antares with status %d" % returned_l.returncode)
+        if returned_l.returncode == 1:
+            raise AntaresDriver.AntaresExecutionError("Error: exited antares with status {returned_l.returncode}")
+        elif returned_l.returncode != 0 and returned_l.returncode != 1 :
+            print("Warning: exited antares with status %d" % returned_l.returncode)
         else:
             self._set_simulation_name()
             StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / self.simulation_name))
 
     def _set_simulation_name(self):
 
+        self.simulation_name = ""
         # Get list of all dirs only in the given directory
         list_of_dirs_filter = filter(lambda x: os.path.isdir(os.path.join(self.antares_output_dir(), x)),
                                      os.listdir(self.antares_output_dir()))
@@ -82,7 +83,8 @@ class AntaresDriver:
         list_of_dirs = sorted(list_of_dirs_filter,
                               key=lambda x: os.path.getmtime(os.path.join(self.antares_output_dir(), x))
                               )
-        self.simulation_name = list_of_dirs[-1]
+        if list_of_dirs:
+            self.simulation_name = list_of_dirs[-1]
 
     def _get_antares_cmd(self):
         return [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu)]

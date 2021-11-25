@@ -12,10 +12,7 @@ import re
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-
-import functools
-
-print = functools.partial(print, flush=True)
+from antares_xpansion.flushed_print import flushed_print
 
 
 class ConfigLoader:
@@ -66,7 +63,6 @@ class ConfigLoader:
     def check_settings_file_format(self):
         check_options(self.options)
         self._verify_solver()
-        self._verify_yearly_weights_consistency()
         self._verify_additional_constraints_file()
 
     def antares_output(self):
@@ -178,19 +174,11 @@ class ConfigLoader:
         lp_path = os.path.normpath(os.path.join(self.simulation_output_path(), 'lp'))
         return lp_path
 
-    def _verify_yearly_weights_consistency(self):
-        if self.weight_file_name():
-            try:
-                XpansionStudyReader.check_weights_file(self.weights_file_path(), self.nb_active_years)
-            except XpansionStudyReader.BaseException as e:
-                print(e)
-                sys.exit(1)
-
     def _verify_additional_constraints_file(self):
         if self.options.get('additional-constraints', "") != "":
             additional_constraints_path = self.additional_constraints()
             if not os.path.isfile(additional_constraints_path):
-                print('Illegal value: %s is not an existent additional-constraints file'
+                flushed_print('Illegal value: %s is not an existent additional-constraints file'
                       % additional_constraints_path)
                 sys.exit(1)
 
@@ -198,7 +186,7 @@ class ConfigLoader:
         try:
             XpansionStudyReader.check_solver(self.options.get('solver', ""), self.config.AVAILABLE_SOLVER)
         except XpansionStudyReader.BaseException as e:
-            print(e)
+            flushed_print(e)
             sys.exit(1)
 
     def simulation_output_path(self) -> Path:
@@ -232,7 +220,6 @@ class ConfigLoader:
         """
             return last simulation name    
         """
-
         # Get list of all dirs only in the given directory
         list_of_dirs_filter = filter( lambda x: os.path.isdir(os.path.join(self.antares_output(), x)),
                                 os.listdir(self.antares_output()) )
@@ -253,3 +240,12 @@ class ConfigLoader:
 
     class MissingFile(Exception):
         pass
+    def is_relaxed(self):
+        """
+            indicates if method to use is relaxed by reading the relaxation_type
+            from the settings file
+        """
+        relaxation_type = self.options.get('master',
+                                           self.config.settings_default["master"])
+        assert relaxation_type in ['integer', 'relaxed', 'full_integer']
+        return relaxation_type == 'relaxed'

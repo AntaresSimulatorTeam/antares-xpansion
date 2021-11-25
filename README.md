@@ -14,7 +14,7 @@ and a full user guide. Visit the [Antares-Simulator Documentation][readthedocs-a
 
 ## Introduction
 
-`Antares-Xpansion` optimizes the installed capacities of an ANTARES study.
+Antares-Xpansion optimizes the installed capacities of an ANTARES study.
 
 Typical uses of Antares-Xpansion are for example:
 
@@ -51,7 +51,7 @@ to minimize the global costs, that is the sum of the
 **expected operation cost during one year**
 and the **investment annuity**.
 
-`Antares-Xpansion` is currently under development. Feel free to submit any issue.
+Antares-Xpansion is currently under development. Feel free to submit any issue.
 
 ## Links:
 

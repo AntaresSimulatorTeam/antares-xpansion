@@ -17,10 +17,12 @@ This is the list of the available labels :
 |:-------|-----|-----|
 | `unit_tests`  | `unit`  | Unit test for OR-Tools use and lpnamer|
 | `unit_logger`  | `unit`  | Unit test for logger use|
-| `unit_launcher`  | `unit`  |Unit test antares-xpansion python launcher|
+| `unit_launcher`  | `unit`  |Unit test Antares-Xpansion python launcher|
 | `examples_medium`  | `medium`  |End to end tests with examples antares study (medium duration)|
 | `examples_long`  | `long`  |End to end tests with examples antares study (long duration)|
-| `benders_end_to_end`  | `benders`  |End to end tests for benders optimization|
+| `mpibenders`  | `benders-mpi`  |End to end tests for benders mpi optimization|
+| `sequential`  | `sequential`  |End to end tests for benders sequential optimization|
+| `merge_mps`  | `merge-mps`  |End to end tests for merge mps optimization|
 
 Note :
 > Use `ctest -N` to see all available tests

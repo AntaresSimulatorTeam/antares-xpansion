@@ -5,7 +5,6 @@ import subprocess
 from pathlib import Path
 import yaml
 import numpy as np
-import pytest
 
 # File RESULT_FILE_PATH
 # Json file containing 
@@ -94,7 +93,7 @@ def check_optimization_json_output(expected_results_dict, instance_path) :
                 rtol=1e-6, atol=0)
 
 
-def run_solver(installDir, solver : str):
+def run_solver(install_dir, solver : str):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -109,7 +108,7 @@ def run_solver(installDir, solver : str):
     for instance in expected_results_dict:
         instance_path = expected_results_dict[instance]['path']
 
-        executable_path = str((Path(installDir) / Path(solver_executable)).resolve())
+        executable_path = str((Path(install_dir) / Path(solver_executable)).resolve())
         commands = [executable_path,
                     expected_results_dict[instance]['option_file']
                     ]
@@ -117,20 +116,4 @@ def run_solver(installDir, solver : str):
         launch_optimization(instance_path, commands, expected_results_dict[instance]["status"])
         check_optimization_json_output(expected_results_dict[instance], instance_path)
 
-## TESTS ##
-@pytest.mark.optim
-@pytest.mark.benderssequential
-def test_001_sequential(install_dir):
-    run_solver(install_dir, 'BENDERS_SEQUENTIAL')
 
-
-@pytest.mark.optim
-@pytest.mark.mergemps
-def test_001_mergemps(install_dir):
-    run_solver(install_dir, 'MERGE_MPS')
-
-
-@pytest.mark.optim
-@pytest.mark.bendersmpi
-def test_001_mpibenders(install_dir):
-    run_solver(install_dir, 'BENDERS_MPI')

@@ -20,4 +20,15 @@ def get_antares_solver():
             raise RuntimeError("Please check file build_config.yaml, content is empty")
 
 def get_antares_solver_path() -> Path:
-        return Path(get_install_dir()) / get_antares_solver() 
+        return Path(get_install_dir()) / get_antares_solver()
+
+def get_lp_namer_exe():
+    with open(Path(os.path.abspath(__file__)).parent / 'build_config.yaml') as file:
+        content = yaml.full_load(file)
+        if content is not None:
+            return content.get('lp_namer', "")
+        else:
+            raise RuntimeError("Please check file build_config.yaml, content is empty")
+
+def get_lp_namer_path():
+    return Path(get_install_dir()) / get_lp_namer_exe()
