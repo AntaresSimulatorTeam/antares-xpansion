@@ -1,7 +1,7 @@
 [submodule "antares-deps"]
 	path = antares-deps
 	url = https://github.com/AntaresSimulatorTeam/antares-deps.git
-	branch = v2.0.0
+	branch = test/test_w_ci
 [submodule "vcpkg"]
 	path = vcpkg
 	url = https://github.com/microsoft/vcpkg.git
