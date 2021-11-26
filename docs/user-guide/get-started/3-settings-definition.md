@@ -49,7 +49,7 @@ around the optimum, solutions whose costs are close may have
 significantly different installed capacities (see **Figure
 10**).
 
-**Which settings should I use the** `optimality_gap`?
+**Which settings should I use for the** `optimality_gap`?
 
 1. I have to run several expansion optimizations of different
   variants of a study and compare them. In that case, if the optimal
@@ -71,9 +71,9 @@ Positive float. Default value: `1e-12`.
 The `relative_gap` parameter is the tolerance on the relative gap for the
 Antares-Xpansion algorithm. 
 
-At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm statisfies:
+At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
 
-$$\frac{\texttt{xpansion\_solution\_cost}}{\texttt{optimal\_cost}} < 1 + \alpha .$$
+$$\frac{\texttt{xpansion\_solution\_cost} - \texttt{optimal\_cost}}{\texttt{optimal\_cost}} < \alpha .$$
 
 !!! Remark
     The algorithm stops as soon as the first criterion among `optimality_gap` and `relative_gap` is met. Keep in mind that if either parameter is not specified by the user, the default value is used.

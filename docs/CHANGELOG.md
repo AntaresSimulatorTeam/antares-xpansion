@@ -7,9 +7,11 @@ Unreleased
 
 - Antares-Xpansion is now compatible with Antares v8.1 studies
 - Add `relative_gap` option as a stopping criterion for the Antares-Xpansion algorithm 
-- Add option `antares-n-cpu` to use Antares parallelism
-- Add option `-v, --version` to show Antares-Xpansion version
-- Add option `--antares-version` to show Antares-Simulator version
+- Add `--antares-n-cpu` option to use Antares-Simulator parallelism
+- Add `-v, --version` option to show Antares-Xpansion version
+- Add `--antares-version` option to show Antares-Simulator version
+- Add `mergeMPS` option to use a frontal resolution of the investment problem instead of Benders decomposition
+- Add `--installDir` option to be able to launch Antares-Xpansion from another directory than its own
 - Set default value of `--simulationName` to `last` in order to use the last Antares simulation
 
 ### Bug fixes

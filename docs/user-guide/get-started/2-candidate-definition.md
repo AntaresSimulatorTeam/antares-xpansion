@@ -285,7 +285,7 @@ The annuity of the _investment candidates_ includes the sum of:
   - Annualized investment costs,
   - Fixed annual operation and maintenance costs.
 
-In this configuration, Antares-Xpansion makes an econmic choice by comparing the sum of these costs and the reduction in variable operating
+In this configuration, Antares-Xpansion makes an economic choice by comparing the sum of these costs and the reduction in variable operating
 costs (mainly fuel costs and penalties associated with loss of load)
 due to the new investment.
 

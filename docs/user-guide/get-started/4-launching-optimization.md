@@ -1,128 +1,160 @@
 # Launch the optimization
 
-First, create an Antares study with the description of the candidates
-and create the candidates.ini and settings.ini files as explained above
-and store them in the directory `study_path/user/expansion/`. Once the
-`candidates.ini` and `settings.ini` files are set up, investment
-optimization can be done with the package.
+Once you have [set up your Antares study](1-prepare-a-simulation.md) with the `candidates.ini` and `settings.ini` files, you are ready to launch the Antares-Xpansion package to solve the investment problem.
 
-Antares-Xpansion include an experimental graphical interface but it's optimatly used as a command line prompt. 
-# Command line usages
-1.  Open a Command Prompt in the `antaresXpansion-x.y.z-win64` folder
+Antares-Xpansion includes an experimental graphical interface but it is optimally used as a command line prompt. 
+## Command line usage
 
-> Note:
-> You can launch a command line prompt by typing `cmd` in the path
-> ![](../../assets/media/image21.png)
+### Quick start
 
-2.  Run the `antares-xpansion-launcher.exe` and chose the path to the
-    Antares study with `-i` parameter:
+1.  Open a command prompt in your Antares-Xpansion install directory (by default it is named `antaresXpansion-x.y.z-win64`
+where `x.y.z` is the version number). 
+  
+    !!! Note
+        You can launch a command line prompt by typing `cmd` in the path.
 
-```cmd
-antares-xpansion-launcher.exe -i .examples\SmallTestFiveCandidates
-```
-> `-i` parameter can also be replaced by `-–dataDir`
+        ![](../../assets/media/image21.png)
+
+2.  Run `antares-xpansion-launcher.exe` and choose the path to the
+    Antares study with the `-i` parameter:
+    ```cmd
+    antares-xpansion-launcher.exe -i .examples\SmallTestFiveCandidates
+    ```
+> The `-i` parameter can also be replaced by `--dataDir`.
 
 ### Command line parameters
-Here is a description of other available parameters.
 
-#### **`--step`**
+#### `-h, --help`
 
-The python script does several operations one after the other. The
-`--step` option allows executing only one step or all steps
-(interaction between the different bricks).
+Show a help message and exit.
 
-| step                 | Description                    |
-| --------             | ------------------------------------------------------------------------ |
-| `antares`            | Launch Antares-Simulator one time to get the ANTARES problem
-| `problem_generation` | Generate the full xpansion problem using and the user input and the results of the Antares-Simulator output  |
-| `benders`            | Launch the resolution of Antares-Xpansion                                |
-| `study_update`       | updates the Antares-Simulator study                            |
-| `full`               | Launch all steps in order (antares \> getnames \> lp \> optim)           |
+#### `--step {full, antares, problem_generation, benders, study_update}`
 
-Default value: `full`.
+Default value: `full`. 
 
-#### **`-i` `--dataDir`**
+The execution of Antares-Xpansion consists of several steps that can be run separately. The
+`--step` parameter allows to select the steps to execute:
 
-Indicate the Antares simulation path. The specified path must be an
-explicit path. Use quotes “” in case of a space in the path.
+| Step                 | Description                    |
+| :--------            | ------------------------------------------------------------------------ |
+| `antares`            | Launch Antares-Simulator once to get the Antares problem.
+| `problem_generation` | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run. |
+| `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/0-optimization-principles.md).|
+| `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/0-optimization-principles.md) algorithm. |
+| `full`               | Launch all steps in order: `antares` \> `problem_generation` \> `benders` \> `study_update`           |
 
-#### **`--simulationName`**
+#### `-i, --dataDir`
 
-This option set the Antares-Simulator output directory that Antares-Xpansion should use to generate the xpansion problem.
-The default value is `last`, which means that the most recent run will be used.
+Specifies the Antares study folder path. Use quotes `“antares study path”` in case of a space in the path.
 
-#### **`-m` `--method`**
+#### `--installDir`
 
-This option enables to set the type of resolution to be used for
-Antares-Xpansion
+Specifies the directory where all binaries used by Antares-Xpansion are stored. 
+  
+  - If the Antares-Xpansion executable is launched from its own directory this option is not needed.
+  - If the Antares-Xpansion executable is launched from another directory than its own, this option is useful. With a defualt install of Antares-Xpansion, the install directory is of the form `antares-xpansion-directory/bin`. 
+
+#### `--simulationName {last, your-antares-output-directory}`
+
+Default value: `last`. 
+
+Defines the name of the Antares-Simulator output directory that Antares-Xpansion uses to generate the expansion problem. If the value is `last`, the most recent run will be used. This option only has an effect when `--step` is among `{problem_generation, benders, study_update}`.
+
+#### `-m, --method {sequential, mpibenders, mergeMPS}`
+
+Default value: `sequential`. 
+
+Sets the optimization method used by Antares-Xpansion.
 
 | Option | Description                           |
 | ---------- | ----------------------------------------------------------------------- |
-| sequential | Launch Benders sequential decomposition
-| mpibenders | Launch the MPI version of the Benders decomposition if the user has MPI |
-| mergeMPS   | Not implemented. Launch frontal resolution without decomposition        |
+| `sequential` | Launch sequential Benders decomposition.
+| `mpibenders` | Launch the MPI version of Benders decomposition if the user has MPI. Use the option `-n` or `--np` to set the number of processes to use.  |
+| `mergeMPS`   | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.|
 
-Defaut value: sequential
+#### `-n, --np`
 
-#### **--antares-n-cpu**
-Number of Threads for Antares-Simulator
-#### **`-v, --version`**
-show **Antares-Xpansion** version.
+Default value: 2. 
 
-#### **`--antares-version`**
-show Antares-Simulator version.
-# Human machine Interface usages
-Since v0.6.0, Antares-Xpansion came with an GUI in order to simplify Antares-Xpansion utilization. For now this GUI is in the experimental phase. 
-> ![](../../assets/media/ui.png)
-# Results and logs
+Sets the number of MPI processes to use for the MPI version of Benders decomposition. This option only has an effect when `-m` is set to `mpibenders`.
 
-## Logs
-During the simulation logs are displayed on the console to indicate current iteration :
+#### `--antares-n-cpu`
+
+Default value: 1.
+
+Sets the number of threads to use for Antares-Simulator in the initial `antares` step.
+
+#### `--keepMps`
+
+Default value: `False`.
+
+If set to `True`, keeps `mps` files that encodes the problems solved by the optimizer. This option must be set to `True` if the user intends to launch the optimization several times on the same study (`--step benders`) without doing the other steps of Antares-Xpansion.
+#### `-v, --version`
+
+Show the Antares-Xpansion version.
+
+#### `--antares-version`
+
+Show the Antares-Simulator version (used in the `antares` step).
+
+## Human machine Interface usage
+
+Since v0.6.0, Antares-Xpansion comes with a GUI in order to simplify Antares-Xpansion usage. The GUI can be launched by running `antares-xpansion-ui.exe`. For now, this GUI is in the experimental phase. 
+
+![](../../assets/media/ui.png)
+
+## Logs and results
+
+### Logs
+During the simulation, logs are displayed on the console to give information on the current iteration.
 
 ```cmd
 ITERATION 6:
-    Solving master...
-Time master solve pure = 0.026
-    Master solved in 0.0296908 s
-        Candidates:
-                      battery = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
-                         peak = 1300.00 invested MW -- possible interval [0.00; 2000.00] MW
-                           pv = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
-                     semibase =  200.00 invested MW -- possible interval [0.00; 2000.00] MW
-            transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
-    Solving subproblems...
-    Subproblems solved in 0.159525 s
-    Solution =
-        Operational cost =    22525.07 Me
-         Investment cost =      218.60 Me
-            Overall cost =    22743.67 Me
-           Best Solution =    22738.26 Me
-             Lower Bound =    22738.20 Me
-                     Gap = 5.40000e+04 e
+	Solving master...
+Time master solve pure = 27.202
+	Master solved in 0.0329394 s
+		Candidates:
+			          battery = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
+			             peak = 1300.00 invested MW -- possible interval [0.00; 2000.00] MW
+			               pv = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
+			         semibase =  200.00 invested MW -- possible interval [0.00; 2000.00] MW
+			transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
+	Solving subproblems...
+	Subproblems solved in 0.165742 s
+		Solution =
+			Operational cost =    22525.07 Me
+			 Investment cost =      218.60 Me
+			    Overall cost =    22743.67 Me
+			   Best Solution =    22738.26 Me
+			     Lower Bound =    22738.20 Me
+			    Absolute gap = 5.40000e+04 e
+			    Relative gap = 2.37485e-06
 ITERATION 7:
-    Solving master...
-Time master solve pure = 0.025
-    Master solved in 0.0300845 s
-        Candidates:
-                      battery = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
-                         peak = 1400.00 invested MW -- possible interval [0.00; 2000.00] MW
-                           pv = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
-                     semibase =  200.00 invested MW -- possible interval [0.00; 2000.00] MW
-            transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
-    Solving subproblems...
-    Subproblems solved in 0.153621 s
-        Solution =
-            Operational cost =    22513.66 Me
-             Investment cost =      224.60 Me
-                Overall cost =    22738.26 Me
-               Best Solution =    22738.26 Me
-                 Lower Bound =    22738.26 Me
-                         Gap = 3.05176e-05 e
---- CONVERGENCE outside optimitality gap :
-    Best solution = it 5
-     Overall cost = 22738.26 Me
-Problem ran in 8.13665 s
-Optimization results available in : C:\\antaresXpansion-x.y.z-win64\examples\SmallTestFiveCandidates\output\20210930-1056eco\lp\.\out.json
+	Solving master...
+Time master solve pure = 30.593
+	Master solved in 0.0365323 s
+		Candidates:
+			          battery = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
+			             peak = 1400.00 invested MW -- possible interval [0.00; 2000.00] MW
+			               pv = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
+			         semibase =  200.00 invested MW -- possible interval [0.00; 2000.00] MW
+			transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
+	Solving subproblems...
+	Subproblems solved in 0.168702 s
+		Solution =
+			Operational cost =    22513.66 Me
+			 Investment cost =      224.60 Me
+			    Overall cost =    22738.26 Me
+			   Best Solution =    22738.26 Me
+			     Lower Bound =    22738.26 Me
+			    Absolute gap = 3.05176e-05 e
+			    Relative gap = 1.34212e-15
+--- Run completed: absolute gap reached
+	Best solution = it 5
+	 Overall cost = 22738.26 Me
+Problem ran in 7.93209 s
+Optimization results available in : C:\\antaresXpansion-x.y.z-win64\examples\SmallTestFiveCandidates\output\20211126-1755eco\lp\.\out.json
+-- Study Update
 ```
 
 ### Results
