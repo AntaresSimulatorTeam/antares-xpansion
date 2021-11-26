@@ -133,26 +133,41 @@ class ConfigLoader:
         else:
             return ""
 
-    def optimality_gap(self):
+    def get_absolute_optimality_gap(self):
         """
-            prints and returns the optimality gap read from the settings file
-
-            :return: gap value or 0 if the gap is set to -Inf
+        prints and returns the absolute optimality gap read from the settings file
+        :return: gap value or 0 if the gap is negative
         """
-        optimality_gap_str = self.options.get('optimality_gap',
-                                              self.config.settings_default["optimality_gap"])
-        assert not '%' in optimality_gap_str
-        return float(optimality_gap_str) if optimality_gap_str != '-Inf' else 0
+        abs_optimality_gap_str = self.options.get(
+            "optimality_gap", self.config.settings_default["optimality_gap"]
+        )
 
-    def max_iterations(self):
+        return float(abs_optimality_gap_str) if float(abs_optimality_gap_str) > 0 else 0
+
+    def get_relative_optimality_gap(self):
+        """
+        prints and returns the relative optimality gap read from the settings file
+        :return: gap value or 1e-12 if the value is set to a lower value than 1e-12
+        """
+        rel_optimality_gap_str = self.options.get(
+            "relative_gap", self.config.settings_default["relative_gap"]
+        )
+
+        return (
+            float(rel_optimality_gap_str)
+            if float(rel_optimality_gap_str) > 1e-12
+            else 1e-12
+        )
+
+    def get_max_iterations(self):
         """
             prints and returns the maximum iterations read from the settings file
 
-            :return: max iterations value or -1 if the parameter is is set to +Inf
+            :return: max iterations value or -1 if the parameter is set to +Inf or +infini
         """
         max_iterations_str = self.options.get('max_iteration',
                                               self.config.settings_default["max_iteration"])
-        assert not '%' in max_iterations_str
+
         return float(max_iterations_str) if (
                 (max_iterations_str != '+Inf') and (max_iterations_str != '+infini')) else -1
 
@@ -204,8 +219,9 @@ class ConfigLoader:
         # computing the weight of slaves
         options_values = self.config.options_default
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
-        options_values["GAP"] = self.optimality_gap()
-        options_values["MAX_ITERATIONS"] = self.max_iterations()
+        options_values["ABSOLUTE_GAP"] = self.get_absolute_optimality_gap()
+        options_values["RELATIVE_GAP"] = self.get_relative_optimality_gap()
+        options_values["MAX_ITERATIONS"] = self.get_max_iterations()
         options_values["SOLVER_NAME"] = XpansionStudyReader.convert_study_solver_to_option_solver(
             self.options.get('solver', "Cbc"))
         if self.weight_file_name():

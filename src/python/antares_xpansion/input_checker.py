@@ -278,21 +278,24 @@ def check_setting_option_type(option, value):
                  False or exits if the value has the wrong type
     """
 
-    options_types = {'method': 'string',
-                     'uc_type': 'string',
-                     'master': 'string',
-                     'optimality_gap': 'double',
-                     'cut_type': 'string',
-                     'week_selection': 'string',
-                     'max_iteration': 'integer',
-                     'relaxed_optimality_gap': 'string',
-                     'solver': 'string',
-                     'timelimit': 'integer',
-                     'yearly-weights': 'string',
-                     'additional-constraints': 'string', }
+    options_types = {
+        "method": "string",
+        "uc_type": "string",
+        "master": "string",
+        "optimality_gap": "double",
+        "relative_gap": "double",
+        "cut_type": "string",
+        "week_selection": "string",
+        "max_iteration": "integer",
+        "relaxed_optimality_gap": "string",
+        "solver": "string",
+        "timelimit": "integer",
+        "yearly-weights": "string",
+        "additional-constraints": "string",
+    }
     option_type = options_types.get(option)
     if option_type is None:
-        flushed_print('check_setting_option_type: Illegal %s option in candidates file.' % option)
+        flushed_print('check_setting_option_type: Illegal %s option in settings file.' % option)
         sys.exit(1)
     else:
         if option_type == 'string':
@@ -329,17 +332,20 @@ def check_setting_option_value(option, value):
         :return: True if the option has the correct type, exits if the value has the wrong type
     """
 
-    options_legal_values = {'method': ['benders_decomposition'],
-                            'uc_type': ['expansion_accurate', 'expansion_fast'],
-                            'master': ['relaxed', 'integer', 'full_integer'],
-                            'optimality_gap': None,
-                            'cut_type': ['average', 'yearly', 'weekly'],
-                            'week_selection': ['true', 'false'],
-                            'max_iteration': None,
-                            'relaxed_optimality_gap': None,
-                            'timelimit': None,
-                            'yearly-weights': None,
-                            'additional-constraints': None}
+    options_legal_values = {
+        "method": ["benders_decomposition"],
+        "uc_type": ["expansion_accurate", "expansion_fast"],
+        "master": ["relaxed", "integer", "full_integer"],
+        "optimality_gap": None,
+        "relative_gap": None,
+        "cut_type": ["average", "yearly", "weekly"],
+        "week_selection": ["true", "false"],
+        "max_iteration": None,
+        "relaxed_optimality_gap": None,
+        "timelimit": None,
+        "yearly-weights": None,
+        "additional-constraints": None,
+    }
     legal_values = options_legal_values.get(option)
 
     skip_verif = ["yearly-weights", "additional-constraints", "solver"]
@@ -347,9 +353,18 @@ def check_setting_option_value(option, value):
     if ((legal_values is not None) and (value in legal_values)) or (option in skip_verif):
         return True
 
-    if option == 'optimality_gap':
-        if (value == "-Inf") or (float(value) >= 0):
-            return True
+    if (option == "optimality_gap") or (option == "relative_gap"):
+        try:
+            gap = float(value)
+            if float(value) >= 0:
+                return True
+            else:
+                raise ValueError
+        except ValueError:
+            print(
+                "Illegal value %s for option %s : only positive values are allowed"
+                % (value, option)
+            )
     elif option == 'max_iteration':
         if value in ["+Inf", "+infini"]:
             return True
@@ -387,7 +402,6 @@ def check_setting_option_value(option, value):
 
     flushed_print('check_candidate_option_value: Illegal value %s for option %s' % (value, option))
     sys.exit(1)
-    return False
 
 
 def check_options(options):

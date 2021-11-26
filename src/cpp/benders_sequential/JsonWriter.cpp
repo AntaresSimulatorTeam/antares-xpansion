@@ -57,8 +57,8 @@ void JsonWriter::write(BendersOptions const & bendersOptions_p)
     #undef BENDERS_OPTIONS_MACRO
 }
 
-void JsonWriter::write(int const& nbWeeks_p, BendersTrace const& bendersTrace_p,
-    BendersData const& bendersData_p, double const& min_gap)
+void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
+                       BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
 {
     _output["nbWeeks"] = nbWeeks_p;
 
@@ -74,8 +74,8 @@ void JsonWriter::write(int const& nbWeeks_p, BendersTrace const& bendersTrace_p,
             _output["iterations"][strIterCnt_l]["lb"] = masterDataPtr_l->_lb;
             _output["iterations"][strIterCnt_l]["ub"] = masterDataPtr_l->_ub;
             _output["iterations"][strIterCnt_l]["best_ub"] = masterDataPtr_l->_bestub;
-            _output["iterations"][strIterCnt_l]["gap"] = masterDataPtr_l->_bestub - masterDataPtr_l->_lb;
-            _output["iterations"][strIterCnt_l]["relative_gap"] = (masterDataPtr_l->_ub - masterDataPtr_l->_lb) / masterDataPtr_l->_ub;
+            _output["iterations"][strIterCnt_l]["optimality_gap"] = masterDataPtr_l->_bestub - masterDataPtr_l->_lb;
+            _output["iterations"][strIterCnt_l]["relative_gap"] = (masterDataPtr_l->_bestub - masterDataPtr_l->_lb) / masterDataPtr_l->_bestub;
             _output["iterations"][strIterCnt_l]["investment_cost"] = masterDataPtr_l->_invest_cost;
             _output["iterations"][strIterCnt_l]["operational_cost"] = masterDataPtr_l->_operational_cost;
             _output["iterations"][strIterCnt_l]["overall_cost"] = masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
@@ -108,12 +108,20 @@ void JsonWriter::write(int const& nbWeeks_p, BendersTrace const& bendersTrace_p,
         }
     }
 
-    double gap_l = bendersData_p.best_ub - bendersData_p.lb;
-    _output["solution"]["gap"] = gap_l;
-    if (gap_l <= min_gap) {
+    double abs_gap_l = bendersData_p.best_ub - bendersData_p.lb;
+    double rel_gap_l = abs_gap_l / bendersData_p.best_ub;
+    _output["solution"]["optimality_gap"] = abs_gap_l;
+    _output["solution"]["relative_gap"] = rel_gap_l;
+    if ((abs_gap_l <= min_abs_gap) || (rel_gap_l <= min_rel_gap))
+    {
         _output["solution"]["problem_status"] = "OPTIMAL";
     }
-    else {
+    else if (max_iter != -1 && bendersData_p.it > max_iter)
+    {
+        _output["solution"]["problem_status"] = "MAX ITERATIONS";
+    }
+    else
+    {
         _output["solution"]["problem_status"] = "ERROR";
     }
     
@@ -134,14 +142,17 @@ void JsonWriter::write(int nbWeeks_p,
     _output["solution"]["overall_cost"] = overallCost_p;
     _output["solution"]["lb"] = lb_p;
     _output["solution"]["ub"] = ub_p;
-    _output["solution"]["gap"] = ub_p - lb_p;
-    if (optimality_p) {
+    _output["solution"]["optimality_gap"] = ub_p - lb_p;
+    _output["solution"]["relative_gap"] = (ub_p - lb_p) / ub_p;
+    if (optimality_p)
+    {
         _output["solution"]["problem_status"] = "OPTIMAL";
     }
-    else {
+    else
+    {
         _output["solution"]["problem_status"] = "ERROR";
     }
-    for(auto pairNameValue_l : solution_p)
+    for (auto pairNameValue_l : solution_p)
     {
         _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
     }
