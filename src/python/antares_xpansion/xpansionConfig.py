@@ -13,6 +13,7 @@ from typing import List
 
 @dataclass
 class ConfigParameters:
+    default_install_dir: str
     ANTARES: str
     MERGE_MPS: str
     BENDERS_MPI: str
@@ -84,15 +85,18 @@ class XpansionConfig:
         else:
             return install_dir
 
-    @staticmethod
-    def _initialize_install_dir_with_default_value():
-        install_dir_inside_package = Path(os.path.abspath(__file__)).parent.parent / "bin"
-        install_dir_from_absolute_path = Path.cwd() / "bin"
-        if Path.is_dir(install_dir_inside_package):
-            return install_dir_inside_package
-        else:
-            return install_dir_from_absolute_path
+    def _initialize_install_dir_with_default_value(self):
 
+        if getattr(sys, 'frozen', False):
+            install_dir_inside_package = Path(os.path.abspath(__file__)).parent.parent / "bin"
+            install_dir_next_to_package = Path(sys.executable).parent / "bin"
+            if Path.is_dir(install_dir_inside_package):
+                return install_dir_inside_package
+            else:
+                return install_dir_next_to_package
+        elif __file__:
+            return self.default_install_dir
+            
     def _initialize_default_values(self):
         self._set_constants()
         self._set_default_options()
@@ -161,6 +165,7 @@ class XpansionConfig:
 
     def _get_config_values(self):
         
+        self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
         self.BENDERS_MPI = self.config_parameters.BENDERS_MPI

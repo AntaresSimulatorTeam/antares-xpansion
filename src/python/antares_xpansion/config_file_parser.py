@@ -8,6 +8,7 @@ class ConfigFileParser:
     def __init__(self, config_file) -> None:
         
         self.config_file = config_file
+        self.default_install_dir = ""
         self.ANTARES_DEFAULT = "antares-solver"
         self.MERGE_MPS_DEFAULT = "merge_mps"
         self.BENDERS_MPI_DEFAULT = "benders_mpi"
@@ -23,6 +24,7 @@ class ConfigFileParser:
                 content = {}
                 
             self.config = ConfigParameters (
+                            default_install_dir = content.get("DEFAULT_INSTALL_DIR", self.default_install_dir),
                             ANTARES = content.get('ANTARES', self.ANTARES_DEFAULT),
                             MERGE_MPS = content.get('MERGE_MPS', self.MERGE_MPS_DEFAULT),
                             BENDERS_MPI = content.get('BENDERS_MPI', self.BENDERS_MPI_DEFAULT),

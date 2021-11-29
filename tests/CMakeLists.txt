@@ -24,13 +24,20 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 	
     # Examples tests
     add_test(
-        NAME examples_medium
-        COMMAND Python3::Interpreter -m pytest -m medium --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
+        NAME examples_medium_sequential
+        COMMAND Python3::Interpreter -m pytest -m medium_sequential --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
-    set_property(TEST examples_medium PROPERTY LABELS medium)
-	
-	add_test(
+    set_property(TEST examples_medium_sequential PROPERTY LABELS "medium;medium_sequential")
+
+    add_test(
+        NAME examples_medium_mpi
+        COMMAND Python3::Interpreter -m pytest -m medium_mpi --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_medium_mpi PROPERTY LABELS "medium;medium_mpi")
+
+    add_test(
         NAME examples_long
         COMMAND Python3::Interpreter -m pytest -m long --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
