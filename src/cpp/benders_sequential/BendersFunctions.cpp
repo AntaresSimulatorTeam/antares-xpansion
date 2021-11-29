@@ -212,7 +212,7 @@ bool stopping_criterion(BendersData & data, BendersOptions const & options) {
 	data.deletedcut = 0;
 	data.maxsimplexiter = 0;
 	data.minsimplexiter = std::numeric_limits<int>::max();
-	return(((options.MAX_ITERATIONS != -1) && (data.it > options.MAX_ITERATIONS)) || (data.lb + options.GAP >= data.best_ub));
+	return (((options.MAX_ITERATIONS != -1) && (data.it > options.MAX_ITERATIONS)) || (data.lb + options.ABSOLUTE_GAP >= data.best_ub) || (((data.best_ub - data.lb) / data.best_ub) <= options.RELATIVE_GAP));
 }
 
 /*!
@@ -492,7 +492,7 @@ void add_random_cuts(WorkerMasterPtr & master, AllCutPackage const & all_package
 			master->add_cut_slave(problem_to_id[kvp.first], handler->get_subgradient(), data.x0, handler->get_dbl(SLAVE_COST));
 			handler->get_dbl(ALPHA_I) = data.alpha_i[problem_to_id[kvp.first]];
 			bound_simplex_iter(handler->get_int(SIMPLEXITER), data);
-			if (handler->get_dbl(SLAVE_COST) <= options.GAP + handler->get_dbl(ALPHA_I)) {
+			if (handler->get_dbl(SLAVE_COST) <= options.ABSOLUTE_GAP + handler->get_dbl(ALPHA_I)) {
 				nboundslaves++;
 			}
 			trace[data.it - 1]->_cut_trace[kvp.first] = slave_cut_data;			

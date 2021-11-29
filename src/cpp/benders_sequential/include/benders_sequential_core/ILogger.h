@@ -18,7 +18,9 @@ struct LogData {
     LogPoint x0;
     LogPoint min_invest;
     LogPoint max_invest;
-    double optimal_gap;
+    double optimality_gap;
+    double relative_gap;
+    double max_iterations;
 };
 
 class ILogger {

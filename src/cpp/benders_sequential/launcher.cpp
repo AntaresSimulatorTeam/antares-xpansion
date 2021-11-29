@@ -106,11 +106,13 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
     }
 
     LogData logData = defineLogDataFromBendersDataAndTrace(benders._data, benders._trace);
-	logData.optimal_gap = options.GAP;
+	logData.optimality_gap = options.ABSOLUTE_GAP;
+	logData.relative_gap = options.RELATIVE_GAP;
+	logData.max_iterations = options.MAX_ITERATIONS;
 
     logger->log_at_ending(logData);
 	jsonWriter_l.updateEndTime();
-	jsonWriter_l.write(input.size(), benders._trace, benders._data, options.GAP);
+	jsonWriter_l.write(input.size(), benders._trace, benders._data, options.ABSOLUTE_GAP, options.RELATIVE_GAP, options.MAX_ITERATIONS);
 	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
 
 	benders.free();
