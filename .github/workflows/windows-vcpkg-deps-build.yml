@@ -6,8 +6,8 @@ on:
       - main
       - develop
       - feature/review_build_option
+      - fix/windows_ci_vcpkg_deps
       - release/*
-      - test/test_windows_ci
 jobs:
 
   windows:
