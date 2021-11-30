@@ -27,7 +27,7 @@ runs:
     run: |
       cd _install
       rm -f ./antares-xpansion-launcher*
-      pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher.exe --add-data "../src/python/config.yaml${{inputs.pyinstaller-add-data-separator}}." --add-data "./bin/${{inputs.pyinstaller-add-data-separator}}bin"
+      pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml${{inputs.pyinstaller-add-data-separator}}." --add-data "./bin/${{inputs.pyinstaller-add-data-separator}}bin"
       mv ./dist/antares-xpansion-launcher* .
       rm -rf bin
       rm -rf build

@@ -29,6 +29,7 @@ class MainWidget(QWidget):
 
         self._settings = QSettings("pyqt_settings.ini", QSettings.IniFormat)
 
+        self._define_launcher_name()
         self._main_layout = QVBoxLayout()
 
         self._init_antares_study_selection_widget()
@@ -47,6 +48,11 @@ class MainWidget(QWidget):
                 if content is not None:
                     self._install_dir = content.get('INSTALL_DIR', "bin")
 
+    def _define_launcher_name(self):
+        self._launcher_name = "antares-xpansion-launcher"
+        if sys.platform.startswith("win32"):
+            self._launcher_name+=".exe"
+        
     def _init_log_widget(self):
         log_layout = QHBoxLayout()
         self._log_text_edit = QPlainTextEdit()
@@ -285,9 +291,9 @@ class MainWidget(QWidget):
         if install_dir_path.is_dir():
             install_dir_full = str(install_dir_path.resolve())
             program_in_python_package = Path(os.path.abspath(
-                __file__)).parent / "antares-xpansion-launcher.exe"
+                __file__)).parent / self._launcher_name
             program_in_single_package = Path(
-                sys.executable).parent / "antares-xpansion-launcher.exe"
+                sys.executable).parent / self._launcher_name
             commands = ["--installDir", install_dir_full,
                         "--dataDir", str(study_path),
                         "--method", self._get_method(),
