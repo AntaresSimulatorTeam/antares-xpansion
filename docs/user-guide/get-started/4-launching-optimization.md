@@ -97,16 +97,44 @@ Show the Antares-Xpansion version.
 
 Show the Antares-Simulator version (used in the `antares` step).
 
-## Human machine Interface usage
+## Graphical user interface
 
-Since v0.6.0, Antares-Xpansion comes with a GUI in order to simplify Antares-Xpansion usage. The GUI can be launched by running `antares-xpansion-ui.exe`. For now, this GUI is in the experimental phase. 
+Since v0.6.0, Antares-Xpansion comes with a GUI. The GUI can be launched by running `antares-xpansion-ui.exe`. For now, this GUI is in the experimental phase. 
 
 ![](../../assets/media/ui.png)
 
-## Logs and results
+## Output of Antares-Xpansion
+
+### Results
+When the Antares-Xpansion algorithm terminates, i.e. when an optimal
+investment combination has been found, the
+package performs the following steps:
+
+  - It writes output data in the `reportbenderssequential` text file and the `out.json` file located in the subdirectory `/output/simulation-name/lp/` of the Antares study. They gather for each iteration:
+	1. The investment combination that has been evaluated,
+	2. The operational, investment and overall costs, 
+	3. The current lower and upper bounds,
+	4. The absolute and relative gap,  
+	5. The resolution time for the subproblems (`reportbenderssequential` only) and the master problem.
+
+	Finally, the iteration number which has led to the best solution is given. The file `out.json` also gives the parameters that are used by the optimization algorithm (some of them are defined by the user in `settings.ini`).   
+
+  - It updates the Antares study by replacing the capacities of investment
+    candidate links with their optimal value taking into account the
+    `link-profile`, the `already-installed-capacity` and the
+    `already-installed-link-profile`, see **Figure 15**.
+	
+	The user can therefore immediately launch an Antares simulation using the results of the best iteration. 
+	
+	!!! Advice 
+		It is recommended to relaunch an Antares study with the optimal solution returned by Antares-Xpansion for further analysis. Antares-Xpansion relaxes some constraints (see `link-profile` and `uc_type` parameters for example), therefore the total cost may be a bit different.
+
+![](../../assets/media/image23.png)
+
+**Figure** **15** – Update of the Antares study.
 
 ### Logs
-During the simulation, logs are displayed on the console to give information on the current iteration.
+During the simulation, logs are displayed on the console to give information on the current iteration, corresponding to the data written in the `reportbenderssequential` text file.
 
 ```cmd
 ITERATION 6:
@@ -157,35 +185,6 @@ Optimization results available in : C:\\antaresXpansion-x.y.z-win64\examples\Sma
 -- Study Update
 ```
 
-### Results
-When the search for Antares-Xpansion ends, i.e. when the optimal
-investment combination has been found or a stop criterion has been
-reached - which can take several hours or even days in some cases - the
-package:
-
-  - Writes the outputs in the
-    `reportbenderssequential` text file and in the `out.json` text file, which
-    are in the Antares study `/output/simulation-name/lp/` folder. This
-    report gives the parameters used in the `settings.ini` file for the
-    Antares-Xpansion optimization, gives the capacities, the costs
-    of the optimal solution and the time of resolution, as well as the
-    path of the iterations of the Benders decomposition.
-
-  - Updates the Antares study by replacing the capacities of investment
-    candidate links with their optimal value taking into account the
-    link-profile, the already-installed-capacity and the
-    already-installed-link-profile:
-
-![](../../assets/media/image23.png)
-
-**Figure** **15** – Example of update on the Antares study
-
-The user can therefore relaunch the simulation corresponding to the last
-iteration. However, it is recommended to relaunch a real Antares
-post-Antares-Xpansion study for further analysis because
-Antares-Xpansion relaxes certain constraints (see `link-profile` and
-`uc_type` parameters) and the total costs could be a bit different.
-
 ## Errors
 
 Xpansion will not work if the initial Antares study is not running. The
@@ -193,7 +192,7 @@ user must therefore check beforehand that the Antares simulations do not
 contain any errors.
 
 Be careful to check the consistency between the names of the
-links in the candidates.ini file and in the Antares study and to use a
+links in the `candidates.ini` file and in the Antares study and to use a
 unique index and name per candidate.
 
 In case of a problem, put an issue on Github:
