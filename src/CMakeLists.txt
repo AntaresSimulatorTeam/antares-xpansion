@@ -37,9 +37,9 @@ find_program(PYINSTALLER "pyinstaller")
 if (PYINSTALLER)
 
     if (MSVC)
-        install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml;.\")" )
+        install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher.exe --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml;.\")" )
     else()
-        install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml:.\")" )
+        install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher.exe --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml:.\")" )
     endif()
 
     if (BUILD_UI)
