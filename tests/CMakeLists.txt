@@ -7,7 +7,6 @@ endif()
 
 #configure file to define xpansion installDir
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml )
-# file(GENERATE OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml INPUT ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml )
 #check if pytest and numpy are installed
 find_python_module(pytest)
 find_python_module(numpy)
