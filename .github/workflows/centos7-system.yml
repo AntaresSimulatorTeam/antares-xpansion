@@ -3,7 +3,12 @@ name: Centos7 CI (docker image)
 on:
   push:
     branches:
-      - fix/run_all_tests
+      - main
+      - develop
+      - features/*
+      - feature/*
+      - fix/*
+      - release/*
   
 jobs:
 

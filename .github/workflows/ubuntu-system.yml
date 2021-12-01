@@ -3,7 +3,12 @@ name: Ubuntu CI (system libs)
 on:
   push:
     branches:
-      - fix/run_all_tests
+      - main
+      - develop
+      - features/*
+      - feature/*
+      - fix/*
+      - release/*
 jobs:
 
   build:

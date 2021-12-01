@@ -3,7 +3,10 @@ name: Windows CI (VCPKG + deps build)
 on:
   push:
     branches:
-      - fix/run_all_tests
+      - main
+      - develop
+      - feature/review_build_option
+      - release/*
 jobs:
 
   windows:
