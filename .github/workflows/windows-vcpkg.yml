@@ -113,7 +113,12 @@ jobs:
       run: |
            set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
            cd _build
+           dir
            ctest -N
+           dir tests\
+           type tests\CTestTestfile.cmake
+           dir tests\CMakeFiles
+           type tests\CMakeFiles\generate.stamp.depend
            ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
     
     - name: Installer .zip creation
