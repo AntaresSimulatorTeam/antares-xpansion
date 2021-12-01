@@ -338,8 +338,6 @@ add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 if(BUILD_TESTING)
 	enable_testing()
 	add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
-	FILE(WRITE "${PROJECT_SOURCE_DIR}/tests/bin_paths.yaml"
-	"antares-solver : "${ANTARES_SOLVER_PATH})
 endif()
 
 
