@@ -32,11 +32,6 @@ jobs:
       with:
         submodules: true
       
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9.1
-
     # Restore both vcpkg and its artifacts from the GitHub cache service.
     - name: Restore vcpkg and its artifacts.
       uses: actions/cache@v2
@@ -109,9 +104,7 @@ jobs:
       run: |
            $pwd=Get-Location
            cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON
-      with:
-        python-version: 3.9.1
-        
+      
     - name: Build
       run: |
            cmake --build _build --config Release -j2 --target install
