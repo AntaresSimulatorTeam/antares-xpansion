@@ -9,7 +9,6 @@ on:
       - feature/*
       - fix/*
       - release/*
-      - test/run_all_test
 jobs:
 
   windows:
@@ -109,8 +108,7 @@ jobs:
       run: |
            $pwd=Get-Location
            cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON
-      
-
+    
     - name: Build
       run: |
            cmake --build _build --config Release -j2 --target install
@@ -120,12 +118,6 @@ jobs:
       run: |
            set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
            cd _build
-           dir
-           ctest -N
-           dir tests\
-           type tests\CTestTestfile.cmake
-           dir tests\CMakeFiles
-           type tests\CMakeFiles\generate.stamp.depend
            ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
     
     - name: Installer .zip creation
