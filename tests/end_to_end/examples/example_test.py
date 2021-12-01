@@ -30,6 +30,31 @@ def remove_outputs(study_path):
             if f.is_dir():
                 shutil.rmtree(f)
 
+def backup_links(study_path):
+    
+    input_path = os.path.join(study_path, "input")
+    links_path = os.path.join(input_path, "links")
+    tmp_links_path = os.path.join(input_path, "tmp_links")
+
+    if os.path.isdir(tmp_links_path):
+        shutil.rmtree(tmp_links_path)
+
+    shutil.copytree(links_path, tmp_links_path)
+    
+    return tmp_links_path
+
+
+def restore_links(study_path, tmp_links_path):
+    input_path = os.path.join(study_path, "input")
+    links_path = os.path.join(input_path, "links")
+
+    if os.path.isdir(links_path):
+        shutil.rmtree(links_path)
+    
+    shutil.copytree(tmp_links_path, links_path)
+    
+    if os.path.isdir(tmp_links_path):
+        shutil.rmtree(tmp_links_path)
 
 def launch_xpansion(install_dir, study_path, method):
     # Clean study output
@@ -163,22 +188,26 @@ long_parameters_values = [
         ),
     ]
 
-@pytest.mark.parametrize(long_parameters_names, long_parameters_values)
+@pytest.mark.parametrize(long_parameters_names, long_parameters_values, )
 @pytest.mark.long_sequential
-def verify_full_study_long_sequential(install_dir, study_path, expected_values, expected_investment_solution):
+def test_full_study_long_sequential(install_dir, study_path, expected_values, expected_investment_solution):
+    tmp_links_path = backup_links(study_path)
     launch_xpansion(install_dir, study_path, "sequential")
     verify_solution(study_path, expected_values, expected_investment_solution)
     verify_study_update(study_path, expected_investment_solution)
     remove_outputs(study_path)
+    restore_links(study_path, tmp_links_path)
 
 
-@pytest.mark.parametrize(long_parameters_names, long_parameters_values)
+@pytest.mark.parametrize(long_parameters_names, long_parameters_values, )
 @pytest.mark.long_mpi
-def verify_full_study_long_mpi(install_dir, study_path, expected_values, expected_investment_solution):
+def test_full_study_long_mpi(install_dir, study_path, expected_values, expected_investment_solution):
+    tmp_links_path = backup_links(study_path)
     launch_xpansion(install_dir, study_path, "mpibenders")
     verify_solution(study_path, expected_values, expected_investment_solution)
     verify_study_update(study_path, expected_investment_solution)
     remove_outputs(study_path)
+    restore_links(study_path, tmp_links_path)
 
 
 medium_parameters_names = "study_path, expected_values, expected_investment_solution"
@@ -343,19 +372,23 @@ medium_parameters_values = [
     ]
 
 
-@pytest.mark.parametrize(medium_parameters_names, medium_parameters_values)
+@pytest.mark.parametrize(medium_parameters_names, medium_parameters_values, )
 @pytest.mark.medium_sequential
-def verify_full_study_medium_sequential(install_dir, study_path, expected_values, expected_investment_solution):
+def test_full_study_medium_sequential(install_dir, study_path, expected_values, expected_investment_solution):
+    tmp_links_path = backup_links(study_path)
     launch_xpansion(install_dir, study_path, "sequential")
     verify_solution(study_path, expected_values, expected_investment_solution)
     verify_study_update(study_path, expected_investment_solution)
     remove_outputs(study_path)
+    restore_links(study_path, tmp_links_path)
 
 
-@pytest.mark.parametrize(medium_parameters_names, medium_parameters_values)
+@pytest.mark.parametrize(medium_parameters_names, medium_parameters_values, )
 @pytest.mark.medium_mpi
-def verify_full_study_medium_parallel(install_dir, study_path, expected_values, expected_investment_solution):
+def test_full_study_medium_parallel(install_dir, study_path, expected_values, expected_investment_solution):
+    tmp_links_path = backup_links(study_path)
     launch_xpansion(install_dir, study_path, "mpibenders")
     verify_solution(study_path, expected_values, expected_investment_solution)
     verify_study_update(study_path, expected_investment_solution)
     remove_outputs(study_path)
+    restore_links(study_path, tmp_links_path)
