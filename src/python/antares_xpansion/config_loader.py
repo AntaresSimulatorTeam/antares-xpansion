@@ -157,7 +157,7 @@ class ConfigLoader:
         :return: gap value or 1e-12 if the value is set to a lower value than 1e-12
         """
         rel_optimality_gap_str = self.options.get(
-            "relative_gap", self.config.settings_default["relative_gap"]
+            "relative_gap", self._config.settings_default["relative_gap"]
         )
 
         return (
@@ -173,7 +173,7 @@ class ConfigLoader:
             :return: max iterations value or -1 if the parameter is set to +Inf or +infini
         """
         max_iterations_str = self.options.get('max_iteration',
-                                              self.config.settings_default["max_iteration"])
+                                              self._config.settings_default["max_iteration"])
 
         return float(max_iterations_str) if (
             (max_iterations_str != '+Inf') and (max_iterations_str != '+infini')) else -1
