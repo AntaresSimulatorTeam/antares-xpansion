@@ -146,7 +146,7 @@ class ConfigLoader:
         :return: gap value or 0 if the gap is negative
         """
         abs_optimality_gap_str = self.options.get(
-            "optimality_gap", self.config.settings_default["optimality_gap"]
+            "optimality_gap", self._config.settings_default["optimality_gap"]
         )
 
         return float(abs_optimality_gap_str) if float(abs_optimality_gap_str) > 0 else 0
