@@ -13,6 +13,7 @@ from typing import List
 
 @dataclass
 class ConfigParameters:
+    default_install_dir: str
     ANTARES: str
     MERGE_MPS: str
     BENDERS_MPI: str
@@ -84,15 +85,18 @@ class XpansionConfig:
         else:
             return install_dir
 
-    @staticmethod
-    def _initialize_install_dir_with_default_value():
-        install_dir_inside_package = Path(os.path.abspath(__file__)).parent.parent / "bin"
-        install_dir_from_absolute_path = Path.cwd() / "bin"
-        if Path.is_dir(install_dir_inside_package):
-            return install_dir_inside_package
-        else:
-            return install_dir_from_absolute_path
+    def _initialize_install_dir_with_default_value(self):
 
+        if getattr(sys, 'frozen', False):
+            install_dir_inside_package = Path(os.path.abspath(__file__)).parent.parent / "bin"
+            install_dir_next_to_package = Path(sys.executable).parent / "bin"
+            if Path.is_dir(install_dir_inside_package):
+                return install_dir_inside_package
+            else:
+                return install_dir_next_to_package
+        elif __file__:
+            return self.default_install_dir
+            
     def _initialize_default_values(self):
         self._set_constants()
         self._set_default_options()
@@ -116,47 +120,52 @@ class XpansionConfig:
         self.OPTIONS_TXT = 'options.txt'
 
     def _set_default_settings(self):
-        self.settings_default = {'method': 'benders_decomposition',
-                                 'uc_type': 'expansion_fast',
-                                 'master': 'integer',
-                                 'optimality_gap': '0',
-                                 'cut_type': 'yearly',
-                                 'week_selection': 'false',
-                                 'max_iteration': '+infini',
-                                 'relaxed_optimality_gap': '0.01',
-                                 'solver': 'Cbc',
-                                 'timelimit': '+infini',
-                                 'additional-constraints': "",
-                                 'yearly-weights': ""}
+        self.settings_default = {
+            "method": "benders_decomposition",
+            "uc_type": "expansion_fast",
+            "master": "integer",
+            "optimality_gap": "1",
+            "relative_gap": "1e-12",
+            "cut_type": "yearly",
+            "week_selection": "false",
+            "max_iteration": "+infini",
+            "relaxed_optimality_gap": "0.01",
+            "solver": "Cbc",
+            "timelimit": "+infini",
+            "additional-constraints": "",
+            "yearly-weights": "",
+        }
 
     def _set_default_options(self):
         self.options_default = {
-            'LOG_LEVEL': '0',
-            'MAX_ITERATIONS': '-1',
-            'GAP': '1e-06',
-            'AGGREGATION': '0',
-            'OUTPUTROOT': '.',
-            'TRACE': '1',
-            'DELETE_CUT': '0',
-            'SLAVE_WEIGHT': 'CONSTANT',
-            'SLAVE_WEIGHT_VALUE': '1',
-            'MASTER_NAME': 'master',
-            'SLAVE_NUMBER': '-1',
-            'STRUCTURE_FILE': 'structure.txt',
-            'INPUTROOT': '.',
-            'BASIS': '1',
-            'ACTIVECUTS': '0',
-            'THRESHOLD_AGGREGATION': '0',
-            'THRESHOLD_ITERATION': '0',
-            'RAND_AGGREGATION': '0',
-            'CSV_NAME': 'benders_output_trace',
-            'JSON_NAME': 'out',
-            'BOUND_ALPHA': '1',
+            "LOG_LEVEL": "0",
+            "MAX_ITERATIONS": "-1",
+            "ABSOLUTE_GAP": "1",
+            "RELATIVE_GAP": "1e-12",
+            "AGGREGATION": "0",
+            "OUTPUTROOT": ".",
+            "TRACE": "1",
+            "DELETE_CUT": "0",
+            "SLAVE_WEIGHT": "CONSTANT",
+            "SLAVE_WEIGHT_VALUE": "1",
+            "MASTER_NAME": "master",
+            "SLAVE_NUMBER": "-1",
+            "STRUCTURE_FILE": "structure.txt",
+            "INPUTROOT": ".",
+            "BASIS": "1",
+            "ACTIVECUTS": "0",
+            "THRESHOLD_AGGREGATION": "0",
+            "THRESHOLD_ITERATION": "0",
+            "RAND_AGGREGATION": "0",
+            "CSV_NAME": "benders_output_trace",
+            "JSON_NAME": "out",
+            "BOUND_ALPHA": "1",
         }
 
 
     def _get_config_values(self):
         
+        self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
         self.BENDERS_MPI = self.config_parameters.BENDERS_MPI

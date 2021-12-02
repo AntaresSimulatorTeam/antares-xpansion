@@ -19,8 +19,18 @@ namespace logger {
     }
 
     void IterationResultLog::setValuesFromData(const LogData &data) {
-        const double gap = data.best_ub - data.lb;
+        
+        double low_bd = data.lb;
+        double abs_gap = data.best_ub - data.lb;
+        double rel_gap = abs_gap / data.best_ub;
         const double overall_cost = data.slave_cost + data.invest_cost;
+
+        // Quick and dirty fix when gap is negative, further investigation needed
+        if (abs_gap < 0) {
+            abs_gap = 0;
+            rel_gap = 0;
+            low_bd = data.best_ub;
+        }
 
         //Get values
 
@@ -29,8 +39,9 @@ namespace logger {
         _values.push_back(create_value_map("Investment cost", commons::create_str_million_euros(data.invest_cost), " Me") );
         _values.push_back(create_value_map("Overall cost", commons::create_str_million_euros(overall_cost), " Me") );
         _values.push_back(create_value_map("Best Solution", commons::create_str_million_euros(data.best_ub), " Me"));
-        _values.push_back(create_value_map("Lower Bound", commons::create_str_million_euros(data.lb), " Me"));
-        _values.push_back(create_value_map("Gap", commons::create_str_euros(gap), " e")  );
+        _values.push_back(create_value_map("Lower Bound", commons::create_str_million_euros(low_bd), " Me"));
+        _values.push_back(create_value_map("Absolute gap", commons::create_str_euros(abs_gap), " e")  );
+        _values.push_back(create_value_map("Relative gap", commons::create_str_euros(rel_gap), "")  );
     }
 
 
