@@ -82,8 +82,6 @@ class XpansionDriver:
             raise XpansionDriver.UnknownStep(
                 f"Launching failed! {self.config_loader.step()} is not an Xpansion step.")
 
-        return True
-
     def launch_antares_step(self):
         self._update_general_data_ini()
         self.antares_driver.launch(

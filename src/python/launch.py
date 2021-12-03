@@ -36,7 +36,7 @@ CONFIG = XpansionConfig(input_parameters, configuration_data)
 config_loader = ConfigLoader(CONFIG)
 DRIVER = XpansionDriver(config_loader)
 
-if (DRIVER.launch()):
-    flushed_print("Xpansion Finished.")
+DRIVER.launch()
+flushed_print("Xpansion Finished.")
 
 locker.unlock()
