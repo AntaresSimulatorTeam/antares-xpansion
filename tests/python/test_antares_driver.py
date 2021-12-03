@@ -9,8 +9,10 @@ import yaml
 from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import GeneralDataFileExceptions, GeneralDataProcessor
+from tests.build_config_reader import get_antares_solver_path
 
-SUBPROCESS_RUN =  "antares_xpansion.antares_driver.subprocess.run"
+SUBPROCESS_RUN = "antares_xpansion.antares_driver.subprocess.run"
+
 
 class TestGeneralDataProcessor:
 
@@ -89,7 +91,8 @@ class TestGeneralDataProcessor:
 
         gen_data_proc.change_general_data_file_to_configure_antares_execution()
         general_data_ini_file = gen_data_proc.general_data_ini_file
-        self.verify_that_general_data_contains_expected_vals(general_data_ini_file, expected_val)
+        self.verify_that_general_data_contains_expected_vals(
+            general_data_ini_file, expected_val)
 
     def test_values_change_in_general_file_fast_mode(self, tmp_path):
         study_path = tmp_path
@@ -135,7 +138,8 @@ class TestGeneralDataProcessor:
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
         gen_data_proc.change_general_data_file_to_configure_antares_execution()
 
-        self.verify_that_general_data_contains_expected_vals(general_data_path, expected_val)
+        self.verify_that_general_data_contains_expected_vals(
+            general_data_path, expected_val)
 
     def verify_that_general_data_contains_expected_vals(self, general_data_ini_file, expected_val):
         with open(general_data_ini_file, "r") as reader:
@@ -157,38 +161,42 @@ class TestGeneralDataProcessor:
 
 class TestAntaresDriver:
 
-    
     def test_antares_cmd(self, tmp_path):
         study_dir = tmp_path
         exe_path = "/Path/to/bin1"
         antares_driver = AntaresDriver(exe_path)
-            # mock subprocess.run
-        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+        # mock subprocess.run
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, 1)
-            expected_cmd = [exe_path, study_dir, "--force-parallel","1"]
-            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
+            expected_cmd = [exe_path, study_dir, "--force-parallel", "1"]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3)
 
     def test_antares_cmd_force_parallel_option(self, tmp_path):
         study_dir = tmp_path
         exe_path = "/Path/to/bin2"
         n_cpu = 13
         antares_driver = AntaresDriver(exe_path)
-        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", str(n_cpu)]
-            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
-    
+            expected_cmd = [exe_path, study_dir,
+                            "--force-parallel", str(n_cpu)]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3)
+
     def test_invalid_n_cpu(self, tmp_path):
         study_dir = tmp_path
         exe_path = "/Path/to/bin"
         n_cpu = -1
         expected_n_cpu = 1
         antares_driver = AntaresDriver(exe_path)
-        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", str(expected_n_cpu)]
-            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
-    
+            expected_cmd = [exe_path, study_dir,
+                            "--force-parallel", str(expected_n_cpu)]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3)
+
     def test_remove_log_file(self, tmp_path):
         study_dir = tmp_path
         exe_path = tmp_path
@@ -196,11 +204,12 @@ class TestAntaresDriver:
         log_file = Path(log_file).touch()
         n_cpu = 13
         antares_driver = AntaresDriver(exe_path)
-        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu)]
-            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3 )
-
+            expected_cmd = [str(exe_path), study_dir,
+                            "--force-parallel", str(n_cpu)]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3)
 
     def test_non_valid_exe_empty(self, tmp_path):
         study_dir = tmp_path
@@ -211,14 +220,13 @@ class TestAntaresDriver:
             antares_driver.launch(study_dir, 1)
 
     def test_empty_study_dir(self, tmp_path):
-        
+
         study_dir = tmp_path
-        antares_driver = AntaresDriver(self.get_antares_exe())
+        antares_driver = AntaresDriver(get_antares_solver_path())
 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
             antares_driver.launch(study_dir, 1)
 
-            
     def test_clean_antares_step(self, tmp_path):
         study_dir = tmp_path
         self.initialize_dummy_study_dir(study_dir)
@@ -229,18 +237,19 @@ class TestAntaresDriver:
         simulation_dir = output_dir / "my_simu"
         simulation_dir.mkdir()
         fnames = ["something_criterion_other.ext", "-1.mps", "-1.txt"]
-        files_to_remove = [ simulation_dir / fname for fname in fnames]
+        files_to_remove = [simulation_dir / fname for fname in fnames]
         for file in files_to_remove:
             file.write_text("")
             assert file.exists()
 
         antares_driver = AntaresDriver(exe_path)
-        with patch(SUBPROCESS_RUN, autospec=True) as run_function :
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 0
             antares_driver.launch(study_dir, 1)
 
             expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]
-            run_function.assert_called_once_with(expected_cmd, shell=False, stdout=-3, stderr=-3)
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3)
 
         for file in files_to_remove:
             assert not file.exists()
@@ -265,14 +274,3 @@ class TestAntaresDriver:
                       "key1 = value1\n" \
                       "key2 = value2\n"
         general_data_path.write_text(default_val)
-
-    @staticmethod
-    def get_antares_exe():
-        bin_paths_file = Path(os.path.abspath(__file__)).parent.parent  / "bin_paths.yaml"
-        with open(bin_paths_file) as file:
-            content = yaml.full_load(file)
-        
-        if content is None :
-            content = {}
-
-        return content.get('antares-solver')
