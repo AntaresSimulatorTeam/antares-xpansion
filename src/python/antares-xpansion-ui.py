@@ -1,4 +1,5 @@
 import os
+import psutil
 import sys
 import yaml
 
@@ -52,7 +53,7 @@ class MainWidget(QWidget):
         self._launcher_name = "antares-xpansion-launcher"
         if sys.platform.startswith("win32"):
             self._launcher_name+=".exe"
-        
+
     def _init_log_widget(self):
         log_layout = QHBoxLayout()
         self._log_text_edit = QPlainTextEdit()
@@ -90,12 +91,13 @@ class MainWidget(QWidget):
         self._nb_core_edit = QSpinBox()
         self._nb_core_edit.setMinimum(2)
         self._nb_core_edit.setMaximum(128)
-        self._nb_core_edit.setValue(os.cpu_count())
+        cpu_count = psutil.cpu_count(logical=False)
+        self._nb_core_edit.setValue(cpu_count)
         self._nb_core_edit.setEnabled(False)
         method_layout.addWidget(self._nb_core_edit)
         nb_cpu_label = QLabel(
-            "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available core {nb_cpu}</span></a>".format(
-                nb_cpu=os.cpu_count()))
+            "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available physical cores {nb_cpu}</span></a>".format(
+                nb_cpu=cpu_count))
         nb_cpu_label.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
         nb_cpu_label.linkActivated.connect(self._use_available_core)
         method_layout.addWidget(nb_cpu_label)
@@ -237,7 +239,8 @@ class MainWidget(QWidget):
             self._mpibenders_radio_button.isChecked())
 
     def _use_available_core(self):
-        self._nb_core_edit.setValue(os.cpu_count())
+        cpu_count = psutil.cpu_count(logical=False)
+        self._nb_core_edit.setValue(cpu_count)
 
     def _set_stop_label(self):
         self._run_button.setText("Stop")
