@@ -1,5 +1,4 @@
 -r requirements.txt 
 pytest
 numpy
-touch
 pytest-cov

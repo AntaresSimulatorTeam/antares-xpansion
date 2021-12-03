@@ -11,8 +11,6 @@ from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 
-from tests.build_config_reader import get_install_dir, get_lp_namer_exe, get_antares_solver_path
-
 SUBPROCESS_RUN = "antares_xpansion.problem_generator_driver.subprocess.run"
 
 
@@ -23,14 +21,17 @@ class TestProblemGeneratorDriver:
         self.lp_exe = "lp_namer.exe"
         self.empty_pblm_gen_data = ProblemGeneratorData(keep_mps=False,
                                                         additional_constraints="",
-                                                        user_weights_file_path=Path(""),
+                                                        user_weights_file_path=Path(
+                                                            ""),
                                                         weight_file_name_for_lp="",
-                                                        lp_namer_exe_path=Path(""),
+                                                        lp_namer_exe_path=Path(
+                                                            ""),
                                                         nb_active_years=0)
 
     def test_problem_generator_data(self):
 
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
 
         assert problem_generator_driver.keep_mps == self.empty_pblm_gen_data.keep_mps
         assert problem_generator_driver.additional_constraints == self.empty_pblm_gen_data.additional_constraints
@@ -38,13 +39,15 @@ class TestProblemGeneratorDriver:
         assert problem_generator_driver.lp_namer_exe_path == self.empty_pblm_gen_data.lp_namer_exe_path
 
     def test_output_path(self, tmp_path):
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.OutputPathError):
             problem_generator_driver.launch(tmp_path / "i_don_t_exist", False)
 
     def test_no_area_file(self, tmp_path):
 
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.AreaFileException):
             problem_generator_driver.launch(tmp_path, False)
 
@@ -53,14 +56,16 @@ class TestProblemGeneratorDriver:
         self._create_empty_area_file(tmp_path)
         self._create_empty_area_file(tmp_path)
 
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.AreaFileException):
             problem_generator_driver.launch(tmp_path, False)
 
     def test_no_interco_file(self, tmp_path):
 
         self._create_empty_area_file(tmp_path)
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.IntercoFilesException):
             problem_generator_driver.launch(tmp_path, False)
 
@@ -70,7 +75,8 @@ class TestProblemGeneratorDriver:
         self._create_empty_interco_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.IntercoFilesException):
             problem_generator_driver.launch(tmp_path, False)
 
@@ -79,7 +85,8 @@ class TestProblemGeneratorDriver:
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
             problem_generator_driver.launch(tmp_path, False)
 
@@ -88,7 +95,8 @@ class TestProblemGeneratorDriver:
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
             problem_generator_driver.launch(tmp_path, False)
 
@@ -101,7 +109,8 @@ class TestProblemGeneratorDriver:
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
-        problem_generator_driver = ProblemGeneratorDriver(self.empty_pblm_gen_data)
+        problem_generator_driver = ProblemGeneratorDriver(
+            self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
             problem_generator_driver.launch(tmp_path, False)
 
@@ -318,8 +327,10 @@ class TestProblemGeneratorDriver:
         expected_weight_file_content = []
         for file in mps_files:
             year = self._get_year_index_from_name(file)
-            expected_weight_file_content.append(Path(file).with_suffix('').name + " " + str(float(weight_list[year - 1])) + "\n") 
-        expected_weight_file_content.append("WEIGHT_SUM " + str(float(sum(weight_list))))
+            expected_weight_file_content.append(Path(file).with_suffix(
+                '').name + " " + str(float(weight_list[year - 1])) + "\n")
+        expected_weight_file_content.append(
+            "WEIGHT_SUM " + str(float(sum(weight_list))))
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
@@ -328,12 +339,13 @@ class TestProblemGeneratorDriver:
             run_function.return_value.returncode = 0
 
             problem_generator_driver.launch(tmp_path, False)
-        
+
         assert file_path.exists()
-        with open(tmp_path / "lp" / weight_file_name , "r") as file:
+        with open(tmp_path / "lp" / weight_file_name, "r") as file:
             lines = file.readlines()
-        
+
         assert lines == expected_weight_file_content
+
     def _get_expected_mps_txt(self, tmp_path):
 
         weeks = [1, 2, 3]
@@ -342,13 +354,16 @@ class TestProblemGeneratorDriver:
 
         for year in years:
             for week in weeks:
-                fname_mps = self._get_file_name("problem", str(year), str(week), "mps")
+                fname_mps = self._get_file_name(
+                    "problem", str(year), str(week), "mps")
                 mps_file = tmp_path / fname_mps
                 mps_file.write_text("")
-                fname_vars = self._get_file_name("variables", str(year), str(week), "txt")
+                fname_vars = self._get_file_name(
+                    "variables", str(year), str(week), "txt")
                 variables_file = tmp_path / fname_vars
                 variables_file.write_text("")
-                fname_cts = self._get_file_name("constraints", str(year), str(week), "txt")
+                fname_cts = self._get_file_name(
+                    "constraints", str(year), str(week), "txt")
                 constraints_file = tmp_path / fname_cts
                 constraints_file.write_text("")
 
@@ -358,16 +373,22 @@ class TestProblemGeneratorDriver:
 
     def _get_file_name(self, prefix, year, week, extension):
 
-        month = str(date.today().month) if date.today().month > 9 else "0" + str(date.today().month)
-        day = str(date.today().day) if date.today().day > 9 else "0" + str(date.today().day)
+        month = str(date.today().month) if date.today(
+        ).month > 9 else "0" + str(date.today().month)
+        day = str(date.today().day) if date.today(
+        ).day > 9 else "0" + str(date.today().day)
         today_date = str(date.today().year) + month + day
 
-        hour = str(datetime.now().hour) if datetime.now().hour > 9 else "0" + str(datetime.now().hour)
-        minute = str(datetime.now().minute) if datetime.now().minute > 9 else "0" + str(datetime.now().minute)
-        second = str(datetime.now().second) if datetime.now().second > 9 else "0" + str(datetime.now().second)
+        hour = str(datetime.now().hour) if datetime.now(
+        ).hour > 9 else "0" + str(datetime.now().hour)
+        minute = str(datetime.now().minute) if datetime.now(
+        ).minute > 9 else "0" + str(datetime.now().minute)
+        second = str(datetime.now().second) if datetime.now(
+        ).second > 9 else "0" + str(datetime.now().second)
 
         what_time = hour + minute + second
-        file_name = prefix + "-" + year + "-" + week + "-" + today_date + "-" + what_time + "." + extension
+        file_name = prefix + "-" + year + "-" + week + "-" + \
+            today_date + "-" + what_time + "." + extension
         return file_name
 
     def _create_empty_area_file(self, tmp_path):
@@ -379,7 +400,8 @@ class TestProblemGeneratorDriver:
     def _create_empty_n_file(self, tmp_path, prefix, extension):
 
         TestProblemGeneratorDriver.number += 1
-        fname = prefix + str(TestProblemGeneratorDriver.number) + "." + extension
+        fname = prefix + \
+            str(TestProblemGeneratorDriver.number) + "." + extension
         file = tmp_path / fname
         file.write_text("")
 
