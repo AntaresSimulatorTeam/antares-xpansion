@@ -1,22 +1,25 @@
 Antares-Xpansion Changelog
 =================
 
-Unreleased
+v0.6.0
 --------------------
 ### Features
 
+- Antares-Xpansion is now compatible with Antares_Simulator v8.1.0 
 - added option *antares-n-cpu* to use Antares parallelism
 - added option *-v, --version* to show AntaresXpansion version
 - added option *--antares-version* to show Antares_Simulator version
 - Set default value of *--simulationName* to *last* in order to use the last antares simulation
+- add relative gap option as a stopping criterion for the Antares-Xpansion algorithm
 
 ### Bug fixes
 - Path to binaries directory was not found in some situations with python launcher and in python exclusive package
 - Correction bug when there are too many zeros in a link-profile 
 
-### For developpers
-- cpp Lp namer library is splited into smaller and consistents libraries
+### For developers
+- cpp Lp-namer library is split into smaller and consistent libraries
 - Each AntaresXpansion step has its own driver (python class) instead of the all-in driver
+- upgrade to a new version of `antares-deps` (bug fix)
 
 v0.5.0 (10/2021)
 --------------------

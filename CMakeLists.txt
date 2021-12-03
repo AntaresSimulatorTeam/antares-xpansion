@@ -8,7 +8,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.5.0)
+PROJECT (antaresXpansion VERSION 0.6.0)
+set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # Default parameters
@@ -52,8 +53,6 @@ else ()
 	message(FATAL_ERRROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")	
 endif()
 
-
-#set(ANTARES_XPANSION_RC 3)
 
 # ===========================================================================
 # CMAKE ADDITIONAL MODULES

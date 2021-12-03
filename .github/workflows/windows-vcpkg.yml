@@ -9,7 +9,6 @@ on:
       - feature/*
       - fix/*
       - release/*
-      - test/run_all_test
 jobs:
 
   windows:
