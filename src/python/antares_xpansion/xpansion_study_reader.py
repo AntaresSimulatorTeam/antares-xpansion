@@ -29,6 +29,7 @@ class XpansionStudyReader:
     def convert_study_solver_to_option_solver(study_solver: str) -> str:
         keys = {
             "Cbc": "COIN",
+            "Coin": "COIN",
             "Xpress": "XPRESS",
             "Cplex": "CPLEX",
         }
