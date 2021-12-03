@@ -162,7 +162,7 @@ not to be simulated unnecessarily.
 
 String. Default value: `Cbc`.
 
-Defines the solver that is used to solve the master and the slave problems in the [Benders decompsoition](../optimization-principles/0-optimization-principles.md). With `solver = Cbc`, depending on whether the problem has integer variables, Antares-Xpansion calls either the linear solver ([Clp](https://github.com/coin-or/Clp)) or the MILP solver ([Cbc](https://github.com/coin-or/Cbc)) of the COIN-OR optimization suite. 
+Defines the solver that is used to solve the master and the slave problems in the [Benders decompsoition](../optimization-principles/0-optimization-principles.md). The user can either write `solver = Cbc` or `solver = Coin` to use the COIN-OR optimization suite. These settings are identical: depending on whether the problem has integer variables, Antares-Xpansion calls either the linear solver ([Clp](https://github.com/coin-or/Clp)) or the MILP solver ([Cbc](https://github.com/coin-or/Cbc)) of the COIN-OR optimization suite. 
 
 !!! Remark
     In Antares-Xpansion, the slave problems are always linear. If `master = relaxed`, the master problem is linear as well, whereas if `master = integer`, the master problem is a MILP.
