@@ -95,7 +95,7 @@ the following technical and economic parameters:
   unit.
 
 - It has an hourly availability time series
-  that is **always higher than the potential** of the candidate, where by *potential* we mean the capacity correponding to the maximum investment that is allowed by the user (see [`max-investment`](2-candidate-definition.md#max-invest)): 
+  that is **always higher than the potential** of the candidate, where by *potential* we mean the capacity correponding to the maximum investment that is allowed by the user (i.e. [`max-investment`](2-candidate-definition.md#max-invest) or [`max-units`](2-candidate-definition.md#max-units) \\(\small \times\\) [`unit-size`](2-candidate-definition.md#unit-size)): 
   
     - If the hourly
       availability time series of thermal generation are "*ready-made*” in
@@ -149,6 +149,48 @@ storage: for example a negative `ROW Balance` in `psp-in`,
 positive `ROW Balance` in `psp-out` and the following constraint:
 
 ![](../../assets/media/image9.png)
+
+### Decommissioning decisions for thermal capcities
+
+With Antares-Xpansion, it is possible to consider decommissioning decisions, the corresponding assets are referred as _decommissioning candidates_. The difference between _investment candidates_ and _decommissioning candidates_ lies in the fixed-cost annuity.
+
+  <!-- - For _investment candidates_ the cost function includes the investment cost (hence the fixed-cost-annuity).
+  - For _decommissioning candidates_, there is no investment cost, since the investment decision consists only in choosing whether to maintain operation with the associated maintenance costs. -->
+
+#### Fixed-cost annuity for investment candidates
+
+The annuity of the _investment candidates_ includes the sum of:
+
+  - Annualized investment costs,
+  - Fixed annual operation and maintenance costs.
+
+In this configuration, Antares-Xpansion makes an economic choice by comparing the sum of these costs and the reduction in variable operating
+costs (mainly fuel costs and penalties associated with loss of load)
+due to the new investment.
+
+#### Fixed-cost annuity for decommissioning candidates
+
+The annuity for _decommissioning candidates_ only includes the fixed annual
+operation and maintenance costs. There is indeed no investment cost, since the decision consists only in choosing whether to maintain operation with the associated maintenance costs.
+
+In this configuration,
+Antares-Xpansion makes an economic choice by comparing the operation
+and maintenance costs of a generation or transmission asset and the
+savings induced on the variable costs of power system operation thanks to this asset.
+
+The annualized investment costs are in this case considered
+stranded and are not taken into account in this economic choice. The
+potential of this type of candidate (i.e. its [`max-investment`](2-candidate-definition.md#max-invest) or [`max-units`](2-candidate-definition.md#max-units) \\(\small \times\\) [`unit-size`](2-candidate-definition.md#unit-size)) corresponds to its decommissionable capacity,
+or in other words, the candidate's already installed capacity that could be shut
+down if it is no longer profitable for the power system.
+
+The modelling of _decommissioning_candidates_ follows the same virtual node logic as the [investment in thermal generation capacity](#thermal). The difference in this case is that there are already existing physical facilities. For example, suppose that some 
+
+Candidates for decommissioning should be explicitly specified in
+Antares-Xpansion in the `name` (although this is not required by the tool).
+Antares-Xpansion is neither able to decommission the already installed generation
+units in the Antares study, nor the capacities covered by the
+`already-installed-capacity` parameter of the investment candidates.
 
 ### Additional characteristics for links of investment candidates
 
