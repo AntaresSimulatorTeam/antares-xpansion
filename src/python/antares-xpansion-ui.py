@@ -1,5 +1,6 @@
 import os
 
+import psutil
 import yaml
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QMovie, QIcon
@@ -86,8 +87,8 @@ class MainWidget(QWidget):
         self._nb_core_edit.setEnabled(False)
         method_layout.addWidget(self._nb_core_edit)
         nb_cpu_label = QLabel(
-            "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available core {nb_cpu}</span></a>".format(
-                nb_cpu=os.cpu_count()))
+            "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available physical cores {nb_cpu}</span></a>".format(
+                nb_cpu=psutil.cpu_count(logical=False)))
         nb_cpu_label.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
         nb_cpu_label.linkActivated.connect(self._use_available_core)
         method_layout.addWidget(nb_cpu_label)
