@@ -48,7 +48,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
         COMMAND Python3::Interpreter -m pytest -m long_mpi --installDir=${XPANSION_INSTALL_DIR} example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
-    set_property(TEST examples_long_mpi PROPERTY LABELS "long;long_mpi")
+    set_property(TEST examples_long PROPERTY LABELS "long;long_mpi")
 	
 	# benders end to end tests
     add_test(
