@@ -91,12 +91,13 @@ class MainWidget(QWidget):
         self._nb_core_edit = QSpinBox()
         self._nb_core_edit.setMinimum(2)
         self._nb_core_edit.setMaximum(128)
-        self._nb_core_edit.setValue(os.cpu_count())
+        cpu_count = psutil.cpu_count(logical=False)
+        self._nb_core_edit.setValue(cpu_count)
         self._nb_core_edit.setEnabled(False)
         method_layout.addWidget(self._nb_core_edit)
         nb_cpu_label = QLabel(
             "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available physical cores {nb_cpu}</span></a>".format(
-                nb_cpu=psutil.cpu_count(logical=False)))
+                nb_cpu=cpu_count))
         nb_cpu_label.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
         nb_cpu_label.linkActivated.connect(self._use_available_core)
         method_layout.addWidget(nb_cpu_label)
