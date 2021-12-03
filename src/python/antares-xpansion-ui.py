@@ -40,6 +40,7 @@ class MainWidget(QWidget):
         self.setLayout(self._main_layout)
 
         self._check_run_availability()
+        self._available_cores = psutil.cpu_count(logical=False)
 
     def _define_install_dir(self):
         self._install_dir = Path("bin")
@@ -92,12 +93,12 @@ class MainWidget(QWidget):
         self._nb_core_edit.setMinimum(2)
         self._nb_core_edit.setMaximum(128)
         cpu_count = psutil.cpu_count(logical=False)
-        self._nb_core_edit.setValue(cpu_count)
+        self._use_available_core
         self._nb_core_edit.setEnabled(False)
         method_layout.addWidget(self._nb_core_edit)
         nb_cpu_label = QLabel(
             "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available physical cores {nb_cpu}</span></a>".format(
-                nb_cpu=cpu_count))
+                nb_cpu=self._available_cores))
         nb_cpu_label.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
         nb_cpu_label.linkActivated.connect(self._use_available_core)
         method_layout.addWidget(nb_cpu_label)
@@ -239,7 +240,7 @@ class MainWidget(QWidget):
             self._mpibenders_radio_button.isChecked())
 
     def _use_available_core(self):
-        self._nb_core_edit.setValue(os.cpu_count())
+        self._nb_core_edit.setValue(self._available_cores)
 
     def _set_stop_label(self):
         self._run_button.setText("Stop")
