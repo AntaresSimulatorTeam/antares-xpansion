@@ -1,7 +1,8 @@
 import os
-
 import psutil
+import sys
 import yaml
+
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QMovie, QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
@@ -29,6 +30,7 @@ class MainWidget(QWidget):
 
         self._settings = QSettings("pyqt_settings.ini", QSettings.IniFormat)
 
+        self._define_launcher_name()
         self._main_layout = QVBoxLayout()
 
         self._init_antares_study_selection_widget()
@@ -47,6 +49,11 @@ class MainWidget(QWidget):
                 if content is not None:
                     self._install_dir = content.get('INSTALL_DIR', "bin")
 
+    def _define_launcher_name(self):
+        self._launcher_name = "antares-xpansion-launcher"
+        if sys.platform.startswith("win32"):
+            self._launcher_name+=".exe"
+
     def _init_log_widget(self):
         log_layout = QHBoxLayout()
         self._log_text_edit = QPlainTextEdit()
@@ -64,7 +71,8 @@ class MainWidget(QWidget):
         self._init_step_selection_widget()
         self._init_xpansion_config_widget()
 
-        self._xpansion_config_layout.addSpacerItem(QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
+        self._xpansion_config_layout.addSpacerItem(
+            QSpacerItem(1, 1, QSizePolicy.Expanding, QSizePolicy.Fixed))
         self._init_xpansion_run_widget()
 
         self._main_layout.addLayout(self._xpansion_config_layout)
@@ -125,17 +133,20 @@ class MainWidget(QWidget):
         layout_study_path = QGridLayout()
 
         layout_study_path.addWidget(QLabel('Antares study path'), 0, 0)
-        self._study_path_text_edit = QLineEdit(self._settings.value(LAST_ANTARES_STUDY_DIR))
+        self._study_path_text_edit = QLineEdit(
+            self._settings.value(LAST_ANTARES_STUDY_DIR))
         layout_study_path.addWidget(self._study_path_text_edit, 0, 1)
         select_button = QPushButton('...')
         select_button.clicked.connect(self._select_study_path)
         layout_study_path.addWidget(select_button, 0, 2)
 
         self._combo_simulation_name = QComboBox()
-        self._combo_simulation_name.currentTextChanged.connect(self._simulation_name_changed)
+        self._combo_simulation_name.currentTextChanged.connect(
+            self._simulation_name_changed)
         layout_study_path.addWidget(QLabel('Simulation name'), 1, 0)
         layout_study_path.addWidget(self._combo_simulation_name, 1, 1)
-        self._init_simulation_name_combo(self._settings.value(LAST_ANTARES_STUDY_DIR))
+        self._init_simulation_name_combo(
+            self._settings.value(LAST_ANTARES_STUDY_DIR))
 
         self._main_layout.addLayout(layout_study_path)
 
@@ -145,7 +156,8 @@ class MainWidget(QWidget):
         self._step_buttons = {}
         for step in STEPS:
             self._step_buttons[step] = QRadioButton(step)
-            self._step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
+            self._step_buttons[step].setEnabled(
+                step not in STEP_WITH_SIMULATION_NAME)
             step_layout.addWidget(self._step_buttons[step])
 
         self._step_buttons["full"].setChecked(True)
@@ -216,12 +228,14 @@ class MainWidget(QWidget):
         if state == QProcess.NotRunning:
             self._set_run_label()
             if self._get_step() not in STEP_WITH_SIMULATION_NAME:
-                self._init_simulation_name_combo(self._study_path_text_edit.text())
+                self._init_simulation_name_combo(
+                    self._study_path_text_edit.text())
         else:
             self._set_stop_label()
 
     def _method_changed(self):
-        self._nb_core_edit.setEnabled(self._mpibenders_radio_button.isChecked())
+        self._nb_core_edit.setEnabled(
+            self._mpibenders_radio_button.isChecked())
 
     def _use_available_core(self):
         self._nb_core_edit.setValue(os.cpu_count())
@@ -239,20 +253,23 @@ class MainWidget(QWidget):
     def _simulation_name_changed(self, text):
         for step in self._step_buttons:
             if text == NEW_SIMULATION_NAME:
-                self._step_buttons[step].setEnabled(step not in STEP_WITH_SIMULATION_NAME)
+                self._step_buttons[step].setEnabled(
+                    step not in STEP_WITH_SIMULATION_NAME)
             else:
-                self._step_buttons[step].setEnabled(step in STEP_WITH_SIMULATION_NAME)
+                self._step_buttons[step].setEnabled(
+                    step in STEP_WITH_SIMULATION_NAME)
 
     def _add_text_to_log(self, s):
         self._log_text_edit.appendPlainText(s.rstrip('\r\n'))
 
     def _cleanup_run_process(self):
-        self._run_process.close();
+        self._run_process.close()
 
     def _run_or_stop(self):
         if self._run_process and self._run_process.isOpen():
             qm = QMessageBox()
-            ret = qm.question(self, "Stop simulation", "Do you want to stop current simulation ?")
+            ret = qm.question(self, "Stop simulation",
+                              "Do you want to stop current simulation ?")
             if ret == qm.Yes:
                 self._run_process.close()
         else:
@@ -274,7 +291,10 @@ class MainWidget(QWidget):
         install_dir_path = Path(install_dir)
         if install_dir_path.is_dir():
             install_dir_full = str(install_dir_path.resolve())
-            program = "antares-xpansion-launcher.exe"
+            program_in_python_package = Path(os.path.abspath(
+                __file__)).parent / self._launcher_name
+            program_in_single_package = Path(
+                sys.executable).parent / self._launcher_name
             commands = ["--installDir", install_dir_full,
                         "--dataDir", str(study_path),
                         "--method", self._get_method(),
@@ -287,7 +307,11 @@ class MainWidget(QWidget):
                 commands.append(self._combo_simulation_name.currentText())
             if Path("launch.py").is_file():
                 commands.insert(0, "launch.py")
-                program = "python"
+                program = str(Path(sys.executable))
+            elif program_in_python_package.is_dir():
+                program = str(program_in_python_package)
+            else:
+                program = str(program_in_single_package)
             self._run_process.start(program, commands)
             self._set_stop_label()
         else:

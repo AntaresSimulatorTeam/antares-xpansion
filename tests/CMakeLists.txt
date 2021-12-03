@@ -38,11 +38,18 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     set_property(TEST examples_medium_mpi PROPERTY LABELS "medium;medium_mpi")
 
     add_test(
-        NAME examples_long
-        COMMAND Python3::Interpreter -m pytest -m long --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
+        NAME examples_long_sequential
+        COMMAND Python3::Interpreter -m pytest -m long_sequential --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
-    set_property(TEST examples_long PROPERTY LABELS long)
+    set_property(TEST examples_long_sequential PROPERTY LABELS "long;long_sequential")
+
+    add_test(
+        NAME examples_long_mpi
+        COMMAND Python3::Interpreter -m pytest -m long_mpi --installDir=$<TARGET_FILE_DIR:lp_namer> example_test.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_long_mpi PROPERTY LABELS "long;long_mpi")
 	
 	# benders end to end tests
     add_test(

@@ -8,6 +8,7 @@ from antares_xpansion.input_parser import InputParser
 from antares_xpansion.config_file_parser import ConfigFileParser
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.driver import XpansionDriver
+from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.__version__ import __version__, __antares_simulator_version__
 import os
 
@@ -21,15 +22,16 @@ input_parameters = parser.parse_args()
 
 print("----------------------------------------------------------------")
 print("Running Antares Xpansion ... ")
-print("Xpansion version: %s"%__version__)
-print("antares simulator version: %s"%__antares_simulator_version__)
+print(f"Xpansion version: {__version__}")
+print(f"antares simulator version: {__antares_simulator_version__}")
 print("----------------------------------------------------------------")
 
 
 locker = StudyLocker(Path(input_parameters.data_dir)) 
 locker.lock()
 CONFIG = XpansionConfig(input_parameters, configuration_data)
-DRIVER = XpansionDriver(CONFIG)
+config_loader = ConfigLoader(CONFIG)
+DRIVER = XpansionDriver(config_loader)
 
 DRIVER.launch()
 locker.unlock()
