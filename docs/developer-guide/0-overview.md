@@ -16,22 +16,22 @@ The weekly supply-demand optimization problems are written as `.mps` files. In t
 
 ## 2- Investment problem generation: `problem_generation`
 
-This stage is responsible for building the investment optimization problem, using the [Benders reformulation](../../user-guide/optimization-principles/1-problem-formalization.md), which results in the creation of a **master problem** and of **satellite problems**. The **master problem** takes investment decisions whereas **satelitte problems** solve the Antares supply-demand problems once the investment decisions are taken.
+This stage is responsible for building the investment optimization problem, using the [Benders reformulation](../../user-guide/optimization-principles/1-problem-formalization.md), which results in the creation of a _master problem_ and of _satellite problems_. The _master problem_ takes investment decisions whereas _satellite problems_ solve the Antares supply-demand problems once the investment decisions are taken.
 
 Using the data on investment candidates specified in the `user/expansion/candidates.ini` file,
 Antares-Xpansion modifies the `.mps` problems provided by
 Antares-Simulator in the previous step to add information on the candidates. These modified problems, still written
- as `.mps` files, are the so-called **satellite problems**. They correspond to the supply-demand problem to be solved once the investment has been fixed to a given value (that changes during the Antares-Xpansion optimization).
+ as `.mps` files, are the so-called _satellite problems_. They correspond to the supply-demand problem to be solved once the investment has been fixed to a given value (that changes during the Antares-Xpansion optimization).
 
-This stage is also responsible for building the intial **master problem**
-used for Benders decomposition. If there are additional constraints linking the investment candidates (defined in the `additional-constraints` field of the `user/expansion/settings.ini` file), then they are added to the **master problem**.
+This stage is also responsible for building the intial _master problem_
+used for Benders decomposition. If there are additional constraints linking the investment candidates (defined in the `additional-constraints` field of the `user/expansion/settings.ini` file), then they are added to the _master problem_.
 
 For more details on how the master and the satellite problems are generated, see [Investment problem generation](2-problem-modification.md).
 
 ## 3- Resolution stage with Benders decomposition: `benders`
 
 The core step of Antares-Xpansion problem consists in solving the investment problem generated in the previous step.
-Antares-Xpansion uses a [Benders decomposition](https://en.wikipedia.org/wiki/Benders_decomposition) algorithm as it is well-suited to the structure of the investment problem: the **satellite problems** are independent, i.e. the weekly problems in an Antares study are independent (using water values is not allowed in Antares-Xpansion). Details of the methodology are given in the [optimization principles](../user-guide/optimization-principles/0-optimization-principles.md) page.
+Antares-Xpansion uses a [Benders decomposition](https://en.wikipedia.org/wiki/Benders_decomposition) algorithm as it is well-suited to the structure of the investment problem: the _satellite problems_ are independent, i.e. the weekly problems in an Antares study are independent (using water values is not allowed in Antares-Xpansion). Details of the methodology are given in the [optimization principles](../user-guide/optimization-principles/0-optimization-principles.md) page.
 
 
 ## 4- Update of antares study: `study_update`

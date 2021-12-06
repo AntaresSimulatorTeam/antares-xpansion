@@ -1,36 +1,46 @@
-# Modification of problems to introduce investment variables
+# Investment problem generation
+
+The goal of this step is to modify the `.mps` files of the weekly Antares problems to create the so-called _satellite problems_ of the investment problem. The _master problem_ is also generated in this step. 
 
 ## Python orchestrator `get_names` 
-Before changing the .mps file, a post-processing of the files created by `antares-solver` must be done.
 
-The goal is to produce a file `mps.txt` file containing each .mps with his associated variables.txt file (containing the column ID for variable at specific time step).
+Before changing the `.mps` file, a post-processing of the files created by `antares-solver` must be done.
+
+The goal is to produce a file `mps.txt` containing each `.mps` with his associated `variables.txt` file (defining the mapping between the column IDs and variable names). Each line of the `mps.txt` file looks as follows:
+
 ```
 problem-1-1-20210713-163528.mps variables-1-1-20210713-163528.txt constraints-1-1-20210713-163528.txt
 ```
+
 !!! Note
-    `constraints.txt` file are still defined in the file but not used in later steps.
+    `constraints.txt` files are still defined in the file but not used in later steps.
 
-`area-<mc_year>-<week>-<timestamp>.txt` file produced by `antares-solver` is also copied as `area.txt`.
+Then:
+    
+- The `area-<mc_year>-<week>-<timestamp>.txt` file produced by `antares-solver` is copied as `area.txt`. 
+- The `interco-<mc_year>-<week>-<timestamp>.txt` file produced by `antares-solver` is also copied as `interco.txt`.
 
-`interco-<mc_year>-<week>-<timestamp>.txt` file produced by `antares-solver` is also copied as `interco.txt`.
+## Modification of weekly problems with `lp_namer`
 
-## Modification of problems with `lp_namer`
-Here are the main steps of problem modification with `lp_namer`
+Here are the main steps of problem modification with `lp_namer`, that lead to the creation of the _satellite problems_.
 
 ### 1- Read candidates and get link column ID
-- `area.txt` and `interco.txt` files are used to get link ID from area names
-- Candidates defined in `user/expansion/candidates.ini` and the associated link profile (if defined) are read.
+
+Each investment link corresponds to a variable in the weekly optimization problem. The first step is to retrieve the column ID of each investment candidate link from its name specified in `candidates.ini`:
+
+- The `area.txt` and `interco.txt` files are used to map area names to link IDs.
+- Candidates defined in `candidates.ini` and the associated link profile (if defined) are read.
 
 ### 2- Modification of .mps file
-Each `.mps` file is changed to:
 
-- remove bounds for `ValeurDeNTCOrigineVersExtremite` variable (only for link with candidate)
-- remove bounds for `ValeurDeNTCOrigineVersExtremite` variable (only for link with candidate)
-- change upper bounds to inf for `CoutOrigineVersExtremiteDeLInterconnexion`  and `CoutExtremiteVersOrigineDeLInterconnexion` variable (only for link with candidate)
-- add new columns for each candidates
-- add constraint on `ValeurDeNTCOrigineVersExtremite`
-- add constraint on `CoutOrigineVersExtremiteDeLInterconnexion`
-- add constraint on `CoutExtremiteVersOrigineDeLInterconnexion`
+The following modifications are applied to each `.mps` file:
+
+- Remove bounds for `ValeurDeNTCOrigineVersExtremite` variables (only for link with candidate),
+- Change upper bounds to `Inf` for `CoutOrigineVersExtremiteDeLInterconnexion`  and `CoutExtremiteVersOrigineDeLInterconnexion` variables (only for link with candidate),
+- Add new columns for each candidate,
+- Add constraint on `ValeurDeNTCOrigineVersExtremite`, (laquelle ?)
+- Add constraint on `CoutOrigineVersExtremiteDeLInterconnexion`, (laquelle ?)
+- Add constraint on `CoutExtremiteVersOrigineDeLInterconnexion`, (laquelle ?)
 
 ### 3- Read additional candidate constrains
 Antares-Xpansion setting file can contains `additional-constraints` parameter.
