@@ -1,0 +1,126 @@
+# Antares optimization problem retrieval
+
+In this step, `antares-solver` runs the Antares study with a specific configuration set by Antares-Xpansion and writes the weekly optimization problems as `.mps` files. More precisely, `antares-solver` performs two successive optimizations, see [Antares-Simulator reference guide](https://antares-simulator.readthedocs.io/en/latest/reference-guide/1-reference-guide#antares-at-one-glance):
+
+1. A linear relaxation of the Antares MILP problem is solved where the on/off variables of thermal clusters are continuous.
+2. A heuristic search for integer values of these variables, satisfying the dynamic constraint of the system with the smallest possible cost is then carried out. Finally, a second linear optimization with the integer variables set to the previously found values is performed. 
+
+In Antares-Xpansion, the weekly problems solved in the first optimization step are written as `.mps` files, the second optimization is useless. Some additional files (`variable.txt`, `area.txt` and `interco.txt`) are also generated to map the variables of the Antares optimization problems to their phhysical meaning. 
+
+## Specific Antares-Xpansion configuration
+
+In order to run the Antares study correctly, some 
+specific simulation options are required. The Python orchestrator changes the file `settings/generaldata.ini`, with some settings depending on the `uc_type` parameter defined in the `user/expansion/settings.ini` file. An example is given below:
+
+```ini
+[optimization]
+include-exportmps = true
+include-exportstructure = true
+include-tc-minstablepower = false
+include-tc-min-ud-time = false
+include-dayahead = false
+include-usexprs = None
+include-inbasis = None
+include-outbasis = None
+include-trace = None
+[general]
+mode = Economy
+[other preferences]
+unit-commitment-mode = fast
+```
+
+|Parameters|Remark|
+|-----|-----|
+|`[optimization]include-exportmps`| Ask for export of `.mps` files. | 
+|`[optimization]include-exportstructure`| Ask for export of structure files : `variables.txt`, `area.txt`, `interco.txt`.|
+|`[optimization]include-tc-minstablepower`| Whether to consider constraints on minimum stable power for thermal clusters: `True` if `uc_type = expansion_accurate`, `False` otherwise.| 
+|`[optimization]include-tc-min-ud-timer`| Whether to consider constraints on minimum up and down times for thermal clusters: `True` if `uc_type = expansion_accurate`, `False` otherwise.| 
+|`[optimization]include-dayahead`| Whether to consider day ahead reserves (i.e. limitation of the maximum production power in order to be able to react to infraday unexpected events): `True` if `uc_type = expansion_accurate`, `False` otherwise.|
+|`[optimization]include-usexprs`| TODO|
+|`[optimization]include-inbasis`| TODO|
+|`[optimization]include-outbasis`| TODO|
+|`[optimization]include-trace`| TODO| 
+|`[general]mode`| Sets the Antares simulation mode: `expansion` if `uc_type = expansion_accurate`, `Economy` otherwise. (Discard constraints on min stable power with `expansion`?).| 
+|`[other preferences]unit-commitment-mode`| Sets the Antares unit-commitment mode: `accurate` if `uc_type = expansion_accurate`, `fast` otherwise, see [the unit-commitment mode of Antares-Simulator](https://antares-simulator.readthedocs.io/en/latest/reference-guide/1-reference-guide/#the-unit-commitment-mode-advanced-parameter). (Discard constraints on min up and down times with `fast`, what about min stable power ?)| 
+
+## Output files
+
+After the Antares simulation, some output files of interest for Antares-Xpansion are generated.
+
+### `.mps` files for the weekly optimization problems
+
+For each week and Monte-Carlo year, one `.mps` file is generated, encoding the linear problem that is solved by Antares-Simulator.
+
+File name formatting: `problem-<mc_year>-<week>-<timestamp>.mps`.
+
+!!! Example
+    `problem-1-1-20210928-155703.mps` represents the weekly problem for MC year 1 and week 1 generated on 2021/09/28 at 15h57m03s.
+
+### `variables.txt` file for each `.mps` file
+
+Each `.mps` file has a corresponding `variable.txt` file that allows to map each variable number of the `.mps` file to its physical representation.
+
+File name formatting :`variables-<mc_year>-<week>-<timestamp>.txt`
+
+!!! Example
+    `variables-1-1-20210928-155703.txt` represents the variable names of the problem for MC year 1 and week 1 generated on 2021/09/28 at 15h57m 03s.
+
+The `variable.txt` file contains one line for each variable (i.e. column) in the weekly problem encoded in the corresponding `.mps` file. In the `.mps` file the variables are named `Cxxxxxxx` where `xxxxxxx` is the number of the variable.
+
+The line content depends on the type of variable (if it is related to a country or not).
+
+!!! Example 
+    For `462 ValeurDeNTCOrigineVersExtremite 0 0 14`:
+
+    |Value|Parameter|
+    |-----|-----|
+    |`462`| Column ID in the `.mps` weekly problem. | 
+    |`ValeurDeNTCOrigineVersExtremite`| Column physical name. |
+    |`0`| Country.| 
+    |`0`| Link ID.| 
+    |`14`| Time step.| 
+
+As the weekly problem is solved with an hourly time step, each physical variable is present 168 times. The time steps are numbered with reference to the first hour of the year.
+
+!!! Example
+    For the problem of week 2, the variable `ValeurDeNTCOrigineVersExtremite 0 0` is present 168 times, with time steps ranging from 168 to 335.
+
+### The file `area.txt`
+
+One file that contains the name of the areas of the Antares study is produced by `antares-solver`.
+
+File name formatting: `area-<mc_year>-<week>-<timestamp>.txt`.
+
+Because the areas do not change in each MC year or week, the file is created only for the first MC year and week simulated. The file contains one line for each area.
+
+!!! Example
+    ```
+    area1
+    area2
+    flex
+    peak
+    pv
+    semibase
+    ```
+
+### The file `interco.txt`
+
+One file that describes the links of the Antares study is produced by `antares-solver`. 
+
+File name formatting: `interco-<mc_year>-<week>-<timestamp>.txt`.
+
+Because the links do not change in each MC year or week, the file is created only for the first MC year and week simulated. The file contains one line for each link.
+
+!!! Example
+    The line 
+    ``` 
+    3 1 2
+    ```
+    in `interco.txt` means that 
+    ```
+    link_id = 3 
+    index_area_origin = 1
+    index_area_extremite = 2
+    ```
+
+    The index is a match to the index in the `area.txt` file. So for this example, the `link_id 3` matches the link between `area2` (area id 1) and `flex` (area id 2).

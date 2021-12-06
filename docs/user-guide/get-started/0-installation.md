@@ -13,7 +13,7 @@ Antares-Xpansion is built using CMake.
 
 ## Download Antares-Xpansion
 
-To download the latest version of Antares-Xpansion, visit [Antares-Xpansion repository][antares_xpansion_release_url] and download the binary that matches your platform. If you prefer to build the software from source file, please refer to the [developer guide](../../developer-guide/build/0-INSTALL.md).
+To download the latest version of Antares-Xpansion, visit [Antares-Xpansion repository][antares_xpansion_release_url] and download the binary that matches your platform. If you prefer to build the software from source file, please refer to the [developer guide](../../developer-guide/install_from_sources/0-INSTALL.md).
 
 ## Installation instruction
 

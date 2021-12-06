@@ -31,7 +31,6 @@ nav:
   - Home: index.md
   - 'Antares ecosystem': 'https://antares-doc.readthedocs.io'
   - 'User guide':
-    - 'Problems addressed by Antares-Xpansion': 'user-guide/0-introduction.md'
     - 'Get started':
       - 'Installation': 'user-guide/get-started/0-installation.md'
       - 'Set up an Antares-Xpansion study':
@@ -44,16 +43,17 @@ nav:
       - 'Formulation of the problem': 'user-guide/optimization-principles/1-problem-formalization.md'
   - 'Developer guide': 
     - 'Install from sources':
-      - 'Introduction': 'developer-guide/build/0-INSTALL.md'
-      - 'Development requirements': 'developer-guide/build/1-Development-requirements.md'
-      - 'Dependencies install': 'developer-guide/build/2-Dependencies-install.md'
-      - 'Build': 'developer-guide/build/3-Build.md'
-      - 'Tests': 'developer-guide/build/4-Tests.md'
-      - 'UI creation': 'developer-guide/build/5-ui-creation.md'
-      - 'Installer creation': 'developer-guide/build/6-Installer-creation.md'
-    - 'Antares-Xpansion simulation procedure' : 'developer-guide/0-Process.md'
-    - 'Optimization problems generation' : 'developer-guide/1-antares-solver.md'
-    - 'Modification of problems to introduce investment variables' : 'developer-guide/2-problem-modification.md'
+      - 'Introduction': 'developer-guide/install_from_sources/0-INSTALL.md'
+      - 'Development requirements': 'developer-guide/install_from_sources/1-Development-requirements.md'
+      - 'Dependencies install': 'developer-guide/install_from_sources/2-Dependencies-install.md'
+      - 'Build': 'developer-guide/install_from_sources/3-Build.md'
+      - 'Tests': 'developer-guide/install_from_sources/4-Tests.md'
+      - 'UI creation': 'developer-guide/install_from_sources/5-ui-creation.md'
+      - 'Installer creation': 'developer-guide/install_from_sources/6-Installer-creation.md'
+    - 'Antares-Xpansion simulation procedure' : 
+      - 'Overview' : 'developer-guide/0-overview.md'
+      - 'Antares optimization problem retrieval' : 'developer-guide/1-antares-solver-problem.md'
+      - 'Investment problem generation' : 'developer-guide/2-problem-modification.md'
   - 'Changelog': 'CHANGELOG.md'
 
 plugins:

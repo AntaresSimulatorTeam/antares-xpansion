@@ -88,8 +88,6 @@ the following technical and economic parameters:
 
 - It is located in the virtual node `invest_semibase`.
 
-- created before executing the Benders decomposition,
-
 - Its *market bid* is equal to its *marginal cost*, which is
   the variable operating cost (in €/MWh) of the generation
   unit.
@@ -150,16 +148,13 @@ positive `ROW Balance` in `psp-out` and the following constraint:
 
 ![](../../assets/media/image9.png)
 
-### Decommissioning decisions for thermal capcities
+### Decommissioning decisions for thermal capcities {#decommissioning}
 
 With Antares-Xpansion, it is possible to consider decommissioning decisions, the corresponding assets are referred as _decommissioning candidates_. The difference between _investment candidates_ and _decommissioning candidates_ lies in the fixed-cost annuity.
 
-  <!-- - For _investment candidates_ the cost function includes the investment cost (hence the fixed-cost-annuity).
-  - For _decommissioning candidates_, there is no investment cost, since the investment decision consists only in choosing whether to maintain operation with the associated maintenance costs. -->
-
 #### Fixed-cost annuity for investment candidates
 
-The annuity of the _investment candidates_ includes the sum of:
+The annuity of an _investment candidate_ includes the sum of:
 
   - Annualized investment costs,
   - Fixed annual operation and maintenance costs.
@@ -184,13 +179,13 @@ potential of this type of candidate (i.e. its [`max-investment`](2-candidate-def
 or in other words, the candidate's already installed capacity that could be shut
 down if it is no longer profitable for the power system.
 
-The modelling of _decommissioning_candidates_ follows the same virtual node logic as the [investment in thermal generation capacity](#thermal). The difference in this case is that there are already existing physical facilities. For example, suppose that some 
+Antares-Xpansion is not able to decommission generation units that are installed in the Antares study (i.e. located in "physical nodes"). However, we can use a modelling of _decommissioning candidates_ with the same virtual node logic as the [investment in thermal generation capacity](#thermal). Decommissioning candidates are existing physical facilities that should be moved to a virtual node. 
 
-Candidates for decommissioning should be explicitly specified in
-Antares-Xpansion in the `name` (although this is not required by the tool).
-Antares-Xpansion is neither able to decommission the already installed generation
-units in the Antares study, nor the capacities covered by the
-`already-installed-capacity` parameter of the investment candidates.
+For example, suppose that we aim at taking a decommissioning decision for thermal generation capacities that are physically located in `area1` of **Figure 3 (b)**. To be considered _decommissioning candidates_, these generation units must be moved to a virtual node (`invest_semibase` in **Figure 3 (b)**) with an hourly availability time series higher than their potential. 
+
+The decommissioning decision is made in Antares-Xpansion through the capacity of the link between `area1` and `invest_semibase`. Thus, the capacity invested by Antares-Xpansion on the link corresponds to the capacity that is **not** decommissioned.
+
+Details on how to fill in the file `candidates.ini` for _decommissioning candidates_ are given in the [next part](2-candidate-definition.md#decommissioning).
 
 ### Additional characteristics for links of investment candidates
 

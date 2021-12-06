@@ -47,13 +47,6 @@ The execution of Antares-Xpansion consists of several steps that can be run sepa
 
 Specifies the Antares study folder path. Use quotes `“antares study path”` in case of a space in the path.
 
-#### `--installDir`
-
-Specifies the directory where all binaries used by Antares-Xpansion are stored. 
-  
-  - If the Antares-Xpansion executable is launched from its own directory this option is not needed.
-  - If the Antares-Xpansion executable is launched from another directory than its own, this option is useful. With a defualt install of Antares-Xpansion, the install directory is of the form `antares-xpansion-directory/bin`. 
-
 #### `--simulationName {last, your-antares-output-directory}`
 
 Default value: `last`. 

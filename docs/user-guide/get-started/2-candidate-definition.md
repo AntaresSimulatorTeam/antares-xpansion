@@ -271,53 +271,23 @@ The example in **Figure 8** shows the case of an investment in photovoltaic prod
 
 This only works with the Antares-Xpansion algorithm (Benders decomposition) if the costs are increasing and if the investment candidates with the same link have the same `already-installed-capacity` and  `already-installed-link-profile`. 
 
-### Investment candidates and decommissioning candidates
+### Decommissioning candidates {#decommissioning}
 
-With Antares-Xpansion, it is possible to consider decommissioning decisions, the corresponding assets are referred as _decommissioning candidates_. The difference between _investment candidates_ and _decommissioning candidates_ lies in the fixed-cost annuity.
+In this example, we show how to consider both an investment candidate and a decommissioning candidate on the same link. Candidates for decommissioning must be moved from their physical location to a virtual node as explained in [Prepare the Antares study](1-prepare-a-simulation.md#decommissioning).
 
-  <!-- - For _investment candidates_ the cost function includes the investment cost (hence the fixed-cost-annuity).
-  - For _decommissioning candidates_, there is no investment cost, since the investment decision consists only in choosing whether to maintain operation with the associated maintenance costs. -->
+We strongly advise to explicitly specify candidates for decommissioning in the `name` field of the `candidates.ini` file (although this is not required by the tool), see **Figure 9**. This will ease the analysis of Antares-Xpansion output for the user.
 
-#### Fixed-cost annuity for investment candidates
+By considering [several investment candidates on the same link](#several-candidates), it is possible to model both an investment and a decommissioning candidate.
 
-The annuity of the _investment candidates_ includes the sum of:
+- The candidate for decommissioning is defined by:
 
-  - Annualized investment costs,
-  - Fixed annual operation and maintenance costs.
+    - A decommissionable capacity, that corresponds to a `max-investment` or `max-units` \\(\small \times\\) `unit-size`.
+    - Fixed operation and maintenance costs (no investment cost) given in the field `annual-cost-per-mw`.
 
-In this configuration, Antares-Xpansion makes an economic choice by comparing the sum of these costs and the reduction in variable operating
-costs (mainly fuel costs and penalties associated with loss of load)
-due to the new investment.
+- The candidate for investment is defined as by:
 
-#### Fixed-cost annuity for decommissioning candidates
-
-The annuity for _decommissioning candidates_ only includes the fixed annual
-operation and maintenance costs. There is indeed no investment cost, since the decision consists only in choosing whether to maintain operation with the associated maintenance costs.
-
-In this configuration,
-Antares-Xpansion makes an economic choice by comparing the operation
-and maintenance costs of a generation or transmission asset and the
-savings induced on the variable costs of power system operation thanks to this asset.
-
-The annualized investment costs are in this case considered
-stranded and are not taken into account in this economic choice. The
-potential of this type of candidate (i.e. its `max-investment` or
-`max-units` \\(\small\times\\) `unit-size`) corresponds to its decommissionable capacity,
-i.e. the candidate's already installed capacity that could be shut
-down if it is no longer profitable for the power system.
-
-Candidates for decommissioning should be explicitly specified in
-Antares-Xpansion in the `name` (although this is not required by the tool).
-Antares-Xpansion is neither able to decommission the already installed generation
-units in the Antares study, nor the capacities covered by the
-`already-installed-capacity` parameter of the investment candidates.
-
-By considering [several investment candidates on the same link](#several-candidates), it is possible to define:
-
-- A candidate for decommissioning defined by an already installed capacity and by its fixed operation and maintenance costs,
-
-- A candidate for investment defined by an expandable capacity and a
-  fixed-cost annuity that includes investment costs.
+    - An expandable capacity, that corresponds to a `max-investment` or `max-units` \\(\small \times\\) `unit-size`.
+    - A fixed-cost annuity that includes investment costs and fixed operation and maintenance costs given in the field `annual-cost-per-mw`.
 
 An example of production process that can be decommissioned or
 expanded is given in **Figure 9**.
@@ -334,8 +304,10 @@ the same link from an Antares study.
     (availability of CCG cluster
     in the virtual node \\(fr_{ccg} > 330 \cdot 19 + 330 \cdot 50\\) in this example).
 
-For the _decommissioning candidates_, the final result is opposite of
-that of the _investment candidates_: 
+!!! Remark
+    If the user specifies an `already-installed-capacity` for the decommissioning candidate, this capacity will **not** be decommissioned by Antares-Xpansion.
+
+From the modelling of _decommissioning candidates_, it follows that the final result should be read "in the opposite way" compared to _investment candidates_: 
 
   - If the result displayed in the console for `fr_ccg_decommissioning` is 300 x 19 MW invested, this means that **no unit is decommissioned**. 
-  - If the result displayed in the console `fr_ccg_decommissioning` is 0 MW invested, this means that **all units have been decommissioned**.
+  - If the result displayed in the console for `fr_ccg_decommissioning` is 0 MW invested, this means that **all units have been decommissioned**.
