@@ -175,7 +175,6 @@ void JsonWriter::dump(std::string const & filename_p)
 {
     //Antares
     _output["antares"]["version"] = ANTARES_VERSION_TAG;
-    _output["antares"]["name"] = "unknown";
 
     //Xpansion
     _output["antares_xpansion"]["version"] = PROJECT_VER;
