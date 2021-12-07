@@ -170,7 +170,7 @@ Defines the solver that is used to solve the master and the slave problems in th
 To use another solver, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.
 
 
-#### `additional-constraints`
+#### `additional-constraints` {#add-constr}
 
 String, specifying the name of a file. Default: `None`.
 
