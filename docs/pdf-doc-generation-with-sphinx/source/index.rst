@@ -1,7 +1,7 @@
 Welcome to Antares Xpansion User Guide'!
 =======================================================
 .. toctree::
-   Get started <user-guide/get-started/0-introduction.md>
+   Introduction <user-guide/index.md>
    Prepare a simulation <user-guide/get-started/1-prepare-a-simulation.md>
    Run a simulation <user-guide/2-Launching-an-Antares-Xpansion-optimization.md>
    The optimization problem in Antares-Xpansion  <user-guide/optimization-principles/0-optimization-principles.md>

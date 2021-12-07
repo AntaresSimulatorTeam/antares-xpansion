@@ -7,7 +7,7 @@ In this step, `antares-solver` runs the Antares study with a specific configurat
 
 In Antares-Xpansion, the weekly problems solved in the first optimization step are written as `.mps` files, the second optimization is useless. Some additional files (`variable.txt`, `area.txt` and `interco.txt`) are also generated to map the variables of the Antares optimization problems to their phhysical meaning. 
 
-## Specific Antares-Xpansion configuration
+## Specific configuration for Antares-Xpansion
 
 In order to run the Antares study correctly, some 
 specific simulation options are required. The Python orchestrator changes the file `settings/generaldata.ini`, with some settings depending on the `uc_type` parameter defined in the `user/expansion/settings.ini` file. An example is given below:

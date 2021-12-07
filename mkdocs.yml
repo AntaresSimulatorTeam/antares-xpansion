@@ -12,6 +12,8 @@ theme:
     - navigation.instant
     - navigation.top
     - navigation.expand
+    - navigation.tabs
+    - navigation.tabs.sticky
   #  - navigation.sections
   #   - header.autohide
   #   - toc.separate

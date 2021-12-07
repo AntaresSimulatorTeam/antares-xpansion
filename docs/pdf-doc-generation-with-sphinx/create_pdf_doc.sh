@@ -2,6 +2,7 @@
 # copy reference guide md files and assets
 cp -r ../user-guide source/
 cp -r ../assets/ source/
+cp ../index.md source/user-guide/
 # change style for inline latex math \\( -> $ and \\) -> $
 find source/user-guide/ -type f -name "*.md" -exec sed -i 's=\\\\)=$=g ; s=\\\\(=$=g' {} \;
 # actually make the pdf

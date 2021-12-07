@@ -33,14 +33,61 @@ Each investment link corresponds to a variable in the weekly optimization proble
 
 ### 2- Modification of .mps file
 
-The following modifications are applied to each `.mps` file:
+The power transmission which transits in the link at a given time step $t$ is denoted by $p_t$. If the maximum power going in the forward direction (resp. backward) is given by $P_{t,max}^{+}$ (resp. $P_{t,max}^{-}$), the original problem bounds for $p_t$ (`ValeurDeNTCOrigineVersExtremite`) are
+$$
+- P_{t,max}^{-} \leq p_t \leq P_{t,max}^{+}
+$$
+If the hurdle costs for the link are activated, there are two extra variables $p_{t}^{+}$ (`CoutOrigineVersExtremiteDeLInterconnexion`) and $p_{t}^{-}$ (`CoutExtremiteVersOrigineDeLInterconnexion`) with the following bounds:
+$$
+0 \leq p_{t}^{+} \leq P_{t,max}^{+}
+$$
+
+$$
+0 \leq p_{t}^{-} \leq P_{t,max}^{-}
+$$
+and the additional constraints:
+$$
+p_{t} = p_{t}^{+} - p_{t}^{-}
+$$
+
+The following modifications are applied to each `.mps` file in order to have the following system:
+$$
+-\infty \leq p_t \leq +\infty
+$$
+If the hurdle costs for the link are activated, there are two extra variables $p_{t}^{+}$ (`CoutOrigineVersExtremiteDeLInterconnexion`) and $p_{t}^{-}$ (`CoutExtremiteVersOrigineDeLInterconnexion`) with the following bounds:
+$$
+0 \leq p_{t}^{+} \leq +\infty
+$$
+
+$$
+0 \leq p_{t}^{-} \leq +\infty
+$$
+and the additional constraints:
+$$
+p_{t} = p_{t}^{+} - p_{t}^{-}
+$$
+We need to add the new investment variables $x$ having a direct (resp. indirect) temporal profile $X_t^{+}$ (resp. $X_t^{-}$) on a link with the already installed capacity $\bar{P}_{t,max}^{+}$
+$$
+p_t + X_t^{-} \cdot x \geq \bar{P}_{t,max}^{-}\\
+p_t - X_t^{+} \cdot x \leq \bar{P}_{t,max}^{+}
+$$
+
+$$
+p_{t}^{+} - X_t^{+} \cdot x \leq \bar{P}_{t,max}^{+}
+$$
+
+$$
+p_{t}^{-} - X_t^{-} \cdot x \leq \bar{P}_{t,max}^{-}
+$$
+
+This translates into the following steps:
 
 - Remove bounds for `ValeurDeNTCOrigineVersExtremite` variables (only for link with candidate),
 - Change upper bounds to `Inf` for `CoutOrigineVersExtremiteDeLInterconnexion`  and `CoutExtremiteVersOrigineDeLInterconnexion` variables (only for link with candidate),
 - Add new columns for each candidate,
-- Add constraint on `ValeurDeNTCOrigineVersExtremite`, (laquelle ?)
-- Add constraint on `CoutOrigineVersExtremiteDeLInterconnexion`, (laquelle ?)
-- Add constraint on `CoutExtremiteVersOrigineDeLInterconnexion`, (laquelle ?)
+- Add constraint on `ValeurDeNTCOrigineVersExtremite`,
+- Add constraint on `CoutOrigineVersExtremiteDeLInterconnexion`,
+- Add constraint on `CoutExtremiteVersOrigineDeLInterconnexion`.
 
 ### 3- Read additional candidate constraints
 
