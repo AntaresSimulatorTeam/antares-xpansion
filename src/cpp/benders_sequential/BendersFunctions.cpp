@@ -25,6 +25,7 @@ void init(BendersData & data) {
 	data.maxsimplexiter = 0;
 	data.minsimplexiter = std::numeric_limits<int>::max();
 	data.best_it =0;
+	data.stopping_criterion = StoppingCriterion::empty;
 }
 
 void print_master_and_cut(std::ostream& file,Str2Int & problem_to_id, int ite, WorkerMasterDataPtr & trace, Point const & xopt, std::string const & master_name, int const nslaves) {
@@ -212,7 +213,16 @@ bool stopping_criterion(BendersData & data, BendersOptions const & options) {
 	data.deletedcut = 0;
 	data.maxsimplexiter = 0;
 	data.minsimplexiter = std::numeric_limits<int>::max();
-	return (((options.MAX_ITERATIONS != -1) && (data.it > options.MAX_ITERATIONS)) || (data.lb + options.ABSOLUTE_GAP >= data.best_ub) || (((data.best_ub - data.lb) / data.best_ub) <= options.RELATIVE_GAP));
+	if(data.elapsed_time > options.TIME_LIMIT)
+		data.stopping_criterion = StoppingCriterion::timelimit;
+	else if( (options.MAX_ITERATIONS != -1) && (data.it > options.MAX_ITERATIONS) )
+		data.stopping_criterion = StoppingCriterion::max_iteration;
+	else if ( data.lb + options.ABSOLUTE_GAP >= data.best_ub )
+		data.stopping_criterion = StoppingCriterion::absolute_gap;
+	else if  ( ((data.best_ub - data.lb) / data.best_ub) <= options.RELATIVE_GAP ) 
+		data.stopping_criterion = StoppingCriterion::relative_gap;
+	
+	return data.stopping_criterion != StoppingCriterion::empty;
 }
 
 /*!

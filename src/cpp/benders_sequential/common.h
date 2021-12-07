@@ -145,6 +145,8 @@ struct BendersData {
 	double dnslaves;
 	int master_status;
 	int nrandom;
+	double elapsed_time;
+	StoppingCriterion stopping_criterion;
 };
 
 double norm_point(Point const & x0, Point const & x1);

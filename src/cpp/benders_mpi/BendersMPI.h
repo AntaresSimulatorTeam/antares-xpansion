@@ -50,7 +50,7 @@ private:
     void step_1_solve_master(mpi::environment & env, mpi::communicator & world);
     void step_2_build_cuts(mpi::environment & env, mpi::communicator & world);
     void step_3_gather_slaves_basis(mpi::environment & env, mpi::communicator & world);
-    void step_4_update_best_solution(int rank, const Timer& timer_master);
+    void step_4_update_best_solution(int rank, const Timer& timer_master, const Timer& benders_timer);
 
     Logger _logger;
 

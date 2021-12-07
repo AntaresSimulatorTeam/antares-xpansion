@@ -112,6 +112,7 @@ void Benders::doRun(){
 	}
 	init(_data);
 	_data.nrandom = _options.RAND_AGGREGATION;
+	Timer benders_timer;
 	while (!_data.stop) {
 		Timer timer_master;
 		++_data.it;
@@ -140,6 +141,7 @@ void Benders::doRun(){
 		update_trace(_trace, _data);
 
 		_data.timer_master = timer_master.elapsed();
+		_data.elapsed_time = benders_timer.elapsed();
 		_data.stop = stopping_criterion(_data, _options);
 	}
 

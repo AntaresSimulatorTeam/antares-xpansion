@@ -292,13 +292,14 @@ void BendersMpi::step_3_gather_slaves_basis(mpi::environment & env, mpi::communi
 }
 
 
-void BendersMpi::step_4_update_best_solution(int rank, const Timer& timer_master){
+void BendersMpi::step_4_update_best_solution(int rank, const Timer& timer_master, const Timer& benders_timer){
     if (rank == 0) {
         update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
         _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
         update_trace(_trace, _data);
 
+		_data.elapsed_time = benders_timer.elapsed();
         _data.timer_master = timer_master.elapsed();
         _data.stop = stopping_criterion(_data,_options);
     }
@@ -339,6 +340,7 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
 	init(_data);
 	world.barrier();
 
+	Timer benders_timer;
 	while (!_data.stop) {
 		Timer timer_master;
 		update_random_option(env, world, _options, _data);
@@ -358,12 +360,11 @@ void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
 		}
 
         if (!_exceptionRaised) {
-            step_4_update_best_solution(world.rank(), timer_master);
+            step_4_update_best_solution(world.rank(), timer_master, benders_timer);
         }
         _data.stop |= _exceptionRaised;
 
 		broadcast(world, _data.stop, 0);
-		world.barrier();
 	}
 
 	if (world.rank() == 0) {

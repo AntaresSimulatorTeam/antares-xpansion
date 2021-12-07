@@ -235,6 +235,7 @@ class ConfigLoader:
             self.options.get('solver', "Cbc"))
         if self.weight_file_name():
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
+        options_values["TIME_LIMIT"] = self.timelimit()
         # generate options file for the solver
         options_path = os.path.normpath(os.path.join(
             self._simulation_lp_path(), self._config.OPTIONS_TXT))
@@ -317,6 +318,16 @@ class ConfigLoader:
 
     def json_name(self):
         return self._config.options_default["JSON_NAME"]
+
+    def timelimit(self):
+        """
+        returns the timelimit read from the settings file
+        :return: timelimit value or 0 if the gap is negative
+        """
+        timelimit_str = self.options.get(
+            "timelimit", self._config.settings_default["timelimit"]
+        )
+        return 1e12 if timelimit_str in ("+Inf", "+infini") else int(timelimit_str)
 
     class MissingSimulationName(Exception):
         pass
