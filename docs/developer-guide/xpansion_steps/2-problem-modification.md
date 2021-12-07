@@ -33,7 +33,44 @@ Each investment link corresponds to a variable in the weekly optimization proble
 
 ### 2- Modification of .mps file
 
-The power transmission which transits in the link at a given time step $t$ is denoted by $p_t$. If the maximum power going in the forward direction (resp. backward) is given by $P_{t,max}^{+}$ (resp. $P_{t,max}^{-}$), the original problem bounds for $p_t$ (`ValeurDeNTCOrigineVersExtremite`) are
+In order to create the _satellite problems_, some contraints of the weekly problems must be changed and some variables must be added.
+
+#### Initial weekly problems
+
+In the initial weekly problems, we have the following variables:
+
+| Notation | Description | Label |
+| :-------|:-----------|:-----|
+| \\(F_{l,t}\\) | Total power flow through link \\(l\\) at time \\(t\\). | `ValeurDeNTCOrigineVersExtremite` |
+| \\(F_{l,t}^{+}\\) | Power flow through link \\(l\\) in the forward direction at time \\(t\\). | `CoutOrigineVersExtremiteDeLInterconnexion` |
+| \\(F_{l,t}^{-}\\) | Power flow through link \\(l\\) in the backward direction at time \\(t\\). | `CoutExtremiteVersOrigineDeLInterconnexion` |
+| \\(\bar{C}_{l,t}^{+}\\) | Maximum transmission capacity through link \\(l\\) in the forward direction at time \\(t\\). |
+| \\(\bar{C}_{l,t}^{-}\\) | Maximum transmission capacity through link \\(l\\) in the backward direction at time \\(t\\). |
+
+The bounds on the variables are as follows:
+$$
+F_{l,t} \leq \bar{C}_{l,t}^{+}
+$$
+
+$$
+F_{l,t} \geq -\bar{C}_{l,t}^{-}
+$$
+
+$$
+0 \leq F_{l,t}^{+} \leq \bar{C}_{l,t}^{+} 
+$$
+
+$$
+0 \leq F_{l,t}^{-} \leq \bar{C}_{l,t}^{-}
+$$
+
+There are also constraints linking the forward and backward flows:
+
+$$
+F_{l,t} = F_{l,t}^{+} - F_{l,t}^{-}
+$$
+
+<!-- The power transmission which transits in the link at a given time step $t$ is denoted by $p_t$. If the maximum power going in the forward direction (resp. backward) is given by $P_{t,max}^{+}$ (resp. $P_{t,max}^{-}$), the original problem bounds for $p_t$ (`ValeurDeNTCOrigineVersExtremite`) are
 $$
 - P_{t,max}^{-} \leq p_t \leq P_{t,max}^{+}
 $$
@@ -48,46 +85,55 @@ $$
 and the additional constraints:
 $$
 p_{t} = p_{t}^{+} - p_{t}^{-}
-$$
+$$ -->
 
-The following modifications are applied to each `.mps` file in order to have the following system:
-$$
--\infty \leq p_t \leq +\infty
-$$
-If the hurdle costs for the link are activated, there are two extra variables $p_{t}^{+}$ (`CoutOrigineVersExtremiteDeLInterconnexion`) and $p_{t}^{-}$ (`CoutExtremiteVersOrigineDeLInterconnexion`) with the following bounds:
-$$
-0 \leq p_{t}^{+} \leq +\infty
-$$
+#### Modifications for _satellite problems_
+
+In order to create the _satellite problems_, the constraints must be changed as follows:
 
 $$
-0 \leq p_{t}^{-} \leq +\infty
-$$
-and the additional constraints:
-$$
-p_{t} = p_{t}^{+} - p_{t}^{-}
-$$
-We need to add the new investment variables $x$ having a direct (resp. indirect) temporal profile $X_t^{+}$ (resp. $X_t^{-}$) on a link with the already installed capacity $\bar{P}_{t,max}^{+}$
-$$
-p_t + X_t^{-} \cdot x \geq \bar{P}_{t,max}^{-}\\
-p_t - X_t^{+} \cdot x \leq \bar{P}_{t,max}^{+}
+-\infty \leq F_{l,t} \leq +\infty
 $$
 
 $$
-p_{t}^{+} - X_t^{+} \cdot x \leq \bar{P}_{t,max}^{+}
+0 \leq F_{l,t}^{+} \leq +\infty
 $$
 
 $$
-p_{t}^{-} - X_t^{-} \cdot x \leq \bar{P}_{t,max}^{-}
+0 \leq F_{l,t}^{-} \leq +\infty
+$$
+with the same additional constraints:
+
+$$
+F_{l,t} = F_{l,t}^{+} - F_{l,t}^{-}
 $$
 
-This translates into the following steps:
+We also need to add the investment variables \\(x_{l}\\) that represent the invested capcity on link \\(l\\). We suppose that the link has a direct (resp. indirect) temporal profile denoted by \\(\Lambda_{l,t}^{+}\\) (resp. \\(\Lambda_{l,t}^{-}\\)) with the already installed capacity \\(\widetilde{C}\_{l,t}^{+}\\) in the forward direction (resp. \\(\widetilde{C}\_{l,t}^{-}\\) in the backward direction). Then the following constraints must be added:
+
+$$
+F_{l,t} + \Lambda_{l,t}^{-} \cdot x_{l} \geq \widetilde{C}_{l,t}^{-}
+$$
+
+$$
+F_{l,t} + \Lambda_{l,t}^{+} \cdot x_{l} \leq \widetilde{C}_{l,t}^{+}\\
+$$
+
+$$
+F_{l,t}^{-} - \Lambda_{l,t}^{-} \cdot x_{l} \leq \widetilde{C}_{l,t}^{-}
+$$
+
+$$
+F_{l,t}^{+} - \Lambda_{l,t}^{+} \cdot x_{l} \leq \widetilde{C}_{l,t}^{+}
+$$
+
+This translates into the following steps for the modification of `.mps` files:
 
 - Remove bounds for `ValeurDeNTCOrigineVersExtremite` variables (only for link with candidate),
 - Change upper bounds to `Inf` for `CoutOrigineVersExtremiteDeLInterconnexion`  and `CoutExtremiteVersOrigineDeLInterconnexion` variables (only for link with candidate),
-- Add new columns for each candidate,
-- Add constraint on `ValeurDeNTCOrigineVersExtremite`,
-- Add constraint on `CoutOrigineVersExtremiteDeLInterconnexion`,
-- Add constraint on `CoutExtremiteVersOrigineDeLInterconnexion`.
+- Add a new column for each candidate,
+- Add the constraints on `ValeurDeNTCOrigineVersExtremite`,
+- Add the constraints on `CoutOrigineVersExtremiteDeLInterconnexion`,
+- Add the constraints on `CoutExtremiteVersOrigineDeLInterconnexion`.
 
 ### 3- Read additional candidate constraints
 
