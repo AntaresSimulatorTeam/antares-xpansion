@@ -18,11 +18,10 @@ SolverXpress::SolverXpress() {
 	_NumberOfProblems += 1;
 
 	_xprs = NULL;
-	_stream.push_back(&std::cout);
 }
 
 SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
-	init();
+    SolverXpress::init();
 	int status = 0;
 
 	// Try to cast the solver in fictif to a SolverCPLEX
@@ -33,14 +32,14 @@ SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
 	}
 	else {
 		_NumberOfProblems -= 1;
-		free();
+        SolverXpress::free();
         throw InvalidSolverForCopyException(toCopy->get_solver_name(),get_solver_name());
 	}
 }
 
 SolverXpress::~SolverXpress() {
 	_NumberOfProblems -= 1;
-	free();
+    SolverXpress::free();
 
 	if (_NumberOfProblems == 0) {
 		int status = XPRSfree();
@@ -477,7 +476,7 @@ void SolverXpress::set_simplex_iter(int iter){
 	zero_status_check(status, "set simplex max iter");
 }
 
-void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLen,
+const void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLen,
 	int nMsglvl) {
 	std::list<std::ostream* >* ptr = NULL;
 	if (strPtr != NULL)ptr = (std::list<std::ostream* >*)strPtr;
