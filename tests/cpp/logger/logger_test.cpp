@@ -225,7 +225,7 @@ TEST_F(UserLoggerTest, EndLogAbsoluteGap) {
     logData.relative_gap = 1e-6;
     logData.it = 2;
     logData.max_iterations = 10;
-
+    logData.stopping_criterion = StoppingCriterion::absolute_gap;
     std::stringstream expected;
     expected << "--- Run completed: absolute gap reached" << std::endl;
     expected << indent_1 << "Best solution = it 1" << std::endl;
@@ -246,6 +246,7 @@ TEST_F(UserLoggerTest, EndLogRelativeGap) {
     logData.relative_gap = 0.1;
     logData.it = 2;
     logData.max_iterations = 10;
+    logData.stopping_criterion = StoppingCriterion::relative_gap;
 
     std::stringstream expected;
     expected << "--- Run completed: relative gap reached" << std::endl;
@@ -268,6 +269,7 @@ TEST_F(UserLoggerTest, EndLogMaxIterations)
     logData.relative_gap = 1e-6;
     logData.it = 11;
     logData.max_iterations = 10;
+    logData.stopping_criterion = StoppingCriterion::max_iteration;
 
     std::stringstream expected;
     expected << "--- Run completed: maximum iterations reached" << std::endl;
