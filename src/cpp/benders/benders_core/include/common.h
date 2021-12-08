@@ -25,7 +25,7 @@
 #include <thread>
 #include <cmath>
 #include "Timer.h"
-#include "benders_sequential_core/ILogger.h"
+#include "core/ILogger.h"
 // MultiSolver interface 
 #include "multisolver_interface/Solver.h"
 
