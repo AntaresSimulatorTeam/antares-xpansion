@@ -137,7 +137,7 @@ This translates into the following steps for the modification of `.mps` files:
 
 ### 3- Read additional candidate constraints
 
-The `additional-constraints` parameter, that specifies the path to file, may be defined in the `settings.ini`. This is used to define linear constraints between the invested capacities of investment candidates, and is read at this stage of Antares-Xpansion process. For more information on the file format, see the [corresponding part](../../user-guide/get-started/3-settings-definition.md#add-constr) of the user guide.
+The `additional-constraints` parameter, that specifies the path to file, may be defined in the `settings.ini`. This is used to define linear constraints between the invested capacities of investment candidates, and is read at this stage of Antares-Xpansion process. For more information on the file format, see the [corresponding part](../../user-guide/get-started/settings-definition.md#additional-constraints) of the user guide.
 
 ### 4- Creation of master problem
 
@@ -149,7 +149,7 @@ The _master problem_ is created from the list of candidates in the following way
     - Add a constraint that links the number of units to the invested capacity.
     
 - If additional constraints are defined:
-    - Create binary constraints, that represent for example exclusion constraints, see [**Figure 13**](../../user-guide/get-started/3-settings-definition.md#add-constr).
+    - Create binary constraints, that represent for example exclusion constraints, see [**Figure 13**](../../user-guide/get-started/settings-definition.md#additional-constraints).
     - Create the other linear constraints between invested capactities of the candidates.
     
 ### 5- Creation of a variable / column ID mapping file

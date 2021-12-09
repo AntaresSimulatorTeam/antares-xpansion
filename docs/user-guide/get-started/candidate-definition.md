@@ -1,4 +1,6 @@
-Once the Antares study has been prepared for the Antares-Xpansion simulation, by the introduction of virtual nodes as described in [Prepare the Antares study](1-prepare-a-simulation.md#prepare-study), the user must use the `candidates.ini` file to characterize the investment candidates.
+# Define the candidates
+
+Once the Antares study has been prepared for the Antares-Xpansion simulation, by the introduction of virtual nodes as described in [Prepare the Antares study](prepare-a-simulation.md#prepare-the-antares-study), the user must use the `candidates.ini` file to characterize the investment candidates.
 
 ## Characterization of investment candidates in `candidates.ini`
 
@@ -40,7 +42,7 @@ The format is a standard `.ini` and should follow this template:
 **Figure 4** – Example of a candidates.ini file.
 
 In Antares-Xpansion, the investment decisions only affect the capacity of the
-Antares' links. Investment in physical generation capacity is done with virtual nodes as described in [Prepare the Antares study](1-prepare-a-simulation.md#prepare-study).
+Antares' links. Investment in physical generation capacity is done with virtual nodes as described in [Prepare the Antares study](prepare-a-simulation.md#prepare-the-antares-study).
 
 ### Details of the parameters
 
@@ -63,7 +65,7 @@ origin_area – destination_area
 Node names that include spaces or dashes are not compatible
 with Antares-Xpansion. The origin area corresponds to the first in
 the spelling order. The same link may contain several investment
-candidates (see [this section](#several-candidates)).
+candidates (see [this section](#several-investment-candidates-on-the-same-link )).
 
 #### `annual-cost-per-mw`
 
@@ -75,18 +77,18 @@ the fixed cost annuity can include:
     - Fixed operation and maintenance costs,
     - An investment cost annuity.
 
-#### `max-investment` {#max-invest}
+#### `max-investment`
 
 Float. Represents the candidate's
 potential, i.e. the maximum capacity (in MW) that can be invested in
 this candidate. If this parameter is set, the invested capacity can take any value in the interval \\(\small [0, \texttt{max-investment}]\\).
 
-#### `unit-size` {#unit-size}
+#### `unit-size`
 
 Float. Defines the nominal capacity
 (in MW) of the investment candidate's units.
 
-#### `max-units` {#max-units}
+#### `max-units`
 
 Integer. Corresponds to the candidate's
 potential in terms of number of installable units. If
@@ -102,7 +104,7 @@ $$
     either (i) a maximum potential in MW (`max-investment`) or (ii) a unit
     size in MW (`unit-size`) and a maximum potential in number of units (`max-units`).
 
-#### `already-installed-capacity` {#already-installed-capa}
+#### `already-installed-capacity`
 
 Float. Corresponds to a capacity that is
 already installed on the investment candidate's link. If
@@ -113,7 +115,7 @@ initially indicated in the Antares study are not considered in the
 Antares-Xpansion.
 
 
-#### `link-profile` {#link-profile}
+#### `link-profile`
 
 String, specifying the name of a file. This
 file must be located in the `user/expansion/capa/` directory of the
@@ -121,7 +123,7 @@ Antares study. It must contain one or two columns of 8760 numerical
 values (the decimal separator is the point), see **Figure 5**. The `link-profile` makes the
 link between the invested capacity and the capacity that is actually available,
 in the direct and indirect directions of the Antares link, for the 8760
-hours of the year. More details are given in [this section](#profile-relationship).
+hours of the year. More details are given in [this section](#link-between-invested-capacity-and-capacity-of-the-antares-study).
 
 The `link-profile` can be used for example to represent
 the maintenance of a generation asset via a seasonalized power outage,
@@ -145,14 +147,14 @@ file must be located in the `user/expansion/capa/` directory of the
 Antares study and has the same format as a `link-profile` file, see **Figure 5**. The `already-installed-link-profile` makes the link between the
 already installed capacity and the available capacity, in the
 direct and indirect way of the Antares link, for the 8760 hours of the
-year. More details are given in [this section](#profile-relationship).
+year. More details are given in [this section](#link-between-invested-capacity-and-capacity-of-the-antares-study).
 
 
 !!! Note 
     The same file can be used for `link-profile`
     and `already-installed-link-profile` of one or more candidates.
 
-## Link between invested capacity and capacity of the Antares study {#profile-relationship}
+## Link between invested capacity and capacity of the Antares study
 
 The parameters `link-profile`, `already-installed-capacity` and
 `already-installed-link-profile` are used to define the link between the capacity installed by Antares-Xpansion, the already installed capacity and the truly available capacity in the Antares study, hour by hour and in both directions of the link, following the relationship presented in **Figure 6**.
@@ -256,7 +258,7 @@ the candidate, see **Figure 5**. When \\(x\\) MW of the
 candidate `solar_power` are invested, the actual time series of
 available power is equal to the product of \\(x\\) and the time series `pv1.txt`.
 
-### Several investment candidates on the same link {#several-candidates}
+### Several investment candidates on the same link
 
 The same link in an Antares study can be the support of several investment candidates. The interest of such an approach can be :
 
@@ -271,13 +273,13 @@ The example in **Figure 8** shows the case of an investment in photovoltaic prod
 
 This only works with the Antares-Xpansion algorithm (Benders decomposition) if the costs are increasing and if the investment candidates with the same link have the same `already-installed-capacity` and  `already-installed-link-profile`. 
 
-### Decommissioning candidates {#decommissioning}
+### Decommissioning candidates
 
-In this example, we show how to consider both an investment candidate and a decommissioning candidate on the same link. Candidates for decommissioning must be moved from their physical location to a virtual node as explained in [Prepare the Antares study](1-prepare-a-simulation.md#decommissioning).
+In this example, we show how to consider both an investment candidate and a decommissioning candidate on the same link. Candidates for decommissioning must be moved from their physical location to a virtual node as explained in [Prepare the Antares study](prepare-a-simulation.md#decommissioning-decisions-for-thermal-capacities).
 
 We strongly advise to explicitly specify candidates for decommissioning in the `name` field of the `candidates.ini` file (although this is not required by the tool), see **Figure 9**. This will ease the analysis of Antares-Xpansion output for the user.
 
-By considering [several investment candidates on the same link](#several-candidates), it is possible to model both an investment and a decommissioning candidate.
+By considering [several investment candidates on the same link](#several-investment-candidates-on-the-same-link ), it is possible to model both an investment and a decommissioning candidate.
 
 - The candidate for decommissioning is defined by:
 

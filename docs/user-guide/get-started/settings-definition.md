@@ -1,4 +1,6 @@
-In order to solve the investment problem defined by an Antares study and its associated `candidates.ini` file, Antares-Xpansion uses the [Benders decomposition algorithm](../optimization-principles/optimization-principles.md). The parameters of the algorithm are defined in the `settings.ini` file. 
+# Settings of the algorithm
+
+In order to solve the investment problem defined by an Antares study and its associated `candidates.ini` file, Antares-Xpansion uses the [Benders decomposition algorithm](../optimization-principles/investment-problem.md). The parameters of the algorithm are defined in the `settings.ini` file. 
 
 ## Parameterization of the optimization algorithm in `settings.ini`
 
@@ -85,7 +87,7 @@ Strictly positive integer or infinite. Default value: `Inf`.
 Maximum number of
 iterations for the Benders decomposition algorithm. Once this number of iterations is reached, the Antares-Xpansion algorithm ends, regardless of the quality of the solution.
 
-#### `uc_type` {#uc_type}
+#### `uc_type`
 
 Possible values: `expansion_fast` and `expansion_accurate`. By default:
 `expansion_fast`.
@@ -114,10 +116,10 @@ The `master` parameter provides information on how integer variables are
 taken into account in the Antares-Xpansion master problem.
 
 - If `master = relaxed`: the integer variables are relaxed, and the
-  level constraints of the investment candidates (cf. [`unit-size`](2-candidate-definition.md#unit-size)) will not be necessarily respected. The master problem is linear.
+  level constraints of the investment candidates (cf. [`unit-size`](candidate-definition.md#unit-size)) will not be necessarily respected. The master problem is linear.
 
 - If `master = integer`: the investment problem is solved
-  by taking into account [`unit-size`](2-candidate-definition.md#unit-size) constraints of the candidates. The master problem is a MILP (Mixed-Integer Linear Program).
+  by taking into account [`unit-size`](candidate-definition.md#unit-size) constraints of the candidates. The master problem is a MILP (Mixed-Integer Linear Program).
 
 For problems with several investment candidates with large `max-units`,
 using `master = relaxed` can accelerate the Antares-Xpansion algorithm
@@ -162,7 +164,7 @@ not to be simulated unnecessarily.
 
 String. Default value: `Cbc`.
 
-Defines the solver that is used to solve the master and the slave problems in the [Benders decompsoition](../optimization-principles/optimization-principles.md). The user can either write `solver = Cbc` or `solver = Coin` to use the COIN-OR optimization suite. These settings are identical: depending on whether the problem has integer variables, Antares-Xpansion calls either the linear solver ([Clp](https://github.com/coin-or/Clp)) or the MILP solver ([Cbc](https://github.com/coin-or/Cbc)) of the COIN-OR optimization suite. 
+Defines the solver that is used to solve the master and the slave problems in the [Benders decompsoition](../optimization-principles/investment-problem.md). The user can either write `solver = Cbc` or `solver = Coin` to use the COIN-OR optimization suite. These settings are identical: depending on whether the problem has integer variables, Antares-Xpansion calls either the linear solver ([Clp](https://github.com/coin-or/Clp)) or the MILP solver ([Cbc](https://github.com/coin-or/Cbc)) of the COIN-OR optimization suite. 
 
 !!! Remark
     In Antares-Xpansion, the slave problems are always linear. If `master = relaxed`, the master problem is linear as well, whereas if `master = integer`, the master problem is a MILP.
@@ -170,7 +172,7 @@ Defines the solver that is used to solve the master and the slave problems in th
 To use another solver, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.
 
 
-#### `additional-constraints` {#add-constr}
+#### `additional-constraints`
 
 String, specifying the name of a file. Default: `None`.
 

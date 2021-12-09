@@ -1,5 +1,4 @@
-# The problem of optimal dimensioning of generation and transport capacities
-
+# The optimal investment problem in Antares-Xpansion
 ## General description
 
 Antares-Xpansion minimizes the following cost:
@@ -12,7 +11,7 @@ over a set of investment variables specified by the user.
 - The expected operating costs for one year, calculated by
 Antares, includes the variable costs of thermal generation (fuel and CO2
 costs), penalties in case of unsupplied energy, line transit costs (if
-any), and, if the [`expansion_accurate`](../get-started/3-settings-definition.md#uc_type) mode is used, the start-up costs of
+any), and, if the [`expansion_accurate`](../get-started/settings-definition.md#uc_type) mode is used, the start-up costs of
 the thermal generation units. The production costs are calculated over
 the entire geographical perimeter of the Antares study, and in
 expectation over the probabilistic scenarios defined in the study. 
@@ -85,7 +84,7 @@ the B-C line is built - or of competitions - for example an A-B-C
 corridor parallel to another A-D-C corridor.
 
 The definition of the investment variables in Antares-Xpansion is
-detailed in [Define the candidates](../get-started/2-candidate-definition.md). For example, it may include:
+detailed in [Define the candidates](../get-started/candidate-definition.md). For example, it may include:
 
 - **Investable capacity values limited to a
    finite set rather than a whole interval.** This allows to consider the following cases:   

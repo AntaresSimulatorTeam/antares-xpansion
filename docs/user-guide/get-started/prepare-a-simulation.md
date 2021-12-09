@@ -42,7 +42,7 @@ antares-study
 
 Depending on the type of investment considered in the study, some modifications of the Antares study are necessary before filling the `candidates.ini` and `settings.ini` files.
 
-## Prepare the Antares study {#prepare-study}
+## Prepare the Antares study
 
 The first step to set up an Antares-Xpansion study consists in defining investment candidates.
 **Candidate capacities for investment are
@@ -59,12 +59,12 @@ reinforcement), **(b)** generation units and **(c)** storage.
 
 The following sections describe the Antares modelling for different types of investment:
 
-  - [Transmission capcity between two areas](#transmission)
-  - [Thermal generation capacity](#thermal)
-  - [Renewable generation capacity](#renewable)
-  - [Flexibility](#flexibility)
+  - [Transmission capcity between two areas](#investment-in-transmission-capacity-between-two-areas)
+  - [Thermal generation capacity](#investment-in-thermal-generation-capacity)
+  - [Renewable generation capacity](#investment-in-renewable-generation-capacity)
+  - [Flexibility](#investment-in-flexibility)
 
-### Investment in transmission capacity between two areas {#transmission}
+### Investment in transmission capacity between two areas
 
 The Antares link candidate for investment, shown in red in
 **Figure 3 (a)**, is directly the interconnection for which the interest
@@ -76,9 +76,9 @@ in increasing capacity is being studied.
 - In the case of a grid reinforcement between two already
   interconnected areas, the link between these two areas already
   exists in the Antares study. The parameter
-  [`already-installed-capacity`](2-candidate-definition.md#already-installed-capa) will be used in the `candidates.ini` file to specify the capacity of the grid that already exists between the two zones. In this way, Antares-Xpansion will assess the economic interest of increasing this capacity beyond what is already installed.
+  [`already-installed-capacity`](candidate-definition.md#already-installed-capacity) will be used in the `candidates.ini` file to specify the capacity of the grid that already exists between the two zones. In this way, Antares-Xpansion will assess the economic interest of increasing this capacity beyond what is already installed.
 
-### Investment in thermal generation capacity {#thermal}
+### Investment in thermal generation capacity
 
 Suppose that the thermal generation capacity subject to expansion is 
 physically located in `area1` for the example in **Figure 3 (b)**. As Antares-Xpansion only performs investment through links of the study, the modelling trick consists in creating a virtual node, here `invest_semibase`, connected to the physical node `area1`. The Antares link of the investment candidate is the link between these two nodes.
@@ -93,7 +93,7 @@ the following technical and economic parameters:
   unit.
 
 - It has an hourly availability time series
-  that is **always higher than the potential** of the candidate, where by *potential* we mean the capacity correponding to the maximum investment that is allowed by the user (i.e. [`max-investment`](2-candidate-definition.md#max-invest) or [`max-units`](2-candidate-definition.md#max-units) \\(\small \times\\) [`unit-size`](2-candidate-definition.md#unit-size)): 
+  that is **always higher than the potential** of the candidate, where by *potential* we mean the capacity correponding to the maximum investment that is allowed by the user (i.e. [`max-investment`](candidate-definition.md#max-investment) or [`max-units`](candidate-definition.md#max-units) \\(\small \times\\) [`unit-size`](candidate-definition.md#unit-size)): 
   
     - If the hourly
       availability time series of thermal generation are "*ready-made*” in
@@ -109,9 +109,9 @@ the following technical and economic parameters:
 
 Other cluster parameters (*pmin*, *start-up costs*, etc.) can also be
 defined. However, they will only be taken into account by
-Antares-Xpansion if the unit-commitment type is set to [`expansion_accurate`](3-settings-definition.md#uc_type).
+Antares-Xpansion if the unit-commitment type is set to [`expansion_accurate`](settings-definition.md#uc_type).
 
-### Investment in renewable generation capacity {#renewable}
+### Investment in renewable generation capacity
 
 Similarly as for thermal generation, the renewable
 generation capacity subject to expansion, physically located for the
@@ -123,12 +123,12 @@ production time-series (Antares wind or solar tab) must be defined in
 the virtual node. The production time-series must be deterministic,
 constant, and **higher than the
 potential** (`max-investment`) of the candidate. The
-parameter [`link-profile`](2-candidate-definition.md#link-profile) from the `candidates.ini` file will then be used to define the
+parameter [`link-profile`](candidate-definition.md#link-profile) from the `candidates.ini` file will then be used to define the
 hourly load factor. It should be noted that this profile is necessarily
 deterministic and that the new renewable generation capacities cannot
 have differentiated production time-series for each Monte-Carlo year.
 
-### Investment in flexibility {#flexibility}
+### Investment in flexibility
 
 The modeling of flexibilities, such as pumped storage, is generally based in Antares
 on a set of virtual nodes/links and coupling constraints. To make
@@ -148,7 +148,7 @@ positive `ROW Balance` in `psp-out` and the following constraint:
 
 ![](../../assets/media/image9.png)
 
-### Decommissioning decisions for thermal capcities {#decommissioning}
+### Decommissioning decisions for thermal capacities
 
 With Antares-Xpansion, it is possible to consider decommissioning decisions, the corresponding assets are referred as _decommissioning candidates_. The difference between _investment candidates_ and _decommissioning candidates_ lies in the fixed-cost annuity.
 
@@ -175,17 +175,17 @@ savings induced on the variable costs of power system operation thanks to this a
 
 The annualized investment costs are in this case considered
 stranded and are not taken into account in this economic choice. The
-potential of this type of candidate (i.e. its [`max-investment`](2-candidate-definition.md#max-invest) or [`max-units`](2-candidate-definition.md#max-units) \\(\small \times\\) [`unit-size`](2-candidate-definition.md#unit-size)) corresponds to its decommissionable capacity,
+potential of this type of candidate (i.e. its [`max-investment`](candidate-definition.md#max-investment) or [`max-units`](candidate-definition.md#max-units) \\(\small \times\\) [`unit-size`](candidate-definition.md#unit-size)) corresponds to its decommissionable capacity,
 or in other words, the candidate's already installed capacity that could be shut
 down if it is no longer profitable for the power system.
 
-Antares-Xpansion is not able to decommission generation units that are installed in the Antares study (i.e. located in "physical nodes"). However, we can use a modelling of _decommissioning candidates_ with the same virtual node logic as the [investment in thermal generation capacity](#thermal). Decommissioning candidates are existing physical facilities that should be moved to a virtual node. 
+Antares-Xpansion is not able to decommission generation units that are installed in the Antares study (i.e. located in "physical nodes"). However, we can use a modelling of _decommissioning candidates_ with the same virtual node logic as the [investment in thermal generation capacity](#investment-in-thermal-generation-capacity). Decommissioning candidates are existing physical facilities that should be moved to a virtual node. 
 
 For example, suppose that we aim at taking a decommissioning decision for thermal generation capacities that are physically located in `area1` of **Figure 3 (b)**. To be considered _decommissioning candidates_, these generation units must be moved to a virtual node (`invest_semibase` in **Figure 3 (b)**) with an hourly availability time series higher than their potential. 
 
 The decommissioning decision is made in Antares-Xpansion through the capacity of the link between `area1` and `invest_semibase`. Thus, the capacity invested by Antares-Xpansion on the link corresponds to the capacity that is **not** decommissioned.
 
-Details on how to fill in the file `candidates.ini` for _decommissioning candidates_ are given in the [next part](2-candidate-definition.md#decommissioning).
+Details on how to fill in the file `candidates.ini` for _decommissioning candidates_ are given in the [next part](candidate-definition.md#decommissioning-candidates).
 
 ### Additional characteristics for links of investment candidates
 
@@ -211,6 +211,6 @@ modified by Antares-Xpansion. The values initially entered in the
 *Trans.* *Capacity Direct* and *Trans. Capacity Indirect* columns do not
 matter since they will be overwritten when the expansion problem is
 solved. Note that the capacities of existing structures must be filled
-in with the [`already-installed-capacity`](2-candidate-definition.md#already-installed-capa) parameter in the `candidates.ini`
+in with the [`already-installed-capacity`](candidate-definition.md#already-installed-capacity) parameter in the `candidates.ini`
 file and not in the definition of the links in the Antares
 study.

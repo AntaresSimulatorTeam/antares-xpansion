@@ -17,7 +17,7 @@ To download the latest version of Antares-Xpansion, visit [Antares-Xpansion repo
 
 ## Installation instruction
 
-Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use Antares-Xpansion. See [launching an optimization](4-launching-optimization.md) for instructions on how to launch the software.
+Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use Antares-Xpansion. See [launching an optimization](launching-optimization.md) for instructions on how to launch the software.
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml/badge.svg
 [ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml

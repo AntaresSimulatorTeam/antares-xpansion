@@ -35,15 +35,15 @@ nav:
   - 'User guide':
     - 'How does Antares-Xpansion work ?':
         - 'General simulation procedure': 'user-guide/optimization-principles/general-process.md'
-        - 'Optimization principles': 'user-guide/optimization-principles/optimization-principles.md'
+        - 'The optimal investment problem in Antares-Xpansion': 'user-guide/optimization-principles/investment-problem.md'
         - 'Mathematical formulation of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
-    - 'Get started':
-      - 'Installation': 'user-guide/get-started/0-installation.md'
+    - 'Getting started':
+      - 'Installation': 'user-guide/get-started/installation.md'
       - 'Set up an Antares-Xpansion study':
-        - 'Prepare the Antares study': 'user-guide/get-started/1-prepare-a-simulation.md'
-        - 'Define the candidates': 'user-guide/get-started/2-candidate-definition.md'
-        - 'Settings of the algorithm': 'user-guide/get-started/3-settings-definition.md'
-      - 'Launch the optimization': 'user-guide/get-started/4-launching-optimization.md'
+        - 'Prepare the Antares study': 'user-guide/get-started/prepare-a-simulation.md'
+        - 'Define the candidates': 'user-guide/get-started/candidate-definition.md'
+        - 'Settings of the algorithm': 'user-guide/get-started/settings-definition.md'
+      - 'Launch the optimization': 'user-guide/get-started/launching-optimization.md'
   - 'Developer guide': 
     - 'Install from sources':
       - 'Introduction': 'developer-guide/install_from_sources/0-INSTALL.md'

@@ -11,7 +11,7 @@ module load mpi
 ```
 git submodule update --init antares-deps
 ```
-## Configure build with CMake {#configure}
+## Configure build with CMake
 === "Windows"
 
     ```

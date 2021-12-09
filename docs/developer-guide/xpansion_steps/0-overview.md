@@ -31,7 +31,7 @@ For more details on how the master and the satellite problems are generated, see
 ## 3- Resolution stage with Benders decomposition: `benders`
 
 The core step of Antares-Xpansion problem consists in solving the investment problem generated in the previous step.
-Antares-Xpansion uses a [Benders decomposition](https://en.wikipedia.org/wiki/Benders_decomposition) algorithm as it is well-suited to the structure of the investment problem: the _satellite problems_ are independent, i.e. the weekly problems in an Antares study are independent (using water values is not allowed in Antares-Xpansion). Details of the methodology are given in the [optimization principles](../../user-guide/optimization-principles/optimization-principles.md) page.
+Antares-Xpansion uses a [Benders decomposition](https://en.wikipedia.org/wiki/Benders_decomposition) algorithm as it is well-suited to the structure of the investment problem: the _satellite problems_ are independent, i.e. the weekly problems in an Antares study are independent (using water values is not allowed in Antares-Xpansion). Details of the methodology are given in the [optimization principles](../../user-guide/optimization-principles/investment-problem.md) page.
 
 
 ## 4- Update of antares study: `study_update`
