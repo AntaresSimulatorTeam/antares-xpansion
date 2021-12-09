@@ -477,7 +477,7 @@ void SolverXpress::set_simplex_iter(int iter){
 	zero_status_check(status, "set simplex max iter");
 }
 
-const void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLen,
+void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLen,
 	int nMsglvl) {
 	std::list<std::ostream* >* ptr = NULL;
 	if (strPtr != NULL)ptr = (std::list<std::ostream* >*)strPtr;
