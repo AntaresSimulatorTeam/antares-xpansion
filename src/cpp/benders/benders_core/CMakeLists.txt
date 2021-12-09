@@ -24,6 +24,7 @@ add_library (benders_core STATIC
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
 
+
 target_include_directories (benders_core
 		PUBLIC
 			${CMAKE_CURRENT_SOURCE_DIR}/include

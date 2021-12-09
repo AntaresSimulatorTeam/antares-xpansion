@@ -56,19 +56,19 @@ namespace logger {
         switch (d.stopping_criterion)
         {
         case StoppingCriterion::absolute_gap:
-            stop_crit = "absolute gap reached";
+            stop_crit = "absolute gap";
             break;
         
         case StoppingCriterion::relative_gap:
-            stop_crit = "relative gap reached";
+            stop_crit = "relative gap";
             break;
         
         case StoppingCriterion::max_iteration:
-            stop_crit = "maximum iterations reached";
+            stop_crit = "maximum iterations";
             break;
         
         case StoppingCriterion::timelimit:
-            stop_crit = "timelimit reached";
+            stop_crit = "timelimit";
             break;
         
         default:
@@ -76,7 +76,7 @@ namespace logger {
         }
        
 
-        _stream << "--- Run completed: " << stop_crit << std::endl;
+        _stream << "--- Run completed: " << stop_crit << " reached"<< std::endl;
         _stream << indent_1 << "Best solution = it " << d.best_it << std::endl;
         _stream << indent_1 << " Overall cost = " << commons::create_str_million_euros(overall_cost) << " Me" << std::endl;
     }
