@@ -33,7 +33,7 @@ SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
 	else {
 		_NumberOfProblems -= 1;
         SolverXpress::free();
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(),get_solver_name());
+        throw InvalidSolverForCopyException(toCopy->get_solver_name(),SolverXpress::get_solver_name());
 	}
 }
 
@@ -63,6 +63,7 @@ void SolverXpress::init() {
 	int status = XPRScreateprob(&_xprs);
 	zero_status_check(status, "create XPRESS problem");
 
+    SolverXpress::set_output_log_level(0);
 	status = XPRSloadlp(_xprs, "empty", 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 	zero_status_check(status, "generate empty prob in XPRS interface init method");
 }
