@@ -39,8 +39,8 @@ The execution of Antares-Xpansion consists of several steps that can be run sepa
 | :--------            | ------------------------------------------------------------------------ |
 | `antares`            | Launch Antares-Simulator once to get the Antares problem.
 | `problem_generation` | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run. |
-| `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/0-optimization-principles.md).|
-| `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/0-optimization-principles.md) algorithm. |
+| `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/optimization-principles.md).|
+| `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/optimization-principles.md) algorithm. |
 | `full`               | Launch all steps in order: `antares` \> `problem_generation` \> `benders` \> `study_update`           |
 
 #### `-i, --dataDir`

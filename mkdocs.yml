@@ -33,6 +33,10 @@ nav:
   - Home: index.md
   - 'Antares ecosystem': 'https://antares-doc.readthedocs.io'
   - 'User guide':
+    - 'How does Antares-Xpansion work ?':
+        - 'General simulation procedure': 'user-guide/optimization-principles/general-process.md'
+        - 'Optimization principles': 'user-guide/optimization-principles/optimization-principles.md'
+        - 'Mathematical formulation of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
     - 'Get started':
       - 'Installation': 'user-guide/get-started/0-installation.md'
       - 'Set up an Antares-Xpansion study':
@@ -40,9 +44,6 @@ nav:
         - 'Define the candidates': 'user-guide/get-started/2-candidate-definition.md'
         - 'Settings of the algorithm': 'user-guide/get-started/3-settings-definition.md'
       - 'Launch the optimization': 'user-guide/get-started/4-launching-optimization.md'
-    - 'The optimization problem in Antares-Xpansion':
-      - 'General principles': 'user-guide/optimization-principles/0-optimization-principles.md'
-      - 'Formulation of the problem': 'user-guide/optimization-principles/1-problem-formalization.md'
   - 'Developer guide': 
     - 'Install from sources':
       - 'Introduction': 'developer-guide/install_from_sources/0-INSTALL.md'

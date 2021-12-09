@@ -3,9 +3,9 @@
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) -->
 # Introduction
 
-The Antares-Xpansion package works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]. Antares-Xpansion aims at performing investment simulations for Antares studies. Visit the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares. 
+The [Antares-Xpansion][xpansion-github] package, works along with RTE's adequacy software [Antares][antareswebsite] that is also [hosted on github][antares-github]. Antares-Xpansion aims at performing investment simulations for Antares studies. Check out the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares. 
 
-Antares-Xpansion optimizes the installed capacities of an Antares study. Typical uses of Antares-Xpansion are for example:
+Antares-Xpansion optimizes the investments on new capacities and transmission lines for an Antares study. Typical uses of Antares-Xpansion are for example:
 
 - **long-term scenario building**: build an economically consistent long-term generation mix,
 - **transmission expansion planning** : compute the network development which maximizes social welfare.
@@ -19,27 +19,25 @@ power consumption and power transfer between zones (with the import-export trans
 Antares performs probabilistic simulations of the system
 throughout many year-long scenarios made of 8760 hourly
 time frames each.
-The goal of the simulation is to minimize the
+The goal of the Antares simulation is to minimize the
 **expected operation cost during one year**.
 
 ## Antares-Xpansion simulation
 
 Given an Antares simulation the user can define some
-_investment candidates_ in the power network such as:
+_investment candidates_ in the power network in order to:
 
-- (increase or create) transfer capacity between to areas,
-- (increase or create) maximum power of a generation facility.
+- (increase or create) the transfer capacity between areas,
+- (increase or create) the maximum power of a generation facility.
 
-Each _investment candidate_ can potentially decrease the operational cost
-of the power system, but is also characterised by one or more costs such as:
+Each _investment candidate_ can potentially decrease the variable operational cost
+of the power system, but induces an additional **investment annuity** that includes:
 
 - Annualized investment costs to physically build the facility,
-- Operational costs and maintenance costs to sustain the operation.
+- Fixed operational costs and maintenance costs to sustain the operation.
 
->Antares-Xpansion optimizes the _investments_ in order
->to minimize the global cost, which is the sum of the
->**expected operation cost during one year**
->and the **investment annuity**.
+!!! info "Goal of Antares-Xpansion" 
+    Antares-Xpansion optimizes the _investments_ in order to minimize the global cost, which is the sum of the **expected operation cost during one year** and the **investment annuity**.
 
 Antares-Xpansion is currently under development. Feel free to submit any issue.
 
@@ -51,6 +49,7 @@ Antares-Xpansion is currently under development. Feel free to submit any issue.
 [centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Centos7%20CI%20(system%20libs)/badge.svg
 [centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)" -->
 
+[xpansion-github]: https://github.com/AntaresSimulatorTeam/antares-xpansion
 [antares-github]: https://github.com/AntaresSimulatorTeam/Antares_Simulator
 [readthedocs]: https://antares-xpansion.readthedocs.io/
 [readthedocs-antares]: https://antares-doc.readthedocs.io/
