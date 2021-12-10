@@ -422,7 +422,7 @@ def test_full_study_medium_sequential(
 
 @pytest.mark.parametrize(
     medium_parameters_names,
-    medium_parameters_values,
+    medium_parameters_values[:1],
 )
 @pytest.mark.medium_mpi
 def test_full_study_medium_parallel(

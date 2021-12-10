@@ -17,6 +17,7 @@ from antares_xpansion.flushed_print import flushed_print
 class BendersDriver:
     def __init__(self, benders_mpi, benders_sequential, merge_mps) -> None:
 
+        self.oversubscribe = False
         self.benders_mpi = benders_mpi
         self.merge_mps = merge_mps
         self.benders_sequential = benders_sequential
@@ -24,14 +25,16 @@ class BendersDriver:
         self.OPTIONS_TXT = "options.txt"
         self._initialise_system_specific_mpi_vars()
 
-    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1):
+    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=True):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
 
         """
         flushed_print("-- Benders")
+        flushed_print(f"running using oversubscribe={oversubscribe}")
         self.method = method
         self.n_mpi = n_mpi
+        self.oversubscribe = oversubscribe
         self.simulation_output_path = simulation_output_path
         old_cwd = os.getcwd()
         lp_path = self.get_lp_path()
@@ -42,8 +45,10 @@ class BendersDriver:
 
         # delete execution logs
         self._clean_log_files()
+        full_command = self._get_solver_cmd()
+        flushed_print(f"Running using the command: {full_command}")
         returned_l = subprocess.run(
-            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr
+            full_command, shell=False, stdout=sys.stdout, stderr=sys.stderr
         )
         if returned_l.returncode != 0:
             raise BendersDriver.BendersExecutionError(
@@ -103,17 +108,20 @@ class BendersDriver:
         """
         returns a list consisting of the path to the required solver and its launching options
         """
-
+        bare_solver_command = [self.solver, self.OPTIONS_TXT]
         if self.solver == self.benders_mpi:
-            return [
-                self.MPI_LAUNCHER,
-                self.MPI_N,
-                str(self.n_mpi),
-                self.solver,
-                self.OPTIONS_TXT,
-            ]
+            mpi_command = self._get_mpi_run_command_root()
+            mpi_command.extend(bare_solver_command)
+            return mpi_command
         else:
-            return [self.solver, self.OPTIONS_TXT]
+            return bare_solver_command
+
+    def _get_mpi_run_command_root(self):
+
+        mpi_command = [self.MPI_LAUNCHER, self.MPI_N, str(self.n_mpi)]
+        if sys.platform.startswith("linux") and self.oversubscribe:
+            mpi_command.append("--oversubscribe")
+        return mpi_command
 
     def _initialise_system_specific_mpi_vars(self):
         if sys.platform.startswith("win32"):
