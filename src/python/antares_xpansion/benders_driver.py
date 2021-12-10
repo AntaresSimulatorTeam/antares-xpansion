@@ -17,7 +17,7 @@ from antares_xpansion.flushed_print import flushed_print
 class BendersDriver:
     def __init__(self, benders_mpi, benders_sequential, merge_mps) -> None:
 
-        self.oversubscribe = False
+        self.oversubscribe = True
         self.benders_mpi = benders_mpi
         self.merge_mps = merge_mps
         self.benders_sequential = benders_sequential
@@ -44,9 +44,8 @@ class BendersDriver:
 
         # delete execution logs
         self._clean_log_files()
-        full_command = self._get_solver_cmd()
         returned_l = subprocess.run(
-            full_command, shell=False, stdout=sys.stdout, stderr=sys.stderr
+            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr
         )
         if returned_l.returncode != 0:
             raise BendersDriver.BendersExecutionError(
