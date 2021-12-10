@@ -31,7 +31,6 @@ class BendersDriver:
 
         """
         flushed_print("-- Benders")
-        flushed_print(f"running using oversubscribe={oversubscribe}")
         self.method = method
         self.n_mpi = n_mpi
         self.oversubscribe = oversubscribe
@@ -46,7 +45,6 @@ class BendersDriver:
         # delete execution logs
         self._clean_log_files()
         full_command = self._get_solver_cmd()
-        flushed_print(f"Running using the command: {full_command}")
         returned_l = subprocess.run(
             full_command, shell=False, stdout=sys.stdout, stderr=sys.stderr
         )
