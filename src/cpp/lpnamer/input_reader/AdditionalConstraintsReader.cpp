@@ -37,7 +37,7 @@ void AdditionalConstraintsReader::processSectionLine()
 {
     if ( _line[_line.length()-1] != ']' )
     {
-        std::cout << "line " << _lineNb << " : section line not ending with ']'.\n";
+        std::cout << "additional constraints file:  line " << _lineNb << " : section line not ending with ']'.\n";
         std::exit(1);
     }
 
@@ -45,7 +45,7 @@ void AdditionalConstraintsReader::processSectionLine()
 
     if (!_sections.insert(_section).second)
     {
-        std::cout << "line " << _lineNb << " : duplicate section " << _section << "!\n";
+        std::cout << "additional constraints file:  line " << _lineNb << " : duplicate section " << _section << "!\n";
         std::exit(1);
     }
 }
@@ -55,7 +55,7 @@ void AdditionalConstraintsReader::processEntryLine()
     size_t delimiterIt_l = _line.find(" = ");
     if (delimiterIt_l == std::string::npos)
     {
-        std::cout << "line " << _lineNb << " : incorrect entry line format. Expected format 'attribute = value'!\n";
+        std::cout << "additional constraints file: line " << _lineNb << " : incorrect entry line format. Expected format 'attribute = value'!\n";
         std::exit(1);
     }
 
@@ -65,13 +65,13 @@ void AdditionalConstraintsReader::processEntryLine()
     size_t illegalCharIndex_l = attribute_l.find_first_of(AdditionalConstraintsReader::illegal_chars);
     if( illegalCharIndex_l != std::string::npos)
     {
-        std::cout << "line " << _lineNb << " : Illegal character '" << attribute_l[illegalCharIndex_l] << "' in attribute name!\n";
+        std::cout << "additional constraints file: line " << _lineNb << " : Illegal character '" << attribute_l[illegalCharIndex_l] << "' in attribute name!\n";
         std::exit(1);
     }
 
     if(_values[_section].count(attribute_l))
     {
-        std::cout << "line " << _lineNb << " : duplicate attribute " << attribute_l << "!\n";
+        std::cout << "additional constraints file:  line " << _lineNb << " : duplicate attribute " << attribute_l << "!\n";
         std::exit(1);
     }
     else
@@ -81,7 +81,7 @@ void AdditionalConstraintsReader::processEntryLine()
             illegalCharIndex_l = value_l.find_first_of(AdditionalConstraintsReader::illegal_chars);
             if( illegalCharIndex_l != std::string::npos)
             {
-                std::cout << "line " << _lineNb << " : Illegal character '" << value_l[illegalCharIndex_l] << "' in value!\n";
+                std::cout << "additional constraints file: line " << _lineNb << " : Illegal character '" << value_l[illegalCharIndex_l] << "' in value!\n";
                 std::exit(1);
             }
         }
@@ -90,7 +90,7 @@ void AdditionalConstraintsReader::processEntryLine()
         {
             if ( (value_l != "greater_or_equal") && (value_l != "less_or_equal") && (value_l != "equal") )
             {
-                std::cout << "line " << _lineNb << " : Illegal sign value : " << value_l << "! supported values are: "
+                std::cout << "additional constraints file:  line " << _lineNb << " : Illegal sign value : " << value_l << "! supported values are: "
                             <<"greater_or_equal, less_or_equal and equal.\n";
                 std::exit(1);
             }
@@ -124,7 +124,7 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(std::string  const & co
             //check we have a valid section name
             if(_section == "")
             {
-                std::cout << "Section line is required before line " << _lineNb << "!\n";
+                std::cout << "additional constraints file:  Section line is required before line " << _lineNb << "!\n";
                 std::exit(1);
             }
 
