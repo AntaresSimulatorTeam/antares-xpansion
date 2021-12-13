@@ -9,15 +9,14 @@ Antares-Xpansion includes an experimental graphical interface but it is optimall
 
 1.  Open a command prompt in your Antares-Xpansion install directory (by default it is named `antaresXpansion-x.y.z-win64`
 where `x.y.z` is the version number). 
-  
-    !!! Note
-        You can launch a command line prompt by typing `cmd` in the path.
 
-        ![](../../assets/media/image21.png)
+	You can launch a command line prompt by typing `cmd` in the path.
+
+	![](../../assets/media/image21.png)
 
 2.  Run `antares-xpansion-launcher.exe` and choose the path to the
     Antares study with the `-i` parameter:
-    ```cmd
+    ```
     antares-xpansion-launcher.exe -i .examples\SmallTestFiveCandidates
     ```
 > The `-i` parameter can also be replaced by `--dataDir`.
@@ -129,7 +128,7 @@ package performs the following steps:
 ### Logs
 During the simulation, logs are displayed on the console to give information on the current iteration, corresponding to the data written in the `reportbenderssequential` text file.
 
-```cmd
+```
 ITERATION 6:
 	Solving master...
 Time master solve pure = 27.202

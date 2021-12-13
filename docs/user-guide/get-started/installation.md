@@ -13,11 +13,11 @@ Antares-Xpansion is built using CMake.
 
 ## Download Antares-Xpansion
 
-To download the latest version of Antares-Xpansion, visit [Antares-Xpansion repository][antares_xpansion_release_url] and download the binary that matches your platform. If you prefer to build the software from source file, please refer to the [developer guide](../../developer-guide/install_from_sources/0-INSTALL.md).
+To download the latest version of Antares-Xpansion, visit [Antares-Xpansion repository][antares_xpansion_release_url] and download the binary that matches your platform. If you prefer to build the software from the source files, please refer to the [developer guide](../../developer-guide/install_from_sources/0-INSTALL.md).
 
 ## Installation instruction
 
-Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use Antares-Xpansion. See [launching an optimization](launching-optimization.md) for instructions on how to launch the software.
+Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use Antares-Xpansion. See [Launch the optimization](launching-optimization.md) for instructions on how to launch the software.
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml/badge.svg
 [ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/linux-system.yml
