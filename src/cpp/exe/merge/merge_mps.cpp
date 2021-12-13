@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 
 	JsonWriter jsonWriter_l;
 	jsonWriter_l.write_failure();
-	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+	jsonWriter_l.dump(options.JSON_FILE);
 
 	jsonWriter_l.write(options);
 	jsonWriter_l.updateBeginTime();
@@ -202,7 +202,7 @@ int main(int argc, char** argv)
         jsonWriter_l.write(input.size(), overallCost_l,
                            overallCost_l, investCost_l, operationalCost_l,
                            overallCost_l, x0, optimality_l);
-        jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+        jsonWriter_l.dump(options.JSON_FILE);
 	}
     catch (std::exception& ex)
     {
