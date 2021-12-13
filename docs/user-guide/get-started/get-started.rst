@@ -1,3 +1,6 @@
+Getting started
+****************
+
 .. toctree::
    :hidden:
 
@@ -5,6 +8,3 @@
     Define the candidates <candidate-definition>
     Settings of the algorithm <settings-definition>
     Launch the optimization <launching-optimization>
-
-Getting started
-****************
