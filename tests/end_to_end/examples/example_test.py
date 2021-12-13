@@ -17,7 +17,7 @@ ALL_STUDIES_PATH = Path("../../../data_test/examples")
 def get_first_json_filepath_output(output_dir):
     op = []
     for path in Path(output_dir).iterdir():
-        for jsonpath in Path(path / "lp").rglob("out.json"):
+        for jsonpath in Path(path / "expansion").rglob("out.json"):
             op.append(jsonpath)
     assert len(op) == 1
     return op[0]
