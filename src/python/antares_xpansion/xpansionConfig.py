@@ -157,7 +157,6 @@ class XpansionConfig:
             "ACTIVECUTS": "0",
             "THRESHOLD_AGGREGATION": "0",
             "THRESHOLD_ITERATION": "0",
-            "RAND_AGGREGATION": "0",
             "CSV_NAME": "benders_output_trace",
             "JSON_NAME": "out",
             "BOUND_ALPHA": "1",
