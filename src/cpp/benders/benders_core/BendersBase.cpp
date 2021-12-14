@@ -407,11 +407,11 @@ void BendersBase::compute_cut_val(const SlaveCutDataHandlerPtr& handler, const P
 */
 void BendersBase::build_cut_full(AllCutPackage const & all_package) {
 	check_status(all_package);
-	if (!_options.AGGREGATION) {
-        compute_cut(all_package);
+	if (_options.AGGREGATION) {
+		compute_cut_aggregate(all_package);
 	}
-	else if (_options.AGGREGATION) {
-        compute_cut_aggregate(all_package);
+	else {
+        compute_cut(all_package);   
 	}
 	if (_options.THRESHOLD_AGGREGATION > 1) {
 		dynamic_aggregation(all_package);

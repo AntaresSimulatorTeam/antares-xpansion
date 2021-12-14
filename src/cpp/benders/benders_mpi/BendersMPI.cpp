@@ -77,7 +77,6 @@ void BendersMpi::load(CouplingMap const & problem_list) {
 	}
 }
 
-
 /*!
 *  \brief Solve, get and send solution of the Master Problem to every thread
 *
@@ -110,6 +109,11 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts(int rank) {
 void BendersMpi::broadcast_the_master_problem() {
     if(!_exceptionRaised){
         mpi::broadcast(_world, _data.x0, 0);
+        if (_options.RAND_AGGREGATION) {
+            std::random_device rd;
+            std::mt19937 g(rd());
+            std::shuffle(_slaves.begin(), _slaves.end(), g);
+        }
         _world.barrier();
     }
 }
