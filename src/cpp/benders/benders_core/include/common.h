@@ -25,7 +25,7 @@
 #include <thread>
 #include <cmath>
 #include "Timer.h"
-#include "benders_sequential_core/ILogger.h"
+#include "core/ILogger.h"
 // MultiSolver interface 
 #include "multisolver_interface/Solver.h"
 
@@ -145,6 +145,8 @@ struct BendersData {
 	double dnslaves;
 	int master_status;
 	int nrandom;
+	double elapsed_time;
+	StoppingCriterion stopping_criterion;
 };
 
 double norm_point(Point const & x0, Point const & x1);

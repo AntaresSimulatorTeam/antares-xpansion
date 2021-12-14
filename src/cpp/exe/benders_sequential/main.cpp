@@ -4,11 +4,12 @@
 #include "glog/logging.h"
 
 #include "launcher.h"
-#include "benders_sequential_core/Benders.h"
+#include "Benders.h"
 #include "BendersOptions.h"
 #include "logger/Master.h"
 #include "logger/UserFile.h"
 #include "logger/User.h"
+#include "SequentialLaunch.h"
 
 #if defined(WIN32) || defined(_WIN32) 
 #include <direct.h>

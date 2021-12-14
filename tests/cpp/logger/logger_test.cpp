@@ -2,7 +2,7 @@
 
 #include "gtest/gtest.h"
 
-#include "benders_sequential_core/ILogger.h"
+#include "core/ILogger.h"
 #include "logger/User.h"
 #include "logger/Master.h"
 #include "logger/UserFile.h"
@@ -225,7 +225,7 @@ TEST_F(UserLoggerTest, EndLogAbsoluteGap) {
     logData.relative_gap = 1e-6;
     logData.it = 2;
     logData.max_iterations = 10;
-
+    logData.stopping_criterion = StoppingCriterion::absolute_gap;
     std::stringstream expected;
     expected << "--- Run completed: absolute gap reached" << std::endl;
     expected << indent_1 << "Best solution = it 1" << std::endl;
@@ -246,6 +246,7 @@ TEST_F(UserLoggerTest, EndLogRelativeGap) {
     logData.relative_gap = 0.1;
     logData.it = 2;
     logData.max_iterations = 10;
+    logData.stopping_criterion = StoppingCriterion::relative_gap;
 
     std::stringstream expected;
     expected << "--- Run completed: relative gap reached" << std::endl;
@@ -268,9 +269,33 @@ TEST_F(UserLoggerTest, EndLogMaxIterations)
     logData.relative_gap = 1e-6;
     logData.it = 11;
     logData.max_iterations = 10;
+    logData.stopping_criterion = StoppingCriterion::max_iteration;
 
     std::stringstream expected;
     expected << "--- Run completed: maximum iterations reached" << std::endl;
+    expected << indent_1 << "Best solution = it 1" << std::endl;
+    expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
+
+    _logger.log_at_ending(logData);
+    ASSERT_EQ(_stream.str(), expected.str());
+}
+
+TEST_F(UserLoggerTest, EndLogTimeLimit)
+{
+    LogData logData;
+    logData.best_it = 1;
+    logData.best_ub = 20;
+    logData.lb = 19.5;
+    logData.slave_cost = 1e6;
+    logData.invest_cost = 10e6;
+    logData.optimality_gap = 1e-6;
+    logData.relative_gap = 1e-6;
+    logData.it = 11;
+    logData.max_iterations = 10;
+    logData.stopping_criterion = StoppingCriterion::timelimit;
+
+    std::stringstream expected;
+    expected << "--- Run completed: timelimit reached" << std::endl;
     expected << indent_1 << "Best solution = it 1" << std::endl;
     expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
 

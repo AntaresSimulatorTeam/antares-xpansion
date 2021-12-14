@@ -4,7 +4,7 @@
 #include <list>
 #include <map>
 
-#include "benders_sequential_core/ILogger.h"
+#include "core/ILogger.h"
 #include "CandidateLog.h"
 
 namespace xpansion{

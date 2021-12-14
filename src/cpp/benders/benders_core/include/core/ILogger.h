@@ -8,6 +8,8 @@
 
 typedef std::map<std::string, double> LogPoint;
 
+enum class StoppingCriterion {empty, timelimit, relative_gap, absolute_gap, max_iteration};
+
 struct LogData {
     double lb;
     double best_ub;
@@ -21,6 +23,7 @@ struct LogData {
     double optimality_gap;
     double relative_gap;
     double max_iterations;
+    StoppingCriterion stopping_criterion;
 };
 
 class ILogger {

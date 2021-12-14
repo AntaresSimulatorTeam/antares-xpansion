@@ -1,4 +1,4 @@
-#include "benders_sequential_core/Benders.h"
+#include "Benders.h"
 
 #include "solver_utils.h"
 
@@ -19,7 +19,7 @@ Benders::~Benders() {
 *  \param options : set of options fixed by the user
 */
 
-Benders::Benders(Logger &logger):_logger{ logger } {
+Benders::Benders(BendersOptions const &options, Logger &logger):BendersBase(options, logger) {
 
 }
 
@@ -72,10 +72,10 @@ void Benders::build_cut() {
         std::random_device rd;
         std::mt19937 g(rd());
 		std::shuffle(_slaves.begin(), _slaves.end(),g);
-		get_random_slave_cut(slave_cut_package, _map_slaves, _slaves, _options, _data);
+		get_random_slave_cut(slave_cut_package);
 	}
 	else {
-		get_slave_cut(slave_cut_package, _map_slaves, _options, _data);
+		get_slave_cut(slave_cut_package);
 		_data.slave_cost = 0;
 		for (auto pairSlavenameSlavecutdata_l : slave_cut_package)
 		{
@@ -85,13 +85,13 @@ void Benders::build_cut() {
 	
 	_data.timer_slaves = timer_slaves.elapsed();
 	all_package.push_back(slave_cut_package);
-	build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage, _dynamic_aggregate_cuts, _data, _options);
+	build_cut_full( all_package);
 	if (_options.BASIS) {
 		SimplexBasisPackage slave_basis_package;
 		AllBasisPackage all_basis_package;
-		get_slave_basis(slave_basis_package, _map_slaves);
+		get_slave_basis(slave_basis_package);
 		all_basis_package.push_back(slave_basis_package);
-		sort_basis(all_basis_package, _problem_to_id, _basis, _data);
+		sort_basis(all_basis_package);
 	}
 }
 
@@ -100,8 +100,7 @@ void Benders::build_cut() {
 *
 *  Method to run Benders algorithm
 */
-void Benders::run( CouplingMap const &problem_list, BendersOptions const &options) {
-    _options = options;
+void Benders::run( CouplingMap const &problem_list) {
     initialise_problems(problem_list);
     doRun();
 }
@@ -110,21 +109,22 @@ void Benders::doRun(){
 	for (auto const & kvp : _problem_to_id) {
 		_all_cuts_storage[kvp.first] = SlaveCutStorage();
 	}
-	init(_data);
+	init_data();
 	_data.nrandom = _options.RAND_AGGREGATION;
+	Timer benders_timer;
 	while (!_data.stop) {
 		Timer timer_master;
 		++_data.it;
 
 		_logger->log_at_initialization(bendersDataToLogData(_data));
 		_logger->display_message("\tSolving master...");
-		get_master_value(_master, _data, _options);
+		get_master_value();
 		_logger->log_master_solving_duration( _data.timer_master);
 
 		_logger->log_iteration_candidates(bendersDataToLogData(_data));
 
 		if (_options.ACTIVECUTS) {
-			update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
+			update_active_cuts();
 		}
 
 		_trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
@@ -133,20 +133,21 @@ void Benders::doRun(){
 		build_cut();
 		_logger->log_subproblems_solving_duration(_data.timer_slaves);
 
-		update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
+		update_best_ub();
 
 		_logger->log_at_iteration_end(bendersDataToLogData(_data));
 
-		update_trace(_trace, _data);
+		update_trace();
 
 		_data.timer_master = timer_master.elapsed();
-		_data.stop = stopping_criterion(_data, _options);
+		_data.elapsed_time = benders_timer.elapsed();
+		_data.stop = stopping_criterion();
 	}
 
 	if (_options.TRACE) {
-		print_csv(_trace, _problem_to_id, _data, _options);
+		print_csv();
 	}
 	if (_options.ACTIVECUTS) {
-		print_active_cut(_active_cuts,_options);
+		print_active_cut();
 	}
 }

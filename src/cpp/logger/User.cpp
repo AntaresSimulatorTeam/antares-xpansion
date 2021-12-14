@@ -50,29 +50,33 @@ namespace logger {
 
     void User::log_at_ending(const LogData &d) {
 
-        const double abs_gap = d.best_ub - d.lb;
-        const double rel_gap = abs_gap / d.best_ub;
         const double overall_cost = d.slave_cost + d.invest_cost;
 
         std::string stop_crit;
-        if (abs_gap <= d.optimality_gap)
+        switch (d.stopping_criterion)
         {
-            stop_crit = "absolute gap reached";
+        case StoppingCriterion::absolute_gap:
+            stop_crit = "absolute gap";
+            break;
+        
+        case StoppingCriterion::relative_gap:
+            stop_crit = "relative gap";
+            break;
+        
+        case StoppingCriterion::max_iteration:
+            stop_crit = "maximum iterations";
+            break;
+        
+        case StoppingCriterion::timelimit:
+            stop_crit = "timelimit";
+            break;
+        
+        default:
+            break;
         }
-        else if (rel_gap <= d.relative_gap)
-        {
-            stop_crit = "relative gap reached";
-        }
-        else if (d.max_iterations != -1 && d.it > d.max_iterations)
-        {
-            stop_crit = "maximum iterations reached";
-        }
-        else
-        {
-            stop_crit = "unexpected termination criterion";
-        }
+       
 
-        _stream << "--- Run completed: " << stop_crit << std::endl;
+        _stream << "--- Run completed: " << stop_crit << " reached"<< std::endl;
         _stream << indent_1 << "Best solution = it " << d.best_it << std::endl;
         _stream << indent_1 << " Overall cost = " << commons::create_str_million_euros(overall_cost) << " Me" << std::endl;
     }

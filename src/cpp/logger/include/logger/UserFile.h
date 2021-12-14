@@ -4,7 +4,7 @@
 #include <ostream>
 #include <fstream>
 
-#include "benders_sequential_core/ILogger.h"
+#include "core/ILogger.h"
 #include "logger/User.h"
 
 namespace xpansion {

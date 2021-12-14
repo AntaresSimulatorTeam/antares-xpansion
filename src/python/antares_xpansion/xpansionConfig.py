@@ -9,8 +9,6 @@ import yaml
 from typing import List
 
 
-
-
 @dataclass
 class ConfigParameters:
     default_install_dir: str
@@ -22,6 +20,7 @@ class ConfigParameters:
     STUDY_UPDATER: str
     AVAILABLE_SOLVERS: List[str]
 
+
 @dataclass
 class InputParameters:
     step: str
@@ -30,7 +29,7 @@ class InputParameters:
     install_dir: str
     method: str
     n_mpi: int
-    antares_n_cpu : int
+    antares_n_cpu: int
     keep_mps: bool
 
 
@@ -66,7 +65,8 @@ class XpansionConfig:
         self.step = self.input_parameters.step
         self.simulation_name = self.input_parameters.simulation_name
         self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
-        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
+        self.install_dir = self._get_install_dir(
+            self.input_parameters.install_dir)
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
         self.antares_n_cpu = self.input_parameters.antares_n_cpu
@@ -88,7 +88,8 @@ class XpansionConfig:
     def _initialize_install_dir_with_default_value(self):
 
         if getattr(sys, 'frozen', False):
-            install_dir_inside_package = Path(os.path.abspath(__file__)).parent.parent / "bin"
+            install_dir_inside_package = Path(
+                os.path.abspath(__file__)).parent.parent / "bin"
             install_dir_next_to_package = Path(sys.executable).parent / "bin"
             if Path.is_dir(install_dir_inside_package):
                 return install_dir_inside_package
@@ -96,15 +97,15 @@ class XpansionConfig:
                 return install_dir_next_to_package
         elif __file__:
             return self.default_install_dir
-            
+
     def _initialize_default_values(self):
         self._set_constants()
         self._set_default_options()
         self._set_default_settings()
 
     def _set_constants(self):
-        #TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
-        self.SETTINGS = 'settings' 
+        # TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
+        self.SETTINGS = 'settings'
         self.GENERAL_DATA_INI = 'generaldata.ini'
         self.OUTPUT = 'output'
 
@@ -162,9 +163,8 @@ class XpansionConfig:
             "BOUND_ALPHA": "1",
         }
 
-
     def _get_config_values(self):
-        
+
         self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
@@ -173,4 +173,3 @@ class XpansionConfig:
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
         self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS
-    
