@@ -23,8 +23,8 @@ namespace po = boost::program_options;
  */
 void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& links_p, std::string const& solutionFilename_p)
 {
-	std::string linksPath_l = Path(rootPath_p) / ".." / "..";
-	std::string jsonPath_l	= Path(rootPath_p) / "lp" / solutionFilename_p;
+	std::string linksPath_l = static_cast<std::string>( Path(rootPath_p) / ".." / ".." );
+	std::string jsonPath_l	= static_cast<std::string>( Path(rootPath_p) / "lp" / solutionFilename_p );
 
 	StudyUpdater studyUpdater(linksPath_l);
 	int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);
@@ -69,15 +69,15 @@ int main(int argc, char** argv) {
 
 		po::notify(opts);
 
-        std::string const area_file_name	= Path(root) / "area.txt";
-        std::string const interco_file_name	= Path(root) / "interco.txt";
+        std::string const area_file_name	= static_cast<std::string>( Path(root) / "area.txt");
+        std::string const interco_file_name	= static_cast<std::string>( Path(root) / "interco.txt");
 
         CandidatesINIReader candidateReader(interco_file_name,area_file_name);
 
         // Get all mandatory path
-        std::string const xpansion_user_dir = Path(root) / ".." / ".." / "user" / "expansion";
-        std::string const candidates_file_name = Path(xpansion_user_dir) / CANDIDATES_INI;
-        std::string const capacity_folder = Path(xpansion_user_dir) / "capa";
+        std::string const xpansion_user_dir =  static_cast<std::string>( Path(root) / ".." / ".." / "user" / "expansion");
+        std::string const candidates_file_name =  static_cast<std::string>( Path(xpansion_user_dir) / CANDIDATES_INI);
+        std::string const capacity_folder =  static_cast<std::string>( Path(xpansion_user_dir) / "capa");
 
 		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
 		const auto& mapLinkProfile = LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);

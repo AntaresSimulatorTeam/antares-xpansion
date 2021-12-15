@@ -94,7 +94,7 @@ void masterGeneration(const std::string& rootPath,
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
 	std::string const& lp_name = "master";
-	master_l->write_prob_mps( Path(rootPath) / "lp" / (lp_name + ".mps") );
+	master_l->write_prob_mps( static_cast<std::string>( Path(rootPath) / "lp" / (lp_name + ".mps") ) );
 
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const& coupling : couplings) {
@@ -153,15 +153,15 @@ int main(int argc, char** argv) {
 
 		po::notify(opts);
 
-        std::string const area_file_name	= Path(root) / "area.txt";
-        std::string const interco_file_name	= Path(root) / "interco.txt";
+        std::string const area_file_name	= static_cast<std::string>( Path(root) / "area.txt");
+        std::string const interco_file_name	= static_cast<std::string>( Path(root) / "interco.txt");
 
         CandidatesINIReader candidateReader(interco_file_name,area_file_name);
 
         // Get all mandatory path
-        std::string const xpansion_user_dir = Path(root) / ".." / ".." / "user" / "expansion";
-        std::string const candidates_file_name = Path(xpansion_user_dir)  / CANDIDATES_INI;
-        std::string const capacity_folder = Path(xpansion_user_dir) / "capa";
+        std::string const xpansion_user_dir = static_cast<std::string>( Path(root) / ".." / ".." / "user" / "expansion");
+        std::string const candidates_file_name = static_cast<std::string>( Path(xpansion_user_dir)  / CANDIDATES_INI);
+        std::string const capacity_folder = static_cast<std::string>( Path(xpansion_user_dir) / "capa");
 
         // Instantiation of candidates
 		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);

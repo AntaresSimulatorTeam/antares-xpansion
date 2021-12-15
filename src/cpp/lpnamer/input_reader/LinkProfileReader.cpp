@@ -44,6 +44,6 @@ void LinkProfileReader::importProfile(std::map<std::string, LinkProfile>& mapLin
 {
     if (!profile_name.empty() && mapLinkProfile.find(profile_name) == mapLinkProfile.end()) {
 
-        mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile(Path(capacitySubfolder) / profile_name);      
+        mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile( static_cast<std::string> (Path(capacitySubfolder) / profile_name) );      
     }
 }

@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	BendersOptions options(build_benders_options(argc, argv));
 
 	google::InitGoogleLogging(argv[0]);
-	std::string path_to_log = Path(options.OUTPUTROOT) / "benderssequentialLog";
+	std::string path_to_log = static_cast<std::string>( Path(options.OUTPUTROOT) / "benderssequentialLog");
 	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 	LOG(INFO) << "starting Benders Sequential" << std::endl;
 
@@ -38,7 +38,7 @@ int main(int argc, char** argv)
 	LOG(INFO) << "Launching Benders Sequential" << std::endl;
 	auto masterLogger = std::make_shared<xpansion::logger::Master>();
 	
-	const std::string& loggerFileName = Path(options.OUTPUTROOT) / "reportbenderssequential";
+	const std::string& loggerFileName = static_cast<std::string>( Path(options.OUTPUTROOT) / "reportbenderssequential");
     Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
 	Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
 	masterLogger->addLogger(loggerUser);

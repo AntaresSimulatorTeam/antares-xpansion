@@ -15,16 +15,15 @@ public:
   // Linux, Unix, Apple
   static const char mSep = '/';
 #endif
-public:
-  Path(const std::string& s) : mPath(s){}
-  Path(std::string&& s) : mPath(std::move(s)){}
-  Path operator/(const Path& other) {
+  explicit Path(const std::string& s) : mPath(s){}
+  explicit Path(std::string&& s) : mPath(std::move(s)){}
+  Path operator/(const Path& other) const {
     return Path(mPath + mSep + other.mPath);
   }
-  Path operator/(const std::string& s) {
+  Path operator/(const std::string& s) const {
     return Path(mPath + mSep + s);
   }
-  operator std::string() const {
+  explicit operator std::string() const {
     return mPath;
   }
   friend std::ostream& operator<<(std::ostream& os, const Path& p) {

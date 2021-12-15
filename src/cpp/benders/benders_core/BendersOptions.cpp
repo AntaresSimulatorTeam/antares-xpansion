@@ -27,21 +27,21 @@ file.close();
 *  \brief Get path to master problem mps file from options
 */
 std::string BendersOptions::get_master_path() const {
-	return Path(INPUTROOT) /  (MASTER_NAME + ".mps");
+	return static_cast<std::string> (Path(INPUTROOT) /  (MASTER_NAME + ".mps") );
 }
 
 /*!
 *  \brief Get path to structure txt file from options
 */
 std::string BendersOptions::get_structure_path() const {
-	return Path(INPUTROOT) / STRUCTURE_FILE;
+	return static_cast<std::string> (Path(INPUTROOT) / STRUCTURE_FILE);
 }
 
 /*!
 *  \brief Get path to slave problem mps file from options
 */
 std::string BendersOptions::get_slave_path(std::string const & slave_name) const {
-	return Path(INPUTROOT) / (slave_name + ".mps");
+	return static_cast<std::string> (Path(INPUTROOT) / (slave_name + ".mps"));
 }
 
 /*!
@@ -65,7 +65,7 @@ void BendersOptions::read(std::string const & file_name) {
 
 		if (SLAVE_WEIGHT != "UNIFORM" && SLAVE_WEIGHT != "CONSTANT") {
 			std::string line;
-			std::string filename = Path(INPUTROOT) / SLAVE_WEIGHT;
+			std::string filename(Path(INPUTROOT) / SLAVE_WEIGHT);
 			std::ifstream file(filename);
 
 			if (!file) {

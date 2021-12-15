@@ -5,7 +5,7 @@
 #include "helpers/Path.h"
 
 
-std::string StudyUpdater::linksSubfolder_ = Path("") / "input"  / "links";
+std::string StudyUpdater::linksSubfolder_ = static_cast<std::string>( Path("") / "input"  / "links");
 
 
 StudyUpdater::StudyUpdater(std::string const & studyPath_p):
@@ -22,7 +22,7 @@ int StudyUpdater::getAntaresVersion() const
 
 void StudyUpdater::readAntaresVersion()
 {
-    std::ifstream studyFile_l(Path(studyPath_) / STUDY_FILE);
+    std::ifstream studyFile_l (static_cast<std::string> (Path(studyPath_) / STUDY_FILE) );
     std::string line_l;
     const std::string versionProperty_l("version = ");
 
@@ -44,7 +44,7 @@ void StudyUpdater::readAntaresVersion()
 
 std::string StudyUpdater::getLinkdataFilepath(ActiveLink const& link_p) const
 {
-    std::string linkDataFilePath = Path(linksPath_) / link_p.get_linkor() / (link_p.get_linkex() + ".txt");
+    std::string linkDataFilePath = static_cast<std::string>( Path(linksPath_) / link_p.get_linkor() / (link_p.get_linkex() + ".txt") );
     return linkDataFilePath;
 }
 
