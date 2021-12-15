@@ -211,7 +211,7 @@ The different settings can be modified by the user of the package. All the setti
 
  - `optimality_gap`: The optimality gap can take any numeric value. The optimality gap is the maximum possible distance (in euros) between the solution returned by the method and the optimal solution.
  - `master`: Can take two values, `relaxed` or `integer`. Defines whether or not should integer variables be used for the master problem.
- - `uc-type`: The UC (Unit Commitment) type can take two different values, `expansion_fast` or `expansion_accurate`. It defines which mode will be used in ANTARES. `expansion_fast` correponds to the fast mode of ANTARES in which the minimum up/down and minimum stable power constraints are relaxed whereas `expansion_accurate` takes into account the technical constraints of the thermal power plants as well as their start-up costs.
+ - `uc_type`: The UC (Unit Commitment) type can take two different values, `expansion_fast` or `expansion_accurate`. It defines which mode will be used in ANTARES. `expansion_fast` correponds to the fast mode of ANTARES in which the minimum up/down and minimum stable power constraints are relaxed whereas `expansion_accurate` takes into account the technical constraints of the thermal power plants as well as their start-up costs.
 
 An example of a `settings.ini` file with the appropriate syntax is given below.
 ```
