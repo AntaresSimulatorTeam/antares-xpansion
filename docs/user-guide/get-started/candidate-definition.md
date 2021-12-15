@@ -74,14 +74,14 @@ point. It defines the fixed cost annuity of the investment candidate (in
 €/MW/year). Depending on the type of candidate,
 the fixed cost annuity can include:
 
-    - Fixed operation and maintenance costs,
-    - An investment cost annuity.
+- Fixed operation and maintenance costs,
+- An investment cost annuity.
 
 #### `max-investment`
 
 Float. Represents the candidate's
 potential, i.e. the maximum capacity (in MW) that can be invested in
-this candidate. If this parameter is set, the invested capacity can take any value in the interval \\(\small [0, \texttt{max-investment}]\\).
+this candidate. If this parameter is set, the invested capacity can take any value in the interval \\( [0, \texttt{max-investment}]\\).
 
 #### `unit-size`
 
@@ -95,8 +95,8 @@ potential in terms of number of installable units. If
 the parameters `max-units` and `unit-size` are set, then the
 invested capacity is necessarily a multiple of `unit-size` from the set:
 
-$$\small
-[0, \texttt{unit-size}, 2 \cdot \texttt{unit-size}, … , \texttt{max-units} \cdot \texttt{unit-size}].
+$$
+\\{0, \texttt{unit-size}, 2 \cdot \texttt{unit-size}, … , \texttt{max-units} \cdot \texttt{unit-size}\\}.
 $$
 
 !!! Warning 
@@ -283,12 +283,12 @@ By considering [several investment candidates on the same link](#several-investm
 
 - The candidate for decommissioning is defined by:
 
-    - A decommissionable capacity, that corresponds to a `max-investment` or `max-units` \\(\small \times\\) `unit-size`.
+    - A decommissionable capacity, that corresponds to a `max-investment` or `max-units` \\( \times\\) `unit-size`.
     - Fixed operation and maintenance costs (no investment cost) given in the field `annual-cost-per-mw`.
 
 - The candidate for investment is defined as by:
 
-    - An expandable capacity, that corresponds to a `max-investment` or `max-units` \\(\small \times\\) `unit-size`.
+    - An expandable capacity, that corresponds to a `max-investment` or `max-units` \\( \times\\) `unit-size`.
     - A fixed-cost annuity that includes investment costs and fixed operation and maintenance costs given in the field `annual-cost-per-mw`.
 
 An example of production process that can be decommissioned or

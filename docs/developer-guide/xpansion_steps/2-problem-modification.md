@@ -143,7 +143,7 @@ The `additional-constraints` parameter, that specifies the path to file, may be 
 
 The _master problem_ is created from the list of candidates in the following way:
 
-- Add a new column (= variable) for each candidate with lower bound `0` and upper bound `max-investment` or `max-units` \\(\small\times\\) `unit-size`.
+- Add a new column (= variable) for each candidate with lower bound `0` and upper bound `max-investment` or `max-units` \\(\times\\) `unit-size`.
 - If the investment on the candidate has integer constraints (use of the `unit-size` parameter): 
     - Add a new (integer) column for the number of built units, with lower bound `0` and upper bound `max-units`.
     - Add a constraint that links the number of units to the invested capacity.

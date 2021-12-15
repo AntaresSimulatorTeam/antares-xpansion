@@ -34,7 +34,6 @@ nav:
   - 'Antares ecosystem': 'https://antares-doc.readthedocs.io'
   - 'User guide':
     - 'How does Antares-Xpansion work ?':
-        - 'General simulation procedure': 'user-guide/optimization-principles/general-process.md'
         - 'The optimal investment problem in Antares-Xpansion': 'user-guide/optimization-principles/investment-problem.md'
         - 'Mathematical formulation of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
     - 'Getting started':

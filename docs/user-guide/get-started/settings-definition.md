@@ -75,7 +75,7 @@ Antares-Xpansion algorithm.
 
 At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
 
-$$\frac{\texttt{xpansion\_solution\_cost} - \texttt{optimal\_cost}}{\texttt{optimal\_cost}} < \alpha .$$
+$$\frac{\texttt{xpansion solution cost} - \texttt{optimal cost}}{\texttt{optimal cost}} < \alpha .$$
 
 !!! Remark
     The algorithm stops as soon as the first criterion among `optimality_gap` and `relative_gap` is met. Keep in mind that if either parameter is not specified by the user, the default value is used.
