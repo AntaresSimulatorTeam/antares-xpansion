@@ -53,12 +53,12 @@ void LinkProblemsGenerator::treat(std::string const & root,
 	std::map< std::pair<std::string, std::string>, int> & couplings) const {
 
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
-	std::string const mps_name = static_cast<std::string> (Path(root) / problemData._problem_mps);
-	std::string const var_name = static_cast<std::string>(Path(root) / problemData._variables_txt);
+	auto const mps_name = static_cast<std::string> (Path(root) / problemData._problem_mps);
+	auto const var_name = static_cast<std::string>(Path(root) / problemData._variables_txt);
 
 	// new mps file in the new lp directory
 	std::string const lp_name = problemData._problem_mps.substr(0, problemData._problem_mps.size() - 4);
-	std::string const lp_mps_name = static_cast<std::string> ( Path(root) / "lp" / (lp_name + ".mps") );
+	auto const lp_mps_name = static_cast<std::string> ( Path(root) / "lp" / (lp_name + ".mps") );
 
 	// List of variables
     VariableFileReadNameConfiguration variable_name_config;
@@ -106,7 +106,7 @@ void LinkProblemsGenerator::treat(std::string const & root,
 void LinkProblemsGenerator::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
 	int>& couplings) const {
 
-    std::string const mps_file_name			= static_cast<std::string>(Path(root) / MPS_TXT) ;
+    auto const mps_file_name			= static_cast<std::string>(Path(root) / MPS_TXT) ;
 
 	for (auto const & mps : readMPSList(mps_file_name)) {
 		treat(root, mps, couplings);

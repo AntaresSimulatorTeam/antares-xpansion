@@ -24,8 +24,8 @@ namespace po = boost::program_options;
  */
 void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& links_p, std::string const& solutionFilename_p)
 {
-	std::string linksPath_l = static_cast<std::string>( Path(rootPath_p) / ".." / ".." );
-	std::string jsonPath_l	= static_cast<std::string>( Path(rootPath_p) / "lp" / solutionFilename_p );
+	auto linksPath_l = static_cast<std::string>( Path(rootPath_p) / ".." / ".." );
+	auto jsonPath_l	= static_cast<std::string>( Path(rootPath_p) / "lp" / solutionFilename_p );
 
 	StudyUpdater studyUpdater(linksPath_l);
 	int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);

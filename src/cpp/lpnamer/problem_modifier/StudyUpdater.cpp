@@ -44,7 +44,7 @@ void StudyUpdater::readAntaresVersion()
 
 std::string StudyUpdater::getLinkdataFilepath(ActiveLink const& link_p) const
 {
-    std::string linkDataFilePath = static_cast<std::string>( Path(linksPath_) / link_p.get_linkor() / (link_p.get_linkex() + ".txt") );
+    auto linkDataFilePath = static_cast<std::string>( Path(linksPath_) / link_p.get_linkor() / (link_p.get_linkex() + ".txt") );
     return linkDataFilePath;
 }
 

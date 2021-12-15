@@ -27,7 +27,7 @@ int main(int argc, char** argv)
 	BendersOptions options(build_benders_options(argc, argv));
 
 	google::InitGoogleLogging(argv[0]);
-	std::string path_to_log = static_cast<std::string>( Path(options.OUTPUTROOT) / "benderssequentialLog");
+	auto path_to_log = static_cast<std::string>( Path(options.OUTPUTROOT) / "benderssequentialLog");
 	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 	LOG(INFO) << "starting Benders Sequential" << std::endl;
 

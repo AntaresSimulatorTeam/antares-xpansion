@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
     auto masterLogger = std::make_shared<xpansion::logger::Master>();
     Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
-    std::string loggerFileName = static_cast<std::string>( Path(options.OUTPUTROOT) / "reportbendersmpi.txt");
+    auto loggerFileName = static_cast<std::string>( Path(options.OUTPUTROOT) / "reportbendersmpi.txt");
     if (world.rank() == 0)
     {
         Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     google::InitGoogleLogging(argv[0]);
-    std::string path_to_log = static_cast<std::string> (Path(options.OUTPUTROOT) / ("bendersmpiLog-rank" + std::to_string(world.rank()) + "-"));
+    auto path_to_log = static_cast<std::string> (Path(options.OUTPUTROOT) / ("bendersmpiLog-rank" + std::to_string(world.rank()) + "-"));
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 
     JsonWriter jsonWriter_l;
