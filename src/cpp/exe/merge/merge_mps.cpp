@@ -6,7 +6,6 @@
 #include "launcher.h"
 #include "Worker.h"
 #include "BendersOptions.h"
-#include "BendersFunctions.h"
 #include "JsonWriter.h"
 #include "Timer.h"
 

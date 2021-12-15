@@ -12,8 +12,8 @@ BendersMpi::~BendersMpi() {
 
 }
 
-BendersMpi::BendersMpi(mpi::environment & env, mpi::communicator & world, BendersOptions const & options, Logger &logger):
-_options(options),_logger(logger),_exceptionRaised(false) {
+BendersMpi::BendersMpi(BendersOptions const & options, Logger &logger, mpi::environment & env, mpi::communicator & world):
+BendersBase(options, logger), _exceptionRaised(false), _env(env), _world(world) {
 
 }
 
@@ -24,17 +24,14 @@ _options(options),_logger(logger),_exceptionRaised(false) {
 *
 *  \param problem_list : map linking each problem name to its variables and their id
 *
-*  \param env : environment variable for mpi communication
-*
-*  \param world : communicator variable for mpi communication
 */
 
-void BendersMpi::load(CouplingMap const & problem_list, mpi::environment & env, mpi::communicator & world) {
+void BendersMpi::load(CouplingMap const & problem_list) {
 	StrVector names;
 	_data.nslaves = -1;
 	std::vector<CouplingMap::const_iterator> real_problem_list;
 	if (!problem_list.empty()) {
-		if (world.rank() == 0) {
+		if (_world.rank() == 0) {
 			_data.nslaves = _options.SLAVE_NUMBER;
 			if (_data.nslaves < 0) {
 				_data.nslaves = problem_list.size() - 1;
@@ -60,19 +57,19 @@ void BendersMpi::load(CouplingMap const & problem_list, mpi::environment & env, 
 			_master.reset(new WorkerMaster(it_master->second, _options.get_master_path(), _options, _data.nslaves));
 			LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
 		}
-		mpi::broadcast(world, _data.nslaves, 0);
+		mpi::broadcast(_world, _data.nslaves, 0);
 		int current_worker(1);
 		for (int islave(0); islave < _data.nslaves; ++islave, ++current_worker) {
-			if (current_worker >= world.size()) {
+			if (current_worker >= _world.size()) {
 				current_worker = 1;
 			}
-			if (world.rank() == 0) {
+			if (_world.rank() == 0) {
 				CouplingMap::value_type kvp(*real_problem_list[islave]);
-				world.send(current_worker, islave, kvp);
+				_world.send(current_worker, islave, kvp);
 			}
-			else if (world.rank() == current_worker) {
+			else if (_world.rank() == current_worker) {
 				CouplingMap::value_type kvp;
-				world.recv(0, islave, kvp);
+				_world.recv(0, islave, kvp);
 				_map_slaves[kvp.first] = WorkerSlavePtr(new WorkerSlave(kvp.second, _options.get_slave_path(kvp.first), _options.slave_weight(_data.nslaves, kvp.first), _options));
 				_slaves.push_back(kvp.first);
 			}
@@ -89,32 +86,32 @@ void BendersMpi::load(CouplingMap const & problem_list, mpi::environment & env, 
 *
 *  \param options : set of Benders data
 *
-*  \param env : environment variable for mpi communication
+*  \param _env : environment variable for mpi communication
 *
-*  \param world : communicator variable for mpi communication
+*  \param _world : communicator variable for mpi communication
 */
-void BendersMpi::update_random_option(mpi::environment & env, mpi::communicator & world, BendersOptions const & options, BendersData & data) {
-	int const n_thread(world.size() - 1);
+void BendersMpi::update_random_option() {
+	int const n_thread(_world.size() - 1);
 	int const n_max_slave(_data.nslaves % n_thread);
 	int const n_sup_rand(_options.RAND_AGGREGATION % n_thread);
 	int const n_slave_by_thread(_data.nslaves / n_thread);
 	int const n_rand_slave(_options.RAND_AGGREGATION / n_thread);
 	int const n_add_rand(n_thread * !(n_slave_by_thread == n_rand_slave) + n_max_slave* (n_slave_by_thread == n_rand_slave));
-	if (_options.RAND_AGGREGATION && world.rank() != 0) {
+	if (_options.RAND_AGGREGATION && _world.rank() != 0) {
 		_data.nrandom = n_rand_slave;
 	}
 	if (n_sup_rand) {
 		std::set<int> set_rand_slave;
-		if (world.rank() == 0) {
+		if (_world.rank() == 0) {
 			for (int i(0); i < n_sup_rand;) {
 				if (set_rand_slave.insert(std::rand() % n_add_rand + 1).second) {
 					i++;
 				}
 			}
 		}
-		boost::mpi::broadcast(world, set_rand_slave, 0);
-		if (set_rand_slave.find(world.rank()) != set_rand_slave.end()) {
-			data.nrandom++;
+		boost::mpi::broadcast(_world, set_rand_slave, 0);
+		if (set_rand_slave.find(_world.rank()) != set_rand_slave.end()) {
+			_data.nrandom++;
 		}
 	}
 }
@@ -122,41 +119,41 @@ void BendersMpi::update_random_option(mpi::environment & env, mpi::communicator 
 /*!
 *  \brief Solve, get and send solution of the Master Problem to every thread
 *
-*  \param env : environment variable for mpi communication
+*  \param _env : environment variable for mpi communication
 *
-*  \param world : communicator variable for mpi communication
+*  \param _world : communicator variable for mpi communication
 */
-void BendersMpi::step_1_solve_master(mpi::environment & env, mpi::communicator & world) {
+void BendersMpi::step_1_solve_master() {
 
     int success = 1;
     try {
-        do_solve_master_create_trace_and_update_cuts(world.rank());
+        do_solve_master_create_trace_and_update_cuts(_world.rank());
     }catch(std::exception& ex){
         success = 0;
         write_exception_message(ex);
     }
-    check_if_some_proc_had_a_failure(world, success);
-    broadcast_the_master_problem(world);
+    check_if_some_proc_had_a_failure(success);
+    broadcast_the_master_problem();
 }
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts(int rank) {
     if (rank == 0){
         solve_master_and_create_trace();
         if (_options.ACTIVECUTS) {
-            update_active_cuts(_master, _active_cuts, _slave_cut_id, _data.it);
+            update_active_cuts();
         }
     }
 }
 
-void BendersMpi::broadcast_the_master_problem(const mpi::communicator &world) {
+void BendersMpi::broadcast_the_master_problem() {
     if(!_exceptionRaised){
-        mpi::broadcast(world, _data.x0, 0);
+        mpi::broadcast(_world, _data.x0, 0);
         if (_options.RAND_AGGREGATION) {
             std::random_device rd;
             std::mt19937 g(rd());
             std::shuffle(_slaves.begin(), _slaves.end(), g);
         }
-        world.barrier();
+        _world.barrier();
     }
 }
 
@@ -165,7 +162,7 @@ void BendersMpi::broadcast_the_master_problem(const mpi::communicator &world) {
 void BendersMpi::solve_master_and_create_trace() {
     _logger->log_at_initialization(bendersDataToLogData(_data));
     _logger->display_message("\tSolving master...");
-    get_master_value(_master, _data, _options);
+    get_master_value();
     _logger->log_master_solving_duration(_data.timer_master);
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
@@ -177,46 +174,43 @@ void BendersMpi::solve_master_and_create_trace() {
 *
 *	Get cut information of every Slave Problem in each thread and send it to thread 0 to build new Master's cuts
 *
-*  \param env : environment variable for mpi communication
-*
-*  \param world : communicator variable for mpi communication
 */
-void BendersMpi::step_2_build_cuts(mpi::environment & env, mpi::communicator & world) {
-    solve_slaves_and_build_cuts(world);
-    broadcast_rand_aggregation(world);
+void BendersMpi::step_2_build_cuts() {
+    solve_slaves_and_build_cuts();
+    broadcast_rand_aggregation();
 }
 
-void BendersMpi::broadcast_rand_aggregation(const mpi::communicator &world) {
+void BendersMpi::broadcast_rand_aggregation() {
     if(!_exceptionRaised) {
-        mpi::broadcast(world, _options.RAND_AGGREGATION, 0);
-        world.barrier();
+        mpi::broadcast(_world, _options.RAND_AGGREGATION, 0);
+        _world.barrier();
     }
 }
 
-void BendersMpi::solve_slaves_and_build_cuts(const mpi::communicator &world) {
+void BendersMpi::solve_slaves_and_build_cuts() {
     int success = 1;
     SlaveCutPackage slave_cut_package;
     Timer timer_slaves;
     try {
-        if (world.rank() != 0) {
+        if (_world.rank() != 0) {
             slave_cut_package = get_slave_package();
         }
     }catch(std::exception& ex){
         success = 0;
         write_exception_message(ex);
     }
-    check_if_some_proc_had_a_failure(world,success);
-    gather_slave_cut_package_and_build_cuts(world, slave_cut_package, timer_slaves);
+    check_if_some_proc_had_a_failure(success);
+    gather_slave_cut_package_and_build_cuts(slave_cut_package, timer_slaves);
 }
 
-void BendersMpi::gather_slave_cut_package_and_build_cuts(const mpi::communicator &world,const SlaveCutPackage& slave_cut_package ,const Timer& timer_slaves)
+void BendersMpi::gather_slave_cut_package_and_build_cuts(const SlaveCutPackage& slave_cut_package, const Timer& timer_slaves)
 {
     if (!_exceptionRaised) {
-        if (world.rank() != 0){
-            mpi::gather(world, slave_cut_package, 0);
+        if (_world.rank() != 0){
+            mpi::gather(_world, slave_cut_package, 0);
         }else{
             AllCutPackage all_package;
-            mpi::gather(world, slave_cut_package, all_package, 0);
+            mpi::gather(_world, slave_cut_package, all_package, 0);
             _data.timer_slaves = timer_slaves.elapsed();
             master_build_cuts(all_package);
         }
@@ -226,10 +220,10 @@ void BendersMpi::gather_slave_cut_package_and_build_cuts(const mpi::communicator
 SlaveCutPackage BendersMpi::get_slave_package()  {
     SlaveCutPackage slave_cut_package;
     if (_options.RAND_AGGREGATION) {
-        get_random_slave_cut(slave_cut_package, _map_slaves, _slaves, _options, _data);
+        get_random_slave_cut(slave_cut_package);
     }
     else {
-        get_slave_cut(slave_cut_package, _map_slaves, _options, _data);
+        get_slave_cut(slave_cut_package);
     }
     return slave_cut_package;
 }
@@ -246,22 +240,21 @@ void BendersMpi::master_build_cuts(AllCutPackage all_package) {
 
     _logger->display_message("\tSolving subproblems...");
 
-    build_cut_full(_master, all_package, _problem_to_id, _trace, _slave_cut_id, _all_cuts_storage,
-                   _dynamic_aggregate_cuts, _data, _options);
+    build_cut_full(all_package);
     _logger->log_subproblems_solving_duration(_data.timer_slaves);
 }
 
 /*!
 *  \brief Gather, store and sort all slaves basis in a set
 *
-*  \param env : environment variable for mpi communication
+*  \param _env : environment variable for mpi communication
 *
-*  \param world : communicator variable for mpi communication
+*  \param _world : communicator variable for mpi communication
 */
 
-void BendersMpi::check_if_some_proc_had_a_failure(const mpi::communicator &world, int success) {
+void BendersMpi::check_if_some_proc_had_a_failure(int success) {
     int global_success;
-    mpi::all_reduce(world, success, global_success, mpi::bitwise_and<int>());
+    mpi::all_reduce(_world, success, global_success, mpi::bitwise_and<int>());
     if (global_success == 0){
         _exceptionRaised = true;
     }
@@ -275,50 +268,47 @@ void BendersMpi::write_exception_message(const std::exception &ex) {
     }
 }
 
-void BendersMpi::step_3_gather_slaves_basis(mpi::environment & env, mpi::communicator & world) {
+void BendersMpi::step_3_gather_slaves_basis() {
 
 	SimplexBasisPackage slave_basis_package;
-	if (world.rank() == 0) {
+	if (_world.rank() == 0) {
 		AllBasisPackage all_basis_package;
-		mpi::gather(world, slave_basis_package, all_basis_package, 0);
+		mpi::gather(_world, slave_basis_package, all_basis_package, 0);
 		all_basis_package.erase(all_basis_package.begin());
-		sort_basis(all_basis_package, _problem_to_id, _basis, _data);
+		sort_basis(all_basis_package);
 	}
 	else {
-		get_slave_basis(slave_basis_package, _map_slaves);
-		mpi::gather(world, slave_basis_package, 0);
+		get_slave_basis(slave_basis_package);
+		mpi::gather(_world, slave_basis_package, 0);
 	}
-	world.barrier();
+	_world.barrier();
 }
 
 
-void BendersMpi::step_4_update_best_solution(int rank, const Timer& timer_master){
+void BendersMpi::step_4_update_best_solution(int rank, const Timer& timer_master, const Timer& benders_timer){
     if (rank == 0) {
-        update_best_ub(_data.best_ub, _data.ub, _data.bestx, _data.x0, _data.best_it, _data.it);
+        update_best_ub();
         _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
-        update_trace(_trace, _data);
+        update_trace();
 
+		_data.elapsed_time = benders_timer.elapsed();
         _data.timer_master = timer_master.elapsed();
-        _data.stop = stopping_criterion(_data,_options);
+        _data.stop = stopping_criterion();
     }
 }
 
 /*!
 *  \brief Method to free the memory used by each problem
-*
-*  \param env : environment variable for mpi communication
-*
-*  \param world : communicator variable for mpi communication
 */
-void BendersMpi::free(mpi::environment & env, mpi::communicator & world) {
-	if (world.rank() == 0)
+void BendersMpi::free() {
+	if (_world.rank() == 0)
 		_master->free();
 	else {
 		for (auto & ptr : _map_slaves)
 			ptr.second->free();
 	}
-	world.barrier();
+	_world.barrier();
 }
 
 /*!
@@ -326,52 +316,49 @@ void BendersMpi::free(mpi::environment & env, mpi::communicator & world) {
 *
 *  Method to run Benders algorithm in parallel
 *
-*  \param env : environment variable for mpi communication
-*
-*  \param world : communicator variable for mpi communication
 */
-void BendersMpi::run(mpi::environment & env, mpi::communicator & world) {
-	if (world.rank() == 0) {
+void BendersMpi::run() {
+	if (_world.rank() == 0) {
 		for (auto const & kvp : _problem_to_id) {
 			_all_cuts_storage[kvp.first] = SlaveCutStorage();
 		}
 	}
-	init(_data);
-	world.barrier();
+	init_data();
+	_world.barrier();
 
+	Timer benders_timer;
 	while (!_data.stop) {
 		Timer timer_master;
-		update_random_option(env, world, _options, _data);
+		update_random_option();
 		++_data.it;
 		_data.deletedcut = 0;
 
 		/*Solve Master problem, get optimal value and cost and send it to Slaves*/
-		step_1_solve_master(env, world);
+		step_1_solve_master();
 
 		/*Gather cut from each slave in master thread and add them to Master problem*/
 		if (!_exceptionRaised) {
-            step_2_build_cuts(env, world);
+            step_2_build_cuts();
         }
 
 		if (_options.BASIS && !_exceptionRaised) {
-            step_3_gather_slaves_basis(env, world);
+            step_3_gather_slaves_basis();
 		}
 
         if (!_exceptionRaised) {
-            step_4_update_best_solution(world.rank(), timer_master);
+            step_4_update_best_solution(_world.rank(), timer_master, benders_timer);
         }
         _data.stop |= _exceptionRaised;
 
-		broadcast(world, _data.stop, 0);
-		world.barrier();
+		broadcast(_world, _data.stop, 0);
 	}
 
-	if (world.rank() == 0) {
+	if (_world.rank() == 0) {
 		if (_options.TRACE) {
-			print_csv(_trace,_problem_to_id,_data,_options);
+			print_csv();
 		}
 		if (_options.ACTIVECUTS) {
-			print_active_cut(_active_cuts, _options);
+			print_active_cut();
 		}
 	}
 }

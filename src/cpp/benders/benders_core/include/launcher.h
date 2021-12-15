@@ -1,6 +1,6 @@
 #pragma once
 
-#include <benders_sequential_core/Benders.h>
+// #include "Benders.h"
 #include "common.h"
 
 #include "solver_utils.h"
@@ -11,7 +11,7 @@ CouplingMap build_input(BendersOptions const & options);
 
 BendersOptions build_benders_options(int argc, char** argv);
 
-void sequential_launch(BendersOptions const &options,  Logger & logger);
+// void sequential_launch(BendersOptions const &options,  Logger & logger);
 
 void usage(int argc);
 

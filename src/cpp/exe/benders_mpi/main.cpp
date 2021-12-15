@@ -6,7 +6,7 @@
 
 #include "Worker.h"
 #include "Timer.h"
-#include "benders_sequential_core/Benders.h"
+#include "SequentialLaunch.h"
 #include "BendersMPI.h"
 #include "launcher.h"
 #include "JsonWriter.h"
@@ -87,11 +87,11 @@ int main(int argc, char** argv)
         CouplingMap input = build_input(options);
         world.barrier();
 
-        BendersMpi bendersMpi(env, world, options,logger);
-        bendersMpi.load(input, env, world);
+        BendersMpi bendersMpi(options,logger, env, world);
+        bendersMpi.load(input);
         world.barrier();
 
-        bendersMpi.run(env, world);
+        bendersMpi.run();
         world.barrier();
 
         if (world.rank() == 0) {
@@ -115,7 +115,7 @@ int main(int argc, char** argv)
                 << options.JSON_FILE;
             logger->display_message(str.str());
         }
-        bendersMpi.free(env, world);
+        bendersMpi.free();
         world.barrier();
 
         if (world.rank() == 0) {

@@ -66,3 +66,5 @@ BENDERS_OPTIONS_MACRO(SOLVER_NAME, std::string, "COIN")
 
 // json file in output/expansion/ 
 BENDERS_OPTIONS_MACRO(JSON_FILE, std::string, ".")
+//TIME_LIMIT
+BENDERS_OPTIONS_MACRO(TIME_LIMIT, double, 1e12)
