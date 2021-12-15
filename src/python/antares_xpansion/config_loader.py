@@ -11,6 +11,7 @@ import re
 
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
+from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
 
@@ -20,7 +21,7 @@ class ConfigLoader:
         Class to control the execution of the optimization session
     """
 
-    def __init__(self, config):
+    def __init__(self, config: XpansionConfig):
         """
             Initialise driver with a given antaresXpansion configuration,
             the system platform and parses the arguments
@@ -317,6 +318,9 @@ class ConfigLoader:
 
     def json_name(self):
         return self._config.options_default["JSON_NAME"]
+
+    def oversubscribe(self):
+        return self._config.oversubscribe
 
     class MissingSimulationName(Exception):
         pass

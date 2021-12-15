@@ -59,6 +59,11 @@ class InputParser:
                                  action='version',
                                  version=__antares_simulator_version__,
                                  help='show Antares_Simulator version and exit ')
+        self.parser.add_argument("--oversubscribe",
+                                 dest="oversubscribe",
+                                 default=False,
+                                 action='store_true',
+                                 help='enable mpi oversubscribe option (linux only)')
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -73,6 +78,7 @@ class InputParser:
             n_mpi=params.n_mpi,
             antares_n_cpu = params.antares_n_cpu,
             keep_mps=params.keep_mps,
+            oversubscribe=params.oversubscribe,
         )
         return my_parameters
 

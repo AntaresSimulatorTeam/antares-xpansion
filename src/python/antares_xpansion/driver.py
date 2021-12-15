@@ -107,6 +107,7 @@ class XpansionDriver:
             self.config_loader.method(),
             self.config_loader.keep_mps(),
             self.config_loader.n_mpi(),
+            oversubscribe=self.config_loader.oversubscribe()
         )
 
     class UnknownStep(Exception):

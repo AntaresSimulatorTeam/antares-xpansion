@@ -9,8 +9,6 @@ import yaml
 from typing import List
 
 
-
-
 @dataclass
 class ConfigParameters:
     default_install_dir: str
@@ -22,6 +20,7 @@ class ConfigParameters:
     STUDY_UPDATER: str
     AVAILABLE_SOLVERS: List[str]
 
+
 @dataclass
 class InputParameters:
     step: str
@@ -30,8 +29,9 @@ class InputParameters:
     install_dir: str
     method: str
     n_mpi: int
-    antares_n_cpu : int
+    antares_n_cpu: int
     keep_mps: bool
+    oversubscribe: bool
 
 
 class XpansionConfig:
@@ -71,6 +71,7 @@ class XpansionConfig:
         self.n_mpi = self.input_parameters.n_mpi
         self.antares_n_cpu = self.input_parameters.antares_n_cpu
         self.keep_mps = self.input_parameters.keep_mps
+        self.oversubscribe = self.input_parameters.oversubscribe
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -96,15 +97,15 @@ class XpansionConfig:
                 return install_dir_next_to_package
         elif __file__:
             return self.default_install_dir
-            
+
     def _initialize_default_values(self):
         self._set_constants()
         self._set_default_options()
         self._set_default_settings()
 
     def _set_constants(self):
-        #TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
-        self.SETTINGS = 'settings' 
+        # TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
+        self.SETTINGS = 'settings'
         self.GENERAL_DATA_INI = 'generaldata.ini'
         self.OUTPUT = 'output'
 
@@ -162,9 +163,8 @@ class XpansionConfig:
             "BOUND_ALPHA": "1",
         }
 
-
     def _get_config_values(self):
-        
+
         self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
@@ -173,4 +173,3 @@ class XpansionConfig:
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
         self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS
-    
