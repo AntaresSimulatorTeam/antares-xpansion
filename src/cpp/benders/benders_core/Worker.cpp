@@ -1,5 +1,5 @@
 #include "glog/logging.h"
-
+#include "helpers/Path.h"
 #include "Worker.h"
 
 #include "solver_utils.h"
@@ -103,11 +103,7 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 	if (lp_status != SOLVER_STATUS::OPTIMAL) {
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
 		std::stringstream buffer;
-
-		buffer << options.OUTPUTROOT << PATH_SEPARATOR;
-		buffer << _path_to_mps << "_lp_status_";
-		buffer << _solver->SOLVER_STRING_STATUS[lp_status];
-		buffer<< ".mps";
+		buffer <<  Path(options.OUTPUTROOT) / (_path_to_mps+"_lp_status_")  / (_solver->SOLVER_STRING_STATUS[lp_status]+".mps");
 		LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status] << std::endl;
 		LOG(INFO) << "written in " << buffer.str() << std::endl;
 		_solver->write_prob_mps(buffer.str());
@@ -118,8 +114,7 @@ void Worker::solve(int & lp_status, BendersOptions const& options) {
 	if (_is_master) {
         std::string suffix = ".mps";
         std::stringstream buffer;
-        buffer << options.OUTPUTROOT << PATH_SEPARATOR;
-        buffer << _path_to_mps.substr(0, _path_to_mps.length() - suffix.length()) << "_last_iteration";
+        buffer << Path(options.OUTPUTROOT) /  _path_to_mps.substr(0, _path_to_mps.length() - suffix.length()) << "_last_iteration";
         buffer<< ".mps";
         _solver->write_prob_mps(buffer.str());
 	}

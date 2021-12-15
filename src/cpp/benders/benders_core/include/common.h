@@ -3,11 +3,7 @@
 #ifdef _MSC_VER
 #pragma warning( disable : 4267 ) // implicit conversion, possible loss of data
 #endif
-#if defined(WIN32) || defined(_WIN32)
-#define PATH_SEPARATOR "\\"
-#else
-#define PATH_SEPARATOR "/"
-#endif
+
 
 #include <tuple>
 #include <sstream>

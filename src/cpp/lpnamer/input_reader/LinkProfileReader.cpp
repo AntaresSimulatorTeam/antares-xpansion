@@ -1,5 +1,5 @@
 #include "LinkProfileReader.h"
-
+#include "helpers/Path.h"
 LinkProfile LinkProfileReader::ReadLinkProfile(const std::string& filename){
 
     std::ifstream infile(filename);
@@ -44,6 +44,6 @@ void LinkProfileReader::importProfile(std::map<std::string, LinkProfile>& mapLin
 {
     if (!profile_name.empty() && mapLinkProfile.find(profile_name) == mapLinkProfile.end()) {
 
-        mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile(capacitySubfolder + PATH_SEPARATOR + profile_name);      
+        mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile(Path(capacitySubfolder) / profile_name);      
     }
 }

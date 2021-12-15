@@ -2,9 +2,10 @@
 
 #include "common_lpnamer.h"
 #include "JsonXpansionReader.h"
+#include "helpers/Path.h"
 
 
-std::string StudyUpdater::linksSubfolder_ = std::string(PATH_SEPARATOR) + "input" + PATH_SEPARATOR + "links";
+std::string StudyUpdater::linksSubfolder_ = Path("") / "input"  / "links";
 
 
 StudyUpdater::StudyUpdater(std::string const & studyPath_p):
@@ -21,7 +22,7 @@ int StudyUpdater::getAntaresVersion() const
 
 void StudyUpdater::readAntaresVersion()
 {
-    std::ifstream studyFile_l(studyPath_ + PATH_SEPARATOR + STUDY_FILE);
+    std::ifstream studyFile_l(Path(studyPath_) / STUDY_FILE);
     std::string line_l;
     const std::string versionProperty_l("version = ");
 
@@ -43,7 +44,7 @@ void StudyUpdater::readAntaresVersion()
 
 std::string StudyUpdater::getLinkdataFilepath(ActiveLink const& link_p) const
 {
-    std::string linkDataFilePath = linksPath_ + PATH_SEPARATOR + link_p.get_linkor() + PATH_SEPARATOR + link_p.get_linkex() + ".txt";
+    std::string linkDataFilePath = Path(linksPath_) / link_p.get_linkor() / (link_p.get_linkex() + ".txt");
     return linkDataFilePath;
 }
 

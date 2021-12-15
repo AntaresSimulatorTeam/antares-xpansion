@@ -4,6 +4,7 @@
 #include "VariableFileReader.h"
 #include "solver_utils.h"
 #include "helpers/StringUtils.h"
+#include "helpers/Path.h"
 
 ProblemData::ProblemData(const std::string& problem_mps, const std::string& variables_txt):
         _problem_mps(problem_mps), _variables_txt(variables_txt)
@@ -52,12 +53,12 @@ void LinkProblemsGenerator::treat(std::string const & root,
 	std::map< std::pair<std::string, std::string>, int> & couplings) const {
 
 	// get path of file problem***.mps, variable***.txt and constraints***.txt
-	std::string const mps_name(root + PATH_SEPARATOR + problemData._problem_mps);
-	std::string const var_name(root + PATH_SEPARATOR + problemData._variables_txt);
+	std::string const mps_name(Path(root) / problemData._problem_mps);
+	std::string const var_name(Path(root) / problemData._variables_txt);
 
 	// new mps file in the new lp directory
 	std::string const lp_name = problemData._problem_mps.substr(0, problemData._problem_mps.size() - 4);
-	std::string const lp_mps_name = root + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps";
+	std::string const lp_mps_name = Path(root) / "lp" / (lp_name + ".mps");
 
 	// List of variables
     VariableFileReadNameConfiguration variable_name_config;
@@ -105,7 +106,7 @@ void LinkProblemsGenerator::treat(std::string const & root,
 void LinkProblemsGenerator::treatloop(std::string const & root, std::map< std::pair<std::string, std::string>,
 	int>& couplings) const {
 
-    std::string const mps_file_name			= root + PATH_SEPARATOR + MPS_TXT;
+    std::string const mps_file_name			= Path(root) / MPS_TXT;
 
 	for (auto const & mps : readMPSList(mps_file_name)) {
 		treat(root, mps, couplings);

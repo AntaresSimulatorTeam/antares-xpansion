@@ -23,6 +23,7 @@
 #include "CandidatesINIReader.h"
 #include "LinkProfileReader.h"
 #include "MasterProblemBuilder.h"
+#include "helpers/Path.h"
 
 namespace po = boost::program_options;
 
@@ -34,7 +35,7 @@ namespace po = boost::program_options;
   * \return The correct path
   */
 std::string get_name(std::string const & path) {
-	size_t last_sep(path.find(PATH_SEPARATOR));
+	size_t last_sep(path.find(Path::mSep));
 
 	if( last_sep == std::string::npos)
 	{
@@ -43,7 +44,7 @@ std::string get_name(std::string const & path) {
 
 	while(true)
 	{
-		size_t next_sep = path.find(PATH_SEPARATOR, last_sep+1);
+		size_t next_sep = path.find(Path::mSep, last_sep+1);
 		if(next_sep == std::string::npos)
 		{
 			break;
@@ -93,7 +94,7 @@ void masterGeneration(const std::string& rootPath,
 	treatAdditionalConstraints(master_l, additionalConstraints_p);
 
 	std::string const& lp_name = "master";
-	master_l->write_prob_mps((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + lp_name + ".mps"));
+	master_l->write_prob_mps( Path(rootPath) / "lp" / (lp_name + ".mps") );
 
 	std::map<std::string, std::map<std::string, int> > output;
 	for (auto const& coupling : couplings) {
@@ -105,7 +106,7 @@ void masterGeneration(const std::string& rootPath,
 		++i;
 	}
 
-	std::ofstream coupling_file((rootPath + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + STRUCTURE_FILE).c_str());
+	std::ofstream coupling_file( static_cast<std::string> (Path(rootPath) / "lp" / STRUCTURE_FILE).c_str() );
 	for (auto const& mps : output) {
 		for (auto const& pmax : mps.second) {
 			coupling_file << std::setw(50) << mps.first;
@@ -152,15 +153,15 @@ int main(int argc, char** argv) {
 
 		po::notify(opts);
 
-        std::string const area_file_name	= root + PATH_SEPARATOR + "area.txt";
-        std::string const interco_file_name	= root + PATH_SEPARATOR + "interco.txt";
+        std::string const area_file_name	= Path(root) / "area.txt";
+        std::string const interco_file_name	= Path(root) / "interco.txt";
 
         CandidatesINIReader candidateReader(interco_file_name,area_file_name);
 
         // Get all mandatory path
-        std::string const xpansion_user_dir = root + PATH_SEPARATOR + ".." + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "user" + PATH_SEPARATOR + "expansion";
-        std::string const candidates_file_name = xpansion_user_dir + PATH_SEPARATOR + CANDIDATES_INI;
-        std::string const capacity_folder = xpansion_user_dir + PATH_SEPARATOR + "capa";
+        std::string const xpansion_user_dir = Path(root) / ".." / ".." / "user" / "expansion";
+        std::string const candidates_file_name = Path(xpansion_user_dir)  / CANDIDATES_INI;
+        std::string const capacity_folder = Path(xpansion_user_dir) / "capa";
 
         // Instantiation of candidates
 		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);

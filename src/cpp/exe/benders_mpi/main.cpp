@@ -13,6 +13,7 @@
 #include "logger/User.h"
 #include "logger/UserFile.h"
 #include "logger/Master.h"
+#include "helpers/Path.h"
 
 #if defined(WIN32) || defined(_WIN32)
 #include <direct.h>
@@ -38,7 +39,7 @@ int main(int argc, char** argv)
 
     auto masterLogger = std::make_shared<xpansion::logger::Master>();
     Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
-    std::string loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbendersmpi.txt";
+    std::string loggerFileName = Path(options.OUTPUTROOT) / "reportbendersmpi.txt";
     if (world.rank() == 0)
     {
         Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
@@ -50,7 +51,7 @@ int main(int argc, char** argv)
 
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     google::InitGoogleLogging(argv[0]);
-    std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog-rank" + std::to_string(world.rank()) + "-";
+    std::string path_to_log = Path(options.OUTPUTROOT) / ("bendersmpiLog-rank" + std::to_string(world.rank()) + "-");
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 
     JsonWriter jsonWriter_l;
@@ -59,7 +60,7 @@ int main(int argc, char** argv)
 	{
 	    LOG(INFO) << "starting bendersmpi" << std::endl;
         jsonWriter_l.write_failure();
-        jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+        jsonWriter_l.dump( Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json") );
 	}
 
 	if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1) {
@@ -106,14 +107,14 @@ int main(int argc, char** argv)
 
             jsonWriter_l.updateEndTime();
             jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data, options.ABSOLUTE_GAP, options.RELATIVE_GAP, options.MAX_ITERATIONS);
-            jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+            jsonWriter_l.dump(Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json") );
 
             char buff[FILENAME_MAX];
             GetCurrentDir(buff, FILENAME_MAX);
 
             std::stringstream str;
-            str << "Optimization results available in : " << buff << PATH_SEPARATOR
-                << options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json";
+            str << "Optimization results available in : " << buff << Path::mSep
+                << Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json") ;
             logger->display_message(str.str());
         }
         bendersMpi.free();

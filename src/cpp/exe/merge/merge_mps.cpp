@@ -11,6 +11,7 @@
 
 #include "solver_utils.h"
 #include "logger/User.h"
+#include "helpers/Path.h"
 
 
 //@suggest: create and move to standardlp.cpp
@@ -26,13 +27,13 @@ int main(int argc, char** argv)
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
 	google::InitGoogleLogging(argv[0]);
-	std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "merge_mpsLog";
+	std::string path_to_log = Path(options.OUTPUTROOT) / "merge_mpsLog";
 	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 	LOG(INFO) << "starting merge_mps" << std::endl;
 
 	JsonWriter jsonWriter_l;
 	jsonWriter_l.write_failure();
-	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+	jsonWriter_l.dump(Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json") );
 
 	jsonWriter_l.write(options);
 	jsonWriter_l.updateBeginTime();
@@ -54,7 +55,7 @@ int main(int argc, char** argv)
         LOG(INFO) << "Merging problems..." << std::endl;
         for (auto const & kvp : input) {
 
-            std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first + ".mps");
+            std::string problem_name( Path(options.INPUTROOT) / (kvp.first + ".mps") );
             ncols = mergedSolver_l->get_ncols();
 
             SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
@@ -87,8 +88,8 @@ int main(int argc, char** argv)
                 int col_index = mergedSolver_l->get_col_index(varPrefix_l + x.first);
                 if (col_index == -1){
                     std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l+x.first << ".";
-                    mergedSolver_l->write_prob_lp(options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.lp");
-                    mergedSolver_l->write_prob_mps(options.OUTPUTROOT + PATH_SEPARATOR + "mergeError.mps");
+                    mergedSolver_l->write_prob_lp(Path(options.OUTPUTROOT) / "mergeError.lp");
+                    mergedSolver_l->write_prob_mps(Path(options.OUTPUTROOT) / "mergeError.mps");
                     std::exit(1);
                 }
                 else{
@@ -150,9 +151,9 @@ int main(int argc, char** argv)
 
         LOG(INFO) << "Problems merged." << std::endl;
         LOG(INFO) << "Writting mps file" << std::endl;
-        mergedSolver_l->write_prob_mps(options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.mps");
+        mergedSolver_l->write_prob_mps(Path(options.OUTPUTROOT) / "log_merged.mps");
         LOG(INFO) << "Writting lp file" << std::endl;
-        mergedSolver_l->write_prob_lp(options.OUTPUTROOT + PATH_SEPARATOR + "log_merged.lp");
+        mergedSolver_l->write_prob_lp(Path(options.OUTPUTROOT) / "log_merged.lp");
 
         mergedSolver_l->set_threads(16);
 
@@ -201,7 +202,7 @@ int main(int argc, char** argv)
         jsonWriter_l.write(input.size(), overallCost_l,
                            overallCost_l, investCost_l, operationalCost_l,
                            overallCost_l, x0, optimality_l);
-        jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+        jsonWriter_l.dump(Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json") );
 	}
     catch (std::exception& ex)
     {

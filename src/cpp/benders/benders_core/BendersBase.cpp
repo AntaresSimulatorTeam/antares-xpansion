@@ -1,5 +1,6 @@
 #include "BendersBase.h"
 #include "solver_utils.h"
+#include "helpers/Path.h"
 
 #include "glog/logging.h"
 BendersBase::BendersBase(BendersOptions const & options, Logger &logger):_options(options),_logger(logger) {}
@@ -33,7 +34,7 @@ void BendersBase::init_data() {
 *
 */
 void BendersBase::print_csv() {
-	std::string const output(_options.OUTPUTROOT + PATH_SEPARATOR + _options.CSV_NAME + ".csv");
+	std::string const output(Path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv") );
 	std::ofstream file(output, std::ios::out | std::ios::trunc);
 	if (file) {
         file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;deletedcut;time;basis;" << std::endl;
@@ -136,7 +137,7 @@ void BendersBase::print_cut_csv(std::ostream&stream, SlaveCutDataHandler const &
 *  \param options : set of parameters
 */
 void BendersBase::print_active_cut() {
-	std::string output(_options.OUTPUTROOT + PATH_SEPARATOR + "active_cut_output.csv");
+	std::string output(Path(_options.OUTPUTROOT) / "active_cut_output.csv" );
 	std::ofstream file(output, std::ios::out | std::ios::trunc);
 	if (file)
 	{
