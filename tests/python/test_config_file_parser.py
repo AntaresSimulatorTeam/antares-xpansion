@@ -18,6 +18,7 @@ class TestConfigFileParser:
         temp_config_file_path.write_text(content)
         my_config_file_parser = ConfigFileParser(temp_config_file_path)
         config_param =  my_config_file_parser.get_config_parameters()
+        assert config_param.default_install_dir == ""
         assert config_param.ANTARES == "antares-solver"
         assert config_param.MERGE_MPS == "merge_mps"
         assert config_param.BENDERS_MPI == "benders_mpi"
@@ -30,7 +31,8 @@ class TestConfigFileParser:
     def test_config_file_non_empty(self, tmp_path):
 
         temp_config_file_path = tmp_path / "toto.kldka"
-        content ="ANTARES             : antares-8.0-solver.exe\n"\
+        content ="DEFAULT_INSTALL_DIR             : Path/to/install\n"\
+                "ANTARES             : antares-8.0-solver.exe\n"\
                 "MERGE_MPS           : merge_mps.exe\n"\
                     "BENDERS_MPI         : bendersmpi.exe\n"\
                     "BENDERS_SEQUENTIAL  : benderssequential.exe\n"\
@@ -42,6 +44,7 @@ class TestConfigFileParser:
         temp_config_file_path.write_text(content)
         my_config_file_parser = ConfigFileParser(temp_config_file_path)
         config_param =  my_config_file_parser.get_config_parameters()
+        assert config_param.default_install_dir == "Path/to/install"
         assert config_param.ANTARES == "antares-8.0-solver.exe"
         assert config_param.MERGE_MPS == "merge_mps.exe"
         assert config_param.BENDERS_MPI == "bendersmpi.exe"

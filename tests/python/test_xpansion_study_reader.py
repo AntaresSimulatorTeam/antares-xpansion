@@ -55,6 +55,8 @@ def test_xpansion_weight_read(tmp_path):
 def test_option_solver_conversion():
     study_solver = "Cbc"
     assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "COIN")
+    study_solver = "Coin"
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "COIN")
     study_solver = "Xpress"
     assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "XPRESS")
     study_solver = "Cplex"

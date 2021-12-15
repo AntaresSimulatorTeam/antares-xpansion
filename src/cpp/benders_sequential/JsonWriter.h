@@ -74,9 +74,11 @@ public:
 *  \param nbWeeks_p : number of the weeks in the study
 *  \param bendersTrace_p : trace to be written ie iterations details
 *  \param bendersData_p : final benders data to get the best iteration
-*  \param min_gap : minimum gap wanted
+*  \param min_abs_gap : minimum absolute gap wanted
+*  \param min_rel_gap : minimum relative gap wanted
+*  \param max_iter : maximum number of iterations
 */
-    void write(int const & nbWeeks_p, BendersTrace const & bendersTrace_p, BendersData const & bendersData_p, double const & min_gap);
+    void write(int const & nbWeeks_p, BendersTrace const & bendersTrace_p, BendersData const & bendersData_p, double const& min_abs_gap, double const& min_rel_gap, double const& max_iter);
 
 /*!
 *  \brief  saves some entries to be later written to the json file

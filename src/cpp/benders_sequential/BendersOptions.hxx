@@ -4,8 +4,11 @@ BENDERS_OPTIONS_MACRO(LOG_LEVEL, int, 3)
 //Maximum number of iterations accepted
 BENDERS_OPTIONS_MACRO(MAX_ITERATIONS, int, -1)
 
-//Level of precision accepted
-BENDERS_OPTIONS_MACRO(GAP, double, 1e-6)
+//Absolute required level of precision
+BENDERS_OPTIONS_MACRO(ABSOLUTE_GAP, double, 1)
+
+//Absolute required level of precision
+BENDERS_OPTIONS_MACRO(RELATIVE_GAP, double, 1e-12)
 
 //True if cuts need to be aggregated, false otherwise
 BENDERS_OPTIONS_MACRO(AGGREGATION, bool, false)

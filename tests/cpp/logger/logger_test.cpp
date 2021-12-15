@@ -186,7 +186,8 @@ TEST_F(UserLoggerTest, IterationEndLog) {
     expected << indent_0 << indent_1 << "    Overall cost =       35.50 Me" << std::endl;
     expected << indent_0 << indent_1 << "   Best Solution =        3.00 Me" << std::endl;
     expected << indent_0 << indent_1 << "     Lower Bound =        2.00 Me" << std::endl;
-    expected << indent_0 << indent_1 << "             Gap = 1.00000e+06 e" << std::endl;
+     expected << indent_0 << indent_1 << "    Absolute gap = 1.00000e+06 e" << std::endl;
+    expected << indent_0 << indent_1 << "    Relative gap = 3.33333e-01" << std::endl;
 
     _logger.log_at_iteration_end(logData);
     ASSERT_EQ( _stream.str() ,expected.str() );
@@ -206,23 +207,27 @@ TEST_F(UserLoggerTest, IterationEndLogLongCost) {
     expected << indent_0 << indent_1 << "    Overall cost = 350000000.50 Me" << std::endl;
     expected << indent_0 << indent_1 << "   Best Solution =       100.00 Me" << std::endl;
     expected << indent_0 << indent_1 << "     Lower Bound =         3.00 Me" << std::endl;
-    expected << indent_0 << indent_1 << "             Gap =  9.70000e+07 e" << std::endl;
+    expected << indent_0 << indent_1 << "    Absolute gap =  9.70000e+07 e" << std::endl;
+    expected << indent_0 << indent_1 << "    Relative gap =  9.70000e-01" << std::endl;
 
     _logger.log_at_iteration_end(logData);
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
-TEST_F(UserLoggerTest, EndLogWithinOptimitality) {
+TEST_F(UserLoggerTest, EndLogAbsoluteGap) {
     LogData logData;
     logData.best_it = 1;
     logData.best_ub = 20;
     logData.lb = 19.5;
     logData.slave_cost = 1e6;
     logData.invest_cost = 10e6;
-    logData.optimal_gap = 1;
+    logData.optimality_gap = 1;
+    logData.relative_gap = 1e-6;
+    logData.it = 2;
+    logData.max_iterations = 10;
 
     std::stringstream expected;
-    expected << "--- CONVERGENCE within optimitality gap :" << std::endl;
+    expected << "--- Run completed: absolute gap reached" << std::endl;
     expected << indent_1 << "Best solution = it 1" << std::endl;
     expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
 
@@ -230,22 +235,47 @@ TEST_F(UserLoggerTest, EndLogWithinOptimitality) {
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
-TEST_F(UserLoggerTest, EndLogOutsideOptimitality) {
+TEST_F(UserLoggerTest, EndLogRelativeGap) {
     LogData logData;
     logData.best_it = 1;
     logData.best_ub = 20;
-    logData.lb = 18;
+    logData.lb = 19.5;
     logData.slave_cost = 1e6;
     logData.invest_cost = 10e6;
-    logData.optimal_gap = 1;
+    logData.optimality_gap = 0.1;
+    logData.relative_gap = 0.1;
+    logData.it = 2;
+    logData.max_iterations = 10;
 
     std::stringstream expected;
-    expected << "--- CONVERGENCE outside optimitality gap :" << std::endl;
+    expected << "--- Run completed: relative gap reached" << std::endl;
     expected << indent_1 << "Best solution = it 1" << std::endl;
     expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
 
     _logger.log_at_ending(logData);
     ASSERT_EQ( _stream.str() ,expected.str() );
+}
+
+TEST_F(UserLoggerTest, EndLogMaxIterations)
+{
+    LogData logData;
+    logData.best_it = 1;
+    logData.best_ub = 20;
+    logData.lb = 19.5;
+    logData.slave_cost = 1e6;
+    logData.invest_cost = 10e6;
+    logData.optimality_gap = 1e-6;
+    logData.relative_gap = 1e-6;
+    logData.it = 11;
+    logData.max_iterations = 10;
+
+    std::stringstream expected;
+    expected << "--- Run completed: maximum iterations reached" << std::endl;
+    expected << indent_1 << "Best solution = it 1" << std::endl;
+    expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
+
+    _logger.log_at_ending(logData);
+    ASSERT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(UserLoggerTest, DifferentCallsAddToTheSamStream) {
