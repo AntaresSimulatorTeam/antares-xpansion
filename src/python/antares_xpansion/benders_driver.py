@@ -17,7 +17,7 @@ from antares_xpansion.flushed_print import flushed_print
 class BendersDriver:
     def __init__(self, benders_mpi, benders_sequential, merge_mps) -> None:
 
-        self.oversubscribe = True
+        self.oversubscribe = False
         self.benders_mpi = benders_mpi
         self.merge_mps = merge_mps
         self.benders_sequential = benders_sequential
@@ -25,7 +25,7 @@ class BendersDriver:
         self.OPTIONS_TXT = "options.txt"
         self._initialise_system_specific_mpi_vars()
 
-    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=True):
+    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
 
