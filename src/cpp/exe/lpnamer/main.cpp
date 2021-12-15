@@ -24,6 +24,7 @@
 #include "LinkProfileReader.h"
 #include "MasterProblemBuilder.h"
 #include "helpers/Path.h"
+#include "Candidate.h"
 
 namespace po = boost::program_options;
 
@@ -118,6 +119,7 @@ void masterGeneration(const std::string& rootPath,
 	coupling_file.close();
 }
 
+
 /**
  * \fn int main (void)
  * \brief Main program
@@ -153,21 +155,7 @@ int main(int argc, char** argv) {
 
 		po::notify(opts);
 
-        std::string const area_file_name	= static_cast<std::string>( Path(root) / "area.txt");
-        std::string const interco_file_name	= static_cast<std::string>( Path(root) / "interco.txt");
-
-        CandidatesINIReader candidateReader(interco_file_name,area_file_name);
-
-        // Get all mandatory path
-        std::string const xpansion_user_dir = static_cast<std::string>( Path(root) / ".." / ".." / "user" / "expansion");
-        std::string const candidates_file_name = static_cast<std::string>( Path(xpansion_user_dir)  / CANDIDATES_INI);
-        std::string const capacity_folder = static_cast<std::string>( Path(xpansion_user_dir) / "capa");
-
-        // Instantiation of candidates
-		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
-		const auto& mapLinkProfile	= LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
-
-		ActiveLinksBuilder linkBuilder(candidatesDatas, mapLinkProfile);
+		ActiveLinksBuilder linkBuilder = get_link_builders(root);
 		
 		if ((master_formulation != "relaxed") && (master_formulation != "integer"))
 		{

@@ -10,6 +10,7 @@
 #include "CandidatesINIReader.h"
 #include "LinkProfileReader.h"
 #include "helpers/Path.h"
+#include "LauncherHelpers.h"
 
 namespace po = boost::program_options;
 
@@ -35,6 +36,8 @@ void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& l
 			<< links_p.size() - updateFailures_l << " files were updated\n";
 	}
 }
+
+
 
 /**
  * \fn int main (void)
@@ -69,20 +72,7 @@ int main(int argc, char** argv) {
 
 		po::notify(opts);
 
-        std::string const area_file_name	= static_cast<std::string>( Path(root) / "area.txt");
-        std::string const interco_file_name	= static_cast<std::string>( Path(root) / "interco.txt");
-
-        CandidatesINIReader candidateReader(interco_file_name,area_file_name);
-
-        // Get all mandatory path
-        std::string const xpansion_user_dir =  static_cast<std::string>( Path(root) / ".." / ".." / "user" / "expansion");
-        std::string const candidates_file_name =  static_cast<std::string>( Path(xpansion_user_dir) / CANDIDATES_INI);
-        std::string const capacity_folder =  static_cast<std::string>( Path(xpansion_user_dir) / "capa");
-
-		const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
-		const auto& mapLinkProfile = LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
-
-		ActiveLinksBuilder linksBuilder(candidatesDatas, mapLinkProfile);
+		ActiveLinksBuilder linksBuilder = get_link_builders(root);
 
 		const std::vector<ActiveLink> links = linksBuilder.getLinks();
 

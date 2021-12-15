@@ -1,5 +1,9 @@
 #include "LauncherHelpers.h"
-
+#include "Candidate.h"
+#include "CandidatesINIReader.h"
+#include "LinkProfileReader.h"
+#include "helpers/Path.h"
+#include "LinkProblemsGenerator.h"
 
 void treatAdditionalConstraints(SolverAbstract::Ptr master_p, 
 	const AdditionalConstraints& additionalConstraints_p)
@@ -106,4 +110,32 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, const std::map<std::string
 		master_p->chg_row_name(master_p->get_nrows() - 1, 
 			"link_" + pairOldNewVarnames.first + "_" + pairOldNewVarnames.second);
 	}
+}
+
+/**
+* \fn 
+* \brief return Active Links Builder 
+* \param root  path corresponding to the path to the simulation output directory containing the lp directory
+* \return ActiveLinksBuilder object
+*/
+
+ActiveLinksBuilder get_link_builders(const std::string& root)
+{
+
+	auto const area_file_name	= static_cast<std::string>( Path(root) / "area.txt");
+	auto const interco_file_name	= static_cast<std::string>( Path(root) / "interco.txt");
+
+	CandidatesINIReader candidateReader(interco_file_name,area_file_name);
+
+	// Get all mandatory path
+	auto const xpansion_user_dir =  static_cast<std::string>( Path(root) / ".." / ".." / "user" / "expansion");
+	auto const candidates_file_name =  static_cast<std::string>( Path(xpansion_user_dir) / CANDIDATES_INI);
+	auto const capacity_folder =  static_cast<std::string>( Path(xpansion_user_dir) / "capa");
+
+	// Instantiation of candidates
+	const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
+	const auto& mapLinkProfile = LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
+
+	return ActiveLinksBuilder(candidatesDatas, mapLinkProfile);
+
 }
