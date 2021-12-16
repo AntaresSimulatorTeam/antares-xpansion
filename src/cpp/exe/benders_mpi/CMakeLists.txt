@@ -20,6 +20,7 @@ add_executable (bendersmpi
 #			msmpi libboost_serialization-vc141-mt-x64-1_67)
 #ELSE (WIN32)
 	target_link_libraries (bendersmpi
+			${PROJECT_NAME}::benders_core
 			${PROJECT_NAME}::benders_sequential_core
 			${PROJECT_NAME}::benders_mpi_core
 			logger_lib

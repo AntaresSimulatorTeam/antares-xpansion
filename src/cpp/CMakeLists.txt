@@ -16,11 +16,8 @@ endif()
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/helpers")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/logger")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/lpnamer")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders_sequential")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/multisolver_interface")
 
-if (USE_MPI)
-	add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders_mpi")
-endif ()
 
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/exe")

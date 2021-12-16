@@ -42,20 +42,20 @@ def check_profile_file(filename_path):
                     indirect_profile.append(float(line_vals[1]))
                 else:
                     flushed_print('Line %d in file %s is not valid.'
-                          % (idx + 1, filename_path))
+                                  % (idx + 1, filename_path))
                     sys.exit(1)
             except ValueError:
                 flushed_print('Line %d in file %s is not valid: allowed formats "X" or "X\tY".'
-                      % (idx + 1, filename_path))
+                              % (idx + 1, filename_path))
                 sys.exit(1)
             if (first_profile[-1] < 0) or (two_profiles and indirect_profile[-1] < 0):
                 flushed_print('Line %d in file %s indicates a negative value'
-                      % (idx + 1, filename_path))
+                              % (idx + 1, filename_path))
                 sys.exit(1)
 
     if len(first_profile) != 8760:
         flushed_print('file %s does not have 8760 lines'
-              % filename_path)
+                      % filename_path)
         sys.exit(1)
 
     return any(first_profile) or any(indirect_profile)
@@ -63,6 +63,7 @@ def check_profile_file(filename_path):
 ##########################################
 # Checks related to candidates.ini
 ##########################################
+
 
 def check_candidate_option_type(option, value):
     """
@@ -90,11 +91,13 @@ def check_candidate_option_type(option, value):
     obsolete_options = ["has-link-profile"]
     option_type = options_types.get(option)
     if option_type is None:
-        flushed_print('check_candidate_option_type: %s option not recognized in candidates file.' % option)
+        flushed_print(
+            'check_candidate_option_type: %s option not recognized in candidates file.' % option)
         sys.exit(1)
     else:
         if obsolete_options.count(option):
-            flushed_print('%s option is no longer used by antares-xpansion' % option)
+            flushed_print(
+                '%s option is no longer used by antares-xpansion' % option)
             return True
         if option_type == 'string':
             return True
@@ -106,7 +109,7 @@ def check_candidate_option_type(option, value):
             except ValueError:
                 return False
         flushed_print('check_candidate_option_type: Non handled data type %s for option %s'
-              % (option_type, option))
+                      % (option_type, option))
         sys.exit(1)
 
 
@@ -138,7 +141,7 @@ def check_candidate_option_value(option, value):
         return True
 
     flushed_print('check_candidate_option_value: Illegal value %s for option %s allowed values are: %s'
-          % (value, option, legal_values))
+                  % (value, option, legal_values))
     sys.exit(1)
 
 
@@ -147,12 +150,14 @@ def check_candidate_name(name, section):
         checks that the candidate's name is not empty and does not contain a space
     """
     if (not name) or (name.lower() == "na"):
-        flushed_print('Error candidates name cannot be empty : found in section %s' % section)
+        flushed_print(
+            'Error candidates name cannot be empty : found in section %s' % section)
         sys.exit(1)
     illegal_chars = " \n\r\t\f\v-+=:[]()"
     for c in illegal_chars:
         if c in name:
-            flushed_print('Error candidates name should not contain %s, found in section %s in "%s"' % (c, section, name))
+            flushed_print('Error candidates name should not contain %s, found in section %s in "%s"' % (
+                c, section, name))
             sys.exit(1)
 
 
@@ -161,10 +166,12 @@ def check_candidate_link(link, section):
         checks that the candidate's link is not empty
     """
     if (not link) or (link.lower() == "na"):
-        flushed_print('Error candidates link cannot be empty : found in section %s' % section)
+        flushed_print(
+            'Error candidates link cannot be empty : found in section %s' % section)
         sys.exit(1)
     if " - " not in link:
-        flushed_print('Error candidates link value must contain " - " : found in section %s' % section)
+        flushed_print(
+            'Error candidates link value must contain " - " : found in section %s' % section)
         sys.exit(1)
 
 
@@ -198,16 +205,20 @@ def check_candidates_file(driver):
     for each_section in ini_file.sections():
         for (option, value) in ini_file.items(each_section):
             if not check_candidate_option_type(option, value):
-                flushed_print("value %s for option %s has the wrong type!" % (value, option))
+                flushed_print(
+                    "value %s for option %s has the wrong type!" % (value, option))
                 sys.exit(1)
             check_candidate_option_value(option, value)
 
     # check that name is not empty and does not have space
     # check that link is not empty
     for each_section in ini_file.sections():
-        check_candidate_name(ini_file[each_section]['name'].strip(), each_section)
-        check_candidate_link(ini_file[each_section]['link'].strip(), each_section)
-        driver.candidates_list.append(ini_file[each_section]['name'].strip().lower())
+        check_candidate_name(
+            ini_file[each_section]['name'].strip(), each_section)
+        check_candidate_link(
+            ini_file[each_section]['link'].strip(), each_section)
+        driver.candidates_list.append(
+            ini_file[each_section]['name'].strip().lower())
 
     # check some attributes unicity : name and links
     unique_attributes = ["name"]
@@ -217,7 +228,7 @@ def check_candidates_file(driver):
             value = ini_file[each_section][verified_attribute].strip().lower()
             if value in unique_values:
                 flushed_print('Error candidates %ss have to be unique, duplicate %s %s in section %s'
-                      % (verified_attribute, verified_attribute, value, each_section))
+                              % (verified_attribute, verified_attribute, value, each_section))
                 sys.exit(1)
             else:
                 unique_values.add(value)
@@ -249,19 +260,22 @@ def check_candidates_file(driver):
             elif value == '1':
                 has_a_profile = True
             else:
-                has_a_profile = has_a_profile or check_profile_file(driver.capacity_file(value))
+                has_a_profile = has_a_profile or check_profile_file(
+                    driver.capacity_file(value))
         if not has_a_profile:
             # remove candidate if it has no profile
-            flushed_print("candidate %s will be removed!" % ini_file[each_section]["name"])
+            flushed_print("candidate %s will be removed!" %
+                          ini_file[each_section]["name"])
             ini_file.remove_section(each_section)
             config_changed = True
 
     if config_changed:
-        shutil.copyfile(driver.candidates_ini_filepath(), driver.candidates_ini_filepath() + ".bak")
+        shutil.copyfile(driver.candidates_ini_filepath(),
+                        driver.candidates_ini_filepath() + ".bak")
         with open(driver.candidates_ini_filepath(), 'w') as out_file:
             ini_file.write(out_file)
         flushed_print("%s file was overwritten! backup file %s created"
-              % (driver.candidates_ini_filepath(), driver.candidates_ini_filepath() + ".bak"))
+                      % (driver.candidates_ini_filepath(), driver.candidates_ini_filepath() + ".bak"))
 
 
 ##########################################
@@ -295,7 +309,8 @@ def check_setting_option_type(option, value):
     }
     option_type = options_types.get(option)
     if option_type is None:
-        flushed_print('check_setting_option_type: Illegal %s option in settings file.' % option)
+        flushed_print(
+            'check_setting_option_type: Illegal %s option in settings file.' % option)
         sys.exit(1)
     else:
         if option_type == 'string':
@@ -318,7 +333,7 @@ def check_setting_option_type(option, value):
                 return False
         else:
             flushed_print('check_setting_option_type: Non handled data type %s for option %s'
-                  % (option_type, option))
+                          % (option_type, option))
             sys.exit(1)
 
 
@@ -375,7 +390,7 @@ def check_setting_option_value(option, value):
                     return True
             except ValueError:
                 flushed_print('Illegal value %s for option %s : only -1 or positive values are allowed'
-                      % (value, option))
+                              % (value, option))
                 sys.exit(1)
     elif option == "relaxed_optimality_gap":
         if value.strip().endswith("%"):
@@ -385,7 +400,7 @@ def check_setting_option_value(option, value):
                     return True
             except ValueError:
                 flushed_print('Illegal value %s for option %s: legal format "X%%" with X between 0 and 100'
-                      % (value, option))
+                              % (value, option))
                 sys.exit(1)
     elif option == 'timelimit':
         if (value in ["+Inf", "+infini"]):
@@ -397,10 +412,11 @@ def check_setting_option_value(option, value):
                     return True
             except ValueError:
                 flushed_print('Illegal value %s for option %s : only positive values are allowed'
-                      % (value, option))
+                              % (value, option))
                 sys.exit(1)
 
-    flushed_print('check_candidate_option_value: Illegal value %s for option %s' % (value, option))
+    flushed_print(
+        'check_candidate_option_value: Illegal value %s for option %s' % (value, option))
     sys.exit(1)
 
 
@@ -417,11 +433,13 @@ def check_options(options):
     option_items = options.items()
     for (option, value) in option_items:
         if not check_setting_option_type(option, value):
-            flushed_print("check_settings : value %s for option %s has the wrong type!" % (value, option))
+            flushed_print(
+                "check_settings : value %s for option %s has the wrong type!" % (value, option))
             sys.exit(1)
         check_setting_option_value(option, value)
 
     if options.get('yearly-weights', "") != "":
         if options.get("cut_type") == "average":
-            flushed_print("check_settings : yearly-weights option can not be used when cut_type is average")
+            flushed_print(
+                "check_settings : yearly-weights option can not be used when cut_type is average")
             sys.exit(1)
