@@ -306,6 +306,7 @@ def check_setting_option_type(option, value):
         "timelimit": "integer",
         "yearly-weights": "string",
         "additional-constraints": "string",
+        "log_level": "integer",
     }
     option_type = options_types.get(option)
     if option_type is None:
@@ -360,6 +361,7 @@ def check_setting_option_value(option, value):
         "timelimit": None,
         "yearly-weights": None,
         "additional-constraints": None,
+        "log_level": None,
     }
     legal_values = options_legal_values.get(option)
 
@@ -414,6 +416,14 @@ def check_setting_option_value(option, value):
                 flushed_print('Illegal value %s for option %s : only positive values are allowed'
                               % (value, option))
                 sys.exit(1)
+    elif option == 'log_level':
+        if (value in ["0", "1"]):
+            return True
+        else:
+            flushed_print('Illegal value %s for option %s : only level 0 or 1 are allowed'
+                            % (value, option))
+            sys.exit(1)
+            
 
     flushed_print(
         'check_candidate_option_value: Illegal value %s for option %s' % (value, option))
