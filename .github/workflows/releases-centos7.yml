@@ -10,50 +10,55 @@ env:
 jobs:
 
   docker_publish:
-  
+
     runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@master 
-    
-    - name: Read antares-solver version
-      id: antares-version
-      uses: notiz-dev/github-action-json-property@release
-      with: 
-        path: 'antares-version.json'
-        prop_path: 'antares_version'
-        
-    - name: Read antares-deps version
-      id: antares-deps-version
-      uses: notiz-dev/github-action-json-property@release
-      with: 
-        path: 'antares-version.json'
-        prop_path: 'antares_deps_version'
-    
-    - name: Get branch name
-      id: branch-name
-      uses: tj-actions/branch-names@v5
-      
-    - name: Create docker file with src
-      shell: bash
-      run: |
-        cd docker
-        sh build-docker-file-src.sh
-        
-    - name: Docker file push
-      uses: elgohr/Publish-Docker-Github-Action@master
-      env:
-        ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
-        ANTARES_SOLVER_VERSION: ${{steps.antares-version.outputs.prop}}
-        ANTARES_XPANSION_TAG: ${{ steps.branch-name.outputs.current_branch }}
-      with:
-        name: antaresrte/rte-antares
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        workdir: docker
-        dockerfile: build-centos7-src
-        cache: true
-        tags: centos7-xpansion-${{ steps.branch-name.outputs.current_branch }}
-        buildargs: ANTARES_DEPS_VERSION, ANTARES_SOLVER_VERSION, ANTARES_XPANSION_TAG
+
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v1.1.2
+        with:
+          files: |
+            docker/centos7
+            antares-version.json
+
+      - name: Read antares-solver version
+        id: antares-version
+        if: steps.changed-files.outputs.modified_files != ''
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_version'
+
+      - name: Read antares-deps version
+        id: antares-deps-version
+        if: steps.changed-files.outputs.modified_files != ''
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_deps_version'
+
+      - name: Docker file push
+        id: docker_push
+        if: steps.changed-files.outputs.modified_files != ''
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
+          ANTARES_SOLVER_VERSION: ${{steps.antares-version.outputs.prop}}
+        with:
+          name: antaresrte/rte-antares
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          workdir: docker
+          dockerfile: centos7
+          cache: true
+          tags: centos7-xpansion
+          buildargs: ANTARES_DEPS_VERSION, ANTARES_SOLVER_VERSION
 
   build:
 
