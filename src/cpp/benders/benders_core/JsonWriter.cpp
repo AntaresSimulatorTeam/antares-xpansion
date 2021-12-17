@@ -1,60 +1,32 @@
 #include "JsonWriter.h"
 #include "config.h"
 
-namespace
-{
-    std::string timeToStr(std::time_t* time_p)
-    {
-        char buffer_l[100];
-        strftime(buffer_l, sizeof(buffer_l), "%d-%m-%Y %H:%M:%S", std::localtime(time_p));
-        std::string strTime_l(buffer_l);
-
-        return strTime_l;
-    }
-}
-
-JsonWriter::JsonWriter() :
-    _beginTime(std::time(0)),
-    _endTime(std::time(0))
+JsonWriter::JsonWriter() : OutputWriter()
 {
 }
 
-JsonWriter::~JsonWriter() {
+JsonWriter::~JsonWriter()
+{
 }
 
 void JsonWriter::updateBeginTime()
 {
-    _beginTime = std::time(0);
+    OutputWriter::updateBeginTime();
     _output["begin"] = getBegin();
 }
 
 void JsonWriter::updateEndTime()
 {
-    _endTime =  std::time(0);
+    OutputWriter::updateEndTime();
     _output["end"] = getEnd();
 }
 
-std::string JsonWriter::getBegin()
+void JsonWriter::write(BendersOptions const &bendersOptions_p)
 {
-    return timeToStr(&_beginTime);
-}
-
-std::string JsonWriter::getEnd()
-{
-    return timeToStr(&_endTime);
-}
-
-double JsonWriter::getDuration()
-{
-    return std::difftime(_endTime, _beginTime);
-}
-
-void JsonWriter::write(BendersOptions const & bendersOptions_p)
-{
-    //Options
-    #define BENDERS_OPTIONS_MACRO(name__, type__, default__) _output["options"][#name__] = bendersOptions_p.name__;
-    #include "BendersOptions.hxx"
-    #undef BENDERS_OPTIONS_MACRO
+// Options
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) _output["options"][#name__] = bendersOptions_p.name__;
+#include "BendersOptions.hxx"
+#undef BENDERS_OPTIONS_MACRO
 }
 
 void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
@@ -62,12 +34,13 @@ void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
 {
     _output["nbWeeks"] = nbWeeks_p;
 
-    //Iterations
+    // Iterations
     size_t iterCnt_l(0);
     for (auto masterDataPtr_l : bendersTrace_p)
     {
         ++iterCnt_l;
-        if (masterDataPtr_l->_valid) {
+        if (masterDataPtr_l->_valid)
+        {
 
             std::string strIterCnt_l(std::to_string(iterCnt_l));
             _output["iterations"][strIterCnt_l]["duration"] = masterDataPtr_l->_time;
@@ -81,7 +54,8 @@ void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
             _output["iterations"][strIterCnt_l]["overall_cost"] = masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
 
             Json::Value vectCandidates_l(Json::arrayValue);
-            for (auto pairNameValue_l : masterDataPtr_l->get_point()) {
+            for (auto pairNameValue_l : masterDataPtr_l->get_point())
+            {
                 Json::Value candidate_l;
                 candidate_l["name"] = pairNameValue_l.first;
                 candidate_l["invest"] = pairNameValue_l.second;
@@ -93,15 +67,15 @@ void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
         }
     }
 
-    //solution
+    // solution
     size_t bestItIndex_l = bendersData_p.best_it - 1;
     _output["solution"]["iteration"] = bendersData_p.best_it;
     if (bestItIndex_l >= 0 && bestItIndex_l < bendersTrace_p.size())
-    {    
+    {
         _output["solution"]["investment_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost;
         _output["solution"]["operational_cost"] = bendersTrace_p[bestItIndex_l].get()->_operational_cost;
         _output["solution"]["overall_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost + bendersTrace_p[bestItIndex_l].get()->_operational_cost;
-        
+
         for (auto pairNameValue_l : bendersTrace_p[bestItIndex_l]->get_point())
         {
             _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
@@ -124,16 +98,15 @@ void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
     {
         _output["solution"]["problem_status"] = "ERROR";
     }
-    
 }
 
 void JsonWriter::write(int nbWeeks_p,
-                       double const & lb_p, double const & ub_p,
-                       double const & investCost_p,
-                       double const& operationalCost_p,
-                       double const & overallCost_p,
-                       Point const & solution_p,
-                       bool const & optimality_p)
+                       double const &lb_p, double const &ub_p,
+                       double const &investCost_p,
+                       double const &operationalCost_p,
+                       double const &overallCost_p,
+                       Point const &solution_p,
+                       bool const &optimality_p)
 {
     _output["nbWeeks"] = nbWeeks_p;
 
@@ -159,37 +132,38 @@ void JsonWriter::write(int nbWeeks_p,
 }
 
 /*!
-*  \brief write a json output with a failure status in solution. If optimization process exits before it ends, this failure will be available as an output.
-*
-*/
-void JsonWriter::write_failure() {
+ *  \brief write a json output with a failure status in solution. If optimization process exits before it ends, this failure will be available as an output.
+ *
+ */
+void JsonWriter::write_failure()
+{
     _output["solution"]["problem_status"] = "ERROR";
 }
 
 /*!
-*  \brief write the json data into a file
-*
-*  \param filename_p : name of the file to be written
-*/
-void JsonWriter::dump(std::string const & filename_p)
+ *  \brief write the json data into a file
+ *
+ *  \param filename_p : name of the file to be written
+ */
+void JsonWriter::dump(std::string const &filename_p)
 {
-    //Antares
+    // Antares
     _output["antares"]["version"] = ANTARES_VERSION_TAG;
 
-    //Xpansion
+    // Xpansion
     _output["antares_xpansion"]["version"] = PROJECT_VER;
 
-    //Time
+    // Time
     _output["duration"] = getDuration();
 
     std::ofstream jsonOut_l(filename_p);
-    if(jsonOut_l)
+    if (jsonOut_l)
     {
-        //Output
+        // Output
         jsonOut_l << _output << std::endl;
     }
     else
     {
-		std::cout << "Impossible d'ouvrir le fichier json " << filename_p << std::endl;
-	}
+        std::cout << "Impossible d'ouvrir le fichier json " << filename_p << std::endl;
+    }
 }
