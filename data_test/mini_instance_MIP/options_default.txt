@@ -19,4 +19,5 @@
                       CSV_NAME                              benders_output_trace
                      JSON_NAME                                               out
                    BOUND_ALPHA                                                 1
+                   JSON_FILE                                        ./expansion/out.json
 

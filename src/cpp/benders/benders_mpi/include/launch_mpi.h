@@ -5,4 +5,3 @@
 #include "core/ILogger.h"
 
 void run_mpibenders(mpi::communicator& world, mpi::environment& env, const BendersOptions& options, Logger& logger, JsonWriter& jsonWriter_l);
-// void run_mpibenders_wrapper(mpi::communicator& world, mpi::environment& env, const BendersOptions& options, Logger& logger, JsonWriter& jsonWriter_l);

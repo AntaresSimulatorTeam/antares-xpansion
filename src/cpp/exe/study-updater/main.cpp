@@ -17,13 +17,12 @@ namespace po = boost::program_options;
  *
  * \param rootPath_p path corresponding to the path to the simulation output directory containing the lp directory
  * \param links_p Structure which contains the list of links
- * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
+ * \param jsonPath_l path to the json output file
  * \return void
  */
-void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& links_p, std::string const& solutionFilename_p)
+void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& links_p, std::string const& jsonPath_l)
 {
 	std::string linksPath_l = rootPath_p + PATH_SEPARATOR + ".." + PATH_SEPARATOR + "..";
-	std::string jsonPath_l	= rootPath_p + PATH_SEPARATOR + "lp" + PATH_SEPARATOR + solutionFilename_p;
 
 	StudyUpdater studyUpdater(linksPath_l);
 	int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);
