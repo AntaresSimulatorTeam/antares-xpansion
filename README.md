@@ -112,7 +112,6 @@ For build instructions, please visit the [developer guide][developer-guide].
 * [conception/](conception)        - json output description. 
 * [docs/](docs) - Markdown files for documentation generation.  
 * [data_test/](data_test)	 - Free sample data sets.
-* [documentation/](documentation)	 - Documentation generation with doxygen.
 * [src/cpp/](src/cpp)      - Source code for cpp application (lpnamer, benders with MPI, benders without MPI, mergeMPS, study updater)
 * [src/python/](src/python)       - Python script for Antares-Xpansion launch.
 

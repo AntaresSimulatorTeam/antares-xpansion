@@ -1,6 +1,18 @@
 Antares-Xpansion Changelog
 =================
 
+v0.6.1 (not released yet)
+--------------------
+### Features
+
+- Antares-Xpansion outputs are written in the `expansion` directory instead of the `lp` directory
+
+### Bug fixes
+
+### For developers
+
+- Remove documentation generation with doxygen
+
 v0.6.0 (12/2021)
 --------------------
 ### Features
