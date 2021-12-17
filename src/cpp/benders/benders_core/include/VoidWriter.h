@@ -10,10 +10,10 @@
 #include <json/writer.h>
 
 /*!
- * \class JsonWriter
- * \brief JsonWriter class to describe the execuion session of an antares xpansion optimization in a json file
+ * \class VoidWriter
+ * \brief VoidWriter class to describe the execuion session of an antares xpansion optimization
  */
-class JsonWriter : public OutputWriter
+class VoidWriter : public OutputWriter
 {
 private:
     // attributes of the optimization execution
@@ -21,34 +21,24 @@ private:
 
 public:
     /*!
-     *  \brief JsonWriter default constructor
+     *  \brief VoidWriter default constructor
      */
-    JsonWriter();
+    VoidWriter();
 
     /*!
-     *  \brief destructor of class JsonWriter
+     *  \brief destructor of class VoidWriter
      */
-    virtual ~JsonWriter();
+    virtual ~VoidWriter();
 
     /*!
-     *  \brief updates the execution begin time
-     */
-    virtual void updateBeginTime();
-
-    /*!
-     *  \brief updates the end of execution time
-     */
-    virtual void updateEndTime();
-
-    /*!
-     *  \brief saves the options of the benders algorithm to be later written to the json file
+     *  \brief saves the options of the benders algorithm to be later written
      *
      *  \param bendersOptions_p : set of options used for the optimization
      */
     virtual void write(BendersOptions const &bendersOptions_p);
 
     /*!
-     *  \brief saves some entries to be later written to the json file
+     *  \brief saves some entries to be later written
      *
      *  \param nbWeeks_p : number of the weeks in the study
      *  \param bendersTrace_p : trace to be written ie iterations details
@@ -60,7 +50,7 @@ public:
     virtual void write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter);
 
     /*!
-     *  \brief  saves some entries to be later written to the json file
+     *  \brief  saves some entries to be later written
      *
      *  \param nbWeeks_p : number of the weeks in the study
      *  \param lb_p : solution lower bound

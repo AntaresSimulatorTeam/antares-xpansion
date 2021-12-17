@@ -34,6 +34,7 @@ protected:
      *  \brief return a double indicating the exection time in seconds
      */
     double getDuration();
+    std::string _filename;
 
 public:
     /*!
@@ -98,8 +99,17 @@ public:
 
     /*!
      *  \brief write the log data into a file
-     *
-     *  \param filename_p : name of the file to be written
      */
-    virtual void dump(std::string const &filename_p) = 0;
+    virtual void dump() = 0;
+
+    /*!
+     * \brief initialize outputs
+     * \param filename_p : name of the file to be written
+     * \param options : set of options used for the optimization
+     */
+    void initialize(BendersOptions options);
+
+    void end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter, std::string const &filename_p);
 };
+
+using Writer = std::shared_ptr<OutputWriter>;

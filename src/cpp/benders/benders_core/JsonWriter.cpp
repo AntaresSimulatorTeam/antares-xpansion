@@ -142,10 +142,8 @@ void JsonWriter::write_failure()
 
 /*!
  *  \brief write the json data into a file
- *
- *  \param filename_p : name of the file to be written
  */
-void JsonWriter::dump(std::string const &filename_p)
+void JsonWriter::dump()
 {
     // Antares
     _output["antares"]["version"] = ANTARES_VERSION_TAG;
@@ -156,7 +154,7 @@ void JsonWriter::dump(std::string const &filename_p)
     // Time
     _output["duration"] = getDuration();
 
-    std::ofstream jsonOut_l(filename_p);
+    std::ofstream jsonOut_l(_filename);
     if (jsonOut_l)
     {
         // Output
@@ -164,6 +162,6 @@ void JsonWriter::dump(std::string const &filename_p)
     }
     else
     {
-        std::cout << "Impossible d'ouvrir le fichier json " << filename_p << std::endl;
+        std::cout << "Impossible d'ouvrir le fichier json " << _filename << std::endl;
     }
 }

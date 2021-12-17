@@ -4,26 +4,27 @@
 #include "glog/logging.h"
 
 #include "launcher.h"
-#include "Benders.h"
+#include "BendersSequential.h"
 #include "BendersOptions.h"
 #include "logger/Master.h"
 #include "logger/UserFile.h"
 #include "logger/User.h"
-#include "SequentialLaunch.h"
+#include "OutputWriter.h"
+#include "JsonWriter.h"
 
-#if defined(WIN32) || defined(_WIN32) 
+#if defined(WIN32) || defined(_WIN32)
 #include <direct.h>
 #define GetCurrentDir _getcwd
-#define PATH_SEPARATOR "\\" 
+#define PATH_SEPARATOR "\\"
 #else
 #include <unistd.h>
 #define GetCurrentDir getcwd
-#define PATH_SEPARATOR "/" 
+#define PATH_SEPARATOR "/"
 #endif
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-	//options.print(std::cout);
+	// options.print(std::cout);
 	usage(argc);
 	BendersOptions options(build_benders_options(argc, argv));
 
@@ -38,25 +39,23 @@ int main(int argc, char** argv)
 
 	LOG(INFO) << "Launching Benders Sequential" << std::endl;
 	auto masterLogger = std::make_shared<xpansion::logger::Master>();
-	
-	const std::string& loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbenderssequential";
-    Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
+
+	const std::string &loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbenderssequential";
+	Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
 	Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
 	masterLogger->addLogger(loggerUser);
 	masterLogger->addLogger(loggerFile);
 
 	Logger logger = masterLogger;
+	Writer writer = std::make_shared<JsonWriter>();
+	writer->initialize(options);
 
-    sequential_launch(options, logger);
+	Timer timer;
 
-    char buff[FILENAME_MAX];
-    GetCurrentDir(buff, FILENAME_MAX);
+	BendersSequential benders(options, logger, writer);
+	benders.launch();
 
-    std::stringstream str;
-    str << "Optimization results available in : " << buff <<  PATH_SEPARATOR
-        << options.OUTPUTROOT << PATH_SEPARATOR << options.JSON_NAME + ".json";
-    logger->display_message(str.str());
-
+	logger->log_total_duration(timer.elapsed());
 
 	return 0;
 }
