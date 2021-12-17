@@ -17,7 +17,7 @@ where `x.y.z` is the version number).
 2.  Run `antares-xpansion-launcher.exe` and choose the path to the
     Antares study with the `-i` parameter:
     ```
-    antares-xpansion-launcher.exe -i .examples\SmallTestFiveCandidates
+    antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates
     ```
 > The `-i` parameter can also be replaced by `--dataDir`.
 
