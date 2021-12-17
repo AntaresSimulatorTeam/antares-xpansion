@@ -48,7 +48,7 @@ Antares-Xpansion optimizes the _investments_ in order to minimize the global cos
 
 Antares-Xpansion is currently under development. Feel free to submit any issue.
 
-## Links:
+## Links
 
 - [Official Documentation][readthedocs]
 - [Antares website][antareswebsite]
