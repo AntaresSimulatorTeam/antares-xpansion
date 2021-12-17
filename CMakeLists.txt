@@ -344,8 +344,6 @@ endif()
 # Documentation
 # ===========================================================================
 
-add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
-
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 
 if (WIN32)
