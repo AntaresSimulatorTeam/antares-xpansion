@@ -91,7 +91,7 @@ class BendersDriver:
             )
 
     def _clean_log_files(self):
-        solver_name =  Path(self.solver).name
+        solver_name = Path(self.solver).name
         logfile_list = glob.glob("./" + solver_name + "Log*")
         for file_path in logfile_list:
             try:

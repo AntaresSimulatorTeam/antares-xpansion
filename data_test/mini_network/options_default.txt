@@ -19,4 +19,5 @@
                       CSV_NAME                              benders_output_trace
                    BOUND_ALPHA                                                 1
                    SOLVER_NAME                                        COIN
+                   JSON_FILE                                        ./expansion/out.json
 

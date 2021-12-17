@@ -121,6 +121,7 @@ class XpansionConfig:
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_TXT = 'options.txt'
+        self.JSON_NAME = "out"
 
     def _set_default_settings(self):
         self.settings_default = {
@@ -161,7 +162,6 @@ class XpansionConfig:
             "THRESHOLD_ITERATION": "0",
             "RAND_AGGREGATION": "0",
             "CSV_NAME": "benders_output_trace",
-            "JSON_NAME": "out",
             "BOUND_ALPHA": "1",
         }
 

@@ -17,7 +17,7 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
 
 	JsonWriter jsonWriter_l;
 	jsonWriter_l.write_failure();
-	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+	jsonWriter_l.dump(options.JSON_FILE);
 
 	jsonWriter_l.write(options);
 	jsonWriter_l.updateBeginTime();
@@ -43,7 +43,7 @@ void sequential_launch(BendersOptions const & options,  Logger & logger) {
     logger->log_at_ending(logData);
 	jsonWriter_l.updateEndTime();
 	jsonWriter_l.write(input.size(), benders._trace, benders._data, options.ABSOLUTE_GAP, options.RELATIVE_GAP, options.MAX_ITERATIONS);
-	jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+	jsonWriter_l.dump(options.JSON_FILE);
 
 	benders.free();
 	logger->log_total_duration(timer.elapsed());
