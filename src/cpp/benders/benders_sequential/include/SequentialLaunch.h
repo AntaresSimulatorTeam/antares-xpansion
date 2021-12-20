@@ -3,4 +3,4 @@
 #include "BendersOptions.h"
 #include "core/ILogger.h"
 
-void sequential_launch(BendersOptions const & options,  Logger & logger);
+void sequential_launch(BendersOptions const &options, Logger &logger);

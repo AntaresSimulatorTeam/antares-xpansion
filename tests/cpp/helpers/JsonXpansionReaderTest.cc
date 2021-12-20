@@ -1,27 +1,24 @@
 #include "gtest/gtest.h"
 
-#include <sstream>
 #include <fstream>
+#include <sstream>
 
 #include "JsonXpansionReader.h"
 
-class JsonXpansionReaderTest : public ::testing::Test
-{
+class JsonXpansionReaderTest : public ::testing::Test {
 protected:
+  static JsonXpansionReader *jsonXpansionReader_;
 
-    static JsonXpansionReader  * jsonXpansionReader_;
+  static void SetUpTestCase() {
 
-	static void SetUpTestCase()
-	{
+    // called before 1st test
+    std::string content_l;
+    std::ofstream file_l;
 
-        // called before 1st test
-        std::string content_l;
-        std::ofstream file_l;
+    // dummy interco tmp file name
+    file_l.open("temp_out.json");
 
-		// dummy interco tmp file name
-        file_l.open("temp_out.json");
-
-        content_l ="\
+    content_l = "\
 {\n\
 	\"antares\" : \n\
 	{\n\
@@ -163,52 +160,45 @@ protected:
 }\n\
 ";
 
-        file_l << content_l;
-        file_l.close();
+    file_l << content_l;
+    file_l.close();
 
-        jsonXpansionReader_ = new JsonXpansionReader();
-        jsonXpansionReader_->read("temp_out.json");
-    }
+    jsonXpansionReader_ = new JsonXpansionReader();
+    jsonXpansionReader_->read("temp_out.json");
+  }
 
-	static void TearDownTestCase()
-	{
-		// called after last test
+  static void TearDownTestCase() {
+    // called after last test
 
-		//delete the created tmp file
-		std::remove("temp_out.json");
+    // delete the created tmp file
+    std::remove("temp_out.json");
 
-        delete jsonXpansionReader_;
-        jsonXpansionReader_ = nullptr;
-	}
+    delete jsonXpansionReader_;
+    jsonXpansionReader_ = nullptr;
+  }
 
-	void SetUp()
-	{
-		// called before each test
-	}
+  void SetUp() {
+    // called before each test
+  }
 
-   void TearDown()
-	{
-		// called after each test
-	}
+  void TearDown() {
+    // called after each test
+  }
 };
 
-JsonXpansionReader * JsonXpansionReaderTest::jsonXpansionReader_ = nullptr;
+JsonXpansionReader *JsonXpansionReaderTest::jsonXpansionReader_ = nullptr;
 
-TEST_F(JsonXpansionReaderTest, getBestIteration)
-{
-	ASSERT_EQ(jsonXpansionReader_->getBestIteration(), 3);
+TEST_F(JsonXpansionReaderTest, getBestIteration) {
+  ASSERT_EQ(jsonXpansionReader_->getBestIteration(), 3);
 }
 
-
-TEST_F(JsonXpansionReaderTest, getLastIteration)
-{
-    ASSERT_EQ(jsonXpansionReader_->getLastIteration(), 4);
+TEST_F(JsonXpansionReaderTest, getLastIteration) {
+  ASSERT_EQ(jsonXpansionReader_->getLastIteration(), 4);
 }
 
-TEST_F(JsonXpansionReaderTest, getSolutionPoint)
-{
-    std::map<std::string, double> solution_l = jsonXpansionReader_->getSolutionPoint();
-    
-    ASSERT_EQ(solution_l["x"], 1.5);
-}
+TEST_F(JsonXpansionReaderTest, getSolutionPoint) {
+  std::map<std::string, double> solution_l =
+      jsonXpansionReader_->getSolutionPoint();
 
+  ASSERT_EQ(solution_l["x"], 1.5);
+}
