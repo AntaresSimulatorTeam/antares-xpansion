@@ -3,7 +3,6 @@
 #include "glog/logging.h"
 #include "Benders.h"
 #include "launcher.h"
-#include "helpers/Path.h"
 
 /*!
  *  \brief Execute the Benders algorithm in sequential
@@ -19,8 +18,7 @@ void sequential_launch(BendersOptions const &options, Logger &logger)
 
 	JsonWriter jsonWriter_l;
 	jsonWriter_l.write_failure();
-	auto json_file = Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json");
-	jsonWriter_l.dump(json_file.get_str());
+	jsonWriter_l.dump(options.JSON_FILE);
 
 	jsonWriter_l.write(options);
 	jsonWriter_l.updateBeginTime();
@@ -49,7 +47,7 @@ void sequential_launch(BendersOptions const &options, Logger &logger)
 	logger->log_at_ending(logData);
 	jsonWriter_l.updateEndTime();
 	jsonWriter_l.write(input.size(), benders._trace, benders._data, options.ABSOLUTE_GAP, options.RELATIVE_GAP, options.MAX_ITERATIONS);
-	jsonWriter_l.dump((Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json")).get_str());
+	jsonWriter_l.dump(options.JSON_FILE);
 
 	benders.free();
 	logger->log_total_duration(timer.elapsed());

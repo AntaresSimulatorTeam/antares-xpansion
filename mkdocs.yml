@@ -12,6 +12,8 @@ theme:
     - navigation.instant
     - navigation.top
     - navigation.expand
+    - navigation.tabs
+    - navigation.tabs.sticky
   #  - navigation.sections
   #   - header.autohide
   #   - toc.separate
@@ -29,23 +31,31 @@ theme:
 
 nav:
   - Home: index.md
-  - 'Antares ecosystem' : 'https://antares-doc.readthedocs.io'
+  - 'Antares ecosystem': 'https://antares-doc.readthedocs.io'
   - 'User guide':
-      - 'Introduction': 'user-guide/0-introduction.md'
-      - 'Prepare a simulation': 'user-guide/1-prepare-a-simulation.md'
-      - 'Launching an optimization': 'user-guide/2-Launching-an-Antares-Xpansion-optimization.md'
-  - 'Build':
-    - 'Introduction': 'build/0-INSTALL.md'
-    - 'Development requirements': 'build/1-Development-requirements.md'
-    - 'Dependencies install': 'build/2-Dependencies-install.md'
-    - 'Build': 'build/3-Build.md'
-    - 'Tests': 'build/4-Tests.md'
-    - 'UI creation': 'build/6-ui-creation.md'
-    - 'Installer creation': 'build/5-Installer-creation.md'
+    - 'How does Antares-Xpansion work ?':
+        - 'The optimal investment problem in Antares-Xpansion': 'user-guide/optimization-principles/investment-problem.md'
+        - 'Mathematical formulation of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
+    - 'Getting started':
+      - 'Installation': 'user-guide/get-started/installation.md'
+      - 'Set up an Antares-Xpansion study':
+        - 'Prepare the Antares study': 'user-guide/get-started/prepare-a-simulation.md'
+        - 'Define the candidates': 'user-guide/get-started/candidate-definition.md'
+        - 'Settings of the algorithm': 'user-guide/get-started/settings-definition.md'
+      - 'Launch the optimization': 'user-guide/get-started/launching-optimization.md'
   - 'Developer guide': 
-    - 'Antares-Xpansion simulation procedure' : 'developer-guide/0-Process.md'
-    - 'Optimization problems generation' : 'developer-guide/1-antares-solver.md'
-    - 'Modification of problems to introduce investment variables' : 'developer-guide/2-problem-modification.md'
+    - 'Install from sources':
+      - 'Introduction': 'developer-guide/install_from_sources/0-INSTALL.md'
+      - 'Development requirements': 'developer-guide/install_from_sources/1-Development-requirements.md'
+      - 'Dependencies install': 'developer-guide/install_from_sources/2-Dependencies-install.md'
+      - 'Build': 'developer-guide/install_from_sources/3-Build.md'
+      - 'Tests': 'developer-guide/install_from_sources/4-Tests.md'
+      - 'UI creation': 'developer-guide/install_from_sources/5-ui-creation.md'
+      - 'Installer creation': 'developer-guide/install_from_sources/6-Installer-creation.md'
+    - 'Antares-Xpansion simulation procedure' : 
+      - 'Overview' : 'developer-guide/xpansion_steps/0-overview.md'
+      - 'Antares optimization problem retrieval' : 'developer-guide/xpansion_steps/1-antares-solver-problem.md'
+      - 'Investment problem generation' : 'developer-guide/xpansion_steps/2-problem-modification.md'
   - 'Changelog': 'CHANGELOG.md'
 
 plugins:

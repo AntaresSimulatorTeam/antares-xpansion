@@ -55,12 +55,11 @@ int main(int argc, char **argv)
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 
     JsonWriter jsonWriter_l;
-
     if (world.rank() == 0)
     {
         LOG(INFO) << "starting bendersmpi" << std::endl;
         jsonWriter_l.write_failure();
-        jsonWriter_l.dump((Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json")).get_str());
+        jsonWriter_l.dump(options.JSON_FILE);
     }
 
     if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1)
@@ -111,14 +110,14 @@ int main(int argc, char **argv)
 
             jsonWriter_l.updateEndTime();
             jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data, options.ABSOLUTE_GAP, options.RELATIVE_GAP, options.MAX_ITERATIONS);
-            jsonWriter_l.dump((Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json")).get_str());
+            jsonWriter_l.dump(options.JSON_FILE);
 
             char buff[FILENAME_MAX];
             GetCurrentDir(buff, FILENAME_MAX);
 
             std::stringstream str;
-            str << "Optimization results available in : " << buff << Path::mSep
-                << Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json");
+            str << "Optimization results available in : "
+                << options.JSON_FILE;
             logger->display_message(str.str());
         }
         bendersMpi.free();

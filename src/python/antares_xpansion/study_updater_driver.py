@@ -13,10 +13,9 @@ from antares_xpansion.flushed_print import flushed_print
 
 
 class StudyUpdaterDriver:
-    def __init__(self, study_updater_exe, json_name) -> None:
+    def __init__(self, study_updater_exe) -> None:
 
         self._set_study_updater_exe(study_updater_exe)
-        self.JSON_NAME = json_name
 
     def _set_study_updater_exe(self, study_updater_exe: str):
         if Path(study_updater_exe).is_file():
@@ -25,12 +24,13 @@ class StudyUpdaterDriver:
             raise StudyUpdaterDriver.StudyUpdaterOutputPathError(
                 f"Study Updater Error: {study_updater_exe} not found ")
 
-    def launch(self, simulation_output_path, keep_mps=False):
+    def launch(self, simulation_output_path, json_file_path, keep_mps=False):
         """
             updates the antares study using the candidates file and the json solution output
 
         """
         self._set_simulation_output_path(simulation_output_path)
+        self._set_json_file_path(Path(json_file_path))
         flushed_print("-- Study Update")
 
         with open(self.get_study_updater_log_filename(), 'w') as output_file:
@@ -52,15 +52,25 @@ class StudyUpdaterDriver:
             raise StudyUpdaterDriver.StudyUpdaterOutputPathError(
                 f"Study Updater Error: {simulation_output_path} not found ")
 
+    def _set_json_file_path(self, json_file_path: Path):
+        if json_file_path.is_file():
+            self.json_file_path = json_file_path
+        else:
+            raise StudyUpdaterDriver.StudyUpdaterJsonFilePath(
+                f"Study Updater Error: {json_file_path} not found ")
+
     def get_study_updater_log_filename(self):
         return os.path.join(self.simulation_output_path, Path(self.study_updater_exe).name + '.log')
 
     def get_study_updater_command(self):
         return [self.study_updater_exe, "-o", str(self.simulation_output_path), "-s",
-                self.JSON_NAME + ".json"]
+                str(self.json_file_path)]
 
     class UpdaterExecutionError(Exception):
         pass
 
     class StudyUpdaterOutputPathError(Exception):
+        pass
+
+    class StudyUpdaterJsonFilePath(Exception):
         pass

@@ -5,13 +5,11 @@ The compilation of  Antares-Xpansion requires C++11 support.
 
 === "Windows"
 
-    Compilation is tested on MSVC 2019
+    Compilation is tested on MSVC 2019.
 
 === "Centos"
 
-    By default, GCC version of Centos7 is 4.8.5.
-
-    Some external repositories must be enabled
+    By default, GCC version of Centos7 is 4.8.5. Some external repositories must be enabled:
 
     === "Centos 7 (EPEL)"    
         ``` 
@@ -25,12 +23,12 @@ The compilation of  Antares-Xpansion requires C++11 support.
         sudo yum config-manager --set-enabled PowerTools
         ```
     
-    You can then use a more recent version of GCC by enabling `devtoolset-7` :
+    You can then use a more recent version of GCC by enabling `devtoolset-7`:
     ```
     sudo yum install devtoolset-7
     ```
     
-    Before compiling Antares-Xpansion we must launch a new shell with `scl` tool :
+    Before compiling Antares-Xpansion, we must launch a new shell with `scl` tool :
     ```
     scl enable devtoolset-7 bash
     ```
@@ -74,13 +72,13 @@ Python 3.x must be used.
     sudo apt-get install python3 python3-pip
     ```
 
-Required python modules can be installed with :
+Required python modules can be installed with:
 ```
 pip install -r requirements-tests.txt
 ```
 
 ## [Git version](#git-version)
-Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see https://github.com/google/or-tools/issues/1193).
+Git version must be above 2.15 for external dependencies build because `--ignore-whitespace` is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see [https://github.com/google/or-tools/issues/1193](https://github.com/google/or-tools/issues/1193)).
 
 === "Windows"
 
@@ -92,7 +90,7 @@ Git version must be above 2.15 for external dependencies build because `--ignore
     sudo yum install git
     ```
     
-    Sometimes we need a 2.x version of git. To enable to git 2.27 :
+    Sometimes we need a 2.x version of git. To enable to git 2.27:
     ```
     source /opt/rh/rh-git227/enable
     ```

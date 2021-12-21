@@ -7,7 +7,7 @@ from antares_xpansion.xpansionConfig import InputParameters
 class TestInputParser:
 
     def setup_method(self):
-        self.default_parameters = {"step" :"full"}
+        self.default_parameters = {"step": "full"}
 
     def test_empty_input_raises_error(self):
         my_parser = InputParser()
@@ -29,7 +29,7 @@ class TestInputParser:
         my_parser = InputParser()
         with pytest.raises(SystemExit):
             my_parser.parse_args(["--dataDir=hello", "--step=fully"])
-            
+
     def test_problem_generation_step_is_accepted(self):
         my_parser = InputParser()
         my_parser.parse_args(["--dataDir=hello", "--step=problem_generation"])
@@ -41,45 +41,48 @@ class TestInputParser:
     def test_study_update_step_is_accepted(self):
         my_parser = InputParser()
         my_parser.parse_args(["--dataDir=hello", "--step=study_update"])
-        
+
     def test_getnames_step_is_no_longer_accepted(self):
         my_parser = InputParser()
         with pytest.raises(SystemExit):
             my_parser.parse_args(["--dataDir=hello", "--step=getnames"])
-        
+
     def test_lp_step_is_no_longer_accepted(self):
         my_parser = InputParser()
         with pytest.raises(SystemExit):
             my_parser.parse_args(["--dataDir=hello", "--step=lp"])
-        
+
     def test_optim_step_is_no_longer_accepted(self):
         my_parser = InputParser()
         with pytest.raises(SystemExit):
             my_parser.parse_args(["--dataDir=hello", "--step=optim"])
-        
+
     def test_update_step_is_no_longer_accepted(self):
         my_parser = InputParser()
         with pytest.raises(SystemExit):
             my_parser.parse_args(["--dataDir=hello", "--step=update"])
-    
+
     def test_antares_n_cpu_default_value_is_one(self):
         my_parser = InputParser()
         result = my_parser.parse_args(["--dataDir=hello", ])
         assert result.antares_n_cpu == 1
-    
+
     def test_antares_n_cpu_default_value_is_equal_to_np_if_np_is_given(self):
         my_parser = InputParser()
-        result = my_parser.parse_args(["--dataDir=hello","--np=4" ])
+        result = my_parser.parse_args(["--dataDir=hello", "--np=4"])
         assert result.antares_n_cpu == 4
 
     def test_antares_n_cpu_default_value_is_1_if_np_is_2(self):
         my_parser = InputParser()
-        result = my_parser.parse_args(["--dataDir=hello","--np=2" ])
+        result = my_parser.parse_args(["--dataDir=hello", "--np=2"])
         assert result.antares_n_cpu == 1
 
+    def test_oversubscribe_default_is_false(self):
+        my_parser = InputParser()
+        result = my_parser.parse_args(["--dataDir=hello", "--np=2"])
+        assert result.oversubscribe is False
 
-
-
-
-
-
+    def test_if_option_oversubscribe_then_oversubscribe_is_true(self):
+        my_parser = InputParser()
+        result = my_parser.parse_args(["--dataDir=hello", "--oversubscribe"])
+        assert result.oversubscribe is True

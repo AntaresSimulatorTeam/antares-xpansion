@@ -140,7 +140,6 @@ struct BendersData {
 	int nslaves;
 	double dnslaves;
 	int master_status;
-	int nrandom;
 	double elapsed_time;
 	StoppingCriterion stopping_criterion;
 };

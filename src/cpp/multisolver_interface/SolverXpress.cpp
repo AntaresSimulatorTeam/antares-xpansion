@@ -18,11 +18,10 @@ SolverXpress::SolverXpress() {
 	_NumberOfProblems += 1;
 
 	_xprs = NULL;
-	_stream.push_back(&std::cout);
 }
 
 SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
-	init();
+    SolverXpress::init();
 	int status = 0;
 
 	// Try to cast the solver in fictif to a SolverCPLEX
@@ -33,14 +32,14 @@ SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
 	}
 	else {
 		_NumberOfProblems -= 1;
-		free();
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(),get_solver_name());
+        SolverXpress::free();
+        throw InvalidSolverForCopyException(toCopy->get_solver_name(),SolverXpress::get_solver_name());
 	}
 }
 
 SolverXpress::~SolverXpress() {
 	_NumberOfProblems -= 1;
-	free();
+    SolverXpress::free();
 
 	if (_NumberOfProblems == 0) {
 		int status = XPRSfree();
@@ -64,6 +63,7 @@ void SolverXpress::init() {
 	int status = XPRScreateprob(&_xprs);
 	zero_status_check(status, "create XPRESS problem");
 
+    SolverXpress::set_output_log_level(0);
 	status = XPRSloadlp(_xprs, "empty", 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 	zero_status_check(status, "generate empty prob in XPRS interface init method");
 }

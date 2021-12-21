@@ -12,14 +12,6 @@
 #include "SequentialLaunch.h"
 #include "helpers/Path.h"
 
-#if defined(WIN32) || defined(_WIN32)
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
-
 int main(int argc, char **argv)
 {
 	// options.print(std::cout);
@@ -48,12 +40,9 @@ int main(int argc, char **argv)
 
 	sequential_launch(options, logger);
 
-	char buff[FILENAME_MAX];
-	GetCurrentDir(buff, FILENAME_MAX);
-
 	std::stringstream str;
-	str << "Optimization results available in : " << buff << Path::mSep
-		<< Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json");
+	str << "Optimization results available in : "
+		<< options.JSON_FILE;
 	logger->display_message(str.str());
 
 	return 0;

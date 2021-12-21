@@ -1,0 +1,182 @@
+# The Benders decomposition for the optimal investment problem
+
+In this part, we give the mathematical formulation of the investment problem considered in Antares-Xpansion. We also explain the Benders decomposition algorithm that is used.
+
+## Problem formulation
+
+We consider a power system with given production and trasmission capacities. Antares-Xpansion seeks to invest in additional capacties in order to minimize the sum of annualized investment costs and yearly operating costs.
+
+### Variables and costs
+
+#### Invested capacity and investment cost
+
+Let \\((x_i)\_{1 \leq i \leq n}\\) be the variables modeling the invested capacities (in MW) of the candidates.
+
+- If the investment is continuous, \\(x_{i} \in [0, \overline{x}\_{i}] \ \\), where \\(\overline{x}\_{i} \\) is the upper bound on the investment for candidate \\(i \\) i.e. \\(\overline{x}\_{i}\\) is the `max-investment`. 
+
+    We denote by \\(\mathcal{R}\\) (for real) the set of indices of candidates with continuous investment.
+
+- If the investment is integer, \\(x_{i} \in \\{0, u_{i}, \ldots, \overline{x}\_{i} = K_{i}u_{i}\\} \\), where \\(u_{i} \in \mathbb{R}\\) is the `unit-size` and \\(K_{i} \in \mathbb{N}\\) is the maximum number of buildable units `max-units`. Then, \\(\overline{x}\_{i} = K_{i}u_{i}\\) is the upper bound on the investment for candidate \\(i \\) i.e. \\(\overline{x}\_{i}\\) is `max-units` \\(\times\\) `unit-size`. 
+    
+    We denote by \\(\mathcal{I}\\) (for integer) the set of indices of candidates with integer investment. Thus, we have \\(\mathcal{R} \cup \mathcal{I} = \\{1, \ldots, n \\} \\).
+
+Each candidate is also characterized by an annualized investment cost per MW installed \\(c_{i} \in \mathbb{R}_{+}\ \\).
+
+The investment vector is denoted by \\(x = (x_{1}, \ldots, x_{n})\\) and the cost vector by \\(c = (c_{1}, \ldots, c_{n})\\), so that the investment cost is \\(c^{\top}x\\). 
+
+#### Operating cost
+
+The system is also characterized by an expected yearly operating cost, denoted by \\(\Theta(x) \in \mathbb{R}\\). The cost \\(\Theta(x)\\) is the output of an Antares simulation for the system with the investment level \\(x\\).
+
+##### The operating cost as the solution of an Antares simulation
+
+The expected operating cost in Antares is estimated over \\(N\\) scenarios (a.k.a. MC years), that is:
+
+$$
+\Theta(x) = \frac{1}{N} \sum_{l=1}^{N} p_{l} \theta_{l}(x)
+$$
+
+where \\(p_{l}\\) is the weight of year \\(l\\). The cost \\(\theta_{l}(x)\\) is the solution of the relaxed yearly Antares problem, that can be written in compact form:
+
+$$
+\begin{aligned}
+    \theta_{l}(x) = \min_{y \in \mathcal{Y}} \ & g^{\top} y\\\\
+    \text{s.t.} \ & Wy = d_{l} - Tx
+\end{aligned}
+$$
+
+where \\(y\\) represents all the variables of the Antares problem, \\(\mathcal{Y}\\) is the admissible set and \\(g\\) is the cost vector. The matrices \\(W\\) and \\(T\\) as well as the vector \\(d_{l}\\) are used to model the constraints of the system. The difference between MC years comes from the availability of thermal plants, the load, the wind and solar power generation, and the hydraulic inflows, that are taken into account in the right-hand side of the constraint through the term \\(d_{l}\\).
+
+More details on the Antares problem can be found in the [Antares documentation](https://antares-simulator.readthedocs.io/en/latest/reference-guide/2-modeling/#formulation-of-the-optimisation-problems). We simply mention that the linear problem presented here and used in Antares-Xpansion is a relaxation of the Antares problem as unit-commitment constraints (minimum on and off time) are not taken into account.
+
+##### Splitting the weeks
+
+In fact, the variables in the Antares problem are defined with an hourly time step so that \\(y = (y_{1}, \ldots, y_{8760})\\), where \\(y_{h}\\) gathers all the variables of the Antares problem at hour \\(h\\) of the year. Antares solves weekly problems, that involves only the variables of a given week i.e. the problem on week \\(s \in [1,52]\\) involves only the subvector \\(y_{s} = (y_{168 s}, \ldots, y_{168 (s+1) - 1})\\). In the sequel, the index \\(_s\\) always denotes subvectors correponding to week \\(s\\). 
+
+In Antares-Xpansion, the **weekly problems are assumed to be independent**, this is why, **no coupling constraints between the weeks** are allowed. By doing so, the matrix \\(W\\) is **block diagonal** i.e. \\(W = \mathrm{diag}(W_{1}, \ldots, W_{52})\\). Writing:
+
+- \\(g = (g_{1}, \ldots, g_{52})\\),
+- \\(d_{l} = (d_{l, 1}, \ldots, d_{l, 52})\\) ,
+- \\(T = \begin{pmatrix} T_{1} \\\\ \vdots \\\\ T_{52} \end{pmatrix} \\),
+
+the yearly Antares problem (here for MC year \\(l\\)) can be split in 52 independent weekly problems, given for week \\(s\\) by:
+
+$$
+\begin{aligned}
+    \theta_{l, s}(x) = \min_{y_{s} \in \mathcal{Y}\_{s}} \ & g_{s}^{\top} y_{s}\\\\
+    \text{s.t.} \ & W_{s}y_{s} = d_{l, s} - T_{s}x
+\end{aligned}
+$$
+
+where \\(\theta_{l, s}(x)\\) is the operational cost of week \\(s\\) of MC year \\(l\\) and \\(\mathcal{Y}\_{s}\\) is the admissible set for the variables of week \\(s\\).
+
+Overall, if week \\(s\\) of MC year \\(l\\) has weight \\(p_{l, s}\\), the expected yearly operating cost becomes:
+
+$$
+\Theta(x) = \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s} \theta_{l, s}(x)
+$$
+
+#### Summary of the costs
+
+For an investment \\(x\\), the overall cost of the system is given by \\(c^{\top}x + \Theta(x)\\), where \\(\Theta(x)\\) is computed from the solution of \\(52N\\) linear weekly Antares problems, with \\(N\\) the number of MC years.
+
+### Constraints (for the investment problem)
+
+The invested capacities of the different candidates can be bound by linear constraints, specified by the user with the [`additional-constraints`](../get-started/settings-definition.md#additional-constraints) parameter. These constraints are written \\(Ax = b\\), with \\(A \in \mathbb{R}^{m \times n}\\) and \\(b \in \mathbb{R}^{m}\\), where \\(m\\) is the number of constraints.
+
+### Investment problem
+
+The optimal investment problem is therefore:
+
+$$
+\begin{aligned}
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \Theta(x) \\\\
+    \text{s.t.} \ & Ax = b\\
+\end{aligned}
+$$
+
+where \\(\mathcal{X} = \prod_{i \in \mathcal{R}} [0, \overline{x}\_{i}] \times \prod\_{i \in \mathcal{I}} \\{0, u\_{i}, \ldots, K\_{i}u\_{i}\\}\\) is the set of admissible investment levels.
+
+## Benders reformulation and decomposition algorithm
+
+The problem structure, with investments as first stage decision and optimal dispatch as second stage decision, is naturally suited for a Benders decomposition. We briefly expose the ideas of the Benders reformulation and of the Benders decomposition algorithm.
+
+### Benders reformulation of the investment problem
+
+Taking the dual of the weekly Antares problem, we get:
+
+$$
+\begin{aligned}
+    \theta_{l, s}(x) = \max_{\pi_{l, s} \in \Pi\_{l, s}} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\\\
+    \text{s.t.} \ & W_{s}^{\top}\pi_{l, s} \geq g_{s}
+\end{aligned}
+$$
+
+where \\(\Pi_{l, s}\\) is the appropriate admissible set. An important feature of the dual problem is that the feasible set \\(F=\\{\pi_{l, s}, \ W_{s}^{\top}\pi_{l, s} \geq g_{s}\\} \cap \Pi_{l, s}\\), which is a polyhedron, does not depend on the investment variable \\(x\\). 
+
+Weekly Antares problems are always feasible, by penalizing feasibility with a large enough coefficient in their objective. Then, \\(F\\) is always non empty and bounded. Therefore, the dual problem has a solution and we know that it is one of the extreme points of the polyhedron \\(F\\). We deduce:
+
+$$
+\begin{aligned}
+    \theta_{l, s}(x) = \max_{\pi_{l, s} \in \mathrm{extr}(F)} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\\\
+\end{aligned}
+$$
+
+where \\(\mathrm{extr}(F)\\) is the set of extreme points of \\(F \\). Thus, the investment problem can be reformulated as:
+
+$$
+\begin{aligned}
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s} \max_{\pi_{l, s} \in \mathrm{extr}(F)} \pi_{l, s}^{\top} (d_{l, s} - T_{s}x) \\\\
+    \text{s.t.} \ & Ax = b\\
+\end{aligned}
+$$
+
+This problem can be linearized by introducing continuous variables \\(\vartheta_{l, s} \in \mathbb{R}\\) for \\(l \in [1, N]\\) and \\(s \in [1,52]\\), which gives rise to an equivalent reformulation of the investment problem, known as the Benders reformulation or _Benders master problem_:
+    
+$$
+\begin{aligned}
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\vartheta_{l, s} \\\\
+    \text{s.t.} \ & Ax = b\\\\
+    & \vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\ , \quad \forall l \ , \forall s \ , \forall \pi_{l, s} \in \mathrm{extr}(F)
+\end{aligned}
+$$
+
+The constraints of the form \\(\vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\) in the master problem are referred as _Benders cuts_ in the sequel.
+### The Benders decomposition algorithm
+
+As the number of extreme points of \\(F\\) is often very large, the full Benders master problem has a large number of constraints, so it is difficult to work directly with.
+
+This is why, the Benders decomposition algorithm proceeds iteratively:
+
+1. Solve the master problem where all Benders cuts have been removed. The optimal solution \\(\bar{x}\\) is taken as a trial investment value.
+2. For each MC year and each week, solve the (dual) weekly Antares problem, referred as _satellite problem_, with the investment value set to \\(\bar{x}\\):
+
+    $$
+    \begin{aligned}
+        \max_{\pi_{l, s} \in \Pi\_{l, s}} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}\bar{x})\\\\
+        \text{s.t.} \ & W_{s}^{\top}\pi_{l, s} \geq g_{s}
+    \end{aligned}
+    $$
+    
+    There are \\(52 N\\) satellite problems to solve. Let \\(\bar{\pi}\_{l, s}\\) the solution of the satellite problem for MC year \\(l\\) and week \\(s\\), so that its optimal objective value is \\(\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{s}\bar{x})\\).
+
+3. For all \\(l\\), for all \\(s\\), add the cut \\(\vartheta_{l, s} \geq \bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{s}x)\\) to the master problem. There are \\(52 N\\) new cuts i.e. additional constraints to the master problem.
+
+4. At iteration \\(k\\), the master problem is of the form:
+
+$$
+\begin{aligned}
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\vartheta_{l, s} \\\\
+    \text{s.t.} \ & Ax = b\\\\
+    & \vartheta_{l, s} \geq {{}\bar{\pi}\_{l, s}^{i}}^{\top} (d_{l, s} - T_{s}x)\ , \quad \forall l \ , \forall s \ , \forall i < k
+\end{aligned}
+$$
+
+where \\({\bar{\pi}\_{l, s}^{i}}\\) is the solution of the satellite problem for MC year \\(l\\) at week \\(s\\) at iteration \\(i < k\\). Solve this master problem. The optimal solution is denoted \\(\bar{x}\\). Go to step 2.
+
+In order to check convergence of the algorithm, an optimality gap is computed at each iteration:
+
+- The solution of the master problem is a lower bound of the optimal cost as it is a relaxation of the investment problem.
+- With a given investment level \\(\bar{x}\\), we get a feasible solution with a cost equal to the sum of the investment cost and of the optimal cost of the satellite problems: \\(c^{\top}\bar{x} + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{s}\bar{x})\\). This gives a valid upper bound for the investment problem.
+
+The optimality gap is the difference (either absolute or relative) between the lower and the upper bound. The Benders decomposition algorithm stops when the optimality gap falls below a value specified by the user (or set by default), see [`optimality_gap`](../get-started/settings-definition.md#optimality_gap) and [`relative_gap`](../get-started/settings-definition.md#relative_gap).

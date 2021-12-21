@@ -22,15 +22,15 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       
     steps:
-    - uses: actions/checkout@v2 
+    - uses: actions/checkout@v2
       with:
         submodules: true
     
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: 3.9.1
-          
+        python-version: '3.x'
+
     # Restore both vcpkg and its artifacts from the GitHub cache service.
     - name: Restore vcpkg and its artifacts.
       uses: actions/cache@v2

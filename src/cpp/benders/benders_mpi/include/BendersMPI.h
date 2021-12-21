@@ -27,7 +27,6 @@ public:
 	
 
 	virtual void free();
-	void update_random_option();
 	void run();
 
 private:
@@ -52,7 +51,6 @@ private:
     void solve_slaves_and_build_cuts();
     void gather_slave_cut_package_and_build_cuts(const SlaveCutPackage& slave_cut_package,const Timer& timer_slaves);
 
-    void broadcast_rand_aggregation();
 
     void write_exception_message(const std::exception &ex);
 
