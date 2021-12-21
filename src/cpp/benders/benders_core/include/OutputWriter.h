@@ -109,7 +109,7 @@ public:
      */
     void initialize(BendersOptions options);
 
-    void end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter, std::string const &filename_p);
+    void end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter);
 };
 
 using Writer = std::shared_ptr<OutputWriter>;

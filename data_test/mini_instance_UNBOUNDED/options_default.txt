@@ -13,4 +13,5 @@
                     ACTIVECUTS                                                 0
               RAND_AGGREGATION                                                 0
                         SOLVER                                            XPRESS
+                   JSON_FILE                                        ./expansion/out.json
 

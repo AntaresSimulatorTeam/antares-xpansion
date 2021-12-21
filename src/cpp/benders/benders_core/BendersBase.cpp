@@ -4,14 +4,6 @@
 
 #include "glog/logging.h"
 
-#if defined(WIN32) || defined(_WIN32)
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
-
 BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer) {}
 
 BendersBase::~BendersBase()
@@ -786,13 +778,10 @@ void BendersBase::post_run_actions(CouplingMap input)
 	_logger->log_at_ending(logData);
 
 	_writer->end_writing(input.size(), _trace, _data, _options.ABSOLUTE_GAP,
-						 _options.RELATIVE_GAP, _options.MAX_ITERATIONS, _options.OUTPUTROOT + PATH_SEPARATOR + _options.JSON_NAME + ".json");
-
-	char buff[FILENAME_MAX];
-	GetCurrentDir(buff, FILENAME_MAX);
+						 _options.RELATIVE_GAP, _options.MAX_ITERATIONS);
 
 	std::stringstream str;
-	str << "Optimization results available in : " << buff << PATH_SEPARATOR
-		<< _options.OUTPUTROOT + PATH_SEPARATOR + _options.JSON_NAME + ".json";
+	str << "Optimization results available in : "
+		<< _options.JSON_FILE;
 	_logger->display_message(str.str());
 }

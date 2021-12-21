@@ -31,6 +31,7 @@ class InputParameters:
     n_mpi: int
     antares_n_cpu: int
     keep_mps: bool
+    oversubscribe: bool
 
 
 class XpansionConfig:
@@ -71,6 +72,7 @@ class XpansionConfig:
         self.n_mpi = self.input_parameters.n_mpi
         self.antares_n_cpu = self.input_parameters.antares_n_cpu
         self.keep_mps = self.input_parameters.keep_mps
+        self.oversubscribe = self.input_parameters.oversubscribe
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -119,6 +121,7 @@ class XpansionConfig:
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_TXT = 'options.txt'
+        self.JSON_NAME = "out"
 
     def _set_default_settings(self):
         self.settings_default = {
@@ -159,7 +162,6 @@ class XpansionConfig:
             "THRESHOLD_ITERATION": "0",
             "RAND_AGGREGATION": "0",
             "CSV_NAME": "benders_output_trace",
-            "JSON_NAME": "out",
             "BOUND_ALPHA": "1",
         }
 

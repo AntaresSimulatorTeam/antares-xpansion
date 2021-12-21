@@ -49,7 +49,7 @@ double OutputWriter::getDuration()
 
 void OutputWriter::initialize(BendersOptions options)
 {
-    _filename = options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json";
+    _filename = options.JSON_FILE;
     write_failure();
     dump();
 
@@ -57,7 +57,7 @@ void OutputWriter::initialize(BendersOptions options)
     updateBeginTime();
 }
 
-void OutputWriter::end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter, std::string const &filename_p)
+void OutputWriter::end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
 {
     updateEndTime();
     write(nbWeeks_p, bendersTrace_p, bendersData_p, min_abs_gap, min_rel_gap, max_iter);

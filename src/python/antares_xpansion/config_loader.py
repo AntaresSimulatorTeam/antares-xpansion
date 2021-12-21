@@ -3,6 +3,7 @@
 """
 
 import os
+import shutil
 import sys
 
 from pathlib import Path
@@ -11,6 +12,7 @@ import re
 
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
+from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
 
@@ -20,7 +22,7 @@ class ConfigLoader:
         Class to control the execution of the optimization session
     """
 
-    def __init__(self, config):
+    def __init__(self, config: XpansionConfig):
         """
             Initialise driver with a given antaresXpansion configuration,
             the system platform and parses the arguments
@@ -218,8 +220,19 @@ class ConfigLoader:
             self._set_last_simulation_name()
         return Path(os.path.normpath(os.path.join(self.antares_output(), self._simulation_name)))
 
-    def set_options_for_benders_solver(self):
-        return self._set_options_for_benders_solver()
+    def benders_pre_actions(self):
+        self._create_expansion_dir()
+        self._set_options_for_benders_solver()
+
+    def _create_expansion_dir(self):
+        expansion_dir = self._expansion_dir()
+        if os.path.isdir(expansion_dir):
+            shutil.rmtree(expansion_dir)
+        os.makedirs(expansion_dir)
+
+    def _expansion_dir(self):
+        return os.path.normpath(os.path.join(
+            self.simulation_output_path(), 'expansion'))
 
     def _set_options_for_benders_solver(self):
         """
@@ -228,6 +241,7 @@ class ConfigLoader:
         # computing the weight of slaves
         options_values = self._config.options_default
         options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
+        options_values["JSON_FILE"] = self.json_file_path()
         options_values["ABSOLUTE_GAP"] = self.get_absolute_optimality_gap()
         options_values["RELATIVE_GAP"] = self.get_relative_optimality_gap()
         options_values["MAX_ITERATIONS"] = self.get_max_iterations()
@@ -240,12 +254,12 @@ class ConfigLoader:
         options_path = os.path.normpath(os.path.join(
             self._simulation_lp_path(), self._config.OPTIONS_TXT))
         with open(options_path, 'w') as options_file:
-            options_file.writelines(["%30s%30s\n" % (kvp[0], kvp[1])
+            options_file.writelines([f"{kvp[0]: <30} {kvp[1]} \n"
                                      for kvp in options_values.items()])
 
     def _set_last_simulation_name(self):
         """
-            return last simulation name    
+            return last simulation name
         """
         # Get list of all dirs only in the given directory
         list_of_dirs_filter = filter(lambda x: os.path.isdir(os.path.join(self.antares_output(), x)),
@@ -316,9 +330,12 @@ class ConfigLoader:
     def antares_n_cpu(self):
         return self._config.antares_n_cpu
 
-    def json_name(self):
-        return self._config.options_default["JSON_NAME"]
+    def json_file_path(self):
+        return os.path.join(self._expansion_dir(), self._config.JSON_NAME + ".json")
 
+    def oversubscribe(self):
+        return self._config.oversubscribe
+      
     def timelimit(self):
         """
         returns the timelimit read from the settings file

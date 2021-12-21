@@ -9,7 +9,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # ===========================================================================
 
 PROJECT (antaresXpansion VERSION 0.6.0)
-set(ANTARES_XPANSION_RC 1)
+#set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # Default parameters
@@ -343,8 +343,6 @@ endif()
 # ===========================================================================
 # Documentation
 # ===========================================================================
-
-add_subdirectory ("${PROJECT_SOURCE_DIR}/documentation")
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 

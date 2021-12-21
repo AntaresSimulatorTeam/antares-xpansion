@@ -13,12 +13,8 @@
 #include "JsonWriter.h"
 
 #if defined(WIN32) || defined(_WIN32)
-#include <direct.h>
-#define GetCurrentDir _getcwd
 #define PATH_SEPARATOR "\\"
 #else
-#include <unistd.h>
-#define GetCurrentDir getcwd
 #define PATH_SEPARATOR "/"
 #endif
 

@@ -1,9 +1,7 @@
 #include "glog/logging.h"
 
 #include "launcher.h"
-// #include "BendersSequential.h"
 #include "Timer.h"
-// #include "JsonWriter.h"
 
 #include "BendersOptions.h"
 
