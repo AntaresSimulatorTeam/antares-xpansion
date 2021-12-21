@@ -57,12 +57,10 @@ public:
 
     void get_master_value();
     void get_slave_cut(SlaveCutPackage &slave_cut_package);
-    void get_random_slave_cut(SlaveCutPackage &slave_cut_package);
 
     void compute_cut(AllCutPackage const &all_package);
     void compute_cut_aggregate(AllCutPackage const &all_package);
     void compute_cut_val(const SlaveCutDataHandlerPtr &handler, const Point &x0, Point &s);
-    void add_random_cuts(AllCutPackage const &all_package);
     void build_cut_full(AllCutPackage const &all_package);
 
     void dynamic_aggregation(AllCutPackage const &all_package);

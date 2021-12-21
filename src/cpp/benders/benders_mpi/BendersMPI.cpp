@@ -88,52 +88,6 @@ void BendersMpi::load(CouplingMap const &problem_list)
 }
 
 /*!
- *  \brief Update the value of options RAND_AGGREGATION according to the number of slaves on each thread
- *
- *	Update the value of options RAND_AGGREGATION according to the number of slaves on each thread
- *
- *  \param options : set of Benders options
- *
- *  \param options : set of Benders data
- *
- *  \param _env : environment variable for mpi communication
- *
- *  \param _world : communicator variable for mpi communication
- */
-void BendersMpi::update_random_option()
-{
-	int const n_thread(_world.size() - 1);
-	int const n_max_slave(_data.nslaves % n_thread);
-	int const n_sup_rand(_options.RAND_AGGREGATION % n_thread);
-	int const n_slave_by_thread(_data.nslaves / n_thread);
-	int const n_rand_slave(_options.RAND_AGGREGATION / n_thread);
-	int const n_add_rand(n_thread * !(n_slave_by_thread == n_rand_slave) + n_max_slave * (n_slave_by_thread == n_rand_slave));
-	if (_options.RAND_AGGREGATION && _world.rank() != 0)
-	{
-		_data.nrandom = n_rand_slave;
-	}
-	if (n_sup_rand)
-	{
-		std::set<int> set_rand_slave;
-		if (_world.rank() == 0)
-		{
-			for (int i(0); i < n_sup_rand;)
-			{
-				if (set_rand_slave.insert(std::rand() % n_add_rand + 1).second)
-				{
-					i++;
-				}
-			}
-		}
-		boost::mpi::broadcast(_world, set_rand_slave, 0);
-		if (set_rand_slave.find(_world.rank()) != set_rand_slave.end())
-		{
-			_data.nrandom++;
-		}
-	}
-}
-
-/*!
  *  \brief Solve, get and send solution of the Master Problem to every thread
  *
  *  \param _env : environment variable for mpi communication
@@ -168,18 +122,11 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts(int rank)
 		}
 	}
 }
-
 void BendersMpi::broadcast_the_master_problem()
 {
 	if (!_exceptionRaised)
 	{
 		mpi::broadcast(_world, _data.x0, 0);
-		if (_options.RAND_AGGREGATION)
-		{
-			std::random_device rd;
-			std::mt19937 g(rd());
-			std::shuffle(_slaves.begin(), _slaves.end(), g);
-		}
 		_world.barrier();
 	}
 }
@@ -204,16 +151,6 @@ void BendersMpi::solve_master_and_create_trace()
 void BendersMpi::step_2_build_cuts()
 {
 	solve_slaves_and_build_cuts();
-	broadcast_rand_aggregation();
-}
-
-void BendersMpi::broadcast_rand_aggregation()
-{
-	if (!_exceptionRaised)
-	{
-		mpi::broadcast(_world, _options.RAND_AGGREGATION, 0);
-		_world.barrier();
-	}
 }
 
 void BendersMpi::solve_slaves_and_build_cuts()
@@ -258,14 +195,7 @@ void BendersMpi::gather_slave_cut_package_and_build_cuts(const SlaveCutPackage &
 SlaveCutPackage BendersMpi::get_slave_package()
 {
 	SlaveCutPackage slave_cut_package;
-	if (_options.RAND_AGGREGATION)
-	{
-		get_random_slave_cut(slave_cut_package);
-	}
-	else
-	{
-		get_slave_cut(slave_cut_package);
-	}
+	get_slave_cut(slave_cut_package);
 	return slave_cut_package;
 }
 
@@ -387,7 +317,6 @@ void BendersMpi::run()
 	while (!_data.stop)
 	{
 		Timer timer_master;
-		update_random_option();
 		++_data.it;
 		_data.deletedcut = 0;
 

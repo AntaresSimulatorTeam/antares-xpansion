@@ -76,21 +76,11 @@ void BendersSequential::build_cut()
 	SlaveCutPackage slave_cut_package;
 	AllCutPackage all_package;
 	Timer timer_slaves;
-	if (_options.RAND_AGGREGATION)
+	get_slave_cut(slave_cut_package);
+	_data.slave_cost = 0;
+	for (auto pairSlavenameSlavecutdata_l : slave_cut_package)
 	{
-		std::random_device rd;
-		std::mt19937 g(rd());
-		std::shuffle(_slaves.begin(), _slaves.end(), g);
-		get_random_slave_cut(slave_cut_package);
-	}
-	else
-	{
-		get_slave_cut(slave_cut_package);
-		_data.slave_cost = 0;
-		for (auto pairSlavenameSlavecutdata_l : slave_cut_package)
-		{
-			_data.slave_cost += pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST];
-		}
+		_data.slave_cost += pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST];
 	}
 
 	_data.timer_slaves = timer_slaves.elapsed();
@@ -118,7 +108,6 @@ void BendersSequential::run()
 		_all_cuts_storage[kvp.first] = SlaveCutStorage();
 	}
 	init_data();
-	_data.nrandom = _options.RAND_AGGREGATION;
 	Timer benders_timer;
 	while (!_data.stop)
 	{
