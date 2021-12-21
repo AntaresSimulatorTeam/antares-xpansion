@@ -285,9 +285,7 @@ void BendersBase::get_master_value() {
 
 
 
-	if (!_options.RAND_AGGREGATION) {
-		_data.ub = _data.invest_cost;
-	}
+	_data.ub = _data.invest_cost;
 	_data.timer_master = timer_master.elapsed();
 }
 
@@ -320,39 +318,6 @@ void BendersBase::get_slave_cut(SlaveCutPackage & slave_cut_package) {
 		ptr->get_simplex_ite(handler->get_int(SIMPLEXITER));
 		handler->get_dbl(SLAVE_TIMER) = timer_slave.elapsed();
 		slave_cut_package[kvp.first] = *slave_cut_data;
-	}
-}
-
-/*!
-*  \brief Solve and store optimal variables of random Slaves Problems
-*
-*  Method to solve and store optimal variables of random Slaves Problems after fixing trial values
-*
-*  \param slave_cut_package : map storing for each slave its cut
-*
-*  \param map_slaves : map linking each problem name to its problem
-*
-*  \param data : data containing trial values
-*
-*  \param options : set of parameters
-*/
-void BendersBase::get_random_slave_cut(SlaveCutPackage & slave_cut_package) {
-	for (int i(0); i < _data.nrandom; i++){
-		Timer timer_slave;
-		std::string const name_slave(_slaves[i]);
-		WorkerSlavePtr & ptr(_map_slaves[name_slave]);
-		SlaveCutDataPtr slave_cut_data(new SlaveCutData);
-		SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
-		ptr->fix_to(_data.x0);
-		ptr->solve(handler->get_int(LPSTATUS), _options);
-		if (_options.BASIS) {
-			ptr->get_basis();
-		}
-		ptr->get_value(handler->get_dbl(SLAVE_COST));
-		ptr->get_subgradient(handler->get_subgradient());
-			ptr->get_simplex_ite(handler->get_int(SIMPLEXITER));
-		handler->get_dbl(SLAVE_TIMER) = timer_slave.elapsed();
-		slave_cut_package[name_slave] = *slave_cut_data;
 	}
 }
 
@@ -422,33 +387,6 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const & all_package) {
 }
 
 
-/*!
-*  \brief Add the random cuts in master problem
-*
-*	Add the random cuts in master problem
-*
-*  \param all_package : storage of every slave information
-*/
-void BendersBase::add_random_cuts(AllCutPackage const & all_package) {
-	int nboundslaves(0);
-	for (int i(0); i < all_package.size(); i++) {
-		for (auto const & kvp : all_package[i]) {
-			SlaveCutDataPtr slave_cut_data(new SlaveCutData(kvp.second));
-			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
-			_master->add_cut_slave(_problem_to_id[kvp.first], handler->get_subgradient(), _data.x0, handler->get_dbl(SLAVE_COST));
-			handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[kvp.first]];
-			bound_simplex_iter(handler->get_int(SIMPLEXITER));
-			if (handler->get_dbl(SLAVE_COST) <= _options.ABSOLUTE_GAP + handler->get_dbl(ALPHA_I)) {
-				nboundslaves++;
-			}
-			_trace[_data.it - 1]->_cut_trace[kvp.first] = slave_cut_data;			
-		}
-	}
-	if (nboundslaves == _options.RAND_AGGREGATION) {
-		_options.RAND_AGGREGATION = 0;
-	}
-}
-
 void BendersBase::compute_cut_val(const SlaveCutDataHandlerPtr& handler, const Point & x0, Point& s){
     for (auto const & var : x0) {
         if (handler->get_subgradient().find(var.first)!=handler->get_subgradient().end()){
@@ -469,14 +407,11 @@ void BendersBase::compute_cut_val(const SlaveCutDataHandlerPtr& handler, const P
 */
 void BendersBase::build_cut_full(AllCutPackage const & all_package) {
 	check_status(all_package);
-	if (!_options.AGGREGATION && !_options.RAND_AGGREGATION) {
-        compute_cut(all_package);
+	if (_options.AGGREGATION) {
+		compute_cut_aggregate(all_package);
 	}
-	else if (_options.AGGREGATION) {
-        compute_cut_aggregate(all_package);
-	}
-	else if (_options.RAND_AGGREGATION) {
-		add_random_cuts(all_package);
+	else {
+        compute_cut(all_package);   
 	}
 	if (_options.THRESHOLD_AGGREGATION > 1) {
 		dynamic_aggregation(all_package);
