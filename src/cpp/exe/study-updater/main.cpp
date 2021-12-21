@@ -22,10 +22,10 @@ namespace po = boost::program_options;
  * \param solutionFilename_p name of the json output file to retrieve in rootPath_p/lp to be used to update the study
  * \return void
  */
-void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& links_p, std::string const& solutionFilename_p)
+void updateStudy(std::string const &rootPath_p, const std::vector<ActiveLink> &links_p, std::string const &solutionFilename_p)
 {
-	auto linksPath_l = static_cast<std::string>( Path(rootPath_p) / ".." / ".." );
-	auto jsonPath_l	= static_cast<std::string>( Path(rootPath_p) / "lp" / solutionFilename_p );
+	auto linksPath_l = (Path(rootPath_p) / ".." / "..").get_str();
+	auto jsonPath_l = (Path(rootPath_p) / "lp" / solutionFilename_p).get_str();
 
 	StudyUpdater studyUpdater(linksPath_l);
 	int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);
@@ -33,11 +33,9 @@ void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& l
 	if (updateFailures_l)
 	{
 		std::cout << "Error : Failed to update " << updateFailures_l << " files."
-			<< links_p.size() - updateFailures_l << " files were updated\n";
+				  << links_p.size() - updateFailures_l << " files were updated\n";
 	}
 }
-
-
 
 /**
  * \fn int main (void)
@@ -47,25 +45,24 @@ void updateStudy(std::string const& rootPath_p, const std::vector<ActiveLink>& l
  * \param  argv Path to input data which is the 1st argument vector of the command line argument.
  * \return an integer 0 corresponding to exit success
  */
-int main(int argc, char** argv) {
+int main(int argc, char **argv)
+{
 
-	try {
+	try
+	{
 
 		std::string root;
 		std::string solutionFile_l;
 
 		po::options_description desc("Allowed options");
 
-		desc.add_options()
-			("help,h", "produce help message")
-			("study-output,o", po::value<std::string>(&root)->required(), "antares-xpansion study output")
-			("solution,s", po::value<std::string>(&solutionFile_l)->required(), "path to json solution file")
-			;
+		desc.add_options()("help,h", "produce help message")("study-output,o", po::value<std::string>(&root)->required(), "antares-xpansion study output")("solution,s", po::value<std::string>(&solutionFile_l)->required(), "path to json solution file");
 
 		po::variables_map opts;
 		store(parse_command_line(argc, argv, desc), opts);
 
-		if (opts.count("help")) {
+		if (opts.count("help"))
+		{
 			std::cout << desc << std::endl;
 			return 0;
 		}
@@ -78,16 +75,17 @@ int main(int argc, char** argv) {
 
 		updateStudy(root, links, solutionFile_l);
 
-		return 0;		
+		return 0;
 	}
-	catch (std::exception& e) {
+	catch (std::exception &e)
+	{
 		std::cerr << "error: " << e.what() << std::endl;
 		return 1;
 	}
-	catch (...) {
+	catch (...)
+	{
 		std::cerr << "Exception of unknown type!" << std::endl;
 	}
 
 	return 0;
 }
-

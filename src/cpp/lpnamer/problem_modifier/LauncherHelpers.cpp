@@ -5,21 +5,22 @@
 #include "helpers/Path.h"
 #include "LinkProblemsGenerator.h"
 
-void treatAdditionalConstraints(SolverAbstract::Ptr master_p, 
-	const AdditionalConstraints& additionalConstraints_p)
+void treatAdditionalConstraints(SolverAbstract::Ptr master_p,
+								const AdditionalConstraints &additionalConstraints_p)
 {
-	//add requested binary variables
+	// add requested binary variables
 	addBinaryVariables(master_p, additionalConstraints_p.getVariablesToBinarise());
 
-	//add the constraints
-	for(auto pairNameAdditionalcstr : additionalConstraints_p )
+	// add the constraints
+	for (auto pairNameAdditionalcstr : additionalConstraints_p)
 	{
 		addAdditionalConstraint(master_p, pairNameAdditionalcstr.second);
 	}
 }
 
-void addAdditionalConstraint(SolverAbstract::Ptr master_p, 
-	AdditionalConstraint & additionalConstraint_p){
+void addAdditionalConstraint(SolverAbstract::Ptr master_p,
+							 AdditionalConstraint &additionalConstraint_p)
+{
 	auto newnz = (int)additionalConstraint_p.size();
 	int newrows = 1;
 	std::vector<char> rtype(newrows);
@@ -31,29 +32,33 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
 	matstart[1] = newnz;
 
 	std::string sign_l = additionalConstraint_p.getSign();
-	if ( sign_l == "less_or_equal" ){
+	if (sign_l == "less_or_equal")
+	{
 		rtype[0] = 'L';
 	}
-	else if ( sign_l == "greater_or_equal"){
+	else if (sign_l == "greater_or_equal")
+	{
 		rtype[0] = 'U';
 	}
-	else if (sign_l == "equal") {
+	else if (sign_l == "equal")
+	{
 		rtype[0] = 'E';
 	}
-	else {
-		std::cout << "ERROR un addAdditionalConstraint, unknown row type " 
-			<< sign_l << std::endl;
+	else
+	{
+		std::cout << "ERROR un addAdditionalConstraint, unknown row type "
+				  << sign_l << std::endl;
 		std::exit(1);
 	}
 
 	int i = 0;
-	for(auto & pairNameCoeff : additionalConstraint_p)
+	for (auto &pairNameCoeff : additionalConstraint_p)
 	{
-	    int col_index = master_p->get_col_index(pairNameCoeff.first);
-		if( col_index == -1)
+		int col_index = master_p->get_col_index(pairNameCoeff.first);
+		if (col_index == -1)
 		{
-			std::cout << "missing variable " << pairNameCoeff.first 
-				<< " used in additional constraint file!\n";
+			std::cout << "missing variable " << pairNameCoeff.first
+					  << " used in additional constraint file!\n";
 			std::exit(1);
 		}
 		mindex[i] = col_index;
@@ -61,31 +66,33 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
 		i++;
 	}
 
-	master_p->add_rows(1, newnz, rtype.data(), rhs.data(), nullptr, matstart.data(), 
-		mindex.data(), matval.data());
+	master_p->add_rows(1, newnz, rtype.data(), rhs.data(), nullptr, matstart.data(),
+					   mindex.data(), matval.data());
 }
 
+void addBinaryVariables(SolverAbstract::Ptr master_p, const std::map<std::string,
+																	 std::string> &variablesToBinarise_p)
+{
 
-void addBinaryVariables(SolverAbstract::Ptr master_p, const std::map<std::string, 
-	std::string>& variablesToBinarise_p){
+	for (const auto &pairOldNewVarnames : variablesToBinarise_p)
+	{
+		int col_index = master_p->get_col_index(pairOldNewVarnames.first);
 
-	for(const auto& pairOldNewVarnames : variablesToBinarise_p){
-	    int col_index = master_p->get_col_index(pairOldNewVarnames.first);
+		if (col_index == -1)
+		{
 
-		if (col_index == -1){
-
-			std::cout << "missing variable " << pairOldNewVarnames.first 
-				<< " used in additional constraint file!\n";
+			std::cout << "missing variable " << pairOldNewVarnames.first
+					  << " used in additional constraint file!\n";
 			std::exit(1);
 		}
 
 		master_p->add_cols(1, 0, std::vector<double>(1, 0.0).data(), std::vector<int>(2, 0).data(),
-			std::vector<int>(0).data(), std::vector<double>(0).data(),
-			std::vector<double>(1, 0).data(), std::vector<double>(1, 1e20).data());
+						   std::vector<int>(0).data(), std::vector<double>(0).data(),
+						   std::vector<double>(1, 0).data(), std::vector<double>(1, 1e20).data());
 
 		// Changing column type to binary
 		master_p->chg_col_type(std::vector<int>(1, master_p->get_ncols() - 1),
-			std::vector<char>(1, 'B'));
+							   std::vector<char>(1, 'B'));
 
 		// Changing column name
 		master_p->chg_col_name(master_p->get_ncols() - 1, pairOldNewVarnames.second);
@@ -94,11 +101,11 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, const std::map<std::string
 		std::vector<int> matstart(2);
 		matstart[0] = 0;
 		matstart[1] = 2;
-		
+
 		std::vector<int> matind(2);
 		matind[0] = col_index;
 		matind[1] = master_p->get_ncols() - 1;
-		
+
 		std::vector<double> matval(2);
 		std::vector<double> oldVarUb(1);
 		master_p->get_ub(oldVarUb.data(), col_index, col_index);
@@ -106,36 +113,35 @@ void addBinaryVariables(SolverAbstract::Ptr master_p, const std::map<std::string
 		matval[1] = -oldVarUb[0];
 
 		master_p->add_rows(1, 2, std::vector<char>(1, 'L').data(), std::vector<double>(1, 0.0).data(),
-			nullptr, matstart.data(), matind.data(), matval.data());
-		master_p->chg_row_name(master_p->get_nrows() - 1, 
-			"link_" + pairOldNewVarnames.first + "_" + pairOldNewVarnames.second);
+						   nullptr, matstart.data(), matind.data(), matval.data());
+		master_p->chg_row_name(master_p->get_nrows() - 1,
+							   "link_" + pairOldNewVarnames.first + "_" + pairOldNewVarnames.second);
 	}
 }
 
 /**
-* \fn 
-* \brief return Active Links Builder 
-* \param root  path corresponding to the path to the simulation output directory containing the lp directory
-* \return ActiveLinksBuilder object
-*/
+ * \fn
+ * \brief return Active Links Builder
+ * \param root  path corresponding to the path to the simulation output directory containing the lp directory
+ * \return ActiveLinksBuilder object
+ */
 
-ActiveLinksBuilder get_link_builders(const std::string& root)
+ActiveLinksBuilder get_link_builders(const std::string &root)
 {
 
-	auto const area_file_name	= static_cast<std::string>( Path(root) / "area.txt");
-	auto const interco_file_name	= static_cast<std::string>( Path(root) / "interco.txt");
+	auto const area_file_name = (Path(root) / "area.txt").get_str();
+	auto const interco_file_name = (Path(root) / "interco.txt").get_str();
 
-	CandidatesINIReader candidateReader(interco_file_name,area_file_name);
+	CandidatesINIReader candidateReader(interco_file_name, area_file_name);
 
 	// Get all mandatory path
-	auto const xpansion_user_dir =  static_cast<std::string>( Path(root) / ".." / ".." / "user" / "expansion");
-	auto const candidates_file_name =  static_cast<std::string>( Path(xpansion_user_dir) / CANDIDATES_INI);
-	auto const capacity_folder =  static_cast<std::string>( Path(xpansion_user_dir) / "capa");
+	auto const xpansion_user_dir = (Path(root) / ".." / ".." / "user" / "expansion").get_str();
+	auto const candidates_file_name = (Path(xpansion_user_dir) / CANDIDATES_INI).get_str();
+	auto const capacity_folder = (Path(xpansion_user_dir) / "capa").get_str();
 
 	// Instantiation of candidates
-	const auto& candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
-	const auto& mapLinkProfile = LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
+	const auto &candidatesDatas = candidateReader.readCandidateData(candidates_file_name);
+	const auto &mapLinkProfile = LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
 
 	return ActiveLinksBuilder(candidatesDatas, mapLinkProfile);
-
 }
