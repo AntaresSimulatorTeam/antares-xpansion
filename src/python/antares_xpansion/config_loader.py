@@ -250,6 +250,7 @@ class ConfigLoader:
         if self.weight_file_name():
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         options_values["TIME_LIMIT"] = self.timelimit()
+        options_values["LOG_LEVEL"] = self.log_level()
         # generate options file for the solver
         options_path = os.path.normpath(os.path.join(
             self._simulation_lp_path(), self._config.OPTIONS_TXT))
@@ -345,6 +346,16 @@ class ConfigLoader:
             "timelimit", self._config.settings_default["timelimit"]
         )
         return 1e12 if timelimit_str in ("+Inf", "+infini") else int(timelimit_str)
+
+    def log_level(self):
+        """
+        returns the log_level read from the settings file
+        :return: log_level value
+        """
+        log_level_str = self.options.get(
+            "log_level", self._config.settings_default["log_level"]
+        )
+        return int(log_level_str) 
 
     class MissingSimulationName(Exception):
         pass
