@@ -161,6 +161,7 @@ long_parameters_values = [
             "peak2": 1.0e03,
             "pv": 4.4267733994e02,
             "semibase1": 6.0e02,
+            "semibase2": 0
         },
     ),
     (
