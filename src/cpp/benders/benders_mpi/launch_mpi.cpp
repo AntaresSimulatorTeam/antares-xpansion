@@ -11,6 +11,8 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+#include "helpers/Path.h"
+
 #if defined(WIN32) || defined(_WIN32)
 #include <direct.h>
 #define GetCurrentDir _getcwd
@@ -43,14 +45,14 @@ void run_mpibenders(mpi::communicator& world, mpi::environment& env, const Bende
 
 		jsonWriter_l.updateEndTime();
 		jsonWriter_l.write(input.size(), bendersMpi._trace, bendersMpi._data, options.ABSOLUTE_GAP, options.RELATIVE_GAP, options.MAX_ITERATIONS);
-		jsonWriter_l.dump(options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json");
+		jsonWriter_l.dump( Path(options.OUTPUTROOT) / (options.JSON_NAME + ".json") );
 
 		char buff[FILENAME_MAX];
 		GetCurrentDir(buff, FILENAME_MAX);
 
 		std::stringstream str;
-		str << "Optimization results available in : " << buff << PATH_SEPARATOR
-			<< options.OUTPUTROOT + PATH_SEPARATOR + options.JSON_NAME + ".json";
+		str << "Optimization results available in : " << buff << Path::mSep
+			<< Path( options.OUTPUTROOT) / ( options.JSON_NAME + ".json");
 		logger->display_message(str.str());
 	}
 	bendersMpi.free(env, world);

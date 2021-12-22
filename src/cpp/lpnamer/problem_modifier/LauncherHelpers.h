@@ -3,6 +3,7 @@
 #include "solver_utils.h"
 
 #include "AdditionalConstraints.h"
+#include "ActiveLinks.h"
 
 #include <map>
 
@@ -33,3 +34,11 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p, AdditionalConstraint 
  *          adds the linking constraint link_BinVar_CorrespondingVar : CorrespondingVar  <= UB(CorrespondingVar) * BinVar
  */
 void addBinaryVariables(SolverAbstract::Ptr master_p, std::map<std::string, std::string> const & variablesToBinarise_p);
+
+
+/**
+* \brief return Active Links Builder 
+* \param root  path corresponding to the path to the simulation output directory containing the lp directory
+* \return ActiveLinksBuilder object
+*/
+ActiveLinksBuilder get_link_builders(const std::string& root);
