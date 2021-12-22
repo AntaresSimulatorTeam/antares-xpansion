@@ -15,14 +15,7 @@
 #include "logger/User.h"
 #include "logger/UserFile.h"
 #include "logger/Master.h"
-
-#if defined(WIN32) || defined(_WIN32)
-#include <direct.h>
-#define GetCurrentDir _getcwd
-#else
-#include <unistd.h>
-#define GetCurrentDir getcwd
-#endif
+#include "helpers/Path.h"
 
 int main(int argc, char **argv)
 {
@@ -46,12 +39,12 @@ int main(int argc, char **argv)
 
     auto masterLogger = std::make_shared<xpansion::logger::Master>();
     Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
-    std::string loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbendersmpi.txt";
+    std::string loggerFileName = (Path(options.OUTPUTROOT) / "reportbendersmpi.txt").get_str();
     Writer writer;
 
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     google::InitGoogleLogging(argv[0]);
-    std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "bendersmpiLog-rank" + std::to_string(world.rank()) + "-";
+    auto path_to_log = (Path(options.OUTPUTROOT) / ("bendersmpiLog-rank" + std::to_string(world.rank()) + "-")).get_str();
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 
     if (world.rank() == 0)

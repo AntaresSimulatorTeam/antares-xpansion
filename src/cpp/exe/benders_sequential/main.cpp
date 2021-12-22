@@ -11,12 +11,7 @@
 #include "logger/User.h"
 #include "OutputWriter.h"
 #include "JsonWriter.h"
-
-#if defined(WIN32) || defined(_WIN32)
-#define PATH_SEPARATOR "\\"
-#else
-#define PATH_SEPARATOR "/"
-#endif
+#include "helpers/Path.h"
 
 int main(int argc, char **argv)
 {
@@ -25,7 +20,7 @@ int main(int argc, char **argv)
 	BendersOptions options(build_benders_options(argc, argv));
 
 	google::InitGoogleLogging(argv[0]);
-	std::string path_to_log = options.OUTPUTROOT + PATH_SEPARATOR + "benderssequentialLog";
+	auto path_to_log = (Path(options.OUTPUTROOT) / "benderssequentialLog").get_str();
 	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 	LOG(INFO) << "starting Benders Sequential" << std::endl;
 
@@ -36,7 +31,7 @@ int main(int argc, char **argv)
 	LOG(INFO) << "Launching Benders Sequential" << std::endl;
 	auto masterLogger = std::make_shared<xpansion::logger::Master>();
 
-	const std::string &loggerFileName = options.OUTPUTROOT + PATH_SEPARATOR + "reportbenderssequential";
+	const std::string &loggerFileName = (Path(options.OUTPUTROOT) / "reportbenderssequential").get_str();
 	Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
 	Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
 	masterLogger->addLogger(loggerUser);

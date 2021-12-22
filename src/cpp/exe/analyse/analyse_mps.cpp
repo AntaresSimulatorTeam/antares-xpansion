@@ -3,6 +3,7 @@
 #include "launcher.h"
 #include "Worker.h"
 #include "BendersOptions.h"
+#include "helpers/Path.h"
 
 #include "solver_utils.h"
 
@@ -24,7 +25,7 @@ int main(int argc, char** argv)
 
 	size_t n_rows(-1);
 	for (auto const & kvp : input) {
-		std::string problem_name(options.INPUTROOT + PATH_SEPARATOR + kvp.first);
+		std::string problem_name(Path(options.INPUTROOT) / kvp.first);
 		std::cout << problem_name << std::endl;
 
 		SolverAbstract::Ptr solver = factory.create_solver("CLP");

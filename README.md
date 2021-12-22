@@ -63,7 +63,13 @@ an archive including multiple binaries called by a driver.
 
 To download the latest version of Antares-Xpansion, visit the [release page][antares_xpansion_release_url] of Antares-Xpansion repository and download the binary that matches your platform. If you prefer to build the software from the source files, please refer to the [developer guide][developer-guide].
 
-Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use Antares-Xpansion.
+Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use Antares-Xpansion. 
+
+To check the installation, you can open a command prompt in the Antares-Xpansion install directory and run the following command to execute one of the examples included in the package:
+
+```shell
+antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates
+```
 
 ## Getting started
 

@@ -26,14 +26,14 @@ def check_profile_file(filename_path):
 
     two_profiles = False
     with open(filename_path, 'r') as profile_file:
-        two_profiles = (len(profile_file.readline().strip().split("\t")) == 2)
+        two_profiles = (len(profile_file.readline().strip().split()) == 2)
 
     with open(filename_path, 'r') as profile_file:
         first_profile = []
         indirect_profile = []
         for idx, line in enumerate(profile_file):
             try:
-                line_vals = line.strip().split("\t")
+                line_vals = line.strip().split()
 
                 if (len(line_vals) == 1) and not two_profiles:
                     first_profile.append(float(line_vals[0]))

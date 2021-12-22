@@ -7,7 +7,7 @@
 #include "CandidatesINIReader.h"
 #include "LinkProfileReader.h"
 #include "ActiveLinks.h"
-
+#include "helpers/Path.h"
 class StudyUpdateTest : public ::testing::Test
 {
 protected:
@@ -201,8 +201,8 @@ author = Unknown\n\
 TEST_F(StudyUpdateTest, LinkFilenames)
 {
     StudyUpdater studyupdater(".");
-    ASSERT_EQ(studyupdater.getLinkdataFilepath(_links[0]), std::string(".") + PATH_SEPARATOR + "input" + PATH_SEPARATOR + "links" + PATH_SEPARATOR + "area1" + PATH_SEPARATOR + "area2.txt");
-    ASSERT_EQ(studyupdater.getLinkdataFilepath(_links[1]), std::string(".") + PATH_SEPARATOR + "input" + PATH_SEPARATOR + "links" + PATH_SEPARATOR + "area1" + PATH_SEPARATOR + "peak.txt");
+    ASSERT_EQ(studyupdater.getLinkdataFilepath(_links[0]), static_cast<std::string> ( Path(".") / "input" / "links" / "area1" / "area2.txt") );
+    ASSERT_EQ(studyupdater.getLinkdataFilepath(_links[1]), static_cast<std::string> ( Path(".") / "input" / "links" / "area1" / "peak.txt") );
 }
 
 TEST_F(StudyUpdateTest, computeNewCapacities)
