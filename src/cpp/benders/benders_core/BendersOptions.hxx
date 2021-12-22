@@ -1,5 +1,5 @@
 //Determine the degree of detail of the output, from 1 to 3
-BENDERS_OPTIONS_MACRO(LOG_LEVEL, int, 3)
+BENDERS_OPTIONS_MACRO(LOG_LEVEL, int, 0)
 
 //Maximum number of iterations accepted
 BENDERS_OPTIONS_MACRO(MAX_ITERATIONS, int, -1)

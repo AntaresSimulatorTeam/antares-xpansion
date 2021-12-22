@@ -13,6 +13,7 @@ master = integer
 optimality_gap = 0
 max_iteration = 100
 additional-constraints = constraint.txt
+log_level = 0
 ```
 
 The following section lists the configurable parameters. If the user does not specify the value of a parameter, its default value is used.
@@ -209,3 +210,12 @@ time, but it can invest in neither.
 ![](../../assets/media/image19.png)
 
 **Figure 13** – Example of an additional constraint file.
+#### `log_level`
+Positive integer greater than or equal to zero
+to specify `solver`'s log severity.
+
+For now two log levels are avalaible:
+
+If `log_level` = 0: basic solver logs are printed.
+
+If `log_level` > 0: full logs are printed.

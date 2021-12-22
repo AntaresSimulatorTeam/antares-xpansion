@@ -138,11 +138,11 @@ class XpansionConfig:
             "timelimit": "+infini",
             "additional-constraints": "",
             "yearly-weights": "",
+            "log_level": "0",
         }
 
     def _set_default_options(self):
         self.options_default = {
-            "LOG_LEVEL": "0",
             "MAX_ITERATIONS": "-1",
             "ABSOLUTE_GAP": "1",
             "RELATIVE_GAP": "1e-12",
