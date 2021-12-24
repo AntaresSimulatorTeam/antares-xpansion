@@ -26,9 +26,9 @@ namespace Output
          *  \brief destructor of class VoidWriter
          */
         virtual ~VoidWriter();
-        virtual void VoidWriter::updateBeginTime();
+        virtual void updateBeginTime();
 
-        virtual void VoidWriter::updateEndTime();
+        virtual void updateEndTime();
         /*!
          *  \brief saves the options of the benders algorithm to be later written
          *
