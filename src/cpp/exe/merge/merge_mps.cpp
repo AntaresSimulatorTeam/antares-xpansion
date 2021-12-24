@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
     LOG(INFO) << "starting merge_mps" << std::endl;
 
-    JsonWriter jsonWriter_l;
+    Output::JsonWriter jsonWriter_l;
     jsonWriter_l.initialize(options);
 
     try

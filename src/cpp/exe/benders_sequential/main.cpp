@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 	masterLogger->addLogger(loggerFile);
 
 	Logger logger = masterLogger;
-	Writer writer = std::make_shared<JsonWriter>();
+	Writer writer = std::make_shared<Output::JsonWriter>();
 	writer->initialize(options);
 
 	Timer timer;

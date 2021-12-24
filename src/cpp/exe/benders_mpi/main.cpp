@@ -52,7 +52,7 @@ int main(int argc, char **argv)
         Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
         masterLogger->addLogger(loggerFile);
         masterLogger->addLogger(loggerUser);
-        writer = std::make_shared<JsonWriter>();
+        writer = std::make_shared<Output::JsonWriter>();
 
         LOG(INFO) << "starting bendersmpi" << std::endl;
         std::ostringstream oss_l;
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     }
     else
     {
-        writer = std::make_shared<VoidWriter>();
+        writer = std::make_shared<Output::VoidWriter>();
     }
     Logger logger = masterLogger;
 
