@@ -9,22 +9,22 @@ VoidWriter::~VoidWriter()
 {
 }
 
-void VoidWriter::write(BendersOptions const &bendersOptions_p)
+void VoidWriter::write_options(BendersOptions const &bendersOptions_p)
 {
 }
 
-void VoidWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
-                       BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
+void VoidWriter::write_iteration(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
+                                 BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
 {
 }
 
-void VoidWriter::write(int nbWeeks_p,
-                       double const &lb_p, double const &ub_p,
-                       double const &investCost_p,
-                       double const &operationalCost_p,
-                       double const &overallCost_p,
-                       Point const &solution_p,
-                       bool const &optimality_p)
+void VoidWriter::update_solution(int nbWeeks_p,
+                                 double const &lb_p, double const &ub_p,
+                                 double const &investCost_p,
+                                 double const &operationalCost_p,
+                                 double const &overallCost_p,
+                                 Point const &solution_p,
+                                 bool const &optimality_p)
 {
 }
 

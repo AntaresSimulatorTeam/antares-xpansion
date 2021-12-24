@@ -21,7 +21,7 @@ void JsonWriter::updateEndTime()
     _output["end"] = getEnd();
 }
 
-void JsonWriter::write(BendersOptions const &bendersOptions_p)
+void JsonWriter::write_options(BendersOptions const &bendersOptions_p)
 {
 // Options
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__) _output["options"][#name__] = bendersOptions_p.name__;
@@ -29,8 +29,9 @@ void JsonWriter::write(BendersOptions const &bendersOptions_p)
 #undef BENDERS_OPTIONS_MACRO
 }
 
-void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
-                       BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
+void JsonWriter::write_iteration(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
+                                 BendersData const &bendersData_p, double const &min_abs_gap,
+                                 double const &min_rel_gap, double const &max_iter)
 {
     _output["nbWeeks"] = nbWeeks_p;
 
@@ -100,13 +101,13 @@ void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
     }
 }
 
-void JsonWriter::write(int nbWeeks_p,
-                       double const &lb_p, double const &ub_p,
-                       double const &investCost_p,
-                       double const &operationalCost_p,
-                       double const &overallCost_p,
-                       Point const &solution_p,
-                       bool const &optimality_p)
+void JsonWriter::update_solution(int nbWeeks_p,
+                                 double const &lb_p, double const &ub_p,
+                                 double const &investCost_p,
+                                 double const &operationalCost_p,
+                                 double const &overallCost_p,
+                                 Point const &solution_p,
+                                 bool const &optimality_p)
 {
     _output["nbWeeks"] = nbWeeks_p;
 

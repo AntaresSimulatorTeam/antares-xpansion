@@ -214,9 +214,9 @@ int main(int argc, char **argv)
         double operationalCost_l = overallCost_l - investCost_l;
 
         bool optimality_l = (status_l == SOLVER_STATUS::OPTIMAL);
-        jsonWriter_l.write(input.size(), overallCost_l,
-                           overallCost_l, investCost_l, operationalCost_l,
-                           overallCost_l, x0, optimality_l);
+        jsonWriter_l.update_solution(input.size(), overallCost_l,
+                                     overallCost_l, investCost_l, operationalCost_l,
+                                     overallCost_l, x0, optimality_l);
         jsonWriter_l.dump();
     }
     catch (std::exception &ex)

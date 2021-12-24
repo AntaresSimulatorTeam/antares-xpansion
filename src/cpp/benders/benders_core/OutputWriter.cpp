@@ -53,13 +53,13 @@ void OutputWriter::initialize(BendersOptions options)
     write_failure();
     dump();
 
-    write(options);
+    write_options(options);
     updateBeginTime();
 }
 
 void OutputWriter::end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
 {
     updateEndTime();
-    write(nbWeeks_p, bendersTrace_p, bendersData_p, min_abs_gap, min_rel_gap, max_iter);
+    write_iteration(nbWeeks_p, bendersTrace_p, bendersData_p, min_abs_gap, min_rel_gap, max_iter);
     dump();
 }
