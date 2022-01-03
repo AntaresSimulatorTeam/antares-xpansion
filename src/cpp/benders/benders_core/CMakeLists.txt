@@ -18,9 +18,9 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/common.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerTrace.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Worker.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OutputWriter.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/VoidWriter.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/TimeUtil.cpp
         )
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)

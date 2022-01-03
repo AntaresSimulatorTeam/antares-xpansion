@@ -2,7 +2,7 @@
 #include "config.h"
 namespace Output
 {
-    JsonWriter::JsonWriter() : OutputWriter()
+    JsonWriter::JsonWriter() : _time(TimeUtil())
     {
     }
 

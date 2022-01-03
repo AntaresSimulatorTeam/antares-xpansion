@@ -2,7 +2,7 @@
 #include "config.h"
 namespace Output
 {
-    VoidWriter::VoidWriter() : OutputWriter()
+    VoidWriter::VoidWriter()
     {
     }
 

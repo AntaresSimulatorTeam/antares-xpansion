@@ -7,51 +7,6 @@
 #include "common.h"
 namespace Output
 {
-    class Time
-    {
-    public:
-        /*!
-         *  \brief Time default constructor
-         */
-        Time();
-
-        /*!
-         *  \brief destructor of class Time
-         */
-        virtual ~Time();
-        /*!
-         *  \brief updates the execution begin time
-         */
-        virtual void updateBeginTime();
-
-        /*!
-         *  \brief updates the end of execution time
-         */
-        virtual void updateEndTime();
-
-        // attributes of the optimization execution
-
-        /*!
-         *  returns the start of execution time as a string
-         */
-        std::string getBegin();
-
-        /*!
-         *  returns the end of execution time as a string
-         */
-        std::string getEnd();
-
-        /*!
-         *  \brief return a double indicating the exection time in seconds
-         */
-        double getDuration();
-
-    private:
-        // begin time of the optimization
-        std::time_t _beginTime;
-        // end time of the optimization
-        std::time_t _endTime;
-    };
 
     /*!
      * \class OutputWriter
@@ -59,37 +14,8 @@ namespace Output
      */
     class OutputWriter
     {
-    protected:
-        // // begin time of the optimization
-        // std::time_t _beginTime;
-        // // end time of the optimization
-        // std::time_t _endTime;
-
-        // // attributes of the optimization execution
-
-        // /*!
-        //  *  returns the start of execution time as a string
-        //  */
-        // std::string getBegin();
-
-        // /*!
-        //  *  returns the end of execution time as a string
-        //  */
-        // std::string getEnd();
-
-        // /*!
-        //  *  \brief return a double indicating the exection time in seconds
-        //  */
-        // double getDuration();
-        Time _time;
-        std::string _filename;
 
     public:
-        /*!
-         *  \brief OutputWriter default constructor
-         */
-        OutputWriter();
-
         /*!
          *  \brief destructor of class OutputWriter
          */
@@ -158,7 +84,9 @@ namespace Output
          */
         virtual void initialize(BendersOptions options) = 0;
 
-        virtual void end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter) = 0;
+        virtual void end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
+                                 BendersData const &bendersData_p, double const &min_abs_gap,
+                                 double const &min_rel_gap, double const &max_iter) = 0;
     };
 }
 using Writer = std::shared_ptr<Output::OutputWriter>;
