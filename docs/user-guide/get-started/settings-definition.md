@@ -172,6 +172,15 @@ Defines the solver that is used to solve the master and the slave problems in th
 
 To use another solver, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.
 
+#### `log_level`
+
+Positive integer, specifying the `solver`'s log severity. Default value: `0`.
+
+For now two log levels are avalaible:
+
+ - If `log_level = 0`: basic solver logs are printed.
+
+ - If `log_level > 0`: full logs are printed.
 
 #### `additional-constraints`
 
@@ -210,12 +219,3 @@ time, but it can invest in neither.
 ![](../../assets/media/image19.png)
 
 **Figure 13** – Example of an additional constraint file.
-#### `log_level`
-Positive integer greater than or equal to zero
-to specify `solver`'s log severity.
-
-For now two log levels are avalaible:
-
-If `log_level` = 0: basic solver logs are printed.
-
-If `log_level` > 0: full logs are printed.
