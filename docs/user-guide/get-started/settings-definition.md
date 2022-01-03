@@ -176,7 +176,7 @@ To use another solver, you have to build the package with the chosen solver, ple
 
 Positive integer, specifying the `solver`'s log severity. Default value: `0`.
 
-For now two log levels are avalaible:
+For now two log levels are available:
 
  - If `log_level = 0`: basic solver logs are printed.
 
