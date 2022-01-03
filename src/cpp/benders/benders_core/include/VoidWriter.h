@@ -46,9 +46,7 @@ namespace Output
          *  \param min_rel_gap : minimum relative gap wanted
          *  \param max_iter : maximum number of iterations
          */
-        virtual void write_iteration(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
-                                     BendersData const &bendersData_p, double const &min_abs_gap,
-                                     double const &min_rel_gap, double const &max_iter);
+        virtual void write_iteration(const IterationsInfo &iterations_info);
 
         /*!
          *  \brief  saves some entries to be later written
@@ -76,6 +74,6 @@ namespace Output
          */
         virtual void dump();
         virtual void initialize(BendersOptions options);
-        virtual void end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter);
+        virtual void end_writing(const IterationsInfo &iterations_info);
     };
 }

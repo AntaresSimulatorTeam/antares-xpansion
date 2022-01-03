@@ -9,6 +9,26 @@ namespace Output
 {
 
     /*!
+     *  \brief struct containing some entries to be later written to the json file
+     *
+     *  nbWeeks_p : number of the weeks in the study
+     *   bendersTrace_p : trace to be written ie iterations details
+     *   bendersData_p : final benders data to get the best iteration
+     *   min_abs_gap : minimum absolute gap wanted
+     *   min_rel_gap : minimum relative gap wanted
+     *   max_iter : maximum number of iterations
+     */
+    struct IterationsInfo
+    {
+        int nbWeeks_p;
+        BendersTrace bendersTrace_p;
+        BendersData bendersData_p;
+        double min_abs_gap;
+        double min_rel_gap;
+        double max_iter;
+    };
+
+    /*!
      * \class OutputWriter
      * \brief OutputWriter class to describe the execuion session of an antares xpansion optimization in a log file
      */
@@ -48,9 +68,7 @@ namespace Output
          *  \param min_rel_gap : minimum relative gap wanted
          *  \param max_iter : maximum number of iterations
          */
-        virtual void write_iteration(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
-                                     BendersData const &bendersData_p, double const &min_abs_gap,
-                                     double const &min_rel_gap, double const &max_iter) = 0;
+        virtual void write_iteration(const IterationsInfo &iterations_info) = 0;
 
         /*!
          *  \brief  saves some entries to be later written to the json file
@@ -84,9 +102,7 @@ namespace Output
          */
         virtual void initialize(BendersOptions options) = 0;
 
-        virtual void end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
-                                 BendersData const &bendersData_p, double const &min_abs_gap,
-                                 double const &min_rel_gap, double const &max_iter) = 0;
+        virtual void end_writing(const IterationsInfo &iterations_info) = 0;
     };
 }
 using Writer = std::shared_ptr<Output::OutputWriter>;

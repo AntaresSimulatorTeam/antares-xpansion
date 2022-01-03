@@ -370,7 +370,7 @@ void BendersMpi::launch()
 
 	if (_world.rank() == 0)
 	{
-		post_run_actions(input);
+		post_run_actions(input.size());
 	}
 
 	free();

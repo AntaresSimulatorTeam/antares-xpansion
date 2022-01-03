@@ -175,6 +175,6 @@ void BendersSequential::launch()
 		_logger->display_message(error);
 	}
 
-	post_run_actions(input);
+	post_run_actions(input.size());
 	free();
 }

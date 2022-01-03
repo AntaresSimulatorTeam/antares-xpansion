@@ -75,6 +75,6 @@ public:
     void update_active_cuts();
 
     void fill_log_data_from_data(LogData &logdata);
-    void post_run_actions(CouplingMap input);
+    void post_run_actions(int nbWeeks_p);
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

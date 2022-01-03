@@ -696,15 +696,23 @@ void BendersBase::fill_log_data_from_data(LogData &logData)
 	logData.max_iterations = _options.MAX_ITERATIONS;
 }
 
-void BendersBase::post_run_actions(CouplingMap input)
+void BendersBase::post_run_actions(int nbWeeks_p)
 {
 	LogData logData;
 	fill_log_data_from_data(logData);
 
 	_logger->log_at_ending(logData);
 
-	_writer->end_writing(input.size(), _trace, _data, _options.ABSOLUTE_GAP,
-						 _options.RELATIVE_GAP, _options.MAX_ITERATIONS);
+	Output::IterationsInfo iterations_infos;
+
+	iterations_infos.nbWeeks_p = nbWeeks_p;
+	iterations_infos.bendersTrace_p = _trace;
+	iterations_infos.bendersData_p = _data;
+	iterations_infos.min_abs_gap = _options.ABSOLUTE_GAP;
+	iterations_infos.min_rel_gap = _options.RELATIVE_GAP;
+	iterations_infos.max_iter = _options.MAX_ITERATIONS;
+
+	_writer->end_writing(iterations_infos);
 
 	std::stringstream str;
 	str << "Optimization results available in : "

@@ -21,8 +21,7 @@ namespace Output
     {
     }
 
-    void VoidWriter::write_iteration(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
-                                     BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
+    void VoidWriter::write_iteration(const IterationsInfo &iterations_info)
     {
     }
 
@@ -54,7 +53,7 @@ namespace Output
     {
     }
 
-    void VoidWriter::end_writing(int const &nbWeeks_p, BendersTrace const &bendersTrace_p, BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
+    void VoidWriter::end_writing(const IterationsInfo &iterations_info)
     {
     }
 }
