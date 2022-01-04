@@ -21,17 +21,11 @@ namespace Output
     {
     }
 
-    void VoidWriter::write_iteration(const IterationsInfo &iterations_info)
+    void VoidWriter::write_iteration(const IterationsData &iterations_data)
     {
     }
 
-    void VoidWriter::update_solution(int nbWeeks_p,
-                                     double const &lb_p, double const &ub_p,
-                                     double const &investCost_p,
-                                     double const &operationalCost_p,
-                                     double const &overallCost_p,
-                                     Point const &solution_p,
-                                     bool const &optimality_p)
+    void VoidWriter::update_solution(const SolutionData &solution_data)
     {
     }
 
@@ -53,7 +47,7 @@ namespace Output
     {
     }
 
-    void VoidWriter::end_writing(const IterationsInfo &iterations_info)
+    void VoidWriter::end_writing(const IterationsData &iterations_data)
     {
     }
 }

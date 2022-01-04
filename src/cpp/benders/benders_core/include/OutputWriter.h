@@ -18,14 +18,41 @@ namespace Output
      *   min_rel_gap : minimum relative gap wanted
      *   max_iter : maximum number of iterations
      */
-    struct IterationsInfo
+    struct IterationsData
     {
         int nbWeeks_p;
         BendersTrace bendersTrace_p;
-        BendersData bendersData_p;
+        int it;
+        int best_it;
+        double best_ub;
+        double lb;
         double min_abs_gap;
         double min_rel_gap;
         double max_iter;
+    };
+
+    /*!
+     *  \brief struct saves some entries to be later written to the json file
+     *
+     *   nbWeeks_p : number of the weeks in the study
+     *   lb_p : solution lower bound
+     *   ub_p : solution upper bound
+     *   investCost_p : investment cost
+     *   operationalCost_p : operational cost
+     *   overallCost_p : total cost, sum of invest and operational
+     *   solution_p : point giving the solution and the candidates
+     *   optimality_p : indicates if optimality was reached
+     */
+    struct SolutionData
+    {
+        int nbWeeks_p;
+        double lb_p;
+        double ub_p;
+        double investCost_p;
+        double operationalCost_p;
+        double overallCost_p;
+        Point solution_p;
+        bool optimality_p;
     };
 
     /*!
@@ -68,7 +95,7 @@ namespace Output
          *  \param min_rel_gap : minimum relative gap wanted
          *  \param max_iter : maximum number of iterations
          */
-        virtual void write_iteration(const IterationsInfo &iterations_info) = 0;
+        virtual void write_iteration(const IterationsData &iterations_data) = 0;
 
         /*!
          *  \brief  saves some entries to be later written to the json file
@@ -82,9 +109,7 @@ namespace Output
          *  \param solution_p : point giving the solution and the candidates
          *  \param optimality_p : indicates if optimality was reached
          */
-        virtual void update_solution(int nbWeeks_p, double const &lb_p, double const &ub_p, double const &investCost_p,
-                                     double const &operationalCost_p, double const &overallCost_p,
-                                     Point const &solution_p, bool const &optimality_p) = 0;
+        virtual void update_solution(const SolutionData &solution_data) = 0;
 
         /*!
          *  \brief write an a priori errored log output, overwritten if optimization ends
@@ -102,7 +127,7 @@ namespace Output
          */
         virtual void initialize(BendersOptions options) = 0;
 
-        virtual void end_writing(const IterationsInfo &iterations_info) = 0;
+        virtual void end_writing(const IterationsData &iterations_data) = 0;
     };
 }
 using Writer = std::shared_ptr<Output::OutputWriter>;

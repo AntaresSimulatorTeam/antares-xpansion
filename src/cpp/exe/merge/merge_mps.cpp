@@ -214,9 +214,18 @@ int main(int argc, char **argv)
         double operationalCost_l = overallCost_l - investCost_l;
 
         bool optimality_l = (status_l == SOLVER_STATUS::OPTIMAL);
-        jsonWriter_l.update_solution(input.size(), overallCost_l,
-                                     overallCost_l, investCost_l, operationalCost_l,
-                                     overallCost_l, x0, optimality_l);
+
+        Output::SolutionData sol_infos;
+        sol_infos.nbWeeks_p = input.size();
+        sol_infos.lb_p = overallCost_l;
+        sol_infos.ub_p = overallCost_l;
+        sol_infos.investCost_p = investCost_l;
+        sol_infos.operationalCost_p = operationalCost_l;
+        sol_infos.overallCost_p = overallCost_l;
+        sol_infos.solution_p = x0;
+        sol_infos.optimality_p = optimality_l;
+
+        jsonWriter_l.update_solution(sol_infos);
         jsonWriter_l.dump();
     }
     catch (std::exception &ex)

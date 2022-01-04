@@ -30,13 +30,13 @@ namespace Output
 #undef BENDERS_OPTIONS_MACRO
     }
 
-    void JsonWriter::write_iteration(const IterationsInfo &iterations_info)
+    void JsonWriter::write_iteration(const IterationsData &iterations_data)
     {
-        _output["nbWeeks"] = iterations_info.nbWeeks_p;
+        _output["nbWeeks"] = iterations_data.nbWeeks_p;
 
         // Iterations
         size_t iterCnt_l(0);
-        for (auto masterDataPtr_l : iterations_info.bendersTrace_p)
+        for (auto masterDataPtr_l : iterations_data.bendersTrace_p)
         {
             ++iterCnt_l;
             if (masterDataPtr_l->_valid)
@@ -68,29 +68,29 @@ namespace Output
         }
 
         // solution
-        size_t bestItIndex_l = iterations_info.bendersData_p.best_it - 1;
-        _output["solution"]["iteration"] = iterations_info.bendersData_p.best_it;
-        if (bestItIndex_l >= 0 && bestItIndex_l < iterations_info.bendersTrace_p.size())
+        size_t bestItIndex_l = iterations_data.best_it - 1;
+        _output["solution"]["iteration"] = iterations_data.best_it;
+        if (bestItIndex_l >= 0 && bestItIndex_l < iterations_data.bendersTrace_p.size())
         {
-            _output["solution"]["investment_cost"] = iterations_info.bendersTrace_p[bestItIndex_l].get()->_invest_cost;
-            _output["solution"]["operational_cost"] = iterations_info.bendersTrace_p[bestItIndex_l].get()->_operational_cost;
-            _output["solution"]["overall_cost"] = iterations_info.bendersTrace_p[bestItIndex_l].get()->_invest_cost + iterations_info.bendersTrace_p[bestItIndex_l].get()->_operational_cost;
+            _output["solution"]["investment_cost"] = iterations_data.bendersTrace_p[bestItIndex_l].get()->_invest_cost;
+            _output["solution"]["operational_cost"] = iterations_data.bendersTrace_p[bestItIndex_l].get()->_operational_cost;
+            _output["solution"]["overall_cost"] = iterations_data.bendersTrace_p[bestItIndex_l].get()->_invest_cost + iterations_data.bendersTrace_p[bestItIndex_l].get()->_operational_cost;
 
-            for (auto pairNameValue_l : iterations_info.bendersTrace_p[bestItIndex_l]->get_point())
+            for (auto pairNameValue_l : iterations_data.bendersTrace_p[bestItIndex_l]->get_point())
             {
                 _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
             }
         }
 
-        double abs_gap_l = iterations_info.bendersData_p.best_ub - iterations_info.bendersData_p.lb;
-        double rel_gap_l = abs_gap_l / iterations_info.bendersData_p.best_ub;
+        double abs_gap_l = iterations_data.best_ub - iterations_data.lb;
+        double rel_gap_l = abs_gap_l / iterations_data.best_ub;
         _output["solution"]["optimality_gap"] = abs_gap_l;
         _output["solution"]["relative_gap"] = rel_gap_l;
-        if ((abs_gap_l <= iterations_info.min_abs_gap) || (rel_gap_l <= iterations_info.min_rel_gap))
+        if ((abs_gap_l <= iterations_data.min_abs_gap) || (rel_gap_l <= iterations_data.min_rel_gap))
         {
             _output["solution"]["problem_status"] = "OPTIMAL";
         }
-        else if (iterations_info.max_iter != -1 && iterations_info.bendersData_p.it > iterations_info.max_iter)
+        else if (iterations_data.max_iter != -1 && iterations_data.it > iterations_data.max_iter)
         {
             _output["solution"]["problem_status"] = "MAX ITERATIONS";
         }
@@ -100,24 +100,18 @@ namespace Output
         }
     }
 
-    void JsonWriter::update_solution(int nbWeeks_p,
-                                     double const &lb_p, double const &ub_p,
-                                     double const &investCost_p,
-                                     double const &operationalCost_p,
-                                     double const &overallCost_p,
-                                     Point const &solution_p,
-                                     bool const &optimality_p)
+    void JsonWriter::update_solution(const SolutionData &solution_data)
     {
-        _output["nbWeeks"] = nbWeeks_p;
+        _output["nbWeeks"] = solution_data.nbWeeks_p;
 
-        _output["solution"]["investment_cost"] = investCost_p;
-        _output["solution"]["operational_cost"] = operationalCost_p;
-        _output["solution"]["overall_cost"] = overallCost_p;
-        _output["solution"]["lb"] = lb_p;
-        _output["solution"]["ub"] = ub_p;
-        _output["solution"]["optimality_gap"] = ub_p - lb_p;
-        _output["solution"]["relative_gap"] = (ub_p - lb_p) / ub_p;
-        if (optimality_p)
+        _output["solution"]["investment_cost"] = solution_data.investCost_p;
+        _output["solution"]["operational_cost"] = solution_data.operationalCost_p;
+        _output["solution"]["overall_cost"] = solution_data.overallCost_p;
+        _output["solution"]["lb"] = solution_data.lb_p;
+        _output["solution"]["ub"] = solution_data.ub_p;
+        _output["solution"]["optimality_gap"] = solution_data.ub_p - solution_data.lb_p;
+        _output["solution"]["relative_gap"] = (solution_data.ub_p - solution_data.lb_p) / solution_data.ub_p;
+        if (solution_data.optimality_p)
         {
             _output["solution"]["problem_status"] = "OPTIMAL";
         }
@@ -125,7 +119,7 @@ namespace Output
         {
             _output["solution"]["problem_status"] = "ERROR";
         }
-        for (auto pairNameValue_l : solution_p)
+        for (auto pairNameValue_l : solution_data.solution_p)
         {
             _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
         }
@@ -176,10 +170,10 @@ namespace Output
         updateBeginTime();
     }
 
-    void JsonWriter::end_writing(const IterationsInfo &iterations_info)
+    void JsonWriter::end_writing(const IterationsData &iterations_data)
     {
         updateEndTime();
-        write_iteration(iterations_info);
+        write_iteration(iterations_data);
         dump();
     }
 }
