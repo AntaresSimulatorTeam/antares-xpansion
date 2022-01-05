@@ -18,6 +18,7 @@ SolverXpress::SolverXpress() {
 	_NumberOfProblems += 1;
 
 	_xprs = NULL;
+	add_stream(std::cout);
 }
 
 SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
