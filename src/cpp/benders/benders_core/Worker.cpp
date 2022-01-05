@@ -73,6 +73,7 @@ void Worker::init(Str2Int const & variable_map, std::string const & path_to_mps,
 		_solver->init();
 	}
 	_solver->set_threads(1);
+	_solver->add_stream(std::cout);
 	_solver->set_output_log_level(log_level);
 	_solver->read_prob_mps(path_to_mps);
 	
