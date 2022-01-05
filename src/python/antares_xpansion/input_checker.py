@@ -9,16 +9,26 @@ import shutil
 
 from antares_xpansion.flushed_print import flushed_print
 
+
 class ProfileFileNotExists(Exception):
     pass
+
+
 class ProfileFileWrongNumberOfLines(Exception):
     pass
+
+
 class ProfileFileWrongNumberOfcolumns(Exception):
     pass
+
+
 class ProfileFileValueError(Exception):
     pass
+
+
 class ProfileFileNegativeValue(Exception):
     pass
+
 
 def check_profile_file(filename_path):
     """
@@ -74,6 +84,10 @@ def check_profile_file(filename_path):
 ##########################################
 
 
+class UnrecognizedCandidateOptionType(Exception):
+    pass
+
+
 def check_candidate_option_type(option, value):
     """
         verifies if a given option value has the correct type corresponding allowed for this option
@@ -102,7 +116,7 @@ def check_candidate_option_type(option, value):
     if option_type is None:
         flushed_print(
             'check_candidate_option_type: %s option not recognized in candidates file.' % option)
-        sys.exit(1)
+        raise UnrecognizedCandidateOptionType
     else:
         if obsolete_options.count(option):
             flushed_print(
@@ -110,16 +124,11 @@ def check_candidate_option_type(option, value):
             return True
         if option_type == 'string':
             return True
-        elif option_type == 'numeric':
-            return value.isnumeric()
         elif option_type == 'non-negative':
             try:
                 return float(value) >= 0
             except ValueError:
                 return False
-        flushed_print('check_candidate_option_type: Non handled data type %s for option %s'
-                      % (option_type, option))
-        sys.exit(1)
 
 
 def check_candidate_option_value(option, value):
@@ -269,13 +278,14 @@ def check_candidates_file(driver):
             elif value == '1':
                 has_a_profile = True
             else:
-                  # check file existence
-                filename_path =  driver.capacity_file(value)
+                # check file existence
+                filename_path = driver.capacity_file(value)
                 if not os.path.isfile(filename_path):
                     flushed_print('Illegal value : option can be 0, 1 or an existent filename.\
                             %s is not an existent file' % filename_path)
                     raise ProfileFileNotExists
-                has_a_profile = has_a_profile or check_profile_file(filename_path)
+                has_a_profile = has_a_profile or check_profile_file(
+                    filename_path)
         if not has_a_profile:
             # remove candidate if it has no profile
             flushed_print("candidate %s will be removed!" %
@@ -431,13 +441,12 @@ def check_setting_option_value(option, value):
                               % (value, option))
                 sys.exit(1)
     elif option == 'log_level':
-        if (value >=0):
+        if (value >= 0):
             return True
         else:
             flushed_print('Illegal value %s for option %s : only greater than or equal to zero values are accepted'
-                            % (value, option))
+                          % (value, option))
             sys.exit(1)
-            
 
     flushed_print(
         'check_candidate_option_value: Illegal value %s for option %s' % (value, option))
