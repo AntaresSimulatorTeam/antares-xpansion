@@ -9,6 +9,16 @@ import shutil
 
 from antares_xpansion.flushed_print import flushed_print
 
+class ProfileFileNotExists(Exception):
+    pass
+class ProfileFileWrongNumberOfLines(Exception):
+    pass
+class ProfileFileWrongNumberOfcolumns(Exception):
+    pass
+class ProfileFileValueError(Exception):
+    pass
+class ProfileFileNegativeValue(Exception):
+    pass
 
 def check_profile_file(filename_path):
     """
@@ -20,9 +30,8 @@ def check_profile_file(filename_path):
     """
     # check file existence
     if not os.path.isfile(filename_path):
-        flushed_print('Illegal value : option can be 0, 1 or an existent filename.\
-                 %s is not an existent file' % filename_path)
-        sys.exit(1)
+        flushed_print(f'{filename_path} is not an existent file')
+        raise ProfileFileNotExists
 
     two_profiles = False
     with open(filename_path, 'r') as profile_file:
@@ -43,20 +52,20 @@ def check_profile_file(filename_path):
                 else:
                     flushed_print('Line %d in file %s is not valid.'
                                   % (idx + 1, filename_path))
-                    sys.exit(1)
+                    raise ProfileFileWrongNumberOfcolumns
             except ValueError:
-                flushed_print('Line %d in file %s is not valid: allowed formats "X" or "X\tY".'
+                flushed_print('Line %d in file %s is not valid: allowed float values in formats "X" or "X\tY".'
                               % (idx + 1, filename_path))
-                sys.exit(1)
+                raise ProfileFileValueError
             if (first_profile[-1] < 0) or (two_profiles and indirect_profile[-1] < 0):
                 flushed_print('Line %d in file %s indicates a negative value'
                               % (idx + 1, filename_path))
-                sys.exit(1)
+                raise ProfileFileNegativeValue
 
     if len(first_profile) != 8760:
         flushed_print('file %s does not have 8760 lines'
                       % filename_path)
-        sys.exit(1)
+        raise ProfileFileWrongNumberOfLines
 
     return any(first_profile) or any(indirect_profile)
 
@@ -260,8 +269,13 @@ def check_candidates_file(driver):
             elif value == '1':
                 has_a_profile = True
             else:
-                has_a_profile = has_a_profile or check_profile_file(
-                    driver.capacity_file(value))
+                  # check file existence
+                filename_path =  driver.capacity_file(value)
+                if not os.path.isfile(filename_path):
+                    flushed_print('Illegal value : option can be 0, 1 or an existent filename.\
+                            %s is not an existent file' % filename_path)
+                    raise ProfileFileNotExists
+                has_a_profile = has_a_profile or check_profile_file(filename_path)
         if not has_a_profile:
             # remove candidate if it has no profile
             flushed_print("candidate %s will be removed!" %
