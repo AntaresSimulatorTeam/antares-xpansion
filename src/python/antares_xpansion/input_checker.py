@@ -212,6 +212,22 @@ def check_candidate_link(link, section):
         raise CandidateLinkWithoutSeparator
 
 
+class CandidateFileWrongTypeValue(Exception):
+    pass
+
+
+class CandidateNameDuplicatedError(Exception):
+    pass
+
+
+class MaxUnitsAndMaxInvestmentNonNullSimultaneously(Exception):
+    pass
+
+
+class MaxUnitsAndMaxInvestmentAreNullSimultaneously(Exception):
+    pass
+
+
 def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
     """
         checks that a candidate file related to an XpansionDriver has the correct format
@@ -244,7 +260,7 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
             if not check_candidate_option_type(option, value):
                 flushed_print(
                     "value %s for option %s has the wrong type!" % (value, option))
-                sys.exit(1)
+                raise CandidateFileWrongTypeValue
             check_candidate_option_value(option, value)
 
     # check that name is not empty and does not have space
@@ -264,7 +280,7 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
             if value in unique_values:
                 flushed_print('Error candidates %ss have to be unique, duplicate %s %s in section %s'
                               % (verified_attribute, verified_attribute, value, each_section))
-                sys.exit(1)
+                raise CandidateNameDuplicatedError
             else:
                 unique_values.add(value)
                 # FIXME can also add reverse link
@@ -278,11 +294,11 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
             if max_units != 0 or unit_size != 0:
                 flushed_print("Illegal values in section %s: cannot assign non-null values simultaneously \
                       to max-investment and (unit-size or max_units)" % (each_section))
-                sys.exit(1)
+                raise MaxUnitsAndMaxInvestmentNonNullSimultaneously
         elif max_units == 0 or unit_size == 0:
             flushed_print("Illegal values in section %s: need to assign non-null values to max-investment \
                   or (unit-size and max_units)" % (each_section))
-            sys.exit(1)
+            raise MaxUnitsAndMaxInvestmentAreNullSimultaneously
 
     # check attributes profile is 0, 1 or an existent filename
     profile_attributes = ['link-profile', 'already-installed-link-profile']

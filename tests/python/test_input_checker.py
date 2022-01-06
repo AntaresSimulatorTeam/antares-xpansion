@@ -7,7 +7,7 @@ from antares_xpansion.input_checker import *
 
 class TestCheckProfileFile:
 
-    def test_no_existent_file(self, tmp_path):
+    def test_no_existing_file(self, tmp_path):
         profile_file = tmp_path / "ghost" / "file"
 
         with pytest.raises(ProfileFileNotExists):
@@ -147,3 +147,101 @@ class TestCheckCandidateLink:
             check_candidate_link("ato-b", "section")
             check_candidate_link("ato- b", "section")
             check_candidate_link("ato -b", "section")
+
+
+class TestCheckCandidatesFile:
+
+    def test_wrong_option_type_ini_file(self, tmp_path):
+
+        option = "max-units"
+        value = -1545
+
+        ini_file = tmp_path / "a.ini"
+        ini_file.touch()
+        ini_file.write_text(f"""[5] \n
+                           {option} = {value}""")
+
+        with pytest.raises(CandidateFileWrongTypeValue):
+            check_candidates_file(ini_file, "")
+
+    def test_duplicated_candidate_name_ini_file(self, tmp_path):
+
+        option = "max-units"
+        value = 1545
+
+        ini_file = tmp_path / "a.ini"
+        ini_file.touch()
+        ini_file.write_text(f"""[5] \n
+                            name = alpha \n
+                            link = a - b \n
+                           {option} = {value}\n
+                           unit-size = 400\n
+                           [6] \n
+                            name = alpha \n
+                            link = a - b \n
+                           {option} = {value}\n
+                           unit-size = 400\n""")
+
+        with pytest.raises(CandidateNameDuplicatedError):
+            check_candidates_file(ini_file, "")
+
+    def test_non_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
+
+        ini_file = tmp_path / "a.ini"
+        ini_file.touch()
+        ini_file.write_text(f"""[5] \n
+                            name = alpha \n
+                            link = a - b \n
+                           max-units = 13\n
+                           unit-size = 400\n
+                           max-investment = 985""")
+
+        with pytest.raises(MaxUnitsAndMaxInvestmentNonNullSimultaneously):
+            check_candidates_file(ini_file, "")
+
+    def test_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
+
+        ini_file = tmp_path / "a.ini"
+        ini_file.touch()
+        ini_file.write_text(f"""[5] \n
+                            name = alpha \n
+                            link = a - b \n
+                           max-units = 0\n
+                           unit-size = 0\n
+                           max-investment = 0""")
+
+        with pytest.raises(MaxUnitsAndMaxInvestmentAreNullSimultaneously):
+            check_candidates_file(ini_file, "")
+
+    def test_profile_file_existence(self, tmp_path):
+
+        ini_file = tmp_path / "a.ini"
+        ini_file.touch()
+        ini_file.write_text(f"""[5] \n
+                            name = alpha \n
+                            link = a - b \n
+                           max-units = 1\n
+                           unit-size = 23\n
+                           link-profile = file.ini""")
+
+        with pytest.raises(ProfileFileNotExists):
+            check_candidates_file(ini_file, capacity_dir_path=tmp_path)
+
+    # def test_remove_candidate(self, tmp_path):
+
+    #     ini_file = tmp_path / "a.ini"
+    #     ini_file.touch()
+    #     ini_file.write_text(f"""[5] \n
+    #                         name = alpha \n
+    #                         link = a - b \n
+    #                        max-units = 1\n
+    #                        unit-size = 23\n
+    #                        link-profile = 1""")
+
+    #     # with pytest.raises(ProfileFileNotExists):
+    #     check_candidates_file(ini_file, capacity_dir_path=tmp_path)
+
+    #     with open(ini_file) as ini:
+    #         print(ini.readlines())
+
+    #     assert False
