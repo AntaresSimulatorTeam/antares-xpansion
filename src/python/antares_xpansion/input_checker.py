@@ -111,7 +111,7 @@ def check_candidate_option_type(option, value):
                      'already-installed-capacity': 'non-negative',
                      'already-installed-link-profile': 'string',
                      'has-link-profile': 'string'}
-    obsolete_options = ["has-link-profile"]
+    obsolete_options = ["c"]
     option_type = options_types.get(option)
     if option_type is None:
         flushed_print(
@@ -131,6 +131,10 @@ def check_candidate_option_type(option, value):
                 return False
 
 
+class IllegalCandidateOptionValue(Exception):
+    pass
+
+
 def check_candidate_option_value(option, value):
     """
         verifies if a given option value belongs to the list of allowed values for that option
@@ -140,12 +144,11 @@ def check_candidate_option_value(option, value):
 
         :return: True if the value is legal or is not to be checked. Exists otherwise.
     """
-    antares_links_list = None
     options_legal_values = {'name': None,
                             'enable': ["true", "false"],
                             'candidate-type': None,
                             'investment-type': None,
-                            'link': antares_links_list,
+                            'link': None,
                             'annual-cost-per-mw': None,
                             'unit-size': None,
                             'max-units': None,
@@ -155,12 +158,12 @@ def check_candidate_option_value(option, value):
                             'already-installed-capacity': None,
                             'already-installed-link-profile': None}
     legal_values = options_legal_values.get(option)
-    if (legal_values is None) or (value.lower() in legal_values):
+    if (legal_values is None) or (isinstance(value, str) and value.lower() in legal_values):
         return True
 
     flushed_print('check_candidate_option_value: Illegal value %s for option %s allowed values are: %s'
                   % (value, option, legal_values))
-    sys.exit(1)
+    raise IllegalCandidateOptionValue
 
 
 def check_candidate_name(name, section):

@@ -89,3 +89,21 @@ class TestCheckCandidateOptionType:
         value = "0-1"
 
         assert check_candidate_option_type(option, value) == True
+
+
+class TestcheckCandidateOptionValue:
+
+    def test_fail_if_relaxed_is_not_str(self):
+        option = "relaxed"
+        value = 22
+
+        with pytest.raises(IllegalCandidateOptionValue):
+            check_candidate_option_value(option, value)
+
+    def test_accepted_relaxed_value(self):
+        option = "relaxed"
+
+        assert check_candidate_option_value(option, "true") == True
+        assert check_candidate_option_value(option, "True") == True
+        assert check_candidate_option_value(option, "FalSe") == True
+        assert check_candidate_option_value(option, "FALSE") == True
