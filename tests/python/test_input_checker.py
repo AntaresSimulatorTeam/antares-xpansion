@@ -107,3 +107,31 @@ class TestcheckCandidateOptionValue:
         assert check_candidate_option_value(option, "True") == True
         assert check_candidate_option_value(option, "FalSe") == True
         assert check_candidate_option_value(option, "FALSE") == True
+
+
+class TestCheckCandidateName:
+
+    def test_empty_candidate_name(self):
+
+        with pytest.raises(EmptyCandidateName):
+            check_candidate_name("", "section1236")
+
+    def test_illegal_chars_in_candidate_name(self):
+
+        with pytest.raises(IllegalCharsInCandidateName):
+            check_candidate_name("newline\n123", "section1236")
+
+        with pytest.raises(IllegalCharsInCandidateName):
+            check_candidate_name("escapeR\r123", "section1236")
+
+        with pytest.raises(IllegalCharsInCandidateName):
+            check_candidate_name("tab\t123", "section1236")
+
+        with pytest.raises(IllegalCharsInCandidateName):
+            check_candidate_name("escapeF\f\v123", "section1236")
+
+        with pytest.raises(IllegalCharsInCandidateName):
+            check_candidate_name("escapeV\v123", "section1236")
+
+        with pytest.raises(IllegalCharsInCandidateName):
+            check_candidate_name("parenthesis(123", "section1236")

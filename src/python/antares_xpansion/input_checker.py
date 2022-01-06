@@ -166,6 +166,14 @@ def check_candidate_option_value(option, value):
     raise IllegalCandidateOptionValue
 
 
+class EmptyCandidateName(Exception):
+    pass
+
+
+class IllegalCharsInCandidateName(Exception):
+    pass
+
+
 def check_candidate_name(name, section):
     """
         checks that the candidate's name is not empty and does not contain a space
@@ -173,13 +181,13 @@ def check_candidate_name(name, section):
     if (not name) or (name.lower() == "na"):
         flushed_print(
             'Error candidates name cannot be empty : found in section %s' % section)
-        sys.exit(1)
+        raise EmptyCandidateName
     illegal_chars = " \n\r\t\f\v-+=:[]()"
     for c in illegal_chars:
         if c in name:
             flushed_print('Error candidates name should not contain %s, found in section %s in "%s"' % (
                 c, section, name))
-            sys.exit(1)
+            raise IllegalCharsInCandidateName
 
 
 def check_candidate_link(link, section):
