@@ -212,7 +212,7 @@ def check_candidate_link(link, section):
         raise CandidateLinkWithoutSeparator
 
 
-def check_candidates_file(driver):
+def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
     """
         checks that a candidate file related to an XpansionDriver has the correct format
 
@@ -234,7 +234,7 @@ def check_candidates_file(driver):
                       'already-installed-capacity': '0',
                       'already-installed-link-profile': '1'}
     ini_file = configparser.ConfigParser(default_values)
-    ini_file.read(driver.candidates_ini_filepath())
+    ini_file.read(candidates_ini_filepath)
 
     config_changed = False
 
@@ -254,8 +254,6 @@ def check_candidates_file(driver):
             ini_file[each_section]['name'].strip(), each_section)
         check_candidate_link(
             ini_file[each_section]['link'].strip(), each_section)
-        driver.candidates_list.append(
-            ini_file[each_section]['name'].strip().lower())
 
     # check some attributes unicity : name and links
     unique_attributes = ["name"]
@@ -298,7 +296,8 @@ def check_candidates_file(driver):
                 has_a_profile = True
             else:
                 # check file existence
-                filename_path = driver.capacity_file(value)
+                filename_path = os.path.normpath(
+                    os.path.join(capacity_dir_path, value))
                 if not os.path.isfile(filename_path):
                     flushed_print('Illegal value : option can be 0, 1 or an existent filename.\
                             %s is not an existent file' % filename_path)
@@ -313,17 +312,19 @@ def check_candidates_file(driver):
             config_changed = True
 
     if config_changed:
-        shutil.copyfile(driver.candidates_ini_filepath(),
-                        driver.candidates_ini_filepath() + ".bak")
-        with open(driver.candidates_ini_filepath(), 'w') as out_file:
+        shutil.copyfile(candidates_ini_filepath,
+                        candidates_ini_filepath + ".bak")
+        with open(candidates_ini_filepath, 'w') as out_file:
             ini_file.write(out_file)
         flushed_print("%s file was overwritten! backup file %s created"
-                      % (driver.candidates_ini_filepath(), driver.candidates_ini_filepath() + ".bak"))
+                      % (candidates_ini_filepath, candidates_ini_filepath + ".bak"))
 
 
 ##########################################
 # Checks related to settings.ini
 ##########################################
+
+
 def check_setting_option_type(option, value):
     """
         checks that a given option value has the correct type

@@ -67,7 +67,8 @@ class ConfigLoader:
             raise ConfigLoader.MissingFile(
                 ' %s was not retrieved.' % self.candidates_ini_filepath())
 
-        check_candidates_file(self)
+        check_candidates_file(
+            self.candidates_ini_filepath(), self.capacity_file(""))
 
     def check_settings_file_format(self):
         check_options(self.options)
@@ -336,7 +337,7 @@ class ConfigLoader:
 
     def oversubscribe(self):
         return self._config.oversubscribe
-      
+
     def timelimit(self):
         """
         returns the timelimit read from the settings file
@@ -355,7 +356,7 @@ class ConfigLoader:
         log_level_str = self.options.get(
             "log_level", self._config.settings_default["log_level"]
         )
-        return int(log_level_str) 
+        return int(log_level_str)
 
     class MissingSimulationName(Exception):
         pass
