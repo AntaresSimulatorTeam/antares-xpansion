@@ -190,6 +190,14 @@ def check_candidate_name(name, section):
             raise IllegalCharsInCandidateName
 
 
+class EmptyCandidateLink(Exception):
+    pass
+
+
+class CandidateLinkWithoutSeparator(Exception):
+    pass
+
+
 def check_candidate_link(link, section):
     """
         checks that the candidate's link is not empty
@@ -197,11 +205,11 @@ def check_candidate_link(link, section):
     if (not link) or (link.lower() == "na"):
         flushed_print(
             'Error candidates link cannot be empty : found in section %s' % section)
-        sys.exit(1)
+        raise EmptyCandidateLink
     if " - " not in link:
         flushed_print(
             'Error candidates link value must contain " - " : found in section %s' % section)
-        sys.exit(1)
+        raise CandidateLinkWithoutSeparator
 
 
 def check_candidates_file(driver):
