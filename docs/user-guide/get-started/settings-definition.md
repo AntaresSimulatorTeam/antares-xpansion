@@ -12,6 +12,7 @@ uc_type = expansion_fast
 master = integer
 optimality_gap = 0
 max_iteration = 100
+timelimit = 300
 additional-constraints = constraint.txt
 log_level = 0
 ```
@@ -87,6 +88,12 @@ Strictly positive integer or infinite. Default value: `Inf`.
 
 Maximum number of
 iterations for the Benders decomposition algorithm. Once this number of iterations is reached, the Antares-Xpansion algorithm ends, regardless of the quality of the solution.
+
+#### `timelimit`
+
+Strictly positive integer. Default value: `1e12`.
+
+Maximum allowed time in seconds for the execution of the Benders step of Antares-Xpansion (i.e. the time of the initial Antares simulation and for the problem generation step is not accounted for). Once the timelimit is reached, the algorithm finishes the current Benders iteration - which can take several additional seconds or minutes - and terminates.
 
 #### `uc_type`
 
