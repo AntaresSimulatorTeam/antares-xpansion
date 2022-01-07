@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	LOG(INFO) << "Launching Benders Sequential" << std::endl;
 	auto masterLogger = std::make_shared<xpansion::logger::Master>();
 
-	const std::string &loggerFileName = (Path(options.OUTPUTROOT) / "reportbenderssequential").get_str();
+	const std::string &loggerFileName = (Path(options.OUTPUTROOT) / "reportbenderssequential.txt").get_str();
 	Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
 	Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
 	masterLogger->addLogger(loggerUser);
