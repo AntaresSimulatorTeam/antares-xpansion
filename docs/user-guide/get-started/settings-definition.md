@@ -12,6 +12,7 @@ uc_type = expansion_fast
 master = integer
 optimality_gap = 0
 max_iteration = 100
+timelimit = 300
 additional-constraints = constraint.txt
 log_level = 0
 ```
@@ -87,6 +88,12 @@ Strictly positive integer or infinite. Default value: `Inf`.
 
 Maximum number of
 iterations for the Benders decomposition algorithm. Once this number of iterations is reached, the Antares-Xpansion algorithm ends, regardless of the quality of the solution.
+
+#### `timelimit`
+
+Strictly positive integer. Default value: `1e12`.
+
+Maximum allowed time in seconds for the execution of the Benders step of Antares-Xpansion (i.e. the time of the initial Antares simulation and for the problem generation step is not accounted for). Once the timelimit is reached, the algorithm finishes the current Benders iteration - which can take several additional seconds or minutes - and terminates.
 
 #### `uc_type`
 
@@ -172,6 +179,15 @@ Defines the solver that is used to solve the master and the slave problems in th
 
 To use another solver, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.
 
+#### `log_level`
+
+Positive integer, specifying the `solver`'s log severity. Default value: `0`.
+
+For now two log levels are available:
+
+ - If `log_level = 0`: basic solver logs are printed.
+
+ - If `log_level > 0`: full logs are printed.
 
 #### `additional-constraints`
 
@@ -210,12 +226,3 @@ time, but it can invest in neither.
 ![](../../assets/media/image19.png)
 
 **Figure 13** – Example of an additional constraint file.
-#### `log_level`
-Positive integer greater than or equal to zero
-to specify `solver`'s log severity.
-
-For now two log levels are avalaible:
-
-If `log_level` = 0: basic solver logs are printed.
-
-If `log_level` > 0: full logs are printed.
