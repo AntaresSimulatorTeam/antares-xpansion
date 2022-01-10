@@ -217,13 +217,31 @@ int main(int argc, char **argv)
 
         Output::SolutionData sol_infos;
         sol_infos.nbWeeks_p = input.size();
-        sol_infos.lb_p = overallCost_l;
-        sol_infos.ub_p = overallCost_l;
-        sol_infos.investCost_p = investCost_l;
-        sol_infos.operationalCost_p = operationalCost_l;
-        sol_infos.overallCost_p = overallCost_l;
-        sol_infos.solution_p = x0;
-        sol_infos.optimality_p = optimality_l;
+
+        sol_infos.solution.lb = overallCost_l;
+        sol_infos.solution.ub = overallCost_l;
+        sol_infos.solution.investment_cost = investCost_l;
+        sol_infos.solution.operational_cost = operationalCost_l;
+        sol_infos.solution.overall_cost = overallCost_l;
+
+        Output::CandidatesVec candidates_vec;
+        for (auto pairNameValue_l : x0)
+        {
+            Output::CandidateData candidate_data;
+            candidate_data.invest = pairNameValue_l.second;
+            candidate_data.min = -1;
+            candidate_data.max = -1;
+            candidates_vec.push_back(candidate_data);
+        }
+        sol_infos.solution.candidates = candidates_vec;
+        if (optimality_l)
+        {
+            sol_infos.problem_status = "OPTIMAL";
+        }
+        else
+        {
+            sol_infos.problem_status = "ERROR";
+        }
 
         jsonWriter_l.update_solution(sol_infos);
         jsonWriter_l.dump();

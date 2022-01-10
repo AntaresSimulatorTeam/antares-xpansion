@@ -8,6 +8,41 @@
 namespace Output
 {
 
+    struct CandidateData
+    {
+        std::string name;
+        double invest;
+        double min;
+        double max;
+    };
+    typedef std::vector<CandidateData> CandidatesVec;
+    struct Iteration
+    {
+        double time;
+        double lb;
+        double ub;
+        double best_ub;
+        double optimality_gap;
+        double relative_gap;
+        double investment_cost;
+        double operational_cost;
+        double overall_cost;
+        CandidatesVec candidates;
+    };
+    typedef std::vector<Iteration> Iterations;
+    /*!
+     *  \brief struct saves some entries to be later written to the json file
+     *
+     *   nbWeeks_p : number of the weeks in the study
+     *   solution : solution data as iteration
+     */
+    struct SolutionData
+    {
+        Iteration solution;
+        int nbWeeks_p;
+        int best_it;
+        std::string problem_status;
+    };
     /*!
      *  \brief struct containing some entries to be later written to the json file
      *
@@ -21,38 +56,8 @@ namespace Output
     struct IterationsData
     {
         int nbWeeks_p;
-        BendersTrace bendersTrace_p;
-        int it;
-        int best_it;
-        double best_ub;
-        double lb;
-        double min_abs_gap;
-        double min_rel_gap;
-        double max_iter;
-    };
-
-    /*!
-     *  \brief struct saves some entries to be later written to the json file
-     *
-     *   nbWeeks_p : number of the weeks in the study
-     *   lb_p : solution lower bound
-     *   ub_p : solution upper bound
-     *   investCost_p : investment cost
-     *   operationalCost_p : operational cost
-     *   overallCost_p : total cost, sum of invest and operational
-     *   solution_p : point giving the solution and the candidates
-     *   optimality_p : indicates if optimality was reached
-     */
-    struct SolutionData
-    {
-        int nbWeeks_p;
-        double lb_p;
-        double ub_p;
-        double investCost_p;
-        double operationalCost_p;
-        double overallCost_p;
-        Point solution_p;
-        bool optimality_p;
+        Iterations iters;
+        SolutionData solution_data;
     };
 
     /*!

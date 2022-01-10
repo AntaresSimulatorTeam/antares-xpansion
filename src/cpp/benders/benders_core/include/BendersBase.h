@@ -76,5 +76,9 @@ public:
 
     void fill_log_data_from_data(LogData &logdata);
     void post_run_actions(int nbWeeks_p);
+    Output::IterationsData output_data(const int nbWeeks) const;
+    Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
+    Output::CandidatesVec candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const;
+    Output::SolutionData solution(const int nbWeeks) const;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

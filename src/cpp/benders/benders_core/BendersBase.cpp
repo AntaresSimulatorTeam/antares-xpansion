@@ -703,23 +703,87 @@ void BendersBase::post_run_actions(int nbWeeks_p)
 
 	_logger->log_at_ending(logData);
 
-	Output::IterationsData iterations_data;
-
-	iterations_data.nbWeeks_p = nbWeeks_p;
-	iterations_data.bendersTrace_p = _trace;
-	iterations_data.it = _data.it;
-	iterations_data.best_it = _data.best_it;
-	iterations_data.best_ub = _data.best_ub;
-	iterations_data.lb = _data.lb;
-
-	iterations_data.min_abs_gap = _options.ABSOLUTE_GAP;
-	iterations_data.min_rel_gap = _options.RELATIVE_GAP;
-	iterations_data.max_iter = _options.MAX_ITERATIONS;
-
-	_writer->end_writing(iterations_data);
+	_writer->end_writing(output_data(nbWeeks_p));
 
 	std::stringstream str;
 	str << "Optimization results available in : "
 		<< _options.JSON_FILE;
 	_logger->display_message(str.str());
+}
+
+Output::IterationsData BendersBase::output_data(const int nbWeeks) const
+{
+	Output::IterationsData iterations_data;
+	Output::Iterations iters;
+	iterations_data.nbWeeks_p = nbWeeks;
+	// Iterations
+	for (auto masterDataPtr_l : _trace)
+	{
+		if (masterDataPtr_l->_valid)
+		{
+			iters.push_back(iteration(masterDataPtr_l));
+		}
+	}
+	iterations_data.iters = iters;
+	iterations_data.solution_data = solution(nbWeeks);
+	return iterations_data;
+}
+
+Output::Iteration BendersBase::iteration(const WorkerMasterDataPtr &masterDataPtr_l) const
+{
+	Output::Iteration iteration;
+	iteration.time = masterDataPtr_l->_time;
+	iteration.lb = masterDataPtr_l->_lb;
+	iteration.ub = masterDataPtr_l->_ub;
+	iteration.best_ub = masterDataPtr_l->_bestub;
+	iteration.optimality_gap = masterDataPtr_l->_bestub - masterDataPtr_l->_lb;
+	iteration.relative_gap = (masterDataPtr_l->_bestub - masterDataPtr_l->_lb) / masterDataPtr_l->_bestub;
+	iteration.investment_cost = masterDataPtr_l->_invest_cost;
+	iteration.operational_cost = masterDataPtr_l->_operational_cost;
+	iteration.overall_cost = masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
+	iteration.candidates = candidates_data(masterDataPtr_l);
+	return iteration;
+}
+Output::CandidatesVec BendersBase::candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const
+{
+	Output::CandidatesVec candidates_vec;
+	for (auto pairNameValue_l : masterDataPtr_l->get_point())
+	{
+		Output::CandidateData candidate_data;
+		candidate_data.name = pairNameValue_l.first;
+		candidate_data.invest = pairNameValue_l.second;
+		candidate_data.min = masterDataPtr_l->get_min_invest()[pairNameValue_l.first];
+		candidate_data.max = masterDataPtr_l->get_max_invest()[pairNameValue_l.first];
+		candidates_vec.push_back(candidate_data);
+	}
+
+	return candidates_vec;
+}
+
+Output::SolutionData BendersBase::solution(const int nbWeeks) const
+{
+	Output::SolutionData solution_data;
+	solution_data.nbWeeks_p = nbWeeks;
+	solution_data.best_it = _data.best_it;
+	size_t bestItIndex_l = _data.best_it - 1;
+
+	if (bestItIndex_l >= 0 && bestItIndex_l < _trace.size())
+	{
+		solution_data.solution = iteration(_trace[bestItIndex_l]);
+	}
+
+	if ((solution_data.solution.optimality_gap <= _options.ABSOLUTE_GAP) || (solution_data.solution.relative_gap <= _options.RELATIVE_GAP))
+	{
+		solution_data.problem_status = "OPTIMAL";
+	}
+	else if (_options.MAX_ITERATIONS != -1 && _data.it > _options.MAX_ITERATIONS)
+	{
+		solution_data.problem_status = "MAX ITERATIONS";
+	}
+	else
+	{
+		solution_data.problem_status = "ERROR";
+	}
+
+	return solution_data;
 }

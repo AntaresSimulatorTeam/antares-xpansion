@@ -36,92 +36,67 @@ namespace Output
 
         // Iterations
         size_t iterCnt_l(0);
-        for (auto masterDataPtr_l : iterations_data.bendersTrace_p)
+        for (auto iter : iterations_data.iters)
         {
             ++iterCnt_l;
-            if (masterDataPtr_l->_valid)
+
+            std::string strIterCnt_l(std::to_string(iterCnt_l));
+            _output["iterations"][strIterCnt_l]["duration"] = iter.time;
+            _output["iterations"][strIterCnt_l]["lb"] = iter.lb;
+            _output["iterations"][strIterCnt_l]["ub"] = iter.ub;
+            _output["iterations"][strIterCnt_l]["best_ub"] = iter.best_ub;
+            _output["iterations"][strIterCnt_l]["optimality_gap"] = iter.optimality_gap;
+            _output["iterations"][strIterCnt_l]["relative_gap"] = iter.relative_gap;
+            _output["iterations"][strIterCnt_l]["investment_cost"] = iter.investment_cost;
+            _output["iterations"][strIterCnt_l]["operational_cost"] = iter.operational_cost;
+            _output["iterations"][strIterCnt_l]["overall_cost"] = iter.overall_cost;
+
+            Json::Value vectCandidates_l(Json::arrayValue);
+            for (auto candidate : iter.candidates)
             {
-
-                std::string strIterCnt_l(std::to_string(iterCnt_l));
-                _output["iterations"][strIterCnt_l]["duration"] = masterDataPtr_l->_time;
-                _output["iterations"][strIterCnt_l]["lb"] = masterDataPtr_l->_lb;
-                _output["iterations"][strIterCnt_l]["ub"] = masterDataPtr_l->_ub;
-                _output["iterations"][strIterCnt_l]["best_ub"] = masterDataPtr_l->_bestub;
-                _output["iterations"][strIterCnt_l]["optimality_gap"] = masterDataPtr_l->_bestub - masterDataPtr_l->_lb;
-                _output["iterations"][strIterCnt_l]["relative_gap"] = (masterDataPtr_l->_bestub - masterDataPtr_l->_lb) / masterDataPtr_l->_bestub;
-                _output["iterations"][strIterCnt_l]["investment_cost"] = masterDataPtr_l->_invest_cost;
-                _output["iterations"][strIterCnt_l]["operational_cost"] = masterDataPtr_l->_operational_cost;
-                _output["iterations"][strIterCnt_l]["overall_cost"] = masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
-
-                Json::Value vectCandidates_l(Json::arrayValue);
-                for (auto pairNameValue_l : masterDataPtr_l->get_point())
-                {
-                    Json::Value candidate_l;
-                    candidate_l["name"] = pairNameValue_l.first;
-                    candidate_l["invest"] = pairNameValue_l.second;
-                    candidate_l["min"] = masterDataPtr_l->get_min_invest()[pairNameValue_l.first];
-                    candidate_l["max"] = masterDataPtr_l->get_max_invest()[pairNameValue_l.first];
-                    vectCandidates_l.append(candidate_l);
-                }
-                _output["iterations"][strIterCnt_l]["candidates"] = vectCandidates_l;
+                Json::Value candidate_l;
+                candidate_l["name"] = candidate.name;
+                candidate_l["invest"] = candidate.invest;
+                candidate_l["min"] = candidate.min;
+                candidate_l["max"] = candidate.max;
+                vectCandidates_l.append(candidate_l);
             }
+            _output["iterations"][strIterCnt_l]["candidates"] = vectCandidates_l;
         }
 
         // solution
-        size_t bestItIndex_l = iterations_data.best_it - 1;
-        _output["solution"]["iteration"] = iterations_data.best_it;
-        if (bestItIndex_l >= 0 && bestItIndex_l < iterations_data.bendersTrace_p.size())
-        {
-            _output["solution"]["investment_cost"] = iterations_data.bendersTrace_p[bestItIndex_l].get()->_invest_cost;
-            _output["solution"]["operational_cost"] = iterations_data.bendersTrace_p[bestItIndex_l].get()->_operational_cost;
-            _output["solution"]["overall_cost"] = iterations_data.bendersTrace_p[bestItIndex_l].get()->_invest_cost + iterations_data.bendersTrace_p[bestItIndex_l].get()->_operational_cost;
+        _output["solution"]["iteration"] = iterations_data.solution_data.best_it;
+        _output["solution"]["investment_cost"] = iterations_data.solution_data.solution.investment_cost;
+        _output["solution"]["operational_cost"] = iterations_data.solution_data.solution.operational_cost;
+        _output["solution"]["overall_cost"] = iterations_data.solution_data.solution.overall_cost;
 
-            for (auto pairNameValue_l : iterations_data.bendersTrace_p[bestItIndex_l]->get_point())
-            {
-                _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
-            }
+        for (auto candidate : iterations_data.solution_data.solution.candidates)
+        {
+            _output["solution"]["values"][candidate.name] = candidate.invest;
         }
 
-        double abs_gap_l = iterations_data.best_ub - iterations_data.lb;
-        double rel_gap_l = abs_gap_l / iterations_data.best_ub;
-        _output["solution"]["optimality_gap"] = abs_gap_l;
-        _output["solution"]["relative_gap"] = rel_gap_l;
-        if ((abs_gap_l <= iterations_data.min_abs_gap) || (rel_gap_l <= iterations_data.min_rel_gap))
-        {
-            _output["solution"]["problem_status"] = "OPTIMAL";
-        }
-        else if (iterations_data.max_iter != -1 && iterations_data.it > iterations_data.max_iter)
-        {
-            _output["solution"]["problem_status"] = "MAX ITERATIONS";
-        }
-        else
-        {
-            _output["solution"]["problem_status"] = "ERROR";
-        }
+        _output["solution"]["optimality_gap"] = iterations_data.solution_data.solution.optimality_gap;
+        _output["solution"]["relative_gap"] = iterations_data.solution_data.solution.relative_gap;
+
+        _output["solution"]["problem_status"] = iterations_data.solution_data.problem_status;
     }
 
     void JsonWriter::update_solution(const SolutionData &solution_data)
     {
         _output["nbWeeks"] = solution_data.nbWeeks_p;
 
-        _output["solution"]["investment_cost"] = solution_data.investCost_p;
-        _output["solution"]["operational_cost"] = solution_data.operationalCost_p;
-        _output["solution"]["overall_cost"] = solution_data.overallCost_p;
-        _output["solution"]["lb"] = solution_data.lb_p;
-        _output["solution"]["ub"] = solution_data.ub_p;
-        _output["solution"]["optimality_gap"] = solution_data.ub_p - solution_data.lb_p;
-        _output["solution"]["relative_gap"] = (solution_data.ub_p - solution_data.lb_p) / solution_data.ub_p;
-        if (solution_data.optimality_p)
+        _output["solution"]["investment_cost"] = solution_data.solution.investment_cost;
+        _output["solution"]["operational_cost"] = solution_data.solution.operational_cost;
+        _output["solution"]["overall_cost"] = solution_data.solution.overall_cost;
+        _output["solution"]["lb"] = solution_data.solution.lb;
+        _output["solution"]["ub"] = solution_data.solution.ub;
+        _output["solution"]["optimality_gap"] = solution_data.solution.optimality_gap;
+        _output["solution"]["relative_gap"] = solution_data.solution.relative_gap;
+
+        _output["solution"]["problem_status"] = solution_data.problem_status;
+        for (auto candidate : solution_data.solution.candidates)
         {
-            _output["solution"]["problem_status"] = "OPTIMAL";
-        }
-        else
-        {
-            _output["solution"]["problem_status"] = "ERROR";
-        }
-        for (auto pairNameValue_l : solution_data.solution_p)
-        {
-            _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
+            _output["solution"]["values"][candidate.name] = candidate.invest;
         }
     }
 
