@@ -770,6 +770,8 @@ Output::SolutionData BendersBase::solution(const int nbWeeks) const
 	if (bestItIndex_l >= 0 && bestItIndex_l < _trace.size())
 	{
 		solution_data.solution = iteration(_trace[bestItIndex_l]);
+		solution_data.solution.optimality_gap = _data.best_ub - _data.lb;
+		solution_data.solution.relative_gap = solution_data.solution.optimality_gap / _data.best_ub;
 	}
 
 	if ((solution_data.solution.optimality_gap <= _options.ABSOLUTE_GAP) || (solution_data.solution.relative_gap <= _options.RELATIVE_GAP))
