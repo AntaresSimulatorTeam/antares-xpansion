@@ -228,6 +228,7 @@ int main(int argc, char **argv)
         for (auto pairNameValue_l : x0)
         {
             Output::CandidateData candidate_data;
+            candidate_data.name = pairNameValue_l.first;
             candidate_data.invest = pairNameValue_l.second;
             candidate_data.min = -1;
             candidate_data.max = -1;
