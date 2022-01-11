@@ -159,7 +159,7 @@ void BendersSequential::launch()
 
 	LOG(INFO) << "Constructing workers..." << std::endl;
 
-	initialise_problems(input);
+	initialise_problems();
 	LOG(INFO) << "Running solver..." << std::endl;
 	try
 	{
@@ -173,6 +173,6 @@ void BendersSequential::launch()
 		_logger->display_message(error);
 	}
 
-	post_run_actions(input.size());
+	post_run_actions();
 	free();
 }

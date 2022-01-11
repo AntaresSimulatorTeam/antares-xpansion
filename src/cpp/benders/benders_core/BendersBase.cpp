@@ -5,7 +5,7 @@
 
 #include "glog/logging.h"
 
-BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer), nbWeeks(0) {}
+BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer), _nbWeeks(0) {}
 
 BendersBase::~BendersBase()
 {
@@ -696,14 +696,14 @@ void BendersBase::fill_log_data_from_data(LogData &logData)
 	logData.max_iterations = _options.MAX_ITERATIONS;
 }
 
-void BendersBase::post_run_actions(int nbWeeks_p)
+void BendersBase::post_run_actions()
 {
 	LogData logData;
 	fill_log_data_from_data(logData);
 
 	_logger->log_at_ending(logData);
 
-	_writer->end_writing(output_data(nbWeeks_p));
+	_writer->end_writing(output_data());
 
 	std::stringstream str;
 	str << "Optimization results available in : "
@@ -711,11 +711,11 @@ void BendersBase::post_run_actions(int nbWeeks_p)
 	_logger->display_message(str.str());
 }
 
-Output::IterationsData BendersBase::output_data(const int nbWeeks) const
+Output::IterationsData BendersBase::output_data() const
 {
 	Output::IterationsData iterations_data;
 	Output::Iterations iters;
-	iterations_data.nbWeeks_p = nbWeeks;
+	iterations_data.nbWeeks_p = _nbWeeks;
 	// Iterations
 	for (auto masterDataPtr_l : _trace)
 	{
@@ -725,7 +725,7 @@ Output::IterationsData BendersBase::output_data(const int nbWeeks) const
 		}
 	}
 	iterations_data.iters = iters;
-	iterations_data.solution_data = solution(nbWeeks);
+	iterations_data.solution_data = solution();
 	return iterations_data;
 }
 
@@ -760,10 +760,10 @@ Output::CandidatesVec BendersBase::candidates_data(const WorkerMasterDataPtr &ma
 	return candidates_vec;
 }
 
-Output::SolutionData BendersBase::solution(const int nbWeeks) const
+Output::SolutionData BendersBase::solution() const
 {
 	Output::SolutionData solution_data;
-	solution_data.nbWeeks_p = nbWeeks;
+	solution_data.nbWeeks_p = _nbWeeks;
 	solution_data.best_it = _data.best_it;
 	size_t bestItIndex_l = _data.best_it - 1;
 

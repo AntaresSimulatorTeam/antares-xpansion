@@ -78,10 +78,10 @@ public:
     void update_active_cuts();
 
     void fill_log_data_from_data(LogData &logdata);
-    void post_run_actions(int nbWeeks_p);
-    Output::IterationsData output_data(const int nbWeeks) const;
+    void post_run_actions();
+    Output::IterationsData output_data() const;
     Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
     Output::CandidatesVec candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const;
-    Output::SolutionData solution(const int nbWeeks) const;
+    Output::SolutionData solution() const;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;
