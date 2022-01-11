@@ -16,6 +16,13 @@
 #include "logger/UserFile.h"
 #include "logger/Master.h"
 #include "helpers/Path.h"
+#include "../../../../tests/cpp/solvers_interface/catch2.hpp"
+
+Logger build_master_only_stdout_and_file_logger(const int rank, const std::string &report_file_path_string);
+
+Writer build_master_only_json_writer(const int rank, const BendersOptions &options);
+
+void announce_start_of_simulation(const BendersOptions &options);
 
 int main(int argc, char **argv)
 {
@@ -37,39 +44,23 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    auto masterLogger = std::make_shared<xpansion::logger::Master>();
-    Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
-    std::string loggerFileName = (Path(options.OUTPUTROOT) / "reportbendersmpi.txt").get_str();
-    Writer writer;
-
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     google::InitGoogleLogging(argv[0]);
     auto path_to_log = (Path(options.OUTPUTROOT) / ("bendersmpiLog-rank" + std::to_string(world.rank()) + "-")).get_str();
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 
-    if (world.rank() == 0)
-    {
-        Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
-        masterLogger->addLogger(loggerFile);
-        masterLogger->addLogger(loggerUser);
-        writer = std::make_shared<Output::JsonWriter>();
+    std::string log_reports_name = (Path(options.OUTPUTROOT) / "reportbendersmpi.txt").get_str();
+    Logger logger = build_master_only_stdout_and_file_logger(world.rank(), log_reports_name);
+    Writer writer = build_master_only_json_writer(world.rank(), options);
 
-        LOG(INFO) << "starting bendersmpi" << std::endl;
-        std::ostringstream oss_l;
-        options.print(oss_l);
-        LOG(INFO) << oss_l.str() << std::endl;
+    if (world.rank() == 0){
+        announce_start_of_simulation(options);
     }
-    else
-    {
-        writer = std::make_shared<Output::VoidWriter>();
-    }
-    Logger logger = masterLogger;
-
-    writer->initialize(options);
 
     world.barrier();
     Timer timer;
     pBendersBase benders;
+
     if (world.size() == 1)
     {
         std::cout << "Sequential launch" << std::endl;
@@ -85,5 +76,39 @@ int main(int argc, char **argv)
     benders->launch();
     logger->log_total_duration(timer.elapsed());
     writer->updateEndTime();
-    return (0);
+    return 0;
+}
+
+void announce_start_of_simulation(const BendersOptions &options) {
+    LOG(INFO) << "starting bendersmpi" << std::endl;
+    std::ostringstream oss_l;
+    options.print(oss_l);
+    LOG(INFO) << oss_l.str() << std::endl;
+}
+
+Writer build_master_only_json_writer(const int rank, const BendersOptions &options) {
+    Writer writer;
+    if (rank == 0)
+    {
+        writer = std::make_shared<Output::JsonWriter>();
+        writer->initialize(options);
+    }
+    else
+    {
+        writer = std::make_shared<Output::VoidWriter>();
+    }
+    return writer;
+}
+
+Logger build_master_only_stdout_and_file_logger(const int rank, const std::string &report_file_path_string) {
+    auto masterLogger = std::make_shared<xpansion::logger::Master>();
+    if (rank == 0)
+    {
+        Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(report_file_path_string);
+        Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
+        masterLogger->addLogger(loggerFile);
+        masterLogger->addLogger(loggerUser);
+    }
+    Logger logger = masterLogger;
+    return logger;
 }
