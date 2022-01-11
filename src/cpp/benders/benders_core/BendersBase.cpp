@@ -5,11 +5,8 @@
 
 #include "glog/logging.h"
 
-BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer), _nbWeeks(0) {}
+BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer) {}
 
-BendersBase::~BendersBase()
-{
-}
 /*!
  *  \brief Initialize set of data used in the loop
  */
@@ -47,24 +44,7 @@ void BendersBase::print_csv()
 		int const nite = _trace.size();
 		for (int i = 0; i < nite; i++)
 		{
-			if (_trace[i]->_valid)
-			{
-				Point xopt;
-				// Write first problem : use result of best iteration
-				if (i == 0)
-				{
-					int best_it_index = _data.best_it - 1;
-					if (best_it_index >= 0 && _trace.size() > best_it_index)
-					{
-						xopt = _trace[best_it_index]->get_point();
-					}
-				}
-				else
-				{
-					xopt = _trace[i - 1]->get_point();
-				}
-				print_master_and_cut(file, i + 1, _trace[i], xopt);
-			}
+			print_csv_iteration(file, i);
 		}
 		file.close();
 	}
@@ -74,6 +54,28 @@ void BendersBase::print_csv()
 	}
 }
 
+void BendersBase::print_csv_iteration(std::ostream &file, int ite)
+{
+
+	if (_trace[ite]->_valid)
+	{
+		Point xopt;
+		// Write first problem : use result of best iteration
+		if (ite == 0)
+		{
+			int best_it_index = _data.best_it - 1;
+			if (best_it_index >= 0 && _trace.size() > best_it_index)
+			{
+				xopt = _trace[best_it_index]->get_point();
+			}
+		}
+		else
+		{
+			xopt = _trace[ite - 1]->get_point();
+		}
+		print_master_and_cut(file, ite + 1, _trace[ite], xopt);
+	}
+}
 void BendersBase::print_master_and_cut(std::ostream &file, int ite, WorkerMasterDataPtr &trace, Point const &xopt)
 {
 	file << ite << ";";
@@ -82,7 +84,7 @@ void BendersBase::print_master_and_cut(std::ostream &file, int ite, WorkerMaster
 
 	for (auto &kvp : trace->_cut_trace)
 	{
-		SlaveCutDataHandler const handler(kvp.second);
+		const SlaveCutDataHandler handler(kvp.second);
 		file << ite << ";";
 		print_cut_csv(file, handler, kvp.first, _problem_to_id[kvp.first]);
 	}
@@ -101,7 +103,7 @@ void BendersBase::print_master_and_cut(std::ostream &file, int ite, WorkerMaster
  *
  *  \param nslaves : number of slaves
  */
-void BendersBase::print_master_csv(std::ostream &stream, WorkerMasterDataPtr &trace, Point const &xopt)
+void BendersBase::print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace, Point const &xopt) const
 {
 	stream << "Master"
 		   << ";";
@@ -129,7 +131,7 @@ void BendersBase::print_master_csv(std::ostream &stream, WorkerMasterDataPtr &tr
  *
  *  \param islaves : problem id
  */
-void BendersBase::print_cut_csv(std::ostream &stream, SlaveCutDataHandler const &handler, std::string const &name, int const islaves)
+void BendersBase::print_cut_csv(std::ostream &stream, SlaveCutDataHandler const &handler, std::string const &name, int const islaves) const
 {
 	stream << "Slave"
 		   << ";";
@@ -162,12 +164,12 @@ void BendersBase::print_active_cut()
 	if (file)
 	{
 		file << "Ite;Slave;CutNumber;IsActive;" << std::endl;
-		for (int i(0); i < _active_cuts.size(); i++)
+		for (const auto &active_cut : _active_cuts)
 		{
-			file << std::get<0>(_active_cuts[i]) << ";";
-			file << std::get<1>(_active_cuts[i]) << ";";
-			file << std::get<2>(_active_cuts[i]) << ";";
-			file << std::get<3>(_active_cuts[i]) << ";" << std::endl;
+			file << std::get<0>(active_cut) << ";";
+			file << std::get<1>(active_cut) << ";";
+			file << std::get<2>(active_cut) << ";";
+			file << std::get<3>(active_cut) << ";" << std::endl;
 		}
 		file.close();
 	}
@@ -268,16 +270,16 @@ void BendersBase::update_trace()
  *  \param all_package : storage of each slaves status
  *  \param data : BendersData used to get master solving status
  */
-void BendersBase::check_status(AllCutPackage const &all_package)
+void BendersBase::check_status(AllCutPackage const &all_package) const
 {
 	if (_data.master_status != SOLVER_STATUS::OPTIMAL)
 	{
 		LOG(INFO) << "Master status is " << _data.master_status << std::endl;
 		throw InvalidSolverStatusException("Master status is " + std::to_string(_data.master_status));
 	}
-	for (int i(0); i < all_package.size(); i++)
+	for (const auto &package : all_package)
 	{
-		for (auto const &kvp : all_package[i])
+		for (const auto &kvp : package)
 		{
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(kvp.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
@@ -368,35 +370,40 @@ void BendersBase::get_slave_cut(SlaveCutPackage &slave_cut_package)
  */
 void BendersBase::compute_cut(AllCutPackage const &all_package)
 {
-	for (int i(0); i < all_package.size(); i++)
+	for (const auto &slave_cut_package : all_package)
 	{
-		for (auto const &itmap : all_package[i])
-		{
-			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
-			SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
-			handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[itmap.first]];
-			_data.ub += handler->get_dbl(SLAVE_COST);
-			SlaveCutTrimmer cut(handler, _data.x0);
-			if (_options.DELETE_CUT && !(_all_cuts_storage[itmap.first].find(cut) == _all_cuts_storage[itmap.first].end()))
-			{
-				_data.deletedcut++;
-			}
-			else
-			{
-				_master->add_cut_slave(_problem_to_id[itmap.first], handler->get_subgradient(), _data.x0, handler->get_dbl(SLAVE_COST));
-				if (_options.ACTIVECUTS)
-				{
-					_slave_cut_id[itmap.first].push_back(_master->get_number_constraint());
-				}
-				_all_cuts_storage[itmap.first].insert(cut);
-			}
-			_trace[_data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
-
-			bound_simplex_iter(handler->get_int(SIMPLEXITER));
-		}
+		compute_slave_cut(slave_cut_package);
 	}
 }
 
+void BendersBase::compute_slave_cut(const SlaveCutPackage slave_cut_package)
+{
+
+	for (const auto &itmap : slave_cut_package)
+	{
+		SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
+		SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
+		handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[itmap.first]];
+		_data.ub += handler->get_dbl(SLAVE_COST);
+		SlaveCutTrimmer cut(handler, _data.x0);
+		if (_options.DELETE_CUT && !(_all_cuts_storage[itmap.first].find(cut) == _all_cuts_storage[itmap.first].end()))
+		{
+			_data.deletedcut++;
+		}
+		else
+		{
+			_master->add_cut_slave(_problem_to_id[itmap.first], handler->get_subgradient(), _data.x0, handler->get_dbl(SLAVE_COST));
+			if (_options.ACTIVECUTS)
+			{
+				_slave_cut_id[itmap.first].push_back(_master->get_number_constraint());
+			}
+			_all_cuts_storage[itmap.first].insert(cut);
+		}
+		_trace[_data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
+
+		bound_simplex_iter(handler->get_int(SIMPLEXITER));
+	}
+}
 /*!
  *  \brief Add aggregated cut to Master Problem and store it in a set
  *
@@ -408,9 +415,9 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package)
 {
 	Point s;
 	double rhs(0);
-	for (int i(0); i < all_package.size(); i++)
+	for (const auto &slave_cut_package : all_package)
 	{
-		for (auto const &itmap : all_package[i])
+		for (auto const &itmap : slave_cut_package)
 		{
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
 			SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
@@ -433,7 +440,7 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package)
 	_master->add_cut(s, _data.x0, rhs);
 }
 
-void BendersBase::compute_cut_val(const SlaveCutDataHandlerPtr &handler, const Point &x0, Point &s)
+void BendersBase::compute_cut_val(const SlaveCutDataHandlerPtr &handler, const Point &x0, Point &s) const
 {
 	for (auto const &var : x0)
 	{
@@ -567,9 +574,9 @@ void BendersBase::store_current_aggregate_cut(AllCutPackage const &all_package)
 			std::get<2>(_dynamic_aggregate_cuts[i]) = 0;
 		}
 	}
-	for (int i(0); i < all_package.size(); i++)
+	for (const auto &slave_cut_package : all_package)
 	{
-		for (auto const &itmap : all_package[i])
+		for (auto const &itmap : slave_cut_package)
 		{
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
@@ -609,9 +616,9 @@ void BendersBase::store_iter_aggregate_cut(AllCutPackage const &all_package)
 			std::get<2>(_dynamic_aggregate_cuts[i]) = 0;
 		}
 	}
-	for (int i(0); i < all_package.size(); i++)
+	for (const auto &slave_cut_package : all_package)
 	{
-		for (auto const &itmap : all_package[i])
+		for (auto const &itmap : slave_cut_package)
 		{
 			SlaveCutDataPtr slave_cut_data(new SlaveCutData(itmap.second));
 			SlaveCutDataHandlerPtr const handler(new SlaveCutDataHandler(slave_cut_data));
@@ -650,9 +657,9 @@ void BendersBase::get_slave_basis(SimplexBasisPackage &simplex_basis_package)
  */
 void BendersBase::sort_basis(AllBasisPackage const &all_basis_package)
 {
-	for (int i(0); i < all_basis_package.size(); i++)
+	for (const auto &basis_package : all_basis_package)
 	{
-		for (auto const &itmap : all_basis_package[i])
+		for (auto const &itmap : basis_package)
 		{
 			SimplexBasisPtr basis(new SimplexBasis(itmap.second));
 			SimplexBasisHandler handler(basis);
@@ -679,7 +686,7 @@ void BendersBase::update_active_cuts()
 {
 	DblVector dual;
 	_master->get_dual_values(dual);
-	for (auto &kvp : _slave_cut_id)
+	for (const auto &kvp : _slave_cut_id)
 	{
 		for (int i(0); i < kvp.second.size(); i++)
 		{
@@ -688,7 +695,7 @@ void BendersBase::update_active_cuts()
 	}
 }
 
-void BendersBase::fill_log_data_from_data(LogData &logData)
+void BendersBase::fill_log_data_from_data(LogData &logData) const
 {
 	logData = defineLogDataFromBendersDataAndTrace(_data, _trace);
 	logData.optimality_gap = _options.ABSOLUTE_GAP;
@@ -747,7 +754,7 @@ Output::Iteration BendersBase::iteration(const WorkerMasterDataPtr &masterDataPt
 Output::CandidatesVec BendersBase::candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const
 {
 	Output::CandidatesVec candidates_vec;
-	for (auto pairNameValue_l : masterDataPtr_l->get_point())
+	for (const auto &pairNameValue_l : masterDataPtr_l->get_point())
 	{
 		Output::CandidateData candidate_data;
 		candidate_data.name = pairNameValue_l.first;

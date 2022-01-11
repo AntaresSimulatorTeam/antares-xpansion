@@ -32,7 +32,7 @@ namespace Output
         /*!
          *  \brief destructor of class JsonWriter
          */
-        virtual ~JsonWriter();
+        virtual ~JsonWriter() = default;
 
         /*!
          *  \brief updates the execution begin time
@@ -90,7 +90,7 @@ namespace Output
          * \brief initialize outputs
          * \param options : set of options used for the optimization
          */
-        void initialize(BendersOptions options);
+        void initialize(const BendersOptions &options);
 
         void end_writing(const IterationsData &iterations_data);
     };

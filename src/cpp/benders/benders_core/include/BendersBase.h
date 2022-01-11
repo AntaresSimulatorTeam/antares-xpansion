@@ -13,7 +13,7 @@ class BendersBase
 {
 
 public:
-    virtual ~BendersBase();
+    virtual ~BendersBase() = default;
     BendersBase(BendersOptions const &options, Logger &logger, Writer writer);
 
     WorkerMasterPtr _master;
@@ -39,7 +39,7 @@ protected:
     Writer _writer;
     // map linking each problem name to its variables and their ids
     CouplingMap _input;
-    int _nbWeeks;
+    int _nbWeeks = 0;
     virtual void free() = 0;
     virtual void run() = 0;
 
@@ -47,23 +47,25 @@ public:
     void init_data();
 
     void print_csv();
+    void print_csv_iteration(std::ostream &file, int ite);
     void print_master_and_cut(std::ostream &file, int ite, WorkerMasterDataPtr &trace, Point const &xopt);
-    void print_master_csv(std::ostream &stream, WorkerMasterDataPtr &trace, Point const &xopt);
-    void print_cut_csv(std::ostream &stream, SlaveCutDataHandler const &handler, std::string const &name, int const islaves);
+    void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace, Point const &xopt) const;
+    void print_cut_csv(std::ostream &stream, SlaveCutDataHandler const &handler, std::string const &name, int const islaves) const;
     void print_active_cut();
 
     void update_best_ub();
     void bound_simplex_iter(int simplexiter);
     bool stopping_criterion();
     void update_trace();
-    void check_status(AllCutPackage const &all_package);
+    void check_status(AllCutPackage const &all_package) const;
 
     void get_master_value();
     void get_slave_cut(SlaveCutPackage &slave_cut_package);
 
     void compute_cut(AllCutPackage const &all_package);
+    void compute_slave_cut(const SlaveCutPackage slave_cut_package);
     void compute_cut_aggregate(AllCutPackage const &all_package);
-    void compute_cut_val(const SlaveCutDataHandlerPtr &handler, const Point &x0, Point &s);
+    void compute_cut_val(const SlaveCutDataHandlerPtr &handler, const Point &x0, Point &s) const;
     void build_cut_full(AllCutPackage const &all_package);
 
     void dynamic_aggregation(AllCutPackage const &all_package);
@@ -77,7 +79,7 @@ public:
     void sort_basis(AllBasisPackage const &all_basis_package);
     void update_active_cuts();
 
-    void fill_log_data_from_data(LogData &logdata);
+    void fill_log_data_from_data(LogData &logdata) const;
     void post_run_actions();
     Output::IterationsData output_data() const;
     Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;

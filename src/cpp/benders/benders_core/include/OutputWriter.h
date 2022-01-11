@@ -118,7 +118,7 @@ namespace Output
          * \brief initialize outputs
          * \param options : set of options used for the optimization
          */
-        virtual void initialize(BendersOptions options) = 0;
+        virtual void initialize(const BendersOptions &options) = 0;
 
         virtual void end_writing(const IterationsData &iterations_data) = 0;
     };

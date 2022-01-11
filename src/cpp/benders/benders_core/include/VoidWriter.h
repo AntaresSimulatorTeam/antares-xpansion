@@ -71,7 +71,7 @@ namespace Output
          *  \brief write the json data into a file
          */
         virtual void dump();
-        virtual void initialize(BendersOptions options);
+        virtual void initialize(const BendersOptions &options);
         virtual void end_writing(const IterationsData &iterations_data);
     };
 }
