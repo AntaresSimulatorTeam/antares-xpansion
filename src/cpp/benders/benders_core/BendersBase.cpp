@@ -5,7 +5,7 @@
 
 #include "glog/logging.h"
 
-BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer) {}
+BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer), nbWeeks(0) {}
 
 BendersBase::~BendersBase()
 {

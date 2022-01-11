@@ -37,6 +37,9 @@ public:
 protected:
     Logger _logger;
     Writer _writer;
+    // map linking each problem name to its variables and their ids
+    CouplingMap _input;
+    int _nbWeeks;
     virtual void free() = 0;
     virtual void run() = 0;
 

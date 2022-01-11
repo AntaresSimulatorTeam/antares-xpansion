@@ -17,8 +17,6 @@ BendersSequential::~BendersSequential()
  *
  *  Method to build a BendersSequential element, initializing each problem from a list
  *
- *  \param problem_list : map linking each problem name to its variables and their ids
- *
  *  \param options : set of options fixed by the user
  */
 
@@ -26,19 +24,19 @@ BendersSequential::BendersSequential(BendersOptions const &options, Logger &logg
 {
 }
 
-void BendersSequential::initialise_problems(const CouplingMap &problem_list)
+void BendersSequential::initialise_problems()
 {
-	if (!problem_list.empty())
+	if (!_input.empty())
 	{
 		_data.nslaves = _options.SLAVE_NUMBER;
 		if (_data.nslaves < 0)
 		{
-			_data.nslaves = problem_list.size() - 1;
+			_data.nslaves = _input.size() - 1;
 		}
 
-		auto it(problem_list.begin());
+		auto it(_input.begin());
 
-		auto const it_master = problem_list.find(_options.MASTER_NAME);
+		auto const it_master = _input.find(_options.MASTER_NAME);
 		Str2Int const &master_variable(it_master->second);
 		for (int i(0); i < _data.nslaves; ++it)
 		{
@@ -155,8 +153,8 @@ void BendersSequential::run()
 
 void BendersSequential::launch()
 {
-	CouplingMap input = build_input(_options);
-
+	_input = build_input(_options);
+	_nbWeeks = _input.size();
 	LOG(INFO) << "Building input" << std::endl;
 
 	LOG(INFO) << "Constructing workers..." << std::endl;

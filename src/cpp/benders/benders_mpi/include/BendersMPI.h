@@ -23,7 +23,7 @@ public:
     virtual ~BendersMpi();
     BendersMpi(BendersOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world);
 
-    void load(CouplingMap const &problem_list);
+    void load();
 
     void update_random_option();
     virtual void launch();

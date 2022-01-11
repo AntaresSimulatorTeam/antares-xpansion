@@ -21,36 +21,34 @@ BendersMpi::BendersMpi(BendersOptions const &options, Logger &logger, Writer wri
  *
  *  The initialization of each problem is done sequentially
  *
- *  \param problem_list : map linking each problem name to its variables and their id
- *
  */
 
-void BendersMpi::load(CouplingMap const &problem_list)
+void BendersMpi::load()
 {
 	StrVector names;
 	_data.nslaves = -1;
 	std::vector<CouplingMap::const_iterator> real_problem_list;
-	if (!problem_list.empty())
+	if (!_input.empty())
 	{
 		if (_world.rank() == 0)
 		{
 			_data.nslaves = _options.SLAVE_NUMBER;
 			if (_data.nslaves < 0)
 			{
-				_data.nslaves = problem_list.size() - 1;
+				_data.nslaves = _input.size() - 1;
 			}
 			std::string const &master_name(_options.MASTER_NAME);
-			auto const it_master(problem_list.find(master_name));
-			if (it_master == problem_list.end())
+			auto const it_master(_input.find(master_name));
+			if (it_master == _input.end())
 			{
 				std::cout << "UNABLE TO FIND " << master_name << std::endl;
 				std::exit(1);
 			}
 			// real problem list taking into account SLAVE_NUMBER
 
-			real_problem_list.resize(_data.nslaves, problem_list.end());
+			real_problem_list.resize(_data.nslaves, _input.end());
 
-			CouplingMap::const_iterator it(problem_list.begin());
+			CouplingMap::const_iterator it(_input.begin());
 			for (int i(0); i < _data.nslaves; ++it)
 			{
 				if (it != it_master)
@@ -358,11 +356,11 @@ void BendersMpi::run()
 
 void BendersMpi::launch()
 {
-	CouplingMap input = build_input(_options);
-
+	_input = build_input(_options);
+	_nbWeeks = _input.size();
 	_world.barrier();
 
-	load(input);
+	load();
 	_world.barrier();
 
 	run();

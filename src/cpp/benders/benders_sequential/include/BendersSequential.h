@@ -15,7 +15,7 @@ public:
 	virtual ~BendersSequential();
 	virtual void launch();
 	void build_cut();
-	void initialise_problems(const CouplingMap &problem_list);
+	void initialise_problems();
 
 protected:
 	virtual void free();
