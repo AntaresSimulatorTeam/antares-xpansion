@@ -774,7 +774,7 @@ Output::SolutionData BendersBase::solution() const
 	solution_data.best_it = _data.best_it;
 	size_t bestItIndex_l = _data.best_it - 1;
 
-	if (bestItIndex_l >= 0 && bestItIndex_l < _trace.size())
+	if (bestItIndex_l < _trace.size())
 	{
 		solution_data.solution = iteration(_trace[bestItIndex_l]);
 		solution_data.solution.optimality_gap = _data.best_ub - _data.lb;

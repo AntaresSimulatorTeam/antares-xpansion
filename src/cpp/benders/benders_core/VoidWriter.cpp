@@ -1,32 +1,30 @@
 #include "VoidWriter.h"
-#include "config.h"
 namespace Output
 {
-    VoidWriter::VoidWriter()
-    {
-    }
 
-    VoidWriter::~VoidWriter()
-    {
-    }
     void VoidWriter::updateBeginTime()
     {
+        // keep this method empty
     }
 
     void VoidWriter::updateEndTime()
     {
+        // keep this method empty
     }
 
     void VoidWriter::write_options(BendersOptions const &bendersOptions_p)
     {
+        // keep this method empty
     }
 
     void VoidWriter::write_iteration(const IterationsData &iterations_data)
     {
+        // keep this method empty
     }
 
     void VoidWriter::update_solution(const SolutionData &solution_data)
     {
+        // keep this method empty
     }
 
     /*!
@@ -35,6 +33,7 @@ namespace Output
      */
     void VoidWriter::write_failure()
     {
+        // keep this method empty
     }
 
     /*!
@@ -42,6 +41,7 @@ namespace Output
      */
     void VoidWriter::dump()
     {
+        // keep this method empty
     }
     void VoidWriter::initialize(const BendersOptions &options)
     {
@@ -49,5 +49,6 @@ namespace Output
 
     void VoidWriter::end_writing(const IterationsData &iterations_data)
     {
+        // keep this method empty
     }
 }

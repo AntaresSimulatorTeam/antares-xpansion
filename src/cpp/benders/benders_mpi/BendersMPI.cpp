@@ -30,37 +30,8 @@ void BendersMpi::load()
 	std::vector<CouplingMap::const_iterator> real_problem_list;
 	if (!_input.empty())
 	{
-		if (_world.rank() == 0)
-		{
-			_data.nslaves = _options.SLAVE_NUMBER;
-			if (_data.nslaves < 0)
-			{
-				_data.nslaves = _input.size() - 1;
-			}
-			std::string const &master_name(_options.MASTER_NAME);
-			auto const it_master(_input.find(master_name));
-			if (it_master == _input.end())
-			{
-				std::cout << "UNABLE TO FIND " << master_name << std::endl;
-				std::exit(1);
-			}
-			// real problem list taking into account SLAVE_NUMBER
+		update_real_problem_list(real_problem_list);
 
-			real_problem_list.resize(_data.nslaves, _input.end());
-
-			CouplingMap::const_iterator it(_input.begin());
-			for (int i(0); i < _data.nslaves; ++it)
-			{
-				if (it != it_master)
-				{
-					real_problem_list[i] = it;
-					_problem_to_id[it->first] = i;
-					++i;
-				}
-			}
-			_master.reset(new WorkerMaster(it_master->second, _options.get_master_path(), _options, _data.nslaves));
-			LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
-		}
 		mpi::broadcast(_world, _data.nslaves, 0);
 		int current_worker(1);
 		for (int islave(0); islave < _data.nslaves; ++islave, ++current_worker)
@@ -85,6 +56,41 @@ void BendersMpi::load()
 	}
 }
 
+void BendersMpi::update_real_problem_list(std::vector<CouplingMap::const_iterator> &real_problem_list)
+{
+
+	if (_world.rank() == 0)
+	{
+		_data.nslaves = _options.SLAVE_NUMBER;
+		if (_data.nslaves < 0)
+		{
+			_data.nslaves = _input.size() - 1;
+		}
+		std::string const &master_name(_options.MASTER_NAME);
+		auto const it_master(_input.find(master_name));
+		if (it_master == _input.end())
+		{
+			std::cout << "UNABLE TO FIND " << master_name << std::endl;
+			std::exit(1);
+		}
+		// real problem list taking into account SLAVE_NUMBER
+
+		real_problem_list.resize(_data.nslaves, _input.end());
+
+		CouplingMap::const_iterator it(_input.begin());
+		for (int i(0); i < _data.nslaves; ++it)
+		{
+			if (it != it_master)
+			{
+				real_problem_list[i] = it;
+				_problem_to_id[it->first] = i;
+				++i;
+			}
+		}
+		_master.reset(new WorkerMaster(it_master->second, _options.get_master_path(), _options, _data.nslaves));
+		LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
+	}
+}
 /*!
  *  \brief Solve, get and send solution of the Master Problem to every thread
  *

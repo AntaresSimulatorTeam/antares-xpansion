@@ -32,11 +32,12 @@ public:
     SlaveCutId _slave_cut_id;
     ActiveCutStorage _active_cuts;
 
+    Logger _logger;
+    Writer _writer;
+
     virtual void launch() = 0;
 
 protected:
-    Logger _logger;
-    Writer _writer;
     // map linking each problem name to its variables and their ids
     CouplingMap _input;
     int _nbWeeks = 0;

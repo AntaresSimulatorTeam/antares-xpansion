@@ -13,23 +13,19 @@ namespace
         return strTime_l;
     }
 }
-TimeUtil::TimeUtil() : _beginTime(std::time(0)),
-                       _endTime(std::time(0))
-{
-}
-
-TimeUtil::~TimeUtil()
+TimeUtil::TimeUtil() : _beginTime(std::time(nullptr)),
+                       _endTime(std::time(nullptr))
 {
 }
 
 void TimeUtil::updateBeginTime()
 {
-    _beginTime = std::time(0);
+    _beginTime = std::time(nullptr);
 }
 
 void TimeUtil::updateEndTime()
 {
-    _endTime = std::time(0);
+    _endTime = std::time(nullptr);
 }
 
 std::string TimeUtil::getBegin()

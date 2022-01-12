@@ -20,12 +20,12 @@ namespace Output
         /*!
          *  \brief VoidWriter default constructor
          */
-        VoidWriter();
+        VoidWriter() = default;
 
         /*!
          *  \brief destructor of class VoidWriter
          */
-        virtual ~VoidWriter();
+        virtual ~VoidWriter() = default;
         virtual void updateBeginTime();
 
         virtual void updateEndTime();

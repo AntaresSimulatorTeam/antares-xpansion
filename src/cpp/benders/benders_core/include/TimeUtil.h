@@ -15,7 +15,7 @@ public:
     /*!
      *  \brief destructor of class TimeUtil
      */
-    virtual ~TimeUtil();
+    virtual ~TimeUtil() = default;
     /*!
      *  \brief updates the execution begin time
      */
