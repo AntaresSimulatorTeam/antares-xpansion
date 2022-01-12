@@ -14,8 +14,6 @@
 #include "WriterFactories.h"
 #include "LoggerFactories.h"
 
-void announce_start_of_simulation(const BendersOptions &options);
-
 int main(int argc, char **argv)
 {
     mpi::environment env(argc, argv);
@@ -45,12 +43,15 @@ int main(int argc, char **argv)
     Logger logger;
     Writer writer;
 
-    if (world.rank() == 0){
+    if (world.rank() == 0)
+    {
         logger = build_stdout_and_file_logger(log_reports_name);
         writer = build_json_writer(options);
-        announce_start_of_simulation(options);
+        std::ostringstream oss_l = start_message(options, "mpi");
+        LOG(INFO) << oss_l.str() << std::endl;
     }
-    else{
+    else
+    {
         logger = build_void_logger();
         writer = build_void_writer();
     }
@@ -75,11 +76,4 @@ int main(int argc, char **argv)
     logger->log_total_duration(timer.elapsed());
     writer->updateEndTime();
     return 0;
-}
-
-void announce_start_of_simulation(const BendersOptions &options) {
-    LOG(INFO) << "starting bendersmpi" << std::endl;
-    std::ostringstream oss_l;
-    options.print(oss_l);
-    LOG(INFO) << oss_l.str() << std::endl;
 }

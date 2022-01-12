@@ -12,6 +12,8 @@
 #include "OutputWriter.h"
 #include "JsonWriter.h"
 #include "helpers/Path.h"
+#include "LoggerFactories.h"
+#include "WriterFactories.h"
 
 int main(int argc, char **argv)
 {
@@ -22,25 +24,13 @@ int main(int argc, char **argv)
 	google::InitGoogleLogging(argv[0]);
 	auto path_to_log = (Path(options.OUTPUTROOT) / "benderssequentialLog").get_str();
 	google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
-	LOG(INFO) << "starting Benders Sequential" << std::endl;
 
-	std::ostringstream oss_l;
-	options.print(oss_l);
+	std::ostringstream oss_l = start_message(options, "Sequential");
 	LOG(INFO) << oss_l.str() << std::endl;
 
-	LOG(INFO) << "Launching Benders Sequential" << std::endl;
-	auto masterLogger = std::make_shared<xpansion::logger::Master>();
-
 	const std::string &loggerFileName = (Path(options.OUTPUTROOT) / "reportbenderssequential").get_str();
-	Logger loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
-	Logger loggerFile = std::make_shared<xpansion::logger::UserFile>(loggerFileName);
-	masterLogger->addLogger(loggerUser);
-	masterLogger->addLogger(loggerFile);
-
-	Logger logger = masterLogger;
-	Writer writer = std::make_shared<Output::JsonWriter>();
-	writer->initialize(options);
-
+	Logger logger = build_stdout_and_file_logger(loggerFileName);
+	Writer writer = build_json_writer(options);
 	Timer timer;
 
 	BendersSequential benders(options, logger, writer);
