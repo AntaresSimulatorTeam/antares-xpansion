@@ -80,7 +80,7 @@ public:
     void update_active_cuts();
 
     void fill_log_data_from_data(LogData &logdata) const;
-    void post_run_actions();
+    void post_run_actions() const;
     Output::IterationsData output_data() const;
     Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
     Output::CandidatesVec candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const;

@@ -703,7 +703,7 @@ void BendersBase::fill_log_data_from_data(LogData &logData) const
 	logData.max_iterations = _options.MAX_ITERATIONS;
 }
 
-void BendersBase::post_run_actions()
+void BendersBase::post_run_actions() const
 {
 	LogData logData;
 	fill_log_data_from_data(logData);
