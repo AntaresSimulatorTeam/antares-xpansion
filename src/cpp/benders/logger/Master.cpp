@@ -3,11 +3,7 @@
 namespace xpansion{
 namespace logger {
 
-    Master::Master() {}
 
-    Master::~Master() {
-
-    }
 
     void Master::display_message(const std::string& str) {
         for (auto logger : _loggers) {

@@ -25,7 +25,7 @@ namespace logger {
         size_map _sizes;
 
 
-        std::string getHeaderString(const LogData &data);
+        std::string getHeaderString() const;
         std::string getMainBodyString(const LogData &data);
         void set_values_and_sizes(const LogData &data);
         static std::string get_formatted_string_from_value(double val);
