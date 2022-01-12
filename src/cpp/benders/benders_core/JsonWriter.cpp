@@ -1,10 +1,9 @@
 #include "JsonWriter.h"
 #include "config.h"
+#include "Timer.h"
 namespace Output
 {
-    JsonWriter::JsonWriter() : _time(TimeUtil())
-    {
-    }
+    JsonWriter::JsonWriter()= default;
 
     void JsonWriter::updateBeginTime()
     {

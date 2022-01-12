@@ -2,11 +2,8 @@
 #pragma once
 
 #include "OutputWriter.h"
-#include "TimeUtil.h"
-#include "Timer.h"
 #include "BendersOptions.h"
-#include "WorkerTrace.h"
-#include "common.h"
+#include "TimeUtil.h"
 
 #include <json/writer.h>
 namespace Output
@@ -18,7 +15,7 @@ namespace Output
     class JsonWriter : public OutputWriter
     {
     private:
-        TimeUtil _time;
+        TimeUtil _time = TimeUtil();
         std::string _filename;
         // attributes of the optimization execution
         Json::Value _output;
