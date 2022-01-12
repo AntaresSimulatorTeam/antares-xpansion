@@ -43,7 +43,7 @@ namespace Output
     void VoidWriter::dump()
     {
     }
-    void VoidWriter::initialize(BendersOptions options)
+    void VoidWriter::initialize(const BendersOptions &options)
     {
     }
 

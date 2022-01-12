@@ -6,10 +6,6 @@ namespace Output
     {
     }
 
-    JsonWriter::~JsonWriter()
-    {
-    }
-
     void JsonWriter::updateBeginTime()
     {
         _time.updateBeginTime();
@@ -36,7 +32,7 @@ namespace Output
 
         // Iterations
         size_t iterCnt_l(0);
-        for (auto iter : iterations_data.iters)
+        for (const auto &iter : iterations_data.iters)
         {
             ++iterCnt_l;
 
@@ -52,7 +48,7 @@ namespace Output
             _output["iterations"][strIterCnt_l]["overall_cost"] = iter.overall_cost;
 
             Json::Value vectCandidates_l(Json::arrayValue);
-            for (auto candidate : iter.candidates)
+            for (const auto &candidate : iter.candidates)
             {
                 Json::Value candidate_l;
                 candidate_l["name"] = candidate.name;
@@ -70,7 +66,7 @@ namespace Output
         _output["solution"]["operational_cost"] = iterations_data.solution_data.solution.operational_cost;
         _output["solution"]["overall_cost"] = iterations_data.solution_data.solution.overall_cost;
 
-        for (auto candidate : iterations_data.solution_data.solution.candidates)
+        for (const auto &candidate : iterations_data.solution_data.solution.candidates)
         {
             _output["solution"]["values"][candidate.name] = candidate.invest;
         }
@@ -94,7 +90,7 @@ namespace Output
         _output["solution"]["relative_gap"] = solution_data.solution.relative_gap;
 
         _output["solution"]["problem_status"] = solution_data.problem_status;
-        for (auto candidate : solution_data.solution.candidates)
+        for (const auto &candidate : solution_data.solution.candidates)
         {
             _output["solution"]["values"][candidate.name] = candidate.invest;
         }
@@ -135,7 +131,7 @@ namespace Output
         }
     }
 
-    void JsonWriter::initialize(BendersOptions options)
+    void JsonWriter::initialize(const BendersOptions &options)
     {
         _filename = options.JSON_FILE;
         write_failure();

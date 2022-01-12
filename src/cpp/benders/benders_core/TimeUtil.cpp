@@ -4,7 +4,7 @@
 
 namespace
 {
-    std::string timeToStr(std::time_t *time_p)
+    std::string timeToStr(const std::time_t *time_p)
     {
         char buffer_l[100];
         strftime(buffer_l, sizeof(buffer_l), "%d-%m-%Y %H:%M:%S", std::localtime(time_p));
