@@ -19,8 +19,8 @@ namespace logger {
 
     public:
 
-        Master();
-        virtual ~Master();
+        Master() = default;
+        ~Master()= default;
 
         void addLogger(const std::shared_ptr<ILogger>& logger) {_loggers.push_back(logger);}
 

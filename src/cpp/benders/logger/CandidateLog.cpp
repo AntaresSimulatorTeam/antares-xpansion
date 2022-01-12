@@ -12,12 +12,12 @@ namespace logger {
 
     std::string CandidateLog::log_iteration_candidates(const LogData &data){
         std::stringstream _stream;
-        _stream << getHeaderString(data);
+        _stream << getHeaderString();
         _stream << getMainBodyString(data);
         return _stream.str();
     }
 
-    std::string CandidateLog::getHeaderString(const LogData &data){
+    std::string CandidateLog::getHeaderString() const{
         std::stringstream header;
         header << indent_0 << "Candidates:" << std::endl;
         return header.str();
