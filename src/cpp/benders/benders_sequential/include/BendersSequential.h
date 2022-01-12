@@ -12,7 +12,7 @@ class BendersSequential : public BendersBase
 {
 public:
 	explicit BendersSequential(BendersOptions const &options, Logger &logger, Writer writer);
-	virtual ~BendersSequential();
+	virtual ~BendersSequential() = default;
 	virtual void launch();
 	void build_cut();
 	void initialise_problems();

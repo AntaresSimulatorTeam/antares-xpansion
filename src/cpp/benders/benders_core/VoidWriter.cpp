@@ -45,6 +45,7 @@ namespace Output
     }
     void VoidWriter::initialize(const BendersOptions &options)
     {
+        // keep this method empty
     }
 
     void VoidWriter::end_writing(const IterationsData &iterations_data)

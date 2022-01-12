@@ -8,10 +8,6 @@
 
 #include "glog/logging.h"
 
-BendersSequential::~BendersSequential()
-{
-}
-
 /*!
  *  \brief Constructor of class BendersSequential
  *
