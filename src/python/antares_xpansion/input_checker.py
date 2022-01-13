@@ -477,7 +477,7 @@ def check_setting_option_value(option, value):
                               % (value, option))
                 sys.exit(1)
     elif option == 'log_level':
-        if (value >= 0):
+        if (int(value) >=0):
             return True
         else:
             flushed_print('Illegal value %s for option %s : only greater than or equal to zero values are accepted'
