@@ -402,8 +402,12 @@ def check_setting_option_type(option, value):
             return True
         else:
             try:
-                int(value)
-                return True
+                if float(value).is_integer():
+                    return True
+                else:
+                    flushed_print(
+                        'check_setting_option_type: Illegal %s option in type, integer is expected .' % option)
+                    return False
             except ValueError:
                 flushed_print(
                     'check_setting_option_type: Illegal %s option in type, integer is expected .' % option)
@@ -417,7 +421,23 @@ class OptionTypeError(Exception):
     pass
 
 
-class GapValueError(ValueError):
+class GapValueError(Exception):
+    pass
+
+
+class MaxIterValueError(Exception):
+    pass
+
+
+class RelaxedOptimalityValueError(Exception):
+    pass
+
+
+class TimelimitValueError(Exception):
+    pass
+
+
+class LogLevelValueError(Exception):
     pass
 
 
@@ -447,7 +467,7 @@ def check_setting_option_value(option, value):
         if float(value) >= 0:
             return True
         else:
-            print(
+            flushed_print(
                 "Illegal value %s for option %s : only positive values are allowed"
                 % (value, option)
             )
@@ -457,43 +477,45 @@ def check_setting_option_value(option, value):
         if value in ["+Inf", "+infini"]:
             return True
         else:
-            try:
-                max_iter = int(value)
-                if (max_iter == -1) or (max_iter > 0):
-                    return True
-            except ValueError:
+            max_iter = int(value)
+            if (max_iter == -1) or (max_iter > 0):
+                return True
+            else:
                 flushed_print('Illegal value %s for option %s : only -1 or positive values are allowed'
                               % (value, option))
-                sys.exit(1)
+                raise MaxIterValueError
     elif option == "relaxed_optimality_gap":
         if value.strip().endswith("%"):
             try:
                 gap = float(value[:-1])
+
                 if 0 <= gap <= 100:
                     return True
+                else:
+                    flushed_print('Illegal value %s for option %s: legal format "X%%" with X between 0 and 100'
+                                  % (value, option))
+                    raise RelaxedOptimalityValueError
             except ValueError:
                 flushed_print('Illegal value %s for option %s: legal format "X%%" with X between 0 and 100'
                               % (value, option))
-                sys.exit(1)
+                raise RelaxedOptimalityValueError
     elif option == 'timelimit':
         if (value in ["+Inf", "+infini"]):
             return True
         else:
-            try:
-                timelimit = int(value)
-                if timelimit > 0:
-                    return True
-            except ValueError:
+            if int(value) > 0:
+                return True
+            else:
                 flushed_print('Illegal value %s for option %s : only positive values are allowed'
                               % (value, option))
-                sys.exit(1)
+                raise TimelimitValueError
     elif option == 'log_level':
-        if (value >= 0):
+        if (int(value) >= 0):
             return True
         else:
             flushed_print('Illegal value %s for option %s : only greater than or equal to zero values are accepted'
                           % (value, option))
-            sys.exit(1)
+            raise LogLevelValueError
 
     flushed_print(
         'check_candidate_option_value: Illegal value %s for option %s' % (value, option))
