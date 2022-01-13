@@ -245,3 +245,42 @@ class TestCheckCandidatesFile:
     #         print(ini.readlines())
 
     #     assert False
+
+
+class TestCheckSettingOptionType:
+
+    def test_check_setting_option_type(self):
+
+        with pytest.raises(NotHandledOption):
+            check_setting_option_type("unknown option", "value")
+
+    def test_str_options(self):
+
+        assert check_setting_option_type("method", "sequential") == True
+        assert check_setting_option_type("method", 123) == False
+
+    def test_int_options(self):
+
+        assert check_setting_option_type("timelimit", 1) == True
+        assert check_setting_option_type("timelimit", "str") == False
+        assert check_setting_option_type("timelimit", -1) == True
+        assert check_setting_option_type("timelimit", "inf") == False
+        assert check_setting_option_type("timelimit", "+Inf") == True
+
+    def test_double_options(self):
+
+        assert check_setting_option_type("relative_gap", 1.) == True
+        assert check_setting_option_type("relative_gap", -1.) == True
+        assert check_setting_option_type("relative_gap", "str") == False
+
+
+class TestCheckSettingOptionValue:
+
+    def test_optimality_gap_str_value(self):
+        with pytest.raises(OptionTypeError):
+            check_setting_option_value("optimality_gap", -123)
+
+    def test_optimality_gap_str_value(self):
+
+        with pytest.raises(OptionTypeError):
+            check_setting_option_value("optimality_gap", "defe")

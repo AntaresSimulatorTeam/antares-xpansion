@@ -340,6 +340,36 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
 # Checks related to settings.ini
 ##########################################
 
+class NotHandledOption(Exception):
+    pass
+
+
+class NotHandledValue(Exception):
+    pass
+
+
+type_str = str
+type_int = int
+type_float = float
+
+# "option": (type, legal_value(s))
+options_types_and_legal_values = {
+    "method": (type_str, ["benders_decomposition"]),
+    "uc_type": (type_str, ["expansion_accurate", "expansion_fast"]),
+    "master": (type_str, ["relaxed", "integer", "full_integer"]),
+    "optimality_gap": (type_float, None),
+    "relative_gap": (type_float, None),
+    "cut_type": (type_str, ["average", "yearly", "weekly"]),
+    "week_selection": (type_str,  ["true", "false"]),
+    "max_iteration": (type_int, None),
+    "relaxed_optimality_gap": (type_str, None),
+    "solver": (type_str, None),
+    "timelimit": (type_int, None),
+    "yearly-weights": (type_str, None),
+    "additional-constraints": (type_str, None),
+    "log_level": (type_int, None)
+}
+
 
 def check_setting_option_type(option, value):
     """
@@ -352,50 +382,43 @@ def check_setting_option_type(option, value):
                  False or exits if the value has the wrong type
     """
 
-    options_types = {
-        "method": "string",
-        "uc_type": "string",
-        "master": "string",
-        "optimality_gap": "double",
-        "relative_gap": "double",
-        "cut_type": "string",
-        "week_selection": "string",
-        "max_iteration": "integer",
-        "relaxed_optimality_gap": "string",
-        "solver": "string",
-        "timelimit": "integer",
-        "yearly-weights": "string",
-        "additional-constraints": "string",
-        "log_level": "integer",
-    }
-    option_type = options_types.get(option)
-    if option_type is None:
+    if options_types_and_legal_values.get(option) is None:
         flushed_print(
             'check_setting_option_type: Illegal %s option in settings file.' % option)
-        sys.exit(1)
-    else:
-        if option_type == 'string':
+        raise NotHandledOption
+
+    option_type = options_types_and_legal_values.get(option)[0]
+
+    if option_type == type_float:
+        try:
+            float(value)
             return True
-        elif option_type == 'numeric':
-            return value.isnumeric()
-        elif option_type == 'double':
-            try:
-                float(value)
-                return True
-            except ValueError:
-                return False
-        elif option_type == 'integer':
-            if value in ["+Inf", "-Inf", "+infini", "-infini"]:
-                return True
+        except ValueError:
+            flushed_print(
+                'check_setting_option_type: Illegal %s option in type, numerical value is expected .' % option)
+            return False
+    elif option_type == type_int:
+        if value in ["+Inf", "-Inf", "+infini", "-infini"]:
+            return True
+        else:
             try:
                 int(value)
                 return True
             except ValueError:
+                flushed_print(
+                    'check_setting_option_type: Illegal %s option in type, integer is expected .' % option)
                 return False
-        else:
-            flushed_print('check_setting_option_type: Non handled data type %s for option %s'
-                          % (option_type, option))
-            sys.exit(1)
+
+    else:
+        return isinstance(value, type_str)
+
+
+class OptionTypeError(Exception):
+    pass
+
+
+class GapValueError(ValueError):
+    pass
 
 
 def check_setting_option_value(option, value):
@@ -408,22 +431,12 @@ def check_setting_option_value(option, value):
         :return: True if the option has the correct type, exits if the value has the wrong type
     """
 
-    options_legal_values = {
-        "method": ["benders_decomposition"],
-        "uc_type": ["expansion_accurate", "expansion_fast"],
-        "master": ["relaxed", "integer", "full_integer"],
-        "optimality_gap": None,
-        "relative_gap": None,
-        "cut_type": ["average", "yearly", "weekly"],
-        "week_selection": ["true", "false"],
-        "max_iteration": None,
-        "relaxed_optimality_gap": None,
-        "timelimit": None,
-        "yearly-weights": None,
-        "additional-constraints": None,
-        "log_level": None,
-    }
-    legal_values = options_legal_values.get(option)
+    if not check_setting_option_type(option, value):
+        flushed_print(
+            "check_settings : value %s for option %s has the wrong type!" % (value, option))
+        raise OptionTypeError
+
+    legal_values = options_types_and_legal_values.get(option)[1]
 
     skip_verif = ["yearly-weights", "additional-constraints", "solver"]
 
@@ -431,17 +444,15 @@ def check_setting_option_value(option, value):
         return True
 
     if (option == "optimality_gap") or (option == "relative_gap"):
-        try:
-            gap = float(value)
-            if float(value) >= 0:
-                return True
-            else:
-                raise ValueError
-        except ValueError:
+        if float(value) >= 0:
+            return True
+        else:
             print(
                 "Illegal value %s for option %s : only positive values are allowed"
                 % (value, option)
             )
+            raise GapValueError
+
     elif option == 'max_iteration':
         if value in ["+Inf", "+infini"]:
             return True
@@ -477,7 +488,7 @@ def check_setting_option_value(option, value):
                               % (value, option))
                 sys.exit(1)
     elif option == 'log_level':
-        if (int(value) >=0):
+        if (value >= 0):
             return True
         else:
             flushed_print('Illegal value %s for option %s : only greater than or equal to zero values are accepted'
@@ -501,10 +512,6 @@ def check_options(options):
 
     option_items = options.items()
     for (option, value) in option_items:
-        if not check_setting_option_type(option, value):
-            flushed_print(
-                "check_settings : value %s for option %s has the wrong type!" % (value, option))
-            sys.exit(1)
         check_setting_option_value(option, value)
 
     if options.get('yearly-weights', "") != "":
