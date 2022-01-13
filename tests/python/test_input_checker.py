@@ -276,11 +276,16 @@ class TestCheckSettingOptionType:
 
 class TestCheckSettingOptionValue:
 
-    def test_optimality_gap_str_value(self):
-        with pytest.raises(OptionTypeError):
+    def test_optimality_gap_negative_int(self):
+        with pytest.raises(GapValueError):
             check_setting_option_value("optimality_gap", -123)
 
     def test_optimality_gap_str_value(self):
 
         with pytest.raises(OptionTypeError):
             check_setting_option_value("optimality_gap", "defe")
+
+    def test_optimality_gap_negative_float(self):
+
+        with pytest.raises(GapValueError):
+            check_setting_option_value("optimality_gap", -1.2)
