@@ -1,7 +1,7 @@
 
 
 add_library (sensitivity
-        SensitivityAnalysis.cpp SensitivityLogger.cpp SensitivityWriter.cpp)
+        SensitivityAnalysis.cpp SensitivityLogger.cpp SensitivityWriter.cpp SensitivityPbModifier.cpp)
 
 target_include_directories (sensitivity
         PUBLIC
