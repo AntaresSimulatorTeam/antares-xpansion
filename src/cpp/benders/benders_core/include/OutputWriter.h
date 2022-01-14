@@ -74,16 +74,6 @@ namespace Output
         virtual ~OutputWriter() = default;
 
         /*!
-         *  \brief updates the execution begin time
-         */
-        virtual void updateBeginTime() = 0;
-
-        /*!
-         *  \brief updates the end of execution time
-         */
-        virtual void updateEndTime() = 0;
-
-        /*!
          *  \brief saves the options of the benders algorithm to be later written to the json file
          *
          *  \param bendersOptions_p : set of options used for the optimization
@@ -91,23 +81,11 @@ namespace Output
         virtual void write_options(BendersOptions const &bendersOptions_p) = 0;
 
         /*!
-         *  \brief saves some entries to be later written to the json file
-         *
-         *  \param iterations_data : containing iterations data
-         */
-        virtual void write_iteration(const IterationsData &iterations_data) = 0;
-
-        /*!
          *  \brief  saves some entries to be later written to the json file
          *
          *  \param solution_data containing solution data
          */
         virtual void update_solution(const SolutionData &solution_data) = 0;
-
-        /*!
-         *  \brief write an a priori errored log output, overwritten if optimization ends
-         */
-        virtual void write_failure() = 0;
 
         /*!
          *  \brief write the log data into a file

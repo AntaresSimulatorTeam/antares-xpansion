@@ -42,7 +42,6 @@ int main(int argc, char **argv)
         mergedSolver_l->init();
         mergedSolver_l->set_output_log_level(options.LOG_LEVEL);
 
-        int ncols(0);
         int nslaves = input.size() - 1;
         CouplingMap x_mps_id;
         int cntProblems_l(0);
@@ -52,7 +51,6 @@ int main(int argc, char **argv)
         {
 
             auto problem_name((Path(options.INPUTROOT) / (kvp.first + ".mps")).get_str());
-            ncols = mergedSolver_l->get_ncols();
 
             SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
             solver_l->init();
@@ -178,8 +176,6 @@ int main(int argc, char **argv)
 
         logger->log_total_duration(timer.elapsed());
 
-        writer->updateEndTime();
-
         Point x0;
         DblVector ptr(mergedSolver_l->get_ncols());
         double investCost_l(0);
@@ -189,7 +185,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            mergedSolver_l->get_lp_sol(ptr.data(), NULL, NULL);
+            mergedSolver_l->get_lp_sol(ptr.data(), nullptr, nullptr);
         }
 
         std::vector<double> obj_coef(mergedSolver_l->get_ncols());
@@ -215,7 +211,7 @@ int main(int argc, char **argv)
         bool optimality_l = (status_l == SOLVER_STATUS::OPTIMAL);
 
         Output::SolutionData sol_infos;
-        sol_infos.nbWeeks_p = input.size();
+        sol_infos.nbWeeks_p = static_cast<int>(input.size());
 
         sol_infos.solution.lb = overallCost_l;
         sol_infos.solution.ub = overallCost_l;
@@ -224,7 +220,7 @@ int main(int argc, char **argv)
         sol_infos.solution.overall_cost = overallCost_l;
 
         Output::CandidatesVec candidates_vec;
-        for (auto pairNameValue_l : x0)
+        for (const auto & pairNameValue_l : x0)
         {
             Output::CandidateData candidate_data;
             candidate_data.name = pairNameValue_l.first;

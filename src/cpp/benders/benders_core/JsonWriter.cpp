@@ -1,20 +1,43 @@
 #include "JsonWriter.h"
 #include "config.h"
 #include "Timer.h"
+
+namespace clock_utils
+{
+    std::string timeToStr(const std::time_t &time_p)
+    {
+        struct tm local_time;
+        localtime_r(&time_p, &local_time); // Compliant
+        const char* FORMAT = "%d-%m-%Y %H:%M:%S";
+        char buffer_l[100];
+        strftime(buffer_l, sizeof(buffer_l), FORMAT, &local_time);
+        std::string strTime_l(buffer_l);
+
+        return strTime_l;
+    }
+}
 namespace Output
 {
-    JsonWriter::JsonWriter(std::shared_ptr<TimeUtil> timer) : _time(timer) { }
+    JsonWriter::JsonWriter(std::shared_ptr<Clock> p_clock, const std::string& json_filename) : _clock(p_clock), _filename(json_filename) { }
+
+    void JsonWriter::initialize(const BendersOptions &options)
+    {
+        write_failure();
+        dump();
+
+        write_options(options);
+        updateBeginTime();
+    }
 
     void JsonWriter::updateBeginTime()
     {
-        _time->updateBeginTime();
-        _output["begin"] = _time->getBegin();
-    }
+        _start_time = _clock->getTime();
+        _output["begin"] = clock_utils::timeToStr(_start_time);    }
 
     void JsonWriter::updateEndTime()
     {
-        _time->updateEndTime();
-        _output["end"] = _time->getEnd();
+        _end_time = _clock->getTime();
+        _output["end"] = clock_utils::timeToStr(_end_time);
     }
 
     void JsonWriter::write_options(BendersOptions const &bendersOptions_p)
@@ -46,7 +69,7 @@ namespace Output
             _output["iterations"][strIterCnt_l]["operational_cost"] = iter.operational_cost;
             _output["iterations"][strIterCnt_l]["overall_cost"] = iter.overall_cost;
 
-            Json::Value vectCandidates_l(Json::arrayValue);
+                    Json::Value vectCandidates_l(Json::arrayValue);
             for (const auto &candidate : iter.candidates)
             {
                 Json::Value candidate_l;
@@ -93,6 +116,7 @@ namespace Output
         {
             _output["solution"]["values"][candidate.name] = candidate.invest;
         }
+        updateEndTime();
     }
 
     /*!
@@ -116,7 +140,7 @@ namespace Output
         _output["antares_xpansion"]["version"] = PROJECT_VER;
 
         // Time
-        _output["duration"] = _time->getDuration();
+        _output["duration"] = clock_utils::timeToStr(_end_time - _start_time);
 
         std::ofstream jsonOut_l(_filename);
         if (jsonOut_l)
@@ -128,16 +152,6 @@ namespace Output
         {
             std::cout << "Impossible d'ouvrir le fichier json " << _filename << std::endl;
         }
-    }
-
-    void JsonWriter::initialize(const BendersOptions &options)
-    {
-        _filename = options.JSON_FILE;
-        write_failure();
-        dump();
-
-        write_options(options);
-        updateBeginTime();
     }
 
     void JsonWriter::end_writing(const IterationsData &iterations_data)

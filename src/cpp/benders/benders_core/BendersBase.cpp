@@ -711,11 +711,6 @@ void BendersBase::post_run_actions() const
 	_logger->log_at_ending(logData);
 
 	_writer->end_writing(output_data());
-
-	std::stringstream str;
-	str << "Optimization results available in : "
-		<< _options.JSON_FILE;
-	_logger->display_message(str.str());
 }
 
 Output::IterationsData BendersBase::output_data() const
@@ -785,11 +780,11 @@ Output::SolutionData BendersBase::solution() const
 	{
 		solution_data.problem_status = "OPTIMAL";
 	}
-	else if (_options.MAX_ITERATIONS != -1 && _data.it > _options.MAX_ITERATIONS)
-	{
-		solution_data.problem_status = "MAX ITERATIONS";
-	}
-	else
+    else if (_options.MAX_ITERATIONS != -1 && _data.it > _options.MAX_ITERATIONS)
+    {
+        solution_data.problem_status = "MAX ITERATIONS";
+    }
+    else
 	{
 		solution_data.problem_status = "ERROR";
 	}
