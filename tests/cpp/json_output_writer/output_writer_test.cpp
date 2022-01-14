@@ -7,7 +7,6 @@
 #include <iostream>
 #include <cstdio>
 #include <time.h>
-#include "gmock/gmock.h"
 
 using namespace Output;
 
@@ -15,12 +14,12 @@ class JsonWriterShould : public ::testing::Test
 {
 public:
 
-    void SetUp()
+    void SetUp() override
     {
         _fileName = std::tmpnam(nullptr);
     }
 
-    void TearDown()
+    void TearDown() override
     {
         std::remove(_fileName.c_str());
     }
@@ -34,7 +33,7 @@ class TimeUtilMock : public TimeUtil{
 private:
     int updateBeginCount = 0;
 public:
-    void updateBeginTime(){
+    void updateBeginTime() override{
         updateBeginCount ++;
     }
     int get_updateBeginCount() const{
