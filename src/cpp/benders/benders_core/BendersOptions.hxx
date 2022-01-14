@@ -46,9 +46,6 @@ BENDERS_OPTIONS_MACRO(BASIS, bool, true)
 // True if a statement of active cuts need to be done, false otherwise
 BENDERS_OPTIONS_MACRO(ACTIVECUTS, bool, false)
 
-// Number of iterations before aggregation of all previous cuts by iteration, set to 0 if no aggregation needed
-BENDERS_OPTIONS_MACRO(THRESHOLD_ITERATION, int, 0)
-
 // Name of the csv output file
 BENDERS_OPTIONS_MACRO(CSV_NAME, std::string, "benders_output_trace")
 

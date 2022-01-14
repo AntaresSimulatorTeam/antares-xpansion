@@ -158,7 +158,6 @@ class XpansionConfig:
             "INPUTROOT": ".",
             "BASIS": "1",
             "ACTIVECUTS": "0",
-            "THRESHOLD_ITERATION": "0",
             "CSV_NAME": "benders_output_trace",
             "BOUND_ALPHA": "1",
         }

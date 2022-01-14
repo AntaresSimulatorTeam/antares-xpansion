@@ -59,10 +59,6 @@ public:
     void compute_cut_val(const SlaveCutDataHandlerPtr &handler, const Point &x0, Point &s);
     void build_cut_full(AllCutPackage const &all_package);
 
-    void dynamic_iteration(AllCutPackage const &all_package);
-    void store_iter_aggregate_cut(AllCutPackage const &all_package);
-    void gather_cut();
-
     void get_slave_basis(SimplexBasisPackage &simplex_basis_package);
     void sort_basis(AllBasisPackage const &all_basis_package);
     void update_active_cuts();
