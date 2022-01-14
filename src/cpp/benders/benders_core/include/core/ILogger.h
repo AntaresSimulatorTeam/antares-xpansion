@@ -23,7 +23,6 @@ struct LogData {
     double optimality_gap;
     double relative_gap;
     double max_iterations;
-    StoppingCriterion stopping_criterion;
 };
 
 class ILogger {
@@ -39,7 +38,7 @@ public:
     virtual void log_at_iteration_end      (const LogData& d) = 0;
     virtual void log_at_ending        (const LogData& d) = 0;
     virtual void log_total_duration(double durationInSeconds) = 0;
-
+    virtual void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) = 0 ;
 };
 using Logger = std::shared_ptr<ILogger>;
 

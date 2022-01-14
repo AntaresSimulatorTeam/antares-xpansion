@@ -51,37 +51,37 @@ namespace logger {
     void User::log_at_ending(const LogData &d) {
 
         const double overall_cost = d.slave_cost + d.invest_cost;
-
-        std::string stop_crit;
-        switch (d.stopping_criterion)
-        {
-        case StoppingCriterion::absolute_gap:
-            stop_crit = "absolute gap";
-            break;
-        
-        case StoppingCriterion::relative_gap:
-            stop_crit = "relative gap";
-            break;
-        
-        case StoppingCriterion::max_iteration:
-            stop_crit = "maximum iterations";
-            break;
-        
-        case StoppingCriterion::timelimit:
-            stop_crit = "timelimit";
-            break;
-        
-        default:
-            break;
-        }
-       
-
-        _stream << "--- Run completed: " << stop_crit << " reached"<< std::endl;
         _stream << indent_1 << "Best solution = it " << d.best_it << std::endl;
         _stream << indent_1 << " Overall cost = " << commons::create_str_million_euros(overall_cost) << " Me" << std::endl;
     }
     void User::log_total_duration(double durationInSeconds) {
         _stream << "Problem ran in " << durationInSeconds << " s"  << std::endl;
+    }
+
+    void User::log_stop_criterion_reached(const StoppingCriterion stopping_criterion) {
+        std::string stop_crit;
+        switch (stopping_criterion)
+        {
+            case StoppingCriterion::absolute_gap:
+                stop_crit = "absolute gap";
+                break;
+
+            case StoppingCriterion::relative_gap:
+                stop_crit = "relative gap";
+                break;
+
+            case StoppingCriterion::max_iteration:
+                stop_crit = "maximum iterations";
+                break;
+
+            case StoppingCriterion::timelimit:
+                stop_crit = "timelimit";
+                break;
+
+            default:
+                break;
+        }
+        _stream << "--- Run completed: " << stop_crit << " reached"<< std::endl;
     }
 
 } // namespace logger

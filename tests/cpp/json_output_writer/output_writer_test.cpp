@@ -50,7 +50,7 @@ public:
 
 TEST_F(JsonWriterShould, GenerateAValideFile) {
     auto timer= std::make_shared<Clock>();
-    auto writer = JsonWriter(timer, std::string());
+    auto writer = JsonWriter(timer, _fileName);
     auto benders_options = BendersOptions();
     benders_options.JSON_FILE = _fileName;
     writer.initialize(benders_options);

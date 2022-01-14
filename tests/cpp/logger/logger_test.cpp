@@ -214,7 +214,43 @@ TEST_F(UserLoggerTest, IterationEndLogLongCost) {
     ASSERT_EQ( _stream.str() ,expected.str() );
 }
 
-TEST_F(UserLoggerTest, EndLogAbsoluteGap) {
+TEST_F(UserLoggerTest, MaxIterationsReached)
+{
+    std::stringstream expected;
+    expected << "--- Run completed: maximum iterations reached" << std::endl;
+    StoppingCriterion criterion = StoppingCriterion::max_iteration;
+    _logger.log_stop_criterion_reached(criterion);
+    ASSERT_EQ(_stream.str(), expected.str());
+}
+
+TEST_F(UserLoggerTest, TimeLimitReached)
+{
+    std::stringstream expected;
+    expected << "--- Run completed: timelimit reached" << std::endl;
+    StoppingCriterion criterion = StoppingCriterion::timelimit;
+    _logger.log_stop_criterion_reached(criterion);
+    ASSERT_EQ(_stream.str(), expected.str());
+}
+
+TEST_F(UserLoggerTest, AbsoluteGapReached)
+{
+    std::stringstream expected;
+    expected << "--- Run completed: absolute gap reached" << std::endl;
+    StoppingCriterion criterion = StoppingCriterion::absolute_gap;
+    _logger.log_stop_criterion_reached(criterion);
+    ASSERT_EQ(_stream.str(), expected.str());
+}
+
+TEST_F(UserLoggerTest, RelativeGapReached)
+{
+    std::stringstream expected;
+    expected << "--- Run completed: relative gap reached" << std::endl;
+    StoppingCriterion criterion = StoppingCriterion::relative_gap;
+    _logger.log_stop_criterion_reached(criterion);
+    ASSERT_EQ(_stream.str(), expected.str());
+}
+
+TEST_F(UserLoggerTest, EndLog) {
     LogData logData;
     logData.best_it = 1;
     logData.best_ub = 20;
@@ -225,82 +261,12 @@ TEST_F(UserLoggerTest, EndLogAbsoluteGap) {
     logData.relative_gap = 1e-6;
     logData.it = 2;
     logData.max_iterations = 10;
-    logData.stopping_criterion = StoppingCriterion::absolute_gap;
     std::stringstream expected;
-    expected << "--- Run completed: absolute gap reached" << std::endl;
     expected << indent_1 << "Best solution = it 1" << std::endl;
     expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
 
     _logger.log_at_ending(logData);
     ASSERT_EQ( _stream.str() ,expected.str() );
-}
-
-TEST_F(UserLoggerTest, EndLogRelativeGap) {
-    LogData logData;
-    logData.best_it = 1;
-    logData.best_ub = 20;
-    logData.lb = 19.5;
-    logData.slave_cost = 1e6;
-    logData.invest_cost = 10e6;
-    logData.optimality_gap = 0.1;
-    logData.relative_gap = 0.1;
-    logData.it = 2;
-    logData.max_iterations = 10;
-    logData.stopping_criterion = StoppingCriterion::relative_gap;
-
-    std::stringstream expected;
-    expected << "--- Run completed: relative gap reached" << std::endl;
-    expected << indent_1 << "Best solution = it 1" << std::endl;
-    expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
-
-    _logger.log_at_ending(logData);
-    ASSERT_EQ( _stream.str() ,expected.str() );
-}
-
-TEST_F(UserLoggerTest, EndLogMaxIterations)
-{
-    LogData logData;
-    logData.best_it = 1;
-    logData.best_ub = 20;
-    logData.lb = 19.5;
-    logData.slave_cost = 1e6;
-    logData.invest_cost = 10e6;
-    logData.optimality_gap = 1e-6;
-    logData.relative_gap = 1e-6;
-    logData.it = 11;
-    logData.max_iterations = 10;
-    logData.stopping_criterion = StoppingCriterion::max_iteration;
-
-    std::stringstream expected;
-    expected << "--- Run completed: maximum iterations reached" << std::endl;
-    expected << indent_1 << "Best solution = it 1" << std::endl;
-    expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
-
-    _logger.log_at_ending(logData);
-    ASSERT_EQ(_stream.str(), expected.str());
-}
-
-TEST_F(UserLoggerTest, EndLogTimeLimit)
-{
-    LogData logData;
-    logData.best_it = 1;
-    logData.best_ub = 20;
-    logData.lb = 19.5;
-    logData.slave_cost = 1e6;
-    logData.invest_cost = 10e6;
-    logData.optimality_gap = 1e-6;
-    logData.relative_gap = 1e-6;
-    logData.it = 11;
-    logData.max_iterations = 10;
-    logData.stopping_criterion = StoppingCriterion::timelimit;
-
-    std::stringstream expected;
-    expected << "--- Run completed: timelimit reached" << std::endl;
-    expected << indent_1 << "Best solution = it 1" << std::endl;
-    expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
-
-    _logger.log_at_ending(logData);
-    ASSERT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(UserLoggerTest, DifferentCallsAddToTheSamStream) {
@@ -367,6 +333,8 @@ public:
         _iterationEndCall = false;
         _endingCall = false;
 
+        _stopping_criterion = StoppingCriterion::empty;
+
         _durationMaster = 0.0;
         _durationSubproblem = 0.0;
         _durationTotal = 0.0;
@@ -403,15 +371,23 @@ public:
         _durationTotal = durationInSeconds;
     }
 
+    void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) override{
+        _stopping_criterion = stopping_criterion;
+    }
+
     bool _initCall;
     bool _iterationStartCall;
     bool _iterationEndCall;
     bool _endingCall;
+    StoppingCriterion _stopping_criterion;
+
     std::string _displaymessage;
 
     double _durationMaster;
     double _durationSubproblem;
     double _durationTotal;
+
+
 };
 
 class MasterLoggerTest : public ::testing::Test
@@ -485,3 +461,12 @@ TEST_F(MasterLoggerTest, LogTotalDuration) {
     ASSERT_EQ( _logger->_durationTotal ,duration );
     ASSERT_EQ( _logger2->_durationTotal ,duration );
 }
+
+TEST_F(MasterLoggerTest, LogStoppingCriterion) {
+    StoppingCriterion criterion= StoppingCriterion::absolute_gap;
+    _master.log_stop_criterion_reached(criterion);
+    ASSERT_EQ( _logger->_stopping_criterion ,StoppingCriterion::absolute_gap );
+    ASSERT_EQ( _logger2->_stopping_criterion ,StoppingCriterion::absolute_gap );
+}
+
+

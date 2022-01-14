@@ -80,7 +80,7 @@ public:
     void sort_basis(AllBasisPackage const &all_basis_package);
     void update_active_cuts();
 
-    void fill_log_data_from_data(LogData &logdata) const;
+    LogData build_log_data_from_data() const;
     void post_run_actions() const;
     Output::IterationsData output_data() const;
     Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;

@@ -40,6 +40,8 @@ namespace logger {
 
         void log_total_duration(double durationInSeconds) override;
 
+        void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) override;
+
     private:
 
         std::list<std::shared_ptr<ILogger>> _loggers;
