@@ -571,10 +571,7 @@ int SolverCbc::solve_mip(){
 	// Passing OsiClp to Cbc to solve
 	// Cbc keeps only solutions of problem
     defineCbcModelFromInnerSolver();
-	clock_t t_i = clock();
 	_cbc.branchAndBound();
-	clock_t t_f = clock();
-	std::cout << "Time master solve pure = " << (t_f - t_i) * 1e-3 << std::endl;
 
 	/*std::cout << "*********************************************" << std::endl;
 	std::cout << "COUCOU CBC STATUS " << _cbc.status() << std::endl;
