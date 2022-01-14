@@ -30,18 +30,7 @@ class ProfileFileNegativeValue(Exception):
     pass
 
 
-def check_profile_file(filename_path):
-    """
-        verifies if a given profile file is valid and indicates if it is a null profile or not
-
-        :param filename_path: path to the profile file to check
-
-        :return: returns False if the profile is null
-    """
-    # check file existence
-    if not os.path.isfile(filename_path):
-        flushed_print(f'{filename_path} is not an existent file')
-        raise ProfileFileNotExists
+def check_profile_file_consistency(filename_path):
 
     two_profiles = False
     with open(filename_path, 'r') as profile_file:
@@ -53,7 +42,6 @@ def check_profile_file(filename_path):
         for idx, line in enumerate(profile_file):
             try:
                 line_vals = line.strip().split()
-
                 if (len(line_vals) == 1) and not two_profiles:
                     first_profile.append(float(line_vals[0]))
                 elif (len(line_vals) == 2) and two_profiles:
@@ -78,6 +66,22 @@ def check_profile_file(filename_path):
         raise ProfileFileWrongNumberOfLines
 
     return any(first_profile) or any(indirect_profile)
+
+
+def check_profile_file(filename_path):
+    """
+        verifies if a given profile file is valid and indicates if it is a null profile or not
+
+        :param filename_path: path to the profile file to check
+
+        :return: returns False if the profile is null
+    """
+    # check file existence
+    if not os.path.isfile(filename_path):
+        flushed_print(f'{filename_path} is not an existent file')
+        raise ProfileFileNotExists
+
+    return check_profile_file_consistency(filename_path)
 
 ##########################################
 # Checks related to candidates.ini
@@ -228,33 +232,12 @@ class MaxUnitsAndMaxInvestmentAreNullSimultaneously(Exception):
     pass
 
 
-def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
-    """
-        checks that a candidate file related to an XpansionDriver has the correct format
+#############################################
+# check candidate attributes types and values
+#############################################
 
-        :param driver: the XpansionDriver pointing to the candidates file
+def check_candidate_attributes(ini_file):
 
-        :return: Exits if the candidates files has the wrong format.
-    """
-    default_values = {'name': 'NA',
-                      'enable': 'true',
-                      'candidate-type': 'investment',
-                      'investment-type': 'generation',
-                      'link': 'NA',
-                      'annual-cost-per-mw': '0',
-                      'unit-size': '0',
-                      'max-units': '0',
-                      'max-investment': '0',
-                      'Relaxed': 'false',
-                      'link-profile': '1',
-                      'already-installed-capacity': '0',
-                      'already-installed-link-profile': '1'}
-    ini_file = configparser.ConfigParser(default_values)
-    ini_file.read(candidates_ini_filepath)
-
-    config_changed = False
-
-    # check attributes types and values
     for each_section in ini_file.sections():
         for (option, value) in ini_file.items(each_section):
             if not check_candidate_option_type(option, value):
@@ -263,14 +246,8 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
                 raise CandidateFileWrongTypeValue
             check_candidate_option_value(option, value)
 
-    # check that name is not empty and does not have space
-    # check that link is not empty
-    for each_section in ini_file.sections():
-        check_candidate_name(
-            ini_file[each_section]['name'].strip(), each_section)
-        check_candidate_link(
-            ini_file[each_section]['link'].strip(), each_section)
 
+def check_name_and_link_unicity(ini_file):
     # check some attributes unicity : name and links
     unique_attributes = ["name"]
     for verified_attribute in unique_attributes:
@@ -285,6 +262,20 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
                 unique_values.add(value)
                 # FIXME can also add reverse link
 
+
+def check_candidate_name_and_link(ini_file):
+    # check that name is not empty and does not have space
+    # check that link is not empty
+    for each_section in ini_file.sections():
+        check_candidate_name(
+            ini_file[each_section]['name'].strip(), each_section)
+        check_candidate_link(
+            ini_file[each_section]['link'].strip(), each_section)
+
+    check_name_and_link_unicity(ini_file)
+
+
+def check_candidate_exclusive_attributes(ini_file):
     # check exclusion between max-investment and (max-units, unit-size) attributes
     for each_section in ini_file.sections():
         max_invest = float(ini_file[each_section]['max-investment'].strip())
@@ -300,7 +291,21 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
                   or (unit-size and max_units)" % (each_section))
             raise MaxUnitsAndMaxInvestmentAreNullSimultaneously
 
+
+def copy_in_backup(ini_file, candidates_ini_filepath):
+
+    shutil.copyfile(candidates_ini_filepath,
+                    candidates_ini_filepath + ".bak")
+    with open(candidates_ini_filepath, 'w') as out_file:
+        ini_file.write(out_file)
+    flushed_print("%s file was overwritten! backup file %s created"
+                  % (candidates_ini_filepath, candidates_ini_filepath + ".bak"))
+
+
+def check_attribute_profile_values(ini_file, capacity_dir_path):
+
     # check attributes profile is 0, 1 or an existent filename
+    config_changed = False
     profile_attributes = ['link-profile', 'already-installed-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
@@ -327,18 +332,58 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
             ini_file.remove_section(each_section)
             config_changed = True
 
-    if config_changed:
-        shutil.copyfile(candidates_ini_filepath,
-                        candidates_ini_filepath + ".bak")
-        with open(candidates_ini_filepath, 'w') as out_file:
-            ini_file.write(out_file)
-        flushed_print("%s file was overwritten! backup file %s created"
-                      % (candidates_ini_filepath, candidates_ini_filepath + ".bak"))
+    return config_changed
+
+
+def check_attributes_profile(ini_file, candidates_ini_filepath, capacity_dir_path):
+    # check attributes profile is 0, 1 or an existent filename
+    if check_attribute_profile_values(ini_file, capacity_dir_path):
+        copy_in_backup(ini_file, candidates_ini_filepath)
+
+
+def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
+    """
+        checks that a candidate file related to an XpansionDriver has the correct format
+
+        :param driver: the XpansionDriver pointing to the candidates file
+
+        :return: Exits if the candidates files has the wrong format.
+    """
+    default_values = {'name': 'NA',
+                      'enable': 'true',
+                      'candidate-type': 'investment',
+                      'investment-type': 'generation',
+                      'link': 'NA',
+                      'annual-cost-per-mw': '0',
+                      'unit-size': '0',
+                      'max-units': '0',
+                      'max-investment': '0',
+                      'Relaxed': 'false',
+                      'link-profile': '1',
+                      'already-installed-capacity': '0',
+                      'already-installed-link-profile': '1'}
+    ini_file = configparser.ConfigParser(default_values)
+    ini_file.read(candidates_ini_filepath)
+
+    # check attributes types and values
+    check_candidate_attributes(ini_file)
+
+    # check that name is not empty and does not have space
+    # check that link is not empty
+    check_candidate_name_and_link(ini_file)
+
+    # check exclusion between max-investment and (max-units, unit-size) attributes
+    check_candidate_exclusive_attributes(ini_file)
+
+    # check attributes profile is 0, 1 or an existent filename
+    check_attributes_profile(
+        ini_file, candidates_ini_filepath, capacity_dir_path)
 
 
 ##########################################
 # Checks related to settings.ini
 ##########################################
+
 
 class NotHandledOption(Exception):
     pass
@@ -413,8 +458,7 @@ def check_setting_option_type(option, value):
                     'check_setting_option_type: Illegal %s option in type, integer is expected .' % option)
                 return False
 
-    else:
-        return isinstance(value, type_str)
+    return isinstance(value, type_str)
 
 
 class OptionTypeError(Exception):
@@ -536,8 +580,7 @@ def check_options(options):
     for (option, value) in option_items:
         check_setting_option_value(option, value)
 
-    if options.get('yearly-weights', "") != "":
-        if options.get("cut_type") == "average":
-            flushed_print(
-                "check_settings : yearly-weights option can not be used when cut_type is average")
-            sys.exit(1)
+    if options.get('yearly-weights', "") != "" and options.get("cut_type") == "average":
+        flushed_print(
+            "check_settings : yearly-weights option can not be used when cut_type is average")
+        sys.exit(1)
