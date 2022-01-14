@@ -25,7 +25,6 @@ public:
 
     AllCutStorage _all_cuts_storage;
     BendersTrace _trace;
-    DynamicAggregateCuts _dynamic_aggregate_cuts;
 
     SimplexBasisStorage _basis;
     SlaveCutId _slave_cut_id;
