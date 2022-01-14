@@ -3,18 +3,18 @@
 #include "Timer.h"
 namespace Output
 {
-    JsonWriter::JsonWriter()= default;
+    JsonWriter::JsonWriter(std::shared_ptr<TimeUtil> timer) : _time(timer) { }
 
     void JsonWriter::updateBeginTime()
     {
-        _time.updateBeginTime();
-        _output["begin"] = _time.getBegin();
+        _time->updateBeginTime();
+        _output["begin"] = _time->getBegin();
     }
 
     void JsonWriter::updateEndTime()
     {
-        _time.updateEndTime();
-        _output["end"] = _time.getEnd();
+        _time->updateEndTime();
+        _output["end"] = _time->getEnd();
     }
 
     void JsonWriter::write_options(BendersOptions const &bendersOptions_p)
@@ -116,7 +116,7 @@ namespace Output
         _output["antares_xpansion"]["version"] = PROJECT_VER;
 
         // Time
-        _output["duration"] = _time.getDuration();
+        _output["duration"] = _time->getDuration();
 
         std::ofstream jsonOut_l(_filename);
         if (jsonOut_l)

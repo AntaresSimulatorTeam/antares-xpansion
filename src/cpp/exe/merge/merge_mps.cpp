@@ -12,6 +12,7 @@
 #include "solver_utils.h"
 #include "logger/User.h"
 #include "helpers/Path.h"
+#include "../../benders/factories/include/WriterFactories.h"
 
 //@suggest: create and move to standardlp.cpp
 // Initialize static member
@@ -30,9 +31,7 @@ int main(int argc, char **argv)
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
     LOG(INFO) << "starting merge_mps" << std::endl;
 
-    Output::JsonWriter jsonWriter_l;
-    jsonWriter_l.initialize(options);
-
+    Writer writer = build_json_writer(options);
     try
     {
         CouplingMap input = build_input(options);
@@ -179,7 +178,7 @@ int main(int argc, char **argv)
 
         logger->log_total_duration(timer.elapsed());
 
-        jsonWriter_l.updateEndTime();
+        writer->updateEndTime();
 
         Point x0;
         DblVector ptr(mergedSolver_l->get_ncols());
@@ -244,8 +243,8 @@ int main(int argc, char **argv)
             sol_infos.problem_status = "ERROR";
         }
 
-        jsonWriter_l.update_solution(sol_infos);
-        jsonWriter_l.dump();
+        writer->update_solution(sol_infos);
+        writer->dump();
     }
     catch (std::exception &ex)
     {

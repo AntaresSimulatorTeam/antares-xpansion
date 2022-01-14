@@ -15,7 +15,7 @@ namespace Output
     class JsonWriter : public OutputWriter
     {
     private:
-        TimeUtil _time = TimeUtil();
+        std::shared_ptr<TimeUtil> _time;
         std::string _filename;
         // attributes of the optimization execution
         Json::Value _output;
@@ -24,7 +24,8 @@ namespace Output
         /*!
          *  \brief JsonWriter default constructor
          */
-        JsonWriter();
+        JsonWriter() = delete;
+        JsonWriter(std::shared_ptr<TimeUtil> timer);
 
         /*!
          *  \brief destructor of class JsonWriter
