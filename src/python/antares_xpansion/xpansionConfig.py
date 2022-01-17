@@ -149,7 +149,6 @@ class XpansionConfig:
             "AGGREGATION": "0",
             "OUTPUTROOT": ".",
             "TRACE": "1",
-            "DELETE_CUT": "0",
             "SLAVE_WEIGHT": "CONSTANT",
             "SLAVE_WEIGHT_VALUE": "1",
             "MASTER_NAME": "master",

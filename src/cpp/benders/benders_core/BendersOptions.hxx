@@ -19,9 +19,6 @@ BENDERS_OPTIONS_MACRO(OUTPUTROOT, std::string, ".")
 // True if a trace should be built, false otherwise
 BENDERS_OPTIONS_MACRO(TRACE, bool, true)
 
-// True if similar cuts should be deleted, false otherwise
-BENDERS_OPTIONS_MACRO(DELETE_CUT, bool, false)
-
 // UNIFORM (1/n), CONSTANT (to set in SLAVE_WEIGHT_VALUE), or a txt file linking each slave to its weight
 BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT, std::string, "CONSTANT")
 

@@ -344,15 +344,9 @@ void BendersBase::compute_cut(AllCutPackage const &all_package)
 			handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[itmap.first]];
 			_data.ub += handler->get_dbl(SLAVE_COST);
 			SlaveCutTrimmer cut(handler, _data.x0);
-			if (_options.DELETE_CUT && !(_all_cuts_storage[itmap.first].find(cut) == _all_cuts_storage[itmap.first].end()))
-			{
-				_data.deletedcut++;
-			}
-			else
-			{
-				_master->add_cut_slave(_problem_to_id[itmap.first], handler->get_subgradient(), _data.x0, handler->get_dbl(SLAVE_COST));
-				_all_cuts_storage[itmap.first].insert(cut);
-			}
+
+			_master->add_cut_slave(_problem_to_id[itmap.first], handler->get_subgradient(), _data.x0, handler->get_dbl(SLAVE_COST));
+			_all_cuts_storage[itmap.first].insert(cut);
 			_trace[_data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
 
 			bound_simplex_iter(handler->get_int(SIMPLEXITER));
@@ -383,10 +377,7 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package)
 			compute_cut_val(handler, _data.x0, s);
 
 			SlaveCutTrimmer cut(handler, _data.x0);
-			if (_options.DELETE_CUT && !(_all_cuts_storage[itmap.first].find(cut) == _all_cuts_storage[itmap.first].end()))
-			{
-				_data.deletedcut++;
-			}
+
 			_all_cuts_storage.find(itmap.first)->second.insert(cut);
 			_trace[_data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
 
