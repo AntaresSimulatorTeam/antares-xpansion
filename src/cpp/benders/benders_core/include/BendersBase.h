@@ -27,8 +27,6 @@ public:
     BendersTrace _trace;
 
     SimplexBasisStorage _basis;
-    SlaveCutId _slave_cut_id;
-    ActiveCutStorage _active_cuts;
 
     virtual void free() = 0;
     // virtual void run()=0;
@@ -42,7 +40,6 @@ public:
     void print_master_and_cut(std::ostream &file, int ite, WorkerMasterDataPtr &trace, Point const &xopt);
     void print_master_csv(std::ostream &stream, WorkerMasterDataPtr &trace, Point const &xopt);
     void print_cut_csv(std::ostream &stream, SlaveCutDataHandler const &handler, std::string const &name, int const islaves);
-    void print_active_cut();
 
     void update_best_ub();
     void bound_simplex_iter(int simplexiter);
@@ -60,5 +57,4 @@ public:
 
     void get_slave_basis(SimplexBasisPackage &simplex_basis_package);
     void sort_basis(AllBasisPackage const &all_basis_package);
-    void update_active_cuts();
 };

@@ -157,7 +157,6 @@ class XpansionConfig:
             "STRUCTURE_FILE": "structure.txt",
             "INPUTROOT": ".",
             "BASIS": "1",
-            "ACTIVECUTS": "0",
             "CSV_NAME": "benders_output_trace",
             "BOUND_ALPHA": "1",
         }

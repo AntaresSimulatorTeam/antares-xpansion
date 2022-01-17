@@ -145,37 +145,6 @@ void BendersBase::print_cut_csv(std::ostream &stream, SlaveCutDataHandler const 
 }
 
 /*!
- *  \brief Write in a csv file every active cut at every iteration
- *
- *	Write in a csv file every active cut for every slave for all iterations
- *
- *  \param active_cuts : vector of tuple storing which cut is active or not
- *
- *  \param options : set of parameters
- */
-void BendersBase::print_active_cut()
-{
-	std::string output(Path(_options.OUTPUTROOT) / "active_cut_output.csv");
-	std::ofstream file(output, std::ios::out | std::ios::trunc);
-	if (file)
-	{
-		file << "Ite;Slave;CutNumber;IsActive;" << std::endl;
-		for (int i(0); i < _active_cuts.size(); i++)
-		{
-			file << std::get<0>(_active_cuts[i]) << ";";
-			file << std::get<1>(_active_cuts[i]) << ";";
-			file << std::get<2>(_active_cuts[i]) << ";";
-			file << std::get<3>(_active_cuts[i]) << ";" << std::endl;
-		}
-		file.close();
-	}
-	else
-	{
-		LOG(INFO) << "Impossible d'ouvrir le fichier .csv" << std::endl;
-	}
-}
-
-/*!
  *  \brief Update best upper bound and best optimal variables
  *
  *	Function to update best upper bound and best optimal variables regarding the current ones
@@ -382,10 +351,6 @@ void BendersBase::compute_cut(AllCutPackage const &all_package)
 			else
 			{
 				_master->add_cut_slave(_problem_to_id[itmap.first], handler->get_subgradient(), _data.x0, handler->get_dbl(SLAVE_COST));
-				if (_options.ACTIVECUTS)
-				{
-					_slave_cut_id[itmap.first].push_back(_master->get_number_constraint());
-				}
 				_all_cuts_storage[itmap.first].insert(cut);
 			}
 			_trace[_data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
@@ -500,30 +465,4 @@ void BendersBase::sort_basis(AllBasisPackage const &all_basis_package)
 		}
 	}
 	_data.nbasis = _basis.size();
-}
-
-/*!
- *  \brief Store all cuts status at each iteration
- *
- *  Fonction to store all cuts status from master problem at each iteration
- *
- *  \param master : pointer to master problem
- *
- *  \param active_cuts : vector of tuple storing each cut status
- *
- *  \param cut_id : map linking each cut from each slave to its id in master problem
- *
- *  \param it : current iteration
- */
-void BendersBase::update_active_cuts()
-{
-	DblVector dual;
-	_master->get_dual_values(dual);
-	for (auto &kvp : _slave_cut_id)
-	{
-		for (int i(0); i < kvp.second.size(); i++)
-		{
-			_active_cuts.push_back(std::make_tuple(_data.it, kvp.first, i + 1, (dual[kvp.first[i]] != 0))); //@TODO check : kvp.first is a string and indexing a vector
-		}
-	}
 }
