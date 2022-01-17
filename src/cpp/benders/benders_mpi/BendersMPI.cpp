@@ -243,25 +243,6 @@ void BendersMpi::write_exception_message(const std::exception &ex)
 	}
 }
 
-void BendersMpi::step_3_gather_slaves_basis()
-{
-
-	SimplexBasisPackage slave_basis_package;
-	if (_world.rank() == 0)
-	{
-		AllBasisPackage all_basis_package;
-		mpi::gather(_world, slave_basis_package, all_basis_package, 0);
-		all_basis_package.erase(all_basis_package.begin());
-		sort_basis(all_basis_package);
-	}
-	else
-	{
-		get_slave_basis(slave_basis_package);
-		mpi::gather(_world, slave_basis_package, 0);
-	}
-	_world.barrier();
-}
-
 void BendersMpi::step_4_update_best_solution(int rank, const Timer &timer_master, const Timer &benders_timer)
 {
 	if (rank == 0)
@@ -324,11 +305,6 @@ void BendersMpi::run()
 		if (!_exceptionRaised)
 		{
 			step_2_build_cuts();
-		}
-
-		if (_options.BASIS && !_exceptionRaised)
-		{
-			step_3_gather_slaves_basis();
 		}
 
 		if (!_exceptionRaised)

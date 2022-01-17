@@ -84,14 +84,6 @@ void Benders::build_cut()
 	_data.timer_slaves = timer_slaves.elapsed();
 	all_package.push_back(slave_cut_package);
 	build_cut_full(all_package);
-	if (_options.BASIS)
-	{
-		SimplexBasisPackage slave_basis_package;
-		AllBasisPackage all_basis_package;
-		get_slave_basis(slave_basis_package);
-		all_basis_package.push_back(slave_basis_package);
-		sort_basis(all_basis_package);
-	}
 }
 
 /*!

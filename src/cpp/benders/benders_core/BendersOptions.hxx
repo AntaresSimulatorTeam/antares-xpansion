@@ -37,9 +37,6 @@ BENDERS_OPTIONS_MACRO(STRUCTURE_FILE, std::string, "structure.txt")
 // Path to the folder where input files are stored
 BENDERS_OPTIONS_MACRO(INPUTROOT, std::string, ".")
 
-// True if simplex bases need to be stored, false otherwise
-BENDERS_OPTIONS_MACRO(BASIS, bool, true)
-
 // Name of the csv output file
 BENDERS_OPTIONS_MACRO(CSV_NAME, std::string, "benders_output_trace")
 

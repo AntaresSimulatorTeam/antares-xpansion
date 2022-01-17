@@ -41,7 +41,7 @@ void BendersBase::print_csv()
 	std::ofstream file(output, std::ios::out | std::ios::trunc);
 	if (file)
 	{
-		file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;deletedcut;time;basis;" << std::endl;
+		file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;deletedcut;time;" << std::endl;
 		int const nite = _trace.size();
 		for (int i = 0; i < nite; i++)
 		{
@@ -313,10 +313,7 @@ void BendersBase::get_slave_cut(SlaveCutPackage &slave_cut_package)
 		SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
 		ptr->fix_to(_data.x0);
 		ptr->solve(handler->get_int(LPSTATUS), _options);
-		if (_options.BASIS)
-		{
-			ptr->get_basis();
-		}
+
 		ptr->get_value(handler->get_dbl(SLAVE_COST));
 		ptr->get_subgradient(handler->get_subgradient());
 		ptr->get_simplex_ite(handler->get_int(SIMPLEXITER));
@@ -419,41 +416,4 @@ void BendersBase::build_cut_full(AllCutPackage const &all_package)
 	{
 		compute_cut(all_package);
 	}
-}
-
-/*!
- *  \brief Get all slaves basis from a map
- *
- *  Fonction to get all slaves basis
- *
- *  \param simplex_basis_package : map linking each slave to its current simplex basis
- */
-void BendersBase::get_slave_basis(SimplexBasisPackage &simplex_basis_package)
-{
-	for (auto &kvp : _map_slaves)
-	{
-		WorkerSlavePtr &ptr(kvp.second);
-		simplex_basis_package[kvp.first] = ptr->get_basis();
-	}
-}
-
-/*!
- *  \brief Store all slaves basis in a set
- *
- *  Fonction to store and sort all slaves basis in a set
- *
- *  \param all_basis_package : vector of slaves basis
- */
-void BendersBase::sort_basis(AllBasisPackage const &all_basis_package)
-{
-	for (int i(0); i < all_basis_package.size(); i++)
-	{
-		for (auto const &itmap : all_basis_package[i])
-		{
-			SimplexBasisPtr basis(new SimplexBasis(itmap.second));
-			SimplexBasisHandler handler(basis);
-			_basis.insert(handler);
-		}
-	}
-	_data.nbasis = _basis.size();
 }

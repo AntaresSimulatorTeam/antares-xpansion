@@ -26,8 +26,6 @@ public:
     AllCutStorage _all_cuts_storage;
     BendersTrace _trace;
 
-    SimplexBasisStorage _basis;
-
     virtual void free() = 0;
     // virtual void run()=0;
 protected:
@@ -54,7 +52,4 @@ public:
     void compute_cut_aggregate(AllCutPackage const &all_package);
     void compute_cut_val(const SlaveCutDataHandlerPtr &handler, const Point &x0, Point &s);
     void build_cut_full(AllCutPackage const &all_package);
-
-    void get_slave_basis(SimplexBasisPackage &simplex_basis_package);
-    void sort_basis(AllBasisPackage const &all_basis_package);
 };
