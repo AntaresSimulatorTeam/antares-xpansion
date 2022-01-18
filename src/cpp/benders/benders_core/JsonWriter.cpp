@@ -99,11 +99,30 @@ namespace Output
 
         _output["solution"]["stopping_criterion"] = criterion_to_string(
                 iterations_data.solution_data.stopping_criterion);
-        _output["solution"]["status"] = status_from_criterion(iterations_data.solution_data.stopping_criterion);
+        _output["solution"]["problem_status"] = status_from_criterion(iterations_data.solution_data.stopping_criterion);
     }
 
     std::string JsonWriter::criterion_to_string(
             const StoppingCriterion stopping_criterion) const {
+        switch (stopping_criterion) {
+            case StoppingCriterion::absolute_gap:
+                return "absolute gap";
+
+            case StoppingCriterion::relative_gap:
+                return "relative gap";
+
+            case StoppingCriterion::max_iteration:
+                return "maximum iterations";
+
+            case StoppingCriterion::timelimit:
+                return "timelimit";
+
+            default:
+                return "error";
+        }
+    }
+
+    std::string JsonWriter::status_from_criterion(const StoppingCriterion stopping_criterion) const  {
         switch (stopping_criterion) {
             case StoppingCriterion::absolute_gap:
                 return "OPTIMAL";
@@ -119,25 +138,6 @@ namespace Output
 
             default:
                 return "ERROR";
-        }
-    }
-
-    std::string JsonWriter::status_from_criterion(const StoppingCriterion stopping_criterion) const  {
-        switch (stopping_criterion) {
-            case StoppingCriterion::absolute_gap:
-                return "OPTIMAL";
-
-            case StoppingCriterion::relative_gap:
-                return "relative gap";
-
-            case StoppingCriterion::max_iteration:
-                return "maximum iterations";
-
-            case StoppingCriterion::timelimit:
-                return "timelimit";
-
-            default:
-                return "error";
         }
     }
 
