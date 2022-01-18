@@ -52,7 +52,9 @@ namespace Output
          */
         virtual void write_failure();
 
-        std::string getCriterionString(const StoppingCriterion stopping_criterion) const;
+        std::string criterion_to_string(const StoppingCriterion stopping_criterion) const;
+        std::string status_from_criterion(const StoppingCriterion stopping_criterion) const;
+
     public:
 
         /*!
@@ -73,8 +75,8 @@ namespace Output
          *  \param bendersOptions_p : set of options used for the optimization
          */
         virtual void write_options(BendersOptions const &bendersOptions_p);
-
         virtual void update_solution(const SolutionData &solution_data);
+
         /*!
          *  \brief write the json data into a file
          */
