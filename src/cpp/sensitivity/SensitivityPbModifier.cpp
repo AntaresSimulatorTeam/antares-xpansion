@@ -6,3 +6,11 @@ std::shared_ptr<SolverAbstract> SensitivityPbModifier::changeProblem(std::shared
 
     return solverModel;
 }
+
+void SensitivityPbModifier::change_objective(){
+
+}
+
+void SensitivityPbModifier::add_near_optimal_cost_constraint(){
+    
+}

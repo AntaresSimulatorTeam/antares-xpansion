@@ -11,4 +11,7 @@ class SensitivityPbModifier{
     
     private:
         std::shared_ptr<SolverAbstract> _solver_model;
+
+        void change_objective();
+        void add_near_optimal_cost_constraint();
 };
