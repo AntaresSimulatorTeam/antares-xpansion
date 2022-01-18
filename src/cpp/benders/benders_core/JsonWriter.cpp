@@ -1,14 +1,14 @@
 #include "JsonWriter.h"
 #include "config.h"
-#include "Timer.h"
 
 namespace clock_utils
 {
     std::string timeToStr(const std::time_t &time_p)
     {
         struct tm local_time;
-        localtime_r(&time_p, &local_time); // Compliant
-        const char* FORMAT = "%d-%m-%Y %H:%M:%S";
+        localtime_platform(time_p, local_time);
+        // localtime_r(&time_p, &local_time); // Compliant
+        const char *FORMAT = "%d-%m-%Y %H:%M:%S";
         char buffer_l[100];
         strftime(buffer_l, sizeof(buffer_l), FORMAT, &local_time);
         std::string strTime_l(buffer_l);
@@ -18,7 +18,7 @@ namespace clock_utils
 }
 namespace Output
 {
-    JsonWriter::JsonWriter(std::shared_ptr<Clock> p_clock, const std::string& json_filename) : _clock(p_clock), _filename(json_filename) { }
+    JsonWriter::JsonWriter(std::shared_ptr<Clock> p_clock, const std::string &json_filename) : _clock(p_clock), _filename(json_filename) {}
 
     void JsonWriter::initialize(const BendersOptions &options)
     {
@@ -32,7 +32,8 @@ namespace Output
     void JsonWriter::updateBeginTime()
     {
         _start_time = _clock->getTime();
-        _output["begin"] = clock_utils::timeToStr(_start_time);    }
+        _output["begin"] = clock_utils::timeToStr(_start_time);
+    }
 
     void JsonWriter::updateEndTime()
     {
@@ -69,7 +70,7 @@ namespace Output
             _output["iterations"][strIterCnt_l]["operational_cost"] = iter.operational_cost;
             _output["iterations"][strIterCnt_l]["overall_cost"] = iter.overall_cost;
 
-                    Json::Value vectCandidates_l(Json::arrayValue);
+            Json::Value vectCandidates_l(Json::arrayValue);
             for (const auto &candidate : iter.candidates)
             {
                 Json::Value candidate_l;

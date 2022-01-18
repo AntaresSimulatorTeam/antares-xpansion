@@ -4,8 +4,18 @@
 #include "OutputWriter.h"
 #include "BendersOptions.h"
 #include "Clock.h"
+#include "Timer.h"
 
 #include <json/writer.h>
+
+inline void localtime_platform(const std::time_t &time_p, struct tm &local_time)
+{
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    localtime_s(&local_time, &time_p);
+#else // defined(__unix__) || (__APPLE__)
+    localtime_r(&time_p, &local_time);
+#endif
+}
 namespace clock_utils
 {
     std::string timeToStr(const std::time_t &time_p);
@@ -43,13 +53,12 @@ namespace Output
         virtual void write_failure();
 
     public:
-
         /*!
          *  \brief JsonWriter default constructor
          */
         JsonWriter() = delete;
 
-        JsonWriter(std::shared_ptr<Clock> p_clock, const std::string & json_filename);
+        JsonWriter(std::shared_ptr<Clock> p_clock, const std::string &json_filename);
 
         /*!
          *  \brief destructor of class JsonWriter
@@ -62,7 +71,6 @@ namespace Output
          *  \param bendersOptions_p : set of options used for the optimization
          */
         virtual void write_options(BendersOptions const &bendersOptions_p);
-
 
         virtual void update_solution(const SolutionData &solution_data);
 
