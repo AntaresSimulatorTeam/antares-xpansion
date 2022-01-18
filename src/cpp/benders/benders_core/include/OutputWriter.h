@@ -42,6 +42,7 @@ namespace Output
         int nbWeeks_p;
         int best_it;
         std::string problem_status;
+        StoppingCriterion stopping_criterion;
     };
     /*!
      *  \brief struct containing some entries to be later written to the json file

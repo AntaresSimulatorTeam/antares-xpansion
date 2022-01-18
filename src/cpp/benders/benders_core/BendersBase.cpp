@@ -775,20 +775,7 @@ Output::SolutionData BendersBase::solution() const
 		solution_data.solution = iteration(_trace[bestItIndex_l]);
 		solution_data.solution.optimality_gap = _data.best_ub - _data.lb;
 		solution_data.solution.relative_gap = solution_data.solution.optimality_gap / _data.best_ub;
+        solution_data.stopping_criterion = _data.stopping_criterion;
 	}
-
-	if ((solution_data.solution.optimality_gap <= _options.ABSOLUTE_GAP) || (solution_data.solution.relative_gap <= _options.RELATIVE_GAP))
-	{
-		solution_data.problem_status = "OPTIMAL";
-	}
-    else if (_options.MAX_ITERATIONS != -1 && _data.it > _options.MAX_ITERATIONS)
-    {
-        solution_data.problem_status = "MAX ITERATIONS";
-    }
-    else
-	{
-		solution_data.problem_status = "ERROR";
-	}
-
 	return solution_data;
 }

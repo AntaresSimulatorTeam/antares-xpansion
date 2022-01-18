@@ -52,7 +52,9 @@ namespace Output
          */
         virtual void write_failure();
 
+        std::string getCriterionString(const StoppingCriterion stopping_criterion) const;
     public:
+
         /*!
          *  \brief JsonWriter default constructor
          */
@@ -73,11 +75,11 @@ namespace Output
         virtual void write_options(BendersOptions const &bendersOptions_p);
 
         virtual void update_solution(const SolutionData &solution_data);
-
         /*!
          *  \brief write the json data into a file
          */
         virtual void dump();
+
         /*!
          * \brief initialize outputs
          * \param options : set of options used for the optimization

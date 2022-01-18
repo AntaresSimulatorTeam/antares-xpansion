@@ -97,7 +97,27 @@ namespace Output
         _output["solution"]["optimality_gap"] = iterations_data.solution_data.solution.optimality_gap;
         _output["solution"]["relative_gap"] = iterations_data.solution_data.solution.relative_gap;
 
-        _output["solution"]["problem_status"] = iterations_data.solution_data.problem_status;
+        _output["solution"]["stopping_criterion"] = getCriterionString(iterations_data.solution_data.stopping_criterion);
+    }
+
+    std::string JsonWriter::getCriterionString(
+            const StoppingCriterion stopping_criterion) const {
+        switch (stopping_criterion) {
+            case StoppingCriterion::absolute_gap:
+                return "absolute gap";
+
+            case StoppingCriterion::relative_gap:
+                return "relative gap";
+
+            case StoppingCriterion::max_iteration:
+                return "maximum iterations";
+
+            case StoppingCriterion::timelimit:
+                return "timelimit";
+
+            default:
+                return "error";
+        }
     }
 
     void JsonWriter::update_solution(const SolutionData &solution_data)
