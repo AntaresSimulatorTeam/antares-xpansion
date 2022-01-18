@@ -8,9 +8,42 @@
 
 typedef std::map<std::string, double> LogPoint;
 
-enum class StoppingCriterion {empty, timelimit, relative_gap, absolute_gap, max_iteration};
+enum class StoppingCriterion
+{
+    empty,
+    timelimit,
+    relative_gap,
+    absolute_gap,
+    max_iteration
+};
+inline std::string stopping_criterion_to_str(const StoppingCriterion stopping_criterion)
+{
+    std::string stop_crit("");
+    switch (stopping_criterion)
+    {
+    case StoppingCriterion::absolute_gap:
+        stop_crit = "absolute gap";
+        break;
 
-struct LogData {
+    case StoppingCriterion::relative_gap:
+        stop_crit = "relative gap";
+        break;
+
+    case StoppingCriterion::max_iteration:
+        stop_crit = "maximum iterations";
+        break;
+
+    case StoppingCriterion::timelimit:
+        stop_crit = "timelimit";
+        break;
+
+    default:
+        break;
+    }
+    return stop_crit;
+}
+struct LogData
+{
     double lb;
     double best_ub;
     int it;
@@ -25,21 +58,22 @@ struct LogData {
     double max_iterations;
 };
 
-class ILogger {
+class ILogger
+{
 
 public:
-    virtual ~ILogger()= default;
-    
-    virtual void display_message(const std::string& str) = 0;
-    virtual void log_at_initialization(const LogData& d) = 0;
-    virtual void log_iteration_candidates      (const LogData& d) = 0;
+    virtual ~ILogger() = default;
+
+    virtual void display_message(const std::string &str) = 0;
+    virtual void log_at_initialization(const LogData &d) = 0;
+    virtual void log_iteration_candidates(const LogData &d) = 0;
     virtual void log_master_solving_duration(double durationInSeconds) = 0;
     virtual void log_subproblems_solving_duration(double durationInSeconds) = 0;
-    virtual void log_at_iteration_end      (const LogData& d) = 0;
-    virtual void log_at_ending        (const LogData& d) = 0;
+    virtual void log_at_iteration_end(const LogData &d) = 0;
+    virtual void log_at_ending(const LogData &d) = 0;
     virtual void log_total_duration(double durationInSeconds) = 0;
-    virtual void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) = 0 ;
+    virtual void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) = 0;
 };
 using Logger = std::shared_ptr<ILogger>;
 
-#endif //ANTARESXPANSION_ILOGGER_H
+#endif // ANTARESXPANSION_ILOGGER_H

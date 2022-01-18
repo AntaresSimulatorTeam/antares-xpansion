@@ -701,14 +701,14 @@ LogData BendersBase::build_log_data_from_data() const
 	logData.optimality_gap = _options.ABSOLUTE_GAP;
 	logData.relative_gap = _options.RELATIVE_GAP;
 	logData.max_iterations = _options.MAX_ITERATIONS;
-    return logData;
+	return logData;
 }
 
 void BendersBase::post_run_actions() const
 {
-	LogData logData= build_log_data_from_data();
+	LogData logData = build_log_data_from_data();
 
-    _logger->log_stop_criterion_reached(_data.stopping_criterion);
+	_logger->log_stop_criterion_reached(_data.stopping_criterion);
 	_logger->log_at_ending(logData);
 
 	_writer->end_writing(output_data());
