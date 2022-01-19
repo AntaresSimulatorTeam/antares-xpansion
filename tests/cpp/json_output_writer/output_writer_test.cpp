@@ -7,9 +7,26 @@
 #include <iostream>
 #include <cstdio>
 #include <time.h>
+#include <json/json.h>
 
 using namespace Output;
-time_t time_t_from_date(int year, int month, int day, int hour, int min, int sec);
+time_t time_from_date(int year, int month, int day, int hour, int min, int sec);
+
+class ClockMock : public Clock
+{
+private:
+    std::time_t _time;
+
+public:
+    std::time_t getTime() override
+    {
+        return _time;
+    }
+    void set_time(std::time_t time)
+    {
+        _time = time;
+    }
+};
 
 class JsonWriterShould : public ::testing::Test
 {
@@ -25,28 +42,7 @@ public:
     }
 
     std::string _fileName;
-};
-
-class TimeUtilMock : public Clock
-{
-private:
-    int getBeginCount = 0;
-    std::time_t _time;
-
-public:
-    std::time_t getTime() override
-    {
-        getBeginCount++;
-        return _time;
-    }
-    void set_time(std::time_t time)
-    {
-        _time = time;
-    }
-    int get_updateBeginCount() const
-    {
-        return getBeginCount;
-    }
+    std::shared_ptr<ClockMock> my_clock = std::make_shared<ClockMock>();
 };
 
 TEST_F(JsonWriterShould, GenerateAValideFile)
@@ -63,25 +59,37 @@ TEST_F(JsonWriterShould, GenerateAValideFile)
     ASSERT_TRUE(fileStream.good());
 }
 
-TEST_F(JsonWriterShould, CallTimerUpdateBeginTime)
+Json::Value get_value_from_json(const std::string& file_name){
+    Json::Value _input;
+    std::ifstream input_file_l(file_name, std::ifstream::binary);
+    Json::CharReaderBuilder builder_l;
+    std::string errs;
+    if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
+        throw std::runtime_error("");
+    }
+    return _input;
+}
+TEST_F(JsonWriterShould, PrintBeginTime)
 {
-    auto timer = std::make_shared<TimeUtilMock>();
+    my_clock->set_time(time_from_date(2020, 1, 1, 12, 10, 30));
 
-    std::time_t my_time_t = time_t_from_date(2020, 1, 1, 12, 10, 30);
-    timer->set_time(time_t_from_date(2020, 1, 1, 12, 10, 30));
-
-    auto writer = JsonWriter(timer, _fileName);
+    auto writer = JsonWriter(my_clock, _fileName);
     auto benders_options = BendersOptions();
 
     benders_options.JSON_FILE = _fileName;
     writer.initialize(benders_options);
-    int n_calls = timer->get_updateBeginCount();
-    ASSERT_EQ(1, n_calls);
-    std::string string_time_zero = clock_utils::timeToStr(my_time_t);
-    ASSERT_EQ("01-01-2020 12:10:30", string_time_zero);
+    writer.dump();
+    Json::Value json_content = get_value_from_json(_fileName);
+    ASSERT_EQ("01-01-2020 12:10:30", json_content["begin"].asString());
+    IterationsData iterations_data;
+    my_clock->set_time(time_from_date(2020, 2, 2, 12, 10, 30));
+    writer.end_writing(iterations_data);
+    json_content = get_value_from_json(_fileName);
+    ASSERT_EQ("01-01-2020 12:10:30", json_content["begin"].asString());
+    ASSERT_EQ("02-02-2020 12:10:30", json_content["end"].asString());
 }
 
-time_t time_t_from_date(int year, int month, int day, int hour, int min, int sec)
+time_t time_from_date(int year, int month, int day, int hour, int min, int sec)
 {
     time_t current_time;
     struct tm time_info;
