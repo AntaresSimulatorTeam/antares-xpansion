@@ -1,62 +1,66 @@
 #include "SensitivityAnalysis.h"
 #include "SensitivityPbModifier.h"
 
-SensitivityAnalysis::SensitivityAnalysis(std::shared_ptr<SolverAbstract> &lastMasterModel, SensitivityLogger &logger, SensitivityWriter writer) : _last_master_model(lastMasterModel), _logger(logger), _writer(writer) {
+SensitivityAnalysis::SensitivityAnalysis(std::shared_ptr<SolverAbstract> &lastMasterModel, std::shared_ptr<SensitivityWriter> writer) : _last_master_model(lastMasterModel), _writer(writer)
+{
 	_sensitivity_pb_model = NULL;
 }
 
 void SensitivityAnalysis::launch()
 {
-	get_capex_optimal_solutions();
-	get_candidates_projection();
+	// get_capex_optimal_solutions();
+	// get_candidates_projection();
+	SensitivityOutputData output_data = get_capex_min_solution();
+	_writer->end_writing(output_data);
 }
 
-void SensitivityAnalysis::get_capex_optimal_solutions()
+// void SensitivityAnalysis::get_capex_optimal_solutions()
+// {
+// 	get_capex_min_solution();
+// 	get_capex_max_solution();
+// }
+
+SensitivityOutputData SensitivityAnalysis::get_capex_min_solution()
 {
-	get_capex_min_solution();
-	get_capex_max_solution();
-}
 
-void SensitivityAnalysis::get_capex_min_solution() {
-	
 	auto pb_modifier = SensitivityPbModifier();
 	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
 
-	solve_sensitivity_pb();
+	return solve_sensitivity_pb();
 }
 
-void SensitivityAnalysis::get_capex_max_solution() {
-	
-	auto pb_modifier = SensitivityPbModifier();
-	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
+// void SensitivityAnalysis::get_capex_max_solution() {
 
-	solve_sensitivity_pb();
-}
+// 	auto pb_modifier = SensitivityPbModifier();
+// 	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
 
-void SensitivityAnalysis::get_candidates_projection()
-{
-	for (int candidateNum(0); candidateNum < _last_master_model->get_ncols(); candidateNum++)
-	{
-		get_candidate_lower_projection(candidateNum);
-		get_candidate_upper_projection(candidateNum);
-	}
-}
+// 	solve_sensitivity_pb();
+// }
 
-void SensitivityAnalysis::get_candidate_lower_projection(int &candidateNum) {
-	auto pb_modifier = SensitivityPbModifier();
-	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
+// void SensitivityAnalysis::get_candidates_projection()
+// {
+// 	for (int candidateNum(0); candidateNum < _last_master_model->get_ncols(); candidateNum++)
+// 	{
+// 		get_candidate_lower_projection(candidateNum);
+// 		get_candidate_upper_projection(candidateNum);
+// 	}
+// }
 
-	solve_sensitivity_pb();
-}
+// void SensitivityAnalysis::get_candidate_lower_projection(int &candidateNum) {
+// 	auto pb_modifier = SensitivityPbModifier();
+// 	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
 
-void SensitivityAnalysis::get_candidate_upper_projection(int &candidateNum) {
-	auto pb_modifier = SensitivityPbModifier();
-	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
+// 	solve_sensitivity_pb();
+// }
 
-	solve_sensitivity_pb();
-}
+// void SensitivityAnalysis::get_candidate_upper_projection(int &candidateNum) {
+// 	auto pb_modifier = SensitivityPbModifier();
+// 	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
 
-void SensitivityAnalysis::solve_sensitivity_pb()
+// 	solve_sensitivity_pb();
+// }
+
+SensitivityOutputData SensitivityAnalysis::solve_sensitivity_pb()
 {
 
 	std::vector<double> ptr(_sensitivity_pb_model->get_ncols());

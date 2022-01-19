@@ -19,6 +19,7 @@ message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 add_subdirectory(solvers_interface)
 add_subdirectory(logger)
 add_subdirectory(lp_namer)
+add_subdirectory(sensitivity)
 add_executable (unit_tests
 		helpers/JsonXpansionReaderTest.cc
 		)
