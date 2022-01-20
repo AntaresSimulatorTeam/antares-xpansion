@@ -18,10 +18,12 @@ private:
     std::time_t _time;
 
 public:
-    std::time_t getTime() override{
+    std::time_t getTime() override
+    {
         return _time;
     }
-    void set_time(std::time_t time){
+    void set_time(std::time_t time)
+    {
         _time = time;
     }
 };
@@ -55,18 +57,21 @@ TEST_F(JsonWriterTest, GenerateAValideFile)
     ASSERT_TRUE(fileStream.good());
 }
 
-Json::Value get_value_from_json(const std::string& file_name){
+Json::Value get_value_from_json(const std::string &file_name)
+{
     Json::Value _input;
     std::ifstream input_file_l(file_name, std::ifstream::binary);
     Json::CharReaderBuilder builder_l;
     std::string errs;
-    if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
+    if (!parseFromStream(builder_l, input_file_l, &_input, &errs))
+    {
         throw std::runtime_error("");
     }
     return _input;
 }
 
-TEST_F(JsonWriterTest, InitialiseShouldPrintBeginTimeAndOptions){
+TEST_F(JsonWriterTest, InitialiseShouldPrintBeginTimeAndOptions)
+{
     // given
     my_clock->set_time(time_from_date(2020, 1, 1, 12, 10, 30));
     auto writer = JsonWriter(my_clock, _fileName);
@@ -76,12 +81,31 @@ TEST_F(JsonWriterTest, InitialiseShouldPrintBeginTimeAndOptions){
     // then
     Json::Value json_content = get_value_from_json(_fileName);
     ASSERT_EQ("01-01-2020 12:10:30", json_content["begin"].asString());
+    ASSERT_EQ(benders_options.LOG_LEVEL, json_content["options"]["LOG_LEVEL"].asInt());
+    ASSERT_EQ(benders_options.MAX_ITERATIONS, json_content["options"]["MAX_ITERATIONS"].asInt());
     ASSERT_EQ(benders_options.ABSOLUTE_GAP, json_content["options"]["ABSOLUTE_GAP"].asDouble());
     ASSERT_EQ(benders_options.RELATIVE_GAP, json_content["options"]["RELATIVE_GAP"].asDouble());
-
+    ASSERT_EQ(benders_options.AGGREGATION, json_content["options"]["AGGREGATION"].asBool());
+    ASSERT_EQ(benders_options.OUTPUTROOT, json_content["options"]["OUTPUTROOT"].asString());
+    ASSERT_EQ(benders_options.TRACE, json_content["options"]["TRACE"].asBool());
+    ASSERT_EQ(benders_options.DELETE_CUT, json_content["options"]["DELETE_CUT"].asBool());
+    ASSERT_EQ(benders_options.SLAVE_WEIGHT, json_content["options"]["SLAVE_WEIGHT"].asString());
+    ASSERT_EQ(benders_options.MASTER_NAME, json_content["options"]["MASTER_NAME"].asString());
+    ASSERT_EQ(benders_options.SLAVE_NUMBER, json_content["options"]["SLAVE_NUMBER"].asInt());
+    ASSERT_EQ(benders_options.INPUTROOT, json_content["options"]["INPUTROOT"].asString());
+    ASSERT_EQ(benders_options.BASIS, json_content["options"]["BASIS"].asBool());
+    ASSERT_EQ(benders_options.ACTIVECUTS, json_content["options"]["ACTIVECUTS"].asBool());
+    ASSERT_EQ(benders_options.THRESHOLD_AGGREGATION, json_content["options"]["THRESHOLD_AGGREGATION"].asInt());
+    ASSERT_EQ(benders_options.THRESHOLD_ITERATION, json_content["options"]["THRESHOLD_ITERATION"].asInt());
+    ASSERT_EQ(benders_options.CSV_NAME, json_content["options"]["CSV_NAME"].asString());
+    ASSERT_EQ(benders_options.BOUND_ALPHA, json_content["options"]["BOUND_ALPHA"].asBool());
+    ASSERT_EQ(benders_options.SOLVER_NAME, json_content["options"]["SOLVER_NAME"].asString());
+    ASSERT_EQ(benders_options.JSON_FILE, json_content["options"]["JSON_FILE"].asString());
+    ASSERT_EQ(benders_options.TIME_LIMIT, json_content["options"]["TIME_LIMIT"].asDouble());
 }
 
-TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults){
+TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults)
+{
     my_clock->set_time(time_from_date(2020, 1, 1, 12, 10, 30));
     auto writer = JsonWriter(my_clock, _fileName);
 
