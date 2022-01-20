@@ -45,7 +45,7 @@ namespace Output
 #undef BENDERS_OPTIONS_MACRO
     }
 
-    void JsonWriter::write_iteration(const IterationsData &iterations_data)
+    void JsonWriter::write_iterations(const IterationsData &iterations_data)
     {
         _output["nbWeeks"] = iterations_data.nbWeeks_p;
         _output["duration"] = iterations_data.elapsed_time;
@@ -95,46 +95,50 @@ namespace Output
         _output["solution"]["relative_gap"] = iterations_data.solution_data.solution.relative_gap;
 
         _output["solution"]["stopping_criterion"] = criterion_to_string(
-                iterations_data.solution_data.stopping_criterion);
+            iterations_data.solution_data.stopping_criterion);
         _output["solution"]["problem_status"] = status_from_criterion(iterations_data.solution_data.stopping_criterion);
     }
 
     std::string JsonWriter::criterion_to_string(
-            const StoppingCriterion stopping_criterion) const {
-        switch (stopping_criterion) {
-            case StoppingCriterion::absolute_gap:
-                return "absolute gap";
+        const StoppingCriterion stopping_criterion) const
+    {
+        switch (stopping_criterion)
+        {
+        case StoppingCriterion::absolute_gap:
+            return "absolute gap";
 
-            case StoppingCriterion::relative_gap:
-                return "relative gap";
+        case StoppingCriterion::relative_gap:
+            return "relative gap";
 
-            case StoppingCriterion::max_iteration:
-                return "maximum iterations";
+        case StoppingCriterion::max_iteration:
+            return "maximum iterations";
 
-            case StoppingCriterion::timelimit:
-                return "timelimit";
+        case StoppingCriterion::timelimit:
+            return "timelimit";
 
-            default:
-                return "error";
+        default:
+            return "error";
         }
     }
 
-    std::string JsonWriter::status_from_criterion(const StoppingCriterion stopping_criterion) const  {
-        switch (stopping_criterion) {
-            case StoppingCriterion::absolute_gap:
-                return "OPTIMAL";
+    std::string JsonWriter::status_from_criterion(const StoppingCriterion stopping_criterion) const
+    {
+        switch (stopping_criterion)
+        {
+        case StoppingCriterion::absolute_gap:
+            return "OPTIMAL";
 
-            case StoppingCriterion::relative_gap:
-                return "OPTIMAL";
+        case StoppingCriterion::relative_gap:
+            return "OPTIMAL";
 
-            case StoppingCriterion::max_iteration:
-                return "OPTIMAL";
+        case StoppingCriterion::max_iteration:
+            return "OPTIMAL";
 
-            case StoppingCriterion::timelimit:
-                return "OPTIMAL";
+        case StoppingCriterion::timelimit:
+            return "OPTIMAL";
 
-            default:
-                return "ERROR";
+        default:
+            return "ERROR";
         }
     }
 
@@ -182,7 +186,7 @@ namespace Output
     void JsonWriter::end_writing(const IterationsData &iterations_data)
     {
         updateEndTime();
-        write_iteration(iterations_data);
+        write_iterations(iterations_data);
         dump();
     }
 }

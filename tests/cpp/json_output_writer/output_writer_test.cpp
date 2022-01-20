@@ -116,6 +116,84 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults)
     ASSERT_EQ("01-01-2020 12:10:30", json_content["end"].asString());
 }
 
+TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData)
+{
+    auto writer = JsonWriter(my_clock, _fileName);
+
+    CandidateData c1, c2;
+    c1.name = "c1";
+    c1.invest = 55;
+    c1.min = 0.55;
+    c1.max = 555;
+    c2.name = "c2";
+    c2.invest = 66;
+    c2.min = 0.66;
+    c2.max = 666;
+    CandidatesVec cdVec = {c1, c2};
+
+    Iteration iter1;
+    iter1.time = 15;
+    iter1.lb = 1.2;
+    iter1.best_ub = 12;
+    iter1.optimality_gap = 1e-10;
+    iter1.relative_gap = 1e-12;
+    iter1.investment_cost = 1;
+    iter1.operational_cost = 17;
+    iter1.overall_cost = 20;
+    iter1.candidates = cdVec;
+
+    CandidateData c3, c4;
+    c3.name = "c3";
+    c3.invest = 33;
+    c3.min = 0.33;
+    c3.max = 5553;
+    c4.name = "c4";
+    c4.invest = 656;
+    c4.min = 0.4566;
+    c4.max = 545666;
+    CandidatesVec cdVec2 = {c3, c4};
+
+    Iteration iter2;
+    iter2.time = 105;
+    iter2.lb = 12;
+    iter2.best_ub = 212;
+    iter2.optimality_gap = 1e-1;
+    iter2.relative_gap = 1e-10;
+    iter2.investment_cost = 12;
+    iter2.operational_cost = 67;
+    iter2.overall_cost = 620;
+    iter2.candidates = cdVec2;
+
+    Iterations itersVec = {iter1, iter2};
+
+    SolutionData solution_data;
+    solution_data.solution = iter2;
+    solution_data.nbWeeks_p = 5;
+    solution_data.best_it = 2;
+    solution_data.problem_status = "OPTIMAL";
+    solution_data.stopping_criterion = StoppingCriterion::max_iteration;
+
+    IterationsData iterations_data;
+    iterations_data.nbWeeks_p = 5;
+    iterations_data.elapsed_time = 55;
+    iterations_data.iters = itersVec;
+    iterations_data.solution_data = solution_data;
+
+    writer.end_writing(iterations_data);
+
+    Json::Value json_content = get_value_from_json(_fileName);
+
+    ASSERT_EQ(iter1.best_ub, json_content["iterations"]["1"]["best_ub"].asDouble());
+    ASSERT_EQ(iter1.time, json_content["iterations"]["1"]["duration"].asDouble());
+    ASSERT_EQ(iter1.investment_cost, json_content["iterations"]["1"]["investment_cost"].asDouble());
+    ASSERT_EQ(iter1.lb, json_content["iterations"]["1"]["lb"].asDouble());
+    ASSERT_EQ(iter1.operational_cost, json_content["iterations"]["1"]["operational_cost"].asDouble());
+    ASSERT_EQ(iter1.optimality_gap, json_content["iterations"]["1"]["optimality_gap"].asDouble());
+    ASSERT_EQ(iter1.relative_gap, json_content["iterations"]["1"]["relative_gap"].asDouble());
+    ASSERT_EQ(iter1.ub, json_content["iterations"]["1"]["ub"].asDouble());
+
+    // ASSERT_EQ(iter1.ub, json_content["iterations"]["1"]["candidates"][""].asDouble());
+}
 time_t time_from_date(int year, int month, int day, int hour, int min, int sec)
 {
     time_t current_time;

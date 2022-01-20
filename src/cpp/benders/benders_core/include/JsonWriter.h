@@ -43,7 +43,7 @@ namespace Output
          *  \brief updates the end of execution time
          */
         virtual void updateEndTime();
-        virtual void write_iteration(const IterationsData &iterations_data);
+        virtual void write_iterations(const IterationsData &iterations_data);
 
         /*!
          *  \brief write an a priori errored json output, overwritten if optimization ends
@@ -52,7 +52,6 @@ namespace Output
         std::string status_from_criterion(const StoppingCriterion stopping_criterion) const;
 
     public:
-
         /*!
          *  \brief JsonWriter default constructor
          */
