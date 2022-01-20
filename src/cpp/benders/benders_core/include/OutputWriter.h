@@ -57,6 +57,7 @@ namespace Output
     struct IterationsData
     {
         int nbWeeks_p;
+        double elapsed_time;
         Iterations iters;
         SolutionData solution_data;
     };
@@ -75,18 +76,18 @@ namespace Output
         virtual ~OutputWriter() = default;
 
         /*!
-         *  \brief saves the options of the benders algorithm to be later written to the json file
-         *
-         *  \param bendersOptions_p : set of options used for the optimization
-         */
-        virtual void write_options(BendersOptions const &bendersOptions_p) = 0;
-
-        /*!
          *  \brief  saves some entries to be later written to the json file
          *
          *  \param solution_data containing solution data
          */
         virtual void update_solution(const SolutionData &solution_data) = 0;
+
+        /*!
+         *  \brief saves the options of the benders algorithm to be later written to the json file
+         *
+         *  \param bendersOptions_p : set of options used for the optimization
+         */
+        virtual void write_options(BendersOptions const &bendersOptions_p) = 0;
 
         /*!
          *  \brief write the log data into a file

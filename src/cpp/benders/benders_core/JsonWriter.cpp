@@ -22,23 +22,19 @@ namespace Output
 
     void JsonWriter::initialize(const BendersOptions &options)
     {
-        write_failure();
-        dump();
-
         write_options(options);
         updateBeginTime();
+        dump();
     }
 
     void JsonWriter::updateBeginTime()
     {
-        _start_time = _clock->getTime();
-        _output["begin"] = clock_utils::timeToStr(_start_time);
+        _output["begin"] = clock_utils::timeToStr(_clock->getTime());
     }
 
     void JsonWriter::updateEndTime()
     {
-        _end_time = _clock->getTime();
-        _output["end"] = clock_utils::timeToStr(_end_time);
+        _output["end"] = clock_utils::timeToStr(_clock->getTime());
     }
 
     void JsonWriter::write_options(BendersOptions const &bendersOptions_p)
@@ -52,6 +48,7 @@ namespace Output
     void JsonWriter::write_iteration(const IterationsData &iterations_data)
     {
         _output["nbWeeks"] = iterations_data.nbWeeks_p;
+        _output["duration"] = iterations_data.elapsed_time;
 
         // Iterations
         size_t iterCnt_l(0);
@@ -158,16 +155,8 @@ namespace Output
         {
             _output["solution"]["values"][candidate.name] = candidate.invest;
         }
-        updateEndTime();
-    }
 
-    /*!
-     *  \brief write a json output with a failure status in solution. If optimization process exits before it ends, this failure will be available as an output.
-     *
-     */
-    void JsonWriter::write_failure()
-    {
-        _output["solution"]["problem_status"] = "ERROR";
+        updateEndTime();
     }
 
     /*!
@@ -175,14 +164,8 @@ namespace Output
      */
     void JsonWriter::dump()
     {
-        // Antares
         _output["antares"]["version"] = ANTARES_VERSION_TAG;
-
-        // Xpansion
         _output["antares_xpansion"]["version"] = PROJECT_VER;
-
-        // Time
-        _output["duration"] = clock_utils::timeToStr(_end_time - _start_time);
 
         std::ofstream jsonOut_l(_filename);
         if (jsonOut_l)

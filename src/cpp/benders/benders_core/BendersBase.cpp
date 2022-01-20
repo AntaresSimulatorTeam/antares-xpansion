@@ -729,6 +729,7 @@ Output::IterationsData BendersBase::output_data() const
 	}
 	iterations_data.iters = iters;
 	iterations_data.solution_data = solution();
+    iterations_data.elapsed_time = _data.elapsed_time;
 	return iterations_data;
 }
 

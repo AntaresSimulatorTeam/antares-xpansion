@@ -18,17 +18,15 @@ private:
     std::time_t _time;
 
 public:
-    std::time_t getTime() override
-    {
+    std::time_t getTime() override{
         return _time;
     }
-    void set_time(std::time_t time)
-    {
+    void set_time(std::time_t time){
         _time = time;
     }
 };
 
-class JsonWriterShould : public ::testing::Test
+class JsonWriterTest : public ::testing::Test
 {
 public:
     void SetUp() override
@@ -45,12 +43,10 @@ public:
     std::shared_ptr<ClockMock> my_clock = std::make_shared<ClockMock>();
 };
 
-TEST_F(JsonWriterShould, GenerateAValideFile)
+TEST_F(JsonWriterTest, GenerateAValideFile)
 {
-    auto timer = std::make_shared<Clock>();
-    auto writer = JsonWriter(timer, _fileName);
+    auto writer = JsonWriter(my_clock, _fileName);
     auto benders_options = BendersOptions();
-    benders_options.JSON_FILE = _fileName;
     writer.initialize(benders_options);
     writer.write_options(benders_options);
 
@@ -69,24 +65,31 @@ Json::Value get_value_from_json(const std::string& file_name){
     }
     return _input;
 }
-TEST_F(JsonWriterShould, PrintBeginTime)
-{
+
+TEST_F(JsonWriterTest, InitialiseShouldPrintBeginTimeAndOptions){
+    // given
     my_clock->set_time(time_from_date(2020, 1, 1, 12, 10, 30));
-
     auto writer = JsonWriter(my_clock, _fileName);
+    // when
     auto benders_options = BendersOptions();
-
-    benders_options.JSON_FILE = _fileName;
     writer.initialize(benders_options);
-    writer.dump();
+    // then
     Json::Value json_content = get_value_from_json(_fileName);
     ASSERT_EQ("01-01-2020 12:10:30", json_content["begin"].asString());
+    ASSERT_EQ(benders_options.ABSOLUTE_GAP, json_content["options"]["ABSOLUTE_GAP"].asDouble());
+    ASSERT_EQ(benders_options.RELATIVE_GAP, json_content["options"]["RELATIVE_GAP"].asDouble());
+
+}
+
+TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults){
+    my_clock->set_time(time_from_date(2020, 1, 1, 12, 10, 30));
+    auto writer = JsonWriter(my_clock, _fileName);
+
     IterationsData iterations_data;
-    my_clock->set_time(time_from_date(2020, 2, 2, 12, 10, 30));
     writer.end_writing(iterations_data);
-    json_content = get_value_from_json(_fileName);
-    ASSERT_EQ("01-01-2020 12:10:30", json_content["begin"].asString());
-    ASSERT_EQ("02-02-2020 12:10:30", json_content["end"].asString());
+
+    Json::Value json_content = get_value_from_json(_fileName);
+    ASSERT_EQ("01-01-2020 12:10:30", json_content["end"].asString());
 }
 
 time_t time_from_date(int year, int month, int day, int hour, int min, int sec)

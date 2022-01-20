@@ -30,8 +30,6 @@ namespace Output
     {
     private:
         std::shared_ptr<Clock> _clock;
-        time_t _start_time;
-        time_t _end_time;
         std::string _filename;
         // attributes of the optimization execution
         Json::Value _output;
@@ -50,8 +48,6 @@ namespace Output
         /*!
          *  \brief write an a priori errored json output, overwritten if optimization ends
          */
-        virtual void write_failure();
-
         std::string criterion_to_string(const StoppingCriterion stopping_criterion) const;
         std::string status_from_criterion(const StoppingCriterion stopping_criterion) const;
 
