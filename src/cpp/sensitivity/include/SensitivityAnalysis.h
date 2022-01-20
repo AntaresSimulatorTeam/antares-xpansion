@@ -7,12 +7,14 @@
 class SensitivityAnalysis
 {
 public:
-    explicit SensitivityAnalysis(std::shared_ptr<SolverAbstract> &lastMasterProblem, std::shared_ptr<SensitivityWriter> writer);
+    explicit SensitivityAnalysis(double epsilon, std::shared_ptr<SolverAbstract> &lastMasterProblem, std::shared_ptr<SensitivityWriter> writer);
     ~SensitivityAnalysis();
 
     void launch();
 
 private:
+    double _epsilon;
+
     std::shared_ptr<SolverAbstract> _last_master_model;
     std::shared_ptr<SolverAbstract> _sensitivity_pb_model;
 

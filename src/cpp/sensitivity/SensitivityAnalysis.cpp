@@ -1,7 +1,7 @@
 #include "SensitivityAnalysis.h"
 #include "SensitivityPbModifier.h"
 
-SensitivityAnalysis::SensitivityAnalysis(std::shared_ptr<SolverAbstract> &lastMasterModel, std::shared_ptr<SensitivityWriter> writer) : _last_master_model(lastMasterModel), _writer(writer)
+SensitivityAnalysis::SensitivityAnalysis(double epsilon, std::shared_ptr<SolverAbstract> &lastMasterModel, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _last_master_model(lastMasterModel), _writer(writer)
 {
 	_sensitivity_pb_model = NULL;
 }
@@ -23,7 +23,7 @@ void SensitivityAnalysis::launch()
 SensitivityOutputData SensitivityAnalysis::get_capex_min_solution()
 {
 
-	auto pb_modifier = SensitivityPbModifier();
+	auto pb_modifier = SensitivityPbModifier(_epsilon);
 	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
 
 	return solve_sensitivity_pb();
