@@ -1,21 +1,7 @@
 #pragma once
 
 #include <json/writer.h>
-
-struct SensitivityCandidate
-{
-    std::string name;
-    double invest;
-};
-
-struct SensitivityOutputData
-{
-    double epsilon;
-    double best_overall_cost; //ou stocker un objet Output::SolutionData
-    double sensitivity_solution_overall_cost;
-    double sensitivity_pb_objective; // should contain specific pb objective for each sensitivity pb (either min/max candidate cost or cpaex min/max)
-    std::vector<SensitivityCandidate> sensitivity_candidates;
-};
+#include "SensitivityOutputData.h"
 
 class SensitivityWriter
 {

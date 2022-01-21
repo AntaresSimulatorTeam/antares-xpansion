@@ -24,7 +24,8 @@ void SensitivityWriter::dump()
 void SensitivityWriter::write_sensitivity_output(const SensitivityOutputData &output_data)
 {
     _output["epsilon"] = output_data.epsilon;
-    _output["best_overall_cost"] = output_data.best_overall_cost;
+    _output["best_benders_cost"] = output_data.best_benders_cost;
+    _output["sensitivity_pb_status"] = output_data.sensitivity_pb_status;
     _output["sensitivity_solution_overall_cost"] = output_data.sensitivity_solution_overall_cost;
     _output["sensitivity_pb_objective"] = output_data.sensitivity_pb_objective;
 
@@ -32,8 +33,8 @@ void SensitivityWriter::write_sensitivity_output(const SensitivityOutputData &ou
     for (const auto &candidate : output_data.sensitivity_candidates)
     {
         Json::Value candidate_l;
-        candidate_l["name"] = candidate.name;
-        candidate_l["invest"] = candidate.invest;
+        candidate_l["name"] = candidate.first;
+        candidate_l["invest"] = candidate.second;
         candidates_l.append(candidate_l);
     }
     _output["sensitivity_solution_candidates"] = candidates_l;
