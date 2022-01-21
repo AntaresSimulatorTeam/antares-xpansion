@@ -12,6 +12,12 @@
 using namespace Output;
 time_t time_from_date(int year, int month, int day, int hour, int min, int sec);
 
+const std::string
+    CRIT_ABSOLUTE_GAP_C("absolute gap"),
+    CRIT_RELATIVE_GAP_C("relative gap"),
+    CRIT_MAX_ITER_C("maximum iterations"),
+    CRIT_TIMELIMIT_C("timelimit"),
+    STOP_ERROR_C("error");
 class ClockMock : public Clock
 {
 private:
@@ -171,7 +177,7 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData)
     solution_data.nbWeeks_p = 5;
     solution_data.best_it = 2;
     solution_data.problem_status = STATUS_OPTIMAL_C;
-    solution_data.stopping_criterion = StoppingCriterion::max_iteration;
+    solution_data.stopping_criterion = CRIT_MAX_ITER_C;
 
     IterationsData iterations_data;
     iterations_data.nbWeeks_p = 5;
@@ -204,7 +210,7 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData)
     ASSERT_EQ(solution_data.solution.relative_gap, json_content[SOLUTION_C][RELATIVE_GAP_C].asDouble());
     ASSERT_EQ(solution_data.best_it, json_content[SOLUTION_C][ITERATION_C].asInt());
     ASSERT_EQ(solution_data.problem_status, json_content[SOLUTION_C][PROBLEM_STATUS_C].asString());
-    ASSERT_EQ(CRIT_MAX_ITER_C, json_content[SOLUTION_C][STOPPING_CRITERION_C].asString());
+    ASSERT_EQ(solution_data.stopping_criterion, json_content[SOLUTION_C][STOPPING_CRITERION_C].asString());
 }
 time_t time_from_date(int year, int month, int day, int hour, int min, int sec)
 {

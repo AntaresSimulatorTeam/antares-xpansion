@@ -86,5 +86,6 @@ public:
     Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
     Output::CandidatesVec candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const;
     Output::SolutionData solution() const;
+    std::string status_from_criterion() const;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

@@ -70,7 +70,7 @@ namespace xpansion
 
         void User::log_stop_criterion_reached(const StoppingCriterion stopping_criterion)
         {
-            _stream << "--- Run completed: " << stopping_criterion_to_str(stopping_criterion) << " reached" << std::endl;
+            _stream << "--- Run completed: " << criterion_to_str(stopping_criterion) << " reached" << std::endl;
         }
 
     } // namespace logger

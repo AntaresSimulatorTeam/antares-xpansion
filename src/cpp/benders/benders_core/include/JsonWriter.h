@@ -23,42 +23,6 @@ namespace clock_utils
 namespace Output
 {
 
-    // string constantes
-    const std::string
-        ANTARES_C("antares"),
-        VERSION_C("version"),
-        ANTARES_XPANSION_C("antares_xpansion"),
-        BEGIN_C("begin"),
-        END_C("end"),
-        DURATION_C("duration"),
-        ITERATIONS_C("iterations"),
-        BEST_UB_C("best_ub"),
-        CANDIDATES_C("candidates"),
-        INVEST_C("invest"),
-        MAX_C("max"),
-        MIN_C("min"),
-        NAME_C("name"),
-        INVESTMENT_COST_C("investment_cost"),
-        LB_C("lb"),
-        OPERATIONAL_COST_C("operational_cost"),
-        OPTIMALITY_GAP_C("optimality_gap"),
-        OVERALL_COST_C("overall_cost"),
-        RELATIVE_GAP_C("relative_gap"),
-        UB_C("ub"),
-        NBWEEKS_C("nbWeeks"),
-        OPTIONS_C("options"),
-        SOLUTION_C("solution"),
-        ITERATION_C("iteration"),
-        PROBLEM_STATUS_C("problem_status"),
-        STATUS_OPTIMAL_C("OPTIMAL"),
-        STATUS_ERROR_C("ERROR"),
-        VALUES_C("values"),
-        STOPPING_CRITERION_C("stopping_criterion"),
-        CRIT_ABSOLUTE_GAP_C("absolute gap"),
-        CRIT_RELATIVE_GAP_C("relative gap"),
-        CRIT_MAX_ITER_C("maximum iterations"),
-        CRIT_TIMELIMIT_C("timelimit"),
-        STOP_ERROR_C("error");
     /*!
      * \class JsonWriter
      * \brief JsonWriter class to describe the execuion session of an antares xpansion optimization in a json file

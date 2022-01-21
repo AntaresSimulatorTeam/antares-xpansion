@@ -729,7 +729,7 @@ Output::IterationsData BendersBase::output_data() const
 	}
 	iterations_data.iters = iters;
 	iterations_data.solution_data = solution();
-    iterations_data.elapsed_time = _data.elapsed_time;
+	iterations_data.elapsed_time = _data.elapsed_time;
 	return iterations_data;
 }
 
@@ -769,6 +769,7 @@ Output::SolutionData BendersBase::solution() const
 	Output::SolutionData solution_data;
 	solution_data.nbWeeks_p = _nbWeeks;
 	solution_data.best_it = _data.best_it;
+	solution_data.problem_status = status_from_criterion();
 	size_t bestItIndex_l = _data.best_it - 1;
 
 	if (bestItIndex_l < _trace.size())
@@ -776,7 +777,22 @@ Output::SolutionData BendersBase::solution() const
 		solution_data.solution = iteration(_trace[bestItIndex_l]);
 		solution_data.solution.optimality_gap = _data.best_ub - _data.lb;
 		solution_data.solution.relative_gap = solution_data.solution.optimality_gap / _data.best_ub;
-        solution_data.stopping_criterion = _data.stopping_criterion;
+		solution_data.stopping_criterion = criterion_to_str(_data.stopping_criterion);
 	}
 	return solution_data;
+}
+
+std::string BendersBase::status_from_criterion() const
+{
+	switch (_data.stopping_criterion)
+	{
+	case StoppingCriterion::absolute_gap:
+	case StoppingCriterion::relative_gap:
+	case StoppingCriterion::max_iteration:
+	case StoppingCriterion::timelimit:
+		return Output::STATUS_OPTIMAL_C;
+
+	default:
+		return Output::STATUS_ERROR_C;
+	}
 }

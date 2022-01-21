@@ -16,7 +16,7 @@ enum class StoppingCriterion
     absolute_gap,
     max_iteration
 };
-inline std::string stopping_criterion_to_str(const StoppingCriterion stopping_criterion)
+inline std::string criterion_to_str(const StoppingCriterion stopping_criterion)
 {
     std::string stop_crit("");
     switch (stopping_criterion)

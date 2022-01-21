@@ -94,46 +94,8 @@ namespace Output
         _output[SOLUTION_C][OPTIMALITY_GAP_C] = iterations_data.solution_data.solution.optimality_gap;
         _output[SOLUTION_C][RELATIVE_GAP_C] = iterations_data.solution_data.solution.relative_gap;
 
-        _output[SOLUTION_C][STOPPING_CRITERION_C] = criterion_to_string(
-            iterations_data.solution_data.stopping_criterion);
-        _output[SOLUTION_C][PROBLEM_STATUS_C] = status_from_criterion(iterations_data.solution_data.stopping_criterion);
-    }
-
-    std::string JsonWriter::criterion_to_string(
-        const StoppingCriterion stopping_criterion) const
-    {
-        switch (stopping_criterion)
-        {
-        case StoppingCriterion::absolute_gap:
-            return CRIT_ABSOLUTE_GAP_C;
-
-        case StoppingCriterion::relative_gap:
-            return CRIT_RELATIVE_GAP_C;
-
-        case StoppingCriterion::max_iteration:
-            return CRIT_MAX_ITER_C;
-
-        case StoppingCriterion::timelimit:
-            return CRIT_TIMELIMIT_C;
-
-        default:
-            return STOP_ERROR_C;
-        }
-    }
-
-    std::string JsonWriter::status_from_criterion(const StoppingCriterion stopping_criterion) const
-    {
-        switch (stopping_criterion)
-        {
-        case StoppingCriterion::absolute_gap:
-        case StoppingCriterion::relative_gap:
-        case StoppingCriterion::max_iteration:
-        case StoppingCriterion::timelimit:
-            return STATUS_OPTIMAL_C;
-
-        default:
-            return STATUS_ERROR_C;
-        }
+        _output[SOLUTION_C][STOPPING_CRITERION_C] = iterations_data.solution_data.stopping_criterion;
+        _output[SOLUTION_C][PROBLEM_STATUS_C] = iterations_data.solution_data.problem_status;
     }
 
     void JsonWriter::update_solution(const SolutionData &solution_data)
@@ -149,6 +111,7 @@ namespace Output
         _output[SOLUTION_C][RELATIVE_GAP_C] = solution_data.solution.relative_gap;
 
         _output[SOLUTION_C][PROBLEM_STATUS_C] = solution_data.problem_status;
+        _output[SOLUTION_C][STOPPING_CRITERION_C] = solution_data.stopping_criterion;
         for (const auto &candidate : solution_data.solution.candidates)
         {
             _output[SOLUTION_C][VALUES_C][candidate.name] = candidate.invest;
