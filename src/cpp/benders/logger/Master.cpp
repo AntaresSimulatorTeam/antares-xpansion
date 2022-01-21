@@ -3,11 +3,7 @@
 namespace xpansion{
 namespace logger {
 
-    Master::Master() {}
 
-    Master::~Master() {
-
-    }
 
     void Master::display_message(const std::string& str) {
         for (auto logger : _loggers) {
@@ -54,6 +50,12 @@ namespace logger {
     void Master::log_total_duration(double durationInSeconds) {
         for (auto logger : _loggers) {
             logger->log_total_duration(durationInSeconds);
+        }
+    }
+
+    void Master::log_stop_criterion_reached(const StoppingCriterion stopping_criterion) {
+        for (auto logger : _loggers) {
+            logger->log_stop_criterion_reached(stopping_criterion);
         }
     }
 

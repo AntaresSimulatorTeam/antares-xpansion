@@ -1,22 +1,28 @@
 //
-// Created by s20217 on 20/04/2021.
+// Created by jmkerloch on 19/04/2021.
 //
 
-#ifndef ANTARESXPANSION_USER_H
-#define ANTARESXPANSION_USER_H
+#ifndef ANTARESXPANSION_MASTER_H
+#define ANTARESXPANSION_MASTER_H
 
-#include <ostream>
+#include <iostream>
+#include <fstream>
+#include <list>
+#include <memory>
 
 #include "core/ILogger.h"
 
 namespace xpansion{
 namespace logger {
 
-    class User : public  ILogger {
+    class Master : public ILogger {
 
     public:
 
-        User(std::ostream& stream);
+        Master() = default;
+        ~Master()= default;
+
+        void addLogger(const std::shared_ptr<ILogger>& logger) {_loggers.push_back(logger);}
 
         void display_message(const std::string& str) override;
 
@@ -34,14 +40,15 @@ namespace logger {
 
         void log_total_duration(double durationInSeconds) override;
 
+        void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) override;
+
     private:
 
-        std::ostream& _stream;
-
+        std::list<std::shared_ptr<ILogger>> _loggers;
 
     };
 
 } // namespace logger
 } // namespace xpansion
 
-#endif //ANTARESXPANSION_USER_H
+#endif //ANTARESXPANSION_MASTER_H

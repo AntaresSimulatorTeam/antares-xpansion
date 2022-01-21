@@ -23,6 +23,7 @@ add_executable (bendersmpi
 			${PROJECT_NAME}::benders_core
 			${PROJECT_NAME}::benders_sequential_core
 			${PROJECT_NAME}::benders_mpi_core
+			${PROJECT_NAME}::factories
 			logger_lib
 			Boost::serialization)
 #ENDIF (WIN32)

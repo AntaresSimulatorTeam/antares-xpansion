@@ -1,9 +1,8 @@
 #pragma once
 
 #ifdef _MSC_VER
-#pragma warning( disable : 4267 ) // implicit conversion, possible loss of data
+#pragma warning(disable : 4267) // implicit conversion, possible loss of data
 #endif
-
 
 #include <tuple>
 #include <sstream>
@@ -20,9 +19,9 @@
 #include <algorithm>
 #include <thread>
 #include <cmath>
-#include "Timer.h"
+//#include "Timer.h"
 #include "core/ILogger.h"
-// MultiSolver interface 
+// MultiSolver interface
 #include "multisolver_interface/Solver.h"
 
 struct Predicate;
@@ -40,71 +39,87 @@ typedef std::vector<int> IntVector;
 typedef std::vector<char> CharVector;
 typedef std::vector<double> DblVector;
 typedef std::vector<std::string> StrVector;
-typedef std::map < std::string, Str2Int> CouplingMap;
+typedef std::map<std::string, Str2Int> CouplingMap;
 
-typedef std::map <std::string, IntVector> SlaveCutId;
-typedef std::tuple <int, std::string, int, bool> ActiveCut;
+typedef std::map<std::string, IntVector> SlaveCutId;
+typedef std::tuple<int, std::string, int, bool> ActiveCut;
 typedef std::vector<ActiveCut> ActiveCutStorage;
 
 typedef std::pair<std::string, std::string> mps_coupling;
 typedef std::list<mps_coupling> mps_coupling_list;
 
-struct Predicate {
-	bool operator()(PointPtr const & lhs, PointPtr const & rhs)const {
+struct Predicate
+{
+	bool operator()(PointPtr const &lhs, PointPtr const &rhs) const
+	{
 		return *lhs < *rhs;
 	}
-	bool operator()(Point const & lhs, Point const & rhs)const {
+	bool operator()(Point const &lhs, Point const &rhs) const
+	{
 		Point::const_iterator it1(lhs.begin());
 		Point::const_iterator it2(rhs.begin());
 
 		Point::const_iterator end1(lhs.end());
 		Point::const_iterator end2(rhs.end());
 
-		while (it1 != end1 && it2 != end2) {
-			if (it1->first != it2->first) {
+		while (it1 != end1 && it2 != end2)
+		{
+			if (it1->first != it2->first)
+			{
 				return it1->first < it2->first;
 			}
-			else {
-				if (std::fabs(it1->second - it2->second) < EPSILON_PREDICATE) {
+			else
+			{
+				if (std::fabs(it1->second - it2->second) < EPSILON_PREDICATE)
+				{
 					++it1;
 					++it2;
 				}
-				else {
+				else
+				{
 					return it1->second < it2->second;
 				}
 			}
 		}
 
-		if (it1 == end1 && it2 == end2) {
+		if (it1 == end1 && it2 == end2)
+		{
 			return false;
 		}
-		else {
+		else
+		{
 			return (it1 == end1);
 		}
 	}
 };
 
 /*!
-*  \brief Stream output overloading for point
-*
-*  \param stream : stream output
-*
-*  \param rhs : point
-*/
-inline std::ostream & operator<<(std::ostream & stream, Point const & rhs) {
-	for (auto const & kvp : rhs) {
-		if (kvp.second > 0) {
-			if (kvp.second == 1) {
+ *  \brief Stream output overloading for point
+ *
+ *  \param stream : stream output
+ *
+ *  \param rhs : point
+ */
+inline std::ostream &operator<<(std::ostream &stream, Point const &rhs)
+{
+	for (auto const &kvp : rhs)
+	{
+		if (kvp.second > 0)
+		{
+			if (kvp.second == 1)
+			{
 				stream << "+";
 				stream << kvp.first;
 			}
-			else {
+			else
+			{
 				stream << "+";
 				stream << kvp.second;
 				stream << kvp.first;
 			}
 		}
-		else if (kvp.second < 0) {
+		else if (kvp.second < 0)
+		{
 			stream << kvp.second;
 			stream << kvp.first;
 		}
@@ -113,10 +128,11 @@ inline std::ostream & operator<<(std::ostream & stream, Point const & rhs) {
 }
 
 /*!
-* \struct BendersData
-* \brief Structure used to manage every benders data
-*/
-struct BendersData {
+ * \struct BendersData
+ * \brief Structure used to manage every benders data
+ */
+struct BendersData
+{
 	int nbasis;
 	double timer_slaves;
 	double timer_master;
@@ -144,9 +160,8 @@ struct BendersData {
 	StoppingCriterion stopping_criterion;
 };
 
-double norm_point(Point const & x0, Point const & x1);
+double norm_point(Point const &x0, Point const &x1);
 
-std::ostream & operator<<(std::ostream & stream, std::vector<IntVector> const & rhs);
+std::ostream &operator<<(std::ostream &stream, std::vector<IntVector> const &rhs);
 
-
-LogData bendersDataToLogData(const BendersData& data);
+LogData bendersDataToLogData(const BendersData &data);
