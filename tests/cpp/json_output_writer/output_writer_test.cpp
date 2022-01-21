@@ -80,28 +80,28 @@ TEST_F(JsonWriterTest, InitialiseShouldPrintBeginTimeAndOptions)
     writer.initialize(benders_options);
     // then
     Json::Value json_content = get_value_from_json(_fileName);
-    ASSERT_EQ("01-01-2020 12:10:30", json_content["begin"].asString());
-    ASSERT_EQ(benders_options.LOG_LEVEL, json_content["options"]["LOG_LEVEL"].asInt());
-    ASSERT_EQ(benders_options.MAX_ITERATIONS, json_content["options"]["MAX_ITERATIONS"].asInt());
-    ASSERT_EQ(benders_options.ABSOLUTE_GAP, json_content["options"]["ABSOLUTE_GAP"].asDouble());
-    ASSERT_EQ(benders_options.RELATIVE_GAP, json_content["options"]["RELATIVE_GAP"].asDouble());
-    ASSERT_EQ(benders_options.AGGREGATION, json_content["options"]["AGGREGATION"].asBool());
-    ASSERT_EQ(benders_options.OUTPUTROOT, json_content["options"]["OUTPUTROOT"].asString());
-    ASSERT_EQ(benders_options.TRACE, json_content["options"]["TRACE"].asBool());
-    ASSERT_EQ(benders_options.DELETE_CUT, json_content["options"]["DELETE_CUT"].asBool());
-    ASSERT_EQ(benders_options.SLAVE_WEIGHT, json_content["options"]["SLAVE_WEIGHT"].asString());
-    ASSERT_EQ(benders_options.MASTER_NAME, json_content["options"]["MASTER_NAME"].asString());
-    ASSERT_EQ(benders_options.SLAVE_NUMBER, json_content["options"]["SLAVE_NUMBER"].asInt());
-    ASSERT_EQ(benders_options.INPUTROOT, json_content["options"]["INPUTROOT"].asString());
-    ASSERT_EQ(benders_options.BASIS, json_content["options"]["BASIS"].asBool());
-    ASSERT_EQ(benders_options.ACTIVECUTS, json_content["options"]["ACTIVECUTS"].asBool());
-    ASSERT_EQ(benders_options.THRESHOLD_AGGREGATION, json_content["options"]["THRESHOLD_AGGREGATION"].asInt());
-    ASSERT_EQ(benders_options.THRESHOLD_ITERATION, json_content["options"]["THRESHOLD_ITERATION"].asInt());
-    ASSERT_EQ(benders_options.CSV_NAME, json_content["options"]["CSV_NAME"].asString());
-    ASSERT_EQ(benders_options.BOUND_ALPHA, json_content["options"]["BOUND_ALPHA"].asBool());
-    ASSERT_EQ(benders_options.SOLVER_NAME, json_content["options"]["SOLVER_NAME"].asString());
-    ASSERT_EQ(benders_options.JSON_FILE, json_content["options"]["JSON_FILE"].asString());
-    ASSERT_EQ(benders_options.TIME_LIMIT, json_content["options"]["TIME_LIMIT"].asDouble());
+    ASSERT_EQ("01-01-2020 12:10:30", json_content[BEGIN_C].asString());
+    ASSERT_EQ(benders_options.LOG_LEVEL, json_content[OPTIONS_C]["LOG_LEVEL"].asInt());
+    ASSERT_EQ(benders_options.MAX_ITERATIONS, json_content[OPTIONS_C]["MAX_ITERATIONS"].asInt());
+    ASSERT_EQ(benders_options.ABSOLUTE_GAP, json_content[OPTIONS_C]["ABSOLUTE_GAP"].asDouble());
+    ASSERT_EQ(benders_options.RELATIVE_GAP, json_content[OPTIONS_C]["RELATIVE_GAP"].asDouble());
+    ASSERT_EQ(benders_options.AGGREGATION, json_content[OPTIONS_C]["AGGREGATION"].asBool());
+    ASSERT_EQ(benders_options.OUTPUTROOT, json_content[OPTIONS_C]["OUTPUTROOT"].asString());
+    ASSERT_EQ(benders_options.TRACE, json_content[OPTIONS_C]["TRACE"].asBool());
+    ASSERT_EQ(benders_options.DELETE_CUT, json_content[OPTIONS_C]["DELETE_CUT"].asBool());
+    ASSERT_EQ(benders_options.SLAVE_WEIGHT, json_content[OPTIONS_C]["SLAVE_WEIGHT"].asString());
+    ASSERT_EQ(benders_options.MASTER_NAME, json_content[OPTIONS_C]["MASTER_NAME"].asString());
+    ASSERT_EQ(benders_options.SLAVE_NUMBER, json_content[OPTIONS_C]["SLAVE_NUMBER"].asInt());
+    ASSERT_EQ(benders_options.INPUTROOT, json_content[OPTIONS_C]["INPUTROOT"].asString());
+    ASSERT_EQ(benders_options.BASIS, json_content[OPTIONS_C]["BASIS"].asBool());
+    ASSERT_EQ(benders_options.ACTIVECUTS, json_content[OPTIONS_C]["ACTIVECUTS"].asBool());
+    ASSERT_EQ(benders_options.THRESHOLD_AGGREGATION, json_content[OPTIONS_C]["THRESHOLD_AGGREGATION"].asInt());
+    ASSERT_EQ(benders_options.THRESHOLD_ITERATION, json_content[OPTIONS_C]["THRESHOLD_ITERATION"].asInt());
+    ASSERT_EQ(benders_options.CSV_NAME, json_content[OPTIONS_C]["CSV_NAME"].asString());
+    ASSERT_EQ(benders_options.BOUND_ALPHA, json_content[OPTIONS_C]["BOUND_ALPHA"].asBool());
+    ASSERT_EQ(benders_options.SOLVER_NAME, json_content[OPTIONS_C]["SOLVER_NAME"].asString());
+    ASSERT_EQ(benders_options.JSON_FILE, json_content[OPTIONS_C]["JSON_FILE"].asString());
+    ASSERT_EQ(benders_options.TIME_LIMIT, json_content[OPTIONS_C]["TIME_LIMIT"].asDouble());
 }
 
 TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults)
@@ -113,7 +113,7 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults)
     writer.end_writing(iterations_data);
 
     Json::Value json_content = get_value_from_json(_fileName);
-    ASSERT_EQ("01-01-2020 12:10:30", json_content["end"].asString());
+    ASSERT_EQ("01-01-2020 12:10:30", json_content[END_C].asString());
 }
 
 TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData)
@@ -170,7 +170,7 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData)
     solution_data.solution = iter2;
     solution_data.nbWeeks_p = 5;
     solution_data.best_it = 2;
-    solution_data.problem_status = "OPTIMAL";
+    solution_data.problem_status = STATUS_OPTIMAL_C;
     solution_data.stopping_criterion = StoppingCriterion::max_iteration;
 
     IterationsData iterations_data;
@@ -183,16 +183,28 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData)
 
     Json::Value json_content = get_value_from_json(_fileName);
 
-    ASSERT_EQ(iter1.best_ub, json_content["iterations"]["1"]["best_ub"].asDouble());
-    ASSERT_EQ(iter1.time, json_content["iterations"]["1"]["duration"].asDouble());
-    ASSERT_EQ(iter1.investment_cost, json_content["iterations"]["1"]["investment_cost"].asDouble());
-    ASSERT_EQ(iter1.lb, json_content["iterations"]["1"]["lb"].asDouble());
-    ASSERT_EQ(iter1.operational_cost, json_content["iterations"]["1"]["operational_cost"].asDouble());
-    ASSERT_EQ(iter1.optimality_gap, json_content["iterations"]["1"]["optimality_gap"].asDouble());
-    ASSERT_EQ(iter1.relative_gap, json_content["iterations"]["1"]["relative_gap"].asDouble());
-    ASSERT_EQ(iter1.ub, json_content["iterations"]["1"]["ub"].asDouble());
+    ASSERT_EQ(iter1.best_ub, json_content[ITERATIONS_C]["1"][BEST_UB_C].asDouble());
+    ASSERT_EQ(iter1.time, json_content[ITERATIONS_C]["1"][DURATION_C].asDouble());
+    ASSERT_EQ(iter1.investment_cost, json_content[ITERATIONS_C]["1"][INVESTMENT_COST_C].asDouble());
+    ASSERT_EQ(iter1.lb, json_content[ITERATIONS_C]["1"][LB_C].asDouble());
+    ASSERT_EQ(iter1.operational_cost, json_content[ITERATIONS_C]["1"][OPERATIONAL_COST_C].asDouble());
+    ASSERT_EQ(iter1.optimality_gap, json_content[ITERATIONS_C]["1"][OPTIMALITY_GAP_C].asDouble());
+    ASSERT_EQ(iter1.relative_gap, json_content[ITERATIONS_C]["1"][RELATIVE_GAP_C].asDouble());
+    ASSERT_EQ(iter1.ub, json_content[ITERATIONS_C]["1"][UB_C].asDouble());
 
-    // ASSERT_EQ(iter1.ub, json_content["iterations"]["1"]["candidates"][""].asDouble());
+    ASSERT_EQ(c1.name, json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][NAME_C].asString());
+    ASSERT_EQ(c1.invest, json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][INVEST_C].asDouble());
+    ASSERT_EQ(c1.min, json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][MIN_C].asDouble());
+    ASSERT_EQ(c1.max, json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][MAX_C].asDouble());
+
+    ASSERT_EQ(solution_data.solution.investment_cost, json_content[SOLUTION_C][INVESTMENT_COST_C].asDouble());
+    ASSERT_EQ(solution_data.solution.operational_cost, json_content[SOLUTION_C][OPERATIONAL_COST_C].asDouble());
+    ASSERT_EQ(solution_data.solution.optimality_gap, json_content[SOLUTION_C][OPTIMALITY_GAP_C].asDouble());
+    ASSERT_EQ(solution_data.solution.overall_cost, json_content[SOLUTION_C][OVERALL_COST_C].asDouble());
+    ASSERT_EQ(solution_data.solution.relative_gap, json_content[SOLUTION_C][RELATIVE_GAP_C].asDouble());
+    ASSERT_EQ(solution_data.best_it, json_content[SOLUTION_C][ITERATION_C].asInt());
+    ASSERT_EQ(solution_data.problem_status, json_content[SOLUTION_C][PROBLEM_STATUS_C].asString());
+    ASSERT_EQ(CRIT_MAX_ITER_C, json_content[SOLUTION_C][STOPPING_CRITERION_C].asString());
 }
 time_t time_from_date(int year, int month, int day, int hour, int min, int sec)
 {
