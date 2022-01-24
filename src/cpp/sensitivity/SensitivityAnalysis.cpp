@@ -1,6 +1,6 @@
 #include "SensitivityAnalysis.h"
 
-SensitivityAnalysis::SensitivityAnalysis(double epsilon, std::shared_ptr<SolverAbstract> lastMasterModel, std::shared_ptr<BendersData> bendersData, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _benders_data(bendersData), _sensitivity_pb_model(nullptr), _writer(writer), _pb_modifier(epsilon, bendersData, lastMasterModel)
+SensitivityAnalysis::SensitivityAnalysis(double epsilon, std::shared_ptr<SolverAbstract> lastMasterModel, std::shared_ptr<BendersData> bendersData, std::map<int, std::string> idToName, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _benders_data(bendersData), _id_to_name(idToName), _sensitivity_pb_model(nullptr), _writer(writer), _pb_modifier(epsilon, bendersData, lastMasterModel)
 {
 	init_output_data();
 }
@@ -89,9 +89,7 @@ void SensitivityAnalysis::solve_sensitivity_pb()
 		_output_data.sensitivity_pb_status = _sensitivity_pb_model->solve_lp();
 		_sensitivity_pb_model->get_lp_sol(ptr.data(), NULL, NULL);
 	}
-
-	for (int idCandidate(0); idCandidate < _output_data.sensitivity_candidates.size(); idCandidate++)
-	{
-		
+	for (auto const & kvp : _id_to_name) {
+		_output_data.sensitivity_candidates[kvp.second] = ptr[kvp.first];
 	}
 }

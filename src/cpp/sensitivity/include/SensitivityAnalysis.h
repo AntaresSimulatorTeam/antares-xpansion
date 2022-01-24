@@ -9,7 +9,7 @@ class SensitivityAnalysis
 {
 public:
     explicit SensitivityAnalysis(double epsilon, std::shared_ptr<SolverAbstract> lastMasterProblem,
-                                 std::shared_ptr<BendersData> bendersData, std::shared_ptr<SensitivityWriter> writer);
+                                 std::shared_ptr<BendersData> bendersData, std::map<int, std::string> idToName, std::shared_ptr<SensitivityWriter> writer);
     ~SensitivityAnalysis();
 
     void launch();
@@ -18,6 +18,7 @@ private:
     double _epsilon;
 
     std::shared_ptr<BendersData> _benders_data;
+    std::map<int, std::string> _id_to_name;
     std::shared_ptr<SolverAbstract> _sensitivity_pb_model;
     std::shared_ptr<SensitivityWriter> _writer;
 

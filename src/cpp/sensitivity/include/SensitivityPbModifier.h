@@ -6,8 +6,8 @@
 class SensitivityPbModifier
 {
 public:
-    explicit SensitivityPbModifier(double epsilon, std::shared_ptr<BendersData> bendersData, std::shared_ptr<SolverAbstract> solverModel);
-    ~SensitivityPbModifier();
+    explicit SensitivityPbModifier(double epsilon, std::shared_ptr<BendersData>& bendersData, std::shared_ptr<SolverAbstract>& solverModel);
+    ~SensitivityPbModifier() = default;
 
     std::shared_ptr<SolverAbstract> getProblem();
     void changeProblem();

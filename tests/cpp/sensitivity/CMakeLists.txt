@@ -1,9 +1,9 @@
-add_executable(sensitivity_writer_test SensitivityWriterTest.cpp)
+add_executable(sensitivity_test SensitivityWriterTest.cpp SensitivityPbModifierTest.cpp)
 
-target_link_libraries(sensitivity_writer_test
+target_link_libraries(sensitivity_test
         PRIVATE
         sensitivity
         GTest::Main)
 
-add_test(NAME sensitivity_writer_test COMMAND sensitivity_writer_test)
-set_property(TEST sensitivity_writer_test PROPERTY LABELS unit)
+add_test(NAME sensitivity_test COMMAND sensitivity_test WORKING_DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY})
+set_property(TEST sensitivity_test PROPERTY LABELS unit)
