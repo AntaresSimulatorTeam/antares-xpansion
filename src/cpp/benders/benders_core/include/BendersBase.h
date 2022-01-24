@@ -36,7 +36,6 @@ protected:
     virtual void free() = 0;
     virtual void run() = 0;
 
-private:
     // map linking each problem name to its variables and their ids
     CouplingMap _input;
     int _nbWeeks = 0;
@@ -57,7 +56,7 @@ public:
     void check_status(AllCutPackage const &all_package) const;
 
     void get_master_value();
-    void get_slave_cut(SlaveCutPackage &slave_cut_package) const;
+    void get_slave_cut(SlaveCutPackage &slave_cut_package) ;
 
     LogData build_log_data_from_data() const;
     void post_run_actions() const;

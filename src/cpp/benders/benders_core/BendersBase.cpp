@@ -305,7 +305,7 @@ void BendersBase::get_master_value()
  *
  *  \param options : set of parameters
  */
-void BendersBase::get_slave_cut(SlaveCutPackage &slave_cut_package) const
+void BendersBase::get_slave_cut(SlaveCutPackage &slave_cut_package)
 {
 	for (auto &kvp : _map_slaves)
 	{
