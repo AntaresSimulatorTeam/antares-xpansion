@@ -24,15 +24,15 @@ namespace logger {
         size_map  _max_sizes;
     private:
 
-        std::string create_solution_str(const value_map &value, const size_map &sizes);
+        std::string create_solution_str(const value_map &value, const size_map &sizes) const;
 
-        value_map create_value_map(const std::string &label, const std::string &value, const std::string &unit);
+        value_map create_value_map(const std::string &label, const std::string &value, const std::string &unit) const;
 
         void setValuesFromData(const LogData &data);
 
         void setMaximumStringSizes();
 
-        std::string getCompleteMessageString();
+        std::string getCompleteMessageString() const;
     };
 
 } // namespace logger

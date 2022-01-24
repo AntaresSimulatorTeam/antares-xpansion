@@ -1,21 +1,20 @@
 #pragma once
 
-// #include "Benders.h"
+// #include "BendersSequential.h"
 #include "common.h"
 
 #include "solver_utils.h"
 
 class BendersOptions;
 
-CouplingMap build_input(BendersOptions const & options);
+CouplingMap build_input(BendersOptions const &options);
 
-BendersOptions build_benders_options(int argc, char** argv);
-
-// void sequential_launch(BendersOptions const &options,  Logger & logger);
+BendersOptions build_benders_options(int argc, char **argv);
 
 void usage(int argc);
 
-enum Attribute {
+enum Attribute
+{
 	INT_VALUE,
 	INT_VECTOR,
 	CHAR_VECTOR,
@@ -23,26 +22,29 @@ enum Attribute {
 	MAX_ATTRIBUTE
 };
 
-enum IntAttribute {
+enum IntAttribute
+{
 	NROWS,
 	NCOLS,
 	NELES,
 	MAX_INT_ATTRIBUTE
 };
 
-
-enum IntVectorAttribute {
+enum IntVectorAttribute
+{
 	MSTART,
 	MINDEX,
 	MAX_INT_VECTOR_ATTRIBUTE,
 };
-enum CharVectorAttribute {
+enum CharVectorAttribute
+{
 	ROWTYPE,
 	COLTYPE,
 	MAX_CHAR_VECTOR_ATTRIBUTE
 };
 
-enum DblVectorAttribute {
+enum DblVectorAttribute
+{
 	MVALUE,
 	RHS,
 	RANGE,
@@ -51,9 +53,10 @@ enum DblVectorAttribute {
 	UB,
 	MAX_DBL_VECTOR_ATTRIBUTE
 };
-typedef std::tuple<IntVector, std::vector<IntVector>, std::vector<CharVector>, std::vector<DblVector> > raw_standard_lp_data;
+typedef std::tuple<IntVector, std::vector<IntVector>, std::vector<CharVector>, std::vector<DblVector>> raw_standard_lp_data;
 
-class StandardLp {
+class StandardLp
+{
 private:
 	std::vector<std::string> _colNames;
 
@@ -61,14 +64,15 @@ public:
 	// to be used in boost serialization for mpi transfer
 	raw_standard_lp_data _data;
 	static size_t appendCNT;
-public:
-    void init() {
-        initialise_int_values_with_zeros();
-        initialise_int_vectors();
-        initialise_char_vectors();
-        initialise_dbl_vectors();
-	}
 
+public:
+	void init()
+	{
+		initialise_int_values_with_zeros();
+		initialise_int_vectors();
+		initialise_char_vectors();
+		initialise_dbl_vectors();
+	}
 
 	StandardLp(SolverAbstract::Ptr solver_p)
 	{
@@ -82,7 +86,7 @@ public:
 		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] = nrows;
 		std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] = nelems;
 
-        _colNames = solver_p->get_col_names(0, ncols - 1);
+		_colNames = solver_p->get_col_names(0, ncols - 1);
 
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].clear();
 		std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].resize(nrows + 1);
@@ -115,40 +119,35 @@ public:
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].clear();
 		std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].resize(ncols);
 
-        solver_getrows(solver_p,
-                       std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
-                       std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX],
-                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE],
-                       0,
-                       std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+		solver_getrows(solver_p,
+					   std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
+					   std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX],
+					   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE],
+					   0,
+					   std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-        solver_getrowtype(solver_p,
-                          std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
-                          0,
-                          std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+		solver_getrowtype(solver_p,
+						  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
+						  0,
+						  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-        solver_getrhs(solver_p,
-                      std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
-                      0,
-                      std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
+		solver_getrhs(solver_p,
+					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
+					  0,
+					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-		// Range constraint don't exist in a sparse matrix formulation
-		/*solver_getrhsrange(solver_p,
-						std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE],
-						0,
-						std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);*/
 
-        solver_getcolinfo(solver_p,
-                          std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
-                          std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
-                          std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
-                          0,
-                          std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
+		solver_getcolinfo(solver_p,
+						  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
+						  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
+						  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
+						  0,
+						  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
-        solver_getobj(solver_p,
-                      std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
-                      0,
-                      std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
+		solver_getobj(solver_p,
+					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
+					  0,
+					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
 		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == 1 + std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
@@ -157,45 +156,47 @@ public:
 
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES]);
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
-		//assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
 	}
 
-	int append_in(SolverAbstract::Ptr containingSolver_p, std::string const & prefix_p = "") const {
+	int append_in(SolverAbstract::Ptr containingSolver_p, std::string const &prefix_p = "") const
+	{
 
 		// simply increment the columns indices
 		IntVector newmindex(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
 		int nbExistingCols(containingSolver_p->get_ncols());
-		for (auto & i : newmindex) {
+		for (auto &i : newmindex)
+		{
 			i += nbExistingCols;
 		}
 
-		//rename variables
-		std::string prefix_l = (prefix_p != "") ? prefix_p : ("prob"+std::to_string(appendCNT));
+		// rename variables
+		std::string prefix_l = (prefix_p != "") ? prefix_p : ("prob" + std::to_string(appendCNT));
 		std::vector<std::string> newNames;
 		newNames.resize(_colNames.size());
 		std::transform(_colNames.begin(), _colNames.end(), newNames.begin(),
-					[&prefix_l](std::string varName_p)->std::string{ return prefix_l + varName_p; });
+					   [&prefix_l](std::string varName_p) -> std::string
+					   { return prefix_l + varName_p; });
 
 		std::vector<int> mstart(std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS], 0);
-        solver_addcols(containingSolver_p,
-                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
-                       mstart, IntVector(0, 0), DblVector(0, 0.0),
-                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
-                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
-                       std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
-                       newNames);
+		solver_addcols(containingSolver_p,
+					   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
+					   mstart, IntVector(0, 0), DblVector(0, 0.0),
+					   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
+					   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB],
+					   std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
+					   newNames);
 
-        solver_addrows(containingSolver_p,
-                       std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
-                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
-                       {},
-                       std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
-                       newmindex,
-                       std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
+		solver_addrows(containingSolver_p,
+					   std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
+					   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
+					   {},
+					   std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
+					   newmindex,
+					   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE]);
 
 		++appendCNT;
 
@@ -203,18 +204,20 @@ public:
 	}
 
 private:
-    void initialise_int_values_with_zeros(){
-        std::get<Attribute::INT_VALUE>(_data).assign(IntAttribute::MAX_INT_ATTRIBUTE, 0);
-    }
-    void initialise_int_vectors() {
-        std::get<Attribute::INT_VECTOR>(_data).assign(IntVectorAttribute::MAX_INT_VECTOR_ATTRIBUTE, IntVector());
-    }
-    void initialise_char_vectors() {
-        std::get<Attribute::CHAR_VECTOR>(_data).assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE, CharVector());
-    }
-    void initialise_dbl_vectors() {
-        std::get<Attribute::DBL_VECTOR>(_data).assign(DblVectorAttribute::MAX_DBL_VECTOR_ATTRIBUTE, DblVector());
-    }
-
-
+	void initialise_int_values_with_zeros()
+	{
+		std::get<Attribute::INT_VALUE>(_data).assign(IntAttribute::MAX_INT_ATTRIBUTE, 0);
+	}
+	void initialise_int_vectors()
+	{
+		std::get<Attribute::INT_VECTOR>(_data).assign(IntVectorAttribute::MAX_INT_VECTOR_ATTRIBUTE, IntVector());
+	}
+	void initialise_char_vectors()
+	{
+		std::get<Attribute::CHAR_VECTOR>(_data).assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE, CharVector());
+	}
+	void initialise_dbl_vectors()
+	{
+		std::get<Attribute::DBL_VECTOR>(_data).assign(DblVectorAttribute::MAX_DBL_VECTOR_ATTRIBUTE, DblVector());
+	}
 };

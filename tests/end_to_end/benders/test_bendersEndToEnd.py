@@ -46,7 +46,7 @@ def remove_outputs(study_path):
 #                   code different from 0.
 
 
-def launch_optimization(data_path, commands, status):
+def launch_optimization(data_path, commands, status=None):
 
     # Going to instance folder
     owd = os.getcwd()
@@ -83,9 +83,11 @@ def check_optimization_json_output(expected_results_dict):
     with open(output_path, 'r') as jsonFile:
         curr_instance_json = json.load(jsonFile)
 
+    prb_status = None
     # Testing optimality
-    prb_status = curr_instance_json['solution']['problem_status']
-    assert prb_status == expected_results_dict['status']
+    if ('solution' in curr_instance_json):
+        prb_status = curr_instance_json['solution']['problem_status']
+        assert prb_status == expected_results_dict['status']
 
     # Testing optimization output if the instance has a solution
     if(prb_status == 'OPTIMAL'):
@@ -126,8 +128,7 @@ def run_solver(install_dir, solver: str):
         commands = [executable_path,
                     expected_results_dict[instance]['option_file']
                     ]
-
-        launch_optimization(instance_path, commands,
-                            expected_results_dict[instance]["status"])
+        status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
+        launch_optimization(instance_path, commands, status)
         check_optimization_json_output(
             expected_results_dict[instance])

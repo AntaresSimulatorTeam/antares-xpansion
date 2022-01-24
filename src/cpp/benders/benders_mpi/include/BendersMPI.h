@@ -8,6 +8,7 @@
 #include "WorkerSlave.h"
 #include "WorkerMaster.h"
 #include "WorkerTrace.h"
+#include "launcher.h"
 
 #include "core/ILogger.h"
 
@@ -19,13 +20,14 @@ class BendersMpi : public BendersBase
 {
 
 public:
-    virtual ~BendersMpi();
-    BendersMpi(BendersOptions const &options, Logger &logger, mpi::environment &env, mpi::communicator &world);
+    virtual ~BendersMpi() = default;
+    BendersMpi(BendersOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world);
 
-    void load(CouplingMap const &problem_list);
+    void load();
 
+protected:
     virtual void free();
-    void run();
+    virtual void run();
 
 private:
     void step_1_solve_master();
@@ -49,6 +51,9 @@ private:
     void write_exception_message(const std::exception &ex);
 
     void check_if_some_proc_had_a_failure(int success);
+    void update_real_problem_list(std::vector<CouplingMap::const_iterator> &real_problem_list);
     mpi::environment &_env;
     mpi::communicator &_world;
+
+    void launch();
 };

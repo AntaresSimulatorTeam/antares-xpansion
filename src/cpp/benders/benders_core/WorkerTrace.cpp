@@ -24,7 +24,6 @@ LogData defineLogDataFromBendersDataAndTrace(const BendersData& data, const Bend
     result.lb = data.lb;
     result.best_ub = data.best_ub;
     result.x0 = data.bestx;
-    result.stopping_criterion = data.stopping_criterion;
     size_t bestItIndex_l = data.best_it - 1;
 
     if (bestItIndex_l >= 0 && bestItIndex_l < trace.size())
