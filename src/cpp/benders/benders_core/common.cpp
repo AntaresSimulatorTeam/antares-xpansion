@@ -28,6 +28,5 @@ LogData bendersDataToLogData(const BendersData &data) {
     result.x0 = data.x0;
     result.min_invest = data.min_invest;
     result.max_invest = data.max_invest;
-    result.stopping_criterion =  data.stopping_criterion;
     return result;
 }

@@ -12,6 +12,7 @@
 #include "solver_utils.h"
 #include "logger/User.h"
 #include "helpers/Path.h"
+#include "../../benders/factories/include/WriterFactories.h"
 
 //@suggest: create and move to standardlp.cpp
 // Initialize static member
@@ -30,13 +31,7 @@ int main(int argc, char **argv)
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
     LOG(INFO) << "starting merge_mps" << std::endl;
 
-    JsonWriter jsonWriter_l;
-    jsonWriter_l.write_failure();
-    jsonWriter_l.dump(options.JSON_FILE);
-
-    jsonWriter_l.write(options);
-    jsonWriter_l.updateBeginTime();
-
+    Writer writer = build_json_writer(options);
     try
     {
         CouplingMap input = build_input(options);
@@ -47,7 +42,6 @@ int main(int argc, char **argv)
         mergedSolver_l->init();
         mergedSolver_l->set_output_log_level(options.LOG_LEVEL);
 
-        int ncols(0);
         int nslaves = input.size() - 1;
         CouplingMap x_mps_id;
         int cntProblems_l(0);
@@ -57,7 +51,6 @@ int main(int argc, char **argv)
         {
 
             auto problem_name((Path(options.INPUTROOT) / (kvp.first + ".mps")).get_str());
-            ncols = mergedSolver_l->get_ncols();
 
             SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
             solver_l->init();
@@ -183,8 +176,6 @@ int main(int argc, char **argv)
 
         logger->log_total_duration(timer.elapsed());
 
-        jsonWriter_l.updateEndTime();
-
         Point x0;
         DblVector ptr(mergedSolver_l->get_ncols());
         double investCost_l(0);
@@ -194,7 +185,7 @@ int main(int argc, char **argv)
         }
         else
         {
-            mergedSolver_l->get_lp_sol(ptr.data(), NULL, NULL);
+            mergedSolver_l->get_lp_sol(ptr.data(), nullptr, nullptr);
         }
 
         std::vector<double> obj_coef(mergedSolver_l->get_ncols());
@@ -218,10 +209,38 @@ int main(int argc, char **argv)
         double operationalCost_l = overallCost_l - investCost_l;
 
         bool optimality_l = (status_l == SOLVER_STATUS::OPTIMAL);
-        jsonWriter_l.write(input.size(), overallCost_l,
-                           overallCost_l, investCost_l, operationalCost_l,
-                           overallCost_l, x0, optimality_l);
-        jsonWriter_l.dump(options.JSON_FILE);
+
+        Output::SolutionData sol_infos;
+        sol_infos.nbWeeks_p = static_cast<int>(input.size());
+
+        sol_infos.solution.lb = overallCost_l;
+        sol_infos.solution.ub = overallCost_l;
+        sol_infos.solution.investment_cost = investCost_l;
+        sol_infos.solution.operational_cost = operationalCost_l;
+        sol_infos.solution.overall_cost = overallCost_l;
+
+        Output::CandidatesVec candidates_vec;
+        for (const auto & pairNameValue_l : x0)
+        {
+            Output::CandidateData candidate_data;
+            candidate_data.name = pairNameValue_l.first;
+            candidate_data.invest = pairNameValue_l.second;
+            candidate_data.min = -1;
+            candidate_data.max = -1;
+            candidates_vec.push_back(candidate_data);
+        }
+        sol_infos.solution.candidates = candidates_vec;
+        if (optimality_l)
+        {
+            sol_infos.problem_status = "OPTIMAL";
+        }
+        else
+        {
+            sol_infos.problem_status = "ERROR";
+        }
+
+        writer->update_solution(sol_infos);
+        writer->dump();
     }
     catch (std::exception &ex)
     {

@@ -1,195 +1,149 @@
 #include "JsonWriter.h"
 #include "config.h"
 
-namespace
+namespace clock_utils
 {
-    std::string timeToStr(std::time_t* time_p)
+    std::string timeToStr(const std::time_t &time_p)
     {
+        struct tm local_time;
+        localtime_platform(time_p, local_time);
+        // localtime_r(&time_p, &local_time); // Compliant
+        const char *FORMAT = "%d-%m-%Y %H:%M:%S";
         char buffer_l[100];
-        strftime(buffer_l, sizeof(buffer_l), "%d-%m-%Y %H:%M:%S", std::localtime(time_p));
+        strftime(buffer_l, sizeof(buffer_l), FORMAT, &local_time);
         std::string strTime_l(buffer_l);
 
         return strTime_l;
     }
 }
-
-JsonWriter::JsonWriter() :
-    _beginTime(std::time(0)),
-    _endTime(std::time(0))
+namespace Output
 {
-}
+    JsonWriter::JsonWriter(std::shared_ptr<Clock> p_clock, const std::string &json_filename) : _clock(p_clock), _filename(json_filename) {}
 
-JsonWriter::~JsonWriter() {
-}
-
-void JsonWriter::updateBeginTime()
-{
-    _beginTime = std::time(0);
-    _output["begin"] = getBegin();
-}
-
-void JsonWriter::updateEndTime()
-{
-    _endTime =  std::time(0);
-    _output["end"] = getEnd();
-}
-
-std::string JsonWriter::getBegin()
-{
-    return timeToStr(&_beginTime);
-}
-
-std::string JsonWriter::getEnd()
-{
-    return timeToStr(&_endTime);
-}
-
-double JsonWriter::getDuration()
-{
-    return std::difftime(_endTime, _beginTime);
-}
-
-void JsonWriter::write(BendersOptions const & bendersOptions_p)
-{
-    //Options
-    #define BENDERS_OPTIONS_MACRO(name__, type__, default__) _output["options"][#name__] = bendersOptions_p.name__;
-    #include "BendersOptions.hxx"
-    #undef BENDERS_OPTIONS_MACRO
-}
-
-void JsonWriter::write(int const &nbWeeks_p, BendersTrace const &bendersTrace_p,
-                       BendersData const &bendersData_p, double const &min_abs_gap, double const &min_rel_gap, double const &max_iter)
-{
-    _output["nbWeeks"] = nbWeeks_p;
-
-    //Iterations
-    size_t iterCnt_l(0);
-    for (auto masterDataPtr_l : bendersTrace_p)
+    void JsonWriter::initialize(const BendersOptions &options)
     {
-        ++iterCnt_l;
-        if (masterDataPtr_l->_valid) {
+        write_options(options);
+        updateBeginTime();
+        dump();
+    }
+
+    void JsonWriter::updateBeginTime()
+    {
+        _output[BEGIN_C] = clock_utils::timeToStr(_clock->getTime());
+    }
+
+    void JsonWriter::updateEndTime()
+    {
+        _output[END_C] = clock_utils::timeToStr(_clock->getTime());
+    }
+
+    void JsonWriter::write_options(BendersOptions const &bendersOptions_p)
+    {
+// Options
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) _output[OPTIONS_C][#name__] = bendersOptions_p.name__;
+#include "BendersOptions.hxx"
+#undef BENDERS_OPTIONS_MACRO
+    }
+
+    void JsonWriter::write_iterations(const IterationsData &iterations_data)
+    {
+        _output[NBWEEKS_C] = iterations_data.nbWeeks_p;
+        _output[DURATION_C] = iterations_data.elapsed_time;
+
+        // Iterations
+        size_t iterCnt_l(0);
+        for (const auto &iter : iterations_data.iters)
+        {
+            ++iterCnt_l;
 
             std::string strIterCnt_l(std::to_string(iterCnt_l));
-            _output["iterations"][strIterCnt_l]["duration"] = masterDataPtr_l->_time;
-            _output["iterations"][strIterCnt_l]["lb"] = masterDataPtr_l->_lb;
-            _output["iterations"][strIterCnt_l]["ub"] = masterDataPtr_l->_ub;
-            _output["iterations"][strIterCnt_l]["best_ub"] = masterDataPtr_l->_bestub;
-            _output["iterations"][strIterCnt_l]["optimality_gap"] = masterDataPtr_l->_bestub - masterDataPtr_l->_lb;
-            _output["iterations"][strIterCnt_l]["relative_gap"] = (masterDataPtr_l->_bestub - masterDataPtr_l->_lb) / masterDataPtr_l->_bestub;
-            _output["iterations"][strIterCnt_l]["investment_cost"] = masterDataPtr_l->_invest_cost;
-            _output["iterations"][strIterCnt_l]["operational_cost"] = masterDataPtr_l->_operational_cost;
-            _output["iterations"][strIterCnt_l]["overall_cost"] = masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
+            _output[ITERATIONS_C][strIterCnt_l][DURATION_C] = iter.time;
+            _output[ITERATIONS_C][strIterCnt_l][LB_C] = iter.lb;
+            _output[ITERATIONS_C][strIterCnt_l][UB_C] = iter.ub;
+            _output[ITERATIONS_C][strIterCnt_l][BEST_UB_C] = iter.best_ub;
+            _output[ITERATIONS_C][strIterCnt_l][OPTIMALITY_GAP_C] = iter.optimality_gap;
+            _output[ITERATIONS_C][strIterCnt_l][RELATIVE_GAP_C] = iter.relative_gap;
+            _output[ITERATIONS_C][strIterCnt_l][INVESTMENT_COST_C] = iter.investment_cost;
+            _output[ITERATIONS_C][strIterCnt_l][OPERATIONAL_COST_C] = iter.operational_cost;
+            _output[ITERATIONS_C][strIterCnt_l][OVERALL_COST_C] = iter.overall_cost;
 
             Json::Value vectCandidates_l(Json::arrayValue);
-            for (auto pairNameValue_l : masterDataPtr_l->get_point()) {
+            for (const auto &candidate : iter.candidates)
+            {
                 Json::Value candidate_l;
-                candidate_l["name"] = pairNameValue_l.first;
-                candidate_l["invest"] = pairNameValue_l.second;
-                candidate_l["min"] = masterDataPtr_l->get_min_invest()[pairNameValue_l.first];
-                candidate_l["max"] = masterDataPtr_l->get_max_invest()[pairNameValue_l.first];
+                candidate_l[NAME_C] = candidate.name;
+                candidate_l[INVEST_C] = candidate.invest;
+                candidate_l[MIN_C] = candidate.min;
+                candidate_l[MAX_C] = candidate.max;
                 vectCandidates_l.append(candidate_l);
             }
-            _output["iterations"][strIterCnt_l]["candidates"] = vectCandidates_l;
+            _output[ITERATIONS_C][strIterCnt_l][CANDIDATES_C] = vectCandidates_l;
         }
-    }
 
-    //solution
-    size_t bestItIndex_l = bendersData_p.best_it - 1;
-    _output["solution"]["iteration"] = bendersData_p.best_it;
-    if (bestItIndex_l >= 0 && bestItIndex_l < bendersTrace_p.size())
-    {    
-        _output["solution"]["investment_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost;
-        _output["solution"]["operational_cost"] = bendersTrace_p[bestItIndex_l].get()->_operational_cost;
-        _output["solution"]["overall_cost"] = bendersTrace_p[bestItIndex_l].get()->_invest_cost + bendersTrace_p[bestItIndex_l].get()->_operational_cost;
-        
-        for (auto pairNameValue_l : bendersTrace_p[bestItIndex_l]->get_point())
+        // solution
+        _output[SOLUTION_C][ITERATION_C] = iterations_data.solution_data.best_it;
+        _output[SOLUTION_C][INVESTMENT_COST_C] = iterations_data.solution_data.solution.investment_cost;
+        _output[SOLUTION_C][OPERATIONAL_COST_C] = iterations_data.solution_data.solution.operational_cost;
+        _output[SOLUTION_C][OVERALL_COST_C] = iterations_data.solution_data.solution.overall_cost;
+
+        for (const auto &candidate : iterations_data.solution_data.solution.candidates)
         {
-            _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
+            _output[SOLUTION_C][VALUES_C][candidate.name] = candidate.invest;
+        }
+
+        _output[SOLUTION_C][OPTIMALITY_GAP_C] = iterations_data.solution_data.solution.optimality_gap;
+        _output[SOLUTION_C][RELATIVE_GAP_C] = iterations_data.solution_data.solution.relative_gap;
+
+        _output[SOLUTION_C][STOPPING_CRITERION_C] = iterations_data.solution_data.stopping_criterion;
+        _output[SOLUTION_C][PROBLEM_STATUS_C] = iterations_data.solution_data.problem_status;
+    }
+
+    void JsonWriter::update_solution(const SolutionData &solution_data)
+    {
+        _output[NBWEEKS_C] = solution_data.nbWeeks_p;
+
+        _output[SOLUTION_C][INVESTMENT_COST_C] = solution_data.solution.investment_cost;
+        _output[SOLUTION_C][OPERATIONAL_COST_C] = solution_data.solution.operational_cost;
+        _output[SOLUTION_C][OVERALL_COST_C] = solution_data.solution.overall_cost;
+        _output[SOLUTION_C][LB_C] = solution_data.solution.lb;
+        _output[SOLUTION_C][UB_C] = solution_data.solution.ub;
+        _output[SOLUTION_C][OPTIMALITY_GAP_C] = solution_data.solution.optimality_gap;
+        _output[SOLUTION_C][RELATIVE_GAP_C] = solution_data.solution.relative_gap;
+
+        _output[SOLUTION_C][PROBLEM_STATUS_C] = solution_data.problem_status;
+        _output[SOLUTION_C][STOPPING_CRITERION_C] = solution_data.stopping_criterion;
+        for (const auto &candidate : solution_data.solution.candidates)
+        {
+            _output[SOLUTION_C][VALUES_C][candidate.name] = candidate.invest;
+        }
+
+        updateEndTime();
+    }
+
+    /*!
+     *  \brief write the json data into a file
+     */
+    void JsonWriter::dump()
+    {
+        _output[ANTARES_C][VERSION_C] = ANTARES_VERSION_TAG;
+        _output[ANTARES_XPANSION_C][VERSION_C] = PROJECT_VER;
+
+        std::ofstream jsonOut_l(_filename);
+        if (jsonOut_l)
+        {
+            // Output
+            jsonOut_l << _output << std::endl;
+        }
+        else
+        {
+            std::cout << "Impossible d'ouvrir le fichier json " << _filename << std::endl;
         }
     }
 
-    double abs_gap_l = bendersData_p.best_ub - bendersData_p.lb;
-    double rel_gap_l = abs_gap_l / bendersData_p.best_ub;
-    _output["solution"]["optimality_gap"] = abs_gap_l;
-    _output["solution"]["relative_gap"] = rel_gap_l;
-    if ((abs_gap_l <= min_abs_gap) || (rel_gap_l <= min_rel_gap))
+    void JsonWriter::end_writing(const IterationsData &iterations_data)
     {
-        _output["solution"]["problem_status"] = "OPTIMAL";
+        updateEndTime();
+        write_iterations(iterations_data);
+        dump();
     }
-    else if (max_iter != -1 && bendersData_p.it > max_iter)
-    {
-        _output["solution"]["problem_status"] = "MAX ITERATIONS";
-    }
-    else
-    {
-        _output["solution"]["problem_status"] = "ERROR";
-    }
-    
-}
-
-void JsonWriter::write(int nbWeeks_p,
-                       double const & lb_p, double const & ub_p,
-                       double const & investCost_p,
-                       double const& operationalCost_p,
-                       double const & overallCost_p,
-                       Point const & solution_p,
-                       bool const & optimality_p)
-{
-    _output["nbWeeks"] = nbWeeks_p;
-
-    _output["solution"]["investment_cost"] = investCost_p;
-    _output["solution"]["operational_cost"] = operationalCost_p;
-    _output["solution"]["overall_cost"] = overallCost_p;
-    _output["solution"]["lb"] = lb_p;
-    _output["solution"]["ub"] = ub_p;
-    _output["solution"]["optimality_gap"] = ub_p - lb_p;
-    _output["solution"]["relative_gap"] = (ub_p - lb_p) / ub_p;
-    if (optimality_p)
-    {
-        _output["solution"]["problem_status"] = "OPTIMAL";
-    }
-    else
-    {
-        _output["solution"]["problem_status"] = "ERROR";
-    }
-    for (auto pairNameValue_l : solution_p)
-    {
-        _output["solution"]["values"][pairNameValue_l.first] = pairNameValue_l.second;
-    }
-}
-
-/*!
-*  \brief write a json output with a failure status in solution. If optimization process exits before it ends, this failure will be available as an output.
-*
-*/
-void JsonWriter::write_failure() {
-    _output["solution"]["problem_status"] = "ERROR";
-}
-
-/*!
-*  \brief write the json data into a file
-*
-*  \param filename_p : name of the file to be written
-*/
-void JsonWriter::dump(std::string const & filename_p)
-{
-    //Antares
-    _output["antares"]["version"] = ANTARES_VERSION_TAG;
-
-    //Xpansion
-    _output["antares_xpansion"]["version"] = PROJECT_VER;
-
-    //Time
-    _output["duration"] = getDuration();
-
-    std::ofstream jsonOut_l(filename_p);
-    if(jsonOut_l)
-    {
-        //Output
-        jsonOut_l << _output << std::endl;
-    }
-    else
-    {
-		std::cout << "Impossible d'ouvrir le fichier json " << filename_p << std::endl;
-	}
 }

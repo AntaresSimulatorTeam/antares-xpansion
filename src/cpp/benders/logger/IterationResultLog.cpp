@@ -63,7 +63,7 @@ namespace logger {
     }
 
     inline std::string IterationResultLog::create_solution_str(const value_map& value,
-                                                               const size_map& sizes)
+                                                               const size_map& sizes) const
     {
         std::stringstream result;
         result << indent_0 << indent_1 << std::setw(sizes.at(LABEL)) << value.at(LABEL);
@@ -76,7 +76,7 @@ namespace logger {
 
 
 
-    inline value_map IterationResultLog::create_value_map(const std::string& label, const std::string& value, const std::string& unit)
+    inline value_map IterationResultLog::create_value_map(const std::string& label, const std::string& value, const std::string& unit) const
     {
         value_map result;
         result[LABEL] = label;
