@@ -42,3 +42,10 @@ CMakeFiles/*
 
 # Outputs of instances
 src/python/config.yaml
+src/python/antares-xpansion/__version.py
+src/python/resources.py
+config-ui.yaml
+build_config.yaml
+
+# Doc pdf file
+antaresxpansionuserguide.pdf
