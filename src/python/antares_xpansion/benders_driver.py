@@ -47,10 +47,10 @@ class BendersDriver:
         # delete execution logs
         self._clean_log_files()
 
-        returncode = "Error in benders_driver"
-        
+        returncode = None
+
         if self._benders_log_file == "":
-            returncode = self._run_and_print_only_in_stdout()
+            returncode = self._run_and_print_only_in_std_out_err()
         else :
             returncode = self._run_and_print_in_std_out_err_and_file()
 
