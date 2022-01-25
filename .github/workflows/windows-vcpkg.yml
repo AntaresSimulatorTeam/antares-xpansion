@@ -9,6 +9,7 @@ on:
       - feature/*
       - fix/*
       - release/*
+      - test/*
 jobs:
 
   windows:
@@ -121,10 +122,23 @@ jobs:
            ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
     
     - name: Installer .zip creation
+      shell: bash
       run: |
            cd _build
            cpack -G ZIP
-           
+           export ZIP_NAME=$(ls *.zip)
+           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+
+    - name: Add file to zip installer
+      shell: bash
+      run: |
+          cd _build
+          ZIP_NAME=${{env.ZIP_NAME}}
+          dirname="${ZIP_NAME%%.*}"
+          mkdir $dirname
+          touch $dirname/toto.txt
+          zip -ur ZIP_NAME $dirname
+
     - id: create-single-file
       name: Single file .zip creation
       uses: ./.github/workflows/single-file-creation-zip
