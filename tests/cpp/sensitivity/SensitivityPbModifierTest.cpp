@@ -22,10 +22,10 @@ public:
     std::vector<std::basic_string<char>> col_names;
 
 protected:
-    void SetUp()
+    void SetUp() override
     {
         std::string last_master_mps_path = "../data_test/mps/master_last_iteration.mps";
-        std::string solver_name = "XPRESS";
+        std::string solver_name = "CBC";
         SolverFactory factory;
         math_problem = factory.create_solver(solver_name);
         math_problem->init();
@@ -257,17 +257,20 @@ TEST_F(SensitivityProblemModifierTest, ChangeProblem)
     std::map<int, std::string> id_to_name = {{peak_id, "peak"}, {semibase_id, "semibase"}};
 
     auto problem_modifier = SensitivityPbModifier(epsilon, best_ub, id_to_name, math_problem);
-    problem_modifier.changeProblem();
 
     verify_columns_are(5);
+    verify_rows_are(13);
+
+    auto sensitivity_pb = problem_modifier.changeProblem(id_to_name, math_problem);
+
+    verify_columns_are(5);
+    verify_rows_are(14);
 
     verify_column(peak_id, peak_name, 'C', 60000, 0, 3000);
     verify_column(semibase_id, semibase_name, 'C', 90000, 0, 400);
     verify_column(alpha_id, alpha_name, 'C', 0, -10000000000, 172124607.0861876);
     verify_column(alpha_0_id, alpha_0_name, 'C', 0, -10000000000, 1e+20);
     verify_column(alpha_1_id, alpha_1_name, 'C', 0, -10000000000, 1e+20);
-
-    verify_rows_are(14);
 
     verify_row(0, 'E', {1, -1, -1}, {alpha_id, alpha_0_id, alpha_1_id}, 0);
     verify_row(1, 'L', {-245032.5320257737, -245032.5263440894, -1}, {peak_id, semibase_id, alpha_0_id}, -117533866.2940578);

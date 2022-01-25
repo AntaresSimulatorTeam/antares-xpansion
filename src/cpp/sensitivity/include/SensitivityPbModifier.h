@@ -6,19 +6,15 @@
 class SensitivityPbModifier
 {
 public:
-    explicit SensitivityPbModifier(double epsilon, double bestUb, std::map<int, std::string>& idToName, std::shared_ptr<SolverAbstract>& solverModel);
+    explicit SensitivityPbModifier(double epsilon, double bestUb);
     ~SensitivityPbModifier() = default;
 
-    std::shared_ptr<SolverAbstract> getProblem();
-    void changeProblem();
+    std::shared_ptr<SolverAbstract> changeProblem(const std::map<int, std::string> &idToName, const std::shared_ptr<SolverAbstract> &lastMaster);
 
 private:
     double _epsilon;
     double _best_ub;
-    int _nb_candidates;
 
-    std::shared_ptr<SolverAbstract> _solver_model;
-
-    void change_objective();
-    void add_near_optimal_cost_constraint();
+    std::shared_ptr<SolverAbstract> change_objective(std::shared_ptr<SolverAbstract> &solverModel, int nbCandidates);
+    std::shared_ptr<SolverAbstract> add_near_optimal_cost_constraint(std::shared_ptr<SolverAbstract> &solverModel, int nbCandidates);
 };

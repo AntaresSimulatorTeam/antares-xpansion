@@ -1,4 +1,4 @@
-add_executable(sensitivity_test SensitivityWriterTest.cpp SensitivityPbModifierTest.cpp)
+add_executable(sensitivity_test SensitivityWriterTest.cpp SensitivityPbModifierTest.cpp SensitivityAnalysisTest.cpp)
 
 target_link_libraries(sensitivity_test
         PRIVATE

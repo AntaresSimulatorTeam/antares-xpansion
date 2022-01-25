@@ -3,11 +3,6 @@
 #include <iostream>
 #include "common.h"
 
-struct SensitivityCandidate
-{
-    std::string name;
-    double invest;
-};
 struct SensitivityOutputData
 {
     double epsilon;
