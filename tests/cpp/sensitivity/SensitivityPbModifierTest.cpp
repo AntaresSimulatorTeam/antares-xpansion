@@ -225,35 +225,47 @@ protected:
 
 TEST_F(SensitivityProblemModifierTest, ChangeProblem)
 {
-    double epsilon = 1e4;
-
-    auto benders_data = std::make_shared<BendersData>();
-    benders_data->best_ub = 171696313.74728549;
-    benders_data->x0["peak"] = 1234;
-    benders_data->x0["semibase"] = 5678;
-
-    update_col_names();
-    for (int i = 0; i < col_names.size(); i++)
-    {
-        std::cout << col_names[i] << " " << col_names[i].size() << std::endl;
-    }
-
-    auto problem_modifier = SensitivityPbModifier(epsilon, benders_data, math_problem);
-    problem_modifier.changeProblem();
-
-    verify_columns_are(5);
-
     const int peak_id = 0;
     const int semibase_id = 1;
     const int alpha_id = 2;
     const int alpha_0_id = 3;
     const int alpha_1_id = 4;
 
-    verify_column(peak_id, "peak", 'C', 60000, 0, 3000);
-    verify_column(semibase_id, "semibase", 'C', 90000, 0, 400);
-    verify_column(alpha_id, "alpha", 'C', 0, -10000000000, 172124607.0861876);
-    verify_column(alpha_0_id, "alpha_0", 'C', 0, -10000000000, 1e+20);
-    verify_column(alpha_1_id, "alpha_1", 'C', 0, -10000000000, 1e+20);
+    std::string peak_name;
+    std::string semibase_name;
+    std::string alpha_name;
+    std::string alpha_0_name;
+    std::string alpha_1_name;
+
+    if (math_problem->get_solver_name() == "XPRESS"){
+        peak_name = "peak    ";
+        semibase_name = "semibase";
+        alpha_name = "alpha   ";
+        alpha_0_name = "alpha_0 ";
+        alpha_1_name = "alpha_1 ";
+    }
+    else {
+        peak_name = "peak";
+        semibase_name = "semibase";
+        alpha_name = "alpha";
+        alpha_0_name = "alpha_0";
+        alpha_1_name = "alpha_1";
+    }
+
+    double epsilon = 1e4;
+    double best_ub = 171696313.74728549;
+    std::map<int, std::string> id_to_name = {{peak_id, "peak"}, {semibase_id, "semibase"}};
+
+    auto problem_modifier = SensitivityPbModifier(epsilon, best_ub, id_to_name, math_problem);
+    problem_modifier.changeProblem();
+
+    verify_columns_are(5);
+
+    verify_column(peak_id, peak_name, 'C', 60000, 0, 3000);
+    verify_column(semibase_id, semibase_name, 'C', 90000, 0, 400);
+    verify_column(alpha_id, alpha_name, 'C', 0, -10000000000, 172124607.0861876);
+    verify_column(alpha_0_id, alpha_0_name, 'C', 0, -10000000000, 1e+20);
+    verify_column(alpha_1_id, alpha_1_name, 'C', 0, -10000000000, 1e+20);
 
     verify_rows_are(14);
 

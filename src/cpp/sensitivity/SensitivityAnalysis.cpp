@@ -1,6 +1,6 @@
 #include "SensitivityAnalysis.h"
 
-SensitivityAnalysis::SensitivityAnalysis(double epsilon, std::shared_ptr<SolverAbstract> lastMasterModel, std::shared_ptr<BendersData> bendersData, std::map<int, std::string> idToName, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _benders_data(bendersData), _id_to_name(idToName), _sensitivity_pb_model(nullptr), _writer(writer), _pb_modifier(epsilon, bendersData, lastMasterModel)
+SensitivityAnalysis::SensitivityAnalysis(double epsilon, double bestUb, std::shared_ptr<SolverAbstract> lastMasterModel, std::map<int, std::string> idToName, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _best_ub(bestUb), _id_to_name(idToName), _sensitivity_pb_model(nullptr), _writer(writer), _pb_modifier(epsilon, bestUb, idToName, lastMasterModel)
 {
 	init_output_data();
 }
@@ -17,13 +17,12 @@ void SensitivityAnalysis::launch()
 void SensitivityAnalysis::init_output_data()
 {
 	_output_data.epsilon = _epsilon;
-	_output_data.best_benders_cost = _benders_data->best_ub;
+	_output_data.best_benders_cost = _best_ub;
 	_output_data.sensitivity_solution_overall_cost = 1e+20;
 	_output_data.sensitivity_pb_objective = 1e+20;
-	_output_data.sensitivity_candidates = _benders_data->x0;
-	for (auto &candidateNameValue : _output_data.sensitivity_candidates)
+	for (auto &kvp : _id_to_name)
 	{
-		candidateNameValue.second = 1e+20;
+		_output_data.sensitivity_candidates[kvp.second] 	= 1e+20;
 	}
 	_output_data.sensitivity_pb_status = SOLVER_STATUS::UNKNOWN;
 }
