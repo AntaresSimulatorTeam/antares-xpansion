@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     google::InitGoogleLogging(argv[0]);
-    auto path_to_log = (Path(options.OUTPUTROOT) / ("bendersmpiLog-rank" + std::to_string(world.rank()) + "-")).get_str();
+    auto path_to_log = (Path(options.OUTPUTROOT) / ("bendersmpiLog-rank" + std::to_string(world.rank()) + ".txt.")).get_str();
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
 
     std::string log_reports_name = (Path(options.OUTPUTROOT) / "reportbendersmpi.txt").get_str();
