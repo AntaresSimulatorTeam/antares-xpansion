@@ -122,6 +122,7 @@ class XpansionConfig:
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_TXT = 'options.txt'
         self.JSON_NAME = "out"
+        self.BENDERS_LOG_FILE = "benders.log"
 
     def _set_default_settings(self):
         self.settings_default = {
