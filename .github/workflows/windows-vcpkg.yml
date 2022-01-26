@@ -134,7 +134,7 @@ jobs:
       run: |
           cd _build
           ZIP_NAME=${{env.ZIP_NAME}}
-          dirname="${ZIP_NAME%%.*}"
+          dirname="${ZIP_NAME%.*}"
           mkdir $dirname
           touch $dirname/toto.txt
           zip -ur $ZIP_NAME $dirname
