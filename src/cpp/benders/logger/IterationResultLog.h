@@ -32,7 +32,7 @@ namespace logger {
 
         void setMaximumStringSizes();
 
-        std::string getCompleteMessageString();
+        std::string getCompleteMessageString() const;
     };
 
 } // namespace logger

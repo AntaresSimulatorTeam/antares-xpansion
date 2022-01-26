@@ -1,16 +1,11 @@
 
 #include <algorithm>
-#include <random>
 
 #include "glog/logging.h"
 
 #include "BendersMPI.h"
 
 #define __DEBUG_BENDERS_MPI__ 0
-
-BendersMpi::~BendersMpi()
-{
-}
 
 BendersMpi::BendersMpi(BendersOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world) : BendersBase(options, logger, writer), _exceptionRaised(false), _env(env), _world(world)
 {
@@ -120,12 +115,9 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts(int rank)
 	if (rank == 0)
 	{
 		solve_master_and_create_trace();
-		if (_options.ACTIVECUTS)
-		{
-			update_active_cuts();
-		}
 	}
 }
+
 void BendersMpi::broadcast_the_master_problem()
 {
 	if (!_exceptionRaised)
@@ -244,29 +236,11 @@ void BendersMpi::write_exception_message(const std::exception &ex)
 {
 	std::string error = "Exception raised : " + std::string(ex.what());
 	LOG(WARNING) << error << std::endl;
+	// TODO is this IF necessary ?
 	if (_logger)
 	{
 		_logger->display_message(error);
 	}
-}
-
-void BendersMpi::step_3_gather_slaves_basis()
-{
-
-	SimplexBasisPackage slave_basis_package;
-	if (_world.rank() == 0)
-	{
-		AllBasisPackage all_basis_package;
-		mpi::gather(_world, slave_basis_package, all_basis_package, 0);
-		all_basis_package.erase(all_basis_package.begin());
-		sort_basis(all_basis_package);
-	}
-	else
-	{
-		get_slave_basis(slave_basis_package);
-		mpi::gather(_world, slave_basis_package, 0);
-	}
-	_world.barrier();
 }
 
 void BendersMpi::step_4_update_best_solution(int rank, const Timer &timer_master, const Timer &benders_timer)
@@ -333,11 +307,6 @@ void BendersMpi::run()
 			step_2_build_cuts();
 		}
 
-		if (_options.BASIS && !_exceptionRaised)
-		{
-			step_3_gather_slaves_basis();
-		}
-
 		if (!_exceptionRaised)
 		{
 			step_4_update_best_solution(_world.rank(), timer_master, benders_timer);
@@ -347,16 +316,9 @@ void BendersMpi::run()
 		broadcast(_world, _data.stop, 0);
 	}
 
-	if (_world.rank() == 0)
+	if (_world.rank() == 0 && _options.TRACE)
 	{
-		if (_options.TRACE)
-		{
-			print_csv();
-		}
-		if (_options.ACTIVECUTS)
-		{
-			print_active_cut();
-		}
+		print_csv();
 	}
 }
 
@@ -372,7 +334,7 @@ void BendersMpi::launch()
 	run();
 	_world.barrier();
 
-    post_run_actions();
+	post_run_actions();
 
 	free();
 	_world.barrier();

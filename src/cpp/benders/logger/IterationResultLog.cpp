@@ -53,7 +53,7 @@ namespace logger {
         }
     }
 
-    std::string IterationResultLog::getCompleteMessageString() {
+    std::string IterationResultLog::getCompleteMessageString() const {
         std::stringstream _stream;
         _stream << indent_0 << "Solution =" << std::endl;
         for (const auto& value : _values)  {

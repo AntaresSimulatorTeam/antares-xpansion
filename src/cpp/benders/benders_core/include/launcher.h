@@ -136,11 +136,6 @@ public:
 					  0,
 					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-		// Range constraint don't exist in a sparse matrix formulation
-		/*solver_getrhsrange(solver_p,
-						std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE],
-						0,
-						std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);*/
 
 		solver_getcolinfo(solver_p,
 						  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
@@ -161,7 +156,6 @@ public:
 
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES]);
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
-		// assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RANGE].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
 		assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].size() == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);

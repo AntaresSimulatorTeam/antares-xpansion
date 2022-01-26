@@ -94,15 +94,10 @@ TEST_F(JsonWriterTest, InitialiseShouldPrintBeginTimeAndOptions)
     ASSERT_EQ(benders_options.AGGREGATION, json_content[OPTIONS_C]["AGGREGATION"].asBool());
     ASSERT_EQ(benders_options.OUTPUTROOT, json_content[OPTIONS_C]["OUTPUTROOT"].asString());
     ASSERT_EQ(benders_options.TRACE, json_content[OPTIONS_C]["TRACE"].asBool());
-    ASSERT_EQ(benders_options.DELETE_CUT, json_content[OPTIONS_C]["DELETE_CUT"].asBool());
     ASSERT_EQ(benders_options.SLAVE_WEIGHT, json_content[OPTIONS_C]["SLAVE_WEIGHT"].asString());
     ASSERT_EQ(benders_options.MASTER_NAME, json_content[OPTIONS_C]["MASTER_NAME"].asString());
     ASSERT_EQ(benders_options.SLAVE_NUMBER, json_content[OPTIONS_C]["SLAVE_NUMBER"].asInt());
     ASSERT_EQ(benders_options.INPUTROOT, json_content[OPTIONS_C]["INPUTROOT"].asString());
-    ASSERT_EQ(benders_options.BASIS, json_content[OPTIONS_C]["BASIS"].asBool());
-    ASSERT_EQ(benders_options.ACTIVECUTS, json_content[OPTIONS_C]["ACTIVECUTS"].asBool());
-    ASSERT_EQ(benders_options.THRESHOLD_AGGREGATION, json_content[OPTIONS_C]["THRESHOLD_AGGREGATION"].asInt());
-    ASSERT_EQ(benders_options.THRESHOLD_ITERATION, json_content[OPTIONS_C]["THRESHOLD_ITERATION"].asInt());
     ASSERT_EQ(benders_options.CSV_NAME, json_content[OPTIONS_C]["CSV_NAME"].asString());
     ASSERT_EQ(benders_options.BOUND_ALPHA, json_content[OPTIONS_C]["BOUND_ALPHA"].asBool());
     ASSERT_EQ(benders_options.SOLVER_NAME, json_content[OPTIONS_C]["SOLVER_NAME"].asString());
