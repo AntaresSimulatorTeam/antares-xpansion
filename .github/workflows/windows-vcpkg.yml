@@ -137,7 +137,7 @@ jobs:
           dirname="${ZIP_NAME%%.*}"
           mkdir $dirname
           touch $dirname/toto.txt
-          zip -ur ZIP_NAME $dirname
+          zip -ur $ZIP_NAME $dirname
 
     - id: create-single-file
       name: Single file .zip creation
