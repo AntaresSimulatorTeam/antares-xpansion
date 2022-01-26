@@ -46,7 +46,7 @@ namespace Output
          *  \param min_rel_gap : minimum relative gap wanted
          *  \param max_iter : maximum number of iterations
          */
-        virtual void write_iteration(const IterationsData &iterations_data);
+        virtual void write_iterations(const IterationsData &iterations_data);
 
         /*!
          *  \brief  saves some entries to be later written

@@ -8,6 +8,37 @@
 namespace Output
 {
 
+    // string constantes
+    const std::string
+        ANTARES_C("antares"),
+        VERSION_C("version"),
+        ANTARES_XPANSION_C("antares_xpansion"),
+        BEGIN_C("begin"),
+        END_C("end"),
+        DURATION_C("duration"),
+        ITERATIONS_C("iterations"),
+        BEST_UB_C("best_ub"),
+        CANDIDATES_C("candidates"),
+        INVEST_C("invest"),
+        MAX_C("max"),
+        MIN_C("min"),
+        NAME_C("name"),
+        INVESTMENT_COST_C("investment_cost"),
+        LB_C("lb"),
+        OPERATIONAL_COST_C("operational_cost"),
+        OPTIMALITY_GAP_C("optimality_gap"),
+        OVERALL_COST_C("overall_cost"),
+        RELATIVE_GAP_C("relative_gap"),
+        UB_C("ub"),
+        NBWEEKS_C("nbWeeks"),
+        OPTIONS_C("options"),
+        SOLUTION_C("solution"),
+        ITERATION_C("iteration"),
+        PROBLEM_STATUS_C("problem_status"),
+        STATUS_OPTIMAL_C("OPTIMAL"),
+        STATUS_ERROR_C("ERROR"),
+        VALUES_C("values"),
+        STOPPING_CRITERION_C("stopping_criterion");
     struct CandidateData
     {
         std::string name;
@@ -42,6 +73,7 @@ namespace Output
         int nbWeeks_p;
         int best_it;
         std::string problem_status;
+        std::string stopping_criterion;
     };
     /*!
      *  \brief struct containing some entries to be later written to the json file
@@ -56,6 +88,7 @@ namespace Output
     struct IterationsData
     {
         int nbWeeks_p;
+        double elapsed_time;
         Iterations iters;
         SolutionData solution_data;
     };
@@ -74,30 +107,6 @@ namespace Output
         virtual ~OutputWriter() = default;
 
         /*!
-         *  \brief updates the execution begin time
-         */
-        virtual void updateBeginTime() = 0;
-
-        /*!
-         *  \brief updates the end of execution time
-         */
-        virtual void updateEndTime() = 0;
-
-        /*!
-         *  \brief saves the options of the benders algorithm to be later written to the json file
-         *
-         *  \param bendersOptions_p : set of options used for the optimization
-         */
-        virtual void write_options(BendersOptions const &bendersOptions_p) = 0;
-
-        /*!
-         *  \brief saves some entries to be later written to the json file
-         *
-         *  \param iterations_data : containing iterations data
-         */
-        virtual void write_iteration(const IterationsData &iterations_data) = 0;
-
-        /*!
          *  \brief  saves some entries to be later written to the json file
          *
          *  \param solution_data containing solution data
@@ -105,9 +114,11 @@ namespace Output
         virtual void update_solution(const SolutionData &solution_data) = 0;
 
         /*!
-         *  \brief write an a priori errored log output, overwritten if optimization ends
+         *  \brief saves the options of the benders algorithm to be later written to the json file
+         *
+         *  \param bendersOptions_p : set of options used for the optimization
          */
-        virtual void write_failure() = 0;
+        virtual void write_options(BendersOptions const &bendersOptions_p) = 0;
 
         /*!
          *  \brief write the log data into a file

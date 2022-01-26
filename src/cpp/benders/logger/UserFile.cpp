@@ -64,5 +64,9 @@ namespace xpansion {
             _userLog->log_total_duration(durationInSeconds);
         }
 
+        void UserFile::log_stop_criterion_reached(const StoppingCriterion stopping_criterion) {
+            _userLog->log_stop_criterion_reached(stopping_criterion);
+        }
+
     } // namespace logger
 } // namespace xpansion

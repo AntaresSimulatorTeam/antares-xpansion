@@ -695,27 +695,23 @@ void BendersBase::update_active_cuts()
 	}
 }
 
-void BendersBase::fill_log_data_from_data(LogData &logData) const
+LogData BendersBase::build_log_data_from_data() const
 {
-	logData = defineLogDataFromBendersDataAndTrace(_data, _trace);
+	auto logData = defineLogDataFromBendersDataAndTrace(_data, _trace);
 	logData.optimality_gap = _options.ABSOLUTE_GAP;
 	logData.relative_gap = _options.RELATIVE_GAP;
 	logData.max_iterations = _options.MAX_ITERATIONS;
+	return logData;
 }
 
 void BendersBase::post_run_actions() const
 {
-	LogData logData;
-	fill_log_data_from_data(logData);
+	LogData logData = build_log_data_from_data();
 
+	_logger->log_stop_criterion_reached(_data.stopping_criterion);
 	_logger->log_at_ending(logData);
 
 	_writer->end_writing(output_data());
-
-	std::stringstream str;
-	str << "Optimization results available in : "
-		<< _options.JSON_FILE;
-	_logger->display_message(str.str());
 }
 
 Output::IterationsData BendersBase::output_data() const
@@ -733,6 +729,7 @@ Output::IterationsData BendersBase::output_data() const
 	}
 	iterations_data.iters = iters;
 	iterations_data.solution_data = solution();
+	iterations_data.elapsed_time = _data.elapsed_time;
 	return iterations_data;
 }
 
@@ -772,6 +769,7 @@ Output::SolutionData BendersBase::solution() const
 	Output::SolutionData solution_data;
 	solution_data.nbWeeks_p = _nbWeeks;
 	solution_data.best_it = _data.best_it;
+	solution_data.problem_status = status_from_criterion();
 	size_t bestItIndex_l = _data.best_it - 1;
 
 	if (bestItIndex_l < _trace.size())
@@ -779,20 +777,22 @@ Output::SolutionData BendersBase::solution() const
 		solution_data.solution = iteration(_trace[bestItIndex_l]);
 		solution_data.solution.optimality_gap = _data.best_ub - _data.lb;
 		solution_data.solution.relative_gap = solution_data.solution.optimality_gap / _data.best_ub;
+		solution_data.stopping_criterion = criterion_to_str(_data.stopping_criterion);
 	}
-
-	if ((solution_data.solution.optimality_gap <= _options.ABSOLUTE_GAP) || (solution_data.solution.relative_gap <= _options.RELATIVE_GAP))
-	{
-		solution_data.problem_status = "OPTIMAL";
-	}
-	else if (_options.MAX_ITERATIONS != -1 && _data.it > _options.MAX_ITERATIONS)
-	{
-		solution_data.problem_status = "MAX ITERATIONS";
-	}
-	else
-	{
-		solution_data.problem_status = "ERROR";
-	}
-
 	return solution_data;
+}
+
+std::string BendersBase::status_from_criterion() const
+{
+	switch (_data.stopping_criterion)
+	{
+	case StoppingCriterion::absolute_gap:
+	case StoppingCriterion::relative_gap:
+	case StoppingCriterion::max_iteration:
+	case StoppingCriterion::timelimit:
+		return Output::STATUS_OPTIMAL_C;
+
+	default:
+		return Output::STATUS_ERROR_C;
+	}
 }

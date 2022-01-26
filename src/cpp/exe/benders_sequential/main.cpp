@@ -35,7 +35,10 @@ int main(int argc, char **argv)
 
 	BendersSequential benders(options, logger, writer);
 	benders.launch();
-
+    std::stringstream str;
+    str << "Optimization results available in : "
+        << options.JSON_FILE;
+    logger->display_message(str.str());
 	logger->log_total_duration(timer.elapsed());
 
 	return 0;

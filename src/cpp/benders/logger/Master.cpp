@@ -53,6 +53,12 @@ namespace logger {
         }
     }
 
+    void Master::log_stop_criterion_reached(const StoppingCriterion stopping_criterion) {
+        for (auto logger : _loggers) {
+            logger->log_stop_criterion_reached(stopping_criterion);
+        }
+    }
+
 } // namespace logger
 } // namespace xpansion
 

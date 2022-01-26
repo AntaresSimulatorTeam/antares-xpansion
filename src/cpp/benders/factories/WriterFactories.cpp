@@ -10,7 +10,10 @@ Writer build_void_writer() {
 }
 
 Writer build_json_writer(const BendersOptions &options) {
-    Writer writer = std::make_shared<Output::JsonWriter>();
+    auto m_clock= std::make_shared<Clock>();
+
+    Writer writer = std::make_shared<Output::JsonWriter>(m_clock, options.JSON_FILE);
+
     writer->initialize(options);
     return writer;
 }

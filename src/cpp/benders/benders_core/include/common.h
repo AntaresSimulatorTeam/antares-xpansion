@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <thread>
 #include <cmath>
-#include "Timer.h"
+//#include "Timer.h"
 #include "core/ILogger.h"
 // MultiSolver interface
 #include "multisolver_interface/Solver.h"

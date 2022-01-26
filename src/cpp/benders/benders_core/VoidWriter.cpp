@@ -17,7 +17,7 @@ namespace Output
         // keep this method empty
     }
 
-    void VoidWriter::write_iteration(const IterationsData &iterations_data)
+    void VoidWriter::write_iterations(const IterationsData &iterations_data)
     {
         // keep this method empty
     }

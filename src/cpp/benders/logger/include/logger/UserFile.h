@@ -35,6 +35,8 @@ namespace xpansion
 
 			void log_total_duration(double durationInSeconds) override;
 
+            void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) override;
+
 		private:
 			std::ofstream _file;
 			std::unique_ptr<User> _userLog;

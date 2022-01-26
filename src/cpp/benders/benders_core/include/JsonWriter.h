@@ -3,11 +3,26 @@
 
 #include "OutputWriter.h"
 #include "BendersOptions.h"
-#include "TimeUtil.h"
+#include "Clock.h"
+#include "Timer.h"
 
 #include <json/writer.h>
+
+inline void localtime_platform(const std::time_t &time_p, struct tm &local_time)
+{
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+    localtime_s(&local_time, &time_p);
+#else // defined(__unix__) || (__APPLE__)
+    localtime_r(&time_p, &local_time);
+#endif
+}
+namespace clock_utils
+{
+    std::string timeToStr(const std::time_t &time_p);
+}
 namespace Output
 {
+
     /*!
      * \class JsonWriter
      * \brief JsonWriter class to describe the execuion session of an antares xpansion optimization in a json file
@@ -15,21 +30,10 @@ namespace Output
     class JsonWriter : public OutputWriter
     {
     private:
-        TimeUtil _time = TimeUtil();
+        std::shared_ptr<Clock> _clock;
         std::string _filename;
         // attributes of the optimization execution
         Json::Value _output;
-
-    public:
-        /*!
-         *  \brief JsonWriter default constructor
-         */
-        JsonWriter();
-
-        /*!
-         *  \brief destructor of class JsonWriter
-         */
-        virtual ~JsonWriter() = default;
 
         /*!
          *  \brief updates the execution begin time
@@ -40,6 +44,26 @@ namespace Output
          *  \brief updates the end of execution time
          */
         virtual void updateEndTime();
+        virtual void write_iterations(const IterationsData &iterations_data);
+
+        /*!
+         *  \brief write an a priori errored json output, overwritten if optimization ends
+         */
+        std::string criterion_to_string(const StoppingCriterion stopping_criterion) const;
+        std::string status_from_criterion(const StoppingCriterion stopping_criterion) const;
+
+    public:
+        /*!
+         *  \brief JsonWriter default constructor
+         */
+        JsonWriter() = delete;
+
+        JsonWriter(std::shared_ptr<Clock> p_clock, const std::string &json_filename);
+
+        /*!
+         *  \brief destructor of class JsonWriter
+         */
+        virtual ~JsonWriter() = default;
 
         /*!
          *  \brief saves the options of the benders algorithm to be later written to the json file
@@ -47,42 +71,13 @@ namespace Output
          *  \param bendersOptions_p : set of options used for the optimization
          */
         virtual void write_options(BendersOptions const &bendersOptions_p);
-
-        /*!
-         *  \brief saves some entries to be later written to the json file
-         *
-         *  \param nbWeeks_p : number of the weeks in the study
-         *  \param bendersTrace_p : trace to be written ie iterations details
-         *  \param bendersData_p : final benders data to get the best iteration
-         *  \param min_abs_gap : minimum absolute gap wanted
-         *  \param min_rel_gap : minimum relative gap wanted
-         *  \param max_iter : maximum number of iterations
-         */
-        virtual void write_iteration(const IterationsData &iterations_data);
-
-        /*!
-         *  \brief  saves some entries to be later written to the json file
-         *
-         *  \param nbWeeks_p : number of the weeks in the study
-         *  \param lb_p : solution lower bound
-         *  \param ub_p : solution upper bound
-         *  \param investCost_p : investment cost
-         *  \param operationalCost_p : operational cost
-         *  \param overallCost_p : total cost, sum of invest and operational
-         *  \param solution_p : point giving the solution and the candidates
-         *  \param optimality_p : indicates if optimality was reached
-         */
         virtual void update_solution(const SolutionData &solution_data);
-
-        /*!
-         *  \brief write an a priori errored json output, overwritten if optimization ends
-         */
-        virtual void write_failure();
 
         /*!
          *  \brief write the json data into a file
          */
         virtual void dump();
+
         /*!
          * \brief initialize outputs
          * \param options : set of options used for the optimization

@@ -17,6 +17,7 @@ add_executable (merge_mps
 target_link_libraries (merge_mps 
 	PUBLIC
 		${PROJECT_NAME}::benders_sequential_core
+		${PROJECT_NAME}::factories
 		helpers
 		logger_lib
 )

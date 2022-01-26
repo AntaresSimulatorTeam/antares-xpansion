@@ -80,11 +80,12 @@ public:
     void sort_basis(AllBasisPackage const &all_basis_package);
     void update_active_cuts();
 
-    void fill_log_data_from_data(LogData &logdata) const;
+    LogData build_log_data_from_data() const;
     void post_run_actions() const;
     Output::IterationsData output_data() const;
     Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
     Output::CandidatesVec candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const;
     Output::SolutionData solution() const;
+    std::string status_from_criterion() const;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

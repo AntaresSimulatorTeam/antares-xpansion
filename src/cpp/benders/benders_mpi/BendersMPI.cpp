@@ -372,10 +372,7 @@ void BendersMpi::launch()
 	run();
 	_world.barrier();
 
-	if (_world.rank() == 0)
-	{
-		post_run_actions();
-	}
+    post_run_actions();
 
 	free();
 	_world.barrier();
