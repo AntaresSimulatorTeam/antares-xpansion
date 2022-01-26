@@ -7,7 +7,8 @@ SensitivityPbModifier::SensitivityPbModifier(double epsilon, double bestUb) : _e
 
 std::shared_ptr<SolverAbstract> SensitivityPbModifier::changeProblem(const std::map<int, std::string> &idToName, const std::shared_ptr<SolverAbstract> &lastMaster)
 {
-    auto sensitivity_model = std::make_shared<SolverAbstract>("sensitivity model", lastMaster);
+    SolverFactory factory;
+    std::shared_ptr<SolverAbstract> sensitivity_model = factory.create_solver(lastMaster);
     int nb_candidates = idToName.size();
 
     sensitivity_model = add_near_optimal_cost_constraint(sensitivity_model, nb_candidates);

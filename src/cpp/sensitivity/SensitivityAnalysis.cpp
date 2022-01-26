@@ -23,13 +23,13 @@ void SensitivityAnalysis::init_output_data()
 {
 	_output_data.epsilon = _epsilon;
 	_output_data.best_benders_cost = _best_ub;
-	_output_data.sensitivity_solution_overall_cost = 1e+20;
-	_output_data.sensitivity_pb_objective = 1e+20;
+	_output_data.solution_system_cost = 1e+20;
+	_output_data.pb_objective = 1e+20;
 	for (auto &kvp : _id_to_name)
 	{
-		_output_data.sensitivity_candidates[kvp.second] = 1e+20;
+		_output_data.candidates[kvp.second] = 1e+20;
 	}
-	_output_data.sensitivity_pb_status = SOLVER_STATUS::UNKNOWN;
+	_output_data.pb_status = SOLVER_STATUS::UNKNOWN;
 }
 
 // void SensitivityAnalysis::get_capex_optimal_solutions()
@@ -86,12 +86,12 @@ std::vector<double> SensitivityAnalysis::get_sensitivity_solution(std::shared_pt
 
 	if (sensitivity_problem->get_n_integer_vars() > 0)
 	{
-		_output_data.sensitivity_pb_status = sensitivity_problem->solve_mip();
+		_output_data.pb_status = sensitivity_problem->solve_mip();
 		sensitivity_problem->get_mip_sol(solution.data());
 	}
 	else
 	{
-		_output_data.sensitivity_pb_status = sensitivity_problem->solve_lp();
+		_output_data.pb_status = sensitivity_problem->solve_lp();
 		sensitivity_problem->get_lp_sol(solution.data(), NULL, NULL);
 	}
 	return solution;
@@ -101,6 +101,6 @@ void SensitivityAnalysis::fill_output_data(const std::vector<double> &solution)
 {
 	for (auto const &kvp : _id_to_name)
 	{
-		_output_data.sensitivity_candidates[kvp.second] = solution[kvp.first];
+		_output_data.candidates[kvp.second] = solution[kvp.first];
 	}
 }

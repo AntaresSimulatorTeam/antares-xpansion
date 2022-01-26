@@ -34,16 +34,16 @@ protected:
 
 TEST_F(SensitivityAnalysisTest, OutputDataInit)
 {
-    auto sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, math_problem, id_to_name, writer);
+    auto sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, id_to_name, math_problem, writer);
 
     auto outputData = sensitivity_analysis.get_output_data();
 
     ASSERT_DOUBLE_EQ(outputData.epsilon, epsilon);
     ASSERT_DOUBLE_EQ(outputData.best_benders_cost, best_ub);
-    ASSERT_DOUBLE_EQ(outputData.sensitivity_solution_overall_cost, 1e+20);
-    ASSERT_DOUBLE_EQ(outputData.sensitivity_pb_objective, 1e+20);
-    ASSERT_EQ(outputData.sensitivity_pb_status, SOLVER_STATUS::UNKNOWN);
+    ASSERT_DOUBLE_EQ(outputData.solution_system_cost, 1e+20);
+    ASSERT_DOUBLE_EQ(outputData.pb_objective, 1e+20);
+    ASSERT_EQ(outputData.pb_status, SOLVER_STATUS::UNKNOWN);
 
-    ASSERT_EQ(outputData.sensitivity_candidates.size(), 2);
+    ASSERT_EQ(outputData.candidates.size(), 2);
 
 }

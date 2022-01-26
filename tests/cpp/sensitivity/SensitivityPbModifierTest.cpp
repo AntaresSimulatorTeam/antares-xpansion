@@ -231,6 +231,9 @@ TEST_F(SensitivityProblemModifierTest, ChangeProblem)
     const int alpha_0_id = 3;
     const int alpha_1_id = 4;
 
+    const int peak_cost = 60000;
+    const int semibase_cost = 90000;
+
     std::string peak_name;
     std::string semibase_name;
     std::string alpha_name;
@@ -256,7 +259,7 @@ TEST_F(SensitivityProblemModifierTest, ChangeProblem)
     double best_ub = 171696313.74728549;
     std::map<int, std::string> id_to_name = {{peak_id, "peak"}, {semibase_id, "semibase"}};
 
-    auto problem_modifier = SensitivityPbModifier(epsilon, best_ub, id_to_name, math_problem);
+    auto problem_modifier = SensitivityPbModifier(epsilon, best_ub);
 
     verify_columns_are(5);
     verify_rows_are(13);
@@ -266,8 +269,8 @@ TEST_F(SensitivityProblemModifierTest, ChangeProblem)
     verify_columns_are(5);
     verify_rows_are(14);
 
-    verify_column(peak_id, peak_name, 'C', 60000, 0, 3000);
-    verify_column(semibase_id, semibase_name, 'C', 90000, 0, 400);
+    verify_column(peak_id, peak_name, 'C', peak_cost, 0, 3000);
+    verify_column(semibase_id, semibase_name, 'C', semibase_cost, 0, 400);
     verify_column(alpha_id, alpha_name, 'C', 0, -10000000000, 172124607.0861876);
     verify_column(alpha_0_id, alpha_0_name, 'C', 0, -10000000000, 1e+20);
     verify_column(alpha_1_id, alpha_1_name, 'C', 0, -10000000000, 1e+20);
@@ -285,5 +288,5 @@ TEST_F(SensitivityProblemModifierTest, ChangeProblem)
     verify_row(10, 'L', {-69369.9960200541, -78919.96181423182, -1}, {peak_id, semibase_id, alpha_1_id}, -169919665.3424386);
     verify_row(11, 'L', {-7199.532842092396, -1}, {semibase_id, alpha_0_id}, -16164482.13700069);
     verify_row(12, 'L', {-39639.9977257452, -49189.96351992292, -1}, {peak_id, semibase_id, alpha_1_id}, -122916538.0391362);
-    verify_row(13, 'L', {60000, 90000, 1}, {peak_id, semibase_id, alpha_id}, 171706313.74728549);
+    verify_row(13, 'L', {peak_cost, semibase_cost, 1}, {peak_id, semibase_id, alpha_id}, 171706313.74728549);
 }
