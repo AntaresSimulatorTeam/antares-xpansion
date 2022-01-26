@@ -3,12 +3,13 @@
 #include "solver_utils.h"
 
 SensitivityPbModifier::SensitivityPbModifier(double epsilon, double bestUb) : _epsilon(epsilon), _best_ub(bestUb)
-{}
+{
+}
 
-std::shared_ptr<SolverAbstract> SensitivityPbModifier::changeProblem(const std::map<int, std::string> &idToName, const std::shared_ptr<SolverAbstract> &lastMaster)
+SolverAbstract::Ptr SensitivityPbModifier::changeProblem(const std::map<int, std::string> &idToName, const SolverAbstract::Ptr &lastMaster)
 {
     SolverFactory factory;
-    std::shared_ptr<SolverAbstract> sensitivity_model = factory.create_solver(lastMaster);
+    SolverAbstract::Ptr sensitivity_model = factory.create_solver(lastMaster);
     int nb_candidates = idToName.size();
 
     sensitivity_model = add_near_optimal_cost_constraint(sensitivity_model, nb_candidates);
@@ -16,7 +17,7 @@ std::shared_ptr<SolverAbstract> SensitivityPbModifier::changeProblem(const std::
     return sensitivity_model;
 }
 
-std::shared_ptr<SolverAbstract> SensitivityPbModifier::change_objective(std::shared_ptr<SolverAbstract> &solverModel, int nbCandidates)
+SolverAbstract::Ptr SensitivityPbModifier::change_objective(SolverAbstract::Ptr &solverModel, int nbCandidates)
 {
     std::vector<int> colind(solverModel->get_ncols());
     std::vector<double> obj(colind.size());
@@ -34,7 +35,7 @@ std::shared_ptr<SolverAbstract> SensitivityPbModifier::change_objective(std::sha
     return solverModel;
 }
 
-std::shared_ptr<SolverAbstract> SensitivityPbModifier::add_near_optimal_cost_constraint(std::shared_ptr<SolverAbstract> &solverModel, int nbCandidates)
+SolverAbstract::Ptr SensitivityPbModifier::add_near_optimal_cost_constraint(SolverAbstract::Ptr &solverModel, int nbCandidates)
 {
     std::vector<int> colind(nbCandidates + 1);
     std::vector<double> dmatval(colind.size());

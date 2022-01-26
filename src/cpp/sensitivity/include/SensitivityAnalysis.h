@@ -10,7 +10,7 @@ class SensitivityAnalysis
 public:
     explicit SensitivityAnalysis(double epsilon, double bestUb,
                                  std::map<int, std::string> idToName,
-                                 std::shared_ptr<SolverAbstract> lastMaster, std::shared_ptr<SensitivityWriter> writer);
+                                 SolverAbstract::Ptr lastMaster, std::shared_ptr<SensitivityWriter> writer);
     ~SensitivityAnalysis() = default;
 
     void launch();
@@ -21,7 +21,7 @@ private:
     double _best_ub;
 
     std::map<int, std::string> _id_to_name;
-    std::shared_ptr<SolverAbstract> _last_master;
+    SolverAbstract::Ptr _last_master;
     std::shared_ptr<SensitivityWriter> _writer;
 
     SensitivityPbModifier _pb_modifier;
@@ -37,6 +37,6 @@ private:
     // void get_candidate_upper_projection(int &candidateNum);
     // void get_candidate_lower_projection(int &candidateNum);
 
-    std::vector<double> get_sensitivity_solution(std::shared_ptr<SolverAbstract> sensitivity_problem);
+    std::vector<double> get_sensitivity_solution(SolverAbstract::Ptr sensitivity_problem);
     void fill_output_data(const std::vector<double> &solution);
 };

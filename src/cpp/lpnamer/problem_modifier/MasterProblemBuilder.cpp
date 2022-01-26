@@ -7,11 +7,11 @@
 #include <algorithm>
 #include <unordered_map>
 
-MasterProblemBuilder::MasterProblemBuilder(const std::string& master_formulation):_master_formulation (master_formulation)
+MasterProblemBuilder::MasterProblemBuilder(const std::string &master_formulation) : _master_formulation(master_formulation)
 {
 }
 
-std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& solverName, const std::vector<Candidate>& candidates)
+SolverAbstract::Ptr MasterProblemBuilder::build(const std::string &solverName, const std::vector<Candidate> &candidates)
 {
 	_indexOfNvar.clear();
 	_indexOfPmaxVar.clear();
@@ -24,8 +24,9 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& s
 	std::vector<Candidate> candidatesInteger;
 
 	std::copy_if(candidates.begin(), candidates.end(),
-		back_inserter(candidatesInteger),
-		[](const Candidate& cand) { return cand.is_integer(); });
+				 back_inserter(candidatesInteger),
+				 [](const Candidate &cand)
+				 { return cand.is_integer(); });
 
 	if (_master_formulation == "integer")
 	{
@@ -37,9 +38,9 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(const std::string& s
 	return master_l;
 }
 
-void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l)
+void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate> &candidatesInteger, SolverAbstract::Ptr &master_l)
 {
-	
+
 	auto n_integer = (int)candidatesInteger.size();
 	if (n_integer > 0)
 	{
@@ -57,7 +58,7 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 		int positionInIntegerCandidadeList(0);
 		auto nbColPmaxVar = (int)_indexOfPmaxVar.size();
 
-		for (const auto& candidate : candidatesInteger)
+		for (const auto &candidate : candidatesInteger)
 		{
 			int pmaxVarColumNumber = getPmaxVarColumnNumberFor(candidate);
 			int nVarColumNumber = nbColPmaxVar + positionInIntegerCandidadeList;
@@ -81,9 +82,9 @@ void MasterProblemBuilder::addPmaxConstraint(const std::vector<Candidate>& candi
 	}
 }
 
-int MasterProblemBuilder::getPmaxVarColumnNumberFor(const Candidate& candidate)
+int MasterProblemBuilder::getPmaxVarColumnNumberFor(const Candidate &candidate)
 {
-	const auto& it = _indexOfPmaxVar.find(candidate.get_name());
+	const auto &it = _indexOfPmaxVar.find(candidate.get_name());
 	if (it == _indexOfPmaxVar.end())
 	{
 		std::string message = "There is no Pvar for the candidate " + candidate.get_name();
@@ -92,10 +93,10 @@ int MasterProblemBuilder::getPmaxVarColumnNumberFor(const Candidate& candidate)
 	return it->second;
 }
 
-void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candidate>& candidatesInteger, SolverAbstract::Ptr& master_l) const
+void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candidate> &candidatesInteger, SolverAbstract::Ptr &master_l) const
 {
-	
-	auto nbNvar = (int) candidatesInteger.size();
+
+	auto nbNvar = (int)candidatesInteger.size();
 	if (nbNvar > 0)
 	{
 		std::vector<double> zeros(nbNvar, 0.0);
@@ -103,10 +104,10 @@ void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candi
 		std::vector<char> integer_type(nbNvar, 'I');
 		std::vector<std::string> colNames(0);
 		std::vector<double> max_unit;
-		
+
 		for (int i = 0; i < candidatesInteger.size(); i++)
 		{
-			const auto& candidate = candidatesInteger.at(i);
+			const auto &candidate = candidatesInteger.at(i);
 			max_unit.push_back(candidate.max_unit());
 		}
 
@@ -114,9 +115,9 @@ void MasterProblemBuilder::addNvarOnEachIntegerCandidate(const std::vector<Candi
 	}
 }
 
-void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(const std::vector<Candidate>& candidates, SolverAbstract::Ptr& master_l)
+void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(const std::vector<Candidate> &candidates, SolverAbstract::Ptr &master_l)
 {
-	auto nbCandidates = (int) candidates.size();
+	auto nbCandidates = (int)candidates.size();
 
 	if (nbCandidates > 0)
 	{
@@ -127,8 +128,9 @@ void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(const std::vector<Can
 		std::vector<char> coltypes_candidate(nbCandidates, 'C');
 		std::vector<std::string> candidate_names(nbCandidates);
 
-		for (int i = 0; i < candidates.size(); i++) {
-			const auto& candidate = candidates.at(i);
+		for (int i = 0; i < candidates.size(); i++)
+		{
+			const auto &candidate = candidates.at(i);
 			obj_candidate[i] = candidate.obj();
 			lb_candidate[i] = candidate.lb();
 			ub_candidate[i] = candidate.ub();

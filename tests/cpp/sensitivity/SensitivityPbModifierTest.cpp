@@ -3,13 +3,27 @@
 #include "SensitivityPbModifier.h"
 #include "BendersBase.h"
 
-class SensitivityProblemModifierTest : public ::testing::Test
+const int peak_id = 0;
+const int semibase_id = 1;
+const int alpha_id = 2;
+const int alpha_0_id = 3;
+const int alpha_1_id = 4;
+
+const int peak_cost = 60000;
+const int semibase_cost = 90000;
+
+std::string peak_name;
+std::string semibase_name;
+std::string alpha_name;
+std::string alpha_0_name;
+std::string alpha_1_name;
+
+struct SolverData
 {
-public:
-    SolverAbstract::Ptr math_problem;
-    int n_cols = -1;
-    int n_rows = -1;
-    int n_elems = -1;
+    SolverAbstract::Ptr solver_model;
+    int n_cols;
+    int n_rows;
+    int n_elems;
     std::vector<char> coltypes;
     std::vector<char> rowtypes;
     std::vector<double> objectives;
@@ -20,6 +34,12 @@ public:
     std::vector<int> col_indexes;
     std::vector<int> start_indexes;
     std::vector<std::basic_string<char>> col_names;
+};
+
+class SensitivityProblemModifierTest : public ::testing::Test
+{
+public:
+    std::vector<SolverData> solvers_data;
 
 protected:
     void SetUp() override
@@ -27,111 +47,148 @@ protected:
         std::string last_master_mps_path = "../data_test/mps/master_last_iteration.mps";
         std::string solver_name = "CBC";
         SolverFactory factory;
-        math_problem = factory.create_solver(solver_name);
-        math_problem->init();
-        math_problem->read_prob_mps(last_master_mps_path);
+
+        SolverAbstract::Ptr solver_model = factory.create_solver(solver_name);
+        solver_model->init();
+        solver_model->read_prob_mps(last_master_mps_path);
+
+        solvers_data.push_back(init_solver_data_from_solver_model(solver_model));
     }
 
-    void TearDown()
+    void TearDown() override {}
+
+    SolverData init_solver_data_from_solver_model(const SolverAbstract::Ptr &solver_model)
     {
-        n_cols = -1;
-        n_rows = -1;
-        n_elems = -1;
+        SolverData solver_data;
+        solver_data.solver_model = solver_model;
+        solver_data.n_cols = -1;
+        solver_data.n_rows = -1;
+        solver_data.n_elems = -1;
+        return solver_data;
     }
 
     void update_n_cols()
     {
-        if (n_cols == -1)
+        for (auto &solver_data : solvers_data)
         {
-            n_cols = math_problem->get_ncols();
+            if (solver_data.n_cols == -1)
+            {
+                solver_data.n_cols = solver_data.solver_model->get_ncols();
+            }
         }
     }
     void update_n_rows()
     {
-        if (n_rows == -1)
+        for (auto &solver_data : solvers_data)
         {
-            n_rows = math_problem->get_nrows();
+            if (solver_data.n_rows == -1)
+            {
+                solver_data.n_rows = solver_data.solver_model->get_nrows();
+            }
         }
     }
     void update_n_elems()
     {
-        if (n_elems == -1)
+        for (auto &solver_data : solvers_data)
         {
-            n_elems = math_problem->get_nelems();
+            if (solver_data.n_elems == -1)
+            {
+                solver_data.n_elems = solver_data.solver_model->get_nelems();
+            }
         }
     }
     void update_col_names()
     {
         update_n_cols();
-        col_names = math_problem->get_col_names(0, n_cols - 1);
+        for (auto &solver_data : solvers_data)
+        {
+            solver_data.col_names = solver_data.solver_model->get_col_names(0, solver_data.n_cols - 1);
+        }
     }
     void update_col_type()
     {
         update_n_cols();
-        if (coltypes.size() != n_cols)
+        for (auto &solver_data : solvers_data)
         {
-            std::vector<char> buffer(n_cols, '0');
-            coltypes.insert(coltypes.begin(), buffer.begin(), buffer.end());
-            math_problem->get_col_type(coltypes.data(), 0, n_cols - 1);
+            if (solver_data.coltypes.size() != solver_data.n_cols)
+            {
+                std::vector<char> buffer(solver_data.n_cols, '0');
+                solver_data.coltypes.insert(coltypes.begin(), buffer.begin(), buffer.end());
+                solver_data.solver_model->get_col_type(solver_data.coltypes.data(), 0, solver_data.n_cols - 1);
+            }
         }
     }
     void update_row_type()
     {
         update_n_rows();
-        if (rowtypes.size() != n_rows)
+        for (auto &solver_data : solvers_data)
         {
-            std::vector<char> buffer(n_rows, '0');
-            rowtypes.insert(rowtypes.begin(), buffer.begin(), buffer.end());
-            math_problem->get_row_type(rowtypes.data(), 0, n_rows - 1);
+            if (solver_data.rowtypes.size() != solver_data.n_rows)
+            {
+                std::vector<char> buffer(solver_data.n_rows, '0');
+                solver_data.rowtypes.insert(solver_data.rowtypes.begin(), buffer.begin(), buffer.end());
+                solver_data.solver_model->get_row_type(solver_data.rowtypes.data(), 0, solver_data.n_rows - 1);
+            }
         }
     }
     void update_objectives()
     {
         update_n_cols();
-        if (objectives.size() != n_cols)
+        for (auto &solver_data : solvers_data)
         {
-            std::vector<double> buffer(n_cols, -777);
-            objectives.insert(objectives.begin(), buffer.begin(), buffer.end());
-            math_problem->get_obj(objectives.data(), 0, n_cols - 1);
+            if (solver_data.objectives.size() != solver_data.n_cols)
+            {
+                std::vector<double> buffer(solver_data.n_cols, -777);
+                solver_data.objectives.insert(solver_data.objectives.begin(), buffer.begin(), buffer.end());
+                solver_data.solver_model->get_obj(solver_data.objectives.data(), 0, solver_data.n_cols - 1);
+            }
         }
     }
     void update_lower_bounds()
     {
         update_n_cols();
-        if (lower_bounds.size() != n_cols)
+        for (auto &solver_data : solvers_data)
         {
-            std::vector<double> buffer(n_cols, -777);
-            lower_bounds.insert(lower_bounds.begin(), buffer.begin(), buffer.end());
-            math_problem->get_lb(lower_bounds.data(), 0, n_cols - 1);
+            if (solver_data.lower_bounds.size() != solver_data.n_cols)
+            {
+                std::vector<double> buffer(solver_data.n_cols, -777);
+                solver_data.lower_bounds.insert(solver_data.lower_bounds.begin(), buffer.begin(), buffer.end());
+                solver_data.solver_model->get_lb(solver_data.lower_bounds.data(), 0, solver_data.n_cols - 1);
+            }
         }
     }
     void update_upper_bounds()
     {
         update_n_cols();
-        if (upper_bounds.size() != n_cols)
+        for (auto &solver_data : solvers_data)
         {
-            std::vector<double> buffer(n_cols, -777);
-            upper_bounds.insert(upper_bounds.begin(), buffer.begin(), buffer.end());
-            math_problem->get_ub(upper_bounds.data(), 0, n_cols - 1);
+            if (solver_data.upper_bounds.size() != solver_data.n_cols)
+            {
+                std::vector<double> buffer(solver_data.n_cols, -777);
+                solver_data.upper_bounds.insert(solver_data.upper_bounds.begin(), buffer.begin(), buffer.end());
+                solver_data.solver_model->get_ub(solver_data.upper_bounds.data(), 0, solver_data.n_cols - 1);
+            }
         }
     }
     void update_mat_val()
     {
         update_n_rows();
         update_n_elems();
-
-        if (mat_val.size() != n_elems)
+        for (auto &solver_data : solvers_data)
         {
-            std::vector<double> buffer(n_elems, -777);
-            mat_val.insert(mat_val.begin(), buffer.begin(), buffer.end());
+            if (solver_data.mat_val.size() != solver_data.n_elems)
+            {
+                std::vector<double> buffer(solver_data.n_elems, -777);
+                solver_data.mat_val.insert(solver_data.mat_val.begin(), buffer.begin(), buffer.end());
 
-            start_indexes.clear();
-            start_indexes = std::vector<int>(n_rows + 1);
-            col_indexes.clear();
-            col_indexes = std::vector<int>(n_elems);
-            int n_returned(0);
-            math_problem->get_rows(start_indexes.data(), col_indexes.data(), mat_val.data(),
-                                   n_elems, &n_returned, 0, n_rows - 1);
+                solver_data.start_indexes.clear();
+                solver_data.start_indexes = std::vector<int>(solver_data.n_rows + 1);
+                solver_data.col_indexes.clear();
+                solver_data.col_indexes = std::vector<int>(solver_data.n_elems);
+                int n_returned(0);
+                solver_data.solver_model->get_rows(solver_data.start_indexes.data(), solver_data.col_indexes.data(), solver_data.mat_val.data(),
+                                                   solver_data.n_elems, &n_returned, 0, solver_data.n_rows - 1);
+            }
         }
     }
 
@@ -158,7 +215,7 @@ protected:
         {
             std::vector<double> buffer(n_rows, -777);
             rhs.insert(rhs.begin(), buffer.begin(), buffer.end());
-            math_problem->get_rhs(rhs.data(), 0, n_rows - 1);
+            solver_model->get_rhs(rhs.data(), 0, n_rows - 1);
         }
     }
     void verify_columns_are(const int expected_n_cols)
@@ -225,29 +282,17 @@ protected:
 
 TEST_F(SensitivityProblemModifierTest, ChangeProblem)
 {
-    const int peak_id = 0;
-    const int semibase_id = 1;
-    const int alpha_id = 2;
-    const int alpha_0_id = 3;
-    const int alpha_1_id = 4;
 
-    const int peak_cost = 60000;
-    const int semibase_cost = 90000;
-
-    std::string peak_name;
-    std::string semibase_name;
-    std::string alpha_name;
-    std::string alpha_0_name;
-    std::string alpha_1_name;
-
-    if (math_problem->get_solver_name() == "XPRESS"){
+    if (solver_model->get_solver_name() == "XPRESS")
+    {
         peak_name = "peak    ";
         semibase_name = "semibase";
         alpha_name = "alpha   ";
         alpha_0_name = "alpha_0 ";
         alpha_1_name = "alpha_1 ";
     }
-    else {
+    else
+    {
         peak_name = "peak";
         semibase_name = "semibase";
         alpha_name = "alpha";
@@ -255,38 +300,30 @@ TEST_F(SensitivityProblemModifierTest, ChangeProblem)
         alpha_1_name = "alpha_1";
     }
 
-    double epsilon = 1e4;
-    double best_ub = 171696313.74728549;
+    double epsilon = 10;
+    double best_ub = 1000;
     std::map<int, std::string> id_to_name = {{peak_id, "peak"}, {semibase_id, "semibase"}};
 
     auto problem_modifier = SensitivityPbModifier(epsilon, best_ub);
 
     verify_columns_are(5);
-    verify_rows_are(13);
+    verify_rows_are(5);
 
-    auto sensitivity_pb = problem_modifier.changeProblem(id_to_name, math_problem);
+    auto sensitivity_pb = problem_modifier.changeProblem(id_to_name, solver_model);
 
     verify_columns_are(5);
-    verify_rows_are(14);
+    verify_rows_are(5);
 
     verify_column(peak_id, peak_name, 'C', peak_cost, 0, 3000);
     verify_column(semibase_id, semibase_name, 'C', semibase_cost, 0, 400);
-    verify_column(alpha_id, alpha_name, 'C', 0, -10000000000, 172124607.0861876);
-    verify_column(alpha_0_id, alpha_0_name, 'C', 0, -10000000000, 1e+20);
-    verify_column(alpha_1_id, alpha_1_name, 'C', 0, -10000000000, 1e+20);
+    verify_column(alpha_id, alpha_name, 'C', 0, -60, 45);
+    verify_column(alpha_0_id, alpha_0_name, 'C', 0, -100, 150);
+    verify_column(alpha_1_id, alpha_1_name, 'C', 0, -200, 200);
 
     verify_row(0, 'E', {1, -1, -1}, {alpha_id, alpha_0_id, alpha_1_id}, 0);
-    verify_row(1, 'L', {-245032.5320257737, -245032.5263440894, -1}, {peak_id, semibase_id, alpha_0_id}, -117533866.2940578);
-    verify_row(2, 'L', {-604145.0150967597, -604144.9688289623, -1}, {peak_id, semibase_id, alpha_1_id}, -457438478.9421513);
-    verify_row(3, 'L', {-2174.971812644999, -1}, {semibase_id, alpha_0_id}, -15919303.47465738);
-    verify_row(4, 'L', {-4039.965523606698, -1}, {semibase_id, alpha_1_id}, -57334535.85367353);
-    verify_row(5, 'L', {-79279.9953740404, -86479.52821613279, -1}, {peak_id, semibase_id, alpha_0_id}, -82383098.27316803);
-    verify_row(6, 'L', {-257659.9852173438, -267209.9510115215, -1}, {peak_id, semibase_id, alpha_1_id}, -350311384.9928737);
-    verify_row(7, 'L', {-7199.532842092396, -1}, {semibase_id, alpha_0_id}, -16164482.13700069);
-    verify_row(8, 'L', {-109009.9937457993, -118559.959539977, -1}, {peak_id, semibase_id, alpha_1_id}, -218399382.5610252);
-    verify_row(9, 'L', {-7199.532842092396, -1}, {semibase_id, alpha_0_id}, -16164482.13700069);
-    verify_row(10, 'L', {-69369.9960200541, -78919.96181423182, -1}, {peak_id, semibase_id, alpha_1_id}, -169919665.3424386);
-    verify_row(11, 'L', {-7199.532842092396, -1}, {semibase_id, alpha_0_id}, -16164482.13700069);
-    verify_row(12, 'L', {-39639.9977257452, -49189.96351992292, -1}, {peak_id, semibase_id, alpha_1_id}, -122916538.0391362);
-    verify_row(13, 'L', {peak_cost, semibase_cost, 1}, {peak_id, semibase_id, alpha_id}, 171706313.74728549);
+    verify_row(1, 'L', {-10, -100, -1}, {peak_id, semibase_id, alpha_0_id}, -1000);
+    verify_row(2, 'L', {-20, -100, -1}, {peak_id, semibase_id, alpha_1_id}, -2000);
+    verify_row(3, 'L', {-50, -1}, {semibase_id, alpha_0_id}, -3000);
+    verify_row(4, 'L', {-20, -1}, {semibase_id, alpha_1_id}, -4000);
+    // verify_row(5, 'L', {peak_cost, semibase_cost, 1}, {peak_id, semibase_id, alpha_id}, epsilon + best_ub);
 }

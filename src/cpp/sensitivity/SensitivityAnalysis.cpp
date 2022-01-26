@@ -1,6 +1,6 @@
 #include "SensitivityAnalysis.h"
 
-SensitivityAnalysis::SensitivityAnalysis(double epsilon, double bestUb, std::map<int, std::string> idToName, std::shared_ptr<SolverAbstract> lastMaster, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _best_ub(bestUb), _id_to_name(idToName), _last_master(lastMaster), _writer(writer), _pb_modifier(epsilon, bestUb)
+SensitivityAnalysis::SensitivityAnalysis(double epsilon, double bestUb, std::map<int, std::string> idToName, SolverAbstract::Ptr lastMaster, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _best_ub(bestUb), _id_to_name(idToName), _last_master(lastMaster), _writer(writer), _pb_modifier(epsilon, bestUb)
 {
 	init_output_data();
 }
@@ -79,7 +79,7 @@ void SensitivityAnalysis::get_capex_min_solution()
 // 	get_sensitivity_solution();
 // }
 
-std::vector<double> SensitivityAnalysis::get_sensitivity_solution(std::shared_ptr<SolverAbstract> sensitivity_problem)
+std::vector<double> SensitivityAnalysis::get_sensitivity_solution(SolverAbstract::Ptr sensitivity_problem)
 {
 
 	std::vector<double> solution(sensitivity_problem->get_ncols());
