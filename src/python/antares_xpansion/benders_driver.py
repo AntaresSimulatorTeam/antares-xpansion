@@ -76,7 +76,6 @@ class BendersDriver:
                 self._get_solver_cmd(), shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             encoding='utf-8') as proc:
                 for output in proc.stdout:
-                    sys.stdout.write(output)
                     benders_log.write(output)
                     
                 for err in proc.stderr:

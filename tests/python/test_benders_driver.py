@@ -1,11 +1,12 @@
 import pytest
 import os, sys
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import PropertyMock, patch
 
 from antares_xpansion.benders_driver import BendersDriver
 
 MOCK_SUBPROCESS_RUN = "antares_xpansion.benders_driver.subprocess.run"
+MOCK_SUBPROCESS_POPEN = "antares_xpansion.benders_driver.subprocess.Popen"
 MOCK_SYS = "antares_xpansion.benders_driver.sys"
 
 
@@ -208,6 +209,108 @@ class TestBendersDriver:
         # check that files are deleted
         for file in benders_files:
             assert not file.exists()
+    
+    def test_benders_log_file_is_removed_if_it_already_exists(self, tmp_path):
+
+        benders_log_file = tmp_path / "benders.log"
+        orig_msg = "hello"
+        benders_log_file.write_text(orig_msg)
+        
+        my_benders_mpi = "something"
+        my_install_dir = Path("Dummy/Path/to/")
+        my_n_mpi = 13
+        exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
+
+        benders_driver = BendersDriver(exe_path, "", "")
+
+        simulation_output_path = tmp_path
+        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path.mkdir()
+        os.chdir(lp_path)
+
+        assert benders_log_file.exists()
+        assert benders_log_file.stat().st_size == len(orig_msg)
+        with patch(MOCK_SUBPROCESS_POPEN, autospec=True):
+            with pytest.raises(BendersDriver.BendersExecutionError):
+                
+                benders_driver.set_benders_log_file(benders_log_file)
+                
+                benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi)   
+
+        assert benders_log_file.exists()
+        assert benders_log_file.stat().st_size == 0
+    
+    def test_benders_that_stdout_are_printed_in_log_file(self, tmp_path):
+
+        benders_log_file = tmp_path / "benders.log"
+        orig_msg = "hello"
+        benders_log_file.write_text(orig_msg)
+        
+        my_benders_mpi = "something"
+        my_install_dir = Path("Dummy/Path/to/")
+        my_n_mpi = 13
+        exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
+
+        benders_driver = BendersDriver(exe_path, "", "")
+
+        simulation_output_path = tmp_path
+        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path.mkdir()
+        os.chdir(lp_path)
+        
+        expected_std_out = ["solver out bla bla"]
+        assert benders_log_file.exists()
+        assert benders_log_file.stat().st_size == len(orig_msg)
+        with patch(MOCK_SUBPROCESS_POPEN, autospec=True) as popen_function:
+            with pytest.raises(BendersDriver.BendersExecutionError):
+                
+                type(popen_function.return_value.__enter__()).stdout = PropertyMock(return_value= expected_std_out)
+                benders_driver.set_benders_log_file(benders_log_file)
+                benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi)   
+                
+
+
+        assert benders_log_file.exists()
+        assert benders_log_file.stat().st_size == len(expected_std_out[0])
+        with open(benders_log_file) as log:
+            lines = [line for line in log.readlines()]
+            assert lines == expected_std_out  
+
+    def test_benders_that_stderr_are_printed_in_log_file(self, tmp_path):
+
+        benders_log_file = tmp_path / "benders.log"
+        orig_msg = "Bonjour"
+        benders_log_file.write_text(orig_msg)
+        
+        my_benders_mpi = "something"
+        my_install_dir = Path("Dummy/Path/to/")
+        my_n_mpi = 13
+        exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
+
+        benders_driver = BendersDriver(exe_path, "", "")
+
+        simulation_output_path = tmp_path
+        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path.mkdir()
+        os.chdir(lp_path)
+        
+        expected_std_err = ["solver out bla bla"]
+        assert benders_log_file.exists()
+        assert benders_log_file.stat().st_size == len(orig_msg)
+        with patch(MOCK_SUBPROCESS_POPEN, autospec=True) as popen_function:
+            with pytest.raises(BendersDriver.BendersExecutionError):
+                
+                type(popen_function.return_value.__enter__()).stderr = PropertyMock(return_value= expected_std_err)
+                benders_driver.set_benders_log_file(benders_log_file)
+                benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi)   
+                
+
+
+        assert benders_log_file.exists()
+        assert benders_log_file.stat().st_size == len(expected_std_err[0])
+        with open(benders_log_file) as log:
+            lines = [line for line in log.readlines()]
+            assert lines == expected_std_err  
 
     def _create_empty_file(self, tmp_path: Path, fname: str):
         file = tmp_path / fname
