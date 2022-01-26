@@ -236,7 +236,7 @@ void BendersMpi::write_exception_message(const std::exception &ex)
 {
 	std::string error = "Exception raised : " + std::string(ex.what());
 	LOG(WARNING) << error << std::endl;
-    //TODO is this IF necessary ?
+	// TODO is this IF necessary ?
 	if (_logger)
 	{
 		_logger->display_message(error);
@@ -316,12 +316,9 @@ void BendersMpi::run()
 		broadcast(_world, _data.stop, 0);
 	}
 
-	if (_world.rank() == 0)
+	if (_world.rank() == 0 && _options.TRACE)
 	{
-		if (_options.TRACE)
-		{
-			print_csv();
-		}
+		print_csv();
 	}
 }
 
@@ -337,7 +334,7 @@ void BendersMpi::launch()
 	run();
 	_world.barrier();
 
-    post_run_actions();
+	post_run_actions();
 
 	free();
 	_world.barrier();
