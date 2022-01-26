@@ -33,6 +33,7 @@ jobs:
           antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
       - name: user guide upload
+        id : userguide_upload
         uses: actions/upload-artifact@v2
         with:
           name: user-guide
@@ -41,6 +42,7 @@ jobs:
   windows:
 
     runs-on: ${{ matrix.os }}
+    needs: userguide_upload
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
