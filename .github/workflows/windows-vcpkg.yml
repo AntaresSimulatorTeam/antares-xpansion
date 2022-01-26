@@ -10,7 +10,49 @@ on:
       - fix/*
       - release/*
       - test/*
+
 jobs:
+
+  userguide:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip3 install -r requirements-tests.txt
+          pip3 install -r requirements-doc.txt
+
+      - name: Install libraries
+        run: |
+          sudo apt-get update --fix-missing
+          sudo apt-get install latexmk texlive-latex-recommended texlive-formats-extra
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_xpansion_version'
+
+      - id: create-user-guide
+        name: user guide pdf creation
+        uses: ./.github/workflows/generate-userguide-pdf
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+
+      - name: user guide upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: user-guide
+          path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
   windows:
 
@@ -120,24 +162,35 @@ jobs:
            set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
            cd _build
            ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
-    
+
     - name: Installer .zip creation
       shell: bash
       run: |
-           cd _build
-           cpack -G ZIP
-           export ZIP_NAME=$(ls *.zip)
-           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+        cd _build
+        cpack -G ZIP
+        export ZIP_NAME=$(ls *.zip)
+        echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
-    - name: Add file to zip installer
+    - name: make empty zipdir
       shell: bash
       run: |
-          cd _build
-          ZIP_NAME=${{env.ZIP_NAME}}
-          dirname="${ZIP_NAME%.*}"
-          mkdir $dirname
-          touch $dirname/toto.txt
-          zip -ur $ZIP_NAME $dirname
+        cd _build
+        ZIP_NAME=${{env.ZIP_NAME}}
+        dirname="${ZIP_NAME%.*}"
+        mkdir $dirname
+        echo "ZIP_DIR_NAME=$dirname" >> $GITHUB_ENV
+
+    - name: Download userguide
+      uses: actions/download-artifact@v2
+      with:
+        name: user-guide
+        path: _build/${{env.ZIP_DIR_NAME}}
+
+    - name: Add userguide to zip installer
+      shell: bash
+      run: |
+        cd _build
+        zip -ur ${{env.ZIP_NAME}} ${{env.ZIP_DIR_NAME}}
 
     - id: create-single-file
       name: Single file .zip creation
