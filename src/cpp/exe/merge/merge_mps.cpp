@@ -31,7 +31,7 @@ int main(int argc, char **argv)
     google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
     LOG(INFO) << "starting merge_mps" << std::endl;
 
-    Writer writer = build_json_writer(options);
+    Writer writer = build_json_writer(options.JSON_FILE);
     try
     {
         CouplingMap input = build_input(options);
@@ -220,7 +220,7 @@ int main(int argc, char **argv)
         sol_infos.solution.overall_cost = overallCost_l;
 
         Output::CandidatesVec candidates_vec;
-        for (const auto & pairNameValue_l : x0)
+        for (const auto &pairNameValue_l : x0)
         {
             Output::CandidateData candidate_data;
             candidate_data.name = pairNameValue_l.first;

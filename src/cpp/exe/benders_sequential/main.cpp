@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 
 	const std::string &loggerFileName = (Path(options.OUTPUTROOT) / "reportbenderssequential.txt").get_str();
 	Logger logger = build_stdout_and_file_logger(loggerFileName);
-	Writer writer = build_json_writer(options);
+	Writer writer = build_json_writer(options.JSON_FILE);
 	Timer timer;
 
 	BendersSequential benders(options, logger, writer);

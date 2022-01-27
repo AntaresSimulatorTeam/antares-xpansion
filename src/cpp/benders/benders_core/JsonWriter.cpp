@@ -20,9 +20,8 @@ namespace Output
 {
     JsonWriter::JsonWriter(std::shared_ptr<Clock> p_clock, const std::string &json_filename) : _clock(p_clock), _filename(json_filename) {}
 
-    void JsonWriter::initialize(const BendersOptions &options)
+    void JsonWriter::initialize()
     {
-        write_options(options);
         updateBeginTime();
         dump();
     }
@@ -35,14 +34,6 @@ namespace Output
     void JsonWriter::updateEndTime()
     {
         _output[END_C] = clock_utils::timeToStr(_clock->getTime());
-    }
-
-    void JsonWriter::write_options(BendersOptions const &bendersOptions_p)
-    {
-// Options
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) _output[OPTIONS_C][#name__] = bendersOptions_p.name__;
-#include "BendersOptions.hxx"
-#undef BENDERS_OPTIONS_MACRO
     }
 
     void JsonWriter::write_iterations(const IterationsData &iterations_data)

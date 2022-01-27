@@ -3,8 +3,6 @@
 
 #include "OutputWriter.h"
 #include "Timer.h"
-#include "BendersOptions.h"
-#include "WorkerTrace.h"
 #include "common.h"
 
 namespace Output
@@ -29,12 +27,6 @@ namespace Output
         virtual void updateBeginTime();
 
         virtual void updateEndTime();
-        /*!
-         *  \brief saves the options of the benders algorithm to be later written
-         *
-         *  \param bendersOptions_p : set of options used for the optimization
-         */
-        virtual void write_options(BendersOptions const &bendersOptions_p);
 
         /*!
          *  \brief saves some entries to be later written
@@ -71,7 +63,7 @@ namespace Output
          *  \brief write the json data into a file
          */
         virtual void dump();
-        virtual void initialize(const BendersOptions &options);
+        virtual void initialize();
         virtual void end_writing(const IterationsData &iterations_data);
     };
 }

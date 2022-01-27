@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     if (world.rank() == 0)
     {
         logger = build_stdout_and_file_logger(log_reports_name);
-        writer = build_json_writer(options);
+        writer = build_json_writer(options.JSON_FILE);
         std::ostringstream oss_l = start_message(options, "mpi");
         LOG(INFO) << oss_l.str() << std::endl;
     }
