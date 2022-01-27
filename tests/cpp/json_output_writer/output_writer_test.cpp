@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <time.h>
 #include <json/json.h>
+#include <fstream>
 
 using namespace Output;
 time_t time_from_date(int year, int month, int day, int hour, int min, int sec);

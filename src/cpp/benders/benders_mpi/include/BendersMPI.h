@@ -9,6 +9,7 @@
 #include "WorkerMaster.h"
 #include "WorkerTrace.h"
 #include "launcher.h"
+#include "Timer.h"
 
 #include "core/ILogger.h"
 

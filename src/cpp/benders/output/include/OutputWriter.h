@@ -1,8 +1,9 @@
 
 #pragma once
+#include <string>
+#include <vector>
+#include <memory>
 
-#include "Timer.h"
-#include "common.h"
 namespace Output
 {
 

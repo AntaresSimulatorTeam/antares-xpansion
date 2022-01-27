@@ -1,6 +1,7 @@
 #include "BendersSequential.h"
 #include "launcher.h"
 #include "solver_utils.h"
+#include "Timer.h"
 
 #include <iomanip>
 #include <algorithm>

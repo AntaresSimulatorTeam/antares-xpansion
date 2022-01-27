@@ -1,5 +1,7 @@
 #include "JsonWriter.h"
 #include "config.h"
+#include <iostream>
+#include <fstream>
 
 namespace clock_utils
 {

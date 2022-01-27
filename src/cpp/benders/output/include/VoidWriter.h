@@ -2,8 +2,6 @@
 #pragma once
 
 #include "OutputWriter.h"
-#include "Timer.h"
-#include "common.h"
 
 namespace Output
 {

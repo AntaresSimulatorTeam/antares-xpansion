@@ -3,7 +3,6 @@
 
 #include "OutputWriter.h"
 #include "Clock.h"
-#include "Timer.h"
 
 #include <json/writer.h>
 
@@ -44,12 +43,6 @@ namespace Output
          */
         virtual void updateEndTime();
         virtual void write_iterations(const IterationsData &iterations_data);
-
-        /*!
-         *  \brief write an a priori errored json output, overwritten if optimization ends
-         */
-        std::string criterion_to_string(const StoppingCriterion stopping_criterion) const;
-        std::string status_from_criterion(const StoppingCriterion stopping_criterion) const;
 
     public:
         /*!

@@ -4,6 +4,7 @@
 #include "glog/logging.h"
 
 #include "BendersMPI.h"
+#include "Timer.h"
 
 #define __DEBUG_BENDERS_MPI__ 0
 

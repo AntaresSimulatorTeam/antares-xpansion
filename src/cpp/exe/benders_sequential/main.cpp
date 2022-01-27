@@ -14,6 +14,7 @@
 #include "helpers/Path.h"
 #include "LoggerFactories.h"
 #include "WriterFactories.h"
+#include "Timer.h"
 
 int main(int argc, char **argv)
 {

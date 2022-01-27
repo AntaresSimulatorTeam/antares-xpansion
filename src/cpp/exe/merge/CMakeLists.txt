@@ -18,6 +18,7 @@ target_link_libraries (merge_mps
 	PUBLIC
 		${PROJECT_NAME}::benders_sequential_core
 		${PROJECT_NAME}::factories
+		${PROJECT_NAME}::output_core
 		helpers
 		logger_lib
 )

@@ -6,7 +6,7 @@ add_library (logger_lib
 
 target_link_libraries (logger_lib
         PUBLIC
-        benders_sequential_core
+        benders_core
         )
 
 target_include_directories (logger_lib

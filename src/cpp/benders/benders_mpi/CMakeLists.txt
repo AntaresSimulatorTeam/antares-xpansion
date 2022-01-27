@@ -19,6 +19,7 @@ add_library (benders_mpi_core STATIC
 target_link_libraries (benders_mpi_core
 	PUBLIC
 		benders_core
+		output_core
 		Boost::mpi
 		MPI::MPI_C
 		glog::glog

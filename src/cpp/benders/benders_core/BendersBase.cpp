@@ -1,4 +1,5 @@
 #include "BendersBase.h"
+#include "Timer.h"
 #include "launcher.h"
 #include "solver_utils.h"
 #include "helpers/Path.h"
@@ -28,13 +29,14 @@ void BendersBase::init_data()
 }
 
 /*!
-*  \brief Print the trace of the Benders algorithm in a csv file
-*
-*  Method to print trace of the Benders algorithm in a csv file
-*
-*/
-void BendersBase::print_csv() {
-	std::string const output(Path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv") );
+ *  \brief Print the trace of the Benders algorithm in a csv file
+ *
+ *  Method to print trace of the Benders algorithm in a csv file
+ *
+ */
+void BendersBase::print_csv()
+{
+	std::string const output(Path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv"));
 	std::ofstream file(output, std::ios::out | std::ios::trunc);
 	if (file)
 	{
