@@ -5,12 +5,30 @@
  *  \brief Constructor of Benders Options
  *
  */
-BendersOptions::BendersOptions() :
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) name__(default__),
-#include "BendersOptions.hxx"
-#undef BENDERS_OPTIONS_MACRO
-								   _weights()
+BendersOptions::BendersOptions() : _weights()
 {
+	_initNameToMember();
+}
+void BendersOptions::_initNameToMember()
+{
+	__nameToMember.insert(std::pair<std::string, int *>("LOG_LEVEL", &LOG_LEVEL));
+	__nameToMember.insert(std::pair<std::string, int *>("MAX_ITERATIONS", &MAX_ITERATIONS));
+	__nameToMember.insert(std::pair<std::string, int *>("SLAVE_NUMBER", &SLAVE_NUMBER));
+	__nameToMember.insert(std::pair<std::string, double *>("ABSOLUTE_GAP", &ABSOLUTE_GAP));
+	__nameToMember.insert(std::pair<std::string, double *>("RELATIVE_GAP", &RELATIVE_GAP));
+	__nameToMember.insert(std::pair<std::string, double *>("SLAVE_WEIGHT_VALUE", &SLAVE_WEIGHT_VALUE));
+	__nameToMember.insert(std::pair<std::string, double *>("TIME_LIMIT", &TIME_LIMIT));
+	__nameToMember.insert(std::pair<std::string, bool *>("AGGREGATION", &AGGREGATION));
+	__nameToMember.insert(std::pair<std::string, bool *>("TRACE", &TRACE));
+	__nameToMember.insert(std::pair<std::string, bool *>("BOUND_ALPHA", &BOUND_ALPHA));
+	__nameToMember.insert(std::pair<std::string, std::string *>("OUTPUTROOT", &OUTPUTROOT));
+	__nameToMember.insert(std::pair<std::string, std::string *>("SLAVE_WEIGHT", &SLAVE_WEIGHT));
+	__nameToMember.insert(std::pair<std::string, std::string *>("MASTER_NAME", &MASTER_NAME));
+	__nameToMember.insert(std::pair<std::string, std::string *>("STRUCTURE_FILE", &STRUCTURE_FILE));
+	__nameToMember.insert(std::pair<std::string, std::string *>("INPUTROOT", &INPUTROOT));
+	__nameToMember.insert(std::pair<std::string, std::string *>("CSV_NAME", &CSV_NAME));
+	__nameToMember.insert(std::pair<std::string, std::string *>("SOLVER_NAME", &SOLVER_NAME));
+	__nameToMember.insert(std::pair<std::string, std::string *>("JSON_FILE", &JSON_FILE));
 }
 
 /*!
@@ -63,13 +81,31 @@ void BendersOptions::read(std::string const &file_name)
 		{
 			std::stringstream buffer(line);
 			buffer >> name;
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
-	if (#name__ == name)                                 \
-		buffer >> name__;
-#include "BendersOptions.hxx"
-#undef BENDERS_OPTIONS_MACRO
+			// #define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
+// 	if (#name__ == name)                                 \
+// 		buffer >> name__;
+			// #include "BendersOptions.hxx"
+			// #undef BENDERS_OPTIONS_MACRO
+			// 	if (#name__ == name)                                 \
+// 		buffer >> name__;
+			auto it = __nameToMember.find(name);
+			if (it != __nameToMember.end())
+			{
+				int *integer = nullptr;
+				double *db = nullptr;
+				std::string *str = nullptr;
+				bool *boolean = nullptr;
+				std::cout << "******* it->first = " << it->first << " ********\n";
+				if (is_Tptr(it->second, integer))
+					buffer >> *integer;
+				else if (is_Tptr(it->second, boolean))
+					buffer >> *boolean;
+				else if (is_Tptr(it->second, str))
+					buffer >> *str;
+				else if (is_Tptr(it->second, db))
+					buffer >> *db;
+			}
 		}
-
 		if (SLAVE_WEIGHT != "UNIFORM" && SLAVE_WEIGHT != "CONSTANT")
 		{
 			std::string line;
@@ -125,9 +161,25 @@ void BendersOptions::read(std::string const &file_name)
  */
 void BendersOptions::print(std::ostream &stream) const
 {
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) stream << std::setw(30) << #name__ << std::setw(50) << name__ << std::endl;
-#include "BendersOptions.hxx"
-#undef BENDERS_OPTIONS_MACRO
+	for (const auto &it : __nameToMember)
+	{
+		int *integer = nullptr;
+		double *db = nullptr;
+		std::string *str = nullptr;
+		bool *boolean = nullptr;
+		std::cout << "******* it.first = " << it.first << " ********\n";
+		if (is_Tptr(it.second, integer))
+			stream << std::setw(30) << it.first << std::setw(50) << *integer << std::endl;
+		if (is_Tptr(it.second, db))
+			stream << std::setw(30) << it.first << std::setw(50) << *db << std::endl;
+		if (is_Tptr(it.second, boolean))
+			stream << std::setw(30) << it.first << std::setw(50) << *boolean << std::endl;
+		if (is_Tptr(it.second, str))
+			stream << std::setw(30) << it.first << std::setw(50) << *str << std::endl;
+	}
+	// #define BENDERS_OPTIONS_MACRO(name__, type__, default__) stream << std::setw(30) << #name__ << std::setw(50) << name__ << std::endl;
+	// #include "BendersOptions.hxx"
+	// #undef BENDERS_OPTIONS_MACRO
 	stream << std::endl;
 
 	if (SLAVE_NUMBER == 1)
