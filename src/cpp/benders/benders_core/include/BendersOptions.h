@@ -4,6 +4,7 @@
 #include <map>
 #include <utility>
 #include <string>
+#include <tuple>
 struct BendersOptionsData
 {
 	int
@@ -73,11 +74,15 @@ public:
 	Str2Dbl _weights;
 
 private:
-	std::map<std::string, void *> __nameToMember;
+	enum class types{integer, doublep, std_string, boolean};
+
+	std::map<std::string, std::tuple<void *, types>> __nameToMember;
 	void _initNameToMember();
+
 	template <typename T>
-	inline bool is_Tptr(void *ptr, T *t) const
+	inline void insert(std::string var_name, types type, T* t)
 	{
-		return (t = reinterpret_cast<T *>(ptr)) != nullptr;
+		std::tuple<T*, types> a(t,type);
+		__nameToMember.insert(std::pair<std::string, std::tuple<void *, types> >(var_name, a) );
 	}
 };
