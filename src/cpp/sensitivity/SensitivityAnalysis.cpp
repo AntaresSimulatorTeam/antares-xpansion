@@ -88,19 +88,23 @@ std::vector<double> SensitivityAnalysis::get_sensitivity_solution(SolverAbstract
 	{
 		_output_data.pb_status = sensitivity_problem->solve_mip();
 		sensitivity_problem->get_mip_sol(solution.data());
+		_output_data.pb_objective = sensitivity_problem->get_mip_value();
 	}
 	else
 	{
 		_output_data.pb_status = sensitivity_problem->solve_lp();
 		sensitivity_problem->get_lp_sol(solution.data(), NULL, NULL);
+		_output_data.pb_objective = sensitivity_problem->get_lp_value();
 	}
 	return solution;
 }
 
 void SensitivityAnalysis::fill_output_data(const std::vector<double> &solution)
 {
+	int nb_candidates = _id_to_name.size();
 	for (auto const &kvp : _id_to_name)
 	{
 		_output_data.candidates[kvp.second] = solution[kvp.first];
 	}
+	_output_data.solution_system_cost = _output_data.pb_objective + solution[nb_candidates];
 }

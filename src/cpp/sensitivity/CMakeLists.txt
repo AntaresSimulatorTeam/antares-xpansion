@@ -13,8 +13,5 @@ target_include_directories (sensitivity
 
 target_link_libraries (sensitivity
 	PUBLIC
-        # jsoncpp_lib
-        # solvers
-		# helpers
 		benders_core
 )

@@ -12,6 +12,8 @@ public:
 
     SolverAbstract::Ptr math_problem;
 
+    SensitivityAnalysis sensitivity_analysis;
+
 protected:
     void SetUp() override
     {
@@ -29,13 +31,13 @@ protected:
         math_problem = factory.create_solver(solver_name);
         math_problem->init();
         math_problem->read_prob_mps(last_master_mps_path);
+
+        sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, id_to_name, math_problem, writer);
     }
 };
 
 TEST_F(SensitivityAnalysisTest, OutputDataInit)
 {
-    auto sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, id_to_name, math_problem, writer);
-
     auto outputData = sensitivity_analysis.get_output_data();
 
     ASSERT_DOUBLE_EQ(outputData.epsilon, epsilon);
@@ -46,4 +48,18 @@ TEST_F(SensitivityAnalysisTest, OutputDataInit)
 
     ASSERT_EQ(outputData.candidates.size(), 2);
 
+}
+
+TEST_F(SensitivityAnalysisTest, GetCapexMinSolution)
+{
+    sensitivity_analysis.launch();
+    auto output_data = sensitivity_analysis.get_output_data();
+
+    ASSERT_NEAR(output_data.pb_objective, 32.142857, 1e-6);
+    ASSERT_NEAR(output_data.solution_system_cost, 32.142857 + 45, 1e-6);
+
+    ASSERT_DOUBLE_EQ(output_data.candidates["candidate_0"], 0);
+    ASSERT_NEAR(output_data.candidates["candidate_1"], 0.357142, 1e-6);
+
+    ASSERT_EQ(output_data.pb_status, SOLVER_STATUS::OPTIMAL);
 }

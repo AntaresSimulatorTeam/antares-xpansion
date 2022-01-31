@@ -6,6 +6,7 @@
 class SensitivityPbModifier
 {
 public:
+    SensitivityPbModifier(){};
     explicit SensitivityPbModifier(double epsilon, double bestUb);
     ~SensitivityPbModifier() = default;
 

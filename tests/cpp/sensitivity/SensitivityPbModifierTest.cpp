@@ -9,8 +9,8 @@ const int alpha_id = 2;
 const int alpha_0_id = 3;
 const int alpha_1_id = 4;
 
-const int peak_cost = 60000;
-const int semibase_cost = 90000;
+const int peak_cost = 60;
+const int semibase_cost = 90;
 
 std::string peak_name;
 std::string semibase_name;
@@ -282,23 +282,6 @@ protected:
         ASSERT_EQ(getRowColIndexes(solver_data, row), col_indexes);
         verify_rhs_is(solver_data, row, rhs);
     }
-    void verify_last_master_problem(SolverData &solver_data)
-    {
-        verify_columns_are(solver_data, 5);
-        verify_rows_are(solver_data, 5);
-
-        verify_column(solver_data, peak_id, peak_name, 'C', peak_cost, 0, 3000);
-        verify_column(solver_data, semibase_id, semibase_name, 'C', semibase_cost, 0, 400);
-        verify_column(solver_data, alpha_id, alpha_name, 'C', 1, -60, 45);
-        verify_column(solver_data, alpha_0_id, alpha_0_name, 'C', 0, -100, 150);
-        verify_column(solver_data, alpha_1_id, alpha_1_name, 'C', 0, -200, 200);
-
-        verify_row(solver_data, 0, 'E', {1, -1, -1}, {alpha_id, alpha_0_id, alpha_1_id}, 0);
-        verify_row(solver_data, 1, 'L', {-10, -100, -1}, {peak_id, semibase_id, alpha_0_id}, -1000);
-        verify_row(solver_data, 2, 'L', {-20, -100, -1}, {peak_id, semibase_id, alpha_1_id}, -2000);
-        verify_row(solver_data, 3, 'L', {-50, -1}, {semibase_id, alpha_0_id}, -3000);
-        verify_row(solver_data, 4, 'L', {-20, -1}, {semibase_id, alpha_1_id}, -4000);
-    }
     void verify_column_number_equality(SolverData &lastMasterData, SolverData &sensitivityPbData)
     {
         update_n_cols(lastMasterData);
@@ -382,6 +365,23 @@ protected:
     {
         update_n_rows(sensitivityPbData);
         verify_row(sensitivityPbData, sensitivityPbData.n_rows - 1, 'L', {peak_cost, semibase_cost, 1}, {peak_id, semibase_id, alpha_id}, epsilon + best_ub);
+    }
+    void verify_last_master_problem(SolverData &solver_data)
+    {
+        verify_columns_are(solver_data, 5);
+        verify_rows_are(solver_data, 5);
+
+        verify_column(solver_data, peak_id, peak_name, 'C', peak_cost, 0, 3000);
+        verify_column(solver_data, semibase_id, semibase_name, 'C', semibase_cost, 0, 400);
+        verify_column(solver_data, alpha_id, alpha_name, 'C', 1, -60, 45);
+        verify_column(solver_data, alpha_0_id, alpha_0_name, 'C', 0, -100, 150);
+        verify_column(solver_data, alpha_1_id, alpha_1_name, 'C', 0, -200, 200);
+
+        verify_row(solver_data, 0, 'E', {1, -1, -1}, {alpha_id, alpha_0_id, alpha_1_id}, 0);
+        verify_row(solver_data, 1, 'L', {-10, -100, -1}, {peak_id, semibase_id, alpha_0_id}, -10);
+        verify_row(solver_data, 2, 'L', {-20, -100, -1}, {peak_id, semibase_id, alpha_1_id}, -20);
+        verify_row(solver_data, 3, 'L', {-50, -1}, {semibase_id, alpha_0_id}, -30);
+        verify_row(solver_data, 4, 'L', {-20, -1}, {semibase_id, alpha_1_id}, -40);
     }
     void verify_sensitivity_problem(SolverData &lastMasterData, SolverData &sensitivityPbData)
     {

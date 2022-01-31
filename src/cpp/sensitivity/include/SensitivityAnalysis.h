@@ -8,6 +8,7 @@
 class SensitivityAnalysis
 {
 public:
+    SensitivityAnalysis(){};
     explicit SensitivityAnalysis(double epsilon, double bestUb,
                                  std::map<int, std::string> idToName,
                                  SolverAbstract::Ptr lastMaster, std::shared_ptr<SensitivityWriter> writer);
