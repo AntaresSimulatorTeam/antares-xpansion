@@ -7,7 +7,7 @@
 
 class BendersOptions;
 
-CouplingMap build_input(BendersOptions const &options);
+CouplingMap build_input(const std::string &structure_path, const int slave_number, const std::string &master_name);
 
 BendersOptions build_benders_options(int argc, char **argv);
 
@@ -135,7 +135,6 @@ public:
 					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
 					  0,
 					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
-
 
 		solver_getcolinfo(solver_p,
 						  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],

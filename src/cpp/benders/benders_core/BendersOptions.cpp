@@ -5,30 +5,12 @@
  *  \brief Constructor of Benders Options
  *
  */
-BendersOptions::BendersOptions() : _weights()
+BendersOptions::BendersOptions() :
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) name__(default__),
+#include "BendersOptions.hxx"
+#undef BENDERS_OPTIONS_MACRO
+								   _weights()
 {
-	_initNameToMember();
-}
-void BendersOptions::_initNameToMember()
-{
-	insert("LOG_LEVEL", types::integer,  &LOG_LEVEL);
-	insert("MAX_ITERATIONS", types::integer, &MAX_ITERATIONS);
-	insert("SLAVE_NUMBER", types::integer, &SLAVE_NUMBER);
-	insert("ABSOLUTE_GAP", types::doublep, &ABSOLUTE_GAP);
-	insert("RELATIVE_GAP", types::doublep, &RELATIVE_GAP);
-	insert("SLAVE_WEIGHT_VALUE", types::doublep, &SLAVE_WEIGHT_VALUE);
-	insert("TIME_LIMIT", types::doublep, &TIME_LIMIT);
-	insert("AGGREGATION", types::boolean, &AGGREGATION);
-	insert("TRACE", types::boolean, &TRACE);
-	insert("BOUND_ALPHA", types::boolean, &BOUND_ALPHA);
-	insert("OUTPUTROOT", types::std_string, &OUTPUTROOT);
-	insert("SLAVE_WEIGHT", types::std_string, &SLAVE_WEIGHT);
-	insert("MASTER_NAME", types::std_string, &MASTER_NAME);
-	insert("STRUCTURE_FILE", types::std_string, &STRUCTURE_FILE);
-	insert("INPUTROOT", types::std_string, &INPUTROOT);
-	insert("CSV_NAME", types::std_string, &CSV_NAME);
-	insert("SOLVER_NAME", types::std_string, &SOLVER_NAME);
-	insert("JSON_FILE", types::std_string, &JSON_FILE);
 }
 
 /*!
@@ -41,29 +23,29 @@ void BendersOptions::write_default()
 	file.close();
 }
 
-/*!
- *  \brief Get path to master problem mps file from options
- */
-std::string BendersOptions::get_master_path() const
-{
-	return (Path(INPUTROOT) / (MASTER_NAME + ".mps")).get_str();
-}
+// /*!
+//  *  \brief Get path to master problem mps file from options
+//  */
+// std::string BendersOptions::get_master_path() const
+// {
+// 	return (Path(INPUTROOT) / (MASTER_NAME + ".mps")).get_str();
+// }
 
-/*!
- *  \brief Get path to structure txt file from options
- */
-std::string BendersOptions::get_structure_path() const
-{
-	return (Path(INPUTROOT) / STRUCTURE_FILE).get_str();
-}
+// /*!
+//  *  \brief Get path to structure txt file from options
+//  */
+// std::string BendersOptions::get_structure_path() const
+// {
+// 	return (Path(INPUTROOT) / STRUCTURE_FILE).get_str();
+// }
 
-/*!
- *  \brief Get path to slave problem mps file from options
- */
-std::string BendersOptions::get_slave_path(std::string const &slave_name) const
-{
-	return (Path(INPUTROOT) / (slave_name + ".mps")).get_str();
-}
+// /*!
+//  *  \brief Get path to slave problem mps file from options
+//  */
+// std::string BendersOptions::get_slave_path(std::string const &slave_name) const
+// {
+// 	return (Path(INPUTROOT) / (slave_name + ".mps")).get_str();
+// }
 
 /*!
  *  \brief Read Benders options from file path
@@ -81,31 +63,14 @@ void BendersOptions::read(std::string const &file_name)
 		{
 			std::stringstream buffer(line);
 			buffer >> name;
-			auto it = __nameToMember.find(name);
-			if (it != __nameToMember.end())
-			{
-				switch (std::get<1>(it->second))
-				{
-				case types::integer:
-					buffer >> *((int*)std::get<0>(it->second));
-					break;
-				case types::doublep:
-					buffer >> *((double*)std::get<0>(it->second));
-					break;
-				case types::std_string:
-					buffer >> *((std::string*)std::get<0>(it->second));
-					break;
-				case types::boolean:
-					buffer >> *((bool*)std::get<0>(it->second));
-					break;
-				
-				default:
-					break;
-				}
-
-			}
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
+	if (#name__ == name)                                 \
+		buffer >> name__;
+#include "BendersOptions.hxx"
+#undef BENDERS_OPTIONS_MACRO
 		}
-		if (SLAVE_WEIGHT != "UNIFORM" && SLAVE_WEIGHT != "CONSTANT")
+
+		if (SLAVE_WEIGHT != SLAVE_WEIGHT_UNIFORM && SLAVE_WEIGHT != SLAVE_WEIGHT_CONSTANT)
 		{
 			std::string line;
 			std::string filename(Path(INPUTROOT) / SLAVE_WEIGHT);
@@ -160,27 +125,9 @@ void BendersOptions::read(std::string const &file_name)
  */
 void BendersOptions::print(std::ostream &stream) const
 {
-	for (const auto &it : __nameToMember)
-	{
-		switch (std::get<1>(it.second))
-				{
-				case types::integer:
-					stream << std::setw(30) << it.first << std::setw(50) << *((int*)std::get<0>(it.second)) << std::endl;
-					break;
-				case types::doublep:
-					stream << std::setw(30) << it.first << std::setw(50) << *((double*)std::get<0>(it.second)) << std::endl;
-					break;
-				case types::std_string:
-					stream << std::setw(30) << it.first << std::setw(50) << *((std::string*)std::get<0>(it.second)) << std::endl;
-					break;
-				case types::boolean:
-					stream << std::setw(30) << it.first << std::setw(50) << *((bool*)std::get<0>(it.second)) << std::endl;
-					break;
-				
-				default:
-					break;
-				}
-	}
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) stream << std::setw(30) << #name__ << std::setw(50) << name__ << std::endl;
+#include "BendersOptions.hxx"
+#undef BENDERS_OPTIONS_MACRO
 	stream << std::endl;
 
 	if (SLAVE_NUMBER == 1)
@@ -189,26 +136,26 @@ void BendersOptions::print(std::ostream &stream) const
 	}
 }
 
-/*!
- *  \brief Return slave weight value
- *
- *  \param nslaves : total number of slaves
- *
- *  \param name : slave name
- */
-double BendersOptions::slave_weight(int nslaves, std::string const &name) const
-{
-	if (SLAVE_WEIGHT == "UNIFORM")
-	{
-		return 1 / static_cast<double>(nslaves);
-	}
-	else if (SLAVE_WEIGHT == "CONSTANT")
-	{
-		double const weight(SLAVE_WEIGHT_VALUE);
-		return 1 / weight;
-	}
-	else
-	{
-		return _weights.find(name)->second;
-	}
-}
+// /*!
+//  *  \brief Return slave weight value
+//  *
+//  *  \param nslaves : total number of slaves
+//  *
+//  *  \param name : slave name
+//  */
+// double BendersOptions::slave_weight(int nslaves, std::string const &name) const
+// {
+// 	if (SLAVE_WEIGHT == "UNIFORM")
+// 	{
+// 		return 1 / static_cast<double>(nslaves);
+// 	}
+// 	else if (SLAVE_WEIGHT == "CONSTANT")
+// 	{
+// 		double const weight(SLAVE_WEIGHT_VALUE);
+// 		return 1 / weight;
+// 	}
+// 	else
+// 	{
+// 		return _weights.find(name)->second;
+// 	}
+// }

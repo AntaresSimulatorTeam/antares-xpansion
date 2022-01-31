@@ -523,3 +523,51 @@ std::string BendersBase::status_from_criterion() const
 		return Output::STATUS_ERROR_C;
 	}
 }
+
+/*!
+ *  \brief Get path to slave problem mps file from options
+ */
+std::string BendersBase::get_slave_path(std::string const &slave_name) const
+{
+	return (Path(_options.INPUTROOT) / (slave_name + ".mps")).get_str();
+}
+
+/*!
+ *  \brief Return slave weight value
+ *
+ *  \param nslaves : total number of slaves
+ *
+ *  \param name : slave name
+ */
+double BendersBase::slave_weight(int nslaves, std::string const &name) const
+{
+	if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_UNIFORM)
+	{
+		return 1 / static_cast<double>(nslaves);
+	}
+	else if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_CONSTANT)
+	{
+		double const weight(_options.SLAVE_WEIGHT_VALUE);
+		return 1 / weight;
+	}
+	else
+	{
+		return _options.weights().find(name)->second;
+	}
+}
+
+/*!
+ *  \brief Get path to master problem mps file from options
+ */
+std::string BendersBase::get_master_path() const
+{
+	return (Path(_options.INPUTROOT) / (_options.MASTER_NAME + ".mps")).get_str();
+}
+
+/*!
+ *  \brief Get path to structure txt file from options
+ */
+std::string BendersBase::get_structure_path() const
+{
+	return (Path(_options.INPUTROOT) / _options.STRUCTURE_FILE).get_str();
+}

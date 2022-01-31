@@ -56,7 +56,7 @@ public:
     void check_status(AllCutPackage const &all_package) const;
 
     void get_master_value();
-    void get_slave_cut(SlaveCutPackage &slave_cut_package) ;
+    void get_slave_cut(SlaveCutPackage &slave_cut_package);
 
     LogData build_log_data_from_data() const;
     void post_run_actions() const;
@@ -73,5 +73,9 @@ public:
     void compute_cut(const AllCutPackage &all_package);
 
     void build_cut_full(const AllCutPackage &all_package);
+    std::string get_slave_path(std::string const &slave_name) const;
+    double slave_weight(int nslaves, std::string const &name) const;
+    std::string get_master_path() const;
+    std::string get_structure_path() const;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

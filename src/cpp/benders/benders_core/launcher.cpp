@@ -33,14 +33,14 @@ BendersOptions build_benders_options(int argc, char **argv)
  *  \note The id in the coupling_map is that of the variable in the solver responsible for the creation of
  *  the structure file.
  */
-CouplingMap build_input(BendersOptions const &options)
+CouplingMap build_input(const std::string &structure_path, const int slave_number, const std::string &master_name)
 {
 	CouplingMap coupling_map;
-	std::ifstream summary(options.get_structure_path(), std::ios::in);
+	std::ifstream summary(structure_path, std::ios::in);
 	if (!summary)
 	{
 		// TODO JMK : gestion cas d'erreur si pas de structure d'entrée
-		std::cout << "Cannot open file summary " << options.get_structure_path() << std::endl;
+		std::cout << "Cannot open file summary " << structure_path << std::endl;
 		return coupling_map;
 	}
 	std::string line;
@@ -57,15 +57,15 @@ CouplingMap build_input(BendersOptions const &options)
 		coupling_map[problem_name][variable_name] = variable_id;
 	}
 
-	if (options.SLAVE_NUMBER >= 0)
+	if (slave_number >= 0)
 	{
 		int n(0);
 		CouplingMap trimmer;
 		for (auto const &problem : coupling_map)
 		{
-			if (problem.first == options.MASTER_NAME)
+			if (problem.first == master_name)
 				trimmer.insert(problem);
-			else if (n < options.SLAVE_NUMBER)
+			else if (n < slave_number)
 			{
 				trimmer.insert(problem);
 				++n;

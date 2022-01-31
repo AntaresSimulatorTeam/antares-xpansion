@@ -18,6 +18,29 @@
 // Initialize static member
 size_t StandardLp::appendCNT = 0;
 
+/*!
+ *  \brief Return slave weight value
+ *
+ *  \param nslaves : total number of slaves
+ *
+ *  \param name : slave name
+ */
+double slave_weight(int nslaves, std::string const &name, double slave_weight_value, std::string slave_weight, const Str2Dbl &weights)
+{
+    if (slave_weight == SLAVE_WEIGHT_UNIFORM)
+    {
+        return 1 / static_cast<double>(nslaves);
+    }
+    else if (slave_weight == SLAVE_WEIGHT_CONSTANT)
+    {
+        double const weight(slave_weight_value);
+        return 1 / weight;
+    }
+    else
+    {
+        return weights.find(name)->second;
+    }
+}
 int main(int argc, char **argv)
 {
     usage(argc);
@@ -34,7 +57,9 @@ int main(int argc, char **argv)
     Writer writer = build_json_writer(options.JSON_FILE);
     try
     {
-        CouplingMap input = build_input(options);
+
+        auto structure_path((Path(options.INPUTROOT) / options.STRUCTURE_FILE).get_str());
+        CouplingMap input = build_input(structure_path, options.SLAVE_NUMBER, options.MASTER_NAME);
 
         SolverFactory factory;
         std::string solver_to_use = (options.SOLVER_NAME == "COIN") ? "CBC" : options.SOLVER_NAME;
@@ -69,7 +94,7 @@ int main(int argc, char **argv)
                     sequence[i] = i;
                 }
                 solver_getobj(solver_l, o, 0, mps_ncols - 1);
-                double const weigth = options.slave_weight(nslaves, kvp.first);
+                double const weigth = slave_weight(nslaves, kvp.first, options.SLAVE_WEIGHT_VALUE, options.SLAVE_WEIGHT, options.weights());
                 for (auto &c : o)
                 {
                     c *= weigth;

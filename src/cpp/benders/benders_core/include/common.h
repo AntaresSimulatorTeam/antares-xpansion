@@ -165,3 +165,6 @@ double norm_point(Point const &x0, Point const &x1);
 std::ostream &operator<<(std::ostream &stream, std::vector<IntVector> const &rhs);
 
 LogData bendersDataToLogData(const BendersData &data);
+
+const std::string SLAVE_WEIGHT_CONSTANT("CONSTANT");
+const std::string SLAVE_WEIGHT_UNIFORM("UNIFORM");
