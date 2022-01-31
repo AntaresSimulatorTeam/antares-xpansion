@@ -1,6 +1,6 @@
 #include "SensitivityAnalysis.h"
 
-SensitivityAnalysis::SensitivityAnalysis(double epsilon, double bestUb, std::map<int, std::string> idToName, SolverAbstract::Ptr lastMaster, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _best_ub(bestUb), _id_to_name(idToName), _last_master(lastMaster), _writer(writer), _pb_modifier(epsilon, bestUb)
+SensitivityAnalysis::SensitivityAnalysis(double epsilon, double bestUb, const std::map<int, std::string> &idToName, SolverAbstract::Ptr lastMaster, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _best_ub(bestUb), _id_to_name(idToName), _last_master(lastMaster), _writer(writer), _pb_modifier(epsilon, bestUb)
 {
 	init_output_data();
 }
@@ -14,7 +14,7 @@ void SensitivityAnalysis::launch()
 	_writer->end_writing(_output_data);
 }
 
-SensitivityOutputData SensitivityAnalysis::get_output_data()
+SensitivityOutputData SensitivityAnalysis::get_output_data() const
 {
 	return _output_data;
 }
@@ -25,7 +25,7 @@ void SensitivityAnalysis::init_output_data()
 	_output_data.best_benders_cost = _best_ub;
 	_output_data.solution_system_cost = 1e+20;
 	_output_data.pb_objective = 1e+20;
-	for (auto &kvp : _id_to_name)
+	for (auto const &kvp : _id_to_name)
 	{
 		_output_data.candidates[kvp.second] = 1e+20;
 	}
@@ -93,7 +93,7 @@ std::vector<double> SensitivityAnalysis::get_sensitivity_solution(SolverAbstract
 	else
 	{
 		_output_data.pb_status = sensitivity_problem->solve_lp();
-		sensitivity_problem->get_lp_sol(solution.data(), NULL, NULL);
+		sensitivity_problem->get_lp_sol(solution.data(), nullptr, nullptr);
 		_output_data.pb_objective = sensitivity_problem->get_lp_value();
 	}
 	return solution;

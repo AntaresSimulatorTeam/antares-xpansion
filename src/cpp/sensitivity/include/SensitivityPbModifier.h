@@ -6,7 +6,7 @@
 class SensitivityPbModifier
 {
 public:
-    SensitivityPbModifier(){};
+    SensitivityPbModifier() = default;
     explicit SensitivityPbModifier(double epsilon, double bestUb);
     ~SensitivityPbModifier() = default;
 
@@ -16,6 +16,6 @@ private:
     double _epsilon;
     double _best_ub;
 
-    SolverAbstract::Ptr change_objective(SolverAbstract::Ptr &solverModel, int nbCandidates);
-    SolverAbstract::Ptr add_near_optimal_cost_constraint(SolverAbstract::Ptr &solverModel, int nbCandidates);
+    SolverAbstract::Ptr change_objective(const SolverAbstract::Ptr &solverModel, int nbCandidates) const;
+    SolverAbstract::Ptr add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solverModel, int nbCandidates);
 };

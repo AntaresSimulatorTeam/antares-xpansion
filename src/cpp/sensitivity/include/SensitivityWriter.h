@@ -13,7 +13,7 @@ private:
 
 public:
     SensitivityWriter() = delete;
-    SensitivityWriter(const std::string &json_filename);
+    explicit SensitivityWriter(const std::string &json_filename);
     ~SensitivityWriter() = default;
 
     void dump();

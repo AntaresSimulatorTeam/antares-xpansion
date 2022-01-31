@@ -8,14 +8,14 @@
 class SensitivityAnalysis
 {
 public:
-    SensitivityAnalysis(){};
+    SensitivityAnalysis() = default;
     explicit SensitivityAnalysis(double epsilon, double bestUb,
-                                 std::map<int, std::string> idToName,
+                                 const std::map<int, std::string> &idToName,
                                  SolverAbstract::Ptr lastMaster, std::shared_ptr<SensitivityWriter> writer);
     ~SensitivityAnalysis() = default;
 
     void launch();
-    SensitivityOutputData get_output_data();
+    SensitivityOutputData get_output_data() const;
 
 private:
     double _epsilon;
