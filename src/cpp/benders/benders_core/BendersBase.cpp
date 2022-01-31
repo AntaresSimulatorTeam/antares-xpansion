@@ -278,7 +278,7 @@ void BendersBase::get_master_value()
 	{
 		_master->fix_alpha(_data.best_ub);
 	}
-	_master->solve(_data.master_status, _options);
+	_master->solve(_data.master_status, _options.OUTPUTROOT);
 	_master->get(_data.x0, _data.alpha, _data.alpha_i); /*Get the optimal variables of the Master Problem*/
 	_master->get_value(_data.lb);						/*Get the optimal value of the Master Problem*/
 
@@ -316,7 +316,7 @@ void BendersBase::get_slave_cut(SlaveCutPackage &slave_cut_package)
 		SlaveCutDataPtr slave_cut_data(new SlaveCutData);
 		SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
 		ptr->fix_to(_data.x0);
-		ptr->solve(handler->get_int(LPSTATUS), _options);
+		ptr->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT);
 
 		ptr->get_value(handler->get_dbl(SLAVE_COST));
 		ptr->get_subgradient(handler->get_subgradient());

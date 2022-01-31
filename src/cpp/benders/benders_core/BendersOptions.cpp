@@ -23,30 +23,6 @@ void BendersOptions::write_default()
 	file.close();
 }
 
-// /*!
-//  *  \brief Get path to master problem mps file from options
-//  */
-// std::string BendersOptions::get_master_path() const
-// {
-// 	return (Path(INPUTROOT) / (MASTER_NAME + ".mps")).get_str();
-// }
-
-// /*!
-//  *  \brief Get path to structure txt file from options
-//  */
-// std::string BendersOptions::get_structure_path() const
-// {
-// 	return (Path(INPUTROOT) / STRUCTURE_FILE).get_str();
-// }
-
-// /*!
-//  *  \brief Get path to slave problem mps file from options
-//  */
-// std::string BendersOptions::get_slave_path(std::string const &slave_name) const
-// {
-// 	return (Path(INPUTROOT) / (slave_name + ".mps")).get_str();
-// }
-
 /*!
  *  \brief Read Benders options from file path
  *
@@ -135,27 +111,3 @@ void BendersOptions::print(std::ostream &stream) const
 		stream << "Sequential launch (only one slave problem)" << std::endl;
 	}
 }
-
-// /*!
-//  *  \brief Return slave weight value
-//  *
-//  *  \param nslaves : total number of slaves
-//  *
-//  *  \param name : slave name
-//  */
-// double BendersOptions::slave_weight(int nslaves, std::string const &name) const
-// {
-// 	if (SLAVE_WEIGHT == "UNIFORM")
-// 	{
-// 		return 1 / static_cast<double>(nslaves);
-// 	}
-// 	else if (SLAVE_WEIGHT == "CONSTANT")
-// 	{
-// 		double const weight(SLAVE_WEIGHT_VALUE);
-// 		return 1 / weight;
-// 	}
-// 	else
-// 	{
-// 		return _weights.find(name)->second;
-// 	}
-// }
