@@ -5,7 +5,7 @@
 
 #include "launcher.h"
 #include "BendersSequential.h"
-#include "BendersOptions.h"
+#include "SimulationOptions.h"
 #include "logger/Master.h"
 #include "logger/UserFile.h"
 #include "logger/User.h"
@@ -20,7 +20,8 @@ int main(int argc, char **argv)
 {
 	// options.print(std::cout);
 	usage(argc);
-	BendersOptions options(build_benders_options(argc, argv));
+	SimulationOptions options(build_benders_options(argc, argv));
+	BendersBaseOptions benders_options(SimuOptToBendersBaseOpt(options));
 
 	google::InitGoogleLogging(argv[0]);
 	auto path_to_log = (Path(options.OUTPUTROOT) / "benderssequentialLog.txt.").get_str();
@@ -34,7 +35,7 @@ int main(int argc, char **argv)
 	Writer writer = build_json_writer(options.JSON_FILE);
 	Timer timer;
 
-	BendersSequential benders(options, logger, writer);
+	BendersSequential benders(benders_options, logger, writer);
 	benders.launch();
 	std::stringstream str;
 	str << "Optimization results available in : "

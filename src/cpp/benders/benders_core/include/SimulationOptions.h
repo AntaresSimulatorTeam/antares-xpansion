@@ -2,14 +2,14 @@
 
 #include "common.h"
 
-class BendersOptions
+class SimulationOptions
 {
 public:
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__) type__ name__;
-#include "BendersOptions.hxx"
+#include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
 
-	BendersOptions();
+	SimulationOptions();
 
 	void read(std::string const &file_name);
 	void print(std::ostream &stream) const;

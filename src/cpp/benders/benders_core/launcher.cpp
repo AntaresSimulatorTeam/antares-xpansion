@@ -1,9 +1,9 @@
 #include "glog/logging.h"
 
 #include "launcher.h"
-#include "Timer.h"
+#include "SimulationOptions.h"
 
-#include "BendersOptions.h"
+#include "Timer.h"
 
 /*!
  *  \brief Get Benders Options from command line
@@ -12,9 +12,9 @@
  *
  *  \param argv : elements on command line
  */
-BendersOptions build_benders_options(int argc, char **argv)
+SimulationOptions build_benders_options(int argc, char **argv)
 {
-	BendersOptions result;
+	SimulationOptions result;
 	result.read(argv[1]);
 	return result;
 }
@@ -87,8 +87,37 @@ void usage(int argc)
 	if (argc < 2)
 	{
 		std::cout << "usage is : <exe> <option_file> " << std::endl;
-		BendersOptions input;
+		SimulationOptions input;
 		input.write_default();
 		std::exit(1);
 	}
+}
+
+BendersBaseOptions SimuOptToBendersBaseOpt(const SimulationOptions &options)
+{
+	BendersBaseOptions result;
+
+	result.LOG_LEVEL = options.LOG_LEVEL;
+	result.MAX_ITERATIONS = options.MAX_ITERATIONS;
+	result.SLAVE_NUMBER = options.SLAVE_NUMBER;
+
+	result.ABSOLUTE_GAP = options.ABSOLUTE_GAP;
+	result.RELATIVE_GAP = options.RELATIVE_GAP;
+	result.SLAVE_WEIGHT_VALUE = options.SLAVE_WEIGHT_VALUE;
+	result.TIME_LIMIT = options.TIME_LIMIT;
+
+	result.AGGREGATION = options.AGGREGATION;
+	result.TRACE = options.TRACE;
+	result.BOUND_ALPHA = options.BOUND_ALPHA;
+
+	result.OUTPUTROOT = options.OUTPUTROOT;
+	result.SLAVE_WEIGHT = options.SLAVE_WEIGHT;
+	result.MASTER_NAME = options.MASTER_NAME;
+	result.STRUCTURE_FILE = options.STRUCTURE_FILE;
+	result.INPUTROOT = options.INPUTROOT;
+	result.CSV_NAME = options.CSV_NAME;
+	result.SOLVER_NAME = options.SOLVER_NAME;
+	result.weights = options.weights();
+
+	return result;
 }

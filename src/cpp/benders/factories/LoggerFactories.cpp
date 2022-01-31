@@ -20,7 +20,7 @@ Logger build_stdout_and_file_logger(const std::string &report_file_path_string)
     return logger;
 }
 
-std::ostringstream start_message(const BendersOptions &options, const std::string &benders_type)
+std::ostringstream start_message(const SimulationOptions &options, const std::string &benders_type)
 {
     std::ostringstream oss_l;
     oss_l << "starting Benders " << benders_type << std::endl;

@@ -5,7 +5,7 @@
 
 #include "launcher.h"
 #include "Worker.h"
-#include "BendersOptions.h"
+#include "SimulationOptions.h"
 #include "JsonWriter.h"
 #include "Timer.h"
 
@@ -44,7 +44,7 @@ double slave_weight(int nslaves, std::string const &name, double slave_weight_va
 int main(int argc, char **argv)
 {
     usage(argc);
-    BendersOptions options(build_benders_options(argc, argv));
+    SimulationOptions options(build_benders_options(argc, argv));
     options.print(std::cout);
 
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);

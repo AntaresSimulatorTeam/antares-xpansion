@@ -16,7 +16,7 @@
  *  \param options : set of options fixed by the user
  */
 
-BendersSequential::BendersSequential(BendersOptions const &options, Logger &logger, Writer writer) : BendersBase(options, logger, writer)
+BendersSequential::BendersSequential(BendersBaseOptions const &options, Logger &logger, Writer writer) : BendersBase(options, logger, writer)
 {
 }
 

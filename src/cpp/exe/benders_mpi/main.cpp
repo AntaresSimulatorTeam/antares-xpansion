@@ -26,7 +26,9 @@ int main(int argc, char **argv)
     }
 
     // Read options, needed to have options.OUTPUTROOT
-    BendersOptions options(build_benders_options(argc, argv));
+    SimulationOptions options(build_benders_options(argc, argv));
+
+    BendersBaseOptions benders_options(SimuOptToBendersBaseOpt(options));
 
     if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1)
     {
@@ -65,11 +67,11 @@ int main(int argc, char **argv)
         std::cout << "Sequential launch" << std::endl;
         LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;
 
-        benders = std::make_shared<BendersSequential>(options, logger, writer);
+        benders = std::make_shared<BendersSequential>(benders_options, logger, writer);
     }
     else
     {
-        benders = std::make_shared<BendersMpi>(options, logger, writer, env, world);
+        benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env, world);
     }
 
     benders->launch();

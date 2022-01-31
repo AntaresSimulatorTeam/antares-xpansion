@@ -1,22 +1,22 @@
-#include "BendersOptions.h"
+#include "SimulationOptions.h"
 #include "helpers/Path.h"
 
 /*!
  *  \brief Constructor of Benders Options
  *
  */
-BendersOptions::BendersOptions() :
+SimulationOptions::SimulationOptions() :
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__) name__(default__),
-#include "BendersOptions.hxx"
+#include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
-								   _weights()
+										 _weights()
 {
 }
 
 /*!
  *  \brief Write default options in "options_default" txt file
  */
-void BendersOptions::write_default()
+void SimulationOptions::write_default()
 {
 	std::ofstream file("options_default.txt");
 	print(file);
@@ -28,7 +28,7 @@ void BendersOptions::write_default()
  *
  *  \param file_name : path to options txt file
  */
-void BendersOptions::read(std::string const &file_name)
+void SimulationOptions::read(std::string const &file_name)
 {
 	std::ifstream file(file_name.c_str());
 	if (file.good())
@@ -42,7 +42,7 @@ void BendersOptions::read(std::string const &file_name)
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
 	if (#name__ == name)                                 \
 		buffer >> name__;
-#include "BendersOptions.hxx"
+#include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
 		}
 
@@ -99,10 +99,10 @@ void BendersOptions::read(std::string const &file_name)
  *
  *  \param stream : output stream
  */
-void BendersOptions::print(std::ostream &stream) const
+void SimulationOptions::print(std::ostream &stream) const
 {
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__) stream << std::setw(30) << #name__ << std::setw(50) << name__ << std::endl;
-#include "BendersOptions.hxx"
+#include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
 	stream << std::endl;
 

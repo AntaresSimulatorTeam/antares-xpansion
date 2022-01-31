@@ -6,7 +6,7 @@
 
 #include "glog/logging.h"
 
-BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer) {}
+BendersBase::BendersBase(BendersBaseOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -552,7 +552,7 @@ double BendersBase::slave_weight(int nslaves, std::string const &name) const
 	}
 	else
 	{
-		return _options.weights().find(name)->second;
+		return _options.weights.find(name)->second;
 	}
 }
 

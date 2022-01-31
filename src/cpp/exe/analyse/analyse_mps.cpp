@@ -2,7 +2,7 @@
 //
 #include "launcher.h"
 #include "Worker.h"
-#include "BendersOptions.h"
+#include "SimulationOptions.h"
 #include "helpers/Path.h"
 
 #include "solver_utils.h"
@@ -10,7 +10,7 @@
 int main(int argc, char **argv)
 {
 	usage(argc);
-	BendersOptions options(build_benders_options(argc, argv));
+	SimulationOptions options(build_benders_options(argc, argv));
 	options.print(std::cout);
 
 	auto structure_path((Path(options.INPUTROOT) / options.STRUCTURE_FILE).get_str());

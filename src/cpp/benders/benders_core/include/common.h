@@ -168,3 +168,33 @@ LogData bendersDataToLogData(const BendersData &data);
 
 const std::string SLAVE_WEIGHT_CONSTANT("CONSTANT");
 const std::string SLAVE_WEIGHT_UNIFORM("UNIFORM");
+
+struct BendersBaseOptions
+{
+	int
+		LOG_LEVEL,
+		MAX_ITERATIONS,
+		SLAVE_NUMBER;
+
+	double
+		ABSOLUTE_GAP,
+		RELATIVE_GAP,
+		SLAVE_WEIGHT_VALUE,
+		TIME_LIMIT;
+
+	bool
+		AGGREGATION,
+		TRACE,
+		BOUND_ALPHA;
+
+	std::string
+		OUTPUTROOT,
+		SLAVE_WEIGHT,
+		MASTER_NAME,
+		STRUCTURE_FILE,
+		INPUTROOT,
+		CSV_NAME,
+		SOLVER_NAME;
+
+	Str2Dbl weights;
+};
