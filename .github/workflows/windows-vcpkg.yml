@@ -56,7 +56,7 @@ jobs:
       - name: print pdf-path
         shell: bash
         run: |
-            echo ${{ needs.userguide.steps.outputs.pdf-path }}
+            echo ${{ needs.userguide.outputs.pdf-path }}
 
     # env:
     #   # Indicates the location of the vcpkg as a Git submodule of the project repository.
