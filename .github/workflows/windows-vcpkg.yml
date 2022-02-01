@@ -51,11 +51,11 @@ jobs:
         triplet: [x64-windows]
 
     steps:
-    - uses: actions/checkout@v2
-    - name: print pdf-path
-    - shell: bash
-    - run: |
-          echo ${{ needs.userguide.steps.create-user-guide.outputs.pdf-name }}
+      - uses: actions/checkout@v2
+      - name: print pdf-path
+      - shell: bash
+      - run: |
+            echo ${{ needs.userguide.steps.create-user-guide.outputs.pdf-name }}
 
     # env:
     #   # Indicates the location of the vcpkg as a Git submodule of the project repository.
