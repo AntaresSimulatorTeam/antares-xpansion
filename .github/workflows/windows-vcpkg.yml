@@ -16,9 +16,7 @@ jobs:
   userguide:
     runs-on: ubuntu-latest
     outputs:
-      pdf-path:
-        description: "Created archive path"
-        value: ${{ steps.create-user-guide.outputs.pdf-path }}
+      pdf-path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
     steps:
       - uses: actions/checkout@v2
