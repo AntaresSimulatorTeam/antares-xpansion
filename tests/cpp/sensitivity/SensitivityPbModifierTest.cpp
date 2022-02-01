@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include <multisolver_interface/SolverFactory.h>
-#include "SensitivityPbModifier.h"
+#include "PbModifierCapex.h"
 #include "BendersBase.h"
 
 const int peak_id = 0;
@@ -413,7 +413,7 @@ TEST_F(SensitivityProblemModifierTest, ChangeProblem)
 {
     verify_last_master_problem(lastMasterData);
 
-    auto problem_modifier = SensitivityPbModifier(epsilon, best_ub);
+    auto problem_modifier = PbModifierCapex(epsilon, best_ub);
     auto sensitivity_pb = problem_modifier.changeProblem(id_to_name, lastMasterData.solver_model);
 
     SolverData sensitivityPbData = init_solver_data_from_solver_model(sensitivity_pb);

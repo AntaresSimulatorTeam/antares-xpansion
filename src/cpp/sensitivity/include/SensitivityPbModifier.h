@@ -16,6 +16,6 @@ private:
     double _epsilon;
     double _best_ub;
 
-    SolverAbstract::Ptr change_objective(const SolverAbstract::Ptr &solverModel, int nbCandidates) const;
-    SolverAbstract::Ptr add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solverModel, int nbCandidates) const;
+    virtual SolverAbstract::Ptr change_objective(const SolverAbstract::Ptr &solverModel, int nbCandidates) const = 0;
+    virtual SolverAbstract::Ptr add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solverModel, int nbCandidates) const;
 };

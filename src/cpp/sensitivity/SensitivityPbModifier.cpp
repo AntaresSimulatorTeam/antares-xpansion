@@ -17,24 +17,6 @@ SolverAbstract::Ptr SensitivityPbModifier::changeProblem(const std::map<int, std
     return sensitivity_model;
 }
 
-SolverAbstract::Ptr SensitivityPbModifier::change_objective(const SolverAbstract::Ptr &solverModel, int nbCandidates) const
-{
-    std::vector<int> colind(solverModel->get_ncols());
-    std::vector<double> obj(colind.size());
-
-    std::iota(std::begin(colind), std::end(colind), 0);
-
-    solver_getobj(solverModel, obj, 0, colind.size() - 1);
-
-    //Keep only coefficients corresponding to candidates, alpha and all alpha_i are set to 0
-    for (int i(nbCandidates); i < obj.size(); i++)
-    {
-        obj[i] = 0;
-    }
-    solverModel->chg_obj(colind, obj);
-    return solverModel;
-}
-
 SolverAbstract::Ptr SensitivityPbModifier::add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solverModel, int nbCandidates) const
 {
     std::vector<int> colind(nbCandidates + 1);

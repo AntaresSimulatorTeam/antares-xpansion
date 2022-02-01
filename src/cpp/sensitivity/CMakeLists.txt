@@ -1,7 +1,13 @@
 
 
 add_library (sensitivity
-	SensitivityAnalysis.cpp SensitivityLogger.cpp SensitivityWriter.cpp SensitivityPbModifier.cpp)
+	SensitivityAnalysis.cpp 
+	SensitivityLogger.cpp 
+	SensitivityWriter.cpp 
+	SensitivityPbModifier.cpp 
+	PbModifierCapex.cpp 
+	PbModifierProjection.cpp
+)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 

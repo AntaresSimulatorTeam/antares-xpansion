@@ -1,6 +1,8 @@
 #include "SensitivityAnalysis.h"
+#include "PbModifierCapex.h"
+#include "PbModifierProjection.h"
 
-SensitivityAnalysis::SensitivityAnalysis(double epsilon, double bestUb, const std::map<int, std::string> &idToName, SolverAbstract::Ptr lastMaster, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _best_ub(bestUb), _id_to_name(idToName), _last_master(lastMaster), _writer(writer), _pb_modifier(epsilon, bestUb)
+SensitivityAnalysis::SensitivityAnalysis(double epsilon, double bestUb, const std::map<int, std::string> &idToName, SolverAbstract::Ptr lastMaster, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _best_ub(bestUb), _id_to_name(idToName), _last_master(lastMaster), _writer(writer)
 {
 	init_output_data();
 }
@@ -9,7 +11,7 @@ void SensitivityAnalysis::launch()
 {
 
 	// get_capex_optimal_solutions();
-	// get_candidates_projection();
+	get_candidates_projection();
 	get_capex_min_solution();
 	_writer->end_writing(_output_data);
 }
@@ -38,13 +40,18 @@ void SensitivityAnalysis::init_output_data()
 // 	get_capex_max_solution();
 // }
 
-void SensitivityAnalysis::get_capex_min_solution()
+void SensitivityAnalysis::run_analysis()
 {
-
-	auto sensitivity_pb_model = _pb_modifier.changeProblem(_id_to_name, _last_master);
+	auto sensitivity_pb_model = _pb_modifier->changeProblem(_id_to_name, _last_master);
 
 	auto solution = get_sensitivity_solution(sensitivity_pb_model);
 	fill_output_data(solution);
+}
+
+void SensitivityAnalysis::get_capex_min_solution()
+{
+	_pb_modifier = std::make_shared<PbModifierCapex>(_epsilon, _best_ub);
+	run_analysis();
 }
 
 // void SensitivityAnalysis::get_capex_max_solution() {
@@ -55,23 +62,22 @@ void SensitivityAnalysis::get_capex_min_solution()
 // 	get_sensitivity_solution();
 // }
 
-// void SensitivityAnalysis::get_candidates_projection()
-// {
-// 	for (int candidateNum(0); candidateNum < _last_master_model->get_ncols(); candidateNum++)
-// 	{
-// 		get_candidate_lower_projection(candidateNum);
-// 		get_candidate_upper_projection(candidateNum);
-// 	}
-// }
+void SensitivityAnalysis::get_candidates_projection()
+{
+	for (auto const &kvp: _id_to_name)
+	{
+		get_candidate_lower_projection(kvp.first);
+		// get_candidate_upper_projection(kvp.first);
+	}
+}
 
-// void SensitivityAnalysis::get_candidate_lower_projection(int &candidateNum) {
-// 	auto pb_modifier = SensitivityPbModifier();
-// 	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
+void SensitivityAnalysis::get_candidate_lower_projection(const int &candidateId) {
 
-// 	get_sensitivity_solution();
-// }
+	_pb_modifier = std::make_shared<PbModifierProjection>(_epsilon, _best_ub, candidateId);
+	run_analysis();
+}
 
-// void SensitivityAnalysis::get_candidate_upper_projection(int &candidateNum) {
+// void SensitivityAnalysis::get_candidate_upper_projection(const int candidateId) {
 // 	auto pb_modifier = SensitivityPbModifier();
 // 	_sensitivity_pb_model = pb_modifier.changeProblem(_last_master_model);
 
