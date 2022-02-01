@@ -1,12 +1,6 @@
 #include "gtest/gtest.h"
 #include "SensitivityAnalysis.h"
 
-#if defined(WIN32) || defined(_WIN32)
-        std::string data_test_dir = "../../data_test";
-#else
-        std::string data_test_dir = "../data_test";
-#endif
-
 class SensitivityAnalysisTest : public ::testing::Test
 {
 public:
@@ -23,6 +17,11 @@ public:
 protected:
     void SetUp() override
     {
+#if defined(WIN32) || defined(_WIN32)
+        std::string data_test_dir = "../../data_test";
+#else
+        std::string data_test_dir = "../data_test";
+#endif
         epsilon = 1e3;
         best_ub = 1e5;
 

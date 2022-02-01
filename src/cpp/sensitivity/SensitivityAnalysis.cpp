@@ -42,7 +42,6 @@ void SensitivityAnalysis::get_capex_min_solution()
 {
 
 	auto sensitivity_pb_model = _pb_modifier.changeProblem(_id_to_name, _last_master);
-	// _sensitivity_pb_model = _pb_modifier.getProblem();
 
 	auto solution = get_sensitivity_solution(sensitivity_pb_model);
 	fill_output_data(solution);

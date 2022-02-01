@@ -3,12 +3,6 @@
 #include "SensitivityPbModifier.h"
 #include "BendersBase.h"
 
-#if defined(WIN32) || defined(_WIN32)
-        std::string data_test_dir = "../../data_test";
-#else
-        std::string data_test_dir = "../data_test";
-#endif
-
 const int peak_id = 0;
 const int semibase_id = 1;
 const int alpha_id = 2;
@@ -55,6 +49,11 @@ public:
 protected:
     void SetUp() override
     {
+#if defined(WIN32) || defined(_WIN32)
+        std::string data_test_dir = "../../data_test";
+#else
+        std::string data_test_dir = "../data_test";
+#endif
         std::string last_master_mps_path = "../data_test/mps/master_last_iteration.mps";
         std::string solver_name = "CBC";
         SolverFactory factory;
