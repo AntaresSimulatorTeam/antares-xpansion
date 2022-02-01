@@ -51,6 +51,7 @@ jobs:
         triplet: [x64-windows]
 
     steps:
+    - uses: actions/checkout@v2
     - name: print pdf-path
     - shell: bash
     - run: |
