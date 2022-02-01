@@ -3,6 +3,12 @@
 #include "SensitivityPbModifier.h"
 #include "BendersBase.h"
 
+#if defined(WIN32) || defined(_WIN32)
+        std::string data_test_dir = "../../data_test";
+#else
+        std::string data_test_dir = "../data_test";
+#endif
+
 const int peak_id = 0;
 const int semibase_id = 1;
 const int alpha_id = 2;

@@ -35,7 +35,7 @@ SolverAbstract::Ptr SensitivityPbModifier::change_objective(const SolverAbstract
     return solverModel;
 }
 
-SolverAbstract::Ptr SensitivityPbModifier::add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solverModel, int nbCandidates)
+SolverAbstract::Ptr SensitivityPbModifier::add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solverModel, int nbCandidates) const
 {
     std::vector<int> colind(nbCandidates + 1);
     std::vector<double> dmatval(colind.size());

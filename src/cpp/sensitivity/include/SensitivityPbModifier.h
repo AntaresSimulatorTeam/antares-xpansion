@@ -17,5 +17,5 @@ private:
     double _best_ub;
 
     SolverAbstract::Ptr change_objective(const SolverAbstract::Ptr &solverModel, int nbCandidates) const;
-    SolverAbstract::Ptr add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solverModel, int nbCandidates);
+    SolverAbstract::Ptr add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solverModel, int nbCandidates) const;
 };

@@ -1,6 +1,12 @@
 #include "gtest/gtest.h"
 #include "SensitivityAnalysis.h"
 
+#if defined(WIN32) || defined(_WIN32)
+        std::string data_test_dir = "../../data_test";
+#else
+        std::string data_test_dir = "../data_test";
+#endif
+
 class SensitivityAnalysisTest : public ::testing::Test
 {
 public:
@@ -24,12 +30,6 @@ protected:
 
         json_filename = std::tmpnam(nullptr);
         writer = std::make_shared<SensitivityWriter>(json_filename);
-
-#if defined(WIN32) || defined(_WIN32)
-        std::string data_test_dir = "../../data_test";
-#else
-        std::string data_test_dir = "../data_test";
-#endif
 
         std::string last_master_mps_path = data_test_dir + "/mps/master_last_iteration.mps";
         std::string solver_name = "CBC";
