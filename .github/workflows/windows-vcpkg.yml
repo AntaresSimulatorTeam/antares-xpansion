@@ -132,11 +132,17 @@ jobs:
         antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
         antares-version: ${{steps.antares-version.outputs.prop}}
         os: ${{matrix.os}}
+
+    - name: Download userguide
+      uses: actions/download-artifact@v2
+      with:
+        name: user-guide
+        path: docs/
         
     - name: Configure
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH=${{ steps.create.outputs.pdf-name }}
     
     - name: Build
       run: |
@@ -157,26 +163,26 @@ jobs:
         export ZIP_NAME=$(ls *.zip)
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
-    - name: make empty zipdir
-      shell: bash
-      run: |
-        cd _build
-        ZIP_NAME=${{env.ZIP_NAME}}
-        dirname="${ZIP_NAME%.*}"
-        mkdir $dirname
-        echo "ZIP_DIR_NAME=$dirname" >> $GITHUB_ENV
+    # - name: make empty zipdir
+    #   shell: bash
+    #   run: |
+    #     cd _build
+    #     ZIP_NAME=${{env.ZIP_NAME}}
+    #     dirname="${ZIP_NAME%.*}"
+    #     mkdir $dirname
+    #     echo "ZIP_DIR_NAME=$dirname" >> $GITHUB_ENV
 
-    - name: Download userguide
-      uses: actions/download-artifact@v2
-      with:
-        name: user-guide
-        path: _build/${{env.ZIP_DIR_NAME}}
+    # - name: Download userguide
+    #   uses: actions/download-artifact@v2
+    #   with:
+    #     name: user-guide
+    #     path: _build/${{env.ZIP_DIR_NAME}}
 
-    - name: Add userguide to zip installer
-      shell: bash
-      run: |
-        cd _build
-        zip -ur ${{env.ZIP_NAME}} ${{env.ZIP_DIR_NAME}}
+    # - name: Add userguide to zip installer
+    #   shell: bash
+    #   run: |
+    #     cd _build
+    #     zip -ur ${{env.ZIP_NAME}} ${{env.ZIP_DIR_NAME}}
 
     - id: create-single-file
       name: Single file .zip creation

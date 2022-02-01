@@ -344,6 +344,10 @@ endif()
 # Documentation
 # ===========================================================================
 
+if (USER_GUIDE_PATH)
+	install(FILES ${USER_GUIDE_PATH} DESTINATION .)
+endif()
+
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 
 if (WIN32)
