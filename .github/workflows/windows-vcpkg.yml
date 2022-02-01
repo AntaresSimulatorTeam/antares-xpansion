@@ -53,8 +53,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: print pdf-path
-      - shell: bash
-      - run: |
+        uses: actions/checkout@v2
+        shell: bash
+        run: |
             echo ${{ needs.userguide.steps.create-user-guide.outputs.pdf-name }}
 
     # env:
