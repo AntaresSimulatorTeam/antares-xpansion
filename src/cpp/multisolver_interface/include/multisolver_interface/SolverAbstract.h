@@ -433,6 +433,13 @@ public:
     * @param obj    : Values to set in objective function
     */
     virtual void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) = 0;
+
+    /**
+    * @brief Change the problem's objective function sense to minimize or maximize
+    *
+    * @param minimize : boolean that is true for minimize, false for maximization
+    */
+    virtual void chg_obj_sense(const bool minimize) = 0;
 	
     /**
     * @brief Change bounds of some variables

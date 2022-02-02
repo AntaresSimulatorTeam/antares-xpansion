@@ -52,7 +52,7 @@ TEST_F(SensitivityWriterTest, EndWritingPrintsOutputData)
 
     output_data.epsilon = 2;
     output_data.best_benders_cost = 100;
-    output_data.solution_system_cost = 120;
+    output_data.system_cost = 120;
     output_data.pb_objective = 80;
     output_data.candidates = {{"peak", 50}, {"semibase", 30}};
     output_data.pb_status = SOLVER_STATUS::OPTIMAL;
@@ -63,7 +63,7 @@ TEST_F(SensitivityWriterTest, EndWritingPrintsOutputData)
 
     ASSERT_EQ(output_data.epsilon, json_content["epsilon"].asDouble());
     ASSERT_EQ(output_data.best_benders_cost, json_content["best_benders_cost"].asDouble());
-    ASSERT_EQ(output_data.solution_system_cost, json_content["solution_system_cost"].asDouble());
+    ASSERT_EQ(output_data.system_cost, json_content["system_cost"].asDouble());
     ASSERT_EQ(output_data.pb_objective, json_content["pb_objective"].asDouble());
     ASSERT_EQ(output_data.pb_status, json_content["pb_status"].asInt());
 

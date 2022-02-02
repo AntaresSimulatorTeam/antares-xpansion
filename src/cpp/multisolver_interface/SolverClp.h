@@ -110,6 +110,7 @@ public:
                     const double* bdu);
     virtual void add_name(int type, const char* cnames, int indice);
     virtual void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj);
+	virtual void chg_obj_sense(const bool minimize) override;
     virtual void chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd);
     virtual void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype);
 	virtual void chg_rhs(int id_row, double val);

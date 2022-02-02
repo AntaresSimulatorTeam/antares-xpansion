@@ -2,7 +2,6 @@
 
 add_library (sensitivity
 	SensitivityAnalysis.cpp 
-	SensitivityLogger.cpp 
 	SensitivityWriter.cpp 
 	SensitivityPbModifier.cpp 
 	PbModifierCapex.cpp 

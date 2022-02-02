@@ -352,6 +352,11 @@ void SolverClp::chg_obj(const std::vector<int>& mindex, const std::vector<double
 	}
 }
 
+void SolverClp::chg_obj_sense(const bool minimize) {
+	int objsense = minimize ? 1 : -1;
+	_clp.setOptimizationDirection(objsense);
+}
+
 void SolverClp::chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd){
     assert(qbtype.size() == mindex.size());
     assert(bnd.size() == mindex.size());

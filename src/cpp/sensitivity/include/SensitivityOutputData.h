@@ -3,12 +3,26 @@
 #include <iostream>
 #include "common.h"
 
+struct SinglePbData
+{
+    std::string pb_type;
+    std::string opt_dir;
+    double objective;    // should contain specific pb objective for each sensitivity pb (either min/max candidate cost or capex min/max)
+    double system_cost;  // System cost (i.e. invest. cost + operational cost) of the solution of the sensitivity problem
+    Point candidates;
+    int status;
+};
+
 struct SensitivityOutputData
 {
     double epsilon;
-    double best_benders_cost; //ou stocker un objet Output::SolutionData
-    double solution_system_cost;  // System cost (i.e. invest. cost + operational cost) of the solution of the sensitivity problem
-    double pb_objective; // should contain specific pb objective for each sensitivity pb (either min/max candidate cost or capex min/max)
-    Point candidates;
-    int pb_status;
+    double best_benders_cost;
+    std::vector<SinglePbData> pbs_data;
+};
+
+struct RawPbData
+{
+    double status;
+    double objective;
+    std::vector<double> solution;
 };

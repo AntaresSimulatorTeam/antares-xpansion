@@ -47,7 +47,7 @@ TEST_F(SensitivityAnalysisTest, OutputDataInit)
 
     ASSERT_DOUBLE_EQ(outputData.epsilon, epsilon);
     ASSERT_DOUBLE_EQ(outputData.best_benders_cost, best_ub);
-    ASSERT_DOUBLE_EQ(outputData.solution_system_cost, 1e+20);
+    ASSERT_DOUBLE_EQ(outputData.system_cost, 1e+20);
     ASSERT_DOUBLE_EQ(outputData.pb_objective, 1e+20);
     ASSERT_EQ(outputData.pb_status, SOLVER_STATUS::UNKNOWN);
 
@@ -60,7 +60,7 @@ TEST_F(SensitivityAnalysisTest, GetCapexMinSolution)
     auto output_data = sensitivity_analysis.get_output_data();
 
     ASSERT_NEAR(output_data.pb_objective, 32.142857, 1e-6);
-    ASSERT_NEAR(output_data.solution_system_cost, 32.142857 + 45, 1e-6);
+    ASSERT_NEAR(output_data.system_cost, 32.142857 + 45, 1e-6);
 
     ASSERT_DOUBLE_EQ(output_data.candidates["candidate_0"], 0);
     ASSERT_NEAR(output_data.candidates["candidate_1"], 0.357142, 1e-6);

@@ -298,6 +298,12 @@ void SolverCplex::chg_obj(const std::vector<int>& mindex, const std::vector<doub
     zero_status_check(status, "change obj");
 }
 
+void SolverCplex::chg_obj_sense(const bool minimize) {
+	int objsense = minimize ? CPX_MIN : CPX_MAX;
+	int status = CPXchgobjsen(_env, _prb, objsense);
+	zero_status_check(status, "change obj sense");
+}
+
 void SolverCplex::chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd){
     assert(qbtype.size() == mindex.size());
     assert(bnd.size() == mindex.size());

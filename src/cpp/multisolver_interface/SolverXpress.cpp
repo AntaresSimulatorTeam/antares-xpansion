@@ -294,6 +294,12 @@ void SolverXpress::chg_obj(const std::vector<int>& mindex, const std::vector<dou
 	zero_status_check(status, "change objective");
 }
 
+void SolverXpress::chg_obj_sense(const bool minimize) {
+	int objsense = minimize ? XPRS_OBJ_MINIMIZE : XPRS_OBJ_MAXIMIZE;
+	int status = XPRSchgobjsense(_xprs, objsense);
+	zero_status_check(status, "change objective sense");
+}
+
 void SolverXpress::chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd){
     assert(qbtype.size() == mindex.size());
     assert(bnd.size() == mindex.size());
