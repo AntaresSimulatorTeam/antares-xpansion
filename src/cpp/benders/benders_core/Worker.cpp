@@ -57,9 +57,9 @@ void Worker::init(Str2Int const &variable_map, std::string const &path_to_mps,
 	SolverFactory factory;
 	if (_is_master)
 	{
-		if (solver_name == "COIN")
+		if (solver_name == COIN_STR)
 		{
-			_solver = factory.create_solver("CBC");
+			_solver = factory.create_solver(CBC_STR);
 		}
 		else
 		{
@@ -69,9 +69,9 @@ void Worker::init(Str2Int const &variable_map, std::string const &path_to_mps,
 	}
 	else
 	{
-		if (solver_name == "COIN")
+		if (solver_name == COIN_STR)
 		{
-			_solver = factory.create_solver("CLP");
+			_solver = factory.create_solver(CLP_STR);
 		}
 		else
 		{
