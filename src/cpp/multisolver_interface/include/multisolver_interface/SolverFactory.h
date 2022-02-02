@@ -25,60 +25,60 @@ SOLVER_TYPE str_to_solver_type(std::string solver_name);
 
 std::string
 solver_to_str(SOLVER_TYPE solver);
-SOLVER_TYPE str_to_solver_type(std::string solver_name)
-{
+// SOLVER_TYPE str_to_solver_type(std::string solver_name)
+// {
 
-    if (solver_name == COIN_STR)
-    {
-        return SOLVER_TYPE::COIN;
-    }
-    if (solver_name == CBC_STR)
-    {
-        return SOLVER_TYPE::CBC;
-    }
-    if (solver_name == CPLEX_STR)
-    {
-        return SOLVER_TYPE::CPLEX;
-    }
-    if (solver_name == CLP_STR)
-    {
-        return SOLVER_TYPE::CLP;
-    }
-    else
-    {
-        return SOLVER_TYPE::UNKNOWN;
-    }
-}
-std::string
-solver_to_str(SOLVER_TYPE solver)
-{
-    switch (solver)
-    {
-    case SOLVER_TYPE::COIN:
-        return COIN_STR;
-        break;
+//     if (solver_name == COIN_STR)
+//     {
+//         return SOLVER_TYPE::COIN;
+//     }
+//     if (solver_name == CBC_STR)
+//     {
+//         return SOLVER_TYPE::CBC;
+//     }
+//     if (solver_name == CPLEX_STR)
+//     {
+//         return SOLVER_TYPE::CPLEX;
+//     }
+//     if (solver_name == CLP_STR)
+//     {
+//         return SOLVER_TYPE::CLP;
+//     }
+//     else
+//     {
+//         return SOLVER_TYPE::UNKNOWN;
+//     }
+// }
+// std::string
+// solver_to_str(SOLVER_TYPE solver)
+// {
+//     switch (solver)
+//     {
+//     case SOLVER_TYPE::COIN:
+//         return COIN_STR;
+//         break;
 
-    case SOLVER_TYPE::CPLEX:
-        return CPLEX_STR;
-        break;
+//     case SOLVER_TYPE::CPLEX:
+//         return CPLEX_STR;
+//         break;
 
-    case SOLVER_TYPE::CLP:
-        return CLP_STR;
-        break;
+//     case SOLVER_TYPE::CLP:
+//         return CLP_STR;
+//         break;
 
-    case SOLVER_TYPE::CBC:
-        return CBC_STR;
-        break;
+//     case SOLVER_TYPE::CBC:
+//         return CBC_STR;
+//         break;
 
-    case SOLVER_TYPE::XPRESS:
-        return XPRESS_STR;
-        break;
+//     case SOLVER_TYPE::XPRESS:
+//         return XPRESS_STR;
+//         break;
 
-    default:
-        return UNKNOWN_STR;
-        break;
-    }
-}
+//     default:
+//         return UNKNOWN_STR;
+//         break;
+//     }
+// }
 
 /*!
  * \class class SolverFactory
