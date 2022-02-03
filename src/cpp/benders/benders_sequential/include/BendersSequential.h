@@ -8,16 +8,16 @@
  * \class BendersSequential
  * \brief Class use run the benders algorithm in sequential
  */
-class BendersSequential : public BendersBase
-{
+class BendersSequential : public BendersBase {
 public:
-	explicit BendersSequential(BendersOptions const &options, Logger &logger, Writer writer);
-	virtual ~BendersSequential() = default;
-	virtual void launch();
-	void build_cut();
-	void initialise_problems();
+  explicit BendersSequential(BendersOptions const &options, Logger &logger,
+                             Writer writer);
+  virtual ~BendersSequential() = default;
+  virtual void launch();
+  void build_cut();
+  void initialise_problems();
 
 protected:
-	virtual void free();
-	virtual void run();
+  virtual void free();
+  virtual void run();
 };

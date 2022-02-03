@@ -9,22 +9,22 @@
  *
  */
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <boost/program_options.hpp>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 #include "ActiveLinks.h"
-#include "LinkProblemsGenerator.h"
 #include "AdditionalConstraints.h"
 #include "LauncherHelpers.h"
+#include "LinkProblemsGenerator.h"
 
-#include "solver_utils.h"
+#include "Candidate.h"
 #include "CandidatesINIReader.h"
 #include "LinkProfileReader.h"
 #include "MasterProblemBuilder.h"
 #include "helpers/Path.h"
-#include "Candidate.h"
+#include "solver_utils.h"
 
 namespace po = boost::program_options;
 
@@ -35,31 +35,25 @@ namespace po = boost::program_options;
  * \param path String corresponding to a path with mistakes
  * \return The correct path
  */
-std::string get_name(std::string const &path)
-{
-	size_t last_sep(path.find(Path::mSep));
+std::string get_name(std::string const &path) {
+  size_t last_sep(path.find(Path::mSep));
 
-	if (last_sep == std::string::npos)
-	{
-		return path;
-	}
+  if (last_sep == std::string::npos) {
+    return path;
+  }
 
-	while (true)
-	{
-		size_t next_sep = path.find(Path::mSep, last_sep + 1);
-		if (next_sep == std::string::npos)
-		{
-			break;
-		}
-		else
-		{
-			last_sep = next_sep;
-		}
-	}
+  while (true) {
+    size_t next_sep = path.find(Path::mSep, last_sep + 1);
+    if (next_sep == std::string::npos) {
+      break;
+    } else {
+      last_sep = next_sep;
+    }
+  }
 
-	std::string name(path.substr(last_sep + 1));
-	name = name.substr(0, name.size() - 4);
-	return name;
+  std::string name(path.substr(last_sep + 1));
+  name = name.substr(0, name.size() - 4);
+  return name;
 }
 
 /**
@@ -68,60 +62,57 @@ std::string get_name(std::string const &path)
  *
  * \param rootPath String corresponding to the path where are located input data
  * \param links Structure which contains the list of Activelink
- * \param couplings map pairs and integer which give the correspondence between optim variable and antares variable
- * \return void
+ * \param couplings map pairs and integer which give the correspondence between
+ * optim variable and antares variable \return void
  */
-void masterGeneration(const std::string &rootPath,
-					  const std::vector<ActiveLink> &links,
-					  AdditionalConstraints additionalConstraints_p,
-					  std::map<std::pair<std::string, std::string>, int> &couplings,
-					  std::string const &master_formulation,
-					  std::string const &solver_name)
-{
-	std::vector<Candidate> candidates;
+void masterGeneration(
+    const std::string &rootPath, const std::vector<ActiveLink> &links,
+    AdditionalConstraints additionalConstraints_p,
+    std::map<std::pair<std::string, std::string>, int> &couplings,
+    std::string const &master_formulation, std::string const &solver_name) {
+  std::vector<Candidate> candidates;
 
-	for (const auto &link : links)
-	{
-		const auto &candidateFromLink = link.getCandidates();
-		candidates.insert(candidates.end(), candidateFromLink.begin(), candidateFromLink.end());
-	}
+  for (const auto &link : links) {
+    const auto &candidateFromLink = link.getCandidates();
+    candidates.insert(candidates.end(), candidateFromLink.begin(),
+                      candidateFromLink.end());
+  }
 
-	std::sort(candidates.begin(), candidates.end(),
-			  [](const Candidate &cand1, const Candidate &cand2) -> bool
-			  {
-				  return cand1.get_name() < cand2.get_name();
-			  });
+  std::sort(candidates.begin(), candidates.end(),
+            [](const Candidate &cand1, const Candidate &cand2) -> bool {
+              return cand1.get_name() < cand2.get_name();
+            });
 
-	SolverAbstract::Ptr master_l = MasterProblemBuilder(master_formulation).build(solver_name, candidates);
-	treatAdditionalConstraints(master_l, additionalConstraints_p);
+  SolverAbstract::Ptr master_l =
+      MasterProblemBuilder(master_formulation).build(solver_name, candidates);
+  treatAdditionalConstraints(master_l, additionalConstraints_p);
 
-	std::string const &lp_name = "master";
-	master_l->write_prob_mps((Path(rootPath) / "lp" / (lp_name + ".mps")).get_str());
+  std::string const &lp_name = "master";
+  master_l->write_prob_mps(
+      (Path(rootPath) / "lp" / (lp_name + ".mps")).get_str());
 
-	std::map<std::string, std::map<std::string, int>> output;
-	for (auto const &coupling : couplings)
-	{
-		output[get_name(coupling.first.second)][coupling.first.first] = coupling.second;
-	}
-	int i = 0;
-	for (auto const &candidate : candidates)
-	{
-		output["master"][candidate.get_name()] = i;
-		++i;
-	}
+  std::map<std::string, std::map<std::string, int>> output;
+  for (auto const &coupling : couplings) {
+    output[get_name(coupling.first.second)][coupling.first.first] =
+        coupling.second;
+  }
+  int i = 0;
+  for (auto const &candidate : candidates) {
+    output["master"][candidate.get_name()] = i;
+    ++i;
+  }
 
-	std::ofstream coupling_file((Path(rootPath) / "lp" / STRUCTURE_FILE).get_str().c_str());
-	for (auto const &mps : output)
-	{
-		for (auto const &pmax : mps.second)
-		{
-			coupling_file << std::setw(50) << mps.first;
-			coupling_file << std::setw(50) << pmax.first;
-			coupling_file << std::setw(10) << pmax.second;
-			coupling_file << std::endl;
-		}
-	}
-	coupling_file.close();
+  std::ofstream coupling_file(
+      (Path(rootPath) / "lp" / STRUCTURE_FILE).get_str().c_str());
+  for (auto const &mps : output) {
+    for (auto const &pmax : mps.second) {
+      coupling_file << std::setw(50) << mps.first;
+      coupling_file << std::setw(50) << pmax.first;
+      coupling_file << std::setw(10) << pmax.second;
+      coupling_file << std::endl;
+    }
+  }
+  coupling_file.close();
 }
 
 /**
@@ -129,69 +120,71 @@ void masterGeneration(const std::string &rootPath,
  * \brief Main program
  *
  * \param  argc An integer argument count of the command line arguments
- * \param  argv Path to input data which is the 1st argument vector of the command line argument.
- * \return an integer 0 corresponding to exit success
+ * \param  argv Path to input data which is the 1st argument vector of the
+ * command line argument. \return an integer 0 corresponding to exit success
  */
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
 
-	try
-	{
+  try {
 
-		std::string root;
-		std::string master_formulation;
-		std::string additionalConstraintFilename_l;
+    std::string root;
+    std::string master_formulation;
+    std::string additionalConstraintFilename_l;
 
-		po::options_description desc("Allowed options");
+    po::options_description desc("Allowed options");
 
-		desc.add_options()("help,h", "produce help message")("output,o", po::value<std::string>(&root)->required(), "antares-xpansion study output")("formulation,f", po::value<std::string>(&master_formulation)->default_value("relaxed"), "master formulation (relaxed or integer)")("exclusion-files,e", po::value<std::string>(&additionalConstraintFilename_l), "path to exclusion files");
+    desc.add_options()("help,h", "produce help message")(
+        "output,o", po::value<std::string>(&root)->required(),
+        "antares-xpansion study output")(
+        "formulation,f",
+        po::value<std::string>(&master_formulation)->default_value("relaxed"),
+        "master formulation (relaxed or integer)")(
+        "exclusion-files,e",
+        po::value<std::string>(&additionalConstraintFilename_l),
+        "path to exclusion files");
 
-		po::variables_map opts;
-		po::store(po::parse_command_line(argc, argv, desc), opts);
+    po::variables_map opts;
+    po::store(po::parse_command_line(argc, argv, desc), opts);
 
-		if (opts.count("help"))
-		{
-			std::cout << desc << std::endl;
-			return 0;
-		}
+    if (opts.count("help")) {
+      std::cout << desc << std::endl;
+      return 0;
+    }
 
-		po::notify(opts);
+    po::notify(opts);
 
-		ActiveLinksBuilder linkBuilder = get_link_builders(root);
+    ActiveLinksBuilder linkBuilder = get_link_builders(root);
 
-		if ((master_formulation != "relaxed") && (master_formulation != "integer"))
-		{
-			std::cout << "Invalid formulation argument : argument must be \"integer\" or \"relaxed\""
-					  << std::endl;
-			std::exit(1);
-		}
+    if ((master_formulation != "relaxed") &&
+        (master_formulation != "integer")) {
+      std::cout << "Invalid formulation argument : argument must be "
+                   "\"integer\" or \"relaxed\""
+                << std::endl;
+      std::exit(1);
+    }
 
-		AdditionalConstraints additionalConstraints;
-		if (!additionalConstraintFilename_l.empty())
-		{
-			additionalConstraints = AdditionalConstraints(additionalConstraintFilename_l);
-		}
+    AdditionalConstraints additionalConstraints;
+    if (!additionalConstraintFilename_l.empty()) {
+      additionalConstraints =
+          AdditionalConstraints(additionalConstraintFilename_l);
+    }
 
-		std::map<std::pair<std::string, std::string>, int> couplings;
-		std::string solver_name = "CBC";
-		std::vector<ActiveLink> links = linkBuilder.getLinks();
-		LinkProblemsGenerator linkProblemsGenerator(links, solver_name);
-		linkProblemsGenerator.treatloop(root, couplings);
+    std::map<std::pair<std::string, std::string>, int> couplings;
+    std::string solver_name = "CBC";
+    std::vector<ActiveLink> links = linkBuilder.getLinks();
+    LinkProblemsGenerator linkProblemsGenerator(links, solver_name);
+    linkProblemsGenerator.treatloop(root, couplings);
 
-		masterGeneration(root, links, additionalConstraints, couplings,
-						 master_formulation, solver_name);
+    masterGeneration(root, links, additionalConstraints, couplings,
+                     master_formulation, solver_name);
 
-		return 0;
-	}
-	catch (std::exception &e)
-	{
-		std::cerr << "error: " << e.what() << std::endl;
-		return 1;
-	}
-	catch (...)
-	{
-		std::cerr << "Exception of unknown type!" << std::endl;
-	}
+    return 0;
+  } catch (std::exception &e) {
+    std::cerr << "error: " << e.what() << std::endl;
+    return 1;
+  } catch (...) {
+    std::cerr << "Exception of unknown type!" << std::endl;
+  }
 
-	return 0;
+  return 0;
 }

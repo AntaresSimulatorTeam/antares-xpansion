@@ -1,48 +1,46 @@
 #ifndef ANTARESXPANSION_CONSOLE_H
 #define ANTARESXPANSION_CONSOLE_H
 
-#include <ostream>
 #include <fstream>
+#include <ostream>
 
 #include "core/ILogger.h"
 #include "logger/User.h"
 
-namespace xpansion
-{
-	namespace logger
-	{
+namespace xpansion {
+namespace logger {
 
-		class UserFile : public ILogger
-		{
+class UserFile : public ILogger {
 
-		public:
-			explicit UserFile(const std::string &filename);
-			~UserFile();
+public:
+  explicit UserFile(const std::string &filename);
+  ~UserFile();
 
-			void display_message(const std::string &str) override;
+  void display_message(const std::string &str) override;
 
-			void log_at_initialization(const LogData &d) override;
+  void log_at_initialization(const LogData &d) override;
 
-			void log_iteration_candidates(const LogData &d) override;
+  void log_iteration_candidates(const LogData &d) override;
 
-			void log_master_solving_duration(double durationInSeconds) override;
+  void log_master_solving_duration(double durationInSeconds) override;
 
-			void log_subproblems_solving_duration(double durationInSeconds) override;
+  void log_subproblems_solving_duration(double durationInSeconds) override;
 
-			void log_at_iteration_end(const LogData &d) override;
+  void log_at_iteration_end(const LogData &d) override;
 
-			void log_at_ending(const LogData &d) override;
+  void log_at_ending(const LogData &d) override;
 
-			void log_total_duration(double durationInSeconds) override;
+  void log_total_duration(double durationInSeconds) override;
 
-            void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) override;
+  void log_stop_criterion_reached(
+      const StoppingCriterion stopping_criterion) override;
 
-		private:
-			std::ofstream _file;
-			std::unique_ptr<User> _userLog;
-		};
+private:
+  std::ofstream _file;
+  std::unique_ptr<User> _userLog;
+};
 
-	} // namespace logger
+} // namespace logger
 } // namespace xpansion
 
 #endif // ANTARESXPANSION_CONSOLE_H

@@ -1,10 +1,10 @@
 
-#include <ProblemModifier.h>
-#include <ActiveLinks.h>
-#include <multisolver_interface/SolverFactory.h>
-#include <fstream>
-#include <solver_utils.h>
 #include "gtest/gtest.h"
+#include <ActiveLinks.h>
+#include <ProblemModifier.h>
+#include <fstream>
+#include <multisolver_interface/SolverFactory.h>
+#include <solver_utils.h>
 
 const std::string P_LINK = "p_link";
 const std::string P_PLUS = "p_plus";
@@ -13,605 +13,601 @@ const double ZERO = 0.0;
 const double PLUS_INF = 1e20;
 const double MINUS_INF = -1e20;
 
-
-class ProblemModifierTest : public ::testing::Test
-{
+class ProblemModifierTest : public ::testing::Test {
 public:
-    SolverAbstract::Ptr math_problem;
-    int n_cols=-1;
-    int n_rows=-1;
-    int n_elems=-1;
-    std::vector<char> coltypes;
-    std::vector<char> rowtypes;
-    std::vector<double> objectives;
-    std::vector<double> upper_bounds;
-    std::vector<double> lower_bounds;
-    std::vector<double> rhs;
-    std::vector<double> mat_val;
-    std::vector<int> col_indexes;
-    std::vector<int> start_indexes;
-    std::vector<std::basic_string<char>> col_names;
-
+  SolverAbstract::Ptr math_problem;
+  int n_cols = -1;
+  int n_rows = -1;
+  int n_elems = -1;
+  std::vector<char> coltypes;
+  std::vector<char> rowtypes;
+  std::vector<double> objectives;
+  std::vector<double> upper_bounds;
+  std::vector<double> lower_bounds;
+  std::vector<double> rhs;
+  std::vector<double> mat_val;
+  std::vector<int> col_indexes;
+  std::vector<int> start_indexes;
+  std::vector<std::basic_string<char>> col_names;
 
 protected:
-    void SetUp()
+  void SetUp() {
+
+    std::string solver_name = "CBC";
+    SolverFactory factory;
+    math_problem = factory.create_solver(solver_name);
+
+    // Add NTC variable column
     {
-
-        std::string solver_name = "CBC";
-        SolverFactory factory;
-        math_problem = factory.create_solver(solver_name);
-
-        //Add NTC variable column
-        {
-            std::vector<double> objectives(1, 1);
-            std::vector<double> lb(1, -1000);
-            std::vector<double> ub(1, 1000);
-            std::vector<char> coltypes(1, 'C');
-            std::vector<int> mstart(1, 0);
-            std::vector<std::string> candidates_colnames(1, P_LINK);
-            solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
-        }
-
-        //Add direct cost variable column
-        {
-            std::vector<double> objectives(1, 1);
-            std::vector<double> lb(1, 0);
-            std::vector<double> ub(1, 1);
-            std::vector<char> coltypes(1, 'C');
-            std::vector<int> mstart(1, 0);
-            std::vector<std::string> candidates_colnames( 1, P_PLUS);
-            solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
-        }
-
-        //Add indirect cost variable column
-        {
-            std::vector<double> objectives(1, 1);
-            std::vector<double> lb(1, 0);
-            std::vector<double> ub(1, 1);
-            std::vector<char> coltypes(1, 'C');
-            std::vector<int> mstart(1, 0);
-            std::vector<std::string> candidates_colnames(1, P_MINUS);
-            solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes, candidates_colnames);
-        }
+      std::vector<double> objectives(1, 1);
+      std::vector<double> lb(1, -1000);
+      std::vector<double> ub(1, 1000);
+      std::vector<char> coltypes(1, 'C');
+      std::vector<int> mstart(1, 0);
+      std::vector<std::string> candidates_colnames(1, P_LINK);
+      solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
+                     candidates_colnames);
     }
 
-    void TearDown()
+    // Add direct cost variable column
     {
-        n_cols=-1;
-        n_rows=-1;
-        n_elems=-1;
-
+      std::vector<double> objectives(1, 1);
+      std::vector<double> lb(1, 0);
+      std::vector<double> ub(1, 1);
+      std::vector<char> coltypes(1, 'C');
+      std::vector<int> mstart(1, 0);
+      std::vector<std::string> candidates_colnames(1, P_PLUS);
+      solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
+                     candidates_colnames);
     }
 
-    void update_n_cols(){
-        if(n_cols==-1){
-            n_cols = math_problem->get_ncols();
-        }
+    // Add indirect cost variable column
+    {
+      std::vector<double> objectives(1, 1);
+      std::vector<double> lb(1, 0);
+      std::vector<double> ub(1, 1);
+      std::vector<char> coltypes(1, 'C');
+      std::vector<int> mstart(1, 0);
+      std::vector<std::string> candidates_colnames(1, P_MINUS);
+      solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
+                     candidates_colnames);
     }
-    void update_n_rows(){
-        if(n_rows==-1){
-            n_rows = math_problem->get_nrows();
-        }
-    }
-    void update_n_elems(){
-        if(n_elems==-1){
-            n_elems = math_problem->get_nelems();
-        }
-    }
-    void update_col_names(){
-        update_n_cols();
-        col_names = math_problem->get_col_names(0, n_cols-1);
-    }
-    void update_col_type(){
-        update_n_cols();
-        if(coltypes.size()!= n_cols){
-            std::vector<char> buffer(n_cols, '0');
-            coltypes.insert(coltypes.begin(), buffer.begin(), buffer.end());
-            math_problem->get_col_type(coltypes.data(), 0, n_cols-1);
-        }
-    }
-    void update_row_type(){
-        update_n_rows();
-        if(rowtypes.size()!= n_rows){
-            std::vector<char> buffer(n_rows, '0');
-            rowtypes.insert(rowtypes.begin(), buffer.begin(), buffer.end());
-            math_problem->get_row_type(rowtypes.data(), 0, n_rows-1);
-        }
-    }
-    void update_objectives(){
-        update_n_cols();
-        if(objectives.size()!=n_cols){
-            std::vector<double> buffer(n_cols, -777);
-            objectives.insert(objectives.begin(), buffer.begin(), buffer.end());
-            math_problem->get_obj(objectives.data(), 0, n_cols-1);
-        }
-    }
-    void update_lower_bounds(){
-        update_n_cols();
-        if(lower_bounds.size()!=n_cols){
-            std::vector<double> buffer(n_cols, -777);
-            lower_bounds.insert(lower_bounds.begin(), buffer.begin(), buffer.end());
-            math_problem->get_lb(lower_bounds.data(), 0, n_cols-1);
-        }
-    }
-    void update_upper_bounds(){
-        update_n_cols();
-        if(upper_bounds.size()!=n_cols){
-            std::vector<double> buffer(n_cols, -777);
-            upper_bounds.insert(upper_bounds.begin(), buffer.begin(), buffer.end());
-            math_problem->get_ub(upper_bounds.data(), 0, n_cols-1);
-        }
-    }
-    void update_mat_val(){
-        update_n_rows();
-        update_n_elems();
+  }
 
-        if (mat_val.size() != n_elems){
-            std::vector<double> buffer(n_elems, -777);
-            mat_val.insert(mat_val.begin(), buffer.begin(), buffer.end());
+  void TearDown() {
+    n_cols = -1;
+    n_rows = -1;
+    n_elems = -1;
+  }
 
-            start_indexes.clear();
-            start_indexes = std::vector<int>(n_rows+1);
-            col_indexes.clear();
-            col_indexes = std::vector<int>(n_elems);
-            int n_returned(0);
-            math_problem->get_rows(start_indexes.data(), col_indexes.data(), mat_val.data(),
-                                   n_elems, &n_returned, 0, n_rows - 1);
-        }
+  void update_n_cols() {
+    if (n_cols == -1) {
+      n_cols = math_problem->get_ncols();
     }
+  }
+  void update_n_rows() {
+    if (n_rows == -1) {
+      n_rows = math_problem->get_nrows();
+    }
+  }
+  void update_n_elems() {
+    if (n_elems == -1) {
+      n_elems = math_problem->get_nelems();
+    }
+  }
+  void update_col_names() {
+    update_n_cols();
+    col_names = math_problem->get_col_names(0, n_cols - 1);
+  }
+  void update_col_type() {
+    update_n_cols();
+    if (coltypes.size() != n_cols) {
+      std::vector<char> buffer(n_cols, '0');
+      coltypes.insert(coltypes.begin(), buffer.begin(), buffer.end());
+      math_problem->get_col_type(coltypes.data(), 0, n_cols - 1);
+    }
+  }
+  void update_row_type() {
+    update_n_rows();
+    if (rowtypes.size() != n_rows) {
+      std::vector<char> buffer(n_rows, '0');
+      rowtypes.insert(rowtypes.begin(), buffer.begin(), buffer.end());
+      math_problem->get_row_type(rowtypes.data(), 0, n_rows - 1);
+    }
+  }
+  void update_objectives() {
+    update_n_cols();
+    if (objectives.size() != n_cols) {
+      std::vector<double> buffer(n_cols, -777);
+      objectives.insert(objectives.begin(), buffer.begin(), buffer.end());
+      math_problem->get_obj(objectives.data(), 0, n_cols - 1);
+    }
+  }
+  void update_lower_bounds() {
+    update_n_cols();
+    if (lower_bounds.size() != n_cols) {
+      std::vector<double> buffer(n_cols, -777);
+      lower_bounds.insert(lower_bounds.begin(), buffer.begin(), buffer.end());
+      math_problem->get_lb(lower_bounds.data(), 0, n_cols - 1);
+    }
+  }
+  void update_upper_bounds() {
+    update_n_cols();
+    if (upper_bounds.size() != n_cols) {
+      std::vector<double> buffer(n_cols, -777);
+      upper_bounds.insert(upper_bounds.begin(), buffer.begin(), buffer.end());
+      math_problem->get_ub(upper_bounds.data(), 0, n_cols - 1);
+    }
+  }
+  void update_mat_val() {
+    update_n_rows();
+    update_n_elems();
 
-    std::vector<double> getRowCoefficients(int index_row){
-        update_mat_val();
-        std::vector<double> row;
-        row.insert(row.begin(), mat_val.begin() + start_indexes.at(index_row), mat_val.begin() + start_indexes.at(index_row+1));
-        return row;
-    }
+    if (mat_val.size() != n_elems) {
+      std::vector<double> buffer(n_elems, -777);
+      mat_val.insert(mat_val.begin(), buffer.begin(), buffer.end());
 
-    std::vector<int> getRowColIndexes(int index_row){
-        update_mat_val();
-        std::vector<int> index;
-        index.insert(index.begin(), col_indexes.begin() + start_indexes.at(index_row), col_indexes.begin() + start_indexes.at(index_row+1));
-        return index;
+      start_indexes.clear();
+      start_indexes = std::vector<int>(n_rows + 1);
+      col_indexes.clear();
+      col_indexes = std::vector<int>(n_elems);
+      int n_returned(0);
+      math_problem->get_rows(start_indexes.data(), col_indexes.data(),
+                             mat_val.data(), n_elems, &n_returned, 0,
+                             n_rows - 1);
     }
+  }
 
-    void update_rhs_val(){
-        update_n_rows();
-        if (rhs.size() != n_rows){
-            std::vector<double> buffer(n_rows, -777);
-            rhs.insert(rhs.begin(), buffer.begin(), buffer.end());
-            math_problem->get_rhs(rhs.data(),0, n_rows - 1);
-        }
+  std::vector<double> getRowCoefficients(int index_row) {
+    update_mat_val();
+    std::vector<double> row;
+    row.insert(row.begin(), mat_val.begin() + start_indexes.at(index_row),
+               mat_val.begin() + start_indexes.at(index_row + 1));
+    return row;
+  }
+
+  std::vector<int> getRowColIndexes(int index_row) {
+    update_mat_val();
+    std::vector<int> index;
+    index.insert(index.begin(),
+                 col_indexes.begin() + start_indexes.at(index_row),
+                 col_indexes.begin() + start_indexes.at(index_row + 1));
+    return index;
+  }
+
+  void update_rhs_val() {
+    update_n_rows();
+    if (rhs.size() != n_rows) {
+      std::vector<double> buffer(n_rows, -777);
+      rhs.insert(rhs.begin(), buffer.begin(), buffer.end());
+      math_problem->get_rhs(rhs.data(), 0, n_rows - 1);
     }
-    void verify_columns_are(const int expected_n_cols){
-        update_n_cols();
-        ASSERT_EQ(n_cols, expected_n_cols);
-    }
-    void verify_rows_are(const int expected_n_rows){
-        update_n_rows();
-        ASSERT_EQ(n_rows, expected_n_rows);
-    }
-    void verify_column_name_is(const int col_id, std::basic_string<char> name){
-        update_col_names();
-        ASSERT_EQ(col_names.at(col_id), name);
-    }
-    void verify_column_is_of_type(const int col_id, char type){
-        update_col_type();
-        ASSERT_EQ(coltypes.at(col_id), type);
-    }
-    void verify_column_objective_is(const int col_id, double obj_value){
-        update_objectives();
-        ASSERT_DOUBLE_EQ(objectives.at(col_id), obj_value);
-    }
-    void verify_column_lower_bound_is(const int col_id, double lower_value){
-        update_lower_bounds();
-        ASSERT_DOUBLE_EQ(lower_bounds.at(col_id), lower_value);
-    }
-    void verify_column_upper_bound_is(const int col_id, double upper_value){
-        update_upper_bounds();
-        ASSERT_DOUBLE_EQ(upper_bounds.at(col_id), upper_value);
-    }
-    void verify_row_is_of_type(const int row_id, char type){
-        update_row_type();
-        ASSERT_EQ(rowtypes.at(row_id), type);
-    }
-    void verify_rhs_is(const int rhs_id, double rhs_value){
-        update_rhs_val();
-        ASSERT_DOUBLE_EQ(rhs.at(rhs_id), rhs_value);
-    }
-    void verify_column(const int col_id, std::basic_string<char> name, char type,double obj_value,double lower_value,double upper_value ){
-        verify_column_name_is(col_id, name);
-        verify_column_is_of_type(col_id, type);
-        verify_column_objective_is(col_id, obj_value);
-        verify_column_lower_bound_is(col_id, lower_value);
-        verify_column_upper_bound_is(col_id, upper_value);
-    }
-    void verify_row(int row, char type, const std::vector<double>& coeff,const std::vector<int>& col_indexes, double rhs){
-        verify_row_is_of_type(row, type);
-        ASSERT_EQ(getRowCoefficients(row), coeff);
-        ASSERT_EQ(getRowColIndexes(row), col_indexes);
-        verify_rhs_is(row, rhs);
-    }
+  }
+  void verify_columns_are(const int expected_n_cols) {
+    update_n_cols();
+    ASSERT_EQ(n_cols, expected_n_cols);
+  }
+  void verify_rows_are(const int expected_n_rows) {
+    update_n_rows();
+    ASSERT_EQ(n_rows, expected_n_rows);
+  }
+  void verify_column_name_is(const int col_id, std::basic_string<char> name) {
+    update_col_names();
+    ASSERT_EQ(col_names.at(col_id), name);
+  }
+  void verify_column_is_of_type(const int col_id, char type) {
+    update_col_type();
+    ASSERT_EQ(coltypes.at(col_id), type);
+  }
+  void verify_column_objective_is(const int col_id, double obj_value) {
+    update_objectives();
+    ASSERT_DOUBLE_EQ(objectives.at(col_id), obj_value);
+  }
+  void verify_column_lower_bound_is(const int col_id, double lower_value) {
+    update_lower_bounds();
+    ASSERT_DOUBLE_EQ(lower_bounds.at(col_id), lower_value);
+  }
+  void verify_column_upper_bound_is(const int col_id, double upper_value) {
+    update_upper_bounds();
+    ASSERT_DOUBLE_EQ(upper_bounds.at(col_id), upper_value);
+  }
+  void verify_row_is_of_type(const int row_id, char type) {
+    update_row_type();
+    ASSERT_EQ(rowtypes.at(row_id), type);
+  }
+  void verify_rhs_is(const int rhs_id, double rhs_value) {
+    update_rhs_val();
+    ASSERT_DOUBLE_EQ(rhs.at(rhs_id), rhs_value);
+  }
+  void verify_column(const int col_id, std::basic_string<char> name, char type,
+                     double obj_value, double lower_value, double upper_value) {
+    verify_column_name_is(col_id, name);
+    verify_column_is_of_type(col_id, type);
+    verify_column_objective_is(col_id, obj_value);
+    verify_column_lower_bound_is(col_id, lower_value);
+    verify_column_upper_bound_is(col_id, upper_value);
+  }
+  void verify_row(int row, char type, const std::vector<double> &coeff,
+                  const std::vector<int> &col_indexes, double rhs) {
+    verify_row_is_of_type(row, type);
+    ASSERT_EQ(getRowCoefficients(row), coeff);
+    ASSERT_EQ(getRowColIndexes(row), col_indexes);
+    verify_rhs_is(row, rhs);
+  }
 };
 
-TEST_F(ProblemModifierTest, empty_test_the_multisolver_interface)
-{
-    verify_columns_are(3);
-    verify_rows_are(0);
+TEST_F(ProblemModifierTest, empty_test_the_multisolver_interface) {
+  verify_columns_are(3);
+  verify_rows_are(0);
 
-    verify_column(0,P_LINK,'C',1,-1000,1000);
-    verify_column(1,P_PLUS,'C',1,0,1);
-    verify_column(2,P_MINUS,'C',1,0,1);
+  verify_column(0, P_LINK, 'C', 1, -1000, 1000);
+  verify_column(1, P_PLUS, 'C', 1, 0, 1);
+  verify_column(2, P_MINUS, 'C', 1, 0, 1);
 }
 
+TEST_F(ProblemModifierTest,
+       One_link_no_candidates_link_boundaries_are_removed) {
+  const int link_id = 0;
+  const std::map<linkId, ColumnsToChange> p_var_columns = {{link_id, {{0, 0}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{{1, 0}}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{{2, 0}}}}};
+  const std::vector<ActiveLink> active_links = {
+      ActiveLink(link_id, "dummy_link", "from", "to", 0)};
 
-TEST_F(ProblemModifierTest, One_link_no_candidates_link_boundaries_are_removed) {
-    const int link_id = 0;
-    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{{0, 0}}}};
-    const std::map<linkId , ColumnsToChange> p_direct_cost_columns= {{link_id,{{{1, 0}}}}};
-    const std::map<linkId , ColumnsToChange> p_indirect_cost_columns= {{link_id,{{{2, 0}}}}};
-    const std::vector<ActiveLink> active_links= {ActiveLink(link_id, "dummy_link", "from", "to", 0)};
+  auto problem_modifier = ProblemModifier();
+  math_problem = problem_modifier.changeProblem(
+      std::move(math_problem), active_links, p_var_columns,
+      p_direct_cost_columns, p_indirect_cost_columns);
 
-    auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), active_links, p_var_columns,p_direct_cost_columns,p_indirect_cost_columns);
+  verify_columns_are(3);
 
-    verify_columns_are(3);
+  verify_column(0, P_LINK, 'C', 1, MINUS_INF, PLUS_INF);
+  verify_column(1, P_PLUS, 'C', 1, ZERO, PLUS_INF);
+  verify_column(2, P_MINUS, 'C', 1, ZERO, PLUS_INF);
 
-    verify_column(0,P_LINK,'C',1,MINUS_INF, PLUS_INF);
-    verify_column(1,P_PLUS,'C',1,ZERO, PLUS_INF);
-    verify_column(2,P_MINUS,'C',1,ZERO, PLUS_INF);
-
-    try {
-        problem_modifier.get_candidate_col_id("invalid_cand_name");
-        FAIL();
-    }
-    catch(const std::runtime_error& expected) {
-        ASSERT_STREQ(expected.what(), "Candidate 'invalid_cand_name' not added in problem");
-    }
+  try {
+    problem_modifier.get_candidate_col_id("invalid_cand_name");
+    FAIL();
+  } catch (const std::runtime_error &expected) {
+    ASSERT_STREQ(expected.what(),
+                 "Candidate 'invalid_cand_name' not added in problem");
+  }
 }
-
 
 TEST_F(ProblemModifierTest, One_link_two_candidates) {
-    const int link_id = 0;
-    std::vector<int> time_steps = {0};
-    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{{0, 0}}}};
-    const std::map<linkId , ColumnsToChange> p_direct_cost_columns= {{link_id,{{1, 0}}}};
-    const std::map<linkId , ColumnsToChange> p_indirect_cost_columns= {{link_id,{{2, 0}}}};
+  const int link_id = 0;
+  std::vector<int> time_steps = {0};
+  const std::map<linkId, ColumnsToChange> p_var_columns = {{link_id, {{0, 0}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{1, 0}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{2, 0}}}};
 
-    const double link_capacity = 1000.0;
-    CandidateData cand1;
-    cand1.link_id = link_id;
-    cand1.name = "candy1";
-    cand1.link_name = "dummy_link";
-    cand1.already_installed_capacity = link_capacity;
-    CandidateData cand2;
-    cand2.link_id = link_id;
-    cand2.name = "candy2";
-    cand2.link_name = "dummy_link";
-    cand2.already_installed_capacity = link_capacity;
+  const double link_capacity = 1000.0;
+  CandidateData cand1;
+  cand1.link_id = link_id;
+  cand1.name = "candy1";
+  cand1.link_name = "dummy_link";
+  cand1.already_installed_capacity = link_capacity;
+  CandidateData cand2;
+  cand2.link_id = link_id;
+  cand2.name = "candy2";
+  cand2.link_name = "dummy_link";
+  cand2.already_installed_capacity = link_capacity;
 
-    std::vector<CandidateData> cand_data_list = { cand1, cand2 };
-    std::map<std::string, LinkProfile> profile_map;
+  std::vector<CandidateData> cand_data_list = {cand1, cand2};
+  std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
-    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  const std::vector<ActiveLink> &links = linkBuilder.getLinks();
 
-    auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_direct_cost_columns,p_indirect_cost_columns);
+  auto problem_modifier = ProblemModifier();
+  math_problem = problem_modifier.changeProblem(
+      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
 
-    verify_columns_are(5);
+  verify_columns_are(5);
 
-    const int P_LINK_id  = 0;
-    const int P_PLUS_id = 1;
-    const int P_MINUS_id = 2;
-    const int cand1_id= 3;
-    const int cand2_id= 4;
+  const int P_LINK_id = 0;
+  const int P_PLUS_id = 1;
+  const int P_MINUS_id = 2;
+  const int cand1_id = 3;
+  const int cand2_id = 4;
 
-    verify_column(P_LINK_id,P_LINK,'C',1,MINUS_INF,PLUS_INF);
-    verify_column(P_PLUS_id,P_PLUS,'C',1,0,PLUS_INF);
-    verify_column(P_MINUS_id,P_MINUS,'C',1,0,PLUS_INF);
-    verify_column(cand1_id,cand1.name,'C',0,MINUS_INF,PLUS_INF);
-    verify_column(cand2_id,cand2.name,'C',0,MINUS_INF,PLUS_INF);
+  verify_column(P_LINK_id, P_LINK, 'C', 1, MINUS_INF, PLUS_INF);
+  verify_column(P_PLUS_id, P_PLUS, 'C', 1, 0, PLUS_INF);
+  verify_column(P_MINUS_id, P_MINUS, 'C', 1, 0, PLUS_INF);
+  verify_column(cand1_id, cand1.name, 'C', 0, MINUS_INF, PLUS_INF);
+  verify_column(cand2_id, cand2.name, 'C', 0, MINUS_INF, PLUS_INF);
 
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , cand1_id);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , cand2_id);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name), cand1_id);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name), cand2_id);
 
-    verify_rows_are(4);
-    verify_row(0, 'L',
-               {1,-1,-1},
-               {P_LINK_id,cand1_id,cand2_id},
-               link_capacity);
-    verify_row(1 , 'G',
-               {1,1,1},
-               {P_LINK_id,cand1_id,cand2_id},
-               -link_capacity);
-    verify_row(2, 'L',
-               {1,-1,-1},
-               {P_PLUS_id,cand1_id,cand2_id},
-               link_capacity);
-    verify_row(3, 'L',
-               {1,-1,-1},
-               {P_MINUS_id,cand1_id,cand2_id},
-               link_capacity);
+  verify_rows_are(4);
+  verify_row(0, 'L', {1, -1, -1}, {P_LINK_id, cand1_id, cand2_id},
+             link_capacity);
+  verify_row(1, 'G', {1, 1, 1}, {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity);
+  verify_row(2, 'L', {1, -1, -1}, {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity);
+  verify_row(3, 'L', {1, -1, -1}, {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity);
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_no_profile) {
-    const int link_id = 0;
-    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{{0, 0},{0, 1}}}};
-    const std::map<linkId , ColumnsToChange> p_direct_cost_columns= {{link_id,{{1, 0},{1, 1}}}};
-    const std::map<linkId , ColumnsToChange> p_indirect_cost_columns= {{link_id,{{{2, 0},{2, 1}}}}};
+  const int link_id = 0;
+  const std::map<linkId, ColumnsToChange> p_var_columns = {
+      {link_id, {{0, 0}, {0, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{1, 0}, {1, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{{2, 0}, {2, 1}}}}};
 
-    const double link_capacity = 1000.0;
-    CandidateData cand1;
-    cand1.link_id = link_id;
-    cand1.name = "candy1";
-    cand1.link_name = "dummy_link";
-    cand1.already_installed_capacity = link_capacity;
-    CandidateData cand2;
-    cand2.link_id = link_id;
-    cand2.name = "candy2";
-    cand2.link_name = "dummy_link";
-    cand2.already_installed_capacity = link_capacity;
+  const double link_capacity = 1000.0;
+  CandidateData cand1;
+  cand1.link_id = link_id;
+  cand1.name = "candy1";
+  cand1.link_name = "dummy_link";
+  cand1.already_installed_capacity = link_capacity;
+  CandidateData cand2;
+  cand2.link_id = link_id;
+  cand2.name = "candy2";
+  cand2.link_name = "dummy_link";
+  cand2.already_installed_capacity = link_capacity;
 
-    std::vector<CandidateData> cand_data_list = { cand1, cand2 };
-    std::map<std::string, LinkProfile> profile_map;
+  std::vector<CandidateData> cand_data_list = {cand1, cand2};
+  std::map<std::string, LinkProfile> profile_map;
 
-    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
-    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  const std::vector<ActiveLink> &links = linkBuilder.getLinks();
 
-    auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_direct_cost_columns,p_indirect_cost_columns);
-    verify_columns_are(5);
+  auto problem_modifier = ProblemModifier();
+  math_problem = problem_modifier.changeProblem(
+      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+  verify_columns_are(5);
 
-    const int P_LINK_id  = 0;
-    const int P_PLUS_id = 1;
-    const int P_MINUS_id = 2;
-    const int cand1_id= 3;
-    const int cand2_id= 4;
+  const int P_LINK_id = 0;
+  const int P_PLUS_id = 1;
+  const int P_MINUS_id = 2;
+  const int cand1_id = 3;
+  const int cand2_id = 4;
 
-    verify_column(P_LINK_id,P_LINK,'C',1,MINUS_INF,PLUS_INF);
-    verify_column(P_PLUS_id,P_PLUS,'C',1,0,PLUS_INF);
-    verify_column(P_MINUS_id,P_MINUS,'C',1,0,PLUS_INF);
-    verify_column(cand1_id,cand1.name,'C',0,MINUS_INF,PLUS_INF);
-    verify_column(cand2_id,cand2.name,'C',0,MINUS_INF,PLUS_INF);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , cand1_id);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , cand2_id);
+  verify_column(P_LINK_id, P_LINK, 'C', 1, MINUS_INF, PLUS_INF);
+  verify_column(P_PLUS_id, P_PLUS, 'C', 1, 0, PLUS_INF);
+  verify_column(P_MINUS_id, P_MINUS, 'C', 1, 0, PLUS_INF);
+  verify_column(cand1_id, cand1.name, 'C', 0, MINUS_INF, PLUS_INF);
+  verify_column(cand2_id, cand2.name, 'C', 0, MINUS_INF, PLUS_INF);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name), cand1_id);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name), cand2_id);
 
-    verify_rows_are(8);
+  verify_rows_are(8);
 
-    verify_row(0, 'L',
-               {1,-1,-1},
-               {P_LINK_id,cand1_id,cand2_id},
-               link_capacity);
-    verify_row(1 , 'G',
-               {1,1,1},
-               {P_LINK_id,cand1_id,cand2_id},
-               -link_capacity);
-    verify_row(2, 'L',
-               {1,-1,-1},
-               {P_LINK_id,cand1_id,cand2_id},
-               link_capacity);
-    verify_row(3 , 'G',
-               {1,1,1},
-               {P_LINK_id,cand1_id,cand2_id},
-               -link_capacity);
-    verify_row(4, 'L',
-               {1,-1,-1},
-               {P_PLUS_id,cand1_id,cand2_id},
-               link_capacity);
-    verify_row(5, 'L',
-               {1,-1,-1},
-               {P_PLUS_id,cand1_id,cand2_id},
-               link_capacity);
-    verify_row(6, 'L',
-               {1,-1,-1},
-               {P_MINUS_id,cand1_id,cand2_id},
-               link_capacity);
-    verify_row(7, 'L',
-               {1,-1,-1},
-               {P_MINUS_id,cand1_id,cand2_id},
-               link_capacity);
-
+  verify_row(0, 'L', {1, -1, -1}, {P_LINK_id, cand1_id, cand2_id},
+             link_capacity);
+  verify_row(1, 'G', {1, 1, 1}, {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity);
+  verify_row(2, 'L', {1, -1, -1}, {P_LINK_id, cand1_id, cand2_id},
+             link_capacity);
+  verify_row(3, 'G', {1, 1, 1}, {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity);
+  verify_row(4, 'L', {1, -1, -1}, {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity);
+  verify_row(5, 'L', {1, -1, -1}, {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity);
+  verify_row(6, 'L', {1, -1, -1}, {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity);
+  verify_row(7, 'L', {1, -1, -1}, {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity);
 }
 
 TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
-    const int link_id = 0;
-    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{{0, 0},{0, 1}}}};
-    const std::map<linkId , ColumnsToChange> p_direct_cost_columns= {{link_id,{{1, 0},{1, 1}}}};
-    const std::map<linkId , ColumnsToChange> p_indirect_cost_columns= {{link_id,{{{2, 0},{2, 1}}}}};
+  const int link_id = 0;
+  const std::map<linkId, ColumnsToChange> p_var_columns = {
+      {link_id, {{0, 0}, {0, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{1, 0}, {1, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{{2, 0}, {2, 1}}}}};
 
-    const double link_capacity = 2000.0;
-    CandidateData cand1;
-    cand1.link_id = link_id;
-    cand1.name = "candy1";
-    cand1.link_name = "dummy_link";
-    cand1.already_installed_capacity = link_capacity;
-    cand1.installed_link_profile_name = "install_link_profile";
-    cand1.link_profile = "profile_cand1";
-    CandidateData cand2;
-    cand2.link_id = link_id;
-    cand2.name = "candy2";
-    cand2.link_name = "dummy_link";
-    cand2.already_installed_capacity = link_capacity;
-    cand2.installed_link_profile_name = "install_link_profile";
-    cand2.link_profile = "profile_cand2";
+  const double link_capacity = 2000.0;
+  CandidateData cand1;
+  cand1.link_id = link_id;
+  cand1.name = "candy1";
+  cand1.link_name = "dummy_link";
+  cand1.already_installed_capacity = link_capacity;
+  cand1.installed_link_profile_name = "install_link_profile";
+  cand1.link_profile = "profile_cand1";
+  CandidateData cand2;
+  cand2.link_id = link_id;
+  cand2.name = "candy2";
+  cand2.link_name = "dummy_link";
+  cand2.already_installed_capacity = link_capacity;
+  cand2.installed_link_profile_name = "install_link_profile";
+  cand2.link_profile = "profile_cand2";
 
-    std::vector<CandidateData> cand_data_list = { cand1, cand2 };
-    std::map<std::string, LinkProfile> profile_map;
-    LinkProfile profile_link;
-    profile_link._directLinkProfile = {1,2};
-    profile_link._indirectLinkProfile = {3,4};
-    profile_map["install_link_profile"]=profile_link;
-    LinkProfile profile_cand1;
-    profile_cand1._directLinkProfile = {0.5, 1};
-    profile_cand1._indirectLinkProfile = {0.8, 1.2};
-    profile_map["profile_cand1"]=profile_cand1;
-    LinkProfile profile_cand2;
-    profile_cand2._directLinkProfile = {1.5, 1.7};
-    profile_cand2._indirectLinkProfile = {2.6, 2.8};
-    profile_map["profile_cand2"]=profile_cand2;
+  std::vector<CandidateData> cand_data_list = {cand1, cand2};
+  std::map<std::string, LinkProfile> profile_map;
+  LinkProfile profile_link;
+  profile_link._directLinkProfile = {1, 2};
+  profile_link._indirectLinkProfile = {3, 4};
+  profile_map["install_link_profile"] = profile_link;
+  LinkProfile profile_cand1;
+  profile_cand1._directLinkProfile = {0.5, 1};
+  profile_cand1._indirectLinkProfile = {0.8, 1.2};
+  profile_map["profile_cand1"] = profile_cand1;
+  LinkProfile profile_cand2;
+  profile_cand2._directLinkProfile = {1.5, 1.7};
+  profile_cand2._indirectLinkProfile = {2.6, 2.8};
+  profile_map["profile_cand2"] = profile_cand2;
 
-    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
-    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  const std::vector<ActiveLink> &links = linkBuilder.getLinks();
 
-    auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_direct_cost_columns,p_indirect_cost_columns);
+  auto problem_modifier = ProblemModifier();
+  math_problem = problem_modifier.changeProblem(
+      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
 
-    const int P_LINK_id = 0;
-    const int P_PLUS_id = 1;
-    const int P_MINUS_id = 2;
-    const int cand1_id = 3;
-    const int cand2_id = 4;
+  const int P_LINK_id = 0;
+  const int P_PLUS_id = 1;
+  const int P_MINUS_id = 2;
+  const int cand1_id = 3;
+  const int cand2_id = 4;
 
-    verify_column(P_LINK_id,P_LINK,'C',1,MINUS_INF,PLUS_INF);
-    verify_column(P_PLUS_id,P_PLUS,'C',1,0,PLUS_INF);
-    verify_column(P_MINUS_id,P_MINUS,'C',1,0,PLUS_INF);
-    verify_column(cand1_id,cand1.name,'C',0,MINUS_INF,PLUS_INF);
-    verify_column(cand2_id,cand2.name,'C',0,MINUS_INF,PLUS_INF);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , cand1_id);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name) , cand2_id);
+  verify_column(P_LINK_id, P_LINK, 'C', 1, MINUS_INF, PLUS_INF);
+  verify_column(P_PLUS_id, P_PLUS, 'C', 1, 0, PLUS_INF);
+  verify_column(P_MINUS_id, P_MINUS, 'C', 1, 0, PLUS_INF);
+  verify_column(cand1_id, cand1.name, 'C', 0, MINUS_INF, PLUS_INF);
+  verify_column(cand2_id, cand2.name, 'C', 0, MINUS_INF, PLUS_INF);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name), cand1_id);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name), cand2_id);
 
-    verify_rows_are(8);
+  verify_rows_are(8);
 
-    verify_row(0,'L',
-               {1,-profile_cand1.getDirectProfile(0),-profile_cand2.getDirectProfile(0)},
-               {P_LINK_id,cand1_id,cand2_id},
-               link_capacity * profile_link.getDirectProfile(0));
+  verify_row(0, 'L',
+             {1, -profile_cand1.getDirectProfile(0),
+              -profile_cand2.getDirectProfile(0)},
+             {P_LINK_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(0));
 
-    verify_row(1 , 'G',
-               {1,profile_cand1.getIndirectProfile(0),profile_cand2.getIndirectProfile(0)},
-               {P_LINK_id,cand1_id,cand2_id},
-               -link_capacity * profile_link.getIndirectProfile(0));
+  verify_row(1, 'G',
+             {1, profile_cand1.getIndirectProfile(0),
+              profile_cand2.getIndirectProfile(0)},
+             {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity * profile_link.getIndirectProfile(0));
 
-    verify_row(2,'L',
-               {1,-profile_cand1.getDirectProfile(1),-profile_cand2.getDirectProfile(1)},
-               {P_LINK_id,cand1_id,cand2_id},
-               link_capacity * profile_link.getDirectProfile(1));
+  verify_row(2, 'L',
+             {1, -profile_cand1.getDirectProfile(1),
+              -profile_cand2.getDirectProfile(1)},
+             {P_LINK_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(1));
 
-    verify_row(3 , 'G',
-               {1,profile_cand1.getIndirectProfile(1),profile_cand2.getIndirectProfile(1)},
-               {P_LINK_id,cand1_id,cand2_id},
-               -link_capacity * profile_link.getIndirectProfile(1));
+  verify_row(3, 'G',
+             {1, profile_cand1.getIndirectProfile(1),
+              profile_cand2.getIndirectProfile(1)},
+             {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity * profile_link.getIndirectProfile(1));
 
-    verify_row(4, 'L',
-               {1,-profile_cand1.getDirectProfile(0),-profile_cand2.getDirectProfile(0)},
-               {P_PLUS_id,cand1_id,cand2_id},
-               link_capacity* profile_link.getDirectProfile(0));
+  verify_row(4, 'L',
+             {1, -profile_cand1.getDirectProfile(0),
+              -profile_cand2.getDirectProfile(0)},
+             {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(0));
 
-    verify_row(5, 'L',
-               {1,-profile_cand1.getDirectProfile(1),-profile_cand2.getDirectProfile(1)},
-               {P_PLUS_id,cand1_id,cand2_id},
-               link_capacity* profile_link.getDirectProfile(1));
+  verify_row(5, 'L',
+             {1, -profile_cand1.getDirectProfile(1),
+              -profile_cand2.getDirectProfile(1)},
+             {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(1));
 
-    verify_row(6, 'L',
-               {1,-profile_cand1.getIndirectProfile(0),-profile_cand2.getIndirectProfile(0)},
-               {P_MINUS_id,cand1_id,cand2_id},
-               link_capacity* profile_link.getIndirectProfile(0));
+  verify_row(6, 'L',
+             {1, -profile_cand1.getIndirectProfile(0),
+              -profile_cand2.getIndirectProfile(0)},
+             {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getIndirectProfile(0));
 
-    verify_row(7, 'L',
-               {1,-profile_cand1.getIndirectProfile(1),-profile_cand2.getIndirectProfile(1)},
-               {P_MINUS_id,cand1_id,cand2_id},
-               link_capacity* profile_link.getIndirectProfile(1));
-
+  verify_row(7, 'L',
+             {1, -profile_cand1.getIndirectProfile(1),
+              -profile_cand2.getIndirectProfile(1)},
+             {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getIndirectProfile(1));
 }
 
+TEST_F(ProblemModifierTest,
+       One_link_two_candidates_one_candidate_with_empty_profile) {
+  const int link_id = 0;
+  const std::map<linkId, ColumnsToChange> p_var_columns = {
+      {link_id, {{0, 0}, {0, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{1, 0}, {1, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{{2, 0}, {2, 1}}}}};
 
-TEST_F(ProblemModifierTest, One_link_two_candidates_one_candidate_with_empty_profile) {
-    const int link_id = 0;
-    const std::map<linkId , ColumnsToChange> p_var_columns = {{link_id,{{0, 0},{0, 1}}}};
-    const std::map<linkId , ColumnsToChange> p_direct_cost_columns= {{link_id,{{1, 0},{1, 1}}}};
-    const std::map<linkId , ColumnsToChange> p_indirect_cost_columns= {{link_id,{{{2, 0},{2, 1}}}}};
+  const double link_capacity = 2000.0;
+  CandidateData cand1;
+  cand1.link_id = link_id;
+  cand1.name = "candy1";
+  cand1.link_name = "dummy_link";
+  cand1.already_installed_capacity = link_capacity;
+  cand1.installed_link_profile_name = "install_link_profile";
+  cand1.link_profile = "profile_cand1";
+  CandidateData cand2;
+  cand2.link_id = link_id;
+  cand2.name = "candy2";
+  cand2.link_name = "dummy_link";
+  cand2.already_installed_capacity = link_capacity;
+  cand2.installed_link_profile_name = "install_link_profile";
+  cand2.link_profile = "empty_profile";
 
-    const double link_capacity = 2000.0;
-    CandidateData cand1;
-    cand1.link_id = link_id;
-    cand1.name = "candy1";
-    cand1.link_name = "dummy_link";
-    cand1.already_installed_capacity = link_capacity;
-    cand1.installed_link_profile_name = "install_link_profile";
-    cand1.link_profile = "profile_cand1";
-    CandidateData cand2;
-    cand2.link_id = link_id;
-    cand2.name = "candy2";
-    cand2.link_name = "dummy_link";
-    cand2.already_installed_capacity = link_capacity;
-    cand2.installed_link_profile_name = "install_link_profile";
-    cand2.link_profile = "empty_profile";
+  std::vector<CandidateData> cand_data_list = {cand1, cand2};
+  std::map<std::string, LinkProfile> profile_map;
+  LinkProfile profile_link;
+  profile_link._directLinkProfile = {1, 2};
+  profile_link._indirectLinkProfile = {3, 4};
+  profile_map["install_link_profile"] = profile_link;
+  LinkProfile profile_cand1;
+  profile_cand1._directLinkProfile = {0.5, 1};
+  profile_cand1._indirectLinkProfile = {0.8, 1.2};
+  profile_map["profile_cand1"] = profile_cand1;
+  LinkProfile empty_profile;
+  empty_profile._directLinkProfile = {0.0, 0.0};
+  empty_profile._indirectLinkProfile = {0.0, 0.0};
+  profile_map["empty_profile"] = empty_profile;
 
-    std::vector<CandidateData> cand_data_list = { cand1, cand2 };
-    std::map<std::string, LinkProfile> profile_map;
-    LinkProfile profile_link;
-    profile_link._directLinkProfile = {1,2};
-    profile_link._indirectLinkProfile = {3,4};
-    profile_map["install_link_profile"]=profile_link;
-    LinkProfile profile_cand1;
-    profile_cand1._directLinkProfile = {0.5, 1};
-    profile_cand1._indirectLinkProfile = {0.8, 1.2};
-    profile_map["profile_cand1"]=profile_cand1;
-    LinkProfile empty_profile;
-    empty_profile._directLinkProfile = {0.0, 0.0};
-    empty_profile._indirectLinkProfile = {0.0, 0.0};
-    profile_map["empty_profile"]=empty_profile;
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  const std::vector<ActiveLink> &links = linkBuilder.getLinks();
 
-    ActiveLinksBuilder linkBuilder{ cand_data_list, profile_map };
-    const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+  auto problem_modifier = ProblemModifier();
+  math_problem = problem_modifier.changeProblem(
+      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
 
-    auto problem_modifier = ProblemModifier();
-    math_problem = problem_modifier.changeProblem(std::move(math_problem), links, p_var_columns,p_direct_cost_columns,p_indirect_cost_columns);
+  const int P_LINK_id = 0;
+  const int P_PLUS_id = 1;
+  const int P_MINUS_id = 2;
+  const int cand1_id = 3;
 
-    const int P_LINK_id = 0;
-    const int P_PLUS_id = 1;
-    const int P_MINUS_id = 2;
-    const int cand1_id = 3;
+  verify_column(P_LINK_id, P_LINK, 'C', 1, MINUS_INF, PLUS_INF);
+  verify_column(P_PLUS_id, P_PLUS, 'C', 1, 0, PLUS_INF);
+  verify_column(P_MINUS_id, P_MINUS, 'C', 1, 0, PLUS_INF);
+  verify_column(cand1_id, cand1.name, 'C', 0, MINUS_INF, PLUS_INF);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name), cand1_id);
+  EXPECT_FALSE(problem_modifier.has_candidate_col_id(cand2.name));
 
-    verify_column(P_LINK_id,P_LINK,'C',1,MINUS_INF,PLUS_INF);
-    verify_column(P_PLUS_id,P_PLUS,'C',1,0,PLUS_INF);
-    verify_column(P_MINUS_id,P_MINUS,'C',1,0,PLUS_INF);
-    verify_column(cand1_id,cand1.name,'C',0,MINUS_INF,PLUS_INF);
-    ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name) , cand1_id);
-    EXPECT_FALSE(problem_modifier.has_candidate_col_id(cand2.name));
+  verify_rows_are(8);
 
-    verify_rows_are(8);
+  verify_row(0, 'L', {1, -profile_cand1.getDirectProfile(0)},
+             {P_LINK_id, cand1_id},
+             link_capacity * profile_link.getDirectProfile(0));
 
-    verify_row(0,'L',
-               {1,-profile_cand1.getDirectProfile(0)},
-               {P_LINK_id,cand1_id},
-               link_capacity * profile_link.getDirectProfile(0));
+  verify_row(1, 'G', {1, profile_cand1.getIndirectProfile(0)},
+             {P_LINK_id, cand1_id},
+             -link_capacity * profile_link.getIndirectProfile(0));
 
-    verify_row(1 , 'G',
-               {1,profile_cand1.getIndirectProfile(0)},
-               {P_LINK_id,cand1_id},
-               -link_capacity * profile_link.getIndirectProfile(0));
+  verify_row(2, 'L', {1, -profile_cand1.getDirectProfile(1)},
+             {P_LINK_id, cand1_id},
+             link_capacity * profile_link.getDirectProfile(1));
 
-    verify_row(2,'L',
-               {1,-profile_cand1.getDirectProfile(1)},
-               {P_LINK_id,cand1_id},
-               link_capacity * profile_link.getDirectProfile(1));
+  verify_row(3, 'G', {1, profile_cand1.getIndirectProfile(1)},
+             {P_LINK_id, cand1_id},
+             -link_capacity * profile_link.getIndirectProfile(1));
 
-    verify_row(3 , 'G',
-               {1,profile_cand1.getIndirectProfile(1)},
-               {P_LINK_id,cand1_id},
-               -link_capacity * profile_link.getIndirectProfile(1));
+  verify_row(4, 'L', {1, -profile_cand1.getDirectProfile(0)},
+             {P_PLUS_id, cand1_id},
+             link_capacity * profile_link.getDirectProfile(0));
 
-    verify_row(4, 'L',
-               {1,-profile_cand1.getDirectProfile(0)},
-               {P_PLUS_id,cand1_id},
-               link_capacity* profile_link.getDirectProfile(0));
+  verify_row(5, 'L', {1, -profile_cand1.getDirectProfile(1)},
+             {P_PLUS_id, cand1_id},
+             link_capacity * profile_link.getDirectProfile(1));
 
-    verify_row(5, 'L',
-               {1,-profile_cand1.getDirectProfile(1)},
-               {P_PLUS_id,cand1_id},
-               link_capacity* profile_link.getDirectProfile(1));
+  verify_row(6, 'L', {1, -profile_cand1.getIndirectProfile(0)},
+             {P_MINUS_id, cand1_id},
+             link_capacity * profile_link.getIndirectProfile(0));
 
-    verify_row(6, 'L',
-               {1,-profile_cand1.getIndirectProfile(0)},
-               {P_MINUS_id,cand1_id},
-               link_capacity* profile_link.getIndirectProfile(0));
-
-    verify_row(7, 'L',
-               {1,-profile_cand1.getIndirectProfile(1)},
-               {P_MINUS_id,cand1_id},
-               link_capacity* profile_link.getIndirectProfile(1));
-
+  verify_row(7, 'L', {1, -profile_cand1.getIndirectProfile(1)},
+             {P_MINUS_id, cand1_id},
+             link_capacity * profile_link.getIndirectProfile(1));
 }
-
-

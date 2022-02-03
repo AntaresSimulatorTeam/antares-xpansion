@@ -4,12 +4,10 @@
 #include "Timer.h"
 #include <ctime>
 
-
-class Clock
-{
+class Clock {
 public:
-    Clock() = default;
-    virtual ~Clock() = default;
+  Clock() = default;
+  virtual ~Clock() = default;
 
-    virtual std::time_t getTime();
+  virtual std::time_t getTime();
 };
