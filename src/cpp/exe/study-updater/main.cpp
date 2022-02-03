@@ -1,9 +1,8 @@
 
+#include <boost/program_options.hpp>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-
-#include <boost/program_options.hpp>
 
 #include "ActiveLinks.h"
 #include "CandidatesINIReader.h"
@@ -44,9 +43,7 @@ void updateStudy(std::string const &rootPath_p,
  * command line argument. \return an integer 0 corresponding to exit success
  */
 int main(int argc, char **argv) {
-
   try {
-
     std::string root;
     std::string solutionFile_l;
 

@@ -14,8 +14,7 @@ namespace Output {
  * xpansion optimization
  */
 class VoidWriter : public OutputWriter {
-
-public:
+ public:
   /*!
    *  \brief VoidWriter default constructor
    */
@@ -74,4 +73,4 @@ public:
   virtual void initialize(const BendersOptions &options);
   virtual void end_writing(const IterationsData &iterations_data);
 };
-} // namespace Output
+}  // namespace Output

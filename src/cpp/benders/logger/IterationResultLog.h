@@ -9,11 +9,10 @@ typedef std::map<std::string, std::string> value_map;
 typedef std::map<std::string, int> size_map;
 
 class IterationResultLog {
-
-public:
+ public:
   std::string Log_at_iteration_end(const LogData &data);
 
-private:
+ private:
   const std::string indent_0 = "\t\t";
   const std::string indent_1 = "\t";
 
@@ -23,7 +22,7 @@ private:
   std::list<value_map> _values;
   size_map _max_sizes;
 
-private:
+ private:
   std::string create_solution_str(const value_map &value,
                                   const size_map &sizes) const;
 
@@ -37,7 +36,7 @@ private:
   std::string getCompleteMessageString() const;
 };
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion
 
-#endif // ANTARESXPANSION_ITERATIONRESULTLOG_H
+#endif  // ANTARESXPANSION_ITERATIONRESULTLOG_H

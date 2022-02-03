@@ -4,9 +4,9 @@
 const double DEFAULT_CAPACITY = 0;
 const double DEFAULT_PROFILE_VALUE = 1;
 
-LinkProfile
-createProfile(std::vector<double> &directAlreadyInstalledLinkprofile_l,
-              std::vector<double> &indirectAlreadyInstalledLinkprofile_l) {
+LinkProfile createProfile(
+    std::vector<double> &directAlreadyInstalledLinkprofile_l,
+    std::vector<double> &indirectAlreadyInstalledLinkprofile_l) {
   LinkProfile profile;
   profile._directLinkProfile = directAlreadyInstalledLinkprofile_l;
   profile._indirectLinkProfile = indirectAlreadyInstalledLinkprofile_l;

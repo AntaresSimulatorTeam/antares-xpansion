@@ -3,10 +3,8 @@
 #include "multisolver_interface/Solver.h"
 
 TEST_CASE("InvalidStatusException", "[exceptions][invalid_status]") {
-
   SolverFactory factory;
   for (auto const &solver_name : factory.get_solvers_list()) {
-
     //========================================================================================
     // solver declaration
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -20,7 +18,6 @@ TEST_CASE("InvalidStatusException", "[exceptions][invalid_status]") {
 }
 
 TEST_CASE("InvalidRowSizeException", "[exceptions][invalid_row_size]") {
-
   SolverFactory factory;
   std::string solver_name = "CBC";
   //========================================================================================
@@ -37,7 +34,6 @@ TEST_CASE("InvalidRowSizeException", "[exceptions][invalid_row_size]") {
 }
 
 TEST_CASE("InvalidColSizeException", "[exceptions][invalid_col_size]") {
-
   SolverFactory factory;
   std::string solver_name = "CBC";
   //========================================================================================
@@ -85,7 +81,6 @@ SolverAbstract::Ptr createSimpleProblem(const std::string &solver_name) {
 }
 
 TEST_CASE("InvalidColTypeException", "[exceptions][invalid_col_type]") {
-
   for (auto const &solver_name : {"CBC", "CLP"}) {
     SolverAbstract::Ptr solver = createSimpleProblem(solver_name);
     try {
@@ -97,7 +92,6 @@ TEST_CASE("InvalidColTypeException", "[exceptions][invalid_col_type]") {
 }
 
 TEST_CASE("InvalidBoundTypeException", "[exceptions][invalid_bound_type]") {
-
   for (auto const &solver_name : {"CBC", "CLP"}) {
     SolverAbstract::Ptr solver = createSimpleProblem(solver_name);
 
@@ -111,7 +105,6 @@ TEST_CASE("InvalidBoundTypeException", "[exceptions][invalid_bound_type]") {
 }
 
 TEST_CASE("InvalidSetAlgorithm", "[exceptions][invalid_set_algorithm]") {
-
   for (auto const &solver_name : {"CBC", "CLP"}) {
     SolverFactory factory;
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -127,7 +120,6 @@ TEST_CASE("InvalidSetAlgorithm", "[exceptions][invalid_set_algorithm]") {
 }
 
 TEST_CASE("InvalidSetSimpleIter", "[exceptions][set_simplex_iter]") {
-
   for (auto const &solver_name : {"CBC"}) {
     SolverFactory factory;
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -143,7 +135,6 @@ TEST_CASE("InvalidSetSimpleIter", "[exceptions][set_simplex_iter]") {
 }
 
 TEST_CASE("InvalidSetOptimatilityGap", "[exceptions][set_optimality_gap]") {
-
   for (auto const &solver_name : {"CBC", "CLP"}) {
     SolverFactory factory;
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -159,7 +150,6 @@ TEST_CASE("InvalidSetOptimatilityGap", "[exceptions][set_optimality_gap]") {
 }
 
 TEST_CASE("InvalidSolverNameException", "[exceptions][invalid_solver_name]") {
-
   for (std::string const &solver_name : {"SIRIUS", "GUROBI"}) {
     SolverFactory factory;
     try {

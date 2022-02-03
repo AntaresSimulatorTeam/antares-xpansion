@@ -22,7 +22,7 @@ std::string rtrim(const std::string &s) {
 // trim leading and trailing whitespaces
 std::string trim(const std::string &s) { return rtrim(ltrim(s)); }
 
-} // namespace
+}  // namespace
 
 std::string AdditionalConstraintsReader::illegal_chars = " \n\r\t\f\v-+=:[]()";
 
@@ -105,9 +105,9 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(
                    [](unsigned char c) { return std::tolower(c); });
 
     if ((_line.length() == 0) || (_line[0] == '#') ||
-        (_line[0] == ';')) { // line is a comment or empty
+        (_line[0] == ';')) {  // line is a comment or empty
       continue;
-    } else if (_line[0] == '[') { // line is a section
+    } else if (_line[0] == '[') {  // line is a section
       processSectionLine();
     } else {
       // check we have a valid section name

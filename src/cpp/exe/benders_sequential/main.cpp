@@ -1,14 +1,13 @@
 // projet_benders.cpp : définit le point d'entrée pour l'application console.
 //
 
-#include "glog/logging.h"
-
 #include "BendersOptions.h"
 #include "BendersSequential.h"
 #include "JsonWriter.h"
 #include "LoggerFactories.h"
 #include "OutputWriter.h"
 #include "WriterFactories.h"
+#include "glog/logging.h"
 #include "helpers/Path.h"
 #include "launcher.h"
 #include "logger/Master.h"

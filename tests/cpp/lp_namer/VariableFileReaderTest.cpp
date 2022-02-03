@@ -1,7 +1,7 @@
-#include "gtest/gtest.h"
+#include <fstream>
 
 #include "VariableFileReader.h"
-#include <fstream>
+#include "gtest/gtest.h"
 
 const char *TEMP_FILE_NAME = "temp_variable.txt";
 
@@ -14,7 +14,7 @@ struct VariableFileLine {
 };
 
 class VariableFileReaderTest : public ::testing::Test {
-protected:
+ protected:
   static std::vector<VariableFileLine> createVariableFileLineVec(
       const std::vector<int> &ids, const std::vector<std::string> &variable,
       const std::vector<int> &id_pays, const std::vector<int> &id_link,
@@ -39,9 +39,9 @@ protected:
     return result;
   }
 
-  static void
-  createVariableFile(const std::string &temp_variable_name,
-                     const std::vector<VariableFileLine> &variableFileLineVec) {
+  static void createVariableFile(
+      const std::string &temp_variable_name,
+      const std::vector<VariableFileLine> &variableFileLineVec) {
     std::ofstream file(temp_variable_name);
 
     for (const auto &fileLine : variableFileLineVec) {
@@ -68,7 +68,6 @@ protected:
   static std::vector<std::string> createExpectedVariableName(
       const std::vector<std::string> &variable, const std::vector<int> &id_pays,
       const std::vector<int> &id_link, const std::vector<int> &time_step) {
-
     std::vector<std::string> result;
     result.reserve(variable.size());
     assert(variable.size() == id_pays.size());
@@ -125,7 +124,6 @@ TEST_F(VariableFileReaderTest, FileNotAvailable) {
 }
 
 TEST_F(VariableFileReaderTest, ReadVariable) {
-
   _ids = {0, 1, 2, 3, 4, 5, 6};
   _variable = {"var_1", "var_2", "var_3", "var_4", "var_5", "var_6", "var_7"};
   _id_pays = std::vector<int>(_variable.size(), 0);
@@ -146,7 +144,6 @@ TEST_F(VariableFileReaderTest, ReadVariable) {
 }
 
 TEST_F(VariableFileReaderTest, ReadNtcColumnsWithoutActiveLink) {
-
   _ids = {0, 1, 2, 3, 4, 5, 6};
   _variable = {"var_ntc", "var_ntc", "var_3", "var_4",
                "var_5",   "var_6",   "var_7"};
@@ -168,7 +165,6 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithoutActiveLink) {
 }
 
 TEST_F(VariableFileReaderTest, ReadNtcColumnsWithOneActiveLink) {
-
   _ids = {0, 1, 2, 3, 4, 5, 6};
   _variable = {"var_ntc", "var_ntc", "var_3", "var_4",
                "var_5",   "var_6",   "var_7"};
@@ -193,7 +189,6 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithOneActiveLink) {
 }
 
 TEST_F(VariableFileReaderTest, ReadNtcColumnsWithMultipleActiveLink) {
-
   _ids = {0, 1, 2, 3, 4, 5, 6};
   _variable = {"var_ntc", "var_ntc", "var_3",  "var_4",
                "var_5",   "var_ntc", "var_ntc"};
@@ -220,7 +215,6 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithMultipleActiveLink) {
 }
 
 TEST_F(VariableFileReaderTest, ReadCostColumnsWithMultipleActiveLink) {
-
   _ids = {0, 1, 2, 3, 4, 5, 6};
   _variable = {"cost_ori", "cost_ori", "cost_ext", "var_4",
                "cost_ext", "cost_ori", "cost_ori"};

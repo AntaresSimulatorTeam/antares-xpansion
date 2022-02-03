@@ -1,10 +1,12 @@
 
-#include "gtest/gtest.h"
 #include <ActiveLinks.h>
 #include <ProblemModifier.h>
-#include <fstream>
 #include <multisolver_interface/SolverFactory.h>
 #include <solver_utils.h>
+
+#include <fstream>
+
+#include "gtest/gtest.h"
 
 const std::string P_LINK = "p_link";
 const std::string P_PLUS = "p_plus";
@@ -14,7 +16,7 @@ const double PLUS_INF = 1e20;
 const double MINUS_INF = -1e20;
 
 class ProblemModifierTest : public ::testing::Test {
-public:
+ public:
   SolverAbstract::Ptr math_problem;
   int n_cols = -1;
   int n_rows = -1;
@@ -30,9 +32,8 @@ public:
   std::vector<int> start_indexes;
   std::vector<std::basic_string<char>> col_names;
 
-protected:
+ protected:
   void SetUp() {
-
     std::string solver_name = "CBC";
     SolverFactory factory;
     math_problem = factory.create_solver(solver_name);

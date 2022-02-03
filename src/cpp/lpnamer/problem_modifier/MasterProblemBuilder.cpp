@@ -3,17 +3,17 @@
 //
 #include "MasterProblemBuilder.h"
 
-#include <algorithm>
 #include <solver_utils.h>
+
+#include <algorithm>
 #include <unordered_map>
 
 MasterProblemBuilder::MasterProblemBuilder(
     const std::string &master_formulation)
     : _master_formulation(master_formulation) {}
 
-std::shared_ptr<SolverAbstract>
-MasterProblemBuilder::build(const std::string &solverName,
-                            const std::vector<Candidate> &candidates) {
+std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
+    const std::string &solverName, const std::vector<Candidate> &candidates) {
   _indexOfNvar.clear();
   _indexOfPmaxVar.clear();
 
@@ -40,7 +40,6 @@ MasterProblemBuilder::build(const std::string &solverName,
 void MasterProblemBuilder::addPmaxConstraint(
     const std::vector<Candidate> &candidatesInteger,
     SolverAbstract::Ptr &master_l) {
-
   auto n_integer = (int)candidatesInteger.size();
   if (n_integer > 0) {
     std::vector<double> dmatval;
@@ -94,7 +93,6 @@ int MasterProblemBuilder::getPmaxVarColumnNumberFor(
 void MasterProblemBuilder::addNvarOnEachIntegerCandidate(
     const std::vector<Candidate> &candidatesInteger,
     SolverAbstract::Ptr &master_l) const {
-
   auto nbNvar = (int)candidatesInteger.size();
   if (nbNvar > 0) {
     std::vector<double> zeros(nbNvar, 0.0);

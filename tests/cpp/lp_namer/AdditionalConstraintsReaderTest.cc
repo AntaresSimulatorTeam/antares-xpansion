@@ -1,15 +1,15 @@
-#include "gtest/gtest.h"
-
 #include <fstream>
 #include <sstream>
 
 #include "AdditionalConstraintsReader.h"
+#include "gtest/gtest.h"
 
 class AdditionalConstraintsReaderTest : public ::testing::Test {
-protected:
+ protected:
   static void SetUpTestCase() {
     // called before 1st test
-    std::string content_l = "\
+    std::string content_l =
+        "\
 [variables]\n\
 grid = bin_grid\n\
 grid2 = bin_grid2\n\

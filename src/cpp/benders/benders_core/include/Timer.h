@@ -1,19 +1,19 @@
 #pragma once
 
-#include "common.h"
-
 #include <chrono>
+
+#include "common.h"
 typedef std::chrono::time_point<std::chrono::system_clock> TimePoint;
 
 class Timer {
-public:
+ public:
   Timer();
   virtual ~Timer();
 
   double elapsed() const;
   void restart();
 
-private:
+ private:
   TimePoint _start;
 };
 

@@ -1,3 +1,5 @@
+#include "IterationResultLog.h"
+
 #include <algorithm>
 #include <iomanip>
 #include <list>
@@ -5,7 +7,6 @@
 #include <sstream>
 
 #include "Commons.h"
-#include "IterationResultLog.h"
 #include "core/ILogger.h"
 
 namespace xpansion {
@@ -18,7 +19,6 @@ std::string IterationResultLog::Log_at_iteration_end(const LogData &data) {
 }
 
 void IterationResultLog::setValuesFromData(const LogData &data) {
-
   double low_bd = data.lb;
   double abs_gap = data.best_ub - data.lb;
   double rel_gap = abs_gap / data.best_ub;
@@ -52,8 +52,8 @@ void IterationResultLog::setValuesFromData(const LogData &data) {
       create_value_map("Relative gap", commons::create_str_euros(rel_gap), ""));
 }
 
-void IterationResultLog::setMaximumStringSizes() { // Compute maximum string
-                                                   // size
+void IterationResultLog::setMaximumStringSizes() {  // Compute maximum string
+                                                    // size
 
   for (auto value : _values) {
     _max_sizes[LABEL] =
@@ -72,9 +72,8 @@ std::string IterationResultLog::getCompleteMessageString() const {
   return _stream.str();
 }
 
-inline std::string
-IterationResultLog::create_solution_str(const value_map &value,
-                                        const size_map &sizes) const {
+inline std::string IterationResultLog::create_solution_str(
+    const value_map &value, const size_map &sizes) const {
   std::stringstream result;
   result << indent_0 << indent_1 << std::setw(sizes.at(LABEL))
          << value.at(LABEL);
@@ -83,10 +82,9 @@ IterationResultLog::create_solution_str(const value_map &value,
   return result.str();
 }
 
-inline value_map
-IterationResultLog::create_value_map(const std::string &label,
-                                     const std::string &value,
-                                     const std::string &unit) const {
+inline value_map IterationResultLog::create_value_map(
+    const std::string &label, const std::string &value,
+    const std::string &unit) const {
   value_map result;
   result[LABEL] = label;
   result[VALUE] = value;
@@ -95,5 +93,5 @@ IterationResultLog::create_value_map(const std::string &label,
   return result;
 }
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion

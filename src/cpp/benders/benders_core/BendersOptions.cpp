@@ -1,4 +1,5 @@
 #include "BendersOptions.h"
+
 #include "helpers/Path.h"
 
 /*!
@@ -39,8 +40,8 @@ std::string BendersOptions::get_structure_path() const {
 /*!
  *  \brief Get path to slave problem mps file from options
  */
-std::string
-BendersOptions::get_slave_path(std::string const &slave_name) const {
+std::string BendersOptions::get_slave_path(
+    std::string const &slave_name) const {
   return (Path(INPUTROOT) / (slave_name + ".mps")).get_str();
 }
 
@@ -57,9 +58,8 @@ void BendersOptions::read(std::string const &file_name) {
     while (std::getline(file, line)) {
       std::stringstream buffer(line);
       buffer >> name;
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__)                       \
-  if (#name__ == name)                                                         \
-    buffer >> name__;
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
+  if (#name__ == name) buffer >> name__;
 #include "BendersOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
     }
@@ -108,7 +108,7 @@ void BendersOptions::read(std::string const &file_name) {
  *  \param stream : output stream
  */
 void BendersOptions::print(std::ostream &stream) const {
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__)                       \
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
   stream << std::setw(30) << #name__ << std::setw(50) << name__ << std::endl;
 #include "BendersOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO

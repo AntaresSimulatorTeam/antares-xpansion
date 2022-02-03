@@ -1,4 +1,5 @@
 #include "ActiveLinks.h"
+
 #include <limits>
 #include <unordered_set>
 
@@ -8,7 +9,6 @@ bool doubles_are_different(const double a, const double b) {
 }
 
 void ActiveLinksBuilder::addCandidate(const CandidateData &candidate_data) {
-
   unsigned int indexLink = getLinkIndexOf(candidate_data.link_id);
   _links.at(indexLink).addCandidate(
       candidate_data, getProfileFromProfileMap(candidate_data.link_profile));
@@ -139,7 +139,10 @@ LinkProfile ActiveLinksBuilder::getProfileFromProfileMap(
 ActiveLink::ActiveLink(int idLink, const std::string &linkName,
                        const std::string &linkor, const std::string &linkex,
                        const double &already_installed_capacity)
-    : _idLink(idLink), _name(linkName), _linkor(linkor), _linkex(linkex),
+    : _idLink(idLink),
+      _name(linkName),
+      _linkor(linkor),
+      _linkex(linkex),
       _already_installed_capacity(already_installed_capacity) {}
 
 void ActiveLink::setAlreadyInstalledLinkProfile(

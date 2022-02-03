@@ -4,10 +4,10 @@
 #include <string>
 
 class Path {
-private:
+ private:
   std::string mPath;
 
-public:
+ public:
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   // Windows
   static const char mSep = '\\';
@@ -30,4 +30,4 @@ public:
   }
 };
 
-#endif // ANTARESXPANSION_PATH_H
+#endif  // ANTARESXPANSION_PATH_H

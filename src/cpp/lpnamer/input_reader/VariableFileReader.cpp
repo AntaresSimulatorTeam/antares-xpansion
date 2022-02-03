@@ -1,8 +1,8 @@
 //
+#include "VariableFileReader.h"
+
 #include <algorithm>
 #include <sstream>
-
-#include "VariableFileReader.h"
 
 void updateMapColumn(const std::vector<ActiveLink> &links, int link_id,
                      colId id, int time_step,
@@ -20,14 +20,12 @@ void updateMapColumn(const std::vector<ActiveLink> &links, int link_id,
 VariableFileReader::VariableFileReader(
     const std::string &fileName, const std::vector<ActiveLink> &links,
     const VariableFileReadNameConfiguration &variable_name_config) {
-
   std::string line;
   std::ifstream file(fileName.c_str());
   if (!file.good()) {
     throw std::runtime_error("Unable to open '" + fileName + "'");
   }
   while (std::getline(file, line)) {
-
     std::string name = getVarNameFromLine(line);
     _variables.push_back(name);
 
@@ -64,8 +62,8 @@ VariableFileReader::VariableFileReader(
   file.close();
 }
 
-std::string
-VariableFileReader::getVarNameFromLine(const std::string &line) const {
+std::string VariableFileReader::getVarNameFromLine(
+    const std::string &line) const {
   std::ostringstream name;
   {
     std::istringstream buffer(line);
@@ -86,17 +84,17 @@ const std::vector<std::string> &VariableFileReader::getVariables() const {
   return _variables;
 }
 
-const std::map<linkId, ColumnsToChange> &
-VariableFileReader::getNtcVarColumns() const {
+const std::map<linkId, ColumnsToChange> &VariableFileReader::getNtcVarColumns()
+    const {
   return _ntc_p_var_columns;
 }
 
-const std::map<linkId, ColumnsToChange> &
-VariableFileReader::getDirectCostVarColumns() const {
+const std::map<linkId, ColumnsToChange>
+    &VariableFileReader::getDirectCostVarColumns() const {
   return _direct_cost_p_var_columns;
 }
 
-const std::map<linkId, ColumnsToChange> &
-VariableFileReader::getIndirectCostVarColumns() const {
+const std::map<linkId, ColumnsToChange>
+    &VariableFileReader::getIndirectCostVarColumns() const {
   return _indirect_cost_p_var_columns;
 }

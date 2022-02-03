@@ -67,7 +67,6 @@ void SolverCbc::free() {}
 -------------------------------
 *************************************************************************************************/
 void SolverCbc::write_prob_mps(const std::string &filename) {
-
   const int numcols = get_ncols();
   std::shared_ptr<char[]> shared_integrality(new char[numcols]);
   char *integrality = shared_integrality.get();
@@ -214,7 +213,6 @@ void SolverCbc::get_row_type(char *qrtype, int first, int last) const {
 
   std::vector<int> whichBound(get_nrows());
   for (int i(first); i < last + 1; i++) {
-
     if (rowLower[i] == rowUpper[i]) {
       qrtype[i - first] = 'E';
     } else if (rowLower[i] > -COIN_DBL_MAX) {
@@ -240,7 +238,6 @@ void SolverCbc::get_rhs(double *rhs, int first, int last) const {
   const double *rowUpper = _clp_inner_solver.getRowUpper();
 
   for (int i = first; i < last + 1; i++) {
-
     if (rowLower[i] == rowUpper[i]) {
       rhs[i - first] = rowUpper[i];
     } else if (rowLower[i] > -COIN_DBL_MAX) {
@@ -377,7 +374,6 @@ void SolverCbc::add_rows(int newrows, int newnz, const char *qrtype,
                          const double *rhs, const double *range,
                          const int *mstart, const int *mclind,
                          const double *dmatval) {
-
   std::vector<double> rowLower(newrows);
   std::vector<double> rowUpper(newrows);
   for (int i(0); i < newrows; i++) {
@@ -405,7 +401,6 @@ void SolverCbc::add_cols(int newcol, int newnz, const double *objx,
                          const int *mstart, const int *mrwind,
                          const double *dmatval, const double *bdl,
                          const double *bdu) {
-
   std::vector<int> colStart(newcol + 1);
   for (int i(0); i < newcol; i++) {
     colStart[i] = mstart[i];
@@ -498,7 +493,6 @@ void SolverCbc::chg_rhs(int id_row, double val) {
 }
 
 void SolverCbc::chg_coef(int id_row, int id_col, double val) {
-
   // Very tricky method by method "modifyCoefficient" of OsiClp does not work
   CoinPackedMatrix matrix = *_clp_inner_solver.getMatrixByRow();
   const int *column = matrix.getIndices();
@@ -645,15 +639,15 @@ void SolverCbc::set_output_log_level(int loglevel) {
   _clp_inner_solver.passInMessageHandler(&_message_handler);
   _cbc.passInMessageHandler(&_message_handler);
   if (loglevel > 0) {
-    _message_handler.setLogLevel(0, 1); // Coin messages
-    _message_handler.setLogLevel(1, 1); // Clp messages
-    _message_handler.setLogLevel(2, 1); // Presolve messages
-    _message_handler.setLogLevel(3, 1); // Cgl messages
+    _message_handler.setLogLevel(0, 1);  // Coin messages
+    _message_handler.setLogLevel(1, 1);  // Clp messages
+    _message_handler.setLogLevel(2, 1);  // Presolve messages
+    _message_handler.setLogLevel(3, 1);  // Cgl messages
   } else {
-    _message_handler.setLogLevel(0, 0); // Coin messages
-    _message_handler.setLogLevel(1, 0); // Clp messages
-    _message_handler.setLogLevel(2, 0); // Presolve messages
-    _message_handler.setLogLevel(3, 0); // Cgl messages
+    _message_handler.setLogLevel(0, 0);  // Coin messages
+    _message_handler.setLogLevel(1, 0);  // Clp messages
+    _message_handler.setLogLevel(2, 0);  // Presolve messages
+    _message_handler.setLogLevel(3, 0);  // Cgl messages
     _message_handler.setLogLevel(0);
   }
 }

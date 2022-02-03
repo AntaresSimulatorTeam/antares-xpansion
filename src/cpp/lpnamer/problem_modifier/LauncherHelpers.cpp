@@ -1,4 +1,5 @@
 #include "LauncherHelpers.h"
+
 #include "Candidate.h"
 #include "CandidatesINIReader.h"
 #include "LinkProblemsGenerator.h"
@@ -63,12 +64,10 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
 void addBinaryVariables(
     SolverAbstract::Ptr master_p,
     const std::map<std::string, std::string> &variablesToBinarise_p) {
-
   for (const auto &pairOldNewVarnames : variablesToBinarise_p) {
     int col_index = master_p->get_col_index(pairOldNewVarnames.first);
 
     if (col_index == -1) {
-
       std::cout << "missing variable " << pairOldNewVarnames.first
                 << " used in additional constraint file!\n";
       std::exit(1);
@@ -105,9 +104,9 @@ void addBinaryVariables(
     master_p->add_rows(1, 2, std::vector<char>(1, 'L').data(),
                        std::vector<double>(1, 0.0).data(), nullptr,
                        matstart.data(), matind.data(), matval.data());
-    master_p->chg_row_name(master_p->get_nrows() - 1,
-                           "link_" + pairOldNewVarnames.first + "_" +
-                               pairOldNewVarnames.second);
+    master_p->chg_row_name(
+        master_p->get_nrows() - 1,
+        "link_" + pairOldNewVarnames.first + "_" + pairOldNewVarnames.second);
   }
 }
 
@@ -119,7 +118,6 @@ void addBinaryVariables(
  */
 
 ActiveLinksBuilder get_link_builders(const std::string &root) {
-
   auto const area_file_name = (Path(root) / "area.txt").get_str();
   auto const interco_file_name = (Path(root) / "interco.txt").get_str();
 

@@ -13,8 +13,7 @@ namespace xpansion {
 namespace logger {
 
 class User : public ILogger {
-
-public:
+ public:
   User(std::ostream &stream);
 
   void display_message(const std::string &str) override;
@@ -36,11 +35,11 @@ public:
   void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) override;
 
-private:
+ private:
   std::ostream &_stream;
 };
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion
 
-#endif // ANTARESXPANSION_USER_H
+#endif  // ANTARESXPANSION_USER_H

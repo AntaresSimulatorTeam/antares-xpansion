@@ -2,15 +2,17 @@
 #ifndef ANTARESXPANSION_PROBLEMMODIFIER_H
 #define ANTARESXPANSION_PROBLEMMODIFIER_H
 
-#include "ActiveLinks.h"
-#include "ColumnToChange.h"
+#include <multisolver_interface/SolverAbstract.h>
+
 #include <map>
 #include <memory>
-#include <multisolver_interface/SolverAbstract.h>
 #include <vector>
 
+#include "ActiveLinks.h"
+#include "ColumnToChange.h"
+
 class ProblemModifier {
-public:
+ public:
   ProblemModifier();
 
   std::shared_ptr<SolverAbstract> changeProblem(
@@ -23,7 +25,7 @@ public:
   unsigned int get_candidate_col_id(const std::string &cand_name) const;
   bool has_candidate_col_id(const std::string &cand_name) const;
 
-private:
+ private:
   void changeProblem(
       const std::vector<ActiveLink> &active_links,
       const std::map<linkId, ColumnsToChange> &p_ntc_columns,
@@ -38,13 +40,13 @@ private:
 
   void add_new_columns(const std::vector<Candidate> &candidates);
 
-  std::vector<Candidate>
-  candidates_from_all_links(const std::vector<ActiveLink> &active_links) const;
-  std::set<int>
-  extract_time_steps(const std::map<linkId, ColumnsToChange> &p_columns) const;
-  std::vector<Candidate>
-  candidates_with_not_null_profile(const std::vector<ActiveLink> &active_links,
-                                   const std::set<int> &time_steps) const;
+  std::vector<Candidate> candidates_from_all_links(
+      const std::vector<ActiveLink> &active_links) const;
+  std::set<int> extract_time_steps(
+      const std::map<linkId, ColumnsToChange> &p_columns) const;
+  std::vector<Candidate> candidates_with_not_null_profile(
+      const std::vector<ActiveLink> &active_links,
+      const std::set<int> &time_steps) const;
 
   void add_new_ntc_constraints(
       const std::vector<ActiveLink> &active_links,
@@ -86,4 +88,4 @@ private:
                                            const ColumnToChange &column);
 };
 
-#endif // ANTARESXPANSION_PROBLEMMODIFIER_H
+#endif  // ANTARESXPANSION_PROBLEMMODIFIER_H

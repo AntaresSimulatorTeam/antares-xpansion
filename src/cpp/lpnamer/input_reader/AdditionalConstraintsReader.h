@@ -10,13 +10,12 @@
  *
  */
 struct AdditionalConstraintsReader {
-
   /*!
    *  characters to forbid in variables and constraints names
    */
   static std::string illegal_chars;
 
-private:
+ private:
   //! set of section names contained between [] in the ini file
   std::set<std::string> _sections;
   //! map containing the string value per section per attribute _values[section
@@ -30,7 +29,7 @@ private:
   //! number of the line that is being currently processed
   int _lineNb = 0;
 
-public:
+ public:
   /*!
    *  default constructor for struct AdditionalConstraintsReader
    */
@@ -65,10 +64,10 @@ public:
    *
    * \throw if the section does not exist
    */
-  std::map<std::string, std::string> const &
-  getSection(std::string const &sectionName_p) const;
+  std::map<std::string, std::string> const &getSection(
+      std::string const &sectionName_p) const;
 
-private:
+ private:
   /*!
    * \brief process a section line ie a line that indicates a section name
    *

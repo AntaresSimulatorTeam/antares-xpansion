@@ -16,11 +16,10 @@
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
-#include "LauncherHelpers.h"
-#include "LinkProblemsGenerator.h"
-
 #include "Candidate.h"
 #include "CandidatesINIReader.h"
+#include "LauncherHelpers.h"
+#include "LinkProblemsGenerator.h"
 #include "LinkProfileReader.h"
 #include "MasterProblemBuilder.h"
 #include "helpers/Path.h"
@@ -124,9 +123,7 @@ void masterGeneration(
  * command line argument. \return an integer 0 corresponding to exit success
  */
 int main(int argc, char **argv) {
-
   try {
-
     std::string root;
     std::string master_formulation;
     std::string additionalConstraintFilename_l;

@@ -25,9 +25,8 @@ SolverFactory::SolverFactory() {
 #endif
 }
 
-SolverAbstract::Ptr
-SolverFactory::create_solver(const std::string solver_name) {
-
+SolverAbstract::Ptr SolverFactory::create_solver(
+    const std::string solver_name) {
   SolverAbstract::Ptr solver;
 
   if (solver_name == "") {

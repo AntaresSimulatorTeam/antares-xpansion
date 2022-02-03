@@ -1,11 +1,12 @@
 
 #pragma once
 
-#include "Timer.h"
 #include <ctime>
 
+#include "Timer.h"
+
 class Clock {
-public:
+ public:
   Clock() = default;
   virtual ~Clock() = default;
 

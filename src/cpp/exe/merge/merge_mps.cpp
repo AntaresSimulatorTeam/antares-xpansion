@@ -1,16 +1,14 @@
 // projet_benders.cpp : définit le point d'entrée pour l'application console.
 //
 
-#include "glog/logging.h"
-
+#include "../../benders/factories/include/WriterFactories.h"
 #include "BendersOptions.h"
 #include "JsonWriter.h"
 #include "Timer.h"
 #include "Worker.h"
-#include "launcher.h"
-
-#include "../../benders/factories/include/WriterFactories.h"
+#include "glog/logging.h"
 #include "helpers/Path.h"
+#include "launcher.h"
 #include "logger/User.h"
 #include "solver_utils.h"
 
@@ -47,7 +45,6 @@ int main(int argc, char **argv) {
 
     LOG(INFO) << "Merging problems..." << std::endl;
     for (auto const &kvp : input) {
-
       auto problem_name(
           (Path(options.INPUTROOT) / (kvp.first + ".mps")).get_str());
 
@@ -57,7 +54,6 @@ int main(int argc, char **argv) {
       solver_l->read_prob_mps(problem_name);
 
       if (kvp.first != options.MASTER_NAME) {
-
         int mps_ncols(solver_l->get_ncols());
 
         DblVector o(mps_ncols);

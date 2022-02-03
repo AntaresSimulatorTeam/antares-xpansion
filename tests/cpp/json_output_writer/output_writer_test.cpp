@@ -1,13 +1,13 @@
 
-#include <ostream>
-
-#include "gtest/gtest.h"
-
-#include "JsonWriter.h"
-#include <cstdio>
-#include <iostream>
 #include <json/json.h>
 #include <time.h>
+
+#include <cstdio>
+#include <iostream>
+#include <ostream>
+
+#include "JsonWriter.h"
+#include "gtest/gtest.h"
 
 using namespace Output;
 time_t time_from_date(int year, int month, int day, int hour, int min, int sec);
@@ -16,16 +16,16 @@ const std::string CRIT_ABSOLUTE_GAP_C("absolute gap"),
     CRIT_RELATIVE_GAP_C("relative gap"), CRIT_MAX_ITER_C("maximum iterations"),
     CRIT_TIMELIMIT_C("timelimit"), STOP_ERROR_C("error");
 class ClockMock : public Clock {
-private:
+ private:
   std::time_t _time;
 
-public:
+ public:
   std::time_t getTime() override { return _time; }
   void set_time(std::time_t time) { _time = time; }
 };
 
 class JsonWriterTest : public ::testing::Test {
-public:
+ public:
   void SetUp() override { _fileName = std::tmpnam(nullptr); }
 
   void TearDown() override { std::remove(_fileName.c_str()); }
@@ -228,7 +228,7 @@ time_t time_from_date(int year, int month, int day, int hour, int min,
   time_info.tm_min = min;
   time_info.tm_sec = sec;
   time_info.tm_mday = day;
-  time_info.tm_mon = month - 1; // january = 0
+  time_info.tm_mon = month - 1;  // january = 0
   time_info.tm_year = year - 1900;
   time_t my_time_t = mktime(&time_info);
   return my_time_t;

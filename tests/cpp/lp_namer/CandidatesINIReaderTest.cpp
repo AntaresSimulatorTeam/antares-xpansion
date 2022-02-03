@@ -1,58 +1,60 @@
-#include "gtest/gtest.h"
-
 #include <fstream>
 
 #include "CandidatesINIReader.h"
+#include "gtest/gtest.h"
 
 class CandidatesINIReaderTest : public ::testing::Test {
-protected:
+ protected:
   static void SetUpTestCase() {
     // called before 1st test
-    std::string interco_content_l = "0 0 1\n"
-                                    "1 0 3\n"
-                                    "2 0 5\n"
-                                    "3 1 2\n"
-                                    "4 1 4";
+    std::string interco_content_l =
+        "0 0 1\n"
+        "1 0 3\n"
+        "2 0 5\n"
+        "3 1 2\n"
+        "4 1 4";
 
     // dummy interco tmp file name
     std::ofstream file_interco("temp_interco.txt");
     file_interco << interco_content_l;
     file_interco.close();
 
-    std::string area_content_l = "area1\n"
-                                 "area2\n"
-                                 "flex\n"
-                                 "peak\n"
-                                 "pv\n"
-                                 "semibase";
+    std::string area_content_l =
+        "area1\n"
+        "area2\n"
+        "flex\n"
+        "peak\n"
+        "pv\n"
+        "semibase";
 
     // dummy area tmp file name
     std::ofstream file_area("temp_area.txt");
     file_area << area_content_l;
     file_area.close();
 
-    std::string candidate_content_l = "[1]\n"
-                                      "name = semibase\n"
-                                      "link = area1 - semibase\n"
-                                      "annual-cost-per-mw = 126000\n"
-                                      "unit-size = 200\n"
-                                      "max-units = 10\n"
-                                      "enable = true\n"
-                                      "\n"
-                                      "[2]\n"
-                                      "name = peak\n"
-                                      "link = area1 - peak\n"
-                                      "annual-cost-per-mw = 60000\n"
-                                      "unit-size = 100\n"
-                                      "max-units = 20\n"
-                                      "enable = false\n"
-                                      "\n"
-                                      "[3]\n"
-                                      "name = peak2\n"
-                                      "link = area1 - peak\n"
-                                      "annual-cost-per-mw = 30000\n"
-                                      "unit-size = 100\n"
-                                      "max-units = 20";
+    std::string candidate_content_l =
+        "[1]\n"
+        "name = semibase\n"
+        "link = area1 - semibase\n"
+        "annual-cost-per-mw = 126000\n"
+        "unit-size = 200\n"
+        "max-units = 10\n"
+        "enable = true\n"
+        "\n"
+        "[2]\n"
+        "name = peak\n"
+        "link = area1 - peak\n"
+        "annual-cost-per-mw = 60000\n"
+        "unit-size = 100\n"
+        "max-units = 20\n"
+        "enable = false\n"
+        "\n"
+        "[3]\n"
+        "name = peak2\n"
+        "link = area1 - peak\n"
+        "annual-cost-per-mw = 30000\n"
+        "unit-size = 100\n"
+        "max-units = 20";
 
     // dummy area tmp file name
     std::ofstream file_candidate("temp_candidate.ini");
@@ -79,7 +81,6 @@ protected:
 };
 
 TEST_F(CandidatesINIReaderTest, testReadIntero) {
-
   std::vector<IntercoFileData> intercoDataList =
       CandidatesINIReader::ReadAntaresIntercoFile("temp_interco.txt");
 
@@ -89,7 +90,6 @@ TEST_F(CandidatesINIReaderTest, testReadIntero) {
 }
 
 TEST_F(CandidatesINIReaderTest, testReadArea) {
-
   std::vector<std::string> areaList =
       CandidatesINIReader::ReadAreaFile("temp_area.txt");
 

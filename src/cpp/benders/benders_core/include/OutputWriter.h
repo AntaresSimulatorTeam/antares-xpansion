@@ -75,8 +75,7 @@ struct IterationsData {
  * xpansion optimization in a log file
  */
 class OutputWriter {
-
-public:
+ public:
   /*!
    *  \brief destructor of class OutputWriter
    */
@@ -110,5 +109,5 @@ public:
 
   virtual void end_writing(const IterationsData &iterations_data) = 0;
 };
-} // namespace Output
+}  // namespace Output
 using Writer = std::shared_ptr<Output::OutputWriter>;

@@ -1,9 +1,8 @@
-#include "glog/logging.h"
-
-#include "Timer.h"
 #include "launcher.h"
 
 #include "BendersOptions.h"
+#include "Timer.h"
+#include "glog/logging.h"
 
 /*!
  *  \brief Get Benders Options from command line

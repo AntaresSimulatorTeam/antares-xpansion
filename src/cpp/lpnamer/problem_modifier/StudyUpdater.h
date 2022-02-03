@@ -9,7 +9,7 @@
  * execution
  */
 class StudyUpdater {
-private:
+ private:
   // folder containing the links files in the antares study
   static std::string linksSubfolder_;
   // path to the antares study
@@ -19,7 +19,7 @@ private:
   // antares version
   int antaresVersion_;
 
-public:
+ public:
   /*!
    * \brief constructor of class StudyUpdater
    *
@@ -60,9 +60,9 @@ public:
    *
    * \return a pair of the computed direct and indirect capacities
    */
-  std::pair<double, double>
-  computeNewCapacities(const std::map<std::string, double> &investments_p,
-                       const ActiveLink &link_p, int timepoint_p) const;
+  std::pair<double, double> computeNewCapacities(
+      const std::map<std::string, double> &investments_p,
+      const ActiveLink &link_p, int timepoint_p) const;
 
   /*!
    * \brief updates the linkdata file for a given link according to the

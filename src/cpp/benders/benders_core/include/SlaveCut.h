@@ -33,7 +33,7 @@ enum SlaveCutDbl { SLAVE_COST = 0, ALPHA_I, SLAVE_TIMER, MAXDBL };
 enum SlaveCutStr { MAXSTR = 0 };
 
 class SlaveCutDataHandler {
-public:
+ public:
   Point &get_subgradient();
   IntVector &get_int();
   DblVector &get_dbl();
@@ -53,7 +53,7 @@ public:
   StrVector const &get_str() const;
   void print(std::ostream &stream) const;
 
-public:
+ public:
   explicit SlaveCutDataHandler(SlaveCutDataPtr const &data);
   explicit SlaveCutDataHandler(SlaveCutDataPtr &data);
   virtual ~SlaveCutDataHandler();
@@ -62,7 +62,7 @@ public:
 };
 
 class SlaveCutTrimmer {
-public:
+ public:
   SlaveCutDataHandlerPtr _data_cut;
   Point _x0;
   double _const_cut;

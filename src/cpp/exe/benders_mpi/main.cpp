@@ -1,16 +1,15 @@
 // projet_benders.cpp: defines the entry point  for the console application
 //
 
-#include "Worker.h"
-#include "gflags/gflags.h"
-#include "glog/logging.h"
-
 #include "BendersMPI.h"
 #include "BendersSequential.h"
 #include "LoggerFactories.h"
 #include "OutputWriter.h"
 #include "Timer.h"
+#include "Worker.h"
 #include "WriterFactories.h"
+#include "gflags/gflags.h"
+#include "glog/logging.h"
 #include "helpers/Path.h"
 #include "launcher.h"
 

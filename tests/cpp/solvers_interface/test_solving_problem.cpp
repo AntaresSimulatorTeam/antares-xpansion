@@ -1,13 +1,12 @@
 #pragma once
-#include "catch2.hpp"
-
-#include "define_datas.hpp"
-#include "multisolver_interface/Solver.h"
 #include <fstream>
 #include <iostream>
 
-TEST_CASE("A LP problem is solved", "[solve-lp]") {
+#include "catch2.hpp"
+#include "define_datas.hpp"
+#include "multisolver_interface/Solver.h"
 
+TEST_CASE("A LP problem is solved", "[solve-lp]") {
   AllDatas datas;
   fill_datas(datas);
 
@@ -15,7 +14,6 @@ TEST_CASE("A LP problem is solved", "[solve-lp]") {
 
   auto inst = GENERATE(MULTIKP);
   SECTION("Loop on the instances") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
       std::string instance = datas[inst]._path;
 
@@ -60,7 +58,6 @@ TEST_CASE("A LP problem is solved", "[solve-lp]") {
 
 TEST_CASE("A LP problem is solved and we can get the LP value",
           "[solve-lp][get-lp-val]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -68,7 +65,6 @@ TEST_CASE("A LP problem is solved and we can get the LP value",
 
   auto inst = GENERATE(MULTIKP, NET_MASTER, NET_SP1, NET_SP2);
   SECTION("Loop on the instances") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
       std::string instance = datas[inst]._path;
       //========================================================================================
@@ -120,7 +116,6 @@ TEST_CASE("A LP problem is solved and we can get the LP value",
 
 TEST_CASE("A LP problem is solved and we can get the LP solution",
           "[solve-lp][get-lp-sol]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -128,7 +123,6 @@ TEST_CASE("A LP problem is solved and we can get the LP solution",
 
   auto inst = GENERATE(LP_TOY, SLACKS, REDUCED);
   SECTION("Loop on the instances") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
       std::string instance = datas[inst]._path;
       //========================================================================================
@@ -205,7 +199,6 @@ TEST_CASE("A LP problem is solved and we can get the LP solution",
 
 TEST_CASE("A problem is solved and we can get the optimal solution",
           "[solve-mip]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -213,12 +206,9 @@ TEST_CASE("A problem is solved and we can get the optimal solution",
 
   auto inst = GENERATE(MIP_TOY, LP_TOY, UNBD_PRB, INFEAS_PRB);
   SECTION("Loop on the instances") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       // As CLP is a pure LP solver, it cannot pass this test
       if (solver_name != "CLP") {
-
         std::string instance = datas[inst]._path;
         //========================================================================================
         // Solver declaration

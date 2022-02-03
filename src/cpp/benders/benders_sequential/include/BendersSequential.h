@@ -9,7 +9,7 @@
  * \brief Class use run the benders algorithm in sequential
  */
 class BendersSequential : public BendersBase {
-public:
+ public:
   explicit BendersSequential(BendersOptions const &options, Logger &logger,
                              Writer writer);
   virtual ~BendersSequential() = default;
@@ -17,7 +17,7 @@ public:
   void build_cut();
   void initialise_problems();
 
-protected:
+ protected:
   virtual void free();
   virtual void run();
 };

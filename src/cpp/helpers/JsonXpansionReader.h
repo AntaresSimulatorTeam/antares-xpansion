@@ -9,17 +9,17 @@
  * merge optimizers
  */
 class JsonXpansionReader {
-private:
+ private:
   typedef std::map<std::string, double> Point;
 
-private:
+ private:
   // number of the last iteration
   int _lastIterNb;
 
   // json file content
   Json::Value _input;
 
-public:
+ public:
   /*!
    *  \brief JsonXpansionReader default constructor
    */

@@ -1,6 +1,7 @@
 //
 
 #include "LinkProfile.h"
+
 #include <exception>
 
 /*!

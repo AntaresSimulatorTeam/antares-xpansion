@@ -11,8 +11,7 @@ namespace xpansion {
 namespace logger {
 
 class UserFile : public ILogger {
-
-public:
+ public:
   explicit UserFile(const std::string &filename);
   ~UserFile();
 
@@ -35,12 +34,12 @@ public:
   void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) override;
 
-private:
+ private:
   std::ofstream _file;
   std::unique_ptr<User> _userLog;
 };
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion
 
-#endif // ANTARESXPANSION_CONSOLE_H
+#endif  // ANTARESXPANSION_CONSOLE_H

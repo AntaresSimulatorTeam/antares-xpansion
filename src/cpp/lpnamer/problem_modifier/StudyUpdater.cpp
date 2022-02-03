@@ -92,7 +92,7 @@ int StudyUpdater::updateLinkdataFile(
   }
 
   bool isModernVersion_l = (antaresVersion_ >= 700);
-  LinkdataRecord record_l(isModernVersion_l); // csv file fields
+  LinkdataRecord record_l(isModernVersion_l);  // csv file fields
 
   std::string line_l;
   for (int line_cnt = 0; line_cnt < 8760; ++line_cnt) {

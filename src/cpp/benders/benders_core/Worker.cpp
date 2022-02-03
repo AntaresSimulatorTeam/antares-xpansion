@@ -1,7 +1,7 @@
 #include "Worker.h"
+
 #include "glog/logging.h"
 #include "helpers/Path.h"
-
 #include "solver_utils.h"
 
 Worker::Worker() : _is_master(false), _solver(nullptr) {}
@@ -78,7 +78,6 @@ void Worker::init(Str2Int const &variable_map, std::string const &path_to_mps,
  *  \param lp_status : problem status after optimization
  */
 void Worker::solve(int &lp_status, BendersOptions const &options) {
-
   if (_is_master && _solver->get_n_integer_vars() > 0) {
     lp_status = _solver->solve_mip();
   } else {

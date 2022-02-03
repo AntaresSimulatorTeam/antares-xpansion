@@ -1,9 +1,11 @@
 #include "Candidate.h"
 
 Candidate::Candidate(const CandidateData &data, const LinkProfile &profile)
-    : _profile(profile), _name(data.name),
+    : _profile(profile),
+      _name(data.name),
       _annual_cost_per_mw(data.annual_cost_per_mw),
-      _max_investment(data.max_investment), _unit_size(data.unit_size),
+      _max_investment(data.max_investment),
+      _unit_size(data.unit_size),
       _max_units(data.max_units) {}
 
 double Candidate::direct_profile(size_t timeStep) const {

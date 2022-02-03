@@ -1,11 +1,11 @@
 #include "BendersSequential.h"
-#include "launcher.h"
-#include "solver_utils.h"
 
 #include <algorithm>
 #include <iomanip>
 
 #include "glog/logging.h"
+#include "launcher.h"
+#include "solver_utils.h"
 
 /*!
  *  \brief Constructor of class BendersSequential
@@ -50,10 +50,8 @@ void BendersSequential::initialise_problems() {
  *  \brief Method to free the memory used by each problem
  */
 void BendersSequential::free() {
-  if (_master)
-    _master->free();
-  for (auto &ptr : _map_slaves)
-    ptr.second->free();
+  if (_master) _master->free();
+  for (auto &ptr : _map_slaves) ptr.second->free();
 }
 
 /*!

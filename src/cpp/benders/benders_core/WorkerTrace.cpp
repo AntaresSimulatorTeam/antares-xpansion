@@ -11,7 +11,6 @@ Point WorkerMasterData::get_max_invest() { return *_max_invest; }
 
 LogData defineLogDataFromBendersDataAndTrace(const BendersData &data,
                                              const BendersTrace &trace) {
-
   LogData result;
 
   result.it = data.it;

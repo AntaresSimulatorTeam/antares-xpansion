@@ -1,7 +1,7 @@
+#include "include/helpers/StringUtils.h"
+
 #include <algorithm>
 #include <iterator>
-
-#include "include/helpers/StringUtils.h"
 
 std::string StringUtils::ToLowercase(const std::string &s) {
   std::string result;

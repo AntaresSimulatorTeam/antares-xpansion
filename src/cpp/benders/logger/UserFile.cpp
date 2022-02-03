@@ -1,10 +1,10 @@
+#include "logger/UserFile.h"
+
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <list>
 #include <sstream>
-
-#include "logger/UserFile.h"
 
 namespace xpansion {
 namespace logger {
@@ -54,5 +54,5 @@ void UserFile::log_stop_criterion_reached(
   _userLog->log_stop_criterion_reached(stopping_criterion);
 }
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion

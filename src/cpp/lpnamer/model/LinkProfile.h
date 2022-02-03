@@ -10,8 +10,7 @@
  */
 
 class LinkProfile {
-
-public:
+ public:
   /*!
    *  \brief LinkProfile default constructor
    *
@@ -46,4 +45,4 @@ public:
   std::vector<double> _indirectLinkProfile;
 };
 
-#endif // ANTARESXPANSION_LINKPROFILE_H
+#endif  // ANTARESXPANSION_LINKPROFILE_H

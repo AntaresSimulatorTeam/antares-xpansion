@@ -1,13 +1,13 @@
-#include "gtest/gtest.h"
+#include <fstream>
 
 #include "LinkProfileReader.h"
-#include <fstream>
+#include "gtest/gtest.h"
 
 const char *VALID_PROFILE_NAME = "temp_profile.txt";
 const char *INVALID_PROFILE_NAME = "temp_invalid_profile.txt";
 
 class LinkProfileReaderTest : public ::testing::Test {
-protected:
+ protected:
   static void createProfileFile(const std::string &temp_profile_name,
                                 std::vector<double> &directLinkprofile_l,
                                 std::vector<double> &indirectLinkprofile_l) {
@@ -23,7 +23,6 @@ protected:
   }
 
   static void SetUpTestCase() {
-
     std::vector<double> directLinkprofile_l(8760, 1);
     std::vector<double> indirectLinkprofile_l(8760, 1);
 
@@ -59,7 +58,6 @@ protected:
 };
 
 TEST_F(LinkProfileReaderTest, ReadValidProfile) {
-
   LinkProfile profile = LinkProfileReader::ReadLinkProfile(VALID_PROFILE_NAME);
 
   ASSERT_EQ(profile.getDirectProfile(0), 0);
@@ -69,7 +67,6 @@ TEST_F(LinkProfileReaderTest, ReadValidProfile) {
 }
 
 TEST_F(LinkProfileReaderTest, ReadInvalidProfile) {
-
   try {
     LinkProfile profile =
         LinkProfileReader::ReadLinkProfile(INVALID_PROFILE_NAME);
@@ -82,7 +79,6 @@ TEST_F(LinkProfileReaderTest, ReadInvalidProfile) {
 }
 
 TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760) {
-
   LinkProfile profile = LinkProfileReader::ReadLinkProfile(VALID_PROFILE_NAME);
 
   try {

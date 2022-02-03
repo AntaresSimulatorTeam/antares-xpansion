@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4267) // implicit conversion, possible loss of data
+#pragma warning(disable : 4267)  // implicit conversion, possible loss of data
 #endif
 
 #include <algorithm>

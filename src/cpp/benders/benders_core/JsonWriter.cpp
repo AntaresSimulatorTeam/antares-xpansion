@@ -1,4 +1,5 @@
 #include "JsonWriter.h"
+
 #include "config.h"
 
 namespace clock_utils {
@@ -13,7 +14,7 @@ std::string timeToStr(const std::time_t &time_p) {
 
   return strTime_l;
 }
-} // namespace clock_utils
+}  // namespace clock_utils
 namespace Output {
 JsonWriter::JsonWriter(std::shared_ptr<Clock> p_clock,
                        const std::string &json_filename)
@@ -35,7 +36,7 @@ void JsonWriter::updateEndTime() {
 
 void JsonWriter::write_options(BendersOptions const &bendersOptions_p) {
 // Options
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__)                       \
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
   _output[OPTIONS_C][#name__] = bendersOptions_p.name__;
 #include "BendersOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
@@ -144,4 +145,4 @@ void JsonWriter::end_writing(const IterationsData &iterations_data) {
   write_iterations(iterations_data);
   dump();
 }
-} // namespace Output
+}  // namespace Output

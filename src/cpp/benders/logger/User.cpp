@@ -1,3 +1,5 @@
+#include "logger/User.h"
+
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
@@ -7,7 +9,6 @@
 #include "CandidateLog.h"
 #include "Commons.h"
 #include "IterationResultLog.h"
-#include "logger/User.h"
 
 namespace xpansion {
 namespace logger {
@@ -48,7 +49,6 @@ void User::log_at_iteration_end(const LogData &d) {
 }
 
 void User::log_at_ending(const LogData &d) {
-
   const double overall_cost = d.slave_cost + d.invest_cost;
   _stream << indent_1 << "Best solution = it " << d.best_it << std::endl;
   _stream << indent_1 << " Overall cost = "
@@ -65,5 +65,5 @@ void User::log_stop_criterion_reached(
           << " reached" << std::endl;
 }
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion

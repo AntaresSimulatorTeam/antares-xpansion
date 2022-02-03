@@ -10,14 +10,14 @@ typedef std::vector<SimplexBasisPackage> AllBasisPackage;
 typedef std::shared_ptr<SimplexBasis> SimplexBasisPtr;
 
 class SimplexBasisHandler {
-public:
+ public:
   IntVector &get_col();
   IntVector &get_row();
 
   IntVector const &get_col() const;
   IntVector const &get_row() const;
 
-public:
+ public:
   SimplexBasisHandler();
   explicit SimplexBasisHandler(SimplexBasisPtr const &data);
   explicit SimplexBasisHandler(SimplexBasisPtr &data);

@@ -1,16 +1,14 @@
-#include "gtest/gtest.h"
-
 #include <fstream>
 #include <sstream>
 
 #include "JsonXpansionReader.h"
+#include "gtest/gtest.h"
 
 class JsonXpansionReaderTest : public ::testing::Test {
-protected:
+ protected:
   static JsonXpansionReader *jsonXpansionReader_;
 
   static void SetUpTestCase() {
-
     // called before 1st test
     std::string content_l;
     std::ofstream file_l;
@@ -18,7 +16,8 @@ protected:
     // dummy interco tmp file name
     file_l.open("temp_out.json");
 
-    content_l = "\
+    content_l =
+        "\
 {\n\
 	\"antares\" : \n\
 	{\n\

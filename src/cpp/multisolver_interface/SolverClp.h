@@ -1,10 +1,9 @@
 #pragma once
 
 #include "ClpSimplex.hpp"
-#include "multisolver_interface/SolverAbstract.h"
-
 #include "CoinHelperFunctions.hpp"
 #include "CoinIndexedVector.hpp"
+#include "multisolver_interface/SolverAbstract.h"
 
 enum CLP_STATUS {
   CLP_OPTIMAL,
@@ -19,14 +18,13 @@ enum CLP_STATUS {
  * \brief Daughter class of AsbtractSolver implementing solver XPRESS FICO
  */
 class SolverClp : public SolverAbstract {
-
   /*************************************************************************************************
   ----------------------------------------    ATTRIBUTES
   ---------------------------------------
   *************************************************************************************************/
   static int _NumberOfProblems; /*!< Counter of the total number of Cplex
                             problems declared to set or end the environment */
-public:
+ public:
   ClpSimplex _clp;
   CoinMessageHandler _message_handler;
 
@@ -34,7 +32,7 @@ public:
   -----------------------------------    Constructor/Desctructor
   --------------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief Default constructor of a CLP solver
    */
@@ -63,7 +61,7 @@ public:
   ------    Destruction or creation of inner strctures and datas, closing
   environments    ----------
   *************************************************************************************************/
-public:
+ public:
   virtual void init();
   virtual void free();
 
@@ -71,7 +69,7 @@ public:
   -------------------------------    Reading & Writing problems
   -------------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual void write_prob_mps(const std::string &filename);
   virtual void write_prob_lp(const std::string &filename);
 
@@ -84,7 +82,7 @@ public:
   -----------------------    Get general informations about problem
   ----------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual int get_ncols() const;
   virtual int get_nrows() const;
   virtual int get_nelems() const;
@@ -108,7 +106,7 @@ public:
   ------------------------------    Methods to modify problem
   ----------------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual void del_rows(int first, int last);
   virtual void add_rows(int newrows, int newnz, const char *qrtype,
                         const double *rhs, const double *range,
@@ -135,7 +133,7 @@ public:
   -----------------------------    Methods to solve the problem
   ---------------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual int solve_lp();
   virtual int solve_mip();
 
@@ -143,7 +141,7 @@ public:
   -------------------------    Methods to get solutions information
   -----------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
   * @brief Returns the current basis into the user’s data arrays.
   *
@@ -170,7 +168,7 @@ public:
   ------------------------    Methods to set algorithm or logs levels
   ---------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual void set_output_log_level(int loglevel);
   virtual void set_algorithm(std::string const &algo);
   virtual void set_threads(int n_threads);

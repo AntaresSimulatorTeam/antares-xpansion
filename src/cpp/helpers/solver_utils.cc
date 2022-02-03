@@ -3,7 +3,6 @@
 void solver_getrows(SolverAbstract::Ptr const solver_p,
                     std::vector<int> &mstart_p, std::vector<int> &mclind_p,
                     std::vector<double> &dmatval_p, int first_p, int last_p) {
-
   int nelems_returned = 0;
   solver_p->get_rows(mstart_p.data(), mclind_p.data(), dmatval_p.data(),
                      solver_p->get_nelems(), &nelems_returned, first_p, last_p);
@@ -134,7 +133,6 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
 
 void solver_rename_vars(SolverAbstract::Ptr outSolver_p,
                         const std::vector<std::string> &names_p) {
-
   for (int i = 0; i < outSolver_p->get_ncols(); i++) {
     outSolver_p->chg_col_name(i, names_p[i]);
   }

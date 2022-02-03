@@ -1,7 +1,6 @@
-#include "glog/logging.h"
-
 #include "WorkerMaster.h"
 
+#include "glog/logging.h"
 #include "solver_utils.h"
 
 WorkerMaster::WorkerMaster() {
@@ -224,7 +223,6 @@ WorkerMaster::WorkerMaster(Str2Int const &variable_map,
                            std::string const &path_to_mps,
                            BendersOptions const &options, int nslaves)
     : Worker() {
-
   _is_master = true;
   init(variable_map, path_to_mps, options.SOLVER_NAME, options.LOG_LEVEL);
   _id_alpha = 0;

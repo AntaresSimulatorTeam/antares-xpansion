@@ -1,15 +1,14 @@
 //
 
+#include "CandidatesINIReader.h"
+
 #include <exception>
 
-#include "helpers/StringUtils.h"
-
-#include "CandidatesINIReader.h"
 #include "INIReader.h"
+#include "helpers/StringUtils.h"
 
 CandidatesINIReader::CandidatesINIReader(const std::string &antaresIntercoFile,
                                          const std::string &areaFile) {
-
   _intercoFileData = ReadAntaresIntercoFile(antaresIntercoFile);
   _areaNames = ReadAreaFile(areaFile);
 
@@ -25,7 +24,6 @@ CandidatesINIReader::CandidatesINIReader(const std::string &antaresIntercoFile,
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
     const std::string &antaresIntercoFile) {
-
   std::vector<IntercoFileData> result;
 
   std::ifstream interco_filestream(antaresIntercoFile);
@@ -38,7 +36,6 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
   while (std::getline(interco_filestream, line)) {
     std::stringstream buffer(line);
     if (!line.empty() && line.front() != '#') {
-
       IntercoFileData intercoData;
       buffer >> intercoData.index_interco;
       buffer >> intercoData.index_pays_origine;
@@ -49,9 +46,8 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
   }
   return result;
 }
-std::vector<std::string>
-CandidatesINIReader::ReadAreaFile(const std::string &areaFile) {
-
+std::vector<std::string> CandidatesINIReader::ReadAreaFile(
+    const std::string &areaFile) {
   std::vector<std::string> result;
 
   std::ifstream area_filestream(areaFile);
@@ -80,7 +76,6 @@ std::string getStrVal(const INIReader &reader, const std::string &sectionName,
 
 double getDblVal(const INIReader &reader, const std::string &sectionName,
                  const std::string &key) {
-
   double d_val(0);
 
   std::string val = reader.Get(sectionName, key, "NA");
@@ -94,7 +89,6 @@ double getDblVal(const INIReader &reader, const std::string &sectionName,
 
 bool getBoolVal(const INIReader &reader, const std::string &sectionName,
                 const std::string &key) {
-
   bool result = reader.GetBoolean(sectionName, key, true);
   return result;
 }
@@ -105,15 +99,14 @@ bool CandidatesINIReader::checkArea(std::string const &areaName_p) const {
   return found_l;
 }
 
-std::vector<CandidateData>
-CandidatesINIReader::readCandidateData(const std::string &candidateFile) {
+std::vector<CandidateData> CandidatesINIReader::readCandidateData(
+    const std::string &candidateFile) {
   std::vector<CandidateData> result;
 
   INIReader reader(candidateFile);
   std::stringstream ss;
   std::set<std::string> sections = reader.Sections();
   for (auto const &sectionName : sections) {
-
     CandidateData candidateData =
         readCandidateSection(candidateFile, reader, sectionName);
     result.push_back(candidateData);
@@ -122,10 +115,9 @@ CandidatesINIReader::readCandidateData(const std::string &candidateFile) {
   return result;
 }
 
-CandidateData
-CandidatesINIReader::readCandidateSection(const std::string &candidateFile,
-                                          const INIReader &reader,
-                                          const std::string &sectionName) {
+CandidateData CandidatesINIReader::readCandidateSection(
+    const std::string &candidateFile, const INIReader &reader,
+    const std::string &sectionName) {
   CandidateData candidateData;
   candidateData.name =
       StringUtils::ToLowercase(getStrVal(reader, sectionName, "name"));

@@ -1,11 +1,13 @@
 #pragma once
 
+#include <multisolver_interface/SolverAbstract.h>
+
+#include <memory>
+
 #include "ActiveLinks.h"
 #include "Candidate.h"
 #include "ProblemModifier.h"
 #include "common_lpnamer.h"
-#include <memory>
-#include <multisolver_interface/SolverAbstract.h>
 
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
@@ -19,8 +21,7 @@ struct ProblemData {
 };
 
 class LinkProblemsGenerator {
-
-public:
+ public:
   LinkProblemsGenerator(const std::vector<ActiveLink> &links,
                         const std::string &solver_name)
       : _links(links), _solver_name(solver_name) {}
@@ -29,12 +30,12 @@ public:
       std::string const &root,
       std::map<std::pair<std::string, std::string>, int> &couplings) const;
 
-private:
+ private:
   std::vector<ProblemData> readMPSList(std::string const &mps_filePath_p) const;
 
-  void
-  treat(std::string const &root, ProblemData const &,
-        std::map<std::pair<std::string, std::string>, int> &couplings) const;
+  void treat(
+      std::string const &root, ProblemData const &,
+      std::map<std::pair<std::string, std::string>, int> &couplings) const;
 
   const std::vector<ActiveLink> &_links;
   std::string _solver_name;

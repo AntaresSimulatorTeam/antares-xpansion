@@ -1,6 +1,6 @@
-#include <cassert>
-
 #include "SolverCplex.h"
+
+#include <cassert>
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
@@ -229,9 +229,8 @@ std::vector<std::string> SolverCplex::get_row_names(int first, int last) {
   return names;
 }
 
-std::vector<std::string>
-SolverCplex::get_col_names(int first, int last,
-                           std::vector<std::string> &names) {
+std::vector<std::string> SolverCplex::get_col_names(
+    int first, int last, std::vector<std::string> &names) {
   std::vector<std::string> names;
   names.reserve(1 + last - first);
 

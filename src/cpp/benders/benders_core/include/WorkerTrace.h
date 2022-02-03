@@ -8,7 +8,7 @@
  * \brief Class use to store trace information during the algorithm run
  */
 class WorkerMasterData {
-public:
+ public:
   WorkerMasterData() { _valid = false; }
 
   bool _valid;

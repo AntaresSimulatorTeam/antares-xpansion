@@ -1,9 +1,9 @@
 #include "BendersBase.h"
+
+#include "glog/logging.h"
 #include "helpers/Path.h"
 #include "launcher.h"
 #include "solver_utils.h"
-
-#include "glog/logging.h"
 
 BendersBase::BendersBase(BendersOptions const &options, Logger &logger,
                          Writer writer)
@@ -53,7 +53,6 @@ void BendersBase::print_csv() {
 }
 
 void BendersBase::print_csv_iteration(std::ostream &file, int ite) {
-
   if (_trace[ite]->_valid) {
     Point xopt;
     // Write first problem : use result of best iteration
@@ -442,8 +441,8 @@ Output::IterationsData BendersBase::output_data() const {
   return iterations_data;
 }
 
-Output::Iteration
-BendersBase::iteration(const WorkerMasterDataPtr &masterDataPtr_l) const {
+Output::Iteration BendersBase::iteration(
+    const WorkerMasterDataPtr &masterDataPtr_l) const {
   Output::Iteration iteration;
   iteration.time = masterDataPtr_l->_time;
   iteration.lb = masterDataPtr_l->_lb;
@@ -459,8 +458,8 @@ BendersBase::iteration(const WorkerMasterDataPtr &masterDataPtr_l) const {
   iteration.candidates = candidates_data(masterDataPtr_l);
   return iteration;
 }
-Output::CandidatesVec
-BendersBase::candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const {
+Output::CandidatesVec BendersBase::candidates_data(
+    const WorkerMasterDataPtr &masterDataPtr_l) const {
   Output::CandidatesVec candidates_vec;
   for (const auto &pairNameValue_l : masterDataPtr_l->get_point()) {
     Output::CandidateData candidate_data;
@@ -496,13 +495,13 @@ Output::SolutionData BendersBase::solution() const {
 
 std::string BendersBase::status_from_criterion() const {
   switch (_data.stopping_criterion) {
-  case StoppingCriterion::absolute_gap:
-  case StoppingCriterion::relative_gap:
-  case StoppingCriterion::max_iteration:
-  case StoppingCriterion::timelimit:
-    return Output::STATUS_OPTIMAL_C;
+    case StoppingCriterion::absolute_gap:
+    case StoppingCriterion::relative_gap:
+    case StoppingCriterion::max_iteration:
+    case StoppingCriterion::timelimit:
+      return Output::STATUS_OPTIMAL_C;
 
-  default:
-    return Output::STATUS_ERROR_C;
+    default:
+      return Output::STATUS_ERROR_C;
   }
 }

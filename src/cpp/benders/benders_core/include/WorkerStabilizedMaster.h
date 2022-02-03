@@ -5,7 +5,7 @@
 enum BundleStep { SERIOUS_STEP, NULL_STEP };
 
 class BundleIteration {
-public:
+ public:
   double _prediction;
   double _update;
   int _nb_serious_step;
@@ -19,8 +19,8 @@ public:
 };
 
 class WorkerStabilizedMaster : public WorkerMaster {
-public:
-public:
+ public:
+ public:
   WorkerStabilizedMaster();
   WorkerStabilizedMaster(std::map<std::string, int> const &variable_name,
                          std::string const &problem_name,
@@ -33,10 +33,10 @@ public:
 
   // void add_cut(Point const & s, Point const & x0, double rhs);
   // void add_cut_slave(int i, Point const & s, Point const & x0, double rhs);
-public:
+ public:
   void update_center(Point const &);
 
-public:
+ public:
   PointPtr _center;
 
   std::map<std::string, double> _weights;

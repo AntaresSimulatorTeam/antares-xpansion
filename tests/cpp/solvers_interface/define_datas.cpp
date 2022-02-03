@@ -1,7 +1,6 @@
 #include "define_datas.hpp"
 
 void fill_datas(AllDatas &datas) {
-
   datas.clear();
 
 #if defined(WIN32) || defined(_WIN32)

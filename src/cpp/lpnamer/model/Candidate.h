@@ -5,7 +5,6 @@
 #include "common_lpnamer.h"
 
 struct CandidateData {
-
   bool enable = true;
 
   std::string link_name;
@@ -29,8 +28,7 @@ struct CandidateData {
  *
  */
 class Candidate {
-
-public:
+ public:
   Candidate() = default;
   Candidate(const CandidateData &data, const LinkProfile &profile);
 
@@ -49,7 +47,7 @@ public:
   std::string get_name() const;
   void set_name(const std::string &name);
 
-private:
+ private:
   LinkProfile _profile;
   std::string _name;
   double _annual_cost_per_mw;
@@ -58,4 +56,4 @@ private:
   double _max_units;
 };
 
-#endif // ANTARESXPANSION_CANDIDATE_H
+#endif  // ANTARESXPANSION_CANDIDATE_H

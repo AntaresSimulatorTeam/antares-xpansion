@@ -1,7 +1,7 @@
 #include "LinkProfileReader.h"
+
 #include "helpers/Path.h"
 LinkProfile LinkProfileReader::ReadLinkProfile(const std::string &filename) {
-
   std::ifstream infile(filename);
   if (!infile.good()) {
     throw std::runtime_error("unable to open : " + filename);
@@ -46,7 +46,6 @@ void LinkProfileReader::importProfile(
     const std::string &capacitySubfolder, const std::string &profile_name) {
   if (!profile_name.empty() &&
       mapLinkProfile.find(profile_name) == mapLinkProfile.end()) {
-
     mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile(
         (Path(capacitySubfolder) / profile_name).get_str());
   }

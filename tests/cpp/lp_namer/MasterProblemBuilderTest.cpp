@@ -1,9 +1,10 @@
 //
 // Created by s90365 on 23/08/2021.
 //
+#include <solver_utils.h>
+
 #include "MasterProblemBuilder.h"
 #include "gtest/gtest.h"
-#include <solver_utils.h>
 
 TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
   std::string solver_name = "CBC";

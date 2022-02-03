@@ -1,11 +1,10 @@
-#include "gtest/gtest.h"
-
 #include <fstream>
 
 #include "StudyUpdater.h"
+#include "gtest/gtest.h"
 
 class LinkdataRecordTest : public ::testing::Test {
-protected:
+ protected:
   static void SetUpTestCase() {
     // called before first test
   }

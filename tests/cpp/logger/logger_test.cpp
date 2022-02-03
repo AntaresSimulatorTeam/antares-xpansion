@@ -1,18 +1,17 @@
+#include <cstdio>
+#include <iostream>
 #include <ostream>
 
-#include "gtest/gtest.h"
-
 #include "core/ILogger.h"
+#include "gtest/gtest.h"
 #include "logger/Master.h"
 #include "logger/User.h"
 #include "logger/UserFile.h"
-#include <cstdio>
-#include <iostream>
 
 using namespace xpansion::logger;
 
 class FileLoggerTest : public ::testing::Test {
-public:
+ public:
   void SetUp() { _fileName = std::tmpnam(nullptr); }
 
   void TearDown() { std::remove(_fileName.c_str()); }
@@ -21,7 +20,6 @@ public:
 };
 
 TEST_F(FileLoggerTest, InvalidFileNotified) {
-
   const std::string &expectedErrorString =
       "Invalid file name passed as parameter";
   std::stringstream redirectedErrorStream;
@@ -65,8 +63,7 @@ TEST_F(FileLoggerTest, FileHasBeenWritten) {
 }
 
 class UserLoggerTest : public ::testing::Test {
-
-public:
+ public:
   const std::string indent_0 = "\t\t";
   const std::string indent_1 = "\t";
 
@@ -88,7 +85,6 @@ TEST_F(UserLoggerTest, EmptyStreamAtInit) {
 }
 
 TEST_F(UserLoggerTest, InvalidStreamNotified) {
-
   const std::string expectedErrorString =
       "Invalid stream passed as parameter\n";
 
@@ -359,7 +355,7 @@ TEST_F(UserLoggerTest, LogTotalDuration) {
 }
 
 class SimpleLoggerMock : public ILogger {
-public:
+ public:
   SimpleLoggerMock() {
     _initCall = false;
     _iterationStartCall = false;
@@ -417,7 +413,7 @@ public:
 };
 
 class MasterLoggerTest : public ::testing::Test {
-public:
+ public:
   MasterLoggerTest() {
     _logger = std::make_shared<SimpleLoggerMock>();
     _logger2 = std::make_shared<SimpleLoggerMock>();

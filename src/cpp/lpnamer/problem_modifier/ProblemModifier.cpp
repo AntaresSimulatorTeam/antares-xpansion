@@ -1,6 +1,8 @@
 #include "ProblemModifier.h"
-#include "solver_utils.h"
+
 #include <algorithm>
+
+#include "solver_utils.h"
 
 ProblemModifier::ProblemModifier() = default;
 
@@ -32,8 +34,8 @@ void ProblemModifier::change_upper_bounds_to_pos_inf(
   _math_problem->chg_bounds(col_ids, ub_char, pos_inf);
 }
 
-unsigned int
-ProblemModifier::get_candidate_col_id(const std::string &cand_name) const {
+unsigned int ProblemModifier::get_candidate_col_id(
+    const std::string &cand_name) const {
   if (_candidate_col_id.find(cand_name) == _candidate_col_id.end()) {
     throw std::runtime_error("Candidate '" + cand_name +
                              "' not added in problem");
@@ -113,7 +115,6 @@ void ProblemModifier::add_new_ntc_constraints(
 void ProblemModifier::add_new_direct_cost_constraints(
     const std::vector<ActiveLink> &active_links,
     const std::map<linkId, ColumnsToChange> &p_cost_columns) {
-
   std::vector<double> dmatval;
   std::vector<int> colind;
   std::vector<char> rowtype;
@@ -138,7 +139,6 @@ void ProblemModifier::add_new_direct_cost_constraints(
 void ProblemModifier::add_new_indirect_cost_constraints(
     const std::vector<ActiveLink> &active_links,
     const std::map<linkId, ColumnsToChange> &p_cost_columns) {
-
   std::vector<double> dmatval;
   std::vector<int> colind;
   std::vector<char> rowtype;

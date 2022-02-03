@@ -123,15 +123,13 @@ https://github.com/benhoyt/inih
 /* Strip whitespace chars off end of given string, in place. Return s. */
 inline static char *rstrip(char *s) {
   char *p = s + strlen(s);
-  while (p > s && isspace((unsigned char)(*--p)))
-    *p = '\0';
+  while (p > s && isspace((unsigned char)(*--p))) *p = '\0';
   return s;
 }
 
 /* Return pointer to first non-whitespace char in given string. */
 inline static char *lskip(const char *s) {
-  while (*s && isspace((unsigned char)(*s)))
-    s++;
+  while (*s && isspace((unsigned char)(*s))) s++;
   return (char *)s;
 }
 
@@ -209,15 +207,13 @@ inline int ini_parse_stream(ini_reader reader, void *stream,
 
 #if INI_ALLOW_INLINE_COMMENTS
       end = find_chars_or_comment(start, NULL);
-      if (*end)
-        *end = '\0';
+      if (*end) *end = '\0';
       rstrip(start);
 #endif
 
       /* Non-blank line with leading whitespace, treat as continuation
          of previous name's value (as per Python configparser). */
-      if (!handler(user, section, prev_name, start) && !error)
-        error = lineno;
+      if (!handler(user, section, prev_name, start) && !error) error = lineno;
     }
 #endif
     else if (*start == '[') {
@@ -240,15 +236,13 @@ inline int ini_parse_stream(ini_reader reader, void *stream,
         value = lskip(end + 1);
 #if INI_ALLOW_INLINE_COMMENTS
         end = find_chars_or_comment(value, NULL);
-        if (*end)
-          *end = '\0';
+        if (*end) *end = '\0';
 #endif
         rstrip(value);
 
         /* Valid name[=:]value pair found, call handler */
         strncpy0(prev_name, name, sizeof(prev_name));
-        if (!handler(user, section, name, value) && !error)
-          error = lineno;
+        if (!handler(user, section, name, value) && !error) error = lineno;
       } else if (!error) {
         /* No '=' or ':' found on name[=:]value line */
         error = lineno;
@@ -256,8 +250,7 @@ inline int ini_parse_stream(ini_reader reader, void *stream,
     }
 
 #if INI_STOP_ON_FIRST_ERROR
-    if (error)
-      break;
+    if (error) break;
 #endif
   }
 
@@ -279,8 +272,7 @@ inline int ini_parse(const char *filename, ini_handler handler, void *user) {
   int error;
 
   file = fopen(filename, "r");
-  if (!file)
-    return -1;
+  if (!file) return -1;
   error = ini_parse_file(file, handler, user);
   fclose(file);
   return error;
@@ -298,7 +290,7 @@ inline int ini_parse(const char *filename, ini_handler handler, void *user) {
 // Read an INI file into easy-to-access name/value pairs. (Note that I've gone
 // for simplicity here rather than speed, but it should be pretty decent.)
 class INIReader {
-public:
+ public:
   // Empty Constructor
   INIReader(){};
 
@@ -339,7 +331,7 @@ public:
   bool GetBoolean(std::string section, std::string name,
                   bool default_value) const;
 
-protected:
+ protected:
   int _error;
   std::map<std::string, std::string> _values;
   std::set<std::string> _sections;
@@ -348,7 +340,7 @@ protected:
                           const char *value);
 };
 
-#endif // __INIREADER_H__
+#endif  // __INIREADER_H__
 
 #ifndef __INIREADER__
 #define __INIREADER__
@@ -421,11 +413,10 @@ inline int INIReader::ValueHandler(void *user, const char *section,
                                    const char *name, const char *value) {
   INIReader *reader = (INIReader *)user;
   std::string key = MakeKey(section, name);
-  if (reader->_values[key].size() > 0)
-    reader->_values[key] += "\n";
+  if (reader->_values[key].size() > 0) reader->_values[key] += "\n";
   reader->_values[key] += value;
   reader->_sections.insert(section);
   return 1;
 }
 
-#endif // __INIREADER__
+#endif  // __INIREADER__

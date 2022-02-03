@@ -16,8 +16,7 @@ namespace xpansion {
 namespace logger {
 
 class Master : public ILogger {
-
-public:
+ public:
   Master() = default;
   ~Master() = default;
 
@@ -44,11 +43,11 @@ public:
   void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) override;
 
-private:
+ private:
   std::list<std::shared_ptr<ILogger>> _loggers;
 };
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion
 
-#endif // ANTARESXPANSION_MASTER_H
+#endif  // ANTARESXPANSION_MASTER_H

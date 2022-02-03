@@ -12,14 +12,15 @@ LinkdataRecord::LinkdataRecord(double directCapacity_p,
                                double directHurdlesCost_p,
                                double indirectHurdlesCost_p,
                                double impedances_p)
-    : modernAntaresVersion_(false), fileColumns{directCapacity_p,
-                                                indirectCapacity_p,
-                                                directHurdlesCost_p,
-                                                indirectHurdlesCost_p,
-                                                impedances_p,
-                                                0,
-                                                0,
-                                                0}
+    : modernAntaresVersion_(false),
+      fileColumns{directCapacity_p,
+                  indirectCapacity_p,
+                  directHurdlesCost_p,
+                  indirectHurdlesCost_p,
+                  impedances_p,
+                  0,
+                  0,
+                  0}
 
 {}
 

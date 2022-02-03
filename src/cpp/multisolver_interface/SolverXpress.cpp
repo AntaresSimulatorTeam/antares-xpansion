@@ -1,7 +1,7 @@
+#include "SolverXpress.h"
+
 #include <cassert>
 #include <cstring>
-
-#include "SolverXpress.h"
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
@@ -134,7 +134,6 @@ void SolverXpress::read_prob(const char *prob_name, const char *flags) {
 }
 
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv) {
-
   std::string error = "Copy XPRESS problem : TO DO WHEN NEEDED";
   throw NotImplementedFeatureSolverException(error);
 }
@@ -487,26 +486,23 @@ void SolverXpress::set_simplex_iter(int iter) {
 void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,
                           int nLen, int nMsglvl) {
   std::list<std::ostream *> *ptr = NULL;
-  if (strPtr != NULL)
-    ptr = (std::list<std::ostream *> *)strPtr;
+  if (strPtr != NULL) ptr = (std::list<std::ostream *> *)strPtr;
   switch (nMsglvl) {
-
-    /* Print Optimizer error messages and warnings */
-  case 4: /* error */
-  case 3: /* warning */
-  case 2: /* dialogue */
-  case 1: /* information */
-    if (ptr != NULL) {
-      for (auto const &stream : *ptr)
-        *stream << sMsg << std::endl;
-    } else {
-      std::cout << sMsg << std::endl;
-    }
-    break;
-    /* Exit and flush buffers */
-  default:
-    fflush(NULL);
-    break;
+      /* Print Optimizer error messages and warnings */
+    case 4: /* error */
+    case 3: /* warning */
+    case 2: /* dialogue */
+    case 1: /* information */
+      if (ptr != NULL) {
+        for (auto const &stream : *ptr) *stream << sMsg << std::endl;
+      } else {
+        std::cout << sMsg << std::endl;
+      }
+      break;
+      /* Exit and flush buffers */
+    default:
+      fflush(NULL);
+      break;
   }
 }
 
@@ -517,8 +513,7 @@ void errormsg(XPRSprob &_xprs, const char *sSubName, int nLineNo,
   printf("The subroutine %s has failed on line %d\n", sSubName, nLineNo);
 
   /* Append the error code if it exists */
-  if (nErrCode != -1)
-    printf("with error code %d.\n\n", nErrCode);
+  if (nErrCode != -1) printf("with error code %d.\n\n", nErrCode);
 
   /* Append Optimizer error number, if available */
   if (nErrCode == 32) {

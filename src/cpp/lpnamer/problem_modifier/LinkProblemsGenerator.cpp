@@ -1,6 +1,7 @@
+#include "LinkProblemsGenerator.h"
+
 #include <algorithm>
 
-#include "LinkProblemsGenerator.h"
 #include "VariableFileReader.h"
 #include "helpers/Path.h"
 #include "helpers/StringUtils.h"
@@ -10,8 +11,8 @@ ProblemData::ProblemData(const std::string &problem_mps,
                          const std::string &variables_txt)
     : _problem_mps(problem_mps), _variables_txt(variables_txt) {}
 
-std::vector<ProblemData>
-LinkProblemsGenerator::readMPSList(std::string const &mps_filePath_p) const {
+std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
+    std::string const &mps_filePath_p) const {
   std::string line;
   std::vector<ProblemData> result;
   std::ifstream mps_filestream(mps_filePath_p.c_str());
@@ -22,7 +23,6 @@ LinkProblemsGenerator::readMPSList(std::string const &mps_filePath_p) const {
   while (std::getline(mps_filestream, line)) {
     std::stringstream buffer(line);
     if (!line.empty() && line.front() != '#') {
-
       std::string ProblemMps;
       std::string VariablesTxt;
       std::string ConstraintsTxt;
@@ -52,7 +52,6 @@ LinkProblemsGenerator::readMPSList(std::string const &mps_filePath_p) const {
 void LinkProblemsGenerator::treat(
     std::string const &root, ProblemData const &problemData,
     std::map<std::pair<std::string, std::string>, int> &couplings) const {
-
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const mps_name = (Path(root) / problemData._problem_mps).get_str();
   auto const var_name = (Path(root) / problemData._variables_txt).get_str();
@@ -117,7 +116,6 @@ void LinkProblemsGenerator::treat(
 void LinkProblemsGenerator::treatloop(
     std::string const &root,
     std::map<std::pair<std::string, std::string>, int> &couplings) const {
-
   auto const mps_file_name = (Path(root) / MPS_TXT).get_str();
 
   for (auto const &mps : readMPSList(mps_file_name)) {

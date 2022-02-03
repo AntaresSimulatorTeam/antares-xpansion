@@ -1,8 +1,9 @@
 #pragma once
+#include <iostream>
+
 #include "catch2.hpp"
 #include "define_datas.hpp"
 #include "multisolver_interface/Solver.h"
-#include <iostream>
 
 TEST_CASE("Un objet solveur peut etre cree et detruit", "[read][init]") {
   AllDatas datas;
@@ -12,7 +13,6 @@ TEST_CASE("Un objet solveur peut etre cree et detruit", "[read][init]") {
 
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Construction and destruction") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
       std::string instance = datas[inst]._path;
 
@@ -39,9 +39,7 @@ TEST_CASE("MPS file can be read and we can get number of columns",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration
@@ -71,9 +69,7 @@ TEST_CASE("MPS file can be read and we can get number of rows",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
@@ -100,9 +96,7 @@ TEST_CASE("MPS file can be read and we can get number of integer variables",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration
@@ -119,9 +113,10 @@ TEST_CASE("MPS file can be read and we can get number of integer variables",
   }
 }
 
-TEST_CASE("MPS file can be read and we can get number of non zero elements in "
-          "the matrix",
-          "[read][read-elements]") {
+TEST_CASE(
+    "MPS file can be read and we can get number of non zero elements in "
+    "the matrix",
+    "[read][read-elements]") {
   AllDatas datas;
   fill_datas(datas);
 
@@ -130,9 +125,7 @@ TEST_CASE("MPS file can be read and we can get number of non zero elements in "
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
@@ -151,7 +144,6 @@ TEST_CASE("MPS file can be read and we can get number of non zero elements in "
 
 TEST_CASE("MPS file can be read and we can get objective function coefficients",
           "[read][read-obj]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -160,9 +152,7 @@ TEST_CASE("MPS file can be read and we can get objective function coefficients",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
@@ -187,7 +177,6 @@ TEST_CASE("MPS file can be read and we can get objective function coefficients",
 
 TEST_CASE("MPS file can be read and we can get matrix coefficients",
           "[read][read-rows]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -196,9 +185,7 @@ TEST_CASE("MPS file can be read and we can get matrix coefficients",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
@@ -237,7 +224,6 @@ TEST_CASE("MPS file can be read and we can get matrix coefficients",
 
 TEST_CASE("MPS file can be read and we can get right hand side",
           "[read][read-rhs]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -246,9 +232,7 @@ TEST_CASE("MPS file can be read and we can get right hand side",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration
@@ -275,7 +259,6 @@ TEST_CASE("MPS file can be read and we can get right hand side",
 
 TEST_CASE("MPS file can be read and we can get row types",
           "[read][read-rowtypes]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -284,9 +267,7 @@ TEST_CASE("MPS file can be read and we can get row types",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver Declaration
@@ -311,7 +292,6 @@ TEST_CASE("MPS file can be read and we can get row types",
 
 TEST_CASE("MPS file can be read and we can get types of columns",
           "[read][read-coltypes]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -320,9 +300,7 @@ TEST_CASE("MPS file can be read and we can get types of columns",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver Declaration
@@ -346,7 +324,6 @@ TEST_CASE("MPS file can be read and we can get types of columns",
 
 TEST_CASE("MPS file can be read and we can get lower bounds on variables",
           "[read][read-lb]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -355,9 +332,7 @@ TEST_CASE("MPS file can be read and we can get lower bounds on variables",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
@@ -381,7 +356,6 @@ TEST_CASE("MPS file can be read and we can get lower bounds on variables",
 
 TEST_CASE("MPS file can be read and we can get upper bounds on variables",
           "[read][read-ub]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -390,9 +364,7 @@ TEST_CASE("MPS file can be read and we can get upper bounds on variables",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
@@ -424,7 +396,6 @@ TEST_CASE("MPS file can be read and we can get upper bounds on variables",
 TEST_CASE(
     "MPS file can be read and we can get every information about the problem",
     "[read]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -433,9 +404,7 @@ TEST_CASE(
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2, SLACKS, REDUCED);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -529,10 +498,10 @@ TEST_CASE(
   }
 }
 
-TEST_CASE("We can get the names of variables and constraints present in MPS "
-          "file after read",
-          "[read][read-names]") {
-
+TEST_CASE(
+    "We can get the names of variables and constraints present in MPS "
+    "file after read",
+    "[read][read-names]") {
   AllDatas datas;
   fill_datas(datas);
 
@@ -540,9 +509,7 @@ TEST_CASE("We can get the names of variables and constraints present in MPS "
   int ind = 0;
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
@@ -584,7 +551,6 @@ TEST_CASE("We can get the names of variables and constraints present in MPS "
 
 TEST_CASE("We can get the indices of rows and columns by their names",
           "[read][get-indices]") {
-
   AllDatas datas;
   fill_datas(datas);
 
@@ -592,9 +558,7 @@ TEST_CASE("We can get the indices of rows and columns by their names",
   int ind = 0;
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Reading instance") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
-
       std::string instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
@@ -640,7 +604,6 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]") {
 
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Construction and destruction") {
-
     for (auto const &solver_name : factory.get_solvers_list()) {
       std::string instance = datas[inst]._path;
 

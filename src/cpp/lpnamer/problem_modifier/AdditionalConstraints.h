@@ -11,14 +11,13 @@
  * variables coeffs
  */
 class AdditionalConstraint : public std::map<std::string, double> {
-
-private:
+ private:
   std::string _sectionName;
   std::string _name;
   std::string _sign;
   double _rhs;
 
-public:
+ public:
   /**
    * \brief AdditionalConstraint default constructor
    */
@@ -37,7 +36,9 @@ public:
   AdditionalConstraint(std::string const &sectionName_p,
                        std::string const &constraintName_p,
                        std::string const &sign_p, double rhs_p)
-      : _sectionName(sectionName_p), _name(constraintName_p), _sign(sign_p),
+      : _sectionName(sectionName_p),
+        _name(constraintName_p),
+        _sign(sign_p),
         _rhs(rhs_p) {}
 
   /**
@@ -87,12 +88,12 @@ public:
  */
 struct AdditionalConstraints
     : public std::map<std::string, AdditionalConstraint> {
-private:
+ private:
   // set of variables to which a binary corresponding variable will be created
   std::map<std::string, std::string> _variablesToBinarise;
   std::set<std::string> _binaryVariables;
 
-public:
+ public:
   /*!
    *  \brief default constructor for struct AdditionalConstraints
    */

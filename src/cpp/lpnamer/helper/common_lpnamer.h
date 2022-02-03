@@ -1,15 +1,14 @@
 #pragma once
 
-#include <list>
-#include <map>
-#include <set>
-#include <string>
-
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <list>
+#include <map>
+#include <set>
 #include <sstream>
+#include <string>
 #include <vector>
 
 inline bool contains(std::string const &v1, std::string const &v2) {

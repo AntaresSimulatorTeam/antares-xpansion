@@ -8,16 +8,16 @@
  * implementations
  */
 class SolverFactory {
-public:
+ public:
   std::vector<std::string> _available_solvers;
 
-public:
+ public:
   /**
    * @brief Constructor of SolverFactory, fills the list of available solvers
    */
   SolverFactory();
 
-public:
+ public:
   /**
    * @brief Creates and returns to an object solver from the wanted
    * implementation

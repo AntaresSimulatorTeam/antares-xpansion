@@ -1,11 +1,10 @@
 #pragma once
 
-#include "solver_utils.h"
+#include <map>
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
-
-#include <map>
+#include "solver_utils.h"
 
 /**
  * \brief adds binary variables and additional constraints to an existent solver

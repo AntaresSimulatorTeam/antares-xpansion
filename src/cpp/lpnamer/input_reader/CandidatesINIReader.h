@@ -16,19 +16,18 @@ struct IntercoFileData {
 };
 
 class CandidatesINIReader {
-
-public:
+ public:
   CandidatesINIReader(const std::string &antaresIntercoFile,
                       const std::string &areaFile);
 
-  static std::vector<IntercoFileData>
-  ReadAntaresIntercoFile(const std::string &antaresIntercoFile);
+  static std::vector<IntercoFileData> ReadAntaresIntercoFile(
+      const std::string &antaresIntercoFile);
   static std::vector<std::string> ReadAreaFile(const std::string &areaFile);
 
-  std::vector<CandidateData>
-  readCandidateData(const std::string &candidateFile);
+  std::vector<CandidateData> readCandidateData(
+      const std::string &candidateFile);
 
-private:
+ private:
   bool checkArea(std::string const &areaName_p) const;
   CandidateData readCandidateSection(const std::string &candidateFile,
                                      const INIReader &reader,
@@ -39,4 +38,4 @@ private:
   std::vector<std::string> _areaNames;
 };
 
-#endif // ANTARESXPANSION_CANDIDATESINIREADER_H
+#endif  // ANTARESXPANSION_CANDIDATESINIREADER_H

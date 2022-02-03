@@ -8,4 +8,4 @@ Writer build_void_writer();
 
 Writer build_json_writer(const BendersOptions &options);
 
-#endif // ANTARESXPANSION_WRITERFACTORIES_H
+#endif  // ANTARESXPANSION_WRITERFACTORIES_H

@@ -1,8 +1,9 @@
 #include "JsonXpansionReader.h"
 
+#include <json/json.h>
+
 #include <fstream>
 #include <iostream>
-#include <json/json.h>
 
 JsonXpansionReader::JsonXpansionReader() : _lastIterNb(0) {}
 

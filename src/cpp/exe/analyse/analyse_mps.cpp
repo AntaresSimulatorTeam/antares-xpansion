@@ -4,7 +4,6 @@
 #include "Worker.h"
 #include "helpers/Path.h"
 #include "launcher.h"
-
 #include "solver_utils.h"
 
 int main(int argc, char **argv) {
@@ -21,7 +20,7 @@ int main(int argc, char **argv) {
   SolverFactory factory;
 
   //@TODO check desynchronisation possible entre i et kvp.second : check
-  //name_rhs
+  // name_rhs
 
   size_t n_rows(-1);
   for (auto const &kvp : input) {
@@ -43,8 +42,7 @@ int main(int argc, char **argv) {
     }
 
     ++i;
-    if (i > 5)
-      break;
+    if (i > 5) break;
   }
   // Really ??
   std::ofstream file("toto.csv");

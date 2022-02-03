@@ -3,13 +3,13 @@
 #define ANTARESXPANSION_ACTIVELINKS_H
 
 #include <Candidate.h>
+
 #include <unordered_map>
 
 using LinkName = std::string;
 
 class ActiveLink {
-
-public:
+ public:
   ActiveLink(int idLink, const std::string &linkName, const std::string &linkor,
              const std::string &linkex,
              const double &already_installed_capacity);
@@ -28,7 +28,7 @@ public:
   std::string get_linkex() const;
   double get_already_installed_capacity() const;
 
-private:
+ private:
   int _idLink;
   LinkName _name;
   std::string _linkor;
@@ -39,14 +39,13 @@ private:
 };
 
 class ActiveLinksBuilder {
-
-public:
+ public:
   ActiveLinksBuilder(const std::vector<CandidateData> &candidateList,
                      const std::map<std::string, LinkProfile> &profile_map);
 
   const std::vector<ActiveLink> &getLinks();
 
-private:
+ private:
   struct LinkData {
     int id;
     double installed_capacity;
@@ -78,4 +77,4 @@ private:
   std::vector<ActiveLink> _links;
 };
 
-#endif // ANTARESXPANSION_ACTIVELINKS_H
+#endif  // ANTARESXPANSION_ACTIVELINKS_H

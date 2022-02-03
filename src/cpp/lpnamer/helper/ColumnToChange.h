@@ -4,7 +4,6 @@
 #include <vector>
 using colId = unsigned int;
 struct ColumnToChange {
-
   ColumnToChange(colId id, int time_step) : id(id), time_step(time_step){};
   bool operator==(const ColumnToChange &other) const;
 
@@ -15,4 +14,4 @@ struct ColumnToChange {
 using ColumnsToChange = std::vector<ColumnToChange>;
 using linkId = unsigned int;
 
-#endif // ANTARESXPANSION_COLUMNTOCHANGE_H
+#endif  // ANTARESXPANSION_COLUMNTOCHANGE_H

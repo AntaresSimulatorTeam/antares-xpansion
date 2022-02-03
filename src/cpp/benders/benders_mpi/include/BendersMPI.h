@@ -8,17 +8,15 @@
 #include "WorkerSlave.h"
 #include "WorkerTrace.h"
 #include "common_mpi.h"
-#include "launcher.h"
-
 #include "core/ILogger.h"
+#include "launcher.h"
 
 /*!
  * \class BendersMpi
  * \brief Class use run the benders algorithm in parallel
  */
 class BendersMpi : public BendersBase {
-
-public:
+ public:
   virtual ~BendersMpi() = default;
   BendersMpi(BendersOptions const &options, Logger &logger, Writer writer,
              mpi::environment &env, mpi::communicator &world);
@@ -26,11 +24,11 @@ public:
   void load();
   virtual void launch();
 
-protected:
+ protected:
   virtual void free();
   virtual void run();
 
-private:
+ private:
   void step_1_solve_master();
   void step_2_build_cuts();
   void step_4_update_best_solution(int rank, const Timer &timer_master,

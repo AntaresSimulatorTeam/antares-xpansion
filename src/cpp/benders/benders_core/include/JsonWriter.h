@@ -1,18 +1,18 @@
 
 #pragma once
 
+#include <json/writer.h>
+
 #include "BendersOptions.h"
 #include "Clock.h"
 #include "OutputWriter.h"
 #include "Timer.h"
 
-#include <json/writer.h>
-
 inline void localtime_platform(const std::time_t &time_p,
                                struct tm &local_time) {
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
   localtime_s(&local_time, &time_p);
-#else // defined(__unix__) || (__APPLE__)
+#else  // defined(__unix__) || (__APPLE__)
   localtime_r(&time_p, &local_time);
 #endif
 }
@@ -27,7 +27,7 @@ namespace Output {
  * xpansion optimization in a json file
  */
 class JsonWriter : public OutputWriter {
-private:
+ private:
   std::shared_ptr<Clock> _clock;
   std::string _filename;
   // attributes of the optimization execution
@@ -48,12 +48,12 @@ private:
    *  \brief write an a priori errored json output, overwritten if optimization
    * ends
    */
-  std::string
-  criterion_to_string(const StoppingCriterion stopping_criterion) const;
-  std::string
-  status_from_criterion(const StoppingCriterion stopping_criterion) const;
+  std::string criterion_to_string(
+      const StoppingCriterion stopping_criterion) const;
+  std::string status_from_criterion(
+      const StoppingCriterion stopping_criterion) const;
 
-public:
+ public:
   /*!
    *  \brief JsonWriter default constructor
    */
@@ -88,4 +88,4 @@ public:
 
   void end_writing(const IterationsData &iterations_data);
 };
-} // namespace Output
+}  // namespace Output

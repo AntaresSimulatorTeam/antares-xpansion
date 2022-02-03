@@ -58,5 +58,5 @@ void Master::log_stop_criterion_reached(
   }
 }
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion

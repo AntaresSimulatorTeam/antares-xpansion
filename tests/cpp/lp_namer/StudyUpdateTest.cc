@@ -1,5 +1,3 @@
-#include "gtest/gtest.h"
-
 #include <fstream>
 
 #include "ActiveLinks.h"
@@ -7,9 +5,10 @@
 #include "LinkProfileReader.h"
 #include "StudyUpdater.h"
 #include "common_lpnamer.h"
+#include "gtest/gtest.h"
 #include "helpers/Path.h"
 class StudyUpdateTest : public ::testing::Test {
-protected:
+ protected:
   static std::vector<ActiveLink> _links;
 
   static void SetUpTestCase() {
@@ -22,7 +21,8 @@ protected:
 
     // dummy interco tmp file name
     file_l.open("temp_interco.txt");
-    content_l = "\
+    content_l =
+        "\
 0 0 1\n\
 1 0 2\n\
 ";
@@ -31,7 +31,8 @@ protected:
 
     // dummy area tmp file name
     file_l.open("temp_area.txt");
-    content_l = "\
+    content_l =
+        "\
 area1\n\
 area2\n\
 peak\n\
@@ -41,7 +42,8 @@ peak\n\
 
     // dummy candidates tmp file name
     file_l.open("temp_candidates.ini");
-    content_l = "\
+    content_l =
+        "\
 [1]\n\
 name = peak\n\
 link = area1 - peak\n\
@@ -168,7 +170,8 @@ TEST_F(StudyUpdateTest, antaresVersion700) {
   std::ofstream file_l("study.antares");
 
   // dummy study tmp file name
-  content_l = "\
+  content_l =
+      "\
 [antares]\n\
 version = 700\n\
 caption = test_case_7.1_structure\n\
@@ -236,7 +239,8 @@ TEST_F(StudyUpdateTest, no_computed_investment_for_candidate_peak) {
     FAIL() << "Missing investment not detected for candidate peak on link "
               "area1 - peak";
   } catch (const std::runtime_error &err) {
-    ASSERT_STREQ(err.what(), "No investment computed for the candidate peak on "
-                             "the link area1 - peak");
+    ASSERT_STREQ(err.what(),
+                 "No investment computed for the candidate peak on "
+                 "the link area1 - peak");
   }
 }

@@ -2,7 +2,6 @@
 
 // #include "BendersSequential.h"
 #include "common.h"
-
 #include "solver_utils.h"
 
 class BendersOptions;
@@ -44,15 +43,15 @@ typedef std::tuple<IntVector, std::vector<IntVector>, std::vector<CharVector>,
     raw_standard_lp_data;
 
 class StandardLp {
-private:
+ private:
   std::vector<std::string> _colNames;
 
-public:
+ public:
   // to be used in boost serialization for mpi transfer
   raw_standard_lp_data _data;
   static size_t appendCNT;
 
-public:
+ public:
   void init() {
     initialise_int_values_with_zeros();
     initialise_int_vectors();
@@ -176,7 +175,6 @@ public:
 
   int append_in(SolverAbstract::Ptr containingSolver_p,
                 std::string const &prefix_p = "") const {
-
     // simply increment the columns indices
     IntVector newmindex(
         std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
@@ -219,7 +217,7 @@ public:
     return nbExistingCols;
   }
 
-private:
+ private:
   void initialise_int_values_with_zeros() {
     std::get<Attribute::INT_VALUE>(_data).assign(
         IntAttribute::MAX_INT_ATTRIBUTE, 0);

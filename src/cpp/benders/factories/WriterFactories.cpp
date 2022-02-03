@@ -1,6 +1,7 @@
 
 
 #include "WriterFactories.h"
+
 #include "JsonWriter.h"
 #include "OutputWriter.h"
 #include "VoidWriter.h"

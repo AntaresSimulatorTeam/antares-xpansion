@@ -11,7 +11,7 @@ class WorkerMaster;
 typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 
 class WorkerMaster : public Worker {
-public:
+ public:
   int _id_alpha;
   std::vector<int> _id_alpha_i;
 
@@ -32,7 +32,7 @@ public:
   void delete_constraint(int const nrows);
   void fix_alpha(double const &bestUB);
 
-private:
+ private:
   void define_matval_mclind(const Point &s, std::vector<double> &matval,
                             std::vector<int> &mclind) const;
 
