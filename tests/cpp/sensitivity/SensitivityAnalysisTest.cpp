@@ -39,31 +39,47 @@ protected:
 
         sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, id_to_name, math_problem, writer);
     }
+
+    void verify_output_data(const SensitivityOutputData &output_data, double expec_epsilon, double expec_best_ub, const std::vector<SinglePbData> &expec_pbs_data)
+    {
+        ASSERT_DOUBLE_EQ(output_data.epsilon, expec_epsilon);
+        ASSERT_DOUBLE_EQ(output_data.best_benders_cost, expec_best_ub);
+        ASSERT_EQ(output_data.pbs_data.size(), expec_pbs_data.size());
+
+        for (int pb_id(0); pb_id < output_data.pbs_data.size(); pb_id++)
+        {
+            verify_single_pb_data(output_data.pbs_data[pb_id], expec_pbs_data[pb_id]);
+        }
+    }
+
+    void verify_single_pb_data(const SinglePbData &single_pb_data, const SinglePbData &expec_single_pb_data)
+    {
+        ASSERT_EQ(single_pb_data.pb_type, expec_single_pb_data.pb_type);
+        ASSERT_EQ(single_pb_data.opt_dir, expec_single_pb_data.opt_dir);
+        ASSERT_NEAR(single_pb_data.objective, expec_single_pb_data.objective, 1e-8);
+        ASSERT_NEAR(single_pb_data.system_cost, expec_single_pb_data.system_cost, 1e-8);
+        ASSERT_EQ(single_pb_data.candidates, expec_single_pb_data.candidates);
+        ASSERT_EQ(single_pb_data.status, expec_single_pb_data.status);
+    }
 };
 
 TEST_F(SensitivityAnalysisTest, OutputDataInit)
 {
-    auto outputData = sensitivity_analysis.get_output_data();
-
-    ASSERT_DOUBLE_EQ(outputData.epsilon, epsilon);
-    ASSERT_DOUBLE_EQ(outputData.best_benders_cost, best_ub);
-    ASSERT_DOUBLE_EQ(outputData.system_cost, 1e+20);
-    ASSERT_DOUBLE_EQ(outputData.pb_objective, 1e+20);
-    ASSERT_EQ(outputData.pb_status, SOLVER_STATUS::UNKNOWN);
-
-    ASSERT_EQ(outputData.candidates.size(), 2);
-}
-
-TEST_F(SensitivityAnalysisTest, GetCapexMinSolution)
-{
-    sensitivity_analysis.launch();
     auto output_data = sensitivity_analysis.get_output_data();
 
-    ASSERT_NEAR(output_data.pb_objective, 32.142857, 1e-6);
-    ASSERT_NEAR(output_data.system_cost, 32.142857 + 45, 1e-6);
-
-    ASSERT_DOUBLE_EQ(output_data.candidates["candidate_0"], 0);
-    ASSERT_NEAR(output_data.candidates["candidate_1"], 0.357142, 1e-6);
-
-    ASSERT_EQ(output_data.pb_status, SOLVER_STATUS::OPTIMAL);
+    verify_output_data(output_data, epsilon, best_ub, {});
 }
+
+// TEST_F(SensitivityAnalysisTest, GetCapexSolutions)
+// {
+//     sensitivity_analysis.get_capex_solutions();
+//     auto output_data = sensitivity_analysis.get_output_data();
+
+//     ASSERT_NEAR(output_data.pb_objective, 32.142857, 1e-6);
+//     ASSERT_NEAR(output_data.system_cost, 32.142857 + 45, 1e-6);
+
+//     ASSERT_DOUBLE_EQ(output_data.candidates["candidate_0"], 0);
+//     ASSERT_NEAR(output_data.candidates["candidate_1"], 0.357142, 1e-6);
+
+//     ASSERT_EQ(output_data.pb_status, SOLVER_STATUS::OPTIMAL);
+// }

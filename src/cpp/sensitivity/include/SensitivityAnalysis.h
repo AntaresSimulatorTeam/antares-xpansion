@@ -25,6 +25,8 @@ public:
     static const std::vector<std::string> sensitivity_string_pb_type;
 
     void launch();
+    void get_capex_solutions();
+    void get_candidates_projection();
     SensitivityOutputData get_output_data() const;
 
 private:
@@ -43,9 +45,6 @@ private:
     void init_output_data();
     void run_analysis();
     void run_optimization(const SolverAbstract::Ptr &sensitivity_model, const bool minimize);
-
-    void get_capex_solutions();
-    void get_candidates_projection();
 
     RawPbData solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem);
     void fill_output_data(const RawPbData &raw_output, const bool minimize);

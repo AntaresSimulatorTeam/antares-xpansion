@@ -88,9 +88,9 @@ RawPbData SensitivityAnalysis::solve_sensitivity_pb(SolverAbstract::Ptr sensitiv
 void SensitivityAnalysis::fill_output_data(const RawPbData &raw_output, const bool minimize)
 {
 	SinglePbData pb_data;
-	
+
 	pb_data.pb_type = sensitivity_string_pb_type[_sensitivity_pb_type];
-	pb_data.opt_dir = minimize ? "min" : "max";
+	pb_data.opt_dir = minimize ? MIN_C : MAX_C;
 	pb_data.objective = raw_output.objective;
 	pb_data.status = raw_output.status;
 

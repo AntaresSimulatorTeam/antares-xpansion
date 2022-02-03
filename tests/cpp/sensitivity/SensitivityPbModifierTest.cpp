@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include <multisolver_interface/SolverFactory.h>
 #include "PbModifierCapex.h"
+#include "PbModifierProjection.h"
 #include "BendersBase.h"
 
 const int peak_id = 0;
@@ -409,12 +410,13 @@ protected:
     }
 };
 
-TEST_F(SensitivityProblemModifierTest, ChangeProblem)
+TEST_F(SensitivityProblemModifierTest, ChangeProblemCapex)
 {
+    int nb_candidates = id_to_name.size();
     verify_last_master_problem(lastMasterData);
 
-    auto problem_modifier = PbModifierCapex(epsilon, best_ub);
-    auto sensitivity_pb = problem_modifier.changeProblem(id_to_name, lastMasterData.solver_model);
+    auto problem_modifier = std::make_shared<PbModifierCapex>(epsilon, best_ub);
+    auto sensitivity_pb = problem_modifier->changeProblem(nb_candidates, lastMasterData.solver_model);
 
     SolverData sensitivityPbData = init_solver_data_from_solver_model(sensitivity_pb);
 

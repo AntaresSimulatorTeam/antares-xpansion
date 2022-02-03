@@ -27,10 +27,10 @@ void SensitivityWriter::write_sensitivity_output(const SensitivityOutputData &ou
     _output[BEST_BENDERS_C] = output_data.best_benders_cost;
 
     Json::Value pbs_data_l(Json::arrayValue);
-
+    
     for (const auto &single_pb_data : output_data.pbs_data)
-    {   
-        Json::Value single_pb_data_l(Json::arrayValue);
+    {
+        Json::Value single_pb_data_l;
         single_pb_data_l[PB_TYPE_C] = single_pb_data.pb_type;
         single_pb_data_l[OPT_DIR_C] = single_pb_data.opt_dir;
         single_pb_data_l[STATUS_C] = single_pb_data.status;
@@ -45,7 +45,7 @@ void SensitivityWriter::write_sensitivity_output(const SensitivityOutputData &ou
             candidate_l[INVEST_C] = candidate.second;
             candidates_l.append(candidate_l);
         }
-        
+
         single_pb_data_l[CANDIDATES_C] = candidates_l;
         pbs_data_l.append(single_pb_data_l);
     }

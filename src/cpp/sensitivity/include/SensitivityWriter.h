@@ -11,6 +11,8 @@ const std::string
     BEST_BENDERS_C("best benders cost"),
     OPT_DIR_C("optimization direction"),
     PB_TYPE_C("problem type"),
+    MIN_C("min"),
+    MAX_C("max"),
     CAPEX_C("capex"),
     PROJECTION_C("projection"),
     STATUS_C("status"),
