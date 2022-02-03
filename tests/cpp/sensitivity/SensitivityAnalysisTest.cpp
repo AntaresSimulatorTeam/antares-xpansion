@@ -1,6 +1,9 @@
 #include "gtest/gtest.h"
 #include "SensitivityAnalysis.h"
 
+const std::string peak_name = "peak";
+const std::string semibase_name = "semibase";
+
 class SensitivityAnalysisTest : public ::testing::Test
 {
 public:
@@ -22,10 +25,10 @@ protected:
 #else
         std::string data_test_dir = "../data_test";
 #endif
-        epsilon = 1e3;
-        best_ub = 1e5;
+        epsilon = 100;
+        best_ub = 1390;
 
-        id_to_name = {{0, "candidate_0"}, {1, "candidate_1"}};
+        id_to_name = {{0, peak_name}, {1, semibase_name}};
 
         json_filename = std::tmpnam(nullptr);
         writer = std::make_shared<SensitivityWriter>(json_filename);
@@ -40,15 +43,15 @@ protected:
         sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, id_to_name, math_problem, writer);
     }
 
-    void verify_output_data(const SensitivityOutputData &output_data, double expec_epsilon, double expec_best_ub, const std::vector<SinglePbData> &expec_pbs_data)
+    void verify_output_data(const SensitivityOutputData &output_data, const SensitivityOutputData &expec_output_data)
     {
-        ASSERT_DOUBLE_EQ(output_data.epsilon, expec_epsilon);
-        ASSERT_DOUBLE_EQ(output_data.best_benders_cost, expec_best_ub);
-        ASSERT_EQ(output_data.pbs_data.size(), expec_pbs_data.size());
+        ASSERT_DOUBLE_EQ(output_data.epsilon, expec_output_data.epsilon);
+        ASSERT_DOUBLE_EQ(output_data.best_benders_cost, expec_output_data.best_benders_cost);
+        ASSERT_EQ(output_data.pbs_data.size(), expec_output_data.pbs_data.size());
 
         for (int pb_id(0); pb_id < output_data.pbs_data.size(); pb_id++)
         {
-            verify_single_pb_data(output_data.pbs_data[pb_id], expec_pbs_data[pb_id]);
+            verify_single_pb_data(output_data.pbs_data[pb_id], expec_output_data.pbs_data[pb_id]);
         }
     }
 
@@ -56,30 +59,64 @@ protected:
     {
         ASSERT_EQ(single_pb_data.pb_type, expec_single_pb_data.pb_type);
         ASSERT_EQ(single_pb_data.opt_dir, expec_single_pb_data.opt_dir);
-        ASSERT_NEAR(single_pb_data.objective, expec_single_pb_data.objective, 1e-8);
-        ASSERT_NEAR(single_pb_data.system_cost, expec_single_pb_data.system_cost, 1e-8);
-        ASSERT_EQ(single_pb_data.candidates, expec_single_pb_data.candidates);
+        ASSERT_NEAR(single_pb_data.objective, expec_single_pb_data.objective, 1e-6);
+        ASSERT_NEAR(single_pb_data.system_cost, expec_single_pb_data.system_cost, 1e-6);
         ASSERT_EQ(single_pb_data.status, expec_single_pb_data.status);
+
+        verify_candidates(single_pb_data.candidates, expec_single_pb_data.candidates);
+    }
+
+    void verify_candidates(const Point &candidates, const Point &expec_candidates)
+    {
+        ASSERT_EQ(candidates.size(), expec_candidates.size());
+
+        for (auto candidate_it = candidates.begin(), expec_candidate_it = expec_candidates.begin(); candidate_it != candidates.end(), expec_candidate_it != expec_candidates.end(); candidate_it++, expec_candidate_it++)
+        {
+            ASSERT_EQ(candidate_it->first, expec_candidate_it->first);
+            ASSERT_NEAR(candidate_it->second, expec_candidate_it->second, 1e-6);
+        }
     }
 };
 
 TEST_F(SensitivityAnalysisTest, OutputDataInit)
 {
+    SensitivityOutputData expec_output_data;
+    expec_output_data.epsilon = epsilon;
+    expec_output_data.best_benders_cost = best_ub;
+    expec_output_data.pbs_data = {};
+
     auto output_data = sensitivity_analysis.get_output_data();
 
-    verify_output_data(output_data, epsilon, best_ub, {});
+    verify_output_data(output_data, expec_output_data);
 }
 
-// TEST_F(SensitivityAnalysisTest, GetCapexSolutions)
-// {
-//     sensitivity_analysis.get_capex_solutions();
-//     auto output_data = sensitivity_analysis.get_output_data();
+TEST_F(SensitivityAnalysisTest, GetCapexSolutions)
+{
+    sensitivity_analysis.get_capex_solutions();
+    auto output_data = sensitivity_analysis.get_output_data();
 
-//     ASSERT_NEAR(output_data.pb_objective, 32.142857, 1e-6);
-//     ASSERT_NEAR(output_data.system_cost, 32.142857 + 45, 1e-6);
+    SensitivityOutputData expec_output_data;
+    expec_output_data.epsilon = epsilon;
+    expec_output_data.best_benders_cost = best_ub;
 
-//     ASSERT_DOUBLE_EQ(output_data.candidates["candidate_0"], 0);
-//     ASSERT_NEAR(output_data.candidates["candidate_1"], 0.357142, 1e-6);
+    SinglePbData capex_min_data;
+    capex_min_data.pb_type = CAPEX_C;
+    capex_min_data.opt_dir = MIN_C;
+    capex_min_data.objective = 1040;
+    capex_min_data.system_cost = 1390;
+    capex_min_data.candidates = {{peak_name, 14}, {semibase_name, 10}};
+    capex_min_data.status = SOLVER_STATUS::OPTIMAL;
 
-//     ASSERT_EQ(output_data.pb_status, SOLVER_STATUS::OPTIMAL);
-// }
+    SinglePbData capex_max_data;
+    capex_max_data.pb_type = CAPEX_C;
+    capex_max_data.opt_dir = MAX_C;
+    capex_max_data.objective = 1224.745762711;
+    capex_max_data.system_cost = 1490;
+    capex_max_data.candidates = {{peak_name, 17.22033898}, {semibase_name, 11.69491525}};
+    capex_max_data.status = SOLVER_STATUS::OPTIMAL;
+
+    expec_output_data.pbs_data.push_back(capex_min_data);
+    expec_output_data.pbs_data.push_back(capex_max_data);
+
+    verify_output_data(output_data, expec_output_data);
+}

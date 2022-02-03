@@ -443,7 +443,7 @@ void SolverCbc::chg_obj(const std::vector<int>& mindex, const std::vector<double
 
 void SolverCbc::chg_obj_sense(const bool minimize) {
 	int objsense = minimize ? 1 : -1;
-	_cbc.setObjSense(objsense);
+	_clp_inner_solver.setObjSense(objsense);
 }
 
 void SolverCbc::chg_bounds(const std::vector<int>& mindex, const std::vector<char>& qbtype, const std::vector<double>& bnd){

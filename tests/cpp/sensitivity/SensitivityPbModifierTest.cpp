@@ -10,7 +10,7 @@ const int alpha_id = 2;
 const int alpha_0_id = 3;
 const int alpha_1_id = 4;
 
-const int peak_cost = 60;
+const int peak_cost = 10;
 const int semibase_cost = 90;
 
 std::string peak_name;
@@ -379,15 +379,15 @@ protected:
 
         verify_column(solver_data, peak_id, peak_name, 'C', peak_cost, 0, 3000);
         verify_column(solver_data, semibase_id, semibase_name, 'C', semibase_cost, 0, 400);
-        verify_column(solver_data, alpha_id, alpha_name, 'C', 1, -60, 45);
+        verify_column(solver_data, alpha_id, alpha_name, 'C', 1, -60, 1000);
         verify_column(solver_data, alpha_0_id, alpha_0_name, 'C', 0, -100, 150);
-        verify_column(solver_data, alpha_1_id, alpha_1_name, 'C', 0, -200, 200);
+        verify_column(solver_data, alpha_1_id, alpha_1_name, 'C', 0, -200, 2000);
 
         verify_row(solver_data, 0, 'E', {1, -1, -1}, {alpha_id, alpha_0_id, alpha_1_id}, 0);
-        verify_row(solver_data, 1, 'L', {-10, -100, -1}, {peak_id, semibase_id, alpha_0_id}, -10);
-        verify_row(solver_data, 2, 'L', {-20, -100, -1}, {peak_id, semibase_id, alpha_1_id}, -20);
-        verify_row(solver_data, 3, 'L', {-50, -1}, {semibase_id, alpha_0_id}, -30);
-        verify_row(solver_data, 4, 'L', {-20, -1}, {semibase_id, alpha_1_id}, -40);
+        verify_row(solver_data, 1, 'L', {-10, -1, -1}, {peak_id, semibase_id, alpha_0_id}, -300);
+        verify_row(solver_data, 2, 'L', {-25, -2, -1}, {peak_id, semibase_id, alpha_1_id}, -400);
+        verify_row(solver_data, 3, 'L', {-20, -1}, {semibase_id, alpha_0_id}, -350);
+        verify_row(solver_data, 4, 'L', {-30, -1}, {semibase_id, alpha_1_id}, -500);
     }
     void verify_sensitivity_problem(SolverData &lastMasterData, SolverData &sensitivityPbData)
     {
