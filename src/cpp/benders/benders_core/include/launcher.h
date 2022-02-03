@@ -144,10 +144,10 @@ public:
 						  0,
 						  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
-		solver_getobj(solver_p,
-					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
-					  0,
-					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
+		solver_get_obj_func_coeffs(solver_p,
+								   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
+								   0,
+								   std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
 		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == 1 + std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 

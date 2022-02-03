@@ -38,6 +38,5 @@ public:
 
 public:
 	SolverAbstract::Ptr _solver; /*!< Problem stocked in the instance Worker*/
-	std::list<std::ostream *> _stream;
 	bool _is_master;
 };

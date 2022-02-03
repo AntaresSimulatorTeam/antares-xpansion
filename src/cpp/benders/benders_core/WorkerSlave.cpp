@@ -3,10 +3,6 @@
 
 #include "solver_utils.h"
 
-WorkerSlave::WorkerSlave()
-{
-}
-
 /*!
  *  \brief Constructor of a Worker Slave
  *
@@ -21,18 +17,18 @@ WorkerSlave::WorkerSlave(Str2Int const &variable_map, std::string const &path_to
 	init(variable_map, path_to_mps, solver_name, log_level);
 
 	int mps_ncols(_solver->get_ncols());
-	DblVector o_l(mps_ncols);
+	DblVector obj_func_coeffs(mps_ncols);
 	IntVector sequence(mps_ncols);
-	for (int i(0); i < mps_ncols; ++i)
+	for (int i = 0; i < mps_ncols; ++i)
 	{
 		sequence[i] = i;
 	}
-	solver_getobj(_solver, o_l, 0, mps_ncols - 1);
-	for (auto &c : o_l)
+	solver_get_obj_func_coeffs(_solver, obj_func_coeffs, 0, mps_ncols - 1);
+	for (auto &c : obj_func_coeffs)
 	{
 		c *= slave_weight;
 	}
-	_solver->chg_obj(sequence, o_l);
+	_solver->chg_obj(sequence, obj_func_coeffs);
 }
 WorkerSlave::~WorkerSlave()
 {

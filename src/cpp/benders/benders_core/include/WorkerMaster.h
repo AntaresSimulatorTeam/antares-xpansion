@@ -38,8 +38,7 @@ private:
 
 	void define_rhs_from_sx0(const double &sx0, const double &rhs, std::vector<double> &rowrhs) const;
 
-	void
-	define_matval_mclind_for_index(const int i, const Point &s, std::vector<double> &matval, std::vector<int> &mclind) const;
+	void define_matval_mclind_for_index(const int i, const Point &s, std::vector<double> &matval, std::vector<int> &mclind) const;
 	void _set_upper_bounds();
 	void _add_alpha_var();
 };

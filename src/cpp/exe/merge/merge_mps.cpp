@@ -93,7 +93,7 @@ int main(int argc, char **argv)
                 {
                     sequence[i] = i;
                 }
-                solver_getobj(solver_l, o, 0, mps_ncols - 1);
+                solver_get_obj_func_coeffs(solver_l, o, 0, mps_ncols - 1);
                 double const weigth = slave_weight(nslaves, kvp.first, options.SLAVE_WEIGHT_VALUE, options.SLAVE_WEIGHT, options.weights());
                 for (auto &c : o)
                 {

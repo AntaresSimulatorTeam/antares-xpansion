@@ -128,7 +128,7 @@ public:
 public:
     std::string _name;                           /*!< Name of the problem */
     typedef std::shared_ptr<SolverAbstract> Ptr; /*!< Ptr to the solver */
-    std::list<std::ostream *> _stream;           /*!< List of streams to print the output (default std::cout) */
+    std::list<std::ostream *> _streams;          /*!< List of streams to print the output (default std::cout) */
 
     /*************************************************************************************************
     -----------------------------------    Constructor/Desctructor    --------------------------------
@@ -169,7 +169,7 @@ public:
     /**
      * @brief returns the list of streams used by the solver instance
      */
-    std::list<std::ostream *> &get_stream() { return _stream; };
+    std::list<std::ostream *> &get_stream() { return _streams; };
 
     /**
      * @brief add a stream to the list of streams used by the solver instance
