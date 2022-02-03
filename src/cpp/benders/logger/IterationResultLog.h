@@ -1,6 +1,8 @@
 #ifndef ANTARESXPANSION_ITERATIONRESULTLOG_H
 #define ANTARESXPANSION_ITERATIONRESULTLOG_H
 
+#include <list>
+
 #include "core/ILogger.h"
 namespace xpansion {
 namespace logger {
