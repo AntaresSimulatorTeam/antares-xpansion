@@ -245,8 +245,15 @@ WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_
 	_is_master = true;
 	init(variable_map, path_to_mps, solver_name, log_level);
 	_id_alpha = 0;
+	_nslaves = nslaves;
 
-	// Cbc solver sets infinite upper bounds to DBL_MAX = 1.79769e+308 which is way to large
+	_set_upper_bounds();
+	_add_alpha_var();
+}
+
+void WorkerMaster::_set_upper_bounds()
+{
+	// Cbc solver sets infinite upper bounds to DBL_MAX = 1.79769e+308 which is way too large
 	// as it appears in datas.max_invest. We set it to 1e20
 	int ncols = _solver->get_ncols();
 	DblVector bounds(ncols);
@@ -259,7 +266,10 @@ WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_
 		bounds[i] = std::min(bounds[i], 1e20);
 	}
 	_solver->chg_bounds(indices, bndTypes, bounds);
+}
 
+void WorkerMaster::_add_alpha_var()
+{
 	// add the variable alpha
 	auto const it(_name_to_id.find("alpha"));
 	if (it == _name_to_id.end())
@@ -273,8 +283,8 @@ WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_
 		solver_addcols(_solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0), DblVector(0, 0.0),
 					   DblVector(1, lb), DblVector(1, ub), CharVector(1, 'C'), StrVector(1, "alpha")); /* Add variable alpha and its parameters */
 
-		_id_alpha_i.resize(nslaves, -1);
-		for (int i(0); i < nslaves; ++i)
+		_id_alpha_i.resize(_nslaves, -1);
+		for (int i(0); i < _nslaves; ++i)
 		{
 			std::stringstream buffer;
 			buffer << "alpha_" << i;
@@ -286,12 +296,12 @@ WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_
 
 		std::vector<char> rowtype = {'E'};
 		std::vector<double> rowrhs = {0};
-		std::vector<int> mstart = {0, nslaves + 1};
-		std::vector<double> matval(nslaves + 1, 0);
-		std::vector<int> mclind(nslaves + 1);
+		std::vector<int> mstart = {0, _nslaves + 1};
+		std::vector<double> matval(_nslaves + 1, 0);
+		std::vector<int> mclind(_nslaves + 1);
 		mclind[0] = _id_alpha;
 		matval[0] = 1;
-		for (int i(0); i < nslaves; ++i)
+		for (int i(0); i < _nslaves; ++i)
 		{
 			mclind[i + 1] = _id_alpha_i[i];
 			matval[i + 1] = -1;

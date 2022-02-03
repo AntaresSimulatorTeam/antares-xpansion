@@ -113,7 +113,7 @@ void Worker::solve(int &lp_status, const std::string &outputroot)
 	{
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
 		std::stringstream buffer;
-		buffer << Path(outputroot) / (_path_to_mps + "_lp_status_") / (_solver->SOLVER_STRING_STATUS[lp_status] + ".mps");
+		buffer << Path(outputroot) / (_path_to_mps + "_lp_status_") / (_solver->SOLVER_STRING_STATUS[lp_status] + mps_suffix);
 		LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status] << std::endl;
 		LOG(INFO) << "written in " << buffer.str() << std::endl;
 		_solver->write_prob_mps(buffer.str());
@@ -123,20 +123,23 @@ void Worker::solve(int &lp_status, const std::string &outputroot)
 
 	if (_is_master)
 	{
-		std::string suffix = ".mps";
 		std::stringstream buffer;
-		buffer << Path(outputroot) / _path_to_mps.substr(0, _path_to_mps.length() - suffix.length()) << "_last_iteration";
-		buffer << ".mps";
+
+		buffer << Path(outputroot) / insert_str_in_str(_path_to_mps, mps_suffix, "_last_iteration");
 		_solver->write_prob_mps(buffer.str());
 	}
 }
 
+std::string Worker::insert_str_in_str(const std::string &input, const std::string &suffix, const std::string &to_insert)
+{
+	return input.substr(0, input.length() - suffix.length()) + to_insert + suffix;
+}
 /*!
  *  \brief Get the number of iteration needed to solve a problem
  *
  *  \param result : result
  */
-void Worker::get_simplex_ite(int &result)
+void Worker::get_splex_num_of_ite_last(int &result)
 {
-	result = _solver->get_simplex_ite();
+	result = _solver->get_splex_num_of_ite_last();
 }

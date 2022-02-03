@@ -12,9 +12,6 @@ typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 class WorkerMaster : public Worker
 {
 public:
-	int _id_alpha;
-	std::vector<int> _id_alpha_i;
-
 	WorkerMaster();
 	WorkerMaster(Str2Int const &variable_map, std::string const &problem_name, const std::string &solver_name, const int log_level, int nslaves = 1);
 	virtual ~WorkerMaster();
@@ -31,6 +28,10 @@ public:
 	void fix_alpha(double const &bestUB);
 
 private:
+	std::vector<int> _id_alpha_i;
+	int _id_alpha;
+	int _nslaves;
+
 	void define_matval_mclind(const Point &s, std::vector<double> &matval, std::vector<int> &mclind) const;
 
 	void define_rhs_with_master_variable(const Point &s, const Point &x0, const double &rhs, std::vector<double> &rowrhs) const;
@@ -39,4 +40,6 @@ private:
 
 	void
 	define_matval_mclind_for_index(const int i, const Point &s, std::vector<double> &matval, std::vector<int> &mclind) const;
+	void _set_upper_bounds();
+	void _add_alpha_var();
 };

@@ -320,7 +320,7 @@ void BendersBase::get_slave_cut(SlaveCutPackage &slave_cut_package)
 
 		ptr->get_value(handler->get_dbl(SLAVE_COST));
 		ptr->get_subgradient(handler->get_subgradient());
-		ptr->get_simplex_ite(handler->get_int(SIMPLEXITER));
+		ptr->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
 		handler->get_dbl(SLAVE_TIMER) = timer_slave.elapsed();
 		slave_cut_package[kvp.first] = *slave_cut_data;
 	}
