@@ -6,7 +6,26 @@ In order to solve the investment problem defined by an Antares study and its ass
 
 The simulation options and algorithmic parameters for solving the
 investment problem must be entered in `settings.ini` located in the
-folder `user/expansion/` of the Antares study, with the syntax given below:
+folder `user/expansion/` of the Antares study.
+
+The following section lists the configurable parameters. If the user does not specify the value of a parameter, its default value is used.
+
+### Overview of the `settings.ini` file
+
+| Name | Default value | Description |
+| -----| -------------| -------------|
+|[`optimality_gap`](#optimality_gap) | `1` | Tolerance on absolute gap |
+|[`relative_gap`](#relative_gap) | `1e-12` | Tolerance on relative gap |
+|[`max_iteration`](#max_iteration) | `Inf` | Maximum number of Benders iterations |
+|[`timelimit`](#timelimit) | `1e12` | Timelimit (in seconds) of the Benders step |
+|[`uc_type`](#uc_type) | `expansion_fast` | Unit-commitment type used by Antares |
+|[`master`](#master) | `integer` | Resolution mode of the master problem |
+|[`yearly-weights`](#yearly-weights) | `None` | Path of the Monte-Carlo weights file |
+|[`solver`](#solver) | `Cbc` | Name of the solver |
+|[`log_level`](#log_level) | `0` | Solver's log level |
+|[`additional-constraints`](#additional-constraints) | `None` | Path of the additional constraints file |
+
+The format is a standard `.ini` and should follow this template:
 ```ini
 uc_type = expansion_fast
 master = integer
@@ -17,9 +36,7 @@ additional-constraints = constraint.txt
 log_level = 0
 ```
 
-The following section lists the configurable parameters. If the user does not specify the value of a parameter, its default value is used.
-
-### Lists of parameters
+### Details of the parameters
 #### `optimality_gap`
 
 Positive float. Default value: `1`. 
@@ -82,7 +99,7 @@ $$\frac{\texttt{xpansion solution cost} - \texttt{optimal cost}}{\texttt{optimal
 !!! Remark
     The algorithm stops as soon as the first criterion among `optimality_gap` and `relative_gap` is met. Keep in mind that if either parameter is not specified by the user, the default value is used.
 
-#### `max-iteration`
+#### `max_iteration`
 
 Strictly positive integer or infinite. Default value: `Inf`.
 
@@ -172,7 +189,7 @@ not to be simulated unnecessarily.
 
 String. Default value: `Cbc`.
 
-Defines the solver that is used to solve the master and the slave problems in the [Benders decompsoition](../optimization-principles/investment-problem.md). The user can either write `solver = Cbc` or `solver = Coin` to use the COIN-OR optimization suite. These settings are identical: depending on whether the problem has integer variables, Antares-Xpansion calls either the linear solver ([Clp](https://github.com/coin-or/Clp)) or the MILP solver ([Cbc](https://github.com/coin-or/Cbc)) of the COIN-OR optimization suite. 
+Defines the solver that is used to solve the master and the slave problems in the [Benders decomposition](../optimization-principles/investment-problem.md). The user can either write `solver = Cbc` or `solver = Coin` to use the COIN-OR optimization suite. These settings are identical: depending on whether the problem has integer variables, Antares-Xpansion calls either the linear solver ([Clp](https://github.com/coin-or/Clp)) or the MILP solver ([Cbc](https://github.com/coin-or/Cbc)) of the COIN-OR optimization suite. 
 
 !!! Remark
     In Antares-Xpansion, the slave problems are always linear. If `master = relaxed`, the master problem is linear as well, whereas if `master = integer`, the master problem is a MILP.
