@@ -121,14 +121,19 @@ class TestCheckCandidateName:
         with pytest.raises(IllegalCharsInCandidateName):
             check_candidate_name("newline\n123", "section1236")
 
+        with pytest.raises(IllegalCharsInCandidateName):
             check_candidate_name("escapeR\r123", "section1236")
 
+        with pytest.raises(IllegalCharsInCandidateName):
             check_candidate_name("tab\t123", "section1236")
 
+        with pytest.raises(IllegalCharsInCandidateName):
             check_candidate_name("escapeF\f\v123", "section1236")
 
+        with pytest.raises(IllegalCharsInCandidateName):
             check_candidate_name("escapeV\v123", "section1236")
 
+        with pytest.raises(IllegalCharsInCandidateName):
             check_candidate_name("parenthesis(123", "section1236")
 
 
@@ -142,10 +147,12 @@ class TestCheckCandidateLink:
     def test_fail_if_link_doesnt_contains_separator(self):
 
         with pytest.raises(CandidateLinkWithoutSeparator):
-
             check_candidate_link("atob", "section")
+        with pytest.raises(CandidateLinkWithoutSeparator):
             check_candidate_link("ato-b", "section")
+        with pytest.raises(CandidateLinkWithoutSeparator):
             check_candidate_link("ato- b", "section")
+        with pytest.raises(CandidateLinkWithoutSeparator):
             check_candidate_link("ato -b", "section")
 
 
