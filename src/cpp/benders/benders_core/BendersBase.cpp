@@ -529,7 +529,7 @@ std::string BendersBase::status_from_criterion() const
  */
 std::string BendersBase::get_slave_path(std::string const &slave_name) const
 {
-	return (Path(_options.INPUTROOT) / (slave_name + ".mps")).get_str();
+	return (Path(_options.INPUTROOT) / (slave_name + MPS_SUFFIX)).get_str();
 }
 
 /*!
@@ -561,7 +561,7 @@ double BendersBase::slave_weight(int nslaves, std::string const &name) const
  */
 std::string BendersBase::get_master_path() const
 {
-	return (Path(_options.INPUTROOT) / (_options.MASTER_NAME + ".mps")).get_str();
+	return (Path(_options.INPUTROOT) / (_options.MASTER_NAME + MPS_SUFFIX)).get_str();
 }
 
 /*!

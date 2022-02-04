@@ -113,7 +113,7 @@ void Worker::solve(int &lp_status, const std::string &outputroot)
 	{
 		LOG(INFO) << "lp_status is : " << lp_status << std::endl;
 		std::stringstream buffer;
-		buffer << Path(outputroot) / (_path_to_mps + "_lp_status_") / (_solver->SOLVER_STRING_STATUS[lp_status] + mps_suffix);
+		buffer << Path(outputroot) / (_path_to_mps + "_lp_status_") / (_solver->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
 		LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status] << std::endl;
 		LOG(INFO) << "written in " << buffer.str() << std::endl;
 		_solver->write_prob_mps(buffer.str());
@@ -125,7 +125,7 @@ void Worker::solve(int &lp_status, const std::string &outputroot)
 	{
 		std::stringstream buffer;
 
-		buffer << Path(outputroot) / insert_str_in_str(_path_to_mps, mps_suffix, "_last_iteration");
+		buffer << Path(outputroot) / insert_str_in_str(_path_to_mps, MPS_SUFFIX, "_last_iteration");
 		_solver->write_prob_mps(buffer.str());
 	}
 }

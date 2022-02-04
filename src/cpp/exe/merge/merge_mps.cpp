@@ -75,7 +75,7 @@ int main(int argc, char **argv)
         for (auto const &kvp : input)
         {
 
-            auto problem_name((Path(options.INPUTROOT) / (kvp.first + ".mps")).get_str());
+            auto problem_name((Path(options.INPUTROOT) / (kvp.first + MPS_SUFFIX)).get_str());
 
             SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
             solver_l->init();
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
                 {
                     std::cerr << "missing variable " << x.first << " in " << kvp.first << " supposedly renamed to " << varPrefix_l + x.first << ".";
                     mergedSolver_l->write_prob_lp((Path(options.OUTPUTROOT) / "mergeError.lp").get_str());
-                    mergedSolver_l->write_prob_mps((Path(options.OUTPUTROOT) / "mergeError.mps").get_str());
+                    mergedSolver_l->write_prob_mps((Path(options.OUTPUTROOT) / ("mergeError" + MPS_SUFFIX)).get_str());
                     std::exit(1);
                 }
                 else
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
 
         LOG(INFO) << "Problems merged." << std::endl;
         LOG(INFO) << "Writting mps file" << std::endl;
-        mergedSolver_l->write_prob_mps((Path(options.OUTPUTROOT) / "log_merged.mps").get_str());
+        mergedSolver_l->write_prob_mps((Path(options.OUTPUTROOT) / ("log_merged" + MPS_SUFFIX)).get_str());
         LOG(INFO) << "Writting lp file" << std::endl;
         mergedSolver_l->write_prob_lp((Path(options.OUTPUTROOT) / "log_merged.lp").get_str());
 

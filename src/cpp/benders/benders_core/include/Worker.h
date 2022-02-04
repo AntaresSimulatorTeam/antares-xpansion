@@ -27,7 +27,6 @@ public:
 	void free();
 
 public:
-	const std::string mps_suffix = ".mps";
 	std::string _path_to_mps;
 	Str2Int _name_to_id; /*!< Link between the variable name and its identifier */
 	Int2Str _id_to_name; /*!< Link between the identifier of a variable and its name*/

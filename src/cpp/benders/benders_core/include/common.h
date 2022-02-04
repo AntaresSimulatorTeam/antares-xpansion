@@ -168,6 +168,7 @@ LogData bendersDataToLogData(const BendersData &data);
 
 const std::string SLAVE_WEIGHT_CONSTANT("CONSTANT");
 const std::string SLAVE_WEIGHT_UNIFORM("UNIFORM");
+const std::string MPS_SUFFIX = ".mps";
 
 struct BendersBaseOptions
 {
