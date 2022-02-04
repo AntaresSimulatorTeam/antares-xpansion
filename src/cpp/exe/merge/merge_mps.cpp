@@ -27,11 +27,11 @@ size_t StandardLp::appendCNT = 0;
  */
 double slave_weight(int nslaves, std::string const &name, double slave_weight_value, std::string slave_weight, const Str2Dbl &weights)
 {
-    if (slave_weight == SLAVE_WEIGHT_UNIFORM)
+    if (slave_weight == SLAVE_WEIGHT_UNIFORM_CST_STR)
     {
         return 1 / static_cast<double>(nslaves);
     }
-    else if (slave_weight == SLAVE_WEIGHT_CONSTANT)
+    else if (slave_weight == SLAVE_WEIGHT_CST_STR)
     {
         double const weight(slave_weight_value);
         return 1 / weight;

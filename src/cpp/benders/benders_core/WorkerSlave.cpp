@@ -30,9 +30,6 @@ WorkerSlave::WorkerSlave(Str2Int const &variable_map, std::string const &path_to
 	}
 	_solver->chg_obj(sequence, obj_func_coeffs);
 }
-WorkerSlave::~WorkerSlave()
-{
-}
 
 /*!
  *  \brief Fix a set of variables to constant in a problem

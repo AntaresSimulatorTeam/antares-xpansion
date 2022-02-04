@@ -541,11 +541,11 @@ std::string BendersBase::get_slave_path(std::string const &slave_name) const
  */
 double BendersBase::slave_weight(int nslaves, std::string const &name) const
 {
-	if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_UNIFORM)
+	if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_UNIFORM_CST_STR)
 	{
 		return 1 / static_cast<double>(nslaves);
 	}
-	else if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_CONSTANT)
+	else if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_CST_STR)
 	{
 		double const weight(_options.SLAVE_WEIGHT_VALUE);
 		return 1 / weight;

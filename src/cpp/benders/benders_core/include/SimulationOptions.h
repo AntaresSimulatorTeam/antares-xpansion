@@ -15,10 +15,12 @@ public:
 	void print(std::ostream &stream) const;
 
 	void write_default();
-
 	Str2Dbl _weights;
 	inline Str2Dbl weights() const
 	{
 		return _weights;
 	}
+
+private:
+	void set_weights();
 };

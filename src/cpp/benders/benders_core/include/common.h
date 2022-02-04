@@ -166,8 +166,9 @@ std::ostream &operator<<(std::ostream &stream, std::vector<IntVector> const &rhs
 
 LogData bendersDataToLogData(const BendersData &data);
 
-const std::string SLAVE_WEIGHT_CONSTANT("CONSTANT");
-const std::string SLAVE_WEIGHT_UNIFORM("UNIFORM");
+const std::string SLAVE_WEIGHT_CST_STR("CONSTANT");
+const std::string SLAVE_WEIGHT_UNIFORM_CST_STR("UNIFORM");
+const std::string WEIGHT_SUM_CST_STR("WEIGHT_SUM");
 const std::string MPS_SUFFIX = ".mps";
 
 struct BendersBaseOptions

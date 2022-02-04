@@ -9,10 +9,6 @@ Worker::Worker()
 {
 }
 
-Worker::~Worker()
-{
-}
-
 /*!
  *  \brief Free the problem
  */

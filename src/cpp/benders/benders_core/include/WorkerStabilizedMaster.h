@@ -29,7 +29,7 @@ public:
 public:
 	WorkerStabilizedMaster();
 	WorkerStabilizedMaster(std::map<std::string, int> const &variable_name, std::string const &problem_name, const std::string &solver_name, const int log_level, int nslaves = 1);
-	virtual ~WorkerStabilizedMaster();
+	virtual ~WorkerStabilizedMaster() = default;
 
 	// void get(Point & x0, double & alpha);
 	//
