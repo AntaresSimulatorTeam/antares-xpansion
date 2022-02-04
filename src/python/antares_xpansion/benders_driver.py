@@ -77,7 +77,8 @@ class BendersDriver:
             encoding='utf-8') as proc:
                 for output in proc.stdout:
                     benders_log.write(output)
-                    
+                    sys.stdout.write(output)
+
                 for err in proc.stderr:
                     sys.stderr.write(err)
                     benders_log.write(err)
