@@ -2,7 +2,7 @@
 
 #include <map>
 #include <set>
-
+#include <string>
 /*!
  *  \class AdditionalConstraint
  *  \brief additional constraint to add to master problem
