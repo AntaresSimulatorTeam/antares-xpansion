@@ -204,7 +204,7 @@ For now two log levels are available:
 
  - If `log_level = 0`: basic solver logs are printed.
 
- - If `log_level > 0`: full logs are printed.
+ - If `log_level > 0`: full logs are printed simultaneously in standard output and in `benders.log` file located in the `lp` folder.
 
 #### `additional-constraints`
 
