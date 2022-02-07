@@ -168,9 +168,6 @@ class BendersDriver:
             os.remove(benders_log_file)
         self._benders_log_file = benders_log_file
 
-    def benders_log_file(self):
-        return self._benders_log_file         
-
     simulation_output_path = property(
         get_simulation_output_path, set_simulation_output_path
     )
