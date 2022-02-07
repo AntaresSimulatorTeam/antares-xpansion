@@ -111,7 +111,7 @@ $$
 We also need to add the investment variables \\(x_{l}\\) that represent the invested capcity on link \\(l\\). We suppose that the link has a direct (resp. indirect) temporal profile denoted by \\(\Lambda_{l,t}^{+}\\) (resp. \\(\Lambda_{l,t}^{-}\\)) with the already installed capacity \\(\widetilde{C}\_{l,t}^{+}\\) in the forward direction (resp. \\(\widetilde{C}\_{l,t}^{-}\\) in the backward direction). Then the following constraints must be added:
 
 $$
-F_{l,t} + \Lambda_{l,t}^{-} \cdot x_{l} \geq \widetilde{C}_{l,t}^{-}
+F_{l,t} + \Lambda_{l,t}^{-} \cdot x_{l} \geq -\widetilde{C}_{l,t}^{-}
 $$
 
 $$
