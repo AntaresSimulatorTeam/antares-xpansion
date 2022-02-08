@@ -48,4 +48,6 @@ private:
 
     RawPbData solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem);
     void fill_output_data(const RawPbData &raw_output, const bool minimize);
+    double get_system_cost(const RawPbData &raw_output);
+    std::string get_projection_pb_candidate_name(const RawPbData &raw_output);
 };

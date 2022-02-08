@@ -13,7 +13,6 @@ SensitivityAnalysis::SensitivityAnalysis(double epsilon, double best_ub, const s
 
 void SensitivityAnalysis::launch()
 {
-
 	get_capex_solutions();
 	get_candidates_projection();
 	_writer->end_writing(_output_data);
@@ -67,19 +66,24 @@ void SensitivityAnalysis::run_optimization(const SolverAbstract::Ptr &sensitivit
 RawPbData SensitivityAnalysis::solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem)
 {
 	RawPbData raw_output;
-	raw_output.solution.resize(sensitivity_problem->get_ncols());
+	int ncols = sensitivity_problem->get_ncols();
+
+	raw_output.obj_coeffs.resize(ncols);
+	raw_output.solution.resize(ncols);
+
+	sensitivity_problem->get_obj(raw_output.obj_coeffs.data(), 0, ncols - 1);
 
 	if (sensitivity_problem->get_n_integer_vars() > 0)
 	{
 		raw_output.status = sensitivity_problem->solve_mip();
 		sensitivity_problem->get_mip_sol(raw_output.solution.data());
-		raw_output.objective = sensitivity_problem->get_mip_value();
+		raw_output.obj_value = sensitivity_problem->get_mip_value();
 	}
 	else
 	{
 		raw_output.status = sensitivity_problem->solve_lp();
 		sensitivity_problem->get_lp_sol(raw_output.solution.data(), nullptr, nullptr);
-		raw_output.objective = sensitivity_problem->get_lp_value();
+		raw_output.obj_value = sensitivity_problem->get_lp_value();
 	}
 
 	return raw_output;
@@ -89,17 +93,50 @@ void SensitivityAnalysis::fill_output_data(const RawPbData &raw_output, const bo
 {
 	SinglePbData pb_data;
 
-	pb_data.pb_type = sensitivity_string_pb_type[_sensitivity_pb_type];
 	pb_data.opt_dir = minimize ? MIN_C : MAX_C;
-	pb_data.objective = raw_output.objective;
+	pb_data.objective = raw_output.obj_value;
 	pb_data.status = raw_output.status;
+	pb_data.pb_type = sensitivity_string_pb_type[_sensitivity_pb_type];
 
-	int nb_candidates = _id_to_name.size();
+	if (_sensitivity_pb_type == PROJECTION)
+	{
+		pb_data.pb_type += " " + get_projection_pb_candidate_name(raw_output);
+	}
+
 	for (auto const &kvp : _id_to_name)
 	{
 		pb_data.candidates[kvp.second] = raw_output.solution[kvp.first];
 	}
-	pb_data.system_cost = pb_data.objective + raw_output.solution[nb_candidates];
+	pb_data.system_cost = get_system_cost(raw_output);
 
 	_output_data.pbs_data.push_back(pb_data);
+}
+
+double SensitivityAnalysis::get_system_cost(const RawPbData &raw_output)
+{
+	int ncols = _last_master->get_ncols();
+	std::vector<double> master_obj(ncols);
+
+	_last_master->get_obj(master_obj.data(), 0, ncols - 1);
+
+	double system_cost = 0;
+	for (int col_id(0); col_id < ncols; col_id++)
+	{
+		system_cost += master_obj[col_id] * raw_output.solution[col_id];
+	}
+	return system_cost;
+}
+
+std::string SensitivityAnalysis::get_projection_pb_candidate_name(const RawPbData &raw_output)
+{
+	std::string candidate_name = "";
+	
+	auto obj_it = std::find(raw_output.obj_coeffs.begin(), raw_output.obj_coeffs.end(), 1);
+
+	if (obj_it != raw_output.obj_coeffs.end())
+	{
+		candidate_name = _id_to_name[std::distance(raw_output.obj_coeffs.begin(), obj_it)];
+	}
+	
+	return candidate_name;
 }

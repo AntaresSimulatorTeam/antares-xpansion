@@ -19,17 +19,17 @@ SolverAbstract::Ptr SensitivityPbModifier::changeProblem(const int nb_candidates
 
 SolverAbstract::Ptr SensitivityPbModifier::add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solver_model, int nb_candidates) const
 {
-    std::vector<int> colind(nb_candidates + 1);
-    std::vector<double> dmatval(colind.size());
+    int ncols = solver_model->get_ncols();
+    std::vector<int> colind(ncols);
+    std::vector<double> dmatval(ncols);
     std::vector<char> rowtype{'L'};
     std::vector<double> rhs{_best_ub + _epsilon};
-    std::vector<int> rstart{0, nb_candidates + 1};
+    std::vector<int> rstart{0, ncols};
 
     std::iota(std::begin(colind), std::end(colind), 0);
 
     solver_getobj(solver_model, dmatval, 0, colind.size() - 1);
     solver_addrows(solver_model, rowtype, rhs, {}, rstart, colind, dmatval);
 
-    std::vector<std::basic_string<char>> col_names = solver_model->get_col_names(0, solver_model->get_ncols() - 1);
     return solver_model;
 }

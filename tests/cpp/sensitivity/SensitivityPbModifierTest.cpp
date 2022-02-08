@@ -370,7 +370,7 @@ protected:
     void verify_additional_row(SolverData &sensitivityPbData)
     {
         update_n_rows(sensitivityPbData);
-        verify_row(sensitivityPbData, sensitivityPbData.n_rows - 1, 'L', {peak_cost, semibase_cost, 1}, {peak_id, semibase_id, alpha_id}, epsilon + best_ub);
+        verify_row(sensitivityPbData, sensitivityPbData.n_rows - 1, 'L', {peak_cost, semibase_cost, 1, 0, 0}, {peak_id, semibase_id, alpha_id, alpha_0_id, alpha_1_id}, epsilon + best_ub);
     }
     void verify_last_master_problem(SolverData &solver_data)
     {

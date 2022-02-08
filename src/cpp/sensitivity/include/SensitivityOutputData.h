@@ -23,6 +23,7 @@ struct SensitivityOutputData
 struct RawPbData
 {
     double status;
-    double objective;
+    double obj_value;
+    std::vector<double> obj_coeffs;
     std::vector<double> solution;
 };
