@@ -12,8 +12,6 @@ SimulationOptions build_benders_options(int argc, char **argv);
 
 void usage(int argc);
 
-BendersBaseOptions SimuOptToBendersBaseOpt(const SimulationOptions &options);
-
 enum Attribute
 {
 	INT_VALUE,

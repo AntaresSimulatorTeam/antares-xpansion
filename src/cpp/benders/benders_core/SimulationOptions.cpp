@@ -115,3 +115,32 @@ void SimulationOptions::print(std::ostream &stream) const
 		stream << "Sequential launch (only one slave problem)" << std::endl;
 	}
 }
+
+BendersBaseOptions SimulationOptions::get_benders_options() const
+{
+	BendersBaseOptions result;
+
+	result.LOG_LEVEL = LOG_LEVEL;
+	result.MAX_ITERATIONS = MAX_ITERATIONS;
+	result.SLAVE_NUMBER = SLAVE_NUMBER;
+
+	result.ABSOLUTE_GAP = ABSOLUTE_GAP;
+	result.RELATIVE_GAP = RELATIVE_GAP;
+	result.SLAVE_WEIGHT_VALUE = SLAVE_WEIGHT_VALUE;
+	result.TIME_LIMIT = TIME_LIMIT;
+
+	result.AGGREGATION = AGGREGATION;
+	result.TRACE = TRACE;
+	result.BOUND_ALPHA = BOUND_ALPHA;
+
+	result.OUTPUTROOT = OUTPUTROOT;
+	result.SLAVE_WEIGHT = SLAVE_WEIGHT;
+	result.MASTER_NAME = MASTER_NAME;
+	result.STRUCTURE_FILE = STRUCTURE_FILE;
+	result.INPUTROOT = INPUTROOT;
+	result.CSV_NAME = CSV_NAME;
+	result.SOLVER_NAME = SOLVER_NAME;
+	result.weights = _weights;
+
+	return result;
+}

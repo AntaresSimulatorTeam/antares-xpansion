@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	// options.print(std::cout);
 	usage(argc);
 	SimulationOptions options(build_benders_options(argc, argv));
-	BendersBaseOptions benders_options(SimuOptToBendersBaseOpt(options));
+	BendersBaseOptions benders_options(options.get_benders_options());
 
 	google::InitGoogleLogging(argv[0]);
 	auto path_to_log = (Path(options.OUTPUTROOT) / "benderssequentialLog.txt.").get_str();

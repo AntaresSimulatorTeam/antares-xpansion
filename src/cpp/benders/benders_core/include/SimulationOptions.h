@@ -13,13 +13,10 @@ public:
 
 	void read(std::string const &file_name);
 	void print(std::ostream &stream) const;
+	BendersBaseOptions get_benders_options() const;
 
 	void write_default();
 	Str2Dbl _weights;
-	inline Str2Dbl weights() const
-	{
-		return _weights;
-	}
 
 private:
 	void set_weights();

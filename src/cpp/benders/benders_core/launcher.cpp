@@ -92,32 +92,3 @@ void usage(int argc)
 		std::exit(1);
 	}
 }
-
-BendersBaseOptions SimuOptToBendersBaseOpt(const SimulationOptions &options)
-{
-	BendersBaseOptions result;
-
-	result.LOG_LEVEL = options.LOG_LEVEL;
-	result.MAX_ITERATIONS = options.MAX_ITERATIONS;
-	result.SLAVE_NUMBER = options.SLAVE_NUMBER;
-
-	result.ABSOLUTE_GAP = options.ABSOLUTE_GAP;
-	result.RELATIVE_GAP = options.RELATIVE_GAP;
-	result.SLAVE_WEIGHT_VALUE = options.SLAVE_WEIGHT_VALUE;
-	result.TIME_LIMIT = options.TIME_LIMIT;
-
-	result.AGGREGATION = options.AGGREGATION;
-	result.TRACE = options.TRACE;
-	result.BOUND_ALPHA = options.BOUND_ALPHA;
-
-	result.OUTPUTROOT = options.OUTPUTROOT;
-	result.SLAVE_WEIGHT = options.SLAVE_WEIGHT;
-	result.MASTER_NAME = options.MASTER_NAME;
-	result.STRUCTURE_FILE = options.STRUCTURE_FILE;
-	result.INPUTROOT = options.INPUTROOT;
-	result.CSV_NAME = options.CSV_NAME;
-	result.SOLVER_NAME = options.SOLVER_NAME;
-	result.weights = options.weights();
-
-	return result;
-}

@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     // Read options, needed to have options.OUTPUTROOT
     SimulationOptions options(build_benders_options(argc, argv));
 
-    BendersBaseOptions benders_options(SimuOptToBendersBaseOpt(options));
+    BendersBaseOptions benders_options(options.get_benders_options());
 
     if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1)
     {
