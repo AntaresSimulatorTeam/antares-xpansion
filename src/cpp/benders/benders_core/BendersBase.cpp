@@ -1,6 +1,5 @@
 #include "BendersBase.h"
 #include "Timer.h"
-#include "launcher.h"
 #include "solver_utils.h"
 #include "helpers/Path.h"
 

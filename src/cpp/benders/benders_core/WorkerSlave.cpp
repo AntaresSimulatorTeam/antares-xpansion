@@ -1,5 +1,4 @@
 #include "WorkerSlave.h"
-#include "launcher.h"
 
 #include "solver_utils.h"
 

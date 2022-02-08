@@ -170,17 +170,35 @@ const std::string SLAVE_WEIGHT_UNIFORM_CST_STR("UNIFORM");
 const std::string WEIGHT_SUM_CST_STR("WEIGHT_SUM");
 const std::string MPS_SUFFIX = ".mps";
 
-struct BendersBaseOptions
+struct BaseOptions
 {
+	std::string
+		OUTPUTROOT,
+		INPUTROOT,
+		STRUCTURE_FILE,
+		MASTER_NAME,
+		SOLVER_NAME,
+		SLAVE_WEIGHT;
+
 	int
-		LOG_LEVEL,
-		MAX_ITERATIONS,
-		SLAVE_NUMBER;
+		SLAVE_NUMBER,
+		LOG_LEVEL;
+
+	double SLAVE_WEIGHT_VALUE;
+
+	Str2Dbl weights;
+};
+typedef BaseOptions MergeMPSOptions;
+struct BendersBaseOptions : public BaseOptions
+{
+	BendersBaseOptions(const BaseOptions &base_to_copy) : BaseOptions(base_to_copy)
+	{
+	}
+	int MAX_ITERATIONS;
 
 	double
 		ABSOLUTE_GAP,
 		RELATIVE_GAP,
-		SLAVE_WEIGHT_VALUE,
 		TIME_LIMIT;
 
 	bool
@@ -188,16 +206,7 @@ struct BendersBaseOptions
 		TRACE,
 		BOUND_ALPHA;
 
-	std::string
-		OUTPUTROOT,
-		SLAVE_WEIGHT,
-		MASTER_NAME,
-		STRUCTURE_FILE,
-		INPUTROOT,
-		CSV_NAME,
-		SOLVER_NAME;
-
-	Str2Dbl weights;
+	std::string CSV_NAME;
 };
 
 void usage(int argc);

@@ -15,6 +15,7 @@ public:
 	void read(std::string const &file_name);
 	void print(std::ostream &stream) const;
 	BendersBaseOptions get_benders_options() const;
+	BaseOptions get_base_options() const;
 
 	void write_default();
 	Str2Dbl _weights;
