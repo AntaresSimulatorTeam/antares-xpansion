@@ -14,6 +14,15 @@ SimulationOptions::SimulationOptions() :
 }
 
 /*!
+ *  \brief Constructor of Benders Options
+ *  \param options_filename file that contains options
+ */
+SimulationOptions::SimulationOptions(const std::string &options_filename) : SimulationOptions()
+{
+	read(options_filename);
+}
+
+/*!
  *  \brief Write default options in "options_default" txt file
  */
 void SimulationOptions::write_default()

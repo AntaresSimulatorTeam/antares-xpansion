@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     }
 
     // Read options, needed to have options.OUTPUTROOT
-    SimulationOptions options(build_benders_options(argc, argv));
+    SimulationOptions options(argv[1]);
 
     BendersBaseOptions benders_options(options.get_benders_options());
 

@@ -8,8 +8,6 @@
 class SimulationOptions;
 CouplingMap build_input(const std::string &structure_path, const int slave_number, const std::string &master_name);
 
-SimulationOptions build_benders_options(int argc, char **argv);
-
 void usage(int argc);
 
 enum Attribute

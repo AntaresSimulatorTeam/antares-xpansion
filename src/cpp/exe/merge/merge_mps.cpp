@@ -44,7 +44,7 @@ double slave_weight(int nslaves, std::string const &name, double slave_weight_va
 int main(int argc, char **argv)
 {
     usage(argc);
-    SimulationOptions options(build_benders_options(argc, argv));
+    SimulationOptions options(argv[1]);
     options.print(std::cout);
 
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);

@@ -6,20 +6,6 @@
 #include "Timer.h"
 
 /*!
- *  \brief Get Benders Options from command line
- *
- *  \param argc : number of elements
- *
- *  \param argv : elements on command line
- */
-SimulationOptions build_benders_options(int argc, char **argv)
-{
-	SimulationOptions result;
-	result.read(argv[1]);
-	return result;
-}
-
-/*!
  *  \brief Build the input from the structure file
  *
  *	Function to build the map linking each problem name to its variables and their id

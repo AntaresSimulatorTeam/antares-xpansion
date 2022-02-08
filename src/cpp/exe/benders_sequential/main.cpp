@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 {
 	// options.print(std::cout);
 	usage(argc);
-	SimulationOptions options(build_benders_options(argc, argv));
+	SimulationOptions options(argv[1]);
 	BendersBaseOptions benders_options(options.get_benders_options());
 
 	google::InitGoogleLogging(argv[0]);
