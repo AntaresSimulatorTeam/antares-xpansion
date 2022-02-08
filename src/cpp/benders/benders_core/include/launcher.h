@@ -5,10 +5,6 @@
 
 #include "solver_utils.h"
 
-class SimulationOptions;
-CouplingMap build_input(const std::string &structure_path, const int slave_number, const std::string &master_name);
-
-void usage(int argc);
 
 enum Attribute
 {

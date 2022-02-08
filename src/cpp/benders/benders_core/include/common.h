@@ -19,7 +19,6 @@
 #include <algorithm>
 #include <thread>
 #include <cmath>
-//#include "Timer.h"
 #include "core/ILogger.h"
 // MultiSolver interface
 #include "multisolver_interface/Solver.h"
@@ -200,3 +199,6 @@ struct BendersBaseOptions
 
 	Str2Dbl weights;
 };
+
+void usage(int argc);
+CouplingMap build_input(const std::string &structure_path, const int slave_number, const std::string &master_name);

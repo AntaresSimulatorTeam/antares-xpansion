@@ -6,7 +6,6 @@
 #include "Worker.h"
 
 #include "Timer.h"
-#include "launcher.h"
 #include "BendersSequential.h"
 #include "BendersMPI.h"
 #include "OutputWriter.h"

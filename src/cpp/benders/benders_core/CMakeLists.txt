@@ -8,7 +8,6 @@
 
 add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/SimplexBasis.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/launcher.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerSlave.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerStabilizedMaster.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/SimulationOptions.cpp

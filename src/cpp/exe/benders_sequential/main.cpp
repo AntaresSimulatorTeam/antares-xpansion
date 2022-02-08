@@ -3,7 +3,6 @@
 
 #include "glog/logging.h"
 
-#include "launcher.h"
 #include "BendersSequential.h"
 #include "SimulationOptions.h"
 #include "logger/Master.h"
