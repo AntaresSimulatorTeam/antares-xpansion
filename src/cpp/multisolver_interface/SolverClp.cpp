@@ -1,4 +1,5 @@
 #include "SolverClp.h"
+#include "COIN_common_functions.h"
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor    --------------------------------
@@ -141,28 +142,7 @@ void SolverClp::get_rows(int *mstart, int *mclind, double *dmatval, int size, in
 {
 
 	CoinPackedMatrix matrix = *_clp.matrix();
-	matrix.reverseOrdering();
-	const int *column = matrix.getIndices();
-	const int *rowLength = matrix.getVectorLengths();
-	const CoinBigIndex *rowStart = matrix.getVectorStarts();
-	const double *vals = matrix.getElements();
-
-	int firstIndexToReturn = rowStart[first];
-	int lastIndexToReturn = rowStart[last + 1] - 1;
-	int nelemsToReturn = lastIndexToReturn - firstIndexToReturn + 1;
-	// Need to take into account the offset of rowstart as _clp.matrix
-	// returnes the entire matrix
-	for (int i = first; i < last + 2; i++)
-	{
-		mstart[i - first] = rowStart[i] - rowStart[first];
-	}
-
-	for (int i = firstIndexToReturn; i < lastIndexToReturn + 1; i++)
-	{
-		mclind[i - firstIndexToReturn] = column[i];
-		dmatval[i - firstIndexToReturn] = vals[i];
-	}
-	*nels = nelemsToReturn;
+	coin_common::fill_rows_from_COIN_matrix(matrix, mstart, mclind, dmatval, size, nels, first, last);
 }
 
 void SolverClp::get_row_type(char *qrtype, int first, int last) const
@@ -170,71 +150,14 @@ void SolverClp::get_row_type(char *qrtype, int first, int last) const
 	const double *rowLower = _clp.getRowLower();
 	const double *rowUpper = _clp.getRowUpper();
 
-	std::vector<int> whichBound(get_nrows());
-	for (int i = first; i < last + 1; i++)
-	{
-
-		if (rowLower[i] == rowUpper[i])
-		{
-			qrtype[i - first] = 'E';
-		}
-		else if (rowLower[i] > -COIN_DBL_MAX)
-		{
-			if (rowUpper[i] < COIN_DBL_MAX)
-			{
-				std::string error = "ERROR : Row " + std::to_string(i) + " has two different RHS, both right and left.";
-				throw GenericSolverException(error);
-			}
-			else
-			{
-				qrtype[i - first] = 'G';
-			}
-		}
-		else if (rowUpper[i] < COIN_DBL_MAX)
-		{
-			qrtype[i - first] = 'L';
-		}
-		else
-		{
-			std::string error = "ERROR : Row " + std::to_string(i) + " in unconstrained. No RHS found.";
-			throw GenericSolverException(error);
-		}
-	}
+	coin_common::fill_row_type_from_row_bounds(rowLower, rowUpper, qrtype, first, last);
 }
 
 void SolverClp::get_rhs(double *rhs, int first, int last) const
 {
 	const double *rowLower = _clp.getRowLower();
 	const double *rowUpper = _clp.getRowUpper();
-
-	for (int i = first; i < last + 1; i++)
-	{
-		if (rowLower[i] == rowUpper[i])
-		{
-			rhs[i - first] = rowLower[i];
-		}
-		else if (rowLower[i] > -COIN_DBL_MAX)
-		{
-			if (rowUpper[i] < COIN_DBL_MAX)
-			{
-				std::string error = "ERROR : Row " + std::to_string(i) + " has two different RHS, both right and left.";
-				throw GenericSolverException(error);
-			}
-			else
-			{
-				rhs[i - first] = rowLower[i];
-			}
-		}
-		else if (rowUpper[i] < COIN_DBL_MAX)
-		{
-			rhs[i - first] = rowUpper[i];
-		}
-		else
-		{
-			std::string error = "ERROR : Row " + std::to_string(i) + " in unconstrained. No RHS found.";
-			throw GenericSolverException(error);
-		}
-	}
+	coin_common::fill_rhs_from_bounds(rowLower, rowUpper, rhs, first, last);
 }
 
 void SolverClp::get_rhs_range(double *range, int first, int last) const
@@ -364,30 +287,7 @@ void SolverClp::add_rows(int newrows, int newnz, const char *qrtype, const doubl
 
 	std::vector<double> rowLower(newrows);
 	std::vector<double> rowUpper(newrows);
-	for (int i(0); i < newrows; i++)
-	{
-		if (qrtype[i] == 'L')
-		{
-			rowUpper[i] = rhs[i];
-			rowLower[i] = -COIN_DBL_MAX;
-		}
-		else if (qrtype[i] == 'G')
-		{
-			rowUpper[i] = COIN_DBL_MAX;
-			rowLower[i] = rhs[i];
-		}
-		else if (qrtype[i] == 'E')
-		{
-			rowUpper[i] = rhs[i];
-			rowLower[i] = rhs[i];
-		}
-		else
-		{
-			std::stringstream buffer;
-			buffer << "ERROR : add rows, qrtype " << qrtype[i] << " of row " << i << " to add unknown.";
-			throw GenericSolverException(buffer.str());
-		}
-	}
+	coin_common::fill_row_bounds_from_new_rows_data(rowLower, rowUpper, newrows, qrtype, rhs);
 
 	_clp.addRows(newrows, rowLower.data(), rowUpper.data(), mstart, mclind, dmatval);
 }

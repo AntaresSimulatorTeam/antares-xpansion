@@ -3,6 +3,11 @@
 #include "multisolver_interface/SolverAbstract.h"
 #include <set>
 
+enum class SOLVER_TYPE
+{
+    INTEGER,
+    CONTINUOUS
+};
 const std::string
     UNKNOWN_STR("UNKNOWN"),
     COIN_STR("COIN"),
@@ -11,7 +16,7 @@ const std::string
     XPRESS_STR("XPRESS"),
     CPLEX_STR("CPLEX");
 
-enum class SOLVER_TYPE
+enum class SOLVER_NAME
 {
     UNKNOWN,
     COIN,
@@ -21,56 +26,56 @@ enum class SOLVER_TYPE
     CBC
 };
 
-SOLVER_TYPE str_to_solver_type(std::string solver_name);
+SOLVER_NAME str_to_solver_name(std::string solver_name);
 
 std::string
-solver_to_str(SOLVER_TYPE solver);
-// SOLVER_TYPE str_to_solver_type(std::string solver_name)
+solver_to_str(SOLVER_NAME solver);
+// SOLVER_NAME str_to_solver_name(std::string solver_name)
 // {
 
 //     if (solver_name == COIN_STR)
 //     {
-//         return SOLVER_TYPE::COIN;
+//         return SOLVER_NAME::COIN;
 //     }
 //     if (solver_name == CBC_STR)
 //     {
-//         return SOLVER_TYPE::CBC;
+//         return SOLVER_NAME::CBC;
 //     }
 //     if (solver_name == CPLEX_STR)
 //     {
-//         return SOLVER_TYPE::CPLEX;
+//         return SOLVER_NAME::CPLEX;
 //     }
 //     if (solver_name == CLP_STR)
 //     {
-//         return SOLVER_TYPE::CLP;
+//         return SOLVER_NAME::CLP;
 //     }
 //     else
 //     {
-//         return SOLVER_TYPE::UNKNOWN;
+//         return SOLVER_NAME::UNKNOWN;
 //     }
 // }
 // std::string
-// solver_to_str(SOLVER_TYPE solver)
+// solver_to_str(SOLVER_NAME solver)
 // {
 //     switch (solver)
 //     {
-//     case SOLVER_TYPE::COIN:
+//     case SOLVER_NAME::COIN:
 //         return COIN_STR;
 //         break;
 
-//     case SOLVER_TYPE::CPLEX:
+//     case SOLVER_NAME::CPLEX:
 //         return CPLEX_STR;
 //         break;
 
-//     case SOLVER_TYPE::CLP:
+//     case SOLVER_NAME::CLP:
 //         return CLP_STR;
 //         break;
 
-//     case SOLVER_TYPE::CBC:
+//     case SOLVER_NAME::CBC:
 //         return CBC_STR;
 //         break;
 
-//     case SOLVER_TYPE::XPRESS:
+//     case SOLVER_NAME::XPRESS:
 //         return XPRESS_STR;
 //         break;
 
@@ -102,6 +107,14 @@ public:
      * @param solver_name : Name of the solver to use
      */
     SolverAbstract::Ptr create_solver(const std::string solver_name);
+
+    /**
+     * @brief Creates and returns to an object solver from the wanted implementation
+     *
+     * @param solver_name : Name of the solver to use
+     * @param solver_type : Name of the solver to use
+     */
+    SolverAbstract::Ptr create_solver(const std::string solver_name, const SOLVER_TYPE solver_type);
 
     /**
      * @brief Copy constructor : Creates and returns to an object solver from the wanted

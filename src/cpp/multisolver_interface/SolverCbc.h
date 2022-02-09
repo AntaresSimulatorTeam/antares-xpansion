@@ -1,6 +1,7 @@
 #pragma once
 
 #include "multisolver_interface/SolverAbstract.h"
+
 #include "Cbc_C_Interface.h"
 #include "CbcModel.hpp"
 #include "OsiClpSolverInterface.hpp"
