@@ -53,30 +53,14 @@ void Worker::init(Str2Int const &variable_map, std::string const &path_to_mps,
 	SolverFactory factory;
 	if (_is_master)
 	{
-		if (solver_name == COIN_STR)
-		{
-			// _solver = factory.create_solver(CBC_STR);
-			_solver = factory.create_solver(COIN_STR, SOLVER_TYPE::CONTINUOUS);
-		}
-		else
-		{
-			_solver = factory.create_solver(solver_name);
-		}
-		_solver->init();
+		_solver = factory.create_solver(solver_name, SOLVER_TYPE::INTEGER);
 	}
 	else
 	{
-		if (solver_name == COIN_STR)
-		{
-			// _solver = factory.create_solver(CLP_STR);
-			_solver = factory.create_solver(COIN_STR, SOLVER_TYPE::INTEGER);
-		}
-		else
-		{
-			_solver = factory.create_solver(solver_name);
-		}
-		_solver->init();
+		_solver = factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS);
 	}
+
+	_solver->init();
 	_solver->set_threads(1);
 	_solver->set_output_log_level(log_level);
 	_solver->read_prob_mps(path_to_mps);
