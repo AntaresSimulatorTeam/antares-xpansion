@@ -16,7 +16,6 @@ const std::string
     XPRESS_STR("XPRESS"),
     CPLEX_STR("CPLEX");
 
-
 /*!
  * \class class SolverFactory
  * \brief Class to manage the creation of solvers from the different implementations
@@ -38,7 +37,7 @@ public:
      *
      * @param solver_name : Name of the solver to use
      */
-    SolverAbstract::Ptr create_solver(const std::string solver_name);
+    SolverAbstract::Ptr create_solver(const std::string &solver_name);
 
     /**
      * @brief Creates and returns to an object solver from the wanted implementation
@@ -46,7 +45,7 @@ public:
      * @param solver_name : Name of the solver to use
      * @param solver_type : Name of the solver to use
      */
-    SolverAbstract::Ptr create_solver(const std::string solver_name, const SOLVER_TYPE solver_type);
+    SolverAbstract::Ptr create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type);
 
     /**
      * @brief Copy constructor : Creates and returns to an object solver from the wanted
