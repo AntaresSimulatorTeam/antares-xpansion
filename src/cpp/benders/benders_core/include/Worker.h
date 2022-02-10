@@ -33,7 +33,6 @@ public:
 
 public:
 	void solve(int &lp_status, const std::string &outputroot) const;
-	static std::string insert_str_in_str(const std::string &input, const std::string &suffix, const std::string &to_add);
 
 public:
 	SolverAbstract::Ptr _solver = nullptr; /*!< Problem stocked in the instance Worker*/

@@ -100,16 +100,8 @@ void Worker::solve(int &lp_status, const std::string &outputroot) const
 
 	if (_is_master)
 	{
-		std::stringstream buffer;
-
-		buffer << Path(outputroot) / insert_str_in_str(_path_to_mps, MPS_SUFFIX, "_last_iteration");
-		_solver->write_prob_mps(buffer.str());
+		_solver->write_prob_mps((Path(outputroot) / OUTPUT_MASTER_MPS_FILE_NAME).get_str());
 	}
-}
-
-std::string Worker::insert_str_in_str(const std::string &input, const std::string &suffix, const std::string &to_insert)
-{
-	return input.substr(0, input.length() - suffix.length()) + to_insert + suffix;
 }
 /*!
  *  \brief Get the number of iteration needed to solve a problem

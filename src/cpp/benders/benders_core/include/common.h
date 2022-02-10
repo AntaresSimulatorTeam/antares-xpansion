@@ -169,6 +169,7 @@ const std::string SLAVE_WEIGHT_CST_STR("CONSTANT");
 const std::string SLAVE_WEIGHT_UNIFORM_CST_STR("UNIFORM");
 const std::string WEIGHT_SUM_CST_STR("WEIGHT_SUM");
 const std::string MPS_SUFFIX = ".mps";
+const std::string OUTPUT_MASTER_MPS_FILE_NAME = "master_last_iteration" + MPS_SUFFIX;
 
 struct BaseOptions
 {
