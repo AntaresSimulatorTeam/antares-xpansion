@@ -2,9 +2,7 @@
 #pragma once
 
 #include "OutputWriter.h"
-#include "BendersOptions.h"
 #include "Clock.h"
-#include "Timer.h"
 
 #include <json/writer.h>
 
@@ -46,12 +44,6 @@ namespace Output
         virtual void updateEndTime();
         virtual void write_iterations(const IterationsData &iterations_data);
 
-        /*!
-         *  \brief write an a priori errored json output, overwritten if optimization ends
-         */
-        std::string criterion_to_string(const StoppingCriterion stopping_criterion) const;
-        std::string status_from_criterion(const StoppingCriterion stopping_criterion) const;
-
     public:
         /*!
          *  \brief JsonWriter default constructor
@@ -65,12 +57,6 @@ namespace Output
          */
         virtual ~JsonWriter() = default;
 
-        /*!
-         *  \brief saves the options of the benders algorithm to be later written to the json file
-         *
-         *  \param bendersOptions_p : set of options used for the optimization
-         */
-        virtual void write_options(BendersOptions const &bendersOptions_p);
         virtual void update_solution(const SolutionData &solution_data);
 
         /*!
@@ -82,7 +68,7 @@ namespace Output
          * \brief initialize outputs
          * \param options : set of options used for the optimization
          */
-        void initialize(const BendersOptions &options);
+        void initialize();
 
         void end_writing(const IterationsData &iterations_data);
     };

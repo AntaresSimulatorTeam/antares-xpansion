@@ -19,7 +19,6 @@
 #include <algorithm>
 #include <thread>
 #include <cmath>
-//#include "Timer.h"
 #include "core/ILogger.h"
 // MultiSolver interface
 #include "multisolver_interface/Solver.h"
@@ -165,3 +164,48 @@ double norm_point(Point const &x0, Point const &x1);
 std::ostream &operator<<(std::ostream &stream, std::vector<IntVector> const &rhs);
 
 LogData bendersDataToLogData(const BendersData &data);
+
+const std::string SLAVE_WEIGHT_CST_STR("CONSTANT");
+const std::string SLAVE_WEIGHT_UNIFORM_CST_STR("UNIFORM");
+const std::string WEIGHT_SUM_CST_STR("WEIGHT_SUM");
+const std::string MPS_SUFFIX = ".mps";
+const std::string OUTPUT_MASTER_MPS_FILE_NAME = "master_last_iteration" + MPS_SUFFIX;
+
+struct BaseOptions
+{
+	std::string OUTPUTROOT;
+	std::string INPUTROOT;
+	std::string STRUCTURE_FILE;
+	std::string MASTER_NAME;
+	std::string SOLVER_NAME;
+	std::string SLAVE_WEIGHT;
+
+	int SLAVE_NUMBER;
+	int LOG_LEVEL;
+
+	double SLAVE_WEIGHT_VALUE;
+
+	Str2Dbl weights;
+};
+typedef BaseOptions MergeMPSOptions;
+struct BendersBaseOptions : public BaseOptions
+{
+	explicit BendersBaseOptions(const BaseOptions &base_to_copy) : BaseOptions(base_to_copy)
+	{
+	}
+
+	int MAX_ITERATIONS;
+
+	double ABSOLUTE_GAP;
+	double RELATIVE_GAP;
+	double TIME_LIMIT;
+
+	bool AGGREGATION;
+	bool TRACE;
+	bool BOUND_ALPHA;
+
+	std::string CSV_NAME;
+};
+
+void usage(int argc);
+CouplingMap build_input(const std::string &structure_path, const int slave_number, const std::string &master_name);

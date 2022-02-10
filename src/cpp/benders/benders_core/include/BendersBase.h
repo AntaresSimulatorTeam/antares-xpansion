@@ -1,11 +1,12 @@
 #pragma once
 
+#include "common.h"
 #include "SlaveCut.h"
 #include "Worker.h"
 #include "WorkerSlave.h"
 #include "WorkerMaster.h"
 #include "WorkerTrace.h"
-#include "BendersOptions.h"
+#include "SimulationOptions.h"
 #include "core/ILogger.h"
 #include "OutputWriter.h"
 
@@ -14,14 +15,14 @@ class BendersBase
 
 public:
     virtual ~BendersBase() = default;
-    BendersBase(BendersOptions const &options, Logger &logger, Writer writer);
+    BendersBase(BendersBaseOptions const &options, Logger &logger, Writer writer);
 
     WorkerMasterPtr _master;
     SlavesMapPtr _map_slaves;
 
     Str2Int _problem_to_id;
     BendersData _data;
-    BendersOptions _options;
+    BendersBaseOptions _options;
     StrVector _slaves;
 
     AllCutStorage _all_cuts_storage;
@@ -56,7 +57,7 @@ public:
     void check_status(AllCutPackage const &all_package) const;
 
     void get_master_value();
-    void get_slave_cut(SlaveCutPackage &slave_cut_package) ;
+    void get_slave_cut(SlaveCutPackage &slave_cut_package);
 
     LogData build_log_data_from_data() const;
     void post_run_actions() const;
@@ -73,5 +74,10 @@ public:
     void compute_cut(const AllCutPackage &all_package);
 
     void build_cut_full(const AllCutPackage &all_package);
+
+    std::string get_slave_path(std::string const &slave_name) const;
+    double slave_weight(int nslaves, std::string const &name) const;
+    std::string get_master_path() const;
+    std::string get_structure_path() const;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

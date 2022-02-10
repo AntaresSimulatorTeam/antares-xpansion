@@ -11,7 +11,7 @@
 class BendersSequential : public BendersBase
 {
 public:
-	explicit BendersSequential(BendersOptions const &options, Logger &logger, Writer writer);
+	explicit BendersSequential(BendersBaseOptions const &options, Logger &logger, Writer writer);
 	virtual ~BendersSequential() = default;
 	virtual void launch();
 	void build_cut();

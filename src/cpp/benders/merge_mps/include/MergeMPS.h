@@ -1,17 +1,10 @@
 #pragma once
 
-// #include "BendersSequential.h"
 #include "common.h"
+#include "WriterFactories.h"
+#include "logger/User.h"
 
 #include "solver_utils.h"
-
-class BendersOptions;
-
-CouplingMap build_input(BendersOptions const &options);
-
-BendersOptions build_benders_options(int argc, char **argv);
-
-void usage(int argc);
 
 enum Attribute
 {
@@ -136,7 +129,6 @@ public:
 					  0,
 					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] - 1);
 
-
 		solver_getcolinfo(solver_p,
 						  std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
 						  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
@@ -144,10 +136,10 @@ public:
 						  0,
 						  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
-		solver_getobj(solver_p,
-					  std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
-					  0,
-					  std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
+		solver_get_obj_func_coeffs(solver_p,
+								   std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
+								   0,
+								   std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
 		assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size() == 1 + std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
@@ -220,4 +212,16 @@ private:
 	{
 		std::get<Attribute::DBL_VECTOR>(_data).assign(DblVectorAttribute::MAX_DBL_VECTOR_ATTRIBUTE, DblVector());
 	}
+};
+
+class MergeMPS
+{
+public:
+	MergeMPS(const MergeMPSOptions &options, Logger &logger, Writer writer);
+	void launch();
+	double slave_weight(int nslaves, std::string const &name) const;
+
+	MergeMPSOptions _options;
+	Logger _logger;
+	Writer _writer;
 };

@@ -1,9 +1,7 @@
 
 #pragma once
 
-#include "Timer.h"
 #include <ctime>
-
 
 class Clock
 {

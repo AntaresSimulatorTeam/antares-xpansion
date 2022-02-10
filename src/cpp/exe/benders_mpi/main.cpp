@@ -6,7 +6,6 @@
 #include "Worker.h"
 
 #include "Timer.h"
-#include "launcher.h"
 #include "BendersSequential.h"
 #include "BendersMPI.h"
 #include "OutputWriter.h"
@@ -26,7 +25,9 @@ int main(int argc, char **argv)
     }
 
     // Read options, needed to have options.OUTPUTROOT
-    BendersOptions options(build_benders_options(argc, argv));
+    SimulationOptions options(argv[1]);
+
+    BendersBaseOptions benders_options(options.get_benders_options());
 
     if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1)
     {
@@ -46,7 +47,7 @@ int main(int argc, char **argv)
     if (world.rank() == 0)
     {
         logger = build_stdout_and_file_logger(log_reports_name);
-        writer = build_json_writer(options);
+        writer = build_json_writer(options.JSON_FILE);
         std::ostringstream oss_l = start_message(options, "mpi");
         LOG(INFO) << oss_l.str() << std::endl;
     }
@@ -65,11 +66,11 @@ int main(int argc, char **argv)
         std::cout << "Sequential launch" << std::endl;
         LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;
 
-        benders = std::make_shared<BendersSequential>(options, logger, writer);
+        benders = std::make_shared<BendersSequential>(benders_options, logger, writer);
     }
     else
     {
-        benders = std::make_shared<BendersMpi>(options, logger, writer, env, world);
+        benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env, world);
     }
 
     benders->launch();

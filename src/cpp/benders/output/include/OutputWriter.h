@@ -1,10 +1,9 @@
 
 #pragma once
+#include <string>
+#include <vector>
+#include <memory>
 
-#include "Timer.h"
-#include "BendersOptions.h"
-#include "WorkerTrace.h"
-#include "common.h"
 namespace Output
 {
 
@@ -114,22 +113,14 @@ namespace Output
         virtual void update_solution(const SolutionData &solution_data) = 0;
 
         /*!
-         *  \brief saves the options of the benders algorithm to be later written to the json file
-         *
-         *  \param bendersOptions_p : set of options used for the optimization
-         */
-        virtual void write_options(BendersOptions const &bendersOptions_p) = 0;
-
-        /*!
          *  \brief write the log data into a file
          */
         virtual void dump() = 0;
 
         /*!
          * \brief initialize outputs
-         * \param options : set of options used for the optimization
          */
-        virtual void initialize(const BendersOptions &options) = 0;
+        virtual void initialize() = 0;
 
         virtual void end_writing(const IterationsData &iterations_data) = 0;
     };

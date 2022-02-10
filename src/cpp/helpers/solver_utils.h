@@ -5,12 +5,13 @@
 
 #include "multisolver_interface/Solver.h"
 
-
-class InvalidSolverStatusException : public std::runtime_error {
+class InvalidSolverStatusException : public std::runtime_error
+{
 public:
-    InvalidSolverStatusException(const std::string& message)
-        :std::runtime_error(message)
-    {}
+    InvalidSolverStatusException(const std::string &message)
+        : std::runtime_error(message)
+    {
+    }
 };
 
 /**
@@ -27,7 +28,7 @@ public:
  * @param last_p  : Last row in the range.
  */
 void solver_getrows(SolverAbstract::Ptr const solver_p,
-                    std::vector<int> & mstart_p, std::vector<int> & mclind_p, std::vector<double> & dmatval_p,
+                    std::vector<int> &mstart_p, std::vector<int> &mclind_p, std::vector<double> &dmatval_p,
                     int first_p, int last_p);
 
 /**
@@ -38,7 +39,7 @@ void solver_getrows(SolverAbstract::Ptr const solver_p,
  * @param first_p  : first column to consider.
  * @param last_p  : last column to consider.
  */
-void solver_getobj(SolverAbstract::Ptr const solver_p, std::vector<double> & obj_p, int first_p, int last_p);
+void solver_get_obj_func_coeffs(SolverAbstract::Ptr const solver_p, std::vector<double> &obj_p, int first_p, int last_p);
 
 /**
  * @brief Adds variables to an existent solver
@@ -58,11 +59,11 @@ void solver_getobj(SolverAbstract::Ptr const solver_p, std::vector<double> & obj
  * @param colNames_p : optional parameter. array containing the names of the new columns to add.
  */
 void solver_addcols(SolverAbstract::Ptr solver_p,
-                    std::vector<double> const & objx_p,
-                    std::vector<int> const & mstart_p, std::vector<int> const & mrwind_p, std::vector<double> const & dmatval_p,
-                    std::vector<double> const & bdl_p, std::vector<double> const & bdu_p,
-                    std::vector<char> const & colTypes_p,
-                    std::vector<std::string> const & colNames_p);
+                    std::vector<double> const &objx_p,
+                    std::vector<int> const &mstart_p, std::vector<int> const &mrwind_p, std::vector<double> const &dmatval_p,
+                    std::vector<double> const &bdl_p, std::vector<double> const &bdu_p,
+                    std::vector<char> const &colTypes_p,
+                    std::vector<std::string> const &colNames_p);
 
 /**
  * @brief Adds constraints to an existent solver
@@ -85,10 +86,10 @@ void solver_addcols(SolverAbstract::Ptr solver_p,
  * @note ignores non-binding rows
  */
 void solver_addrows(SolverAbstract::Ptr solver_p,
-                    std::vector<char> const &  qrtype_p,
-                    std::vector<double>  const & rhs_p,
-                    std::vector<double>  const & range_p,
-                    std::vector<int> const & mstart_p, std::vector<int> const & mclind_p, std::vector<double> const & dmatval_p);
+                    std::vector<char> const &qrtype_p,
+                    std::vector<double> const &rhs_p,
+                    std::vector<double> const &range_p,
+                    std::vector<int> const &mstart_p, std::vector<int> const &mclind_p, std::vector<double> const &dmatval_p);
 
 /**
  * @brief returns the solution of a solved problem
@@ -96,7 +97,7 @@ void solver_addrows(SolverAbstract::Ptr solver_p,
  * @param solver_p  : solver containing the solved model.
  * @param x_p : will be filled with the variables values of the retrieved solution
  */
-void solver_getlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> & x_p);
+void solver_getlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> &x_p);
 
 /**
  * @brief returns the dual values of a solved problem
@@ -104,7 +105,7 @@ void solver_getlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double
  * @param solver_p  : solver containing the solved model.
  * @param dual_p : will be filled with the dual values of the retrieved solution
  */
-void solver_getlpdual(SolverAbstract::Ptr const solver_p, std::vector<double> & dual_p);
+void solver_getlpdual(SolverAbstract::Ptr const solver_p, std::vector<double> &dual_p);
 
 /**
  * @brief Returns the reduced costs of a solved problem
@@ -112,7 +113,7 @@ void solver_getlpdual(SolverAbstract::Ptr const solver_p, std::vector<double> & 
  * @param solver_p  : solver containing the solved model.
  * @param dj_p : will be filled with the reduced costs
  */
-void solver_getlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<double> & dj_p);
+void solver_getlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<double> &dj_p);
 
 /**
  * @brief Returns the row types for the rows in a given range.
@@ -127,7 +128,7 @@ void solver_getlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<dou
  * @param first_p : First row in the range.
  * @param last_p : Last row in the range
  */
-void solver_getrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> & qrtype_p, int first_p, int last_p);
+void solver_getrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> &qrtype_p, int first_p, int last_p);
 
 /**
  * @brief Returns the right hand side elements for the rows in a given range.
@@ -141,7 +142,7 @@ void solver_getrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> & q
  * @note if the constraint is a range, returns the ub.
  * @note if the constraint is unbound, still returns the ub i.e. solver's +inf.
  */
-void solver_getrhs(SolverAbstract::Ptr const solver_p, std::vector<double> & rhs_p, int first_p, int last_p);
+void solver_getrhs(SolverAbstract::Ptr const solver_p, std::vector<double> &rhs_p, int first_p, int last_p);
 
 /**
  * @brief Returns the right hand side range values for the rows in a given range.
@@ -151,7 +152,7 @@ void solver_getrhs(SolverAbstract::Ptr const solver_p, std::vector<double> & rhs
  * @param first_p : First row in the range.
  * @param last_p : Last row in the range
  */
-void solver_getrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> &  range_p, int first_p, int last_p);
+void solver_getrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> &range_p, int first_p, int last_p);
 
 /**
  * @brief Returns infos about the columns
@@ -169,8 +170,8 @@ void solver_getrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> 
  * @note return 'I' if the variable is binary or integer and it was fixed
  */
 void solver_getcolinfo(SolverAbstract::Ptr const solver_p,
-                       std::vector<char> & coltype_p,
-                       std::vector<double> & bdl_p, std::vector<double> & bdu_p,
+                       std::vector<char> &coltype_p,
+                       std::vector<double> &bdl_p, std::vector<double> &bdu_p,
                        int first_p, int last_p);
 
 /**
@@ -182,7 +183,7 @@ void solver_getcolinfo(SolverAbstract::Ptr const solver_p,
  * @note note that this method does not delete the rows but simply unbounds the constraint and supresses its terms
  * i.e. replaces the indexed rows with  -inf <= 0 <= +inf
  */
-void solver_deactivaterows(SolverAbstract::Ptr solver_p, std::vector<int> const & mindex);
+void solver_deactivaterows(SolverAbstract::Ptr solver_p, std::vector<int> const &mindex);
 
 /**
  * @brief Returns the current basis
@@ -201,7 +202,7 @@ May be NULL if not required.
  *      3 : variable is super-basic.
 May be NULL if not required.
  */
-void solver_getbasis(SolverAbstract::Ptr solver_p, std::vector<int> & rstatus_p, std::vector<int> & cstatus_p);
+void solver_getbasis(SolverAbstract::Ptr solver_p, std::vector<int> &rstatus_p, std::vector<int> &cstatus_p);
 
 /**
  * @brief Returns the current basis
@@ -217,9 +218,9 @@ void solver_getbasis(SolverAbstract::Ptr solver_p, std::vector<int> & rstatus_p,
  * @note if the same bound is changed twice the bound at the end of the vector will be used and no warning will be issued
  */
 void solver_chgbounds(SolverAbstract::Ptr solver_p,
-                      std::vector<int> const & mindex_p,
-                      std::vector<char> const & qbtype_p,
-                      std::vector<double> const & bnd_p);
+                      std::vector<int> const &mindex_p,
+                      std::vector<char> const &qbtype_p,
+                      std::vector<double> const &bnd_p);
 
 /**
  * @brief Returns the current basis
@@ -231,5 +232,4 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
  * @note care when copying between solvers of different types : no special verifications are done (eg. infinity values correspondance)
  * @note duplicate/empty names will be named automatically by ortools
  */
-void
-solver_rename_vars(SolverAbstract::Ptr outSolver_p,const std::vector<std::string> &names_p);
+void solver_rename_vars(SolverAbstract::Ptr outSolver_p, const std::vector<std::string> &names_p);

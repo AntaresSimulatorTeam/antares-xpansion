@@ -1,11 +1,11 @@
 #include "BendersBase.h"
-#include "launcher.h"
+#include "Timer.h"
 #include "solver_utils.h"
 #include "helpers/Path.h"
 
 #include "glog/logging.h"
 
-BendersBase::BendersBase(BendersOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer) {}
+BendersBase::BendersBase(BendersBaseOptions const &options, Logger &logger, Writer writer) : _options(options), _logger(logger), _writer(writer) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -28,13 +28,14 @@ void BendersBase::init_data()
 }
 
 /*!
-*  \brief Print the trace of the Benders algorithm in a csv file
-*
-*  Method to print trace of the Benders algorithm in a csv file
-*
-*/
-void BendersBase::print_csv() {
-	std::string const output(Path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv") );
+ *  \brief Print the trace of the Benders algorithm in a csv file
+ *
+ *  Method to print trace of the Benders algorithm in a csv file
+ *
+ */
+void BendersBase::print_csv()
+{
+	std::string const output(Path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv"));
 	std::ofstream file(output, std::ios::out | std::ios::trunc);
 	if (file)
 	{
@@ -276,7 +277,7 @@ void BendersBase::get_master_value()
 	{
 		_master->fix_alpha(_data.best_ub);
 	}
-	_master->solve(_data.master_status, _options);
+	_master->solve(_data.master_status, _options.OUTPUTROOT);
 	_master->get(_data.x0, _data.alpha, _data.alpha_i); /*Get the optimal variables of the Master Problem*/
 	_master->get_value(_data.lb);						/*Get the optimal value of the Master Problem*/
 
@@ -314,11 +315,11 @@ void BendersBase::get_slave_cut(SlaveCutPackage &slave_cut_package)
 		SlaveCutDataPtr slave_cut_data(new SlaveCutData);
 		SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
 		ptr->fix_to(_data.x0);
-		ptr->solve(handler->get_int(LPSTATUS), _options);
+		ptr->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT);
 
 		ptr->get_value(handler->get_dbl(SLAVE_COST));
 		ptr->get_subgradient(handler->get_subgradient());
-		ptr->get_simplex_ite(handler->get_int(SIMPLEXITER));
+		ptr->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
 		handler->get_dbl(SLAVE_TIMER) = timer_slave.elapsed();
 		slave_cut_package[kvp.first] = *slave_cut_data;
 	}
@@ -520,4 +521,52 @@ std::string BendersBase::status_from_criterion() const
 	default:
 		return Output::STATUS_ERROR_C;
 	}
+}
+
+/*!
+ *  \brief Get path to slave problem mps file from options
+ */
+std::string BendersBase::get_slave_path(std::string const &slave_name) const
+{
+	return (Path(_options.INPUTROOT) / (slave_name + MPS_SUFFIX)).get_str();
+}
+
+/*!
+ *  \brief Return slave weight value
+ *
+ *  \param nslaves : total number of slaves
+ *
+ *  \param name : slave name
+ */
+double BendersBase::slave_weight(int nslaves, std::string const &name) const
+{
+	if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_UNIFORM_CST_STR)
+	{
+		return 1 / static_cast<double>(nslaves);
+	}
+	else if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_CST_STR)
+	{
+		double const weight(_options.SLAVE_WEIGHT_VALUE);
+		return 1 / weight;
+	}
+	else
+	{
+		return _options.weights.find(name)->second;
+	}
+}
+
+/*!
+ *  \brief Get path to master problem mps file from options
+ */
+std::string BendersBase::get_master_path() const
+{
+	return (Path(_options.INPUTROOT) / (_options.MASTER_NAME + MPS_SUFFIX)).get_str();
+}
+
+/*!
+ *  \brief Get path to structure txt file from options
+ */
+std::string BendersBase::get_structure_path() const
+{
+	return (Path(_options.INPUTROOT) / _options.STRUCTURE_FILE).get_str();
 }

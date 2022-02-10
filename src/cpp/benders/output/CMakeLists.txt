@@ -6,14 +6,17 @@
 # Targets
 # ===========================================================================
 
-add_library (benders_sequential_core STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/BendersSequential.cpp
+add_library (output_core STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/VoidWriter.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/Clock.cpp
         )
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
 
-target_include_directories (benders_sequential_core
+
+target_include_directories (output_core
 		PUBLIC
 			${CMAKE_CURRENT_SOURCE_DIR}/include
 		PUBLIC
@@ -21,13 +24,9 @@ target_include_directories (benders_sequential_core
             ${JSON_INC_PATH}/jsoncpp
 )
 
-target_link_libraries (benders_sequential_core
+target_link_libraries (output_core
 	PUBLIC
-        benders_core
-		helpers
-		output_core
-		solvers
-		glog::glog
+		jsoncpp_lib
 )
 
-add_library (${PROJECT_NAME}::benders_sequential_core ALIAS benders_sequential_core)
+add_library (${PROJECT_NAME}::output_core ALIAS output_core)

@@ -12,11 +12,6 @@ namespace Output
         // keep this method empty
     }
 
-    void VoidWriter::write_options(BendersOptions const &bendersOptions_p)
-    {
-        // keep this method empty
-    }
-
     void VoidWriter::write_iterations(const IterationsData &iterations_data)
     {
         // keep this method empty
@@ -43,7 +38,7 @@ namespace Output
     {
         // keep this method empty
     }
-    void VoidWriter::initialize(const BendersOptions &options)
+    void VoidWriter::initialize()
     {
         // keep this method empty
     }

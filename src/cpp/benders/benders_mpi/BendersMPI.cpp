@@ -4,10 +4,11 @@
 #include "glog/logging.h"
 
 #include "BendersMPI.h"
+#include "Timer.h"
 
 #define __DEBUG_BENDERS_MPI__ 0
 
-BendersMpi::BendersMpi(BendersOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world) : BendersBase(options, logger, writer), _exceptionRaised(false), _env(env), _world(world)
+BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world) : BendersBase(options, logger, writer), _env(env), _world(world)
 {
 }
 
@@ -44,7 +45,7 @@ void BendersMpi::load()
 			{
 				CouplingMap::value_type kvp;
 				_world.recv(0, islave, kvp);
-				_map_slaves[kvp.first] = WorkerSlavePtr(new WorkerSlave(kvp.second, _options.get_slave_path(kvp.first), _options.slave_weight(_data.nslaves, kvp.first), _options));
+				_map_slaves[kvp.first] = WorkerSlavePtr(new WorkerSlave(kvp.second, get_slave_path(kvp.first), slave_weight(_data.nslaves, kvp.first), _options.SOLVER_NAME, _options.LOG_LEVEL));
 				_slaves.push_back(kvp.first);
 			}
 		}
@@ -82,7 +83,7 @@ void BendersMpi::update_real_problem_list(std::vector<CouplingMap::const_iterato
 				++i;
 			}
 		}
-		_master.reset(new WorkerMaster(it_master->second, _options.get_master_path(), _options, _data.nslaves));
+		_master.reset(new WorkerMaster(it_master->second, get_master_path(), _options.SOLVER_NAME, _options.LOG_LEVEL, _data.nslaves));
 		LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
 	}
 }
@@ -324,7 +325,7 @@ void BendersMpi::run()
 
 void BendersMpi::launch()
 {
-	_input = build_input(_options);
+	_input = build_input(get_structure_path(), _options.SLAVE_NUMBER, _options.MASTER_NAME);
 	_nbWeeks = _input.size();
 	_world.barrier();
 

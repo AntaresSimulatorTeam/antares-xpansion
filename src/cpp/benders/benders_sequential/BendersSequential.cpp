@@ -1,6 +1,6 @@
 #include "BendersSequential.h"
-#include "launcher.h"
 #include "solver_utils.h"
+#include "Timer.h"
 
 #include <iomanip>
 #include <algorithm>
@@ -15,7 +15,7 @@
  *  \param options : set of options fixed by the user
  */
 
-BendersSequential::BendersSequential(BendersOptions const &options, Logger &logger, Writer writer) : BendersBase(options, logger, writer)
+BendersSequential::BendersSequential(BendersBaseOptions const &options, Logger &logger, Writer writer) : BendersBase(options, logger, writer)
 {
 }
 
@@ -38,12 +38,12 @@ void BendersSequential::initialise_problems()
 			if (it != it_master)
 			{
 				_problem_to_id[it->first] = i;
-				_map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(it->second, _options.get_slave_path(it->first), _options.slave_weight(_data.nslaves, it->first), _options));
+				_map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(it->second, get_slave_path(it->first), slave_weight(_data.nslaves, it->first), _options.SOLVER_NAME, _options.LOG_LEVEL));
 				_slaves.push_back(it->first);
 				i++;
 			}
 		}
-		_master.reset(new WorkerMaster(master_variable, _options.get_master_path(), _options, _data.nslaves));
+		_master.reset(new WorkerMaster(master_variable, get_master_path(), _options.SOLVER_NAME, _options.LOG_LEVEL, _data.nslaves));
 	}
 }
 
@@ -131,7 +131,7 @@ void BendersSequential::run()
 
 void BendersSequential::launch()
 {
-	_input = build_input(_options);
+	_input = build_input(get_structure_path(), _options.SLAVE_NUMBER, _options.MASTER_NAME);
 	_nbWeeks = _input.size();
 	LOG(INFO) << "Building input" << std::endl;
 

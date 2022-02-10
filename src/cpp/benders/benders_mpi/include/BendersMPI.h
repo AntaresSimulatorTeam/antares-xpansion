@@ -1,14 +1,13 @@
 #pragma once
 
 #include "BendersBase.h"
-#include "BendersOptions.h"
 #include "common_mpi.h"
 #include "SlaveCut.h"
 #include "Worker.h"
 #include "WorkerSlave.h"
 #include "WorkerMaster.h"
 #include "WorkerTrace.h"
-#include "launcher.h"
+#include "Timer.h"
 
 #include "core/ILogger.h"
 
@@ -21,7 +20,7 @@ class BendersMpi : public BendersBase
 
 public:
     virtual ~BendersMpi() = default;
-    BendersMpi(BendersOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world);
+    BendersMpi(BendersBaseOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world);
 
     void load();
     virtual void launch();
@@ -40,7 +39,7 @@ private:
 
     void solve_master_and_create_trace();
 
-    bool _exceptionRaised;
+    bool _exceptionRaised = false;
 
     void do_solve_master_create_trace_and_update_cuts(int rank);
 

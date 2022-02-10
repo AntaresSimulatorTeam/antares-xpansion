@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <time.h>
 #include <json/json.h>
+#include <fstream>
 
 using namespace Output;
 time_t time_from_date(int year, int month, int day, int hour, int min, int sec);
@@ -54,9 +55,7 @@ public:
 TEST_F(JsonWriterTest, GenerateAValideFile)
 {
     auto writer = JsonWriter(my_clock, _fileName);
-    auto benders_options = BendersOptions();
-    writer.initialize(benders_options);
-    writer.write_options(benders_options);
+    writer.initialize();
 
     std::ifstream fileStream(_fileName);
     fileStream.close();
@@ -82,27 +81,10 @@ TEST_F(JsonWriterTest, InitialiseShouldPrintBeginTimeAndOptions)
     my_clock->set_time(time_from_date(2020, 1, 1, 12, 10, 30));
     auto writer = JsonWriter(my_clock, _fileName);
     // when
-    auto benders_options = BendersOptions();
-    writer.initialize(benders_options);
+    writer.initialize();
     // then
     Json::Value json_content = get_value_from_json(_fileName);
     ASSERT_EQ("01-01-2020 12:10:30", json_content[BEGIN_C].asString());
-    ASSERT_EQ(benders_options.LOG_LEVEL, json_content[OPTIONS_C]["LOG_LEVEL"].asInt());
-    ASSERT_EQ(benders_options.MAX_ITERATIONS, json_content[OPTIONS_C]["MAX_ITERATIONS"].asInt());
-    ASSERT_EQ(benders_options.ABSOLUTE_GAP, json_content[OPTIONS_C]["ABSOLUTE_GAP"].asDouble());
-    ASSERT_EQ(benders_options.RELATIVE_GAP, json_content[OPTIONS_C]["RELATIVE_GAP"].asDouble());
-    ASSERT_EQ(benders_options.AGGREGATION, json_content[OPTIONS_C]["AGGREGATION"].asBool());
-    ASSERT_EQ(benders_options.OUTPUTROOT, json_content[OPTIONS_C]["OUTPUTROOT"].asString());
-    ASSERT_EQ(benders_options.TRACE, json_content[OPTIONS_C]["TRACE"].asBool());
-    ASSERT_EQ(benders_options.SLAVE_WEIGHT, json_content[OPTIONS_C]["SLAVE_WEIGHT"].asString());
-    ASSERT_EQ(benders_options.MASTER_NAME, json_content[OPTIONS_C]["MASTER_NAME"].asString());
-    ASSERT_EQ(benders_options.SLAVE_NUMBER, json_content[OPTIONS_C]["SLAVE_NUMBER"].asInt());
-    ASSERT_EQ(benders_options.INPUTROOT, json_content[OPTIONS_C]["INPUTROOT"].asString());
-    ASSERT_EQ(benders_options.CSV_NAME, json_content[OPTIONS_C]["CSV_NAME"].asString());
-    ASSERT_EQ(benders_options.BOUND_ALPHA, json_content[OPTIONS_C]["BOUND_ALPHA"].asBool());
-    ASSERT_EQ(benders_options.SOLVER_NAME, json_content[OPTIONS_C]["SOLVER_NAME"].asString());
-    ASSERT_EQ(benders_options.JSON_FILE, json_content[OPTIONS_C]["JSON_FILE"].asString());
-    ASSERT_EQ(benders_options.TIME_LIMIT, json_content[OPTIONS_C]["TIME_LIMIT"].asDouble());
 }
 
 TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults)
