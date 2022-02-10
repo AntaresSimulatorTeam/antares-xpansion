@@ -9,10 +9,6 @@ int SolverCbc::_NumberOfProblems = 0;
 SolverCbc::SolverCbc()
 {
 	int status = 0;
-	if (_NumberOfProblems == 0)
-	{
-		// No environment to instanciate
-	}
 
 	_NumberOfProblems += 1;
 	_current_log_level = 0;
@@ -37,11 +33,6 @@ SolverCbc::~SolverCbc()
 {
 	_NumberOfProblems -= 1;
 	free();
-
-	if (_NumberOfProblems == 0)
-	{
-		// No environment to close.
-	}
 }
 
 int SolverCbc::get_number_of_instances()

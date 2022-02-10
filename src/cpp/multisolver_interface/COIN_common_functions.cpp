@@ -11,7 +11,6 @@ namespace coin_common
     {
 
         const int *column = matrix.getIndices();
-        const int *rowLength = matrix.getVectorLengths();
         const CoinBigIndex *rowStart = matrix.getVectorStarts();
         const double *vals = matrix.getElements();
 

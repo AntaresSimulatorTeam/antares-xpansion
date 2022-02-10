@@ -9,10 +9,6 @@ int SolverClp::_NumberOfProblems = 0;
 SolverClp::SolverClp()
 {
 	int status = 0;
-	if (_NumberOfProblems == 0)
-	{
-		// No environment to instanciate
-	}
 
 	_NumberOfProblems += 1;
 	_clp = NULL;
@@ -37,10 +33,6 @@ SolverClp::~SolverClp()
 
 	_NumberOfProblems -= 1;
 	free();
-
-	if (_NumberOfProblems == 0)
-	{
-	}
 }
 
 int SolverClp::get_number_of_instances()
