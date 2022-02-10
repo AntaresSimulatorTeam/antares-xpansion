@@ -37,7 +37,7 @@ public:
      *
      * @param solver_name : Name of the solver to use
      */
-    SolverAbstract::Ptr create_solver(const std::string &solver_name);
+    SolverAbstract::Ptr create_solver(const std::string &solver_name) const;
 
     /**
      * @brief Creates and returns to an object solver from the wanted implementation
@@ -45,7 +45,7 @@ public:
      * @param solver_name : Name of the solver to use
      * @param solver_type : Name of the solver to use
      */
-    SolverAbstract::Ptr create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type);
+    SolverAbstract::Ptr create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type) const;
 
     /**
      * @brief Copy constructor : Creates and returns to an object solver from the wanted

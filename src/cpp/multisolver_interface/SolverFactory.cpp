@@ -26,7 +26,7 @@ SolverFactory::SolverFactory()
 #endif
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type)
+SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type) const
 {
 
 #ifdef COIN_OR
@@ -42,7 +42,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name,
 	return create_solver(solver_name);
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name)
+SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name) const
 {
 
 	if (solver_name == "")
