@@ -4,11 +4,6 @@
 
 #include "solver_utils.h"
 
-Worker::Worker()
-	: _is_master(false), _solver(nullptr)
-{
-}
-
 /*!
  *  \brief Free the problem
  */
@@ -26,7 +21,7 @@ void Worker::free()
  *
  *  \param lb : double which receives the optimal value
  */
-void Worker::get_value(double &lb)
+void Worker::get_value(double &lb) const
 {
 	if (_is_master && _solver->get_n_integer_vars() > 0)
 	{
@@ -79,7 +74,7 @@ void Worker::init(Str2Int const &variable_map, std::string const &path_to_mps,
  *
  *  \param lp_status : problem status after optimization
  */
-void Worker::solve(int &lp_status, const std::string &outputroot)
+void Worker::solve(int &lp_status, const std::string &outputroot) const
 {
 
 	if (_is_master && _solver->get_n_integer_vars() > 0)
@@ -121,7 +116,7 @@ std::string Worker::insert_str_in_str(const std::string &input, const std::strin
  *
  *  \param result : result
  */
-void Worker::get_splex_num_of_ite_last(int &result)
+void Worker::get_splex_num_of_ite_last(int &result) const
 {
 	result = _solver->get_splex_num_of_ite_last();
 }

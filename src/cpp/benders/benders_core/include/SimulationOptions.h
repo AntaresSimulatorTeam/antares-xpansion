@@ -17,7 +17,7 @@ public:
 	BendersBaseOptions get_benders_options() const;
 	BaseOptions get_base_options() const;
 
-	void write_default();
+	void write_default() const;
 	Str2Dbl _weights;
 
 private:

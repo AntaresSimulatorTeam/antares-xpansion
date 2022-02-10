@@ -25,7 +25,7 @@ SimulationOptions::SimulationOptions(const std::string &options_filename) : Simu
 /*!
  *  \brief Write default options in "options_default" txt file
  */
-void SimulationOptions::write_default()
+void SimulationOptions::write_default() const
 {
 	std::ofstream file("options_default.txt");
 	print(file);
@@ -99,7 +99,7 @@ void SimulationOptions::set_weights()
 		}
 		else
 		{
-			for (auto &kvp : _weights)
+			for (const auto &kvp : _weights)
 			{
 				_weights[kvp.first] /= weights_sum;
 			}
