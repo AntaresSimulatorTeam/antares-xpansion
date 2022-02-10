@@ -7,7 +7,6 @@
 WorkerMaster::WorkerMaster()
 {
 	_is_master = true;
-	_id_alpha = 0;
 }
 
 /*!
@@ -21,7 +20,7 @@ WorkerMaster::WorkerMaster()
  *  \param log_level : solver log level
  *  \param nslaves : number of slaves
  */
-WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps, const std::string &solver_name, const int log_level, int nslaves) : Worker(), _nslaves(nslaves), _id_alpha(0)
+WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps, const std::string &solver_name, const int log_level, int nslaves) : Worker(), _nslaves(nslaves)
 {
 	_is_master = true;
 	init(variable_map, path_to_mps, solver_name, log_level);
@@ -72,7 +71,7 @@ void WorkerMaster::get(Point &x0, double &alpha, DblVector &alpha_i)
  *
  *  \param dual : reference to a vector of double
  */
-void WorkerMaster::get_dual_values(std::vector<double> &dual)
+void WorkerMaster::get_dual_values(std::vector<double> &dual) const
 {
 	dual.resize(get_number_constraint());
 	solver_getlpdual(_solver, dual);
@@ -91,7 +90,7 @@ int WorkerMaster::get_number_constraint() const
  *
  *  \param nrows : number of rows to delete
  */
-void WorkerMaster::delete_constraint(int const nrows)
+void WorkerMaster::delete_constraint(int const nrows) const
 {
 	std::vector<int> mindex(nrows, 0);
 	int const nconstraint(get_number_constraint());

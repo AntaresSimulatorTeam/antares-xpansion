@@ -226,7 +226,7 @@ void SolverCbc::get_rows(int *mstart, int *mclind, double *dmatval, int size, in
 						 int first, int last) const
 {
 	CoinPackedMatrix matrix = *_clp_inner_solver.getMatrixByRow();
-	coin_common::fill_rows_from_COIN_matrix(matrix, mstart, mclind, dmatval, size, nels, first, last);
+	coin_common::fill_rows_from_COIN_matrix(matrix, mstart, mclind, dmatval, nels, first, last);
 }
 
 void SolverCbc::get_row_type(char *qrtype, int first, int last) const

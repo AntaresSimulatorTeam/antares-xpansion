@@ -17,19 +17,19 @@ public:
 	virtual ~WorkerMaster();
 
 	void get(Point &x0, double &alpha, DblVector &alpha_i);
-	void get_dual_values(std::vector<double> &dual);
+	void get_dual_values(std::vector<double> &dual) const;
 	int get_number_constraint() const;
 
 	void add_cut(Point const &s, Point const &x0, double const &rhs) const;
 	void add_cut_by_iter(int const i, Point const &s, double const &sx0, double const &rhs) const;
 	void add_dynamic_cut(Point const &s, double const &sx0, double const &rhs) const;
 	void add_cut_slave(int i, Point const &s, Point const &x0, double const &rhs) const;
-	void delete_constraint(int const nrows);
+	void delete_constraint(int const nrows)const;
 	void fix_alpha(double const &bestUB) const;
 
 private:
 	std::vector<int> _id_alpha_i;
-	int _id_alpha;
+	int _id_alpha = 0;
 	int _nslaves;
 
 	void define_matval_mclind(const Point &s, std::vector<double> &matval, std::vector<int> &mclind) const;

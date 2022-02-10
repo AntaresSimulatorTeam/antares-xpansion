@@ -142,8 +142,8 @@ void SolverClp::get_rows(int *mstart, int *mclind, double *dmatval, int size, in
 {
 
 	CoinPackedMatrix matrix = *_clp.matrix();
-    matrix.reverseOrdering();
-	coin_common::fill_rows_from_COIN_matrix(matrix, mstart, mclind, dmatval, size, nels, first, last);
+	matrix.reverseOrdering();
+	coin_common::fill_rows_from_COIN_matrix(matrix, mstart, mclind, dmatval, nels, first, last);
 }
 
 void SolverClp::get_row_type(char *qrtype, int first, int last) const

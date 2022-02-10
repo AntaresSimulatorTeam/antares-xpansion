@@ -5,7 +5,7 @@
 namespace coin_common
 {
 
-    void fill_rows_from_COIN_matrix(const CoinPackedMatrix &matrix, int *mstart, int *mclind, double *dmatval, int size, int *nels,
+    void fill_rows_from_COIN_matrix(const CoinPackedMatrix &matrix, int *mstart, int *mclind, double *dmatval, int *nels,
                                     int first, int last);
 
     void fill_row_type_from_row_bounds(const double *rowLower, const double *rowUpper, char *qrtype, int first, int last);
