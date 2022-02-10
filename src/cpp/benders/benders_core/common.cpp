@@ -67,7 +67,6 @@ CouplingMap build_input(const std::string &structure_path, const int slave_numbe
     std::ifstream summary(structure_path, std::ios::in);
     if (!summary)
     {
-        // TODO JMK : gestion cas d'erreur si pas de structure d'entrée
         std::cout << "Cannot open file summary " << structure_path << std::endl;
         return coupling_map;
     }

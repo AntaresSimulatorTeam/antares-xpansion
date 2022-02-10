@@ -10,7 +10,7 @@ public:
 #undef BENDERS_OPTIONS_MACRO
 
 	SimulationOptions();
-	SimulationOptions(const std::string &options_filename);
+	explicit SimulationOptions(const std::string &options_filename);
 
 	void read(std::string const &file_name);
 	void print(std::ostream &stream) const;

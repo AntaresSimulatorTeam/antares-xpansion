@@ -10,6 +10,25 @@ WorkerMaster::WorkerMaster()
 	_id_alpha = 0;
 }
 
+/*!
+ *  \brief Constructor of a Master Problem
+ *
+ *  Construct a Master Problem by loading mps and mapping files and adding the variable alpha
+ *
+ *  \param variable_map : map linking each variable to its id in the problem
+ *  \param path_to_mps : path to the problem mps file
+ *  \param solver_name : solver name
+ *  \param log_level : solver log level
+ *  \param nslaves : number of slaves
+ */
+WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps, const std::string &solver_name, const int log_level, int nslaves) : Worker(), _nslaves(nslaves), _id_alpha(0)
+{
+	_is_master = true;
+	init(variable_map, path_to_mps, solver_name, log_level);
+
+	_set_upper_bounds();
+	_add_alpha_var();
+}
 WorkerMaster::~WorkerMaster()
 {
 }
@@ -62,7 +81,7 @@ void WorkerMaster::get_dual_values(std::vector<double> &dual)
 /*!
  *  \brief Return number of constraint in a problem
  */
-int WorkerMaster::get_number_constraint()
+int WorkerMaster::get_number_constraint() const
 {
 	return _solver->get_nrows();
 }
@@ -90,7 +109,7 @@ void WorkerMaster::delete_constraint(int const nrows)
  *  \param x0 : optimal Master variables
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::add_cut(Point const &s, Point const &x0, double const &rhs)
+void WorkerMaster::add_cut(Point const &s, Point const &x0, double const &rhs) const
 {
 	// cut is -rhs >= alpha  + s^(x-x0)
 	int ncoeffs(1 + (int)s.size());
@@ -142,7 +161,7 @@ void WorkerMaster::define_matval_mclind(const Point &s, std::vector<double> &mat
  *  \param sx0 : subgradient times x0
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::add_dynamic_cut(Point const &s, double const &sx0, double const &rhs)
+void WorkerMaster::add_dynamic_cut(Point const &s, double const &sx0, double const &rhs) const
 {
 	// cut is -rhs >= alpha  + s^(x-x0)
 	int ncoeffs(1 + (int)s.size());
@@ -171,7 +190,7 @@ void WorkerMaster::define_rhs_from_sx0(const double &sx0, const double &rhs, std
  *  \param sx0 : subgradient times x0
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::add_cut_by_iter(int const i, Point const &s, double const &sx0, double const &rhs)
+void WorkerMaster::add_cut_by_iter(int const i, Point const &s, double const &sx0, double const &rhs) const
 {
 	// cut is -rhs >= alpha  + s^(x-x0)
 	int ncoeffs(1 + (int)s.size());
@@ -212,7 +231,7 @@ void WorkerMaster::define_matval_mclind_for_index(const int i, const Point &s, s
  *  \param x0 : optimal Master variables
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::add_cut_slave(int i, Point const &s, Point const &x0, double const &rhs)
+void WorkerMaster::add_cut_slave(int i, Point const &s, Point const &x0, double const &rhs) const
 {
 	// cut is -rhs >= alpha  + s^(x-x0)
 	int ncoeffs(1 + (int)s.size());
@@ -228,30 +247,7 @@ void WorkerMaster::add_cut_slave(int i, Point const &s, Point const &x0, double 
 	solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
-/*!
- *  \brief Constructor of a Master Problem
- *
- *  Construct a Master Problem by loading mps and mapping files and adding the variable alpha
- *
- *  \param variable_map : map linking each variable to its id in the problem
- *  \param path_to_mps : path to the problem mps file
- *  \param solver_name : solver name
- *  \param log_level : solver log level
- *  \param nslaves : number of slaves
- */
-WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps, const std::string &solver_name, const int log_level, int nslaves) : Worker()
-{
-
-	_is_master = true;
-	init(variable_map, path_to_mps, solver_name, log_level);
-	_id_alpha = 0;
-	_nslaves = nslaves;
-
-	_set_upper_bounds();
-	_add_alpha_var();
-}
-
-void WorkerMaster::_set_upper_bounds()
+void WorkerMaster::_set_upper_bounds() const
 {
 	// Cbc solver sets infinite upper bounds to DBL_MAX = 1.79769e+308 which is way too large
 	// as it appears in datas.max_invest. We set it to 1e20
@@ -320,7 +316,7 @@ void WorkerMaster::_add_alpha_var()
  *
  *  \param bestUB : bound to fix
  */
-void WorkerMaster::fix_alpha(double const &bestUB)
+void WorkerMaster::fix_alpha(double const &bestUB) const
 {
 	std::vector<int> mindex(1, _id_alpha);
 	std::vector<char> bnd_types(1, 'U');

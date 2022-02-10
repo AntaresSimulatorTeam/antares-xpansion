@@ -172,17 +172,15 @@ const std::string MPS_SUFFIX = ".mps";
 
 struct BaseOptions
 {
-	std::string
-		OUTPUTROOT,
-		INPUTROOT,
-		STRUCTURE_FILE,
-		MASTER_NAME,
-		SOLVER_NAME,
-		SLAVE_WEIGHT;
+	std::string OUTPUTROOT;
+	std::string INPUTROOT;
+	std::string STRUCTURE_FILE;
+	std::string MASTER_NAME;
+	std::string SOLVER_NAME;
+	std::string SLAVE_WEIGHT;
 
-	int
-		SLAVE_NUMBER,
-		LOG_LEVEL;
+	int SLAVE_NUMBER;
+	int LOG_LEVEL;
 
 	double SLAVE_WEIGHT_VALUE;
 
@@ -191,20 +189,19 @@ struct BaseOptions
 typedef BaseOptions MergeMPSOptions;
 struct BendersBaseOptions : public BaseOptions
 {
-	BendersBaseOptions(const BaseOptions &base_to_copy) : BaseOptions(base_to_copy)
+	explicit BendersBaseOptions(const BaseOptions &base_to_copy) : BaseOptions(base_to_copy)
 	{
 	}
+
 	int MAX_ITERATIONS;
 
-	double
-		ABSOLUTE_GAP,
-		RELATIVE_GAP,
-		TIME_LIMIT;
+	double ABSOLUTE_GAP;
+	double RELATIVE_GAP;
+	double TIME_LIMIT;
 
-	bool
-		AGGREGATION,
-		TRACE,
-		BOUND_ALPHA;
+	bool AGGREGATION;
+	bool TRACE;
+	bool BOUND_ALPHA;
 
 	std::string CSV_NAME;
 };

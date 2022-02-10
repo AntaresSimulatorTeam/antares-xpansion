@@ -18,14 +18,14 @@ public:
 
 	void get(Point &x0, double &alpha, DblVector &alpha_i);
 	void get_dual_values(std::vector<double> &dual);
-	int get_number_constraint();
+	int get_number_constraint() const;
 
-	void add_cut(Point const &s, Point const &x0, double const &rhs);
-	void add_cut_by_iter(int const i, Point const &s, double const &sx0, double const &rhs);
-	void add_dynamic_cut(Point const &s, double const &sx0, double const &rhs);
-	void add_cut_slave(int i, Point const &s, Point const &x0, double const &rhs);
+	void add_cut(Point const &s, Point const &x0, double const &rhs) const;
+	void add_cut_by_iter(int const i, Point const &s, double const &sx0, double const &rhs) const;
+	void add_dynamic_cut(Point const &s, double const &sx0, double const &rhs) const;
+	void add_cut_slave(int i, Point const &s, Point const &x0, double const &rhs) const;
 	void delete_constraint(int const nrows);
-	void fix_alpha(double const &bestUB);
+	void fix_alpha(double const &bestUB) const;
 
 private:
 	std::vector<int> _id_alpha_i;
@@ -39,6 +39,6 @@ private:
 	void define_rhs_from_sx0(const double &sx0, const double &rhs, std::vector<double> &rowrhs) const;
 
 	void define_matval_mclind_for_index(const int i, const Point &s, std::vector<double> &matval, std::vector<int> &mclind) const;
-	void _set_upper_bounds();
+	void _set_upper_bounds() const;
 	void _add_alpha_var();
 };

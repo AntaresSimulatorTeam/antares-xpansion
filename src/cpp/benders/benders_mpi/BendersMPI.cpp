@@ -8,7 +8,7 @@
 
 #define __DEBUG_BENDERS_MPI__ 0
 
-BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world) : BendersBase(options, logger, writer), _exceptionRaised(false), _env(env), _world(world)
+BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger, Writer writer, mpi::environment &env, mpi::communicator &world) : BendersBase(options, logger, writer), _env(env), _world(world)
 {
 }
 

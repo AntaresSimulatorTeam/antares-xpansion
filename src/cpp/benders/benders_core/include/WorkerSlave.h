@@ -21,9 +21,9 @@ public:
 	virtual ~WorkerSlave() = default;
 
 public:
-	void fix_to(Point const &x0);
+	void fix_to(Point const &x0) const;
 
-	void get_subgradient(Point &s);
+	void get_subgradient(Point &s) const;
 
-	SimplexBasis get_basis();
+	SimplexBasis get_basis() const;
 };

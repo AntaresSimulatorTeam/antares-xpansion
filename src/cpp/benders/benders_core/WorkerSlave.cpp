@@ -37,7 +37,7 @@ WorkerSlave::WorkerSlave(Str2Int const &variable_map, std::string const &path_to
  *
  *  \param x0 : Set of variables to fix
  */
-void WorkerSlave::fix_to(Point const &x0)
+void WorkerSlave::fix_to(Point const &x0) const
 {
 	int nbnds((int)_name_to_id.size());
 	std::vector<int> indexes(nbnds);
@@ -60,7 +60,7 @@ void WorkerSlave::fix_to(Point const &x0)
  *
  *  \param s : Empty point which receives the solution
  */
-void WorkerSlave::get_subgradient(Point &s)
+void WorkerSlave::get_subgradient(Point &s) const
 {
 	s.clear();
 	std::vector<double> ptr(_solver->get_ncols());
@@ -76,7 +76,7 @@ void WorkerSlave::get_subgradient(Point &s)
  *
  *  Method to store simplex basis of a problem, and build the distance matrix
  */
-SimplexBasis WorkerSlave::get_basis()
+SimplexBasis WorkerSlave::get_basis() const
 {
 	IntVector cstatus(_solver->get_ncols());
 	IntVector rstatus(_solver->get_nrows());
