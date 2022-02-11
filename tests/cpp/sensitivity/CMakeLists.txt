@@ -2,7 +2,7 @@ add_executable(sensitivity_test SensitivityWriterTest.cpp SensitivityPbModifierT
 
 target_link_libraries(sensitivity_test
         PRIVATE
-        sensitivity
+        sensitivity_core
         GTest::Main)
 
 add_test(NAME sensitivity_test COMMAND sensitivity_test WORKING_DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY})

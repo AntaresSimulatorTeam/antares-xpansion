@@ -120,3 +120,25 @@ TEST_F(SensitivityAnalysisTest, GetCapexSolutions)
 
     verify_output_data(output_data, expec_output_data);
 }
+
+TEST_F(SensitivityAnalysisTest, FullSensitivityAnalysis)
+{
+    double epsilon = 10000;
+    double best_ub = 1440683382.537683;
+
+    std::map<int, std::string> id_to_name = {{3, "semibase"}, {1, "peak"}, {2, "pv"}, {0, "battery"}, {4, "transmission_line"}};
+
+    std::string data_test_dir = "../data_test";
+    std::string json_filename = data_test_dir + "/mps/sensitivity_out.json";
+    std::shared_ptr<SensitivityWriter> writer = std::make_shared<SensitivityWriter>(json_filename);
+
+    std::string last_master_mps_path = data_test_dir + "/mps/sensitivity.mps";
+    std::string solver_name = "CBC";
+    SolverFactory factory;
+    SolverAbstract::Ptr math_problem = factory.create_solver(solver_name);
+    math_problem->init();
+    math_problem->read_prob_mps(last_master_mps_path);
+
+    SensitivityAnalysis sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, id_to_name, math_problem, writer);
+    sensitivity_analysis.launch();
+}
