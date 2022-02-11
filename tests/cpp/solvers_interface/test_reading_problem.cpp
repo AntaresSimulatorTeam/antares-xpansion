@@ -1,4 +1,3 @@
-#pragma once
 #include "catch2.hpp"
 #include <iostream>
 #include "multisolver_interface/Solver.h"
@@ -605,9 +604,7 @@ TEST_CASE("We can get the indices of rows and columns by their names", "[read][g
             }
             //========================================================================================
             // Get row and columns indices by their names
-            int n_vars = solver->get_ncols();
-            int n_rows = solver->get_nrows();
-            
+
             int col_index = -1;
             std::string cur_name;
             for (int i(0); i < 2; i++) {

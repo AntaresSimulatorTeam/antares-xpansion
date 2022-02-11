@@ -3,15 +3,15 @@
 /*!
 * \brief Get point
 */
-Point WorkerMasterData::get_point() {
+Point WorkerMasterData::get_point() const{
 	return *_x0;
 }
 
-Point WorkerMasterData::get_min_invest() {
+Point WorkerMasterData::get_min_invest()  const{
 	return *_min_invest;
 }
 
-Point WorkerMasterData::get_max_invest() {
+Point WorkerMasterData::get_max_invest()  const{
 	return *_max_invest;
 }
 
@@ -26,7 +26,7 @@ LogData defineLogDataFromBendersDataAndTrace(const BendersData& data, const Bend
     result.x0 = data.bestx;
     size_t bestItIndex_l = data.best_it - 1;
 
-    if (bestItIndex_l >= 0 && bestItIndex_l < trace.size())
+    if (bestItIndex_l < trace.size())
     {
         const WorkerMasterDataPtr& bestItTrace = trace[bestItIndex_l];
         result.slave_cost = bestItTrace->_operational_cost;
