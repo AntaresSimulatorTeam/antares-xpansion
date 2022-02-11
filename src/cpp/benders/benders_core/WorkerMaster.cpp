@@ -20,10 +20,10 @@ WorkerMaster::WorkerMaster()
  *  \param log_level : solver log level
  *  \param nslaves : number of slaves
  */
-WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps, const std::string &solver_name, const int log_level, int nslaves) : Worker(), _nslaves(nslaves)
+WorkerMaster::WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps, const std::string &solver_name, const int log_level, int nslaves, FILE *fp) : Worker(), _nslaves(nslaves)
 {
 	_is_master = true;
-	init(variable_map, path_to_mps, solver_name, log_level);
+	init(variable_map, path_to_mps, solver_name, log_level, fp);
 
 	_set_upper_bounds();
 	_add_alpha_var();

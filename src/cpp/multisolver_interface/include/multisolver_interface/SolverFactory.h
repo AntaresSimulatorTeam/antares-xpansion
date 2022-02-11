@@ -2,7 +2,7 @@
 
 #include "multisolver_interface/SolverAbstract.h"
 #include <set>
-
+#include <cstdio>
 enum class SOLVER_TYPE
 {
     INTEGER,
@@ -38,6 +38,7 @@ public:
      * @param solver_name : Name of the solver to use
      */
     SolverAbstract::Ptr create_solver(const std::string &solver_name) const;
+    SolverAbstract::Ptr create_solver(const std::string &solver_name, FILE *fp) const;
 
     /**
      * @brief Creates and returns to an object solver from the wanted implementation
@@ -46,6 +47,7 @@ public:
      * @param solver_type : Name of the solver to use
      */
     SolverAbstract::Ptr create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type) const;
+    SolverAbstract::Ptr create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type, FILE *fp) const;
 
     /**
      * @brief Copy constructor : Creates and returns to an object solver from the wanted

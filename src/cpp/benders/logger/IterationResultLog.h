@@ -1,5 +1,8 @@
 #ifndef ANTARESXPANSION_ITERATIONRESULTLOG_H
 #define ANTARESXPANSION_ITERATIONRESULTLOG_H
+#include <map>
+#include <string>
+
 
 namespace xpansion{
 namespace logger {

@@ -7,6 +7,7 @@
 #include "OsiClpSolverInterface.hpp"
 #include "CoinMpsIO.hpp"
 #include "CoinHelperFunctions.hpp"
+#include <cstdio>
 
 /*!
  * \class class SolverCbc
@@ -34,6 +35,7 @@ public:
 	 * @brief Default constructor of a CBC solver
 	 */
 	SolverCbc();
+	SolverCbc(FILE *fp);
 
 	/**
 	 * @brief Copy constructor of solver, copy the problem toCopy in memory and name it "name"
@@ -41,6 +43,7 @@ public:
 	 * @param toCopy : Pointer to an AbstractSolver object, containing a CBC solver to copy
 	 */
 	SolverCbc(const SolverAbstract::Ptr toCopy);
+	SolverCbc(const SolverAbstract::Ptr toCopy, FILE *fp);
 
 	virtual ~SolverCbc();
 	virtual int get_number_of_instances() override;

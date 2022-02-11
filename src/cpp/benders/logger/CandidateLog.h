@@ -1,5 +1,9 @@
 #ifndef ANTARESXPANSION_CANDIDATELOG_H
 #define ANTARESXPANSION_CANDIDATELOG_H
+#include <map>
+#include <string>
+#include <list>
+#include "core/ILogger.h"
 
 namespace xpansion{
 namespace logger {

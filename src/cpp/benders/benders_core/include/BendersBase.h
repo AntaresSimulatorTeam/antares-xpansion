@@ -9,6 +9,7 @@
 #include "SimulationOptions.h"
 #include "core/ILogger.h"
 #include "OutputWriter.h"
+#include <cstdio>
 
 class BendersBase
 {
@@ -79,5 +80,10 @@ public:
     double slave_weight(int nslaves, std::string const &name) const;
     std::string get_master_path() const;
     std::string get_structure_path() const;
+    FILE *_fp = NULL;
+    inline void set_fp(FILE *fp)
+    {
+        _fp = fp;
+    }
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

@@ -10,10 +10,10 @@
  *  \param problem_name : Name of the problem
  *
  */
-WorkerSlave::WorkerSlave(Str2Int const &variable_map, std::string const &path_to_mps, double const &slave_weight, const std::string &solver_name, const int log_level)
+WorkerSlave::WorkerSlave(Str2Int const &variable_map, std::string const &path_to_mps, double const &slave_weight, const std::string &solver_name, const int log_level, FILE *fp)
 {
 
-	init(variable_map, path_to_mps, solver_name, log_level);
+	init(variable_map, path_to_mps, solver_name, log_level, fp);
 
 	int mps_ncols(_solver->get_ncols());
 	DblVector obj_func_coeffs(mps_ncols);

@@ -6,6 +6,15 @@
 *************************************************************************************************/
 int SolverCbc::_NumberOfProblems = 0;
 
+SolverCbc::SolverCbc(FILE *fp) : SolverCbc()
+{
+	_fp = fp;
+
+	if (_fp)
+	{
+		_message_handler.setFilePointer(_fp);
+	}
+}
 SolverCbc::SolverCbc()
 {
 	int status = 0;
@@ -14,6 +23,15 @@ SolverCbc::SolverCbc()
 	_current_log_level = 0;
 }
 
+SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif, FILE *fp) : SolverCbc(fictif)
+{
+	_fp = fp;
+
+	if (_fp)
+	{
+		_message_handler.setFilePointer(_fp);
+	}
+}
 SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc()
 {
 	// Try to cast the solver in fictif to a SolverCPLEX

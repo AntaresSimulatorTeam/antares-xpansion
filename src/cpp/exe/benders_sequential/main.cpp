@@ -30,11 +30,13 @@ int main(int argc, char **argv)
 	LOG(INFO) << oss_l.str() << std::endl;
 
 	const std::string &loggerFileName = (Path(options.OUTPUTROOT) / "reportbenderssequential.txt").get_str();
-	Logger logger = build_stdout_and_file_logger(loggerFileName);
+	FILE *fp = NULL;
+	Logger logger = build_stdout_and_file_logger(loggerFileName, fp);
 	Writer writer = build_json_writer(options.JSON_FILE);
 	Timer timer;
 
 	BendersSequential benders(benders_options, logger, writer);
+	benders.set_fp(fp);
 	benders.launch();
 	std::stringstream str;
 	str << "Optimization results available in : "

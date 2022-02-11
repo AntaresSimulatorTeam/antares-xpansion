@@ -1,7 +1,7 @@
 #pragma once
 
 #include "common.h"
-
+#include <cstdio>
 class Worker;
 typedef std::shared_ptr<Worker> WorkerPtr;
 
@@ -17,7 +17,7 @@ class Worker
 public:
 	Worker() = default;
 	void init(Str2Int const &variable_map, std::string const &path_to_mps,
-			  std::string const &solver_name, int log_level);
+			  std::string const &solver_name, int log_level, FILE *fp);
 	virtual ~Worker() = default;
 
 	void get_value(double &lb) const;

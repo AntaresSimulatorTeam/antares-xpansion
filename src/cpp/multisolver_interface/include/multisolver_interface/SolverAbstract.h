@@ -7,7 +7,7 @@
 #include <sstream>
 #include <memory>
 #include <stdexcept>
-
+#include <cstdio>
 class InvalidStatusException : public std::runtime_error
 {
 public:
@@ -170,14 +170,17 @@ public:
      * @brief returns the list of streams used by the solver instance
      */
     std::list<std::ostream *> &get_stream() { return _streams; };
-
+    FILE *_fp;
     /**
      * @brief add a stream to the list of streams used by the solver instance
      *
      * @param stream  : reference to a std::ostream object
      */
     void add_stream(std::ostream &stream) { get_stream().push_back(&stream); };
-
+    void set_fp(FILE *fp)
+    {
+        _fp = fp;
+    }
     /**
     * @brief Check if a status code is different to 0, throw InvalidStatusException if it occurs
     *

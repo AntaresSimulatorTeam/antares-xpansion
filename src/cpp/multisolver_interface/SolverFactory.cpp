@@ -28,21 +28,28 @@ SolverFactory::SolverFactory()
 
 SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type) const
 {
+	return create_solver(solver_name, solver_type, NULL);
+}
+SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name, const SOLVER_TYPE solver_type, FILE *fp) const
+{
 
 #ifdef COIN_OR
 	if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS)
 	{
-		return std::make_shared<SolverClp>();
+		return std::make_shared<SolverClp>(fp);
 	}
 	else if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::INTEGER)
 	{
-		return std::make_shared<SolverCbc>();
+		return std::make_shared<SolverCbc>(fp);
 	}
 #endif
-	return create_solver(solver_name);
+	return create_solver(solver_name, fp);
 }
-
 SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name) const
+{
+	return create_solver(solver_name, NULL);
+}
+SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name, FILE *fp) const
 {
 
 	if (solver_name == "")
@@ -64,11 +71,11 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string &solver_name)
 #ifdef COIN_OR
 	else if (solver_name == CLP_STR)
 	{
-		return std::make_shared<SolverClp>();
+		return std::make_shared<SolverClp>(fp);
 	}
 	else if (solver_name == CBC_STR)
 	{
-		return std::make_shared<SolverCbc>();
+		return std::make_shared<SolverCbc>(fp);
 	}
 #endif
 	else

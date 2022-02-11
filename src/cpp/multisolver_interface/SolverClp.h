@@ -39,6 +39,7 @@ public:
 	 * @brief Default constructor of a CLP solver
 	 */
 	SolverClp();
+	SolverClp(FILE *fp);
 
 	/**
 	 * @brief Copy constructor of CLP, copy the problem toCopy in memory and name it "name"
@@ -46,6 +47,7 @@ public:
 	 * @param toCopy : Pointer to an AbstractSolver object, containing a CLP solver to copy
 	 */
 	SolverClp(const SolverAbstract::Ptr toCopy);
+	SolverClp(const SolverAbstract::Ptr toCopy, FILE *fp);
 
 	virtual ~SolverClp();
 	virtual int get_number_of_instances() override;

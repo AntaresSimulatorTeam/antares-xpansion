@@ -6,6 +6,14 @@
 *************************************************************************************************/
 int SolverClp::_NumberOfProblems = 0;
 
+SolverClp::SolverClp(FILE *fp) : SolverClp()
+{
+	_fp = fp;
+	if (_fp)
+	{
+		_message_handler.setFilePointer(_fp);
+	}
+}
 SolverClp::SolverClp()
 {
 	int status = 0;
@@ -14,6 +22,14 @@ SolverClp::SolverClp()
 	_clp = NULL;
 }
 
+SolverClp::SolverClp(const SolverAbstract::Ptr fictif, FILE *fp) : SolverClp(fictif)
+{
+	_fp = fp;
+	if (_fp)
+	{
+		_message_handler.setFilePointer(_fp);
+	}
+}
 SolverClp::SolverClp(const SolverAbstract::Ptr fictif) : SolverClp()
 {
 	// Try to cast the solver in fictif to a SolverCPLEX

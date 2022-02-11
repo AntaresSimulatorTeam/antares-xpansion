@@ -38,12 +38,12 @@ void BendersSequential::initialise_problems()
 			if (it != it_master)
 			{
 				_problem_to_id[it->first] = i;
-				_map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(it->second, get_slave_path(it->first), slave_weight(_data.nslaves, it->first), _options.SOLVER_NAME, _options.LOG_LEVEL));
+				_map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(it->second, get_slave_path(it->first), slave_weight(_data.nslaves, it->first), _options.SOLVER_NAME, _options.LOG_LEVEL, _fp));
 				_slaves.push_back(it->first);
 				i++;
 			}
 		}
-		_master.reset(new WorkerMaster(master_variable, get_master_path(), _options.SOLVER_NAME, _options.LOG_LEVEL, _data.nslaves));
+		_master.reset(new WorkerMaster(master_variable, get_master_path(), _options.SOLVER_NAME, _options.LOG_LEVEL, _data.nslaves, _fp));
 	}
 }
 

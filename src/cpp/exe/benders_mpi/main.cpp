@@ -44,9 +44,10 @@ int main(int argc, char **argv)
     Logger logger;
     Writer writer;
 
+    FILE *fp = NULL;
     if (world.rank() == 0)
     {
-        logger = build_stdout_and_file_logger(log_reports_name);
+        logger = build_stdout_and_file_logger(log_reports_name, fp);
         writer = build_json_writer(options.JSON_FILE);
         std::ostringstream oss_l = start_message(options, "mpi");
         LOG(INFO) << oss_l.str() << std::endl;
@@ -72,7 +73,7 @@ int main(int argc, char **argv)
     {
         benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env, world);
     }
-
+    benders->set_fp(fp);
     benders->launch();
     std::stringstream str;
     str << "Optimization results available in : "

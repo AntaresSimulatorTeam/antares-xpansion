@@ -13,7 +13,7 @@ class WorkerMaster : public Worker
 {
 public:
 	WorkerMaster();
-	WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps, const std::string &solver_name, const int log_level, int nslaves = 1);
+	WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps, const std::string &solver_name, const int log_level, int nslaves, FILE *fp);
 	virtual ~WorkerMaster();
 
 	void get(Point &x0, double &alpha, DblVector &alpha_i);
@@ -24,7 +24,7 @@ public:
 	void add_cut_by_iter(int const i, Point const &s, double const &sx0, double const &rhs) const;
 	void add_dynamic_cut(Point const &s, double const &sx0, double const &rhs) const;
 	void add_cut_slave(int i, Point const &s, Point const &x0, double const &rhs) const;
-	void delete_constraint(int const nrows)const;
+	void delete_constraint(int const nrows) const;
 	void fix_alpha(double const &bestUB) const;
 
 private:
