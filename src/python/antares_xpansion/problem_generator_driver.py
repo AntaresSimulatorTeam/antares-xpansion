@@ -165,7 +165,7 @@ class ProblemGeneratorDriver:
     def get_lp_namer_log_filename(self):
         if not self._lp_path:
             raise ProblemGeneratorDriver.LPNamerPathError("Error output path is not given")
-        return os.path.join(self._lp_path, self.LP_NAMER + '.log')
+        return os.path.join(self._lp_path, os.path.splitext(self.LP_NAMER)[0] + '.log')
 
     def _get_lp_namer_command(self):
 

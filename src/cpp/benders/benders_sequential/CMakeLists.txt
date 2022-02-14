@@ -7,8 +7,7 @@
 # ===========================================================================
 
 add_library (benders_sequential_core STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/Benders.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/SequentialLaunch.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/BendersSequential.cpp
         )
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
@@ -26,7 +25,7 @@ target_link_libraries (benders_sequential_core
 	PUBLIC
         benders_core
 		helpers
-		jsoncpp_lib
+		output_core
 		solvers
 		glog::glog
 )

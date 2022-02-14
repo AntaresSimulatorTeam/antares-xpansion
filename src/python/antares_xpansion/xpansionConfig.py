@@ -122,6 +122,7 @@ class XpansionConfig:
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_TXT = 'options.txt'
         self.JSON_NAME = "out"
+        self.BENDERS_LOG_FILE = "benders.log"
 
     def _set_default_settings(self):
         self.settings_default = {
@@ -149,17 +150,12 @@ class XpansionConfig:
             "AGGREGATION": "0",
             "OUTPUTROOT": ".",
             "TRACE": "1",
-            "DELETE_CUT": "0",
             "SLAVE_WEIGHT": "CONSTANT",
             "SLAVE_WEIGHT_VALUE": "1",
             "MASTER_NAME": "master",
             "SLAVE_NUMBER": "-1",
             "STRUCTURE_FILE": "structure.txt",
             "INPUTROOT": ".",
-            "BASIS": "1",
-            "ACTIVECUTS": "0",
-            "THRESHOLD_AGGREGATION": "0",
-            "THRESHOLD_ITERATION": "0",
             "CSV_NAME": "benders_output_trace",
             "BOUND_ALPHA": "1",
         }

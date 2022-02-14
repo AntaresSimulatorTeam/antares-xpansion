@@ -138,8 +138,7 @@ class TestProblemGeneratorDriver:
         self._create_empty_interco_file(tmp_path)
         problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
         problem_generator_driver.output_path = tmp_path
-        assert problem_generator_driver.get_lp_namer_log_filename() == os.path.join(tmp_path, "lp",
-                                                                                    self.lp_exe + '.log')
+        assert problem_generator_driver.get_lp_namer_log_filename() == os.path.join(tmp_path, "lp", "lp_namer.log")
 
     def test_lp_namer_log_filename_with_non_existing_lp_dir(self):
 

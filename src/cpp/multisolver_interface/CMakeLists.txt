@@ -35,6 +35,7 @@ IF(COIN_OR)
 	list(APPEND Solver_sources
 		${CMAKE_CURRENT_LIST_DIR}/SolverCbc.cpp
 		${CMAKE_CURRENT_LIST_DIR}/SolverClp.cpp
+		${CMAKE_CURRENT_LIST_DIR}/COIN_common_functions.cpp
 	)
 ENDIF(COIN_OR)
 

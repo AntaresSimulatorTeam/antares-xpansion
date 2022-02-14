@@ -354,7 +354,11 @@ class ConfigLoader:
         log_level_str = self.options.get(
             "log_level", self._config.settings_default["log_level"]
         )
-        return int(log_level_str)
+        return int(log_level_str) 
+    
+    def benders_log_file(self)-> Path:
+        return Path(os.path.join(self._simulation_lp_path(), self._config.BENDERS_LOG_FILE))
+
 
     class MissingSimulationName(Exception):
         pass
