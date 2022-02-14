@@ -11,11 +11,9 @@
 class WorkerMasterData {
 public:
 
-    WorkerMasterData(){
-        _valid = false;
-    }
+    WorkerMasterData() =default;
 
-    bool _valid;
+    bool _valid = false;
 	double _lb;
 	double _ub;
 	double _bestub;
@@ -30,13 +28,13 @@ public:
 	double _invest_cost;
 	double _operational_cost;
 
-	Point get_point();
-	Point get_min_invest();
-	Point get_max_invest();
+	Point get_point()  const;
+	Point get_min_invest()  const;
+	Point get_max_invest() const;
 };
 
-typedef std::shared_ptr<WorkerMasterData> WorkerMasterDataPtr;
-typedef std::vector<WorkerMasterDataPtr> BendersTrace;
+using WorkerMasterDataPtr=std::shared_ptr<WorkerMasterData> ;
+using BendersTrace=std::vector<WorkerMasterDataPtr> ;
 
 LogData defineLogDataFromBendersDataAndTrace(const BendersData& data, const BendersTrace& trace);
 
