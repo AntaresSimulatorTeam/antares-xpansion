@@ -3,6 +3,7 @@
 
 #include <map>
 #include <list>
+#include <string>
 #include "core/ILogger.h"
 
 namespace xpansion {
