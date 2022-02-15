@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Worker.h"
-#include "SlaveCut.h"
 #include "SimplexBasis.h"
+#include "SlaveCut.h"
+#include "Worker.h"
 
 /*!
  * \class WorkerSlave
@@ -13,17 +13,18 @@ typedef std::shared_ptr<WorkerSlave> WorkerSlavePtr;
 typedef std::vector<WorkerSlavePtr> WorkerSlaves;
 typedef std::map<std::string, WorkerSlavePtr> SlavesMapPtr;
 
-class WorkerSlave : public Worker
-{
-public:
-	WorkerSlave() = default;
-	WorkerSlave(Str2Int const &variable_map, std::string const &path_to_mps, double const &slave_weight, const std::string &solver_name, const int log_level);
-	virtual ~WorkerSlave() = default;
+class WorkerSlave : public Worker {
+ public:
+  WorkerSlave() = default;
+  WorkerSlave(Str2Int const &variable_map, std::string const &path_to_mps,
+              double const &slave_weight, const std::string &solver_name,
+              const int log_level);
+  virtual ~WorkerSlave() = default;
 
-public:
-	void fix_to(Point const &x0) const;
+ public:
+  void fix_to(Point const &x0) const;
 
-	void get_subgradient(Point &s) const;
+  void get_subgradient(Point &s) const;
 
-	SimplexBasis get_basis() const;
+  SimplexBasis get_basis() const;
 };
