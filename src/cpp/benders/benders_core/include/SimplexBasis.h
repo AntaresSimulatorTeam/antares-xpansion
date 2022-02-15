@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common.h"
 #include "Worker.h"
+#include "common.h"
 
 typedef std::pair<IntVector, IntVector> SimplexBasis;
 typedef std::map<std::string, SimplexBasis> SimplexBasisPackage;
@@ -10,29 +10,25 @@ typedef std::vector<SimplexBasisPackage> AllBasisPackage;
 typedef std::shared_ptr<SimplexBasis> SimplexBasisPtr;
 
 class SimplexBasisHandler {
-public:
+ public:
+  IntVector &get_col();
+  IntVector &get_row();
 
-	IntVector & get_col();
-	IntVector & get_row();
+  IntVector const &get_col() const;
+  IntVector const &get_row() const;
 
-	IntVector const & get_col()const;
-	IntVector const & get_row()const;
+ public:
+  SimplexBasisHandler();
+  explicit SimplexBasisHandler(SimplexBasisPtr const &data);
+  explicit SimplexBasisHandler(SimplexBasisPtr &data);
+  virtual ~SimplexBasisHandler();
 
-public:
+  bool operator<(SimplexBasisHandler const &other) const;
 
-	SimplexBasisHandler();
-	explicit SimplexBasisHandler(SimplexBasisPtr const &data);
-	explicit SimplexBasisHandler(SimplexBasisPtr & data);
-	virtual ~SimplexBasisHandler();
-
-	bool operator<(SimplexBasisHandler const &  other)const;
-
-	SimplexBasisPtr _data;
-	void print(std::ostream & stream)const;
+  SimplexBasisPtr _data;
+  void print(std::ostream &stream) const;
 };
 
-std::ostream & operator<<(std::ostream & stream, SimplexBasisHandler const & rhs);
+std::ostream &operator<<(std::ostream &stream, SimplexBasisHandler const &rhs);
 
 typedef std::set<SimplexBasisHandler> SimplexBasisStorage;
-
-
