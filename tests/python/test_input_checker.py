@@ -2,7 +2,7 @@ import pytest
 import os
 from pathlib import Path
 
-from antares_xpansion.input_checker import _check_candidate_option_type, _check_candidate_option_value, \
+from antares_xpansion.input_checker import _check_candidate_option_type,  \
     _check_candidate_name, _check_candidate_link, _check_setting_option_value, _check_profile_file, \
     _check_setting_option_type
 from antares_xpansion.input_checker import *
@@ -92,18 +92,6 @@ class TestCheckCandidateOptionType:
         value = "0-1"
 
         assert _check_candidate_option_type(option, value) == True
-
-
-class TestcheckCandidateOptionValue:
-
-
-    def test_accepted_relaxed_value(self):
-        option = "relaxed"
-
-        assert _check_candidate_option_value(option, "true") == True
-        assert _check_candidate_option_value(option, "True") == True
-        assert _check_candidate_option_value(option, "FalSe") == True
-        assert _check_candidate_option_value(option, "FALSE") == True
 
 
 class TestCheckCandidateName:

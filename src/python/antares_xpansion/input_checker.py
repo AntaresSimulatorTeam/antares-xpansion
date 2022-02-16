@@ -135,37 +135,6 @@ def _check_candidate_option_type(option, value):
                 return False
 
 
-class IllegalCandidateOptionValue(Exception):
-    pass
-
-
-def _check_candidate_option_value(option, value):
-    """
-        verifies if a given option value belongs to the list of allowed values for that option
-
-        :param option: the treated option
-        :param value: the value to check
-
-        :return: True if the value is legal or is not to be checked. Exists otherwise.
-    """
-    options_legal_values = {'name': None,
-                            'link': None,
-                            'annual-cost-per-mw': None,
-                            'unit-size': None,
-                            'max-units': None,
-                            'max-investment': None,
-                            'link-profile': None,
-                            'already-installed-capacity': None,
-                            'already-installed-link-profile': None}
-    legal_values = options_legal_values.get(option)
-    if (legal_values is None) or (isinstance(value, str) and value.lower() in legal_values):
-        return True
-
-    flushed_print('check_candidate_option_value: Illegal value %s for option %s allowed values are: %s'
-                  % (value, option, legal_values))
-    raise IllegalCandidateOptionValue
-
-
 class EmptyCandidateName(Exception):
     pass
 
@@ -239,7 +208,6 @@ def _check_candidate_attributes(ini_file):
                 flushed_print(
                     "value %s for option %s has the wrong type!" % (value, option))
                 raise CandidateFileWrongTypeValue
-            _check_candidate_option_value(option, value)
 
 
 def _check_name_is_unique(ini_file):
