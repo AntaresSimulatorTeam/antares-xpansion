@@ -147,16 +147,24 @@ def _check_candidate_name(name, section):
     """
         checks that the candidate's name is not empty and does not contain a space
     """
-    if (not name) or (name.lower() == "na"):
-        flushed_print(
-            'Error candidates name cannot be empty : found in section %s' % section)
-        raise EmptyCandidateName
+    _verify_name_is_not_empty(name, section)
+    _verify_name_has_no_invalid_character(name, section)
+
+
+def _verify_name_has_no_invalid_character(name, section):
     illegal_chars = " \n\r\t\f\v-+=:[]()"
     for c in illegal_chars:
         if c in name:
             flushed_print('Error candidates name should not contain %s, found in section %s in "%s"' % (
                 c, section, name))
             raise IllegalCharsInCandidateName
+
+
+def _verify_name_is_not_empty(name, section):
+    if (not name) or (name.lower() == "na"):
+        flushed_print(
+            'Error candidates name cannot be empty : found in section %s' % section)
+        raise EmptyCandidateName
 
 
 class EmptyCandidateLink(Exception):
@@ -222,7 +230,6 @@ def _check_name_is_unique(ini_file):
                 raise CandidateNameDuplicatedError
             else:
                 unique_values.add(value)
-                # FIXME can also add reverse link
 
 
 def _check_candidate_name_and_link(ini_file):
@@ -361,7 +368,7 @@ options_types_and_legal_values = {
     "timelimit": (type_int, None),
     "yearly-weights": (type_str, None),
     "additional-constraints": (type_str, None),
-    "log_level": (type_int, None)
+    "log_level": (type_int, ["0", "1", "2", "3"])
 }
 
 
@@ -392,7 +399,7 @@ def _check_setting_option_type(option, value):
                 'check_setting_option_type: Illegal %s option in type, numerical value is expected .' % option)
             return False
     elif option_type == type_int:
-        if value in ["+Inf", "-Inf", "+infini", "-infini"]:
+        if value in ["+Inf", "+infini"]:
             return True
         else:
             try:
