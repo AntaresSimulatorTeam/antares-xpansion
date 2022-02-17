@@ -6,7 +6,7 @@ const bool SensitivityAnalysis::MINIMIZE = true;
 const bool SensitivityAnalysis::MAXIMIZE = false;
 const std::vector<std::string> SensitivityAnalysis::sensitivity_string_pb_type{CAPEX_C, PROJECTION_C};
 
-SensitivityAnalysis::SensitivityAnalysis(double epsilon, double best_ub, const std::map<int, std::string> &id_to_name, SolverAbstract::Ptr last_master, std::shared_ptr<SensitivityWriter> writer) : _epsilon(epsilon), _best_ub(best_ub), _id_to_name(id_to_name), _last_master(last_master), _writer(writer)
+SensitivityAnalysis::SensitivityAnalysis(const SensitivityInputData &input_data, std::shared_ptr<SensitivityWriter> writer) : _epsilon(input_data.epsilon), _best_ub(input_data.best_ub), _capex(input_data.capex), _projection(input_data.projection), _id_to_name(input_data.id_to_name), _last_master(input_data.last_master), _writer(writer)
 {
 	init_output_data();
 }

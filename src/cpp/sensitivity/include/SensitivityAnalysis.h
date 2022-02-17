@@ -1,6 +1,7 @@
 #pragma once
 
 #include <multisolver_interface/SolverAbstract.h>
+#include "SensitivityInputReader.h"
 #include "SensitivityWriter.h"
 #include "SensitivityOutputData.h"
 #include "SensitivityPbModifier.h"
@@ -15,9 +16,7 @@ class SensitivityAnalysis
 {
 public:
     SensitivityAnalysis() = default;
-    explicit SensitivityAnalysis(double epsilon, double best_ub,
-                                 const std::map<int, std::string> &id_to_name,
-                                 SolverAbstract::Ptr last_master, std::shared_ptr<SensitivityWriter> writer);
+    explicit SensitivityAnalysis(const SensitivityInputData &input_data, std::shared_ptr<SensitivityWriter> writer);
     ~SensitivityAnalysis() = default;
 
     static const bool MINIMIZE;
@@ -32,6 +31,9 @@ public:
 private:
     double _epsilon;
     double _best_ub;
+
+    bool _capex;
+    std::vector<std::string> _projection;
 
     std::map<int, std::string> _id_to_name;
     SolverAbstract::Ptr _last_master;

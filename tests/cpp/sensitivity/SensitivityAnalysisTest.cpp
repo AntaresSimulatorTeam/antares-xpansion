@@ -6,6 +6,7 @@ class SensitivityAnalysisTest : public ::testing::Test
 public:
     double epsilon;
     double best_ub;
+    bool capex;
     std::string peak_name;
     std::string semibase_name;
     std::map<int, std::string> id_to_name;
@@ -27,6 +28,8 @@ protected:
         epsilon = 100;
         best_ub = 1390;
 
+        capex = true;
+
         peak_name = "peak";
         semibase_name = "semibase";
 
@@ -42,7 +45,9 @@ protected:
         math_problem->init();
         math_problem->read_prob_mps(last_master_mps_path);
 
-        sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, id_to_name, math_problem, writer);
+        SensitivityInputData input_data = {epsilon, best_ub, id_to_name, math_problem, true, {peak_name, semibase_name}};
+
+        sensitivity_analysis = SensitivityAnalysis(input_data, writer);
     }
 
     void verify_output_data(const SensitivityOutputData &output_data, const SensitivityOutputData &expec_output_data)
