@@ -292,15 +292,6 @@ class TestCheckSettingOptionValue:
         with pytest.raises(MaxIterValueError):
             _check_setting_option_value("max_iteration", -2)
 
-    def test_wrong_relaxed_optimality(self):
-
-        with pytest.raises(RelaxedOptimalityValueError):
-            _check_setting_option_value("relaxed_optimality_gap", "200%")
-
-    def test_wrong_relaxed_optimality2(self):
-
-        with pytest.raises(RelaxedOptimalityValueError):
-            _check_setting_option_value("relaxed_optimality_gap", "fzfz%")
 
     def test_wrong_time_limit(self):
 

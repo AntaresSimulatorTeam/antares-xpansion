@@ -360,7 +360,6 @@ options_types_and_legal_values = {
     "master": (type_str, ["relaxed", "integer", "full_integer"]),
     "optimality_gap": (type_float, None),
     "relative_gap": (type_float, None),
-    "cut_type": (type_str, ["average", "yearly", "weekly"]),
     "week_selection": (type_str, ["true", "false"]),
     "max_iteration": (type_int, None),
     "relaxed_optimality_gap": (type_str, None),
@@ -429,10 +428,6 @@ class MaxIterValueError(Exception):
     pass
 
 
-class RelaxedOptimalityValueError(Exception):
-    pass
-
-
 class TimelimitValueError(Exception):
     pass
 
@@ -454,11 +449,6 @@ def check_options(options):
     option_items = options.items()
     for (option, value) in option_items:
         _check_setting_option_value(option, value)
-
-    if options.get('yearly-weights', "") != "" and options.get("cut_type") == "average":
-        flushed_print(
-            "check_settings : yearly-weights option can not be used when cut_type is average")
-        sys.exit(1)
 
 
 def _check_setting_option_value(option, value):
@@ -504,23 +494,9 @@ def _check_setting_option_value(option, value):
                 flushed_print('Illegal value %s for option %s : only -1 or positive values are allowed'
                               % (value, option))
                 raise MaxIterValueError
-    elif option == "relaxed_optimality_gap":
-        if value.strip().endswith("%"):
-            try:
-                gap = float(value[:-1])
 
-                if 0 <= gap <= 100:
-                    return True
-                else:
-                    flushed_print('Illegal value %s for option %s: legal format "X%%" with X between 0 and 100'
-                                  % (value, option))
-                    raise RelaxedOptimalityValueError
-            except ValueError:
-                flushed_print('Illegal value %s for option %s: legal format "X%%" with X between 0 and 100'
-                              % (value, option))
-                raise RelaxedOptimalityValueError
     elif option == 'timelimit':
-        if (value in ["+Inf", "+infini"]):
+        if value in ["+Inf", "+infini"]:
             return True
         else:
             if int(value) > 0:
@@ -530,7 +506,7 @@ def _check_setting_option_value(option, value):
                               % (value, option))
                 raise TimelimitValueError
     elif option == 'log_level':
-        if (int(value) >= 0):
+        if int(value) >= 0:
             return True
         else:
             flushed_print('Illegal value %s for option %s : only greater than or equal to zero values are accepted'
