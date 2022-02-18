@@ -7,10 +7,13 @@ struct SinglePbData
 {
     std::string pb_type;
     std::string opt_dir;
-    double objective;    // should contain specific pb objective for each sensitivity pb (either min/max candidate cost or capex min/max)
-    double system_cost;  // System cost (i.e. invest. cost + operational cost) of the solution of the sensitivity problem
+    double objective;   // should contain specific pb objective for each sensitivity pb (either min/max candidate cost or capex min/max)
+    double system_cost; // System cost (i.e. invest. cost + operational cost) of the solution of the sensitivity problem
     Point candidates;
     int status;
+
+    SinglePbData() = default;
+    SinglePbData(std::string pb_type, std::string opt_dir, double objective, double system_cost, Point candidates, int status) : pb_type(pb_type), opt_dir(opt_dir), objective(objective), system_cost(system_cost), candidates(candidates), status(status) {}
 };
 
 struct SensitivityOutputData
@@ -18,6 +21,9 @@ struct SensitivityOutputData
     double epsilon;
     double best_benders_cost;
     std::vector<SinglePbData> pbs_data;
+
+    SensitivityOutputData() = default;
+    SensitivityOutputData(double epsilon, double benders_cost, std::vector<SinglePbData> pbs_data = {}) : epsilon(epsilon), best_benders_cost(benders_cost), pbs_data(pbs_data) {}
 };
 
 struct RawPbData

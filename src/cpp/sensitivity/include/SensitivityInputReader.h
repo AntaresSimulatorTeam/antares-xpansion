@@ -8,7 +8,7 @@ struct SensitivityInputData
 {
     double epsilon;
     double best_ub;
-    std::map<int, std::string> id_to_name;
+    std::map<std::string, int> name_to_id;
     SolverAbstract::Ptr last_master;
     bool capex;
     std::vector<std::string> projection;
@@ -33,6 +33,6 @@ private:
 
     SolverAbstract::Ptr get_last_master();
     double get_best_ub();
-    std::map<int, std::string> get_id_to_name();
+    std::map<std::string, int> get_name_to_id();
     std::vector<std::string> get_projection();
 };

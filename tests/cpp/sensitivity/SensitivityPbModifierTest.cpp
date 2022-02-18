@@ -19,7 +19,7 @@ std::string alpha_name;
 std::string alpha_0_name;
 std::string alpha_1_name;
 
-std::map<int, std::string> id_to_name;
+std::map<int, std::string> name_to_id;
 
 const double epsilon = 10;
 const double best_ub = 1000;
@@ -82,7 +82,7 @@ protected:
             alpha_1_name = "alpha_1";
         }
 
-        id_to_name = {{peak_id, peak_name}, {semibase_id, semibase_name}};
+        name_to_id = {{peak_id, peak_name}, {semibase_id, semibase_name}};
     }
 
     void TearDown() override {}
@@ -412,7 +412,7 @@ protected:
 
 TEST_F(SensitivityProblemModifierTest, ChangeProblemCapex)
 {
-    int nb_candidates = id_to_name.size();
+    int nb_candidates = name_to_id.size();
     verify_last_master_problem(lastMasterData);
 
     auto problem_modifier = std::make_shared<PbModifierCapex>(epsilon, best_ub);

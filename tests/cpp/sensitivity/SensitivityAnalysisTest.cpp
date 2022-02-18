@@ -6,16 +6,13 @@ class SensitivityAnalysisTest : public ::testing::Test
 public:
     double epsilon;
     double best_ub;
-    bool capex;
+
     std::string peak_name;
     std::string semibase_name;
-    std::map<int, std::string> id_to_name;
-    std::string json_filename;
+
     std::shared_ptr<SensitivityWriter> writer;
 
-    SolverAbstract::Ptr math_problem;
-
-    SensitivityAnalysis sensitivity_analysis;
+    SensitivityInputData input_data;
 
 protected:
     void SetUp() override
@@ -28,26 +25,26 @@ protected:
         epsilon = 100;
         best_ub = 1390;
 
-        capex = true;
-
         peak_name = "peak";
         semibase_name = "semibase";
 
-        id_to_name = {{0, peak_name}, {1, semibase_name}};
+        std::map<std::string, int> name_to_id = {{peak_name, 0}, {semibase_name, 1}};
 
-        json_filename = std::tmpnam(nullptr);
+        bool capex = true;
+        std::vector<std::string> projection = {peak_name, semibase_name};
+
+        std::string json_filename = std::tmpnam(nullptr);
         writer = std::make_shared<SensitivityWriter>(json_filename);
 
         std::string last_master_mps_path = data_test_dir + "/mps/master_last_iteration.mps";
         std::string solver_name = "CBC";
+
         SolverFactory factory;
-        math_problem = factory.create_solver(solver_name);
+        SolverAbstract::Ptr math_problem = factory.create_solver(solver_name);
         math_problem->init();
         math_problem->read_prob_mps(last_master_mps_path);
 
-        SensitivityInputData input_data = {epsilon, best_ub, id_to_name, math_problem, true, {peak_name, semibase_name}};
-
-        sensitivity_analysis = SensitivityAnalysis(input_data, writer);
+        input_data = {epsilon, best_ub, name_to_id, math_problem, capex, projection};
     }
 
     void verify_output_data(const SensitivityOutputData &output_data, const SensitivityOutputData &expec_output_data)
@@ -87,10 +84,9 @@ protected:
 
 TEST_F(SensitivityAnalysisTest, OutputDataInit)
 {
-    SensitivityOutputData expec_output_data;
-    expec_output_data.epsilon = epsilon;
-    expec_output_data.best_benders_cost = best_ub;
-    expec_output_data.pbs_data = {};
+    auto sensitivity_analysis = SensitivityAnalysis(input_data, writer);
+
+    auto expec_output_data = SensitivityOutputData(epsilon, best_ub);
 
     auto output_data = sensitivity_analysis.get_output_data();
 
@@ -99,102 +95,73 @@ TEST_F(SensitivityAnalysisTest, OutputDataInit)
 
 TEST_F(SensitivityAnalysisTest, GetCapexSolutions)
 {
-    sensitivity_analysis.get_capex_solutions();
+    input_data.capex = true;
+    input_data.projection = {};
+    auto sensitivity_analysis = SensitivityAnalysis(input_data, writer);
+    sensitivity_analysis.launch();
+
     auto output_data = sensitivity_analysis.get_output_data();
 
-    SensitivityOutputData expec_output_data;
-    expec_output_data.epsilon = epsilon;
-    expec_output_data.best_benders_cost = best_ub;
+    auto capex_min_data = SinglePbData(CAPEX_C, MIN_C, 1040, 1390, {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
 
-    SinglePbData capex_min_data;
-    capex_min_data.pb_type = CAPEX_C;
-    capex_min_data.opt_dir = MIN_C;
-    capex_min_data.objective = 1040;
-    capex_min_data.system_cost = 1390;
-    capex_min_data.candidates = {{peak_name, 14}, {semibase_name, 10}};
-    capex_min_data.status = SOLVER_STATUS::OPTIMAL;
+    auto capex_max_data = SinglePbData(CAPEX_C, MAX_C, 1224.745762711, 1490, {{peak_name, 17.22033898}, {semibase_name, 11.69491525}}, SOLVER_STATUS::OPTIMAL);
 
-    SinglePbData capex_max_data;
-    capex_max_data.pb_type = CAPEX_C;
-    capex_max_data.opt_dir = MAX_C;
-    capex_max_data.objective = 1224.745762711;
-    capex_max_data.system_cost = 1490;
-    capex_max_data.candidates = {{peak_name, 17.22033898}, {semibase_name, 11.69491525}};
-    capex_max_data.status = SOLVER_STATUS::OPTIMAL;
+    std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
 
-    expec_output_data.pbs_data.push_back(capex_min_data);
-    expec_output_data.pbs_data.push_back(capex_max_data);
+    auto expec_output_data = SensitivityOutputData(epsilon, best_ub, pbs_data);
 
     verify_output_data(output_data, expec_output_data);
 }
 
 TEST_F(SensitivityAnalysisTest, GetCandidatesProjection)
 {
-    sensitivity_analysis.get_candidates_projection();
+    input_data.capex = false;
+    input_data.projection = {peak_name, semibase_name};
+    auto sensitivity_analysis = SensitivityAnalysis(input_data, writer);
+    sensitivity_analysis.launch();
+
     auto output_data = sensitivity_analysis.get_output_data();
 
-    SensitivityOutputData expec_output_data;
-    expec_output_data.epsilon = epsilon;
-    expec_output_data.best_benders_cost = best_ub;
+    auto projection_min_peak = SinglePbData(PROJECTION_C + " " + peak_name, MIN_C, 13.83050847, 1490, {{peak_name, 13.83050847}, {semibase_name, 11.694915254}}, SOLVER_STATUS::OPTIMAL);
 
-    SinglePbData projection_min_peak;
-    projection_min_peak.pb_type = PROJECTION_C + " " + peak_name;
-    projection_min_peak.opt_dir = MIN_C;
-    projection_min_peak.objective = 13.83050847;
-    projection_min_peak.system_cost = 1490;
-    projection_min_peak.candidates = {{peak_name, 13.83050847}, {semibase_name, 11.694915254}};
-    projection_min_peak.status = SOLVER_STATUS::OPTIMAL;
+    auto projection_max_peak = SinglePbData(PROJECTION_C + " " + peak_name, MAX_C, 24, 1490, {{peak_name, 24}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
 
-    SinglePbData projection_max_peak;
-    projection_max_peak.pb_type = PROJECTION_C + " " + peak_name;
-    projection_max_peak.opt_dir = MAX_C;
-    projection_max_peak.objective = 24;
-    projection_max_peak.system_cost = 1490;
-    projection_max_peak.candidates = {{peak_name, 24}, {semibase_name, 10}};
-    projection_max_peak.status = SOLVER_STATUS::OPTIMAL;
+    auto projection_min_semibase = SinglePbData(PROJECTION_C + " " + semibase_name, MIN_C, 10, 1390, {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
 
-    SinglePbData projection_min_semibase;
-    projection_min_semibase.pb_type = PROJECTION_C + " " + semibase_name;
-    projection_min_semibase.opt_dir = MIN_C;
-    projection_min_semibase.objective = 10;
-    projection_min_semibase.system_cost = 1390;
-    projection_min_semibase.candidates = {{peak_name, 14}, {semibase_name, 10}};
-    projection_min_semibase.status = SOLVER_STATUS::OPTIMAL;
+    auto projection_max_semibase = SinglePbData(PROJECTION_C + " " + semibase_name, MAX_C, 11.694915254, 1490, {{peak_name, 13.83050847}, {semibase_name, 11.694915254}}, SOLVER_STATUS::OPTIMAL);
 
-    SinglePbData projection_max_semibase;
-    projection_max_semibase.pb_type = PROJECTION_C + " " + semibase_name;
-    projection_max_semibase.opt_dir = MAX_C;
-    projection_max_semibase.objective = 11.694915254;
-    projection_max_semibase.system_cost = 1490;
-    projection_max_semibase.candidates = {{peak_name, 13.83050847}, {semibase_name, 11.694915254}};
-    projection_max_semibase.status = SOLVER_STATUS::OPTIMAL;
+    std::vector<SinglePbData> pbs_data = {projection_min_peak, projection_max_peak, projection_min_semibase, projection_max_semibase};
 
-    expec_output_data.pbs_data.push_back(projection_min_peak);
-    expec_output_data.pbs_data.push_back(projection_max_peak);
-    expec_output_data.pbs_data.push_back(projection_min_semibase);
-    expec_output_data.pbs_data.push_back(projection_max_semibase);
+    auto expec_output_data = SensitivityOutputData(epsilon, best_ub, pbs_data);
 
     verify_output_data(output_data, expec_output_data);
 }
 
-// TEST(SensitivityAnalysisTest, FullSensitivityAnalysis)
-// {
-//     double epsilon = 10000;
-//     double best_ub = 1440683382.537683;
+TEST_F(SensitivityAnalysisTest, InvalidCandidateNameInProjection)
+{
+    // TODO
+}
 
-//     std::map<int, std::string> id_to_name = {{3, "semibase"}, {1, "peak"}, {2, "pv"}, {0, "battery"}, {4, "transmission_line"}};
+TEST_F(SensitivityAnalysisTest, FullSensitivityAnalysis)
+{
+    double epsilon = 10000;
+    double best_ub = 1440683382.537683;
 
-//     std::string data_test_dir = "../data_test";
-//     std::string json_filename = data_test_dir + "/mps/sensitivity_out.json";
-//     std::shared_ptr<SensitivityWriter> writer = std::make_shared<SensitivityWriter>(json_filename);
+    std::map<std::string, int> name_to_id = {{"semibase", 3}, {"peak", 1}, {"pv", 2}, {"battery", 0}, {"transmission_line", 4}};
 
-//     std::string last_master_mps_path = data_test_dir + "/mps/sensitivity.mps";
-//     std::string solver_name = "CBC";
-//     SolverFactory factory;
-//     SolverAbstract::Ptr math_problem = factory.create_solver(solver_name);
-//     math_problem->init();
-//     math_problem->read_prob_mps(last_master_mps_path);
+    std::string data_test_dir = "../data_test";
+    std::string json_filename = data_test_dir + "/mps/sensitivity_out_2.json";
+    std::shared_ptr<SensitivityWriter> writer = std::make_shared<SensitivityWriter>(json_filename);
 
-//     SensitivityAnalysis sensitivity_analysis = SensitivityAnalysis(epsilon, best_ub, id_to_name, math_problem, writer);
-//     sensitivity_analysis.launch();
-// }
+    std::string last_master_mps_path = data_test_dir + "/mps/sensitivity.mps";
+    std::string solver_name = "CBC";
+    SolverFactory factory;
+    SolverAbstract::Ptr math_problem = factory.create_solver(solver_name);
+    math_problem->init();
+    math_problem->read_prob_mps(last_master_mps_path);
+
+    SensitivityInputData input_data = {epsilon, best_ub, name_to_id, math_problem, true, {"semibase", "peak", "pv", "battery", "transmission_line"}};
+
+    SensitivityAnalysis sensitivity_analysis = SensitivityAnalysis(input_data, writer);
+    sensitivity_analysis.launch();
+}

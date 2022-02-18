@@ -24,8 +24,6 @@ public:
     static const std::vector<std::string> sensitivity_string_pb_type;
 
     void launch();
-    void get_capex_solutions();
-    void get_candidates_projection();
     SensitivityOutputData get_output_data() const;
 
 private:
@@ -35,7 +33,7 @@ private:
     bool _capex;
     std::vector<std::string> _projection;
 
-    std::map<int, std::string> _id_to_name;
+    std::map<std::string, int> _name_to_id;
     SolverAbstract::Ptr _last_master;
     std::shared_ptr<SensitivityWriter> _writer;
 
@@ -45,11 +43,12 @@ private:
     SensitivityPbType _sensitivity_pb_type;
 
     void init_output_data();
+    void get_capex_solutions();
+    void get_candidates_projection();
     void run_analysis();
     void run_optimization(const SolverAbstract::Ptr &sensitivity_model, const bool minimize);
 
     RawPbData solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem);
     void fill_output_data(const RawPbData &raw_output, const bool minimize);
     double get_system_cost(const RawPbData &raw_output);
-    std::string get_projection_pb_candidate_name(const RawPbData &raw_output);
 };
