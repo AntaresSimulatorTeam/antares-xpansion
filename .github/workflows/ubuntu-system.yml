@@ -125,7 +125,14 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -B _build -S . -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+          cmake -B _build -S . \
+                -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+                -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
+                -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release \
+                -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install \
+                -DBUILD_UI=ON  \
+                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
 
       - name: Build
         run: |
