@@ -16,11 +16,16 @@ public:
     _fp = fopen(_filename.c_str(), "a+");
     if (_fp == NULL) {
       std::cerr << "Invalid file name passed as parameter" << std::endl;
+    } else {
+      setvbuf(_fp, NULL, _IONBF, 0);
     }
-    setvbuf(_fp, NULL, _IONBF, 0);
   }
   FileHandler(const FileHandler &copy) : FileHandler(copy._filename) {}
-  ~FileHandler() { fclose(_fp); }
+  ~FileHandler() {
+    if (_fp != NULL) {
+      fclose(_fp);
+    }
+  }
   template <typename T> FileHandler &operator<<(const T &t) {
     std::ostringstream _s;
     _s << t;

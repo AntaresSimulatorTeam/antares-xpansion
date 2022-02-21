@@ -16,11 +16,7 @@ UserFile::UserFile(const std::string &filename)
     : _filename(filename), _file_handler(filename) {}
 
 UserFile::UserFile(const UserFile &copy)
-    : _filename(copy._filename), _file_handler(copy._file_handler) {
-  // _file_handler = copy._file_handler;
-  std::cout << " _file_handler._fp " << copy._file_handler._fp << "\n";
-  std::cout << " _file_handler._fp " << _file_handler._fp << "\n";
-}
+    : _filename(copy._filename), _file_handler(copy._file_handler) {}
 // _userLog = std::unique_ptr<User>(new User(_file));
 
 UserFile::~UserFile() {}
