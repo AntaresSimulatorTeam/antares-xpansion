@@ -18,6 +18,7 @@ class ConfigParameters:
     BENDERS_SEQUENTIAL: str
     LP_NAMER: str
     STUDY_UPDATER: str
+    SENSITIVITY_EXE: str
     AVAILABLE_SOLVERS: List[str]
 
 
@@ -52,6 +53,7 @@ class XpansionConfig:
         self.BENDERS_SEQUENTIAL: str = ""
         self.LP_NAMER: str = ""
         self.STUDY_UPDATER: str = ""
+        self.SENSITIVITY_EXE: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
         self.AVAILABLE_SOLVER: List[str]
@@ -113,6 +115,7 @@ class XpansionConfig:
 
         self.USER = 'user'
         self.EXPANSION = 'expansion'
+        self.SENSITIVITY_DIR = 'sensitivity'
         self.CAPADIR = 'capa'
         self.NB_YEARS = 'nbyears'
         self.SETTINGS_INI = 'settings.ini'
@@ -122,6 +125,8 @@ class XpansionConfig:
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_TXT = 'options.txt'
         self.JSON_NAME = "out"
+        self.JSON_SENSITIVITY_IN = "sensitivity_in"
+        self.JSON_SENSITIVITY_OUT = "sensitivity_out"
 
     def _set_default_settings(self):
         self.settings_default = {
@@ -173,4 +178,5 @@ class XpansionConfig:
         self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
+        self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE
         self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS
