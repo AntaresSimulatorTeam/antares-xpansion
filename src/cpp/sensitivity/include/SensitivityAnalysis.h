@@ -6,7 +6,7 @@
 #include "SensitivityOutputData.h"
 #include "SensitivityPbModifier.h"
 
-enum SensitivityPbType
+enum class SensitivityPbType
 {
     CAPEX,
     PROJECTION,
@@ -48,7 +48,7 @@ private:
     void run_analysis();
     void run_optimization(const SolverAbstract::Ptr &sensitivity_model, const bool minimize);
 
-    RawPbData solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem);
+    RawPbData solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem) const;
     void fill_output_data(const RawPbData &raw_output, const bool minimize);
-    double get_system_cost(const RawPbData &raw_output);
+    double get_system_cost(const RawPbData &raw_output) const;
 };

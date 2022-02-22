@@ -134,7 +134,7 @@ class ConfigLoader:
             returns path to sensitivity input file
         """
         return os.path.normpath(os.path.join(self.data_dir(), self._config.USER,
-                                             self._config.EXPANSION, self._config.SENSITIVITY_DIR, self._config.JSON_SENSITIVITY_IN+ ".json"))
+                                             self._config.EXPANSION, self._config.SENSITIVITY_DIR, self._config.JSON_SENSITIVITY_IN))
 
     def weights_file_path(self):
         """
@@ -352,10 +352,10 @@ class ConfigLoader:
         return self._config.antares_n_cpu
 
     def json_file_path(self):
-        return os.path.join(self._expansion_dir(), self._config.JSON_NAME + ".json")
+        return os.path.join(self._expansion_dir(), self._config.JSON_NAME)
     
     def json_sensitivity_out_path(self):
-        return os.path.join(self._sensitivity_dir(), self._config.JSON_SENSITIVITY_OUT + ".json")
+        return os.path.join(self._sensitivity_dir(), self._config.JSON_SENSITIVITY_OUT)
 
     def oversubscribe(self):
         return self._config.oversubscribe

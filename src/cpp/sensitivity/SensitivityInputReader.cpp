@@ -21,7 +21,7 @@ SensitivityInputReader::SensitivityInputReader(const std::string &json_input_pat
 std::vector<std::string> SensitivityInputReader::get_projection()
 {
     std::vector<std::string> projection;
-    for (auto &candidate_name : _json_data[PROJECTION_C])
+    for (const auto &candidate_name : _json_data[PROJECTION_C])
     {
         projection.push_back(candidate_name.asString());
     }

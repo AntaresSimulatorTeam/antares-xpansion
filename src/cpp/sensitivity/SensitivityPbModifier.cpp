@@ -6,7 +6,7 @@ SensitivityPbModifier::SensitivityPbModifier(double epsilon, double best_ub) : _
 {
 }
 
-SolverAbstract::Ptr SensitivityPbModifier::change_objective(SolverAbstract::Ptr &solver_model, const std::vector<double> &obj) const
+SolverAbstract::Ptr SensitivityPbModifier::change_objective(const SolverAbstract::Ptr &solver_model, const std::vector<double> &obj) const
 {
     std::vector<int> colind(solver_model->get_ncols());
 
@@ -18,19 +18,19 @@ SolverAbstract::Ptr SensitivityPbModifier::change_objective(SolverAbstract::Ptr 
     return solver_model;
 }
 
-SolverAbstract::Ptr SensitivityPbModifier::changeProblem(const int nb_candidates, const SolverAbstract::Ptr &last_master)
+SolverAbstract::Ptr SensitivityPbModifier::changeProblem(const int nb_candidates, const SolverAbstract::Ptr &last_master) const
 {
     SolverFactory factory;
     SolverAbstract::Ptr sensitivity_model = factory.create_solver(last_master);
     std::vector<double> obj = get_cost_vector(last_master, nb_candidates);
 
-    sensitivity_model = add_near_optimal_cost_constraint(sensitivity_model, nb_candidates);
+    sensitivity_model = add_near_optimal_cost_constraint(sensitivity_model);
     sensitivity_model = change_objective(sensitivity_model, obj);
 
     return sensitivity_model;
 }
 
-SolverAbstract::Ptr SensitivityPbModifier::add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solver_model, int nb_candidates) const
+SolverAbstract::Ptr SensitivityPbModifier::add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solver_model) const
 {
     int ncols = solver_model->get_ncols();
     std::vector<int> colind(ncols);

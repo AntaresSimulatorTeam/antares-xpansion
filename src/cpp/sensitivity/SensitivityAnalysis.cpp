@@ -17,7 +17,7 @@ void SensitivityAnalysis::launch()
 	{
 		get_capex_solutions();
 	}
-	if (_projection.size() > 0)
+	if (!_projection.empty())
 	{
 		get_candidates_projection();
 	}
@@ -38,16 +38,16 @@ void SensitivityAnalysis::init_output_data()
 
 void SensitivityAnalysis::get_capex_solutions()
 {
-	_sensitivity_pb_type = CAPEX;
+	_sensitivity_pb_type = SensitivityPbType::CAPEX;
 	_pb_modifier = std::make_shared<PbModifierCapex>(_epsilon, _best_ub);
 	run_analysis();
 }
 
 void SensitivityAnalysis::get_candidates_projection()
 {
-	_sensitivity_pb_type = PROJECTION;
+	_sensitivity_pb_type = SensitivityPbType::PROJECTION;
 	for (auto const &candidate_name : _projection)
-	{	
+	{
 		if (_name_to_id.find(candidate_name) != _name_to_id.end())
 		{
 			_pb_modifier = std::make_shared<PbModifierProjection>(_epsilon, _best_ub, _name_to_id[candidate_name], candidate_name);
@@ -55,7 +55,7 @@ void SensitivityAnalysis::get_candidates_projection()
 		}
 		else
 		{
-			//Raise warning -> use a logger ?
+			// Raise warning -> use a logger ?
 		}
 	}
 }
@@ -76,7 +76,7 @@ void SensitivityAnalysis::run_optimization(const SolverAbstract::Ptr &sensitivit
 	fill_output_data(raw_output, minimize);
 }
 
-RawPbData SensitivityAnalysis::solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem)
+RawPbData SensitivityAnalysis::solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem) const
 {
 	RawPbData raw_output;
 	int ncols = sensitivity_problem->get_ncols();
@@ -109,12 +109,12 @@ void SensitivityAnalysis::fill_output_data(const RawPbData &raw_output, const bo
 	pb_data.opt_dir = minimize ? MIN_C : MAX_C;
 	pb_data.objective = raw_output.obj_value;
 	pb_data.status = raw_output.status;
-	pb_data.pb_type = sensitivity_string_pb_type[_sensitivity_pb_type];
+	pb_data.pb_type = sensitivity_string_pb_type[static_cast<int>(_sensitivity_pb_type)];
 
-	if (_sensitivity_pb_type == PROJECTION)
+	if (_sensitivity_pb_type == SensitivityPbType::PROJECTION)
 	{
 		// Add a check for the success of the cast
-		PbModifierProjection *pb_modifier = dynamic_cast<PbModifierProjection *>(_pb_modifier.get());
+		auto *pb_modifier = dynamic_cast<PbModifierProjection *>(_pb_modifier.get());
 		pb_data.pb_type += " " + pb_modifier->get_candidate_name();
 	}
 
@@ -127,7 +127,7 @@ void SensitivityAnalysis::fill_output_data(const RawPbData &raw_output, const bo
 	_output_data.pbs_data.push_back(pb_data);
 }
 
-double SensitivityAnalysis::get_system_cost(const RawPbData &raw_output)
+double SensitivityAnalysis::get_system_cost(const RawPbData &raw_output) const
 {
 	int ncols = _last_master->get_ncols();
 	std::vector<double> master_obj(ncols);

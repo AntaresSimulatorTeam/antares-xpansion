@@ -2,7 +2,7 @@
 #include "PbModifierProjection.h"
 #include "solver_utils.h"
 
-PbModifierProjection::PbModifierProjection(double epsilon, double best_ub, int candidate_id, std::string candidate_name) : SensitivityPbModifier(epsilon, best_ub), _candidate_id(candidate_id), _candidate_name(candidate_name)
+PbModifierProjection::PbModifierProjection(double epsilon, double best_ub, int candidate_id, const std::string &candidate_name) : SensitivityPbModifier(epsilon, best_ub), _candidate_id(candidate_id), _candidate_name(candidate_name)
 {
 }
 
@@ -15,7 +15,7 @@ std::vector<double> PbModifierProjection::get_cost_vector(const SolverAbstract::
     return obj;
 }
 
-std::string PbModifierProjection::get_candidate_name()
+std::string PbModifierProjection::get_candidate_name() const
 {
     return _candidate_name;
 }

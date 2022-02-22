@@ -10,5 +10,5 @@ public:
     ~PbModifierCapex() = default;
 
 private:
-    virtual std::vector<double> get_cost_vector(const SolverAbstract::Ptr &solver_model, int nb_candidates) const override;
+    std::vector<double> get_cost_vector(const SolverAbstract::Ptr &solver_model, int nb_candidates) const override;
 };

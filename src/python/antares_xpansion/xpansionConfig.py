@@ -124,9 +124,9 @@ class XpansionConfig:
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_TXT = 'options.txt'
-        self.JSON_NAME = "out"
-        self.JSON_SENSITIVITY_IN = "sensitivity_in"
-        self.JSON_SENSITIVITY_OUT = "sensitivity_out"
+        self.JSON_NAME = "out.json"
+        self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
+        self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
 
     def _set_default_settings(self):
         self.settings_default = {

@@ -3,25 +3,24 @@
 #include <json/writer.h>
 #include "SensitivityOutputData.h"
 
-const std::string
-    ANTARES_C("antares"),
-    VERSION_C("version"),
-    ANTARES_XPANSION_C("antares_xpansion"),
-    EPSILON_C("epsilon"),
-    BEST_BENDERS_C("best benders cost"),
-    OPT_DIR_C("optimization direction"),
-    PB_TYPE_C("problem type"),
-    MIN_C("min"),
-    MAX_C("max"),
-    CAPEX_C("capex"),
-    PROJECTION_C("projection"),
-    STATUS_C("status"),
-    SYSTEM_COST_C("system cost"),
-    OBJECTIVE_C("objective"),
-    NAME_C("name"),
-    INVEST_C("invest"),
-    CANDIDATES_C("candidates"),
-    SENSITIVITY_SOLUTION_C("sensitivity solutions");
+const std::string ANTARES_C("antares");
+const std::string VERSION_C("version");
+const std::string ANTARES_XPANSION_C("antares_xpansion");
+const std::string EPSILON_C("epsilon");
+const std::string BEST_BENDERS_C("best benders cost");
+const std::string OPT_DIR_C("optimization direction");
+const std::string PB_TYPE_C("problem type");
+const std::string MIN_C("min");
+const std::string MAX_C("max");
+const std::string CAPEX_C("capex");
+const std::string PROJECTION_C("projection");
+const std::string STATUS_C("status");
+const std::string SYSTEM_COST_C("system cost");
+const std::string OBJECTIVE_C("objective");
+const std::string NAME_C("name");
+const std::string INVEST_C("invest");
+const std::string CANDIDATES_C("candidates");
+const std::string SENSITIVITY_SOLUTION_C("sensitivity solutions");
 
 class SensitivityWriter
 {
