@@ -74,7 +74,8 @@ public:
   void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) override;
 
-  FileHandler &get_file_handler();
+  FILE *get_file_handler();
+  const std::string LINE_PREFIX = "<<BENDERS>> ";
 
 private:
   std::ofstream _file;
