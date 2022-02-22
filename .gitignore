@@ -48,5 +48,9 @@ src/python/resources.py
 config-ui.yaml
 build_config.yaml
 
+# Tests
+.coverage
+coverage-reports
+
 # Doc pdf file
 antaresxpansionuserguide.pdf
