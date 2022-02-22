@@ -56,19 +56,8 @@ class SensitivityDriver:
         if Path(json_sensitivity_in_path).is_file():
             self.json_sensitivity_in_path = json_sensitivity_in_path
         else:
-            raise SensitivityDriver.SensitivityJsonFilePath(
+            raise SensitivityDriver.SensitivityJsonFilePathError(
                 f"Sensitivity Error: {json_sensitivity_in_path} not found "
-            )
-
-    def get_lp_path(self):
-        lp_path = Path(
-            os.path.normpath(os.path.join(self.simulation_output_path, "lp"))
-        )
-        if lp_path.is_dir():
-            return lp_path
-        else:
-            raise SensitivityDriver.SensitivityLpPathError(
-                f"Error in lp path: {lp_path} not found"
             )
 
     def _get_sensitivity_cmd(self):
@@ -83,10 +72,7 @@ class SensitivityDriver:
     class SensitivityOutputPathError(Exception):
         pass
 
-    class SensitivityLpPathError(Exception):
-        pass
-
-    class SensitivityJsonFilePath(Exception):
+    class SensitivityJsonFilePathError(Exception):
         pass
 
     class SensitivityExeError(Exception):
