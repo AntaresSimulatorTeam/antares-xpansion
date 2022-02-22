@@ -55,7 +55,8 @@ protected:
 #else
         std::string data_test_dir = "../data_test";
 #endif
-        std::string last_master_mps_path = data_test_dir + "/mps/master_last_iteration.mps";
+        data_test_dir += "/sensitivity";
+        std::string last_master_mps_path = data_test_dir + "/toy_last_iteration.mps";
         std::string solver_name = "CBC";
         SolverFactory factory;
 
