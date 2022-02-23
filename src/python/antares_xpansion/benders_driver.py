@@ -2,7 +2,6 @@
     Class to control the execution of Benders
 """
 
-from dataclasses import dataclass
 import glob
 import os
 from pathlib import Path
@@ -24,6 +23,7 @@ class BendersDriver:
 
         self.OPTIONS_TXT = "options.txt"
         self._initialise_system_specific_mpi_vars()
+        self._benders_log_file = ""
 
     def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False):
         """
@@ -37,6 +37,8 @@ class BendersDriver:
         self.simulation_output_path = simulation_output_path
         old_cwd = os.getcwd()
         lp_path = self.get_lp_path()
+            
+
         os.chdir(lp_path)
         flushed_print("Current directory is now: ", os.getcwd())
 
@@ -44,12 +46,17 @@ class BendersDriver:
 
         # delete execution logs
         self._clean_log_files()
-        returned_l = subprocess.run(
-            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr
-        )
-        if returned_l.returncode != 0:
+
+        returncode = None
+
+        if self._benders_log_file == "":
+            returncode = self._run_and_print_only_in_std_out_err()
+        else :
+            returncode = self._run_and_print_in_std_out_err_and_file()
+
+        if returncode != 0:
             raise BendersDriver.BendersExecutionError(
-                "ERROR: exited solver with status %d" % returned_l.returncode
+                f"ERROR: exited solver with status {returncode}"
             )
         elif not keep_mps:
             StudyOutputCleaner.clean_benders_step(self.simulation_output_path)
@@ -62,6 +69,28 @@ class BendersDriver:
             raise BendersDriver.BendersOutputPathError(
                 f"Benders Error: {simulation_output_path} not found "
             )
+
+    def _run_and_print_in_std_out_err_and_file(self):
+        with open(self._benders_log_file, "w") as benders_log:
+            with subprocess.Popen(
+                self._get_solver_cmd(), shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            encoding='utf-8') as proc:
+                for output in proc.stdout:
+                    benders_log.write(output)
+                    sys.stdout.write(output)
+
+                for err in proc.stderr:
+                    sys.stderr.write(err)
+                    benders_log.write(err)
+
+        return proc.returncode
+
+    def _run_and_print_only_in_std_out_err(self):
+        ret = subprocess.run(
+            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
+        encoding='utf-8')
+
+        return ret.returncode
 
     def get_simulation_output_path(self):
         return self._simulation_output_path
@@ -133,6 +162,11 @@ class BendersDriver:
                     f"Error {sys.platform} platform is not supported \n"
                 )
             )
+
+    def set_benders_log_file(self, benders_log_file: Path):
+        if benders_log_file.exists():
+            os.remove(benders_log_file)
+        self._benders_log_file = benders_log_file
 
     simulation_output_path = property(
         get_simulation_output_path, set_simulation_output_path

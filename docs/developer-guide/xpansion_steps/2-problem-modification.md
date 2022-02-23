@@ -108,22 +108,22 @@ $$
 F_{l,t} = F_{l,t}^{+} - F_{l,t}^{-}
 $$
 
-We also need to add the investment variables \\(x_{l}\\) that represent the invested capcity on link \\(l\\). We suppose that the link has a direct (resp. indirect) temporal profile denoted by \\(\Lambda_{l,t}^{+}\\) (resp. \\(\Lambda_{l,t}^{-}\\)) with the already installed capacity \\(\widetilde{C}\_{l,t}^{+}\\) in the forward direction (resp. \\(\widetilde{C}\_{l,t}^{-}\\) in the backward direction). Then the following constraints must be added:
+We also need to add the investment variables \\(x_{l}\\) that represent the invested capacity on link \\(l\\). We suppose that the link has a direct (resp. indirect) temporal profile denoted by \\(\Lambda_{l,t}^{+}\\) (resp. \\(\Lambda_{l,t}^{-}\\)). The already installed capacity is \\(\widetilde{C}\_{l}^{+}\\) in the forward direction (resp. \\(\widetilde{C}\_{l}^{-}\\) in the backward direction) and the already installed direct (resp. indirect) temporal profile is denoted by \\(\widetilde{\Lambda}\_{l,t}^{+}\\) (resp. \\(\widetilde{\Lambda}\_{l,t}^{-}\\)). Then the following constraints must be added:
 
 $$
-F_{l,t} + \Lambda_{l,t}^{-} \cdot x_{l} \geq \widetilde{C}_{l,t}^{-}
-$$
-
-$$
-F_{l,t} + \Lambda_{l,t}^{+} \cdot x_{l} \leq \widetilde{C}_{l,t}^{+}\\
+F_{l,t} + \Lambda_{l,t}^{-} \cdot x_{l} \geq -\widetilde{\Lambda}\_{l,t}^{-}\cdot\widetilde{C}_{l}^{-}
 $$
 
 $$
-F_{l,t}^{-} - \Lambda_{l,t}^{-} \cdot x_{l} \leq \widetilde{C}_{l,t}^{-}
+F_{l,t} - \Lambda_{l,t}^{+} \cdot x_{l} \leq \widetilde{\Lambda}\_{l,t}^{-}\cdot\widetilde{C}_{l}^{+}\\
 $$
 
 $$
-F_{l,t}^{+} - \Lambda_{l,t}^{+} \cdot x_{l} \leq \widetilde{C}_{l,t}^{+}
+F_{l,t}^{-} - \Lambda_{l,t}^{-} \cdot x_{l} \leq \widetilde{\Lambda}\_{l,t}^{-}\cdot\widetilde{C}_{l}^{-}
+$$
+
+$$
+F_{l,t}^{+} - \Lambda_{l,t}^{+} \cdot x_{l} \leq \widetilde{\Lambda}\_{l,t}^{+}\cdot\widetilde{C}_{l}^{+}
 $$
 
 This translates into the following steps for the modification of `.mps` files:

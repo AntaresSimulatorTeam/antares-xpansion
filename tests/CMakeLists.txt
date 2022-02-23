@@ -78,7 +78,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     set_property(TEST lpnamer_end_to_end PROPERTY LABELS lpnamer)
 
 else()   
-  message(FATAL "Module pytest or numpy not installed : can't run python scripts for end to end tests" )
+  message(FATAL_ERROR "Module pytest or numpy not installed : can't run python scripts for end to end tests" )
 endif()
 
 add_subdirectory(cpp)

@@ -4,11 +4,8 @@
 #include <string>
 
 class StringUtils {
-
-public :
-    static std::string ToLowercase(const std::string& s);
-
+ public:
+  static std::string ToLowercase(const std::string& s);
 };
 
-
-#endif //ANTARESXPANSION_STRINGUTILS_H
+#endif  // ANTARESXPANSION_STRINGUTILS_H

@@ -6,6 +6,7 @@ add_library (factories
 target_link_libraries (factories
         PUBLIC
         benders_core
+        output_core
         logger_lib
         )
 

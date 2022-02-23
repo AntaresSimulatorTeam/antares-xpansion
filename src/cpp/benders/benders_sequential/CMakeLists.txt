@@ -25,7 +25,7 @@ target_link_libraries (benders_sequential_core
 	PUBLIC
         benders_core
 		helpers
-		jsoncpp_lib
+		output_core
 		solvers
 		glog::glog
 )
