@@ -8,8 +8,6 @@ import sys
 
 from pathlib import Path
 
-import re
-
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.xpansionConfig import XpansionConfig
@@ -67,7 +65,8 @@ class ConfigLoader:
             raise ConfigLoader.MissingFile(
                 ' %s was not retrieved.' % self.candidates_ini_filepath())
 
-        check_candidates_file(self)
+        check_candidates_file(
+            self.candidates_ini_filepath(), self.capacity_file(""))
 
     def check_settings_file_format(self):
         check_options(self.options)
@@ -365,7 +364,7 @@ class ConfigLoader:
 
     def oversubscribe(self):
         return self._config.oversubscribe
-      
+
     def timelimit(self):
         """
         returns the timelimit read from the settings file
@@ -388,7 +387,7 @@ class ConfigLoader:
     
     def benders_log_file(self)-> Path:
         return Path(os.path.join(self._simulation_lp_path(), self._config.BENDERS_LOG_FILE))
-        
+
 
     class MissingSimulationName(Exception):
         pass
