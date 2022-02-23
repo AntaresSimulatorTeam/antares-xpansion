@@ -10,7 +10,7 @@ std::vector<double> PbModifierCapex::get_cost_vector(const SolverAbstract::Ptr &
 {
     std::vector<double> obj(solver_model->get_ncols());
 
-    solver_getobj(solver_model, obj, 0, solver_model->get_ncols() - 1);
+    solver_get_obj_func_coeffs(solver_model, obj, 0, solver_model->get_ncols() - 1);
 
     //Keep only coefficients corresponding to candidates, alpha and all alpha_i are set to 0
     for (int i(nb_candidates); i < obj.size(); i++)

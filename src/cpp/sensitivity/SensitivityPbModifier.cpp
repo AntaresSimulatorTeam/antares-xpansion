@@ -41,7 +41,7 @@ SolverAbstract::Ptr SensitivityPbModifier::add_near_optimal_cost_constraint(cons
 
     std::iota(std::begin(colind), std::end(colind), 0);
 
-    solver_getobj(solver_model, dmatval, 0, colind.size() - 1);
+    solver_get_obj_func_coeffs(solver_model, dmatval, 0, colind.size() - 1);
     solver_addrows(solver_model, rowtype, rhs, {}, rstart, colind, dmatval);
 
     return solver_model;
