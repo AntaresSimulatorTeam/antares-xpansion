@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   Timer timer;
 
   BendersSequential benders(benders_options, logger, writer);
-  benders.set_fp(logger_factory.get_file_pointer());
+  benders.set_log_file(loggerFileName);
   benders.launch();
   std::stringstream str;
   str << "Optimization results available in : " << options.JSON_FILE;

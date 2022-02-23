@@ -9,7 +9,13 @@
 *************************************************************************************************/
 int SolverXpress::_NumberOfProblems = 0;
 
-SolverXpress::SolverXpress(FILE *fp) : SolverXpress() { _fp = fp; }
+SolverXpress::SolverXpress(const std::string &log_file) : SolverXpress() {
+  _log_file = log_file;
+  if (_log_file != "") {
+    _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
+    add_stream(&log_stream);
+  }
+}
 SolverXpress::SolverXpress() {
   int status = 0;
   if (_NumberOfProblems == 0) {
@@ -20,7 +26,6 @@ SolverXpress::SolverXpress() {
   _NumberOfProblems += 1;
 
   _xprs = NULL;
-  add_stream(std::cout);
 }
 
 SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
@@ -30,6 +35,11 @@ SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
   // Try to cast the solver in fictif to a SolverCPLEX
   if (SolverXpress *xpSolv = dynamic_cast<SolverXpress *>(toCopy.get())) {
     status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
+    _log_file = toCopy->_log_file;
+    if (_log_file != "") {
+      _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
+      add_stream(&log_stream);
+    }
     zero_status_check(status, "create problem");
   } else {
     _NumberOfProblems -= 1;
@@ -46,6 +56,9 @@ SolverXpress::~SolverXpress() {
   if (_NumberOfProblems == 0) {
     int status = XPRSfree();
     zero_status_check(status, "free XPRESS environment");
+  }
+  if (_log_stream.is_open()) {
+    _log_stream.close();
   }
 }
 
@@ -497,15 +510,9 @@ void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,
   case 3: /* warning */
   case 2: /* dialogue */
   case 1: /* information */
-    // if (ptr != NULL)
-    // {
-    // 	for (auto const &stream : *ptr)
-    // 		*stream << sMsg << std::endl;
-    // }
-    if (_fp != NULL) {
-      fprintf(_fp, "%s", sMsg);
-    } else {
-      std::cout << sMsg << std::endl;
+    if (ptr != NULL) {
+      for (auto const &stream : *ptr)
+        *stream << sMsg << std::endl;
     }
     break;
     /* Exit and flush buffers */

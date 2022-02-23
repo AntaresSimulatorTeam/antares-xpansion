@@ -18,7 +18,6 @@ std::ostringstream start_message(const SimulationOptions &options,
 class FileAndStdoutLoggerFactory {
 
 private:
-  FILE *fp;
   Logger logger;
 
 public:
@@ -26,14 +25,12 @@ public:
     auto masterLogger = std::make_shared<xpansion::logger::Master>();
     auto user_file =
         std::make_shared<xpansion::logger::UserFile>(report_file_path_string);
-    fp = user_file->get_file_handler();
 
     auto loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
     masterLogger->addLogger(user_file);
     masterLogger->addLogger(loggerUser);
     logger = masterLogger;
   }
-  inline FILE *get_file_pointer() const { return fp; }
 
   inline Logger get_logger() const { return logger; }
 };

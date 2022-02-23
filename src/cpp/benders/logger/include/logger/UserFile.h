@@ -74,14 +74,14 @@ public:
   void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) override;
 
-  FILE *get_file_handler();
+  // FILE *get_file_handler();
   const std::string LINE_PREFIX = "<<BENDERS>> ";
 
 private:
   std::ofstream _file;
   std::string _filename;
   std::unique_ptr<User> _userLog;
-  FileHandler _file_handler;
+  // FileHandler _file_handler;
 };
 
 } // namespace logger

@@ -38,7 +38,7 @@ public:
    * @brief Default constructor of a CBC solver
    */
   SolverCbc();
-  SolverCbc(FILE *fp);
+  SolverCbc(const std::string &log_file);
 
   /**
    * @brief Copy constructor of solver, copy the problem toCopy in memory and

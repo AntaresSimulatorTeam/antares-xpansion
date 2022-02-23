@@ -7,10 +7,14 @@
 *************************************************************************************************/
 int SolverCbc::_NumberOfProblems = 0;
 
-SolverCbc::SolverCbc(FILE *fp) : SolverCbc() {
-  _fp = fp;
+SolverCbc::SolverCbc(const std::string &log_file) : SolverCbc() {
+  _log_file = log_file;
+  _fp = fopen(_log_file.c_str(), "a+");
 
-  if (_fp != NULL) {
+  if (_fp == NULL) {
+    std::cerr << "Invalid log file name passed as parameter" << std::endl;
+  } else {
+    setvbuf(_fp, NULL, _IONBF, 0);
     _message_handler.setFilePointer(_fp);
   }
 }
@@ -25,8 +29,10 @@ SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
   // Try to cast the solver in fictif to a SolverCPLEX
   if (SolverCbc *c = dynamic_cast<SolverCbc *>(fictif.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
-    _fp = fictif->_fp;
+    _log_file = fictif->_log_file;
+    _fp = fopen(_log_file.c_str(), "a+");
     if (_fp != NULL) {
+      setvbuf(_fp, NULL, _IONBF, 0);
       _message_handler.setFilePointer(_fp);
     }
     defineCbcModelFromInnerSolver();
@@ -39,6 +45,9 @@ SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
 
 SolverCbc::~SolverCbc() {
   _NumberOfProblems -= 1;
+  if (_fp != NULL) {
+    fclose(_fp);
+  }
   free();
 }
 
