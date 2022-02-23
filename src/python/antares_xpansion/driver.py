@@ -120,7 +120,10 @@ class XpansionDriver:
         self.sensitivity_driver.launch(
             self.config_loader.simulation_output_path(),
             self.config_loader.json_sensitivity_in_path(),
-            self.config_loader.json_sensitivity_out_path()
+            self.config_loader.json_file_path(),
+            self.config_loader.last_master_file_path(),
+            self.config_loader.structure_file_path(),
+            self.config_loader.json_sensitivity_out_path(),
         )
     class UnknownStep(Exception):
         pass

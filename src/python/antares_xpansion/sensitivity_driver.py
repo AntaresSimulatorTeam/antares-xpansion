@@ -18,13 +18,21 @@ class SensitivityDriver:
         self,
         simulation_output_path,
         json_sensitivity_in_path,
+        json_benders_output_path,
+        last_master_path,
+        structure_path,
         json_sensitivity_out_path,
     ):
         """
         launch sensitivity analysis
         """
-        self._set_simulation_output_path(simulation_output_path)
-        self._set_json_input_file_path(json_sensitivity_in_path)
+        self.simulation_output_path = self._get_simulation_output_path(
+            simulation_output_path
+        )
+        self.json_sensitivity_in_path = self._get_file_path(json_sensitivity_in_path)
+        self.json_benders_output_path = self._get_file_path(json_benders_output_path)
+        self.last_master_path = self._get_file_path(last_master_path)
+        self.structure_path = self._get_file_path(structure_path)
 
         self.json_sensitivity_out_path = json_sensitivity_out_path
 
@@ -35,7 +43,10 @@ class SensitivityDriver:
         flushed_print(f"Current directory is now {os.getcwd()}")
 
         returned_l = subprocess.run(
-            self._get_sensitivity_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr
+            self._get_sensitivity_cmd(),
+            shell=False,
+            stdout=sys.stdout,
+            stderr=sys.stderr,
         )
         if returned_l.returncode != 0:
             raise SensitivityDriver.SensitivityExeError(
@@ -44,27 +55,35 @@ class SensitivityDriver:
 
         os.chdir(old_cwd)
 
-    def _set_simulation_output_path(self, simulation_output_path: Path):
+    @staticmethod
+    def _get_file_path(filepath):
+        if Path(filepath).is_file():
+            return filepath
+        else:
+            raise SensitivityDriver.SensitivityFilePathError(
+                f"Sensitivity Error: {filepath} not found"
+            )
+
+    @staticmethod
+    def _get_simulation_output_path(simulation_output_path):
         if simulation_output_path.is_dir():
-            self.simulation_output_path = simulation_output_path
+            return simulation_output_path
         else:
             raise SensitivityDriver.SensitivityOutputPathError(
                 f"Sensitivity Error: {simulation_output_path} not found "
             )
 
-    def _set_json_input_file_path(self, json_sensitivity_in_path):
-        if Path(json_sensitivity_in_path).is_file():
-            self.json_sensitivity_in_path = json_sensitivity_in_path
-        else:
-            raise SensitivityDriver.SensitivityJsonFilePathError(
-                f"Sensitivity Error: {json_sensitivity_in_path} not found "
-            )
-
     def _get_sensitivity_cmd(self):
         return [
             self.sensitivity_exe,
-            "-j",
+            "-i",
             self.json_sensitivity_in_path,
+            "-b",
+            self.json_benders_output_path,
+            "-m",
+            self.last_master_path,
+            "-s",
+            self.structure_path,
             "-o",
             self.json_sensitivity_out_path,
         ]
@@ -72,7 +91,7 @@ class SensitivityDriver:
     class SensitivityOutputPathError(Exception):
         pass
 
-    class SensitivityJsonFilePathError(Exception):
+    class SensitivityFilePathError(Exception):
         pass
 
     class SensitivityExeError(Exception):

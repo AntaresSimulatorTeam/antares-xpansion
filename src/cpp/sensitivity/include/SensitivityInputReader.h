@@ -18,7 +18,7 @@ class SensitivityInputReader
 {
 public:
     SensitivityInputReader() = default;
-    explicit SensitivityInputReader(const std::string &json_input_path);
+    explicit SensitivityInputReader(const std::string &json_input_path, const std::string &benders_output_path, const std::string &last_master_path, const std::string &structure_path);
     ~SensitivityInputReader() = default;
 
     SensitivityInputData get_input_data();

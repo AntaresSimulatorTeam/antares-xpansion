@@ -10,12 +10,10 @@ const std::string EPSILON_C("epsilon");
 const std::string CAPEX_C("capex");
 const std::string PROJECTION_C("projection");
 
-SensitivityInputReader::SensitivityInputReader(const std::string &json_input_path)
+SensitivityInputReader::SensitivityInputReader(const std::string &json_input_path, const std::string &benders_output_path, const std::string &last_master_path, const std::string &structure_path): _last_master_path(last_master_path), _structure_file_path(structure_path)
 {
     _json_data = read_json(json_input_path);
-    _last_master_path = _json_data[LAST_MASTER_C].asString();
-    _structure_file_path = _json_data[STRUCTURE_C].asString();
-    _benders_data = read_json(_json_data[BENDERS_OUT_C].asString());
+    _benders_data = read_json(benders_output_path);
 }
 
 std::vector<std::string> SensitivityInputReader::get_projection()

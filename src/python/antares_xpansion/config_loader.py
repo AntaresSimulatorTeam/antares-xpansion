@@ -356,6 +356,12 @@ class ConfigLoader:
     
     def json_sensitivity_out_path(self):
         return os.path.join(self._sensitivity_dir(), self._config.JSON_SENSITIVITY_OUT)
+    
+    def structure_file_path(self):
+        return os.path.join(self.simulation_lp_path(), self._config.options_default["STRUCTURE_FILE"])  # Assumes that structure file is always the default, ok for now as the user cannot set it, but could it be dangerous if later we wish for some reasons modify its name to a non-default one
+
+    def last_master_file_path(self):
+        return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_iteration.mps") # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
 
     def oversubscribe(self):
         return self._config.oversubscribe
