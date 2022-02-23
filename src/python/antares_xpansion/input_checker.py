@@ -210,6 +210,7 @@ class MaxUnitsAndMaxInvestmentAreNullSimultaneously(Exception):
 #############################################
 
 def _check_candidate_attributes(ini_file):
+    # check attributes types and values
     for each_section in ini_file.sections():
         for (option, value) in ini_file.items(each_section):
             if not _check_candidate_option_type(option, value):
@@ -252,12 +253,10 @@ def _check_candidate_exclusive_attributes(ini_file):
         max_units = float(ini_file[each_section]['max-units'].strip())
         if max_invest != 0:
             if max_units != 0 or unit_size != 0:
-                flushed_print("Illegal values in section %s: cannot assign non-null values simultaneously \
-                      to max-investment and (unit-size or max_units)" % (each_section))
+                flushed_print(f"Illegal values in section {each_section}: cannot assign non-null values simultaneously to max-investment and (unit-size or max_units)" )
                 raise MaxUnitsAndMaxInvestmentNonNullSimultaneously
         elif max_units == 0 or unit_size == 0:
-            flushed_print("Illegal values in section %s: need to assign non-null values to max-investment \
-                  or (unit-size and max_units)" % (each_section))
+            flushed_print(f"Illegal values in section {each_section}: need to assign non-null values to max-investment or (unit-size and max_units)")
             raise MaxUnitsAndMaxInvestmentAreNullSimultaneously
 
 
@@ -321,17 +320,9 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
     ini_file = configparser.ConfigParser(default_values)
     ini_file.read(candidates_ini_filepath)
 
-    # check attributes types and values
     _check_candidate_attributes(ini_file)
-
-    # check that name is not empty and does not have space
-    # check that link is not empty
     _check_candidate_name_and_link(ini_file)
-
-    # check exclusion between max-investment and (max-units, unit-size) attributes
     _check_candidate_exclusive_attributes(ini_file)
-
-    # check attributes profile is 0, 1 or an existent filename
     _check_attributes_profile(
         ini_file, candidates_ini_filepath, capacity_dir_path)
 
