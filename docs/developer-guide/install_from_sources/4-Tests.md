@@ -16,6 +16,7 @@ All tests are associated to a label and multiple labels can be defined. You can 
 | `unit_launcher`  | `unit`  |Unit test Antares-Xpansion python launcher.|
 | `unit_solver`  | `unit`  |Unit test of multisolver interface(COIN only).|
 | `unit_lpnamer`  | `unit`  |Unit test of lpnamer.|
+| `unit_sensitivity`  | `unit`  |Unit test for sensitivity analysis.|
 | `examples_medium_sequential`  | `medium` `medium_sequential` |Non-parallel end-to-end tests with examples antares studies (medium duration).|
 | `examples_medium_mpi`  | `medium` `medium_mpi` |Parallel end-to-end tests with examples antares study (medium duration).|
 | `examples_long_sequential`  | `long` `long sequential`  |Non-parallel end-to-end tests with examples antares studies (long duration).|
