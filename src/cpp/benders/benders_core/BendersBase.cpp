@@ -546,7 +546,7 @@ std::string BendersBase::get_structure_path() const {
   return (Path(_options.INPUTROOT) / _options.STRUCTURE_FILE).get_str();
 }
 
-LogData BendersBase::bendersDataToLogData(const BendersData &data) {
+LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   LogData result;
   result.lb = data.lb;
   result.best_ub = data.best_ub;

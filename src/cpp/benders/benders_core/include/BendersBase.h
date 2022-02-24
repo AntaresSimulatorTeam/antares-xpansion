@@ -82,6 +82,6 @@ class BendersBase {
   double slave_weight(int nslaves, std::string const &name) const;
   std::string get_master_path() const;
   std::string get_structure_path() const;
-  LogData bendersDataToLogData(const BendersData &data);
+  LogData bendersDataToLogData(const BendersData &data) const;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;
