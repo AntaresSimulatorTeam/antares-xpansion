@@ -1,8 +1,9 @@
 #pragma once
 
-#include "multisolver_interface/SolverAbstract.h"
-#include <cstdio>
 #include <set>
+
+#include "multisolver_interface/SolverAbstract.h"
+
 enum class SOLVER_TYPE { INTEGER, CONTINUOUS };
 const std::string UNKNOWN_STR("UNKNOWN"), COIN_STR("COIN"), CBC_STR("CBC"),
     CLP_STR("CLP"), XPRESS_STR("XPRESS"), CPLEX_STR("CPLEX");
@@ -13,16 +14,16 @@ const std::string UNKNOWN_STR("UNKNOWN"), COIN_STR("COIN"), CBC_STR("CBC"),
  * implementations
  */
 class SolverFactory {
-private:
+ private:
   std::vector<std::string> _available_solvers;
 
-public:
+ public:
   /**
    * @brief Constructor of SolverFactory, fills the list of available solvers
    */
   SolverFactory();
 
-public:
+ public:
   /**
    * @brief Creates and returns to an object solver from the wanted
    * implementation

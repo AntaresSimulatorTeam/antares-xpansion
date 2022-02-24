@@ -25,16 +25,13 @@ SolverFactory::SolverFactory() {
 #endif
 }
 
-SolverAbstract::Ptr
-SolverFactory::create_solver(const std::string &solver_name,
-                             const SOLVER_TYPE solver_type) const {
+SolverAbstract::Ptr SolverFactory::create_solver(
+    const std::string &solver_name, const SOLVER_TYPE solver_type) const {
   return create_solver(solver_name, solver_type, "");
 }
-SolverAbstract::Ptr
-SolverFactory::create_solver(const std::string &solver_name,
-                             const SOLVER_TYPE solver_type,
-                             const std::string &log_name) const {
-
+SolverAbstract::Ptr SolverFactory::create_solver(
+    const std::string &solver_name, const SOLVER_TYPE solver_type,
+    const std::string &log_name) const {
 #ifdef COIN_OR
   if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS) {
     return std::make_shared<SolverClp>(log_name);
@@ -44,14 +41,12 @@ SolverFactory::create_solver(const std::string &solver_name,
 #endif
   return create_solver(solver_name, log_name);
 }
-SolverAbstract::Ptr
-SolverFactory::create_solver(const std::string &solver_name) const {
+SolverAbstract::Ptr SolverFactory::create_solver(
+    const std::string &solver_name) const {
   return create_solver(solver_name, "");
 }
-SolverAbstract::Ptr
-SolverFactory::create_solver(const std::string &solver_name,
-                             const std::string &log_name) const {
-
+SolverAbstract::Ptr SolverFactory::create_solver(
+    const std::string &solver_name, const std::string &log_name) const {
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name);
   }

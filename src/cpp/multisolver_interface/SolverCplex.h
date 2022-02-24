@@ -9,7 +9,6 @@
  * CPLEX
  */
 class SolverCplex : public SolverAbstract {
-
   /*************************************************************************************************
   ----------------------------------------    ATTRIBUTES
   ---------------------------------------
@@ -17,7 +16,7 @@ class SolverCplex : public SolverAbstract {
   static int
       _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                          declared to set or end the environment */
-public:
+ public:
   CPXENVptr _env; /*!< Ptr to the CPLEX environment */
   CPXLPptr _prb;  /*!< Ptr to the CPLEX problem */
 
@@ -25,7 +24,7 @@ public:
   -----------------------------------    Constructor/Desctructor
   --------------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
   * @brief Default constructor of a CPLEX solver, as a name is needed by CPLEX,
   the name is set to DefaultProblem_$(_NumberOfProblems+1)
@@ -62,7 +61,7 @@ public:
   ------    Destruction or creation of inner strctures and datas, closing
   environments    ----------
   *************************************************************************************************/
-public:
+ public:
   virtual void init() override;
   virtual void free() override;
 
@@ -70,7 +69,7 @@ public:
   -------------------------------    Reading & Writing problems
   -------------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual void write_prob_mps(const std::string &filename) override;
   virtual void write_prob_lp(const std::string &filename) override;
 
@@ -84,7 +83,7 @@ public:
   -----------------------    Get general informations about problem
   ----------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual int get_ncols() const override;
   virtual int get_nrows() const override;
   virtual int get_nelems() const override;
@@ -108,7 +107,7 @@ public:
   ------------------------------    Methods to modify problem
   ----------------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual void del_rows(int first, int last);
   virtual void add_rows(int newrows, int newnz, const char *qrtype,
                         const double *rhs, const double *range,
@@ -135,7 +134,7 @@ public:
   -----------------------------    Methods to solve the problem
   ---------------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual int solve_lp() override;
   virtual int solve_mip() override;
 
@@ -143,7 +142,7 @@ public:
   -------------------------    Methods to get solutions information
   -----------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
   * @brief Returns the current basis into the user’s data arrays.
   *
@@ -168,7 +167,7 @@ public:
   ------------------------    Methods to set algorithm or logs levels
   ---------------------------
   *************************************************************************************************/
-public:
+ public:
   virtual void set_output_log_level(int loglevel) override;
   virtual void set_algorithm(std::string const &algo) override;
   virtual void set_threads(int n_threads) override;

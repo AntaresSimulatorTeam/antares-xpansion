@@ -1,13 +1,14 @@
-#include "CandidateLog.h"
-#include "Commons.h"
-#include "IterationResultLog.h"
+#include "logger/UserFile.h"
+
 #include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include <list>
 #include <sstream>
 
-#include "logger/UserFile.h"
+#include "CandidateLog.h"
+#include "Commons.h"
+#include "IterationResultLog.h"
 
 namespace xpansion {
 namespace logger {
@@ -17,7 +18,6 @@ UserFile::UserFile(const std::string &filename) {
   if (_file.fail()) {
     std::cerr << "Invalid file name passed as parameter" << std::endl;
   }
-  // _userLog = std::unique_ptr<User>(new User(_file));
 }
 
 UserFile::~UserFile() { _file.close(); }
@@ -79,7 +79,6 @@ void UserFile::log_stop_criterion_reached(
         << " reached" << std::endl;
   _file.flush();
 }
-// FILE *UserFile::get_file_handler() { return _file._fp; }
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion

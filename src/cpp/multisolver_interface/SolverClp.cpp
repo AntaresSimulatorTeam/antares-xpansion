@@ -1,4 +1,5 @@
 #include "SolverClp.h"
+
 #include "COIN_common_functions.h"
 
 /*************************************************************************************************
@@ -43,7 +44,6 @@ SolverClp::SolverClp(const SolverAbstract::Ptr fictif) : SolverClp() {
 }
 
 SolverClp::~SolverClp() {
-
   _NumberOfProblems -= 1;
   if (_fp != NULL) {
     fclose(_fp);
@@ -115,7 +115,6 @@ int SolverClp::get_n_integer_vars() const {
 }
 
 void SolverClp::get_obj(double *obj, int first, int last) const {
-  const int nvars = get_ncols();
   double *internalObj = _clp.objective();
 
   for (int i = first; i < last + 1; i++) {
@@ -125,7 +124,6 @@ void SolverClp::get_obj(double *obj, int first, int last) const {
 
 void SolverClp::get_rows(int *mstart, int *mclind, double *dmatval, int size,
                          int *nels, int first, int last) const {
-
   CoinPackedMatrix matrix = *_clp.matrix();
   matrix.reverseOrdering();
   coin_common::fill_rows_from_COIN_matrix(matrix, mstart, mclind, dmatval, nels,
@@ -153,7 +151,6 @@ void SolverClp::get_rhs_range(double *range, int first, int last) const {
 }
 
 void SolverClp::get_col_type(char *coltype, int first, int last) const {
-
   const double *colLower = _clp.getColLower();
   const double *colUpper = _clp.getColUpper();
 
@@ -247,7 +244,6 @@ void SolverClp::add_rows(int newrows, int newnz, const char *qrtype,
                          const double *rhs, const double *range,
                          const int *mstart, const int *mclind,
                          const double *dmatval) {
-
   std::vector<double> rowLower(newrows);
   std::vector<double> rowUpper(newrows);
   coin_common::fill_row_bounds_from_new_rows_data(rowLower, rowUpper, newrows,
@@ -261,7 +257,6 @@ void SolverClp::add_cols(int newcol, int newnz, const double *objx,
                          const int *mstart, const int *mrwind,
                          const double *dmatval, const double *bdl,
                          const double *bdu) {
-
   std::vector<int> colStart(newcol + 1);
   for (int i(0); i < newcol; i++) {
     colStart[i] = mstart[i];
@@ -312,19 +307,19 @@ void SolverClp::chg_col_type(const std::vector<int> &mindex,
 
   for (int i = 0; i < mindex.size(); i++) {
     switch (qctype[i]) {
-    case 'C':
-      _clp.setContinuous(mindex[i]);
-      break;
-    case 'B':
-      _clp.setInteger(mindex[i]);
-      bnd_index[0] = mindex[i];
-      chg_bounds(bnd_index, bnd_type, bnd_val);
-      break;
-    case 'I':
-      _clp.setInteger(mindex[i]);
-      break;
-    default:
-      throw InvalidColTypeException(qctype[i]);
+      case 'C':
+        _clp.setContinuous(mindex[i]);
+        break;
+      case 'B':
+        _clp.setInteger(mindex[i]);
+        bnd_index[0] = mindex[i];
+        chg_bounds(bnd_index, bnd_type, bnd_val);
+        break;
+      case 'I':
+        _clp.setInteger(mindex[i]);
+        break;
+      default:
+        throw InvalidColTypeException(qctype[i]);
     }
   }
 }
@@ -354,7 +349,6 @@ void SolverClp::chg_rhs(int id_row, double val) {
 }
 
 void SolverClp::chg_coef(int id_row, int id_col, double val) {
-
   CoinPackedMatrix *matrix = _clp.matrix();
   matrix->modifyCoefficient(id_row, id_col, val);
 }

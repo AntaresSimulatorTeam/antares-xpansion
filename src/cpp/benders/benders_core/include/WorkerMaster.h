@@ -10,7 +10,7 @@ class WorkerMaster;
 typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 
 class WorkerMaster : public Worker {
-public:
+ public:
   WorkerMaster();
   WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps,
                const std::string &solver_name, const int log_level, int nslaves,
@@ -31,7 +31,7 @@ public:
   void delete_constraint(int const nrows) const;
   void fix_alpha(double const &bestUB) const;
 
-private:
+ private:
   std::vector<int> _id_alpha_i;
   int _id_alpha = 0;
   int _nslaves;

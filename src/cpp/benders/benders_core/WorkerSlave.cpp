@@ -15,7 +15,6 @@ WorkerSlave::WorkerSlave(Str2Int const &variable_map,
                          double const &slave_weight,
                          const std::string &solver_name, const int log_level,
                          const std::string &log_name) {
-
   init(variable_map, path_to_mps, solver_name, log_level, log_name);
 
   int mps_ncols(_solver->get_ncols());

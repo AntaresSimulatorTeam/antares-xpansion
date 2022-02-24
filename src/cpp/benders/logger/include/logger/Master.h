@@ -5,50 +5,49 @@
 #ifndef ANTARESXPANSION_MASTER_H
 #define ANTARESXPANSION_MASTER_H
 
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <list>
 #include <memory>
 
 #include "core/ILogger.h"
 
-namespace xpansion{
+namespace xpansion {
 namespace logger {
 
-    class Master : public ILogger {
+class Master : public ILogger {
+ public:
+  Master() = default;
+  ~Master() = default;
 
-    public:
+  void addLogger(const std::shared_ptr<ILogger> &logger) {
+    _loggers.push_back(logger);
+  }
 
-        Master() = default;
-        ~Master()= default;
+  void display_message(const std::string &str) override;
 
-        void addLogger(const std::shared_ptr<ILogger>& logger) {_loggers.push_back(logger);}
+  void log_at_initialization(const LogData &d) override;
 
-        void display_message(const std::string& str) override;
+  void log_iteration_candidates(const LogData &d) override;
 
-        void log_at_initialization(const LogData &d) override;
+  void log_master_solving_duration(double durationInSeconds) override;
 
-        void log_iteration_candidates(const LogData &d) override;
+  void log_subproblems_solving_duration(double durationInSeconds) override;
 
-        void log_master_solving_duration(double durationInSeconds) override;
+  void log_at_iteration_end(const LogData &d) override;
 
-        void log_subproblems_solving_duration(double durationInSeconds) override;
+  void log_at_ending(const LogData &d) override;
 
-        void log_at_iteration_end(const LogData &d) override;
+  void log_total_duration(double durationInSeconds) override;
 
-        void log_at_ending(const LogData &d) override;
+  void log_stop_criterion_reached(
+      const StoppingCriterion stopping_criterion) override;
 
-        void log_total_duration(double durationInSeconds) override;
+ private:
+  std::list<std::shared_ptr<ILogger>> _loggers;
+};
 
-        void log_stop_criterion_reached(const StoppingCriterion stopping_criterion) override;
+}  // namespace logger
+}  // namespace xpansion
 
-    private:
-
-        std::list<std::shared_ptr<ILogger>> _loggers;
-
-    };
-
-} // namespace logger
-} // namespace xpansion
-
-#endif //ANTARESXPANSION_MASTER_H
+#endif  // ANTARESXPANSION_MASTER_H

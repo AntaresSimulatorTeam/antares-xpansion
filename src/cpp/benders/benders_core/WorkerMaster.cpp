@@ -1,7 +1,6 @@
-#include "glog/logging.h"
-
 #include "WorkerMaster.h"
 
+#include "glog/logging.h"
 #include "solver_utils.h"
 
 WorkerMaster::WorkerMaster() { _is_master = true; }

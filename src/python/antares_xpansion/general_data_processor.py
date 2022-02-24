@@ -68,10 +68,6 @@ class GeneralDataProcessor:
                 (optimization, 'include-tc-minstablepower'): 'true' if self.is_accurate else 'false',
                 (optimization, 'include-tc-min-ud-time'): 'true' if self.is_accurate else 'false',
                 (optimization, 'include-dayahead'): 'true' if self.is_accurate else 'false',
-                (optimization, 'include-usexprs'): None,
-                (optimization, 'include-inbasis'): None,
-                (optimization, 'include-outbasis'): None,
-                (optimization, 'include-trace'): None,
                 ('[general]', 'mode'): 'expansion' if self.is_accurate else 'Economy',
                 (
                     '[other preferences]',

@@ -20,7 +20,7 @@ inline std::string create_str_euros(double val) {
   result << std::scientific << std::setprecision(5) << val;
   return result.str();
 }
-} // namespace commons
-} // namespace logger
-} // namespace xpansion
-#endif // ANTARESXPANSION_COMMONS_H
+}  // namespace commons
+}  // namespace logger
+}  // namespace xpansion
+#endif  // ANTARESXPANSION_COMMONS_H

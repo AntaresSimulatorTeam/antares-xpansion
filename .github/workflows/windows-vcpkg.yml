@@ -9,10 +9,41 @@ on:
       - feature/*
       - fix/*
       - release/*
+      - test/*
+
 jobs:
+
+  userguide:
+    runs-on: ubuntu-latest
+    outputs:
+      pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_xpansion_version'
+
+      - id: create-user-guide
+        name: user guide pdf creation
+        uses: ./.github/workflows/generate-userguide-pdf
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+
+      - name: user guide upload
+        id : userguide_upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: user-guide
+          path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
   windows:
 
+    needs: userguide
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
@@ -20,7 +51,8 @@ jobs:
         os: [windows-latest]
         buildtype: [release]
         triplet: [x64-windows]
-        
+
+
     env:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
@@ -103,11 +135,17 @@ jobs:
         antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
         antares-version: ${{steps.antares-version.outputs.prop}}
         os: ${{matrix.os}}
+
+    - name: Download userguide
+      uses: actions/download-artifact@v2
+      with:
+        name: user-guide
+        path: docs/
         
     - name: Configure
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
     
     - name: Build
       run: |
@@ -119,12 +157,16 @@ jobs:
            set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
            cd _build
            ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
-    
+
     - name: Installer .zip creation
+      shell: bash
       run: |
-           cd _build
-           cpack -G ZIP
-           
+        cd _build
+        cpack -G ZIP
+        export ZIP_NAME=$(ls *.zip)
+        echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+
+
     - id: create-single-file
       name: Single file .zip creation
       uses: ./.github/workflows/single-file-creation-zip

@@ -1,25 +1,24 @@
+#include <cstdio>
+#include <iostream>
 #include <ostream>
-
-#include "gtest/gtest.h"
+#include <sstream>
 
 #include "core/ILogger.h"
+#include "gtest/gtest.h"
 #include "logger/Master.h"
 #include "logger/User.h"
 #include "logger/UserFile.h"
-#include <cstdio>
-#include <iostream>
-#include <sstream>
 
 using namespace xpansion::logger;
 
-void addCandidate(LogData &logData, std::string candidate, double invest,
+void addCandidate(LogData& logData, std::string candidate, double invest,
                   double minInvest, double maxInvest) {
   logData.x0[candidate] = invest;
   logData.min_invest[candidate] = minInvest;
   logData.max_invest[candidate] = maxInvest;
 }
 class FileLoggerTest : public ::testing::Test {
-public:
+ public:
   void SetUp() { _fileName = std::tmpnam(nullptr); }
 
   void TearDown() { std::remove(_fileName.c_str()); }
@@ -28,11 +27,10 @@ public:
 };
 
 TEST_F(FileLoggerTest, InvalidFileNotified) {
-
-  const std::string &expectedErrorString =
+  const std::string& expectedErrorString =
       "Invalid file name passed as parameter";
   std::stringstream redirectedErrorStream;
-  std::streambuf *initialBufferCerr =
+  std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
 
   UserFile userFileLogger("");
@@ -95,8 +93,7 @@ TEST_F(FileLoggerTest, ShouldHavePrefixOnEveryLine) {
   fileStream.close();
 }
 class UserLoggerTest : public ::testing::Test {
-
-public:
+ public:
   const std::string indent_0 = "\t\t";
   const std::string indent_1 = "\t";
 
@@ -111,12 +108,11 @@ TEST_F(UserLoggerTest, EmptyStreamAtInit) {
 }
 
 TEST_F(UserLoggerTest, InvalidStreamNotified) {
-
   const std::string expectedErrorString =
       "Invalid stream passed as parameter\n";
 
   std::stringstream redirectedErrorStream;
-  std::streambuf *initialBufferCerr =
+  std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
   std::ofstream invalidStream("");
 
@@ -382,7 +378,7 @@ TEST_F(UserLoggerTest, LogTotalDuration) {
 }
 
 class SimpleLoggerMock : public ILogger {
-public:
+ public:
   SimpleLoggerMock() {
     _initCall = false;
     _iterationStartCall = false;
@@ -396,11 +392,11 @@ public:
     _durationTotal = 0.0;
   }
 
-  void display_message(const std::string &str) { _displaymessage = str; }
+  void display_message(const std::string& str) { _displaymessage = str; }
 
-  void log_at_initialization(const LogData &d) override { _initCall = true; }
+  void log_at_initialization(const LogData& d) override { _initCall = true; }
 
-  void log_iteration_candidates(const LogData &d) override {
+  void log_iteration_candidates(const LogData& d) override {
     _iterationStartCall = true;
   }
 
@@ -412,11 +408,11 @@ public:
     _durationSubproblem = durationInSeconds;
   }
 
-  void log_at_iteration_end(const LogData &d) override {
+  void log_at_iteration_end(const LogData& d) override {
     _iterationEndCall = true;
   }
 
-  void log_at_ending(const LogData &d) override { _endingCall = true; }
+  void log_at_ending(const LogData& d) override { _endingCall = true; }
   void log_total_duration(double durationInSeconds) {
     _durationTotal = durationInSeconds;
   }
@@ -440,7 +436,7 @@ public:
 };
 
 class MasterLoggerTest : public ::testing::Test {
-public:
+ public:
   MasterLoggerTest() {
     _logger = std::make_shared<SimpleLoggerMock>();
     _logger2 = std::make_shared<SimpleLoggerMock>();

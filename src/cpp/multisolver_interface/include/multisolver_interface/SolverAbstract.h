@@ -9,14 +9,14 @@
 #include <string>
 #include <vector>
 class InvalidStatusException : public std::runtime_error {
-public:
+ public:
   InvalidStatusException(int status, const std::string &action)
       : std::runtime_error("Failed to " + action + ": invalid status " +
                            std::to_string(status) + " (0 expected)") {}
 };
 
 class InvalidRowSizeException : public std::runtime_error {
-public:
+ public:
   InvalidRowSizeException(int expected_size, int actual_size)
       : std::runtime_error("Invalid row size for solver. " +
                            std::to_string(actual_size) + " rows available (" +
@@ -24,7 +24,7 @@ public:
 };
 
 class InvalidColSizeException : public std::runtime_error {
-public:
+ public:
   InvalidColSizeException(int expected_size, int actual_size)
       : std::runtime_error("Invalid col size for solver. " +
                            std::to_string(actual_size) + " cols available (" +
@@ -32,27 +32,27 @@ public:
 };
 
 class InvalidBoundTypeException : public std::runtime_error {
-public:
+ public:
   InvalidBoundTypeException(char qbtype)
       : std::runtime_error(std::string("Invalid bound type ") + qbtype +
                            std::string(" for solver.")) {}
 };
 
 class InvalidColTypeException : public std::runtime_error {
-public:
+ public:
   InvalidColTypeException(char qctype)
       : std::runtime_error(std::string("Invalid col type ") + qctype +
                            std::string(" for solver.")) {}
 };
 
 class InvalidSolverOptionException : public std::runtime_error {
-public:
+ public:
   InvalidSolverOptionException(const std::string &option)
       : std::runtime_error("Invalid option '" + option + "' for solver.") {}
 };
 
 class InvalidSolverForCopyException : public std::runtime_error {
-public:
+ public:
   InvalidSolverForCopyException(const std::string &from_solver,
                                 const std::string &to_solver)
       : std::runtime_error("Can't copy " + from_solver + "solver from " +
@@ -60,18 +60,18 @@ public:
 };
 
 class InvalidSolverNameException : public std::runtime_error {
-public:
+ public:
   InvalidSolverNameException(const std::string &solver_name)
       : std::runtime_error("Solver '" + solver_name + "' not supported") {}
 };
 class GenericSolverException : public std::runtime_error {
-public:
+ public:
   GenericSolverException(const std::string &message)
       : std::runtime_error(message) {}
 };
 
 class NotImplementedFeatureSolverException : public std::runtime_error {
-public:
+ public:
   NotImplementedFeatureSolverException(const std::string &message)
       : std::runtime_error(message) {}
 };
@@ -90,8 +90,7 @@ enum SOLVER_STATUS {
  * \brief Virtual class to implement solvers methods
  */
 class SolverAbstract {
-
-public:
+ public:
   std::vector<std::string> SOLVER_STRING_STATUS = {
       "OPTIMAL", "INFEASIBLE", "UNBOUNDED", "INForUNBOUND", "UNKNOWN"};
 
@@ -99,7 +98,7 @@ public:
   ----------------------------------------    ATTRIBUTES
   ---------------------------------------
   *************************************************************************************************/
-public:
+ public:
   std::string _name;                           /*!< Name of the problem */
   typedef std::shared_ptr<SolverAbstract> Ptr; /*!< Ptr to the solver */
   std::list<std::ostream *>
@@ -109,7 +108,7 @@ public:
   -----------------------------------    Constructor/Desctructor
   --------------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief constructor of SolverAbstract class : does nothing
    */
@@ -144,7 +143,7 @@ public:
   -----------------------------------    Output stream management
   ------------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief returns the list of streams used by the solver instance
    */
@@ -176,7 +175,7 @@ public:
   ------    Destruction or creation of inner strctures and datas, closing
   environments    ----------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief Initializes a problem
    */
@@ -191,7 +190,7 @@ public:
   -------------------------------    Reading & Writing problems
   -------------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief writes an optimization problem in a MPS file
    *
@@ -231,7 +230,7 @@ public:
   -----------------------    Get general informations about problem
   ----------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief returns number of columns of the problem
    */
@@ -377,7 +376,7 @@ public:
   ------------------------------    Methods to modify problem
   ----------------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief Deletes rows between index first and last
    *
@@ -512,7 +511,7 @@ public:
   -----------------------------    Methods to solve the problem
   ---------------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief Solves a problem as LP
    *
@@ -531,7 +530,7 @@ public:
   -------------------------    Methods to get solutions information
   -----------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
   * @brief Returns the current basis into the user’s data arrays.
   *
@@ -591,7 +590,7 @@ public:
   ------------------------    Methods to set algorithm or logs levels
   ---------------------------
   *************************************************************************************************/
-public:
+ public:
   /**
    * @brief Sets log level of the solver
    *

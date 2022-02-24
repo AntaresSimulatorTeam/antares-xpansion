@@ -1,3 +1,5 @@
+#include "CandidateLog.h"
+
 #include <algorithm>
 #include <iomanip>
 #include <list>
@@ -58,7 +60,7 @@ inline std::string CandidateLog::get_formatted_string_from_value(double val) {
 }
 
 void CandidateLog::updateMaximumSizes(
-    value_map &valuesMap) { // Compute maximum string size
+    value_map &valuesMap) {  // Compute maximum string size
   for (const auto &it : valuesMap) {
     const std::string &key = it.first;
     _sizes[key] = std::max<int>(it.second.length(), _sizes[key]);
@@ -86,5 +88,5 @@ inline std::string CandidateLog::create_candidate_str(const value_map &value) {
   return result.str();
 }
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion

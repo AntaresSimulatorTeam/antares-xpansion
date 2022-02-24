@@ -1,10 +1,10 @@
 
+#include "BendersMPI.h"
+
 #include <algorithm>
 
-#include "glog/logging.h"
-
-#include "BendersMPI.h"
 #include "Timer.h"
+#include "glog/logging.h"
 
 #define __DEBUG_BENDERS_MPI__ 0
 
@@ -51,7 +51,6 @@ void BendersMpi::load() {
 
 void BendersMpi::update_real_problem_list(
     std::vector<CouplingMap::const_iterator> &real_problem_list) {
-
   if (_world.rank() == 0) {
     _data.nslaves = _options.SLAVE_NUMBER;
     if (_data.nslaves < 0) {
@@ -89,7 +88,6 @@ void BendersMpi::update_real_problem_list(
  *  \param _world : communicator variable for mpi communication
  */
 void BendersMpi::step_1_solve_master() {
-
   int success = 1;
   try {
     do_solve_master_create_trace_and_update_cuts(_world.rank());
@@ -170,7 +168,6 @@ SlaveCutPackage BendersMpi::get_slave_package() {
 }
 
 void BendersMpi::master_build_cuts(AllCutPackage all_package) {
-
   _data.slave_cost = 0;
   for (auto const &pack : all_package) {
     for (auto &dataVal : pack) {
@@ -232,8 +229,7 @@ void BendersMpi::free() {
   if (_world.rank() == 0)
     _master->free();
   else {
-    for (auto &ptr : _map_slaves)
-      ptr.second->free();
+    for (auto &ptr : _map_slaves) ptr.second->free();
   }
   _world.barrier();
 }

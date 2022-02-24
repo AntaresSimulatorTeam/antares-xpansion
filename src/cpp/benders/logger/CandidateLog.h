@@ -1,9 +1,10 @@
 #ifndef ANTARESXPANSION_CANDIDATELOG_H
 #define ANTARESXPANSION_CANDIDATELOG_H
-#include "core/ILogger.h"
 #include <list>
 #include <map>
 #include <string>
+
+#include "core/ILogger.h"
 
 namespace xpansion {
 namespace logger {
@@ -11,12 +12,12 @@ typedef std::map<std::string, std::string> value_map;
 typedef std::map<std::string, int> size_map;
 
 class CandidateLog {
-public:
+ public:
   CandidateLog() = default;
   CandidateLog(const std::string &line_prefix);
   std::string log_iteration_candidates(const LogData &_data);
 
-private:
+ private:
   const std::string indent_0 = "\t\t";
   const std::string indent_1 = "\t";
 
@@ -38,7 +39,7 @@ private:
   std::string create_candidate_str(const value_map &value);
 };
 
-} // namespace logger
-} // namespace xpansion
+}  // namespace logger
+}  // namespace xpansion
 
-#endif // ANTARESXPANSION_CANDIDATELOG_H
+#endif  // ANTARESXPANSION_CANDIDATELOG_H

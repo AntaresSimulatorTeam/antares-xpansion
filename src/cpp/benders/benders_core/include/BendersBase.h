@@ -9,11 +9,9 @@
 #include "WorkerTrace.h"
 #include "common.h"
 #include "core/ILogger.h"
-#include <cstdio>
 
 class BendersBase {
-
-public:
+ public:
   virtual ~BendersBase() = default;
   BendersBase(BendersBaseOptions const &options, Logger &logger, Writer writer);
 
@@ -33,7 +31,7 @@ public:
 
   virtual void launch() = 0;
 
-protected:
+ protected:
   virtual void free() = 0;
   virtual void run() = 0;
 
@@ -41,7 +39,7 @@ protected:
   CouplingMap _input;
   int _nbWeeks = 0;
 
-public:
+ public:
   void init_data();
 
   void print_csv();
@@ -66,8 +64,8 @@ public:
   void post_run_actions() const;
   Output::IterationsData output_data() const;
   Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
-  Output::CandidatesVec
-  candidates_data(const WorkerMasterDataPtr &masterDataPtr_l) const;
+  Output::CandidatesVec candidates_data(
+      const WorkerMasterDataPtr &masterDataPtr_l) const;
   Output::SolutionData solution() const;
   std::string status_from_criterion() const;
 

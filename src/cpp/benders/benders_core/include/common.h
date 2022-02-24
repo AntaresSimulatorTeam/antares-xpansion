@@ -1,24 +1,25 @@
 #pragma once
 
 #ifdef _MSC_VER
-#pragma warning(disable : 4267) // implicit conversion, possible loss of data
+#pragma warning(disable : 4267)  // implicit conversion, possible loss of data
 #endif
 
-#include <tuple>
-#include <sstream>
+#include <algorithm>
+#include <cmath>
 #include <fstream>
-#include <iostream>
 #include <iomanip>
-#include <string>
+#include <iostream>
 #include <limits>
-#include <vector>
 #include <list>
 #include <map>
-#include <set>
 #include <memory>
-#include <algorithm>
+#include <set>
+#include <sstream>
+#include <string>
 #include <thread>
-#include <cmath>
+#include <tuple>
+#include <vector>
+
 #include "core/ILogger.h"
 // MultiSolver interface
 #include "multisolver_interface/Solver.h"
@@ -47,49 +48,36 @@ typedef std::vector<ActiveCut> ActiveCutStorage;
 typedef std::pair<std::string, std::string> mps_coupling;
 typedef std::list<mps_coupling> mps_coupling_list;
 
-struct Predicate
-{
-	bool operator()(PointPtr const &lhs, PointPtr const &rhs) const
-	{
-		return *lhs < *rhs;
-	}
-	bool operator()(Point const &lhs, Point const &rhs) const
-	{
-		Point::const_iterator it1(lhs.begin());
-		Point::const_iterator it2(rhs.begin());
+struct Predicate {
+  bool operator()(PointPtr const &lhs, PointPtr const &rhs) const {
+    return *lhs < *rhs;
+  }
+  bool operator()(Point const &lhs, Point const &rhs) const {
+    Point::const_iterator it1(lhs.begin());
+    Point::const_iterator it2(rhs.begin());
 
-		Point::const_iterator end1(lhs.end());
-		Point::const_iterator end2(rhs.end());
+    Point::const_iterator end1(lhs.end());
+    Point::const_iterator end2(rhs.end());
 
-		while (it1 != end1 && it2 != end2)
-		{
-			if (it1->first != it2->first)
-			{
-				return it1->first < it2->first;
-			}
-			else
-			{
-				if (std::fabs(it1->second - it2->second) < EPSILON_PREDICATE)
-				{
-					++it1;
-					++it2;
-				}
-				else
-				{
-					return it1->second < it2->second;
-				}
-			}
-		}
+    while (it1 != end1 && it2 != end2) {
+      if (it1->first != it2->first) {
+        return it1->first < it2->first;
+      } else {
+        if (std::fabs(it1->second - it2->second) < EPSILON_PREDICATE) {
+          ++it1;
+          ++it2;
+        } else {
+          return it1->second < it2->second;
+        }
+      }
+    }
 
-		if (it1 == end1 && it2 == end2)
-		{
-			return false;
-		}
-		else
-		{
-			return (it1 == end1);
-		}
-	}
+    if (it1 == end1 && it2 == end2) {
+      return false;
+    } else {
+      return (it1 == end1);
+    }
+  }
 };
 
 /*!
@@ -99,69 +87,61 @@ struct Predicate
  *
  *  \param rhs : point
  */
-inline std::ostream &operator<<(std::ostream &stream, Point const &rhs)
-{
-	for (auto const &kvp : rhs)
-	{
-		if (kvp.second > 0)
-		{
-			if (kvp.second == 1)
-			{
-				stream << "+";
-				stream << kvp.first;
-			}
-			else
-			{
-				stream << "+";
-				stream << kvp.second;
-				stream << kvp.first;
-			}
-		}
-		else if (kvp.second < 0)
-		{
-			stream << kvp.second;
-			stream << kvp.first;
-		}
-	}
-	return stream;
+inline std::ostream &operator<<(std::ostream &stream, Point const &rhs) {
+  for (auto const &kvp : rhs) {
+    if (kvp.second > 0) {
+      if (kvp.second == 1) {
+        stream << "+";
+        stream << kvp.first;
+      } else {
+        stream << "+";
+        stream << kvp.second;
+        stream << kvp.first;
+      }
+    } else if (kvp.second < 0) {
+      stream << kvp.second;
+      stream << kvp.first;
+    }
+  }
+  return stream;
 }
 
 /*!
  * \struct BendersData
  * \brief Structure used to manage every benders data
  */
-struct BendersData
-{
-	int nbasis;
-	double timer_slaves;
-	double timer_master;
-	double lb;
-	double ub;
-	double best_ub;
-	int maxsimplexiter;
-	int minsimplexiter;
-	int deletedcut;
-	int it;
-	bool stop;
-	double alpha;
-	std::vector<double> alpha_i;
-	double slave_cost;
-	double invest_cost;
-	int best_it;
-	Point bestx;
-	Point x0;
-	Point min_invest;
-	Point max_invest;
-	int nslaves;
-	double dnslaves;
-	int master_status;
-	double elapsed_time;
-	StoppingCriterion stopping_criterion;
+struct BendersData {
+  int nbasis;
+  double timer_slaves;
+  double timer_master;
+  double lb;
+  double ub;
+  double best_ub;
+  int maxsimplexiter;
+  int minsimplexiter;
+  int deletedcut;
+  int it;
+  bool stop;
+  double alpha;
+  std::vector<double> alpha_i;
+  double slave_cost;
+  double invest_cost;
+  int best_it;
+  Point bestx;
+  Point x0;
+  Point min_invest;
+  Point max_invest;
+  int nslaves;
+  double dnslaves;
+  int master_status;
+  double elapsed_time;
+  StoppingCriterion stopping_criterion;
 };
 
 double norm_point(Point const &x0, Point const &x1);
 
-std::ostream &operator<<(std::ostream &stream, std::vector<IntVector> const &rhs);
+std::ostream &operator<<(std::ostream &stream,
+                         std::vector<IntVector> const &rhs);
 
 LogData bendersDataToLogData(const BendersData &data);
 
@@ -169,43 +149,42 @@ const std::string SLAVE_WEIGHT_CST_STR("CONSTANT");
 const std::string SLAVE_WEIGHT_UNIFORM_CST_STR("UNIFORM");
 const std::string WEIGHT_SUM_CST_STR("WEIGHT_SUM");
 const std::string MPS_SUFFIX = ".mps";
-const std::string OUTPUT_MASTER_MPS_FILE_NAME = "master_last_iteration" + MPS_SUFFIX;
+const std::string OUTPUT_MASTER_MPS_FILE_NAME =
+    "master_last_iteration" + MPS_SUFFIX;
 
-struct BaseOptions
-{
-	std::string OUTPUTROOT;
-	std::string INPUTROOT;
-	std::string STRUCTURE_FILE;
-	std::string MASTER_NAME;
-	std::string SOLVER_NAME;
-	std::string SLAVE_WEIGHT;
+struct BaseOptions {
+  std::string OUTPUTROOT;
+  std::string INPUTROOT;
+  std::string STRUCTURE_FILE;
+  std::string MASTER_NAME;
+  std::string SOLVER_NAME;
+  std::string SLAVE_WEIGHT;
 
-	int SLAVE_NUMBER;
-	int LOG_LEVEL;
+  int SLAVE_NUMBER;
+  int LOG_LEVEL;
 
-	double SLAVE_WEIGHT_VALUE;
+  double SLAVE_WEIGHT_VALUE;
 
-	Str2Dbl weights;
+  Str2Dbl weights;
 };
 typedef BaseOptions MergeMPSOptions;
-struct BendersBaseOptions : public BaseOptions
-{
-	explicit BendersBaseOptions(const BaseOptions &base_to_copy) : BaseOptions(base_to_copy)
-	{
-	}
+struct BendersBaseOptions : public BaseOptions {
+  explicit BendersBaseOptions(const BaseOptions &base_to_copy)
+      : BaseOptions(base_to_copy) {}
 
-	int MAX_ITERATIONS;
+  int MAX_ITERATIONS;
 
-	double ABSOLUTE_GAP;
-	double RELATIVE_GAP;
-	double TIME_LIMIT;
+  double ABSOLUTE_GAP;
+  double RELATIVE_GAP;
+  double TIME_LIMIT;
 
-	bool AGGREGATION;
-	bool TRACE;
-	bool BOUND_ALPHA;
+  bool AGGREGATION;
+  bool TRACE;
+  bool BOUND_ALPHA;
 
-	std::string CSV_NAME;
+  std::string CSV_NAME;
 };
 
 void usage(int argc);
-CouplingMap build_input(const std::string &structure_path, const int slave_number, const std::string &master_name);
+CouplingMap build_input(const std::string &structure_path,
+                        const int slave_number, const std::string &master_name);
