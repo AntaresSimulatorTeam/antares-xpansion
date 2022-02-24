@@ -40,4 +40,13 @@ void VoidWriter::initialize() {
 void VoidWriter::end_writing(const IterationsData &iterations_data) {
   // keep this method empty
 }
+void VoidWriter::write_solver_name(const std::string &solver_name) {
+  // keep this method empty
+}
+void VoidWriter::write_master_name(const std::string &master_name) {
+  // keep this method empty
+}
+void VoidWriter::write_log_level(const int log_level) {
+  // keep this method empty
+}
 }  // namespace Output

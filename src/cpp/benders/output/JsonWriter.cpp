@@ -139,4 +139,14 @@ void JsonWriter::end_writing(const IterationsData &iterations_data) {
   write_iterations(iterations_data);
   dump();
 }
+
+void JsonWriter::write_solver_name(const std::string &solver_name) {
+  _output[OPTIONS_C][SOLVER_NAME_C] = solver_name;
+}
+void JsonWriter::write_master_name(const std::string &master_name) {
+  _output[OPTIONS_C][MASTER_NAME_C] = master_name;
+}
+void JsonWriter::write_log_level(const int log_level) {
+  _output[OPTIONS_C][LOG_LEVEL_C] = log_level;
+}
 }  // namespace Output

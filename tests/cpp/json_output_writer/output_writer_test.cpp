@@ -139,6 +139,12 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData) {
   iterations_data.iters = itersVec;
   iterations_data.solution_data = solution_data;
 
+  const int expected_log_level = 1;
+  const std::string expected_master_name = "Name";
+  const std::string expected_solver_name = "Solver";
+  writer.write_log_level(expected_log_level);
+  writer.write_master_name(expected_master_name);
+  writer.write_solver_name(expected_solver_name);
   writer.end_writing(iterations_data);
 
   Json::Value json_content = get_value_from_json(_fileName);
@@ -184,6 +190,11 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData) {
             json_content[SOLUTION_C][PROBLEM_STATUS_C].asString());
   ASSERT_EQ(solution_data.stopping_criterion,
             json_content[SOLUTION_C][STOPPING_CRITERION_C].asString());
+  ASSERT_EQ(expected_log_level, json_content[OPTIONS_C][LOG_LEVEL_C].asInt());
+  ASSERT_EQ(expected_master_name,
+            json_content[OPTIONS_C][MASTER_NAME_C].asString());
+  ASSERT_EQ(expected_solver_name,
+            json_content[OPTIONS_C][SOLVER_NAME_C].asString());
 }
 time_t time_from_date(int year, int month, int day, int hour, int min,
                       int sec) {
