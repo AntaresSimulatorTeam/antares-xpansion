@@ -71,7 +71,7 @@ class SolverXpress : public SolverAbstract {
   virtual void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 
  private:
-  virtual void read_prob(const char *prob_name, const char *flags) override;
+  virtual void read_prob(const char *prob_name, const char *flags);
 
   /*************************************************************************************************
   -----------------------    Get general informations about problem
