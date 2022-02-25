@@ -20,8 +20,6 @@ SolverClp::SolverClp(const std::string &log_file) : SolverClp() {
   }
 }
 SolverClp::SolverClp() {
-  int status = 0;
-
   _NumberOfProblems += 1;
   _clp = NULL;
 }

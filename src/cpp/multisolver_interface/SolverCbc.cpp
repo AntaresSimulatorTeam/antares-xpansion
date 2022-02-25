@@ -20,8 +20,6 @@ SolverCbc::SolverCbc(const std::string &log_file) : SolverCbc() {
   }
 }
 SolverCbc::SolverCbc() {
-  int status = 0;
-
   _NumberOfProblems += 1;
   _current_log_level = 0;
 }
@@ -192,7 +190,6 @@ int SolverCbc::get_n_integer_vars() const {
 }
 
 void SolverCbc::get_obj(double *obj, int first, int last) const {
-  const int nvars = get_ncols();
   const double *internalObj = _clp_inner_solver.getObjCoefficients();
 
   for (int i = first; i < last + 1; i++) {
@@ -442,10 +439,6 @@ void SolverCbc::chg_rhs(int id_row, double val) {
 void SolverCbc::chg_coef(int id_row, int id_col, double val) {
   // Very tricky method by method "modifyCoefficient" of OsiClp does not work
   CoinPackedMatrix matrix = *_clp_inner_solver.getMatrixByRow();
-  const int *column = matrix.getIndices();
-  const int *rowLength = matrix.getVectorLengths();
-  const CoinBigIndex *rowStart = matrix.getVectorStarts();
-  const double *vals = matrix.getElements();
 
   matrix.modifyCoefficient(id_row, id_col, val);
   _clp_inner_solver.replaceMatrix(matrix);
