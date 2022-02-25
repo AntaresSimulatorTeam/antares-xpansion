@@ -14,7 +14,7 @@ typedef std::map<std::string, int> size_map;
 class IterationResultLog {
  public:
   IterationResultLog() = default;
-  IterationResultLog(const std::string &line_prefix);
+  explicit IterationResultLog(const std::string &line_prefix);
   std::string Log_at_iteration_end(const LogData &data);
 
  private:

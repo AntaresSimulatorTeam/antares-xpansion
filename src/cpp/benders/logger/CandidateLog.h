@@ -14,7 +14,7 @@ typedef std::map<std::string, int> size_map;
 class CandidateLog {
  public:
   CandidateLog() = default;
-  CandidateLog(const std::string &line_prefix);
+  explicit CandidateLog(const std::string &line_prefix);
   std::string log_iteration_candidates(const LogData &_data);
 
  private:

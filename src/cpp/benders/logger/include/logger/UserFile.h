@@ -13,7 +13,6 @@ namespace logger {
 class UserFile : public ILogger {
  public:
   explicit UserFile(const std::string &filename);
-  explicit UserFile(const UserFile &copy);
   ~UserFile();
 
   void display_message(const std::string &str) override;

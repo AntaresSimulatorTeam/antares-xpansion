@@ -16,7 +16,8 @@ class FileAndStdoutLoggerFactory {
   Logger logger;
 
  public:
-  FileAndStdoutLoggerFactory(const std::string &report_file_path_string) {
+  explicit FileAndStdoutLoggerFactory(
+      const std::string &report_file_path_string) {
     auto masterLogger = std::make_shared<xpansion::logger::Master>();
     auto user_file =
         std::make_shared<xpansion::logger::UserFile>(report_file_path_string);
