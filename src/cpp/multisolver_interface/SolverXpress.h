@@ -72,8 +72,13 @@ class SolverXpress : public SolverAbstract {
 
  private:
   virtual void read_prob(const char *prob_name, const char *flags) override;
-  ************************************************************************************************* /
-      public : virtual int get_ncols() const override;
+
+  /*************************************************************************************************
+  -----------------------    Get general informations about problem
+  ----------------------------
+  *************************************************************************************************/
+ public:
+  virtual int get_ncols() const override;
   virtual int get_nrows() const override;
   virtual int get_nelems() const override;
   virtual int get_n_integer_vars() const override;
