@@ -69,5 +69,9 @@ class JsonWriter : public OutputWriter {
   void initialize();
 
   void end_writing(const IterationsData &iterations_data);
+
+  void write_solver_name(const std::string &solver_name) override;
+  void write_master_name(const std::string &master_name) override;
+  void write_log_level(const int log_level) override;
 };
 }  // namespace Output
