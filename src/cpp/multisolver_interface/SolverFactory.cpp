@@ -27,36 +27,44 @@ SolverFactory::SolverFactory() {
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type) const {
+  return create_solver(solver_name, solver_type, "");
+}
+SolverAbstract::Ptr SolverFactory::create_solver(
+    const std::string &solver_name, const SOLVER_TYPE solver_type,
+    const std::string &log_name) const {
 #ifdef COIN_OR
   if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS) {
-    return std::make_shared<SolverClp>();
+    return std::make_shared<SolverClp>(log_name);
   } else if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::INTEGER) {
-    return std::make_shared<SolverCbc>();
+    return std::make_shared<SolverCbc>(log_name);
   }
 #endif
-  return create_solver(solver_name);
+  return create_solver(solver_name, log_name);
 }
-
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name) const {
+  return create_solver(solver_name, "");
+}
+SolverAbstract::Ptr SolverFactory::create_solver(
+    const std::string &solver_name, const std::string &log_name) const {
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name);
   }
 #ifdef CPLEX
   else if (solver_name == CPLEX_STR) {
-    return std::make_shared<SolverCplex>();
+    return std::make_shared<SolverCplex>(log_name);
   }
 #endif
 #ifdef XPRESS
   else if (solver_name == XPRESS_STR) {
-    return std::make_shared<SolverXpress>();
+    return std::make_shared<SolverXpress>(log_name);
   }
 #endif
 #ifdef COIN_OR
   else if (solver_name == CLP_STR) {
-    return std::make_shared<SolverClp>();
+    return std::make_shared<SolverClp>(log_name);
   } else if (solver_name == CBC_STR) {
-    return std::make_shared<SolverCbc>();
+    return std::make_shared<SolverCbc>(log_name);
   }
 #endif
   else {

@@ -38,6 +38,7 @@ class SolverClp : public SolverAbstract {
    * @brief Default constructor of a CLP solver
    */
   SolverClp();
+  explicit SolverClp(const std::string &log_file);
 
   /**
    * @brief Copy constructor of CLP, copy the problem toCopy in memory and name

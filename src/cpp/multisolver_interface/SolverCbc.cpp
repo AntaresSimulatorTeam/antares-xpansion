@@ -8,9 +8,18 @@
 *************************************************************************************************/
 int SolverCbc::_NumberOfProblems = 0;
 
-SolverCbc::SolverCbc() {
-  int status = 0;
+SolverCbc::SolverCbc(const std::string &log_file) : SolverCbc() {
+  _log_file = log_file;
+  _fp = fopen(_log_file.c_str(), "a+");
 
+  if (_fp == NULL) {
+    std::cerr << "Invalid log file name passed as parameter" << std::endl;
+  } else {
+    setvbuf(_fp, NULL, _IONBF, 0);
+    _message_handler.setFilePointer(_fp);
+  }
+}
+SolverCbc::SolverCbc() {
   _NumberOfProblems += 1;
   _current_log_level = 0;
 }
@@ -19,6 +28,12 @@ SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
   // Try to cast the solver in fictif to a SolverCPLEX
   if (SolverCbc *c = dynamic_cast<SolverCbc *>(fictif.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
+    _log_file = fictif->_log_file;
+    _fp = fopen(_log_file.c_str(), "a+");
+    if (_fp != NULL) {
+      setvbuf(_fp, NULL, _IONBF, 0);
+      _message_handler.setFilePointer(_fp);
+    }
     defineCbcModelFromInnerSolver();
   } else {
     _NumberOfProblems -= 1;
@@ -29,6 +44,9 @@ SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
 
 SolverCbc::~SolverCbc() {
   _NumberOfProblems -= 1;
+  if (_fp != NULL) {
+    fclose(_fp);
+  }
   free();
 }
 
@@ -172,7 +190,6 @@ int SolverCbc::get_n_integer_vars() const {
 }
 
 void SolverCbc::get_obj(double *obj, int first, int last) const {
-  const int nvars = get_ncols();
   const double *internalObj = _clp_inner_solver.getObjCoefficients();
 
   for (int i = first; i < last + 1; i++) {
@@ -422,10 +439,6 @@ void SolverCbc::chg_rhs(int id_row, double val) {
 void SolverCbc::chg_coef(int id_row, int id_col, double val) {
   // Very tricky method by method "modifyCoefficient" of OsiClp does not work
   CoinPackedMatrix matrix = *_clp_inner_solver.getMatrixByRow();
-  const int *column = matrix.getIndices();
-  const int *rowLength = matrix.getVectorLengths();
-  const CoinBigIndex *rowStart = matrix.getVectorStarts();
-  const double *vals = matrix.getElements();
 
   matrix.modifyCoefficient(id_row, id_col, val);
   _clp_inner_solver.replaceMatrix(matrix);

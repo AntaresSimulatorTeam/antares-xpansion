@@ -5,7 +5,8 @@
 
 /*!
  * \class class SolverCplex
- * \brief Daughter class of AsbtractSolver implementing solver IBM ILOG CPLEX
+ * \brief Daughter class of AsbtractSolver implementing solver IBM ILOG
+ * CPLEX
  */
 class SolverCplex : public SolverAbstract {
   /*************************************************************************************************
@@ -29,13 +30,14 @@ class SolverCplex : public SolverAbstract {
   the name is set to DefaultProblem_$(_NumberOfProblems+1)
   */
   SolverCplex();
+  SolverCplex(const std::string &log_file);
 
   /**
    * @brief Constructor of a CPLEX solver named "name"
    *
    * @param name : Name of the solver, used in memory by CPLEX
    */
-  SolverCplex(const std::string &name);
+  // SolverCplex(const std::string &name);
 
   /**
    * @brief Copy constructor of CPLEX, copy the problem "fictif" in memory and

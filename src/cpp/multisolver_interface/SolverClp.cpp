@@ -8,9 +8,18 @@
 *************************************************************************************************/
 int SolverClp::_NumberOfProblems = 0;
 
-SolverClp::SolverClp() {
-  int status = 0;
+SolverClp::SolverClp(const std::string &log_file) : SolverClp() {
+  _log_file = log_file;
+  _fp = fopen(_log_file.c_str(), "a+");
 
+  if (_fp == NULL) {
+    std::cerr << "Invalid log file name passed as parameter" << std::endl;
+  } else {
+    setvbuf(_fp, NULL, _IONBF, 0);
+    _message_handler.setFilePointer(_fp);
+  }
+}
+SolverClp::SolverClp() {
   _NumberOfProblems += 1;
   _clp = NULL;
 }
@@ -19,6 +28,12 @@ SolverClp::SolverClp(const SolverAbstract::Ptr fictif) : SolverClp() {
   // Try to cast the solver in fictif to a SolverCPLEX
   if (SolverClp *c = dynamic_cast<SolverClp *>(fictif.get())) {
     _clp = ClpSimplex(c->_clp);
+    _log_file = fictif->_log_file;
+    _fp = fopen(_log_file.c_str(), "a+");
+    if (_fp != NULL) {
+      setvbuf(_fp, NULL, _IONBF, 0);
+      _message_handler.setFilePointer(_fp);
+    }
   } else {
     _NumberOfProblems -= 1;
     throw InvalidSolverForCopyException(fictif->get_solver_name(),
@@ -28,6 +43,9 @@ SolverClp::SolverClp(const SolverAbstract::Ptr fictif) : SolverClp() {
 
 SolverClp::~SolverClp() {
   _NumberOfProblems -= 1;
+  if (_fp != NULL) {
+    fclose(_fp);
+  }
   free();
 }
 

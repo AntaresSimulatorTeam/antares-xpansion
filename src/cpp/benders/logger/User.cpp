@@ -10,11 +10,9 @@
 #include "Commons.h"
 #include "IterationResultLog.h"
 
+using xpansion::logger::commons::indent_1;
 namespace xpansion {
 namespace logger {
-
-const std::string indent_0 = "\t\t";
-const std::string indent_1 = "\t";
 
 User::User(std::ostream &stream) : _stream(stream) {
   if (_stream.fail()) {

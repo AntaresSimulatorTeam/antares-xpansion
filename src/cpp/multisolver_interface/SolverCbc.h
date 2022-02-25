@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdio>
+
 #include "CbcModel.hpp"
 #include "Cbc_C_Interface.h"
 #include "CoinHelperFunctions.hpp"
@@ -35,6 +37,7 @@ class SolverCbc : public SolverAbstract {
    * @brief Default constructor of a CBC solver
    */
   SolverCbc();
+  explicit SolverCbc(const std::string &log_file);
 
   /**
    * @brief Copy constructor of solver, copy the problem toCopy in memory and

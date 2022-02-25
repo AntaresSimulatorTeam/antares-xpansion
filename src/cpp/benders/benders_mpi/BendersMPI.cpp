@@ -39,10 +39,10 @@ void BendersMpi::load() {
       } else if (_world.rank() == current_worker) {
         CouplingMap::value_type kvp;
         _world.recv(0, islave, kvp);
-        _map_slaves[kvp.first] = WorkerSlavePtr(
-            new WorkerSlave(kvp.second, get_slave_path(kvp.first),
-                            slave_weight(_data.nslaves, kvp.first),
-                            _options.SOLVER_NAME, _options.LOG_LEVEL));
+        _map_slaves[kvp.first] = WorkerSlavePtr(new WorkerSlave(
+            kvp.second, get_slave_path(kvp.first),
+            slave_weight(_data.nslaves, kvp.first), _options.SOLVER_NAME,
+            _options.LOG_LEVEL, _log_name));
         _slaves.push_back(kvp.first);
       }
     }
@@ -76,7 +76,7 @@ void BendersMpi::update_real_problem_list(
     }
     _master.reset(new WorkerMaster(it_master->second, get_master_path(),
                                    _options.SOLVER_NAME, _options.LOG_LEVEL,
-                                   _data.nslaves));
+                                   _data.nslaves, _log_name));
     LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
   }
 }

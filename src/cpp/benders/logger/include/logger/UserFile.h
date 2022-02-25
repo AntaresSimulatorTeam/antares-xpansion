@@ -1,12 +1,12 @@
 #ifndef ANTARESXPANSION_CONSOLE_H
 #define ANTARESXPANSION_CONSOLE_H
 
+#include <cstdio>
 #include <fstream>
 #include <ostream>
 
 #include "core/ILogger.h"
 #include "logger/User.h"
-
 namespace xpansion {
 namespace logger {
 
@@ -34,9 +34,11 @@ class UserFile : public ILogger {
   void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) override;
 
+  const std::string LINE_PREFIX = "<<BENDERS>> ";
+
  private:
   std::ofstream _file;
-  std::unique_ptr<User> _userLog;
+  std::string _filename;
 };
 
 }  // namespace logger

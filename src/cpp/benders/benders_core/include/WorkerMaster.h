@@ -13,8 +13,8 @@ class WorkerMaster : public Worker {
  public:
   WorkerMaster();
   WorkerMaster(Str2Int const &variable_map, std::string const &path_to_mps,
-               const std::string &solver_name, const int log_level,
-               int nslaves = 1);
+               const std::string &solver_name, const int log_level, int nslaves,
+               const std::string &log_name);
   virtual ~WorkerMaster();
 
   void get(Point &x0, double &alpha, DblVector &alpha_i);

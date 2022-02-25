@@ -10,9 +10,6 @@
 #include "WriterFactories.h"
 #include "glog/logging.h"
 #include "helpers/Path.h"
-#include "logger/Master.h"
-#include "logger/User.h"
-#include "logger/UserFile.h"
 
 int main(int argc, char **argv) {
   // options.print(std::cout);
@@ -30,7 +27,10 @@ int main(int argc, char **argv) {
 
   const std::string &loggerFileName =
       (Path(options.OUTPUTROOT) / "reportbenderssequential.txt").get_str();
-  Logger logger = build_stdout_and_file_logger(loggerFileName);
+
+  auto logger_factory = FileAndStdoutLoggerFactory(loggerFileName);
+
+  Logger logger = logger_factory.get_logger();
   Writer writer = build_json_writer(options.JSON_FILE);
   writer->write_log_level(options.LOG_LEVEL);
   writer->write_master_name(options.MASTER_NAME);
@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
   Timer timer;
 
   BendersSequential benders(benders_options, logger, writer);
+  benders.set_log_file(loggerFileName);
   benders.launch();
   std::stringstream str;
   str << "Optimization results available in : " << options.JSON_FILE;

@@ -1,11 +1,14 @@
 #ifndef ANTARESXPANSION_ITERATIONRESULTLOG_H
 #define ANTARESXPANSION_ITERATIONRESULTLOG_H
-
-#include <map>
 #include <list>
+#include <map>
 #include <string>
+
+#include "Commons.h"
 #include "core/ILogger.h"
 
+using xpansion::logger::commons::indent_0;
+using xpansion::logger::commons::indent_1;
 namespace xpansion {
 namespace logger {
 
@@ -14,17 +17,17 @@ typedef std::map<std::string, int> size_map;
 
 class IterationResultLog {
  public:
+  IterationResultLog() = default;
+  explicit IterationResultLog(const std::string &line_prefix);
   std::string Log_at_iteration_end(const LogData &data);
 
  private:
-  const std::string indent_0 = "\t\t";
-  const std::string indent_1 = "\t";
-
   const std::string LABEL = "LABEL";
   const std::string VALUE = "VALUE";
   const std::string UNIT = "UNIT";
   std::list<value_map> _values;
   size_map _max_sizes;
+  std::string _line_prefix = "";
 
  private:
   std::string create_solution_str(const value_map &value,
