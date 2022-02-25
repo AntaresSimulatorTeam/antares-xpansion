@@ -20,10 +20,6 @@
 #include <tuple>
 #include <vector>
 
-#include "core/ILogger.h"
-// MultiSolver interface
-#include "multisolver_interface/Solver.h"
-
 struct Predicate;
 typedef std::map<std::string, double> Point;
 
@@ -106,44 +102,10 @@ inline std::ostream &operator<<(std::ostream &stream, Point const &rhs) {
   return stream;
 }
 
-/*!
- * \struct BendersData
- * \brief Structure used to manage every benders data
- */
-struct BendersData {
-  int nbasis;
-  double timer_slaves;
-  double timer_master;
-  double lb;
-  double ub;
-  double best_ub;
-  int maxsimplexiter;
-  int minsimplexiter;
-  int deletedcut;
-  int it;
-  bool stop;
-  double alpha;
-  std::vector<double> alpha_i;
-  double slave_cost;
-  double invest_cost;
-  int best_it;
-  Point bestx;
-  Point x0;
-  Point min_invest;
-  Point max_invest;
-  int nslaves;
-  double dnslaves;
-  int master_status;
-  double elapsed_time;
-  StoppingCriterion stopping_criterion;
-};
-
 double norm_point(Point const &x0, Point const &x1);
 
 std::ostream &operator<<(std::ostream &stream,
                          std::vector<IntVector> const &rhs);
-
-LogData bendersDataToLogData(const BendersData &data);
 
 const std::string SLAVE_WEIGHT_CST_STR("CONSTANT");
 const std::string SLAVE_WEIGHT_UNIFORM_CST_STR("UNIFORM");

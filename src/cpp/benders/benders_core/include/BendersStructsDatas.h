@@ -2,7 +2,40 @@
 
 #include "SlaveCut.h"
 #include "Worker.h"
+#include "common.h"
+#include "core/ILogger.h"
 
+/*!
+ * \struct BendersData
+ * \brief Structure used to manage every benders data
+ */
+struct BendersData {
+  int nbasis;
+  double timer_slaves;
+  double timer_master;
+  double lb;
+  double ub;
+  double best_ub;
+  int maxsimplexiter;
+  int minsimplexiter;
+  int deletedcut;
+  int it;
+  bool stop;
+  double alpha;
+  std::vector<double> alpha_i;
+  double slave_cost;
+  double invest_cost;
+  int best_it;
+  Point bestx;
+  Point x0;
+  Point min_invest;
+  Point max_invest;
+  int nslaves;
+  double dnslaves;
+  int master_status;
+  double elapsed_time;
+  StoppingCriterion stopping_criterion;
+};
 /*!
  * \class WorkerMasterData
  * \brief Class use to store trace information during the algorithm run

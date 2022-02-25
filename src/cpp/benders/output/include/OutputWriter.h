@@ -17,7 +17,8 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
     NBWEEKS_C("nbWeeks"), OPTIONS_C("options"), SOLUTION_C("solution"),
     ITERATION_C("iteration"), PROBLEM_STATUS_C("problem_status"),
     STATUS_OPTIMAL_C("OPTIMAL"), STATUS_ERROR_C("ERROR"), VALUES_C("values"),
-    STOPPING_CRITERION_C("stopping_criterion");
+    STOPPING_CRITERION_C("stopping_criterion"), MASTER_NAME_C("MASTER_NAME"),
+    LOG_LEVEL_C("LOG_LEVEL"), SOLVER_NAME_C("SOLVER_NAME");
 struct CandidateData {
   std::string name;
   double invest;
@@ -98,6 +99,10 @@ class OutputWriter {
   virtual void initialize() = 0;
 
   virtual void end_writing(const IterationsData &iterations_data) = 0;
+
+  virtual void write_solver_name(const std::string &solver_name) = 0;
+  virtual void write_master_name(const std::string &master_name) = 0;
+  virtual void write_log_level(const int log_level) = 0;
 };
 }  // namespace Output
 using Writer = std::shared_ptr<Output::OutputWriter>;

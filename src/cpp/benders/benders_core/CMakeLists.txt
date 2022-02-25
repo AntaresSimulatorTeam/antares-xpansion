@@ -14,7 +14,7 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerMaster.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/SlaveCut.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/common.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/WorkerTrace.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/BendersStructsDatas.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Worker.cpp
         )
 

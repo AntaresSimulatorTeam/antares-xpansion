@@ -1,12 +1,12 @@
 #pragma once
 
 #include "BendersBase.h"
+#include "BendersStructsDatas.h"
 #include "SlaveCut.h"
 #include "Timer.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "WorkerSlave.h"
-#include "WorkerTrace.h"
 #include "common_mpi.h"
 #include "core/ILogger.h"
 
