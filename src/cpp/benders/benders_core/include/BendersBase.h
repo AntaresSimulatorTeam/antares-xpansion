@@ -1,12 +1,12 @@
 #pragma once
 
+#include "BendersStructsDatas.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SlaveCut.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "WorkerSlave.h"
-#include "WorkerTrace.h"
 #include "common.h"
 #include "core/ILogger.h"
 
@@ -86,5 +86,6 @@ class BendersBase {
   inline void set_log_file(const std::string &log_name) {
     _log_name = log_name;
   }
+  LogData bendersDataToLogData(const BendersData &data) const;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

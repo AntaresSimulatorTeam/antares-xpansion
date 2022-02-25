@@ -1,8 +1,7 @@
 #pragma once
 
-#include <cstdio>
-
 #include "common.h"
+#include "multisolver_interface/Solver.h"
 class Worker;
 typedef std::shared_ptr<Worker> WorkerPtr;
 

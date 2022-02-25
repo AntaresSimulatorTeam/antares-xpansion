@@ -70,6 +70,10 @@ int main(int argc, char **argv) {
                                            world);
   }
   benders->set_log_file(log_reports_name);
+
+  writer->write_log_level(options.LOG_LEVEL);
+  writer->write_master_name(options.MASTER_NAME);
+  writer->write_solver_name(options.SOLVER_NAME);
   benders->launch();
   std::stringstream str;
   str << "Optimization results available in : " << options.JSON_FILE;
