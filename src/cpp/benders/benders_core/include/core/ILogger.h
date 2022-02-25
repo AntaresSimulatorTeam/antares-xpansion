@@ -55,8 +55,6 @@ struct LogData {
   double max_iterations;
 };
 
-const std::string indent_0 = "\t\t";
-const std::string indent_1 = "\t";
 class ILogger {
  public:
   virtual ~ILogger() = default;

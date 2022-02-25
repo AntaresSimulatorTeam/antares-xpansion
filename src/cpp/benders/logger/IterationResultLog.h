@@ -4,7 +4,11 @@
 #include <map>
 #include <string>
 
+#include "Commons.h"
 #include "core/ILogger.h"
+
+using xpansion::logger::commons::indent_0;
+using xpansion::logger::commons::indent_1;
 namespace xpansion {
 namespace logger {
 
@@ -18,9 +22,6 @@ class IterationResultLog {
   std::string Log_at_iteration_end(const LogData &data);
 
  private:
-  const std::string indent_0 = "\t\t";
-  const std::string indent_1 = "\t";
-
   const std::string LABEL = "LABEL";
   const std::string VALUE = "VALUE";
   const std::string UNIT = "UNIT";

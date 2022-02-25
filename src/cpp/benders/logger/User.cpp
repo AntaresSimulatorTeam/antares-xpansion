@@ -10,6 +10,7 @@
 #include "Commons.h"
 #include "IterationResultLog.h"
 
+using xpansion::logger::commons::indent_1;
 namespace xpansion {
 namespace logger {
 
