@@ -101,8 +101,6 @@ class XpansionDriver:
 
     def launch_benders_step(self):
         self.config_loader.benders_pre_actions()
-        if(self.config_loader.log_level() > 0):
-            self.benders_driver.set_benders_log_file(self.config_loader.benders_log_file())
         self.benders_driver.launch(
             self.config_loader.simulation_output_path(),
             self.config_loader.method(),
