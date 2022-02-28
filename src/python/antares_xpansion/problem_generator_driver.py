@@ -5,6 +5,8 @@
 import shutil
 import os
 import subprocess
+from typing import List
+
 import sys
 from datetime import datetime
 from dataclasses import dataclass
@@ -23,14 +25,14 @@ class ProblemGeneratorData:
     additional_constraints: str
     user_weights_file_path: Path
     weight_file_name_for_lp: str
-    lp_namer_exe_path : Path
-    nb_active_years: int
+    lp_namer_exe_path: Path
+    active_years: List
 
 
 class ProblemGeneratorDriver:
-
     class BasicException(Exception):
         pass
+
     class AreaFileException(BasicException):
         pass
 
@@ -49,7 +51,6 @@ class ProblemGeneratorDriver:
     class LPNamerExecutionError(BasicException):
         pass
 
-
     def __init__(self, problem_generator_data: ProblemGeneratorData) -> None:
 
         self.lp_namer_exe_path = Path(problem_generator_data.lp_namer_exe_path)
@@ -58,7 +59,7 @@ class ProblemGeneratorDriver:
         self.additional_constraints = problem_generator_data.additional_constraints
         self.user_weights_file_path = problem_generator_data.user_weights_file_path
         self.weight_file_name_for_lp = problem_generator_data.weight_file_name_for_lp
-        self.nb_active_years = problem_generator_data.nb_active_years
+        self.active_years = problem_generator_data.active_years
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
         self._lp_path = None
@@ -142,9 +143,10 @@ class ProblemGeneratorDriver:
         os.makedirs(self._lp_path)
 
         if self.weight_file_name_for_lp:
-            XpansionStudyReader.check_weights_file(self.user_weights_file_path, self.nb_active_years)
+            XpansionStudyReader.check_weights_file(self.user_weights_file_path, len(self.active_years))
             weight_list = XpansionStudyReader.get_years_weight_from_file(self.user_weights_file_path)
-            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name_for_lp)
+            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name_for_lp,
+                                                                          self.active_years)
 
         with open(self.get_lp_namer_log_filename(), 'w') as output_file:
 
@@ -175,6 +177,5 @@ class ProblemGeneratorDriver:
 
         return [self.lp_namer_exe_path, "-o", str(self.output_path), "-f", is_relaxed, "-e",
                 self.additional_constraints]
-
 
     output_path = property(get_output_path, set_output_path)

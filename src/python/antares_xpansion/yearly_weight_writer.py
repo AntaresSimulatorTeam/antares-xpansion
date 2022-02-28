@@ -16,22 +16,23 @@ class YearlyWeightWriter:
     def output_dir(self):
         return self.simulation_path / self.MPS_DIR
 
-    def create_weight_file(self, weight_list: List[float], file_name: str):
+    def create_weight_file(self, weight_list: List[float], file_name: str, active_years):
         self.file_content = []
-        self._add_mps_lines_with_weights_to_content(weight_list)
+        self._add_mps_lines_with_weights_to_content(weight_list, active_years)
         self._add_last_line_to_content(weight_list)
         self._write_content_to_file(file_name)
 
-    def _add_mps_lines_with_weights_to_content(self, weight_list):
+    def _add_mps_lines_with_weights_to_content(self, weight_list, active_years):
         sorted_dir = sorted(os.listdir(self.simulation_path))
-        for instance in sorted_dir:
-            if self._file_should_be_added(instance):
-                self._add_line_to_file_content(instance, weight_list)
+        for mps_file in sorted_dir:
+            if self._file_should_be_added(mps_file):
+                self._add_mps_file_to_output_file_content(mps_file, weight_list,  active_years)
 
-    def _add_line_to_file_content(self, file_name, weight_list):
+    def _add_mps_file_to_output_file_content(self, file_name, weight_list,  active_years):
         year = self._get_year_index_from_name(file_name)
+        year_index = active_years.index(int(year))
         mps_file_name = Path(file_name).with_suffix('').name
-        self.file_content.append(mps_file_name + " " + str(weight_list[year - 1]) + "\n")
+        self.file_content.append(mps_file_name + " " + str(weight_list[year_index]) + "\n")
 
     def _add_last_line_to_content(self, weight_list):
         self.file_content.append("WEIGHT_SUM " + str(sum(weight_list)))
