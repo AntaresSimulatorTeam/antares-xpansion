@@ -299,7 +299,7 @@ void SolverXpress::chg_obj(const std::vector<int> &mindex,
   zero_status_check(status, "change objective");
 }
 
-void SolverXpress::chg_obj_sense(const bool minimize) {
+void SolverXpress::chg_obj_direction(const bool minimize) {
   int objsense = minimize ? XPRS_OBJ_MINIMIZE : XPRS_OBJ_MAXIMIZE;
   int status = XPRSchgobjsense(_xprs, objsense);
   zero_status_check(status, "change objective sense");

@@ -71,7 +71,7 @@ void SensitivityAnalysis::run_analysis()
 
 void SensitivityAnalysis::run_optimization(const SolverAbstract::Ptr &sensitivity_model, const bool minimize)
 {
-	sensitivity_model->chg_obj_sense(minimize);
+	sensitivity_model->chg_obj_direction(minimize);
 	auto raw_output = solve_sensitivity_pb(sensitivity_model);
 	fill_output_data(raw_output, minimize);
 }

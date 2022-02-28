@@ -456,7 +456,7 @@ class SolverAbstract {
    *
    * @param minimize : boolean that is true for minimize, false for maximization
    */
-  virtual void chg_obj_sense(const bool minimize) = 0;
+  virtual void chg_obj_direction(const bool minimize) = 0;
 
   /**
    * @brief Change bounds of some variables

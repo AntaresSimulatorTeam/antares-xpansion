@@ -351,7 +351,7 @@ void SolverCbc::chg_obj(const std::vector<int> &mindex,
   }
 }
 
-void SolverCbc::chg_obj_sense(const bool minimize) {
+void SolverCbc::chg_obj_direction(const bool minimize) {
   int objsense = minimize ? 1 : -1;
   _clp_inner_solver.setObjSense(objsense);
 }

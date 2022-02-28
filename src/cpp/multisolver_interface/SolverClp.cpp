@@ -259,7 +259,7 @@ void SolverClp::chg_obj(const std::vector<int> &mindex,
   }
 }
 
-void SolverClp::chg_obj_sense(const bool minimize) {
+void SolverClp::chg_obj_direction(const bool minimize) {
 	int objsense = minimize ? 1 : -1;
 	_clp.setOptimizationDirection(objsense);
 }

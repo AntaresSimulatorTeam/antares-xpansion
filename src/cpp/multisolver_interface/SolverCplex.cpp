@@ -299,7 +299,7 @@ void SolverCplex::chg_obj(const std::vector<int> &mindex,
   zero_status_check(status, "change obj");
 }
 
-void SolverCplex::chg_obj_sense(const bool minimize) {
+void SolverCplex::chg_obj_direction(const bool minimize) {
 	int objsense = minimize ? CPX_MIN : CPX_MAX;
 	int status = CPXchgobjsen(_env, _prb, objsense);
 	zero_status_check(status, "change obj sense");

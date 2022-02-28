@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "multisolver_interface/SolverFactory.h"
 #include "SensitivityAnalysis.h"
 
 class SensitivityAnalysisTest : public ::testing::Test

@@ -1,5 +1,6 @@
 #include <fstream>
 #include "common.h"
+#include "multisolver_interface/SolverFactory.h"
 #include "OutputWriter.h"
 #include "SensitivityInputReader.h"
 
