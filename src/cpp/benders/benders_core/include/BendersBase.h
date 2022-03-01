@@ -16,6 +16,7 @@ class BendersBase {
   BendersBase(BendersBaseOptions const &options, Logger &logger, Writer writer);
   virtual void launch() = 0;
   void set_log_file(const std::string &log_name);
+  std::string log_name() const { return _log_name; }
 
  public:
   Logger _logger;
@@ -38,12 +39,10 @@ class BendersBase {
   std::string get_master_path() const;
   std::string get_structure_path() const;
   LogData bendersDataToLogData(const BendersData &data) const;
+  void build_input_map();
+  const CouplingMap input() const;
 
  protected:
-  // map linking each problem name to its variables and their ids
-  CouplingMap _input;
-  int _nbWeeks = 0;
-  std::string _log_name = "";
   WorkerMasterPtr _master;
   SlavesMapPtr _map_slaves;
   Str2Int _problem_to_id;
@@ -74,5 +73,11 @@ class BendersBase {
                        Point &s) const;
   void compute_cut_aggregate(const AllCutPackage &all_package);
   void compute_cut(const AllCutPackage &all_package);
+
+ private:
+  // map linking each problem name to its variables and their ids
+  CouplingMap _input;
+  int _nbWeeks = 0;
+  std::string _log_name = "";
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

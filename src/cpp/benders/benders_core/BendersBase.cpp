@@ -562,3 +562,26 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
 void BendersBase::set_log_file(const std::string &log_name) {
   _log_name = log_name;
 }
+
+/*!
+ *  \brief Build the input from the structure file
+ *
+ *	Function to build the map linking each problem name to its variables and
+ *their id
+ *
+ *  \param root : root of the structure file
+ *
+ *  \param summary_name : name of the structure file
+ *
+ *  \param coupling_map : empty map to increment
+ *
+ *  \note The id in the coupling_map is that of the variable in the solver
+ *responsible for the creation of the structure file.
+ */
+void BendersBase::build_input_map() {
+  _input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
+                       _options.MASTER_NAME);
+  _nbWeeks = _input.size();
+}
+
+const CouplingMap BendersBase::input() const { return _input; }

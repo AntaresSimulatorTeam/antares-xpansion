@@ -24,7 +24,7 @@ void BendersMpi::load() {
   StrVector names;
   _data.nslaves = -1;
   std::vector<CouplingMap::const_iterator> real_problem_list;
-  if (!_input.empty()) {
+  if (!input().empty()) {
     update_real_problem_list(real_problem_list);
 
     mpi::broadcast(_world, _data.nslaves, 0);
@@ -42,7 +42,7 @@ void BendersMpi::load() {
         _map_slaves[kvp.first] = WorkerSlavePtr(new WorkerSlave(
             kvp.second, get_slave_path(kvp.first),
             slave_weight(_data.nslaves, kvp.first), _options.SOLVER_NAME,
-            _options.LOG_LEVEL, _log_name));
+            _options.LOG_LEVEL, log_name()));
         _slaves.push_back(kvp.first);
       }
     }
@@ -54,19 +54,19 @@ void BendersMpi::update_real_problem_list(
   if (_world.rank() == 0) {
     _data.nslaves = _options.SLAVE_NUMBER;
     if (_data.nslaves < 0) {
-      _data.nslaves = _input.size() - 1;
+      _data.nslaves = input().size() - 1;
     }
     std::string const &master_name(_options.MASTER_NAME);
-    auto const it_master(_input.find(master_name));
-    if (it_master == _input.end()) {
+    auto const it_master(input().find(master_name));
+    if (it_master == input().end()) {
       std::cout << "UNABLE TO FIND " << master_name << std::endl;
       std::exit(1);
     }
     // real problem list taking into account SLAVE_NUMBER
 
-    real_problem_list.resize(_data.nslaves, _input.end());
+    real_problem_list.resize(_data.nslaves, input().end());
 
-    CouplingMap::const_iterator it(_input.begin());
+    CouplingMap::const_iterator it(input().begin());
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
         real_problem_list[i] = it;
@@ -76,7 +76,7 @@ void BendersMpi::update_real_problem_list(
     }
     _master.reset(new WorkerMaster(it_master->second, get_master_path(),
                                    _options.SOLVER_NAME, _options.LOG_LEVEL,
-                                   _data.nslaves, _log_name));
+                                   _data.nslaves, log_name()));
     LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
   }
 }
@@ -278,9 +278,7 @@ void BendersMpi::run() {
 }
 
 void BendersMpi::launch() {
-  _input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
-                       _options.MASTER_NAME);
-  _nbWeeks = _input.size();
+  build_input_map();
   _world.barrier();
 
   load();

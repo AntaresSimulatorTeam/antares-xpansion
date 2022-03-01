@@ -21,15 +21,15 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
     : BendersBase(options, logger, writer) {}
 
 void BendersSequential::initialise_problems() {
-  if (!_input.empty()) {
+  if (!input().empty()) {
     _data.nslaves = _options.SLAVE_NUMBER;
     if (_data.nslaves < 0) {
-      _data.nslaves = _input.size() - 1;
+      _data.nslaves = input().size() - 1;
     }
 
-    auto it(_input.begin());
+    auto it(input().begin());
 
-    auto const it_master = _input.find(_options.MASTER_NAME);
+    auto const it_master = input().find(_options.MASTER_NAME);
     Str2Int const &master_variable(it_master->second);
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
@@ -37,14 +37,14 @@ void BendersSequential::initialise_problems() {
         _map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(
             it->second, get_slave_path(it->first),
             slave_weight(_data.nslaves, it->first), _options.SOLVER_NAME,
-            _options.LOG_LEVEL, _log_name));
+            _options.LOG_LEVEL, log_name()));
         _slaves.push_back(it->first);
         i++;
       }
     }
     _master.reset(new WorkerMaster(master_variable, get_master_path(),
                                    _options.SOLVER_NAME, _options.LOG_LEVEL,
-                                   _data.nslaves, _log_name));
+                                   _data.nslaves, log_name()));
   }
 }
 
@@ -124,9 +124,8 @@ void BendersSequential::run() {
 }
 
 void BendersSequential::launch() {
-  _input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
-                       _options.MASTER_NAME);
-  _nbWeeks = _input.size();
+  build_input_map();
+
   LOG(INFO) << "Building input" << std::endl;
 
   LOG(INFO) << "Constructing workers..." << std::endl;
