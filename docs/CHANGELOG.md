@@ -1,4 +1,4 @@
-Antares-Xpansion Changelog
+Antares-Xpansion changelog
 =================
 
 v0.6.1 (not released yet)
@@ -6,6 +6,8 @@ v0.6.1 (not released yet)
 ### Features
 
 - Antares-Xpansion outputs are written in the `expansion` directory instead of the `lp` directory
+- Add `timelimit` option as a stopping criterion for the Antares-Xpansion algorithm
+- Add `loglevel` option to choose the verbosity level of the solver
 
 ### Bug fixes
 
