@@ -35,6 +35,7 @@ class GeneralDataIniReader:
         self.file_lines = open(file_path, 'r').readlines()
 
         self._mc_years: int = int(self.config["general"]["nbyears"])
+        self._user_playlist = str(self.config["general"]["user-playlist"])
         self._playlist_reset_option: bool = True
         self._active_year_list: List[int] = []
         self._inactive_year_list: List[int] = []
@@ -42,10 +43,34 @@ class GeneralDataIniReader:
     def get_nb_years(self) -> int:
         return self._mc_years
 
-    def get_nb_activated_year(self):
-        self._set_playlist_reset_option()
-        self._set_playlist_year_lists()
-        return self._compute_nb_activated_years()
+    def get_active_years(self):
+
+        if self._user_playlist == "true":
+            self._set_playlist_reset_option()
+            self._set_playlist_year_lists()
+            return self._get_active_years()
+        else:
+            return list(range(1, self._mc_years+1))
+
+    def _get_active_years(self):
+        if self._playlist_reset_option is True:
+            return self._active_years_from_inactive_list()
+        else:
+            return self._active_years_from_active_list()
+
+    def _active_years_from_active_list(self):
+        active_years = []
+        for year in range(self._mc_years):
+            if year in self._active_year_list:
+                active_years.append(year+1)
+        return active_years
+
+    def _active_years_from_inactive_list(self):
+        active_years = []
+        for year in range(self._mc_years):
+            if year not in self._inactive_year_list:
+                active_years.append(year+1)
+        return active_years
 
     def _set_playlist_reset_option(self):
         # Default : all mc years are activated
@@ -73,24 +98,4 @@ class GeneralDataIniReader:
         elif key == 'playlist_year -':
             self._inactive_year_list.append(int(val))
 
-    def _compute_nb_activated_years(self) -> int:
-        if self._playlist_reset_option:
-            nb_activated_year = self._count_years_from_inactive_years_list()
-        else:
-            nb_activated_year = self._count_years_from_active_years_list()
-        return nb_activated_year
-
-    def _count_years_from_active_years_list(self):
-        nb_activated_year = 0
-        for active_year in self._active_year_list:
-            if int(active_year) < self._mc_years:
-                nb_activated_year += 1
-        return nb_activated_year
-
-    def _count_years_from_inactive_years_list(self):
-        nb_activated_year = self._mc_years
-        for inactive_year in self._inactive_year_list:
-            if int(inactive_year) < self._mc_years:
-                nb_activated_year -= 1
-        return nb_activated_year
 

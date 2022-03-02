@@ -26,7 +26,7 @@ class TestProblemGeneratorDriver:
                                                         weight_file_name_for_lp="",
                                                         lp_namer_exe_path=Path(
                                                             ""),
-                                                        nb_active_years=0)
+                                                        active_years=[])
 
     def test_problem_generator_data(self):
 
@@ -80,7 +80,7 @@ class TestProblemGeneratorDriver:
         with pytest.raises(ProblemGeneratorDriver.IntercoFilesException):
             problem_generator_driver.launch(tmp_path, False)
 
-    def test_lp_namer_exe_not_exit(self, tmp_path):
+    def test_lp_namer_exe_does_not_exit(self, tmp_path):
 
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
@@ -132,7 +132,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_exe_file,
-                                             nb_active_years=1)
+                                             active_years=[])
 
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
@@ -148,7 +148,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path="",
-                                             nb_active_years=1)
+                                             active_years=[])
 
         problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.LPNamerPathError):
@@ -163,7 +163,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
-                                             nb_active_years=1)
+                                             active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
@@ -188,7 +188,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
-                                             nb_active_years=1)
+                                             active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
@@ -200,12 +200,9 @@ class TestProblemGeneratorDriver:
         lp_dir.mkdir()
         lp_dir_sub_file_1 = lp_dir / "file1"
         lp_dir_sub_file_1.write_text("")
-        lp_dir_sub_file_2 = lp_dir / "file2"
-        lp_dir_sub_file_2.write_text("")
 
         assert lp_dir.exists()
         assert lp_dir_sub_file_1.exists()
-        assert lp_dir_sub_file_2.exists()
         problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 0
@@ -213,7 +210,6 @@ class TestProblemGeneratorDriver:
 
         assert lp_dir.exists()
         assert not lp_dir_sub_file_1.exists()
-        assert not lp_dir_sub_file_2.exists()
 
     def test_weight_file_name_fails_if_file_does_not_exist(self, tmp_path):
 
@@ -225,7 +221,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=Path(""),
                                              lp_namer_exe_path=lp_namer_file,
-                                             nb_active_years=1)
+                                             active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
@@ -249,7 +245,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=weight_file_name,
                                              lp_namer_exe_path=lp_namer_file,
-                                             nb_active_years=2)
+                                             active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
@@ -273,7 +269,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=weight_file_name,
                                              lp_namer_exe_path=lp_namer_file,
-                                             nb_active_years=2)
+                                             active_years=[1, 2])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         expected_message = f'file {str(file_path)} : all values are null'
@@ -296,7 +292,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=weight_file_name,
                                              lp_namer_exe_path=lp_namer_file,
-                                             nb_active_years=5)
+                                             active_years=[1, 2, 3])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         expected_message = f'file {str(file_path)} : invalid weight number : 4 values / 5 expected'
@@ -319,7 +315,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=weight_file_name,
                                              lp_namer_exe_path=lp_namer_file,
-                                             nb_active_years=2)
+                                             active_years=[1, 2])
 
         list_generated_files = self._get_expected_mps_txt(tmp_path)
         mps_files = [week_files[0] for week_files in list_generated_files]
@@ -387,7 +383,7 @@ class TestProblemGeneratorDriver:
 
         what_time = hour + minute + second
         file_name = prefix + "-" + year + "-" + week + "-" + \
-            today_date + "-" + what_time + "." + extension
+                    today_date + "-" + what_time + "." + extension
         return file_name
 
     def _create_empty_area_file(self, tmp_path):
@@ -400,7 +396,7 @@ class TestProblemGeneratorDriver:
 
         TestProblemGeneratorDriver.number += 1
         fname = prefix + \
-            str(TestProblemGeneratorDriver.number) + "." + extension
+                str(TestProblemGeneratorDriver.number) + "." + extension
         file = tmp_path / fname
         file.write_text("")
 
