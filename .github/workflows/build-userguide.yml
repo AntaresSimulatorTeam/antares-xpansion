@@ -16,14 +16,15 @@ jobs:
 
   build:
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
-    strategy:
-      matrix:
-        os: [ubuntu-20.04]
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Get release
+      id: get_release
+      uses: bruceadams/get-release@v1.2.3
 
     - name: Read antares-xpansion version
       id: antares-xpansion-version
