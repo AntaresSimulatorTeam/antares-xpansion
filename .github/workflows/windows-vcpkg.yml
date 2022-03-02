@@ -177,10 +177,29 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-installer-64bits
-        path: _build/antaresXpansion-*.*.*-*.zip
+        path: _build/${{env.ZIP_NAME}}
 
     - name: Single file upload
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-windows-single-file
         path: ${{ steps.create-single-file.outputs.archive-path }}
+
+    - name: Publish .zip
+      if: github.event_name == 'release' && github.event.action == 'created'
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: _build/${{env.ZIP_NAME}}
+        asset_name: ${{env.ZIP_NAME}}
+        asset_content_type: application/octet-stream
+
+    - name: Publish file upload
+      if: github.event_name == 'release' && github.event.action == 'created'
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: ${{ steps.create-single-file.outputs.archive-path }}
+        asset_name: ${{ steps.create-single-file.outputs.archive-name }}
+        asset_content_type: application/octet-stream
+
