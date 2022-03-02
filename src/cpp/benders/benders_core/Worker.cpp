@@ -67,7 +67,8 @@ void Worker::init(Str2Int const &variable_map, std::string const &path_to_mps,
  *
  *  \param lp_status : problem status after optimization
  */
-void Worker::solve(int &lp_status, const std::string &outputroot) const {
+void Worker::solve(int &lp_status, const std::string &outputroot,
+                   const std::string &output_master_mps_file_name) const {
   if (_is_master && _solver->get_n_integer_vars() > 0) {
     lp_status = _solver->solve_mip();
   } else {
@@ -91,7 +92,7 @@ void Worker::solve(int &lp_status, const std::string &outputroot) const {
 
   if (_is_master) {
     _solver->write_prob_mps(
-        (Path(outputroot) / OUTPUT_MASTER_MPS_FILE_NAME).get_str());
+        (Path(outputroot) / output_master_mps_file_name).get_str());
   }
 }
 /*!
