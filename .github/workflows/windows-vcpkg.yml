@@ -10,6 +10,8 @@ on:
       - fix/*
       - release/*
       - test/*
+env:
+  GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
 

@@ -7,6 +7,11 @@ on:
       - develop
       - doc
       - test
+  release:
+    types: [ created ]
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
 jobs:
 
   build:
@@ -33,9 +38,19 @@ jobs:
       with:
         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
-    - name: user guide upload
+    - name: upload user guide
       uses: actions/upload-artifact@v2
       with:
         name: ${{ steps.create-user-guide.outputs.pdf-name }}
         path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
+    - name: publish guide upload
+      if: github.event_name == 'release' && github.event.action == 'created'
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: ${{ steps.create-user-guide.outputs.pdf-path }}
+        asset_name: ${{ steps.create-user-guide.outputs.pdf-name }}
+        asset_content_type: application/pdf
+
 

@@ -1,8 +1,6 @@
 name: Release asset upload (Centos7)
 
-on:
-  release:
-    types: [created]
+on: workflow_dispatch
 
 env:
   GITHUB_TOKEN: ${{ github.token }}

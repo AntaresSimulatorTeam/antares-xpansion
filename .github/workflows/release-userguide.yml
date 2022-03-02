@@ -1,8 +1,6 @@
 name: Release Userguide pdf
 
-on:
-  release:
-    types: [created]
+on: workflow_dispatch
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
