@@ -9,8 +9,8 @@ on:
       - feature/*
       - fix/*
       - release/*
-  release:
-    types: [ created ]
+  #release:
+  #  types: [ created ]
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
