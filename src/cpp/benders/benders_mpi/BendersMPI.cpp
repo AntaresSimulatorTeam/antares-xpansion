@@ -76,9 +76,9 @@ void BendersMpi::update_real_problem_list(
         ++i;
       }
     }
-    _master.reset(new WorkerMaster(it_master->second, get_master_path(),
-                                   _options.SOLVER_NAME, _options.LOG_LEVEL,
-                                   _data.nslaves, log_name()));
+    reset_master(new WorkerMaster(it_master->second, get_master_path(),
+                                  _options.SOLVER_NAME, _options.LOG_LEVEL,
+                                  _data.nslaves, log_name()));
     LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
   }
 }
@@ -121,7 +121,7 @@ void BendersMpi::solve_master_and_create_trace() {
   _logger->log_master_solving_duration(_data.timer_master);
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-  _trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
+  push_in_trace(WorkerMasterDataPtr(new WorkerMasterData));
 }
 
 /*!
@@ -228,9 +228,9 @@ void BendersMpi::step_4_update_best_solution(int rank,
  *  \brief Method to free the memory used by each problem
  */
 void BendersMpi::free() {
-  if (_world.rank() == 0)
-    _master->free();
-  else {
+  if (_world.rank() == 0) {
+    free_master();
+  } else {
     for (auto &ptr : _map_slaves) ptr.second->free();
   }
   _world.barrier();

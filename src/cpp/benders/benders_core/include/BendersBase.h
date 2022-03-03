@@ -18,6 +18,14 @@ class BendersBase {
   void set_log_file(const std::string &log_name);
   std::string log_name() const { return _log_name; }
 
+ protected:
+  SlavesMapPtr _map_slaves;
+  Str2Int _problem_to_id;
+  BendersData _data;
+  BendersBaseOptions _options;
+  StrVector _slaves;
+  AllCutStorage _all_cuts_storage;
+
  public:
   Logger _logger;
   Writer _writer;
@@ -41,16 +49,9 @@ class BendersBase {
   LogData bendersDataToLogData(const BendersData &data) const;
   void build_input_map();
   const CouplingMap input() const;
-
- protected:
-  WorkerMasterPtr _master;
-  SlavesMapPtr _map_slaves;
-  Str2Int _problem_to_id;
-  BendersData _data;
-  BendersBaseOptions _options;
-  StrVector _slaves;
-  AllCutStorage _all_cuts_storage;
-  BendersTrace _trace;
+  void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
+  void reset_master(WorkerMaster *worker_master);
+  void free_master();
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -79,5 +80,7 @@ class BendersBase {
   CouplingMap _input;
   int _nbWeeks = 0;
   std::string _log_name = "";
+  BendersTrace _trace;
+  WorkerMasterPtr _master;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

@@ -43,9 +43,9 @@ void BendersSequential::initialise_problems() {
         i++;
       }
     }
-    _master.reset(new WorkerMaster(master_variable, get_master_path(),
-                                   _options.SOLVER_NAME, _options.LOG_LEVEL,
-                                   _data.nslaves, log_name()));
+    reset_master(new WorkerMaster(master_variable, get_master_path(),
+                                  _options.SOLVER_NAME, _options.LOG_LEVEL,
+                                  _data.nslaves, log_name()));
   }
 }
 
@@ -53,7 +53,7 @@ void BendersSequential::initialise_problems() {
  *  \brief Method to free the memory used by each problem
  */
 void BendersSequential::free() {
-  if (_master) _master->free();
+  free_master();
   for (auto &ptr : _map_slaves) ptr.second->free();
 }
 
@@ -102,7 +102,7 @@ void BendersSequential::run() {
 
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-    _trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
+    push_in_trace(WorkerMasterDataPtr(new WorkerMasterData));
 
     _logger->display_message("\tSolving subproblems...");
     build_cut();
