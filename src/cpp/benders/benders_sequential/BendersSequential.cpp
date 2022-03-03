@@ -21,15 +21,16 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
     : BendersBase(options, logger, writer) {}
 
 void BendersSequential::initialise_problems() {
-  if (!input().empty()) {
+  const auto input_ = input();
+  if (!input_.empty()) {
     _data.nslaves = _options.SLAVE_NUMBER;
     if (_data.nslaves < 0) {
-      _data.nslaves = input().size() - 1;
+      _data.nslaves = input_.size() - 1;
     }
 
-    auto it(input().begin());
+    auto it(input_.begin());
 
-    auto const it_master = input().find(_options.MASTER_NAME);
+    auto const it_master = input_.find(_options.MASTER_NAME);
     Str2Int const &master_variable(it_master->second);
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {

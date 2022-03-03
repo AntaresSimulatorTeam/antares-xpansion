@@ -24,7 +24,8 @@ void BendersMpi::load() {
   StrVector names;
   _data.nslaves = -1;
   std::vector<CouplingMap::const_iterator> real_problem_list;
-  if (!input().empty()) {
+  const auto input_ = input();
+  if (!input_.empty()) {
     update_real_problem_list(real_problem_list);
 
     mpi::broadcast(_world, _data.nslaves, 0);
@@ -51,22 +52,23 @@ void BendersMpi::load() {
 
 void BendersMpi::update_real_problem_list(
     std::vector<CouplingMap::const_iterator> &real_problem_list) {
+  const auto input_ = input();
   if (_world.rank() == 0) {
     _data.nslaves = _options.SLAVE_NUMBER;
     if (_data.nslaves < 0) {
-      _data.nslaves = input().size() - 1;
+      _data.nslaves = input_.size() - 1;
     }
     std::string const &master_name(_options.MASTER_NAME);
-    auto const it_master(input().find(master_name));
-    if (it_master == input().end()) {
+    auto const it_master(input_.find(master_name));
+    if (it_master == input_.end()) {
       std::cout << "UNABLE TO FIND " << master_name << std::endl;
       std::exit(1);
     }
     // real problem list taking into account SLAVE_NUMBER
 
-    real_problem_list.resize(_data.nslaves, input().end());
+    real_problem_list.resize(_data.nslaves, input_.end());
 
-    CouplingMap::const_iterator it(input().begin());
+    CouplingMap::const_iterator it(input_.begin());
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
         real_problem_list[i] = it;
