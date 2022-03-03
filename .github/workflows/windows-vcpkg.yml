@@ -101,9 +101,9 @@ jobs:
     - name: Pre-requisites
       shell: cmd
       run: |
-          choco install wget zip unzip --no-progress
-          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
-          msmpisetup.exe -unattend
+        choco install wget zip unzip --no-progress
+        wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+        msmpisetup.exe -unattend
 
     - name: Read antares-solver version
       id: antares-version
