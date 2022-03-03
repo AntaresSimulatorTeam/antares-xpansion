@@ -6,7 +6,6 @@ on:
       - main
       - develop
       - release/*
-      - feature/unify_actions
 jobs:
 
   windows:
