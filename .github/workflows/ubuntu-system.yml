@@ -65,8 +65,7 @@ jobs:
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
-        uses:
-          bruceadams/get-release@v1.2.3
+        uses: bruceadams/get-release@v1.2.3
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -76,10 +75,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip3 install -r requirements-tests.txt
-          pip3 install -r requirements-ui.txt
+          pip install -r requirements-tests.txt
+          pip install -r requirements-ui.txt
 
-      - name: Install libraries
+      - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
           sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev
@@ -163,19 +162,19 @@ jobs:
           export DEB_NAME=$(ls *.deb)
           echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
 
-      - name: Installer upload
+      - name: Upload .tar.gz
         uses: actions/upload-artifact@v2
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
 
-      - name: Deb Installer upload
+      - name: Upload .deb
         uses: actions/upload-artifact@v2
         with:
           name: ${{env.DEB_NAME}}
           path: _build/${{env.DEB_NAME}}
 
-      - name: Single file upload
+      - name: Upload single file
         uses: actions/upload-artifact@v2
         with:
           name: antares-xpansion-ubuntu-single-file
@@ -207,7 +206,4 @@ jobs:
           asset_path: ${{ steps.create-single-file.outputs.archive-path }}
           asset_name: ${{ steps.create-single-file.outputs.archive-name }}
           asset_content_type: application/octet-stream
-
-
-
 

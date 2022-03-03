@@ -52,6 +52,11 @@ jobs:
       with:
         submodules: true
 
+    - name: Get release
+      id: get_release
+      uses:
+        bruceadams/get-release@v1.2.3
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -79,10 +84,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
           pip install -r requirements-ui.txt
-
-    - name: Get release
-      id: get_release
-      uses: bruceadams/get-release@v1.2.0
 
     - name: Pre-requisites
       shell: cmd
@@ -135,7 +136,7 @@ jobs:
         name: user-guide
         path: docs/
 
-    - name: Configure with VCPKG
+    - name: Configure
       run: |
            $pwd=Get-Location
            cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
@@ -151,21 +152,22 @@ jobs:
            cd _build
            ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
+    - name: Installer .zip creation
+      shell: bash
+      run: |
+        cd _build
+        cpack -G ZIP
+        export ZIP_NAME=$(ls *.zip)
+        echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+
     - id: create-single-file
       name: Single file .zip creation
       uses: ./.github/workflows/single-file-creation-zip
       with:
         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
-    - name: .zip Installer creation
-      shell: bash
-      run: |
-           cd _build
-           cpack -G ZIP
-           export ZIP_NAME=$(ls *.zip)
-           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
-    - name: Upload .zip
+    - name: Publish .zip
       uses: actions/upload-release-asset@v1.0.2
       with:
         upload_url: ${{ steps.get_release.outputs.upload_url }}
@@ -173,7 +175,7 @@ jobs:
         asset_name: ${{env.ZIP_NAME}}
         asset_content_type: application/octet-stream
 
-    - name: Single file upload
+    - name: Publish single file
       uses: actions/upload-release-asset@v1.0.2
       with:
         upload_url: ${{ steps.get_release.outputs.upload_url }}
