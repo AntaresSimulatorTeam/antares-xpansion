@@ -19,11 +19,9 @@ class BendersBase {
   std::string log_name() const { return _log_name; }
 
  protected:
-  Str2Int _problem_to_id;
   BendersData _data;
   BendersBaseOptions _options;
-  StrVector _slaves;
-  AllCutStorage _all_cuts_storage;
+  CouplingMap _input;
 
  public:
   Logger _logger;
@@ -47,13 +45,17 @@ class BendersBase {
   std::string get_structure_path() const;
   LogData bendersDataToLogData(const BendersData &data) const;
   void build_input_map();
-  CouplingMap input() const;
+  CouplingMap get_input() const;
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_slaves();
   void set_slave(const std::pair<std::string, Str2Int> &kvp);
   WorkerMasterPtr get_master() const;
+  int get_nbWeeks() const;
+  void set_problem_to_id(const std::string &name, const int id);
+  void set_cut_storage();
+  void add_slave_name(const std::string &name);
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -79,11 +81,13 @@ class BendersBase {
 
  private:
   // map linking each problem name to its variables and their ids
-  CouplingMap _input;
   int _nbWeeks = 0;
   std::string _log_name = "";
   BendersTrace _trace;
   WorkerMasterPtr _master;
+  Str2Int _problem_to_id;
   SlavesMapPtr _map_slaves;
+  AllCutStorage _all_cuts_storage;
+  StrVector _slaves;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

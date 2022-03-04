@@ -24,8 +24,7 @@ void BendersMpi::load() {
   StrVector names;
   _data.nslaves = -1;
   std::vector<CouplingMap::const_iterator> real_problem_list;
-  const auto input_ = input();
-  if (!input_.empty()) {
+  if (!_input.empty()) {
     update_real_problem_list(real_problem_list);
 
     mpi::broadcast(_world, _data.nslaves, 0);
@@ -41,7 +40,7 @@ void BendersMpi::load() {
         CouplingMap::value_type kvp;
         _world.recv(0, islave, kvp);
         set_slave(kvp);
-        _slaves.push_back(kvp.first);
+        add_slave_name(kvp.first);
       }
     }
   }
@@ -49,27 +48,27 @@ void BendersMpi::load() {
 
 void BendersMpi::update_real_problem_list(
     std::vector<CouplingMap::const_iterator> &real_problem_list) {
-  const auto input_ = input();
   if (_world.rank() == 0) {
+    // const auto input_ = get_input();
     _data.nslaves = _options.SLAVE_NUMBER;
     if (_data.nslaves < 0) {
-      _data.nslaves = input_.size() - 1;
+      _data.nslaves = _input.size() - 1;
     }
     std::string const &master_name(_options.MASTER_NAME);
-    auto const it_master(input_.find(master_name));
-    if (it_master == input_.end()) {
+    auto const it_master(_input.find(master_name));
+    if (it_master == _input.end()) {
       std::cout << "UNABLE TO FIND " << master_name << std::endl;
       std::exit(1);
     }
     // real problem list taking into account SLAVE_NUMBER
 
-    real_problem_list.resize(_data.nslaves, input_.end());
+    real_problem_list.resize(_data.nslaves, _input.end());
 
-    CouplingMap::const_iterator it(input_.begin());
+    CouplingMap::const_iterator it(_input.begin());
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
         real_problem_list[i] = it;
-        _problem_to_id[it->first] = i;
+        set_problem_to_id(it->first, i);
         ++i;
       }
     }
@@ -241,9 +240,7 @@ void BendersMpi::free() {
  */
 void BendersMpi::run() {
   if (_world.rank() == 0) {
-    for (auto const &kvp : _problem_to_id) {
-      _all_cuts_storage[kvp.first] = SlaveCutStorage();
-    }
+    set_cut_storage();
   }
   init_data();
   _world.barrier();

@@ -583,8 +583,8 @@ void BendersBase::build_input_map() {
                        _options.MASTER_NAME);
   _nbWeeks = _input.size();
 }
-
-CouplingMap BendersBase::input() const { return _input; }
+int BendersBase::get_nbWeeks() const { return _nbWeeks; }
+CouplingMap BendersBase::get_input() const { return _input; }
 
 void BendersBase::push_in_trace(const WorkerMasterDataPtr &worker_master_data) {
   _trace.push_back(worker_master_data);
@@ -593,7 +593,7 @@ void BendersBase::push_in_trace(const WorkerMasterDataPtr &worker_master_data) {
 void BendersBase::reset_master(WorkerMaster *worker_master) {
   _master.reset(worker_master);
 }
-void BendersBase::free_master() { _master->free(); }
+void BendersBase::free_master() const { _master->free(); }
 WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
 void BendersBase::set_slave(const std::pair<std::string, Str2Int> &kvp) {
@@ -605,4 +605,16 @@ void BendersBase::set_slave(const std::pair<std::string, Str2Int> &kvp) {
 
 void BendersBase::free_slaves() {
   for (auto &ptr : _map_slaves) ptr.second->free();
+}
+void BendersBase::set_problem_to_id(const std::string &name, const int id) {
+  _problem_to_id[name] = id;
+}
+void BendersBase::set_cut_storage() {
+  for (auto const &kvp : _problem_to_id) {
+    _all_cuts_storage[kvp.first] = SlaveCutStorage();
+  }
+}
+
+void BendersBase::add_slave_name(const std::string &name) {
+  _slaves.push_back(name);
 }

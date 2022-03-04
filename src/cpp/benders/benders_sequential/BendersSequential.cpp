@@ -21,7 +21,7 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
     : BendersBase(options, logger, writer) {}
 
 void BendersSequential::initialise_problems() {
-  const auto input_ = input();
+  const auto input_ = get_input();
   if (!input_.empty()) {
     _data.nslaves = _options.SLAVE_NUMBER;
     if (_data.nslaves < 0) {
@@ -34,9 +34,9 @@ void BendersSequential::initialise_problems() {
     Str2Int const &master_variable(it_master->second);
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
-        _problem_to_id[it->first] = i;
+        set_problem_to_id(it->first, i);
         set_slave(*it);
-        _slaves.push_back(it->first);
+        add_slave_name(it->first);
         i++;
       }
     }
@@ -85,9 +85,7 @@ void BendersSequential::build_cut() {
  *  Method to run BendersSequential algorithm
  */
 void BendersSequential::run() {
-  for (auto const &kvp : _problem_to_id) {
-    _all_cuts_storage[kvp.first] = SlaveCutStorage();
-  }
+  set_cut_storage();
   init_data();
   Timer benders_timer;
   while (!_data.stop) {
