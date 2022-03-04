@@ -33,7 +33,7 @@ class Worker {
       _id_to_name; /*!< Link between the identifier of a variable and its name*/
 
  public:
-  void solve(int &lp_status, const std::string &outputroot) const;
+  void solve(int &lp_status, const std::string &outputroot, const std::string &output_master_mps_file_name) const;
 
  public:
   SolverAbstract::Ptr _solver =
