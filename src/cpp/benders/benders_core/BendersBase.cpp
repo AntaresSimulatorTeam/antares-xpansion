@@ -584,7 +584,7 @@ void BendersBase::build_input_map() {
   _nbWeeks = _input.size();
 }
 
-const CouplingMap BendersBase::input() const { return _input; }
+CouplingMap BendersBase::input() const { return _input; }
 
 void BendersBase::push_in_trace(const WorkerMasterDataPtr &worker_master_data) {
   _trace.push_back(worker_master_data);
