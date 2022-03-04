@@ -6,6 +6,7 @@ on:
       - main
       - develop
       - release/*
+
 jobs:
 
   build:
@@ -30,7 +31,7 @@ jobs:
            yum install -y libuuid-devel
            
     - uses: nelonoel/branch-name@v1.0.1
-    
+
     - name: Checkout
       run: |
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
@@ -41,11 +42,11 @@ jobs:
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
-    
+
     - name: Init submodule
       run: |
            git submodule update --init --recursive .
-          
+
     - name: Install dependencies
       run: |
           pip3 install -r requirements-tests.txt
@@ -66,43 +67,25 @@ jobs:
            source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
-           cmake3 --build _build --config Release -j2  --target install
-           
+           cmake3 --build _build --config Release -j2 --target install
+
     - name: Running unit tests
       run: |
            cd _build
            ctest3 -C Release --output-on-failure -L "unit|benders"
+
+    - name: .tar.gz creation
+      run: |
+        cd _build
+        cpack3 -G TGZ
+
+    - name: Installer .rpm creation
+      run: |
+        cd _build
+        cpack3 -G RPM
 
     - id: create-single-file
       name: Single file .tar.gz creation
       uses: ./.github/workflows/single-file-creation-tgz
       with:
         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
-      
-    - name: Installer .rpm creation
-      run: |
-           cd _build
-           cpack3 -G RPM
-           
-    - name: Installer .tar.gz creation
-      run: |
-           cd _build
-           cpack3 -G TGZ
-
-    - name: Installer archive upload
-      uses: actions/upload-artifact@v2
-      with:
-        name: antares-xpansion-centos7-archive
-        path: _build/*.tar.gz
-        
-    - name: Installer rpm upload
-      uses: actions/upload-artifact@v2
-      with:
-        name: antares-xpansion-centos7-rpm
-        path: _build/*.rpm
-
-    - name: Single file upload
-      uses: actions/upload-artifact@v2
-      with:
-        name: antares-xpansion-centos-single-file
-        path: ${{ steps.create-single-file.outputs.archive-path }}
