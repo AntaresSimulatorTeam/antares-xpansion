@@ -50,11 +50,11 @@ void BendersMpi::update_real_problem_list(
     std::vector<CouplingMap::const_iterator> &real_problem_list) {
   if (_world.rank() == 0) {
     // const auto input_ = get_input();
-    _data.nslaves = _options.SLAVE_NUMBER;
+    _data.nslaves = get_slaves_number();
     if (_data.nslaves < 0) {
       _data.nslaves = _input.size() - 1;
     }
-    std::string const &master_name(_options.MASTER_NAME);
+    std::string const &master_name(get_master_name());
     auto const it_master(_input.find(master_name));
     if (it_master == _input.end()) {
       std::cout << "UNABLE TO FIND " << master_name << std::endl;
@@ -73,7 +73,7 @@ void BendersMpi::update_real_problem_list(
       }
     }
     reset_master(new WorkerMaster(it_master->second, get_master_path(),
-                                  _options.SOLVER_NAME, _options.LOG_LEVEL,
+                                  get_solver_name(), get_log_level(),
                                   _data.nslaves, log_name()));
     LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
   }
@@ -268,7 +268,7 @@ void BendersMpi::run() {
     broadcast(_world, _data.stop, 0);
   }
 
-  if (_world.rank() == 0 && _options.TRACE) {
+  if (_world.rank() == 0 && is_trace()) {
     print_csv();
   }
 }

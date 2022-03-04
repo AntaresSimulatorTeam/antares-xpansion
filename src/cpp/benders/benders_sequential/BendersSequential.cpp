@@ -23,14 +23,14 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
 void BendersSequential::initialise_problems() {
   const auto input_ = get_input();
   if (!input_.empty()) {
-    _data.nslaves = _options.SLAVE_NUMBER;
+    _data.nslaves = get_slaves_number();
     if (_data.nslaves < 0) {
       _data.nslaves = input_.size() - 1;
     }
 
     auto it(input_.begin());
 
-    auto const it_master = input_.find(_options.MASTER_NAME);
+    auto const it_master = input_.find(get_master_name());
     Str2Int const &master_variable(it_master->second);
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
@@ -41,7 +41,7 @@ void BendersSequential::initialise_problems() {
       }
     }
     reset_master(new WorkerMaster(master_variable, get_master_path(),
-                                  _options.SOLVER_NAME, _options.LOG_LEVEL,
+                                  get_solver_name(), get_log_level(),
                                   _data.nslaves, log_name()));
   }
 }
@@ -116,7 +116,7 @@ void BendersSequential::run() {
     _data.stop = stopping_criterion();
   }
 
-  if (_options.TRACE) {
+  if (is_trace()) {
     print_csv();
   }
 }

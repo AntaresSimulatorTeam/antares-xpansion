@@ -618,3 +618,14 @@ void BendersBase::set_cut_storage() {
 void BendersBase::add_slave_name(const std::string &name) {
   _slaves.push_back(name);
 }
+int BendersBase::get_slaves_number() const { return _options.SLAVE_NUMBER; }
+std::string BendersBase::get_master_name() const {
+  return _options.MASTER_NAME;
+}
+std::string BendersBase::get_solver_name() const {
+  return _options.SOLVER_NAME;
+}
+int BendersBase::get_log_level() const { return _options.LOG_LEVEL; }
+bool BendersBase::is_trace() const { return _options.TRACE; }
+Point BendersBase::get_x0() const { return _data.x0; }
+double BendersBase::get_timer_master() const { return _data.timer_master; }

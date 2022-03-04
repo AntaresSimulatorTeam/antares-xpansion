@@ -20,12 +20,8 @@ class BendersBase {
 
  protected:
   BendersData _data;
-  BendersBaseOptions _options;
+  // map linking each problem name to its variables and their ids
   CouplingMap _input;
-
- public:
-  Logger _logger;
-  Writer _writer;
 
  protected:
   virtual void free() = 0;
@@ -56,6 +52,13 @@ class BendersBase {
   void set_problem_to_id(const std::string &name, const int id);
   void set_cut_storage();
   void add_slave_name(const std::string &name);
+  int get_slaves_number() const;
+  std::string get_master_name() const;
+  std::string get_solver_name() const;
+  int get_log_level() const;
+  bool is_trace() const;
+  Point get_x0() const;
+  double get_timer_master() const;
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -80,7 +83,7 @@ class BendersBase {
   void compute_cut(const AllCutPackage &all_package);
 
  private:
-  // map linking each problem name to its variables and their ids
+  BendersBaseOptions _options;
   int _nbWeeks = 0;
   std::string _log_name = "";
   BendersTrace _trace;
@@ -89,5 +92,9 @@ class BendersBase {
   SlavesMapPtr _map_slaves;
   AllCutStorage _all_cuts_storage;
   StrVector _slaves;
+
+ public:
+  Logger _logger;
+  Writer _writer;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;
