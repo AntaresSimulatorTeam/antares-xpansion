@@ -165,7 +165,7 @@ jobs:
            cd _build
            ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
-    - name: Installer .zip creation
+    - name: Create installer .zip
       shell: bash
       run: |
         cd _build
@@ -173,25 +173,25 @@ jobs:
         export ZIP_NAME=$(ls *.zip)
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
-    - id: create-single-file
-      name: Single file .zip creation
+    - name: Create single file .zip
+      id: create-single-file
       uses: ./.github/workflows/single-file-creation-zip
       with:
         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
-    - name: Installer upload
+    - name: Upload installer
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-installer-64bits
         path: _build/${{env.ZIP_NAME}}
 
-    - name: Single file upload
+    - name: Upload single file
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-windows-single-file
         path: ${{ steps.create-single-file.outputs.archive-path }}
 
-    - name: Publish .zip
+    - name: Publish installer
       if: github.event_name == 'release' && github.event.action == 'created'
       uses: actions/upload-release-asset@v1.0.2
       with:
