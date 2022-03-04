@@ -40,10 +40,7 @@ void BendersMpi::load() {
       } else if (_world.rank() == current_worker) {
         CouplingMap::value_type kvp;
         _world.recv(0, islave, kvp);
-        _map_slaves[kvp.first] = WorkerSlavePtr(new WorkerSlave(
-            kvp.second, get_slave_path(kvp.first),
-            slave_weight(_data.nslaves, kvp.first), _options.SOLVER_NAME,
-            _options.LOG_LEVEL, log_name()));
+        set_slave(kvp);
         _slaves.push_back(kvp.first);
       }
     }
@@ -231,7 +228,7 @@ void BendersMpi::free() {
   if (_world.rank() == 0) {
     free_master();
   } else {
-    for (auto &ptr : _map_slaves) ptr.second->free();
+    free_slaves();
   }
   _world.barrier();
 }

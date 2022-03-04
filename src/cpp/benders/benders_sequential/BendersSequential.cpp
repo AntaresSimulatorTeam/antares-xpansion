@@ -35,10 +35,7 @@ void BendersSequential::initialise_problems() {
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
         _problem_to_id[it->first] = i;
-        _map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(
-            it->second, get_slave_path(it->first),
-            slave_weight(_data.nslaves, it->first), _options.SOLVER_NAME,
-            _options.LOG_LEVEL, log_name()));
+        set_slave(*it);
         _slaves.push_back(it->first);
         i++;
       }
@@ -53,8 +50,10 @@ void BendersSequential::initialise_problems() {
  *  \brief Method to free the memory used by each problem
  */
 void BendersSequential::free() {
-  free_master();
-  for (auto &ptr : _map_slaves) ptr.second->free();
+  if (get_master()) {
+    free_master();
+  }
+  free_slaves();
 }
 
 /*!

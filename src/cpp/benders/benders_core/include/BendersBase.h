@@ -19,7 +19,6 @@ class BendersBase {
   std::string log_name() const { return _log_name; }
 
  protected:
-  SlavesMapPtr _map_slaves;
   Str2Int _problem_to_id;
   BendersData _data;
   BendersBaseOptions _options;
@@ -52,6 +51,9 @@ class BendersBase {
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
   void free_master();
+  void free_slaves();
+  void set_slave(const std::pair<std::string, Str2Int> &kvp);
+  WorkerMasterPtr get_master() const;
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -82,5 +84,6 @@ class BendersBase {
   std::string _log_name = "";
   BendersTrace _trace;
   WorkerMasterPtr _master;
+  SlavesMapPtr _map_slaves;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;
