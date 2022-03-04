@@ -10,6 +10,11 @@ on:
       - fix/*
       - release/*
       - test/*
+  release:
+    types: [ created ]
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
 
@@ -35,34 +40,36 @@ jobs:
           antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
       - name: user guide upload
-        id : userguide_upload
+        id: userguide_upload
         uses: actions/upload-artifact@v2
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
   windows:
-
     needs: userguide
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
         os: [windows-latest]
-        buildtype: [release]
         triplet: [x64-windows]
-
 
     env:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     steps:
-    
     - uses: actions/checkout@v2
       with:
         submodules: true
-      
+
+    - name: Get release
+      if: github.event_name == 'release' && github.event.action == 'created'
+      id: get_release
+      uses:
+        bruceadams/get-release@v1.2.3
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
@@ -84,41 +91,41 @@ jobs:
         # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
         key: |
           ${{ hashFiles( 'vcpkg_manifest/vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
-        
+
     - name: Install dependencies
       run: |
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
           pip install -r requirements-ui.txt
-          
+
     - name: Pre-requisites
       shell: cmd
-      run: |          
-          choco install wget zip unzip --no-progress
-          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
-          msmpisetup.exe -unattend
+      run: |
+        choco install wget zip unzip --no-progress
+        wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+        msmpisetup.exe -unattend
 
     - name: Read antares-solver version
       id: antares-version
       uses: notiz-dev/github-action-json-property@release
-      with: 
+      with:
         path: 'antares-version.json'
         prop_path: 'antares_version'
-        
+
     - name: Read antares-xpansion version
       id: antares-xpansion-version
       uses: notiz-dev/github-action-json-property@release
-      with: 
+      with:
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
-        
+
     - name: Read antares-deps version
       id: antares-deps-version
       uses: notiz-dev/github-action-json-property@release
-      with: 
+      with:
         path: 'antares-version.json'
         prop_path: 'antares_deps_version'
-        
+
     - name : Install deps with VCPKG
       run: |
           cd vcpkg
@@ -128,7 +135,7 @@ jobs:
           rm -rf packages
           rm -rf downloads
       shell: bash
-        
+
     - name: Download pre-compiled librairies
       uses: ./.github/workflows/download-extract-precompiled-libraries-zip
       with:
@@ -141,16 +148,16 @@ jobs:
       with:
         name: user-guide
         path: docs/
-        
+
     - name: Configure
       run: |
            $pwd=Get-Location
            cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
-    
+
     - name: Build
       run: |
            cmake --build _build --config Release -j2 --target install
-    
+
     - name: Running unit tests
       shell: cmd
       run: |
@@ -158,7 +165,7 @@ jobs:
            cd _build
            ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
-    - name: Installer .zip creation
+    - name: Create installer .zip
       shell: bash
       run: |
         cd _build
@@ -166,21 +173,38 @@ jobs:
         export ZIP_NAME=$(ls *.zip)
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
-
-    - id: create-single-file
-      name: Single file .zip creation
+    - name: Create single file .zip
+      id: create-single-file
       uses: ./.github/workflows/single-file-creation-zip
       with:
-        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}  
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
-    - name: Installer upload
+    - name: Upload installer
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-installer-64bits
-        path: _build/antaresXpansion-*.*.*-*.zip
+        path: _build/${{env.ZIP_NAME}}
 
-    - name: Single file upload
+    - name: Upload single file
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-windows-single-file
         path: ${{ steps.create-single-file.outputs.archive-path }}
+
+    - name: Publish installer
+      if: github.event_name == 'release' && github.event.action == 'created'
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: _build/${{env.ZIP_NAME}}
+        asset_name: ${{env.ZIP_NAME}}
+        asset_content_type: application/octet-stream
+
+    - name: Publish single file
+      if: github.event_name == 'release' && github.event.action == 'created'
+      uses: actions/upload-release-asset@v1.0.2
+      with:
+        upload_url: ${{ steps.get_release.outputs.upload_url }}
+        asset_path: ${{ steps.create-single-file.outputs.archive-path }}
+        asset_name: ${{ steps.create-single-file.outputs.archive-name }}
+        asset_content_type: application/octet-stream
