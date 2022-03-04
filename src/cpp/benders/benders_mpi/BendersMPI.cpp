@@ -22,26 +22,23 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
 
 void BendersMpi::load() {
   StrVector names;
-  _data.nslaves = -1;
   std::vector<CouplingMap::const_iterator> real_problem_list;
-  if (!_input.empty()) {
-    update_real_problem_list(real_problem_list);
 
-    mpi::broadcast(_world, _data.nslaves, 0);
-    int current_worker(1);
-    for (int islave(0); islave < _data.nslaves; ++islave, ++current_worker) {
-      if (current_worker >= _world.size()) {
-        current_worker = 1;
-      }
-      if (_world.rank() == 0) {
-        CouplingMap::value_type kvp(*real_problem_list[islave]);
-        _world.send(current_worker, islave, kvp);
-      } else if (_world.rank() == current_worker) {
-        CouplingMap::value_type kvp;
-        _world.recv(0, islave, kvp);
-        set_slave(kvp);
-        add_slave_name(kvp.first);
-      }
+  update_real_problem_list(real_problem_list);
+
+  int current_worker(1);
+  for (int islave(0); islave < _data.nslaves; ++islave, ++current_worker) {
+    if (current_worker >= _world.size()) {
+      current_worker = 1;
+    }
+    if (_world.rank() == 0) {
+      CouplingMap::value_type kvp(*real_problem_list[islave]);
+      _world.send(current_worker, islave, kvp);
+    } else if (_world.rank() == current_worker) {
+      CouplingMap::value_type kvp;
+      _world.recv(0, islave, kvp);
+      set_slave(kvp);
+      add_slave_name(kvp.first);
     }
   }
 }
@@ -50,10 +47,7 @@ void BendersMpi::update_real_problem_list(
     std::vector<CouplingMap::const_iterator> &real_problem_list) {
   if (_world.rank() == 0) {
     // const auto input_ = get_input();
-    _data.nslaves = get_slaves_number();
-    if (_data.nslaves < 0) {
-      _data.nslaves = _input.size() - 1;
-    }
+    _data.nslaves = _input.size() - 1;
     std::string const &master_name(get_master_name());
     auto const it_master(_input.find(master_name));
     if (it_master == _input.end()) {
@@ -105,7 +99,7 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts(int rank) {
 
 void BendersMpi::broadcast_the_master_problem() {
   if (!_exceptionRaised) {
-    mpi::broadcast(_world, _data.x0, 0);
+    mpi::broadcast(_world, get_x0(), 0);
     _world.barrier();
   }
 }
@@ -114,7 +108,7 @@ void BendersMpi::solve_master_and_create_trace() {
   _logger->log_at_initialization(bendersDataToLogData(_data));
   _logger->display_message("\tSolving master...");
   get_master_value();
-  _logger->log_master_solving_duration(_data.timer_master);
+  _logger->log_master_solving_duration(get_timer_master());
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
   push_in_trace(WorkerMasterDataPtr(new WorkerMasterData));
@@ -153,7 +147,7 @@ void BendersMpi::gather_slave_cut_package_and_build_cuts(
     } else {
       AllCutPackage all_package;
       mpi::gather(_world, slave_cut_package, all_package, 0);
-      _data.timer_slaves = timer_slaves.elapsed();
+      set_timer_slaves(timer_slaves.elapsed());
       master_build_cuts(all_package);
     }
   }
@@ -166,10 +160,11 @@ SlaveCutPackage BendersMpi::get_slave_package() {
 }
 
 void BendersMpi::master_build_cuts(AllCutPackage all_package) {
-  _data.slave_cost = 0;
+  set_slave_cost(0);
   for (auto const &pack : all_package) {
     for (auto &dataVal : pack) {
-      _data.slave_cost += dataVal.second.first.second[SLAVE_COST];
+      set_slave_cost(get_slave_cost() +
+                     dataVal.second.first.second[SLAVE_COST]);
     }
   }
   all_package.erase(all_package.begin());
@@ -177,7 +172,7 @@ void BendersMpi::master_build_cuts(AllCutPackage all_package) {
   _logger->display_message("\tSolving subproblems...");
 
   build_cut_full(all_package);
-  _logger->log_subproblems_solving_duration(_data.timer_slaves);
+  _logger->log_subproblems_solving_duration(get_timer_slaves());
 }
 
 /*!
@@ -199,10 +194,7 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success) {
 void BendersMpi::write_exception_message(const std::exception &ex) {
   std::string error = "Exception raised : " + std::string(ex.what());
   LOG(WARNING) << error << std::endl;
-  // TODO is this IF necessary ?
-  if (_logger) {
-    _logger->display_message(error);
-  }
+  _logger->display_message(error);
 }
 
 void BendersMpi::step_4_update_best_solution(int rank,
@@ -215,7 +207,7 @@ void BendersMpi::step_4_update_best_solution(int rank,
     update_trace();
 
     _data.elapsed_time = benders_timer.elapsed();
-    _data.timer_master = timer_master.elapsed();
+    set_timer_master(timer_master.elapsed());
     _data.stop = stopping_criterion();
   }
 }

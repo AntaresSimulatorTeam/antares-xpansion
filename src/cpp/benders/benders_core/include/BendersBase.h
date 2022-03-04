@@ -48,7 +48,7 @@ class BendersBase {
   void free_slaves();
   void set_slave(const std::pair<std::string, Str2Int> &kvp);
   WorkerMasterPtr get_master() const;
-  int get_nbWeeks() const;
+  int get_totalNbProblems() const;
   void set_problem_to_id(const std::string &name, const int id);
   void set_cut_storage();
   void add_slave_name(const std::string &name);
@@ -59,6 +59,11 @@ class BendersBase {
   bool is_trace() const;
   Point get_x0() const;
   double get_timer_master() const;
+  void BendersBase::set_timer_master(const double &timer_master);
+  double get_timer_slaves() const;
+  void BendersBase::set_timer_slaves(const double &timer_slaves);
+  double get_slave_cost() const;
+  void BendersBase::set_slave_cost(const double &slave_cost);
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -84,7 +89,7 @@ class BendersBase {
 
  private:
   BendersBaseOptions _options;
-  int _nbWeeks = 0;
+  int _totalNbProblems = 0;
   std::string _log_name = "";
   BendersTrace _trace;
   WorkerMasterPtr _master;

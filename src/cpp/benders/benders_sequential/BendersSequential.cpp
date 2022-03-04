@@ -68,13 +68,13 @@ void BendersSequential::build_cut() {
   AllCutPackage all_package;
   Timer timer_slaves;
   get_slave_cut(slave_cut_package);
-  _data.slave_cost = 0;
+  set_slave_cost(0);
   for (auto pairSlavenameSlavecutdata_l : slave_cut_package) {
-    _data.slave_cost +=
-        pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST];
+    set_slave_cost(get_slave_cost() +
+                   pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST]);
   }
 
-  _data.timer_slaves = timer_slaves.elapsed();
+  set_timer_slaves(timer_slaves.elapsed());
   all_package.push_back(slave_cut_package);
   build_cut_full(all_package);
 }
@@ -95,7 +95,7 @@ void BendersSequential::run() {
     _logger->log_at_initialization(bendersDataToLogData(_data));
     _logger->display_message("\tSolving master...");
     get_master_value();
-    _logger->log_master_solving_duration(_data.timer_master);
+    _logger->log_master_solving_duration(get_timer_master());
 
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
@@ -103,7 +103,7 @@ void BendersSequential::run() {
 
     _logger->display_message("\tSolving subproblems...");
     build_cut();
-    _logger->log_subproblems_solving_duration(_data.timer_slaves);
+    _logger->log_subproblems_solving_duration(get_timer_slaves());
 
     update_best_ub();
 
@@ -111,7 +111,7 @@ void BendersSequential::run() {
 
     update_trace();
 
-    _data.timer_master = timer_master.elapsed();
+    set_timer_master(timer_master.elapsed());
     _data.elapsed_time = benders_timer.elapsed();
     _data.stop = stopping_criterion();
   }

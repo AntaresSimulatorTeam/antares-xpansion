@@ -428,7 +428,7 @@ void BendersBase::post_run_actions() const {
 Output::IterationsData BendersBase::output_data() const {
   Output::IterationsData iterations_data;
   Output::Iterations iters;
-  iterations_data.nbWeeks_p = _nbWeeks;
+  iterations_data.nbWeeks_p = _totalNbProblems;
   // Iterations
   for (auto masterDataPtr_l : _trace) {
     if (masterDataPtr_l->_valid) {
@@ -477,7 +477,7 @@ Output::CandidatesVec BendersBase::candidates_data(
 
 Output::SolutionData BendersBase::solution() const {
   Output::SolutionData solution_data;
-  solution_data.nbWeeks_p = _nbWeeks;
+  solution_data.nbWeeks_p = _totalNbProblems;
   solution_data.best_it = _data.best_it;
   solution_data.problem_status = status_from_criterion();
   size_t bestItIndex_l = _data.best_it - 1;
@@ -581,9 +581,10 @@ void BendersBase::set_log_file(const std::string &log_name) {
 void BendersBase::build_input_map() {
   _input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
                        _options.MASTER_NAME);
-  _nbWeeks = _input.size();
+  _totalNbProblems = _input.size();
+  _data.nslaves = _totalNbProblems - 1;
 }
-int BendersBase::get_nbWeeks() const { return _nbWeeks; }
+int BendersBase::get_totalNbProblems() const { return _totalNbProblems; }
 CouplingMap BendersBase::get_input() const { return _input; }
 
 void BendersBase::push_in_trace(const WorkerMasterDataPtr &worker_master_data) {
@@ -629,3 +630,14 @@ int BendersBase::get_log_level() const { return _options.LOG_LEVEL; }
 bool BendersBase::is_trace() const { return _options.TRACE; }
 Point BendersBase::get_x0() const { return _data.x0; }
 double BendersBase::get_timer_master() const { return _data.timer_master; }
+void BendersBase::set_timer_master(const double &timer_master) {
+  _data.timer_master = timer_master;
+}
+double BendersBase::get_timer_slaves() const { return _data.timer_slaves; }
+void BendersBase::set_timer_slaves(const double &timer_slaves) {
+  _data.timer_slaves = timer_slaves;
+}
+double BendersBase::get_slave_cost() const { return _data.slave_cost; }
+void BendersBase::set_slave_cost(const double &slave_cost) {
+  _data.slave_cost = slave_cost;
+}
