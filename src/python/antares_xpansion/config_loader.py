@@ -250,6 +250,7 @@ class ConfigLoader:
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         options_values["TIME_LIMIT"] = self.timelimit()
         options_values["LOG_LEVEL"] = self.log_level()
+        options_values["LAST_MASTER_MPS"] = self._config.LAST_MASTER_MPS
         # generate options file for the solver
         options_path = os.path.normpath(os.path.join(
             self._simulation_lp_path(), self._config.OPTIONS_TXT))
@@ -354,11 +355,10 @@ class ConfigLoader:
         log_level_str = self.options.get(
             "log_level", self._config.settings_default["log_level"]
         )
-        return int(log_level_str) 
-    
-    def benders_log_file(self)-> Path:
-        return Path(os.path.join(self._simulation_lp_path(), self._config.BENDERS_LOG_FILE))
+        return int(log_level_str)
 
+    def benders_log_file(self) -> Path:
+        return Path(os.path.join(self._simulation_lp_path(), self._config.BENDERS_LOG_FILE))
 
     class MissingSimulationName(Exception):
         pass
