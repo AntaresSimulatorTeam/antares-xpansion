@@ -59,11 +59,11 @@ class BendersBase {
   bool is_trace() const;
   Point get_x0() const;
   double get_timer_master() const;
-  void BendersBase::set_timer_master(const double &timer_master);
+  void set_timer_master(const double &timer_master);
   double get_timer_slaves() const;
-  void BendersBase::set_timer_slaves(const double &timer_slaves);
+  void set_timer_slaves(const double &timer_slaves);
   double get_slave_cost() const;
-  void BendersBase::set_slave_cost(const double &slave_cost);
+  void set_slave_cost(const double &slave_cost);
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
