@@ -99,7 +99,9 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts(int rank) {
 
 void BendersMpi::broadcast_the_master_problem() {
   if (!_exceptionRaised) {
-    mpi::broadcast(_world, get_x0(), 0);
+    Point x0 = get_x0();
+    mpi::broadcast(_world, x0, 0);
+    set_x0(x0);
     _world.barrier();
   }
 }

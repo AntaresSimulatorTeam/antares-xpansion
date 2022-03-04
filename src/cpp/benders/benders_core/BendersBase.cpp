@@ -629,6 +629,7 @@ std::string BendersBase::get_solver_name() const {
 int BendersBase::get_log_level() const { return _options.LOG_LEVEL; }
 bool BendersBase::is_trace() const { return _options.TRACE; }
 Point BendersBase::get_x0() const { return _data.x0; }
+void BendersBase::set_x0(const Point &x0) { _data.x0 = x0; }
 double BendersBase::get_timer_master() const { return _data.timer_master; }
 void BendersBase::set_timer_master(const double &timer_master) {
   _data.timer_master = timer_master;

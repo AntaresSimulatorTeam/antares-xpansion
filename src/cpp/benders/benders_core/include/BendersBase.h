@@ -58,6 +58,7 @@ class BendersBase {
   int get_log_level() const;
   bool is_trace() const;
   Point get_x0() const;
+  void set_x0(const Point &x0);
   double get_timer_master() const;
   void set_timer_master(const double &timer_master);
   double get_timer_slaves() const;
