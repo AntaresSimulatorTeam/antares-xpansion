@@ -176,7 +176,7 @@ jobs:
       with:
         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
-    - name: Umpload  .tar.gz
+    - name: Upload  .tar.gz
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-centos7-archive
