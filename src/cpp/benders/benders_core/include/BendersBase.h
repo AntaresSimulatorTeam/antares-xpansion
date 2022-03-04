@@ -48,10 +48,10 @@ class BendersBase {
   std::string get_structure_path() const;
   LogData bendersDataToLogData(const BendersData &data) const;
   void build_input_map();
-  const CouplingMap input() const;
+  CouplingMap input() const;
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
-  void free_master();
+  void free_master() const;
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
