@@ -51,8 +51,7 @@ class BendersMpi : public BendersBase {
   void write_exception_message(const std::exception &ex);
 
   void check_if_some_proc_had_a_failure(int success);
-  void update_real_problem_list(
-      std::vector<CouplingMap::const_iterator> &real_problem_list);
+  void init_master_problem_and_slave_id();
   mpi::environment &_env;
   mpi::communicator &_world;
 };

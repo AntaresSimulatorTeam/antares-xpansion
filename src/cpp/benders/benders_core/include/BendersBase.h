@@ -46,7 +46,7 @@ class BendersBase {
   void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_slaves();
-  void set_slave(const std::pair<std::string, Str2Int> &kvp);
+  void add_slave(const std::pair<std::string, Str2Int> &kvp);
   WorkerMasterPtr get_master() const;
   int get_totalNbProblems() const;
   void set_problem_to_id(const std::string &name, const int id);

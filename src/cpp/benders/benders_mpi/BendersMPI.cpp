@@ -21,47 +21,38 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
  */
 
 void BendersMpi::load() {
-  StrVector names;
-  std::vector<CouplingMap::const_iterator> real_problem_list;
-
-  update_real_problem_list(real_problem_list);
-
-  int current_worker(1);
-  for (int islave(0); islave < _data.nslaves; ++islave, ++current_worker) {
-    if (current_worker >= _world.size()) {
-      current_worker = 1;
+    _data.nslaves = _input.size() - 1;
+    init_master_problem_and_slave_id();
+  int current_problem_id=0;
+  auto slaveCount = _world.size() - 1;
+    if (_world.rank() != 0) {
+        std::string const &master_name(get_master_name());
+        for (auto problem: _input) {
+            if (problem.first != master_name) {
+                auto slaveToFeed = current_problem_id % slaveCount + 1;
+                if (slaveToFeed == _world.rank()) {
+                    add_slave(problem);
+                    add_slave_name(problem.first);
+                }
+                current_problem_id++;
+            }
+        }
     }
-    if (_world.rank() == 0) {
-      CouplingMap::value_type kvp(*real_problem_list[islave]);
-      _world.send(current_worker, islave, kvp);
-    } else if (_world.rank() == current_worker) {
-      CouplingMap::value_type kvp;
-      _world.recv(0, islave, kvp);
-      set_slave(kvp);
-      add_slave_name(kvp.first);
-    }
-  }
 }
 
-void BendersMpi::update_real_problem_list(
-    std::vector<CouplingMap::const_iterator> &real_problem_list) {
+void BendersMpi::init_master_problem_and_slave_id() {
   if (_world.rank() == 0) {
-    // const auto input_ = get_input();
-    _data.nslaves = _input.size() - 1;
+
     std::string const &master_name(get_master_name());
     auto const it_master(_input.find(master_name));
     if (it_master == _input.end()) {
       std::cout << "UNABLE TO FIND " << master_name << std::endl;
       std::exit(1);
     }
-    // real problem list taking into account SLAVE_NUMBER
-
-    real_problem_list.resize(_data.nslaves, _input.end());
 
     CouplingMap::const_iterator it(_input.begin());
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
-        real_problem_list[i] = it;
         set_problem_to_id(it->first, i);
         ++i;
       }

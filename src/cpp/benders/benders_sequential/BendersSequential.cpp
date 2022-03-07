@@ -35,7 +35,7 @@ void BendersSequential::initialise_problems() {
     for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
         set_problem_to_id(it->first, i);
-        set_slave(*it);
+        add_slave(*it);
         add_slave_name(it->first);
         i++;
       }
