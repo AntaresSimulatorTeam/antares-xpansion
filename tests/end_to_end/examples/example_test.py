@@ -301,18 +301,7 @@ medium_parameters_values = [
             "transmission_line": 0.0,
         },
     ),
-    (
-        ALL_STUDIES_PATH / "xpansion-test-one-link-two-candidates",
-        {
-            "optimality_gap": 0,
-            "investment_cost": 15999999.999994278,
-            "operational_cost": 11800333780.786646,
-            "overall_cost": 11816333780.78664,
-            "relative_gap": 0,
-            "accepted_rel_gap_atol": 1e-10,
-        },
-        {"transmission_line": 800.0, "transmission_line_2": 800.0},
-    ),
+
     (
         ALL_STUDIES_PATH / "xpansion-test-01-hurdles-cost",
         {
@@ -379,30 +368,6 @@ medium_parameters_values = [
         },
         {"peak": 1300.0, "semibase": 1600.0, "transmission_line": 1000.0},
     ),
-    (
-        ALL_STUDIES_PATH / "link-profile-with-empty-week",
-        {
-            "optimality_gap": 0,
-            "investment_cost": 27585000000.000004,
-            "operational_cost": 10629896636.069275,
-            "overall_cost": 38214896636.069275,
-            "relative_gap": 0,
-            "accepted_rel_gap_atol": 1e-10,
-        },
-        {"base": 51150.0, "pointe": 33500, "semibase_winter": 0.0},
-    ),
-    (
-        ALL_STUDIES_PATH / "empty-link-profile",
-        {
-            "optimality_gap": 0,
-            "investment_cost": 27584999999.999992,
-            "operational_cost": 10629896636.069145,
-            "overall_cost": 38214896636.069138,
-            "relative_gap": 0,
-            "accepted_rel_gap_atol": 1e-10,
-        },
-        {"base": 51150.0, "pointe": 33500, "semibase_empty": 0.0},
-    ),
 ]
 
 
@@ -428,6 +393,76 @@ def test_full_study_medium_sequential(
 @pytest.mark.medium_mpi
 def test_full_study_medium_parallel(
     install_dir, study_path, expected_values, expected_investment_solution, tmp_path
+):
+    tmp_study = tmp_path / study_path.name
+    shutil.copytree(study_path, tmp_study)
+    launch_xpansion(install_dir, tmp_study, "mpibenders")
+    verify_solution(tmp_study, expected_values, expected_investment_solution)
+    verify_study_update(tmp_study, expected_investment_solution)
+
+short_parameters_names = "study_path, expected_values, expected_investment_solution"
+short_parameters_values = [
+    (
+        ALL_STUDIES_PATH / "link-profile-with-empty-week",
+        {
+            "optimality_gap": 0,
+            "investment_cost": 27585000000.000004,
+            "operational_cost": 10629896636.069275,
+            "overall_cost": 38214896636.069275,
+            "relative_gap": 0,
+            "accepted_rel_gap_atol": 1e-10,
+        },
+        {"base": 51150.0, "pointe": 33500, "semibase_winter": 0.0},
+    ),
+    (
+        ALL_STUDIES_PATH / "empty-link-profile",
+        {
+            "optimality_gap": 0,
+            "investment_cost": 27584999999.999992,
+            "operational_cost": 10629896636.069145,
+            "overall_cost": 38214896636.069138,
+            "relative_gap": 0,
+            "accepted_rel_gap_atol": 1e-10,
+        },
+        {"base": 51150.0, "pointe": 33500, "semibase_empty": 0.0},
+    ),
+    (
+        ALL_STUDIES_PATH / "xpansion-test-one-link-two-candidates",
+        {
+            "optimality_gap": 0,
+            "investment_cost": 15999999.999994278,
+            "operational_cost": 11800333780.786646,
+            "overall_cost": 11816333780.78664,
+            "relative_gap": 0,
+            "accepted_rel_gap_atol": 1e-10,
+        },
+        {"transmission_line": 800.0, "transmission_line_2": 800.0},
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    short_parameters_names,
+    short_parameters_values,
+)
+@pytest.mark.short_sequential
+def test_full_study_short_sequential(
+        install_dir, study_path, expected_values, expected_investment_solution, tmp_path
+):
+    tmp_study = tmp_path / study_path.name
+    shutil.copytree(study_path, tmp_study)
+    launch_xpansion(install_dir, tmp_study, "sequential")
+    verify_solution(tmp_study, expected_values, expected_investment_solution)
+    verify_study_update(tmp_study, expected_investment_solution)
+
+
+@pytest.mark.parametrize(
+    short_parameters_names,
+    short_parameters_values,
+)
+@pytest.mark.short_mpi
+def test_full_study_short_parallel(
+        install_dir, study_path, expected_values, expected_investment_solution, tmp_path
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
