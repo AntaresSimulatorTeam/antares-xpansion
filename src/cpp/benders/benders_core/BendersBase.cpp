@@ -581,12 +581,12 @@ void BendersBase::set_log_file(const std::string &log_name) {
  *responsible for the creation of the structure file.
  */
 void BendersBase::build_input_map() {
-  _input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
-                       _options.MASTER_NAME);
-  _totalNbProblems = _input.size();
+  auto input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
+                           _options.MASTER_NAME);
+  _totalNbProblems = input.size();
   _data.nslaves = _totalNbProblems - 1;
-  master_variable_map = get_master_variable_map(_input);
-  slaves_map = get_slaves_map(_input);
+  master_variable_map = get_master_variable_map(input);
+  slaves_map = get_slaves_map(input);
 }
 
 std::map<std::string, int> BendersBase::get_master_variable_map(
@@ -611,7 +611,6 @@ CouplingMap BendersBase::get_slaves_map(CouplingMap input) const {
 }
 
 int BendersBase::get_totalNbProblems() const { return _totalNbProblems; }
-CouplingMap BendersBase::get_input() const { return _input; }
 
 void BendersBase::push_in_trace(const WorkerMasterDataPtr &worker_master_data) {
   _trace.push_back(worker_master_data);

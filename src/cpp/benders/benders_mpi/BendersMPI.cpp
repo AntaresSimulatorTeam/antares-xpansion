@@ -57,7 +57,7 @@ void BendersMpi::initialize_problems() {
 void BendersMpi::step_1_solve_master() {
   int success = 1;
   try {
-    do_solve_master_create_trace_and_update_cuts(_world.rank());
+    do_solve_master_create_trace_and_update_cuts();
   } catch (std::exception &ex) {
     success = 0;
     write_exception_message(ex);
@@ -66,8 +66,8 @@ void BendersMpi::step_1_solve_master() {
   broadcast_the_master_problem();
 }
 
-void BendersMpi::do_solve_master_create_trace_and_update_cuts(int rank) {
-  if (rank == 0) {
+void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
+  if (_world.rank() == 0) {
     solve_master_and_create_trace();
   }
 }
@@ -98,9 +98,7 @@ void BendersMpi::solve_master_and_create_trace() {
  *thread 0 to build new Master's cuts
  *
  */
-void BendersMpi::step_2_build_cuts() { solve_slaves_and_build_cuts(); }
-
-void BendersMpi::solve_slaves_and_build_cuts() {
+void BendersMpi::step_2_solve_slaves_and_build_cuts() {
   int success = 1;
   SlaveCutPackage slave_cut_package;
   Timer timer_slaves;
@@ -226,7 +224,7 @@ void BendersMpi::run() {
     /*Gather cut from each slave in master thread and add them to Master
      * problem*/
     if (!_exceptionRaised) {
-      step_2_build_cuts();
+      step_2_solve_slaves_and_build_cuts();
     }
 
     if (!_exceptionRaised) {

@@ -20,8 +20,6 @@ class BendersBase {
 
  protected:
   BendersData _data;
-  // map linking each problem name to its variables and their ids
-  CouplingMap _input;
   Str2Int master_variable_map;
   CouplingMap slaves_map;
 
@@ -44,7 +42,6 @@ class BendersBase {
   std::string get_structure_path() const;
   LogData bendersDataToLogData(const BendersData &data) const;
   void build_input_map();
-  CouplingMap get_input() const;
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
   void free_master() const;
