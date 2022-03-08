@@ -53,4 +53,5 @@ class BendersMpi : public BendersBase {
   void check_if_some_proc_had_a_failure(int success);
   mpi::environment &_env;
   mpi::communicator &_world;
+  const unsigned int rank_0 = 0;
 };

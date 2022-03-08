@@ -26,7 +26,7 @@ void BendersMpi::initialize_problems() {
   int current_problem_id = 0;
   auto slaveCount = _world.size() - 1;
 
-  if (_world.rank() == 0) {
+  if (_world.rank() == rank_0) {
     reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                   get_solver_name(), get_log_level(),
                                   _data.nslaves, log_name()));
@@ -63,7 +63,7 @@ void BendersMpi::step_1_solve_master() {
 }
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
-  if (_world.rank() == 0) {
+  if (_world.rank() == rank_0) {
     solve_master_and_create_trace();
   }
 }
@@ -71,7 +71,7 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
 void BendersMpi::broadcast_the_master_problem() {
   if (!_exceptionRaised) {
     Point x0 = get_x0();
-    mpi::broadcast(_world, x0, 0);
+    mpi::broadcast(_world, x0, rank_0);
     set_x0(x0);
     _world.barrier();
   }
@@ -99,7 +99,7 @@ void BendersMpi::step_2_solve_slaves_and_build_cuts() {
   SlaveCutPackage slave_cut_package;
   Timer timer_slaves;
   try {
-    if (_world.rank() != 0) {
+    if (_world.rank() != rank_0) {
       slave_cut_package = get_slave_package();
     }
   } catch (std::exception &ex) {
@@ -113,11 +113,11 @@ void BendersMpi::step_2_solve_slaves_and_build_cuts() {
 void BendersMpi::gather_slave_cut_package_and_build_cuts(
     const SlaveCutPackage &slave_cut_package, const Timer &timer_slaves) {
   if (!_exceptionRaised) {
-    if (_world.rank() != 0) {
-      mpi::gather(_world, slave_cut_package, 0);
+    if (_world.rank() != rank_0) {
+      mpi::gather(_world, slave_cut_package, rank_0);
     } else {
       AllCutPackage all_package;
-      mpi::gather(_world, slave_cut_package, all_package, 0);
+      mpi::gather(_world, slave_cut_package, all_package, rank_0);
       set_timer_slaves(timer_slaves.elapsed());
       master_build_cuts(all_package);
     }
@@ -171,7 +171,7 @@ void BendersMpi::write_exception_message(const std::exception &ex) {
 void BendersMpi::step_4_update_best_solution(int rank,
                                              const Timer &timer_master,
                                              const Timer &benders_timer) {
-  if (rank == 0) {
+  if (rank == rank_0) {
     update_best_ub();
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
@@ -187,7 +187,7 @@ void BendersMpi::step_4_update_best_solution(int rank,
  *  \brief Method to free the memory used by each problem
  */
 void BendersMpi::free() {
-  if (_world.rank() == 0) {
+  if (_world.rank() == rank_0) {
     free_master();
   } else {
     free_slaves();
@@ -202,7 +202,7 @@ void BendersMpi::free() {
  *
  */
 void BendersMpi::run() {
-  if (_world.rank() == 0) {
+  if (_world.rank() == rank_0) {
     set_cut_storage();
   }
   init_data();
@@ -228,10 +228,10 @@ void BendersMpi::run() {
     }
     _data.stop |= _exceptionRaised;
 
-    broadcast(_world, _data.stop, 0);
+    broadcast(_world, _data.stop, rank_0);
   }
 
-  if (_world.rank() == 0 && is_trace()) {
+  if (_world.rank() == rank_0 && is_trace()) {
     print_csv();
   }
 }

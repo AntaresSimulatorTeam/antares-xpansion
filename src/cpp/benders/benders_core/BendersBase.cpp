@@ -593,7 +593,7 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
     std::map<std::string, std::map<std::string, int>> input_map) const {
   auto const it_master(input_map.find(get_master_name()));
   if (it_master == input_map.end()) {
-    std::cout << "UNABLE TO FIND " << get_master_name() << std::endl;
+    LOG(ERROR) << "UNABLE TO FIND " << get_master_name() << std::endl;
     std::exit(1);
   }
   return it_master->second;
@@ -635,7 +635,7 @@ void BendersBase::free_slaves() {
 void BendersBase::match_problem_to_id() {
   int count = 0;
   for (const auto &problem : slaves_map) {
-  _problem_to_id[problem.first] = count;
+    _problem_to_id[problem.first] = count;
     count++;
   }
 }

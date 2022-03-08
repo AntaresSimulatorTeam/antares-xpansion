@@ -93,7 +93,7 @@ class BendersBase {
 
  private:
   BendersBaseOptions _options;
-  int _totalNbProblems = 0;
+  unsigned int _totalNbProblems = 0;
   std::string _log_name = "";
   BendersTrace _trace;
   WorkerMasterPtr _master;
