@@ -585,7 +585,18 @@ void BendersBase::build_input_map() {
                        _options.MASTER_NAME);
   _totalNbProblems = _input.size();
   _data.nslaves = _totalNbProblems - 1;
+  verify_existence_of_master_problem();
 }
+
+void BendersBase::verify_existence_of_master_problem() {
+  std::string const &master_name(get_master_name());
+  auto const it_master(_input.find(master_name));
+  if (it_master == _input.end()) {
+    std::cout << "UNABLE TO FIND " << master_name << std::endl;
+    std::exit(1);
+  }
+}
+
 int BendersBase::get_totalNbProblems() const { return _totalNbProblems; }
 CouplingMap BendersBase::get_input() const { return _input; }
 

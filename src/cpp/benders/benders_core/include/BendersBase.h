@@ -87,6 +87,7 @@ class BendersBase {
                        Point &s) const;
   void compute_cut_aggregate(const AllCutPackage &all_package);
   void compute_cut(const AllCutPackage &all_package);
+  void verify_existence_of_master_problem();
 
  private:
   BendersBaseOptions _options;
