@@ -1,5 +1,6 @@
 import pytest
-import os, sys
+import os
+import sys
 from pathlib import Path
 from unittest.mock import PropertyMock, patch
 
@@ -51,18 +52,22 @@ class TestBendersDriver:
         my_benders_mpi = "something"
         my_install_dir = Path("Dummy/Path/to/install/Dir")
         my_n_mpi = 13
-        exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
+        exe_path = os.path.normpath(
+            os.path.join(my_install_dir, my_benders_mpi))
 
         benders_driver = BendersDriver(exe_path, "", "")
 
         simulation_output_path = tmp_path
-        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path = Path(os.path.normpath(
+            os.path.join(simulation_output_path, 'lp')))
         lp_path.mkdir()
         os.chdir(lp_path)
-        expected_cmd = [self.MPI_LAUNCHER, self.MPI_N, str(my_n_mpi), exe_path, self.OPTIONS_TXT]
+        expected_cmd = [self.MPI_LAUNCHER, self.MPI_N,
+                        str(my_n_mpi), exe_path, self.OPTIONS_TXT]
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 0
-            benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi)            
+            benders_driver.launch(simulation_output_path,
+                                  "mpibenders", True, my_n_mpi)
             args, _ = run_function.call_args_list[0]
             assert args[0] == expected_cmd
 
@@ -71,30 +76,36 @@ class TestBendersDriver:
             my_benders_mpi = "something"
             my_install_dir = Path("Dummy/Path/to/installDir")
             my_n_mpi = 13
-            exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
+            exe_path = os.path.normpath(
+                os.path.join(my_install_dir, my_benders_mpi))
 
             benders_driver = BendersDriver(exe_path, "", "")
 
             simulation_output_path = tmp_path
-            lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+            lp_path = Path(os.path.normpath(
+                os.path.join(simulation_output_path, 'lp')))
             lp_path.mkdir()
             os.chdir(lp_path)
             with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
-                expected_cmd = [self.MPI_LAUNCHER, self.MPI_N, str(my_n_mpi), "--oversubscribe", exe_path, self.OPTIONS_TXT]
+                expected_cmd = [self.MPI_LAUNCHER, self.MPI_N, str(
+                    my_n_mpi), "--oversubscribe", exe_path, self.OPTIONS_TXT]
                 run_function.return_value.returncode = 0
-                benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi, oversubscribe=True)
+                benders_driver.launch(
+                    simulation_output_path, "mpibenders", True, my_n_mpi, oversubscribe=True)
                 args, _ = run_function.call_args_list[0]
                 assert args[0] == expected_cmd
 
     def test_benders_cmd_sequential(self, tmp_path):
         my_sequential = "something"
         my_install_dir = Path("Path/to/Dir")
-        exe_path = os.path.normpath(os.path.join(my_install_dir, my_sequential))
+        exe_path = os.path.normpath(
+            os.path.join(my_install_dir, my_sequential))
 
         benders_driver = BendersDriver("", exe_path, "")
 
         simulation_output_path = tmp_path
-        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path = Path(os.path.normpath(
+            os.path.join(simulation_output_path, 'lp')))
         lp_path.mkdir()
         os.chdir(lp_path)
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
@@ -107,12 +118,14 @@ class TestBendersDriver:
     def test_benders_cmd_merge_mps(self, tmp_path):
         my_merges_mps = "something"
         my_install_dir = Path("Path/to/")
-        exe_path = os.path.normpath(os.path.join(my_install_dir, my_merges_mps))
+        exe_path = os.path.normpath(
+            os.path.join(my_install_dir, my_merges_mps))
 
         benders_driver = BendersDriver("", "", exe_path)
 
         simulation_output_path = tmp_path
-        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path = Path(os.path.normpath(
+            os.path.join(simulation_output_path, 'lp')))
         lp_path.mkdir()
         os.chdir(lp_path)
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
@@ -127,28 +140,33 @@ class TestBendersDriver:
         my_benders_mpi = "something"
         my_install_dir = Path("Path/DummyDir/")
         my_n_mpi = 13
-        exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
+        exe_path = os.path.normpath(
+            os.path.join(my_install_dir, my_benders_mpi))
 
         benders_driver = BendersDriver(exe_path, "", "")
 
         simulation_output_path = tmp_path
-        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path = Path(os.path.normpath(
+            os.path.join(simulation_output_path, 'lp')))
         lp_path.mkdir()
         os.chdir(lp_path)
         with patch(MOCK_SUBPROCESS_RUN, autospec=True):
             with pytest.raises(BendersDriver.BendersExecutionError):
-                benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi)
+                benders_driver.launch(
+                    simulation_output_path, "mpibenders", True, my_n_mpi)
 
     def test_clean_solver_log_file(self, tmp_path):
 
         my_benders_mpi = "something"
         my_install_dir = Path("Path/to/Install")
         my_n_mpi = 13
-        exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
+        exe_path = os.path.normpath(
+            os.path.join(my_install_dir, my_benders_mpi))
         benders_driver = BendersDriver(exe_path, "", "")
 
         simulation_output_path = tmp_path
-        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path = Path(os.path.normpath(
+            os.path.join(simulation_output_path, 'lp')))
         lp_path.mkdir()
         os.chdir(lp_path)
 
@@ -163,7 +181,8 @@ class TestBendersDriver:
 
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 0
-            benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi)
+            benders_driver.launch(simulation_output_path,
+                                  "mpibenders", True, my_n_mpi)
 
         assert not solver_log_file_1.exists()
         assert not solver_log_file_2.exists()
@@ -178,21 +197,25 @@ class TestBendersDriver:
     def test_clean_benders_step_if_not_keep_mps(self, tmp_path):
         my_benders_mpi = "something"
         my_install_dir = Path("Dummy/Path/to/")
-        exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
+        exe_path = os.path.normpath(
+            os.path.join(my_install_dir, my_benders_mpi))
         keep_mps = False
 
         benders_driver = BendersDriver(exe_path, "", "")
 
         simulation_output_path = tmp_path
-        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
+        lp_path = Path(os.path.normpath(
+            os.path.join(simulation_output_path, 'lp')))
         lp_path.mkdir()
         os.chdir(lp_path)
 
         mps_fnames = ["master.mps", "1.mps", "2.mps"]
-        mps_files = [self._create_empty_file(lp_path, mps_fname) for mps_fname in mps_fnames]
+        mps_files = [self._create_empty_file(
+            lp_path, mps_fname) for mps_fname in mps_fnames]
 
         lp_fnames = ["master.lp", "1.lp", "2.lp"]
-        lp_files = [self._create_empty_file(lp_path, lp_fname) for lp_fname in lp_fnames]
+        lp_files = [self._create_empty_file(
+            lp_path, lp_fname) for lp_fname in lp_fnames]
 
         benders_files = mps_files + lp_files
         # check that files are created
@@ -201,87 +224,14 @@ class TestBendersDriver:
 
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 0
-            benders_driver.launch(simulation_output_path, "mpibenders", keep_mps)
+            benders_driver.launch(simulation_output_path,
+                                  "mpibenders", keep_mps)
 
         # check that files are deleted
         for file in benders_files:
             assert not file.exists()
-    
-    def test_benders_log_file_is_removed_if_it_already_exists(self, tmp_path):
-
-        
-        simulation_output_path = tmp_path
-        benders_driver, benders_log_file, orig_msg = self._get_benders_driver(simulation_output_path)
-
-        assert benders_log_file.exists()
-        assert benders_log_file.stat().st_size == len(orig_msg)
-        my_n_mpi = 15
-
-        with patch(MOCK_SUBPROCESS_POPEN, autospec=True):
-            with pytest.raises(BendersDriver.BendersExecutionError):
-                
-                benders_driver.set_benders_log_file(benders_log_file)
-                
-                benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi)   
-
-        assert benders_log_file.exists()
-        assert benders_log_file.stat().st_size == 0
-    
-    def test_benders_that_stdout_are_printed_in_log_file(self, tmp_path):
-       
-        self.check_that_std_streams_are_printed(tmp_path, "stdout")
-
-
-    def test_benders_that_stderr_are_printed_in_log_file(self, tmp_path):
-        self.check_that_std_streams_are_printed(tmp_path, "stderr")
-        
-    def check_that_std_streams_are_printed(self, tmp_path, stream_type):
-        simulation_output_path = tmp_path
-        benders_driver, benders_log_file, orig_msg = self._get_benders_driver(simulation_output_path)
-        
-        expected_std_ = ["solver out bla bla"]
-        assert benders_log_file.exists()
-        assert benders_log_file.stat().st_size == len(orig_msg)
-        my_n_mpi = 16
-
-        with patch(MOCK_SUBPROCESS_POPEN, autospec=True) as popen_function:
-            with pytest.raises(BendersDriver.BendersExecutionError):
-                if(stream_type == "stdout"):
-                    type(popen_function.return_value.__enter__()).stdout = PropertyMock(return_value = expected_std_)
-                elif (stream_type == "stderr"):
-                    type(popen_function.return_value.__enter__()).stderr = PropertyMock(return_value = expected_std_)
-                benders_driver.set_benders_log_file(benders_log_file)
-                benders_driver.launch(simulation_output_path, "mpibenders", True, my_n_mpi)   
-                
-
-
-        assert benders_log_file.exists()
-        assert benders_log_file.stat().st_size == len(expected_std_[0])
-        with open(benders_log_file) as log:
-            lines = [line for line in log.readlines()]
-            assert lines == expected_std_  
 
     def _create_empty_file(self, tmp_path: Path, fname: str):
         file = tmp_path / fname
         file.write_text("")
         return file
-
-
-    def _get_benders_driver(self, tmp_path):
-
-        orig_msg = "log Message"
-        benders_log_file = tmp_path / "benders.log"
-        benders_log_file.write_text(orig_msg)
-
-        my_benders_mpi = "something"
-        my_install_dir = Path("Dummy/Path/to/")
-        exe_path = os.path.normpath(os.path.join(my_install_dir, my_benders_mpi))
-
-        benders_driver = BendersDriver(exe_path, "", "")
-
-        simulation_output_path = tmp_path
-        lp_path = Path(os.path.normpath(os.path.join(simulation_output_path, 'lp')))
-        lp_path.mkdir()
-        os.chdir(lp_path)
-
-        return (benders_driver, benders_log_file, orig_msg )

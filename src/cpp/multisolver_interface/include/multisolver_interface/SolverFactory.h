@@ -31,6 +31,8 @@ class SolverFactory {
    * @param solver_name : Name of the solver to use
    */
   SolverAbstract::Ptr create_solver(const std::string &solver_name) const;
+  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+                                    const std::string &log_name) const;
 
   /**
    * @brief Creates and returns to an object solver from the wanted
@@ -41,6 +43,9 @@ class SolverFactory {
    */
   SolverAbstract::Ptr create_solver(const std::string &solver_name,
                                     const SOLVER_TYPE solver_type) const;
+  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+                                    const SOLVER_TYPE solver_type,
+                                    const std::string &log_name) const;
 
   /**
    * @brief Copy constructor : Creates and returns to an object solver from the

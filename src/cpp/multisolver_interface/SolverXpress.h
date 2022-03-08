@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 #include "multisolver_interface/SolverAbstract.h"
 #include "xprs.h"
 
@@ -27,6 +29,7 @@ class SolverXpress : public SolverAbstract {
    * @brief Default constructor of a XPRESS solver
    */
   SolverXpress();
+  SolverXpress(const std::string &log_file);
 
   /**
    * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and
@@ -169,6 +172,9 @@ class SolverXpress : public SolverAbstract {
   virtual void set_threads(int n_threads) override;
   virtual void set_optimality_gap(double gap) override;
   virtual void set_simplex_iter(int iter) override;
+
+ public:
+  std::ofstream _log_stream;
 };
 
 /************************************************************************************\

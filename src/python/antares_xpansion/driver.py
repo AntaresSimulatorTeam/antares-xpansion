@@ -38,7 +38,7 @@ class XpansionDriver:
                                                                                     user_weights_file_path=self.config_loader.weights_file_path(),
                                                                                     weight_file_name_for_lp=self.config_loader.weight_file_name(),
                                                                                     lp_namer_exe_path=self.config_loader.lp_namer_exe(),
-                                                                                    nb_active_years=self.config_loader.nb_active_years
+                                                                                    active_years=self.config_loader.active_years
                                                                                     ))
 
         self.benders_driver = BendersDriver(
@@ -105,8 +105,6 @@ class XpansionDriver:
 
     def launch_benders_step(self):
         self.config_loader.benders_pre_actions()
-        if(self.config_loader.log_level() > 0):
-            self.benders_driver.set_benders_log_file(self.config_loader.benders_log_file())
         self.benders_driver.launch(
             self.config_loader.simulation_output_path(),
             self.config_loader.method(),

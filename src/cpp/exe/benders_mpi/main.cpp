@@ -4,7 +4,6 @@
 #include "BendersMPI.h"
 #include "BendersSequential.h"
 #include "LoggerFactories.h"
-#include "OutputWriter.h"
 #include "Timer.h"
 #include "Worker.h"
 #include "WriterFactories.h"
@@ -45,7 +44,9 @@ int main(int argc, char **argv) {
   Writer writer;
 
   if (world.rank() == 0) {
-    logger = build_stdout_and_file_logger(log_reports_name);
+    auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
+
+    logger = logger_factory.get_logger();
     writer = build_json_writer(options.JSON_FILE);
     std::ostringstream oss_l = start_message(options, "mpi");
     LOG(INFO) << oss_l.str() << std::endl;
@@ -68,6 +69,7 @@ int main(int argc, char **argv) {
     benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env,
                                            world);
   }
+  benders->set_log_file(log_reports_name);
 
   writer->write_log_level(options.LOG_LEVEL);
   writer->write_master_name(options.MASTER_NAME);

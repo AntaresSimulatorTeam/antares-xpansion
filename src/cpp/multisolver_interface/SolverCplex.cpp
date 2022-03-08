@@ -8,6 +8,13 @@
 *************************************************************************************************/
 int SolverCplex::_NumberOfProblems = 0;
 
+SolverCplex::SolverCplex(const std::string &log_file) : SolverCplex() {
+  _log_file = log_file;
+
+  if (_log_file != "") {
+    CPXsetlogfilename(_env, _log_file.c_str(), "a+");
+  }
+}
 SolverCplex::SolverCplex() {
   int status(0);
 
@@ -20,19 +27,20 @@ SolverCplex::SolverCplex() {
   _NumberOfProblems += 1;
 }
 
-SolverCplex::SolverCplex(const std::string &name) {
-  int status(0);
+// OLD cplex ctor to set problem name
+// SolverCplex::SolverCplex(const std::string &name) {
+//   int status(0);
 
-  // Openning CPLEX environment
-  _env = CPXopenCPLEX(&status);
-  zero_status_check(status, "open CPLEX");
+//   // Openning CPLEX environment
+//   _env = CPXopenCPLEX(&status);
+//   zero_status_check(status, "open CPLEX");
 
-  // Creating empty problem
-  _prb = CPXcreateprob(_env, &status, name.c_str());
-  zero_status_check(status, "create problem");
+//   // Creating empty problem
+//   _prb = CPXcreateprob(_env, &status, name.c_str());
+//   zero_status_check(status, "create problem");
 
-  _NumberOfProblems += 1;
-}
+//   _NumberOfProblems += 1;
+// }
 
 SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif) {
   int status(0);
@@ -45,7 +53,10 @@ SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif) {
   if (SolverCplex *c = dynamic_cast<SolverCplex *>(fictif.get())) {
     _prb = CPXcloneprob(_env, c->_prb, &status);
     zero_status_check(status, "create problem");
-
+    _log_file = fictif->_log_file;
+    if (_log_file != "") {
+      CPXsetlogfilename(_env, _log_file.c_str(), "a+");
+    }
     _NumberOfProblems += 1;
   } else {
     throw InvalidSolverForCopyException(fictif->get_solver_name(),

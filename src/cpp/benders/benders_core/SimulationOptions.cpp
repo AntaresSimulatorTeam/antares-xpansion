@@ -143,6 +143,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.BOUND_ALPHA = BOUND_ALPHA;
 
   result.CSV_NAME = CSV_NAME;
+  result.LAST_MASTER_MPS = LAST_MASTER_MPS;
 
   return result;
 }

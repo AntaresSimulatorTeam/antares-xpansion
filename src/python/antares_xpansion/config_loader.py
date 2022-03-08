@@ -33,8 +33,8 @@ class ConfigLoader:
         self.candidates_list = []
         self._verify_settings_ini_file_exists()
 
-        self.nb_active_years = GeneralDataIniReader(
-            Path(self.general_data())).get_nb_activated_year()
+        self.active_years = GeneralDataIniReader(
+            Path(self.general_data())).get_active_years()
 
         self.options = self._get_options_from_settings_inifile()
 
@@ -256,7 +256,7 @@ class ConfigLoader:
         """
         # computing the weight of slaves
         options_values = self._config.options_default
-        options_values["SLAVE_WEIGHT_VALUE"] = str(self.nb_active_years)
+        options_values["SLAVE_WEIGHT_VALUE"] = str(len(self.active_years))
         options_values["JSON_FILE"] = self.json_file_path()
         options_values["ABSOLUTE_GAP"] = self.get_absolute_optimality_gap()
         options_values["RELATIVE_GAP"] = self.get_relative_optimality_gap()
@@ -267,6 +267,7 @@ class ConfigLoader:
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         options_values["TIME_LIMIT"] = self.timelimit()
         options_values["LOG_LEVEL"] = self.log_level()
+        options_values["LAST_MASTER_MPS"] = self._config.LAST_MASTER_MPS
         # generate options file for the solver
         options_path = os.path.normpath(os.path.join(
             self._simulation_lp_path(), self._config.OPTIONS_TXT))
@@ -383,10 +384,7 @@ class ConfigLoader:
         log_level_str = self.options.get(
             "log_level", self._config.settings_default["log_level"]
         )
-        return int(log_level_str) 
-    
-    def benders_log_file(self)-> Path:
-        return Path(os.path.join(self._simulation_lp_path(), self._config.BENDERS_LOG_FILE))
+        return int(log_level_str)
 
     def sensitivity_log_file(self)-> Path:
         return Path(os.path.join(self._sensitivity_dir(), self._config.SENSITIVITY_LOG_FILE))

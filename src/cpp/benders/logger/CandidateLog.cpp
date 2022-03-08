@@ -6,10 +6,14 @@
 #include <map>
 #include <sstream>
 
+#include "CandidateLog.h"
 #include "core/ILogger.h"
 
 namespace xpansion {
 namespace logger {
+
+CandidateLog::CandidateLog(const std::string &line_prefix)
+    : _line_prefix(line_prefix) {}
 
 std::string CandidateLog::log_iteration_candidates(const LogData &data) {
   std::stringstream _stream;
@@ -20,7 +24,7 @@ std::string CandidateLog::log_iteration_candidates(const LogData &data) {
 
 std::string CandidateLog::getHeaderString() const {
   std::stringstream header;
-  header << indent_0 << "Candidates:" << std::endl;
+  header << _line_prefix << indent_0 << "Candidates:" << std::endl;
   return header.str();
 }
 
@@ -73,8 +77,8 @@ std::string CandidateLog::getStringBodyUsingValuesAndSizes() {
 
 inline std::string CandidateLog::create_candidate_str(const value_map &value) {
   std::stringstream result;
-  result << indent_0 << indent_1 << std::setw(_sizes.at(CANDIDATE))
-         << value.at(CANDIDATE);
+  result << _line_prefix << indent_0 << indent_1
+         << std::setw(_sizes.at(CANDIDATE)) << value.at(CANDIDATE);
   result << " = " << std::setw(_sizes.at(INVEST)) << value.at(INVEST)
          << " invested MW ";
   result << "-- possible interval [" << std::setw(_sizes.at(INVEST_MIN))

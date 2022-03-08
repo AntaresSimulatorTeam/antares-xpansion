@@ -1,6 +1,7 @@
 #include <cstdio>
 #include <iostream>
 #include <ostream>
+#include <sstream>
 
 #include "core/ILogger.h"
 #include "gtest/gtest.h"
@@ -10,6 +11,12 @@
 
 using namespace xpansion::logger;
 
+void addCandidate(LogData& logData, std::string candidate, double invest,
+                  double minInvest, double maxInvest) {
+  logData.x0[candidate] = invest;
+  logData.min_invest[candidate] = minInvest;
+  logData.max_invest[candidate] = maxInvest;
+}
 class FileLoggerTest : public ::testing::Test {
  public:
   void SetUp() { _fileName = std::tmpnam(nullptr); }
@@ -44,37 +51,53 @@ TEST_F(FileLoggerTest, EmptyFileCreatedAtInit) {
 
   ASSERT_TRUE(fileStream.good() && stringStreamFromFile.str().empty());
 }
+TEST_F(FileLoggerTest, ShouldHavePrefixOnEveryLine) {
+  UserFile user_file(_fileName);
 
-TEST_F(FileLoggerTest, FileHasBeenWritten) {
-  UserFile fileLog(_fileName);
-  const std::string& displayMessage = "Writing test";
-  std::stringstream expected;
-  expected << displayMessage << std::endl;
+  user_file.display_message("Hello!");
 
-  fileLog.display_message(displayMessage);
+  user_file.log_master_solving_duration(2);
 
+  user_file.log_subproblems_solving_duration(36);
+
+  LogData log_data;
+  log_data.it = 45;
+  user_file.log_at_initialization(log_data);
+
+  addCandidate(log_data, "z", 50.0, 0.0, 100.0);
+  user_file.log_iteration_candidates(log_data);
+
+  log_data.slave_cost = 150000000.5e6;
+  log_data.invest_cost = 200000000e6;
+  log_data.best_ub = 100e6;
+  log_data.lb = 3e6;
+  user_file.log_at_iteration_end(log_data);
+
+  log_data.best_it = 1;
+  log_data.optimality_gap = 1;
+  log_data.relative_gap = 1e-6;
+  log_data.max_iterations = 10;
+  user_file.log_at_ending(log_data);
+
+  user_file.log_total_duration(123);
+
+  user_file.log_stop_criterion_reached(StoppingCriterion::absolute_gap);
   std::ifstream fileStream(_fileName);
-  std::stringstream stringStringFromFile;
+  const std::string expected_prefix = "<<BENDERS>> ";
 
-  stringStringFromFile << fileStream.rdbuf();
+  std::string line;
+  while (std::getline(fileStream, line)) {
+    auto prefix = line.substr(0, expected_prefix.size());
+    ASSERT_EQ(prefix, expected_prefix);
+  }
   fileStream.close();
-
-  ASSERT_EQ(stringStringFromFile.str(), expected.str());
 }
-
 class UserLoggerTest : public ::testing::Test {
  public:
   const std::string indent_0 = "\t\t";
   const std::string indent_1 = "\t";
 
   UserLoggerTest() : _logger(_stream) {}
-
-  void addCandidate(LogData& logData, std::string candidate, double invest,
-                    double minInvest, double maxInvest) {
-    logData.x0[candidate] = invest;
-    logData.min_invest[candidate] = minInvest;
-    logData.max_invest[candidate] = maxInvest;
-  }
 
   std::stringstream _stream;
   User _logger;

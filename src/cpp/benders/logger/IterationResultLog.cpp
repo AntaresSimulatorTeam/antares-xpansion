@@ -7,18 +7,21 @@
 #include <sstream>
 
 #include "Commons.h"
+#include "IterationResultLog.h"
 #include "core/ILogger.h"
 
 namespace xpansion {
 namespace logger {
 
-std::string IterationResultLog::Log_at_iteration_end(const LogData& data) {
+IterationResultLog::IterationResultLog(const std::string &line_prefix)
+    : _line_prefix(line_prefix) {}
+std::string IterationResultLog::Log_at_iteration_end(const LogData &data) {
   setValuesFromData(data);
   setMaximumStringSizes();
   return getCompleteMessageString();
 }
 
-void IterationResultLog::setValuesFromData(const LogData& data) {
+void IterationResultLog::setValuesFromData(const LogData &data) {
   double low_bd = data.lb;
   double abs_gap = data.best_ub - data.lb;
   double rel_gap = abs_gap / data.best_ub;
@@ -65,26 +68,26 @@ void IterationResultLog::setMaximumStringSizes() {  // Compute maximum string
 
 std::string IterationResultLog::getCompleteMessageString() const {
   std::stringstream _stream;
-  _stream << indent_0 << "Solution =" << std::endl;
-  for (const auto& value : _values) {
-    _stream << create_solution_str(value, _max_sizes) << std::endl;
+  _stream << _line_prefix << indent_0 << "Solution =" << std::endl;
+  for (const auto &value : _values) {
+    _stream << create_solution_str(value, _max_sizes);
   }
   return _stream.str();
 }
 
 inline std::string IterationResultLog::create_solution_str(
-    const value_map& value, const size_map& sizes) const {
+    const value_map &value, const size_map &sizes) const {
   std::stringstream result;
-  result << indent_0 << indent_1 << std::setw(sizes.at(LABEL))
+  result << _line_prefix << indent_0 << indent_1 << std::setw(sizes.at(LABEL))
          << value.at(LABEL);
   result << " = " << std::setw(sizes.at(VALUE)) << value.at(VALUE)
-         << value.at(UNIT);
+         << value.at(UNIT) << std::endl;
   return result.str();
 }
 
 inline value_map IterationResultLog::create_value_map(
-    const std::string& label, const std::string& value,
-    const std::string& unit) const {
+    const std::string &label, const std::string &value,
+    const std::string &unit) const {
   value_map result;
   result[LABEL] = label;
   result[VALUE] = value;

@@ -16,7 +16,8 @@ class Worker {
  public:
   Worker() = default;
   void init(Str2Int const &variable_map, std::string const &path_to_mps,
-            std::string const &solver_name, int log_level);
+            std::string const &solver_name, int log_level,
+            const std::string &log_name);
   virtual ~Worker() = default;
 
   void get_value(double &lb) const;
@@ -32,7 +33,7 @@ class Worker {
       _id_to_name; /*!< Link between the identifier of a variable and its name*/
 
  public:
-  void solve(int &lp_status, const std::string &outputroot) const;
+  void solve(int &lp_status, const std::string &outputroot, const std::string &output_master_mps_file_name) const;
 
  public:
   SolverAbstract::Ptr _solver =
