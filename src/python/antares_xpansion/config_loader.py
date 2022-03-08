@@ -388,6 +388,9 @@ class ConfigLoader:
     def benders_log_file(self)-> Path:
         return Path(os.path.join(self._simulation_lp_path(), self._config.BENDERS_LOG_FILE))
 
+    def sensitivity_log_file(self)-> Path:
+        return Path(os.path.join(self._sensitivity_dir(), self._config.SENSITIVITY_LOG_FILE))
+
 
     class MissingSimulationName(Exception):
         pass

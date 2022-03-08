@@ -22,6 +22,7 @@ class SensitivityDriver:
         last_master_path,
         structure_path,
         json_sensitivity_out_path,
+        sensitivity_log_path,
     ):
         """
         launch sensitivity analysis
@@ -35,6 +36,7 @@ class SensitivityDriver:
         self.structure_path = self._get_file_path(structure_path)
 
         self.json_sensitivity_out_path = json_sensitivity_out_path
+        self.sensitivity_log_path = sensitivity_log_path
 
         flushed_print("-- Sensitivity analysis")
 
@@ -86,6 +88,8 @@ class SensitivityDriver:
             self.structure_path,
             "-o",
             self.json_sensitivity_out_path,
+            "-l",
+            self.sensitivity_log_path,
         ]
 
     class SensitivityOutputPathError(Exception):

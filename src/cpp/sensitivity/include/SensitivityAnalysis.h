@@ -2,21 +2,16 @@
 
 #include <multisolver_interface/SolverAbstract.h>
 #include "SensitivityInputReader.h"
+#include "SensitivityILogger.h"
 #include "SensitivityWriter.h"
 #include "SensitivityOutputData.h"
 #include "SensitivityPbModifier.h"
-
-enum class SensitivityPbType
-{
-    CAPEX,
-    PROJECTION,
-};
 
 class SensitivityAnalysis
 {
 public:
     SensitivityAnalysis() = default;
-    explicit SensitivityAnalysis(const SensitivityInputData &input_data, std::shared_ptr<SensitivityWriter> writer);
+    explicit SensitivityAnalysis(const SensitivityInputData &input_data, std::shared_ptr<SensitivityILogger> logger, std::shared_ptr<SensitivityWriter> writer);
     ~SensitivityAnalysis() = default;
 
     static const bool MINIMIZE;
@@ -35,6 +30,7 @@ private:
 
     std::map<std::string, int> _name_to_id;
     SolverAbstract::Ptr _last_master;
+    std::shared_ptr<SensitivityILogger> _logger;
     std::shared_ptr<SensitivityWriter> _writer;
 
     std::shared_ptr<SensitivityPbModifier> _pb_modifier;

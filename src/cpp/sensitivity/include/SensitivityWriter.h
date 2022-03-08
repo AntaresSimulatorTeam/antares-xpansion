@@ -1,6 +1,7 @@
 #pragma once
 
 #include <json/writer.h>
+
 #include "SensitivityOutputData.h"
 
 const std::string ANTARES_C("antares");
@@ -13,7 +14,7 @@ const std::string PB_TYPE_C("problem type");
 const std::string MIN_C("min");
 const std::string MAX_C("max");
 const std::string CAPEX_C("capex");
-const std::string PROJECTION_C("projection");
+const std::string PROJECTION_C("investment");
 const std::string STATUS_C("status");
 const std::string SYSTEM_COST_C("system cost");
 const std::string OBJECTIVE_C("objective");
@@ -22,19 +23,20 @@ const std::string INVEST_C("invest");
 const std::string CANDIDATES_C("candidates");
 const std::string SENSITIVITY_SOLUTION_C("sensitivity solutions");
 
-class SensitivityWriter
-{
-private:
-    std::string _filename;
-    Json::Value _output;
+class SensitivityWriter {
+ private:
+  std::string _filename;
+  Json::Value _output;
 
-    void write_sensitivity_output(SensitivityOutputData const &output_data);
+  void _write_sensitivity_output(const SensitivityOutputData &output_data);
+  Json::Value _write_single_pb(const SinglePbData &single_pb_data);
+  Json::Value _write_candidate(const std::pair<std::string, double> &candidate);
 
-public:
-    SensitivityWriter() = delete;
-    explicit SensitivityWriter(const std::string &json_filename);
-    ~SensitivityWriter() = default;
+ public:
+  SensitivityWriter() = delete;
+  explicit SensitivityWriter(const std::string &json_filename);
+  ~SensitivityWriter() = default;
 
-    void dump();
-    void end_writing(SensitivityOutputData const &output_data);
+  void dump();
+  void end_writing(SensitivityOutputData const &output_data);
 };

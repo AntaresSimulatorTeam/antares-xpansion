@@ -1,5 +1,8 @@
 add_library (sensitivity_core
 	SensitivityInputReader.cpp
+	SensitivityMasterLogger.cpp
+	SensitivityUserLogger.cpp
+	SensitivityFileLogger.cpp
 	SensitivityAnalysis.cpp 
 	SensitivityWriter.cpp 
 	SensitivityPbModifier.cpp 
@@ -7,7 +10,8 @@ add_library (sensitivity_core
 	PbModifierProjection.cpp
 )
 
-get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(JSON_INC_PATH jsoncpp_lib
+INTERFACE_INCLUDE_DIRECTORIES)
 
 target_include_directories (sensitivity_core
 	PUBLIC
@@ -17,7 +21,7 @@ target_include_directories (sensitivity_core
 
 target_link_libraries (sensitivity_core
 	PUBLIC
-		benders_core
+		logger_lib
 )
 
 add_library (${PROJECT_NAME}::sensitivity_core ALIAS sensitivity_core)

@@ -128,6 +128,7 @@ class XpansionConfig:
         self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
         self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
         self.BENDERS_LOG_FILE = "benders.log"
+        self.SENSITIVITY_LOG_FILE = "sensitivity_log.txt"
 
     def _set_default_settings(self):
         self.settings_default = {
