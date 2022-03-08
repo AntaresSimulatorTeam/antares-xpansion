@@ -21,19 +21,17 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
     : BendersBase(options, logger, writer) {}
 
 void BendersSequential::initialise_problems() {
-  const auto input_ = get_input();
-
-  auto it(input_.begin());
-
-  auto const it_master = input_.find(get_master_name());
-  for (int i(0); i < _data.nslaves; ++it) {
-    if (it != it_master) {
-      set_problem_to_id(it->first, i);
-      add_slave(*it);
-      add_slave_name(it->first);
-      i++;
-    }
+  int count = 0;
+  for (const auto &problem: slaves_map) {
+    set_problem_to_id(problem.first, count);
+    count ++;
   }
+
+  for (const auto &problem: slaves_map) {
+    add_slave(problem);
+    add_slave_name(problem.first);
+  }
+
   reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
                                 _data.nslaves, log_name()));

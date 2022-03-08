@@ -21,22 +21,29 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
  */
 
 void BendersMpi::load() {
+  int count = 0;
+  for (const auto &problem: slaves_map) {
+    set_problem_to_id(problem.first, count);
+    count ++;
+  }
+
   init_master_problem_and_slave_id();
   int current_problem_id=0;
   auto slaveCount = _world.size() - 1;
-    if (_world.rank() != 0) {
-        std::string const &master_name(get_master_name());
-        for (const auto &problem: slaves_map) {
-            if (problem.first != master_name) {
-                auto slaveToFeed = current_problem_id % slaveCount + 1;
-                if (slaveToFeed == _world.rank()) {
-                    add_slave(problem);
-                    add_slave_name(problem.first);
-                }
-                current_problem_id++;
-            }
-        }
+
+  if (_world.rank() != 0) {
+    std::string const &master_name(get_master_name());
+    for (const auto &problem: slaves_map) {
+
+      auto slaveToFeed = current_problem_id % slaveCount + 1;
+      if (slaveToFeed == _world.rank()) {
+        add_slave(problem);
+        add_slave_name(problem.first);
+      }
+      current_problem_id++;
     }
+  }
+
 }
 
 void BendersMpi::init_master_problem_and_slave_id() {
@@ -246,16 +253,7 @@ void BendersMpi::launch() {
   build_input_map();
   _world.barrier();
 
-  CouplingMap::const_iterator it(_input.begin());
-  auto const it_master(_input.find(get_master_name()));
 
-  for (int i(0); i < _data.nslaves; ++it) {
-      if (it != it_master) {
-          set_problem_to_id(it->first, i);
-          ++i;
-      }
-  }
-  ////
 
   load();
   _world.barrier();
