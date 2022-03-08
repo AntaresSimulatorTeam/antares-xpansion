@@ -28,6 +28,7 @@ class BendersBase {
  protected:
   virtual void free() = 0;
   virtual void run() = 0;
+  virtual void initialize_problems() = 0;
   void init_data();
   void print_csv();
   void update_best_ub();
@@ -107,6 +108,5 @@ class BendersBase {
  public:
   Logger _logger;
   Writer _writer;
-
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

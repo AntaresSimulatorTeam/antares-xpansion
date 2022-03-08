@@ -20,22 +20,20 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger &logger, Writer writer)
     : BendersBase(options, logger, writer) {}
 
-void BendersSequential::initialise_problems() {
+void BendersSequential::initialize_problems() {
   int count = 0;
-  for (const auto &problem: slaves_map) {
+  for (const auto &problem : slaves_map) {
     set_problem_to_id(problem.first, count);
-    count ++;
-  }
-
-  for (const auto &problem: slaves_map) {
-    add_slave(problem);
-    add_slave_name(problem.first);
+    count++;
   }
 
   reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
                                 _data.nslaves, log_name()));
-
+  for (const auto &problem : slaves_map) {
+    add_slave(problem);
+    add_slave_name(problem.first);
+  }
 }
 
 /*!
@@ -120,7 +118,7 @@ void BendersSequential::launch() {
 
   LOG(INFO) << "Constructing workers..." << std::endl;
 
-  initialise_problems();
+  initialize_problems();
   LOG(INFO) << "Running solver..." << std::endl;
   try {
     run();

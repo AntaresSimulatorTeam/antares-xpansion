@@ -26,6 +26,7 @@ class BendersMpi : public BendersBase {
  protected:
   virtual void free();
   virtual void run();
+  virtual void initialize_problems();
 
  private:
   void step_1_solve_master();
@@ -51,7 +52,6 @@ class BendersMpi : public BendersBase {
   void write_exception_message(const std::exception &ex);
 
   void check_if_some_proc_had_a_failure(int success);
-  void init_master_problem_and_slave_id();
   mpi::environment &_env;
   mpi::communicator &_world;
 };
