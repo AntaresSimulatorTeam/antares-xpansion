@@ -11,14 +11,20 @@ class SensitivityUserLogger : public SensitivityILogger {
   ~SensitivityUserLogger() = default;
 
   void display_message(const std::string &msg) override;
-  void log_at_start() override;
+  void log_at_start(const SensitivityOutputData &output_data) override;
   void log_set_sensitivity_pb(const SinglePbData &pb_data) override;
   void log_begin_pb_resolution(const SinglePbData &pb_data) override;
-  void log_pb_solution(const SinglePbData& pb_data) override;
+  void log_pb_solution(const SinglePbData &pb_data) override;
+  virtual void log_summary(const SensitivityOutputData &output_data) override;
   void log_at_ending() override;
 
-  private:
+ private:
   std::ostream &_stream;
+
+  void log_projection_summary(const SensitivityOutputData &output_data);
+  void log_capex_summary(const SensitivityOutputData &output_data);
+  static bool is_capex_min(const SinglePbData &pb_data);
+  static bool is_capex_max(const SinglePbData &pb_data);
 };
 
 #endif  // ANTARESXPANSION_SENSITIVITYUSERLOGGER_H

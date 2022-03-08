@@ -38,7 +38,7 @@ void SensitivityWriter::_write_sensitivity_output(
 Json::Value SensitivityWriter::_write_single_pb(
     const SinglePbData &single_pb_data) {
   Json::Value single_pb_data_l;
-  single_pb_data_l[PB_TYPE_C] = single_pb_data.pb_type;
+  single_pb_data_l[PB_TYPE_C] = single_pb_data.str_pb_type;
   single_pb_data_l[OPT_DIR_C] = single_pb_data.opt_dir;
   single_pb_data_l[STATUS_C] = single_pb_data.status;
   single_pb_data_l[OBJECTIVE_C] = single_pb_data.objective;

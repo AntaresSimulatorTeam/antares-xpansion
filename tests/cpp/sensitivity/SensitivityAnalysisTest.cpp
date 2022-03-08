@@ -101,7 +101,7 @@ protected:
 
     void verify_single_pb_data(const SinglePbData &single_pb_data, const SinglePbData &expec_single_pb_data)
     {
-        ASSERT_EQ(single_pb_data.pb_type, expec_single_pb_data.pb_type);
+        ASSERT_EQ(single_pb_data.str_pb_type, expec_single_pb_data.str_pb_type);
         ASSERT_EQ(single_pb_data.opt_dir, expec_single_pb_data.opt_dir);
         ASSERT_NEAR(single_pb_data.objective, expec_single_pb_data.objective, 1e-6);
         ASSERT_NEAR(single_pb_data.system_cost, expec_single_pb_data.system_cost, 1e-6);

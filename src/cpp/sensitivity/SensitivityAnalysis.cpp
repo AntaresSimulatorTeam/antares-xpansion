@@ -24,7 +24,7 @@ SensitivityAnalysis::SensitivityAnalysis(
 }
 
 void SensitivityAnalysis::launch() {
-  _logger->log_at_start();
+  _logger->log_at_start(_output_data);
 
   if (_capex) {
     get_capex_solutions();
@@ -33,6 +33,7 @@ void SensitivityAnalysis::launch() {
     get_candidates_projection();
   }
   _writer->end_writing(_output_data);
+  _logger->log_summary(_output_data);
   _logger->log_at_ending();
 }
 
@@ -54,7 +55,7 @@ void SensitivityAnalysis::get_capex_solutions() {
 
 void SensitivityAnalysis::get_candidates_projection() {
   _sensitivity_pb_type = SensitivityPbType::PROJECTION;
-  
+
   for (auto const &candidate_name : _projection) {
     if (_name_to_id.find(candidate_name) != _name_to_id.end()) {
       _pb_modifier = std::make_shared<PbModifierProjection>(
@@ -81,8 +82,29 @@ void SensitivityAnalysis::run_analysis() {
 void SensitivityAnalysis::run_optimization(
     const SolverAbstract::Ptr &sensitivity_model, const bool minimize) {
   sensitivity_model->chg_obj_direction(minimize);
+
+  SinglePbData pb_data = init_single_pb_data(minimize);
+  _logger->log_begin_pb_resolution(pb_data);
+
   auto raw_output = solve_sensitivity_pb(sensitivity_model);
-  fill_output_data(raw_output, minimize);
+
+  fill_single_pb_data(pb_data, raw_output, minimize);
+  _logger->log_pb_solution(pb_data);
+
+  _output_data.pbs_data.push_back(pb_data);
+}
+
+SinglePbData SensitivityAnalysis::init_single_pb_data(const bool minimize) {
+  std::string str_pb_type =
+      sensitivity_string_pb_type[static_cast<int>(_sensitivity_pb_type)];
+  if (_sensitivity_pb_type == SensitivityPbType::PROJECTION) {
+    // Add a check for the success of the cast
+    auto *pb_modifier =
+        dynamic_cast<PbModifierProjection *>(_pb_modifier.get());
+    str_pb_type += " " + pb_modifier->get_candidate_name();
+  }
+  std::string opt_dir = minimize ? MIN_C : MAX_C;
+  return SinglePbData(_sensitivity_pb_type, str_pb_type, opt_dir);
 }
 
 RawPbData SensitivityAnalysis::solve_sensitivity_pb(
@@ -109,29 +131,16 @@ RawPbData SensitivityAnalysis::solve_sensitivity_pb(
   return raw_output;
 }
 
-void SensitivityAnalysis::fill_output_data(const RawPbData &raw_output,
-                                           const bool minimize) {
-  SinglePbData pb_data;
-
-  pb_data.opt_dir = minimize ? MIN_C : MAX_C;
+void SensitivityAnalysis::fill_single_pb_data(SinglePbData &pb_data,
+                                              const RawPbData &raw_output,
+                                              const bool minimize) {
   pb_data.objective = raw_output.obj_value;
   pb_data.status = raw_output.status;
-  pb_data.pb_type =
-      sensitivity_string_pb_type[static_cast<int>(_sensitivity_pb_type)];
-
-  if (_sensitivity_pb_type == SensitivityPbType::PROJECTION) {
-    // Add a check for the success of the cast
-    auto *pb_modifier =
-        dynamic_cast<PbModifierProjection *>(_pb_modifier.get());
-    pb_data.pb_type += " " + pb_modifier->get_candidate_name();
-  }
 
   for (auto const &kvp : _name_to_id) {
     pb_data.candidates[kvp.first] = raw_output.solution[kvp.second];
   }
   pb_data.system_cost = get_system_cost(raw_output);
-
-  _output_data.pbs_data.push_back(pb_data);
 }
 
 double SensitivityAnalysis::get_system_cost(const RawPbData &raw_output) const {

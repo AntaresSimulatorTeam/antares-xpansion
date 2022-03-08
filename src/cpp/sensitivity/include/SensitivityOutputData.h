@@ -4,13 +4,17 @@
 
 #include "common.h"
 
+const std::string MIN_C("min");
+const std::string MAX_C("max");
+
 enum class SensitivityPbType {
   CAPEX,
   PROJECTION,
 };
 
 struct SinglePbData {
-  std::string pb_type;
+  SensitivityPbType pb_type;
+  std::string str_pb_type;
   std::string opt_dir;
   double objective;
   double system_cost;
@@ -18,18 +22,27 @@ struct SinglePbData {
   int status;
 
   SinglePbData() = default;
-  SinglePbData(const std::string &pb_type, const std::string &opt_dir,
+  SinglePbData(const std::string &str_pb_type, const std::string &opt_dir,
                double objective, double system_cost, const Point &candidates,
                int status)
-      : pb_type(pb_type),
+      : str_pb_type(str_pb_type),
         opt_dir(opt_dir),
         objective(objective),
         system_cost(system_cost),
         candidates(candidates),
         status(status) {}
+
+  SinglePbData(const SensitivityPbType &pb_type, const std::string &str_pb_type,
+               const std::string &opt_dir)
+      : pb_type(pb_type), str_pb_type(str_pb_type), opt_dir(opt_dir) {}
+
   std::string get_pb_description() const {
-    return opt_dir + " " + pb_type;
+    return opt_dir + " " + str_pb_type;
   };
+
+  bool is_capex() const { return pb_type == SensitivityPbType::CAPEX; }
+  bool is_capex_min() const { return is_capex() && (opt_dir == MIN_C); }
+  bool is_capex_max() const { return is_capex() && (opt_dir == MAX_C); }
 };
 
 struct SensitivityOutputData {

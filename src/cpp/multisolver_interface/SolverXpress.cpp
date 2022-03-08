@@ -13,7 +13,7 @@ SolverXpress::SolverXpress(const std::string &log_file) : SolverXpress() {
   _log_file = log_file;
   if (_log_file != "") {
     _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
-    add_stream(&log_stream);
+    add_stream(_log_stream);
   }
 }
 SolverXpress::SolverXpress() {
@@ -38,7 +38,7 @@ SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
     _log_file = toCopy->_log_file;
     if (_log_file != "") {
       _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
-      add_stream(&log_stream);
+      add_stream(_log_stream);
     }
     zero_status_check(status, "create problem");
   } else {

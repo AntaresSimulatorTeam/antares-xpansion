@@ -10,10 +10,11 @@ class SensitivityFileLogger : public SensitivityILogger {
   ~SensitivityFileLogger();
 
   void display_message(const std::string &msg) override;
-  void log_at_start() override;
+  void log_at_start(const SensitivityOutputData &output_data) override;
   void log_set_sensitivity_pb(const SinglePbData &pb_data) override;
   void log_begin_pb_resolution(const SinglePbData &pb_data) override;
   void log_pb_solution(const SinglePbData& pb_data) override;
+  virtual void log_summary(const SensitivityOutputData &output_data) override;
   void log_at_ending() override;
 
  private:

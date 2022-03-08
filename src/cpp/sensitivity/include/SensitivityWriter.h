@@ -11,8 +11,6 @@ const std::string EPSILON_C("epsilon");
 const std::string BEST_BENDERS_C("best benders cost");
 const std::string OPT_DIR_C("optimization direction");
 const std::string PB_TYPE_C("problem type");
-const std::string MIN_C("min");
-const std::string MAX_C("max");
 const std::string CAPEX_C("capex");
 const std::string PROJECTION_C("investment");
 const std::string STATUS_C("status");

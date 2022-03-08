@@ -1,7 +1,7 @@
 #include "SensitivityFileLogger.h"
 
-#include <string>
 #include <iostream>
+#include <string>
 
 SensitivityFileLogger::SensitivityFileLogger(const std::string& filename) {
   _file.open(filename);
@@ -18,7 +18,10 @@ void SensitivityFileLogger::display_message(const std::string& msg) {
   _userLog->display_message(msg);
 }
 
-void SensitivityFileLogger::log_at_start() { _userLog->log_at_start(); }
+void SensitivityFileLogger::log_at_start(
+    const SensitivityOutputData& output_data) {
+  _userLog->log_at_start(output_data);
+}
 
 void SensitivityFileLogger::log_set_sensitivity_pb(
     const SinglePbData& pb_data) {
@@ -32,6 +35,11 @@ void SensitivityFileLogger::log_begin_pb_resolution(
 
 void SensitivityFileLogger::log_pb_solution(const SinglePbData& pb_data) {
   _userLog->log_pb_solution(pb_data);
+}
+
+void SensitivityFileLogger::log_summary(
+    const SensitivityOutputData& output_data) {
+  _userLog->log_summary(output_data);
 }
 
 void SensitivityFileLogger::log_at_ending() { _userLog->log_at_ending(); }

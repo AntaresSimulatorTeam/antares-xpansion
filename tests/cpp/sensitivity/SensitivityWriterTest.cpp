@@ -42,7 +42,7 @@ public:
 
         for (int pb_id(0); pb_id < pbs_data.size(); pb_id++)
         {
-            ASSERT_EQ(pbs_data[pb_id].pb_type, written_pbs_data[pb_id][PB_TYPE_C].asString());
+            ASSERT_EQ(pbs_data[pb_id].str_pb_type, written_pbs_data[pb_id][PB_TYPE_C].asString());
             ASSERT_EQ(pbs_data[pb_id].opt_dir, written_pbs_data[pb_id][OPT_DIR_C].asString());
             ASSERT_EQ(pbs_data[pb_id].status, written_pbs_data[pb_id][STATUS_C].asInt());
             ASSERT_DOUBLE_EQ(pbs_data[pb_id].objective, written_pbs_data[pb_id][OBJECTIVE_C].asDouble());
