@@ -26,7 +26,7 @@ void BendersMpi::load() {
   auto slaveCount = _world.size() - 1;
     if (_world.rank() != 0) {
         std::string const &master_name(get_master_name());
-        for (auto problem: _input) {
+        for (const auto &problem: slaves_map) {
             if (problem.first != master_name) {
                 auto slaveToFeed = current_problem_id % slaveCount + 1;
                 if (slaveToFeed == _world.rank()) {
@@ -41,7 +41,7 @@ void BendersMpi::load() {
 
 void BendersMpi::init_master_problem_and_slave_id() {
   if (_world.rank() == 0) {
-    reset_master(new WorkerMaster(it_master->second, get_master_path(),
+    reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                   get_solver_name(), get_log_level(),
                                   _data.nslaves, log_name()));
     LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
@@ -247,6 +247,8 @@ void BendersMpi::launch() {
   _world.barrier();
 
   CouplingMap::const_iterator it(_input.begin());
+  auto const it_master(_input.find(get_master_name()));
+
   for (int i(0); i < _data.nslaves; ++it) {
       if (it != it_master) {
           set_problem_to_id(it->first, i);

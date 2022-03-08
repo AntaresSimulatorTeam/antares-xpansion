@@ -26,7 +26,6 @@ void BendersSequential::initialise_problems() {
   auto it(input_.begin());
 
   auto const it_master = input_.find(get_master_name());
-  Str2Int const &master_variable(it_master->second);
   for (int i(0); i < _data.nslaves; ++it) {
     if (it != it_master) {
       set_problem_to_id(it->first, i);
@@ -35,7 +34,7 @@ void BendersSequential::initialise_problems() {
       i++;
     }
   }
-  reset_master(new WorkerMaster(master_variable, get_master_path(),
+  reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
                                 _data.nslaves, log_name()));
 

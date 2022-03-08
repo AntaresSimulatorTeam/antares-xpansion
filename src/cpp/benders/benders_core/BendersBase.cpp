@@ -585,16 +585,26 @@ void BendersBase::build_input_map() {
                        _options.MASTER_NAME);
   _totalNbProblems = _input.size();
   _data.nslaves = _totalNbProblems - 1;
-  verify_existence_of_master_problem();
+  master_variable_map = get_master_variable_map(_input);
+  slaves_map = get_slaves_map(_input);
 }
 
-void BendersBase::verify_existence_of_master_problem() {
-  std::string const &master_name(get_master_name());
-  auto const it_master(_input.find(master_name));
-  if (it_master == _input.end()) {
-    std::cout << "UNABLE TO FIND " << master_name << std::endl;
+std::map<std::string, int> BendersBase::get_master_variable_map(
+    std::map<std::string, std::map<std::string, int>> input_map) const{
+  auto const it_master(input_map.find(get_master_name()));
+  if (it_master == input_map.end()) {
+    std::cout << "UNABLE TO FIND " << get_master_name() << std::endl;
     std::exit(1);
   }
+  return it_master->second;
+}
+
+CouplingMap BendersBase::get_slaves_map(CouplingMap input) const{
+  CouplingMap slave_map;
+  auto master_name = get_master_name();
+  std::copy_if(input.begin(), input.end(), std::inserter(slave_map, slave_map.end()),
+               [master_name](const CouplingMap::value_type& kvp){return kvp.first !=master_name;} );
+  return slave_map;
 }
 
 int BendersBase::get_totalNbProblems() const { return _totalNbProblems; }
@@ -655,3 +665,4 @@ double BendersBase::get_slave_cost() const { return _data.slave_cost; }
 void BendersBase::set_slave_cost(const double &slave_cost) {
   _data.slave_cost = slave_cost;
 }
+

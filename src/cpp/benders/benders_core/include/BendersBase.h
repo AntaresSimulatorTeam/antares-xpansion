@@ -22,6 +22,8 @@ class BendersBase {
   BendersData _data;
   // map linking each problem name to its variables and their ids
   CouplingMap _input;
+  Str2Int master_variable_map;
+  CouplingMap slaves_map;
 
  protected:
   virtual void free() = 0;
@@ -87,7 +89,9 @@ class BendersBase {
                        Point &s) const;
   void compute_cut_aggregate(const AllCutPackage &all_package);
   void compute_cut(const AllCutPackage &all_package);
-  void verify_existence_of_master_problem();
+  std::map<std::string, int> get_master_variable_map(
+      std::map<std::string, std::map<std::string, int>> input_map) const;
+  CouplingMap get_slaves_map(CouplingMap input) const;
 
  private:
   BendersBaseOptions _options;
@@ -103,5 +107,6 @@ class BendersBase {
  public:
   Logger _logger;
   Writer _writer;
+
 };
 using pBendersBase = std::shared_ptr<BendersBase>;
