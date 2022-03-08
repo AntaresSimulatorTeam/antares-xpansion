@@ -64,7 +64,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: docker
           dockerfile: centos7
-          cache: false
+          cache: true
           tags: centos7-xpansion
           buildargs: ANTARES_DEPS_VERSION, ANTARES_SOLVER_VERSION
 

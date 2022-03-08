@@ -20,7 +20,7 @@ class BendersBase {
 
  protected:
   BendersData _data;
-  Str2Int master_variable_map;
+  VariableMap master_variable_map;
   CouplingMap slaves_map;
 
  protected:
@@ -46,10 +46,10 @@ class BendersBase {
   void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_slaves();
-  void add_slave(const std::pair<std::string, Str2Int> &kvp);
+  void add_slave(const std::pair<std::string, VariableMap> &kvp);
   WorkerMasterPtr get_master() const;
   int get_totalNbProblems() const;
-  void set_problem_to_id(const std::string &name, const int id);
+  void match_problem_to_id();
   void set_cut_storage();
   void add_slave_name(const std::string &name);
   int get_slaves_number() const;
@@ -97,7 +97,7 @@ class BendersBase {
   std::string _log_name = "";
   BendersTrace _trace;
   WorkerMasterPtr _master;
-  Str2Int _problem_to_id;
+  VariableMap _problem_to_id;
   SlavesMapPtr _map_slaves;
   AllCutStorage _all_cuts_storage;
   StrVector _slaves;

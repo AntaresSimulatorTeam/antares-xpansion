@@ -21,11 +21,7 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
  */
 
 void BendersMpi::initialize_problems() {
-  int count = 0;
-  for (const auto &problem : slaves_map) {
-    set_problem_to_id(problem.first, count);
-    count++;
-  }
+  match_problem_to_id();
 
   int current_problem_id = 0;
   auto slaveCount = _world.size() - 1;

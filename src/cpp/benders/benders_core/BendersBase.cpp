@@ -622,7 +622,7 @@ void BendersBase::reset_master(WorkerMaster *worker_master) {
 void BendersBase::free_master() const { _master->free(); }
 WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
-void BendersBase::add_slave(const std::pair<std::string, Str2Int> &kvp) {
+void BendersBase::add_slave(const std::pair<std::string, VariableMap> &kvp) {
   _map_slaves[kvp.first] = WorkerSlavePtr(
       new WorkerSlave(kvp.second, get_slave_path(kvp.first),
                       slave_weight(_data.nslaves, kvp.first),
@@ -632,8 +632,12 @@ void BendersBase::add_slave(const std::pair<std::string, Str2Int> &kvp) {
 void BendersBase::free_slaves() {
   for (auto &ptr : _map_slaves) ptr.second->free();
 }
-void BendersBase::set_problem_to_id(const std::string &name, const int id) {
-  _problem_to_id[name] = id;
+void BendersBase::match_problem_to_id() {
+  int count = 0;
+  for (const auto &problem : slaves_map) {
+  _problem_to_id[problem.first] = count;
+    count++;
+  }
 }
 void BendersBase::set_cut_storage() {
   for (auto const &kvp : _problem_to_id) {

@@ -28,14 +28,14 @@ typedef std::shared_ptr<Point> PointPtr;
 double const EPSILON_PREDICATE = 1e-8;
 
 typedef std::set<std::string> problem_names;
-typedef std::map<std::string, int> Str2Int;
+typedef std::map<std::string, int> VariableMap;
 typedef std::map<int, std::string> Int2Str;
 typedef std::map<std::string, double> Str2Dbl;
 typedef std::vector<int> IntVector;
 typedef std::vector<char> CharVector;
 typedef std::vector<double> DblVector;
 typedef std::vector<std::string> StrVector;
-typedef std::map<std::string, Str2Int> CouplingMap;
+typedef std::map<std::string, VariableMap> CouplingMap;
 
 typedef std::map<std::string, IntVector> SlaveCutId;
 typedef std::tuple<int, std::string, int, bool> ActiveCut;

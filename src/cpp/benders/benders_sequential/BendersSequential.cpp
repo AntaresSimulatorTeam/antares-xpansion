@@ -21,11 +21,7 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
     : BendersBase(options, logger, writer) {}
 
 void BendersSequential::initialize_problems() {
-  int count = 0;
-  for (const auto &problem : slaves_map) {
-    set_problem_to_id(problem.first, count);
-    count++;
-  }
+  match_problem_to_id();
 
   reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
