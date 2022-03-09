@@ -128,7 +128,6 @@
 				"MAX_ITERATIONS",
 				"OUTPUTROOT",
 				"RAND_AGGREGATION",
-				"SLAVE_NUMBER",
 				"SLAVE_WEIGHT",
 				"SLAVE_WEIGHT_VALUE",
 				"STRUCTURE_FILE",
@@ -266,15 +265,6 @@
 					"default": 0,
 					"examples": [
 						0
-					]
-				},
-				"SLAVE_NUMBER": {
-					"$id": "#root/options/SLAVE_NUMBER",
-					"title": "SLAVE_NUMBER",
-					"type": "integer",
-					"default": -1,
-					"examples": [
-						-1
 					]
 				},
 				"SLAVE_WEIGHT": {
