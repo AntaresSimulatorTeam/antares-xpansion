@@ -184,11 +184,19 @@ jobs:
         export ZIP_NAME=$(ls *.zip)
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
+    - name: set name variables
+      id: appendix
+      shell: bash
+      run: |
+      XPRS=${{ matrix.xprs }}
+      [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
+      echo "::set-output name=appendix::$WITH_XPRS"
+
     - name: Create single file .zip
       id: create-single-file
       uses: ./.github/workflows/single-file-creation-zip
       with:
-        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}${{steps.appendix.ouputs.appendix}}
 
     - name: Upload installer
       uses: actions/upload-artifact@v2

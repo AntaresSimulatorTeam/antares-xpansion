@@ -101,6 +101,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: [docker_publish, userguide]
     container: 'antaresrte/rte-antares:centos7-xpansion'
+    strategy:
+      matrix:
+        xprs: [ ON, OFF ]
+    env:
+      XPRS_Path: ${{ github.workspace }}/xpress
+      XPRESS: ${{ github.workspace }}/xpress/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
     
@@ -113,18 +120,19 @@ jobs:
 
     - name: Checkout
       run: |
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
-        
+        git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+        git submodule update --init --recursive antares-deps
+
+    - name: Checkout xpressmp linux
+      run: |
+        git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRS_Path }}
+
     - name: Read antares-xpansion version
       id: antares-xpansion-version
       uses: notiz-dev/github-action-json-property@release
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
-
-    - name: Init submodule
-      run: |
-           git submodule update --init --recursive antares-deps
 
     - name: Install dependencies
       run: |
@@ -139,10 +147,19 @@ jobs:
 
     - name: Configure
       run: |
-           source /opt/rh/devtoolset-7/enable
-           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-           export PATH=/usr/lib64/openmpi/bin:$PATH
-           cmake3 -B _build -S . -DDEPS_INSTALL_DIR=/rte-antares-deps-Release -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+         source /opt/rh/devtoolset-7/enable
+         export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+         export PATH=/usr/lib64/openmpi/bin:$PATH
+         cmake3 -B _build -S . \
+                -DDEPS_INSTALL_DIR=/rte-antares-deps-Release \
+                -DBUILD_TESTING=ON \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DUSE_MPI=ON \
+                -DCMAKE_INSTALL_PREFIX=_install \
+                -DBUILD_UI=ON \
+                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
+                -DXPRESS=${{ matrix.xprs }} \
+                -DXPRESS_ROOT=${{ env.XPRS_Path }}
 
     - name: Build
       run: |
@@ -170,11 +187,19 @@ jobs:
         export RPM_NAME=$(ls *.rpm)
         echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
 
+    - name: set name variables
+      id: appendix
+      shell: bash
+      run: |
+      XPRS=${{ matrix.xprs }}
+      [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
+      echo "::set-output name=appendix::$WITH_XPRS"
+
     - id: create-single-file
       name: Single file .tar.gz creation
       uses: ./.github/workflows/single-file-creation-tgz
       with:
-        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}${{steps.appendix.ouputs.appendix}}
 
     - name: Upload  .tar.gz
       uses: actions/upload-artifact@v2

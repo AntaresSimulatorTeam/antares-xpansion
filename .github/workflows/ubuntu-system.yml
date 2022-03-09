@@ -160,11 +160,19 @@ jobs:
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
+      - name: set name variables
+        id: appendix
+        shell: bash
+        run: |
+        XPRS=${{ matrix.xprs }}
+        [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
+        echo "::set-output name=appendix::$WITH_XPRS"
+
       - id: create-single-file
         name: Single file .tar.gz creation
         uses: ./.github/workflows/single-file-creation-tgz
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}${{steps.appendix.ouputs.appendix}}
 
       - name: Installer .tar.gz creation
         run: |
