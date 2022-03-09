@@ -23,10 +23,13 @@ struct SinglePbData {
   int status;
 
   SinglePbData() = default;
-  SinglePbData(const std::string &str_pb_type, const std::string &opt_dir,
+  SinglePbData(const SensitivityPbType &pb_type, const std::string &str_pb_type,
+               const std::string &candidate_name, const std::string &opt_dir,
                double objective, double system_cost, const Point &candidates,
                int status)
-      : str_pb_type(str_pb_type),
+      : pb_type(pb_type),
+        str_pb_type(str_pb_type),
+        candidate_name(candidate_name),
         opt_dir(opt_dir),
         objective(objective),
         system_cost(system_cost),
