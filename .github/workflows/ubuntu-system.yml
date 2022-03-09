@@ -164,9 +164,9 @@ jobs:
         id: appendix
         shell: bash
         run: |
-        XPRS=${{ matrix.xprs }}
-        [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
-        echo "::set-output name=appendix::$WITH_XPRS"
+          XPRS=${{ matrix.xprs }}
+          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
+          echo "::set-output name=appendix::$WITH_XPRS"
 
       - id: create-single-file
         name: Single file .tar.gz creation
