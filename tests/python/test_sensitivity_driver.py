@@ -14,7 +14,13 @@ class TestSensitivityDriver:
         sensitivity_driver = SensitivityDriver("")
         with pytest.raises(SensitivityDriver.SensitivityOutputPathError):
             sensitivity_driver.launch(
-                tmp_path / "i_dont_exist", "test", "other_test", "mock", "mock", "mock"
+                tmp_path / "i_dont_exist",
+                "test",
+                "other_test",
+                "mock",
+                "mock",
+                "mock",
+                "a_path",
             )
 
     def test_non_existing_input_file(self, tmp_path):
@@ -22,7 +28,7 @@ class TestSensitivityDriver:
         sensitivity_driver = SensitivityDriver("")
         with pytest.raises(SensitivityDriver.SensitivityFilePathError):
             sensitivity_driver.launch(
-                simulation_path, tmp_path / "i_dont_exist", "test", "", "", ""
+                simulation_path, tmp_path / "i_dont_exist", "test", "", "", "", "a_path"
             )
 
     def test_sensitivity_cmd(self, tmp_path):
@@ -36,6 +42,7 @@ class TestSensitivityDriver:
         _create_empty_file_from_list(tmp_path, input_files)
 
         json_out_path = "somefile.json"
+        sensitivity_log_path = "a_path"
 
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 0
@@ -46,6 +53,7 @@ class TestSensitivityDriver:
                 input_paths[2],
                 input_paths[3],
                 json_out_path,
+                sensitivity_log_path,
             )
             expected_cmd = [
                 exe_path,
@@ -59,6 +67,8 @@ class TestSensitivityDriver:
                 input_paths[3],
                 "-o",
                 json_out_path,
+                "-l",
+                sensitivity_log_path,
             ]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=sys.stdout, stderr=sys.stderr
@@ -74,15 +84,17 @@ class TestSensitivityDriver:
         _create_empty_file_from_list(tmp_path, input_files)
 
         json_out_path = "somefile.json"
+        sensitivity_log_path = "a_path"
 
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 1
             with pytest.raises(SensitivityDriver.SensitivityExeError):
                 sensitivity_driver.launch(
-                simulation_path,
-                input_paths[0],
-                input_paths[1],
-                input_paths[2],
-                input_paths[3],
-                json_out_path,
-            )
+                    simulation_path,
+                    input_paths[0],
+                    input_paths[1],
+                    input_paths[2],
+                    input_paths[3],
+                    json_out_path,
+                    sensitivity_log_path,
+                )
