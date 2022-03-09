@@ -138,6 +138,7 @@ jobs:
             docs/
 
       - name: Configure
+        shell: bash
         run: |
           cd ${{ env.XPRS_Path }}
           cd ..
@@ -149,7 +150,7 @@ jobs:
                 -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
                 -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
-                -DXPRESS_ROOT="${{ env.XPRS_Path }}"
+                -DXPRESS_ROOT=${{ env.XPRS_Path }}
                 -DXPRESS=${{ matrix.xprs }}
 
       - name: Build
