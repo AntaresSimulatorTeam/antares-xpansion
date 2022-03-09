@@ -146,5 +146,4 @@ struct BendersBaseOptions : public BaseOptions {
 };
 
 void usage(int argc);
-CouplingMap build_input(const std::string &structure_path,
-                        const std::string &master_name);
+CouplingMap build_input(const std::string &structure_path);

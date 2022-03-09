@@ -44,8 +44,7 @@ void usage(int argc) {
  *  \note The id in the coupling_map is that of the variable in the solver
  *responsible for the creation of the structure file.
  */
-CouplingMap build_input(const std::string &structure_path,
-                        const std::string &master_name) {
+CouplingMap build_input(const std::string &structure_path) {
   CouplingMap coupling_map;
   std::ifstream summary(structure_path, std::ios::in);
   if (!summary) {
