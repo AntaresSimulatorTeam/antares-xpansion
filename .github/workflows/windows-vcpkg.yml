@@ -172,10 +172,17 @@ jobs:
 
     - name: Running unit tests
       shell: cmd
+      env:
+        XPRS_Path: ${{ github.workspace }}/xpress
+        XPRESS: ${{ github.workspace }}/xpress/bin
+        XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+        XPRESS_BIN_DIR: ${{ github.workspace }}/xpress/bin
       run: |
-           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
-           cd _build
-           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+        set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+        set XPRESS=${{ github.workspace }}\xpress\bin
+        set XPRESS_BIN_DIR=${{ github.workspace }}\xpress\bin
+        cd _build
+        ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
     - name: Create installer .zip
       shell: bash

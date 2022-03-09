@@ -136,8 +136,8 @@ jobs:
 
     - name: Install dependencies
       run: |
-          pip3 install -r requirements-tests.txt
-          pip3 install -r requirements-ui.txt
+        pip3 install -r requirements-tests.txt
+        pip3 install -r requirements-ui.txt
 
     - name: Download userguide
       uses: actions/download-artifact@v2
@@ -147,31 +147,31 @@ jobs:
 
     - name: Configure
       run: |
-         source /opt/rh/devtoolset-7/enable
-         export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-         export PATH=/usr/lib64/openmpi/bin:$PATH
-         cmake3 -B _build -S . \
-                -DDEPS_INSTALL_DIR=/rte-antares-deps-Release \
-                -DBUILD_TESTING=ON \
-                -DCMAKE_BUILD_TYPE=Release \
-                -DUSE_MPI=ON \
-                -DCMAKE_INSTALL_PREFIX=_install \
-                -DBUILD_UI=ON \
-                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
-                -DXPRESS=${{ matrix.xprs }} \
-                -DXPRESS_ROOT=${{ env.XPRS_Path }}
+        source /opt/rh/devtoolset-7/enable
+        export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+        export PATH=/usr/lib64/openmpi/bin:$PATH
+        cmake3 -B _build -S . \
+               -DDEPS_INSTALL_DIR=/rte-antares-deps-Release \
+               -DBUILD_TESTING=ON \
+               -DCMAKE_BUILD_TYPE=Release \
+               -DUSE_MPI=ON \
+               -DCMAKE_INSTALL_PREFIX=_install \
+               -DBUILD_UI=ON \
+               -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
+               -DXPRESS=${{ matrix.xprs }} \
+               -DXPRESS_ROOT=${{ env.XPRS_Path }}
 
     - name: Build
       run: |
-           source /opt/rh/devtoolset-7/enable
-           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-           export PATH=/usr/lib64/openmpi/bin:$PATH
-           cmake3 --build _build --config Release -j2 --target install
+        source /opt/rh/devtoolset-7/enable
+        export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+        export PATH=/usr/lib64/openmpi/bin:$PATH
+        cmake3 --build _build --config Release -j2 --target install
 
     - name: Running unit tests
       run: |
-           cd _build
-           ctest3 -C Release --output-on-failure -L "unit|benders"
+        cd _build
+        ctest3 -C Release --output-on-failure -L "unit|benders"
 
     - name: .tar.gz creation
       run: |
