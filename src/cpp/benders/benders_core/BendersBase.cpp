@@ -581,8 +581,7 @@ void BendersBase::set_log_file(const std::string &log_name) {
  *responsible for the creation of the structure file.
  */
 void BendersBase::build_input_map() {
-  auto input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
-                           _options.MASTER_NAME);
+  auto input = build_input(get_structure_path(), _options.MASTER_NAME);
   _totalNbProblems = input.size();
   _data.nslaves = _totalNbProblems - 1;
   master_variable_map = get_master_variable_map(input);
@@ -648,7 +647,6 @@ void BendersBase::set_cut_storage() {
 void BendersBase::add_slave_name(const std::string &name) {
   _slaves.push_back(name);
 }
-int BendersBase::get_slaves_number() const { return _options.SLAVE_NUMBER; }
 std::string BendersBase::get_master_name() const {
   return _options.MASTER_NAME;
 }

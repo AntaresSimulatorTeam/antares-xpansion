@@ -25,11 +25,6 @@ int main(int argc, char **argv) {
 
   BendersBaseOptions benders_options(options.get_benders_options());
 
-  if (world.rank() > options.SLAVE_NUMBER + 1 && options.SLAVE_NUMBER != -1) {
-    std::cout << "You need to have at least one slave by thread" << std::endl;
-    exit(1);
-  }
-
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   google::InitGoogleLogging(argv[0]);
   auto path_to_log =
