@@ -9,7 +9,6 @@
 class SensitivityMasterLogger : public SensitivityILogger {
  public:
   SensitivityMasterLogger() = default;
-  ~SensitivityMasterLogger() = default;
 
   void addLogger(const std::shared_ptr<SensitivityILogger> &logger) {
     _loggers.push_back(logger);
@@ -19,7 +18,7 @@ class SensitivityMasterLogger : public SensitivityILogger {
   void log_at_start(const SensitivityOutputData &output_data) override;
   void log_begin_pb_resolution(const SinglePbData &pb_data) override;
   void log_pb_solution(const SinglePbData& pb_data) override;
-  virtual void log_summary(const SensitivityOutputData &output_data) override;
+  void log_summary(const SensitivityOutputData &output_data) override;
   void log_at_ending() override;
 
  private:

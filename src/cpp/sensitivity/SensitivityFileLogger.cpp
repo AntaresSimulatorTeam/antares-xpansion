@@ -12,8 +12,6 @@ SensitivityFileLogger::SensitivityFileLogger(const std::string& filename) {
       std::unique_ptr<SensitivityUserLogger>(new SensitivityUserLogger(_file));
 }
 
-SensitivityFileLogger::~SensitivityFileLogger() { _file.close(); }
-
 void SensitivityFileLogger::display_message(const std::string& msg) {
   _userLog->display_message(msg);
 }

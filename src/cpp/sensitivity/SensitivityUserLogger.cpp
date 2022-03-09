@@ -55,7 +55,7 @@ void SensitivityUserLogger::log_summary(
   std::vector<SinglePbData> projection_data = {};
   std::vector<SinglePbData> capex_data = {};
 
-  for (auto pb_data : output_data.pbs_data) {
+  for (const auto& pb_data : output_data.pbs_data) {
     if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
       projection_data.push_back(pb_data);
     } else {
@@ -76,7 +76,7 @@ void SensitivityUserLogger::log_capex_summary(
   double capex_min = 0;
   double capex_max = 0;
 
-  for (auto pb_data : capex_data) {
+  for (const auto& pb_data : capex_data) {
     if (pb_data.opt_dir == MIN_C) {
       capex_min = pb_data.objective;
     } else if (pb_data.opt_dir == MAX_C) {
@@ -93,7 +93,7 @@ void SensitivityUserLogger::log_capex_summary(
 }
 
 std::string SensitivityUserLogger::get_objective_unit(
-    const SinglePbData& pb_data) {
+    const SinglePbData& pb_data) const {
   if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
     return MW;
   } else {
@@ -102,7 +102,7 @@ std::string SensitivityUserLogger::get_objective_unit(
 }
 
 std::string SensitivityUserLogger::format_objective(
-    const SinglePbData& pb_data) {
+    const SinglePbData& pb_data) const {
   if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
     std::stringstream objective;
     objective << pb_data.objective;
@@ -118,7 +118,7 @@ void SensitivityUserLogger::log_projection_summary(
   auto investment_intervals = get_investment_intervals(projection_data);
 
   _stream << indent_1 << "Investment intervals of candidates:" << std::endl;
-  for (auto const kvp : investment_intervals) {
+  for (const auto& kvp : investment_intervals) {
     auto interval = kvp.second;
     _stream << indent_1 << indent_1 << kvp.first << ": [" << interval[MIN_C]
             << MW << ", " << interval[MAX_C] << MW << "]" << std::endl;
@@ -128,10 +128,10 @@ void SensitivityUserLogger::log_projection_summary(
 
 std::map<std::string, std::map<std::string, double>>
 SensitivityUserLogger::get_investment_intervals(
-    const std::vector<SinglePbData>& projection_data) {
+    const std::vector<SinglePbData>& projection_data) const {
   std::map<std::string, std::map<std::string, double>> investment_intervals;
 
-  for (auto pb_data : projection_data) {
+  for (const auto& pb_data : projection_data) {
     if (pb_data.opt_dir == MIN_C) {
       investment_intervals[pb_data.candidate_name][MIN_C] = pb_data.objective;
     } else {

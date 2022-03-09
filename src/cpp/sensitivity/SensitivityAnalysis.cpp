@@ -88,19 +88,20 @@ void SensitivityAnalysis::run_optimization(
 
   auto raw_output = solve_sensitivity_pb(sensitivity_model);
 
-  fill_single_pb_data(pb_data, raw_output, minimize);
+  fill_single_pb_data(pb_data, raw_output);
   _logger->log_pb_solution(pb_data);
 
   _output_data.pbs_data.push_back(pb_data);
 }
 
-SinglePbData SensitivityAnalysis::init_single_pb_data(const bool minimize) {
+SinglePbData SensitivityAnalysis::init_single_pb_data(
+    const bool minimize) const {
   std::string candidate_name = "";
   std::string str_pb_type =
       sensitivity_string_pb_type[static_cast<int>(_sensitivity_pb_type)];
   if (_sensitivity_pb_type == SensitivityPbType::PROJECTION) {
     // Add a check for the success of the cast
-    auto *pb_modifier =
+    const auto *pb_modifier =
         dynamic_cast<PbModifierProjection *>(_pb_modifier.get());
     candidate_name = pb_modifier->get_candidate_name();
   }
@@ -133,9 +134,8 @@ RawPbData SensitivityAnalysis::solve_sensitivity_pb(
   return raw_output;
 }
 
-void SensitivityAnalysis::fill_single_pb_data(SinglePbData &pb_data,
-                                              const RawPbData &raw_output,
-                                              const bool minimize) {
+void SensitivityAnalysis::fill_single_pb_data(
+    SinglePbData &pb_data, const RawPbData &raw_output) const {
   pb_data.objective = raw_output.obj_value;
   pb_data.status = raw_output.status;
 
