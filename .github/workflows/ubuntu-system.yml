@@ -203,7 +203,7 @@ jobs:
       - name: Upload single file
         uses: actions/upload-artifact@v2
         with:
-          name: antares-xpansion-ubuntu-single-file
+          name: antares-xpansion-ubuntu-single-file${{steps.appendix.ouputs.appendix}
           path: ${{ steps.create-single-file.outputs.archive-path }}
 
       - name: Publish .tar.gz
