@@ -54,8 +54,11 @@ jobs:
       matrix:
         os: [windows-latest]
         triplet: [x64-windows]
-
+        xprs: [ON, OFF]
     env:
+      XPRS_Path: ${{ github.workspace }}/xpress
+      XPRESS: ${{ github.workspace }}/xpress/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
@@ -63,6 +66,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
+
+    - name: Checkout xpressmp linux
+      uses: actions/checkout@v2
+      with:
+        repository: rte-france/xpress-mp-temp
+        path: ${{ env.XPRS_Path }}
+        ref: master
+        token: ${{ secrets.AS_TOKEN }}
 
     - name: Get release
       if: github.event_name == 'release' && github.event.action == 'created'
@@ -152,7 +163,7 @@ jobs:
     - name: Configure
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ matrix.xprs }} -DXPRESS_ROOT="${{ env.XPRS_Path }}"
 
     - name: Build
       run: |
