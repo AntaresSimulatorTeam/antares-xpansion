@@ -53,14 +53,30 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
+        xprs: [ON, OFF]
+    env:
+      XPRS_Path: ${{ github.workspace }}/xpressmp
+      XPRESS: ${{ github.workspace }}/xpressmp/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpressmp/lib
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
 
+      - name: Checkout xpressmp linux
+        if: ${{ matrix.xprs == 'ON' }}
+        uses: actions/checkout@v2
+        with:
+          repository: rte-france/xpress-mp
+          path: ${{ env.XPRS_Path }}
+          ref: master
+          token: ${{ secrets.AS_TOKEN }}
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ${{ matrix.os }}-${{ matrix.xprs }}
 
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
@@ -132,6 +148,8 @@ jobs:
                 -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
                 -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+                -DXPRESS_ROOT="${{ env.XPRS_Path }}"
+                -DXPRESS=${{ matrix.xprs }}
 
       - name: Build
         run: |
