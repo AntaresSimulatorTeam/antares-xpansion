@@ -1,3 +1,6 @@
+#ifndef ANTARESXPANSION_SENSITIVITYMASTERLOGGER_H
+#define ANTARESXPANSION_SENSITIVITYMASTERLOGGER_H
+
 #include <list>
 #include <memory>
 
@@ -22,3 +25,5 @@ class SensitivityMasterLogger : public SensitivityILogger {
  private:
   std::list<std::shared_ptr<SensitivityILogger>> _loggers;
 };
+
+#endif  // ANTARESXPANSION_SENSITIVITYMASTERLOGGER_H

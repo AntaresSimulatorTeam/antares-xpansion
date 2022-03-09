@@ -1,3 +1,6 @@
+#ifndef ANTARESXPANSION_SENSITIVITYFILELOGGER_H
+#define ANTARESXPANSION_SENSITIVITYFILELOGGER_H
+
 #include <fstream>
 #include <memory>
 
@@ -20,3 +23,5 @@ class SensitivityFileLogger : public SensitivityILogger {
   std::ofstream _file;
   std::unique_ptr<SensitivityUserLogger> _userLog;
 };
+
+#endif  // ANTARESXPANSION_SENSITIVITYFILELOGGER_H

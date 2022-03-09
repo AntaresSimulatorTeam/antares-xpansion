@@ -4,11 +4,6 @@
 
 #include "Commons.h"
 
-const std::string indent_1 = "\t";
-const std::string EUROS = " e";
-const std::string MILLON_EUROS = " Me";
-const std::string MW = " MW";
-
 SensitivityUserLogger::SensitivityUserLogger(std::ostream& stream)
     : _stream(stream) {
   if (_stream.fail()) {

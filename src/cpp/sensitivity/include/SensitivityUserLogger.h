@@ -5,6 +5,11 @@
 
 #include "SensitivityILogger.h"
 
+const std::string indent_1("\t");
+const std::string EUROS(" e");
+const std::string MILLON_EUROS(" Me");
+const std::string MW(" MW");
+
 class SensitivityUserLogger : public SensitivityILogger {
  public:
   explicit SensitivityUserLogger(std::ostream &stream);
@@ -14,7 +19,7 @@ class SensitivityUserLogger : public SensitivityILogger {
   void log_at_start(const SensitivityOutputData &output_data) override;
   void log_begin_pb_resolution(const SinglePbData &pb_data) override;
   void log_pb_solution(const SinglePbData &pb_data) override;
-  virtual void log_summary(const SensitivityOutputData &output_data) override;
+  void log_summary(const SensitivityOutputData &output_data) override;
   void log_at_ending() override;
 
  private:
