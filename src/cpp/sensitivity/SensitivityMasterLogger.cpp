@@ -12,13 +12,6 @@ void SensitivityMasterLogger::log_at_start(const SensitivityOutputData &output_d
   }
 }
 
-void SensitivityMasterLogger::log_set_sensitivity_pb(
-    const SinglePbData &pb_data) {
-  for (auto logger : _loggers) {
-    logger->log_set_sensitivity_pb(pb_data);
-  }
-}
-
 void SensitivityMasterLogger::log_begin_pb_resolution(
     const SinglePbData &pb_data) {
   for (auto logger : _loggers) {

@@ -23,11 +23,6 @@ void SensitivityFileLogger::log_at_start(
   _userLog->log_at_start(output_data);
 }
 
-void SensitivityFileLogger::log_set_sensitivity_pb(
-    const SinglePbData& pb_data) {
-  _userLog->log_set_sensitivity_pb(pb_data);
-}
-
 void SensitivityFileLogger::log_begin_pb_resolution(
     const SinglePbData& pb_data) {
   _userLog->log_begin_pb_resolution(pb_data);

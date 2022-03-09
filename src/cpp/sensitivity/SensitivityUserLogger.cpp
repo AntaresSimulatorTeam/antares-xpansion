@@ -5,6 +5,9 @@
 #include "Commons.h"
 
 const std::string indent_1 = "\t";
+const std::string EUROS = " e";
+const std::string MILLON_EUROS = " Me";
+const std::string MW = " MW";
 
 SensitivityUserLogger::SensitivityUserLogger(std::ostream& stream)
     : _stream(stream) {
@@ -23,14 +26,9 @@ void SensitivityUserLogger::log_at_start(
   _stream << "Best overall cost = "
           << xpansion::logger::commons::create_str_million_euros(
                  output_data.best_benders_cost)
-          << " Me" << std::endl;
-  _stream << "epsilon = " << output_data.epsilon << std::endl;
+          << MILLON_EUROS << std::endl;
+  _stream << "epsilon = " << output_data.epsilon << EUROS << std::endl;
   _stream << std::endl;
-}
-
-void SensitivityUserLogger::log_set_sensitivity_pb(
-    const SinglePbData& pb_data) {
-  _stream << "Setting " << pb_data.get_pb_description() << std::endl;
 }
 
 void SensitivityUserLogger::log_begin_pb_resolution(
@@ -40,11 +38,12 @@ void SensitivityUserLogger::log_begin_pb_resolution(
 
 void SensitivityUserLogger::log_pb_solution(const SinglePbData& pb_data) {
   _stream << indent_1 << pb_data.get_pb_description() << " = "
-          << pb_data.objective << " MW" << std::endl;
+          << format_objective(pb_data) << get_objective_unit(pb_data)
+          << std::endl;
   _stream << indent_1 << "Overall cost = "
           << xpansion::logger::commons::create_str_million_euros(
                  pb_data.system_cost)
-          << " Me" << std::endl;
+          << MILLON_EUROS << std::endl;
   _stream << std::endl;
 }
 
@@ -54,40 +53,95 @@ void SensitivityUserLogger::log_at_ending() {
 
 void SensitivityUserLogger::log_summary(
     const SensitivityOutputData& output_data) {
-  _stream << "Sensitivity analysis summary:" << std::endl;
-  log_capex_summary(output_data);
+  _stream << "Sensitivity analysis summary "
+          << "(epsilon = " << output_data.epsilon << EUROS << "):" << std::endl
+          << std::endl;
+
+  std::vector<SinglePbData> projection_data = {};
+  std::vector<SinglePbData> capex_data = {};
+
+  for (auto pb_data : output_data.pbs_data) {
+    if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
+      projection_data.push_back(pb_data);
+    } else {
+      capex_data.push_back(pb_data);
+    }
+  }
+
+  if (!capex_data.empty()) {
+    log_capex_summary(capex_data);
+  }
+  if (!projection_data.empty()) {
+    log_projection_summary(projection_data);
+  }
 }
 
 void SensitivityUserLogger::log_capex_summary(
-    const SensitivityOutputData& output_data) {
+    const std::vector<SinglePbData>& capex_data) {
   double capex_min = 0;
   double capex_max = 0;
-  auto capex_min_pb_it = std::find_if(output_data.pbs_data.begin(),
-                                      output_data.pbs_data.end(), is_capex_min);
-  auto capex_max_pb_it = std::find_if(output_data.pbs_data.begin(),
-                                      output_data.pbs_data.end(), is_capex_max);
-  if (capex_min_pb_it != output_data.pbs_data.end()) {
-    capex_min = (*capex_min_pb_it).objective;
-  } else {
-    display_message("CAPEX min value not found");
-  }
-  if (capex_max_pb_it != output_data.pbs_data.end()) {
-    capex_max = (*capex_max_pb_it).objective;
-  } else {
-    display_message("CAPEX max value not found");
+
+  for (auto pb_data : capex_data) {
+    if (pb_data.opt_dir == MIN_C) {
+      capex_min = pb_data.objective;
+    } else if (pb_data.opt_dir == MAX_C) {
+      capex_max = pb_data.objective;
+    }
   }
 
   _stream << indent_1 << "CAPEX interval: ["
           << xpansion::logger::commons::create_str_million_euros(capex_min)
-          << " Me, "
+          << MILLON_EUROS << ", "
           << xpansion::logger::commons::create_str_million_euros(capex_max)
-          << " Me]" << std::endl;
+          << MILLON_EUROS << "]" << std::endl
+          << std::endl;
 }
 
-bool SensitivityUserLogger::is_capex_min(const SinglePbData& pb_data) {
-  return pb_data.is_capex_min();
+std::string SensitivityUserLogger::get_objective_unit(
+    const SinglePbData& pb_data) {
+  if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
+    return MW;
+  } else {
+    return MILLON_EUROS;
+  }
 }
 
-bool SensitivityUserLogger::is_capex_max(const SinglePbData& pb_data) {
-  return pb_data.is_capex_max();
+std::string SensitivityUserLogger::format_objective(
+    const SinglePbData& pb_data) {
+  if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
+    std::stringstream objective;
+    objective << pb_data.objective;
+    return objective.str();
+  } else {
+    return xpansion::logger::commons::create_str_million_euros(
+        pb_data.objective);
+  }
+}
+
+void SensitivityUserLogger::log_projection_summary(
+    const std::vector<SinglePbData>& projection_data) {
+  auto investment_intervals = get_investment_intervals(projection_data);
+
+  _stream << indent_1 << "Investment intervals of candidates:" << std::endl;
+  for (auto const kvp : investment_intervals) {
+    auto interval = kvp.second;
+    _stream << indent_1 << indent_1 << kvp.first << ": [" << interval[MIN_C]
+            << MW << ", " << interval[MAX_C] << MW << "]" << std::endl;
+  }
+  _stream << std::endl;
+}
+
+std::map<std::string, std::map<std::string, double>>
+SensitivityUserLogger::get_investment_intervals(
+    const std::vector<SinglePbData>& projection_data) {
+  std::map<std::string, std::map<std::string, double>> investment_intervals;
+
+  for (auto pb_data : projection_data) {
+    if (pb_data.opt_dir == MIN_C) {
+      investment_intervals[pb_data.candidate_name][MIN_C] = pb_data.objective;
+    } else {
+      investment_intervals[pb_data.candidate_name][MAX_C] = pb_data.objective;
+    }
+  }
+  return investment_intervals;
 }

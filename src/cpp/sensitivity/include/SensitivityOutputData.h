@@ -15,6 +15,7 @@ enum class SensitivityPbType {
 struct SinglePbData {
   SensitivityPbType pb_type;
   std::string str_pb_type;
+  std::string candidate_name;
   std::string opt_dir;
   double objective;
   double system_cost;
@@ -33,16 +34,15 @@ struct SinglePbData {
         status(status) {}
 
   SinglePbData(const SensitivityPbType &pb_type, const std::string &str_pb_type,
-               const std::string &opt_dir)
-      : pb_type(pb_type), str_pb_type(str_pb_type), opt_dir(opt_dir) {}
+               const std::string &candidate_name, const std::string &opt_dir)
+      : pb_type(pb_type),
+        str_pb_type(str_pb_type),
+        candidate_name(candidate_name),
+        opt_dir(opt_dir) {}
 
   std::string get_pb_description() const {
-    return opt_dir + " " + str_pb_type;
+    return opt_dir + " " + str_pb_type + " " + candidate_name;
   };
-
-  bool is_capex() const { return pb_type == SensitivityPbType::CAPEX; }
-  bool is_capex_min() const { return is_capex() && (opt_dir == MIN_C); }
-  bool is_capex_max() const { return is_capex() && (opt_dir == MAX_C); }
 };
 
 struct SensitivityOutputData {

@@ -32,8 +32,8 @@ void SensitivityAnalysis::launch() {
   if (!_projection.empty()) {
     get_candidates_projection();
   }
-  _writer->end_writing(_output_data);
   _logger->log_summary(_output_data);
+  _writer->end_writing(_output_data);
   _logger->log_at_ending();
 }
 
@@ -95,16 +95,18 @@ void SensitivityAnalysis::run_optimization(
 }
 
 SinglePbData SensitivityAnalysis::init_single_pb_data(const bool minimize) {
+  std::string candidate_name = "";
   std::string str_pb_type =
       sensitivity_string_pb_type[static_cast<int>(_sensitivity_pb_type)];
   if (_sensitivity_pb_type == SensitivityPbType::PROJECTION) {
     // Add a check for the success of the cast
     auto *pb_modifier =
         dynamic_cast<PbModifierProjection *>(_pb_modifier.get());
-    str_pb_type += " " + pb_modifier->get_candidate_name();
+    candidate_name = pb_modifier->get_candidate_name();
   }
   std::string opt_dir = minimize ? MIN_C : MAX_C;
-  return SinglePbData(_sensitivity_pb_type, str_pb_type, opt_dir);
+  return SinglePbData(_sensitivity_pb_type, str_pb_type, candidate_name,
+                      opt_dir);
 }
 
 RawPbData SensitivityAnalysis::solve_sensitivity_pb(
