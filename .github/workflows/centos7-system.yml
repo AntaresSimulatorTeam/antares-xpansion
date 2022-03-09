@@ -9,7 +9,6 @@ on:
       - feature/*
       - fix/*
       - release/*
-      - '!feature/add_xpress '
   release:
     types: [ created ]
 

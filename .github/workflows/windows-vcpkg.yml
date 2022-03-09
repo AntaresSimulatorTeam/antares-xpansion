@@ -10,7 +10,6 @@ on:
       - fix/*
       - release/*
       - test/*
-      - '!feature/add_xpress '
   release:
     types: [ created ]
 

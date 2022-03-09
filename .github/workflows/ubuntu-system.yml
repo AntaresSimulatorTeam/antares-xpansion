@@ -140,8 +140,6 @@ jobs:
       - name: Configure
         shell: bash
         run: |
-          cd ${{ env.XPRS_Path }}
-          cd ..
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
@@ -149,9 +147,9 @@ jobs:
                 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release \
                 -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
-                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
+                -DXPRESS=${{ matrix.xprs }} \
                 -DXPRESS_ROOT=${{ env.XPRS_Path }}
-                -DXPRESS=${{ matrix.xprs }}
 
       - name: Build
         run: |
