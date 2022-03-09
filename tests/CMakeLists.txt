@@ -23,16 +23,30 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 	
     # Examples tests
     add_test(
-        NAME examples_medium_sequential
-        COMMAND Python3::Interpreter -m pytest -m medium_sequential --installDir=${XPANSION_INSTALL_DIR} example_test.py
+        NAME examples_short_sequential
+        COMMAND Python3::Interpreter -m pytest -m short_sequential --installDir=${XPANSION_INSTALL_DIR} example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_short_sequential PROPERTY LABELS short short_sequential)
+
+    add_test(
+        NAME examples_short_mpi
+        COMMAND Python3::Interpreter -m pytest -m short_mpi --installDir=${XPANSION_INSTALL_DIR} example_test.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_short_mpi PROPERTY LABELS short short_mpi)
+
+    add_test(
+            NAME examples_medium_sequential
+            COMMAND Python3::Interpreter -m pytest -m medium_sequential --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_medium_sequential PROPERTY LABELS medium medium_sequential)
 
     add_test(
-        NAME examples_medium_mpi
-        COMMAND Python3::Interpreter -m pytest -m medium_mpi --installDir=${XPANSION_INSTALL_DIR} example_test.py
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+            NAME examples_medium_mpi
+            COMMAND Python3::Interpreter -m pytest -m medium_mpi --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_medium_mpi PROPERTY LABELS medium medium_mpi)
 

@@ -26,10 +26,11 @@ class BendersMpi : public BendersBase {
  protected:
   virtual void free();
   virtual void run();
+  virtual void initialize_problems();
 
  private:
   void step_1_solve_master();
-  void step_2_build_cuts();
+  void step_2_solve_slaves_and_build_cuts();
   void step_4_update_best_solution(int rank, const Timer &timer_master,
                                    const Timer &benders_timer);
 
@@ -40,19 +41,17 @@ class BendersMpi : public BendersBase {
 
   bool _exceptionRaised = false;
 
-  void do_solve_master_create_trace_and_update_cuts(int rank);
+  void do_solve_master_create_trace_and_update_cuts();
 
   void broadcast_the_master_problem();
 
-  void solve_slaves_and_build_cuts();
   void gather_slave_cut_package_and_build_cuts(
       const SlaveCutPackage &slave_cut_package, const Timer &timer_slaves);
 
   void write_exception_message(const std::exception &ex);
 
   void check_if_some_proc_had_a_failure(int success);
-  void update_real_problem_list(
-      std::vector<CouplingMap::const_iterator> &real_problem_list);
   mpi::environment &_env;
   mpi::communicator &_world;
+  const unsigned int rank_0 = 0;
 };

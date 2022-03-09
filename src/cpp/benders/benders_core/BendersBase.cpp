@@ -430,7 +430,7 @@ void BendersBase::post_run_actions() const {
 Output::IterationsData BendersBase::output_data() const {
   Output::IterationsData iterations_data;
   Output::Iterations iters;
-  iterations_data.nbWeeks_p = _nbWeeks;
+  iterations_data.nbWeeks_p = _totalNbProblems;
   // Iterations
   for (auto masterDataPtr_l : _trace) {
     if (masterDataPtr_l->_valid) {
@@ -479,7 +479,7 @@ Output::CandidatesVec BendersBase::candidates_data(
 
 Output::SolutionData BendersBase::solution() const {
   Output::SolutionData solution_data;
-  solution_data.nbWeeks_p = _nbWeeks;
+  solution_data.nbWeeks_p = _totalNbProblems;
   solution_data.best_it = _data.best_it;
   solution_data.problem_status = status_from_criterion();
   size_t bestItIndex_l = _data.best_it - 1;
@@ -560,4 +560,114 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   result.min_invest = data.min_invest;
   result.max_invest = data.max_invest;
   return result;
+}
+void BendersBase::set_log_file(const std::string &log_name) {
+  _log_name = log_name;
+}
+
+/*!
+ *  \brief Build the input from the structure file
+ *
+ *	Function to build the map linking each problem name to its variables and
+ *their id
+ *
+ *  \param root : root of the structure file
+ *
+ *  \param summary_name : name of the structure file
+ *
+ *  \param coupling_map : empty map to increment
+ *
+ *  \note The id in the coupling_map is that of the variable in the solver
+ *responsible for the creation of the structure file.
+ */
+void BendersBase::build_input_map() {
+  auto input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
+                           _options.MASTER_NAME);
+  _totalNbProblems = input.size();
+  _data.nslaves = _totalNbProblems - 1;
+  master_variable_map = get_master_variable_map(input);
+  slaves_map = get_slaves_map(input);
+}
+
+std::map<std::string, int> BendersBase::get_master_variable_map(
+    std::map<std::string, std::map<std::string, int>> input_map) const {
+  auto const it_master(input_map.find(get_master_name()));
+  if (it_master == input_map.end()) {
+    LOG(ERROR) << "UNABLE TO FIND " << get_master_name() << std::endl;
+    std::exit(1);
+  }
+  return it_master->second;
+}
+
+CouplingMap BendersBase::get_slaves_map(CouplingMap input) const {
+  CouplingMap slave_map;
+  auto master_name = get_master_name();
+  std::copy_if(input.begin(), input.end(),
+               std::inserter(slave_map, slave_map.end()),
+               [master_name](const CouplingMap::value_type &kvp) {
+                 return kvp.first != master_name;
+               });
+  return slave_map;
+}
+
+int BendersBase::get_totalNbProblems() const { return _totalNbProblems; }
+
+void BendersBase::push_in_trace(const WorkerMasterDataPtr &worker_master_data) {
+  _trace.push_back(worker_master_data);
+}
+
+void BendersBase::reset_master(WorkerMaster *worker_master) {
+  _master.reset(worker_master);
+}
+void BendersBase::free_master() const { _master->free(); }
+WorkerMasterPtr BendersBase::get_master() const { return _master; }
+
+void BendersBase::add_slave(const std::pair<std::string, VariableMap> &kvp) {
+  _map_slaves[kvp.first] = WorkerSlavePtr(
+      new WorkerSlave(kvp.second, get_slave_path(kvp.first),
+                      slave_weight(_data.nslaves, kvp.first),
+                      _options.SOLVER_NAME, _options.LOG_LEVEL, log_name()));
+}
+
+void BendersBase::free_slaves() {
+  for (auto &ptr : _map_slaves) ptr.second->free();
+}
+void BendersBase::match_problem_to_id() {
+  int count = 0;
+  for (const auto &problem : slaves_map) {
+    _problem_to_id[problem.first] = count;
+    count++;
+  }
+}
+void BendersBase::set_cut_storage() {
+  for (auto const &kvp : _problem_to_id) {
+    _all_cuts_storage[kvp.first] = SlaveCutStorage();
+  }
+}
+
+void BendersBase::add_slave_name(const std::string &name) {
+  _slaves.push_back(name);
+}
+int BendersBase::get_slaves_number() const { return _options.SLAVE_NUMBER; }
+std::string BendersBase::get_master_name() const {
+  return _options.MASTER_NAME;
+}
+std::string BendersBase::get_solver_name() const {
+  return _options.SOLVER_NAME;
+}
+int BendersBase::get_log_level() const { return _options.LOG_LEVEL; }
+bool BendersBase::is_trace() const { return _options.TRACE; }
+Point BendersBase::get_x0() const { return _data.x0; }
+void BendersBase::set_x0(const Point &x0) { _data.x0 = x0; }
+double BendersBase::get_timer_master() const { return _data.timer_master; }
+void BendersBase::set_timer_master(const double &timer_master) {
+  _data.timer_master = timer_master;
+}
+double BendersBase::get_timer_slaves() const { return _data.timer_slaves; }
+void BendersBase::set_timer_slaves(const double &timer_slaves) {
+  _data.timer_slaves = timer_slaves;
+}
+double BendersBase::get_slave_cost() const { return _data.slave_cost; }
+void BendersBase::set_slave_cost(const double &slave_cost) {
+  _data.slave_cost = slave_cost;
 }
