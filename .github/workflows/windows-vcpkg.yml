@@ -59,6 +59,7 @@ jobs:
       XPRS_Path: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+      XPRESS_BIN_DIR: ${{ github.workspace }}/xpress/bin
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
