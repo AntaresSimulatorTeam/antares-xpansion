@@ -35,7 +35,7 @@ void Worker::get_value(double &lb) const {
  *
  *  \param problem_name : name of the problem
  */
-void Worker::init(Str2Int const &variable_map, std::string const &path_to_mps,
+void Worker::init(VariableMap const &variable_map, std::string const &path_to_mps,
                   std::string const &solver_name, int log_level,
                   const std::string &log_name) {
   _path_to_mps = path_to_mps;

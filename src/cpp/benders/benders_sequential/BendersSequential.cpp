@@ -20,31 +20,15 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger &logger, Writer writer)
     : BendersBase(options, logger, writer) {}
 
-void BendersSequential::initialise_problems() {
-  if (!_input.empty()) {
-    _data.nslaves = _options.SLAVE_NUMBER;
-    if (_data.nslaves < 0) {
-      _data.nslaves = _input.size() - 1;
-    }
+void BendersSequential::initialize_problems() {
+  match_problem_to_id();
 
-    auto it(_input.begin());
-
-    auto const it_master = _input.find(_options.MASTER_NAME);
-    Str2Int const &master_variable(it_master->second);
-    for (int i(0); i < _data.nslaves; ++it) {
-      if (it != it_master) {
-        _problem_to_id[it->first] = i;
-        _map_slaves[it->first] = WorkerSlavePtr(new WorkerSlave(
-            it->second, get_slave_path(it->first),
-            slave_weight(_data.nslaves, it->first), _options.SOLVER_NAME,
-            _options.LOG_LEVEL, _log_name));
-        _slaves.push_back(it->first);
-        i++;
-      }
-    }
-    _master.reset(new WorkerMaster(master_variable, get_master_path(),
-                                   _options.SOLVER_NAME, _options.LOG_LEVEL,
-                                   _data.nslaves, _log_name));
+  reset_master(new WorkerMaster(master_variable_map, get_master_path(),
+                                get_solver_name(), get_log_level(),
+                                _data.nslaves, log_name()));
+  for (const auto &problem : slaves_map) {
+    add_slave(problem);
+    add_slave_name(problem.first);
   }
 }
 
@@ -52,8 +36,10 @@ void BendersSequential::initialise_problems() {
  *  \brief Method to free the memory used by each problem
  */
 void BendersSequential::free() {
-  if (_master) _master->free();
-  for (auto &ptr : _map_slaves) ptr.second->free();
+  if (get_master()) {
+    free_master();
+  }
+  free_slaves();
 }
 
 /*!
@@ -68,13 +54,13 @@ void BendersSequential::build_cut() {
   AllCutPackage all_package;
   Timer timer_slaves;
   get_slave_cut(slave_cut_package);
-  _data.slave_cost = 0;
+  set_slave_cost(0);
   for (auto pairSlavenameSlavecutdata_l : slave_cut_package) {
-    _data.slave_cost +=
-        pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST];
+    set_slave_cost(get_slave_cost() +
+                   pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST]);
   }
 
-  _data.timer_slaves = timer_slaves.elapsed();
+  set_timer_slaves(timer_slaves.elapsed());
   all_package.push_back(slave_cut_package);
   build_cut_full(all_package);
 }
@@ -85,9 +71,7 @@ void BendersSequential::build_cut() {
  *  Method to run BendersSequential algorithm
  */
 void BendersSequential::run() {
-  for (auto const &kvp : _problem_to_id) {
-    _all_cuts_storage[kvp.first] = SlaveCutStorage();
-  }
+  set_cut_storage();
   init_data();
   Timer benders_timer;
   while (!_data.stop) {
@@ -97,15 +81,15 @@ void BendersSequential::run() {
     _logger->log_at_initialization(bendersDataToLogData(_data));
     _logger->display_message("\tSolving master...");
     get_master_value();
-    _logger->log_master_solving_duration(_data.timer_master);
+    _logger->log_master_solving_duration(get_timer_master());
 
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-    _trace.push_back(WorkerMasterDataPtr(new WorkerMasterData));
+    push_in_trace(WorkerMasterDataPtr(new WorkerMasterData));
 
     _logger->display_message("\tSolving subproblems...");
     build_cut();
-    _logger->log_subproblems_solving_duration(_data.timer_slaves);
+    _logger->log_subproblems_solving_duration(get_timer_slaves());
 
     update_best_ub();
 
@@ -113,25 +97,24 @@ void BendersSequential::run() {
 
     update_trace();
 
-    _data.timer_master = timer_master.elapsed();
+    set_timer_master(timer_master.elapsed());
     _data.elapsed_time = benders_timer.elapsed();
     _data.stop = stopping_criterion();
   }
 
-  if (_options.TRACE) {
+  if (is_trace()) {
     print_csv();
   }
 }
 
 void BendersSequential::launch() {
-  _input = build_input(get_structure_path(), _options.SLAVE_NUMBER,
-                       _options.MASTER_NAME);
-  _nbWeeks = _input.size();
+  build_input_map();
+
   LOG(INFO) << "Building input" << std::endl;
 
   LOG(INFO) << "Constructing workers..." << std::endl;
 
-  initialise_problems();
+  initialize_problems();
   LOG(INFO) << "Running solver..." << std::endl;
   try {
     run();

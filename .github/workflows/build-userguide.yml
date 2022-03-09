@@ -23,6 +23,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Get release
+      if: github.event_name == 'release' && github.event.action == 'created'
       id: get_release
       uses: bruceadams/get-release@v1.2.3
 
