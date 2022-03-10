@@ -30,9 +30,6 @@ BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT_VALUE, double, 1)
 BENDERS_OPTIONS_MACRO(MASTER_NAME, std::string, "master")
 
 // Number of slaves to use to solve the problem
-BENDERS_OPTIONS_MACRO(SLAVE_NUMBER, int, -1)
-
-// Number of slaves to use to solve the problem
 BENDERS_OPTIONS_MACRO(STRUCTURE_FILE, std::string, "structure.txt")
 
 // Path to the folder where input files are stored

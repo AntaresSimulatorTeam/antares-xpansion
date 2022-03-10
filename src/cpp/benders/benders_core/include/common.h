@@ -120,7 +120,6 @@ struct BaseOptions {
   std::string SOLVER_NAME;
   std::string SLAVE_WEIGHT;
 
-  int SLAVE_NUMBER;
   int LOG_LEVEL;
 
   double SLAVE_WEIGHT_VALUE;
@@ -147,5 +146,4 @@ struct BendersBaseOptions : public BaseOptions {
 };
 
 void usage(int argc);
-CouplingMap build_input(const std::string &structure_path,
-                        const int slave_number, const std::string &master_name);
+CouplingMap build_input(const std::string &structure_path);

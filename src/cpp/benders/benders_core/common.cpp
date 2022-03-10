@@ -44,9 +44,7 @@ void usage(int argc) {
  *  \note The id in the coupling_map is that of the variable in the solver
  *responsible for the creation of the structure file.
  */
-CouplingMap build_input(const std::string &structure_path,
-                        const int slave_number,
-                        const std::string &master_name) {
+CouplingMap build_input(const std::string &structure_path) {
   CouplingMap coupling_map;
   std::ifstream summary(structure_path, std::ios::in);
   if (!summary) {
@@ -66,19 +64,6 @@ CouplingMap build_input(const std::string &structure_path,
     coupling_map[problem_name][variable_name] = variable_id;
   }
 
-  if (slave_number >= 0) {
-    int n(0);
-    CouplingMap trimmer;
-    for (auto const &problem : coupling_map) {
-      if (problem.first == master_name)
-        trimmer.insert(problem);
-      else if (n < slave_number) {
-        trimmer.insert(problem);
-        ++n;
-      }
-    }
-    coupling_map = trimmer;
-  }
   summary.close();
   return coupling_map;
 }
