@@ -1,5 +1,5 @@
-#include "SensitivityAnalysis.h"
 #include "SensitivityFileLogger.h"
+#include "SensitivityStudy.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/SolverFactory.h"
 
@@ -111,7 +111,7 @@ class SensitivityAnalysisTest : public ::testing::Test {
     ASSERT_NEAR(single_pb_data.objective, expec_single_pb_data.objective, 1e-6);
     ASSERT_NEAR(single_pb_data.system_cost, expec_single_pb_data.system_cost,
                 1e-6);
-    ASSERT_EQ(single_pb_data.status, expec_single_pb_data.status);
+    ASSERT_EQ(single_pb_data.solver_status, expec_single_pb_data.solver_status);
 
     verify_candidates(single_pb_data.candidates,
                       expec_single_pb_data.candidates);
@@ -135,7 +135,7 @@ class SensitivityAnalysisTest : public ::testing::Test {
 TEST_F(SensitivityAnalysisTest, OutputDataInit) {
   prepare_toy_sensitivity_pb();
 
-  auto sensitivity_analysis = SensitivityAnalysis(input_data, logger, writer);
+  auto sensitivity_analysis = SensitivityStudy(input_data, logger, writer);
   auto expec_output_data = SensitivityOutputData(epsilon, best_ub);
   auto output_data = sensitivity_analysis.get_output_data();
 
@@ -147,7 +147,7 @@ TEST_F(SensitivityAnalysisTest, GetCapexSolutions) {
 
   input_data.capex = true;
   input_data.projection = {};
-  auto sensitivity_analysis = SensitivityAnalysis(input_data, logger, writer);
+  auto sensitivity_analysis = SensitivityStudy(input_data, logger, writer);
   sensitivity_analysis.launch();
 
   auto output_data = sensitivity_analysis.get_output_data();
@@ -172,7 +172,7 @@ TEST_F(SensitivityAnalysisTest, GetCandidatesProjection) {
 
   input_data.capex = false;
   input_data.projection = candidate_names;
-  auto sensitivity_analysis = SensitivityAnalysis(input_data, logger, writer);
+  auto sensitivity_analysis = SensitivityStudy(input_data, logger, writer);
   sensitivity_analysis.launch();
 
   auto output_data = sensitivity_analysis.get_output_data();
@@ -215,8 +215,8 @@ TEST_F(SensitivityAnalysisTest, FullSensitivityAnalysis) {
 
   input_data.capex = true;
   input_data.projection = candidate_names;
-  SensitivityAnalysis sensitivity_analysis =
-      SensitivityAnalysis(input_data, logger, writer);
+  SensitivityStudy sensitivity_analysis =
+      SensitivityStudy(input_data, logger, writer);
   sensitivity_analysis.launch();
 
   auto output_data = sensitivity_analysis.get_output_data();

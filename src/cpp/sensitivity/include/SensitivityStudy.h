@@ -8,13 +8,13 @@
 #include "SensitivityPbModifier.h"
 #include "SensitivityWriter.h"
 
-class SensitivityAnalysis {
+class SensitivityStudy {
  public:
-  SensitivityAnalysis() = default;
-  explicit SensitivityAnalysis(const SensitivityInputData &input_data,
+  SensitivityStudy() = default;
+  explicit SensitivityStudy(const SensitivityInputData &input_data,
                                std::shared_ptr<SensitivityILogger> logger,
                                std::shared_ptr<SensitivityWriter> writer);
-  ~SensitivityAnalysis() = default;
+  ~SensitivityStudy() = default;
 
   static const bool MINIMIZE;
   static const bool MAXIMIZE;
@@ -32,8 +32,9 @@ class SensitivityAnalysis {
 
   std::map<std::string, int> _name_to_id;
   SolverAbstract::Ptr _last_master;
-  std::shared_ptr<SensitivityILogger> _logger;
-  std::shared_ptr<SensitivityWriter> _writer;
+  std::shared_ptr<SensitivityILogger> logger;
+  std::shared_ptr<SensitivityWriter> writer;
+  SensitivityInputData input_data;
 
   std::shared_ptr<SensitivityPbModifier> _pb_modifier;
   SensitivityOutputData _output_data;
@@ -42,7 +43,7 @@ class SensitivityAnalysis {
 
   void init_output_data();
   SinglePbData init_single_pb_data(const bool minimize) const;
-  void get_capex_solutions();
+  void run_capex_analysis();
   void get_candidates_projection();
   void run_analysis();
   void run_optimization(const SolverAbstract::Ptr &sensitivity_model,

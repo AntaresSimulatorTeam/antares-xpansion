@@ -3,12 +3,12 @@ add_library (sensitivity_core
 	SensitivityMasterLogger.cpp
 	SensitivityUserLogger.cpp
 	SensitivityFileLogger.cpp
-	SensitivityAnalysis.cpp 
+        SensitivityStudy.cpp
 	SensitivityWriter.cpp 
 	SensitivityPbModifier.cpp 
 	PbModifierCapex.cpp 
 	PbModifierProjection.cpp
-)
+        CapexAnalysis.cpp CapexAnalysis.h)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib
 INTERFACE_INCLUDE_DIRECTORIES)

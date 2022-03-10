@@ -20,7 +20,7 @@ struct SinglePbData {
   double objective;
   double system_cost;
   Point candidates;
-  int status;
+  int solver_status;
 
   SinglePbData() = default;
   SinglePbData(const SensitivityPbType &pb_type, const std::string &str_pb_type,
@@ -34,7 +34,7 @@ struct SinglePbData {
         objective(objective),
         system_cost(system_cost),
         candidates(candidates),
-        status(status) {}
+        solver_status(status) {}
 
   SinglePbData(const SensitivityPbType &pb_type, const std::string &str_pb_type,
                const std::string &candidate_name, const std::string &opt_dir)

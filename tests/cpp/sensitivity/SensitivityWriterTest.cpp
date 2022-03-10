@@ -39,7 +39,7 @@ class SensitivityWriterTest : public ::testing::Test {
                 written_pbs_data[pb_id][PB_TYPE_C].asString());
       ASSERT_EQ(pbs_data[pb_id].opt_dir,
                 written_pbs_data[pb_id][OPT_DIR_C].asString());
-      ASSERT_EQ(pbs_data[pb_id].status,
+      ASSERT_EQ(pbs_data[pb_id].solver_status,
                 written_pbs_data[pb_id][STATUS_C].asInt());
       ASSERT_DOUBLE_EQ(pbs_data[pb_id].objective,
                        written_pbs_data[pb_id][OBJECTIVE_C].asDouble());

@@ -1,10 +1,10 @@
 #include <boost/program_options.hpp>
 #include <iostream>
 
-#include "SensitivityAnalysis.h"
 #include "SensitivityFileLogger.h"
 #include "SensitivityInputReader.h"
 #include "SensitivityMasterLogger.h"
+#include "SensitivityStudy.h"
 #include "SensitivityUserLogger.h"
 
 namespace po = boost::program_options;
@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
   SensitivityInputData input_data = sensitivity_input_reader.get_input_data();
 
   auto writer = std::make_shared<SensitivityWriter>(json_output_path);
-  auto sensitivity_analysis = SensitivityAnalysis(input_data, logger, writer);
+  auto sensitivity_analysis = SensitivityStudy(input_data, logger, writer);
 
   try {
     sensitivity_analysis.launch();

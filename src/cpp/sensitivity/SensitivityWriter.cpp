@@ -40,7 +40,7 @@ Json::Value SensitivityWriter::_write_single_pb(
   Json::Value single_pb_data_l;
   single_pb_data_l[PB_TYPE_C] = single_pb_data.str_pb_type;
   single_pb_data_l[OPT_DIR_C] = single_pb_data.opt_dir;
-  single_pb_data_l[STATUS_C] = single_pb_data.status;
+  single_pb_data_l[STATUS_C] = single_pb_data.solver_status;
   single_pb_data_l[OBJECTIVE_C] = single_pb_data.objective;
   single_pb_data_l[SYSTEM_COST_C] = single_pb_data.system_cost;
 
