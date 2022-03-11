@@ -17,6 +17,7 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
+
   userguide:
     runs-on: ubuntu-latest
     outputs:
@@ -205,7 +206,7 @@ jobs:
         name: ${{ steps.create-single-file.outputs.archive-name }}
         path: ${{ steps.create-single-file.outputs.archive-path }}
 
-  - name: Running unit tests
+    - name: Running unit tests
       shell: cmd
       env:
         XPRS_Path: ${{ github.workspace }}/xpress
