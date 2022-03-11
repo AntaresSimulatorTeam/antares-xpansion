@@ -72,7 +72,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   }
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(SolverAbstract::Ptr to_copy) {
+SolverAbstract::Ptr SolverFactory::copy_solver(SolverAbstract::Ptr to_copy) {
   std::string solver_name = to_copy->get_solver_name();
 
   if (solver_name == "") {

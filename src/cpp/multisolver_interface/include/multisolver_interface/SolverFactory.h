@@ -53,7 +53,7 @@ class SolverFactory {
    *
    * @param to_copy : solver to copy
    */
-  SolverAbstract::Ptr create_solver(SolverAbstract::Ptr to_copy);
+  SolverAbstract::Ptr copy_solver(SolverAbstract::Ptr to_copy);
 
   /**
    * @brief Returns a reference to the list of available solvers

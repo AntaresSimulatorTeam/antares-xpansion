@@ -616,7 +616,7 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]") {
 
       //========================================================================================
       // Declare copy prob
-      SolverAbstract::Ptr solver2 = factory.create_solver(solver);
+      SolverAbstract::Ptr solver2 = factory.copy_solver(solver);
       REQUIRE(solver2->get_number_of_instances() == 2);
 
       REQUIRE(solver2->get_ncols() == datas[inst]._ncols);

@@ -42,7 +42,7 @@ class SensitivityAnalysisTest : public ::testing::Test {
 
     std::string solver_name = "CBC";
     SolverFactory factory;
-    math_problem = factory.create_solver(solver_name);
+    math_problem = factory.create_solver(solver_name, std::tmpnam(nullptr));
     math_problem->init();
   }
 

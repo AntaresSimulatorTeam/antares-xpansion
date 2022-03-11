@@ -13,7 +13,7 @@ SolverCbc::SolverCbc(const std::string &log_file) : SolverCbc() {
   _fp = fopen(_log_file.c_str(), "a+");
 
   if (_fp == NULL) {
-    std::cerr << "Invalid log file name passed as parameter" << std::endl;
+    std::cerr << "Invalid log file name passed as parameter: " << _log_file << std::endl;
   } else {
     setvbuf(_fp, NULL, _IONBF, 0);
     _message_handler.setFilePointer(_fp);
