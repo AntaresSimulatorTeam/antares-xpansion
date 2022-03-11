@@ -202,14 +202,14 @@ jobs:
     - name: Upload .tar.gz
       uses: actions/upload-artifact@v2
       with:
-        name: antares-xpansion-centos7-archive
-        path: _build/*.tar.gz
+        name: ${{env.TGZ_NAME}}
+        path: _build/${{env.TGZ_NAME}}
         
     - name: Upload rpm
       uses: actions/upload-artifact@v2
       with:
-        name: antares-xpansion-centos7-rpm
-        path: _build/*.rpm
+        name: ${{env.RPM_NAME}}
+        path: _build/${{env.RPM_NAME}}
 
     - name: Upload single file
       uses: actions/upload-artifact@v2
