@@ -170,8 +170,6 @@ jobs:
       run: |
            cmake --build _build --config Release -j2 --target install
 
-
-
     - name: Create installer .zip
       shell: bash
       run: |
@@ -181,18 +179,21 @@ jobs:
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
     - name: set name variables
-      id: appendix
+      id: single_file_name
       shell: bash
       run: |
         XPRS=${{ matrix.xprs }}
         [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
-        echo "::set-output name=appendix::$WITH_XPRS"
+        VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
+        echo "::set-output name=version::$VERSION"
+        echo "VERSION=$VERSION"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Create single file .zip
       id: create-single-file
       uses: ./.github/workflows/single-file-creation-zip
       with:
-        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}${{steps.appendix.ouputs.appendix}}
+        antares-xpansion-version: ${{env.VERSION}}
 
     - name: Upload installer
       uses: actions/upload-artifact@v2
