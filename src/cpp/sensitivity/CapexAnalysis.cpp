@@ -10,36 +10,74 @@ CapexAnalysis::CapexAnalysis(
       input_data(input_data){
 
 }
+
 std::pair<SinglePbData, SinglePbData>  CapexAnalysis::run() {
   PbModifierCapex pb_modifier(input_data.epsilon, input_data.best_ub);
   int nb_candidates = input_data.name_to_id.size();
-  auto sensitivity_pb_model =
-      pb_modifier.changeProblem(nb_candidates, input_data.last_master);
-  run_optimization(sensitivity_pb_model, SensitivityStudy::MINIMIZE);
-  run_optimization(sensitivity_pb_model, SensitivityStudy::MAXIMIZE);
-  return { SinglePbData(), SinglePbData() };
+  sensitivity_pb_model = pb_modifier.changeProblem(nb_candidates, input_data.last_master);
+  auto min_capex_data = run_optimization(SensitivityStudy::MINIMIZE);
+  auto max_capex_data = run_optimization(SensitivityStudy::MAXIMIZE);
+  return { min_capex_data, max_capex_data };
 }
 
-void CapexAnalysis::run_optimization(
-    const SolverAbstract::Ptr &sensitivity_model, const bool minimize) {
-  sensitivity_model->chg_obj_direction(minimize);
+SinglePbData CapexAnalysis::run_optimization(const bool minimize) {
+  sensitivity_pb_model->chg_obj_direction(minimize);
 
-  SinglePbData pb_data = init_single_pb_data(minimize);
+  SinglePbData pb_data = SinglePbData(SensitivityPbType::CAPEX, "capex", "",
+                                      minimize ? MIN_C : MAX_C);
   logger->log_begin_pb_resolution(pb_data);
 
-  //auto raw_output = solve_sensitivity_pb(sensitivity_model);
+  auto raw_output = solve_sensitivity_pb();
 
-  //fill_single_pb_data(pb_data, raw_output);
-  //logger->log_pb_solution(pb_data);
+  fill_single_pb_data(pb_data, raw_output);
+  logger->log_pb_solution(pb_data);
 
-  //_output_data.pbs_data.push_back(pb_data);
+  return pb_data;
 }
 
-SinglePbData CapexAnalysis::init_single_pb_data(
-    const bool minimize) const {
-  std::string candidate_name = "";
-  std::string str_pb_type = "capex";
-  std::string opt_dir = minimize ? MIN_C : MAX_C;
-  return SinglePbData(SensitivityPbType::CAPEX, str_pb_type, candidate_name,
-                      opt_dir);
+RawPbData CapexAnalysis::solve_sensitivity_pb() const {
+  RawPbData raw_output;
+  int ncols = sensitivity_pb_model->get_ncols();
+
+  raw_output.obj_coeffs.resize(ncols);
+  raw_output.solution.resize(ncols);
+
+  sensitivity_pb_model->get_obj(raw_output.obj_coeffs.data(), 0, ncols - 1);
+
+  if (sensitivity_pb_model->get_n_integer_vars() > 0) {
+    raw_output.status = sensitivity_pb_model->solve_mip();
+    sensitivity_pb_model->get_mip_sol(raw_output.solution.data());
+    raw_output.obj_value = sensitivity_pb_model->get_mip_value();
+  } else {
+    raw_output.status = sensitivity_pb_model->solve_lp();
+    sensitivity_pb_model->get_lp_sol(raw_output.solution.data(), nullptr,
+                                    nullptr);
+    raw_output.obj_value = sensitivity_pb_model->get_lp_value();
+  }
+
+  return raw_output;
+}
+
+void CapexAnalysis::fill_single_pb_data(
+    SinglePbData &pb_data, const RawPbData &raw_output) const {
+  pb_data.objective = raw_output.obj_value;
+  pb_data.solver_status = raw_output.status;
+
+  for (auto const &kvp : input_data.name_to_id) {
+    pb_data.candidates[kvp.first] = raw_output.solution[kvp.second];
+  }
+  pb_data.system_cost = get_system_cost(raw_output);
+}
+
+double CapexAnalysis::get_system_cost(const RawPbData &raw_output) const {
+  int ncols = input_data.last_master->get_ncols();
+  std::vector<double> master_obj(ncols);
+
+  input_data.last_master->get_obj(master_obj.data(), 0, ncols - 1);
+
+  double system_cost = 0;
+  for (int col_id(0); col_id < ncols; col_id++) {
+    system_cost += master_obj[col_id] * raw_output.solution[col_id];
+  }
+  return system_cost;
 }

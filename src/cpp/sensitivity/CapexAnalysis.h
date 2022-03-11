@@ -14,10 +14,14 @@ class CapexAnalysis {
  private:
   std::shared_ptr<SensitivityILogger> logger;
   SensitivityInputData input_data;
+  std::shared_ptr<SolverAbstract> sensitivity_pb_model;
 
-  void run_optimization(
-      const SolverAbstract::Ptr &sensitivity_model, const bool minimize);
-  SinglePbData init_single_pb_data(const bool minimize) const;
+  SinglePbData run_optimization(const bool minimize);
+  RawPbData solve_sensitivity_pb() const;
+  void fill_single_pb_data(SinglePbData &pb_data,
+                           const RawPbData &raw_output) const;
+  double get_system_cost(const RawPbData &raw_output) const;
+
 };
 
 #endif  // ANTARESXPANSION_CAPEXANALYSIS_H

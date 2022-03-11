@@ -53,10 +53,8 @@ void SensitivityStudy::run_capex_analysis() {
   CapexAnalysis capex_analysis(input_data, logger);
   std::pair<SinglePbData, SinglePbData> capex_data = capex_analysis.run();
 
-  // finish refactoring
-  _sensitivity_pb_type = SensitivityPbType::CAPEX;
-  _pb_modifier = std::make_shared<PbModifierCapex>(_epsilon, _best_ub);
-  run_analysis();
+  _output_data.pbs_data.push_back(capex_data.first);
+  _output_data.pbs_data.push_back(capex_data.second);
 }
 
 void SensitivityStudy::get_candidates_projection() {
