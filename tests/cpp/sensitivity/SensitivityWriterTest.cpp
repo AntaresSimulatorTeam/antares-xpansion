@@ -64,7 +64,7 @@ class SensitivityWriterTest : public ::testing::Test {
 
 TEST_F(SensitivityWriterTest, GenerateAValidFile) {
   auto writer = SensitivityWriter(_fileName);
-  writer.dump();
+  writer.end_writing({});
 
   std::ifstream fileStream(_fileName);
   fileStream.close();

@@ -23,18 +23,12 @@ const std::string SENSITIVITY_SOLUTION_C("sensitivity solutions");
 
 class SensitivityWriter {
  private:
-  std::string _filename;
-  Json::Value _output;
-
-  void _write_sensitivity_output(const SensitivityOutputData &output_data);
-  Json::Value _write_single_pb(const SinglePbData &single_pb_data);
-  Json::Value _write_candidate(const std::pair<std::string, double> &candidate);
+  const std::string _filename;
 
  public:
   SensitivityWriter() = delete;
   explicit SensitivityWriter(const std::string &json_filename);
   ~SensitivityWriter() = default;
 
-  void dump();
-  void end_writing(SensitivityOutputData const &output_data);
+  void end_writing(SensitivityOutputData const &output_data) const;
 };
