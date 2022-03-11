@@ -1,7 +1,7 @@
 add_library (sensitivity_core
 	SensitivityInputReader.cpp
 	SensitivityMasterLogger.cpp
-	SensitivityUserLogger.cpp
+        SensitivityLogger.cpp
 	SensitivityFileLogger.cpp
         SensitivityStudy.cpp
 	SensitivityWriter.cpp 

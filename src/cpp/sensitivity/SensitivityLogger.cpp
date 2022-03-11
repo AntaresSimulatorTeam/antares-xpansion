@@ -1,21 +1,21 @@
-#include "SensitivityUserLogger.h"
+#include "SensitivityLogger.h"
 
 #include <iostream>
 
 #include "Commons.h"
 
-SensitivityUserLogger::SensitivityUserLogger(std::ostream& stream)
+SensitivityLogger::SensitivityLogger(std::ostream& stream)
     : _stream(stream) {
   if (_stream.fail()) {
     std::cerr << "Invalid stream passed as parameter" << std::endl;
   }
 }
 
-void SensitivityUserLogger::display_message(const std::string& msg) {
+void SensitivityLogger::display_message(const std::string& msg) {
   _stream << msg << std::endl;
 }
 
-void SensitivityUserLogger::log_at_start(
+void SensitivityLogger::log_at_start(
     const SensitivityOutputData& output_data) {
   _stream << std::endl;
   _stream << "Best overall cost = "
@@ -26,12 +26,12 @@ void SensitivityUserLogger::log_at_start(
   _stream << std::endl;
 }
 
-void SensitivityUserLogger::log_begin_pb_resolution(
+void SensitivityLogger::log_begin_pb_resolution(
     const SinglePbData& pb_data) {
   _stream << "Solving " << pb_data.get_pb_description() << "..." << std::endl;
 }
 
-void SensitivityUserLogger::log_pb_solution(const SinglePbData& pb_data) {
+void SensitivityLogger::log_pb_solution(const SinglePbData& pb_data) {
   _stream << indent_1 << pb_data.get_pb_description() << " = "
           << format_objective(pb_data) << get_objective_unit(pb_data)
           << std::endl;
@@ -42,11 +42,11 @@ void SensitivityUserLogger::log_pb_solution(const SinglePbData& pb_data) {
   _stream << std::endl;
 }
 
-void SensitivityUserLogger::log_at_ending() {
+void SensitivityLogger::log_at_ending() {
   _stream << "--- Sensitivity analysis completed ---" << std::endl;
 }
 
-void SensitivityUserLogger::log_summary(
+void SensitivityLogger::log_summary(
     const SensitivityOutputData& output_data) {
   _stream << "Sensitivity analysis summary "
           << "(epsilon = " << output_data.epsilon << EUROS << "):" << std::endl
@@ -71,7 +71,7 @@ void SensitivityUserLogger::log_summary(
   }
 }
 
-void SensitivityUserLogger::log_capex_summary(
+void SensitivityLogger::log_capex_summary(
     const std::vector<SinglePbData>& capex_data) {
   double capex_min = 0;
   double capex_max = 0;
@@ -92,7 +92,7 @@ void SensitivityUserLogger::log_capex_summary(
           << std::endl;
 }
 
-std::string SensitivityUserLogger::get_objective_unit(
+std::string SensitivityLogger::get_objective_unit(
     const SinglePbData& pb_data) const {
   if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
     return MW;
@@ -101,7 +101,7 @@ std::string SensitivityUserLogger::get_objective_unit(
   }
 }
 
-std::string SensitivityUserLogger::format_objective(
+std::string SensitivityLogger::format_objective(
     const SinglePbData& pb_data) const {
   if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
     std::stringstream objective;
@@ -113,7 +113,7 @@ std::string SensitivityUserLogger::format_objective(
   }
 }
 
-void SensitivityUserLogger::log_projection_summary(
+void SensitivityLogger::log_projection_summary(
     const std::vector<SinglePbData>& projection_data) {
   auto investment_intervals = get_investment_intervals(projection_data);
 
@@ -127,7 +127,7 @@ void SensitivityUserLogger::log_projection_summary(
 }
 
 std::map<std::string, std::map<std::string, double>>
-SensitivityUserLogger::get_investment_intervals(
+SensitivityLogger::get_investment_intervals(
     const std::vector<SinglePbData>& projection_data) const {
   std::map<std::string, std::map<std::string, double>> investment_intervals;
 

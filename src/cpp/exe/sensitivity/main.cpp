@@ -5,7 +5,7 @@
 #include "SensitivityInputReader.h"
 #include "SensitivityMasterLogger.h"
 #include "SensitivityStudy.h"
-#include "SensitivityUserLogger.h"
+#include "SensitivityLogger.h"
 
 namespace po = boost::program_options;
 
@@ -15,7 +15,7 @@ std::shared_ptr<SensitivityILogger> build_logger(
   std::shared_ptr<SensitivityILogger> file_logger =
       std::make_shared<SensitivityFileLogger>(log_file_path);
   std::shared_ptr<SensitivityILogger> user_logger =
-      std::make_shared<SensitivityUserLogger>(std::cout);
+      std::make_shared<SensitivityLogger>(std::cout);
   master_logger->addLogger(file_logger);
   master_logger->addLogger(user_logger);
   std::shared_ptr<SensitivityILogger> logger = master_logger;

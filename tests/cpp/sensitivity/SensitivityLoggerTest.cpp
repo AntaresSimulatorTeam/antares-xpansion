@@ -2,7 +2,7 @@
 #include "SensitivityFileLogger.h"
 #include "SensitivityILogger.h"
 #include "SensitivityMasterLogger.h"
-#include "SensitivityUserLogger.h"
+#include "SensitivityLogger.h"
 #include "gtest/gtest.h"
 
 class SensitivityFileLoggerTest : public ::testing::Test {
@@ -46,7 +46,7 @@ class SensitivityUserLoggerTest : public ::testing::Test {
   SensitivityUserLoggerTest() : _logger(_stream) {}
 
   std::stringstream _stream;
-  SensitivityUserLogger _logger;
+  SensitivityLogger _logger;
 
   double epsilon = 12;
   double best_benders_cost = 1e6;
@@ -70,7 +70,7 @@ TEST_F(SensitivityUserLoggerTest, InvalidStreamNotified) {
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
   std::ofstream invalidStream("");
 
-  SensitivityUserLogger userLogger(invalidStream);
+  SensitivityLogger userLogger(invalidStream);
 
   std::cerr.rdbuf(initialBufferCerr);
 

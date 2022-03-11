@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "SensitivityILogger.h"
-#include "SensitivityUserLogger.h"
+#include "SensitivityLogger.h"
 
 class SensitivityFileLogger : public SensitivityILogger {
  public:
@@ -20,7 +20,7 @@ class SensitivityFileLogger : public SensitivityILogger {
 
  private:
   std::ofstream _file;
-  std::unique_ptr<SensitivityUserLogger> _userLog;
+  std::unique_ptr<SensitivityLogger> _userLog;
 };
 
 #endif  // ANTARESXPANSION_SENSITIVITYFILELOGGER_H

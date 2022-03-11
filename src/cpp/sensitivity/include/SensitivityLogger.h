@@ -1,5 +1,5 @@
-#ifndef ANTARESXPANSION_SENSITIVITYUSERLOGGER_H
-#define ANTARESXPANSION_SENSITIVITYUSERLOGGER_H
+#ifndef ANTARESXPANSION_SENSITIVITYLOGGER_H
+#define ANTARESXPANSION_SENSITIVITYLOGGER_H
 
 #include <ostream>
 
@@ -10,9 +10,9 @@ const std::string EUROS(" e");
 const std::string MILLON_EUROS(" Me");
 const std::string MW(" MW");
 
-class SensitivityUserLogger : public SensitivityILogger {
+class SensitivityLogger : public SensitivityILogger {
  public:
-  explicit SensitivityUserLogger(std::ostream &stream);
+  explicit SensitivityLogger(std::ostream &stream);
 
   void display_message(const std::string &msg) override;
   void log_at_start(const SensitivityOutputData &output_data) override;
@@ -32,4 +32,4 @@ class SensitivityUserLogger : public SensitivityILogger {
   std::string format_objective(const SinglePbData &pb_data) const;
 };
 
-#endif  // ANTARESXPANSION_SENSITIVITYUSERLOGGER_H
+#endif  // ANTARESXPANSION_SENSITIVITYLOGGER_H
