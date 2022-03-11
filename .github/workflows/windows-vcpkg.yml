@@ -170,19 +170,7 @@ jobs:
       run: |
            cmake --build _build --config Release -j2 --target install
 
-    - name: Running unit tests
-      shell: cmd
-      env:
-        XPRS_Path: ${{ github.workspace }}/xpress
-        XPRESS: ${{ github.workspace }}/xpress/bin
-        XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
-        XPRESS_BIN_DIR: ${{ github.workspace }}/xpress/bin
-      run: |
-        set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
-        set XPRESS=${{ github.workspace }}\xpress\bin
-        set XPRESS_BIN_DIR=${{ github.workspace }}\xpress\bin
-        cd _build
-        ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+
 
     - name: Create installer .zip
       shell: bash
@@ -217,6 +205,20 @@ jobs:
       with:
         name: ${{ steps.create-single-file.outputs.archive-name }}
         path: ${{ steps.create-single-file.outputs.archive-path }}
+
+  - name: Running unit tests
+      shell: cmd
+      env:
+        XPRS_Path: ${{ github.workspace }}/xpress
+        XPRESS: ${{ github.workspace }}/xpress/bin
+        XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+        XPRESS_BIN_DIR: ${{ github.workspace }}/xpress/bin
+      run: |
+        set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+        set XPRESS=${{ github.workspace }}\xpress\bin
+        set XPRESS_BIN_DIR=${{ github.workspace }}\xpress\bin
+        cd _build
+        ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
     - name: Publish installer
       if: github.event_name == 'release' && github.event.action == 'created'

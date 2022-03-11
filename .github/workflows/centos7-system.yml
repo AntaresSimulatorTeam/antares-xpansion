@@ -29,7 +29,7 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v1.1.2
+        uses: tj-actions/changed-files@v17.3
         with:
           files: |
             docker/centos7
@@ -37,7 +37,7 @@ jobs:
 
       - name: Read antares-solver version
         id: antares-version
-        if: steps.changed-files.outputs.modified_files != ''
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: notiz-dev/github-action-json-property@release
         with:
           path: 'antares-version.json'
@@ -45,7 +45,7 @@ jobs:
 
       - name: Read antares-deps version
         id: antares-deps-version
-        if: steps.changed-files.outputs.modified_files != ''
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: notiz-dev/github-action-json-property@release
         with:
           path: 'antares-version.json'
@@ -53,7 +53,7 @@ jobs:
 
       - name: Docker file push
         id: docker_push
-        if: steps.changed-files.outputs.modified_files != ''
+        if: steps.changed-files.outputs.any_changed == 'true'
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
@@ -168,11 +168,6 @@ jobs:
         export PATH=/usr/lib64/openmpi/bin:$PATH
         cmake3 --build _build --config Release -j2 --target install
 
-    - name: Running unit tests
-      run: |
-        cd _build
-        ctest3 -C Release --output-on-failure -L "unit|benders"
-
     - name: .tar.gz creation
       run: |
         cd _build
@@ -201,7 +196,7 @@ jobs:
       with:
         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}${{steps.appendix.ouputs.appendix}}
 
-    - name: Upload  .tar.gz
+    - name: Upload .tar.gz
       uses: actions/upload-artifact@v2
       with:
         name: antares-xpansion-centos7-archive
@@ -218,6 +213,11 @@ jobs:
       with:
         name: ${{ steps.create-single-file.outputs.archive-name }}
         path: ${{ steps.create-single-file.outputs.archive-path }}
+
+    - name: Running unit tests
+      run: |
+        cd _build
+        ctest3 -C Release --output-on-failure -L "unit|benders"
 
     - name: Publish .tar.gz
       if: github.event_name == 'release' && github.event.action == 'created'
