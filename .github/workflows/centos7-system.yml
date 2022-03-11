@@ -183,18 +183,21 @@ jobs:
         echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
 
     - name: set name variables
-      id: appendix
+      id: single_file_name
       shell: bash
       run: |
         XPRS=${{ matrix.xprs }}
         [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
-        echo "::set-output name=appendix::$WITH_XPRS"
+        VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
+        echo "::set-output name=version::$VERSION"
+        echo "VERSION=$VERSION"
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - id: create-single-file
       name: Single file .tar.gz creation
       uses: ./.github/workflows/single-file-creation-tgz
       with:
-        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}${{steps.appendix.ouputs.appendix}}
+        antares-xpansion-version: ${{env.VERSION}}
 
     - name: Upload .tar.gz
       uses: actions/upload-artifact@v2
@@ -213,6 +216,12 @@ jobs:
       with:
         name: ${{ steps.create-single-file.outputs.archive-name }}
         path: ${{ steps.create-single-file.outputs.archive-path }}
+
+    - name: set ld_library_path
+      shell: bash
+      run: |
+        LD_PATH="${{ env.XPRS_LIB_Path }}/"
+        echo "LD_LIBRARY_PATH=$LD_PATH" >> $GITHUB_ENV
 
     - name: Running unit tests
       run: |
