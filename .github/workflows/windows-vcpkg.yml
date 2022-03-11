@@ -198,7 +198,7 @@ jobs:
     - name: Upload installer
       uses: actions/upload-artifact@v2
       with:
-        name: antares-xpansion-installer-64bits
+        name: ${{env.ZIP_NAME}}
         path: _build/${{env.ZIP_NAME}}
 
     - name: Upload single file
