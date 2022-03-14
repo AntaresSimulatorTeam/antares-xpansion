@@ -18,7 +18,7 @@ class SensitivityInputReader
 {
 public:
     SensitivityInputReader() = default;
-    explicit SensitivityInputReader(const std::string &json_input_path, const std::string &benders_output_path, const std::string &last_master_path, const std::string &structure_path);
+    explicit SensitivityInputReader(const std::string &json_input_path, const std::string &benders_output_path, std::string last_master_path, std::string structure_path);
     ~SensitivityInputReader() = default;
 
     SensitivityInputData get_input_data();
@@ -28,8 +28,6 @@ private:
     Json::Value _benders_data;
     std::string _last_master_path;
     std::string _structure_file_path;
-
-    Json::Value read_json(const std::string &json_file_path);
 
     SolverAbstract::Ptr get_last_master();
     double get_best_ub();

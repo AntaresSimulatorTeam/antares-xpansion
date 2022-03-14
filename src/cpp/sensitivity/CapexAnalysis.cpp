@@ -1,30 +1,33 @@
 
 #include "CapexAnalysis.h"
 
-#include <PbModifierCapex.h>
+#include <ProblemModifierCapex.h>
 #include <SensitivityStudy.h>
+
+#include <utility>
 CapexAnalysis::CapexAnalysis(
-    const SensitivityInputData& input_data,
+    SensitivityInputData input_data,
     std::shared_ptr<SensitivityILogger> logger)
-    : logger(logger),
-      input_data(input_data){
+    : logger(std::move(logger)),
+      input_data(std::move(input_data)){
 
 }
 
 std::pair<SinglePbData, SinglePbData>  CapexAnalysis::run() {
-  PbModifierCapex pb_modifier(input_data.epsilon, input_data.best_ub, input_data.last_master);
-  int nb_candidates = input_data.name_to_id.size();
+  ProblemModifierCapex pb_modifier(input_data.epsilon, input_data.best_ub, input_data.last_master);
+  unsigned int nb_candidates = input_data.name_to_id.size();
   sensitivity_pb_model = pb_modifier.changeProblem(nb_candidates);
-  auto min_capex_data = run_optimization(SensitivityStudy::MINIMIZE);
-  auto max_capex_data = run_optimization(SensitivityStudy::MAXIMIZE);
+  auto min_capex_data = run_optimization(SensitivityStudy::StudyType::MINIMIZE);
+  auto max_capex_data = run_optimization(SensitivityStudy::StudyType::MAXIMIZE);
   return { min_capex_data, max_capex_data };
 }
 
-SinglePbData CapexAnalysis::run_optimization(const bool minimize) {
-  sensitivity_pb_model->chg_obj_direction(minimize);
+SinglePbData CapexAnalysis::run_optimization(
+    SensitivityStudy::StudyType minimize) {
+  sensitivity_pb_model->chg_obj_direction(static_cast<bool>(minimize));
 
   SinglePbData pb_data = SinglePbData(SensitivityPbType::CAPEX, "capex", "",
-                                      minimize ? MIN_C : MAX_C);
+                                      minimize == SensitivityStudy::StudyType::MINIMIZE ? MIN_C : MAX_C);
   logger->log_begin_pb_resolution(pb_data);
 
   auto raw_output = solve_sensitivity_pb();

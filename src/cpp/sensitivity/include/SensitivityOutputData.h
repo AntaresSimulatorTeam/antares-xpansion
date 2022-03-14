@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <utility>
 
 #include "common.h"
 
@@ -13,35 +14,35 @@ enum class SensitivityPbType {
 };
 
 struct SinglePbData {
-  SensitivityPbType pb_type;
+  SensitivityPbType pb_type = SensitivityPbType::CAPEX;
   std::string str_pb_type;
   std::string candidate_name;
   std::string opt_dir;
-  double objective;
-  double system_cost;
+  double objective = 0;
+  double system_cost = 0;
   Point candidates;
-  int solver_status;
+  int solver_status = 0;
 
   SinglePbData() = default;
-  SinglePbData(const SensitivityPbType &pb_type, const std::string &str_pb_type,
-               const std::string &candidate_name, const std::string &opt_dir,
-               double objective, double system_cost, const Point &candidates,
+  SinglePbData(const SensitivityPbType &pb_type, std::string str_pb_type,
+               std::string candidate_name, std::string opt_dir,
+               double objective, double system_cost, Point candidates,
                int status)
       : pb_type(pb_type),
-        str_pb_type(str_pb_type),
-        candidate_name(candidate_name),
-        opt_dir(opt_dir),
+        str_pb_type(std::move(str_pb_type)),
+        candidate_name(std::move(candidate_name)),
+        opt_dir(std::move(opt_dir)),
         objective(objective),
         system_cost(system_cost),
-        candidates(candidates),
+        candidates(std::move(candidates)),
         solver_status(status) {}
 
-  SinglePbData(const SensitivityPbType &pb_type, const std::string &str_pb_type,
-               const std::string &candidate_name, const std::string &opt_dir)
+  SinglePbData(const SensitivityPbType &pb_type, std::string str_pb_type,
+               std::string candidate_name, std::string opt_dir)
       : pb_type(pb_type),
-        str_pb_type(str_pb_type),
-        candidate_name(candidate_name),
-        opt_dir(opt_dir) {}
+        str_pb_type(std::move(str_pb_type)),
+        candidate_name(std::move(candidate_name)),
+        opt_dir(std::move(opt_dir)) {}
 
   std::string get_pb_description() const {
     return opt_dir + " " + str_pb_type + " " + candidate_name;
@@ -49,14 +50,14 @@ struct SinglePbData {
 };
 
 struct SensitivityOutputData {
-  double epsilon;
-  double best_benders_cost;
+  double epsilon = 0;
+  double best_benders_cost = 0;
   std::vector<SinglePbData> pbs_data;
 
   SensitivityOutputData() = default;
   SensitivityOutputData(double epsilon, double benders_cost,
-                        const std::vector<SinglePbData> &pbs_data = {})
-      : epsilon(epsilon), best_benders_cost(benders_cost), pbs_data(pbs_data) {}
+                        std::vector<SinglePbData> pbs_data = {})
+      : epsilon(epsilon), best_benders_cost(benders_cost), pbs_data(std::move(pbs_data)) {}
 };
 
 struct RawPbData {

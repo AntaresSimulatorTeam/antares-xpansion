@@ -4,9 +4,10 @@
 
 #include <SensitivityILogger.h>
 #include <SensitivityInputReader.h>
+#include "SensitivityStudy.h"
 class CapexAnalysis {
  public:
-  CapexAnalysis(const SensitivityInputData &input_data,
+  CapexAnalysis(SensitivityInputData input_data,
                 std::shared_ptr<SensitivityILogger> logger);
 
   std::pair<SinglePbData, SinglePbData>  run();
@@ -16,7 +17,7 @@ class CapexAnalysis {
   SensitivityInputData input_data;
   std::shared_ptr<SolverAbstract> sensitivity_pb_model;
 
-  SinglePbData run_optimization(const bool minimize);
+  SinglePbData run_optimization(SensitivityStudy::StudyType minimize);
   RawPbData solve_sensitivity_pb() const;
   void fill_single_pb_data(SinglePbData &pb_data,
                            const RawPbData &raw_output) const;

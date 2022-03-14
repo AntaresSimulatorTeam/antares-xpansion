@@ -27,7 +27,7 @@ class SensitivityWriter {
 
  public:
   SensitivityWriter() = delete;
-  explicit SensitivityWriter(const std::string &json_filename);
+  explicit SensitivityWriter(std::string json_filename);
   ~SensitivityWriter() = default;
 
   void end_writing(SensitivityOutputData const &output_data) const;

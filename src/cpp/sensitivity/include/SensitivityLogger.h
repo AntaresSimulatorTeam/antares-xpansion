@@ -26,10 +26,6 @@ class SensitivityLogger : public SensitivityILogger {
 
   void log_projection_summary(const std::vector<SinglePbData> &projection_data);
   void log_capex_summary(const std::vector<SinglePbData> &capex_data);
-  std::map<std::string, std::map<std::string, double>> get_investment_intervals(
-      const std::vector<SinglePbData> &projection_data) const;
-  std::string get_objective_unit(const SinglePbData &pb_data) const;
-  std::string format_objective(const SinglePbData &pb_data) const;
 };
 
 #endif  // ANTARESXPANSION_SENSITIVITYLOGGER_H

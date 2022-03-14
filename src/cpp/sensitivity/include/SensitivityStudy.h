@@ -5,19 +5,22 @@
 #include "SensitivityILogger.h"
 #include "SensitivityInputReader.h"
 #include "SensitivityOutputData.h"
-#include "SensitivityPbModifier.h"
+#include "SensitivityProblemModifier.h"
 #include "SensitivityWriter.h"
 
 class SensitivityStudy {
  public:
-  SensitivityStudy() = default;
+  SensitivityStudy() = delete;
   explicit SensitivityStudy(const SensitivityInputData &input_data,
                                std::shared_ptr<SensitivityILogger> logger,
                                std::shared_ptr<SensitivityWriter> writer);
   ~SensitivityStudy() = default;
 
-  static const bool MINIMIZE;
-  static const bool MAXIMIZE;
+  enum class StudyType: bool {
+    MINIMIZE = true,
+    MAXIMIZE = false,
+  };
+
   static const std::vector<std::string> sensitivity_string_pb_type;
 
   void launch();
@@ -36,20 +39,19 @@ class SensitivityStudy {
   std::shared_ptr<SensitivityWriter> writer;
   SensitivityInputData input_data;
 
-  std::shared_ptr<SensitivityPbModifier> _pb_modifier;
+  std::shared_ptr<SensitivityProblemModifier> _pb_modifier;
   SensitivityOutputData _output_data;
 
   SensitivityPbType _sensitivity_pb_type;
 
   void init_output_data();
-  SinglePbData init_single_pb_data(const bool minimize) const;
+  SinglePbData init_single_pb_data(StudyType minimize) const;
   void run_capex_analysis();
   void get_candidates_projection();
   void run_analysis();
   void run_optimization(const SolverAbstract::Ptr &sensitivity_model,
-                        const bool minimize);
+                        StudyType minimize);
 
-  RawPbData solve_sensitivity_pb(SolverAbstract::Ptr sensitivity_problem) const;
   void fill_single_pb_data(SinglePbData &pb_data,
                            const RawPbData &raw_output) const;
   double get_system_cost(const RawPbData &raw_output) const;

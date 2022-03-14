@@ -31,6 +31,27 @@ void SensitivityLogger::log_begin_pb_resolution(
   _stream << "Solving " << pb_data.get_pb_description() << "..." << std::endl;
 }
 
+std::string get_objective_unit(
+    const SinglePbData& pb_data) {
+  if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
+    return MW;
+  } else {
+    return MILLON_EUROS;
+  }
+}
+
+std::string format_objective(
+    const SinglePbData& pb_data) {
+  if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
+    std::stringstream objective;
+    objective << pb_data.objective;
+    return objective.str();
+  } else {
+    return xpansion::logger::commons::create_str_million_euros(
+        pb_data.objective);
+  }
+}
+
 void SensitivityLogger::log_pb_solution(const SinglePbData& pb_data) {
   _stream << indent_1 << pb_data.get_pb_description() << " = "
           << format_objective(pb_data) << get_objective_unit(pb_data)
@@ -92,25 +113,19 @@ void SensitivityLogger::log_capex_summary(
           << std::endl;
 }
 
-std::string SensitivityLogger::get_objective_unit(
-    const SinglePbData& pb_data) const {
-  if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
-    return MW;
-  } else {
-    return MILLON_EUROS;
-  }
-}
+std::map<std::string, std::map<std::string, double>>
+get_investment_intervals(
+    const std::vector<SinglePbData>& projection_data) {
+  std::map<std::string, std::map<std::string, double>> investment_intervals;
 
-std::string SensitivityLogger::format_objective(
-    const SinglePbData& pb_data) const {
-  if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
-    std::stringstream objective;
-    objective << pb_data.objective;
-    return objective.str();
-  } else {
-    return xpansion::logger::commons::create_str_million_euros(
-        pb_data.objective);
+  for (const auto& pb_data : projection_data) {
+    if (pb_data.opt_dir == MIN_C) {
+      investment_intervals[pb_data.candidate_name][MIN_C] = pb_data.objective;
+    } else {
+      investment_intervals[pb_data.candidate_name][MAX_C] = pb_data.objective;
+    }
   }
+  return investment_intervals;
 }
 
 void SensitivityLogger::log_projection_summary(
@@ -124,19 +139,4 @@ void SensitivityLogger::log_projection_summary(
             << MW << ", " << interval[MAX_C] << MW << "]" << std::endl;
   }
   _stream << std::endl;
-}
-
-std::map<std::string, std::map<std::string, double>>
-SensitivityLogger::get_investment_intervals(
-    const std::vector<SinglePbData>& projection_data) const {
-  std::map<std::string, std::map<std::string, double>> investment_intervals;
-
-  for (const auto& pb_data : projection_data) {
-    if (pb_data.opt_dir == MIN_C) {
-      investment_intervals[pb_data.candidate_name][MIN_C] = pb_data.objective;
-    } else {
-      investment_intervals[pb_data.candidate_name][MAX_C] = pb_data.objective;
-    }
-  }
-  return investment_intervals;
 }

@@ -1,6 +1,7 @@
 #include "SensitivityFileLogger.h"
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 SensitivityFileLogger::SensitivityFileLogger(const std::string& filename) {
@@ -9,7 +10,7 @@ SensitivityFileLogger::SensitivityFileLogger(const std::string& filename) {
     std::cerr << "Invalid file name passed as parameter" << std::endl;
   }
   _userLog =
-      std::unique_ptr<SensitivityLogger>(new SensitivityLogger(_file));
+      std::make_unique<SensitivityLogger>(_file);
 }
 
 void SensitivityFileLogger::display_message(const std::string& msg) {

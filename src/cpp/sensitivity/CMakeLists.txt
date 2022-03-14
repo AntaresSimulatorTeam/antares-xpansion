@@ -4,10 +4,10 @@ add_library (sensitivity_core
         SensitivityLogger.cpp
 	SensitivityFileLogger.cpp
         SensitivityStudy.cpp
-	SensitivityWriter.cpp 
-	SensitivityPbModifier.cpp 
-	PbModifierCapex.cpp 
-	PbModifierProjection.cpp
+	SensitivityWriter.cpp
+        SensitivityProblemModifier.cpp
+		ProblemModifierCapex.cpp
+		ProblemModifierProjection.cpp
         CapexAnalysis.cpp CapexAnalysis.h)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib

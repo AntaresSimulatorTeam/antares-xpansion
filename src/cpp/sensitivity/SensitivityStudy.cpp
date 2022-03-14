@@ -1,13 +1,12 @@
 #include "SensitivityStudy.h"
 
-#include "CapexAnalysis.h"
-#include "PbModifierCapex.h"
-#include "PbModifierProjection.h"
+#include <utility>
 
-const bool SensitivityStudy::MINIMIZE = true;
-const bool SensitivityStudy::MAXIMIZE = false;
-const std::vector<std::string> SensitivityStudy::sensitivity_string_pb_type{
-    CAPEX_C, PROJECTION_C};
+#include "CapexAnalysis.h"
+#include "ProblemModifierCapex.h"
+#include "ProblemModifierProjection.h"
+
+const std::vector<std::string> SensitivityStudy::sensitivity_string_pb_type  = { CAPEX_C, PROJECTION_C };
 
 SensitivityStudy::SensitivityStudy(
     const SensitivityInputData &input_data,
@@ -19,8 +18,8 @@ SensitivityStudy::SensitivityStudy(
       _projection(input_data.projection),
       _name_to_id(input_data.name_to_id),
       _last_master(input_data.last_master),
-      logger(logger),
-      writer(writer),
+      logger(std::move(logger)),
+      writer(std::move(writer)),
       input_data(input_data){
   init_output_data();
 }
@@ -62,7 +61,7 @@ void SensitivityStudy::get_candidates_projection() {
 
   for (auto const &candidate_name : _projection) {
     if (_name_to_id.find(candidate_name) != _name_to_id.end()) {
-      _pb_modifier = std::make_shared<PbModifierProjection>(
+      _pb_modifier = std::make_shared<ProblemModifierProjection>(
           _epsilon, _best_ub, _last_master, _name_to_id[candidate_name], candidate_name);
       run_analysis();
     } else {
@@ -79,43 +78,12 @@ void SensitivityStudy::run_analysis() {
   auto sensitivity_pb_model =
       _pb_modifier->changeProblem(nb_candidates);
 
-  run_optimization(sensitivity_pb_model, MINIMIZE);
-  run_optimization(sensitivity_pb_model, MAXIMIZE);
+  run_optimization(sensitivity_pb_model, StudyType::MINIMIZE);
+  run_optimization(sensitivity_pb_model, StudyType::MAXIMIZE);
 }
 
-void SensitivityStudy::run_optimization(
-    const SolverAbstract::Ptr &sensitivity_model, const bool minimize) {
-  sensitivity_model->chg_obj_direction(minimize);
-
-  SinglePbData pb_data = init_single_pb_data(minimize);
-  logger->log_begin_pb_resolution(pb_data);
-
-  auto raw_output = solve_sensitivity_pb(sensitivity_model);
-
-  fill_single_pb_data(pb_data, raw_output);
-  logger->log_pb_solution(pb_data);
-
-  _output_data.pbs_data.push_back(pb_data);
-}
-
-SinglePbData SensitivityStudy::init_single_pb_data(
-    const bool minimize) const {
-  std::string candidate_name = "";
-  std::string str_pb_type =
-      sensitivity_string_pb_type[static_cast<int>(_sensitivity_pb_type)];
-  if (_sensitivity_pb_type == SensitivityPbType::PROJECTION) {
-    // Add a check for the success of the cast
-    const auto *pb_modifier =
-        dynamic_cast<PbModifierProjection *>(_pb_modifier.get());
-    candidate_name = pb_modifier->get_candidate_name();
-  }
-  std::string opt_dir = minimize ? MIN_C : MAX_C;
-  return SinglePbData(_sensitivity_pb_type, str_pb_type, candidate_name,
-                      opt_dir);
-}
-
-RawPbData SensitivityStudy::solve_sensitivity_pb(
-    SolverAbstract::Ptr sensitivity_problem) const {
+RawPbData solve_sensitivity_pb(
+    const SolverAbstract::Ptr& sensitivity_problem) {
   RawPbData raw_output;
   int ncols = sensitivity_problem->get_ncols();
 
@@ -136,6 +104,36 @@ RawPbData SensitivityStudy::solve_sensitivity_pb(
   }
 
   return raw_output;
+}
+
+void SensitivityStudy::run_optimization(
+    const SolverAbstract::Ptr &sensitivity_model, StudyType minimize) {
+  sensitivity_model->chg_obj_direction(static_cast<bool>(minimize));
+
+  SinglePbData pb_data = init_single_pb_data(minimize);
+  logger->log_begin_pb_resolution(pb_data);
+
+  auto raw_output = solve_sensitivity_pb(sensitivity_model);
+
+  fill_single_pb_data(pb_data, raw_output);
+  logger->log_pb_solution(pb_data);
+
+  _output_data.pbs_data.push_back(pb_data);
+}
+
+SinglePbData SensitivityStudy::init_single_pb_data(StudyType minimize) const {
+  std::string candidate_name;
+  std::string str_pb_type =
+      sensitivity_string_pb_type[static_cast<int>(_sensitivity_pb_type)];
+  if (_sensitivity_pb_type == SensitivityPbType::PROJECTION) {
+    // Add a check for the success of the cast
+    const auto *pb_modifier =
+        dynamic_cast<ProblemModifierProjection *>(_pb_modifier.get());
+    candidate_name = pb_modifier->get_candidate_name();
+  }
+  std::string opt_dir = minimize == StudyType::MINIMIZE ? MIN_C : MAX_C;
+  return {_sensitivity_pb_type, str_pb_type, candidate_name,
+                      opt_dir};
 }
 
 void SensitivityStudy::fill_single_pb_data(
