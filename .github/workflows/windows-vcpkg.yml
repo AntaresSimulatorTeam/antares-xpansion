@@ -225,6 +225,7 @@ jobs:
         set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
         set XPRESS=${{ github.workspace }}\xpress\bin
         set XPRESS_BIN_DIR=${{ github.workspace }}\xpress\bin
+        set XPRESSDIR=${{ github.workspace }}\xpress
         cd _build
         ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
