@@ -10,9 +10,11 @@ int SolverClp::_NumberOfProblems = 0;
 
 SolverClp::SolverClp(const std::string &log_file) : SolverClp() {
   _log_file = log_file;
-  _fp = fopen(_log_file.c_str(), "a+");
 
-  if (_fp == NULL) {
+  if (_log_file.empty()) {
+    std::cout << "Empty log file name, fallback to default behaviour" << std::endl;
+  }
+  else if ((_fp = fopen(_log_file.c_str(), "a+"))  == NULL) {
     std::cerr << "Invalid log file name passed as parameter: " << _log_file << std::endl;
   } else {
     setvbuf(_fp, NULL, _IONBF, 0);
