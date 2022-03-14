@@ -57,6 +57,7 @@ jobs:
         xprs: [ON, OFF]
     env:
       XPRS_Path: ${{ github.workspace }}/xpress
+      XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
       XPRESS_BIN_DIR: ${{ github.workspace }}/xpress/bin
