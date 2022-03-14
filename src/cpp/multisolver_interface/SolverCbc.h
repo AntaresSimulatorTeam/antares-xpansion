@@ -32,6 +32,7 @@ class SolverCbc : public SolverAbstract {
   -----------------------------------    Constructor/Desctructor
   --------------------------------
   *************************************************************************************************/
+
  public:
   /**
    * @brief Default constructor of a CBC solver
@@ -46,7 +47,8 @@ class SolverCbc : public SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing a CBC
    * solver to copy
    */
-  SolverCbc(const SolverAbstract::Ptr toCopy);
+  SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
+
 
   virtual ~SolverCbc();
   virtual int get_number_of_instances() override;

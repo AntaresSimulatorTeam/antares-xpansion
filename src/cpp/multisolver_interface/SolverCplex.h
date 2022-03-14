@@ -47,6 +47,8 @@ class SolverCplex : public SolverAbstract {
    * solver to copy
    */
   SolverCplex(const SolverAbstract::Ptr fictif);
+  SolverCplex(const std::shared_ptr<const SolverAbstract> fictif);
+
   virtual ~SolverCplex();
   virtual int get_number_of_instances() override;
 

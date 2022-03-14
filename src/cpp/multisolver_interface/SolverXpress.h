@@ -39,6 +39,7 @@ class SolverXpress : public SolverAbstract {
    * solver to copy
    */
   SolverXpress(const SolverAbstract::Ptr toCopy);
+  SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
 
   virtual ~SolverXpress();
   virtual int get_number_of_instances() override;

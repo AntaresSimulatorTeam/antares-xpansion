@@ -42,7 +42,11 @@ SolverCplex::SolverCplex() {
 //   _NumberOfProblems += 1;
 // }
 
-SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif) {
+SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif): SolverCplex(static_cast<const std::shared_ptr<const SolverAbstract>>(fictif)) {
+
+}
+
+SolverCplex::SolverCplex(const std::shared_ptr<const SolverAbstract> fictif) {
   int status(0);
 
   // Openning CPLEX environment
@@ -50,7 +54,7 @@ SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif) {
   zero_status_check(status, "open CPLEX");
 
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (SolverCplex *c = dynamic_cast<SolverCplex *>(fictif.get())) {
+  if (const SolverCplex *c = dynamic_cast<const SolverCplex *>(fictif.get())) {
     _prb = CPXcloneprob(_env, c->_prb, &status);
     zero_status_check(status, "create problem");
     _log_file = fictif->_log_file;

@@ -33,6 +33,7 @@ class SolverClp : public SolverAbstract {
   -----------------------------------    Constructor/Desctructor
   --------------------------------
   *************************************************************************************************/
+
  public:
   /**
    * @brief Default constructor of a CLP solver
@@ -47,7 +48,7 @@ class SolverClp : public SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing a CLP
    * solver to copy
    */
-  SolverClp(const SolverAbstract::Ptr toCopy);
+  SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
 
   virtual ~SolverClp();
   virtual int get_number_of_instances() override;

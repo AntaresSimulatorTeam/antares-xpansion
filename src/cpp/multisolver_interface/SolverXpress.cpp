@@ -28,12 +28,16 @@ SolverXpress::SolverXpress() {
   _xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
+SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress(static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy)) {
+
+}
+
+SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy) : SolverXpress() {
   SolverXpress::init();
   int status = 0;
 
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (SolverXpress *xpSolv = dynamic_cast<SolverXpress *>(toCopy.get())) {
+  if (const SolverXpress *xpSolv = dynamic_cast<const SolverXpress *>(toCopy.get())) {
     status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
     _log_file = toCopy->_log_file;
     if (_log_file != "") {

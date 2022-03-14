@@ -1,22 +1,27 @@
 #pragma once
 
-#include "common.h"
 #include <multisolver_interface/SolverAbstract.h>
 
-class SensitivityPbModifier
-{
-public:
-    SensitivityPbModifier() = default;
-    explicit SensitivityPbModifier(double epsilon, double best_ub);
-    ~SensitivityPbModifier() = default;
+#include "common.h"
 
-    SolverAbstract::Ptr changeProblem(const int nb_candidates, const SolverAbstract::Ptr &last_master) const;
+class SensitivityPbModifier {
+ public:
+  SensitivityPbModifier() = default;
+  explicit SensitivityPbModifier(double epsilon, double best_ubm, const std::shared_ptr<const SolverAbstract> &last_master);
+  ~SensitivityPbModifier() = default;
 
-private:
-    double _epsilon;
-    double _best_ub;
+  SolverAbstract::Ptr changeProblem(const int nb_candidates) const;
 
-    virtual std::vector<double> get_cost_vector(const SolverAbstract::Ptr &solver_model, int nb_candidates) const = 0;
-    SolverAbstract::Ptr change_objective(const SolverAbstract::Ptr &solver_model, const std::vector<double> &obj) const;
-    SolverAbstract::Ptr add_near_optimal_cost_constraint(const SolverAbstract::Ptr &solver_model) const;
+ private:
+  const double _epsilon;
+  const double _best_ub;
+  const std::shared_ptr<const SolverAbstract> last_master;
+
+  virtual std::vector<double> get_cost_vector(
+      const const std::shared_ptr<const SolverAbstract> &solver_model, int nb_candidates) const = 0;
+  void change_objective(
+      const SolverAbstract::Ptr &solver_model,
+      const std::vector<double> &obj) const;
+  void add_near_optimal_cost_constraint(
+      const SolverAbstract::Ptr &solver_model) const;
 };

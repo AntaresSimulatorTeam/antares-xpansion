@@ -12,9 +12,9 @@ CapexAnalysis::CapexAnalysis(
 }
 
 std::pair<SinglePbData, SinglePbData>  CapexAnalysis::run() {
-  PbModifierCapex pb_modifier(input_data.epsilon, input_data.best_ub);
+  PbModifierCapex pb_modifier(input_data.epsilon, input_data.best_ub, input_data.last_master);
   int nb_candidates = input_data.name_to_id.size();
-  sensitivity_pb_model = pb_modifier.changeProblem(nb_candidates, input_data.last_master);
+  sensitivity_pb_model = pb_modifier.changeProblem(nb_candidates);
   auto min_capex_data = run_optimization(SensitivityStudy::MINIMIZE);
   auto max_capex_data = run_optimization(SensitivityStudy::MAXIMIZE);
   return { min_capex_data, max_capex_data };

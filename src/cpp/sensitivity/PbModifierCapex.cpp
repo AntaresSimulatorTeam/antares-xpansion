@@ -2,11 +2,11 @@
 #include "PbModifierCapex.h"
 #include "solver_utils.h"
 
-PbModifierCapex::PbModifierCapex(double epsilon, double best_ub) : SensitivityPbModifier(epsilon, best_ub)
+PbModifierCapex::PbModifierCapex(double epsilon, double best_ub, const std::shared_ptr<const SolverAbstract> &last_master) : SensitivityPbModifier(epsilon, best_ub, last_master)
 {
 }
 
-std::vector<double> PbModifierCapex::get_cost_vector(const SolverAbstract::Ptr &solver_model, int nb_candidates) const
+std::vector<double> PbModifierCapex::get_cost_vector(const std::shared_ptr<const SolverAbstract> &solver_model, int nb_candidates) const
 {
     std::vector<double> obj(solver_model->get_ncols());
 

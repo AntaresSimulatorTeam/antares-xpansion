@@ -39,7 +39,7 @@ void solver_getrows(SolverAbstract::Ptr const solver_p,
  * @param first_p  : first column to consider.
  * @param last_p  : last column to consider.
  */
-void solver_get_obj_func_coeffs(SolverAbstract::Ptr const solver_p,
+void solver_get_obj_func_coeffs(const std::shared_ptr<const SolverAbstract> solver_p,
                                 std::vector<double> &obj_p, int first_p,
                                 int last_p);
 

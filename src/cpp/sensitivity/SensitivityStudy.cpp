@@ -63,7 +63,7 @@ void SensitivityStudy::get_candidates_projection() {
   for (auto const &candidate_name : _projection) {
     if (_name_to_id.find(candidate_name) != _name_to_id.end()) {
       _pb_modifier = std::make_shared<PbModifierProjection>(
-          _epsilon, _best_ub, _name_to_id[candidate_name], candidate_name);
+          _epsilon, _best_ub, _last_master, _name_to_id[candidate_name], candidate_name);
       run_analysis();
     } else {
       // TODO : Improve this ?
@@ -77,7 +77,7 @@ void SensitivityStudy::get_candidates_projection() {
 void SensitivityStudy::run_analysis() {
   int nb_candidates = _name_to_id.size();
   auto sensitivity_pb_model =
-      _pb_modifier->changeProblem(nb_candidates, _last_master);
+      _pb_modifier->changeProblem(nb_candidates);
 
   run_optimization(sensitivity_pb_model, MINIMIZE);
   run_optimization(sensitivity_pb_model, MAXIMIZE);

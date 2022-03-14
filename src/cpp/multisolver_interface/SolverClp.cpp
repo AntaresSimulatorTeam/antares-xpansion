@@ -26,11 +26,11 @@ SolverClp::SolverClp() {
   _clp = NULL;
 }
 
-SolverClp::SolverClp(const SolverAbstract::Ptr fictif) : SolverClp() {
+SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy): SolverClp() {
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (SolverClp *c = dynamic_cast<SolverClp *>(fictif.get())) {
+  if (const SolverClp *c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
-    _log_file = fictif->_log_file;
+    _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.c_str(), "a+");
     if (_fp != NULL) {
       setvbuf(_fp, NULL, _IONBF, 0);
@@ -38,7 +38,7 @@ SolverClp::SolverClp(const SolverAbstract::Ptr fictif) : SolverClp() {
     }
   } else {
     _NumberOfProblems -= 1;
-    throw InvalidSolverForCopyException(fictif->get_solver_name(),
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(),
                                         get_solver_name());
   }
 }

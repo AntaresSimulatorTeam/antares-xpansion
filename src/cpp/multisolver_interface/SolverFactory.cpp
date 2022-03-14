@@ -72,7 +72,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   }
 }
 
-SolverAbstract::Ptr SolverFactory::copy_solver(SolverAbstract::Ptr to_copy) {
+SolverAbstract::Ptr SolverFactory::copy_solver(const std::shared_ptr<const SolverAbstract>& to_copy) {
   std::string solver_name = to_copy->get_solver_name();
 
   if (solver_name == "") {
@@ -98,6 +98,10 @@ SolverAbstract::Ptr SolverFactory::copy_solver(SolverAbstract::Ptr to_copy) {
   else {
     throw InvalidSolverNameException(solver_name);
   }
+}
+
+SolverAbstract::Ptr SolverFactory::copy_solver(SolverAbstract::Ptr to_copy) {
+  return copy_solver(static_cast<const std::shared_ptr<const SolverAbstract>>(to_copy));
 }
 
 const std::vector<std::string> &SolverFactory::get_solvers_list() const {

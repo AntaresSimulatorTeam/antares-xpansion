@@ -416,8 +416,8 @@ TEST_F(SensitivityProblemModifierTest, ChangeProblemCapex)
     int nb_candidates = name_to_id.size();
     verify_last_master_problem(lastMasterData);
 
-    auto problem_modifier = std::make_shared<PbModifierCapex>(epsilon, best_ub);
-    auto sensitivity_pb = problem_modifier->changeProblem(nb_candidates, lastMasterData.solver_model);
+    auto problem_modifier = std::make_shared<PbModifierCapex>(epsilon, best_ub, lastMasterData.solver_model);
+    auto sensitivity_pb = problem_modifier->changeProblem(nb_candidates);
 
     SolverData sensitivityPbData = init_solver_data_from_solver_model(sensitivity_pb);
 
