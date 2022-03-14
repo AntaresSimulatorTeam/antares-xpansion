@@ -21,38 +21,17 @@ class SensitivityStudy {
     MAXIMIZE = false,
   };
 
-  static const std::vector<std::string> sensitivity_string_pb_type;
-
   void launch();
   SensitivityOutputData get_output_data() const;
 
  private:
-  double _epsilon;
-  double _best_ub;
-
-  bool _capex;
-  std::vector<std::string> _projection;
-
-  std::map<std::string, int> _name_to_id;
-  SolverAbstract::Ptr _last_master;
   std::shared_ptr<SensitivityILogger> logger;
   std::shared_ptr<SensitivityWriter> writer;
   SensitivityInputData input_data;
-
-  std::shared_ptr<SensitivityProblemModifier> _pb_modifier;
-  SensitivityOutputData _output_data;
-
-  SensitivityPbType _sensitivity_pb_type;
+  SensitivityOutputData output_data;
 
   void init_output_data();
-  SinglePbData init_single_pb_data(StudyType minimize) const;
   void run_capex_analysis();
-  void get_candidates_projection();
-  void run_analysis();
-  void run_optimization(const SolverAbstract::Ptr &sensitivity_model,
-                        StudyType minimize);
+  void run_projection_analysis();
 
-  void fill_single_pb_data(SinglePbData &pb_data,
-                           const RawPbData &raw_output) const;
-  double get_system_cost(const RawPbData &raw_output) const;
 };
