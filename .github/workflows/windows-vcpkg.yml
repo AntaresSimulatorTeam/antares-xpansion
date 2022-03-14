@@ -56,7 +56,6 @@ jobs:
         triplet: [x64-windows]
         xprs: [ON, OFF]
     env:
-      XPRS_Path: ${{ github.workspace }}\xpress
       XPRESSDIR: ${{ github.workspace }}\xpress
       XPRESS: ${{ github.workspace }}\xpress\bin
       XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
@@ -73,7 +72,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: rte-france/xpress-mp-temp
-        path: ${{ env.XPRS_Path }}
+        path: ${{ env.XPRESSDIR }}
         ref: master
         token: ${{ secrets.AS_TOKEN }}
 
@@ -165,7 +164,7 @@ jobs:
     - name: Configure
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ matrix.xprs }} -DXPRESS_ROOT="${{ env.XPRS_Path }}"
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ matrix.xprs }} -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
 
     - name: Build
       run: |
@@ -210,12 +209,6 @@ jobs:
 
     - name: Running unit tests
       shell: cmd
-      env:
-        XPRS_Path: ${{ github.workspace }}\xpress
-        XPRESS: ${{ github.workspace }}\xpress\bin
-        XPRESSDIR: ${{ github.workspace }}\xpress
-        XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
-        XPRESS_BIN_DIR: ${{ github.workspace }}\xpress\bin
       run: |
         set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
         set PATH=%PATH%;${{ env.XPRESS }}
