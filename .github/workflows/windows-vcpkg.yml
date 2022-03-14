@@ -218,9 +218,9 @@ jobs:
       run: |
         echo "${{ env.XPRS_Path }}\bin" >> $GITHUB_PATH
         echo "C:\Program Files\Microsoft MPI\Bin\" >> $GITHUB_PATH
-        export XPRESS="${{ github.workspace }}\xpress\bin"
-        export XPRESS_BIN_DIR="${{ github.workspace }}\xpress\bin"
-        export XPRESSDIR="${{ github.workspace }}\xpress"
+        XPRESS="${{ github.workspace }}\xpress\bin"
+        XPRESS_BIN_DIR="${{ github.workspace }}\xpress\bin"
+        XPRESSDIR="${{ github.workspace }}\xpress"
         cd _build
         ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
