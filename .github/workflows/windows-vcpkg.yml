@@ -206,7 +206,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: build_${{env.VERSION_WITH_XPRESS}}
-        path: _build
+        path: .
 
     - name: Upload single file
       uses: actions/upload-artifact@v2
