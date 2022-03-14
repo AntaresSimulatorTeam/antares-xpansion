@@ -56,11 +56,11 @@ jobs:
         triplet: [x64-windows]
         xprs: [ON, OFF]
     env:
-      XPRS_Path: ${{ github.workspace }}/xpress
-      XPRESSDIR: ${{ github.workspace }}/xpress
-      XPRESS: ${{ github.workspace }}/xpress/bin
-      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
-      XPRESS_BIN_DIR: ${{ github.workspace }}/xpress/bin
+      XPRS_Path: ${{ github.workspace }}\xpress
+      XPRESSDIR: ${{ github.workspace }}\xpress
+      XPRESS: ${{ github.workspace }}\xpress\bin
+      XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
+      XPRESS_BIN_DIR: ${{ github.workspace }}\xpress\bin
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
@@ -209,18 +209,16 @@ jobs:
         path: ${{ steps.create-single-file.outputs.archive-path }}
 
     - name: Running unit tests
-      shell: bash
+      shell: cmd
       env:
-        XPRS_Path: ${{ github.workspace }}/xpress
-        XPRESS: ${{ github.workspace }}/xpress/bin
-        XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
-        XPRESS_BIN_DIR: ${{ github.workspace }}/xpress/bin
+        XPRS_Path: ${{ github.workspace }}\xpress
+        XPRESS: ${{ github.workspace }}\xpress\bin
+        XPRESSDIR: ${{ github.workspace }}\xpress
+        XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
+        XPRESS_BIN_DIR: ${{ github.workspace }}\xpress\bin
       run: |
-        echo "${{ env.XPRS_Path }}\bin" >> $GITHUB_PATH
-        echo "C:\Program Files\Microsoft MPI\Bin\" >> $GITHUB_PATH
-        XPRESS="${{ github.workspace }}\xpress\bin"
-        XPRESS_BIN_DIR="${{ github.workspace }}\xpress\bin"
-        XPRESSDIR="${{ github.workspace }}\xpress"
+        set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+        set PATH=%PATH%;${{ env.XPRESS }}
         cd _build
         ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
