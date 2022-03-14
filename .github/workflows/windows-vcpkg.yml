@@ -201,6 +201,12 @@ jobs:
         name: ${{env.ZIP_NAME}}
         path: _build/${{env.ZIP_NAME}}
 
+    - name: Upload build dir
+      uses: actions/upload-artifact@v2
+      with:
+        name: build_${{env.VERSION_WITH_XPRESS}}
+        path: _build
+
     - name: Upload single file
       uses: actions/upload-artifact@v2
       with:
