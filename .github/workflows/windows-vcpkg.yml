@@ -209,17 +209,18 @@ jobs:
         path: ${{ steps.create-single-file.outputs.archive-path }}
 
     - name: Running unit tests
-      shell: cmd
+      shell: bash
       env:
         XPRS_Path: ${{ github.workspace }}/xpress
         XPRESS: ${{ github.workspace }}/xpress/bin
         XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
         XPRESS_BIN_DIR: ${{ github.workspace }}/xpress/bin
       run: |
-        set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
-        set XPRESS=${{ github.workspace }}\xpress\bin
-        set XPRESS_BIN_DIR=${{ github.workspace }}\xpress\bin
-        set XPRESSDIR=${{ github.workspace }}\xpress
+        echo "${{ env.XPRS_Path }}\bin" >> $GITHUB_PATH
+        echo "C:\Program Files\Microsoft MPI\Bin\" >> $GITHUB_PATH
+        export XPRESS="${{ github.workspace }}\xpress\bin"
+        export XPRESS_BIN_DIR="${{ github.workspace }}\xpress\bin"
+        export XPRESSDIR="${{ github.workspace }}\xpress"
         cd _build
         ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
