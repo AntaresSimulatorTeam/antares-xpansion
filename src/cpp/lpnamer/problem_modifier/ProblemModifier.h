@@ -13,7 +13,7 @@
 
 class ProblemModifier {
  public:
-  ProblemModifier();
+  ProblemModifier() = default;
 
   std::shared_ptr<SolverAbstract> changeProblem(
       std::shared_ptr<SolverAbstract> mathProblem,
@@ -40,14 +40,6 @@ class ProblemModifier {
 
   void add_new_columns(const std::vector<Candidate> &candidates);
 
-  std::vector<Candidate> candidates_from_all_links(
-      const std::vector<ActiveLink> &active_links) const;
-  std::set<int> extract_time_steps(
-      const std::map<linkId, ColumnsToChange> &p_columns) const;
-  std::vector<Candidate> candidates_with_not_null_profile(
-      const std::vector<ActiveLink> &active_links,
-      const std::set<int> &time_steps) const;
-
   void add_new_ntc_constraints(
       const std::vector<ActiveLink> &active_links,
       const std::map<linkId, ColumnsToChange> &p_ntc_columns);
@@ -62,7 +54,7 @@ class ProblemModifier {
 
   std::shared_ptr<SolverAbstract> _math_problem;
   std::map<std::string, unsigned int> _candidate_col_id;
-  unsigned int _n_cols_at_start;
+  unsigned int _n_cols_at_start = 0;
 
   void add_direct_profile_column_constraint(std::vector<double> &dmatval,
                                             std::vector<int> &colind,
