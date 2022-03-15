@@ -9,7 +9,7 @@ SensitivityFileLogger::SensitivityFileLogger(const std::string& filename) {
   if (_file.fail()) {
     std::cerr << "Invalid file name passed as parameter" << std::endl;
   }
-  _userLog = std::unique_ptr<SensitivityLogger>(new SensitivityLogger(_file));
+  _userLog = std::make_unique<SensitivityLogger>(SensitivityLogger(_file));
 }
 
 void SensitivityFileLogger::display_message(const std::string& msg) {
