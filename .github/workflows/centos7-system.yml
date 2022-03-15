@@ -105,7 +105,7 @@ jobs:
       matrix:
         xprs: [ ON, OFF ]
     env:
-      XPRS_Path: ${{ github.workspace }}/xpress
+      XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
@@ -125,7 +125,7 @@ jobs:
 
     - name: Checkout xpressmp linux
       run: |
-        git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRS_Path }}
+        git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
 
     - name: Read antares-xpansion version
       id: antares-xpansion-version
@@ -159,7 +159,7 @@ jobs:
                -DBUILD_UI=ON \
                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                -DXPRESS=${{ matrix.xprs }} \
-               -DXPRESS_ROOT=${{ env.XPRS_Path }}
+               -DXPRESS_ROOT=${{ env.XPRESSDIR }}
 
     - name: Build
       run: |

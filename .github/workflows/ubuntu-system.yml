@@ -55,7 +55,7 @@ jobs:
         os: [ubuntu-20.04]
         xprs: [ON, OFF]
     env:
-      XPRS_Path: ${{ github.workspace }}/xpress
+      XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
@@ -68,7 +68,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: rte-france/xpress-mp
-          path: ${{ env.XPRS_Path }}
+          path: ${{ env.XPRESSDIR }}
           ref: master
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
@@ -149,7 +149,7 @@ jobs:
                 -DBUILD_UI=ON  \
                 -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                 -DXPRESS=${{ matrix.xprs }} \
-                -DXPRESS_ROOT=${{ env.XPRS_Path }}
+                -DXPRESS_ROOT=${{ env.XPRESSDIR }}
 
       - name: Build
         run: |
