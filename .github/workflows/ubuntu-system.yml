@@ -134,8 +134,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: user-guide
-          path:
-            docs/
+          path: docs/
 
       - name: Configure
         shell: bash
@@ -154,11 +153,6 @@ jobs:
       - name: Build
         run: |
           cmake --build _build --config Release -j2 --target install
-
-      - name: Running unit tests
-        run: |
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: set name variables
         id: single_file_name
@@ -208,6 +202,11 @@ jobs:
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
+
+      - name: Running unit tests
+        run: |
+          cd _build
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Publish .tar.gz
         if:  github.event_name == 'release' && github.event.action == 'created'
