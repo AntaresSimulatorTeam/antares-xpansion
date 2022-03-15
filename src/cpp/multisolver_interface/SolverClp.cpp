@@ -10,23 +10,29 @@ int SolverClp::_NumberOfProblems = 0;
 
 SolverClp::SolverClp(const std::string &log_file) : SolverClp() {
   _log_file = log_file;
-
+  _fp = NULL;
   if (_log_file.empty()) {
-    std::cout << "Empty log file name, fallback to default behaviour" << std::endl;
-  }
-  else if ((_fp = fopen(_log_file.c_str(), "a+"))  == NULL) {
-    std::cerr << "Invalid log file name passed as parameter: " << _log_file << std::endl;
+    std::cout << "Empty log file name, fallback to default behaviour"
+              << std::endl;
   } else {
-    setvbuf(_fp, NULL, _IONBF, 0);
-    _message_handler.setFilePointer(_fp);
+    if ((_fp = fopen(_log_file.c_str(), "a+")) == NULL) {
+      std::cerr << "Invalid log file name passed as parameter: " << _log_file
+                << std::endl;
+    } else {
+      setvbuf(_fp, NULL, _IONBF, 0);
+      _message_handler.setFilePointer(_fp);
+    }
   }
 }
 SolverClp::SolverClp() {
   _NumberOfProblems += 1;
   _clp = NULL;
+  _fp = NULL;
 }
 
-SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy): SolverClp() {
+SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
+    : SolverClp() {
+  _fp = NULL;
   // Try to cast the solver in fictif to a SolverCPLEX
   if (const SolverClp *c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
@@ -47,6 +53,7 @@ SolverClp::~SolverClp() {
   _NumberOfProblems -= 1;
   if (_fp != NULL) {
     fclose(_fp);
+    _fp = NULL;
   }
   free();
 }
@@ -280,8 +287,8 @@ void SolverClp::chg_obj(const std::vector<int> &mindex,
 }
 
 void SolverClp::chg_obj_direction(const bool minimize) {
-	int objsense = minimize ? 1 : -1;
-	_clp.setOptimizationDirection(objsense);
+  int objsense = minimize ? 1 : -1;
+  _clp.setOptimizationDirection(objsense);
 }
 
 void SolverClp::chg_bounds(const std::vector<int> &mindex,
