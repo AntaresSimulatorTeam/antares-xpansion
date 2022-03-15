@@ -34,7 +34,7 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
     : SolverCbc() {
   _fp = NULL;
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (const SolverCbc *c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
+  if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
     _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.c_str(), "a+");

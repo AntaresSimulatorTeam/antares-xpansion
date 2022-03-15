@@ -34,7 +34,7 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     : SolverClp() {
   _fp = NULL;
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (const SolverClp *c = dynamic_cast<const SolverClp *>(toCopy.get())) {
+  if (const auto c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
     _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.c_str(), "a+");
