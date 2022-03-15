@@ -10,7 +10,6 @@ int SolverClp::_NumberOfProblems = 0;
 
 SolverClp::SolverClp(const std::string &log_file) : SolverClp() {
   _log_file = log_file;
-  _fp = NULL;
   if (_log_file.empty()) {
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
@@ -26,20 +25,19 @@ SolverClp::SolverClp(const std::string &log_file) : SolverClp() {
 }
 SolverClp::SolverClp() {
   _NumberOfProblems += 1;
-  _clp = NULL;
-  _fp = NULL;
+  _fp = nullptr;
 }
 
 SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     : SolverClp() {
-  _fp = NULL;
+  _fp = nullptr;
   // Try to cast the solver in fictif to a SolverCPLEX
   if (const auto c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
     _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.c_str(), "a+");
-    if (_fp != NULL) {
-      setvbuf(_fp, NULL, _IONBF, 0);
+    if (_fp != nullptr) {
+      setvbuf(_fp, nullptr, _IONBF, 0);
       _message_handler.setFilePointer(_fp);
     }
   } else {
@@ -51,9 +49,9 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
 
 SolverClp::~SolverClp() {
   _NumberOfProblems -= 1;
-  if (_fp != NULL) {
+  if (_fp != nullptr) {
     fclose(_fp);
-    _fp = NULL;
+    _fp = nullptr;
   }
   free();
 }

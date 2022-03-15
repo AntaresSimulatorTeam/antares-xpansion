@@ -148,7 +148,7 @@ class SolverAbstract {
    * @brief returns the list of streams used by the solver instance
    */
   std::list<std::ostream *> &get_stream() { return _streams; };
-  FILE *_fp;
+  FILE *_fp = nullptr;
   std::string _log_file = "";
   /**
    * @brief add a stream to the list of streams used by the solver instance
