@@ -1,16 +1,6 @@
 name: Centos7 CI (docker image)
 
-on:
-  push:
-    branches:
-      - main
-      - develop
-      - features/*
-      - feature/*
-      - fix/*
-      - release/*
-  release:
-    types: [ created ]
+on: workflow_dispatch
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
