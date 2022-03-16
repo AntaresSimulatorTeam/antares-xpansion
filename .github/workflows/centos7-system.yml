@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - develop
-      - features/*
-      - feature/*
+      - NOfeatures/*
+      - NOfeature/*
       - fix/*
       - release/*
   release:

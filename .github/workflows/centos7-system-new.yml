@@ -36,7 +36,7 @@ jobs:
 
       - name: Docker file push
         id: docker_push
-        if: steps.changed-files.outputs.any_changed == 'true'
+        #if: steps.changed-files.outputs.any_changed == 'true'
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
           name: antaresrte/rte-antares
