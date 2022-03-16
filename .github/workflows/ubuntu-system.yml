@@ -53,14 +53,29 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
+        xprs: [ON, OFF]
+    env:
+      XPRESSDIR: ${{ github.workspace }}/xpress
+      XPRESS: ${{ github.workspace }}/xpress/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
 
+      - name: Checkout xpressmp linux
+        uses: actions/checkout@v2
+        with:
+          repository: rte-france/xpress-mp
+          path: ${{ env.XPRESSDIR }}
+          ref: master
+          token: ${{ secrets.AS_TOKEN }} #reniew token periodically
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: ${{ matrix.os }}-${{ matrix.xprs }}
 
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
@@ -119,10 +134,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: user-guide
-          path:
-            docs/
+          path: docs/
 
       - name: Configure
+        shell: bash
         run: |
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
@@ -131,22 +146,30 @@ jobs:
                 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release \
                 -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
-                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
+                -DXPRESS=${{ matrix.xprs }} \
+                -DXPRESS_ROOT=${{ env.XPRESSDIR }}
 
       - name: Build
         run: |
           cmake --build _build --config Release -j2 --target install
 
-      - name: Running unit tests
+      - name: set name variables
+        id: single_file_name
+        shell: bash
         run: |
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+          XPRS=${{ matrix.xprs }}
+          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
+          VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
+          echo "::set-output name=version::$VERSION"
+          echo "VERSION_WITH_XPRESS=$VERSION"
+          echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
       - id: create-single-file
         name: Single file .tar.gz creation
         uses: ./.github/workflows/single-file-creation-tgz
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
       - name: Installer .tar.gz creation
         run: |
@@ -177,8 +200,13 @@ jobs:
       - name: Upload single file
         uses: actions/upload-artifact@v2
         with:
-          name: antares-xpansion-ubuntu-single-file
+          name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
+
+      - name: Running unit tests
+        run: |
+          cd _build
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Publish .tar.gz
         if:  github.event_name == 'release' && github.event.action == 'created'
