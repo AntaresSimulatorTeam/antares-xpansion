@@ -7,12 +7,23 @@
 
 const std::string MIN_C("min");
 const std::string MAX_C("max");
+const std::string PROJECTION_C("investment");
+const std::string CAPEX_C("capex");
 
 enum class SensitivityPbType {
   CAPEX,
   PROJECTION,
 };
 
+std::string get_string_from_SensitivityPbType(SensitivityPbType type) {
+  if (type == SensitivityPbType::PROJECTION) {
+    return PROJECTION_C;
+  } else if (type == SensitivityPbType::CAPEX) {
+    return CAPEX_C;
+  } else {
+    return "";
+  }
+}
 struct SinglePbData {
   SensitivityPbType pb_type = SensitivityPbType::CAPEX;
   std::string str_pb_type;
@@ -57,7 +68,9 @@ struct SensitivityOutputData {
   SensitivityOutputData() = default;
   SensitivityOutputData(double epsilon, double benders_cost,
                         std::vector<SinglePbData> pbs_data = {})
-      : epsilon(epsilon), best_benders_cost(benders_cost), pbs_data(std::move(pbs_data)) {}
+      : epsilon(epsilon),
+        best_benders_cost(benders_cost),
+        pbs_data(std::move(pbs_data)) {}
 };
 
 struct RawPbData {

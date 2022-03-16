@@ -8,7 +8,14 @@ add_library (sensitivity_core
         SensitivityProblemModifier.cpp
 		ProblemModifierCapex.cpp
 		ProblemModifierProjection.cpp
-        CapexAnalysis.cpp CapexAnalysis.h ProjectionAnalysis.cpp ProjectionAnalysis.h)
+        CapexAnalysis.cpp
+		CapexAnalysis.h
+		ProjectionAnalysis.cpp
+		ProjectionAnalysis.h 
+		AnalysisFunctions.h 
+		AnalysisFunctions.cpp
+		Analysis.h
+		Analysis.cpp) 
 
 get_target_property(JSON_INC_PATH jsoncpp_lib
 INTERFACE_INCLUDE_DIRECTORIES)
