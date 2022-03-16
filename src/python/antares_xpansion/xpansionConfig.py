@@ -153,7 +153,6 @@ class XpansionConfig:
             "SLAVE_WEIGHT": "CONSTANT",
             "SLAVE_WEIGHT_VALUE": "1",
             "MASTER_NAME": "master",
-            "SLAVE_NUMBER": "-1",
             "STRUCTURE_FILE": "structure.txt",
             "INPUTROOT": ".",
             "CSV_NAME": "benders_output_trace",

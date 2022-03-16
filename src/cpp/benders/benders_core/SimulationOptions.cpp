@@ -104,17 +104,12 @@ void SimulationOptions::print(std::ostream &stream) const {
 #include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
   stream << std::endl;
-
-  if (SLAVE_NUMBER == 1) {
-    stream << "Sequential launch (only one slave problem)" << std::endl;
-  }
 }
 
 BaseOptions SimulationOptions::get_base_options() const {
   BaseOptions result;
 
   result.LOG_LEVEL = LOG_LEVEL;
-  result.SLAVE_NUMBER = SLAVE_NUMBER;
 
   result.SLAVE_WEIGHT_VALUE = SLAVE_WEIGHT_VALUE;
 

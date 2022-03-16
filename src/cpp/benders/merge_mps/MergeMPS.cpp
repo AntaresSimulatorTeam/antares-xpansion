@@ -11,8 +11,7 @@ MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
 void MergeMPS::launch() {
   auto structure_path(
       (Path(_options.INPUTROOT) / _options.STRUCTURE_FILE).get_str());
-  CouplingMap input =
-      build_input(structure_path, _options.SLAVE_NUMBER, _options.MASTER_NAME);
+  CouplingMap input = build_input(structure_path);
 
   SolverFactory factory;
   std::string solver_to_use =
