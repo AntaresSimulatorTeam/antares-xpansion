@@ -8,10 +8,6 @@ add_library (sensitivity_core
         SensitivityProblemModifier.cpp
 		ProblemModifierCapex.cpp
 		ProblemModifierProjection.cpp
-        CapexAnalysis.cpp
-		CapexAnalysis.h
-		ProjectionAnalysis.cpp
-		ProjectionAnalysis.h 
 		AnalysisFunctions.h 
 		AnalysisFunctions.cpp
 		Analysis.h

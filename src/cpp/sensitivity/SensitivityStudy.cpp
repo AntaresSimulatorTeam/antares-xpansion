@@ -2,16 +2,14 @@
 
 #include <utility>
 
-#include "CapexAnalysis.h"
-#include "ProjectionAnalysis.h"
+#include "Analysis.h"
 
-SensitivityStudy::SensitivityStudy(
-    const SensitivityInputData &input_data,
-    std::shared_ptr<SensitivityILogger> logger,
-    std::shared_ptr<SensitivityWriter> writer)
+SensitivityStudy::SensitivityStudy(const SensitivityInputData &input_data,
+                                   std::shared_ptr<SensitivityILogger> logger,
+                                   std::shared_ptr<SensitivityWriter> writer)
     : logger(std::move(logger)),
       writer(std::move(writer)),
-      input_data(input_data){
+      input_data(input_data) {
   init_output_data();
 }
 
@@ -44,7 +42,7 @@ void SensitivityStudy::init_output_data() {
 
 void SensitivityStudy::run_capex_analysis() {
   logger->display_message("Capex analysis in progress");
-  CapexAnalysis capex_analysis(input_data, logger);
+  Analysis capex_analysis(input_data, "", logger, SensitivityPbType::CAPEX);
   std::pair<SinglePbData, SinglePbData> capex_data = capex_analysis.run();
 
   output_data.pbs_data.push_back(capex_data.first);
@@ -55,16 +53,18 @@ void SensitivityStudy::run_projection_analysis() {
   logger->display_message("Projection analysis in progress");
 
   for (auto const &candidate_name : input_data.projection) {
-    if (input_data.name_to_id.find(candidate_name) != input_data.name_to_id.end()) {
-      ProjectionAnalysis projection_analysis(input_data, candidate_name,logger);
+    if (input_data.name_to_id.find(candidate_name) !=
+        input_data.name_to_id.end()) {
+      Analysis projection_analysis(input_data, candidate_name, logger,
+                                   SensitivityPbType::PROJECTION);
       auto problem_data = projection_analysis.run();
       output_data.pbs_data.push_back(problem_data.first);
       output_data.pbs_data.push_back(problem_data.second);
     } else {
       // TODO : Improve this ?
       logger->display_message("Warning : " + candidate_name +
-                               "ignored as it has not been found in the list "
-                               "of investment candidates");
+                              "ignored as it has not been found in the list "
+                              "of investment candidates");
     }
   }
 }

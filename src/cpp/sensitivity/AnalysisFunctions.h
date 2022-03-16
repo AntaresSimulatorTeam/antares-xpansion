@@ -1,6 +1,12 @@
 #ifndef __ANALYSISFUNCTION_H__
 #define __ANALYSISFUNCTION_H__
+#include "ProblemModifierCapex.h"
+#include "ProblemModifierProjection.h"
+#include "SensitivityInputReader.h"
 #include "SensitivityOutputData.h"
 #include "multisolver_interface/SolverAbstract.h"
-RawPbData solve_sensitivity_pb(const SolverAbstract::Ptr &sensitivity_problem);
+SolverAbstract::Ptr get_sensitivity_problem(
+    const SensitivityInputData input_data, const std::string& candidate_name,
+    SensitivityPbType type);
+RawPbData solve_sensitivity_pb(const SolverAbstract::Ptr& sensitivity_problem);
 #endif  //__ANALYSISFUNCTION_H__

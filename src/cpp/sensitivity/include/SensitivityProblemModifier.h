@@ -7,7 +7,9 @@
 class SensitivityProblemModifier {
  public:
   SensitivityProblemModifier() = delete;
-  explicit SensitivityProblemModifier(double epsilon, double best_ubm, std::shared_ptr<const SolverAbstract> last_master);
+  explicit SensitivityProblemModifier(
+      double epsilon, double best_ubm,
+      std::shared_ptr<const SolverAbstract> last_master);
   ~SensitivityProblemModifier() = default;
 
   SolverAbstract::Ptr changeProblem(unsigned int nb_candidates) const;

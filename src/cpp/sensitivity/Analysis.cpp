@@ -49,3 +49,10 @@ SinglePbData Analysis::run_optimization(SensitivityStudy::StudyType minimize) {
 
   return pb_data;
 }
+std::pair<SinglePbData, SinglePbData> Analysis::run() {
+  sensitivity_pb_model =
+      get_sensitivity_problem(input_data, candidate_name, problem_type);
+  auto min_capex_data = run_optimization(SensitivityStudy::StudyType::MINIMIZE);
+  auto max_capex_data = run_optimization(SensitivityStudy::StudyType::MAXIMIZE);
+  return {min_capex_data, max_capex_data};
+}

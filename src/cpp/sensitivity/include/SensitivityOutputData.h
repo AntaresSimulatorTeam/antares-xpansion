@@ -15,7 +15,8 @@ enum class SensitivityPbType {
   PROJECTION,
 };
 
-std::string get_string_from_SensitivityPbType(SensitivityPbType type) {
+
+inline std::string get_string_from_SensitivityPbType(SensitivityPbType type) {
   if (type == SensitivityPbType::PROJECTION) {
     return PROJECTION_C;
   } else if (type == SensitivityPbType::CAPEX) {

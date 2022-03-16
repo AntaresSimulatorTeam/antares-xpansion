@@ -9,17 +9,10 @@ class Analysis {
   Analysis(SensitivityInputData input_data, std::string candidate_name,
            std::shared_ptr<SensitivityILogger> logger,
            const SensitivityPbType type);
-  virtual std::pair<SinglePbData, SinglePbData> run() = 0;
+  std::pair<SinglePbData, SinglePbData> run();
 
  protected:
   SinglePbData run_optimization(SensitivityStudy::StudyType minimize);
-  inline const SensitivityInputData get_input_data() const {
-    return input_data;
-  }
-  inline const std::string get_candidate_name() const { return candidate_name; }
-  void set_sensitivity_pb_model(std::shared_ptr<SolverAbstract> problem_model) {
-    sensitivity_pb_model = problem_model;
-  }
 
  private:
   const std::shared_ptr<SensitivityILogger> logger;
