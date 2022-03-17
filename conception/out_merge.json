@@ -28,7 +28,6 @@
 		"MAX_ITERATIONS" : -1,
 		"OUTPUTROOT" : ".",
 		"RAND_AGGREGATION" : 0,
-		"SLAVE_NUMBER" : -1,
 		"SLAVE_WEIGHT" : "CONSTANT",
 		"SLAVE_WEIGHT_VALUE" : 1.0,
 		"STRUCTURE_FILE" : "structure.txt",

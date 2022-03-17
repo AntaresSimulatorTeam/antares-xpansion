@@ -54,8 +54,11 @@ jobs:
       matrix:
         os: [windows-latest]
         triplet: [x64-windows]
-
+        xprs: [ON, OFF]
     env:
+      XPRESSDIR: ${{ github.workspace }}\xpress
+      XPRESS: ${{ github.workspace }}\xpress\bin
+      XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
@@ -63,6 +66,14 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
+
+    - name: Checkout xpressmp linux
+      uses: actions/checkout@v2
+      with:
+        repository: rte-france/xpress-mp-temp
+        path: ${{ env.XPRESSDIR }}
+        ref: master
+        token: ${{ secrets.AS_TOKEN }}
 
     - name: Get release
       if: github.event_name == 'release' && github.event.action == 'created'
@@ -152,18 +163,11 @@ jobs:
     - name: Configure
       run: |
            $pwd=Get-Location
-           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ matrix.xprs }} -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
 
     - name: Build
       run: |
            cmake --build _build --config Release -j2 --target install
-
-    - name: Running unit tests
-      shell: cmd
-      run: |
-           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
-           cd _build
-           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
     - name: Create installer .zip
       shell: bash
@@ -173,23 +177,42 @@ jobs:
         export ZIP_NAME=$(ls *.zip)
         echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
+    - name: set name variables
+      id: single_file_name
+      shell: bash
+      run: |
+        XPRS=${{ matrix.xprs }}
+        [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
+        VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
+        echo "::set-output name=version::$VERSION"
+        echo "VERSION_WITH_XPRESS=$VERSION"
+        echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
+
     - name: Create single file .zip
       id: create-single-file
       uses: ./.github/workflows/single-file-creation-zip
       with:
-        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+        antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
     - name: Upload installer
       uses: actions/upload-artifact@v2
       with:
-        name: antares-xpansion-installer-64bits
+        name: ${{env.ZIP_NAME}}
         path: _build/${{env.ZIP_NAME}}
 
     - name: Upload single file
       uses: actions/upload-artifact@v2
       with:
-        name: antares-xpansion-windows-single-file
+        name: ${{ steps.create-single-file.outputs.archive-name }}
         path: ${{ steps.create-single-file.outputs.archive-path }}
+
+    - name: Running unit tests
+      shell: cmd
+      run: |
+        set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+        set PATH=%PATH%;${{ env.XPRESS }}
+        cd _build
+        ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
     - name: Publish installer
       if: github.event_name == 'release' && github.event.action == 'created'

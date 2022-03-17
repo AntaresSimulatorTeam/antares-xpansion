@@ -1,0 +1,21 @@
+FROM centos:7
+
+# Install requirements : update repo
+RUN yum update -y
+
+# Install requirements : install epel
+RUN yum install -y epel-release 
+
+# Install requirements
+RUN yum install -y git redhat-lsb-core gcc gcc-c++ make wget centos-release-scl scl-utils rpm-build &&\
+    yum install -y cmake3 devtoolset-7 &&\
+    yum install -y rh-git227-git
+
+# Install xpansion requirements
+RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options environment-modules rpm-build zlib-devel
+    
+# Add python and pip installation for antares-xpansion
+RUN yum install -y python3-pip &&\
+    python3 -m pip install --upgrade pip &&\
+    pip3 install pyinstaller pyyaml pytest numpy touch pytest-cov mkdocs mkdocs-material
+
