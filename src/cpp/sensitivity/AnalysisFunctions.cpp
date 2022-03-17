@@ -31,19 +31,16 @@ SolverAbstract::Ptr get_sensitivity_problem(
       ProblemModifierCapex pb_modifier(input_data.epsilon, input_data.best_ub,
                                        input_data.last_master);
       return pb_modifier.changeProblem(nb_candidates);
-      break;
     }
     case SensitivityPbType::PROJECTION: {
       ProblemModifierProjection pb_modifier(
           input_data.epsilon, input_data.best_ub, input_data.last_master,
           input_data.name_to_id.at(candidate_name), candidate_name);
       return pb_modifier.changeProblem(nb_candidates);
-      break;
     }
 
     default:
       std::cerr << "Unrecognized Sensitivity Problem type" << std::endl;
       return nullptr;
-      break;
   }
 }
