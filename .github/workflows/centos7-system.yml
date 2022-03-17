@@ -1,4 +1,4 @@
-name: Centos7 CI (docker image)
+name: Centos7 CI (bare docker image)
 
 on:
   push:
@@ -32,41 +32,20 @@ jobs:
         uses: tj-actions/changed-files@v17.3
         with:
           files: |
-            docker/centos7
-            antares-version.json
-
-      - name: Read antares-solver version
-        id: antares-version
-        if: steps.changed-files.outputs.any_changed == 'true'
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_version'
-
-      - name: Read antares-deps version
-        id: antares-deps-version
-        if: steps.changed-files.outputs.any_changed == 'true'
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_deps_version'
+            docker/centos7-bare
 
       - name: Docker file push
         id: docker_push
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: elgohr/Publish-Docker-Github-Action@master
-        env:
-          ANTARES_DEPS_VERSION: ${{steps.antares-deps-version.outputs.prop}}
-          ANTARES_SOLVER_VERSION: ${{steps.antares-version.outputs.prop}}
         with:
           name: antaresrte/rte-antares
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: docker
-          dockerfile: centos7
+          dockerfile: centos7-bare
           cache: false
-          tags: centos7-xpansion
-          buildargs: ANTARES_DEPS_VERSION, ANTARES_SOLVER_VERSION
+          tags: centos7-xpansion-bare
 
   userguide:
     runs-on: ubuntu-latest
@@ -100,7 +79,7 @@ jobs:
 
     runs-on: ubuntu-latest
     needs: [docker_publish, userguide]
-    container: 'antaresrte/rte-antares:centos7-xpansion'
+    container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
       matrix:
         xprs: [ ON, OFF ]
@@ -126,12 +105,34 @@ jobs:
         run: |
           git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
 
+      - name: Read antares-solver version
+        id: antares-version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_version'
+
       - name: Read antares-xpansion version
         id: antares-xpansion-version
         uses: notiz-dev/github-action-json-property@release
         with:
           path: 'antares-version.json'
           prop_path: 'antares_xpansion_version'
+
+      - name: Read antares-deps version
+        id: antares-deps-version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_deps_version'
+
+      - name: Download pre-compiled librairies
+        uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
+        with:
+          antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
+          antares-version: ${{steps.antares-version.outputs.prop}}
+          os: centos7
+          os-full-name: CentOS-7.9.2009
 
       - name: Install dependencies
         run: |
@@ -150,7 +151,7 @@ jobs:
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 -B _build -S . \
-                 -DDEPS_INSTALL_DIR=/rte-antares-deps-Release \
+                 -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DUSE_MPI=ON \
