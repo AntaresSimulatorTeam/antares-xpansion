@@ -153,12 +153,12 @@ def get_solver_exe(solver: str):
 def get_mpi_command():
     MPI_LAUNCHER = ""
     MPI_N = ""
+    nproc = "2"
     if sys.platform.startswith("win32"):
         MPI_LAUNCHER = "mpiexec"
         MPI_N = "-n"
+        return [MPI_LAUNCHER, MPI_N, nproc]
     elif sys.platform.startswith("linux"):
-        MPI_LAUNCHER = "mpirun --oversubscribe"
+        MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
-    nproc = "2"
-
-    return [MPI_LAUNCHER, MPI_N, nproc]
+        return [MPI_LAUNCHER, MPI_N, nproc, "--oversubscribe"]
