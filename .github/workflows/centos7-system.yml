@@ -223,8 +223,6 @@ jobs:
         run: |
           source /etc/profile.d/modules.sh
           module load mpi
-          shopt -s expand_aliases
-          alias mpirun="mpirun --allow-run-as-root"
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
           export XPRESS=${{ env.XPRESS }}
           cd _build
