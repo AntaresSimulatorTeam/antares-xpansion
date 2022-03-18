@@ -12,7 +12,7 @@ void solver_getrows(SolverAbstract::Ptr const solver_p,
                        solver_p->get_nelems(), &nelems_returned, first_p, last_p);
 }
 
-void solver_get_obj_func_coeffs(SolverAbstract::Ptr const solver_p, std::vector<double> &obj_p,
+void solver_get_obj_func_coeffs(const std::shared_ptr<const SolverAbstract> solver_p, std::vector<double> &obj_p,
                                 int first_p, int last_p)
 {
     solver_p->get_obj(obj_p.data(), first_p, last_p);

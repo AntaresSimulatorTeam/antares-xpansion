@@ -411,12 +411,9 @@ set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4,libjsoncpp1,libboost-mpi-dev")
 set(CPACK_RPM_PACKAGE_REQUIRES "openmpi,jsoncpp,boost-openmpi")
 set(CPACK_RPM_PACKAGE_AUTOREQPROV "0")
 
-set(VERSION_APPENDIX "")
 if (ANTARES_XPANSION_RC)
-	set(VERSION_APPENDIX "${VERSION_APPENDIX}-rc${ANTARES_XPANSION_RC}")
+	set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}-rc${ANTARES_XPANSION_RC}")
 endif()
-set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}${VERSION_APPENDIX}")
-
 
 #version file to define Xpansion and Antares-simulator versions
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py.in ${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py)

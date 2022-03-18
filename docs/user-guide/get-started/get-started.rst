@@ -9,3 +9,4 @@ Getting started
     Define the candidates <candidate-definition>
     Settings of the algorithm <settings-definition>
     Launch the optimization <launching-optimization>
+    Sensitivity analysis <sensitivity-analysis>

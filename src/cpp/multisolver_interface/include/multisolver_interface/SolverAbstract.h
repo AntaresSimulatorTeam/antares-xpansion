@@ -148,7 +148,7 @@ class SolverAbstract {
    * @brief returns the list of streams used by the solver instance
    */
   std::list<std::ostream *> &get_stream() { return _streams; };
-  FILE *_fp;
+  FILE *_fp = nullptr;
   std::string _log_file = "";
   /**
    * @brief add a stream to the list of streams used by the solver instance
@@ -262,7 +262,7 @@ class SolverAbstract {
   * @brief get coefficients of rows from index first to last
   *
   * @param mstart     : Integer array which will be filled with the indices
-  indicating the starting offsets in the mrwind and dmatval arrays for each
+  indicating the starting offsets in the mclind and dmatval arrays for each
   requested row.
   * @param mclind     : array containing the column indices of the elements
   contained in dmatval
@@ -450,6 +450,14 @@ class SolverAbstract {
    */
   virtual void chg_obj(const std::vector<int> &mindex,
                        const std::vector<double> &obj) = 0;
+
+  /**
+   * @brief Change the problem's objective function sense to minimize or
+   * maximize
+   *
+   * @param minimize : boolean that is true for minimize, false for maximization
+   */
+  virtual void chg_obj_direction(const bool minimize) = 0;
 
   /**
    * @brief Change bounds of some variables

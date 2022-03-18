@@ -8,6 +8,7 @@ v0.6.1 (not released yet)
 - Antares-Xpansion outputs are written in the `expansion` directory instead of the `lp` directory
 - Add `timelimit` option as a stopping criterion for the Antares-Xpansion algorithm
 - Add `log_level` option to choose the verbosity level of the solver
+- Added `Sensitivity Study`
 
 ### Bug fixes
 

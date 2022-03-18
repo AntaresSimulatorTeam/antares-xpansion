@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from antares_xpansion.study_output_cleaner import remove_files_containing_str_from_dir, StudyOutputCleaner
+from antares_xpansion.study_output_cleaner import rename_master, remove_files_containing_str_from_dir, StudyOutputCleaner
 from file_creation import _create_empty_file_from_list
 
 def _check_result(tmp_path: Path, removed_files, keep_files):
@@ -13,6 +13,16 @@ def _check_result(tmp_path: Path, removed_files, keep_files):
 
 
 class TestStudyOutputCleaner:
+    def test_rename_master(self, tmp_path):
+        
+        old_path = Path(tmp_path / "old_path")
+        new_path = Path(tmp_path / "new_path")
+        old_path.touch()
+        
+        rename_master(old_path, new_path)
+
+        assert not old_path.is_file()
+        assert new_path.is_file()
 
     def test_remove_files(self, tmp_path):
         removed_files = ("test", "otherfile_test.txt", "test.txt")
@@ -47,7 +57,7 @@ class TestStudyOutputCleaner:
         os.mkdir(tmp_path / "lp")
 
         removed_files_lp = ("test.mps", "test.lp", "testother.mps")
-        keep_files_lp = ("test.txt", "test.json", "option.txt")
+        keep_files_lp = ("test.txt", "test.json", "option.txt", "master_last_iteration.mps")
         keep_files_root = ("mps.txt", "area.txt")
 
         _create_empty_file_from_list(tmp_path / 'lp', removed_files_lp)

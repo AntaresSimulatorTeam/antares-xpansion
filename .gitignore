@@ -34,6 +34,7 @@
 
 # build
 _build
+_install
 antares-deps
 
 # Cmake generated files
@@ -42,3 +43,14 @@ CMakeFiles/*
 
 # Outputs of instances
 src/python/config.yaml
+src/python/antares_xpansion/__version__.py
+src/python/resources.py
+config-ui.yaml
+build_config.yaml
+
+# Tests
+.coverage
+coverage-reports
+
+# Doc pdf file
+antaresxpansionuserguide.pdf

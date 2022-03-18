@@ -28,12 +28,16 @@ SolverXpress::SolverXpress() {
   _xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress() {
+SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress(static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy)) {
+
+}
+
+SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy) : SolverXpress() {
   SolverXpress::init();
   int status = 0;
 
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (SolverXpress *xpSolv = dynamic_cast<SolverXpress *>(toCopy.get())) {
+  if (const SolverXpress *xpSolv = dynamic_cast<const SolverXpress *>(toCopy.get())) {
     status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
     _log_file = toCopy->_log_file;
     if (_log_file != "") {
@@ -311,6 +315,12 @@ void SolverXpress::chg_obj(const std::vector<int> &mindex,
   assert(obj.size() == mindex.size());
   int status = XPRSchgobj(_xprs, obj.size(), mindex.data(), obj.data());
   zero_status_check(status, "change objective");
+}
+
+void SolverXpress::chg_obj_direction(const bool minimize) {
+  int objsense = minimize ? XPRS_OBJ_MINIMIZE : XPRS_OBJ_MAXIMIZE;
+  int status = XPRSchgobjsense(_xprs, objsense);
+  zero_status_check(status, "change objective sense");
 }
 
 void SolverXpress::chg_bounds(const std::vector<int> &mindex,

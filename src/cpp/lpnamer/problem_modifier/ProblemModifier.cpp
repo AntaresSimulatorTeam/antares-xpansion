@@ -4,7 +4,48 @@
 
 #include "solver_utils.h"
 
-ProblemModifier::ProblemModifier() = default;
+std::vector<Candidate> candidates_from_all_links(
+    const std::vector<ActiveLink> &active_links) {
+  std::vector<Candidate> all_candidates;
+  for (const auto &link : active_links) {
+    std::vector<Candidate> candidates = link.getCandidates();
+    all_candidates.insert(all_candidates.end(), candidates.begin(),
+                          candidates.end());
+  }
+  return all_candidates;
+}
+std::set<int> extract_time_steps(
+    const std::map<linkId, ColumnsToChange> &p_columns) {
+  std::set<int> result;
+  for (const auto &columns : p_columns) {
+    for (const auto &column : columns.second) {
+      result.insert(column.time_step);
+    }
+  }
+  return result;
+}
+
+std::vector<Candidate> candidates_with_not_null_profile(
+    const std::vector<ActiveLink> &active_links,
+    const std::set<int> &time_steps) {
+  std::vector<Candidate> candidates = candidates_from_all_links(active_links);
+
+  candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
+                                  [time_steps](const Candidate &cand) {
+                                    bool hasOnlyNullProfile = true;
+                                    for (int time_step : time_steps) {
+                                      hasOnlyNullProfile &=
+                                          cand.direct_profile(time_step) == 0.0;
+                                      hasOnlyNullProfile &=
+                                          cand.indirect_profile(time_step) ==
+                                          0.0;
+                                    }
+                                    return hasOnlyNullProfile;
+                                  }),
+                   candidates.end());
+
+  return candidates;
+}
 
 std::vector<int> extract_col_ids(const ColumnsToChange &columns_to_change) {
   std::vector<int> col_ids;
@@ -248,47 +289,4 @@ void ProblemModifier::add_new_columns(
     solver_addcols(_math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
                    candidates_colnames);
   }
-}
-
-std::vector<Candidate> ProblemModifier::candidates_from_all_links(
-    const std::vector<ActiveLink> &active_links) const {
-  std::vector<Candidate> all_candidates;
-  for (const auto &link : active_links) {
-    std::vector<Candidate> candidates = link.getCandidates();
-    all_candidates.insert(all_candidates.end(), candidates.begin(),
-                          candidates.end());
-  }
-  return all_candidates;
-}
-std::set<int> ProblemModifier::extract_time_steps(
-    const std::map<linkId, ColumnsToChange> &p_columns) const {
-  std::set<int> result;
-  for (const auto &columns : p_columns) {
-    for (const auto &column : columns.second) {
-      result.insert(column.time_step);
-    }
-  }
-  return result;
-}
-
-std::vector<Candidate> ProblemModifier::candidates_with_not_null_profile(
-    const std::vector<ActiveLink> &active_links,
-    const std::set<int> &time_steps) const {
-  std::vector<Candidate> candidates = candidates_from_all_links(active_links);
-
-  candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
-                                  [time_steps](const Candidate &cand) {
-                                    bool hasOnlyNullProfile = true;
-                                    for (int time_step : time_steps) {
-                                      hasOnlyNullProfile &=
-                                          cand.direct_profile(time_step) == 0.0;
-                                      hasOnlyNullProfile &=
-                                          cand.indirect_profile(time_step) ==
-                                          0.0;
-                                    }
-                                    return hasOnlyNullProfile;
-                                  }),
-                   candidates.end());
-
-  return candidates;
 }
