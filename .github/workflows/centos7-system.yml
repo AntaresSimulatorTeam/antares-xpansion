@@ -220,6 +220,7 @@ jobs:
       - name: Running unit tests
         shell: bash
         run: |
+          module load mpi
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
           export XPRESS=${{ env.XPRESS }}
           cd _build
