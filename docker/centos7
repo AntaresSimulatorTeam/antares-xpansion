@@ -15,7 +15,7 @@ RUN yum install -y git redhat-lsb-core gcc gcc-c++ make wget centos-release-scl 
     yum install -y rh-git227-git
 
 # Install xpansion requirements
-RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options environment-modules rpm-build zlib-devel
+RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options environment-modules rpm-build zlib-devel tbb-dev
     
 # Add python and pip installation for antares-xpansion
 RUN yum install -y python3-pip &&\
