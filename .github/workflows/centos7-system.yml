@@ -79,9 +79,7 @@ jobs:
 
     runs-on: ubuntu-latest
     needs: [docker_publish, userguide]
-    container: 
-      image: 'antaresrte/rte-antares:centos7-xpansion-bare'
-      options: --user 1001
+    container: 'antaresrte/rte-antares:centos7-xpansion-bare' 
     strategy:
       matrix:
         xprs: [ ON, OFF ]
@@ -224,12 +222,14 @@ jobs:
         run: |
           source /etc/profile.d/modules.sh
           module load mpi
+          echo -e "\nalias mpirun='mpirun --allow-run-as-root'" >> ~/.bashrc
+          source ~/.bashrc
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
           export XPRESS=${{ env.XPRESS }}
           cd _build
           ctest3 -C Release --output-on-failure -L "unit|benders"
 
-      - name: Publish .tar.gz
+      - name: Publish .tar.gzs
         if: github.event_name == 'release' && github.event.action == 'created'
         uses: actions/upload-release-asset@v1.0.2
         with:
