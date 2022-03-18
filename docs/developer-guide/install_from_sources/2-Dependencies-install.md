@@ -59,13 +59,13 @@ The install procedure can be done:
 
     ```
     sudo yum install 
-    sudo yum install environment-modules jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel boost-program-options doxygen graphviz redhat-lsb-core
+    sudo yum install environment-modules jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel boost-program-options doxygen graphviz redhat-lsb-core tbb-dev
     sudo yum install libuuid-devel
     ```
 === "Ubuntu (apt-get)"
 
     ```
-    sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev
+    sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev libtbb-dev
     sudo apt-get install unzip uuid-dev
     ```
     !!! Note

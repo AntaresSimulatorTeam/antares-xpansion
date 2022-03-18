@@ -1,15 +1,17 @@
 #include "SensitivityStudy.h"
 
+#include <execution>
+#include <numeric>
 #include <utility>
 
 #include "Analysis.h"
 
-SensitivityStudy::SensitivityStudy(const SensitivityInputData &input_data,
+SensitivityStudy::SensitivityStudy(SensitivityInputData input_data,
                                    std::shared_ptr<SensitivityILogger> logger,
                                    std::shared_ptr<SensitivityWriter> writer)
     : logger(std::move(logger)),
       writer(std::move(writer)),
-      input_data(input_data) {
+      input_data(std::move(input_data)) {
   init_output_data();
 }
 
@@ -53,19 +55,22 @@ void SensitivityStudy::run_capex_analysis() {
 
 void SensitivityStudy::run_projection_analysis() {
   logger->display_message("Projection analysis in progress");
-
-  for (auto const &candidate_name : input_data.projection) {
-    if (input_data.name_to_id.find(candidate_name) !=
-        input_data.name_to_id.end()) {
-      Analysis projection_analysis(input_data, candidate_name, logger,
-                                   SensitivityPbType::PROJECTION);
-      auto problem_data = projection_analysis.run();
-      output_data.pbs_data.push_back(problem_data.first);
-      output_data.pbs_data.push_back(problem_data.second);
-    } else {
-      logger->display_message("Warning : " + candidate_name +
-                              " ignored as it has not been found in the list "
-                              "of investment candidates");
-    }
-  }
+  std::for_each(
+      std::execution::par_unseq, input_data.projection.begin(),
+      input_data.projection.end(), [this](const std::string& candidate_name) {
+        if (input_data.name_to_id.find(candidate_name) !=
+            input_data.name_to_id.end()) {
+          Analysis projection_analysis(input_data, candidate_name, logger,
+                                       SensitivityPbType::PROJECTION);
+          auto problem_data = projection_analysis.run();
+          output_data.pbs_data.push_back(problem_data.first);
+          output_data.pbs_data.push_back(problem_data.second);
+        } else {
+          // TODO : Improve this ?
+          logger->display_message(
+              "Warning : " + candidate_name +
+              " ignored as it has not been found in the list "
+              "of investment candidates");
+        }
+      });
 }

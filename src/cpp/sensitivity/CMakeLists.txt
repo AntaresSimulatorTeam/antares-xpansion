@@ -25,6 +25,7 @@ target_include_directories (sensitivity_core
 target_link_libraries (sensitivity_core
 	PUBLIC
 		logger_lib
+		tbb
 )
 
 add_library (${PROJECT_NAME}::sensitivity_core ALIAS sensitivity_core)
