@@ -26,7 +26,7 @@ jobs:
       run: |
            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
            yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options tbb-dev
-           yum install -y cmake3 devtoolset-7 environment-modules rpm-build zlib-devel
+           yum install -y cmake3 devtoolset-9 environment-modules rpm-build zlib-devel
            yum install -y rh-git227-git
            yum install -y libuuid-devel
            
@@ -54,7 +54,7 @@ jobs:
 
     - name: Configure
       run: |
-           source /opt/rh/devtoolset-7/enable
+           source /opt/rh/devtoolset-9/enable
            #git 2.x must be enabled for Coin compilation with CMake ExternalProject_Add
            source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
@@ -63,7 +63,7 @@ jobs:
 
     - name: Build
       run: |
-           source /opt/rh/devtoolset-7/enable
+           source /opt/rh/devtoolset-9/enable
            source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
