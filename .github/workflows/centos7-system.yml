@@ -81,7 +81,6 @@ jobs:
     needs: [docker_publish, userguide]
     container:  
       image: 'antaresrte/rte-antares:centos7-xpansion-bare' 
-      options: --user user
     strategy:
       matrix:
         xprs: [ ON, OFF ]
@@ -223,6 +222,7 @@ jobs:
       - name: Running unit tests
         shell: bash
         run: |
+          su user
           source /etc/profile.d/modules.sh
           module load mpi
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
