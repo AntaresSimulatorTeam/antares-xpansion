@@ -79,7 +79,9 @@ jobs:
 
     runs-on: ubuntu-latest
     needs: [docker_publish, userguide]
-    container: 'antaresrte/rte-antares:centos7-xpansion-bare' 
+    container:  
+      image: 'antaresrte/rte-antares:centos7-xpansion-bare' 
+      options: --user 1001
     strategy:
       matrix:
         xprs: [ ON, OFF ]
@@ -98,6 +100,7 @@ jobs:
 
       - name: Checkout
         run: |
+          source /opt/rh/rh-git227/enable
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
           git submodule update --init --recursive antares-deps
 
@@ -222,8 +225,6 @@ jobs:
         run: |
           source /etc/profile.d/modules.sh
           module load mpi
-          echo -e "\nalias mpirun='mpirun --allow-run-as-root'" >> ~/.bashrc
-          source ~/.bashrc
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
           export XPRESS=${{ env.XPRESS }}
           cd _build
