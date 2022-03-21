@@ -6,10 +6,6 @@ RUN yum update -y
 # Install requirements : install epel
 RUN yum install -y epel-release 
 
-#create user 
-RUN groupadd -r user && useradd -r -g user user
-USER user
-
 # Install requirements
 RUN yum install -y git redhat-lsb-core gcc gcc-c++ make wget centos-release-scl scl-utils rpm-build &&\
     yum install -y cmake3 devtoolset-7 &&\
@@ -23,3 +19,7 @@ RUN yum install -y python3-pip &&\
     python3 -m pip install --upgrade pip &&\
     pip3 install pyinstaller pyyaml pytest numpy touch pytest-cov mkdocs mkdocs-material
 
+
+#create user 
+RUN groupadd -r user && useradd -r -g user user
+USER user
