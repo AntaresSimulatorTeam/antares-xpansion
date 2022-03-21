@@ -81,7 +81,7 @@ jobs:
     needs: [docker_publish, userguide]
     container:  
       image: 'antaresrte/rte-antares:centos7-xpansion-bare' 
-      options: --user 1001
+      options: --user user
     strategy:
       matrix:
         xprs: [ ON, OFF ]
