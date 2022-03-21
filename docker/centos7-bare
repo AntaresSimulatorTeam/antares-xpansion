@@ -17,7 +17,7 @@ RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel d
 # Install tbb. tbb is required for execution policy (parallelization c++) but the system version is too old.
 RUN git clone https://github.com/wjakob/tbb.git && \
     cd tbb/build && \
-    cmake3 .. -DCMAKE_INSTALL_PREFIX=/usr && \
+    cmake3 .. && \
     cmake3 --build . --target install -j8
 
 # Add python and pip installation for antares-xpansion
