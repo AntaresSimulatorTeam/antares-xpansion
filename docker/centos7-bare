@@ -22,4 +22,4 @@ RUN yum install -y python3-pip &&\
 
 #create user 
 RUN groupadd -r user && useradd -r -g user user
-USER user
+# USER user
