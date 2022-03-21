@@ -39,19 +39,28 @@ MasterGeneration::MasterGeneration(
     AdditionalConstraints additionalConstraints_p,
     std::map<std::pair<std::string, std::string>, int> &couplings,
     std::string const &master_formulation, std::string const &solver_name) {
-  std::vector<Candidate> candidates;
+  add_candidates(links);
+  write_master_mps(rootPath, master_formulation, solver_name,
+                   additionalConstraints_p);
+  write_structure_file(rootPath, couplings);
+}
 
+void MasterGeneration::add_candidates(const std::vector<ActiveLink> &links) {
   for (const auto &link : links) {
     const auto &candidateFromLink = link.getCandidates();
     candidates.insert(candidates.end(), candidateFromLink.begin(),
                       candidateFromLink.end());
   }
-
   std::sort(candidates.begin(), candidates.end(),
             [](const Candidate &cand1, const Candidate &cand2) -> bool {
               return cand1.get_name() < cand2.get_name();
             });
+}
 
+void MasterGeneration::write_master_mps(
+    const std::string &rootPath, std::string const &master_formulation,
+    std::string const &solver_name,
+    AdditionalConstraints additionalConstraints_p) {
   SolverAbstract::Ptr master_l =
       MasterProblemBuilder(master_formulation).build(solver_name, candidates);
   treatAdditionalConstraints(master_l, additionalConstraints_p);
@@ -59,7 +68,11 @@ MasterGeneration::MasterGeneration(
   std::string const &lp_name = "master";
   master_l->write_prob_mps(
       (Path(rootPath) / "lp" / (lp_name + ".mps")).get_str());
+}
 
+void MasterGeneration::write_structure_file(
+    const std::string &rootPath,
+    std::map<std::pair<std::string, std::string>, int> &couplings) {
   std::map<std::string, std::map<std::string, int>> output;
   for (auto const &coupling : couplings) {
     output[get_name(coupling.first.second)][coupling.first.first] =

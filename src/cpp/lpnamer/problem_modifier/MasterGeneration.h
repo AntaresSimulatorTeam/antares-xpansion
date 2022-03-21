@@ -19,5 +19,18 @@ class MasterGeneration {
       AdditionalConstraints additionalConstraints_p,
       std::map<std::pair<std::string, std::string>, int> &couplings,
       std::string const &master_formulation, std::string const &solver_name);
+
+ private: /*methods*/
+  void add_candidates(const std::vector<ActiveLink> &links);
+  void write_master_mps(const std::string &rootPath,
+                        std::string const &master_formulation,
+                        std::string const &solver_name,
+                        AdditionalConstraints additionalConstraints_p);
+  void write_structure_file(
+      const std::string &rootPath,
+      std::map<std::pair<std::string, std::string>, int> &couplings);
+
+ private: /*members*/
+  std::vector<Candidate> candidates;
 };
 #endif  //__MASTER_GENERATION__
