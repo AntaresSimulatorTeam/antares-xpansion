@@ -51,11 +51,28 @@ class SensitivityWriterTest : public ::testing::Test {
     }
   }
 
+  void verify_bounds_writing(
+      const std::map<std::string, std::pair<double, double>> &candidates_bounds,
+      const Json::Value &written_candidates_bounds) {
+    ASSERT_EQ(candidates_bounds.size(), written_candidates_bounds.size());
+
+    int candidate_id = 0;
+    for (auto &kvp : candidates_bounds) {
+      ASSERT_EQ(kvp.first, written_candidates_bounds[candidate_id][NAME_C].asString());
+      ASSERT_EQ(kvp.second.first, written_candidates_bounds[candidate_id][LB_C].asDouble());
+      ASSERT_EQ(kvp.second.second, written_candidates_bounds[candidate_id][UB_C].asDouble());
+      candidate_id++;
+    }
+  }
+
   void verify_output_writing(const SensitivityOutputData &output_data,
                              Json::Value written_data) {
     ASSERT_EQ(output_data.epsilon, written_data[EPSILON_C].asDouble());
     ASSERT_EQ(output_data.best_benders_cost,
               written_data[BEST_BENDERS_C].asDouble());
+
+    verify_bounds_writing(output_data.candidates_bounds,
+                          written_data[BOUNDS_C]);
 
     verify_pbs_data_writing(output_data.pbs_data,
                             written_data[SENSITIVITY_SOLUTION_C]);
@@ -105,6 +122,7 @@ TEST_F(SensitivityWriterTest, EndWritingPrintsOutputData) {
 
   output_data.epsilon = 2;
   output_data.best_benders_cost = 100;
+  output_data.candidates_bounds = {{"my_cand", {12, 37}}, {"mock", {123, 456}}};
   output_data.pbs_data = {capex_min_data, proj_max_data};
 
   writer.end_writing(output_data);

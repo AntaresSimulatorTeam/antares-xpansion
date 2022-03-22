@@ -17,6 +17,7 @@ class SensitivityStudyTest : public ::testing::Test {
   const std::string transmission_name = "transmission_line";
 
   std::vector<std::string> candidate_names;
+  std::map<std::string, std::pair<double, double>> expec_candidates_bounds;
 
   SolverAbstract::Ptr math_problem;
 
@@ -63,6 +64,9 @@ class SensitivityStudyTest : public ::testing::Test {
 
     input_data = {epsilon,      best_ub, name_to_id,
                   math_problem, capex,   candidate_names};
+
+    expec_candidates_bounds = {{peak_name, {0, 3000}},
+                               {semibase_name, {0, 400}}};
   }
 
   void prepare_real_sensitivity_pb() {
@@ -86,6 +90,12 @@ class SensitivityStudyTest : public ::testing::Test {
 
     input_data = {epsilon,      best_ub, name_to_id,
                   math_problem, capex,   candidate_names};
+
+    expec_candidates_bounds = {{peak_name, {0, 2000}},
+                               {semibase_name, {0, 2000}},
+                               {battery_name, {0, 1000}},
+                               {pv_name, {0, 1000}},
+                               {transmission_name, {0, 3200}}};
   }
 
   void verify_output_data(const SensitivityOutputData &output_data,
@@ -93,6 +103,8 @@ class SensitivityStudyTest : public ::testing::Test {
     ASSERT_DOUBLE_EQ(output_data.epsilon, expec_output_data.epsilon);
     ASSERT_DOUBLE_EQ(output_data.best_benders_cost,
                      expec_output_data.best_benders_cost);
+    ASSERT_EQ(output_data.candidates_bounds,
+              expec_output_data.candidates_bounds);
     ASSERT_EQ(output_data.pbs_data.size(), expec_output_data.pbs_data.size());
 
     for (int pb_id(0); pb_id < output_data.pbs_data.size(); pb_id++) {
@@ -136,7 +148,8 @@ TEST_F(SensitivityStudyTest, OutputDataInit) {
   prepare_toy_sensitivity_pb();
 
   auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
-  auto expec_output_data = SensitivityOutputData(epsilon, best_ub);
+  auto expec_output_data =
+      SensitivityOutputData(epsilon, best_ub, expec_candidates_bounds);
   auto output_data = sensitivity_study.get_output_data();
 
   verify_output_data(output_data, expec_output_data);
@@ -162,7 +175,8 @@ TEST_F(SensitivityStudyTest, GetCapexSolutions) {
       SOLVER_STATUS::OPTIMAL);
 
   std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
-  auto expec_output_data = SensitivityOutputData(epsilon, best_ub, pbs_data);
+  auto expec_output_data = SensitivityOutputData(
+      epsilon, best_ub, expec_candidates_bounds, pbs_data);
 
   verify_output_data(output_data, expec_output_data);
 }
@@ -201,7 +215,8 @@ TEST_F(SensitivityStudyTest, GetCandidatesProjection) {
       projection_min_peak, projection_max_peak, projection_min_semibase,
       projection_max_semibase};
 
-  auto expec_output_data = SensitivityOutputData(epsilon, best_ub, pbs_data);
+  auto expec_output_data = SensitivityOutputData(
+      epsilon, best_ub, expec_candidates_bounds, pbs_data);
 
   verify_output_data(output_data, expec_output_data);
 }
@@ -349,7 +364,8 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest) {
                                         projection_max_battery,
                                         projection_min_transmission,
                                         projection_max_transmission};
-  auto expec_output_data = SensitivityOutputData(epsilon, best_ub, pbs_data);
+  auto expec_output_data = SensitivityOutputData(
+      epsilon, best_ub, expec_candidates_bounds, pbs_data);
 
   verify_output_data(output_data, expec_output_data);
 }

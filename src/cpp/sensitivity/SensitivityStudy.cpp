@@ -38,7 +38,39 @@ SensitivityOutputData SensitivityStudy::get_output_data() const {
 void SensitivityStudy::init_output_data() {
   output_data.epsilon = input_data.epsilon;
   output_data.best_benders_cost = input_data.best_ub;
+  output_data.candidates_bounds = get_candidates_bounds();
   output_data.pbs_data = {};
+}
+
+std::string &rtrim(std::string &s) {
+  auto it = std::find_if(s.rbegin(), s.rend(), [](unsigned char c) {
+    return !std::isspace<char>(c, std::locale::classic());
+  });
+  s.erase(it.base(), s.end());
+  return s;
+}
+
+std::map<std::string, std::pair<double, double>>
+SensitivityStudy::get_candidates_bounds() {
+  std::map<std::string, std::pair<double, double>> candidates_bounds;
+
+  unsigned int nb_candidates = input_data.name_to_id.size();
+  std::vector<double> lb_buffer(nb_candidates);
+  std::vector<double> ub_buffer(nb_candidates);
+  std::vector<std::string> candidates_name =
+      input_data.last_master->get_col_names(0, nb_candidates - 1);
+
+  for (int i = 0; i < candidates_name.size(); i++) {
+    candidates_name[i] = rtrim(candidates_name[i]);
+  }
+
+  input_data.last_master->get_lb(lb_buffer.data(), 0, nb_candidates - 1);
+  input_data.last_master->get_ub(ub_buffer.data(), 0, nb_candidates - 1);
+
+  for (int i = 0; i < nb_candidates; i++) {
+    candidates_bounds[candidates_name[i]] = {lb_buffer[i], ub_buffer[i]};
+  }
+  return candidates_bounds;
 }
 
 void SensitivityStudy::run_capex_analysis() {

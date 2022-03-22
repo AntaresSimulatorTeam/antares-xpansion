@@ -83,7 +83,7 @@ void SensitivityLogger::log_summary(const SensitivityOutputData& output_data) {
     log_capex_summary(capex_data);
   }
   if (!projection_data.empty()) {
-    log_projection_summary(projection_data);
+    log_projection_summary(projection_data, output_data.candidates_bounds);
   }
 }
 
@@ -123,14 +123,19 @@ std::map<std::string, std::map<std::string, double>> get_investment_intervals(
 }
 
 void SensitivityLogger::log_projection_summary(
-    const std::vector<SinglePbData>& projection_data) {
+    const std::vector<SinglePbData>& projection_data,
+    const std::map<std::string, std::pair<double, double>>& candidates_bounds) {
   auto investment_intervals = get_investment_intervals(projection_data);
 
   _stream << indent_1 << "Investment intervals of candidates:" << std::endl;
+
   for (const auto& kvp : investment_intervals) {
     auto interval = kvp.second;
     _stream << indent_1 << indent_1 << kvp.first << ": [" << interval[MIN_C]
-            << MW << ", " << interval[MAX_C] << MW << "]" << std::endl;
+            << MW << ", " << interval[MAX_C] << MW << "]" << indent_1
+            << "-- possible interval = ["
+            << candidates_bounds.at(kvp.first).first << MW << ", "
+            << candidates_bounds.at(kvp.first).second << MW << "]" << std::endl;
   }
   _stream << std::endl;
 }

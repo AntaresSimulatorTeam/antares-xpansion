@@ -107,7 +107,8 @@ TEST_F(SensitivityUserLoggerTest, LogBeginPbResolution) {
   auto pb_data = SinglePbData(SensitivityPbType::CAPEX, str_pb_type,
                               "some_name", "my_opt_dir");
   std::stringstream expected;
-  expected << indent_1 << "Solving " << pb_data.get_pb_description() << "..." << std::endl;
+  expected << indent_1 << "Solving " << pb_data.get_pb_description() << "..."
+           << std::endl;
 
   _logger.log_begin_pb_resolution(pb_data);
   ASSERT_EQ(_stream.str(), expected.str());
@@ -169,8 +170,10 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyCapex) {
                    {{peak_name, 17}, {semibase_name, 11}}, 37);
 
   std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
-  auto output_data =
-      SensitivityOutputData(epsilon, best_benders_cost, pbs_data);
+  std::map<std::string, std::pair<double, double>> candidates_bounds = {
+      {peak_name, {0, 100}}, {semibase_name, {0, 200}}};
+  auto output_data = SensitivityOutputData(epsilon, best_benders_cost,
+                                           candidates_bounds, pbs_data);
 
   std::stringstream expected;
   expected << "Sensitivity analysis summary "
@@ -209,8 +212,11 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyProjection) {
       projection_min_peak, projection_max_peak, projection_min_semibase,
       projection_max_semibase};
 
-  auto output_data =
-      SensitivityOutputData(epsilon, best_benders_cost, pbs_data);
+  std::map<std::string, std::pair<double, double>> candidates_bounds = {
+      {peak_name, {0, 100}}, {semibase_name, {0, 200}}};
+
+  auto output_data = SensitivityOutputData(epsilon, best_benders_cost,
+                                           candidates_bounds, pbs_data);
 
   std::stringstream expected;
   expected << "Sensitivity analysis summary "
@@ -219,10 +225,12 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyProjection) {
 
   expected << indent_1 << "Investment intervals of candidates:" << std::endl;
   expected << indent_1 << indent_1 << peak_name << ": [" << 13 << MW << ", "
-           << 24 << MW << "]" << std::endl;
+           << 24 << MW << "]" << indent_1 << "-- possible interval = [" << 0
+           << MW << ", " << 100 << MW << "]" << std::endl;
 
   expected << indent_1 << indent_1 << semibase_name << ": [" << 10 << MW << ", "
-           << 11 << MW << "]" << std::endl;
+           << 11 << MW << "]" << indent_1 << "-- possible interval = [" << 0
+           << MW << ", " << 200 << MW << "]" << std::endl;
   expected << std::endl;
 
   _logger.log_summary(output_data);
