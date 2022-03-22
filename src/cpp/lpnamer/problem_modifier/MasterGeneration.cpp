@@ -83,11 +83,11 @@ void MasterGeneration::write_structure_file(const std::string &rootPath,
 
   std::ofstream coupling_file(
       (Path(rootPath) / "lp" / STRUCTURE_FILE).get_str().c_str());
-  for (auto const &mps : output) {
-    for (auto const &pmax : mps.second) {
-      coupling_file << std::setw(50) << mps.first;
-      coupling_file << std::setw(50) << pmax.first;
-      coupling_file << std::setw(10) << pmax.second;
+  for (auto const &[mps_file_path, candidates_name_and_colId] : output) {
+    for (auto const &[candidate_name, colId] : candidates_name_and_colId) {
+      coupling_file << std::setw(50) << mps_file_path;
+      coupling_file << std::setw(50) << candidate_name;
+      coupling_file << std::setw(10) << colId;
       coupling_file << std::endl;
     }
   }
