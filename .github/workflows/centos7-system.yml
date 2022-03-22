@@ -9,6 +9,7 @@ on:
       - feature/*
       - fix/*
       - release/*
+      - centos/*
   release:
     types: [ created ]
 
@@ -47,40 +48,41 @@ jobs:
           cache: false
           tags: centos7-xpansion-bare
 
-  userguide:
-    runs-on: ubuntu-latest
-    outputs:
-      pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
+  # userguide:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
-    steps:
-      - uses: actions/checkout@v2
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Read antares-xpansion version
-        id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+  #     - name: Read antares-xpansion version
+  #       id: antares-xpansion-version
+  #       uses: notiz-dev/github-action-json-property@release
+  #       with:
+  #         path: 'antares-version.json'
+  #         prop_path: 'antares_xpansion_version'
 
-      - id: create-user-guide
-        name: user guide pdf creation
-        uses: ./.github/workflows/generate-userguide-pdf
-        with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+  #     - id: create-user-guide
+  #       name: user guide pdf creation
+  #       uses: ./.github/workflows/generate-userguide-pdf
+  #       with:
+  #         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
-      - name: user guide upload
-        id: userguide_upload
-        uses: actions/upload-artifact@v2
-        with:
-          name: user-guide
-          path: ${{ steps.create-user-guide.outputs.pdf-path }}
+  #     - name: user guide upload
+  #       id: userguide_upload
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: user-guide
+  #         path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
   build:
 
     runs-on: ubuntu-latest
-    needs: [docker_publish, userguide]
+    needs: [docker_publish]
     container:  
       image: 'antaresrte/rte-antares:centos7-xpansion-bare' 
+      options: --user user
     strategy:
       matrix:
         xprs: [ OFF ]
@@ -141,11 +143,11 @@ jobs:
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
 
-      - name: Download userguide
-        uses: actions/download-artifact@v2
-        with:
-          name: user-guide
-          path: docs/
+      # - name: Download userguide
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: user-guide
+      #     path: docs/
 
       - name: Configure
         run: |
@@ -159,7 +161,7 @@ jobs:
                  -DUSE_MPI=ON \
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
-                 -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
+                #  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                  -DXPRESS=${{ matrix.xprs }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }}
 
