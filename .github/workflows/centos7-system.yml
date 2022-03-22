@@ -223,12 +223,16 @@ jobs:
       - name: Running unit tests
         shell: bash
         run: |
+          echo "**1**"
+          whoami
           su user
+          echo "**2**"
+          whoami
           source /etc/profile.d/modules.sh
           module load mpi
-          # export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
-          # export XPRESS=${{ env.XPRESS }}
           cd _build
+          echo "**3**"
+          whoami
           ctest3 -C Release --output-on-failure -L "unit|benders"
 
       - name: Publish .tar.gzs
