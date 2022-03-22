@@ -161,7 +161,6 @@ jobs:
                  -DUSE_MPI=ON \
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
-                #  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                  -DXPRESS=${{ matrix.xprs }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }}
 
@@ -224,6 +223,7 @@ jobs:
       - name: Running unit tests
         shell: bash
         run: |
+          su user
           source /etc/profile.d/modules.sh
           module load mpi
           # export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
