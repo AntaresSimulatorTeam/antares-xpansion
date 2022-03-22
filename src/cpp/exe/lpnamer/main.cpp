@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
           AdditionalConstraints(additionalConstraintFilename_l);
     }
 
-    std::map<std::pair<std::string, std::string>, int> couplings;
+    Couplings couplings;
     std::string solver_name = "CBC";
     std::vector<ActiveLink> links = linkBuilder.getLinks();
     LinkProblemsGenerator linkProblemsGenerator(links, solver_name);

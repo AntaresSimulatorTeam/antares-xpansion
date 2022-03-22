@@ -3,7 +3,6 @@
 #include <algorithm>
 
 #include "LauncherHelpers.h"
-#include "LinkProblemsGenerator.h"
 #include "MasterProblemBuilder.h"
 #include "helpers/Path.h"
 #include "multisolver_interface/SolverAbstract.h"
@@ -36,8 +35,7 @@ std::string get_name(std::string const &path) {
 }
 MasterGeneration::MasterGeneration(
     const std::string &rootPath, const std::vector<ActiveLink> &links,
-    AdditionalConstraints additionalConstraints_p,
-    std::map<std::pair<std::string, std::string>, int> &couplings,
+    const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
     std::string const &master_formulation, std::string const &solver_name) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
@@ -52,7 +50,7 @@ void MasterGeneration::add_candidates(const std::vector<ActiveLink> &links) {
                       candidateFromLink.end());
   }
   std::sort(candidates.begin(), candidates.end(),
-            [](const Candidate &cand1, const Candidate &cand2) -> bool {
+            [](const Candidate &cand1, const Candidate &cand2) {
               return cand1.get_name() < cand2.get_name();
             });
 }
@@ -60,7 +58,7 @@ void MasterGeneration::add_candidates(const std::vector<ActiveLink> &links) {
 void MasterGeneration::write_master_mps(
     const std::string &rootPath, std::string const &master_formulation,
     std::string const &solver_name,
-    AdditionalConstraints additionalConstraints_p) {
+    const AdditionalConstraints &additionalConstraints_p) const {
   SolverAbstract::Ptr master_l =
       MasterProblemBuilder(master_formulation).build(solver_name, candidates);
   treatAdditionalConstraints(master_l, additionalConstraints_p);
@@ -70,15 +68,14 @@ void MasterGeneration::write_master_mps(
       (Path(rootPath) / "lp" / (lp_name + ".mps")).get_str());
 }
 
-void MasterGeneration::write_structure_file(
-    const std::string &rootPath,
-    std::map<std::pair<std::string, std::string>, int> &couplings) {
-  std::map<std::string, std::map<std::string, int>> output;
-  for (auto const &coupling : couplings) {
-    output[get_name(coupling.first.second)][coupling.first.first] =
-        coupling.second;
+void MasterGeneration::write_structure_file(const std::string &rootPath,
+                                            const Couplings &couplings) const {
+  std::map<std::string, std::map<std::string, unsigned int>> output;
+  for (const auto &[candidate_name_and_mps_filePath, colId] : couplings) {
+    output[get_name(candidate_name_and_mps_filePath.second)]
+          [candidate_name_and_mps_filePath.first] = colId;
   }
-  int i = 0;
+  unsigned int i = 0;
   for (auto const &candidate : candidates) {
     output["master"][candidate.get_name()] = i;
     ++i;

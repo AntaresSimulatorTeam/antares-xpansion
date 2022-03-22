@@ -3,6 +3,7 @@
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
+#include "LinkProblemsGenerator.h"
 class MasterGeneration {
  public:
   /**
@@ -16,19 +17,18 @@ class MasterGeneration {
    */
   explicit MasterGeneration(
       const std::string &rootPath, const std::vector<ActiveLink> &links,
-      AdditionalConstraints additionalConstraints_p,
-      std::map<std::pair<std::string, std::string>, int> &couplings,
-      std::string const &master_formulation, std::string const &solver_name);
+      const AdditionalConstraints &additionalConstraints_p,
+      Couplings &couplings, std::string const &master_formulation,
+      std::string const &solver_name);
 
  private: /*methods*/
   void add_candidates(const std::vector<ActiveLink> &links);
-  void write_master_mps(const std::string &rootPath,
-                        std::string const &master_formulation,
-                        std::string const &solver_name,
-                        AdditionalConstraints additionalConstraints_p);
-  void write_structure_file(
-      const std::string &rootPath,
-      std::map<std::pair<std::string, std::string>, int> &couplings);
+  void write_master_mps(
+      const std::string &rootPath, std::string const &master_formulation,
+      std::string const &solver_name,
+      const AdditionalConstraints &additionalConstraints_p) const;
+  void write_structure_file(const std::string &rootPath,
+                            const Couplings &couplings) const;
 
  private: /*members*/
   std::vector<Candidate> candidates;
