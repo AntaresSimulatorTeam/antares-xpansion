@@ -102,9 +102,9 @@ void SensitivityLogger::log_capex_summary(
 
   _stream << indent_1 << "CAPEX interval: ["
           << xpansion::logger::commons::create_str_million_euros(capex_min)
-          << MILLON_EUROS << ", "
+          << ", "
           << xpansion::logger::commons::create_str_million_euros(capex_max)
-          << MILLON_EUROS << "]" << std::endl
+          << "]" << MILLON_EUROS << std::endl
           << std::endl;
 }
 
@@ -132,10 +132,10 @@ void SensitivityLogger::log_projection_summary(
   for (const auto& kvp : investment_intervals) {
     auto interval = kvp.second;
     _stream << indent_1 << indent_1 << kvp.first << ": [" << interval[MIN_C]
-            << MW << ", " << interval[MAX_C] << MW << "]" << indent_1
+            << ", " << interval[MAX_C] << "]" << MW << indent_1
             << "-- possible interval = ["
-            << candidates_bounds.at(kvp.first).first << MW << ", "
-            << candidates_bounds.at(kvp.first).second << MW << "]" << std::endl;
+            << candidates_bounds.at(kvp.first).first << ", "
+            << candidates_bounds.at(kvp.first).second << "]" << MW << std::endl;
   }
   _stream << std::endl;
 }

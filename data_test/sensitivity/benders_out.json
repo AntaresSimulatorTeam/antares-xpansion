@@ -1,0 +1,25 @@
+{
+	
+	"options" : 
+	{
+		"LOG_LEVEL" : 0,
+		"MASTER_NAME" : "master",
+		"SOLVER_NAME" : "COIN"
+	},
+	"solution" : 
+	{
+		"investment_cost" : 1000,
+		"iteration" : 4,
+		"operational_cost" : 1200,
+		"optimality_gap" : 0.04,
+		"overall_cost" : 2200,
+		"problem_status" : "OPTIMAL",
+		"relative_gap" : 0.001,
+		"stopping_criterion" : "maximum iterations",
+		"values" : 
+		{
+			"peak" : 15,
+			"semibase" : 3
+		}
+	}
+}

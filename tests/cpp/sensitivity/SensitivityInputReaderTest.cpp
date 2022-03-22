@@ -1,13 +1,62 @@
+#include "SensitivityInputReader.h"
 #include "gtest/gtest.h"
 
-#include "SensitivityInputReader.h"
+class SensitivityInputReaderTest : public ::testing::Test {
+ public:
+  std::string data_test_dir;
 
-class SensitivityInputReaderTest : public ::testing::Test
-{
-protected:
-    void SetUp() override
-    {
+  std::string last_master_mps_path;
+  std::string json_input_path;
+  std::string benders_output_path;
+  std::string structure_path;
+
+  const std::string peak_name = "peak";
+  const std::string semibase_name = "semibase";
+
+ protected:
+  void SetUp() override {
+#if defined(WIN32) || defined(_WIN32)
+    data_test_dir = "../../data_test";
+#else
+    data_test_dir = "../data_test";
+#endif
+    data_test_dir += "/sensitivity";
+
+    last_master_mps_path = data_test_dir + "/toy_last_iteration.mps";
+    json_input_path = data_test_dir + "/sensitivity_in.json";
+    benders_output_path = data_test_dir + "/benders_out.json";
+    structure_path = data_test_dir + "/structure.txt";
+  }
+
+  void TearDown() override {}
+
+  void verify_input_data(const SensitivityInputData &input_data,
+                         const SensitivityInputData &expec_input_data) {
+    EXPECT_EQ(input_data.epsilon, expec_input_data.epsilon);
+    EXPECT_EQ(input_data.best_ub, expec_input_data.best_ub);
+    EXPECT_EQ(input_data.name_to_id, expec_input_data.name_to_id);
+    EXPECT_EQ(input_data.candidates_bounds, expec_input_data.candidates_bounds);
+    EXPECT_EQ(input_data.capex, expec_input_data.capex);
+    ASSERT_EQ(input_data.projection.size(), expec_input_data.projection.size());
+    for (int i(0); i < input_data.projection.size(); i++) {
+      EXPECT_EQ(input_data.projection[i], expec_input_data.projection[i]);
     }
-
-    void TearDown() override {}
+  }
 };
+
+TEST_F(SensitivityInputReaderTest, GetInputData) {
+  SensitivityInputReader input_reader(json_input_path, benders_output_path,
+                                      last_master_mps_path, structure_path);
+  SensitivityInputData input_data = input_reader.get_input_data();
+
+  SensitivityInputData expec_input_data = {
+      1e4,
+      2200,
+      {{peak_name, 15}, {semibase_name, 32}},
+      nullptr,
+      {{peak_name, {0, 3000}}, {semibase_name, {0, 400}}},
+      true,
+      {peak_name, semibase_name}};
+
+  verify_input_data(input_data, expec_input_data);
+}

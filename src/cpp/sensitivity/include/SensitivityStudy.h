@@ -31,7 +31,6 @@ class SensitivityStudy {
   SensitivityOutputData output_data;
 
   void init_output_data();
-  std::map<std::string, std::pair<double, double>> get_candidates_bounds();
   void run_capex_analysis();
   void run_projection_analysis();
 

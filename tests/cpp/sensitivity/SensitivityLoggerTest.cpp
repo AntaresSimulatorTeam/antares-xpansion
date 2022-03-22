@@ -23,7 +23,7 @@ TEST_F(SensitivityFileLoggerTest, InvalidFileNotified) {
   SensitivityFileLogger sensitivityFileLogger("");
   std::cerr.rdbuf(initialBufferCerr);
 
-  ASSERT_TRUE(redirectedErrorStream.str().find(expectedErrorString) !=
+  EXPECT_TRUE(redirectedErrorStream.str().find(expectedErrorString) !=
               std::string::npos);
 }
 
@@ -36,7 +36,7 @@ TEST_F(SensitivityFileLoggerTest, EmptyFileCreatedAtInit) {
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
 
-  ASSERT_TRUE(fileStream.good() && stringStreamFromFile.str().empty());
+  EXPECT_TRUE(fileStream.good() && stringStreamFromFile.str().empty());
 }
 
 class SensitivityUserLoggerTest : public ::testing::Test {
@@ -58,7 +58,7 @@ class SensitivityUserLoggerTest : public ::testing::Test {
 };
 
 TEST_F(SensitivityUserLoggerTest, EmptyStreamAtInit) {
-  ASSERT_EQ(_stream.str().size(), 0);
+  EXPECT_EQ(_stream.str().size(), 0);
 }
 
 TEST_F(SensitivityUserLoggerTest, InvalidStreamNotified) {
@@ -74,7 +74,7 @@ TEST_F(SensitivityUserLoggerTest, InvalidStreamNotified) {
 
   std::cerr.rdbuf(initialBufferCerr);
 
-  ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString);
+  EXPECT_EQ(redirectedErrorStream.str(), expectedErrorString);
 }
 
 TEST_F(SensitivityUserLoggerTest, DisplayMessage) {
@@ -82,7 +82,7 @@ TEST_F(SensitivityUserLoggerTest, DisplayMessage) {
   expected << "Message" << std::endl << std::endl;
 
   _logger.display_message("Message");
-  ASSERT_EQ(_stream.str(), expected.str());
+  EXPECT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(SensitivityUserLoggerTest, InitLog) {
@@ -100,7 +100,7 @@ TEST_F(SensitivityUserLoggerTest, InitLog) {
   expected << std::endl;
 
   _logger.log_at_start(output_data);
-  ASSERT_EQ(_stream.str(), expected.str());
+  EXPECT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(SensitivityUserLoggerTest, LogBeginPbResolution) {
@@ -111,7 +111,7 @@ TEST_F(SensitivityUserLoggerTest, LogBeginPbResolution) {
            << std::endl;
 
   _logger.log_begin_pb_resolution(pb_data);
-  ASSERT_EQ(_stream.str(), expected.str());
+  EXPECT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(SensitivityUserLoggerTest, LogPbSolutionProjection) {
@@ -129,7 +129,7 @@ TEST_F(SensitivityUserLoggerTest, LogPbSolutionProjection) {
   expected << std::endl;
 
   _logger.log_pb_solution(pb_data);
-  ASSERT_EQ(_stream.str(), expected.str());
+  EXPECT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(SensitivityUserLoggerTest, LogPbSolutionCapex) {
@@ -149,7 +149,7 @@ TEST_F(SensitivityUserLoggerTest, LogPbSolutionCapex) {
   expected << std::endl;
 
   _logger.log_pb_solution(pb_data);
-  ASSERT_EQ(_stream.str(), expected.str());
+  EXPECT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(SensitivityUserLoggerTest, LogAtEnding) {
@@ -157,7 +157,7 @@ TEST_F(SensitivityUserLoggerTest, LogAtEnding) {
   expected << "--- Sensitivity study completed ---" << std::endl;
 
   _logger.log_at_ending();
-  ASSERT_EQ(_stream.str(), expected.str());
+  EXPECT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyCapex) {
@@ -181,14 +181,13 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyCapex) {
            << std::endl;
 
   expected << indent_1 << "CAPEX interval: ["
-           << xpansion::logger::commons::create_str_million_euros(1040)
-           << MILLON_EUROS << ", "
-           << xpansion::logger::commons::create_str_million_euros(1224)
-           << MILLON_EUROS << "]" << std::endl
+           << xpansion::logger::commons::create_str_million_euros(1040) << ", "
+           << xpansion::logger::commons::create_str_million_euros(1224) << "]"
+           << MILLON_EUROS << std::endl
            << std::endl;
 
   _logger.log_summary(output_data);
-  ASSERT_EQ(_stream.str(), expected.str());
+  EXPECT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyProjection) {
@@ -224,17 +223,17 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyProjection) {
            << std::endl;
 
   expected << indent_1 << "Investment intervals of candidates:" << std::endl;
-  expected << indent_1 << indent_1 << peak_name << ": [" << 13 << MW << ", "
-           << 24 << MW << "]" << indent_1 << "-- possible interval = [" << 0
-           << MW << ", " << 100 << MW << "]" << std::endl;
+  expected << indent_1 << indent_1 << peak_name << ": [" << 13 << ", " << 24
+           << "]" << MW << indent_1 << "-- possible interval = [" << 0 << ", "
+           << 100 << "]" << MW << std::endl;
 
-  expected << indent_1 << indent_1 << semibase_name << ": [" << 10 << MW << ", "
-           << 11 << MW << "]" << indent_1 << "-- possible interval = [" << 0
-           << MW << ", " << 200 << MW << "]" << std::endl;
+  expected << indent_1 << indent_1 << semibase_name << ": [" << 10 << ", " << 11
+           << "]" << MW << indent_1 << "-- possible interval = [" << 0 << ", "
+           << 200 << "]" << MW << std::endl;
   expected << std::endl;
 
   _logger.log_summary(output_data);
-  ASSERT_EQ(_stream.str(), expected.str());
+  EXPECT_EQ(_stream.str(), expected.str());
 }
 
 class SensitivityLoggerMock : public SensitivityILogger {
@@ -294,40 +293,40 @@ class SensitivityMasterLoggerTest : public ::testing::Test {
 TEST_F(SensitivityMasterLoggerTest, DisplayMessage) {
   std::string message = "message";
   _master.display_message(message);
-  ASSERT_EQ(_logger->_displaymessage, message);
-  ASSERT_EQ(_logger2->_displaymessage, message);
+  EXPECT_EQ(_logger->_displaymessage, message);
+  EXPECT_EQ(_logger2->_displaymessage, message);
 }
 
 TEST_F(SensitivityMasterLoggerTest, InitLog) {
   SensitivityOutputData output_data;
   _master.log_at_start(output_data);
-  ASSERT_TRUE(_logger->_initCall);
-  ASSERT_TRUE(_logger2->_initCall);
+  EXPECT_TRUE(_logger->_initCall);
+  EXPECT_TRUE(_logger2->_initCall);
 }
 
 TEST_F(SensitivityMasterLoggerTest, BeginPbResolutionLog) {
   SinglePbData pb_data;
   _master.log_begin_pb_resolution(pb_data);
-  ASSERT_TRUE(_logger->_beginPbResolutionCall);
-  ASSERT_TRUE(_logger2->_beginPbResolutionCall);
+  EXPECT_TRUE(_logger->_beginPbResolutionCall);
+  EXPECT_TRUE(_logger2->_beginPbResolutionCall);
 }
 
 TEST_F(SensitivityMasterLoggerTest, PbSolutionLog) {
   SinglePbData pb_data;
   _master.log_pb_solution(pb_data);
-  ASSERT_TRUE(_logger->_pbSolutionCall);
-  ASSERT_TRUE(_logger2->_pbSolutionCall);
+  EXPECT_TRUE(_logger->_pbSolutionCall);
+  EXPECT_TRUE(_logger2->_pbSolutionCall);
 }
 
 TEST_F(SensitivityMasterLoggerTest, SummaryLog) {
   SensitivityOutputData output_data;
   _master.log_summary(output_data);
-  ASSERT_TRUE(_logger->_summaryCall);
-  ASSERT_TRUE(_logger2->_summaryCall);
+  EXPECT_TRUE(_logger->_summaryCall);
+  EXPECT_TRUE(_logger2->_summaryCall);
 }
 
 TEST_F(SensitivityMasterLoggerTest, EndingLog) {
   _master.log_at_ending();
-  ASSERT_TRUE(_logger->_endingCall);
-  ASSERT_TRUE(_logger2->_endingCall);
+  EXPECT_TRUE(_logger->_endingCall);
+  EXPECT_TRUE(_logger2->_endingCall);
 }

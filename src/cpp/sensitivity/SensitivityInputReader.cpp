@@ -11,8 +11,7 @@ const std::string EPSILON_C("epsilon");
 const std::string CAPEX_C("capex");
 const std::string PROJECTION_C("projection");
 
-Json::Value read_json(
-    const std::string &json_file_path) {
+Json::Value read_json(const std::string &json_file_path) {
   std::ifstream json_file(json_file_path);
   Json::Value json_data;
   if (json_file.good()) {
@@ -58,12 +57,44 @@ SolverAbstract::Ptr SensitivityInputReader::get_last_master() {
   return last_master;
 }
 
+std::string &rtrim(std::string &s) {
+  auto it = std::find_if(s.rbegin(), s.rend(), [](unsigned char c) {
+    return !std::isspace<char>(c, std::locale::classic());
+  });
+  s.erase(it.base(), s.end());
+  return s;
+}
+
+std::map<std::string, std::pair<double, double>>
+SensitivityInputReader::get_candidates_bounds(
+    SolverAbstract::Ptr last_master, std::map<std::string, int> name_to_id) {
+  std::map<std::string, std::pair<double, double>> candidates_bounds;
+
+  unsigned int nb_candidates = name_to_id.size();
+  std::vector<double> lb_buffer(nb_candidates);
+  std::vector<double> ub_buffer(nb_candidates);
+  std::vector<std::string> candidates_name =
+      last_master->get_col_names(0, nb_candidates - 1);
+
+  for (int i = 0; i < candidates_name.size(); i++) {
+    candidates_name[i] = rtrim(candidates_name[i]);
+  }
+
+  last_master->get_lb(lb_buffer.data(), 0, nb_candidates - 1);
+  last_master->get_ub(ub_buffer.data(), 0, nb_candidates - 1);
+
+  for (int i = 0; i < nb_candidates; i++) {
+    candidates_bounds[candidates_name[i]] = {lb_buffer[i], ub_buffer[i]};
+  }
+  return candidates_bounds;
+}
+
 double SensitivityInputReader::get_best_ub() {
   return _benders_data[Output::SOLUTION_C][Output::OVERALL_COST_C].asDouble();
 }
 
 std::map<std::string, int> SensitivityInputReader::get_name_to_id() {
-  std::map<std::string, int> _name_to_id;
+  std::map<std::string, int> name_to_id;
   std::ifstream structure(_structure_file_path);
   if (structure.good()) {
     std::string line;
@@ -79,13 +110,13 @@ std::map<std::string, int> SensitivityInputReader::get_name_to_id() {
 
       if (problem_name ==
           _benders_data[Output::OPTIONS_C]["MASTER_NAME"].asString()) {
-        _name_to_id[variable_name] = variable_id;
+        name_to_id[variable_name] = variable_id;
       }
     }
   } else {
     throw std::runtime_error("unable to open : " + _structure_file_path);
   }
-  return _name_to_id;
+  return name_to_id;
 }
 
 SensitivityInputData SensitivityInputReader::get_input_data() {
@@ -94,6 +125,8 @@ SensitivityInputData SensitivityInputReader::get_input_data() {
   input_data.best_ub = get_best_ub();
   input_data.name_to_id = get_name_to_id();
   input_data.last_master = get_last_master();
+  input_data.candidates_bounds =
+      get_candidates_bounds(input_data.last_master, input_data.name_to_id);
   input_data.capex = _json_data[CAPEX_C].asBool();
   input_data.projection = get_projection();
   return input_data;
