@@ -24,7 +24,7 @@ class SensitivityInputReader {
                                   std::string structure_path);
   ~SensitivityInputReader() = default;
 
-  SensitivityInputData get_input_data();
+  SensitivityInputData get_input_data() const;
 
  private:
   Json::Value _json_data;
@@ -32,10 +32,11 @@ class SensitivityInputReader {
   std::string _last_master_path;
   std::string _structure_file_path;
 
-  SolverAbstract::Ptr get_last_master();
-  double get_best_ub();
-  std::map<std::string, int> get_name_to_id();
-  std::vector<std::string> get_projection();
+  SolverAbstract::Ptr get_last_master() const;
+  double get_best_ub() const;
+  std::map<std::string, int> get_name_to_id() const;
+  std::vector<std::string> get_projection() const;
   std::map<std::string, std::pair<double, double>> get_candidates_bounds(
-      SolverAbstract::Ptr last_master, std::map<std::string, int> name_to_id);
+      SolverAbstract::Ptr last_master,
+      const std::map<std::string, int> &name_to_id) const;
 };

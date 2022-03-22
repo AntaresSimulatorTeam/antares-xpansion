@@ -32,7 +32,7 @@ SensitivityInputReader::SensitivityInputReader(
   _benders_data = read_json(benders_output_path);
 }
 
-std::vector<std::string> SensitivityInputReader::get_projection() {
+std::vector<std::string> SensitivityInputReader::get_projection() const {
   std::vector<std::string> projection;
   for (const auto &candidate_name : _json_data[PROJECTION_C]) {
     projection.push_back(candidate_name.asString());
@@ -40,7 +40,7 @@ std::vector<std::string> SensitivityInputReader::get_projection() {
   return projection;
 }
 
-SolverAbstract::Ptr SensitivityInputReader::get_last_master() {
+SolverAbstract::Ptr SensitivityInputReader::get_last_master() const {
   SolverFactory factory;
   SolverAbstract::Ptr last_master;
 
@@ -60,7 +60,8 @@ SolverAbstract::Ptr SensitivityInputReader::get_last_master() {
 
 std::map<std::string, std::pair<double, double>>
 SensitivityInputReader::get_candidates_bounds(
-    SolverAbstract::Ptr last_master, std::map<std::string, int> name_to_id) {
+    SolverAbstract::Ptr last_master,
+    const std::map<std::string, int> &name_to_id) const {
   std::map<std::string, std::pair<double, double>> candidates_bounds;
 
   unsigned int nb_candidates = name_to_id.size();
@@ -69,8 +70,8 @@ SensitivityInputReader::get_candidates_bounds(
   std::vector<std::string> candidates_name =
       last_master->get_col_names(0, nb_candidates - 1);
 
-  for (int i = 0; i < candidates_name.size(); i++) {
-    boost::algorithm::trim_left(candidates_name[i]);
+  for (auto &cand_name : candidates_name) {
+    boost::algorithm::trim_left(cand_name);
   }
 
   last_master->get_lb(lb_buffer.data(), 0, nb_candidates - 1);
@@ -82,11 +83,11 @@ SensitivityInputReader::get_candidates_bounds(
   return candidates_bounds;
 }
 
-double SensitivityInputReader::get_best_ub() {
+double SensitivityInputReader::get_best_ub() const {
   return _benders_data[Output::SOLUTION_C][Output::OVERALL_COST_C].asDouble();
 }
 
-std::map<std::string, int> SensitivityInputReader::get_name_to_id() {
+std::map<std::string, int> SensitivityInputReader::get_name_to_id() const {
   std::map<std::string, int> name_to_id;
   std::ifstream structure(_structure_file_path);
   if (structure.good()) {
@@ -112,7 +113,7 @@ std::map<std::string, int> SensitivityInputReader::get_name_to_id() {
   return name_to_id;
 }
 
-SensitivityInputData SensitivityInputReader::get_input_data() {
+SensitivityInputData SensitivityInputReader::get_input_data() const {
   SensitivityInputData input_data;
   input_data.epsilon = _json_data[EPSILON_C].asDouble();
   input_data.best_ub = get_best_ub();

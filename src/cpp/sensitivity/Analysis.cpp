@@ -4,7 +4,7 @@
 #include "SensitivityOutputData.h"
 Analysis::Analysis(SensitivityInputData input_data, std::string candidate_name,
                    std::shared_ptr<SensitivityILogger> logger,
-                   const SensitivityPbType type)
+                   SensitivityPbType type)
     : input_data(std::move(input_data)),
       candidate_name(std::move(candidate_name)),
       logger(std::move(logger)),

@@ -27,7 +27,8 @@ Json::Value write_candidate(const std::pair<std::string, double> &candidate) {
 }
 
 Json::Value write_candidate_bounds(
-    const std::pair<std::string, std::pair<double, double>> candidate_bounds) {
+    const std::pair<std::string, const std::pair<double, double>>
+        &candidate_bounds) {
   Json::Value candidate_bounds_l;
   candidate_bounds_l[NAME_C] = candidate_bounds.first;
   candidate_bounds_l[LB_C] = candidate_bounds.second.first;
