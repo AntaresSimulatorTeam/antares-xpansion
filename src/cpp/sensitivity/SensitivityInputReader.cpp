@@ -1,5 +1,6 @@
 #include "SensitivityInputReader.h"
 
+#include <boost/algorithm/string/trim.hpp>
 #include <fstream>
 #include <utility>
 
@@ -57,14 +58,6 @@ SolverAbstract::Ptr SensitivityInputReader::get_last_master() {
   return last_master;
 }
 
-std::string &rtrim(std::string &s) {
-  auto it = std::find_if(s.rbegin(), s.rend(), [](unsigned char c) {
-    return !std::isspace<char>(c, std::locale::classic());
-  });
-  s.erase(it.base(), s.end());
-  return s;
-}
-
 std::map<std::string, std::pair<double, double>>
 SensitivityInputReader::get_candidates_bounds(
     SolverAbstract::Ptr last_master, std::map<std::string, int> name_to_id) {
@@ -77,7 +70,7 @@ SensitivityInputReader::get_candidates_bounds(
       last_master->get_col_names(0, nb_candidates - 1);
 
   for (int i = 0; i < candidates_name.size(); i++) {
-    candidates_name[i] = rtrim(candidates_name[i]);
+    boost::algorithm::trim_left(candidates_name[i]);
   }
 
   last_master->get_lb(lb_buffer.data(), 0, nb_candidates - 1);
