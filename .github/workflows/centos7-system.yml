@@ -222,8 +222,6 @@ jobs:
       - name: Running unit tests
         shell: bash
         run: |
-          echo "alias mpirun='mpirun --allow-run-as-root'" >> mpi_command.sh
-          source mpi_command.sh
           source /etc/profile.d/modules.sh
           module load mpi
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
