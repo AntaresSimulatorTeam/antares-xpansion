@@ -63,10 +63,10 @@ int main(int argc, char **argv) {
   SensitivityInputData input_data = sensitivity_input_reader.get_input_data();
 
   auto writer = std::make_shared<SensitivityWriter>(json_output_path);
-  auto sensitivity_analysis = SensitivityStudy(input_data, logger, writer);
+  auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
 
   try {
-    sensitivity_analysis.launch();
+    sensitivity_study.launch();
     return 0;
   } catch (const std::exception &e) {
     std::cerr << "error: " << e.what() << std::endl;

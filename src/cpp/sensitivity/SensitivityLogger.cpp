@@ -4,19 +4,17 @@
 
 #include "Commons.h"
 
-SensitivityLogger::SensitivityLogger(std::ostream& stream)
-    : _stream(stream) {
+SensitivityLogger::SensitivityLogger(std::ostream& stream) : _stream(stream) {
   if (_stream.fail()) {
     std::cerr << "Invalid stream passed as parameter" << std::endl;
   }
 }
 
 void SensitivityLogger::display_message(const std::string& msg) {
-  _stream << msg << std::endl;
+  _stream << msg << std::endl << std::endl;
 }
 
-void SensitivityLogger::log_at_start(
-    const SensitivityOutputData& output_data) {
+void SensitivityLogger::log_at_start(const SensitivityOutputData& output_data) {
   _stream << std::endl;
   _stream << "Best overall cost = "
           << xpansion::logger::commons::create_str_million_euros(
@@ -26,13 +24,12 @@ void SensitivityLogger::log_at_start(
   _stream << std::endl;
 }
 
-void SensitivityLogger::log_begin_pb_resolution(
-    const SinglePbData& pb_data) {
-  _stream << "Solving " << pb_data.get_pb_description() << "..." << std::endl;
+void SensitivityLogger::log_begin_pb_resolution(const SinglePbData& pb_data) {
+  _stream << indent_1 << "Solving " << pb_data.get_pb_description() << "..."
+          << std::endl;
 }
 
-std::string get_objective_unit(
-    const SinglePbData& pb_data) {
+std::string get_objective_unit(const SinglePbData& pb_data) {
   if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
     return MW;
   } else {
@@ -40,8 +37,7 @@ std::string get_objective_unit(
   }
 }
 
-std::string format_objective(
-    const SinglePbData& pb_data) {
+std::string format_objective(const SinglePbData& pb_data) {
   if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
     std::stringstream objective;
     objective << pb_data.objective;
@@ -53,10 +49,10 @@ std::string format_objective(
 }
 
 void SensitivityLogger::log_pb_solution(const SinglePbData& pb_data) {
-  _stream << indent_1 << pb_data.get_pb_description() << " = "
+  _stream << indent_1 << indent_1 << pb_data.get_pb_description() << " = "
           << format_objective(pb_data) << get_objective_unit(pb_data)
           << std::endl;
-  _stream << indent_1 << "Overall cost = "
+  _stream << indent_1 << indent_1 << "Overall cost = "
           << xpansion::logger::commons::create_str_million_euros(
                  pb_data.system_cost)
           << MILLON_EUROS << std::endl;
@@ -64,11 +60,10 @@ void SensitivityLogger::log_pb_solution(const SinglePbData& pb_data) {
 }
 
 void SensitivityLogger::log_at_ending() {
-  _stream << "--- Sensitivity analysis completed ---" << std::endl;
+  _stream << "--- Sensitivity study completed ---" << std::endl;
 }
 
-void SensitivityLogger::log_summary(
-    const SensitivityOutputData& output_data) {
+void SensitivityLogger::log_summary(const SensitivityOutputData& output_data) {
   _stream << "Sensitivity analysis summary "
           << "(epsilon = " << output_data.epsilon << EUROS << "):" << std::endl
           << std::endl;
@@ -113,8 +108,7 @@ void SensitivityLogger::log_capex_summary(
           << std::endl;
 }
 
-std::map<std::string, std::map<std::string, double>>
-get_investment_intervals(
+std::map<std::string, std::map<std::string, double>> get_investment_intervals(
     const std::vector<SinglePbData>& projection_data) {
   std::map<std::string, std::map<std::string, double>> investment_intervals;
 

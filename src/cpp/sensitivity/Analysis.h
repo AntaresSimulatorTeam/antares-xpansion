@@ -15,9 +15,9 @@ class Analysis {
   SinglePbData run_optimization(SensitivityStudy::StudyType minimize);
 
  private:
-  const std::shared_ptr<SensitivityILogger> logger;
   const SensitivityInputData input_data;
   const std::string candidate_name;
+  const std::shared_ptr<SensitivityILogger> logger;
   std::shared_ptr<SolverAbstract> sensitivity_pb_model;
   SensitivityPbType problem_type;
 

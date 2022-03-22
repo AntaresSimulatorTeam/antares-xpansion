@@ -23,9 +23,10 @@ void SensitivityStudy::launch() {
     run_projection_analysis();
   }
   if (!input_data.capex && input_data.projection.empty()) {
-    logger->display_message("Study is empty. No capex or projection provided");
+    logger->display_message("Study is empty. No capex or projection provided.");
+  } else {
+    logger->log_summary(output_data);
   }
-  logger->log_summary(output_data);
   writer->end_writing(output_data);
   logger->log_at_ending();
 }
@@ -61,9 +62,8 @@ void SensitivityStudy::run_projection_analysis() {
       output_data.pbs_data.push_back(problem_data.first);
       output_data.pbs_data.push_back(problem_data.second);
     } else {
-      // TODO : Improve this ?
       logger->display_message("Warning : " + candidate_name +
-                              "ignored as it has not been found in the list "
+                              " ignored as it has not been found in the list "
                               "of investment candidates");
     }
   }

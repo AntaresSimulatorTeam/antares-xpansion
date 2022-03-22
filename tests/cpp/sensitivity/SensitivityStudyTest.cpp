@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 #include "multisolver_interface/SolverFactory.h"
 
-class SensitivityAnalysisTest : public ::testing::Test {
+class SensitivityStudyTest : public ::testing::Test {
  public:
   std::string data_test_dir;
 
@@ -132,25 +132,25 @@ class SensitivityAnalysisTest : public ::testing::Test {
   }
 };
 
-TEST_F(SensitivityAnalysisTest, OutputDataInit) {
+TEST_F(SensitivityStudyTest, OutputDataInit) {
   prepare_toy_sensitivity_pb();
 
-  auto sensitivity_analysis = SensitivityStudy(input_data, logger, writer);
+  auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
   auto expec_output_data = SensitivityOutputData(epsilon, best_ub);
-  auto output_data = sensitivity_analysis.get_output_data();
+  auto output_data = sensitivity_study.get_output_data();
 
   verify_output_data(output_data, expec_output_data);
 }
 
-TEST_F(SensitivityAnalysisTest, GetCapexSolutions) {
+TEST_F(SensitivityStudyTest, GetCapexSolutions) {
   prepare_toy_sensitivity_pb();
 
   input_data.capex = true;
   input_data.projection = {};
-  auto sensitivity_analysis = SensitivityStudy(input_data, logger, writer);
-  sensitivity_analysis.launch();
+  auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
+  sensitivity_study.launch();
 
-  auto output_data = sensitivity_analysis.get_output_data();
+  auto output_data = sensitivity_study.get_output_data();
 
   auto capex_min_data = SinglePbData(
       SensitivityPbType::CAPEX, CAPEX_C, "", MIN_C, 1040, 1390,
@@ -167,15 +167,15 @@ TEST_F(SensitivityAnalysisTest, GetCapexSolutions) {
   verify_output_data(output_data, expec_output_data);
 }
 
-TEST_F(SensitivityAnalysisTest, GetCandidatesProjection) {
+TEST_F(SensitivityStudyTest, GetCandidatesProjection) {
   prepare_toy_sensitivity_pb();
 
   input_data.capex = false;
   input_data.projection = candidate_names;
-  auto sensitivity_analysis = SensitivityStudy(input_data, logger, writer);
-  sensitivity_analysis.launch();
+  auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
+  sensitivity_study.launch();
 
-  auto output_data = sensitivity_analysis.get_output_data();
+  auto output_data = sensitivity_study.get_output_data();
 
   auto projection_min_peak =
       SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, peak_name,
@@ -206,20 +206,16 @@ TEST_F(SensitivityAnalysisTest, GetCandidatesProjection) {
   verify_output_data(output_data, expec_output_data);
 }
 
-TEST_F(SensitivityAnalysisTest, InvalidCandidateNameInProjection) {
-  // TODO
-}
-
-TEST_F(SensitivityAnalysisTest, FullSensitivityAnalysis) {
+TEST_F(SensitivityStudyTest, FullSensitivityTest) {
   prepare_real_sensitivity_pb();
 
   input_data.capex = true;
   input_data.projection = candidate_names;
-  SensitivityStudy sensitivity_analysis =
+  SensitivityStudy sensitivity_study =
       SensitivityStudy(input_data, logger, writer);
-  sensitivity_analysis.launch();
+  sensitivity_study.launch();
 
-  auto output_data = sensitivity_analysis.get_output_data();
+  auto output_data = sensitivity_study.get_output_data();
 
   auto capex_min_data =
       SinglePbData(SensitivityPbType::CAPEX, CAPEX_C, "", MIN_C,

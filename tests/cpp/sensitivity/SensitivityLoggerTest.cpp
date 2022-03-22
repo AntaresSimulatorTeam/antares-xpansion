@@ -1,8 +1,8 @@
 #include "Commons.h"
 #include "SensitivityFileLogger.h"
 #include "SensitivityILogger.h"
-#include "SensitivityMasterLogger.h"
 #include "SensitivityLogger.h"
+#include "SensitivityMasterLogger.h"
 #include "gtest/gtest.h"
 
 class SensitivityFileLoggerTest : public ::testing::Test {
@@ -79,7 +79,7 @@ TEST_F(SensitivityUserLoggerTest, InvalidStreamNotified) {
 
 TEST_F(SensitivityUserLoggerTest, DisplayMessage) {
   std::stringstream expected;
-  expected << "Message" << std::endl;
+  expected << "Message" << std::endl << std::endl;
 
   _logger.display_message("Message");
   ASSERT_EQ(_stream.str(), expected.str());
@@ -107,7 +107,7 @@ TEST_F(SensitivityUserLoggerTest, LogBeginPbResolution) {
   auto pb_data = SinglePbData(SensitivityPbType::CAPEX, str_pb_type,
                               "some_name", "my_opt_dir");
   std::stringstream expected;
-  expected << "Solving " << pb_data.get_pb_description() << "..." << std::endl;
+  expected << indent_1 << "Solving " << pb_data.get_pb_description() << "..." << std::endl;
 
   _logger.log_begin_pb_resolution(pb_data);
   ASSERT_EQ(_stream.str(), expected.str());
@@ -119,9 +119,9 @@ TEST_F(SensitivityUserLoggerTest, LogPbSolutionProjection) {
                    "my_opt_dir", 10, 1e6, {{"peak", 15}, {"semibase", 50}}, 0);
 
   std::stringstream expected;
-  expected << indent_1 << pb_data.get_pb_description() << " = "
+  expected << indent_1 << indent_1 << pb_data.get_pb_description() << " = "
            << pb_data.objective << MW << std::endl;
-  expected << indent_1 << "Overall cost = "
+  expected << indent_1 << indent_1 << "Overall cost = "
            << xpansion::logger::commons::create_str_million_euros(
                   pb_data.system_cost)
            << MILLON_EUROS << std::endl;
@@ -137,11 +137,11 @@ TEST_F(SensitivityUserLoggerTest, LogPbSolutionCapex) {
                    "my_opt_dir", 10, 1e6, {{"peak", 15}, {"semibase", 50}}, 0);
 
   std::stringstream expected;
-  expected << indent_1 << pb_data.get_pb_description() << " = "
+  expected << indent_1 << indent_1 << pb_data.get_pb_description() << " = "
            << xpansion::logger::commons::create_str_million_euros(
                   pb_data.objective)
            << MILLON_EUROS << std::endl;
-  expected << indent_1 << "Overall cost = "
+  expected << indent_1 << indent_1 << "Overall cost = "
            << xpansion::logger::commons::create_str_million_euros(
                   pb_data.system_cost)
            << MILLON_EUROS << std::endl;
@@ -153,7 +153,7 @@ TEST_F(SensitivityUserLoggerTest, LogPbSolutionCapex) {
 
 TEST_F(SensitivityUserLoggerTest, LogAtEnding) {
   std::stringstream expected;
-  expected << "--- Sensitivity analysis completed ---" << std::endl;
+  expected << "--- Sensitivity study completed ---" << std::endl;
 
   _logger.log_at_ending();
   ASSERT_EQ(_stream.str(), expected.str());
