@@ -163,7 +163,7 @@ jobs:
                  -DBUILD_UI=ON \
                  -DXPRESS=${{ matrix.xprs }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
-                 -Dmpi_args="--allow-run-as-root"
+                 -Dallow_run_as_root=True
 
       - name: Build
         run: |
