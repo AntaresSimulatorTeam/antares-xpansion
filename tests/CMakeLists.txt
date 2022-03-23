@@ -73,7 +73,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     set_property(TEST sequential PROPERTY LABELS benders benders-sequential)
     add_test(
         NAME mpibenders
-        COMMAND Python3::Interpreter -m pytest --installDir=${XPANSION_INSTALL_DIR} test_bendersmpibendersEndToEnd.py
+        COMMAND Python3::Interpreter -m pytest --mpi_custom_arguments=${mpi_args} --installDir=${XPANSION_INSTALL_DIR} test_bendersmpibendersEndToEnd.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
     set_property(TEST mpibenders PROPERTY LABELS benders benders-mpi)
