@@ -593,8 +593,6 @@ CouplingMap BendersBase::GetCouplingMap(CouplingMap input) const {
   return couplingMap;
 }
 
-int BendersBase::get_totalNbProblems() const { return _totalNbProblems; }
-
 void BendersBase::push_in_trace(const WorkerMasterDataPtr &worker_master_data) {
   _trace.push_back(worker_master_data);
 }

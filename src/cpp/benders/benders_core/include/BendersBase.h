@@ -16,7 +16,7 @@ class BendersBase {
   BendersBase(BendersBaseOptions const &options, Logger &logger, Writer writer);
   virtual void launch() = 0;
   void set_log_file(const std::string &log_name);
-  std::string log_name() const { return _log_name; }
+  [[nodiscard]] std::string log_name() const { return _log_name; }
 
  protected:
   BendersData _data;
@@ -36,34 +36,32 @@ class BendersBase {
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
-  std::string GetSubproblemPath(std::string const &subproblem_name) const;
-  double SubproblemWeight(int subproblem_count, std::string const &name) const;
-  std::string get_master_path() const;
-  std::string get_structure_path() const;
-  LogData bendersDataToLogData(const BendersData &data) const;
+  [[nodiscard]] std::string GetSubproblemPath(std::string const &subproblem_name) const;
+  [[nodiscard]] double SubproblemWeight(int subproblem_count, std::string const &name) const;
+  [[nodiscard]] std::string get_master_path() const;
+  [[nodiscard]] std::string get_structure_path() const;
+  [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
   void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_subproblems();
   void addSubproblem(const std::pair<std::string, VariableMap> &kvp);
-  WorkerMasterPtr get_master() const;
-  int get_totalNbProblems() const;
+  [[nodiscard]] WorkerMasterPtr get_master() const;
   void match_problem_to_id();
   void set_cut_storage();
   void AddSubproblemName(const std::string &name);
-  int GetSubproblemNumber() const;
-  std::string get_master_name() const;
-  std::string get_solver_name() const;
-  int get_log_level() const;
-  bool is_trace() const;
-  Point get_x0() const;
+  [[nodiscard]] std::string get_master_name() const;
+  [[nodiscard]] std::string get_solver_name() const;
+  [[nodiscard]] int get_log_level() const;
+  [[nodiscard]] bool is_trace() const;
+  [[nodiscard]] Point get_x0() const;
   void set_x0(const Point &x0);
-  double get_timer_master() const;
+  [[nodiscard]] double get_timer_master() const;
   void set_timer_master(const double &timer_master);
-  double GetSubproblemTimers() const;
+  [[nodiscard]] double GetSubproblemTimers() const;
   void SetSubproblemTimers(const double &subproblem_timer);
-  double GetSubproblemCost() const;
+  [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
 
  private:
@@ -74,28 +72,28 @@ class BendersBase {
                         Point const &xopt) const;
   void print_cut_csv(std::ostream &stream,
                      SubproblemCutDataHandler const &handler,
-                     std::string const &name, int const subproblem_index) const;
+                     std::string const &name, int subproblem_index) const;
   void bound_simplex_iter(int simplexiter);
   void check_status(AllCutPackage const &all_package) const;
-  LogData build_log_data_from_data() const;
-  Output::IterationsData output_data() const;
-  Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
-  Output::CandidatesVec candidates_data(
+  [[nodiscard]] LogData build_log_data_from_data() const;
+  [[nodiscard]] Output::IterationsData output_data() const;
+  [[nodiscard]] Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
+  [[nodiscard]] Output::CandidatesVec candidates_data(
       const WorkerMasterDataPtr &masterDataPtr_l) const;
-  Output::SolutionData solution() const;
-  std::string status_from_criterion() const;
+  [[nodiscard]] Output::SolutionData solution() const;
+  [[nodiscard]] std::string status_from_criterion() const;
   void compute_cut_val(const SubproblemCutDataHandlerPtr &handler, const Point &x0,
                        Point &s) const;
   void compute_cut_aggregate(const AllCutPackage &all_package);
   void compute_cut(const AllCutPackage &all_package);
-  std::map<std::string, int> get_master_variable_map(
+  [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       std::map<std::string, std::map<std::string, int>> input_map) const;
-  CouplingMap GetCouplingMap(CouplingMap input) const;
+  [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
 
  private:
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
-  std::string _log_name = "";
+  std::string _log_name;
   BendersTrace _trace;
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
