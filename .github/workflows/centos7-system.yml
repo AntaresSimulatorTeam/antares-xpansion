@@ -171,19 +171,19 @@ jobs:
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
 
-      - name: .tar.gz creation
-        run: |
-          cd _build
-          cpack3 -G TGZ
-          export TGZ_NAME=$(ls *.tar.gz)
-          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
+      # - name: .tar.gz creation
+      #   run: |
+      #     cd _build
+      #     cpack3 -G TGZ
+      #     export TGZ_NAME=$(ls *.tar.gz)
+      #     echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
 
-      - name: Installer .rpm creation
-        run: |
-          cd _build
-          cpack3 -G RPM
-          export RPM_NAME=$(ls *.rpm)
-          echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
+      # - name: Installer .rpm creation
+      #   run: |
+      #     cd _build
+      #     cpack3 -G RPM
+      #     export RPM_NAME=$(ls *.rpm)
+      #     echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
 
       - name: set name variables
         id: single_file_name
@@ -196,29 +196,29 @@ jobs:
           echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
-      - id: create-single-file
-        name: Single file .tar.gz creation
-        uses: ./.github/workflows/single-file-creation-tgz
-        with:
-          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
+      # - id: create-single-file
+      #   name: Single file .tar.gz creation
+      #   uses: ./.github/workflows/single-file-creation-tgz
+      #   with:
+      #     antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
-      - name: Upload .tar.gz
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{env.TGZ_NAME}}
-          path: _build/${{env.TGZ_NAME}}
+      # - name: Upload .tar.gz
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{env.TGZ_NAME}}
+      #     path: _build/${{env.TGZ_NAME}}
 
-      - name: Upload rpm
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{env.RPM_NAME}}
-          path: _build/${{env.RPM_NAME}}
+      # - name: Upload rpm
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{env.RPM_NAME}}
+      #     path: _build/${{env.RPM_NAME}}
 
-      - name: Upload single file
-        uses: actions/upload-artifact@v2
-        with:
-          name: ${{ steps.create-single-file.outputs.archive-name }}
-          path: ${{ steps.create-single-file.outputs.archive-path }}
+      # - name: Upload single file
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: ${{ steps.create-single-file.outputs.archive-name }}
+      #     path: ${{ steps.create-single-file.outputs.archive-path }}
 
       - name: Running unit tests
         shell: bash
@@ -234,7 +234,7 @@ jobs:
           cd _build
           echo "**3**"
           whoami
-          ctest3 -C Release --output-on-failure -L "unit|benders"
+          su user -c "ctest3 -C Release --output-on-failure -L \"unit|benders\""
 
       - name: Publish .tar.gzs
         if: github.event_name == 'release' && github.event.action == 'created'
