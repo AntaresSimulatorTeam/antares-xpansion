@@ -31,8 +31,7 @@ def remove_outputs(study_path):
                 shutil.rmtree(f)
 
 
-
-def launch_xpansion(install_dir, study_path, method):
+def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
     # Clean study output
     remove_outputs(study_path)
 
@@ -51,6 +50,8 @@ def launch_xpansion(install_dir, study_path, method):
         "full",
         "-n",
         "2",
+        "--allow_run_as_root",
+        allow_run_as_root
     ]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
@@ -135,11 +136,13 @@ def verify_study_update(study_path, expected_investment_solution):
             )
             expected_link_capacity += investment * link_profile_array
 
-        study_link = candidate_reader.get_link_antares_link_file(study_path, link)
+        study_link = candidate_reader.get_link_antares_link_file(
+            study_path, link)
         study_link_array = np.loadtxt(study_link, delimiter="\t")
         link_capacity = study_link_array[:, [0, 1]]
 
-        np.testing.assert_allclose(link_capacity, expected_link_capacity, rtol=1e-4)
+        np.testing.assert_allclose(
+            link_capacity, expected_link_capacity, rtol=1e-4)
 
 
 ## TESTS ##
@@ -224,11 +227,11 @@ def test_full_study_long_sequential(
 )
 @pytest.mark.long_mpi
 def test_full_study_long_mpi(
-    install_dir, study_path, expected_values, expected_investment_solution, tmp_path
+    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders")
+    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(tmp_study, expected_investment_solution)
 
@@ -392,13 +395,14 @@ def test_full_study_medium_sequential(
 )
 @pytest.mark.medium_mpi
 def test_full_study_medium_parallel(
-    install_dir, study_path, expected_values, expected_investment_solution, tmp_path
+    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders")
+    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(tmp_study, expected_investment_solution)
+
 
 short_parameters_names = "study_path, expected_values, expected_investment_solution"
 short_parameters_values = [
@@ -462,10 +466,10 @@ def test_full_study_short_sequential(
 )
 @pytest.mark.short_mpi
 def test_full_study_short_parallel(
-        install_dir, study_path, expected_values, expected_investment_solution, tmp_path
+        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders")
+    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(tmp_study, expected_investment_solution)

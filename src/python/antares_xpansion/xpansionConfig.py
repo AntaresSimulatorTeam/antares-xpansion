@@ -32,6 +32,7 @@ class InputParameters:
     antares_n_cpu: int
     keep_mps: bool
     oversubscribe: bool
+    allow_run_as_root: bool
 
 
 class XpansionConfig:
@@ -73,6 +74,7 @@ class XpansionConfig:
         self.antares_n_cpu = self.input_parameters.antares_n_cpu
         self.keep_mps = self.input_parameters.keep_mps
         self.oversubscribe = self.input_parameters.oversubscribe
+        self.allow_run_as_root = self.input_parameters.allow_run_as_root
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:

@@ -109,7 +109,7 @@ def check_optimization_json_output(expected_results_dict):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver2(install_dir, mpi_custom_arguments, solver):
+def run_solver2(install_dir, allow_run_as_root, solver):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -119,7 +119,7 @@ def run_solver2(install_dir, mpi_custom_arguments, solver):
     pre_command = []
 
     if (solver == "BENDERS_MPI"):
-        pre_command = get_mpi_command(mpi_custom_arguments)
+        pre_command = get_mpi_command(allow_run_as_root)
 
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
@@ -178,7 +178,7 @@ def get_solver_exe(solver: str):
     return solver_executable
 
 
-def get_mpi_command(mpi_custom_arguments=""):
+def get_mpi_command(allow_run_as_root=False):
     MPI_LAUNCHER = ""
     MPI_N = ""
     nproc = "2"
@@ -189,7 +189,7 @@ def get_mpi_command(mpi_custom_arguments=""):
     elif sys.platform.startswith("linux"):
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
-        if (mpi_custom_arguments != ""):
-            return [MPI_LAUNCHER, mpi_custom_arguments, MPI_N, nproc, "--oversubscribe"]
+        if (allow_run_as_root):
+            return [MPI_LAUNCHER, "--allow_run_as_root", MPI_N, nproc, "--oversubscribe"]
         else:
             return [MPI_LAUNCHER, MPI_N, nproc, "--oversubscribe"]
