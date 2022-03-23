@@ -29,14 +29,14 @@ void BendersMpi::initialize_problems() {
   if (_world.rank() == rank_0) {
     reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                   get_solver_name(), get_log_level(),
-                                  _data.nslaves, log_name()));
-    LOG(INFO) << "nrealslaves is " << _data.nslaves << std::endl;
+                                  _data.nsubproblem, log_name()));
+    LOG(INFO) << "nrealslaves is " << _data.nsubproblem << std::endl;
   } else {
-    for (const auto &problem : slaves_map) {
+    for (const auto &problem : coupling_map) {
       auto slaveToFeed = current_problem_id % slaveCount + 1;
       if (slaveToFeed == _world.rank()) {
         addSubproblem(problem);
-        add_slave_name(problem.first);
+        AddSubproblemName(problem.first);
       }
       current_problem_id++;
     }
@@ -118,7 +118,7 @@ void BendersMpi::gather_slave_cut_package_and_build_cuts(
     } else {
       AllCutPackage all_package;
       mpi::gather(_world, slave_cut_package, all_package, rank_0);
-      set_timer_slaves(timer_slaves.elapsed());
+      SetSubproblemTimers(timer_slaves.elapsed());
       master_build_cuts(all_package);
     }
   }
@@ -131,11 +131,11 @@ SubproblemCutPackage BendersMpi::get_slave_package() {
 }
 
 void BendersMpi::master_build_cuts(AllCutPackage all_package) {
-  set_slave_cost(0);
+  SetSubproblemCost(0);
   for (auto const &pack : all_package) {
     for (auto &dataVal : pack) {
-      set_slave_cost(get_slave_cost() +
-                     dataVal.second.first.second[SUBPROBLEM_COST]);
+      SetSubproblemCost(GetSubproblemCost() +
+                        dataVal.second.first.second[SUBPROBLEM_COST]);
     }
   }
   all_package.erase(all_package.begin());
@@ -143,7 +143,7 @@ void BendersMpi::master_build_cuts(AllCutPackage all_package) {
   _logger->display_message("\tSolving subproblems...");
 
   build_cut_full(all_package);
-  _logger->log_subproblems_solving_duration(get_timer_slaves());
+  _logger->log_subproblems_solving_duration(GetSubproblemTimers());
 }
 
 /*!

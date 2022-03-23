@@ -45,7 +45,7 @@ struct LogData {
   double best_ub;
   int it;
   int best_it;
-  double slave_cost;
+  double subproblem_cost;
   double invest_cost;
   LogPoint x0;
   LogPoint min_invest;

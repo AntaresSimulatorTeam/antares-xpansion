@@ -25,10 +25,10 @@ void BendersSequential::initialize_problems() {
 
   reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
-                                _data.nslaves, log_name()));
-  for (const auto &problem : slaves_map) {
+                                _data.nsubproblem, log_name()));
+  for (const auto &problem : coupling_map) {
     addSubproblem(problem);
-    add_slave_name(problem.first);
+    AddSubproblemName(problem.first);
   }
 }
 
@@ -54,13 +54,14 @@ void BendersSequential::build_cut() {
   AllCutPackage all_package;
   Timer timer_slaves;
   getSubproblemCut(slave_cut_package);
-  set_slave_cost(0);
+  SetSubproblemCost(0);
   for (auto pairSlavenameSlavecutdata_l : slave_cut_package) {
-    set_slave_cost(get_slave_cost() +
-                   pairSlavenameSlavecutdata_l.second.first.second[SUBPROBLEM_COST]);
+    SetSubproblemCost(
+        GetSubproblemCost() +
+        pairSlavenameSlavecutdata_l.second.first.second[SUBPROBLEM_COST]);
   }
 
-  set_timer_slaves(timer_slaves.elapsed());
+  SetSubproblemTimers(timer_slaves.elapsed());
   all_package.push_back(slave_cut_package);
   build_cut_full(all_package);
 }
@@ -89,7 +90,7 @@ void BendersSequential::run() {
 
     _logger->display_message("\tSolving subproblems...");
     build_cut();
-    _logger->log_subproblems_solving_duration(get_timer_slaves());
+    _logger->log_subproblems_solving_duration(GetSubproblemTimers());
 
     update_best_ub();
 

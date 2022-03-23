@@ -21,7 +21,7 @@ class BendersBase {
  protected:
   BendersData _data;
   VariableMap master_variable_map;
-  CouplingMap slaves_map;
+  CouplingMap coupling_map;
 
  protected:
   virtual void free() = 0;
@@ -36,8 +36,8 @@ class BendersBase {
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
-  std::string get_slave_path(std::string const &slave_name) const;
-  double slave_weight(int nslaves, std::string const &name) const;
+  std::string GetSubproblemPath(std::string const &subproblem_name) const;
+  double SubproblemWeight(int subproblem_count, std::string const &name) const;
   std::string get_master_path() const;
   std::string get_structure_path() const;
   LogData bendersDataToLogData(const BendersData &data) const;
@@ -51,8 +51,8 @@ class BendersBase {
   int get_totalNbProblems() const;
   void match_problem_to_id();
   void set_cut_storage();
-  void add_slave_name(const std::string &name);
-  int get_slaves_number() const;
+  void AddSubproblemName(const std::string &name);
+  int GetSubproblemNumber() const;
   std::string get_master_name() const;
   std::string get_solver_name() const;
   int get_log_level() const;
@@ -61,10 +61,10 @@ class BendersBase {
   void set_x0(const Point &x0);
   double get_timer_master() const;
   void set_timer_master(const double &timer_master);
-  double get_timer_slaves() const;
-  void set_timer_slaves(const double &timer_slaves);
-  double get_slave_cost() const;
-  void set_slave_cost(const double &slave_cost);
+  double GetSubproblemTimers() const;
+  void SetSubproblemTimers(const double &subproblem_timer);
+  double GetSubproblemCost() const;
+  void SetSubproblemCost(const double &subproblem_cost);
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -74,7 +74,7 @@ class BendersBase {
                         Point const &xopt) const;
   void print_cut_csv(std::ostream &stream,
                      SubproblemCutDataHandler const &handler,
-                     std::string const &name, int const islaves) const;
+                     std::string const &name, int const subproblem_index) const;
   void bound_simplex_iter(int simplexiter);
   void check_status(AllCutPackage const &all_package) const;
   LogData build_log_data_from_data() const;
@@ -90,7 +90,7 @@ class BendersBase {
   void compute_cut(const AllCutPackage &all_package);
   std::map<std::string, int> get_master_variable_map(
       std::map<std::string, std::map<std::string, int>> input_map) const;
-  CouplingMap get_slaves_map(CouplingMap input) const;
+  CouplingMap GetCouplingMap(CouplingMap input) const;
 
  private:
   BendersBaseOptions _options;
@@ -101,7 +101,7 @@ class BendersBase {
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;
   AllCutStorage _all_cuts_storage;
-  StrVector _slaves;
+  StrVector subproblems;
 
  public:
   Logger _logger;

@@ -89,10 +89,6 @@ void BendersBase::print_master_and_cut(std::ostream &file, int ite,
  *  \param trace : storage of problem data
  *
  *  \param xopt : final optimal value
- *
- *  \param name : master name
- *
- *  \param nslaves : number of slaves
  */
 void BendersBase::print_master_csv(std::ostream &stream,
                                    const WorkerMasterDataPtr &trace,
@@ -100,7 +96,7 @@ void BendersBase::print_master_csv(std::ostream &stream,
   stream << "Master"
          << ";";
   stream << _options.MASTER_NAME << ";";
-  stream << _data.nslaves << ";";
+  stream << _data.nsubproblem << ";";
   stream << trace->_ub << ";";
   stream << trace->_lb << ";";
   stream << trace->_bestub << ";";
@@ -113,24 +109,24 @@ void BendersBase::print_master_csv(std::ostream &stream,
 }
 
 /*!
- *  \brief Print in a file slave's information
+ *  \brief Print in a file subproblem's information
  *
  *  \param stream : output stream
  *
- *  \param handler : handler to manage slave data
+ *  \param handler : handler to manage subproblem data
  *
  *  \param name : problem name
  *
- *  \param islaves : problem id
+ *  \param subproblem_index : problem id
  */
 void BendersBase::print_cut_csv(std::ostream &stream,
                                 SubproblemCutDataHandler const &handler,
                                 std::string const &name,
-                                int const islaves) const {
-  stream << "Slave"
+                                int const subproblem_index) const {
+  stream << "Subproblem"
          << ";";
   stream << name << ";";
-  stream << islaves << ";";
+  stream << subproblem_index << ";";
   stream << handler.get_dbl(SUBPROBLEM_COST) << ";";
   stream << ";";
   stream << ";";
@@ -219,14 +215,14 @@ void BendersBase::update_trace() {
   _trace[_data.it - 1]->_time = _data.timer_master;
   _trace[_data.it - 1]->_nbasis = _data.nbasis;
   _trace[_data.it - 1]->_invest_cost = _data.invest_cost;
-  _trace[_data.it - 1]->_operational_cost = _data.slave_cost;
+  _trace[_data.it - 1]->_operational_cost = _data.subproblem_cost;
   _trace[_data.it - 1]->_valid = true;
 }
 
 /*!
- *  \brief Check if every slave has been solved to optimality
+ *  \brief Check if every subproblem has been solved to optimality
  *
- *  \param all_package : storage of each slaves status
+ *  \param all_package : storage of each subproblems status
  *  \param data : BendersData used to get master solving status
  */
 void BendersBase::check_status(AllCutPackage const &all_package) const {
@@ -237,12 +233,12 @@ void BendersBase::check_status(AllCutPackage const &all_package) const {
   }
   for (const auto &package : all_package) {
     for (const auto &kvp : package) {
-      SubproblemCutDataPtr slave_cut_data(new SubproblemCutData(kvp.second));
+      SubproblemCutDataPtr subproblem_cut_data(new SubproblemCutData(kvp.second));
       SubproblemCutDataHandlerPtr const handler(
-          new SubproblemCutDataHandler(slave_cut_data));
+          new SubproblemCutDataHandler(subproblem_cut_data));
       if (handler->get_int(LPSTATUS) != SOLVER_STATUS::OPTIMAL) {
         std::stringstream stream;
-        stream << "Slave " << kvp.first << " status is "
+        stream << "Subproblem " << kvp.first << " status is "
                << handler->get_int(LPSTATUS);
         LOG(INFO) << stream.str() << std::endl;
 
@@ -261,7 +257,7 @@ void BendersBase::check_status(AllCutPackage const &all_package) const {
  */
 void BendersBase::get_master_value() {
   Timer timer_master;
-  _data.alpha_i.resize(_data.nslaves);
+  _data.alpha_i.resize(_data.nsubproblem);
   if (_options.BOUND_ALPHA) {
     _master->fix_alpha(_data.best_ub);
   }
@@ -286,25 +282,19 @@ void BendersBase::get_master_value() {
 }
 
 /*!
- *  \brief Solve and store optimal variables of all Slaves Problems
+ *  \brief Solve and store optimal variables of all Subproblem Problems
  *
- *  Method to solve and store optimal variables of all Slaves Problems after
+ *  Method to solve and store optimal variables of all Subproblem Problems after
  * fixing trial values
  *
- *  \param subproblem_cut_package : map storing for each slave its cut
- *
- *  \param map_slaves : map linking each problem name to its problem
- *
- *  \param data : data containing trial values
- *
- *  \param options : set of parameters
+ *  \param subproblem_cut_package : map storing for each subproblem its cut
  */
 void BendersBase::getSubproblemCut(SubproblemCutPackage &subproblem_cut_package) {
   for (auto &kvp : subproblem_map) {
     Timer subproblem_timer;
     SubproblemWorkerPtr &ptr(kvp.second);
-    SubproblemCutDataPtr slave_cut_data(new SubproblemCutData);
-    SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(slave_cut_data));
+    SubproblemCutDataPtr subproblem_cut_data(new SubproblemCutData);
+    SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(subproblem_cut_data));
     ptr->fix_to(_data.x0);
     ptr->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
                _options.LAST_MASTER_MPS + MPS_SUFFIX);
@@ -313,34 +303,34 @@ void BendersBase::getSubproblemCut(SubproblemCutPackage &subproblem_cut_package)
     ptr->get_subgradient(handler->get_subgradient());
     ptr->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
     handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
-    subproblem_cut_package[kvp.first] = *slave_cut_data;
+    subproblem_cut_package[kvp.first] = *subproblem_cut_data;
   }
 }
 
 /*!
  *  \brief Add cut to Master Problem and store the cut in a set
  *
- *  Method to add cut from a slave to the Master Problem and store this cut in a
- * map linking each slave to its set of cuts.
+ *  Method to add cut from a subproblem to the Master Problem and store this cut in a
+ * map linking each subproblem to its set of cuts.
  *
- *  \param all_package : vector storing all cuts information for each slave
+ *  \param all_package : vector storing all cuts information for each subproblem
  * problem
  *
  */
 void BendersBase::compute_cut(AllCutPackage const &all_package) {
   for (int i(0); i < all_package.size(); i++) {
     for (auto const &itmap : all_package[i]) {
-      SubproblemCutDataPtr slave_cut_data(new SubproblemCutData(itmap.second));
-      SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(slave_cut_data));
+      SubproblemCutDataPtr subproblem_cut_data(new SubproblemCutData(itmap.second));
+      SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(subproblem_cut_data));
       handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[itmap.first]];
       _data.ub += handler->get_dbl(SUBPROBLEM_COST);
       SubproblemCutTrimmer cut(handler, _data.x0);
 
-      _master->add_cut_slave(_problem_to_id[itmap.first],
-                             handler->get_subgradient(), _data.x0,
-                             handler->get_dbl(SUBPROBLEM_COST));
+      _master->addSubproblemCut(_problem_to_id[itmap.first],
+                                handler->get_subgradient(), _data.x0,
+                                handler->get_dbl(SUBPROBLEM_COST));
       _all_cuts_storage[itmap.first].insert(cut);
-      _trace[_data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
+      _trace[_data.it - 1]->_cut_trace[itmap.first] = subproblem_cut_data;
 
       bound_simplex_iter(handler->get_int(SIMPLEXITER));
     }
@@ -350,10 +340,10 @@ void BendersBase::compute_cut(AllCutPackage const &all_package) {
 /*!
  *  \brief Add aggregated cut to Master Problem and store it in a set
  *
- *  Method to add aggregated cut from slaves to Master Problem and store it in a
- * map linking each slave to its set of non-aggregated cut
+ *  Method to add aggregated cut from subproblems to Master Problem and store it in a
+ * map linking each subproblem to its set of non-aggregated cut
  *
- *  \param all_package : vector storing all cuts information for each slave
+ *  \param all_package : vector storing all cuts information for each subproblem
  * problem
  */
 void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
@@ -361,8 +351,8 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
   double rhs(0);
   for (int i(0); i < all_package.size(); i++) {
     for (auto const &itmap : all_package[i]) {
-      SubproblemCutDataPtr slave_cut_data(new SubproblemCutData(itmap.second));
-      SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(slave_cut_data));
+      SubproblemCutDataPtr subproblem_cut_data(new SubproblemCutData(itmap.second));
+      SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(subproblem_cut_data));
       _data.ub += handler->get_dbl(SUBPROBLEM_COST);
       rhs += handler->get_dbl(SUBPROBLEM_COST);
 
@@ -371,7 +361,7 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
       SubproblemCutTrimmer cut(handler, _data.x0);
 
       _all_cuts_storage.find(itmap.first)->second.insert(cut);
-      _trace[_data.it - 1]->_cut_trace[itmap.first] = slave_cut_data;
+      _trace[_data.it - 1]->_cut_trace[itmap.first] = subproblem_cut_data;
 
       bound_simplex_iter(handler->get_int(SIMPLEXITER));
     }
@@ -393,13 +383,7 @@ void BendersBase::compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
  *
  *	Add cuts in master problem according to the selected option
  *
- *  \param all_package : storage of every slave information
- *
- *  \param slave_cut_id : map linking each slaves to their cuts ids in the
- *master problem
- *
- *  \param dynamic_aggregate_cuts : vector of tuple storing cut information
- *(rhs, x0, subgradient)
+ *  \param all_package : storage of every subproblem information
  */
 void BendersBase::build_cut_full(AllCutPackage const &all_package) {
   check_status(all_package);
@@ -511,21 +495,21 @@ std::string BendersBase::status_from_criterion() const {
 /*!
  *  \brief Get path to subproblem mps file from options
  */
-std::string BendersBase::get_slave_path(std::string const &slave_name) const {
-  return (Path(_options.INPUTROOT) / (slave_name + MPS_SUFFIX)).get_str();
+std::string BendersBase::GetSubproblemPath(std::string const &subproblem_name) const {
+  return (Path(_options.INPUTROOT) / (subproblem_name + MPS_SUFFIX)).get_str();
 }
 
 /*!
- *  \brief Return slave weight value
+ *  \brief Return subproblem weight value
  *
- *  \param nslaves : total number of slaves
+ *  \param subproblem_count : total number of subproblems
  *
- *  \param name : slave name
+ *  \param name : subproblem name
  */
-double BendersBase::slave_weight(int nslaves, std::string const &name) const {
-  if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_UNIFORM_CST_STR) {
-    return 1 / static_cast<double>(nslaves);
-  } else if (_options.SLAVE_WEIGHT == SLAVE_WEIGHT_CST_STR) {
+double BendersBase::SubproblemWeight(int subproblem_count, std::string const &name) const {
+  if (_options.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_UNIFORM_CST_STR) {
+    return 1 / static_cast<double>(subproblem_count);
+  } else if (_options.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_CST_STR) {
     double const weight(_options.SLAVE_WEIGHT_VALUE);
     return 1 / weight;
   } else {
@@ -554,7 +538,7 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   result.best_ub = data.best_ub;
   result.it = data.it;
   result.best_it = data.best_it;
-  result.slave_cost = data.slave_cost;
+  result.subproblem_cost = data.subproblem_cost;
   result.invest_cost = data.invest_cost;
   result.x0 = data.x0;
   result.min_invest = data.min_invest;
@@ -583,9 +567,9 @@ void BendersBase::set_log_file(const std::string &log_name) {
 void BendersBase::build_input_map() {
   auto input = build_input(get_structure_path());
   _totalNbProblems = input.size();
-  _data.nslaves = _totalNbProblems - 1;
+  _data.nsubproblem = _totalNbProblems - 1;
   master_variable_map = get_master_variable_map(input);
-  slaves_map = get_slaves_map(input);
+  coupling_map = GetCouplingMap(input);
 }
 
 std::map<std::string, int> BendersBase::get_master_variable_map(
@@ -598,15 +582,15 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
   return it_master->second;
 }
 
-CouplingMap BendersBase::get_slaves_map(CouplingMap input) const {
-  CouplingMap slave_map;
+CouplingMap BendersBase::GetCouplingMap(CouplingMap input) const {
+  CouplingMap couplingMap;
   auto master_name = get_master_name();
   std::copy_if(input.begin(), input.end(),
-               std::inserter(slave_map, slave_map.end()),
+               std::inserter(couplingMap, couplingMap.end()),
                [master_name](const CouplingMap::value_type &kvp) {
                  return kvp.first != master_name;
                });
-  return slave_map;
+  return couplingMap;
 }
 
 int BendersBase::get_totalNbProblems() const { return _totalNbProblems; }
@@ -623,8 +607,8 @@ WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
 void BendersBase::addSubproblem(const std::pair<std::string, VariableMap> &kvp) {
   subproblem_map[kvp.first] = SubproblemWorkerPtr(
-      new SubproblemWorker(kvp.second, get_slave_path(kvp.first),
-                      slave_weight(_data.nslaves, kvp.first),
+      new SubproblemWorker(kvp.second, GetSubproblemPath(kvp.first),
+      SubproblemWeight(_data.nsubproblem, kvp.first),
                       _options.SOLVER_NAME, _options.LOG_LEVEL, log_name()));
 }
 
@@ -633,7 +617,7 @@ void BendersBase::free_subproblems() {
 }
 void BendersBase::match_problem_to_id() {
   int count = 0;
-  for (const auto &problem : slaves_map) {
+  for (const auto &problem : coupling_map) {
     _problem_to_id[problem.first] = count;
     count++;
   }
@@ -644,8 +628,8 @@ void BendersBase::set_cut_storage() {
   }
 }
 
-void BendersBase::add_slave_name(const std::string &name) {
-  _slaves.push_back(name);
+void BendersBase::AddSubproblemName(const std::string &name) {
+  subproblems.push_back(name);
 }
 std::string BendersBase::get_master_name() const {
   return _options.MASTER_NAME;
@@ -661,11 +645,11 @@ double BendersBase::get_timer_master() const { return _data.timer_master; }
 void BendersBase::set_timer_master(const double &timer_master) {
   _data.timer_master = timer_master;
 }
-double BendersBase::get_timer_slaves() const { return _data.timer_slaves; }
-void BendersBase::set_timer_slaves(const double &timer_slaves) {
-  _data.timer_slaves = timer_slaves;
+double BendersBase::GetSubproblemTimers() const { return _data.subproblem_timers; }
+void BendersBase::SetSubproblemTimers(const double &subproblem_timer) {
+  _data.subproblem_timers = subproblem_timer;
 }
-double BendersBase::get_slave_cost() const { return _data.slave_cost; }
-void BendersBase::set_slave_cost(const double &slave_cost) {
-  _data.slave_cost = slave_cost;
+double BendersBase::GetSubproblemCost() const { return _data.subproblem_cost; }
+void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
+  _data.subproblem_cost = subproblem_cost;
 }

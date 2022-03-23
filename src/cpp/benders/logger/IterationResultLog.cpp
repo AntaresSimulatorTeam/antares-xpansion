@@ -25,7 +25,7 @@ void IterationResultLog::setValuesFromData(const LogData &data) {
   double low_bd = data.lb;
   double abs_gap = data.best_ub - data.lb;
   double rel_gap = abs_gap / data.best_ub;
-  const double overall_cost = data.slave_cost + data.invest_cost;
+  const double overall_cost = data.subproblem_cost + data.invest_cost;
 
   // Quick and dirty fix when gap is negative, further investigation needed
   if (abs_gap < 0) {
@@ -38,7 +38,7 @@ void IterationResultLog::setValuesFromData(const LogData &data) {
 
   _values.clear();
   _values.push_back(create_value_map(
-      "Operational cost", commons::create_str_million_euros(data.slave_cost),
+      "Operational cost", commons::create_str_million_euros(data.subproblem_cost),
       " Me"));
   _values.push_back(create_value_map(
       "Investment cost", commons::create_str_million_euros(data.invest_cost),

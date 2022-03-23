@@ -26,7 +26,7 @@ class WorkerMaster : public Worker {
                        double const &rhs) const;
   void add_dynamic_cut(Point const &s, double const &sx0,
                        double const &rhs) const;
-  void add_cut_slave(int i, Point const &s, Point const &x0,
+  void addSubproblemCut(int i, Point const &s, Point const &x0,
                      double const &rhs) const;
   void delete_constraint(int const nrows) const;
   void fix_alpha(double const &bestUB) const;

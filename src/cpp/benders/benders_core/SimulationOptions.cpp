@@ -58,8 +58,8 @@ void SimulationOptions::read(std::string const &file_name) {
 }
 
 void SimulationOptions::set_weights() {
-  if (SLAVE_WEIGHT != SLAVE_WEIGHT_UNIFORM_CST_STR &&
-      SLAVE_WEIGHT != SLAVE_WEIGHT_CST_STR) {
+  if (SLAVE_WEIGHT != SUBPROBLEM_WEIGHT_UNIFORM_CST_STR &&
+      SLAVE_WEIGHT != SUBPROBLEM_WEIGHT_CST_STR) {
     std::string line;
     std::string filename(Path(INPUTROOT) / SLAVE_WEIGHT);
     std::ifstream file(filename);

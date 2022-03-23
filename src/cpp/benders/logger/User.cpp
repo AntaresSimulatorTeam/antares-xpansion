@@ -47,7 +47,7 @@ void User::log_at_iteration_end(const LogData &d) {
 }
 
 void User::log_at_ending(const LogData &d) {
-  const double overall_cost = d.slave_cost + d.invest_cost;
+  const double overall_cost = d.subproblem_cost + d.invest_cost;
   _stream << indent_1 << "Best solution = it " << d.best_it << std::endl;
   _stream << indent_1 << " Overall cost = "
           << commons::create_str_million_euros(overall_cost) << " Me"

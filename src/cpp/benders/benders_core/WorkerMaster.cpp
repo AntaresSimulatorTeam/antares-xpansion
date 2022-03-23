@@ -213,7 +213,7 @@ void WorkerMaster::define_matval_mclind_for_index(
  *  \param x0 : optimal Master variables
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::add_cut_slave(int i, Point const &s, Point const &x0,
+void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x0,
                                  double const &rhs) const {
   // cut is -rhs >= alpha  + s^(x-x0)
   int ncoeffs(1 + (int)s.size());
