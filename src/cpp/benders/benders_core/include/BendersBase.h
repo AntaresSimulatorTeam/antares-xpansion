@@ -13,7 +13,7 @@
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(BendersBaseOptions const &options, Logger &logger, Writer writer);
+  BendersBase(BendersBaseOptions options, Logger &logger, Writer writer);
   virtual void launch() = 0;
   void set_log_file(const std::string &log_name);
   [[nodiscard]] std::string log_name() const { return _log_name; }
@@ -40,7 +40,7 @@ class BendersBase {
   [[nodiscard]] double SubproblemWeight(int subproblem_count, std::string const &name) const;
   [[nodiscard]] std::string get_master_path() const;
   [[nodiscard]] std::string get_structure_path() const;
-  [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
+  [[nodiscard]] static LogData bendersDataToLogData(const BendersData &data) ;
   void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
@@ -70,20 +70,12 @@ class BendersBase {
                             WorkerMasterDataPtr &trace, Point const &xopt);
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
                         Point const &xopt) const;
-  void print_cut_csv(std::ostream &stream,
-                     SubproblemCutDataHandler const &handler,
-                     std::string const &name, int subproblem_index) const;
   void bound_simplex_iter(int simplexiter);
   void check_status(AllCutPackage const &all_package) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
   [[nodiscard]] Output::IterationsData output_data() const;
-  [[nodiscard]] Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
-  [[nodiscard]] Output::CandidatesVec candidates_data(
-      const WorkerMasterDataPtr &masterDataPtr_l) const;
   [[nodiscard]] Output::SolutionData solution() const;
   [[nodiscard]] std::string status_from_criterion() const;
-  void compute_cut_val(const SubproblemCutDataHandlerPtr &handler, const Point &x0,
-                       Point &s) const;
   void compute_cut_aggregate(const AllCutPackage &all_package);
   void compute_cut(const AllCutPackage &all_package);
   [[nodiscard]] std::map<std::string, int> get_master_variable_map(

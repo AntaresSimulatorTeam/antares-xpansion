@@ -1,13 +1,16 @@
 #include "BendersBase.h"
 
+#include <memory>
+#include <utility>
+
 #include "Timer.h"
 #include "glog/logging.h"
 #include "helpers/Path.h"
 #include "solver_utils.h"
 
-BendersBase::BendersBase(BendersBaseOptions const &options, Logger &logger,
+BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
                          Writer writer)
-    : _options(options), _logger(logger), _writer(writer) {}
+    : _options(std::move(options)), _logger(logger), _writer(std::move(writer)) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -67,6 +70,37 @@ void BendersBase::print_csv_iteration(std::ostream &file, int ite) {
     print_master_and_cut(file, ite + 1, _trace[ite], xopt);
   }
 }
+
+/*!
+ *  \brief Print in a file subproblem's information
+ *
+ *  \param stream : output stream
+ *
+ *  \param handler : handler to manage subproblem data
+ *
+ *  \param name : problem name
+ *
+ *  \param subproblem_index : problem id
+ */
+void print_cut_csv(std::ostream &stream,
+                   SubproblemCutDataHandler const &handler,
+                   std::string const &name,
+                   int subproblem_index) {
+  stream << "Subproblem"
+         << ";";
+  stream << name << ";";
+  stream << subproblem_index << ";";
+  stream << handler.get_dbl(SUBPROBLEM_COST) << ";";
+  stream << ";";
+  stream << ";";
+  stream << handler.get_int(SIMPLEXITER) << ";";
+  stream << ";";
+  stream << handler.get_dbl(ALPHA_I) << ";";
+  stream << ";";
+  stream << handler.get_dbl(SUBPROBLEM_TIMER) << ";";
+  stream << std::endl;
+}
+
 void BendersBase::print_master_and_cut(std::ostream &file, int ite,
                                        WorkerMasterDataPtr &trace,
                                        Point const &xopt) {
@@ -106,36 +140,6 @@ void BendersBase::print_master_csv(std::ostream &stream,
   stream << trace->_deleted_cut << ";";
   stream << trace->_time << ";";
   stream << trace->_nbasis << ";" << std::endl;
-}
-
-/*!
- *  \brief Print in a file subproblem's information
- *
- *  \param stream : output stream
- *
- *  \param handler : handler to manage subproblem data
- *
- *  \param name : problem name
- *
- *  \param subproblem_index : problem id
- */
-void BendersBase::print_cut_csv(std::ostream &stream,
-                                SubproblemCutDataHandler const &handler,
-                                std::string const &name,
-                                int const subproblem_index) const {
-  stream << "Subproblem"
-         << ";";
-  stream << name << ";";
-  stream << subproblem_index << ";";
-  stream << handler.get_dbl(SUBPROBLEM_COST) << ";";
-  stream << ";";
-  stream << ";";
-  stream << handler.get_int(SIMPLEXITER) << ";";
-  stream << ";";
-  stream << handler.get_dbl(ALPHA_I) << ";";
-  stream << ";";
-  stream << handler.get_dbl(SUBPROBLEM_TIMER) << ";";
-  stream << std::endl;
 }
 
 /*!
@@ -208,9 +212,9 @@ void BendersBase::update_trace() {
   _trace[_data.it - 1]->_lb = _data.lb;
   _trace[_data.it - 1]->_ub = _data.ub;
   _trace[_data.it - 1]->_bestub = _data.best_ub;
-  _trace[_data.it - 1]->_x0 = PointPtr(new Point(_data.x0));
-  _trace[_data.it - 1]->_max_invest = PointPtr(new Point(_data.max_invest));
-  _trace[_data.it - 1]->_min_invest = PointPtr(new Point(_data.min_invest));
+  _trace[_data.it - 1]->_x0 = std::make_shared<Point>(_data.x0);
+  _trace[_data.it - 1]->_max_invest = std::make_shared<Point>(_data.max_invest);
+  _trace[_data.it - 1]->_min_invest = std::make_shared<Point>(_data.min_invest);
   _trace[_data.it - 1]->_deleted_cut = _data.deletedcut;
   _trace[_data.it - 1]->_time = _data.timer_master;
   _trace[_data.it - 1]->_nbasis = _data.nbasis;
@@ -270,7 +274,7 @@ void BendersBase::get_master_value() {
 
   _data.invest_cost = _data.lb - _data.alpha;
 
-  for (auto pairIdName : _master->_id_to_name) {
+  for (const auto& pairIdName : _master->_id_to_name) {
     _master->_solver->get_ub(&_data.max_invest[pairIdName.second],
                              pairIdName.first, pairIdName.first);
     _master->_solver->get_lb(&_data.min_invest[pairIdName.second],
@@ -318,8 +322,8 @@ void BendersBase::getSubproblemCut(SubproblemCutPackage &subproblem_cut_package)
  *
  */
 void BendersBase::compute_cut(AllCutPackage const &all_package) {
-  for (int i(0); i < all_package.size(); i++) {
-    for (auto const &itmap : all_package[i]) {
+  for (const auto & i : all_package) {
+    for (auto const &itmap : i) {
       SubproblemCutDataPtr subproblem_cut_data(new SubproblemCutData(itmap.second));
       SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(subproblem_cut_data));
       handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[itmap.first]];
@@ -337,6 +341,16 @@ void BendersBase::compute_cut(AllCutPackage const &all_package) {
   }
 }
 
+void compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
+                                  const Point &x0, Point &s) {
+  for (auto const &var : x0) {
+    if (handler->get_subgradient().find(var.first) !=
+        handler->get_subgradient().end()) {
+      s[var.first] += handler->get_subgradient().find(var.first)->second;
+    }
+  }
+}
+
 /*!
  *  \brief Add aggregated cut to Master Problem and store it in a set
  *
@@ -349,8 +363,8 @@ void BendersBase::compute_cut(AllCutPackage const &all_package) {
 void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
   Point s;
   double rhs(0);
-  for (int i(0); i < all_package.size(); i++) {
-    for (auto const &itmap : all_package[i]) {
+  for (const auto & i : all_package) {
+    for (auto const &itmap : i) {
       SubproblemCutDataPtr subproblem_cut_data(new SubproblemCutData(itmap.second));
       SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(subproblem_cut_data));
       _data.ub += handler->get_dbl(SUBPROBLEM_COST);
@@ -369,15 +383,6 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
   _master->add_cut(s, _data.x0, rhs);
 }
 
-void BendersBase::compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
-                                  const Point &x0, Point &s) const {
-  for (auto const &var : x0) {
-    if (handler->get_subgradient().find(var.first) !=
-        handler->get_subgradient().end()) {
-      s[var.first] += handler->get_subgradient().find(var.first)->second;
-    }
-  }
-}
 /*!
  *  \brief Add cuts in master problem
  *
@@ -411,24 +416,25 @@ void BendersBase::post_run_actions() const {
   _writer->end_writing(output_data());
 }
 
-Output::IterationsData BendersBase::output_data() const {
-  Output::IterationsData iterations_data;
-  Output::Iterations iters;
-  iterations_data.nbWeeks_p = _totalNbProblems;
-  // Iterations
-  for (auto masterDataPtr_l : _trace) {
-    if (masterDataPtr_l->_valid) {
-      iters.push_back(iteration(masterDataPtr_l));
-    }
+Output::CandidatesVec candidates_data(
+    const WorkerMasterDataPtr &masterDataPtr_l) {
+  Output::CandidatesVec candidates_vec;
+  for (const auto &pairNameValue_l : masterDataPtr_l->get_point()) {
+    Output::CandidateData candidate_data;
+    candidate_data.name = pairNameValue_l.first;
+    candidate_data.invest = pairNameValue_l.second;
+    candidate_data.min =
+        masterDataPtr_l->get_min_invest()[pairNameValue_l.first];
+    candidate_data.max =
+        masterDataPtr_l->get_max_invest()[pairNameValue_l.first];
+    candidates_vec.push_back(candidate_data);
   }
-  iterations_data.iters = iters;
-  iterations_data.solution_data = solution();
-  iterations_data.elapsed_time = _data.elapsed_time;
-  return iterations_data;
+
+  return candidates_vec;
 }
 
-Output::Iteration BendersBase::iteration(
-    const WorkerMasterDataPtr &masterDataPtr_l) const {
+Output::Iteration iteration(
+    const WorkerMasterDataPtr &masterDataPtr_l) {
   Output::Iteration iteration;
   iteration.time = masterDataPtr_l->_time;
   iteration.lb = masterDataPtr_l->_lb;
@@ -444,21 +450,21 @@ Output::Iteration BendersBase::iteration(
   iteration.candidates = candidates_data(masterDataPtr_l);
   return iteration;
 }
-Output::CandidatesVec BendersBase::candidates_data(
-    const WorkerMasterDataPtr &masterDataPtr_l) const {
-  Output::CandidatesVec candidates_vec;
-  for (const auto &pairNameValue_l : masterDataPtr_l->get_point()) {
-    Output::CandidateData candidate_data;
-    candidate_data.name = pairNameValue_l.first;
-    candidate_data.invest = pairNameValue_l.second;
-    candidate_data.min =
-        masterDataPtr_l->get_min_invest()[pairNameValue_l.first];
-    candidate_data.max =
-        masterDataPtr_l->get_max_invest()[pairNameValue_l.first];
-    candidates_vec.push_back(candidate_data);
-  }
 
-  return candidates_vec;
+Output::IterationsData BendersBase::output_data() const {
+  Output::IterationsData iterations_data;
+  Output::Iterations iters;
+  iterations_data.nbWeeks_p = _totalNbProblems;
+  // Iterations
+  for (const auto& masterDataPtr_l : _trace) {
+    if (masterDataPtr_l->_valid) {
+      iters.push_back(iteration(masterDataPtr_l));
+    }
+  }
+  iterations_data.iters = iters;
+  iterations_data.solution_data = solution();
+  iterations_data.elapsed_time = _data.elapsed_time;
+  return iterations_data;
 }
 
 Output::SolutionData BendersBase::solution() const {
@@ -532,7 +538,7 @@ std::string BendersBase::get_structure_path() const {
   return (Path(_options.INPUTROOT) / _options.STRUCTURE_FILE).get_str();
 }
 
-LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
+LogData BendersBase::bendersDataToLogData(const BendersData &data) {
   LogData result;
   result.lb = data.lb;
   result.best_ub = data.best_ub;
@@ -604,10 +610,10 @@ void BendersBase::free_master() const { _master->free(); }
 WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
 void BendersBase::addSubproblem(const std::pair<std::string, VariableMap> &kvp) {
-  subproblem_map[kvp.first] = SubproblemWorkerPtr(
-      new SubproblemWorker(kvp.second, GetSubproblemPath(kvp.first),
+  subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
+      kvp.second, GetSubproblemPath(kvp.first),
       SubproblemWeight(_data.nsubproblem, kvp.first),
-                      _options.SOLVER_NAME, _options.LOG_LEVEL, log_name()));
+                      _options.SOLVER_NAME, _options.LOG_LEVEL, log_name());
 }
 
 void BendersBase::free_subproblems() {
