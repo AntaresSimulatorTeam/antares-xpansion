@@ -234,7 +234,9 @@ jobs:
           cd _build
           echo "**3**"
           whoami
-          su user -c "ctest3 -C Release --output-on-failure -L \"unit|benders\""
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+          ctest3 -C Release --output-on-failure -L "unit|benders"
 
       - name: Publish .tar.gzs
         if: github.event_name == 'release' && github.event.action == 'created'
