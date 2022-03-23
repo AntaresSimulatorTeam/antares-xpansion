@@ -2,7 +2,7 @@
 
 #include "BendersBase.h"
 #include "BendersStructsDatas.h"
-#include "SlaveCut.h"
+#include "SubproblemCut.h"
 #include "Timer.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
@@ -35,7 +35,7 @@ class BendersMpi : public BendersBase {
                                    const Timer &benders_timer);
 
   void master_build_cuts(AllCutPackage all_package);
-  SlaveCutPackage get_slave_package();
+  SubproblemCutPackage get_slave_package();
 
   void solve_master_and_create_trace();
 
@@ -46,7 +46,7 @@ class BendersMpi : public BendersBase {
   void broadcast_the_master_problem();
 
   void gather_slave_cut_package_and_build_cuts(
-      const SlaveCutPackage &slave_cut_package, const Timer &timer_slaves);
+      const SubproblemCutPackage &slave_cut_package, const Timer &timer_slaves);
 
   void write_exception_message(const std::exception &ex);
 

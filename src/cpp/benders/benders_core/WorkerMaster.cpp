@@ -15,13 +15,13 @@ WorkerMaster::WorkerMaster() { _is_master = true; }
  *  \param path_to_mps : path to the problem mps file
  *  \param solver_name : solver name
  *  \param log_level : solver log level
- *  \param nslaves : number of slaves
+ *  \param subproblems_count : number of subproblems
  */
 WorkerMaster::WorkerMaster(VariableMap const &variable_map,
                            std::string const &path_to_mps,
                            const std::string &solver_name, const int log_level,
-                           int nslaves, const std::string &log_name)
-    : Worker(), _nslaves(nslaves) {
+                           int subproblems_count, const std::string &log_name)
+    : Worker(), subproblems_count(subproblems_count) {
   _is_master = true;
   init(variable_map, path_to_mps, solver_name, log_level, log_name);
 
@@ -261,8 +261,8 @@ void WorkerMaster::_add_alpha_var() {
         CharVector(1, 'C'),
         StrVector(1, "alpha")); /* Add variable alpha and its parameters */
 
-    _id_alpha_i.resize(_nslaves, -1);
-    for (int i(0); i < _nslaves; ++i) {
+    _id_alpha_i.resize(subproblems_count, -1);
+    for (int i(0); i < subproblems_count; ++i) {
       std::stringstream buffer;
       buffer << "alpha_" << i;
       _id_alpha_i[i] = _solver->get_ncols();
@@ -276,12 +276,12 @@ void WorkerMaster::_add_alpha_var() {
 
     std::vector<char> rowtype = {'E'};
     std::vector<double> rowrhs = {0};
-    std::vector<int> mstart = {0, _nslaves + 1};
-    std::vector<double> matval(_nslaves + 1, 0);
-    std::vector<int> mclind(_nslaves + 1);
+    std::vector<int> mstart = {0, subproblems_count + 1};
+    std::vector<double> matval(subproblems_count + 1, 0);
+    std::vector<int> mclind(subproblems_count + 1);
     mclind[0] = _id_alpha;
     matval[0] = 1;
-    for (int i(0); i < _nslaves; ++i) {
+    for (int i(0); i < subproblems_count; ++i) {
       mclind[i + 1] = _id_alpha_i[i];
       matval[i + 1] = -1;
     }

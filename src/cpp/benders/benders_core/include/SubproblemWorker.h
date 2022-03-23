@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SimplexBasis.h"
-#include "SlaveCut.h"
+#include "SubproblemCut.h"
 #include "Worker.h"
 
 /*!

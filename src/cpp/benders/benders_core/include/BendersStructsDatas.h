@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SlaveCut.h"
+#include "SubproblemCut.h"
 #include "Worker.h"
 #include "common.h"
 #include "core/ILogger.h"
@@ -54,7 +54,7 @@ class WorkerMasterData {
   PointPtr _x0;
   PointPtr _min_invest;
   PointPtr _max_invest;
-  std::map<std::string, SlaveCutDataPtr> _cut_trace;
+  std::map<std::string, SubproblemCutDataPtr> _cut_trace;
 
   double _invest_cost;
   double _operational_cost;

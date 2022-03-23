@@ -27,7 +27,7 @@ void BendersSequential::initialize_problems() {
                                 get_solver_name(), get_log_level(),
                                 _data.nslaves, log_name()));
   for (const auto &problem : slaves_map) {
-    add_slave(problem);
+    addSubproblem(problem);
     add_slave_name(problem.first);
   }
 }
@@ -39,7 +39,7 @@ void BendersSequential::free() {
   if (get_master()) {
     free_master();
   }
-  free_slaves();
+  free_subproblems();
 }
 
 /*!
@@ -50,14 +50,14 @@ void BendersSequential::free() {
  *
  */
 void BendersSequential::build_cut() {
-  SlaveCutPackage slave_cut_package;
+  SubproblemCutPackage slave_cut_package;
   AllCutPackage all_package;
   Timer timer_slaves;
-  get_slave_cut(slave_cut_package);
+  getSubproblemCut(slave_cut_package);
   set_slave_cost(0);
   for (auto pairSlavenameSlavecutdata_l : slave_cut_package) {
     set_slave_cost(get_slave_cost() +
-                   pairSlavenameSlavecutdata_l.second.first.second[SLAVE_COST]);
+                   pairSlavenameSlavecutdata_l.second.first.second[SUBPROBLEM_COST]);
   }
 
   set_timer_slaves(timer_slaves.elapsed());

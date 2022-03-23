@@ -35,7 +35,7 @@ void BendersMpi::initialize_problems() {
     for (const auto &problem : slaves_map) {
       auto slaveToFeed = current_problem_id % slaveCount + 1;
       if (slaveToFeed == _world.rank()) {
-        add_slave(problem);
+        addSubproblem(problem);
         add_slave_name(problem.first);
       }
       current_problem_id++;
@@ -96,7 +96,7 @@ void BendersMpi::solve_master_and_create_trace() {
  */
 void BendersMpi::step_2_solve_slaves_and_build_cuts() {
   int success = 1;
-  SlaveCutPackage slave_cut_package;
+  SubproblemCutPackage slave_cut_package;
   Timer timer_slaves;
   try {
     if (_world.rank() != rank_0) {
@@ -111,7 +111,7 @@ void BendersMpi::step_2_solve_slaves_and_build_cuts() {
 }
 
 void BendersMpi::gather_slave_cut_package_and_build_cuts(
-    const SlaveCutPackage &slave_cut_package, const Timer &timer_slaves) {
+    const SubproblemCutPackage &slave_cut_package, const Timer &timer_slaves) {
   if (!_exceptionRaised) {
     if (_world.rank() != rank_0) {
       mpi::gather(_world, slave_cut_package, rank_0);
@@ -124,9 +124,9 @@ void BendersMpi::gather_slave_cut_package_and_build_cuts(
   }
 }
 
-SlaveCutPackage BendersMpi::get_slave_package() {
-  SlaveCutPackage slave_cut_package;
-  get_slave_cut(slave_cut_package);
+SubproblemCutPackage BendersMpi::get_slave_package() {
+  SubproblemCutPackage slave_cut_package;
+  getSubproblemCut(slave_cut_package);
   return slave_cut_package;
 }
 
@@ -135,7 +135,7 @@ void BendersMpi::master_build_cuts(AllCutPackage all_package) {
   for (auto const &pack : all_package) {
     for (auto &dataVal : pack) {
       set_slave_cost(get_slave_cost() +
-                     dataVal.second.first.second[SLAVE_COST]);
+                     dataVal.second.first.second[SUBPROBLEM_COST]);
     }
   }
   all_package.erase(all_package.begin());
@@ -190,7 +190,7 @@ void BendersMpi::free() {
   if (_world.rank() == rank_0) {
     free_master();
   } else {
-    free_slaves();
+    free_subproblems();
   }
   _world.barrier();
 }

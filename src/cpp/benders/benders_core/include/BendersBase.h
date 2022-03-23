@@ -3,7 +3,7 @@
 #include "BendersStructsDatas.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
-#include "SlaveCut.h"
+#include "SubproblemCut.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "SubproblemWorker.h"
@@ -33,7 +33,7 @@ class BendersBase {
   bool stopping_criterion();
   void update_trace();
   void get_master_value();
-  void get_slave_cut(SlaveCutPackage &slave_cut_package);
+  void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
   std::string get_slave_path(std::string const &slave_name) const;
@@ -45,8 +45,8 @@ class BendersBase {
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
   void free_master() const;
-  void free_slaves();
-  void add_slave(const std::pair<std::string, VariableMap> &kvp);
+  void free_subproblems();
+  void addSubproblem(const std::pair<std::string, VariableMap> &kvp);
   WorkerMasterPtr get_master() const;
   int get_totalNbProblems() const;
   void match_problem_to_id();
@@ -72,7 +72,8 @@ class BendersBase {
                             WorkerMasterDataPtr &trace, Point const &xopt);
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
                         Point const &xopt) const;
-  void print_cut_csv(std::ostream &stream, SlaveCutDataHandler const &handler,
+  void print_cut_csv(std::ostream &stream,
+                     SubproblemCutDataHandler const &handler,
                      std::string const &name, int const islaves) const;
   void bound_simplex_iter(int simplexiter);
   void check_status(AllCutPackage const &all_package) const;
@@ -83,7 +84,7 @@ class BendersBase {
       const WorkerMasterDataPtr &masterDataPtr_l) const;
   Output::SolutionData solution() const;
   std::string status_from_criterion() const;
-  void compute_cut_val(const SlaveCutDataHandlerPtr &handler, const Point &x0,
+  void compute_cut_val(const SubproblemCutDataHandlerPtr &handler, const Point &x0,
                        Point &s) const;
   void compute_cut_aggregate(const AllCutPackage &all_package);
   void compute_cut(const AllCutPackage &all_package);
@@ -98,7 +99,7 @@ class BendersBase {
   BendersTrace _trace;
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
-  SubproblemsMapPtr _map_slaves;
+  SubproblemsMapPtr subproblem_map;
   AllCutStorage _all_cuts_storage;
   StrVector _slaves;
 

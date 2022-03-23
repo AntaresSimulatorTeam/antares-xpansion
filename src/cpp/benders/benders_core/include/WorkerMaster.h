@@ -13,7 +13,7 @@ class WorkerMaster : public Worker {
  public:
   WorkerMaster();
   WorkerMaster(VariableMap const &variable_map, std::string const &path_to_mps,
-               const std::string &solver_name, const int log_level, int nslaves,
+               const std::string &solver_name, const int log_level, int subproblems_count,
                const std::string &log_name);
   virtual ~WorkerMaster();
 
@@ -34,7 +34,7 @@ class WorkerMaster : public Worker {
  private:
   std::vector<int> _id_alpha_i;
   int _id_alpha = 0;
-  int _nslaves;
+  int subproblems_count;
 
   void define_matval_mclind(const Point &s, std::vector<double> &matval,
                             std::vector<int> &mclind) const;
