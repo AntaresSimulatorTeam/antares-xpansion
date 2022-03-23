@@ -6,7 +6,7 @@
 #include "SlaveCut.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
-#include "WorkerSlave.h"
+#include "SubproblemWorker.h"
 #include "common.h"
 #include "core/ILogger.h"
 
@@ -98,7 +98,7 @@ class BendersBase {
   BendersTrace _trace;
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
-  SlavesMapPtr _map_slaves;
+  SubproblemsMapPtr _map_slaves;
   AllCutStorage _all_cuts_storage;
   StrVector _slaves;
 

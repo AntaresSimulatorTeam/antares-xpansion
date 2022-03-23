@@ -169,7 +169,7 @@ void WorkerMaster::define_rhs_from_sx0(const double &sx0, const double &rhs,
 /*!
  *  \brief Add benders cut to a problem
  *
- *  \param i : identifier of a slave problem
+ *  \param i : identifier of a subproblem
  *  \param s : optimal slave variables
  *  \param sx0 : subgradient times x0
  *  \param rhs : optimal slave value
@@ -208,7 +208,7 @@ void WorkerMaster::define_matval_mclind_for_index(
 /*!
  *  \brief Add one benders cut to a problem
  *
- *  \param i : identifier of a slave problem
+ *  \param i : identifier of a subproblem
  *  \param s : optimal slave variables
  *  \param x0 : optimal Master variables
  *  \param rhs : optimal slave value

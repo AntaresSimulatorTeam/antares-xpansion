@@ -1,4 +1,4 @@
-#include "WorkerSlave.h"
+#include "SubproblemWorker.h"
 
 #include "solver_utils.h"
 
@@ -10,7 +10,7 @@
  *  \param problem_name : Name of the problem
  *
  */
-WorkerSlave::WorkerSlave(VariableMap const &variable_map,
+SubproblemWorker::SubproblemWorker(VariableMap const &variable_map,
                          std::string const &path_to_mps,
                          double const &slave_weight,
                          const std::string &solver_name, const int log_level,
@@ -37,7 +37,7 @@ WorkerSlave::WorkerSlave(VariableMap const &variable_map,
  *
  *  \param x0 : Set of variables to fix
  */
-void WorkerSlave::fix_to(Point const &x0) const {
+void SubproblemWorker::fix_to(Point const &x0) const {
   int nbnds((int)_name_to_id.size());
   std::vector<int> indexes(nbnds);
   std::vector<char> bndtypes(nbnds, 'B');
@@ -58,7 +58,7 @@ void WorkerSlave::fix_to(Point const &x0) const {
  *
  *  \param s : Empty point which receives the solution
  */
-void WorkerSlave::get_subgradient(Point &s) const {
+void SubproblemWorker::get_subgradient(Point &s) const {
   s.clear();
   std::vector<double> ptr(_solver->get_ncols());
   solver_getlpreducedcost(_solver, ptr);
@@ -72,7 +72,7 @@ void WorkerSlave::get_subgradient(Point &s) const {
  *
  *  Method to store simplex basis of a problem, and build the distance matrix
  */
-SimplexBasis WorkerSlave::get_basis() const {
+SimplexBasis SubproblemWorker::get_basis() const {
   IntVector cstatus(_solver->get_ncols());
   IntVector rstatus(_solver->get_nrows());
   solver_getbasis(_solver, rstatus, cstatus);

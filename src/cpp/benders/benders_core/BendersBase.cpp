@@ -302,7 +302,7 @@ void BendersBase::get_master_value() {
 void BendersBase::get_slave_cut(SlaveCutPackage &slave_cut_package) {
   for (auto &kvp : _map_slaves) {
     Timer timer_slave;
-    WorkerSlavePtr &ptr(kvp.second);
+    SubproblemWorkerPtr &ptr(kvp.second);
     SlaveCutDataPtr slave_cut_data(new SlaveCutData);
     SlaveCutDataHandlerPtr handler(new SlaveCutDataHandler(slave_cut_data));
     ptr->fix_to(_data.x0);
@@ -509,7 +509,7 @@ std::string BendersBase::status_from_criterion() const {
 }
 
 /*!
- *  \brief Get path to slave problem mps file from options
+ *  \brief Get path to subproblem mps file from options
  */
 std::string BendersBase::get_slave_path(std::string const &slave_name) const {
   return (Path(_options.INPUTROOT) / (slave_name + MPS_SUFFIX)).get_str();
@@ -622,8 +622,8 @@ void BendersBase::free_master() const { _master->free(); }
 WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
 void BendersBase::add_slave(const std::pair<std::string, VariableMap> &kvp) {
-  _map_slaves[kvp.first] = WorkerSlavePtr(
-      new WorkerSlave(kvp.second, get_slave_path(kvp.first),
+  _map_slaves[kvp.first] = SubproblemWorkerPtr(
+      new SubproblemWorker(kvp.second, get_slave_path(kvp.first),
                       slave_weight(_data.nslaves, kvp.first),
                       _options.SOLVER_NAME, _options.LOG_LEVEL, log_name()));
 }

@@ -90,7 +90,7 @@ void BendersMpi::solve_master_and_create_trace() {
 /*!
  *  \brief Get cut information from each Slave and add it to the Master problem
  *
- *	Get cut information of every Slave Problem in each thread and send it to
+ *	Get cut information of every Subproblem in each thread and send it to
  *thread 0 to build new Master's cuts
  *
  */

@@ -6,7 +6,7 @@
 #include "Timer.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
-#include "WorkerSlave.h"
+#include "SubproblemWorker.h"
 #include "common_mpi.h"
 #include "core/ILogger.h"
 

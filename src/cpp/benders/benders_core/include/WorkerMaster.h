@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Worker.h"
-#include "WorkerSlave.h"
+#include "SubproblemWorker.h"
 /*!
- * \class WorkerSlave
+ * \class SubproblemWorker
  * \brief Class daughter of Worker Class, build and manage a master problem
  */
 class WorkerMaster;

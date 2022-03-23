@@ -8,7 +8,7 @@
 
 add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/SimplexBasis.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/WorkerSlave.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorker.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/SimulationOptions.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersBase.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerMaster.cpp
@@ -16,7 +16,7 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/common.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersStructsDatas.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Worker.cpp
-        )
+)
 
 
 
