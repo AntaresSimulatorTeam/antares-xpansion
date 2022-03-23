@@ -50,7 +50,7 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
         "full",
         "-n",
         "2",
-        "--allow_run_as_root",
+        "--allow-run-as-root",
         allow_run_as_root
     ]
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
