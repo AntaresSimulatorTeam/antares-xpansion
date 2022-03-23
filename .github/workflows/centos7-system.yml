@@ -223,6 +223,7 @@ jobs:
       - name: Running unit tests
         shell: bash
         run: |
+          cat /etc/passwd
           echo "**1***"
           whoami
           su user
