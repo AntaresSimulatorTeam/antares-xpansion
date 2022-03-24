@@ -109,7 +109,7 @@ def check_optimization_json_output(expected_results_dict):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver2(install_dir, allow_run_as_root, solver):
+def run_solver(install_dir, solver, allow_run_as_root=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -120,34 +120,6 @@ def run_solver2(install_dir, allow_run_as_root, solver):
 
     if (solver == "BENDERS_MPI"):
         pre_command = get_mpi_command(allow_run_as_root)
-
-    executable_path = str(
-        (Path(install_dir) / Path(solver_executable)).resolve())
-
-    for instance in expected_results_dict:
-        instance_path = expected_results_dict[instance]['path']
-        command = [e for e in pre_command]
-        command.append(executable_path)
-        command.append(
-            expected_results_dict[instance]['option_file']
-        )
-        status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
-        launch_optimization(instance_path, command, status)
-        check_optimization_json_output(
-            expected_results_dict[instance])
-
-
-def run_solver(install_dir, solver):
-    # Loading expected results from json RESULT_FILE_PATH
-    with open(RESULT_FILE_PATH, 'r') as jsonFile:
-        expected_results_dict = json.load(jsonFile)
-
-    solver_executable = get_solver_exe(solver)
-
-    pre_command = []
-
-    if (solver == "BENDERS_MPI"):
-        pre_command = get_mpi_command()
 
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
