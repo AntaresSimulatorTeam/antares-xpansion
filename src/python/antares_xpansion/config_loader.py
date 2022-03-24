@@ -366,6 +366,9 @@ class ConfigLoader:
     def oversubscribe(self):
         return self._config.oversubscribe
 
+    def allow_run_as_root(self):
+        return self._config.allow_run_as_root
+
     def timelimit(self):
         """
         returns the timelimit read from the settings file

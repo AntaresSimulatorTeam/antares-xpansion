@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+import sys
 import yaml
 import numpy as np
 
@@ -108,11 +109,36 @@ def check_optimization_json_output(expected_results_dict):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, solver: str):
+def run_solver(install_dir, solver, allow_run_as_root=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
 
+    solver_executable = get_solver_exe(solver)
+
+    pre_command = []
+
+    if (solver == "BENDERS_MPI"):
+        pre_command = get_mpi_command(allow_run_as_root)
+
+    executable_path = str(
+        (Path(install_dir) / Path(solver_executable)).resolve())
+
+    for instance in expected_results_dict:
+        instance_path = expected_results_dict[instance]['path']
+        command = [e for e in pre_command]
+        command.append(executable_path)
+        command.append(
+            expected_results_dict[instance]['option_file']
+        )
+        status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
+        launch_optimization(instance_path, command, status)
+        check_optimization_json_output(
+            expected_results_dict[instance])
+
+
+def get_solver_exe(solver: str):
+    solver_executable = ""
     with open(CONFIG_FILE_PATH) as file:
         content = yaml.full_load(file)
         if content is not None:
@@ -120,15 +146,22 @@ def run_solver(install_dir, solver: str):
         else:
             raise RuntimeError(
                 "Please check file config.yaml, content is empty")
-    for instance in expected_results_dict:
-        instance_path = expected_results_dict[instance]['path']
 
-        executable_path = str(
-            (Path(install_dir) / Path(solver_executable)).resolve())
-        commands = [executable_path,
-                    expected_results_dict[instance]['option_file']
-                    ]
-        status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
-        launch_optimization(instance_path, commands, status)
-        check_optimization_json_output(
-            expected_results_dict[instance])
+    return solver_executable
+
+
+def get_mpi_command(allow_run_as_root=False):
+    MPI_LAUNCHER = ""
+    MPI_N = ""
+    nproc = "2"
+    if sys.platform.startswith("win32"):
+        MPI_LAUNCHER = "mpiexec"
+        MPI_N = "-n"
+        return [MPI_LAUNCHER, MPI_N, nproc]
+    elif sys.platform.startswith("linux"):
+        MPI_LAUNCHER = "mpirun"
+        MPI_N = "-np"
+        if (allow_run_as_root):
+            return [MPI_LAUNCHER, "--allow-run-as-root", MPI_N, nproc, "--oversubscribe"]
+        else:
+            return [MPI_LAUNCHER, MPI_N, nproc, "--oversubscribe"]
