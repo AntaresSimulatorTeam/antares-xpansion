@@ -26,6 +26,6 @@ RUN yum install -y python3-pip &&\
     pip3 install pyinstaller pyyaml pytest numpy touch pytest-cov mkdocs mkdocs-material
 
 
-#create user 
+#create user
 RUN useradd user
 # USER user

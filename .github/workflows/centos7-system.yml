@@ -45,7 +45,7 @@ jobs:
           workdir: docker
           dockerfile: centos7-bare
           cache: false
-          tags: centos7-xpansion-bare
+          tags: centos7-xpansion-bare-devtoolset-9
 
   userguide:
     runs-on: ubuntu-latest
@@ -79,7 +79,7 @@ jobs:
 
     runs-on: ubuntu-latest
     needs: [docker_publish, userguide]
-    container: 'antaresrte/rte-antares:centos7-xpansion-bare'
+    container: 'antaresrte/rte-antares:centos7-xpansion-bare-devtoolset-9'
     strategy:
       matrix:
         xprs: [ ON, OFF ]
