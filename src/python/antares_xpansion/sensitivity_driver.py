@@ -38,7 +38,7 @@ class SensitivityDriver:
         self.json_sensitivity_out_path = json_sensitivity_out_path
         self.sensitivity_log_path = sensitivity_log_path
 
-        flushed_print("-- Sensitivity analysis")
+        flushed_print("-- Sensitivity study")
 
         old_cwd = os.getcwd()
         os.chdir(simulation_output_path)

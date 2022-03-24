@@ -15,7 +15,6 @@ enum class SensitivityPbType {
   PROJECTION,
 };
 
-
 inline std::string get_string_from_SensitivityPbType(SensitivityPbType type) {
   if (type == SensitivityPbType::PROJECTION) {
     return PROJECTION_C;
@@ -64,13 +63,17 @@ struct SinglePbData {
 struct SensitivityOutputData {
   double epsilon = 0;
   double best_benders_cost = 0;
+  std::map<std::string, std::pair<double, double>> candidates_bounds;
   std::vector<SinglePbData> pbs_data;
 
   SensitivityOutputData() = default;
-  SensitivityOutputData(double epsilon, double benders_cost,
-                        std::vector<SinglePbData> pbs_data = {})
+  SensitivityOutputData(
+      double epsilon, double benders_cost,
+      std::map<std::string, std::pair<double, double>> candidates_bounds,
+      std::vector<SinglePbData> pbs_data = {})
       : epsilon(epsilon),
         best_benders_cost(benders_cost),
+        candidates_bounds(std::move(candidates_bounds)),
         pbs_data(std::move(pbs_data)) {}
 };
 

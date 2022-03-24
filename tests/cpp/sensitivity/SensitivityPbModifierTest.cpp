@@ -242,37 +242,37 @@ protected:
     void verify_column_name_is(SolverData &solver_data, const int col_id, std::basic_string<char> name)
     {
         update_col_names(solver_data);
-        ASSERT_EQ(solver_data.col_names.at(col_id), name);
+        EXPECT_EQ(solver_data.col_names.at(col_id), name);
     }
     void verify_column_is_of_type(SolverData &solver_data, const int col_id, char type)
     {
         update_col_type(solver_data);
-        ASSERT_EQ(solver_data.coltypes.at(col_id), type);
+        EXPECT_EQ(solver_data.coltypes.at(col_id), type);
     }
     void verify_column_objective_is(SolverData &solver_data, const int col_id, double obj_value)
     {
         update_objectives(solver_data);
-        ASSERT_DOUBLE_EQ(solver_data.objectives.at(col_id), obj_value);
+        EXPECT_DOUBLE_EQ(solver_data.objectives.at(col_id), obj_value);
     }
     void verify_column_lower_bound_is(SolverData &solver_data, const int col_id, double lower_value)
     {
         update_lower_bounds(solver_data);
-        ASSERT_DOUBLE_EQ(solver_data.lower_bounds.at(col_id), lower_value);
+        EXPECT_DOUBLE_EQ(solver_data.lower_bounds.at(col_id), lower_value);
     }
     void verify_column_upper_bound_is(SolverData &solver_data, const int col_id, double upper_value)
     {
         update_upper_bounds(solver_data);
-        ASSERT_DOUBLE_EQ(solver_data.upper_bounds.at(col_id), upper_value);
+        EXPECT_DOUBLE_EQ(solver_data.upper_bounds.at(col_id), upper_value);
     }
     void verify_row_is_of_type(SolverData &solver_data, const int row_id, char type)
     {
         update_row_type(solver_data);
-        ASSERT_EQ(solver_data.rowtypes.at(row_id), type);
+        EXPECT_EQ(solver_data.rowtypes.at(row_id), type);
     }
     void verify_rhs_is(SolverData &solver_data, const int rhs_id, double rhs_value)
     {
         update_rhs_val(solver_data);
-        ASSERT_DOUBLE_EQ(solver_data.rhs.at(rhs_id), rhs_value);
+        EXPECT_DOUBLE_EQ(solver_data.rhs.at(rhs_id), rhs_value);
     }
     void verify_column(SolverData &solver_data, const int col_id, std::basic_string<char> name, char type, double obj_value, double lower_value, double upper_value)
     {
@@ -285,8 +285,8 @@ protected:
     void verify_row(SolverData &solver_data, int row, char type, const std::vector<double> &coeff, const std::vector<int> &col_indexes, double rhs)
     {
         verify_row_is_of_type(solver_data, row, type);
-        ASSERT_EQ(getRowCoefficients(solver_data, row), coeff);
-        ASSERT_EQ(getRowColIndexes(solver_data, row), col_indexes);
+        EXPECT_EQ(getRowCoefficients(solver_data, row), coeff);
+        EXPECT_EQ(getRowColIndexes(solver_data, row), col_indexes);
         verify_rhs_is(solver_data, row, rhs);
     }
     void verify_column_number_equality(SolverData &lastMasterData, SolverData &sensitivityPbData)
@@ -299,31 +299,31 @@ protected:
     {
         update_col_names(lastMasterData);
         update_col_names(sensitivityPbData);
-        ASSERT_EQ(lastMasterData.col_names.at(col_id), sensitivityPbData.col_names.at(col_id));
+        EXPECT_EQ(lastMasterData.col_names.at(col_id), sensitivityPbData.col_names.at(col_id));
     }
     void verify_column_type_equality(SolverData &lastMasterData, SolverData &sensitivityPbData, const int col_id)
     {
         update_col_type(lastMasterData);
         update_col_type(sensitivityPbData);
-        ASSERT_EQ(lastMasterData.coltypes.at(col_id), sensitivityPbData.coltypes.at(col_id));
+        EXPECT_EQ(lastMasterData.coltypes.at(col_id), sensitivityPbData.coltypes.at(col_id));
     }
     void verify_column_objective_equality(SolverData &lastMasterData, SolverData &sensitivityPbData, const int col_id)
     {
         update_objectives(lastMasterData);
         update_objectives(sensitivityPbData);
-        ASSERT_DOUBLE_EQ(lastMasterData.objectives.at(col_id), sensitivityPbData.objectives.at(col_id));
+        EXPECT_DOUBLE_EQ(lastMasterData.objectives.at(col_id), sensitivityPbData.objectives.at(col_id));
     }
     void verify_column_lower_bound_equality(SolverData &lastMasterData, SolverData &sensitivityPbData, const int col_id)
     {
         update_lower_bounds(lastMasterData);
         update_lower_bounds(sensitivityPbData);
-        ASSERT_DOUBLE_EQ(lastMasterData.lower_bounds.at(col_id), sensitivityPbData.lower_bounds.at(col_id));
+        EXPECT_DOUBLE_EQ(lastMasterData.lower_bounds.at(col_id), sensitivityPbData.lower_bounds.at(col_id));
     }
     void verify_column_upper_bound_equality(SolverData &lastMasterData, SolverData &sensitivityPbData, const int col_id)
     {
         update_upper_bounds(lastMasterData);
         update_upper_bounds(sensitivityPbData);
-        ASSERT_DOUBLE_EQ(lastMasterData.upper_bounds.at(col_id), sensitivityPbData.upper_bounds.at(col_id));
+        EXPECT_DOUBLE_EQ(lastMasterData.upper_bounds.at(col_id), sensitivityPbData.upper_bounds.at(col_id));
     }
     void verify_column_equality(SolverData &lastMasterData, SolverData &sensitivityPbData, const int col_id)
     {
@@ -341,7 +341,7 @@ protected:
         verify_column_upper_bound_equality(lastMasterData, sensitivityPbData, col_id);
 
         update_objectives(sensitivityPbData);
-        ASSERT_DOUBLE_EQ(sensitivityPbData.objectives.at(col_id), 0);
+        EXPECT_DOUBLE_EQ(sensitivityPbData.objectives.at(col_id), 0);
     }
     void verify_row_is_added(SolverData &lastMasterData, SolverData &sensitivityPbData)
     {
@@ -353,19 +353,19 @@ protected:
     {
         update_row_type(lastMasterData);
         update_row_type(sensitivityPbData);
-        ASSERT_EQ(lastMasterData.rowtypes.at(row_id), sensitivityPbData.rowtypes.at(row_id));
+        EXPECT_EQ(lastMasterData.rowtypes.at(row_id), sensitivityPbData.rowtypes.at(row_id));
     }
     void verify_rhs_equality(SolverData &lastMasterData, SolverData &sensitivityPbData, const int row_id)
     {
         update_rhs_val(lastMasterData);
         update_rhs_val(sensitivityPbData);
-        ASSERT_DOUBLE_EQ(lastMasterData.rhs.at(row_id), sensitivityPbData.rhs.at(row_id));
+        EXPECT_DOUBLE_EQ(lastMasterData.rhs.at(row_id), sensitivityPbData.rhs.at(row_id));
     }
     void verify_row_equality(SolverData &lastMasterData, SolverData &sensitivityPbData, const int row_id)
     {
         verify_row_type_equality(lastMasterData, sensitivityPbData, row_id);
-        ASSERT_EQ(getRowCoefficients(lastMasterData, row_id), getRowCoefficients(sensitivityPbData, row_id));
-        ASSERT_EQ(getRowColIndexes(lastMasterData, row_id), getRowColIndexes(sensitivityPbData, row_id));
+        EXPECT_EQ(getRowCoefficients(lastMasterData, row_id), getRowCoefficients(sensitivityPbData, row_id));
+        EXPECT_EQ(getRowColIndexes(lastMasterData, row_id), getRowColIndexes(sensitivityPbData, row_id));
         verify_rhs_equality(lastMasterData, sensitivityPbData, row_id);
     }
     void verify_additional_row(SolverData &sensitivityPbData)

@@ -24,7 +24,10 @@ class SensitivityLogger : public SensitivityILogger {
  private:
   std::ostream &_stream;
 
-  void log_projection_summary(const std::vector<SinglePbData> &projection_data);
+  void log_projection_summary(
+      const std::vector<SinglePbData> &projection_data,
+      const std::map<std::string, std::pair<double, double>>
+          &candidates_bounds);
   void log_capex_summary(const std::vector<SinglePbData> &capex_data);
 };
 
