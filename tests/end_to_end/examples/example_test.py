@@ -49,10 +49,10 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
         "--step",
         "full",
         "-n",
-        "2",
-        "--allow-run-as-root",
-        allow_run_as_root
+        "2"
     ]
+    if (allow_run_as_root == True):
+        command.append("--allow-run-as-root")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
 

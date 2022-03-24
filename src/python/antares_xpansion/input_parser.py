@@ -68,7 +68,7 @@ class InputParser:
                                  default=False,
                                  action='store_true',
                                  help='enable mpi oversubscribe option (linux only)')
-        self.parser.add_argument("--allow_run_as_root",
+        self.parser.add_argument("--allow-run-as-root",
                                  dest="allow_run_as_root",
                                  default=False,
                                  action='store_true',
