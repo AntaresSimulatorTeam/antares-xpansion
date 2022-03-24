@@ -31,7 +31,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
     add_test(
         NAME examples_short_mpi
-        COMMAND Python3::Interpreter -m pytest -m short_mpi --installDir=${XPANSION_INSTALL_DIR} example_test.py
+        COMMAND Python3::Interpreter -m pytest -m short_mpi --allow_run_as_root=${ALLOW_TO_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_short_mpi PROPERTY LABELS short short_mpi)
@@ -45,7 +45,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
     add_test(
             NAME examples_medium_mpi
-            COMMAND Python3::Interpreter -m pytest -m medium_mpi --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            COMMAND Python3::Interpreter -m pytest -m medium_mpi --allow_run_as_root=${ALLOW_TO_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_medium_mpi PROPERTY LABELS medium medium_mpi)
@@ -59,7 +59,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
     add_test(
         NAME examples_long_mpi
-        COMMAND Python3::Interpreter -m pytest -m long_mpi --allow_run_as_root=${allow_run_as_root} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+        COMMAND Python3::Interpreter -m pytest -m long_mpi --allow_run_as_root=${ALLOW_TO_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_long_mpi PROPERTY LABELS long long_mpi)
@@ -73,7 +73,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     set_property(TEST sequential PROPERTY LABELS benders benders-sequential)
     add_test(
         NAME mpibenders
-        COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${allow_run_as_root} --installDir=${XPANSION_INSTALL_DIR} test_bendersmpibendersEndToEnd.py
+        COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${ALLOW_TO_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} test_bendersmpibendersEndToEnd.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
     set_property(TEST mpibenders PROPERTY LABELS benders benders-mpi)

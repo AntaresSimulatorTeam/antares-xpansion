@@ -41,6 +41,10 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
 
+# for centos docker to run MPI tests as root
+IF(ALLOW_TO_RUN_AS_ROOT)
+	set(ALLOW_TO_RUN_AS_ROOT True)
+ENDIF() 
 
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
