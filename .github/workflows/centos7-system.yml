@@ -147,9 +147,6 @@ jobs:
 
       - name: Configure
         run: |
-          ls /opt
-          ls /opt/rh
-          ls /opt/rh/devtoolset-9/
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
