@@ -15,6 +15,7 @@ class ConfigFileParser:
         self.BENDERS_SEQUENTIAL_DEFAULT = "benders_sequential"
         self.LP_NAMER_DEFAULT = "lp_namer"
         self.STUDY_UPDATER_DEFAULT = "study_updater"
+        self.SENSITIVITY_DEFAULT = "sensitivity"
         self.AVAILABLE_SOLVERS_DEFAULT = []
         
     def get_config_parameters(self) -> ConfigParameters :
@@ -31,6 +32,7 @@ class ConfigFileParser:
                             BENDERS_SEQUENTIAL = content.get('BENDERS_SEQUENTIAL', self.BENDERS_SEQUENTIAL_DEFAULT),
                             LP_NAMER = content.get('LP_NAMER', self.LP_NAMER_DEFAULT),
                             STUDY_UPDATER = content.get('STUDY_UPDATER', self.STUDY_UPDATER_DEFAULT),
+                            SENSITIVITY_EXE = content.get('SENSITIVITY', self.SENSITIVITY_DEFAULT),
                             AVAILABLE_SOLVERS = content.get('AVAILABLE_SOLVER', self.AVAILABLE_SOLVERS_DEFAULT)
                     )
         return self.config

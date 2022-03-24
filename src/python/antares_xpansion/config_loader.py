@@ -128,6 +128,13 @@ class ConfigLoader:
         return os.path.normpath(os.path.join(self.data_dir(), self._config.USER,
                                              self._config.EXPANSION, self._config.CAPADIR, filename))
 
+    def json_sensitivity_in_path(self):
+        """
+            returns path to sensitivity input file
+        """
+        return os.path.normpath(os.path.join(self.data_dir(), self._config.USER,
+                                             self._config.EXPANSION, self._config.SENSITIVITY_DIR, self._config.JSON_SENSITIVITY_IN))
+
     def weights_file_path(self):
         """
             returns the path to a yearly-weights file
@@ -228,10 +235,20 @@ class ConfigLoader:
         if os.path.isdir(expansion_dir):
             shutil.rmtree(expansion_dir)
         os.makedirs(expansion_dir)
+    
+    def _create_sensitivity_dir(self):
+        sensitivity_dir = self._sensitivity_dir()
+        if os.path.isdir(sensitivity_dir):
+            shutil.rmtree(sensitivity_dir)
+        os.makedirs(sensitivity_dir)
 
     def _expansion_dir(self):
         return os.path.normpath(os.path.join(
             self.simulation_output_path(), 'expansion'))
+    
+    def _sensitivity_dir(self):
+        return os.path.normpath(os.path.join(
+            self.simulation_output_path(), 'sensitivity'))
 
     def _set_options_for_benders_solver(self):
         """
@@ -315,6 +332,9 @@ class ConfigLoader:
 
     def study_update_exe(self):
         return self.exe_path(self._config.STUDY_UPDATER)
+    
+    def sensitivity_exe(self):
+        return self.exe_path(self._config.SENSITIVITY_EXE)
 
     def method(self):
         return self._config.method
@@ -332,7 +352,16 @@ class ConfigLoader:
         return self._config.antares_n_cpu
 
     def json_file_path(self):
-        return os.path.join(self._expansion_dir(), self._config.JSON_NAME + ".json")
+        return os.path.join(self._expansion_dir(), self._config.JSON_NAME)
+    
+    def json_sensitivity_out_path(self):
+        return os.path.join(self._sensitivity_dir(), self._config.JSON_SENSITIVITY_OUT)
+    
+    def structure_file_path(self):
+        return os.path.join(self.simulation_lp_path(), self._config.options_default["STRUCTURE_FILE"])  # Assumes that structure file is always the default, ok for now as the user cannot set it, but could it be dangerous if later we wish for some reasons modify its name to a non-default one
+
+    def last_master_file_path(self):
+        return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_iteration.mps") # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
 
     def oversubscribe(self):
         return self._config.oversubscribe
@@ -359,6 +388,10 @@ class ConfigLoader:
             "log_level", self._config.settings_default["log_level"]
         )
         return int(log_level_str)
+
+    def sensitivity_log_file(self)-> Path:
+        return Path(os.path.join(self._sensitivity_dir(), self._config.SENSITIVITY_LOG_FILE))
+
 
     class MissingSimulationName(Exception):
         pass

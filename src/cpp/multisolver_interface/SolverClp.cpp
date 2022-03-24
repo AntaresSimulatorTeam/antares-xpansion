@@ -10,41 +10,48 @@ int SolverClp::_NumberOfProblems = 0;
 
 SolverClp::SolverClp(const std::string &log_file) : SolverClp() {
   _log_file = log_file;
-  _fp = fopen(_log_file.c_str(), "a+");
-
-  if (_fp == NULL) {
-    std::cerr << "Invalid log file name passed as parameter" << std::endl;
+  if (_log_file.empty()) {
+    std::cout << "Empty log file name, fallback to default behaviour"
+              << std::endl;
   } else {
-    setvbuf(_fp, NULL, _IONBF, 0);
-    _message_handler.setFilePointer(_fp);
+    if ((_fp = fopen(_log_file.c_str(), "a+")) == NULL) {
+      std::cerr << "Invalid log file name passed as parameter: " << _log_file
+                << std::endl;
+    } else {
+      setvbuf(_fp, NULL, _IONBF, 0);
+      _message_handler.setFilePointer(_fp);
+    }
   }
 }
 SolverClp::SolverClp() {
   _NumberOfProblems += 1;
-  _clp = NULL;
+  _fp = nullptr;
 }
 
-SolverClp::SolverClp(const SolverAbstract::Ptr fictif) : SolverClp() {
+SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
+    : SolverClp() {
+  _fp = nullptr;
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (SolverClp *c = dynamic_cast<SolverClp *>(fictif.get())) {
+  if (const auto c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
-    _log_file = fictif->_log_file;
+    _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.c_str(), "a+");
-    if (_fp != NULL) {
-      setvbuf(_fp, NULL, _IONBF, 0);
+    if (_fp != nullptr) {
+      setvbuf(_fp, nullptr, _IONBF, 0);
       _message_handler.setFilePointer(_fp);
     }
   } else {
     _NumberOfProblems -= 1;
-    throw InvalidSolverForCopyException(fictif->get_solver_name(),
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(),
                                         get_solver_name());
   }
 }
 
 SolverClp::~SolverClp() {
   _NumberOfProblems -= 1;
-  if (_fp != NULL) {
+  if (_fp != nullptr) {
     fclose(_fp);
+    _fp = nullptr;
   }
   free();
 }
@@ -275,6 +282,11 @@ void SolverClp::chg_obj(const std::vector<int> &mindex,
   for (int i(0); i < obj.size(); i++) {
     _clp.setObjCoeff(mindex[i], obj[i]);
   }
+}
+
+void SolverClp::chg_obj_direction(const bool minimize) {
+  int objsense = minimize ? 1 : -1;
+  _clp.setOptimizationDirection(objsense);
 }
 
 void SolverClp::chg_bounds(const std::vector<int> &mindex,

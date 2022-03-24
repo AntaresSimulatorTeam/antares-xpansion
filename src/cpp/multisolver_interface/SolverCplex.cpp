@@ -42,7 +42,11 @@ SolverCplex::SolverCplex() {
 //   _NumberOfProblems += 1;
 // }
 
-SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif) {
+SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif): SolverCplex(static_cast<const std::shared_ptr<const SolverAbstract>>(fictif)) {
+
+}
+
+SolverCplex::SolverCplex(const std::shared_ptr<const SolverAbstract> fictif) {
   int status(0);
 
   // Openning CPLEX environment
@@ -50,7 +54,7 @@ SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif) {
   zero_status_check(status, "open CPLEX");
 
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (SolverCplex *c = dynamic_cast<SolverCplex *>(fictif.get())) {
+  if (const SolverCplex *c = dynamic_cast<const SolverCplex *>(fictif.get())) {
     _prb = CPXcloneprob(_env, c->_prb, &status);
     zero_status_check(status, "create problem");
     _log_file = fictif->_log_file;
@@ -308,6 +312,12 @@ void SolverCplex::chg_obj(const std::vector<int> &mindex,
   assert(obj.size() == mindex.size());
   int status = CPXchgobj(_env, _prb, obj.size(), mindex.data(), obj.data());
   zero_status_check(status, "change obj");
+}
+
+void SolverCplex::chg_obj_direction(const bool minimize) {
+	int objsense = minimize ? CPX_MIN : CPX_MAX;
+	int status = CPXchgobjsen(_env, _prb, objsense);
+	zero_status_check(status, "change obj sense");
 }
 
 void SolverCplex::chg_bounds(const std::vector<int> &mindex,

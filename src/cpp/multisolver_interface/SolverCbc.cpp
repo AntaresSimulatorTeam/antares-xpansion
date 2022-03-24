@@ -10,13 +10,17 @@ int SolverCbc::_NumberOfProblems = 0;
 
 SolverCbc::SolverCbc(const std::string &log_file) : SolverCbc() {
   _log_file = log_file;
-  _fp = fopen(_log_file.c_str(), "a+");
-
-  if (_fp == NULL) {
-    std::cerr << "Invalid log file name passed as parameter" << std::endl;
+  if (_log_file.empty()) {
+    std::cout << "Empty log file name, fallback to default behaviour"
+              << std::endl;
   } else {
-    setvbuf(_fp, NULL, _IONBF, 0);
-    _message_handler.setFilePointer(_fp);
+    if ((_fp = fopen(_log_file.c_str(), "a+")) == nullptr) {
+      std::cerr << "Invalid log file name passed as parameter: " << _log_file
+                << std::endl;
+    } else {
+      setvbuf(_fp, nullptr, _IONBF, 0);
+      _message_handler.setFilePointer(_fp);
+    }
   }
 }
 SolverCbc::SolverCbc() {
@@ -24,28 +28,30 @@ SolverCbc::SolverCbc() {
   _current_log_level = 0;
 }
 
-SolverCbc::SolverCbc(const SolverAbstract::Ptr fictif) : SolverCbc() {
+SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
+    : SolverCbc() {
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (SolverCbc *c = dynamic_cast<SolverCbc *>(fictif.get())) {
+  if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
-    _log_file = fictif->_log_file;
+    _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.c_str(), "a+");
-    if (_fp != NULL) {
-      setvbuf(_fp, NULL, _IONBF, 0);
+    if (_fp != nullptr) {
+      setvbuf(_fp, nullptr, _IONBF, 0);
       _message_handler.setFilePointer(_fp);
     }
     defineCbcModelFromInnerSolver();
   } else {
     _NumberOfProblems -= 1;
-    throw InvalidSolverForCopyException(fictif->get_solver_name(),
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(),
                                         get_solver_name());
   }
 }
 
 SolverCbc::~SolverCbc() {
   _NumberOfProblems -= 1;
-  if (_fp != NULL) {
+  if (_fp != nullptr) {
     fclose(_fp);
+    _fp = nullptr;
   }
   free();
 }
@@ -129,7 +135,7 @@ void SolverCbc::write_prob_mps(const std::string &filename) {
   writer.setMpsData(
       *(_clp_inner_solver.getMatrixByCol()), _clp_inner_solver.getInfinity(),
       _clp_inner_solver.getColLower(), _clp_inner_solver.getColUpper(),
-      _clp_inner_solver.getObjCoefficients(), hasInteger ? integrality : NULL,
+      _clp_inner_solver.getObjCoefficients(), hasInteger ? integrality : nullptr,
       _clp_inner_solver.getRowLower(), _clp_inner_solver.getRowUpper(),
       colNames, rowNames);
 
@@ -141,11 +147,11 @@ void SolverCbc::write_prob_mps(const std::string &filename) {
   _clp_inner_solver.getDblParam(OsiObjOffset, objOffset);
   writer.setObjectiveOffset(objOffset);
 
-  writer.writeMps(filename.c_str(), 0 /*gzip it*/, 1, 1, NULL, 0, NULL);
+  writer.writeMps(filename.c_str(), 0 /*gzip it*/, 1, 1, nullptr, 0, nullptr);
 }
 
 void SolverCbc::write_prob_lp(const std::string &name) {
-  _clp_inner_solver.writeLpNative(name.c_str(), NULL, NULL);
+  _clp_inner_solver.writeLpNative(name.c_str(), nullptr, nullptr);
 }
 
 void SolverCbc::read_prob_mps(const std::string &prob_name) {
@@ -368,6 +374,11 @@ void SolverCbc::chg_obj(const std::vector<int> &mindex,
   }
 }
 
+void SolverCbc::chg_obj_direction(const bool minimize) {
+  int objsense = minimize ? 1 : -1;
+  _clp_inner_solver.setObjSense(objsense);
+}
+
 void SolverCbc::chg_bounds(const std::vector<int> &mindex,
                            const std::vector<char> &qbtype,
                            const std::vector<double> &bnd) {
@@ -537,21 +548,21 @@ int SolverCbc::get_splex_num_of_ite_last() const {
 
 void SolverCbc::get_lp_sol(double *primals, double *duals,
                            double *reduced_costs) {
-  if (primals != NULL) {
+  if (primals != nullptr) {
     const double *primalSol = _cbc.solver()->getColSolution();
     for (int i(0); i < get_ncols(); i++) {
       primals[i] = primalSol[i];
     }
   }
 
-  if (duals != NULL) {
+  if (duals != nullptr) {
     const double *dualSol = _cbc.solver()->getRowPrice();
     for (int i(0); i < get_nrows(); i++) {
       duals[i] = dualSol[i];
     }
   }
 
-  if (reduced_costs != NULL) {
+  if (reduced_costs != nullptr) {
     const double *reducedCostSolution = _cbc.solver()->getReducedCost();
     for (int i(0); i < get_ncols(); i++) {
       reduced_costs[i] = reducedCostSolution[i];
@@ -560,7 +571,7 @@ void SolverCbc::get_lp_sol(double *primals, double *duals,
 }
 
 void SolverCbc::get_mip_sol(double *primals) {
-  if (primals != NULL) {
+  if (primals != nullptr) {
     const double *primalSol = _cbc.getColSolution();
     for (int i(0); i < get_ncols(); i++) {
       primals[i] = primalSol[i];

@@ -39,6 +39,7 @@ class SolverXpress : public SolverAbstract {
    * solver to copy
    */
   SolverXpress(const SolverAbstract::Ptr toCopy);
+  SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
 
   virtual ~SolverXpress();
   virtual int get_number_of_instances() override;
@@ -114,6 +115,7 @@ class SolverXpress : public SolverAbstract {
   virtual void add_name(int type, const char *cnames, int indice) override;
   virtual void chg_obj(const std::vector<int> &mindex,
                        const std::vector<double> &obj) override;
+  virtual void chg_obj_direction(const bool minimize) override;
   virtual void chg_bounds(const std::vector<int> &mindex,
                           const std::vector<char> &qbtype,
                           const std::vector<double> &bnd) override;

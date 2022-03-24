@@ -25,6 +25,7 @@ class TestConfigFileParser:
         assert config_param.BENDERS_SEQUENTIAL == "benders_sequential"
         assert config_param.LP_NAMER == "lp_namer"
         assert config_param.STUDY_UPDATER == "study_updater"
+        assert config_param.SENSITIVITY_EXE == "sensitivity"
         assert config_param.AVAILABLE_SOLVERS == []
 
 
@@ -38,6 +39,7 @@ class TestConfigFileParser:
                     "BENDERS_SEQUENTIAL  : benderssequential.exe\n"\
                     "LP_NAMER            : lp_namer.exe\n"\
                     "STUDY_UPDATER       : xpansion-study-updater.exe\n"\
+                    "SENSITIVITY         : sensitivity.exe\n"\
                     "AVAILABLE_SOLVER :\n"\
                     "- Cbc\n"
                     
@@ -51,6 +53,7 @@ class TestConfigFileParser:
         assert config_param.BENDERS_SEQUENTIAL == "benderssequential.exe"
         assert config_param.LP_NAMER == "lp_namer.exe"
         assert config_param.STUDY_UPDATER == "xpansion-study-updater.exe"
+        assert config_param.SENSITIVITY_EXE == "sensitivity.exe"
         assert config_param.AVAILABLE_SOLVERS == ["Cbc"]
 
 

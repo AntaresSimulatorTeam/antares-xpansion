@@ -1,0 +1,5 @@
+{
+    "epsilon" : 1e4,
+    "capex": true,
+    "projection": ["peak", "semibase"]
+}

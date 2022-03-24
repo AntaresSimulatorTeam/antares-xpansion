@@ -27,7 +27,7 @@ where `x.y.z` is the version number).
 
 Show a help message and exit.
 
-#### `--step {full, antares, problem_generation, benders, study_update}`
+#### `--step {full, antares, problem_generation, benders, study_update, sensitivity}`
 
 Default value: `full`. 
 
@@ -41,6 +41,7 @@ The execution of Antares-Xpansion consists of several steps that can be run sepa
 | `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/investment-problem.md).|
 | `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/investment-problem.md) algorithm. |
 | `full`               | Launch all steps in order: `antares` \> `problem_generation` \> `benders` \> `study_update`           |
+| `sensitivity`        | Launch sensitivity analysis, see [Sensitivity analysis](sensitivity-analysis.md).                       |
 
 #### `-i, --dataDir`
 
