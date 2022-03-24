@@ -42,8 +42,8 @@ IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 ENDIF ()
 
 # for centos docker to run MPI tests as root
-IF(ALLOW_TO_RUN_AS_ROOT)
-	set(ALLOW_TO_RUN_AS_ROOT True)
+IF(ALLOW_RUN_AS_ROOT)
+	set(ALLOW_RUN_AS_ROOT True)
 ENDIF() 
 
 # Set solvers to use

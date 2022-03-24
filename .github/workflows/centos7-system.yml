@@ -163,7 +163,7 @@ jobs:
                  -DBUILD_UI=ON \
                  -DXPRESS=${{ matrix.xprs }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
-                 -DALLOW_TO_RUN_AS_ROOT=ON
+                 -DALLOW_RUN_AS_ROOT=ON
 
       - name: Build
         run: |
