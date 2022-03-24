@@ -9,7 +9,6 @@ on:
       - feature/*
       - fix/*
       - release/*
-      - centos/*
   release:
     types: [ created ]
 
@@ -48,48 +47,46 @@ jobs:
           cache: false
           tags: centos7-xpansion-bare
 
-  # userguide:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
+  userguide:
+    runs-on: ubuntu-latest
+    outputs:
+      pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
-  #   steps:
-  #     - uses: actions/checkout@v2
+    steps:
+      - uses: actions/checkout@v2
 
-  #     - name: Read antares-xpansion version
-  #       id: antares-xpansion-version
-  #       uses: notiz-dev/github-action-json-property@release
-  #       with:
-  #         path: 'antares-version.json'
-  #         prop_path: 'antares_xpansion_version'
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_xpansion_version'
 
-  #     - id: create-user-guide
-  #       name: user guide pdf creation
-  #       uses: ./.github/workflows/generate-userguide-pdf
-  #       with:
-  #         antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+      - id: create-user-guide
+        name: user guide pdf creation
+        uses: ./.github/workflows/generate-userguide-pdf
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
-  #     - name: user guide upload
-  #       id: userguide_upload
-  #       uses: actions/upload-artifact@v2
-  #       with:
-  #         name: user-guide
-  #         path: ${{ steps.create-user-guide.outputs.pdf-path }}
+      - name: user guide upload
+        id: userguide_upload
+        uses: actions/upload-artifact@v2
+        with:
+          name: user-guide
+          path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
   build:
 
     runs-on: ubuntu-latest
-    needs: [docker_publish]
-    container:  
-      image: 'antaresrte/rte-antares:centos7-xpansion-bare' 
-      # options: --user user
+    needs: [docker_publish, userguide]
+    container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
       matrix:
-        xprs: [ OFF ]
-    # env:
-    #   XPRESSDIR: ${{ github.workspace }}/xpress
-    #   XPRESS: ${{ github.workspace }}/xpress/bin
-    #   XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+        xprs: [ ON, OFF ]
+    env:
+      XPRESSDIR: ${{ github.workspace }}/xpress
+      XPRESS: ${{ github.workspace }}/xpress/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
       - uses: nelonoel/branch-name@v1.0.1
@@ -101,13 +98,12 @@ jobs:
 
       - name: Checkout
         run: |
-          source /opt/rh/rh-git227/enable
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
           git submodule update --init --recursive antares-deps
 
-      # - name: Checkout xpressmp linux
-      #   run: |
-      #     git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
+      - name: Checkout xpressmp linux
+        run: |
+          git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
 
       - name: Read antares-solver version
         id: antares-version
@@ -143,11 +139,11 @@ jobs:
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
 
-      # - name: Download userguide
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: user-guide
-      #     path: docs/
+      - name: Download userguide
+        uses: actions/download-artifact@v2
+        with:
+          name: user-guide
+          path: docs/
 
       - name: Configure
         run: |
@@ -161,6 +157,7 @@ jobs:
                  -DUSE_MPI=ON \
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
+                 -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                  -DXPRESS=${{ matrix.xprs }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
                  -DALLOW_RUN_AS_ROOT=ON
@@ -172,19 +169,19 @@ jobs:
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
 
-      # - name: .tar.gz creation
-      #   run: |
-      #     cd _build
-      #     cpack3 -G TGZ
-      #     export TGZ_NAME=$(ls *.tar.gz)
-      #     echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
+      - name: .tar.gz creation
+        run: |
+          cd _build
+          cpack3 -G TGZ
+          export TGZ_NAME=$(ls *.tar.gz)
+          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
 
-      # - name: Installer .rpm creation
-      #   run: |
-      #     cd _build
-      #     cpack3 -G RPM
-      #     export RPM_NAME=$(ls *.rpm)
-      #     echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
+      - name: Installer .rpm creation
+        run: |
+          cd _build
+          cpack3 -G RPM
+          export RPM_NAME=$(ls *.rpm)
+          echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
 
       - name: set name variables
         id: single_file_name
@@ -197,43 +194,41 @@ jobs:
           echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
-      # - id: create-single-file
-      #   name: Single file .tar.gz creation
-      #   uses: ./.github/workflows/single-file-creation-tgz
-      #   with:
-      #     antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
+      - id: create-single-file
+        name: Single file .tar.gz creation
+        uses: ./.github/workflows/single-file-creation-tgz
+        with:
+          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
-      # - name: Upload .tar.gz
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: ${{env.TGZ_NAME}}
-      #     path: _build/${{env.TGZ_NAME}}
+      - name: Upload .tar.gz
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{env.TGZ_NAME}}
+          path: _build/${{env.TGZ_NAME}}
 
-      # - name: Upload rpm
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: ${{env.RPM_NAME}}
-      #     path: _build/${{env.RPM_NAME}}
+      - name: Upload rpm
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{env.RPM_NAME}}
+          path: _build/${{env.RPM_NAME}}
 
-      # - name: Upload single file
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: ${{ steps.create-single-file.outputs.archive-name }}
-      #     path: ${{ steps.create-single-file.outputs.archive-path }}
+      - name: Upload single file
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.create-single-file.outputs.archive-name }}
+          path: ${{ steps.create-single-file.outputs.archive-path }}
 
       - name: Running unit tests
         shell: bash
         run: |
-          cat /etc/passwd
-          echo "**1***"
-          whoami
-          echo "**2**"
           source /etc/profile.d/modules.sh
           module load mpi
+          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
+          export XPRESS=${{ env.XPRESS }}
           cd _build
           ctest3 -C Release --output-on-failure -L "unit|benders"
 
-      - name: Publish .tar.gzs
+      - name: Publish .tar.gz
         if: github.event_name == 'release' && github.event.action == 'created'
         uses: actions/upload-release-asset@v1.0.2
         with:
