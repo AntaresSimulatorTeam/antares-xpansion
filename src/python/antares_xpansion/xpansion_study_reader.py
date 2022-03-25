@@ -24,7 +24,7 @@ class XpansionStudyReader:
 
     class NoSimulationDirectory(BaseException):
         pass
-    
+
     @staticmethod
     def convert_study_solver_to_option_solver(study_solver: str) -> str:
         keys = {
@@ -35,6 +35,8 @@ class XpansionStudyReader:
         }
         if study_solver in keys:
             return keys.get(study_solver)
+        elif study_solver == "":
+            return keys.get("Cbc")
         else:
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {study_solver} not available.')
@@ -45,7 +47,7 @@ class XpansionStudyReader:
             checks that the yearly-weights file exists and has correct format:
                 column of non-negative weights
                 sum of weights is positive
-				nb_weight equal nb_active_yearse
+                                nb_weight equal nb_active_yearse
         """
 
         # check file existence
@@ -78,6 +80,7 @@ class XpansionStudyReader:
         :param available_solvers: List of available solvers
         :return:
         """
+
         if not solver_str:
             print("No solver defined in user/expansion/settings.ini. Cbc used")
             solver_str = "Cbc"
@@ -85,13 +88,14 @@ class XpansionStudyReader:
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {solver_str} not available. Please use one of these solver in user/expansion/settings.ini : {available_solvers}')
 
-    @staticmethod
+    @ staticmethod
     def _count_values_and_check_if_all_weights_are_null(filename_path, weights_file):
         _null_weights = True
         _nb_values = 0
         for idx, line in enumerate(weights_file):
             if line.strip():
-                line_value = XpansionStudyReader._get_line_value(line, idx, filename_path)
+                line_value = XpansionStudyReader._get_line_value(
+                    line, idx, filename_path)
                 _nb_values += 1
                 if line_value > 0:
                     _null_weights = False
@@ -101,7 +105,7 @@ class XpansionStudyReader:
                         % (idx + 1, filename_path))
         return _nb_values, _null_weights
 
-    @staticmethod
+    @ staticmethod
     def _get_line_value(line, idx, filename_path) -> float:
         try:
             line_value = float(line.strip())
@@ -111,7 +115,7 @@ class XpansionStudyReader:
                 % (idx + 1, filename_path))
         return line_value
 
-    @staticmethod
+    @ staticmethod
     def get_years_weight_from_file(file_path: Path) -> List[float]:
         result = []
         with open(file_path, 'r') as weights_file:
