@@ -154,7 +154,7 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build _build --config Release -j2 --target install
+          cmake --build _build --config Release -j8 --target install
 
       - name: set name variables
         id: single_file_name
