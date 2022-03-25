@@ -18,6 +18,9 @@ const std::string NAME_C("name");
 const std::string INVEST_C("invest");
 const std::string CANDIDATES_C("candidates");
 const std::string SENSITIVITY_SOLUTION_C("sensitivity solutions");
+const std::string LB_C("lower bound");
+const std::string UB_C("upper bound");
+const std::string BOUNDS_C("candidates bounds");
 
 class SensitivityWriter {
  private:

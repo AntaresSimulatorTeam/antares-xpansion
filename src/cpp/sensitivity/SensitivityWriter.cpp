@@ -9,7 +9,7 @@
 SensitivityWriter::SensitivityWriter(std::string json_filename)
     : _filename(std::move(json_filename)) {}
 
-void dump(const Json::Value &output, const std::string& file_name) {
+void dump(const Json::Value &output, const std::string &file_name) {
   std::ofstream jsonOut_l(file_name);
   if (jsonOut_l) {
     jsonOut_l << output << std::endl;
@@ -24,6 +24,16 @@ Json::Value write_candidate(const std::pair<std::string, double> &candidate) {
   candidate_l[NAME_C] = candidate.first;
   candidate_l[INVEST_C] = candidate.second;
   return candidate_l;
+}
+
+Json::Value write_candidate_bounds(
+    const std::pair<std::string, const std::pair<double, double>>
+        &candidate_bounds) {
+  Json::Value candidate_bounds_l;
+  candidate_bounds_l[NAME_C] = candidate_bounds.first;
+  candidate_bounds_l[LB_C] = candidate_bounds.second.first;
+  candidate_bounds_l[UB_C] = candidate_bounds.second.second;
+  return candidate_bounds_l;
 }
 
 Json::Value write_single_pb(const SinglePbData &single_pb_data) {
@@ -52,12 +62,20 @@ Json::Value write_sensitivity_output(const SensitivityOutputData &output_data) {
   output[EPSILON_C] = output_data.epsilon;
   output[BEST_BENDERS_C] = output_data.best_benders_cost;
 
+  Json::Value candidates_bounds_l(Json::arrayValue);
   Json::Value pbs_data_l(Json::arrayValue);
+
+  for (const auto &candidate_bounds : output_data.candidates_bounds) {
+    Json::Value candidate_bounds_l = write_candidate_bounds(candidate_bounds);
+    candidates_bounds_l.append(candidate_bounds_l);
+  }
 
   for (const auto &single_pb_data : output_data.pbs_data) {
     Json::Value single_pb_data_l = write_single_pb(single_pb_data);
     pbs_data_l.append(single_pb_data_l);
   }
+
+  output[BOUNDS_C] = candidates_bounds_l;
   output[SENSITIVITY_SOLUTION_C] = pbs_data_l;
   return output;
 }

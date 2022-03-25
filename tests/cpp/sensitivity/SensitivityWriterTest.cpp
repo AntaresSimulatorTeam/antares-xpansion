@@ -23,8 +23,8 @@ class SensitivityWriterTest : public ::testing::Test {
 
     int candidate_id = 0;
     for (auto &kvp : candidates) {
-      ASSERT_EQ(kvp.first, written_candidates[candidate_id][NAME_C].asString());
-      ASSERT_DOUBLE_EQ(kvp.second,
+      EXPECT_EQ(kvp.first, written_candidates[candidate_id][NAME_C].asString());
+      EXPECT_DOUBLE_EQ(kvp.second,
                        written_candidates[candidate_id][INVEST_C].asDouble());
       candidate_id++;
     }
@@ -35,15 +35,15 @@ class SensitivityWriterTest : public ::testing::Test {
     ASSERT_EQ(pbs_data.size(), written_pbs_data.size());
 
     for (int pb_id(0); pb_id < pbs_data.size(); pb_id++) {
-      ASSERT_EQ(pbs_data[pb_id].str_pb_type,
+      EXPECT_EQ(pbs_data[pb_id].str_pb_type,
                 written_pbs_data[pb_id][PB_TYPE_C].asString());
-      ASSERT_EQ(pbs_data[pb_id].opt_dir,
+      EXPECT_EQ(pbs_data[pb_id].opt_dir,
                 written_pbs_data[pb_id][OPT_DIR_C].asString());
-      ASSERT_EQ(pbs_data[pb_id].solver_status,
+      EXPECT_EQ(pbs_data[pb_id].solver_status,
                 written_pbs_data[pb_id][STATUS_C].asInt());
-      ASSERT_DOUBLE_EQ(pbs_data[pb_id].objective,
+      EXPECT_DOUBLE_EQ(pbs_data[pb_id].objective,
                        written_pbs_data[pb_id][OBJECTIVE_C].asDouble());
-      ASSERT_DOUBLE_EQ(pbs_data[pb_id].system_cost,
+      EXPECT_DOUBLE_EQ(pbs_data[pb_id].system_cost,
                        written_pbs_data[pb_id][SYSTEM_COST_C].asDouble());
 
       verify_candidates_writing(pbs_data[pb_id].candidates,
@@ -51,11 +51,28 @@ class SensitivityWriterTest : public ::testing::Test {
     }
   }
 
+  void verify_bounds_writing(
+      const std::map<std::string, std::pair<double, double>> &candidates_bounds,
+      const Json::Value &written_candidates_bounds) {
+    ASSERT_EQ(candidates_bounds.size(), written_candidates_bounds.size());
+
+    int candidate_id = 0;
+    for (auto &kvp : candidates_bounds) {
+      EXPECT_EQ(kvp.first, written_candidates_bounds[candidate_id][NAME_C].asString());
+      EXPECT_EQ(kvp.second.first, written_candidates_bounds[candidate_id][LB_C].asDouble());
+      EXPECT_EQ(kvp.second.second, written_candidates_bounds[candidate_id][UB_C].asDouble());
+      candidate_id++;
+    }
+  }
+
   void verify_output_writing(const SensitivityOutputData &output_data,
                              Json::Value written_data) {
-    ASSERT_EQ(output_data.epsilon, written_data[EPSILON_C].asDouble());
-    ASSERT_EQ(output_data.best_benders_cost,
+    EXPECT_EQ(output_data.epsilon, written_data[EPSILON_C].asDouble());
+    EXPECT_EQ(output_data.best_benders_cost,
               written_data[BEST_BENDERS_C].asDouble());
+
+    verify_bounds_writing(output_data.candidates_bounds,
+                          written_data[BOUNDS_C]);
 
     verify_pbs_data_writing(output_data.pbs_data,
                             written_data[SENSITIVITY_SOLUTION_C]);
@@ -68,7 +85,7 @@ TEST_F(SensitivityWriterTest, GenerateAValidFile) {
 
   std::ifstream fileStream(_fileName);
   fileStream.close();
-  ASSERT_TRUE(fileStream.good());
+  EXPECT_TRUE(fileStream.good());
 }
 
 Json::Value get_value_from_json(const std::string &file_name) {
@@ -105,6 +122,7 @@ TEST_F(SensitivityWriterTest, EndWritingPrintsOutputData) {
 
   output_data.epsilon = 2;
   output_data.best_benders_cost = 100;
+  output_data.candidates_bounds = {{"my_cand", {12, 37}}, {"mock", {123, 456}}};
   output_data.pbs_data = {capex_min_data, proj_max_data};
 
   writer.end_writing(output_data);
