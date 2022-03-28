@@ -38,14 +38,14 @@ std::string get_objective_unit(const SinglePbData& pb_data) {
 }
 
 std::string format_objective(const SinglePbData& pb_data) {
+  std::string objective;
   if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
-    std::stringstream objective;
-    objective << pb_data.objective;
-    return objective.str();
+    objective = xpansion::logger::commons::create_str_mw(pb_data.objective);
   } else {
-    return xpansion::logger::commons::create_str_million_euros(
-        pb_data.objective);
+    objective =
+        xpansion::logger::commons::create_str_million_euros(pb_data.objective);
   }
+  return objective;
 }
 
 void SensitivityLogger::log_pb_solution(const SinglePbData& pb_data) {
@@ -64,10 +64,11 @@ void SensitivityLogger::log_at_ending() {
 }
 
 void SensitivityLogger::log_summary(const SensitivityOutputData& output_data) {
-  _stream << "Sensitivity analysis summary "
-          << "(epsilon = " << output_data.epsilon << EUROS << "):" << std::endl
+  _stream << std::endl
+          << "--- Sensitivity analysis summary "
+          << "(epsilon = " << output_data.epsilon << EUROS << ") ---"
+          << std::endl
           << std::endl;
-
   std::vector<SinglePbData> projection_data = {};
   std::vector<SinglePbData> capex_data = {};
 
@@ -131,11 +132,17 @@ void SensitivityLogger::log_projection_summary(
 
   for (const auto& kvp : investment_intervals) {
     auto interval = kvp.second;
-    _stream << indent_1 << indent_1 << kvp.first << ": [" << interval[MIN_C]
-            << ", " << interval[MAX_C] << "]" << MW << indent_1
-            << "-- possible interval = ["
-            << candidates_bounds.at(kvp.first).first << ", "
-            << candidates_bounds.at(kvp.first).second << "]" << MW << std::endl;
+
+    _stream << indent_1 << indent_1 << kvp.first << ": ["
+            << xpansion::logger::commons::create_str_mw(interval[MIN_C]) << ", "
+            << xpansion::logger::commons::create_str_mw(interval[MAX_C]) << "]"
+            << MW << indent_1 << "-- possible interval = ["
+            << xpansion::logger::commons::create_str_mw(
+                   candidates_bounds.at(kvp.first).first)
+            << ", "
+            << xpansion::logger::commons::create_str_mw(
+                   candidates_bounds.at(kvp.first).second)
+            << "]" << MW << std::endl;
   }
   _stream << std::endl;
 }

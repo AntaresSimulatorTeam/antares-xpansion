@@ -56,7 +56,11 @@ struct SinglePbData {
         opt_dir(std::move(opt_dir)) {}
 
   std::string get_pb_description() const {
-    return opt_dir + " " + str_pb_type + " " + candidate_name;
+    std::string pb_description = opt_dir + " " + str_pb_type;
+    if (pb_type == SensitivityPbType::PROJECTION) {
+      pb_description += " " + candidate_name;
+    }
+    return pb_description;
   };
 };
 
