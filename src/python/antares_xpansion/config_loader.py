@@ -28,7 +28,7 @@ class ConfigLoader:
             :type config: XpansionConfig object
         """
         self.platform = sys.platform
-        self._INFO = '<< INFO >>'
+        self._INFO_MSG = '<< INFO >>'
         self._config = config
         self._set_simulation_name()
         self.candidates_list = []
@@ -156,7 +156,7 @@ class ConfigLoader:
         """
         if ("optimality_gap" not in self.options):
             flushed_print(
-                f"{self._INFO} optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used")
+                f"{self._INFO_MSG} optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used")
         abs_optimality_gap_str = self.options.get(
             "optimality_gap", self._config.settings_default["optimality_gap"]
         )
@@ -222,7 +222,7 @@ class ConfigLoader:
         if ("solver" not in self.options):
             default_solver = self._config.settings_default["solver"]
             flushed_print(
-                f"{self._INFO} No solver defined in user/expansion/settings.ini. {default_solver} used")
+                f"{self._INFO_MSG} No solver defined in user/expansion/settings.ini. {default_solver} used")
             self.options["solver"] = default_solver
         else:
             try:
@@ -306,7 +306,7 @@ class ConfigLoader:
         """
         if (self._config.UC_TYPE not in self.options):
             flushed_print(
-                f"{self._INFO} {self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used.")
+                f"{self._INFO_MSG} {self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used.")
         uc_type = self.options.get(self._config.UC_TYPE,
                                    self._config.settings_default[self._config.UC_TYPE])
         assert uc_type in [self._config.EXPANSION_ACCURATE,
@@ -323,7 +323,7 @@ class ConfigLoader:
         """
         if ("master" not in self.options):
             flushed_print(
-                f"{self._INFO} master options is not defined, {self._config.settings_default['master']} used")
+                f"{self._INFO_MSG} master options is not defined, {self._config.settings_default['master']} used")
         relaxation_type = self.options.get('master',
                                            self._config.settings_default["master"])
         assert relaxation_type in ['integer', 'relaxed', 'full_integer']
