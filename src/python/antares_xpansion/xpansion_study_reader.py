@@ -22,6 +22,9 @@ class XpansionStudyReader:
     class SolverNotAvailable(BaseException):
         pass
 
+    class NoSolverValue(BaseException):
+        pass
+
     class NoSimulationDirectory(BaseException):
         pass
 
@@ -82,11 +85,15 @@ class XpansionStudyReader:
         """
 
         if not solver_str:
-            print("No solver defined in user/expansion/settings.ini. Cbc used")
-            solver_str = "Cbc"
+            raise XpansionStudyReader.NoSolverValue(
+                f"Error in solver definition, please check user/expansion/settings.ini file")
         if not available_solvers.count(solver_str):
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {solver_str} not available. Please use one of these solver in user/expansion/settings.ini : {available_solvers}')
+
+    @staticmethod
+    def get_default_solver():
+        return "Cbc"
 
     @ staticmethod
     def _count_values_and_check_if_all_weights_are_null(filename_path, weights_file):
