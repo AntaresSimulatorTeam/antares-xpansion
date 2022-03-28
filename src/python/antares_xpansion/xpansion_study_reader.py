@@ -91,10 +91,6 @@ class XpansionStudyReader:
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {solver_str} not available. Please use one of these solver in user/expansion/settings.ini : {available_solvers}')
 
-    @staticmethod
-    def get_default_solver():
-        return "Cbc"
-
     @ staticmethod
     def _count_values_and_check_if_all_weights_are_null(filename_path, weights_file):
         _null_weights = True

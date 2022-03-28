@@ -28,6 +28,7 @@ class ConfigLoader:
             :type config: XpansionConfig object
         """
         self.platform = sys.platform
+        self._INFO = '<< INFO >>'
         self._config = config
         self._set_simulation_name()
         self.candidates_list = []
@@ -153,6 +154,9 @@ class ConfigLoader:
         prints and returns the absolute optimality gap read from the settings file
         :return: gap value or 0 if the gap is negative
         """
+        if ("optimality_gap" not in self.options):
+            flushed_print(
+                f"{self._INFO} optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used")
         abs_optimality_gap_str = self.options.get(
             "optimality_gap", self._config.settings_default["optimality_gap"]
         )
@@ -215,10 +219,10 @@ class ConfigLoader:
 
     def _verify_solver(self):
 
-        if (not "solver" in self.options):
-            default_solver = XpansionStudyReader.get_default_solver()
+        if ("solver" not in self.options):
+            default_solver = self._config.settings_default["solver"]
             flushed_print(
-                f"No solver defined in user/expansion/settings.ini. {default_solver} used")
+                f"{self._INFO} No solver defined in user/expansion/settings.ini. {default_solver} used")
             self.options["solver"] = default_solver
         else:
             try:
@@ -300,6 +304,9 @@ class ConfigLoader:
         """
             indicates if method to use is accurate by reading the uc_type in the settings file
         """
+        if (self._config.UC_TYPE not in self.options):
+            flushed_print(
+                f"{self._INFO} {self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used.")
         uc_type = self.options.get(self._config.UC_TYPE,
                                    self._config.settings_default[self._config.UC_TYPE])
         assert uc_type in [self._config.EXPANSION_ACCURATE,
@@ -314,6 +321,9 @@ class ConfigLoader:
             indicates if method to use is relaxed by reading the relaxation_type
             from the settings file
         """
+        if ("master" not in self.options):
+            flushed_print(
+                f"{self._INFO} master options is not defined, {self._config.settings_default['master']} used")
         relaxation_type = self.options.get('master',
                                            self._config.settings_default["master"])
         assert relaxation_type in ['integer', 'relaxed', 'full_integer']
