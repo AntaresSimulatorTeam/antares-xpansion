@@ -219,25 +219,6 @@ class TestCheckCandidatesFile:
         with pytest.raises(ProfileFileNotExists):
             check_candidates_file(ini_file, capacity_dir_path=tmp_path)
 
-    # def test_remove_candidate(self, tmp_path):
-
-    #     ini_file = tmp_path / "a.ini"
-    #     ini_file.touch()
-    #     ini_file.write_text(f"""[5] \n
-    #                         name = alpha \n
-    #                         link = a - b \n
-    #                        max-units = 1\n
-    #                        unit-size = 23\n
-    #                        link-profile = 1""")
-
-    #     # with pytest.raises(ProfileFileNotExists):
-    #     check_candidates_file(ini_file, capacity_dir_path=tmp_path)
-
-    #     with open(ini_file) as ini:
-    #         print(ini.readlines())
-
-    #     assert False
-
 
 class TestCheckSettingOptionType:
 
