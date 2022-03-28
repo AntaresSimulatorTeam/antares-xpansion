@@ -175,7 +175,7 @@ class TestCheckCandidatesFile:
                            unit-size = 400\n""")
 
         with pytest.raises(CandidateNameDuplicatedError):
-             check_candidates_file(ini_file, "")
+            check_candidates_file(ini_file, "")
 
     def test_non_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
 
@@ -248,8 +248,9 @@ class TestCheckSettingOptionType:
 
     def test_str_options(self):
 
-        assert _check_setting_option_type("method", "sequential") == True
-        assert _check_setting_option_type("method", 123) == False
+        assert _check_setting_option_type(
+            "uc_type", "expansion_accurate") == True
+        assert _check_setting_option_type("uc_type", 123) == False
 
     def test_int_options(self):
 
@@ -291,7 +292,6 @@ class TestCheckSettingOptionValue:
 
         with pytest.raises(MaxIterValueError):
             _check_setting_option_value("max_iteration", -2)
-
 
     def test_wrong_time_limit(self):
 
