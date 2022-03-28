@@ -11,7 +11,7 @@
 class SensitivityStudy {
  public:
   SensitivityStudy() = delete;
-  explicit SensitivityStudy(const SensitivityInputData &input_data,
+  explicit SensitivityStudy(SensitivityInputData input_data,
                                std::shared_ptr<SensitivityILogger> logger,
                                std::shared_ptr<SensitivityWriter> writer);
   ~SensitivityStudy() = default;

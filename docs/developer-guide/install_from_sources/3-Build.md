@@ -1,9 +1,9 @@
 # Build
 
 ## Environnement settings
-On Centos, enable `devtoolset-7` and `rh-git227` and load `mpi` module:
+On Centos, enable `devtoolset-9` and `rh-git227` and load `mpi` module:
 ```
-scl enable devtoolset-7 bash
+scl enable devtoolset-9 bash
 source /opt/rh/rh-git227/enable
 module load mpi
 ```
