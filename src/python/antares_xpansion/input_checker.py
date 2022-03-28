@@ -115,7 +115,8 @@ def _check_candidate_option_type(option, value):
                      'already-installed-capacity': 'non-negative',
                      'already-installed-link-profile': 'string',
                      'has-link-profile': 'string'}
-    obsolete_options = ["c", 'enable', 'candidate-type', 'investment-type', 'relaxed']
+    obsolete_options = ["c", 'enable',
+                        'candidate-type', 'investment-type', 'relaxed']
     option_type = options_types.get(option)
     if option_type is None:
         flushed_print(
@@ -253,10 +254,12 @@ def _check_candidate_exclusive_attributes(ini_file):
         max_units = float(ini_file[each_section]['max-units'].strip())
         if max_invest != 0:
             if max_units != 0 or unit_size != 0:
-                flushed_print(f"Illegal values in section {each_section}: cannot assign non-null values simultaneously to max-investment and (unit-size or max_units)" )
+                flushed_print(
+                    f"Illegal values in section {each_section}: cannot assign non-null values simultaneously to max-investment and (unit-size or max_units)")
                 raise MaxUnitsAndMaxInvestmentNonNullSimultaneously
         elif max_units == 0 or unit_size == 0:
-            flushed_print(f"Illegal values in section {each_section}: need to assign non-null values to max-investment or (unit-size and max_units)")
+            flushed_print(
+                f"Illegal values in section {each_section}: need to assign non-null values to max-investment or (unit-size and max_units)")
             raise MaxUnitsAndMaxInvestmentAreNullSimultaneously
 
 
@@ -346,7 +349,6 @@ type_float = float
 
 # "option": (type, legal_value(s))
 options_types_and_legal_values = {
-    "method": (type_str, ["benders_decomposition"]),
     "uc_type": (type_str, ["expansion_accurate", "expansion_fast"]),
     "master": (type_str, ["relaxed", "integer", "full_integer"]),
     "optimality_gap": (type_float, None),
