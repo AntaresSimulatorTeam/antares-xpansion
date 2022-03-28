@@ -49,9 +49,9 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  * correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void LinkProblemsGenerator::treat(
-    std::string const &root, ProblemData const &problemData,
-    std::map<std::pair<std::string, std::string>, int> &couplings) const {
+void LinkProblemsGenerator::treat(std::string const &root,
+                                  ProblemData const &problemData,
+                                  Couplings &couplings) const {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const mps_name = (Path(root) / problemData._problem_mps).get_str();
   auto const var_name = (Path(root) / problemData._variables_txt).get_str();
@@ -113,9 +113,8 @@ void LinkProblemsGenerator::treat(
  * correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void LinkProblemsGenerator::treatloop(
-    std::string const &root,
-    std::map<std::pair<std::string, std::string>, int> &couplings) const {
+void LinkProblemsGenerator::treatloop(std::string const &root,
+                                      Couplings &couplings) const {
   auto const mps_file_name = (Path(root) / MPS_TXT).get_str();
 
   for (auto const &mps : readMPSList(mps_file_name)) {
