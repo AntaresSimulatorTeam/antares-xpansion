@@ -95,8 +95,34 @@ class SensitivityStudyTest : public ::testing::Test {
                   candidates_bounds, capex,   candidate_names};
   }
 
+  bool areEquals(const Point &left, const Point &right) {
+    if (left.size() != left.size()) return false;
+
+    for (auto candidate_it = left.begin(),
+              expec_candidate_it = right.begin();
+         candidate_it != left.end(),
+              expec_candidate_it != right.end();
+         candidate_it++, expec_candidate_it++) {
+      if (candidate_it->first != expec_candidate_it->first) return false;
+      if ( fabs(candidate_it->second - expec_candidate_it->second) > 1e-6) return false;
+    }
+    return true;
+  }
+
+  bool areEquals(const SinglePbData& left, const SinglePbData& right) {
+    return left.pb_type == right.pb_type &&
+    left.str_pb_type == right.str_pb_type &&
+    left.candidate_name ==
+              right.candidate_name &&
+    left.opt_dir == right.opt_dir &&
+    fabs(left.objective - right.objective) < 1e-6 &&
+    fabs(left.system_cost - right.system_cost) < 1e-6 &&
+    left.solver_status == right.solver_status &&
+    areEquals(left.candidates, right.candidates);
+  }
+
   void verify_output_data(const SensitivityOutputData &output_data,
-                          const SensitivityOutputData &expec_output_data) {
+                          SensitivityOutputData expec_output_data) {
     EXPECT_DOUBLE_EQ(output_data.epsilon, expec_output_data.epsilon);
     EXPECT_DOUBLE_EQ(output_data.best_benders_cost,
                      expec_output_data.best_benders_cost);
@@ -104,10 +130,14 @@ class SensitivityStudyTest : public ::testing::Test {
               expec_output_data.candidates_bounds);
     ASSERT_EQ(output_data.pbs_data.size(), expec_output_data.pbs_data.size());
 
-    for (int pb_id(0); pb_id < output_data.pbs_data.size(); pb_id++) {
-      verify_single_pb_data(output_data.pbs_data[pb_id],
-                            expec_output_data.pbs_data[pb_id]);
+    for (auto leftMatch : output_data.pbs_data) {
+      auto rightMatch = std::find_if(expec_output_data.pbs_data.begin(), expec_output_data.pbs_data.end(), [&leftMatch, this](const SinglePbData& data){
+        return areEquals(leftMatch, data);
+      });
+      ASSERT_NE(rightMatch, expec_output_data.pbs_data.end());
+      expec_output_data.pbs_data.erase(rightMatch);
     }
+    ASSERT_EQ(expec_output_data.pbs_data.size(), 0);
   }
 
   void verify_single_pb_data(const SinglePbData &single_pb_data,

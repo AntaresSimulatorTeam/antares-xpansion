@@ -19,6 +19,8 @@ add_library (lp_namer_problem_modifier STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/MasterProblemBuilder.h
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
+	${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.h
     )
 
 target_include_directories (lp_namer_problem_modifier

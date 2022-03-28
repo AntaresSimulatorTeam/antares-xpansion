@@ -5,6 +5,10 @@
     "jsoncpp",
     "gtest",
     "boost-mpi",
-    "boost-program-options"
+    "boost-program-options",
+    "tbb"
+  ],
+  "overrides": [
+    { "name": "tbb", "version": "2020_U3" }
   ]
 }

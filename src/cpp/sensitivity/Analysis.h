@@ -16,10 +16,10 @@ class Analysis {
 
  private:
   const SensitivityInputData input_data;
+  SensitivityPbType problem_type;
   const std::string candidate_name;
   const std::shared_ptr<SensitivityILogger> logger;
   std::shared_ptr<SolverAbstract> sensitivity_pb_model;
-  SensitivityPbType problem_type;
 
   void fill_single_pb_data(SinglePbData& pb_data,
                            const RawPbData& raw_output) const;
