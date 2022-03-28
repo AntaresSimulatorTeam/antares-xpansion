@@ -13,6 +13,9 @@ const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
 const std::string MPS_TXT{"mps.txt"};
 const std::string STUDY_FILE{"study.antares"};
+typedef std::pair<std::string, std::string> CandidateNameAndMpsFilePath;
+typedef unsigned int ColId;
+typedef std::map<CandidateNameAndMpsFilePath, ColId> Couplings;
 
 struct ProblemData {
   ProblemData(const std::string& problem_mps, const std::string& variables_txt);
@@ -26,16 +29,13 @@ class LinkProblemsGenerator {
                         const std::string& solver_name)
       : _links(links), _solver_name(solver_name) {}
 
-  void treatloop(
-      std::string const& root,
-      std::map<std::pair<std::string, std::string>, int>& couplings) const;
+  void treatloop(std::string const& root, Couplings& couplings) const;
 
  private:
   std::vector<ProblemData> readMPSList(std::string const& mps_filePath_p) const;
 
-  void treat(
-      std::string const& root, ProblemData const&,
-      std::map<std::pair<std::string, std::string>, int>& couplings) const;
+  void treat(std::string const& root, ProblemData const&,
+             Couplings& couplings) const;
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
