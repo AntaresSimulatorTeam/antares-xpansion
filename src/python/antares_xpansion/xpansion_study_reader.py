@@ -91,7 +91,7 @@ class XpansionStudyReader:
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {solver_str} not available. Please use one of these solver in user/expansion/settings.ini : {available_solvers}')
 
-    @ staticmethod
+    @staticmethod
     def _count_values_and_check_if_all_weights_are_null(filename_path, weights_file):
         _null_weights = True
         _nb_values = 0
@@ -108,7 +108,7 @@ class XpansionStudyReader:
                         % (idx + 1, filename_path))
         return _nb_values, _null_weights
 
-    @ staticmethod
+    @staticmethod
     def _get_line_value(line, idx, filename_path) -> float:
         try:
             line_value = float(line.strip())
@@ -118,7 +118,7 @@ class XpansionStudyReader:
                 % (idx + 1, filename_path))
         return line_value
 
-    @ staticmethod
+    @staticmethod
     def get_years_weight_from_file(file_path: Path) -> List[float]:
         result = []
         with open(file_path, 'r') as weights_file:
