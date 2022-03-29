@@ -5,6 +5,3 @@
 [submodule "vcpkg"]
 	path = vcpkg
 	url = https://github.com/microsoft/vcpkg.git
-[submodule "tbb"]
-	path = tbb
-	url = https://github.com/wjakob/tbb
