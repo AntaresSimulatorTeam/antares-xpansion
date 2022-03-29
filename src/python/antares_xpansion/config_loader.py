@@ -28,6 +28,7 @@ class ConfigLoader:
             :type config: XpansionConfig object
         """
         self.platform = sys.platform
+        self._INFO_MSG = '<< INFO >>'
         self._config = config
         self._set_simulation_name()
         self.candidates_list = []
@@ -153,6 +154,9 @@ class ConfigLoader:
         prints and returns the absolute optimality gap read from the settings file
         :return: gap value or 0 if the gap is negative
         """
+        if ("optimality_gap" not in self.options):
+            flushed_print(
+                f"{self._INFO_MSG} optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used")
         abs_optimality_gap_str = self.options.get(
             "optimality_gap", self._config.settings_default["optimality_gap"]
         )
@@ -214,12 +218,19 @@ class ConfigLoader:
                 sys.exit(1)
 
     def _verify_solver(self):
-        try:
-            XpansionStudyReader.check_solver(self.options.get(
-                'solver', ""), self._config.AVAILABLE_SOLVER)
-        except XpansionStudyReader.BaseException as e:
-            flushed_print(e)
-            sys.exit(1)
+
+        if ("solver" not in self.options):
+            default_solver = self._config.settings_default["solver"]
+            flushed_print(
+                f"{self._INFO_MSG} No solver defined in user/expansion/settings.ini. {default_solver} used")
+            self.options["solver"] = default_solver
+        else:
+            try:
+                XpansionStudyReader.check_solver(
+                    self.options['solver'], self._config.AVAILABLE_SOLVER)
+            except XpansionStudyReader.BaseException as e:
+                flushed_print(e)
+                sys.exit(1)
 
     def simulation_output_path(self) -> Path:
         if (self._simulation_name == "last"):
@@ -235,7 +246,7 @@ class ConfigLoader:
         if os.path.isdir(expansion_dir):
             shutil.rmtree(expansion_dir)
         os.makedirs(expansion_dir)
-    
+
     def _create_sensitivity_dir(self):
         sensitivity_dir = self._sensitivity_dir()
         if os.path.isdir(sensitivity_dir):
@@ -245,7 +256,7 @@ class ConfigLoader:
     def _expansion_dir(self):
         return os.path.normpath(os.path.join(
             self.simulation_output_path(), 'expansion'))
-    
+
     def _sensitivity_dir(self):
         return os.path.normpath(os.path.join(
             self.simulation_output_path(), 'sensitivity'))
@@ -293,6 +304,9 @@ class ConfigLoader:
         """
             indicates if method to use is accurate by reading the uc_type in the settings file
         """
+        if (self._config.UC_TYPE not in self.options):
+            flushed_print(
+                f"{self._INFO_MSG} {self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used.")
         uc_type = self.options.get(self._config.UC_TYPE,
                                    self._config.settings_default[self._config.UC_TYPE])
         assert uc_type in [self._config.EXPANSION_ACCURATE,
@@ -307,6 +321,9 @@ class ConfigLoader:
             indicates if method to use is relaxed by reading the relaxation_type
             from the settings file
         """
+        if ("master" not in self.options):
+            flushed_print(
+                f"{self._INFO_MSG} master options is not defined, {self._config.settings_default['master']} used")
         relaxation_type = self.options.get('master',
                                            self._config.settings_default["master"])
         assert relaxation_type in ['integer', 'relaxed', 'full_integer']
@@ -332,7 +349,7 @@ class ConfigLoader:
 
     def study_update_exe(self):
         return self.exe_path(self._config.STUDY_UPDATER)
-    
+
     def sensitivity_exe(self):
         return self.exe_path(self._config.SENSITIVITY_EXE)
 
@@ -353,15 +370,17 @@ class ConfigLoader:
 
     def json_file_path(self):
         return os.path.join(self._expansion_dir(), self._config.JSON_NAME)
-    
+
     def json_sensitivity_out_path(self):
         return os.path.join(self._sensitivity_dir(), self._config.JSON_SENSITIVITY_OUT)
-    
+
     def structure_file_path(self):
-        return os.path.join(self.simulation_lp_path(), self._config.options_default["STRUCTURE_FILE"])  # Assumes that structure file is always the default, ok for now as the user cannot set it, but could it be dangerous if later we wish for some reasons modify its name to a non-default one
+        # Assumes that structure file is always the default, ok for now as the user cannot set it, but could it be dangerous if later we wish for some reasons modify its name to a non-default one
+        return os.path.join(self.simulation_lp_path(), self._config.options_default["STRUCTURE_FILE"])
 
     def last_master_file_path(self):
-        return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_iteration.mps") # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
+        # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
+        return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_iteration.mps")
 
     def oversubscribe(self):
         return self._config.oversubscribe
@@ -389,9 +408,8 @@ class ConfigLoader:
         )
         return int(log_level_str)
 
-    def sensitivity_log_file(self)-> Path:
+    def sensitivity_log_file(self) -> Path:
         return Path(os.path.join(self._sensitivity_dir(), self._config.SENSITIVITY_LOG_FILE))
-
 
     class MissingSimulationName(Exception):
         pass

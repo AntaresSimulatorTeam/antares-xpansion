@@ -49,18 +49,26 @@ def test_xpansion_weight_read(tmp_path):
     file_path: Path = tmp_path / "weight_file"
     weight_list = [1, 2, 3, 4]
     _create_weight_file(file_path, weight_list)
-    assert (XpansionStudyReader.get_years_weight_from_file(file_path) == weight_list)
+    assert (XpansionStudyReader.get_years_weight_from_file(
+        file_path) == weight_list)
 
 
 def test_option_solver_conversion():
     study_solver = "Cbc"
-    assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "COIN")
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(
+        study_solver) == "COIN")
     study_solver = "Coin"
-    assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "COIN")
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(
+        study_solver) == "COIN")
     study_solver = "Xpress"
-    assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "XPRESS")
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(
+        study_solver) == "XPRESS")
     study_solver = "Cplex"
-    assert (XpansionStudyReader.convert_study_solver_to_option_solver(study_solver) == "CPLEX")
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(
+        study_solver) == "CPLEX")
+    study_solver = ""
+    assert (XpansionStudyReader.convert_study_solver_to_option_solver(
+        study_solver) == "COIN")
 
     study_solver = "Gurobi"
     expected_message = f'Solver {study_solver} not available.'
