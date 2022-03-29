@@ -8,7 +8,7 @@ Antares-Xpansion depends on several mandatory libraries:
 - [Boost](https://www.boost.org/) : MPI serialization (only for MPI benders compilation), program-options,
 - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation,
 - [GraphViz](https://graphviz.org/) for Doxygen use.
-- [TBB](https://github.com/oneapi-src/oneTBB) for execution policy and parallelization
+- [TBB](https://github.com/oneapi-src/oneTBB) for execution policy and parallelization.
 
 This section describes the install procedures for the third-party open source libraries used by Antares-Xpansion.
 The install procedure can be done:
