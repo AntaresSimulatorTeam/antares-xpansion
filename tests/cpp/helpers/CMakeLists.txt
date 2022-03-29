@@ -39,28 +39,3 @@ endif ()
 
 add_test(NAME json_reader COMMAND json_reader)
 set_property(TEST json_reader PROPERTY LABELS unit)
-
-# # ----------------------------------------------------------------------------
-# # run_json_reader & coverage
-# # ----------------------------------------------------------------------------
-# set (TESTS_REPORTS_DIR "${CMAKE_BINARY_DIR}/tests-reports")
-# set (TESTS_REPORTS_FILE "json_reader-results.xml")
-
-# add_custom_target (run_json_reader
-# 		COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:json_reader> ${CMAKE_BINARY_DIR}/json_reader.bak
-# 		COMMAND ${CMAKE_COMMAND} -E make_directory "${TESTS_REPORTS_DIR}"
-# 		COMMAND $<TARGET_FILE:json_reader> --gtest_output=xml:${TESTS_REPORTS_DIR}/${TESTS_REPORTS_FILE}
-# 		DEPENDS $<TARGET_FILE:json_reader>
-# 		BYPRODUCTS ${TESTS_REPORTS_DIR}/${TESTS_REPORTS_FILE}
-# 		COMMENT "Runs the unit tests")
-
-# # --------------------------------------------------------------------------
-# # coverage
-# # --------------------------------------------------------------------------
-# if (${PROJECT_NAME}_WITH_COVERAGE AND (CMAKE_BUILD_TYPE STREQUAL Debug))
-# 	add_custom_command (TARGET run_json_reader
-# 			POST_BUILD
-# 			COMMAND ${GCOVR_PATH} --root=${PROJECT_SOURCE_DIR} --object-directory=${PROJECT_BINARY_DIR} --gcov-exclude=".*/src_test/.*Test.c*" --branches --xml-pretty --output ${GCOV_RESULT_FILE} --print-summary
-# 			COMMENT "Generate coverage reports"
-# 			)
-# endif ()
