@@ -15,8 +15,6 @@ PROJECT (antaresXpansion VERSION 0.6.0)
 # Default parameters
 # ===========================================================================
 
-add_subdirectory(tbb)
-
 if (MSVC)
 	cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
 endif()

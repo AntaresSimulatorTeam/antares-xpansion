@@ -22,9 +22,12 @@ class XpansionStudyReader:
     class SolverNotAvailable(BaseException):
         pass
 
+    class NoSolverValue(BaseException):
+        pass
+
     class NoSimulationDirectory(BaseException):
         pass
-    
+
     @staticmethod
     def convert_study_solver_to_option_solver(study_solver: str) -> str:
         keys = {
@@ -35,6 +38,8 @@ class XpansionStudyReader:
         }
         if study_solver in keys:
             return keys.get(study_solver)
+        elif study_solver == "":
+            return keys.get("Cbc")
         else:
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {study_solver} not available.')
@@ -45,7 +50,7 @@ class XpansionStudyReader:
             checks that the yearly-weights file exists and has correct format:
                 column of non-negative weights
                 sum of weights is positive
-				nb_weight equal nb_active_yearse
+                                nb_weight equal nb_active_yearse
         """
 
         # check file existence
@@ -78,9 +83,10 @@ class XpansionStudyReader:
         :param available_solvers: List of available solvers
         :return:
         """
+
         if not solver_str:
-            print("No solver defined in user/expansion/settings.ini. Cbc used")
-            solver_str = "Cbc"
+            raise XpansionStudyReader.NoSolverValue(
+                f"Error in solver definition, please check user/expansion/settings.ini file")
         if not available_solvers.count(solver_str):
             raise XpansionStudyReader.SolverNotAvailable(
                 f'Solver {solver_str} not available. Please use one of these solver in user/expansion/settings.ini : {available_solvers}')
@@ -91,7 +97,8 @@ class XpansionStudyReader:
         _nb_values = 0
         for idx, line in enumerate(weights_file):
             if line.strip():
-                line_value = XpansionStudyReader._get_line_value(line, idx, filename_path)
+                line_value = XpansionStudyReader._get_line_value(
+                    line, idx, filename_path)
                 _nb_values += 1
                 if line_value > 0:
                     _null_weights = False
