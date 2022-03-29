@@ -24,7 +24,6 @@ add_library (sensitivity_core
 get_target_property(JSON_INC_PATH jsoncpp_lib
 INTERFACE_INCLUDE_DIRECTORIES)
 
-add_dependencies(sensitivity_core tbb)
 target_include_directories (sensitivity_core
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/include
