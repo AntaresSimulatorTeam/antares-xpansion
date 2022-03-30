@@ -24,17 +24,18 @@ void BendersMpi::initialize_problems() {
   match_problem_to_id();
 
   int current_problem_id = 0;
-  auto slaveCount = _world.size() - 1;
+  auto subproblemProcessCount = _world.size() - 1;
 
   if (_world.rank() == rank_0) {
     reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                   get_solver_name(), get_log_level(),
                                   _data.nsubproblem, log_name()));
-    LOG(INFO) << "nrealslaves is " << _data.nsubproblem << std::endl;
+    LOG(INFO) << "subproblem number is " << _data.nsubproblem << std::endl;
   } else {
+    //Dispatch subproblems to process
     for (const auto &problem : coupling_map) {
-      auto slaveToFeed = current_problem_id % slaveCount + 1;
-      if (slaveToFeed == _world.rank()) {
+      auto process_to_feed = current_problem_id % subproblemProcessCount + 1; //In case there are more subproblems than process
+      if (process_to_feed == _world.rank()) { //Assign  [problemNumber % processCount] to processID
         addSubproblem(problem);
         AddSubproblemName(problem.first);
       }
@@ -88,46 +89,47 @@ void BendersMpi::solve_master_and_create_trace() {
 }
 
 /*!
- *  \brief Get cut information from each Slave and add it to the Master problem
+ *  \brief Get cut information from each Subproblem and add it to the Master problem
  *
- *	Get cut information of every Subproblem in each thread and send it to
- *thread 0 to build new Master's cuts
+ * Get cut information of every Subproblem in each thread and send it to
+ * thread 0 to build new Master's cuts
  *
  */
-void BendersMpi::step_2_solve_slaves_and_build_cuts() {
+void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   int success = 1;
-  SubproblemCutPackage slave_cut_package;
-  Timer timer_slaves;
+  SubproblemCutPackage subproblem_cut_package;
+  Timer process_timer;
   try {
     if (_world.rank() != rank_0) {
-      slave_cut_package = get_slave_package();
+      subproblem_cut_package = get_subproblem_cut_package();
     }
   } catch (std::exception &ex) {
     success = 0;
     write_exception_message(ex);
   }
   check_if_some_proc_had_a_failure(success);
-  gather_slave_cut_package_and_build_cuts(slave_cut_package, timer_slaves);
+  gather_subproblems_cut_package_and_build_cuts(subproblem_cut_package,
+                                                process_timer);
 }
 
-void BendersMpi::gather_slave_cut_package_and_build_cuts(
-    const SubproblemCutPackage &slave_cut_package, const Timer &timer_slaves) {
+void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
+    const SubproblemCutPackage &subproblem_cut_package, const Timer &process_timer) {
   if (!_exceptionRaised) {
     if (_world.rank() != rank_0) {
-      mpi::gather(_world, slave_cut_package, rank_0);
+      mpi::gather(_world, subproblem_cut_package, rank_0);
     } else {
       AllCutPackage all_package;
-      mpi::gather(_world, slave_cut_package, all_package, rank_0);
-      SetSubproblemTimers(timer_slaves.elapsed());
+      mpi::gather(_world, subproblem_cut_package, all_package, rank_0);
+      SetSubproblemTimers(process_timer.elapsed());
       master_build_cuts(all_package);
     }
   }
 }
 
-SubproblemCutPackage BendersMpi::get_slave_package() {
-  SubproblemCutPackage slave_cut_package;
-  getSubproblemCut(slave_cut_package);
-  return slave_cut_package;
+SubproblemCutPackage BendersMpi::get_subproblem_cut_package() {
+  SubproblemCutPackage subproblem_cut_package;
+  getSubproblemCut(subproblem_cut_package);
+  return subproblem_cut_package;
 }
 
 void BendersMpi::master_build_cuts(AllCutPackage all_package) {
@@ -147,7 +149,7 @@ void BendersMpi::master_build_cuts(AllCutPackage all_package) {
 }
 
 /*!
- *  \brief Gather, store and sort all slaves basis in a set
+ *  \brief Gather, store and sort all process results in a set
  *
  *  \param _env : environment variable for mpi communication
  *
@@ -214,13 +216,13 @@ void BendersMpi::run() {
     ++_data.it;
     _data.deletedcut = 0;
 
-    /*Solve Master problem, get optimal value and cost and send it to Slaves*/
+    /*Solve Master problem, get optimal value and cost and send it to process*/
     step_1_solve_master();
 
-    /*Gather cut from each slave in master thread and add them to Master
+    /*Gather cut from each subproblem in master thread and add them to Master
      * problem*/
     if (!_exceptionRaised) {
-      step_2_solve_slaves_and_build_cuts();
+      step_2_solve_subproblems_and_build_cuts();
     }
 
     if (!_exceptionRaised) {
