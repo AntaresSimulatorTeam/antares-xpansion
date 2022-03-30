@@ -67,6 +67,10 @@ jobs:
       with:
         submodules: true
 
+    - name: Ensure submodules up-to-date
+      run: |
+        git submodule update --remote vcpkg
+
     - name: Checkout xpressmp linux
       uses: actions/checkout@v2
       with:
