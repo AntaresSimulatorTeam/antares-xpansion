@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <utility>
 
 #include "Timer.h"
 #include "glog/logging.h"
@@ -18,7 +19,7 @@
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger &logger, Writer writer)
-    : BendersBase(options, logger, writer) {}
+    : BendersBase(options, logger, std::move(writer)) {}
 
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
@@ -43,26 +44,26 @@ void BendersSequential::free() {
 }
 
 /*!
- *  \brief Build Slave cut and store it in the BendersSequential trace
+ * \brief Build subproblem cut and store it in the BendersSequential trace
  *
- *  Method to build Slaves cuts, store them in the BendersSequential trace and
+ * Method to build subproblem cuts, store them in the BendersSequential trace and
  * add them to the Master problem
  *
  */
 void BendersSequential::build_cut() {
-  SubproblemCutPackage slave_cut_package;
+  SubproblemCutPackage subproblem_cut_package;
   AllCutPackage all_package;
-  Timer timer_slaves;
-  getSubproblemCut(slave_cut_package);
+  Timer timer;
+  getSubproblemCut(subproblem_cut_package);
   SetSubproblemCost(0);
-  for (auto pairSlavenameSlavecutdata_l : slave_cut_package) {
+  for (const auto& pair_name_subproblemcutdata_l : subproblem_cut_package) {
     SetSubproblemCost(
         GetSubproblemCost() +
-        pairSlavenameSlavecutdata_l.second.first.second[SUBPROBLEM_COST]);
+        pair_name_subproblemcutdata_l.second.first.second[SUBPROBLEM_COST]);
   }
 
-  SetSubproblemTimers(timer_slaves.elapsed());
-  all_package.push_back(slave_cut_package);
+  SetSubproblemTimers(timer.elapsed());
+  all_package.push_back(subproblem_cut_package);
   build_cut_full(all_package);
 }
 
@@ -86,7 +87,7 @@ void BendersSequential::run() {
 
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-    push_in_trace(WorkerMasterDataPtr(new WorkerMasterData));
+    push_in_trace(std::make_shared<WorkerMasterData>());
 
     _logger->display_message("\tSolving subproblems...");
     build_cut();
@@ -120,7 +121,7 @@ void BendersSequential::launch() {
   try {
     run();
     LOG(INFO) << "BendersSequential solver terminated." << std::endl;
-  } catch (std::exception &ex) {
+  } catch (std::exception const &ex) {
     std::string error = "Exception raised : " + std::string(ex.what());
     LOG(WARNING) << error << std::endl;
     _logger->display_message(error);

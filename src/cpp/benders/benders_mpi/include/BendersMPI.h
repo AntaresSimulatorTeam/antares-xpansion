@@ -16,17 +16,16 @@
  */
 class BendersMpi : public BendersBase {
  public:
-  virtual ~BendersMpi() = default;
+  ~BendersMpi() override = default;
   BendersMpi(BendersBaseOptions const &options, Logger &logger, Writer writer,
              mpi::environment &env, mpi::communicator &world);
 
-  void load();
-  virtual void launch();
+  void launch() override;
 
  protected:
-  virtual void free();
-  virtual void run();
-  virtual void initialize_problems();
+  void free() override;
+  void run() override;
+  void initialize_problems() override;
 
  private:
   void step_1_solve_master();
@@ -48,7 +47,7 @@ class BendersMpi : public BendersBase {
   void gather_subproblems_cut_package_and_build_cuts(
       const SubproblemCutPackage &subproblem_cut_package, const Timer &process_timer);
 
-  void write_exception_message(const std::exception &ex);
+  void write_exception_message(const std::exception &ex) const;
 
   void check_if_some_proc_had_a_failure(int success);
   mpi::environment &_env;

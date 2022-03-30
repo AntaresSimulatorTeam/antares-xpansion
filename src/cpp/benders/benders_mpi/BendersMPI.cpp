@@ -2,16 +2,15 @@
 #include "BendersMPI.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "Timer.h"
 #include "glog/logging.h"
 
-#define __DEBUG_BENDERS_MPI__ 0
-
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
                        Writer writer, mpi::environment &env,
                        mpi::communicator &world)
-    : BendersBase(options, logger, writer), _env(env), _world(world) {}
+    : BendersBase(options, logger, std::move(writer)), _env(env), _world(world) {}
 
 /*!
  *  \brief Method to load each problem in a thread
@@ -55,7 +54,7 @@ void BendersMpi::step_1_solve_master() {
   int success = 1;
   try {
     do_solve_master_create_trace_and_update_cuts();
-  } catch (std::exception &ex) {
+  } catch (std::exception const &ex) {
     success = 0;
     write_exception_message(ex);
   }
@@ -85,7 +84,7 @@ void BendersMpi::solve_master_and_create_trace() {
   _logger->log_master_solving_duration(get_timer_master());
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-  push_in_trace(WorkerMasterDataPtr(new WorkerMasterData));
+  push_in_trace(std::make_shared<WorkerMasterData>());
 }
 
 /*!
@@ -103,7 +102,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
     if (_world.rank() != rank_0) {
       subproblem_cut_package = get_subproblem_cut_package();
     }
-  } catch (std::exception &ex) {
+  } catch (std::exception const &ex) {
     success = 0;
     write_exception_message(ex);
   }
@@ -135,9 +134,9 @@ SubproblemCutPackage BendersMpi::get_subproblem_cut_package() {
 void BendersMpi::master_build_cuts(AllCutPackage all_package) {
   SetSubproblemCost(0);
   for (auto const &pack : all_package) {
-    for (auto &dataVal : pack) {
+    for (auto && [_, subproblem_cut_package] : pack) {
       SetSubproblemCost(GetSubproblemCost() +
-                        dataVal.second.first.second[SUBPROBLEM_COST]);
+                        subproblem_cut_package.first.second[SUBPROBLEM_COST]);
     }
   }
   all_package.erase(all_package.begin());
@@ -164,7 +163,7 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success) {
   }
 }
 
-void BendersMpi::write_exception_message(const std::exception &ex) {
+void BendersMpi::write_exception_message(const std::exception &ex) const {
   std::string error = "Exception raised : " + std::string(ex.what());
   LOG(WARNING) << error << std::endl;
   _logger->display_message(error);
