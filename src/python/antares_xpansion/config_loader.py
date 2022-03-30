@@ -166,6 +166,9 @@ class ConfigLoader:
         return os.path.normpath(os.path.join(self.data_dir(), self._config.USER,
                                              self._config.EXPANSION, filename))
 
+    def _get_weight_file_path_in_weights_dir(self, filename):
+        return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.WEIGHTS, filename)))
+
     def capacity_file(self, filename):
         """
             returns path to input capacity file
@@ -189,7 +192,7 @@ class ConfigLoader:
 
         yearly_weights_filename = self.weight_file_name()
         if yearly_weights_filename:
-            return self._get_path_from_file_in_xpansion_dir(yearly_weights_filename)
+            return self._get_weight_file_path_in_weights_dir(yearly_weights_filename)
         else:
             return ""
 
