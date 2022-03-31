@@ -136,6 +136,7 @@ class XpansionConfig:
         self.LAST_MASTER_MPS = "master_last_iteration"
         self.LAST_MASTER_BASIS = "master_last_basis.bss"
         self.WEIGHTS = "weights"
+        self.CONSTRAINTS = "constraints"
 
     def _set_default_settings(self):
         self.settings_default = {
