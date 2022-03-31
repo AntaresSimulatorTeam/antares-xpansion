@@ -169,6 +169,9 @@ class ConfigLoader:
     def _get_weight_file_path_in_weights_dir(self, filename):
         return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.WEIGHTS, filename)))
 
+    def _get_constraints_file_path_in_constraints_dir(self, filename):
+        return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.CONSTRAINTS, filename)))
+
     def capacity_file(self, filename):
         """
             returns path to input capacity file
@@ -246,7 +249,7 @@ class ConfigLoader:
 
         if additional_constraints_filename == "":
             return ""
-        return self._get_path_from_file_in_xpansion_dir(additional_constraints_filename)
+        return self._get_constraints_file_path_in_constraints_dir(additional_constraints_filename)
 
     def simulation_lp_path(self):
         return self._simulation_lp_path()
