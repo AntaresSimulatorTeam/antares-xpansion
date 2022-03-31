@@ -8,6 +8,10 @@
 #include "helpers/Path.h"
 #include "solver_utils.h"
 
+#include <numeric>
+#include <execution>
+#include <mutex>
+
 BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
                          Writer writer)
     : _options(std::move(options)), _logger(logger), _writer(std::move(writer)) {}
@@ -285,6 +289,18 @@ void BendersBase::get_master_value() {
   _data.timer_master = timer_master.elapsed();
 }
 
+/**
+ * std execution policies don't share a base type so we can't just select them in place in the foreach
+ * This function allow the selection of policy via template deduction
+ **/
+template<class lambda>
+auto selectPolicy(lambda f,bool shouldParallelize) {
+  if (shouldParallelize)
+    return f(std::execution::par_unseq);
+  else
+    return f(std::execution::seq);
+}
+
 /*!
  *  \brief Solve and store optimal variables of all Subproblem Problems
  *
@@ -294,21 +310,33 @@ void BendersBase::get_master_value() {
  *  \param subproblem_cut_package : map storing for each subproblem its cut
  */
 void BendersBase::getSubproblemCut(SubproblemCutPackage &subproblem_cut_package) {
-  for (auto &kvp : subproblem_map) {
-    Timer subproblem_timer;
-    SubproblemWorkerPtr &ptr(kvp.second);
-    SubproblemCutDataPtr subproblem_cut_data(new SubproblemCutData);
-    SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(subproblem_cut_data));
-    ptr->fix_to(_data.x0);
-    ptr->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
-               _options.LAST_MASTER_MPS + MPS_SUFFIX);
-
-    ptr->get_value(handler->get_dbl(SUBPROBLEM_COST));
-    ptr->get_subgradient(handler->get_subgradient());
-    ptr->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
-    handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
-    subproblem_cut_package[kvp.first] = *subproblem_cut_data;
+  //With gcc9 there was no parallelisation when iterating on the map directly so with
+  //project it in a vector
+  std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
+  nameAndWorkers.reserve(subproblem_map.size());
+  for (const auto& [name, worker]: subproblem_map) {
+    nameAndWorkers.emplace_back(name, worker);
   }
+  std::mutex m;
+  selectPolicy([&](auto &policy){
+    std::for_each(policy, nameAndWorkers.begin(), nameAndWorkers.end(), [&](const std::pair<std::string, SubproblemWorkerPtr>& kvp){
+      const auto& [name, worker] = kvp;
+      Timer subproblem_timer;
+      auto subproblem_cut_data(
+          std::make_shared<SubproblemCutData>());
+      auto handler(
+          std::make_shared<SubproblemCutDataHandler>(subproblem_cut_data));
+      worker->fix_to(_data.x0);
+      worker->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
+                    _options.LAST_MASTER_MPS + MPS_SUFFIX);
+      worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
+      worker->get_subgradient(handler->get_subgradient());
+      worker->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
+      handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
+      std::lock_guard guard(m);
+      subproblem_cut_package[name] = *subproblem_cut_data;
+    });
+  }, shouldParallelize());
 }
 
 /*!
@@ -322,23 +350,25 @@ void BendersBase::getSubproblemCut(SubproblemCutPackage &subproblem_cut_package)
  *
  */
 void BendersBase::compute_cut(AllCutPackage const &all_package) {
-  for (const auto & i : all_package) {
-    for (auto const &itmap : i) {
-      SubproblemCutDataPtr subproblem_cut_data(new SubproblemCutData(itmap.second));
-      SubproblemCutDataHandlerPtr handler(new SubproblemCutDataHandler(subproblem_cut_data));
-      handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[itmap.first]];
+  std::for_each(all_package.begin(), all_package.end(), [this](const SubproblemCutPackage& i){
+    for (auto const &[name, data] : i) {
+      auto subproblem_cut_data(
+          std::make_shared<SubproblemCutData>(data));
+      auto handler(
+          std::make_shared<SubproblemCutDataHandler>(subproblem_cut_data));
+      handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[name]];
       _data.ub += handler->get_dbl(SUBPROBLEM_COST);
       SubproblemCutTrimmer cut(handler, _data.x0);
 
-      _master->addSubproblemCut(_problem_to_id[itmap.first],
+      _master->addSubproblemCut(_problem_to_id[name],
                                 handler->get_subgradient(), _data.x0,
                                 handler->get_dbl(SUBPROBLEM_COST));
-      _all_cuts_storage[itmap.first].insert(cut);
-      _trace[_data.it - 1]->_cut_trace[itmap.first] = subproblem_cut_data;
+      _all_cuts_storage[name].insert(cut);
+      _trace[_data.it - 1]->_cut_trace[name] = subproblem_cut_data;
 
       bound_simplex_iter(handler->get_int(SIMPLEXITER));
     }
-  }
+  });
 }
 
 void compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
@@ -657,3 +687,4 @@ double BendersBase::GetSubproblemCost() const { return _data.subproblem_cost; }
 void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
 }
+
