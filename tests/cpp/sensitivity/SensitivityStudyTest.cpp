@@ -171,6 +171,54 @@ class SensitivityStudyTest : public ::testing::Test {
   }
 };
 
+class SensitivityLogMock : public SensitivityILogger {
+ public:
+  SensitivityLogMock() = default;
+
+  std::string displayed_message;
+  bool display_message_called = false;
+
+  void display_message(const std::string &str) override {
+    displayed_message = str;
+    display_message_called = true;
+  }
+  void log_at_start(const SensitivityOutputData &output_data) override {}
+  void log_begin_pb_resolution(const SinglePbData &pb_data) override {}
+  void log_pb_solution(const SinglePbData &pb_data) override {}
+  void log_summary(const SensitivityOutputData &output_data) override {}
+  void log_at_ending() override {}
+};
+
+TEST_F(SensitivityStudyTest, EmptyStudy) {
+  input_data.capex = false;
+  input_data.projection = {};
+  auto _logger = std::make_shared<SensitivityLogMock>();
+  auto sensitivity_study = SensitivityStudy(input_data, _logger, writer);
+  sensitivity_study.launch();
+
+  std::string message = "Study is empty. No capex or projection provided.";
+  EXPECT_TRUE(_logger->display_message_called);
+  EXPECT_EQ(_logger->displayed_message, message);
+}
+
+TEST_F(SensitivityStudyTest, CandidateIgnored) {
+  prepare_toy_sensitivity_pb();
+
+  std::string cand_name = "i_am_not_in_the_list";
+  input_data.projection = {cand_name};
+  input_data.capex = false;
+
+  auto _logger = std::make_shared<SensitivityLogMock>();
+  auto sensitivity_study = SensitivityStudy(input_data, _logger, writer);
+  sensitivity_study.launch();
+
+  std::string message = "Warning : " + cand_name +
+                        " ignored as it has not been found in the list "
+                        "of investment candidates";
+  EXPECT_TRUE(_logger->display_message_called);
+  EXPECT_EQ(_logger->displayed_message, message);
+}
+
 TEST_F(SensitivityStudyTest, OutputDataInit) {
   prepare_toy_sensitivity_pb();
 

@@ -121,7 +121,8 @@ TEST_F(SensitivityUserLoggerTest, LogPbSolutionProjection) {
 
   std::stringstream expected;
   expected << indent_1 << indent_1 << pb_data.get_pb_description() << " = "
-           << pb_data.objective << MW << std::endl;
+           << xpansion::logger::commons::create_str_mw(pb_data.objective) << MW
+           << std::endl;
   expected << indent_1 << indent_1 << "Overall cost = "
            << xpansion::logger::commons::create_str_million_euros(
                   pb_data.system_cost)
@@ -176,8 +177,10 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyCapex) {
                                            candidates_bounds, pbs_data);
 
   std::stringstream expected;
-  expected << "Sensitivity analysis summary "
-           << "(epsilon = " << output_data.epsilon << EUROS << "):" << std::endl
+  expected << std::endl
+           << "--- Sensitivity analysis summary "
+           << "(epsilon = " << output_data.epsilon << EUROS << ") ---"
+           << std::endl
            << std::endl;
 
   expected << indent_1 << "CAPEX interval: ["
@@ -218,18 +221,28 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyProjection) {
                                            candidates_bounds, pbs_data);
 
   std::stringstream expected;
-  expected << "Sensitivity analysis summary "
-           << "(epsilon = " << output_data.epsilon << EUROS << "):" << std::endl
+  expected << std::endl
+           << "--- Sensitivity analysis summary "
+           << "(epsilon = " << output_data.epsilon << EUROS << ") ---"
+           << std::endl
            << std::endl;
 
   expected << indent_1 << "Investment intervals of candidates:" << std::endl;
-  expected << indent_1 << indent_1 << peak_name << ": [" << 13 << ", " << 24
-           << "]" << MW << indent_1 << "-- possible interval = [" << 0 << ", "
-           << 100 << "]" << MW << std::endl;
+  expected << indent_1 << indent_1 << peak_name << ": ["
+           << xpansion::logger::commons::create_str_mw(13) << ", "
+           << xpansion::logger::commons::create_str_mw(24) << "]" << MW
+           << indent_1 << "-- possible interval = ["
+           << xpansion::logger::commons::create_str_mw(0) << ", "
+           << xpansion::logger::commons::create_str_mw(100) << "]" << MW
+           << std::endl;
 
-  expected << indent_1 << indent_1 << semibase_name << ": [" << 10 << ", " << 11
-           << "]" << MW << indent_1 << "-- possible interval = [" << 0 << ", "
-           << 200 << "]" << MW << std::endl;
+  expected << indent_1 << indent_1 << semibase_name << ": ["
+           << xpansion::logger::commons::create_str_mw(10) << ", "
+           << xpansion::logger::commons::create_str_mw(11) << "]" << MW
+           << indent_1 << "-- possible interval = ["
+           << xpansion::logger::commons::create_str_mw(0) << ", "
+           << xpansion::logger::commons::create_str_mw(200) << "]" << MW
+           << std::endl;
   expected << std::endl;
 
   _logger.log_summary(output_data);

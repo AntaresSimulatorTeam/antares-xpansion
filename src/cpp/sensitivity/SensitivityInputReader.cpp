@@ -71,7 +71,7 @@ SensitivityInputReader::get_candidates_bounds(
       last_master->get_col_names(0, nb_candidates - 1);
 
   for (auto &cand_name : candidates_name) {
-    boost::algorithm::trim_left(cand_name);
+    boost::algorithm::trim_right(cand_name);
   }
 
   last_master->get_lb(lb_buffer.data(), 0, nb_candidates - 1);
