@@ -23,6 +23,12 @@ inline std::string create_str_euros(double val) {
   result << std::scientific << std::setprecision(5) << val;
   return result.str();
 }
+
+inline std::string create_str_mw(double val) {
+  std::stringstream result;
+  result << std::fixed << std::setprecision(0) << val;
+  return result.str();
+}
 }  // namespace commons
 }  // namespace logger
 }  // namespace xpansion
