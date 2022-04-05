@@ -5,6 +5,9 @@
 
 class SensitivityStudyTest : public ::testing::Test {
  public:
+  const std::string coin_name = "CBC";
+  const std::string xpress_name = "XPRESS";
+
   std::string data_test_dir;
 
   const std::string semibase_name = "semibase";
@@ -36,53 +39,41 @@ class SensitivityStudyTest : public ::testing::Test {
 
     std::string json_filename = std::tmpnam(nullptr);
     writer = std::make_shared<SensitivityWriter>(json_filename);
-
-    std::string solver_name = "CBC";
-    SolverFactory factory;
-    math_problem = factory.create_solver(solver_name);
-    math_problem->init();
   }
 
-  void prepare_toy_sensitivity_pb() {
-    double epsilon = 100;
-    double best_ub = 1390;
+  void init_solver(std::string solver_name, std::string last_master_mps_path) {
+    SolverFactory factory;
+    math_problem = factory.create_solver(solver_name, std::tmpnam(nullptr));
+    math_problem->init();
+    math_problem->read_prob_mps(last_master_mps_path);
+  }
 
-    candidate_names = {peak_name, semibase_name};
+  std::string prepare_toy_sensitivity_pb(
+      bool capex = true, std::vector<std::string> projection_candidates = {}) {
+    double epsilon = 1000;
+    double best_ub = 1390;
 
     std::map<std::string, int> name_to_id = {{peak_name, 0},
                                              {semibase_name, 1}};
 
-    std::string last_master_mps_path =
-        data_test_dir + "/toy_last_iteration.mps";
-    math_problem->read_prob_mps(last_master_mps_path);
-
-    bool capex = true;
-
     std::map<std::string, std::pair<double, double>> candidates_bounds = {
         {peak_name, {0, 3000}}, {semibase_name, {0, 400}}};
 
-    input_data = {epsilon,           best_ub, name_to_id,     math_problem,
-                  candidates_bounds, capex,   candidate_names};
+    input_data = {epsilon,           best_ub, name_to_id,           nullptr,
+                  candidates_bounds, capex,   projection_candidates};
+    return data_test_dir + "/toy_last_iteration.mps";
   }
 
-  void prepare_real_sensitivity_pb() {
+  std::string prepare_real_sensitivity_pb(
+      bool capex = true, std::vector<std::string> projection_candidates = {}) {
     double epsilon = 10000;
     double best_ub = 1440683382.5376825;
-
-    candidate_names = {semibase_name, peak_name, pv_name, battery_name,
-                       transmission_name};
 
     std::map<std::string, int> name_to_id = {{semibase_name, 3},
                                              {peak_name, 1},
                                              {pv_name, 2},
                                              {battery_name, 0},
                                              {transmission_name, 4}};
-
-    std::string last_master_mps_path =
-        data_test_dir + "/real_last_iteration.mps";
-    math_problem->read_prob_mps(last_master_mps_path);
-
-    bool capex = true;
 
     std::map<std::string, std::pair<double, double>> candidates_bounds = {
         {peak_name, {0, 2000}},
@@ -91,34 +82,49 @@ class SensitivityStudyTest : public ::testing::Test {
         {pv_name, {0, 1000}},
         {transmission_name, {0, 3200}}};
 
-    input_data = {epsilon,           best_ub, name_to_id,     math_problem,
-                  candidates_bounds, capex,   candidate_names};
+    input_data = {epsilon,           best_ub, name_to_id,           nullptr,
+                  candidates_bounds, capex,   projection_candidates};
+    return data_test_dir + "/real_last_iteration.mps";
+  }
+
+  void launch_tests(
+      std::string mps_path,
+      std::map<std::string, SensitivityOutputData> expec_output_data_map) {
+    for (auto solver_name : {xpress_name}) {
+      std::cout << solver_name << std::endl;
+      init_solver(solver_name, mps_path);
+      input_data.last_master = math_problem;
+
+      auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
+      sensitivity_study.launch();
+
+      auto output_data = sensitivity_study.get_output_data();
+      verify_output_data(output_data, expec_output_data_map[solver_name]);
+    }
   }
 
   bool areEquals(const Point &left, const Point &right) {
     if (left.size() != left.size()) return false;
 
-    for (auto candidate_it = left.begin(),
-              expec_candidate_it = right.begin();
-         candidate_it != left.end(),
-              expec_candidate_it != right.end();
+    for (auto candidate_it = left.begin(), expec_candidate_it = right.begin();
+         candidate_it != left.end(), expec_candidate_it != right.end();
          candidate_it++, expec_candidate_it++) {
       if (candidate_it->first != expec_candidate_it->first) return false;
-      if ( fabs(candidate_it->second - expec_candidate_it->second) > 1e-6) return false;
+      if (fabs(candidate_it->second - expec_candidate_it->second) > 1e-6)
+        return false;
     }
     return true;
   }
 
-  bool areEquals(const SinglePbData& left, const SinglePbData& right) {
+  bool areEquals(const SinglePbData &left, const SinglePbData &right) {
     return left.pb_type == right.pb_type &&
-    left.str_pb_type == right.str_pb_type &&
-    left.candidate_name ==
-              right.candidate_name &&
-    left.opt_dir == right.opt_dir &&
-    fabs(left.objective - right.objective) < 1e-6 &&
-    fabs(left.system_cost - right.system_cost) < 1e-6 &&
-    left.solver_status == right.solver_status &&
-    areEquals(left.candidates, right.candidates);
+           left.str_pb_type == right.str_pb_type &&
+           left.candidate_name == right.candidate_name &&
+           left.opt_dir == right.opt_dir &&
+           fabs(left.objective - right.objective) < 1e-6 &&
+           fabs(left.system_cost - right.system_cost) < 1e-6 &&
+           left.solver_status == right.solver_status &&
+           areEquals(left.candidates, right.candidates);
   }
 
   void verify_output_data(const SensitivityOutputData &output_data,
@@ -131,9 +137,11 @@ class SensitivityStudyTest : public ::testing::Test {
     ASSERT_EQ(output_data.pbs_data.size(), expec_output_data.pbs_data.size());
 
     for (auto leftMatch : output_data.pbs_data) {
-      auto rightMatch = std::find_if(expec_output_data.pbs_data.begin(), expec_output_data.pbs_data.end(), [&leftMatch, this](const SinglePbData& data){
-        return areEquals(leftMatch, data);
-      });
+      auto rightMatch = std::find_if(
+          expec_output_data.pbs_data.begin(), expec_output_data.pbs_data.end(),
+          [&leftMatch, this](const SinglePbData &data) {
+            return areEquals(leftMatch, data);
+          });
       ASSERT_NE(rightMatch, expec_output_data.pbs_data.end());
       expec_output_data.pbs_data.erase(rightMatch);
     }
@@ -220,7 +228,8 @@ TEST_F(SensitivityStudyTest, CandidateIgnored) {
 }
 
 TEST_F(SensitivityStudyTest, OutputDataInit) {
-  prepare_toy_sensitivity_pb();
+  std::string mps_path = prepare_toy_sensitivity_pb();
+  init_solver(coin_name, mps_path);
 
   auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
   auto expec_output_data = SensitivityOutputData(
@@ -230,84 +239,79 @@ TEST_F(SensitivityStudyTest, OutputDataInit) {
   verify_output_data(output_data, expec_output_data);
 }
 
-TEST_F(SensitivityStudyTest, GetCapexSolutions) {
-  prepare_toy_sensitivity_pb();
+// TEST_F(SensitivityStudyTest, GetCapexSolutions) {
+//   std::string mps_path = prepare_toy_sensitivity_pb(true, {});
 
-  input_data.capex = true;
-  input_data.projection = {};
-  auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
-  sensitivity_study.launch();
+//   auto capex_min_data = SinglePbData(
+//       SensitivityPbType::CAPEX, CAPEX_C, "", MIN_C, 1040, 1390,
+//       {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
 
-  auto output_data = sensitivity_study.get_output_data();
+//   auto capex_max_data = SinglePbData(
+//       SensitivityPbType::CAPEX, CAPEX_C, "", MAX_C, 1224.745762711, 1490,
+//       {{peak_name, 17.22033898}, {semibase_name, 11.69491525}},
+//       SOLVER_STATUS::OPTIMAL);
 
-  auto capex_min_data = SinglePbData(
-      SensitivityPbType::CAPEX, CAPEX_C, "", MIN_C, 1040, 1390,
-      {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
+//   std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
+//   auto expec_output_data =
+//       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
+//                             input_data.candidates_bounds, pbs_data);
 
-  auto capex_max_data = SinglePbData(
-      SensitivityPbType::CAPEX, CAPEX_C, "", MAX_C, 1224.745762711, 1490,
-      {{peak_name, 17.22033898}, {semibase_name, 11.69491525}},
-      SOLVER_STATUS::OPTIMAL);
+//   std::map<std::string, SensitivityOutputData> expec_output_data_map = {
+//       {coin_name, expec_output_data}, {xpress_name, expec_output_data}};
 
-  std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
-  auto expec_output_data =
-      SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                            input_data.candidates_bounds, pbs_data);
+//   launch_tests(mps_path, expec_output_data_map);
+// }
 
-  verify_output_data(output_data, expec_output_data);
-}
+// TEST_F(SensitivityStudyTest, GetCandidatesProjection) {
+//   std::string mps_path =
+//       prepare_toy_sensitivity_pb(false, {peak_name, semibase_name});
 
-TEST_F(SensitivityStudyTest, GetCandidatesProjection) {
-  prepare_toy_sensitivity_pb();
+//   auto projection_min_peak =
+//       SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, peak_name,
+//                    MIN_C, 13.83050847, 1490,
+//                    {{peak_name, 13.83050847}, {semibase_name, 11.694915254}},
+//                    SOLVER_STATUS::OPTIMAL);
 
-  input_data.capex = false;
-  input_data.projection = candidate_names;
-  auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
-  sensitivity_study.launch();
+//   auto projection_max_peak = SinglePbData(
+//       SensitivityPbType::PROJECTION, PROJECTION_C, peak_name, MAX_C, 24, 1490,
+//       {{peak_name, 24}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
 
-  auto output_data = sensitivity_study.get_output_data();
+//   auto projection_min_semibase = SinglePbData(
+//       SensitivityPbType::PROJECTION, PROJECTION_C, semibase_name, MIN_C, 10,
+//       1390, {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
 
-  auto projection_min_peak =
-      SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, peak_name,
-                   MIN_C, 13.83050847, 1490,
-                   {{peak_name, 13.83050847}, {semibase_name, 11.694915254}},
-                   SOLVER_STATUS::OPTIMAL);
+//   auto projection_max_semibase_cbc =
+//       SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, semibase_name,
+//                    MAX_C, 11.694915254, 1490,
+//                    {{peak_name, 13.83050847}, {semibase_name, 11.694915254}},
+//                    SOLVER_STATUS::OPTIMAL);
 
-  auto projection_max_peak = SinglePbData(
-      SensitivityPbType::PROJECTION, PROJECTION_C, peak_name, MAX_C, 24, 1490,
-      {{peak_name, 24}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
+//   auto projection_max_semibase_xpress = projection_max_semibase_cbc;
+//   projection_max_semibase_xpress.candidates[peak_name] = 17.22033898;
 
-  auto projection_min_semibase = SinglePbData(
-      SensitivityPbType::PROJECTION, PROJECTION_C, semibase_name, MIN_C, 10,
-      1390, {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
+//   std::vector<SinglePbData> pbs_data_cbc = {
+//       projection_min_peak, projection_max_peak, projection_min_semibase,
+//       projection_max_semibase_cbc};
 
-  auto projection_max_semibase =
-      SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, semibase_name,
-                   MAX_C, 11.694915254, 1490,
-                   {{peak_name, 13.83050847}, {semibase_name, 11.694915254}},
-                   SOLVER_STATUS::OPTIMAL);
+//   std::vector<SinglePbData> pbs_data_xpress = {
+//       projection_min_peak, projection_max_peak, projection_min_semibase,
+//       projection_max_semibase_xpress};
 
-  std::vector<SinglePbData> pbs_data = {
-      projection_min_peak, projection_max_peak, projection_min_semibase,
-      projection_max_semibase};
+//   std::map<std::string, SensitivityOutputData> expec_output_data_map = {
+//       {coin_name,
+//        SensitivityOutputData(input_data.epsilon, input_data.best_ub,
+//                              input_data.candidates_bounds, pbs_data_cbc)},
+//       {xpress_name,
+//        SensitivityOutputData(input_data.epsilon, input_data.best_ub,
+//                              input_data.candidates_bounds, pbs_data_xpress)}};
 
-  auto expec_output_data =
-      SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                            input_data.candidates_bounds, pbs_data);
-
-  verify_output_data(output_data, expec_output_data);
-}
+//   launch_tests(mps_path, expec_output_data_map);
+// }
 
 TEST_F(SensitivityStudyTest, FullSensitivityTest) {
-  prepare_real_sensitivity_pb();
-
-  input_data.capex = true;
-  input_data.projection = candidate_names;
-  SensitivityStudy sensitivity_study =
-      SensitivityStudy(input_data, logger, writer);
-  sensitivity_study.launch();
-
-  auto output_data = sensitivity_study.get_output_data();
+  std::string mps_path = prepare_real_sensitivity_pb(
+      false,
+      {transmission_name});
 
   auto capex_min_data =
       SinglePbData(SensitivityPbType::CAPEX, CAPEX_C, "", MIN_C,
@@ -445,5 +449,8 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest) {
       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
                             input_data.candidates_bounds, pbs_data);
 
-  verify_output_data(output_data, expec_output_data);
+  std::map<std::string, SensitivityOutputData> expec_output_data_map = {
+      {coin_name, expec_output_data}, {xpress_name, expec_output_data}};
+
+  launch_tests(mps_path, expec_output_data_map);
 }
