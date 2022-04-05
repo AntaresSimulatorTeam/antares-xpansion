@@ -1,7 +1,6 @@
 #include "Worker.h"
 
 #include "glog/logging.h"
-#include "helpers/Path.h"
 #include "solver_utils.h"
 
 /*!
@@ -35,7 +34,8 @@ void Worker::get_value(double &lb) const {
  *
  *  \param problem_name : name of the problem
  */
-void Worker::init(VariableMap const &variable_map, std::string const &path_to_mps,
+void Worker::init(VariableMap const &variable_map,
+                  const std::filesystem::path &path_to_mps,
                   std::string const &solver_name, int log_level,
                   const std::string &log_name) {
   _path_to_mps = path_to_mps;
@@ -78,7 +78,8 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
   if (lp_status != SOLVER_STATUS::OPTIMAL) {
     LOG(INFO) << "lp_status is : " << lp_status << std::endl;
     std::stringstream buffer;
-    buffer << Path(outputroot) / (_path_to_mps + "_lp_status_") /
+    buffer << std::filesystem::path(outputroot) /
+                  (_path_to_mps.string() + "_lp_status_") /
                   (_solver->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
     LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status]
               << std::endl;
@@ -91,8 +92,8 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
   }
 
   if (_is_master) {
-    _solver->write_prob_mps(
-        (Path(outputroot) / output_master_mps_file_name).get_str());
+    _solver->write_prob_mps(std::filesystem::path(outputroot) /
+                            output_master_mps_file_name);
   }
 }
 /*!

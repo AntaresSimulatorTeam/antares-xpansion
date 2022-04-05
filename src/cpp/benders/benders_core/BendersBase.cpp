@@ -2,7 +2,6 @@
 
 #include "Timer.h"
 #include "glog/logging.h"
-#include "helpers/Path.h"
 #include "solver_utils.h"
 
 BendersBase::BendersBase(BendersBaseOptions const &options, Logger &logger,
@@ -35,8 +34,8 @@ void BendersBase::init_data() {
  *
  */
 void BendersBase::print_csv() {
-  std::string const output(Path(_options.OUTPUTROOT) /
-                           (_options.CSV_NAME + ".csv"));
+  const auto output =
+      std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv");
   std::ofstream file(output, std::ios::out | std::ios::trunc);
   if (file) {
     file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;"
@@ -511,8 +510,9 @@ std::string BendersBase::status_from_criterion() const {
 /*!
  *  \brief Get path to slave problem mps file from options
  */
-std::string BendersBase::get_slave_path(std::string const &slave_name) const {
-  return (Path(_options.INPUTROOT) / (slave_name + MPS_SUFFIX)).get_str();
+std::filesystem::path BendersBase::get_slave_path(
+    std::string const &slave_name) const {
+  return std::filesystem::path(_options.INPUTROOT) / (slave_name + MPS_SUFFIX);
 }
 
 /*!
@@ -536,16 +536,16 @@ double BendersBase::slave_weight(int nslaves, std::string const &name) const {
 /*!
  *  \brief Get path to master problem mps file from options
  */
-std::string BendersBase::get_master_path() const {
-  return (Path(_options.INPUTROOT) / (_options.MASTER_NAME + MPS_SUFFIX))
-      .get_str();
+std::filesystem::path BendersBase::get_master_path() const {
+  return std::filesystem::path(_options.INPUTROOT) /
+         (_options.MASTER_NAME + MPS_SUFFIX);
 }
 
 /*!
  *  \brief Get path to structure txt file from options
  */
-std::string BendersBase::get_structure_path() const {
-  return (Path(_options.INPUTROOT) / _options.STRUCTURE_FILE).get_str();
+std::filesystem::path BendersBase::get_structure_path() const {
+  return std::filesystem::path(_options.INPUTROOT) / _options.STRUCTURE_FILE;
 }
 
 LogData BendersBase::bendersDataToLogData(const BendersData &data) const {

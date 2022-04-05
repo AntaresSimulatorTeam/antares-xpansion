@@ -6,6 +6,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -146,4 +147,4 @@ struct BendersBaseOptions : public BaseOptions {
 };
 
 void usage(int argc);
-CouplingMap build_input(const std::string &structure_path);
+CouplingMap build_input(const std::filesystem::path &structure_path);

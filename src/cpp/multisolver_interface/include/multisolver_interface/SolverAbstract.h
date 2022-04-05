@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdio>
+#include <filesystem>
 #include <iostream>
 #include <list>
 #include <memory>
@@ -196,21 +197,21 @@ class SolverAbstract {
    *
    * @param name   : name of the file to write
    */
-  virtual void write_prob_mps(const std::string &filename) = 0;
+  virtual void write_prob_mps(const std::filesystem::path &filename) = 0;
 
   /**
    * @brief writes an optimization problem in a LP file
    *
    * @param name   : name of the file to write
    */
-  virtual void write_prob_lp(const std::string &filename) = 0;
+  virtual void write_prob_lp(const std::filesystem::path &filename) = 0;
 
   /**
    * @brief reads an optimization problem contained in a MPS file
    *
    * @param name   : name of the file to read
    */
-  virtual void read_prob_mps(const std::string &filename) = 0;
+  virtual void read_prob_mps(const std::filesystem::path &filename) = 0;
 
   /**
    * @brief reads an optimization problem contained in a MPS file

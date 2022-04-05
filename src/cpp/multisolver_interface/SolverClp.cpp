@@ -77,16 +77,16 @@ void SolverClp::free() {
 -------------------------------    Reading & Writing problems
 -------------------------------
 *************************************************************************************************/
-void SolverClp::write_prob_mps(const std::string &filename) {
-  _clp.writeMps(filename.c_str(), 1);
+void SolverClp::write_prob_mps(const std::filesystem::path &filename) {
+  _clp.writeMps(filename.string().c_str(), 1);
 }
 
-void SolverClp::write_prob_lp(const std::string &filename) {
-  _clp.writeLp(filename.c_str());
+void SolverClp::write_prob_lp(const std::filesystem::path &filename) {
+  _clp.writeLp(filename.string().c_str());
 }
 
-void SolverClp::read_prob_mps(const std::string &filename) {
-  _clp.readMps(filename.c_str(), true, false);
+void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
+  _clp.readMps(filename.string().c_str(), true, false);
 }
 
 void SolverClp::read_prob_lp(const std::string &filename) {

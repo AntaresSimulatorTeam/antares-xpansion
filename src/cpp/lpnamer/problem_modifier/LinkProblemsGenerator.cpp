@@ -3,7 +3,6 @@
 #include <algorithm>
 
 #include "VariableFileReader.h"
-#include "helpers/Path.h"
 #include "helpers/StringUtils.h"
 #include "solver_utils.h"
 
@@ -12,7 +11,7 @@ ProblemData::ProblemData(const std::string &problem_mps,
     : _problem_mps(problem_mps), _variables_txt(variables_txt) {}
 
 std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
-    std::string const &mps_filePath_p) const {
+    const std::filesystem::path &mps_filePath_p) const {
   std::string line;
   std::vector<ProblemData> result;
   std::ifstream mps_filestream(mps_filePath_p.c_str());
@@ -49,17 +48,17 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  * correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void LinkProblemsGenerator::treat(std::string const &root,
+void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
                                   Couplings &couplings) const {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
-  auto const mps_name = (Path(root) / problemData._problem_mps).get_str();
-  auto const var_name = (Path(root) / problemData._variables_txt).get_str();
+  auto const mps_name = root / problemData._problem_mps;
+  auto const var_name = root / problemData._variables_txt;
 
   // new mps file in the new lp directory
   std::string const lp_name =
       problemData._problem_mps.substr(0, problemData._problem_mps.size() - 4);
-  auto const lp_mps_name = (Path(root) / "lp" / (lp_name + ".mps")).get_str();
+  auto const lp_mps_name = root / "lp" / (lp_name + ".mps");
 
   // List of variables
   VariableFileReadNameConfiguration variable_name_config;
@@ -70,7 +69,7 @@ void LinkProblemsGenerator::treat(std::string const &root,
       "CoutExtremiteVersOrigineDeLInterconnexion";
 
   auto variableReader =
-      VariableFileReader(var_name, _links, variable_name_config);
+      VariableFileReader(var_name.string(), _links, variable_name_config);
 
   std::vector<std::string> var_names = variableReader.getVariables();
   std::map<colId, ColumnsToChange> p_ntc_columns =
@@ -113,9 +112,9 @@ void LinkProblemsGenerator::treat(std::string const &root,
  * correspondence between optimizer variables and interconnection candidates
  * \return void
  */
-void LinkProblemsGenerator::treatloop(std::string const &root,
+void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings) const {
-  auto const mps_file_name = (Path(root) / MPS_TXT).get_str();
+  auto const mps_file_name = root / MPS_TXT;
 
   for (auto const &mps : readMPSList(mps_file_name)) {
     treat(root, mps, couplings);

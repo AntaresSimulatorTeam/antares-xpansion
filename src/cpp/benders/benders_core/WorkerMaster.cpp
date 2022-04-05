@@ -18,7 +18,7 @@ WorkerMaster::WorkerMaster() { _is_master = true; }
  *  \param nslaves : number of slaves
  */
 WorkerMaster::WorkerMaster(VariableMap const &variable_map,
-                           std::string const &path_to_mps,
+                           const std::filesystem::path &path_to_mps,
                            const std::string &solver_name, const int log_level,
                            int nslaves, const std::string &log_name)
     : Worker(), _nslaves(nslaves) {

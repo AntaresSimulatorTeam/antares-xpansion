@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "BendersStructsDatas.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
@@ -36,10 +38,10 @@ class BendersBase {
   void get_slave_cut(SlaveCutPackage &slave_cut_package);
   void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
-  std::string get_slave_path(std::string const &slave_name) const;
+  std::filesystem::path get_slave_path(std::string const &slave_name) const;
   double slave_weight(int nslaves, std::string const &name) const;
-  std::string get_master_path() const;
-  std::string get_structure_path() const;
+  std::filesystem::path get_master_path() const;
+  std::filesystem::path get_structure_path() const;
   LogData bendersDataToLogData(const BendersData &data) const;
   void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);

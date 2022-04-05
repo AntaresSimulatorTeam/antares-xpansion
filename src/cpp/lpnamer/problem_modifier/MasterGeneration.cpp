@@ -1,6 +1,7 @@
 #include "MasterGeneration.h"
 
 #include <algorithm>
+#include <filesystem>
 
 #include "LauncherHelpers.h"
 #include "MasterProblemBuilder.h"
@@ -64,15 +65,15 @@ void MasterGeneration::write_master_mps(
   treatAdditionalConstraints(master_l, additionalConstraints_p);
 
   std::string const &lp_name = "master";
-  master_l->write_prob_mps(
-      (Path(rootPath) / "lp" / (lp_name + ".mps")).get_str());
+  master_l->write_prob_mps(std::filesystem::path(rootPath) / "lp" /
+                           (lp_name + ".mps"));
 }
 
 void MasterGeneration::write_structure_file(const std::string &rootPath,
                                             const Couplings &couplings) const {
   std::map<std::string, std::map<std::string, unsigned int>> output;
   for (const auto &[candidate_name_and_mps_filePath, colId] : couplings) {
-    output[get_name(candidate_name_and_mps_filePath.second)]
+    output[candidate_name_and_mps_filePath.second.stem().string()]
           [candidate_name_and_mps_filePath.first] = colId;
   }
   unsigned int i = 0;

@@ -12,7 +12,8 @@ typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 class WorkerMaster : public Worker {
  public:
   WorkerMaster();
-  WorkerMaster(VariableMap const &variable_map, std::string const &path_to_mps,
+  WorkerMaster(VariableMap const &variable_map,
+               const std::filesystem::path &path_to_mps,
                const std::string &solver_name, const int log_level, int nslaves,
                const std::string &log_name);
   virtual ~WorkerMaster();
