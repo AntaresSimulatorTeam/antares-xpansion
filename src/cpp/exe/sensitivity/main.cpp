@@ -11,6 +11,9 @@
 #include "helpers/Path.h"
 namespace po = boost::program_options;
 
+const std::string DEFAULT_SENSITIVITY_OUTPUT_JSON("sensitivity.json");
+const std::string DEFAULT_SENSITIVITY_LOG_FILE("sensitivity_log.txt");
+
 std::shared_ptr<SensitivityILogger> build_logger(
     const std::string &log_file_path) {
   auto master_logger = std::make_shared<SensitivityMasterLogger>();
@@ -63,9 +66,9 @@ int main(int argc, char **argv) {
         "master,m", po::value<std::string>(&last_master_path)->required(),
         "path to the last master mps file")(
         "structure,s", po::value<std::string>(&structure_path)->required(),
-        "path to the structure txt file")(
-        "log,l", po::value<std::string>(&log_path)->required(),
-        "path to the sensitivity log file");
+        "path to the structure txt file")("log,l",
+                                          po::value<std::string>(&log_path),
+                                          "path to the sensitivity log file");
 
     po::variables_map opts;
     po::store(po::parse_command_line(argc, argv, desc), opts);
@@ -77,8 +80,6 @@ int main(int argc, char **argv) {
 
     po::notify(opts);
 
-    auto logger = build_logger(log_path);
-
     auto sensitivity_input_reader = SensitivityInputReader(
         json_input_path, benders_output_path, last_master_path, structure_path);
     SensitivityInputData input_data = sensitivity_input_reader.get_input_data();
@@ -87,9 +88,19 @@ int main(int argc, char **argv) {
       std::filesystem::path windows_path(json_input_path);
       json_output_path = (Path(get_sensitivity_input_dir(
                               windows_path.make_preferred().string())) /
-                          "sensitivity.json")
+                          DEFAULT_SENSITIVITY_OUTPUT_JSON)
                              .get_str();
     }
+
+    if (!opts.count("log")) {
+      std::filesystem::path windows_path(json_input_path);
+      log_path = (Path(get_sensitivity_input_dir(
+                      windows_path.make_preferred().string())) /
+                  DEFAULT_SENSITIVITY_LOG_FILE)
+                     .get_str();
+    }
+    auto logger = build_logger(log_path);
+
     auto writer = std::make_shared<SensitivityWriter>(json_output_path);
     auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
 
