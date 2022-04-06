@@ -2,22 +2,20 @@
 
 #include "JsonXpansionReader.h"
 #include "common_lpnamer.h"
-#include "helpers/Path.h"
 
-std::string StudyUpdater::linksSubfolder_ =
-    static_cast<std::string>(Path("") / "input" / "links");
+std::filesystem::path StudyUpdater::linksSubfolder_ =
+    std::filesystem::path("input") / "links";
 
-StudyUpdater::StudyUpdater(std::string const& studyPath_p)
+StudyUpdater::StudyUpdater(const std::filesystem::path& studyPath_p)
     : studyPath_(studyPath_p) {
-  linksPath_ = studyPath_ + linksSubfolder_;
+  linksPath_ = studyPath_ / linksSubfolder_;
   readAntaresVersion();
 }
 
 int StudyUpdater::getAntaresVersion() const { return antaresVersion_; }
 
 void StudyUpdater::readAntaresVersion() {
-  std::ifstream studyFile_l(
-      static_cast<std::string>(Path(studyPath_) / STUDY_FILE));
+  std::ifstream studyFile_l(studyPath_ / STUDY_FILE);
   std::string line_l;
   const std::string versionProperty_l("version = ");
 
@@ -36,10 +34,9 @@ void StudyUpdater::readAntaresVersion() {
   antaresVersion_ = 710;
 }
 
-std::string StudyUpdater::getLinkdataFilepath(ActiveLink const& link_p) const {
-  auto linkDataFilePath = static_cast<std::string>(
-      Path(linksPath_) / link_p.get_linkor() / (link_p.get_linkex() + ".txt"));
-  return linkDataFilePath;
+std::filesystem::path StudyUpdater::getLinkdataFilepath(
+    ActiveLink const& link_p) const {
+  return linksPath_ / link_p.get_linkor() / (link_p.get_linkex() + ".txt");
 }
 
 std::pair<double, double> StudyUpdater::computeNewCapacities(
@@ -71,13 +68,13 @@ std::pair<double, double> StudyUpdater::computeNewCapacities(
 int StudyUpdater::updateLinkdataFile(
     const ActiveLink& link_p,
     const std::map<std::string, double>& investments_p) const {
-  std::string linkdataFilename_l = getLinkdataFilepath(link_p);
+  auto linkdataFilename_l = getLinkdataFilepath(link_p);
 
   std::ifstream inputCsv_l(linkdataFilename_l);
-  std::ofstream tempOutCsvFile(linkdataFilename_l + ".tmp");
+  std::ofstream tempOutCsvFile(linkdataFilename_l.string() + ".tmp");
 
   if (!tempOutCsvFile.is_open()) {
-    std::cout << "ERROR: Error writing " + linkdataFilename_l + "."
+    std::cout << "ERROR: Error writing " + linkdataFilename_l.string() + "."
               << std::endl;
     return 1;
   }
@@ -101,7 +98,8 @@ int StudyUpdater::updateLinkdataFile(
     } else {
       record_l.reset();
       if (!warned_l) {
-        std::cout << "WARNING: Missing entries in : " + linkdataFilename_l +
+        std::cout << "WARNING: Missing entries in : " +
+                         linkdataFilename_l.string() +
                          ". Missing valus were populated with 0."
                   << std::endl;
         warned_l = true;
@@ -117,9 +115,9 @@ int StudyUpdater::updateLinkdataFile(
   tempOutCsvFile.close();
 
   // delete old file and rename the temporarily created file
-  std::remove(linkdataFilename_l.c_str());
-  std::rename((linkdataFilename_l + ".tmp").c_str(),
-              linkdataFilename_l.c_str());
+  std::remove(linkdataFilename_l.string().c_str());
+  std::rename((linkdataFilename_l.string() + ".tmp").c_str(),
+              linkdataFilename_l.string().c_str());
 
   return 0;
 }

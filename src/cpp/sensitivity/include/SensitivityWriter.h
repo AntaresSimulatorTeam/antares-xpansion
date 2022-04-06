@@ -26,7 +26,7 @@ const std::string BOUNDS_C("candidates bounds");
 
 class SensitivityWriter {
  private:
-  const std::filesystem::path& _filename;
+  const std::filesystem::path _filename;
 
  public:
   SensitivityWriter() = delete;

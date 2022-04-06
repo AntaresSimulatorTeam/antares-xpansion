@@ -7,8 +7,9 @@
 #include "INIReader.h"
 #include "helpers/StringUtils.h"
 
-CandidatesINIReader::CandidatesINIReader(const std::string &antaresIntercoFile,
-                                         const std::string &areaFile) {
+CandidatesINIReader::CandidatesINIReader(
+    const std::filesystem::path &antaresIntercoFile,
+    const std::filesystem::path &areaFile) {
   _intercoFileData = ReadAntaresIntercoFile(antaresIntercoFile);
   _areaNames = ReadAreaFile(areaFile);
 
@@ -23,12 +24,12 @@ CandidatesINIReader::CandidatesINIReader(const std::string &antaresIntercoFile,
 }
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
-    const std::string &antaresIntercoFile) {
+    const std::filesystem::path &antaresIntercoFile) {
   std::vector<IntercoFileData> result;
 
   std::ifstream interco_filestream(antaresIntercoFile);
   if (!interco_filestream.good()) {
-    std::string message = "unable to open " + antaresIntercoFile;
+    std::string message = "unable to open " + antaresIntercoFile.string();
     throw std::runtime_error(message);
   }
 
@@ -47,12 +48,12 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
   return result;
 }
 std::vector<std::string> CandidatesINIReader::ReadAreaFile(
-    const std::string &areaFile) {
+    const std::filesystem::path &areaFile) {
   std::vector<std::string> result;
 
   std::ifstream area_filestream(areaFile);
   if (!area_filestream.good()) {
-    std::string message = "unable to open " + areaFile;
+    std::string message = "unable to open " + areaFile.string();
     throw std::runtime_error(message);
   }
 
@@ -100,10 +101,10 @@ bool CandidatesINIReader::checkArea(std::string const &areaName_p) const {
 }
 
 std::vector<CandidateData> CandidatesINIReader::readCandidateData(
-    const std::string &candidateFile) {
+    const std::filesystem::path &candidateFile) {
   std::vector<CandidateData> result;
 
-  INIReader reader(candidateFile);
+  INIReader reader(candidateFile.string());
   std::stringstream ss;
   std::set<std::string> sections = reader.Sections();
   for (auto const &sectionName : sections) {
@@ -116,7 +117,7 @@ std::vector<CandidateData> CandidatesINIReader::readCandidateData(
 }
 
 CandidateData CandidatesINIReader::readCandidateSection(
-    const std::string &candidateFile, const INIReader &reader,
+    const std::filesystem::path &candidateFile, const INIReader &reader,
     const std::string &sectionName) {
   CandidateData candidateData;
   candidateData.name =
@@ -131,13 +132,13 @@ CandidateData CandidatesINIReader::readCandidateSection(
     if (!checkArea(candidateData.linkor)) {
       std::string message = "Unrecognized area " + candidateData.linkor +
                             " in section " + sectionName + " in " +
-                            candidateFile + ".";
+                            candidateFile.string() + ".";
       throw std::runtime_error(message);
     }
     if (!checkArea(candidateData.linkex)) {
       std::string message = "Unrecognized area " + candidateData.linkex +
                             " in section " + sectionName + " in " +
-                            candidateFile + ".";
+                            candidateFile.string() + ".";
       throw std::runtime_error(message);
     }
   }

@@ -1,10 +1,11 @@
 #include "LauncherHelpers.h"
 
+#include <filesystem>
+
 #include "Candidate.h"
 #include "CandidatesINIReader.h"
 #include "LinkProblemsGenerator.h"
 #include "LinkProfileReader.h"
-#include "helpers/Path.h"
 
 void treatAdditionalConstraints(
     SolverAbstract::Ptr master_p,
@@ -117,18 +118,16 @@ void addBinaryVariables(
  * directory containing the lp directory \return ActiveLinksBuilder object
  */
 
-ActiveLinksBuilder get_link_builders(const std::string &root) {
-  auto const area_file_name = (Path(root) / "area.txt").get_str();
-  auto const interco_file_name = (Path(root) / "interco.txt").get_str();
+ActiveLinksBuilder get_link_builders(const std::filesystem::path &root) {
+  const auto area_file_name = root / "area.txt";
+  const auto interco_file_name = root / "interco.txt";
 
   CandidatesINIReader candidateReader(interco_file_name, area_file_name);
 
   // Get all mandatory path
-  auto const xpansion_user_dir =
-      (Path(root) / ".." / ".." / "user" / "expansion").get_str();
-  auto const candidates_file_name =
-      (Path(xpansion_user_dir) / CANDIDATES_INI).get_str();
-  auto const capacity_folder = (Path(xpansion_user_dir) / "capa").get_str();
+  auto const xpansion_user_dir = root / ".." / ".." / "user" / "expansion";
+  auto const candidates_file_name = xpansion_user_dir / CANDIDATES_INI;
+  auto const capacity_folder = xpansion_user_dir / "capa";
 
   // Instantiation of candidates
   const auto &candidatesDatas =

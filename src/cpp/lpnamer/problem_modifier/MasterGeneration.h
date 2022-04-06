@@ -1,6 +1,8 @@
 #ifndef __MASTER_GENERATION__
 #define __MASTER_GENERATION__
 
+#include <filesystem>
+
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
 #include "LinkProblemsGenerator.h"
@@ -16,7 +18,8 @@ class MasterGeneration {
    * variable and antares variable
    */
   explicit MasterGeneration(
-      const std::string &rootPath, const std::vector<ActiveLink> &links,
+      const std::filesystem::path &rootPath,
+      const std::vector<ActiveLink> &links,
       const AdditionalConstraints &additionalConstraints_p,
       Couplings &couplings, std::string const &master_formulation,
       std::string const &solver_name);
@@ -24,10 +27,10 @@ class MasterGeneration {
  private: /*methods*/
   void add_candidates(const std::vector<ActiveLink> &links);
   void write_master_mps(
-      const std::string &rootPath, std::string const &master_formulation,
-      std::string const &solver_name,
+      const std::filesystem::path &rootPath,
+      std::string const &master_formulation, std::string const &solver_name,
       const AdditionalConstraints &additionalConstraints_p) const;
-  void write_structure_file(const std::string &rootPath,
+  void write_structure_file(const std::filesystem::path &rootPath,
                             const Couplings &couplings) const;
 
  private: /*members*/

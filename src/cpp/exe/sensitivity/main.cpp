@@ -8,7 +8,6 @@
 #include "SensitivityLogger.h"
 #include "SensitivityMasterLogger.h"
 #include "SensitivityStudy.h"
-#include "helpers/Path.h"
 namespace po = boost::program_options;
 
 const std::string DEFAULT_SENSITIVITY_OUTPUT_JSON("sensitivity.json");
@@ -25,24 +24,6 @@ std::shared_ptr<SensitivityILogger> build_logger(
   master_logger->addLogger(user_logger);
   std::shared_ptr<SensitivityILogger> logger = master_logger;
   return logger;
-}
-std::string get_sensitivity_input_dir(const std::string &input_file) {
-  size_t last_sep(input_file.find(Path::mSep));
-
-  if (last_sep == std::string::npos) {
-    return ".";
-  }
-
-  while (true) {
-    size_t next_sep = input_file.find(Path::mSep, last_sep + 1);
-    if (next_sep == std::string::npos) {
-      break;
-    } else {
-      last_sep = next_sep;
-    }
-  }
-
-  return (input_file.substr(0, last_sep));
 }
 
 int main(int argc, char **argv) {

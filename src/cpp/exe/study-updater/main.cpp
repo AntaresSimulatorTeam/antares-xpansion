@@ -1,5 +1,6 @@
 
 #include <boost/program_options.hpp>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -9,7 +10,6 @@
 #include "LauncherHelpers.h"
 #include "LinkProfileReader.h"
 #include "StudyUpdater.h"
-#include "helpers/Path.h"
 
 namespace po = boost::program_options;
 
@@ -20,10 +20,10 @@ namespace po = boost::program_options;
  * directory containing the lp directory \param links_p Structure which contains
  * the list of links \param jsonPath_l path to the json output file \return void
  */
-void updateStudy(std::string const &rootPath_p,
+void updateStudy(const std::filesystem::path &rootPath_p,
                  const std::vector<ActiveLink> &links_p,
                  std::string const &jsonPath_l) {
-  std::string linksPath_l = (Path(rootPath_p) / ".." / "..").get_str();
+  auto linksPath_l = rootPath_p / ".." / "..";
 
   StudyUpdater studyUpdater(linksPath_l);
   int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);

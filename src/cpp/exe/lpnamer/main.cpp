@@ -37,14 +37,14 @@ namespace po = boost::program_options;
  */
 int main(int argc, char **argv) {
   try {
-    std::string root;
+    std::filesystem::path root;
     std::string master_formulation;
     std::string additionalConstraintFilename_l;
 
     po::options_description desc("Allowed options");
 
     desc.add_options()("help,h", "produce help message")(
-        "output,o", po::value<std::string>(&root)->required(),
+        "output,o", po::value<std::filesystem::path>(&root)->required(),
         "antares-xpansion study output")(
         "formulation,f",
         po::value<std::string>(&master_formulation)->default_value("relaxed"),
