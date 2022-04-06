@@ -1,13 +1,14 @@
 // projet_benders.cpp : définit le point d'entrée pour l'application console.
 //
 
+#include <filesystem>
+
 #include "JsonWriter.h"
 #include "MergeMPS.h"
 #include "SimulationOptions.h"
 #include "Worker.h"
 #include "WriterFactories.h"
 #include "glog/logging.h"
-#include "helpers/Path.h"
 #include "logger/User.h"
 #include "solver_utils.h"
 
@@ -23,8 +24,8 @@ int main(int argc, char **argv) {
   Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
   google::InitGoogleLogging(argv[0]);
-  auto path_to_log = (Path(options.OUTPUTROOT) / "merge_mpsLog").get_str();
-  google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
+  auto path_to_log = std::filesystem::path(options.OUTPUTROOT) / "merge_mpsLog";
+  google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
   LOG(INFO) << "starting merge_mps" << std::endl;
 
   Writer writer = build_json_writer(options.JSON_FILE);

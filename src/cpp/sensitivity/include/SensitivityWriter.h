@@ -2,6 +2,8 @@
 
 #include <json/writer.h>
 
+#include <filesystem>
+
 #include "SensitivityOutputData.h"
 
 const std::string ANTARES_C("antares");
@@ -24,12 +26,12 @@ const std::string BOUNDS_C("candidates bounds");
 
 class SensitivityWriter {
  private:
-  const std::string _filename;
+  const std::filesystem::path& _filename;
 
  public:
   SensitivityWriter() = delete;
-  explicit SensitivityWriter(std::string json_filename);
+  explicit SensitivityWriter(std::filesystem::path json_filename);
   ~SensitivityWriter() = default;
 
-  void end_writing(SensitivityOutputData const &output_data) const;
+  void end_writing(SensitivityOutputData const& output_data) const;
 };
