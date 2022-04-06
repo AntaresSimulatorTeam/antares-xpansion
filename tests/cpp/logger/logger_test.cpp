@@ -21,9 +21,9 @@ class FileLoggerTest : public ::testing::Test {
  public:
   void SetUp() { _fileName = std::tmpnam(nullptr); }
 
-  void TearDown() { std::remove(_fileName.c_str()); }
+  void TearDown() { std::remove(_fileName.string().c_str()); }
 
-  std::string _fileName;
+  std::filesystem::path _fileName;
 };
 
 TEST_F(FileLoggerTest, InvalidFileNotified) {

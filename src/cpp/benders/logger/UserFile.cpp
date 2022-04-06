@@ -15,7 +15,7 @@ using xpansion::logger::commons::indent_1;
 namespace xpansion {
 namespace logger {
 
-UserFile::UserFile(const std::string &filename) {
+UserFile::UserFile(const std::filesystem::path &filename) {
   _file.open(filename, std::ofstream::out | std::ofstream::app);
   if (_file.fail()) {
     std::cerr << "Invalid file name passed as parameter" << std::endl;

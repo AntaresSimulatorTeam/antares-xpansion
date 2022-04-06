@@ -15,7 +15,7 @@ class WorkerMaster : public Worker {
   WorkerMaster(VariableMap const &variable_map,
                const std::filesystem::path &path_to_mps,
                const std::string &solver_name, const int log_level, int nslaves,
-               const std::string &log_name);
+               const std::filesystem::path &log_name);
   virtual ~WorkerMaster();
 
   void get(Point &x0, double &alpha, DblVector &alpha_i);

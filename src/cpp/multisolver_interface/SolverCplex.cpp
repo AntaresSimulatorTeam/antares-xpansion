@@ -8,11 +8,12 @@
 *************************************************************************************************/
 int SolverCplex::_NumberOfProblems = 0;
 
-SolverCplex::SolverCplex(const std::string &log_file) : SolverCplex() {
+SolverCplex::SolverCplex(const std::filesystem::path &log_file)
+    : SolverCplex() {
   _log_file = log_file;
 
   if (_log_file != "") {
-    CPXsetlogfilename(_env, _log_file.c_str(), "a+");
+    CPXsetlogfilename(_env, _log_file.string().c_str(), "a+");
   }
 }
 SolverCplex::SolverCplex() {
@@ -59,7 +60,7 @@ SolverCplex::SolverCplex(const std::shared_ptr<const SolverAbstract> fictif) {
     zero_status_check(status, "create problem");
     _log_file = fictif->_log_file;
     if (_log_file != "") {
-      CPXsetlogfilename(_env, _log_file.c_str(), "a+");
+      CPXsetlogfilename(_env, _log_file.string().c_str(), "a+");
     }
     _NumberOfProblems += 1;
   } else {

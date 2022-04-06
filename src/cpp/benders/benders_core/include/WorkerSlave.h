@@ -19,7 +19,7 @@ class WorkerSlave : public Worker {
   WorkerSlave(VariableMap const &variable_map,
               const std::filesystem::path &path_to_mps,
               double const &slave_weight, const std::string &solver_name,
-              const int log_level, const std::string &log_name);
+              const int log_level, const std::filesystem::path &log_name);
   virtual ~WorkerSlave() = default;
 
  public:

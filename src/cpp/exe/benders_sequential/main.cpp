@@ -1,6 +1,8 @@
 // projet_benders.cpp : définit le point d'entrée pour l'application console.
 //
 
+#include <filesystem>
+
 #include "BendersSequential.h"
 #include "JsonWriter.h"
 #include "LoggerFactories.h"
@@ -9,8 +11,6 @@
 #include "Timer.h"
 #include "WriterFactories.h"
 #include "glog/logging.h"
-#include "helpers/Path.h"
-
 int main(int argc, char **argv) {
   // options.print(std::cout);
   usage(argc);
@@ -19,14 +19,14 @@ int main(int argc, char **argv) {
 
   google::InitGoogleLogging(argv[0]);
   auto path_to_log =
-      (Path(options.OUTPUTROOT) / "benderssequentialLog.txt.").get_str();
-  google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
+      std::filesystem::path(options.OUTPUTROOT) / "benderssequentialLog.txt.";
+  google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
 
   std::ostringstream oss_l = start_message(options, "Sequential");
   LOG(INFO) << oss_l.str() << std::endl;
 
-  const std::string &loggerFileName =
-      (Path(options.OUTPUTROOT) / "reportbenderssequential.txt").get_str();
+  const auto &loggerFileName =
+      std::filesystem::path(options.OUTPUTROOT) / "reportbenderssequential.txt";
 
   auto logger_factory = FileAndStdoutLoggerFactory(loggerFileName);
 

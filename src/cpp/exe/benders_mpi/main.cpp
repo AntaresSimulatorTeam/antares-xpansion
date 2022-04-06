@@ -1,6 +1,8 @@
 // projet_benders.cpp: defines the entry point  for the console application
 //
 
+#include <filesystem>
+
 #include "BendersMPI.h"
 #include "BendersSequential.h"
 #include "LoggerFactories.h"
@@ -9,8 +11,6 @@
 #include "WriterFactories.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
-#include "helpers/Path.h"
-
 int main(int argc, char **argv) {
   mpi::environment env(argc, argv);
   mpi::communicator world;
@@ -28,13 +28,12 @@ int main(int argc, char **argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   google::InitGoogleLogging(argv[0]);
   auto path_to_log =
-      (Path(options.OUTPUTROOT) /
-       ("bendersmpiLog-rank" + std::to_string(world.rank()) + ".txt."))
-          .get_str();
-  google::SetLogDestination(google::GLOG_INFO, path_to_log.c_str());
+      std::filesystem::path(options.OUTPUTROOT) /
+      ("bendersmpiLog-rank" + std::to_string(world.rank()) + ".txt.");
+  google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
 
-  std::string log_reports_name =
-      (Path(options.OUTPUTROOT) / "reportbendersmpi.txt").get_str();
+  auto log_reports_name =
+      std::filesystem::path(options.OUTPUTROOT) / "reportbendersmpi.txt";
   Logger logger;
   Writer writer;
 

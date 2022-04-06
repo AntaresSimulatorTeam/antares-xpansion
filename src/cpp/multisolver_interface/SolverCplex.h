@@ -30,7 +30,7 @@ class SolverCplex : public SolverAbstract {
   the name is set to DefaultProblem_$(_NumberOfProblems+1)
   */
   SolverCplex();
-  SolverCplex(const std::string &log_file);
+  SolverCplex(const std::filesystem::path &log_file);
 
   /**
    * @brief Constructor of a CPLEX solver named "name"

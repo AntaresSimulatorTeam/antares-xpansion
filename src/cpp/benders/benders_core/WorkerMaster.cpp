@@ -20,7 +20,7 @@ WorkerMaster::WorkerMaster() { _is_master = true; }
 WorkerMaster::WorkerMaster(VariableMap const &variable_map,
                            const std::filesystem::path &path_to_mps,
                            const std::string &solver_name, const int log_level,
-                           int nslaves, const std::string &log_name)
+                           int nslaves, const std::filesystem::path &log_name)
     : Worker(), _nslaves(nslaves) {
   _is_master = true;
   init(variable_map, path_to_mps, solver_name, log_level, log_name);

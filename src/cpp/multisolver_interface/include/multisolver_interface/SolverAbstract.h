@@ -150,7 +150,7 @@ class SolverAbstract {
    */
   std::list<std::ostream *> &get_stream() { return _streams; };
   FILE *_fp = nullptr;
-  std::string _log_file = "";
+  std::filesystem::path _log_file = "";
   /**
    * @brief add a stream to the list of streams used by the solver instance
    *

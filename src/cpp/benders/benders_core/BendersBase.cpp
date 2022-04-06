@@ -561,7 +561,7 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   result.max_invest = data.max_invest;
   return result;
 }
-void BendersBase::set_log_file(const std::string &log_name) {
+void BendersBase::set_log_file(const std::filesystem::path &log_name) {
   _log_name = log_name;
 }
 

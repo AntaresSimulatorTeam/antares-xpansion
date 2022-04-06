@@ -8,13 +8,13 @@
 *************************************************************************************************/
 int SolverClp::_NumberOfProblems = 0;
 
-SolverClp::SolverClp(const std::string &log_file) : SolverClp() {
+SolverClp::SolverClp(const std::filesystem::path &log_file) : SolverClp() {
   _log_file = log_file;
   if (_log_file.empty()) {
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
   } else {
-    if ((_fp = fopen(_log_file.c_str(), "a+")) == NULL) {
+    if ((_fp = fopen(_log_file.string().c_str(), "a+")) == NULL) {
       std::cerr << "Invalid log file name passed as parameter: " << _log_file
                 << std::endl;
     } else {
@@ -35,7 +35,7 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
   if (const auto c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
     _log_file = toCopy->_log_file;
-    _fp = fopen(_log_file.c_str(), "a+");
+    _fp = fopen(_log_file.string().c_str(), "a+");
     if (_fp != nullptr) {
       setvbuf(_fp, nullptr, _IONBF, 0);
       _message_handler.setFilePointer(_fp);

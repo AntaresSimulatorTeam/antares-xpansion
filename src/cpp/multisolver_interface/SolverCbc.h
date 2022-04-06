@@ -38,7 +38,7 @@ class SolverCbc : public SolverAbstract {
    * @brief Default constructor of a CBC solver
    */
   SolverCbc();
-  explicit SolverCbc(const std::string &log_file);
+  explicit SolverCbc(const std::filesystem::path &log_file);
 
   /**
    * @brief Copy constructor of solver, copy the problem toCopy in memory and

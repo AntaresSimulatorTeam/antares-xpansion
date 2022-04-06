@@ -31,7 +31,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type,
-    const std::string &log_name) const {
+    const std::filesystem::path &log_name) const {
 #ifdef COIN_OR
   if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS) {
     return std::make_shared<SolverClp>(log_name);
@@ -46,7 +46,8 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   return create_solver(solver_name, "");
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
-    const std::string &solver_name, const std::string &log_name) const {
+    const std::string &solver_name,
+    const std::filesystem::path &log_name) const {
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name);
   }
@@ -72,7 +73,8 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   }
 }
 
-SolverAbstract::Ptr SolverFactory::copy_solver(const std::shared_ptr<const SolverAbstract>& to_copy) {
+SolverAbstract::Ptr SolverFactory::copy_solver(
+    const std::shared_ptr<const SolverAbstract> &to_copy) {
   std::string solver_name = to_copy->get_solver_name();
 
   if (solver_name == "") {
@@ -101,7 +103,8 @@ SolverAbstract::Ptr SolverFactory::copy_solver(const std::shared_ptr<const Solve
 }
 
 SolverAbstract::Ptr SolverFactory::copy_solver(SolverAbstract::Ptr to_copy) {
-  return copy_solver(static_cast<const std::shared_ptr<const SolverAbstract>>(to_copy));
+  return copy_solver(
+      static_cast<const std::shared_ptr<const SolverAbstract>>(to_copy));
 }
 
 const std::vector<std::string> &SolverFactory::get_solvers_list() const {

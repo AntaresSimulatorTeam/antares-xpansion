@@ -37,7 +37,7 @@ void Worker::get_value(double &lb) const {
 void Worker::init(VariableMap const &variable_map,
                   const std::filesystem::path &path_to_mps,
                   std::string const &solver_name, int log_level,
-                  const std::string &log_name) {
+                  const std::filesystem::path &log_name) {
   _path_to_mps = path_to_mps;
 
   SolverFactory factory;

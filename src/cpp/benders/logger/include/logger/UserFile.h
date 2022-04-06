@@ -2,6 +2,7 @@
 #define ANTARESXPANSION_CONSOLE_H
 
 #include <cstdio>
+#include <filesystem>
 #include <fstream>
 #include <ostream>
 
@@ -12,7 +13,7 @@ namespace logger {
 
 class UserFile : public ILogger {
  public:
-  explicit UserFile(const std::string &filename);
+  explicit UserFile(const std::filesystem::path &filename);
   ~UserFile();
 
   void display_message(const std::string &str) override;

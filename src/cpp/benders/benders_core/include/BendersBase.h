@@ -17,8 +17,8 @@ class BendersBase {
   virtual ~BendersBase() = default;
   BendersBase(BendersBaseOptions const &options, Logger &logger, Writer writer);
   virtual void launch() = 0;
-  void set_log_file(const std::string &log_name);
-  std::string log_name() const { return _log_name; }
+  void set_log_file(const std::filesystem::path &log_name);
+  std::filesystem::path log_name() const { return _log_name; }
 
  protected:
   BendersData _data;
@@ -96,7 +96,7 @@ class BendersBase {
  private:
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
-  std::string _log_name = "";
+  std::filesystem::path _log_name = "";
   BendersTrace _trace;
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
