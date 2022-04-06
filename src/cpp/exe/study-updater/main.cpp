@@ -44,13 +44,13 @@ void updateStudy(const std::filesystem::path &rootPath_p,
  */
 int main(int argc, char **argv) {
   try {
-    std::string root;
+    std::filesystem::path root;
     std::string solutionFile_l;
 
     po::options_description desc("Allowed options");
 
     desc.add_options()("help,h", "produce help message")(
-        "study-output,o", po::value<std::string>(&root)->required(),
+        "study-output,o", po::value<std::filesystem::path>(&root)->required(),
         "antares-xpansion study output")(
         "solution,s", po::value<std::string>(&solutionFile_l)->required(),
         "path to json solution file");
