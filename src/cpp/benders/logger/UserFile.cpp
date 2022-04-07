@@ -57,7 +57,7 @@ void UserFile::log_at_iteration_end(const LogData &d) {
 }
 
 void UserFile::log_at_ending(const LogData &d) {
-  const double overall_cost = d.slave_cost + d.invest_cost;
+  const double overall_cost = d.subproblem_cost + d.invest_cost;
   _file << LINE_PREFIX << indent_1 << "Best solution = it " << d.best_it
         << std::endl;
   _file.flush();

@@ -108,8 +108,8 @@ double norm_point(Point const &x0, Point const &x1);
 std::ostream &operator<<(std::ostream &stream,
                          std::vector<IntVector> const &rhs);
 
-const std::string SLAVE_WEIGHT_CST_STR("CONSTANT");
-const std::string SLAVE_WEIGHT_UNIFORM_CST_STR("UNIFORM");
+const std::string SUBPROBLEM_WEIGHT_CST_STR("CONSTANT");
+const std::string SUBPROBLEM_WEIGHT_UNIFORM_CST_STR("UNIFORM");
 const std::string WEIGHT_SUM_CST_STR("WEIGHT_SUM");
 const std::string MPS_SUFFIX = ".mps";
 

@@ -1,5 +1,3 @@
-#pragma once
-#include <fstream>
 #include <iostream>
 
 #include "catch2.hpp"

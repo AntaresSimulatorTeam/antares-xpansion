@@ -15,13 +15,14 @@ WorkerMaster::WorkerMaster() { _is_master = true; }
  *  \param path_to_mps : path to the problem mps file
  *  \param solver_name : solver name
  *  \param log_level : solver log level
- *  \param nslaves : number of slaves
+ *  \param subproblems_count : number of subproblems
  */
 WorkerMaster::WorkerMaster(VariableMap const &variable_map,
                            const std::filesystem::path &path_to_mps,
                            const std::string &solver_name, const int log_level,
-                           int nslaves, const std::filesystem::path &log_name)
-    : Worker(), _nslaves(nslaves) {
+                           int subproblems_count,
+                           const std::filesystem::path &log_name)
+    : Worker(), subproblems_count(subproblems_count) {
   _is_master = true;
   init(variable_map, path_to_mps, solver_name, log_level, log_name);
 
@@ -169,7 +170,7 @@ void WorkerMaster::define_rhs_from_sx0(const double &sx0, const double &rhs,
 /*!
  *  \brief Add benders cut to a problem
  *
- *  \param i : identifier of a slave problem
+ *  \param i : identifier of a subproblem
  *  \param s : optimal slave variables
  *  \param sx0 : subgradient times x0
  *  \param rhs : optimal slave value
@@ -208,13 +209,13 @@ void WorkerMaster::define_matval_mclind_for_index(
 /*!
  *  \brief Add one benders cut to a problem
  *
- *  \param i : identifier of a slave problem
+ *  \param i : identifier of a subproblem
  *  \param s : optimal slave variables
  *  \param x0 : optimal Master variables
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::add_cut_slave(int i, Point const &s, Point const &x0,
-                                 double const &rhs) const {
+void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x0,
+                                    double const &rhs) const {
   // cut is -rhs >= alpha  + s^(x-x0)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
@@ -261,8 +262,8 @@ void WorkerMaster::_add_alpha_var() {
         CharVector(1, 'C'),
         StrVector(1, "alpha")); /* Add variable alpha and its parameters */
 
-    _id_alpha_i.resize(_nslaves, -1);
-    for (int i(0); i < _nslaves; ++i) {
+    _id_alpha_i.resize(subproblems_count, -1);
+    for (int i(0); i < subproblems_count; ++i) {
       std::stringstream buffer;
       buffer << "alpha_" << i;
       _id_alpha_i[i] = _solver->get_ncols();
@@ -276,12 +277,12 @@ void WorkerMaster::_add_alpha_var() {
 
     std::vector<char> rowtype = {'E'};
     std::vector<double> rowrhs = {0};
-    std::vector<int> mstart = {0, _nslaves + 1};
-    std::vector<double> matval(_nslaves + 1, 0);
-    std::vector<int> mclind(_nslaves + 1);
+    std::vector<int> mstart = {0, subproblems_count + 1};
+    std::vector<double> matval(subproblems_count + 1, 0);
+    std::vector<int> mclind(subproblems_count + 1);
     mclind[0] = _id_alpha;
     matval[0] = 1;
-    for (int i(0); i < _nslaves; ++i) {
+    for (int i(0); i < subproblems_count; ++i) {
       mclind[i + 1] = _id_alpha_i[i];
       matval[i + 1] = -1;
     }

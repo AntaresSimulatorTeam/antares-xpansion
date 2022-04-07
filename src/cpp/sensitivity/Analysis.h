@@ -8,7 +8,7 @@ class Analysis {
  public:
   Analysis(SensitivityInputData input_data, std::string candidate_name,
            std::shared_ptr<SensitivityILogger> logger,
-           const SensitivityPbType type);
+           SensitivityPbType type);
   std::pair<SinglePbData, SinglePbData> run();
 
  protected:
@@ -16,14 +16,14 @@ class Analysis {
 
  private:
   const SensitivityInputData input_data;
-  SensitivityPbType problem_type;
   const std::string candidate_name;
   const std::shared_ptr<SensitivityILogger> logger;
+  SensitivityPbType problem_type;
   std::shared_ptr<SolverAbstract> sensitivity_pb_model;
 
   void fill_single_pb_data(SinglePbData& pb_data,
                            const RawPbData& raw_output) const;
-  double get_system_cost(const RawPbData& raw_output) const;
+  [[nodiscard]] double get_system_cost(const RawPbData& raw_output) const;
 };
 
 #endif  //__ANALYSIS_H__

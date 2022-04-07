@@ -1,109 +1,110 @@
-#include "SlaveCut.h"
+#include "SubproblemCut.h"
 
 /*!
  *  \brief Constructor of a slave cut handler from slave cut data
  *
  *  \param data : pointer to a slave cut data
  */
-SlaveCutDataHandler::SlaveCutDataHandler(SlaveCutDataPtr& data) : _data(data) {
+SubproblemCutDataHandler::SubproblemCutDataHandler(SubproblemCutDataPtr& data) : _data(data) {
   // get_subgradient().clear();
-  get_int().resize(SlaveCutInt::MAXINTEGER);
-  get_dbl().resize(SlaveCutDbl::MAXDBL);
-  get_str().resize(SlaveCutStr::MAXSTR);
+  get_int().resize(SubproblemCutInt::MAXINTEGER);
+  get_dbl().resize(SubproblemCutDbl::MAXDBL);
+  get_str().resize(SubproblemCutStr::MAXSTR);
 }
 
-SlaveCutDataHandler::~SlaveCutDataHandler() {}
+SubproblemCutDataHandler::~SubproblemCutDataHandler() {}
 
 /*!
  *  \brief Get subgradient of a slave cut
  */
-Point& SlaveCutDataHandler::get_subgradient() {
+Point& SubproblemCutDataHandler::get_subgradient() {
   return _data->first.first.first;
 }
 
 /*!
  *  \brief Get int variable of a slave cut
  */
-IntVector& SlaveCutDataHandler::get_int() { return _data->first.first.second; }
+IntVector& SubproblemCutDataHandler::get_int() { return _data->first.first.second; }
 
 /*!
  *  \brief Get double variable of a slave cut
  */
-DblVector& SlaveCutDataHandler::get_dbl() { return _data->first.second; }
+DblVector& SubproblemCutDataHandler::get_dbl() { return _data->first.second; }
 
 /*!
  *  \brief Get string variable of a slave cut
  */
-StrVector& SlaveCutDataHandler::get_str() { return _data->second; }
+StrVector& SubproblemCutDataHandler::get_str() { return _data->second; }
 
 /*!
  *  \brief Get int variable of a slave cut (SIMPLEXITE, LPSTATUS)
  */
-int& SlaveCutDataHandler::get_int(SlaveCutInt key) { return get_int()[key]; }
+int& SubproblemCutDataHandler::get_int(SubproblemCutInt key) { return get_int()[key]; }
 
 /*!
- *  \brief Get double variable of a slave cut (SLAVECOST, ALPHA_I, SLAVE_TIMER)
+ *  \brief Get double variable of a slave cut (SLAVECOST, ALPHA_I, SUBPROBLEM_TIMER)
  */
-double& SlaveCutDataHandler::get_dbl(SlaveCutDbl key) { return get_dbl()[key]; }
+double& SubproblemCutDataHandler::get_dbl(SubproblemCutDbl key) { return get_dbl()[key]; }
 
 /*!
  *  \brief Get string variable of a slave cut
  */
-std::string& SlaveCutDataHandler::get_str(SlaveCutStr key) {
+std::string& SubproblemCutDataHandler::get_str(SubproblemCutStr key) {
   return get_str()[key];
 }
 
 /*!
  *  \brief Get subgradient of a slave cut
  */
-Point const& SlaveCutDataHandler::get_subgradient() const {
+Point const& SubproblemCutDataHandler::get_subgradient() const {
   return _data->first.first.first;
 }
 
 /*!
  *  \brief Get int variable of a slave cut
  */
-IntVector const& SlaveCutDataHandler::get_int() const {
+IntVector const& SubproblemCutDataHandler::get_int() const {
   return _data->first.first.second;
 }
 
 /*!
  *  \brief Get double variable of a slave cut
  */
-DblVector const& SlaveCutDataHandler::get_dbl() const {
+DblVector const& SubproblemCutDataHandler::get_dbl() const {
   return _data->first.second;
 }
 
 /*!
  *  \brief Get string variable of a slave cut
  */
-StrVector const& SlaveCutDataHandler::get_str() const { return _data->second; }
+StrVector const& SubproblemCutDataHandler::get_str() const { return _data->second; }
 
 /*!
  *  \brief Get int variable of a slave cut (SIMPLEXITE, LPSTATUS)
  */
-int SlaveCutDataHandler::get_int(SlaveCutInt key) const {
+int SubproblemCutDataHandler::get_int(SubproblemCutInt key) const {
   return get_int()[key];
 }
 
 /*!
- *  \brief Get double variable of a slave cut (SLAVECOST, ALPHA_I, SLAVE_TIMER)
+ *  \brief Get double variable of a slave cut (SLAVECOST, ALPHA_I, SUBPROBLEM_TIMER)
  */
-double SlaveCutDataHandler::get_dbl(SlaveCutDbl key) const {
+double SubproblemCutDataHandler::get_dbl(SubproblemCutDbl key) const {
   return get_dbl()[key];
 }
 
 /*!
  *  \brief Get string variable of a slave cut
  */
-std::string const& SlaveCutDataHandler::get_str(SlaveCutStr key) const {
+std::string const& SubproblemCutDataHandler::get_str(
+    SubproblemCutStr key) const {
   return get_str()[key];
 }
 
 /*!
  *  \brief Comparator overloading of slave cut trimmer
  */
-bool SlaveCutTrimmer::operator<(SlaveCutTrimmer const& other) const {
+bool SubproblemCutTrimmer::operator<(SubproblemCutTrimmer const& other) const {
   Predicate point_comp;
   if (std::fabs(_const_cut - other._const_cut) < EPSILON_PREDICATE) {
     return point_comp(_data_cut->get_subgradient(),
@@ -116,9 +117,9 @@ bool SlaveCutTrimmer::operator<(SlaveCutTrimmer const& other) const {
 /*!
  *  \brief Constructor of Slave cut trimmer from an handler and trial values
  */
-SlaveCutTrimmer::SlaveCutTrimmer(SlaveCutDataHandlerPtr& data, Point& x0)
+SubproblemCutTrimmer::SubproblemCutTrimmer(SubproblemCutDataHandlerPtr& data, Point& x0)
     : _data_cut(data), _x0(x0) {
-  _const_cut = _data_cut->get_dbl(SLAVE_COST);
+  _const_cut = _data_cut->get_dbl(SUBPROBLEM_COST);
   for (auto const& kvp : _x0) {
     if (get_subgradient().find(kvp.first) != get_subgradient().end()) {
       _const_cut -= get_subgradient().find(kvp.first)->second * kvp.second;
@@ -129,7 +130,7 @@ SlaveCutTrimmer::SlaveCutTrimmer(SlaveCutDataHandlerPtr& data, Point& x0)
 /*!
  *  \brief Get subgradient of a slave cut trimmer
  */
-Point const& SlaveCutTrimmer::get_subgradient() const {
+Point const& SubproblemCutTrimmer::get_subgradient() const {
   return _data_cut->get_subgradient();
 }
 
@@ -138,7 +139,7 @@ Point const& SlaveCutTrimmer::get_subgradient() const {
  *
  *  \param stream : output stream
  */
-void SlaveCutTrimmer::print(std::ostream& stream) const {
+void SubproblemCutTrimmer::print(std::ostream& stream) const {
   std::stringstream buffer;
   buffer << _const_cut << get_subgradient();
   stream << buffer.str();
@@ -149,9 +150,9 @@ void SlaveCutTrimmer::print(std::ostream& stream) const {
  *
  *  \param stream : output stream
  */
-void SlaveCutDataHandler::print(std::ostream& stream) const {
+void SubproblemCutDataHandler::print(std::ostream& stream) const {
   std::stringstream buffer;
-  buffer << get_dbl(SLAVE_COST) << get_subgradient();
+  buffer << get_dbl(SUBPROBLEM_COST) << get_subgradient();
   stream << buffer.str();
   stream << " Simplexiter " << get_int(SIMPLEXITER) << " | ";
 }

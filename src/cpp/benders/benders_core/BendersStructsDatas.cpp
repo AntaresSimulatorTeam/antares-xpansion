@@ -22,7 +22,7 @@ LogData defineLogDataFromBendersDataAndTrace(const BendersData& data,
 
   if (bestItIndex_l < trace.size()) {
     const WorkerMasterDataPtr& bestItTrace = trace[bestItIndex_l];
-    result.slave_cost = bestItTrace->_operational_cost;
+    result.subproblem_cost = bestItTrace->_operational_cost;
     result.invest_cost = bestItTrace->_invest_cost;
     result.min_invest = bestItTrace->get_min_invest();
     result.max_invest = bestItTrace->get_max_invest();

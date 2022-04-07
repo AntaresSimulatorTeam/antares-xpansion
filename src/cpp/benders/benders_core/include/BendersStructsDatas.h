@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SlaveCut.h"
+#include "SubproblemCut.h"
 #include "Worker.h"
 #include "common.h"
 #include "core/ILogger.h"
@@ -11,7 +11,7 @@
  */
 struct BendersData {
   int nbasis;
-  double timer_slaves;
+  double subproblem_timers;
   double timer_master;
   double lb;
   double ub;
@@ -23,14 +23,14 @@ struct BendersData {
   bool stop;
   double alpha;
   std::vector<double> alpha_i;
-  double slave_cost;
+  double subproblem_cost;
   double invest_cost;
   int best_it;
   Point bestx;
   Point x0;
   Point min_invest;
   Point max_invest;
-  int nslaves;
+  int nsubproblem;
   double dnslaves;
   int master_status;
   double elapsed_time;
@@ -54,7 +54,7 @@ class WorkerMasterData {
   PointPtr _x0;
   PointPtr _min_invest;
   PointPtr _max_invest;
-  std::map<std::string, SlaveCutDataPtr> _cut_trace;
+  std::map<std::string, SubproblemCutDataPtr> _cut_trace;
 
   double _invest_cost;
   double _operational_cost;
