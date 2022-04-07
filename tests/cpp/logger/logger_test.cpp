@@ -67,7 +67,7 @@ TEST_F(FileLoggerTest, ShouldHavePrefixOnEveryLine) {
   addCandidate(log_data, "z", 50.0, 0.0, 100.0);
   user_file.log_iteration_candidates(log_data);
 
-  log_data.slave_cost = 150000000.5e6;
+  log_data.subproblem_cost = 150000000.5e6;
   log_data.invest_cost = 200000000e6;
   log_data.best_ub = 100e6;
   log_data.lb = 3e6;
@@ -207,7 +207,7 @@ TEST_F(UserLoggerTest, IterationStartLogCandidateNameLenght) {
 
 TEST_F(UserLoggerTest, IterationEndLog) {
   LogData logData;
-  logData.slave_cost = 15.5e6;
+  logData.subproblem_cost = 15.5e6;
   logData.invest_cost = 20e6;
   logData.best_ub = 3e6;
   logData.lb = 2e6;
@@ -235,7 +235,7 @@ TEST_F(UserLoggerTest, IterationEndLog) {
 
 TEST_F(UserLoggerTest, IterationEndLogLongCost) {
   LogData logData;
-  logData.slave_cost = 150000000.5e6;
+  logData.subproblem_cost = 150000000.5e6;
   logData.invest_cost = 200000000e6;
   logData.best_ub = 100e6;
   logData.lb = 3e6;
@@ -298,7 +298,7 @@ TEST_F(UserLoggerTest, EndLog) {
   logData.best_it = 1;
   logData.best_ub = 20;
   logData.lb = 19.5;
-  logData.slave_cost = 1e6;
+  logData.subproblem_cost = 1e6;
   logData.invest_cost = 10e6;
   logData.optimality_gap = 1;
   logData.relative_gap = 1e-6;

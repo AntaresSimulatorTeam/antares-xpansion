@@ -8,7 +8,7 @@ Analysis::Analysis(SensitivityInputData input_data, std::string candidate_name,
     : input_data(std::move(input_data)),
       candidate_name(std::move(candidate_name)),
       logger(std::move(logger)),
-      problem_type(std::move(type)) {}
+      problem_type(type) {}
 
 void Analysis::fill_single_pb_data(SinglePbData &pb_data,
                                    const RawPbData &raw_output) const {
