@@ -85,6 +85,7 @@ class BendersBase {
   [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       std::map<std::string, std::map<std::string, int>> input_map) const;
   [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
+  [[nodiscard]] virtual bool shouldParallelize() const = 0;
 
  private:
   BendersBaseOptions _options;

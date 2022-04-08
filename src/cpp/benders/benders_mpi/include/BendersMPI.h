@@ -50,6 +50,8 @@ class BendersMpi : public BendersBase {
   void write_exception_message(const std::exception &ex) const;
 
   void check_if_some_proc_had_a_failure(int success);
+  [[nodiscard]] bool shouldParallelize() const final { return false; }
+
   mpi::environment &_env;
   mpi::communicator &_world;
   const unsigned int rank_0 = 0;

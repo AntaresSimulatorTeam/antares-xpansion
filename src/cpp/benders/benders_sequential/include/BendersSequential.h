@@ -20,4 +20,7 @@ class BendersSequential : public BendersBase {
  protected:
   virtual void free();
   virtual void run();
+
+ private:
+  [[nodiscard]] bool shouldParallelize() const final { return true; }
 };
