@@ -3,6 +3,7 @@
 #include <execution>
 #include <numeric>
 #include <utility>
+#include <mutex>
 
 #include "Analysis.h"
 
@@ -55,16 +56,18 @@ void SensitivityStudy::run_capex_analysis() {
 
 void SensitivityStudy::run_projection_analysis() {
   logger->display_message("Projection analysis in progress");
+  std::mutex m;
   std::for_each(
       std::execution::par_unseq, input_data.projection.begin(),
-      input_data.projection.end(), [this](const std::string& candidate_name) {
+      input_data.projection.end(), [&](const std::string& candidate_name) {
         if (input_data.name_to_id.find(candidate_name) !=
             input_data.name_to_id.end()) {
           Analysis projection_analysis(input_data, candidate_name, logger,
                                        SensitivityPbType::PROJECTION);
-          auto problem_data = projection_analysis.run();
-          output_data.pbs_data.push_back(problem_data.first);
-          output_data.pbs_data.push_back(problem_data.second);
+          auto [minimizeSolution, maximizeSolution] = projection_analysis.run();
+          std::lock_guard guard(m);
+          output_data.pbs_data.push_back(minimizeSolution);
+          output_data.pbs_data.push_back(maximizeSolution);
         } else {
           // TODO : Improve this ?
           logger->display_message(
