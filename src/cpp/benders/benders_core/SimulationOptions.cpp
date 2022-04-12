@@ -61,22 +61,7 @@ void SimulationOptions::read(std::string const &file_name) {
 #include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
   }
-  //   if (file.good()) {
-  //     std::string line;
-  //     std::string name;
-  //     while (std::getline(file, line)) {
-  //       std::stringstream buffer(line);
-  //       buffer >> name;
-  // #define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
-  // if (#name__ == name) buffer >> name__;
-  // #include "SimulationOptions.hxx"
-  // #undef BENDERS_OPTIONS_MACRO
-  //     }
-  //     set_weights();
-  //   } else {
-  //     std::cout << "setting option to default" << std::endl;
-  //     write_default();
-  //   }
+  set_weights();
 }
 
 void SimulationOptions::set_weights() {
@@ -121,7 +106,8 @@ void SimulationOptions::set_weights() {
  *  \param stream : output stream
  */
 void SimulationOptions::print(std::ostream &stream) const {
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__, \
+                              deserialization_method__)  \
   stream << std::setw(30) << #name__ << std::setw(50) << name__ << std::endl;
 #include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO

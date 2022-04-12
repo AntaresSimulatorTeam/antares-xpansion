@@ -281,13 +281,18 @@ class ConfigLoader:
         options_values["LOG_LEVEL"] = self.log_level()
         options_values["LAST_MASTER_MPS"] = self._config.LAST_MASTER_MPS
         # generate options file for the solver
-        options_path = os.path.normpath(os.path.join(
-            self._simulation_lp_path(), self._config.OPTIONS_JSON))
-        with open(options_path, 'w') as options_file:
+        with open(self.options_file_path(), 'w') as options_file:
             json.dump(options_values, options_file, indent=4)
             # options_file.writelines([f"{kvp[0]: <30} {kvp[1]} \n"
             #                          for kvp in options_values.items()])
 
+    def options_file_path(self):
+        return os.path.normpath(os.path.join(
+            self._simulation_lp_path(), self._config.OPTIONS_JSON))
+
+    def options_file_name(self):
+        return self._config.OPTIONS_JSON
+        
     def _set_last_simulation_name(self):
         """
             return last simulation name
