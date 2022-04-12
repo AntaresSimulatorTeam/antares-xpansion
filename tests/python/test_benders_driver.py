@@ -22,7 +22,7 @@ class TestBendersDriver:
             self.MPI_LAUNCHER = "mpirun"
             self.MPI_N = "-np"
 
-        self.OPTIONS_TXT = "options.txt"
+        self.OPTIONS_JSON = "options.json"
 
     def test_lp_path(self, tmp_path):
         lp_path = tmp_path / "lp"
@@ -55,7 +55,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_benders_mpi))
 
-        benders_driver = BendersDriver(exe_path, "", "", "")
+        benders_driver = BendersDriver(exe_path, "", "", self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -63,7 +63,7 @@ class TestBendersDriver:
         lp_path.mkdir()
         os.chdir(lp_path)
         expected_cmd = [self.MPI_LAUNCHER, self.MPI_N,
-                        str(my_n_mpi), exe_path, self.OPTIONS_TXT]
+                        str(my_n_mpi), exe_path, self.OPTIONS_JSON]
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 0
             benders_driver.launch(simulation_output_path,
@@ -79,7 +79,7 @@ class TestBendersDriver:
             exe_path = os.path.normpath(
                 os.path.join(my_install_dir, my_benders_mpi))
 
-            benders_driver = BendersDriver(exe_path, "", "", "")
+            benders_driver = BendersDriver(exe_path, "", "",self.OPTIONS_JSON)
 
             simulation_output_path = tmp_path
             lp_path = Path(os.path.normpath(
@@ -88,7 +88,7 @@ class TestBendersDriver:
             os.chdir(lp_path)
             with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
                 expected_cmd = [self.MPI_LAUNCHER, self.MPI_N, str(
-                    my_n_mpi), "--oversubscribe", exe_path, self.OPTIONS_TXT]
+                    my_n_mpi), "--oversubscribe", exe_path, self.OPTIONS_JSON]
                 run_function.return_value.returncode = 0
                 benders_driver.launch(
                     simulation_output_path, "mpibenders", True, my_n_mpi, oversubscribe=True)
@@ -101,7 +101,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_sequential))
 
-        benders_driver = BendersDriver("", exe_path, "","")
+        benders_driver = BendersDriver("", exe_path, "",self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -109,7 +109,7 @@ class TestBendersDriver:
         lp_path.mkdir()
         os.chdir(lp_path)
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
-            expected_cmd = [exe_path, self.OPTIONS_TXT]
+            expected_cmd = [exe_path, self.OPTIONS_JSON]
             run_function.return_value.returncode = 0
             benders_driver.launch(simulation_output_path, "sequential", True)
             args, _ = run_function.call_args_list[0]
@@ -121,7 +121,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_merges_mps))
 
-        benders_driver = BendersDriver("", "", exe_path, "")
+        benders_driver = BendersDriver("", "", exe_path, self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -129,7 +129,7 @@ class TestBendersDriver:
         lp_path.mkdir()
         os.chdir(lp_path)
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
-            expected_cmd = [exe_path, self.OPTIONS_TXT]
+            expected_cmd = [exe_path, self.OPTIONS_JSON]
             run_function.return_value.returncode = 0
             benders_driver.launch(simulation_output_path, "mergeMPS", True)
             args, _ = run_function.call_args_list[0]
