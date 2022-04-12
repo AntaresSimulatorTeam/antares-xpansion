@@ -5,6 +5,7 @@
 import os
 import shutil
 import sys
+import json
 
 from pathlib import Path
 
@@ -267,7 +268,7 @@ class ConfigLoader:
         """
         # computing the weight of slaves
         options_values = self._config.options_default
-        options_values["SLAVE_WEIGHT_VALUE"] = str(len(self.active_years))
+        options_values["SLAVE_WEIGHT_VALUE"] = len(self.active_years)
         options_values["JSON_FILE"] = self.json_file_path()
         options_values["ABSOLUTE_GAP"] = self.get_absolute_optimality_gap()
         options_values["RELATIVE_GAP"] = self.get_relative_optimality_gap()
@@ -281,10 +282,11 @@ class ConfigLoader:
         options_values["LAST_MASTER_MPS"] = self._config.LAST_MASTER_MPS
         # generate options file for the solver
         options_path = os.path.normpath(os.path.join(
-            self._simulation_lp_path(), self._config.OPTIONS_TXT))
+            self._simulation_lp_path(), self._config.OPTIONS_JSON))
         with open(options_path, 'w') as options_file:
-            options_file.writelines([f"{kvp[0]: <30} {kvp[1]} \n"
-                                     for kvp in options_values.items()])
+            json.dump(options_values, options_file, indent=4)
+            # options_file.writelines([f"{kvp[0]: <30} {kvp[1]} \n"
+            #                          for kvp in options_values.items()])
 
     def _set_last_simulation_name(self):
         """

@@ -22,7 +22,7 @@ class BendersDriver:
         self.merge_mps = merge_mps
         self.benders_sequential = benders_sequential
 
-        self.OPTIONS_TXT = "options.txt"
+        self.OPTIONS_JSON = "options.txt"
         self._initialise_system_specific_mpi_vars()
 
     def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False, allow_run_as_root=False):
@@ -109,7 +109,7 @@ class BendersDriver:
         """
         returns a list consisting of the path to the required solver and its launching options
         """
-        bare_solver_command = [self.solver, self.OPTIONS_TXT]
+        bare_solver_command = [self.solver, self.OPTIONS_JSON]
         if self.solver == self.benders_mpi:
             mpi_command = self._get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)

@@ -125,7 +125,7 @@ class XpansionConfig:
         self.UC_TYPE = 'uc_type'
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
-        self.OPTIONS_TXT = 'options.txt'
+        self.OPTIONS_JSON = 'options.json'
         self.JSON_NAME = "out.json"
         self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
         self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
@@ -155,16 +155,16 @@ class XpansionConfig:
             "MAX_ITERATIONS": "-1",
             "ABSOLUTE_GAP": "1",
             "RELATIVE_GAP": "1e-12",
-            "AGGREGATION": "0",
+            "AGGREGATION": False,
             "OUTPUTROOT": ".",
-            "TRACE": "1",
+            "TRACE": True,
             "SLAVE_WEIGHT": "CONSTANT",
             "SLAVE_WEIGHT_VALUE": "1",
             "MASTER_NAME": "master",
             "STRUCTURE_FILE": "structure.txt",
             "INPUTROOT": ".",
             "CSV_NAME": "benders_output_trace",
-            "BOUND_ALPHA": "1",
+            "BOUND_ALPHA": True,
         }
 
     def _get_config_values(self):
