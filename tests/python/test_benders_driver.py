@@ -44,7 +44,7 @@ class TestBendersDriver:
     def test_illegal_method(self, tmp_path):
         lp_path = tmp_path / "lp"
         os.mkdir(lp_path)
-        benders_driver = BendersDriver("", "", "","")
+        benders_driver = BendersDriver("", "", "", "")
         with pytest.raises(BendersDriver.BendersSolverError):
             benders_driver.launch(tmp_path, "test")
 
@@ -79,7 +79,7 @@ class TestBendersDriver:
             exe_path = os.path.normpath(
                 os.path.join(my_install_dir, my_benders_mpi))
 
-            benders_driver = BendersDriver(exe_path, "", "",self.OPTIONS_JSON)
+            benders_driver = BendersDriver(exe_path, "", "", self.OPTIONS_JSON)
 
             simulation_output_path = tmp_path
             lp_path = Path(os.path.normpath(
@@ -101,7 +101,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_sequential))
 
-        benders_driver = BendersDriver("", exe_path, "",self.OPTIONS_JSON)
+        benders_driver = BendersDriver("", exe_path, "", self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
