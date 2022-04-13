@@ -74,12 +74,14 @@ class CandidatesReader:
         area1, area2 = self.get_candidate_areas(candidate)
         return study_path / "input" / "links" / area1 / str(area2 + ".txt")
 
-    def get_candidate_link_profile(self, study_path: Path, candidate : str) -> str:
+    def get_candidate_link_profile(self, study_path: Path, candidate : str) -> (str, str):
         index = self._get_candidate_index(candidate)
-        link_profile_path =""
-        if self.config.has_option(index, "link-profile"):
-            link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["link-profile"])
-        return link_profile_path
+        direct_link_profile_path =""
+        indirect_link_profile_path =""
+        if self.config.has_option(index, "direct-link-profile"):
+            direct_link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["direct-link-profile"])
+            indirect_link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["indirect-link-profile"])
+        return direct_link_profile_path, indirect_link_profile_path
 
     @staticmethod
     def _get_link_areas(link : str):
@@ -89,7 +91,16 @@ class CandidatesReader:
         return area1, area2
 
     @staticmethod
-    def _read_or_create_link_profile_array(file : str):
+    def _read_or_create_link_profile_array(direct_link_file : str, indirect_link_file : str):
+        link_profile_array = np.ones((8760, 2))
+        if direct_link_file:
+            direct_link_profile_array = np.loadtxt(direct_link_file, delimiter="\t")
+            indirect_link_profile_array = np.loadtxt(indirect_link_file, delimiter="\t")
+            link_profile_array = np.c_[direct_link_profile_array, indirect_link_profile_array]
+        return link_profile_array
+
+    @staticmethod
+    def _read_or_create_link_profile_array_one_file(file : str):
         link_profile_array = np.ones((8760, 2))
         if file:
             link_profile_array = np.loadtxt(file, delimiter="\t")
@@ -98,12 +109,12 @@ class CandidatesReader:
         return link_profile_array
 
     def get_candidate_link_profile_array(self, study_path: Path, candidate : str):
-        link_profile = self.get_candidate_link_profile(study_path,candidate)
-        return self._read_or_create_link_profile_array(link_profile)
+        (direct_link_profile, indirect_link_profile) = self.get_candidate_link_profile(study_path,candidate)
+        return self._read_or_create_link_profile_array(direct_link_profile, indirect_link_profile)
 
     def get_candidate_already_installed_link_profile_array(self, study_path: Path, candidate : str):
         link_profile = self.get_candidate_already_install_link_profile(study_path,candidate)
-        return self._read_or_create_link_profile_array(link_profile)
+        return self._read_or_create_link_profile_array_one_file(link_profile)
 
 
 
