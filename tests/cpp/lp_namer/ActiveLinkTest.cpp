@@ -5,11 +5,11 @@ const double DEFAULT_CAPACITY = 0;
 const double DEFAULT_PROFILE_VALUE = 1;
 
 LinkProfile createProfile(
-    std::vector<double>& directAlreadyInstalledLinkprofile_l,
-    std::vector<double>& indirectAlreadyInstalledLinkprofile_l) {
+    std::array<double, NUMBER_OF_HOUR_PER_YEAR>& directAlreadyInstalledLinkprofile_l,
+    std::array<double, NUMBER_OF_HOUR_PER_YEAR>& indirectAlreadyInstalledLinkprofile_l) {
   LinkProfile profile;
-  profile._directLinkProfile = directAlreadyInstalledLinkprofile_l;
-  profile._indirectLinkProfile = indirectAlreadyInstalledLinkprofile_l;
+  profile.direct_link_profile = directAlreadyInstalledLinkprofile_l;
+  profile.indirect_link_profile = indirectAlreadyInstalledLinkprofile_l;
   return profile;
 }
 
@@ -76,8 +76,10 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity) {
 
   std::map<std::string, LinkProfile> profile_map;
 
-  std::vector<double> directLinkprofile_l(8760, 1);
-  std::vector<double> indirectLinkprofile_l(8760, 1);
+  std::array<double, NUMBER_OF_HOUR_PER_YEAR> directLinkprofile_l;
+  std::array<double, NUMBER_OF_HOUR_PER_YEAR> indirectLinkprofile_l;
+  directLinkprofile_l.fill(1);
+  indirectLinkprofile_l.fill(1);
 
   directLinkprofile_l[0] = 0;
   directLinkprofile_l[1] = 0.5;
@@ -326,8 +328,10 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
 
-  std::vector<double> directLinkprofile_l(8760, 1);
-  std::vector<double> indirectLinkprofile_l(8760, 1);
+  std::array<double, NUMBER_OF_HOUR_PER_YEAR> directLinkprofile_l;
+  std::array<double, NUMBER_OF_HOUR_PER_YEAR> indirectLinkprofile_l;
+  directLinkprofile_l.fill(1);
+  indirectLinkprofile_l.fill(1);
 
   directLinkprofile_l[0] = 0;
   directLinkprofile_l[1] = 0.5;

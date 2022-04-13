@@ -432,16 +432,16 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
   std::map<std::string, LinkProfile> profile_map;
   LinkProfile profile_link;
-  profile_link._directLinkProfile = {1, 2};
-  profile_link._indirectLinkProfile = {3, 4};
+  profile_link.direct_link_profile = {1, 2};
+  profile_link.indirect_link_profile = {3, 4};
   profile_map["install_link_profile"] = profile_link;
   LinkProfile profile_cand1;
-  profile_cand1._directLinkProfile = {0.5, 1};
-  profile_cand1._indirectLinkProfile = {0.8, 1.2};
+  profile_cand1.direct_link_profile = {0.5, 1};
+  profile_cand1.indirect_link_profile = {0.8, 1.2};
   profile_map["profile_cand1"] = profile_cand1;
   LinkProfile profile_cand2;
-  profile_cand2._directLinkProfile = {1.5, 1.7};
-  profile_cand2._indirectLinkProfile = {2.6, 2.8};
+  profile_cand2.direct_link_profile = {1.5, 1.7};
+  profile_cand2.indirect_link_profile = {2.6, 2.8};
   profile_map["profile_cand2"] = profile_cand2;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
@@ -546,16 +546,16 @@ TEST_F(ProblemModifierTest,
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
   std::map<std::string, LinkProfile> profile_map;
   LinkProfile profile_link;
-  profile_link._directLinkProfile = {1, 2};
-  profile_link._indirectLinkProfile = {3, 4};
+  profile_link.direct_link_profile = {1, 2};
+  profile_link.indirect_link_profile = {3, 4};
   profile_map["install_link_profile"] = profile_link;
   LinkProfile profile_cand1;
-  profile_cand1._directLinkProfile = {0.5, 1};
-  profile_cand1._indirectLinkProfile = {0.8, 1.2};
+  profile_cand1.direct_link_profile = {0.5, 1};
+  profile_cand1.indirect_link_profile = {0.8, 1.2};
   profile_map["profile_cand1"] = profile_cand1;
   LinkProfile empty_profile;
-  empty_profile._directLinkProfile = {0.0, 0.0};
-  empty_profile._indirectLinkProfile = {0.0, 0.0};
+  empty_profile.direct_link_profile = {0.0, 0.0};
+  empty_profile.indirect_link_profile = {0.0, 0.0};
   profile_map["empty_profile"] = empty_profile;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};

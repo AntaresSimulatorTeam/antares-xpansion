@@ -6,23 +6,23 @@ LinkProfile LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &filename) {
   std::ifstream infile(filename);
   if (!infile.good()) {
-    throw std::runtime_error("unable to open : " + filename.string());
+    throw std::filesystem::filesystem_error("unable to open file", filename.string(), std::error_code());
   }
   LinkProfile result;
-  result._directLinkProfile.reserve(8760);
   double value;
   std::string line;
-  for (size_t line_id(0); line_id < 8760; ++line_id) {
+  for (size_t line_id(0); line_id < NUMBER_OF_HOUR_PER_YEAR; ++line_id) {
     if (std::getline(infile, line)) {
       std::stringstream buffer(line);
       buffer >> value;
-      result._directLinkProfile.push_back(value);
-      if (buffer >> value) {
-        result._indirectLinkProfile.reserve(8760);
-        result._indirectLinkProfile.push_back(value);
+      result.direct_link_profile.at(line_id) = value;
+      if (buffer >> value) { //indirect profile exists
+        result.indirect_link_profile.at(line_id) = value;
+      } else { //use direct profile in indirect profile
+        result.indirect_link_profile.at(line_id) = value;
       }
     } else {
-      throw std::runtime_error("error not enough line in link-profile " +
+      throw std::domain_error("error not enough line in link-profile " +
                                filename.string());
     }
   }
