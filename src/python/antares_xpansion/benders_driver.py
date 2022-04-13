@@ -22,7 +22,11 @@ class BendersDriver:
         self.merge_mps = merge_mps
         self.benders_sequential = benders_sequential
 
-        self.options_file = options_file
+        if (options_file != ""):
+            self.options_file = options_file
+        else:
+            raise BendersDriver.BendersOptionsFileError(
+                f"Invalid Options File!")
         self._initialise_system_specific_mpi_vars()
 
     def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False, allow_run_as_root=False):
@@ -158,4 +162,7 @@ class BendersDriver:
         pass
 
     class BendersExecutionError(Exception):
+        pass
+
+    class BendersOptionsFileError(Exception):
         pass
