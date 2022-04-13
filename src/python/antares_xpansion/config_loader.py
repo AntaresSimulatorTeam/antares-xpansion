@@ -283,8 +283,6 @@ class ConfigLoader:
         # generate options file for the solver
         with open(self.options_file_path(), 'w') as options_file:
             json.dump(options_values, options_file, indent=4)
-            # options_file.writelines([f"{kvp[0]: <30} {kvp[1]} \n"
-            #                          for kvp in options_values.items()])
 
     def options_file_path(self):
         return os.path.normpath(os.path.join(
@@ -292,7 +290,7 @@ class ConfigLoader:
 
     def options_file_name(self):
         return self._config.OPTIONS_JSON
-        
+
     def _set_last_simulation_name(self):
         """
             return last simulation name
