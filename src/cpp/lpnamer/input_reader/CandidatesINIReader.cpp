@@ -151,7 +151,8 @@ CandidateData CandidatesINIReader::readCandidateSection(
     throw std::runtime_error(message);
   }
   candidateData.link_id = it->second;
-  candidateData.link_profile = getStrVal(reader, sectionName, "link-profile");
+  candidateData.direct_link_profile = getStrVal(reader, sectionName, "direct-link-profile");
+  candidateData.indirect_link_profile = getStrVal(reader, sectionName, "indirect-link-profile");
   candidateData.installed_link_profile_name =
       getStrVal(reader, sectionName, "already-installed-link-profile");
 

@@ -21,10 +21,17 @@ class TestCandidateReader:
         return content
 
     @staticmethod
-    def _create_link_profile_content(link_profile: str) -> str:
+    def _create_direct_link_profile_content(link_profile: str) -> str:
         content = ""
         if link_profile:
-            content = f"link-profile = {link_profile}\n"
+            content = f"direct-link-profile = {link_profile}\n"
+        return content
+
+    @staticmethod
+    def _create_indirect_link_profile_content(link_profile: str) -> str:
+        content = ""
+        if link_profile:
+            content = f"indirect-link-profile = {link_profile}\n"
         return content
 
     @staticmethod
@@ -45,8 +52,6 @@ class TestCandidateReader:
     def _create_link_profile_file(file_path, array):
         expected_array : np.array = array
         np.savetxt(file_path, array, delimiter='\t')
-        if expected_array.ndim == 1:
-            expected_array= np.c_[expected_array, expected_array]
         return expected_array
 
     def test_empty_reader(self):
@@ -58,13 +63,13 @@ class TestCandidateReader:
 
     def test_read_candidates(self, tmp_path):
         candidates = [
-            {"name" : "semibase", "area1" : "area1", "area2" : "semibase", "link-profile" : "", "already-installed-capacity" : "" , "already-installed-link-profile" : ""},
-            {"name" : "peak", "area1" : "area1", "area2" : "peak", "link-profile" : "capa_pv.ini", "already-installed-capacity" : "" , "already-installed-link-profile" : "", },
-            {"name" : "peak2", "area1" : "area1", "area2" : "peak", "link-profile" : "capa_pv.ini", "already-installed-capacity" : 1000.0 , "already-installed-link-profile" : ""},
-            {"name" : "peak3", "area1" : "area1", "area2" : "peak", "link-profile" : "capa_pv.ini", "already-installed-capacity" : "" , "already-installed-link-profile" : "link-profile-one-col.txt",
+            {"name" : "semibase", "area1" : "area1", "area2" : "semibase", "direct-link-profile" : "", "indirect-link-profile" : "", "already-installed-capacity" : "" , "already-installed-link-profile" : ""},
+            {"name" : "peak", "area1" : "area1", "area2" : "peak", "direct-link-profile" : "direct_capa_pv.ini", "indirect-link-profile" : "indirect_capa_pv.ini", "already-installed-capacity" : "" , "already-installed-link-profile" : "", },
+            {"name" : "peak2", "area1" : "area1", "area2" : "peak", "direct-link-profile" : "direct_capa_pv.ini", "indirect-link-profile" : "indirect_capa_pv.ini", "already-installed-capacity" : 1000.0 , "already-installed-link-profile" : ""},
+            {"name" : "peak3", "area1" : "area1", "area2" : "peak", "direct-link-profile" : "direct_capa_pv.ini", "indirect-link-profile" : "indirect_capa_pv.ini", "already-installed-capacity" : "" , "already-installed-link-profile" : "link-profile-one-col.txt",
              "link-profile-array" : np.array([1.0, 2.0, 3.0])},
-            {"name" : "peak4", "area1" : "area1", "area2" : "peak", "link-profile" : "capa_pv.ini", "already-installed-capacity" : "" , "already-installed-link-profile" : "link-profile-two-col.txt",
-             "link-profile-array" : np.array([[1.0, 2.0, 3.0],[0.0, 1.0, 2.0]])},
+            {"name" : "peak4", "area1" : "area1", "area2" : "peak", "direct-link-profile" : "direct_capa_pv.ini", "indirect-link-profile" : "indirect_capa_pv.ini", "already-installed-capacity" : "" , "already-installed-link-profile" : "link-profile-two-col.txt",
+             "direct-link-profile-array" : [1.0, 2.0, 3.0],"indirect-link-profile-array" : [0.0, 1.0, 2.0]},
         ]
 
         links = [
@@ -78,7 +83,8 @@ class TestCandidateReader:
         for candidate in candidates:
             candidate_name_list.append(candidate["name"])
             content += self._create_candidate_content(index, candidate["name"], candidate["area1"], candidate["area2"])
-            content += self._create_link_profile_content(candidate["link-profile"])
+            content += self._create_direct_link_profile_content(candidate["direct-link-profile"])
+            content += self._create_indirect_link_profile_content(candidate["indirect-link-profile"])
             content += self._create_already_installed_capacity_content(candidate["already-installed-capacity"])
             content += self._create_already_installed_link_profile_content(candidate["already-installed-link-profile"])
             index += 1
@@ -105,26 +111,43 @@ class TestCandidateReader:
 
             assert self.ini_reader.get_candidate_antares_link_file(study_path, candidate_name ) == study_path / "input"/ "links" / candidate["area1"] / str(candidate["area2"] + ".txt")
 
-            link_profile = candidate["link-profile"]
-            if link_profile:
+            direct_link_profile = candidate["direct-link-profile"]
+            expected_profile_array = [[],[]]
+            if direct_link_profile:
 
                 os.makedirs(study_path / "user" / "expansion" / "capa", exist_ok=True)
-                expected_profile_path = study_path / "user" / "expansion" / "capa" / link_profile
-                assert Path(self.ini_reader.get_candidate_link_profile(study_path, candidate_name)) == expected_profile_path
+                expected_profile_path = study_path / "user" / "expansion" / "capa" / direct_link_profile
+                assert Path(self.ini_reader.get_candidate_link_profile(study_path, candidate_name)[0]) == expected_profile_path
 
-                if "link-profile-array" in candidate:
-                    expected_profile_array = self._create_link_profile_file(expected_profile_path, candidate["link-profile-array"].T)
+                if "direct-link-profile-array" in candidate:
+                    expected_profile_array[0] = self._create_link_profile_file(expected_profile_path, candidate["direct-link-profile-array"])
                 else:
-                    array = np.ones((8760, 2))
-                    expected_profile_array = self._create_link_profile_file(expected_profile_path, array)
+                    array = [1 for k in range(8760)]
+                    expected_profile_array[0] = self._create_link_profile_file(expected_profile_path, array)
+            else:
+                assert not self.ini_reader.get_candidate_link_profile(study_path, candidate_name)[0]
 
+            indirect_link_profile = candidate["indirect-link-profile"]
+            if indirect_link_profile:
+
+                os.makedirs(study_path / "user" / "expansion" / "capa", exist_ok=True)
+                expected_profile_path = study_path / "user" / "expansion" / "capa" / indirect_link_profile
+                assert Path(self.ini_reader.get_candidate_link_profile(study_path, candidate_name)[1]) == expected_profile_path
+
+                if "indirect-link-profile-array" in candidate:
+                    expected_profile_array[1] = self._create_link_profile_file(expected_profile_path, candidate["indirect-link-profile-array"])
+                else:
+                    array = [1 for k in range(8760)]
+                    expected_profile_array[1] = self._create_link_profile_file(expected_profile_path, array)
+            else:
+                assert not self.ini_reader.get_candidate_link_profile(study_path, candidate_name)[1]
+
+            if direct_link_profile and indirect_link_profile:
                 profile_array = self.ini_reader.get_candidate_link_profile_array(study_path, candidate_name)
                 row, col = profile_array.shape
                 assert col == 2
-                np.testing.assert_allclose(profile_array, expected_profile_array, rtol=1e-4, verbose=True)
-
-            else:
-                assert not self.ini_reader.get_candidate_link_profile(study_path, candidate_name)
+                np.testing.assert_allclose(profile_array[:, 0], expected_profile_array[0], rtol=1e-4, verbose=True)
+                np.testing.assert_allclose(profile_array[:, 1], expected_profile_array[1], rtol=1e-4, verbose=True)
 
             already_install_capacity = candidate["already-installed-capacity"]
             if already_install_capacity:

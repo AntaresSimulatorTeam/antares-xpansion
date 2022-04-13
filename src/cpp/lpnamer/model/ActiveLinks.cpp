@@ -11,12 +11,12 @@ bool doubles_are_different(const double a, const double b) {
 void ActiveLinksBuilder::addCandidate(const CandidateData& candidate_data) {
   unsigned int indexLink = getLinkIndexOf(candidate_data.link_id);
   _links.at(indexLink).addCandidate(
-      candidate_data, getProfileFromProfileMap(candidate_data.link_profile));
+      candidate_data, getProfilesFromProfileMap(candidate_data.direct_link_profile));
 }
 
 ActiveLinksBuilder::ActiveLinksBuilder(
     const std::vector<CandidateData>& candidateList,
-    const std::map<std::string, LinkProfile>& profile_map)
+    const std::map<std::string, std::vector<LinkProfile>>& profile_map)
     : _candidateDatas(candidateList), _profile_map(profile_map) {
   checkCandidateNameDuplication();
   checkLinksValidity();
@@ -24,9 +24,9 @@ ActiveLinksBuilder::ActiveLinksBuilder(
 
 void ActiveLinksBuilder::checkLinksValidity() {
   for (const auto& candidateData : _candidateDatas) {
-    launchExceptionIfNoLinkProfileAssociated(candidateData.link_profile);
+    launchExceptionIfNoLinkProfileAssociated(candidateData.direct_link_profile);
     launchExceptionIfNoLinkProfileAssociated(
-        candidateData.installed_link_profile_name);
+        candidateData.installed_direct_link_profile_name);
 
     record_link_data(candidateData);
   }
@@ -35,7 +35,7 @@ void ActiveLinksBuilder::checkLinksValidity() {
 void ActiveLinksBuilder::record_link_data(const CandidateData& candidateData) {
   LinkData link_data = {candidateData.link_id,
                         candidateData.already_installed_capacity,
-                        candidateData.installed_link_profile_name,
+                        candidateData.installed_direct_link_profile_name,
                         candidateData.linkor, candidateData.linkex};
   const auto& it = _links_data.find(candidateData.link_name);
   if (it == _links_data.end()) {
@@ -129,11 +129,18 @@ void ActiveLinksBuilder::create_links() {
 
 LinkProfile ActiveLinksBuilder::getProfileFromProfileMap(
     const std::string& profile_name) const {
-  LinkProfile already_installed_link_profile;
+  std::vector<LinkProfile> already_installed_link_profile;
   if (_profile_map.find(profile_name) != _profile_map.end()) {
     already_installed_link_profile = _profile_map.at(profile_name);
   }
-  return already_installed_link_profile;
+  if (already_installed_link_profile.empty())
+    return {};
+  return already_installed_link_profile.at(0);
+}
+
+std::vector<LinkProfile> ActiveLinksBuilder::getProfilesFromProfileMap(
+    const std::string& profile_name) const {
+  return std::vector<LinkProfile>{getProfileFromProfileMap(profile_name) };
 }
 
 ActiveLink::ActiveLink(int idLink, const std::string& linkName,
@@ -143,15 +150,20 @@ ActiveLink::ActiveLink(int idLink, const std::string& linkName,
       _name(linkName),
       _linkor(linkor),
       _linkex(linkex),
-      _already_installed_capacity(already_installed_capacity) {}
+      _already_installed_capacity(already_installed_capacity) {
+  _already_installed_profile.emplace_back();
+}
 
 void ActiveLink::setAlreadyInstalledLinkProfile(
     const LinkProfile& linkProfile) {
-  _already_installed_profile = linkProfile;
+  if (!_already_installed_profile.empty())
+    _already_installed_profile.at(0) = linkProfile;
+  else
+    _already_installed_profile.push_back(linkProfile);
 }
 
 void ActiveLink::addCandidate(const CandidateData& candidate_data,
-                              const LinkProfile& candidate_profile) {
+    const std::vector<LinkProfile>& candidate_profile) {
   Candidate candidate(candidate_data, candidate_profile);
 
   _candidates.push_back(candidate);
@@ -162,11 +174,19 @@ const std::vector<Candidate>& ActiveLink::getCandidates() const {
 }
 
 double ActiveLink::already_installed_direct_profile(size_t timeStep) const {
-  return _already_installed_profile.getDirectProfile(timeStep);
+  return _already_installed_profile.at(0).getDirectProfile(timeStep);
 }
 
 double ActiveLink::already_installed_indirect_profile(size_t timeStep) const {
-  return _already_installed_profile.getIndirectProfile(timeStep);
+  return _already_installed_profile.at(0).getIndirectProfile(timeStep);
+}
+
+double ActiveLink::already_installed_direct_profile(size_t timeStep, size_t year) const {
+  return _already_installed_profile.at(year).getDirectProfile(timeStep);
+}
+
+double ActiveLink::already_installed_indirect_profile(size_t timeStep, size_t year) const {
+  return _already_installed_profile.at(year).getIndirectProfile(timeStep);
 }
 
 int ActiveLink::get_idLink() const { return _idLink; }
