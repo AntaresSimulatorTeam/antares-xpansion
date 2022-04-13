@@ -12,14 +12,17 @@ struct CandidateData {
   std::string linkor;
   std::string linkex;
   std::string installed_link_profile_name;
+  std::string installed_direct_link_profile_name;
+  std::string installed_indirect_link_profile_name;
   double already_installed_capacity = 1.0;
 
   std::string name;
-  std::string link_profile;
   double annual_cost_per_mw = 0.0;
   double max_investment = 0.0;
   double unit_size = 0.0;
   double max_units = 0.0;
+  std::string direct_link_profile;
+  std::string indirect_link_profile;
 };
 
 /*!
@@ -30,10 +33,13 @@ struct CandidateData {
 class Candidate {
  public:
   Candidate() = default;
-  Candidate(const CandidateData& data, const LinkProfile& profile);
+  Candidate(const CandidateData& data, std::vector<LinkProfile>  profile);
 
-  double direct_profile(size_t timeStep) const;
-  double indirect_profile(size_t timeStep) const;
+  double directCapacityFactor(size_t timeStep) const;
+  double indirectCapacityFactor(size_t timeStep) const;
+
+  double directCapacityFactor(size_t chronicle_number, size_t timeStep) const;
+  double indirectCapacityFactor(size_t chronicle_number, size_t timeStep) const;
 
   double obj() const;
   double lb() const;
@@ -48,7 +54,7 @@ class Candidate {
   void set_name(const std::string& name);
 
  private:
-  LinkProfile _profile;
+  std::vector<LinkProfile> _profile;
   std::string _name;
   double _annual_cost_per_mw;
   double _max_investment;
