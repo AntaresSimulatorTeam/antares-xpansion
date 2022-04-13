@@ -9,7 +9,8 @@ Json::Value get_value_from_json(const std::string &file_name) {
   Json::CharReaderBuilder builder_l;
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
-    throw std::runtime_error("");
+    std::cerr << "Invalid options file: " << file_name;
+    std::exit(1);
   }
   return _input;
 }
@@ -51,7 +52,6 @@ void SimulationOptions::write_default() const {
  *  \param file_name : path to options txt file
  */
 void SimulationOptions::read(std::string const &file_name) {
-  // std::ifstream file(file_name.c_str());
   const auto options_values = get_value_from_json(file_name);
   for (const auto &var_name : options_values.getMemberNames()) {
 #define BENDERS_OPTIONS_MACRO(var__, type__, default__, \
