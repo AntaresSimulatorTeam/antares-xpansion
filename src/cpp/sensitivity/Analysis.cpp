@@ -42,7 +42,7 @@ SinglePbData Analysis::run_optimization(SensitivityStudy::StudyType minimize) {
       minimize == SensitivityStudy::StudyType::MINIMIZE ? MIN_C : MAX_C};
   logger->log_begin_pb_resolution(pb_data);
 
-  auto raw_output = solve_sensitivity_pb(sensitivity_pb_model);
+  auto raw_output = solve_sensitivity_pb(input_data, sensitivity_pb_model);
 
   fill_single_pb_data(pb_data, raw_output);
   logger->log_pb_solution(pb_data);

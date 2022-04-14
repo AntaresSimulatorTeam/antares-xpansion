@@ -510,6 +510,11 @@ void SolverXpress::set_simplex_iter(int iter) {
   zero_status_check(status, "set simplex max iter");
 }
 
+void SolverXpress::load_basis(int *rstatus, int *cstatus) {
+  int status = XPRSloadbasis(_xprs, rstatus, cstatus);
+  zero_status_check(status, "load basis");
+}
+
 void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,
                           int nLen, int nMsglvl) {
   std::list<std::ostream *> *ptr = NULL;

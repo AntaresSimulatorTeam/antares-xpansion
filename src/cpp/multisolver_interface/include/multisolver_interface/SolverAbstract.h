@@ -634,4 +634,12 @@ class SolverAbstract {
    * @param iter: maximum number of simplex iterations
    */
   virtual void set_simplex_iter(int iter) = 0;
+
+  /**
+   * @brief Loads simplex basis
+   *
+   * @param rstatus: Integer array of length number of rows containing the basis status of the slack, surplus or artificial variable associated with each row
+   * @param cstatus: Integer array of length number of cols containing the basis status of each of the columns of the constraint matrix
+   */
+  virtual void load_basis(int *rstatus, int *cstatus) = 0;
 };

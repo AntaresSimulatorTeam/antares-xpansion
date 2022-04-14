@@ -1,5 +1,5 @@
 #include "AnalysisFunctions.h"
-RawPbData solve_sensitivity_pb(const SolverAbstract::Ptr& sensitivity_problem) {
+RawPbData solve_sensitivity_pb(SensitivityInputData input_data, const SolverAbstract::Ptr& sensitivity_problem) {
   RawPbData raw_output;
   int ncols = sensitivity_problem->get_ncols();
 
@@ -7,6 +7,25 @@ RawPbData solve_sensitivity_pb(const SolverAbstract::Ptr& sensitivity_problem) {
   raw_output.solution.resize(ncols);
 
   sensitivity_problem->get_obj(raw_output.obj_coeffs.data(), 0, ncols - 1);
+
+  // std::ifstream row_basis_file("/home/bittartho/Documents/xpansion/etudes/sensitivity_test_case/row_basis.csv");
+  // std::ifstream col_basis_file("/home/bittartho/Documents/xpansion/etudes/sensitivity_test_case/col_basis.csv");
+
+  // std::vector<int> row_basis;
+  // std::vector<int> col_basis;
+  // std::string line;
+
+  // while (std::getline(row_basis_file, line))
+  // {
+  //   row_basis.push_back(std::stoi(line));
+  // }
+  // while (std::getline(col_basis_file, line))
+  // {
+  //   col_basis.push_back(std::stoi(line));
+  // }
+  // row_basis.push_back(1);
+
+  sensitivity_problem->load_basis(input_data.basis.first.data(), input_data.basis.second.data());
 
   if (sensitivity_problem->get_n_integer_vars() > 0) {
     raw_output.status = sensitivity_problem->solve_mip();

@@ -176,4 +176,5 @@ class SolverCplex : public SolverAbstract {
   virtual void set_threads(int n_threads) override;
   virtual void set_optimality_gap(double gap) override;
   virtual void set_simplex_iter(int iter) override;
+  virtual void load_basis(int *rstatus, int *cstatus) override {};
 };

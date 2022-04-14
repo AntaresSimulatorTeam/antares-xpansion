@@ -8,5 +8,5 @@
 SolverAbstract::Ptr get_sensitivity_problem(
     const SensitivityInputData input_data, const std::string& candidate_name,
     SensitivityPbType type);
-RawPbData solve_sensitivity_pb(const SolverAbstract::Ptr& sensitivity_problem);
+RawPbData solve_sensitivity_pb(SensitivityInputData input_data, const SolverAbstract::Ptr& sensitivity_problem);
 #endif  //__ANALYSISFUNCTION_H__

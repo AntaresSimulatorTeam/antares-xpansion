@@ -6,6 +6,7 @@ class SensitivityInputReaderTest : public ::testing::Test {
   std::string data_test_dir;
 
   std::string last_master_mps_path;
+  std::string basis_path;
   std::string json_input_path;
   std::string benders_output_path;
   std::string structure_path;
@@ -26,6 +27,7 @@ class SensitivityInputReaderTest : public ::testing::Test {
     json_input_path = data_test_dir + "/sensitivity_in.json";
     benders_output_path = data_test_dir + "/benders_out.json";
     structure_path = data_test_dir + "/structure.txt";
+    basis_path = data_test_dir + "/master_last_basis.json";
   }
 
   void TearDown() override {}
@@ -46,7 +48,8 @@ class SensitivityInputReaderTest : public ::testing::Test {
 
 TEST_F(SensitivityInputReaderTest, GetInputData) {
   SensitivityInputReader input_reader(json_input_path, benders_output_path,
-                                      last_master_mps_path, structure_path);
+                                      last_master_mps_path, basis_path,
+                                      structure_path);
   SensitivityInputData input_data = input_reader.get_input_data();
 
   SensitivityInputData expec_input_data = {
@@ -54,6 +57,7 @@ TEST_F(SensitivityInputReaderTest, GetInputData) {
       2200,
       {{peak_name, 15}, {semibase_name, 32}},
       nullptr,
+      {{1, 0, 2}, {1, 3}},
       {{peak_name, {0, 3000}}, {semibase_name, {0, 400}}},
       true,
       {peak_name, semibase_name}};

@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
     std::filesystem::path json_output_path;
     std::string benders_output_path;
     std::string last_master_path;
+    std::string basis_path;
     std::string structure_path;
     std::filesystem::path log_path;
 
@@ -46,6 +47,8 @@ int main(int argc, char **argv) {
         "path to the benders json output file")(
         "master,m", po::value<std::string>(&last_master_path)->required(),
         "path to the last master mps file")(
+        "basis", po::value<std::string>(&basis_path)->required(),
+        "path to the last master optimal basis file")(
         "structure,s", po::value<std::string>(&structure_path)->required(),
         "path to the structure txt file")(
         "log,l", po::value<std::filesystem::path>(&log_path),
@@ -62,7 +65,7 @@ int main(int argc, char **argv) {
     po::notify(opts);
 
     auto sensitivity_input_reader = SensitivityInputReader(
-        json_input_path, benders_output_path, last_master_path, structure_path);
+        json_input_path, benders_output_path, last_master_path, basis_path, structure_path);
     SensitivityInputData input_data = sensitivity_input_reader.get_input_data();
 
     auto input_dir = std::filesystem::path(json_input_path).parent_path();
