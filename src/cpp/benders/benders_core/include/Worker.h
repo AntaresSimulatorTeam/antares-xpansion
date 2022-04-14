@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include "common.h"
+#include "SimplexBasis.h"
 #include "multisolver_interface/Solver.h"
 class Worker;
 typedef std::shared_ptr<Worker> WorkerPtr;
@@ -28,6 +29,7 @@ class Worker {
   void get_splex_num_of_ite_last(int &result) const;
 
   void free();
+  SimplexBasis get_basis() const;
 
  public:
   std::filesystem::path _path_to_mps;

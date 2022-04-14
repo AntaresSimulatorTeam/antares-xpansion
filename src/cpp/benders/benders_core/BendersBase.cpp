@@ -8,6 +8,8 @@
 
 #include "Timer.h"
 #include "glog/logging.h"
+#include "helpers/Path.h"
+#include "json/writer.h"
 #include "solver_utils.h"
 
 BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
@@ -698,4 +700,32 @@ void BendersBase::SetSubproblemTimers(const double &subproblem_timer) {
 double BendersBase::GetSubproblemCost() const { return _data.subproblem_cost; }
 void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
+}
+
+SimplexBasis BendersBase::get_basis() const { return _master->get_basis(); }
+
+void BendersBase::save_basis(const SimplexBasis &basis) const {
+  std::string const filename(Path(_options.OUTPUTROOT) /
+                             (_options.LAST_MASTER_BASIS + ".json"));
+  std::ofstream jsonfile(filename);
+
+  Json::Value output;
+  Json::Value row_basis_l(Json::arrayValue);
+  Json::Value col_basis_l(Json::arrayValue);
+  for (const auto &it : basis.first) {
+    row_basis_l.append(it);
+  }
+  for (const auto &it : basis.second) {
+    col_basis_l.append(it);
+  }
+
+  output["row_basis"] = row_basis_l;
+  output["col_basis"] = col_basis_l;
+
+  if (jsonfile.good()) {
+    jsonfile << output << std::endl;
+  } else {
+    std::cout << "Impossible d'ouvrir le fichier json " << filename
+              << std::endl;
+  }
 }

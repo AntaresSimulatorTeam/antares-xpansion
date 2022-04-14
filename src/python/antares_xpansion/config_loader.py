@@ -280,6 +280,7 @@ class ConfigLoader:
         options_values["TIME_LIMIT"] = self.timelimit()
         options_values["LOG_LEVEL"] = self.log_level()
         options_values["LAST_MASTER_MPS"] = self._config.LAST_MASTER_MPS
+        options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
         # generate options file for the solver
         with open(self.options_file_path(), 'w') as options_file:
             json.dump(options_values, options_file, indent=4)
