@@ -22,7 +22,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity) {
 
   std::vector<CandidateData> cand_data_list = {cand1};
 
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -54,7 +54,7 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity) {
 
   std::vector<CandidateData> cand_data_list = {cand1};
 
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -69,12 +69,13 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity) {
   cand1.link_id = 1;
   cand1.name = "transmission_line_1";
   cand1.link_name = "area1 - area2";
-  cand1.link_profile = link_profile_cand1;
+  cand1.direct_link_profile = link_profile_cand1;
+  cand1.indirect_link_profile = link_profile_cand1;
   cand1.already_installed_capacity = 0;
 
   std::vector<CandidateData> cand_data_list = {cand1};
 
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   std::array<double, NUMBER_OF_HOUR_PER_YEAR> directLinkprofile_l;
   std::array<double, NUMBER_OF_HOUR_PER_YEAR> indirectLinkprofile_l;
@@ -89,7 +90,7 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity) {
   const auto linkProfileCandidat1 =
       createProfile(directLinkprofile_l, indirectLinkprofile_l);
 
-  profile_map[link_profile_cand1] = linkProfileCandidat1;
+  profile_map[link_profile_cand1] = {linkProfileCandidat1};
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -131,7 +132,7 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity) {
 
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
 
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -182,7 +183,7 @@ TEST(LinkBuilderTest,
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
 
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -241,7 +242,7 @@ TEST(LinkBuilderTest,
   std::vector<CandidateData> cand_data_list;
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
-  std::map<std::string, LinkProfile> profile_map = {{"dummy", LinkProfile()}};
+  std::map<std::string, std::vector<LinkProfile>> profile_map = {{"dummy", {LinkProfile()}}};
 
   try {
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
@@ -268,7 +269,7 @@ TEST(LinkBuilderTest,
   std::vector<CandidateData> cand_data_list;
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
@@ -293,7 +294,7 @@ TEST(LinkBuilderTest, two_candidates_same_name) {
   std::vector<CandidateData> cand_data_list;
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
@@ -341,10 +342,10 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
   const auto alreadyInstalledProfile =
       createProfile(directLinkprofile_l, indirectLinkprofile_l);
 
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  profile_map[temp_already_installed_profile1_name] = alreadyInstalledProfile;
-  profile_map[temp_already_installed_profile2_name] = alreadyInstalledProfile;
+  profile_map[temp_already_installed_profile1_name] = {alreadyInstalledProfile};
+  profile_map[temp_already_installed_profile2_name] = {alreadyInstalledProfile};
 
   try {
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
@@ -374,7 +375,7 @@ TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity) {
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
 
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
@@ -392,13 +393,14 @@ TEST(LinkBuilderTest, missing_link_profile_in_profile_map) {
   cand1.link_id = 1;
   cand1.name = "transmission_line_1";
   cand1.link_name = "area1 - area2";
-  cand1.link_profile = cand_profile1_name;
+  cand1.direct_link_profile = cand_profile1_name;
+  cand1.indirect_link_profile = cand_profile1_name;
   cand1.already_installed_capacity = 20;
 
   std::vector<CandidateData> cand_data_list;
   cand_data_list.push_back(cand1);
 
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
@@ -425,7 +427,7 @@ TEST(LinkBuilderTest, candidate_not_enable) {
   std::vector<CandidateData> cand_data_list;
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();

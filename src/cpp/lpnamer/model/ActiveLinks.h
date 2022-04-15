@@ -45,7 +45,7 @@ class ActiveLink {
 class ActiveLinksBuilder {
  public:
   ActiveLinksBuilder(const std::vector<CandidateData>& candidateList,
-                     const std::map<std::string, LinkProfile>& profile_map);
+      const std::map<std::string, std::vector<LinkProfile>>& profile_map);
 
   const std::vector<ActiveLink>& getLinks();
 
@@ -78,7 +78,7 @@ class ActiveLinksBuilder {
   std::unordered_map<LinkName, std::string> linkToAlreadyInstalledProfileName;
   std::unordered_map<LinkName, double> linkToAlreadyInstalledCapacity;
   const std::vector<CandidateData> _candidateDatas;
-  const std::map<std::string, LinkProfile> _profile_map;
+  const std::map<std::string, std::vector<LinkProfile>> _profile_map;
   std::vector<ActiveLink> _links;
 };
 

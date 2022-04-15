@@ -11,12 +11,12 @@ bool doubles_are_different(const double a, const double b) {
 void ActiveLinksBuilder::addCandidate(const CandidateData& candidate_data) {
   unsigned int indexLink = getLinkIndexOf(candidate_data.link_id);
   _links.at(indexLink).addCandidate(
-      candidate_data, getProfilesFromProfileMap(candidate_data.link_profile));
+      candidate_data, getProfilesFromProfileMap(candidate_data.direct_link_profile));
 }
 
 ActiveLinksBuilder::ActiveLinksBuilder(
     const std::vector<CandidateData>& candidateList,
-    const std::map<std::string, LinkProfile>& profile_map)
+    const std::map<std::string, std::vector<LinkProfile>>& profile_map)
     : _candidateDatas(candidateList), _profile_map(profile_map) {
   checkCandidateNameDuplication();
   checkLinksValidity();
@@ -24,7 +24,7 @@ ActiveLinksBuilder::ActiveLinksBuilder(
 
 void ActiveLinksBuilder::checkLinksValidity() {
   for (const auto& candidateData : _candidateDatas) {
-    launchExceptionIfNoLinkProfileAssociated(candidateData.link_profile);
+    launchExceptionIfNoLinkProfileAssociated(candidateData.direct_link_profile);
     launchExceptionIfNoLinkProfileAssociated(
         candidateData.installed_link_profile_name);
 
@@ -129,11 +129,13 @@ void ActiveLinksBuilder::create_links() {
 
 LinkProfile ActiveLinksBuilder::getProfileFromProfileMap(
     const std::string& profile_name) const {
-  LinkProfile already_installed_link_profile;
+  std::vector<LinkProfile> already_installed_link_profile;
   if (_profile_map.find(profile_name) != _profile_map.end()) {
     already_installed_link_profile = _profile_map.at(profile_name);
   }
-  return already_installed_link_profile;
+  if (already_installed_link_profile.empty())
+    return {};
+  return already_installed_link_profile.at(0);
 }
 
 std::vector<LinkProfile> ActiveLinksBuilder::getProfilesFromProfileMap(

@@ -15,11 +15,13 @@ struct CandidateData {
   double already_installed_capacity = 1.0;
 
   std::string name;
-  std::string link_profile;
   double annual_cost_per_mw = 0.0;
   double max_investment = 0.0;
   double unit_size = 0.0;
   double max_units = 0.0;
+  std::string link_profile;
+  std::string direct_link_profile;
+  std::string indirect_link_profile;
 };
 
 /*!

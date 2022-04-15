@@ -3,13 +3,13 @@
 #include "LinkProfileReader.h"
 #include "gtest/gtest.h"
 
-const std::string VALID_PROFILE_NAME("temp_profile.txt");
-const std::string SINGLE_PROFILE_NAME("temp_single_profile.txt");
-const std::string INVALID_PROFILE_NAME("temp_invalid_profile.txt");
+const std::string VALID_DIRECT_PROFILE_NAME("temp_direct_profile.txt");
+const std::string VALID_INDIRECT_PROFILE_NAME("temp_indirect_profile.txt");
+const std::string INVALID_DIRECT_PROFILE("temp_invalid_direct_profile.txt");
 
 class LinkProfileReaderTest : public ::testing::Test {
  protected:
-  static void createProfileFile(const std::string& temp_profile_name,
+  static void createMergedProfileFile(const std::string& temp_profile_name,
                                 std::vector<double>& directLinkprofile_l,
                                 std::vector<double>& indirectLinkprofile_l) {
     std::ofstream file_profile(temp_profile_name);
@@ -24,13 +24,13 @@ class LinkProfileReaderTest : public ::testing::Test {
   }
 
   static void createProfileFile(const std::string& temp_profile_name,
-                                std::vector<double>& directLinkprofile_l) {
+                                std::vector<double>& linkprofile_l) {
     std::ofstream file_profile(temp_profile_name);
 
-    for (auto cnt_l = 0; cnt_l < directLinkprofile_l.size() - 1; ++cnt_l) {
-      file_profile << directLinkprofile_l[cnt_l] << "\n";
+    for (auto cnt_l = 0; cnt_l < linkprofile_l.size() - 1; ++cnt_l) {
+      file_profile << linkprofile_l[cnt_l] << "\n";
     }
-    file_profile << directLinkprofile_l.back();
+    file_profile << linkprofile_l.back();
     file_profile.close();
   }
 
@@ -43,23 +43,21 @@ class LinkProfileReaderTest : public ::testing::Test {
     indirectLinkprofile_l[0] = 0.25;
     indirectLinkprofile_l[1] = 0.75;
 
-    createProfileFile(VALID_PROFILE_NAME, directLinkprofile_l,
-                      indirectLinkprofile_l);
-    createProfileFile(SINGLE_PROFILE_NAME, directLinkprofile_l);
+    createProfileFile(VALID_DIRECT_PROFILE_NAME, directLinkprofile_l);
+    createProfileFile(VALID_INDIRECT_PROFILE_NAME, indirectLinkprofile_l);
 
     std::vector<double> invalid_directLinkprofile_l(100, 1);
     std::vector<double> invalid_indirectLinkprofile_l(100, 1);
-    createProfileFile(INVALID_PROFILE_NAME, invalid_directLinkprofile_l,
-                      invalid_directLinkprofile_l);
+    createMergedProfileFile(INVALID_DIRECT_PROFILE, invalid_directLinkprofile_l,
+                            invalid_directLinkprofile_l);
   }
 
   static void TearDownTestCase() {
     // called after last test
 
     // delete the created tmp file
-    std::remove(VALID_PROFILE_NAME.c_str());
-    std::remove(INVALID_PROFILE_NAME.c_str());
-    std::remove(SINGLE_PROFILE_NAME.c_str());
+    std::remove(VALID_DIRECT_PROFILE_NAME.c_str());
+    std::remove(INVALID_DIRECT_PROFILE.c_str());
   }
 
   void SetUp() {
@@ -71,9 +69,11 @@ class LinkProfileReaderTest : public ::testing::Test {
   }
 };
 
-TEST_F(LinkProfileReaderTest, ReadValidProfile) {
-  LinkProfile profile = LinkProfileReader::ReadLinkProfile(
-      std::filesystem::path(VALID_PROFILE_NAME));
+TEST_F(LinkProfileReaderTest, ReadValidSplitProfile) {
+  LinkProfile profile =
+      LinkProfileReader::ReadLinkProfile(std::filesystem::path(VALID_DIRECT_PROFILE_NAME),
+                                              std::filesystem::path(VALID_INDIRECT_PROFILE_NAME))
+          .at(0);
 
   ASSERT_EQ(profile.getDirectProfile(0), 0);
   ASSERT_EQ(profile.getIndirectProfile(0), 0.25);
@@ -81,8 +81,11 @@ TEST_F(LinkProfileReaderTest, ReadValidProfile) {
   ASSERT_EQ(profile.getIndirectProfile(1), 0.75);
 }
 
+
 TEST_F(LinkProfileReaderTest, ReadOnlyDirectProfile) {
-  LinkProfile profile = LinkProfileReader::ReadLinkProfile(SINGLE_PROFILE_NAME);
+  LinkProfile profile =
+      LinkProfileReader::ReadLinkProfile(VALID_DIRECT_PROFILE_NAME)
+          .at(0);
 
   ASSERT_EQ(profile.getDirectProfile(0), 0);
   ASSERT_EQ(profile.getIndirectProfile(0), 0);
@@ -90,21 +93,25 @@ TEST_F(LinkProfileReaderTest, ReadOnlyDirectProfile) {
   ASSERT_EQ(profile.getIndirectProfile(1), 0.5);
 }
 
-TEST_F(LinkProfileReaderTest, ReadInvalidProfile) {
+TEST_F(LinkProfileReaderTest, ReadInvalidMergedProfile) {
   try {
     LinkProfile profile =
-        LinkProfileReader::ReadLinkProfile(INVALID_PROFILE_NAME);
+        LinkProfileReader::ReadLinkProfile(INVALID_DIRECT_PROFILE)
+            .at(0);
     FAIL();
   } catch (const std::domain_error& expected) {
     ASSERT_STREQ(
         expected.what(),
-        "error not enough line in link-profile temp_invalid_profile.txt");
+        ("error not enough line in link-profile "+
+                                   INVALID_DIRECT_PROFILE).c_str());
   }
 }
 
-TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760) {
-  LinkProfile profile = LinkProfileReader::ReadLinkProfile(
-      std::filesystem::path(VALID_PROFILE_NAME));
+TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760InSplitFile) {
+  LinkProfile profile =
+      LinkProfileReader::ReadLinkProfile(std::filesystem::path(VALID_DIRECT_PROFILE_NAME),
+                                              std::filesystem::path(VALID_INDIRECT_PROFILE_NAME))
+          .at(0);
 
   try {
     profile.getDirectProfile(8790);
