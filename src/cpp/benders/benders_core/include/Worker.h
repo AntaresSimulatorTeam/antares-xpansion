@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "common.h"
 #include "multisolver_interface/Solver.h"
 class Worker;
@@ -15,9 +17,10 @@ typedef std::shared_ptr<Worker> WorkerPtr;
 class Worker {
  public:
   Worker() = default;
-  void init(VariableMap const &variable_map, std::string const &path_to_mps,
+  void init(VariableMap const &variable_map,
+            const std::filesystem::path &path_to_mps,
             std::string const &solver_name, int log_level,
-            const std::string &log_name);
+            const std::filesystem::path &log_name);
   virtual ~Worker() = default;
 
   void get_value(double &lb) const;
@@ -27,13 +30,15 @@ class Worker {
   void free();
 
  public:
-  std::string _path_to_mps;
-  VariableMap _name_to_id; /*!< Link between the variable name and its identifier */
+  std::filesystem::path _path_to_mps;
+  VariableMap
+      _name_to_id; /*!< Link between the variable name and its identifier */
   Int2Str
       _id_to_name; /*!< Link between the identifier of a variable and its name*/
 
  public:
-  void solve(int &lp_status, const std::string &outputroot, const std::string &output_master_mps_file_name) const;
+  void solve(int &lp_status, const std::string &outputroot,
+             const std::string &output_master_mps_file_name) const;
 
  public:
   SolverAbstract::Ptr _solver =

@@ -519,7 +519,7 @@ TEST_CASE(
       solver->read_prob_mps(instance);
 
       if (solver_name == "XPRESS") {
-        std::string prb_name = "test" + ind;
+        auto prb_name = std::filesystem::path("test" + ind);
         solver->write_prob_mps(prb_name);
         ind++;
       }
@@ -568,7 +568,7 @@ TEST_CASE("We can get the indices of rows and columns by their names",
       solver->read_prob_mps(instance);
 
       if (solver_name == "XPRESS") {
-        std::string prb_name = "test" + ind;
+        auto prb_name = std::filesystem::path("test" + ind);
         solver->write_prob_mps(prb_name);
         ind++;
       }

@@ -6,10 +6,10 @@
 
 #include "config.h"
 
-SensitivityWriter::SensitivityWriter(std::string json_filename)
+SensitivityWriter::SensitivityWriter(std::filesystem::path json_filename)
     : _filename(std::move(json_filename)) {}
 
-void dump(const Json::Value &output, const std::string &file_name) {
+void dump(const Json::Value &output, const std::filesystem::path &file_name) {
   std::ofstream jsonOut_l(file_name);
   if (jsonOut_l) {
     jsonOut_l << output << std::endl;

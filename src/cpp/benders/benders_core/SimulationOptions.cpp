@@ -2,7 +2,7 @@
 
 #include <json/json.h>
 
-#include "helpers/Path.h"
+#include <filesystem>
 Json::Value get_value_from_json(const std::string &file_name) {
   Json::Value _input;
   std::ifstream input_file_l(file_name, std::ifstream::binary);
@@ -68,7 +68,7 @@ void SimulationOptions::set_weights() {
   if (SLAVE_WEIGHT != SUBPROBLEM_WEIGHT_UNIFORM_CST_STR &&
       SLAVE_WEIGHT != SUBPROBLEM_WEIGHT_CST_STR) {
     std::string line;
-    std::string filename(Path(INPUTROOT) / SLAVE_WEIGHT);
+    auto filename(std::filesystem::path(INPUTROOT) / SLAVE_WEIGHT);
     std::ifstream file(filename);
 
     if (!file) {

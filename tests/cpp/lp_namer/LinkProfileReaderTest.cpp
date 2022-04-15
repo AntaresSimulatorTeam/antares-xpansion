@@ -58,7 +58,8 @@ class LinkProfileReaderTest : public ::testing::Test {
 };
 
 TEST_F(LinkProfileReaderTest, ReadValidProfile) {
-  LinkProfile profile = LinkProfileReader::ReadLinkProfile(VALID_PROFILE_NAME);
+  LinkProfile profile = LinkProfileReader::ReadLinkProfile(
+      std::filesystem::path(VALID_PROFILE_NAME));
 
   ASSERT_EQ(profile.getDirectProfile(0), 0);
   ASSERT_EQ(profile.getIndirectProfile(0), 0.25);
@@ -79,7 +80,8 @@ TEST_F(LinkProfileReaderTest, ReadInvalidProfile) {
 }
 
 TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760) {
-  LinkProfile profile = LinkProfileReader::ReadLinkProfile(VALID_PROFILE_NAME);
+  LinkProfile profile = LinkProfileReader::ReadLinkProfile(
+      std::filesystem::path(VALID_PROFILE_NAME));
 
   try {
     profile.getDirectProfile(8790);

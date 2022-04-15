@@ -8,11 +8,12 @@
 *************************************************************************************************/
 int SolverCplex::_NumberOfProblems = 0;
 
-SolverCplex::SolverCplex(const std::string &log_file) : SolverCplex() {
+SolverCplex::SolverCplex(const std::filesystem::path &log_file)
+    : SolverCplex() {
   _log_file = log_file;
 
   if (_log_file != "") {
-    CPXsetlogfilename(_env, _log_file.c_str(), "a+");
+    CPXsetlogfilename(_env, _log_file.string().c_str(), "a+");
   }
 }
 SolverCplex::SolverCplex() {
@@ -42,9 +43,9 @@ SolverCplex::SolverCplex() {
 //   _NumberOfProblems += 1;
 // }
 
-SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif): SolverCplex(static_cast<const std::shared_ptr<const SolverAbstract>>(fictif)) {
-
-}
+SolverCplex::SolverCplex(const SolverAbstract::Ptr fictif)
+    : SolverCplex(
+          static_cast<const std::shared_ptr<const SolverAbstract>>(fictif)) {}
 
 SolverCplex::SolverCplex(const std::shared_ptr<const SolverAbstract> fictif) {
   int status(0);
@@ -59,7 +60,7 @@ SolverCplex::SolverCplex(const std::shared_ptr<const SolverAbstract> fictif) {
     zero_status_check(status, "create problem");
     _log_file = fictif->_log_file;
     if (_log_file != "") {
-      CPXsetlogfilename(_env, _log_file.c_str(), "a+");
+      CPXsetlogfilename(_env, _log_file.string().c_str(), "a+");
     }
     _NumberOfProblems += 1;
   } else {
@@ -108,17 +109,17 @@ void SolverCplex::free() {
 -------------------------------    Reading & Writing problems
 -------------------------------
 *************************************************************************************************/
-void SolverCplex::write_prob_mps(const std::string &filename) {
+void SolverCplex::write_prob_mps(const std::filesystem::path &filename) {
   std::string cplexFlags = "MPS";
   CPXwriteprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
 }
 
-void SolverCplex::write_prob_lp(const std::string &filename) {
+void SolverCplex::write_prob_lp(const std::filesystem::path &filename) {
   std::string cplexFlags = "LP";
   CPXwriteprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
 }
 
-void SolverCplex::read_prob_mps(const std::string &filename) {
+void SolverCplex::read_prob_mps(const std::filesystem::path &filename) {
   std::string cplexFlags = "MPS";
   int status =
       CPXreadcopyprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
@@ -315,9 +316,9 @@ void SolverCplex::chg_obj(const std::vector<int> &mindex,
 }
 
 void SolverCplex::chg_obj_direction(const bool minimize) {
-	int objsense = minimize ? CPX_MIN : CPX_MAX;
-	int status = CPXchgobjsen(_env, _prb, objsense);
-	zero_status_check(status, "change obj sense");
+  int objsense = minimize ? CPX_MIN : CPX_MAX;
+  int status = CPXchgobjsen(_env, _prb, objsense);
+  zero_status_check(status, "change obj sense");
 }
 
 void SolverCplex::chg_bounds(const std::vector<int> &mindex,

@@ -18,9 +18,10 @@ WorkerMaster::WorkerMaster() { _is_master = true; }
  *  \param subproblems_count : number of subproblems
  */
 WorkerMaster::WorkerMaster(VariableMap const &variable_map,
-                           std::string const &path_to_mps,
+                           const std::filesystem::path &path_to_mps,
                            const std::string &solver_name, const int log_level,
-                           int subproblems_count, const std::string &log_name)
+                           int subproblems_count,
+                           const std::filesystem::path &log_name)
     : Worker(), subproblems_count(subproblems_count) {
   _is_master = true;
   init(variable_map, path_to_mps, solver_name, log_level, log_name);
@@ -214,7 +215,7 @@ void WorkerMaster::define_matval_mclind_for_index(
  *  \param rhs : optimal slave value
  */
 void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x0,
-                                 double const &rhs) const {
+                                    double const &rhs) const {
   // cut is -rhs >= alpha  + s^(x-x0)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');

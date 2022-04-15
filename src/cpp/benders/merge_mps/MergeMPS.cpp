@@ -1,16 +1,16 @@
 #include "MergeMPS.h"
 
+#include <filesystem>
+
 #include "Timer.h"
 #include "glog/logging.h"
-#include "helpers/Path.h"
-
 MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
                    Writer writer)
     : _options(options), _logger(logger), _writer(writer) {}
 
 void MergeMPS::launch() {
-  auto structure_path(
-      (Path(_options.INPUTROOT) / _options.STRUCTURE_FILE).get_str());
+  auto structure_path(std::filesystem::path(_options.INPUTROOT) /
+                      _options.STRUCTURE_FILE);
   CouplingMap input = build_input(structure_path);
 
   SolverFactory factory;
@@ -26,8 +26,8 @@ void MergeMPS::launch() {
 
   LOG(INFO) << "Merging problems..." << std::endl;
   for (auto const &kvp : input) {
-    auto problem_name(
-        (Path(_options.INPUTROOT) / (kvp.first + MPS_SUFFIX)).get_str());
+    auto problem_name(std::filesystem::path(_options.INPUTROOT) /
+                      (kvp.first + MPS_SUFFIX));
 
     SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
     solver_l->init();
@@ -60,10 +60,10 @@ void MergeMPS::launch() {
         std::cerr << "missing variable " << x.first << " in " << kvp.first
                   << " supposedly renamed to " << varPrefix_l + x.first << ".";
         mergedSolver_l->write_prob_lp(
-            (Path(_options.OUTPUTROOT) / "mergeError.lp").get_str());
+            std::filesystem::path(_options.OUTPUTROOT) / "mergeError.lp");
         mergedSolver_l->write_prob_mps(
-            (Path(_options.OUTPUTROOT) / ("mergeError" + MPS_SUFFIX))
-                .get_str());
+            std::filesystem::path(_options.OUTPUTROOT) /
+            ("mergeError" + MPS_SUFFIX));
         std::exit(1);
       } else {
         x_mps_id[x.first][kvp.first] = col_index;
@@ -124,11 +124,11 @@ void MergeMPS::launch() {
 
   LOG(INFO) << "Problems merged." << std::endl;
   LOG(INFO) << "Writting mps file" << std::endl;
-  mergedSolver_l->write_prob_mps(
-      (Path(_options.OUTPUTROOT) / ("log_merged" + MPS_SUFFIX)).get_str());
+  mergedSolver_l->write_prob_mps(std::filesystem::path(_options.OUTPUTROOT) /
+                                 ("log_merged" + MPS_SUFFIX));
   LOG(INFO) << "Writting lp file" << std::endl;
-  mergedSolver_l->write_prob_lp(
-      (Path(_options.OUTPUTROOT) / "log_merged.lp").get_str());
+  mergedSolver_l->write_prob_lp(std::filesystem::path(_options.OUTPUTROOT) /
+                                "log_merged.lp");
 
   mergedSolver_l->set_threads(16);
 

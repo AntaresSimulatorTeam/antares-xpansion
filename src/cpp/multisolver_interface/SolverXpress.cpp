@@ -9,7 +9,8 @@
 *************************************************************************************************/
 int SolverXpress::_NumberOfProblems = 0;
 
-SolverXpress::SolverXpress(const std::string &log_file) : SolverXpress() {
+SolverXpress::SolverXpress(const std::filesystem::path &log_file)
+    : SolverXpress() {
   _log_file = log_file;
   if (_log_file != "") {
     _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
@@ -28,16 +29,18 @@ SolverXpress::SolverXpress() {
   _xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy) : SolverXpress(static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy)) {
+SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy)
+    : SolverXpress(
+          static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy)) {}
 
-}
-
-SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy) : SolverXpress() {
+SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy)
+    : SolverXpress() {
   SolverXpress::init();
   int status = 0;
 
   // Try to cast the solver in fictif to a SolverCPLEX
-  if (const SolverXpress *xpSolv = dynamic_cast<const SolverXpress *>(toCopy.get())) {
+  if (const SolverXpress *xpSolv =
+          dynamic_cast<const SolverXpress *>(toCopy.get())) {
     status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
     _log_file = toCopy->_log_file;
     if (_log_file != "") {
@@ -98,21 +101,21 @@ void SolverXpress::free() {
 -------------------------------    Reading & Writing problems
 -------------------------------
 *************************************************************************************************/
-void SolverXpress::write_prob_mps(const std::string &filename) {
+void SolverXpress::write_prob_mps(const std::filesystem::path &filename) {
   std::string nFlags = "";
-  int status = XPRSwriteprob(_xprs, filename.c_str(), nFlags.c_str());
+  int status = XPRSwriteprob(_xprs, filename.string().c_str(), nFlags.c_str());
   zero_status_check(status, "write problem");
 }
 
-void SolverXpress::write_prob_lp(const std::string &filename) {
+void SolverXpress::write_prob_lp(const std::filesystem::path &filename) {
   std::string nFlags = "l";
-  int status = XPRSwriteprob(_xprs, filename.c_str(), nFlags.c_str());
+  int status = XPRSwriteprob(_xprs, filename.string().c_str(), nFlags.c_str());
   zero_status_check(status, "write problem");
 }
 
-void SolverXpress::read_prob_mps(const std::string &filename) {
+void SolverXpress::read_prob_mps(const std::filesystem::path &filename) {
   std::string nFlags = "";
-  read_prob(filename.c_str(), nFlags.c_str());
+  read_prob(filename.string().c_str(), nFlags.c_str());
 }
 void SolverXpress::read_prob_lp(const std::string &filename) {
   std::string nFlags = "l";

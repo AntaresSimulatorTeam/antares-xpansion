@@ -2,6 +2,8 @@
 #ifndef ANTARESXPANSION_LOGGERFACTORIES_H
 #define ANTARESXPANSION_LOGGERFACTORIES_H
 
+#include <filesystem>
+
 #include "SimulationOptions.h"
 #include "core/ILogger.h"
 #include "logger/Master.h"
@@ -17,7 +19,7 @@ class FileAndStdoutLoggerFactory {
 
  public:
   explicit FileAndStdoutLoggerFactory(
-      const std::string &report_file_path_string) {
+      const std::filesystem::path &report_file_path_string) {
     auto masterLogger = std::make_shared<xpansion::logger::Master>();
     auto user_file =
         std::make_shared<xpansion::logger::UserFile>(report_file_path_string);

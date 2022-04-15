@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include <cstdio>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <ostream>
@@ -29,9 +30,9 @@ class JsonWriterTest : public ::testing::Test {
  public:
   void SetUp() override { _fileName = std::tmpnam(nullptr); }
 
-  void TearDown() override { std::remove(_fileName.c_str()); }
+  void TearDown() override { std::remove(_fileName.string().c_str()); }
 
-  std::string _fileName;
+  std::filesystem::path _fileName;
   std::shared_ptr<ClockMock> my_clock = std::make_shared<ClockMock>();
 };
 
@@ -44,7 +45,7 @@ TEST_F(JsonWriterTest, GenerateAValideFile) {
   ASSERT_TRUE(fileStream.good());
 }
 
-Json::Value get_value_from_json(const std::string &file_name) {
+Json::Value get_value_from_json(const std::filesystem::path &file_name) {
   Json::Value _input;
   std::ifstream input_file_l(file_name, std::ifstream::binary);
   Json::CharReaderBuilder builder_l;

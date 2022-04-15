@@ -29,7 +29,7 @@ class SolverXpress : public SolverAbstract {
    * @brief Default constructor of a XPRESS solver
    */
   SolverXpress();
-  SolverXpress(const std::string &log_file);
+  SolverXpress(const std::filesystem::path &log_file);
 
   /**
    * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and
@@ -64,10 +64,10 @@ class SolverXpress : public SolverAbstract {
   -------------------------------
   *************************************************************************************************/
  public:
-  virtual void write_prob_mps(const std::string &filename) override;
-  virtual void write_prob_lp(const std::string &filename) override;
+  virtual void write_prob_mps(const std::filesystem::path &filename) override;
+  virtual void write_prob_lp(const std::filesystem::path &filename) override;
 
-  virtual void read_prob_mps(const std::string &filename) override;
+  virtual void read_prob_mps(const std::filesystem::path &filename) override;
   virtual void read_prob_lp(const std::string &filename) override;
   virtual void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 

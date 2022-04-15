@@ -8,13 +8,13 @@
 *************************************************************************************************/
 int SolverCbc::_NumberOfProblems = 0;
 
-SolverCbc::SolverCbc(const std::string &log_file) : SolverCbc() {
+SolverCbc::SolverCbc(const std::filesystem::path &log_file) : SolverCbc() {
   _log_file = log_file;
   if (_log_file.empty()) {
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
   } else {
-    if ((_fp = fopen(_log_file.c_str(), "a+")) == nullptr) {
+    if ((_fp = fopen(_log_file.string().c_str(), "a+")) == nullptr) {
       std::cerr << "Invalid log file name passed as parameter: " << _log_file
                 << std::endl;
     } else {
@@ -34,7 +34,7 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
   if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
     _log_file = toCopy->_log_file;
-    _fp = fopen(_log_file.c_str(), "a+");
+    _fp = fopen(_log_file.string().c_str(), "a+");
     if (_fp != nullptr) {
       setvbuf(_fp, nullptr, _IONBF, 0);
       _message_handler.setFilePointer(_fp);
@@ -87,7 +87,7 @@ void SolverCbc::free() {
 -------------------------------    Reading & Writing problems
 -------------------------------
 *************************************************************************************************/
-void SolverCbc::write_prob_mps(const std::string &filename) {
+void SolverCbc::write_prob_mps(const std::filesystem::path &filename) {
   const int numcols = get_ncols();
   std::shared_ptr<char[]> shared_integrality(new char[numcols]);
   char *integrality = shared_integrality.get();
@@ -135,9 +135,9 @@ void SolverCbc::write_prob_mps(const std::string &filename) {
   writer.setMpsData(
       *(_clp_inner_solver.getMatrixByCol()), _clp_inner_solver.getInfinity(),
       _clp_inner_solver.getColLower(), _clp_inner_solver.getColUpper(),
-      _clp_inner_solver.getObjCoefficients(), hasInteger ? integrality : nullptr,
-      _clp_inner_solver.getRowLower(), _clp_inner_solver.getRowUpper(),
-      colNames, rowNames);
+      _clp_inner_solver.getObjCoefficients(),
+      hasInteger ? integrality : nullptr, _clp_inner_solver.getRowLower(),
+      _clp_inner_solver.getRowUpper(), colNames, rowNames);
 
   std::string probName = "";
   _clp_inner_solver.getStrParam(OsiProbName, probName);
@@ -147,15 +147,16 @@ void SolverCbc::write_prob_mps(const std::string &filename) {
   _clp_inner_solver.getDblParam(OsiObjOffset, objOffset);
   writer.setObjectiveOffset(objOffset);
 
-  writer.writeMps(filename.c_str(), 0 /*gzip it*/, 1, 1, nullptr, 0, nullptr);
+  writer.writeMps(filename.string().c_str(), 0 /*gzip it*/, 1, 1, nullptr, 0,
+                  nullptr);
 }
 
-void SolverCbc::write_prob_lp(const std::string &name) {
-  _clp_inner_solver.writeLpNative(name.c_str(), nullptr, nullptr);
+void SolverCbc::write_prob_lp(const std::filesystem::path &name) {
+  _clp_inner_solver.writeLpNative(name.string().c_str(), nullptr, nullptr);
 }
 
-void SolverCbc::read_prob_mps(const std::string &prob_name) {
-  int status = _clp_inner_solver.readMps(prob_name.c_str());
+void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
+  int status = _clp_inner_solver.readMps(prob_name.string().c_str());
   zero_status_check(status, "read problem");
   defineCbcModelFromInnerSolver();
 }

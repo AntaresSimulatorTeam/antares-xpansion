@@ -30,7 +30,7 @@ class SolverCplex : public SolverAbstract {
   the name is set to DefaultProblem_$(_NumberOfProblems+1)
   */
   SolverCplex();
-  SolverCplex(const std::string &log_file);
+  SolverCplex(const std::filesystem::path &log_file);
 
   /**
    * @brief Constructor of a CPLEX solver named "name"
@@ -72,10 +72,10 @@ class SolverCplex : public SolverAbstract {
   -------------------------------
   *************************************************************************************************/
  public:
-  virtual void write_prob_mps(const std::string &filename) override;
-  virtual void write_prob_lp(const std::string &filename) override;
+  virtual void write_prob_mps(const std::filesystem::path &filename) override;
+  virtual void write_prob_lp(const std::filesystem::path &filename) override;
 
-  virtual void read_prob_mps(const std::string &filename) override;
+  virtual void read_prob_mps(const std::filesystem::path &filename) override;
   virtual void read_prob_lp(const std::string &filename) override;
   virtual void write_prob(const char *name, const char *flags) override;
   virtual void read_prob(const char *prob_name, const char *flags) override;

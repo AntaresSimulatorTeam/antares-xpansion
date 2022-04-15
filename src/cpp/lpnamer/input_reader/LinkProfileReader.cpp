@@ -1,10 +1,12 @@
 #include "LinkProfileReader.h"
 
-#include "helpers/Path.h"
-LinkProfile LinkProfileReader::ReadLinkProfile(const std::string &filename) {
+#include <filesystem>
+
+LinkProfile LinkProfileReader::ReadLinkProfile(
+    const std::filesystem::path &filename) {
   std::ifstream infile(filename);
   if (!infile.good()) {
-    throw std::runtime_error("unable to open : " + filename);
+    throw std::runtime_error("unable to open : " + filename.string());
   }
   LinkProfile result;
   result._directLinkProfile.reserve(8760);
@@ -21,7 +23,7 @@ LinkProfile LinkProfileReader::ReadLinkProfile(const std::string &filename) {
       }
     } else {
       throw std::runtime_error("error not enough line in link-profile " +
-                               filename);
+                               filename.string());
     }
   }
   infile.close();
@@ -30,7 +32,7 @@ LinkProfile LinkProfileReader::ReadLinkProfile(const std::string &filename) {
 }
 
 const std::map<std::string, LinkProfile> LinkProfileReader::getLinkProfileMap(
-    const std::string &capacity_folder,
+    const std::filesystem::path &capacity_folder,
     const std::vector<CandidateData> &candidateList) {
   std::map<std::string, LinkProfile> mapLinkProfile;
   for (const auto &candidate_data : candidateList) {
@@ -43,10 +45,11 @@ const std::map<std::string, LinkProfile> LinkProfileReader::getLinkProfileMap(
 
 void LinkProfileReader::importProfile(
     std::map<std::string, LinkProfile> &mapLinkProfile,
-    const std::string &capacitySubfolder, const std::string &profile_name) {
+    const std::filesystem::path &capacitySubfolder,
+    const std::string &profile_name) {
   if (!profile_name.empty() &&
       mapLinkProfile.find(profile_name) == mapLinkProfile.end()) {
-    mapLinkProfile[profile_name] = LinkProfileReader::ReadLinkProfile(
-        (Path(capacitySubfolder) / profile_name).get_str());
+    mapLinkProfile[profile_name] =
+        LinkProfileReader::ReadLinkProfile(capacitySubfolder / profile_name);
   }
 }
