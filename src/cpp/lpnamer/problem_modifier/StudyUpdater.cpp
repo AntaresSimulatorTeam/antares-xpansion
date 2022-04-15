@@ -58,9 +58,9 @@ std::pair<double, double> StudyUpdater::computeNewCapacities(
     }
     double candidate_investment = it_candidate->second;
 
-    direct_l += candidate_investment * candidate.direct_profile(timepoint_p);
+    direct_l += candidate_investment * candidate.directCapacityFactor(timepoint_p);
     indirect_l +=
-        candidate_investment * candidate.indirect_profile(timepoint_p);
+        candidate_investment * candidate.indirectCapacityFactor(timepoint_p);
   }
   return std::make_pair(direct_l, indirect_l);
 }

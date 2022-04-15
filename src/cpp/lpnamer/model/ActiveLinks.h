@@ -16,11 +16,13 @@ class ActiveLink {
   void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
   void addCandidate(const CandidateData& candidate_data,
-                    const LinkProfile& candidate_profile);
+                    const std::vector<LinkProfile>& candidate_profile);
   const std::vector<Candidate>& getCandidates() const;
 
   double already_installed_direct_profile(size_t timeStep) const;
   double already_installed_indirect_profile(size_t timeStep) const;
+  [[nodiscard]] double already_installed_direct_profile(size_t year, size_t timeStep) const;
+  [[nodiscard]] double already_installed_indirect_profile(size_t year, size_t timeStep) const;
 
   int get_idLink() const;
   LinkName get_LinkName() const;
@@ -33,9 +35,11 @@ class ActiveLink {
   LinkName _name;
   std::string _linkor;
   std::string _linkex;
+  //Sur le lien capacité à ne pas toucher
   double _already_installed_capacity = 1;
-  LinkProfile _already_installed_profile;
-  std::vector<Candidate> _candidates;
+  //Profile de la capa
+  std::vector<LinkProfile> _already_installed_profile = {};
+  std::vector<Candidate> _candidates = {};
 };
 
 class ActiveLinksBuilder {
@@ -68,6 +72,7 @@ class ActiveLinksBuilder {
   void create_links();
 
   LinkProfile getProfileFromProfileMap(const std::string& profile_name) const;
+  std::vector<LinkProfile> getProfilesFromProfileMap(const std::string& profile_name) const;
 
   std::map<LinkName, LinkData> _links_data;
   std::unordered_map<LinkName, std::string> linkToAlreadyInstalledProfileName;

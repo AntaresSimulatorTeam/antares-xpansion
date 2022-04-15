@@ -30,10 +30,13 @@ struct CandidateData {
 class Candidate {
  public:
   Candidate() = default;
-  Candidate(const CandidateData& data, const LinkProfile& profile);
+  Candidate(const CandidateData& data, std::vector<LinkProfile>  profile);
 
-  double direct_profile(size_t timeStep) const;
-  double indirect_profile(size_t timeStep) const;
+  double directCapacityFactor(size_t timeStep) const;
+  double indirectCapacityFactor(size_t timeStep) const;
+
+  double directCapacityFactor(size_t chronicle_number, size_t timeStep) const;
+  double indirectCapacityFactor(size_t chronicle_number, size_t timeStep) const;
 
   double obj() const;
   double lb() const;
@@ -48,7 +51,7 @@ class Candidate {
   void set_name(const std::string& name);
 
  private:
-  LinkProfile _profile;
+  std::vector<LinkProfile> _profile;
   std::string _name;
   double _annual_cost_per_mw;
   double _max_investment;

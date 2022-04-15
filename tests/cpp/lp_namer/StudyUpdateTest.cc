@@ -147,17 +147,17 @@ TEST_F(StudyUpdateTest, linkprofile) {
 
   ASSERT_EQ(link1candidates.size(), 1);
 
-  // direct profile
-  ASSERT_EQ(link1candidates[0].direct_profile(0), 0);
-  ASSERT_EQ(link1candidates[0].direct_profile(1), 0.5);
-  ASSERT_EQ(link1candidates[0].direct_profile(2), 1);
-  ASSERT_EQ(link1candidates[0].direct_profile(8759), 1);
+    //direct profile
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(0), 0);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(1), 0.5);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(2), 1);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(8759), 1);
 
-  // indirect profile
-  ASSERT_EQ(link1candidates[0].indirect_profile(0), 0.25);
-  ASSERT_EQ(link1candidates[0].indirect_profile(1), 0.75);
-  ASSERT_EQ(link1candidates[0].indirect_profile(2), 1);
-  ASSERT_EQ(link1candidates[0].indirect_profile(8759), 1);
+    //indirect profile
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(0), 0.25);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(1), 0.75);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(2), 1);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(8759), 1);
 }
 
 TEST_F(StudyUpdateTest, defaultAntaresVersion) {

@@ -40,8 +40,8 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity) {
   ASSERT_EQ(candidates.size(), 1);
   ASSERT_EQ(candidates[0].get_name(), "transmission_line_1");
   for (int timeStep = 0; timeStep < 8760; timeStep++) {
-    ASSERT_DOUBLE_EQ(candidates[0].direct_profile(timeStep), 1);
-    ASSERT_DOUBLE_EQ(candidates[0].indirect_profile(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidates[0].directCapacityFactor(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidates[0].indirectCapacityFactor(timeStep), 1);
   }
 }
 
@@ -106,13 +106,13 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity) {
   const auto& candidates = links[0].getCandidates();
   ASSERT_EQ(candidates.size(), 1);
   ASSERT_EQ(candidates[0].get_name(), "transmission_line_1");
-  ASSERT_EQ(candidates[0].direct_profile(0), 0);
-  ASSERT_EQ(candidates[0].direct_profile(1), 0.5);
-  ASSERT_EQ(candidates[0].indirect_profile(0), 0.25);
-  ASSERT_EQ(candidates[0].indirect_profile(1), 0.75);
+  ASSERT_EQ(candidates[0].directCapacityFactor(0), 0);
+  ASSERT_EQ(candidates[0].directCapacityFactor(1), 0.5);
+  ASSERT_EQ(candidates[0].indirectCapacityFactor(0), 0.25);
+  ASSERT_EQ(candidates[0].indirectCapacityFactor(1), 0.75);
   for (int timeStep = 2; timeStep < 8760; timeStep++) {
-    ASSERT_DOUBLE_EQ(candidates[0].direct_profile(timeStep), 1);
-    ASSERT_DOUBLE_EQ(candidates[0].indirect_profile(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidates[0].directCapacityFactor(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidates[0].indirectCapacityFactor(timeStep), 1);
   }
 }
 
@@ -150,14 +150,14 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity) {
 
   ASSERT_EQ(candidates[0].get_name(), "transmission_line_1");
   for (int timeStep = 0; timeStep < 8760; timeStep++) {
-    ASSERT_DOUBLE_EQ(candidates[0].direct_profile(timeStep), 1);
-    ASSERT_DOUBLE_EQ(candidates[0].indirect_profile(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidates[0].directCapacityFactor(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidates[0].indirectCapacityFactor(timeStep), 1);
   }
 
   ASSERT_EQ(candidates[1].get_name(), "transmission_line_2");
   for (int timeStep = 0; timeStep < 8760; timeStep++) {
-    ASSERT_DOUBLE_EQ(candidates[1].direct_profile(timeStep), 1);
-    ASSERT_DOUBLE_EQ(candidates[1].indirect_profile(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidates[1].directCapacityFactor(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidates[1].indirectCapacityFactor(timeStep), 1);
   }
 }
 
@@ -202,8 +202,8 @@ TEST(LinkBuilderTest,
 
   ASSERT_EQ(candidatesLink0[0].get_name(), "transmission_line_1");
   for (int timeStep = 0; timeStep < 8760; timeStep++) {
-    ASSERT_DOUBLE_EQ(candidatesLink0[0].direct_profile(timeStep), 1);
-    ASSERT_DOUBLE_EQ(candidatesLink0[0].indirect_profile(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidatesLink0[0].directCapacityFactor(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidatesLink0[0].indirectCapacityFactor(timeStep), 1);
   }
 
   ASSERT_EQ(links[1].get_idLink(), 12);
@@ -220,8 +220,8 @@ TEST(LinkBuilderTest,
 
   ASSERT_EQ(candidatesLink1[0].get_name(), "pv");
   for (int timeStep = 0; timeStep < 8760; timeStep++) {
-    ASSERT_DOUBLE_EQ(candidatesLink1[0].direct_profile(timeStep), 1);
-    ASSERT_DOUBLE_EQ(candidatesLink1[0].indirect_profile(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidatesLink1[0].directCapacityFactor(timeStep), 1);
+    ASSERT_DOUBLE_EQ(candidatesLink1[0].indirectCapacityFactor(timeStep), 1);
   }
 }
 

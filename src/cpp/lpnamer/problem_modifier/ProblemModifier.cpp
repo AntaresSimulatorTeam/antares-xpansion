@@ -35,9 +35,11 @@ std::vector<Candidate> candidates_with_not_null_profile(
                                     bool hasOnlyNullProfile = true;
                                     for (int time_step : time_steps) {
                                       hasOnlyNullProfile &=
-                                          cand.direct_profile(time_step) == 0.0;
+                                          cand.directCapacityFactor(
+                                              time_step) == 0.0;
                                       hasOnlyNullProfile &=
-                                          cand.indirect_profile(time_step) ==
+                                          cand.indirectCapacityFactor(
+                                              time_step) ==
                                           0.0;
                                     }
                                     return hasOnlyNullProfile;
@@ -216,9 +218,9 @@ void ProblemModifier::add_direct_profile_column_constraint(
   colind.push_back(column.id);
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.direct_profile(column.time_step) != 0.0) {
+    if (candidate.directCapacityFactor(column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(-candidate.direct_profile(column.time_step));
+      dmatval.push_back(-candidate.directCapacityFactor(column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
@@ -239,9 +241,9 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(
   colind.push_back(column.id);
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.indirect_profile(column.time_step) != 0.0) {
+    if (candidate.indirectCapacityFactor(column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(candidate.indirect_profile(column.time_step));
+      dmatval.push_back(candidate.indirectCapacityFactor(column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
@@ -262,9 +264,9 @@ void ProblemModifier::add_indirect_cost_column_constraint(
   colind.push_back(column.id);
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.indirect_profile(column.time_step) != 0.0) {
+    if (candidate.indirectCapacityFactor(column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(-candidate.indirect_profile(column.time_step));
+      dmatval.push_back(-candidate.indirectCapacityFactor(column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
