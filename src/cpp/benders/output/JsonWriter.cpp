@@ -20,7 +20,7 @@ std::string timeToStr(const std::time_t &time_p) {
 }  // namespace clock_utils
 namespace Output {
 JsonWriter::JsonWriter(std::shared_ptr<Clock> p_clock,
-                       const std::string &json_filename)
+                       const std::filesystem::path &json_filename)
     : _clock(p_clock), _filename(json_filename) {}
 
 void JsonWriter::initialize() {

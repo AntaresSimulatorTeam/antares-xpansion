@@ -3,6 +3,8 @@
 
 #include <json/writer.h>
 
+#include <filesystem>
+
 #include "Clock.h"
 #include "OutputWriter.h"
 
@@ -27,7 +29,7 @@ namespace Output {
 class JsonWriter : public OutputWriter {
  private:
   std::shared_ptr<Clock> _clock;
-  std::string _filename;
+  std::filesystem::path _filename;
   // attributes of the optimization execution
   Json::Value _output;
 
@@ -48,7 +50,8 @@ class JsonWriter : public OutputWriter {
    */
   JsonWriter() = delete;
 
-  JsonWriter(std::shared_ptr<Clock> p_clock, const std::string &json_filename);
+  JsonWriter(std::shared_ptr<Clock> p_clock,
+             const std::filesystem::path &json_filename);
 
   /*!
    *  \brief destructor of class JsonWriter

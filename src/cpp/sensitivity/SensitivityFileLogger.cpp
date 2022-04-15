@@ -4,7 +4,8 @@
 #include <memory>
 #include <string>
 
-SensitivityFileLogger::SensitivityFileLogger(const std::string& filename) {
+SensitivityFileLogger::SensitivityFileLogger(
+    const std::filesystem::path& filename) {
   _file.open(filename);
   if (_file.fail()) {
     std::cerr << "Invalid file name passed as parameter" << std::endl;

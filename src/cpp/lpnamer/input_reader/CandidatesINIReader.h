@@ -3,6 +3,7 @@
 #ifndef ANTARESXPANSION_CANDIDATESINIREADER_H
 #define ANTARESXPANSION_CANDIDATESINIREADER_H
 
+#include <filesystem>
 #include <string>
 #include <vector>
 
@@ -17,19 +18,20 @@ struct IntercoFileData {
 
 class CandidatesINIReader {
  public:
-  CandidatesINIReader(const std::string& antaresIntercoFile,
-                      const std::string& areaFile);
+  CandidatesINIReader(const std::filesystem::path& antaresIntercoFile,
+                      const std::filesystem::path& areaFile);
 
   static std::vector<IntercoFileData> ReadAntaresIntercoFile(
-      const std::string& antaresIntercoFile);
-  static std::vector<std::string> ReadAreaFile(const std::string& areaFile);
+      const std::filesystem::path& antaresIntercoFile);
+  static std::vector<std::string> ReadAreaFile(
+      const std::filesystem::path& areaFile);
 
   std::vector<CandidateData> readCandidateData(
-      const std::string& candidateFile);
+      const std::filesystem::path& candidateFile);
 
  private:
   bool checkArea(std::string const& areaName_p) const;
-  CandidateData readCandidateSection(const std::string& candidateFile,
+  CandidateData readCandidateSection(const std::filesystem::path& candidateFile,
                                      const INIReader& reader,
                                      const std::string& sectionName);
 

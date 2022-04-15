@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Worker.h"
 #include "SubproblemWorker.h"
+#include "Worker.h"
 /*!
  * \class SubproblemWorker
  * \brief Class daughter of Worker Class, build and manage a master problem
@@ -12,9 +12,10 @@ typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 class WorkerMaster : public Worker {
  public:
   WorkerMaster();
-  WorkerMaster(VariableMap const &variable_map, std::string const &path_to_mps,
-               const std::string &solver_name, const int log_level, int subproblems_count,
-               const std::string &log_name);
+  WorkerMaster(VariableMap const &variable_map,
+               const std::filesystem::path &path_to_mps,
+               const std::string &solver_name, const int log_level,
+               int subproblems_count, const std::filesystem::path &log_name);
   virtual ~WorkerMaster();
 
   void get(Point &x0, double &alpha, DblVector &alpha_i);
@@ -27,7 +28,7 @@ class WorkerMaster : public Worker {
   void add_dynamic_cut(Point const &s, double const &sx0,
                        double const &rhs) const;
   void addSubproblemCut(int i, Point const &s, Point const &x0,
-                     double const &rhs) const;
+                        double const &rhs) const;
   void delete_constraint(int const nrows) const;
   void fix_alpha(double const &bestUB) const;
 

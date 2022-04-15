@@ -1,6 +1,7 @@
 #include <json/json.h>
 
 #include <cstdio>
+#include <filesystem>
 #include <fstream>
 
 #include "SensitivityWriter.h"
@@ -11,11 +12,11 @@ const std::string semibase_name = "semibase";
 
 class SensitivityWriterTest : public ::testing::Test {
  public:
-  std::string _fileName;
+  std::filesystem::path _fileName;
 
   void SetUp() override { _fileName = std::tmpnam(nullptr); }
 
-  void TearDown() override { std::remove(_fileName.c_str()); }
+  void TearDown() override { std::remove(_fileName.string().c_str()); }
 
   void verify_candidates_writing(const Point &candidates,
                                  const Json::Value &written_candidates) {
@@ -58,9 +59,12 @@ class SensitivityWriterTest : public ::testing::Test {
 
     int candidate_id = 0;
     for (auto &kvp : candidates_bounds) {
-      EXPECT_EQ(kvp.first, written_candidates_bounds[candidate_id][NAME_C].asString());
-      EXPECT_EQ(kvp.second.first, written_candidates_bounds[candidate_id][LB_C].asDouble());
-      EXPECT_EQ(kvp.second.second, written_candidates_bounds[candidate_id][UB_C].asDouble());
+      EXPECT_EQ(kvp.first,
+                written_candidates_bounds[candidate_id][NAME_C].asString());
+      EXPECT_EQ(kvp.second.first,
+                written_candidates_bounds[candidate_id][LB_C].asDouble());
+      EXPECT_EQ(kvp.second.second,
+                written_candidates_bounds[candidate_id][UB_C].asDouble());
       candidate_id++;
     }
   }
@@ -80,6 +84,7 @@ class SensitivityWriterTest : public ::testing::Test {
 };
 
 TEST_F(SensitivityWriterTest, GenerateAValidFile) {
+  std::cout << "******* _fileName = " << _fileName << "***\n";
   auto writer = SensitivityWriter(_fileName);
   writer.end_writing({});
 
@@ -88,7 +93,7 @@ TEST_F(SensitivityWriterTest, GenerateAValidFile) {
   EXPECT_TRUE(fileStream.good());
 }
 
-Json::Value get_value_from_json(const std::string &file_name) {
+Json::Value get_value_from_json(const std::filesystem::path &file_name) {
   Json::Value _input;
   std::ifstream input_file_l(file_name, std::ifstream::binary);
   Json::CharReaderBuilder builder_l;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "ActiveLinks.h"
 #include "LinkProblemsGenerator.h"
 
@@ -11,11 +13,11 @@
 class StudyUpdater {
  private:
   // folder containing the links files in the antares study
-  static std::string linksSubfolder_;
+  static std::filesystem::path linksSubfolder_;
   // path to the antares study
-  std::string studyPath_;
+  std::filesystem::path studyPath_;
   // path to the links folder
-  std::string linksPath_;
+  std::filesystem::path linksPath_;
   // antares version
   int antaresVersion_;
 
@@ -25,7 +27,7 @@ class StudyUpdater {
    *
    * \param studyPath_p : path to the antares study folder
    */
-  explicit StudyUpdater(std::string const& studyPath_p);
+  explicit StudyUpdater(const std::filesystem::path& studyPath_p);
 
   /*!
    * \brief default destructor of calass StudyUpdater
@@ -49,7 +51,7 @@ class StudyUpdater {
    * \param link_p : link for which the datalink file path will be returned
    */
 
-  std::string getLinkdataFilepath(ActiveLink const& link_p) const;
+  std::filesystem::path getLinkdataFilepath(ActiveLink const& link_p) const;
 
   /*!
    * \brief computes the new capacities of related to a link

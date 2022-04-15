@@ -1,12 +1,14 @@
 #pragma once
 
+#include <filesystem>
+
 #include "BendersStructsDatas.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
+#include "SubproblemWorker.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
-#include "SubproblemWorker.h"
 #include "common.h"
 #include "core/ILogger.h"
 
@@ -15,8 +17,8 @@ class BendersBase {
   virtual ~BendersBase() = default;
   BendersBase(BendersBaseOptions options, Logger &logger, Writer writer);
   virtual void launch() = 0;
-  void set_log_file(const std::string &log_name);
-  [[nodiscard]] std::string log_name() const { return _log_name; }
+  void set_log_file(const std::filesystem::path &log_name);
+  [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
 
  protected:
   BendersData _data;
@@ -36,11 +38,13 @@ class BendersBase {
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
-  [[nodiscard]] std::string GetSubproblemPath(std::string const &subproblem_name) const;
-  [[nodiscard]] double SubproblemWeight(int subproblem_count, std::string const &name) const;
-  [[nodiscard]] std::string get_master_path() const;
-  [[nodiscard]] std::string get_structure_path() const;
-  [[nodiscard]] static LogData bendersDataToLogData(const BendersData &data) ;
+  [[nodiscard]] std::filesystem::path GetSubproblemPath(
+      std::string const &subproblem_name) const;
+  [[nodiscard]] double SubproblemWeight(int subproblem_count,
+                                        std::string const &name) const;
+  [[nodiscard]] std::filesystem::path get_master_path() const;
+  [[nodiscard]] std::filesystem::path get_structure_path() const;
+  [[nodiscard]] static LogData bendersDataToLogData(const BendersData &data);
   void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
@@ -86,7 +90,7 @@ class BendersBase {
  private:
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
-  std::string _log_name;
+  std::filesystem::path _log_name;
   BendersTrace _trace;
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;

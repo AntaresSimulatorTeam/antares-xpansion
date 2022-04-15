@@ -38,7 +38,7 @@ class SolverCbc : public SolverAbstract {
    * @brief Default constructor of a CBC solver
    */
   SolverCbc();
-  explicit SolverCbc(const std::string &log_file);
+  explicit SolverCbc(const std::filesystem::path &log_file);
 
   /**
    * @brief Copy constructor of solver, copy the problem toCopy in memory and
@@ -48,7 +48,6 @@ class SolverCbc : public SolverAbstract {
    * solver to copy
    */
   SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
-
 
   virtual ~SolverCbc();
   virtual int get_number_of_instances() override;
@@ -76,10 +75,10 @@ class SolverCbc : public SolverAbstract {
   -------------------------------
   *************************************************************************************************/
  public:
-  virtual void write_prob_mps(const std::string &filename) override;
-  virtual void write_prob_lp(const std::string &filename) override;
+  virtual void write_prob_mps(const std::filesystem::path &filename) override;
+  virtual void write_prob_lp(const std::filesystem::path &filename) override;
 
-  virtual void read_prob_mps(const std::string &filename) override;
+  virtual void read_prob_mps(const std::filesystem::path &filename) override;
   virtual void read_prob_lp(const std::string &filename) override;
 
   virtual void copy_prob(const SolverAbstract::Ptr fictif_solv) override;

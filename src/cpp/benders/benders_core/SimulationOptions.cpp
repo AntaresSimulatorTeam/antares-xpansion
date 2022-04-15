@@ -1,7 +1,6 @@
 #include "SimulationOptions.h"
 
-#include "helpers/Path.h"
-
+#include <filesystem>
 /*!
  *  \brief Constructor of Benders Options
  *
@@ -61,7 +60,7 @@ void SimulationOptions::set_weights() {
   if (SLAVE_WEIGHT != SUBPROBLEM_WEIGHT_UNIFORM_CST_STR &&
       SLAVE_WEIGHT != SUBPROBLEM_WEIGHT_CST_STR) {
     std::string line;
-    std::string filename(Path(INPUTROOT) / SLAVE_WEIGHT);
+    auto filename(std::filesystem::path(INPUTROOT) / SLAVE_WEIGHT);
     std::ifstream file(filename);
 
     if (!file) {
