@@ -105,16 +105,6 @@ void BendersSequential::run() {
   }
   write_basis();
 
-  // std::ofstream
-  // row_basis("/home/bittartho/Documents/xpansion/etudes/sensitivity_test_case/row_basis.csv");
-  // std::copy(optimal_basis.first.rbegin(), optimal_basis.first.rend(),
-  //         std::ostream_iterator<int>(row_basis, "\n"));
-
-  // std::ofstream
-  // col_basis("/home/bittartho/Documents/xpansion/etudes/sensitivity_test_case/col_basis.csv");
-  // std::copy(optimal_basis.second.rbegin(), optimal_basis.second.rend(),
-  //         std::ostream_iterator<int>(col_basis, "\n"));
-
   if (is_trace()) {
     print_csv();
   }
