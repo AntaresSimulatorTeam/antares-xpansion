@@ -33,9 +33,12 @@ jobs:
     - name: Install TBB
       run: |
           git clone https://github.com/wjakob/tbb.git
+          pushd tbb/build
           cd tbb/build
           cmake3 ..
           cmake3 --build . --target install -j8
+          popd
+          rm -rf tbb
 
     - uses: nelonoel/branch-name@v1.0.1
 
