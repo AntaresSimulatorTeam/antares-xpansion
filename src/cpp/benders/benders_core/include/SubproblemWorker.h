@@ -26,6 +26,4 @@ class SubproblemWorker : public Worker {
   void fix_to(Point const &x0) const;
 
   void get_subgradient(Point &s) const;
-
-  SimplexBasis get_basis() const;
 };
