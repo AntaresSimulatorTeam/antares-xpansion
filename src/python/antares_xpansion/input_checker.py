@@ -102,15 +102,11 @@ def _check_candidate_option_type(option, value):
         :return: True if the value has an appropriate type, False or exist otherwise
     """
     options_types = {'name': 'string',
-                     'enable': 'string',
-                     'candidate-type': 'string',
-                     'investment-type': 'string',
                      'link': 'string',
                      'annual-cost-per-mw': 'non-negative',
                      'unit-size': 'non-negative',
                      'max-units': 'non-negative',
                      'max-investment': 'non-negative',
-                     'relaxed': 'string',
                      'link-profile': 'string',
                      'already-installed-capacity': 'non-negative',
                      'already-installed-link-profile': 'string',
@@ -121,6 +117,7 @@ def _check_candidate_option_type(option, value):
     if option_type is None:
         flushed_print(
             'check_candidate_option_type: %s option not recognized in candidates file.' % option)
+        flushed_print(f"Authorized options are: ", *options_types, sep="\n")
         raise UnrecognizedCandidateOptionType
     else:
         if obsolete_options.count(option):
