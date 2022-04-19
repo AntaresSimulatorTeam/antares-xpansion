@@ -8,8 +8,6 @@
 
 #include "Timer.h"
 #include "glog/logging.h"
-#include "helpers/Path.h"
-#include "json/writer.h"
 #include "solver_utils.h"
 
 BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
@@ -703,7 +701,7 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
 }
 
 void BendersBase::write_basis() const {
-  std::string const filename(Path(_options.OUTPUTROOT) /
+  std::string const filename(std::filesystem::path(_options.OUTPUTROOT) /
                              (_options.LAST_MASTER_BASIS));
   _master->write_basis(filename);
 }
