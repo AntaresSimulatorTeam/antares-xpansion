@@ -1,5 +1,5 @@
 #include "AnalysisFunctions.h"
-RawPbData solve_sensitivity_pb(SensitivityInputData input_data,
+RawPbData solve_sensitivity_pb(const SensitivityInputData& input_data,
                                const SolverAbstract::Ptr& sensitivity_problem) {
   RawPbData raw_output;
   int ncols = sensitivity_problem->get_ncols();
@@ -8,7 +8,7 @@ RawPbData solve_sensitivity_pb(SensitivityInputData input_data,
   raw_output.solution.resize(ncols);
 
   sensitivity_problem->get_obj(raw_output.obj_coeffs.data(), 0, ncols - 1);
-  
+
   std::ifstream basis_file(input_data.basis_file_path);
   if (basis_file.good()) {
     sensitivity_problem->read_basis(input_data.basis_file_path);
