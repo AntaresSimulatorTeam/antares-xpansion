@@ -35,7 +35,6 @@ jobs:
       run: |
           git clone https://github.com/wjakob/tbb.git
           pushd tbb/build
-          cd tbb/build
           cmake3 ..
           cmake3 --build . --target install -j8
           popd
