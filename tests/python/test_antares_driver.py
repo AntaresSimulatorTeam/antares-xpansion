@@ -1,5 +1,4 @@
 from unittest.mock import ANY, patch
-from _pytest import config
 
 import pytest
 import os

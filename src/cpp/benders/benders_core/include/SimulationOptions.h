@@ -4,7 +4,9 @@
 
 class SimulationOptions {
  public:
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) type__ name__;
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__, \
+                              deserialization_method__)  \
+  type__ name__;
 #include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
 

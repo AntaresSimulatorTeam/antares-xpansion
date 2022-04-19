@@ -1,59 +1,49 @@
 {
-    "mini_network_default":
-    {
+    "mini_network_default": {
         "path": "../../../data_test/mini_network/",
-        "option_file": "options_default.txt",
+        "option_file": "options_default.json",
         "status": "OPTIMAL",
         "optimal_value": 233.0,
-        "optimal_variables":
-        {
+        "optimal_variables": {
             "t": 4.0,
             "p": 6.0
         }
     },
-    "mini_network_slave_weight":
-    {
+    "mini_network_slave_weight": {
         "path": "../../../data_test/mini_network/",
-        "option_file": "options_weights.txt",
+        "option_file": "options_weights.json",
         "status": "OPTIMAL",
         "optimal_value": 19.0,
-        "optimal_variables":
-        {
+        "optimal_variables": {
             "t": 2.0,
             "p": 3.0
         }
     },
-    "mini_instance_LP_default":
-    {
+    "mini_instance_LP_default": {
         "path": "../../../data_test/mini_instance_LP/",
-        "option_file": "options_default.txt",
+        "option_file": "options_default.json",
         "status": "OPTIMAL",
         "optimal_value": 3.25,
-        "optimal_variables":
-        {
+        "optimal_variables": {
             "x": 1.5
         }
     },
-    "mini_instance_MIP_default":
-    {
+    "mini_instance_MIP_default": {
         "path": "../../../data_test/mini_instance_MIP/",
-        "option_file": "options_default.txt",
+        "option_file": "options_default.json",
         "status": "OPTIMAL",
         "optimal_value": 3.50,
-        "optimal_variables":
-        {
+        "optimal_variables": {
             "x": 2.0
         }
     },
-    "mini_instance_UNBOUNDED":
-    {
+    "mini_instance_UNBOUNDED": {
         "path": "../../../data_test/mini_instance_UNBOUNDED/",
-        "option_file": "options_default.txt"
+        "option_file": "options_default.json"
     },
-    "mini_instance_INFEASIBLE":
-    {
+    "mini_instance_INFEASIBLE": {
         "path": "../../../data_test/mini_instance_INFEAS/",
-        "option_file": "options_default.txt",
+        "option_file": "options_default.json",
         "status": "ERROR"
     }
 }

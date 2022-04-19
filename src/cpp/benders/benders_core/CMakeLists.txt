@@ -26,12 +26,14 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/Worker.cpp
 )
 
+get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
 
 
 target_include_directories (benders_core
 		PUBLIC
 			${CMAKE_CURRENT_SOURCE_DIR}/include
+            ${JSON_INC_PATH}/jsoncpp
 )
 
 target_link_libraries (benders_core
@@ -41,6 +43,7 @@ target_link_libraries (benders_core
 		solvers
 		glog::glog
 		TBB::tbb
+		jsoncpp_lib
 )
 
 add_library (${PROJECT_NAME}::benders_core ALIAS benders_core)

@@ -1,13 +1,28 @@
 #include "SimulationOptions.h"
 
+#include <json/json.h>
+
 #include <filesystem>
+Json::Value get_value_from_json(const std::string &file_name) {
+  Json::Value _input;
+  std::ifstream input_file_l(file_name, std::ifstream::binary);
+  Json::CharReaderBuilder builder_l;
+  std::string errs;
+  if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
+    std::cerr << "Invalid options file: " << file_name;
+    std::exit(1);
+  }
+  return _input;
+}
 /*!
  *  \brief Constructor of Benders Options
  *
  */
 SimulationOptions::SimulationOptions()
     :
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) name__(default__),
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__, \
+                              deserialization_method__)  \
+  name__(default__),
 #include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
       _weights() {
@@ -37,23 +52,16 @@ void SimulationOptions::write_default() const {
  *  \param file_name : path to options txt file
  */
 void SimulationOptions::read(std::string const &file_name) {
-  std::ifstream file(file_name.c_str());
-  if (file.good()) {
-    std::string line;
-    std::string name;
-    while (std::getline(file, line)) {
-      std::stringstream buffer(line);
-      buffer >> name;
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
-  if (#name__ == name) buffer >> name__;
+  const auto options_values = get_value_from_json(file_name);
+  for (const auto &var_name : options_values.getMemberNames()) {
+#define BENDERS_OPTIONS_MACRO(var__, type__, default__, \
+                              deserialization_method__) \
+  if (#var__ == var_name)                               \
+    var__ = options_values[var_name].deserialization_method__;
 #include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
-    }
-    set_weights();
-  } else {
-    std::cout << "setting option to default" << std::endl;
-    write_default();
   }
+  set_weights();
 }
 
 void SimulationOptions::set_weights() {
@@ -98,7 +106,8 @@ void SimulationOptions::set_weights() {
  *  \param stream : output stream
  */
 void SimulationOptions::print(std::ostream &stream) const {
-#define BENDERS_OPTIONS_MACRO(name__, type__, default__) \
+#define BENDERS_OPTIONS_MACRO(name__, type__, default__, \
+                              deserialization_method__)  \
   stream << std::setw(30) << #name__ << std::setw(50) << name__ << std::endl;
 #include "SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
