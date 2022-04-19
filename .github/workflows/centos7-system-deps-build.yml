@@ -6,6 +6,7 @@ on:
       - main
       - develop
       - release/*
+      - centos_libs_deps_build_fix
 
 jobs:
 
