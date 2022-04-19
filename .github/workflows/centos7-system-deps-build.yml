@@ -68,7 +68,7 @@ jobs:
            source /opt/rh/rh-git227/enable
            export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
            export PATH=/usr/lib64/openmpi/bin:$PATH
-           cmake3 -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON
+           cmake3 -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DALLOW_RUN_AS_ROOT=ON
 
     - name: Build
       run: |
@@ -80,6 +80,8 @@ jobs:
 
     - name: Running unit tests
       run: |
+           source /etc/profile.d/modules.sh
+           module load mpi
            cd _build
            ctest3 -C Release --output-on-failure -L "unit|benders"
 
