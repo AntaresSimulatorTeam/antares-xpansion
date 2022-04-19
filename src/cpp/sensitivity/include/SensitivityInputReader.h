@@ -11,7 +11,7 @@ struct SensitivityInputData {
   double best_ub;
   std::map<std::string, int> name_to_id;
   SolverAbstract::Ptr last_master;
-  SimplexBasis basis;
+  std::string basis_file_path;
   std::map<std::string, std::pair<double, double>> candidates_bounds;
   bool capex;
   std::vector<std::string> projection;
@@ -32,8 +32,8 @@ class SensitivityInputReader {
  private:
   Json::Value _json_data;
   Json::Value _benders_data;
-  Json::Value _basis_data;
   std::string _last_master_path;
+  std::string _basis_file_path;
   std::string _structure_file_path;
 
   SolverAbstract::Ptr get_last_master() const;
@@ -43,5 +43,4 @@ class SensitivityInputReader {
   std::map<std::string, std::pair<double, double>> get_candidates_bounds(
       SolverAbstract::Ptr last_master,
       const std::map<std::string, int> &name_to_id) const;
-  SimplexBasis get_basis() const;
 };

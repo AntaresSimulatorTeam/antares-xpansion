@@ -456,6 +456,11 @@ void SolverXpress::get_mip_sol(double *primals) {
   zero_status_check(status, "get MIP sol");
 }
 
+void SolverXpress::write_basis(const std::string &filename) {
+  int status = XPRSwritebasis(_xprs, filename.c_str(), "");
+  zero_status_check(status, "write basis");
+}
+
 /*************************************************************************************************
 ------------------------    Methods to set algorithm or logs levels
 ---------------------------
@@ -513,6 +518,11 @@ void SolverXpress::set_simplex_iter(int iter) {
 void SolverXpress::load_basis(int *rstatus, int *cstatus) {
   int status = XPRSloadbasis(_xprs, rstatus, cstatus);
   zero_status_check(status, "load basis");
+}
+
+void SolverXpress::read_basis(const std::string &filename) {
+  int status = XPRSreadbasis(_xprs, filename.c_str(), "");
+  zero_status_check(status, "read basis");
 }
 
 void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,

@@ -105,14 +105,6 @@ void Worker::get_splex_num_of_ite_last(int &result) const {
   result = _solver->get_splex_num_of_ite_last();
 }
 
-/*!
- *  \brief Get simplex basis of a problem
- *
- *  Method to store simplex basis of a problem, and build the distance matrix
- */
-SimplexBasis Worker::get_basis() const {
-  IntVector cstatus(_solver->get_ncols());
-  IntVector rstatus(_solver->get_nrows());
-  solver_getbasis(_solver, rstatus, cstatus);
-  return std::make_pair(rstatus, cstatus);
+void Worker::write_basis(const std::string &filename) const {
+  _solver->write_basis(filename);
 }

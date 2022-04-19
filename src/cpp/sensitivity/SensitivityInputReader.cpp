@@ -28,10 +28,10 @@ SensitivityInputReader::SensitivityInputReader(
     std::string last_master_path, std::string basis_path,
     std::string structure_path)
     : _last_master_path(std::move(last_master_path)),
+      _basis_file_path(std::move(basis_path)),
       _structure_file_path(std::move(structure_path)) {
   _json_data = read_json(json_input_path);
   _benders_data = read_json(benders_output_path);
-  _basis_data = read_json(basis_path);
 }
 
 std::vector<std::string> SensitivityInputReader::get_projection() const {
@@ -121,22 +121,10 @@ SensitivityInputData SensitivityInputReader::get_input_data() const {
   input_data.best_ub = get_best_ub();
   input_data.name_to_id = get_name_to_id();
   input_data.last_master = get_last_master();
-  input_data.basis = get_basis();
+  input_data.basis_file_path = _basis_file_path;
   input_data.candidates_bounds =
       get_candidates_bounds(input_data.last_master, input_data.name_to_id);
   input_data.capex = _json_data[CAPEX_C].asBool();
   input_data.projection = get_projection();
   return input_data;
-}
-
-SimplexBasis SensitivityInputReader::get_basis() const {
-  std::vector<int> row_basis;
-  std::vector<int> col_basis;
-  for (const auto &basis_elem : _basis_data["row_basis"]) {
-    row_basis.push_back(basis_elem.asInt());
-  }
-  for (const auto &basis_elem : _basis_data["col_basis"]) {
-    col_basis.push_back(basis_elem.asInt());
-  }
-  return {row_basis, col_basis};
 }

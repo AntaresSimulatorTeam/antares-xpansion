@@ -103,7 +103,7 @@ void BendersSequential::run() {
     _data.elapsed_time = benders_timer.elapsed();
     _data.stop = stopping_criterion();
   }
-  save_basis(get_basis());
+  write_basis();
 
   // std::ofstream
   // row_basis("/home/bittartho/Documents/xpansion/etudes/sensitivity_test_case/row_basis.csv");

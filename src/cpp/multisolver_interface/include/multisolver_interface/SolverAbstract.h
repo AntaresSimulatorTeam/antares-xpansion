@@ -595,6 +595,14 @@ class SolverAbstract {
    */
   virtual void get_mip_sol(double *primals) = 0;
 
+  /**
+   * @brief Writes the current basis to a file for later input into the
+   * optimizer
+   *
+   * @param filename    : file name where the basis is written
+   */
+  virtual void write_basis(const std::string &filename) = 0;
+
   /*************************************************************************************************
   ------------------------    Methods to set algorithm or logs levels
   ---------------------------
@@ -638,8 +646,18 @@ class SolverAbstract {
   /**
    * @brief Loads simplex basis
    *
-   * @param rstatus: Integer array of length number of rows containing the basis status of the slack, surplus or artificial variable associated with each row
-   * @param cstatus: Integer array of length number of cols containing the basis status of each of the columns of the constraint matrix
+   * @param rstatus: Integer array of length number of rows containing the basis
+   * status of the slack, surplus or artificial variable associated with each
+   * row
+   * @param cstatus: Integer array of length number of cols containing the basis
+   * status of each of the columns of the constraint matrix
    */
   virtual void load_basis(int *rstatus, int *cstatus) = 0;
+
+  /**
+   * @brief Instructs the optimizer to read in a previously saved basis from a file
+   *
+   * @param filename: File name where the basis is to be read
+   */
+  virtual void read_basis(const std::string &filename) = 0;
 };

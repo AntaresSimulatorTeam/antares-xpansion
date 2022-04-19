@@ -165,6 +165,7 @@ class SolverCplex : public SolverAbstract {
   virtual void get_lp_sol(double *primals, double *duals,
                           double *reduced_costs) override;
   virtual void get_mip_sol(double *primals) override;
+  virtual void write_basis(const std::string &filename) override {};
 
   /*************************************************************************************************
   ------------------------    Methods to set algorithm or logs levels
@@ -177,4 +178,5 @@ class SolverCplex : public SolverAbstract {
   virtual void set_optimality_gap(double gap) override;
   virtual void set_simplex_iter(int iter) override;
   virtual void load_basis(int *rstatus, int *cstatus) override {};
+  virtual void read_basis(const std::string &filename) override {};
 };
