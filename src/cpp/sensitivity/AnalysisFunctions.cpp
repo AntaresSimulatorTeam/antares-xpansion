@@ -8,7 +8,11 @@ RawPbData solve_sensitivity_pb(SensitivityInputData input_data,
   raw_output.solution.resize(ncols);
 
   sensitivity_problem->get_obj(raw_output.obj_coeffs.data(), 0, ncols - 1);
-  sensitivity_problem->read_basis(input_data.basis_file_path);
+  
+  std::ifstream basis_file(input_data.basis_file_path);
+  if (basis_file.good()) {
+    sensitivity_problem->read_basis(input_data.basis_file_path);
+  }
 
   if (sensitivity_problem->get_n_integer_vars() > 0) {
     raw_output.status = sensitivity_problem->solve_mip();

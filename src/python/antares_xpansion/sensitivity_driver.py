@@ -20,6 +20,7 @@ class SensitivityDriver:
         json_sensitivity_in_path,
         json_benders_output_path,
         last_master_path,
+        last_master_basis,
         structure_path,
         json_sensitivity_out_path,
         sensitivity_log_path,
@@ -33,6 +34,7 @@ class SensitivityDriver:
         self.json_sensitivity_in_path = self._get_file_path(json_sensitivity_in_path)
         self.json_benders_output_path = self._get_file_path(json_benders_output_path)
         self.last_master_path = self._get_file_path(last_master_path)
+        self.last_master_basis = self._get_optional_file_path(last_master_basis)
         self.structure_path = self._get_file_path(structure_path)
 
         self.json_sensitivity_out_path = json_sensitivity_out_path
@@ -67,6 +69,13 @@ class SensitivityDriver:
             )
 
     @staticmethod
+    def _get_optional_file_path(filepath):
+        if Path(filepath).is_file():
+            return filepath
+        else:
+            return ""
+
+    @staticmethod
     def _get_simulation_output_path(simulation_output_path):
         if simulation_output_path.is_dir():
             return simulation_output_path
@@ -90,6 +99,8 @@ class SensitivityDriver:
             self.json_sensitivity_out_path,
             "-l",
             self.sensitivity_log_path,
+            "--basis",
+            self.last_master_basis,
         ]
 
     class SensitivityOutputPathError(Exception):

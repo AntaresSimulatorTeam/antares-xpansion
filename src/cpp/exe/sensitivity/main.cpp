@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
         "path to the benders json output file")(
         "master,m", po::value<std::string>(&last_master_path)->required(),
         "path to the last master mps file")(
-        "basis", po::value<std::string>(&basis_path)->required(),
+        "basis", po::value<std::string>(&basis_path)->default_value(""),
         "path to the last master optimal basis file")(
         "structure,s", po::value<std::string>(&structure_path)->required(),
         "path to the structure txt file")(

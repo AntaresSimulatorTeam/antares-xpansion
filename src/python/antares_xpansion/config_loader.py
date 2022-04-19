@@ -387,6 +387,9 @@ class ConfigLoader:
     def last_master_file_path(self):
         # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
         return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_iteration.mps")
+    
+    def last_master_basis_path(self):
+        return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_basis.bss")
 
     def oversubscribe(self):
         return self._config.oversubscribe
