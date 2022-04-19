@@ -6,6 +6,7 @@ on:
       - main
       - develop
       - release/*
+      - fix/centos_ci_sys_builds
 
 jobs:
 
