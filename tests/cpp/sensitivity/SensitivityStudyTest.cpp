@@ -96,7 +96,11 @@ class SensitivityStudyTest : public ::testing::Test {
   void launch_tests(
       std::string mps_path,
       std::map<std::string, SensitivityOutputData> expec_output_data_map) {
-    for (auto solver_name : {coin_name, xpress_name}) {
+    std::vector<std::string> solvers_name = {coin_name};
+#ifdef XPRESS
+    solvers_name.push_back(xpress_name);
+#endif
+    for (auto solver_name : solvers_name) {
       init_solver(solver_name, mps_path);
       input_data.last_master = math_problem;
 
