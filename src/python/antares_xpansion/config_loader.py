@@ -92,7 +92,7 @@ class ConfigLoader:
                 ' %s was not retrieved.' % self.candidates_ini_filepath())
 
         check_candidates_file(
-            self.candidates_ini_filepath(), self.capacity_file(""))
+            Path(self.candidates_ini_filepath()), Path(self.capacity_file("")))
 
     def check_settings_file_format(self):
         check_options(self.options)
