@@ -111,7 +111,8 @@ def _check_candidate_option_type(option, value):
                      'max-units': 'non-negative',
                      'max-investment': 'non-negative',
                      'relaxed': 'string',
-                     'link-profile': 'string',
+                     'direct-link-profile': 'string',
+                     'indirect-link-profile': 'string',
                      'already-installed-capacity': 'non-negative',
                      'already-installed-link-profile': 'string',
                      'has-link-profile': 'string'}
@@ -275,7 +276,7 @@ def _copy_in_backup(ini_file, candidates_ini_filepath):
 def _check_attribute_profile_values(ini_file, capacity_dir_path):
     # check attributes profile is 0, 1 or an existent filename
     config_changed = False
-    profile_attributes = ['link-profile', 'already-installed-link-profile']
+    profile_attributes = ['direct-link-profile', 'indirect-link-profile', 'already-installed-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
         for attribute in profile_attributes:
@@ -317,7 +318,8 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
                       'unit-size': '0',
                       'max-units': '0',
                       'max-investment': '0',
-                      'link-profile': '1',
+                      'direct-link-profile': '1',
+                      'indirect-link-profile': '1',
                       'already-installed-capacity': '0',
                       'already-installed-link-profile': '1'}
     ini_file = configparser.ConfigParser(default_values)
