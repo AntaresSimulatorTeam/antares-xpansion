@@ -8,6 +8,7 @@ import os
 import shutil
 
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.profile_link_checker import ProfileLinkChecker
 
 
 class ProfileFileNotExists(Exception):
@@ -101,7 +102,8 @@ candidate_options_type = {'name': 'string',
                           'unit-size': 'non-negative',
                           'max-units': 'non-negative',
                           'max-investment': 'non-negative',
-                          'link-profile': 'string',
+                          'direct-link-profile': 'string',
+                          'indirect-link-profile': 'string',
                           'already-installed-capacity': 'non-negative',
                           'already-installed-link-profile': 'string',
                           'has-link-profile': 'string'}
@@ -118,7 +120,7 @@ def _check_candidate_option_type(option, value):
     """
 
     obsolete_options = ["c", 'enable',
-                        'candidate-type', 'investment-type', 'relaxed']
+                        'candidate-type', 'investment-type', 'relaxed', 'link-profile']
     option_type = candidate_options_type.get(option)
     if option_type is None:
         flushed_print(
@@ -253,9 +255,12 @@ def _check_candidate_name_and_link(ini_file):
 def _check_candidate_exclusive_attributes(ini_file):
     # check exclusion between max-investment and (max-units, unit-size) attributes
     for each_section in ini_file.sections():
-        max_invest = float(ini_file[each_section]['max-investment'].strip())
-        unit_size = float(ini_file[each_section]['unit-size'].strip())
-        max_units = float(ini_file[each_section]['max-units'].strip())
+        max_invest = ini_file.getfloat(
+            each_section, 'max-investment') if ini_file.has_option(each_section, 'max-investment') else 0
+        unit_size = ini_file.getfloat(
+            each_section, 'unit-size') if ini_file.has_option(each_section, 'unit-size') else 0
+        max_units = ini_file.getfloat(
+            each_section, 'max-units') if ini_file.has_option(each_section, 'max-units') else 0
         if max_invest != 0:
             if max_units != 0 or unit_size != 0:
                 flushed_print(
@@ -279,11 +284,13 @@ def _copy_in_backup(ini_file, candidates_ini_filepath):
 def _check_attribute_profile_values(ini_file, capacity_dir_path):
     # check attributes profile is 0, 1 or an existent filename
     config_changed = False
-    profile_attributes = ['link-profile', 'already-installed-link-profile']
+    profile_attributes = ['direct-link-profile',
+                          'indirect-link-profile', 'already-installed-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
         for attribute in profile_attributes:
-            value = ini_file[each_section][attribute].strip()
+            value = ini_file[each_section][attribute].strip(
+            ) if ini_file.has_option(each_section, attribute) else "1"
             if value == '0':
                 continue
             elif value == '1':
@@ -324,8 +331,13 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
                       'link-profile': '1',
                       'already-installed-capacity': '0',
                       'already-installed-link-profile': '1'}
-    ini_file = configparser.ConfigParser(default_values)
-    ini_file.read(candidates_ini_filepath)
+
+    profile_link_checker = ProfileLinkChecker(
+        candidates_ini_filepath, capacity_dir_path)
+    if profile_link_checker.update():
+        profile_link_checker.write()
+
+    ini_file = profile_link_checker.config
 
     _check_candidate_attributes(ini_file)
     _check_candidate_name_and_link(ini_file)
