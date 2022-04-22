@@ -1,26 +1,24 @@
 
 
-from genericpath import exists
 from pathlib import Path
 
-import argparse
-import sys
+from antares_xpansion.flushed_print import flushed_print, INFO_MSG
 
 
 class SplitLinkProfile:
-    def __init__(self, link_profile_file: str, candidate_file_dir: Path) -> None:
+    def __init__(self, link_profile_file: str, capacity_dir: Path) -> None:
 
-        if not candidate_file_dir.exists():
-            raise SplitLinkProfile.CandidateFileDirNotFound(
-                f"Candidate file directory: {candidate_file_dir} was not found!")
-        if not (candidate_file_dir / link_profile_file).exists():
+        if not capacity_dir.exists():
+            raise SplitLinkProfile.CapacityDirNotFound(
+                f"Capacity directory: {capacity_dir} was not found!")
+        if not (capacity_dir / link_profile_file).exists():
             raise SplitLinkProfile.LinkProfileFileNotFound(
-                f"link profile file: {(candidate_file_dir / link_profile_file)} was not found!")
-        self._link_profile_file = candidate_file_dir / link_profile_file
+                f"link profile file: {(capacity_dir / link_profile_file)} was not found!")
+        self._link_profile_file = capacity_dir / link_profile_file
         self.DIRECT_SUFFIX = "direct_"
         self.INDIRECT_SUFFIX = "indirect_"
 
-    class CandidateFileDirNotFound(Exception):
+    class CapacityDirNotFound(Exception):
         pass
 
     class LinkProfileFileNotFound(Exception):
@@ -67,10 +65,15 @@ class SplitLinkProfile:
         indirect_file = self._link_profile_file.parent / \
             (self.INDIRECT_SUFFIX +
              self._link_profile_file.name) if two_profiles else direct_file
+
+        flushed_print(
+            f"{INFO_MSG} direct link profile: {direct_file.name} is created from link-profile file: {self._link_profile_file.name}")
         with open(direct_file, "w") as direct:
             direct.writelines(["%s\n" % item for item in first_profile])
 
         if (two_profiles):
+            flushed_print(
+                f"{INFO_MSG} indirect link profile: {indirect_file.name} is created from link-profile file: {self._link_profile_file.name}")
             with open(indirect_file, "w") as indirect:
                 indirect.writelines(["%s\n" % item for item in indirect_profile]
                                     )
@@ -80,9 +83,6 @@ class SplitLinkProfile:
     def two_profile(self):
         with open(self._link_profile_file, 'r') as profile_file:
             return (len(profile_file.readline().strip().split()) == 2)
-
-    class ProfileFileNotExists(Exception):
-        pass
 
     class ProfileFileWrongNumberOfLines(Exception):
         pass

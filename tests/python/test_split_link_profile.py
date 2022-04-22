@@ -9,7 +9,7 @@ class TestSplitLinkProfile:
         pass
 
     def test_with_non_existing_candidate_file_directory(self, tmp_path):
-        with pytest.raises(SplitLinkProfile.CandidateFileDirNotFound):
+        with pytest.raises(SplitLinkProfile.CapacityDirNotFound):
             SplitLinkProfile("nothing.txt", tmp_path / "void")
 
     def test_with_non_existing_file(self, tmp_path):

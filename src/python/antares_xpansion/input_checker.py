@@ -8,6 +8,7 @@ import os
 import shutil
 
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.profile_link_checker import ProfileLinkChecker
 
 
 class ProfileFileNotExists(Exception):
@@ -111,12 +112,13 @@ def _check_candidate_option_type(option, value):
                      'max-units': 'non-negative',
                      'max-investment': 'non-negative',
                      'relaxed': 'string',
-                     'link-profile': 'string',
+                     'direct-link-profile': 'string',
+                     'indirect-link-profile': 'string',
                      'already-installed-capacity': 'non-negative',
                      'already-installed-link-profile': 'string',
                      'has-link-profile': 'string'}
     obsolete_options = ["c", 'enable',
-                        'candidate-type', 'investment-type', 'relaxed']
+                        'candidate-type', 'investment-type', 'relaxed', 'link-profile']
     option_type = options_types.get(option)
     if option_type is None:
         flushed_print(
@@ -320,8 +322,13 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
                       'link-profile': '1',
                       'already-installed-capacity': '0',
                       'already-installed-link-profile': '1'}
-    ini_file = configparser.ConfigParser(default_values)
-    ini_file.read(candidates_ini_filepath)
+
+    profile_link_checker = ProfileLinkChecker(
+        candidates_ini_filepath, capacity_dir_path)
+    if (profile_link_checker.update()):
+        profile_link_checker.write()
+
+    ini_file = profile_link_checker.config
 
     _check_candidate_attributes(ini_file)
     _check_candidate_name_and_link(ini_file)

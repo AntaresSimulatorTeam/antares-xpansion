@@ -13,7 +13,7 @@ from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import flushed_print, INFO_MSG
 
 
 class ConfigLoader:
@@ -29,7 +29,6 @@ class ConfigLoader:
             :type config: XpansionConfig object
         """
         self.platform = sys.platform
-        self._INFO_MSG = '<< INFO >>'
         self._config = config
         self._set_simulation_name()
         self.candidates_list = []
@@ -68,7 +67,7 @@ class ConfigLoader:
                 ' %s was not retrieved.' % self.candidates_ini_filepath())
 
         check_candidates_file(
-            self.candidates_ini_filepath(), self.capacity_file(""))
+            Path(self.candidates_ini_filepath()), Path(self.capacity_file("")))
 
     def check_settings_file_format(self):
         check_options(self.options)
@@ -157,7 +156,7 @@ class ConfigLoader:
         """
         if ("optimality_gap" not in self.options):
             flushed_print(
-                f"{self._INFO_MSG} optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used")
+                f"{INFO_MSG} optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used")
         abs_optimality_gap_str = self.options.get(
             "optimality_gap", self._config.settings_default["optimality_gap"]
         )
@@ -223,7 +222,7 @@ class ConfigLoader:
         if ("solver" not in self.options):
             default_solver = self._config.settings_default["solver"]
             flushed_print(
-                f"{self._INFO_MSG} No solver defined in user/expansion/settings.ini. {default_solver} used")
+                f"{INFO_MSG} No solver defined in user/expansion/settings.ini. {default_solver} used")
             self.options["solver"] = default_solver
         else:
             try:
@@ -311,7 +310,7 @@ class ConfigLoader:
         """
         if (self._config.UC_TYPE not in self.options):
             flushed_print(
-                f"{self._INFO_MSG} {self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used.")
+                f"{INFO_MSG} {self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used.")
         uc_type = self.options.get(self._config.UC_TYPE,
                                    self._config.settings_default[self._config.UC_TYPE])
         assert uc_type in [self._config.EXPANSION_ACCURATE,
@@ -328,7 +327,7 @@ class ConfigLoader:
         """
         if ("master" not in self.options):
             flushed_print(
-                f"{self._INFO_MSG} master options is not defined, {self._config.settings_default['master']} used")
+                f"{INFO_MSG} master options is not defined, {self._config.settings_default['master']} used")
         relaxation_type = self.options.get('master',
                                            self._config.settings_default["master"])
         assert relaxation_type in ['integer', 'relaxed', 'full_integer']
