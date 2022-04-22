@@ -251,9 +251,12 @@ def _check_candidate_name_and_link(ini_file):
 def _check_candidate_exclusive_attributes(ini_file):
     # check exclusion between max-investment and (max-units, unit-size) attributes
     for each_section in ini_file.sections():
-        max_invest = float(ini_file[each_section]['max-investment'].strip())
-        unit_size = float(ini_file[each_section]['unit-size'].strip())
-        max_units = float(ini_file[each_section]['max-units'].strip())
+        max_invest = ini_file.getfloat(
+            each_section, 'max-investment') if ini_file.has_option(each_section, 'max-investment') else 0
+        unit_size = ini_file.getfloat(
+            each_section, 'unit-size') if ini_file.has_option(each_section, 'unit-size') else 0
+        max_units = ini_file.getfloat(
+            each_section, 'max-units') if ini_file.has_option(each_section, 'max-units') else 0
         if max_invest != 0:
             if max_units != 0 or unit_size != 0:
                 flushed_print(
@@ -277,11 +280,13 @@ def _copy_in_backup(ini_file, candidates_ini_filepath):
 def _check_attribute_profile_values(ini_file, capacity_dir_path):
     # check attributes profile is 0, 1 or an existent filename
     config_changed = False
-    profile_attributes = ['link-profile', 'already-installed-link-profile']
+    profile_attributes = ['direct-link-profile',
+                          'indirect-link-profile', 'already-installed-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
         for attribute in profile_attributes:
-            value = ini_file[each_section][attribute].strip()
+            value = ini_file[each_section][attribute].strip(
+            ) if ini_file.has_option(each_section, attribute) else "1"
             if value == '0':
                 continue
             elif value == '1':
