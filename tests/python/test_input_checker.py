@@ -6,6 +6,7 @@ from antares_xpansion.input_checker import _check_candidate_option_type,  \
     _check_candidate_name, _check_candidate_link, _check_setting_option_value, _check_profile_file, \
     _check_setting_option_type
 from antares_xpansion.input_checker import *
+from antares_xpansion.split_link_profile import SplitLinkProfile
 
 
 class TestCheckProfileFile:
@@ -150,11 +151,13 @@ class TestCheckCandidatesFile:
 
         ini_file = tmp_path / "a.ini"
         ini_file.touch()
+        capa_dir = tmp_path / 'capa'
+        capa_dir.mkdir()
         ini_file.write_text(f"""[5] \n
                            {option} = {value}""")
 
         with pytest.raises(CandidateFileWrongTypeValue):
-            check_candidates_file(ini_file, "")
+            check_candidates_file(ini_file, capa_dir)
 
     def test_duplicated_candidate_name_ini_file(self, tmp_path):
 
@@ -173,9 +176,11 @@ class TestCheckCandidatesFile:
                             link = a - b \n
                            {option} = {value}\n
                            unit-size = 400\n""")
+        capa_dir = tmp_path / 'capa'
+        capa_dir.mkdir()
 
         with pytest.raises(CandidateNameDuplicatedError):
-            check_candidates_file(ini_file, "")
+            check_candidates_file(ini_file, capa_dir)
 
     def test_non_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
 
@@ -187,9 +192,11 @@ class TestCheckCandidatesFile:
                            max-units = 13\n
                            unit-size = 400\n
                            max-investment = 985""")
+        capa_dir = tmp_path / 'capa'
+        capa_dir.mkdir()
 
         with pytest.raises(MaxUnitsAndMaxInvestmentNonNullSimultaneously):
-            check_candidates_file(ini_file, "")
+            check_candidates_file(ini_file, capa_dir)
 
     def test_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
 
@@ -201,13 +208,16 @@ class TestCheckCandidatesFile:
                            max-units = 0\n
                            unit-size = 0\n
                            max-investment = 0""")
+        capa_dir = tmp_path / 'capa'
+        capa_dir.mkdir()
 
         with pytest.raises(MaxUnitsAndMaxInvestmentAreNullSimultaneously):
-            check_candidates_file(ini_file, "")
+            check_candidates_file(ini_file, capa_dir)
 
     def test_profile_file_existence(self, tmp_path):
 
         ini_file = tmp_path / "a.ini"
+
         ini_file.touch()
         ini_file.write_text(f"""[5] \n
                             name = alpha \n
@@ -216,7 +226,7 @@ class TestCheckCandidatesFile:
                            unit-size = 23\n
                            link-profile = file.ini""")
 
-        with pytest.raises(ProfileFileNotExists):
+        with pytest.raises(SplitLinkProfile.LinkProfileFileNotFound):
             check_candidates_file(ini_file, capacity_dir_path=tmp_path)
 
 
