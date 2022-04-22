@@ -26,7 +26,7 @@ void ActiveLinksBuilder::checkLinksValidity() {
   for (const auto& candidateData : _candidateDatas) {
     launchExceptionIfNoLinkProfileAssociated(candidateData.direct_link_profile);
     launchExceptionIfNoLinkProfileAssociated(
-        candidateData.installed_link_profile_name);
+        candidateData.installed_direct_link_profile_name);
 
     record_link_data(candidateData);
   }
@@ -35,7 +35,7 @@ void ActiveLinksBuilder::checkLinksValidity() {
 void ActiveLinksBuilder::record_link_data(const CandidateData& candidateData) {
   LinkData link_data = {candidateData.link_id,
                         candidateData.already_installed_capacity,
-                        candidateData.installed_link_profile_name,
+                        candidateData.installed_direct_link_profile_name,
                         candidateData.linkor, candidateData.linkex};
   const auto& it = _links_data.find(candidateData.link_name);
   if (it == _links_data.end()) {

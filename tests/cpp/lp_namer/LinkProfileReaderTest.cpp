@@ -129,3 +129,40 @@ TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760InSplitFile) {
                  "Link profiles can be requested between point 0 and 8759.");
   }
 }
+
+TEST_F(LinkProfileReaderTest, MapIsEmptyIfNoCandidateAsAProfile) {
+  CandidateData candidate;
+  candidate.installed_link_profile_name = "";
+  candidate.direct_link_profile = "";
+  ASSERT_TRUE(LinkProfileReader::getLinkProfileMap({}, {candidate}).empty());
+}
+
+TEST_F(LinkProfileReaderTest, MapContainLinkProfileOfCandidate) {
+  CandidateData candidate;
+  candidate.installed_link_profile_name = "";
+  candidate.direct_link_profile = VALID_DIRECT_PROFILE_NAME;
+  candidate.indirect_link_profile = VALID_INDIRECT_PROFILE_NAME;
+
+  auto profiles = LinkProfileReader::getLinkProfileMap({}, {candidate});
+
+  auto profile = profiles.at(VALID_DIRECT_PROFILE_NAME).at(0);
+  ASSERT_EQ(profile.getDirectProfile(0), 0);
+  ASSERT_EQ(profile.getIndirectProfile(0), 0.25);
+  ASSERT_EQ(profile.getDirectProfile(1), 0.5);
+  ASSERT_EQ(profile.getIndirectProfile(1), 0.75);
+}
+
+TEST_F(LinkProfileReaderTest, MapContainInstalledProfileOfCandidate) {
+  CandidateData candidate;
+  candidate.installed_direct_link_profile_name = VALID_DIRECT_PROFILE_NAME;
+  candidate.installed_indirect_link_profile_name = VALID_DIRECT_PROFILE_NAME;
+
+
+  auto profiles = LinkProfileReader::getLinkProfileMap({}, {candidate});
+
+  auto profile = profiles.at(VALID_DIRECT_PROFILE_NAME).at(0);
+  ASSERT_EQ(profile.getDirectProfile(0), 0);
+  ASSERT_EQ(profile.getIndirectProfile(0), 0);
+  ASSERT_EQ(profile.getDirectProfile(1), 0.5);
+  ASSERT_EQ(profile.getIndirectProfile(1), 0.5);
+}

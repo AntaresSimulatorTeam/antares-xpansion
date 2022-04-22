@@ -237,7 +237,7 @@ TEST(LinkBuilderTest,
   cand2.link_id = 1;
   cand2.name = "transmission_line_2";
   cand2.link_name = "area1 - area2";
-  cand2.installed_link_profile_name = "dummy";
+  cand2.installed_direct_link_profile_name = "dummy";
 
   std::vector<CandidateData> cand_data_list;
   cand_data_list.push_back(cand1);
@@ -316,14 +316,14 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
   cand1.name = "transmission_line_1";
   cand1.link_name = "area1 - area2";
   cand1.already_installed_capacity = 0;
-  cand1.installed_link_profile_name = temp_already_installed_profile1_name;
+  cand1.installed_direct_link_profile_name = temp_already_installed_profile1_name;
 
   CandidateData cand2;
   cand2.link_id = 1;
   cand2.name = "transmission_line_2";
   cand2.link_name = "area1 - area2";
   cand2.already_installed_capacity = 0;
-  cand2.installed_link_profile_name = temp_already_installed_profile2_name;
+  cand2.installed_direct_link_profile_name = temp_already_installed_profile2_name;
 
   std::vector<CandidateData> cand_data_list;
   cand_data_list.push_back(cand1);

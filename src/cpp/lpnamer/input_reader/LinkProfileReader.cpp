@@ -72,7 +72,7 @@ std::map<std::string, std::vector<LinkProfile>> LinkProfileReader::getLinkProfil
   std::map<std::string, std::vector<LinkProfile>> mapLinkProfile;
   for (const auto &candidate_data : candidateList) {
     importProfile(mapLinkProfile, capacity_folder,
-                  candidate_data.installed_link_profile_name, candidate_data.installed_link_profile_name); //TODO Check
+                  candidate_data.installed_direct_link_profile_name, candidate_data.installed_indirect_link_profile_name);
     importProfile(mapLinkProfile, capacity_folder,
                   candidate_data.direct_link_profile, candidate_data.indirect_link_profile);
   }

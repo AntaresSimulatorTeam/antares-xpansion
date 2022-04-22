@@ -12,6 +12,8 @@ struct CandidateData {
   std::string linkor;
   std::string linkex;
   std::string installed_link_profile_name;
+  std::string installed_direct_link_profile_name;
+  std::string installed_indirect_link_profile_name;
   double already_installed_capacity = 1.0;
 
   std::string name;
@@ -19,7 +21,6 @@ struct CandidateData {
   double max_investment = 0.0;
   double unit_size = 0.0;
   double max_units = 0.0;
-  std::string link_profile;
   std::string direct_link_profile;
   std::string indirect_link_profile;
 };

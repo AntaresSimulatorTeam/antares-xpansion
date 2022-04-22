@@ -419,7 +419,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
   cand1.name = "candy1";
   cand1.link_name = "dummy_link";
   cand1.already_installed_capacity = link_capacity;
-  cand1.installed_link_profile_name = "install_link_profile";
+  cand1.installed_direct_link_profile_name = "install_link_profile";
   cand1.direct_link_profile = "profile_cand1";
   cand1.indirect_link_profile = "profile_cand1";
   CandidateData cand2;
@@ -427,7 +427,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
   cand2.name = "candy2";
   cand2.link_name = "dummy_link";
   cand2.already_installed_capacity = link_capacity;
-  cand2.installed_link_profile_name = "install_link_profile";
+  cand2.installed_direct_link_profile_name = "install_link_profile";
   cand2.direct_link_profile = "profile_cand2";
   cand2.indirect_link_profile = "profile_cand2";
 
@@ -534,7 +534,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile_multipl
   cand1.name = "candy1";
   cand1.link_name = "dummy_link";
   cand1.already_installed_capacity = link_capacity;
-  cand1.installed_link_profile_name = "install_link_profile";
+  cand1.installed_direct_link_profile_name = "install_link_profile";
   cand1.direct_link_profile = "profile_cand1";
   cand1.indirect_link_profile = "profile_cand1";
   CandidateData cand2;
@@ -542,7 +542,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile_multipl
   cand2.name = "candy2";
   cand2.link_name = "dummy_link";
   cand2.already_installed_capacity = link_capacity;
-  cand2.installed_link_profile_name = "install_link_profile";
+  cand2.installed_direct_link_profile_name = "install_link_profile";
   cand2.direct_link_profile = "profile_cand2";
   cand2.indirect_link_profile = "profile_cand2";
 
@@ -650,7 +650,7 @@ TEST_F(ProblemModifierTest,
   cand1.name = "candy1";
   cand1.link_name = "dummy_link";
   cand1.already_installed_capacity = link_capacity;
-  cand1.installed_link_profile_name = "install_link_profile";
+  cand1.installed_direct_link_profile_name = "install_link_profile";
   cand1.direct_link_profile = "profile_cand1";
   cand1.indirect_link_profile = "profile_cand1";
   CandidateData cand2;
@@ -658,7 +658,7 @@ TEST_F(ProblemModifierTest,
   cand2.name = "candy2";
   cand2.link_name = "dummy_link";
   cand2.already_installed_capacity = link_capacity;
-  cand2.installed_link_profile_name = "install_link_profile";
+  cand2.installed_direct_link_profile_name = "install_link_profile";
   cand2.direct_link_profile = "empty_profile";
   cand2.indirect_link_profile = "empty_profile";
 
