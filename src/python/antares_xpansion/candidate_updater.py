@@ -3,6 +3,8 @@
 import configparser
 from pathlib import Path
 
+from antares_xpansion.split_link_profile import SplitLinkProfile
+
 
 class CandidateUpdater:
     def __init__(self, candidate_file: Path) -> None:
@@ -40,11 +42,14 @@ class CandidateUpdater:
         for candidate in self._config.sections():
             if self.has_link_profile_key(candidate):
                 link_file = self._config.get(candidate, self.LINK_PROFILE_KEY)
+                spliter = SplitLinkProfile(
+                    link_file, self._candidate_file.parent)
+                direct_link_profile, indirect_link_profile = spliter.split()
                 self._config.remove_option(candidate, self.LINK_PROFILE_KEY)
                 self._config.set(
-                    candidate, self.DIRECT_LINK_PROFILE_KEY, link_file)
+                    candidate, self.DIRECT_LINK_PROFILE_KEY, str(direct_link_profile))
                 self._config.set(
-                    candidate, self.INDIRECT_LINK_PROFILE_KEY, link_file)
+                    candidate, self.INDIRECT_LINK_PROFILE_KEY, str(indirect_link_profile))
 
     def write(self):
         with open(self._candidate_file, "w") as candidate_file:

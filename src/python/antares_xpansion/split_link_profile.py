@@ -1,22 +1,27 @@
 
 
+from genericpath import exists
 from pathlib import Path
 
 import argparse
-from pathlib import Path
 import sys
 
 
 class SplitLinkProfile:
-    def __init__(self, link_profile_file: Path) -> None:
+    def __init__(self, link_profile_file: str, candidate_file_dir: Path) -> None:
 
-        if not link_profile_file.exists():
+        if not candidate_file_dir.exists():
+            raise SplitLinkProfile.CandidateFileDirNotFound(
+                f"Candidate file directory: {candidate_file_dir} was not found!")
+        if not (candidate_file_dir / link_profile_file).exists():
             raise SplitLinkProfile.LinkProfileFileNotFound(
-                f"link profile file: {link_profile_file} was not found!")
-
-        self._link_profile_file = link_profile_file
+                f"link profile file: {(candidate_file_dir / link_profile_file)} was not found!")
+        self._link_profile_file = candidate_file_dir / link_profile_file
         self.DIRECT_SUFFIX = "direct_"
         self.INDIRECT_SUFFIX = "indirect_"
+
+    class CandidateFileDirNotFound(Exception):
+        pass
 
     class LinkProfileFileNotFound(Exception):
         pass
@@ -57,11 +62,11 @@ class SplitLinkProfile:
             two_profiles, first_profile, indirect_profile)
 
     def write_splited_profile(self, two_profiles, first_profile, indirect_profile):
-        direct_file = Path(self._link_profile_file).parent / \
-            (self.DIRECT_SUFFIX+Path(self._link_profile_file).name)
-        indirect_file = Path(self._link_profile_file).parent / \
+        direct_file = self._link_profile_file.parent / \
+            (self.DIRECT_SUFFIX+self._link_profile_file.name)
+        indirect_file = self._link_profile_file.parent / \
             (self.INDIRECT_SUFFIX +
-             Path(self._link_profile_file).name) if two_profiles else direct_file
+             self._link_profile_file.name) if two_profiles else direct_file
         with open(direct_file, "w") as direct:
             direct.writelines(["%s\n" % item for item in first_profile])
 
