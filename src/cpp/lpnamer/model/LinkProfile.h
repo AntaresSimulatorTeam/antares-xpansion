@@ -2,7 +2,9 @@
 #define ANTARESXPANSION_LINKPROFILE_H
 
 constexpr int NUMBER_OF_HOUR_PER_YEAR = 8760;
+#include <array>
 #include <exception>
+
 #include "common_lpnamer.h"
 
 /*!
@@ -41,8 +43,8 @@ class LinkProfile {
   std::array<double, NUMBER_OF_HOUR_PER_YEAR> indirect_link_profile;
 
   bool operator==(const LinkProfile& rhs) const {
-    return direct_link_profile == rhs.direct_link_profile
-    && indirect_link_profile == rhs.indirect_link_profile;
+    return direct_link_profile == rhs.direct_link_profile &&
+           indirect_link_profile == rhs.indirect_link_profile;
   }
 };
 
