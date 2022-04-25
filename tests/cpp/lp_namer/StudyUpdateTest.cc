@@ -50,7 +50,8 @@ link = area1 - peak\n\
 annual-cost-per-mw = 60000\n\
 unit-size = 100\n\
 max-units = 20\n\
-link-profile = temp_profile.ini\n\
+direct-link-profile = temp_profile-direct.ini\n\
+indirect-link-profile = temp_profile-indirect.ini\n\
 \n\
 \n\
 [2]\n\
@@ -64,22 +65,30 @@ already-installed-capacity = 100\n\
     file_l << content_l;
     file_l.close();
 
-    // dummy link profile tmp file name
-    file_l.open("temp_profile.ini");
-    std::vector<double> directLinkprofile_l(8760, 1);
-    directLinkprofile_l[0] = 0;
-    directLinkprofile_l[1] = 0.5;
-    std::vector<double> indirectLinkprofile_l(8760, 1);
-    indirectLinkprofile_l[0] = 0.25;
-    indirectLinkprofile_l[1] = 0.75;
+        // dummy link profile tmp file name
+        std::ofstream file_direct;
+        file_direct.open("temp_profile-direct.ini");
+        std::ofstream file_indirect;
+        file_indirect.open("temp_profile-indirect.ini");
+        std::vector<double> directLinkprofile_l(8760, 1);
+        directLinkprofile_l[0] = 0;
+        directLinkprofile_l[1] = 0.5;
+        std::vector<double> indirectLinkprofile_l(8760, 1);
+        indirectLinkprofile_l[0] = 0.25;
+        indirectLinkprofile_l[1] = 0.75;
 
-    for (auto cnt_l = 0; cnt_l < directLinkprofile_l.size() - 1; ++cnt_l) {
-      file_l << directLinkprofile_l[cnt_l] << "\t"
-             << indirectLinkprofile_l[cnt_l] << "\n";
-    }
-    file_l << directLinkprofile_l.back() << "\t"
-           << indirectLinkprofile_l.back();
-    file_l.close();
+        for(auto cnt_l = 0; cnt_l < directLinkprofile_l.size()-1 ; ++cnt_l)
+        {
+          file_direct <<  directLinkprofile_l[cnt_l] << "\n";
+        }
+        for(auto cnt_l = 0; cnt_l < indirectLinkprofile_l.size()-1 ; ++cnt_l)
+        {
+          file_indirect <<  indirectLinkprofile_l[cnt_l] << "\n";
+        }
+        file_direct << directLinkprofile_l.back();
+        file_indirect << indirectLinkprofile_l.back();
+        file_direct.close();
+        file_indirect.close();
 
     CandidatesINIReader candidateReader("temp_interco.txt", "temp_area.txt");
     LinkProfileReader profileReader;
@@ -87,8 +96,7 @@ already-installed-capacity = 100\n\
     std::vector<CandidateData> cand_data_list =
         candidateReader.readCandidateData("temp_candidates.ini");
 
-    std::map<std::string, LinkProfile> profile_map =
-        profileReader.getLinkProfileMap(".", cand_data_list);
+        std::map<std::string, std::vector<LinkProfile>> profile_map = profileReader.getLinkProfileMap(".", cand_data_list);
 
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
     StudyUpdateTest::_links = linkBuilder.getLinks();
@@ -97,12 +105,13 @@ already-installed-capacity = 100\n\
   static void TearDownTestCase() {
     // called after last test
 
-    // delete the created tmp file
-    std::remove("temp_interco.txt");
-    std::remove("temp_area.txt");
-    std::remove("temp_candidates.ini");
-    std::remove("temp_profile.ini");
-  }
+		//delete the created tmp file
+        std::remove("temp_interco.txt");
+        std::remove("temp_area.txt");
+        std::remove("temp_candidates.ini");
+        std::remove("temp_profile-direct.ini");
+        std::remove("temp_profile-indirect.ini");
+	}
 
   void SetUp() {
     // called before each test
@@ -147,17 +156,17 @@ TEST_F(StudyUpdateTest, linkprofile) {
 
   ASSERT_EQ(link1candidates.size(), 1);
 
-  // direct profile
-  ASSERT_EQ(link1candidates[0].direct_profile(0), 0);
-  ASSERT_EQ(link1candidates[0].direct_profile(1), 0.5);
-  ASSERT_EQ(link1candidates[0].direct_profile(2), 1);
-  ASSERT_EQ(link1candidates[0].direct_profile(8759), 1);
+    //direct profile
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(0), 0);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(1), 0.5);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(2), 1);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(8759), 1);
 
-  // indirect profile
-  ASSERT_EQ(link1candidates[0].indirect_profile(0), 0.25);
-  ASSERT_EQ(link1candidates[0].indirect_profile(1), 0.75);
-  ASSERT_EQ(link1candidates[0].indirect_profile(2), 1);
-  ASSERT_EQ(link1candidates[0].indirect_profile(8759), 1);
+    //indirect profile
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(0), 0.25);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(1), 0.75);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(2), 1);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(8759), 1);
 }
 
 TEST_F(StudyUpdateTest, defaultAntaresVersion) {

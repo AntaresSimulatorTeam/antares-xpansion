@@ -9,15 +9,29 @@ class LinkProfileReader {
  public:
   LinkProfileReader() = default;
 
-  static LinkProfile ReadLinkProfile(const std::filesystem::path& filename);
-  static const std::map<std::string, LinkProfile> getLinkProfileMap(
+  static std::vector<LinkProfile> ReadLinkProfile(const std::filesystem::path& direct_filename,
+                                                       const std::filesystem::path& indirect_file_name);
+  static std::vector<LinkProfile> ReadLinkProfile(const std::filesystem::path& direct_filename);
+  static std::map<std::string, std::vector<LinkProfile>> getLinkProfileMap(
       const std::filesystem::path& capacity_folder,
       const std::vector<CandidateData>& candidateList);
 
  private:
-  static void importProfile(std::map<std::string, LinkProfile>& mapLinkProfile,
-                            const std::filesystem::path& capacitySubfolder,
-                            const std::string& profile_name);
+  static void importProfile(
+      std::map<std::string, std::vector<LinkProfile>>& mapLinkProfile,
+      const std::filesystem::path& capacitySubfolder,
+      const std::string& direct_profile_name,
+      const std::string& indirect_profile_name);
+
+  static void ReadLinkProfile(const std::filesystem::path & filename,
+                                    std::vector<LinkProfile>& result,
+                                    bool fillDirectProfile);
+
+  static void UpdateResultWithMissingChronicle(std::vector<LinkProfile>& result,
+                                      int chronicle_id);
+  static void UpdateProfile(std::vector<LinkProfile>& result,
+                            bool directProfile, double value, int chronicle_id,
+                            size_t line_id);
 };
 
 #endif  // ANTARESXPANSION_LINKPROFILEREADER_H

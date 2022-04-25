@@ -324,7 +324,8 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
                       'unit-size': '0',
                       'max-units': '0',
                       'max-investment': '0',
-                      'link-profile': '1',
+                      'direct-link-profile': '1',
+                      'indirect-link-profile': '1',
                       'already-installed-capacity': '0',
                       'already-installed-link-profile': '1'}
 

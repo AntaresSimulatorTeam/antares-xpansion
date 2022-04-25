@@ -13,8 +13,9 @@ class MasterGeneration {
    * \brief Generate the master ob the optimization problem
    *
    * \param rootPath String corresponding to the path where are located input
-   * data \param links Structure which contains the list of Activelink \param
-   * couplings map pairs and integer which give the correspondence between optim
+   * data
+   * \param links Structure which contains the list of Activelink
+   * \param couplings map pairs and integer which give the correspondence between optim
    * variable and antares variable
    */
   explicit MasterGeneration(
