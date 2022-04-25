@@ -8,6 +8,7 @@
 --------------------------------
 *************************************************************************************************/
 int SolverXpress::_NumberOfProblems = 0;
+std::mutex SolverXpress::license_guard;
 
 SolverXpress::SolverXpress(const std::filesystem::path &log_file)
     : SolverXpress() {
@@ -18,6 +19,7 @@ SolverXpress::SolverXpress(const std::filesystem::path &log_file)
   }
 }
 SolverXpress::SolverXpress() {
+  std::lock_guard<std::mutex> guard(license_guard);
   int status = 0;
   if (_NumberOfProblems == 0) {
     status = XPRSinit(NULL);
@@ -57,7 +59,7 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy)
 }
 
 SolverXpress::~SolverXpress() {
-  { // Scope guard
+  {  // Scope guard
     std::lock_guard<std::mutex> guard(license_guard);
     _NumberOfProblems -= 1;
     SolverXpress::free();

@@ -18,6 +18,8 @@ class SolverXpress : public SolverAbstract {
   static int
       _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                          declared to set or end the environment */
+  static std::mutex license_guard;
+
  public:
   XPRSprob _xprs; /*!< Problem in XPRESS */
 
@@ -180,9 +182,6 @@ class SolverXpress : public SolverAbstract {
 
  public:
   std::ofstream _log_stream;
-
- private:
-  std::mutex license_guard;
 };
 
 /************************************************************************************\
