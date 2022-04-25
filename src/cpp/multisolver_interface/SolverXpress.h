@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <mutex>
 
 #include "multisolver_interface/SolverAbstract.h"
 #include "xprs.h"
@@ -179,6 +180,9 @@ class SolverXpress : public SolverAbstract {
 
  public:
   std::ofstream _log_stream;
+
+ private:
+  std::mutex license_guard;
 };
 
 /************************************************************************************\

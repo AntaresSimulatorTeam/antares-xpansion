@@ -29,7 +29,7 @@ class Worker {
   void get_splex_num_of_ite_last(int &result) const;
 
   void free();
-  void write_basis(const std::string &filename) const;
+  void write_basis(const std::filesystem::path &filename) const;
 
  public:
   std::filesystem::path _path_to_mps;

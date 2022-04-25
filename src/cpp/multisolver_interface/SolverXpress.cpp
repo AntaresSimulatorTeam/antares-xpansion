@@ -57,12 +57,15 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy)
 }
 
 SolverXpress::~SolverXpress() {
-  _NumberOfProblems -= 1;
-  SolverXpress::free();
+  { // Scope guard
+    std::lock_guard<std::mutex> guard(license_guard);
+    _NumberOfProblems -= 1;
+    SolverXpress::free();
 
-  if (_NumberOfProblems == 0) {
-    int status = XPRSfree();
-    zero_status_check(status, "free XPRESS environment");
+    if (_NumberOfProblems == 0) {
+      int status = XPRSfree();
+      zero_status_check(status, "free XPRESS environment");
+    }
   }
   if (_log_stream.is_open()) {
     _log_stream.close();

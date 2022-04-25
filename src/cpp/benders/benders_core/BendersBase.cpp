@@ -701,7 +701,8 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
 }
 
 void BendersBase::write_basis() const {
-  std::string const filename(std::filesystem::path(_options.OUTPUTROOT) /
-                             (_options.LAST_MASTER_BASIS));
+  std::filesystem::path const filename(
+      std::filesystem::path(_options.OUTPUTROOT) /
+      (_options.LAST_MASTER_BASIS));
   _master->write_basis(filename);
 }

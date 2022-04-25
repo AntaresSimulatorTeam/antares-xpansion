@@ -105,6 +105,6 @@ void Worker::get_splex_num_of_ite_last(int &result) const {
   result = _solver->get_splex_num_of_ite_last();
 }
 
-void Worker::write_basis(const std::string &filename) const {
+void Worker::write_basis(const std::filesystem::path &filename) const {
   _solver->write_basis(filename);
 }
