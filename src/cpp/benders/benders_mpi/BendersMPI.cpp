@@ -231,6 +231,10 @@ void BendersMpi::run() {
 
     broadcast(_world, _data.stop, rank_0);
   }
+  
+  if (_world.rank() == rank_0) {
+    write_basis();
+  }
 
   if (_world.rank() == rank_0 && is_trace()) {
     print_csv();
