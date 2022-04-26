@@ -285,8 +285,7 @@ def _check_attribute_profile_values(ini_file, capacity_dir_path):
     # check attributes profile is 0, 1 or an existent filename
     config_changed = False
     profile_attributes = ['direct-link-profile',
-                          'indirect-link-profile', 'already-installed-link-profile']
-    profile_attributes = ['direct-link-profile', 'indirect-link-profile', 'already-installed-link-profile']
+                          'indirect-link-profile', 'direct-already-installed-link-profile', 'indirect-already-installed-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
         for attribute in profile_attributes:
