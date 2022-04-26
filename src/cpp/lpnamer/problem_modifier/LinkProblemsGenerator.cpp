@@ -80,8 +80,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       variableReader.getIndirectCostVarColumns();
 
   SolverFactory factory;
-  SolverAbstract::Ptr in_prblm;
-  in_prblm = factory.create_solver(_solver_name);
+  auto in_prblm = std::make_shared<Problem>(factory.create_solver(_solver_name));
   in_prblm->read_prob_mps(mps_name);
 
   solver_rename_vars(in_prblm, var_names);
