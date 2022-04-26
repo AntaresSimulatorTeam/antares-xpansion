@@ -115,10 +115,11 @@ def _check_candidate_option_type(option, value):
                      'direct-link-profile': 'string',
                      'indirect-link-profile': 'string',
                      'already-installed-capacity': 'non-negative',
-                     'already-installed-link-profile': 'string',
+                     'direct-already-installed-link-profile': 'string',
+                     'indirect-already-installed-link-profile': 'string',
                      'has-link-profile': 'string'}
     obsolete_options = ["c", 'enable',
-                        'candidate-type', 'investment-type', 'relaxed', 'link-profile']
+                        'candidate-type', 'investment-type', 'relaxed', 'link-profile', "already-installed-link-profile"]
     option_type = options_types.get(option)
     if option_type is None:
         flushed_print(
@@ -281,7 +282,7 @@ def _check_attribute_profile_values(ini_file, capacity_dir_path):
     # check attributes profile is 0, 1 or an existent filename
     config_changed = False
     profile_attributes = ['direct-link-profile',
-                          'indirect-link-profile', 'already-installed-link-profile']
+                          'indirect-link-profile', 'direct-already-installed-link-profile', 'indirect-already-installed-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
         for attribute in profile_attributes:
@@ -318,16 +319,6 @@ def _check_attributes_profile(ini_file, candidates_ini_filepath, capacity_dir_pa
 
 
 def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
-    default_values = {'name': 'NA',
-                      'link': 'NA',
-                      'annual-cost-per-mw': '0',
-                      'unit-size': '0',
-                      'max-units': '0',
-                      'max-investment': '0',
-                      'direct-link-profile': '1',
-                      'indirect-link-profile': '1',
-                      'already-installed-capacity': '0',
-                      'already-installed-link-profile': '1'}
 
     profile_link_checker = ProfileLinkChecker(
         candidates_ini_filepath, capacity_dir_path)
