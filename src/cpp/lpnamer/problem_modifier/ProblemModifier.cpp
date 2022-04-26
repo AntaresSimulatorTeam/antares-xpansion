@@ -90,13 +90,13 @@ bool ProblemModifier::has_candidate_col_id(const std::string &cand_name) const {
   return _candidate_col_id.find(cand_name) != _candidate_col_id.end();
 }
 
-std::shared_ptr<SolverAbstract> ProblemModifier::changeProblem(
-    std::shared_ptr<SolverAbstract> mathProblem,
+std::shared_ptr<Problem> ProblemModifier::changeProblem(
+    std::shared_ptr<Problem> problem,
     const std::vector<ActiveLink> &active_links,
     const std::map<linkId, ColumnsToChange> &p_ntc_columns,
     const std::map<linkId, ColumnsToChange> &p_direct_cost_columns,
     const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns) {
-  _math_problem = std::move(mathProblem);
+  _math_problem = std::move(problem);
   _n_cols_at_start = _math_problem->get_ncols();
 
   changeProblem(active_links, p_ntc_columns, p_direct_cost_columns,
