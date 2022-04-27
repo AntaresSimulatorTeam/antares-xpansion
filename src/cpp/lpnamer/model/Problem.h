@@ -21,7 +21,7 @@ class Problem: public SolverAbstract
   SolverAbstract::Ptr solver_abstract_;
 
  public:
-  unsigned int montecarlo_year = 0;
+  unsigned int mc_year = 0;
 
  public:
   virtual int get_number_of_instances() override { return solver_abstract_->get_number_of_instances(); }

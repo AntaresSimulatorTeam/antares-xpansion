@@ -30,6 +30,8 @@ class ActiveLink {
   std::string get_linkex() const;
   double get_already_installed_capacity() const;
 
+  std::map<unsigned, unsigned > mc_year_to_chronicle;
+
  private:
   int _idLink;
   LinkName _name;
