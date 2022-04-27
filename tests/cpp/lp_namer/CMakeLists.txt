@@ -24,7 +24,7 @@ add_executable (lp_namer_tests
         LinkProfileReaderTest.cpp
         ProblemModifierTest.cpp
         VariableFileReaderTest.cpp
-        MasterProblemBuilderTest.cpp)
+        MasterProblemBuilderTest.cpp ChronicleMapReaderTest.cpp)
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main
