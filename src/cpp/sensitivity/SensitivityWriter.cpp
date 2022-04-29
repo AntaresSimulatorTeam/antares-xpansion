@@ -38,7 +38,13 @@ Json::Value write_candidate_bounds(
 
 Json::Value write_single_pb(const SinglePbData &single_pb_data) {
   Json::Value single_pb_data_l;
-  single_pb_data_l[PB_TYPE_C] = single_pb_data.str_pb_type;
+
+  std::string pb_description = single_pb_data.str_pb_type;
+  if (single_pb_data.pb_type == SensitivityPbType::PROJECTION) {
+    pb_description += " " + single_pb_data.candidate_name;
+  }
+
+  single_pb_data_l[PB_TYPE_C] = pb_description;
   single_pb_data_l[OPT_DIR_C] = single_pb_data.opt_dir;
   single_pb_data_l[STATUS_C] = single_pb_data.solver_status;
   single_pb_data_l[OBJECTIVE_C] = single_pb_data.objective;

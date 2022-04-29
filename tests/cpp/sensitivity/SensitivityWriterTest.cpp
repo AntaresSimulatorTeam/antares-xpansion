@@ -36,8 +36,11 @@ class SensitivityWriterTest : public ::testing::Test {
     ASSERT_EQ(pbs_data.size(), written_pbs_data.size());
 
     for (int pb_id(0); pb_id < pbs_data.size(); pb_id++) {
-      EXPECT_EQ(pbs_data[pb_id].str_pb_type,
-                written_pbs_data[pb_id][PB_TYPE_C].asString());
+      std::string pb_description = pbs_data[pb_id].str_pb_type;
+      if (pbs_data[pb_id].pb_type == SensitivityPbType::PROJECTION) {
+        pb_description += " " + pbs_data[pb_id].candidate_name;
+      }
+      EXPECT_EQ(pb_description, written_pbs_data[pb_id][PB_TYPE_C].asString());
       EXPECT_EQ(pbs_data[pb_id].opt_dir,
                 written_pbs_data[pb_id][OPT_DIR_C].asString());
       EXPECT_EQ(pbs_data[pb_id].solver_status,
