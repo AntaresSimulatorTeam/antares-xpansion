@@ -1,50 +1,9 @@
 //
 // Created by marechaljas on 27/04/2022.
 //
+#include <fstream>
 #include "gtest/gtest.h"
-
-class ScenarioToChronicleReader {
- private:
-  std::map<unsigned, unsigned > chronicle_map;
-
-  void ignoreFirstLine(std::stringstream& ss) const {
-    std::string garbage;
-    std::getline(ss, garbage);
-  }
-
-  void AssignChronicleValueToMCYear(std::stringstream& ss,
-                                    unsigned int montecarlo_year) {
-    int value;
-    ss >> value;
-    chronicle_map[montecarlo_year] = value;
-  }
-  void AssignChronicleValuesToMCYears(std::stringstream& ss) {
-    unsigned montecarlo_year = 1;
-    while (!ss.eof()) {
-      AssignChronicleValueToMCYear(ss, montecarlo_year);
-      ++montecarlo_year;
-    }
-  }
-
- public:
-  [[nodiscard]] std::map<unsigned int, unsigned int> read(std::string const& input) {
-    std::stringstream ss;
-    ss << input;
-    return  read(ss);
-  }
-
-  [[nodiscard]] std::map<unsigned int, unsigned int> read(std::stringstream& input) {
-    ignoreFirstLine(input);
-    AssignChronicleValuesToMCYears(input);
-    return chronicle_map;
-  }
-
-  [[nodiscard]] std::map<unsigned int, unsigned int> ChronicleMap() const {
-    return chronicle_map;
-  }
-
-
-};
+#include "ChronicleMapReader.h"
 
 class ChronicleTest: public ::testing::Test {
  public:
@@ -84,3 +43,21 @@ TEST_F(ChronicleTest, AcceptStreamAsInput) {
   ASSERT_EQ(reader_.read(ss).at(2), 32);
 }
 
+TEST_F(ChronicleTest, AcceptFileAsInput) {
+  auto temp_name = std::tmpnam(nullptr);
+  std::ofstream file(temp_name);
+  file << "Garbage\n42\n52\n";
+  file.close();
+  std::ifstream ifile(temp_name);
+  ASSERT_EQ(reader_.read(ifile).at(1), 42);
+}
+
+TEST_F(ChronicleTest, ProperlyHandleLAstLineEnding) {
+  auto temp_name = std::tmpnam(nullptr);
+  std::ofstream file(temp_name);
+  file << "Garbage\n42\n52\n";
+  file.close();
+  std::ifstream ifile(temp_name);
+  std::map<unsigned, unsigned > expected = {{1,42}, {2,52}};
+  ASSERT_EQ(reader_.read(ifile), expected);
+}

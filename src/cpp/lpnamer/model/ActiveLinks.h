@@ -5,6 +5,7 @@
 #include <Candidate.h>
 
 #include <unordered_map>
+#include "ChronicleMapProvider.h"
 
 using LinkName = std::string;
 
@@ -13,6 +14,10 @@ class ActiveLink {
   ActiveLink(int idLink, const std::string& linkName, const std::string& linkor,
              const std::string& linkex,
              const double& already_installed_capacity);
+  ActiveLink(int idLink, std::string  linkName, std::string  linkor,
+             std::string  linkex,
+             const double& already_installed_capacity,
+             std::map<unsigned, unsigned > mc_year_to_chronicle);
   void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
 
   void addCandidate(const CandidateData& candidate_data,
@@ -30,9 +35,12 @@ class ActiveLink {
   std::string get_linkex() const;
   double get_already_installed_capacity() const;
 
-  std::map<unsigned, unsigned > mc_year_to_chronicle;
+  [[nodiscard]] std::map<unsigned int, unsigned int> McYearToChronicle() const {
+    return mc_year_to_chronicle_;
+  }
 
  private:
+  std::map<unsigned, unsigned > mc_year_to_chronicle_;
   int _idLink;
   LinkName _name;
   std::string _linkor;
@@ -46,6 +54,9 @@ class ActiveLink {
 
 class ActiveLinksBuilder {
  public:
+  ActiveLinksBuilder(const std::vector<CandidateData>& candidateList,
+                     const std::map<std::string, std::vector<LinkProfile>>& profile_map, DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider);
+
   ActiveLinksBuilder(const std::vector<CandidateData>& candidateList,
       const std::map<std::string, std::vector<LinkProfile>>& profile_map);
 
@@ -82,6 +93,7 @@ class ActiveLinksBuilder {
   const std::vector<CandidateData> _candidateDatas;
   const std::map<std::string, std::vector<LinkProfile>> _profile_map;
   std::vector<ActiveLink> _links;
+  DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider_;
 };
 
 #endif  // ANTARESXPANSION_ACTIVELINKS_H

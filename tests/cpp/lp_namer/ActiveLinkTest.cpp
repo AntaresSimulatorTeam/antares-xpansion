@@ -434,3 +434,29 @@ TEST(LinkBuilderTest, candidate_not_enable) {
   const auto& candidates = links[0].getCandidates();
   ASSERT_EQ(candidates.size(), 1);
 }
+
+TEST(LinkBuilderTest, ChronicleMap_properly_loaded_in_link) {
+  CandidateData cand1;
+  cand1.link_id = 1;
+  cand1.name = "transmission_line_1";
+  cand1.link_name = "area1 - area2";
+  cand1.linkor = "area2";
+  cand1.linkex = "area1";
+  cand1.already_installed_capacity = 20;
+
+  std::vector<CandidateData> cand_data_list = {cand1};
+
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
+
+  std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path();
+  std::filesystem::create_directories(ts_info_root_ / "area1");
+  std::ofstream b_file(ts_info_root_ / "area1"/"area2");
+  b_file << "Garbage\n52\n";
+  b_file.close();
+
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+  const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+
+  std::map<unsigned, unsigned> expected = {{1, 52}};
+  ASSERT_EQ(links[0].McYearToChronicle(),  expected);
+}
