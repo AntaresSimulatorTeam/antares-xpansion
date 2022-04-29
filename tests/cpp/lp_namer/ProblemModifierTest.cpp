@@ -532,6 +532,8 @@ class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
     cand1.installed_direct_link_profile_name = "install_link_profile";
     cand1.direct_link_profile = "profile_cand1";
     cand1.indirect_link_profile = "profile_cand1";
+    cand1.linkor = "A";
+    cand1.linkex = "B";
 
     cand2.link_id = link_id;
     cand2.name = "candy2";
@@ -540,6 +542,8 @@ class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
     cand2.installed_direct_link_profile_name = "install_link_profile";
     cand2.direct_link_profile = "profile_cand2";
     cand2.indirect_link_profile = "profile_cand2";
+    cand2.linkor = "C";
+    cand2.linkex = "D";
 
     std::vector<CandidateData> cand_data_list = {cand1, cand2};
     std::map<std::string, std::vector<LinkProfile>> profile_map;
@@ -548,16 +552,27 @@ class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
     profile_map["install_link_profile"] = {profile_link};
     profile_cand1.direct_link_profile = {0.5, 1};
     profile_cand1.indirect_link_profile = {0.8, 1.2};
-    profile_cand1_2.direct_link_profile = {1, 2};
-    profile_cand1_2.indirect_link_profile = {1, 2};
+    profile_cand1_2.direct_link_profile = {5, 10};
+    profile_cand1_2.indirect_link_profile = {8, 12};
     profile_map["profile_cand1"] = {profile_cand1, profile_cand1_2};
     profile_cand2.direct_link_profile = {1.5, 1.7};
     profile_cand2.indirect_link_profile = {2.6, 2.8};
-    profile_cand2_2.direct_link_profile = {1, 2};
-    profile_cand2_2.indirect_link_profile = {1, 2};
+    profile_cand2_2.direct_link_profile = {15, 17};
+    profile_cand2_2.indirect_link_profile = {26, 28};
     profile_map["profile_cand2"] = {profile_cand2, profile_cand2_2};
 
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+
+    std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path();
+    std::filesystem::create_directories(ts_info_root_ / "A");
+    std::ofstream b_file(ts_info_root_ / "A"/"B");
+    b_file << "Garbage\n1\n2\n"; //Use link profile 1 for MCY1 and link profile 2 for MCY2
+    b_file.close();
+
+    std::ofstream D_file(ts_info_root_ / "C"/"D");
+    D_file << "Garbage\n1\n1\n";
+    D_file.close();
+
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
     links = linkBuilder.getLinks();
   }
 
@@ -646,8 +661,9 @@ TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_p
              {P_MINUS_id, cand1_id, cand2_id},
              link_capacity * profile_link.getIndirectProfile(1));
 }
-TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseChronicle1) {
+TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseChronicle2forYear2) {
   auto problem_modifier = ProblemModifier();
+  math_problem->mc_year = 2;
   math_problem = problem_modifier.changeProblem(
       math_problem, links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -670,49 +686,49 @@ TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_p
 
   verify_row(0, 'L',
              {1, -profile_cand1_2.getDirectProfile(0),
-              -profile_cand2.getDirectProfile(0)},
+              -profile_cand2_2.getDirectProfile(0)},
              {P_LINK_id, cand1_id, cand2_id},
              link_capacity * profile_link.getDirectProfile(0));
 
   verify_row(1, 'G',
              {1, profile_cand1_2.getIndirectProfile(0),
-              profile_cand2.getIndirectProfile(0)},
+              profile_cand2_2.getIndirectProfile(0)},
              {P_LINK_id, cand1_id, cand2_id},
              -link_capacity * profile_link.getIndirectProfile(0));
 
   verify_row(2, 'L',
              {1, -profile_cand1_2.getDirectProfile(1),
-              -profile_cand2.getDirectProfile(1)},
+              -profile_cand2_2.getDirectProfile(1)},
              {P_LINK_id, cand1_id, cand2_id},
              link_capacity * profile_link.getDirectProfile(1));
 
   verify_row(3, 'G',
              {1, profile_cand1_2.getIndirectProfile(1),
-              profile_cand2.getIndirectProfile(1)},
+              profile_cand2_2.getIndirectProfile(1)},
              {P_LINK_id, cand1_id, cand2_id},
              -link_capacity * profile_link.getIndirectProfile(1));
 
   verify_row(4, 'L',
              {1, -profile_cand1_2.getDirectProfile(0),
-              -profile_cand2.getDirectProfile(0)},
+              -profile_cand2_2.getDirectProfile(0)},
              {P_PLUS_id, cand1_id, cand2_id},
              link_capacity * profile_link.getDirectProfile(0));
 
   verify_row(5, 'L',
              {1, -profile_cand1_2.getDirectProfile(1),
-              -profile_cand2.getDirectProfile(1)},
+              -profile_cand2_2.getDirectProfile(1)},
              {P_PLUS_id, cand1_id, cand2_id},
              link_capacity * profile_link.getDirectProfile(1));
 
   verify_row(6, 'L',
              {1, -profile_cand1_2.getIndirectProfile(0),
-              -profile_cand2.getIndirectProfile(0)},
+              -profile_cand2_2.getIndirectProfile(0)},
              {P_MINUS_id, cand1_id, cand2_id},
              link_capacity * profile_link.getIndirectProfile(0));
 
   verify_row(7, 'L',
              {1, -profile_cand1_2.getIndirectProfile(1),
-              -profile_cand2.getIndirectProfile(1)},
+              -profile_cand2_2.getIndirectProfile(1)},
              {P_MINUS_id, cand1_id, cand2_id},
              link_capacity * profile_link.getIndirectProfile(1));
 }

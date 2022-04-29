@@ -21,6 +21,9 @@ class Problem: public SolverAbstract
   SolverAbstract::Ptr solver_abstract_;
 
  public:
+  [[nodiscard]] unsigned int McYear() const { return mc_year; }
+
+ public:
   unsigned int mc_year = 0;
 
  public:
@@ -30,7 +33,7 @@ class Problem: public SolverAbstract
   virtual void free() override { solver_abstract_->free(); }
   virtual void write_prob_mps(const std::filesystem::path &filename) override { solver_abstract_->write_prob_mps(filename); }
   virtual void write_prob_lp(const std::filesystem::path &filename) override { solver_abstract_->write_prob_lp(filename); }
-  virtual void read_prob_mps(const std::filesystem::path &filename) override { solver_abstract_->write_prob_mps(filename);}
+  void read_prob_mps(const std::filesystem::path &filename) override;
   virtual void read_prob_lp(const std::string &filename) override {solver_abstract_->read_prob_lp(filename); }
   virtual void copy_prob(Ptr fictif_solv) override { solver_abstract_->copy_prob(fictif_solv); }
   virtual int get_ncols() const override { return solver_abstract_->get_ncols(); }

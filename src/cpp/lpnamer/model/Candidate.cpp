@@ -19,11 +19,19 @@ double Candidate::indirectCapacityFactor(size_t timeStep) const {
 }
 
 double Candidate::directCapacityFactor(size_t chronicle_number, size_t timeStep) const {
-  return _profile.at(chronicle_number).getDirectProfile(timeStep);
+  if (chronicle_number == 0) {
+    return _profile.at(0).getDirectProfile(timeStep);
+  } else {
+    //1-based chronicle in 0 based vector
+    return _profile.at(chronicle_number - 1).getDirectProfile(timeStep);
+  }
 }
 
 double Candidate::indirectCapacityFactor(size_t chronicle_number, size_t timeStep) const {
-  return _profile.at(chronicle_number).getIndirectProfile(timeStep);
+  if (chronicle_number == 0) {
+    return _profile.at(0).getIndirectProfile(timeStep);
+  }
+  return _profile.at(chronicle_number - 1 ).getIndirectProfile(timeStep);
 }
 
 double Candidate::obj() const { return _annual_cost_per_mw; }

@@ -35,7 +35,7 @@ std::vector<Candidate> candidates_with_not_null_profile(
                                     bool hasOnlyNullProfile = true;
                                     for (int time_step : time_steps) {
                                       hasOnlyNullProfile &=
-                                          cand.directCapacityFactor(
+                                          cand.directCapacityFactor( //todo multiple chronicle ?
                                               time_step) == 0.0;
                                       hasOnlyNullProfile &=
                                           cand.indirectCapacityFactor(
@@ -217,10 +217,13 @@ void ProblemModifier::add_direct_profile_column_constraint(
   rowtype.push_back('L');
   colind.push_back(column.id);
   dmatval.push_back(1);
+  auto chronicle_map = link.McYearToChronicle();
+  auto problem_mc_year = _math_problem->McYear();
+  auto chronicle_to_use = chronicle_map[problem_mc_year];
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.directCapacityFactor(column.time_step) != 0.0) {
+    if (candidate.directCapacityFactor(chronicle_to_use, column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(-candidate.directCapacityFactor(column.time_step));
+      dmatval.push_back(-candidate.directCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
@@ -240,10 +243,13 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(
   rowtype.push_back('G');
   colind.push_back(column.id);
   dmatval.push_back(1);
+  auto chronicle_map = link.McYearToChronicle();
+  auto problem_mc_year = _math_problem->McYear();
+  auto chronicle_to_use = chronicle_map[problem_mc_year];
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.indirectCapacityFactor(column.time_step) != 0.0) {
+    if (candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(candidate.indirectCapacityFactor(column.time_step));
+      dmatval.push_back(candidate.indirectCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
@@ -263,10 +269,13 @@ void ProblemModifier::add_indirect_cost_column_constraint(
   rowtype.push_back('L');
   colind.push_back(column.id);
   dmatval.push_back(1);
+  auto chronicle_map = link.McYearToChronicle();
+  auto problem_mc_year = _math_problem->McYear();
+  auto chronicle_to_use = chronicle_map[problem_mc_year];
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.indirectCapacityFactor(column.time_step) != 0.0) {
+    if (candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(-candidate.indirectCapacityFactor(column.time_step));
+      dmatval.push_back(-candidate.indirectCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
