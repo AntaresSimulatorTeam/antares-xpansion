@@ -3,3 +3,9 @@
 //
 
 #include "Problem.h"
+#include "../problem_modifier/ProblemNameParser.h"
+
+void Problem::read_prob_mps(const std::filesystem::path& filename) {
+  mc_year = MCYear(filename);
+  solver_abstract_->read_prob_mps(filename);
+}

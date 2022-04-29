@@ -16,10 +16,21 @@ void ActiveLinksBuilder::addCandidate(const CandidateData& candidate_data) {
 
 ActiveLinksBuilder::ActiveLinksBuilder(
     const std::vector<CandidateData>& candidateList,
-    const std::map<std::string, std::vector<LinkProfile>>& profile_map)
-    : _candidateDatas(candidateList), _profile_map(profile_map) {
+    const std::map<std::string, std::vector<LinkProfile>>& profile_map,
+    DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider)
+    : _candidateDatas(candidateList),
+      _profile_map(profile_map)
+      , scenario_to_chronicle_provider_(scenario_to_chronicle_provider)
+{
   checkCandidateNameDuplication();
   checkLinksValidity();
+}
+
+ActiveLinksBuilder::ActiveLinksBuilder(
+    const std::vector<CandidateData>& candidateList,
+    const std::map<std::string, std::vector<LinkProfile>>& profile_map)
+    : ActiveLinksBuilder(candidateList, profile_map, DirectAccessScenarioToChronicleProvider("")) {
+
 }
 
 void ActiveLinksBuilder::checkLinksValidity() {
@@ -119,8 +130,9 @@ void ActiveLinksBuilder::create_links() {
   for (auto const& it : _links_data) {
     LinkName name = it.first;
     LinkData data = it.second;
+    auto mc_year_to_chronicle = scenario_to_chronicle_provider_.GetMap(data._linkex, data._linkor);
     ActiveLink link(data.id, name, data._linkor, data._linkex,
-                    data.installed_capacity);
+                    data.installed_capacity, mc_year_to_chronicle);
     link.setAlreadyInstalledLinkProfile(
         getProfileFromProfileMap(data.profile_name));
     _links.push_back(link);
@@ -140,19 +152,34 @@ LinkProfile ActiveLinksBuilder::getProfileFromProfileMap(
 
 std::vector<LinkProfile> ActiveLinksBuilder::getProfilesFromProfileMap(
     const std::string& profile_name) const {
-  return std::vector<LinkProfile>{getProfileFromProfileMap(profile_name) };
+  std::vector<LinkProfile> profiles;
+  if (_profile_map.find(profile_name) != _profile_map.end()) {
+    profiles = _profile_map.at(profile_name);
+  }
+  if (profiles.empty())
+    return {LinkProfile()};
+  return profiles;
+}
+
+ActiveLink::ActiveLink(
+    int idLink, std::string  linkName, std::string  linkor,
+    std::string  linkex, const double& already_installed_capacity,
+    std::map<unsigned int, unsigned int> mc_year_to_chronicle)
+    : mc_year_to_chronicle_(std::move(mc_year_to_chronicle)),
+      _idLink(idLink),
+      _name(std::move(linkName)),
+      _linkor(std::move(linkor)),
+      _linkex(std::move(linkex)),
+      _already_installed_capacity(already_installed_capacity) {
+  _already_installed_profile.emplace_back();
 }
 
 ActiveLink::ActiveLink(int idLink, const std::string& linkName,
                        const std::string& linkor, const std::string& linkex,
                        const double& already_installed_capacity)
-    : _idLink(idLink),
-      _name(linkName),
-      _linkor(linkor),
-      _linkex(linkex),
-      _already_installed_capacity(already_installed_capacity) {
-  _already_installed_profile.emplace_back();
-}
+    : ActiveLink(idLink, linkName, linkor, linkex, already_installed_capacity, {})
+{}
+
 
 void ActiveLink::setAlreadyInstalledLinkProfile(
     const LinkProfile& linkProfile) {
