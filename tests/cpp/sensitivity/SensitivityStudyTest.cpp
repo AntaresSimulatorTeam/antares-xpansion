@@ -326,7 +326,7 @@ TEST_F(SensitivityStudyTest, GetCandidatesProjection) {
 TEST_F(SensitivityStudyTest, FullSensitivityTest) {
   std::string mps_path = prepare_real_sensitivity_pb(
       true,
-      {transmission_name, battery_name, semibase_name, pv_name, peak_name});
+      {semibase_name, peak_name, pv_name, battery_name, transmission_name});
 
   auto capex_min_data =
       SinglePbData(SensitivityPbType::CAPEX, CAPEX_C, "", MIN_C,
@@ -361,16 +361,6 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest) {
   auto projection_max_semibase =
       SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, semibase_name,
                    MAX_C, 1200, 1440693382.5376825,
-                   {{battery_name, 511.01433490356368},
-                    {peak_name, 1500},
-                    {pv_name, 0},
-                    {semibase_name, 1200},
-                    {transmission_name, 2800}},
-                   SOLVER_STATUS::OPTIMAL);
-
-  auto projection_max_semibase_cbc =
-      SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, semibase_name,
-                   MAX_C, 1200, 1440693382.5376825,
                    {{battery_name, 519.91634122015228},
                     {peak_name, 1500},
                     {pv_name, 0},
@@ -379,16 +369,6 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest) {
                    SOLVER_STATUS::OPTIMAL);
 
   auto projection_min_peak =
-      SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, peak_name,
-                   MIN_C, 1500, 1440693382.5376825,
-                   {{battery_name, 519.91634122015932},
-                    {peak_name, 1500},
-                    {pv_name, 0},
-                    {semibase_name, 1200},
-                    {transmission_name, 2800}},
-                   SOLVER_STATUS::OPTIMAL);
-
-  auto projection_min_peak_cbc =
       SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, peak_name,
                    MIN_C, 1500, 1440693382.5376825,
                    {{battery_name, 511.01433490344891},
@@ -421,7 +401,7 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest) {
   auto projection_max_pv =
       SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, pv_name, MAX_C,
                    1.2427901705828661, 1440693382.5376825,
-                   {{battery_name, 517.99999999999875},
+                   {{battery_name, 518},
                     {peak_name, 1500},
                     {pv_name, 1.2427901706122959},
                     {semibase_name, 1200},
@@ -430,8 +410,8 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest) {
 
   auto projection_min_battery =
       SinglePbData(SensitivityPbType::PROJECTION, PROJECTION_C, battery_name,
-                   MIN_C, 511.0136117232214019, 1440693382.5376825,
-                   {{battery_name, 511.0136117232214019},
+                   MIN_C, 511.0132577770553, 1440693382.5376825,
+                   {{battery_name, 511.0132577770553},
                     {peak_name, 1500},
                     {pv_name, 0},
                     {semibase_name, 1200},
@@ -491,8 +471,8 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest) {
   std::vector<SinglePbData> pbs_data_cbc = {capex_min_data,
                                             capex_max_data,
                                             projection_min_semibase,
-                                            projection_max_semibase_cbc,
-                                            projection_min_peak_cbc,
+                                            projection_max_semibase,
+                                            projection_min_peak,
                                             projection_max_peak,
                                             projection_min_pv,
                                             projection_max_pv,
