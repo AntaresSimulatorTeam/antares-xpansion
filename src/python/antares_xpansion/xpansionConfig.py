@@ -79,6 +79,7 @@ class XpansionConfig:
         self.keep_mps = self.input_parameters.keep_mps
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
+        self.resume = self.input_parameters.resume
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:

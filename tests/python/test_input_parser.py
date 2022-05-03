@@ -1,3 +1,4 @@
+from cgitb import reset
 import pytest
 
 from antares_xpansion.input_parser import InputParser
@@ -91,3 +92,9 @@ class TestInputParser:
         my_parser = InputParser()
         result = my_parser.parse_args(["--dataDir=hello"])
         assert result.resume is False
+
+    def test_only_data_dir_option_accepted_with_resume_opion(self):
+        my_parser = InputParser()
+        with pytest.raises(InputParser.InputParserMutualyExclusiveOption):
+            result = my_parser.parse_args(
+                ["--dataDir=hello", "--step=antares", "--resume"])
