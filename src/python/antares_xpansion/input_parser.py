@@ -73,6 +73,11 @@ class InputParser:
                                  default=False,
                                  action='store_true',
                                  help='allow-run-as-root option (linux only)')
+        self.parser.add_argument("--resume",
+                                 dest="resume",
+                                 default=False,
+                                 action='store_true',
+                                 help='restart last study')
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -88,7 +93,8 @@ class InputParser:
             antares_n_cpu=params.antares_n_cpu,
             keep_mps=params.keep_mps,
             oversubscribe=params.oversubscribe,
-            allow_run_as_root=params.allow_run_as_root
+            allow_run_as_root=params.allow_run_as_root,
+            resume=params.resume
         )
         return my_parameters
 

@@ -86,3 +86,8 @@ class TestInputParser:
         my_parser = InputParser()
         result = my_parser.parse_args(["--dataDir=hello", "--oversubscribe"])
         assert result.oversubscribe is True
+
+    def test_resume_default_is_false(self):
+        my_parser = InputParser()
+        result = my_parser.parse_args(["--dataDir=hello"])
+        assert result.resume is False

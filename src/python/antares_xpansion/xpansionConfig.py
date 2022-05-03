@@ -4,6 +4,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 import os
+from pdb import Restart
 import sys
 import yaml
 from typing import List
@@ -34,6 +35,7 @@ class InputParameters:
     keep_mps: bool
     oversubscribe: bool
     allow_run_as_root: bool
+    resume: bool
 
 
 class XpansionConfig:
