@@ -118,7 +118,7 @@ class InputParser:
     def _check_mutualy_exclusive_options_with_resume(self, params):
         if params.resume == True:
             if params.step is not None:
-                raise InputParser.InputParserMutualyExclusiveOption(
+                raise InputParser.InputParserMutualyExclusiveOptions(
                     f"Error Xpansion can not be launched with mutualy exclusive options: --step and --resume")
         else:
             self._set_default_step(params)
@@ -127,5 +127,5 @@ class InputParser:
         if params.step == None:
             params.step = self.DEFAULT_STEP
 
-    class InputParserMutualyExclusiveOption(Exception):
+    class InputParserMutualyExclusiveOptions(Exception):
         pass
