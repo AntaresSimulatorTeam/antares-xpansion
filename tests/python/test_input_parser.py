@@ -43,6 +43,10 @@ class TestInputParser:
         my_parser = InputParser()
         my_parser.parse_args(["--dataDir=hello", "--step=study_update"])
 
+    def test_resume_step_is_accepted(self):
+        my_parser = InputParser()
+        my_parser.parse_args(["--dataDir=hello", "--step=resume"])
+
     def test_getnames_step_is_no_longer_accepted(self):
         my_parser = InputParser()
         with pytest.raises(SystemExit):
@@ -87,14 +91,3 @@ class TestInputParser:
         my_parser = InputParser()
         result = my_parser.parse_args(["--dataDir=hello", "--oversubscribe"])
         assert result.oversubscribe is True
-
-    def test_resume_default_is_false(self):
-        my_parser = InputParser()
-        result = my_parser.parse_args(["--dataDir=hello"])
-        assert result.resume is False
-
-    def test_only_data_dir_option_accepted_with_resume_opion(self):
-        my_parser = InputParser()
-        with pytest.raises(InputParser.InputParserMutualyExclusiveOptions):
-            result = my_parser.parse_args(
-                ["--dataDir=hello", "--step=antares", "--resume"])

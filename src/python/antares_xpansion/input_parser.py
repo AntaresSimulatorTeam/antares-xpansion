@@ -27,9 +27,9 @@ class InputParser:
         self.parser.add_argument("--step",
                                  dest="step",
                                  choices=["full", "antares", "problem_generation",
-                                          "benders", "study_update", "sensitivity"],
-                                 help='Step to execute ("full", "antares", "problem_generation", "benders", "study_update", "sensitivity")',
-                                 default=None)
+                                          "benders", "study_update", "sensitivity", "resume"],
+                                 help='Step to execute ("full", "antares", "problem_generation", "benders", "study_update", "sensitivity", "resume")',
+                                 default=self.DEFAULT_STEP)
         self.parser.add_argument("--simulationName",
                                  dest="simulationName",
                                  help="Name of the antares simulation to use. Must be present in the output directory",
@@ -93,7 +93,6 @@ class InputParser:
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
         self._check_antares_cpu_option(params)
-        self._check_mutualy_exclusive_options_with_resume(params)
 
         my_parameters = InputParameters(
             step=params.step,
@@ -105,8 +104,7 @@ class InputParser:
             antares_n_cpu=params.antares_n_cpu,
             keep_mps=params.keep_mps,
             oversubscribe=params.oversubscribe,
-            allow_run_as_root=params.allow_run_as_root,
-            resume=params.resume
+            allow_run_as_root=params.allow_run_as_root
         )
         return my_parameters
 
@@ -114,18 +112,3 @@ class InputParser:
 
         if (params.antares_n_cpu == 1) and (params.n_mpi > 2):
             params.antares_n_cpu = params.n_mpi
-
-    def _check_mutualy_exclusive_options_with_resume(self, params):
-        if params.resume == True:
-            if params.step is not None:
-                raise InputParser.InputParserMutualyExclusiveOptions(
-                    f"Error Xpansion can not be launched with mutualy exclusive options: --step and --resume")
-        else:
-            self._set_default_step(params)
-
-    def _set_default_step(self, params):
-        if params.step == None:
-            params.step = self.DEFAULT_STEP
-
-    class InputParserMutualyExclusiveOptions(Exception):
-        pass

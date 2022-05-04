@@ -35,7 +35,6 @@ class InputParameters:
     keep_mps: bool
     oversubscribe: bool
     allow_run_as_root: bool
-    resume: bool
 
 
 class XpansionConfig:
@@ -79,7 +78,6 @@ class XpansionConfig:
         self.keep_mps = self.input_parameters.keep_mps
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
-        self.resume = self.input_parameters.resume
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -155,20 +153,98 @@ class XpansionConfig:
 
     def _set_default_options(self):
         self.options_default = {
-            "MAX_ITERATIONS": "-1",
-            "ABSOLUTE_GAP": "1",
-            "RELATIVE_GAP": "1e-12",
-            "AGGREGATION": False,
-            "OUTPUTROOT": ".",
-            "TRACE": True,
-            "SLAVE_WEIGHT": "CONSTANT",
-            "SLAVE_WEIGHT_VALUE": "1",
-            "MASTER_NAME": "master",
-            "STRUCTURE_FILE": "structure.txt",
-            "INPUTROOT": ".",
-            "CSV_NAME": "benders_output_trace",
-            "BOUND_ALPHA": True,
+            self.max_iterations_key(): self.max_iterations_default_value(),
+            self.absolute_gap_key(): self.absolute_gap_default_value(),
+            self.relative_gap_key(): self.relative_gap_default_value(),
+            self.aggregation_key(): self.aggregation_default_value(),
+            self.outpoutroot_key(): self.outpoutroot_default_value(),
+            self.trace_key(): self.trace_default_value(),
+            self.slave_weight_key(): self.slave_weight_default_value(),
+            self.slave_weight_value_key(): self.slave_weight_value_default_value(),
+            self.master_name_key(): self.master_name_default_value(),
+            self.structure_file_key(): self.structure_file_default_value(),
+            self.input_root_key(): self.input_root_default_value(),
+            self.csv_name_key(): self.csv_name_default_value(),
+            self.bound_alpha_key(): self.bound_alpha_default_value(),
         }
+
+    def bound_alpha_default_value(self):
+        return True
+
+    def csv_name_default_value(self):
+        return "benders_output_trace"
+
+    def input_root_default_value(self):
+        return "."
+
+    def structure_file_default_value(self):
+        return "structure.txt"
+
+    def master_name_default_value(self):
+        return "master"
+
+    def slave_weight_value_default_value(self):
+        return "1"
+
+    def slave_weight_default_value(self):
+        return "CONSTANT"
+
+    def trace_default_value(self):
+        return True
+
+    def outpoutroot_default_value(self):
+        return "."
+
+    def aggregation_default_value(self):
+        return False
+
+    def relative_gap_default_value(self):
+        return "1e-12"
+
+    def absolute_gap_default_value(self):
+        return "1"
+
+    def max_iterations_default_value(self):
+        return "-1"
+
+    def max_iterations_key(self):
+        return "MAX_ITERATIONS"
+
+    def absolute_gap_key(self):
+        return "ABSOLUTE_GAP"
+
+    def relative_gap_key(self):
+        return "RELATIVE_GAP"
+
+    def aggregation_key(self):
+        return "AGGREGATION"
+
+    def outpoutroot_key(self):
+        return "OUTPUTROOT"
+
+    def trace_key(self):
+        return "TRACE"
+
+    def slave_weight_key(self):
+        return "SLAVE_WEIGHT"
+
+    def slave_weight_value_key(self):
+        return "SLAVE_WEIGHT_VALUE"
+
+    def bound_alpha_key(self):
+        return "BOUND_ALPHA"
+
+    def csv_name_key(self):
+        return "CSV_NAME"
+
+    def input_root_key(self):
+        return "INPUTROOT"
+
+    def structure_file_key(self):
+        return "STRUCTURE_FILE"
+
+    def master_name_key(self):
+        return "MASTER_NAME"
 
     def _get_config_values(self):
 

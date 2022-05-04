@@ -14,6 +14,7 @@ class TestResumeStudy:
         self.MASTER_MPS_KEYWORD = "MASTER"
         self.last_master_file = "master_last_iteration"
         self.master_file = "master"
+        self.MPS_SUFFIX = ".mps"
         options = {self.LAST_MASTER_MPS_KEYWORD: self.last_master_file,
                    self.MASTER_MPS_KEYWORD: self.master_file}
 
@@ -51,24 +52,17 @@ class TestResumeStudy:
             resume_study.launch(self.created_ouput_dir,
                                 self.created_option_file.name, self.LAST_MASTER_MPS_KEYWORD, self.MASTER_MPS_KEYWORD)
 
-    def test_fail_if_master_file_not_found(self, tmp_path):
-
-        resume_study = ResumeStudy()
-        create_last_master_file = self.created_ouput_dir / self.last_master_file
-        create_last_master_file.touch()
-        with pytest.raises(ResumeStudy.MasterFileNotFound):
-            resume_study.launch(self.created_ouput_dir,
-                                self.created_option_file.name, self.LAST_MASTER_MPS_KEYWORD, self.MASTER_MPS_KEYWORD)
-
     def test_fail_if_options_file_is_updated(self, tmp_path):
 
         resume_study = ResumeStudy()
-        create_last_master_file = self.created_ouput_dir / self.last_master_file
+        create_last_master_file = self.created_ouput_dir / \
+            (self.last_master_file + self.MPS_SUFFIX)
         create_last_master_file.touch()
         expected_last_master_file_content = "last master file content"
         create_last_master_file.write_text(expected_last_master_file_content)
 
-        create_master_file = self.created_ouput_dir / self.master_file
+        create_master_file = self.created_ouput_dir / \
+            (self.master_file + self.MPS_SUFFIX)
         create_master_file.touch()
         create_master_file.write_text("master file content")
 
@@ -80,15 +74,17 @@ class TestResumeStudy:
 
         assert options[self.MASTER_MPS_KEYWORD] == options[self.LAST_MASTER_MPS_KEYWORD]
 
-    def test_fail_if_master_file_is_updated(self, tmp_path):
+    def test_fail_if_master_file_is_not_updated(self, tmp_path):
 
         resume_study = ResumeStudy()
-        create_last_master_file = self.created_ouput_dir / self.last_master_file
+        create_last_master_file = self.created_ouput_dir / \
+            (self.last_master_file + self.MPS_SUFFIX)
         create_last_master_file.touch()
         expected_last_master_file_content = "last master file content"
         create_last_master_file.write_text(expected_last_master_file_content)
 
-        create_master_file = self.created_ouput_dir / self.master_file
+        create_master_file = self.created_ouput_dir / \
+            (self.master_file + self.MPS_SUFFIX)
         create_master_file.touch()
         create_master_file.write_text("master file content")
 

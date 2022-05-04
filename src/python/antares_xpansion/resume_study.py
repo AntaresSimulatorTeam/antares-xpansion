@@ -7,11 +7,10 @@ import shutil
 
 class ResumeStudy:
     def __init__(self) -> None:
-        pass
+        self.MPS_SUFFIX = ".mps"
 
     def launch(self, simulation_output_path: Path, options_file: str, last_master_keyword, master_keyword):
         self.set_simulation_output_path(simulation_output_path)
-        # last_master_file = simulation_output_path / last_master_file
 
         self._update_options_file(
             options_file, last_master_keyword, master_keyword)
@@ -32,6 +31,7 @@ class ResumeStudy:
         if not options_file_path.exists():
             raise ResumeStudy.OptionsFileNotFound(
                 f"last master file: {options_file_path} not found")
+
         options_file_path = self._simulation_output_path / options_file
         with open(options_file_path, "r") as json_file:
             options = json.load(json_file)
@@ -40,7 +40,8 @@ class ResumeStudy:
         except KeyError:
             raise ResumeStudy.KeyWordNotFound(
                 f"Error {last_master_keyword} not found in {options_file_path}")
-        last_master_file_path = self._simulation_output_path / last_master_file
+        last_master_file_path = self._simulation_output_path / \
+            (last_master_file + self.MPS_SUFFIX)
 
         if not last_master_file_path.exists():
             raise ResumeStudy.LastMasterFileNotFound(
@@ -51,10 +52,8 @@ class ResumeStudy:
         except KeyError:
             raise ResumeStudy.KeyWordNotFound(
                 f"Error {master_keyword} not found in {options_file_path}")
-        master_file_path = self._simulation_output_path / master_file
-        if not master_file_path.exists():
-            raise ResumeStudy.MasterFileNotFound(
-                f"master file: {master_file_path} not found")
+        master_file_path = self._simulation_output_path / \
+            (master_file + self.MPS_SUFFIX)
 
         options[master_keyword] = options[last_master_keyword]
         with open(options_file_path, "w") as options_json:

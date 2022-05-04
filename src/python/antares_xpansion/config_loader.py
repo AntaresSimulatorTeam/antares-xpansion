@@ -30,7 +30,6 @@ class ConfigLoader:
         """
         self.platform = sys.platform
         self._INFO_MSG = '<< INFO >>'
-        self.LAST_MASTER_MPS = "LAST_MASTER_MPS"
 
         self._config = config
         self._set_simulation_name()
@@ -281,7 +280,8 @@ class ConfigLoader:
             options_values["SLAVE_WEIGHT"] = self.weight_file_name()
         options_values["TIME_LIMIT"] = self.timelimit()
         options_values["LOG_LEVEL"] = self.log_level()
-        options_values[self.LAST_MASTER_MPS] = self._config.LAST_MASTER_MPS
+        options_values[self.last_master_mps_key(
+        )] = self._config.LAST_MASTER_MPS
         # generate options file for the solver
         with open(self.options_file_path(), 'w') as options_file:
             json.dump(options_values, options_file, indent=4)
@@ -376,7 +376,10 @@ class ConfigLoader:
         return self._config.antares_n_cpu
 
     def json_file_path(self):
-        return os.path.join(self._expansion_dir(), self._config.JSON_NAME)
+        return os.path.join(self._expansion_dir(), self.json_name())
+
+    def json_name(self):
+        return self._config.JSON_NAME
 
     def json_sensitivity_out_path(self):
         return os.path.join(self._sensitivity_dir(), self._config.JSON_SENSITIVITY_OUT)
@@ -418,8 +421,11 @@ class ConfigLoader:
     def sensitivity_log_file(self) -> Path:
         return Path(os.path.join(self._sensitivity_dir(), self._config.SENSITIVITY_LOG_FILE))
 
-    def last_master_mps_keyword(self):
-        return self.LAST_MASTER_MPS
+    def last_master_mps_key(self):
+        return self._config.LAST_MASTER_MPS
+
+    def master_name_key(self):
+        return self._config.master_name_key()
 
     class MissingSimulationName(Exception):
         pass

@@ -9,6 +9,7 @@ from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 from antares_xpansion.benders_driver import BendersDriver
+from antares_xpansion.resume_study import ResumeStudy
 from antares_xpansion.study_updater_driver import StudyUpdaterDriver
 from antares_xpansion.sensitivity_driver import SensitivityDriver
 from antares_xpansion.general_data_processor import GeneralDataProcessor
@@ -50,8 +51,9 @@ class XpansionDriver:
 
         self.study_update_driver = StudyUpdaterDriver(
             self.config_loader.study_update_exe())
-        
-        self.sensitivity_driver = SensitivityDriver(self.config_loader.sensitivity_exe())
+
+        self.sensitivity_driver = SensitivityDriver(
+            self.config_loader.sensitivity_exe())
 
         self.settings = 'settings'
 
@@ -80,8 +82,13 @@ class XpansionDriver:
 
         elif self.config_loader.step() == "benders":
             self.launch_benders_step()
+
         elif self.config_loader.step() == "sensitivity":
             self.launch_sensitivity_step()
+
+        elif self.config_loader.step() == "resume":
+            self.resume_study()
+
         else:
             raise XpansionDriver.UnknownStep(
                 f"Launching failed! {self.config_loader.step()} is not an Xpansion step.")
@@ -127,5 +134,11 @@ class XpansionDriver:
             self.config_loader.json_sensitivity_out_path(),
             self.config_loader.sensitivity_log_file()
         )
+
+    def resume_study(self):
+        resume_study = ResumeStudy()
+        resume_study.launch(Path(self.config_loader.simulation_lp_path(
+        )), self.config_loader.options_file_name(), self.config_loader.last_master_mps_key(), self.config_loader.master_name_key())
+
     class UnknownStep(Exception):
         pass
