@@ -85,9 +85,12 @@ class ActiveLinksBuilder {
       const LinkData& link_data, const LinkName& link_name) const;
   void create_links();
 
+  LinkProfile getProfileFromProfileMap(const std::string& profile_name) const;
   std::vector<LinkProfile> getProfilesFromProfileMap(const std::string& profile_name) const;
 
   std::map<LinkName, LinkData> _links_data;
+  std::unordered_map<LinkName, std::string> linkToAlreadyInstalledProfileName;
+  std::unordered_map<LinkName, double> linkToAlreadyInstalledCapacity;
   const std::vector<CandidateData> _candidateDatas;
   const std::map<std::string, std::vector<LinkProfile>> _profile_map;
   std::vector<ActiveLink> _links;
