@@ -95,7 +95,7 @@ TEST_F(LinkProfileReaderTest, ReadOnlyDirectProfile) {
 
 TEST_F(LinkProfileReaderTest, ReadInvalidMergedProfile) {
   try {
-    LinkProfile profile =
+    [[maybe_unused]] LinkProfile profile =
         LinkProfileReader::ReadLinkProfile(INVALID_DIRECT_PROFILE)
             .at(0);
     FAIL();
@@ -132,14 +132,16 @@ TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760InSplitFile) {
 
 TEST_F(LinkProfileReaderTest, MapIsEmptyIfNoCandidateAsAProfile) {
   CandidateData candidate;
-  candidate.installed_link_profile_name = "";
+  candidate.installed_direct_link_profile_name = "";
+  candidate.installed_indirect_link_profile_name = "";
   candidate.direct_link_profile = "";
   ASSERT_TRUE(LinkProfileReader::getLinkProfileMap({}, {candidate}).empty());
 }
 
 TEST_F(LinkProfileReaderTest, MapContainLinkProfileOfCandidate) {
   CandidateData candidate;
-  candidate.installed_link_profile_name = "";
+  candidate.installed_direct_link_profile_name = "";
+  candidate.installed_indirect_link_profile_name = "";
   candidate.direct_link_profile = VALID_DIRECT_PROFILE_NAME;
   candidate.indirect_link_profile = VALID_INDIRECT_PROFILE_NAME;
 

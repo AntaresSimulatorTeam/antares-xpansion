@@ -13,10 +13,8 @@ class ProfileLinkChecker:
     def __init__(self, candidate_file: Path, capacity_dir: Path) -> None:
         self.LINK_PROFILE_KEY = "link-profile"
         self.ALREADY_INSTALLED_LINK_PROFILE_KEY = "already-installed-link-profile"
-        self.DIRECT_ALREADY_INSTALLED_LINK_PROFILE_KEY = "direct-" + \
-            self.ALREADY_INSTALLED_LINK_PROFILE_KEY
-        self.INDIRECT_ALREADY_INSTALLED_LINK_PROFILE_KEY = "indirect-" + \
-            self.ALREADY_INSTALLED_LINK_PROFILE_KEY
+        self.DIRECT_ALREADY_INSTALLED_LINK_PROFILE_KEY = "already-installed-direct-link-profile"
+        self.INDIRECT_ALREADY_INSTALLED_LINK_PROFILE_KEY = "already-installed-indirect-link-profile"
         self.DIRECT_LINK_PROFILE_KEY = "direct-"+self.LINK_PROFILE_KEY
         self.INDIRECT_LINK_PROFILE_KEY = "indirect-"+self.LINK_PROFILE_KEY
 

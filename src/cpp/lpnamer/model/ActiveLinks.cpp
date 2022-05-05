@@ -133,8 +133,8 @@ void ActiveLinksBuilder::create_links() {
     auto mc_year_to_chronicle = scenario_to_chronicle_provider_.GetMap(data._linkex, data._linkor);
     ActiveLink link(data.id, name, data._linkor, data._linkex,
                     data.installed_capacity, mc_year_to_chronicle);
-    link.setAlreadyInstalledLinkProfile(
-        getProfileFromProfileMap(data.profile_name));
+    link.setAlreadyInstalledLinkProfiles(
+        getProfilesFromProfileMap(data.profile_name));
     _links.push_back(link);
   }
 }
@@ -183,10 +183,15 @@ ActiveLink::ActiveLink(int idLink, const std::string& linkName,
 
 void ActiveLink::setAlreadyInstalledLinkProfile(
     const LinkProfile& linkProfile) {
-  if (!_already_installed_profile.empty())
-    _already_installed_profile.at(0) = linkProfile;
-  else
+  if (_already_installed_profile.empty())
     _already_installed_profile.push_back(linkProfile);
+  else
+    _already_installed_profile.at(0) = linkProfile;
+}
+
+void ActiveLink::setAlreadyInstalledLinkProfiles(
+    const std::vector<LinkProfile>& linkProfile) {
+  _already_installed_profile = linkProfile;
 }
 
 void ActiveLink::addCandidate(const CandidateData& candidate_data,
@@ -208,12 +213,16 @@ double ActiveLink::already_installed_indirect_profile(size_t timeStep) const {
   return _already_installed_profile.at(0).getIndirectProfile(timeStep);
 }
 
-double ActiveLink::already_installed_direct_profile(size_t timeStep, size_t year) const {
-  return _already_installed_profile.at(year).getDirectProfile(timeStep);
+double ActiveLink::already_installed_direct_profile(size_t year, size_t timeStep) const {
+  if (year == 0)
+    year = 1;
+  return _already_installed_profile.at(year - 1).getDirectProfile(timeStep);
 }
 
-double ActiveLink::already_installed_indirect_profile(size_t timeStep, size_t year) const {
-  return _already_installed_profile.at(year).getIndirectProfile(timeStep);
+double ActiveLink::already_installed_indirect_profile(size_t year, size_t timeStep) const {
+  if (year == 0)
+    year = 1;
+  return _already_installed_profile.at(year - 1).getIndirectProfile(timeStep);
 }
 
 int ActiveLink::get_idLink() const { return _idLink; }

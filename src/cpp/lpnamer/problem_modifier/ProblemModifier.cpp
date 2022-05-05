@@ -208,18 +208,19 @@ void ProblemModifier::add_direct_profile_column_constraint(
     std::vector<char> &rowtype, std::vector<double> &rhs,
     std::vector<int> &rstart, const ActiveLink &link,
     const ColumnToChange &column) {
+  auto chronicle_map = link.McYearToChronicle();
+  auto problem_mc_year = _math_problem->McYear();
+  auto chronicle_to_use = chronicle_map[problem_mc_year];
+
   double already_installed_capacity(link.get_already_installed_capacity());
   double direct_already_installed_profile_at_timestep =
-      link.already_installed_direct_profile(column.time_step);
+      link.already_installed_direct_profile(chronicle_to_use, column.time_step);
   rhs.push_back(already_installed_capacity *
                 direct_already_installed_profile_at_timestep);
 
   rowtype.push_back('L');
   colind.push_back(column.id);
   dmatval.push_back(1);
-  auto chronicle_map = link.McYearToChronicle();
-  auto problem_mc_year = _math_problem->McYear();
-  auto chronicle_to_use = chronicle_map[problem_mc_year];
   for (const auto &candidate : link.getCandidates()) {
     if (candidate.directCapacityFactor(chronicle_to_use, column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
@@ -234,18 +235,19 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(
     std::vector<char> &rowtype, std::vector<double> &rhs,
     std::vector<int> &rstart, const ActiveLink &link,
     const ColumnToChange &column) {
+  auto chronicle_map = link.McYearToChronicle();
+  auto problem_mc_year = _math_problem->McYear();
+  auto chronicle_to_use = chronicle_map[problem_mc_year];
+
   double already_installed_capacity(link.get_already_installed_capacity());
   double indirect_already_installed_profile_at_timestep =
-      link.already_installed_indirect_profile(column.time_step);
+      link.already_installed_indirect_profile(chronicle_to_use, column.time_step);
   rhs.push_back(-already_installed_capacity *
                 indirect_already_installed_profile_at_timestep);
 
   rowtype.push_back('G');
   colind.push_back(column.id);
   dmatval.push_back(1);
-  auto chronicle_map = link.McYearToChronicle();
-  auto problem_mc_year = _math_problem->McYear();
-  auto chronicle_to_use = chronicle_map[problem_mc_year];
   for (const auto &candidate : link.getCandidates()) {
     if (candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
@@ -260,18 +262,20 @@ void ProblemModifier::add_indirect_cost_column_constraint(
     std::vector<char> &rowtype, std::vector<double> &rhs,
     std::vector<int> &rstart, const ActiveLink &link,
     const ColumnToChange &column) {
+  auto chronicle_map = link.McYearToChronicle();
+  auto problem_mc_year = _math_problem->McYear();
+  auto chronicle_to_use = chronicle_map[problem_mc_year];
+
   double already_installed_capacity(link.get_already_installed_capacity());
   double indirect_already_installed_profile_at_timestep =
-      link.already_installed_indirect_profile(column.time_step);
+      link.already_installed_indirect_profile(chronicle_to_use, column.time_step);
   rhs.push_back(already_installed_capacity *
                 indirect_already_installed_profile_at_timestep);
 
   rowtype.push_back('L');
   colind.push_back(column.id);
   dmatval.push_back(1);
-  auto chronicle_map = link.McYearToChronicle();
-  auto problem_mc_year = _math_problem->McYear();
-  auto chronicle_to_use = chronicle_map[problem_mc_year];
+
   for (const auto &candidate : link.getCandidates()) {
     if (candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);

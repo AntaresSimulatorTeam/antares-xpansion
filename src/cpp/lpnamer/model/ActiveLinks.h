@@ -19,6 +19,8 @@ class ActiveLink {
              const double& already_installed_capacity,
              std::map<unsigned, unsigned > mc_year_to_chronicle);
   void setAlreadyInstalledLinkProfile(const LinkProfile& linkProfile);
+  void setAlreadyInstalledLinkProfiles(const std::vector<LinkProfile>& linkProfile);
+
 
   void addCandidate(const CandidateData& candidate_data,
                     const std::vector<LinkProfile>& candidate_profile);
