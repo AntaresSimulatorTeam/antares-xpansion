@@ -11,7 +11,6 @@ struct CandidateData {
   int link_id;
   std::string linkor;
   std::string linkex;
-  std::string installed_link_profile_name;
   std::string installed_direct_link_profile_name;
   std::string installed_indirect_link_profile_name;
   double already_installed_capacity = 1.0;

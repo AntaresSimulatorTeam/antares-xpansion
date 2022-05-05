@@ -153,8 +153,8 @@ CandidateData CandidatesINIReader::readCandidateSection(
   candidateData.link_id = it->second;
   candidateData.direct_link_profile = getStrVal(reader, sectionName, "direct-link-profile");
   candidateData.indirect_link_profile = getStrVal(reader, sectionName, "indirect-link-profile");
-  candidateData.installed_link_profile_name =
-      getStrVal(reader, sectionName, "already-installed-link-profile");
+  candidateData.installed_direct_link_profile_name = getStrVal(reader, sectionName, "already-installed-direct-link-profile");
+  candidateData.installed_indirect_link_profile_name = getStrVal(reader, sectionName, "already-installed-indirect-link-profile");
 
   candidateData.annual_cost_per_mw =
       getDblVal(reader, sectionName, "annual-cost-per-mw");
