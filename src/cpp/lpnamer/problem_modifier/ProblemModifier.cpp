@@ -4,16 +4,6 @@
 
 #include "solver_utils.h"
 
-std::vector<Candidate> candidates_from_all_links(
-    const std::vector<ActiveLink> &active_links) {
-  std::vector<Candidate> all_candidates;
-  for (const auto &link : active_links) {
-    std::vector<Candidate> candidates = link.getCandidates();
-    all_candidates.insert(all_candidates.end(), candidates.begin(),
-                          candidates.end());
-  }
-  return all_candidates;
-}
 std::set<int> extract_time_steps(
     const std::map<linkId, ColumnsToChange> &p_columns) {
   std::set<int> result;
