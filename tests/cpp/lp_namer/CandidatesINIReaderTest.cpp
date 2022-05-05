@@ -26,7 +26,8 @@ const std::string candidate_content_l =
     "unit-size = 200\n"
     "max-units = 10\n"
     "enable = true\n"
-    "already-installed-link-profile = alreadyInstalledProfile.txt\n"
+    "already-installed-direct-link-profile = alreadyInstalledDirectProfile.txt\n"
+    "already-installed-indirect-link-profile = alreadyInstalledIndirectProfile.txt\n"
     "direct-link-profile = directLinkProfile.txt\n"
     "indirect-link-profile = indirectLinkProfile.txt\n"
     "\n"
@@ -146,5 +147,6 @@ TEST_F(CandidatesINIReaderTest, AcceptAlreadyInstalledLinkProfileKey) {
   std::vector<CandidateData> candidates_data =
       reader.readCandidateData("temp_candidate.ini");
 
-  ASSERT_EQ(candidates_data.at(0).installed_link_profile_name, "alreadyInstalledProfile.txt");
+  ASSERT_EQ(candidates_data.at(0).installed_direct_link_profile_name, "alreadyInstalledDirectProfile.txt");
+  ASSERT_EQ(candidates_data.at(0).installed_indirect_link_profile_name, "alreadyInstalledIndirectProfile.txt");
 }

@@ -358,6 +358,100 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
   }
 }
 
+TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profiles) {
+  std::string temp_already_installed_profile1_name =
+      "temp_already_installed_profile1.txt";
+
+  CandidateData cand1;
+  cand1.link_id = 1;
+  cand1.name = "transmission_line_1";
+  cand1.link_name = "area1 - area2";
+  cand1.already_installed_capacity = 0;
+  cand1.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+
+  CandidateData cand2;
+  cand2.link_id = 1;
+  cand2.name = "transmission_line_2";
+  cand2.link_name = "area1 - area2";
+  cand2.already_installed_capacity = 0;
+  cand2.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+
+  std::vector<CandidateData> cand_data_list;
+  cand_data_list.push_back(cand1);
+  cand_data_list.push_back(cand2);
+
+  std::array<double, NUMBER_OF_HOUR_PER_YEAR> directLinkprofile_l;
+  std::array<double, NUMBER_OF_HOUR_PER_YEAR> indirectLinkprofile_l;
+  directLinkprofile_l.fill(1);
+  indirectLinkprofile_l.fill(1);
+
+  directLinkprofile_l[0] = 0;
+  directLinkprofile_l[1] = 0.5;
+  indirectLinkprofile_l[0] = 0.25;
+  indirectLinkprofile_l[1] = 0.75;
+
+  const auto alreadyInstalledProfile =
+      createProfile(directLinkprofile_l, indirectLinkprofile_l);
+
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
+
+  profile_map[temp_already_installed_profile1_name] = {alreadyInstalledProfile};
+
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto links = linkBuilder.getLinks();
+  ASSERT_EQ(links[0].already_installed_direct_profile(0), 0);
+  ASSERT_EQ(links[0].already_installed_direct_profile(1), 0.5);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(0), 0.25);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(1), 0.75);
+}
+
+TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profiles_diffrent_chronicle) {
+  std::string temp_already_installed_profile1_name =
+      "temp_already_installed_profile1.txt";
+
+  CandidateData cand1;
+  cand1.link_id = 1;
+  cand1.name = "transmission_line_1";
+  cand1.link_name = "area1 - area2";
+  cand1.already_installed_capacity = 0;
+  cand1.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+
+  CandidateData cand2;
+  cand2.link_id = 1;
+  cand2.name = "transmission_line_2";
+  cand2.link_name = "area1 - area2";
+  cand2.already_installed_capacity = 0;
+  cand2.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+
+  std::vector<CandidateData> cand_data_list;
+  cand_data_list.push_back(cand1);
+  cand_data_list.push_back(cand2);
+
+  std::array<double, NUMBER_OF_HOUR_PER_YEAR> directLinkprofile_l;
+  std::array<double, NUMBER_OF_HOUR_PER_YEAR> indirectLinkprofile_l;
+  directLinkprofile_l.fill(1);
+  indirectLinkprofile_l.fill(1);
+
+  directLinkprofile_l[0] = 0;
+  directLinkprofile_l[1] = 0.5;
+  indirectLinkprofile_l[0] = 0.25;
+  indirectLinkprofile_l[1] = 0.75;
+
+  const auto alreadyInstalledProfile =
+      createProfile(directLinkprofile_l, indirectLinkprofile_l);
+
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
+
+  profile_map[temp_already_installed_profile1_name] = {{}, alreadyInstalledProfile};
+
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto links = linkBuilder.getLinks();
+  ASSERT_EQ(links[0].already_installed_direct_profile(2,0), 0);
+  ASSERT_EQ(links[0].already_installed_direct_profile(2,1), 0.5);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(2,0), 0.25);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(2,1), 0.75);
+}
+
 TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity) {
   CandidateData cand1;
   cand1.link_id = 1;
