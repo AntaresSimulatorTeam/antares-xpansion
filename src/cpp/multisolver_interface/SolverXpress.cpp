@@ -118,13 +118,18 @@ void SolverXpress::write_prob_lp(const std::filesystem::path &filename) {
   zero_status_check(status, "write problem");
 }
 
+void SolverXpress::write_basis(const std::filesystem::path &filename) {
+  int status = XPRSwritebasis(_xprs, filename.string().c_str(), "");
+  zero_status_check(status, "write basis");
+}
+
 void SolverXpress::read_prob_mps(const std::filesystem::path &filename) {
   std::string nFlags = "";
   read_prob(filename.string().c_str(), nFlags.c_str());
 }
-void SolverXpress::read_prob_lp(const std::string &filename) {
+void SolverXpress::read_prob_lp(const std::filesystem::path &filename) {
   std::string nFlags = "l";
-  read_prob(filename.c_str(), nFlags.c_str());
+  read_prob(filename.string().c_str(), nFlags.c_str());
 }
 
 void SolverXpress::read_prob(const char *prob_name, const char *flags) {
@@ -157,6 +162,11 @@ void SolverXpress::read_prob(const char *prob_name, const char *flags) {
   if (keeprows != -1) {
     del_rows(0, 0);
   }
+}
+
+void SolverXpress::read_basis(const std::filesystem::path &filename) {
+  int status = XPRSreadbasis(_xprs, filename.string().c_str(), "");
+  zero_status_check(status, "read basis");
 }
 
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv) {
@@ -461,11 +471,6 @@ void SolverXpress::get_mip_sol(double *primals) {
   zero_status_check(status, "get MIP sol");
 }
 
-void SolverXpress::write_basis(const std::string &filename) {
-  int status = XPRSwritebasis(_xprs, filename.c_str(), "");
-  zero_status_check(status, "write basis");
-}
-
 /*************************************************************************************************
 ------------------------    Methods to set algorithm or logs levels
 ---------------------------
@@ -518,16 +523,6 @@ void SolverXpress::set_simplex_iter(int iter) {
 
   status = XPRSsetdblcontrol(_xprs, XPRS_LPITERLIMIT, iter);
   zero_status_check(status, "set simplex max iter");
-}
-
-void SolverXpress::load_basis(int *rstatus, int *cstatus) {
-  int status = XPRSloadbasis(_xprs, rstatus, cstatus);
-  zero_status_check(status, "load basis");
-}
-
-void SolverXpress::read_basis(const std::string &filename) {
-  int status = XPRSreadbasis(_xprs, filename.c_str(), "");
-  zero_status_check(status, "read basis");
 }
 
 void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,

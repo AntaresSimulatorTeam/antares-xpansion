@@ -15,14 +15,14 @@ enum CLP_STATUS {
 
 /*!
  * \class class SolverXpress
- * \brief Daughter class of AsbtractSolver implementing solver XPRESS FICO
+ * \brief Daughter class of AsbtractSolver implementing solver COIN-OR CBC
  */
 class SolverClp : public SolverAbstract {
   /*************************************************************************************************
   ----------------------------------------    ATTRIBUTES
   ---------------------------------------
   *************************************************************************************************/
-  static int _NumberOfProblems; /*!< Counter of the total number of Cplex
+  static int _NumberOfProblems; /*!< Counter of the total number of
                                    problems declared to set or end the
                                    environment */
  public:
@@ -75,9 +75,11 @@ class SolverClp : public SolverAbstract {
  public:
   virtual void write_prob_mps(const std::filesystem::path &filename) override;
   virtual void write_prob_lp(const std::filesystem::path &filename) override;
+  virtual void write_basis(const std::filesystem::path &filename) override;
 
   virtual void read_prob_mps(const std::filesystem::path &filename) override;
-  virtual void read_prob_lp(const std::string &filename) override;
+  virtual void read_prob_lp(const std::filesystem::path &filename) override;
+  virtual void read_basis(const std::filesystem::path &filename) override;
 
   virtual void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 
@@ -167,7 +169,6 @@ class SolverClp : public SolverAbstract {
   virtual void get_lp_sol(double *primals, double *duals,
                           double *reduced_costs) override;
   virtual void get_mip_sol(double *primals) override;
-  virtual void write_basis(const std::string &filename) override {};
 
   /*************************************************************************************************
   ------------------------    Methods to set algorithm or logs levels
@@ -179,6 +180,4 @@ class SolverClp : public SolverAbstract {
   virtual void set_threads(int n_threads) override;
   virtual void set_optimality_gap(double gap) override;
   virtual void set_simplex_iter(int iter) override;
-  virtual void load_basis(int *rstatus, int *cstatus) override {};
-  virtual void read_basis(const std::string &filename) override {};
 };

@@ -85,12 +85,21 @@ void SolverClp::write_prob_lp(const std::filesystem::path &filename) {
   _clp.writeLp(filename.string().c_str());
 }
 
+void SolverClp::write_basis(const std::filesystem::path &filename) {
+  int status = _clp.writeBasis(filename.string().c_str());
+  zero_status_check(status, "write basis");
+}
+
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
   _clp.readMps(filename.string().c_str(), true, false);
 }
 
-void SolverClp::read_prob_lp(const std::string &filename) {
-  _clp.readLp(filename.c_str());
+void SolverClp::read_prob_lp(const std::filesystem::path &filename) {
+  _clp.readLp(filename.string().c_str());
+}
+
+void SolverClp::read_basis(const std::filesystem::path &filename) {
+  _clp.readBasis(filename.string().c_str());
 }
 
 void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv) {

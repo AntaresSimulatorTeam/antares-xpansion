@@ -161,8 +161,8 @@ void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
   defineCbcModelFromInnerSolver();
 }
 
-void SolverCbc::read_prob_lp(const std::string &prob_name) {
-  int status = _clp_inner_solver.readLp(prob_name.c_str());
+void SolverCbc::read_prob_lp(const std::filesystem::path &prob_name) {
+  int status = _clp_inner_solver.readLp(prob_name.string().c_str());
   zero_status_check(status, "read problem");
   defineCbcModelFromInnerSolver();
 }
