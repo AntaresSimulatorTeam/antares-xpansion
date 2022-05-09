@@ -136,6 +136,7 @@ class XpansionDriver:
         )
 
     def resume_study(self):
+        self.config_loader.benders_pre_actions()
         resume_study_data = ResumeStudyData(
             Path(self.config_loader.simulation_lp_path()),
             self.config_loader.launcher_options_file_path(),

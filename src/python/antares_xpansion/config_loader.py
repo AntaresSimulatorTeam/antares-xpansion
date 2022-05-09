@@ -11,6 +11,7 @@ from pathlib import Path
 
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
+from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
 from antares_xpansion.optimisation_keys import OptimisationKeys
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
@@ -34,7 +35,13 @@ class ConfigLoader:
         self._INFO_MSG = '<< INFO >>'
 
         self._config = config
-        self._set_simulation_name()
+        if self._config.step == "resume":
+            self._config.simulation_name = LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
+            self._simulation_name = self._config.simulation_name
+            self._restore_launcher_options()
+        else:
+            self._set_simulation_name()
+
         self.candidates_list = []
         self._verify_settings_ini_file_exists()
 
@@ -52,6 +59,20 @@ class ConfigLoader:
                 "Missing argument simulationName")
         else:
             self._simulation_name = self._config.simulation_name
+
+    def _restore_launcher_options(self):
+        with open(self.launcher_options_file_path(), "r") as launcher_options:
+            options = json.load(launcher_options)
+
+        self._config.method = options[LauncherOptionsKeys.method_key()]
+        self._config.n_mpi = options[LauncherOptionsKeys.n_mpi_key()]
+        self._config.antares_n_cpu = options[LauncherOptionsKeys.antares_n_cpu_key(
+        )]
+        self._config.keep_mps = options[LauncherOptionsKeys.keep_mps_key()]
+        self._config.oversubscribe = options[LauncherOptionsKeys.oversubscribe_key(
+        )]
+        self._config.allow_run_as_root = options[LauncherOptionsKeys.allow_run_as_root_key(
+        )]
 
     def _verify_settings_ini_file_exists(self):
         if not os.path.isfile(self._get_settings_ini_filepath()):
@@ -242,11 +263,11 @@ class ConfigLoader:
         return Path(os.path.normpath(os.path.join(self.antares_output(), self._simulation_name)))
 
     def benders_pre_actions(self):
-        self._save_launcher_options()
-        self._create_expansion_dir()
+        self.save_launcher_options()
+        self.create_expansion_dir()
         self._set_options_for_benders_solver()
 
-    def _save_launcher_options(self):
+    def save_launcher_options(self):
         options = {}
         options[LauncherOptionsKeys.method_key()] = self.method()
         options[LauncherOptionsKeys.n_mpi_key()] = self.n_mpi()
@@ -264,7 +285,7 @@ class ConfigLoader:
         return os.path.normpath(os.path.join(
             self._simulation_lp_path(), self._config.LAUNCHER_OPTIONS_JSON))
 
-    def _create_expansion_dir(self):
+    def create_expansion_dir(self):
         expansion_dir = self._expansion_dir()
         if os.path.isdir(expansion_dir):
             shutil.rmtree(expansion_dir)

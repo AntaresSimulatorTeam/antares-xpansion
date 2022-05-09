@@ -70,3 +70,7 @@ class OptimisationKeys:
     @staticmethod
     def log_level_key():
         return "LOG_LEVEL"
+
+    @staticmethod
+    def resume_key():
+        return "RESUME"

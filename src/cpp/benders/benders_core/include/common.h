@@ -124,6 +124,7 @@ struct BaseOptions {
   int LOG_LEVEL;
 
   double SLAVE_WEIGHT_VALUE;
+  bool RESUME;
 
   Str2Dbl weights;
 };

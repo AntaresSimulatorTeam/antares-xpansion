@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import json
 from pathlib import Path
 import shutil
+from antares_xpansion.benders_driver import BendersDriver
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.optimisation_keys import OptimisationKeys
@@ -14,8 +15,8 @@ class ResumeStudyData:
     simulation_output_path: Path
     launcher_options_file: Path
     benders_options_file: str
-    benderes_mpi_exe: str
-    benderes_sequential_exe: str
+    benders_mpi_exe: str
+    benders_sequential_exe: str
     merge_mps_exe: str
 
 
@@ -27,8 +28,8 @@ class ResumeStudy:
         self.launcher_options_file = self._simulation_output_path / \
             resume_study_data.launcher_options_file
         self._load_resume_options()
-        self.benders_mpi_exe = resume_study_data.benderes_mpi_exe
-        self.benders_sequential_exe = resume_study_data.benderes_sequential_exe
+        self.benders_mpi_exe = resume_study_data.benders_mpi_exe
+        self.benders_sequential_exe = resume_study_data.benders_sequential_exe
         self.merge_mps_exe = resume_study_data.merge_mps_exe
         self.benders_options_file = resume_study_data.benders_options_file
 
@@ -100,9 +101,22 @@ class ResumeStudy:
         master_file_path = self._simulation_output_path / \
             (master_file + self.MPS_SUFFIX)
 
-        options[master_keyword] = options[last_master_keyword]
+        shutil.copy(last_master_file_path, master_file_path)
+
+        assert master_file_path.exists()
+
+        options[OptimisationKeys.resume_key()] = True
         with open(options_file_path, "w") as options_json:
-            json.dump(options, options_json)
+            json.dump(options, options_json, indent=4)
+
+        benders_driver = BendersDriver(
+            self.benders_mpi_exe,
+            self.benders_sequential_exe,
+            self.merge_mps_exe,
+            self.benders_options_file
+        )
+        benders_driver.launch(self._simulation_output_path.parent, self.method,
+                              self.keep_mps, self.n_mpi, self.oversubscribe, self.allow_run_as_root)
 
     class OptionsFileNotFound(Exception):
         pass

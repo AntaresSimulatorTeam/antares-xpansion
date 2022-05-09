@@ -288,7 +288,8 @@ void WorkerMaster::_add_alpha_var() {
     }
 
     solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
-  } else {
+  } else { /* resume mode*/
+    // _id_alpha = _solver.get_col_index("alpha");
     LOG(INFO) << "ERROR a variable named alpha is in input" << std::endl;
   }
 }

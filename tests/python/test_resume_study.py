@@ -1,8 +1,10 @@
 import json
 from pathlib import Path
 import tempfile
+from unittest.mock import patch
 import pytest
 from antares_xpansion.resume_study import ResumeStudy, ResumeStudyData
+MOCK_SUBPROCESS_RUN = "antares_xpansion.benders_driver.subprocess.run"
 
 
 class TestResumeStudy:
@@ -129,15 +131,6 @@ class TestResumeStudy:
 
         resume_study = ResumeStudy(ResumeStudyData(
             output_path, launcher_options_file.name, benders_options_file_name, "", "", ""))
-        resume_study.launch()
-
-        with open(option_file, "r") as options_json:
-            options = json.load(options_json)
-
-        assert options[self.MASTER_MPS_KEYWORD] == options[self.LAST_MASTER_MPS_KEYWORD]
-        new_master_file = output_path / \
-            (options[self.MASTER_MPS_KEYWORD]+self.MPS_SUFFIX)
-
-        with open(new_master_file, "r") as master_file:
-            master_file_content = master_file.readlines()
-            assert master_file_content == [expected_last_master_file_content]
+        with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
+            run_function.return_value.returncode = 0
+            resume_study.launch()

@@ -128,6 +128,7 @@ BaseOptions SimulationOptions::get_base_options() const {
   result.INPUTROOT = INPUTROOT;
   result.SOLVER_NAME = SOLVER_NAME;
   result.weights = _weights;
+  result.RESUME = RESUME;
 
   return result;
 }
