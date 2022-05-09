@@ -9,7 +9,7 @@ from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 from antares_xpansion.benders_driver import BendersDriver
-from antares_xpansion.resume_study import ResumeStudy
+from antares_xpansion.resume_study import ResumeStudy, ResumeStudyData
 from antares_xpansion.study_updater_driver import StudyUpdaterDriver
 from antares_xpansion.sensitivity_driver import SensitivityDriver
 from antares_xpansion.general_data_processor import GeneralDataProcessor
@@ -136,9 +136,16 @@ class XpansionDriver:
         )
 
     def resume_study(self):
-        resume_study = ResumeStudy()
-        resume_study.launch(Path(self.config_loader.simulation_lp_path(
-        )), self.config_loader.options_file_name(), self.config_loader.last_master_mps_key(), self.config_loader.master_name_key())
+        resume_study_data = ResumeStudyData(
+            Path(self.config_loader.simulation_lp_path()),
+            self.config_loader.launcher_options_file_path(),
+            self.config_loader.options_file_name(),
+            self.config_loader.benders_mpi_exe(),
+            self.config_loader.benders_sequential_exe(),
+            self.config_loader.merge_mps_exe())
+
+        resume_study = ResumeStudy(resume_study_data)
+        resume_study.launch()
 
     class UnknownStep(Exception):
         pass

@@ -9,6 +9,8 @@ import sys
 import yaml
 from typing import List
 
+from antares_xpansion.optimisation_keys import OptimisationKeys
+
 
 @dataclass
 class ConfigParameters:
@@ -127,6 +129,7 @@ class XpansionConfig:
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_JSON = 'options.json'
+        self.LAUNCHER_OPTIONS_JSON = 'launcher_options.json'
         self.JSON_NAME = "out.json"
         self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
         self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
@@ -153,19 +156,19 @@ class XpansionConfig:
 
     def _set_default_options(self):
         self.options_default = {
-            self.max_iterations_key(): self.max_iterations_default_value(),
-            self.absolute_gap_key(): self.absolute_gap_default_value(),
-            self.relative_gap_key(): self.relative_gap_default_value(),
-            self.aggregation_key(): self.aggregation_default_value(),
-            self.outpoutroot_key(): self.outpoutroot_default_value(),
-            self.trace_key(): self.trace_default_value(),
-            self.slave_weight_key(): self.slave_weight_default_value(),
-            self.slave_weight_value_key(): self.slave_weight_value_default_value(),
-            self.master_name_key(): self.master_name_default_value(),
-            self.structure_file_key(): self.structure_file_default_value(),
-            self.input_root_key(): self.input_root_default_value(),
-            self.csv_name_key(): self.csv_name_default_value(),
-            self.bound_alpha_key(): self.bound_alpha_default_value(),
+            OptimisationKeys.max_iterations_key(): self.max_iterations_default_value(),
+            OptimisationKeys.absolute_gap_key(): self.absolute_gap_default_value(),
+            OptimisationKeys.relative_gap_key(): self.relative_gap_default_value(),
+            OptimisationKeys.aggregation_key(): self.aggregation_default_value(),
+            OptimisationKeys.outpoutroot_key(): self.outpoutroot_default_value(),
+            OptimisationKeys.trace_key(): self.trace_default_value(),
+            OptimisationKeys.slave_weight_key(): self.slave_weight_default_value(),
+            OptimisationKeys.slave_weight_value_key(): self.slave_weight_value_default_value(),
+            OptimisationKeys.master_name_key(): self.master_name_default_value(),
+            OptimisationKeys.structure_file_key(): self.structure_file_default_value(),
+            OptimisationKeys.input_root_key(): self.input_root_default_value(),
+            OptimisationKeys.csv_name_key(): self.csv_name_default_value(),
+            OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -206,45 +209,6 @@ class XpansionConfig:
 
     def max_iterations_default_value(self):
         return "-1"
-
-    def max_iterations_key(self):
-        return "MAX_ITERATIONS"
-
-    def absolute_gap_key(self):
-        return "ABSOLUTE_GAP"
-
-    def relative_gap_key(self):
-        return "RELATIVE_GAP"
-
-    def aggregation_key(self):
-        return "AGGREGATION"
-
-    def outpoutroot_key(self):
-        return "OUTPUTROOT"
-
-    def trace_key(self):
-        return "TRACE"
-
-    def slave_weight_key(self):
-        return "SLAVE_WEIGHT"
-
-    def slave_weight_value_key(self):
-        return "SLAVE_WEIGHT_VALUE"
-
-    def bound_alpha_key(self):
-        return "BOUND_ALPHA"
-
-    def csv_name_key(self):
-        return "CSV_NAME"
-
-    def input_root_key(self):
-        return "INPUTROOT"
-
-    def structure_file_key(self):
-        return "STRUCTURE_FILE"
-
-    def master_name_key(self):
-        return "MASTER_NAME"
 
     def _get_config_values(self):
 
