@@ -576,10 +576,9 @@ class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
     links = linkBuilder.getLinks();
   }
 
-
-
+ protected:
   std::vector<ActiveLink> links;
-  const int link_id = 0;
+  const unsigned int link_id = 0;
   const std::map<linkId, ColumnsToChange> p_var_columns = {
       {link_id, {{0, 0}, {0, 1}}}};
   const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
