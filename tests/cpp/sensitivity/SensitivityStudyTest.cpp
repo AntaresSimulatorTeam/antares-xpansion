@@ -112,6 +112,25 @@ class SensitivityStudyTest : public ::testing::Test {
     }
   }
 
+  std::stringstream get_single_pb_data_stream(const SinglePbData &pb_data) {
+    std::stringstream ss;
+    ss << std::endl;
+    ss << "The problem data that has found no match is the following :"
+       << std::endl;
+    ss << "Problem type: " << pb_data.str_pb_type << std::endl;
+    ss << "Candidate name: " << pb_data.candidate_name << std::endl;
+    ss << "Optimization direction: " <<pb_data.opt_dir << std::endl;
+    ss << "Objective: " << std::fixed << std::setprecision(16) << pb_data.objective << std::endl;
+    ss << "System cost: " << pb_data.system_cost << std::endl;
+    ss << "Solver status: " << pb_data.solver_status << std::endl;
+    ss << "Candidates: " << std::endl;
+    for (auto candidate : pb_data.candidates) {
+      ss << indent_1 << candidate.first << " " << candidate.second << std::endl;
+    }
+    ss << std::endl;
+    return ss;
+  }
+
   bool areEquals(const Point &left, const Point &right) {
     if (left.size() != right.size()) return false;
 
@@ -157,7 +176,8 @@ class SensitivityStudyTest : public ::testing::Test {
           [&leftMatch, this](const SinglePbData &data) {
             return areEquals(leftMatch, data);
           });
-      ASSERT_NE(rightMatch, expec_output_data.pbs_data.end());
+      ASSERT_NE(rightMatch, expec_output_data.pbs_data.end())
+          << get_single_pb_data_stream(leftMatch).str();
       expec_output_data.pbs_data.erase(rightMatch);
     }
     ASSERT_EQ(expec_output_data.pbs_data.size(), 0);
@@ -257,8 +277,14 @@ TEST_F(SensitivityStudyTest, OutputDataInit) {
 TEST_F(SensitivityStudyTest, GetCapexSolutions) {
   std::string mps_path = prepare_toy_sensitivity_pb(true, {});
 
+  // In this capex test, the cuts do not constrain too much the overall system
+  // cost, which induces differences between solvers.
   auto capex_min_data = SinglePbData(
       SensitivityPbType::CAPEX, CAPEX_C, "", MIN_C, 1040, 1390,
+      {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
+
+  auto capex_min_data_cbc = SinglePbData(
+      SensitivityPbType::CAPEX, CAPEX_C, "", MIN_C, 1040, 1490,
       {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
 
   auto capex_max_data = SinglePbData(
@@ -266,13 +292,16 @@ TEST_F(SensitivityStudyTest, GetCapexSolutions) {
       {{peak_name, 17.22033898}, {semibase_name, 11.69491525}},
       SOLVER_STATUS::OPTIMAL);
 
-  std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
-  auto expec_output_data =
-      SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                            input_data.candidates_bounds, pbs_data);
+  std::vector<SinglePbData> pbs_data_cbc = {capex_min_data_cbc, capex_max_data};
+  std::vector<SinglePbData> pbs_data_xpress = {capex_min_data, capex_max_data};
 
   std::map<std::string, SensitivityOutputData> expec_output_data_map = {
-      {coin_name, expec_output_data}, {xpress_name, expec_output_data}};
+      {coin_name,
+       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
+                             input_data.candidates_bounds, pbs_data_cbc)},
+      {xpress_name,
+       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
+                             input_data.candidates_bounds, pbs_data_xpress)}};
 
   launch_tests(mps_path, expec_output_data_map);
 }
@@ -291,6 +320,10 @@ TEST_F(SensitivityStudyTest, GetCandidatesProjection) {
       SensitivityPbType::PROJECTION, PROJECTION_C, peak_name, MAX_C, 24, 1490,
       {{peak_name, 24}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
 
+  auto projection_min_semibase_cbc = SinglePbData(
+      SensitivityPbType::PROJECTION, PROJECTION_C, semibase_name, MIN_C, 10,
+      1490, {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
+
   auto projection_min_semibase = SinglePbData(
       SensitivityPbType::PROJECTION, PROJECTION_C, semibase_name, MIN_C, 10,
       1390, {{peak_name, 14}, {semibase_name, 10}}, SOLVER_STATUS::OPTIMAL);
@@ -305,7 +338,7 @@ TEST_F(SensitivityStudyTest, GetCandidatesProjection) {
   projection_max_semibase_xpress.candidates[peak_name] = 17.22033898;
 
   std::vector<SinglePbData> pbs_data_cbc = {
-      projection_min_peak, projection_max_peak, projection_min_semibase,
+      projection_min_peak, projection_max_peak, projection_min_semibase_cbc,
       projection_max_semibase_cbc};
 
   std::vector<SinglePbData> pbs_data_xpress = {

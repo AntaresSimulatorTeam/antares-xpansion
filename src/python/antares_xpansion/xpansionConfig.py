@@ -131,7 +131,7 @@ class XpansionConfig:
         self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
         self.SENSITIVITY_LOG_FILE = "sensitivity_log.txt"
         self.LAST_MASTER_MPS = "master_last_iteration"
-        self.LAST_MASTER_BASIS = "master_last_basis"
+        self.LAST_MASTER_BASIS = "master_last_basis.bss"
 
     def _set_default_settings(self):
         self.settings_default = {
