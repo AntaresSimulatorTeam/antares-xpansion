@@ -15,12 +15,7 @@ class SensitivityInputReaderTest : public ::testing::Test {
 
  protected:
   void SetUp() override {
-#if defined(WIN32) || defined(_WIN32)
-    data_test_dir = "../../data_test";
-#else
-    data_test_dir = "../data_test";
-#endif
-    data_test_dir += "/sensitivity";
+    data_test_dir = "data_test/sensitivity";
 
     last_master_mps_path = data_test_dir + "/toy_last_iteration.mps";
     json_input_path = data_test_dir + "/sensitivity_in.json";

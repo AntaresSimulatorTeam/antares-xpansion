@@ -24,12 +24,7 @@ class SensitivityStudyTest : public ::testing::Test {
 
  protected:
   void SetUp() override {
-#if defined(WIN32) || defined(_WIN32)
-    data_test_dir = "../../data_test";
-#else
-    data_test_dir = "../data_test";
-#endif
-    data_test_dir += "/sensitivity";
+    data_test_dir = "data_test/sensitivity";
 
     std::string logger_filename = std::tmpnam(nullptr);
     logger = std::make_shared<SensitivityFileLogger>(logger_filename);
