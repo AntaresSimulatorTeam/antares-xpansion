@@ -33,29 +33,29 @@ The system is also characterized by an expected yearly operating cost, denoted b
 The expected operating cost in Antares is estimated over \\(N\\) scenarios (a.k.a. MC years), that is:
 
 $$
-\Theta(x) = \frac{1}{N} \sum_{l=1}^{N} p_{l} \theta_{l}(x)
+\Theta(x) = \sum_{l=1}^{N} p_{l} \theta_{l}(x)
 $$
 
 where \\(p_{l}\\) is the weight of year \\(l\\). The cost \\(\theta_{l}(x)\\) is the solution of the relaxed yearly Antares problem, that can be written in compact form:
 
 $$
 \begin{aligned}
-    \theta_{l}(x) = \min_{y \in \mathcal{Y}} \ & g^{\top} y\\\\
+    \theta_{l}(x) = \min_{y \in \mathcal{Y}} \ & g_{l}^{\top} y\\\\
     \text{s.t.} \ & Wy = d_{l} - Tx
 \end{aligned}
 $$
 
-where \\(y\\) represents all the variables of the Antares problem, \\(\mathcal{Y}\\) is the admissible set and \\(g\\) is the cost vector. The matrices \\(W\\) and \\(T\\) as well as the vector \\(d_{l}\\) are used to model the constraints of the system. The difference between MC years comes from the availability of thermal plants, the load, the wind and solar power generation, and the hydraulic inflows, that are taken into account in the right-hand side of the constraint through the term \\(d_{l}\\).
+where \\(y\\) represents all the variables of the Antares problem, \\(\mathcal{Y}\\) is the admissible set and \\(g_{l}\\) is the cost vector. The matrices \\(W\\) and \\(T\\) as well as the vector \\(d_{l}\\) are used to model the constraints of the system. The difference between MC years comes from the availability of thermal plants, the load, the wind and solar power generation, and the hydraulic inflows, that are taken into account in the right-hand side of the constraint through the term \\(d_{l}\\).
 
 More details on the Antares problem can be found in the [Antares documentation](https://antares-simulator.readthedocs.io/en/latest/reference-guide/2-modeling/#formulation-of-the-optimisation-problems). We simply mention that the linear problem presented here and used in Antares-Xpansion is a relaxation of the Antares problem as unit-commitment constraints (minimum on and off time) are not taken into account.
 
 ##### Splitting the weeks
 
-In fact, the variables in the Antares problem are defined with an hourly time step so that \\(y = (y_{1}, \ldots, y_{8760})\\), where \\(y_{h}\\) gathers all the variables of the Antares problem at hour \\(h\\) of the year. Antares solves weekly problems, that involves only the variables of a given week i.e. the problem on week \\(s \in [1,52]\\) involves only the subvector \\(y_{s} = (y_{168 s}, \ldots, y_{168 (s+1) - 1})\\). In the sequel, the index \\(_s\\) always denotes subvectors correponding to week \\(s\\). 
+In fact, the variables in the Antares problem are defined with an hourly time step so that \\(y = (y_{1}, \ldots, y_{8760})\\), where \\(y_{h}\\) gathers all the variables of the Antares problem at hour \\(h\\) of the year. Antares solves weekly problems, that involves only the variables of a given week i.e. the problem on week \\(s \in [1,52]\\) involves only the subvector \\(y_{s} = (y_{168 (s-1) + 1}, \ldots, y_{168s})\\). In the sequel, the index \\(_s\\) always denotes subvectors correponding to week \\(s\\). 
 
 In Antares-Xpansion, the **weekly problems are assumed to be independent**, this is why, **no coupling constraints between the weeks** are allowed. By doing so, the matrix \\(W\\) is **block diagonal** i.e. \\(W = \mathrm{diag}(W_{1}, \ldots, W_{52})\\). Writing:
 
-- \\(g = (g_{1}, \ldots, g_{52})\\),
+- \\(g_{l} = (g_{l,1}, \ldots, g_{l,52})\\),
 - \\(d_{l} = (d_{l, 1}, \ldots, d_{l, 52})\\) ,
 - \\(T = \begin{pmatrix} T_{1} \\\\ \vdots \\\\ T_{52} \end{pmatrix} \\),
 
@@ -63,17 +63,17 @@ the yearly Antares problem (here for MC year \\(l\\)) can be split in 52 indepen
 
 $$
 \begin{aligned}
-    \theta_{l, s}(x) = \min_{y_{s} \in \mathcal{Y}\_{s}} \ & g_{s}^{\top} y_{s}\\\\
+    \theta_{l, s}(x) = \min_{y_{s} \in \mathcal{Y}\_{s}} \ & g_{l,s}^{\top} y_{s}\\\\
     \text{s.t.} \ & W_{s}y_{s} = d_{l, s} - T_{s}x
 \end{aligned}
 $$
 
 where \\(\theta_{l, s}(x)\\) is the operational cost of week \\(s\\) of MC year \\(l\\) and \\(\mathcal{Y}\_{s}\\) is the admissible set for the variables of week \\(s\\).
 
-Overall, if week \\(s\\) of MC year \\(l\\) has weight \\(p_{l, s}\\), the expected yearly operating cost becomes:
+Overall, the expected yearly operating cost becomes:
 
 $$
-\Theta(x) = \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s} \theta_{l, s}(x)
+\Theta(x) = \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \theta_{l, s}(x)
 $$
 
 #### Summary of the costs
@@ -108,25 +108,25 @@ Taking the dual of the weekly Antares problem, we get:
 $$
 \begin{aligned}
     \theta_{l, s}(x) = \max_{\pi_{l, s} \in \Pi\_{l, s}} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\\\
-    \text{s.t.} \ & W_{s}^{\top}\pi_{l, s} \geq g_{s}
+    \text{s.t.} \ & W_{s}^{\top}\pi_{l, s} \geq g_{l, s}
 \end{aligned}
 $$
 
-where \\(\Pi_{l, s}\\) is the appropriate admissible set. An important feature of the dual problem is that the feasible set \\(F=\\{\pi_{l, s}, \ W_{s}^{\top}\pi_{l, s} \geq g_{s}\\} \cap \Pi_{l, s}\\), which is a polyhedron, does not depend on the investment variable \\(x\\). 
+where \\(\Pi_{l, s}\\) is the appropriate admissible set. An important feature of the dual problem is that the feasible set \\(F_{l, s}=\\{\pi_{l, s}, \ W_{s}^{\top}\pi_{l, s} \geq g_{l, s}\\} \cap \Pi_{l, s}\\), which is a polyhedron, does not depend on the investment variable \\(x\\). 
 
-Weekly Antares problems are always feasible, by penalizing feasibility with a large enough coefficient in their objective. Then, \\(F\\) is always non empty and bounded. Therefore, the dual problem has a solution and we know that it is one of the extreme points of the polyhedron \\(F\\). We deduce:
+Weekly Antares problems are always feasible, by penalizing feasibility with a large enough coefficient in their objective. Then, \\(F_{l, s}\\) is always non empty and bounded. Therefore, the dual problem has a solution and we know that it is one of the extreme points of the polyhedron \\(F_{l, s}\\). We deduce:
 
 $$
 \begin{aligned}
-    \theta_{l, s}(x) = \max_{\pi_{l, s} \in \mathrm{extr}(F)} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\\\
+    \theta_{l, s}(x) = \max_{\pi_{l, s} \in \mathrm{extr}(F_{l, s})} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\\\
 \end{aligned}
 $$
 
-where \\(\mathrm{extr}(F)\\) is the set of extreme points of \\(F \\). Thus, the investment problem can be reformulated as:
+where \\(\mathrm{extr}(F_{l, s})\\) is the set of extreme points of \\(F_{l, s} \\). Thus, the investment problem can be reformulated as:
 
 $$
 \begin{aligned}
-    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s} \max_{\pi_{l, s} \in \mathrm{extr}(F)} \pi_{l, s}^{\top} (d_{l, s} - T_{s}x) \\\\
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s} \max_{\pi_{l, s} \in \mathrm{extr}(F_{l, s})} \pi_{l, s}^{\top} (d_{l, s} - T_{s}x) \\\\
     \text{s.t.} \ & Ax = b\\
 \end{aligned}
 $$
@@ -137,14 +137,14 @@ $$
 \begin{aligned}
     \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\vartheta_{l, s} \\\\
     \text{s.t.} \ & Ax = b\\\\
-    & \vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\ , \quad \forall l \ , \forall s \ , \forall \pi_{l, s} \in \mathrm{extr}(F)
+    & \vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\ , \quad \forall l \ , \forall s \ , \forall \pi_{l, s} \in \mathrm{extr}(F_{l, s})
 \end{aligned}
 $$
 
 The constraints of the form \\(\vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\) in the master problem are referred as _Benders cuts_ in the sequel.
 ### The Benders decomposition algorithm
 
-As the number of extreme points of \\(F\\) is often very large, the full Benders master problem has a large number of constraints, so it is difficult to work directly with.
+As the number of extreme points of \\(F_{l, s}\\) is often very large, the full Benders master problem has a large number of constraints, so it is difficult to work directly with.
 
 This is why, the Benders decomposition algorithm proceeds iteratively:
 
@@ -154,7 +154,7 @@ This is why, the Benders decomposition algorithm proceeds iteratively:
     $$
     \begin{aligned}
         \max_{\pi_{l, s} \in \Pi\_{l, s}} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}\bar{x})\\\\
-        \text{s.t.} \ & W_{s}^{\top}\pi_{l, s} \geq g_{s}
+        \text{s.t.} \ & W_{s}^{\top}\pi_{l, s} \geq g_{l, s}
     \end{aligned}
     $$
     
