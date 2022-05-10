@@ -10,7 +10,9 @@
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
                        Writer writer, mpi::environment &env,
                        mpi::communicator &world)
-    : BendersBase(options, logger, std::move(writer)), _env(env), _world(world) {}
+    : BendersBase(options, logger, std::move(writer)),
+      _env(env),
+      _world(world) {}
 
 /*!
  *  \brief Method to load each problem in a thread
@@ -26,15 +28,19 @@ void BendersMpi::initialize_problems() {
   auto subproblemProcessCount = _world.size() - 1;
 
   if (_world.rank() == rank_0) {
-    reset_master(new WorkerMaster(master_variable_map, get_master_path(),
-                                  get_solver_name(), get_log_level(),
-                                  _data.nsubproblem, log_name()));
+    reset_master(new WorkerMaster(
+        master_variable_map, get_master_path(), get_solver_name(),
+        get_log_level(), _data.nsubproblem, log_name(), is_resume_mode()));
     LOG(INFO) << "subproblem number is " << _data.nsubproblem << std::endl;
   } else {
-    //Dispatch subproblems to process
+    // Dispatch subproblems to process
     for (const auto &problem : coupling_map) {
-      auto process_to_feed = current_problem_id % subproblemProcessCount + 1; //In case there are more subproblems than process
-      if (process_to_feed == _world.rank()) { //Assign  [problemNumber % processCount] to processID
+      auto process_to_feed =
+          current_problem_id % subproblemProcessCount +
+          1;  // In case there are more subproblems than process
+      if (process_to_feed ==
+          _world
+              .rank()) {  // Assign  [problemNumber % processCount] to processID
         addSubproblem(problem);
         AddSubproblemName(problem.first);
       }
@@ -88,7 +94,8 @@ void BendersMpi::solve_master_and_create_trace() {
 }
 
 /*!
- *  \brief Get cut information from each Subproblem and add it to the Master problem
+ *  \brief Get cut information from each Subproblem and add it to the Master
+ * problem
  *
  * Get cut information of every Subproblem in each thread and send it to
  * thread 0 to build new Master's cuts
@@ -112,7 +119,8 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
 }
 
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
-    const SubproblemCutPackage &subproblem_cut_package, const Timer &process_timer) {
+    const SubproblemCutPackage &subproblem_cut_package,
+    const Timer &process_timer) {
   if (!_exceptionRaised) {
     if (_world.rank() != rank_0) {
       mpi::gather(_world, subproblem_cut_package, rank_0);
@@ -134,7 +142,7 @@ SubproblemCutPackage BendersMpi::get_subproblem_cut_package() {
 void BendersMpi::master_build_cuts(AllCutPackage all_package) {
   SetSubproblemCost(0);
   for (auto const &pack : all_package) {
-    for (auto && [_, subproblem_cut_package] : pack) {
+    for (auto &&[_, subproblem_cut_package] : pack) {
       SetSubproblemCost(GetSubproblemCost() +
                         subproblem_cut_package.first.second[SUBPROBLEM_COST]);
     }

@@ -699,3 +699,5 @@ double BendersBase::GetSubproblemCost() const { return _data.subproblem_cost; }
 void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
 }
+
+bool BendersBase::is_resume_mode() { return _options.RESUME; }

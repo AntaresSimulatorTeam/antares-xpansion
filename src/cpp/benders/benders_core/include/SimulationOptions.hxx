@@ -52,4 +52,4 @@ BENDERS_OPTIONS_MACRO(TIME_LIMIT, double, 1e12, asDouble())
 BENDERS_OPTIONS_MACRO(LAST_MASTER_MPS, std::string, "master_last_iteration",
                       asString())
 // Resume last benders
-BENDERS_OPTIONS_MACRO(RESUME, bool, "resume", asBool())
+BENDERS_OPTIONS_MACRO(RESUME, bool, false, asBool())

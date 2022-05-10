@@ -67,6 +67,7 @@ class BendersBase {
   void SetSubproblemTimers(const double &subproblem_timer);
   [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
+  bool is_resume_mode();
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);

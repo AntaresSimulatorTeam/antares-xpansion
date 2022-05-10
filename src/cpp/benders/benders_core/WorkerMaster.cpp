@@ -21,13 +21,16 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
                            const std::filesystem::path &path_to_mps,
                            const std::string &solver_name, const int log_level,
                            int subproblems_count,
-                           const std::filesystem::path &log_name)
+                           const std::filesystem::path &log_name,
+                           const bool mps_has_alpha)
     : Worker(), subproblems_count(subproblems_count) {
   _is_master = true;
+  _mps_has_alpha = mps_has_alpha;
   init(variable_map, path_to_mps, solver_name, log_level, log_name);
-
-  _set_upper_bounds();
-  _add_alpha_var();
+  if (!_mps_has_alpha) {
+    _set_upper_bounds();
+  }
+  _set_alpha_var();
 }
 WorkerMaster::~WorkerMaster() {}
 
@@ -245,51 +248,60 @@ void WorkerMaster::_set_upper_bounds() const {
   _solver->chg_bounds(indices, bndTypes, bounds);
 }
 
-void WorkerMaster::_add_alpha_var() {
+void WorkerMaster::_set_alpha_var() {
   // add the variable alpha
-  auto const it(_name_to_id.find("alpha"));
+  const std::string alpha_str("alpha");
+  auto const it(_name_to_id.find(alpha_str));
   if (it == _name_to_id.end()) {
-    double lb(-1e10); /*!< Lower Bound */
-    double ub(+1e20); /*!< Upper Bound*/
-    double obj(+1);
-    std::vector<int> start(2, 0);
-    _id_alpha =
-        _solver->get_ncols(); /* Set the number of columns in _id_alpha */
-
-    solver_addcols(
-        _solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0),
-        DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
-        CharVector(1, 'C'),
-        StrVector(1, "alpha")); /* Add variable alpha and its parameters */
-
     _id_alpha_i.resize(subproblems_count, -1);
-    for (int i(0); i < subproblems_count; ++i) {
-      std::stringstream buffer;
-      buffer << "alpha_" << i;
-      _id_alpha_i[i] = _solver->get_ncols();
+
+    if (_mps_has_alpha) {
+      _id_alpha = _solver->get_col_index(alpha_str);
+      for (int i(0); i < subproblems_count; ++i) {
+        std::stringstream buffer;
+        buffer << "alpha_" << i;
+        _id_alpha_i[i] = _solver->get_col_index(buffer.str());
+      }
+    } else {
+      double lb(-1e10); /*!< Lower Bound */
+      double ub(+1e20); /*!< Upper Bound*/
+      double obj(+1);
+      _id_alpha =
+          _solver->get_ncols(); /* Set the number of columns in _id_alpha */
+
       solver_addcols(
-          _solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0),
+          _solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0),
           DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
           CharVector(1, 'C'),
-          StrVector(
-              1, buffer.str())); /* Add variable alpha_i and its parameters */
-    }
+          StrVector(1, alpha_str)); /* Add variable alpha and its parameters */
 
-    std::vector<char> rowtype = {'E'};
-    std::vector<double> rowrhs = {0};
-    std::vector<int> mstart = {0, subproblems_count + 1};
-    std::vector<double> matval(subproblems_count + 1, 0);
-    std::vector<int> mclind(subproblems_count + 1);
-    mclind[0] = _id_alpha;
-    matval[0] = 1;
-    for (int i(0); i < subproblems_count; ++i) {
-      mclind[i + 1] = _id_alpha_i[i];
-      matval[i + 1] = -1;
-    }
+      for (int i(0); i < subproblems_count; ++i) {
+        std::stringstream buffer;
+        buffer << "alpha_" << i;
+        _id_alpha_i[i] = _solver->get_ncols();
+        solver_addcols(
+            _solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0),
+            DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
+            CharVector(1, 'C'),
+            StrVector(
+                1, buffer.str())); /* Add variable alpha_i and its parameters */
+      }
 
-    solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
-  } else { /* resume mode*/
-    // _id_alpha = _solver.get_col_index("alpha");
+      std::vector<char> rowtype = {'E'};
+      std::vector<double> rowrhs = {0};
+      std::vector<int> mstart = {0, subproblems_count + 1};
+      std::vector<double> matval(subproblems_count + 1, 0);
+      std::vector<int> mclind(subproblems_count + 1);
+      mclind[0] = _id_alpha;
+      matval[0] = 1;
+      for (int i(0); i < subproblems_count; ++i) {
+        mclind[i + 1] = _id_alpha_i[i];
+        matval[i + 1] = -1;
+      }
+
+      solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+    }
+  } else {
     LOG(INFO) << "ERROR a variable named alpha is in input" << std::endl;
   }
 }

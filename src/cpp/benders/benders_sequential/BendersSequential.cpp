@@ -24,9 +24,9 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
 
-  reset_master(new WorkerMaster(master_variable_map, get_master_path(),
-                                get_solver_name(), get_log_level(),
-                                _data.nsubproblem, log_name()));
+  reset_master(new WorkerMaster(
+      master_variable_map, get_master_path(), get_solver_name(),
+      get_log_level(), _data.nsubproblem, log_name(), is_resume_mode()));
   for (const auto &problem : coupling_map) {
     addSubproblem(problem);
     AddSubproblemName(problem.first);
@@ -46,8 +46,8 @@ void BendersSequential::free() {
 /*!
  * \brief Build subproblem cut and store it in the BendersSequential trace
  *
- * Method to build subproblem cuts, store them in the BendersSequential trace and
- * add them to the Master problem
+ * Method to build subproblem cuts, store them in the BendersSequential trace
+ * and add them to the Master problem
  *
  */
 void BendersSequential::build_cut() {
@@ -56,7 +56,7 @@ void BendersSequential::build_cut() {
   Timer timer;
   getSubproblemCut(subproblem_cut_package);
   SetSubproblemCost(0);
-  for (const auto& pair_name_subproblemcutdata_l : subproblem_cut_package) {
+  for (const auto &pair_name_subproblemcutdata_l : subproblem_cut_package) {
     SetSubproblemCost(
         GetSubproblemCost() +
         pair_name_subproblemcutdata_l.second.first.second[SUBPROBLEM_COST]);
