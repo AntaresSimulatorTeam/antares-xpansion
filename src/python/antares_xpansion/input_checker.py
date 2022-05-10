@@ -32,30 +32,18 @@ class ProfileFileNegativeValue(Exception):
 
 
 def _check_profile_file_consistency(filename_path):
-    two_profiles = False
-    with open(filename_path, 'r') as profile_file:
-        two_profiles = (len(profile_file.readline().strip().split()) == 2)
-
     with open(filename_path, 'r') as profile_file:
         first_profile = []
-        indirect_profile = []
         for idx, line in enumerate(profile_file):
             try:
                 line_vals = line.strip().split()
-                if (len(line_vals) == 1) and not two_profiles:
+                if (len(line_vals) != 0):
                     first_profile.append(float(line_vals[0]))
-                elif (len(line_vals) == 2) and two_profiles:
-                    first_profile.append(float(line_vals[0]))
-                    indirect_profile.append(float(line_vals[1]))
-                else:
-                    flushed_print('Line %d in file %s is not valid.'
-                                  % (idx + 1, filename_path))
-                    raise ProfileFileWrongNumberOfcolumns
             except ValueError:
                 flushed_print('Line %d in file %s is not valid: allowed float values in formats "X" or "X\tY".'
                               % (idx + 1, filename_path))
                 raise ProfileFileValueError
-            if (first_profile[-1] < 0) or (two_profiles and indirect_profile[-1] < 0):
+            if (first_profile[-1] < 0):
                 flushed_print('Line %d in file %s indicates a negative value'
                               % (idx + 1, filename_path))
                 raise ProfileFileNegativeValue
@@ -65,7 +53,7 @@ def _check_profile_file_consistency(filename_path):
                       % filename_path)
         raise ProfileFileWrongNumberOfLines
 
-    return any(first_profile) or any(indirect_profile)
+    return any(first_profile)
 
 
 def _check_profile_file(filename_path):
