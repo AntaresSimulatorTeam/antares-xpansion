@@ -33,12 +33,15 @@ class TestCheckProfileFile:
 
     def test_3_columns_in_profile_file(self, tmp_path):
         profile_file = TestCheckProfileFile.get_empty_file(tmp_path)
-        line = "1 2 3"
+        line = "1 2 3\n"
 
-        profile_file.write_text(line)
-
-        with pytest.raises(ProfileFileWrongNumberOfcolumns):
+        with open(profile_file, 'a+') as file:
+            file.writelines([line for k in range(8760)])
+        try:
             _check_profile_file(profile_file)
+        except ProfileFileWrongNumberOfcolumns:
+            pytest.fail("ProfileFileWrongNumberOfcolumns raised improperly")
+
 
     def test_negative_values_in_profile_file(self, tmp_path):
         profile_file = TestCheckProfileFile.get_empty_file(tmp_path)
