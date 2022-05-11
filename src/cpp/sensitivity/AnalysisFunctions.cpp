@@ -9,8 +9,7 @@ RawPbData solve_sensitivity_pb(const SensitivityInputData& input_data,
 
   sensitivity_problem->get_obj(raw_output.obj_coeffs.data(), 0, ncols - 1);
 
-  std::ifstream basis_file(input_data.basis_file_path);
-  if (basis_file.good()) {
+  if (std::ifstream basis_file(input_data.basis_file_path); basis_file.good()) {
     sensitivity_problem->read_basis(input_data.basis_file_path);
   }
 
