@@ -86,7 +86,7 @@ void SolverClp::write_prob_lp(const std::filesystem::path &filename) {
 }
 
 void SolverClp::write_basis(const std::filesystem::path &filename) {
-  int status = _clp.writeBasis(filename.string().c_str());
+  int status = _clp.writeBasis(filename.string().c_str(), false, 1);
   zero_status_check(status, "write basis");
 }
 
