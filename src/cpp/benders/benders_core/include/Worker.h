@@ -3,7 +3,6 @@
 #include <filesystem>
 
 #include "common.h"
-#include "SimplexBasis.h"
 #include "multisolver_interface/Solver.h"
 class Worker;
 typedef std::shared_ptr<Worker> WorkerPtr;

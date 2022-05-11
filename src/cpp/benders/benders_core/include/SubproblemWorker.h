@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SimplexBasis.h"
 #include "SubproblemCut.h"
 #include "Worker.h"
 

@@ -2,7 +2,6 @@
 
 #include <json/json.h>
 #include <multisolver_interface/SolverAbstract.h>
-#include "SimplexBasis.h"
 
 #include <iostream>
 
