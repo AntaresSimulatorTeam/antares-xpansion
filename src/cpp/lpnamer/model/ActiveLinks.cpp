@@ -216,11 +216,15 @@ double ActiveLink::already_installed_indirect_profile(size_t timeStep) const {
 double ActiveLink::already_installed_direct_profile(size_t year, size_t timeStep) const {
   if (year == 0)
     year = 1;
+  if (year > _already_installed_profile.size())
+    year = 1;
   return _already_installed_profile.at(year - 1).getDirectProfile(timeStep);
 }
 
 double ActiveLink::already_installed_indirect_profile(size_t year, size_t timeStep) const {
   if (year == 0)
+    year = 1;
+  if (year > _already_installed_profile.size())
     year = 1;
   return _already_installed_profile.at(year - 1).getIndirectProfile(timeStep);
 }
