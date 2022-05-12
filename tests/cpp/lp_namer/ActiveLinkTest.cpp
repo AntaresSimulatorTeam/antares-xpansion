@@ -544,7 +544,7 @@ TEST(LinkBuilderTest, ChronicleMap_properly_loaded_in_link) {
 
   std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path();
   std::filesystem::create_directories(ts_info_root_ / "area1");
-  std::ofstream b_file(ts_info_root_ / "area1"/"area2");
+  std::ofstream b_file(ts_info_root_ / "area1"/"area2.txt");
   b_file << "Garbage\n52\n";
   b_file.close();
 

@@ -564,11 +564,11 @@ class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
 
     std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path();
     std::filesystem::create_directories(ts_info_root_ / "A");
-    std::ofstream b_file(ts_info_root_ / "A"/"B");
+    std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
     b_file << "Garbage\n1\n2\n"; //Use link profile 1 for MCY1 and link profile 2 for MCY2
     b_file.close();
 
-    std::ofstream D_file(ts_info_root_ / "C"/"D");
+    std::ofstream D_file(ts_info_root_ / "C"/"D.txt");
     D_file << "Garbage\n1\n1\n";
     D_file.close();
 
