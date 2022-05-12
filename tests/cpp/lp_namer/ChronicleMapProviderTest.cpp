@@ -16,11 +16,11 @@ class ChronicleProviderTest: public ::testing::Test {
  protected:
   void SetUp() override {
     std::filesystem::create_directories(ts_info_root_ / "A");
-    std::ofstream b_file(ts_info_root_ / "A"/"B");
+    std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
     b_file << "Garbage\n42\n52\n";
     b_file.close();
     std::filesystem::create_directories(ts_info_root_ / "B");
-    std::ofstream  c_file(ts_info_root_ / "B"/"C");
+    std::ofstream  c_file(ts_info_root_ / "B"/"C.txt");
     c_file << "Garbage\n99\n2";
     c_file.close();
   }
