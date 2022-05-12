@@ -12,7 +12,7 @@ std::map<unsigned int, unsigned int>
 DirectAccessScenarioToChronicleProvider::GetMap(
     const std::string& link_from, const std::string& link_to) const {
   std::filesystem::path file_path = GetPath(link_from, link_to);
-
+  file_path.replace_extension("txt");
   std::ifstream file(file_path);
   /* We could check antares custom-ts-numbers to see if there is a scenario
    * however this would mean reading antares configuration files which is not
