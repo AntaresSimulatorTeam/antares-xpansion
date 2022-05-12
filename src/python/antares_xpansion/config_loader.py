@@ -264,7 +264,8 @@ class ConfigLoader:
 
     def benders_pre_actions(self):
         self.save_launcher_options()
-        self.create_expansion_dir()
+        if (self._config.step != "resume"):  # expansion dir alaready in resume mode
+            self.create_expansion_dir()
         self._set_options_for_benders_solver()
 
     def save_launcher_options(self):
