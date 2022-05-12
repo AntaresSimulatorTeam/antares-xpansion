@@ -131,6 +131,7 @@ class XpansionConfig:
         self.OPTIONS_JSON = 'options.json'
         self.LAUNCHER_OPTIONS_JSON = 'launcher_options.json'
         self.JSON_NAME = "out.json"
+        self.LAST_ITERATION_JSON_FILE_NAME = "last_iteration.json"
         self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
         self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
         self.SENSITIVITY_LOG_FILE = "sensitivity_log.txt"

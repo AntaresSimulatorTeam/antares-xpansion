@@ -315,6 +315,8 @@ class ConfigLoader:
             self.active_years)
         options_values[OptimisationKeys.json_file_key()
                        ] = self.json_file_path()
+        options_values[OptimisationKeys.last_iteration_json_file_key()
+                       ] = self.last_iteration_json_file_path()
         options_values[OptimisationKeys.absolute_gap_key(
         )] = self.get_absolute_optimality_gap()
         options_values[OptimisationKeys.relative_gap_key(
@@ -428,6 +430,12 @@ class ConfigLoader:
 
     def json_name(self):
         return self._config.JSON_NAME
+
+    def last_iteration_json_file_path(self):
+        return os.path.join(self._expansion_dir(), self.last_iteration_json_file_name())
+
+    def last_iteration_json_file_name(self):
+        return self._config.LAST_ITERATION_JSON_FILE_NAME
 
     def json_sensitivity_out_path(self):
         return os.path.join(self._sensitivity_dir(), self._config.JSON_SENSITIVITY_OUT)

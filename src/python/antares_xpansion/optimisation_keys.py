@@ -60,6 +60,10 @@ class OptimisationKeys:
         return "JSON_FILE"
 
     @staticmethod
+    def last_iteration_json_file_key():
+        return "LAST_ITERATION_JSON_FILE"
+
+    @staticmethod
     def solver_name_key():
         return "SOLVER_NAME"
 

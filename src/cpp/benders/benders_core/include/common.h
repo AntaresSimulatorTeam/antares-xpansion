@@ -117,6 +117,7 @@ struct BaseOptions {
   std::string OUTPUTROOT;
   std::string INPUTROOT;
   std::string STRUCTURE_FILE;
+  std::string LAST_ITERATION_JSON_FILE;
   std::string MASTER_NAME;
   std::string SOLVER_NAME;
   std::string SLAVE_WEIGHT;

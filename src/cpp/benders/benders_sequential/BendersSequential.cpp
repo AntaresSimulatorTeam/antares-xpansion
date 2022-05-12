@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <utility>
 
+#include "LastIterationReader.h"
+#include "LastIterationRecorder.h"
 #include "Timer.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
@@ -76,6 +78,12 @@ void BendersSequential::run() {
   set_cut_storage();
   init_data();
   Timer benders_timer;
+
+  if (is_resume_mode()) {
+    auto reader = LastIterationReader(last_iteration_file());
+    auto l = reader.last_iteration_data();
+    benders_timer = Timer(l.benders_elapsed_time);
+  }
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
@@ -102,6 +110,8 @@ void BendersSequential::run() {
     set_timer_master(timer_master.elapsed());
     _data.elapsed_time = benders_timer.elapsed();
     _data.stop = stopping_criterion();
+    LastIterationRecorder last_iteration_recoder(last_iteration_file());
+    last_iteration_recoder.save_last_iteration(bendersDataToLogData(_data));
   }
 
   if (is_trace()) {

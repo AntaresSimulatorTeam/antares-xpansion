@@ -588,6 +588,7 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) {
   result.x0 = data.x0;
   result.min_invest = data.min_invest;
   result.max_invest = data.max_invest;
+  result.benders_elapsed_time = data.elapsed_time;
   return result;
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_name) {

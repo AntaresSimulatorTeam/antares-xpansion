@@ -1,6 +1,7 @@
 #ifndef ANTARESXPANSION_ILOGGER_H
 #define ANTARESXPANSION_ILOGGER_H
 
+#include <filesystem>
 #include <map>
 #include <memory>
 #include <string>
@@ -53,8 +54,8 @@ struct LogData {
   double optimality_gap;
   double relative_gap;
   double max_iterations;
+  double benders_elapsed_time;
 };
-
 class ILogger {
  public:
   virtual ~ILogger() = default;
@@ -70,6 +71,7 @@ class ILogger {
   virtual void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) = 0;
 };
+
 using Logger = std::shared_ptr<ILogger>;
 
 #endif  // ANTARESXPANSION_ILOGGER_H

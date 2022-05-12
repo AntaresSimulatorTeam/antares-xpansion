@@ -20,10 +20,12 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/SimulationOptions.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersBase.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/WorkerMaster.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/SubproblemCut.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/SubproblemCut.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/common.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersStructsDatas.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Worker.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationRecorder.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationReader.cpp 
 )
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)

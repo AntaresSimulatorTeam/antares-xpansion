@@ -68,6 +68,9 @@ class BendersBase {
   [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
   bool is_resume_mode();
+  std::filesystem::path last_iteration_file() const {
+    return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
+  }
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
