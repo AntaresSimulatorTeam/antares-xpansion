@@ -29,8 +29,8 @@ void UserFile::display_message(const std::string &str) {
   _file.flush();
 }
 
-void UserFile::log_at_initialization(const LogData &d) {
-  _file << LINE_PREFIX << "ITERATION " << d.it << ":" << std::endl;
+void UserFile::log_at_initialization(const int it_number) {
+  _file << LINE_PREFIX << "ITERATION " << it_number << ":" << std::endl;
   _file.flush();
 }
 

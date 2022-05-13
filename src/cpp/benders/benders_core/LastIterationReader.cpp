@@ -5,7 +5,7 @@
 #include <iostream>
 
 LastIterationReader::LastIterationReader(
-    const std::filesystem::path &last_iteration_file)
+    const std::filesystem::path& last_iteration_file)
     : _last_iteration_file(last_iteration_file) {}
 
 LogData LastIterationReader::last_iteration_data() const {
@@ -14,9 +14,9 @@ LogData LastIterationReader::last_iteration_data() const {
   LogPoint x0;
   LogPoint min_invest;
   LogPoint max_invest;
-  auto candidates_array = last_iteration_file_content["candidates"];
+  const auto candidates_array = last_iteration_file_content["candidates"];
 
-  for (Json::Value::const_iterator candidate = candidates_array.begin();
+  for (auto candidate = candidates_array.begin();
        candidate != candidates_array.end(); ++candidate) {
     x0.emplace((*candidate)["candidate"].asString(),
                (*candidate)["invest"].asDouble());
@@ -64,7 +64,7 @@ LogData LastIterationReader::last_iteration_data() const {
           max_invest,
           last_iteration_file_content["optimality_gap"].asDouble(),
           last_iteration_file_content["relative_gap"].asDouble(),
-          last_iteration_file_content["max_iterations"].asDouble(),
+          last_iteration_file_content["max_iterations"].asInt(),
           last_iteration_file_content["benders_elapsed_time"].asDouble()
 
   };

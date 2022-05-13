@@ -62,7 +62,7 @@ TEST_F(FileLoggerTest, ShouldHavePrefixOnEveryLine) {
 
   LogData log_data;
   log_data.it = 45;
-  user_file.log_at_initialization(log_data);
+  user_file.log_at_initialization(log_data.it);
 
   addCandidate(log_data, "z", 50.0, 0.0, 100.0);
   user_file.log_iteration_candidates(log_data);
@@ -129,7 +129,7 @@ TEST_F(UserLoggerTest, InitLog) {
   std::stringstream expected;
   expected << "ITERATION 1:" << std::endl;
 
-  _logger.log_at_initialization(logData);
+  _logger.log_at_initialization(logData.it);
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
@@ -394,7 +394,7 @@ class SimpleLoggerMock : public ILogger {
 
   void display_message(const std::string& str) { _displaymessage = str; }
 
-  void log_at_initialization(const LogData& d) override { _initCall = true; }
+  void log_at_initialization(const int it_number) override { _initCall = true; }
 
   void log_iteration_candidates(const LogData& d) override {
     _iterationStartCall = true;
@@ -450,7 +450,7 @@ class MasterLoggerTest : public ::testing::Test {
 
 TEST_F(MasterLoggerTest, InitLog) {
   LogData logData;
-  _master.log_at_initialization(logData);
+  _master.log_at_initialization(logData.it);
   ASSERT_TRUE(_logger->_initCall);
   ASSERT_TRUE(_logger2->_initCall);
 }

@@ -53,7 +53,7 @@ struct LogData {
   LogPoint max_invest;
   double optimality_gap;
   double relative_gap;
-  double max_iterations;
+  int max_iterations;
   double benders_elapsed_time;
 };
 class ILogger {
@@ -61,7 +61,7 @@ class ILogger {
   virtual ~ILogger() = default;
 
   virtual void display_message(const std::string &str) = 0;
-  virtual void log_at_initialization(const LogData &d) = 0;
+  virtual void log_at_initialization(const int it_number) = 0;
   virtual void log_iteration_candidates(const LogData &d) = 0;
   virtual void log_master_solving_duration(double durationInSeconds) = 0;
   virtual void log_subproblems_solving_duration(double durationInSeconds) = 0;

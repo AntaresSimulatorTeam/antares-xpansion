@@ -84,7 +84,7 @@ void BendersMpi::broadcast_the_master_problem() {
 }
 
 void BendersMpi::solve_master_and_create_trace() {
-  _logger->log_at_initialization(bendersDataToLogData(_data));
+  _logger->log_at_initialization(_data.it);
   _logger->display_message("\tSolving master...");
   get_master_value();
   _logger->log_master_solving_duration(get_timer_master());

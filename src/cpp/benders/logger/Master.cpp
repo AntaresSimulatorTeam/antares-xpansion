@@ -9,9 +9,9 @@ void Master::display_message(const std::string &str) {
   }
 }
 
-void Master::log_at_initialization(const LogData &d) {
+void Master::log_at_initialization(const int it_number) {
   for (auto logger : _loggers) {
-    logger->log_at_initialization(d);
+    logger->log_at_initialization(it_number);
   }
 }
 

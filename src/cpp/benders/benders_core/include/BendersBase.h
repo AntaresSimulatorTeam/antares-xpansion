@@ -19,6 +19,7 @@ class BendersBase {
   virtual void launch() = 0;
   void set_log_file(const std::filesystem::path &log_name);
   [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
+  double execution_time() const;
 
  protected:
   BendersData _data;
@@ -44,7 +45,7 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
-  [[nodiscard]] static LogData bendersDataToLogData(const BendersData &data);
+  [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
   void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
@@ -71,6 +72,8 @@ class BendersBase {
   std::filesystem::path last_iteration_file() const {
     return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
   }
+  void update_max_number_iteration_resume_mode(
+      const unsigned nb_iteration_done);
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);

@@ -18,7 +18,7 @@ class User : public ILogger {
 
   void display_message(const std::string &str) override;
 
-  void log_at_initialization(const LogData &d) override;
+  void log_at_initialization(const int it_number) override;
 
   void log_iteration_candidates(const LogData &d) override;
 

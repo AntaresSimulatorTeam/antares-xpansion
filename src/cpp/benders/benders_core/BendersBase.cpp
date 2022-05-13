@@ -577,7 +577,7 @@ std::filesystem::path BendersBase::get_structure_path() const {
   return std::filesystem::path(_options.INPUTROOT) / _options.STRUCTURE_FILE;
 }
 
-LogData BendersBase::bendersDataToLogData(const BendersData &data) {
+LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   LogData result;
   result.lb = data.lb;
   result.best_ub = data.best_ub;
@@ -589,6 +589,7 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) {
   result.min_invest = data.min_invest;
   result.max_invest = data.max_invest;
   result.benders_elapsed_time = data.elapsed_time;
+  result.max_iterations = _options.MAX_ITERATIONS;
   return result;
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_name) {
@@ -702,3 +703,17 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
 }
 
 bool BendersBase::is_resume_mode() { return _options.RESUME; }
+
+void BendersBase::update_max_number_iteration_resume_mode(
+    const unsigned nb_iteration_done) {
+  if (_options.MAX_ITERATIONS == -1) {
+    return;
+  } else if (_options.MAX_ITERATIONS - nb_iteration_done <= 0) {
+    _data.stop = true;
+
+  } else {
+    _options.MAX_ITERATIONS -= nb_iteration_done;
+  }
+}
+
+double BendersBase::execution_time() const { return _data.elapsed_time; }

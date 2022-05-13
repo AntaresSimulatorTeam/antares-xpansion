@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <utility>
 
+#include "LastIterationPrinter.h"
 #include "LastIterationReader.h"
 #include "LastIterationRecorder.h"
 #include "Timer.h"
@@ -78,17 +79,22 @@ void BendersSequential::run() {
   set_cut_storage();
   init_data();
   Timer benders_timer;
-
+  int iterations_before_resume = 0;
   if (is_resume_mode()) {
     auto reader = LastIterationReader(last_iteration_file());
-    auto l = reader.last_iteration_data();
-    benders_timer = Timer(l.benders_elapsed_time);
+    auto restart_data = reader.last_iteration_data();
+    auto restart_data_printer = LastIterationPrinter(restart_data);
+    restart_data_printer.print();
+    update_max_number_iteration_resume_mode(restart_data.it);
+    benders_timer = Timer(restart_data.benders_elapsed_time);
+    _data.stop = stopping_criterion();
+    iterations_before_resume = restart_data.it;
   }
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
 
-    _logger->log_at_initialization(bendersDataToLogData(_data));
+    _logger->log_at_initialization(_data.it + iterations_before_resume);
     _logger->display_message("\tSolving master...");
     get_master_value();
     _logger->log_master_solving_duration(get_timer_master());

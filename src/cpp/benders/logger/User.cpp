@@ -24,8 +24,8 @@ void User::display_message(const std::string &str) {
   _stream << str << std::endl;
 }
 
-void User::log_at_initialization(const LogData &d) {
-  _stream << "ITERATION " << d.it << ":" << std::endl;
+void User::log_at_initialization(const int it_number) {
+  _stream << "ITERATION " << it_number << ":" << std::endl;
 }
 
 void User::log_iteration_candidates(const LogData &d) {
