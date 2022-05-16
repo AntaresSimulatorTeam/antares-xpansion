@@ -11,7 +11,7 @@ inputs:
     description: 'operational system used for github action'
     required: true  
   os-full-name:
-    description: 'full operational system name used (for example Centos-7.9.2009 or Ubuntu-20.04'
+    description: 'full operational system name used (for example Centos-7.9.2009 or Ubuntu-20.04)'
     required: true
   buildtype:
     description: 'build type'
@@ -23,9 +23,9 @@ runs:
   - id: download-extract
     shell: bash
     run: |
-           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{inputs.antares-deps-version}}/rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}-solver-no-ortools.tar.gz
-           tar -xvf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}-solver-no-ortools.tar.gz
-           rm -rf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}-solver-no-ortools.tar.gz
+           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{inputs.antares-deps-version}}/rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.tar.gz
+           tar -xvf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.tar.gz
+           rm -rf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.tar.gz
            
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-${{inputs.antares-version}}-${{inputs.os-full-name}}.tar.gz
            tar -xvf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}.tar.gz -C rte-antares-deps-${{inputs.buildtype}} --strip-components=1
