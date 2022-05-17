@@ -139,17 +139,6 @@ void ActiveLinksBuilder::create_links() {
   }
 }
 
-LinkProfile ActiveLinksBuilder::getProfileFromProfileMap(
-    const std::string& profile_name) const {
-  std::vector<LinkProfile> already_installed_link_profile;
-  if (_profile_map.find(profile_name) != _profile_map.end()) {
-    already_installed_link_profile = _profile_map.at(profile_name);
-  }
-  if (already_installed_link_profile.empty())
-    return {};
-  return already_installed_link_profile.at(0);
-}
-
 std::vector<LinkProfile> ActiveLinksBuilder::getProfilesFromProfileMap(
     const std::string& profile_name) const {
   std::vector<LinkProfile> profiles;
@@ -179,15 +168,6 @@ ActiveLink::ActiveLink(int idLink, const std::string& linkName,
                        const double& already_installed_capacity)
     : ActiveLink(idLink, linkName, linkor, linkex, already_installed_capacity, {})
 {}
-
-
-void ActiveLink::setAlreadyInstalledLinkProfile(
-    const LinkProfile& linkProfile) {
-  if (_already_installed_profile.empty())
-    _already_installed_profile.push_back(linkProfile);
-  else
-    _already_installed_profile.at(0) = linkProfile;
-}
 
 void ActiveLink::setAlreadyInstalledLinkProfiles(
     const std::vector<LinkProfile>& linkProfile) {
