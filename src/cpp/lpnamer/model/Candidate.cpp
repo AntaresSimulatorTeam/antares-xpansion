@@ -54,3 +54,13 @@ bool Candidate::is_integer() const { return _unit_size != 0.0; }
 std::string Candidate::get_name() const { return _name; }
 
 void Candidate::set_name(const std::string& name) { _name = name; }
+
+bool Candidate::hasNullProfile(unsigned int chronicle,
+                               const std::set<int>& time_steps) const {
+  bool hasOnlyNullProfile = true;
+  for (int time_step: time_steps) {
+    hasOnlyNullProfile &= directCapacityFactor(chronicle, time_step) == 0.0;
+    hasOnlyNullProfile &= indirectCapacityFactor(chronicle, time_step) == 0.0;
+  }
+  return hasOnlyNullProfile;
+}
