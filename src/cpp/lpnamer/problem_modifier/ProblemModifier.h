@@ -79,6 +79,16 @@ class ProblemModifier {
                                            std::vector<int> &rstart,
                                            const ActiveLink &link,
                                            const ColumnToChange &column);
+  bool candidateContributionDirectIsNotNull(const ColumnToChange &column,
+                                            unsigned int chronicle_to_use,
+                                            const Candidate &candidate) const;
+  unsigned int chronicleToUse(const ActiveLink &link) const;
+  std::vector<Candidate> candidates_with_not_null_profile(
+      const std::vector<ActiveLink> &active_links,
+      const std::set<int> &time_steps) const;
+
+    bool candidateContributionIndirectIsNotNull(const ColumnToChange &column, unsigned int chronicle_to_use,
+                                                const Candidate &candidate) const;
 };
 
 #endif  // ANTARESXPANSION_PROBLEMMODIFIER_H

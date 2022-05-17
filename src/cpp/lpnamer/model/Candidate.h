@@ -52,6 +52,9 @@ class Candidate {
   std::string get_name() const;
   void set_name(const std::string& name);
 
+  bool hasNullProfile(unsigned int chronicle,
+                      const std::set<int>& time_steps) const;
+
  private:
   std::vector<LinkProfile> _profile;
   std::string _name;

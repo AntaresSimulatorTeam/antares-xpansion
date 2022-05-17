@@ -1,5 +1,6 @@
 #include "Candidate.h"
 
+#include <algorithm>
 #include <utility>
 
 Candidate::Candidate(const CandidateData& data, std::vector<LinkProfile>  profile)
@@ -54,3 +55,10 @@ bool Candidate::is_integer() const { return _unit_size != 0.0; }
 std::string Candidate::get_name() const { return _name; }
 
 void Candidate::set_name(const std::string& name) { _name = name; }
+
+bool Candidate::hasNullProfile(unsigned int chronicle,
+                               const std::set<int>& time_steps) const {
+  return std::all_of(time_steps.begin(), time_steps.end(), [this, chronicle](auto time_step) {
+    return directCapacityFactor(chronicle, time_step) == 0.0 && indirectCapacityFactor(chronicle, time_step) == 0.0;
+  });
+}

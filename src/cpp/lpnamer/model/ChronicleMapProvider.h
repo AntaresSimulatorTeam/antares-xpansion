@@ -20,6 +20,8 @@ class DirectAccessScenarioToChronicleProvider {
   [[nodiscard]] std::map<unsigned int, unsigned int> GetMap(std::string const& link_from,
                                               std::string const& link_to) const;
 
+  std::set<int> GetUsedChronicles(const std::string& link_from, const std::string& link_to) const;
+
  private:
   std::filesystem::path GetPath(const std::string& link_from,
                                 const std::string& link_to) const;
