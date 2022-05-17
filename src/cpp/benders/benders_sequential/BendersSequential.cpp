@@ -82,13 +82,14 @@ void BendersSequential::run() {
   int iterations_before_resume = 0;
   if (is_resume_mode()) {
     auto reader = LastIterationReader(last_iteration_file());
-    auto restart_data = reader.last_iteration_data();
-    auto restart_data_printer = LastIterationPrinter(restart_data);
+    auto [last_iter, best_iteration_data] = reader.last_iteration_data();
+    auto restart_data_printer =
+        LastIterationPrinter(_logger, best_iteration_data, last_iter);
     restart_data_printer.print();
-    update_max_number_iteration_resume_mode(restart_data.it);
-    benders_timer = Timer(restart_data.benders_elapsed_time);
+    update_max_number_iteration_resume_mode(last_iter.it);
+    benders_timer = Timer(last_iter.benders_elapsed_time);
     _data.stop = stopping_criterion();
-    iterations_before_resume = restart_data.it;
+    iterations_before_resume = last_iter.it;
   }
   while (!_data.stop) {
     Timer timer_master;
@@ -117,7 +118,8 @@ void BendersSequential::run() {
     _data.elapsed_time = benders_timer.elapsed();
     _data.stop = stopping_criterion();
     LastIterationRecorder last_iteration_recoder(last_iteration_file());
-    last_iteration_recoder.save_last_iteration(bendersDataToLogData(_data));
+    last_iteration_recoder.save_best_and_last_iterations(
+        bendersDataToLogData(_data), get_best_iteration_data());
   }
 
   if (is_trace()) {

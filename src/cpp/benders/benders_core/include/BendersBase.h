@@ -25,6 +25,7 @@ class BendersBase {
   BendersData _data;
   VariableMap master_variable_map;
   CouplingMap coupling_map;
+  LogData best_iteration_data;
 
  protected:
   virtual void free() = 0;
@@ -74,6 +75,7 @@ class BendersBase {
   }
   void update_max_number_iteration_resume_mode(
       const unsigned nb_iteration_done);
+  LogData get_best_iteration_data() const;
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);

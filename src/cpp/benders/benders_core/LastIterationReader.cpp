@@ -8,13 +8,17 @@ LastIterationReader::LastIterationReader(
     const std::filesystem::path& last_iteration_file)
     : _last_iteration_file(last_iteration_file) {}
 
-LogData LastIterationReader::last_iteration_data() const {
-  auto last_iteration_file_content = _get_last_iteration_file_content();
-
+std::pair<LogData, LogData> LastIterationReader::last_iteration_data() {
+  _load_resume_data();
+  return {_get_iteration_data("last"), _get_iteration_data("best_iteration")};
+}
+LogData LastIterationReader::_get_iteration_data(
+    const std::string& iteration_name) {
   LogPoint x0;
   LogPoint min_invest;
   LogPoint max_invest;
-  const auto candidates_array = last_iteration_file_content["candidates"];
+  const auto candidates_array =
+      _last_iteration_file_content[iteration_name]["candidates"];
 
   for (auto candidate = candidates_array.begin();
        candidate != candidates_array.end(); ++candidate) {
@@ -25,59 +29,33 @@ LogData LastIterationReader::last_iteration_data() const {
     max_invest.emplace((*candidate)["candidate"].asString(),
                        (*candidate)["invest_max"].asDouble());
   }
-  //   std::cout << "last_iteration_file_content[\"lb\"].asDouble()"
-  //             << "= " << last_iteration_file_content["lb"].asDouble() <<
-  //             std::endl
-  //             << "last_iteration_file_content[\"best_ub\"].asDouble()"
-  //             << "= " << last_iteration_file_content["best_ub"].asDouble()
-  //             << std::endl
-  //             << "last_iteration_file_content[\"it\"].asInt()"
-  //             << "= " << last_iteration_file_content["it"].asInt() <<
-  //             std::endl
-  //             << "last_iteration_file_content[\"best_it\"].asInt()"
-  //             << "= " << last_iteration_file_content["best_it"].asInt()
-  //             << std::endl
-  //             <<
-  //             "last_iteration_file_content[\"subproblem_cost\"].asDouble()"
-  //             << "= " <<
-  //             last_iteration_file_content["subproblem_cost"].asDouble()
-  //             << std::endl
-  //             << "last_iteration_file_content[\"invest_cost\"].asDouble()= "
-  //             << last_iteration_file_content["invest_cost"].asDouble()
-  //             << std::endl;
-  //   for (const auto &[candidate_name, value] : x0) {
-  //     std::cout << "candidate" << candidate_name << " invest= " << value
-  //               << std::endl
-  //               << "invest_min= " << min_invest.at(candidate_name) <<
-  //               std::endl
-  //               << "invest_max= " << max_invest.at(candidate_name) <<
-  //               std::endl;
-  //   }
-  return {last_iteration_file_content["lb"].asDouble(),
-          last_iteration_file_content["best_ub"].asDouble(),
-          last_iteration_file_content["it"].asInt(),
-          last_iteration_file_content["best_it"].asInt(),
-          last_iteration_file_content["subproblem_cost"].asDouble(),
-          last_iteration_file_content["invest_cost"].asDouble(),
-          x0,
-          min_invest,
-          max_invest,
-          last_iteration_file_content["optimality_gap"].asDouble(),
-          last_iteration_file_content["relative_gap"].asDouble(),
-          last_iteration_file_content["max_iterations"].asInt(),
-          last_iteration_file_content["benders_elapsed_time"].asDouble()
+  return {
+      _last_iteration_file_content[iteration_name]["lb"].asDouble(),
+      _last_iteration_file_content[iteration_name]["best_ub"].asDouble(),
+      _last_iteration_file_content[iteration_name]["it"].asInt(),
+      _last_iteration_file_content[iteration_name]["best_it"].asInt(),
+      _last_iteration_file_content[iteration_name]["subproblem_cost"]
+          .asDouble(),
+      _last_iteration_file_content[iteration_name]["invest_cost"].asDouble(),
+      x0,
+      min_invest,
+      max_invest,
+      _last_iteration_file_content[iteration_name]["optimality_gap"].asDouble(),
+      _last_iteration_file_content[iteration_name]["relative_gap"].asDouble(),
+      _last_iteration_file_content[iteration_name]["max_iterations"].asInt(),
+      _last_iteration_file_content[iteration_name]["benders_elapsed_time"]
+          .asDouble()
 
   };
 }
-Json::Value LastIterationReader::_get_last_iteration_file_content() const {
+void LastIterationReader::_load_resume_data() {
   std::ifstream input_file_l(_last_iteration_file, std::ifstream::binary);
 
   Json::CharReaderBuilder builder_l;
   // json file content
-  Json::Value file_content;
   std::string errs;
-  if (!parseFromStream(builder_l, input_file_l, &file_content, &errs)) {
+  if (!parseFromStream(builder_l, input_file_l, &_last_iteration_file_content,
+                       &errs)) {
     std::cerr << errs << std::endl;
   }
-  return file_content;
 }

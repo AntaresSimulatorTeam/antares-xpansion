@@ -3,10 +3,13 @@
 #include <fstream>
 #include <iostream>
 
-void LastIterationRecorder::save_last_iteration(
-    const LogData &iteration_log_data) {
-  _last_iteration_data = iteration_log_data;
-  _fill_output();
+void LastIterationRecorder::save_best_and_last_iterations(
+    const LogData &best_iteration_log_data,
+    const LogData &last_iteration_log_data) {
+  _best_iteration_data = best_iteration_log_data;
+  _last_iteration_data = last_iteration_log_data;
+  _fill_output("last", _last_iteration_data);
+  _fill_output("best_iteration", _best_iteration_data);
   std::ofstream jsonOut_l(_output_file);
   if (jsonOut_l) {
     // Output
@@ -17,28 +20,28 @@ void LastIterationRecorder::save_last_iteration(
   }
 }
 
-void LastIterationRecorder::_fill_output() {
-  _output["lb"] = _last_iteration_data.lb;
-  _output["best_ub"] = _last_iteration_data.best_ub;
-  _output["it"] = _last_iteration_data.it;
-  _output["best_it"] = _last_iteration_data.best_it;
-  _output["subproblem_cost"] = _last_iteration_data.subproblem_cost;
-  _output["invest_cost"] = _last_iteration_data.invest_cost;
+void LastIterationRecorder::_fill_output(const std::string &iteration_name,
+                                         const LogData &iteration_data) {
+  _output[iteration_name]["lb"] = iteration_data.lb;
+  _output[iteration_name]["best_ub"] = iteration_data.best_ub;
+  _output[iteration_name]["it"] = iteration_data.it;
+  _output[iteration_name]["best_it"] = iteration_data.best_it;
+  _output[iteration_name]["subproblem_cost"] = iteration_data.subproblem_cost;
+  _output[iteration_name]["invest_cost"] = iteration_data.invest_cost;
 
   Json::Value vectCandidates_l(Json::arrayValue);
-  for (const auto &[candidate_name, value] : _last_iteration_data.x0) {
+  for (const auto &[candidate_name, value] : iteration_data.x0) {
     Json::Value candidate_l;
     candidate_l["candidate"] = candidate_name;
     candidate_l["invest"] = value;
-    candidate_l["invest_min"] =
-        _last_iteration_data.min_invest.at(candidate_name);
-    candidate_l["invest_max"] =
-        _last_iteration_data.max_invest.at(candidate_name);
+    candidate_l["invest_min"] = iteration_data.min_invest.at(candidate_name);
+    candidate_l["invest_max"] = iteration_data.max_invest.at(candidate_name);
     vectCandidates_l.append(candidate_l);
   }
-  _output["candidates"] = vectCandidates_l;
-  _output["optimality_gap"] = _last_iteration_data.optimality_gap;
-  _output["relative_gap"] = _last_iteration_data.relative_gap;
-  _output["max_iterations"] = _last_iteration_data.max_iterations;
-  _output["benders_elapsed_time"] = _last_iteration_data.benders_elapsed_time;
+  _output[iteration_name]["candidates"] = vectCandidates_l;
+  _output[iteration_name]["optimality_gap"] = iteration_data.optimality_gap;
+  _output[iteration_name]["relative_gap"] = iteration_data.relative_gap;
+  _output[iteration_name]["max_iterations"] = iteration_data.max_iterations;
+  _output[iteration_name]["benders_elapsed_time"] =
+      iteration_data.benders_elapsed_time;
 }

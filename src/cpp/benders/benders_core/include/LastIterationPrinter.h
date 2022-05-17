@@ -3,11 +3,14 @@
 
 class LastIterationPrinter {
  public:
-  LastIterationPrinter(const LogData &data);
+  LastIterationPrinter(Logger &logger, const LogData &best_iteration_data,
+                       const LogData &last_iteration_data);
   void print() const;
 
  private:
-  LogData _data;
+  Logger _logger;
+  LogData _best_iteration_data;
+  LogData _last_iteration_data;
 };
 #define __LASTITERATIONPRINTER_H__
 #endif  // __LASTITERATIONPRINTER_H__

@@ -164,6 +164,7 @@ void BendersBase::update_best_ub() {
     _data.best_ub = _data.ub;
     _data.bestx = _data.x0;
     _data.best_it = _data.it;
+    best_iteration_data = bendersDataToLogData(_data);
   }
 }
 
@@ -717,3 +718,6 @@ void BendersBase::update_max_number_iteration_resume_mode(
 }
 
 double BendersBase::execution_time() const { return _data.elapsed_time; }
+LogData BendersBase::get_best_iteration_data() const {
+  return best_iteration_data;
+}

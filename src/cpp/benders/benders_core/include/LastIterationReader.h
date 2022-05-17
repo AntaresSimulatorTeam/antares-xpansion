@@ -8,11 +8,13 @@
 class LastIterationReader {
  public:
   LastIterationReader(const std::filesystem::path& last_iteration_file);
-  LogData last_iteration_data() const;
+  std::pair<LogData, LogData> last_iteration_data();
 
  private:
+  LogData _get_iteration_data(const std::string& iteration_name);
   std::filesystem::path _last_iteration_file;
-  Json::Value _get_last_iteration_file_content() const;
+  void _load_resume_data();
+  Json::Value _last_iteration_file_content;
 };
 
 #define __LASTITERATIONREADER_H__

@@ -9,12 +9,15 @@ class LastIterationRecorder {
  public:
   LastIterationRecorder(const std::filesystem::path &last_iteration_file)
       : _output_file(last_iteration_file) {}
-  void save_last_iteration(const LogData &iteration_log_data);
+  void save_best_and_last_iterations(const LogData &best_iteration_log_data,
+                                     const LogData &last_iteration_log_data);
 
  private:
-  void _fill_output();
+  void _fill_output(const std::string &iteration_name,
+                    const LogData &iteration_data);
   std::filesystem::path _output_file;
   LogData _last_iteration_data;
+  LogData _best_iteration_data;
   Json::Value _output;
 };
 #endif  //__LASTITERATIONRECORDER__H__

@@ -35,6 +35,13 @@ class User : public ILogger {
   void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) override;
 
+  void display_restart_message() override;
+  void restart_elapsed_time(const double elapsed_time) override;
+  void restart_performed_iterations(const int num_iterations) override;
+  void restart_best_iteration(const int best_iterations) override;
+  void restart_best_iterations_infos(
+      const LogData &best_iterations_data) override;
+
  private:
   std::ostream &_stream;
 };
