@@ -23,6 +23,7 @@ void LastIterationRecorder::save_best_and_last_iterations(
 void LastIterationRecorder::_fill_output(const std::string &iteration_name,
                                          const LogData &iteration_data) {
   _output[iteration_name]["lb"] = iteration_data.lb;
+  _output[iteration_name]["ub"] = iteration_data.ub;
   _output[iteration_name]["best_ub"] = iteration_data.best_ub;
   _output[iteration_name]["it"] = iteration_data.it;
   _output[iteration_name]["best_it"] = iteration_data.best_it;
@@ -44,4 +45,5 @@ void LastIterationRecorder::_fill_output(const std::string &iteration_name,
   _output[iteration_name]["max_iterations"] = iteration_data.max_iterations;
   _output[iteration_name]["benders_elapsed_time"] =
       iteration_data.benders_elapsed_time;
+  _output[iteration_name]["duration"] = iteration_data.master_time;
 }

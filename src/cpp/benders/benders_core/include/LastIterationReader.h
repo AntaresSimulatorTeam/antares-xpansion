@@ -13,7 +13,6 @@ class LastIterationReader {
  private:
   LogData _get_iteration_data(const std::string& iteration_name);
   std::filesystem::path _last_iteration_file;
-  void _load_resume_data();
   Json::Value _last_iteration_file_content;
 };
 

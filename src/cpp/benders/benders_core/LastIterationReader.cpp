@@ -4,12 +4,14 @@
 #include <fstream>
 #include <iostream>
 
+#include "common.h"
+
 LastIterationReader::LastIterationReader(
     const std::filesystem::path& last_iteration_file)
     : _last_iteration_file(last_iteration_file) {}
 
 std::pair<LogData, LogData> LastIterationReader::last_iteration_data() {
-  _load_resume_data();
+  _last_iteration_file_content = get_json_file_content(_last_iteration_file);
   return {_get_iteration_data("last"), _get_iteration_data("best_iteration")};
 }
 LogData LastIterationReader::_get_iteration_data(
@@ -31,6 +33,7 @@ LogData LastIterationReader::_get_iteration_data(
   }
   return {
       _last_iteration_file_content[iteration_name]["lb"].asDouble(),
+      _last_iteration_file_content[iteration_name]["ub"].asDouble(),
       _last_iteration_file_content[iteration_name]["best_ub"].asDouble(),
       _last_iteration_file_content[iteration_name]["it"].asInt(),
       _last_iteration_file_content[iteration_name]["best_it"].asInt(),
@@ -44,18 +47,8 @@ LogData LastIterationReader::_get_iteration_data(
       _last_iteration_file_content[iteration_name]["relative_gap"].asDouble(),
       _last_iteration_file_content[iteration_name]["max_iterations"].asInt(),
       _last_iteration_file_content[iteration_name]["benders_elapsed_time"]
-          .asDouble()
+          .asDouble(),
+      _last_iteration_file_content[iteration_name]["duration"].asDouble()
 
   };
-}
-void LastIterationReader::_load_resume_data() {
-  std::ifstream input_file_l(_last_iteration_file, std::ifstream::binary);
-
-  Json::CharReaderBuilder builder_l;
-  // json file content
-  std::string errs;
-  if (!parseFromStream(builder_l, input_file_l, &_last_iteration_file_content,
-                       &errs)) {
-    std::cerr << errs << std::endl;
-  }
 }

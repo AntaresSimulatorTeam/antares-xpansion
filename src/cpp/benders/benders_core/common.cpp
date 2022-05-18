@@ -67,3 +67,15 @@ CouplingMap build_input(const std::filesystem::path &structure_path) {
   summary.close();
   return coupling_map;
 }
+Json::Value get_json_file_content(const std::filesystem::path &json_file) {
+  std::ifstream input_file_l(json_file, std::ifstream::binary);
+
+  Json::CharReaderBuilder builder_l;
+  Json::Value ret;
+  // json file content
+  std::string errs;
+  if (!parseFromStream(builder_l, input_file_l, &ret, &errs)) {
+    std::cerr << errs << std::endl;
+  }
+  return ret;
+}

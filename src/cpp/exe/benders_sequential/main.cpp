@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
   auto logger_factory = FileAndStdoutLoggerFactory(loggerFileName);
 
   Logger logger = logger_factory.get_logger();
-  Writer writer = build_json_writer(options.JSON_FILE);
+  Writer writer = build_json_writer(options.JSON_FILE, options.RESUME);
   writer->write_log_level(options.LOG_LEVEL);
   writer->write_master_name(options.MASTER_NAME);
   writer->write_solver_name(options.SOLVER_NAME);

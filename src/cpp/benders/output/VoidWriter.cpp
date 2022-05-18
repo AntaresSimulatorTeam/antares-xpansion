@@ -49,4 +49,20 @@ void VoidWriter::write_master_name(const std::string &master_name) {
 void VoidWriter::write_log_level(const int log_level) {
   // keep this method empty
 }
+void VoidWriter::write_solution(const SolutionData &solution) {
+  // keep this method empty
+}
+
+void VoidWriter::write_iteration(const Iteration &iteration_data,
+                                 const size_t iteration_num) {
+  // keep this method empty
+}
+
+void VoidWriter::write_nbweeks(const int nb_weeks) {
+  // keep this method empty
+}
+void VoidWriter::write_duration(const double duration) {
+  // keep this method empty
+}
+
 }  // namespace Output

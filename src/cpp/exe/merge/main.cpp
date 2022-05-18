@@ -28,7 +28,8 @@ int main(int argc, char **argv) {
   google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
   LOG(INFO) << "starting merge_mps" << std::endl;
 
-  Writer writer = build_json_writer(std::filesystem::path(options.JSON_FILE));
+  Writer writer =
+      build_json_writer(std::filesystem::path(options.JSON_FILE), false);
   try {
     MergeMPS merge_mps(options.get_base_options(), logger, writer);
     merge_mps.launch();

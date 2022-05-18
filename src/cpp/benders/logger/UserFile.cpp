@@ -82,7 +82,7 @@ void UserFile::log_stop_criterion_reached(
   _file.flush();
 }
 void UserFile::display_restart_message() {
-  _file << LINE_PREFIX << indent_1 << "Restart Study..." << std::endl;
+  _file << LINE_PREFIX << "Restart Study..." << std::endl;
 }
 void UserFile::restart_elapsed_time(const double elapsed_time) {
   _file << LINE_PREFIX << indent_1
@@ -101,7 +101,9 @@ void UserFile::restart_best_iterations_infos(
   const double overall_cost =
       best_iteration_data.subproblem_cost + best_iteration_data.invest_cost;
   _file << LINE_PREFIX << indent_1 << "Best Iteration Infos: " << std::endl
-        << LINE_PREFIX << indent_1
+        << LINE_PREFIX << indent_1 << std::endl;
+  log_master_solving_duration(best_iteration_data.master_time);
+  _file << LINE_PREFIX << indent_1
         << " Overall cost = " << commons::create_str_million_euros(overall_cost)
         << " Me" << std::endl;
   log_iteration_candidates(best_iteration_data);

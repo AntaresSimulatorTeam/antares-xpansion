@@ -82,7 +82,8 @@ void BendersSequential::run() {
   int iterations_before_resume = 0;
   if (is_resume_mode()) {
     auto reader = LastIterationReader(last_iteration_file());
-    auto [last_iter, best_iteration_data] = reader.last_iteration_data();
+    auto [last_iter, best_iteration_data_] = reader.last_iteration_data();
+    best_iteration_data = std::move(best_iteration_data_);
     auto restart_data_printer =
         LastIterationPrinter(_logger, best_iteration_data, last_iter);
     restart_data_printer.print();
@@ -90,6 +91,7 @@ void BendersSequential::run() {
     benders_timer = Timer(last_iter.benders_elapsed_time);
     _data.stop = stopping_criterion();
     iterations_before_resume = last_iter.it;
+    _data.best_it = last_iter.best_it;
   }
   while (!_data.stop) {
     Timer timer_master;
@@ -120,7 +122,11 @@ void BendersSequential::run() {
     LastIterationRecorder last_iteration_recoder(last_iteration_file());
     last_iteration_recoder.save_best_and_last_iterations(
         bendersDataToLogData(_data), get_best_iteration_data());
+    save_current_iteration_in_output_file();
   }
+  _writer->updateEndTime();
+  _writer->write_duration(_data.elapsed_time);
+  save_solution_in_output_file();
 
   if (is_trace()) {
     print_csv();

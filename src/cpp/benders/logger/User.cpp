@@ -63,7 +63,7 @@ void User::log_stop_criterion_reached(
           << " reached" << std::endl;
 }
 void User::display_restart_message() {
-  _stream << indent_1 << "Restart Study..." << std::endl;
+  _stream << "Restart Study..." << std::endl;
 }
 void User::restart_elapsed_time(const double elapsed_time) {
   _stream << indent_1 << "Elapsed time: " << format_time_str(elapsed_time)
@@ -79,6 +79,7 @@ void User::restart_best_iterations_infos(const LogData &best_iteration_data) {
   const double overall_cost =
       best_iteration_data.subproblem_cost + best_iteration_data.invest_cost;
   _stream << indent_1 << "Best Iteration Infos: " << std::endl;
+  log_master_solving_duration(best_iteration_data.master_time);
   _stream << indent_1 << " Overall cost = "
           << commons::create_str_million_euros(overall_cost) << " Me"
           << std::endl;

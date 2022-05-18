@@ -47,6 +47,7 @@ inline std::string criterion_to_str(
 struct LogData {
   double lb;
   double best_ub;
+  double ub;
   int it;
   int best_it;
   double subproblem_cost;
@@ -58,6 +59,7 @@ struct LogData {
   double relative_gap;
   int max_iterations;
   double benders_elapsed_time;
+  double master_time;
 };
 inline std::string format_time_str(const long int time_in_seconds) {
   std::time_t seconds(

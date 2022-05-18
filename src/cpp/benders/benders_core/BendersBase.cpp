@@ -452,7 +452,19 @@ void BendersBase::post_run_actions() const {
   _logger->log_stop_criterion_reached(_data.stopping_criterion);
   _logger->log_at_ending(logData);
 
-  _writer->end_writing(output_data());
+  // _writer->end_writing(output_data());
+}
+
+void BendersBase::save_current_iteration_in_output_file() const {
+  auto masterDataPtr_l = _trace[_data.it - 1];
+  if (masterDataPtr_l->_valid) {
+    _writer->write_iteration(iteration(masterDataPtr_l), _data.it);
+    _writer->dump();
+  }
+}
+void BendersBase::save_solution_in_output_file() const {
+  _writer->write_solution(solution());
+  _writer->dump();
 }
 
 Output::CandidatesVec candidates_data(
@@ -472,7 +484,8 @@ Output::CandidatesVec candidates_data(
   return candidates_vec;
 }
 
-Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) {
+Output::Iteration BendersBase::iteration(
+    const WorkerMasterDataPtr &masterDataPtr_l) const {
   Output::Iteration iteration;
   iteration.time = masterDataPtr_l->_time;
   iteration.lb = masterDataPtr_l->_lb;
@@ -510,16 +523,43 @@ Output::SolutionData BendersBase::solution() const {
   solution_data.nbWeeks_p = _totalNbProblems;
   solution_data.best_it = _data.best_it;
   solution_data.problem_status = status_from_criterion();
-  size_t bestItIndex_l = _data.best_it - 1;
 
-  if (bestItIndex_l < _trace.size()) {
-    solution_data.solution = iteration(_trace[bestItIndex_l]);
-    solution_data.solution.optimality_gap = _data.best_ub - _data.lb;
-    solution_data.solution.relative_gap =
-        solution_data.solution.optimality_gap / _data.best_ub;
-    solution_data.stopping_criterion =
-        criterion_to_str(_data.stopping_criterion);
+  if (_options.RESUME) {
+    // solution not in _trace
+    Output::CandidatesVec candidates_vec;
+    for (const auto &pairNameValue_l : best_iteration_data.x0) {
+      Output::CandidateData candidate_data;
+      candidate_data.name = pairNameValue_l.first;
+      candidate_data.invest = pairNameValue_l.second;
+      candidate_data.min =
+          best_iteration_data.min_invest.at(pairNameValue_l.first);
+      candidate_data.max =
+          best_iteration_data.max_invest.at(pairNameValue_l.first);
+      candidates_vec.push_back(candidate_data);
+    }
+    solution_data.solution = {
+        best_iteration_data.master_time,
+        best_iteration_data.lb,
+        best_iteration_data.ub,
+        best_iteration_data.best_ub,
+        best_iteration_data.optimality_gap,
+        best_iteration_data.relative_gap,
+        best_iteration_data.invest_cost,
+        best_iteration_data.subproblem_cost,
+        best_iteration_data.invest_cost + best_iteration_data.subproblem_cost,
+        candidates_vec};
+
+  } else {
+    size_t bestItIndex_l = _data.best_it - 1;
+
+    if (bestItIndex_l < _trace.size()) {
+      solution_data.solution = iteration(_trace[bestItIndex_l]);
+      /*solution_data.solution.optimality_gap = _data.best_ub - _data.lb;
+      solution_data.solution.relative_gap =
+          solution_data.solution.optimality_gap / _data.best_ub;*/
+    }
   }
+  solution_data.stopping_criterion = criterion_to_str(_data.stopping_criterion);
   return solution_data;
 }
 
@@ -581,6 +621,7 @@ std::filesystem::path BendersBase::get_structure_path() const {
 LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   LogData result;
   result.lb = data.lb;
+  result.ub = data.ub;
   result.best_ub = data.best_ub;
   result.it = data.it;
   result.best_it = data.best_it;
@@ -590,6 +631,7 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   result.min_invest = data.min_invest;
   result.max_invest = data.max_invest;
   result.benders_elapsed_time = data.elapsed_time;
+  result.master_time = data.timer_master;
   result.max_iterations = _options.MAX_ITERATIONS;
   return result;
 }
@@ -615,6 +657,7 @@ void BendersBase::set_log_file(const std::filesystem::path &log_name) {
 void BendersBase::build_input_map() {
   auto input = build_input(get_structure_path());
   _totalNbProblems = input.size();
+  _writer->write_nbweeks(_totalNbProblems);
   _data.nsubproblem = _totalNbProblems - 1;
   master_variable_map = get_master_variable_map(input);
   coupling_map = GetCouplingMap(input);

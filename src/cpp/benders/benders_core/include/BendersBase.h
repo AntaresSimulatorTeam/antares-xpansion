@@ -76,6 +76,8 @@ class BendersBase {
   void update_max_number_iteration_resume_mode(
       const unsigned nb_iteration_done);
   LogData get_best_iteration_data() const;
+  void save_current_iteration_in_output_file() const;
+  void save_solution_in_output_file() const;
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -95,6 +97,7 @@ class BendersBase {
       std::map<std::string, std::map<std::string, int>> input_map) const;
   [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
+  Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
 
  private:
   BendersBaseOptions _options;

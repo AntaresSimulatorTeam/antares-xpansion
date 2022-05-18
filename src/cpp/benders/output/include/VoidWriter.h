@@ -20,9 +20,6 @@ class VoidWriter : public OutputWriter {
    *  \brief destructor of class VoidWriter
    */
   virtual ~VoidWriter() = default;
-  virtual void updateBeginTime();
-
-  virtual void updateEndTime();
 
   /*!
    *  \brief saves some entries to be later written
@@ -65,5 +62,12 @@ class VoidWriter : public OutputWriter {
   void write_solver_name(const std::string &solver_name) override;
   void write_master_name(const std::string &master_name) override;
   void write_log_level(const int log_level) override;
+  void write_solution(const SolutionData &solution) override;
+  void write_iteration(const Iteration &iteration_data,
+                       const size_t iteration_num) override;
+  void updateBeginTime() override;
+  void updateEndTime() override;
+  void write_nbweeks(const int nb_weeks) override;
+  void write_duration(const double duration) override;
 };
 }  // namespace Output

@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
     auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
 
     logger = logger_factory.get_logger();
-    writer = build_json_writer(options.JSON_FILE);
+    writer = build_json_writer(options.JSON_FILE, options.RESUME);
     std::ostringstream oss_l = start_message(options, "mpi");
     LOG(INFO) << oss_l.str() << std::endl;
   } else {
