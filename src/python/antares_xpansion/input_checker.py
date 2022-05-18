@@ -92,6 +92,18 @@ class UnrecognizedCandidateOptionType(Exception):
     pass
 
 
+candidate_options_type = {'name': 'string',
+                          'link': 'string',
+                          'annual-cost-per-mw': 'non-negative',
+                          'unit-size': 'non-negative',
+                          'max-units': 'non-negative',
+                          'max-investment': 'non-negative',
+                          'link-profile': 'string',
+                          'already-installed-capacity': 'non-negative',
+                          'already-installed-link-profile': 'string',
+                          'has-link-profile': 'string'}
+
+
 def _check_candidate_option_type(option, value):
     """
         verifies if a given option value has the correct type corresponding allowed for this option
@@ -101,26 +113,15 @@ def _check_candidate_option_type(option, value):
 
         :return: True if the value has an appropriate type, False or exist otherwise
     """
-    options_types = {'name': 'string',
-                     'enable': 'string',
-                     'candidate-type': 'string',
-                     'investment-type': 'string',
-                     'link': 'string',
-                     'annual-cost-per-mw': 'non-negative',
-                     'unit-size': 'non-negative',
-                     'max-units': 'non-negative',
-                     'max-investment': 'non-negative',
-                     'relaxed': 'string',
-                     'link-profile': 'string',
-                     'already-installed-capacity': 'non-negative',
-                     'already-installed-link-profile': 'string',
-                     'has-link-profile': 'string'}
+
     obsolete_options = ["c", 'enable',
                         'candidate-type', 'investment-type', 'relaxed']
-    option_type = options_types.get(option)
+    option_type = candidate_options_type.get(option)
     if option_type is None:
         flushed_print(
             'check_candidate_option_type: %s option not recognized in candidates file.' % option)
+        flushed_print(f"Authorized options are: ", *
+                      candidate_options_type, sep="\n")
         raise UnrecognizedCandidateOptionType
     else:
         if obsolete_options.count(option):
@@ -216,7 +217,7 @@ def _check_candidate_attributes(ini_file):
         for (option, value) in ini_file.items(each_section):
             if not _check_candidate_option_type(option, value):
                 flushed_print(
-                    "value %s for option %s has the wrong type!" % (value, option))
+                    f"value {value} for option {option} has the wrong type!, it has to be {candidate_options_type[option]}")
                 raise CandidateFileWrongTypeValue
 
 
