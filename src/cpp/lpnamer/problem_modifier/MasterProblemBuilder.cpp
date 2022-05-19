@@ -98,12 +98,13 @@ void MasterProblemBuilder::addNvarOnEachIntegerCandidate(
     std::vector<double> zeros(nbNvar, 0.0);
     std::vector<int> mstart(nbNvar, 0);
     std::vector<char> integer_type(nbNvar, 'I');
-    std::vector<std::string> colNames(0);
+    std::vector<std::string> colNames;
     std::vector<double> max_unit;
 
     for (int i = 0; i < candidatesInteger.size(); i++) {
       const auto& candidate = candidatesInteger.at(i);
       max_unit.push_back(candidate.max_unit());
+      colNames.push_back("nbUnits_" + candidate.get_name());
     }
 
     solver_addcols(master_l, zeros, mstart, {}, {}, zeros, max_unit,

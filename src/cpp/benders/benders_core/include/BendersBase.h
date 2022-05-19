@@ -111,7 +111,6 @@ class BendersBase {
   LogData FinalLogData() const;
 
  private:
-  BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
   std::filesystem::path _log_name;
   BendersTrace _trace;
@@ -125,6 +124,9 @@ class BendersBase {
   LogData best_iteration_data;
   int iterations_before_resume = 0;
   Timer benders_timer;
+
+ protected:
+  BendersBaseOptions _options;
 
  public:
   Logger _logger;
