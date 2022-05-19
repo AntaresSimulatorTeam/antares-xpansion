@@ -20,17 +20,13 @@ std::string timeToStr(const std::time_t &time_p) {
 namespace Output {
 JsonWriter::JsonWriter(std::shared_ptr<Clock> p_clock,
                        const std::filesystem::path &json_filename)
-    : _clock(p_clock), _filename(json_filename) {
-  _open_file();
-}
+    : _clock(p_clock), _filename(json_filename) {}
 
 JsonWriter::JsonWriter(const std::filesystem::path &json_filename,
                        const Json::Value &json_file_content)
     : _clock(std::make_shared<Clock>()),
       _filename(json_filename),
-      _output(json_file_content) {
-  _open_file();
-}
+      _output(json_file_content) {}
 
 void JsonWriter::_open_file() {
   _jsonOut_l.open(_filename, std::ofstream::out | std::ofstream::trunc);
@@ -142,11 +138,13 @@ void JsonWriter::update_solution(const SolutionData &solution_data) {
  *  \brief write the json data into a file
  */
 void JsonWriter::dump() {
+  _open_file();
   _output[ANTARES_C][VERSION_C] = ANTARES_VERSION_TAG;
   _output[ANTARES_XPANSION_C][VERSION_C] = PROJECT_VER;
 
   // Output
   _jsonOut_l << _output << std::endl;
+  _jsonOut_l.close();
 }
 
 void JsonWriter::end_writing(const IterationsData &iterations_data) {
