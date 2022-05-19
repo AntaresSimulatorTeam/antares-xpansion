@@ -18,6 +18,12 @@ from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 
+from antares_xpansion.chronicles_checker import ChronicleChecker
+
+
+class NTCColumnConstraintError(Exception):
+    pass
+
 
 class ConfigLoader:
     """
@@ -52,6 +58,7 @@ class ConfigLoader:
 
         self.check_candidates_file_format()
         self.check_settings_file_format()
+        self.check_NTC_column_constraints()
 
     def _set_simulation_name(self):
         if not self._config.simulation_name:
@@ -484,3 +491,7 @@ class ConfigLoader:
 
     class MissingSimulationName(Exception):
         pass
+
+    def check_NTC_column_constraints(self):
+        checker = ChronicleChecker(self._config.data_dir)
+        checker.CheckChronicleConstraints()
