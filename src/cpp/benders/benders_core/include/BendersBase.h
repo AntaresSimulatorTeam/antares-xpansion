@@ -78,12 +78,13 @@ class BendersBase {
   LogData get_best_iteration_data() const;
   void save_current_iteration_in_output_file() const;
   void save_solution_in_output_file() const;
-  void print_current_iteration_csv();
+  void print_current_iteration_csv(const int before_restart_iterations);
   void open_csv_file();
   void close_csv_file();
 
  private:
-  void print_csv_iteration(std::ostream &file, int ite);
+  void print_csv_iteration(std::ostream &file, int ite,
+                           const int before_restart_iterations);
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterDataPtr &trace, Point const &xopt);
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,

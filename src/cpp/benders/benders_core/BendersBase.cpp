@@ -39,8 +39,9 @@ void BendersBase::init_data() {
 
 void BendersBase::open_csv_file() {
   if (!_csv_file.is_open()) {
-    _csv_file.open(_csv_file_path, std::ios::out | std::ios::trunc);
-    if (_csv_file) {
+    const auto opening_mode = _options.RESUME ? std::ios::app : std::ios::trunc;
+    _csv_file.open(_csv_file_path, std::ios::out | opening_mode);
+    if (_csv_file && !_options.RESUME) {
       _csv_file
           << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;"
              "deletedcut;time;basis;"
@@ -57,8 +58,9 @@ void BendersBase::close_csv_file() {
     _csv_file.close();
   }
 }
-void BendersBase::print_current_iteration_csv() {
-  print_csv_iteration(_csv_file, _data.it - 1);
+void BendersBase::print_current_iteration_csv(
+    const int before_restart_iterations) {
+  print_csv_iteration(_csv_file, _data.it - 1, before_restart_iterations);
 }
 
 /*!
@@ -77,7 +79,7 @@ void BendersBase::print_csv() {
          << std::endl;
     int const nite = _trace.size();
     for (int i = 0; i < nite; i++) {
-      print_csv_iteration(file, i);
+      print_csv_iteration(file, i, 0);
     }
     file.close();
   } else {
@@ -85,7 +87,8 @@ void BendersBase::print_csv() {
   }
 }
 
-void BendersBase::print_csv_iteration(std::ostream &file, int ite) {
+void BendersBase::print_csv_iteration(std::ostream &file, int ite,
+                                      const int before_restart_iterations) {
   if (_trace[ite]->_valid) {
     Point xopt;
     // Write first problem : use result of best iteration
@@ -97,7 +100,8 @@ void BendersBase::print_csv_iteration(std::ostream &file, int ite) {
     } else {
       xopt = _trace[ite - 1]->get_point();
     }
-    print_master_and_cut(file, ite + 1, _trace[ite], xopt);
+    print_master_and_cut(file, ite + 1 + before_restart_iterations, _trace[ite],
+                         xopt);
   }
 }
 

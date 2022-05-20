@@ -124,7 +124,7 @@ void BendersSequential::run() {
     last_iteration_recoder.save_best_and_last_iterations(
         bendersDataToLogData(_data), get_best_iteration_data());
     save_current_iteration_in_output_file();
-    print_current_iteration_csv();
+    print_current_iteration_csv(iterations_before_resume);
   }
   close_csv_file();
   _writer->updateEndTime();
