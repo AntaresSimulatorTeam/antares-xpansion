@@ -93,6 +93,7 @@ void BendersSequential::run() {
     iterations_before_resume = last_iter.it;
     _data.best_it = last_iter.best_it;
   }
+  open_csv_file();
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
@@ -123,14 +124,16 @@ void BendersSequential::run() {
     last_iteration_recoder.save_best_and_last_iterations(
         bendersDataToLogData(_data), get_best_iteration_data());
     save_current_iteration_in_output_file();
+    print_current_iteration_csv();
   }
+  close_csv_file();
   _writer->updateEndTime();
   _writer->write_duration(_data.elapsed_time);
   save_solution_in_output_file();
 
-  if (is_trace()) {
-    print_csv();
-  }
+  // if (is_trace()) {
+  //   print_csv();
+  // }
 }
 
 void BendersSequential::launch() {

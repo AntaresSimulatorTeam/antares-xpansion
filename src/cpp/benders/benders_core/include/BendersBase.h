@@ -78,6 +78,9 @@ class BendersBase {
   LogData get_best_iteration_data() const;
   void save_current_iteration_in_output_file() const;
   void save_solution_in_output_file() const;
+  void print_current_iteration_csv();
+  void open_csv_file();
+  void close_csv_file();
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -109,6 +112,8 @@ class BendersBase {
   SubproblemsMapPtr subproblem_map;
   AllCutStorage _all_cuts_storage;
   StrVector subproblems;
+  std::ofstream _csv_file;
+  std::filesystem::path _csv_file_path;
 
  public:
   Logger _logger;

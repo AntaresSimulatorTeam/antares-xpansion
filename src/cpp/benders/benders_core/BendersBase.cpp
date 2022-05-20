@@ -13,6 +13,8 @@
 BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
                          Writer writer)
     : _options(std::move(options)),
+      _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
+                     (_options.CSV_NAME + ".csv")),
       _logger(logger),
       _writer(std::move(writer)) {}
 
@@ -33,6 +35,30 @@ void BendersBase::init_data() {
   _data.minsimplexiter = std::numeric_limits<int>::max();
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
+}
+
+void BendersBase::open_csv_file() {
+  if (!_csv_file.is_open()) {
+    _csv_file.open(_csv_file_path, std::ios::out | std::ios::trunc);
+    if (_csv_file) {
+      _csv_file
+          << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;"
+             "deletedcut;time;basis;"
+          << std::endl;
+    } else {
+      LOG(INFO) << "Impossible to open the .csv file: " << _csv_file_path
+                << std::endl;
+    }
+  }
+}
+
+void BendersBase::close_csv_file() {
+  if (_csv_file.is_open()) {
+    _csv_file.close();
+  }
+}
+void BendersBase::print_current_iteration_csv() {
+  print_csv_iteration(_csv_file, _data.it - 1);
 }
 
 /*!
@@ -306,8 +332,8 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 /*!
  *  \brief Solve and store optimal variables of all Subproblem Problems
  *
- *  Method to solve and store optimal variables of all Subproblem Problems after
- * fixing trial values
+ *  Method to solve and store optimal variables of all Subproblem Problems
+ * after fixing trial values
  *
  *  \param subproblem_cut_package : map storing for each subproblem its cut
  */
@@ -348,11 +374,11 @@ void BendersBase::getSubproblemCut(
 /*!
  *  \brief Add cut to Master Problem and store the cut in a set
  *
- *  Method to add cut from a subproblem to the Master Problem and store this cut
- * in a map linking each subproblem to its set of cuts.
+ *  Method to add cut from a subproblem to the Master Problem and store this
+ * cut in a map linking each subproblem to its set of cuts.
  *
- *  \param all_package : vector storing all cuts information for each subproblem
- * problem
+ *  \param all_package : vector storing all cuts information for each
+ * subproblem problem
  *
  */
 void BendersBase::compute_cut(AllCutPackage const &all_package) {
@@ -391,11 +417,11 @@ void compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
 /*!
  *  \brief Add aggregated cut to Master Problem and store it in a set
  *
- *  Method to add aggregated cut from subproblems to Master Problem and store it
- * in a map linking each subproblem to its set of non-aggregated cut
+ *  Method to add aggregated cut from subproblems to Master Problem and store
+ * it in a map linking each subproblem to its set of non-aggregated cut
  *
- *  \param all_package : vector storing all cuts information for each subproblem
- * problem
+ *  \param all_package : vector storing all cuts information for each
+ * subproblem problem
  */
 void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
   Point s;
