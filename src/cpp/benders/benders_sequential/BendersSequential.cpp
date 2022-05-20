@@ -67,45 +67,14 @@ void BendersSequential::build_cut() {
   build_cut_full(all_package);
 }
 
-std::vector<int> get_int_var_ids(SolverAbstract::Ptr &master) {
-  std::vector<std::string> var_names =
-      master->get_col_names(0, master->get_ncols()-1);
-  std::vector<int> int_var_ids;
-
-  for (const auto &var_name : var_names) {
-    if (var_name.rfind("nbUnits_", 0) != std::string::npos) {
-      std::cout << var_name << std::endl;
-      int_var_ids.push_back(master->get_col_index(var_name));
-    }
-  }
-  return int_var_ids;
-}
-
-// struct savedRows {
-//   std::vector<int> mstart;
-//   std::vector<int> mclind;
-//   std::vector<double> dmatval;
-// };
-
-// savedRows save_int_constraints(SolverAbstract::Ptr &master,
-//                           std::vector<int> int_var_ids) {
-//   std::sort(int_var_ids.begin(), int_var_ids.end());
-//   std::vector<int> mstart;
-//   std::vector<int> mclind;
-//   std::vector<double> dmatval;
-//   solver_getrows(master, mstart, mclind, dmatval, int_var_ids.front(),
-//                  int_var_ids.back());
-//   savedRows saved_rows = {mstart, mclind, dmatval};
-//   return saved_rows;
-// }
-
 void remove_integrity_constraints(SolverAbstract::Ptr &master,
                                   std::vector<int> int_var_ids) {
   std::vector<char> col_types(int_var_ids.size(), 'C');
   master->chg_col_type(int_var_ids, col_types);
 }
 
-void add_integrity_constraints(SolverAbstract::Ptr &master, std::vector<int> int_var_ids) {
+void add_integrity_constraints(SolverAbstract::Ptr &master,
+                               std::vector<int> int_var_ids) {
   std::vector<char> col_types(int_var_ids.size(), 'I');
   master->chg_col_type(int_var_ids, col_types);
 }
@@ -123,22 +92,19 @@ void BendersSequential::run() {
     OpenCsvFile();
   }
 
-  bool relaxed_master = true;
-  std::vector<int> int_var_ids =
-      get_int_var_ids(get_master()->_solver);
-  remove_integrity_constraints(get_master()->_solver, int_var_ids);
+  if (is_initial_relaxation_requested()) {
+    deactivate_integrity_constraints();
+  }
 
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
 
-    if (relaxed_master &&
-        _data.lb + 1000 * _options.ABSOLUTE_GAP >= _data.best_ub) {
-      relaxed_master = false;
-      std::cout << "switch to integer" << std::endl;
-      add_integrity_constraints(get_master()->_solver, int_var_ids);
+    if (switch_to_integer_master()) {
+      activate_integrity_constraints();
+      reset_data_post_relaxation();
     }
-    
+
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();

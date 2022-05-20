@@ -23,6 +23,8 @@
 #include <tuple>
 #include <vector>
 
+enum class MasterFormulation { INTEGER, RELAXED };
+
 struct Predicate;
 typedef std::map<std::string, double> Point;
 
@@ -140,11 +142,15 @@ struct BendersBaseOptions : public BaseOptions {
 
   double ABSOLUTE_GAP = 0;
   double RELATIVE_GAP = 0;
+  double RELAXED_GAP = 0;
   double TIME_LIMIT = 0;
 
+  bool INITIAL_MASTER_RELAXATION = false;
   bool AGGREGATION = false;
   bool TRACE = false;
   bool BOUND_ALPHA = false;
+
+  MasterFormulation MASTER_FORMULATION;
 
   std::string CSV_NAME;
   std::string LAST_MASTER_MPS;

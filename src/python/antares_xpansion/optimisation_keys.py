@@ -12,6 +12,14 @@ class OptimisationKeys:
         return "RELATIVE_GAP"
 
     @staticmethod
+    def relaxed_gap_key():
+        return "RELAXED_GAP"
+
+    @staticmethod
+    def initial_master_relaxation_key():
+        return "INITIAL_MASTER_RELAXATION"
+
+    @staticmethod
     def aggregation_key():
         return "AGGREGATION"
 

@@ -33,6 +33,7 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
     _set_upper_bounds();
   }
   _set_alpha_var();
+  _set_nb_units_var_ids();
 }
 
 /*!
@@ -78,20 +79,6 @@ void WorkerMaster::get_dual_values(std::vector<double> &dual) const {
  *  \brief Return number of constraint in a problem
  */
 int WorkerMaster::get_number_constraint() const { return _solver->get_nrows(); }
-
-/*!
- *  \brief Delete nrows last rows of a problem
- *
- *  \param nrows : number of rows to delete
- */
-void WorkerMaster::delete_constraint(int const nrows) const {
-  std::vector<int> mindex(nrows, 0);
-  int const nconstraint(get_number_constraint());
-  for (int i(0); i < nrows; i++) {
-    mindex[i] = nconstraint - nrows + i;
-  }
-  solver_deactivaterows(_solver, mindex);
-}
 
 /*!
  *  \brief Add benders cut to a problem
@@ -317,4 +304,26 @@ void WorkerMaster::fix_alpha(double const &bestUB) const {
   std::vector<char> bnd_types(1, 'U');
   std::vector<double> bnd_values(1, bestUB);
   _solver->chg_bounds(mindex, bnd_types, bnd_values);
+}
+
+void WorkerMaster::_set_nb_units_var_ids() {
+  int ncols = _solver->get_ncols();
+  std::vector<char> col_types(ncols);
+  _solver->get_col_type(col_types.data(), 0, ncols - 1);
+
+  for (int i(0); i < col_types.size(); i++) {
+    if (col_types[i] == 'I') {
+      _id_nb_units.push_back(i);
+    }
+  }
+}
+
+void WorkerMaster::deactivate_integrity_constraints() const {
+  std::vector<char> col_types(_id_nb_units.size(), 'C');
+  _solver->chg_col_type(_id_nb_units, col_types);
+}
+
+void WorkerMaster::activate_integrity_constraints() const {
+  std::vector<char> col_types(_id_nb_units.size(), 'I');
+  _solver->chg_col_type(_id_nb_units, col_types);
 }
