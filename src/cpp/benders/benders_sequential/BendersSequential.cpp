@@ -67,18 +67,6 @@ void BendersSequential::build_cut() {
   build_cut_full(all_package);
 }
 
-void remove_integrity_constraints(SolverAbstract::Ptr &master,
-                                  std::vector<int> int_var_ids) {
-  std::vector<char> col_types(int_var_ids.size(), 'C');
-  master->chg_col_type(int_var_ids, col_types);
-}
-
-void add_integrity_constraints(SolverAbstract::Ptr &master,
-                               std::vector<int> int_var_ids) {
-  std::vector<char> col_types(int_var_ids.size(), 'I');
-  master->chg_col_type(int_var_ids, col_types);
-}
-
 /*!
  *  \brief Run BendersSequential algorithm
  *
