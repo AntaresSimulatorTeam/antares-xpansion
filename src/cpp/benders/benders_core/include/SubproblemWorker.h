@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SimplexBasis.h"
 #include "SubproblemCut.h"
 #include "Worker.h"
 
@@ -26,6 +25,4 @@ class SubproblemWorker : public Worker {
   void fix_to(Point const &x0) const;
 
   void get_subgradient(Point &s) const;
-
-  SimplexBasis get_basis() const;
 };

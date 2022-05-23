@@ -699,3 +699,10 @@ double BendersBase::GetSubproblemCost() const { return _data.subproblem_cost; }
 void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
 }
+
+void BendersBase::write_basis() const {
+  const auto filename(
+      std::filesystem::path(_options.OUTPUTROOT) /
+      (_options.LAST_MASTER_BASIS));
+  _master->write_basis(filename);
+}

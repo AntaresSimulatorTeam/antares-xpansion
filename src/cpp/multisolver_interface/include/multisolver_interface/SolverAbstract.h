@@ -207,6 +207,14 @@ class SolverAbstract {
   virtual void write_prob_lp(const std::filesystem::path &filename) = 0;
 
   /**
+   * @brief Writes the current basis to a file for later input into the
+   * optimizer
+   *
+   * @param filename    : file name where the basis is written
+   */
+  virtual void write_basis(const std::filesystem::path &filename) = 0;
+
+  /**
    * @brief reads an optimization problem contained in a MPS file
    *
    * @param name   : name of the file to read
@@ -218,7 +226,15 @@ class SolverAbstract {
    *
    * @param name   : name of the file to read
    */
-  virtual void read_prob_lp(const std::string &filename) = 0;
+  virtual void read_prob_lp(const std::filesystem::path &filename) = 0;
+
+  /**
+   * @brief Instructs the optimizer to read in a previously saved basis from a
+   * file
+   *
+   * @param filename: File name where the basis is to be read
+   */
+  virtual void read_basis(const std::filesystem::path &filename) = 0;
 
   /**
    * @brief copy an existing problem

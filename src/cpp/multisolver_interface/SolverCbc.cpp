@@ -151,8 +151,14 @@ void SolverCbc::write_prob_mps(const std::filesystem::path &filename) {
                   nullptr);
 }
 
-void SolverCbc::write_prob_lp(const std::filesystem::path &name) {
-  _clp_inner_solver.writeLpNative(name.string().c_str(), nullptr, nullptr);
+void SolverCbc::write_prob_lp(const std::filesystem::path &filename) {
+  _clp_inner_solver.writeLpNative(filename.string().c_str(), nullptr, nullptr);
+}
+
+void SolverCbc::write_basis(const std::filesystem::path &filename) {
+  ClpSimplex *clps = _clp_inner_solver.getModelPtr();
+  int status = clps->writeBasis(filename.string().c_str(), false, 1);
+  zero_status_check(status, "write basis");
 }
 
 void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
@@ -161,10 +167,22 @@ void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
   defineCbcModelFromInnerSolver();
 }
 
-void SolverCbc::read_prob_lp(const std::string &prob_name) {
-  int status = _clp_inner_solver.readLp(prob_name.c_str());
+void SolverCbc::read_prob_lp(const std::filesystem::path &prob_name) {
+  int status = _clp_inner_solver.readLp(prob_name.string().c_str());
   zero_status_check(status, "read problem");
   defineCbcModelFromInnerSolver();
+}
+
+void SolverCbc::read_basis(const std::filesystem::path &filename) {
+  ClpSimplex *clps = _clp_inner_solver.getModelPtr();
+  int status = clps->readBasis(filename.string().c_str());
+  // readBasis returns 1 if successful
+  zero_status_check(status - 1, "read basis");
+  if (status == 1) {
+    CoinWarmStartBasis *basis = clps->getBasis();
+    _clp_inner_solver.setWarmStart(basis);
+    delete basis;
+  }
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv) {

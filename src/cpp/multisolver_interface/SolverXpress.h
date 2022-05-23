@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <mutex>
 
 #include "multisolver_interface/SolverAbstract.h"
 #include "xprs.h"
@@ -17,6 +18,8 @@ class SolverXpress : public SolverAbstract {
   static int
       _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                          declared to set or end the environment */
+  static std::mutex license_guard;
+
  public:
   XPRSprob _xprs; /*!< Problem in XPRESS */
 
@@ -66,9 +69,12 @@ class SolverXpress : public SolverAbstract {
  public:
   virtual void write_prob_mps(const std::filesystem::path &filename) override;
   virtual void write_prob_lp(const std::filesystem::path &filename) override;
+  virtual void write_basis(const std::filesystem::path &filename) override;
 
   virtual void read_prob_mps(const std::filesystem::path &filename) override;
-  virtual void read_prob_lp(const std::string &filename) override;
+  virtual void read_prob_lp(const std::filesystem::path &filename) override;
+  virtual void read_basis(const std::filesystem::path &filename) override;
+  
   virtual void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 
  private:

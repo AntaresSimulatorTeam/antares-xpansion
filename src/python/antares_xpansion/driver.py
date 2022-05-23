@@ -123,6 +123,7 @@ class XpansionDriver:
             self.config_loader.json_sensitivity_in_path(),
             self.config_loader.json_file_path(),
             self.config_loader.last_master_file_path(),
+            self.config_loader.last_master_basis_path(),
             self.config_loader.structure_file_path(),
             self.config_loader.json_sensitivity_out_path(),
             self.config_loader.sensitivity_log_file()

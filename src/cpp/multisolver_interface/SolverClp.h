@@ -15,14 +15,14 @@ enum CLP_STATUS {
 
 /*!
  * \class class SolverXpress
- * \brief Daughter class of AsbtractSolver implementing solver XPRESS FICO
+ * \brief Daughter class of AsbtractSolver implementing solver COIN-OR CBC
  */
 class SolverClp : public SolverAbstract {
   /*************************************************************************************************
   ----------------------------------------    ATTRIBUTES
   ---------------------------------------
   *************************************************************************************************/
-  static int _NumberOfProblems; /*!< Counter of the total number of Cplex
+  static int _NumberOfProblems; /*!< Counter of the total number of
                                    problems declared to set or end the
                                    environment */
  public:
@@ -75,9 +75,11 @@ class SolverClp : public SolverAbstract {
  public:
   virtual void write_prob_mps(const std::filesystem::path &filename) override;
   virtual void write_prob_lp(const std::filesystem::path &filename) override;
+  virtual void write_basis(const std::filesystem::path &filename) override;
 
   virtual void read_prob_mps(const std::filesystem::path &filename) override;
-  virtual void read_prob_lp(const std::string &filename) override;
+  virtual void read_prob_lp(const std::filesystem::path &filename) override;
+  virtual void read_basis(const std::filesystem::path &filename) override;
 
   virtual void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 

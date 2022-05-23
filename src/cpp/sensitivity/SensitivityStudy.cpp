@@ -18,7 +18,6 @@ SensitivityStudy::SensitivityStudy(SensitivityInputData input_data,
 
 void SensitivityStudy::launch() {
   logger->log_at_start(output_data);
-
   if (input_data.capex) {
     run_capex_analysis();
   }
@@ -69,7 +68,6 @@ void SensitivityStudy::run_projection_analysis() {
           output_data.pbs_data.push_back(minimizeSolution);
           output_data.pbs_data.push_back(maximizeSolution);
         } else {
-          // TODO : Improve this ?
           logger->display_message(
               "Warning : " + candidate_name +
               " ignored as it has not been found in the list "

@@ -15,7 +15,6 @@ if (TBB_VERSION_MAJOR VERSION_GREATER "2020")
 endif()
 
 add_library (benders_core STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/SimplexBasis.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorker.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/SimulationOptions.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersBase.cpp

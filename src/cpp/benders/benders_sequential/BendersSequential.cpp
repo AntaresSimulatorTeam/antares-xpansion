@@ -103,6 +103,7 @@ void BendersSequential::run() {
     _data.elapsed_time = benders_timer.elapsed();
     _data.stop = stopping_criterion();
   }
+  write_basis();
 
   if (is_trace()) {
     print_csv();

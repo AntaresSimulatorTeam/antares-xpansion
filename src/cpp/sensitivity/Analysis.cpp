@@ -42,7 +42,7 @@ SinglePbData Analysis::run_optimization(SensitivityStudy::StudyType minimize) {
       minimize == SensitivityStudy::StudyType::MINIMIZE ? MIN_C : MAX_C};
   logger->log_begin_pb_resolution(pb_data);
 
-  auto raw_output = solve_sensitivity_pb(sensitivity_pb_model);
+  auto raw_output = solve_sensitivity_pb(input_data, sensitivity_pb_model);
 
   fill_single_pb_data(pb_data, raw_output);
   logger->log_pb_solution(pb_data);
@@ -52,7 +52,7 @@ SinglePbData Analysis::run_optimization(SensitivityStudy::StudyType minimize) {
 std::pair<SinglePbData, SinglePbData> Analysis::run() {
   sensitivity_pb_model =
       get_sensitivity_problem(input_data, candidate_name, problem_type);
-  auto min_capex_data = run_optimization(SensitivityStudy::StudyType::MINIMIZE);
-  auto max_capex_data = run_optimization(SensitivityStudy::StudyType::MAXIMIZE);
-  return {min_capex_data, max_capex_data};
+  auto min_data = run_optimization(SensitivityStudy::StudyType::MINIMIZE);
+  auto max_data = run_optimization(SensitivityStudy::StudyType::MAXIMIZE);
+  return {min_data, max_data};
 }
