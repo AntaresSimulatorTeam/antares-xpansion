@@ -147,11 +147,10 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   if (MASTER_FORMULATION == "integer") {
     result.MASTER_FORMULATION = MasterFormulation::INTEGER;
   } else if (MASTER_FORMULATION == "relaxed") {
-    result.MASTER_FORMULATION == MasterFormulation::RELAXED;
+    result.MASTER_FORMULATION = MasterFormulation::RELAXED;
   } else {
     std::cerr << "Invalid value " << MASTER_FORMULATION << " for option master"
               << std::endl;
-    ;
     std::exit(1);
   }
 

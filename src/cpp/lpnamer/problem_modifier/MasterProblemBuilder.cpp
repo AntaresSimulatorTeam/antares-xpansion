@@ -104,7 +104,7 @@ void MasterProblemBuilder::addNvarOnEachIntegerCandidate(
     for (int i = 0; i < candidatesInteger.size(); i++) {
       const auto& candidate = candidatesInteger.at(i);
       max_unit.push_back(candidate.max_unit());
-      colNames.push_back("nbUnits_" + candidate.get_name());
+      colNames.push_back(NB_UNITS_VAR_PREFIX + candidate.get_name());
     }
 
     solver_addcols(master_l, zeros, mstart, {}, {}, zeros, max_unit,
