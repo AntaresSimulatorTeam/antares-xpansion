@@ -443,7 +443,7 @@ TEST_F(UserLoggerTest, EndLog) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
-TEST_F(UserLoggerTest, DifferentCallsAddToTheSamStream) {
+TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
   LogData logData1;
   logData1.it = 1;
   addCandidate(logData1, "z", 5000000.0, 0.0, 10000000.0);
@@ -508,6 +508,14 @@ TEST_F(UserLoggerTest, LogTotalDuration) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
+TEST_F(UserLoggerTest, LogAtSwitchInteger) {
+  std::stringstream expected;
+  expected << "--- Relaxed gap reached, switch master formulation to integer"
+           << std::endl;
+  _logger.log_at_switch_to_integer();
+  ASSERT_EQ(_stream.str(), expected.str());
+}
+
 class SimpleLoggerMock : public ILogger {
  public:
   SimpleLoggerMock() {
@@ -515,6 +523,7 @@ class SimpleLoggerMock : public ILogger {
     _iterationStartCall = false;
     _iterationEndCall = false;
     _endingCall = false;
+    _switchToIntegerCall = false;
 
     _stopping_criterion = StoppingCriterion::empty;
 
@@ -568,10 +577,13 @@ class SimpleLoggerMock : public ILogger {
     //
   }
 
+  void log_at_switch_to_integer() { _switchToIntegerCall = true; }
+
   bool _initCall;
   bool _iterationStartCall;
   bool _iterationEndCall;
   bool _endingCall;
+  bool _switchToIntegerCall;
   StoppingCriterion _stopping_criterion;
 
   std::string _displaymessage;
@@ -655,4 +667,10 @@ TEST_F(MasterLoggerTest, LogStoppingCriterion) {
   _master.log_stop_criterion_reached(criterion);
   ASSERT_EQ(_logger->_stopping_criterion, StoppingCriterion::absolute_gap);
   ASSERT_EQ(_logger2->_stopping_criterion, StoppingCriterion::absolute_gap);
+}
+
+TEST_F(MasterLoggerTest, LogSwitchToInteger) {
+  _master.log_at_switch_to_integer();
+  ASSERT_TRUE(_logger->_switchToIntegerCall);
+  ASSERT_TRUE(_logger2->_switchToIntegerCall);
 }

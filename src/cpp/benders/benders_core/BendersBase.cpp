@@ -37,6 +37,7 @@ void BendersBase::init_data() {
   _data.minsimplexiter = std::numeric_limits<int>::max();
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
+  _data.is_in_initial_relaxation = false;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -261,12 +262,13 @@ bool BendersBase::is_initial_relaxation_requested() const {
           _options.INITIAL_MASTER_RELAXATION);
 }
 
-bool BendersBase::switch_to_integer_master() const {
-  return is_initial_relaxation_requested() &&
+bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
+  return is_initial_relaxation_requested() && is_relaxed &&
          relaxation_stopping_criterion();
 }
 
 void BendersBase::reset_data_post_relaxation() {
+  _data.is_in_initial_relaxation = false;
   _data.best_ub = 1e+20;
   _data.best_it = 0;
 }
@@ -335,6 +337,7 @@ void BendersBase::get_master_value() {
 }
 
 void BendersBase::deactivate_integrity_constraints() {
+  _data.is_in_initial_relaxation = true;
   _master->deactivate_integrity_constraints();
 }
 
