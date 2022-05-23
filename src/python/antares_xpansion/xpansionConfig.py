@@ -160,7 +160,7 @@ class XpansionConfig:
             OptimisationKeys.max_iterations_key(): self.max_iterations_default_value(),
             OptimisationKeys.absolute_gap_key(): self.absolute_gap_default_value(),
             OptimisationKeys.relative_gap_key(): self.relative_gap_default_value(),
-            OptimisationKeys.relaxed_gap_key(): 1e-4,
+            OptimisationKeys.relaxed_gap_key(): self.relaxed_gap_default_value(),
             OptimisationKeys.initial_master_relaxation_key(): self.initial_master_relaxation_default_value(),
             OptimisationKeys.aggregation_key(): self.aggregation_default_value(),
             OptimisationKeys.outpoutroot_key(): self.outpoutroot_default_value(),
