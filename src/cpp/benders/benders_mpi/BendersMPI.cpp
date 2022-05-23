@@ -84,7 +84,7 @@ void BendersMpi::broadcast_the_master_problem() {
 }
 
 void BendersMpi::solve_master_and_create_trace() {
-  _logger->log_at_initialization(_data.it);
+  _logger->log_at_initialization(_data.it + iterations_before_resume);
   _logger->display_message("\tSolving master...");
   get_master_value();
   _logger->log_master_solving_duration(get_timer_master());
@@ -178,8 +178,7 @@ void BendersMpi::write_exception_message(const std::exception &ex) const {
 }
 
 void BendersMpi::step_4_update_best_solution(int rank,
-                                             const Timer &timer_master,
-                                             const Timer &benders_timer) {
+                                             const Timer &timer_master) {
   if (rank == rank_0) {
     update_best_ub();
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
@@ -217,7 +216,10 @@ void BendersMpi::run() {
   init_data();
   _world.barrier();
 
-  Timer benders_timer;
+  if (_world.rank() == rank_0) {
+    checks_resume_mode();
+    open_csv_file();
+  }
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
@@ -233,16 +235,22 @@ void BendersMpi::run() {
     }
 
     if (!_exceptionRaised) {
-      step_4_update_best_solution(_world.rank(), timer_master, benders_timer);
+      step_4_update_best_solution(_world.rank(), timer_master);
     }
     _data.stop |= _exceptionRaised;
 
     broadcast(_world, _data.stop, rank_0);
+    if (_world.rank() == rank_0) {
+      save_current_benders_data();
+    }
+  }
+  if (_world.rank() == rank_0) {
+    close_csv_file();
   }
 
-  if (_world.rank() == rank_0 && is_trace()) {
-    print_csv();
-  }
+  // if (_world.rank() == rank_0 && is_trace()) {
+  //   print_csv();
+  // }
 }
 
 void BendersMpi::launch() {

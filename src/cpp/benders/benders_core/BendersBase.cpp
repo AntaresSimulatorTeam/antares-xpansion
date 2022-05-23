@@ -6,7 +6,9 @@
 #include <numeric>
 #include <utility>
 
-#include "Timer.h"
+#include "LastIterationPrinter.h"
+#include "LastIterationReader.h"
+#include "LastIterationRecorder.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
 
@@ -58,9 +60,8 @@ void BendersBase::close_csv_file() {
     _csv_file.close();
   }
 }
-void BendersBase::print_current_iteration_csv(
-    const int before_restart_iterations) {
-  print_csv_iteration(_csv_file, _data.it - 1, before_restart_iterations);
+void BendersBase::print_current_iteration_csv() {
+  print_csv_iteration(_csv_file, _data.it - 1);
 }
 
 /*!
@@ -79,7 +80,7 @@ void BendersBase::print_csv() {
          << std::endl;
     int const nite = _trace.size();
     for (int i = 0; i < nite; i++) {
-      print_csv_iteration(file, i, 0);
+      print_csv_iteration(file, i);
     }
     file.close();
   } else {
@@ -87,8 +88,7 @@ void BendersBase::print_csv() {
   }
 }
 
-void BendersBase::print_csv_iteration(std::ostream &file, int ite,
-                                      const int before_restart_iterations) {
+void BendersBase::print_csv_iteration(std::ostream &file, int ite) {
   if (_trace[ite]->_valid) {
     Point xopt;
     // Write first problem : use result of best iteration
@@ -100,7 +100,7 @@ void BendersBase::print_csv_iteration(std::ostream &file, int ite,
     } else {
       xopt = _trace[ite - 1]->get_point();
     }
-    print_master_and_cut(file, ite + 1 + before_restart_iterations, _trace[ite],
+    print_master_and_cut(file, ite + 1 + iterations_before_resume, _trace[ite],
                          xopt);
   }
 }
@@ -469,11 +469,28 @@ void BendersBase::build_cut_full(AllCutPackage const &all_package) {
 }
 
 LogData BendersBase::build_log_data_from_data() const {
-  auto logData = defineLogDataFromBendersDataAndTrace(_data, _trace);
+  auto logData = final_logData();
   logData.optimality_gap = _options.ABSOLUTE_GAP;
   logData.relative_gap = _options.RELATIVE_GAP;
   logData.max_iterations = _options.MAX_ITERATIONS;
   return logData;
+}
+
+LogData BendersBase::final_logData() const {
+  LogData result;
+
+  result.it = _data.it + iterations_before_resume;
+  result.best_it = _data.best_it + iterations_before_resume;
+  result.lb = _data.lb;
+  result.best_ub = _data.best_ub;
+  result.x0 = _data.bestx;
+
+  result.subproblem_cost = best_iteration_data.subproblem_cost;
+  result.invest_cost = best_iteration_data.invest_cost;
+  result.min_invest = best_iteration_data.min_invest;
+  result.max_invest = best_iteration_data.max_invest;
+
+  return result;
 }
 
 void BendersBase::post_run_actions() const {
@@ -551,7 +568,7 @@ Output::IterationsData BendersBase::output_data() const {
 Output::SolutionData BendersBase::solution() const {
   Output::SolutionData solution_data;
   solution_data.nbWeeks_p = _totalNbProblems;
-  solution_data.best_it = _data.best_it;
+  solution_data.best_it = _data.best_it + iterations_before_resume;
   solution_data.problem_status = status_from_criterion();
 
   if (_options.RESUME) {
@@ -653,8 +670,8 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   result.lb = data.lb;
   result.ub = data.ub;
   result.best_ub = data.best_ub;
-  result.it = data.it;
-  result.best_it = data.best_it;
+  result.it = data.it + iterations_before_resume;
+  result.best_it = data.best_it + iterations_before_resume;
   result.subproblem_cost = data.subproblem_cost;
   result.invest_cost = data.invest_cost;
   result.x0 = data.x0;
@@ -776,7 +793,7 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
 }
 
-bool BendersBase::is_resume_mode() { return _options.RESUME; }
+bool BendersBase::is_resume_mode() const { return _options.RESUME; }
 
 void BendersBase::update_max_number_iteration_resume_mode(
     const unsigned nb_iteration_done) {
@@ -793,4 +810,35 @@ void BendersBase::update_max_number_iteration_resume_mode(
 double BendersBase::execution_time() const { return _data.elapsed_time; }
 LogData BendersBase::get_best_iteration_data() const {
   return best_iteration_data;
+}
+
+void BendersBase::checks_resume_mode() {
+  benders_timer = Timer();
+  if (is_resume_mode()) {
+    auto reader = LastIterationReader(last_iteration_file());
+    auto [last_iter, best_iteration_data_] = reader.last_iteration_data();
+    best_iteration_data = std::move(best_iteration_data_);
+    auto restart_data_printer =
+        LastIterationPrinter(_logger, best_iteration_data, last_iter);
+    restart_data_printer.print();
+    update_max_number_iteration_resume_mode(last_iter.it);
+    benders_timer = Timer(last_iter.benders_elapsed_time);
+    _data.stop = stopping_criterion();
+    iterations_before_resume = last_iter.it;
+    // _data.best_it = last_iter.best_it;
+  }
+}
+
+void BendersBase::save_current_benders_data() {
+  LastIterationRecorder last_iteration_recoder(last_iteration_file());
+  last_iteration_recoder.save_best_and_last_iterations(
+      bendersDataToLogData(_data), get_best_iteration_data());
+  save_current_iteration_in_output_file();
+  print_current_iteration_csv();
+}
+
+void BendersBase::end_writing_in_output_file() {
+  _writer->updateEndTime();
+  _writer->write_duration(_data.elapsed_time);
+  save_solution_in_output_file();
 }

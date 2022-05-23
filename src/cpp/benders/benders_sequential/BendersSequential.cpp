@@ -4,9 +4,6 @@
 #include <iomanip>
 #include <utility>
 
-#include "LastIterationPrinter.h"
-#include "LastIterationReader.h"
-#include "LastIterationRecorder.h"
 #include "Timer.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
@@ -78,27 +75,13 @@ void BendersSequential::build_cut() {
 void BendersSequential::run() {
   set_cut_storage();
   init_data();
-  Timer benders_timer;
-  int iterations_before_resume = 0;
-  if (is_resume_mode()) {
-    auto reader = LastIterationReader(last_iteration_file());
-    auto [last_iter, best_iteration_data_] = reader.last_iteration_data();
-    best_iteration_data = std::move(best_iteration_data_);
-    auto restart_data_printer =
-        LastIterationPrinter(_logger, best_iteration_data, last_iter);
-    restart_data_printer.print();
-    update_max_number_iteration_resume_mode(last_iter.it);
-    benders_timer = Timer(last_iter.benders_elapsed_time);
-    _data.stop = stopping_criterion();
-    iterations_before_resume = last_iter.it;
-    _data.best_it = last_iter.best_it;
-  }
-  open_csv_file();
+  checks_resume_mode();
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
 
-    _logger->log_at_initialization(_data.it + iterations_before_resume);
+    _logger->log_at_initialization(_data.it +
+                                   get_num_iterations_before_restart());
     _logger->display_message("\tSolving master...");
     get_master_value();
     _logger->log_master_solving_duration(get_timer_master());
@@ -120,16 +103,10 @@ void BendersSequential::run() {
     set_timer_master(timer_master.elapsed());
     _data.elapsed_time = benders_timer.elapsed();
     _data.stop = stopping_criterion();
-    LastIterationRecorder last_iteration_recoder(last_iteration_file());
-    last_iteration_recoder.save_best_and_last_iterations(
-        bendersDataToLogData(_data), get_best_iteration_data());
-    save_current_iteration_in_output_file();
-    print_current_iteration_csv(iterations_before_resume);
+    save_current_benders_data();
   }
   close_csv_file();
-  _writer->updateEndTime();
-  _writer->write_duration(_data.elapsed_time);
-  save_solution_in_output_file();
+  end_writing_in_output_file();
 
   // if (is_trace()) {
   //   print_csv();

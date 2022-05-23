@@ -7,6 +7,7 @@
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
+#include "Timer.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "common.h"
@@ -26,6 +27,8 @@ class BendersBase {
   VariableMap master_variable_map;
   CouplingMap coupling_map;
   LogData best_iteration_data;
+  Timer benders_timer;
+  int iterations_before_resume = 0;
 
  protected:
   virtual void free() = 0;
@@ -69,7 +72,7 @@ class BendersBase {
   void SetSubproblemTimers(const double &subproblem_timer);
   [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
-  bool is_resume_mode();
+  bool is_resume_mode() const;
   std::filesystem::path last_iteration_file() const {
     return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
   }
@@ -78,13 +81,18 @@ class BendersBase {
   LogData get_best_iteration_data() const;
   void save_current_iteration_in_output_file() const;
   void save_solution_in_output_file() const;
-  void print_current_iteration_csv(const int before_restart_iterations);
+  void print_current_iteration_csv();
   void open_csv_file();
   void close_csv_file();
+  void checks_resume_mode();
+  void save_current_benders_data();
+  void end_writing_in_output_file();
+  [[nodiscard]] int get_num_iterations_before_restart() const {
+    return iterations_before_resume;
+  }
 
  private:
-  void print_csv_iteration(std::ostream &file, int ite,
-                           const int before_restart_iterations);
+  void print_csv_iteration(std::ostream &file, int ite);
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterDataPtr &trace, Point const &xopt);
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
@@ -102,6 +110,7 @@ class BendersBase {
   [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
   Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
+  LogData final_logData() const;
 
  private:
   BendersBaseOptions _options;
