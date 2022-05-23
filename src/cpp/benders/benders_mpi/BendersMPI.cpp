@@ -35,10 +35,10 @@ void BendersMpi::initialize_problems() {
   } else {
     // Dispatch subproblems to process
     for (const auto &problem : coupling_map) {
-      auto process_to_feed =
-          current_problem_id % subproblemProcessCount +
-          1;  // In case there are more subproblems than process
-      if (process_to_feed ==
+      // In case there are more subproblems than process
+      if (auto process_to_feed =
+              current_problem_id % subproblemProcessCount + 1;
+          process_to_feed ==
           _world
               .rank()) {  // Assign  [problemNumber % processCount] to processID
         addSubproblem(problem);
@@ -214,14 +214,14 @@ void BendersMpi::free() {
  *
  */
 void BendersMpi::run() {
-  if (_world.rank() == rank_0) {
-    set_cut_storage();
-  }
   init_data();
 
   if (_world.rank() == rank_0) {
+    set_cut_storage();
+
     if (is_initial_relaxation_requested()) {
       deactivate_integrity_constraints();
+      set_data_pre_relaxation();
     }
   }
 
@@ -236,7 +236,6 @@ void BendersMpi::run() {
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
-    
 
     /*Solve Master problem, get optimal value and cost and send it to process*/
     step_1_solve_master();

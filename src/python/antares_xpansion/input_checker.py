@@ -352,7 +352,6 @@ options_types_and_legal_values = {
     "initial_master_relaxation": (type_str, ["True", "true", "False", "false"]),
     "week_selection": (type_str, ["true", "false"]),
     "max_iteration": (type_int, None),
-    "relaxed_optimality_gap": (type_float, None),
     "solver": (type_str, None),
     "timelimit": (type_int, None),
     "yearly-weights": (type_str, None),

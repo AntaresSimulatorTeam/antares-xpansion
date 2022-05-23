@@ -82,6 +82,7 @@ void BendersSequential::run() {
 
   if (is_initial_relaxation_requested()) {
     deactivate_integrity_constraints();
+    set_data_pre_relaxation();
   }
 
   while (!_data.stop) {

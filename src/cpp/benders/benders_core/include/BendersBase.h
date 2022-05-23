@@ -42,8 +42,9 @@ class BendersBase {
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
-  void deactivate_integrity_constraints();
-  void activate_integrity_constraints();
+  void deactivate_integrity_constraints() const;
+  void activate_integrity_constraints() const;
+  void set_data_pre_relaxation();
   void reset_data_post_relaxation();
   [[nodiscard]] std::filesystem::path GetSubproblemPath(
       std::string const &subproblem_name) const;
