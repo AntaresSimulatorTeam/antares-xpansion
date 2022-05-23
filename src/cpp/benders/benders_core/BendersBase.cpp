@@ -267,6 +267,10 @@ bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
          relaxation_stopping_criterion();
 }
 
+void BendersBase::set_data_pre_relaxation() {
+  _data.is_in_initial_relaxation = true;
+}
+
 void BendersBase::reset_data_post_relaxation() {
   _data.is_in_initial_relaxation = false;
   _data.best_ub = 1e+20;
@@ -336,12 +340,11 @@ void BendersBase::get_master_value() {
   _data.timer_master = timer_master.elapsed();
 }
 
-void BendersBase::deactivate_integrity_constraints() {
-  _data.is_in_initial_relaxation = true;
+void BendersBase::deactivate_integrity_constraints() const {
   _master->deactivate_integrity_constraints();
 }
 
-void BendersBase::activate_integrity_constraints() {
+void BendersBase::activate_integrity_constraints() const {
   _master->activate_integrity_constraints();
 }
 
