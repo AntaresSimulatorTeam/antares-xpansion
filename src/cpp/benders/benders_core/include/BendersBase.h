@@ -36,7 +36,7 @@ class BendersBase {
   void update_best_ub();
   bool stopping_criterion();
   bool is_initial_relaxation_requested() const;
-  bool switch_to_integer_master() const;
+  bool switch_to_integer_master(bool is_relaxed) const;
   void update_trace();
   void get_master_value();
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);

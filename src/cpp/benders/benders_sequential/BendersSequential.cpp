@@ -88,7 +88,8 @@ void BendersSequential::run() {
     Timer timer_master;
     ++_data.it;
 
-    if (switch_to_integer_master()) {
+    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+      _logger->log_at_switch_to_integer();
       activate_integrity_constraints();
       reset_data_post_relaxation();
     }

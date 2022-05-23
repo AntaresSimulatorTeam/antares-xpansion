@@ -284,6 +284,12 @@ class ConfigLoader:
             else -1
         )
 
+    def get_master_formulation(self):
+        """
+        return master formulation read from the settings file
+        """
+        return self.options.get("master", self._config.settings_default["master"])
+
     def get_initial_master_relaxation(self):
         """
         return initial master relaxation read from the settings file
@@ -419,6 +425,9 @@ class ConfigLoader:
             OptimisationKeys.relaxed_gap_key()
         ] = self.get_relaxed_optimality_gap()
         options_values[
+            OptimisationKeys.master_formulation_key()
+        ] = self.get_master_formulation()
+        options_values[
             OptimisationKeys.initial_master_relaxation_key()
         ] = self.get_initial_master_relaxation()
         options_values[
@@ -494,11 +503,8 @@ class ConfigLoader:
             flushed_print(
                 f"{self._INFO_MSG} master options is not defined, {self._config.settings_default['master']} used"
             )
-        relaxation_type = self.options.get(
-            "master", self._config.settings_default["master"]
-        )
 
-        return relaxation_type == "relaxed"
+        return self.get_master_formulation() == "relaxed"
 
     def keep_mps(self) -> bool:
         return self._config.keep_mps
