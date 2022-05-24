@@ -667,20 +667,23 @@ std::filesystem::path BendersBase::get_structure_path() const {
 
 LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
   LogData result;
-  result.lb = data.lb;
-  result.ub = data.ub;
-  result.best_ub = data.best_ub;
-  result.it = data.it + iterations_before_resume;
-  result.best_it = data.best_it + iterations_before_resume;
-  result.subproblem_cost = data.subproblem_cost;
-  result.invest_cost = data.invest_cost;
-  result.x0 = data.x0;
-  result.min_invest = data.min_invest;
-  result.max_invest = data.max_invest;
-  result.benders_elapsed_time = data.elapsed_time;
-  result.master_time = data.timer_master;
-  result.max_iterations = _options.MAX_ITERATIONS;
-  return result;
+
+  auto optimal_gap(data.best_ub - data.lb);
+  return {data.lb,
+          data.best_ub,
+          data.ub,
+          data.it + iterations_before_resume,
+          data.best_it + iterations_before_resume,
+          data.subproblem_cost,
+          data.invest_cost,
+          data.x0,
+          data.min_invest,
+          data.max_invest,
+          optimal_gap,
+          optimal_gap / data.best_ub,
+          _options.MAX_ITERATIONS,
+          data.elapsed_time,
+          data.timer_master};
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_name) {
   _log_name = log_name;
