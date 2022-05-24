@@ -246,6 +246,7 @@ void BendersMpi::run() {
   }
   if (_world.rank() == rank_0) {
     close_csv_file();
+    end_writing_in_output_file();
   }
 
   // if (_world.rank() == rank_0 && is_trace()) {
