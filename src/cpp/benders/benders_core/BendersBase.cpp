@@ -570,6 +570,8 @@ Output::SolutionData BendersBase::solution() const {
   solution_data.nbWeeks_p = _totalNbProblems;
   solution_data.best_it = _data.best_it + iterations_before_resume;
   solution_data.problem_status = status_from_criterion();
+  const auto optimal_gap(_data.best_ub - _data.lb);
+  const auto relative_gap(optimal_gap / _data.best_ub);
 
   if (_options.RESUME) {
     // solution not in _trace
@@ -589,8 +591,8 @@ Output::SolutionData BendersBase::solution() const {
         best_iteration_data.lb,
         best_iteration_data.ub,
         best_iteration_data.best_ub,
-        best_iteration_data.optimality_gap,
-        best_iteration_data.relative_gap,
+        optimal_gap,
+        relative_gap,
         best_iteration_data.invest_cost,
         best_iteration_data.subproblem_cost,
         best_iteration_data.invest_cost + best_iteration_data.subproblem_cost,
@@ -601,9 +603,8 @@ Output::SolutionData BendersBase::solution() const {
 
     if (bestItIndex_l < _trace.size()) {
       solution_data.solution = iteration(_trace[bestItIndex_l]);
-      /*solution_data.solution.optimality_gap = _data.best_ub - _data.lb;
-      solution_data.solution.relative_gap =
-          solution_data.solution.optimality_gap / _data.best_ub;*/
+      solution_data.solution.optimality_gap = optimal_gap;
+      solution_data.solution.relative_gap = relative_gap;
     }
   }
   solution_data.stopping_criterion = criterion_to_str(_data.stopping_criterion);
