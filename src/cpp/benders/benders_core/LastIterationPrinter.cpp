@@ -11,8 +11,8 @@ LastIterationPrinter::LastIterationPrinter(Logger &logger,
 void LastIterationPrinter::print() const {
   _logger->display_restart_message();
   _logger->restart_elapsed_time(_last_iteration_data.benders_elapsed_time);
-  _logger->restart_performed_iterations(_last_iteration_data.it);
+  _logger->number_of_iterations_before_restart(_last_iteration_data.it);
   _logger->restart_best_iteration(_last_iteration_data.best_it);
-  _logger->log_master_solving_duration(_last_iteration_data.master_time);
+  // _logger->log_master_solving_duration(_last_iteration_data.master_time);
   _logger->restart_best_iterations_infos(_best_iteration_data);
 }

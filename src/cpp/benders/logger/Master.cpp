@@ -67,9 +67,9 @@ void Master::restart_elapsed_time(const double elapsed_time) {
     logger->restart_elapsed_time(elapsed_time);
   }
 }
-void Master::restart_performed_iterations(const int num_iteration) {
+void Master::number_of_iterations_before_restart(const int num_iteration) {
   for (auto logger : _loggers) {
-    logger->restart_performed_iterations(num_iteration);
+    logger->number_of_iterations_before_restart(num_iteration);
   }
 }
 void Master::restart_best_iteration(const int best_iteration) {

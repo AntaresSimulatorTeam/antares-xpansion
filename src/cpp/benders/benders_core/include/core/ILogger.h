@@ -100,7 +100,8 @@ class ILogger {
       const StoppingCriterion stopping_criterion) = 0;
   virtual void display_restart_message() = 0;
   virtual void restart_elapsed_time(const double elapsed_time) = 0;
-  virtual void restart_performed_iterations(const int num_iterations) = 0;
+  virtual void number_of_iterations_before_restart(
+      const int num_iterations) = 0;
   virtual void restart_best_iteration(const int best_iterations) = 0;
   virtual void restart_best_iterations_infos(
       const LogData &best_iterations_data) = 0;

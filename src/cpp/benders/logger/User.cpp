@@ -69,21 +69,18 @@ void User::restart_elapsed_time(const double elapsed_time) {
   _stream << indent_1 << "Elapsed time: " << format_time_str(elapsed_time)
           << std::endl;
 }
-void User::restart_performed_iterations(const int num_iteration) {
-  _stream << indent_1 << "Performed Iterations: " << num_iteration << std::endl;
+void User::number_of_iterations_before_restart(const int num_iteration) {
+  _stream << indent_1 << "Number of Iterations performed: " << num_iteration
+          << std::endl;
 }
 void User::restart_best_iteration(const int best_iteration) {
   _stream << indent_1 << "Best Iteration: " << best_iteration << std::endl;
 }
 void User::restart_best_iterations_infos(const LogData &best_iteration_data) {
-  const double overall_cost =
-      best_iteration_data.subproblem_cost + best_iteration_data.invest_cost;
   _stream << indent_1 << "Best Iteration Infos: " << std::endl;
   log_master_solving_duration(best_iteration_data.master_time);
-  _stream << indent_1 << " Overall cost = "
-          << commons::create_str_million_euros(overall_cost) << " Me"
-          << std::endl;
   log_iteration_candidates(best_iteration_data);
+  log_at_iteration_end(best_iteration_data);
 }
 }  // namespace logger
 }  // namespace xpansion
