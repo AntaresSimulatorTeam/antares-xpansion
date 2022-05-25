@@ -76,6 +76,7 @@ Json::Value get_json_file_content(const std::filesystem::path &json_file) {
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &ret, &errs)) {
     std::cerr << errs << std::endl;
+    ret = Json::Value::null;
   }
   return ret;
 }

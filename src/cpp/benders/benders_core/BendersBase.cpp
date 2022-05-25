@@ -818,8 +818,15 @@ void BendersBase::checks_resume_mode() {
   benders_timer = Timer();
   if (is_resume_mode()) {
     auto reader = LastIterationReader(last_iteration_file());
-    auto [last_iter, best_iteration_data_] = reader.last_iteration_data();
-    best_iteration_data = std::move(best_iteration_data_);
+    LogData last_iter;
+    if (reader.is_last_iteration_file_valid()) {
+      const auto lastIter_bestIter = reader.last_iteration_data();
+      best_iteration_data = std::move(lastIter_bestIter.second);
+      last_iter = std::move(lastIter_bestIter.first);
+    } else {
+      best_iteration_data = bendersDataToLogData(_data);
+      last_iter = best_iteration_data;
+    }
     auto restart_data_printer =
         LastIterationPrinter(_logger, best_iteration_data, last_iter);
     restart_data_printer.print();

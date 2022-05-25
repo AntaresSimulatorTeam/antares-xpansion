@@ -9,6 +9,7 @@ class LastIterationReader {
  public:
   LastIterationReader(const std::filesystem::path& last_iteration_file);
   std::pair<LogData, LogData> last_iteration_data();
+  bool is_last_iteration_file_valid() const;
 
  private:
   LogData _get_iteration_data(const std::string& iteration_name);
