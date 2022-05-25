@@ -498,8 +498,6 @@ void BendersBase::post_run_actions() const {
 
   _logger->log_stop_criterion_reached(_data.stopping_criterion);
   _logger->log_at_ending(logData);
-
-  // _writer->end_writing(output_data());
 }
 
 void BendersBase::save_current_iteration_in_output_file() const {
