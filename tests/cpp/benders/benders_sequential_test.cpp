@@ -49,7 +49,7 @@ class BendersSequentialDouble : public BendersSequential {
     return BendersSequential::get_master();
   };
 
-  void get_master_value() override {};
+  void get_master_value() override{};
   BendersData get_data() const { return _data; }
   void build_input_map() override{};
   void write_basis() const override{};
@@ -86,7 +86,7 @@ class BendersSequentialTest : public ::testing::Test {
         std::make_shared<Output::JsonWriter>(nullptr, std::tmpnam(nullptr));
   }
 
-  BaseOptions init_base_options() {
+  BaseOptions init_base_options() const {
     BaseOptions base_options;
 
     base_options.LOG_LEVEL = 0;
@@ -102,7 +102,7 @@ class BendersSequentialTest : public ::testing::Test {
     return base_options;
   }
 
-  BendersBaseOptions init_benders_options() {
+  BendersBaseOptions init_benders_options() const {
     BaseOptions base_options(init_base_options());
     BendersBaseOptions options(base_options);
 
@@ -125,40 +125,66 @@ class BendersSequentialTest : public ::testing::Test {
 
     return options;
   }
+
+  BendersSequentialDouble init_benders_sequential() {
+    BendersBaseOptions options = init_benders_options();
+    BendersSequentialDouble benders(options, logger, writer);
+    return benders;
+  }
+
+  std::vector<char> get_nb_units_col_types(BendersSequentialDouble benders) const {
+    char col_type;
+    std::vector<char> nb_units_col_types;
+    for (auto col_id : benders.get_master()->get_id_nb_units()) {
+      benders.get_master()->solver()->get_col_type(&col_type, col_id, col_id);
+      nb_units_col_types.push_back(col_type);
+    }
+    return nb_units_col_types;
+  }
 };
 
-TEST_F(BendersSequentialTest, ChangeToRelaxedAtBeginning) {
-  BendersBaseOptions options = init_benders_options();
-  BendersSequentialDouble benders(options, logger, writer);
+TEST_F(BendersSequentialTest, MasterRelaxedAtBeginning) {
+  BendersSequentialDouble benders = init_benders_sequential();
+
   benders.set_data(true, 0);
   benders.launch();
 
-  char col_type;
-  std::vector<char> master_col_types;
-  for (auto col_id : benders.get_master()->get_id_nb_units()) {
-    benders.get_master()->solver()->get_col_type(&col_type, col_id, col_id);
-    master_col_types.push_back(col_type);
-  }
+  std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
-  ASSERT_TRUE(std::all_of(master_col_types.begin(), master_col_types.end(),
+  ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
                           [](char element) { return element == 'C'; }));
+}
+
+TEST_F(BendersSequentialTest, CheckDataPreRelaxation) {
+  BendersSequentialDouble benders = init_benders_sequential();
+
+  benders.set_data(true, 0);
+  benders.launch();
+
   ASSERT_EQ(benders.get_data().is_in_initial_relaxation, true);
 }
 
 TEST_F(BendersSequentialTest, ReactivateIntegrityConstraint) {
-  BendersBaseOptions options = init_benders_options();
-  BendersSequentialDouble benders(options, logger, writer);
+  BendersSequentialDouble benders = init_benders_sequential();
+
   benders.set_data(false, 0);
   benders.set_bounds(1000, 1001);
   benders.launch();
 
-  char col_type;
-  std::vector<char> master_col_types;
-  for (auto col_id : benders.get_master()->get_id_nb_units()) {
-    benders.get_master()->solver()->get_col_type(&col_type, col_id, col_id);
-    master_col_types.push_back(col_type);
-  }
+  std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
-  ASSERT_TRUE(std::all_of(master_col_types.begin(), master_col_types.end(),
+  ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
                           [](char element) { return element == 'I'; }));
+}
+
+TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
+  BendersSequentialDouble benders = init_benders_sequential();
+
+  benders.set_data(false, 0);
+  benders.set_bounds(1000, 1001);
+  benders.launch();
+
+  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, false);
+  ASSERT_EQ(benders.get_data().best_ub, 1e+20);
+  ASSERT_EQ(benders.get_data().best_it, 0);
 }
