@@ -80,7 +80,7 @@ inline std::string format_time_str(const long int time_in_seconds) {
     ss << mins << " minutes ";
   }
   if (secs > 0) {
-    ss << seconds << " seconds ";
+    ss << secs << " seconds ";
   }
   return ss.str();
 }
