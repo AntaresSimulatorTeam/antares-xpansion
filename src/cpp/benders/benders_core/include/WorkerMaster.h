@@ -32,8 +32,9 @@ class WorkerMaster : public Worker {
                         double const &rhs) const;
   void fix_alpha(double const &bestUB) const;
 
-  void deactivate_integrity_constraints() const;
-  void activate_integrity_constraints() const;
+  virtual void deactivate_integrity_constraints() const;
+  virtual void activate_integrity_constraints() const;
+  virtual std::vector<int> get_id_nb_units() const { return _id_nb_units; };
 
  private:
   std::vector<int> _id_nb_units;
