@@ -12,7 +12,7 @@ LastIterationReader::LastIterationReader(
   _last_iteration_file_content = get_json_file_content(_last_iteration_file);
 }
 bool LastIterationReader::is_last_iteration_file_valid() const {
-  return _last_iteration_file_content != Json::Value::nullSingleton();
+  return _last_iteration_file_content.isNull();
 }
 std::pair<LogData, LogData> LastIterationReader::last_iteration_data() {
   return {_get_iteration_data("last"), _get_iteration_data("best_iteration")};
