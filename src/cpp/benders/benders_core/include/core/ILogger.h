@@ -60,6 +60,18 @@ struct LogData {
   int max_iterations;
   double benders_elapsed_time;
   double master_time;
+  bool operator==(const LogData &lhs) const {
+    return lb == lhs.lb && best_ub == lhs.best_ub && ub == lhs.ub &&
+           it == lhs.it && best_it == lhs.best_it &&
+           subproblem_cost == lhs.subproblem_cost &&
+           invest_cost == lhs.invest_cost && x0 == lhs.x0 &&
+           min_invest == lhs.min_invest && max_invest == lhs.max_invest &&
+           optimality_gap == lhs.optimality_gap &&
+           relative_gap == lhs.relative_gap &&
+           max_iterations == lhs.max_iterations &&
+           benders_elapsed_time == lhs.benders_elapsed_time &&
+           master_time == lhs.master_time;
+  }
 };
 inline std::string format_time_str(const long int time_in_seconds) {
   std::time_t seconds(

@@ -36,8 +36,8 @@ LogData LastIterationReader::_get_iteration_data(
   }
   return {
       _last_iteration_file_content[iteration_name]["lb"].asDouble(),
-      _last_iteration_file_content[iteration_name]["ub"].asDouble(),
       _last_iteration_file_content[iteration_name]["best_ub"].asDouble(),
+      _last_iteration_file_content[iteration_name]["ub"].asDouble(),
       _last_iteration_file_content[iteration_name]["it"].asInt(),
       _last_iteration_file_content[iteration_name]["best_it"].asInt(),
       _last_iteration_file_content[iteration_name]["subproblem_cost"]
