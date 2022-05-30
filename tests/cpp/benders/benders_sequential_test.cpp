@@ -95,7 +95,7 @@ class BendersSequentialTest : public ::testing::Test {
     base_options.SLAVE_WEIGHT = "CONSTANT";
     base_options.MASTER_NAME = "mip_toy_prob";
     base_options.STRUCTURE_FILE = "my_structure.txt";
-    base_options.INPUTROOT = data_test_dir / "mps";
+    base_options.INPUTROOT = (data_test_dir / "mps").string();
     base_options.SOLVER_NAME = "COIN";
     base_options.weights = {};
 
