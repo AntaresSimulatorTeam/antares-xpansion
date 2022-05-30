@@ -11,7 +11,7 @@
 #ifndef ANTARESXPANSION_MASTERPROBLEMBUILDER_H
 #define ANTARESXPANSION_MASTERPROBLEMBUILDER_H
 
-const std::string NB_UNITS_VAR_PREFIX("nbUnits_");
+const std::string NB_UNITS_VAR_PREFIX("nb_units_");
 
 class MasterProblemBuilder {
  public:
