@@ -147,7 +147,7 @@ class XpansionConfig:
             "week_selection": "false",
             "max_iteration": "+infini",
             "relaxed_optimality_gap": "1e-4",
-            "initial_master_relaxation": "true",
+            "initial_master_relaxation": "false",
             "solver": "Cbc",
             "timelimit": "+infini",
             "additional-constraints": "",
