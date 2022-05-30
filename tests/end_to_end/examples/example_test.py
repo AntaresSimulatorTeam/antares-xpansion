@@ -54,6 +54,7 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
         command.append("--allow-run-as-root")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
+    print(output)
 
     # Check return value
     assert process.returncode == 0
