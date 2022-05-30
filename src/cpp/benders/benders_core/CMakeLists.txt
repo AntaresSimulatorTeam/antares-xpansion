@@ -24,7 +24,7 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/common.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersStructsDatas.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Worker.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationRecorder.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationWriter.cpp 
 	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationReader.cpp 
 	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationPrinter.cpp 
 )

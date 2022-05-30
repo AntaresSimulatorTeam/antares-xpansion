@@ -8,7 +8,7 @@
 
 #include "LastIterationPrinter.h"
 #include "LastIterationReader.h"
-#include "LastIterationRecorder.h"
+#include "LastIterationWriter.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
 
@@ -839,7 +839,7 @@ void BendersBase::checks_resume_mode() {
 }
 
 void BendersBase::save_current_benders_data() {
-  LastIterationRecorder last_iteration_recoder(last_iteration_file());
+  LastIterationWriter last_iteration_recoder(last_iteration_file());
   last_iteration_recoder.save_best_and_last_iterations(
       bendersDataToLogData(_data), get_best_iteration_data());
   save_current_iteration_in_output_file();

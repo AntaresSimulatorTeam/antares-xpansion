@@ -1,13 +1,13 @@
-#ifndef __LASTITERATIONRECORDER__H__
-#define __LASTITERATIONRECORDER__H__
+#ifndef __LASTITERATIONWRITER__H__
+#define __LASTITERATIONWRITER__H__
 #include <json/writer.h>
 
 #include <filesystem>
 
 #include "core/ILogger.h"
-class LastIterationRecorder {
+class LastIterationWriter {
  public:
-  LastIterationRecorder(const std::filesystem::path &last_iteration_file)
+  LastIterationWriter(const std::filesystem::path &last_iteration_file)
       : _output_file(last_iteration_file) {}
   void save_best_and_last_iterations(const LogData &best_iteration_log_data,
                                      const LogData &last_iteration_log_data);
@@ -20,4 +20,4 @@ class LastIterationRecorder {
   LogData _best_iteration_data;
   Json::Value _output;
 };
-#endif  //__LASTITERATIONRECORDER__H__
+#endif  //__LASTITERATIONWRITER__H__

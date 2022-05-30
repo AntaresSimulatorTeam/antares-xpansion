@@ -1,9 +1,9 @@
-#include "LastIterationRecorder.h"
+#include "LastIterationWriter.h"
 
 #include <fstream>
 #include <iostream>
 
-void LastIterationRecorder::save_best_and_last_iterations(
+void LastIterationWriter::save_best_and_last_iterations(
     const LogData &best_iteration_log_data,
     const LogData &last_iteration_log_data) {
   _best_iteration_data = best_iteration_log_data;
@@ -15,13 +15,12 @@ void LastIterationRecorder::save_best_and_last_iterations(
     // Output
     jsonOut_l << _output << std::endl;
   } else {
-    std::cerr << "Impossible d'ouvrir le fichier json " << _output_file
-              << std::endl;
+    std::cerr << "Invalid Json file: " << _output_file.string() << std::endl;
   }
 }
 
-void LastIterationRecorder::_fill_output(const std::string &iteration_name,
-                                         const LogData &iteration_data) {
+void LastIterationWriter::_fill_output(const std::string &iteration_name,
+                                       const LogData &iteration_data) {
   _output[iteration_name]["lb"] = iteration_data.lb;
   _output[iteration_name]["ub"] = iteration_data.ub;
   _output[iteration_name]["best_ub"] = iteration_data.best_ub;
