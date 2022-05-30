@@ -1,6 +1,6 @@
-add_executable(benders_sequential benders_sequential_test.cpp)
+add_executable(benders_sequential_test benders_sequential_test.cpp)
 
-target_link_libraries(benders_sequential
+target_link_libraries(benders_sequential_test
         PRIVATE
         benders_sequential_core
         benders_core
@@ -8,5 +8,5 @@ target_link_libraries(benders_sequential
         logger_lib
         GTest::Main)
 
-add_test(NAME benders_sequential COMMAND benders_sequential WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-set_property(TEST benders_sequential PROPERTY LABELS unit)
+add_test(NAME unit_benders_sequential COMMAND benders_sequential_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+set_property(TEST unit_benders_sequential PROPERTY LABELS unit)
