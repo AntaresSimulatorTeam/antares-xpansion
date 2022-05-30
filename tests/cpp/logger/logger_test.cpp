@@ -132,7 +132,7 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsBeforeRestart) {
 
   ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
 }
-TEST_F(FileLoggerTest, ShouldPrintBestIterationsBestIterationsInfos) {
+TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
   std::stringstream expected_msg;
 
   const auto indent_1("\t");

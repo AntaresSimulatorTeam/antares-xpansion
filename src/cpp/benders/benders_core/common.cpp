@@ -75,6 +75,8 @@ Json::Value get_json_file_content(const std::filesystem::path &json_file) {
   // json file content
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &ret, &errs)) {
+    std::cerr << std::endl
+              << "Invalid Json file: " << json_file.string() << std::endl;
     std::cerr << errs << std::endl;
   }
   return ret;
