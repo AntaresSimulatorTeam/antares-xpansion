@@ -25,9 +25,9 @@ class LastIterationReaderTest : public ::testing::Test {
 
 TEST_F(LastIterationReaderTest, ShouldFailIfInvalidFileIsGiven) {
   const auto delimiter = std::string("\n");
-  const std::string expectedErrorString =
-      delimiter + std::string("Invalid Json file: ") +
-      _last_iteration_file.c_str() + delimiter;
+   std::stringstream expectedErrorString; 
+      expectedErrorString<<delimiter << "Invalid Json file: "<< 
+      _last_iteration_file.c_str() << delimiter;
 
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
@@ -37,7 +37,7 @@ TEST_F(LastIterationReaderTest, ShouldFailIfInvalidFileIsGiven) {
   auto err_str = redirectedErrorStream.str();
   auto first_line_err =
       err_str.substr(0, err_str.find(delimiter, delimiter.length()) + 1);
-  ASSERT_EQ(first_line_err, expectedErrorString);
+  ASSERT_EQ(first_line_err, expectedErrorString.str());
 }
 TEST_F(LastIterationReaderTest,
        ReaderShouldReturnLastAndBestIterationsWrittenByWriter) {
