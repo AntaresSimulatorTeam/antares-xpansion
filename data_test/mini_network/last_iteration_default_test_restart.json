@@ -1,0 +1,62 @@
+{
+	"best_iteration" : 
+	{
+		"benders_elapsed_time" : 0,
+		"best_it" : 1,
+		"best_ub" : 800,
+		"candidates" : 
+		[
+			{
+				"candidate" : "p",
+				"invest" : 0,
+				"invest_max" : 1e+20,
+				"invest_min" : 0
+			},
+			{
+				"candidate" : "t",
+				"invest" : 0,
+				"invest_max" : 1e+20,
+				"invest_min" : 0
+			}
+		],
+		"duration" : 0.0022578279999999999,
+		"invest_cost" : 0,
+		"it" : 1,
+		"lb" : -10000000000,
+		"max_iterations" : -1,
+		"optimality_gap" : 10000000800,
+		"relative_gap" : 12500001,
+		"subproblem_cost" : 800,
+		"ub" : 800
+	},
+	"last" : 
+	{
+		"benders_elapsed_time" : 17.951293206999999,
+		"best_it" : 1,
+		"best_ub" : 800,
+		"candidates" : 
+		[
+			{
+				"candidate" : "p",
+				"invest" : 9.9999999999999982,
+				"invest_max" : 1e+20,
+				"invest_min" : 0
+			},
+			{
+				"candidate" : "t",
+				"invest" : 0,
+				"invest_max" : 1e+20,
+				"invest_min" : 0
+			}
+		],
+		"duration" : 0.0018342199999999999,
+		"invest_cost" : 20,
+		"it" : 2,
+		"lb" : -493.3333333333328,
+		"max_iterations" : -1,
+		"optimality_gap" : 1293.3333333333328,
+		"relative_gap" : 1.616666666666666,
+		"subproblem_cost" : 800,
+		"ub" : 820
+	}
+}

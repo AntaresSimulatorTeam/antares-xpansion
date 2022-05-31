@@ -1,0 +1,50 @@
+{
+	"best_iteration" : 
+	{
+		"benders_elapsed_time" : 0,
+		"best_it" : 1,
+		"best_ub" : 4,
+		"candidates" : 
+		[
+			{
+				"candidate" : "x",
+				"invest" : 0,
+				"invest_max" : 10,
+				"invest_min" : 0
+			}
+		],
+		"duration" : 0.00083878299999999995,
+		"invest_cost" : 0,
+		"it" : 1,
+		"lb" : -10000000000,
+		"max_iterations" : -1,
+		"optimality_gap" : 10000000004,
+		"relative_gap" : 2500000001,
+		"subproblem_cost" : 4,
+		"ub" : 4
+	},
+	"last" : 
+	{
+		"benders_elapsed_time" : 0,
+		"best_it" : 1,
+		"best_ub" : 4,
+		"candidates" : 
+		[
+			{
+				"candidate" : "x",
+				"invest" : 0,
+				"invest_max" : 10,
+				"invest_min" : 0
+			}
+		],
+		"duration" : 0.00083878299999999995,
+		"invest_cost" : 0,
+		"it" : 1,
+		"lb" : -10000000000,
+		"max_iterations" : -1,
+		"optimality_gap" : 10000000004,
+		"relative_gap" : 2500000001,
+		"subproblem_cost" : 4,
+		"ub" : 4
+	}
+}
