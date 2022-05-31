@@ -839,9 +839,12 @@ void BendersBase::checks_resume_mode() {
 }
 
 void BendersBase::save_current_benders_data() {
-  LastIterationWriter last_iteration_recoder(last_iteration_file());
-  last_iteration_recoder.save_best_and_last_iterations(
-      bendersDataToLogData(_data), get_best_iteration_data());
+  LastIterationWriter last_iteration_writer(last_iteration_file());
+  const auto last = (_data.it == best_iteration_data.it)
+                        ? best_iteration_data
+                        : bendersDataToLogData(_data);
+  last_iteration_writer.save_best_and_last_iterations(best_iteration_data,
+                                                      last);
   save_current_iteration_in_output_file();
   print_current_iteration_csv();
 }
