@@ -20,19 +20,21 @@ class LastIterationReaderTest : public ::testing::Test {
  public:
   LastIterationReaderTest() = default;
 
+  const std::string invalid_file_path= "";
   const std::filesystem::path _last_iteration_file = std::tmpnam(nullptr);
+
 };
 
 TEST_F(LastIterationReaderTest, ShouldFailIfInvalidFileIsGiven) {
   const auto delimiter = std::string("\n");
    std::stringstream expectedErrorString; 
       expectedErrorString<<delimiter << "Invalid Json file: "<< 
-      _last_iteration_file.c_str() << delimiter;
+      invalid_file_path << delimiter;
 
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
-  auto last_ite_reader = LastIterationReader(_last_iteration_file);
+  auto last_ite_reader = LastIterationReader(invalid_file_path);
   std::cerr.rdbuf(initialBufferCerr);
   auto err_str = redirectedErrorStream.str();
   auto first_line_err =
@@ -54,18 +56,17 @@ class LastIterationWriterTest : public ::testing::Test {
  public:
   LastIterationWriterTest() = default;
 
-  const std::filesystem::path _last_iteration_file = std::tmpnam(nullptr);
+  const std::string _invalid_file_path= "";
 };
 TEST_F(LastIterationWriterTest, ShouldFailIfInvalidFileIsGiven) {
   std::stringstream expectedErrorString;
-  const auto invalid_file_path("");
-  expectedErrorString << "Invalid Json file: " << invalid_file_path
+  expectedErrorString << "Invalid Json file: " << _invalid_file_path
                       << std::endl;
 
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
-  auto writer = LastIterationWriter(invalid_file_path);
+  auto writer = LastIterationWriter(_invalid_file_path);
   writer.save_best_and_last_iterations(best_iteration_data,
                                        last_iteration_data);
   std::cerr.rdbuf(initialBufferCerr);
