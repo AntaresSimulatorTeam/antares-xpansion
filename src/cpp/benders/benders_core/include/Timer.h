@@ -8,7 +8,7 @@ typedef std::chrono::time_point<std::chrono::system_clock> TimePoint;
 class Timer {
  public:
   Timer();
-  Timer(const double begin_time);
+  explicit Timer(const double begin_time);
   virtual ~Timer();
 
   double elapsed() const;
@@ -21,7 +21,7 @@ class Timer {
 
 inline Timer::Timer() { restart(); }
 inline Timer::Timer(const double begin_time) : _begin_time(begin_time) {
-    // _start
+  // _start
   restart();
 }
 

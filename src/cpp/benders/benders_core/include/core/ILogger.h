@@ -76,7 +76,14 @@ struct LogData {
 inline std::string format_time_str(const long int time_in_seconds) {
   std::time_t seconds(
       time_in_seconds);  // you have to convert your input_seconds into time_t
-  std::tm *p = std::gmtime(&seconds);  // convert to broken down time
+  std::tm *p;
+
+  // convert to broken down time
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+  gmtime_s(p, &seconds);
+#else  // defined(__unix__) || (__APPLE__)
+  gmtime_r(&seconds, p);
+#endif
   std::stringstream ss;
   const auto days = p->tm_yday;
   const auto hours = p->tm_hour;
