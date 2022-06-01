@@ -5,5 +5,5 @@ target_link_libraries(sensitivity_test
         sensitivity_core
         GTest::Main)
 
-add_test(NAME unit_sensitivity COMMAND sensitivity_test WORKING_DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY})
+add_test(NAME unit_sensitivity COMMAND sensitivity_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 set_property(TEST unit_sensitivity PROPERTY LABELS unit)
