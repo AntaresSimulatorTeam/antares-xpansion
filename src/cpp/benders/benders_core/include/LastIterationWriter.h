@@ -7,7 +7,7 @@
 #include "core/ILogger.h"
 class LastIterationWriter {
  public:
-  LastIterationWriter(const std::filesystem::path &last_iteration_file)
+  explicit LastIterationWriter(const std::filesystem::path &last_iteration_file)
       : _output_file(last_iteration_file) {}
   void save_best_and_last_iterations(const LogData &best_iteration_log_data,
                                      const LogData &last_iteration_log_data);

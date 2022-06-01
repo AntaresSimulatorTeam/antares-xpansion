@@ -20,10 +20,9 @@ class Timer {
 };
 
 inline Timer::Timer() { restart(); }
-inline Timer::Timer(const double begin_time) {
-  _begin_time = begin_time;
-  // _start
-  _start = std::chrono::system_clock::now();
+inline Timer::Timer(const double begin_time) : _begin_time(begin_time) {
+    // _start
+  restart();
 }
 
 inline void Timer::restart() { _start = std::chrono::system_clock::now(); }

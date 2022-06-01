@@ -574,14 +574,12 @@ Output::SolutionData BendersBase::solution() const {
   if (_options.RESUME) {
     // solution not in _trace
     Output::CandidatesVec candidates_vec;
-    for (const auto &pairNameValue_l : best_iteration_data.x0) {
+    for (const auto &[name, invest] : best_iteration_data.x0) {
       Output::CandidateData candidate_data;
-      candidate_data.name = pairNameValue_l.first;
-      candidate_data.invest = pairNameValue_l.second;
-      candidate_data.min =
-          best_iteration_data.min_invest.at(pairNameValue_l.first);
-      candidate_data.max =
-          best_iteration_data.max_invest.at(pairNameValue_l.first);
+      candidate_data.name = name;
+      candidate_data.invest = invest;
+      candidate_data.min = best_iteration_data.min_invest.at(name);
+      candidate_data.max = best_iteration_data.max_invest.at(name);
       candidates_vec.push_back(candidate_data);
     }
     solution_data.solution = {
@@ -820,9 +818,9 @@ void BendersBase::checks_resume_mode() {
     auto reader = LastIterationReader(last_iteration_file());
     LogData last_iter;
     if (reader.is_last_iteration_file_valid()) {
-      const auto lastIter_bestIter = reader.last_iteration_data();
-      best_iteration_data = std::move(lastIter_bestIter.second);
-      last_iter = std::move(lastIter_bestIter.first);
+      const auto [lastIter, bestIter] = reader.last_iteration_data();
+      best_iteration_data = bestIter;
+      last_iter = lastIter;
     } else {
       best_iteration_data = bendersDataToLogData(_data);
       last_iter = best_iteration_data;
@@ -849,7 +847,7 @@ void BendersBase::save_current_benders_data() {
   print_current_iteration_csv();
 }
 
-void BendersBase::end_writing_in_output_file() {
+void BendersBase::end_writing_in_output_file() const {
   _writer->updateEndTime();
   _writer->write_duration(_data.elapsed_time);
   save_solution_in_output_file();

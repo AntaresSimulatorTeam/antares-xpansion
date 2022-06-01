@@ -20,16 +20,15 @@ class LastIterationReaderTest : public ::testing::Test {
  public:
   LastIterationReaderTest() = default;
 
-  const std::string invalid_file_path= "";
+  const std::string invalid_file_path = "";
   const std::filesystem::path _last_iteration_file = std::tmpnam(nullptr);
-
 };
 
 TEST_F(LastIterationReaderTest, ShouldFailIfInvalidFileIsGiven) {
   const auto delimiter = std::string("\n");
-   std::stringstream expectedErrorString; 
-      expectedErrorString<<delimiter << "Invalid Json file: "<< 
-      invalid_file_path << delimiter;
+  std::stringstream expectedErrorString;
+  expectedErrorString << delimiter << "Invalid Json file: " << invalid_file_path
+                      << delimiter;
 
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
@@ -56,7 +55,7 @@ class LastIterationWriterTest : public ::testing::Test {
  public:
   LastIterationWriterTest() = default;
 
-  const std::string _invalid_file_path= "";
+  const std::string _invalid_file_path = "";
 };
 TEST_F(LastIterationWriterTest, ShouldFailIfInvalidFileIsGiven) {
   std::stringstream expectedErrorString;

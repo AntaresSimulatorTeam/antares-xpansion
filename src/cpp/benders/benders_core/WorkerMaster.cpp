@@ -23,9 +23,11 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
                            int subproblems_count,
                            const std::filesystem::path &log_name,
                            const bool mps_has_alpha)
-    : Worker(), subproblems_count(subproblems_count) {
+    : Worker(),
+      subproblems_count(subproblems_count),
+      _mps_has_alpha(mps_has_alpha) {
   _is_master = true;
-  _mps_has_alpha = mps_has_alpha;
+
   init(variable_map, path_to_mps, solver_name, log_level, log_name);
   if (!_mps_has_alpha) {
     _set_upper_bounds();
