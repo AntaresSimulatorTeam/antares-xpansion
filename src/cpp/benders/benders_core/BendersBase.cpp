@@ -39,7 +39,7 @@ void BendersBase::init_data() {
   _data.stopping_criterion = StoppingCriterion::empty;
 }
 
-void BendersBase::open_csv_file() {
+void BendersBase::OpenCsvFile() {
   if (!_csv_file.is_open()) {
     const auto opening_mode = _options.RESUME ? std::ios::app : std::ios::trunc;
     _csv_file.open(_csv_file_path, std::ios::out | opening_mode);
@@ -55,12 +55,12 @@ void BendersBase::open_csv_file() {
   }
 }
 
-void BendersBase::close_csv_file() {
+void BendersBase::CloseCsvFile() {
   if (_csv_file.is_open()) {
     _csv_file.close();
   }
 }
-void BendersBase::print_current_iteration_csv() {
+void BendersBase::PrintCurrentIterationCsv() {
   print_csv_iteration(_csv_file, _data.it - 1);
 }
 
@@ -469,14 +469,14 @@ void BendersBase::build_cut_full(AllCutPackage const &all_package) {
 }
 
 LogData BendersBase::build_log_data_from_data() const {
-  auto logData = final_logData();
+  auto logData = FinalLogData();
   logData.optimality_gap = _options.ABSOLUTE_GAP;
   logData.relative_gap = _options.RELATIVE_GAP;
   logData.max_iterations = _options.MAX_ITERATIONS;
   return logData;
 }
 
-LogData BendersBase::final_logData() const {
+LogData BendersBase::FinalLogData() const {
   LogData result;
 
   result.it = _data.it + iterations_before_resume;
@@ -500,7 +500,7 @@ void BendersBase::post_run_actions() const {
   _logger->log_at_ending(logData);
 }
 
-void BendersBase::save_current_iteration_in_output_file() const {
+void BendersBase::SaveCurrentIterationInOutputFile() const {
   auto masterDataPtr_l = _trace[_data.it - 1];
   if (masterDataPtr_l->_valid) {
     _writer->write_iteration(iteration(masterDataPtr_l),
@@ -508,7 +508,7 @@ void BendersBase::save_current_iteration_in_output_file() const {
     _writer->dump();
   }
 }
-void BendersBase::save_solution_in_output_file() const {
+void BendersBase::SaveSolutionInOutputFile() const {
   _writer->write_solution(solution());
   _writer->dump();
 }
@@ -572,7 +572,7 @@ Output::SolutionData BendersBase::solution() const {
   const auto optimal_gap(_data.best_ub - _data.lb);
   const auto relative_gap(optimal_gap / _data.best_ub);
 
-  if (is_resume_mode()) {
+  if (IsResumeMode()) {
     // solution not in _trace
     Output::CandidatesVec candidates_vec;
     std::transform(
@@ -665,8 +665,6 @@ std::filesystem::path BendersBase::get_structure_path() const {
 }
 
 LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
-  LogData result;
-
   auto optimal_gap(data.best_ub - data.lb);
   return {data.lb,
           data.best_ub,
@@ -795,9 +793,9 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
 }
 
-bool BendersBase::is_resume_mode() const { return _options.RESUME; }
+bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
-void BendersBase::update_max_number_iteration_resume_mode(
+void BendersBase::UpdateMaxNumberIterationResumeMode(
     const unsigned nb_iteration_done) {
   if (_options.MAX_ITERATIONS == -1) {
     return;
@@ -810,17 +808,17 @@ void BendersBase::update_max_number_iteration_resume_mode(
 }
 
 double BendersBase::execution_time() const { return _data.elapsed_time; }
-LogData BendersBase::get_best_iteration_data() const {
+LogData BendersBase::GetBestIterationData() const {
   return best_iteration_data;
 }
 
-void BendersBase::checks_resume_mode() {
+void BendersBase::ChecksResumeMode() {
   benders_timer = Timer();
-  if (is_resume_mode()) {
-    auto reader = LastIterationReader(last_iteration_file());
+  if (IsResumeMode()) {
+    auto reader = LastIterationReader(LastIterationFile());
     LogData last_iter;
-    if (reader.is_last_iteration_file_valid()) {
-      const auto [lastIter, bestIter] = reader.last_iteration_data();
+    if (reader.IsLastIterationFileValid()) {
+      const auto [lastIter, bestIter] = reader.LastIterationData();
       best_iteration_data = bestIter;
       last_iter = lastIter;
     } else {
@@ -829,28 +827,27 @@ void BendersBase::checks_resume_mode() {
     }
     auto restart_data_printer =
         LastIterationPrinter(_logger, best_iteration_data, last_iter);
-    restart_data_printer.print();
-    update_max_number_iteration_resume_mode(last_iter.it);
+    restart_data_printer.Print();
+    UpdateMaxNumberIterationResumeMode(last_iter.it);
     benders_timer = Timer(last_iter.benders_elapsed_time);
     _data.stop = stopping_criterion();
     iterations_before_resume = last_iter.it;
   }
 }
 
-void BendersBase::save_current_benders_data() {
-  LastIterationWriter last_iteration_writer(last_iteration_file());
+void BendersBase::SaveCurrentBendersData() {
+  LastIterationWriter last_iteration_writer(LastIterationFile());
   const auto last = (_data.it == best_iteration_data.it)
                         ? best_iteration_data
                         : bendersDataToLogData(_data);
-  last_iteration_writer.save_best_and_last_iterations(best_iteration_data,
-                                                      last);
-  save_current_iteration_in_output_file();
-  print_current_iteration_csv();
+  last_iteration_writer.SaveBestAndLastIterations(best_iteration_data, last);
+  SaveCurrentIterationInOutputFile();
+  PrintCurrentIterationCsv();
 }
 
-void BendersBase::end_writing_in_output_file() const {
+void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
   _writer->write_duration(_data.elapsed_time);
-  save_solution_in_output_file();
+  SaveSolutionInOutputFile();
 }
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }

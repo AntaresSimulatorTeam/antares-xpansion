@@ -30,7 +30,7 @@ void BendersMpi::initialize_problems() {
   if (_world.rank() == rank_0) {
     reset_master(new WorkerMaster(
         master_variable_map, get_master_path(), get_solver_name(),
-        get_log_level(), _data.nsubproblem, log_name(), is_resume_mode()));
+        get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
     LOG(INFO) << "subproblem number is " << _data.nsubproblem << std::endl;
   } else {
     // Dispatch subproblems to process
@@ -84,8 +84,7 @@ void BendersMpi::broadcast_the_master_problem() {
 }
 
 void BendersMpi::solve_master_and_create_trace() {
-  _logger->log_at_initialization(_data.it +
-                                 get_num_iterations_before_restart());
+  _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
   _logger->display_message("\tSolving master...");
   get_master_value();
   _logger->log_master_solving_duration(get_timer_master());
@@ -218,9 +217,9 @@ void BendersMpi::run() {
   _world.barrier();
 
   if (_world.rank() == rank_0) {
-    checks_resume_mode();
+    ChecksResumeMode();
     if (is_trace()) {
-      open_csv_file();
+      OpenCsvFile();
     }
   }
   while (!_data.stop) {
@@ -244,12 +243,12 @@ void BendersMpi::run() {
 
     broadcast(_world, _data.stop, rank_0);
     if (_world.rank() == rank_0) {
-      save_current_benders_data();
+      SaveCurrentBendersData();
     }
   }
   if (_world.rank() == rank_0) {
-    close_csv_file();
-    end_writing_in_output_file();
+    CloseCsvFile();
+    EndWritingInOutputFile();
   }
 }
 

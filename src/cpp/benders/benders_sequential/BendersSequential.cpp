@@ -24,9 +24,9 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
 
-  reset_master(new WorkerMaster(
-      master_variable_map, get_master_path(), get_solver_name(),
-      get_log_level(), _data.nsubproblem, log_name(), is_resume_mode()));
+  reset_master(new WorkerMaster(master_variable_map, get_master_path(),
+                                get_solver_name(), get_log_level(),
+                                _data.nsubproblem, log_name(), IsResumeMode()));
   for (const auto &problem : coupling_map) {
     addSubproblem(problem);
     AddSubproblemName(problem.first);
@@ -75,17 +75,16 @@ void BendersSequential::build_cut() {
 void BendersSequential::run() {
   set_cut_storage();
   init_data();
-  checks_resume_mode();
+  ChecksResumeMode();
   if (is_trace()) {
-    open_csv_file();
+    OpenCsvFile();
   }
 
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
 
-    _logger->log_at_initialization(_data.it +
-                                   get_num_iterations_before_restart());
+    _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();
     _logger->log_master_solving_duration(get_timer_master());
@@ -107,10 +106,10 @@ void BendersSequential::run() {
     set_timer_master(timer_master.elapsed());
     _data.elapsed_time = GetBendersTime();
     _data.stop = stopping_criterion();
-    save_current_benders_data();
+    SaveCurrentBendersData();
   }
-  close_csv_file();
-  end_writing_in_output_file();
+  CloseCsvFile();
+  EndWritingInOutputFile();
 }
 
 void BendersSequential::launch() {

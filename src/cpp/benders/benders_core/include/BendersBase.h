@@ -69,22 +69,21 @@ class BendersBase {
   void SetSubproblemTimers(const double &subproblem_timer);
   [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
-  bool is_resume_mode() const;
-  std::filesystem::path last_iteration_file() const {
+  bool IsResumeMode() const;
+  std::filesystem::path LastIterationFile() const {
     return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
   }
-  void update_max_number_iteration_resume_mode(
-      const unsigned nb_iteration_done);
-  LogData get_best_iteration_data() const;
-  void save_current_iteration_in_output_file() const;
-  void save_solution_in_output_file() const;
-  void print_current_iteration_csv();
-  void open_csv_file();
-  void close_csv_file();
-  void checks_resume_mode();
-  void save_current_benders_data();
-  void end_writing_in_output_file() const;
-  [[nodiscard]] int get_num_iterations_before_restart() const {
+  void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
+  LogData GetBestIterationData() const;
+  void SaveCurrentIterationInOutputFile() const;
+  void SaveSolutionInOutputFile() const;
+  void PrintCurrentIterationCsv();
+  void OpenCsvFile();
+  void CloseCsvFile();
+  void ChecksResumeMode();
+  void SaveCurrentBendersData();
+  void EndWritingInOutputFile() const;
+  [[nodiscard]] int GetNumIterationsBeforeRestart() const {
     return iterations_before_resume;
   }
   double GetBendersTime() const;
@@ -108,7 +107,7 @@ class BendersBase {
   [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
   Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
-  LogData final_logData() const;
+  LogData FinalLogData() const;
 
  private:
   BendersBaseOptions _options;

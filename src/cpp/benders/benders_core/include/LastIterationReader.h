@@ -9,13 +9,13 @@ class LastIterationReader {
  public:
   explicit LastIterationReader(
       const std::filesystem::path& last_iteration_file);
-  std::pair<LogData, LogData> last_iteration_data();
-  bool is_last_iteration_file_valid() const;
+  std::pair<LogData, LogData> LastIterationData();
+  bool IsLastIterationFileValid() const;
 
  private:
-  LogData _get_iteration_data(const std::string& iteration_name);
-  std::filesystem::path _last_iteration_file;
-  Json::Value _last_iteration_file_content;
+  LogData GetIterationData(const std::string& iteration_name);
+  std::filesystem::path last_iteration_file_;
+  Json::Value last_iteration_file_content_;
 };
 
 #define __LASTITERATIONREADER_H__

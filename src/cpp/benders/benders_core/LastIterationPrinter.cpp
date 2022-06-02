@@ -5,13 +5,13 @@
 LastIterationPrinter::LastIterationPrinter(Logger &logger,
                                            const LogData &best_iteration,
                                            const LogData &last_iteration)
-    : _logger(logger),
-      _best_iteration_data(best_iteration),
-      _last_iteration_data(last_iteration) {}
-void LastIterationPrinter::print() const {
-  _logger->display_restart_message();
-  _logger->restart_elapsed_time(_last_iteration_data.benders_elapsed_time);
-  _logger->number_of_iterations_before_restart(_last_iteration_data.it);
-  _logger->restart_best_iteration(_last_iteration_data.best_it);
-  _logger->restart_best_iterations_infos(_best_iteration_data);
+    : logger_(logger),
+      best_iteration_data_(best_iteration),
+      last_iteration_data_(last_iteration) {}
+void LastIterationPrinter::Print() const {
+  logger_->display_restart_message();
+  logger_->restart_elapsed_time(last_iteration_data_.benders_elapsed_time);
+  logger_->number_of_iterations_before_restart(last_iteration_data_.it);
+  logger_->restart_best_iteration(last_iteration_data_.best_it);
+  logger_->restart_best_iterations_infos(best_iteration_data_);
 }

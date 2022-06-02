@@ -43,10 +43,9 @@ TEST_F(LastIterationReaderTest, ShouldFailIfInvalidFileIsGiven) {
 TEST_F(LastIterationReaderTest,
        ReaderShouldReturnLastAndBestIterationsWrittenByWriter) {
   auto writer = LastIterationWriter(_last_iteration_file);
-  writer.save_best_and_last_iterations(best_iteration_data,
-                                       last_iteration_data);
+  writer.SaveBestAndLastIterations(best_iteration_data, last_iteration_data);
   auto reader = LastIterationReader(_last_iteration_file);
-  const auto [last, best] = reader.last_iteration_data();
+  const auto [last, best] = reader.LastIterationData();
   ASSERT_EQ(last, last_iteration_data);
   ASSERT_EQ(best, best_iteration_data);
 }
@@ -66,8 +65,7 @@ TEST_F(LastIterationWriterTest, ShouldFailIfInvalidFileIsGiven) {
   std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
   auto writer = LastIterationWriter(_invalid_file_path);
-  writer.save_best_and_last_iterations(best_iteration_data,
-                                       last_iteration_data);
+  writer.SaveBestAndLastIterations(best_iteration_data, last_iteration_data);
   std::cerr.rdbuf(initialBufferCerr);
   ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString.str());
 }
