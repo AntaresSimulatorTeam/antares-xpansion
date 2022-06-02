@@ -84,7 +84,8 @@ void BendersMpi::broadcast_the_master_problem() {
 }
 
 void BendersMpi::solve_master_and_create_trace() {
-  _logger->log_at_initialization(_data.it + iterations_before_resume);
+  _logger->log_at_initialization(_data.it +
+                                 get_num_iterations_before_restart());
   _logger->display_message("\tSolving master...");
   get_master_value();
   _logger->log_master_solving_duration(get_timer_master());
@@ -185,7 +186,7 @@ void BendersMpi::step_4_update_best_solution(int rank,
 
     update_trace();
 
-    _data.elapsed_time = benders_timer.elapsed();
+    _data.elapsed_time = GetBendersTime();
     set_timer_master(timer_master.elapsed());
     _data.stop = stopping_criterion();
   }
@@ -218,7 +219,9 @@ void BendersMpi::run() {
 
   if (_world.rank() == rank_0) {
     checks_resume_mode();
-    open_csv_file();
+    if (is_trace()) {
+      open_csv_file();
+    }
   }
   while (!_data.stop) {
     Timer timer_master;
@@ -248,10 +251,6 @@ void BendersMpi::run() {
     close_csv_file();
     end_writing_in_output_file();
   }
-
-  // if (_world.rank() == rank_0 && is_trace()) {
-  //   print_csv();
-  // }
 }
 
 void BendersMpi::launch() {

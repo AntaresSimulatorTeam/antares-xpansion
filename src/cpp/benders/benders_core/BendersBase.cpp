@@ -832,7 +832,6 @@ void BendersBase::checks_resume_mode() {
     benders_timer = Timer(last_iter.benders_elapsed_time);
     _data.stop = stopping_criterion();
     iterations_before_resume = last_iter.it;
-    // _data.best_it = last_iter.best_it;
   }
 }
 
@@ -852,3 +851,4 @@ void BendersBase::end_writing_in_output_file() const {
   _writer->write_duration(_data.elapsed_time);
   save_solution_in_output_file();
 }
+double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }

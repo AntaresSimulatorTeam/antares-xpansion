@@ -27,12 +27,12 @@ LogData LastIterationReader::_get_iteration_data(
 
   for (auto candidate = candidates_array.begin();
        candidate != candidates_array.end(); ++candidate) {
-    x0.emplace((*candidate)["candidate"].asString(),
-               (*candidate)["invest"].asDouble());
-    min_invest.emplace((*candidate)["candidate"].asString(),
-                       (*candidate)["invest_min"].asDouble());
-    max_invest.emplace((*candidate)["candidate"].asString(),
-                       (*candidate)["invest_max"].asDouble());
+    x0.try_emplace((*candidate)["candidate"].asString(),
+                   (*candidate)["invest"].asDouble());
+    min_invest.try_emplace((*candidate)["candidate"].asString(),
+                           (*candidate)["invest_min"].asDouble());
+    max_invest.try_emplace((*candidate)["candidate"].asString(),
+                           (*candidate)["invest_max"].asDouble());
   }
   return {
       _last_iteration_file_content[iteration_name]["lb"].asDouble(),

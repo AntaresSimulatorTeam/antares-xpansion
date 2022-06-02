@@ -26,8 +26,6 @@ class BendersBase {
   BendersData _data;
   VariableMap master_variable_map;
   CouplingMap coupling_map;
-  Timer benders_timer;
-  int iterations_before_resume = 0;
 
  protected:
   virtual void free() = 0;
@@ -89,6 +87,7 @@ class BendersBase {
   [[nodiscard]] int get_num_iterations_before_restart() const {
     return iterations_before_resume;
   }
+  double GetBendersTime() const;
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -124,6 +123,8 @@ class BendersBase {
   std::ofstream _csv_file;
   std::filesystem::path _csv_file_path;
   LogData best_iteration_data;
+  int iterations_before_resume = 0;
+  Timer benders_timer;
 
  public:
   Logger _logger;

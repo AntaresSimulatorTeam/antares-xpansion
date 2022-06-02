@@ -76,6 +76,10 @@ void BendersSequential::run() {
   set_cut_storage();
   init_data();
   checks_resume_mode();
+  if (is_trace()) {
+    open_csv_file();
+  }
+
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
@@ -101,16 +105,12 @@ void BendersSequential::run() {
     update_trace();
 
     set_timer_master(timer_master.elapsed());
-    _data.elapsed_time = benders_timer.elapsed();
+    _data.elapsed_time = GetBendersTime();
     _data.stop = stopping_criterion();
     save_current_benders_data();
   }
   close_csv_file();
   end_writing_in_output_file();
-
-  // if (is_trace()) {
-  //   print_csv();
-  // }
 }
 
 void BendersSequential::launch() {
