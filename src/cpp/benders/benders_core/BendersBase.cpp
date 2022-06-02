@@ -503,7 +503,8 @@ void BendersBase::post_run_actions() const {
 void BendersBase::save_current_iteration_in_output_file() const {
   auto masterDataPtr_l = _trace[_data.it - 1];
   if (masterDataPtr_l->_valid) {
-    _writer->write_iteration(iteration(masterDataPtr_l), _data.it);
+    _writer->write_iteration(iteration(masterDataPtr_l),
+                             _data.it + iterations_before_resume);
     _writer->dump();
   }
 }
@@ -571,17 +572,18 @@ Output::SolutionData BendersBase::solution() const {
   const auto optimal_gap(_data.best_ub - _data.lb);
   const auto relative_gap(optimal_gap / _data.best_ub);
 
-  if (_options.RESUME) {
+  if (is_resume_mode()) {
     // solution not in _trace
     Output::CandidatesVec candidates_vec;
-    for (const auto &[name, invest] : best_iteration_data.x0) {
-      Output::CandidateData candidate_data;
-      candidate_data.name = name;
-      candidate_data.invest = invest;
-      candidate_data.min = best_iteration_data.min_invest.at(name);
-      candidate_data.max = best_iteration_data.max_invest.at(name);
-      candidates_vec.push_back(candidate_data);
-    }
+    std::transform(
+        best_iteration_data.x0.cbegin(), best_iteration_data.x0.cend(),
+        std::back_inserter(candidates_vec),
+        [this](std::pair<std::string, double> name_invest)
+            -> Output::CandidateData {
+          const auto &[name, invest] = name_invest;
+          return {name, invest, best_iteration_data.min_invest.at(name),
+                  best_iteration_data.max_invest.at(name)};
+        });
     solution_data.solution = {
         best_iteration_data.master_time,
         best_iteration_data.lb,
