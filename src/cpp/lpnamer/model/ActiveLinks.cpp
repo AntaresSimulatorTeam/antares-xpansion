@@ -220,3 +220,5 @@ double ActiveLink::get_already_installed_capacity() const {
 std::string ActiveLink::get_linkor() const { return _linkor; }
 
 std::string ActiveLink::get_linkex() const { return _linkex; }
+
+unsigned int ActiveLink::number_of_chronicles() const { return _already_installed_profile.size(); }
