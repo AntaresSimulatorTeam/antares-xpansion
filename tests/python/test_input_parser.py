@@ -1,3 +1,4 @@
+from cgitb import reset
 import pytest
 
 from antares_xpansion.input_parser import InputParser
@@ -41,6 +42,10 @@ class TestInputParser:
     def test_study_update_step_is_accepted(self):
         my_parser = InputParser()
         my_parser.parse_args(["--dataDir=hello", "--step=study_update"])
+
+    def test_resume_step_is_accepted(self):
+        my_parser = InputParser()
+        my_parser.parse_args(["--dataDir=hello", "--step=resume"])
 
     def test_getnames_step_is_no_longer_accepted(self):
         my_parser = InputParser()

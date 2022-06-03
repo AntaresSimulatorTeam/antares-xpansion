@@ -11,9 +11,12 @@ from pathlib import Path
 
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
+from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
+from antares_xpansion.optimisation_keys import OptimisationKeys
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 
 
 class ConfigLoader:
@@ -30,8 +33,15 @@ class ConfigLoader:
         """
         self.platform = sys.platform
         self._INFO_MSG = '<< INFO >>'
+
         self._config = config
-        self._set_simulation_name()
+        if self._config.step == "resume":
+            self._config.simulation_name = LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
+            self._simulation_name = self._config.simulation_name
+            self._restore_launcher_options()
+        else:
+            self._set_simulation_name()
+
         self.candidates_list = []
         self._verify_settings_ini_file_exists()
 
@@ -49,6 +59,20 @@ class ConfigLoader:
                 "Missing argument simulationName")
         else:
             self._simulation_name = self._config.simulation_name
+
+    def _restore_launcher_options(self):
+        with open(self.launcher_options_file_path(), "r") as launcher_options:
+            options = json.load(launcher_options)
+
+        self._config.method = options[LauncherOptionsKeys.method_key()]
+        self._config.n_mpi = options[LauncherOptionsKeys.n_mpi_key()]
+        self._config.antares_n_cpu = options[LauncherOptionsKeys.antares_n_cpu_key(
+        )]
+        self._config.keep_mps = options[LauncherOptionsKeys.keep_mps_key()]
+        self._config.oversubscribe = options[LauncherOptionsKeys.oversubscribe_key(
+        )]
+        self._config.allow_run_as_root = options[LauncherOptionsKeys.allow_run_as_root_key(
+        )]
 
     def _verify_settings_ini_file_exists(self):
         if not os.path.isfile(self._get_settings_ini_filepath()):
@@ -239,10 +263,30 @@ class ConfigLoader:
         return Path(os.path.normpath(os.path.join(self.antares_output(), self._simulation_name)))
 
     def benders_pre_actions(self):
-        self._create_expansion_dir()
+        self.save_launcher_options()
+        if (self._config.step != "resume"):  # expansion dir alaready in resume mode
+            self.create_expansion_dir()
         self._set_options_for_benders_solver()
 
-    def _create_expansion_dir(self):
+    def save_launcher_options(self):
+        options = {}
+        options[LauncherOptionsKeys.method_key()] = self.method()
+        options[LauncherOptionsKeys.n_mpi_key()] = self.n_mpi()
+        options[LauncherOptionsKeys.antares_n_cpu_key()] = self.antares_n_cpu()
+        options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
+        options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
+        options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
+        options[LauncherOptionsKeys.allow_run_as_root_key()
+                ] = self.allow_run_as_root()
+
+        with open(self.launcher_options_file_path(), "w") as launcher_options:
+            json.dump(options, launcher_options, indent=4)
+
+    def launcher_options_file_path(self):
+        return os.path.normpath(os.path.join(
+            self._simulation_lp_path(), self._config.LAUNCHER_OPTIONS_JSON))
+
+    def create_expansion_dir(self):
         expansion_dir = self._expansion_dir()
         if os.path.isdir(expansion_dir):
             shutil.rmtree(expansion_dir)
@@ -268,18 +312,27 @@ class ConfigLoader:
         """
         # computing the weight of slaves
         options_values = self._config.options_default
-        options_values["SLAVE_WEIGHT_VALUE"] = len(self.active_years)
-        options_values["JSON_FILE"] = self.json_file_path()
-        options_values["ABSOLUTE_GAP"] = self.get_absolute_optimality_gap()
-        options_values["RELATIVE_GAP"] = self.get_relative_optimality_gap()
-        options_values["MAX_ITERATIONS"] = self.get_max_iterations()
-        options_values["SOLVER_NAME"] = XpansionStudyReader.convert_study_solver_to_option_solver(
+        options_values[OptimisationKeys.slave_weight_value_key()] = len(
+            self.active_years)
+        options_values[OptimisationKeys.json_file_key()
+                       ] = self.json_file_path()
+        options_values[OptimisationKeys.last_iteration_json_file_key()
+                       ] = self.last_iteration_json_file_path()
+        options_values[OptimisationKeys.absolute_gap_key(
+        )] = self.get_absolute_optimality_gap()
+        options_values[OptimisationKeys.relative_gap_key(
+        )] = self.get_relative_optimality_gap()
+        options_values[OptimisationKeys.max_iterations_key()
+                       ] = self.get_max_iterations()
+        options_values[OptimisationKeys.solver_name_key()] = XpansionStudyReader.convert_study_solver_to_option_solver(
             self.options.get('solver', "Cbc"))
         if self.weight_file_name():
-            options_values["SLAVE_WEIGHT"] = self.weight_file_name()
-        options_values["TIME_LIMIT"] = self.timelimit()
-        options_values["LOG_LEVEL"] = self.log_level()
-        options_values["LAST_MASTER_MPS"] = self._config.LAST_MASTER_MPS
+            options_values[OptimisationKeys.slave_weight_key()
+                           ] = self.weight_file_name()
+        options_values[OptimisationKeys.time_limit_key()] = self.timelimit()
+        options_values[OptimisationKeys.log_level_key()] = self.log_level()
+        options_values[OptimisationKeys.last_mps_master_name_key(
+        )] = self._config.LAST_MASTER_MPS
         options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
         # generate options file for the solver
         with open(self.options_file_path(), 'w') as options_file:
@@ -375,7 +428,16 @@ class ConfigLoader:
         return self._config.antares_n_cpu
 
     def json_file_path(self):
-        return os.path.join(self._expansion_dir(), self._config.JSON_NAME)
+        return os.path.join(self._expansion_dir(), self.json_name())
+
+    def json_name(self):
+        return self._config.JSON_NAME
+
+    def last_iteration_json_file_path(self):
+        return os.path.join(self._expansion_dir(), self.last_iteration_json_file_name())
+
+    def last_iteration_json_file_name(self):
+        return self._config.LAST_ITERATION_JSON_FILE_NAME
 
     def json_sensitivity_out_path(self):
         return os.path.join(self._sensitivity_dir(), self._config.JSON_SENSITIVITY_OUT)
@@ -387,7 +449,7 @@ class ConfigLoader:
     def last_master_file_path(self):
         # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
         return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_iteration.mps")
-    
+
     def last_master_basis_path(self):
         return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_basis.bss")
 

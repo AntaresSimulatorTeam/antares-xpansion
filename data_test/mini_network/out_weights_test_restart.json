@@ -1,0 +1,75 @@
+{
+	"antares" : 
+	{
+		"version" : "8.1.1"
+	},
+	"antares_xpansion" : 
+	{
+		"version" : "0.6.0"
+	},
+	"begin" : "31-05-2022 16:15:42",
+	"iterations" : 
+	{
+		"1" : 
+		{
+			"best_ub" : 204,
+			"candidates" : 
+			[
+				{
+					"invest" : 0,
+					"max" : 1e+20,
+					"min" : 0,
+					"name" : "p"
+				},
+				{
+					"invest" : 0,
+					"max" : 1e+20,
+					"min" : 0,
+					"name" : "t"
+				}
+			],
+			"duration" : 0.00068119899999999995,
+			"investment_cost" : 0,
+			"lb" : -10000000000,
+			"operational_cost" : 204,
+			"optimality_gap" : 10000000204,
+			"overall_cost" : 204,
+			"relative_gap" : 49019608.843137257,
+			"ub" : 204
+		},
+		"2" : 
+		{
+			"best_ub" : 204,
+			"candidates" : 
+			[
+				{
+					"invest" : 10,
+					"max" : 1e+20,
+					"min" : 0,
+					"name" : "p"
+				},
+				{
+					"invest" : 0,
+					"max" : 1e+20,
+					"min" : 0,
+					"name" : "t"
+				}
+			],
+			"duration" : 0.0018139129999999999,
+			"investment_cost" : 20,
+			"lb" : -432.66666666666669,
+			"operational_cost" : 204,
+			"optimality_gap" : 636.66666666666674,
+			"overall_cost" : 224,
+			"relative_gap" : 3.120915032679739,
+			"ub" : 224
+		}
+	},
+	"nbWeeks" : 3,
+	"options" : 
+	{
+		"LOG_LEVEL" : 3,
+		"MASTER_NAME" : "master",
+		"SOLVER_NAME" : "COIN"
+	}
+}

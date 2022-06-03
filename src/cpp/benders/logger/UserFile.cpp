@@ -29,8 +29,8 @@ void UserFile::display_message(const std::string &str) {
   _file.flush();
 }
 
-void UserFile::log_at_initialization(const LogData &d) {
-  _file << LINE_PREFIX << "ITERATION " << d.it << ":" << std::endl;
+void UserFile::log_at_initialization(const int it_number) {
+  _file << LINE_PREFIX << "ITERATION " << it_number << ":" << std::endl;
   _file.flush();
 }
 
@@ -80,6 +80,28 @@ void UserFile::log_stop_criterion_reached(
         << "--- Run completed: " << criterion_to_str(stopping_criterion)
         << " reached" << std::endl;
   _file.flush();
+}
+void UserFile::display_restart_message() {
+  _file << LINE_PREFIX << "Restart Study..." << std::endl;
+}
+void UserFile::restart_elapsed_time(const double elapsed_time) {
+  _file << LINE_PREFIX << indent_1
+        << "Elapsed time: " << format_time_str(elapsed_time) << std::endl;
+}
+void UserFile::number_of_iterations_before_restart(const int num_iteration) {
+  _file << LINE_PREFIX << indent_1
+        << "Number of Iterations performed: " << num_iteration << std::endl;
+}
+void UserFile::restart_best_iteration(const int best_iteration) {
+  _file << LINE_PREFIX << indent_1 << "Best Iteration: " << best_iteration
+        << std::endl;
+}
+void UserFile::restart_best_iterations_infos(
+    const LogData &best_iteration_data) {
+  _file << LINE_PREFIX << indent_1 << "Best Iteration Infos: " << std::endl;
+  log_master_solving_duration(best_iteration_data.master_time);
+  log_iteration_candidates(best_iteration_data);
+  log_at_iteration_end(best_iteration_data);
 }
 
 }  // namespace logger

@@ -78,52 +78,66 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults) {
   ASSERT_EQ("01-01-2020 12:10:30", json_content[END_C].asString());
 }
 
+const CandidateData c1 = {"c1", 55, 0.55, 555};
+const CandidateData c2 = {"c2", 66, 0.66, 666};
+const CandidatesVec cdVec = {c1, c2};
+const Iteration iter1 = {15, 1.2, 11, 12, 1e-10, 1e-12, 1, 17, 20, cdVec};
+const CandidateData c3 = {"c3", 33, 0.33, 5553};
+const CandidateData c4 = {"c4", 656, 0.4566, 545666};
+const CandidatesVec cdVec2 = {c3, c4};
+const Iteration iter2 = {105, 12, 112, 212, 1e-1, 1e-10, 12, 67, 620, cdVec2};
+
+void verify_iteration_in_json_content(const Iteration &iter,
+                                      const Json::Value &json_content) {
+  ASSERT_EQ(iter.best_ub,
+            json_content[ITERATIONS_C]["1"][BEST_UB_C].asDouble());
+  ASSERT_EQ(iter.time, json_content[ITERATIONS_C]["1"][DURATION_C].asDouble());
+  ASSERT_EQ(iter.investment_cost,
+            json_content[ITERATIONS_C]["1"][INVESTMENT_COST_C].asDouble());
+  ASSERT_EQ(iter.lb, json_content[ITERATIONS_C]["1"][LB_C].asDouble());
+  ASSERT_EQ(iter.operational_cost,
+            json_content[ITERATIONS_C]["1"][OPERATIONAL_COST_C].asDouble());
+  ASSERT_EQ(iter.optimality_gap,
+            json_content[ITERATIONS_C]["1"][OPTIMALITY_GAP_C].asDouble());
+  ASSERT_EQ(iter.relative_gap,
+            json_content[ITERATIONS_C]["1"][RELATIVE_GAP_C].asDouble());
+  ASSERT_EQ(iter.ub, json_content[ITERATIONS_C]["1"][UB_C].asDouble());
+
+  const auto &cand = iter.candidates.at(0);
+  ASSERT_EQ(
+      cand.name,
+      json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][NAME_C].asString());
+  ASSERT_EQ(
+      cand.invest,
+      json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][INVEST_C].asDouble());
+  ASSERT_EQ(cand.min,
+            json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][MIN_C].asDouble());
+  ASSERT_EQ(cand.max,
+            json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][MAX_C].asDouble());
+}
+
+void verify_solution_data_in_json_content(const SolutionData &solution_data,
+                                          const Json::Value &json_content) {
+  ASSERT_EQ(solution_data.solution.investment_cost,
+            json_content[SOLUTION_C][INVESTMENT_COST_C].asDouble());
+  ASSERT_EQ(solution_data.solution.operational_cost,
+            json_content[SOLUTION_C][OPERATIONAL_COST_C].asDouble());
+  ASSERT_EQ(solution_data.solution.optimality_gap,
+            json_content[SOLUTION_C][OPTIMALITY_GAP_C].asDouble());
+  ASSERT_EQ(solution_data.solution.overall_cost,
+            json_content[SOLUTION_C][OVERALL_COST_C].asDouble());
+  ASSERT_EQ(solution_data.solution.relative_gap,
+            json_content[SOLUTION_C][RELATIVE_GAP_C].asDouble());
+  ASSERT_EQ(solution_data.best_it,
+            json_content[SOLUTION_C][ITERATION_C].asInt());
+  ASSERT_EQ(solution_data.problem_status,
+            json_content[SOLUTION_C][PROBLEM_STATUS_C].asString());
+  ASSERT_EQ(solution_data.stopping_criterion,
+            json_content[SOLUTION_C][STOPPING_CRITERION_C].asString());
+}
+
 TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData) {
   auto writer = JsonWriter(my_clock, _fileName);
-
-  CandidateData c1, c2;
-  c1.name = "c1";
-  c1.invest = 55;
-  c1.min = 0.55;
-  c1.max = 555;
-  c2.name = "c2";
-  c2.invest = 66;
-  c2.min = 0.66;
-  c2.max = 666;
-  CandidatesVec cdVec = {c1, c2};
-
-  Iteration iter1;
-  iter1.time = 15;
-  iter1.lb = 1.2;
-  iter1.best_ub = 12;
-  iter1.optimality_gap = 1e-10;
-  iter1.relative_gap = 1e-12;
-  iter1.investment_cost = 1;
-  iter1.operational_cost = 17;
-  iter1.overall_cost = 20;
-  iter1.candidates = cdVec;
-
-  CandidateData c3, c4;
-  c3.name = "c3";
-  c3.invest = 33;
-  c3.min = 0.33;
-  c3.max = 5553;
-  c4.name = "c4";
-  c4.invest = 656;
-  c4.min = 0.4566;
-  c4.max = 545666;
-  CandidatesVec cdVec2 = {c3, c4};
-
-  Iteration iter2;
-  iter2.time = 105;
-  iter2.lb = 12;
-  iter2.best_ub = 212;
-  iter2.optimality_gap = 1e-1;
-  iter2.relative_gap = 1e-10;
-  iter2.investment_cost = 12;
-  iter2.operational_cost = 67;
-  iter2.overall_cost = 620;
-  iter2.candidates = cdVec2;
 
   Iterations itersVec = {iter1, iter2};
 
@@ -149,48 +163,9 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData) {
   writer.end_writing(iterations_data);
 
   Json::Value json_content = get_value_from_json(_fileName);
+  verify_iteration_in_json_content(iter1, json_content);
+  verify_solution_data_in_json_content(solution_data, json_content);
 
-  ASSERT_EQ(iter1.best_ub,
-            json_content[ITERATIONS_C]["1"][BEST_UB_C].asDouble());
-  ASSERT_EQ(iter1.time, json_content[ITERATIONS_C]["1"][DURATION_C].asDouble());
-  ASSERT_EQ(iter1.investment_cost,
-            json_content[ITERATIONS_C]["1"][INVESTMENT_COST_C].asDouble());
-  ASSERT_EQ(iter1.lb, json_content[ITERATIONS_C]["1"][LB_C].asDouble());
-  ASSERT_EQ(iter1.operational_cost,
-            json_content[ITERATIONS_C]["1"][OPERATIONAL_COST_C].asDouble());
-  ASSERT_EQ(iter1.optimality_gap,
-            json_content[ITERATIONS_C]["1"][OPTIMALITY_GAP_C].asDouble());
-  ASSERT_EQ(iter1.relative_gap,
-            json_content[ITERATIONS_C]["1"][RELATIVE_GAP_C].asDouble());
-  ASSERT_EQ(iter1.ub, json_content[ITERATIONS_C]["1"][UB_C].asDouble());
-
-  ASSERT_EQ(
-      c1.name,
-      json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][NAME_C].asString());
-  ASSERT_EQ(
-      c1.invest,
-      json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][INVEST_C].asDouble());
-  ASSERT_EQ(c1.min,
-            json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][MIN_C].asDouble());
-  ASSERT_EQ(c1.max,
-            json_content[ITERATIONS_C]["1"][CANDIDATES_C][0][MAX_C].asDouble());
-
-  ASSERT_EQ(solution_data.solution.investment_cost,
-            json_content[SOLUTION_C][INVESTMENT_COST_C].asDouble());
-  ASSERT_EQ(solution_data.solution.operational_cost,
-            json_content[SOLUTION_C][OPERATIONAL_COST_C].asDouble());
-  ASSERT_EQ(solution_data.solution.optimality_gap,
-            json_content[SOLUTION_C][OPTIMALITY_GAP_C].asDouble());
-  ASSERT_EQ(solution_data.solution.overall_cost,
-            json_content[SOLUTION_C][OVERALL_COST_C].asDouble());
-  ASSERT_EQ(solution_data.solution.relative_gap,
-            json_content[SOLUTION_C][RELATIVE_GAP_C].asDouble());
-  ASSERT_EQ(solution_data.best_it,
-            json_content[SOLUTION_C][ITERATION_C].asInt());
-  ASSERT_EQ(solution_data.problem_status,
-            json_content[SOLUTION_C][PROBLEM_STATUS_C].asString());
-  ASSERT_EQ(solution_data.stopping_criterion,
-            json_content[SOLUTION_C][STOPPING_CRITERION_C].asString());
   ASSERT_EQ(expected_log_level, json_content[OPTIONS_C][LOG_LEVEL_C].asInt());
   ASSERT_EQ(expected_master_name,
             json_content[OPTIONS_C][MASTER_NAME_C].asString());
@@ -211,4 +186,25 @@ time_t time_from_date(int year, int month, int day, int hour, int min,
   time_info.tm_year = year - 1900;
   time_t my_time_t = mktime(&time_info);
   return my_time_t;
+}
+TEST_F(JsonWriterTest, WriteIterationShouldPrintIterationInOutfile) {
+  auto writer = JsonWriter(my_clock, _fileName);
+  writer.initialize();
+  writer.write_iteration(iter1, 1);
+  writer.dump();
+  Json::Value json_content = get_value_from_json(_fileName);
+  verify_iteration_in_json_content(iter1, json_content);
+}
+TEST_F(JsonWriterTest, WriterShouldPreserveAlreadyWrittenIterationsInOutfile) {
+  auto writer = JsonWriter(my_clock, _fileName);
+  writer.initialize();
+  writer.write_iteration(iter1, 1);
+  writer.dump();
+  Json::Value json_content = get_value_from_json(_fileName);
+  verify_iteration_in_json_content(iter1, json_content);
+  auto writer2 = JsonWriter(_fileName, json_content);
+  writer2.write_iteration(iter2, 2);
+  Json::Value json_content2 = get_value_from_json(_fileName);
+
+  verify_iteration_in_json_content(iter1, json_content2);
 }

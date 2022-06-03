@@ -24,8 +24,8 @@ void User::display_message(const std::string &str) {
   _stream << str << std::endl;
 }
 
-void User::log_at_initialization(const LogData &d) {
-  _stream << "ITERATION " << d.it << ":" << std::endl;
+void User::log_at_initialization(const int it_number) {
+  _stream << "ITERATION " << it_number << ":" << std::endl;
 }
 
 void User::log_iteration_candidates(const LogData &d) {
@@ -62,6 +62,25 @@ void User::log_stop_criterion_reached(
   _stream << "--- Run completed: " << criterion_to_str(stopping_criterion)
           << " reached" << std::endl;
 }
-
+void User::display_restart_message() {
+  _stream << "Restart Study..." << std::endl;
+}
+void User::restart_elapsed_time(const double elapsed_time) {
+  _stream << indent_1 << "Elapsed time: " << format_time_str(elapsed_time)
+          << std::endl;
+}
+void User::number_of_iterations_before_restart(const int num_iteration) {
+  _stream << indent_1 << "Number of Iterations performed: " << num_iteration
+          << std::endl;
+}
+void User::restart_best_iteration(const int best_iteration) {
+  _stream << indent_1 << "Best Iteration: " << best_iteration << std::endl;
+}
+void User::restart_best_iterations_infos(const LogData &best_iteration_data) {
+  _stream << indent_1 << "Best Iteration Infos: " << std::endl;
+  log_master_solving_duration(best_iteration_data.master_time);
+  log_iteration_candidates(best_iteration_data);
+  log_at_iteration_end(best_iteration_data);
+}
 }  // namespace logger
 }  // namespace xpansion

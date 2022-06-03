@@ -4,9 +4,12 @@
 from dataclasses import dataclass
 from pathlib import Path
 import os
+from pdb import Restart
 import sys
 import yaml
 from typing import List
+
+from antares_xpansion.optimisation_keys import OptimisationKeys
 
 
 @dataclass
@@ -126,7 +129,9 @@ class XpansionConfig:
         self.EXPANSION_ACCURATE = 'expansion_accurate'
         self.EXPANSION_FAST = 'expansion_fast'
         self.OPTIONS_JSON = 'options.json'
+        self.LAUNCHER_OPTIONS_JSON = 'launcher_options.json'
         self.JSON_NAME = "out.json"
+        self.LAST_ITERATION_JSON_FILE_NAME = "last_iteration.json"
         self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
         self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
         self.SENSITIVITY_LOG_FILE = "sensitivity_log.txt"
@@ -153,20 +158,59 @@ class XpansionConfig:
 
     def _set_default_options(self):
         self.options_default = {
-            "MAX_ITERATIONS": "-1",
-            "ABSOLUTE_GAP": "1",
-            "RELATIVE_GAP": "1e-12",
-            "AGGREGATION": False,
-            "OUTPUTROOT": ".",
-            "TRACE": True,
-            "SLAVE_WEIGHT": "CONSTANT",
-            "SLAVE_WEIGHT_VALUE": "1",
-            "MASTER_NAME": "master",
-            "STRUCTURE_FILE": "structure.txt",
-            "INPUTROOT": ".",
-            "CSV_NAME": "benders_output_trace",
-            "BOUND_ALPHA": True,
+            OptimisationKeys.max_iterations_key(): self.max_iterations_default_value(),
+            OptimisationKeys.absolute_gap_key(): self.absolute_gap_default_value(),
+            OptimisationKeys.relative_gap_key(): self.relative_gap_default_value(),
+            OptimisationKeys.aggregation_key(): self.aggregation_default_value(),
+            OptimisationKeys.outpoutroot_key(): self.outpoutroot_default_value(),
+            OptimisationKeys.trace_key(): self.trace_default_value(),
+            OptimisationKeys.slave_weight_key(): self.slave_weight_default_value(),
+            OptimisationKeys.slave_weight_value_key(): self.slave_weight_value_default_value(),
+            OptimisationKeys.master_name_key(): self.master_name_default_value(),
+            OptimisationKeys.structure_file_key(): self.structure_file_default_value(),
+            OptimisationKeys.input_root_key(): self.input_root_default_value(),
+            OptimisationKeys.csv_name_key(): self.csv_name_default_value(),
+            OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
         }
+
+    def bound_alpha_default_value(self):
+        return True
+
+    def csv_name_default_value(self):
+        return "benders_output_trace"
+
+    def input_root_default_value(self):
+        return "."
+
+    def structure_file_default_value(self):
+        return "structure.txt"
+
+    def master_name_default_value(self):
+        return "master"
+
+    def slave_weight_value_default_value(self):
+        return "1"
+
+    def slave_weight_default_value(self):
+        return "CONSTANT"
+
+    def trace_default_value(self):
+        return True
+
+    def outpoutroot_default_value(self):
+        return "."
+
+    def aggregation_default_value(self):
+        return False
+
+    def relative_gap_default_value(self):
+        return "1e-12"
+
+    def absolute_gap_default_value(self):
+        return "1"
+
+    def max_iterations_default_value(self):
+        return "-1"
 
     def _get_config_values(self):
 

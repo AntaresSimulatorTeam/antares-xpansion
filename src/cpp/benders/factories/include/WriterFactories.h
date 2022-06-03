@@ -9,6 +9,7 @@
 
 Writer build_void_writer();
 
-Writer build_json_writer(const std::filesystem::path &json_file_name);
+Writer build_json_writer(const std::filesystem::path &json_file_name,
+                         const bool restart);
 
 #endif  // ANTARESXPANSION_WRITERFACTORIES_H

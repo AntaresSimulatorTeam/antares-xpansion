@@ -26,7 +26,7 @@ void BendersSequential::initialize_problems() {
 
   reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
-                                _data.nsubproblem, log_name()));
+                                _data.nsubproblem, log_name(), IsResumeMode()));
   for (const auto &problem : coupling_map) {
     addSubproblem(problem);
     AddSubproblemName(problem.first);
@@ -46,8 +46,8 @@ void BendersSequential::free() {
 /*!
  * \brief Build subproblem cut and store it in the BendersSequential trace
  *
- * Method to build subproblem cuts, store them in the BendersSequential trace and
- * add them to the Master problem
+ * Method to build subproblem cuts, store them in the BendersSequential trace
+ * and add them to the Master problem
  *
  */
 void BendersSequential::build_cut() {
@@ -56,7 +56,7 @@ void BendersSequential::build_cut() {
   Timer timer;
   getSubproblemCut(subproblem_cut_package);
   SetSubproblemCost(0);
-  for (const auto& pair_name_subproblemcutdata_l : subproblem_cut_package) {
+  for (const auto &pair_name_subproblemcutdata_l : subproblem_cut_package) {
     SetSubproblemCost(
         GetSubproblemCost() +
         pair_name_subproblemcutdata_l.second.first.second[SUBPROBLEM_COST]);
@@ -75,12 +75,16 @@ void BendersSequential::build_cut() {
 void BendersSequential::run() {
   set_cut_storage();
   init_data();
-  Timer benders_timer;
+  ChecksResumeMode();
+  if (is_trace()) {
+    OpenCsvFile();
+  }
+
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
 
-    _logger->log_at_initialization(bendersDataToLogData(_data));
+    _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();
     _logger->log_master_solving_duration(get_timer_master());
@@ -100,14 +104,13 @@ void BendersSequential::run() {
     update_trace();
 
     set_timer_master(timer_master.elapsed());
-    _data.elapsed_time = benders_timer.elapsed();
+    _data.elapsed_time = GetBendersTime();
     _data.stop = stopping_criterion();
+    SaveCurrentBendersData();
   }
+  CloseCsvFile();
+  EndWritingInOutputFile();
   write_basis();
-
-  if (is_trace()) {
-    print_csv();
-  }
 }
 
 void BendersSequential::launch() {

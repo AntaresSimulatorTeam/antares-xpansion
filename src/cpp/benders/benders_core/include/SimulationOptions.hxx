@@ -46,11 +46,16 @@ BENDERS_OPTIONS_MACRO(SOLVER_NAME, std::string, "COIN", asString())
 
 // json file in output/expansion/
 BENDERS_OPTIONS_MACRO(JSON_FILE, std::string, ".", asString())
+
+// last  iteration json file in output/expansion/
+BENDERS_OPTIONS_MACRO(LAST_ITERATION_JSON_FILE, std::string, ".", asString())
 // TIME_LIMIT
 BENDERS_OPTIONS_MACRO(TIME_LIMIT, double, 1e12, asDouble())
 // LAST_MASTER_MPS
 BENDERS_OPTIONS_MACRO(LAST_MASTER_MPS, std::string, "master_last_iteration",
                       asString())
+// Resume last benders
+BENDERS_OPTIONS_MACRO(RESUME, bool, false, asBool())
 
 // Name of the last master basis file
 BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",

@@ -17,6 +17,17 @@ void addCandidate(LogData& logData, std::string candidate, double invest,
   logData.min_invest[candidate] = minInvest;
   logData.max_invest[candidate] = maxInvest;
 }
+
+const LogPoint x0 = {{"candidate1", 56}, {"candidate2", 6}};
+const LogPoint min_invest = {{"candidate1", 5}, {"candidate2", 2}};
+const LogPoint max_invest = {{"candidate1", 10}, {"candidate2", 20}};
+const LogData best_iteration_data = {
+    15e5,       255e6,      200e6, 63,    63,   587e8, 8562e8, x0,
+    min_invest, max_invest, 9e9,   3e-15, 5876, 999,   898};
+const LogData last_iteration_data = {
+    1e5,        255e6,      200e6, 159,   63,   587e8, 8562e8, x0,
+    min_invest, max_invest, 9e9,   3e-15, 5876, 9999,  898};
+
 class FileLoggerTest : public ::testing::Test {
  public:
   void SetUp() { _fileName = std::tmpnam(nullptr); }
@@ -51,6 +62,126 @@ TEST_F(FileLoggerTest, EmptyFileCreatedAtInit) {
 
   ASSERT_TRUE(fileStream.good() && stringStreamFromFile.str().empty());
 }
+TEST_F(FileLoggerTest, ShouldPrintRestartMessage) {
+  std::stringstream expected_msg;
+  expected_msg << "<<BENDERS>> Restart Study..." << std::endl;
+  UserFile fileLog(_fileName);
+  fileLog.display_restart_message();
+
+  std::ifstream fileStream(_fileName);
+  std::stringstream stringStreamFromFile;
+  stringStreamFromFile << fileStream.rdbuf();
+  fileStream.close();
+
+  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+}
+TEST_F(FileLoggerTest, ShouldPrintRestartElapsedTimeMessage) {
+  std::stringstream expected_msg;
+  // 2 Days 10 hours 45 minutes 9 seconds
+  const int days(2);
+  const int hours(10);
+  const int minutes(45);
+  const int seconds(9);
+
+  const double elapsed_time_numeric(days * 24 * 60 * 60 + hours * 60 * 60 +
+                                    minutes * 60 + seconds);
+  const std::string elapsed_time_str(std::to_string(days) + " days " +
+                                     std::to_string(hours) + " hours " +
+                                     std::to_string(minutes) + " minutes " +
+                                     std::to_string(seconds) + " seconds ");
+  expected_msg << "<<BENDERS>> \tElapsed time: " << elapsed_time_str
+               << std::endl;
+  UserFile fileLog(_fileName);
+  fileLog.restart_elapsed_time(elapsed_time_numeric);
+
+  std::ifstream fileStream(_fileName);
+  std::stringstream stringStreamFromFile;
+  stringStreamFromFile << fileStream.rdbuf();
+  fileStream.close();
+
+  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+}
+TEST_F(FileLoggerTest, ShouldPrintNumberOfIterationsBeforeRestart) {
+  std::stringstream expected_msg;
+
+  const int num_iteration(684);
+  expected_msg << "<<BENDERS>> \tNumber of Iterations performed: "
+               << num_iteration << std::endl;
+  UserFile fileLog(_fileName);
+  fileLog.number_of_iterations_before_restart(num_iteration);
+
+  std::ifstream fileStream(_fileName);
+  std::stringstream stringStreamFromFile;
+  stringStreamFromFile << fileStream.rdbuf();
+  fileStream.close();
+
+  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+}
+TEST_F(FileLoggerTest, ShouldPrintBestIterationsBeforeRestart) {
+  std::stringstream expected_msg;
+
+  const int best_it(84);
+  expected_msg << "<<BENDERS>> \tBest Iteration: " << best_it << std::endl;
+  UserFile fileLog(_fileName);
+  fileLog.restart_best_iteration(best_it);
+
+  std::ifstream fileStream(_fileName);
+  std::stringstream stringStreamFromFile;
+  stringStreamFromFile << fileStream.rdbuf();
+  fileStream.close();
+
+  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+}
+TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
+  std::stringstream expected_msg;
+
+  const auto indent_1("\t");
+  const std::string indent_0 = "\t\t";
+  const auto prefix = "<<BENDERS>> ";
+  LogData l;
+  l.master_time = 898;
+  l.invest_cost = 20e6;
+  l.best_ub = 3e6;
+  l.lb = 2e6;
+  l.subproblem_cost = 15.5e6;
+
+  addCandidate(l, "candidate1", 58.0, 23.0, 64.0);
+  addCandidate(l, "candidate2", 8.0, 3.0, 40.0);
+  expected_msg
+      << "<<BENDERS>> \tBest Iteration Infos: " << std::endl
+      << "<<BENDERS>> \tMaster solved in " << l.master_time << " s" << std::endl
+      << prefix << indent_0 << "Candidates:" << std::endl
+      << prefix << indent_0 << indent_1
+      << "candidate1 = 58.00 invested MW -- possible interval [23.00; 64.00] MW"
+      << std::endl
+      << prefix << indent_0 << indent_1
+      << "candidate2 =  8.00 invested MW -- possible interval [ 3.00; 40.00] MW"
+      << std::endl
+      << prefix << indent_0 << "Solution =" << std::endl
+      << prefix << indent_0 << indent_1 << "Operational cost =       15.50 Me"
+      << std::endl
+      << prefix << indent_0 << indent_1 << " Investment cost =       20.00 Me"
+      << std::endl
+      << prefix << indent_0 << indent_1 << "    Overall cost =       35.50 Me"
+      << std::endl
+      << prefix << indent_0 << indent_1 << "   Best Solution =        3.00 Me"
+      << std::endl
+      << prefix << indent_0 << indent_1 << "     Lower Bound =        2.00 Me"
+      << std::endl
+      << prefix << indent_0 << indent_1 << "    Absolute gap = 1.00000e+06 e"
+      << std::endl
+      << prefix << indent_0 << indent_1 << "    Relative gap = 3.33333e-01"
+      << std::endl;
+  UserFile fileLog(_fileName);
+  fileLog.restart_best_iterations_infos(l);
+
+  std::ifstream fileStream(_fileName);
+  std::stringstream stringStreamFromFile;
+  stringStreamFromFile << fileStream.rdbuf();
+  fileStream.close();
+
+  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+}
 TEST_F(FileLoggerTest, ShouldHavePrefixOnEveryLine) {
   UserFile user_file(_fileName);
 
@@ -62,7 +193,7 @@ TEST_F(FileLoggerTest, ShouldHavePrefixOnEveryLine) {
 
   LogData log_data;
   log_data.it = 45;
-  user_file.log_at_initialization(log_data);
+  user_file.log_at_initialization(log_data.it);
 
   addCandidate(log_data, "z", 50.0, 0.0, 100.0);
   user_file.log_iteration_candidates(log_data);
@@ -129,7 +260,7 @@ TEST_F(UserLoggerTest, InitLog) {
   std::stringstream expected;
   expected << "ITERATION 1:" << std::endl;
 
-  _logger.log_at_initialization(logData);
+  _logger.log_at_initialization(logData.it);
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
@@ -394,7 +525,7 @@ class SimpleLoggerMock : public ILogger {
 
   void display_message(const std::string& str) { _displaymessage = str; }
 
-  void log_at_initialization(const LogData& d) override { _initCall = true; }
+  void log_at_initialization(const int it_number) override { _initCall = true; }
 
   void log_iteration_candidates(const LogData& d) override {
     _iterationStartCall = true;
@@ -420,6 +551,21 @@ class SimpleLoggerMock : public ILogger {
   void log_stop_criterion_reached(
       const StoppingCriterion stopping_criterion) override {
     _stopping_criterion = stopping_criterion;
+  }
+  void display_restart_message() override {
+    //
+  }
+  void restart_elapsed_time(const double elapsed_time) override {
+    //
+  }
+  void number_of_iterations_before_restart(const int num_iterations) override {
+    //
+  }
+  void restart_best_iteration(const int best_iterations) override {  //
+  }
+  void restart_best_iterations_infos(
+      const LogData& best_iterations_data) override {
+    //
   }
 
   bool _initCall;
@@ -450,7 +596,7 @@ class MasterLoggerTest : public ::testing::Test {
 
 TEST_F(MasterLoggerTest, InitLog) {
   LogData logData;
-  _master.log_at_initialization(logData);
+  _master.log_at_initialization(logData.it);
   ASSERT_TRUE(_logger->_initCall);
   ASSERT_TRUE(_logger2->_initCall);
 }

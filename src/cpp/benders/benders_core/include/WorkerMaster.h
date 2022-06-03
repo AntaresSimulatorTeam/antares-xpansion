@@ -15,7 +15,8 @@ class WorkerMaster : public Worker {
   WorkerMaster(VariableMap const &variable_map,
                const std::filesystem::path &path_to_mps,
                const std::string &solver_name, const int log_level,
-               int subproblems_count, const std::filesystem::path &log_name);
+               int subproblems_count, const std::filesystem::path &log_name,
+               bool mps_has_alpha);
   virtual ~WorkerMaster();
 
   void get(Point &x0, double &alpha, DblVector &alpha_i);
@@ -36,7 +37,7 @@ class WorkerMaster : public Worker {
   std::vector<int> _id_alpha_i;
   int _id_alpha = 0;
   int subproblems_count;
-
+  bool _mps_has_alpha = false;
   void define_matval_mclind(const Point &s, std::vector<double> &matval,
                             std::vector<int> &mclind) const;
 
@@ -51,5 +52,5 @@ class WorkerMaster : public Worker {
                                       std::vector<double> &matval,
                                       std::vector<int> &mclind) const;
   void _set_upper_bounds() const;
-  void _add_alpha_var();
+  void _set_alpha_var();
 };

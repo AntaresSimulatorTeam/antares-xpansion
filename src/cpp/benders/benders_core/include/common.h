@@ -4,6 +4,8 @@
 #pragma warning(disable : 4267)  // implicit conversion, possible loss of data
 #endif
 
+#include <json/reader.h>
+
 #include <algorithm>
 #include <cmath>
 #include <filesystem>
@@ -117,6 +119,7 @@ struct BaseOptions {
   std::string OUTPUTROOT;
   std::string INPUTROOT;
   std::string STRUCTURE_FILE;
+  std::string LAST_ITERATION_JSON_FILE;
   std::string MASTER_NAME;
   std::string SOLVER_NAME;
   std::string SLAVE_WEIGHT;
@@ -124,6 +127,7 @@ struct BaseOptions {
   int LOG_LEVEL;
 
   double SLAVE_WEIGHT_VALUE;
+  bool RESUME;
 
   Str2Dbl weights;
 };
@@ -149,3 +153,4 @@ struct BendersBaseOptions : public BaseOptions {
 
 void usage(int argc);
 CouplingMap build_input(const std::filesystem::path &structure_path);
+Json::Value get_json_file_content(const std::filesystem::path &json_file);

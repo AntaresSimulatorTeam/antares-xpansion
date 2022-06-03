@@ -10,7 +10,9 @@
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
                        Writer writer, mpi::environment &env,
                        mpi::communicator &world)
-    : BendersBase(options, logger, std::move(writer)), _env(env), _world(world) {}
+    : BendersBase(options, logger, std::move(writer)),
+      _env(env),
+      _world(world) {}
 
 /*!
  *  \brief Method to load each problem in a thread
@@ -26,15 +28,19 @@ void BendersMpi::initialize_problems() {
   auto subproblemProcessCount = _world.size() - 1;
 
   if (_world.rank() == rank_0) {
-    reset_master(new WorkerMaster(master_variable_map, get_master_path(),
-                                  get_solver_name(), get_log_level(),
-                                  _data.nsubproblem, log_name()));
+    reset_master(new WorkerMaster(
+        master_variable_map, get_master_path(), get_solver_name(),
+        get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
     LOG(INFO) << "subproblem number is " << _data.nsubproblem << std::endl;
   } else {
-    //Dispatch subproblems to process
+    // Dispatch subproblems to process
     for (const auto &problem : coupling_map) {
-      auto process_to_feed = current_problem_id % subproblemProcessCount + 1; //In case there are more subproblems than process
-      if (process_to_feed == _world.rank()) { //Assign  [problemNumber % processCount] to processID
+      auto process_to_feed =
+          current_problem_id % subproblemProcessCount +
+          1;  // In case there are more subproblems than process
+      if (process_to_feed ==
+          _world
+              .rank()) {  // Assign  [problemNumber % processCount] to processID
         addSubproblem(problem);
         AddSubproblemName(problem.first);
       }
@@ -78,7 +84,7 @@ void BendersMpi::broadcast_the_master_problem() {
 }
 
 void BendersMpi::solve_master_and_create_trace() {
-  _logger->log_at_initialization(bendersDataToLogData(_data));
+  _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
   _logger->display_message("\tSolving master...");
   get_master_value();
   _logger->log_master_solving_duration(get_timer_master());
@@ -88,7 +94,8 @@ void BendersMpi::solve_master_and_create_trace() {
 }
 
 /*!
- *  \brief Get cut information from each Subproblem and add it to the Master problem
+ *  \brief Get cut information from each Subproblem and add it to the Master
+ * problem
  *
  * Get cut information of every Subproblem in each thread and send it to
  * thread 0 to build new Master's cuts
@@ -112,7 +119,8 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
 }
 
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
-    const SubproblemCutPackage &subproblem_cut_package, const Timer &process_timer) {
+    const SubproblemCutPackage &subproblem_cut_package,
+    const Timer &process_timer) {
   if (!_exceptionRaised) {
     if (_world.rank() != rank_0) {
       mpi::gather(_world, subproblem_cut_package, rank_0);
@@ -134,7 +142,7 @@ SubproblemCutPackage BendersMpi::get_subproblem_cut_package() {
 void BendersMpi::master_build_cuts(AllCutPackage all_package) {
   SetSubproblemCost(0);
   for (auto const &pack : all_package) {
-    for (auto && [_, subproblem_cut_package] : pack) {
+    for (auto &&[_, subproblem_cut_package] : pack) {
       SetSubproblemCost(GetSubproblemCost() +
                         subproblem_cut_package.first.second[SUBPROBLEM_COST]);
     }
@@ -170,15 +178,14 @@ void BendersMpi::write_exception_message(const std::exception &ex) const {
 }
 
 void BendersMpi::step_4_update_best_solution(int rank,
-                                             const Timer &timer_master,
-                                             const Timer &benders_timer) {
+                                             const Timer &timer_master) {
   if (rank == rank_0) {
     update_best_ub();
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
     update_trace();
 
-    _data.elapsed_time = benders_timer.elapsed();
+    _data.elapsed_time = GetBendersTime();
     set_timer_master(timer_master.elapsed());
     _data.stop = stopping_criterion();
   }
@@ -209,7 +216,12 @@ void BendersMpi::run() {
   init_data();
   _world.barrier();
 
-  Timer benders_timer;
+  if (_world.rank() == rank_0) {
+    ChecksResumeMode();
+    if (is_trace()) {
+      OpenCsvFile();
+    }
+  }
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
@@ -225,19 +237,19 @@ void BendersMpi::run() {
     }
 
     if (!_exceptionRaised) {
-      step_4_update_best_solution(_world.rank(), timer_master, benders_timer);
+      step_4_update_best_solution(_world.rank(), timer_master);
     }
     _data.stop |= _exceptionRaised;
 
     broadcast(_world, _data.stop, rank_0);
+    if (_world.rank() == rank_0) {
+      SaveCurrentBendersData();
+    }
   }
-  
   if (_world.rank() == rank_0) {
+    CloseCsvFile();
+    EndWritingInOutputFile();
     write_basis();
-  }
-
-  if (_world.rank() == rank_0 && is_trace()) {
-    print_csv();
   }
 }
 

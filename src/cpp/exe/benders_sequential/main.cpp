@@ -31,11 +31,17 @@ int main(int argc, char **argv) {
   auto logger_factory = FileAndStdoutLoggerFactory(loggerFileName);
 
   Logger logger = logger_factory.get_logger();
-  Writer writer = build_json_writer(options.JSON_FILE);
+  Writer writer = build_json_writer(options.JSON_FILE, options.RESUME);
+  if (options.RESUME && writer->solution_status() == Output::STATUS_OPTIMAL_C) {
+    std::stringstream str;
+    str << "Study is already optimal " << std::endl
+        << "Optimization results available in : " << options.JSON_FILE;
+    logger->display_message(str.str());
+    return 0;
+  }
   writer->write_log_level(options.LOG_LEVEL);
   writer->write_master_name(options.MASTER_NAME);
   writer->write_solver_name(options.SOLVER_NAME);
-  Timer timer;
 
   BendersSequential benders(benders_options, logger, writer);
   benders.set_log_file(loggerFileName);
@@ -43,7 +49,7 @@ int main(int argc, char **argv) {
   std::stringstream str;
   str << "Optimization results available in : " << options.JSON_FILE;
   logger->display_message(str.str());
-  logger->log_total_duration(timer.elapsed());
+  logger->log_total_duration(benders.execution_time());
 
   return 0;
 }

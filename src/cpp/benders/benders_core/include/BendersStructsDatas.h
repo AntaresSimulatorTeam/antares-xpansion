@@ -5,10 +5,6 @@
 #include "common.h"
 #include "core/ILogger.h"
 
-/*!
- * \struct BendersData
- * \brief Structure used to manage every benders data
- */
 struct BendersData {
   int nbasis;
   double subproblem_timers;

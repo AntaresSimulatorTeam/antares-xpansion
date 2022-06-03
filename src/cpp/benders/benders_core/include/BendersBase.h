@@ -7,6 +7,7 @@
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
+#include "Timer.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "common.h"
@@ -19,6 +20,7 @@ class BendersBase {
   virtual void launch() = 0;
   void set_log_file(const std::filesystem::path &log_name);
   [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
+  double execution_time() const;
 
  protected:
   BendersData _data;
@@ -44,7 +46,7 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
-  [[nodiscard]] static LogData bendersDataToLogData(const BendersData &data);
+  [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
   void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
@@ -67,6 +69,24 @@ class BendersBase {
   void SetSubproblemTimers(const double &subproblem_timer);
   [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
+  bool IsResumeMode() const;
+  std::filesystem::path LastIterationFile() const {
+    return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
+  }
+  void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
+  LogData GetBestIterationData() const;
+  void SaveCurrentIterationInOutputFile() const;
+  void SaveSolutionInOutputFile() const;
+  void PrintCurrentIterationCsv();
+  void OpenCsvFile();
+  void CloseCsvFile();
+  void ChecksResumeMode();
+  void SaveCurrentBendersData();
+  void EndWritingInOutputFile() const;
+  [[nodiscard]] int GetNumIterationsBeforeRestart() const {
+    return iterations_before_resume;
+  }
+  double GetBendersTime() const;
   void write_basis() const;
 
  private:
@@ -87,6 +107,8 @@ class BendersBase {
       std::map<std::string, std::map<std::string, int>> input_map) const;
   [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
+  Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
+  LogData FinalLogData() const;
 
  private:
   BendersBaseOptions _options;
@@ -98,6 +120,11 @@ class BendersBase {
   SubproblemsMapPtr subproblem_map;
   AllCutStorage _all_cuts_storage;
   StrVector subproblems;
+  std::ofstream _csv_file;
+  std::filesystem::path _csv_file_path;
+  LogData best_iteration_data;
+  int iterations_before_resume = 0;
+  Timer benders_timer;
 
  public:
   Logger _logger;

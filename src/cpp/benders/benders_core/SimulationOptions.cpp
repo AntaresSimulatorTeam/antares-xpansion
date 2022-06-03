@@ -122,12 +122,14 @@ BaseOptions SimulationOptions::get_base_options() const {
   result.SLAVE_WEIGHT_VALUE = SLAVE_WEIGHT_VALUE;
 
   result.OUTPUTROOT = OUTPUTROOT;
+  result.LAST_ITERATION_JSON_FILE = LAST_ITERATION_JSON_FILE;
   result.SLAVE_WEIGHT = SLAVE_WEIGHT;
   result.MASTER_NAME = MASTER_NAME;
   result.STRUCTURE_FILE = STRUCTURE_FILE;
   result.INPUTROOT = INPUTROOT;
   result.SOLVER_NAME = SOLVER_NAME;
   result.weights = _weights;
+  result.RESUME = RESUME;
 
   return result;
 }

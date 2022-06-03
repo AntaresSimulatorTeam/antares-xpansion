@@ -11,5 +11,6 @@
      "INPUTROOT": ".",
      "CSV_NAME": "benders_output_trace",
      "BOUND_ALPHA": true,
-     "JSON_FILE": "./expansion/out.json"
+     "JSON_FILE": "./expansion/out.json",
+     "LAST_ITERATION_JSON_FILE": "./expansion/last_iteration.json"
 }

@@ -72,11 +72,23 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     )
     set_property(TEST sequential PROPERTY LABELS benders benders-sequential end_to_end)
     add_test(
+        NAME sequential_restart
+        COMMAND Python3::Interpreter -m pytest --installDir=${XPANSION_INSTALL_DIR} test_restartBendersSequentialEndToEnd.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
+    )
+    set_property(TEST sequential_restart PROPERTY LABELS benders benders-sequential end_to_end restart)
+    add_test(
         NAME mpibenders
         COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} test_bendersmpibendersEndToEnd.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
     set_property(TEST mpibenders PROPERTY LABELS benders benders-mpi end_to_end)
+    add_test(
+        NAME mpibenders_restart
+        COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersmpibendersEndToEnd.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
+    )
+    set_property(TEST mpibenders_restart PROPERTY LABELS benders benders-mpi end_to_end restart)
     add_test(
         NAME merge_mps
         COMMAND Python3::Interpreter -m pytest --installDir=${XPANSION_INSTALL_DIR} test_bendersMergeMpsEndToEnd.py

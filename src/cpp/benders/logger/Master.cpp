@@ -9,9 +9,9 @@ void Master::display_message(const std::string &str) {
   }
 }
 
-void Master::log_at_initialization(const LogData &d) {
+void Master::log_at_initialization(const int it_number) {
   for (auto logger : _loggers) {
-    logger->log_at_initialization(d);
+    logger->log_at_initialization(it_number);
   }
 }
 
@@ -57,6 +57,30 @@ void Master::log_stop_criterion_reached(
     logger->log_stop_criterion_reached(stopping_criterion);
   }
 }
-
+void Master::display_restart_message() {
+  for (auto logger : _loggers) {
+    logger->display_restart_message();
+  }
+}
+void Master::restart_elapsed_time(const double elapsed_time) {
+  for (auto logger : _loggers) {
+    logger->restart_elapsed_time(elapsed_time);
+  }
+}
+void Master::number_of_iterations_before_restart(const int num_iteration) {
+  for (auto logger : _loggers) {
+    logger->number_of_iterations_before_restart(num_iteration);
+  }
+}
+void Master::restart_best_iteration(const int best_iteration) {
+  for (auto logger : _loggers) {
+    logger->restart_best_iteration(best_iteration);
+  }
+}
+void Master::restart_best_iterations_infos(const LogData &best_iteration_data) {
+  for (auto logger : _loggers) {
+    logger->restart_best_iterations_infos(best_iteration_data);
+  }
+}
 }  // namespace logger
 }  // namespace xpansion

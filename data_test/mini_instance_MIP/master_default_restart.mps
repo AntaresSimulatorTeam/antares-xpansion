@@ -1,0 +1,28 @@
+NAME          master.m  FREE
+ROWS
+ N  OBJROW
+ E  R0000000
+ L  R0000001
+ L  R0000002
+COLUMNS
+    x OBJROW 1.5
+    x R0000001 -2
+    x R0000002 -1
+    alpha OBJROW 1
+    alpha R0000000 1
+    alpha_0 R0000000 -1
+    alpha_0 R0000001 -1
+    alpha_1 R0000000 -1
+    alpha_1 R0000002 -1
+RHS
+    RHS R0000001 -3
+    RHS R0000002 -2.5
+BOUNDS
+ UI BOUND x 10
+ LO BOUND alpha -10000000000
+ UP BOUND alpha 5.5
+ LO BOUND alpha_0 -10000000000
+ UP BOUND alpha_0 1e+20
+ LO BOUND alpha_1 -10000000000
+ UP BOUND alpha_1 1e+20
+ENDATA
