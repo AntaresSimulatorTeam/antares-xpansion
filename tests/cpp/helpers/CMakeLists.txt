@@ -1,15 +1,16 @@
-add_executable (json_reader
-		JsonXpansionReaderTest.cc)
+add_executable (helpers_test
+		JsonXpansionReaderTest.cc
+		AntaresVersionProviderTest.cpp)
 
-target_include_directories (json_reader
+target_include_directories (helpers_test
 		SYSTEM PRIVATE
 		)
-target_include_directories (json_reader
+target_include_directories (helpers_test
 		PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}
 		)
 
-target_link_libraries (json_reader PRIVATE
+target_link_libraries (helpers_test PRIVATE
 		GTest::Main
 		helpers
 		lp_namer_helper
@@ -20,22 +21,22 @@ target_link_libraries (json_reader PRIVATE
 		)
 
 if (USE_MPI)
-	target_link_libraries (json_reader PRIVATE
+	target_link_libraries (helpers_test PRIVATE
 			${PROJECT_NAME}::benders_mpi_core
 			)
 else ()
 	set (THREADS_PREFER_PTHREAD_FLAG ON)
-	target_link_libraries (json_reader PRIVATE
+	target_link_libraries (helpers_test PRIVATE
 			Threads::Threads
 			)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-	target_compile_options (json_reader PUBLIC -Wno-global-constructors)
-	target_compile_options (json_reader PUBLIC -Wno-exit-time-destructors)
-	target_compile_options (json_reader PUBLIC -Wno-weak-vtables)
-	target_compile_options (json_reader PUBLIC -Wno-covered-switch-default)
+	target_compile_options (helpers_test PUBLIC -Wno-global-constructors)
+	target_compile_options (helpers_test PUBLIC -Wno-exit-time-destructors)
+	target_compile_options (helpers_test PUBLIC -Wno-weak-vtables)
+	target_compile_options (helpers_test PUBLIC -Wno-covered-switch-default)
 endif ()
 
-add_test(NAME json_reader COMMAND json_reader)
-set_property(TEST json_reader PROPERTY LABELS unit)
+add_test(NAME helpers_test COMMAND helpers_test)
+set_property(TEST helpers_test PROPERTY LABELS unit)

@@ -169,34 +169,6 @@ TEST_F(StudyUpdateTest, linkprofile) {
     ASSERT_EQ(link1candidates[0].indirectCapacityFactor(8759), 1);
 }
 
-TEST_F(StudyUpdateTest, defaultAntaresVersion) {
-  StudyUpdater studyupdater(".");
-  ASSERT_EQ(studyupdater.getAntaresVersion(), 710);
-}
-
-TEST_F(StudyUpdateTest, antaresVersion700) {
-  std::string content_l;
-  std::ofstream file_l("study.antares");
-
-  // dummy study tmp file name
-  content_l =
-      "\
-[antares]\n\
-version = 700\n\
-caption = test_case_7.1_structure\n\
-created = 1455269769\n\
-lastsave = 1592911186\n\
-author = Unknown\n\
-";
-  file_l << content_l;
-  file_l.close();
-
-  StudyUpdater studyupdater(".");
-  ASSERT_EQ(studyupdater.getAntaresVersion(), 700);
-
-  std::remove("study.antares");
-}
-
 /***
  Verify :
     * returned locations of the link data files
@@ -204,7 +176,7 @@ author = Unknown\n\
 studypath/input/links/ORIGIN/DESTINATION.txt)
 ***/
 TEST_F(StudyUpdateTest, LinkFilenames) {
-  StudyUpdater studyupdater(".");
+  StudyUpdater studyupdater(".", AntaresVersionProvider());
   ASSERT_EQ(
       studyupdater.getLinkdataFilepath(_links[0]),
       std::filesystem::path(".") / "input" / "links" / "area1" / "area2.txt");
@@ -214,7 +186,7 @@ TEST_F(StudyUpdateTest, LinkFilenames) {
 }
 
 TEST_F(StudyUpdateTest, computeNewCapacities) {
-  StudyUpdater studyupdater(".");
+  StudyUpdater studyupdater(".", AntaresVersionProvider());
 
   // candidate peak has a link profile
   const std::map<std::string, double>& investissments = {
@@ -237,7 +209,7 @@ TEST_F(StudyUpdateTest, computeNewCapacities) {
 }
 
 TEST_F(StudyUpdateTest, no_computed_investment_for_candidate_peak) {
-  StudyUpdater studyupdater(".");
+  StudyUpdater studyupdater(".", AntaresVersionProvider());
 
   // candidate peak has no computed investments
   const std::map<std::string, double>& investissments = {

@@ -18,7 +18,7 @@ add_library (helpers STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/StringUtils.cpp)
+	${CMAKE_CURRENT_SOURCE_DIR}/StringUtils.cpp AntaresVersionProvider.cpp AntaresVersionProvider.h)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
