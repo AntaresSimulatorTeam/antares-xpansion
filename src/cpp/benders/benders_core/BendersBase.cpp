@@ -573,12 +573,12 @@ Output::SolutionData BendersBase::solution() const {
   const auto relative_gap(optimal_gap / _data.best_ub);
 
   if (IsResumeMode()) {
-    // solution not in _trace
+    // solution may not be in _trace
     Output::CandidatesVec candidates_vec;
     std::transform(
         best_iteration_data.x0.cbegin(), best_iteration_data.x0.cend(),
         std::back_inserter(candidates_vec),
-        [this](std::pair<std::string, double> name_invest)
+        [this](const std::pair<std::string, double> &name_invest)
             -> Output::CandidateData {
           const auto &[name, invest] = name_invest;
           return {name, invest, best_iteration_data.min_invest.at(name),
