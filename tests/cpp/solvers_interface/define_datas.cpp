@@ -3,11 +3,7 @@
 void fill_datas(AllDatas& datas) {
   datas.clear();
 
-#if defined(WIN32) || defined(_WIN32)
-  std::string data_test_dir = "../../data_test";
-#else
-  std::string data_test_dir = "../data_test";
-#endif
+  std::string data_test_dir = "data_test";
 
   //==================================================================
   // 1. mip toy

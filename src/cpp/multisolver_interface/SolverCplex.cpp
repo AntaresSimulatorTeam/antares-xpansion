@@ -111,25 +111,25 @@ void SolverCplex::free() {
 *************************************************************************************************/
 void SolverCplex::write_prob_mps(const std::filesystem::path &filename) {
   std::string cplexFlags = "MPS";
-  CPXwriteprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
+  CPXwriteprob(_env, _prb, filename.string().c_str(), cplexFlags.c_str());
 }
 
 void SolverCplex::write_prob_lp(const std::filesystem::path &filename) {
   std::string cplexFlags = "LP";
-  CPXwriteprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
+  CPXwriteprob(_env, _prb, filename.string().c_str(), cplexFlags.c_str());
 }
 
 void SolverCplex::read_prob_mps(const std::filesystem::path &filename) {
   std::string cplexFlags = "MPS";
   int status =
-      CPXreadcopyprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
+      CPXreadcopyprob(_env, _prb, filename.string().c_str(), cplexFlags.c_str());
   zero_status_check(status, "read problem");
 }
 
-void SolverCplex::read_prob_lp(const std::string &filename) {
+void SolverCplex::read_prob_lp(const std::filesystem::path &filename) {
   std::string cplexFlags = "LP";
   int status =
-      CPXreadcopyprob(_env, _prb, filename.c_str(), cplexFlags.c_str());
+      CPXreadcopyprob(_env, _prb, filename.string().c_str(), cplexFlags.c_str());
   zero_status_check(status, "read problem");
 }
 

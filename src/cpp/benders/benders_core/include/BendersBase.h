@@ -87,6 +87,7 @@ class BendersBase {
     return iterations_before_resume;
   }
   double GetBendersTime() const;
+  void write_basis() const;
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);

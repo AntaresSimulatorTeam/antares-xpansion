@@ -110,6 +110,7 @@ void BendersSequential::run() {
   }
   CloseCsvFile();
   EndWritingInOutputFile();
+  write_basis();
 }
 
 void BendersSequential::launch() {

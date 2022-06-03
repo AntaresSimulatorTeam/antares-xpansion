@@ -18,6 +18,7 @@ class TestSensitivityDriver:
                 "test",
                 "other_test",
                 "mock",
+                "mock basis",
                 "mock",
                 "mock",
                 "a_path",
@@ -28,7 +29,14 @@ class TestSensitivityDriver:
         sensitivity_driver = SensitivityDriver("")
         with pytest.raises(SensitivityDriver.SensitivityFilePathError):
             sensitivity_driver.launch(
-                simulation_path, tmp_path / "i_dont_exist", "test", "", "", "", "a_path"
+                simulation_path,
+                tmp_path / "i_dont_exist",
+                "test",
+                "",
+                "",
+                "",
+                "",
+                "a_path",
             )
 
     def test_sensitivity_cmd(self, tmp_path):
@@ -36,9 +44,8 @@ class TestSensitivityDriver:
         exe_path = "/Path/to/bin1"
         sensitivity_driver = SensitivityDriver(exe_path)
 
-        input_files = ["json_in.json", "benders_out", "master", "structure"]
+        input_files = ["json_in.json", "benders_out", "master", "my_basis", "structure"]
         input_paths = list(map(lambda x: tmp_path / x, input_files))
-        print(input_paths)
         _create_empty_file_from_list(tmp_path, input_files)
 
         json_out_path = "somefile.json"
@@ -52,6 +59,7 @@ class TestSensitivityDriver:
                 input_paths[1],
                 input_paths[2],
                 input_paths[3],
+                input_paths[4],
                 json_out_path,
                 sensitivity_log_path,
             )
@@ -64,11 +72,13 @@ class TestSensitivityDriver:
                 "-m",
                 input_paths[2],
                 "-s",
-                input_paths[3],
+                input_paths[4],
                 "-o",
                 json_out_path,
                 "-l",
                 sensitivity_log_path,
+                "--basis",
+                input_paths[3],
             ]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=sys.stdout, stderr=sys.stderr
@@ -79,7 +89,7 @@ class TestSensitivityDriver:
         exe_path = "/Path/to/bin1"
         sensitivity_driver = SensitivityDriver(exe_path)
 
-        input_files = ["json_in.json", "benders_out", "master", "structure"]
+        input_files = ["json_in.json", "benders_out", "master", "my_basis", "structure"]
         input_paths = list(map(lambda x: tmp_path / x, input_files))
         _create_empty_file_from_list(tmp_path, input_files)
 
@@ -95,6 +105,7 @@ class TestSensitivityDriver:
                     input_paths[1],
                     input_paths[2],
                     input_paths[3],
+                    input_paths[4],
                     json_out_path,
                     sensitivity_log_path,
                 )

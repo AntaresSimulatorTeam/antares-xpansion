@@ -8,6 +8,7 @@
 --------------------------------
 *************************************************************************************************/
 int SolverXpress::_NumberOfProblems = 0;
+std::mutex SolverXpress::license_guard;
 
 SolverXpress::SolverXpress(const std::filesystem::path &log_file)
     : SolverXpress() {
@@ -18,6 +19,7 @@ SolverXpress::SolverXpress(const std::filesystem::path &log_file)
   }
 }
 SolverXpress::SolverXpress() {
+  std::lock_guard<std::mutex> guard(license_guard);
   int status = 0;
   if (_NumberOfProblems == 0) {
     status = XPRSinit(NULL);
@@ -57,12 +59,15 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy)
 }
 
 SolverXpress::~SolverXpress() {
-  _NumberOfProblems -= 1;
-  SolverXpress::free();
+  {  // Scope guard
+    std::lock_guard<std::mutex> guard(license_guard);
+    _NumberOfProblems -= 1;
+    SolverXpress::free();
 
-  if (_NumberOfProblems == 0) {
-    int status = XPRSfree();
-    zero_status_check(status, "free XPRESS environment");
+    if (_NumberOfProblems == 0) {
+      int status = XPRSfree();
+      zero_status_check(status, "free XPRESS environment");
+    }
   }
   if (_log_stream.is_open()) {
     _log_stream.close();
@@ -113,13 +118,18 @@ void SolverXpress::write_prob_lp(const std::filesystem::path &filename) {
   zero_status_check(status, "write problem");
 }
 
+void SolverXpress::write_basis(const std::filesystem::path &filename) {
+  int status = XPRSwritebasis(_xprs, filename.string().c_str(), "");
+  zero_status_check(status, "write basis");
+}
+
 void SolverXpress::read_prob_mps(const std::filesystem::path &filename) {
   std::string nFlags = "";
   read_prob(filename.string().c_str(), nFlags.c_str());
 }
-void SolverXpress::read_prob_lp(const std::string &filename) {
+void SolverXpress::read_prob_lp(const std::filesystem::path &filename) {
   std::string nFlags = "l";
-  read_prob(filename.c_str(), nFlags.c_str());
+  read_prob(filename.string().c_str(), nFlags.c_str());
 }
 
 void SolverXpress::read_prob(const char *prob_name, const char *flags) {
@@ -152,6 +162,11 @@ void SolverXpress::read_prob(const char *prob_name, const char *flags) {
   if (keeprows != -1) {
     del_rows(0, 0);
   }
+}
+
+void SolverXpress::read_basis(const std::filesystem::path &filename) {
+  int status = XPRSreadbasis(_xprs, filename.string().c_str(), "");
+  zero_status_check(status, "read basis");
 }
 
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv) {

@@ -333,6 +333,7 @@ class ConfigLoader:
         options_values[OptimisationKeys.log_level_key()] = self.log_level()
         options_values[OptimisationKeys.last_mps_master_name_key(
         )] = self._config.LAST_MASTER_MPS
+        options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
         # generate options file for the solver
         with open(self.options_file_path(), 'w') as options_file:
             json.dump(options_values, options_file, indent=4)
@@ -448,6 +449,9 @@ class ConfigLoader:
     def last_master_file_path(self):
         # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
         return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_iteration.mps")
+
+    def last_master_basis_path(self):
+        return os.path.join(self.simulation_lp_path(), self._config.options_default["MASTER_NAME"] + "_last_basis.bss")
 
     def oversubscribe(self):
         return self._config.oversubscribe

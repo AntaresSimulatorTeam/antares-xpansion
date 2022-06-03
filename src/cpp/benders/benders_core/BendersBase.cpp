@@ -851,3 +851,8 @@ void BendersBase::EndWritingInOutputFile() const {
   SaveSolutionInOutputFile();
 }
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }
+void BendersBase::write_basis() const {
+  const auto filename(std::filesystem::path(_options.OUTPUTROOT) /
+                      (_options.LAST_MASTER_BASIS));
+  _master->write_basis(filename);
+}

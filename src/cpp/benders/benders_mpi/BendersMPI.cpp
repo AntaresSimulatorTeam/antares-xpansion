@@ -249,6 +249,7 @@ void BendersMpi::run() {
   if (_world.rank() == rank_0) {
     CloseCsvFile();
     EndWritingInOutputFile();
+    write_basis();
   }
 }
 

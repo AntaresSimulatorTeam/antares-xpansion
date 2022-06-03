@@ -56,3 +56,7 @@ BENDERS_OPTIONS_MACRO(LAST_MASTER_MPS, std::string, "master_last_iteration",
                       asString())
 // Resume last benders
 BENDERS_OPTIONS_MACRO(RESUME, bool, false, asBool())
+
+// Name of the last master basis file
+BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
+                      asString())
