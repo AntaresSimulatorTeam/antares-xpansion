@@ -40,6 +40,8 @@ class ActiveLink {
     return mc_year_to_chronicle_;
   }
 
+  unsigned int number_of_chronicles() const;
+
  private:
   std::map<unsigned, unsigned > mc_year_to_chronicle_;
   int _idLink;
