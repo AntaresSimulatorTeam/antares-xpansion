@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include "ActiveLinks.h"
+#include "AntaresVersionProvider.h"
 #include "LinkProblemsGenerator.h"
 
 /*!
@@ -27,7 +28,7 @@ class StudyUpdater {
    *
    * \param studyPath_p : path to the antares study folder
    */
-  explicit StudyUpdater(const std::filesystem::path& studyPath_p);
+  explicit StudyUpdater(const std::filesystem::path& studyPath_p, const AntaresVersionProvider& antares_version_provider);
 
   /*!
    * \brief default destructor of calass StudyUpdater
@@ -38,12 +39,6 @@ class StudyUpdater {
    * \brief getter for attribute StudyUpdater::antaresVersion_
    */
   int getAntaresVersion() const;
-
-  /*!
-   * \brief reads the antares version from the "study.antares" file and set
-   * StudyUpdater::antaresVersion_
-   */
-  void readAntaresVersion();
 
   /*!
    * \brief returns the path to the linkdata file related to a link
