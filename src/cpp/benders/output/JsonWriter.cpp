@@ -162,4 +162,8 @@ void JsonWriter::write_master_name(const std::string &master_name) {
 void JsonWriter::write_log_level(const int log_level) {
   _output[OPTIONS_C][LOG_LEVEL_C] = log_level;
 }
+
+std::string JsonWriter::solution_status() const {
+  return _output[SOLUTION_C][PROBLEM_STATUS_C].asString();
+}
 }  // namespace Output

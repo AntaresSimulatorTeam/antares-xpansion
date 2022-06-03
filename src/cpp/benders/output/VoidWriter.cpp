@@ -64,5 +64,5 @@ void VoidWriter::write_nbweeks(const int nb_weeks) {
 void VoidWriter::write_duration(const double duration) {
   // keep this method empty
 }
-
+std::string VoidWriter::solution_status() const { return ""; }
 }  // namespace Output

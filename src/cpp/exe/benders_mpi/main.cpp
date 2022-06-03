@@ -42,6 +42,14 @@ int main(int argc, char **argv) {
 
     logger = logger_factory.get_logger();
     writer = build_json_writer(options.JSON_FILE, options.RESUME);
+    if (options.RESUME &&
+        writer->solution_status() == Output::STATUS_OPTIMAL_C) {
+      std::stringstream str;
+      str << "Study is already optimal " << std::endl
+          << "Optimization results available in : " << options.JSON_FILE;
+      logger->display_message(str.str());
+      return 0;
+    }
     std::ostringstream oss_l = start_message(options, "mpi");
     LOG(INFO) << oss_l.str() << std::endl;
   } else {

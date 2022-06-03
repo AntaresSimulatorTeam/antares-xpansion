@@ -88,5 +88,6 @@ class JsonWriter : public OutputWriter {
   void write_solution(const SolutionData &solution) override;
   void write_nbweeks(const int nb_weeks) override;
   void write_duration(const double duration) override;
+  std::string solution_status() const override;
 };
 }  // namespace Output

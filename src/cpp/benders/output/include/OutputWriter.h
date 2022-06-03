@@ -110,6 +110,7 @@ class OutputWriter {
   virtual void updateEndTime() = 0;
   virtual void write_nbweeks(const int nb_weeks) = 0;
   virtual void write_duration(const double duration) = 0;
+  virtual std::string solution_status() const = 0;
 };
 }  // namespace Output
 using Writer = std::shared_ptr<Output::OutputWriter>;
