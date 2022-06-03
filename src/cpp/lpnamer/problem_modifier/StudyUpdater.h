@@ -98,6 +98,9 @@ class StudyUpdater {
    */
   int update(std::vector<ActiveLink> const& links_p,
              std::string const& jsonPath_p) const;
+  [[nodiscard]] std::vector<std::pair<double,double>> computeNewCapacitiesAllChronicles(
+      const std::map<std::string, double>& investments_p, const ActiveLink& link_p,
+      int timepoint_p) const;
 };
 
 /*!
