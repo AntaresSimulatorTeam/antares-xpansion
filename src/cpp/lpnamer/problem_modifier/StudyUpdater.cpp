@@ -6,33 +6,14 @@
 std::filesystem::path StudyUpdater::linksSubfolder_ =
     std::filesystem::path("input") / "links";
 
-StudyUpdater::StudyUpdater(const std::filesystem::path& studyPath_p)
+StudyUpdater::StudyUpdater(const std::filesystem::path& studyPath_p, const AntaresVersionProvider& antares_version_provider)
     : studyPath_(studyPath_p) {
   linksPath_ = studyPath_ / linksSubfolder_;
-  readAntaresVersion();
+
+  antaresVersion_ = antares_version_provider.getAntaresVersion(studyPath_);
 }
 
 int StudyUpdater::getAntaresVersion() const { return antaresVersion_; }
-
-void StudyUpdater::readAntaresVersion() {
-  std::ifstream studyFile_l(studyPath_ / STUDY_FILE);
-  std::string line_l;
-  const std::string versionProperty_l("version = ");
-
-  while (std::getline(studyFile_l, line_l)) {
-    size_t pos_l = line_l.find(versionProperty_l);
-    if (pos_l != std::string::npos) {
-      std::stringstream buffer(line_l.substr(pos_l + versionProperty_l.size()));
-      buffer >> antaresVersion_;
-      return;
-    }
-  }
-
-  // default
-  std::cout
-      << "StudyUpdater::readAntaresVersion : default version 710 returned.\n";
-  antaresVersion_ = 710;
-}
 
 std::filesystem::path StudyUpdater::getLinkdataFilepath(
     ActiveLink const& link_p) const {
