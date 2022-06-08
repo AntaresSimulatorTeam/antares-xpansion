@@ -10,11 +10,13 @@ v0.7.0 (not released yet)
 - Add `timelimit` option as a stopping criterion for the Antares-Xpansion algorithm
 - Add `log_level` option to choose the verbosity level of the solver
 - Add `resume` step, to provide the possibility to resume an unfinished study.
+- Bump antares version used by Xpansion to 8.1.1
 ### Bug fixes
 
 ### For developers
 
 - Remove documentation generation with doxygen
+- Use C++17
 
 v0.6.0 (12/2021)
 --------------------
