@@ -1,7 +1,7 @@
 Antares-Xpansion changelog
 =================
 
-v0.7.0 (not released yet)
+v0.7.0 (06/2022)
 --------------------
 ### Features
 
