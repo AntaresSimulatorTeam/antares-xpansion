@@ -70,7 +70,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -201,19 +201,19 @@ jobs:
           antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
 
       - name: Upload rpm
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{env.RPM_NAME}}
           path: _build/${{env.RPM_NAME}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
