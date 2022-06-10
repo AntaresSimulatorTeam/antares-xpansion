@@ -19,10 +19,10 @@ class SolverXpress : public SolverAbstract {
       _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                          declared to set or end the environment */
   static std::mutex license_guard;
-  const std::string name_ = "XPRESS";
 
  public:
   XPRSprob _xprs; /*!< Problem in XPRESS */
+  const std::string name_ = "XPRESS";
 
   /*************************************************************************************************
   -----------------------------------    Constructor/Desctructor

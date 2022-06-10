@@ -25,11 +25,11 @@ class SolverClp : public SolverAbstract {
   static int _NumberOfProblems; /*!< Counter of the total number of
                                    problems declared to set or end the
                                    environment */
-  const std::string name_ = "CLP";
 
  public:
   ClpSimplex _clp;
   CoinMessageHandler _message_handler;
+  const std::string name_ = "CLP";
 
   /*************************************************************************************************
   -----------------------------------    Constructor/Desctructor

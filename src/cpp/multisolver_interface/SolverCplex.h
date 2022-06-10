@@ -16,9 +16,9 @@ class SolverCplex : public SolverAbstract {
   static int
       _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                          declared to set or end the environment */
-  const std::string name_ = "CPLEX";
 
  public:
+  const std::string name_ = "CPLEX";
   CPXENVptr _env; /*!< Ptr to the CPLEX environment */
   CPXLPptr _prb;  /*!< Ptr to the CPLEX problem */
 
