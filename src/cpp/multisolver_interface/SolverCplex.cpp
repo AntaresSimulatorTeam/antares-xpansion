@@ -64,8 +64,7 @@ SolverCplex::SolverCplex(const std::shared_ptr<const SolverAbstract> fictif) {
     }
     _NumberOfProblems += 1;
   } else {
-    throw InvalidSolverForCopyException(fictif->get_solver_name(),
-                                        get_solver_name());
+    throw InvalidSolverForCopyException(fictif->get_solver_name(), name);
   }
 }
 
@@ -121,15 +120,15 @@ void SolverCplex::write_prob_lp(const std::filesystem::path &filename) {
 
 void SolverCplex::read_prob_mps(const std::filesystem::path &filename) {
   std::string cplexFlags = "MPS";
-  int status =
-      CPXreadcopyprob(_env, _prb, filename.string().c_str(), cplexFlags.c_str());
+  int status = CPXreadcopyprob(_env, _prb, filename.string().c_str(),
+                               cplexFlags.c_str());
   zero_status_check(status, "read problem");
 }
 
 void SolverCplex::read_prob_lp(const std::filesystem::path &filename) {
   std::string cplexFlags = "LP";
-  int status =
-      CPXreadcopyprob(_env, _prb, filename.string().c_str(), cplexFlags.c_str());
+  int status = CPXreadcopyprob(_env, _prb, filename.string().c_str(),
+                               cplexFlags.c_str());
   zero_status_check(status, "read problem");
 }
 

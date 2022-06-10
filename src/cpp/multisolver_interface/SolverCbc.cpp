@@ -42,8 +42,7 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
     defineCbcModelFromInnerSolver();
   } else {
     _NumberOfProblems -= 1;
-    throw InvalidSolverForCopyException(toCopy->get_solver_name(),
-                                        get_solver_name());
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name);
   }
 }
 

@@ -42,8 +42,7 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     }
   } else {
     _NumberOfProblems -= 1;
-    throw InvalidSolverForCopyException(toCopy->get_solver_name(),
-                                        get_solver_name());
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name);
   }
 }
 

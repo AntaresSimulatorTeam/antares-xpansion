@@ -53,8 +53,7 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy)
   } else {
     _NumberOfProblems -= 1;
     SolverXpress::free();
-    throw InvalidSolverForCopyException(toCopy->get_solver_name(),
-                                        SolverXpress::get_solver_name());
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name);
   }
 }
 
