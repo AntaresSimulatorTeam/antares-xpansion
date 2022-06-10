@@ -178,9 +178,8 @@ void SolverCbc::read_basis(const std::filesystem::path &filename) {
   // readBasis returns 1 if successful
   zero_status_check(status - 1, "read basis");
   if (status == 1) {
-    CoinWarmStartBasis *basis = clps->getBasis();
-    _clp_inner_solver.setWarmStart(basis);
-    delete basis;
+    auto basis = std::unique_ptr<CoinWarmStartBasis>(clps->getBasis());
+    _clp_inner_solver.setWarmStart(basis.get());
   }
 }
 
