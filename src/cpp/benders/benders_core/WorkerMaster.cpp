@@ -34,7 +34,6 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
   }
   _set_alpha_var();
 }
-WorkerMaster::~WorkerMaster() {}
 
 /*!
  *  \brief Return optimal variables of a problem
