@@ -22,7 +22,7 @@ class SolverCbc : public SolverAbstract {
   static int _NumberOfProblems; /*!< Counter of the total number of Cplex
                                    problems declared to set or end the
                                    environment */
-  const std::string name = "CBC";
+  const std::string name_ = "CBC";
 
  public:
   OsiClpSolverInterface _clp_inner_solver;
@@ -54,7 +54,7 @@ class SolverCbc : public SolverAbstract {
   virtual ~SolverCbc();
   virtual int get_number_of_instances() override;
 
-  virtual std::string get_solver_name() const override { return name; }
+  virtual std::string get_solver_name() const override { return name_; }
 
  private:
   void defineCbcModelFromInnerSolver();
