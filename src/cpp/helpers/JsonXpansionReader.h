@@ -28,7 +28,7 @@ class JsonXpansionReader {
   /*!
    *  \brief JsonWriter default destructor
    */
-  virtual ~JsonXpansionReader();
+  virtual ~JsonXpansionReader() = default;
 
   /*!
    *  \brief reads a json file describing the execution of an antares xpansion
