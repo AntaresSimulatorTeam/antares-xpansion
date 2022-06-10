@@ -25,7 +25,7 @@ class SolverClp : public SolverAbstract {
   static int _NumberOfProblems; /*!< Counter of the total number of
                                    problems declared to set or end the
                                    environment */
-  const std::string name = "CLP";
+  const std::string name_ = "CLP";
 
  public:
   ClpSimplex _clp;
@@ -55,7 +55,7 @@ class SolverClp : public SolverAbstract {
   virtual ~SolverClp();
   virtual int get_number_of_instances() override;
 
-  virtual std::string get_solver_name() const override { return name; }
+  virtual std::string get_solver_name() const override { return name_; }
 
   /*************************************************************************************************
   ---------------------------------    Output and stream management

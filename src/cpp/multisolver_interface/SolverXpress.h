@@ -19,7 +19,7 @@ class SolverXpress : public SolverAbstract {
       _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                          declared to set or end the environment */
   static std::mutex license_guard;
-  const std::string name = "XPRESS";
+  const std::string name_ = "XPRESS";
 
  public:
   XPRSprob _xprs; /*!< Problem in XPRESS */
@@ -48,7 +48,7 @@ class SolverXpress : public SolverAbstract {
   virtual ~SolverXpress();
   virtual int get_number_of_instances() override;
 
-  virtual std::string get_solver_name() const override { return name; }
+  virtual std::string get_solver_name() const override { return name_; }
 
   /*************************************************************************************************
   ---------------------------------    Output and stream management

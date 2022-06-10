@@ -64,7 +64,7 @@ SolverCplex::SolverCplex(const std::shared_ptr<const SolverAbstract> fictif) {
     }
     _NumberOfProblems += 1;
   } else {
-    throw InvalidSolverForCopyException(fictif->get_solver_name(), name);
+    throw InvalidSolverForCopyException(fictif->get_solver_name(), name_);
   }
 }
 

@@ -16,7 +16,7 @@ class SolverCplex : public SolverAbstract {
   static int
       _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                          declared to set or end the environment */
-  const std::string name = "CPLEX";
+  const std::string name_ = "CPLEX";
 
  public:
   CPXENVptr _env; /*!< Ptr to the CPLEX environment */
@@ -54,7 +54,7 @@ class SolverCplex : public SolverAbstract {
   virtual ~SolverCplex();
   virtual int get_number_of_instances() override;
 
-  virtual std::string get_solver_name() const override { return name; }
+  virtual std::string get_solver_name() const override { return name_; }
 
   /*************************************************************************************************
   ---------------------------------    Output and stream management
