@@ -49,8 +49,14 @@ class SolverCbc : public SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing a CBC
    * solver to copy
    */
-  SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
+  explicit SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
+  SolverCbc &operator=(const std::shared_ptr<const SolverAbstract> toCopy) {
+    return SolverCbc(toCopy);
+  }
 
+  /*SolverCbc ctor accept only std::shared_ptr*/
+  SolverCbc(const SolverCbc &other) = delete;
+  SolverCbc &operator=(const SolverCbc &other) = delete;
   virtual ~SolverCbc();
   virtual int get_number_of_instances() override;
 

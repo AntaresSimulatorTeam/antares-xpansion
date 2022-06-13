@@ -50,7 +50,14 @@ class SolverClp : public SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing a CLP
    * solver to copy
    */
-  SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
+  explicit SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
+  SolverClp &operator=(const std::shared_ptr<const SolverAbstract> toCopy) {
+    return SolverClp(toCopy);
+  }
+
+  /*SolverClp ctor accept only std::shared_ptr*/
+  SolverClp(const SolverClp &other) = delete;
+  SolverClp &operator=(const SolverClp &other) = delete;
 
   virtual ~SolverClp();
   virtual int get_number_of_instances() override;

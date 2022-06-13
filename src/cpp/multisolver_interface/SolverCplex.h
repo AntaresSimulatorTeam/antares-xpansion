@@ -48,8 +48,15 @@ class SolverCplex : public SolverAbstract {
    * @param fictif : Pointer to an AbstractSolver object, containing a CPLEX
    * solver to copy
    */
-  SolverCplex(const SolverAbstract::Ptr fictif);
-  SolverCplex(const std::shared_ptr<const SolverAbstract> fictif);
+  explicit SolverCplex(const SolverAbstract::Ptr fictif);
+  explicit SolverCplex(const std::shared_ptr<const SolverAbstract> fictif);
+  SolverCplex &operator=(const std::shared_ptr<const SolverAbstract> toCopy) {
+    return SolverCplex(toCopy);
+  }
+
+  /*SolverCplex ctor accept only std::shared_ptr*/
+  SolverCplex(const SolverCplex &other) = delete;
+  SolverCplex &operator=(const SolverCplex &other) = delete;
 
   virtual ~SolverCplex();
   virtual int get_number_of_instances() override;

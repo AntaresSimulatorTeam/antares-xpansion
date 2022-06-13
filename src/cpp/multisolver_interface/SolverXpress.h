@@ -42,8 +42,15 @@ class SolverXpress : public SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing an XPRESS
    * solver to copy
    */
-  SolverXpress(const SolverAbstract::Ptr toCopy);
-  SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
+  explicit SolverXpress(const SolverAbstract::Ptr toCopy);
+  explicit SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
+  SolverXpress &operator=(const std::shared_ptr<const SolverAbstract> toCopy) {
+    return SolverXpress(toCopy);
+  }
+
+  /*SolverXpress ctor accept only std::shared_ptr*/
+  SolverXpress(const SolverXpress &other) = delete;
+  SolverXpress &operator=(const SolverXpress &other) = delete;
 
   virtual ~SolverXpress();
   virtual int get_number_of_instances() override;
