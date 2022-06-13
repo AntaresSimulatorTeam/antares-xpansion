@@ -30,6 +30,9 @@ class ProfileFileNegativeValue(Exception):
     pass
 
 
+INFINITY_LIST = ["+Inf", "+infini"]
+
+
 def _check_profile_file_consistency(filename_path):
     two_profiles = False
     with open(filename_path, 'r') as profile_file:
@@ -392,7 +395,7 @@ def _check_setting_option_type(option, value):
                 'check_setting_option_type: Illegal %s option in type, numerical value is expected .' % option)
             return False
     elif option_type == type_int:
-        if value in ["+Inf", "+infini"]:
+        if value in INFINITY_LIST:
             return True
         else:
             try:
@@ -446,7 +449,7 @@ def check_options(options):
 
 
 def _check_max_iteration(value) -> bool:
-    if value in ["+Inf", "+infini"]:
+    if value in INFINITY_LIST:
         return True
     else:
         max_iter = int(value)
@@ -459,7 +462,7 @@ def _check_max_iteration(value) -> bool:
 
 
 def _check_timelimit(value) -> bool:
-    if value in ["+Inf", "+infini"]:
+    if value in INFINITY_LIST:
         return True
     else:
         if int(value) > 0:
