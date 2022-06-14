@@ -6,7 +6,6 @@ from antares_xpansion.launcher_options_default_value import LauncherOptionsDefau
 
 from antares_xpansion.xpansionConfig import InputParameters
 from antares_xpansion.__version__ import __version__, __antares_simulator_version__
-from antares_xpansion.flushed_print import flushed_print, INFO_MSG
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 
 

@@ -15,7 +15,7 @@ class NOOPSolver: public SolverAbstract {
   virtual void write_prob_mps(const std::filesystem::path &filename) override {}
   virtual void write_prob_lp(const std::filesystem::path &filename) override {}
   virtual void read_prob_mps(const std::filesystem::path &filename) override {}
-  virtual void read_prob_lp(const std::string &filename) override {}
+  virtual void read_prob_lp(const std::filesystem::path &filename) override {}
   virtual void copy_prob(Ptr fictif_solv) override {}
   virtual int get_ncols() const override { return 0; }
   virtual int get_nrows() const override { return 0; }
@@ -81,6 +81,8 @@ class NOOPSolver: public SolverAbstract {
   virtual void set_threads(int n_threads) override {}
   virtual void set_optimality_gap(double gap) override {}
   virtual void set_simplex_iter(int iter) override {}
+  virtual void write_basis(const std::filesystem::path &filename) override {}
+  virtual void read_basis(const std::filesystem::path &filename) override {}
 };
 
 #endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_NOOPSOLVER_H_

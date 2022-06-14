@@ -138,20 +138,8 @@ class TestCandidateReader:
 
         study_path = Path(tmp_path)
 
-        for link in links:
-            link_name = link["name"]
-            assert self.ini_reader._get_link_areas(link_name) == (link["area1"], link["area2"])
-            assert self.ini_reader.get_link_candidate(link_name) == link["candidates"]
-            assert self.ini_reader.get_link_antares_link_file(study_path, link_name) == study_path / "input" / "links" / \
-                   link["area1"] / str(link["area2"] + ".txt")
-
         for candidate in candidates:
             candidate_name = candidate["name"]
-
-            assert self.ini_reader.get_candidate_antares_link_file(study_path,
-                                                                   candidate_name) == study_path / "input" / "links" / \
-                   candidate["area1"] / str(candidate["area2"] + ".txt")
-
             direct_link_profile = candidate["direct-link-profile"]
             expected_profile_array = [[], []]
             if direct_link_profile:
@@ -269,29 +257,6 @@ class TestCandidateReader:
         profile_path = study_path / "user" / "expansion" / "capa" / already_install_indirect_link_profile
         self._create_link_profile_file(profile_path, candidate[
             "already-installed-indirect-link-profile-array"])
-
-
-        for link in self.links:
-            link_name = link["name"]
-            assert self.ini_reader._get_link_areas(link_name) == (link["area1"], link["area2"])
-            assert self.ini_reader.get_link_candidate(link_name) == link["candidates"]
-            assert self.ini_reader.get_link_antares_direct_link_file(study_path,
-                                                                     link_name) == study_path / "input" / "links" / \
-                   link["area1"] / "capacities" / str(link["area2"] + "_direct.txt")
-            assert self.ini_reader.get_link_antares_indirect_link_file(study_path,
-                                                                       link_name) == study_path / "input" / "links" / \
-                   link["area1"] / "capacities" / str(link["area2"] + "_indirect.txt")
-
-        for candidate in self.candidates:
-            candidate_name = candidate["name"]
-
-            assert self.ini_reader.get_candidate_antares_direct_link_file(study_path,
-                                                                          candidate_name) == study_path / "input" / "links" / \
-                   candidate["area1"] / "capacities" / str(candidate["area2"] + "_direct.txt")
-            assert self.ini_reader.get_candidate_antares_indirect_link_file(study_path,
-                                                                            candidate_name) == study_path / "input" / "links" / \
-                   candidate["area1"] / "capacities" / str(candidate["area2"] + "_indirect.txt")
-
 
         expected_array = np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 3.0]]).transpose()
         actual_array = self.ini_reader.get_candidate_already_installed_link_profile_array(study_path,
