@@ -40,7 +40,7 @@ class ActiveLink {
     return mc_year_to_chronicle_;
   }
 
-  unsigned int number_of_chronicles() const;
+  unsigned long number_of_chronicles() const;
 
  private:
   std::map<unsigned, unsigned > mc_year_to_chronicle_;
@@ -57,8 +57,8 @@ class ActiveLink {
 
 class ActiveLinksBuilder {
  public:
-  ActiveLinksBuilder(const std::vector<CandidateData>& candidateList,
-                     const std::map<std::string, std::vector<LinkProfile>>& profile_map, DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider);
+  ActiveLinksBuilder(std::vector<CandidateData>  candidateList,
+                     std::map<std::string, std::vector<LinkProfile>>  profile_map, DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider);
 
   ActiveLinksBuilder(const std::vector<CandidateData>& candidateList,
       const std::map<std::string, std::vector<LinkProfile>>& profile_map);

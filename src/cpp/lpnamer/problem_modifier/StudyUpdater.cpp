@@ -56,9 +56,9 @@ int StudyUpdater::updateLinkdataFile(
     auto file_direct = std::ofstream(direct_ntc);
     auto file_indirect = std::ofstream(indirect_ntc);
     for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-      auto chronicle_capacities_at_time =
-          computeNewCapacitiesAllChronicles(investments_p, link_p, i);
-      if (!chronicle_capacities_at_time.empty()) {
+      if (std::vector<std::pair<double, double>> chronicle_capacities_at_time =
+              computeNewCapacitiesAllChronicles(investments_p, link_p, i);
+          !chronicle_capacities_at_time.empty()) {
         for (int j = 0; j < chronicle_capacities_at_time.size() - 1; ++j) {
           auto [direct_capacities_at_time, indirect_capacities_at_time] =
               chronicle_capacities_at_time.at(j);
