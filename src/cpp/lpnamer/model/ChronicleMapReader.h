@@ -22,5 +22,4 @@ class ScenarioToChronicleReader {
 
   [[nodiscard]] std::map<unsigned int, unsigned int> read(std::istream& input) const;
 };
-#include "gtest/gtest.h"
 #endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_CHRONICLEMAPREADERTEST_CPP_CHRONICLEMAPREADER_H_
