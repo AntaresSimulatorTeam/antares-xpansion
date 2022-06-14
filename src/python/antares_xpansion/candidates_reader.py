@@ -89,7 +89,7 @@ class CandidatesReader:
             link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["indirect-link-profile"])
         return link_profile_path
 
-    def __get_link_antares_link_file(self, study_path: Path, link: str) -> Path:
+    def get_link_antares_link_file_pre820(self, study_path: Path, link: str) -> Path:
         area1, area2 = self._get_link_areas(link)
         return study_path / "input" / "links" / area1 / str(area2 + ".txt")
 
@@ -201,7 +201,7 @@ class CandidatesReader:
         return self.link_path_antares_link_file(link_name, study_path, True)
 
     def link_path_antares_link_file(self, link_name, study_path, is_direct: bool):
-        link_path = self.__get_link_antares_link_file(study_path, link_name)
+        link_path = self.get_link_antares_link_file_pre820(study_path, link_name)
         link_path_component = link_path.parts
         link_to_name = link_path_component[-1]
         link_path_until_from = link_path_component[0:-1]

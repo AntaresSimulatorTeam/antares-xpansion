@@ -105,25 +105,37 @@ def verify_solution(study_path, expected_values, expected_investment_solution):
         )
 
 
-def verify_study_update(study_path, expected_investment_solution):
-    return
+def verify_study_update(study_path, expected_investment_solution, antares_version=700):
     candidate_reader = CandidatesReader(
         study_path / "user" / "expansion" / "candidates.ini"
     )
     for link in candidate_reader.get_link_list():
         candidate_name_list = candidate_reader.get_link_candidate(link)
-        already_installed_capacity = (
+        already_installed_direct_capacity = (
             candidate_reader.get_candidate_already_install_capacity(
                 candidate_name_list[0]
             )
         )
-        already_installed_link_profile_array = (
-            candidate_reader.get_candidate_already_installed_link_profile_array(
+        already_installed_indirect_capacity = (
+            candidate_reader.get_candidate_already_install_capacity(
+                candidate_name_list[0]
+            )
+        )
+        already_installed_direct_link_profile_array = (
+            candidate_reader.get_candidate_already_installed_direct_link_profile_array(
                 study_path, candidate_name_list[0]
             )
         )
-        expected_link_capacity = (
-            already_installed_capacity * already_installed_link_profile_array
+        expected_direct_link_capacity = (
+            already_installed_direct_capacity * already_installed_direct_link_profile_array
+        )
+        already_installed_indirect_link_profile_array = (
+            candidate_reader.get_candidate_already_installed_indirect_link_profile_array(
+                study_path, candidate_name_list[0]
+            )
+        )
+        expected_indirect_link_capacity = (
+                already_installed_indirect_capacity * already_installed_indirect_link_profile_array
         )
 
         for candidate in candidate_name_list:
@@ -131,22 +143,46 @@ def verify_study_update(study_path, expected_investment_solution):
             profile_exists, link_profile_array = candidate_reader.get_candidate_link_profile_array(
                 study_path, candidate
             )
-            assert (
-                link_profile_array.shape == already_installed_link_profile_array.shape
-            )
-            expected_link_capacity += investment * link_profile_array
+            if link_profile_array.ndim == 2:
+                assert (
+                        link_profile_array.shape == candidate_reader.get_candidate_already_installed_link_profile_array(
+                    study_path, candidate_name_list[0]) .shape
+                )
+                expected_direct_link_capacity += investment * link_profile_array[:, 0]
+                expected_indirect_link_capacity += investment * link_profile_array[:, 1]
+            else:
+                direct_array = link_profile_array[:, :, 0].transpose()
+                indirect_array = link_profile_array[:, :, 1].transpose()
+                assert (
+                    direct_array.shape == already_installed_direct_link_profile_array.shape
+                )
+                assert (
+                    indirect_array.shape == already_installed_indirect_link_profile_array.shape
+                )
+                expected_direct_link_capacity += investment * link_profile_array[:, :, 0].transpose()
+                expected_indirect_link_capacity += investment * link_profile_array[:, :, 1].transpose()
 
-        study_link = candidate_reader.get_link_antares_link_file(
-            study_path, link)
-        study_link_array = np.loadtxt(study_link, delimiter="\t")
-        link_capacity = study_link_array[:, [0, 1]]
+        if antares_version < 820:
+            study_link = candidate_reader.get_link_antares_link_file_pre820(
+                study_path, link)
+            study_link_array = np.loadtxt(study_link, delimiter="\t")
+            link_capacity = study_link_array[:, [0, 1]]
 
-        np.testing.assert_allclose(
-            link_capacity, expected_link_capacity, rtol=1e-4)
+            np.testing.assert_allclose(
+                link_capacity, np.array([expected_direct_link_capacity, expected_indirect_link_capacity]).transpose(), rtol=1e-4)
+        else:
+            direct_ntc = candidate_reader.get_link_antares_direct_link_file(study_path, link)
+            indirect_ntc = candidate_reader.get_link_antares_indirect_link_file(study_path, link)
+            direct_link_array = np.loadtxt(direct_ntc, delimiter="\t")
+            indirect_link_array = np.loadtxt(indirect_ntc, delimiter="\t")
+            np.testing.assert_allclose(
+                direct_link_array, expected_direct_link_capacity, rtol=1e-4)
+            np.testing.assert_allclose(
+                indirect_link_array, expected_indirect_link_capacity, rtol=1e-4)
 
 
 ## TESTS ##
-long_parameters_names = "study_path, expected_values, expected_investment_solution"
+long_parameters_names = "study_path, expected_values, expected_investment_solution, antares_version"
 long_parameters_values = [
     (
         ALL_STUDIES_PATH / "xpansion-test-02",
@@ -166,6 +202,7 @@ long_parameters_values = [
             "semibase1": 6.0e02,
             "semibase2": 0
         },
+        700
     ),
     (
         ALL_STUDIES_PATH / "xpansion-test-02-new",
@@ -185,6 +222,7 @@ long_parameters_values = [
             "semibase1": 0.0,
             "semibase2": 200.0,
         },
+        700
     ),
     (
         ALL_STUDIES_PATH / "different_NTCs",
@@ -204,6 +242,7 @@ long_parameters_values = [
             "semibase1": 0.0,
             "semibase2": 200.0,
         },
+        820
     ),
 ]
 
@@ -214,13 +253,13 @@ long_parameters_values = [
 )
 @pytest.mark.long_sequential
 def test_full_study_long_sequential(
-    install_dir, study_path, expected_values, expected_investment_solution, tmp_path
+    install_dir, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "sequential")
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(tmp_study, expected_investment_solution)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -229,16 +268,16 @@ def test_full_study_long_sequential(
 )
 @pytest.mark.long_mpi
 def test_full_study_long_mpi(
-    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path
+    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(tmp_study, expected_investment_solution)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
-medium_parameters_names = "study_path, expected_values, expected_investment_solution"
+medium_parameters_names = "study_path, expected_values, expected_investment_solution, antares_version"
 medium_parameters_values = [
     (
         ALL_STUDIES_PATH / "xpansion-test-01",
@@ -257,6 +296,7 @@ medium_parameters_values = [
             "semibase": 2.0e02,
             "transmission_line": 0.0,
         },
+        700,
     ),
     (
         ALL_STUDIES_PATH / "xpansion-test-03",
@@ -269,6 +309,7 @@ medium_parameters_values = [
             "accepted_rel_gap_atol": 1e-10,
         },
         {"peak": 2500.0, "transmission_line": 1600.0, "semibase": 400.0},
+        700,
     ),
     (
         ALL_STUDIES_PATH / "xpansion-test-04-mps-rounding",
@@ -287,6 +328,7 @@ medium_parameters_values = [
             "semibase": 0.0,
             "transmission_line": 0.0,
         },
+        700,
     ),
     (
         ALL_STUDIES_PATH / "xpansion-test-01-weights",
@@ -305,6 +347,7 @@ medium_parameters_values = [
             "semibase": 200.0,
             "transmission_line": 0.0,
         },
+        700,
     ),
 
     (
@@ -324,6 +367,7 @@ medium_parameters_values = [
             "semibase": 2.0e02,
             "transmission_line": 0.0,
         },
+        700,
     ),
     (
         ALL_STUDIES_PATH / "additionnal-constraints",
@@ -342,6 +386,7 @@ medium_parameters_values = [
             "semibase": 2.0e02,
             "transmission_line": 0.0,
         },
+        700,
     ),
     (
         ALL_STUDIES_PATH / "additionnal-constraints-binary",
@@ -360,6 +405,7 @@ medium_parameters_values = [
             "semibase": 0.0,
             "transmission_line": 400.0,
         },
+        700,
     ),
     (
         ALL_STUDIES_PATH / "hurdles-cost-profile-value-over-one",
@@ -372,6 +418,7 @@ medium_parameters_values = [
             "accepted_rel_gap_atol": 1e-7,
         },
         {"peak": 1300.0, "semibase": 1600.0, "transmission_line": 1000.0},
+        700,
     ),
 ]
 
@@ -382,13 +429,13 @@ medium_parameters_values = [
 )
 @pytest.mark.medium_sequential
 def test_full_study_medium_sequential(
-    install_dir, study_path, expected_values, expected_investment_solution, tmp_path
+    install_dir, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "sequential")
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(tmp_study, expected_investment_solution)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -397,16 +444,16 @@ def test_full_study_medium_sequential(
 )
 @pytest.mark.medium_mpi
 def test_full_study_medium_parallel(
-    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path
+    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(tmp_study, expected_investment_solution)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
-short_parameters_names = "study_path, expected_values, expected_investment_solution"
+short_parameters_names = "study_path, expected_values, expected_investment_solution, antares_version"
 short_parameters_values = [
     (
         ALL_STUDIES_PATH / "link-profile-with-empty-week",
@@ -419,6 +466,7 @@ short_parameters_values = [
             "accepted_rel_gap_atol": 1e-10,
         },
         {"base": 51150.0, "pointe": 33500, "semibase_winter": 0.0},
+        800,
     ),
     (
         ALL_STUDIES_PATH / "empty-link-profile",
@@ -431,6 +479,7 @@ short_parameters_values = [
             "accepted_rel_gap_atol": 1e-10,
         },
         {"base": 51150.0, "pointe": 33500, "semibase_empty": 0.0},
+        800,
     ),
     (
         ALL_STUDIES_PATH / "xpansion-test-one-link-two-candidates",
@@ -443,6 +492,7 @@ short_parameters_values = [
             "accepted_rel_gap_atol": 1e-10,
         },
         {"transmission_line": 800.0, "transmission_line_2": 800.0},
+        800
     ),
 ]
 
@@ -453,13 +503,13 @@ short_parameters_values = [
 )
 @pytest.mark.short_sequential
 def test_full_study_short_sequential(
-        install_dir, study_path, expected_values, expected_investment_solution, tmp_path
+        install_dir, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "sequential")
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(tmp_study, expected_investment_solution)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 @pytest.mark.parametrize(
     short_parameters_names,
@@ -467,10 +517,10 @@ def test_full_study_short_sequential(
 )
 @pytest.mark.short_mpi
 def test_full_study_short_parallel(
-        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path
+        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(tmp_study, expected_investment_solution)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
