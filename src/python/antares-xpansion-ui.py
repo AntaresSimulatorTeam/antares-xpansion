@@ -42,7 +42,8 @@ class MainWidget(QWidget):
         self._check_run_availability()
 
     def _define_install_dir(self):
-        self._install_dir = Path("bin")
+        self._install_dir = None
+
         if Path('config-ui.yaml').is_file():
             with open('config-ui.yaml') as file:
                 content = yaml.full_load(file)
@@ -52,7 +53,7 @@ class MainWidget(QWidget):
     def _define_launcher_name(self):
         self._launcher_name = "antares-xpansion-launcher"
         if sys.platform.startswith("win32"):
-            self._launcher_name+=".exe"
+            self._launcher_name += ".exe"
 
     def _init_log_widget(self):
         log_layout = QHBoxLayout()
@@ -289,35 +290,37 @@ class MainWidget(QWidget):
             self._add_text_to_log("No study path defined")
 
     def _run_study(self, study_path):
-        install_dir = self._install_dir
-        install_dir_path = Path(install_dir)
-        if install_dir_path.is_dir():
-            install_dir_full = str(install_dir_path.resolve())
+        commands = [
+            "--dataDir", str(study_path),
+            "--method", self._get_method(),
+            "--step", self._get_step(),
+            "-n", str(self._get_nb_core())]
+        program_in_python_package = None
+        install_dir_full = None
+        if self._install_dir is not None and self._install_dir.is_dir():
+            install_dir_full = str(self._install_dir.resolve())
+
             program_in_python_package = Path(os.path.abspath(
                 __file__)).parent / self._launcher_name
-            program_in_single_package = Path(
-                sys.executable).parent / self._launcher_name
-            commands = ["--installDir", install_dir_full,
-                        "--dataDir", str(study_path),
-                        "--method", self._get_method(),
-                        "--step", self._get_step(),
-                        "-n", str(self._get_nb_core())]
-            if self._get_keep_mps():
-                commands.append("--keepMps")
-            if not self._step_buttons["full"].isChecked():
-                commands.append("--simulationName")
-                commands.append(self._combo_simulation_name.currentText())
-            if Path("launch.py").is_file():
-                commands.insert(0, "launch.py")
-                program = str(Path(sys.executable))
-            elif program_in_python_package.is_dir():
-                program = str(program_in_python_package)
-            else:
-                program = str(program_in_single_package)
-            self._run_process.start(program, commands)
-            self._set_stop_label()
+            commands.extend(["--installDir", install_dir_full])
+
+        program_in_single_package = Path(
+            sys.executable).parent / self._launcher_name
+
+        if self._get_keep_mps():
+            commands.append("--keepMps")
+        if not self._step_buttons["full"].isChecked():
+            commands.append("--simulationName")
+            commands.append(self._combo_simulation_name.currentText())
+        if Path("launch.py").is_file():
+            commands.insert(0, "launch.py")
+            program = str(Path(sys.executable))
+        elif program_in_python_package is not None and program_in_python_package.is_dir():
+            program = str(program_in_python_package)
         else:
-            self._add_text_to_log("Error in install directory definition.")
+            program = str(program_in_single_package)
+        self._run_process.start(program, commands)
+        self._set_stop_label()
 
 
 app = QApplication([])
