@@ -51,9 +51,6 @@ class SolverClp : public SolverAbstract {
    * solver to copy
    */
   explicit SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
-  SolverClp &operator=(const std::shared_ptr<const SolverAbstract> toCopy) {
-    return SolverClp(toCopy);
-  }
 
   /*SolverClp ctor accept only std::shared_ptr*/
   SolverClp(const SolverClp &other) = delete;

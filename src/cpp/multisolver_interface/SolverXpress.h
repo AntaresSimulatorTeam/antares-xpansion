@@ -44,9 +44,6 @@ class SolverXpress : public SolverAbstract {
    */
   explicit SolverXpress(const SolverAbstract::Ptr toCopy);
   explicit SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
-  SolverXpress &operator=(const std::shared_ptr<const SolverAbstract> toCopy) {
-    return SolverXpress(toCopy);
-  }
 
   /*SolverXpress ctor accept only std::shared_ptr*/
   SolverXpress(const SolverXpress &other) = delete;

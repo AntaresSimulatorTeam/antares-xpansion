@@ -50,9 +50,6 @@ class SolverCplex : public SolverAbstract {
    */
   explicit SolverCplex(const SolverAbstract::Ptr fictif);
   explicit SolverCplex(const std::shared_ptr<const SolverAbstract> fictif);
-  SolverCplex &operator=(const std::shared_ptr<const SolverAbstract> toCopy) {
-    return SolverCplex(toCopy);
-  }
 
   /*SolverCplex ctor accept only std::shared_ptr*/
   SolverCplex(const SolverCplex &other) = delete;
