@@ -230,11 +230,11 @@ namespace fs = std::filesystem;
 
 class AntaresLinkDataReader {
  public:
-  [[nodiscard]] std::vector<LinkdataRecord> Read(fs::path const& file, bool modern) const {
+  [[nodiscard]] std::vector<LinkdataRecord> Read(fs::path const& file) const {
     std::ifstream link_file(file);
     std::vector<LinkdataRecord> result;
     for (std::string line; std::getline(link_file, line); /**/){
-      LinkdataRecord record(modern);
+      LinkdataRecord record;
       record.fillFromRow(line);
       result.emplace_back(record);
     }
@@ -244,7 +244,7 @@ class AntaresLinkDataReader {
     std::ifstream link_file(parameters_path);
     std::vector<LinkdataRecord> result;
     for (std::string line; std::getline(link_file, line); /**/){
-      LinkdataRecord record(true);
+      LinkdataRecord record;
       record.fillFromRow("42 45 " + line);
       result.emplace_back(record);
     }
@@ -275,7 +275,7 @@ void WriteRecord(std::ofstream& link_file, const LinkdataRecord& record) {
 }
 
 TEST(AntaresLinkDataReaderTest, ReadLine){
-  LinkdataRecord expected_record(42, 56, 76, 400, 500);
+  LinkdataRecord expected_record({42, 56, 76, 400, 500, 10, 4, 6});
 
   AntaresLinkDataReader reader;
   fs::path link_file_path = std::tmpnam(nullptr);
@@ -283,57 +283,22 @@ TEST(AntaresLinkDataReaderTest, ReadLine){
   link_file.open(link_file_path);
   WriteRecord(link_file, expected_record);
   link_file.close();
-  LinkdataRecord read_record = reader.Read(link_file_path, false).at(0);
+  LinkdataRecord read_record = reader.Read(link_file_path).at(0);
 
   TestLinkDataRecord(read_record, expected_record);
 }
 
 TEST(AntaresLinkDataReaderTest, ReadFile){
-  LinkdataRecord expected_record(42, 56, 76, 400, 500);
-  expected_record.fileColumns.loopFlow_ = 0;
-  expected_record.fileColumns.pShiftMin_ = 0;
-  expected_record.fileColumns.pShiftMin_ = 0;
-
-  AntaresLinkDataReader reader;
-  fs::path link_file_path = std::tmpnam(nullptr);
-  std::ofstream link_file;
-  link_file.open(link_file_path);
-  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-    if (i == 700) {
-      link_file << 100 << " "
-                << 200 << " "
-                << 300 << " "
-                << 400 << " "
-                << 500 << " "
-                << 1 << " "
-                << 2 << " "
-                << 3 << "\n";
-    } else {
-      WriteRecord(link_file, expected_record);
-    }
-  }
-  link_file.close();
-  std::vector<LinkdataRecord> read_record = reader.Read(link_file_path, false);
-
-  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-    if (i == 700) {
-      TestLinkDataRecord(read_record.at(i), {100, 200, 300, 400, 500});
-    } else {
-      TestLinkDataRecord(read_record.at(i), expected_record);
-    }
-  }
-}
-
-TEST(AntaresLinkDataReaderTest, ReadFileModern){
-  LinkdataRecord expected_record(true);
+  LinkdataRecord expected_record;
   expected_record.fileColumns = {42, 56, 76, 400, 500, 1, 2, 3};
 
   AntaresLinkDataReader reader;
   fs::path link_file_path = std::tmpnam(nullptr);
   std::ofstream link_file;
   link_file.open(link_file_path);
+  int exceptional_line_number = 56;
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-    if (i == 700) {
+    if (i == exceptional_line_number) {
       link_file << 100 << " "
                 << 200 << " "
                 << 300 << " "
@@ -347,13 +312,13 @@ TEST(AntaresLinkDataReaderTest, ReadFileModern){
     }
   }
   link_file.close();
-  std::vector<LinkdataRecord> read_record = reader.Read(link_file_path, true);
+  std::vector<LinkdataRecord> read_record = reader.Read(link_file_path);
 
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-    if (i == 700) {
-      LinkdataRecord expected_record(true);
-      expected_record.fileColumns = {100, 200, 300, 400, 500, 4, 5, 6};
-      TestLinkDataRecord(read_record.at(i), expected_record);
+    if (i == exceptional_line_number) {
+      LinkdataRecord expected_record_2;
+      expected_record_2.fileColumns = {100, 200, 300, 400, 500, 4, 5, 6};
+      TestLinkDataRecord(read_record.at(i), expected_record_2);
     } else {
       TestLinkDataRecord(read_record.at(i), expected_record);
     }
@@ -395,12 +360,12 @@ TEST_F(UpdateCapacitiesTest, update_nothing) {
   std::ofstream ntc_file;
   ntc_file.open(ntc_path_);
   for (auto i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-    WriteRecord(ntc_file, {0.5, 0.3, 0, 0, 0});
+    WriteRecord(ntc_file, LinkdataRecord({0.5, 0.3, 0, 0, 0, 0, 0, 0}));
   }
   ntc_file.close();
-  study_updater_.update(std::vector<ActiveLink>(), std::map<std::string, double>());
+  (void) study_updater_.update(std::vector<ActiveLink>(), std::map<std::string, double>());
 
-  auto res = antares_link_data_reader_.Read(ntc_path_, false);
+  auto res = antares_link_data_reader_.Read(ntc_path_);
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     ASSERT_EQ(0.5, res.at(i).fileColumns.directCapacity_ );
     ASSERT_EQ(0.3, res.at(i).fileColumns.indirectCapacity_);
@@ -412,9 +377,9 @@ TEST_F(UpdateCapacitiesTest, update_one_link_no_candidate) {
   std::map<std::string, double> solution {
       {"dummy_link", 2},
   };
-  study_updater_.update({active_link}, solution);
+  (void) study_updater_.update({active_link}, solution);
 
-  auto res = antares_link_data_reader_.Read(ntc_path_, false); //Refactor NTC reader maybe ?
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     ASSERT_EQ(1, res.at(i).fileColumns.directCapacity_ );
     ASSERT_EQ(1, res.at(i).fileColumns.indirectCapacity_);
@@ -430,9 +395,9 @@ TEST_F(UpdateCapacitiesTest, update_one_link_one_candidate) {
   std::map<std::string, double> solution {
       {"dummy_candidate", 300},
   };
-  study_updater_.update({active_link}, solution);
+  (void) study_updater_.update({active_link}, solution);
 
-  auto res = antares_link_data_reader_.Read(ntc_path_, false); //Refactor NTC reader maybe ?
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     ASSERT_EQ(400, res.at(i).fileColumns.directCapacity_ );
     ASSERT_EQ(400, res.at(i).fileColumns.indirectCapacity_);
@@ -450,9 +415,9 @@ TEST_F(UpdateCapacitiesTest, update_version_720) {
   };
 
   study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(720));
-  study_updater_.update({active_link}, solution);
+  (void) study_updater_.update({active_link}, solution);
 
-  auto res = antares_link_data_reader_.Read(ntc_path_, true); //Refactor NTC reader maybe ?
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     ASSERT_EQ(400, res.at(i).fileColumns.directCapacity_ );
     ASSERT_EQ(400, res.at(i).fileColumns.indirectCapacity_);
@@ -472,15 +437,15 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_720) {
   std::ofstream ntc_file;
   ntc_file.open(ntc_path_);
   for (auto i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-    LinkdataRecord record(true);
+    LinkdataRecord record;
     record.fileColumns = {0.5, 0.3, 4, 5, 6, 7, 8, 9};
     WriteRecord(ntc_file, record);
   }
   ntc_file.close();
   study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(720));
-  study_updater_.update({active_link}, solution);
+  (void) study_updater_.update({active_link}, solution);
 
-  auto res = antares_link_data_reader_.Read(ntc_path_, true); //Refactor NTC reader maybe ?
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
 
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     ASSERT_EQ(res.at(i).fileColumns.pShiftMin_, 8);
@@ -503,9 +468,9 @@ TEST_F(UpdateCapacitiesTest, update_version_800) {
   };
 
   study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(811));
-  study_updater_.update({active_link}, solution);
+  (void) study_updater_.update({active_link}, solution);
 
-  auto res = antares_link_data_reader_.Read(ntc_path_, true); //Refactor NTC reader maybe ?
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     ASSERT_EQ(400, res.at(i).fileColumns.directCapacity_ );
     ASSERT_EQ(400, res.at(i).fileColumns.indirectCapacity_);
@@ -525,15 +490,15 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_800) {
   std::ofstream ntc_file;
   ntc_file.open(ntc_path_);
   for (auto i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-    LinkdataRecord record(true);
+    LinkdataRecord record;
     record.fileColumns = {0.5, 0.3, 4, 5, 6, 7, 8, 9};
     WriteRecord(ntc_file, record);
   }
   ntc_file.close();
   study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(800));
-  study_updater_.update({active_link}, solution);
+  (void) study_updater_.update({active_link}, solution);
 
-  auto res = antares_link_data_reader_.Read(ntc_path_, true); //Refactor NTC reader maybe ?
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
 
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     ASSERT_EQ(res.at(i).fileColumns.pShiftMin_, 8);
@@ -582,7 +547,7 @@ TEST_F(UpdateCapacitiesTest, update_version_820_two_chronicle_installed_capacity
   indirect_file.close();
 
   study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(822));
-  study_updater_.update({active_link}, solution);
+  (void) study_updater_.update({active_link}, solution);
 
   auto profiles = LinkProfileReader::ReadLinkProfile(direct_ntc_file_path, indirect_ntc_file_path); //Refactor NTC reader maybe ?
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
@@ -620,7 +585,7 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_820) {
   link_parameters.close();
 
   study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(820));
-  study_updater_.update({active_link}, solution);
+  (void) study_updater_.update({active_link}, solution);
 
   auto res = antares_link_data_reader_.Read820(tmp_directory_path_ / "input" / "links" / "area1" / "area2_parameters.txt"); //Refactor NTC reader maybe ?
 
