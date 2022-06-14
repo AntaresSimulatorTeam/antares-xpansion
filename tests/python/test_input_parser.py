@@ -1,4 +1,3 @@
-from cgitb import reset
 import pytest
 
 from antares_xpansion.input_parser import InputParser

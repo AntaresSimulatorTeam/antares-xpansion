@@ -1,12 +1,10 @@
 """
     parameters for an AntaresXpansion session
 """
+import os
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import os
-from pdb import Restart
-import sys
-import yaml
 from typing import List
 
 from antares_xpansion.optimisation_keys import OptimisationKeys

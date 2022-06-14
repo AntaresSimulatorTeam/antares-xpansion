@@ -2,10 +2,9 @@
     module to perform checks on antares xpansion input data
 """
 
-import configparser
-import sys
 import os
 import shutil
+import sys
 
 from antares_xpansion.flushed_print import flushed_print
 from antares_xpansion.profile_link_checker import ProfileLinkChecker
@@ -93,7 +92,8 @@ candidate_options_type = {'name': 'string',
                           'direct-link-profile': 'string',
                           'indirect-link-profile': 'string',
                           'already-installed-capacity': 'non-negative',
-                          'already-installed-link-profile': 'string',
+                          'already-installed-direct-link-profile': 'string',
+                          'already-installed-indirect-link-profile': 'string',
                           'has-link-profile': 'string'}
 
 
@@ -108,13 +108,14 @@ def _check_candidate_option_type(option, value):
     """
 
     obsolete_options = ["c", 'enable',
-                        'candidate-type', 'investment-type', 'relaxed', 'link-profile']
+                        'candidate-type', 'investment-type', 'relaxed', 'link-profile',
+                        "already-installed-link-profile"]
     option_type = candidate_options_type.get(option)
     if option_type is None:
         flushed_print(
             'check_candidate_option_type: %s option not recognized in candidates file.' % option)
         flushed_print(f"Authorized options are: ", *
-                      candidate_options_type, sep="\n")
+        candidate_options_type, sep="\n")
         raise UnrecognizedCandidateOptionType
     else:
         if obsolete_options.count(option):
@@ -261,19 +262,21 @@ def _check_candidate_exclusive_attributes(ini_file):
 
 
 def _copy_in_backup(ini_file, candidates_ini_filepath):
+    backup_path = candidates_ini_filepath.parent / f"{candidates_ini_filepath.name}.bak"
     shutil.copyfile(candidates_ini_filepath,
-                    candidates_ini_filepath + ".bak")
+                    backup_path)
     with open(candidates_ini_filepath, 'w') as out_file:
         ini_file.write(out_file)
     flushed_print("%s file was overwritten! backup file %s created"
-                  % (candidates_ini_filepath, candidates_ini_filepath + ".bak"))
+                  % (candidates_ini_filepath, backup_path))
 
 
 def _check_attribute_profile_values(ini_file, capacity_dir_path):
     # check attributes profile is 0, 1 or an existent filename
     config_changed = False
     profile_attributes = ['direct-link-profile',
-                          'indirect-link-profile', 'direct-already-installed-link-profile', 'indirect-already-installed-link-profile']
+                          'indirect-link-profile', 'already-installed-direct-link-profile',
+                          'already-installed-indirect-link-profile']
     for each_section in ini_file.sections():
         has_a_profile = False
         for attribute in profile_attributes:
