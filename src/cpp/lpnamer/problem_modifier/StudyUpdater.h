@@ -36,11 +36,6 @@ class StudyUpdater {
   virtual ~StudyUpdater() = default;
 
   /*!
-   * \brief getter for attribute StudyUpdater::antaresVersion_
-   */
-  int getAntaresVersion() const;
-
-  /*!
    * \brief returns the path to the linkdata file related to a link
    *
    * \param link_p : link for which the datalink file path will be returned
@@ -71,7 +66,7 @@ class StudyUpdater {
    * \return 1 if the update fails, 0 otherwise
    */
 
-  int updateLinkdataFile(
+  [[nodiscard]] int updateLinkdataFile(
       const ActiveLink& link_p,
       const std::map<std::string, double>& investments_p) const;
 
@@ -84,7 +79,7 @@ class StudyUpdater {
    *
    * \return number of candidates we failed to update
    */
-  int update(std::vector<ActiveLink> const& links_p,
+  [[nodiscard]] int update(std::vector<ActiveLink> const& links_p,
              const std::map<std::string, double>& investments_p) const;
 
   /*!
@@ -108,8 +103,6 @@ class StudyUpdater {
  * \brief struct describing a line in a linkdata file of antares
  */
 struct LinkdataRecord {
-  //! should be set to true if antares version is 700 or more recent
-  const bool modernAntaresVersion_;
   struct FileColumns {
     double directCapacity_;
     //! 2nd column of the file : indirect capacity of the link
@@ -131,33 +124,17 @@ struct LinkdataRecord {
   FileColumns fileColumns;
   /*!
    * \brief LinkdataRecord constructor
-   *
-   * \param modernAntaresVersion_p : value to set to modernAntaresVersion_p
    */
-  explicit LinkdataRecord(bool modernAntaresVersion_p);
+  explicit LinkdataRecord();
 
   /*!
-   * \brief LinkdataRecord constructor to use with modern antares studies
+   * \brief LinkdataRecord constructor
    * versions
    *
    * \param fileColumns : LinkdataRecord::FileColumns object that hold columns
    * infos of the file
    */
   explicit LinkdataRecord(const FileColumns& afileColumns);
-
-  /*!
-   * \brief LinkdataRecord constructor to use with old antares studies versions
-   *
-   * \param directCapacity_p : value to set to fileColumns.directCapacity_
-   * \param indirectCapacity_p : value to set to fileColumns.indirectCapacity_
-   * \param directHurdlesCost_p : value to set to fileColumns.directHurdlesCost_
-   * \param indirectHurdlesCost_p : value to set to
-   * fileColumns.indirectHurdlesCost_ \param impedances_p : value to set to
-   * fileColumns.impedances_
-   */
-  LinkdataRecord(double directCapacity_p, double indirectCapacity_p,
-                 double directHurdlesCost_p, double indirectHurdlesCost_p,
-                 double impedances_p);
 
   /*!
    * \brief returns a one-line string describing the LinkdataRecord

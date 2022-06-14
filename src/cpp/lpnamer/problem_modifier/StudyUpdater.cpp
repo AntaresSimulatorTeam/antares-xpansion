@@ -13,8 +13,6 @@ StudyUpdater::StudyUpdater(const std::filesystem::path& studyPath_p, const Antar
   antaresVersion_ = antares_version_provider.getAntaresVersion(studyPath_);
 }
 
-int StudyUpdater::getAntaresVersion() const { return antaresVersion_; }
-
 std::filesystem::path StudyUpdater::getLinkdataFilepath(
     ActiveLink const& link_p) const {
   return linksPath_ / link_p.get_linkor() / (link_p.get_linkex() + ".txt");
@@ -95,8 +93,7 @@ int StudyUpdater::updateLinkdataFile(
       warned_l = true;
     }
 
-    bool isModernVersion_l = (antaresVersion_ >= 700);
-    LinkdataRecord record_l(isModernVersion_l);  // csv file fields
+    LinkdataRecord record_l;  // csv file fields
 
     std::string line_l;
     for (int line_cnt = 0; line_cnt < 8760; ++line_cnt) {
@@ -164,7 +161,6 @@ std::vector<std::pair<double,double>> StudyUpdater::computeNewCapacitiesAllChron
 
     const auto& candidates = link_p.getCandidates();
     for (const auto& candidate : candidates) {
-      std::cout << "Calculating investment for candidate " << candidate.get_name() << std::endl;
       const auto& it_candidate = investments_p.find(candidate.get_name());
       if (it_candidate == investments_p.end()) {
         std::string message = "No investment computed for the candidate " +
@@ -173,7 +169,6 @@ std::vector<std::pair<double,double>> StudyUpdater::computeNewCapacitiesAllChron
         throw std::runtime_error(message);
       }
       double candidate_investment = it_candidate->second;
-      std::cout << "investment is " << candidate_investment << std::endl;
       direct_l +=
           candidate_investment * candidate.directCapacityFactor(i,timepoint_p);
       indirect_l +=
