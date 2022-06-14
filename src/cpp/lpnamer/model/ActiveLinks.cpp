@@ -2,6 +2,7 @@
 
 #include <limits>
 #include <unordered_set>
+#include <utility>
 
 bool doubles_are_different(const double a, const double b) {
   constexpr double MACHINE_EPSILON = std::numeric_limits<double>::epsilon();
@@ -15,12 +16,12 @@ void ActiveLinksBuilder::addCandidate(const CandidateData& candidate_data) {
 }
 
 ActiveLinksBuilder::ActiveLinksBuilder(
-    const std::vector<CandidateData>& candidateList,
-    const std::map<std::string, std::vector<LinkProfile>>& profile_map,
+    std::vector<CandidateData>  candidateList,
+    std::map<std::string, std::vector<LinkProfile>>  profile_map,
     DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider)
-    : _candidateDatas(candidateList),
-      _profile_map(profile_map)
-      , scenario_to_chronicle_provider_(scenario_to_chronicle_provider)
+    : _candidateDatas(std::move(candidateList)),
+      _profile_map(std::move(profile_map))
+      , scenario_to_chronicle_provider_(std::move(scenario_to_chronicle_provider))
 {
   checkCandidateNameDuplication();
   checkLinksValidity();
@@ -221,4 +222,4 @@ std::string ActiveLink::get_linkor() const { return _linkor; }
 
 std::string ActiveLink::get_linkex() const { return _linkex; }
 
-unsigned int ActiveLink::number_of_chronicles() const { return _already_installed_profile.size(); }
+unsigned long ActiveLink::number_of_chronicles() const { return _already_installed_profile.size(); }

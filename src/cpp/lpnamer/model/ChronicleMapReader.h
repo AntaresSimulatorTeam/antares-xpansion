@@ -29,5 +29,4 @@ class ScenarioToChronicleReader {
 
 
 };
-#include "gtest/gtest.h"
 #endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_CHRONICLEMAPREADERTEST_CPP_CHRONICLEMAPREADER_H_
