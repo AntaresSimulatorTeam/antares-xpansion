@@ -13,12 +13,8 @@
  */
 class StudyUpdater {
  private:
-  // folder containing the links files in the antares study
-  static std::filesystem::path linksSubfolder_;
   // path to the antares study
   std::filesystem::path studyPath_;
-  // path to the links folder
-  std::filesystem::path linksPath_;
   // antares version
   int antaresVersion_;
 
@@ -28,33 +24,12 @@ class StudyUpdater {
    *
    * \param studyPath_p : path to the antares study folder
    */
-  explicit StudyUpdater(const std::filesystem::path& studyPath_p, const AntaresVersionProvider& antares_version_provider);
+  explicit StudyUpdater(std::filesystem::path  studyPath_p, const AntaresVersionProvider& antares_version_provider);
 
   /*!
    * \brief default destructor of calass StudyUpdater
    */
   virtual ~StudyUpdater() = default;
-
-  /*!
-   * \brief returns the path to the linkdata file related to a link
-   *
-   * \param link_p : link for which the datalink file path will be returned
-   */
-
-  std::filesystem::path getLinkdataFilepath(ActiveLink const& link_p) const;
-
-  /*!
-   * \brief computes the new capacities of related to a link
-   *
-   * \param investment_p : investment to consider for the candidates of the link
-   * \param link_p : link for which the capacities will be computed
-   * \param timepoint_p : timepoint where the capcities will be computed
-   *
-   * \return a pair of the computed direct and indirect capacities
-   */
-  std::pair<double, double> computeNewCapacities(
-      const std::map<std::string, double>& investments_p,
-      const ActiveLink& link_p, int timepoint_p) const;
 
   /*!
    * \brief updates the linkdata file for a given link according to the
@@ -93,74 +68,4 @@ class StudyUpdater {
    */
   int update(std::vector<ActiveLink> const& links_p,
              std::string const& jsonPath_p) const;
-  [[nodiscard]] std::vector<std::pair<double,double>> computeNewCapacitiesAllChronicles(
-      const std::map<std::string, double>& investments_p, const ActiveLink& link_p,
-      int timepoint_p) const;
-};
-
-/*!
- * \struct LinkdataRecord
- * \brief struct describing a line in a linkdata file of antares
- */
-struct LinkdataRecord {
-  struct FileColumns {
-    double directCapacity_;
-    //! 2nd column of the file : indirect capacity of the link
-    double indirectCapacity_;
-    //! 3rd column of the file : direct hurdles cost
-    double directHurdlesCost_;
-    //! 4th column of the file : indirect hurdles cost
-    double indirectHurdlesCost_;
-    //! 5th column of the file : impedances
-    double impedances_;
-    //! 6th column of the file : loop flow
-    double loopFlow_;
-    //! 7th column of the file : power shift min.
-    double pShiftMin_;
-    //! 8th column of the file : power shift max.
-    double pShiftMax_;
-  };
-
-  FileColumns fileColumns;
-  /*!
-   * \brief LinkdataRecord constructor
-   */
-  explicit LinkdataRecord();
-
-  /*!
-   * \brief LinkdataRecord constructor
-   * versions
-   *
-   * \param fileColumns : LinkdataRecord::FileColumns object that hold columns
-   * infos of the file
-   */
-  explicit LinkdataRecord(const FileColumns& afileColumns);
-
-  /*!
-   * \brief returns a one-line string describing the LinkdataRecord
-   *
-   * \param sep_p : delimiter used to separate record's attributes in the
-   * created line string
-   */
-  std::string to_row(std::string const& sep_p) const;
-
-  /*!
-   * \brief update the capacities of the LinkdataRecord
-   *
-   * \param directCapacity_p : value to set to fileColumns.directCapacity_
-   * \param indirectCapacity_p : value to set to fileColumns.indirectCapacity_
-   */
-  void updateCapacities(double directCapacity_p, double indirectCapacity_p);
-
-  /*!
-   * \brief populates the LinkdataRecord attributes for a string
-   *
-   * \param line_p : string describing the record
-   */
-  void fillFromRow(std::string const& line_p);
-
-  /*!
-   * \brief reset the LinkdataRecord attributes to 0
-   */
-  void reset();
 };
