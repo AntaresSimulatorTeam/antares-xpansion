@@ -1,129 +1,31 @@
 #include "StudyUpdater.h"
 
+#include <utility>
+
 #include "JsonXpansionReader.h"
-#include "common_lpnamer.h"
+#include "StudyUpdateLinkCapacitiesStrategy.h"
+#include "StudyUpdateLinkParameterStrategy.h"
+#include "StudyUpdateStrategy.h"
 
-std::filesystem::path StudyUpdater::linksSubfolder_ =
-    std::filesystem::path("input") / "links";
+constexpr int ANTARES_VERSION_CAPACITIES_IN_INDIVIDUAL_FILES = 820;
 
-StudyUpdater::StudyUpdater(const std::filesystem::path& studyPath_p, const AntaresVersionProvider& antares_version_provider)
-    : studyPath_(studyPath_p) {
-  linksPath_ = studyPath_ / linksSubfolder_;
 
+StudyUpdater::StudyUpdater(
+    std::filesystem::path  studyPath_p,
+    const AntaresVersionProvider& antares_version_provider)
+    : studyPath_(std::move(studyPath_p)) {
   antaresVersion_ = antares_version_provider.getAntaresVersion(studyPath_);
-}
-
-std::filesystem::path StudyUpdater::getLinkdataFilepath(
-    ActiveLink const& link_p) const {
-  return linksPath_ / link_p.get_linkor() / (link_p.get_linkex() + ".txt");
-}
-
-std::pair<double, double> StudyUpdater::computeNewCapacities(
-    const std::map<std::string, double>& investments_p,
-    const ActiveLink& link_p, int timepoint_p) const {
-  double direct_l = link_p.get_already_installed_capacity() *
-                    link_p.already_installed_direct_profile(timepoint_p);
-  double indirect_l = link_p.get_already_installed_capacity() *
-                      link_p.already_installed_direct_profile(timepoint_p);
-
-  const auto& candidates = link_p.getCandidates();
-  for (const auto& candidate : candidates) {
-    const auto& it_candidate = investments_p.find(candidate.get_name());
-    if (it_candidate == investments_p.end()) {
-      std::string message = "No investment computed for the candidate " +
-                            candidate.get_name() + " on the link " +
-                            link_p.get_LinkName();
-      throw std::runtime_error(message);
-    }
-    double candidate_investment = it_candidate->second;
-
-    direct_l += candidate_investment * candidate.directCapacityFactor(timepoint_p);
-    indirect_l +=
-        candidate_investment * candidate.indirectCapacityFactor(timepoint_p);
-  }
-  return std::make_pair(direct_l, indirect_l);
 }
 
 int StudyUpdater::updateLinkdataFile(
     const ActiveLink& link_p,
     const std::map<std::string, double>& investments_p) const {
-  if (antaresVersion_ >= 820) {
-    auto link_folder = linksPath_ / link_p.get_linkor() / "capacities";
-    auto direct_ntc = link_folder / (link_p.get_linkex() + "_direct.txt");
-    auto indirect_ntc = link_folder / (link_p.get_linkex() + "_indirect.txt");
-    auto file_direct = std::ofstream(direct_ntc);
-    auto file_indirect = std::ofstream(indirect_ntc);
-    for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-      if (std::vector<std::pair<double, double>> chronicle_capacities_at_time =
-              computeNewCapacitiesAllChronicles(investments_p, link_p, i);
-          !chronicle_capacities_at_time.empty()) {
-        for (int j = 0; j < chronicle_capacities_at_time.size() - 1; ++j) {
-          auto [direct_capacities_at_time, indirect_capacities_at_time] =
-              chronicle_capacities_at_time.at(j);
-          file_direct << direct_capacities_at_time << "\t";
-          file_indirect << indirect_capacities_at_time << "\t";
-        }
-        auto [direct_capacities_at_time, indirect_capacities_at_time] =
-            *(chronicle_capacities_at_time.end());
-        file_direct << direct_capacities_at_time;
-        file_indirect << indirect_capacities_at_time;
-      }
-      file_direct << "\n";
-      file_indirect << "\n";
-    }
-    return 0;
+  if (antaresVersion_ >= ANTARES_VERSION_CAPACITIES_IN_INDIVIDUAL_FILES) {
+    StudyUpdateLinkCapacitiesStrategy study_update(studyPath_);
+    return study_update.Update(link_p, investments_p);
   } else {
-    auto linkdataFilename_l = getLinkdataFilepath(link_p);
-
-    std::ifstream inputCsv_l(linkdataFilename_l);
-    std::ofstream tempOutCsvFile(linkdataFilename_l.string() + ".tmp");
-
-    if (!tempOutCsvFile.is_open()) {
-      std::cout << "ERROR: Error writing " + linkdataFilename_l.string() + "."
-                << std::endl;
-      return 1;
-    }
-
-    bool warned_l = false;
-    if (!inputCsv_l.is_open()) {
-      std::cout << "WARNING: Missing file to update antares study : "
-                << linkdataFilename_l << "."
-                << " Unknown valus were populated with 0 in a new created file."
-                << std::endl;
-      warned_l = true;
-    }
-
-    LinkdataRecord record_l;  // csv file fields
-
-    std::string line_l;
-    for (int line_cnt = 0; line_cnt < 8760; ++line_cnt) {
-      if (std::getline(inputCsv_l, line_l)) {
-        record_l.fillFromRow(line_l);
-      } else {
-        record_l.reset();
-        if (!warned_l) {
-          std::cout << "WARNING: Missing entries in : " +
-                           linkdataFilename_l.string() +
-                           ". Missing valus were populated with 0."
-                    << std::endl;
-          warned_l = true;
-        }
-      }
-      std::pair<double, double> newCapacities_l =
-          computeNewCapacities(investments_p, link_p, line_cnt);
-      record_l.updateCapacities(newCapacities_l.first, newCapacities_l.second);
-      tempOutCsvFile << record_l.to_row("\t") << "\n";
-    }
-
-    inputCsv_l.close();
-    tempOutCsvFile.close();
-
-    // delete old file and rename the temporarily created file
-    std::remove(linkdataFilename_l.string().c_str());
-    std::rename((linkdataFilename_l.string() + ".tmp").c_str(),
-                linkdataFilename_l.string().c_str());
-
-    return 0;
+    StudyUpdateLinkParameterStrategy study_update(studyPath_);
+    return study_update.Update(link_p, investments_p);
   }
 }
 
@@ -149,32 +51,3 @@ int StudyUpdater::update(
   return updateFailures_l;
 }
 
-std::vector<std::pair<double,double>> StudyUpdater::computeNewCapacitiesAllChronicles(
-    const std::map<std::string, double>& investments_p, const ActiveLink& link_p,
-    int timepoint_p) const {
-  std::vector<std::pair<double, double>> new_capacities;
-  for (int i = 1; i < link_p.number_of_chronicles() + 1; ++i) {
-    double direct_l = link_p.get_already_installed_capacity() *
-                      link_p.already_installed_direct_profile(i,timepoint_p);
-    double indirect_l = link_p.get_already_installed_capacity() *
-                        link_p.already_installed_direct_profile(i,timepoint_p);
-
-    const auto& candidates = link_p.getCandidates();
-    for (const auto& candidate : candidates) {
-      const auto& it_candidate = investments_p.find(candidate.get_name());
-      if (it_candidate == investments_p.end()) {
-        std::string message = "No investment computed for the candidate " +
-                              candidate.get_name() + " on the link " +
-                              link_p.get_LinkName();
-        throw std::runtime_error(message);
-      }
-      double candidate_investment = it_candidate->second;
-      direct_l +=
-          candidate_investment * candidate.directCapacityFactor(i,timepoint_p);
-      indirect_l +=
-          candidate_investment * candidate.indirectCapacityFactor(i,timepoint_p);
-    }
-    new_capacities.emplace_back(direct_l, indirect_l);
-  }
-  return new_capacities;
-}
