@@ -1,4 +1,4 @@
-#include "StudyUpdater.h"
+#include "LinkdataRecord.h"
 
 LinkdataRecord::LinkdataRecord()
     : fileColumns{0, 0, 0, 0,

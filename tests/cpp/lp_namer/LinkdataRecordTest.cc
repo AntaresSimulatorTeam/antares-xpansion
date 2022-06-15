@@ -1,8 +1,8 @@
-#include "gtest/gtest.h"
-
 #include <fstream>
 
+#include "LinkdataRecord.h"
 #include "StudyUpdater.h"
+#include "gtest/gtest.h"
 
 class LinkdataRecordTest : public ::testing::Test
 {

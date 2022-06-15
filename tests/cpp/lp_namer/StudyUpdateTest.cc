@@ -4,6 +4,8 @@
 #include "ActiveLinks.h"
 #include "CandidatesINIReader.h"
 #include "LinkProfileReader.h"
+#include "LinkdataRecord.h"
+#include "StudyUpdateLinkParameterStrategy.h"
 #include "StudyUpdater.h"
 #include "common_lpnamer.h"
 #include "gtest/gtest.h"
@@ -176,7 +178,7 @@ TEST_F(StudyUpdateTest, linkprofile) {
 studypath/input/links/ORIGIN/DESTINATION.txt)
 ***/
 TEST_F(StudyUpdateTest, LinkFilenames) {
-  StudyUpdater studyupdater(".", AntaresVersionProvider());
+  StudyUpdateLinkParameterStrategy studyupdater(std::filesystem::path("."));
   ASSERT_EQ(
       studyupdater.getLinkdataFilepath(_links[0]),
       std::filesystem::path(".") / "input" / "links" / "area1" / "area2.txt");
@@ -186,7 +188,7 @@ TEST_F(StudyUpdateTest, LinkFilenames) {
 }
 
 TEST_F(StudyUpdateTest, computeNewCapacities) {
-  StudyUpdater studyupdater(".", AntaresVersionProvider());
+  StudyUpdateLinkParameterStrategy studyupdater(".");
 
   // candidate peak has a link profile
   const std::map<std::string, double>& investissments = {
@@ -209,14 +211,14 @@ TEST_F(StudyUpdateTest, computeNewCapacities) {
 }
 
 TEST_F(StudyUpdateTest, no_computed_investment_for_candidate_peak) {
-  StudyUpdater studyupdater(".", AntaresVersionProvider());
+  StudyUpdateLinkParameterStrategy studyupdater(".");
 
   // candidate peak has no computed investments
   const std::map<std::string, double>& investissments = {
       {"transmission_line", 0}};
 
   try {
-    studyupdater.computeNewCapacities(investissments, _links[1], 0);
+    (void) studyupdater.computeNewCapacities(investissments, _links[1], 0);
     FAIL() << "Missing investment not detected for candidate peak on link "
               "area1 - peak";
   } catch (const std::runtime_error& err) {
