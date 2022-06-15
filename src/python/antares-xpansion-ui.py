@@ -13,8 +13,10 @@ from pathlib import Path
 
 import resources
 
-STEPS = ["full", "antares", "problem_generation", "benders", "study_update"]
-STEP_WITH_SIMULATION_NAME = ["problem_generation", "benders", "study_update"]
+STEPS = ["full", "antares", "problem_generation",
+         "benders", "study_update", "sensitivity", "resume"]
+STEP_WITH_SIMULATION_NAME = ["problem_generation",
+                             "benders", "study_update", "sensitivity", "resume"]
 NEW_SIMULATION_NAME = "New"
 LAST_ANTARES_STUDY_DIR = "last_antares_study_dir"
 
@@ -297,8 +299,8 @@ class MainWidget(QWidget):
             "-n", str(self._get_nb_core())]
         program_in_python_package = None
         install_dir_full = None
-        if self._install_dir is not None and self._install_dir.is_dir():
-            install_dir_full = str(self._install_dir.resolve())
+        if self._install_dir is not None and Path(self._install_dir).is_dir():
+            install_dir_full = str(Path(self._install_dir).resolve())
 
             program_in_python_package = Path(os.path.abspath(
                 __file__)).parent / self._launcher_name
