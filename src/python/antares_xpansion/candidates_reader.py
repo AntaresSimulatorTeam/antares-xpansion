@@ -1,3 +1,4 @@
+import os
 from configparser import ConfigParser
 from pathlib import Path
 
@@ -145,6 +146,17 @@ class CandidatesReader:
 
     @staticmethod
     def _read_or_create_link_profile_array_simple(file : str):
+        print("DEBUG")
+        print(file)
+        print(os.listdir("/tmp"))
+        print(os.listdir("/tmp/pytest-of-runner/"))
+        print(os.listdir("/tmp/pytest-of-runner/pytest-1/"))
+        print(os.listdir("/tmp/pytest-of-runner/pytest-1/test_full_study_medium_sequent0/"))
+        print(os.listdir("/tmp/pytest-of-runner/pytest-1/test_full_study_medium_sequent0/xpansion-test-01/"))
+        print(os.listdir("/tmp/pytest-of-runner/pytest-1/test_full_study_medium_sequent0/xpansion-test-01/input/"))
+        print(os.listdir("/tmp/pytest-of-runner/pytest-1/test_full_study_medium_sequent0/xpansion-test-01/input/links/"))
+        print(os.listdir("/tmp/pytest-of-runner/pytest-1/test_full_study_medium_sequent0/xpansion-test-01/input/links/area1/"))
+        print(os.listdir("/tmp/pytest-of-runner/pytest-1/test_full_study_medium_sequent0/xpansion-test-01/input/links/area1/capacities/"))
         link_profile_array = np.ones(8760)
         if file:
             link_profile_array = np.loadtxt(file, delimiter="\t")
