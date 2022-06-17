@@ -175,9 +175,15 @@ void SolverCbc::read_prob_lp(const std::filesystem::path &prob_name) {
 
 void SolverCbc::read_basis(const std::filesystem::path &filename) {
   ClpSimplex *clps = _clp_inner_solver.getModelPtr();
+  // returns -1 on file error, 0 if no values, 1 if values */
   int status = clps->readBasis(filename.string().c_str());
-  // readBasis returns 1 if successful
-  zero_status_check(status - 1, "read basis");
+  // -r-e-a-d-B-a-s-i-s --r-e-t-u-r-n-s- -1- -i-f- -s-u-c-c-e-s-s-f-u-l-
+  if (status != 0 && status != 1) {
+    std::cerr << "Failed to read basis: invalid status " +
+                     std::to_string(status) + " (0 or 1 expected)";
+    std::exit(1);
+  }
+  // zero_status_check(status - 1, "read basis");
   if (status == 1) {
     CoinWarmStartBasis *basis = clps->getBasis();
     _clp_inner_solver.setWarmStart(basis);
