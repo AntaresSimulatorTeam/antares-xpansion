@@ -21,8 +21,6 @@ add_library (lp_namer_problem_modifier STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
 	${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.h
-        ../model/Problem.cpp ../model/Problem.h
-	${CMAKE_CURRENT_SOURCE_DIR}/ProblemNameParser.h ${CMAKE_CURRENT_SOURCE_DIR}/ProblemNameParser.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.h ${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.cpp
 		LinkdataRecord.h LinkCapacitiesCSVWriter.h LinkCapacitiesCSVWriter.cpp StudyUpdateStrategy.cpp StudyUpdateStrategy.h StudyUpdateLinkCapacitiesStrategy.cpp StudyUpdateLinkCapacitiesStrategy.h StudyUpdateLinkParameterStrategy.cpp StudyUpdateLinkParameterStrategy.h)
 

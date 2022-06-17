@@ -27,8 +27,8 @@ class ActiveLink {
 
   double already_installed_direct_profile(size_t timeStep) const;
   double already_installed_indirect_profile(size_t timeStep) const;
-  [[nodiscard]] double already_installed_direct_profile(size_t year, size_t timeStep) const;
-  [[nodiscard]] double already_installed_indirect_profile(size_t year, size_t timeStep) const;
+  [[nodiscard]] double already_installed_direct_profile(size_t chronicle_number, size_t timeStep) const;
+  [[nodiscard]] double already_installed_indirect_profile(size_t chronicle_number, size_t timeStep) const;
 
   int get_idLink() const;
   LinkName get_LinkName() const;
