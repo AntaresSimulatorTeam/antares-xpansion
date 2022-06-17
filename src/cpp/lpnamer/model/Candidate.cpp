@@ -19,19 +19,31 @@ double Candidate::indirectCapacityFactor(size_t timeStep) const {
   return _profile.at(0).getIndirectProfile(timeStep);
 }
 
-double Candidate::directCapacityFactor(size_t chronicle_number, size_t timeStep) const {
+double Candidate::directCapacityFactor(size_t chronicle_number,
+                                       size_t timeStep) const {
+  /* When there is no scenario builder output from antares. The chronicle map
+   * contains only zeros When there is an output the map contains values ranging
+   * from 1 to <number of chronicles> The first case happen when there is only
+   * one profile, so we need to return it The second case happen when you have
+   * multiple profiles, in this case we need to project values from [1,N] to
+   * [0,N-1] to return the proper profiles
+   */
   if (chronicle_number == 0) {
     return _profile.at(0).getDirectProfile(timeStep);
-  } else {
-    //1-based chronicle in 0 based vector
-    return _profile.at(chronicle_number - 1).getDirectProfile(timeStep);
   }
+  if (chronicle_number > _profile.size())
+    chronicle_number = 1;
+  // 1-based chronicle in 0 based vector
+  return _profile.at(chronicle_number - 1).getDirectProfile(timeStep);
 }
 
 double Candidate::indirectCapacityFactor(size_t chronicle_number, size_t timeStep) const {
   if (chronicle_number == 0) {
     return _profile.at(0).getIndirectProfile(timeStep);
   }
+  if (chronicle_number > _profile.size())
+    chronicle_number = 1;
+  // 1-based chronicle in 0 based vector
   return _profile.at(chronicle_number - 1 ).getIndirectProfile(timeStep);
 }
 

@@ -4,14 +4,19 @@
 
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &direct_filename, const std::filesystem::path& indirect_file_name) {
-  if (std::ifstream infile(direct_filename); !infile.good()) {
-    throw std::filesystem::filesystem_error("unable to open file",
-                                            direct_filename, std::error_code());
-  }
+  EnsureFileIsGood(direct_filename);
+  EnsureFileIsGood(indirect_file_name);
   std::vector<LinkProfile> result;
   ReadLinkProfile(direct_filename, result, true);
   ReadLinkProfile(indirect_file_name, result, false);
   return result;
+}
+void LinkProfileReader::EnsureFileIsGood(
+    const std::filesystem::path &direct_filename) {
+  if (std::ifstream infile(direct_filename); !infile.good()) {
+    throw std::filesystem::filesystem_error("unable to open file",
+                                            direct_filename, std::error_code());
+  }
 }
 
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
