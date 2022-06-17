@@ -13,9 +13,10 @@ add_library (lp_namer_model STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ActiveLinks.h
 	${CMAKE_CURRENT_SOURCE_DIR}/LinkProfile.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/LinkProfile.h
-        Problem.cpp Problem.h
-		ChronicleMapReader.h ChronicleMapReader.cpp
-		ChronicleMapProvider.h ChronicleMapProvider.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/Problem.cpp ${CMAKE_CURRENT_SOURCE_DIR}/Problem.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ProblemNameParser.h ${CMAKE_CURRENT_SOURCE_DIR}/ProblemNameParser.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapReader.h ${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapReader.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapProvider.h ${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapProvider.cpp
 		)
 
 target_include_directories (lp_namer_model

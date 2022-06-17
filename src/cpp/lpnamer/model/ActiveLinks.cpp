@@ -128,14 +128,13 @@ int ActiveLinksBuilder::getLinkIndexOf(int link_id) const {
 }
 
 void ActiveLinksBuilder::create_links() {
-  for (auto const& it : _links_data) {
-    LinkName name = it.first;
-    LinkData data = it.second;
-    auto mc_year_to_chronicle = scenario_to_chronicle_provider_.GetMap(data._linkex, data._linkor);
-    ActiveLink link(data.id, name, data._linkor, data._linkex,
-                    data.installed_capacity, mc_year_to_chronicle);
+  for (auto const& [link_name, link_data] : _links_data) {
+    auto mc_year_to_chronicle = scenario_to_chronicle_provider_.GetMap(
+        link_data._linkor, link_data._linkex);
+    ActiveLink link(link_data.id, link_name, link_data._linkor,
+                    link_data._linkex, link_data.installed_capacity, mc_year_to_chronicle);
     link.setAlreadyInstalledLinkProfiles(
-        getProfilesFromProfileMap(data.profile_name));
+        getProfilesFromProfileMap(link_data.profile_name));
     _links.push_back(link);
   }
 }
@@ -194,20 +193,18 @@ double ActiveLink::already_installed_indirect_profile(size_t timeStep) const {
   return _already_installed_profile.at(0).getIndirectProfile(timeStep);
 }
 
-double ActiveLink::already_installed_direct_profile(size_t year, size_t timeStep) const {
-  if (year == 0)
-    year = 1;
-  if (year > _already_installed_profile.size())
-    year = 1;
-  return _already_installed_profile.at(year - 1).getDirectProfile(timeStep);
+double ActiveLink::already_installed_direct_profile(size_t chronicle_number, size_t timeStep) const {
+  if (chronicle_number == 0) chronicle_number = 1;
+  if (chronicle_number > _already_installed_profile.size())
+    chronicle_number = 1;
+  return _already_installed_profile.at(chronicle_number - 1).getDirectProfile(timeStep);
 }
 
-double ActiveLink::already_installed_indirect_profile(size_t year, size_t timeStep) const {
-  if (year == 0)
-    year = 1;
-  if (year > _already_installed_profile.size())
-    year = 1;
-  return _already_installed_profile.at(year - 1).getIndirectProfile(timeStep);
+double ActiveLink::already_installed_indirect_profile(size_t chronicle_number, size_t timeStep) const {
+  if (chronicle_number == 0) chronicle_number = 1;
+  if (chronicle_number > _already_installed_profile.size())
+    chronicle_number = 1;
+  return _already_installed_profile.at(chronicle_number - 1).getIndirectProfile(timeStep);
 }
 
 int ActiveLink::get_idLink() const { return _idLink; }

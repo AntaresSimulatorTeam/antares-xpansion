@@ -32,6 +32,7 @@ class LinkProfileReader {
   static void UpdateProfile(std::vector<LinkProfile>& result,
                             bool directProfile, double value, int chronicle_id,
                             size_t line_id);
+  static void EnsureFileIsGood(const std::filesystem::path& direct_filename);
 };
 
 #endif  // ANTARESXPANSION_LINKPROFILEREADER_H
