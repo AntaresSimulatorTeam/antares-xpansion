@@ -13,9 +13,17 @@ class TestChroniclesChecker:
     def return_to_test_directory(self, request, monkeypatch):
         monkeypatch.chdir(request.fspath.dirname)
 
+    def test_version_under_820(self):
+        study_path = DATA_PATH / "all_ntc_ok"
+        checker = ChronicleChecker(study_path, 811)
+        try:
+            checker.CheckChronicleConstraints()
+        except Exception as exc:
+            assert False, f"Exception raised: {exc}"
+
     def test_all_ok(self):
         study_path = DATA_PATH / "all_ntc_ok"
-        checker = ChronicleChecker(study_path)
+        checker = ChronicleChecker(study_path, 820)
         try:
             checker.CheckChronicleConstraints()
         except Exception as exc:
@@ -32,13 +40,13 @@ class TestChroniclesChecker:
         ]
     )
     def test_mismatch_column(self, study_path, expected_exception, tmp_path, request):
-        checker = ChronicleChecker(study_path)
+        checker = ChronicleChecker(study_path, 820)
         with pytest.raises(expected_exception) as exc:
             checker.CheckChronicleConstraints()
 
     def test_all_ok_no_installed_profile(self, tmp_path):
         study_path = DATA_PATH / "all_ntc_ok_no_installed_profile"
-        checker = ChronicleChecker(study_path)
+        checker = ChronicleChecker(study_path, 820)
         try:
             checker.CheckChronicleConstraints()
         except Exception as exc:
