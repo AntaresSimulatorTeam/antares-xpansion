@@ -21,10 +21,15 @@ class NTC_And_Candidate_Mismatch(Exception):
 class ChronicleChecker:
     _study_path = Path()
 
-    def __init__(self, study_path):
+    def __init__(self, study_path, antares_version):
+        self.antares_version = antares_version
         self._study_path = Path(study_path)
 
     def CheckChronicleConstraints(self):
+        # NTC mismatch can only happen after 820
+        if self.antares_version < 820:
+            return
+
         candidate_reader = CandidatesReader(
             self._study_path / "user" / "expansion" / "candidates.ini"
         )
