@@ -12,8 +12,10 @@ class IniFileNotFound(Exception):
 class CandidateNotFound(Exception):
     pass
 
+
 class ProfilesOfDifferentDimensions(Exception):
     pass
+
 
 class CandidatesReader:
     def __init__(self, file_path: Path = None):
@@ -31,11 +33,11 @@ class CandidatesReader:
         result = []
         for section in self.config.sections():
             link_name = self.config[section]["link"]
-            if result.count(link_name) == 0 :
+            if result.count(link_name) == 0:
                 result.append(link_name)
         return result
 
-    def get_link_candidate(self, link : str) -> List[str]:
+    def get_link_candidate(self, link: str) -> List[str]:
         result = []
         for candidate in self.get_candidates_list():
             if self.get_candidate_link_name(candidate) == link:
@@ -45,48 +47,52 @@ class CandidatesReader:
     def get_candidates_list(self) -> List[str]:
         return list(self.candidates_map.keys())
 
-    def _get_candidate_index(self, candidate : str):
+    def _get_candidate_index(self, candidate: str):
         if not candidate in self.get_candidates_list():
             raise CandidateNotFound
         return self.candidates_map[candidate]
 
-    def get_candidate_link_name(self, candidate : str):
+    def get_candidate_link_name(self, candidate: str):
         index = self._get_candidate_index(candidate)
         return self.config.get(index, "link")
 
-    def get_candidate_areas(self, candidate : str):
+    def get_candidate_areas(self, candidate: str):
         return self._get_link_areas(self.get_candidate_link_name(candidate))
 
-    def get_candidate_already_install_capacity(self, candidate : str):
+    def get_candidate_already_install_capacity(self, candidate: str):
         index = self._get_candidate_index(candidate)
-        return self.config.getfloat(index, "already-installed-capacity" , fallback=0.0)
+        return self.config.getfloat(index, "already-installed-capacity", fallback=0.0)
 
-    def get_candidate_already_install_direct_link_profile(self, study_path: Path, candidate : str):
+    def get_candidate_already_install_direct_link_profile(self, study_path: Path, candidate: str):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
         if self.config.has_option(index, "already-installed-direct-link-profile"):
-            link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["already-installed-direct-link-profile"])
+            link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index][
+                "already-installed-direct-link-profile"])
         return link_profile_path
 
-    def get_candidate_already_install_indirect_link_profile(self, study_path: Path, candidate : str):
+    def get_candidate_already_install_indirect_link_profile(self, study_path: Path, candidate: str):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
         if self.config.has_option(index, "already-installed-indirect-link-profile"):
-            link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["already-installed-indirect-link-profile"])
+            link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index][
+                "already-installed-indirect-link-profile"])
         return link_profile_path
 
-    def get_candidate_direct_link_profile(self, study_path: Path, candidate : str):
+    def get_candidate_direct_link_profile(self, study_path: Path, candidate: str):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
         if self.config.has_option(index, "direct-link-profile"):
-            link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["direct-link-profile"])
+            link_profile_path = str(
+                study_path / "user" / "expansion" / "capa" / self.config[index]["direct-link-profile"])
         return link_profile_path
 
-    def get_candidate_indirect_link_profile(self, study_path: Path, candidate : str):
+    def get_candidate_indirect_link_profile(self, study_path: Path, candidate: str):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
         if self.config.has_option(index, "indirect-link-profile"):
-            link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["indirect-link-profile"])
+            link_profile_path = str(
+                study_path / "user" / "expansion" / "capa" / self.config[index]["indirect-link-profile"])
         return link_profile_path
 
     def get_link_antares_link_file_pre820(self, study_path: Path, link: str) -> Path:
@@ -109,24 +115,26 @@ class CandidatesReader:
         area1, area2 = self.get_candidate_areas(candidate)
         return study_path / "input" / "links" / area1 / "capacities" / str(area2 + "_indirect.txt")
 
-    def get_candidate_link_profile(self, study_path: Path, candidate : str) -> (str, str):
+    def get_candidate_link_profile(self, study_path: Path, candidate: str) -> (str, str):
         index = self._get_candidate_index(candidate)
-        direct_link_profile_path =""
-        indirect_link_profile_path =""
+        direct_link_profile_path = ""
+        indirect_link_profile_path = ""
         if self.config.has_option(index, "direct-link-profile"):
-            direct_link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["direct-link-profile"])
-            indirect_link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["indirect-link-profile"])
+            direct_link_profile_path = str(
+                study_path / "user" / "expansion" / "capa" / self.config[index]["direct-link-profile"])
+            indirect_link_profile_path = str(
+                study_path / "user" / "expansion" / "capa" / self.config[index]["indirect-link-profile"])
         return direct_link_profile_path, indirect_link_profile_path
 
     @staticmethod
-    def _get_link_areas(link : str):
+    def _get_link_areas(link: str):
         areas = link.split("-")
         area1 = areas[0].strip()
         area2 = areas[1].strip()
         return area1, area2
 
     @staticmethod
-    def _read_or_create_link_profile_array(direct_link_file : str, indirect_link_file : str):
+    def _read_or_create_link_profile_array(direct_link_file: str, indirect_link_file: str):
         link_profile_array = np.ones((8760, 2))
         if direct_link_file:
             direct_link_profile_array = np.loadtxt(direct_link_file, delimiter="\t")
@@ -135,7 +143,7 @@ class CandidatesReader:
         return link_profile_array
 
     @staticmethod
-    def _read_or_create_link_profile_array_one_file(file : str):
+    def _read_or_create_link_profile_array_one_file(file: str):
         link_profile_array = np.ones((8760, 2))
         if file:
             link_profile_array = np.loadtxt(file, delimiter="\t")
@@ -144,36 +152,39 @@ class CandidatesReader:
         return link_profile_array
 
     @staticmethod
-    def _read_or_create_link_profile_array_simple(file : str):
+    def _read_or_create_link_profile_array_simple(file: str):
         link_profile_array = np.ones(8760)
         if file:
             link_profile_array = np.loadtxt(file, delimiter="\t")
         return link_profile_array
 
-    def get_candidate_link_profile_array(self, study_path: Path, candidate : str):
+    def get_candidate_link_profile_array(self, study_path: Path, candidate: str):
         return self.get_candidate_link_profile_array_new(study_path, candidate)
 
-    def get_candidate_link_profile_array_new(self, study_path: Path, candidate : str):
+    def get_candidate_link_profile_array_new(self, study_path: Path, candidate: str):
         direct_link_profile = self.get_candidate_direct_link_profile_array(study_path, candidate)
         indirect_link_profile = self.get_candidate_indirect_link_profile_array(study_path, candidate)
         if direct_link_profile.shape != indirect_link_profile.shape:
             raise ProfilesOfDifferentDimensions
         link_profile_array = np.array([direct_link_profile, indirect_link_profile]).transpose()
-        if not self.get_candidate_direct_link_profile(study_path, candidate) or not self.get_candidate_indirect_link_profile(study_path, candidate):
+        if not self.get_candidate_direct_link_profile(study_path,
+                                                      candidate) or not self.get_candidate_indirect_link_profile(
+                study_path, candidate):
             return False, link_profile_array
         return True, link_profile_array
 
-    def get_candidate_already_install_link_profile(self, study_path: Path, candidate : str):
+    def get_candidate_already_install_link_profile(self, study_path: Path, candidate: str):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
         if self.config.has_option(index, "already-installed-link-profile"):
-            link_profile_path = str(study_path / "user" / "expansion" / "capa" / self.config[index]["already-installed-link-profile"])
+            link_profile_path = str(
+                study_path / "user" / "expansion" / "capa" / self.config[index]["already-installed-link-profile"])
         return link_profile_path
 
-    def get_candidate_already_installed_link_profile_array(self, study_path: Path, candidate : str):
+    def get_candidate_already_installed_link_profile_array(self, study_path: Path, candidate: str):
         return self.get_candidate_already_installed_link_profile_array_new(study_path, candidate)
 
-    def get_candidate_already_installed_link_profile_array_new(self, study_path: Path, candidate : str):
+    def get_candidate_already_installed_link_profile_array_new(self, study_path: Path, candidate: str):
         direct_link_profile = self.get_candidate_already_installed_direct_link_profile_array(study_path, candidate)
         indirect_link_profile = self.get_candidate_already_installed_indirect_link_profile_array(study_path, candidate)
         if direct_link_profile.shape != indirect_link_profile.shape:
@@ -181,20 +192,20 @@ class CandidatesReader:
         link_profile_array = np.array([direct_link_profile, indirect_link_profile]).transpose()
         return link_profile_array
 
-    def get_candidate_already_installed_direct_link_profile_array(self, study_path: Path, candidate : str):
-        link_profile = self.get_candidate_already_install_direct_link_profile(study_path,candidate)
+    def get_candidate_already_installed_direct_link_profile_array(self, study_path: Path, candidate: str):
+        link_profile = self.get_candidate_already_install_direct_link_profile(study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_profile)
 
-    def get_candidate_already_installed_indirect_link_profile_array(self, study_path: Path, candidate : str):
-        link_profile = self.get_candidate_already_install_indirect_link_profile(study_path,candidate)
+    def get_candidate_already_installed_indirect_link_profile_array(self, study_path: Path, candidate: str):
+        link_profile = self.get_candidate_already_install_indirect_link_profile(study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_profile)
 
-    def get_candidate_direct_link_profile_array(self, study_path: Path, candidate : str):
-        link_profile = self.get_candidate_direct_link_profile(study_path,candidate)
+    def get_candidate_direct_link_profile_array(self, study_path: Path, candidate: str):
+        link_profile = self.get_candidate_direct_link_profile(study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_profile)
 
-    def get_candidate_indirect_link_profile_array(self, study_path: Path, candidate : str):
-        link_profile = self.get_candidate_indirect_link_profile(study_path,candidate)
+    def get_candidate_indirect_link_profile_array(self, study_path: Path, candidate: str):
+        link_profile = self.get_candidate_indirect_link_profile(study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_profile)
 
     def get_link_antares_direct_link_file(self, study_path, link_name):
