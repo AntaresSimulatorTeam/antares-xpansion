@@ -153,32 +153,60 @@ def verify_study_update(study_path, expected_investment_solution, antares_versio
             else:
                 direct_array = link_profile_array[:, :, 0].transpose()
                 indirect_array = link_profile_array[:, :, 1].transpose()
-                assert (
-                    direct_array.shape == already_installed_direct_link_profile_array.shape
-                )
-                assert (
-                    indirect_array.shape == already_installed_indirect_link_profile_array.shape
-                )
-                expected_direct_link_capacity += investment * link_profile_array[:, :, 0].transpose()
-                expected_indirect_link_capacity += investment * link_profile_array[:, :, 1].transpose()
+                if candidate_reader.has_installed_profile(study_path, candidate) and candidate_reader.has_profile(study_path, candidate):
+                    assert (
+                        direct_array.shape == already_installed_direct_link_profile_array.shape
+                    )
+                    assert (
+                        indirect_array.shape == already_installed_indirect_link_profile_array.shape
+                    )
+                if candidate_reader.has_profile(study_path, candidate) and not candidate_reader.has_installed_profile(study_path, candidate):
+                    expected_direct_link_capacity, expected_indirect_link_capacity = grow_expectation_to_proper_number_of_chronicles(
+                        direct_array, expected_direct_link_capacity, expected_indirect_link_capacity)
+                expected_direct_link_capacity += investment * direct_array
+                expected_indirect_link_capacity += investment * indirect_array
 
         if antares_version < 820:
-            study_link = candidate_reader.get_link_antares_link_file_pre820(
-                study_path, link)
-            study_link_array = np.loadtxt(study_link, delimiter="\t")
-            link_capacity = study_link_array[:, [0, 1]]
-
-            np.testing.assert_allclose(
-                link_capacity, np.array([expected_direct_link_capacity, expected_indirect_link_capacity]).transpose(), rtol=1e-4)
+            assert_ntc_update_pre_820(candidate_reader, expected_direct_link_capacity, expected_indirect_link_capacity,
+                                      link, study_path)
         else:
-            direct_ntc = candidate_reader.get_link_antares_direct_link_file(study_path, link)
-            indirect_ntc = candidate_reader.get_link_antares_indirect_link_file(study_path, link)
-            direct_link_array = np.loadtxt(direct_ntc, delimiter="\t")
-            indirect_link_array = np.loadtxt(indirect_ntc, delimiter="\t")
-            np.testing.assert_allclose(
-                direct_link_array, expected_direct_link_capacity, rtol=1e-4)
-            np.testing.assert_allclose(
-                indirect_link_array, expected_indirect_link_capacity, rtol=1e-4)
+            assert_ntc_update_post_820(candidate_reader, expected_direct_link_capacity, expected_indirect_link_capacity,
+                                       link, study_path)
+
+
+def grow_expectation_to_proper_number_of_chronicles(direct_array, expected_direct_link_capacity,
+                                                    expected_indirect_link_capacity):
+    new_direct_expected_array = np.ones(direct_array.transpose().shape)
+    new_indirect_expected_array = np.ones(direct_array.transpose().shape)
+    for k in range(new_direct_expected_array.shape[0]):
+        new_direct_expected_array[k] = expected_direct_link_capacity
+        new_indirect_expected_array[k] = expected_indirect_link_capacity
+    expected_direct_link_capacity = new_direct_expected_array.transpose()
+    expected_indirect_link_capacity = new_indirect_expected_array.transpose()
+    return expected_direct_link_capacity, expected_indirect_link_capacity
+
+
+def assert_ntc_update_post_820(candidate_reader, expected_direct_link_capacity, expected_indirect_link_capacity, link,
+                               study_path):
+    direct_ntc = candidate_reader.get_link_antares_direct_link_file(study_path, link)
+    indirect_ntc = candidate_reader.get_link_antares_indirect_link_file(study_path, link)
+    direct_ntc_array = np.loadtxt(direct_ntc, delimiter="\t")
+    indirect_ntc_array = np.loadtxt(indirect_ntc, delimiter="\t")
+    np.testing.assert_allclose(
+        direct_ntc_array, expected_direct_link_capacity, rtol=1e-4)
+    np.testing.assert_allclose(
+        indirect_ntc_array, expected_indirect_link_capacity, rtol=1e-4)
+
+
+def assert_ntc_update_pre_820(candidate_reader, expected_direct_link_capacity, expected_indirect_link_capacity, link,
+                              study_path):
+    study_link = candidate_reader.get_link_antares_link_file_pre820(
+        study_path, link)
+    study_link_array = np.loadtxt(study_link, delimiter="\t")
+    link_capacity = study_link_array[:, [0, 1]]
+    np.testing.assert_allclose(
+        link_capacity, np.array([expected_direct_link_capacity, expected_indirect_link_capacity]).transpose(),
+        rtol=1e-4)
 
 
 ## TESTS ##
