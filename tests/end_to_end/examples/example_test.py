@@ -315,9 +315,9 @@ medium_parameters_values = [
         ALL_STUDIES_PATH / "xpansion-test-04-mps-rounding",
         {
             "optimality_gap": 0,
-            "investment_cost": 115399999.99999619,
-            "operational_cost": 21942458064.791809,
-            "overall_cost": 22057858064.791805,
+            "investment_cost": 115399999.99999046,
+            "operational_cost": 21944788078.597385,
+            "overall_cost": 22060188078.597374,
             "relative_gap": 0,
             "accepted_rel_gap_atol": 1e-10,
         },
