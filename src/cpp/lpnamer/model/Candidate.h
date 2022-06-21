@@ -55,6 +55,8 @@ class Candidate {
   bool hasNullProfile(unsigned int chronicle,
                       const std::set<int>& time_steps) const;
 
+  [[nodiscard]] unsigned long number_of_chronicles() const;
+
  private:
   std::vector<LinkProfile> _profile;
   std::string _name;
