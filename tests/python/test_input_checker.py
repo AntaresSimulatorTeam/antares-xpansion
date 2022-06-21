@@ -1,12 +1,11 @@
 import pytest
-import os
-from pathlib import Path
-
-from antares_xpansion.input_checker import _check_candidate_option_type,  \
-    _check_candidate_name, _check_candidate_link, _check_setting_option_value, _check_profile_file, \
-    _check_setting_option_type
 from antares_xpansion.input_checker import *
+from antares_xpansion.input_checker import _check_candidate_option_type, \
+    _check_candidate_name, _check_candidate_link, _check_setting_option_value, _check_profile_file, \
+    _check_setting_option_type, _check_attribute_profile_values
 from antares_xpansion.split_link_profile import SplitLinkProfile
+
+from src.python.antares_xpansion.profile_link_checker import ProfileLinkChecker
 
 
 class TestCheckProfileFile:
@@ -232,6 +231,26 @@ class TestCheckCandidatesFile:
         with pytest.raises(SplitLinkProfile.LinkProfileFileNotFound):
             check_candidates_file(ini_file, capacity_dir_path=tmp_path)
 
+    def test_no_change_when_profile_exists(self, tmp_path):
+        ini_file = tmp_path / "candidate.ini"
+        ini_file.touch()
+        ini_file.write_text(
+            f"""[5]
+                            name = alpha
+                            link = a - b
+                           max-units = 1
+                           unit-size = 23
+                           direct-link-profile = direct-file.ini
+                           indirect-link-profile = direct-file.ini""")
+        capa_dir = tmp_path / 'capa'
+        capa_dir.mkdir()
+        profile_file = capa_dir / "direct-file.ini"
+        profile_file.touch()
+        with open(profile_file, 'w') as f:
+            f.writelines(["0\n" for k in range(8760)])
+        profile = ProfileLinkChecker(
+            ini_file, capa_dir)
+        assert _check_attribute_profile_values(profile.config, capa_dir) == False
 
 class TestCheckSettingOptionType:
 

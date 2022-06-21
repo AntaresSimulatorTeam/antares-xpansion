@@ -51,7 +51,6 @@ def _check_profile_file_consistency(filename_path):
         flushed_print('file %s does not have 8760 lines'
                       % filename_path)
         raise ProfileFileWrongNumberOfLines
-
     return any(first_profile)
 
 
@@ -275,15 +274,9 @@ def _check_attribute_profile_values(ini_file, capacity_dir_path):
                           'indirect-link-profile', 'already-installed-direct-link-profile',
                           'already-installed-indirect-link-profile']
     for each_section in ini_file.sections():
-        has_a_profile = False
         for attribute in profile_attributes:
-            value = ini_file[each_section][attribute].strip(
-            ) if ini_file.has_option(each_section, attribute) else "1"
-            if value == '0':
-                continue
-            elif value == '1':
-                has_a_profile = True
-            else:
+            if ini_file.has_option(each_section, attribute):
+                value = ini_file[each_section][attribute].strip()
                 # check file existence
                 filename_path = os.path.normpath(
                     os.path.join(capacity_dir_path, value))
@@ -291,15 +284,6 @@ def _check_attribute_profile_values(ini_file, capacity_dir_path):
                     flushed_print('Illegal value : option can be 0, 1 or an existent filename.\
                             %s is not an existent file' % filename_path)
                     raise ProfileFileNotExists
-                has_a_profile = has_a_profile or _check_profile_file(
-                    filename_path)
-        if not has_a_profile:
-            # remove candidate if it has no profile
-            flushed_print("candidate %s will be removed!" %
-                          ini_file[each_section]["name"])
-            ini_file.remove_section(each_section)
-            config_changed = True
-
     return config_changed
 
 
