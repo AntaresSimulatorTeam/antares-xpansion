@@ -219,4 +219,15 @@ std::string ActiveLink::get_linkor() const { return _linkor; }
 
 std::string ActiveLink::get_linkex() const { return _linkex; }
 
-unsigned long ActiveLink::number_of_chronicles() const { return _already_installed_profile.size(); }
+unsigned long ActiveLink::number_of_chronicles() const {
+  // We don't check for correctness of the number of chronicles across profiles
+  // We assume that all profiles have either 1 chronicle (per default) or the same N
+  // number of chronicles.
+  // We can have 1 installed chronicle and N profile chronicle or vice versa
+  if (unsigned long number_of_chronicles = _already_installed_profile.size(); number_of_chronicles > 1)
+    return number_of_chronicles;
+  if (auto candidates = getCandidates(); !candidates.empty()){
+    return candidates.at(0).number_of_chronicles();//Either 1 or N
+  }
+  return 1;
+}

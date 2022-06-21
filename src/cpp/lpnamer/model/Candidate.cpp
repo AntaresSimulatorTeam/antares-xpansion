@@ -74,3 +74,4 @@ bool Candidate::hasNullProfile(unsigned int chronicle,
     return directCapacityFactor(chronicle, time_step) == 0.0 && indirectCapacityFactor(chronicle, time_step) == 0.0;
   });
 }
+unsigned long Candidate::number_of_chronicles() const { return _profile.size(); }
