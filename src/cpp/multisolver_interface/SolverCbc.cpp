@@ -606,12 +606,12 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
   int nrows = _cbc.solver()->getNumRows();
   int ncols = _cbc.solver()->getNumCols();
 
-  auto basis =
-      dynamic_cast<const CoinWarmStartBasis *>(_cbc.solver()->getWarmStart());
+  // auto basis =
+  //     dynamic_cast<const CoinWarmStartBasis *>(_cbc.solver()->getWarmStart());
 
-  // std::vector<int> rstatus(_cbc.solver()->getNumRows());
-  // std::vector<int> cstatus(_cbc.solver()->getNumCols());
-  // get_basis(rstatus.data(), cstatus.data());
+  std::vector<int> rstatus(_cbc.solver()->getNumRows());
+  std::vector<int> cstatus(_cbc.solver()->getNumCols());
+  get_basis(rstatus.data(), cstatus.data());
 
   // char number[20];
   FILE *fp = fopen(filename.c_str(), "w");
@@ -636,15 +636,15 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
   int iRow = 0;
   for (int iColumn = 0; iColumn < ncols; iColumn++) {
     bool printit = false;
-    if (basis->getStructStatus(iColumn) == CoinWarmStartBasis::basic) {
+    if (cstatus[iColumn] == CoinWarmStartBasis::basic) {
       printit = true;
       // Find non basic row
       for (; iRow < nrows; iRow++) {
-        if (basis->getArtifStatus(iRow) != CoinWarmStartBasis::basic) break;
+        if (rstatus[iRow] != CoinWarmStartBasis::basic) break;
       }
       if (iRow != nrows) {
         fprintf(fp, " %s %-8s       %s",
-                basis->getArtifStatus(iRow) == CoinWarmStartBasis::atUpperBound
+                rstatus[iRow] == CoinWarmStartBasis::atUpperBound
                     ? "XU"
                     : "XL",
                 _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str(),
@@ -657,13 +657,13 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
             _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
       }
     } else {
-      if (basis->getStructStatus(iColumn) == CoinWarmStartBasis::atUpperBound) {
+      if (cstatus[iColumn] == CoinWarmStartBasis::atUpperBound) {
         printit = true;
         fprintf(
             fp, " UL %s",
             _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
 
-      } else if (basis->getStructStatus(iColumn) ==
+      } else if (cstatus[iColumn] ==
                  CoinWarmStartBasis::atLowerBound) {
         printit = true;
 
@@ -671,9 +671,9 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
             fp, " LL %s",
             _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
 
-      } else if ((basis->getStructStatus(iColumn) ==
+      } else if ((cstatus[iColumn] ==
                       CoinWarmStartBasis::superBasic ||
-                  basis->getStructStatus(iColumn) ==
+                  cstatus[iColumn] ==
                       CoinWarmStartBasis::isFree)) {
         printit = true;
 
