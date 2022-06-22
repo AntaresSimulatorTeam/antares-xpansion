@@ -155,11 +155,11 @@ void SolverCbc::write_prob_lp(const std::filesystem::path &filename) {
   _clp_inner_solver.writeLpNative(filename.string().c_str(), nullptr, nullptr);
 }
 
-void SolverCbc::write_basis(const std::filesystem::path &filename) {
-  ClpSimplex *clps = _clp_inner_solver.getModelPtr();
-  int status = clps->writeBasis(filename.string().c_str(), false, 1);
-  zero_status_check(status, "write basis");
-}
+// void SolverCbc::write_basis(const std::filesystem::path &filename) {
+//   ClpSimplex *clps = _clp_inner_solver.getModelPtr();
+//   int status = clps->writeBasis(filename.string().c_str(), false, 1);
+//   zero_status_check(status, "write basis");
+// }
 
 void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
   int status = _clp_inner_solver.readMps(prob_name.string().c_str());
@@ -546,6 +546,51 @@ int SolverCbc::solve_mip() {
         << std::endl;
   }
 
+  // auto basis = _clp_inner_solver.getModelPtr()->getBasis();
+  // basis->print();
+  // std::cout <<basis->getNumStructural() << std::endl;
+  // std::cout << basis->getNumArtificial() << std::endl;
+
+  // for (int i(0); i < basis->getNumStructural(); i++){
+  //   std::cout << basis->getStructStatus(i) << " ";
+  // }
+  // std::cout << std::endl;
+  // for (int i(0); i < basis->getNumArtificial(); i++){
+  //   std::cout << basis->getArtifStatus(i) << " ";
+  // }
+  // std::cout << std::endl;
+
+  // std::vector<int> rstatus(1000000);
+  // std::vector<int> cstatus(1000000);
+
+  // get_basis(rstatus.data(), cstatus.data());
+
+  // auto basis_cbc = dynamic_cast<const CoinWarmStartBasis
+  // *>(_cbc.solver()->getWarmStart()); basis_cbc->print();
+
+  // // for (int i(0); i < 1000; i++) {
+  // //   std::cout << rstatus[i] << " ";
+  // // }
+  // // std::cout << std::endl;
+
+  // // for (int i(0); i < 1000; i++) {
+  // //   std::cout << cstatus[i] << " ";
+  // // }
+  // // std::cout << std::endl;
+  // int nb_rows = 0;
+  // int nb_cols = 0;
+  // for (auto i : rstatus) {
+  //   if (i > 0){
+  //     nb_rows++;
+  //   }
+  // }
+  // for (auto i : cstatus) {
+  //   if (i > 0){
+  //     nb_cols++;
+  //   }
+  // }
+  // std::cout << nb_rows << " " << nb_cols << std::endl;
+
   return lp_status;
 }
 
@@ -555,6 +600,127 @@ int SolverCbc::solve_mip() {
 *************************************************************************************************/
 void SolverCbc::get_basis(int *rstatus, int *cstatus) const {
   _cbc.solver()->getBasisStatus(cstatus, rstatus);
+}
+
+void SolverCbc::write_basis(const std::filesystem::path &filename) {
+  int nrows = _cbc.solver()->getNumRows();
+  int ncols = _cbc.solver()->getNumCols();
+  bool lengthNames = true;
+  // std::cout << lengthNames << std::endl;
+  // std::cout << _clp_inner_solver.getModelPtr()->getColumnName(110) << std::endl;
+
+  auto basis =
+      dynamic_cast<const CoinWarmStartBasis *>(_cbc.solver()->getWarmStart());
+
+  // std::vector<int> rstatus(_cbc.solver()->getNumRows());
+  // std::vector<int> cstatus(_cbc.solver()->getNumCols());
+  // get_basis(rstatus.data(), cstatus.data());
+
+  // char number[20];
+  FILE *fp = fopen(filename.c_str(), "w");
+  // if (!fp)
+  // TODO raise file error exception (should not happen^^)
+
+  // NAME card
+
+  // Set locale so won't get , instead of .
+  char *saveLocale = strdup(setlocale(LC_ALL, NULL));
+  setlocale(LC_ALL, "C");
+  std::string problemName;
+  _cbc.solver()->getStrParam(OsiProbName, problemName);
+  if (strcmp(problemName.c_str(), "") == 0) {
+    fprintf(fp, "NAME          BLANK      ");
+  } else {
+    fprintf(fp, "NAME          %s       ", problemName.c_str());
+  }
+  //  fprintf(fp, "VALUES");
+  // finish off name
+  fprintf(fp, "\n");
+  int iRow = 0;
+  for (int iColumn = 0; iColumn < ncols; iColumn++) {
+    bool printit = false;
+    if (basis->getStructStatus(iColumn) == CoinWarmStartBasis::basic) {
+      printit = true;
+      // Find non basic row
+      for (; iRow < nrows; iRow++) {
+        if (basis->getArtifStatus(iRow) != CoinWarmStartBasis::basic) break;
+      }
+      if (lengthNames) {
+        if (iRow != nrows) {
+          fprintf(
+              fp, " %s %-8s       %s",
+              basis->getArtifStatus(iRow) == CoinWarmStartBasis::atUpperBound
+                  ? "XU"
+                  : "XL",
+              _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str(),
+              _clp_inner_solver.getModelPtr()->getRowName(iRow).c_str());
+          iRow++;
+        } else {
+          // Allow for too many basics!
+          fprintf(fp, " BS %-8s       ",
+                  _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
+          // // Dummy row name if values
+          // fprintf(fp, "      _dummy_");
+        }
+      } else {
+        // no names
+        if (iRow != nrows) {
+          fprintf(
+              fp, " %s C%7.7d     R%7.7d",
+              basis->getArtifStatus(iRow) == CoinWarmStartBasis::atUpperBound
+                  ? "XU"
+                  : "XL",
+              iColumn, iRow);
+          iRow++;
+        } else {
+          // Allow for too many basics!
+          fprintf(fp, " BS C%7.7d", iColumn);
+          // // Dummy row name if values
+          // fprintf(fp, "      _dummy_");
+        }
+      }
+    } else {
+      if (basis->getStructStatus(iColumn) == CoinWarmStartBasis::atUpperBound) {
+        printit = true;
+        if (lengthNames)
+          fprintf(fp, " UL %s", _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
+        else
+          fprintf(fp, " UL C%7.7d", iColumn);
+        // // Dummy row name if values
+        // fprintf(fp, "      _dummy_");
+      } else if (basis->getStructStatus(iColumn) ==
+                 CoinWarmStartBasis::atLowerBound) {
+        printit = true;
+        if (lengthNames)
+          fprintf(fp, " LL %s", _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
+        else
+          fprintf(fp, " LL C%7.7d", iColumn);
+        // // Dummy row name if values
+        // fprintf(fp, "      _dummy_");
+      } else if ((basis->getStructStatus(iColumn) ==
+                      CoinWarmStartBasis::superBasic ||
+                  basis->getStructStatus(iColumn) ==
+                      CoinWarmStartBasis::isFree)) {
+        printit = true;
+        if (lengthNames)
+          fprintf(fp, " BS %s", _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
+        else
+          fprintf(fp, " BS C%7.7d", iColumn);
+        // // Dummy row name if values
+        //   fprintf(fp, "      _dummy_");
+      }
+    }
+    // if (printit) {
+    //   // add value
+    //   CoinConvertDouble(0, formatType, columnActivity_[iColumn], number);
+    //   fprintf(fp, "     %s", number);
+    // }
+    if (printit) fprintf(fp, "\n");
+  }
+  fprintf(fp, "ENDATA\n");
+  fclose(fp);
+  setlocale(LC_ALL, saveLocale);
+  // free(saveLocale);
 }
 
 double SolverCbc::get_mip_value() const { return _cbc.getObjValue(); }
