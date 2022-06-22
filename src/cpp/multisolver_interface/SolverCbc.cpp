@@ -605,9 +605,6 @@ void SolverCbc::get_basis(int *rstatus, int *cstatus) const {
 void SolverCbc::write_basis(const std::filesystem::path &filename) {
   int nrows = _cbc.solver()->getNumRows();
   int ncols = _cbc.solver()->getNumCols();
-  bool lengthNames = true;
-  // std::cout << lengthNames << std::endl;
-  // std::cout << _clp_inner_solver.getModelPtr()->getColumnName(110) << std::endl;
 
   auto basis =
       dynamic_cast<const CoinWarmStartBasis *>(_cbc.solver()->getWarmStart());
@@ -645,76 +642,47 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
       for (; iRow < nrows; iRow++) {
         if (basis->getArtifStatus(iRow) != CoinWarmStartBasis::basic) break;
       }
-      if (lengthNames) {
-        if (iRow != nrows) {
-          fprintf(
-              fp, " %s %-8s       %s",
-              basis->getArtifStatus(iRow) == CoinWarmStartBasis::atUpperBound
-                  ? "XU"
-                  : "XL",
-              _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str(),
-              _clp_inner_solver.getModelPtr()->getRowName(iRow).c_str());
-          iRow++;
-        } else {
-          // Allow for too many basics!
-          fprintf(fp, " BS %-8s       ",
-                  _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
-          // // Dummy row name if values
-          // fprintf(fp, "      _dummy_");
-        }
+      if (iRow != nrows) {
+        fprintf(fp, " %s %-8s       %s",
+                basis->getArtifStatus(iRow) == CoinWarmStartBasis::atUpperBound
+                    ? "XU"
+                    : "XL",
+                _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str(),
+                _clp_inner_solver.getModelPtr()->getRowName(iRow).c_str());
+        iRow++;
       } else {
-        // no names
-        if (iRow != nrows) {
-          fprintf(
-              fp, " %s C%7.7d     R%7.7d",
-              basis->getArtifStatus(iRow) == CoinWarmStartBasis::atUpperBound
-                  ? "XU"
-                  : "XL",
-              iColumn, iRow);
-          iRow++;
-        } else {
-          // Allow for too many basics!
-          fprintf(fp, " BS C%7.7d", iColumn);
-          // // Dummy row name if values
-          // fprintf(fp, "      _dummy_");
-        }
+        // Allow for too many basics!
+        fprintf(
+            fp, " BS %-8s       ",
+            _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
       }
     } else {
       if (basis->getStructStatus(iColumn) == CoinWarmStartBasis::atUpperBound) {
         printit = true;
-        if (lengthNames)
-          fprintf(fp, " UL %s", _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
-        else
-          fprintf(fp, " UL C%7.7d", iColumn);
-        // // Dummy row name if values
-        // fprintf(fp, "      _dummy_");
+        fprintf(
+            fp, " UL %s",
+            _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
+
       } else if (basis->getStructStatus(iColumn) ==
                  CoinWarmStartBasis::atLowerBound) {
         printit = true;
-        if (lengthNames)
-          fprintf(fp, " LL %s", _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
-        else
-          fprintf(fp, " LL C%7.7d", iColumn);
-        // // Dummy row name if values
-        // fprintf(fp, "      _dummy_");
+
+        fprintf(
+            fp, " LL %s",
+            _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
+
       } else if ((basis->getStructStatus(iColumn) ==
                       CoinWarmStartBasis::superBasic ||
                   basis->getStructStatus(iColumn) ==
                       CoinWarmStartBasis::isFree)) {
         printit = true;
-        if (lengthNames)
-          fprintf(fp, " BS %s", _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
-        else
-          fprintf(fp, " BS C%7.7d", iColumn);
-        // // Dummy row name if values
-        //   fprintf(fp, "      _dummy_");
+
+        fprintf(
+            fp, " BS %s",
+            _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
       }
     }
-    // if (printit) {
-    //   // add value
-    //   CoinConvertDouble(0, formatType, columnActivity_[iColumn], number);
-    //   fprintf(fp, "     %s", number);
-    // }
+
     if (printit) fprintf(fp, "\n");
   }
   fprintf(fp, "ENDATA\n");
