@@ -35,14 +35,13 @@ TEST_CASE("Write and read basis", "[basis]") {
       std::vector<int> cstatus_2(solver_2->get_ncols());
       solver_2->get_basis(rstatus_2.data(), cstatus_2.data());
 
-      std::cout << "Row status" << std::endl;
       for (int i(0); i < solver->get_nrows(); i++) {
         REQUIRE(rstatus[i] == rstatus_2[i]);
       }
-      std::cout << "Col status" << std::endl;
       for (int i(0); i < solver->get_ncols(); i++) {
         REQUIRE(cstatus[i] == cstatus_2[i]);
       }
+
       solver->free();
       solver_2->free();
     }

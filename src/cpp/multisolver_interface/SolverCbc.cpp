@@ -190,14 +190,12 @@ void SolverCbc::read_basis(const std::filesystem::path &filename) {
       dynamic_cast<OsiClpSolverInterface *>(_cbc.solver());
   ClpSimplex *clps = clp_inner_solver_ptr->getModelPtr();
   int status = clps->readBasis(filename.c_str());
-
-  auto basis = clps->getBasis();
-  std::cout << "CLP basis from file" << std::endl;
-  basis->print();
-  _clp_inner_solver = *clp_inner_solver_ptr;
+  
   // readBasis returns 1 if successful
-  defineCbcModelFromInnerSolver();
   zero_status_check(status - 1, "read basis");
+  
+  _clp_inner_solver = *clp_inner_solver_ptr;
+  defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv) {
@@ -529,17 +527,7 @@ int SolverCbc::solve_mip() {
   // Passing OsiClp to Cbc to solve
   // Cbc keeps only solutions of problem
 
-  std::cout << "init base in CLP inner solver" << std::endl;
-  auto int_base = _clp_inner_solver.getModelPtr()->getBasis();
-  int_base->print();
-
   defineCbcModelFromInnerSolver();
-
-  std::cout << "init base in CBC solver" << std::endl;
-  auto basis_cbc =
-      dynamic_cast<const CoinWarmStartBasis *>(_cbc.solver()->getWarmStart());
-  basis_cbc->print();
-
   _cbc.branchAndBound();
 
   /*std::cout << "*********************************************" << std::endl;
@@ -572,55 +560,6 @@ int SolverCbc::solve_mip() {
         << std::endl;
   }
 
-  std::cout << "output basis CBC" << std::endl;
-  auto c = dynamic_cast<const OsiClpSolverInterface *>(_cbc.solver());
-  auto basis = c->getModelPtr()->getBasis();
-  // // auto basis = _clp_inner_solver.getModelPtr()->getBasis();
-  basis->print();
-
-  // std::cout <<basis->getNumStructural() << std::endl;
-  // std::cout << basis->getNumArtificial() << std::endl;
-
-  // for (int i(0); i < basis->getNumStructural(); i++){
-  //   std::cout << basis->getStructStatus(i) << " ";
-  // }
-  // std::cout << std::endl;
-  // for (int i(0); i < basis->getNumArtificial(); i++){
-  //   std::cout << basis->getArtifStatus(i) << " ";
-  // }
-  // std::cout << std::endl;
-
-  // std::vector<int> rstatus(1000000);
-  // std::vector<int> cstatus(1000000);
-
-  // get_basis(rstatus.data(), cstatus.data());
-
-  // auto basis_cbc = dynamic_cast<const CoinWarmStartBasis
-  // *>(_cbc.solver()->getWarmStart()); basis_cbc->print();
-
-  // // for (int i(0); i < 1000; i++) {
-  // //   std::cout << rstatus[i] << " ";
-  // // }
-  // // std::cout << std::endl;
-
-  // // for (int i(0); i < 1000; i++) {
-  // //   std::cout << cstatus[i] << " ";
-  // // }
-  // // std::cout << std::endl;
-  // int nb_rows = 0;
-  // int nb_cols = 0;
-  // for (auto i : rstatus) {
-  //   if (i > 0){
-  //     nb_rows++;
-  //   }
-  // }
-  // for (auto i : cstatus) {
-  //   if (i > 0){
-  //     nb_cols++;
-  //   }
-  // }
-  // std::cout << nb_rows << " " << nb_cols << std::endl;
-
   return lp_status;
 }
 
@@ -631,119 +570,6 @@ int SolverCbc::solve_mip() {
 void SolverCbc::get_basis(int *rstatus, int *cstatus) const {
   _cbc.solver()->getBasisStatus(cstatus, rstatus);
 }
-
-// void SolverCbc::write_basis(const std::filesystem::path &filename) {
-//   int nrows = _cbc.solver()->getNumRows();
-//   int ncols = _cbc.solver()->getNumCols();
-
-//   // auto basis =
-//   //     dynamic_cast<const CoinWarmStartBasis
-//   //     *>(_cbc.solver()->getWarmStart());
-
-//   std::vector<int> rstatus(_cbc.solver()->getNumRows());
-//   std::vector<int> cstatus(_cbc.solver()->getNumCols());
-//   get_basis(rstatus.data(), cstatus.data());
-
-//   // char number[20];
-//   FILE *fp = fopen(filename.c_str(), "w");
-//   // if (!fp)
-//   // TODO raise file error exception (should not happen^^)
-
-//   // NAME card
-
-//   // Set locale so won't get , instead of .
-//   char *saveLocale = strdup(setlocale(LC_ALL, NULL));
-//   setlocale(LC_ALL, "C");
-//   std::string problemName;
-//   _cbc.solver()->getStrParam(OsiProbName, problemName);
-//   if (strcmp(problemName.c_str(), "") == 0) {
-//     fprintf(fp, "NAME          BLANK      ");
-//   } else {
-//     fprintf(fp, "NAME          %s       ", problemName.c_str());
-//   }
-//   //  fprintf(fp, "VALUES");
-//   // finish off name
-//   fprintf(fp, "\n");
-//   int iRow = 0;
-//   for (int iColumn = 0; iColumn < ncols; iColumn++) {
-//     bool printit = false;
-//     if (cstatus[iColumn] == CoinWarmStartBasis::basic) {
-//       printit = true;
-//       // Find non basic row
-//       for (; iRow < nrows; iRow++) {
-//         if (rstatus[iRow] != CoinWarmStartBasis::basic) break;
-//       }
-//       if (iRow != nrows) {
-//         fprintf(fp, " %s %-8s       %s",
-//                 rstatus[iRow] == CoinWarmStartBasis::atUpperBound ? "XU" :
-//                 "XL",
-//                 _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str(),
-//                 _clp_inner_solver.getModelPtr()->getRowName(iRow).c_str());
-//         iRow++;
-//       } else {
-//         // Allow for too many basics!
-//         fprintf(
-//             fp, " BS %-8s       ",
-//             _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
-//       }
-//     } else {
-//       if (cstatus[iColumn] == CoinWarmStartBasis::atUpperBound) {
-//         printit = true;
-//         fprintf(
-//             fp, " UL %s",
-//             _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
-
-//       } else if (cstatus[iColumn] == CoinWarmStartBasis::atLowerBound) {
-//         printit = true;
-
-//         fprintf(
-//             fp, " LL %s",
-//             _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
-
-//       } else if ((cstatus[iColumn] == CoinWarmStartBasis::superBasic ||
-//                   cstatus[iColumn] == CoinWarmStartBasis::isFree)) {
-//         printit = true;
-
-//         fprintf(
-//             fp, " BS %s",
-//             _clp_inner_solver.getModelPtr()->getColumnName(iColumn).c_str());
-//       }
-//     }
-
-//     if (printit) fprintf(fp, "\n");
-//   }
-//   fprintf(fp, "ENDATA\n");
-//   fclose(fp);
-//   setlocale(LC_ALL, saveLocale);
-//   // free(saveLocale);
-// }
-
-// void SolverCbc::read_basis(const std::filesystem::path &filename) {
-//   int status = 0;
-//   if (strcmp(filename.c_str(), "-") != 0 && strcmp(filename.c_str(), "stdin")
-//   != 0) {
-//     FILE *fp = fopen(filename.c_str(), "r");
-//     if (fp) {
-//       // can open - lets go for it
-//       fclose(fp);
-//     } else {
-//       _cbc.handler_->message(CLP_UNABLE_OPEN, messages_)
-//           << filename.c_str() << CoinMessageEol;
-//       status = -1;
-//     }
-//   }
-//   CoinMpsIO m;
-//   m.passInMessageHandler(handler_);
-//   *m.messagesPointer() = coinMessages();
-//   bool savePrefix = m.messageHandler()->prefix();
-//   m.messageHandler()->setPrefix(handler_->prefix());
-//   status = m.readBasis(fileName, "", columnActivity_, status_ +
-//   numberColumns_,
-//                        status_, columnNames_, numberColumns_, rowNames_,
-//                        numberRows_);
-//   m.messageHandler()->setPrefix(savePrefix);
-//   zero_status_check(status - 1, "read basis");
-// }
 
 double SolverCbc::get_mip_value() const { return _cbc.getObjValue(); }
 
