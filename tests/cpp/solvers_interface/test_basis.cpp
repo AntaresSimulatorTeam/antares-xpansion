@@ -8,10 +8,10 @@ TEST_CASE("Write and read basis", "[basis]") {
 
   SolverFactory factory;
 
-  auto inst = GENERATE(MIP_TOY, LP_TOY);
+  auto inst = GENERATE(MIP_TOY, LP_TOY, MULTIKP, NET_MASTER, SLACKS, REDUCED);
   std::string instance = datas[inst]._path;
 
-  SECTION("Loop on solvers") {
+  SECTION("Loop on instances and solvers") {
     for (auto const& solver_name : factory.get_solvers_list()) {
       // As CLP is a pure LP solver, it cannot pass this test
       if (solver_name != "CLP") {
