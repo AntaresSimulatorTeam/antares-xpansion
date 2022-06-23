@@ -2,6 +2,24 @@
 #include "define_datas.hpp"
 #include "multisolver_interface/Solver.h"
 
+void assert_basis_equality(SolverAbstract::Ptr expec_solver,
+                           SolverAbstract::Ptr current_solver) {
+  std::vector<int> expec_rstatus(expec_solver->get_nrows());
+  std::vector<int> expec_cstatus(expec_solver->get_ncols());
+  expec_solver->get_basis(expec_rstatus.data(), expec_cstatus.data());
+
+  std::vector<int> current_rstatus(current_solver->get_nrows());
+  std::vector<int> current_cstatus(current_solver->get_ncols());
+  current_solver->get_basis(current_rstatus.data(), current_cstatus.data());
+
+  for (int i(0); i < expec_solver->get_nrows(); i++) {
+    REQUIRE(expec_rstatus[i] == current_rstatus[i]);
+  }
+  for (int i(0); i < expec_solver->get_ncols(); i++) {
+    REQUIRE(expec_cstatus[i] == current_cstatus[i]);
+  }
+}
+
 TEST_CASE("Write and read basis", "[basis]") {
   AllDatas datas;
   fill_datas(datas);
@@ -15,36 +33,23 @@ TEST_CASE("Write and read basis", "[basis]") {
     for (auto const& solver_name : factory.get_solvers_list()) {
       // As CLP is a pure LP solver, it cannot pass this test
       if (solver_name != "CLP") {
-        SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-        solver->init();
-        solver->read_prob_mps(instance);
-        solver->solve_mip();
-
-        std::vector<int> rstatus(solver->get_nrows());
-        std::vector<int> cstatus(solver->get_ncols());
-        solver->get_basis(rstatus.data(), cstatus.data());
+        SolverAbstract::Ptr expec_solver = factory.create_solver(solver_name);
+        expec_solver->init();
+        expec_solver->read_prob_mps(instance);
+        expec_solver->solve_mip();
 
         std::string basis_file = std::tmpnam(nullptr);
-        solver->write_basis(basis_file);
+        expec_solver->write_basis(basis_file);
 
-        SolverAbstract::Ptr solver_2 = factory.create_solver(solver_name);
-        solver_2->init();
-        solver_2->read_prob_mps(instance);
-        solver_2->read_basis(basis_file);
+        SolverAbstract::Ptr current_solver = factory.create_solver(solver_name);
+        current_solver->init();
+        current_solver->read_prob_mps(instance);
+        current_solver->read_basis(basis_file);
 
-        std::vector<int> rstatus_2(solver_2->get_nrows());
-        std::vector<int> cstatus_2(solver_2->get_ncols());
-        solver_2->get_basis(rstatus_2.data(), cstatus_2.data());
+        assert_basis_equality(expec_solver, current_solver);
 
-        for (int i(0); i < solver->get_nrows(); i++) {
-          REQUIRE(rstatus[i] == rstatus_2[i]);
-        }
-        for (int i(0); i < solver->get_ncols(); i++) {
-          REQUIRE(cstatus[i] == cstatus_2[i]);
-        }
-
-        solver->free();
-        solver_2->free();
+        expec_solver->free();
+        current_solver->free();
       }
     }
   }
