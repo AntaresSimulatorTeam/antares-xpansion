@@ -56,6 +56,8 @@ class SolverCbc : public SolverAbstract {
 
  private:
   void defineCbcModelFromInnerSolver();
+  void setClpSimplexColNamesFromInnerSolver(ClpSimplex *clps) const;
+  void setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const;
 
   /*************************************************************************************************
   ---------------------------------    Output and stream management
