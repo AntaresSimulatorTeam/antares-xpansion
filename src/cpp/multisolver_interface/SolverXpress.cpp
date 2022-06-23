@@ -119,7 +119,7 @@ void SolverXpress::write_prob_lp(const std::filesystem::path &filename) {
 }
 
 void SolverXpress::write_basis(const std::filesystem::path &filename) {
-  int status = XPRSwritebasis(_xprs, filename.string().c_str(), "");
+  int status = XPRSwritebasis(_xprs, filename.string().c_str(), "n");
   zero_status_check(status, "write basis");
 }
 
