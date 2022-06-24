@@ -58,7 +58,7 @@ std::pair<SinglePbData, SinglePbData> Analysis::run() {
   return {min_data, max_data};
 }
 
-RawPbData Analysis::solve_sensitivity_pb() {
+RawPbData Analysis::solve_sensitivity_pb() const {
   RawPbData raw_output;
   int ncols = sensitivity_pb_model->get_ncols();
 

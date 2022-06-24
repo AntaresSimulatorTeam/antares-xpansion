@@ -24,7 +24,7 @@ class Analysis {
                            const RawPbData& raw_output) const;
   [[nodiscard]] double get_system_cost(const RawPbData& raw_output) const;
   void get_sensitivity_problem();
-  RawPbData solve_sensitivity_pb();
+  RawPbData solve_sensitivity_pb() const;
 };
 
 #endif  //__ANALYSIS_H__
