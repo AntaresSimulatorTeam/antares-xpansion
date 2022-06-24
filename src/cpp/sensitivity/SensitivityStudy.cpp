@@ -1,9 +1,9 @@
 #include "SensitivityStudy.h"
 
 #include <execution>
+#include <mutex>
 #include <numeric>
 #include <utility>
-#include <mutex>
 
 #include "Analysis.h"
 
@@ -69,7 +69,7 @@ void SensitivityStudy::run_projection_analysis() {
           output_data.pbs_data.push_back(maximizeSolution);
         } else {
           logger->display_message(
-              "Warning : " + candidate_name +
+              "Warning: " + candidate_name +
               " ignored as it has not been found in the list "
               "of investment candidates");
         }

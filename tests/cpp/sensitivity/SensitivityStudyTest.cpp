@@ -251,9 +251,27 @@ TEST_F(SensitivityStudyTest, CandidateIgnored) {
   auto sensitivity_study = SensitivityStudy(input_data, _logger, writer);
   sensitivity_study.launch();
 
-  std::string message = "Warning : " + cand_name +
+  std::string message = "Warning: " + cand_name +
                         " ignored as it has not been found in the list "
                         "of investment candidates";
+  EXPECT_TRUE(_logger->display_message_called);
+  EXPECT_EQ(_logger->displayed_message, message);
+}
+
+TEST_F(SensitivityStudyTest, BasisNonExistent) {
+  std::string mps_path = prepare_toy_sensitivity_pb();
+  init_solver(coin_name, mps_path);
+  input_data.last_master = math_problem;
+
+  std::string mock_basis_path = "wrong_path.something";
+  input_data.basis_file_path = mock_basis_path;
+
+  auto _logger = std::make_shared<SensitivityLogMock>();
+  auto sensitivity_study = SensitivityStudy(input_data, _logger, writer);
+  sensitivity_study.launch();
+
+  std::string message =
+      "Warning: Basis file " + mock_basis_path + " could not be read.";
   EXPECT_TRUE(_logger->display_message_called);
   EXPECT_EQ(_logger->displayed_message, message);
 }
