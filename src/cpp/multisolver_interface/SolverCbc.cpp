@@ -197,15 +197,10 @@ void SolverCbc::read_prob_lp(const std::filesystem::path &prob_name) {
 }
 
 void SolverCbc::read_basis(const std::filesystem::path &filename) {
-  auto clp_inner_solver_ptr =
-      dynamic_cast<OsiClpSolverInterface *>(_cbc.solver());
-  ClpSimplex *clps = clp_inner_solver_ptr->getModelPtr();
-  int status = clps->readBasis(filename.string().c_str());
-
+  int status =
+      _clp_inner_solver.getModelPtr()->readBasis(filename.string().c_str());
   // readBasis returns 1 if successful
   zero_status_check(status - 1, "read basis");
-
-  _clp_inner_solver = *clp_inner_solver_ptr;
   defineCbcModelFromInnerSolver();
 }
 
