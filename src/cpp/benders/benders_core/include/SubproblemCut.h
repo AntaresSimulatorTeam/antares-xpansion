@@ -29,8 +29,12 @@ void BuildSubproblemCutData(SubproblemCutData &);
 
 enum SubproblemCutInt { SIMPLEXITER = 0, LPSTATUS, MAXINTEGER };
 
-enum SubproblemCutDbl { SUBPROBLEM_COST = 0, ALPHA_I,
-  SUBPROBLEM_TIMER, MAXDBL };
+enum SubproblemCutDbl {
+  SUBPROBLEM_COST = 0,
+  ALPHA_I,
+  SUBPROBLEM_TIMER,
+  MAXDBL
+};
 
 enum SubproblemCutStr { MAXSTR = 0 };
 
@@ -58,7 +62,7 @@ class SubproblemCutDataHandler {
  public:
   explicit SubproblemCutDataHandler(SubproblemCutDataPtr const &data);
   explicit SubproblemCutDataHandler(SubproblemCutDataPtr &data);
-  virtual ~SubproblemCutDataHandler();
+  virtual ~SubproblemCutDataHandler() = default;
 
   SubproblemCutDataPtr _data;
 };

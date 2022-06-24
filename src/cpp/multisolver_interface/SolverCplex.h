@@ -16,7 +16,9 @@ class SolverCplex : public SolverAbstract {
   static int
       _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                          declared to set or end the environment */
+
  public:
+  const std::string name_ = "CPLEX";
   CPXENVptr _env; /*!< Ptr to the CPLEX environment */
   CPXLPptr _prb;  /*!< Ptr to the CPLEX problem */
 
@@ -46,13 +48,17 @@ class SolverCplex : public SolverAbstract {
    * @param fictif : Pointer to an AbstractSolver object, containing a CPLEX
    * solver to copy
    */
-  SolverCplex(const SolverAbstract::Ptr fictif);
-  SolverCplex(const std::shared_ptr<const SolverAbstract> fictif);
+  explicit SolverCplex(const SolverAbstract::Ptr fictif);
+  explicit SolverCplex(const std::shared_ptr<const SolverAbstract> fictif);
+
+  /*SolverCplex ctor accept only std::shared_ptr*/
+  SolverCplex(const SolverCplex &other) = delete;
+  SolverCplex &operator=(const SolverCplex &other) = delete;
 
   virtual ~SolverCplex();
   virtual int get_number_of_instances() override;
 
-  virtual std::string get_solver_name() const override { return "CPLEX"; }
+  virtual std::string get_solver_name() const override { return name_; }
 
   /*************************************************************************************************
   ---------------------------------    Output and stream management

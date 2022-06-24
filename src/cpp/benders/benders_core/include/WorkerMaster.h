@@ -17,7 +17,7 @@ class WorkerMaster : public Worker {
                const std::string &solver_name, const int log_level,
                int subproblems_count, const std::filesystem::path &log_name,
                bool mps_has_alpha);
-  virtual ~WorkerMaster();
+  virtual ~WorkerMaster() = default;
 
   void get(Point &x0, double &alpha, DblVector &alpha_i);
   void get_dual_values(std::vector<double> &dual) const;
