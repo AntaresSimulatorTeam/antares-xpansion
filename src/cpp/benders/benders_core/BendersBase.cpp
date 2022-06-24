@@ -355,13 +355,16 @@ void BendersBase::getSubproblemCut(
       [this, &nameAndWorkers, &m, &subproblem_cut_package](auto &policy) {
         std::for_each(
             policy, nameAndWorkers.begin(), nameAndWorkers.end(),
-            [this, &m, &subproblem_cut_package](
-                const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
+            [this, &m, &subproblem_cut_package](const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
               const auto &[name, worker] = kvp;
               Timer subproblem_timer;
               auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
               auto handler(std::make_shared<SubproblemCutDataHandler>(
                   subproblem_cut_data));
+              auto worker = std::make_shared<SubproblemWorker>(
+                  kvp.second, GetSubproblemPath(kvp.first),
+                  SubproblemWeight(_data.nsubproblem, kvp.first), _options.SOLVER_NAME,
+                  _options.LOG_LEVEL, log_name());
               worker->fix_to(_data.x0);
               worker->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX);
