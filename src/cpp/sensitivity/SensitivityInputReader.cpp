@@ -12,13 +12,13 @@ const std::string EPSILON_C("epsilon");
 const std::string CAPEX_C("capex");
 const std::string PROJECTION_C("projection");
 
-Json::Value read_json(const std::string &json_file_path) {
+Json::Value read_json(const std::filesystem::path &json_file_path) {
   std::ifstream json_file(json_file_path);
   Json::Value json_data;
   if (json_file.good()) {
     json_file >> json_data;
   } else {
-    throw std::runtime_error("unable to open : " + json_file_path);
+    throw std::runtime_error("unable to open : " + json_file_path.string());
   }
   return json_data;
 }
