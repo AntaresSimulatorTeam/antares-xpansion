@@ -9,10 +9,6 @@ RawPbData solve_sensitivity_pb(const SensitivityInputData& input_data,
 
   sensitivity_problem->get_obj(raw_output.obj_coeffs.data(), 0, ncols - 1);
 
-  if (std::ifstream basis_file(input_data.basis_file_path); basis_file.good()) {
-    sensitivity_problem->read_basis(input_data.basis_file_path);
-  }
-
   if (sensitivity_problem->get_n_integer_vars() > 0) {
     raw_output.status = sensitivity_problem->solve_mip();
     sensitivity_problem->get_mip_sol(raw_output.solution.data());
@@ -31,21 +27,29 @@ SolverAbstract::Ptr get_sensitivity_problem(
     const SensitivityInputData input_data, const std::string& candidate_name,
     SensitivityPbType type) {
   unsigned int nb_candidates = input_data.name_to_id.size();
+  SolverAbstract::Ptr sensitivity_problem;
   switch (type) {
     case SensitivityPbType::CAPEX: {
       ProblemModifierCapex pb_modifier(input_data.epsilon, input_data.best_ub,
                                        input_data.last_master);
-      return pb_modifier.changeProblem(nb_candidates);
+      sensitivity_problem = pb_modifier.changeProblem(nb_candidates);
+      break;
     }
     case SensitivityPbType::PROJECTION: {
       ProblemModifierProjection pb_modifier(
           input_data.epsilon, input_data.best_ub, input_data.last_master,
           input_data.name_to_id.at(candidate_name), candidate_name);
-      return pb_modifier.changeProblem(nb_candidates);
+      sensitivity_problem = pb_modifier.changeProblem(nb_candidates);
+      break;
     }
 
     default:
       std::cerr << "Unrecognized Sensitivity Problem type" << std::endl;
       return nullptr;
   }
+
+  if (std::ifstream basis_file(input_data.basis_file_path); basis_file.good()) {
+    sensitivity_problem->read_basis(input_data.basis_file_path);
+  }
+  return sensitivity_problem;
 }
