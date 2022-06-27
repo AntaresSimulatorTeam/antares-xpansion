@@ -9,7 +9,7 @@ class Timer {
  public:
   Timer();
   explicit Timer(const double begin_time);
-  virtual ~Timer();
+  virtual ~Timer() = default;
 
   double elapsed() const;
   void restart();
@@ -33,5 +33,3 @@ inline double Timer::elapsed() const {
              .count() +
          _begin_time;
 }
-
-inline Timer::~Timer() {}

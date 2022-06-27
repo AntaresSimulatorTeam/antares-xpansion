@@ -22,6 +22,7 @@ class SolverXpress : public SolverAbstract {
 
  public:
   XPRSprob _xprs; /*!< Problem in XPRESS */
+  const std::string name_ = "XPRESS";
 
   /*************************************************************************************************
   -----------------------------------    Constructor/Desctructor
@@ -41,13 +42,17 @@ class SolverXpress : public SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing an XPRESS
    * solver to copy
    */
-  SolverXpress(const SolverAbstract::Ptr toCopy);
-  SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
+  explicit SolverXpress(const SolverAbstract::Ptr toCopy);
+  explicit SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
+
+  /*SolverXpress ctor accept only std::shared_ptr*/
+  SolverXpress(const SolverXpress &other) = delete;
+  SolverXpress &operator=(const SolverXpress &other) = delete;
 
   virtual ~SolverXpress();
   virtual int get_number_of_instances() override;
 
-  virtual std::string get_solver_name() const override { return "XPRESS"; }
+  virtual std::string get_solver_name() const override { return name_; }
 
   /*************************************************************************************************
   ---------------------------------    Output and stream management
@@ -74,7 +79,7 @@ class SolverXpress : public SolverAbstract {
   virtual void read_prob_mps(const std::filesystem::path &filename) override;
   virtual void read_prob_lp(const std::filesystem::path &filename) override;
   virtual void read_basis(const std::filesystem::path &filename) override;
-  
+
   virtual void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 
  private:

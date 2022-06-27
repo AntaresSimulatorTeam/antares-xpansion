@@ -52,7 +52,7 @@ class StandardLp {
     initialise_dbl_vectors();
   }
 
-  StandardLp(SolverAbstract::Ptr solver_p) {
+  explicit StandardLp(SolverAbstract::Ptr solver_p) {
     init();
 
     int ncols = solver_p->get_ncols();

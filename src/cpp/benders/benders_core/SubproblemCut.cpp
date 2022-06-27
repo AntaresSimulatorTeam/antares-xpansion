@@ -5,14 +5,13 @@
  *
  *  \param data : pointer to a slave cut data
  */
-SubproblemCutDataHandler::SubproblemCutDataHandler(SubproblemCutDataPtr& data) : _data(data) {
+SubproblemCutDataHandler::SubproblemCutDataHandler(SubproblemCutDataPtr& data)
+    : _data(data) {
   // get_subgradient().clear();
   get_int().resize(SubproblemCutInt::MAXINTEGER);
   get_dbl().resize(SubproblemCutDbl::MAXDBL);
   get_str().resize(SubproblemCutStr::MAXSTR);
 }
-
-SubproblemCutDataHandler::~SubproblemCutDataHandler() {}
 
 /*!
  *  \brief Get subgradient of a slave cut
@@ -24,7 +23,9 @@ Point& SubproblemCutDataHandler::get_subgradient() {
 /*!
  *  \brief Get int variable of a slave cut
  */
-IntVector& SubproblemCutDataHandler::get_int() { return _data->first.first.second; }
+IntVector& SubproblemCutDataHandler::get_int() {
+  return _data->first.first.second;
+}
 
 /*!
  *  \brief Get double variable of a slave cut
@@ -39,12 +40,17 @@ StrVector& SubproblemCutDataHandler::get_str() { return _data->second; }
 /*!
  *  \brief Get int variable of a slave cut (SIMPLEXITE, LPSTATUS)
  */
-int& SubproblemCutDataHandler::get_int(SubproblemCutInt key) { return get_int()[key]; }
+int& SubproblemCutDataHandler::get_int(SubproblemCutInt key) {
+  return get_int()[key];
+}
 
 /*!
- *  \brief Get double variable of a slave cut (SLAVECOST, ALPHA_I, SUBPROBLEM_TIMER)
+ *  \brief Get double variable of a slave cut (SLAVECOST, ALPHA_I,
+ * SUBPROBLEM_TIMER)
  */
-double& SubproblemCutDataHandler::get_dbl(SubproblemCutDbl key) { return get_dbl()[key]; }
+double& SubproblemCutDataHandler::get_dbl(SubproblemCutDbl key) {
+  return get_dbl()[key];
+}
 
 /*!
  *  \brief Get string variable of a slave cut
@@ -77,7 +83,9 @@ DblVector const& SubproblemCutDataHandler::get_dbl() const {
 /*!
  *  \brief Get string variable of a slave cut
  */
-StrVector const& SubproblemCutDataHandler::get_str() const { return _data->second; }
+StrVector const& SubproblemCutDataHandler::get_str() const {
+  return _data->second;
+}
 
 /*!
  *  \brief Get int variable of a slave cut (SIMPLEXITE, LPSTATUS)
@@ -87,7 +95,8 @@ int SubproblemCutDataHandler::get_int(SubproblemCutInt key) const {
 }
 
 /*!
- *  \brief Get double variable of a slave cut (SLAVECOST, ALPHA_I, SUBPROBLEM_TIMER)
+ *  \brief Get double variable of a slave cut (SLAVECOST, ALPHA_I,
+ * SUBPROBLEM_TIMER)
  */
 double SubproblemCutDataHandler::get_dbl(SubproblemCutDbl key) const {
   return get_dbl()[key];
@@ -117,7 +126,8 @@ bool SubproblemCutTrimmer::operator<(SubproblemCutTrimmer const& other) const {
 /*!
  *  \brief Constructor of Slave cut trimmer from an handler and trial values
  */
-SubproblemCutTrimmer::SubproblemCutTrimmer(SubproblemCutDataHandlerPtr& data, Point& x0)
+SubproblemCutTrimmer::SubproblemCutTrimmer(SubproblemCutDataHandlerPtr& data,
+                                           Point& x0)
     : _data_cut(data), _x0(x0) {
   _const_cut = _data_cut->get_dbl(SUBPROBLEM_COST);
   for (auto const& kvp : _x0) {

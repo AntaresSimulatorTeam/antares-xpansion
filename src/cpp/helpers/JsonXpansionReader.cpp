@@ -7,8 +7,6 @@
 
 JsonXpansionReader::JsonXpansionReader() : _lastIterNb(0) {}
 
-JsonXpansionReader::~JsonXpansionReader() {}
-
 void JsonXpansionReader::read(std::string const& filename_p) {
   std::ifstream input_file_l(filename_p, std::ifstream::binary);
 

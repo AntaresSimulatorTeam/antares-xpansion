@@ -30,6 +30,9 @@ class ProfileFileNegativeValue(Exception):
     pass
 
 
+INFINITY_LIST = ["+Inf", "+infini"]
+
+
 def _check_profile_file_consistency(filename_path):
     two_profiles = False
     with open(filename_path, 'r') as profile_file:
@@ -392,7 +395,7 @@ def _check_setting_option_type(option, value):
                 'check_setting_option_type: Illegal %s option in type, numerical value is expected .' % option)
             return False
     elif option_type == type_int:
-        if value in ["+Inf", "+infini"]:
+        if value in INFINITY_LIST:
             return True
         else:
             try:
@@ -445,6 +448,40 @@ def check_options(options):
         _check_setting_option_value(option, value)
 
 
+def _check_max_iteration(value) -> bool:
+    if value in INFINITY_LIST:
+        return True
+    else:
+        max_iter = int(value)
+        if (max_iter == -1) or (max_iter > 0):
+            return True
+        else:
+            flushed_print(
+                f"Illegal {value} for option max_iteration : only -1 or positive values are allowed")
+            raise MaxIterValueError
+
+
+def _check_timelimit(value) -> bool:
+    if value in INFINITY_LIST:
+        return True
+    else:
+        if int(value) > 0:
+            return True
+        else:
+            flushed_print(
+                f"Illegal {value} for option timelimit : only positive values are allowed")
+            raise TimelimitValueError
+
+
+def _check_log_level(value) -> bool:
+    if int(value) >= 0:
+        return True
+    else:
+        flushed_print(
+            f"Illegal {value} for option log_lvel : only greater than or equal to zero values are accepted")
+        raise LogLevelValueError
+
+
 def _check_setting_option_value(option, value):
     """
         checks that an option has a legal value
@@ -478,34 +515,13 @@ def _check_setting_option_value(option, value):
             raise GapValueError
 
     elif option == 'max_iteration':
-        if value in ["+Inf", "+infini"]:
-            return True
-        else:
-            max_iter = int(value)
-            if (max_iter == -1) or (max_iter > 0):
-                return True
-            else:
-                flushed_print('Illegal value %s for option %s : only -1 or positive values are allowed'
-                              % (value, option))
-                raise MaxIterValueError
+        return _check_max_iteration(value)
 
     elif option == 'timelimit':
-        if value in ["+Inf", "+infini"]:
-            return True
-        else:
-            if int(value) > 0:
-                return True
-            else:
-                flushed_print('Illegal value %s for option %s : only positive values are allowed'
-                              % (value, option))
-                raise TimelimitValueError
+        return _check_timelimit(value)
+
     elif option == 'log_level':
-        if int(value) >= 0:
-            return True
-        else:
-            flushed_print('Illegal value %s for option %s : only greater than or equal to zero values are accepted'
-                          % (value, option))
-            raise LogLevelValueError
+        return _check_log_level(value)
 
     flushed_print(
         'check_candidate_option_value: Illegal value %s for option %s' % (value, option))

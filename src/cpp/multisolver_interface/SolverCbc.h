@@ -22,7 +22,9 @@ class SolverCbc : public SolverAbstract {
   static int _NumberOfProblems; /*!< Counter of the total number of Cplex
                                    problems declared to set or end the
                                    environment */
+
  public:
+  const std::string name_ = "CBC";
   OsiClpSolverInterface _clp_inner_solver;
   CbcModel _cbc;
   CoinMessageHandler _message_handler;
@@ -47,12 +49,15 @@ class SolverCbc : public SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing a CBC
    * solver to copy
    */
-  SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
+  explicit SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
 
+  /*SolverCbc ctor accept only std::shared_ptr*/
+  SolverCbc(const SolverCbc &other) = delete;
+  SolverCbc &operator=(const SolverCbc &other) = delete;
   virtual ~SolverCbc();
   virtual int get_number_of_instances() override;
 
-  virtual std::string get_solver_name() const override { return "CBC"; }
+  virtual std::string get_solver_name() const override { return name_; }
 
  private:
   void defineCbcModelFromInnerSolver();

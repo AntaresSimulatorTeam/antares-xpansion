@@ -25,9 +25,11 @@ class SolverClp : public SolverAbstract {
   static int _NumberOfProblems; /*!< Counter of the total number of
                                    problems declared to set or end the
                                    environment */
+
  public:
   ClpSimplex _clp;
   CoinMessageHandler _message_handler;
+  const std::string name_ = "CLP";
 
   /*************************************************************************************************
   -----------------------------------    Constructor/Desctructor
@@ -48,12 +50,16 @@ class SolverClp : public SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing a CLP
    * solver to copy
    */
-  SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
+  explicit SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
+
+  /*SolverClp ctor accept only std::shared_ptr*/
+  SolverClp(const SolverClp &other) = delete;
+  SolverClp &operator=(const SolverClp &other) = delete;
 
   virtual ~SolverClp();
   virtual int get_number_of_instances() override;
 
-  virtual std::string get_solver_name() const override { return "CLP"; }
+  virtual std::string get_solver_name() const override { return name_; }
 
   /*************************************************************************************************
   ---------------------------------    Output and stream management
