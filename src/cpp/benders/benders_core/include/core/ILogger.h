@@ -57,7 +57,7 @@ struct LogData {
   LogPoint max_invest;
   double optimality_gap;
   double relative_gap;
-  int max_iterations;
+  unsigned int max_iterations;
   double benders_elapsed_time;
   double master_time;
   bool operator==(const LogData &lhs) const {

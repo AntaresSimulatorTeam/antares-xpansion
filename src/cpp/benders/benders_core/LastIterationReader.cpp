@@ -48,7 +48,7 @@ LogData LastIterationReader::GetIterationData(
       max_invest,
       last_iteration_file_content_[iteration_name]["optimality_gap"].asDouble(),
       last_iteration_file_content_[iteration_name]["relative_gap"].asDouble(),
-      last_iteration_file_content_[iteration_name]["max_iterations"].asInt(),
+      last_iteration_file_content_[iteration_name]["max_iterations"].asUInt(),
       last_iteration_file_content_[iteration_name]["benders_elapsed_time"]
           .asDouble(),
       last_iteration_file_content_[iteration_name]["duration"].asDouble()
