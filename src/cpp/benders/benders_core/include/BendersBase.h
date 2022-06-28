@@ -129,5 +129,6 @@ class BendersBase {
  public:
   Logger _logger;
   Writer _writer;
+  std::map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

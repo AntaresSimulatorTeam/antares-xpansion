@@ -47,12 +47,12 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
  */
 void WorkerMaster::get(Point &x0, double &alpha, DblVector &alpha_i) {
   x0.clear();
-  std::vector<double> ptr(_solver->get_ncols());
+  std::vector<double> ptr(solver_->get_ncols());
 
-  if (_solver->get_n_integer_vars() > 0) {
-    _solver->get_mip_sol(ptr.data());
+  if (solver_->get_n_integer_vars() > 0) {
+    solver_->get_mip_sol(ptr.data());
   } else {
-    _solver->get_lp_sol(ptr.data(), NULL, NULL);
+    solver_->get_lp_sol(ptr.data(), NULL, NULL);
   }
   assert(_id_alpha_i.back() + 1 == ptr.size());
   for (auto const &kvp : _id_to_name) {
@@ -71,13 +71,13 @@ void WorkerMaster::get(Point &x0, double &alpha, DblVector &alpha_i) {
  */
 void WorkerMaster::get_dual_values(std::vector<double> &dual) const {
   dual.resize(get_number_constraint());
-  solver_getlpdual(_solver, dual);
+  solver_getlpdual(solver_, dual);
 }
 
 /*!
  *  \brief Return number of constraint in a problem
  */
-int WorkerMaster::get_number_constraint() const { return _solver->get_nrows(); }
+int WorkerMaster::get_number_constraint() const { return solver_->get_nrows(); }
 
 /*!
  *  \brief Delete nrows last rows of a problem
@@ -90,7 +90,7 @@ void WorkerMaster::delete_constraint(int const nrows) const {
   for (int i(0); i < nrows; i++) {
     mindex[i] = nconstraint - nrows + i;
   }
-  solver_deactivaterows(_solver, mindex);
+  solver_deactivaterows(solver_, mindex);
 }
 
 /*!
@@ -113,7 +113,7 @@ void WorkerMaster::add_cut(Point const &s, Point const &x0,
   define_rhs_with_master_variable(s, x0, rhs, rowrhs);
   define_matval_mclind(s, matval, mclind);
 
-  solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+  solver_addrows(solver_, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::define_rhs_with_master_variable(
@@ -162,7 +162,7 @@ void WorkerMaster::add_dynamic_cut(Point const &s, double const &sx0,
 
   define_rhs_from_sx0(sx0, rhs, rowrhs);
   define_matval_mclind(s, matval, mclind);
-  solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+  solver_addrows(solver_, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::define_rhs_from_sx0(const double &sx0, const double &rhs,
@@ -192,7 +192,7 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const &s,
   define_rhs_from_sx0(sx0, rhs, rowrhs);
   define_matval_mclind_for_index(i, s, matval, mclind);
 
-  solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+  solver_addrows(solver_, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::define_matval_mclind_for_index(
@@ -231,22 +231,22 @@ void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x0,
   define_rhs_with_master_variable(s, x0, rhs, rowrhs);
   define_matval_mclind_for_index(i, s, matval, mclind);
 
-  solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+  solver_addrows(solver_, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::_set_upper_bounds() const {
   // Cbc solver sets infinite upper bounds to DBL_MAX = 1.79769e+308 which is
   // way too large as it appears in datas.max_invest. We set it to 1e20
-  int ncols = _solver->get_ncols();
+  int ncols = solver_->get_ncols();
   DblVector bounds(ncols);
-  _solver->get_ub(bounds.data(), 0, ncols - 1);
+  solver_->get_ub(bounds.data(), 0, ncols - 1);
   CharVector bndTypes(ncols, 'U');
   IntVector indices(ncols);
-  for (int i = 0; i < _solver->get_ncols(); i++) {
+  for (int i = 0; i < solver_->get_ncols(); i++) {
     indices[i] = i;
     bounds[i] = std::min(bounds[i], 1e20);
   }
-  _solver->chg_bounds(indices, bndTypes, bounds);
+  solver_->chg_bounds(indices, bndTypes, bounds);
 }
 
 void WorkerMaster::_set_alpha_var() {
@@ -257,21 +257,21 @@ void WorkerMaster::_set_alpha_var() {
     _id_alpha_i.resize(subproblems_count, -1);
 
     if (_mps_has_alpha) {
-      _id_alpha = _solver->get_col_index(alpha_str);
+      _id_alpha = solver_->get_col_index(alpha_str);
       for (int i(0); i < subproblems_count; ++i) {
         std::stringstream buffer;
         buffer << "alpha_" << i;
-        _id_alpha_i[i] = _solver->get_col_index(buffer.str());
+        _id_alpha_i[i] = solver_->get_col_index(buffer.str());
       }
     } else {
       double lb(-1e10); /*!< Lower Bound */
       double ub(+1e20); /*!< Upper Bound*/
       double obj(+1);
       _id_alpha =
-          _solver->get_ncols(); /* Set the number of columns in _id_alpha */
+          solver_->get_ncols(); /* Set the number of columns in _id_alpha */
 
       solver_addcols(
-          _solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0),
+          solver_, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0),
           DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
           CharVector(1, 'C'),
           StrVector(1, alpha_str)); /* Add variable alpha and its parameters */
@@ -279,9 +279,9 @@ void WorkerMaster::_set_alpha_var() {
       for (int i(0); i < subproblems_count; ++i) {
         std::stringstream buffer;
         buffer << "alpha_" << i;
-        _id_alpha_i[i] = _solver->get_ncols();
+        _id_alpha_i[i] = solver_->get_ncols();
         solver_addcols(
-            _solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0),
+            solver_, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0),
             DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
             CharVector(1, 'C'),
             StrVector(
@@ -300,7 +300,7 @@ void WorkerMaster::_set_alpha_var() {
         matval[i + 1] = -1;
       }
 
-      solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+      solver_addrows(solver_, rowtype, rowrhs, {}, mstart, mclind, matval);
     }
   } else {
     LOG(INFO) << "ERROR a variable named alpha is in input" << std::endl;
@@ -316,5 +316,5 @@ void WorkerMaster::fix_alpha(double const &bestUB) const {
   std::vector<int> mindex(1, _id_alpha);
   std::vector<char> bnd_types(1, 'U');
   std::vector<double> bnd_values(1, bestUB);
-  _solver->chg_bounds(mindex, bnd_types, bnd_values);
+  solver_->chg_bounds(mindex, bnd_types, bnd_values);
 }

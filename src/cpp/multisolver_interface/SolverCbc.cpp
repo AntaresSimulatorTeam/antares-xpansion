@@ -555,6 +555,10 @@ void SolverCbc::get_basis(int *rstatus, int *cstatus) const {
   _cbc.solver()->getBasisStatus(cstatus, rstatus);
 }
 
+void SolverCbc::SetBasis(std::vector<int> rstatus, std::vector<int> cstatus) {
+  _cbc.solver()->setBasisStatus(rstatus.data(), cstatus.data());
+}
+
 double SolverCbc::get_mip_value() const { return _cbc.getObjValue(); }
 
 double SolverCbc::get_lp_value() const { return _cbc.solver()->getObjValue(); }
@@ -635,3 +639,4 @@ void SolverCbc::set_simplex_iter(int iter) {
   throw InvalidSolverOptionException("set_simplex_iter : " +
                                      std::to_string(iter));
 }
+

@@ -18,17 +18,17 @@ SubproblemWorker::SubproblemWorker(VariableMap const &variable_map,
                                    const std::filesystem::path &log_name) {
   init(variable_map, path_to_mps, solver_name, log_level, log_name);
 
-  int mps_ncols(_solver->get_ncols());
+  int mps_ncols(solver_->get_ncols());
   DblVector obj_func_coeffs(mps_ncols);
   IntVector sequence(mps_ncols);
   for (int i = 0; i < mps_ncols; ++i) {
     sequence[i] = i;
   }
-  solver_get_obj_func_coeffs(_solver, obj_func_coeffs, 0, mps_ncols - 1);
+  solver_get_obj_func_coeffs(solver_, obj_func_coeffs, 0, mps_ncols - 1);
   for (auto &c : obj_func_coeffs) {
     c *= slave_weight;
   }
-  _solver->chg_obj(sequence, obj_func_coeffs);
+  solver_->chg_obj(sequence, obj_func_coeffs);
 }
 
 /*!
@@ -51,7 +51,7 @@ void SubproblemWorker::fix_to(Point const &x0) const {
     ++i;
   }
 
-  solver_chgbounds(_solver, indexes, bndtypes, values);
+  solver_chgbounds(solver_, indexes, bndtypes, values);
 }
 
 /*!
@@ -61,8 +61,8 @@ void SubproblemWorker::fix_to(Point const &x0) const {
  */
 void SubproblemWorker::get_subgradient(Point &s) const {
   s.clear();
-  std::vector<double> ptr(_solver->get_ncols());
-  solver_getlpreducedcost(_solver, ptr);
+  std::vector<double> ptr(solver_->get_ncols());
+  solver_getlpreducedcost(solver_, ptr);
   for (auto const &kvp : _id_to_name) {
     s[kvp.second] = +ptr[kvp.first];
   }

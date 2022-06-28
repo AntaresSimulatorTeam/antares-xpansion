@@ -42,7 +42,7 @@ class Worker {
              const std::string &output_master_mps_file_name) const;
 
  public:
-  SolverAbstract::Ptr _solver =
+  SolverAbstract::Ptr solver_ =
       nullptr; /*!< Problem stocked in the instance Worker*/
   bool _is_master = false;
 };

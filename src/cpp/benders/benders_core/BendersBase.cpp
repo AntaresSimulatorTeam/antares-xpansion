@@ -310,9 +310,9 @@ void BendersBase::get_master_value() {
   _data.invest_cost = _data.lb - _data.alpha;
 
   for (const auto &pairIdName : _master->_id_to_name) {
-    _master->_solver->get_ub(&_data.max_invest[pairIdName.second],
+    _master->solver_->get_ub(&_data.max_invest[pairIdName.second],
                              pairIdName.first, pairIdName.first);
-    _master->_solver->get_lb(&_data.min_invest[pairIdName.second],
+    _master->solver_->get_lb(&_data.min_invest[pairIdName.second],
                              pairIdName.first, pairIdName.first);
   }
 
@@ -354,9 +354,9 @@ void BendersBase::getSubproblemCut(
   selectPolicy(
       [this, &nameAndWorkers, &m, &subproblem_cut_package](auto &policy) {
         std::for_each(
-            policy, nameAndWorkers.begin(), nameAndWorkers.end(),
-            [this, &m, &subproblem_cut_package](const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
-              const auto &[name, worker] = kvp;
+            policy, coupling_map.begin(), coupling_map.end(),
+            [this, &m, &subproblem_cut_package](const std::pair<std::string, VariableMap> &kvp) {
+              const auto &[name, variables] = kvp;
               Timer subproblem_timer;
               auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
               auto handler(std::make_shared<SubproblemCutDataHandler>(
@@ -365,6 +365,11 @@ void BendersBase::getSubproblemCut(
                   kvp.second, GetSubproblemPath(kvp.first),
                   SubproblemWeight(_data.nsubproblem, kvp.first), _options.SOLVER_NAME,
                   _options.LOG_LEVEL, log_name());
+              if (auto it_map_basis = basiss_.find(name);
+                  it_map_basis != basiss_.end()) {
+                worker->solver_->SetBasis(it_map_basis->second.first,
+                                          it_map_basis->second.second);
+              }
               worker->fix_to(_data.x0);
               worker->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX);
@@ -374,6 +379,12 @@ void BendersBase::getSubproblemCut(
               handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
               std::lock_guard guard(m);
               subproblem_cut_package[name] = *subproblem_cut_data;
+              int row_number = worker->solver_->get_nrows();
+              int col_number = worker->solver_->get_ncols();
+              auto rstatus = std::vector<int>(row_number);
+              auto cstatus = std::vector<int>(col_number);
+              worker->solver_->get_basis(rstatus.data(), cstatus.data());
+              basiss_[name] = std::make_pair(rstatus, cstatus);
             });
       },
       shouldParallelize());

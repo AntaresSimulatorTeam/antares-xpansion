@@ -438,6 +438,11 @@ void SolverXpress::get_basis(int *rstatus, int *cstatus) const {
   zero_status_check(status, "get basis");
 }
 
+void SolverXpress::SetBasis(std::vector<int> rstatus, std::vector<int> cstatus) {
+  int status = XPRSsetbasis (_xprs, rstatus.data(), cstatus.data());
+  zero_status_check(status, "set basis");
+}
+
 double SolverXpress::get_mip_value() const {
   double val;
   int status = XPRSgetdblattrib(_xprs, XPRS_MIPOBJVAL, &val);

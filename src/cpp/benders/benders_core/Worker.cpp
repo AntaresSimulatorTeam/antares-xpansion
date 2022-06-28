@@ -7,9 +7,9 @@
  *  \brief Free the problem
  */
 void Worker::free() {
-  if (_solver) {
-    _solver.reset();
-    _solver = nullptr;
+  if (solver_) {
+    solver_.reset();
+    solver_ = nullptr;
   }
 }
 
@@ -19,10 +19,10 @@ void Worker::free() {
  *  \param lb : double which receives the optimal value
  */
 void Worker::get_value(double &lb) const {
-  if (_is_master && _solver->get_n_integer_vars() > 0) {
-    lb = _solver->get_mip_value();
+  if (_is_master && solver_->get_n_integer_vars() > 0) {
+    lb = solver_->get_mip_value();
   } else {
-    lb = _solver->get_lp_value();
+    lb = solver_->get_lp_value();
   }
 }
 
@@ -42,21 +42,21 @@ void Worker::init(VariableMap const &variable_map,
 
   SolverFactory factory;
   if (_is_master) {
-    _solver =
+    solver_ =
         factory.create_solver(solver_name, SOLVER_TYPE::INTEGER, log_name);
   } else {
-    _solver =
+    solver_ =
         factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS, log_name);
   }
 
-  _solver->init();
-  _solver->set_threads(1);
-  _solver->set_output_log_level(log_level);
-  _solver->read_prob_mps(path_to_mps);
+  solver_->init();
+  solver_->set_threads(1);
+  solver_->set_output_log_level(log_level);
+  solver_->read_prob_mps(path_to_mps);
 
   int var_index;
   for (auto const &kvp : variable_map) {
-    var_index = _solver->get_col_index(kvp.first);
+    var_index = solver_->get_col_index(kvp.first);
     _id_to_name[var_index] = kvp.first;
     _name_to_id[kvp.first] = var_index;
   }
@@ -69,10 +69,10 @@ void Worker::init(VariableMap const &variable_map,
  */
 void Worker::solve(int &lp_status, const std::string &outputroot,
                    const std::string &output_master_mps_file_name) const {
-  if (_is_master && _solver->get_n_integer_vars() > 0) {
-    lp_status = _solver->solve_mip();
+  if (_is_master && solver_->get_n_integer_vars() > 0) {
+    lp_status = solver_->solve_mip();
   } else {
-    lp_status = _solver->solve_lp();
+    lp_status = solver_->solve_lp();
   }
 
   if (lp_status != SOLVER_STATUS::OPTIMAL) {
@@ -80,19 +80,19 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
     std::stringstream buffer;
     buffer << std::filesystem::path(outputroot) /
                   (_path_to_mps.string() + "_lp_status_") /
-                  (_solver->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
-    LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status]
+                  (solver_->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
+    LOG(INFO) << "lp_status is : " << solver_->SOLVER_STRING_STATUS[lp_status]
               << std::endl;
     LOG(INFO) << "written in " << buffer.str() << std::endl;
-    _solver->write_prob_mps(buffer.str());
+    solver_->write_prob_mps(buffer.str());
 
     throw InvalidSolverStatusException(
-        "Invalid solver status " + _solver->SOLVER_STRING_STATUS[lp_status] +
+        "Invalid solver status " + solver_->SOLVER_STRING_STATUS[lp_status] +
         " optimality expected");
   }
 
   if (_is_master) {
-    _solver->write_prob_mps(std::filesystem::path(outputroot) /
+    solver_->write_prob_mps(std::filesystem::path(outputroot) /
                             output_master_mps_file_name);
   }
 }
@@ -102,9 +102,9 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
  *  \param result : result
  */
 void Worker::get_splex_num_of_ite_last(int &result) const {
-  result = _solver->get_splex_num_of_ite_last();
+  result = solver_->get_splex_num_of_ite_last();
 }
 
 void Worker::write_basis(const std::filesystem::path &filename) const {
-  _solver->write_basis(filename);
+  solver_->write_basis(filename);
 }
