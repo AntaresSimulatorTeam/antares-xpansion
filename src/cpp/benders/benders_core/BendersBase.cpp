@@ -357,7 +357,6 @@ void BendersBase::getSubproblemCut(
             policy, coupling_map.begin(), coupling_map.end(),
             [this, &m, &subproblem_cut_package](const std::pair<std::string, VariableMap> &kvp) {
               const auto &[name, variables] = kvp;
-              Timer subproblem_timer;
               auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
               auto handler(std::make_shared<SubproblemCutDataHandler>(
                   subproblem_cut_data));
@@ -365,6 +364,7 @@ void BendersBase::getSubproblemCut(
                   kvp.second, GetSubproblemPath(kvp.first),
                   SubproblemWeight(_data.nsubproblem, kvp.first), _options.SOLVER_NAME,
                   _options.LOG_LEVEL, log_name());
+              Timer subproblem_timer;
               if (auto it_map_basis = basiss_.find(name);
                   it_map_basis != basiss_.end()) {
                 worker->solver_->SetBasis(it_map_basis->second.first,
