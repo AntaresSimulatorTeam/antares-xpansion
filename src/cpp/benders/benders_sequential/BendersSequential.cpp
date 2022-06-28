@@ -18,8 +18,8 @@
  */
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
-                                     Logger &logger, Writer writer)
-    : BendersBase(options, logger, std::move(writer)) {}
+                                     Logger logger, Writer writer)
+    : BendersBase(options, std::move(logger), std::move(writer)) {}
 
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
