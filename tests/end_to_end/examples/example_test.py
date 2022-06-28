@@ -54,7 +54,6 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
         command.append("--allow-run-as-root")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
-
     # Check return value
     assert process.returncode == 0
 
@@ -235,20 +234,20 @@ long_parameters_values = [
     (
         ALL_STUDIES_PATH / "xpansion-test-02-new",
         {
-            "optimality_gap": 709.42435598373413,
-            "investment_cost": 256299462.08039832,
-            "operational_cost": 1067318031.6309935,
-            "overall_cost": 1323617493.7113919,
-            "relative_gap": 5.3597384391960929e-07,
+            "investment_cost": 256188844.36742425,
+            "operational_cost": 1067428489.1755786,
+            "optimality_gap": 27.417008638381958,
+            "overall_cost": 1323617333.5430028,
+            "relative_gap": 2.071369718693035e-08,
             "accepted_rel_gap_atol": 1e-10,
         },
         {
-            "battery": 508.74183466608417,
-            "peak1": 800.0,
-            "peak2": 1000.0,
-            "pv": 447.28156522682048,
-            "semibase1": 0.0,
-            "semibase2": 200.0,
+            "battery" : 507.03470051310484,
+            "peak1" : 800,
+            "peak2" : 1000.0000000000001,
+            "pv" : 447.10352905735476,
+            "semibase1" : 0,
+            "semibase2" : 200
         },
         700
     ),
