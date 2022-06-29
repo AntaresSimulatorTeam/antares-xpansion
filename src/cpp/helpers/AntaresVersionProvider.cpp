@@ -23,6 +23,9 @@ int AntaresVersionProvider::getAntaresVersion(
     if (pos_l != std::string::npos) {
       std::stringstream buffer(line_l.substr(pos_l + versionProperty_l.size()));
       buffer >> version;
+      if (buffer.fail()) {
+          version = DEFAULT_ANTARES_VERSION;
+      }
       return version;
     }
   }
