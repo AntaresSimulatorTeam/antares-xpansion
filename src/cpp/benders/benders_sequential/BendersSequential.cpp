@@ -28,7 +28,6 @@ void BendersSequential::initialize_problems() {
                                 get_solver_name(), get_log_level(),
                                 _data.nsubproblem, log_name(), IsResumeMode()));
   for (const auto &problem : coupling_map) {
-    addSubproblem(problem);
     AddSubproblemName(problem.first);
   }
 }
