@@ -345,10 +345,10 @@ void BendersBase::getSubproblemCut(
     SubproblemCutPackage &subproblem_cut_package) {
   // With gcc9 there was no parallelisation when iterating on the map directly
   // so with project it in a vector
-  std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
-  nameAndWorkers.reserve(subproblem_map.size());
-  for (const auto &[name, worker] : subproblem_map) {
-    nameAndWorkers.emplace_back(name, worker);
+  std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
+  nameAndVariableMap.reserve(coupling_map.size());
+  for (const auto &[name, variableMap] : coupling_map) {
+    nameAndVariableMap.emplace_back(name, variableMap);
   }
   std::mutex m;
   selectPolicy(
