@@ -25,7 +25,7 @@ bool LinkParametersCSVOverWriter::open(
   if (!inputCsv_l_.is_open()) {
     std::cout << "WARNING: Missing file to update antares study : "
               << linkdataFilename_l << "."
-              << " Unknown valus were populated with 0 in a new created file."
+              << " Unknown values were populated with 0 in a newly created file."
               << std::endl;
     already_warned_ = true;
   }
