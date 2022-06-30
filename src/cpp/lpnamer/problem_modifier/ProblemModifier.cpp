@@ -21,14 +21,10 @@ std::vector<Candidate> ProblemModifier::candidates_with_not_null_profile(
   std::vector<Candidate> candidates_to_keep;
 
   for (const auto& link: active_links) {
-    auto candidates = link.getCandidates();
-    auto newEnd = std::remove_if(
-        candidates.begin(), candidates.end(),
-        [&](const Candidate &cand) {
-          return cand.hasNullProfile(chronicleToUse(link), time_steps);
-        });
-
-    std::move(candidates.begin(), newEnd, std::back_inserter(candidates_to_keep));
+      auto const& candidates = link.getCandidates();
+      std::copy_if(candidates.begin(), candidates.end(), std::back_inserter(candidates_to_keep), [this, &link, &time_steps](auto candidate){
+          return !candidate.hasNullProfile(chronicleToUse(link), time_steps);
+      });
   }
   return candidates_to_keep;
 }
