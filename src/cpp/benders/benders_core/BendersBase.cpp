@@ -377,13 +377,13 @@ void BendersBase::getSubproblemCut(
               worker->get_subgradient(handler->get_subgradient());
               worker->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
               handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
-              std::lock_guard guard(m);
-              subproblem_cut_package[name] = *subproblem_cut_data;
               int row_number = worker->solver_->get_nrows();
               int col_number = worker->solver_->get_ncols();
               auto rstatus = std::vector<int>(row_number);
               auto cstatus = std::vector<int>(col_number);
               worker->solver_->get_basis(rstatus.data(), cstatus.data());
+              std::lock_guard guard(m);
+              subproblem_cut_package[name] = *subproblem_cut_data;
               basiss_[name] = std::make_pair(rstatus, cstatus);
             });
       },
