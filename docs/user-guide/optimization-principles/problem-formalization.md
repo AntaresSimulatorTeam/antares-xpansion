@@ -47,7 +47,7 @@ $$
 
 where \\(y\\) represents all the variables of the Antares problem, \\(\mathcal{Y}\\) is the admissible set and \\(g_{l}\\) is the cost vector. The matrices \\(W\\) and \\(T\\) as well as the vector \\(d_{l}\\) are used to model the constraints of the system. The difference between MC years comes from the availability of thermal plants, the load, the wind and solar power generation, and the hydraulic inflows, that are taken into account in the right-hand side of the constraint through the term \\(d_{l}\\).
 
-More details on the Antares problem can be found in the [Antares documentation](https://antares-simulator.readthedocs.io/en/latest/reference-guide/2-modeling/#formulation-of-the-optimisation-problems). We simply mention that the linear problem presented here and used in Antares-Xpansion is a relaxation of the Antares problem as unit-commitment constraints (minimum on and off time) are not taken into account.
+More details on the Antares problem can be found in the [Antares documentation](https://antares-simulator.readthedocs.io/en/latest/reference-guide/11-modeling/). We simply mention that the linear problem presented here and used in Antares-Xpansion is a relaxation of the Antares problem as unit-commitment constraints (minimum on and off time) are not taken into account.
 
 ##### Splitting the weeks
 
