@@ -9,7 +9,8 @@ namespace Output {
 // string constantes
 const std::string ANTARES_C("antares"), VERSION_C("version"),
     ANTARES_XPANSION_C("antares_xpansion"), BEGIN_C("begin"), END_C("end"),
-    DURATION_C("duration"), ITERATIONS_C("iterations"), BEST_UB_C("best_ub"),
+    RUN_DURATION_C("run_duration"), MASTER_DURATION_C("master_duration"),
+    ITERATIONS_C("iterations"), BEST_UB_C("best_ub"),
     CANDIDATES_C("candidates"), INVEST_C("invest"), MAX_C("max"), MIN_C("min"),
     NAME_C("name"), INVESTMENT_COST_C("investment_cost"), LB_C("lb"),
     OPERATIONAL_COST_C("operational_cost"), OPTIMALITY_GAP_C("optimality_gap"),
