@@ -7,7 +7,7 @@ import sys
 import os
 import shutil
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import flushed_print, WARNING_MSG
 
 
 class ProfileFileNotExists(Exception):
@@ -119,18 +119,19 @@ def _check_candidate_option_type(option, value):
 
     obsolete_options = ["c", 'enable',
                         'candidate-type', 'investment-type', 'relaxed']
-    option_type = candidate_options_type.get(option)
-    if option_type is None:
+
+    if obsolete_options.count(option):
         flushed_print(
-            'check_candidate_option_type: %s option not recognized in candidates file.' % option)
-        flushed_print(f"Authorized options are: ", *
-                      candidate_options_type, sep="\n")
-        raise UnrecognizedCandidateOptionType
+            f"{WARNING_MSG} {option} option is no longer used by antares-xpansion")
+        return True
     else:
-        if obsolete_options.count(option):
+        option_type = candidate_options_type.get(option)
+        if option_type is None:
             flushed_print(
-                '%s option is no longer used by antares-xpansion' % option)
-            return True
+                'check_candidate_option_type: %s option not recognized in candidates file.' % option)
+            flushed_print(f"Authorized options are: ", *
+                          candidate_options_type, sep="\n")
+            raise UnrecognizedCandidateOptionType
         if option_type == 'string':
             return True
         elif option_type == 'non-negative':
