@@ -41,11 +41,11 @@ where \\(p_{l}\\) is the weight of year \\(l\\). The cost \\(\theta_{l}(x)\\) is
 $$
 \begin{aligned}
     \theta_{l}(x) = \min_{y \in \mathcal{Y}} \ & g_{l}^{\top} y\\\\
-    \text{s.t.} \ & Wy = d_{l} - Tx
+    \text{s.t.} \ & Wy = d_{l} - T_{l}x
 \end{aligned}
 $$
 
-where \\(y\\) represents all the variables of the Antares problem, \\(\mathcal{Y}\\) is the admissible set and \\(g_{l}\\) is the cost vector. The matrices \\(W\\) and \\(T\\) as well as the vector \\(d_{l}\\) are used to model the constraints of the system. The difference between MC years comes from the availability of thermal plants, the load, the wind and solar power generation, and the hydraulic inflows, that are taken into account in the right-hand side of the constraint through the term \\(d_{l}\\).
+where \\(y\\) represents all the variables of the Antares problem, \\(\mathcal{Y}\\) is the admissible set and \\(g_{l}\\) is the cost vector. The matrices \\(W\\) and \\(T_{l}\\) as well as the vector \\(d_{l}\\) are used to model the constraints of the system. The differences between MC years come from the availability of thermal plants, the load, the wind and solar power generation, and the hydraulic inflows, that are taken into account in the right-hand side of the constraint through the term \\(d_{l}\\). The term \\(T_{l}\\) changes between MC years due to link profiles on investment candidates.
 
 More details on the Antares problem can be found in the [Antares documentation](https://antares-simulator.readthedocs.io/en/latest/reference-guide/11-modeling/). We simply mention that the linear problem presented here and used in Antares-Xpansion is a relaxation of the Antares problem as unit-commitment constraints (minimum on and off time) are not taken into account.
 
@@ -57,14 +57,14 @@ In Antares-Xpansion, the **weekly problems are assumed to be independent**, this
 
 - \\(g_{l} = (g_{l,1}, \ldots, g_{l,52})\\),
 - \\(d_{l} = (d_{l, 1}, \ldots, d_{l, 52})\\) ,
-- \\(T = \begin{pmatrix} T_{1} \\\\ \vdots \\\\ T_{52} \end{pmatrix} \\),
+- \\(T_{l} = \begin{pmatrix} T_{l, 1} \\\\ \vdots \\\\ T_{l, 52} \end{pmatrix} \\),
 
 the yearly Antares problem (here for MC year \\(l\\)) can be split in 52 independent weekly problems, given for week \\(s\\) by:
 
 $$
 \begin{aligned}
     \theta_{l, s}(x) = \min_{y_{s} \in \mathcal{Y}\_{s}} \ & g_{l,s}^{\top} y_{s}\\\\
-    \text{s.t.} \ & W_{s}y_{s} = d_{l, s} - T_{s}x
+    \text{s.t.} \ & W_{s}y_{s} = d_{l, s} - T_{l, s}x
 \end{aligned}
 $$
 
@@ -107,7 +107,7 @@ Taking the dual of the weekly Antares problem, we get:
 
 $$
 \begin{aligned}
-    \theta_{l, s}(x) = \max_{\pi_{l, s} \in \Pi\_{l, s}} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\\\
+    \theta_{l, s}(x) = \max_{\pi_{l, s} \in \Pi\_{l, s}} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\\\\
     \text{s.t.} \ & W_{s}^{\top}\pi_{l, s} \geq g_{l, s}
 \end{aligned}
 $$
@@ -118,7 +118,7 @@ Weekly Antares problems are always feasible, by penalizing feasibility with a la
 
 $$
 \begin{aligned}
-    \theta_{l, s}(x) = \max_{\pi_{l, s} \in \mathrm{extr}(F_{l, s})} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\\\
+    \theta_{l, s}(x) = \max_{\pi_{l, s} \in \mathrm{extr}(F_{l, s})} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\\\\
 \end{aligned}
 $$
 
@@ -126,7 +126,7 @@ where \\(\mathrm{extr}(F_{l, s})\\) is the set of extreme points of \\(F_{l, s} 
 
 $$
 \begin{aligned}
-    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s} \max_{\pi_{l, s} \in \mathrm{extr}(F_{l, s})} \pi_{l, s}^{\top} (d_{l, s} - T_{s}x) \\\\
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s} \max_{\pi_{l, s} \in \mathrm{extr}(F_{l, s})} \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x) \\\\
     \text{s.t.} \ & Ax = b\\
 \end{aligned}
 $$
@@ -137,11 +137,11 @@ $$
 \begin{aligned}
     \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\vartheta_{l, s} \\\\
     \text{s.t.} \ & Ax = b\\\\
-    & \vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\ , \quad \forall l \ , \forall s \ , \forall \pi_{l, s} \in \mathrm{extr}(F_{l, s})
+    & \vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\ , \quad \forall l \ , \forall s \ , \forall \pi_{l, s} \in \mathrm{extr}(F_{l, s})
 \end{aligned}
 $$
 
-The constraints of the form \\(\vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{s}x)\\) in the master problem are referred as _Benders cuts_ in the sequel.
+The constraints of the form \\(\vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\\) in the master problem are referred as _Benders cuts_ in the sequel.
 ### The Benders decomposition algorithm
 
 As the number of extreme points of \\(F_{l, s}\\) is often very large, the full Benders master problem has a large number of constraints, so it is difficult to work directly with.
@@ -153,14 +153,14 @@ This is why, the Benders decomposition algorithm proceeds iteratively:
 
     $$
     \begin{aligned}
-        \max_{\pi_{l, s} \in \Pi\_{l, s}} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{s}\bar{x})\\\\
+        \max_{\pi_{l, s} \in \Pi\_{l, s}} \ & \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\\\
         \text{s.t.} \ & W_{s}^{\top}\pi_{l, s} \geq g_{l, s}
     \end{aligned}
     $$
     
-    There are \\(52 N\\) satellite problems to solve. Let \\(\bar{\pi}\_{l, s}\\) the solution of the satellite problem for MC year \\(l\\) and week \\(s\\), so that its optimal objective value is \\(\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{s}\bar{x})\\).
+    There are \\(52 N\\) satellite problems to solve. Let \\(\bar{\pi}\_{l, s}\\) the solution of the satellite problem for MC year \\(l\\) and week \\(s\\), so that its optimal objective value is \\(\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\).
 
-3. For all \\(l\\), for all \\(s\\), add the cut \\(\vartheta_{l, s} \geq \bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{s}x)\\) to the master problem. There are \\(52 N\\) new cuts i.e. additional constraints to the master problem.
+3. For all \\(l\\), for all \\(s\\), add the cut \\(\vartheta_{l, s} \geq \bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\\) to the master problem. There are \\(52 N\\) new cuts i.e. additional constraints to the master problem.
 
 4. At iteration \\(k\\), the master problem is of the form:
 
@@ -168,7 +168,7 @@ $$
 \begin{aligned}
     \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\vartheta_{l, s} \\\\
     \text{s.t.} \ & Ax = b\\\\
-    & \vartheta_{l, s} \geq {{}\bar{\pi}\_{l, s}^{i}}^{\top} (d_{l, s} - T_{s}x)\ , \quad \forall l \ , \forall s \ , \forall i < k
+    & \vartheta_{l, s} \geq {{}\bar{\pi}\_{l, s}^{i}}^{\top} (d_{l, s} - T_{l, s}x)\ , \quad \forall l \ , \forall s \ , \forall i < k
 \end{aligned}
 $$
 
@@ -177,6 +177,6 @@ where \\({\bar{\pi}\_{l, s}^{i}}\\) is the solution of the satellite problem for
 In order to check convergence of the algorithm, an optimality gap is computed at each iteration:
 
 - The solution of the master problem is a lower bound of the optimal cost as it is a relaxation of the investment problem.
-- With a given investment level \\(\bar{x}\\), we get a feasible solution with a cost equal to the sum of the investment cost and of the optimal cost of the satellite problems: \\(c^{\top}\bar{x} + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{s}\bar{x})\\). This gives a valid upper bound for the investment problem.
+- With a given investment level \\(\bar{x}\\), we get a feasible solution with a cost equal to the sum of the investment cost and of the optimal cost of the satellite problems: \\(c^{\top}\bar{x} + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\). This gives a valid upper bound for the investment problem.
 
 The optimality gap is the difference (either absolute or relative) between the lower and the upper bound. The Benders decomposition algorithm stops when the optimality gap falls below a value specified by the user (or set by default), see [`optimality_gap`](../get-started/settings-definition.md#optimality_gap) and [`relative_gap`](../get-started/settings-definition.md#relative_gap).
