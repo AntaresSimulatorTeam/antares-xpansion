@@ -33,8 +33,8 @@ void SensitivityFileLogger::log_pb_solution(const SinglePbData& pb_data) {
 
 void SensitivityFileLogger::log_summary(
     const SensitivityInputData& input_data,
-    const SensitivityOutputData& output_data) {
-  _userLog->log_summary(input_data, output_data);
+    const std::vector<SinglePbData>& pbs_data) {
+  _userLog->log_summary(input_data, pbs_data);
 }
 
 void SensitivityFileLogger::log_at_ending() { _userLog->log_at_ending(); }

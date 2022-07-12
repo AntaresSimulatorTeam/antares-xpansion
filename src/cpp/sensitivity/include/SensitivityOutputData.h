@@ -64,10 +64,6 @@ struct SinglePbData {
   };
 };
 
-struct SensitivityOutputData {
-  std::vector<SinglePbData> pbs_data;
-};
-
 struct RawPbData {
   int status;
   double obj_value;

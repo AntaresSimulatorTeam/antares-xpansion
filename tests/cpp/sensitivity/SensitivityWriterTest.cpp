@@ -73,7 +73,7 @@ class SensitivityWriterTest : public ::testing::Test {
   }
 
   void verify_output_writing(const SensitivityInputData &input_data,
-                             const SensitivityOutputData &output_data,
+                             const std::vector<SinglePbData> &pbs_data,
                              Json::Value written_data) {
     EXPECT_EQ(input_data.epsilon, written_data[EPSILON_C].asDouble());
     EXPECT_EQ(input_data.best_ub,
@@ -82,7 +82,7 @@ class SensitivityWriterTest : public ::testing::Test {
     verify_bounds_writing(input_data.candidates_bounds,
                           written_data[BOUNDS_C]);
 
-    verify_pbs_data_writing(output_data.pbs_data,
+    verify_pbs_data_writing(pbs_data,
                             written_data[SENSITIVITY_SOLUTION_C]);
   }
 };
@@ -111,7 +111,7 @@ TEST_F(SensitivityWriterTest, EndWritingPrintsOutputData) {
   auto writer = SensitivityWriter(_fileName);
 
   SensitivityInputData input_data;
-  SensitivityOutputData output_data;
+  std::vector<SinglePbData> pbs_data;
   SinglePbData capex_min_data = {SensitivityPbType::CAPEX,
                                  CAPEX_C,
                                  "",
@@ -132,11 +132,11 @@ TEST_F(SensitivityWriterTest, EndWritingPrintsOutputData) {
   input_data.epsilon = 2;
   input_data.best_ub = 100;
   input_data.candidates_bounds = {{"my_cand", {12, 37}}, {"mock", {123, 456}}};
-  output_data.pbs_data = {capex_min_data, proj_max_data};
+  pbs_data = {capex_min_data, proj_max_data};
 
-  writer.end_writing(input_data, output_data);
+  writer.end_writing(input_data, pbs_data);
 
   Json::Value json_content = get_value_from_json(_fileName);
 
-  verify_output_writing(input_data, output_data, json_content);
+  verify_output_writing(input_data, pbs_data, json_content);
 }

@@ -12,9 +12,7 @@ SensitivityStudy::SensitivityStudy(SensitivityInputData input_data,
                                    std::shared_ptr<SensitivityWriter> writer)
     : logger(std::move(logger)),
       writer(std::move(writer)),
-      input_data(std::move(input_data)) {
-  init_output_data();
-}
+      input_data(std::move(input_data)) {}
 
 void SensitivityStudy::launch() {
   logger->log_at_start(input_data);
@@ -33,12 +31,8 @@ void SensitivityStudy::launch() {
   logger->log_at_ending();
 }
 
-SensitivityOutputData SensitivityStudy::get_output_data() const {
+std::vector<SinglePbData> SensitivityStudy::get_output_data() const {
   return output_data;
-}
-
-void SensitivityStudy::init_output_data() {
-  output_data.pbs_data = {};
 }
 
 void SensitivityStudy::run_capex_analysis() {
@@ -46,8 +40,8 @@ void SensitivityStudy::run_capex_analysis() {
   Analysis capex_analysis(input_data, "", logger, SensitivityPbType::CAPEX);
   std::pair<SinglePbData, SinglePbData> capex_data = capex_analysis.run();
 
-  output_data.pbs_data.push_back(capex_data.first);
-  output_data.pbs_data.push_back(capex_data.second);
+  output_data.push_back(capex_data.first);
+  output_data.push_back(capex_data.second);
 }
 
 void SensitivityStudy::run_projection_analysis() {
@@ -62,8 +56,8 @@ void SensitivityStudy::run_projection_analysis() {
                                        SensitivityPbType::PROJECTION);
           auto [minimizeSolution, maximizeSolution] = projection_analysis.run();
           std::lock_guard guard(m);
-          output_data.pbs_data.push_back(minimizeSolution);
-          output_data.pbs_data.push_back(maximizeSolution);
+          output_data.push_back(minimizeSolution);
+          output_data.push_back(maximizeSolution);
         } else {
           logger->display_message(
               "Warning: " + candidate_name +

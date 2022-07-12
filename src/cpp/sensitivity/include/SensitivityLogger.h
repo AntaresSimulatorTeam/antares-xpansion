@@ -21,7 +21,7 @@ class SensitivityLogger : public SensitivityILogger {
   //       const SensitivityOutputData &output_data) override;
   void log_pb_solution(const SinglePbData &pb_data) override;
   void log_summary(const SensitivityInputData &input_data,
-                   const SensitivityOutputData &output_data) override;
+                   const std::vector<SinglePbData> &pbs_data) override;
   void log_at_ending() override;
 
  private:

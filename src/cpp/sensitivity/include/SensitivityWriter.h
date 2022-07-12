@@ -35,5 +35,5 @@ class SensitivityWriter {
   ~SensitivityWriter() = default;
 
   void end_writing(const SensitivityInputData& input_data,
-                   const SensitivityOutputData& output_data) const;
+                   const std::vector<SinglePbData>& pbs_data) const;
 };

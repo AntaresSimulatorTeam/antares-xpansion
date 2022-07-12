@@ -63,7 +63,8 @@ void SensitivityLogger::log_at_ending() {
   _stream << "--- Sensitivity study completed ---" << std::endl;
 }
 
-void SensitivityLogger::log_summary(const SensitivityInputData& input_data, const SensitivityOutputData& output_data) {
+void SensitivityLogger::log_summary(const SensitivityInputData& input_data,
+                                    const std::vector<SinglePbData>& pbs_data) {
   _stream << std::endl
           << "--- Sensitivity analysis summary "
           << "(epsilon = " << input_data.epsilon << EUROS << ") ---"
@@ -72,7 +73,7 @@ void SensitivityLogger::log_summary(const SensitivityInputData& input_data, cons
   std::vector<SinglePbData> projection_data = {};
   std::vector<SinglePbData> capex_data = {};
 
-  for (const auto& pb_data : output_data.pbs_data) {
+  for (const auto& pb_data : pbs_data) {
     if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
       projection_data.push_back(pb_data);
     } else {

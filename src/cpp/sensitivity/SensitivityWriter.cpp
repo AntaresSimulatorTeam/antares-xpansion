@@ -60,7 +60,8 @@ Json::Value write_single_pb(const SinglePbData &single_pb_data) {
   return single_pb_data_l;
 }
 
-Json::Value write_sensitivity_data(const SensitivityInputData &input_data, const SensitivityOutputData &output_data) {
+Json::Value write_sensitivity_data(const SensitivityInputData &input_data,
+                                   const std::vector<SinglePbData> &pbs_data) {
   Json::Value output;
   output[ANTARES_C][VERSION_C] = ANTARES_VERSION_TAG;
   output[ANTARES_XPANSION_C][VERSION_C] = PROJECT_VER;
@@ -76,7 +77,7 @@ Json::Value write_sensitivity_data(const SensitivityInputData &input_data, const
     candidates_bounds_l.append(candidate_bounds_l);
   }
 
-  for (const auto &single_pb_data : output_data.pbs_data) {
+  for (const auto &single_pb_data : pbs_data) {
     Json::Value single_pb_data_l = write_single_pb(single_pb_data);
     pbs_data_l.append(single_pb_data_l);
   }
@@ -88,7 +89,7 @@ Json::Value write_sensitivity_data(const SensitivityInputData &input_data, const
 
 void SensitivityWriter::end_writing(
     const SensitivityInputData &input_data,
-    const SensitivityOutputData &output_data) const {
-  auto output = write_sensitivity_data(input_data, output_data);
+    const std::vector<SinglePbData> &pbs_data) const {
+  auto output = write_sensitivity_data(input_data, pbs_data);
   dump(output, _filename);
 }

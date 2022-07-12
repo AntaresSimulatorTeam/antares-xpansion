@@ -28,9 +28,9 @@ void SensitivityMasterLogger::log_pb_solution(const SinglePbData& pb_data) {
 
 void SensitivityMasterLogger::log_summary(
     const SensitivityInputData& input_data,
-    const SensitivityOutputData& output_data) {
+    const std::vector<SinglePbData>& pbs_data) {
   for (const auto& logger : _loggers) {
-    logger->log_summary(input_data, output_data);
+    logger->log_summary(input_data, pbs_data);
   }
 }
 

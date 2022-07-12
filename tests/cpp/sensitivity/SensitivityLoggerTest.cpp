@@ -162,6 +162,13 @@ TEST_F(SensitivityUserLoggerTest, LogAtEnding) {
 }
 
 TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyCapex) {
+  std::map<std::string, std::pair<double, double>> candidates_bounds = {
+      {peak_name, {0, 100}}, {semibase_name, {0, 200}}};
+
+  SensitivityInputData input_data = {
+      epsilon, best_benders_cost, 0,    {}, {}, nullptr,
+      "",      candidates_bounds, true, {}};
+
   auto capex_min_data =
       SinglePbData(SensitivityPbType::CAPEX, str_pb_type, "", MIN_C, 1040, 1390,
                    {{peak_name, 14}, {semibase_name, 10}}, 42);
@@ -171,13 +178,6 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyCapex) {
                    {{peak_name, 17}, {semibase_name, 11}}, 37);
 
   std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
-  std::map<std::string, std::pair<double, double>> candidates_bounds = {
-      {peak_name, {0, 100}}, {semibase_name, {0, 200}}};
-
-  SensitivityInputData input_data = {
-      epsilon, best_benders_cost, 0,    {}, {}, nullptr,
-      "",      candidates_bounds, true, {}};
-  SensitivityOutputData output_data = {pbs_data};
 
   std::stringstream expected;
   expected << std::endl
@@ -192,11 +192,18 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyCapex) {
            << MILLON_EUROS << std::endl
            << std::endl;
 
-  _logger.log_summary(input_data, output_data);
+  _logger.log_summary(input_data, pbs_data);
   EXPECT_EQ(_stream.str(), expected.str());
 }
 
 TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyProjection) {
+  std::map<std::string, std::pair<double, double>> candidates_bounds = {
+      {peak_name, {0, 100}}, {semibase_name, {0, 200}}};
+
+  SensitivityInputData input_data = {
+      epsilon, best_benders_cost, 0,    {}, {}, nullptr,
+      "",      candidates_bounds, true, {}};
+
   auto projection_min_peak =
       SinglePbData(SensitivityPbType::PROJECTION, str_pb_type, peak_name, MIN_C,
                    13, 1490, {{peak_name, 13}, {semibase_name, 11}}, 1);
@@ -216,14 +223,6 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyProjection) {
   std::vector<SinglePbData> pbs_data = {
       projection_min_peak, projection_max_peak, projection_min_semibase,
       projection_max_semibase};
-
-  std::map<std::string, std::pair<double, double>> candidates_bounds = {
-      {peak_name, {0, 100}}, {semibase_name, {0, 200}}};
-
-  SensitivityInputData input_data = {
-      epsilon, best_benders_cost, 0,    {}, {}, nullptr,
-      "",      candidates_bounds, true, {}};
-  SensitivityOutputData output_data = {pbs_data};
 
   std::stringstream expected;
   expected << std::endl
@@ -250,7 +249,7 @@ TEST_F(SensitivityUserLoggerTest, LogPbSummaryOnlyProjection) {
            << std::endl;
   expected << std::endl;
 
-  _logger.log_summary(input_data, output_data);
+  _logger.log_summary(input_data, pbs_data);
   EXPECT_EQ(_stream.str(), expected.str());
 }
 
@@ -289,7 +288,7 @@ class SensitivityLoggerMock : public SensitivityILogger {
   }
 
   void log_summary(const SensitivityInputData& input_data,
-                   const SensitivityOutputData& output_data) override {
+                   const std::vector<SinglePbData>& pbs_data) override {
     _summaryCall = true;
   }
 
@@ -339,8 +338,8 @@ TEST_F(SensitivityMasterLoggerTest, PbSolutionLog) {
 
 TEST_F(SensitivityMasterLoggerTest, SummaryLog) {
   SensitivityInputData input_data;
-  SensitivityOutputData output_data;
-  _master.log_summary(input_data, output_data);
+  std::vector<SinglePbData> pbs_data;
+  _master.log_summary(input_data, pbs_data);
   EXPECT_TRUE(_logger->_summaryCall);
   EXPECT_TRUE(_logger2->_summaryCall);
 }
