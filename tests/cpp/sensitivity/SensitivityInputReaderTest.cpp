@@ -31,6 +31,11 @@ class SensitivityInputReaderTest : public ::testing::Test {
                          const SensitivityInputData &expec_input_data) {
     EXPECT_EQ(input_data.epsilon, expec_input_data.epsilon);
     EXPECT_EQ(input_data.best_ub, expec_input_data.best_ub);
+    EXPECT_EQ(input_data.benders_capex, expec_input_data.benders_capex);
+    ASSERT_EQ(input_data.benders_solution.size(),
+              input_data.benders_solution.size());
+    EXPECT_EQ(input_data.benders_solution, expec_input_data.benders_solution);
+
     EXPECT_EQ(input_data.name_to_id, expec_input_data.name_to_id);
     EXPECT_EQ(input_data.candidates_bounds, expec_input_data.candidates_bounds);
     EXPECT_EQ(input_data.capex, expec_input_data.capex);
@@ -50,7 +55,9 @@ TEST_F(SensitivityInputReaderTest, GetInputData) {
   SensitivityInputData expec_input_data = {
       1e4,
       2200,
-      {{peak_name, 15}, {semibase_name, 32}},
+      1000,
+      {{peak_name, 15}, {semibase_name, 3}},
+      {{peak_name, 8}, {semibase_name, 32}},
       nullptr,
       basis_path,
       {{peak_name, {0, 3000}}, {semibase_name, {0, 400}}},

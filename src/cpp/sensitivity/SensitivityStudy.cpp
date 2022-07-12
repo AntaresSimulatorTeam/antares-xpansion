@@ -17,7 +17,7 @@ SensitivityStudy::SensitivityStudy(SensitivityInputData input_data,
 }
 
 void SensitivityStudy::launch() {
-  logger->log_at_start(output_data);
+  logger->log_at_start(input_data);
   if (input_data.capex) {
     run_capex_analysis();
   }
@@ -27,9 +27,9 @@ void SensitivityStudy::launch() {
   if (!input_data.capex && input_data.projection.empty()) {
     logger->display_message("Study is empty. No capex or projection provided.");
   } else {
-    logger->log_summary(output_data);
+    logger->log_summary(input_data, output_data);
   }
-  writer->end_writing(output_data);
+  writer->end_writing(input_data, output_data);
   logger->log_at_ending();
 }
 
@@ -38,9 +38,6 @@ SensitivityOutputData SensitivityStudy::get_output_data() const {
 }
 
 void SensitivityStudy::init_output_data() {
-  output_data.epsilon = input_data.epsilon;
-  output_data.best_benders_cost = input_data.best_ub;
-  output_data.candidates_bounds = input_data.candidates_bounds;
   output_data.pbs_data = {};
 }
 

@@ -4,6 +4,7 @@
 
 #include <filesystem>
 
+#include "SensitivityInputReader.h"
 #include "SensitivityOutputData.h"
 
 const std::string ANTARES_C("antares");
@@ -33,5 +34,6 @@ class SensitivityWriter {
   explicit SensitivityWriter(std::filesystem::path json_filename);
   ~SensitivityWriter() = default;
 
-  void end_writing(SensitivityOutputData const& output_data) const;
+  void end_writing(const SensitivityInputData& input_data,
+                   const SensitivityOutputData& output_data) const;
 };

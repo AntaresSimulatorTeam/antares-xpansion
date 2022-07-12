@@ -72,13 +72,14 @@ class SensitivityWriterTest : public ::testing::Test {
     }
   }
 
-  void verify_output_writing(const SensitivityOutputData &output_data,
+  void verify_output_writing(const SensitivityInputData &input_data,
+                             const SensitivityOutputData &output_data,
                              Json::Value written_data) {
-    EXPECT_EQ(output_data.epsilon, written_data[EPSILON_C].asDouble());
-    EXPECT_EQ(output_data.best_benders_cost,
+    EXPECT_EQ(input_data.epsilon, written_data[EPSILON_C].asDouble());
+    EXPECT_EQ(input_data.best_ub,
               written_data[BEST_BENDERS_C].asDouble());
 
-    verify_bounds_writing(output_data.candidates_bounds,
+    verify_bounds_writing(input_data.candidates_bounds,
                           written_data[BOUNDS_C]);
 
     verify_pbs_data_writing(output_data.pbs_data,
@@ -88,7 +89,7 @@ class SensitivityWriterTest : public ::testing::Test {
 
 TEST_F(SensitivityWriterTest, GenerateAValidFile) {
   auto writer = SensitivityWriter(_fileName);
-  writer.end_writing({});
+  writer.end_writing({}, {});
 
   std::ifstream fileStream(_fileName);
   fileStream.close();
@@ -109,6 +110,7 @@ Json::Value get_value_from_json(const std::filesystem::path &file_name) {
 TEST_F(SensitivityWriterTest, EndWritingPrintsOutputData) {
   auto writer = SensitivityWriter(_fileName);
 
+  SensitivityInputData input_data;
   SensitivityOutputData output_data;
   SinglePbData capex_min_data = {SensitivityPbType::CAPEX,
                                  CAPEX_C,
@@ -127,14 +129,14 @@ TEST_F(SensitivityWriterTest, EndWritingPrintsOutputData) {
                                 {{peak_name, 10}, {semibase_name, 25}},
                                 1};
 
-  output_data.epsilon = 2;
-  output_data.best_benders_cost = 100;
-  output_data.candidates_bounds = {{"my_cand", {12, 37}}, {"mock", {123, 456}}};
+  input_data.epsilon = 2;
+  input_data.best_ub = 100;
+  input_data.candidates_bounds = {{"my_cand", {12, 37}}, {"mock", {123, 456}}};
   output_data.pbs_data = {capex_min_data, proj_max_data};
 
-  writer.end_writing(output_data);
+  writer.end_writing(input_data, output_data);
 
   Json::Value json_content = get_value_from_json(_fileName);
 
-  verify_output_writing(output_data, json_content);
+  verify_output_writing(input_data, output_data, json_content);
 }

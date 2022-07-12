@@ -60,18 +60,18 @@ Json::Value write_single_pb(const SinglePbData &single_pb_data) {
   return single_pb_data_l;
 }
 
-Json::Value write_sensitivity_output(const SensitivityOutputData &output_data) {
+Json::Value write_sensitivity_data(const SensitivityInputData &input_data, const SensitivityOutputData &output_data) {
   Json::Value output;
   output[ANTARES_C][VERSION_C] = ANTARES_VERSION_TAG;
   output[ANTARES_XPANSION_C][VERSION_C] = PROJECT_VER;
 
-  output[EPSILON_C] = output_data.epsilon;
-  output[BEST_BENDERS_C] = output_data.best_benders_cost;
+  output[EPSILON_C] = input_data.epsilon;
+  output[BEST_BENDERS_C] = input_data.best_ub;
 
   Json::Value candidates_bounds_l(Json::arrayValue);
   Json::Value pbs_data_l(Json::arrayValue);
 
-  for (const auto &candidate_bounds : output_data.candidates_bounds) {
+  for (const auto &candidate_bounds : input_data.candidates_bounds) {
     Json::Value candidate_bounds_l = write_candidate_bounds(candidate_bounds);
     candidates_bounds_l.append(candidate_bounds_l);
   }
@@ -87,7 +87,8 @@ Json::Value write_sensitivity_output(const SensitivityOutputData &output_data) {
 }
 
 void SensitivityWriter::end_writing(
-    SensitivityOutputData const &output_data) const {
-  auto output = write_sensitivity_output(output_data);
+    const SensitivityInputData &input_data,
+    const SensitivityOutputData &output_data) const {
+  auto output = write_sensitivity_data(input_data, output_data);
   dump(output, _filename);
 }
