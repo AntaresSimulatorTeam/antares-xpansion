@@ -158,6 +158,8 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
       << prefix << indent_0 << indent_1
       << "candidate2 =  8.00 invested MW -- possible interval [ 3.00; 40.00] MW"
       << std::endl
+      << prefix << indent_1 << "Subproblems solved in " << l.subproblem_time
+      << " s" << std::endl
       << prefix << indent_0 << "Solution =" << std::endl
       << prefix << indent_0 << indent_1 << "Operational cost =       15.50 Me"
       << std::endl
