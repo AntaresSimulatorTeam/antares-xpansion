@@ -47,6 +47,7 @@ class WorkerMasterData {
   int _deleted_cut;
   int _nbasis;
   double _time;
+  double _subproblem_duration;
   PointPtr _x0;
   PointPtr _min_invest;
   PointPtr _max_invest;

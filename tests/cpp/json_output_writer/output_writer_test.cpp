@@ -81,11 +81,12 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintEndTimeAndSimuationResults) {
 const CandidateData c1 = {"c1", 55, 0.55, 555};
 const CandidateData c2 = {"c2", 66, 0.66, 666};
 const CandidatesVec cdVec = {c1, c2};
-const Iteration iter1 = {15, 1.2, 11, 12, 1e-10, 1e-12, 1, 17, 20, cdVec};
+const Iteration iter1 = {15, 1.5, 1.2, 11, 12, 1e-10, 1e-12, 1, 17, 20, cdVec};
 const CandidateData c3 = {"c3", 33, 0.33, 5553};
 const CandidateData c4 = {"c4", 656, 0.4566, 545666};
 const CandidatesVec cdVec2 = {c3, c4};
-const Iteration iter2 = {105, 12, 112, 212, 1e-1, 1e-10, 12, 67, 620, cdVec2};
+const Iteration iter2 = {105,   2.3, 12, 112, 212,   1e-1,
+                         1e-10, 12,  67, 620, cdVec2};
 
 void verify_iteration_in_json_content(const Iteration &iter,
                                       const Json::Value &json_content) {

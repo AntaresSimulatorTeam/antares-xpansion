@@ -73,6 +73,8 @@ void JsonWriter::write_iteration(const Iteration &iter,
   std::string strIterCnt_l(std::to_string(iteration_num));
 
   _output[ITERATIONS_C][strIterCnt_l][MASTER_DURATION_C] = iter.time;
+  _output[ITERATIONS_C][strIterCnt_l][SUBPROBLEM_DURATION_C] =
+      iter.subproblem_duration;
   _output[ITERATIONS_C][strIterCnt_l][LB_C] = iter.lb;
   _output[ITERATIONS_C][strIterCnt_l][UB_C] = iter.ub;
   _output[ITERATIONS_C][strIterCnt_l][BEST_UB_C] = iter.best_ub;
