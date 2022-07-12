@@ -30,7 +30,6 @@ class SensitivityStudy {
   SensitivityInputData input_data;
   std::vector<SinglePbData> output_data;
 
-  void init_output_data();
   void run_capex_analysis();
   void run_projection_analysis();
 

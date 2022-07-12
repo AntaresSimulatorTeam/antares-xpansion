@@ -17,8 +17,6 @@ class SensitivityLogger : public SensitivityILogger {
   void display_message(const std::string &msg) override;
   void log_at_start(const SensitivityInputData &input_data) override;
   void log_begin_pb_resolution(const SinglePbData &pb_data) override;
-  //   void log_benders_solution(
-  //       const SensitivityOutputData &output_data) override;
   void log_pb_solution(const SinglePbData &pb_data) override;
   void log_summary(const SensitivityInputData &input_data,
                    const std::vector<SinglePbData> &pbs_data) override;
@@ -26,6 +24,12 @@ class SensitivityLogger : public SensitivityILogger {
 
  private:
   std::ostream &_stream;
+
+  void log_benders_overall_cost(const double &best_ub);
+  void log_benders_capex(const double &best_capex);
+  void log_benders_solution(
+      const std::map<std::string, double> &benders_solution);
+  void log_epsilon(const double &epsilon);
 
   void log_projection_summary(
       const std::vector<SinglePbData> &projection_data,
