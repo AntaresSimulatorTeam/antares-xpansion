@@ -80,6 +80,7 @@ void User::restart_best_iterations_infos(const LogData &best_iteration_data) {
   _stream << indent_1 << "Best Iteration Infos: " << std::endl;
   log_master_solving_duration(best_iteration_data.master_time);
   log_iteration_candidates(best_iteration_data);
+  log_subproblems_solving_duration(best_iteration_data.subproblem_time);
   log_at_iteration_end(best_iteration_data);
 }
 }  // namespace logger

@@ -11,10 +11,10 @@ const LogPoint min_invest = {{"candidate1", 68.e6}, {"candidate2", 62e9}};
 const LogPoint max_invest = {{"candidate1", 1568.e6}, {"candidate2", 3682e9}};
 const LogData best_iteration_data = {
     15e5,       255e6,      200e6, 63,    63,   587e8, 8562e8, x0,
-    min_invest, max_invest, 9e9,   3e-15, 5876, 999,   898};
+    min_invest, max_invest, 9e9,   3e-15, 5876, 999,   898,    25};
 const LogData last_iteration_data = {
     1e5,        255e6,      200e6, 159,   63,   587e8, 8562e8, x0,
-    min_invest, max_invest, 9e9,   3e-15, 5876, 9999,  898};
+    min_invest, max_invest, 9e9,   3e-15, 5876, 9999,  898,    23};
 
 class LastIterationReaderTest : public ::testing::Test {
  public:

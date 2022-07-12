@@ -251,6 +251,7 @@ void BendersBase::update_trace() {
   _trace[_data.it - 1]->_min_invest = std::make_shared<Point>(_data.min_invest);
   _trace[_data.it - 1]->_deleted_cut = _data.deletedcut;
   _trace[_data.it - 1]->_time = _data.timer_master;
+  _trace[_data.it - 1]->_subproblem_duration = _data.subproblem_timers;
   _trace[_data.it - 1]->_nbasis = _data.nbasis;
   _trace[_data.it - 1]->_invest_cost = _data.invest_cost;
   _trace[_data.it - 1]->_operational_cost = _data.subproblem_cost;
@@ -535,6 +536,7 @@ Output::Iteration BendersBase::iteration(
     const WorkerMasterDataPtr &masterDataPtr_l) const {
   Output::Iteration iteration;
   iteration.time = masterDataPtr_l->_time;
+  iteration.subproblem_duration = masterDataPtr_l->_subproblem_duration;
   iteration.lb = masterDataPtr_l->_lb;
   iteration.ub = masterDataPtr_l->_ub;
   iteration.best_ub = masterDataPtr_l->_bestub;
@@ -587,6 +589,7 @@ Output::SolutionData BendersBase::solution() const {
         });
     solution_data.solution = {
         best_iteration_data.master_time,
+        best_iteration_data.subproblem_time,
         best_iteration_data.lb,
         best_iteration_data.ub,
         best_iteration_data.best_ub,
@@ -681,7 +684,8 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
           optimal_gap / data.best_ub,
           _options.MAX_ITERATIONS,
           data.elapsed_time,
-          data.timer_master};
+          data.timer_master,
+          data.subproblem_timers};
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_name) {
   _log_name = log_name;
