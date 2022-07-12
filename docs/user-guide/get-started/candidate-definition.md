@@ -30,9 +30,11 @@ by the following properties:
 - `already-installed-capacity`: capacity in MW that is
 already installed on the investment candidate's link,
 
-- `link-profile`: name of a file that links the invested capacity and the available capacity,
+- `direct-link-profile`: name of a file that links the invested capacity and the available capacity in a direct way,
+- `indirect-link-profile`: name of a file that links the invested capacity and the available capacity in an indirect way,
 
-- `already-installed-link-profile`: name of a file that links the already installed capacity and the available capacity.
+- `already-installed-direct-link-profile`: name of a file that links the already installed capacity and the available capacity for the direct way.
+- `already-installed-indirect-link-profile`: name of a file that links the already installed capacity and the available capacity for the indirect way.
 
 The format is a standard `.ini` and should follow this template:
 
@@ -115,14 +117,18 @@ initially indicated in the Antares study are not considered in the
 Antares-Xpansion.
 
 
-#### `link-profile`
+#### `[in]direct-link-profile`
 
 String, specifying the name of a file. This
 file must be located in the `user/expansion/capa/` directory of the
-Antares study. It must contain one or two columns of 8760 numerical
-values (the decimal separator is the point), see **Figure 5**. The `link-profile` makes the
+Antares study. It must contain at least one column of 8760 numerical
+values (the decimal separator is the point), see **Figure 5**. Multiple column are used when you want to use different data depending on the Montecarlo year in process.
+If you don't care about that you can use only one column, else see details [here](#Using-different-profile-depending-on-Montecarlo-year).
+Both files (direct and indirect) must contain the same number of column.
+
+The `link-profile` makes the
 link between the invested capacity and the capacity that is actually available,
-in the direct and indirect directions of the Antares link, for the 8760
+in the direct or indirect directions of the Antares link, for the 8760
 hours of the year. More details are given in [this section](#link-between-invested-capacity-and-capacity-of-the-antares-study).
 
 The `link-profile` can be used for example to represent
@@ -130,21 +136,22 @@ the maintenance of a generation asset via a seasonalized power outage,
 or the average load factor of intermittent renewable generation, defined
 at hourly intervals. 
 
-!!! Remark 
-    The `link-profile` is
-    deterministic: the same profile is used by Antares-Xpansion for
-    all Monte-Carlo years of the Antares study and all assessed capacities.
+The `link-profile` is deterministic. When only one column is specified the same profile is used by Antares-Xpansion for
+all Monte-Carlo years of the Antares study and all assessed capacities. To select a different link profile given a Monte-Carlo year
+refer to [this section](#Using-different-profile-depending-on-Montecarlo-year)
+
+Note: due to history and for simplicity we will often refer to direct and indirect link profiles as just `link profile`
 
 ![](../../assets/media/link_profile.PNG)
 
 **Figure 5** – Example of a file containing a load factor profile in
 the Antares-Xpansion format.
 
-#### `already-installed-link-profile`
+#### `already-installed-[in]direct-link-profile`
 
 String, specifying the name of a file. This
 file must be located in the `user/expansion/capa/` directory of the
-Antares study and has the same format as a `link-profile` file, see **Figure 5**. The `already-installed-link-profile` makes the link between the
+Antares study and has the same format as a `[in]direct-link-profile` file, see **Figure 5**. The `already-installed-link-profile` makes the link between the
 already installed capacity and the available capacity, in the
 direct and indirect way of the Antares link, for the 8760 hours of the
 year. More details are given in [this section](#link-between-invested-capacity-and-capacity-of-the-antares-study).
@@ -208,6 +215,21 @@ process by relaunching an Antares simulation with the capacities
 obtained by Antares-Xpansion in order to obtain the real production
 program with outages and RES intermittence varying according to the
 scenarios.
+
+## Using different profile depending on Monte-Carlo year
+From Antares_Simulator 8.2, users can define different NTC chronicles for different Monte-Carlo years. Briefly, users defines any number
+of chronicles for each link. For each link users can select or define randomness to select one 
+of the said chronicles in a result we call "scenario"
+(more information in antares simulator documentation). In Antares Xpansion it is possible to use 
+those scenarios to select different link profiles for a given Monte-Carlo year. There are a few pre-requisite:
+1) On a candidate, direct and indirect link profiles must have the same number of columns
+2) The same rule applies for already installed direct and indirect profiles
+3) The number of columns in link profile and already installed profiles must be the same
+4) The number of columns for NTC chronicles on a given link must be the same as the number of columns
+in a link profile and installed profile for candidates on this link. Note: in Antares Xpansion we don't use
+the content of NTC chronicles. Those data may therefore be the same as a link profile.
+5) It is possible to not provide a link profile or already installed profile. A profile with a value of 1 is used
+whichever Monte-Carlo year is chosen
 
 ## Examples of candidates
 

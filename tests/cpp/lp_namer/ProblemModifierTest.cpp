@@ -7,6 +7,7 @@
 #include <fstream>
 
 #include "gtest/gtest.h"
+#include "Problem.h"
 
 const std::string P_LINK = "p_link";
 const std::string P_PLUS = "p_plus";
@@ -17,7 +18,7 @@ const double MINUS_INF = -1e20;
 
 class ProblemModifierTest : public ::testing::Test {
  public:
-  SolverAbstract::Ptr math_problem;
+  std::shared_ptr<Problem> math_problem;
   int n_cols = -1;
   int n_rows = -1;
   int n_elems = -1;
@@ -36,7 +37,7 @@ class ProblemModifierTest : public ::testing::Test {
   void SetUp() {
     std::string solver_name = "CBC";
     SolverFactory factory;
-    math_problem = factory.create_solver(solver_name);
+    math_problem = std::make_shared<Problem>(factory.create_solver(solver_name));
 
     // Add NTC variable column
     {
@@ -254,8 +255,8 @@ TEST_F(ProblemModifierTest,
       {link_id, {{{1, 0}}}}};
   const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
       {link_id, {{{2, 0}}}}};
-  const std::vector<ActiveLink> active_links = {
-      ActiveLink(link_id, "dummy_link", "from", "to", 0)};
+  ActiveLink link(link_id, "dummy_link", "from", "to", 0);
+  const std::vector<ActiveLink> active_links = { link };
 
   auto problem_modifier = ProblemModifier();
   math_problem = problem_modifier.changeProblem(
@@ -299,7 +300,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
   cand2.already_installed_capacity = link_capacity;
 
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -359,7 +360,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_no_profile) {
   cand2.already_installed_capacity = link_capacity;
 
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -419,30 +420,32 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
   cand1.name = "candy1";
   cand1.link_name = "dummy_link";
   cand1.already_installed_capacity = link_capacity;
-  cand1.installed_link_profile_name = "install_link_profile";
-  cand1.link_profile = "profile_cand1";
+  cand1.installed_direct_link_profile_name = "install_link_profile";
+  cand1.direct_link_profile = "profile_cand1";
+  cand1.indirect_link_profile = "profile_cand1";
   CandidateData cand2;
   cand2.link_id = link_id;
   cand2.name = "candy2";
   cand2.link_name = "dummy_link";
   cand2.already_installed_capacity = link_capacity;
-  cand2.installed_link_profile_name = "install_link_profile";
-  cand2.link_profile = "profile_cand2";
+  cand2.installed_direct_link_profile_name = "install_link_profile";
+  cand2.direct_link_profile = "profile_cand2";
+  cand2.indirect_link_profile = "profile_cand2";
 
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
   LinkProfile profile_link;
-  profile_link._directLinkProfile = {1, 2};
-  profile_link._indirectLinkProfile = {3, 4};
-  profile_map["install_link_profile"] = profile_link;
+  profile_link.direct_link_profile = {1, 2};
+  profile_link.indirect_link_profile = {3, 4};
+  profile_map["install_link_profile"] = {profile_link};
   LinkProfile profile_cand1;
-  profile_cand1._directLinkProfile = {0.5, 1};
-  profile_cand1._indirectLinkProfile = {0.8, 1.2};
-  profile_map["profile_cand1"] = profile_cand1;
+  profile_cand1.direct_link_profile = {0.5, 1};
+  profile_cand1.indirect_link_profile = {0.8, 1.2};
+  profile_map["profile_cand1"] = {profile_cand1};
   LinkProfile profile_cand2;
-  profile_cand2._directLinkProfile = {1.5, 1.7};
-  profile_cand2._indirectLinkProfile = {2.6, 2.8};
-  profile_map["profile_cand2"] = profile_cand2;
+  profile_cand2.direct_link_profile = {1.5, 1.7};
+  profile_cand2.indirect_link_profile = {2.6, 2.8};
+  profile_map["profile_cand2"] = {profile_cand2};
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -533,30 +536,32 @@ TEST_F(ProblemModifierTest,
   cand1.name = "candy1";
   cand1.link_name = "dummy_link";
   cand1.already_installed_capacity = link_capacity;
-  cand1.installed_link_profile_name = "install_link_profile";
-  cand1.link_profile = "profile_cand1";
+  cand1.installed_direct_link_profile_name = "install_link_profile";
+  cand1.direct_link_profile = "profile_cand1";
+  cand1.indirect_link_profile = "profile_cand1";
   CandidateData cand2;
   cand2.link_id = link_id;
   cand2.name = "candy2";
   cand2.link_name = "dummy_link";
   cand2.already_installed_capacity = link_capacity;
-  cand2.installed_link_profile_name = "install_link_profile";
-  cand2.link_profile = "empty_profile";
+  cand2.installed_direct_link_profile_name = "install_link_profile";
+  cand2.direct_link_profile = "empty_profile";
+  cand2.indirect_link_profile = "empty_profile";
 
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
-  std::map<std::string, LinkProfile> profile_map;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
   LinkProfile profile_link;
-  profile_link._directLinkProfile = {1, 2};
-  profile_link._indirectLinkProfile = {3, 4};
-  profile_map["install_link_profile"] = profile_link;
+  profile_link.direct_link_profile = {1, 2};
+  profile_link.indirect_link_profile = {3, 4};
+  profile_map["install_link_profile"] = {profile_link};
   LinkProfile profile_cand1;
-  profile_cand1._directLinkProfile = {0.5, 1};
-  profile_cand1._indirectLinkProfile = {0.8, 1.2};
-  profile_map["profile_cand1"] = profile_cand1;
+  profile_cand1.direct_link_profile = {0.5, 1};
+  profile_cand1.indirect_link_profile = {0.8, 1.2};
+  profile_map["profile_cand1"] = {profile_cand1};
   LinkProfile empty_profile;
-  empty_profile._directLinkProfile = {0.0, 0.0};
-  empty_profile._indirectLinkProfile = {0.0, 0.0};
-  profile_map["empty_profile"] = empty_profile;
+  empty_profile.direct_link_profile = {0.0, 0.0};
+  empty_profile.indirect_link_profile = {0.0, 0.0};
+  profile_map["empty_profile"] = {empty_profile};
 
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
@@ -611,4 +616,432 @@ TEST_F(ProblemModifierTest,
   verify_row(7, 'L', {1, -profile_cand1.getIndirectProfile(1)},
              {P_MINUS_id, cand1_id},
              link_capacity * profile_link.getIndirectProfile(1));
+}
+
+TEST_F(ProblemModifierTest, candidateWithNotNullProfileExists) {
+  const int link_id = 0;
+  const std::map<linkId, ColumnsToChange> p_var_columns = {
+      {link_id, {{0, 0}, {0, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{1, 0}, {1, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{{2, 0}, {2, 1}}}}};
+
+  const double link_capacity = 2000.0;
+  CandidateData cand1;
+  cand1.link_id = link_id;
+  cand1.name = "candy1";
+  cand1.link_name = "dummy_link";
+  cand1.already_installed_capacity = link_capacity;
+  cand1.installed_direct_link_profile_name = "install_link_profile";
+  cand1.direct_link_profile = "profile_cand1";
+  cand1.indirect_link_profile = "profile_cand1";
+
+  std::vector<CandidateData> cand_data_list = {cand1};
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
+  LinkProfile profile_link;
+  profile_link.direct_link_profile = {1, 2};
+  profile_link.indirect_link_profile = {3, 4};
+  profile_map["install_link_profile"] = {profile_link};
+  LinkProfile profile_cand1;
+  profile_cand1.direct_link_profile = {0.5, 1};
+  profile_cand1.indirect_link_profile = {0.8, 1.2};
+  profile_map["profile_cand1"] = {profile_cand1};
+
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+
+  auto problem_modifier = ProblemModifier();
+  math_problem = problem_modifier.changeProblem(
+      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+
+  const int cand1_id = 3;
+
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name), cand1_id);
+}
+TEST_F(ProblemModifierTest, candidateWithNullProfileIsRemoved) {
+  const int link_id = 0;
+  const std::map<linkId, ColumnsToChange> p_var_columns = {
+      {link_id, {{0, 0}, {0, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{1, 0}, {1, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{{2, 0}, {2, 1}}}}};
+
+  const double link_capacity = 2000.0;
+  CandidateData cand1;
+  cand1.link_id = link_id;
+  cand1.name = "candy1";
+  cand1.link_name = "dummy_link";
+  cand1.already_installed_capacity = link_capacity;
+  cand1.installed_direct_link_profile_name = "install_link_profile";
+  cand1.direct_link_profile = "profile_cand1";
+  cand1.indirect_link_profile = "profile_cand1";
+
+  std::vector<CandidateData> cand_data_list = {cand1};
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
+  LinkProfile profile_link;
+  profile_link.direct_link_profile = {0, 0};
+  profile_link.indirect_link_profile = {0, 0};
+  profile_map["install_link_profile"] = {profile_link};
+  LinkProfile profile_cand1;
+  profile_cand1.direct_link_profile = {0, 0};
+  profile_cand1.indirect_link_profile = {0, 0};
+  profile_map["profile_cand1"] = {profile_cand1};
+
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  const std::vector<ActiveLink>& links = linkBuilder.getLinks();
+
+  auto problem_modifier = ProblemModifier();
+  math_problem = problem_modifier.changeProblem(
+      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+
+  const int cand1_id = -1;
+
+  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name), std::runtime_error);
+}
+
+class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
+ protected:
+  void SetUp() override {
+    ProblemModifierTest::SetUp();
+
+    cand1.link_id = link_id;
+    cand1.name = "candy1";
+    cand1.link_name = "dummy_link";
+    cand1.already_installed_capacity = link_capacity;
+    cand1.installed_direct_link_profile_name = "install_link_profile";
+    cand1.direct_link_profile = "profile_cand1";
+    cand1.indirect_link_profile = "profile_cand1";
+    cand1.linkor = "A";
+    cand1.linkex = "B";
+
+    cand2.link_id = link_id;
+    cand2.name = "candy2";
+    cand2.link_name = "dummy_link";
+    cand2.already_installed_capacity = link_capacity;
+    cand2.installed_direct_link_profile_name = "install_link_profile";
+    cand2.direct_link_profile = "profile_cand2";
+    cand2.indirect_link_profile = "profile_cand2";
+    cand2.linkor = "C";
+    cand2.linkex = "D";
+
+    std::vector<CandidateData> cand_data_list = {cand1, cand2};
+    std::map<std::string, std::vector<LinkProfile>> profile_map;
+    profile_link.direct_link_profile = {1, 2};
+    profile_link.indirect_link_profile = {3, 4};
+    profile_map["install_link_profile"] = {profile_link};
+    profile_cand1.direct_link_profile = {0.5, 1};
+    profile_cand1.indirect_link_profile = {0.8, 1.2};
+    profile_cand1_2.direct_link_profile = {5, 10};
+    profile_cand1_2.indirect_link_profile = {8, 12};
+    profile_map["profile_cand1"] = {profile_cand1, profile_cand1_2};
+    profile_cand2.direct_link_profile = {1.5, 1.7};
+    profile_cand2.indirect_link_profile = {2.6, 2.8};
+    profile_cand2_2.direct_link_profile = {15, 17};
+    profile_cand2_2.indirect_link_profile = {26, 28};
+    profile_map["profile_cand2"] = {profile_cand2, profile_cand2_2};
+
+
+    std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+    std::filesystem::create_directories(ts_info_root_ / "A");
+    std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
+    b_file << "Garbage\n1\n2\n"; //Use link profile 1 for MCY1 and link profile 2 for MCY2
+    b_file.close();
+
+    std::ofstream D_file(ts_info_root_ / "C"/"D.txt");
+    D_file << "Garbage\n1\n1\n";
+    D_file.close();
+
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+    links = linkBuilder.getLinks();
+  }
+
+ protected:
+  std::vector<ActiveLink> links;
+  const unsigned int link_id = 0;
+  const std::map<linkId, ColumnsToChange> p_var_columns = {
+      {link_id, {{0, 0}, {0, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{1, 0}, {1, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{{2, 0}, {2, 1}}}}};
+  CandidateData cand1, cand2;
+  const double link_capacity = 2000.0;
+  LinkProfile profile_link, profile_cand1, profile_cand1_2, profile_cand2, profile_cand2_2;
+};
+
+TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseNothing) {
+  auto problem_modifier = ProblemModifier();
+  math_problem = problem_modifier.changeProblem(
+      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+
+  const int P_LINK_id = 0;
+  const int P_PLUS_id = 1;
+  const int P_MINUS_id = 2;
+  const int cand1_id = 3;
+  const int cand2_id = 4;
+
+  verify_column(P_LINK_id, P_LINK, 'C', 1, MINUS_INF, PLUS_INF);
+  verify_column(P_PLUS_id, P_PLUS, 'C', 1, 0, PLUS_INF);
+  verify_column(P_MINUS_id, P_MINUS, 'C', 1, 0, PLUS_INF);
+  verify_column(cand1_id, cand1.name, 'C', 0, MINUS_INF, PLUS_INF);
+  verify_column(cand2_id, cand2.name, 'C', 0, MINUS_INF, PLUS_INF);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name), cand1_id);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name), cand2_id);
+
+  verify_rows_are(8);
+
+  verify_row(0, 'L',
+             {1, -profile_cand1.getDirectProfile(0),
+              -profile_cand2.getDirectProfile(0)},
+             {P_LINK_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(0));
+
+  verify_row(1, 'G',
+             {1, profile_cand1.getIndirectProfile(0),
+              profile_cand2.getIndirectProfile(0)},
+             {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity * profile_link.getIndirectProfile(0));
+
+  verify_row(2, 'L',
+             {1, -profile_cand1.getDirectProfile(1),
+              -profile_cand2.getDirectProfile(1)},
+             {P_LINK_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(1));
+
+  verify_row(3, 'G',
+             {1, profile_cand1.getIndirectProfile(1),
+              profile_cand2.getIndirectProfile(1)},
+             {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity * profile_link.getIndirectProfile(1));
+
+  verify_row(4, 'L',
+             {1, -profile_cand1.getDirectProfile(0),
+              -profile_cand2.getDirectProfile(0)},
+             {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(0));
+
+  verify_row(5, 'L',
+             {1, -profile_cand1.getDirectProfile(1),
+              -profile_cand2.getDirectProfile(1)},
+             {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(1));
+
+  verify_row(6, 'L',
+             {1, -profile_cand1.getIndirectProfile(0),
+              -profile_cand2.getIndirectProfile(0)},
+             {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getIndirectProfile(0));
+
+  verify_row(7, 'L',
+             {1, -profile_cand1.getIndirectProfile(1),
+              -profile_cand2.getIndirectProfile(1)},
+             {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getIndirectProfile(1));
+}
+TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseChronicle2forYear2) {
+  auto problem_modifier = ProblemModifier();
+  math_problem->mc_year = 2;
+  math_problem = problem_modifier.changeProblem(
+      math_problem, links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+
+  const int P_LINK_id = 0;
+  const int P_PLUS_id = 1;
+  const int P_MINUS_id = 2;
+  const int cand1_id = 3;
+  const int cand2_id = 4;
+
+  verify_column(P_LINK_id, P_LINK, 'C', 1, MINUS_INF, PLUS_INF);
+  verify_column(P_PLUS_id, P_PLUS, 'C', 1, 0, PLUS_INF);
+  verify_column(P_MINUS_id, P_MINUS, 'C', 1, 0, PLUS_INF);
+  verify_column(cand1_id, cand1.name, 'C', 0, MINUS_INF, PLUS_INF);
+  verify_column(cand2_id, cand2.name, 'C', 0, MINUS_INF, PLUS_INF);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand1.name), cand1_id);
+  ASSERT_EQ(problem_modifier.get_candidate_col_id(cand2.name), cand2_id);
+
+  verify_rows_are(8);
+
+  verify_row(0, 'L',
+             {1, -profile_cand1_2.getDirectProfile(0),
+              -profile_cand2_2.getDirectProfile(0)},
+             {P_LINK_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(0));
+
+  verify_row(1, 'G',
+             {1, profile_cand1_2.getIndirectProfile(0),
+              profile_cand2_2.getIndirectProfile(0)},
+             {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity * profile_link.getIndirectProfile(0));
+
+  verify_row(2, 'L',
+             {1, -profile_cand1_2.getDirectProfile(1),
+              -profile_cand2_2.getDirectProfile(1)},
+             {P_LINK_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(1));
+
+  verify_row(3, 'G',
+             {1, profile_cand1_2.getIndirectProfile(1),
+              profile_cand2_2.getIndirectProfile(1)},
+             {P_LINK_id, cand1_id, cand2_id},
+             -link_capacity * profile_link.getIndirectProfile(1));
+
+  verify_row(4, 'L',
+             {1, -profile_cand1_2.getDirectProfile(0),
+              -profile_cand2_2.getDirectProfile(0)},
+             {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(0));
+
+  verify_row(5, 'L',
+             {1, -profile_cand1_2.getDirectProfile(1),
+              -profile_cand2_2.getDirectProfile(1)},
+             {P_PLUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getDirectProfile(1));
+
+  verify_row(6, 'L',
+             {1, -profile_cand1_2.getIndirectProfile(0),
+              -profile_cand2_2.getIndirectProfile(0)},
+             {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getIndirectProfile(0));
+
+  verify_row(7, 'L',
+             {1, -profile_cand1_2.getIndirectProfile(1),
+              -profile_cand2_2.getIndirectProfile(1)},
+             {P_MINUS_id, cand1_id, cand2_id},
+             link_capacity * profile_link.getIndirectProfile(1));
+}
+TEST_F(ProblemModifierTestMultiChronicle, candidateWithNotNullProfileExists) {
+  auto problem_modifier = ProblemModifier();
+  math_problem->mc_year = 2;
+  math_problem = problem_modifier.changeProblem(
+      math_problem, links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+
+  const int cand1_id = 3;
+
+  ASSERT_TRUE(problem_modifier.has_candidate_col_id(cand1.name));
+}
+
+class ProblemModifierTestWithProfile: public ProblemModifierTest
+{
+ protected:
+  void SetUp() override {
+    ProblemModifierTest::SetUp();
+
+    const double link_capacity = 2000.0;
+
+    cand1.link_id = link_id;
+    cand1.name = "candidate";
+    cand1.link_name = "dummy_link";
+    cand1.already_installed_capacity = link_capacity;
+    cand1.direct_link_profile = "chronicle_1";
+    cand1.indirect_link_profile = "chronicle_1";
+    cand1.linkor = "A";
+    cand1.linkex = "B";
+
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+    links = linkBuilder.getLinks();
+
+    math_problem->mc_year = 2;
+  }
+
+  ProblemModifier problem_modifier = ProblemModifier();
+  std::vector<ActiveLink> links;
+  CandidateData cand1;
+
+  const unsigned int link_id = 0;
+  const std::map<linkId, ColumnsToChange> p_var_columns = {
+      {link_id, {{0, 0}, {0, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_direct_cost_columns = {
+      {link_id, {{1, 0}, {1, 1}}}};
+  const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
+      {link_id, {{{2, 0}, {2, 1}}}}};
+
+  LinkProfile installed_profile, chronicle_1, chronicle_2;
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
+  std::vector<CandidateData> cand_data_list = {cand1};
+  std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+
+};
+
+TEST_F(ProblemModifierTestWithProfile, candidateWithNullProfileIsRemovedMultipleChronicle) {
+  cand1.installed_direct_link_profile_name = "install_link_profile";
+  installed_profile.direct_link_profile = {0, 0};
+  installed_profile.indirect_link_profile = {0, 0};
+  profile_map["install_link_profile"] = {installed_profile};
+  chronicle_1.direct_link_profile = {0, 0};
+  chronicle_1.indirect_link_profile = {0, 0};
+  chronicle_2.direct_link_profile = {0, 0};
+  chronicle_2.indirect_link_profile = {0, 0};
+  profile_map["chronicle_1"] = {chronicle_1, chronicle_2};
+
+  std::filesystem::create_directories(ts_info_root_ / "A");
+  std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
+  b_file << "Garbage\n1\n2\n"; //Use link profile 1 for MCY1 and link profile 2 for MCY2
+  b_file.close();
+
+  cand_data_list = {cand1};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+  links = linkBuilder.getLinks();
+
+  math_problem = problem_modifier.changeProblem(
+      math_problem, links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+
+  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name), std::runtime_error);
+}
+TEST_F(ProblemModifierTestWithProfile, CandidateWithNotNullChronicleButOTherwiseNullProfileExists) {
+  std::vector<CandidateData> cand_data_list = {cand1};
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
+  chronicle_1.direct_link_profile = {0, 0};
+  chronicle_1.indirect_link_profile = {0, 0};
+  chronicle_2.direct_link_profile = {0, 1};
+  chronicle_2.indirect_link_profile = {0, 1};
+  profile_map["chronicle_1"] = {chronicle_1, chronicle_2};
+
+
+  std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  std::filesystem::create_directories(ts_info_root_ / "A");
+  std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
+  b_file << "Garbage\n1\n2\n"; //Use link profile 1 for MCY1 and link profile 2 for MCY2
+  b_file.close();
+
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+  links = linkBuilder.getLinks();
+
+  math_problem = problem_modifier.changeProblem(
+      math_problem, links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+
+  ASSERT_TRUE(problem_modifier.has_candidate_col_id(cand1.name));
+}
+TEST_F(ProblemModifierTestWithProfile, CandidatesWithNullSelectedChronicleIsRemoved) {
+
+  std::vector<CandidateData> cand_data_list = {cand1};
+  std::map<std::string, std::vector<LinkProfile>> profile_map;
+  chronicle_1.direct_link_profile = {1, 1};
+  chronicle_1.indirect_link_profile = {1, 1};
+  chronicle_2.direct_link_profile = {0, 0};
+  chronicle_2.indirect_link_profile = {0, 0};
+  profile_map["chronicle_1"] = {chronicle_1, chronicle_2};
+
+
+  std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  std::filesystem::create_directories(ts_info_root_ / "A");
+  std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
+  b_file << "Garbage\n2\n2\n"; //Use chronicle 2. Chronicle 1 is never used. Chronicle 2 is empty
+  b_file.close();
+
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+  links = linkBuilder.getLinks();
+
+  math_problem = problem_modifier.changeProblem(
+      math_problem, links, p_var_columns, p_direct_cost_columns,
+      p_indirect_cost_columns);
+
+  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name), std::runtime_error);
 }

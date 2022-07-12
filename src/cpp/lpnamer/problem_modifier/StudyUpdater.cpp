@@ -1,125 +1,32 @@
 #include "StudyUpdater.h"
 
+#include <utility>
+
 #include "JsonXpansionReader.h"
-#include "common_lpnamer.h"
+#include "StudyUpdateLinkCapacitiesStrategy.h"
+#include "StudyUpdateLinkParameterStrategy.h"
+#include "StudyUpdateStrategy.h"
 
-std::filesystem::path StudyUpdater::linksSubfolder_ =
-    std::filesystem::path("input") / "links";
+constexpr int ANTARES_VERSION_CAPACITIES_IN_INDIVIDUAL_FILES = 820;
 
-StudyUpdater::StudyUpdater(const std::filesystem::path& studyPath_p)
-    : studyPath_(studyPath_p) {
-  linksPath_ = studyPath_ / linksSubfolder_;
-  readAntaresVersion();
-}
 
-int StudyUpdater::getAntaresVersion() const { return antaresVersion_; }
-
-void StudyUpdater::readAntaresVersion() {
-  std::ifstream studyFile_l(studyPath_ / STUDY_FILE);
-  std::string line_l;
-  const std::string versionProperty_l("version = ");
-
-  while (std::getline(studyFile_l, line_l)) {
-    size_t pos_l = line_l.find(versionProperty_l);
-    if (pos_l != std::string::npos) {
-      std::stringstream buffer(line_l.substr(pos_l + versionProperty_l.size()));
-      buffer >> antaresVersion_;
-      return;
-    }
-  }
-
-  // default
-  std::cout
-      << "StudyUpdater::readAntaresVersion : default version 710 returned.\n";
-  antaresVersion_ = 710;
-}
-
-std::filesystem::path StudyUpdater::getLinkdataFilepath(
-    ActiveLink const& link_p) const {
-  return linksPath_ / link_p.get_linkor() / (link_p.get_linkex() + ".txt");
-}
-
-std::pair<double, double> StudyUpdater::computeNewCapacities(
-    const std::map<std::string, double>& investments_p,
-    const ActiveLink& link_p, int timepoint_p) const {
-  double direct_l = link_p.get_already_installed_capacity() *
-                    link_p.already_installed_direct_profile(timepoint_p);
-  double indirect_l = link_p.get_already_installed_capacity() *
-                      link_p.already_installed_direct_profile(timepoint_p);
-
-  const auto& candidates = link_p.getCandidates();
-  for (const auto& candidate : candidates) {
-    const auto& it_candidate = investments_p.find(candidate.get_name());
-    if (it_candidate == investments_p.end()) {
-      std::string message = "No investment computed for the candidate " +
-                            candidate.get_name() + " on the link " +
-                            link_p.get_LinkName();
-      throw std::runtime_error(message);
-    }
-    double candidate_investment = it_candidate->second;
-
-    direct_l += candidate_investment * candidate.direct_profile(timepoint_p);
-    indirect_l +=
-        candidate_investment * candidate.indirect_profile(timepoint_p);
-  }
-  return std::make_pair(direct_l, indirect_l);
+StudyUpdater::StudyUpdater(
+    std::filesystem::path  studyPath_p,
+    const AntaresVersionProvider& antares_version_provider)
+    : studyPath_(std::move(studyPath_p)) {
+  antaresVersion_ = antares_version_provider.getAntaresVersion(studyPath_);
 }
 
 int StudyUpdater::updateLinkdataFile(
     const ActiveLink& link_p,
     const std::map<std::string, double>& investments_p) const {
-  auto linkdataFilename_l = getLinkdataFilepath(link_p);
-
-  std::ifstream inputCsv_l(linkdataFilename_l);
-  std::ofstream tempOutCsvFile(linkdataFilename_l.string() + ".tmp");
-
-  if (!tempOutCsvFile.is_open()) {
-    std::cout << "ERROR: Error writing " + linkdataFilename_l.string() + "."
-              << std::endl;
-    return 1;
+  if (antaresVersion_ >= ANTARES_VERSION_CAPACITIES_IN_INDIVIDUAL_FILES) {
+    StudyUpdateLinkCapacitiesStrategy study_update(studyPath_);
+    return study_update.Update(link_p, investments_p);
+  } else {
+    StudyUpdateLinkParameterStrategy study_update(studyPath_);
+    return study_update.Update(link_p, investments_p);
   }
-
-  bool warned_l = false;
-  if (!inputCsv_l.is_open()) {
-    std::cout << "WARNING: Missing file to update antares study : "
-              << linkdataFilename_l << "."
-              << " Unknown valus were populated with 0 in a new created file."
-              << std::endl;
-    warned_l = true;
-  }
-
-  bool isModernVersion_l = (antaresVersion_ >= 700);
-  LinkdataRecord record_l(isModernVersion_l);  // csv file fields
-
-  std::string line_l;
-  for (int line_cnt = 0; line_cnt < 8760; ++line_cnt) {
-    if (std::getline(inputCsv_l, line_l)) {
-      record_l.fillFromRow(line_l);
-    } else {
-      record_l.reset();
-      if (!warned_l) {
-        std::cout << "WARNING: Missing entries in : " +
-                         linkdataFilename_l.string() +
-                         ". Missing valus were populated with 0."
-                  << std::endl;
-        warned_l = true;
-      }
-    }
-    std::pair<double, double> newCapacities_l =
-        computeNewCapacities(investments_p, link_p, line_cnt);
-    record_l.updateCapacities(newCapacities_l.first, newCapacities_l.second);
-    tempOutCsvFile << record_l.to_row("\t") << "\n";
-  }
-
-  inputCsv_l.close();
-  tempOutCsvFile.close();
-
-  // delete old file and rename the temporarily created file
-  std::remove(linkdataFilename_l.string().c_str());
-  std::rename((linkdataFilename_l.string() + ".tmp").c_str(),
-              linkdataFilename_l.string().c_str());
-
-  return 0;
 }
 
 int StudyUpdater::update(std::vector<ActiveLink> const& links_p,
@@ -143,3 +50,4 @@ int StudyUpdater::update(
 
   return updateFailures_l;
 }
+

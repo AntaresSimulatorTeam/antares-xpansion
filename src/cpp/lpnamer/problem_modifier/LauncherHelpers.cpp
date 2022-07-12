@@ -121,6 +121,7 @@ void addBinaryVariables(
 ActiveLinksBuilder get_link_builders(const std::filesystem::path &root) {
   const auto area_file_name = root / "area.txt";
   const auto interco_file_name = root / "interco.txt";
+  const auto ts_root  = root / "ts-numbers/ntc";
 
   CandidatesINIReader candidateReader(interco_file_name, area_file_name);
 
@@ -135,5 +136,5 @@ ActiveLinksBuilder get_link_builders(const std::filesystem::path &root) {
   const auto &mapLinkProfile =
       LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
 
-  return ActiveLinksBuilder(candidatesDatas, mapLinkProfile);
+  return ActiveLinksBuilder(candidatesDatas, mapLinkProfile, DirectAccessScenarioToChronicleProvider(ts_root));
 }

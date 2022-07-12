@@ -25,7 +25,7 @@ void updateStudy(const std::filesystem::path &rootPath_p,
                  std::string const &jsonPath_l) {
   auto linksPath_l = rootPath_p / ".." / "..";
 
-  StudyUpdater studyUpdater(linksPath_l);
+  StudyUpdater studyUpdater(linksPath_l, AntaresVersionProvider());
   int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);
 
   if (updateFailures_l) {

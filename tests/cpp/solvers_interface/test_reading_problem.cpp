@@ -38,8 +38,11 @@ TEST_CASE("MPS file can be read and we can get number of columns",
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, NET_MASTER,
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
+    namespace fs = std::filesystem;
     for (auto const& solver_name : factory.get_solvers_list()) {
       std::string instance = datas[inst]._path;
+      std::cout << "Current dir " << fs::current_path() << std::endl;
+      std::cout << instance << std::endl;
       //========================================================================================
       // Solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);

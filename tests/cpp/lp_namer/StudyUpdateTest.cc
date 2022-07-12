@@ -4,6 +4,8 @@
 #include "ActiveLinks.h"
 #include "CandidatesINIReader.h"
 #include "LinkProfileReader.h"
+#include "LinkdataRecord.h"
+#include "StudyUpdateLinkParameterStrategy.h"
 #include "StudyUpdater.h"
 #include "common_lpnamer.h"
 #include "gtest/gtest.h"
@@ -50,7 +52,8 @@ link = area1 - peak\n\
 annual-cost-per-mw = 60000\n\
 unit-size = 100\n\
 max-units = 20\n\
-link-profile = temp_profile.ini\n\
+direct-link-profile = temp_profile-direct.ini\n\
+indirect-link-profile = temp_profile-indirect.ini\n\
 \n\
 \n\
 [2]\n\
@@ -65,7 +68,10 @@ already-installed-capacity = 100\n\
     file_l.close();
 
     // dummy link profile tmp file name
-    file_l.open("temp_profile.ini");
+    std::ofstream file_direct;
+    file_direct.open("temp_profile-direct.ini");
+    std::ofstream file_indirect;
+    file_indirect.open("temp_profile-indirect.ini");
     std::vector<double> directLinkprofile_l(8760, 1);
     directLinkprofile_l[0] = 0;
     directLinkprofile_l[1] = 0.5;
@@ -73,13 +79,18 @@ already-installed-capacity = 100\n\
     indirectLinkprofile_l[0] = 0.25;
     indirectLinkprofile_l[1] = 0.75;
 
-    for (auto cnt_l = 0; cnt_l < directLinkprofile_l.size() - 1; ++cnt_l) {
-      file_l << directLinkprofile_l[cnt_l] << "\t"
-             << indirectLinkprofile_l[cnt_l] << "\n";
+    for(auto cnt_l = 0; cnt_l < directLinkprofile_l.size()-1 ; ++cnt_l)
+    {
+      file_direct <<  directLinkprofile_l[cnt_l] << "\n";
     }
-    file_l << directLinkprofile_l.back() << "\t"
-           << indirectLinkprofile_l.back();
-    file_l.close();
+    for(auto cnt_l = 0; cnt_l < indirectLinkprofile_l.size()-1 ; ++cnt_l)
+    {
+      file_indirect <<  indirectLinkprofile_l[cnt_l] << "\n";
+    }
+    file_direct << directLinkprofile_l.back();
+    file_indirect << indirectLinkprofile_l.back();
+    file_direct.close();
+    file_indirect.close();
 
     CandidatesINIReader candidateReader("temp_interco.txt", "temp_area.txt");
     LinkProfileReader profileReader;
@@ -87,8 +98,7 @@ already-installed-capacity = 100\n\
     std::vector<CandidateData> cand_data_list =
         candidateReader.readCandidateData("temp_candidates.ini");
 
-    std::map<std::string, LinkProfile> profile_map =
-        profileReader.getLinkProfileMap(".", cand_data_list);
+        std::map<std::string, std::vector<LinkProfile>> profile_map = profileReader.getLinkProfileMap(".", cand_data_list);
 
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
     StudyUpdateTest::_links = linkBuilder.getLinks();
@@ -97,11 +107,12 @@ already-installed-capacity = 100\n\
   static void TearDownTestCase() {
     // called after last test
 
-    // delete the created tmp file
+    //delete the created tmp file
     std::remove("temp_interco.txt");
     std::remove("temp_area.txt");
     std::remove("temp_candidates.ini");
-    std::remove("temp_profile.ini");
+    std::remove("temp_profile-direct.ini");
+    std::remove("temp_profile-indirect.ini");
   }
 
   void SetUp() {
@@ -147,45 +158,17 @@ TEST_F(StudyUpdateTest, linkprofile) {
 
   ASSERT_EQ(link1candidates.size(), 1);
 
-  // direct profile
-  ASSERT_EQ(link1candidates[0].direct_profile(0), 0);
-  ASSERT_EQ(link1candidates[0].direct_profile(1), 0.5);
-  ASSERT_EQ(link1candidates[0].direct_profile(2), 1);
-  ASSERT_EQ(link1candidates[0].direct_profile(8759), 1);
+    //direct profile
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(0), 0);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(1), 0.5);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(2), 1);
+    ASSERT_EQ(link1candidates[0].directCapacityFactor(8759), 1);
 
-  // indirect profile
-  ASSERT_EQ(link1candidates[0].indirect_profile(0), 0.25);
-  ASSERT_EQ(link1candidates[0].indirect_profile(1), 0.75);
-  ASSERT_EQ(link1candidates[0].indirect_profile(2), 1);
-  ASSERT_EQ(link1candidates[0].indirect_profile(8759), 1);
-}
-
-TEST_F(StudyUpdateTest, defaultAntaresVersion) {
-  StudyUpdater studyupdater(".");
-  ASSERT_EQ(studyupdater.getAntaresVersion(), 710);
-}
-
-TEST_F(StudyUpdateTest, antaresVersion700) {
-  std::string content_l;
-  std::ofstream file_l("study.antares");
-
-  // dummy study tmp file name
-  content_l =
-      "\
-[antares]\n\
-version = 700\n\
-caption = test_case_7.1_structure\n\
-created = 1455269769\n\
-lastsave = 1592911186\n\
-author = Unknown\n\
-";
-  file_l << content_l;
-  file_l.close();
-
-  StudyUpdater studyupdater(".");
-  ASSERT_EQ(studyupdater.getAntaresVersion(), 700);
-
-  std::remove("study.antares");
+    //indirect profile
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(0), 0.25);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(1), 0.75);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(2), 1);
+    ASSERT_EQ(link1candidates[0].indirectCapacityFactor(8759), 1);
 }
 
 /***
@@ -195,7 +178,7 @@ author = Unknown\n\
 studypath/input/links/ORIGIN/DESTINATION.txt)
 ***/
 TEST_F(StudyUpdateTest, LinkFilenames) {
-  StudyUpdater studyupdater(".");
+  StudyUpdateLinkParameterStrategy studyupdater(std::filesystem::path("."));
   ASSERT_EQ(
       studyupdater.getLinkdataFilepath(_links[0]),
       std::filesystem::path(".") / "input" / "links" / "area1" / "area2.txt");
@@ -205,7 +188,7 @@ TEST_F(StudyUpdateTest, LinkFilenames) {
 }
 
 TEST_F(StudyUpdateTest, computeNewCapacities) {
-  StudyUpdater studyupdater(".");
+  StudyUpdateLinkParameterStrategy studyupdater(".");
 
   // candidate peak has a link profile
   const std::map<std::string, double>& investissments = {
@@ -228,19 +211,392 @@ TEST_F(StudyUpdateTest, computeNewCapacities) {
 }
 
 TEST_F(StudyUpdateTest, no_computed_investment_for_candidate_peak) {
-  StudyUpdater studyupdater(".");
+  StudyUpdateLinkParameterStrategy studyupdater(".");
 
   // candidate peak has no computed investments
   const std::map<std::string, double>& investissments = {
       {"transmission_line", 0}};
 
   try {
-    studyupdater.computeNewCapacities(investissments, _links[1], 0);
+    (void) studyupdater.computeNewCapacities(investissments, _links[1], 0);
     FAIL() << "Missing investment not detected for candidate peak on link "
               "area1 - peak";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(err.what(),
                  "No investment computed for the candidate peak on the link "
                  "area1 - peak");
+  }
+}
+
+namespace fs = std::filesystem;
+
+class AntaresLinkDataReader {
+ public:
+  [[nodiscard]] std::vector<LinkdataRecord> Read(fs::path const& file) const {
+    std::ifstream link_file(file);
+    std::vector<LinkdataRecord> result;
+    for (std::string line; std::getline(link_file, line); /**/){
+      LinkdataRecord record;
+      record.fillFromRow(line);
+      result.emplace_back(record);
+    }
+    return result;
+  }
+  [[nodiscard]] std::vector<LinkdataRecord> Read820(std::filesystem::path parameters_path) {
+    std::ifstream link_file(parameters_path);
+    std::vector<LinkdataRecord> result;
+    for (std::string line; std::getline(link_file, line); /**/){
+      LinkdataRecord record;
+      record.fillFromRow("42 45 " + line);
+      result.emplace_back(record);
+    }
+    return result;
+  }
+};
+
+void TestLinkDataRecord(LinkdataRecord actual, LinkdataRecord expected) {
+  EXPECT_EQ(actual.fileColumns.directCapacity_, expected.fileColumns.directCapacity_);
+  EXPECT_EQ(actual.fileColumns.indirectCapacity_, expected.fileColumns.indirectCapacity_);
+  EXPECT_EQ(actual.fileColumns.directHurdlesCost_, expected.fileColumns.directHurdlesCost_);
+  EXPECT_EQ(actual.fileColumns.indirectHurdlesCost_, expected.fileColumns.indirectHurdlesCost_);
+  EXPECT_EQ(actual.fileColumns.impedances_, expected.fileColumns.impedances_);
+  EXPECT_EQ(actual.fileColumns.loopFlow_, expected.fileColumns.loopFlow_);
+  EXPECT_EQ(actual.fileColumns.pShiftMin_, expected.fileColumns.pShiftMin_);
+  EXPECT_EQ(actual.fileColumns.pShiftMax_, expected.fileColumns.pShiftMax_);
+}
+
+void WriteRecord(std::ofstream& link_file, const LinkdataRecord& record) {
+  link_file << record.fileColumns.directCapacity_ << " "
+            << record.fileColumns.indirectCapacity_ << " "
+            << record.fileColumns.directHurdlesCost_ << " "
+            << record.fileColumns.indirectHurdlesCost_ << " "
+            << record.fileColumns.impedances_ << " "
+            << record.fileColumns.loopFlow_ << " "
+            << record.fileColumns.pShiftMin_ << " "
+            << record.fileColumns.pShiftMax_ << "\n";
+}
+
+TEST(AntaresLinkDataReaderTest, ReadLine){
+  LinkdataRecord expected_record({42, 56, 76, 400, 500, 10, 4, 6});
+
+  AntaresLinkDataReader reader;
+  fs::path link_file_path = std::tmpnam(nullptr);
+  std::ofstream link_file;
+  link_file.open(link_file_path);
+  WriteRecord(link_file, expected_record);
+  link_file.close();
+  LinkdataRecord read_record = reader.Read(link_file_path).at(0);
+
+  TestLinkDataRecord(read_record, expected_record);
+}
+
+TEST(AntaresLinkDataReaderTest, ReadFile){
+  LinkdataRecord expected_record;
+  expected_record.fileColumns = {42, 56, 76, 400, 500, 1, 2, 3};
+
+  AntaresLinkDataReader reader;
+  fs::path link_file_path = std::tmpnam(nullptr);
+  std::ofstream link_file;
+  link_file.open(link_file_path);
+  int exceptional_line_number = 56;
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    if (i == exceptional_line_number) {
+      link_file << 100 << " "
+                << 200 << " "
+                << 300 << " "
+                << 400 << " "
+                << 500 << " "
+                << 4 << " "
+                << 5 << " "
+                << 6 << "\n";
+    } else {
+      WriteRecord(link_file, expected_record);
+    }
+  }
+  link_file.close();
+  std::vector<LinkdataRecord> read_record = reader.Read(link_file_path);
+
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    if (i == exceptional_line_number) {
+      LinkdataRecord expected_record_2;
+      expected_record_2.fileColumns = {100, 200, 300, 400, 500, 4, 5, 6};
+      TestLinkDataRecord(read_record.at(i), expected_record_2);
+    } else {
+      TestLinkDataRecord(read_record.at(i), expected_record);
+    }
+  }
+}
+
+class AntaresVersionProviderStub: public AntaresVersionProvider {
+ public:
+  AntaresVersionProviderStub(int version) :
+                                            AntaresVersionProvider(),
+                                            version_(version){
+  }
+
+  [[nodiscard]] int getAntaresVersion(
+      const std::filesystem::path& study_path) const override {
+    return version_;
+  }
+
+ private:
+  int version_;
+};
+
+class UpdateCapacitiesTest : public ::testing::Test {
+ protected:
+  void SetUp() {
+    tmp_directory_path_ = std::tmpnam(nullptr);
+    fs::create_directories(tmp_directory_path_ / "input" / "links" / "area1");
+    ntc_path_ = tmp_directory_path_ / "input" / "links" / "area1" / "area2.txt";
+    study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(800));
+  }
+
+  fs::path tmp_directory_path_;
+  fs::path ntc_path_;
+  StudyUpdater study_updater_{fs::path("."), AntaresVersionProviderStub(800)};
+  AntaresLinkDataReader antares_link_data_reader_;
+};
+
+TEST_F(UpdateCapacitiesTest, update_nothing) {
+  std::ofstream ntc_file;
+  ntc_file.open(ntc_path_);
+  for (auto i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    WriteRecord(ntc_file, LinkdataRecord({0.5, 0.3, 0, 0, 0, 0, 0, 0}));
+  }
+  ntc_file.close();
+  (void) study_updater_.update(std::vector<ActiveLink>(), std::map<std::string, double>());
+
+  auto res = antares_link_data_reader_.Read(ntc_path_);
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    ASSERT_EQ(0.5, res.at(i).fileColumns.directCapacity_ );
+    ASSERT_EQ(0.3, res.at(i).fileColumns.indirectCapacity_);
+  }
+}
+
+TEST_F(UpdateCapacitiesTest, update_one_link_no_candidate) {
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 1);
+  std::map<std::string, double> solution {
+      {"dummy_link", 2},
+  };
+  (void) study_updater_.update({active_link}, solution);
+
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    ASSERT_EQ(1, res.at(i).fileColumns.directCapacity_ );
+    ASSERT_EQ(1, res.at(i).fileColumns.indirectCapacity_);
+  }
+}
+
+TEST_F(UpdateCapacitiesTest, update_one_link_one_candidate) {
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  CandidateData candidate { true, "dummy_link", 0, "area1", "area2",
+  "", "", 1, "dummy_candidate"};
+  LinkProfile profile;
+  active_link.addCandidate(candidate, {profile});
+  std::map<std::string, double> solution {
+      {"dummy_candidate", 300},
+  };
+  (void) study_updater_.update({active_link}, solution);
+
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    ASSERT_EQ(400, res.at(i).fileColumns.directCapacity_ );
+    ASSERT_EQ(400, res.at(i).fileColumns.indirectCapacity_);
+  }
+}
+
+TEST_F(UpdateCapacitiesTest, update_version_720) {
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  CandidateData candidate { true, "dummy_link", 0, "area1", "area2",
+                          "", "", 1, "dummy_candidate"};
+  LinkProfile profile;
+  active_link.addCandidate(candidate, {profile});
+  std::map<std::string, double> solution {
+      {"dummy_candidate", 300},
+  };
+
+  study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(720));
+  (void) study_updater_.update({active_link}, solution);
+
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    ASSERT_EQ(400, res.at(i).fileColumns.directCapacity_ );
+    ASSERT_EQ(400, res.at(i).fileColumns.indirectCapacity_);
+  }
+}
+
+TEST_F(UpdateCapacitiesTest, update_link_parameters_version_720) {
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  CandidateData candidate { true, "dummy_link", 0, "area1", "area2",
+                          "", "", 1, "dummy_candidate"};
+  LinkProfile profile;
+  active_link.addCandidate(candidate, {profile});
+  std::map<std::string, double> solution {
+      {"dummy_candidate", 300},
+  };
+
+  std::ofstream ntc_file;
+  ntc_file.open(ntc_path_);
+  for (auto i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    LinkdataRecord record;
+    record.fileColumns = {0.5, 0.3, 4, 5, 6, 7, 8, 9};
+    WriteRecord(ntc_file, record);
+  }
+  ntc_file.close();
+  study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(720));
+  (void) study_updater_.update({active_link}, solution);
+
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
+
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    ASSERT_EQ(res.at(i).fileColumns.pShiftMin_, 8);
+    ASSERT_EQ(res.at(i).fileColumns.pShiftMax_, 9);
+    ASSERT_EQ(res.at(i).fileColumns.loopFlow_, 7);
+    ASSERT_EQ(res.at(i).fileColumns.directHurdlesCost_, 4);
+    ASSERT_EQ(res.at(i).fileColumns.indirectHurdlesCost_, 5);
+    ASSERT_EQ(res.at(i).fileColumns.impedances_, 6);
+  }
+}
+
+TEST_F(UpdateCapacitiesTest, update_version_800) {
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  CandidateData candidate { true, "dummy_link", 0, "area1", "area2",
+                          "", "", 1, "dummy_candidate"};
+  LinkProfile profile;
+  active_link.addCandidate(candidate, {profile});
+  std::map<std::string, double> solution {
+      {"dummy_candidate", 300},
+  };
+
+  study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(811));
+  (void) study_updater_.update({active_link}, solution);
+
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    ASSERT_EQ(400, res.at(i).fileColumns.directCapacity_ );
+    ASSERT_EQ(400, res.at(i).fileColumns.indirectCapacity_);
+  }
+}
+
+TEST_F(UpdateCapacitiesTest, update_link_parameters_version_800) {
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  CandidateData candidate { true, "dummy_link", 0, "area1", "area2",
+                          "", "", 1, "dummy_candidate"};
+  LinkProfile profile;
+  active_link.addCandidate(candidate, {profile});
+  std::map<std::string, double> solution {
+      {"dummy_candidate", 300},
+  };
+
+  std::ofstream ntc_file;
+  ntc_file.open(ntc_path_);
+  for (auto i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    LinkdataRecord record;
+    record.fileColumns = {0.5, 0.3, 4, 5, 6, 7, 8, 9};
+    WriteRecord(ntc_file, record);
+  }
+  ntc_file.close();
+  study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(800));
+  (void) study_updater_.update({active_link}, solution);
+
+  auto res = antares_link_data_reader_.Read(ntc_path_); //Refactor NTC reader maybe ?
+
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    ASSERT_EQ(res.at(i).fileColumns.pShiftMin_, 8);
+    ASSERT_EQ(res.at(i).fileColumns.pShiftMax_, 9);
+    ASSERT_EQ(res.at(i).fileColumns.loopFlow_, 7);
+    ASSERT_EQ(res.at(i).fileColumns.directHurdlesCost_, 4);
+    ASSERT_EQ(res.at(i).fileColumns.indirectHurdlesCost_, 5);
+    ASSERT_EQ(res.at(i).fileColumns.impedances_, 6);
+  }
+}
+
+TEST_F(UpdateCapacitiesTest, update_version_820_two_chronicle_installed_capacity_candidate_profile) {
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  CandidateData candidate { true,
+                          "dummy_link", 0, "area1", "area2",
+                          "candidate_installed_direct_profile", "candidate_installed_indirect_profile", 1000,
+                          "dummy_candidate", 0, 0, 0, 0, "candidate_direct_profile", "candidate_indirect_profile"};
+  LinkProfile candidate_profile1, candidate_profile2;
+  candidate_profile1.direct_link_profile.fill(0.2);
+  candidate_profile1.indirect_link_profile.fill(0.2);
+  candidate_profile2.indirect_link_profile.fill(0.5);
+  candidate_profile2.direct_link_profile.fill(0.5);
+  LinkProfile installed_chronicle1, installed_chronicle2;
+  installed_chronicle1.direct_link_profile.fill(0.1);
+  installed_chronicle1.indirect_link_profile.fill(0.1);
+  installed_chronicle2.direct_link_profile.fill(0.9);
+  installed_chronicle2.indirect_link_profile.fill(0.9);
+  active_link.setAlreadyInstalledLinkProfiles({installed_chronicle1, installed_chronicle2});
+
+  active_link.addCandidate(candidate, {candidate_profile1, candidate_profile2});
+  std::map<std::string, double> solution {
+      {"dummy_candidate", 300},
+  };
+
+  fs::create_directories(tmp_directory_path_ / "input" / "links" / "area1" / "capacities");
+  auto direct_ntc_file_path = tmp_directory_path_ / "input" / "links" / "area1" / "capacities" / "area2_direct.txt";
+  auto indirect_ntc_file_path = tmp_directory_path_ / "input" / "links" / "area1" / "capacities" / "area2_indirect.txt";
+  std::ofstream direct_file, indirect_file;
+  direct_file.open(direct_ntc_file_path);
+  indirect_file.open(indirect_ntc_file_path);
+  for (auto i = 0; i < 8760; ++i) {
+    direct_file << 0.5 << " " << 0.3 << "\n";
+    indirect_file << 0.5 << " " << 0.3 << "\n";
+  }
+  direct_file.close();
+  indirect_file.close();
+
+  study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(822));
+  (void) study_updater_.update({active_link}, solution);
+
+  auto profiles = LinkProfileReader::ReadLinkProfile(direct_ntc_file_path, indirect_ntc_file_path); //Refactor NTC reader maybe ?
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    /* Capacité du lien = capacité installée * profile installé
+     *                  = 100 * 0.1 | 100 * 0.9
+     *                  = 10 | 90
+     * Investissement candidat N = investissement trouvé * profil candidat
+     *                  = 300 * 0.2 | 300 * 0.5
+     *                  = 60 | 150
+     * Nouvelle capacité du lien = Capacité du lien + Somme(Investissement candidat)
+     *                  = 70 | 240
+     */
+    ASSERT_EQ(70, profiles[0].getDirectProfile(i));
+    ASSERT_EQ(70, profiles[0].getIndirectProfile(i));
+    ASSERT_EQ(240, profiles[1].getDirectProfile(i));
+    ASSERT_EQ(240, profiles[1].getIndirectProfile(i));
+  }
+}
+
+TEST_F(UpdateCapacitiesTest, update_link_parameters_version_820) {
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  CandidateData candidate { true, "dummy_link", 0, "area1", "area2",
+                          "", "", 1, "dummy_candidate"};
+  LinkProfile profile;
+  active_link.addCandidate(candidate, {profile});
+  std::map<std::string, double> solution {
+      {"dummy_candidate", 300},
+  };
+
+  std::ofstream link_parameters;
+  link_parameters.open(tmp_directory_path_ / "input" / "links" / "area1" / "area2_parameters.txt");
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    link_parameters << "4 5 6 7 8 9\n";
+  }
+  link_parameters.close();
+
+  study_updater_ = StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(820));
+  (void) study_updater_.update({active_link}, solution);
+
+  auto res = antares_link_data_reader_.Read820(tmp_directory_path_ / "input" / "links" / "area1" / "area2_parameters.txt"); //Refactor NTC reader maybe ?
+
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    ASSERT_EQ(res.at(i).fileColumns.pShiftMin_, 8);
+    ASSERT_EQ(res.at(i).fileColumns.pShiftMax_, 9);
+    ASSERT_EQ(res.at(i).fileColumns.loopFlow_, 7);
+    ASSERT_EQ(res.at(i).fileColumns.directHurdlesCost_, 4);
+    ASSERT_EQ(res.at(i).fileColumns.indirectHurdlesCost_, 5);
+    ASSERT_EQ(res.at(i).fileColumns.impedances_, 6);
   }
 }
