@@ -22,10 +22,6 @@ class ProfileLinkChecker:
             raise ProfileLinkChecker.CandidateFileNotFound(
                 f"Candidate file: {candidate_file} was not found!")
 
-        if (not capacity_dir.exists()):
-            raise ProfileLinkChecker.CapacityDirNotFound(
-                f"Capacity directory: {candidate_file} was not found!")
-
         self._candidate_file = candidate_file
         self._capacity_dir = capacity_dir
         self._read()
