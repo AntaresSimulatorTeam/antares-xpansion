@@ -50,6 +50,7 @@ class SensitivityUserLoggerTest : public ::testing::Test {
 
   double epsilon = 12;
   double best_benders_cost = 1e6;
+  double benders_capex = 1e5;
 
   const std::string semibase_name = "semibase";
   const std::string peak_name = "peak";
@@ -89,14 +90,31 @@ TEST_F(SensitivityUserLoggerTest, InitLog) {
   SensitivityInputData input_data;
   input_data.best_ub = best_benders_cost;
   input_data.epsilon = epsilon;
+  input_data.benders_capex = benders_capex;
+  input_data.benders_solution = {{peak_name, 15}, {semibase_name, 60.3}};
 
   std::stringstream expected;
   expected << std::endl;
-  expected << "Best overall cost = "
+  expected << "--- Recall of the best investment solution ---" << std::endl
+           << std::endl;
+  expected << indent_1 << "Best overall cost = "
            << xpansion::logger::commons::create_str_million_euros(
                   input_data.best_ub)
-           << MILLON_EUROS << std::endl;
-  expected << "epsilon = " << input_data.epsilon << EUROS << std::endl;
+           << MILLON_EUROS << std::endl
+           << std::endl;
+  expected << indent_1 << "Best capex = "
+           << xpansion::logger::commons::create_str_million_euros(benders_capex)
+           << MILLON_EUROS << std::endl
+           << std::endl;
+  expected << indent_1 << "Best investment solution = " << std::endl;
+  for (const auto& kvp : input_data.benders_solution) {
+    expected << indent_1 << indent_1 << kvp.first << ": "
+             << xpansion::logger::commons::create_str_mw(kvp.second) << MW
+             << std::endl;
+  }
+  expected << std::endl;
+  expected << "--- Start sensitivity analysis with epsilon = "
+           << input_data.epsilon << EUROS << " --- " << std::endl;
   expected << std::endl;
 
   _logger.log_at_start(input_data);
