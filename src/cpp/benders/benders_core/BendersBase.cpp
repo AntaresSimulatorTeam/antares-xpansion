@@ -352,9 +352,9 @@ void BendersBase::getSubproblemCut(
   }
   std::mutex m;
   selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_cut_package](auto &policy) {
+      [this, &nameAndVariableMap, &m, &subproblem_cut_package](auto &policy) {
         std::for_each(
-            policy, coupling_map.begin(), coupling_map.end(),
+            policy, nameAndVariableMap.begin(), nameAndVariableMap.end(),
             [this, &m, &subproblem_cut_package](const std::pair<std::string, VariableMap> &kvp) {
               const auto &[name, variables] = kvp;
               auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
