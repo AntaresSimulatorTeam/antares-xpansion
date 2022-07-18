@@ -44,9 +44,9 @@ void SensitivityLogger::log_benders_capex(const double& benders_capex) {
 void SensitivityLogger::log_benders_solution(
     const std::map<std::string, double>& benders_solution) {
   _stream << indent_1 << "Best investment solution = " << std::endl;
-  for (const auto& kvp : benders_solution) {
-    _stream << indent_1 << indent_1 << kvp.first << ": "
-            << xpansion::logger::commons::create_str_mw(kvp.second) << MW
+  for (const auto& [candidate_name, investment] : benders_solution) {
+    _stream << indent_1 << indent_1 << candidate_name << ": "
+            << xpansion::logger::commons::create_str_mw(investment) << MW
             << std::endl;
   }
 }
