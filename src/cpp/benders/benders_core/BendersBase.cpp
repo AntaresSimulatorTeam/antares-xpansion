@@ -171,7 +171,7 @@ void BendersBase::print_master_csv(std::ostream &stream,
   stream << norm_point(xopt, trace->get_point()) << ";";
   stream << ";";
   stream << trace->_deleted_cut << ";";
-  stream << trace->_time << ";";
+  stream << trace->_master_duration << ";";
   stream << trace->_nbasis << ";" << std::endl;
 }
 
@@ -253,7 +253,7 @@ void BendersBase::update_trace() {
   LastWorkerMasterDataPtr->_min_invest =
       std::make_shared<Point>(_data.min_invest);
   LastWorkerMasterDataPtr->_deleted_cut = _data.deletedcut;
-  LastWorkerMasterDataPtr->_time = _data.timer_master;
+  LastWorkerMasterDataPtr->_master_duration = _data.timer_master;
   LastWorkerMasterDataPtr->_subproblem_duration = _data.subproblem_timers;
   LastWorkerMasterDataPtr->_nbasis = _data.nbasis;
   LastWorkerMasterDataPtr->_invest_cost = _data.invest_cost;
@@ -538,7 +538,7 @@ Output::CandidatesVec candidates_data(
 Output::Iteration BendersBase::iteration(
     const WorkerMasterDataPtr &masterDataPtr_l) const {
   Output::Iteration iteration;
-  iteration.time = masterDataPtr_l->_time;
+  iteration.time = masterDataPtr_l->_master_duration;
   iteration.subproblem_duration = masterDataPtr_l->_subproblem_duration;
   iteration.lb = masterDataPtr_l->_lb;
   iteration.ub = masterDataPtr_l->_ub;
