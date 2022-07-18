@@ -60,6 +60,9 @@ def launch_optimization(data_path, commands, status=None):
                     expansion_dir / "last_iteration.json")
     os.chdir(data_path)
 
+    print("PLOP")
+    print(owd)
+    print(commands)
     # Launching optimization from instance folder
     process = subprocess.run(commands, stdout=subprocess.PIPE, stderr=None)
 
@@ -118,15 +121,16 @@ def run_solver(install_dir, solver, allow_run_as_root=False):
         expected_results_dict = json.load(jsonFile)
 
     solver_executable = get_solver_exe(solver)
-
+    print(solver_executable)
     pre_command = []
 
     if (solver == "BENDERS_MPI"):
         pre_command = get_mpi_command(allow_run_as_root)
 
+    print(install_dir)
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
-
+    print(executable_path)
     for instance in expected_results_dict:
         instance_path = expected_results_dict[instance]['path']
         command = [e for e in pre_command]

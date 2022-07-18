@@ -95,7 +95,7 @@ def verify_solution(study_path, expected_values, expected_investment_solution):
 
     for investment in expected_investment_solution.keys():
         assert investment in investment_solution.keys(), (
-            "Investment " + investment + " not found in solution"
+                "Investment " + investment + " not found in solution"
         )
         np.testing.assert_allclose(
             expected_investment_solution[investment],
@@ -126,7 +126,7 @@ def verify_study_update(study_path, expected_investment_solution, antares_versio
             )
         )
         expected_direct_link_capacity = (
-            already_installed_direct_capacity * already_installed_direct_link_profile_array
+                already_installed_direct_capacity * already_installed_direct_link_profile_array
         )
         already_installed_indirect_link_profile_array = (
             candidate_reader.get_candidate_already_installed_indirect_link_profile_array(
@@ -145,21 +145,23 @@ def verify_study_update(study_path, expected_investment_solution, antares_versio
             if link_profile_array.ndim == 2:
                 assert (
                         link_profile_array.shape == candidate_reader.get_candidate_already_installed_link_profile_array(
-                    study_path, candidate_name_list[0]) .shape
+                    study_path, candidate_name_list[0]).shape
                 )
                 expected_direct_link_capacity += investment * link_profile_array[:, 0]
                 expected_indirect_link_capacity += investment * link_profile_array[:, 1]
             else:
                 direct_array = link_profile_array[:, :, 0].transpose()
                 indirect_array = link_profile_array[:, :, 1].transpose()
-                if candidate_reader.has_installed_profile(study_path, candidate) and candidate_reader.has_profile(study_path, candidate):
+                if candidate_reader.has_installed_profile(study_path, candidate) and candidate_reader.has_profile(
+                        study_path, candidate):
                     assert (
-                        direct_array.shape == already_installed_direct_link_profile_array.shape
+                            direct_array.shape == already_installed_direct_link_profile_array.shape
                     )
                     assert (
-                        indirect_array.shape == already_installed_indirect_link_profile_array.shape
+                            indirect_array.shape == already_installed_indirect_link_profile_array.shape
                     )
-                if candidate_reader.has_profile(study_path, candidate) and not candidate_reader.has_installed_profile(study_path, candidate):
+                if candidate_reader.has_profile(study_path, candidate) and not candidate_reader.has_installed_profile(
+                        study_path, candidate):
                     expected_direct_link_capacity, expected_indirect_link_capacity = grow_expectation_to_proper_number_of_chronicles(
                         direct_array, expected_direct_link_capacity, expected_indirect_link_capacity)
                 expected_direct_link_capacity += investment * direct_array
@@ -242,34 +244,52 @@ long_parameters_values = [
             "accepted_rel_gap_atol": 1e-10,
         },
         {
-            "battery" : 507.03470051310484,
-            "peak1" : 800,
-            "peak2" : 1000.0000000000001,
-            "pv" : 447.10352905735476,
-            "semibase1" : 0,
-            "semibase2" : 200
+            "battery": 507.03470051310484,
+            "peak1": 800,
+            "peak2": 1000.0000000000001,
+            "pv": 447.10352905735476,
+            "semibase1": 0,
+            "semibase2": 200
         },
         700
     ),
     (
         ALL_STUDIES_PATH / "different_NTCs",
         {
-            "optimality_gap": 709.42435598373413,
-            "investment_cost": 256299462.08039832,
-            "operational_cost": 1067318031.6309935,
-            "overall_cost": 1323617493.7113919,
-            "relative_gap": 5.3597384391960929e-07,
+            "optimality_gap": 5700.6529147624969,
+            "investment_cost": 255947874.8444674,
+            "operational_cost": 1067670735.0614072,
+            "overall_cost": 1323618609.9058747,
+            "relative_gap": 4.3068697222139244e-06,
             "accepted_rel_gap_atol": 1e-10,
         },
         {
-            "battery": 508.74183466608417,
-            "peak1": 800.0,
-            "peak2": 1000.0,
-            "pv": 447.28156522682048,
-            "semibase1": 0.0,
-            "semibase2": 200.0,
+            "battery": 503.28062974027767,
+            "peak1": 899.99999999999989,
+            "peak2": 900,
+            "pv": 446.76167521850482,
+            "semibase1": 0,
+            "semibase2": 200
         },
         820
+    ),
+    (
+        ALL_STUDIES_PATH / "xpansion-test-05-area-uppercase",
+        {
+            "optimality_gap": 558.44661593437195,
+            "investment_cost": 451995209.27069736,
+            "operational_cost": 1324857537.5020638,
+            "overall_cost": 1776852746.7727611,
+            "relative_gap": 3.1428975583298067e-07,
+            "accepted_rel_gap_atol": 1e-10,
+        },
+        {
+            "elec_grid": 709.95027341942216,
+            "h2_grid": 600.01391420346658,
+            "p2g_marg_area1": 1125.0003565560044,
+            "p2g_marg_area2": 2000.0,
+        },
+        700
     ),
 ]
 
@@ -280,7 +300,7 @@ long_parameters_values = [
 )
 @pytest.mark.long_sequential
 def test_full_study_long_sequential(
-    install_dir, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
+        install_dir, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
@@ -295,7 +315,8 @@ def test_full_study_long_sequential(
 )
 @pytest.mark.long_mpi
 def test_full_study_long_mpi(
-    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
+        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path,
+        antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
@@ -456,7 +477,7 @@ medium_parameters_values = [
 )
 @pytest.mark.medium_sequential
 def test_full_study_medium_sequential(
-    install_dir, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
+        install_dir, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
@@ -471,7 +492,8 @@ def test_full_study_medium_sequential(
 )
 @pytest.mark.medium_mpi
 def test_full_study_medium_parallel(
-    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
+        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path,
+        antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
@@ -538,13 +560,15 @@ def test_full_study_short_sequential(
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
+
 @pytest.mark.parametrize(
     short_parameters_names,
     short_parameters_values,
 )
 @pytest.mark.short_mpi
 def test_full_study_short_parallel(
-        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
+        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path,
+        antares_version
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
