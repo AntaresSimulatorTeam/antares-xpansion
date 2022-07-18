@@ -8,7 +8,7 @@ class TestSplitLinkProfile:
     def setup_method(self):
         pass
 
-    def test_with_non_existing_candidate_file_directory(self, tmp_path):
+    def test_with_non_existing_capa_directory(self, tmp_path):
         with pytest.raises(SplitLinkProfile.CapacityDirNotFound):
             SplitLinkProfile("nothing.txt", tmp_path / "void")
 

@@ -32,12 +32,6 @@ class TestProfileLinkChecker:
         with pytest.raises(ProfileLinkChecker.CandidateFileNotFound):
             ProfileLinkChecker(file, tmp_path / "capa")
 
-    def test_fail_with_non_existing_capacity_dir(self, tmp_path):
-        file = tmp_path / "nowhere"
-        file.touch()
-        with pytest.raises(ProfileLinkChecker.CapacityDirNotFound):
-            ProfileLinkChecker(file, tmp_path / "capa")
-
     def test_read_two_candidates_file(self, tmp_path):
 
         candidate_file = tmp_path / "candidate.ini"
