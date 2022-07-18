@@ -54,6 +54,7 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
   virtual void build_input_map();
+  void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   virtual void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_subproblems();
