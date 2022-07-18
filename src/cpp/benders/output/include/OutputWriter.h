@@ -29,7 +29,7 @@ struct CandidateData {
 };
 typedef std::vector<CandidateData> CandidatesVec;
 struct Iteration {
-  double time;
+  double master_duration;
   double subproblem_duration;
   double lb;
   double ub;

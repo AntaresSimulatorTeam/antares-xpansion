@@ -538,7 +538,7 @@ Output::CandidatesVec candidates_data(
 Output::Iteration BendersBase::iteration(
     const WorkerMasterDataPtr &masterDataPtr_l) const {
   Output::Iteration iteration;
-  iteration.time = masterDataPtr_l->_master_duration;
+  iteration.master_duration = masterDataPtr_l->_master_duration;
   iteration.subproblem_duration = masterDataPtr_l->_subproblem_duration;
   iteration.lb = masterDataPtr_l->_lb;
   iteration.ub = masterDataPtr_l->_ub;

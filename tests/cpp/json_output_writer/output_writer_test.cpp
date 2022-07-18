@@ -92,7 +92,7 @@ void verify_iteration_in_json_content(const Iteration &iter,
                                       const Json::Value &json_content) {
   ASSERT_EQ(iter.best_ub,
             json_content[ITERATIONS_C]["1"][BEST_UB_C].asDouble());
-  ASSERT_EQ(iter.time,
+  ASSERT_EQ(iter.master_duration,
             json_content[ITERATIONS_C]["1"][MASTER_DURATION_C].asDouble());
   ASSERT_EQ(iter.investment_cost,
             json_content[ITERATIONS_C]["1"][INVESTMENT_COST_C].asDouble());
