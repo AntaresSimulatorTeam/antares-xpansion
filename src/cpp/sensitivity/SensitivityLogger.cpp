@@ -14,14 +14,47 @@ void SensitivityLogger::display_message(const std::string& msg) {
   _stream << msg << std::endl << std::endl;
 }
 
-void SensitivityLogger::log_at_start(const SensitivityOutputData& output_data) {
+void SensitivityLogger::log_at_start(const SensitivityInputData& input_data) {
   _stream << std::endl;
-  _stream << "Best overall cost = "
-          << xpansion::logger::commons::create_str_million_euros(
-                 output_data.best_benders_cost)
-          << MILLON_EUROS << std::endl;
-  _stream << "epsilon = " << output_data.epsilon << EUROS << std::endl;
+  _stream << "--- Recall of the best investment solution ---" << std::endl
+          << std::endl;
+
+  log_benders_overall_cost(input_data.best_ub);
+  log_benders_capex(input_data.benders_capex);
+  log_benders_solution(input_data.benders_solution);
+  log_epsilon(input_data.epsilon);
+
   _stream << std::endl;
+}
+
+void SensitivityLogger::log_benders_overall_cost(const double& best_ub) {
+  _stream << indent_1 << "Best overall cost = "
+          << xpansion::logger::commons::create_str_million_euros(best_ub)
+          << MILLON_EUROS << std::endl
+          << std::endl;
+}
+
+void SensitivityLogger::log_benders_capex(const double& benders_capex) {
+  _stream << indent_1 << "Best capex = "
+          << xpansion::logger::commons::create_str_million_euros(benders_capex)
+          << MILLON_EUROS << std::endl
+          << std::endl;
+}
+
+void SensitivityLogger::log_benders_solution(
+    const std::map<std::string, double>& benders_solution) {
+  _stream << indent_1 << "Best investment solution = " << std::endl;
+  for (const auto& [candidate_name, investment] : benders_solution) {
+    _stream << indent_1 << indent_1 << candidate_name << ": "
+            << xpansion::logger::commons::create_str_mw(investment) << MW
+            << std::endl;
+  }
+}
+
+void SensitivityLogger::log_epsilon(const double& epsilon) {
+  _stream << std::endl;
+  _stream << "--- Start sensitivity analysis with epsilon = " << epsilon
+          << EUROS << " --- " << std::endl;
 }
 
 void SensitivityLogger::log_begin_pb_resolution(const SinglePbData& pb_data) {
@@ -63,16 +96,17 @@ void SensitivityLogger::log_at_ending() {
   _stream << "--- Sensitivity study completed ---" << std::endl;
 }
 
-void SensitivityLogger::log_summary(const SensitivityOutputData& output_data) {
+void SensitivityLogger::log_summary(const SensitivityInputData& input_data,
+                                    const std::vector<SinglePbData>& pbs_data) {
   _stream << std::endl
           << "--- Sensitivity analysis summary "
-          << "(epsilon = " << output_data.epsilon << EUROS << ") ---"
+          << "(epsilon = " << input_data.epsilon << EUROS << ") ---"
           << std::endl
           << std::endl;
   std::vector<SinglePbData> projection_data = {};
   std::vector<SinglePbData> capex_data = {};
 
-  for (const auto& pb_data : output_data.pbs_data) {
+  for (const auto& pb_data : pbs_data) {
     if (pb_data.pb_type == SensitivityPbType::PROJECTION) {
       projection_data.push_back(pb_data);
     } else {
@@ -84,7 +118,7 @@ void SensitivityLogger::log_summary(const SensitivityOutputData& output_data) {
     log_capex_summary(capex_data);
   }
   if (!projection_data.empty()) {
-    log_projection_summary(projection_data, output_data.candidates_bounds);
+    log_projection_summary(projection_data, input_data.candidates_bounds);
   }
 }
 

@@ -47,6 +47,9 @@ class SensitivityStudyTest : public ::testing::Test {
       bool capex = true, std::vector<std::string> projection_candidates = {}) {
     double epsilon = 100;
     double best_ub = 1390;
+    double benders_capex = 12;
+    std::map<std::string, double> benders_solution = {{peak_name, 14},
+                                                      {semibase_name, 10}};
 
     std::map<std::string, int> name_to_id = {{peak_name, 0},
                                              {semibase_name, 1}};
@@ -56,9 +59,11 @@ class SensitivityStudyTest : public ::testing::Test {
 
     std::string toy_basis_path = data_test_dir + "/toy_basis.bss";
 
-    input_data = {
-        epsilon,        best_ub,           name_to_id, nullptr,
-        toy_basis_path, candidates_bounds, capex,      projection_candidates};
+    input_data = {epsilon,        best_ub,
+                  benders_capex,  benders_solution,
+                  name_to_id,     nullptr,
+                  toy_basis_path, candidates_bounds,
+                  capex,          projection_candidates};
     return data_test_dir + "/toy_last_iteration.mps";
   }
 
@@ -66,6 +71,12 @@ class SensitivityStudyTest : public ::testing::Test {
       bool capex = true, std::vector<std::string> projection_candidates = {}) {
     double epsilon = 10000;
     double best_ub = 1440683382.5376825;
+    double benders_capex = 1234;
+    std::map<std::string, double> benders_solution = {{semibase_name, 12},
+                                                      {peak_name, 34},
+                                                      {pv_name, 56},
+                                                      {battery_name, 78},
+                                                      {transmission_name, 90}};
 
     std::map<std::string, int> name_to_id = {{semibase_name, 3},
                                              {peak_name, 1},
@@ -82,15 +93,17 @@ class SensitivityStudyTest : public ::testing::Test {
 
     std::string real_basis_path = data_test_dir + "/real_basis.bss";
 
-    input_data = {
-        epsilon,         best_ub,           name_to_id, nullptr,
-        real_basis_path, candidates_bounds, capex,      projection_candidates};
+    input_data = {epsilon,         best_ub,
+                  benders_capex,   benders_solution,
+                  name_to_id,      nullptr,
+                  real_basis_path, candidates_bounds,
+                  capex,           projection_candidates};
     return data_test_dir + "/real_last_iteration.mps";
   }
 
   void launch_tests(
       std::string mps_path,
-      std::map<std::string, SensitivityOutputData> expec_output_data_map) {
+      std::map<std::string, std::vector<SinglePbData>> expec_output_data_map) {
     std::vector<std::string> solvers_name = {coin_name};
 #ifdef XPRESS
     solvers_name.push_back(xpress_name);
@@ -157,26 +170,21 @@ class SensitivityStudyTest : public ::testing::Test {
            areEquals(left.candidates, right.candidates);
   }
 
-  void verify_output_data(const SensitivityOutputData &output_data,
-                          SensitivityOutputData expec_output_data) {
-    EXPECT_DOUBLE_EQ(output_data.epsilon, expec_output_data.epsilon);
-    EXPECT_DOUBLE_EQ(output_data.best_benders_cost,
-                     expec_output_data.best_benders_cost);
-    EXPECT_EQ(output_data.candidates_bounds,
-              expec_output_data.candidates_bounds);
-    ASSERT_EQ(output_data.pbs_data.size(), expec_output_data.pbs_data.size());
+  void verify_output_data(const std::vector<SinglePbData> &pbs_data,
+                          std::vector<SinglePbData> expec_pbs_data) {
+    ASSERT_EQ(pbs_data.size(), expec_pbs_data.size());
 
-    for (auto leftMatch : output_data.pbs_data) {
-      auto rightMatch = std::find_if(
-          expec_output_data.pbs_data.begin(), expec_output_data.pbs_data.end(),
-          [&leftMatch, this](const SinglePbData &data) {
-            return areEquals(leftMatch, data);
-          });
-      ASSERT_NE(rightMatch, expec_output_data.pbs_data.end())
+    for (auto leftMatch : pbs_data) {
+      auto rightMatch =
+          std::find_if(expec_pbs_data.begin(), expec_pbs_data.end(),
+                       [&leftMatch, this](const SinglePbData &data) {
+                         return areEquals(leftMatch, data);
+                       });
+      ASSERT_NE(rightMatch, expec_pbs_data.end())
           << get_single_pb_data_stream(leftMatch).str();
-      expec_output_data.pbs_data.erase(rightMatch);
+      expec_pbs_data.erase(rightMatch);
     }
-    ASSERT_EQ(expec_output_data.pbs_data.size(), 0);
+    ASSERT_EQ(expec_pbs_data.size(), 0);
   }
 
   void verify_single_pb_data(const SinglePbData &single_pb_data,
@@ -221,10 +229,11 @@ class SensitivityLogMock : public SensitivityILogger {
     displayed_message = str;
     display_message_called = true;
   }
-  void log_at_start(const SensitivityOutputData &output_data) override {}
+  void log_at_start(const SensitivityInputData &input_data) override {}
   void log_begin_pb_resolution(const SinglePbData &pb_data) override {}
   void log_pb_solution(const SinglePbData &pb_data) override {}
-  void log_summary(const SensitivityOutputData &output_data) override {}
+  void log_summary(const SensitivityInputData &input_data,
+                   const std::vector<SinglePbData> &pbs_data) override {}
   void log_at_ending() override {}
 };
 
@@ -281,8 +290,7 @@ TEST_F(SensitivityStudyTest, OutputDataInit) {
   init_solver(coin_name, mps_path);
 
   auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
-  auto expec_output_data = SensitivityOutputData(
-      input_data.epsilon, input_data.best_ub, input_data.candidates_bounds);
+  std::vector<SinglePbData> expec_output_data = {};
   auto output_data = sensitivity_study.get_output_data();
 
   verify_output_data(output_data, expec_output_data);
@@ -304,13 +312,8 @@ TEST_F(SensitivityStudyTest, GetCapexSolutions) {
 
   std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
 
-  std::map<std::string, SensitivityOutputData> expec_output_data_map = {
-      {coin_name,
-       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                             input_data.candidates_bounds, pbs_data)},
-      {xpress_name,
-       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                             input_data.candidates_bounds, pbs_data)}};
+  std::map<std::string, std::vector<SinglePbData>> expec_output_data_map = {
+      {coin_name, pbs_data}, {xpress_name, pbs_data}};
 
   launch_tests(mps_path, expec_output_data_map);
 }
@@ -350,13 +353,8 @@ TEST_F(SensitivityStudyTest, GetCandidatesProjection) {
       projection_min_peak, projection_max_peak, projection_min_semibase,
       projection_max_semibase_xpress};
 
-  std::map<std::string, SensitivityOutputData> expec_output_data_map = {
-      {coin_name,
-       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                             input_data.candidates_bounds, pbs_data_cbc)},
-      {xpress_name,
-       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                             input_data.candidates_bounds, pbs_data_xpress)}};
+  std::map<std::string, std::vector<SinglePbData>> expec_output_data_map = {
+      {coin_name, pbs_data_cbc}, {xpress_name, pbs_data_xpress}};
 
   launch_tests(mps_path, expec_output_data_map);
 }
@@ -531,13 +529,8 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest) {
                                                projection_min_transmission,
                                                projection_max_transmission};
 
-  std::map<std::string, SensitivityOutputData> expec_output_data_map = {
-      {coin_name,
-       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                             input_data.candidates_bounds, pbs_data_cbc)},
-      {xpress_name,
-       SensitivityOutputData(input_data.epsilon, input_data.best_ub,
-                             input_data.candidates_bounds, pbs_data_xpress)}};
+  std::map<std::string, std::vector<SinglePbData>> expec_output_data_map = {
+      {coin_name, pbs_data_cbc}, {xpress_name, pbs_data_xpress}};
 
   launch_tests(mps_path, expec_output_data_map);
 }

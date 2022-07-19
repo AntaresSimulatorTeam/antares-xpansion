@@ -21,9 +21,7 @@ The sensitivity analysis module of Anatres-Xpansion is able to perform the follo
 
 The sensitivity analysis computation is based on the last master problem used during the Benders algorithm. The Benders cuts of the last master problem (dotted grey lines in **Figure 16**) define a piecewise approximation of the cost function (in blue, that is unknown).
 
-The user sets a threshold \\(\varepsilon\\) up to which investment solutions are considered _near optimal_ or _equivalent_. The sensitivity analysis is an exploration, in a given _direction_, of the set of solutions that are within \\(\varepsilon\\) euros of the optimal cost.
-
-** Explain link epsilon / optimality gap **
+The user sets a threshold \\(\varepsilon\\) up to which investment solutions are considered _near optimal_ or _equivalent_. The sensitivity analysis is an exploration, in a given _direction_, of the set of solutions that are within \\(\varepsilon\\) euros of the optimal cost (i.e. the best upper bound of the Benders algorithm).
 
 **Figure 16** illustrates the case where we look at the range of invested capacity of candidate \\(i\\) for which there exists at least one \\(\varepsilon\\)-optimal solution. We can then define a capacity interval \\([x_{lb}, x_{ub}]\\) for candidate \\(i\\) which is the projection of the set of \\(\epsilon\\)-optimal solutions on the dimension of the capacity of this candidate.
 

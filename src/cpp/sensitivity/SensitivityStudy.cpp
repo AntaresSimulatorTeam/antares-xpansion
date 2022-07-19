@@ -12,12 +12,10 @@ SensitivityStudy::SensitivityStudy(SensitivityInputData input_data,
                                    std::shared_ptr<SensitivityWriter> writer)
     : logger(std::move(logger)),
       writer(std::move(writer)),
-      input_data(std::move(input_data)) {
-  init_output_data();
-}
+      input_data(std::move(input_data)) {}
 
 void SensitivityStudy::launch() {
-  logger->log_at_start(output_data);
+  logger->log_at_start(input_data);
   if (input_data.capex) {
     run_capex_analysis();
   }
@@ -27,21 +25,14 @@ void SensitivityStudy::launch() {
   if (!input_data.capex && input_data.projection.empty()) {
     logger->display_message("Study is empty. No capex or projection provided.");
   } else {
-    logger->log_summary(output_data);
+    logger->log_summary(input_data, output_data);
   }
-  writer->end_writing(output_data);
+  writer->end_writing(input_data, output_data);
   logger->log_at_ending();
 }
 
-SensitivityOutputData SensitivityStudy::get_output_data() const {
+std::vector<SinglePbData> SensitivityStudy::get_output_data() const {
   return output_data;
-}
-
-void SensitivityStudy::init_output_data() {
-  output_data.epsilon = input_data.epsilon;
-  output_data.best_benders_cost = input_data.best_ub;
-  output_data.candidates_bounds = input_data.candidates_bounds;
-  output_data.pbs_data = {};
 }
 
 void SensitivityStudy::run_capex_analysis() {
@@ -49,8 +40,8 @@ void SensitivityStudy::run_capex_analysis() {
   Analysis capex_analysis(input_data, "", logger, SensitivityPbType::CAPEX);
   std::pair<SinglePbData, SinglePbData> capex_data = capex_analysis.run();
 
-  output_data.pbs_data.push_back(capex_data.first);
-  output_data.pbs_data.push_back(capex_data.second);
+  output_data.push_back(capex_data.first);
+  output_data.push_back(capex_data.second);
 }
 
 void SensitivityStudy::run_projection_analysis() {
@@ -65,8 +56,8 @@ void SensitivityStudy::run_projection_analysis() {
                                        SensitivityPbType::PROJECTION);
           auto [minimizeSolution, maximizeSolution] = projection_analysis.run();
           std::lock_guard guard(m);
-          output_data.pbs_data.push_back(minimizeSolution);
-          output_data.pbs_data.push_back(maximizeSolution);
+          output_data.push_back(minimizeSolution);
+          output_data.push_back(maximizeSolution);
         } else {
           logger->display_message(
               "Warning: " + candidate_name +
