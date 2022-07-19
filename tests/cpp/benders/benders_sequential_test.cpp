@@ -128,8 +128,7 @@ class BendersSequentialTest : public ::testing::Test {
 
   BendersSequentialDouble init_benders_sequential() {
     BendersBaseOptions options = init_benders_options();
-    BendersSequentialDouble benders(options, logger, writer);
-    return benders;
+    return BendersSequentialDouble(options, logger, writer);
   }
 
   std::vector<char> get_nb_units_col_types(
