@@ -132,7 +132,8 @@ class BendersSequentialTest : public ::testing::Test {
     return benders;
   }
 
-  std::vector<char> get_nb_units_col_types(BendersSequentialDouble benders) const {
+  std::vector<char> get_nb_units_col_types(
+      const BendersSequentialDouble &benders) const {
     char col_type;
     std::vector<char> nb_units_col_types;
     for (auto col_id : benders.get_master()->get_id_nb_units()) {
