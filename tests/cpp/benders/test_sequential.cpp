@@ -26,7 +26,7 @@ class NOOPLogger: public ILogger {
       const LogData& best_iterations_data) override {}
 };
 
-class NOOPWritter: public Output::OutputWriter {
+class NOOPWriter : public Output::OutputWriter {
  public:
   void update_solution(const Output::SolutionData& solution_data) override {}
   void dump() override {}
@@ -50,8 +50,8 @@ class StubMPSUtils: public MPSUtils {
   CouplingMap build_input(
       const std::filesystem::path& structure_path) const override {
         return {
-            {"master", {{"Variable1", 0}}},
-            {"SubProblem", {{"Variable2", 0}}}
+            {"master", {{"Variable1", 1}}},
+            {"subproblem", {{"Variable2", 2}}}
            };
 
   }
@@ -67,18 +67,22 @@ class PublicBendersSequential: public BendersSequential {
   {}
 
   void build_input_map() override { BendersBase::build_input_map(); }
+  void getSubproblemCut(SubproblemCutPackage& subproblem_cut_package) override {
+    BendersBase::getSubproblemCut(subproblem_cut_package);
+  }
 };
 
 class BendersSequentialTest : public ::testing::Test {
  public:
   Logger logger_ = std::make_shared<NOOPLogger>();
-  Writer writer_ = std::make_shared<NOOPWritter>();
+  Writer writer_ = std::make_shared<NOOPWriter>();
   std::shared_ptr<MPSUtils> mps_utils_ = std::make_shared<StubMPSUtils>();
   const std::filesystem::path data_test_dir = "data_test";
   BendersBaseOptions benders_base_options_ = init_benders_options();
 
  protected:
   void SetUp() override {
+    std::cout << "Working dir " << std::filesystem::current_path() << std::endl;
     benders_base_options_ = init_benders_options();
   }
 
@@ -120,11 +124,21 @@ class BendersSequentialTest : public ::testing::Test {
 };
 
 TEST_F(BendersSequentialTest, problem_initialization_contains_all_problems) {
-  PublicBendersSequential bendersSequential(benders_base_options_, logger_, writer_, mps_utils_);
-  bendersSequential.build_input_map();
+  PublicBendersSequential benders_sequential(benders_base_options_, logger_, writer_, mps_utils_);
+  benders_sequential.build_input_map();
 
-  bendersSequential.initialize_problems();
+  benders_sequential.initialize_problems();
 
-  ASSERT_EQ(bendersSequential.getSubproblemMap().size(), bendersSequential.getSubproblems().size());
-  ASSERT_EQ(bendersSequential.getSubproblemMap().size(), 1);
+  ASSERT_EQ(benders_sequential.getSubproblemMap().size(), benders_sequential.getSubproblems().size());
+  ASSERT_EQ(benders_sequential.getSubproblemMap().size(), 1);
+}
+
+TEST_F(BendersSequentialTest, produce_cut_for_problem) {
+  PublicBendersSequential benders_sequential(benders_base_options_, logger_, writer_, mps_utils_);
+  benders_sequential.build_input_map();
+
+  benders_sequential.initialize_problems();
+  SubproblemCutPackage subproblem_cut_package;
+  benders_sequential.getSubproblemCut(subproblem_cut_package);
+  ASSERT_EQ(1, 0);
 }

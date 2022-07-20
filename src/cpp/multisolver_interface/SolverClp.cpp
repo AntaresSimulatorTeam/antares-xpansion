@@ -90,7 +90,8 @@ void SolverClp::write_basis(const std::filesystem::path &filename) {
 }
 
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
-  _clp.readMps(filename.string().c_str(), true, false);
+  auto ret = _clp.readMps(filename.string().c_str(), true, false);
+  zero_status_check(ret, "read problem");
 }
 
 void SolverClp::read_prob_lp(const std::filesystem::path &filename) {

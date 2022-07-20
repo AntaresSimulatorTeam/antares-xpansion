@@ -354,7 +354,7 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 void BendersBase::getSubproblemCut(
     SubproblemCutPackage &subproblem_cut_package) {
   // With gcc9 there was no parallelisation when iterating on the map directly
-  // so with project it in a vector
+  // so we project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
   nameAndWorkers.reserve(subproblem_map.size());
   for (const auto &[name, worker] : subproblem_map) {

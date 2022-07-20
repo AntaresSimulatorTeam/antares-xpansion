@@ -38,7 +38,7 @@ class BendersBase {
   bool stopping_criterion();
   void update_trace();
   void get_master_value();
-  void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
+  virtual void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
   [[nodiscard]] std::filesystem::path GetSubproblemPath(
