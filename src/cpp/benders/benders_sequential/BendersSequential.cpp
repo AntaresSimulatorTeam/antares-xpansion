@@ -19,7 +19,12 @@
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger &logger, Writer writer)
-    : BendersBase(options, logger, std::move(writer)) {}
+    : BendersSequential(options, logger, std::move(writer), std::make_shared<MPSUtils>()) {}
+
+BendersSequential::BendersSequential(const BendersBaseOptions &options,
+                                     Logger &logger, Writer writer,
+                                     std::shared_ptr<MPSUtils> mps_utils)
+    : BendersBase(options, logger, std::move(writer), std::move(mps_utils)) {}
 
 void BendersSequential::initialize_problems() {
   match_problem_to_id();

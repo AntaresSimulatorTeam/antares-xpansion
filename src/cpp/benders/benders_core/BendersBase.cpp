@@ -14,11 +14,21 @@
 
 BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
                          Writer writer)
+    : BendersBase(options, logger, writer, std::make_shared<MPSUtils>()) {
+
+}
+
+BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
+                         Writer writer, std::shared_ptr<MPSUtils> mps_utils)
     : _options(std::move(options)),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
       _logger(logger),
-      _writer(std::move(writer)) {}
+      _writer(std::move(writer)),
+      mps_utils_(std::move(mps_utils))
+{
+
+}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -703,7 +713,7 @@ void BendersBase::set_log_file(const std::filesystem::path &log_name) {
  *responsible for the creation of the structure file.
  */
 void BendersBase::build_input_map() {
-  auto input = build_input(get_structure_path());
+  auto input = mps_utils_->build_input(get_structure_path());
   _totalNbProblems = input.size();
   _writer->write_nbweeks(_totalNbProblems);
   _data.nsubproblem = _totalNbProblems - 1;
@@ -857,3 +867,7 @@ void BendersBase::write_basis() const {
                       (_options.LAST_MASTER_BASIS));
   _master->write_basis(filename);
 }
+const SubproblemsMapPtr &BendersBase::getSubproblemMap() const {
+  return subproblem_map;
+}
+const StrVector &BendersBase::getSubproblems() const { return subproblems; }

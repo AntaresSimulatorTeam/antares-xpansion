@@ -16,7 +16,8 @@
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(BendersBaseOptions options, Logger &logger, Writer writer);
+  explicit BendersBase(BendersBaseOptions options, Logger &logger, Writer writer);
+  explicit BendersBase(BendersBaseOptions options, Logger &logger, Writer writer, std::shared_ptr<MPSUtils> mps_utils);
   virtual void launch() = 0;
   void set_log_file(const std::filesystem::path &log_name);
   [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
@@ -47,7 +48,7 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
-  void build_input_map();
+  virtual void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
   void free_master() const;
@@ -118,6 +119,12 @@ class BendersBase {
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;
+
+ public:
+  const SubproblemsMapPtr &getSubproblemMap() const;
+  const StrVector &getSubproblems() const;
+
+ private:
   AllCutStorage _all_cuts_storage;
   StrVector subproblems;
   std::ofstream _csv_file;
@@ -129,5 +136,6 @@ class BendersBase {
  public:
   Logger _logger;
   Writer _writer;
+  std::shared_ptr<MPSUtils> mps_utils_;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

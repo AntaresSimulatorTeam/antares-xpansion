@@ -12,6 +12,9 @@ class BendersSequential : public BendersBase {
  public:
   explicit BendersSequential(BendersBaseOptions const &options, Logger &logger,
                              Writer writer);
+  explicit BendersSequential(BendersBaseOptions const &options, Logger &logger,
+                             Writer writer,
+                             std::shared_ptr<MPSUtils> mps_utils);
   virtual ~BendersSequential() = default;
   virtual void launch();
   void build_cut();
