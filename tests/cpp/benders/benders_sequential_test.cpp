@@ -82,8 +82,8 @@ class BendersSequentialTest : public ::testing::Test {
  protected:
   void SetUp() override {
     logger = std::make_shared<xpansion::logger::UserFile>(std::tmpnam(nullptr));
-    writer =
-        std::make_shared<Output::JsonWriter>(nullptr, std::tmpnam(nullptr));
+    writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
+                                                  std::tmpnam(nullptr));
   }
 
   BaseOptions init_base_options() const {
