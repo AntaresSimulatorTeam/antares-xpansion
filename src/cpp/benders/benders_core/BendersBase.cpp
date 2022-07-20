@@ -871,7 +871,9 @@ void BendersBase::SaveCurrentBendersData() {
                         : bendersDataToLogData(_data);
   last_iteration_writer.SaveBestAndLastIterations(best_iteration_data, last);
   SaveCurrentIterationInOutputFile();
-  PrintCurrentIterationCsv();
+  if (_options.TRACE) {
+    PrintCurrentIterationCsv();
+  }
 }
 
 void BendersBase::EndWritingInOutputFile() const {

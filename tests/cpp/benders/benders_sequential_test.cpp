@@ -98,6 +98,7 @@ class BendersSequentialTest : public ::testing::Test {
     base_options.INPUTROOT = (data_test_dir / "mps").string();
     base_options.SOLVER_NAME = "COIN";
     base_options.weights = {};
+    base_options.RESUME = false;
 
     return base_options;
   }
@@ -116,7 +117,7 @@ class BendersSequentialTest : public ::testing::Test {
 
     options.INITIAL_MASTER_RELAXATION = true;
     options.AGGREGATION = false;
-    options.TRACE = true;
+    options.TRACE = false;
     options.BOUND_ALPHA = true;
 
     options.CSV_NAME = "my_trace";
