@@ -51,7 +51,7 @@ class StubMPSUtils: public MPSUtils {
       const std::filesystem::path& structure_path) const override {
         return {
             {"master", {{"Variable1", 1}}},
-            {"subproblem", {{"Variable2", 2}}}
+            {"subproblem", {{"x2", 2}}}
            };
 
   }
@@ -140,5 +140,6 @@ TEST_F(BendersSequentialTest, produce_cut_for_problem) {
   benders_sequential.initialize_problems();
   SubproblemCutPackage subproblem_cut_package;
   benders_sequential.getSubproblemCut(subproblem_cut_package);
-  ASSERT_EQ(1, 0);
+  ASSERT_EQ(subproblem_cut_package.size(), 1);
+  ASSERT_NE(subproblem_cut_package.find("subproblem"), subproblem_cut_package.end());
 }
