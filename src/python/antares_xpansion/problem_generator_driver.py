@@ -6,6 +6,7 @@ import shutil
 import os
 import subprocess
 from typing import List
+import zipfile
 
 import sys
 from datetime import datetime
@@ -81,9 +82,11 @@ class ProblemGeneratorDriver:
 
         if output_path.exists():
             self._output_path = output_path
-            self._lp_path = os.path.normpath(os.path.join(self._output_path, 'lp'))
+            self._lp_path = os.path.normpath(
+                os.path.join(self._output_path, 'lp'))
         else:
-            raise ProblemGeneratorDriver.OutputPathError(f"{output_path} not found")
+            raise ProblemGeneratorDriver.OutputPathError(
+                f"{output_path} not found")
 
     def get_output_path(self):
         return self._output_path
@@ -103,19 +106,24 @@ class ProblemGeneratorDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
 
+        mps_dir = "MPS_DIR.zip"
         mps_txt = read_and_write_mps(self.output_path)
-        with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l:
+        with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l, zipfile.ZipFile(self.output_path / mps_dir, "w") as mps_zip:
             for line in mps_txt.items():
-                file_l.write(line[1][0] + ' ' + line[1][1] + ' ' + line[1][2] + '\n')
-
+                file_l.write(line[1][0] + ' ' + line[1]
+                             [1] + ' ' + line[1][2] + '\n')
+                mps_zip.write(self.output_path /
+                              line[1][0], line[1][0], compress_type=zipfile.ZIP_DEFLATED)
         self._check_and_copy_area_file()
         self._check_and_copy_interco_file()
 
     def _check_and_copy_area_file(self):
-        self._check_and_copy_txt_file("area", ProblemGeneratorDriver.AreaFileException)
+        self._check_and_copy_txt_file(
+            "area", ProblemGeneratorDriver.AreaFileException)
 
     def _check_and_copy_interco_file(self):
-        self._check_and_copy_txt_file("interco", ProblemGeneratorDriver.IntercoFilesException)
+        self._check_and_copy_txt_file(
+            "interco", ProblemGeneratorDriver.IntercoFilesException)
 
     def _check_and_copy_txt_file(self, prefix, exception_to_raise: BasicException):
         self._check_and_copy_file(prefix, "txt", exception_to_raise)
@@ -127,9 +135,11 @@ class ProblemGeneratorDriver:
             raise exception_to_raise("No %s*.txt file found" % prefix)
 
         elif len(files) > 1:
-            raise exception_to_raise("More than one %s*.txt file found" % prefix)
+            raise exception_to_raise(
+                "More than one %s*.txt file found" % prefix)
 
-        shutil.copy(files[0], os.path.normpath(os.path.join(self.output_path, prefix + '.' + extension)))
+        shutil.copy(files[0], os.path.normpath(
+            os.path.join(self.output_path, prefix + '.' + extension)))
 
     def _lp_step(self):
         """
@@ -143,8 +153,10 @@ class ProblemGeneratorDriver:
         os.makedirs(self._lp_path)
 
         if self.weight_file_name_for_lp:
-            XpansionStudyReader.check_weights_file(self.user_weights_file_path, len(self.active_years))
-            weight_list = XpansionStudyReader.get_years_weight_from_file(self.user_weights_file_path)
+            XpansionStudyReader.check_weights_file(
+                self.user_weights_file_path, len(self.active_years))
+            weight_list = XpansionStudyReader.get_years_weight_from_file(
+                self.user_weights_file_path)
             YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name_for_lp,
                                                                           self.active_years)
 
@@ -156,7 +168,8 @@ class ProblemGeneratorDriver:
                                         stderr=output_file)
 
             end_time = datetime.now()
-            flushed_print('Post antares step duration: {}'.format(end_time - start_time))
+            flushed_print('Post antares step duration: {}'.format(
+                end_time - start_time))
 
             if returned_l.returncode != 0:
                 raise ProblemGeneratorDriver.LPNamerExecutionError(
@@ -166,14 +179,16 @@ class ProblemGeneratorDriver:
 
     def get_lp_namer_log_filename(self):
         if not self._lp_path:
-            raise ProblemGeneratorDriver.LPNamerPathError("Error output path is not given")
+            raise ProblemGeneratorDriver.LPNamerPathError(
+                "Error output path is not given")
         return os.path.join(self._lp_path, os.path.splitext(self.LP_NAMER)[0] + '.log')
 
     def _get_lp_namer_command(self):
 
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
         if not self.lp_namer_exe_path.is_file():
-            raise ProblemGeneratorDriver.LPNamerExeError(f"LP namer exe: {self.lp_namer_exe_path} not found")
+            raise ProblemGeneratorDriver.LPNamerExeError(
+                f"LP namer exe: {self.lp_namer_exe_path} not found")
 
         return [self.lp_namer_exe_path, "-o", str(self.output_path), "-f", is_relaxed, "-e",
                 self.additional_constraints]
