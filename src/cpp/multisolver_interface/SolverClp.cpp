@@ -90,8 +90,7 @@ void SolverClp::write_basis(const std::filesystem::path &filename) {
 }
 
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
-  auto ret = _clp.readMps(filename.string().c_str(), true, false);
-  zero_status_check(ret, "read problem");
+  _clp.readMps(filename.string().c_str(), true, false);
 }
 
 void SolverClp::read_prob_lp(const std::filesystem::path &filename) {
@@ -435,6 +434,15 @@ void SolverClp::get_basis(int *rstatus, int *cstatus) const {
   int nrows = get_nrows();
   for (int i = 0; i < nrows; i++) {
     rstatus[i] = _clp.getRowStatus(i);
+  }
+}
+
+void SolverClp::SetBasis(std::vector<int> rstatus, std::vector<int> cstatus) {
+  for (int i = 0; i < rstatus.size(); ++i) {
+    _clp.setRowStatus(i, static_cast< ClpSimplex::Status >(rstatus[i]));
+  }
+  for (int i = 0; i < cstatus.size(); ++i) {
+    _clp.setColumnStatus(i, static_cast< ClpSimplex::Status >(cstatus[i]));
   }
 }
 

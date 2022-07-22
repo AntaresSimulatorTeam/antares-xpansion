@@ -57,9 +57,15 @@ class StubMPSUtils: public MPSUtils {
   }
 };
 
-class PublicBendersSequential: public BendersSequential {
+/**
+ * We need some adjustments to test properly
+ * - Need to make public some function
+ * - Need to override dome factory methods
+ * - Behave like a mock in some cases
+ */
+class BendersSequentialSUT : public BendersSequential {
  public:
-  PublicBendersSequential(BendersBaseOptions const& options,
+  BendersSequentialSUT(BendersBaseOptions const& options,
                           Logger logger,
                           Writer writer,
                           std::shared_ptr<MPSUtils> mps_utils)
@@ -69,6 +75,15 @@ class PublicBendersSequential: public BendersSequential {
   void build_input_map() override { BendersBase::build_input_map(); }
   void getSubproblemCut(SubproblemCutPackage& subproblem_cut_package) override {
     BendersBase::getSubproblemCut(subproblem_cut_package);
+  }
+
+  mutable unsigned int subproblem_construction_count = 0;
+
+ protected:
+  std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
+      const std::pair<std::string, VariableMap>& kvp) const override {
+    subproblem_construction_count++;
+    return BendersBase::makeSubproblemWorker(kvp);
   }
 };
 
@@ -118,13 +133,14 @@ class BendersSequentialTest : public ::testing::Test {
     options.CSV_NAME = "my_trace";
     options.LAST_MASTER_MPS = "my_last_iteration";
     options.LAST_MASTER_BASIS = "my_last_basis";
+    options.CONSTRUCT_ALL_PROBLEMS = true;
 
     return options;
   }
 };
 
 TEST_F(BendersSequentialTest, problem_initialization_contains_all_problems) {
-  PublicBendersSequential benders_sequential(benders_base_options_, logger_, writer_, mps_utils_);
+  BendersSequentialSUT benders_sequential(benders_base_options_, logger_, writer_, mps_utils_);
   benders_sequential.build_input_map();
 
   benders_sequential.initialize_problems();
@@ -134,12 +150,45 @@ TEST_F(BendersSequentialTest, problem_initialization_contains_all_problems) {
 }
 
 TEST_F(BendersSequentialTest, produce_cut_for_problem) {
-  PublicBendersSequential benders_sequential(benders_base_options_, logger_, writer_, mps_utils_);
+  BendersSequentialSUT benders_sequential(benders_base_options_, logger_, writer_, mps_utils_);
   benders_sequential.build_input_map();
 
   benders_sequential.initialize_problems();
+  ASSERT_EQ(benders_sequential.subproblem_construction_count, 1);
+
   SubproblemCutPackage subproblem_cut_package;
   benders_sequential.getSubproblemCut(subproblem_cut_package);
+
+  ASSERT_EQ(benders_sequential.subproblem_construction_count, 1);
+  ASSERT_EQ(subproblem_cut_package.size(), 1);
+  ASSERT_NE(subproblem_cut_package.find("subproblem"), subproblem_cut_package.end());
+}
+
+TEST_F(BendersSequentialTest, Option_to_limit_memory_doesnt_produce_problems) {
+  benders_base_options_.CONSTRUCT_ALL_PROBLEMS = false;
+  BendersSequentialSUT benders_sequential(benders_base_options_, logger_, writer_, mps_utils_);
+  benders_sequential.build_input_map();
+
+  benders_sequential.initialize_problems();
+
+  ASSERT_FALSE(benders_sequential.Options().CONSTRUCT_ALL_PROBLEMS);
+  ASSERT_EQ(benders_sequential.getSubproblemMap().size(), benders_sequential.getSubproblems().size());
+  ASSERT_EQ(benders_sequential.getSubproblemMap().size(), 0);
+}
+
+TEST_F(BendersSequentialTest, produce_cut_for_problem_even_without_all_problems_constructed) {
+  benders_base_options_.CONSTRUCT_ALL_PROBLEMS = false;
+  BendersSequentialSUT benders_sequential(benders_base_options_, logger_, writer_, mps_utils_);
+  benders_sequential.build_input_map();
+
+  benders_sequential.initialize_problems();
+  ASSERT_EQ(benders_sequential.subproblem_construction_count, 0);
+
+  SubproblemCutPackage subproblem_cut_package;
+  benders_sequential.getSubproblemCut(subproblem_cut_package);
+
+  ASSERT_EQ(benders_sequential.subproblem_construction_count, 1);
+  ASSERT_FALSE(benders_sequential.Options().CONSTRUCT_ALL_PROBLEMS);
   ASSERT_EQ(subproblem_cut_package.size(), 1);
   ASSERT_NE(subproblem_cut_package.find("subproblem"), subproblem_cut_package.end());
 }

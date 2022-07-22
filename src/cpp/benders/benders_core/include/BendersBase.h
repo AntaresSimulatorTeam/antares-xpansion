@@ -72,7 +72,7 @@ class BendersBase {
   void SetSubproblemCost(const double &subproblem_cost);
   bool IsResumeMode() const;
   std::filesystem::path LastIterationFile() const {
-    return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
+    return std::filesystem::path(options_.LAST_ITERATION_JSON_FILE);
   }
   void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
   LogData GetBestIterationData() const;
@@ -112,7 +112,12 @@ class BendersBase {
   LogData FinalLogData() const;
 
  private:
-  BendersBaseOptions _options;
+  BendersBaseOptions options_;
+
+ public:
+  const BendersBaseOptions& Options() const;
+
+ private:
   unsigned int _totalNbProblems = 0;
   std::filesystem::path _log_name;
   BendersTrace _trace;
@@ -137,5 +142,9 @@ class BendersBase {
   Logger _logger;
   Writer _writer;
   std::shared_ptr<MPSUtils> mps_utils_;
+ protected:
+  virtual std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
+      const std::pair<std::string, VariableMap> &kvp) const;
+  std::map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

@@ -149,6 +149,7 @@ struct BendersBaseOptions : public BaseOptions {
   std::string CSV_NAME;
   std::string LAST_MASTER_MPS;
   std::string LAST_MASTER_BASIS;
+  bool CONSTRUCT_ALL_PROBLEMS = true;
 };
 
 void usage(int argc);
