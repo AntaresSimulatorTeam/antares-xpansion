@@ -18,7 +18,9 @@ add_library (helpers STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.cc
 	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/StringUtils.cpp AntaresVersionProvider.cpp AntaresVersionProvider.h)
+	${CMAKE_CURRENT_SOURCE_DIR}/StringUtils.cpp AntaresVersionProvider.cpp AntaresVersionProvider.h
+	${CMAKE_CURRENT_SOURCE_DIR}/FileExtracter.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/FileExtracter.h )
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
@@ -35,4 +37,5 @@ target_link_libraries (helpers
 		solvers
 		glog::glog
 		gflags::gflags
+		libzippp::libzippp
 )
