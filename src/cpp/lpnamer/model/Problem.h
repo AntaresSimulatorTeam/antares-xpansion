@@ -201,6 +201,9 @@ class Problem : public SolverAbstract {
   void read_basis(const std::filesystem::path &filename) override {
     solver_abstract_->read_basis(filename);
   }
+  void SetBasis(std::vector<int> rstatus, std::vector<int> cstatus) override {
+    solver_abstract_->SetBasis(rstatus, cstatus);
+  }
 };
 
 #endif  // ANTARESXPANSION_SRC_CPP_LPNAMER_MODEL_PROBLEM_H_

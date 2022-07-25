@@ -34,15 +34,15 @@ Default value: `full`.
 The execution of Antares-Xpansion consists of several steps that can be run separately. The
 `--step` parameter allows to select the steps to execute:
 
-| Step                 | Description                    |
-| :--------            | ------------------------------------------------------------------------ |
-| `antares`            | Launch Antares-Simulator once to get the Antares problem.
-| `problem_generation` | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run. |
-| `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/investment-problem.md).|
-| `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/investment-problem.md) algorithm. |
-| `full`               | Launch all steps in order: `antares` \> `problem_generation` \> `benders` \> `study_update`           |
-| `sensitivity`        | Launch sensitivity analysis, see [Sensitivity analysis](sensitivity-analysis.md).                       |
-| `resume`        | resume benders step of a study in accordance with `--simulationName`, by default `last` study is resumed.                      |
+| Step                     | Description                                                                                                                                                                       |
+|:-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `antares`                | Launch Antares-Simulator once to get the Antares problem.                                                                                                                         
+| `problem_generation`     | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run.                                                                      |
+| `benders`                | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/investment-problem.md).                               |
+| `study_update`           | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/investment-problem.md) algorithm.                                   |
+| `full`                   | Launch all steps in order: `antares` \> `problem_generation` \> `benders` \> `study_update`                                                                                       |
+| `sensitivity`            | Launch sensitivity analysis, see [Sensitivity analysis](sensitivity-analysis.md).                                                                                                 |
+| `resume`                 | resume benders step of a study in accordance with `--simulationName`, by default `last` study is resumed.                                                                         |
 
 #### `-i, --dataDir`
 
@@ -93,6 +93,13 @@ Show the Antares-Xpansion version.
 #### `--antares-version`
 
 Show the Antares-Simulator version (used in the `antares` step).
+
+### `--construct_all_problems`
+
+Default value: `True`.
+
+
+`{True|False}`. Define if you want the benders step to construct all problems initially (True) or to rebuild them each iteration (False). Set to False to reduce maximum RAM usage at the cost of longer execution time (e.g. Running a large study on a personal computer.)
 
 ## Graphical user interface
 

@@ -673,6 +673,8 @@ class SolverAbstract {
   */
   virtual void get_basis(int *rstatus, int *cstatus) const = 0;
 
+  virtual void SetBasis(std::vector<int> rstatus, std::vector<int> cstatus) = 0;
+
   /**
    * @brief Get the optimal value of a MIP problem (available after method
    * "solve_mip")

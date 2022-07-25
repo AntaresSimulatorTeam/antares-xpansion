@@ -5,7 +5,6 @@
 #include <utility>
 
 #include "Timer.h"
-
 #include "solver_utils.h"
 
 /*!
@@ -21,20 +20,27 @@ BendersSequential::BendersSequential(
     BendersBaseOptions const &options, Logger logger, Writer writer,
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : BendersBase(options, std::move(logger), std::move(writer),
-                  mathLoggerDriver) {}
+                  mathLoggerDriver, std::make_shared<MPSUtils>()) {}
 
+BendersSequential::BendersSequential(
+    const BendersBaseOptions &options, Logger &logger, Writer writer,
+    std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+    std::shared_ptr<MPSUtils> mps_utils)
+    : BendersBase(options, logger, std::move(writer), mathLoggerDriver,
+                  std::move(mps_utils)) {}
 void BendersSequential::InitializeProblems() {
   MatchProblemToId();
 
   reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
-                                get_solver_name(), get_log_level(),
-                                _data.nsubproblem, solver_log_manager_,
-                                IsResumeMode(), _logger);
-  for (const auto &problem : coupling_map_) {
-    const auto subProblemFilePath = GetSubproblemPath(problem.first);
-
-    AddSubproblem(problem);
-    AddSubproblemName(problem.first);
+                             get_solver_name(), get_log_level(),
+                             _data.nsubproblem, solver_log_manager_,
+                             IsResumeMode(), _logger);
+  if (Options().CONSTRUCT_ALL_PROBLEMS) {
+    for (const auto &problem : coupling_map_) {
+      const auto subProblemFilePath = GetSubproblemPath(problem.first);
+      AddSubproblem(problem);
+      AddSubproblemName(problem.first);
+    }
   }
 }
 

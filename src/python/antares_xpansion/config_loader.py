@@ -703,6 +703,9 @@ class ConfigLoader:
     def allow_run_as_root(self):
         return self._config.allow_run_as_root
 
+    def construct_all_problems(self):
+        return self._config.CONSTRUCT_ALL_PROBLEMS
+
     def timelimit(self):
         """
         returns the timelimit read from the settings file

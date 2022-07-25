@@ -170,7 +170,8 @@ class XpansionDriver:
             self.config_loader.keep_mps(),
             self.config_loader.n_mpi(),
             oversubscribe=self.config_loader.oversubscribe(),
-            allow_run_as_root=self.config_loader.allow_run_as_root()
+            allow_run_as_root=self.config_loader.allow_run_as_root(),
+            construct_all_problems=self.config_loader.construct_all_problems(),
         )
 
     def launch_sensitivity_step(self):

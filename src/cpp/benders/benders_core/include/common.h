@@ -169,11 +169,20 @@ struct BendersBaseOptions : public BaseOptions {
   std::string CSV_NAME;
   std::string LAST_MASTER_MPS;
   std::string LAST_MASTER_BASIS;
+  bool CONSTRUCT_ALL_PROBLEMS = true;
 
   size_t BATCH_SIZE;
   ExternalLoopOptions EXTERNAL_LOOP_OPTIONS;
 };
 
 void usage(int argc);
-CouplingMap build_input(const std::filesystem::path &structure_path);
+
+class MPSUtils {
+ public:
+  MPSUtils() = default;
+  MPSUtils(const MPSUtils& other) = delete;
+  virtual ~MPSUtils() = default;
+  virtual CouplingMap build_input(const std::filesystem::path &structure_path) const;
+};
+
 Json::Value get_json_file_content(const std::filesystem::path &json_file);

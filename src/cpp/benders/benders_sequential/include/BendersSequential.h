@@ -14,12 +14,16 @@ class BendersSequential : public BendersBase {
   explicit BendersSequential(
       BendersBaseOptions const &options, Logger logger, Writer writer,
       std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+  explicit BendersSequential(BendersBaseOptions const &options, Logger &logger,
+                             Writer writer,
+                             std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                             std::shared_ptr<MPSUtils> mps_utils);
+
   virtual ~BendersSequential() = default;
   virtual void launch();
   virtual void BuildCut();
   virtual void InitializeProblems();
   std::string BendersName() const { return "Sequential"; }
-
 
  protected:
   virtual void free();

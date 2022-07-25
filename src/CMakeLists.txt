@@ -36,6 +36,7 @@ if (PYINSTALLER)
     endif()
 
     if (BUILD_UI)
+        install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml DESTINATION . )
         install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/antares-xpansion-ui.py -n antares-xpansion-ui)" )
     endif()
 

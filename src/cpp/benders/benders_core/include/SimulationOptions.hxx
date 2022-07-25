@@ -70,6 +70,8 @@ BENDERS_OPTIONS_MACRO(RESUME, bool, false, asBool())
 BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
                       asString())
 
+BENDERS_OPTIONS_MACRO(CONSTRUCT_ALL_PROBLEMS, bool, true, asBool())
+
 // BATCH SIZE (Benders by batch)
 BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 

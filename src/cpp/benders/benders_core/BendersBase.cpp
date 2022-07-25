@@ -14,17 +14,25 @@
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          Writer writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : _options(std::move(options)),
-      _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
-                     (_options.CSV_NAME + ".csv")),
+    : BendersBase(options, logger, writer, mathLoggerDriver, std::make_shared<MPSUtils>()) {
+
+}
+
+BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
+                         Writer writer, std::shared_ptr<MathLoggerDriver> mathLoggerDriver, std::shared_ptr<MPSUtils> mps_utils)
+    : options_(std::move(options)),
+      _csv_file_path(std::filesystem::path(options_.OUTPUTROOT) /
+                     (options_.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
       _writer(std::move(writer)),
-      mathLoggerDriver_(std::move(mathLoggerDriver)) {
+      mathLoggerDriver_(std::move(mathLoggerDriver)),
+      mps_utils_(std::move(mps_utils))
+{
 }
 
 std::filesystem::path BendersBase::OuterloopOptionsFile() const {
-  return std::filesystem::path(_options.INPUTROOT) /
-         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE;
+  return std::filesystem::path(options_.INPUTROOT) /
+         options_.EXTERNAL_LOOPoptions_.OUTER_LOOP_OPTION_FILE;
 }
 
 /*!
@@ -52,9 +60,9 @@ void BendersBase::init_data() {
 
 void BendersBase::OpenCsvFile() {
   if (!_csv_file.is_open()) {
-    const auto opening_mode = _options.RESUME ? std::ios::app : std::ios::trunc;
+    const auto opening_mode = options_.RESUME ? std::ios::app : std::ios::trunc;
     _csv_file.open(_csv_file_path, std::ios::out | opening_mode);
-    if (_csv_file && !_options.RESUME) {
+    if (_csv_file && !options_.RESUME) {
       _csv_file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;single_"
                    "subpb_costs_under_approx;"
                    "time;basis;"
@@ -148,7 +156,7 @@ void BendersBase::print_master_csv(std::ostream &stream,
                                    Point const &x_cut) const {
   stream << "Master"
          << ";";
-  stream << _options.MASTER_NAME << ";";
+  stream << options_.MASTER_NAME << ";";
   stream << _data.nsubproblem << ";";
   stream << trace._ub << ";";
   stream << trace._lb << ";";
@@ -186,7 +194,7 @@ void BendersBase::update_best_ub() {
  */
 bool BendersBase::ShouldRelaxationStop() const {
   return (_data.stopping_criterion != StoppingCriterion::empty) ||
-         (((_data.best_ub - _data.lb) / _data.best_ub) <= _options.RELAXED_GAP);
+         (((_data.best_ub - _data.lb) / _data.best_ub) <= options_.RELAXED_GAP);
 }
 
 /*!
@@ -196,16 +204,16 @@ bool BendersBase::ShouldRelaxationStop() const {
  *
  */
 void BendersBase::UpdateStoppingCriterion() {
-  if (_data.benders_time > _options.TIME_LIMIT)
+  if (_data.benders_time > options_.TIME_LIMIT)
     _data.stopping_criterion = StoppingCriterion::timelimit;
-  else if ((_options.MAX_ITERATIONS != -1) &&
-           (_data.it >= _options.MAX_ITERATIONS))
+  else if ((options_.MAX_ITERATIONS != -1) &&
+           (_data.it >= options_.MAX_ITERATIONS))
     _data.stopping_criterion = StoppingCriterion::max_iteration;
-  else if (_data.lb + _options.ABSOLUTE_GAP >= _data.best_ub)
+  else if (_data.lb + options_.ABSOLUTE_GAP >= _data.best_ub)
     _data.stopping_criterion = StoppingCriterion::absolute_gap;
   else if (((_data.best_ub - _data.lb) /
             std::max(std::abs(_data.best_ub), std::abs(_data.lb))) <=
-           _options.RELATIVE_GAP)
+           options_.RELATIVE_GAP)
     _data.stopping_criterion = StoppingCriterion::relative_gap;
 }
 
@@ -242,8 +250,8 @@ void BendersBase::UpdateTrace() {
 }
 
 bool BendersBase::is_initial_relaxation_requested() const {
-  return (_options.MASTER_FORMULATION == MasterFormulation::INTEGER &&
-          _options.SEPARATION_PARAM < 1);
+  return (options_.MASTER_FORMULATION == MasterFormulation::INTEGER &&
+          options_.SEPARATION_PARAM < 1);
 }
 
 bool BendersBase::SwitchToIntegerMaster(bool is_relaxed) const {
@@ -260,7 +268,7 @@ void BendersBase::ResetDataPostRelaxation() {
   _data.best_ub = 1e+20;
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
-  _options.SEPARATION_PARAM = 1;
+  options_.SEPARATION_PARAM = 1;
 }
 
 /*!
@@ -301,11 +309,11 @@ void BendersBase::check_status(
 void BendersBase::get_master_value() {
   Timer timer_master;
   _data.single_subpb_costs_under_approx.resize(_data.nsubproblem);
-  if (_options.BOUND_ALPHA) {
+  if (options_.BOUND_ALPHA) {
     _master->fix_alpha(_data.best_ub);
   }
-  _master->solve(_data.master_status, _options.OUTPUTROOT,
-                 _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
+  _master->solve(_data.master_status, options_.OUTPUTROOT,
+                 options_.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
   _master->get(
       _data.x_out, _data.overall_subpb_cost_under_approx,
       _data.single_subpb_costs_under_approx); /*Get the optimal variables of the
@@ -336,8 +344,8 @@ void BendersBase::ComputeXCut() {
     _data.x_cut = _data.x_out;
   } else {
     for (const auto &[name, value] : _data.x_out) {
-      _data.x_cut[name] = _options.SEPARATION_PARAM * _data.x_out[name] +
-                          (1 - _options.SEPARATION_PARAM) * _data.x_in[name];
+      _data.x_cut[name] = options_.SEPARATION_PARAM * _data.x_out[name] +
+                          (1 - options_.SEPARATION_PARAM) * _data.x_in[name];
     }
   }
 }
@@ -368,8 +376,15 @@ void BendersBase::compute_ub() {
  *  \param subproblem_cut_package : map storing for each subproblem its cut
  */
 void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
-  // With gcc9 there was no parallelisation when iterating on the map directly
-  // so with project it in a vector
+  // so we project it in a vector
+  if (Options().CONSTRUCT_ALL_PROBLEMS) {
+    getSubproblemCut_Fast(subproblem_cut_package);
+  } else {
+    getSubproblemCut_ConstructWorker(subproblem_cut_package);
+  }
+}
+void BendersBase::getSubproblemCut_Fast(
+    SubproblemCutPackage &subproblem_cut_package) {
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
   nameAndWorkers.reserve(subproblem_map.size());
   for (const auto &[name, worker] : subproblem_map) {
@@ -393,14 +408,37 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
       },
       shouldParallelize());
 }
+
+void BendersBase::getSubproblemCut_ConstructWorker(
+    SubproblemCutPackage &subproblem_cut_package) {
+  auto nameAndVariableMap = FlattenMap(coupling_map);
+  std::mutex m;
+  selectPolicy(
+      [this, &nameAndVariableMap, &m, &subproblem_cut_package](auto &policy) {
+        std::for_each(
+            policy, nameAndVariableMap.begin(), nameAndVariableMap.end(),
+            [this, &m, &subproblem_cut_package](const std::pair<std::string, VariableMap> &kvp) {
+              const auto &[name, variables] = kvp;
+              std::shared_ptr<SubproblemWorker> worker =
+                  BuildProblem(kvp, name);
+              auto subproblem_cut_data = ComputeSubProblemCutData(worker);
+              auto [rstatus, cstatus] = GetProblemBasis(worker);
+              std::lock_guard guard(m);
+              subproblem_cut_package[name] = *subproblem_cut_data;
+              basiss_[name] = std::make_pair(rstatus, cstatus);
+            });
+      },
+      shouldParallelize());
+}
+
 void BendersBase::SolveSubproblem(
     SubProblemDataMap &subproblem_data_map,
     PlainData::SubProblemData &subproblem_data, const std::string &name,
     const std::shared_ptr<SubproblemWorker> &worker) {
   Timer subproblem_timer;
   worker->fix_to(_data.x_cut);
-  worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
-                _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
+  worker->solve(subproblem_data.lpstatus, options_.OUTPUTROOT,
+                options_.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
   worker->get_value(subproblem_data.subproblem_cost);
 
   worker->get_subgradient(subproblem_data.var_name_and_subgradient);
@@ -474,7 +512,7 @@ void BendersBase::compute_cut_aggregate(
  */
 void BendersBase::BuildCutFull(const SubProblemDataMap &subproblem_data_map) {
   check_status(subproblem_data_map);
-  if (_options.AGGREGATION) {
+  if (options_.AGGREGATION) {
     compute_cut_aggregate(subproblem_data_map);
   } else {
     compute_cut(subproblem_data_map);
@@ -483,9 +521,9 @@ void BendersBase::BuildCutFull(const SubProblemDataMap &subproblem_data_map) {
 
 LogData BendersBase::build_log_data_from_data() const {
   auto logData = FinalLogData();
-  logData.optimality_gap = _options.ABSOLUTE_GAP;
-  logData.relative_gap = _options.RELATIVE_GAP;
-  logData.max_iterations = _options.MAX_ITERATIONS;
+  logData.optimality_gap = options_.ABSOLUTE_GAP;
+  logData.relative_gap = options_.RELATIVE_GAP;
+  logData.max_iterations = options_.MAX_ITERATIONS;
   return logData;
 }
 
@@ -511,7 +549,7 @@ void BendersBase::post_run_actions() const {
 }
 
 void BendersBase::SaveCurrentIterationInOutputFile() const {
-  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+  if (!options_.EXTERNAL_LOOPoptions_.DO_OUTER_LOOP) {
     auto &LastWorkerMasterData = relevantIterationData_.last;
     if (LastWorkerMasterData._valid) {
       _writer->write_iteration(iteration(LastWorkerMasterData),
@@ -652,7 +690,7 @@ std::string BendersBase::status_from_criterion() const {
  */
 std::filesystem::path BendersBase::GetSubproblemPath(
     std::string const &slave_name) const {
-  return std::filesystem::path(_options.INPUTROOT) / slave_name;
+  return std::filesystem::path(options_.INPUTROOT) / slave_name;
 }
 
 /*!
@@ -664,13 +702,13 @@ std::filesystem::path BendersBase::GetSubproblemPath(
  */
 double BendersBase::SubproblemWeight(int subproblem_count,
                                      std::string const &name) const {
-  if (_options.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_UNIFORM_CST_STR) {
+  if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_UNIFORM_CST_STR) {
     return 1 / static_cast<double>(subproblem_count);
-  } else if (_options.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_CST_STR) {
-    double const weight(_options.SLAVE_WEIGHT_VALUE);
+  } else if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_CST_STR) {
+    double const weight(options_.SLAVE_WEIGHT_VALUE);
     return 1 / weight;
   } else {
-    return _options.weights.find(name)->second;
+    return options_.weights.find(name)->second;
   }
 }
 
@@ -678,22 +716,22 @@ double BendersBase::SubproblemWeight(int subproblem_count,
  *  \brief Get path to master problem mps file from options
  */
 std::filesystem::path BendersBase::get_master_path() const {
-  return std::filesystem::path(_options.INPUTROOT) /
-         (_options.MASTER_NAME + MPS_SUFFIX);
+  return std::filesystem::path(options_.INPUTROOT) /
+         (options_.MASTER_NAME + MPS_SUFFIX);
 }
 /*!
  *  \brief Get path to last mps file of master problem
  */
 std::filesystem::path BendersBase::LastMasterPath() const {
-  return std::filesystem::path(_options.OUTPUTROOT) /
-         (_options.LAST_MASTER_MPS + MPS_SUFFIX);
+  return std::filesystem::path(options_.OUTPUTROOT) /
+         (options_.LAST_MASTER_MPS + MPS_SUFFIX);
 }
 
 /*!
  *  \brief Get path to structure txt file from options
  */
 std::filesystem::path BendersBase::get_structure_path() const {
-  return std::filesystem::path(_options.INPUTROOT) / _options.STRUCTURE_FILE;
+  return std::filesystem::path(options_.INPUTROOT) / options_.STRUCTURE_FILE;
 }
 
 LogData BendersBase::bendersDataToLogData(
@@ -713,7 +751,7 @@ LogData BendersBase::bendersDataToLogData(
           data.max_invest,
           optimal_gap,
           optimal_gap / data.best_ub,
-          _options.MAX_ITERATIONS,
+          options_.MAX_ITERATIONS,
           data.benders_time,
           data.timer_master,
           data.subproblems_walltime,
@@ -758,10 +796,14 @@ WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
 void BendersBase::AddSubproblem(
     const std::pair<std::string, VariableMap> &kvp) {
-  subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
+  subproblem_map[kvp.first] = makeSubproblemWorker(kvp);
+}
+std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
+    const std::pair<std::string, VariableMap> &kvp) const {
+  return std::make_shared<SubproblemWorker>(
       kvp.second, GetSubproblemPath(kvp.first),
-      SubproblemWeight(_data.nsubproblem, kvp.first), _options.SOLVER_NAME,
-      _options.LOG_LEVEL, solver_log_manager_, _logger);
+      SubproblemWeight(_data.nsubproblem, kvp.first), Options().SOLVER_NAME,
+      options_.LOG_LEVEL, solver_log_manager_, _logger);
 }
 
 void BendersBase::free_subproblems() {
@@ -781,13 +823,13 @@ void BendersBase::AddSubproblemName(const std::string &name) {
   subproblems.push_back(name);
 }
 std::string BendersBase::get_master_name() const {
-  return _options.MASTER_NAME;
+  return options_.MASTER_NAME;
 }
 std::string BendersBase::get_solver_name() const {
-  return _options.SOLVER_NAME;
+  return options_.SOLVER_NAME;
 }
-int BendersBase::get_log_level() const { return _options.LOG_LEVEL; }
-bool BendersBase::is_trace() const { return _options.TRACE; }
+int BendersBase::get_log_level() const { return options_.LOG_LEVEL; }
+bool BendersBase::is_trace() const { return options_.TRACE; }
 Point BendersBase::get_x_cut() const { return _data.x_cut; }
 void BendersBase::set_x_cut(const Point &x_cut) { _data.x_cut = x_cut; }
 Point BendersBase::get_x_out() const { return _data.x_out; }
@@ -837,17 +879,17 @@ void BendersBase::ResetSimplexIterationsBounds()
 	_data.max_simplexiter = 0;
 	_data.min_simplexiter = std::numeric_limits<int>::max();
 }
-bool BendersBase::IsResumeMode() const { return _options.RESUME; }
+bool BendersBase::IsResumeMode() const { return options_.RESUME; }
 
 void BendersBase::UpdateMaxNumberIterationResumeMode(
     const unsigned nb_iteration_done) {
-  if (_options.MAX_ITERATIONS == -1) {
+  if (options_.MAX_ITERATIONS == -1) {
     return;
-  } else if (_options.MAX_ITERATIONS - nb_iteration_done <= 0) {
+  } else if (options_.MAX_ITERATIONS - nb_iteration_done <= 0) {
     _data.stop = true;
 
   } else {
-    _options.MAX_ITERATIONS -= nb_iteration_done;
+    options_.MAX_ITERATIONS -= nb_iteration_done;
   }
 }
 
@@ -888,7 +930,7 @@ void BendersBase::SaveCurrentBendersData() {
                         : bendersDataToLogData(_data);
   last_iteration_writer.SaveBestAndLastIterations(best_iteration_data, last);
   SaveCurrentIterationInOutputFile();
-  if (_options.TRACE) {
+  if (options_.TRACE) {
     PrintCurrentIterationCsv();
   }
 }
@@ -899,17 +941,67 @@ void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
   // TODO duration for outer loop
   _writer->write_duration(_data.benders_time);
-  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+  if (!options_.EXTERNAL_LOOPoptions_.DO_OUTER_LOOP) {
     SaveSolutionInOutputFile();
   }
 }
 
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }
 void BendersBase::write_basis() const {
-  const auto filename(std::filesystem::path(_options.OUTPUTROOT) /
-                      (_options.LAST_MASTER_BASIS));
+  const auto filename(std::filesystem::path(options_.OUTPUTROOT) /
+                      (options_.LAST_MASTER_BASIS));
   _master->write_basis(filename);
 }
+//Solve
+auto BendersBase::ComputeSubProblemCutData(const std::shared_ptr<SubproblemWorker> &worker) const {
+  Timer subproblem_timer;
+  auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
+  auto handler = std::make_shared<SubproblemCutDataHandler>(
+      subproblem_cut_data);
+  worker->fix_to(_data.x0);
+  worker->solve(handler->get_int(LPSTATUS), options_.OUTPUTROOT,
+                options_.LAST_MASTER_MPS + MPS_SUFFIX);
+  worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
+  worker->get_subgradient(handler->get_subgradient());
+  worker->get_splex_num_of_ite_last(
+      handler->get_int(SIMPLEXITER));
+  handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
+  return subproblem_cut_data;
+}
+
+template <class T>
+std::vector<std::pair<std::string, T>> FlattenMap(std::map<std::string, T> map_to_flatten) {
+  std::vector<std::pair<std::string, T>> flatten_result;
+  flatten_result.reserve(map_to_flatten.size());
+  for (const auto &[name, value] : map_to_flatten) {
+    flatten_result.emplace_back(name, value);
+  }
+  return flatten_result;
+}
+std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
+    const std::shared_ptr<SubproblemWorker> &worker) const {
+  int row_number = worker->_solver->get_nrows();
+  int col_number = worker->_solver->get_ncols();
+  auto rstatus = std::vector<int>(row_number);
+  auto cstatus = std::vector<int>(col_number);
+  worker->_solver->get_basis(rstatus.data(), cstatus.data());
+  return {rstatus, cstatus};
+}
+
+std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
+    const std::pair<std::string, VariableMap> &kvp, const std::string &name) {
+  auto worker = makeSubproblemWorker(kvp);
+  if (auto it_map_basis = basiss_.find(name); it_map_basis != basiss_.end()) {
+    worker->_solver->SetBasis(it_map_basis->second.first,
+                              it_map_basis->second.second);
+  }
+  return worker;
+}
+const SubproblemsMapPtr &BendersBase::getSubproblemMap() const {
+  return subproblem_map;
+}
+const StrVector &BendersBase::getSubproblems() const { return subproblems; }
+const BendersBaseOptions &BendersBase::Options() const { return options_; }
 
 WorkerMasterDataVect BendersBase::AllCuts() const {
   return workerMasterDataVect_;

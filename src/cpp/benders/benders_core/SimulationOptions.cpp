@@ -169,6 +169,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.CSV_NAME = CSV_NAME;
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
+  result.CONSTRUCT_ALL_PROBLEMS = CONSTRUCT_ALL_PROBLEMS;
   result.BATCH_SIZE = BATCH_SIZE;
   result.EXTERNAL_LOOP_OPTIONS = GetExternalLoopOptions();
   return result;
@@ -177,6 +178,21 @@ SimulationOptions::InvalidOptionFileException::InvalidOptionFileException(
     const std::string &arg)
     : runtime_error(arg) {}
 
+SimulationOptions::SimulationOptions(const std::string &options_filename,
+                                     const std::string &construct_all_problems)
+    : SimulationOptions(options_filename)
+{
+  if (construct_all_problems == "True")
+    CONSTRUCT_ALL_PROBLEMS = true;
+  else if (construct_all_problems == "False")
+    CONSTRUCT_ALL_PROBLEMS = false;
+  else
+  {
+    std::cerr << "Invalid parameter: " << construct_all_problems << ". Accepted values are [True|False] (Beware of capitalisation)" << std::endl;
+    std::cerr << "Fall back to default value: True" << std::endl;
+    CONSTRUCT_ALL_PROBLEMS = true;
+  }
+}
 
 ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
   return {DO_OUTER_LOOP, OUTER_LOOP_OPTION_FILE};

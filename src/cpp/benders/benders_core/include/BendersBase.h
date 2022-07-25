@@ -31,8 +31,9 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(const BendersBaseOptions &options, Logger logger, Writer writer,
-              std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+  explicit BendersBase(BendersBaseOptions options, Logger &logger, Writer writer, std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+  explicit BendersBase(BendersBaseOptions options, Logger &logger, Writer writer, std::shared_ptr<MathLoggerDriver> mathLoggerDriver, std::shared_ptr<MPSUtils> mps_utils);
+
   virtual void launch() = 0;
   void set_solver_log_file(const std::filesystem::path &log_file);
   [[nodiscard]] std::filesystem::path solver_log_file() const {
@@ -127,7 +128,7 @@ class BendersBase {
   void ComputeInvestCost();
   virtual void compute_ub();
   virtual void get_master_value();
-  void GetSubproblemCut(SubProblemDataMap &subproblem_data_map);
+  virtual void GetSubproblemCut(SubProblemDataMap &subproblem_data_map);
   virtual void post_run_actions() const;
   void BuildCutFull(const SubProblemDataMap &subproblem_data_map);
   virtual void DeactivateIntegrityConstraints() const;
@@ -142,6 +143,7 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
+  virtual void build_input_map();
   template <typename T, typename... Args>
   void reset_master(Args &&...args) {
     _master = std::make_shared<T>(std::forward<Args>(args)...);
@@ -181,7 +183,7 @@ class BendersBase {
   void SetSubproblemCost(const double &subproblem_cost);
   bool IsResumeMode() const;
   std::filesystem::path LastIterationFile() const {
-    return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
+    return std::filesystem::path(options_.LAST_ITERATION_JSON_FILE);
   }
   void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
   void SaveCurrentIterationInOutputFile() const;
@@ -249,7 +251,13 @@ class BendersBase {
 
  private:
   bool master_is_empty_ = true;
-  BendersBaseOptions _options;
+  BendersBaseOptions options_;
+
+ public:
+  const SubproblemsMapPtr &getSubproblemMap() const;
+  const StrVector &getSubproblems() const;
+
+ private:
   unsigned int _totalNbProblems = 0;
   std::filesystem::path solver_log_file_ = "";
   WorkerMasterPtr _master;
@@ -267,5 +275,22 @@ class BendersBase {
   Logger _logger;
   Writer _writer;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
+  std::shared_ptr<MPSUtils> mps_utils_;
+
+ protected:
+  virtual std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
+      const std::pair<std::string, VariableMap> &kvp) const;
+ private:
+  std::map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+  std::shared_ptr<SubproblemWorker> BuildProblem(
+      const std::pair<std::string, VariableMap> &kvp, const std::string &name);
+  std::pair<std::vector<int>, std::vector<int>> GetProblemBasis(
+      const std::shared_ptr<SubproblemWorker> &worker) const;
+  auto ComputeSubProblemCutData(const std::shared_ptr<SubproblemWorker> &worker) const;
+  void getSubproblemCut_Fast(
+      SubproblemCutPackage &subproblem_cut_package) const;
+  void getSubproblemCut_ConstructWorker(
+      SubproblemCutPackage &subproblem_cut_package);
+
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

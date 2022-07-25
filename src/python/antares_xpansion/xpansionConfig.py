@@ -38,6 +38,7 @@ class InputParameters:
     keep_mps: bool
     oversubscribe: bool
     allow_run_as_root: bool
+    construct_all_problems: bool
     memory: bool
 
 
@@ -68,6 +69,7 @@ class XpansionConfig:
         self.MPI_N: str = ""
         self.MPIEXEC: str = ""
         self.AVAILABLE_SOLVER: List[str]
+        self.CONSTRUCT_ALL_PROBLEMS: bool = True
 
         self._get_config_values()
 
@@ -88,6 +90,7 @@ class XpansionConfig:
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
         self.memory = self.input_parameters.memory
+        self.CONSTRUCT_ALL_PROBLEMS = self.input_parameters.construct_all_problems
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:

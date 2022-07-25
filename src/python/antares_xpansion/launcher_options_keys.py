@@ -1,6 +1,10 @@
 
 class LauncherOptionsKeys:
     @staticmethod
+    def construct_all_problems_key():
+        return "construct_all_problems"
+
+    @staticmethod
     def allow_run_as_root_key():
         return "allow_run_as_root"
 

@@ -6,11 +6,11 @@ import glob
 import os
 import subprocess
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from dataclasses import dataclass
 
 
 @dataclass
@@ -18,6 +18,7 @@ class SolversExe:
     benders: Path
     merge_mps: Path
     outer_loop: Path
+
 
 class BendersDriver:
 
@@ -28,6 +29,7 @@ class BendersDriver:
         self.benders = solvers_exe.benders
         self.merge_mps = solvers_exe.merge_mps
         self.outer_loop = solvers_exe.outer_loop
+        self.construct_all_problems = True
         self.mpiexec = mpiexec
         self.method = "benders"
         self.n_mpi = 1
@@ -42,7 +44,9 @@ class BendersDriver:
         self.MPI_N = "-n"
         self._initialise_system_specific_mpi_vars()
 
-    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False, allow_run_as_root=False):
+    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=6, oversubscribe=False,
+               allow_run_as_root=False,
+               construct_all_problems=True):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
 
@@ -53,6 +57,7 @@ class BendersDriver:
         self.oversubscribe = oversubscribe
         self.allow_run_as_root = allow_run_as_root
         self.simulation_output_path = simulation_output_path
+        self.construct_all_problems = construct_all_problems
         old_cwd = os.getcwd()
         lp_path = self.get_lp_path()
 
@@ -126,7 +131,7 @@ class BendersDriver:
         """
         returns a list consisting of the path to the required solver and its launching options
         """
-        bare_solver_command = [self.solver, self.options_file]
+        bare_solver_command = [self.solver, self.options_file, self.construct_all_problems]
         if self.n_mpi > 1:
             mpi_command = self.get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)

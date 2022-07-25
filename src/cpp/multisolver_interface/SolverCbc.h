@@ -178,6 +178,8 @@ class SolverCbc : public SolverAbstract {
   lower bound; 4 variable is super basic May be NULL if not required.
   */
   virtual void get_basis(int *rstatus, int *cstatus) const override;
+  void SetBasis(std::vector<int> rstatus,
+                        std::vector<int> cstatus) override;
   virtual double get_mip_value() const override;
   virtual double get_lp_value() const override;
   virtual int get_splex_num_of_ite_last() const override;

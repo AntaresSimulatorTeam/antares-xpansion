@@ -90,6 +90,7 @@ class NOOPSolver: public SolverAbstract {
   virtual void set_simplex_iter(int iter) override {}
   virtual void write_basis(const std::filesystem::path &filename) override {}
   virtual void read_basis(const std::filesystem::path &filename) override {}
+  void SetBasis(std::vector<int> rstatus, std::vector<int> cstatus) override {}
 };
 
 #endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_NOOPSOLVER_H_
