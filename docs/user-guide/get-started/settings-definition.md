@@ -24,6 +24,8 @@ The following section lists the configurable parameters. If the user does not sp
 |[`solver`](#solver) | `Cbc` | Name of the solver |
 |[`log_level`](#log_level) | `0` | Solver's log level |
 |[`additional-constraints`](#additional-constraints) | `None` | Path of the additional constraints file |
+|[`initial_master_relaxation`](#initial_master_relaxation) | `false` | Relax master problem in the first iterations |
+|[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-4` | Threshold to switch from relaxed to integer master |
 
 The format is a standard `.ini` and should follow this template:
 ```ini
@@ -243,3 +245,22 @@ time, but it can invest in neither.
 ![](../../assets/media/image19.png)
 
 **Figure 13** – Example of an additional constraint file.
+
+#### `initial_master_relaxation`
+
+Bool. Default value: `false`.
+
+If `initial_master_relaxation = true`, the master problem is relaxed during the first iterations. The switch from the relaxed to the integer formulation can be tuned with [`relaxed_optimality_gap`](#relaxed_optimality_gap). The parameter `initial_master_relaxation` has no effect in the case where `master = relaxed` as the master problem is always relaxed. 
+
+The initial master relaxation is required to use stabilisation techniques (not implemented yet) in order to speed up the Benders decomposition. These techniques can only be used with continuous problems. Therefore, when `master = integer`, the acceleration strategy consists in:
+
+1. Solving the first iterations with the relaxed formulation combined with stabilisation techniques,
+2. Once the gap is sufficiently small, switch back to the integer formulation and use the classical Benders algorithm.
+
+#### `relaxed_optimality_gap`
+
+Positive float. Default value: `1e-12`. 
+
+The `relaxed_optimality_gap` parameter only has effect when `master = integer` and `initial_master_relaxation = true`. In this case, the master problem is relaxed in the first iterations. The `relaxed_optimality_gap` is the threshold from which to switch from the relaxed to the integer master formulation. 
+
+In the first iterations, the algorithm computes upper and lower bounds on the optimal cost of the relaxed master problem. The algorithm switches to the integer formulation as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relaxed_optimality_gap`. For the subsequent iterations, the best upper bound is reset to \\(+\infty\\) as the solutions of the relaxed problem are not feasible for the integer formulation.
