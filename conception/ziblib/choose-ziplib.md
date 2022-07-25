@@ -12,6 +12,8 @@ Mps files produced by both Antares Simulator and Xpansion can have a signicant w
 
 Decision
 ===
+[libzip](https://libzip.org/) is a C library for reading, creating, and modifying zip archives. It's the most cited lib based on Google searchs. The first inconvenient of this lib is the repetitive manipulation of pointers and the risks that come with. 
+[libzippp](https://github.com/ctabin/libzippp) libzippp is a simple basic C++ wrapper around the [libzip](https://libzip.org/) library. It is meant to be a portable and easy-to-use library for ZIP handling.
 
-Consequences
+Consequences 
 ===
