@@ -30,7 +30,7 @@ def remove_outputs(study_path):
                 shutil.rmtree(f)
 
 
-def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
+def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False, construct_all_problems=True):
     # Clean study output
     remove_outputs(study_path)
 
@@ -48,7 +48,9 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
         "--step",
         "full",
         "-n",
-        "2"
+        "2",
+        f"--construct_all_problems",
+        f"{str(construct_all_problems)}",
     ]
     if (allow_run_as_root == True):
         command.append("--allow-run-as-root")
@@ -210,7 +212,7 @@ def assert_ntc_update_pre_820(candidate_reader, expected_direct_link_capacity, e
 
 
 ## TESTS ##
-long_parameters_names = "study_path, expected_values, expected_investment_solution, antares_version"
+long_parameters_names = "study_path, expected_values, expected_investment_solution, antares_version, construct_all_problems_arg"
 long_parameters_values = [
     (
         ALL_STUDIES_PATH / "xpansion-test-02",
@@ -230,27 +232,50 @@ long_parameters_values = [
             "semibase1": 6.0e02,
             "semibase2": 0
         },
-        700
+        700,
+        True,
     ),
     (
         ALL_STUDIES_PATH / "xpansion-test-02-new",
         {
-            "optimality_gap": 709.42435598373413,
-            "investment_cost": 256299462.08039832,
-            "operational_cost": 1067318031.6309935,
-            "overall_cost": 1323617493.7113919,
-            "relative_gap": 5.3597384391960929e-07,
+            "investment_cost": 256117465.24222946,
+            "operational_cost": 1067499919.8911457,
+            "optimality_gap": 91.140864849090576,
+            "overall_cost": 1323617385.1333752,
+            "relative_gap": 6.8857409907702827e-08,
             "accepted_rel_gap_atol": 1e-10,
         },
         {
-            "battery": 508.74183466608417,
-            "peak1": 800.0,
-            "peak2": 1000.0,
-            "pv": 447.28156522682048,
-            "semibase1": 0.0,
-            "semibase2": 200.0,
+            "battery": 505.92578802666196,
+            "peak1": 800,
+            "peak2": 999.99999999999989,
+            "pv": 446.99821653541574,
+            "semibase1": 0,
+            "semibase2": 200
         },
-        700
+        700,
+        True,
+    ),
+    (
+        ALL_STUDIES_PATH / "xpansion-test-02-new",
+        {
+            "investment_cost": 256188844.36742425,
+            "operational_cost": 1067428489.1755786,
+            "optimality_gap": 27.417008638381958,
+            "overall_cost": 1323617333.5430028,
+            "relative_gap": 2.071369718693035e-08,
+            "accepted_rel_gap_atol": 1e-10,
+        },
+        {
+            "battery": 507.03470051310484,
+            "peak1": 800,
+            "peak2": 1000.0000000000001,
+            "pv": 447.10352905735476,
+            "semibase1": 0,
+            "semibase2": 200
+        },
+        700,
+        False,
     ),
     (
         ALL_STUDIES_PATH / "different_NTCs",
@@ -270,7 +295,27 @@ long_parameters_values = [
             "semibase1": 0.0,
             "semibase2": 200.0,
         },
-        820
+        820,
+        True,
+    ),
+    (
+        ALL_STUDIES_PATH / "xpansion-test-05-area-uppercase",
+        {
+            "optimality_gap": 558.44661593437195,
+            "investment_cost": 451995209.27069736,
+            "operational_cost": 1324857537.5020638,
+            "overall_cost": 1776852746.7727611,
+            "relative_gap": 3.1428975583298067e-07,
+            "accepted_rel_gap_atol": 1e-10,
+        },
+        {
+            "elec_grid": 709.95027341942216,
+            "h2_grid": 600.01391420346658,
+            "p2g_marg_area1": 1125.0003565560044,
+            "p2g_marg_area2": 2000.0,
+        },
+        700,
+        True,
     ),
 ]
 
@@ -281,11 +326,13 @@ long_parameters_values = [
 )
 @pytest.mark.long_sequential
 def test_full_study_long_sequential(
-    install_dir, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
+        install_dir, study_path,
+        expected_values, expected_investment_solution,
+        tmp_path, antares_version, construct_all_problems_arg
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "sequential")
+    launch_xpansion(install_dir, tmp_study, "sequential", construct_all_problems=construct_all_problems_arg)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
@@ -296,7 +343,8 @@ def test_full_study_long_sequential(
 )
 @pytest.mark.long_mpi
 def test_full_study_long_mpi(
-    install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path, antares_version
+        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path,
+        antares_version, construct_all_problems_arg
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)

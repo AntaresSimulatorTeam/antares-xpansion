@@ -343,6 +343,32 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
     return f(std::execution::seq);
 }
 
+auto BendersBase::ComputeSubProblemCutData(const std::shared_ptr<SubproblemWorker> &worker) const {
+  Timer subproblem_timer;
+  auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
+  auto handler = std::make_shared<SubproblemCutDataHandler>(
+      subproblem_cut_data);
+  worker->fix_to(_data.x0);
+  worker->solve(handler->get_int(LPSTATUS), options_.OUTPUTROOT,
+                options_.LAST_MASTER_MPS + MPS_SUFFIX);
+  worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
+  worker->get_subgradient(handler->get_subgradient());
+  worker->get_splex_num_of_ite_last(
+      handler->get_int(SIMPLEXITER));
+  handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
+  return subproblem_cut_data;
+}
+
+template <class T>
+std::vector<std::pair<std::string, T>> FlattenMap(std::map<std::string, T> map_to_flatten) {
+  std::vector<std::pair<std::string, T>> flatten_result;
+  flatten_result.reserve(map_to_flatten.size());
+  for (const auto &[name, value] : map_to_flatten) {
+    flatten_result.emplace_back(name, value);
+  }
+  return flatten_result;
+}
+
 /*!
  *  \brief Solve and store optimal variables of all Subproblem Problems
  *
@@ -356,78 +382,69 @@ void BendersBase::getSubproblemCut(
   // With gcc9 there was no parallelisation when iterating on the map directly
   // so we project it in a vector
   if (Options().CONSTRUCT_ALL_PROBLEMS) {
-    std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
-    nameAndWorkers.reserve(subproblem_map.size());
-    for (const auto &[name, worker] : subproblem_map) {
-      nameAndWorkers.emplace_back(name, worker);
-    }
-    std::mutex m;
-    selectPolicy(
-        [this, &nameAndWorkers, &m, &subproblem_cut_package](auto &policy) {
-          std::for_each(
-              policy, nameAndWorkers.begin(), nameAndWorkers.end(),
-              [this, &m, &subproblem_cut_package](
-                  const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
-                const auto &[name, worker] = kvp;
-                Timer subproblem_timer;
-                auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
-                auto handler(std::make_shared<SubproblemCutDataHandler>(
-                    subproblem_cut_data));
-                worker->fix_to(_data.x0);
-                worker->solve(handler->get_int(LPSTATUS), options_.OUTPUTROOT,
-                              options_.LAST_MASTER_MPS + MPS_SUFFIX);
-                worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
-                worker->get_subgradient(handler->get_subgradient());
-                worker->get_splex_num_of_ite_last(
-                    handler->get_int(SIMPLEXITER));
-                handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
-                std::lock_guard guard(m);
-                subproblem_cut_package[name] = *subproblem_cut_data;
-              });
-        },
-        shouldParallelize());
+    getSubproblemCut_Fast(subproblem_cut_package);
   } else {
-    std::vector<std::pair<std::string, VariableMap>> nameAndVariableMap;
-    nameAndVariableMap.reserve(coupling_map.size());
-    for (const auto &[name, variableMap] : coupling_map) {
-      nameAndVariableMap.emplace_back(name, variableMap);
-    }
-    std::mutex m;
-    selectPolicy(
-        [this, &nameAndVariableMap, &m, &subproblem_cut_package](auto &policy) {
-          std::for_each(
-              policy, nameAndVariableMap.begin(), nameAndVariableMap.end(),
-              [this, &m, &subproblem_cut_package](const std::pair<std::string, VariableMap> &kvp) {
-                const auto &[name, variables] = kvp;
-                auto worker = makeSubproblemWorker(kvp);
-                if (auto it_map_basis = basiss_.find(name);
-                    it_map_basis != basiss_.end()) {
-                  worker->_solver->SetBasis(it_map_basis->second.first,
-                                            it_map_basis->second.second);
-                }
-                Timer subproblem_timer;
-                auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
-                auto handler(std::make_shared<SubproblemCutDataHandler>(
-                    subproblem_cut_data));
-                worker->fix_to(_data.x0);
-                worker->solve(handler->get_int(LPSTATUS), Options().OUTPUTROOT,
-                              Options().LAST_MASTER_MPS + MPS_SUFFIX);
-                worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
-                worker->get_subgradient(handler->get_subgradient());
-                worker->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
-                handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
-                int row_number = worker->_solver->get_nrows();
-                int col_number = worker->_solver->get_ncols();
-                auto rstatus = std::vector<int>(row_number);
-                auto cstatus = std::vector<int>(col_number);
-                worker->_solver->get_basis(rstatus.data(), cstatus.data());
-                std::lock_guard guard(m);
-                subproblem_cut_package[name] = *subproblem_cut_data;
-                basiss_[name] = std::make_pair(rstatus, cstatus);
-              });
-        },
-        shouldParallelize());
+    getSubproblemCut_ConstructWorker(subproblem_cut_package);
   }
+}
+void BendersBase::getSubproblemCut_ConstructWorker(
+    SubproblemCutPackage &subproblem_cut_package) {
+  auto nameAndVariableMap = FlattenMap(coupling_map);
+  std::mutex m;
+  selectPolicy(
+      [this, &nameAndVariableMap, &m, &subproblem_cut_package](auto &policy) {
+        std::for_each(
+            policy, nameAndVariableMap.begin(), nameAndVariableMap.end(),
+            [this, &m, &subproblem_cut_package](const std::pair<std::string, VariableMap> &kvp) {
+              const auto &[name, variables] = kvp;
+              std::shared_ptr<SubproblemWorker> worker =
+                  BuildProblem(kvp, name);
+              auto subproblem_cut_data = ComputeSubProblemCutData(worker);
+              auto [rstatus, cstatus] = GetProblemBasis(worker);
+              std::lock_guard guard(m);
+              subproblem_cut_package[name] = *subproblem_cut_data;
+              basiss_[name] = std::make_pair(rstatus, cstatus);
+            });
+      },
+      shouldParallelize());
+}
+void BendersBase::getSubproblemCut_Fast(
+    SubproblemCutPackage &subproblem_cut_package) const {
+  auto nameAndWorkers = FlattenMap(subproblem_map);
+  std::mutex m;
+  selectPolicy(
+      [this, &nameAndWorkers, &m, &subproblem_cut_package](auto &policy) {
+        std::for_each(
+            policy, nameAndWorkers.begin(), nameAndWorkers.end(),
+            [this, &m, &subproblem_cut_package](
+                const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
+              const auto &[name, worker] = kvp;
+              auto subproblem_cut_data = ComputeSubProblemCutData(worker);
+              std::lock_guard guard(m);
+              subproblem_cut_package[name] = *subproblem_cut_data;
+            });
+      },
+      shouldParallelize());
+}
+
+std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
+    const std::shared_ptr<SubproblemWorker> &worker) const {
+  int row_number = worker->_solver->get_nrows();
+  int col_number = worker->_solver->get_ncols();
+  auto rstatus = std::vector<int>(row_number);
+  auto cstatus = std::vector<int>(col_number);
+  worker->_solver->get_basis(rstatus.data(), cstatus.data());
+  return {rstatus, cstatus};
+}
+
+std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
+    const std::pair<std::string, VariableMap> &kvp, const std::string &name) {
+  auto worker = makeSubproblemWorker(kvp);
+  if (auto it_map_basis = basiss_.find(name); it_map_basis != basiss_.end()) {
+    worker->_solver->SetBasis(it_map_basis->second.first,
+                              it_map_basis->second.second);
+  }
+  return worker;
 }
 
 /*!

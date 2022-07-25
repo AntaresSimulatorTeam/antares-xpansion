@@ -76,6 +76,11 @@ class InputParser:
                                  default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
                                  action='store_true',
                                  help='allow-run-as-root option (linux only)')
+        self.parser.add_argument("--construct_all_problems",
+                                 dest=LauncherOptionsKeys.construct_all_problems_key(),
+                                 default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
+                                 choices=["True", "False"],
+                                 help='If false reconstruct problem each iteration. Minimize RAM consumption')
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -93,7 +98,8 @@ class InputParser:
             antares_n_cpu=params.antares_n_cpu,
             keep_mps=params.keep_mps,
             oversubscribe=params.oversubscribe,
-            allow_run_as_root=params.allow_run_as_root
+            allow_run_as_root=params.allow_run_as_root,
+            construct_all_problems=params.construct_all_problems
         )
         return my_parameters
 
@@ -126,3 +132,6 @@ class InputParser:
 
         if params.allow_run_as_root == LauncherOptionsDefaultValues.DEFAULT_VALUE():
             params.allow_run_as_root = LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT()
+
+        if params.construct_all_problems == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+            params.construct_all_problems = LauncherOptionsDefaultValues.DEFAULT_CONSTRUCT_ALL_PROBLEMS()

@@ -60,3 +60,5 @@ BENDERS_OPTIONS_MACRO(RESUME, bool, false, asBool())
 // Name of the last master basis file
 BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
                       asString())
+
+BENDERS_OPTIONS_MACRO(CONSTRUCT_ALL_PROBLEMS, bool, true, asBool())

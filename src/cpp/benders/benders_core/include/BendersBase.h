@@ -142,9 +142,20 @@ class BendersBase {
   Logger _logger;
   Writer _writer;
   std::shared_ptr<MPSUtils> mps_utils_;
+
  protected:
   virtual std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
       const std::pair<std::string, VariableMap> &kvp) const;
+ private:
   std::map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+  std::shared_ptr<SubproblemWorker> BuildProblem(
+      const std::pair<std::string, VariableMap> &kvp, const std::string &name);
+  std::pair<std::vector<int>, std::vector<int>> GetProblemBasis(
+  const std::shared_ptr<SubproblemWorker> &worker) const;
+  auto ComputeSubProblemCutData(const std::shared_ptr<SubproblemWorker> &worker) const;
+  void getSubproblemCut_Fast(
+      SubproblemCutPackage &subproblem_cut_package) const;
+  void getSubproblemCut_ConstructWorker(
+      SubproblemCutPackage &subproblem_cut_package);
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

@@ -21,6 +21,7 @@ class BendersDriver:
         self.benders_mpi = benders_mpi
         self.merge_mps = merge_mps
         self.benders_sequential = benders_sequential
+        self.construct_all_problems = True
 
         if (options_file != ""):
             self.options_file = options_file
@@ -29,7 +30,8 @@ class BendersDriver:
                 f"Invalid Options File!")
         self._initialise_system_specific_mpi_vars()
 
-    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False, allow_run_as_root=False):
+    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=6, oversubscribe=False, allow_run_as_root=False,
+               construct_all_problems=True):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
 
@@ -40,6 +42,7 @@ class BendersDriver:
         self.oversubscribe = oversubscribe
         self.allow_run_as_root = allow_run_as_root
         self.simulation_output_path = simulation_output_path
+        self.construct_all_problems = construct_all_problems
         old_cwd = os.getcwd()
         lp_path = self.get_lp_path()
 
@@ -113,7 +116,7 @@ class BendersDriver:
         """
         returns a list consisting of the path to the required solver and its launching options
         """
-        bare_solver_command = [self.solver, self.options_file]
+        bare_solver_command = [self.solver, self.options_file, self.construct_all_problems]
         if self.solver == self.benders_mpi:
             mpi_command = self._get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)
