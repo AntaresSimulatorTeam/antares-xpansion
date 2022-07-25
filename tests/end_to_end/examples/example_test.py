@@ -343,12 +343,13 @@ def test_full_study_long_sequential(
 )
 @pytest.mark.long_mpi
 def test_full_study_long_mpi(
-        install_dir, allow_run_as_root, study_path, expected_values, expected_investment_solution, tmp_path,
-        antares_version, construct_all_problems_arg
+        install_dir, allow_run_as_root, study_path,
+        expected_values, expected_investment_solution,
+        tmp_path, antares_version, construct_all_problems_arg
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root, construct_all_problems=construct_all_problems_arg)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(tmp_study, expected_investment_solution, antares_version)
 

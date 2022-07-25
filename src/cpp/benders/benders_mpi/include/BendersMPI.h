@@ -55,4 +55,6 @@ class BendersMpi : public BendersBase {
   mpi::environment &_env;
   mpi::communicator &_world;
   const unsigned int rank_0 = 0;
+  void AssignProblemToWorker();
+  void ReduceCouplingMapForEachWorker();
 };

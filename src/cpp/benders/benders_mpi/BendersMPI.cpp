@@ -23,29 +23,49 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
 
 void BendersMpi::initialize_problems() {
   match_problem_to_id();
-
-  int current_problem_id = 0;
-  auto subproblemProcessCount = _world.size() - 1;
-
   if (_world.rank() == rank_0) {
     reset_master(new WorkerMaster(
         master_variable_map, get_master_path(), get_solver_name(),
         get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
     LOG(INFO) << "subproblem number is " << _data.nsubproblem << std::endl;
+  } else if (Options().CONSTRUCT_ALL_PROBLEMS){
+    AssignProblemToWorker();
   } else {
-    // Dispatch subproblems to process
-    for (const auto &problem : coupling_map) {
-      auto process_to_feed =
-          current_problem_id % subproblemProcessCount +
-          1;  // In case there are more subproblems than process
-      if (process_to_feed ==
-          _world
-              .rank()) {  // Assign  [problemNumber % processCount] to processID
-        addSubproblem(problem);
-        AddSubproblemName(problem.first);
-      }
-      current_problem_id++;
+    ReduceCouplingMapForEachWorker();
+  }
+}
+void BendersMpi::ReduceCouplingMapForEachWorker() {  // Each node will work on a
+                                                 // subset of problems in
+                                                 // coupling map
+  int current_problem_id = 0;
+                                                 auto subproblemProcessCount = _world.size() - 1;
+  for (auto it =
+                                                          coupling_map.begin(); it !=
+                                                      coupling_map.end();) {
+    auto process_to_feed =
+        current_problem_id % subproblemProcessCount +
+        1;
+    if (process_to_feed != _world.rank()) {
+      it = coupling_map.erase(it);
+    } else {
+      ++it;
     }
+    current_problem_id++;
+  }
+}
+void BendersMpi::AssignProblemToWorker() {  // Dispatch subproblems to process
+  int current_problem_id = 0;
+  auto subproblemProcessCount = _world.size() - 1;
+  for (const auto &problem : coupling_map) {
+    auto process_to_feed =
+        current_problem_id % subproblemProcessCount +
+        1;  // In case there are more subproblems than process
+    if (process_to_feed ==
+        _world.rank()) {  //Assign [problemNumber % processCount] to processID
+      addSubproblem(problem);
+      AddSubproblemName(problem.first);
+    }
+    current_problem_id++;
   }
 }
 
