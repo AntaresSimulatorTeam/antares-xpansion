@@ -3,5 +3,5 @@
     "antares_version_executable": "8.2",
     "antares_xpansion_version": "0.6.0",
     "antares_deps_version": "2.0.2",
-    "libzippp_version": "5.1-1.8.0"
+    "minizip_ng_version": "3.0.6"
 }
