@@ -165,7 +165,7 @@ sbeParseJson(antares_version jsonContent)
 #need to know antares solver version because antares-solver targets still refers to antares version
 SET(ANTARES_VERSION ${antares_version.antares_version_executable})
 SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
-SET(LIBZIPPP_TAG ${antares_version.libzippp_version})
+SET(MINIZIP_TAG ${antares_version.minizip_ng_version})
 
 sbeClearJson(antares_version)
 
@@ -185,7 +185,7 @@ endif()
 add_subdirectory(antares-deps)
 
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
-find_package(libzippp  3.0 REQUIRED)
+find_package(minizip  REQUIRED)
 # ---------------------------------------------------------------------------
 # Boost
 # ---------------------------------------------------------------------------
