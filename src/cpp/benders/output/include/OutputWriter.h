@@ -9,9 +9,11 @@ namespace Output {
 // string constantes
 const std::string ANTARES_C("antares"), VERSION_C("version"),
     ANTARES_XPANSION_C("antares_xpansion"), BEGIN_C("begin"), END_C("end"),
-    DURATION_C("duration"), ITERATIONS_C("iterations"), BEST_UB_C("best_ub"),
-    CANDIDATES_C("candidates"), INVEST_C("invest"), MAX_C("max"), MIN_C("min"),
-    NAME_C("name"), INVESTMENT_COST_C("investment_cost"), LB_C("lb"),
+    RUN_DURATION_C("run_duration"), MASTER_DURATION_C("master_duration"),
+    SUBPROBLEM_DURATION_C("subproblem_duration"), ITERATIONS_C("iterations"),
+    BEST_UB_C("best_ub"), CANDIDATES_C("candidates"), INVEST_C("invest"),
+    MAX_C("max"), MIN_C("min"), NAME_C("name"),
+    INVESTMENT_COST_C("investment_cost"), LB_C("lb"),
     OPERATIONAL_COST_C("operational_cost"), OPTIMALITY_GAP_C("optimality_gap"),
     OVERALL_COST_C("overall_cost"), RELATIVE_GAP_C("relative_gap"), UB_C("ub"),
     NBWEEKS_C("nbWeeks"), OPTIONS_C("options"), SOLUTION_C("solution"),
@@ -27,7 +29,8 @@ struct CandidateData {
 };
 typedef std::vector<CandidateData> CandidatesVec;
 struct Iteration {
-  double time;
+  double master_duration;
+  double subproblem_duration;
   double lb;
   double ub;
   double best_ub;

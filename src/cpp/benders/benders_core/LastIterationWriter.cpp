@@ -44,5 +44,7 @@ void LastIterationWriter::FillOutput(const std::string &iteration_name,
   output_[iteration_name]["max_iterations"] = iteration_data.max_iterations;
   output_[iteration_name]["benders_elapsed_time"] =
       iteration_data.benders_elapsed_time;
-  output_[iteration_name]["duration"] = iteration_data.master_time;
+  output_[iteration_name]["master_duration"] = iteration_data.master_time;
+  output_[iteration_name]["subproblem_duration"] =
+      iteration_data.subproblem_time;
 }

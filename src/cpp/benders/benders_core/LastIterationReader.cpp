@@ -51,7 +51,10 @@ LogData LastIterationReader::GetIterationData(
       last_iteration_file_content_[iteration_name]["max_iterations"].asInt(),
       last_iteration_file_content_[iteration_name]["benders_elapsed_time"]
           .asDouble(),
-      last_iteration_file_content_[iteration_name]["duration"].asDouble()
+      last_iteration_file_content_[iteration_name]["master_duration"]
+          .asDouble(),
+      last_iteration_file_content_[iteration_name]["subproblem_duration"]
+          .asDouble()
 
   };
 }
