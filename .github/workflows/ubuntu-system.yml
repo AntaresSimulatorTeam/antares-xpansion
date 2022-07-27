@@ -40,7 +40,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -188,19 +188,19 @@ jobs:
           echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
 
       - name: Upload .deb
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{env.DEB_NAME}}
           path: _build/${{env.DEB_NAME}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}

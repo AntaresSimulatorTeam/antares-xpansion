@@ -117,10 +117,13 @@ def _check_candidate_option_type(option, value):
         candidate_options_type, sep="\n")
         raise UnrecognizedCandidateOptionType
     else:
-        if obsolete_options.count(option):
+        option_type = candidate_options_type.get(option)
+        if option_type is None:
             flushed_print(
-                '%s option is no longer used by antares-xpansion' % option)
-            return True
+                'check_candidate_option_type: %s option not recognized in candidates file.' % option)
+            flushed_print(f"Authorized options are: ", *
+                          candidate_options_type, sep="\n")
+            raise UnrecognizedCandidateOptionType
         if option_type == 'string':
             return True
         elif option_type == 'non-negative':

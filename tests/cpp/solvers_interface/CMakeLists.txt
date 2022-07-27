@@ -19,6 +19,7 @@ add_executable (test_solver
 	${CMAKE_CURRENT_SOURCE_DIR}/test_exceptions.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/define_datas.hpp
 	${CMAKE_CURRENT_SOURCE_DIR}/define_datas.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/test_basis.cpp
 )
 
 target_link_libraries (test_solver

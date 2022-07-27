@@ -270,8 +270,8 @@ class SolverAbstract {
   virtual int get_n_integer_vars() const = 0;
 
   /**
-   * @brief returns number of non zeros elements in the matrix, excluding
-   * objective
+   * @brief returns the objective function coefficients for the columns in a
+   * given range
    */
   virtual void get_obj(double *obj, int first, int last) const = 0;
 

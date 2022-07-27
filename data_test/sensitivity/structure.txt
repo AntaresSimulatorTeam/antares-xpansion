@@ -1,4 +1,4 @@
-master  peak      15
+master  peak      8
 master  semibase  32
 mock_subpb_1  peak   456
 mock_subpb_1  semibase  789
