@@ -123,10 +123,8 @@ production time-series (Antares wind or solar tab) must be defined in
 the virtual node. The production time-series must be deterministic,
 constant, and **higher than the
 potential** (`max-investment`) of the candidate. The
-parameter [`link-profile`](candidate-definition.md#link-profile) from the `candidates.ini` file will then be used to define the
-hourly load factor. It should be noted that this profile is necessarily
-deterministic and that the new renewable generation capacities cannot
-have differentiated production time-series for each Monte-Carlo year.
+parameters [`[in]direct-link-profile`](candidate-definition.md#indirect-link-profile) from the `candidates.ini` file will then be used to define the
+hourly load factor.
 
 ### Investment in flexibility
 

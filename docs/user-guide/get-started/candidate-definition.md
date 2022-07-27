@@ -13,33 +13,43 @@ The candidates are defined in the
 Each investment candidate is characterized
 by the following properties:
 
-- `name` (mandatory): name of the investment candidate (:warning: must not
+- [`name`](#name) (mandatory): name of the investment candidate (:warning: must not
   contain spaces and unique),
 
-- `link` (mandatory): link on which there is a capacity investment,
+- [`link`](#link) (mandatory): link on which there is a capacity investment,
 
-- `annual-cost-per-mw` (mandatory): investment cost, per year and per MW,
+- [`annual-cost-per-mw`](#annual-cost-per-mw) (mandatory): investment cost, per year and per MW,
 
-- `unit-size`: size, in MW, of a single investment unit (e.g. one group
+- [`unit-size`](#unit-size): size, in MW, of a single investment unit (e.g. one group
   of 300 MW),
 
-- `max-units`: maximum number of units that can be built,
+- [`max-units`](#max-units): maximum number of units that can be built,
 
-- `max-investment`: maximum capacity in MW that can be invested in the candidate,
+- [`max-investment`](#max-investment): maximum capacity in MW that can be invested in the candidate,
 
-- `already-installed-capacity`: capacity in MW that is
+- [`already-installed-capacity`](#already-installed-capacity): capacity in MW that is
 already installed on the investment candidate's link,
 
-- `link-profile`: name of a file that links the invested capacity and the available capacity,
+- [`direct-link-profile`](#indirect-link-profile): name of a file that links the invested capacity and the available capacity for the direct way,
+- [`indirect-link-profile`](#indirect-link-profile): name of a file that links the invested capacity and the available capacity for the indirect way,
 
-- `already-installed-link-profile`: name of a file that links the already installed capacity and the available capacity.
+- [`already-installed-direct-link-profile`](#already-installed-indirect-link-profile): name of a file that links the already installed capacity and the available capacity for the direct way,
+- [`already-installed-indirect-link-profile`](#already-installed-indirect-link-profile): name of a file that links the already installed capacity and the available capacity for the indirect way.
 
 The format is a standard `.ini` and should follow this template:
 
-
-![](../../assets/media/candidate.PNG)
-
-**Figure 4** – Example of a candidates.ini file.
+```ini
+[1]
+name = pv
+link = area1 - pv
+annual-cost-per-mw = 46000
+max-investment = 1000
+already-installed-capacity = 50
+direct-link-profile = capa_pv.csv
+indirect-direct-link-profile = capa_pv.csv
+already-installed-direct-link-profile = direct_installed_capa_pv.csv
+already-installed-indirect-link-profile = indirect_installed_capa_pv.csv
+```
 
 In Antares-Xpansion, the investment decisions only affect the capacity of the
 Antares' links. Investment in physical generation capacity is done with virtual nodes as described in [Prepare the Antares study](prepare-a-simulation.md#prepare-the-antares-study).
@@ -115,46 +125,65 @@ initially indicated in the Antares study are not considered in the
 Antares-Xpansion.
 
 
-#### `link-profile`
+#### `[in]direct-link-profile`
 
 String, specifying the name of a file. This
 file must be located in the `user/expansion/capa/` directory of the
-Antares study. It must contain one or two columns of 8760 numerical
-values (the decimal separator is the point), see **Figure 5**. The `link-profile` makes the
+Antares study. It must contain at least one column of 8760 numerical
+values (the decimal separator is the point), see **Figure 5**. Multiple columns are used in order to use different data depending on the Monte-Carlo year in process, see details [here](#using-different-profiles-depending-on-the-monte-carlo-year).
+When only one column is specified, the same profile is used by Antares-Xpansion for
+all Monte-Carlo years of the Antares study and all assessed capacities.
+
+!!! Remark
+    Both files `direct-link-profile` and `indirect-link-profile` must contain the same number of columns.
+
+The `[in]direct-link-profile` makes the
 link between the invested capacity and the capacity that is actually available,
-in the direct and indirect directions of the Antares link, for the 8760
+in the [in]direct directions of the Antares link, for the 8760
 hours of the year. More details are given in [this section](#link-between-invested-capacity-and-capacity-of-the-antares-study).
 
-The `link-profile` can be used for example to represent
+The `[in]direct-link-profile` can be used for example to represent
 the maintenance of a generation asset via a seasonalized power outage,
 or the average load factor of intermittent renewable generation, defined
-at hourly intervals. 
+at hourly intervals.
 
-!!! Remark 
-    The `link-profile` is
-    deterministic: the same profile is used by Antares-Xpansion for
-    all Monte-Carlo years of the Antares study and all assessed capacities.
-
+File `user/expansion/candidates.ini`:
+```ini
+[1]
+name = pv
+link = area1 - pv
+annual-cost-per-mw = 46000
+max-investment = 1000
+already-installed-capacity = 50
+direct-link-profile = capa_pv.csv
+indirect-direct-link-profile = capa_pv.csv
+already-installed-direct-link-profile = direct_installed_capa_pv.csv
+already-installed-indirect-link-profile = indirect_installed_capa_pv.csv
+```
+File `user/expansion/capa/capa_pv.csv`:
 ![](../../assets/media/link_profile.PNG)
 
 **Figure 5** – Example of a file containing a load factor profile in
 the Antares-Xpansion format.
 
-#### `already-installed-link-profile`
+#### `already-installed-[in]direct-link-profile`
 
 String, specifying the name of a file. This
 file must be located in the `user/expansion/capa/` directory of the
-Antares study and has the same format as a `link-profile` file, see **Figure 5**. The `already-installed-link-profile` makes the link between the
+Antares study and has the same format as a `[in]direct-link-profile` file, see **Figure 5**. The `already-installed-[in]direct-link-profile` makes the link between the
 already installed capacity and the available capacity, in the
 direct and indirect way of the Antares link, for the 8760 hours of the
 year. More details are given in [this section](#link-between-invested-capacity-and-capacity-of-the-antares-study).
 
 
 !!! Note 
-    The same file can be used for `link-profile`
-    and `already-installed-link-profile` of one or more candidates.
+    The same file can be used for `[in]direct-link-profile`
+    and `already-installed-[in]direct-link-profile` of one or more candidates.
 
 ## Link between invested capacity and capacity of the Antares study
+
+!!! Note 
+    For simplicity, we often refer to `[already-installed]-direct-link-profile` and `[already-installed]-indirect-link-profile` link profiles as just `[already-installed]-link-profile` in the sequel.
 
 The parameters `link-profile`, `already-installed-capacity` and
 `already-installed-link-profile` are used to define the link between the capacity installed by Antares-Xpansion, the already installed capacity and the truly available capacity in the Antares study, hour by hour and in both directions of the link, following the relationship presented in **Figure 6**.
@@ -174,40 +203,47 @@ The parameters `link-profile` and `already-installed-link-profile` are conventio
 
 - Take into account an NTC profile on an interconnection, possibly
   seasonalized and having a different impact on the direct and
-  indirect directions of the link,
+  indirect directions of the link. It is possible to specify a different NTC profile for each Monte-Carlo year.
 
 - Represent the maintenance of a thermal generation asset by
-  considering a deterministic reduction of its power, possibly
+  considering a reduction of its power, possibly
   different according to the season (see **Figure 7**),
 
 - Model renewable generation by multiplying the invested capacities by
-  a (deterministic) load factor chronicle (e.g. an average chronicle
-  or the chronicle of a given Monte-Carlo year).
-
-!!! Remark
-    The investment problem, at this stage of development, allows
-    to manage, via the `link_profile`, the fact that the availability of an invested capacity varies
-    during the year with an average availability over all Monte-Carlo years. However, it is not possible to manage an hourly
-    availability **per Monte-Carlo year**, which
-    would make it possible to represent more realistically the intermittency
-    of RES from one year to another or the impact of outages and maintenance
-    on an entire unit of thermal power plants (see **Figure 7**).
+  a load factor chronicle (e.g. an average chronicle
+  or the chronicles of some Monte-Carlo years).
 
 ![](../../assets/media/image14.png)
 
 **Figure 7** – Available hourly capacity of different types of power
 plants due to outages. Antares-Xpansion allows taking into account
-an average hourly availability (purple line) via the `link_profile`,
+either an average hourly availability (purple line),
 which is still very different from the actual hourly availability over a
-year.
+year or a different profile for each Monte-Carlo year (green lines), more realistic.
 
-To validate the results, after running the Antares-Xpansion algorithm a
-first time with a deterministic average hourly availability curve, it is
+If you use the average availability, to validate the results after running the Antares-Xpansion, it is
 preferable to re-simulate these outages according to a stochastic
 process by relaunching an Antares simulation with the capacities
 obtained by Antares-Xpansion in order to obtain the real production
 program with outages and RES intermittence varying according to the
 scenarios.
+
+## Using different profiles depending on the Monte-Carlo year
+
+From Antares-Simulator 8.2, users can define different NTC chronicles for different Monte-Carlo years. 
+
+Briefly, users define any number
+of chronicles for each link. For each link, users can select (randomly or not) one 
+of the said chronicles in a result we call _scenario_. Refer to [Antares-Simulator documentation](https://antares-simulator.readthedocs.io/en/latest/reference-guide/04-active_windows/#links) for more information.
+
+In Antares-Xpansion, it is possible to use 
+those scenarios to select a different link profile depending on the Monte-Carlo year. There are a few pre-requisites:
+
+1. For a given candidate, if specified, `direct-link-profile`, `indirect-link-profile`, `already-installed-direct-link-profile` and `already-installed-indirect-link-profile` must have the same number of columns.
+2. For a given link in the Antares-Simulator study, the number of columns for NTC chronicles must be the same as
+in the link profiles and already installed profiles for the candidates on this link.
+3. It is possible not to provide a link profile or already installed profile. A profile with a value of 1 is used
+whichever Monte-Carlo year is chosen.
 
 ## Examples of candidates
 
@@ -250,7 +286,8 @@ name = solar_power
 link = area1 - pv1
 annual-cost-per-mw = 100000
 max-investment = 10000
-link-profile = pv1.txt
+direct-link-profile = pv1.txt
+indirect-link-profile = pv1.txt
 ```
 where `pv1.txt` is a text file, located in the `user/expansion/capa/`
 folder of the study, and which contains the load factor time series of

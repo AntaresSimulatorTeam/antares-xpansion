@@ -4,16 +4,6 @@
 
 #include "solver_utils.h"
 
-std::vector<Candidate> candidates_from_all_links(
-    const std::vector<ActiveLink> &active_links) {
-  std::vector<Candidate> all_candidates;
-  for (const auto &link : active_links) {
-    std::vector<Candidate> candidates = link.getCandidates();
-    all_candidates.insert(all_candidates.end(), candidates.begin(),
-                          candidates.end());
-  }
-  return all_candidates;
-}
 std::set<int> extract_time_steps(
     const std::map<linkId, ColumnsToChange> &p_columns) {
   std::set<int> result;
@@ -25,26 +15,18 @@ std::set<int> extract_time_steps(
   return result;
 }
 
-std::vector<Candidate> candidates_with_not_null_profile(
+std::vector<Candidate> ProblemModifier::candidates_with_not_null_profile(
     const std::vector<ActiveLink> &active_links,
-    const std::set<int> &time_steps) {
-  std::vector<Candidate> candidates = candidates_from_all_links(active_links);
+    const std::set<int> &time_steps) const {
+  std::vector<Candidate> candidates_to_keep;
 
-  candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
-                                  [time_steps](const Candidate &cand) {
-                                    bool hasOnlyNullProfile = true;
-                                    for (int time_step : time_steps) {
-                                      hasOnlyNullProfile &=
-                                          cand.direct_profile(time_step) == 0.0;
-                                      hasOnlyNullProfile &=
-                                          cand.indirect_profile(time_step) ==
-                                          0.0;
-                                    }
-                                    return hasOnlyNullProfile;
-                                  }),
-                   candidates.end());
-
-  return candidates;
+  for (const auto& link: active_links) {
+      auto const& candidates = link.getCandidates();
+      std::copy_if(candidates.begin(), candidates.end(), std::back_inserter(candidates_to_keep), [this, &link, &time_steps](auto candidate){
+          return !candidate.hasNullProfile(chronicleToUse(link), time_steps);
+      });
+  }
+  return candidates_to_keep;
 }
 
 std::vector<int> extract_col_ids(const ColumnsToChange &columns_to_change) {
@@ -88,13 +70,13 @@ bool ProblemModifier::has_candidate_col_id(const std::string &cand_name) const {
   return _candidate_col_id.find(cand_name) != _candidate_col_id.end();
 }
 
-std::shared_ptr<SolverAbstract> ProblemModifier::changeProblem(
-    std::shared_ptr<SolverAbstract> mathProblem,
+std::shared_ptr<Problem> ProblemModifier::changeProblem(
+    std::shared_ptr<Problem> problem,
     const std::vector<ActiveLink> &active_links,
     const std::map<linkId, ColumnsToChange> &p_ntc_columns,
     const std::map<linkId, ColumnsToChange> &p_direct_cost_columns,
     const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns) {
-  _math_problem = std::move(mathProblem);
+  _math_problem = std::move(problem);
   _n_cols_at_start = _math_problem->get_ncols();
 
   changeProblem(active_links, p_ntc_columns, p_direct_cost_columns,
@@ -206,9 +188,11 @@ void ProblemModifier::add_direct_profile_column_constraint(
     std::vector<char> &rowtype, std::vector<double> &rhs,
     std::vector<int> &rstart, const ActiveLink &link,
     const ColumnToChange &column) {
+  unsigned int chronicle_to_use = chronicleToUse(link);
+
   double already_installed_capacity(link.get_already_installed_capacity());
   double direct_already_installed_profile_at_timestep =
-      link.already_installed_direct_profile(column.time_step);
+      link.already_installed_direct_profile(chronicle_to_use, column.time_step);
   rhs.push_back(already_installed_capacity *
                 direct_already_installed_profile_at_timestep);
 
@@ -216,12 +200,17 @@ void ProblemModifier::add_direct_profile_column_constraint(
   colind.push_back(column.id);
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.direct_profile(column.time_step) != 0.0) {
+    if (candidateContributionDirectIsNotNull(column, chronicle_to_use, candidate)) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(-candidate.direct_profile(column.time_step));
+      dmatval.push_back(-candidate.directCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
+}
+bool ProblemModifier::candidateContributionDirectIsNotNull(const ColumnToChange &column,
+                                                           unsigned int chronicle_to_use,
+                                                           const Candidate &candidate) const {
+  return candidate.directCapacityFactor(chronicle_to_use, column.time_step) != 0.0;
 }
 
 void ProblemModifier::add_indirect_profile_ntc_column_constraint(
@@ -229,9 +218,11 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(
     std::vector<char> &rowtype, std::vector<double> &rhs,
     std::vector<int> &rstart, const ActiveLink &link,
     const ColumnToChange &column) {
+  unsigned int chronicle_to_use = chronicleToUse(link);
+
   double already_installed_capacity(link.get_already_installed_capacity());
   double indirect_already_installed_profile_at_timestep =
-      link.already_installed_indirect_profile(column.time_step);
+      link.already_installed_indirect_profile(chronicle_to_use, column.time_step);
   rhs.push_back(-already_installed_capacity *
                 indirect_already_installed_profile_at_timestep);
 
@@ -239,12 +230,25 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(
   colind.push_back(column.id);
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.indirect_profile(column.time_step) != 0.0) {
+    if (candidateContributionIndirectIsNotNull(column, chronicle_to_use, candidate)) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(candidate.indirect_profile(column.time_step));
+      dmatval.push_back(candidate.indirectCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
+}
+
+bool
+ProblemModifier::candidateContributionIndirectIsNotNull(const ColumnToChange &column, unsigned int chronicle_to_use,
+                                                        const Candidate &candidate) const {
+    return candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) != 0.0;
+}
+
+unsigned int ProblemModifier::chronicleToUse(const ActiveLink &link) const {
+  auto chronicle_map = link.McYearToChronicle();
+  auto problem_mc_year = _math_problem->McYear();
+  auto chronicle_to_use = chronicle_map[problem_mc_year];
+  return chronicle_to_use;
 }
 
 void ProblemModifier::add_indirect_cost_column_constraint(
@@ -252,19 +256,22 @@ void ProblemModifier::add_indirect_cost_column_constraint(
     std::vector<char> &rowtype, std::vector<double> &rhs,
     std::vector<int> &rstart, const ActiveLink &link,
     const ColumnToChange &column) {
+  unsigned int chronicle_to_use = chronicleToUse(link);
+
   double already_installed_capacity(link.get_already_installed_capacity());
   double indirect_already_installed_profile_at_timestep =
-      link.already_installed_indirect_profile(column.time_step);
+      link.already_installed_indirect_profile(chronicle_to_use, column.time_step);
   rhs.push_back(already_installed_capacity *
                 indirect_already_installed_profile_at_timestep);
 
   rowtype.push_back('L');
   colind.push_back(column.id);
   dmatval.push_back(1);
+
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.indirect_profile(column.time_step) != 0.0) {
+    if (candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) != 0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(-candidate.indirect_profile(column.time_step));
+      dmatval.push_back(-candidate.indirectCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());

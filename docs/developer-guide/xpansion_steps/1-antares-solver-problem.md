@@ -1,6 +1,6 @@
 # Antares optimization problem retrieval
 
-In this step, `antares-solver` runs the Antares study with a specific configuration set by Antares-Xpansion and writes the weekly optimization problems as `.mps` files. More precisely, `antares-solver` performs two successive optimizations, see [Antares-Simulator reference guide](https://antares-simulator.readthedocs.io/en/latest/reference-guide/1-reference-guide#antares-at-one-glance):
+In this step, `antares-solver` runs the Antares study with a specific configuration set by Antares-Xpansion and writes the weekly optimization problems as `.mps` files. More precisely, `antares-solver` performs two successive optimizations, see [Antares-Simulator reference guide](https://antares-simulator.readthedocs.io/en/latest/reference-guide/08-miscellaneous/#antares-at-one-glance):
 
 1. A linear relaxation of the Antares MILP problem is solved where the on/off variables of thermal clusters are continuous.
 2. A heuristic search for integer values of these variables, satisfying the dynamic constraint of the system with the smallest possible cost is then carried out. Finally, a second linear optimization with the integer variables set to the previously found values is performed. 
@@ -50,7 +50,7 @@ specific simulation options are required. The Python orchestrator changes the fi
 |`include-tc-min-ud-timer`| Enable constraints on minimum up and down times for thermal clusters.| 
 |`include-dayahead`| Enable day ahead reserves (i.e. limitation of the maximum production power in order to be able to react to infraday unexpected events).|
 |`mode`| Sets the Antares simulation mode. | 
-|`unit-commitment-mode`| Sets the Antares unit-commitment mode, see [the unit-commitment mode of Antares-Simulator](https://antares-simulator.readthedocs.io/en/latest/reference-guide/1-reference-guide/#the-unit-commitment-mode-advanced-parameter).| 
+|`unit-commitment-mode`| Sets the Antares unit-commitment mode, see [the unit-commitment mode of Antares-Simulator](https://antares-simulator.readthedocs.io/en/latest/reference-guide/08-miscellaneous/#the-unit-commitment-mode-advanced-parameter).| 
 
 ## Output files
 

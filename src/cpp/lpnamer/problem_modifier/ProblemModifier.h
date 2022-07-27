@@ -10,13 +10,14 @@
 
 #include "ActiveLinks.h"
 #include "ColumnToChange.h"
+#include "Problem.h"
 
 class ProblemModifier {
  public:
   ProblemModifier() = default;
 
-  std::shared_ptr<SolverAbstract> changeProblem(
-      std::shared_ptr<SolverAbstract> mathProblem,
+  std::shared_ptr<Problem> changeProblem(
+      std::shared_ptr<Problem> problem,
       const std::vector<ActiveLink> &active_links,
       const std::map<linkId, ColumnsToChange> &p_ntc_columns,
       const std::map<linkId, ColumnsToChange> &p_direct_cost_columns,
@@ -52,7 +53,7 @@ class ProblemModifier {
       const std::vector<ActiveLink> &active_links,
       const std::map<linkId, ColumnsToChange> &p_cost_columns);
 
-  std::shared_ptr<SolverAbstract> _math_problem;
+  std::shared_ptr<Problem> _math_problem;
   std::map<std::string, unsigned int> _candidate_col_id;
   unsigned int _n_cols_at_start = 0;
 
@@ -78,6 +79,16 @@ class ProblemModifier {
                                            std::vector<int> &rstart,
                                            const ActiveLink &link,
                                            const ColumnToChange &column);
+  bool candidateContributionDirectIsNotNull(const ColumnToChange &column,
+                                            unsigned int chronicle_to_use,
+                                            const Candidate &candidate) const;
+  unsigned int chronicleToUse(const ActiveLink &link) const;
+  std::vector<Candidate> candidates_with_not_null_profile(
+      const std::vector<ActiveLink> &active_links,
+      const std::set<int> &time_steps) const;
+
+    bool candidateContributionIndirectIsNotNull(const ColumnToChange &column, unsigned int chronicle_to_use,
+                                                const Candidate &candidate) const;
 };
 
 #endif  // ANTARESXPANSION_PROBLEMMODIFIER_H

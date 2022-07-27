@@ -3,6 +3,7 @@
 """
 
 import os
+import re
 import shutil
 import sys
 import json
@@ -17,6 +18,22 @@ from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
+
+from antares_xpansion.chronicles_checker import ChronicleChecker
+
+
+class NTCColumnConstraintError(Exception):
+    pass
+
+
+def read_antares_version(study_path):
+    matcher = re.compile(r"(version = )(\d+)")
+    with open(Path(study_path) / "study.antares") as antares_file:
+        for line in antares_file.readlines():
+            result = matcher.match(line.strip())
+            if result:
+                return int(result.group(2))
+    return 720
 
 
 class ConfigLoader:
@@ -52,6 +69,8 @@ class ConfigLoader:
 
         self.check_candidates_file_format()
         self.check_settings_file_format()
+        antares_version = read_antares_version(self._config.data_dir)
+        self.check_NTC_column_constraints(antares_version)
 
     def _set_simulation_name(self):
         if not self._config.simulation_name:
@@ -92,7 +111,7 @@ class ConfigLoader:
                 ' %s was not retrieved.' % self.candidates_ini_filepath())
 
         check_candidates_file(
-            self.candidates_ini_filepath(), self.capacity_file(""))
+            Path(self.candidates_ini_filepath()), Path(self.capacity_file("")))
 
     def check_settings_file_format(self):
         check_options(self.options)
@@ -484,3 +503,7 @@ class ConfigLoader:
 
     class MissingSimulationName(Exception):
         pass
+
+    def check_NTC_column_constraints(self, antares_version):
+        checker = ChronicleChecker(self._config.data_dir, antares_version)
+        checker.CheckChronicleConstraints()

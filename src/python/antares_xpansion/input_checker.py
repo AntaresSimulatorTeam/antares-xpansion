@@ -2,12 +2,12 @@
     module to perform checks on antares xpansion input data
 """
 
-import configparser
-import sys
 import os
 import shutil
+import sys
 
-from antares_xpansion.flushed_print import flushed_print, WARNING_MSG
+from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.profile_link_checker import ProfileLinkChecker
 
 
 class ProfileFileNotExists(Exception):
@@ -34,30 +34,18 @@ INFINITY_LIST = ["+Inf", "+infini"]
 
 
 def _check_profile_file_consistency(filename_path):
-    two_profiles = False
-    with open(filename_path, 'r') as profile_file:
-        two_profiles = (len(profile_file.readline().strip().split()) == 2)
-
     with open(filename_path, 'r') as profile_file:
         first_profile = []
-        indirect_profile = []
         for idx, line in enumerate(profile_file):
             try:
                 line_vals = line.strip().split()
-                if (len(line_vals) == 1) and not two_profiles:
+                if (len(line_vals) != 0):
                     first_profile.append(float(line_vals[0]))
-                elif (len(line_vals) == 2) and two_profiles:
-                    first_profile.append(float(line_vals[0]))
-                    indirect_profile.append(float(line_vals[1]))
-                else:
-                    flushed_print('Line %d in file %s is not valid.'
-                                  % (idx + 1, filename_path))
-                    raise ProfileFileWrongNumberOfcolumns
             except ValueError:
                 flushed_print('Line %d in file %s is not valid: allowed float values in formats "X" or "X\tY".'
                               % (idx + 1, filename_path))
                 raise ProfileFileValueError
-            if (first_profile[-1] < 0) or (two_profiles and indirect_profile[-1] < 0):
+            if (first_profile[-1] < 0):
                 flushed_print('Line %d in file %s indicates a negative value'
                               % (idx + 1, filename_path))
                 raise ProfileFileNegativeValue
@@ -66,8 +54,7 @@ def _check_profile_file_consistency(filename_path):
         flushed_print('file %s does not have 8760 lines'
                       % filename_path)
         raise ProfileFileWrongNumberOfLines
-
-    return any(first_profile) or any(indirect_profile)
+    return any(first_profile)
 
 
 def _check_profile_file(filename_path):
@@ -101,9 +88,11 @@ candidate_options_type = {'name': 'string',
                           'unit-size': 'non-negative',
                           'max-units': 'non-negative',
                           'max-investment': 'non-negative',
-                          'link-profile': 'string',
+                          'direct-link-profile': 'string',
+                          'indirect-link-profile': 'string',
                           'already-installed-capacity': 'non-negative',
-                          'already-installed-link-profile': 'string',
+                          'already-installed-direct-link-profile': 'string',
+                          'already-installed-indirect-link-profile': 'string',
                           'has-link-profile': 'string'}
 
 
@@ -118,12 +107,15 @@ def _check_candidate_option_type(option, value):
     """
 
     obsolete_options = ["c", 'enable',
-                        'candidate-type', 'investment-type', 'relaxed']
-
-    if obsolete_options.count(option):
+                        'candidate-type', 'investment-type', 'relaxed', 'link-profile',
+                        "already-installed-link-profile"]
+    option_type = candidate_options_type.get(option)
+    if option_type is None:
         flushed_print(
-            f"{WARNING_MSG} {option} option is no longer used by antares-xpansion")
-        return True
+            'check_candidate_option_type: %s option not recognized in candidates file.' % option)
+        flushed_print(f"Authorized options are: ", *
+        candidate_options_type, sep="\n")
+        raise UnrecognizedCandidateOptionType
     else:
         option_type = candidate_options_type.get(option)
         if option_type is None:
@@ -254,9 +246,12 @@ def _check_candidate_name_and_link(ini_file):
 def _check_candidate_exclusive_attributes(ini_file):
     # check exclusion between max-investment and (max-units, unit-size) attributes
     for each_section in ini_file.sections():
-        max_invest = float(ini_file[each_section]['max-investment'].strip())
-        unit_size = float(ini_file[each_section]['unit-size'].strip())
-        max_units = float(ini_file[each_section]['max-units'].strip())
+        max_invest = ini_file.getfloat(
+            each_section, 'max-investment') if ini_file.has_option(each_section, 'max-investment') else 0
+        unit_size = ini_file.getfloat(
+            each_section, 'unit-size') if ini_file.has_option(each_section, 'unit-size') else 0
+        max_units = ini_file.getfloat(
+            each_section, 'max-units') if ini_file.has_option(each_section, 'max-units') else 0
         if max_invest != 0:
             if max_units != 0 or unit_size != 0:
                 flushed_print(
@@ -269,27 +264,25 @@ def _check_candidate_exclusive_attributes(ini_file):
 
 
 def _copy_in_backup(ini_file, candidates_ini_filepath):
+    backup_path = candidates_ini_filepath.parent / f"{candidates_ini_filepath.name}.bak"
     shutil.copyfile(candidates_ini_filepath,
-                    candidates_ini_filepath + ".bak")
+                    backup_path)
     with open(candidates_ini_filepath, 'w') as out_file:
         ini_file.write(out_file)
     flushed_print("%s file was overwritten! backup file %s created"
-                  % (candidates_ini_filepath, candidates_ini_filepath + ".bak"))
+                  % (candidates_ini_filepath, backup_path))
 
 
 def _check_attribute_profile_values(ini_file, capacity_dir_path):
     # check attributes profile is 0, 1 or an existent filename
     config_changed = False
-    profile_attributes = ['link-profile', 'already-installed-link-profile']
+    profile_attributes = ['direct-link-profile',
+                          'indirect-link-profile', 'already-installed-direct-link-profile',
+                          'already-installed-indirect-link-profile']
     for each_section in ini_file.sections():
-        has_a_profile = False
         for attribute in profile_attributes:
-            value = ini_file[each_section][attribute].strip()
-            if value == '0':
-                continue
-            elif value == '1':
-                has_a_profile = True
-            else:
+            if ini_file.has_option(each_section, attribute):
+                value = ini_file[each_section][attribute].strip()
                 # check file existence
                 filename_path = os.path.normpath(
                     os.path.join(capacity_dir_path, value))
@@ -297,15 +290,6 @@ def _check_attribute_profile_values(ini_file, capacity_dir_path):
                     flushed_print('Illegal value : option can be 0, 1 or an existent filename.\
                             %s is not an existent file' % filename_path)
                     raise ProfileFileNotExists
-                has_a_profile = has_a_profile or _check_profile_file(
-                    filename_path)
-        if not has_a_profile:
-            # remove candidate if it has no profile
-            flushed_print("candidate %s will be removed!" %
-                          ini_file[each_section]["name"])
-            ini_file.remove_section(each_section)
-            config_changed = True
-
     return config_changed
 
 
@@ -322,11 +306,17 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
                       'unit-size': '0',
                       'max-units': '0',
                       'max-investment': '0',
-                      'link-profile': '1',
+                      'direct-link-profile': '1',
+                      'indirect-link-profile': '1',
                       'already-installed-capacity': '0',
                       'already-installed-link-profile': '1'}
-    ini_file = configparser.ConfigParser(default_values)
-    ini_file.read(candidates_ini_filepath)
+
+    profile_link_checker = ProfileLinkChecker(
+        candidates_ini_filepath, capacity_dir_path)
+    if profile_link_checker.update():
+        profile_link_checker.write()
+
+    ini_file = profile_link_checker.config
 
     _check_candidate_attributes(ini_file)
     _check_candidate_name_and_link(ini_file)

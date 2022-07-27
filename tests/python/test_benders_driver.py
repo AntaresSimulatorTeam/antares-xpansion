@@ -1,9 +1,9 @@
-import pytest
 import os
 import sys
 from pathlib import Path
-from unittest.mock import PropertyMock, patch
+from unittest.mock import patch
 
+import pytest
 from antares_xpansion.benders_driver import BendersDriver
 
 MOCK_SUBPROCESS_RUN = "antares_xpansion.benders_driver.subprocess.run"
