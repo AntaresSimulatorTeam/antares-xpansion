@@ -1,6 +1,18 @@
 Antares-Xpansion changelog
 =================
 
+v0.8.0 (08/2022)
+--------------------
+### Features
+
+- Uses Antares simulator 8.2.2
+- Allow user to use different chronicles of link profiles. More information in [documentation](https://antares-xpansion.readthedocs.io/en/stable/user-guide/get-started/candidate-definition/)
+
+### Bug fixes
+- Allow "capa" folder to be missing is unused
+
+### For developers
+
 v0.7.0 (06/2022)
 --------------------
 ### Features
