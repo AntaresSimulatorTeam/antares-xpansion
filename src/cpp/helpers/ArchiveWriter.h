@@ -1,10 +1,10 @@
 #ifndef _ARCHIVEWRITER_H
 #define _ARCHIVEWRITER_H
+#include <vector>
+
 #include "ArchiveIO.h"
-struct FileBuffer {
-  std::string buffer;
-  std::string fname;
-};
+#include "FileInBuffer.h"
+
 class ArchiveWriter : public ArchiveIO {
  private:
   void* internalPointer_ = NULL;
@@ -20,6 +20,6 @@ class ArchiveWriter : public ArchiveIO {
 
   int Open() override;
   //   int32_t AddFileInArchive(const std::filesystem::path& FileToAddPath);
-  int32_t AddFileInArchive(const FileBuffer& FileBufferToAdd);
+  int32_t AddFilesInArchive(const FileBufferVector& FilesBufferToAdd);
 };
 #endif  // _ARCHIVEWRITER_H

@@ -1,6 +1,7 @@
 #include "LinkProblemsGenerator.h"
 
 #include <algorithm>
+#include <cassert>
 #include <execution>
 
 #include "VariableFileReader.h"
@@ -51,15 +52,17 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  */
 void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
-                                  Couplings &couplings) const {
+                                  Couplings &couplings, ArchiveReader &reader) {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const mps_name = root / problemData._problem_mps;
   auto const var_name = root / problemData._variables_txt;
 
   // new mps file in the new lp directory
-  std::string const lp_name =
-      problemData._problem_mps.substr(0, problemData._problem_mps.size() - 4);
-  auto const lp_mps_name = root / "lp" / (lp_name + ".mps");
+  // std::string const lp_name =
+  //     problemData._problem_mps.substr(0, problemData._problem_mps.size() -
+  //     4);
+  // const auto newMpsFile = (lp_name + ".mps");
+  auto const lp_mps_name = lpDir_ / problemData._problem_mps;
 
   // List of variables
   VariableFileReadNameConfiguration variable_name_config;
@@ -81,8 +84,12 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       variableReader.getIndirectCostVarColumns();
 
   SolverFactory factory;
-  auto in_prblm = std::make_shared<Problem>(factory.create_solver(_solver_name));
-  in_prblm->read_prob_mps(mps_name);
+  auto in_prblm =
+      std::make_shared<Problem>(factory.create_solver(_solver_name));
+
+  reader.ExtractFile(problemData._problem_mps);
+
+  in_prblm->read_prob_mps(lp_mps_name);
 
   solver_rename_vars(in_prblm, var_names);
 
@@ -102,6 +109,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   }
 
   in_prblm->write_prob_mps(lp_mps_name);
+  mpsBufferVector.push_back(FileInBuffer().run(lp_mps_name));
 }
 
 /**
@@ -113,10 +121,22 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
  * \return void
  */
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
-                                      Couplings &couplings) const {
+                                      Couplings &couplings) {
   auto const mps_file_name = root / MPS_TXT;
+  lpDir_ = root / "lp";
+  const auto archivePath = lpDir_ / MPS_ZIP_FILE;
+  auto reader = ArchiveReader(archivePath);
+  reader.Open();
   auto mpsList = readMPSList(mps_file_name);
-  std::for_each(std::execution::par, mpsList.begin(), mpsList.end(), [&](const auto& mps) {
-    treat(root, mps, couplings);
+  std::for_each(std::execution::seq, mpsList.begin(), mpsList.end(), [&](const auto& mps) {
+    treat(root, mps, couplings, reader);
   });
+  reader.Close();
+  reader.Delete();
+  std::filesystem::remove(archivePath);
+  auto writer = ArchiveWriter(archivePath);
+  writer.Open();
+  writer.AddFilesInArchive(mpsBufferVector);
+  writer.Close();
+  writer.Delete();
 }

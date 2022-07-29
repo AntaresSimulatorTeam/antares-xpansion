@@ -1,5 +1,7 @@
 add_executable(zip_mps_lib_tests zip_mps_lib_tests.cpp)
 
+target_include_directories(zip_mps_lib_tests PRIVATE
+${CMAKE_CURRENT_SOURCE_DIR}/../testsHelpers)
 target_link_libraries(zip_mps_lib_tests
         PRIVATE
         helpers

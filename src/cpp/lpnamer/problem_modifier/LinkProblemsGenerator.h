@@ -6,12 +6,16 @@
 #include <memory>
 
 #include "ActiveLinks.h"
+#include "ArchiveReader.h"
+#include "ArchiveWriter.h"
 #include "Candidate.h"
+#include "FileInBuffer.h"
 #include "ProblemModifier.h"
 #include "common_lpnamer.h"
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
 const std::string MPS_TXT{"mps.txt"};
+const std::string MPS_ZIP_FILE{"MPS_ZIP.zip"};
 const std::string STUDY_FILE{"study.antares"};
 typedef std::pair<std::string, std::filesystem::path>
     CandidateNameAndMpsFilePath;
@@ -30,15 +34,17 @@ class LinkProblemsGenerator {
                         const std::string& solver_name)
       : _links(links), _solver_name(solver_name) {}
 
-  void treatloop(const std::filesystem::path& root, Couplings& couplings) const;
+  void treatloop(const std::filesystem::path& root, Couplings& couplings);
 
  private:
   std::vector<ProblemData> readMPSList(
       const std::filesystem::path& mps_filePath_p) const;
 
   void treat(const std::filesystem::path& root, ProblemData const&,
-             Couplings& couplings) const;
+             Couplings& couplings, ArchiveReader& reader);
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
+  std::filesystem::path lpDir_ = "";
+  FileBufferVector mpsBufferVector = {};
 };
