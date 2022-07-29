@@ -26,8 +26,8 @@ void ArchiveReader::Delete() { mz_zip_reader_delete(&internalPointer_); }
 
 int32_t ArchiveReader::ExtractFile(
     const std::filesystem::path& fileToExtractPath) {
-  return ExtractFile(fileToExtractPath,
-                     ArchivePath() / fileToExtractPath.filename());
+  return ExtractFile(fileToExtractPath, ArchivePath().parent_path() /
+                                            fileToExtractPath.filename());
 }
 
 int32_t ArchiveReader::ExtractFile(

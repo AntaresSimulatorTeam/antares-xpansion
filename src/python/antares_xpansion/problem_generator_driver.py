@@ -34,6 +34,9 @@ class ProblemGeneratorDriver:
     class BasicException(Exception):
         pass
 
+    class MpsZipFileException(BasicException):
+        pass
+
     class AreaFileException(BasicException):
         pass
 
@@ -64,6 +67,9 @@ class ProblemGeneratorDriver:
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
         self._lp_path = None
+        self.mps_zip_filename = "MPS_ZIP"
+        self.zip_ext = "zip"
+        self.mps_zip_file = self.mps_zip_filename+"."+self.zip_ext
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """
@@ -106,14 +112,14 @@ class ProblemGeneratorDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
 
-        mps_dir = "MPS_DIR.zip"
         mps_txt = read_and_write_mps(self.output_path)
-        with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l, zipfile.ZipFile(self.output_path / mps_dir, "w") as mps_zip:
+        with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l, zipfile.ZipFile(self.output_path / self.mps_zip_file, "w") as mps_zip:
             for line in mps_txt.items():
                 file_l.write(line[1][0] + ' ' + line[1]
                              [1] + ' ' + line[1][2] + '\n')
                 mps_zip.write(self.output_path /
                               line[1][0], line[1][0], compress_type=zipfile.ZIP_DEFLATED)
+
         self._check_and_copy_area_file()
         self._check_and_copy_interco_file()
 
@@ -152,6 +158,7 @@ class ProblemGeneratorDriver:
             shutil.rmtree(self._lp_path)
         os.makedirs(self._lp_path)
 
+        shutil.move(str(self.output_path/self.mps_zip_file), self._lp_path)
         if self.weight_file_name_for_lp:
             XpansionStudyReader.check_weights_file(
                 self.user_weights_file_path, len(self.active_years))

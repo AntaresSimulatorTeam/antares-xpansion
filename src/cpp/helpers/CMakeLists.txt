@@ -22,6 +22,10 @@ add_library (helpers STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ArchiveIO.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ArchiveReader.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ArchiveReader.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/ArchiveWriter.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ArchiveWriter.cpp 
+	${CMAKE_CURRENT_SOURCE_DIR}/FileInBuffer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/FileInBuffer.cpp 
 )
 # ${CMAKE_CURRENT_SOURCE_DIR}/FileExtracter.cpp 
 # 	${CMAKE_CURRENT_SOURCE_DIR}/FileExtracter.h )
