@@ -19,7 +19,12 @@
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger &logger, Writer writer)
-    : BendersBase(options, logger, std::move(writer)) {}
+    : BendersSequential(options, logger, std::move(writer), std::make_shared<MPSUtils>()) {}
+
+BendersSequential::BendersSequential(const BendersBaseOptions &options,
+                                     Logger &logger, Writer writer,
+                                     std::shared_ptr<MPSUtils> mps_utils)
+    : BendersBase(options, logger, std::move(writer), std::move(mps_utils)) {}
 
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
@@ -27,9 +32,11 @@ void BendersSequential::initialize_problems() {
   reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
                                 _data.nsubproblem, log_name(), IsResumeMode()));
-  for (const auto &problem : coupling_map) {
-    addSubproblem(problem);
-    AddSubproblemName(problem.first);
+  if (Options().CONSTRUCT_ALL_PROBLEMS) {
+    for (const auto &problem : coupling_map) {
+      addSubproblem(problem);
+      AddSubproblemName(problem.first);
+    }
   }
 }
 

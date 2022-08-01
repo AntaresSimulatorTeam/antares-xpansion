@@ -16,7 +16,8 @@
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(BendersBaseOptions options, Logger &logger, Writer writer);
+  explicit BendersBase(BendersBaseOptions options, Logger &logger, Writer writer);
+  explicit BendersBase(BendersBaseOptions options, Logger &logger, Writer writer, std::shared_ptr<MPSUtils> mps_utils);
   virtual void launch() = 0;
   void set_log_file(const std::filesystem::path &log_name);
   [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
@@ -37,7 +38,7 @@ class BendersBase {
   bool stopping_criterion();
   void update_trace();
   void get_master_value();
-  void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
+  virtual void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
   [[nodiscard]] std::filesystem::path GetSubproblemPath(
@@ -47,7 +48,7 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
-  void build_input_map();
+  virtual void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   void reset_master(WorkerMaster *worker_master);
   void free_master() const;
@@ -71,7 +72,7 @@ class BendersBase {
   void SetSubproblemCost(const double &subproblem_cost);
   bool IsResumeMode() const;
   std::filesystem::path LastIterationFile() const {
-    return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
+    return std::filesystem::path(options_.LAST_ITERATION_JSON_FILE);
   }
   void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
   LogData GetBestIterationData() const;
@@ -111,13 +112,24 @@ class BendersBase {
   LogData FinalLogData() const;
 
  private:
-  BendersBaseOptions _options;
+  BendersBaseOptions options_;
+
+ public:
+  const BendersBaseOptions& Options() const;
+
+ private:
   unsigned int _totalNbProblems = 0;
   std::filesystem::path _log_name;
   BendersTrace _trace;
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;
+
+ public:
+  const SubproblemsMapPtr &getSubproblemMap() const;
+  const StrVector &getSubproblems() const;
+
+ private:
   AllCutStorage _all_cuts_storage;
   StrVector subproblems;
   std::ofstream _csv_file;
@@ -129,5 +141,21 @@ class BendersBase {
  public:
   Logger _logger;
   Writer _writer;
+  std::shared_ptr<MPSUtils> mps_utils_;
+
+ protected:
+  virtual std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
+      const std::pair<std::string, VariableMap> &kvp) const;
+ private:
+  std::map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+  std::shared_ptr<SubproblemWorker> BuildProblem(
+      const std::pair<std::string, VariableMap> &kvp, const std::string &name);
+  std::pair<std::vector<int>, std::vector<int>> GetProblemBasis(
+  const std::shared_ptr<SubproblemWorker> &worker) const;
+  auto ComputeSubProblemCutData(const std::shared_ptr<SubproblemWorker> &worker) const;
+  void getSubproblemCut_Fast(
+      SubproblemCutPackage &subproblem_cut_package) const;
+  void getSubproblemCut_ConstructWorker(
+      SubproblemCutPackage &subproblem_cut_package);
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

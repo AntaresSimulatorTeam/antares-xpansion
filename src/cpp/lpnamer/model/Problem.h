@@ -103,6 +103,7 @@ class Problem: public SolverAbstract
   void set_simplex_iter(int iter) override { solver_abstract_->set_simplex_iter(iter);}
   void write_basis(const std::filesystem::path &filename) override { solver_abstract_->write_basis(filename); }
   void read_basis(const std::filesystem::path &filename) override { solver_abstract_->read_basis(filename); }
+  void SetBasis(std::vector<int> rstatus, std::vector<int> cstatus) override { solver_abstract_->SetBasis(rstatus, cstatus); }
 };
 
 #endif  // ANTARESXPANSION_SRC_CPP_LPNAMER_MODEL_PROBLEM_H_

@@ -1,20 +1,19 @@
 import os
-import psutil
 import sys
-import yaml
+from pathlib import Path
 
+import psutil
+import yaml
+from PyQt5.QtCore import QProcess, QByteArray, QSettings
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QFont, QMovie, QIcon
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QPushButton, QVBoxLayout, \
     QHBoxLayout, QWidget, QFileDialog, QRadioButton, QSpacerItem, QSizePolicy, QPlainTextEdit, QMessageBox, QGridLayout, \
     QComboBox, QGroupBox, QSpinBox, QCheckBox
-from PyQt5.QtCore import QProcess, QByteArray, QSettings
-from pathlib import Path
 
-import resources
-
+BENDERS_STEP = "benders"
 STEPS = ["full", "antares", "problem_generation",
-         "benders", "study_update", "sensitivity", "resume"]
+         BENDERS_STEP, "study_update", "sensitivity", "resume"]
 STEP_WITH_SIMULATION_NAME = ["problem_generation",
                              "benders", "study_update", "sensitivity", "resume"]
 NEW_SIMULATION_NAME = "New"
@@ -102,7 +101,6 @@ class MainWidget(QWidget):
             "<a href=\"{nb_cpu}\"><span style=\"text-decoration: none;\">available physical cores {nb_cpu}</span></a>".format(
                 nb_cpu=cpu_count))
         nb_cpu_label.setTextInteractionFlags(Qt.LinksAccessibleByMouse)
-        nb_cpu_label.linkActivated.connect(self._use_available_core)
         method_layout.addWidget(nb_cpu_label)
         method_gb = QGroupBox("Method")
         method_gb.setLayout(method_layout)
@@ -113,8 +111,17 @@ class MainWidget(QWidget):
         self._keep_mps_checkbox = QCheckBox("Keep intermediate files")
         self._keep_mps_checkbox.setChecked(False)
         option_layout.addWidget(self._keep_mps_checkbox)
+        self._initialize_problems_startup = QCheckBox("Initialize problems at startup")
+        self._initialize_problems_startup.setChecked(True)
+        option_layout.addWidget(self._initialize_problems_startup)
         option_gb.setLayout(option_layout)
         self._xpansion_config_layout.addWidget(option_gb)
+
+        #Conect at the end to avoid cyclical dependencies on widget existence
+        nb_cpu_label.linkActivated.connect(self._use_available_core)
+        for step in STEPS:
+            self._step_buttons[step].toggled.connect(self._step_changed)
+        self._step_buttons["full"].setChecked(True)
 
     def _init_xpansion_run_widget(self):
         self._running_label = QLabel()
@@ -163,8 +170,6 @@ class MainWidget(QWidget):
             self._step_buttons[step].setEnabled(
                 step not in STEP_WITH_SIMULATION_NAME)
             step_layout.addWidget(self._step_buttons[step])
-
-        self._step_buttons["full"].setChecked(True)
 
         self._step_gb = QGroupBox("Steps")
         self._step_gb.setLayout(step_layout)
@@ -237,6 +242,9 @@ class MainWidget(QWidget):
         else:
             self._set_stop_label()
 
+    def _step_changed(self):
+        self._initialize_problems_startup.setEnabled(self._get_step() == BENDERS_STEP)
+
     def _method_changed(self):
         self._nb_core_edit.setEnabled(
             self._mpibenders_radio_button.isChecked())
@@ -298,7 +306,6 @@ class MainWidget(QWidget):
             "--step", self._get_step(),
             "-n", str(self._get_nb_core())]
         program_in_python_package = None
-        install_dir_full = None
         if self._install_dir is not None and Path(self._install_dir).is_dir():
             install_dir_full = str(Path(self._install_dir).resolve())
 
@@ -314,6 +321,8 @@ class MainWidget(QWidget):
         if not self._step_buttons["full"].isChecked():
             commands.append("--simulationName")
             commands.append(self._combo_simulation_name.currentText())
+        if self._get_step() == BENDERS_STEP:
+            commands.extend(["--construct_all_problems", str(self._initialize_problems_startup.isChecked())])
         if Path("launch.py").is_file():
             commands.insert(0, "launch.py")
             program = str(Path(sys.executable))
