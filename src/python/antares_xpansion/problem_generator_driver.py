@@ -115,10 +115,13 @@ class ProblemGeneratorDriver:
         mps_txt = read_and_write_mps(self.output_path)
         with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l, zipfile.ZipFile(self.output_path / self.mps_zip_file, "w") as mps_zip:
             for line in mps_txt.items():
-                file_l.write(line[1][0] + ' ' + line[1]
+                mps_sub_problem_file = line[1][0]
+                mps_sub_problem_file_path = self.output_path / mps_sub_problem_file
+                file_l.write(mps_sub_problem_file + ' ' + line[1]
                              [1] + ' ' + line[1][2] + '\n')
-                mps_zip.write(self.output_path /
-                              line[1][0], line[1][0], compress_type=zipfile.ZIP_DEFLATED)
+                mps_zip.write(mps_sub_problem_file_path,
+                              mps_sub_problem_file, compress_type=zipfile.ZIP_DEFLATED)
+                os.remove(mps_sub_problem_file_path)
 
         self._check_and_copy_area_file()
         self._check_and_copy_interco_file()
