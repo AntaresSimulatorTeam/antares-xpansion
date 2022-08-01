@@ -5,9 +5,11 @@ class ArchiveReader : public ArchiveIO {
  private:
   void* internalPointer_ = NULL;
   void* handle_ = NULL;
+  void Create() override;
 
  public:
   explicit ArchiveReader(const std::filesystem::path& archivePath);
+  ArchiveReader();
 
   int32_t Close() override;
   void Delete() override;

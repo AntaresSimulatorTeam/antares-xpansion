@@ -6,14 +6,18 @@ class ArchiveIO {
  private:
   std::filesystem::path archivePath_;
 
- public:
-  std::filesystem::path ArchivePath() const { return archivePath_; }
+ protected:
+  virtual void Create() = 0;
 
  public:
   explicit ArchiveIO(const std::filesystem::path& archivePath)
       : archivePath_(archivePath) {}
-  // virtual void* InternalPointer() const = 0;
-  // virtual void* handle() const = 0;
+  ArchiveIO() = default;
+  std::filesystem::path ArchivePath() const { return archivePath_; }
+  void SetArchivePath(const std::filesystem::path& archivePath) {
+    archivePath_ = archivePath;
+  };
+
   virtual int32_t Close() = 0;
   virtual void Delete() = 0;
 

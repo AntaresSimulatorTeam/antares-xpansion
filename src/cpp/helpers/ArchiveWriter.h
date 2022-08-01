@@ -9,9 +9,11 @@ class ArchiveWriter : public ArchiveIO {
  private:
   void* internalPointer_ = NULL;
   void* handle_ = NULL;
+  void Create() override;
 
  public:
   explicit ArchiveWriter(const std::filesystem::path& archivePath);
+  ArchiveWriter();
 
   int32_t Close() override;
   void Delete() override;

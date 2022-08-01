@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ArchiveReader.h"
 #include "BendersBase.h"
 #include "BendersStructsDatas.h"
 #include "SubproblemCut.h"
@@ -52,6 +53,7 @@ class BendersMpi : public BendersBase {
   void check_if_some_proc_had_a_failure(int success);
   [[nodiscard]] bool shouldParallelize() const final { return false; }
 
+  ArchiveReader reader_;
   mpi::environment &_env;
   mpi::communicator &_world;
   const unsigned int rank_0 = 0;

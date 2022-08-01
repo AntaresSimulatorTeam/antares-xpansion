@@ -8,9 +8,11 @@
 #include <iostream>
 ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
-  mz_zip_reader_create(&internalPointer_);
+  Create();
 }
 // void* ArchiveReader::InternalPointer() const { return mz_zip_reader; }
+ArchiveReader::ArchiveReader() : ArchiveIO() { Create(); }
+void ArchiveReader::Create() { mz_zip_reader_create(&internalPointer_); }
 
 int32_t ArchiveReader::Open() {
   const auto err =
