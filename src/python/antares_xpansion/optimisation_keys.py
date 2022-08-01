@@ -88,5 +88,9 @@ class OptimisationKeys:
         return "RESUME"
 
     @staticmethod
+    def mps_zip_file_key():
+        return "MPS_ZIP_FILE"
+
+    @staticmethod
     def separation_key():
         return "SEPARATION_PARAM"
