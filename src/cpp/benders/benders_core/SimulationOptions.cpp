@@ -163,5 +163,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
 
+  result.MPS_ZIP_FILE = MPS_ZIP_FILE;
+
   return result;
 }
