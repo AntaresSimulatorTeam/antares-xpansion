@@ -1,8 +1,12 @@
 
 
 #include <mz.h>
+#include <mz_strm.h>
+#include <mz_zip.h>
+#include <mz_zip_rw.h>
 
 #include <fstream>
+#include <iterator>
 
 #include "ArchiveReader.h"
 #include "ArchiveWriter.h"
@@ -51,14 +55,26 @@ TEST_F(ArchiveReaderTest, ShouldFailIfInvalidFileIsGiven) {
   std::cerr.rdbuf(initialBufferCerr);
   ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString.str());
 }
+bool equal_files(const std::filesystem::path& a,
+                 const std::filesystem::path& b) {
+  std::ifstream stream{a};
+  std::string file1{std::istreambuf_iterator<char>(stream),
+                    std::istreambuf_iterator<char>()};
 
+  stream = std::ifstream{b};
+  std::string file2{std::istreambuf_iterator<char>(stream),
+                    std::istreambuf_iterator<char>()};
+
+  return file1 == file2;
+}
 TEST_F(ArchiveReaderTest, ShouldExtractFile1FromArchive1) {
   auto fileExt = ArchiveReader(archive1);
   ASSERT_EQ(fileExt.Open(), MZ_OK);
-  const std::filesystem::path tmpDir = "/tmp/";
+  const auto tmpDir = std::filesystem::temp_directory_path();
   const auto expectedFilePath = tmpDir / archive1File1.filename();
   ASSERT_EQ(fileExt.ExtractFile(archive1File1.filename(), tmpDir), MZ_OK);
   ASSERT_TRUE(std::filesystem::exists(expectedFilePath));
+  ASSERT_TRUE(equal_files(expectedFilePath, archive1File1));
   ASSERT_EQ(fileExt.Close(), MZ_OK);
   fileExt.Delete();
 }
@@ -67,35 +83,86 @@ class ArchiveWriterTest : public ::testing::Test {
   ArchiveWriterTest() = default;
 };
 
-FileBufferVector GetRandomFileBufferVector(const size_t vecSize) {
+FileBufferVector GetBufferVectorOfFilesInDir(const std::filesystem::path& dir) {
   FileBufferVector result;
-  for (size_t i = 0; i < vecSize; i++) {
-    std::string fname = "file_" + std::to_string(i);
-    result.push_back({fname, fname + " data"});
+  for (const auto& file : std::filesystem::directory_iterator(dir)) {
+    const auto& pathToFile = file.path();
+    std::ifstream fileStream(pathToFile);
+    std::stringstream buffer;
+    buffer << fileStream.rdbuf();
+    result.push_back({pathToFile.filename().string(), buffer.str()});
   }
   return result;
 }
+void compareArchiveAndDir(const std::filesystem::path& archivePath,
+                          const std::filesystem::path& dirPath,
+                          const std::filesystem::path& tmpDir) {
+  void* reader = NULL;
+
+  mz_zip_reader_create(&reader);
+
+  mz_zip_reader_open_file(reader, archivePath.c_str());
+  assert(mz_zip_reader_entry_open(reader) == MZ_OK);
+
+  for (const auto file : std::filesystem::directory_iterator(dirPath)) {
+    const auto searchFilename = file.path().filename().c_str();
+    assert(mz_zip_reader_locate_entry(reader, searchFilename, 1) == MZ_OK);
+    assert(mz_zip_reader_entry_open(reader) == MZ_OK);
+    const auto extractedFilePath = tmpDir / searchFilename;
+    mz_zip_reader_entry_save_file(reader, extractedFilePath.c_str());
+    assert(equal_files(extractedFilePath, file.path()));
+  }
+  mz_zip_reader_close(reader);
+  mz_zip_reader_delete(&reader);
+}
+std::string timeToStr(const std::time_t& time_p) {
+  struct tm local_time;
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+  localtime_s(&local_time, &time_p);
+#else  // defined(__unix__) || (__APPLE__)
+  localtime_r(&time_p, &local_time);
+#endif
+  const char* FORMAT = "%d-%m-%Y-%H-%M-%S";
+  char buffer_l[100];
+  strftime(buffer_l, sizeof(buffer_l), FORMAT, &local_time);
+  std::string strTime_l(buffer_l);
+
+  return strTime_l;
+}
+std::string GenerateRandomString(size_t len) {
+  srand(time(NULL));
+  const auto abc = "abcdefghijklmnopqrstuvwxyz";
+
+  std::string ret = "XXXXXX";
+
+  for (int i = 0; i < len; ++i) {
+    ret[i] = abc[rand() % (sizeof(abc) - 1)];
+  }
+  return ret;
+}
+std::filesystem::path createRandomSubDir(
+    const std::filesystem::path& parentDir) {
+  return parentDir /
+         (timeToStr(std::time(nullptr)) + "-" + GenerateRandomString(6));
+}
 
 TEST_F(ArchiveWriterTest, ShouldCreateArchiveWithVecBuffer) {
-  const std::filesystem::path archiveName = std::tmpnam(nullptr);
-  ArchiveWriter writer(archiveName);
+  const testing::TestInfo* const test_info =
+      testing::UnitTest::GetInstance()->current_test_info();
+  const auto tmpDir = createRandomSubDir(
+      std::filesystem::temp_directory_path() / test_info->test_suite_name());
+  std::string archiveName = test_info->name();
+  archiveName += ".zip";
+  const auto archivePath = tmpDir / archiveName;
+  ArchiveWriter writer(archivePath);
   ASSERT_EQ(writer.Open(), MZ_OK);
-  ASSERT_EQ(writer.AddFilesInArchive(GetRandomFileBufferVector(5)), MZ_OK);
+  const auto mpsBufferVec = GetBufferVectorOfFilesInDir(archive1Dir);
+  ASSERT_EQ(writer.AddFilesInArchive(mpsBufferVec), MZ_OK);
   ASSERT_EQ(writer.Close(), MZ_OK);
   writer.Delete();
+  compareArchiveAndDir(archivePath, archive1Dir, tmpDir);
 }
 class FileInBufferTest : public ::testing::Test {
  public:
   FileInBufferTest() = default;
 };
-
-TEST_F(FileInBufferTest, ShouldCreateReturnBufferVector) {
-  char templatedFileName[10] = "ZIPXXXXXX";
-  const auto ret = mktemp_platform(templatedFileName, 0);
-
-#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  ASSERT_NE(ret, 0);
-#else  // defined(__unix__) || (__APPLE__)
-  ASSERT_GT(ret, 1);
-#endif
-}
