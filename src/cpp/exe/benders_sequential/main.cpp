@@ -4,13 +4,14 @@
 #include <filesystem>
 
 #include "BendersSequential.h"
-#include "JsonWriter.h"
 #include "LoggerFactories.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
+#include "StartUp.h"
 #include "Timer.h"
 #include "WriterFactories.h"
 #include "glog/logging.h"
+
 int main(int argc, char **argv) {
   // options.print(std::cout);
   usage(argc);
@@ -32,13 +33,7 @@ int main(int argc, char **argv) {
 
   Logger logger = logger_factory.get_logger();
   Writer writer = build_json_writer(options.JSON_FILE, options.RESUME);
-  if (options.RESUME && writer->solution_status() == Output::STATUS_OPTIMAL_C) {
-    std::stringstream str;
-    str << "Study is already optimal " << std::endl
-        << "Optimization results available in : " << options.JSON_FILE;
-    logger->display_message(str.str());
-    return 0;
-  }
+  if (Benders::StartUp startup; startup.StudyAlreadyAchievedCriterion(options, writer, logger)) return 0;
   writer->write_log_level(options.LOG_LEVEL);
   writer->write_master_name(options.MASTER_NAME);
   writer->write_solver_name(options.SOLVER_NAME);
