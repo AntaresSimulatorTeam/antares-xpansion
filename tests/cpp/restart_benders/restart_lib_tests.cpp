@@ -1,7 +1,9 @@
 
-#include "JsonWriter.h"
 #include "LastIterationReader.h"
 #include "LastIterationWriter.h"
+#include "LoggerStub.h"
+#include "StartUp.h"
+#include "WriterStub.h"
 #include "common.h"
 #include "core/ILogger.h"
 #include "gtest/gtest.h"
@@ -68,4 +70,56 @@ TEST_F(LastIterationWriterTest, ShouldFailIfInvalidFileIsGiven) {
   writer.SaveBestAndLastIterations(best_iteration_data, last_iteration_data);
   std::cerr.rdbuf(initialBufferCerr);
   ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString.str());
+}
+
+class WriterMockStatus: public WriterNOOPStub {
+ public:
+  std::string status = Output::STATUS_OPTIMAL_C;
+  std::string solution_status() const override {
+    return status;
+  }
+};
+
+
+TEST(Resume, ShouldNotResumeIfCriterionOk) {
+  Benders::StartUp start_up;
+  SimulationOptions options;
+  options.MAX_ITERATIONS = 10;
+  options.ABSOLUTE_GAP = 100.f;
+  options.RELATIVE_GAP = 200.f;
+  options.TIME_LIMIT = 500.f;
+  options.RESUME = true;
+
+  auto writer = std::make_shared<WriterMockStatus>();
+  auto logger = std::make_shared<LoggerNOOPStub>();
+  ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer, logger), true);
+}
+
+TEST(Resume, DontResumeIfOptionOff){
+  Benders::StartUp start_up;
+  SimulationOptions options;
+  options.MAX_ITERATIONS = 10;
+  options.ABSOLUTE_GAP = 100.f;
+  options.RELATIVE_GAP = 200.f;
+  options.TIME_LIMIT = 500.f;
+  options.RESUME = false;
+
+  auto writer = std::make_shared<WriterMockStatus>();
+  auto logger = std::make_shared<LoggerNOOPStub>();
+  ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer, logger), false);
+}
+
+TEST(Resume, ContinueIfCreterionNotMatch) {
+  Benders::StartUp start_up;
+  SimulationOptions options;
+  options.MAX_ITERATIONS = 10;
+  options.ABSOLUTE_GAP = 100.f;
+  options.RELATIVE_GAP = 200.f;
+  options.TIME_LIMIT = 500.f;
+  options.RESUME = true;
+
+  auto writer = std::make_shared<WriterMockStatus>();
+  writer->status = "NotOptimal";
+  auto logger = std::make_shared<LoggerNOOPStub>();
+  ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer, logger), false);
 }
