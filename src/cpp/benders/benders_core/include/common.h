@@ -124,10 +124,10 @@ struct BaseOptions {
   std::string SOLVER_NAME;
   std::string SLAVE_WEIGHT;
 
-  int LOG_LEVEL;
+  int LOG_LEVEL = 0;
 
-  double SLAVE_WEIGHT_VALUE;
-  bool RESUME;
+  double SLAVE_WEIGHT_VALUE = 0;
+  bool RESUME = false;
 
   Str2Dbl weights;
 };
@@ -136,15 +136,15 @@ struct BendersBaseOptions : public BaseOptions {
   explicit BendersBaseOptions(const BaseOptions &base_to_copy)
       : BaseOptions(base_to_copy) {}
 
-  int MAX_ITERATIONS;
+  int MAX_ITERATIONS = -1;
 
-  double ABSOLUTE_GAP;
-  double RELATIVE_GAP;
-  double TIME_LIMIT;
+  double ABSOLUTE_GAP = 0;
+  double RELATIVE_GAP = 0;
+  double TIME_LIMIT = 0;
 
-  bool AGGREGATION;
-  bool TRACE;
-  bool BOUND_ALPHA;
+  bool AGGREGATION = false;
+  bool TRACE = false;
+  bool BOUND_ALPHA = false;
 
   std::string CSV_NAME;
   std::string LAST_MASTER_MPS;

@@ -12,12 +12,12 @@
 #include "glog/logging.h"
 #include "solver_utils.h"
 
-BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
+BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
                          Writer writer)
     : _options(std::move(options)),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
-      _logger(logger),
+      _logger(std::move(logger)),
       _writer(std::move(writer)) {}
 
 /*!

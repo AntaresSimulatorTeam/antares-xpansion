@@ -16,7 +16,7 @@
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(BendersBaseOptions options, Logger &logger, Writer writer);
+  BendersBase(BendersBaseOptions options, Logger logger, Writer writer);
   virtual void launch() = 0;
   void set_log_file(const std::filesystem::path &log_name);
   [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
