@@ -114,6 +114,9 @@ jobs:
       - name: Init submodule
         run: |
              git submodule update --init --recursive .
+             cd antares-deps
+             git switch feature/add-minizip-ng
+             cd ../
 
       - name: Configure
         run: |
