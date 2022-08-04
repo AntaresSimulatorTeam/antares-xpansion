@@ -13,9 +13,9 @@ COLUMNS
     semibase R0000001 1
     transmission_line OBJROW 10000
     transmission_line R0000002 1
-    C0000005 R0000000 -100
-    C0000006 R0000001 -200
-    C0000007 R0000002 -400
+    nb_units_peak R0000000 -100
+    nb_units_semibase R0000001 -200
+    nb_units_transmission_line R0000002 -400
 RHS
 BOUNDS
  UP BOUND battery 1000
@@ -23,7 +23,7 @@ BOUNDS
  UP BOUND pv 1000
  UP BOUND semibase 2000
  UP BOUND transmission_line 3200
- UI BOUND C0000005 20
- UI BOUND C0000006 10
- UI BOUND C0000007 8
+ UI BOUND nb_units_peak 20
+ UI BOUND nb_units_semibase 10
+ UI BOUND nb_units_transmission_line 8
 ENDATA

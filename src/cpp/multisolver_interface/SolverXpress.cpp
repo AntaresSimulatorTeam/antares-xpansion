@@ -23,7 +23,7 @@ SolverXpress::SolverXpress() {
   int status = 0;
   if (_NumberOfProblems == 0) {
     status = XPRSinit(NULL);
-    zero_status_check(status, "intialize XPRESS environment");
+    zero_status_check(status, "initialize XPRESS environment");
   }
 
   _NumberOfProblems += 1;

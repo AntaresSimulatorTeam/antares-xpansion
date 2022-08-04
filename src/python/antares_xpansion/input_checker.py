@@ -330,12 +330,13 @@ type_float = float
 # "option": (type, legal_value(s))
 options_types_and_legal_values = {
     "uc_type": (type_str, ["expansion_accurate", "expansion_fast"]),
-    "master": (type_str, ["relaxed", "integer", "full_integer"]),
+    "master": (type_str, ["relaxed", "integer"]),
     "optimality_gap": (type_float, None),
     "relative_gap": (type_float, None),
+    "relaxed_optimality_gap": (type_float, None),
+    "initial_master_relaxation": (type_str, ["True", "true", "False", "false"]),
     "week_selection": (type_str, ["true", "false"]),
     "max_iteration": (type_int, None),
-    "relaxed_optimality_gap": (type_str, None),
     "solver": (type_str, None),
     "timelimit": (type_int, None),
     "yearly-weights": (type_str, None),
@@ -480,7 +481,7 @@ def _check_setting_option_value(option, value):
     if ((legal_values is not None) and (value in legal_values)) or (option in skip_verif):
         return True
 
-    if (option == "optimality_gap") or (option == "relative_gap"):
+    if (option == "optimality_gap") or (option == "relative_gap") or (option == "relaxed_optimality_gap"):
         if float(value) >= 0:
             return True
         else:

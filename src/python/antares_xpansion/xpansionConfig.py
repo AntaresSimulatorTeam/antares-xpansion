@@ -146,7 +146,8 @@ class XpansionConfig:
             "cut_type": "yearly",
             "week_selection": "false",
             "max_iteration": "+infini",
-            "relaxed_optimality_gap": "0.01",
+            "relaxed_optimality_gap": "1e-4",
+            "initial_master_relaxation": "false",
             "solver": "Cbc",
             "timelimit": "+infini",
             "additional-constraints": "",
@@ -159,6 +160,8 @@ class XpansionConfig:
             OptimisationKeys.max_iterations_key(): self.max_iterations_default_value(),
             OptimisationKeys.absolute_gap_key(): self.absolute_gap_default_value(),
             OptimisationKeys.relative_gap_key(): self.relative_gap_default_value(),
+            OptimisationKeys.relaxed_gap_key(): self.relaxed_gap_default_value(),
+            OptimisationKeys.initial_master_relaxation_key(): self.initial_master_relaxation_default_value(),
             OptimisationKeys.aggregation_key(): self.aggregation_default_value(),
             OptimisationKeys.outpoutroot_key(): self.outpoutroot_default_value(),
             OptimisationKeys.trace_key(): self.trace_default_value(),
@@ -206,9 +209,15 @@ class XpansionConfig:
 
     def absolute_gap_default_value(self):
         return "1"
+    
+    def relaxed_gap_default_value(self):
+        return "1e-4"
 
     def max_iterations_default_value(self):
         return "-1"
+    
+    def initial_master_relaxation_default_value(self):
+        return False
 
     def _get_config_values(self):
 

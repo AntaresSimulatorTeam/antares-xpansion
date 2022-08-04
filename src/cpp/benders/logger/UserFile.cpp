@@ -105,5 +105,12 @@ void UserFile::restart_best_iterations_infos(
   log_at_iteration_end(best_iteration_data);
 }
 
+void UserFile::log_at_switch_to_integer() {
+  _file << LINE_PREFIX
+        << "--- Relaxed gap reached, switch master formulation to integer"
+        << std::endl;
+  _file.flush();
+}
+
 }  // namespace logger
 }  // namespace xpansion

@@ -31,15 +31,21 @@ class BendersBase {
   virtual void free() = 0;
   virtual void run() = 0;
   virtual void initialize_problems() = 0;
-  void init_data();
+  virtual void init_data();
   void print_csv();
   void update_best_ub();
   bool stopping_criterion();
+  bool is_initial_relaxation_requested() const;
+  bool switch_to_integer_master(bool is_relaxed) const;
   void update_trace();
-  void get_master_value();
+  virtual void get_master_value();
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
-  void post_run_actions() const;
+  virtual void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
+  void deactivate_integrity_constraints() const;
+  void activate_integrity_constraints() const;
+  void set_data_pre_relaxation();
+  void reset_data_post_relaxation();
   [[nodiscard]] std::filesystem::path GetSubproblemPath(
       std::string const &subproblem_name) const;
   [[nodiscard]] double SubproblemWeight(int subproblem_count,
@@ -47,9 +53,9 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
-  void build_input_map();
+  virtual void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
-  void reset_master(WorkerMaster *worker_master);
+  virtual void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_subproblems();
   void addSubproblem(const std::pair<std::string, VariableMap> &kvp);
@@ -87,7 +93,7 @@ class BendersBase {
     return iterations_before_resume;
   }
   double GetBendersTime() const;
-  void write_basis() const;
+  virtual void write_basis() const;
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
@@ -96,6 +102,7 @@ class BendersBase {
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
                         Point const &xopt) const;
   void bound_simplex_iter(int simplexiter);
+  bool relaxation_stopping_criterion() const;
   void check_status(AllCutPackage const &all_package) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
   [[nodiscard]] Output::IterationsData output_data() const;

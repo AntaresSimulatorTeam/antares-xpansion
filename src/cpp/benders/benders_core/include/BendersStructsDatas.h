@@ -31,6 +31,7 @@ struct BendersData {
   int master_status;
   double elapsed_time;
   StoppingCriterion stopping_criterion;
+  bool is_in_initial_relaxation;
 };
 /*!
  * \class WorkerMasterData
@@ -43,7 +44,7 @@ class WorkerMasterData {
   bool _valid = false;
   double _lb;
   double _ub;
-  double _bestub;
+  double _best_ub;
   int _deleted_cut;
   int _nbasis;
   double _master_duration;
