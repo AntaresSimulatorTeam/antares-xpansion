@@ -226,7 +226,7 @@ bool BendersBase::stopping_criterion() {
   if (_data.elapsed_time > _options.TIME_LIMIT)
     _data.stopping_criterion = StoppingCriterion::timelimit;
   else if ((_options.MAX_ITERATIONS != -1) &&
-           (_data.it > _options.MAX_ITERATIONS))
+           (_data.it >= _options.MAX_ITERATIONS))
     _data.stopping_criterion = StoppingCriterion::max_iteration;
   else if (_data.lb + _options.ABSOLUTE_GAP >= _data.best_ub)
     _data.stopping_criterion = StoppingCriterion::absolute_gap;
