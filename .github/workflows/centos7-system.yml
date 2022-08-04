@@ -97,9 +97,6 @@ jobs:
         run: |
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
           git submodule update --init --recursive antares-deps
-             cd antares-deps
-             git switch feature/add-minizip-ng
-             cd ../
 
       - name: Checkout xpressmp linux
         if: matrix.xprs == 'XPRESS-ON'
