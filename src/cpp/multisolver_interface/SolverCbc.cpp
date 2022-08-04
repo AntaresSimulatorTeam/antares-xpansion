@@ -168,17 +168,15 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
 }
 
 void SolverCbc::setClpSimplexColNamesFromInnerSolver(ClpSimplex *clps) const {
-  std::string name;
   for (int col_id(0); col_id < get_ncols(); col_id++) {
-    name = _clp_inner_solver.getColName(col_id);
+    std::string name = _clp_inner_solver.getColName(col_id);
     clps->setColumnName(col_id, name);
   }
 }
 
 void SolverCbc::setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const {
-  std::string name;
-  for (int row_id(0); row_id < get_nrows(); row_id++) {
-    name = _clp_inner_solver.getRowName(row_id);
+  for (int row_id(0); row_id < clps->getNumRows(); row_id++) {
+    std::string  name = _clp_inner_solver.getRowName(row_id);
     clps->setRowName(row_id, name);
   }
 }
@@ -534,17 +532,6 @@ int SolverCbc::solve_mip() {
 
   defineCbcModelFromInnerSolver();
   _cbc.branchAndBound();
-
-  /*std::cout << "*********************************************" << std::endl;
-  std::cout << "COUCOU CBC STATUS " << _cbc.status() << std::endl;
-  std::cout << "COUCOU CBC STATUS " << _cbc.secondaryStatus() << std::endl;
-  std::cout << _cbc.isProvenOptimal() << std::endl;
-  std::cout << "INFEAS ? " << _cbc.isProvenInfeasible() << std::endl;
-  std::cout << "INFEAS ? " << _cbc.isInitialSolveProvenPrimalInfeasible() <<
-  std::endl; std::cout << "UNBD   ? " << _cbc.isProvenDualInfeasible() <<
-  std::endl; std::cout << "UNBD   ? " <<
-  _cbc.isInitialSolveProvenDualInfeasible() << std::endl; std::cout <<
-  "*********************************************" << std::endl;*/
 
   if (_cbc.isProvenOptimal()) {
     if (std::abs(_cbc.solver()->getObjValue()) >= 1e20) {
