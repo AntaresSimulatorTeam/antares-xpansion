@@ -150,7 +150,7 @@ TEST_F(ArchiveWriterTest, ShouldCreateArchiveWithVecBuffer) {
   const testing::TestInfo* const test_info =
       testing::UnitTest::GetInstance()->current_test_info();
   const auto tmpDir = createRandomSubDir(
-      std::filesystem::temp_directory_path() / test_info->test_suite_name());
+      std::filesystem::temp_directory_path() / test_info->test_case_name());
   std::string archiveName = test_info->name();
   archiveName += ".zip";
   const auto archivePath = tmpDir / archiveName;
