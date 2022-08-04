@@ -167,7 +167,7 @@ $$ \mathbb{E}\left(\text{cost}\right) = \frac{\sum_{i = 1}^{n}{\omega_i\text{cos
 with \\(\text{cost}_{i}\\) the production cost of the \\(i\\)-th Monte Carlo
 year and \\(\omega_i\\) the associated weigth.
 
-The file defined by the `yearly-weights` parameters must be located in the `user/expansion/` folder of the Antares
+The file defined by the `yearly-weights` parameters must be located in the `user/expansion/weights` folder of the Antares
 study. It must contain a column with as many numerical values as there
 are Monte-Carlo years in the Antares study. The value of the \\(i\\)-th
 row is the weight \\(\omega_i\\) of the \\(i\\)-th Monte Carlo year (see **Figure 11**).
@@ -210,7 +210,7 @@ For now two log levels are available:
 
 String, specifying the name of a file. Default: `None`.
 
-The file defined by the `additional-constraints` parameter must be located in the `user/expansion/` folder of the Antares study. It allows to impose linear
+The file defined by the `additional-constraints` parameter must be located in the `user/expansion/constraints` folder of the Antares study. It allows to impose linear
 constraints between the invested capacities of investment candidates. These linear constraints will be added to the master problem. 
 
 The syntax of the `additional-constraints` file is illustrated on **Figure 12**. The format is inspired by Antares' binding constraints.
