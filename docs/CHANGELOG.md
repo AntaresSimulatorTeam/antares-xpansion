@@ -10,6 +10,7 @@ v0.8.0 (08/2022)
 
 ### Bug fixes
 - Allow "capa" folder to be missing is unused
+- Algorithm now properly stop after MAX_ITERATION instead of MAX_ITERATION+1 
 
 ### For developers
 
