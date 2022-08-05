@@ -111,6 +111,9 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
+        self._create_lp_dir()
+
+        self._process_weights_file()
 
         mps_txt = read_and_write_mps(self.output_path)
         with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l, zipfile.ZipFile(self.output_path / self.mps_zip_file, "w") as mps_zip:
@@ -157,18 +160,7 @@ class ProblemGeneratorDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
 
-        if os.path.isdir(self._lp_path):
-            shutil.rmtree(self._lp_path)
-        os.makedirs(self._lp_path)
-
         shutil.move(str(self.output_path/self.mps_zip_file), self._lp_path)
-        if self.weight_file_name_for_lp:
-            XpansionStudyReader.check_weights_file(
-                self.user_weights_file_path, len(self.active_years))
-            weight_list = XpansionStudyReader.get_years_weight_from_file(
-                self.user_weights_file_path)
-            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name_for_lp,
-                                                                          self.active_years)
 
         with open(self.get_lp_namer_log_filename(), 'w') as output_file:
 
@@ -186,6 +178,20 @@ class ProblemGeneratorDriver:
                     "ERROR: exited lpnamer with status %d" % returned_l.returncode)
             elif not self.keep_mps:
                 StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
+
+    def _create_lp_dir(self):
+        if os.path.isdir(self._lp_path):
+            shutil.rmtree(self._lp_path)
+        os.makedirs(self._lp_path)
+
+    def _process_weights_file(self):
+        if self.weight_file_name_for_lp:
+            XpansionStudyReader.check_weights_file(
+                self.user_weights_file_path, len(self.active_years))
+            weight_list = XpansionStudyReader.get_years_weight_from_file(
+                self.user_weights_file_path)
+            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name_for_lp,
+                                                                          self.active_years)
 
     def get_lp_namer_log_filename(self):
         if not self._lp_path:
