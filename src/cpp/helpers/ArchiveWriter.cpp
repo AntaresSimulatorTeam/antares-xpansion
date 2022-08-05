@@ -15,8 +15,8 @@ ArchiveWriter::ArchiveWriter() : ArchiveIO() { Create(); }
 
 void ArchiveWriter::Create() { mz_zip_writer_create(&internalPointer_); }
 int32_t ArchiveWriter::Open() {
-  const auto err =
-      mz_zip_writer_open_file(internalPointer_, ArchivePath().c_str(), 0, 1);
+  const auto err = mz_zip_writer_open_file(
+      internalPointer_, ArchivePath().string().c_str(), 0, 1);
   if (err != MZ_OK) {
     std::cerr << "Could not Open Archive: " << ArchivePath().string()
               << std::endl;
