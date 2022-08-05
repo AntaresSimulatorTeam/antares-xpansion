@@ -11,7 +11,6 @@
 #include "ArchiveReader.h"
 #include "ArchiveWriter.h"
 #include "FileInBuffer.h"
-#include "TempFileFactory.h"
 #include "gtest/gtest.h"
 
 /*
@@ -101,7 +100,7 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
 
   mz_zip_reader_create(&reader);
 
-  mz_zip_reader_open_file(reader, archivePath.c_str());
+  mz_zip_reader_open_file(reader, archivePath.string().c_str());
   assert(mz_zip_reader_entry_open(reader) == MZ_OK);
 
   for (const auto file : std::filesystem::directory_iterator(dirPath)) {
@@ -109,7 +108,7 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
     assert(mz_zip_reader_locate_entry(reader, searchFilename, 1) == MZ_OK);
     assert(mz_zip_reader_entry_open(reader) == MZ_OK);
     const auto extractedFilePath = tmpDir / searchFilename;
-    mz_zip_reader_entry_save_file(reader, extractedFilePath.c_str());
+    mz_zip_reader_entry_save_file(reader, extractedFilePath.string().c_str());
     assert(equal_files(extractedFilePath, file.path()));
   }
   mz_zip_reader_close(reader);
