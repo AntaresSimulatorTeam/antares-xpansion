@@ -5,10 +5,7 @@ on:
     branches:
       - main
       - develop
-      - features/*
-      - feature/*
-      - fix/*
-      - release/*
+  workflow_dispatch:
   release:
     types: [ created ]
 

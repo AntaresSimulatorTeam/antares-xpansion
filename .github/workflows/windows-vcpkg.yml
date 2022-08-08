@@ -1,15 +1,11 @@
-name: Windows CI (VCPKG)
+name: Windows CI (precompiled dependencies)
 
 on:
   push:
     branches:
       - main
       - develop
-      - features/*
-      - feature/*
-      - fix/*
-      - release/*
-      - test/*
+  workflow_dispatch:
   release:
     types: [ created ]
 

@@ -1,14 +1,11 @@
-name: Ubuntu CI (system libs)
+name: Ubuntu CI (precompiled dependencies)
 
 on:
   push:
     branches:
       - main
       - develop
-      - features/*
-      - feature/*
-      - fix/*
-      - release/*
+  workflow_dispatch:
   release:
     types: [ created ]
 
