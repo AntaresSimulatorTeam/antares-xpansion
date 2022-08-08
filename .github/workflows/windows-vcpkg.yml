@@ -1,4 +1,4 @@
-name: Windows CI (VCPKG)
+name: Windows CI (precompiled dependencies)
 
 on:
   push:

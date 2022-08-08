@@ -1,4 +1,4 @@
-name: Centos7 CI (system libs + deps. build)
+name: Centos7 CI (build dependencies)
 
 on:
   push:

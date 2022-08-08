@@ -5,10 +5,7 @@ on:
     branches:
       - main
       - develop
-      - features/*
-      - feature/*
-      - fix/*
-      - release/*
+  pull_request:
   release:
     types: [ created ]
 
