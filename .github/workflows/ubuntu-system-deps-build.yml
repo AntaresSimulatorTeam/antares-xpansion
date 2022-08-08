@@ -1,4 +1,4 @@
-name: Ubuntu CI (system libs + deps. build)
+name: Ubuntu CI (also build dependencies)
 
 on:
   push:
