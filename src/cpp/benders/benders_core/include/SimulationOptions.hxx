@@ -71,4 +71,4 @@ BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
                       asString())
 
 // Name of the MPS ZIP file
-BENDERS_OPTIONS_MACRO(MPS_ZIP_FILE, std::string, "MPS_ZIP_FILE", asString())
+BENDERS_OPTIONS_MACRO(MPS_ZIP_FILE, std::string, "MPS_ZIP_FILE.zip", asString())
