@@ -35,18 +35,18 @@ int32_t ArchiveReader::ExtractFile(
 int32_t ArchiveReader::ExtractFile(
     const std::filesystem::path& fileToExtractPath,
     const std::filesystem::path& destination) {
-  auto fileNameCCharPtr = fileToExtractPath.string().c_str();
   int32_t err = MZ_OK;
-  err = mz_zip_reader_locate_entry(internalPointer_, fileNameCCharPtr, 1);
+  err = mz_zip_reader_locate_entry(internalPointer_,
+                                   fileToExtractPath.string().c_str(), 1);
   if (err != MZ_OK) {
-    std::cerr << "File : " << fileNameCCharPtr
+    std::cerr << "File : " << fileToExtractPath.string().c_str()
               << " is not found in archive :" << ArchivePath().c_str()
               << std::endl;
     return err;
   }
   err = mz_zip_reader_entry_open(internalPointer_);
   if (err != MZ_OK) {
-    std::cerr << "Could not open : " << fileNameCCharPtr
+    std::cerr << "Could not open : " << fileToExtractPath.string().c_str()
               << " in archive :" << ArchivePath().c_str() << std::endl;
     return err;
   }
