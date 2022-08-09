@@ -12,6 +12,7 @@ FileBuffer FileInBuffer::run(const std::filesystem::path& filePath) {
     return {};
   }
   buffer << file.rdbuf();
+  file.close();
   //   if (!keepFile_) {
   std::filesystem::remove(filePath);
   //   }
