@@ -31,6 +31,7 @@ jobs:
           submodules: true
 
       - name: Checkout xpressmp linux
+        if: matrix.xprs == 'ON'
         uses: actions/checkout@v2
         with:
           repository: rte-france/xpress-mp
