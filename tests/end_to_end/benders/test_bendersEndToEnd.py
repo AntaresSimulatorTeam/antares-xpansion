@@ -109,7 +109,7 @@ def check_optimization_json_output(expected_results_dict):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, solver, allow_run_as_root=False):
+def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -128,11 +128,16 @@ def run_solver(install_dir, solver, allow_run_as_root=False):
         instance_path = expected_results_dict[instance]['path']
         command = [e for e in pre_command]
         command.append(executable_path)
+        options_file = expected_results_dict[instance]['option_file']
         command.append(
-            expected_results_dict[instance]['option_file']
+            options_file
         )
         status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
-        launch_optimization(instance_path, command, status)
+
+        tmp_study = tmp_path / \
+            (Path(instance_path).name+"-"+Path(options_file).stem)
+        shutil.copytree(instance_path, tmp_study)
+        launch_optimization(tmp_study, command, status)
         check_optimization_json_output(
             expected_results_dict[instance])
 
