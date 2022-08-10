@@ -50,15 +50,13 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
-      - uses: nelonoel/branch-name@v1.0.1
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
         uses: bruceadams/get-release@v1.2.3
-      - name: Checkout
-        run: |
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
-          git submodule update --init --recursive antares-deps
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: Checkout xpressmp linux
         run: |
           git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
