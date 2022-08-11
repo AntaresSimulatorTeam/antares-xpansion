@@ -53,7 +53,7 @@ def setup_and_teardown_lp_directory(request):
     Path(lp_dir).mkdir(exist_ok=True)
 
     with zipfile.ZipFile(lp_dir/MPS_ZIP, "w") as write_mps_zip:
-        for file in glob.glob("*.mps"):
+        for file in Path(test_dir).glob("*.mps"):
             write_mps_zip.write(
                 file, file.name, compress_type=zipfile.ZIP_DEFLATED)
     yield
@@ -86,7 +86,7 @@ def launch_and_compare_lp_with_reference(install_dir, master_mode, test_dir):
     # extract mps and delete zip in lp
     zip_file_path = lp_dir / MPS_ZIP
     with zipfile.ZipFile(zip_file_path, "r") as mps_zip_file:
-        mps_zip_file.extractall(lp_dir)
+        mps_zip_file.extractall(lp_dir, )
 
     os.remove(zip_file_path)
     files_to_compare = os.listdir(reference_lp_dir)
