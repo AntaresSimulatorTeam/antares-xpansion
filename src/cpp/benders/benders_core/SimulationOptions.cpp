@@ -130,6 +130,7 @@ BaseOptions SimulationOptions::get_base_options() const {
   result.SOLVER_NAME = SOLVER_NAME;
   result.weights = _weights;
   result.RESUME = RESUME;
+  result.MPS_ZIP_FILE = MPS_ZIP_FILE;
 
   return result;
 }
@@ -162,8 +163,6 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.CSV_NAME = CSV_NAME;
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
-
-  result.MPS_ZIP_FILE = MPS_ZIP_FILE;
 
   return result;
 }
