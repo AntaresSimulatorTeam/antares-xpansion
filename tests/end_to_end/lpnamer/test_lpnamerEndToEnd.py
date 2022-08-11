@@ -1,10 +1,13 @@
 import filecmp
+import glob
 import os
 import shutil
 import subprocess
 import pytest
+import zipfile
 from pathlib import Path
 
+MPS_ZIP = "MPS_ZIP.zip"
 DATA_TEST = Path("../../../data_test/")
 DATA_TEST_INTEGER = DATA_TEST / "tests_lpnamer" / "tests_integer"
 DATA_TEST_RELAXED = DATA_TEST / "tests_lpnamer" / "tests_relaxed"
@@ -48,7 +51,11 @@ def setup_and_teardown_lp_directory(request):
     if Path(lp_dir).is_dir():
         shutil.rmtree(lp_dir)
     Path(lp_dir).mkdir(exist_ok=True)
-    shutil.copy(test_dir/"MPS_ZIP.zip", lp_dir)
+
+    with zipfile.ZipFile(lp_dir/MPS_ZIP, "w") as write_mps_zip:
+        for file in glob.glob("*.mps"):
+            write_mps_zip.write(
+                file, file.name, compress_type=zipfile.ZIP_DEFLATED)
     yield
     # shutil.rmtree(lp_dir)
 
@@ -76,6 +83,12 @@ def launch_and_compare_lp_with_reference(install_dir, master_mode, test_dir):
     returned_l = subprocess.run(launch_command, shell=False)
     # then
     os.chdir(old_path)
+    # extract mps and delete zip in lp
+    zip_file_path = lp_dir / MPS_ZIP
+    with zipfile.ZipFile(zip_file_path, "r") as mps_zip_file:
+        mps_zip_file.extractall(lp_dir)
+
+    os.remove(zip_file_path)
     files_to_compare = os.listdir(reference_lp_dir)
     match, mismatch, errors = filecmp.cmpfiles(
         reference_lp_dir, lp_dir, files_to_compare)
