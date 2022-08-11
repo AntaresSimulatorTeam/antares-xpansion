@@ -2,6 +2,7 @@
 
 #include <filesystem>
 
+#include "ArchiveReader.h"
 #include "Timer.h"
 #include "glog/logging.h"
 MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
@@ -9,8 +10,8 @@ MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
     : _options(options), _logger(logger), _writer(writer) {}
 
 void MergeMPS::launch() {
-  auto structure_path(std::filesystem::path(_options.INPUTROOT) /
-                      _options.STRUCTURE_FILE);
+  const auto inputRootDir = std::filesystem::path(_options.INPUTROOT);
+  auto structure_path(inputRootDir / _options.STRUCTURE_FILE);
   CouplingMap input = build_input(structure_path);
 
   SolverFactory factory;
@@ -25,14 +26,16 @@ void MergeMPS::launch() {
   int cntProblems_l(0);
 
   LOG(INFO) << "Merging problems..." << std::endl;
+  auto reader = ArchiveReader(inputRootDir / _options.MPS_ZIP_FILE);
+  reader.Open();
   for (auto const &kvp : input) {
-    auto problem_name(std::filesystem::path(_options.INPUTROOT) /
-                      (kvp.first + MPS_SUFFIX));
-
+    auto problem_name(inputRootDir / (kvp.first + MPS_SUFFIX));
+    reader.ExtractFile(problem_name.filename());
     SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
     solver_l->init();
     solver_l->set_output_log_level(_options.LOG_LEVEL);
     solver_l->read_prob_mps(problem_name);
+    std::filesystem::remove(problem_name);
 
     if (kvp.first != _options.MASTER_NAME) {
       int mps_ncols(solver_l->get_ncols());
@@ -72,6 +75,9 @@ void MergeMPS::launch() {
 
     ++cntProblems_l;
   }
+
+  reader.Close();
+  reader.Delete();
 
   IntVector mstart;
   IntVector cindex;
