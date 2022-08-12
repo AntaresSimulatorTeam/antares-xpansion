@@ -38,12 +38,10 @@ jobs:
           cmake3 --build . --target install -j8
           popd
           rm -rf tbb
-    - uses: nelonoel/branch-name@v1.0.1
 
-    - name: Checkout
-      run: |
-          git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
         
     - name: Read antares-xpansion version
       id: antares-xpansion-version
