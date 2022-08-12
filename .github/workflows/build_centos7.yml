@@ -43,7 +43,7 @@ jobs:
     container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
       matrix:
-        xprs: [ ON, OFF ]
+        xprs: [XPRESS-ON, XPRESS-OFF]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -59,7 +59,7 @@ jobs:
           submodules: true
 
       - name: Checkout xpressmp linux
-        if: matrix.xprs == 'ON'
+        if: matrix.xprs == 'XPRESS-ON'
         run: |
           git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
           
@@ -88,6 +88,7 @@ jobs:
           pip3 install -r requirements-ui.txt
       - name: Configure
         run: |
+          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
@@ -98,7 +99,7 @@ jobs:
                  -DUSE_MPI=ON \
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
-                 -DXPRESS=${{ matrix.xprs }} \
+                 -DXPRESS=${{ env.XPRESS_VALUE }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
                  -DALLOW_RUN_AS_ROOT=ON
       - name: Build

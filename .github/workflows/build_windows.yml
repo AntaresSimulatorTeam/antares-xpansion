@@ -20,7 +20,7 @@ jobs:
       matrix:
         os: [windows-latest]
         triplet: [x64-windows]
-        xprs: [ON, OFF]
+        xprs: [XPRESS-ON, XPRESS-OFF]
     env:
       XPRESSDIR: ${{ github.workspace }}\xpress
       XPRESS: ${{ github.workspace }}\xpress\bin
@@ -34,7 +34,7 @@ jobs:
           submodules: true
 
       - name: Checkout xpressmp linux
-        if: matrix.xprs == 'ON'
+        if: matrix.xprs == 'XPRESS-ON'
         uses: actions/checkout@v2
         with:
           repository: rte-france/xpress-mp-temp
@@ -114,10 +114,18 @@ jobs:
           antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
           antares-version: ${{steps.antares-version.outputs.prop}}
           os: ${{matrix.os}}
+
+      - name: Expand xpress value in env
+        #I can't seem to expand the variable in the cmake command line so export it in env
+        shell: bash
+        run: |
+          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF"
+          echo "XPRESS_VALUE=$XPRESS_VALUE" >> $GITHUB_ENV
+
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release  -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DUSE_MPI=ON  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ matrix.xprs }}  -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
+          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release  -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DUSE_MPI=ON  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ env.XPRESS_VALUE }}  -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
       - name: Build
         run: |
           cmake --build _build --config Release -j2 --target install

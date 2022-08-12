@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-20.04]
-        xprs: [ON, OFF]
+        xprs: [XPRESS-ON, XPRESS-OFF]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -31,7 +31,7 @@ jobs:
           submodules: true
 
       - name: Checkout xpressmp linux
-        if: matrix.xprs == 'ON'
+        if: matrix.xprs == 'XPRESS-ON'
         uses: actions/checkout@v2
         with:
           repository: rte-france/xpress-mp
@@ -95,7 +95,9 @@ jobs:
 
       - name: Configure
         shell: bash
+        #XPRESS_VALUE = ${{ matrix.xprs }} == "XPRESS-ON" ? "ON" : "OFF"
         run: |
+          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
@@ -105,7 +107,7 @@ jobs:
                 -DUSE_MPI=ON \
                 -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
-                -DXPRESS=${{ matrix.xprs }} \
+                -DXPRESS=${{ env.XPRESS_VALUE }} \
                 -DXPRESS_ROOT=${{ env.XPRESSDIR }}
 
       - name: Build
