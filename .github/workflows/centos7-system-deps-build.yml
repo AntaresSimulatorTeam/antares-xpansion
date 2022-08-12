@@ -42,6 +42,7 @@ jobs:
 
     - name: Checkout
       run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
         
     - name: Read antares-xpansion version
