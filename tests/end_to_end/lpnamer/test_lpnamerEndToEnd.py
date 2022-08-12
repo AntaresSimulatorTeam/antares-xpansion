@@ -84,9 +84,13 @@ def launch_and_compare_lp_with_reference(install_dir, master_mode, test_dir):
     # then
     os.chdir(old_path)
     # extract mps and delete zip in lp
+    # ugly fix (we could have used zipfile.ZipFile.extractall but it produce file with LF line breaker)
     zip_file_path = lp_dir / MPS_ZIP
     with zipfile.ZipFile(zip_file_path, "r") as mps_zip_file:
-        mps_zip_file.extractall(lp_dir, )
+        # mps_zip_file.extractall(lp_dir)
+        for file in mps_zip_file.filelist:
+            with open(lp_dir / file.filename, "w") as extracted:
+                extracted.write(mps_zip_file.read(file).decode('utf-8'))
 
     os.remove(zip_file_path)
     files_to_compare = os.listdir(reference_lp_dir)
