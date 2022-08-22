@@ -84,7 +84,7 @@ def launch_and_compare_lp_with_reference(install_dir, master_mode, test_dir):
     # then
     os.chdir(old_path)
     # extract mps and delete zip in lp
-    # ugly fix (we could have used zipfile.ZipFile.extractall but it produce file with LF line breaker)
+    # ugly fix (to pass tests in windows)
     zip_file_path = lp_dir / MPS_ZIP
     with zipfile.ZipFile(zip_file_path, "r") as mps_zip_file:
         # mps_zip_file.extractall(lp_dir)
