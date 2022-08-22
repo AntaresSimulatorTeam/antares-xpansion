@@ -87,7 +87,6 @@ def launch_and_compare_lp_with_reference(install_dir, master_mode, test_dir):
     # ugly fix (to pass tests in windows)
     zip_file_path = lp_dir / MPS_ZIP
     with zipfile.ZipFile(zip_file_path, "r") as mps_zip_file:
-        # mps_zip_file.extractall(lp_dir)
         for file in mps_zip_file.filelist:
             with open(lp_dir / file.filename, "w") as extracted:
                 extracted.write(mps_zip_file.read(file).decode('utf-8'))
