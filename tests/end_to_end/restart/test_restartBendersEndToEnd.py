@@ -4,6 +4,7 @@ import shutil
 import subprocess
 from pathlib import Path
 import sys
+from zipfile import ZIP_DEFLATED, ZipFile
 import yaml
 import numpy as np
 
@@ -112,7 +113,7 @@ def check_optimization_json_output(expected_results_dict):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, solver, allow_run_as_root=False):
+def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -127,8 +128,13 @@ def run_solver(install_dir, solver, allow_run_as_root=False):
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
 
+    MPS_ZIP = "MPS_ZIP_FILE.zip"
     for instance in expected_results_dict:
         instance_path = expected_results_dict[instance]['path']
+        options_file = expected_results_dict[instance]['option_file']
+        tmp_study = tmp_path / \
+            (Path(instance_path).name+"-"+Path(options_file).stem)
+        shutil.copytree(instance_path, tmp_study)
         command = [e for e in pre_command]
         command.append(executable_path)
         command.append(
@@ -136,20 +142,24 @@ def run_solver(install_dir, solver, allow_run_as_root=False):
         )
         status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
 
-        data_path_ = Path(instance_path)
-        expansion_dir = data_path_ / "expansion"
+        expansion_dir = tmp_study / "expansion"
         if expansion_dir.is_dir():
             shutil.rmtree(expansion_dir)
 
         expansion_dir.mkdir()
-        shutil.copyfile(data_path_ / expected_results_dict[instance]["output_file"],
+        shutil.copyfile(tmp_study / expected_results_dict[instance]["output_file"],
                         expansion_dir / "out.json")
-        shutil.copyfile(data_path_ / expected_results_dict[instance]["last_iteration_file"],
+        shutil.copyfile(tmp_study / expected_results_dict[instance]["last_iteration_file"],
                         expansion_dir / "last_iteration.json")
 
-    launch_optimization(instance_path, command, status)
-    check_optimization_json_output(
-        expected_results_dict[instance])
+        with ZipFile(tmp_study/MPS_ZIP, "w") as write_mps_zip:
+            for file in Path(tmp_study).glob("*.mps"):
+                write_mps_zip.write(
+                    file, file.name, compress_type=ZIP_DEFLATED)
+
+        launch_optimization(tmp_study, command, status)
+        check_optimization_json_output(
+            expected_results_dict[instance])
 
 
 def get_solver_exe(solver: str):

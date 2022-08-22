@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import yaml
 import numpy as np
+from zipfile import ZipFile, ZIP_DEFLATED
 
 # File RESULT_FILE_PATH
 # Json file containing
@@ -122,6 +123,8 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
 
+    MPS_ZIP = "MPS_ZIP_FILE.zip"
+
     for instance in expected_results_dict:
         instance_path = expected_results_dict[instance]['path']
         command = [e for e in pre_command]
@@ -131,10 +134,14 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
             options_file
         )
         status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
-
         tmp_study = tmp_path / \
             (Path(instance_path).name+"-"+Path(options_file).stem)
         shutil.copytree(instance_path, tmp_study)
+
+        with ZipFile(tmp_study/MPS_ZIP, "w") as write_mps_zip:
+            for file in Path(tmp_study).glob("*.mps"):
+                write_mps_zip.write(
+                    file, file.name, compress_type=ZIP_DEFLATED)
         launch_optimization(tmp_study, command, status)
         check_optimization_json_output(
             expected_results_dict[instance], tmp_study/"expansion/out.json")
