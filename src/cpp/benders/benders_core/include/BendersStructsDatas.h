@@ -23,7 +23,7 @@ struct BendersData {
   double invest_cost;
   int best_it;
   Point bestx;
-  Point x0;
+  Point x_out;
   Point min_invest;
   Point max_invest;
   int nsubproblem;
@@ -49,7 +49,7 @@ class WorkerMasterData {
   int _nbasis;
   double _master_duration;
   double _subproblem_duration;
-  PointPtr _x0;
+  PointPtr _x_out;
   PointPtr _min_invest;
   PointPtr _max_invest;
   std::map<std::string, SubproblemCutDataPtr> _cut_trace;

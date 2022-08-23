@@ -42,12 +42,12 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
  *  Set optimal variables of a problem which has the form (min(x,alpha) : f(x) +
  * alpha)
  *
- *  \param x0 : reference to an empty map list
+ *  \param x_out : reference to an empty map list
  *
  *  \param alpha : reference to an empty double
  */
-void WorkerMaster::get(Point &x0, double &alpha, DblVector &alpha_i) {
-  x0.clear();
+void WorkerMaster::get(Point &x_out, double &alpha, DblVector &alpha_i) {
+  x_out.clear();
   std::vector<double> ptr(_solver->get_ncols());
 
   if (_solver->get_n_integer_vars() > 0) {
@@ -57,7 +57,7 @@ void WorkerMaster::get(Point &x0, double &alpha, DblVector &alpha_i) {
   }
   assert(_id_alpha_i.back() + 1 == ptr.size());
   for (auto const &kvp : _id_to_name) {
-    x0[kvp.second] = ptr[kvp.first];
+    x_out[kvp.second] = ptr[kvp.first];
   }
   alpha = ptr[_id_alpha];
   for (int i(0); i < _id_alpha_i.size(); ++i) {

@@ -36,7 +36,7 @@ std::string CandidateLog::getMainBodyString(const LogData &data) {
 }
 
 void CandidateLog::set_values_and_sizes(const LogData &data) {
-  for (const auto &pairVarnameValue : data.x0) {
+  for (const auto &pairVarnameValue : data.x_out) {
     std::string candidate = pairVarnameValue.first;
 
     value_map valuesMap;

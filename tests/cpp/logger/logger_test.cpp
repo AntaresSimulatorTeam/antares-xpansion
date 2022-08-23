@@ -13,7 +13,7 @@ using namespace xpansion::logger;
 
 void addCandidate(LogData& logData, std::string candidate, double invest,
                   double minInvest, double maxInvest) {
-  logData.x0[candidate] = invest;
+  logData.x_out[candidate] = invest;
   logData.min_invest[candidate] = minInvest;
   logData.max_invest[candidate] = maxInvest;
 }

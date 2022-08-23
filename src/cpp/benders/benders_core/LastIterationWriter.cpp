@@ -30,7 +30,7 @@ void LastIterationWriter::FillOutput(const std::string &iteration_name,
   output_[iteration_name]["invest_cost"] = iteration_data.invest_cost;
 
   Json::Value vectCandidates_l(Json::arrayValue);
-  for (const auto &[candidate_name, value] : iteration_data.x0) {
+  for (const auto &[candidate_name, value] : iteration_data.x_out) {
     Json::Value candidate_l;
     candidate_l["candidate"] = candidate_name;
     candidate_l["invest"] = value;
