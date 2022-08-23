@@ -73,9 +73,10 @@ def launch_optimization(data_path, commands, status=None):
 # arguments :
 #   - expected_results_dict   : Dict of expected values to compare with ones present in
 #                               in file out.json
+#   - output_path             : Path to the output file out.json
 
 
-def check_optimization_json_output(expected_results_dict, output_path):
+def check_optimization_json_output(expected_results_dict, output_path: Path):
 
     # Loading output from optimization process
     curr_instance_json = {}

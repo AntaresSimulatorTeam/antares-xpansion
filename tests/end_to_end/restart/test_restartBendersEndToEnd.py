@@ -76,14 +76,15 @@ def launch_optimization(data_path, commands, status=None):
 # arguments :
 #   - expected_results_dict   : Dict of expected values to compare with ones present in
 #                               in file out.json
+#   - output_path             : Path to the output file out.json
 
 
-def check_optimization_json_output(expected_results_dict):
+def check_optimization_json_output(expected_results_dict, output_path: Path):
 
     # Loading output from optimization process
     curr_instance_json = {}
 
-    output_path = expected_results_dict['path'] / "expansion/out.json"
+    # output_path = expected_results_dict['path'] / "expansion/out.json"
     with open(output_path, 'r') as jsonFile:
         curr_instance_json = json.load(jsonFile)
 
@@ -134,7 +135,6 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
         tmp_study = tmp_path / \
             (Path(instance_path).name+"-"+Path(options_file).stem)
         shutil.copytree(instance_path, tmp_study)
-        expected_results_dict[instance]['path'] = tmp_study
         command = [e for e in pre_command]
         command.append(executable_path)
         command.append(
@@ -159,7 +159,7 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
 
         launch_optimization(tmp_study, command, status)
         check_optimization_json_output(
-            expected_results_dict[instance])
+            expected_results_dict[instance], tmp_study/"expansion/out.json")
 
 
 def get_solver_exe(solver: str):
