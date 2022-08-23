@@ -83,8 +83,7 @@ def check_optimization_json_output(expected_results_dict):
     # Loading output from optimization process
     curr_instance_json = {}
 
-    output_path = expected_results_dict['path'] + \
-        "/expansion/out.json"
+    output_path = expected_results_dict['path'] / "expansion/out.json"
     with open(output_path, 'r') as jsonFile:
         curr_instance_json = json.load(jsonFile)
 
@@ -135,6 +134,7 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
         tmp_study = tmp_path / \
             (Path(instance_path).name+"-"+Path(options_file).stem)
         shutil.copytree(instance_path, tmp_study)
+        expected_results_dict[instance]['path'] = tmp_study
         command = [e for e in pre_command]
         command.append(executable_path)
         command.append(
