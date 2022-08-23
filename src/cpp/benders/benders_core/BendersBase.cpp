@@ -352,6 +352,18 @@ void BendersBase::activate_integrity_constraints() const {
   _master->activate_integrity_constraints();
 }
 
+void BendersBase::compute_x_cut() {
+  if (_data.it == 1) {
+    _data.x_in = _data.x_out;
+    _data.x_cut = _data.x_out;
+  } else {
+    for (const auto &[name, value] : _data.x_out) {
+      _data.x_cut[name] = _options.SEPARATION_PARAM * _data.x_out[name] +
+                          (1 - _options.SEPARATION_PARAM) * _data.x_in[name];
+    }
+  }
+}
+
 /**
  * std execution policies don't share a base type so we can't just select them
  *in place in the foreach This function allow the selection of policy via
@@ -394,7 +406,7 @@ void BendersBase::getSubproblemCut(
               auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
               auto handler(std::make_shared<SubproblemCutDataHandler>(
                   subproblem_cut_data));
-              worker->fix_to(_data.x_out);
+              worker->fix_to(_data.x_cut);
               worker->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX);
               worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
@@ -812,8 +824,8 @@ std::string BendersBase::get_solver_name() const {
 }
 int BendersBase::get_log_level() const { return _options.LOG_LEVEL; }
 bool BendersBase::is_trace() const { return _options.TRACE; }
-Point BendersBase::get_x0() const { return _data.x_out; }
-void BendersBase::set_x0(const Point &x_out) { _data.x_out = x_out; }
+Point BendersBase::get_x_cut() const { return _data.x_cut; }
+void BendersBase::set_x_cut(const Point &x_cut) { _data.x_cut = x_cut; }
 double BendersBase::get_timer_master() const { return _data.timer_master; }
 void BendersBase::set_timer_master(const double &timer_master) {
   _data.timer_master = timer_master;

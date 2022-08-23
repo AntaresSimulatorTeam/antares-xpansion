@@ -80,9 +80,9 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
 
 void BendersMpi::broadcast_the_master_problem() {
   if (!_exceptionRaised) {
-    Point x0 = get_x0();
-    mpi::broadcast(_world, x0, rank_0);
-    set_x0(x0);
+    Point x_cut = get_x_cut();
+    mpi::broadcast(_world, x_cut, rank_0);
+    set_x_cut(x_cut);
     _world.barrier();
   }
 }
@@ -95,6 +95,7 @@ void BendersMpi::solve_master_and_create_trace() {
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
   push_in_trace(std::make_shared<WorkerMasterData>());
+  compute_x_cut();
 }
 
 /*!

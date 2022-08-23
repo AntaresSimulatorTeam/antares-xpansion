@@ -104,6 +104,8 @@ void BendersSequential::run() {
 
     push_in_trace(std::make_shared<WorkerMasterData>());
 
+    compute_x_cut();
+
     _logger->display_message("\tSolving subproblems...");
     build_cut();
     _logger->log_subproblems_solving_duration(GetSubproblemTimers());

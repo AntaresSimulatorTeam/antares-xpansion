@@ -38,6 +38,7 @@ class BendersBase {
   bool is_initial_relaxation_requested() const;
   bool switch_to_integer_master(bool is_relaxed) const;
   void update_trace();
+  void compute_x_cut();
   virtual void get_master_value();
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   virtual void post_run_actions() const;
@@ -67,8 +68,8 @@ class BendersBase {
   [[nodiscard]] std::string get_solver_name() const;
   [[nodiscard]] int get_log_level() const;
   [[nodiscard]] bool is_trace() const;
-  [[nodiscard]] Point get_x0() const;
-  void set_x0(const Point &x0);
+  [[nodiscard]] Point get_x_cut() const;
+  void set_x_cut(const Point &x0);
   [[nodiscard]] double get_timer_master() const;
   void set_timer_master(const double &timer_master);
   [[nodiscard]] double GetSubproblemTimers() const;
