@@ -26,5 +26,5 @@ runs:
            rm -rf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.zip
            
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}-installer-64bits.zip
-           unzip rte-antares-${{inputs.antares-version}}-installer-64bits.zip -d rte-antares-deps-${{inputs.buildtype}}
+           unzip rte-antares-${{inputs.antares-version}}-installer-64bits.zip
            rm -rf rte-antares-${{inputs.antares-version}}-installer-64bits.zip
