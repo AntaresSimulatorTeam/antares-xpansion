@@ -5,14 +5,12 @@ v0.8.0 (08/2022)
 --------------------
 ### Features
 
-- Uses Antares simulator 8.2.2
-- Allow user to use different chronicles of link profiles. More information in [documentation](https://antares-xpansion.readthedocs.io/en/stable/user-guide/get-started/candidate-definition/)
+- Use Antares-Simulator 8.2.2
+- Allow the use of different chronicles of link profile for each Monte-Carlo year. More information [here](user-guide/get-started/candidate-definition.md#using-different-profiles-depending-on-the-monte-carlo-year)
 
 ### Bug fixes
-- Allow "capa" folder to be missing is unused
-- Algorithm now properly stop after MAX_ITERATION instead of MAX_ITERATION+1 
-
-### For developers
+- Allow the `capa` folder to be missing if unused
+- The algorithm now properly stops after `max_iteration` instead of `max_iteration + 1` iterations
 
 v0.7.0 (06/2022)
 --------------------
@@ -22,7 +20,7 @@ v0.7.0 (06/2022)
 - Antares-Xpansion outputs are written in the `expansion` directory instead of the `lp` directory
 - Add `timelimit` option as a stopping criterion for the Antares-Xpansion algorithm
 - Add `log_level` option to choose the verbosity level of the solver
-- Add `resume` step, to provide the possibility to resume an unfinished study.
+- Add `resume` step, to provide the possibility to resume an unfinished study
 - Bump antares version used by Xpansion to 8.1.1
 ### Bug fixes
 
