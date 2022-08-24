@@ -22,7 +22,6 @@ struct BendersData {
   double subproblem_cost;
   double invest_cost;
   int best_it;
-  Point bestx;
   Point x_in;
   Point x_out;
   Point x_cut;

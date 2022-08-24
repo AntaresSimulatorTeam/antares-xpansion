@@ -95,6 +95,8 @@ void BendersSequential::run() {
       reset_data_post_relaxation();
     }
 
+    reset_iteration_data();
+
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();
@@ -110,6 +112,7 @@ void BendersSequential::run() {
     build_cut();
     _logger->log_subproblems_solving_duration(GetSubproblemTimers());
 
+    compute_ub();
     update_best_ub();
 
     _logger->log_at_iteration_end(bendersDataToLogData(_data));

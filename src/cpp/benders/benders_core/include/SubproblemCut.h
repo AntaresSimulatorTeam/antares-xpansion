@@ -70,7 +70,7 @@ class SubproblemCutDataHandler {
 class SubproblemCutTrimmer {
  public:
   SubproblemCutDataHandlerPtr _data_cut;
-  Point _x0;
+  Point _x_cut;
   double _const_cut;
 
   SubproblemCutTrimmer(SubproblemCutDataHandlerPtr &data, Point &x0);

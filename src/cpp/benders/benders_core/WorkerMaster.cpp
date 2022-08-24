@@ -83,13 +83,13 @@ int WorkerMaster::get_number_constraint() const { return _solver->get_nrows(); }
 /*!
  *  \brief Add benders cut to a problem
  *
- *  \param s : optimal slave variables
- *  \param x0 : optimal Master variables
+ *  \param s : subgradient of optimal slave variables
+ *  \param x_cut : master separation point
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::add_cut(Point const &s, Point const &x0,
+void WorkerMaster::add_cut(Point const &s, Point const &x_cut,
                            double const &rhs) const {
-  // cut is -rhs >= alpha  + s^(x-x0)
+  // cut is -rhs >= alpha  + s^(x-x_cut)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
@@ -97,20 +97,20 @@ void WorkerMaster::add_cut(Point const &s, Point const &x0,
   std::vector<int> mstart = {0, ncoeffs};
   std::vector<int> mclind(ncoeffs);
 
-  define_rhs_with_master_variable(s, x0, rhs, rowrhs);
+  define_rhs_with_master_variable(s, x_cut, rhs, rowrhs);
   define_matval_mclind(s, matval, mclind);
 
   solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::define_rhs_with_master_variable(
-    const Point &s, const Point &x0, const double &rhs,
+    const Point &s, const Point &x_cut, const double &rhs,
     std::vector<double> &rowrhs) const {
   rowrhs.front() -= rhs;
   for (auto const &kvp : _name_to_id) {
     if (s.find(kvp.first) != s.end()) {
       rowrhs.front() +=
-          (s.find(kvp.first)->second * x0.find(kvp.first)->second);
+          (s.find(kvp.first)->second * x_cut.find(kvp.first)->second);
     }
   }
 }
@@ -202,12 +202,13 @@ void WorkerMaster::define_matval_mclind_for_index(
  *
  *  \param i : identifier of a subproblem
  *  \param s : optimal slave variables
- *  \param x0 : optimal Master variables
+ *  \param x_cut : optimal Master variables
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x0,
+// TODO : Refactor this with add_cut and define_matval_mclind(_for_index)
+void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x_cut,
                                     double const &rhs) const {
-  // cut is -rhs >= alpha  + s^(x-x0)
+  // cut is -rhs >= alpha  + s^(x-x_cut)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
@@ -215,7 +216,7 @@ void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x0,
   std::vector<int> mstart = {0, ncoeffs};
   std::vector<int> mclind(ncoeffs);
 
-  define_rhs_with_master_variable(s, x0, rhs, rowrhs);
+  define_rhs_with_master_variable(s, x_cut, rhs, rowrhs);
   define_matval_mclind_for_index(i, s, matval, mclind);
 
   solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);

@@ -32,6 +32,7 @@ class BendersBase {
   virtual void run() = 0;
   virtual void initialize_problems() = 0;
   virtual void init_data();
+  void reset_iteration_data();
   void print_csv();
   void update_best_ub();
   bool stopping_criterion();
@@ -39,6 +40,8 @@ class BendersBase {
   bool switch_to_integer_master(bool is_relaxed) const;
   void update_trace();
   void compute_x_cut();
+  void compute_invest_cost();
+  void compute_ub();
   virtual void get_master_value();
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   virtual void post_run_actions() const;

@@ -40,6 +40,8 @@ void BendersBase::init_data() {
   _data.is_in_initial_relaxation = false;
 }
 
+void BendersBase::reset_iteration_data() { _data.ub = 0; }
+
 void BendersBase::OpenCsvFile() {
   if (!_csv_file.is_open()) {
     const auto opening_mode = _options.RESUME ? std::ios::app : std::ios::trunc;
@@ -183,9 +185,9 @@ void BendersBase::print_master_csv(std::ostream &stream,
  *the current ones
  */
 void BendersBase::update_best_ub() {
-  if (_data.best_ub > _data.ub) {
+  if (_data.ub < _data.best_ub) {
+    _data.x_in = _data.x_cut;
     _data.best_ub = _data.ub;
-    _data.bestx = _data.x_out;
     _data.best_it = _data.it;
     best_iteration_data = bendersDataToLogData(_data);
   }
@@ -331,8 +333,6 @@ void BendersBase::get_master_value() {
       _data.alpha_i); /*Get the optimal variables of the Master Problem*/
   _master->get_value(_data.lb); /*Get the optimal value of the Master Problem*/
 
-  _data.invest_cost = _data.lb - _data.alpha;
-
   for (const auto &pairIdName : _master->_id_to_name) {
     _master->_solver->get_ub(&_data.max_invest[pairIdName.second],
                              pairIdName.first, pairIdName.first);
@@ -340,7 +340,6 @@ void BendersBase::get_master_value() {
                              pairIdName.first, pairIdName.first);
   }
 
-  _data.ub = _data.invest_cost;
   _data.timer_master = timer_master.elapsed();
 }
 
@@ -362,6 +361,24 @@ void BendersBase::compute_x_cut() {
                           (1 - _options.SEPARATION_PARAM) * _data.x_in[name];
     }
   }
+}
+
+void BendersBase::compute_invest_cost() {
+  _data.invest_cost = 0;
+
+  int ncols = _master->_solver->get_ncols();
+  std::vector<double> obj(ncols);
+  _master->_solver->get_obj(obj.data(), 0, ncols - 1);
+
+  for (const auto &[col_name, value] : _data.x_cut) {
+    int col_id = _master->_name_to_id[col_name];
+    _data.invest_cost += obj[col_id] * _data.x_cut[col_name];
+  }
+}
+
+void BendersBase::compute_ub() {
+  compute_invest_cost();
+  _data.ub += _data.invest_cost;
 }
 
 /**
@@ -440,10 +457,10 @@ void BendersBase::compute_cut(AllCutPackage const &all_package) {
               std::make_shared<SubproblemCutDataHandler>(subproblem_cut_data));
           handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[name]];
           _data.ub += handler->get_dbl(SUBPROBLEM_COST);
-          SubproblemCutTrimmer cut(handler, _data.x_out);
+          SubproblemCutTrimmer cut(handler, _data.x_cut);
 
           _master->addSubproblemCut(_problem_to_id[name],
-                                    handler->get_subgradient(), _data.x_out,
+                                    handler->get_subgradient(), _data.x_cut,
                                     handler->get_dbl(SUBPROBLEM_COST));
           _all_cuts_storage[name].insert(cut);
           _trace[_data.it - 1]->_cut_trace[name] = subproblem_cut_data;
@@ -454,8 +471,8 @@ void BendersBase::compute_cut(AllCutPackage const &all_package) {
 }
 
 void compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
-                     const Point &x0, Point &s) {
-  for (auto const &var : x0) {
+                     const Point &x_cut, Point &s) {
+  for (auto const &var : x_cut) {
     if (handler->get_subgradient().find(var.first) !=
         handler->get_subgradient().end()) {
       s[var.first] += handler->get_subgradient().find(var.first)->second;
@@ -484,9 +501,9 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
       _data.ub += handler->get_dbl(SUBPROBLEM_COST);
       rhs += handler->get_dbl(SUBPROBLEM_COST);
 
-      compute_cut_val(handler, _data.x_out, s);
+      compute_cut_val(handler, _data.x_cut, s);
 
-      SubproblemCutTrimmer cut(handler, _data.x_out);
+      SubproblemCutTrimmer cut(handler, _data.x_cut);
 
       _all_cuts_storage.find(itmap.first)->second.insert(cut);
       _trace[_data.it - 1]->_cut_trace[itmap.first] = subproblem_cut_data;
@@ -494,7 +511,7 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
       bound_simplex_iter(handler->get_int(SIMPLEXITER));
     }
   }
-  _master->add_cut(s, _data.x_out, rhs);
+  _master->add_cut(s, _data.x_cut, rhs);
 }
 
 /*!
@@ -528,7 +545,7 @@ LogData BendersBase::FinalLogData() const {
   result.best_it = _data.best_it + iterations_before_resume;
   result.lb = _data.lb;
   result.best_ub = _data.best_ub;
-  result.x_out = _data.bestx;
+  result.x_out = _data.x_in;
 
   result.subproblem_cost = best_iteration_data.subproblem_cost;
   result.invest_cost = best_iteration_data.invest_cost;

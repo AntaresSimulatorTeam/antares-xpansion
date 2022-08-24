@@ -74,6 +74,7 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
       activate_integrity_constraints();
       reset_data_post_relaxation();
     }
+    reset_iteration_data();
     solve_master_and_create_trace();
   }
 }
@@ -185,6 +186,7 @@ void BendersMpi::write_exception_message(const std::exception &ex) const {
 void BendersMpi::step_4_update_best_solution(int rank,
                                              const Timer &timer_master) {
   if (rank == rank_0) {
+    compute_ub();
     update_best_ub();
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 

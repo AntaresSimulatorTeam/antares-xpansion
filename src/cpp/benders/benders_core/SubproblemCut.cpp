@@ -127,10 +127,10 @@ bool SubproblemCutTrimmer::operator<(SubproblemCutTrimmer const& other) const {
  *  \brief Constructor of Slave cut trimmer from an handler and trial values
  */
 SubproblemCutTrimmer::SubproblemCutTrimmer(SubproblemCutDataHandlerPtr& data,
-                                           Point& x0)
-    : _data_cut(data), _x0(x0) {
+                                           Point& x_cut)
+    : _data_cut(data), _x_cut(x_cut) {
   _const_cut = _data_cut->get_dbl(SUBPROBLEM_COST);
-  for (auto const& kvp : _x0) {
+  for (auto const& kvp : _x_cut) {
     if (get_subgradient().find(kvp.first) != get_subgradient().end()) {
       _const_cut -= get_subgradient().find(kvp.first)->second * kvp.second;
     }
