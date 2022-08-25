@@ -23,9 +23,15 @@ class CandidatesINIReader {
 
   static std::vector<IntercoFileData> ReadAntaresIntercoFile(
       const std::filesystem::path& antaresIntercoFile);
+  static std::vector<IntercoFileData> ReadAntaresIntercoFile(
+      std::istringstream& antaresIntercoFileInStringStream);
   static std::vector<std::string> ReadAreaFile(
       const std::filesystem::path& areaFile);
-
+  static std::vector<std::string> ReadAreaFile(
+      std::istringstream& areaFileInStringStream);
+  static std::vector<IntercoFileData> ReadLineByLineInterco(
+      std::istream& stream);
+  static std::vector<std::string> ReadLineByLineArea(std::istream& stream);
   std::vector<CandidateData> readCandidateData(
       const std::filesystem::path& candidateFile);
 

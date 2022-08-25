@@ -71,9 +71,8 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       "CoutOrigineVersExtremiteDeLInterconnexion";
   variable_name_config.cost_extremite_variable_name =
       "CoutExtremiteVersOrigineDeLInterconnexion";
-
-  auto variableReader =
-      VariableFileReader(var_name.string(), _links, variable_name_config);
+  auto variableReader = VariableFileReader(
+      reader.ExtractFileInStringStream(var_name), _links, variable_name_config);
 
   std::vector<std::string> var_names = variableReader.getVariables();
   std::map<colId, ColumnsToChange> p_ntc_columns =
@@ -124,7 +123,11 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings) {
   auto const mps_file_name = root / MPS_TXT;
   lpDir_ = root / "lp";
-  const auto archivePath = lpDir_ / MPS_ZIP_FILE;
+  // const auto archivePath = lpDir_ / MPS_ZIP_FILE;
+  const auto root_dir_name = root.filename().string();
+  std::size_t pos = root_dir_name.find("-Xpansion");
+  const auto archivePath =
+      root.parent_path() / (root_dir_name.substr(0, pos) + ".zip");
   auto reader = ArchiveReader(archivePath);
   reader.Open();
   auto mpsList = readMPSList(mps_file_name);
