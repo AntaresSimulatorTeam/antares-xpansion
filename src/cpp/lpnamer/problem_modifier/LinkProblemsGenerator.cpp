@@ -86,7 +86,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   auto in_prblm =
       std::make_shared<Problem>(factory.create_solver(_solver_name));
 
-  reader.ExtractFile(problemData._problem_mps);
+  reader.ExtractFile(problemData._problem_mps, lpDir_);
 
   in_prblm->read_prob_mps(lp_mps_name);
 
@@ -137,7 +137,7 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
   reader.Close();
   reader.Delete();
   std::filesystem::remove(archivePath);
-  auto writer = ArchiveWriter(archivePath);
+  auto writer = ArchiveWriter(lpDir_ / "MPS_ZIP_FILE.zip");
   writer.Open();
   writer.AddFilesInArchive(mpsBufferVector);
   writer.Close();
