@@ -6,6 +6,8 @@
 #include <ActiveLinks.h>
 #include <ColumnToChange.h>
 
+#include <istream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -20,7 +22,13 @@ class VariableFileReader {
   VariableFileReader(
       const std::string& fileName, const std::vector<ActiveLink>& links,
       const VariableFileReadNameConfiguration& variable_name_config);
-
+  VariableFileReader(
+      std::istringstream& fileInIStringStream,
+      const std::vector<ActiveLink>& links,
+      const VariableFileReadNameConfiguration& variable_name_config);
+  void VariableFileReader::ReadVarsFromStream(
+      std::istream& stream, const std::vector<ActiveLink>& links,
+      const VariableFileReadNameConfiguration& variable_name_config);
   const std::vector<std::string>& getVariables() const;
   const std::map<linkId, ColumnsToChange>& getNtcVarColumns() const;
   const std::map<linkId, ColumnsToChange>& getDirectCostVarColumns() const;

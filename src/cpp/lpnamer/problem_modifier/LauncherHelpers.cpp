@@ -1,5 +1,7 @@
 #include "LauncherHelpers.h"
 
+#include <ArchiveReader.h>
+
 #include <filesystem>
 
 #include "Candidate.h"
@@ -119,9 +121,14 @@ void addBinaryVariables(
  */
 
 ActiveLinksBuilder get_link_builders(const std::filesystem::path &root) {
+  // auto studyArchiveReader = ArchiveReader(root);
+
   const auto area_file_name = root / "area.txt";
+  // studyArchiveReader.ExtractFileInStringStream("area.txt");
+
   const auto interco_file_name = root / "interco.txt";
-  const auto ts_root  = root / "ts-numbers/ntc";
+  // studyArchiveReader.ExtractFileInStringStream("interco.txt");
+  const auto ts_root = root / "ts-numbers/ntc";
 
   CandidatesINIReader candidateReader(interco_file_name, area_file_name);
 
@@ -136,5 +143,6 @@ ActiveLinksBuilder get_link_builders(const std::filesystem::path &root) {
   const auto &mapLinkProfile =
       LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
 
-  return ActiveLinksBuilder(candidatesDatas, mapLinkProfile, DirectAccessScenarioToChronicleProvider(ts_root));
+  return ActiveLinksBuilder(candidatesDatas, mapLinkProfile,
+                            DirectAccessScenarioToChronicleProvider(ts_root));
 }

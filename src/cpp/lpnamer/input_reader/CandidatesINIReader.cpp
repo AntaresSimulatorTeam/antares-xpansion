@@ -25,16 +25,26 @@ CandidatesINIReader::CandidatesINIReader(
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
     const std::filesystem::path &antaresIntercoFile) {
-  std::vector<IntercoFileData> result;
-
   std::ifstream interco_filestream(antaresIntercoFile);
   if (!interco_filestream.good()) {
     std::string message = "unable to open " + antaresIntercoFile.string();
     throw std::runtime_error(message);
   }
 
+  return ReadLineByLineInterco(interco_filestream);
+}
+
+std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
+    std::istringstream &antaresIntercoFileInStringStream) {
+  return ReadLineByLineInterco(antaresIntercoFileInStringStream);
+}
+
+std::vector<IntercoFileData> CandidatesINIReader::ReadLineByLineInterco(
+    std::istream &stream) {
+  std::vector<IntercoFileData> result;
+
   std::string line;
-  while (std::getline(interco_filestream, line)) {
+  while (std::getline(stream, line)) {
     std::stringstream buffer(line);
     if (!line.empty() && line.front() != '#') {
       IntercoFileData intercoData;
@@ -47,18 +57,29 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
   }
   return result;
 }
+
 std::vector<std::string> CandidatesINIReader::ReadAreaFile(
     const std::filesystem::path &areaFile) {
-  std::vector<std::string> result;
-
   std::ifstream area_filestream(areaFile);
   if (!area_filestream.good()) {
     std::string message = "unable to open " + areaFile.string();
     throw std::runtime_error(message);
   }
 
+  return ReadLineByLineArea(area_filestream);
+}
+
+std::vector<std::string> CandidatesINIReader::ReadAreaFile(
+    std::istringstream &areaFileInStringStream) {
+  return ReadLineByLineArea(areaFileInStringStream);
+}
+
+std::vector<std::string> CandidatesINIReader::ReadLineByLineArea(
+    std::istream &stream) {
+  std::vector<std::string> result;
+
   std::string line;
-  while (std::getline(area_filestream, line)) {
+  while (std::getline(stream, line)) {
     if (!line.empty() && line.front() != '#') {
       result.push_back(StringUtils::ToLowercase(line));
     }
@@ -151,10 +172,14 @@ CandidateData CandidatesINIReader::readCandidateSection(
     throw std::runtime_error(message);
   }
   candidateData.link_id = it->second;
-  candidateData.direct_link_profile = getStrVal(reader, sectionName, "direct-link-profile");
-  candidateData.indirect_link_profile = getStrVal(reader, sectionName, "indirect-link-profile");
-  candidateData.installed_direct_link_profile_name = getStrVal(reader, sectionName, "already-installed-direct-link-profile");
-  candidateData.installed_indirect_link_profile_name = getStrVal(reader, sectionName, "already-installed-indirect-link-profile");
+  candidateData.direct_link_profile =
+      getStrVal(reader, sectionName, "direct-link-profile");
+  candidateData.indirect_link_profile =
+      getStrVal(reader, sectionName, "indirect-link-profile");
+  candidateData.installed_direct_link_profile_name =
+      getStrVal(reader, sectionName, "already-installed-direct-link-profile");
+  candidateData.installed_indirect_link_profile_name =
+      getStrVal(reader, sectionName, "already-installed-indirect-link-profile");
 
   candidateData.annual_cost_per_mw =
       getDblVal(reader, sectionName, "annual-cost-per-mw");
