@@ -336,7 +336,7 @@ class ConfigLoader:
 
     def _simulation_lp_path(self):
         lp_path = os.path.normpath(os.path.join(
-            self.simulation_output_path(), "lp"))
+            self.simulation_output_path().parent/(self.simulation_output_path().stem+"-Xpansion"), "lp"))
         return lp_path
 
     def _verify_additional_constraints_file(self):
