@@ -6,6 +6,7 @@
 #include <mz_zip_rw.h>
 
 #include <iostream>
+#include <vector>
 ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
   Create();
