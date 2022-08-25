@@ -185,8 +185,9 @@ class ProblemGeneratorDriver:
             if returned_l.returncode != 0:
                 raise ProblemGeneratorDriver.LPNamerExecutionError(
                     "ERROR: exited lpnamer with status %d" % returned_l.returncode)
-            elif not self.keep_mps:
-                StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
+            # TODO will not be needed
+            # elif not self.keep_mps:
+            #     StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
 
     def _create_lp_dir(self):
         if os.path.isdir(self._lp_path):

@@ -26,7 +26,7 @@ class VariableFileReader {
       std::istringstream& fileInIStringStream,
       const std::vector<ActiveLink>& links,
       const VariableFileReadNameConfiguration& variable_name_config);
-  void VariableFileReader::ReadVarsFromStream(
+  void ReadVarsFromStream(
       std::istream& stream, const std::vector<ActiveLink>& links,
       const VariableFileReadNameConfiguration& variable_name_config);
   const std::vector<std::string>& getVariables() const;
