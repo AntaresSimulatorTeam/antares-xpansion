@@ -40,8 +40,6 @@ void BendersBase::init_data() {
   _data.is_in_initial_relaxation = false;
 }
 
-void BendersBase::reset_iteration_data() { _data.ub = 0; }
-
 void BendersBase::OpenCsvFile() {
   if (!_csv_file.is_open()) {
     const auto opening_mode = _options.RESUME ? std::ios::app : std::ios::trunc;
@@ -448,6 +446,7 @@ void BendersBase::getSubproblemCut(
  *
  */
 void BendersBase::compute_cut(AllCutPackage const &all_package) {
+  _data.ub = 0;
   std::for_each(
       all_package.begin(), all_package.end(),
       [this](const SubproblemCutPackage &i) {
@@ -492,6 +491,7 @@ void compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
 void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
   Point s;
   double rhs(0);
+  _data.ub = 0;
   for (const auto &i : all_package) {
     for (auto const &itmap : i) {
       SubproblemCutDataPtr subproblem_cut_data(

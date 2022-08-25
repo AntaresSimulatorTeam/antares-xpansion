@@ -2,8 +2,8 @@
 
 #include "BendersSequential.h"
 #include "JsonWriter.h"
+#include "LoggerStub.h"
 #include "gtest/gtest.h"
-#include "logger/UserFile.h"
 
 class FakeWorkerMaster : public WorkerMaster {
  public:
@@ -29,8 +29,10 @@ class FakeWorkerMaster : public WorkerMaster {
 class BendersSequentialDouble : public BendersSequential {
  public:
   bool parametrized_stop = false;
+  int parametrized_it = 0;
   int parametrized_nsubproblem = 0;
   double parametrized_lb = -1e20;
+  double parametrized_ub = +1e20;
   double parametrized_best_ub = +1e20;
 
   explicit BendersSequentialDouble(BendersBaseOptions const &options,
@@ -43,6 +45,7 @@ class BendersSequentialDouble : public BendersSequential {
     _data.nsubproblem = parametrized_nsubproblem;
     _data.lb = parametrized_lb;
     _data.best_ub = parametrized_best_ub;
+    _data.it = parametrized_it;
   };
 
   [[nodiscard]] WorkerMasterPtr get_master() const {
@@ -50,10 +53,14 @@ class BendersSequentialDouble : public BendersSequential {
   };
 
   void get_master_value() override{};
+  void build_cut() override{};
+  void compute_ub() override { _data.ub = parametrized_ub; };
   BendersData get_data() const { return _data; }
   void build_input_map() override{};
   void write_basis() const override{};
+  void update_trace() override{};
   void post_run_actions() const override{};
+  void SaveCurrentBendersData() override{};
   void reset_master(WorkerMaster *worker_master) override {
     WorkerMasterPtr var;
     var.reset(worker_master);
@@ -66,11 +73,16 @@ class BendersSequentialDouble : public BendersSequential {
     parametrized_nsubproblem = nsubproblem;
     _data.nsubproblem = nsubproblem;
   }
-
   void set_bounds(double lb, double best_ub) {
     parametrized_lb = lb;
     parametrized_best_ub = best_ub;
   }
+  void set_bestx(Point x_out, Point x_in) {
+    _data.x_out = x_out;
+    _data.x_in = x_in;
+  }
+  void set_ub(double ub) { parametrized_ub = ub; }
+  void set_it(int it) { parametrized_it = it; }
 };
 
 class BendersSequentialTest : public ::testing::Test {
@@ -81,7 +93,7 @@ class BendersSequentialTest : public ::testing::Test {
 
  protected:
   void SetUp() override {
-    logger = std::make_shared<xpansion::logger::UserFile>(std::tmpnam(nullptr));
+    logger = std::make_shared<LoggerNOOPStub>();
     writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                   std::tmpnam(nullptr));
   }
@@ -103,17 +115,20 @@ class BendersSequentialTest : public ::testing::Test {
     return base_options;
   }
 
-  BendersBaseOptions init_benders_options() const {
+  BendersBaseOptions init_benders_options(MasterFormulation master_formulation,
+                                          int max_iter,
+                                          double sep_param) const {
     BaseOptions base_options(init_base_options());
     BendersBaseOptions options(base_options);
 
-    options.MAX_ITERATIONS = 1;
+    options.MAX_ITERATIONS = max_iter;
     options.ABSOLUTE_GAP = 1e-4;
     options.RELATIVE_GAP = 1e-4;
     options.RELAXED_GAP = 1e-2;
     options.TIME_LIMIT = 10;
+    options.SEPARATION_PARAM = sep_param;
 
-    options.MASTER_FORMULATION = MasterFormulation::INTEGER;
+    options.MASTER_FORMULATION = master_formulation;
 
     options.INITIAL_MASTER_RELAXATION = true;
     options.AGGREGATION = false;
@@ -127,8 +142,10 @@ class BendersSequentialTest : public ::testing::Test {
     return options;
   }
 
-  BendersSequentialDouble init_benders_sequential() {
-    BendersBaseOptions options = init_benders_options();
+  BendersSequentialDouble init_benders_sequential(
+      MasterFormulation master_formulation, int max_iter, double sep_param) {
+    BendersBaseOptions options =
+        init_benders_options(master_formulation, max_iter, sep_param);
     return BendersSequentialDouble(options, logger, writer);
   }
 
@@ -145,7 +162,11 @@ class BendersSequentialTest : public ::testing::Test {
 };
 
 TEST_F(BendersSequentialTest, MasterRelaxedAtBeginning) {
-  BendersSequentialDouble benders = init_benders_sequential();
+  MasterFormulation master_formulation = MasterFormulation::INTEGER;
+  int max_iter = 1;
+  double sep_param = 1;
+  BendersSequentialDouble benders =
+      init_benders_sequential(master_formulation, max_iter, sep_param);
 
   benders.set_data(true, 0);
   benders.launch();
@@ -157,7 +178,11 @@ TEST_F(BendersSequentialTest, MasterRelaxedAtBeginning) {
 }
 
 TEST_F(BendersSequentialTest, CheckDataPreRelaxation) {
-  BendersSequentialDouble benders = init_benders_sequential();
+  MasterFormulation master_formulation = MasterFormulation::INTEGER;
+  int max_iter = 1;
+  double sep_param = 1;
+  BendersSequentialDouble benders =
+      init_benders_sequential(master_formulation, max_iter, sep_param);
 
   benders.set_data(true, 0);
   benders.launch();
@@ -166,7 +191,11 @@ TEST_F(BendersSequentialTest, CheckDataPreRelaxation) {
 }
 
 TEST_F(BendersSequentialTest, ReactivateIntegrityConstraint) {
-  BendersSequentialDouble benders = init_benders_sequential();
+  MasterFormulation master_formulation = MasterFormulation::INTEGER;
+  int max_iter = 1;
+  double sep_param = 1;
+  BendersSequentialDouble benders =
+      init_benders_sequential(master_formulation, max_iter, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(1000, 1001);
@@ -179,7 +208,11 @@ TEST_F(BendersSequentialTest, ReactivateIntegrityConstraint) {
 }
 
 TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
-  BendersSequentialDouble benders = init_benders_sequential();
+  MasterFormulation master_formulation = MasterFormulation::INTEGER;
+  int max_iter = 1;
+  double sep_param = 1;
+  BendersSequentialDouble benders =
+      init_benders_sequential(master_formulation, max_iter, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(1000, 1001);
@@ -188,4 +221,78 @@ TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
   ASSERT_EQ(benders.get_data().is_in_initial_relaxation, false);
   ASSERT_EQ(benders.get_data().best_ub, 1e+20);
   ASSERT_EQ(benders.get_data().best_it, 0);
+}
+
+TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
+  MasterFormulation master_formulation = MasterFormulation::RELAXED;
+  double sep_param = 0.8;
+  int current_it = 4;
+  int max_iter = current_it + 1;
+
+  double init_lb = 1000;
+  double init_ub = 1001;
+  double current_ub = 2000;
+
+  Point x_out = {{"x1", 1}, {"x2", 2}};
+  Point x_in = {{"x1", 3}, {"x2", 6}};
+
+  BendersSequentialDouble benders =
+      init_benders_sequential(master_formulation, max_iter, sep_param);
+
+  benders.set_data(false, 0);
+  benders.set_bounds(init_lb, init_ub);
+  benders.set_it(current_it);
+  benders.set_bestx(x_out, x_in);
+  benders.set_ub(current_ub);
+
+  Point expec_x_cut;
+  for (const auto &[coord, val] : x_out) {
+    expec_x_cut[coord] =
+        sep_param * x_out[coord] + (1 - sep_param) * x_in[coord];
+  }
+
+  benders.launch();
+
+  EXPECT_EQ(benders.get_data().x_out, x_out);
+  EXPECT_EQ(benders.get_data().x_cut, expec_x_cut);
+  EXPECT_EQ(benders.get_data().x_in, x_in);
+  EXPECT_EQ(benders.get_data().best_ub, init_ub);
+  EXPECT_EQ(benders.get_data().best_it, 0);
+}
+
+TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
+  MasterFormulation master_formulation = MasterFormulation::RELAXED;
+  double sep_param = 0.8;
+  int current_it = 4;
+  int max_iter = current_it + 1;
+
+  double init_lb = 1000;
+  double init_ub = 1001;
+  double current_ub = 1000.5;
+
+  Point x_out = {{"x1", 1}, {"x2", 2}};
+  Point x_in = {{"x1", 3}, {"x2", 6}};
+
+  BendersSequentialDouble benders =
+      init_benders_sequential(master_formulation, max_iter, sep_param);
+
+  benders.set_data(false, 0);
+  benders.set_bounds(init_lb, init_ub);
+  benders.set_it(current_it);
+  benders.set_bestx(x_out, x_in);
+  benders.set_ub(current_ub);
+
+  Point expec_x_cut;
+  for (const auto &[coord, val] : x_out) {
+    expec_x_cut[coord] =
+        sep_param * x_out[coord] + (1 - sep_param) * x_in[coord];
+  }
+
+  benders.launch();
+
+  EXPECT_EQ(benders.get_data().x_out, x_out);
+  EXPECT_EQ(benders.get_data().x_cut, expec_x_cut);
+  EXPECT_EQ(benders.get_data().x_in, expec_x_cut);
+  EXPECT_EQ(benders.get_data().best_ub, current_ub);
+  EXPECT_EQ(benders.get_data().best_it, current_it + 1);
 }
