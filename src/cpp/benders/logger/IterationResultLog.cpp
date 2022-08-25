@@ -27,7 +27,7 @@ void IterationResultLog::setValuesFromData(const LogData &data) {
   double rel_gap = abs_gap / data.best_ub;
   const double overall_cost = data.subproblem_cost + data.invest_cost;
 
-  // Quick and dirty fix when gap is negative, further investigation needed
+  // To reassure users when gap is slightly negative, check has been done that it is only due to numerical precision, and not to a convergence default of the algorithm
   if (abs_gap < 0) {
     abs_gap = 0;
     rel_gap = 0;

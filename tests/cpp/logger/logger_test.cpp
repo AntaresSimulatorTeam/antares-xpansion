@@ -13,20 +13,22 @@ using namespace xpansion::logger;
 
 void addCandidate(LogData& logData, std::string candidate, double invest,
                   double minInvest, double maxInvest) {
-  logData.x_out[candidate] = invest;
+  logData.x_cut[candidate] = invest;
   logData.min_invest[candidate] = minInvest;
   logData.max_invest[candidate] = maxInvest;
 }
 
-const LogPoint x0 = {{"candidate1", 56}, {"candidate2", 6}};
+const LogPoint x_in = {{"candidate1", 52}, {"candidate2", 4}};
+const LogPoint x_out = {{"candidate1", 56}, {"candidate2", 6}};
+const LogPoint x_cut = {{"candidate1", 60}, {"candidate2", 12}};
 const LogPoint min_invest = {{"candidate1", 5}, {"candidate2", 2}};
 const LogPoint max_invest = {{"candidate1", 10}, {"candidate2", 20}};
 const LogData best_iteration_data = {
-    15e5,       255e6,      200e6, 63,    63,   587e8, 8562e8, x0,
-    min_invest, max_invest, 9e9,   3e-15, 5876, 999,   898,    23};
+    15e5,  255e6,      200e6,      63,  63,    587e8, 8562e8, x_in, x_out,
+    x_cut, min_invest, max_invest, 9e9, 3e-15, 5876,  999,    898,  23};
 const LogData last_iteration_data = {
-    1e5,        255e6,      200e6, 159,   63,   587e8, 8562e8, x0,
-    min_invest, max_invest, 9e9,   3e-15, 5876, 9999,  898,    25};
+    1e5,   255e6,      200e6,      159, 63,    587e8, 8562e8, x_in, x_out,
+    x_cut, min_invest, max_invest, 9e9, 3e-15, 5876,  9999,   898,  25};
 
 class FileLoggerTest : public ::testing::Test {
  public:
@@ -314,7 +316,7 @@ TEST_F(UserLoggerTest, IterationStartLogCandidateLongInvestment) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
-TEST_F(UserLoggerTest, IterationStartLogCandidateNameLenght) {
+TEST_F(UserLoggerTest, IterationStartLogCandidateNameLength) {
   LogData logData;
   addCandidate(logData, "z", 50.0, 0.0, 100.0);
   addCandidate(logData, "a", 10.0, 0.0, 50.0);

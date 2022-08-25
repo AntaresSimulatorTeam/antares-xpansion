@@ -24,7 +24,6 @@ BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
  *  \brief Initialize set of data used in the loop
  */
 void BendersBase::init_data() {
-  _data.nbasis = 0;
   _data.lb = -1e20;
   _data.ub = +1e20;
   _data.best_ub = +1e20;
@@ -65,44 +64,20 @@ void BendersBase::PrintCurrentIterationCsv() {
   print_csv_iteration(_csv_file, _data.it - 1);
 }
 
-/*!
- *  \brief Print the trace of the Benders algorithm in a csv file
- *
- *  Method to print trace of the Benders algorithm in a csv file
- *
- */
-void BendersBase::print_csv() {
-  const auto output =
-      std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv");
-  std::ofstream file(output, std::ios::out | std::ios::trunc);
-  if (file) {
-    file << "Ite;Worker;Problem;Id;UB;LB;bestUB;simplexiter;jump;alpha_i;"
-            "deletedcut;time;basis;"
-         << std::endl;
-    int const nite = _trace.size();
-    for (int i = 0; i < nite; i++) {
-      print_csv_iteration(file, i);
-    }
-    file.close();
-  } else {
-    LOG(INFO) << "Impossible to open the .csv file" << std::endl;
-  }
-}
-
 void BendersBase::print_csv_iteration(std::ostream &file, int ite) {
   if (_trace[ite]->_valid) {
-    Point xopt;
+    Point x_cut;
     // Write first problem : use result of best iteration
     if (ite == 0) {
       int best_it_index = _data.best_it - 1;
       if (best_it_index >= 0 && _trace.size() > best_it_index) {
-        xopt = _trace[best_it_index]->get_point();
+        x_cut = _trace[best_it_index]->get_x_cut();
       }
     } else {
-      xopt = _trace[ite - 1]->get_point();
+      x_cut = _trace[ite - 1]->get_x_cut();
     }
     print_master_and_cut(file, ite + 1 + iterations_before_resume, _trace[ite],
-                         xopt);
+                         x_cut);
   }
 }
 
@@ -137,10 +112,10 @@ void print_cut_csv(std::ostream &stream,
 
 void BendersBase::print_master_and_cut(std::ostream &file, int ite,
                                        WorkerMasterDataPtr &trace,
-                                       Point const &xopt) {
+                                       Point const &x_cut) {
   file << ite << ";";
 
-  print_master_csv(file, trace, xopt);
+  print_master_csv(file, trace, x_cut);
 
   for (auto &kvp : trace->_cut_trace) {
     const SubproblemCutDataHandler handler(kvp.second);
@@ -156,11 +131,11 @@ void BendersBase::print_master_and_cut(std::ostream &file, int ite,
  *
  *  \param trace : storage of problem data
  *
- *  \param xopt : final optimal value
+ *  \param x_cut : cut point determined after the master resolution
  */
 void BendersBase::print_master_csv(std::ostream &stream,
                                    const WorkerMasterDataPtr &trace,
-                                   Point const &xopt) const {
+                                   Point const &x_cut) const {
   stream << "Master"
          << ";";
   stream << _options.MASTER_NAME << ";";
@@ -169,11 +144,11 @@ void BendersBase::print_master_csv(std::ostream &stream,
   stream << trace->_lb << ";";
   stream << trace->_best_ub << ";";
   stream << ";";
-  stream << norm_point(xopt, trace->get_point()) << ";";
+  stream << norm_point(x_cut, trace->get_x_cut()) << ";";
   stream << ";";
   stream << trace->_deleted_cut << ";";
   stream << trace->_master_duration << ";";
-  stream << trace->_nbasis << ";" << std::endl;
+  stream << std::endl;
 }
 
 /*!
@@ -247,7 +222,9 @@ void BendersBase::update_trace() {
   LastWorkerMasterDataPtr->_lb = _data.lb;
   LastWorkerMasterDataPtr->_ub = _data.ub;
   LastWorkerMasterDataPtr->_best_ub = _data.best_ub;
+  LastWorkerMasterDataPtr->_x_in = std::make_shared<Point>(_data.x_in);
   LastWorkerMasterDataPtr->_x_out = std::make_shared<Point>(_data.x_out);
+  LastWorkerMasterDataPtr->_x_cut = std::make_shared<Point>(_data.x_cut);
   LastWorkerMasterDataPtr->_max_invest =
       std::make_shared<Point>(_data.max_invest);
   LastWorkerMasterDataPtr->_min_invest =
@@ -255,7 +232,6 @@ void BendersBase::update_trace() {
   LastWorkerMasterDataPtr->_deleted_cut = _data.deletedcut;
   LastWorkerMasterDataPtr->_master_duration = _data.timer_master;
   LastWorkerMasterDataPtr->_subproblem_duration = _data.subproblem_timers;
-  LastWorkerMasterDataPtr->_nbasis = _data.nbasis;
   LastWorkerMasterDataPtr->_invest_cost = _data.invest_cost;
   LastWorkerMasterDataPtr->_operational_cost = _data.subproblem_cost;
   LastWorkerMasterDataPtr->_valid = true;
@@ -578,7 +554,7 @@ void BendersBase::SaveSolutionInOutputFile() const {
 Output::CandidatesVec candidates_data(
     const WorkerMasterDataPtr &masterDataPtr_l) {
   Output::CandidatesVec candidates_vec;
-  for (const auto &pairNameValue_l : masterDataPtr_l->get_point()) {
+  for (const auto &pairNameValue_l : masterDataPtr_l->get_x_cut()) {
     Output::CandidateData candidate_data;
     candidate_data.name = pairNameValue_l.first;
     candidate_data.invest = pairNameValue_l.second;
@@ -639,7 +615,7 @@ Output::SolutionData BendersBase::solution() const {
     // solution may not be in _trace
     Output::CandidatesVec candidates_vec;
     std::transform(
-        best_iteration_data.x_out.cbegin(), best_iteration_data.x_out.cend(),
+        best_iteration_data.x_cut.cbegin(), best_iteration_data.x_cut.cend(),
         std::back_inserter(candidates_vec),
         [this](const std::pair<std::string, double> &name_invest)
             -> Output::CandidateData {
@@ -737,7 +713,9 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
           data.best_it + iterations_before_resume,
           data.subproblem_cost,
           data.invest_cost,
+          data.x_in,
           data.x_out,
+          data.x_cut,
           data.min_invest,
           data.max_invest,
           optimal_gap,

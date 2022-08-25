@@ -32,7 +32,6 @@ class BendersBase {
   virtual void run() = 0;
   virtual void initialize_problems() = 0;
   virtual void init_data();
-  void print_csv();
   void update_best_ub();
   bool stopping_criterion();
   bool is_initial_relaxation_requested() const;

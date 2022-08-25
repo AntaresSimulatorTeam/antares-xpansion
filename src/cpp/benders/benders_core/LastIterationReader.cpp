@@ -19,7 +19,7 @@ std::pair<LogData, LogData> LastIterationReader::LastIterationData() {
 }
 LogData LastIterationReader::GetIterationData(
     const std::string& iteration_name) {
-  LogPoint x0;
+  LogPoint x_cut;
   LogPoint min_invest;
   LogPoint max_invest;
   const auto candidates_array =
@@ -27,7 +27,7 @@ LogData LastIterationReader::GetIterationData(
 
   for (auto candidate = candidates_array.begin();
        candidate != candidates_array.end(); ++candidate) {
-    x0.try_emplace((*candidate)["candidate"].asString(),
+    x_cut.try_emplace((*candidate)["candidate"].asString(),
                    (*candidate)["invest"].asDouble());
     min_invest.try_emplace((*candidate)["candidate"].asString(),
                            (*candidate)["invest_min"].asDouble());
@@ -43,7 +43,9 @@ LogData LastIterationReader::GetIterationData(
       last_iteration_file_content_[iteration_name]["subproblem_cost"]
           .asDouble(),
       last_iteration_file_content_[iteration_name]["invest_cost"].asDouble(),
-      x0,
+      {},
+      {},
+      x_cut,
       min_invest,
       max_invest,
       last_iteration_file_content_[iteration_name]["optimality_gap"].asDouble(),
