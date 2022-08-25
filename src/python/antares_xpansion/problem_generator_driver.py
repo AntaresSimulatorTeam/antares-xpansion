@@ -88,8 +88,13 @@ class ProblemGeneratorDriver:
 
         if output_path.exists():
             self._output_path = output_path
+            self.xpansion_output_dir = output_path.parent / \
+                (output_path.stem+"-Xpansion")
+            if self.xpansion_output_dir.exists():
+                shutil.rmtree(self.xpansion_output_dir)
+            os.makedirs(self.xpansion_output_dir)
             self._lp_path = os.path.normpath(
-                os.path.join(self._output_path, 'lp'))
+                os.path.join(self.xpansion_output_dir, 'lp'))
         else:
             raise ProblemGeneratorDriver.OutputPathError(
                 f"{output_path} not found")
@@ -116,32 +121,38 @@ class ProblemGeneratorDriver:
         self._process_weights_file()
 
         mps_txt = read_and_write_mps(self.output_path)
-        with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l, zipfile.ZipFile(self.output_path / self.mps_zip_file, "w") as mps_zip:
+        with open(os.path.normpath(os.path.join(self.xpansion_output_dir, self.MPS_TXT)), 'w') as file_l:
             for line in mps_txt.items():
                 mps_sub_problem_file = line[1][0]
-                mps_sub_problem_file_path = self.output_path / mps_sub_problem_file
                 file_l.write(mps_sub_problem_file + ' ' + line[1]
                              [1] + ' ' + line[1][2] + '\n')
-                mps_zip.write(mps_sub_problem_file_path,
-                              mps_sub_problem_file, compress_type=zipfile.ZIP_DEFLATED)
-                os.remove(mps_sub_problem_file_path)
 
-        self._check_and_copy_area_file()
-        self._check_and_copy_interco_file()
+        with zipfile.ZipFile(self.output_path, 'r') as study_archive:
+            for e in study_archive.namelist():
+                if '.txt' in e and '/' not in e:
+                    if 'area' in e:
+                        study_archive.extract(
+                            e, self.xpansion_output_dir)
+                    if 'interco' in e:
+                        study_archive.extract(
+                            e, self.xpansion_output_dir)
 
-    def _check_and_copy_area_file(self):
-        self._check_and_copy_txt_file(
+        self._check_and_rename_area_file()
+        self._check_and_rename_interco_file()
+
+    def _check_and_rename_area_file(self):
+        self._check_and_rename_txt_file(
             "area", ProblemGeneratorDriver.AreaFileException)
 
-    def _check_and_copy_interco_file(self):
-        self._check_and_copy_txt_file(
+    def _check_and_rename_interco_file(self):
+        self._check_and_rename_txt_file(
             "interco", ProblemGeneratorDriver.IntercoFilesException)
 
-    def _check_and_copy_txt_file(self, prefix, exception_to_raise: BasicException):
-        self._check_and_copy_file(prefix, "txt", exception_to_raise)
+    def _check_and_rename_txt_file(self, prefix, exception_to_raise: BasicException):
+        self._check_and_rename_file(prefix, "txt", exception_to_raise)
 
-    def _check_and_copy_file(self, prefix, extension, exception_to_raise: BasicException):
-        glob_path = Path(self.output_path)
+    def _check_and_rename_file(self, prefix, extension, exception_to_raise: BasicException):
+        glob_path = Path(self.xpansion_output_dir)
         files = [str(pp) for pp in glob_path.glob(prefix + "*" + extension)]
         if len(files) == 0:
             raise exception_to_raise("No %s*.txt file found" % prefix)
@@ -151,7 +162,7 @@ class ProblemGeneratorDriver:
                 "More than one %s*.txt file found" % prefix)
 
         shutil.copy(files[0], os.path.normpath(
-            os.path.join(self.output_path, prefix + '.' + extension)))
+            os.path.join(self.xpansion_output_dir, prefix + '.' + extension)))
 
     def _lp_step(self):
         """
@@ -159,8 +170,6 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-
-        shutil.move(str(self.output_path/self.mps_zip_file), self._lp_path)
 
         with open(self.get_lp_namer_log_filename(), 'w') as output_file:
 
@@ -206,7 +215,7 @@ class ProblemGeneratorDriver:
             raise ProblemGeneratorDriver.LPNamerExeError(
                 f"LP namer exe: {self.lp_namer_exe_path} not found")
 
-        return [self.lp_namer_exe_path, "-o", str(self.output_path), "-f", is_relaxed, "-e",
+        return [self.lp_namer_exe_path, "-o", str(self.xpansion_output_dir), "-f", is_relaxed, "-e",
                 self.additional_constraints]
 
     output_path = property(get_output_path, set_output_path)
