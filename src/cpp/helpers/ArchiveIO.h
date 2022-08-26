@@ -1,6 +1,31 @@
 #ifndef _ARCHIVEIO_H
 #define _ARCHIVEIO_H
 
+extern "C" {
+#include <mz.h>
+#include <mz_strm.h>
+#include <mz_zip.h>
+#include <mz_zip_rw.h>
+}
+#include <stdexcept>
+#include <string>
+
+class ArchiveIOGeneralException : public std::runtime_error {
+ public:
+  ArchiveIOGeneralException(int32_t status, const std::string& action,
+                            int32_t expectedStatus = MZ_OK)
+      : std::runtime_error("Failed to " + action +
+                           "\ninvalid status:" + std::to_string(status) + " (" +
+                           std::to_string(expectedStatus) + " expected)") {}
+};
+class ArchiveIOSpecificException : public std::runtime_error {
+ public:
+  ArchiveIOSpecificException(int32_t status, const std::string& errMessage,
+                             int32_t expectedStatus = MZ_OK)
+      : std::runtime_error(errMessage +
+                           "\ninvalid status:" + std::to_string(status) + " (" +
+                           std::to_string(expectedStatus) + " expected)") {}
+};
 #include <filesystem>
 class ArchiveIO {
  private:
