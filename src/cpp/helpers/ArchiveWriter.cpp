@@ -15,8 +15,9 @@ ArchiveWriter::ArchiveWriter() : ArchiveIO() { Create(); }
 
 void ArchiveWriter::Create() { mz_zip_writer_create(&internalPointer_); }
 int32_t ArchiveWriter::Open() {
+  // disk-spanning is disabled, meaning that only one file is created
   const auto err = mz_zip_writer_open_file(
-      internalPointer_, ArchivePath().string().c_str(), 0, 1);
+      internalPointer_, ArchivePath().string().c_str(), 0 /* disk-spanning disabled */, 1 /* append */);
   if (err != MZ_OK) {
     std::cerr << "Could not Open Archive: " << ArchivePath().string()
               << std::endl;
