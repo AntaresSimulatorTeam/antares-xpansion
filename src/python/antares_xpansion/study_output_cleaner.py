@@ -17,7 +17,7 @@ def rename_master(old_master_path: Path, new_master_path: Path):
 
 
 def get_last_master_path(dirpath: Path) -> Path:
-    return Path(dirpath / 'master_last_iteration.mps')
+    return Path(dirpath / "lp"/'master_last_iteration.mps')
 
 
 def get_tmp_master_path(master_path: Path) -> Path:
@@ -44,9 +44,9 @@ class StudyOutputCleaner:
         master_path = get_last_master_path(study_output)
         tmp_master_path = get_tmp_master_path(master_path)
 
-        # lp_dir = study_output / 'lp'
+        lp_dir = study_output / 'lp'
         rename_master(master_path, tmp_master_path)
-        remove_files_containing_str_from_dir('.mps', study_output)
+        remove_files_containing_str_from_dir('.mps', lp_dir)
         rename_master(tmp_master_path, master_path)
 
         remove_files_containing_str_from_dir('.lp', study_output)

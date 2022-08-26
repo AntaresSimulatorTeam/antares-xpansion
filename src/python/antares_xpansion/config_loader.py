@@ -335,9 +335,10 @@ class ConfigLoader:
         return self._simulation_lp_path()
 
     def _simulation_lp_path(self):
-        lp_path = os.path.normpath(os.path.join(
-            self.simulation_output_path().parent/(self.simulation_output_path().stem+"-Xpansion"), "lp"))
-        return lp_path
+        return self.xpansion_simulation_output() / "lp"
+
+    def xpansion_simulation_output(self):
+        return self.simulation_output_path().parent/(self.simulation_output_path().stem+"-Xpansion")
 
     def _verify_additional_constraints_file(self):
         if self.options.get("additional-constraints", "") != "":
@@ -414,12 +415,12 @@ class ConfigLoader:
 
     def _expansion_dir(self):
         return os.path.normpath(
-            os.path.join(self.simulation_output_path(), "expansion")
+            os.path.join(self.xpansion_simulation_output(), "expansion")
         )
 
     def _sensitivity_dir(self):
         return os.path.normpath(
-            os.path.join(self.simulation_output_path(), "sensitivity")
+            os.path.join(self.xpansion_simulation_output(), "sensitivity")
         )
 
     def _set_options_for_benders_solver(self):
@@ -500,7 +501,7 @@ class ConfigLoader:
 
     def zip_last_study(self):
         """
-        zip last simulation 
+        zip last simulation
         """
         # Get list of all dirs only in the given directory
         list_of_dirs_filter = filter(

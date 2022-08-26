@@ -68,7 +68,7 @@ class XpansionDriver:
             self.launch_problem_generation_step()
             self.launch_benders_step()
             self.study_update_driver.launch(
-                self.config_loader.simulation_lp_path(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
+                self.config_loader.xpansion_simulation_output(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
 
         elif self.config_loader.step() == "antares":
             self.launch_antares_step()
@@ -78,7 +78,7 @@ class XpansionDriver:
 
         elif self.config_loader.step() == "study_update":
             self.study_update_driver.launch(
-                self.config_loader.simulation_output_path(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
+                self.config_loader.xpansion_simulation_output(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
 
         elif self.config_loader.step() == "benders":
             self.launch_benders_step()
@@ -114,7 +114,7 @@ class XpansionDriver:
     def launch_benders_step(self):
         self.config_loader.benders_pre_actions()
         self.benders_driver.launch(
-            self.config_loader.simulation_output_path(),
+            self.config_loader.xpansion_simulation_output(),
             self.config_loader.method(),
             self.config_loader.keep_mps(),
             self.config_loader.n_mpi(),
