@@ -23,8 +23,8 @@ class ArchiveReader : public ArchiveIO {
   int32_t ExtractFile(const std::filesystem::path& FileToExtractPath);
   int32_t ExtractFile(const std::filesystem::path& FileToExtractPath,
                       const std::filesystem::path& destination);
-  int32_t LocateEntry(const std::filesystem::path& fileToExtractPath);
-  int32_t OpenEntry(const std::filesystem::path& fileToExtractPath);
+  void LocateEntry(const std::filesystem::path& fileToExtractPath);
+  void OpenEntry(const std::filesystem::path& fileToExtractPath);
   std::istringstream ExtractFileInStringStream(
       const std::filesystem::path& FileToExtractPath);
 };

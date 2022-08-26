@@ -1,5 +1,6 @@
 #ifndef _ARCHIVEWRITER_H
 #define _ARCHIVEWRITER_H
+
 #include <vector>
 
 #include "ArchiveIO.h"
@@ -10,6 +11,7 @@ class ArchiveWriter : public ArchiveIO {
   void* internalPointer_ = NULL;
   void* handle_ = NULL;
   void Create() override;
+  mz_zip_file fileInfo_ = {0};
 
  public:
   explicit ArchiveWriter(const std::filesystem::path& archivePath);
@@ -21,6 +23,7 @@ class ArchiveWriter : public ArchiveIO {
   //   void* handle() const override;
 
   int Open() override;
+  void InitFileInfo();
   int32_t AddFileInArchive(const FileBuffer& FileBufferToAdd);
   int32_t AddFileInArchive(const std::filesystem::path& FileToAdd);
 };
