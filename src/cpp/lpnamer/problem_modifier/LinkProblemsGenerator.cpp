@@ -52,7 +52,8 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  */
 void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
-                                  Couplings &couplings, ArchiveReader &reader) {
+                                  Couplings &couplings, ArchiveReader &reader,
+                                  ArchiveWriter &writer) {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const mps_name = root / problemData._problem_mps;
   auto const var_name = root / problemData._variables_txt;
@@ -110,7 +111,10 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   }
 
   in_prblm->write_prob_mps(lp_mps_name);
-  mpsBufferVector.push_back(FileInBuffer().run(lp_mps_name));
+  // writer.AddFileInArchive(FileInBuffer().run(lp_mps_name));
+  writer.AddFileInArchive(lp_mps_name);
+  std::filesystem::remove(lp_mps_name);
+  // mpsBufferVector.push_back(FileInBuffer().run(lp_mps_name));
 }
 
 /**
@@ -132,16 +136,16 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
       root.parent_path() / (root_dir_name.substr(0, pos) + ".zip");
   auto reader = ArchiveReader(archivePath);
   reader.Open();
+  auto writer = ArchiveWriter(lpDir_ / "MPS_ZIP_FILE.zip");
+  writer.Open();
   auto mpsList = readMPSList(mps_file_name);
   std::for_each(std::execution::seq, mpsList.begin(), mpsList.end(), [&](const auto& mps) {
-    treat(root, mps, couplings, reader);
+    treat(root, mps, couplings, reader, writer);
   });
   reader.Close();
   reader.Delete();
   std::filesystem::remove(archivePath);
-  auto writer = ArchiveWriter(lpDir_ / "MPS_ZIP_FILE.zip");
-  writer.Open();
-  writer.AddFilesInArchive(mpsBufferVector);
+  // writer.AddFilesInArchive(mpsBufferVector);
   writer.Close();
   writer.Delete();
 }
