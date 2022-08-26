@@ -90,3 +90,7 @@ class OptimisationKeys:
     @staticmethod
     def resume_key():
         return "RESUME"
+
+    @staticmethod
+    def separation_key():
+        return "SEPARATION_PARAMETER"

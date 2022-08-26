@@ -301,6 +301,17 @@ class ConfigLoader:
 
         return init_master_relaxation_str in ["true", "True"]
 
+    def get_separation(self):
+        """
+        return the separation parameter read from the settings file
+        """
+        separation_parameter_str = self.options.get(
+            "separation_parameter",
+            self._config.settings_default["separation_parameter"],
+        )
+
+        return float(separation_parameter_str)
+
     def additional_constraints(self):
         """
         returns path to additional constraints file
@@ -430,6 +441,7 @@ class ConfigLoader:
         options_values[
             OptimisationKeys.initial_master_relaxation_key()
         ] = self.get_initial_master_relaxation()
+        options_values[OptimisationKeys.separation_key()] = self.get_separation()
         options_values[
             OptimisationKeys.max_iterations_key()
         ] = self.get_max_iterations()
