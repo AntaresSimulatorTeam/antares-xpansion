@@ -41,9 +41,9 @@ class BendersDriver:
         self.allow_run_as_root = allow_run_as_root
         self.simulation_output_path = simulation_output_path
         old_cwd = os.getcwd()
-        # lp_path = self.get_lp_path()
+        lp_path = self.get_lp_path()
 
-        os.chdir(self.simulation_output_path)
+        os.chdir(lp_path)
         flushed_print("Current directory is now: ", os.getcwd())
 
         self.set_solver()
