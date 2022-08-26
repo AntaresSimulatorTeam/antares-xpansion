@@ -104,7 +104,7 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   assert(mz_zip_reader_entry_open(reader) == MZ_OK);
 
   for (const auto file : std::filesystem::directory_iterator(dirPath)) {
-    const auto searchFilename = file.path().filename().c_str();
+    const auto searchFilename = file.path().filename().string().c_str();
     assert(mz_zip_reader_locate_entry(reader, searchFilename, 1) == MZ_OK);
     assert(mz_zip_reader_entry_open(reader) == MZ_OK);
     const auto extractedFilePath = tmpDir / searchFilename;
@@ -124,9 +124,8 @@ std::string timeToStr(const std::time_t& time_p) {
   const char* FORMAT = "%d-%m-%Y-%H-%M-%S";
   char buffer_l[100];
   strftime(buffer_l, sizeof(buffer_l), FORMAT, &local_time);
-  std::string strTime_l(buffer_l);
 
-  return strTime_l;
+  return buffer_l;
 }
 std::string GenerateRandomString(size_t len) {
   srand(time(NULL));
@@ -156,7 +155,9 @@ TEST_F(ArchiveWriterTest, ShouldCreateArchiveWithVecBuffer) {
   ArchiveWriter writer(archivePath);
   ASSERT_EQ(writer.Open(), MZ_OK);
   const auto mpsBufferVec = GetBufferVectorOfFilesInDir(archive1Dir);
-  ASSERT_EQ(writer.AddFilesInArchive(mpsBufferVec), MZ_OK);
+  for (const auto& mpsBuf : mpsBufferVec) {
+    ASSERT_EQ(writer.AddFileInArchive(mpsBuf), MZ_OK);
+  }
   ASSERT_EQ(writer.Close(), MZ_OK);
   writer.Delete();
   compareArchiveAndDir(archivePath, archive1Dir, tmpDir);

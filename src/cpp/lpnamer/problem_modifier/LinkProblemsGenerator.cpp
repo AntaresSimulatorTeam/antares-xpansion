@@ -145,7 +145,6 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
   reader.Close();
   reader.Delete();
   std::filesystem::remove(archivePath);
-  // writer.AddFilesInArchive(mpsBufferVector);
   writer.Close();
   writer.Delete();
 }
