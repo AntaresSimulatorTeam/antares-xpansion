@@ -71,9 +71,10 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       "CoutOrigineVersExtremiteDeLInterconnexion";
   variable_name_config.cost_extremite_variable_name =
       "CoutExtremiteVersOrigineDeLInterconnexion";
-  auto variableReader = VariableFileReader(
-      reader.ExtractFileInStringStream(problemData._variables_txt), _links,
-      variable_name_config);
+  auto variableFileContent =
+      reader.ExtractFileInStringStream(problemData._variables_txt);
+  auto variableReader =
+      VariableFileReader(variableFileContent, _links, variable_name_config);
 
   std::vector<std::string> var_names = variableReader.getVariables();
   std::map<colId, ColumnsToChange> p_ntc_columns =

@@ -218,8 +218,11 @@ class XpansionConfig:
     def max_iterations_default_value(self):
         return "-1"
 
+    def initial_master_relaxation_default_value(self):
+        return False
+
     def mps_zip_file_default_value(self):
-        return "MPS_ZIP.zip"
+        return "MPS_ZIP_FILE.zip"
 
     def separation_default_value(self):
         return "0.5"
