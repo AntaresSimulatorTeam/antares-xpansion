@@ -41,7 +41,8 @@ class LinkProblemsGenerator {
       const std::filesystem::path& mps_filePath_p) const;
 
   void treat(const std::filesystem::path& root, ProblemData const&,
-             Couplings& couplings, ArchiveReader& reader);
+             Couplings& couplings, ArchiveReader& reader,
+             ArchiveWriter& writer);
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
