@@ -21,8 +21,6 @@ class ArchiveWriter : public ArchiveIO {
   //   void* handle() const override;
 
   int Open() override;
-  //   int32_t AddFileInArchive(const std::filesystem::path& FileToAddPath);
-  int32_t AddFilesInArchive(const FileBufferVector& FilesBufferToAdd);
   int32_t AddFileInArchive(const FileBuffer& FileBufferToAdd);
   int32_t AddFileInArchive(const std::filesystem::path& FileToAdd);
 };

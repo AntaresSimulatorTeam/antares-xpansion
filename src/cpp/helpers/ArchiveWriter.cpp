@@ -26,14 +26,6 @@ int32_t ArchiveWriter::Open() {
 int32_t ArchiveWriter::Close() { return mz_zip_writer_close(internalPointer_); }
 void ArchiveWriter::Delete() { mz_zip_writer_delete(&internalPointer_); }
 
-int32_t ArchiveWriter::AddFilesInArchive(
-    const FileBufferVector& FilesBufferToAdd) {
-  for (const auto& FileBufferToAdd : FilesBufferToAdd) {
-    AddFileInArchive(FileBufferToAdd);
-  }
-  return MZ_OK;
-}
-
 int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
   mz_zip_file file_info = {0};
   file_info.compression_method = MZ_COMPRESS_METHOD_DEFLATE;
