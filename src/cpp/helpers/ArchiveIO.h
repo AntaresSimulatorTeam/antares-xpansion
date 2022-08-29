@@ -15,16 +15,16 @@ class ArchiveIOGeneralException : public std::runtime_error {
   ArchiveIOGeneralException(int32_t status, const std::string& action,
                             int32_t expectedStatus = MZ_OK)
       : std::runtime_error("Failed to " + action +
-                           "\ninvalid status:" + std::to_string(status) + " (" +
+                           " invalid status: " + std::to_string(status) + " (" +
                            std::to_string(expectedStatus) + " expected)") {}
 };
 class ArchiveIOSpecificException : public std::runtime_error {
  public:
   ArchiveIOSpecificException(int32_t status, const std::string& errMessage,
                              int32_t expectedStatus = MZ_OK)
-      : std::runtime_error(errMessage +
-                           "\ninvalid status:" + std::to_string(status) + " (" +
-                           std::to_string(expectedStatus) + " expected)") {}
+      : std::runtime_error(
+            errMessage + "\ninvalid status: " + std::to_string(status) + " (" +
+            std::to_string(expectedStatus) + " expected)") {}
 };
 #include <filesystem>
 class ArchiveIO {

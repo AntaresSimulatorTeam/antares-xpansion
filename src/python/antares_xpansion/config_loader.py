@@ -30,10 +30,6 @@ class NTCColumnConstraintError(Exception):
     pass
 
 
-class ZipStuDyError(Exception):
-    pass
-
-
 def read_antares_version(study_path):
     matcher = re.compile(r"(version = )(\d+)")
     with open(Path(study_path) / "study.antares") as antares_file:
@@ -521,12 +517,9 @@ class ConfigLoader:
                 os.path.join(self.antares_output(), x)),
         )
         last_dir_path = Path(self.antares_output()) / list_of_dirs[-1]
-        # returned_l = subprocess.run(
-        #     ["python", "-m", "zipfile", "-c", str(last_dir_path)+".zip", str(last_dir_path)+"/*"], shell=False)
         shutil.make_archive(str(last_dir_path), "zip", last_dir_path)
 
         shutil.rmtree(last_dir_path, ignore_errors=True)
-        # raise ZipStuDyError(f"Could not Zip study: {last_dir_path}")
 
     def is_accurate(self):
         """

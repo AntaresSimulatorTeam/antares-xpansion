@@ -41,18 +41,24 @@ class ArchiveReaderTest : public ::testing::Test {
 
 TEST_F(ArchiveReaderTest, ShouldFailIfInvalidFileIsGiven) {
   std::stringstream expectedErrorString;
-  expectedErrorString << "Could not Open Archive: "
-                      << invalid_file_path.string() << std::endl;
+  expectedErrorString << "Failed to Open Archive: "
+                      << invalid_file_path.string() << std::endl
+                      << " invalid status: " + std::to_string(MZ_OPEN_ERROR) +
+                             " (" + std::to_string(MZ_OK) + " expected)";
 
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
-  auto fileExt = ArchiveReader(invalid_file_path);
-  ASSERT_EQ(fileExt.Open(), MZ_OPEN_ERROR);
-  ASSERT_EQ(fileExt.Close(), MZ_OK);
-  fileExt.Delete();
-  std::cerr.rdbuf(initialBufferCerr);
-  ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString.str());
+  try {
+    auto fileExt = ArchiveReader(invalid_file_path);
+  } catch (const ArchiveIOGeneralException& e) {
+    EXPECT_EQ(e.what(), expectedErrorString.str());
+  }
+  // ASSERT_EQ(fileExt.Open(), MZ_OPEN_ERROR);
+  // ASSERT_EQ(fileExt.Close(), MZ_OK);
+  // fileExt.Delete();
+  // std::cerr.rdbuf(initialBufferCerr);
+  // ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString.str());
 }
 bool equal_files(const std::filesystem::path& a,
                  const std::filesystem::path& b) {
