@@ -93,4 +93,4 @@ class OptimisationKeys:
 
     @staticmethod
     def separation_key():
-        return "SEPARATION_PARAMETER"
+        return "SEPARATION_PARAM"
