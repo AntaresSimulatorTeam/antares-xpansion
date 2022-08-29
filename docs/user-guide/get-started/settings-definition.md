@@ -24,6 +24,7 @@ The following section lists the configurable parameters. If the user does not sp
 |[`solver`](#solver) | `Cbc` | Name of the solver |
 |[`log_level`](#log_level) | `0` | Solver's log level |
 |[`additional-constraints`](#additional-constraints) | `None` | Path of the additional constraints file |
+|[`separation_parameter`](#separation_parameter) | `1` | Step size for the in-out separation |
 |[`initial_master_relaxation`](#initial_master_relaxation) | `false` | Relax master problem in the first iterations |
 |[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-4` | Threshold to switch from relaxed to integer master |
 
@@ -245,6 +246,14 @@ time, but it can invest in neither.
 ![](../../assets/media/image19.png)
 
 **Figure 13** – Example of an additional constraint file.
+
+#### `separation_parameter`
+
+Float in \\([0,1]\\). Default value: `1`. 
+
+Defines the step size for the in-out separation. If \\(x_{in}\\) is the current best feasible solution and \\(x_{out}\\) is the master solution at the current iteration, the investment in the subproblems is set to 
+
+$$ x_{cut} = \texttt{separation_parameter} * x_{out} + (1 - \texttt{separation_parameter}) * x_{in} .$$
 
 #### `initial_master_relaxation`
 
