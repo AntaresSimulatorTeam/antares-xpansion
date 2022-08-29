@@ -49,8 +49,8 @@ class StudyOutputCleaner:
         remove_files_containing_str_from_dir('.mps', lp_dir)
         rename_master(tmp_master_path, master_path)
 
-        remove_files_containing_str_from_dir('.lp', study_output)
-        remove_files_containing_str_from_dir(".zip", study_output)
+        remove_files_containing_str_from_dir('.lp', lp_dir)
+        remove_files_containing_str_from_dir(".zip", lp_dir)
 
     @staticmethod
     def clean_study_update_step(study_output: Path):
