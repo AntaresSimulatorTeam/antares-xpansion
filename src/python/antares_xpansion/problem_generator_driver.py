@@ -200,8 +200,8 @@ class ProblemGeneratorDriver:
                 self.user_weights_file_path, len(self.active_years))
             weight_list = XpansionStudyReader.get_years_weight_from_file(
                 self.user_weights_file_path)
-            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name_for_lp,
-                                                                          self.active_years)
+            YearlyWeightWriter(Path(self.xpansion_output_dir), self.output_path).create_weight_file(weight_list, self.weight_file_name_for_lp,
+                                                                                                    self.active_years)
 
     def get_lp_namer_log_filename(self):
         if not self._lp_path:
