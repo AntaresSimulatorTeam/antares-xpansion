@@ -15,7 +15,7 @@
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
 const std::string MPS_TXT{"mps.txt"};
-const std::string MPS_ZIP_FILE{"MPS_ZIP.zip"};
+const std::string MPS_ZIP_FILE{"MPS_ZIP_File.zip"};
 const std::string STUDY_FILE{"study.antares"};
 typedef std::pair<std::string, std::filesystem::path>
     CandidateNameAndMpsFilePath;

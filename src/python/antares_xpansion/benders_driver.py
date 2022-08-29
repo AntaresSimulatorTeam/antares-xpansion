@@ -59,6 +59,7 @@ class BendersDriver:
             raise BendersDriver.BendersExecutionError(
                 f"ERROR: exited solver with status {ret.returncode}"
             )
+        #assert False
         elif not keep_mps:
             StudyOutputCleaner.clean_benders_step(self.simulation_output_path)
         os.chdir(old_cwd)
