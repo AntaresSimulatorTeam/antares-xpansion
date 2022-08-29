@@ -27,6 +27,8 @@ int32_t ArchiveWriter::Open() {
       mz_zip_writer_open_file(internalPointer_, ArchivePath().string().c_str(),
                               0 /* disk-spanning disabled */, 1 /* append */);
   if (err != MZ_OK) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "Open Archive: " << ArchivePath().string() << std::endl;
     throw ArchiveIOGeneralException(err, errMsg.str());
@@ -41,6 +43,8 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
   fileInfo_.creation_date = std::time(0);
   int32_t err = mz_zip_writer_entry_open(internalPointer_, &fileInfo_);
   if (err != MZ_OK) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "Open entry: " << FileBufferToAdd.fname
            << " in archive: " << ArchivePath().string() << std::endl;
@@ -50,6 +54,8 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
   auto bw = mz_zip_writer_entry_write(internalPointer_,
                                       FileBufferToAdd.buffer.c_str(), len);
   if (bw != len) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "[KO] mz_zip_writer_entry_write, expected " << len
            << "data to be read got" << bw << std::endl;
@@ -57,6 +63,8 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
   }
   err = mz_zip_writer_entry_close(internalPointer_);
   if (MZ_OK != err) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "[KO] mz_zip_writer_entry_close error: could not close entry: "
            << FileBufferToAdd.fname << std::endl;
@@ -71,6 +79,8 @@ int32_t ArchiveWriter::AddFileInArchive(
       mz_zip_writer_add_file(internalPointer_, FileToAdd.string().c_str(),
                              FileToAdd.filename().string().c_str());
   if (err != MZ_OK) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "[KO] mz_zip_writer_add_file: Failed to add file: " << FileToAdd
            << " in archive: " << ArchivePath().string() << std::endl;

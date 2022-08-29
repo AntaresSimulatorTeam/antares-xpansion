@@ -14,6 +14,8 @@ int32_t ArchiveReader::Open() {
   const auto err =
       mz_zip_reader_open_file(internalPointer_, ArchivePath().string().c_str());
   if (err != MZ_OK) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "Open Archive: " << ArchivePath().string() << std::endl;
     throw ArchiveIOGeneralException(err, errMsg.str());
@@ -36,21 +38,22 @@ int32_t ArchiveReader::ExtractFile(
   LocateEntry(fileToExtractPath);
   OpenEntry(fileToExtractPath);
 
+  std::filesystem::path targetFile(destination);
   if (std::filesystem::is_directory(destination)) {
-    auto targetFile = destination / fileToExtractPath.filename();
-    auto bytes_read = mz_zip_reader_entry_save_file(
-        internalPointer_, targetFile.string().c_str());
-  } else {
-    auto bytes_read = mz_zip_reader_entry_save_file(
-        internalPointer_, destination.string().c_str());
+    targetFile = destination / fileToExtractPath.filename();
   }
+  err = mz_zip_reader_entry_save_file(internalPointer_,
+                                      targetFile.string().c_str());
   mz_zip_reader_entry_close(internalPointer_);
+  return err;
 }
 void ArchiveReader::LocateEntry(
     const std::filesystem::path& fileToExtractPath) {
   auto err = mz_zip_reader_locate_entry(internalPointer_,
                                         fileToExtractPath.string().c_str(), 1);
   if (err != MZ_OK) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "File : " << fileToExtractPath.string().c_str()
            << " is not found in archive :" << ArchivePath().c_str()
@@ -61,6 +64,8 @@ void ArchiveReader::LocateEntry(
 void ArchiveReader::OpenEntry(const std::filesystem::path& fileToExtractPath) {
   auto err = mz_zip_reader_entry_open(internalPointer_);
   if (err != MZ_OK) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "open " << fileToExtractPath.string()
            << " in archive :" << ArchivePath().string() << std::endl;
@@ -75,6 +80,8 @@ std::istringstream ArchiveReader::ExtractFileInStringStream(
   std::vector<char> buf(len);
   auto err = mz_zip_reader_entry_save_buffer(internalPointer_, buf.data(), len);
   if (err != MZ_OK) {
+    Close();
+    Delete();
     std::stringstream errMsg;
     errMsg << "Extract file " << FileToExtractPath.string()
            << "in archive: " << ArchivePath().string() << std::endl;
