@@ -16,6 +16,7 @@ message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 # --------------------------------------------------------------------------
 # unit tests
 # --------------------------------------------------------------------------
+add_subdirectory(tests_utils)
 add_subdirectory(solvers_interface)
 add_subdirectory(logger)
 add_subdirectory(json_output_writer)
