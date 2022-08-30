@@ -1,4 +1,4 @@
-name: Windows build (precompiled dependencies)
+name: Windows build
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Ubuntu CI (also build dependencies)
+name: Ubuntu CI full build
 
 on:
   push:

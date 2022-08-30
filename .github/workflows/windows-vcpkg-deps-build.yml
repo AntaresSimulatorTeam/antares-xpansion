@@ -1,4 +1,4 @@
-name: Windows CI (build dependencies)
+name: Windows CI full build
 
 on:
   push:

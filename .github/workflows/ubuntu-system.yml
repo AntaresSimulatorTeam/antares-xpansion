@@ -1,4 +1,4 @@
-name: Ubuntu CI (precompiled dependencies)
+name: Ubuntu CI
 
 on:
   push:
