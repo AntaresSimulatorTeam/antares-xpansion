@@ -71,6 +71,7 @@ void BendersMpi::step_1_solve_master() {
 void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
   if (_world.rank() == rank_0) {
     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+      _logger->log_at_switch_to_integer();
       activate_integrity_constraints();
       reset_data_post_relaxation();
     }
@@ -92,10 +93,11 @@ void BendersMpi::solve_master_and_create_trace() {
   _logger->display_message("\tSolving master...");
   get_master_value();
   _logger->log_master_solving_duration(get_timer_master());
+
+  compute_x_cut();
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
   push_in_trace(std::make_shared<WorkerMasterData>());
-  compute_x_cut();
 }
 
 /*!
@@ -222,6 +224,7 @@ void BendersMpi::run() {
     set_cut_storage();
 
     if (is_initial_relaxation_requested()) {
+      _logger->log_at_initial_relaxation();
       deactivate_integrity_constraints();
       set_data_pre_relaxation();
     }
