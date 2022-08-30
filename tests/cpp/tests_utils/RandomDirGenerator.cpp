@@ -24,8 +24,14 @@ std::string GenerateRandomString(size_t len) {
   }
   return ret;
 }
-std::filesystem::path createRandomSubDir(
+std::filesystem::path GetRandomSubDirPath(
     const std::filesystem::path& parentDir) {
   return parentDir /
          (timeToStr(std::time(nullptr)) + "-" + GenerateRandomString(6));
+}
+std::filesystem::path CreateRandomSubDir(
+    const std::filesystem::path& parentDir) {
+  const auto subDirPath = GetRandomSubDirPath(parentDir);
+  std::filesystem::create_directory(subDirPath);
+  return subDirPath;
 }

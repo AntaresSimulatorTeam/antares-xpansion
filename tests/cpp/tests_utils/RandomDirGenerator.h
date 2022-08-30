@@ -8,6 +8,8 @@
 std::string timeToStr(const std::time_t& time_p);
 
 std::string GenerateRandomString(size_t len);
-std::filesystem::path createRandomSubDir(
+std::filesystem::path CreateRandomSubDir(
+    const std::filesystem::path& parentDir);
+std::filesystem::path GetRandomSubDirPath(
     const std::filesystem::path& parentDir);
 #endif  //__RANDOMDIRGENERATOR_H_
