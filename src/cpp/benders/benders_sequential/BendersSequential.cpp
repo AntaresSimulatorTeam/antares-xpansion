@@ -101,9 +101,8 @@ void BendersSequential::run() {
     get_master_value();
     _logger->log_master_solving_duration(get_timer_master());
 
-    _logger->log_iteration_candidates(bendersDataToLogData(_data));
-
     compute_x_cut();
+    _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
     push_in_trace(std::make_shared<WorkerMasterData>());
 

@@ -256,6 +256,7 @@ void BendersBase::reset_data_post_relaxation() {
   _data.is_in_initial_relaxation = false;
   _data.best_ub = 1e+20;
   _data.best_it = 0;
+  _options.SEPARATION_PARAM = 1;
 }
 
 /*!
