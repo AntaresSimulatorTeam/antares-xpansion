@@ -7,7 +7,8 @@ target_link_libraries(benders_sequential_test
         benders_core
         output_core
         logger_lib
-        GTest::Main)
+        GTest::Main
+        tests_utils)
 
 target_include_directories(benders_sequential_test
         PRIVATE

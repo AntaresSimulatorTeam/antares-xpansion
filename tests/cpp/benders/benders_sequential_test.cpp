@@ -1,7 +1,9 @@
 #include <algorithm>
 
+#include "ArchiveWriter.h"
 #include "BendersSequential.h"
 #include "JsonWriter.h"
+#include "RandomDirGenerator.h"
 #include "LoggerStub.h"
 #include "gtest/gtest.h"
 
@@ -116,6 +118,9 @@ class BendersSequentialTest : public ::testing::Test {
   Logger logger;
   Writer writer;
   const std::filesystem::path data_test_dir = "data_test";
+  const std::filesystem::path mps_dir = data_test_dir / "mps";
+  std::filesystem::path tmpDir;
+  const std::string MPS_ZIP_FILE = "MPS_ZIP_FILE.zip";
 
  protected:
   void SetUp() override {
@@ -123,7 +128,17 @@ class BendersSequentialTest : public ::testing::Test {
     writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                   std::tmpnam(nullptr));
   }
-
+  void zip_mps() {
+    tmpDir = createRandomSubDir(std::filesystem::temp_directory_path());
+    auto zip_writer = ArchiveWriter(tmpDir / MPS_ZIP_FILE);
+    zip_writer.Open();
+    // std::filesystem::copy(mps_dir, tmpDir);
+    for (const auto &file : std::filesystem::directory_iterator(mps_dir)) {
+      zip_writer.AddFileInArchive(file.path());
+    }
+    zip_writer.Close();
+    zip_writer.Delete();
+  }
   BaseOptions init_base_options() const {
     BaseOptions base_options;
 
@@ -133,10 +148,11 @@ class BendersSequentialTest : public ::testing::Test {
     base_options.SLAVE_WEIGHT = "CONSTANT";
     base_options.MASTER_NAME = "mip_toy_prob";
     base_options.STRUCTURE_FILE = "my_structure.txt";
-    base_options.INPUTROOT = (data_test_dir / "mps").string();
+    base_options.INPUTROOT = tmpDir.string();
     base_options.SOLVER_NAME = "COIN";
     base_options.weights = {};
     base_options.RESUME = false;
+    base_options.MPS_ZIP_FILE = MPS_ZIP_FILE;
 
     return base_options;
   }
@@ -188,6 +204,7 @@ class BendersSequentialTest : public ::testing::Test {
 };
 
 TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
+  zip_mps();
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double relaxed_gap = 1e-2;
