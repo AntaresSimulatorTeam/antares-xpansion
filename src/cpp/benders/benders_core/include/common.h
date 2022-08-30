@@ -146,7 +146,6 @@ struct BendersBaseOptions : public BaseOptions {
   double TIME_LIMIT = 0;
   double SEPARATION_PARAM = 1;
 
-  bool INITIAL_MASTER_RELAXATION = false;
   bool AGGREGATION = false;
   bool TRACE = false;
   bool BOUND_ALPHA = false;

@@ -20,10 +20,6 @@ class OptimisationKeys:
         return "MASTER_FORMULATION"
 
     @staticmethod
-    def initial_master_relaxation_key():
-        return "INITIAL_MASTER_RELAXATION"
-
-    @staticmethod
     def aggregation_key():
         return "AGGREGATION"
 

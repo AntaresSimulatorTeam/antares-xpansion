@@ -155,7 +155,6 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
     std::exit(1);
   }
 
-  result.INITIAL_MASTER_RELAXATION = INITIAL_MASTER_RELAXATION;
   result.AGGREGATION = AGGREGATION;
   result.TRACE = TRACE;
   result.BOUND_ALPHA = BOUND_ALPHA;

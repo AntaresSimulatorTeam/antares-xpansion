@@ -130,7 +130,6 @@ class BendersSequentialTest : public ::testing::Test {
 
     options.MASTER_FORMULATION = master_formulation;
 
-    options.INITIAL_MASTER_RELAXATION = true;
     options.AGGREGATION = false;
     options.TRACE = false;
     options.BOUND_ALPHA = true;
@@ -161,7 +160,7 @@ class BendersSequentialTest : public ::testing::Test {
   }
 };
 
-TEST_F(BendersSequentialTest, MasterRelaxedAtBeginning) {
+TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double sep_param = 1;
@@ -174,26 +173,31 @@ TEST_F(BendersSequentialTest, MasterRelaxedAtBeginning) {
   std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
   ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
-                          [](char element) { return element == 'C'; }));
+                          [](char element) { return element == 'I'; }));
+  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, false);
 }
 
-TEST_F(BendersSequentialTest, CheckDataPreRelaxation) {
+TEST_F(BendersSequentialTest, MasterRelaxedWhenSepLowerThanOne) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
-  double sep_param = 1;
+  double sep_param = 0.7;
   BendersSequentialDouble benders =
       init_benders_sequential(master_formulation, max_iter, sep_param);
 
   benders.set_data(true, 0);
   benders.launch();
 
+  std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
+
+  ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
+                          [](char element) { return element == 'C'; }));
   ASSERT_EQ(benders.get_data().is_in_initial_relaxation, true);
 }
 
 TEST_F(BendersSequentialTest, ReactivateIntegrityConstraint) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
-  double sep_param = 1;
+  double sep_param = 0.7;
   BendersSequentialDouble benders =
       init_benders_sequential(master_formulation, max_iter, sep_param);
 
@@ -210,7 +214,7 @@ TEST_F(BendersSequentialTest, ReactivateIntegrityConstraint) {
 TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
-  double sep_param = 1;
+  double sep_param = 0.7;
   BendersSequentialDouble benders =
       init_benders_sequential(master_formulation, max_iter, sep_param);
 

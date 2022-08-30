@@ -19,9 +19,6 @@ BENDERS_OPTIONS_MACRO(SEPARATION_PARAM, double, 1, asDouble())
 // Formulation of the master problem
 BENDERS_OPTIONS_MACRO(MASTER_FORMULATION, std::string, "integer", asString())
 
-// True if master relaxation until RELAXED_GAP is reached
-BENDERS_OPTIONS_MACRO(INITIAL_MASTER_RELAXATION, bool, false, asBool())
-
 // True if cuts need to be aggregated, false otherwise
 BENDERS_OPTIONS_MACRO(AGGREGATION, bool, false, asBool())
 

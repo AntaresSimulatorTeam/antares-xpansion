@@ -239,8 +239,7 @@ void BendersBase::update_trace() {
 
 bool BendersBase::is_initial_relaxation_requested() const {
   return (_options.MASTER_FORMULATION == MasterFormulation::INTEGER &&
-           (_options.INITIAL_MASTER_RELAXATION ||
-          _options.SEPARATION_PARAM < 1));
+          _options.SEPARATION_PARAM < 1);
 }
 
 bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
