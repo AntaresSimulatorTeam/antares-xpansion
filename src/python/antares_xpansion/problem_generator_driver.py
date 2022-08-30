@@ -216,7 +216,7 @@ class ProblemGeneratorDriver:
             raise ProblemGeneratorDriver.LPNamerExeError(
                 f"LP namer exe: {self.lp_namer_exe_path} not found")
 
-        return [self.lp_namer_exe_path, "-o", str(self.xpansion_output_dir), "-f", is_relaxed, "-e",
+        return [self.lp_namer_exe_path, "-o", str(self.xpansion_output_dir), "-a", self.output_path, "-f", is_relaxed, "-e",
                 self.additional_constraints]
 
     output_path = property(get_output_path, set_output_path)

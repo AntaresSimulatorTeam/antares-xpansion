@@ -126,17 +126,20 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
  * \return void
  */
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
+                                      const std::filesystem::path &archivePath,
                                       Couplings &couplings) {
   auto const mps_file_name = root / MPS_TXT;
   lpDir_ = root / "lp";
   // const auto archivePath = lpDir_ / MPS_ZIP_FILE;
-  const auto root_dir_name = root.filename().string();
-  std::size_t pos = root_dir_name.find("-Xpansion");
-  const auto archivePath =
-      root.parent_path() / (root_dir_name.substr(0, pos) + ".zip");
+  // const auto root_dir_name = root.filename().string();
+  // std::size_t pos = root_dir_name.find("-Xpansion");
+  // const auto archivePath =
+  //     root.parent_path() / (root_dir_name.substr(0, pos) + ".zip");
   auto reader = ArchiveReader(archivePath);
   reader.Open();
-  auto writer = ArchiveWriter(lpDir_ / "MPS_ZIP_FILE.zip");
+  const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
+  const auto tmpArchivePath = lpDir_ / tmpArchiveName;
+  auto writer = ArchiveWriter(tmpArchivePath);
   writer.Open();
   auto mpsList = readMPSList(mps_file_name);
   std::for_each(std::execution::seq, mpsList.begin(), mpsList.end(), [&](const auto& mps) {
@@ -145,6 +148,7 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
   reader.Close();
   reader.Delete();
   std::filesystem::remove(archivePath);
+  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
   writer.Close();
   writer.Delete();
 }
