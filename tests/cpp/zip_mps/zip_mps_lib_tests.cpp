@@ -47,19 +47,11 @@ TEST_F(ArchiveReaderTest, ShouldFailIfInvalidFileIsGiven) {
                       << " invalid status: " + std::to_string(MZ_OPEN_ERROR) +
                              " (" + std::to_string(MZ_OK) + " expected)";
 
-  std::stringstream redirectedErrorStream;
-  std::streambuf* initialBufferCerr =
-      std::cerr.rdbuf(redirectedErrorStream.rdbuf());
   try {
     auto fileExt = ArchiveReader(invalid_file_path);
   } catch (const ArchiveIOGeneralException& e) {
     EXPECT_EQ(e.what(), expectedErrorString.str());
   }
-  // ASSERT_EQ(fileExt.Open(), MZ_OPEN_ERROR);
-  // ASSERT_EQ(fileExt.Close(), MZ_OK);
-  // fileExt.Delete();
-  // std::cerr.rdbuf(initialBufferCerr);
-  // ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString.str());
 }
 bool equal_files(const std::filesystem::path& a,
                  const std::filesystem::path& b) {
@@ -122,13 +114,10 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   mz_zip_reader_delete(&reader);
 }
 TEST_F(ArchiveWriterTest, ShouldCreateArchiveWithVecBuffer) {
-  const testing::TestInfo* const test_info =
-      testing::UnitTest::GetInstance()->current_test_info();
-  const auto tmpArhiveRoot =
-      std::filesystem::temp_directory_path() / test_info->test_case_name();
-  std::filesystem::create_directory(tmpArhiveRoot);
-  const auto tmpDir = CreateRandomSubDir(tmpArhiveRoot);
-  std::string archiveName = test_info->name();
+  const auto tmpArchiveRoot = std::filesystem::temp_directory_path();
+  const auto tmpDir =
+      CreateRandomSubDir(std::filesystem::temp_directory_path());
+  std::string archiveName = GenerateRandomString(6);
   archiveName += ".zip";
   const auto archivePath = tmpDir / archiveName;
   ArchiveWriter writer(archivePath);
