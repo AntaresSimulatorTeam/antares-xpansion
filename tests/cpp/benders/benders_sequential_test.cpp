@@ -116,15 +116,15 @@ class BendersSequentialTest : public ::testing::Test {
   }
 
   BendersBaseOptions init_benders_options(MasterFormulation master_formulation,
-                                          int max_iter,
+                                          int max_iter, double relaxed_gap,
                                           double sep_param) const {
     BaseOptions base_options(init_base_options());
     BendersBaseOptions options(base_options);
 
     options.MAX_ITERATIONS = max_iter;
     options.ABSOLUTE_GAP = 1e-4;
-    options.RELATIVE_GAP = 1e-4;
-    options.RELAXED_GAP = 1e-2;
+    options.RELATIVE_GAP = 1e-6;
+    options.RELAXED_GAP = relaxed_gap;
     options.TIME_LIMIT = 10;
     options.SEPARATION_PARAM = sep_param;
 
@@ -142,9 +142,10 @@ class BendersSequentialTest : public ::testing::Test {
   }
 
   BendersSequentialDouble init_benders_sequential(
-      MasterFormulation master_formulation, int max_iter, double sep_param) {
-    BendersBaseOptions options =
-        init_benders_options(master_formulation, max_iter, sep_param);
+      MasterFormulation master_formulation, int max_iter, double relaxed_gap,
+      double sep_param) {
+    BendersBaseOptions options = init_benders_options(
+        master_formulation, max_iter, relaxed_gap, sep_param);
     return BendersSequentialDouble(options, logger, writer);
   }
 
@@ -163,9 +164,10 @@ class BendersSequentialTest : public ::testing::Test {
 TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
+  double relaxed_gap = 1e-2;
   double sep_param = 1;
-  BendersSequentialDouble benders =
-      init_benders_sequential(master_formulation, max_iter, sep_param);
+  BendersSequentialDouble benders = init_benders_sequential(
+      master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(true, 0);
   benders.launch();
@@ -180,9 +182,10 @@ TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
 TEST_F(BendersSequentialTest, MasterRelaxedWhenSepLowerThanOne) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
+  double relaxed_gap = 1e-2;
   double sep_param = 0.7;
-  BendersSequentialDouble benders =
-      init_benders_sequential(master_formulation, max_iter, sep_param);
+  BendersSequentialDouble benders = init_benders_sequential(
+      master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(true, 0);
   benders.launch();
@@ -194,12 +197,13 @@ TEST_F(BendersSequentialTest, MasterRelaxedWhenSepLowerThanOne) {
   ASSERT_EQ(benders.get_data().is_in_initial_relaxation, true);
 }
 
-TEST_F(BendersSequentialTest, ReactivateIntegrityConstraint) {
+TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
+  double relaxed_gap = 1e-2;
   double sep_param = 0.7;
-  BendersSequentialDouble benders =
-      init_benders_sequential(master_formulation, max_iter, sep_param);
+  BendersSequentialDouble benders = init_benders_sequential(
+      master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(1000, 1001);
@@ -209,14 +213,35 @@ TEST_F(BendersSequentialTest, ReactivateIntegrityConstraint) {
 
   ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
                           [](char element) { return element == 'I'; }));
+  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, false);
+}
+
+TEST_F(BendersSequentialTest, DoNotReactivateIntConstraintAsGapNotReached) {
+  MasterFormulation master_formulation = MasterFormulation::INTEGER;
+  int max_iter = 1;
+  double relaxed_gap = 1e-5;
+  double sep_param = 0.7;
+  BendersSequentialDouble benders = init_benders_sequential(
+      master_formulation, max_iter, relaxed_gap, sep_param);
+
+  benders.set_data(false, 0);
+  benders.set_bounds(1000, 1001);
+  benders.launch();
+
+  std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
+
+  ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
+                          [](char element) { return element == 'C'; }));
+  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, true);
 }
 
 TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
+  double relaxed_gap = 1e-2;
   double sep_param = 0.7;
-  BendersSequentialDouble benders =
-      init_benders_sequential(master_formulation, max_iter, sep_param);
+  BendersSequentialDouble benders = init_benders_sequential(
+      master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(1000, 1001);
@@ -230,6 +255,7 @@ TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
 TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
   MasterFormulation master_formulation = MasterFormulation::RELAXED;
   double sep_param = 0.8;
+  double relaxed_gap = 1e-2;
   int current_it = 4;
   int max_iter = current_it + 1;
 
@@ -240,8 +266,8 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
   Point x_out = {{"x1", 1}, {"x2", 2}};
   Point x_in = {{"x1", 3}, {"x2", 6}};
 
-  BendersSequentialDouble benders =
-      init_benders_sequential(master_formulation, max_iter, sep_param);
+  BendersSequentialDouble benders = init_benders_sequential(
+      master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(init_lb, init_ub);
@@ -266,6 +292,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   MasterFormulation master_formulation = MasterFormulation::RELAXED;
+  double relaxed_gap = 1e-2;
   double sep_param = 0.8;
   int current_it = 4;
   int max_iter = current_it + 1;
@@ -277,8 +304,8 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   Point x_out = {{"x1", 1}, {"x2", 2}};
   Point x_in = {{"x1", 3}, {"x2", 6}};
 
-  BendersSequentialDouble benders =
-      init_benders_sequential(master_formulation, max_iter, sep_param);
+  BendersSequentialDouble benders = init_benders_sequential(
+      master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(init_lb, init_ub);
