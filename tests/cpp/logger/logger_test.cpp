@@ -513,6 +513,13 @@ TEST_F(UserLoggerTest, LogTotalDuration) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
+TEST_F(UserLoggerTest, LogAtInitialRelaxation) {
+  std::stringstream expected;
+  expected << "--- Switch master formulation to relaxed" << std::endl;
+  _logger.log_at_initial_relaxation();
+  ASSERT_EQ(_stream.str(), expected.str());
+}
+
 TEST_F(UserLoggerTest, LogAtSwitchInteger) {
   std::stringstream expected;
   expected << "--- Relaxed gap reached, switch master formulation to integer"
@@ -529,6 +536,7 @@ class SimpleLoggerMock : public ILogger {
     _iterationEndCall = false;
     _endingCall = false;
     _switchToIntegerCall = false;
+    _initialRelaxationCall = false;
 
     _stopping_criterion = StoppingCriterion::empty;
 
@@ -582,6 +590,8 @@ class SimpleLoggerMock : public ILogger {
     //
   }
 
+  void log_at_initial_relaxation() { _initialRelaxationCall = true; }
+
   void log_at_switch_to_integer() { _switchToIntegerCall = true; }
 
   bool _initCall;
@@ -589,6 +599,7 @@ class SimpleLoggerMock : public ILogger {
   bool _iterationEndCall;
   bool _endingCall;
   bool _switchToIntegerCall;
+  bool _initialRelaxationCall;
   StoppingCriterion _stopping_criterion;
 
   std::string _displaymessage;
@@ -672,6 +683,12 @@ TEST_F(MasterLoggerTest, LogStoppingCriterion) {
   _master.log_stop_criterion_reached(criterion);
   ASSERT_EQ(_logger->_stopping_criterion, StoppingCriterion::absolute_gap);
   ASSERT_EQ(_logger2->_stopping_criterion, StoppingCriterion::absolute_gap);
+}
+
+TEST_F(MasterLoggerTest, LogAtInitialRelaxation) {
+  _master.log_at_initial_relaxation();
+  ASSERT_TRUE(_logger->_initialRelaxationCall);
+  ASSERT_TRUE(_logger2->_initialRelaxationCall);
 }
 
 TEST_F(MasterLoggerTest, LogSwitchToInteger) {

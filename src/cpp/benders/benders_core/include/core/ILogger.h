@@ -67,7 +67,8 @@ struct LogData {
     return lb == lhs.lb && best_ub == lhs.best_ub && ub == lhs.ub &&
            it == lhs.it && best_it == lhs.best_it &&
            subproblem_cost == lhs.subproblem_cost &&
-           invest_cost == lhs.invest_cost && x_in == lhs.x_in && x_out == lhs.x_out && x_cut == lhs.x_cut &&
+           invest_cost == lhs.invest_cost && x_in == lhs.x_in &&
+           x_out == lhs.x_out && x_cut == lhs.x_cut &&
            min_invest == lhs.min_invest && max_invest == lhs.max_invest &&
            optimality_gap == lhs.optimality_gap &&
            relative_gap == lhs.relative_gap &&
@@ -128,6 +129,7 @@ class ILogger {
   virtual void restart_best_iteration(const int best_iterations) = 0;
   virtual void restart_best_iterations_infos(
       const LogData &best_iterations_data) = 0;
+  virtual void log_at_initial_relaxation() = 0;
   virtual void log_at_switch_to_integer() = 0;
 };
 

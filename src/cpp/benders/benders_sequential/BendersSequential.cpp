@@ -81,6 +81,7 @@ void BendersSequential::run() {
   }
 
   if (is_initial_relaxation_requested()) {
+    _logger->log_at_initial_relaxation();
     deactivate_integrity_constraints();
     set_data_pre_relaxation();
   }
