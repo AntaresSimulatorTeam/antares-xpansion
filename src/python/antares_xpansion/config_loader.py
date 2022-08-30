@@ -55,6 +55,7 @@ class ConfigLoader:
         self.platform = sys.platform
         self._INFO_MSG = "<< INFO >>"
         self._config = config
+        self._last_zip = None
         if self._config.step == "resume":
             self._config.simulation_name = (
                 LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
@@ -340,7 +341,9 @@ class ConfigLoader:
         return self.xpansion_simulation_output() / "lp"
 
     def xpansion_simulation_output(self):
-        return self.simulation_output_path().parent/(self.simulation_output_path().stem+"-Xpansion")
+        if self._simulation_name == "last":
+            self._set_last_simulation_name()
+        return self._simulation_name
 
     def _verify_additional_constraints_file(self):
         if self.options.get("additional-constraints", "") != "":
@@ -372,10 +375,8 @@ class ConfigLoader:
     def simulation_output_path(self) -> Path:
         if self._simulation_name == "last":
             self._set_last_simulation_name()
-        return Path(
-            os.path.normpath(os.path.join(
-                self.antares_output(), self._simulation_name))
-        )
+
+        return self._last_zip
 
     def benders_pre_actions(self):
         self.save_launcher_options()
@@ -488,38 +489,48 @@ class ConfigLoader:
         """
         return last simulation name
         """
-        # TODO temp function to zip study output -- for now antares does not provide archive output
-        self.zip_last_study()
-        # Get list of all dirs only in the given directory
-        list_of_zip_filter = Path(self.antares_output()).glob("*.zip")
+        last_dir_path = self.get_last_modified_dir(self.antares_output())
 
-        # Sort list of files based on last modification time in ascending order
-        list_of_zip = sorted(
-            list_of_zip_filter,
-            key=lambda x: os.path.getmtime(
-                os.path.join(self.antares_output(), x)),
-        )
-        self._simulation_name = list_of_zip[-1]
+        if self.step() == "resume":
+            self._simulation_name = last_dir_path
+        else:
+            # TODO temp function to zip study output -- for now antares does not provide archive output
+            self.zip_last_study(last_dir_path)
+            # Get list of all dirs only in the given directory
+            list_of_zip_filter = Path(self.antares_output()).glob("*.zip")
 
-    def zip_last_study(self):
+            # Sort list of files based on last modification time in ascending order
+            list_of_zip = sorted(
+                list_of_zip_filter,
+                key=lambda x: os.path.getmtime(
+                    os.path.join(self.antares_output(), x)),
+            )
+            self._last_zip = list_of_zip[-1]
+            self._simulation_name = self._last_zip.parent / \
+                (self._last_zip.stem+"-Xpansion")
+
+    def zip_last_study(self, last_dir_path):
         """
-        zip last simulation
+        zip last simulation and delete it
         """
         # Get list of all dirs only in the given directory
+        shutil.make_archive(str(last_dir_path), "zip", last_dir_path)
+
+        shutil.rmtree(last_dir_path, ignore_errors=True)
+
+    def get_last_modified_dir(self, root_dir):
         list_of_dirs_filter = filter(
-            lambda x: os.path.isdir(os.path.join(self.antares_output(), x)),
-            os.listdir(self.antares_output()),
+            lambda x: os.path.isdir(os.path.join(root_dir, x)),
+            os.listdir(root_dir),
         )
         # Sort list of files based on last modification time in ascending order
         list_of_dirs = sorted(
             list_of_dirs_filter,
             key=lambda x: os.path.getmtime(
-                os.path.join(self.antares_output(), x)),
+                os.path.join(root_dir, x)),
         )
-        last_dir_path = Path(self.antares_output()) / list_of_dirs[-1]
-        shutil.make_archive(str(last_dir_path), "zip", last_dir_path)
-
-        shutil.rmtree(last_dir_path, ignore_errors=True)
+        last_dir_path = Path(root_dir) / list_of_dirs[-1]
+        return last_dir_path
 
     def is_accurate(self):
         """
