@@ -147,8 +147,8 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
   });
   reader.Close();
   reader.Delete();
-  std::filesystem::remove(archivePath);
-  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
   writer.Close();
   writer.Delete();
+  std::filesystem::remove(archivePath);
+  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
 }
