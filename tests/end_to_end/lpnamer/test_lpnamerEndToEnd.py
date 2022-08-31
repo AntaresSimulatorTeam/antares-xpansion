@@ -59,7 +59,6 @@ def setup_and_teardown_lp_directory(request):
             write_mps_zip.write(
                 file, file.name, compress_type=zipfile.ZIP_DEFLATED)
     yield
-    # shutil.rmtree(lp_dir)
 
 
 @ pytest.mark.parametrize("test_dir,master_mode", test_data)
@@ -87,12 +86,9 @@ def launch_and_compare_lp_with_reference(install_dir, master_mode, test_dir):
     returned_l = subprocess.run(launch_command, shell=False)
     # then
     os.chdir(old_path)
-    # extract mps and delete zip in lp
-    # ugly fix (to pass tests in windows)
+
     with zipfile.ZipFile(zip_path, "r") as mps_zip_file:
-        for file in mps_zip_file.filelist:
-            with open(lp_dir / file.filename, "w") as extracted:
-                extracted.write(mps_zip_file.read(file).decode('utf-8'))
+        mps_zip_file.extractall(zip_path.parent)
 
     os.remove(zip_path)
     files_to_compare = os.listdir(reference_lp_dir)
