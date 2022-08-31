@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 
@@ -48,7 +48,7 @@ class CandidatesReader:
         return list(self.candidates_map.keys())
 
     def _get_candidate_index(self, candidate: str):
-        if not candidate in self.get_candidates_list():
+        if candidate not in self.get_candidates_list():
             raise CandidateNotFound
         return self.candidates_map[candidate]
 
@@ -115,7 +115,7 @@ class CandidatesReader:
         area1, area2 = self.get_candidate_areas(candidate)
         return study_path / "input" / "links" / area1 / "capacities" / str(area2 + "_indirect.txt")
 
-    def get_candidate_link_profile(self, study_path: Path, candidate: str) -> (str, str):
+    def get_candidate_link_profile(self, study_path: Path, candidate: str) -> Tuple[str, str]:
         index = self._get_candidate_index(candidate)
         direct_link_profile_path = ""
         indirect_link_profile_path = ""
