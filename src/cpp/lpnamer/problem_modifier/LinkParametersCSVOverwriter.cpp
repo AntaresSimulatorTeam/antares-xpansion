@@ -51,7 +51,7 @@ void LinkParametersCSVOverWriter::FillRecord(std::string basic_string_1,
     if (!already_warned_) {
       std::cout << "WARNING: Missing entries in : " <<
                 link_parameters_file_path_.string() <<
-                ". Missing valus were populated with 0."
+                ". Missing values were populated with 0."
                 << std::endl;
       already_warned_ = true;
     }
