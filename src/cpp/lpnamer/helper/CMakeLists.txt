@@ -10,6 +10,8 @@ add_library (lp_namer_helper STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/common_lpnamer.h
 	${CMAKE_CURRENT_SOURCE_DIR}/ColumnToChange.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ColumnToChange.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationLogger.h
+	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationLogger.cpp
     )
 
 target_include_directories (lp_namer_helper
