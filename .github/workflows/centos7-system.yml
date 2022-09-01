@@ -5,10 +5,7 @@ on:
     branches:
       - main
       - develop
-      - features/*
-      - feature/*
-      - fix/*
-      - release/*
+  workflow_dispatch:
   release:
     types: [ created ]
 
@@ -82,7 +79,7 @@ jobs:
     container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
       matrix:
-        xprs: [ ON, OFF ]
+        xprs: [XPRESS-ON, XPRESS-OFF]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -96,13 +93,12 @@ jobs:
         id: get_release
         uses: bruceadams/get-release@v1.2.3
 
-      - name: Checkout
-        run: |
-          git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
-          git submodule update --init --recursive antares-deps
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Checkout xpressmp linux
+        if: matrix.xprs == 'XPRESS-ON'
         run: |
           git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
 
@@ -148,6 +144,7 @@ jobs:
 
       - name: Configure
         run: |
+          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
@@ -159,7 +156,7 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
-                 -DXPRESS=${{ matrix.xprs }} \
+                 -DXPRESS=${{ env.XPRESS_VALUE }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
                  -DALLOW_RUN_AS_ROOT=ON
 
