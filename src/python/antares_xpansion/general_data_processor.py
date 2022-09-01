@@ -80,7 +80,7 @@ class GeneralDataProcessor:
             if self.is_accurate
             else "false",
             (optimization, "include-dayahead"): "true" if self.is_accurate else "false",
-            ("general]", "mode"): "expansion" if self.is_accurate else "Economy",
+            ("[general]", "mode"): "expansion" if self.is_accurate else "Economy",
             ("[output]", "storenewset"): "true",
             ("[other preferences]", "unit-commitment-mode"): "accurate"
             if self.is_accurate
