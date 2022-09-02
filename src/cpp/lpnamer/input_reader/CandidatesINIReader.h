@@ -9,6 +9,7 @@
 
 #include "Candidate.h"
 #include "INIReader.h"
+#include "ProblemGenerationLogger.h"
 
 struct IntercoFileData {
   int index_interco;
@@ -18,13 +19,17 @@ struct IntercoFileData {
 
 class CandidatesINIReader {
  public:
-  CandidatesINIReader(const std::filesystem::path& antaresIntercoFile,
-                      const std::filesystem::path& areaFile);
+  CandidatesINIReader(
+      const std::filesystem::path& antaresIntercoFile,
+      const std::filesystem::path& areaFile,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+  CandidatesINIReader(
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+      : logger_(logger) {}
 
-  static std::vector<IntercoFileData> ReadAntaresIntercoFile(
+  std::vector<IntercoFileData> ReadAntaresIntercoFile(
       const std::filesystem::path& antaresIntercoFile);
-  static std::vector<std::string> ReadAreaFile(
-      const std::filesystem::path& areaFile);
+  std::vector<std::string> ReadAreaFile(const std::filesystem::path& areaFile);
 
   std::vector<CandidateData> readCandidateData(
       const std::filesystem::path& candidateFile);
@@ -38,6 +43,8 @@ class CandidatesINIReader {
   std::map<std::string, int> _intercoIndexMap;
   std::vector<IntercoFileData> _intercoFileData;
   std::vector<std::string> _areaNames;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  ProblemGenerationLog::ProblemGenerationLogger& loggerObj_ = *logger_;
 };
 
 #endif  // ANTARESXPANSION_CANDIDATESINIREADER_H

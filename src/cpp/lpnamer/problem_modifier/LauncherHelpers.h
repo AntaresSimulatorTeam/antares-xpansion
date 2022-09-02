@@ -5,6 +5,7 @@
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
+#include "ProblemGenerationLogger.h"
 #include "solver_utils.h"
 /**
  * \brief adds binary variables and additional constraints to an existent solver
@@ -46,4 +47,6 @@ void addBinaryVariables(
  * \param root  path corresponding to the path to the simulation output
  * directory containing the lp directory \return ActiveLinksBuilder object
  */
-ActiveLinksBuilder get_link_builders(const std::filesystem::path& root);
+ActiveLinksBuilder get_link_builders(
+    const std::filesystem::path& root,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);

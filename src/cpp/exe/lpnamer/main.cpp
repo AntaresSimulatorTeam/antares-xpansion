@@ -23,6 +23,7 @@
 #include "LinkProfileReader.h"
 #include "MasterGeneration.h"
 #include "MasterProblemBuilder.h"
+#include "ProblemGenerationLogger.h"
 #include "solver_utils.h"
 
 namespace po = boost::program_options;
@@ -62,14 +63,28 @@ int main(int argc, char **argv) {
     }
 
     po::notify(opts);
+    /**/
+    using namespace ProblemGenerationLog;
+    auto logFile = std::make_shared<ProblemGenerationFileLogger>(
+        root / "lp" / "NewLogger.txt");
 
-    ActiveLinksBuilder linkBuilder = get_link_builders(root);
+    auto logStd = std::make_shared<ProblemGenerationOstreamLogger>(std::cout);
+
+    auto logger = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::INFO);
+    logger->AddLogger(logFile);
+    logger->AddLogger(logStd);
+    (*logger)() << "*********************** Hello *****************"
+                << std::endl;
+
+    /**/
+    ActiveLinksBuilder linkBuilder = get_link_builders(root, logger);
 
     if ((master_formulation != "relaxed") &&
         (master_formulation != "integer")) {
-      std::cout << "Invalid formulation argument : argument must be "
-                   "\"integer\" or \"relaxed\""
-                << std::endl;
+      logger->(LOGLEVEL::FATAL)
+          << "Invalid formulation argument : argument must be "
+             "\"integer\" or \"relaxed\""
+          << std::endl;
       std::exit(1);
     }
 
