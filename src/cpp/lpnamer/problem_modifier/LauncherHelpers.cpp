@@ -118,12 +118,15 @@ void addBinaryVariables(
  * directory containing the lp directory \return ActiveLinksBuilder object
  */
 
-ActiveLinksBuilder get_link_builders(const std::filesystem::path &root) {
+ActiveLinksBuilder get_link_builders(
+    const std::filesystem::path &root,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
   const auto area_file_name = root / "area.txt";
   const auto interco_file_name = root / "interco.txt";
-  const auto ts_root  = root / "ts-numbers/ntc";
+  const auto ts_root = root / "ts-numbers/ntc";
 
-  CandidatesINIReader candidateReader(interco_file_name, area_file_name);
+  CandidatesINIReader candidateReader(interco_file_name, area_file_name,
+                                      logger);
 
   // Get all mandatory path
   auto const xpansion_user_dir = root / ".." / ".." / "user" / "expansion";
@@ -136,5 +139,6 @@ ActiveLinksBuilder get_link_builders(const std::filesystem::path &root) {
   const auto &mapLinkProfile =
       LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
 
-  return ActiveLinksBuilder(candidatesDatas, mapLinkProfile, DirectAccessScenarioToChronicleProvider(ts_root));
+  return ActiveLinksBuilder(candidatesDatas, mapLinkProfile,
+                            DirectAccessScenarioToChronicleProvider(ts_root));
 }

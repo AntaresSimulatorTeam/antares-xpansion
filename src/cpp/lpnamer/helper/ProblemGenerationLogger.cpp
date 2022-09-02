@@ -3,9 +3,10 @@ namespace ProblemGenerationLog {
 
 std::string LogLevelToStr(const LOGLEVEL logLevel) {
   switch (logLevel) {
+    case LOGLEVEL::TRACE:
+      return "<Trace> ";
     case LOGLEVEL::DEBUG:
       return "<Debug> ";
-      break;
     case LOGLEVEL::INFO:
       return "<Info> ";
     case LOGLEVEL::WARNING:
@@ -20,8 +21,8 @@ std::string LogLevelToStr(const LOGLEVEL logLevel) {
 }
 
 ProblemGenerationFileLogger::ProblemGenerationFileLogger(
-    const LOGLEVEL logLevel, const std::filesystem::path& logFilePath)
-    : ProblemGenerationILogger(logLevel), logFilePath_(logFilePath) {
+    const std::filesystem::path& logFilePath)
+    : logFilePath_(logFilePath) {
   logFile_.open(logFilePath_, std::ofstream::out | std::ofstream::app);
   if (logFile_.fail()) {
     std::cerr << "ProblemGenerationFileLogger: Invalid file ("
@@ -29,19 +30,13 @@ ProblemGenerationFileLogger::ProblemGenerationFileLogger(
   }
 }
 void ProblemGenerationFileLogger::DisplayMessage(const std::string& message) {
-  logFile_ << Prefix() << message << std::endl;
-  logFile_.flush();
-}
-
-void ProblemGenerationFileLogger::DisplayMessage(const std::string& message,
-                                                 const LOGLEVEL logLevel) {
-  logFile_ << LogLevelToStr(logLevel) << message << std::endl;
+  logFile_ << message << std::endl;
   logFile_.flush();
 }
 
 ProblemGenerationOstreamLogger::ProblemGenerationOstreamLogger(
-    const LOGLEVEL logLevel, std::ostream& stream)
-    : ProblemGenerationILogger(logLevel), stream_(stream) {
+    std::ostream& stream)
+    : stream_(stream) {
   if (stream_.fail()) {
     std::cerr
         << "ProblemGenerationOstreamLogger: Invalid stream passed as parameter"
@@ -50,23 +45,19 @@ ProblemGenerationOstreamLogger::ProblemGenerationOstreamLogger(
 }
 void ProblemGenerationOstreamLogger::DisplayMessage(
     const std::string& message) {
-  stream_ << Prefix() << message << std::endl;
-}
-void ProblemGenerationOstreamLogger::DisplayMessage(const std::string& message,
-                                                    const LOGLEVEL logLevel) {
-  stream_ << LogLevelToStr(logLevel) << message << std::endl;
+  stream_ << message << std::endl;
 }
 
 void ProblemGenerationLogger::DisplayMessage(const std::string& message) {
   for (auto& logger : loggers_) {
-    // std::visit(logger.)
     logger->DisplayMessage(message);
   }
 }
 void ProblemGenerationLogger::DisplayMessage(const std::string& message,
                                              const LOGLEVEL logLevel) {
   for (auto& logger : loggers_) {
-    logger->DisplayMessage(message, logLevel);
+    logger->DisplayMessage(LogLevelToStr(logLevel));
+    logger->DisplayMessage(message);
   }
 }
 

@@ -9,6 +9,7 @@
 #include "CandidatesINIReader.h"
 #include "LauncherHelpers.h"
 #include "LinkProfileReader.h"
+#include "ProblemGenerationLogger.h"
 #include "StudyUpdater.h"
 
 namespace po = boost::program_options;
@@ -64,8 +65,15 @@ int main(int argc, char **argv) {
     }
 
     po::notify(opts);
+    using namespace ProblemGenerationLog;
+    auto logFile = std::make_shared<ProblemGenerationFileLogger>(
+        root / "lp" / "StudyUpdateLog.txt");
+    auto logStd = std::make_shared<ProblemGenerationOstreamLogger>(std::cout);
 
-    ActiveLinksBuilder linksBuilder = get_link_builders(root);
+    auto logger = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::INFO);
+    logger->AddLogger(logFile);
+    logger->AddLogger(logStd);
+    ActiveLinksBuilder linksBuilder = get_link_builders(root, logger);
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 
