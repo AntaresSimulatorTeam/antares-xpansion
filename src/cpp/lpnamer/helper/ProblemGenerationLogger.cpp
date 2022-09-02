@@ -1,6 +1,23 @@
 #include "ProblemGenerationLogger.h"
-
 namespace ProblemGenerationLog {
+
+std::string LogLevelToStr(const LOGLEVEL logLevel) {
+  switch (logLevel) {
+    case LOGLEVEL::DEBUG:
+      return "<Debug> ";
+      break;
+    case LOGLEVEL::INFO:
+      return "<Info> ";
+    case LOGLEVEL::WARNING:
+      return "<Warning> ";
+    case LOGLEVEL::ERROR:
+      return "<Error> ";
+    case LOGLEVEL::FATAL:
+      return "<Fatal> ";
+    default:
+      return "";
+  }
+}
 
 ProblemGenerationFileLogger::ProblemGenerationFileLogger(
     const LOGLEVEL logLevel, const std::filesystem::path& logFilePath)
@@ -13,6 +30,12 @@ ProblemGenerationFileLogger::ProblemGenerationFileLogger(
 }
 void ProblemGenerationFileLogger::DisplayMessage(const std::string& message) {
   logFile_ << Prefix() << message << std::endl;
+  logFile_.flush();
+}
+
+void ProblemGenerationFileLogger::DisplayMessage(const std::string& message,
+                                                 const LOGLEVEL logLevel) {
+  logFile_ << LogLevelToStr(logLevel) << message << std::endl;
   logFile_.flush();
 }
 
@@ -29,11 +52,37 @@ void ProblemGenerationOstreamLogger::DisplayMessage(
     const std::string& message) {
   stream_ << Prefix() << message << std::endl;
 }
+void ProblemGenerationOstreamLogger::DisplayMessage(const std::string& message,
+                                                    const LOGLEVEL logLevel) {
+  stream_ << LogLevelToStr(logLevel) << message << std::endl;
+}
 
 void ProblemGenerationLogger::DisplayMessage(const std::string& message) {
   for (auto& logger : loggers_) {
+    // std::visit(logger.)
     logger->DisplayMessage(message);
   }
 }
+void ProblemGenerationLogger::DisplayMessage(const std::string& message,
+                                             const LOGLEVEL logLevel) {
+  for (auto& logger : loggers_) {
+    logger->DisplayMessage(message, logLevel);
+  }
+}
 
+ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
+                                    const LOGLEVEL logLevel) {
+  for (auto& subLogger : logger.loggers_) {
+    subLogger->GetOstreamObject() << LogLevelToStr(logLevel);
+  }
+  return logger;
+}
+
+ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
+                                    std::ostream& (*f)(std::ostream&)) {
+  for (auto& subLogger : logger.loggers_) {
+    subLogger->GetOstreamObject() << f;
+  }
+  return logger;
+}
 }  // namespace ProblemGenerationLog
