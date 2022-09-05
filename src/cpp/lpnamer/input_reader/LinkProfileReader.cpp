@@ -3,7 +3,8 @@
 #include <filesystem>
 
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
-    const std::filesystem::path &direct_filename, const std::filesystem::path& indirect_file_name) {
+    const std::filesystem::path &direct_filename,
+    const std::filesystem::path &indirect_file_name) {
   EnsureFileIsGood(direct_filename);
   EnsureFileIsGood(indirect_file_name);
   std::vector<LinkProfile> result;
@@ -14,6 +15,8 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
 void LinkProfileReader::EnsureFileIsGood(
     const std::filesystem::path &direct_filename) {
   if (std::ifstream infile(direct_filename); !infile.good()) {
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open file" << direct_filename;
     throw std::filesystem::filesystem_error("unable to open file",
                                             direct_filename, std::error_code());
   }
@@ -28,11 +31,14 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
 }
 
 void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
-                                              std::vector<LinkProfile> &result,
-                                              bool fillDirectProfile) {
+                                        std::vector<LinkProfile> &result,
+                                        bool fillDirectProfile) {
   std::ifstream infile(filename);
   if (!infile.good()) {
-    throw std::filesystem::filesystem_error("unable to open file", filename, std::error_code());
+    auto errMsg = std::string("unable to open file ");
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg << filename;
+    throw std::filesystem::filesystem_error(errMsg, filename,
+                                            std::error_code());
   }
   double value;
   std::string line;
@@ -41,15 +47,17 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
     if (std::getline(infile, line)) {
       std::stringstream buffer(line);
       chronicle_id = 0;
-      while ( buffer >> value ) {
+      while (buffer >> value) {
         ConstructChronicle(result, chronicle_id);
         UpdateProfile(result, fillDirectProfile, value, chronicle_id,
                       time_step);
         ++chronicle_id;
       }
     } else {
-      throw std::domain_error("error not enough line in link-profile " +
-                              filename.string());
+      auto errMsg = std::string("error not enough line in link-profile ") +
+                    filename.string();
+      loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
+      throw std::domain_error(errMsg);
     }
   }
   infile.close();
@@ -65,22 +73,25 @@ void LinkProfileReader::UpdateProfile(std::vector<LinkProfile> &result,
   }
 }
 
-void LinkProfileReader::ConstructChronicle(
-    std::vector<LinkProfile> &result, int chronicle_id) {
+void LinkProfileReader::ConstructChronicle(std::vector<LinkProfile> &result,
+                                           int chronicle_id) {
   if (result.size() <= chronicle_id) {
     result.emplace_back();
   }
 }
 
-std::map<std::string, std::vector<LinkProfile>> LinkProfileReader::getLinkProfileMap(
+std::map<std::string, std::vector<LinkProfile>>
+LinkProfileReader::getLinkProfileMap(
     const std::filesystem::path &capacity_folder,
     const std::vector<CandidateData> &candidateList) {
   std::map<std::string, std::vector<LinkProfile>> mapLinkProfile;
   for (const auto &candidate_data : candidateList) {
     importProfile(mapLinkProfile, capacity_folder,
-                  candidate_data.installed_direct_link_profile_name, candidate_data.installed_indirect_link_profile_name);
+                  candidate_data.installed_direct_link_profile_name,
+                  candidate_data.installed_indirect_link_profile_name);
     importProfile(mapLinkProfile, capacity_folder,
-                  candidate_data.direct_link_profile, candidate_data.indirect_link_profile);
+                  candidate_data.direct_link_profile,
+                  candidate_data.indirect_link_profile);
   }
   return mapLinkProfile;
 }
@@ -92,7 +103,8 @@ void LinkProfileReader::importProfile(
     const std::string &indirect_profile_name) {
   if (!direct_profile_name.empty() &&
       mapLinkProfile.find(direct_profile_name) == mapLinkProfile.end()) {
-    mapLinkProfile[direct_profile_name] =
-        LinkProfileReader::ReadLinkProfile(capacitySubfolder / direct_profile_name, capacitySubfolder / indirect_profile_name);
+    mapLinkProfile[direct_profile_name] = LinkProfileReader::ReadLinkProfile(
+        capacitySubfolder / direct_profile_name,
+        capacitySubfolder / indirect_profile_name);
   }
 }

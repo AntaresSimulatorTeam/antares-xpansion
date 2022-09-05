@@ -6,8 +6,8 @@
 
 #include <fstream>
 
-#include "gtest/gtest.h"
 #include "Problem.h"
+#include "gtest/gtest.h"
 
 const std::string P_LINK = "p_link";
 const std::string P_PLUS = "p_plus";
@@ -16,6 +16,11 @@ const double ZERO = 0.0;
 const double PLUS_INF = 1e20;
 const double MINUS_INF = -1e20;
 
+static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+emptyLogger() {
+  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
+      ProblemGenerationLog::LOGLEVEL::NONE);
+}
 class ProblemModifierTest : public ::testing::Test {
  public:
   std::shared_ptr<Problem> math_problem;
@@ -37,7 +42,8 @@ class ProblemModifierTest : public ::testing::Test {
   void SetUp() {
     std::string solver_name = "CBC";
     SolverFactory factory;
-    math_problem = std::make_shared<Problem>(factory.create_solver(solver_name));
+    math_problem =
+        std::make_shared<Problem>(factory.create_solver(solver_name));
 
     // Add NTC variable column
     {
@@ -256,7 +262,7 @@ TEST_F(ProblemModifierTest,
   const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
       {link_id, {{{2, 0}}}}};
   ActiveLink link(link_id, "dummy_link", "from", "to", 0);
-  const std::vector<ActiveLink> active_links = { link };
+  const std::vector<ActiveLink> active_links = {link};
 
   auto problem_modifier = ProblemModifier();
   math_problem = problem_modifier.changeProblem(
@@ -302,7 +308,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier();
@@ -362,7 +368,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_no_profile) {
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier();
@@ -447,7 +453,7 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
   profile_cand2.indirect_link_profile = {2.6, 2.8};
   profile_map["profile_cand2"] = {profile_cand2};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier();
@@ -563,7 +569,7 @@ TEST_F(ProblemModifierTest,
   empty_profile.indirect_link_profile = {0.0, 0.0};
   profile_map["empty_profile"] = {empty_profile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier();
@@ -648,7 +654,7 @@ TEST_F(ProblemModifierTest, candidateWithNotNullProfileExists) {
   profile_cand1.indirect_link_profile = {0.8, 1.2};
   profile_map["profile_cand1"] = {profile_cand1};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier();
@@ -690,7 +696,7 @@ TEST_F(ProblemModifierTest, candidateWithNullProfileIsRemoved) {
   profile_cand1.indirect_link_profile = {0, 0};
   profile_map["profile_cand1"] = {profile_cand1};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier();
@@ -700,10 +706,11 @@ TEST_F(ProblemModifierTest, candidateWithNullProfileIsRemoved) {
 
   const int cand1_id = -1;
 
-  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name), std::runtime_error);
+  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name),
+               std::runtime_error);
 }
 
-class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
+class ProblemModifierTestMultiChronicle : public ProblemModifierTest {
  protected:
   void SetUp() override {
     ProblemModifierTest::SetUp();
@@ -744,18 +751,21 @@ class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
     profile_cand2_2.indirect_link_profile = {26, 28};
     profile_map["profile_cand2"] = {profile_cand2, profile_cand2_2};
 
-
-    std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+    std::filesystem::path ts_info_root_ =
+        std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
     std::filesystem::create_directories(ts_info_root_ / "A");
-    std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
-    b_file << "Garbage\n1\n2\n"; //Use link profile 1 for MCY1 and link profile 2 for MCY2
+    std::ofstream b_file(ts_info_root_ / "A" / "B.txt");
+    b_file << "Garbage\n1\n2\n";  // Use link profile 1 for MCY1 and link
+                                  // profile 2 for MCY2
     b_file.close();
 
-    std::ofstream D_file(ts_info_root_ / "C"/"D.txt");
+    std::ofstream D_file(ts_info_root_ / "C" / "D.txt");
     D_file << "Garbage\n1\n1\n";
     D_file.close();
 
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+    ActiveLinksBuilder linkBuilder{
+        cand_data_list, profile_map,
+        DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
     links = linkBuilder.getLinks();
   }
 
@@ -770,10 +780,13 @@ class ProblemModifierTestMultiChronicle: public ProblemModifierTest {
       {link_id, {{{2, 0}, {2, 1}}}}};
   CandidateData cand1, cand2;
   const double link_capacity = 2000.0;
-  LinkProfile profile_link, profile_cand1, profile_cand1_2, profile_cand2, profile_cand2_2;
+  LinkProfile profile_link, profile_cand1, profile_cand1_2, profile_cand2,
+      profile_cand2_2;
 };
 
-TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseNothing) {
+TEST_F(
+    ProblemModifierTestMultiChronicle,
+    One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseNothing) {
   auto problem_modifier = ProblemModifier();
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
@@ -843,7 +856,9 @@ TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_p
              {P_MINUS_id, cand1_id, cand2_id},
              link_capacity * profile_link.getIndirectProfile(1));
 }
-TEST_F(ProblemModifierTestMultiChronicle, One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseChronicle2forYear2) {
+TEST_F(
+    ProblemModifierTestMultiChronicle,
+    One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseChronicle2forYear2) {
   auto problem_modifier = ProblemModifier();
   math_problem->mc_year = 2;
   math_problem = problem_modifier.changeProblem(
@@ -926,8 +941,7 @@ TEST_F(ProblemModifierTestMultiChronicle, candidateWithNotNullProfileExists) {
   ASSERT_TRUE(problem_modifier.has_candidate_col_id(cand1.name));
 }
 
-class ProblemModifierTestWithProfile: public ProblemModifierTest
-{
+class ProblemModifierTestWithProfile : public ProblemModifierTest {
  protected:
   void SetUp() override {
     ProblemModifierTest::SetUp();
@@ -943,7 +957,9 @@ class ProblemModifierTestWithProfile: public ProblemModifierTest
     cand1.linkor = "A";
     cand1.linkex = "B";
 
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+    ActiveLinksBuilder linkBuilder{
+        cand_data_list, profile_map,
+        DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
     links = linkBuilder.getLinks();
 
     math_problem->mc_year = 2;
@@ -964,11 +980,12 @@ class ProblemModifierTestWithProfile: public ProblemModifierTest
   LinkProfile installed_profile, chronicle_1, chronicle_2;
   std::map<std::string, std::vector<LinkProfile>> profile_map;
   std::vector<CandidateData> cand_data_list = {cand1};
-  std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
-
+  std::filesystem::path ts_info_root_ =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
 };
 
-TEST_F(ProblemModifierTestWithProfile, candidateWithNullProfileIsRemovedMultipleChronicle) {
+TEST_F(ProblemModifierTestWithProfile,
+       candidateWithNullProfileIsRemovedMultipleChronicle) {
   cand1.installed_direct_link_profile_name = "install_link_profile";
   installed_profile.direct_link_profile = {0, 0};
   installed_profile.indirect_link_profile = {0, 0};
@@ -980,21 +997,26 @@ TEST_F(ProblemModifierTestWithProfile, candidateWithNullProfileIsRemovedMultiple
   profile_map["chronicle_1"] = {chronicle_1, chronicle_2};
 
   std::filesystem::create_directories(ts_info_root_ / "A");
-  std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
-  b_file << "Garbage\n1\n2\n"; //Use link profile 1 for MCY1 and link profile 2 for MCY2
+  std::ofstream b_file(ts_info_root_ / "A" / "B.txt");
+  b_file << "Garbage\n1\n2\n";  // Use link profile 1 for MCY1 and link profile
+                                // 2 for MCY2
   b_file.close();
 
   cand_data_list = {cand1};
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+  ActiveLinksBuilder linkBuilder{
+      cand_data_list, profile_map,
+      DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
   links = linkBuilder.getLinks();
 
   math_problem = problem_modifier.changeProblem(
       math_problem, links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
 
-  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name), std::runtime_error);
+  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name),
+               std::runtime_error);
 }
-TEST_F(ProblemModifierTestWithProfile, CandidateWithNotNullChronicleButOTherwiseNullProfileExists) {
+TEST_F(ProblemModifierTestWithProfile,
+       CandidateWithNotNullChronicleButOTherwiseNullProfileExists) {
   std::vector<CandidateData> cand_data_list = {cand1};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
   chronicle_1.direct_link_profile = {0, 0};
@@ -1003,14 +1025,17 @@ TEST_F(ProblemModifierTestWithProfile, CandidateWithNotNullChronicleButOTherwise
   chronicle_2.indirect_link_profile = {0, 1};
   profile_map["chronicle_1"] = {chronicle_1, chronicle_2};
 
-
-  std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  std::filesystem::path ts_info_root_ =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
   std::filesystem::create_directories(ts_info_root_ / "A");
-  std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
-  b_file << "Garbage\n1\n2\n"; //Use link profile 1 for MCY1 and link profile 2 for MCY2
+  std::ofstream b_file(ts_info_root_ / "A" / "B.txt");
+  b_file << "Garbage\n1\n2\n";  // Use link profile 1 for MCY1 and link profile
+                                // 2 for MCY2
   b_file.close();
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+  ActiveLinksBuilder linkBuilder{
+      cand_data_list, profile_map,
+      DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
   links = linkBuilder.getLinks();
 
   math_problem = problem_modifier.changeProblem(
@@ -1019,8 +1044,8 @@ TEST_F(ProblemModifierTestWithProfile, CandidateWithNotNullChronicleButOTherwise
 
   ASSERT_TRUE(problem_modifier.has_candidate_col_id(cand1.name));
 }
-TEST_F(ProblemModifierTestWithProfile, CandidatesWithNullSelectedChronicleIsRemoved) {
-
+TEST_F(ProblemModifierTestWithProfile,
+       CandidatesWithNullSelectedChronicleIsRemoved) {
   std::vector<CandidateData> cand_data_list = {cand1};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
   chronicle_1.direct_link_profile = {1, 1};
@@ -1029,19 +1054,23 @@ TEST_F(ProblemModifierTestWithProfile, CandidatesWithNullSelectedChronicleIsRemo
   chronicle_2.indirect_link_profile = {0, 0};
   profile_map["chronicle_1"] = {chronicle_1, chronicle_2};
 
-
-  std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  std::filesystem::path ts_info_root_ =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
   std::filesystem::create_directories(ts_info_root_ / "A");
-  std::ofstream b_file(ts_info_root_ / "A"/"B.txt");
-  b_file << "Garbage\n2\n2\n"; //Use chronicle 2. Chronicle 1 is never used. Chronicle 2 is empty
+  std::ofstream b_file(ts_info_root_ / "A" / "B.txt");
+  b_file << "Garbage\n2\n2\n";  // Use chronicle 2. Chronicle 1 is never used.
+                                // Chronicle 2 is empty
   b_file.close();
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+  ActiveLinksBuilder linkBuilder{
+      cand_data_list, profile_map,
+      DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
   links = linkBuilder.getLinks();
 
   math_problem = problem_modifier.changeProblem(
       math_problem, links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
 
-  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name), std::runtime_error);
+  ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name),
+               std::runtime_error);
 }

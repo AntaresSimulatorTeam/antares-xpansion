@@ -44,7 +44,7 @@ class CandidatesINIReader {
   std::vector<IntercoFileData> _intercoFileData;
   std::vector<std::string> _areaNames;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerObj_ = *logger_;
+  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };
 
 #endif  // ANTARESXPANSION_CANDIDATESINIREADER_H

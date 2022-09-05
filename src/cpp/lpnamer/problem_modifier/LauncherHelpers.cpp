@@ -136,9 +136,10 @@ ActiveLinksBuilder get_link_builders(
   // Instantiation of candidates
   const auto &candidatesDatas =
       candidateReader.readCandidateData(candidates_file_name);
-  const auto &mapLinkProfile =
-      LinkProfileReader::getLinkProfileMap(capacity_folder, candidatesDatas);
+  const auto &mapLinkProfile = LinkProfileReader(logger).getLinkProfileMap(
+      capacity_folder, candidatesDatas);
 
   return ActiveLinksBuilder(candidatesDatas, mapLinkProfile,
-                            DirectAccessScenarioToChronicleProvider(ts_root));
+                            DirectAccessScenarioToChronicleProvider(ts_root),
+                            logger);
 }
