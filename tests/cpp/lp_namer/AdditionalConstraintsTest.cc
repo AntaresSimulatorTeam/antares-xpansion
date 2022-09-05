@@ -77,8 +77,9 @@ rhs = 200\
 };
 
 TEST_F(AdditionalConstraintsTest, testCreation) {
+  auto logger = emptyLogger();
   AdditionalConstraints additionalConstraints_l(
-      "temp_additional_constraints.ini", emptyLogger());
+      "temp_additional_constraints.ini", logger);
 
   ASSERT_EQ(additionalConstraints_l.getVariablesToBinarise().size(), 5);
   ASSERT_EQ(additionalConstraints_l.size(), 4);

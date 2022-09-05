@@ -28,8 +28,8 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity) {
   std::vector<CandidateData> cand_data_list = {cand1};
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_EQ(links.size(), 1);
@@ -60,8 +60,8 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity) {
   std::vector<CandidateData> cand_data_list = {cand1};
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_DOUBLE_EQ(links[0].get_already_installed_capacity(), 20);
@@ -95,7 +95,8 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity) {
 
   profile_map[link_profile_cand1] = {linkProfileCandidat1};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_EQ(links.size(), 1);
@@ -137,7 +138,8 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_EQ(links.size(), 1);
@@ -188,7 +190,8 @@ TEST(LinkBuilderTest,
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_EQ(links.size(), 2);
@@ -249,7 +252,8 @@ TEST(LinkBuilderTest,
       {"dummy", {LinkProfile()}}};
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "duplicate not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(
@@ -276,7 +280,8 @@ TEST(LinkBuilderTest,
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "incompatibility of link_id not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(err.what(),
@@ -301,7 +306,8 @@ TEST(LinkBuilderTest, two_candidates_same_name) {
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "duplicate not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(err.what(),
@@ -352,7 +358,8 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
   profile_map[temp_already_installed_profile2_name] = {alreadyInstalledProfile};
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Candidate of the same links have different "
               "already_installed_links_profile and it's not detected";
   } catch (const std::runtime_error& err) {
@@ -402,7 +409,8 @@ TEST(LinkBuilderTest,
 
   profile_map[temp_already_installed_profile1_name] = {alreadyInstalledProfile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
   ASSERT_EQ(links[0].already_installed_direct_profile(0), 0);
   ASSERT_EQ(links[0].already_installed_direct_profile(1), 0.5);
@@ -452,7 +460,8 @@ TEST(
   profile_map[temp_already_installed_profile1_name] = {{},
                                                        alreadyInstalledProfile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
   ASSERT_EQ(links[0].already_installed_direct_profile(2, 0), 0);
   ASSERT_EQ(links[0].already_installed_direct_profile(2, 1), 0.5);
@@ -500,7 +509,8 @@ TEST(LinkBuilderTest, return_first_profile_if_chronicle_does_not_exists) {
   profile_map[temp_already_installed_profile1_name] = {{},
                                                        alreadyInstalledProfile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
   ASSERT_EQ(links[0].already_installed_direct_profile(5, 0), 1);
   ASSERT_EQ(links[0].already_installed_direct_profile(5, 1), 1);
@@ -550,7 +560,8 @@ TEST(
 
   // Verifier acces installed profile OK
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
   ASSERT_EQ(links[0].already_installed_direct_profile(
                 profile_map[cand1.direct_link_profile].size() - 1, 0),
@@ -603,7 +614,8 @@ TEST(
                                                        alreadyInstalledProfile,
                                                        alreadyInstalledProfile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
   for (auto const& candidate : links[0].getCandidates()) {
     ASSERT_EQ(
@@ -637,7 +649,8 @@ TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity) {
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Same alreadyInstalledCapacity : not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(
@@ -662,7 +675,8 @@ TEST(LinkBuilderTest, missing_link_profile_in_profile_map) {
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Missing link profile : not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(err.what(),
@@ -688,7 +702,8 @@ TEST(LinkBuilderTest, candidate_not_enable) {
   cand_data_list.push_back(cand2);
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
   const auto& candidates = links[0].getCandidates();
   ASSERT_EQ(candidates.size(), 1);
