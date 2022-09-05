@@ -12,27 +12,30 @@ bool doubles_are_different(const double a, const double b) {
 void ActiveLinksBuilder::addCandidate(const CandidateData& candidate_data) {
   unsigned int indexLink = getLinkIndexOf(candidate_data.link_id);
   _links.at(indexLink).addCandidate(
-      candidate_data, getProfilesFromProfileMap(candidate_data.direct_link_profile));
+      candidate_data,
+      getProfilesFromProfileMap(candidate_data.direct_link_profile));
 }
 
 ActiveLinksBuilder::ActiveLinksBuilder(
-    std::vector<CandidateData>  candidateList,
-    std::map<std::string, std::vector<LinkProfile>>  profile_map,
-    DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider)
+    std::vector<CandidateData> candidateList,
+    std::map<std::string, std::vector<LinkProfile>> profile_map,
+    DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
     : _candidateDatas(std::move(candidateList)),
-      _profile_map(std::move(profile_map))
-      , scenario_to_chronicle_provider_(std::move(scenario_to_chronicle_provider))
-{
+      _profile_map(std::move(profile_map)),
+      scenario_to_chronicle_provider_(
+          std::move(scenario_to_chronicle_provider)),
+      logger_(logger) {
   checkCandidateNameDuplication();
   checkLinksValidity();
 }
 
 ActiveLinksBuilder::ActiveLinksBuilder(
     const std::vector<CandidateData>& candidateList,
-    const std::map<std::string, std::vector<LinkProfile>>& profile_map)
-    : ActiveLinksBuilder(candidateList, profile_map, DirectAccessScenarioToChronicleProvider("")) {
-
-}
+    const std::map<std::string, std::vector<LinkProfile>>& profile_map,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    : ActiveLinksBuilder(candidateList, profile_map,
+                         DirectAccessScenarioToChronicleProvider(""), logger) {}
 
 void ActiveLinksBuilder::checkLinksValidity() {
   for (const auto& candidateData : _candidateDatas) {
@@ -66,15 +69,18 @@ void ActiveLinksBuilder::raise_errors_if_link_data_differs_from_existing_link(
                             old_link_data.installed_capacity)) {
     std::string message =
         "Multiple already installed capacity detected for link " + link_name;
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
     throw std::runtime_error(message);
   }
   if (old_link_data.profile_name != link_data.profile_name) {
     std::string message =
         "Multiple already_installed_profile detected for link " + link_name;
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
     throw std::runtime_error(message);
   }
   if (old_link_data.id != link_data.id) {
     std::string message = "Multiple link_id detected for link " + link_name;
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
     throw std::runtime_error(message);
   }
 }
@@ -87,6 +93,7 @@ void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(
     if (it_profile == _profile_map.end()) {
       std::string message =
           "There is no linkProfile associated with " + profileName;
+      loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
       throw std::runtime_error(message);
     }
   }
@@ -99,6 +106,7 @@ void ActiveLinksBuilder::checkCandidateNameDuplication() const {
     if (!it_inserted.second) {
       std::string message =
           "Candidate " + candidateData.name + " duplication detected";
+      loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
       throw std::runtime_error(message);
     }
   }
@@ -132,7 +140,8 @@ void ActiveLinksBuilder::create_links() {
     auto mc_year_to_chronicle = scenario_to_chronicle_provider_.GetMap(
         link_data._linkor, link_data._linkex);
     ActiveLink link(link_data.id, link_name, link_data._linkor,
-                    link_data._linkex, link_data.installed_capacity, mc_year_to_chronicle);
+                    link_data._linkex, link_data.installed_capacity,
+                    mc_year_to_chronicle);
     link.setAlreadyInstalledLinkProfiles(
         getProfilesFromProfileMap(link_data.profile_name));
     _links.push_back(link);
@@ -145,14 +154,13 @@ std::vector<LinkProfile> ActiveLinksBuilder::getProfilesFromProfileMap(
   if (_profile_map.find(profile_name) != _profile_map.end()) {
     profiles = _profile_map.at(profile_name);
   }
-  if (profiles.empty())
-    return {LinkProfile()};
+  if (profiles.empty()) return {LinkProfile()};
   return profiles;
 }
 
 ActiveLink::ActiveLink(
-    int idLink, std::string  linkName, std::string  linkor,
-    std::string  linkex, const double& already_installed_capacity,
+    int idLink, std::string linkName, std::string linkor, std::string linkex,
+    const double& already_installed_capacity,
     std::map<unsigned int, unsigned int> mc_year_to_chronicle)
     : mc_year_to_chronicle_(std::move(mc_year_to_chronicle)),
       _idLink(idLink),
@@ -166,15 +174,16 @@ ActiveLink::ActiveLink(
 ActiveLink::ActiveLink(int idLink, const std::string& linkName,
                        const std::string& linkor, const std::string& linkex,
                        const double& already_installed_capacity)
-    : ActiveLink(idLink, linkName, linkor, linkex, already_installed_capacity, {})
-{}
+    : ActiveLink(idLink, linkName, linkor, linkex, already_installed_capacity,
+                 {}) {}
 
 void ActiveLink::setAlreadyInstalledLinkProfiles(
     const std::vector<LinkProfile>& linkProfile) {
   _already_installed_profile = linkProfile;
 }
 
-void ActiveLink::addCandidate(const CandidateData& candidate_data,
+void ActiveLink::addCandidate(
+    const CandidateData& candidate_data,
     const std::vector<LinkProfile>& candidate_profile) {
   Candidate candidate(candidate_data, candidate_profile);
 
@@ -193,18 +202,22 @@ double ActiveLink::already_installed_indirect_profile(size_t timeStep) const {
   return _already_installed_profile.at(0).getIndirectProfile(timeStep);
 }
 
-double ActiveLink::already_installed_direct_profile(size_t chronicle_number, size_t timeStep) const {
+double ActiveLink::already_installed_direct_profile(size_t chronicle_number,
+                                                    size_t timeStep) const {
   if (chronicle_number == 0) chronicle_number = 1;
   if (chronicle_number > _already_installed_profile.size())
     chronicle_number = 1;
-  return _already_installed_profile.at(chronicle_number - 1).getDirectProfile(timeStep);
+  return _already_installed_profile.at(chronicle_number - 1)
+      .getDirectProfile(timeStep);
 }
 
-double ActiveLink::already_installed_indirect_profile(size_t chronicle_number, size_t timeStep) const {
+double ActiveLink::already_installed_indirect_profile(size_t chronicle_number,
+                                                      size_t timeStep) const {
   if (chronicle_number == 0) chronicle_number = 1;
   if (chronicle_number > _already_installed_profile.size())
     chronicle_number = 1;
-  return _already_installed_profile.at(chronicle_number - 1).getIndirectProfile(timeStep);
+  return _already_installed_profile.at(chronicle_number - 1)
+      .getIndirectProfile(timeStep);
 }
 
 int ActiveLink::get_idLink() const { return _idLink; }
@@ -221,13 +234,14 @@ std::string ActiveLink::get_linkex() const { return _linkex; }
 
 unsigned long ActiveLink::number_of_chronicles() const {
   // We don't check for correctness of the number of chronicles across profiles
-  // We assume that all profiles have either 1 chronicle (per default) or the same N
-  // number of chronicles.
-  // We can have 1 installed chronicle and N profile chronicle or vice versa
-  if (unsigned long number_of_chronicles = _already_installed_profile.size(); number_of_chronicles > 1)
+  // We assume that all profiles have either 1 chronicle (per default) or the
+  // same N number of chronicles. We can have 1 installed chronicle and N
+  // profile chronicle or vice versa
+  if (unsigned long number_of_chronicles = _already_installed_profile.size();
+      number_of_chronicles > 1)
     return number_of_chronicles;
-  if (auto candidates = getCandidates(); !candidates.empty()){
-    return candidates.at(0).number_of_chronicles();//Either 1 or N
+  if (auto candidates = getCandidates(); !candidates.empty()) {
+    return candidates.at(0).number_of_chronicles();  // Either 1 or N
   }
   return 1;
 }

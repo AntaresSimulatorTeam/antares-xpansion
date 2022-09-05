@@ -6,6 +6,11 @@
 #include "MasterProblemBuilder.h"
 #include "gtest/gtest.h"
 
+static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+emptyLogger() {
+  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
+      ProblemGenerationLog::LOGLEVEL::NONE);
+}
 TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
   std::string solver_name = "CBC";
   std::string master_formulation = "integer";
@@ -20,7 +25,7 @@ TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;
@@ -73,7 +78,7 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_integer) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;
@@ -134,7 +139,7 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_relaxed) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;

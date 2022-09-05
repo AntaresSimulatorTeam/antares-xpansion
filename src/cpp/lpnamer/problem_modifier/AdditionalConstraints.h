@@ -4,6 +4,8 @@
 #include <set>
 #include <string>
 
+#include "ProblemGenerationLogger.h"
+
 /*!
  *  \class AdditionalConstraint
  *  \brief additional constraint to add to master problem
@@ -93,12 +95,17 @@ struct AdditionalConstraints
   // set of variables to which a binary corresponding variable will be created
   std::map<std::string, std::string> _variablesToBinarise;
   std::set<std::string> _binaryVariables;
+  std::string constraintsFilePath_;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 
  public:
   /*!
    *  \brief default constructor for struct AdditionalConstraints
    */
-  AdditionalConstraints() = default;
+  AdditionalConstraints(
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+      : logger_(logger) {}
 
   /*!
    * \brief AdditionalConstraints constructor from an ini file path
@@ -106,8 +113,14 @@ struct AdditionalConstraints
    * \param constraints_file_path String corresponding to the additional
    * constraints file path
    */
-  explicit AdditionalConstraints(std::string const& constraints_file_path);
+  explicit AdditionalConstraints(
+      std::string const& constraints_file_path,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
 
+  void SetConstraintsFile(std::string const& constraints_file_path) {
+    constraintsFilePath_ = constraints_file_path;
+  }
+  void ReadConstraintsFile();
   /*!
    * \brief adds a binary variable to be created and links it to the
    * corresponding variable

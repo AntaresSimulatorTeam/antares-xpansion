@@ -6,8 +6,13 @@
 #include "AdditionalConstraintsReader.h"
 
 AdditionalConstraints::AdditionalConstraints(
-    std::string const& constraints_file_path) {
-  AdditionalConstraintsReader reader_l(constraints_file_path);
+    std::string const& constraints_file_path,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    : constraintsFilePath_(constraints_file_path), logger_(logger) {
+  ReadConstraintsFile();
+}
+void AdditionalConstraints::ReadConstraintsFile() {
+  AdditionalConstraintsReader reader_l(constraintsFilePath_, logger_);
 
   // treat variables section
   std::map<std::string, std::string> const& variables_section =
@@ -23,12 +28,12 @@ AdditionalConstraints::AdditionalConstraints(
     }
   }
 }
-
 void AdditionalConstraints::addVariableToBinarise(
     const std::string& oldVarName_p, const std::string& binVarName_p) {
   if (!_binaryVariables.insert(binVarName_p).second) {
-    std::cout << "Duplicate Binary variable name: " << binVarName_p
-              << " was already added.\n";
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "Duplicate Binary variable name: " << binVarName_p
+        << " was already added.\n";
     std::exit(1);
   }
   _variablesToBinarise[oldVarName_p] = binVarName_p;
@@ -82,17 +87,17 @@ void AdditionalConstraints::constructAdditionalConstraints(
         }
         constraint_l.setCoeff(pairAttributeValue_l.first, coeff_l);
       } catch (const std::invalid_argument& e) {
-        std::cerr << "Invalid value " << pairAttributeValue_l.second
-                  << " in section " << sectionName_l
-                  << ": coeff value must be a double!\n";
+        loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+            << "Invalid value " << pairAttributeValue_l.second << " in section "
+            << sectionName_l << ": coeff value must be a double!\n";
         std::exit(1);
       }
     }
   }
 
   if (emptyCstr_l) {
-    std::cerr << "section " << sectionName_l
-              << " defines an empty constraint.\n";
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "section " << sectionName_l << " defines an empty constraint.\n";
     std::exit(1);
   }
 
@@ -106,12 +111,14 @@ std::string AdditionalConstraints::checkAndReturnConstraintName(
   // check that section has defined a unique constraint name
   auto temporatyIterator_l = constarintsSection_l.find("name");
   if (temporatyIterator_l == constarintsSection_l.end()) {
-    std::cout << "section " << sectionName_l << " is missing a name.\n";
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "section " << sectionName_l << " is missing a name.\n";
     std::exit(1);
   } else {
     constraintName_l = temporatyIterator_l->second;
     if (this->count(constraintName_l)) {
-      std::cout << "Duplicate constraint name " << constraintName_l << ".\n";
+      loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "Duplicate constraint name " << constraintName_l << ".\n";
       std::exit(1);
     }
   }
@@ -126,7 +133,8 @@ std::string AdditionalConstraints::checkAndReturnSectionSign(
   std::string constraintSign_l = "";
   auto temporatyIterator_l = constarintsSection_l.find("sign");
   if (temporatyIterator_l == constarintsSection_l.end()) {
-    std::cout << "section " << sectionName_l << " is missing a sign.\n";
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "section " << sectionName_l << " is missing a sign.\n";
     std::exit(1);
   } else {
     constraintSign_l = temporatyIterator_l->second;
@@ -141,16 +149,17 @@ double AdditionalConstraints::checkAndReturnSectionRhs(
   double constraintRHS_l = 0;
   auto temporatyIterator_l = constarintsSection_l.find("rhs");
   if (temporatyIterator_l == constarintsSection_l.end()) {
-    std::cout << "section " << sectionName_l << " is missing a rhs.\n";
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "section " << sectionName_l << " is missing a rhs.\n";
     std::exit(1);
   } else {
     try {
       std::string::size_type sz;
       constraintRHS_l = std::stod(temporatyIterator_l->second, &sz);
     } catch (const std::invalid_argument& e) {
-      std::cerr << "Invalid value " << temporatyIterator_l->second
-                << " in section " << sectionName_l
-                << ": rhs value must be a double!\n";
+      loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "Invalid value " << temporatyIterator_l->second << " in section "
+          << sectionName_l << ": rhs value must be a double!\n";
       std::exit(1);
     }
   }

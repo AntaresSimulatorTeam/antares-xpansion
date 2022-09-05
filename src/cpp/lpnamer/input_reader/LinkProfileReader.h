@@ -10,8 +10,8 @@
 class LinkProfileReader {
  public:
   LinkProfileReader(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      logger_(logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+      : logger_(logger) {}
 
   std::vector<LinkProfile> ReadLinkProfile(
       const std::filesystem::path& direct_filename,
@@ -38,7 +38,7 @@ class LinkProfileReader {
                      double value, int chronicle_id, size_t time_step);
   void EnsureFileIsGood(const std::filesystem::path& direct_filename);
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerObj_ = *logger_;
+  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };
 
 #endif  // ANTARESXPANSION_LINKPROFILEREADER_H

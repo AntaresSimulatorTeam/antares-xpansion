@@ -73,25 +73,24 @@ int main(int argc, char **argv) {
     auto logger = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::INFO);
     logger->AddLogger(logFile);
     logger->AddLogger(logStd);
-    (*logger)() << "*********************** Hello *****************"
-                << std::endl;
+    auto &loggerRef = (*logger);
 
     /**/
     ActiveLinksBuilder linkBuilder = get_link_builders(root, logger);
 
     if ((master_formulation != "relaxed") &&
         (master_formulation != "integer")) {
-      logger->(LOGLEVEL::FATAL)
+      loggerRef(LOGLEVEL::FATAL)
           << "Invalid formulation argument : argument must be "
              "\"integer\" or \"relaxed\""
           << std::endl;
       std::exit(1);
     }
 
-    AdditionalConstraints additionalConstraints;
+    AdditionalConstraints additionalConstraints(logger);
     if (!additionalConstraintFilename_l.empty()) {
-      additionalConstraints =
-          AdditionalConstraints(additionalConstraintFilename_l);
+      additionalConstraints.SetConstraintsFile(additionalConstraintFilename_l);
+      additionalConstraints.ReadConstraintsFile();
     }
 
     Couplings couplings;

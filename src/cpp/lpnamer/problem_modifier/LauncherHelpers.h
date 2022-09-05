@@ -49,4 +49,4 @@ void addBinaryVariables(
  */
 ActiveLinksBuilder get_link_builders(
     const std::filesystem::path& root,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
