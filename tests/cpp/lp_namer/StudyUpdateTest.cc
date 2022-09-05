@@ -96,9 +96,10 @@ already-installed-capacity = 100\n\
     file_direct.close();
     file_indirect.close();
 
+    auto logger = emptyLogger();
     CandidatesINIReader candidateReader("temp_interco.txt", "temp_area.txt",
-                                        emptyLogger());
-    LinkProfileReader profileReader(emptyLogger());
+                                        logger);
+    LinkProfileReader profileReader(logger);
 
     std::vector<CandidateData> cand_data_list =
         candidateReader.readCandidateData("temp_candidates.ini");
@@ -106,7 +107,7 @@ already-installed-capacity = 100\n\
     std::map<std::string, std::vector<LinkProfile>> profile_map =
         profileReader.getLinkProfileMap(".", cand_data_list);
 
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     StudyUpdateTest::_links = linkBuilder.getLinks();
   }
 
@@ -591,11 +592,10 @@ TEST_F(UpdateCapacitiesTest,
       StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(822));
   (void)study_updater_.update({active_link}, solution);
 
-  auto profiles =
-      LinkProfileReader(emptyLogger())
-          .ReadLinkProfile(
-              direct_ntc_file_path,
-              indirect_ntc_file_path);  // Refactor NTC reader maybe ?
+  auto logger = emptyLogger();
+  auto profiles = LinkProfileReader(logger).ReadLinkProfile(
+      direct_ntc_file_path,
+      indirect_ntc_file_path);  // Refactor NTC reader maybe ?
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     /* Capacité du lien = capacité installée * profile installé
      *                  = 100 * 0.1 | 100 * 0.9

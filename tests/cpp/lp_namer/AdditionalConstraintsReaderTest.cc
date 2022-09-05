@@ -78,8 +78,9 @@ rhs = 200\
 };
 
 TEST_F(AdditionalConstraintsReaderTest, testSections) {
+  auto logger = emptyLogger();
   AdditionalConstraintsReader additionalConstraintsReader_l(
-      "temp_additional_constraints.ini", emptyLogger());
+      "temp_additional_constraints.ini", logger);
 
   std::set<std::string> sections_l =
       additionalConstraintsReader_l.getSections();
@@ -97,8 +98,9 @@ TEST_F(AdditionalConstraintsReaderTest, testSections) {
 }
 
 TEST_F(AdditionalConstraintsReaderTest, testVariables) {
+  auto logger = emptyLogger();
   AdditionalConstraintsReader additionalConstraintsReader_l(
-      "temp_additional_constraints.ini", emptyLogger());
+      "temp_additional_constraints.ini", logger);
 
   std::map<std::string, std::string> variablesSection_l =
       additionalConstraintsReader_l.getVariablesSection();
@@ -122,8 +124,9 @@ TEST_F(AdditionalConstraintsReaderTest, testVariables) {
 }
 
 TEST_F(AdditionalConstraintsReaderTest, testOneSection) {
+  auto logger = emptyLogger();
   AdditionalConstraintsReader additionalConstraintsReader_l(
-      "temp_additional_constraints.ini", emptyLogger());
+      "temp_additional_constraints.ini", logger);
 
   std::map<std::string, std::string> section_l =
       additionalConstraintsReader_l.getSection("10");
