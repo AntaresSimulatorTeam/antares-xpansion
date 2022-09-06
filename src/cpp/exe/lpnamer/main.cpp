@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
     /**/
     using namespace ProblemGenerationLog;
     auto logFile = std::make_shared<ProblemGenerationFileLogger>(
-        root / "lp" / "NewLogger.txt");
+        root / "lp" / "ProblemGenerationLog.txt");
 
     auto logStd = std::make_shared<ProblemGenerationOstreamLogger>(std::cout);
 
