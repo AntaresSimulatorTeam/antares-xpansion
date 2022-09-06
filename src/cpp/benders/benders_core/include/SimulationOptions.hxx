@@ -14,7 +14,7 @@ BENDERS_OPTIONS_MACRO(RELATIVE_GAP, double, 1e-12, asDouble())
 BENDERS_OPTIONS_MACRO(RELAXED_GAP, double, 1e-4, asDouble())
 
 // In-out separation parameter
-BENDERS_OPTIONS_MACRO(SEPARATION_PARAM, double, 1, asDouble())
+BENDERS_OPTIONS_MACRO(SEPARATION_PARAM, double, 0.5, asDouble())
 
 // Formulation of the master problem
 BENDERS_OPTIONS_MACRO(MASTER_FORMULATION, std::string, "integer", asString())

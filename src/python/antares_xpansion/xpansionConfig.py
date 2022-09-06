@@ -151,7 +151,7 @@ class XpansionConfig:
             "additional-constraints": "",
             "yearly-weights": "",
             "log_level": "0",
-            "separation_parameter": "1",
+            "separation_parameter": "0.5",
         }
 
     def _set_default_options(self):
