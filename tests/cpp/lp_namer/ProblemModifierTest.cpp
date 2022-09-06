@@ -1019,7 +1019,6 @@ TEST_F(ProblemModifierTestWithProfile,
 }
 TEST_F(ProblemModifierTestWithProfile,
        CandidateWithNotNullChronicleButOTherwiseNullProfileExists) {
-  std::vector<CandidateData> cand_data_list = {cand1};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
   chronicle_1.direct_link_profile = {0, 0};
   chronicle_1.indirect_link_profile = {0, 0};
@@ -1035,6 +1034,7 @@ TEST_F(ProblemModifierTestWithProfile,
                                 // 2 for MCY2
   b_file.close();
 
+  cand_data_list = {cand1};
   ActiveLinksBuilder linkBuilder{
       cand_data_list, profile_map,
       DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
@@ -1048,7 +1048,7 @@ TEST_F(ProblemModifierTestWithProfile,
 }
 TEST_F(ProblemModifierTestWithProfile,
        CandidatesWithNullSelectedChronicleIsRemoved) {
-  std::vector<CandidateData> cand_data_list = {cand1};
+  cand_data_list = {cand1};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
   chronicle_1.direct_link_profile = {1, 1};
   chronicle_1.indirect_link_profile = {1, 1};
