@@ -33,6 +33,7 @@ class ActiveLink {
     _linkex = toCopy._linkex;
     _already_installed_capacity = toCopy._already_installed_capacity;
     mc_year_to_chronicle_ = toCopy.mc_year_to_chronicle_;
+    _candidates = toCopy._candidates;
     logger_ = toCopy.logger_;
     return *this;
   }
