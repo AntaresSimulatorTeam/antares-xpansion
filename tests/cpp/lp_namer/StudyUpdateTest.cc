@@ -185,7 +185,9 @@ TEST_F(StudyUpdateTest, linkprofile) {
 studypath/input/links/ORIGIN/DESTINATION.txt)
 ***/
 TEST_F(StudyUpdateTest, LinkFilenames) {
-  StudyUpdateLinkParameterStrategy studyupdater(std::filesystem::path("."));
+  auto logger = emptyLogger();
+  StudyUpdateLinkParameterStrategy studyupdater(std::filesystem::path("."),
+                                                logger);
   ASSERT_EQ(
       studyupdater.getLinkdataFilepath(_links[0]),
       std::filesystem::path(".") / "input" / "links" / "area1" / "area2.txt");
@@ -195,7 +197,8 @@ TEST_F(StudyUpdateTest, LinkFilenames) {
 }
 
 TEST_F(StudyUpdateTest, computeNewCapacities) {
-  StudyUpdateLinkParameterStrategy studyupdater(".");
+  auto logger = emptyLogger();
+  StudyUpdateLinkParameterStrategy studyupdater(".", logger);
 
   // candidate peak has a link profile
   const std::map<std::string, double>& investissments = {
@@ -218,7 +221,8 @@ TEST_F(StudyUpdateTest, computeNewCapacities) {
 }
 
 TEST_F(StudyUpdateTest, no_computed_investment_for_candidate_peak) {
-  StudyUpdateLinkParameterStrategy studyupdater(".");
+  auto logger = emptyLogger();
+  StudyUpdateLinkParameterStrategy studyupdater(".", logger);
 
   // candidate peak has no computed investments
   const std::map<std::string, double>& investissments = {
@@ -353,13 +357,15 @@ class UpdateCapacitiesTest : public ::testing::Test {
     tmp_directory_path_ = std::tmpnam(nullptr);
     fs::create_directories(tmp_directory_path_ / "input" / "links" / "area1");
     ntc_path_ = tmp_directory_path_ / "input" / "links" / "area1" / "area2.txt";
-    study_updater_ =
-        StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(800));
+    study_updater_.setStudyPath(tmp_directory_path_);
   }
 
   fs::path tmp_directory_path_;
   fs::path ntc_path_;
-  StudyUpdater study_updater_{fs::path("."), AntaresVersionProviderStub(800)};
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger =
+      emptyLogger();
+  StudyUpdater study_updater_{fs::path("."), AntaresVersionProviderStub(800),
+                              logger};
   AntaresLinkDataReader antares_link_data_reader_;
 };
 
@@ -381,7 +387,7 @@ TEST_F(UpdateCapacitiesTest, update_nothing) {
 }
 
 TEST_F(UpdateCapacitiesTest, update_one_link_no_candidate) {
-  ActiveLink active_link(0, "dummy_link", "area1", "area2", 1);
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 1, logger);
   std::map<std::string, double> solution{
       {"dummy_link", 2},
   };
@@ -396,7 +402,7 @@ TEST_F(UpdateCapacitiesTest, update_one_link_no_candidate) {
 }
 
 TEST_F(UpdateCapacitiesTest, update_one_link_one_candidate) {
-  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
                           "",   "",           1, "dummy_candidate"};
   LinkProfile profile;
@@ -415,7 +421,7 @@ TEST_F(UpdateCapacitiesTest, update_one_link_one_candidate) {
 }
 
 TEST_F(UpdateCapacitiesTest, update_version_720) {
-  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
                           "",   "",           1, "dummy_candidate"};
   LinkProfile profile;
@@ -424,8 +430,8 @@ TEST_F(UpdateCapacitiesTest, update_version_720) {
       {"dummy_candidate", 300},
   };
 
-  study_updater_ =
-      StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(720));
+  study_updater_.setStudyPath(tmp_directory_path_);
+  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(720));
   (void)study_updater_.update({active_link}, solution);
 
   auto res =
@@ -437,7 +443,7 @@ TEST_F(UpdateCapacitiesTest, update_version_720) {
 }
 
 TEST_F(UpdateCapacitiesTest, update_link_parameters_version_720) {
-  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
                           "",   "",           1, "dummy_candidate"};
   LinkProfile profile;
@@ -454,8 +460,8 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_720) {
     WriteRecord(ntc_file, record);
   }
   ntc_file.close();
-  study_updater_ =
-      StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(720));
+  study_updater_.setStudyPath(tmp_directory_path_);
+  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(720));
   (void)study_updater_.update({active_link}, solution);
 
   auto res =
@@ -472,7 +478,7 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_720) {
 }
 
 TEST_F(UpdateCapacitiesTest, update_version_800) {
-  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
                           "",   "",           1, "dummy_candidate"};
   LinkProfile profile;
@@ -481,8 +487,8 @@ TEST_F(UpdateCapacitiesTest, update_version_800) {
       {"dummy_candidate", 300},
   };
 
-  study_updater_ =
-      StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(811));
+  study_updater_.setStudyPath(tmp_directory_path_);
+  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(811));
   (void)study_updater_.update({active_link}, solution);
 
   auto res =
@@ -494,7 +500,7 @@ TEST_F(UpdateCapacitiesTest, update_version_800) {
 }
 
 TEST_F(UpdateCapacitiesTest, update_link_parameters_version_800) {
-  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
                           "",   "",           1, "dummy_candidate"};
   LinkProfile profile;
@@ -511,8 +517,8 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_800) {
     WriteRecord(ntc_file, record);
   }
   ntc_file.close();
-  study_updater_ =
-      StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(800));
+  study_updater_.setStudyPath(tmp_directory_path_);
+  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(800));
   (void)study_updater_.update({active_link}, solution);
 
   auto res =
@@ -530,7 +536,7 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_800) {
 
 TEST_F(UpdateCapacitiesTest,
        update_version_820_two_chronicle_installed_capacity_candidate_profile) {
-  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true,
                           "dummy_link",
                           0,
@@ -588,8 +594,8 @@ TEST_F(UpdateCapacitiesTest,
   direct_file.close();
   indirect_file.close();
 
-  study_updater_ =
-      StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(822));
+  study_updater_.setStudyPath(tmp_directory_path_);
+  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(822));
   (void)study_updater_.update({active_link}, solution);
 
   auto logger = emptyLogger();
@@ -614,7 +620,7 @@ TEST_F(UpdateCapacitiesTest,
 }
 
 TEST_F(UpdateCapacitiesTest, update_link_parameters_version_820) {
-  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
+  ActiveLink active_link(0, "dummy_link", "area1", "area2", 100, logger);
   CandidateData candidate{true, "dummy_link", 0, "area1",          "area2",
                           "",   "",           1, "dummy_candidate"};
   LinkProfile profile;
@@ -631,8 +637,8 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_820) {
   }
   link_parameters.close();
 
-  study_updater_ =
-      StudyUpdater(tmp_directory_path_, AntaresVersionProviderStub(820));
+  study_updater_.setStudyPath(tmp_directory_path_);
+  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(820));
   (void)study_updater_.update({active_link}, solution);
 
   auto res = antares_link_data_reader_.Read820(

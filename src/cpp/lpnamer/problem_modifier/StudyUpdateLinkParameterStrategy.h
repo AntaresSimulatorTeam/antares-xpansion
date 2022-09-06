@@ -8,14 +8,16 @@
 #include "StudyUpdateStrategy.h"
 class StudyUpdateLinkParameterStrategy : public StudyUpdateStrategy {
  public:
-  explicit StudyUpdateLinkParameterStrategy(const std::filesystem::path& link_path);
+  explicit StudyUpdateLinkParameterStrategy(
+      const std::filesystem::path& link_path,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
   int Update(const ActiveLink& link,
-                      const std::map<std::string, double>& map) override;
+             const std::map<std::string, double>& map) override;
 
  private:
   [[nodiscard]] int UpdateLinkDataParameters(
       const ActiveLink& link_p,
-      const std::map<std::string, double>& investments_p) const;
+      const std::map<std::string, double>& investments_p);
 
  public:
   /*!
@@ -23,7 +25,8 @@ class StudyUpdateLinkParameterStrategy : public StudyUpdateStrategy {
    *
    * \param link_p : link for which the datalink file path will be returned
    */
-  [[nodiscard]] std::filesystem::path getLinkdataFilepath(const ActiveLink& link_p) const;
+  [[nodiscard]] std::filesystem::path getLinkdataFilepath(
+      const ActiveLink& link_p) const;
   /*!
    * \brief computes the new capacities of related to a link
    *

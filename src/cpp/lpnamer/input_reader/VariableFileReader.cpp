@@ -19,11 +19,15 @@ void updateMapColumn(const std::vector<ActiveLink>& links, int link_id,
 
 VariableFileReader::VariableFileReader(
     const std::string& fileName, const std::vector<ActiveLink>& links,
-    const VariableFileReadNameConfiguration& variable_name_config) {
+    const VariableFileReadNameConfiguration& variable_name_config,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    : logger_(logger) {
   std::string line;
   std::ifstream file(fileName.c_str());
   if (!file.good()) {
-    throw std::runtime_error("Unable to open '" + fileName + "'");
+    auto errMsg = std::string("Unable to open '") + fileName + "'";
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
+    throw std::runtime_error(errMsg);
   }
   while (std::getline(file, line)) {
     std::string name = getVarNameFromLine(line);

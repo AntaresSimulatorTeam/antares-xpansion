@@ -12,12 +12,13 @@ ProblemData::ProblemData(const std::string &problem_mps,
     : _problem_mps(problem_mps), _variables_txt(variables_txt) {}
 
 std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
-    const std::filesystem::path &mps_filePath_p) const {
+    const std::filesystem::path &mps_filePath_p) {
   std::string line;
   std::vector<ProblemData> result;
   std::ifstream mps_filestream(mps_filePath_p.c_str());
   if (!mps_filestream.good()) {
-    std::cout << "unable to open " << mps_filePath_p << std::endl;
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << mps_filePath_p << std::endl;
     std::exit(1);
   }
   while (std::getline(mps_filestream, line)) {
@@ -51,7 +52,7 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  */
 void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
-                                  Couplings &couplings) const {
+                                  Couplings &couplings) {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const mps_name = root / problemData._problem_mps;
   auto const var_name = root / problemData._variables_txt;
@@ -69,8 +70,8 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   variable_name_config.cost_extremite_variable_name =
       "CoutExtremiteVersOrigineDeLInterconnexion";
 
-  auto variableReader =
-      VariableFileReader(var_name.string(), _links, variable_name_config);
+  auto variableReader = VariableFileReader(var_name.string(), _links,
+                                           variable_name_config, logger_);
 
   std::vector<std::string> var_names = variableReader.getVariables();
   std::map<colId, ColumnsToChange> p_ntc_columns =
@@ -81,12 +82,13 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       variableReader.getIndirectCostVarColumns();
 
   SolverFactory factory;
-  auto in_prblm = std::make_shared<Problem>(factory.create_solver(_solver_name));
+  auto in_prblm =
+      std::make_shared<Problem>(factory.create_solver(_solver_name));
   in_prblm->read_prob_mps(mps_name);
 
   solver_rename_vars(in_prblm, var_names);
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger_);
   in_prblm = problem_modifier.changeProblem(
       std::move(in_prblm), _links, p_ntc_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -113,7 +115,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
  * \return void
  */
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
-                                      Couplings &couplings) const {
+                                      Couplings &couplings) {
   auto const mps_file_name = root / MPS_TXT;
   auto mpsList = readMPSList(mps_file_name);
   std::for_each(std::execution::par, mpsList.begin(), mpsList.end(), [&](const auto& mps) {

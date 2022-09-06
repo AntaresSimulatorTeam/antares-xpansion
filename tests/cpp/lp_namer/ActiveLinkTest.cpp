@@ -728,9 +728,10 @@ TEST(LinkBuilderTest, ChronicleMap_properly_loaded_in_link) {
   b_file << "Garbage\n52\n";
   b_file.close();
 
+  auto logger = emptyLogger();
   ActiveLinksBuilder linkBuilder{
       cand_data_list, profile_map,
-      DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
+      DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::map<unsigned, unsigned> expected = {{1, 52}};

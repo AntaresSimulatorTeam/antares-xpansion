@@ -4,7 +4,8 @@
 
 #include "StudyUpdateStrategy.h"
 
-static const std::filesystem::path ANTARES_LINK_FOLDER = std::filesystem::path("input") / "links";
+static const std::filesystem::path ANTARES_LINK_FOLDER =
+    std::filesystem::path("input") / "links";
 
 void StudyUpdateStrategy::EnsureCandidateInvestmentFound(
     const std::map<std::string, double>& investments_p,
@@ -12,12 +13,14 @@ void StudyUpdateStrategy::EnsureCandidateInvestmentFound(
     const std::map<std::string, double>::const_iterator& it_candidate) const {
   if (it_candidate == investments_p.end()) {
     std::string message = "No investment computed for the candidate " +
-        candidate.get_name() + " on the link " +
-        link_p.get_LinkName();
+                          candidate.get_name() + " on the link " +
+                          link_p.get_LinkName();
+    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
     throw std::runtime_error(message);
   }
 }
-StudyUpdateStrategy::StudyUpdateStrategy(const std::filesystem::path& study_path)
-: antares_link_folder_path{study_path / ANTARES_LINK_FOLDER}
-{
-}
+StudyUpdateStrategy::StudyUpdateStrategy(
+    const std::filesystem::path& study_path,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    : antares_link_folder_path{study_path / ANTARES_LINK_FOLDER},
+      logger_(logger) {}

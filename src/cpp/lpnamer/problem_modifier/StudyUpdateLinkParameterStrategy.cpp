@@ -11,21 +11,21 @@ int StudyUpdateLinkParameterStrategy::Update(
 }
 
 StudyUpdateLinkParameterStrategy::StudyUpdateLinkParameterStrategy(
-    const std::filesystem::path& link_path)
-    : StudyUpdateStrategy(link_path) {
-
-}
+    const std::filesystem::path& link_path,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    : StudyUpdateStrategy(link_path, logger) {}
 
 std::filesystem::path StudyUpdateLinkParameterStrategy::getLinkdataFilepath(
     ActiveLink const& link_p) const {
-  return antares_link_folder_path / link_p.get_linkor() / (link_p.get_linkex() + ".txt");
+  return antares_link_folder_path / link_p.get_linkor() /
+         (link_p.get_linkex() + ".txt");
 }
 
 int StudyUpdateLinkParameterStrategy::UpdateLinkDataParameters(
     const ActiveLink& link_p,
-    const std::map<std::string, double>& investments_p) const {
+    const std::map<std::string, double>& investments_p) {
   auto linkdataFilename_l = getLinkdataFilepath(link_p);
-  LinkParametersCSVOverWriter csv_writer;
+  LinkParametersCSVOverWriter csv_writer(logger_);
   if (!csv_writer.open(linkdataFilename_l)) {
     return 1;
   }
@@ -50,9 +50,9 @@ StudyUpdateLinkParameterStrategy::computeNewCapacities(
     const std::map<std::string, double>& investments_p,
     const ActiveLink& link_p, int timepoint_p) const {
   double direct_l = link_p.get_already_installed_capacity() *
-      link_p.already_installed_direct_profile(timepoint_p);
+                    link_p.already_installed_direct_profile(timepoint_p);
   double indirect_l = link_p.get_already_installed_capacity() *
-      link_p.already_installed_direct_profile(timepoint_p);
+                      link_p.already_installed_direct_profile(timepoint_p);
 
   const auto& candidates = link_p.getCandidates();
   for (const auto& candidate : candidates) {

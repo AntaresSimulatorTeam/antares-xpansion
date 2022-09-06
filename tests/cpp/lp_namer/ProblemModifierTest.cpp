@@ -37,6 +37,8 @@ class ProblemModifierTest : public ::testing::Test {
   std::vector<int> col_indexes;
   std::vector<int> start_indexes;
   std::vector<std::basic_string<char>> col_names;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger =
+      emptyLogger();
 
  protected:
   void SetUp() {
@@ -261,10 +263,10 @@ TEST_F(ProblemModifierTest,
       {link_id, {{{1, 0}}}}};
   const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
       {link_id, {{{2, 0}}}}};
-  ActiveLink link(link_id, "dummy_link", "from", "to", 0);
+  ActiveLink link(link_id, "dummy_link", "from", "to", 0, logger);
   const std::vector<ActiveLink> active_links = {link};
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), active_links, p_var_columns,
       p_direct_cost_columns, p_indirect_cost_columns);
@@ -308,10 +310,10 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -368,10 +370,10 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_no_profile) {
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -453,10 +455,10 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
   profile_cand2.indirect_link_profile = {2.6, 2.8};
   profile_map["profile_cand2"] = {profile_cand2};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -569,10 +571,10 @@ TEST_F(ProblemModifierTest,
   empty_profile.indirect_link_profile = {0.0, 0.0};
   profile_map["empty_profile"] = {empty_profile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -654,10 +656,10 @@ TEST_F(ProblemModifierTest, candidateWithNotNullProfileExists) {
   profile_cand1.indirect_link_profile = {0.8, 1.2};
   profile_map["profile_cand1"] = {profile_cand1};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -696,10 +698,10 @@ TEST_F(ProblemModifierTest, candidateWithNullProfileIsRemoved) {
   profile_cand1.indirect_link_profile = {0, 0};
   profile_map["profile_cand1"] = {profile_cand1};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -765,7 +767,7 @@ class ProblemModifierTestMultiChronicle : public ProblemModifierTest {
 
     ActiveLinksBuilder linkBuilder{
         cand_data_list, profile_map,
-        DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
+        DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
     links = linkBuilder.getLinks();
   }
 
@@ -787,7 +789,7 @@ class ProblemModifierTestMultiChronicle : public ProblemModifierTest {
 TEST_F(
     ProblemModifierTestMultiChronicle,
     One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseNothing) {
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem = problem_modifier.changeProblem(
       std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -859,7 +861,7 @@ TEST_F(
 TEST_F(
     ProblemModifierTestMultiChronicle,
     One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseChronicle2forYear2) {
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem->mc_year = 2;
   math_problem = problem_modifier.changeProblem(
       math_problem, links, p_var_columns, p_direct_cost_columns,
@@ -930,7 +932,7 @@ TEST_F(
              link_capacity * profile_link.getIndirectProfile(1));
 }
 TEST_F(ProblemModifierTestMultiChronicle, candidateWithNotNullProfileExists) {
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger);
   math_problem->mc_year = 2;
   math_problem = problem_modifier.changeProblem(
       math_problem, links, p_var_columns, p_direct_cost_columns,
@@ -959,13 +961,13 @@ class ProblemModifierTestWithProfile : public ProblemModifierTest {
 
     ActiveLinksBuilder linkBuilder{
         cand_data_list, profile_map,
-        DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
+        DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
     links = linkBuilder.getLinks();
 
     math_problem->mc_year = 2;
   }
 
-  ProblemModifier problem_modifier = ProblemModifier();
+  ProblemModifier problem_modifier = ProblemModifier(logger);
   std::vector<ActiveLink> links;
   CandidateData cand1;
 
@@ -1005,7 +1007,7 @@ TEST_F(ProblemModifierTestWithProfile,
   cand_data_list = {cand1};
   ActiveLinksBuilder linkBuilder{
       cand_data_list, profile_map,
-      DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
+      DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
   links = linkBuilder.getLinks();
 
   math_problem = problem_modifier.changeProblem(
@@ -1035,7 +1037,7 @@ TEST_F(ProblemModifierTestWithProfile,
 
   ActiveLinksBuilder linkBuilder{
       cand_data_list, profile_map,
-      DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
+      DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
   links = linkBuilder.getLinks();
 
   math_problem = problem_modifier.changeProblem(
@@ -1064,7 +1066,7 @@ TEST_F(ProblemModifierTestWithProfile,
 
   ActiveLinksBuilder linkBuilder{
       cand_data_list, profile_map,
-      DirectAccessScenarioToChronicleProvider(ts_info_root_), emptyLogger()};
+      DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
   links = linkBuilder.getLinks();
 
   math_problem = problem_modifier.changeProblem(

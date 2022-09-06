@@ -15,7 +15,8 @@
  */
 void treatAdditionalConstraints(
     SolverAbstract::Ptr master_p,
-    const AdditionalConstraints& additionalConstraints_p);
+    const AdditionalConstraints& additionalConstraints_p,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
 
 /**
  * \brief adds an additional constraint to an existent solver
@@ -23,8 +24,9 @@ void treatAdditionalConstraints(
  * \param master_p solver to which the constraint will be added
  * \param additionalConstraint_p the additional constraint to add
  */
-void addAdditionalConstraint(SolverAbstract::Ptr master_p,
-                             AdditionalConstraint& additionalConstraint_p);
+void addAdditionalConstraint(
+    SolverAbstract::Ptr master_p, AdditionalConstraint& additionalConstraint_p,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
 
 /**
  * \brief creates a binary variable and its corresponding linking constraint
@@ -40,7 +42,8 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
  */
 void addBinaryVariables(
     SolverAbstract::Ptr master_p,
-    std::map<std::string, std::string> const& variablesToBinarise_p);
+    std::map<std::string, std::string> const& variablesToBinarise_p,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
 
 /**
  * \brief return Active Links Builder
