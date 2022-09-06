@@ -25,7 +25,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;
@@ -78,7 +79,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_integer) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;
@@ -139,7 +141,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_relaxed) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, emptyLogger()};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;
