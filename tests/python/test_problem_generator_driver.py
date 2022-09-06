@@ -122,20 +122,6 @@ class TestProblemGeneratorDriver:
                 my_list = line.strip().split(" ")
                 assert my_list in expected_results
 
-    def test_lp_namer_log_filename_with_non_existing_lp_dir(self):
-
-        additional_constraints = "my additionals constraints"
-        pblm_gen_data = ProblemGeneratorData(keep_mps=False,
-                                             additional_constraints=additional_constraints,
-                                             user_weights_file_path=Path(""),
-                                             weight_file_name_for_lp="",
-                                             lp_namer_exe_path="",
-                                             active_years=[])
-
-        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
-        with pytest.raises(ProblemGeneratorDriver.LPNamerPathError):
-            problem_generator_driver.get_lp_namer_log_filename()
-
     def test_clear_old_log(self, tmp_path):
 
         lp_namer_file = tmp_path / self.lp_exe
