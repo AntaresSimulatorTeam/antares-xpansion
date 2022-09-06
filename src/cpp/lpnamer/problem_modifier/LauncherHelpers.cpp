@@ -9,19 +9,21 @@
 
 void treatAdditionalConstraints(
     SolverAbstract::Ptr master_p,
-    const AdditionalConstraints &additionalConstraints_p) {
+    const AdditionalConstraints &additionalConstraints_p,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
   // add requested binary variables
-  addBinaryVariables(master_p,
-                     additionalConstraints_p.getVariablesToBinarise());
+  addBinaryVariables(master_p, additionalConstraints_p.getVariablesToBinarise(),
+                     logger);
 
   // add the constraints
   for (auto pairNameAdditionalcstr : additionalConstraints_p) {
-    addAdditionalConstraint(master_p, pairNameAdditionalcstr.second);
+    addAdditionalConstraint(master_p, pairNameAdditionalcstr.second, logger);
   }
 }
 
-void addAdditionalConstraint(SolverAbstract::Ptr master_p,
-                             AdditionalConstraint &additionalConstraint_p) {
+void addAdditionalConstraint(
+    SolverAbstract::Ptr master_p, AdditionalConstraint &additionalConstraint_p,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
   auto newnz = (int)additionalConstraint_p.size();
   int newrows = 1;
   std::vector<char> rtype(newrows);
@@ -40,8 +42,9 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
   } else if (sign_l == "equal") {
     rtype[0] = 'E';
   } else {
-    std::cout << "ERROR un addAdditionalConstraint, unknown row type " << sign_l
-              << std::endl;
+    (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "FATAL: in addAdditionalConstraint, unknown row type " << sign_l
+        << std::endl;
     std::exit(1);
   }
 
@@ -49,8 +52,9 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
   for (auto &pairNameCoeff : additionalConstraint_p) {
     int col_index = master_p->get_col_index(pairNameCoeff.first);
     if (col_index == -1) {
-      std::cout << "missing variable " << pairNameCoeff.first
-                << " used in additional constraint file!\n";
+      (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "missing variable " << pairNameCoeff.first
+          << " used in additional constraint file!\n";
       std::exit(1);
     }
     mindex[i] = col_index;
@@ -64,13 +68,15 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
 
 void addBinaryVariables(
     SolverAbstract::Ptr master_p,
-    const std::map<std::string, std::string> &variablesToBinarise_p) {
+    const std::map<std::string, std::string> &variablesToBinarise_p,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
   for (const auto &pairOldNewVarnames : variablesToBinarise_p) {
     int col_index = master_p->get_col_index(pairOldNewVarnames.first);
 
     if (col_index == -1) {
-      std::cout << "missing variable " << pairOldNewVarnames.first
-                << " used in additional constraint file!\n";
+      (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "missing variable " << pairOldNewVarnames.first
+          << " used in additional constraint file!\n";
       std::exit(1);
     }
 
@@ -139,7 +145,7 @@ ActiveLinksBuilder get_link_builders(
   const auto &mapLinkProfile = LinkProfileReader(logger).getLinkProfileMap(
       capacity_folder, candidatesDatas);
 
-  return ActiveLinksBuilder(candidatesDatas, mapLinkProfile,
-                            DirectAccessScenarioToChronicleProvider(ts_root),
-                            logger);
+  return ActiveLinksBuilder(
+      candidatesDatas, mapLinkProfile,
+      DirectAccessScenarioToChronicleProvider(ts_root, logger), logger);
 }

@@ -14,10 +14,12 @@ int StudyUpdateLinkCapacitiesStrategy::UpdateLinkCapacities(
 
   for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
     if (auto chronicle_capacities_at_time =
-          computeNewCapacitiesAllChronicles(investments_p, link_p, i);
+            computeNewCapacitiesAllChronicles(investments_p, link_p, i);
         !chronicle_capacities_at_time.empty()) {
-      for (auto [direct_capacities_at_time, indirect_capacities_at_time] : chronicle_capacities_at_time) {
-        capacities_csv_writer.WriteChronicleTimePoint(direct_capacities_at_time, indirect_capacities_at_time);
+      for (auto [direct_capacities_at_time, indirect_capacities_at_time] :
+           chronicle_capacities_at_time) {
+        capacities_csv_writer.WriteChronicleTimePoint(
+            direct_capacities_at_time, indirect_capacities_at_time);
       }
     }
     capacities_csv_writer.FinishTimePoint();
@@ -56,5 +58,6 @@ StudyUpdateLinkCapacitiesStrategy::computeNewCapacitiesAllChronicles(
   return new_capacities;
 }
 StudyUpdateLinkCapacitiesStrategy::StudyUpdateLinkCapacitiesStrategy(
-    const std::filesystem::path& link_path)
-    : StudyUpdateStrategy(link_path) {}
+    const std::filesystem::path& link_path,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    : StudyUpdateStrategy(link_path, logger) {}

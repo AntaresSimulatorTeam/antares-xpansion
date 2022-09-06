@@ -21,12 +21,13 @@ namespace po = boost::program_options;
  * directory containing the lp directory \param links_p Structure which contains
  * the list of links \param jsonPath_l path to the json output file \return void
  */
-void updateStudy(const std::filesystem::path &rootPath_p,
-                 const std::vector<ActiveLink> &links_p,
-                 std::string const &jsonPath_l) {
+void updateStudy(
+    const std::filesystem::path &rootPath_p,
+    const std::vector<ActiveLink> &links_p, std::string const &jsonPath_l,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
   auto linksPath_l = rootPath_p / ".." / "..";
 
-  StudyUpdater studyUpdater(linksPath_l, AntaresVersionProvider());
+  StudyUpdater studyUpdater(linksPath_l, AntaresVersionProvider(), logger);
   int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);
 
   if (updateFailures_l) {
@@ -77,7 +78,7 @@ int main(int argc, char **argv) {
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 
-    updateStudy(root, links, solutionFile_l);
+    updateStudy(root, links, solutionFile_l, logger);
 
     return 0;
   } catch (std::exception &e) {

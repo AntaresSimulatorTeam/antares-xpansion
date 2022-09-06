@@ -96,12 +96,12 @@ int main(int argc, char **argv) {
     Couplings couplings;
     std::string solver_name = "CBC";
     std::vector<ActiveLink> links = linkBuilder.getLinks();
-    LinkProblemsGenerator linkProblemsGenerator(links, solver_name);
+    LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger);
     linkProblemsGenerator.treatloop(root, couplings);
 
     MasterGeneration master_generation(root, links, additionalConstraints,
                                        couplings, master_formulation,
-                                       solver_name);
+                                       solver_name, logger);
 
     return 0;
   } catch (std::exception &e) {

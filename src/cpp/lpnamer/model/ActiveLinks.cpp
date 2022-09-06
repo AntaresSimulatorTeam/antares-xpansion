@@ -35,7 +35,8 @@ ActiveLinksBuilder::ActiveLinksBuilder(
     const std::map<std::string, std::vector<LinkProfile>>& profile_map,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
     : ActiveLinksBuilder(candidateList, profile_map,
-                         DirectAccessScenarioToChronicleProvider(""), logger) {}
+                         DirectAccessScenarioToChronicleProvider("", logger),
+                         logger) {}
 
 void ActiveLinksBuilder::checkLinksValidity() {
   for (const auto& candidateData : _candidateDatas) {
@@ -141,7 +142,7 @@ void ActiveLinksBuilder::create_links() {
         link_data._linkor, link_data._linkex);
     ActiveLink link(link_data.id, link_name, link_data._linkor,
                     link_data._linkex, link_data.installed_capacity,
-                    mc_year_to_chronicle);
+                    mc_year_to_chronicle, logger_);
     link.setAlreadyInstalledLinkProfiles(
         getProfilesFromProfileMap(link_data.profile_name));
     _links.push_back(link);
@@ -161,21 +162,24 @@ std::vector<LinkProfile> ActiveLinksBuilder::getProfilesFromProfileMap(
 ActiveLink::ActiveLink(
     int idLink, std::string linkName, std::string linkor, std::string linkex,
     const double& already_installed_capacity,
-    std::map<unsigned int, unsigned int> mc_year_to_chronicle)
+    std::map<unsigned int, unsigned int> mc_year_to_chronicle,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
     : mc_year_to_chronicle_(std::move(mc_year_to_chronicle)),
       _idLink(idLink),
       _name(std::move(linkName)),
       _linkor(std::move(linkor)),
       _linkex(std::move(linkex)),
-      _already_installed_capacity(already_installed_capacity) {
+      _already_installed_capacity(already_installed_capacity),
+      logger_(logger) {
   _already_installed_profile.emplace_back();
 }
 
-ActiveLink::ActiveLink(int idLink, const std::string& linkName,
-                       const std::string& linkor, const std::string& linkex,
-                       const double& already_installed_capacity)
+ActiveLink::ActiveLink(
+    int idLink, const std::string& linkName, const std::string& linkor,
+    const std::string& linkex, const double& already_installed_capacity,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
     : ActiveLink(idLink, linkName, linkor, linkex, already_installed_capacity,
-                 {}) {}
+                 {}, logger) {}
 
 void ActiveLink::setAlreadyInstalledLinkProfiles(
     const std::vector<LinkProfile>& linkProfile) {

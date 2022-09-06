@@ -13,12 +13,29 @@ using LinkName = std::string;
 
 class ActiveLink {
  public:
-  ActiveLink(int idLink, const std::string& linkName, const std::string& linkor,
-             const std::string& linkex,
-             const double& already_installed_capacity);
-  ActiveLink(int idLink, std::string linkName, std::string linkor,
-             std::string linkex, const double& already_installed_capacity,
-             std::map<unsigned, unsigned> mc_year_to_chronicle);
+  ActiveLink(
+      int idLink, const std::string& linkName, const std::string& linkor,
+      const std::string& linkex, const double& already_installed_capacity,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+  ActiveLink(
+      int idLink, std::string linkName, std::string linkor, std::string linkex,
+      const double& already_installed_capacity,
+      std::map<unsigned, unsigned> mc_year_to_chronicle,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+  ActiveLink& ActiveLink::operator=(const ActiveLink& toCopy) {
+    if (this == &toCopy) {
+      return *this;
+    }
+
+    _idLink = toCopy._idLink;
+    _name = toCopy._name;
+    _linkor = toCopy._linkor;
+    _linkex = toCopy._linkex;
+    _already_installed_capacity = toCopy._already_installed_capacity;
+    mc_year_to_chronicle_ = toCopy.mc_year_to_chronicle_;
+    logger_ = toCopy.logger_;
+    return *this;
+  }
   void setAlreadyInstalledLinkProfiles(
       const std::vector<LinkProfile>& linkProfile);
 
@@ -56,6 +73,8 @@ class ActiveLink {
   // Profile de la capa
   std::vector<LinkProfile> _already_installed_profile = {};
   std::vector<Candidate> _candidates = {};
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };
 
 class ActiveLinksBuilder {
