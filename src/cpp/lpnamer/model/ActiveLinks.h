@@ -22,7 +22,7 @@ class ActiveLink {
       const double& already_installed_capacity,
       std::map<unsigned, unsigned> mc_year_to_chronicle,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
-  ActiveLink& ActiveLink::operator=(const ActiveLink& toCopy) {
+  ActiveLink& operator=(const ActiveLink& toCopy) {
     if (this == &toCopy) {
       return *this;
     }
