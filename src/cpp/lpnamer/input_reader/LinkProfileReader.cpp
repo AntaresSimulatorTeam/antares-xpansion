@@ -5,6 +5,9 @@
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &direct_filename,
     const std::filesystem::path &indirect_file_name) {
+  logger_ << ProblemGenerationLog::LOGLEVEL::DEBUG
+          << "direct_filename : " << direct_filename << "\n"
+          << "indirect_file_name: " << indirect_file_name << "\n";
   EnsureFileIsGood(direct_filename);
   EnsureFileIsGood(indirect_file_name);
   std::vector<LinkProfile> result;

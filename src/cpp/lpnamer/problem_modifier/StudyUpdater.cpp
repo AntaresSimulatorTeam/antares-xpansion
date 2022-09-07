@@ -13,7 +13,7 @@ StudyUpdater::StudyUpdater(
     std::filesystem::path studyPath_p,
     const AntaresVersionProvider& antares_version_provider,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
-    : studyPath_(std::move(studyPath_p)), logger_(logger) {
+    : studyPath_(std::move(studyPath_p)), logger_(std::move(logger)) {
   antaresVersion_ = antares_version_provider.getAntaresVersion(studyPath_);
 }
 

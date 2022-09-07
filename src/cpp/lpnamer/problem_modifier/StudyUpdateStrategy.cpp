@@ -23,4 +23,4 @@ StudyUpdateStrategy::StudyUpdateStrategy(
     const std::filesystem::path& study_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
     : antares_link_folder_path{study_path / ANTARES_LINK_FOLDER},
-      logger_(logger) {}
+      logger_(std::move(logger)) {}

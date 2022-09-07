@@ -29,6 +29,9 @@ ProblemGenerationFileLogger::ProblemGenerationFileLogger(
               << logFilePath_.string() << ") passed as parameter" << std::endl;
   }
 }
+ProblemGenerationFileLogger::~ProblemGenerationFileLogger() {
+  logFile_.close();
+}
 void ProblemGenerationFileLogger::DisplayMessage(const std::string& message) {
   logFile_ << message << std::endl;
   logFile_.flush();
