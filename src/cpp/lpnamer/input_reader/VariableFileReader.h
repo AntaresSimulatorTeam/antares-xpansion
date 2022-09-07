@@ -20,7 +20,7 @@ class VariableFileReader {
   VariableFileReader(
       const std::string& fileName, const std::vector<ActiveLink>& links,
       const VariableFileReadNameConfiguration& variable_name_config,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   const std::vector<std::string>& getVariables() const;
   const std::map<linkId, ColumnsToChange>& getNtcVarColumns() const;

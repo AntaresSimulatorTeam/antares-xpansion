@@ -24,7 +24,7 @@ class MasterGeneration {
       const AdditionalConstraints &additionalConstraints_p,
       Couplings &couplings, std::string const &master_formulation,
       std::string const &solver_name,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
  private: /*methods*/
   void add_candidates(const std::vector<ActiveLink> &links);

@@ -1,7 +1,7 @@
+#ifndef __TESTS_LOGGER_UTILS_h__
+#define __TESTS_LOGGER_UTILS_h__
+
 #include "ProblemGenerationLogger.h"
 
-static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-emptyLogger() {
-  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
-}
+ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger();
+#endif  //__TESTS_LOGGER_UTILS_h__

@@ -21,6 +21,6 @@ void StudyUpdateStrategy::EnsureCandidateInvestmentFound(
 }
 StudyUpdateStrategy::StudyUpdateStrategy(
     const std::filesystem::path& study_path,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : antares_link_folder_path{study_path / ANTARES_LINK_FOLDER},
       logger_(std::move(logger)) {}

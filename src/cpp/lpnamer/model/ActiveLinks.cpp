@@ -20,7 +20,7 @@ ActiveLinksBuilder::ActiveLinksBuilder(
     std::vector<CandidateData> candidateList,
     std::map<std::string, std::vector<LinkProfile>> profile_map,
     DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : _candidateDatas(std::move(candidateList)),
       _profile_map(std::move(profile_map)),
       scenario_to_chronicle_provider_(
@@ -33,10 +33,11 @@ ActiveLinksBuilder::ActiveLinksBuilder(
 ActiveLinksBuilder::ActiveLinksBuilder(
     const std::vector<CandidateData>& candidateList,
     const std::map<std::string, std::vector<LinkProfile>>& profile_map,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
-    : ActiveLinksBuilder(candidateList, profile_map,
-                         DirectAccessScenarioToChronicleProvider("", logger),
-                         logger) {}
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    : ActiveLinksBuilder(
+          candidateList, profile_map,
+          DirectAccessScenarioToChronicleProvider("", std::move(logger)),
+          std::move(logger)) {}
 
 void ActiveLinksBuilder::checkLinksValidity() {
   for (const auto& candidateData : _candidateDatas) {
@@ -163,7 +164,7 @@ ActiveLink::ActiveLink(
     int idLink, std::string linkName, std::string linkor, std::string linkex,
     const double& already_installed_capacity,
     std::map<unsigned int, unsigned int> mc_year_to_chronicle,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : mc_year_to_chronicle_(std::move(mc_year_to_chronicle)),
       _idLink(idLink),
       _name(std::move(linkName)),
@@ -177,7 +178,7 @@ ActiveLink::ActiveLink(
 ActiveLink::ActiveLink(
     int idLink, const std::string& linkName, const std::string& linkor,
     const std::string& linkex, const double& already_installed_capacity,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : ActiveLink(idLink, linkName, linkor, linkex, already_installed_capacity,
                  {}, logger) {}
 

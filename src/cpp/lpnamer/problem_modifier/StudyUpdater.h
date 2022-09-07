@@ -29,9 +29,9 @@ class StudyUpdater {
   explicit StudyUpdater(
       std::filesystem::path studyPath_p,
       const AntaresVersionProvider& antares_version_provider,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
-   /*!
+  /*!
    * \brief default destructor of calass StudyUpdater
    */
   virtual ~StudyUpdater() = default;

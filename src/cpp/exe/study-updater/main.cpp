@@ -24,7 +24,7 @@ namespace po = boost::program_options;
 void updateStudy(
     const std::filesystem::path &rootPath_p,
     const std::vector<ActiveLink> &links_p, std::string const &jsonPath_l,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   auto linksPath_l = rootPath_p / ".." / "..";
 
   StudyUpdater studyUpdater(linksPath_l, AntaresVersionProvider(), logger);

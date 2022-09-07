@@ -10,7 +10,7 @@
 class LinkProfileReader {
  public:
   LinkProfileReader(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : logger_(std::move(logger)) {}
 
   std::vector<LinkProfile> ReadLinkProfile(

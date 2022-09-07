@@ -13,7 +13,7 @@ class StudyUpdateStrategy {
       const ActiveLink& link, const std::map<std::string, double>& map) = 0;
   explicit StudyUpdateStrategy(
       const std::filesystem::path& study_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   virtual ~StudyUpdateStrategy() = default;
 
  protected:
