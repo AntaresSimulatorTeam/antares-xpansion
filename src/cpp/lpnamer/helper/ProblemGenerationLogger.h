@@ -6,16 +6,51 @@
 #include <list>
 #include <memory>
 #include <ostream>
+#include <sstream>
 #include <string>
 
 namespace ProblemGenerationLog {
+class AnythingToString : public std::string {
+  std::ostringstream _s;
+
+ public:
+  AnythingToString() : std::string("") {}
+
+  AnythingToString(const AnythingToString& c) : std::string() {
+    _s << c.c_str();
+    this->std::string::operator=(_s.str());
+  }
+
+  AnythingToString& operator=(const AnythingToString& c) {
+    _s << c.c_str();
+    this->std::string::operator=(_s.str());
+    return *this;
+  }
+
+  template <class T>
+  AnythingToString(const T& anything) {
+    _s << anything;
+    this->std::string::operator=(_s.str());
+  }
+
+  template <class T>
+  AnythingToString& operator<<(const T& anything) {
+    _s << anything;
+    this->std::string::operator=(_s.str());
+    return *this;
+  }
+
+  operator char*() const { return (char*)c_str(); }
+
+  std::ostream& Stream() { return _s; }
+};
 enum class LOGLEVEL { NONE, TRACE, DEBUG, INFO, WARNING, ERROR, FATAL };
 std::string LogLevelToStr(const LOGLEVEL logLevel);
 class ProblemGenerationILogger {
  public:
   virtual ~ProblemGenerationILogger() = default;
   virtual void DisplayMessage(const std::string& message) = 0;
-  virtual std::ostream& GetOstreamObject() = 0;
+  // virtual std::ostream& GetOstreamObject() = 0;
 };
 using ProblemGenerationILoggerSharedPointer =
     std::shared_ptr<ProblemGenerationILogger>;
@@ -28,7 +63,7 @@ class ProblemGenerationFileLogger : public ProblemGenerationILogger {
   virtual ~ProblemGenerationFileLogger();
   ProblemGenerationFileLogger(const std::filesystem::path& logFilePath);
   void DisplayMessage(const std::string& message) override;
-  std::ostream& GetOstreamObject() { return logFile_; }
+  // std::ostream& GetOstreamObject() { return logFile_; }
 };
 
 class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
@@ -39,7 +74,7 @@ class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
   virtual ~ProblemGenerationOstreamLogger() = default;
   ProblemGenerationOstreamLogger(std::ostream& stream);
   void DisplayMessage(const std::string& message) override;
-  std::ostream& GetOstreamObject() { return stream_; }
+  // std::ostream& GetOstreamObject() { return stream_; }
 };
 
 class ProblemGenerationLogger;
@@ -52,10 +87,10 @@ ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h,
                                     const LOGLEVEL logLevel);
 
 ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer& h,
+    const ProblemGenerationLoggerSharedPointer h,
     std::ostream& (*f)(std::ostream&));
 ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer& h, const LOGLEVEL logLevel);
+    const ProblemGenerationLoggerSharedPointer h, const LOGLEVEL logLevel);
 template <typename T>
 ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h, T const& t);
 
@@ -85,9 +120,9 @@ class ProblemGenerationLogger {
   friend ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h,
                                              std::ostream& (*f)(std::ostream&));
   friend ProblemGenerationLogger& operator<<(
-      const ProblemGenerationLoggerSharedPointer& h, const LOGLEVEL logLevel);
+      const ProblemGenerationLoggerSharedPointer h, const LOGLEVEL logLevel);
   friend ProblemGenerationLogger& operator<<(
-      const ProblemGenerationLoggerSharedPointer& h,
+      const ProblemGenerationLoggerSharedPointer h,
       std::ostream& (*f)(std::ostream&));
   friend ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h,
                                              const LOGLEVEL logLevel);
@@ -98,7 +133,7 @@ class ProblemGenerationLogger {
 
   template <typename T>
   friend ProblemGenerationLogger& operator<<(
-      const ProblemGenerationLoggerSharedPointer& logger, T const& t);
+      const ProblemGenerationLoggerSharedPointer logger, T const& t);
 
  private:
   std::list<ProblemGenerationILoggerSharedPointer> loggers_;
@@ -107,13 +142,13 @@ template <typename T>
 ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
                                     T const& t) {
   for (auto& subLogger : logger.loggers_) {
-    subLogger->GetOstreamObject() << t;
+    // subLogger->DisplayMessage(AnythingToString(t));
   }
   return logger;
 }
 template <typename T>
 ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer& logger, T const& t) {
+    const ProblemGenerationLoggerSharedPointer logger, T const& t) {
   return (*logger) << t;
 }
 

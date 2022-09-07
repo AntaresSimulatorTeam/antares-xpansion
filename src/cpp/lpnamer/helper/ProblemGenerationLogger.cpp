@@ -67,12 +67,12 @@ void ProblemGenerationLogger::DisplayMessage(const std::string& message,
 ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
                                     const LOGLEVEL logLevel) {
   for (auto& subLogger : logger.loggers_) {
-    subLogger->GetOstreamObject() << LogLevelToStr(logLevel);
+    // subLogger->DisplayMessage(LogLevelToStr(logLevel));
   }
   return logger;
 }
 ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer& logger,
+    const ProblemGenerationLoggerSharedPointer logger,
     const LOGLEVEL logLevel) {
   return (*logger) << logLevel;
 }
@@ -80,13 +80,13 @@ ProblemGenerationLogger& operator<<(
 ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
                                     std::ostream& (*f)(std::ostream&)) {
   for (auto& subLogger : logger.loggers_) {
-    subLogger->GetOstreamObject() << f;
+    // subLogger->DisplayMessage(AnythingToString(f));
   }
   return logger;
 }
 
 ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer& logger,
+    const ProblemGenerationLoggerSharedPointer logger,
     std::ostream& (*f)(std::ostream&)) {
   return (*logger) << f;
 }
