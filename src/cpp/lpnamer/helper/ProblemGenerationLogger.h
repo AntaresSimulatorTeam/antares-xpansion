@@ -25,7 +25,7 @@ class ProblemGenerationFileLogger : public ProblemGenerationILogger {
   std::ofstream logFile_;
 
  public:
-  virtual ~ProblemGenerationFileLogger() = default;
+  virtual ~ProblemGenerationFileLogger();
   ProblemGenerationFileLogger(const std::filesystem::path& logFilePath);
   void DisplayMessage(const std::string& message) override;
   std::ostream& GetOstreamObject() { return logFile_; }

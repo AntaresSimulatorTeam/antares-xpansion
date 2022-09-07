@@ -104,7 +104,7 @@ struct AdditionalConstraints
    */
   AdditionalConstraints(
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
-      : logger_(logger) {}
+      : logger_(std::move(logger)) {}
 
   /*!
    * \brief AdditionalConstraints constructor from an ini file path

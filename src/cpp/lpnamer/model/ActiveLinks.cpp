@@ -25,7 +25,7 @@ ActiveLinksBuilder::ActiveLinksBuilder(
       _profile_map(std::move(profile_map)),
       scenario_to_chronicle_provider_(
           std::move(scenario_to_chronicle_provider)),
-      logger_(logger) {
+      logger_(std::move(logger)) {
   checkCandidateNameDuplication();
   checkLinksValidity();
 }
@@ -170,7 +170,7 @@ ActiveLink::ActiveLink(
       _linkor(std::move(linkor)),
       _linkex(std::move(linkex)),
       _already_installed_capacity(already_installed_capacity),
-      logger_(logger) {
+      logger_(std::move(logger)) {
   _already_installed_profile.emplace_back();
 }
 

@@ -12,7 +12,7 @@ MasterGeneration::MasterGeneration(
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
     std::string const &master_formulation, std::string const &solver_name,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger)
-    : logger_(logger) {
+    : logger_(std::move(logger)) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
                    additionalConstraints_p);
