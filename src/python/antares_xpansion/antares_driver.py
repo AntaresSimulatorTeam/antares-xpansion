@@ -7,7 +7,6 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.flushed_print import flushed_print
 
 
@@ -71,7 +70,6 @@ class AntaresDriver:
             print(f"Warning: exited antares with status {returned_l.returncode}")
         else:
             self._set_simulation_name()
-            StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / self.simulation_name))
 
     def _set_simulation_name(self):
 

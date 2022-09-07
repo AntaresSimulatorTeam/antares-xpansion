@@ -293,34 +293,6 @@ class TestAntaresDriver:
         with pytest.raises(AntaresDriver.AntaresExecutionError):
             antares_driver.launch(study_dir, 1)
 
-    def test_clean_antares_step(self, tmp_path):
-        study_dir = tmp_path
-        self.initialize_dummy_study_dir(study_dir)
-
-        exe_path = Path("/Path/to/exe")
-        output_dir = study_dir / "output"
-        output_dir.mkdir()
-        simulation_dir = output_dir / "my_simu"
-        simulation_dir.mkdir()
-        fnames = ["something_criterion_other.ext", "-1.mps", "-1.txt"]
-        files_to_remove = [simulation_dir / fname for fname in fnames]
-        for file in files_to_remove:
-            file.write_text("")
-            assert file.exists()
-
-        antares_driver = AntaresDriver(exe_path)
-        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
-            run_function.return_value.returncode = 0
-            antares_driver.launch(study_dir, 1)
-
-            expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]
-            run_function.assert_called_once_with(
-                expected_cmd, shell=False, stdout=-3, stderr=-3
-            )
-
-        for file in files_to_remove:
-            assert not file.exists()
-
     def initialize_dummy_study_dir(self, study_dir):
         settings_dir = study_dir / "settings"
         settings_dir.mkdir()
