@@ -29,7 +29,6 @@ class DirectAccessScenarioToChronicleProvider {
   std::filesystem::path ts_info_root_;
   ScenarioToChronicleReader chronicle_map_reader_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };
 
 #endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_CHRONICLEMAPPROVIDERTEST_CPP_CHRONICLEMAPPROVIDER_H_

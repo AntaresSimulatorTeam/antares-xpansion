@@ -10,12 +10,8 @@
 
 #include "ChronicleMapProvider.h"
 #include "ChronicleMapReader.h"
+#include "EmptyLogger.h"
 
-static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-emptyLogger() {
-  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
-}
 class ChronicleProviderTest : public ::testing::Test {
  public:
   std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path();

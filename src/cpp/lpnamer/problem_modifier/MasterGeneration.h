@@ -38,6 +38,5 @@ class MasterGeneration {
  private: /*members*/
   std::vector<Candidate> candidates;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger &loggerRef_ = *logger_;
 };
 #endif  //__MASTER_GENERATION__

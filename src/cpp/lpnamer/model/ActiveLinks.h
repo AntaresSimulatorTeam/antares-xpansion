@@ -22,21 +22,7 @@ class ActiveLink {
       const double& already_installed_capacity,
       std::map<unsigned, unsigned> mc_year_to_chronicle,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
-  ActiveLink& operator=(const ActiveLink& toCopy) {
-    if (this == &toCopy) {
-      return *this;
-    }
 
-    _idLink = toCopy._idLink;
-    _name = toCopy._name;
-    _linkor = toCopy._linkor;
-    _linkex = toCopy._linkex;
-    _already_installed_capacity = toCopy._already_installed_capacity;
-    mc_year_to_chronicle_ = toCopy.mc_year_to_chronicle_;
-    _candidates = toCopy._candidates;
-    logger_ = toCopy.logger_;
-    return *this;
-  }
   void setAlreadyInstalledLinkProfiles(
       const std::vector<LinkProfile>& linkProfile);
 
@@ -75,7 +61,6 @@ class ActiveLink {
   std::vector<LinkProfile> _already_installed_profile = {};
   std::vector<Candidate> _candidates = {};
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };
 
 class ActiveLinksBuilder {
@@ -127,7 +112,6 @@ class ActiveLinksBuilder {
   std::vector<ActiveLink> _links;
   DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };
 
 #endif  // ANTARESXPANSION_ACTIVELINKS_H

@@ -65,7 +65,7 @@ unsigned int ProblemModifier::get_candidate_col_id(
   if (_candidate_col_id.find(cand_name) == _candidate_col_id.end()) {
     auto errMsg =
         std::string("Candidate '") + cand_name + "' not added in problem";
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
+    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << errMsg;
     throw std::runtime_error(errMsg);
   }
   return _candidate_col_id.at(cand_name);

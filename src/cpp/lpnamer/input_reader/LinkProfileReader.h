@@ -38,7 +38,6 @@ class LinkProfileReader {
                      double value, int chronicle_id, size_t time_step);
   void EnsureFileIsGood(const std::filesystem::path& direct_filename);
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };
 
 #endif  // ANTARESXPANSION_LINKPROFILEREADER_H

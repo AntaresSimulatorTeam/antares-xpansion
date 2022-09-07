@@ -22,9 +22,9 @@ DirectAccessScenarioToChronicleProvider::GetMap(
    * expected at the moment
    * */
   if (!file.is_open()) {
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::INFO) << "No scenario builder output found for link at destination: "
+    logger_(ProblemGenerationLog::LOGLEVEL::INFO) << "No scenario builder output found for link at destination: "
               << file_path << std::endl;
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::INFO) << " => All MC years for link " + link_from + " - " + link_to +
+    logger_(ProblemGenerationLog::LOGLEVEL::INFO) << " => All MC years for link " + link_from + " - " + link_to +
                      " will use the first chronicle"
               << std::endl;
     return {};

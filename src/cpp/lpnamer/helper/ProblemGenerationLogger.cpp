@@ -68,6 +68,11 @@ ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
   }
   return logger;
 }
+ProblemGenerationLogger& operator<<(
+    const ProblemGenerationLoggerSharedPointer& logger,
+    const LOGLEVEL logLevel) {
+  return (*logger) << logLevel;
+}
 
 ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
                                     std::ostream& (*f)(std::ostream&)) {
@@ -75,5 +80,11 @@ ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
     subLogger->GetOstreamObject() << f;
   }
   return logger;
+}
+
+ProblemGenerationLogger& operator<<(
+    const ProblemGenerationLoggerSharedPointer& logger,
+    std::ostream& (*f)(std::ostream&)) {
+  return (*logger) << f;
 }
 }  // namespace ProblemGenerationLog

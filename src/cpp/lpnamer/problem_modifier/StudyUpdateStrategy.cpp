@@ -15,7 +15,7 @@ void StudyUpdateStrategy::EnsureCandidateInvestmentFound(
     std::string message = "No investment computed for the candidate " +
                           candidate.get_name() + " on the link " +
                           link_p.get_LinkName();
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
+    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << message;
     throw std::runtime_error(message);
   }
 }

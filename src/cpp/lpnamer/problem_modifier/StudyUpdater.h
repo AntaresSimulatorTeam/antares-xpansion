@@ -19,7 +19,6 @@ class StudyUpdater {
   // antares version
   int antaresVersion_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 
  public:
   /*!
@@ -32,19 +31,7 @@ class StudyUpdater {
       const AntaresVersionProvider& antares_version_provider,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
 
-  void setStudyPath(const std::filesystem::path& studyPath_p) {
-    studyPath_ = std::move(studyPath_p);
-  }
-
-  void setAntaresVersionProvider(
-      const AntaresVersionProvider& antares_version_provider) {
-    antaresVersion_ = antares_version_provider.getAntaresVersion(studyPath_);
-  }
-  void setlogger(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger) {
-    logger_ = logger;
-  }
-  /*!
+   /*!
    * \brief default destructor of calass StudyUpdater
    */
   virtual ~StudyUpdater() = default;

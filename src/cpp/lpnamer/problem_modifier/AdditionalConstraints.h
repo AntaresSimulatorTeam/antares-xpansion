@@ -97,7 +97,6 @@ struct AdditionalConstraints
   std::set<std::string> _binaryVariables;
   std::string constraintsFilePath_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 
  public:
   /*!
