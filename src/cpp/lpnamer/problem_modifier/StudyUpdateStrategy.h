@@ -25,5 +25,4 @@ class StudyUpdateStrategy {
   const std::filesystem::path antares_link_folder_path;
 
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };

@@ -70,18 +70,18 @@ void ActiveLinksBuilder::raise_errors_if_link_data_differs_from_existing_link(
                             old_link_data.installed_capacity)) {
     std::string message =
         "Multiple already installed capacity detected for link " + link_name;
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
+    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << message;
     throw std::runtime_error(message);
   }
   if (old_link_data.profile_name != link_data.profile_name) {
     std::string message =
         "Multiple already_installed_profile detected for link " + link_name;
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
+    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << message;
     throw std::runtime_error(message);
   }
   if (old_link_data.id != link_data.id) {
     std::string message = "Multiple link_id detected for link " + link_name;
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
+    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << message;
     throw std::runtime_error(message);
   }
 }
@@ -94,7 +94,7 @@ void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(
     if (it_profile == _profile_map.end()) {
       std::string message =
           "There is no linkProfile associated with " + profileName;
-      loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
+      logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << message;
       throw std::runtime_error(message);
     }
   }
@@ -107,7 +107,7 @@ void ActiveLinksBuilder::checkCandidateNameDuplication() const {
     if (!it_inserted.second) {
       std::string message =
           "Candidate " + candidateData.name + " duplication detected";
-      loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
+      logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << message;
       throw std::runtime_error(message);
     }
   }

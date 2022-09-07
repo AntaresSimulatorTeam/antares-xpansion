@@ -35,7 +35,6 @@ class VariableFileReader {
   std::map<linkId, ColumnsToChange> _indirect_cost_p_var_columns;
   std::map<linkId, ColumnsToChange> _direct_cost_p_var_columns;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };
 
 #endif  // ANTARESXPANSION_VARIABLEFILEREADER_H

@@ -15,8 +15,8 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
 void LinkProfileReader::EnsureFileIsGood(
     const std::filesystem::path &direct_filename) {
   if (std::ifstream infile(direct_filename); !infile.good()) {
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL)
-        << "unable to open file" << direct_filename;
+    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << "unable to open file"
+            << direct_filename;
     throw std::filesystem::filesystem_error("unable to open file",
                                             direct_filename, std::error_code());
   }
@@ -36,7 +36,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
   std::ifstream infile(filename);
   if (!infile.good()) {
     auto errMsg = std::string("unable to open file ");
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg << filename;
+    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << errMsg << filename;
     throw std::filesystem::filesystem_error(errMsg, filename,
                                             std::error_code());
   }
@@ -56,7 +56,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
     } else {
       auto errMsg = std::string("error not enough line in link-profile ") +
                     filename.string();
-      loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
+      logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << errMsg;
       throw std::domain_error(errMsg);
     }
   }

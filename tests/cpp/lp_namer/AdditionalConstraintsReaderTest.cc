@@ -2,14 +2,10 @@
 #include <sstream>
 
 #include "AdditionalConstraintsReader.h"
+#include "EmptyLogger.h"
 #include "ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 
-static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-emptyLogger() {
-  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
-}
 class AdditionalConstraintsReaderTest : public ::testing::Test {
  protected:
   static void SetUpTestCase() {

@@ -3,14 +3,10 @@
 //
 #include <solver_utils.h>
 
+#include "EmptyLogger.h"
 #include "MasterProblemBuilder.h"
 #include "gtest/gtest.h"
 
-static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-emptyLogger() {
-  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
-}
 TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
   std::string solver_name = "CBC";
   std::string master_formulation = "integer";

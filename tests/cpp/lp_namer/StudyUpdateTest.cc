@@ -3,6 +3,7 @@
 
 #include "ActiveLinks.h"
 #include "CandidatesINIReader.h"
+#include "EmptyLogger.h"
 #include "LinkProfileReader.h"
 #include "LinkdataRecord.h"
 #include "ProblemGenerationLogger.h"
@@ -11,11 +12,6 @@
 #include "common_lpnamer.h"
 #include "gtest/gtest.h"
 
-static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-emptyLogger() {
-  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
-}
 class StudyUpdateTest : public ::testing::Test {
  protected:
   static std::vector<ActiveLink> _links;
@@ -96,10 +92,10 @@ already-installed-capacity = 100\n\
     file_direct.close();
     file_indirect.close();
 
-    auto logger = emptyLogger();
+    auto logger_ = emptyLogger();
     CandidatesINIReader candidateReader("temp_interco.txt", "temp_area.txt",
-                                        logger);
-    LinkProfileReader profileReader(logger);
+                                        logger_);
+    LinkProfileReader profileReader(logger_);
 
     std::vector<CandidateData> cand_data_list =
         candidateReader.readCandidateData("temp_candidates.ini");
@@ -107,7 +103,7 @@ already-installed-capacity = 100\n\
     std::map<std::string, std::vector<LinkProfile>> profile_map =
         profileReader.getLinkProfileMap(".", cand_data_list);
 
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger_};
     StudyUpdateTest::_links = linkBuilder.getLinks();
   }
 
@@ -357,7 +353,8 @@ class UpdateCapacitiesTest : public ::testing::Test {
     tmp_directory_path_ = std::tmpnam(nullptr);
     fs::create_directories(tmp_directory_path_ / "input" / "links" / "area1");
     ntc_path_ = tmp_directory_path_ / "input" / "links" / "area1" / "area2.txt";
-    study_updater_.setStudyPath(tmp_directory_path_);
+    study_updater_ = StudyUpdater(tmp_directory_path_,
+                                  AntaresVersionProviderStub(800), logger);
   }
 
   fs::path tmp_directory_path_;
@@ -430,8 +427,8 @@ TEST_F(UpdateCapacitiesTest, update_version_720) {
       {"dummy_candidate", 300},
   };
 
-  study_updater_.setStudyPath(tmp_directory_path_);
-  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(720));
+  study_updater_ = StudyUpdater(tmp_directory_path_,
+                                AntaresVersionProviderStub(720), logger);
   (void)study_updater_.update({active_link}, solution);
 
   auto res =
@@ -460,8 +457,8 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_720) {
     WriteRecord(ntc_file, record);
   }
   ntc_file.close();
-  study_updater_.setStudyPath(tmp_directory_path_);
-  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(720));
+  study_updater_ = StudyUpdater(tmp_directory_path_,
+                                AntaresVersionProviderStub(720), logger);
   (void)study_updater_.update({active_link}, solution);
 
   auto res =
@@ -487,8 +484,8 @@ TEST_F(UpdateCapacitiesTest, update_version_800) {
       {"dummy_candidate", 300},
   };
 
-  study_updater_.setStudyPath(tmp_directory_path_);
-  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(811));
+  study_updater_ = StudyUpdater(tmp_directory_path_,
+                                AntaresVersionProviderStub(811), logger);
   (void)study_updater_.update({active_link}, solution);
 
   auto res =
@@ -517,8 +514,8 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_800) {
     WriteRecord(ntc_file, record);
   }
   ntc_file.close();
-  study_updater_.setStudyPath(tmp_directory_path_);
-  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(800));
+  study_updater_ = StudyUpdater(tmp_directory_path_,
+                                AntaresVersionProviderStub(800), logger);
   (void)study_updater_.update({active_link}, solution);
 
   auto res =
@@ -580,6 +577,7 @@ TEST_F(UpdateCapacitiesTest,
 
   fs::create_directories(tmp_directory_path_ / "input" / "links" / "area1" /
                          "capacities");
+
   auto direct_ntc_file_path = tmp_directory_path_ / "input" / "links" /
                               "area1" / "capacities" / "area2_direct.txt";
   auto indirect_ntc_file_path = tmp_directory_path_ / "input" / "links" /
@@ -594,11 +592,10 @@ TEST_F(UpdateCapacitiesTest,
   direct_file.close();
   indirect_file.close();
 
-  study_updater_.setStudyPath(tmp_directory_path_);
-  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(822));
+  study_updater_ = StudyUpdater(tmp_directory_path_,
+                                AntaresVersionProviderStub(822), logger);
   (void)study_updater_.update({active_link}, solution);
 
-  auto logger = emptyLogger();
   auto profiles = LinkProfileReader(logger).ReadLinkProfile(
       direct_ntc_file_path,
       indirect_ntc_file_path);  // Refactor NTC reader maybe ?
@@ -637,8 +634,8 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_820) {
   }
   link_parameters.close();
 
-  study_updater_.setStudyPath(tmp_directory_path_);
-  study_updater_.setAntaresVersionProvider(AntaresVersionProviderStub(820));
+  study_updater_ = StudyUpdater(tmp_directory_path_,
+                                AntaresVersionProviderStub(820), logger);
   (void)study_updater_.update({active_link}, solution);
 
   auto res = antares_link_data_reader_.Read820(

@@ -94,7 +94,6 @@ class ProblemModifier {
                                               unsigned int chronicle_to_use,
                                               const Candidate &candidate) const;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger &loggerRef_ = *logger_;
 };
 
 #endif  // ANTARESXPANSION_PROBLEMMODIFIER_H

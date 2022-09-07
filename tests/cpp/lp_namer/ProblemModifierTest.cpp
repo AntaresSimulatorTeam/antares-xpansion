@@ -6,6 +6,7 @@
 
 #include <fstream>
 
+#include "EmptyLogger.h"
 #include "Problem.h"
 #include "gtest/gtest.h"
 
@@ -16,11 +17,6 @@ const double ZERO = 0.0;
 const double PLUS_INF = 1e20;
 const double MINUS_INF = -1e20;
 
-static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-emptyLogger() {
-  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
-}
 class ProblemModifierTest : public ::testing::Test {
  public:
   std::shared_ptr<Problem> math_problem;

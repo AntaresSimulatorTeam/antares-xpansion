@@ -45,5 +45,4 @@ class LinkProblemsGenerator {
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };

@@ -31,7 +31,6 @@ struct AdditionalConstraintsReader {
   //! number of the line that is being currently processed
   int _lineNb = 0;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 
  public:
   /*!

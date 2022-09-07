@@ -29,5 +29,4 @@ class LinkParametersCSVOverWriter {
   std::ofstream tempOutCsvFile;
   bool already_warned_ = false;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  ProblemGenerationLog::ProblemGenerationLogger& loggerRef_ = *logger_;
 };

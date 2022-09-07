@@ -1,5 +1,6 @@
 #include <fstream>
 
+#include "EmptyLogger.h"
 #include "LinkProfileReader.h"
 #include "ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
@@ -10,9 +11,8 @@ const std::string INVALID_DIRECT_PROFILE("temp_invalid_direct_profile.txt");
 
 class LinkProfileReaderTest : public ::testing::Test {
  protected:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger =
-      std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-          ProblemGenerationLog::LOGLEVEL::NONE);
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_ =
+      emptyLogger();
   static void createMergedProfileFile(
       const std::string& temp_profile_name,
       std::vector<double>& directLinkprofile_l,
@@ -76,7 +76,7 @@ class LinkProfileReaderTest : public ::testing::Test {
 
 TEST_F(LinkProfileReaderTest, ReadValidSplitProfile) {
   LinkProfile profile =
-      LinkProfileReader(emptyLogger)
+      LinkProfileReader(logger_)
           .ReadLinkProfile(std::filesystem::path(VALID_DIRECT_PROFILE_NAME),
                            std::filesystem::path(VALID_INDIRECT_PROFILE_NAME))
           .at(0);
@@ -88,7 +88,7 @@ TEST_F(LinkProfileReaderTest, ReadValidSplitProfile) {
 }
 
 TEST_F(LinkProfileReaderTest, ReadOnlyDirectProfile) {
-  LinkProfile profile = LinkProfileReader(emptyLogger)
+  LinkProfile profile = LinkProfileReader(logger_)
                             .ReadLinkProfile(VALID_DIRECT_PROFILE_NAME)
                             .at(0);
 
@@ -101,7 +101,7 @@ TEST_F(LinkProfileReaderTest, ReadOnlyDirectProfile) {
 TEST_F(LinkProfileReaderTest, ReadInvalidMergedProfile) {
   try {
     [[maybe_unused]] LinkProfile profile =
-        LinkProfileReader(emptyLogger)
+        LinkProfileReader(logger_)
             .ReadLinkProfile(INVALID_DIRECT_PROFILE)
             .at(0);
     FAIL();
@@ -114,7 +114,7 @@ TEST_F(LinkProfileReaderTest, ReadInvalidMergedProfile) {
 
 TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760InSplitFile) {
   LinkProfile profile =
-      LinkProfileReader(emptyLogger)
+      LinkProfileReader(logger_)
           .ReadLinkProfile(std::filesystem::path(VALID_DIRECT_PROFILE_NAME),
                            std::filesystem::path(VALID_INDIRECT_PROFILE_NAME))
           .at(0);
@@ -141,9 +141,8 @@ TEST_F(LinkProfileReaderTest, MapIsEmptyIfNoCandidateAsAProfile) {
   candidate.installed_direct_link_profile_name = "";
   candidate.installed_indirect_link_profile_name = "";
   candidate.direct_link_profile = "";
-  ASSERT_TRUE(LinkProfileReader(emptyLogger)
-                  .getLinkProfileMap({}, {candidate})
-                  .empty());
+  ASSERT_TRUE(
+      LinkProfileReader(logger_).getLinkProfileMap({}, {candidate}).empty());
 }
 
 TEST_F(LinkProfileReaderTest, MapContainLinkProfileOfCandidate) {
@@ -153,8 +152,7 @@ TEST_F(LinkProfileReaderTest, MapContainLinkProfileOfCandidate) {
   candidate.direct_link_profile = VALID_DIRECT_PROFILE_NAME;
   candidate.indirect_link_profile = VALID_INDIRECT_PROFILE_NAME;
 
-  auto profiles =
-      LinkProfileReader(emptyLogger).getLinkProfileMap({}, {candidate});
+  auto profiles = LinkProfileReader(logger_).getLinkProfileMap({}, {candidate});
 
   auto profile = profiles.at(VALID_DIRECT_PROFILE_NAME).at(0);
   ASSERT_EQ(profile.getDirectProfile(0), 0);
@@ -168,8 +166,7 @@ TEST_F(LinkProfileReaderTest, MapContainInstalledProfileOfCandidate) {
   candidate.installed_direct_link_profile_name = VALID_DIRECT_PROFILE_NAME;
   candidate.installed_indirect_link_profile_name = VALID_DIRECT_PROFILE_NAME;
 
-  auto profiles =
-      LinkProfileReader(emptyLogger).getLinkProfileMap({}, {candidate});
+  auto profiles = LinkProfileReader(logger_).getLinkProfileMap({}, {candidate});
 
   auto profile = profiles.at(VALID_DIRECT_PROFILE_NAME).at(0);
   ASSERT_EQ(profile.getDirectProfile(0), 0);

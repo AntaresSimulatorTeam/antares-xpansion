@@ -1,13 +1,9 @@
 #include <fstream>
 
+#include "EmptyLogger.h"
 #include "VariableFileReader.h"
 #include "gtest/gtest.h"
 
-static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-emptyLogger() {
-  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
-}
 const char* TEMP_FILE_NAME = "temp_variable.txt";
 
 struct VariableFileLine {

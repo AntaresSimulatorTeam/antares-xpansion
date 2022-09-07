@@ -1,6 +1,7 @@
 #include <fstream>
 
 #include "CandidatesINIReader.h"
+#include "EmptyLogger.h"
 #include "ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 
@@ -88,14 +89,13 @@ class CandidatesINIReaderTest : public ::testing::Test {
   }
 
  public:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger =
-      std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-          ProblemGenerationLog::LOGLEVEL::NONE);
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger_ =
+      emptyLogger();
 };
 
 TEST_F(CandidatesINIReaderTest, testReadIntero) {
   std::vector<IntercoFileData> intercoDataList =
-      CandidatesINIReader(emptyLogger)
+      CandidatesINIReader(emptyLogger_)
           .ReadAntaresIntercoFile("temp_interco.txt");
 
   ASSERT_EQ(intercoDataList[0].index_interco, 0);
@@ -105,7 +105,7 @@ TEST_F(CandidatesINIReaderTest, testReadIntero) {
 
 TEST_F(CandidatesINIReaderTest, testReadArea) {
   std::vector<std::string> areaList =
-      CandidatesINIReader(emptyLogger).ReadAreaFile("temp_area.txt");
+      CandidatesINIReader(emptyLogger_).ReadAreaFile("temp_area.txt");
 
   ASSERT_EQ(areaList[0], "area1");
   ASSERT_EQ(areaList[1], "area2");
@@ -113,7 +113,7 @@ TEST_F(CandidatesINIReaderTest, testReadArea) {
 }
 
 TEST_F(CandidatesINIReaderTest, testReadCandidate) {
-  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger);
+  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger_);
 
   std::vector<CandidateData> candidates_data =
       reader.readCandidateData("temp_candidate.ini");
@@ -140,7 +140,7 @@ TEST_F(CandidatesINIReaderTest, testReadCandidate) {
 }
 
 TEST_F(CandidatesINIReaderTest, AcceptLinkProfileKey) {
-  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger);
+  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger_);
 
   std::vector<CandidateData> candidates_data =
       reader.readCandidateData("temp_candidate.ini");
@@ -151,7 +151,7 @@ TEST_F(CandidatesINIReaderTest, AcceptLinkProfileKey) {
 }
 
 TEST_F(CandidatesINIReaderTest, AcceptAlreadyInstalledLinkProfileKey) {
-  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger);
+  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger_);
 
   std::vector<CandidateData> candidates_data =
       reader.readCandidateData("temp_candidate.ini");

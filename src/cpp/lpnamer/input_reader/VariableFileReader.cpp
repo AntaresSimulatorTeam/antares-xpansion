@@ -26,7 +26,7 @@ VariableFileReader::VariableFileReader(
   std::ifstream file(fileName.c_str());
   if (!file.good()) {
     auto errMsg = std::string("Unable to open '") + fileName + "'";
-    loggerRef_(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
+    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << errMsg;
     throw std::runtime_error(errMsg);
   }
   while (std::getline(file, line)) {
