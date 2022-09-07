@@ -37,7 +37,7 @@ struct AdditionalConstraintsReader {
    *  default constructor for struct AdditionalConstraintsReader
    */
   AdditionalConstraintsReader(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : logger_(std::move(logger)) {}
 
   /*!
@@ -48,7 +48,7 @@ struct AdditionalConstraintsReader {
    */
   explicit AdditionalConstraintsReader(
       std::string const& constraints_file_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   /*!
    * \brief return the section defining the binary variables to add

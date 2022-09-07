@@ -103,7 +103,7 @@ struct AdditionalConstraints
    *  \brief default constructor for struct AdditionalConstraints
    */
   AdditionalConstraints(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : logger_(std::move(logger)) {}
 
   /*!
@@ -114,7 +114,7 @@ struct AdditionalConstraints
    */
   explicit AdditionalConstraints(
       std::string const& constraints_file_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   void SetConstraintsFile(std::string const& constraints_file_path) {
     constraintsFilePath_ = constraints_file_path;

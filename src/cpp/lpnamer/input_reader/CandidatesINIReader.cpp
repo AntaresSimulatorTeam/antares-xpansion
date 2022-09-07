@@ -10,7 +10,7 @@
 CandidatesINIReader::CandidatesINIReader(
     const std::filesystem::path &antaresIntercoFile,
     const std::filesystem::path &areaFile,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger)
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : logger_(std::move(logger)) {
   _intercoFileData = ReadAntaresIntercoFile(antaresIntercoFile);
   _areaNames = ReadAreaFile(areaFile);

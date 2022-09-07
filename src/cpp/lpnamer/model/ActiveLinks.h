@@ -13,15 +13,14 @@ using LinkName = std::string;
 
 class ActiveLink {
  public:
-  ActiveLink(
-      int idLink, const std::string& linkName, const std::string& linkor,
-      const std::string& linkex, const double& already_installed_capacity,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
-  ActiveLink(
-      int idLink, std::string linkName, std::string linkor, std::string linkex,
-      const double& already_installed_capacity,
-      std::map<unsigned, unsigned> mc_year_to_chronicle,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+  ActiveLink(int idLink, const std::string& linkName, const std::string& linkor,
+             const std::string& linkex,
+             const double& already_installed_capacity,
+             ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+  ActiveLink(int idLink, std::string linkName, std::string linkor,
+             std::string linkex, const double& already_installed_capacity,
+             std::map<unsigned, unsigned> mc_year_to_chronicle,
+             ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   void setAlreadyInstalledLinkProfiles(
       const std::vector<LinkProfile>& linkProfile);
@@ -69,12 +68,12 @@ class ActiveLinksBuilder {
       std::vector<CandidateData> candidateList,
       std::map<std::string, std::vector<LinkProfile>> profile_map,
       DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   ActiveLinksBuilder(
       const std::vector<CandidateData>& candidateList,
       const std::map<std::string, std::vector<LinkProfile>>& profile_map,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   const std::vector<ActiveLink>& getLinks();
 

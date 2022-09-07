@@ -10,7 +10,7 @@ class StudyUpdateLinkCapacitiesStrategy : public StudyUpdateStrategy {
  public:
   explicit StudyUpdateLinkCapacitiesStrategy(
       const std::filesystem::path& link_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger);
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   int Update(const ActiveLink& link,
              const std::map<std::string, double>& map) override;
 

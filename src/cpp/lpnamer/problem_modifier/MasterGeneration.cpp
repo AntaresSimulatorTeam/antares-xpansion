@@ -11,7 +11,7 @@ MasterGeneration::MasterGeneration(
     const std::filesystem::path &rootPath, const std::vector<ActiveLink> &links,
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
     std::string const &master_formulation, std::string const &solver_name,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger)
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : logger_(std::move(logger)) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,

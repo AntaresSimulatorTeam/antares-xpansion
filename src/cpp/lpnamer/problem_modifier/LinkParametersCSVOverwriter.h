@@ -11,7 +11,7 @@
 class LinkParametersCSVOverWriter {
  public:
   LinkParametersCSVOverWriter(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger)
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : logger_(std::move(logger)) {}
 
   bool open(const std::filesystem::path& linkdataFilename_l);

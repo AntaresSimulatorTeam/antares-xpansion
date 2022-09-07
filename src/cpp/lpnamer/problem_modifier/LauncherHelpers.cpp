@@ -10,7 +10,7 @@
 void treatAdditionalConstraints(
     SolverAbstract::Ptr master_p,
     const AdditionalConstraints &additionalConstraints_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   // add requested binary variables
   addBinaryVariables(master_p, additionalConstraints_p.getVariablesToBinarise(),
                      logger);
@@ -23,7 +23,7 @@ void treatAdditionalConstraints(
 
 void addAdditionalConstraint(
     SolverAbstract::Ptr master_p, AdditionalConstraint &additionalConstraint_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   auto newnz = (int)additionalConstraint_p.size();
   int newrows = 1;
   std::vector<char> rtype(newrows);
@@ -69,7 +69,7 @@ void addAdditionalConstraint(
 void addBinaryVariables(
     SolverAbstract::Ptr master_p,
     const std::map<std::string, std::string> &variablesToBinarise_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   for (const auto &pairOldNewVarnames : variablesToBinarise_p) {
     int col_index = master_p->get_col_index(pairOldNewVarnames.first);
 
@@ -126,7 +126,7 @@ void addBinaryVariables(
 
 ActiveLinksBuilder get_link_builders(
     const std::filesystem::path &root,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer &logger) {
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   const auto area_file_name = root / "area.txt";
   const auto interco_file_name = root / "interco.txt";
   const auto ts_root = root / "ts-numbers/ntc";
