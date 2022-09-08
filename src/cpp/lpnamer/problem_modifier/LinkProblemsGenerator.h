@@ -31,7 +31,7 @@ class LinkProblemsGenerator {
   LinkProblemsGenerator(
       const std::vector<ActiveLink>& links, const std::string& solver_name,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : _links(links), _solver_name(solver_name), logger_(std::move(logger)) {}
+      : _links(links), _solver_name(solver_name), logger_(logger) {}
 
   void treatloop(const std::filesystem::path& root, Couplings& couplings);
 

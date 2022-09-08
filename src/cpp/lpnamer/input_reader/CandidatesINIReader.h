@@ -25,7 +25,7 @@ class CandidatesINIReader {
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   CandidatesINIReader(
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : logger_(std::move(logger)) {}
+      : logger_(logger) {}
 
   std::vector<IntercoFileData> ReadAntaresIntercoFile(
       const std::filesystem::path& antaresIntercoFile);

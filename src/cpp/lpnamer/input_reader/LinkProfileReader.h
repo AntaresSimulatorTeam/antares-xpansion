@@ -11,7 +11,7 @@ class LinkProfileReader {
  public:
   LinkProfileReader(
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : logger_(std::move(logger)) {}
+      : logger_(logger) {}
 
   std::vector<LinkProfile> ReadLinkProfile(
       const std::filesystem::path& direct_filename,
