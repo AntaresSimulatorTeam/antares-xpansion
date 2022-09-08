@@ -29,9 +29,6 @@ ProblemGenerationFileLogger::ProblemGenerationFileLogger(
               << logFilePath_.string() << ") passed as parameter" << std::endl;
   }
 }
-ProblemGenerationFileLogger::~ProblemGenerationFileLogger() {
-  logFile_.close();
-}
 void ProblemGenerationFileLogger::DisplayMessage(const std::string& message) {
   logFile_ << message << std::endl;
   logFile_.flush();
@@ -67,7 +64,7 @@ void ProblemGenerationLogger::DisplayMessage(const std::string& message,
 ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
                                     const LOGLEVEL logLevel) {
   for (auto& subLogger : logger.loggers_) {
-    // subLogger->DisplayMessage(LogLevelToStr(logLevel));
+    subLogger->GetOstreamObject() << LogLevelToStr(logLevel);
   }
   return logger;
 }
@@ -80,7 +77,7 @@ ProblemGenerationLogger& operator<<(
 ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
                                     std::ostream& (*f)(std::ostream&)) {
   for (auto& subLogger : logger.loggers_) {
-    // subLogger->DisplayMessage(AnythingToString(f));
+    subLogger->GetOstreamObject() << f;
   }
   return logger;
 }

@@ -358,7 +358,6 @@ ProblemGenerationLoggerSharedPointer Getlog(
   auto logger = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::INFO);
   logger->AddLogger(logFile);
   logger->AddLogger(logStd);
-  auto& loggerRef = (*logger);
   return logger;
 
   /**/
@@ -611,28 +610,28 @@ TEST_F(UpdateCapacitiesTest,
   direct_file.close();
   indirect_file.close();
   logger << "***HELLO 2 **\n";
-  // study_updater_ = StudyUpdater(tmp_directory_path_,
-  //                               AntaresVersionProviderStub(822), logger);
-  // (void)study_updater_.update({active_link}, solution);
+  study_updater_ = StudyUpdater(tmp_directory_path_,
+                                AntaresVersionProviderStub(822), logger);
+  (void)study_updater_.update({active_link}, solution);
 
   auto profiles = LinkProfileReader(logger).ReadLinkProfile(
       direct_ntc_file_path,
       indirect_ntc_file_path);  // Refactor NTC reader maybe ?
-  // for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
-  //   /* Capacité du lien = capacité installée * profile installé
-  //    *                  = 100 * 0.1 | 100 * 0.9
-  //    *                  = 10 | 90
-  //    * Investissement candidat N = investissement trouvé * profil candidat
-  //    *                  = 300 * 0.2 | 300 * 0.5
-  //    *                  = 60 | 150
-  //    * Nouvelle capacité du lien = Capacité du lien + Somme(Investissement
-  //    * candidat) = 70 | 240
-  //    */
-  //   ASSERT_EQ(70, profiles[0].getDirectProfile(i));
-  //   ASSERT_EQ(70, profiles[0].getIndirectProfile(i));
-  //   ASSERT_EQ(240, profiles[1].getDirectProfile(i));
-  //   ASSERT_EQ(240, profiles[1].getIndirectProfile(i));
-  // }
+  for (int i = 0; i < NUMBER_OF_HOUR_PER_YEAR; ++i) {
+    /* Capacité du lien = capacité installée * profile installé
+     *                  = 100 * 0.1 | 100 * 0.9
+     *                  = 10 | 90
+     * Investissement candidat N = investissement trouvé * profil candidat
+     *                  = 300 * 0.2 | 300 * 0.5
+     *                  = 60 | 150
+     * Nouvelle capacité du lien = Capacité du lien + Somme(Investissement
+     * candidat) = 70 | 240
+     */
+    ASSERT_EQ(70, profiles[0].getDirectProfile(i));
+    ASSERT_EQ(70, profiles[0].getIndirectProfile(i));
+    ASSERT_EQ(240, profiles[1].getDirectProfile(i));
+    ASSERT_EQ(240, profiles[1].getIndirectProfile(i));
+  }
 }
 
 TEST_F(UpdateCapacitiesTest, update_link_parameters_version_820) {
