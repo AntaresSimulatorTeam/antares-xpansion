@@ -86,7 +86,7 @@ void BendersSequential::run() {
     set_data_pre_relaxation();
   }
 
-  while (!_data.stop) {
+  while (!_data.stop || _data.is_in_initial_relaxation) {
     Timer timer_master;
     ++_data.it;
 

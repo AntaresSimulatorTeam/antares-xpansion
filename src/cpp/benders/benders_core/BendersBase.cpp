@@ -185,7 +185,7 @@ void BendersBase::bound_simplex_iter(int simplexiter) {
  *  \brief Check if initial relaxation should stop
  */
 bool BendersBase::relaxation_stopping_criterion() const {
-  return (((_data.best_ub - _data.lb) / _data.best_ub) <= _options.RELAXED_GAP);
+  return _data.stop || (((_data.best_ub - _data.lb) / _data.best_ub) <= _options.RELAXED_GAP);
 }
 
 /*!
@@ -255,6 +255,8 @@ void BendersBase::reset_data_post_relaxation() {
   _data.is_in_initial_relaxation = false;
   _data.best_ub = 1e+20;
   _data.best_it = 0;
+  _data.stopping_criterion = StoppingCriterion::empty;
+  _data.stop = false;
   _options.SEPARATION_PARAM = 1;
 }
 

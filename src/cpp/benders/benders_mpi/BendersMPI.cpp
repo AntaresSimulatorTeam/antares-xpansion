@@ -238,7 +238,8 @@ void BendersMpi::run() {
       OpenCsvFile();
     }
   }
-  while (!_data.stop) {
+
+  while (!_data.stop || _data.is_in_initial_relaxation) {
     Timer timer_master;
     ++_data.it;
 
@@ -257,6 +258,7 @@ void BendersMpi::run() {
     _data.stop |= _exceptionRaised;
 
     broadcast(_world, _data.stop, rank_0);
+    broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     if (_world.rank() == rank_0) {
       SaveCurrentBendersData();
     }

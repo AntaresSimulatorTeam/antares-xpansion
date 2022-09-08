@@ -259,14 +259,14 @@ class ConfigLoader:
     def get_relaxed_optimality_gap(self):
         """
         returns the relaxed optimality gap read from the settings file
-        :return: gap value or 1e-4 if the value is set to a lower value than 1e-12
+        :return: gap value or 1e-12 if the value is set to a lower value than 1e-12
         """
         relaxed_gap_str = self.options.get(
             "relaxed_optimality_gap",
             self._config.settings_default["relaxed_optimality_gap"],
         )
 
-        return float(relaxed_gap_str) if float(relaxed_gap_str) > 1e-12 else 1e-4
+        return float(relaxed_gap_str) if float(relaxed_gap_str) > 1e-12 else 1e-12
 
     def get_max_iterations(self):
         """
