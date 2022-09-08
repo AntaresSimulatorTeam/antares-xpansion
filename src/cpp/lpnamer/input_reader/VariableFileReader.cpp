@@ -21,7 +21,7 @@ VariableFileReader::VariableFileReader(
     const std::string& fileName, const std::vector<ActiveLink>& links,
     const VariableFileReadNameConfiguration& variable_name_config,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-    : logger_(std::move(logger)) {
+    : logger_(logger) {
   std::string line;
   std::ifstream file(fileName.c_str());
   if (!file.good()) {

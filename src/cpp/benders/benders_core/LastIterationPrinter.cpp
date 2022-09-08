@@ -5,7 +5,7 @@
 LastIterationPrinter::LastIterationPrinter(Logger &logger,
                                            const LogData &best_iteration,
                                            const LogData &last_iteration)
-    : logger_(std::move(logger)),
+    : logger_(logger),
       best_iteration_data_(best_iteration),
       last_iteration_data_(last_iteration) {}
 void LastIterationPrinter::Print() const {

@@ -25,7 +25,7 @@ ActiveLinksBuilder::ActiveLinksBuilder(
       _profile_map(std::move(profile_map)),
       scenario_to_chronicle_provider_(
           std::move(scenario_to_chronicle_provider)),
-      logger_(std::move(logger)) {
+      logger_(logger) {
   checkCandidateNameDuplication();
   checkLinksValidity();
 }
@@ -34,10 +34,9 @@ ActiveLinksBuilder::ActiveLinksBuilder(
     const std::vector<CandidateData>& candidateList,
     const std::map<std::string, std::vector<LinkProfile>>& profile_map,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-    : ActiveLinksBuilder(
-          candidateList, profile_map,
-          DirectAccessScenarioToChronicleProvider("", std::move(logger)),
-          std::move(logger)) {}
+    : ActiveLinksBuilder(candidateList, profile_map,
+                         DirectAccessScenarioToChronicleProvider("", logger),
+                         logger) {}
 
 void ActiveLinksBuilder::checkLinksValidity() {
   for (const auto& candidateData : _candidateDatas) {
@@ -171,7 +170,7 @@ ActiveLink::ActiveLink(
       _linkor(std::move(linkor)),
       _linkex(std::move(linkex)),
       _already_installed_capacity(already_installed_capacity),
-      logger_(std::move(logger)) {
+      logger_(logger) {
   _already_installed_profile.emplace_back();
 }
 

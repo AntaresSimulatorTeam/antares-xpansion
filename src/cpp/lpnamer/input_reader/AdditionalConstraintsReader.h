@@ -38,7 +38,7 @@ struct AdditionalConstraintsReader {
    */
   AdditionalConstraintsReader(
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : logger_(std::move(logger)) {}
+      : logger_(logger) {}
 
   /*!
    * \brief AdditionalConstraintsReader from an inifile

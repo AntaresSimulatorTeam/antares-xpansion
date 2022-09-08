@@ -17,7 +17,7 @@ class ProblemModifier {
  public:
   ProblemModifier(
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : logger_(std::move(logger)) {}
+      : logger_(logger) {}
 
   std::shared_ptr<Problem> changeProblem(
       std::shared_ptr<Problem> problem,
