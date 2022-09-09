@@ -450,10 +450,10 @@ void BendersBase::compute_cut(AllCutPackage const &all_package) {
 
 void compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
                      const Point &x_cut, Point &s) {
-  for (auto const &var : x_cut) {
-    if (handler->get_subgradient().find(var.first) !=
+  for (auto const &[cand_name, cand_value] : x_cut) {
+    if (handler->get_subgradient().find(cand_name) !=
         handler->get_subgradient().end()) {
-      s[var.first] += handler->get_subgradient().find(var.first)->second;
+      s[cand_name] += handler->get_subgradient().find(cand_name)->second;
     }
   }
 }
@@ -557,14 +557,14 @@ void BendersBase::SaveSolutionInOutputFile() const {
 Output::CandidatesVec candidates_data(
     const WorkerMasterDataPtr &masterDataPtr_l) {
   Output::CandidatesVec candidates_vec;
-  for (const auto &pairNameValue_l : masterDataPtr_l->get_x_cut()) {
+  for (const auto &[cand_name, cand_value] : masterDataPtr_l->get_x_cut()) {
     Output::CandidateData candidate_data;
-    candidate_data.name = pairNameValue_l.first;
-    candidate_data.invest = pairNameValue_l.second;
+    candidate_data.name = cand_name;
+    candidate_data.invest = cand_value;
     candidate_data.min =
-        masterDataPtr_l->get_min_invest()[pairNameValue_l.first];
+        masterDataPtr_l->get_min_invest()[cand_name];
     candidate_data.max =
-        masterDataPtr_l->get_max_invest()[pairNameValue_l.first];
+        masterDataPtr_l->get_max_invest()[cand_name];
     candidates_vec.push_back(candidate_data);
   }
 
