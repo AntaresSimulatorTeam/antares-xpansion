@@ -184,8 +184,9 @@ void BendersBase::bound_simplex_iter(int simplexiter) {
 /*!
  *  \brief Check if initial relaxation should stop
  */
-bool BendersBase::relaxation_stopping_criterion() const {
-  return _data.stop || (((_data.best_ub - _data.lb) / _data.best_ub) <= _options.RELAXED_GAP);
+bool BendersBase::should_relaxation_stop() const {
+  return (_data.stopping_criterion != StoppingCriterion::empty) ||
+         (((_data.best_ub - _data.lb) / _data.best_ub) <= _options.RELAXED_GAP);
 }
 
 /*!
@@ -194,10 +195,11 @@ bool BendersBase::relaxation_stopping_criterion() const {
  *  Method updating the stopping criterion and reinitializing some datas
  *
  */
-bool BendersBase::stopping_criterion() {
+void BendersBase::update_stopping_criterion() {
   _data.deletedcut = 0;
   _data.maxsimplexiter = 0;
   _data.minsimplexiter = std::numeric_limits<int>::max();
+
   if (_data.elapsed_time > _options.TIME_LIMIT)
     _data.stopping_criterion = StoppingCriterion::timelimit;
   else if ((_options.MAX_ITERATIONS != -1) &&
@@ -208,8 +210,12 @@ bool BendersBase::stopping_criterion() {
   else if (((_data.best_ub - _data.lb) / _data.best_ub) <=
            _options.RELATIVE_GAP)
     _data.stopping_criterion = StoppingCriterion::relative_gap;
+}
 
-  return _data.stopping_criterion != StoppingCriterion::empty;
+bool BendersBase::should_benders_stop() {
+  update_stopping_criterion();
+  return (_data.stopping_criterion != StoppingCriterion::empty) &&
+         !_data.is_in_initial_relaxation;
 }
 
 /*!
@@ -244,7 +250,7 @@ bool BendersBase::is_initial_relaxation_requested() const {
 
 bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
   return is_initial_relaxation_requested() && is_relaxed &&
-         relaxation_stopping_criterion();
+         should_relaxation_stop();
 }
 
 void BendersBase::set_data_pre_relaxation() {
@@ -256,7 +262,6 @@ void BendersBase::reset_data_post_relaxation() {
   _data.best_ub = 1e+20;
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
-  _data.stop = false;
   _options.SEPARATION_PARAM = 1;
 }
 
@@ -561,10 +566,8 @@ Output::CandidatesVec candidates_data(
     Output::CandidateData candidate_data;
     candidate_data.name = cand_name;
     candidate_data.invest = cand_value;
-    candidate_data.min =
-        masterDataPtr_l->get_min_invest()[cand_name];
-    candidate_data.max =
-        masterDataPtr_l->get_max_invest()[cand_name];
+    candidate_data.min = masterDataPtr_l->get_min_invest()[cand_name];
+    candidate_data.max = masterDataPtr_l->get_max_invest()[cand_name];
     candidates_vec.push_back(candidate_data);
   }
 
@@ -876,7 +879,7 @@ void BendersBase::ChecksResumeMode() {
     restart_data_printer.Print();
     UpdateMaxNumberIterationResumeMode(last_iter.it);
     benders_timer = Timer(last_iter.benders_elapsed_time);
-    _data.stop = stopping_criterion();
+    _data.stop = should_benders_stop();
     iterations_before_resume = last_iter.it;
   }
 }

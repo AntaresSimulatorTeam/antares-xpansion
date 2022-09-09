@@ -195,7 +195,7 @@ void BendersMpi::step_4_update_best_solution(int rank,
 
     _data.elapsed_time = GetBendersTime();
     set_timer_master(timer_master.elapsed());
-    _data.stop = stopping_criterion();
+    _data.stop = should_benders_stop();
   }
 }
 
@@ -239,7 +239,7 @@ void BendersMpi::run() {
     }
   }
 
-  while (!_data.stop || _data.is_in_initial_relaxation) {
+  while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
 
@@ -258,7 +258,6 @@ void BendersMpi::run() {
     _data.stop |= _exceptionRaised;
 
     broadcast(_world, _data.stop, rank_0);
-    broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     if (_world.rank() == rank_0) {
       SaveCurrentBendersData();
     }

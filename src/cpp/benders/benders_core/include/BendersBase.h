@@ -33,7 +33,7 @@ class BendersBase {
   virtual void initialize_problems() = 0;
   virtual void init_data();
   void update_best_ub();
-  bool stopping_criterion();
+  bool should_benders_stop();
   bool is_initial_relaxation_requested() const;
   bool switch_to_integer_master(bool is_relaxed) const;
   virtual void update_trace();
@@ -44,10 +44,10 @@ class BendersBase {
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   virtual void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
-  void deactivate_integrity_constraints() const;
-  void activate_integrity_constraints() const;
-  void set_data_pre_relaxation();
-  void reset_data_post_relaxation();
+  virtual void deactivate_integrity_constraints() const;
+  virtual void activate_integrity_constraints() const;
+  virtual void set_data_pre_relaxation();
+  virtual void reset_data_post_relaxation();
   [[nodiscard]] std::filesystem::path GetSubproblemPath(
       std::string const &subproblem_name) const;
   [[nodiscard]] double SubproblemWeight(int subproblem_count,
@@ -104,7 +104,8 @@ class BendersBase {
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
                         Point const &xopt) const;
   void bound_simplex_iter(int simplexiter);
-  bool relaxation_stopping_criterion() const;
+  void update_stopping_criterion();
+  bool should_relaxation_stop() const;
   void check_status(AllCutPackage const &all_package) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
   [[nodiscard]] Output::IterationsData output_data() const;

@@ -35,6 +35,11 @@ class BendersSequentialDouble : public BendersSequential {
   double parametrized_ub = +1e20;
   double parametrized_best_ub = +1e20;
 
+  mutable bool _deactivateIntConstraintCall = false;
+  mutable bool _reactivateIntConstraintCall = false;
+  bool _setDataPreRelaxationCall = false;
+  bool _setDataPostRelaxationCall = false;
+
   explicit BendersSequentialDouble(BendersBaseOptions const &options,
                                    Logger &logger, Writer writer)
       : BendersSequential(options, logger, writer){};
@@ -67,6 +72,27 @@ class BendersSequentialDouble : public BendersSequential {
     BendersBase::reset_master(new FakeWorkerMaster(var));
   };
   void free() override{};
+
+  // No override as the base class function is const
+  void deactivate_integrity_constraints() const override {
+    _deactivateIntConstraintCall = true;
+    BendersBase::deactivate_integrity_constraints();
+  };
+
+  // No override as the base class function is const
+  void activate_integrity_constraints() const override {
+    _reactivateIntConstraintCall = true;
+    BendersBase::activate_integrity_constraints();
+  };
+
+  void set_data_pre_relaxation() override {
+    _setDataPreRelaxationCall = true;
+    BendersBase::set_data_pre_relaxation();
+  }
+  void reset_data_post_relaxation() override {
+    _setDataPostRelaxationCall = true;
+    BendersBase::reset_data_post_relaxation();
+  }
 
   void set_data(bool stop, int nsubproblem) {
     parametrized_stop = stop;
@@ -174,9 +200,10 @@ TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
 
   std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
-  ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
-                          [](char element) { return element == 'I'; }));
-  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, false);
+  EXPECT_EQ(benders._deactivateIntConstraintCall, false);
+  EXPECT_EQ(benders._setDataPreRelaxationCall, false);
+  EXPECT_EQ(benders._reactivateIntConstraintCall, false);
+  EXPECT_EQ(benders._setDataPostRelaxationCall, false);
 }
 
 TEST_F(BendersSequentialTest, MasterRelaxedWhenSepLowerThanOne) {
@@ -192,9 +219,10 @@ TEST_F(BendersSequentialTest, MasterRelaxedWhenSepLowerThanOne) {
 
   std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
-  ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
-                          [](char element) { return element == 'C'; }));
-  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, true);
+  EXPECT_EQ(benders._deactivateIntConstraintCall, true);
+  EXPECT_EQ(benders._setDataPreRelaxationCall, true);
+  EXPECT_EQ(benders._reactivateIntConstraintCall, false);
+  EXPECT_EQ(benders._setDataPostRelaxationCall, false);
 }
 
 TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached) {
@@ -211,12 +239,14 @@ TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached) {
 
   std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
-  ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
-                          [](char element) { return element == 'I'; }));
-  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, false);
+  EXPECT_EQ(benders._deactivateIntConstraintCall, true);
+  EXPECT_EQ(benders._setDataPreRelaxationCall, true);
+  EXPECT_EQ(benders._reactivateIntConstraintCall, true);
+  EXPECT_EQ(benders._setDataPostRelaxationCall, true);
 }
 
-TEST_F(BendersSequentialTest, DoNotReactivateIntConstraintAsGapNotReached) {
+TEST_F(BendersSequentialTest,
+       MaxIterReachedBeforeRelaxedGapShouldEndRunWithAnIntegerMasterIteration) {
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double relaxed_gap = 1e-5;
@@ -224,15 +254,20 @@ TEST_F(BendersSequentialTest, DoNotReactivateIntConstraintAsGapNotReached) {
   BendersSequentialDouble benders = init_benders_sequential(
       master_formulation, max_iter, relaxed_gap, sep_param);
 
+  int expec_benders_run_it = 2;
+
   benders.set_data(false, 0);
   benders.set_bounds(1000, 1001);
   benders.launch();
 
   std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
-  ASSERT_TRUE(std::all_of(nb_units_col_types.begin(), nb_units_col_types.end(),
-                          [](char element) { return element == 'C'; }));
-  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, true);
+  EXPECT_EQ(benders._deactivateIntConstraintCall, true);
+  EXPECT_EQ(benders._setDataPreRelaxationCall, true);
+  EXPECT_EQ(benders._reactivateIntConstraintCall, true);
+  EXPECT_EQ(benders._setDataPostRelaxationCall, true);
+
+  EXPECT_EQ(benders.get_data().it, expec_benders_run_it);
 }
 
 TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
@@ -247,9 +282,13 @@ TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
   benders.set_bounds(1000, 1001);
   benders.launch();
 
-  ASSERT_EQ(benders.get_data().is_in_initial_relaxation, false);
-  ASSERT_EQ(benders.get_data().best_ub, 1e+20);
-  ASSERT_EQ(benders.get_data().best_it, 0);
+  EXPECT_EQ(benders._deactivateIntConstraintCall, true);
+  EXPECT_EQ(benders._setDataPreRelaxationCall, true);
+  EXPECT_EQ(benders._reactivateIntConstraintCall, true);
+  EXPECT_EQ(benders._setDataPostRelaxationCall, true);
+
+  EXPECT_EQ(benders.get_data().best_ub, 1e+20);
+  EXPECT_EQ(benders.get_data().best_it, 0);
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
@@ -282,6 +321,11 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
   }
 
   benders.launch();
+
+  EXPECT_EQ(benders._deactivateIntConstraintCall, false);
+  EXPECT_EQ(benders._setDataPreRelaxationCall, false);
+  EXPECT_EQ(benders._reactivateIntConstraintCall, false);
+  EXPECT_EQ(benders._setDataPostRelaxationCall, false);
 
   EXPECT_EQ(benders.get_data().x_out, x_out);
   EXPECT_EQ(benders.get_data().x_cut, expec_x_cut);
@@ -320,6 +364,11 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   }
 
   benders.launch();
+
+  EXPECT_EQ(benders._deactivateIntConstraintCall, false);
+  EXPECT_EQ(benders._setDataPreRelaxationCall, false);
+  EXPECT_EQ(benders._reactivateIntConstraintCall, false);
+  EXPECT_EQ(benders._setDataPostRelaxationCall, false);
 
   EXPECT_EQ(benders.get_data().x_out, x_out);
   EXPECT_EQ(benders.get_data().x_cut, expec_x_cut);

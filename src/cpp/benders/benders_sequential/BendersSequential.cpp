@@ -86,7 +86,7 @@ void BendersSequential::run() {
     set_data_pre_relaxation();
   }
 
-  while (!_data.stop || _data.is_in_initial_relaxation) {
+  while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
 
@@ -119,7 +119,7 @@ void BendersSequential::run() {
 
     set_timer_master(timer_master.elapsed());
     _data.elapsed_time = GetBendersTime();
-    _data.stop = stopping_criterion();
+    _data.stop = should_benders_stop();
     SaveCurrentBendersData();
   }
   CloseCsvFile();
