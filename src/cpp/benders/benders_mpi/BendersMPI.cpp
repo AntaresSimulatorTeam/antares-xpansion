@@ -257,6 +257,7 @@ void BendersMpi::run() {
     }
     _data.stop |= _exceptionRaised;
 
+    broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);
     if (_world.rank() == rank_0) {
       SaveCurrentBendersData();
