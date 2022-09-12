@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from flushed_print import flushed_print
+from .flushed_print import flushed_print
 
 
 class IniFileNotFound(Exception):
