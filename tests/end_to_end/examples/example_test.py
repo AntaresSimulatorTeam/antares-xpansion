@@ -15,10 +15,10 @@ RELATIVE_TOLERANCE = 1e-4
 RELATIVE_TOLERANCE_LIGHT = 1e-2
 
 
-def get_first_json_filepath_output(output_dir):
+def get_json_filepath(output_dir, folder, filename):
     op = []
     for path in Path(output_dir).iterdir():
-        for jsonpath in Path(path / "expansion").rglob("out.json"):
+        for jsonpath in Path(path / folder).rglob(filename):
             op.append(jsonpath)
     assert len(op) == 1
     return op[0]
@@ -64,12 +64,23 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
     assert process.returncode == 0
 
 
+def assert_convergence(solution, options_data):
+    assert (solution["relative_gap"] <= options_data["RELATIVE_GAP"]) or (
+        solution["overall_cost"] * solution["relative_gap"]
+        <= options_data["ABSOLUTE_GAP"]
+    )
+
+
 def verify_solution(study_path, expected_values, expected_investment_solution):
     output_path = study_path / "output"
-    json_path = get_first_json_filepath_output(output_path)
+    json_path = get_json_filepath(output_path, "expansion", "out.json")
+    options_path = get_json_filepath(output_path, "lp", "options.json")
 
     with open(str(json_path), "r") as json_file:
         json_data = json.load(json_file)
+
+    with open(str(options_path), "r") as options_file:
+        options_data = json.load(options_file)
 
     solution = json_data["solution"]
     investment_solution = solution["values"]
@@ -91,11 +102,8 @@ def verify_solution(study_path, expected_values, expected_investment_solution):
         expected_values["overall_cost"],
         rtol=RELATIVE_TOLERANCE,
     )
-    np.testing.assert_allclose(
-        solution["relative_gap"],
-        expected_values["relative_gap"],
-        atol=expected_values["accepted_rel_gap_atol"],
-    )
+
+    assert_convergence(solution, options_data)
 
     for investment in expected_investment_solution.keys():
         assert investment in investment_solution.keys(), (
