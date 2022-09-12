@@ -51,6 +51,7 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
         "full",
         "-n",
         "4",
+        "--oversubscribe",
     ]
     if allow_run_as_root == "True":
         command.append("--allow-run-as-root")
