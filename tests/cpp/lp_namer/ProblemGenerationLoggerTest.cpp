@@ -15,7 +15,7 @@ TEST_F(ProblemGenerationLoggerTest, fileLogIsCreated) {
   temp_file_ = std::filesystem::temp_directory_path() /
                "ProblemGenerationLoggerTestFile.txt";
   logger_ = BuildLoggerWithParams(LOGLEVEL::INFO, temp_file_);
-  logger_ << "HELLO;";
+  (*logger_)(LOGLEVEL::INFO) << "HELLO;";
   ASSERT_EQ(std::filesystem::exists(temp_file_), true);
 }
 TEST_F(ProblemGenerationLoggerTest, MessageAreWritenInStream) {

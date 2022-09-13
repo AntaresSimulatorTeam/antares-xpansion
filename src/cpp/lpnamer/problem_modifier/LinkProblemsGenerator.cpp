@@ -17,8 +17,8 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
   std::vector<ProblemData> result;
   std::ifstream mps_filestream(mps_filePath_p.c_str());
   if (!mps_filestream.good()) {
-    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << "unable to open "
-            << mps_filePath_p << std::endl;
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << mps_filePath_p << std::endl;
     std::exit(1);
   }
   while (std::getline(mps_filestream, line)) {

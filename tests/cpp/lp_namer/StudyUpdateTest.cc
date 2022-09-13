@@ -598,8 +598,7 @@ TEST_F(UpdateCapacitiesTest,
                               "area1" / "capacities" / "area2_direct.txt";
   auto indirect_ntc_file_path = tmp_directory_path_ / "input" / "links" /
                                 "area1" / "capacities" / "area2_indirect.txt";
-  logger << "***HELLO 1 **\n";
-  logger << "***tmp_directory_path_ = " << tmp_directory_path_ << "**\n";
+
   std::ofstream direct_file, indirect_file;
   direct_file.open(direct_ntc_file_path);
   indirect_file.open(indirect_ntc_file_path);
@@ -609,7 +608,7 @@ TEST_F(UpdateCapacitiesTest,
   }
   direct_file.close();
   indirect_file.close();
-  logger << "***HELLO 2 **\n";
+
   study_updater_ = StudyUpdater(tmp_directory_path_,
                                 AntaresVersionProviderStub(822), logger);
   (void)study_updater_.update({active_link}, solution);

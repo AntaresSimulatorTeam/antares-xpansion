@@ -1,5 +1,7 @@
 #ifndef __PROBLEMGENERATIONLOGGER_H__
 #define __PROBLEMGENERATIONLOGGER_H__
+#include <chrono>
+#include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -9,6 +11,7 @@
 #include <string>
 
 namespace ProblemGenerationLog {
+std::string GetTime();
 enum class LOGLEVEL { NONE, TRACE, DEBUG, INFO, WARNING, ERROR, FATAL };
 std::string LogLevelToStr(const LOGLEVEL logLevel);
 class ProblemGenerationILogger {
@@ -46,19 +49,6 @@ class ProblemGenerationLogger;
 using ProblemGenerationLoggerSharedPointer =
     std::shared_ptr<ProblemGenerationLogger>;
 
-ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h,
-                                    std::ostream& (*f)(std::ostream&));
-ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h,
-                                    const LOGLEVEL logLevel);
-
-ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer h,
-    std::ostream& (*f)(std::ostream&));
-ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer h, const LOGLEVEL logLevel);
-template <typename T>
-ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h, T const& t);
-
 class ProblemGenerationLogger {
  private:
   std::string prefix_;
@@ -78,45 +68,32 @@ class ProblemGenerationLogger {
     logLevel_ = logLevel;
     prefix_ = LogLevelToStr(logLevel_);
   }
-  std::string PrefixMessage() const { return prefix_; }
+  std::string PrefixMessage() const { return prefix_ + GetTime(); }
+  std::string PrefixMessage(const LOGLEVEL&) const;
   ProblemGenerationLogger& operator()(const LOGLEVEL logLevel) {
     return (*this) << logLevel;
   }
-  ProblemGenerationLogger& operator()() { return (*this) << prefix_; }
+  ProblemGenerationLogger& operator()() { return (*this) << PrefixMessage(); }
 
-  friend ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h,
-                                             std::ostream& (*f)(std::ostream&));
-  friend ProblemGenerationLogger& operator<<(
-      const ProblemGenerationLoggerSharedPointer h, const LOGLEVEL logLevel);
-  friend ProblemGenerationLogger& operator<<(
-      const ProblemGenerationLoggerSharedPointer h,
-      std::ostream& (*f)(std::ostream&));
-  friend ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h,
-                                             const LOGLEVEL logLevel);
+  ProblemGenerationLogger& operator<<(std::ostream& (*f)(std::ostream&));
+  ProblemGenerationLogger& operator<<(
+      const ProblemGenerationLoggerSharedPointer logger) {
+    return (*logger);
+  }
+  ProblemGenerationLogger& operator<<(const LOGLEVEL logLevel);
 
   template <typename T>
-  friend ProblemGenerationLogger& operator<<(ProblemGenerationLogger& h,
-                                             T const& t);
-
-  template <typename T>
-  friend ProblemGenerationLogger& operator<<(
-      const ProblemGenerationLoggerSharedPointer logger, T const& t);
+  ProblemGenerationLogger& operator<<(T const& t);
 
  private:
   std::list<ProblemGenerationILoggerSharedPointer> loggers_;
 };
 template <typename T>
-ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
-                                    T const& t) {
-  for (auto& subLogger : logger.loggers_) {
+ProblemGenerationLogger& ProblemGenerationLogger::operator<<(T const& t) {
+  for (auto& subLogger : loggers_) {
     subLogger->GetOstreamObject() << t;
   }
-  return logger;
-}
-template <typename T>
-ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer logger, T const& t) {
-  return (*logger) << t;
+  return *this;
 }
 
 }  // namespace ProblemGenerationLog
