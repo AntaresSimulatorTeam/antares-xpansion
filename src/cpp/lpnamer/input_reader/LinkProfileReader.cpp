@@ -5,9 +5,9 @@
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &direct_filename,
     const std::filesystem::path &indirect_file_name) {
-  logger_ << ProblemGenerationLog::LOGLEVEL::DEBUG
-          << "direct_filename : " << direct_filename << "\n"
-          << "indirect_file_name: " << indirect_file_name << "\n";
+  (*logger_)(ProblemGenerationLog::LOGLEVEL::DEBUG)
+      << "direct_filename : " << direct_filename << "\n"
+      << "indirect_file_name: " << indirect_file_name << "\n";
   EnsureFileIsGood(direct_filename);
   EnsureFileIsGood(indirect_file_name);
   std::vector<LinkProfile> result;
@@ -18,8 +18,8 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
 void LinkProfileReader::EnsureFileIsGood(
     const std::filesystem::path &direct_filename) {
   if (std::ifstream infile(direct_filename); !infile.good()) {
-    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << "unable to open file"
-            << direct_filename;
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open file" << direct_filename;
     throw std::filesystem::filesystem_error("unable to open file",
                                             direct_filename, std::error_code());
   }
@@ -39,7 +39,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
   std::ifstream infile(filename);
   if (!infile.good()) {
     auto errMsg = std::string("unable to open file ");
-    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << errMsg << filename;
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg << filename;
     throw std::filesystem::filesystem_error(errMsg, filename,
                                             std::error_code());
   }
@@ -59,7 +59,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
     } else {
       auto errMsg = std::string("error not enough line in link-profile ") +
                     filename.string();
-      logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << errMsg;
+      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
       throw std::domain_error(errMsg);
     }
   }

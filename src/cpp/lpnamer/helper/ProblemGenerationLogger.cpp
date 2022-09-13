@@ -60,31 +60,29 @@ void ProblemGenerationLogger::DisplayMessage(const std::string& message,
     logger->DisplayMessage(message);
   }
 }
-
-ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
-                                    const LOGLEVEL logLevel) {
-  for (auto& subLogger : logger.loggers_) {
-    subLogger->GetOstreamObject() << LogLevelToStr(logLevel);
-  }
-  return logger;
+std::string GetTime() {
+  auto now = std::chrono::system_clock::now();
+  auto thisTime = std::chrono::system_clock::to_time_t(now);
+  return std::ctime(&thisTime);
 }
-ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer logger,
+std::string ProblemGenerationLogger::PrefixMessage(
+    const LOGLEVEL& logLevel) const {
+  return LogLevelToStr(logLevel) + GetTime();
+}
+ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     const LOGLEVEL logLevel) {
-  return (*logger) << logLevel;
+  for (auto& subLogger : loggers_) {
+    subLogger->GetOstreamObject() << PrefixMessage(logLevel);
+  }
+  return *this;
 }
 
-ProblemGenerationLogger& operator<<(ProblemGenerationLogger& logger,
-                                    std::ostream& (*f)(std::ostream&)) {
-  for (auto& subLogger : logger.loggers_) {
+ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
+    std::ostream& (*f)(std::ostream&)) {
+  for (auto& subLogger : loggers_) {
     subLogger->GetOstreamObject() << f;
   }
-  return logger;
+  return *this;
 }
 
-ProblemGenerationLogger& operator<<(
-    const ProblemGenerationLoggerSharedPointer logger,
-    std::ostream& (*f)(std::ostream&)) {
-  return (*logger) << f;
-}
 }  // namespace ProblemGenerationLog

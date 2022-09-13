@@ -30,8 +30,8 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
 
   std::ifstream interco_filestream(antaresIntercoFile);
   if (!interco_filestream.good()) {
-    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << "unable to open "
-            << antaresIntercoFile.string();
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << antaresIntercoFile.string();
     std::exit(1);
   }
 
@@ -55,8 +55,8 @@ std::vector<std::string> CandidatesINIReader::ReadAreaFile(
 
   std::ifstream area_filestream(areaFile);
   if (!area_filestream.good()) {
-    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << "unable to open "
-            << areaFile.string();
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << areaFile.string();
     std::exit(1);
   }
 
@@ -134,15 +134,15 @@ CandidateData CandidatesINIReader::readCandidateSection(
     candidateData.linkex =
         candidateData.link_name.substr(i + 3, candidateData.link_name.size());
     if (!checkArea(candidateData.linkor)) {
-      logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << "Unrecognized area "
-              << candidateData.linkor << " in section " << sectionName << " in "
-              << candidateFile.string() + ".";
+      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "Unrecognized area " << candidateData.linkor << " in section "
+          << sectionName << " in " << candidateFile.string() + ".";
       std::exit(1);
     }
     if (!checkArea(candidateData.linkex)) {
-      logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << "Unrecognized area "
-              << candidateData.linkex << " in section " << sectionName << " in "
-              << candidateFile.string() << ".";
+      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "Unrecognized area " << candidateData.linkex << " in section "
+          << sectionName << " in " << candidateFile.string() << ".";
       std::exit(1);
     }
   }
@@ -150,8 +150,8 @@ CandidateData CandidatesINIReader::readCandidateSection(
   // Check if interco is available
   auto it = _intercoIndexMap.find(candidateData.link_name);
   if (it == _intercoIndexMap.end()) {
-    logger_ << ProblemGenerationLog::LOGLEVEL::FATAL << "cannot link candidate "
-            << candidateData.name << " to interco id";
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "cannot link candidate " << candidateData.name << " to interco id";
     std::exit(1);
   }
   candidateData.link_id = it->second;
