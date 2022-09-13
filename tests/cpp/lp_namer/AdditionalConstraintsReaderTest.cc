@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "AdditionalConstraintsReader.h"
-#include "EmptyLogger.h"
+#include "LoggerBuilder.h"
 #include "ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 

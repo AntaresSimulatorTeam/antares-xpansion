@@ -10,7 +10,7 @@
 
 #include "ChronicleMapProvider.h"
 #include "ChronicleMapReader.h"
-#include "EmptyLogger.h"
+#include "LoggerBuilder.h"
 
 class ChronicleProviderTest : public ::testing::Test {
  public:

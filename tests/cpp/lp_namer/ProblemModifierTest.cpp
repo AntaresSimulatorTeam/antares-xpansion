@@ -6,7 +6,7 @@
 
 #include <fstream>
 
-#include "EmptyLogger.h"
+#include "LoggerBuilder.h"
 #include "Problem.h"
 #include "gtest/gtest.h"
 

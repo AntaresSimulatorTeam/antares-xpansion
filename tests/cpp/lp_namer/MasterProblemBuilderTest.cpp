@@ -3,7 +3,7 @@
 //
 #include <solver_utils.h>
 
-#include "EmptyLogger.h"
+#include "LoggerBuilder.h"
 #include "MasterProblemBuilder.h"
 #include "gtest/gtest.h"
 

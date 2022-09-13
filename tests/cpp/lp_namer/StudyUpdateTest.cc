@@ -3,9 +3,9 @@
 
 #include "ActiveLinks.h"
 #include "CandidatesINIReader.h"
-#include "EmptyLogger.h"
 #include "LinkProfileReader.h"
 #include "LinkdataRecord.h"
+#include "LoggerBuilder.h"
 #include "ProblemGenerationLogger.h"
 #include "StudyUpdateLinkParameterStrategy.h"
 #include "StudyUpdater.h"

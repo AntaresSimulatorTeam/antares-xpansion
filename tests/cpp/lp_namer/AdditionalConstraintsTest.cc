@@ -2,7 +2,7 @@
 #include <sstream>
 
 #include "AdditionalConstraints.h"
-#include "EmptyLogger.h"
+#include "LoggerBuilder.h"
 #include "gtest/gtest.h"
 
 class AdditionalConstraintsTest : public ::testing::Test {

@@ -28,8 +28,9 @@ add_executable (lp_namer_tests
         ChronicleMapReaderTest.cpp
         ChronicleMapProviderTest.cpp
         ProblemConstructionTest.cpp NOOPSolver.h
-        EmptyLogger.h
-        EmptyLogger.cpp)
+        LoggerBuilder.h
+        LoggerBuilder.cpp
+        ProblemGenerationLoggerTest.cpp)
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main
