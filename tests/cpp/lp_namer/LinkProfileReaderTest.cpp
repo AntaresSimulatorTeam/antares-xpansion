@@ -1,7 +1,7 @@
 #include <fstream>
 
-#include "EmptyLogger.h"
 #include "LinkProfileReader.h"
+#include "LoggerBuilder.h"
 #include "ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 

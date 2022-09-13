@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "EmptyLogger.h"
+#include "LoggerBuilder.h"
 #include "VariableFileReader.h"
 #include "gtest/gtest.h"
 

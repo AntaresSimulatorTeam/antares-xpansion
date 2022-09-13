@@ -1,7 +1,7 @@
 #include <fstream>
 
 #include "CandidatesINIReader.h"
-#include "EmptyLogger.h"
+#include "LoggerBuilder.h"
 #include "ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 
