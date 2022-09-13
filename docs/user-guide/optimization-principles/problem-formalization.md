@@ -126,7 +126,7 @@ where \\(\mathrm{extr}(F_{l, s})\\) is the set of extreme points of \\(F_{l, s} 
 
 $$
 \begin{aligned}
-    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s} \max_{\pi_{l, s} \in \mathrm{extr}(F_{l, s})} \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x) \\\\
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \max_{\pi_{l, s} \in \mathrm{extr}(F_{l, s})} \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x) \\\\
     \text{s.t.} \ & Ax = b\\
 \end{aligned}
 $$
@@ -135,7 +135,7 @@ This problem can be linearized by introducing continuous variables \\(\vartheta_
     
 $$
 \begin{aligned}
-    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\vartheta_{l, s} \\\\
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \vartheta_{l, s} \\\\
     \text{s.t.} \ & Ax = b\\\\
     & \vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\ , \quad \forall l \ , \forall s \ , \forall \pi_{l, s} \in \mathrm{extr}(F_{l, s})
 \end{aligned}
@@ -166,7 +166,7 @@ This is why, the Benders decomposition algorithm proceeds iteratively:
 
 $$
 \begin{aligned}
-    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\vartheta_{l, s} \\\\
+    \min\_{x \in \mathcal{X}}\ & c^{\top}x + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \vartheta_{l, s} \\\\
     \text{s.t.} \ & Ax = b\\\\
     & \vartheta_{l, s} \geq {{}\bar{\pi}\_{l, s}^{i}}^{\top} (d_{l, s} - T_{l, s}x)\ , \quad \forall l \ , \forall s \ , \forall i < k
 \end{aligned}
@@ -177,6 +177,6 @@ where \\({\bar{\pi}\_{l, s}^{i}}\\) is the solution of the satellite problem for
 In order to check convergence of the algorithm, an optimality gap is computed at each iteration:
 
 - The solution of the master problem is a lower bound of the optimal cost as it is a relaxation of the investment problem.
-- With a given investment level \\(\bar{x}\\), we get a feasible solution with a cost equal to the sum of the investment cost and of the optimal cost of the satellite problems: \\(c^{\top}\bar{x} + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\). This gives a valid upper bound for the investment problem.
+- With a given investment level \\(\bar{x}\\), we get a feasible solution with a cost equal to the sum of the investment cost and of the optimal cost of the satellite problems: \\(c^{\top}\bar{x} + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\). This gives a valid upper bound for the investment problem.
 
 The optimality gap is the difference (either absolute or relative) between the lower and the upper bound. The Benders decomposition algorithm stops when the optimality gap falls below a value specified by the user (or set by default), see [`optimality_gap`](../get-started/settings-definition.md#optimality_gap) and [`relative_gap`](../get-started/settings-definition.md#relative_gap).
