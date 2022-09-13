@@ -63,11 +63,12 @@ void ProblemGenerationLogger::DisplayMessage(const std::string& message,
 std::string GetTime() {
   auto now = std::chrono::system_clock::now();
   auto thisTime = std::chrono::system_clock::to_time_t(now);
-  return std::ctime(&thisTime);
+
+  auto str = std::string(std::ctime(&thisTime));
+  return str.substr(0, str.size() - 1);
 }
-std::string ProblemGenerationLogger::PrefixMessage(
-    const LOGLEVEL& logLevel) const {
-  return LogLevelToStr(logLevel) + GetTime();
+std::string ProblemGenerationLogger::PrefixMessage(const LOGLEVEL& logLevel) const {
+  return LogLevelToStr(logLevel) + GetTime() + ": ";
 }
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     const LOGLEVEL logLevel) {
