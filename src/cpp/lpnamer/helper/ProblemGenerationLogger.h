@@ -68,7 +68,7 @@ class ProblemGenerationLogger {
     logLevel_ = logLevel;
     prefix_ = LogLevelToStr(logLevel_);
   }
-  std::string PrefixMessage() const { return prefix_ + GetTime(); }
+  std::string PrefixMessage() const { return PrefixMessage(logLevel_); }
   std::string PrefixMessage(const LOGLEVEL&) const;
   ProblemGenerationLogger& operator()(const LOGLEVEL logLevel) {
     return (*this) << logLevel;
