@@ -8,7 +8,6 @@ class ProblemGenerationLoggerTest : public ::testing::Test {
   std::filesystem::path temp_file_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 
- protected:
 };
 
 TEST_F(ProblemGenerationLoggerTest, fileLogIsCreated) {

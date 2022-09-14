@@ -67,7 +67,7 @@ std::string ProblemGenerationLogger::PrefixMessage(const LOGLEVEL& logLevel) con
 }
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     const LOGLEVEL logLevel) {
-  for (auto& subLogger : loggers_) {
+  for (const auto& subLogger : loggers_) {
     subLogger->GetOstreamObject() << PrefixMessage(logLevel);
   }
   return *this;
@@ -75,7 +75,7 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
 
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     std::ostream& (*f)(std::ostream&)) {
-  for (auto& subLogger : loggers_) {
+  for (const auto& subLogger : loggers_) {
     subLogger->GetOstreamObject() << f;
   }
   return *this;
