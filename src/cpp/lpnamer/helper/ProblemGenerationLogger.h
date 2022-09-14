@@ -27,10 +27,10 @@ class ProblemGenerationFileLogger : public ProblemGenerationILogger {
   std::ofstream logFile_;
 
  public:
-  virtual ~ProblemGenerationFileLogger() { logFile_.close(); }
-  ProblemGenerationFileLogger(const std::filesystem::path& logFilePath);
+  ~ProblemGenerationFileLogger() override { logFile_.close(); }
+  explicit ProblemGenerationFileLogger(const std::filesystem::path& logFilePath);
   void DisplayMessage(const std::string& message) override;
-  std::ostream& GetOstreamObject() { return logFile_; }
+  std::ostream& GetOstreamObject() override { return logFile_; }
 };
 
 class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
@@ -38,10 +38,10 @@ class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
   std::ostream& stream_;
 
  public:
-  virtual ~ProblemGenerationOstreamLogger() = default;
-  ProblemGenerationOstreamLogger(std::ostream& stream);
+   ~ProblemGenerationOstreamLogger() override = default;
+  explicit ProblemGenerationOstreamLogger(std::ostream& stream) ;
   void DisplayMessage(const std::string& message) override;
-  std::ostream& GetOstreamObject() { return stream_; }
+  std::ostream& GetOstreamObject() override{ return stream_; }
 };
 
 class ProblemGenerationLogger;
@@ -54,7 +54,7 @@ class ProblemGenerationLogger {
   LOGLEVEL logLevel_;
 
  public:
-  ProblemGenerationLogger(const LOGLEVEL logLevel)
+  explicit ProblemGenerationLogger(const LOGLEVEL logLevel)
       : prefix_(LogLevelToStr(logLevel)), logLevel_(logLevel) {}
   ~ProblemGenerationLogger() = default;
 
