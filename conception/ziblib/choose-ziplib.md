@@ -1,6 +1,6 @@
 Choose Zip Library 
 ===
-This Adr aim to select zip library that will be used to manage mps file in arhive.
+This ADR aims to select the library that will be used to manage MPS files in ZIP archives.
 
 Status
 === 
