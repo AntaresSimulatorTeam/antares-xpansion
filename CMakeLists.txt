@@ -167,26 +167,18 @@ sbeParseJson(antares_version jsonContent)
 #need to know antares solver version because antares-solver targets still refers to antares version
 SET(ANTARES_VERSION ${antares_version.antares_version_executable})
 SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
+SET(ANTARES_DEPS_VERSION ${antares_version.antares_deps_version})
 
 sbeClearJson(antares_version)
 
 # Build dependencies not handled by antares-deps repository
-option(BUILD_antares_solver "Build antares solver" ON)
+option(BUILD_antares_solver "Build antares solver" OFF)
+option(DOWNLOAD_antares_solver "Download antares solver" ON)
+message(STATUS "Download antares solver: ${DOWNLOAD_antares_solver}")
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
-if (${BUILD_antares_solver})
-	#check if antares_solver available before asking for sirius and ortools build
-	find_package(antares-solver)
-	if (NOT antares-solver_FOUND)
-		set(BUILD_sirius ON)
-		set(BUILD_ortools ON)
-	endif()
-endif()
-
 add_subdirectory(antares-deps)
-
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
-
 # ---------------------------------------------------------------------------
 # Boost
 # ---------------------------------------------------------------------------
@@ -228,8 +220,6 @@ find_package(glog REQUIRED)
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
-
-find_package(sirius_solver REQUIRED)
 
 if (SOLVER)
 	if (SOLVER STREQUAL "cplex")
