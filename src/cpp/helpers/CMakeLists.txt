@@ -14,6 +14,7 @@
 # unit tests
 # --------------------------------------------------------------------------
 
+find_package(gflags)
 add_library (helpers STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.cc

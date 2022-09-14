@@ -177,8 +177,21 @@ option(DOWNLOAD_antares_solver "Download antares solver" ON)
 message(STATUS "Download antares solver: ${DOWNLOAD_antares_solver}")
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
-add_subdirectory(antares-deps)
+option(DOWNLOAD_DEPS "Download antares deps" ON)
+message(STATUS "Download antares deps: ${DOWNLOAD_DEPS}")
+
+#add_subdirectory(antares-deps)
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
+
+find_package(antares-solver REQUIRED)
+find_package(gflags REQUIRED)
+find_package(Cbc REQUIRED)
+find_package(Cgl REQUIRED)
+find_package(Clp REQUIRED)
+find_package(CoinUtils REQUIRED)
+find_package(Osi REQUIRED)
+find_package(glog REQUIRED)
+
 # ---------------------------------------------------------------------------
 # Boost
 # ---------------------------------------------------------------------------
@@ -209,13 +222,6 @@ find_package (Threads REQUIRED)
 
 
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
-find_package(gflags REQUIRED)
-find_package(Cbc REQUIRED)
-find_package(Cgl REQUIRED)
-find_package(Clp REQUIRED)
-find_package(CoinUtils REQUIRED)
-find_package(Osi REQUIRED)
-find_package(glog REQUIRED)
 
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
@@ -298,8 +304,6 @@ if(WIN32)
 else()
 	set(CURRENT_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif()
-
-find_package(antares-solver REQUIRED)
 
 #Default RELEASE antares-solver use
 get_target_property( ANTARES_SOLVER_PATH antares-${ANTARES_VERSION}-solver IMPORTED_LOCATION_RELEASE )
