@@ -12,7 +12,7 @@ ProblemData::ProblemData(const std::string &problem_mps,
     : _problem_mps(problem_mps), _variables_txt(variables_txt) {}
 
 std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
-    const std::filesystem::path &mps_filePath_p) {
+    const std::filesystem::path &mps_filePath_p)const {
   std::string line;
   std::vector<ProblemData> result;
   std::ifstream mps_filestream(mps_filePath_p.c_str());
@@ -52,7 +52,7 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  */
 void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
-                                  Couplings &couplings) {
+                                  Couplings &couplings) const {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const mps_name = root / problemData._problem_mps;
   auto const var_name = root / problemData._variables_txt;

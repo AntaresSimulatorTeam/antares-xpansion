@@ -34,7 +34,7 @@ void MasterGeneration::add_candidates(const std::vector<ActiveLink> &links) {
 void MasterGeneration::write_master_mps(
     const std::filesystem::path &rootPath,
     std::string const &master_formulation, std::string const &solver_name,
-    const AdditionalConstraints &additionalConstraints_p) {
+    const AdditionalConstraints &additionalConstraints_p) const{
   SolverAbstract::Ptr master_l =
       MasterProblemBuilder(master_formulation).build(solver_name, candidates);
   treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);

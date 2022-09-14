@@ -48,14 +48,14 @@ void ProblemGenerationOstreamLogger::DisplayMessage(
   stream_ << message << std::endl;
 }
 
-void ProblemGenerationLogger::DisplayMessage(const std::string& message) {
-  for (auto& logger : loggers_) {
+void ProblemGenerationLogger::DisplayMessage(const std::string& message)const {
+  for (const auto& logger : loggers_) {
     logger->DisplayMessage(message);
   }
 }
 void ProblemGenerationLogger::DisplayMessage(const std::string& message,
-                                             const LOGLEVEL logLevel) {
-  for (auto& logger : loggers_) {
+                                             const LOGLEVEL logLevel)const {
+  for (const auto& logger : loggers_) {
     logger->DisplayMessage(LogLevelToStr(logLevel));
     logger->DisplayMessage(message);
   }

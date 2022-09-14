@@ -17,7 +17,7 @@ class StudyUpdateLinkParameterStrategy : public StudyUpdateStrategy {
  private:
   [[nodiscard]] int UpdateLinkDataParameters(
       const ActiveLink& link_p,
-      const std::map<std::string, double>& investments_p);
+      const std::map<std::string, double>& investments_p) const;
 
  public:
   /*!
