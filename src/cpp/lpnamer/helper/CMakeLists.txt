@@ -18,6 +18,9 @@ target_include_directories (lp_namer_helper
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
 )
-
+target_link_libraries (lp_namer_helper 
+	PUBLIC
+		helpers
+)
 
 add_library (${PROJECT_NAME}::lp_namer_helper ALIAS lp_namer_helper)

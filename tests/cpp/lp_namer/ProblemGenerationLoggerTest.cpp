@@ -24,8 +24,9 @@ TEST_F(ProblemGenerationLoggerTest, MessageAreWritenInStream) {
   std::stringstream stream;
 
   logger_ = BuildLoggerWithParams(LOGLEVEL::INFO, stream);
-  auto msg = "HELLO";
-  (*logger_)() << msg;
-  auto expectedMsg = logger_->PrefixMessage() + msg;
-  ASSERT_EQ(expectedMsg, stream.str());
+  std::string expectedMsg ("HELLO");
+  (*logger_)() << expectedMsg;
+  auto printedMsg = stream.str();
+  auto printedMsgSize = printedMsg.size();
+  ASSERT_EQ(expectedMsg, printedMsg.substr(printedMsgSize-expectedMsg.size()) );
 }
