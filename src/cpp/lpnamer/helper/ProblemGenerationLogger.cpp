@@ -1,4 +1,6 @@
 #include "ProblemGenerationLogger.h"
+#include "Clock.h"
+
 namespace ProblemGenerationLog {
 
 std::string LogLevelToStr(const LOGLEVEL logLevel) {
@@ -60,15 +62,8 @@ void ProblemGenerationLogger::DisplayMessage(const std::string& message,
     logger->DisplayMessage(message);
   }
 }
-std::string GetTime() {
-  auto now = std::chrono::system_clock::now();
-  auto thisTime = std::chrono::system_clock::to_time_t(now);
-
-  auto str = std::string(std::ctime(&thisTime));
-  return str.substr(0, str.size() - 1);
-}
 std::string ProblemGenerationLogger::PrefixMessage(const LOGLEVEL& logLevel) const {
-  return LogLevelToStr(logLevel) + GetTime() + ": ";
+  return LogLevelToStr(logLevel) + clock_utils::timeToStr(std::time(nullptr))+  ": ";
 }
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     const LOGLEVEL logLevel) {

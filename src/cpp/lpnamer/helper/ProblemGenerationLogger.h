@@ -11,7 +11,6 @@
 #include <string>
 
 namespace ProblemGenerationLog {
-std::string GetTime();
 enum class LOGLEVEL { NONE, TRACE, DEBUG, INFO, WARNING, ERROR, FATAL };
 std::string LogLevelToStr(const LOGLEVEL logLevel);
 class ProblemGenerationILogger {
