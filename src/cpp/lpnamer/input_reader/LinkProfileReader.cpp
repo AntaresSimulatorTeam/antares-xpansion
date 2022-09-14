@@ -16,7 +16,7 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
   return result;
 }
 void LinkProfileReader::EnsureFileIsGood(
-    const std::filesystem::path &direct_filename) {
+    const std::filesystem::path &direct_filename)const {
   if (std::ifstream infile(direct_filename); !infile.good()) {
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
         << "unable to open file" << direct_filename;
@@ -67,7 +67,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
 }
 void LinkProfileReader::UpdateProfile(std::vector<LinkProfile> &result,
                                       bool directProfile, double value,
-                                      int chronicle_id, size_t time_step) {
+                                      int chronicle_id, size_t time_step)const {
   LinkProfile &profile = result.at(chronicle_id);
   if (directProfile) {
     profile.direct_link_profile.at(time_step) = value;
@@ -77,7 +77,7 @@ void LinkProfileReader::UpdateProfile(std::vector<LinkProfile> &result,
 }
 
 void LinkProfileReader::ConstructChronicle(std::vector<LinkProfile> &result,
-                                           int chronicle_id) {
+                                           int chronicle_id) const{
   if (result.size() <= chronicle_id) {
     result.emplace_back();
   }

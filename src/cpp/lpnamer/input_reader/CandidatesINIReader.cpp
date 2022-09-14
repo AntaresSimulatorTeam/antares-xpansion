@@ -25,7 +25,7 @@ CandidatesINIReader::CandidatesINIReader(
 }
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
-    const std::filesystem::path &antaresIntercoFile) {
+    const std::filesystem::path &antaresIntercoFile)const {
   std::vector<IntercoFileData> result;
 
   std::ifstream interco_filestream(antaresIntercoFile);
@@ -50,7 +50,7 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
   return result;
 }
 std::vector<std::string> CandidatesINIReader::ReadAreaFile(
-    const std::filesystem::path &areaFile) {
+    const std::filesystem::path &areaFile) const {
   std::vector<std::string> result;
 
   std::ifstream area_filestream(areaFile);

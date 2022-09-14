@@ -33,10 +33,10 @@ class LinkProfileReader {
                        std::vector<LinkProfile>& result,
                        bool fillDirectProfile);
 
-  void ConstructChronicle(std::vector<LinkProfile>& result, int chronicle_id);
+  void ConstructChronicle(std::vector<LinkProfile>& result, int chronicle_id)const;
   void UpdateProfile(std::vector<LinkProfile>& result, bool directProfile,
-                     double value, int chronicle_id, size_t time_step);
-  void EnsureFileIsGood(const std::filesystem::path& direct_filename);
+                     double value, int chronicle_id, size_t time_step)const;
+  void EnsureFileIsGood(const std::filesystem::path& direct_filename) const;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 };
 

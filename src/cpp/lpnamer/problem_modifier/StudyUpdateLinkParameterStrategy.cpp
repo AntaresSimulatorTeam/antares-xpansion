@@ -23,7 +23,7 @@ std::filesystem::path StudyUpdateLinkParameterStrategy::getLinkdataFilepath(
 
 int StudyUpdateLinkParameterStrategy::UpdateLinkDataParameters(
     const ActiveLink& link_p,
-    const std::map<std::string, double>& investments_p) {
+    const std::map<std::string, double>& investments_p) const {
   auto linkdataFilename_l = getLinkdataFilepath(link_p);
   LinkParametersCSVOverWriter csv_writer(logger_);
   if (!csv_writer.open(linkdataFilename_l)) {

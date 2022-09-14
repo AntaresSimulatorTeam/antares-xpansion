@@ -48,7 +48,7 @@ class StudyUpdater {
 
   [[nodiscard]] int updateLinkdataFile(
       const ActiveLink& link_p,
-      const std::map<std::string, double>& investments_p);
+      const std::map<std::string, double>& investments_p)const;
 
   /*!
    * \brief updates the linkdata files for multiple candidates from a solution

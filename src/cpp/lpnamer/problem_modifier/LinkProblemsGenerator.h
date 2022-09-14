@@ -37,10 +37,10 @@ class LinkProblemsGenerator {
 
  private:
   std::vector<ProblemData> readMPSList(
-      const std::filesystem::path& mps_filePath_p);
+      const std::filesystem::path& mps_filePath_p)const;
 
   void treat(const std::filesystem::path& root, ProblemData const&,
-             Couplings& couplings);
+             Couplings& couplings)const;
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;

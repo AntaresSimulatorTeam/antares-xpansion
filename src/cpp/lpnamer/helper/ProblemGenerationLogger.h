@@ -62,8 +62,8 @@ class ProblemGenerationLogger {
   void AddLogger(const ProblemGenerationILoggerSharedPointer& logger) {
     loggers_.push_back(logger);
   }
-  void DisplayMessage(const std::string& message);
-  void DisplayMessage(const std::string& message, const LOGLEVEL logLevel);
+  void DisplayMessage(const std::string& message)const;
+  void DisplayMessage(const std::string& message, const LOGLEVEL logLevel)const;
   void setLogLevel(const LOGLEVEL logLevel) {
     logLevel_ = logLevel;
     prefix_ = LogLevelToStr(logLevel_);
@@ -90,7 +90,7 @@ class ProblemGenerationLogger {
 };
 template <typename T>
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(T const& t) {
-  for (auto& subLogger : loggers_) {
+  for (const auto& subLogger : loggers_) {
     subLogger->GetOstreamObject() << t;
   }
   return *this;

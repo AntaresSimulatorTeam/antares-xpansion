@@ -28,8 +28,8 @@ class CandidatesINIReader {
       : logger_(logger) {}
 
   std::vector<IntercoFileData> ReadAntaresIntercoFile(
-      const std::filesystem::path& antaresIntercoFile);
-  std::vector<std::string> ReadAreaFile(const std::filesystem::path& areaFile);
+      const std::filesystem::path& antaresIntercoFile)const;
+  std::vector<std::string> ReadAreaFile(const std::filesystem::path& areaFile)const;
 
   std::vector<CandidateData> readCandidateData(
       const std::filesystem::path& candidateFile);

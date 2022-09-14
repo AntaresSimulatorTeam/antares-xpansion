@@ -31,7 +31,7 @@ class MasterGeneration {
   void write_master_mps(const std::filesystem::path &rootPath,
                         std::string const &master_formulation,
                         std::string const &solver_name,
-                        const AdditionalConstraints &additionalConstraints_p);
+                        const AdditionalConstraints &additionalConstraints_p) const;
   void write_structure_file(const std::filesystem::path &rootPath,
                             const Couplings &couplings) const;
 
