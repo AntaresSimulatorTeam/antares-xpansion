@@ -4,7 +4,7 @@ This ADR aims to select the library that will be used to manage MPS files in ZIP
 
 Status
 === 
-choice made: [minizip-ng](https://github.com/zlib-ng/minizip-ng)
+[minizip-ng](https://github.com/zlib-ng/minizip-ng): Accepted [08/2022]
 
 Context
 ===
@@ -31,3 +31,4 @@ libzip and it's wrapper libzippp : rejected
 
 Consequences 
 ===
+Add [minizip-ng](https://github.com/zlib-ng/minizip-ng) as dependency in [antares-deps](https://github.com/AntaresSimulatorTeam/antares-deps)
