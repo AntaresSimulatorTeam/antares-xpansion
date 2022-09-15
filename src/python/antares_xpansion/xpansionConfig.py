@@ -216,7 +216,7 @@ class XpansionConfig:
         return "-1"
 
     def separation_default_value(self):
-        return "1"
+        return "0.5"
 
     def _get_config_values(self):
 
