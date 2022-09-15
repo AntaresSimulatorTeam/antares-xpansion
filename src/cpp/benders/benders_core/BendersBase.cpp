@@ -184,7 +184,7 @@ void BendersBase::bound_simplex_iter(int simplexiter) {
 /*!
  *  \brief Check if initial relaxation should stop
  */
-bool BendersBase::should_relaxation_stop() const {
+bool BendersBase::ShouldRelaxationStop() const {
   return (_data.stopping_criterion != StoppingCriterion::empty) ||
          (((_data.best_ub - _data.lb) / _data.best_ub) <= _options.RELAXED_GAP);
 }
@@ -195,7 +195,7 @@ bool BendersBase::should_relaxation_stop() const {
  *  Method updating the stopping criterion and reinitializing some datas
  *
  */
-void BendersBase::update_stopping_criterion() {
+void BendersBase::updateStoppingCriterion() {
   _data.deletedcut = 0;
   _data.maxsimplexiter = 0;
   _data.minsimplexiter = std::numeric_limits<int>::max();
@@ -250,7 +250,7 @@ bool BendersBase::is_initial_relaxation_requested() const {
 
 bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
   return is_initial_relaxation_requested() && is_relaxed &&
-         should_relaxation_stop();
+         ShouldRelaxationStop();
 }
 
 void BendersBase::set_data_pre_relaxation() {
@@ -333,7 +333,7 @@ void BendersBase::activate_integrity_constraints() const {
   _master->activate_integrity_constraints();
 }
 
-void BendersBase::compute_x_cut() {
+void BendersBase::ComputeXCut() {
   if (_data.it == 1) {
     _data.x_in = _data.x_out;
     _data.x_cut = _data.x_out;
@@ -345,7 +345,7 @@ void BendersBase::compute_x_cut() {
   }
 }
 
-void BendersBase::compute_invest_cost() {
+void BendersBase::ComputeInvestCost() {
   _data.invest_cost = 0;
 
   int ncols = _master->_solver->get_ncols();
@@ -879,7 +879,7 @@ void BendersBase::ChecksResumeMode() {
     restart_data_printer.Print();
     UpdateMaxNumberIterationResumeMode(last_iter.it);
     benders_timer = Timer(last_iter.benders_elapsed_time);
-    _data.stop = should_benders_stop();
+    _data.stop = ShouldBendersStop();
     iterations_before_resume = last_iter.it;
   }
 }

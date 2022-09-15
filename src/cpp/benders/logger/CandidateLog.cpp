@@ -36,7 +36,16 @@ std::string CandidateLog::getMainBodyString(const LogData &data) {
 }
 
 void CandidateLog::set_values_and_sizes(const LogData &data) {
-  for (const auto &pairVarnameValue : data.x_cut) {
+  for (const auto &[name, value] : data.x_cut) {
+
+    value_map valuesMap;
+    valuesMap[CANDIDATE] = name;
+    valuesMap[INVEST] =
+        get_formatted_string_from_value(value);
+    valuesMap[INVEST_MIN] =
+        get_formatted_string_from_value(data.min_invest.at(name));
+    valuesMap[INVEST_MAX] =
+get_formatted_string_from_value(data.max_invest.at(name));
     std::string candidate = pairVarnameValue.first;
 
     value_map valuesMap;
