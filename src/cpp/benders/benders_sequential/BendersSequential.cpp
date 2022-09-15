@@ -81,7 +81,7 @@ void BendersSequential::run() {
   }
 
   if (is_initial_relaxation_requested()) {
-    _logger->log_at_initial_relaxation();
+    _logger->LogAtInitialRelaxation();
     deactivate_integrity_constraints();
     set_data_pre_relaxation();
   }
@@ -101,7 +101,7 @@ void BendersSequential::run() {
     get_master_value();
     _logger->log_master_solving_duration(get_timer_master());
 
-    compute_x_cut();
+    ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
     push_in_trace(std::make_shared<WorkerMasterData>());
@@ -119,7 +119,7 @@ void BendersSequential::run() {
 
     set_timer_master(timer_master.elapsed());
     _data.elapsed_time = GetBendersTime();
-    _data.stop = should_benders_stop();
+    _data.stop = ShouldBendersStop();
     SaveCurrentBendersData();
   }
   CloseCsvFile();

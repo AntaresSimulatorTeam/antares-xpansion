@@ -97,13 +97,13 @@ void WorkerMaster::add_cut(Point const &s, Point const &x_cut,
   std::vector<int> mstart = {0, ncoeffs};
   std::vector<int> mclind(ncoeffs);
 
-  define_rhs_with_master_variable(s, x_cut, rhs, rowrhs);
+  DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
   define_matval_mclind(s, matval, mclind);
 
   solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
-void WorkerMaster::define_rhs_with_master_variable(
+void WorkerMaster::DefineRhsWithMasterVariable(
     const Point &s, const Point &x_cut, const double &rhs,
     std::vector<double> &rowrhs) const {
   rowrhs.front() -= rhs;
@@ -216,7 +216,7 @@ void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x_cut,
   std::vector<int> mstart = {0, ncoeffs};
   std::vector<int> mclind(ncoeffs);
 
-  define_rhs_with_master_variable(s, x_cut, rhs, rowrhs);
+  DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
   define_matval_mclind_for_index(i, s, matval, mclind);
 
   solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
