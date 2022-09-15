@@ -12,21 +12,22 @@ const std::string EPSILON_C("epsilon");
 const std::string CAPEX_C("capex");
 const std::string PROJECTION_C("projection");
 
-Json::Value read_json(const std::string &json_file_path) {
+Json::Value read_json(const std::filesystem::path &json_file_path) {
   std::ifstream json_file(json_file_path);
   Json::Value json_data;
   if (json_file.good()) {
     json_file >> json_data;
   } else {
-    throw std::runtime_error("unable to open : " + json_file_path);
+    throw std::runtime_error("unable to open : " + json_file_path.string());
   }
   return json_data;
 }
 
 SensitivityInputReader::SensitivityInputReader(
-    const std::string &json_input_path, const std::string &benders_output_path,
-    std::string last_master_path, std::string basis_path,
-    std::string structure_path)
+    const std::filesystem::path &json_input_path,
+    const std::filesystem::path &benders_output_path,
+    std::filesystem::path last_master_path, std::filesystem::path basis_path,
+    std::filesystem::path structure_path)
     : _last_master_path(std::move(last_master_path)),
       _basis_file_path(std::move(basis_path)),
       _structure_file_path(std::move(structure_path)) {
@@ -89,6 +90,23 @@ double SensitivityInputReader::get_best_ub() const {
   return _benders_data[Output::SOLUTION_C][Output::OVERALL_COST_C].asDouble();
 }
 
+double SensitivityInputReader::get_benders_capex() const {
+  return _benders_data[Output::SOLUTION_C][Output::INVESTMENT_COST_C]
+      .asDouble();
+}
+
+std::map<std::string, double> SensitivityInputReader::get_benders_solution()
+    const {
+  std::map<std::string, double> investment_solution = {};
+  for (const auto &candidate_name :
+       _benders_data[Output::SOLUTION_C][Output::VALUES_C].getMemberNames()) {
+    investment_solution[candidate_name] =
+        _benders_data[Output::SOLUTION_C][Output::VALUES_C][candidate_name]
+            .asDouble();
+  }
+  return investment_solution;
+}
+
 std::map<std::string, int> SensitivityInputReader::get_name_to_id() const {
   std::map<std::string, int> name_to_id;
   std::ifstream structure(_structure_file_path);
@@ -110,7 +128,8 @@ std::map<std::string, int> SensitivityInputReader::get_name_to_id() const {
       }
     }
   } else {
-    throw std::runtime_error("unable to open : " + _structure_file_path);
+    throw std::runtime_error("unable to open : " +
+                             _structure_file_path.string());
   }
   return name_to_id;
 }
@@ -119,6 +138,8 @@ SensitivityInputData SensitivityInputReader::get_input_data() const {
   SensitivityInputData input_data;
   input_data.epsilon = _json_data[EPSILON_C].asDouble();
   input_data.best_ub = get_best_ub();
+  input_data.benders_capex = get_benders_capex();
+  input_data.benders_solution = get_benders_solution();
   input_data.name_to_id = get_name_to_id();
   input_data.last_master = get_last_master();
   input_data.basis_file_path = _basis_file_path;

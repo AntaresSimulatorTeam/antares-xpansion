@@ -94,6 +94,11 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_integer) {
 
   ASSERT_EQ(colTypeArray[1], 'I');
 
+  std::vector<std::string> colNameArray(master_problem->get_ncols());
+  colNameArray =
+      master_problem->get_col_names(0, master_problem->get_ncols() - 1);
+  ASSERT_EQ(colNameArray[1], NB_UNITS_VAR_PREFIX + "transmission_line_1");
+
   std::vector<double> varLbArray(master_problem->get_ncols());
   master_problem->get_lb(varLbArray.data(), 0, master_problem->get_ncols() - 1);
 

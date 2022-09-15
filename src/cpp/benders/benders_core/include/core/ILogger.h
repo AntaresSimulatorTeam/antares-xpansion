@@ -60,6 +60,7 @@ struct LogData {
   int max_iterations;
   double benders_elapsed_time;
   double master_time;
+  double subproblem_time;
   bool operator==(const LogData &lhs) const {
     return lb == lhs.lb && best_ub == lhs.best_ub && ub == lhs.ub &&
            it == lhs.it && best_it == lhs.best_it &&
@@ -70,7 +71,8 @@ struct LogData {
            relative_gap == lhs.relative_gap &&
            max_iterations == lhs.max_iterations &&
            benders_elapsed_time == lhs.benders_elapsed_time &&
-           master_time == lhs.master_time;
+           master_time == lhs.master_time &&
+           subproblem_time == lhs.subproblem_time;
   }
 };
 inline std::string format_time_str(const long int time_in_seconds) {
@@ -124,6 +126,7 @@ class ILogger {
   virtual void restart_best_iteration(const int best_iterations) = 0;
   virtual void restart_best_iterations_infos(
       const LogData &best_iterations_data) = 0;
+  virtual void log_at_switch_to_integer() = 0;
 };
 
 using Logger = std::shared_ptr<ILogger>;

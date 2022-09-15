@@ -22,15 +22,14 @@ class SensitivityStudy {
   };
 
   void launch();
-  SensitivityOutputData get_output_data() const;
+  std::vector<SinglePbData> get_output_data() const;
 
  private:
   std::shared_ptr<SensitivityILogger> logger;
   std::shared_ptr<SensitivityWriter> writer;
   SensitivityInputData input_data;
-  SensitivityOutputData output_data;
+  std::vector<SinglePbData> output_data;
 
-  void init_output_data();
   void run_capex_analysis();
   void run_projection_analysis();
 

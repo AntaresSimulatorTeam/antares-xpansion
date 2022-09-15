@@ -12,12 +12,12 @@
 #include "glog/logging.h"
 #include "solver_utils.h"
 
-BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
+BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
                          Writer writer)
     : _options(std::move(options)),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
-      _logger(logger),
+      _logger(std::move(logger)),
       _writer(std::move(writer)) {}
 
 /*!
@@ -37,6 +37,7 @@ void BendersBase::init_data() {
   _data.minsimplexiter = std::numeric_limits<int>::max();
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
+  _data.is_in_initial_relaxation = false;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -166,12 +167,12 @@ void BendersBase::print_master_csv(std::ostream &stream,
   stream << _data.nsubproblem << ";";
   stream << trace->_ub << ";";
   stream << trace->_lb << ";";
-  stream << trace->_bestub << ";";
+  stream << trace->_best_ub << ";";
   stream << ";";
   stream << norm_point(xopt, trace->get_point()) << ";";
   stream << ";";
   stream << trace->_deleted_cut << ";";
-  stream << trace->_time << ";";
+  stream << trace->_master_duration << ";";
   stream << trace->_nbasis << ";" << std::endl;
 }
 
@@ -180,14 +181,6 @@ void BendersBase::print_master_csv(std::ostream &stream,
  *
  *	Function to update best upper bound and best optimal variables regarding
  *the current ones
- *
- *  \param best_ub : current best upper bound
- *
- *  \param ub : current upper bound
- *
- *  \param bestx : current best optimal variables
- *
- *  \param x0 : current optimal variables
  */
 void BendersBase::update_best_ub() {
   if (_data.best_ub > _data.ub) {
@@ -214,6 +207,13 @@ void BendersBase::bound_simplex_iter(int simplexiter) {
 }
 
 /*!
+ *  \brief Check if initial relaxation should stop
+ */
+bool BendersBase::relaxation_stopping_criterion() const {
+  return (((_data.best_ub - _data.lb) / _data.best_ub) <= _options.RELAXED_GAP);
+}
+
+/*!
  *  \brief Update stopping criterion
  *
  *  Method updating the stopping criterion and reinitializing some datas
@@ -226,7 +226,7 @@ bool BendersBase::stopping_criterion() {
   if (_data.elapsed_time > _options.TIME_LIMIT)
     _data.stopping_criterion = StoppingCriterion::timelimit;
   else if ((_options.MAX_ITERATIONS != -1) &&
-           (_data.it > _options.MAX_ITERATIONS))
+           (_data.it >= _options.MAX_ITERATIONS))
     _data.stopping_criterion = StoppingCriterion::max_iteration;
   else if (_data.lb + _options.ABSOLUTE_GAP >= _data.best_ub)
     _data.stopping_criterion = StoppingCriterion::absolute_gap;
@@ -243,18 +243,42 @@ bool BendersBase::stopping_criterion() {
  *  Fonction to store the current Benders data in the trace
  */
 void BendersBase::update_trace() {
-  _trace[_data.it - 1]->_lb = _data.lb;
-  _trace[_data.it - 1]->_ub = _data.ub;
-  _trace[_data.it - 1]->_bestub = _data.best_ub;
-  _trace[_data.it - 1]->_x0 = std::make_shared<Point>(_data.x0);
-  _trace[_data.it - 1]->_max_invest = std::make_shared<Point>(_data.max_invest);
-  _trace[_data.it - 1]->_min_invest = std::make_shared<Point>(_data.min_invest);
-  _trace[_data.it - 1]->_deleted_cut = _data.deletedcut;
-  _trace[_data.it - 1]->_time = _data.timer_master;
-  _trace[_data.it - 1]->_nbasis = _data.nbasis;
-  _trace[_data.it - 1]->_invest_cost = _data.invest_cost;
-  _trace[_data.it - 1]->_operational_cost = _data.subproblem_cost;
-  _trace[_data.it - 1]->_valid = true;
+  auto &LastWorkerMasterDataPtr = _trace[_data.it - 1];
+  LastWorkerMasterDataPtr->_lb = _data.lb;
+  LastWorkerMasterDataPtr->_ub = _data.ub;
+  LastWorkerMasterDataPtr->_best_ub = _data.best_ub;
+  LastWorkerMasterDataPtr->_x0 = std::make_shared<Point>(_data.x0);
+  LastWorkerMasterDataPtr->_max_invest =
+      std::make_shared<Point>(_data.max_invest);
+  LastWorkerMasterDataPtr->_min_invest =
+      std::make_shared<Point>(_data.min_invest);
+  LastWorkerMasterDataPtr->_deleted_cut = _data.deletedcut;
+  LastWorkerMasterDataPtr->_master_duration = _data.timer_master;
+  LastWorkerMasterDataPtr->_subproblem_duration = _data.subproblem_timers;
+  LastWorkerMasterDataPtr->_nbasis = _data.nbasis;
+  LastWorkerMasterDataPtr->_invest_cost = _data.invest_cost;
+  LastWorkerMasterDataPtr->_operational_cost = _data.subproblem_cost;
+  LastWorkerMasterDataPtr->_valid = true;
+}
+
+bool BendersBase::is_initial_relaxation_requested() const {
+  return (_options.MASTER_FORMULATION == MasterFormulation::INTEGER &&
+          _options.INITIAL_MASTER_RELAXATION);
+}
+
+bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
+  return is_initial_relaxation_requested() && is_relaxed &&
+         relaxation_stopping_criterion();
+}
+
+void BendersBase::set_data_pre_relaxation() {
+  _data.is_in_initial_relaxation = true;
+}
+
+void BendersBase::reset_data_post_relaxation() {
+  _data.is_in_initial_relaxation = false;
+  _data.best_ub = 1e+20;
+  _data.best_it = 0;
 }
 
 /*!
@@ -318,6 +342,14 @@ void BendersBase::get_master_value() {
 
   _data.ub = _data.invest_cost;
   _data.timer_master = timer_master.elapsed();
+}
+
+void BendersBase::deactivate_integrity_constraints() const {
+  _master->deactivate_integrity_constraints();
+}
+
+void BendersBase::activate_integrity_constraints() const {
+  _master->activate_integrity_constraints();
 }
 
 /**
@@ -502,9 +534,9 @@ void BendersBase::post_run_actions() const {
 }
 
 void BendersBase::SaveCurrentIterationInOutputFile() const {
-  auto masterDataPtr_l = _trace[_data.it - 1];
-  if (masterDataPtr_l->_valid) {
-    _writer->write_iteration(iteration(masterDataPtr_l),
+  auto &LastWorkerMasterDataPtr = _trace[_data.it - 1];
+  if (LastWorkerMasterDataPtr->_valid) {
+    _writer->write_iteration(iteration(LastWorkerMasterDataPtr),
                              _data.it + iterations_before_resume);
     _writer->dump();
   }
@@ -534,13 +566,14 @@ Output::CandidatesVec candidates_data(
 Output::Iteration BendersBase::iteration(
     const WorkerMasterDataPtr &masterDataPtr_l) const {
   Output::Iteration iteration;
-  iteration.time = masterDataPtr_l->_time;
+  iteration.master_duration = masterDataPtr_l->_master_duration;
+  iteration.subproblem_duration = masterDataPtr_l->_subproblem_duration;
   iteration.lb = masterDataPtr_l->_lb;
   iteration.ub = masterDataPtr_l->_ub;
-  iteration.best_ub = masterDataPtr_l->_bestub;
-  iteration.optimality_gap = masterDataPtr_l->_bestub - masterDataPtr_l->_lb;
-  iteration.relative_gap = (masterDataPtr_l->_bestub - masterDataPtr_l->_lb) /
-                           masterDataPtr_l->_bestub;
+  iteration.best_ub = masterDataPtr_l->_best_ub;
+  iteration.optimality_gap = masterDataPtr_l->_best_ub - masterDataPtr_l->_lb;
+  iteration.relative_gap = (masterDataPtr_l->_best_ub - masterDataPtr_l->_lb) /
+                           masterDataPtr_l->_best_ub;
   iteration.investment_cost = masterDataPtr_l->_invest_cost;
   iteration.operational_cost = masterDataPtr_l->_operational_cost;
   iteration.overall_cost =
@@ -587,6 +620,7 @@ Output::SolutionData BendersBase::solution() const {
         });
     solution_data.solution = {
         best_iteration_data.master_time,
+        best_iteration_data.subproblem_time,
         best_iteration_data.lb,
         best_iteration_data.ub,
         best_iteration_data.best_ub,
@@ -681,7 +715,8 @@ LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
           optimal_gap / data.best_ub,
           _options.MAX_ITERATIONS,
           data.elapsed_time,
-          data.timer_master};
+          data.timer_master,
+          data.subproblem_timers};
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_name) {
   _log_name = log_name;
@@ -843,7 +878,9 @@ void BendersBase::SaveCurrentBendersData() {
                         : bendersDataToLogData(_data);
   last_iteration_writer.SaveBestAndLastIterations(best_iteration_data, last);
   SaveCurrentIterationInOutputFile();
-  PrintCurrentIterationCsv();
+  if (_options.TRACE) {
+    PrintCurrentIterationCsv();
+  }
 }
 
 void BendersBase::EndWritingInOutputFile() const {

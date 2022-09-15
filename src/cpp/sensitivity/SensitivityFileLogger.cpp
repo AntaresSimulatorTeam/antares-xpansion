@@ -18,8 +18,8 @@ void SensitivityFileLogger::display_message(const std::string& msg) {
 }
 
 void SensitivityFileLogger::log_at_start(
-    const SensitivityOutputData& output_data) {
-  _userLog->log_at_start(output_data);
+    const SensitivityInputData& input_data) {
+  _userLog->log_at_start(input_data);
 }
 
 void SensitivityFileLogger::log_begin_pb_resolution(
@@ -32,8 +32,9 @@ void SensitivityFileLogger::log_pb_solution(const SinglePbData& pb_data) {
 }
 
 void SensitivityFileLogger::log_summary(
-    const SensitivityOutputData& output_data) {
-  _userLog->log_summary(output_data);
+    const SensitivityInputData& input_data,
+    const std::vector<SinglePbData>& pbs_data) {
+  _userLog->log_summary(input_data, pbs_data);
 }
 
 void SensitivityFileLogger::log_at_ending() { _userLog->log_at_ending(); }

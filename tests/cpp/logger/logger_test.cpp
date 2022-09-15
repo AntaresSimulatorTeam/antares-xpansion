@@ -23,10 +23,10 @@ const LogPoint min_invest = {{"candidate1", 5}, {"candidate2", 2}};
 const LogPoint max_invest = {{"candidate1", 10}, {"candidate2", 20}};
 const LogData best_iteration_data = {
     15e5,       255e6,      200e6, 63,    63,   587e8, 8562e8, x0,
-    min_invest, max_invest, 9e9,   3e-15, 5876, 999,   898};
+    min_invest, max_invest, 9e9,   3e-15, 5876, 999,   898,    23};
 const LogData last_iteration_data = {
     1e5,        255e6,      200e6, 159,   63,   587e8, 8562e8, x0,
-    min_invest, max_invest, 9e9,   3e-15, 5876, 9999,  898};
+    min_invest, max_invest, 9e9,   3e-15, 5876, 9999,  898,    25};
 
 class FileLoggerTest : public ::testing::Test {
  public:
@@ -140,6 +140,7 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
   const auto prefix = "<<BENDERS>> ";
   LogData l;
   l.master_time = 898;
+  l.subproblem_time = 6;
   l.invest_cost = 20e6;
   l.best_ub = 3e6;
   l.lb = 2e6;
@@ -157,6 +158,8 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
       << prefix << indent_0 << indent_1
       << "candidate2 =  8.00 invested MW -- possible interval [ 3.00; 40.00] MW"
       << std::endl
+      << prefix << indent_1 << "Subproblems solved in " << l.subproblem_time
+      << " s" << std::endl
       << prefix << indent_0 << "Solution =" << std::endl
       << prefix << indent_0 << indent_1 << "Operational cost =       15.50 Me"
       << std::endl
@@ -443,7 +446,7 @@ TEST_F(UserLoggerTest, EndLog) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
-TEST_F(UserLoggerTest, DifferentCallsAddToTheSamStream) {
+TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
   LogData logData1;
   logData1.it = 1;
   addCandidate(logData1, "z", 5000000.0, 0.0, 10000000.0);
@@ -508,6 +511,14 @@ TEST_F(UserLoggerTest, LogTotalDuration) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
+TEST_F(UserLoggerTest, LogAtSwitchInteger) {
+  std::stringstream expected;
+  expected << "--- Relaxed gap reached, switch master formulation to integer"
+           << std::endl;
+  _logger.log_at_switch_to_integer();
+  ASSERT_EQ(_stream.str(), expected.str());
+}
+
 class SimpleLoggerMock : public ILogger {
  public:
   SimpleLoggerMock() {
@@ -515,6 +526,7 @@ class SimpleLoggerMock : public ILogger {
     _iterationStartCall = false;
     _iterationEndCall = false;
     _endingCall = false;
+    _switchToIntegerCall = false;
 
     _stopping_criterion = StoppingCriterion::empty;
 
@@ -568,10 +580,13 @@ class SimpleLoggerMock : public ILogger {
     //
   }
 
+  void log_at_switch_to_integer() { _switchToIntegerCall = true; }
+
   bool _initCall;
   bool _iterationStartCall;
   bool _iterationEndCall;
   bool _endingCall;
+  bool _switchToIntegerCall;
   StoppingCriterion _stopping_criterion;
 
   std::string _displaymessage;
@@ -655,4 +670,10 @@ TEST_F(MasterLoggerTest, LogStoppingCriterion) {
   _master.log_stop_criterion_reached(criterion);
   ASSERT_EQ(_logger->_stopping_criterion, StoppingCriterion::absolute_gap);
   ASSERT_EQ(_logger2->_stopping_criterion, StoppingCriterion::absolute_gap);
+}
+
+TEST_F(MasterLoggerTest, LogSwitchToInteger) {
+  _master.log_at_switch_to_integer();
+  ASSERT_TRUE(_logger->_switchToIntegerCall);
+  ASSERT_TRUE(_logger2->_switchToIntegerCall);
 }

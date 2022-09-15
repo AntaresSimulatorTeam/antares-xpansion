@@ -23,7 +23,7 @@ SolverXpress::SolverXpress() {
   int status = 0;
   if (_NumberOfProblems == 0) {
     status = XPRSinit(NULL);
-    zero_status_check(status, "intialize XPRESS environment");
+    zero_status_check(status, "initialize XPRESS environment");
   }
 
   _NumberOfProblems += 1;
@@ -117,8 +117,10 @@ void SolverXpress::write_prob_lp(const std::filesystem::path &filename) {
   zero_status_check(status, "write problem");
 }
 
+const std::string WRITE_SOL_VALUES = "n";
 void SolverXpress::write_basis(const std::filesystem::path &filename) {
-  int status = XPRSwritebasis(_xprs, filename.string().c_str(), "");
+  int status = XPRSwritebasis(_xprs, filename.string().c_str(),
+                              WRITE_SOL_VALUES.c_str());
   zero_status_check(status, "write basis");
 }
 

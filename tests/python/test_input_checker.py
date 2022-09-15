@@ -264,6 +264,7 @@ class TestCheckSettingOptionType:
         assert _check_setting_option_type(
             "uc_type", "expansion_accurate") == True
         assert _check_setting_option_type("uc_type", 123) == False
+        assert _check_setting_option_type("master", "a string") == True
 
     def test_int_options(self):
 
@@ -272,6 +273,7 @@ class TestCheckSettingOptionType:
         assert _check_setting_option_type("timelimit", -1) == True
         assert _check_setting_option_type("timelimit", "inf") == False
         assert _check_setting_option_type("timelimit", "+Inf") == True
+        assert _check_setting_option_type("timelimit", 12.2) == False
 
     def test_double_options(self):
 
@@ -315,3 +317,18 @@ class TestCheckSettingOptionValue:
 
         with pytest.raises(LogLevelValueError):
             _check_setting_option_value("log_level", -30)
+    
+    def test_relaxed_optimality_gap_negative_float(self):
+        with pytest.raises(GapValueError):
+            _check_setting_option_value("relaxed_optimality_gap", -1.2)
+    
+    def test_initial_master_relaxation_bool(self):
+        with pytest.raises(OptionTypeError):
+            _check_setting_option_value("initial_master_relaxation", True)
+
+    def test_initial_master_relaxation_allowed_str(self):
+        assert _check_setting_option_value("initial_master_relaxation", "True") == True
+
+    def test_initial_master_relaxation_illegal_value(self):
+        with pytest.raises(SystemExit):
+            _check_setting_option_value("initial_master_relaxation", "unknown")

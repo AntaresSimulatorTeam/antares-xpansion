@@ -65,14 +65,16 @@ void JsonWriter::write_nbweeks(const int nb_weeks) {
   _output[NBWEEKS_C] = nb_weeks;
 }
 void JsonWriter::write_duration(const double duration) {
-  _output[DURATION_C] = duration;
+  _output[RUN_DURATION_C] = duration;
 }
 
 void JsonWriter::write_iteration(const Iteration &iter,
                                  const size_t iteration_num) {
   std::string strIterCnt_l(std::to_string(iteration_num));
 
-  _output[ITERATIONS_C][strIterCnt_l][DURATION_C] = iter.time;
+  _output[ITERATIONS_C][strIterCnt_l][MASTER_DURATION_C] = iter.master_duration;
+  _output[ITERATIONS_C][strIterCnt_l][SUBPROBLEM_DURATION_C] =
+      iter.subproblem_duration;
   _output[ITERATIONS_C][strIterCnt_l][LB_C] = iter.lb;
   _output[ITERATIONS_C][strIterCnt_l][UB_C] = iter.ub;
   _output[ITERATIONS_C][strIterCnt_l][BEST_UB_C] = iter.best_ub;

@@ -6,7 +6,7 @@ import os
 import shutil
 import sys
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import flushed_print, WARNING_MSG
 from antares_xpansion.profile_link_checker import ProfileLinkChecker
 
 
@@ -92,8 +92,7 @@ candidate_options_type = {'name': 'string',
                           'indirect-link-profile': 'string',
                           'already-installed-capacity': 'non-negative',
                           'already-installed-direct-link-profile': 'string',
-                          'already-installed-indirect-link-profile': 'string',
-                          'has-link-profile': 'string'}
+                          'already-installed-indirect-link-profile': 'string'}
 
 
 def _check_candidate_option_type(option, value):
@@ -107,20 +106,20 @@ def _check_candidate_option_type(option, value):
     """
 
     obsolete_options = ["c", 'enable',
-                        'candidate-type', 'investment-type', 'relaxed', 'link-profile',
-                        "already-installed-link-profile"]
-    option_type = candidate_options_type.get(option)
-    if option_type is None:
+                        'candidate-type', 'investment-type', 'relaxed', 'has-link-profile']
+
+    if obsolete_options.count(option):
         flushed_print(
-            'check_candidate_option_type: %s option not recognized in candidates file.' % option)
-        flushed_print(f"Authorized options are: ", *
-        candidate_options_type, sep="\n")
-        raise UnrecognizedCandidateOptionType
+            f"{WARNING_MSG} {option} option is no longer used by antares-xpansion")
+        return True
     else:
-        if obsolete_options.count(option):
+        option_type = candidate_options_type.get(option)
+        if option_type is None:
             flushed_print(
-                '%s option is no longer used by antares-xpansion' % option)
-            return True
+                'check_candidate_option_type: %s option not recognized in candidates file.' % option)
+            flushed_print(f"Authorized options are: ", *
+                          candidate_options_type, sep="\n")
+            raise UnrecognizedCandidateOptionType
         if option_type == 'string':
             return True
         elif option_type == 'non-negative':
@@ -297,17 +296,6 @@ def _check_attributes_profile(ini_file, candidates_ini_filepath, capacity_dir_pa
 
 
 def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
-    default_values = {'name': 'NA',
-                      'link': 'NA',
-                      'annual-cost-per-mw': '0',
-                      'unit-size': '0',
-                      'max-units': '0',
-                      'max-investment': '0',
-                      'direct-link-profile': '1',
-                      'indirect-link-profile': '1',
-                      'already-installed-capacity': '0',
-                      'already-installed-link-profile': '1'}
-
     profile_link_checker = ProfileLinkChecker(
         candidates_ini_filepath, capacity_dir_path)
     if profile_link_checker.update():
@@ -342,12 +330,13 @@ type_float = float
 # "option": (type, legal_value(s))
 options_types_and_legal_values = {
     "uc_type": (type_str, ["expansion_accurate", "expansion_fast"]),
-    "master": (type_str, ["relaxed", "integer", "full_integer"]),
+    "master": (type_str, ["relaxed", "integer"]),
     "optimality_gap": (type_float, None),
     "relative_gap": (type_float, None),
+    "relaxed_optimality_gap": (type_float, None),
+    "initial_master_relaxation": (type_str, ["True", "true", "False", "false"]),
     "week_selection": (type_str, ["true", "false"]),
     "max_iteration": (type_int, None),
-    "relaxed_optimality_gap": (type_str, None),
     "solver": (type_str, None),
     "timelimit": (type_int, None),
     "yearly-weights": (type_str, None),
@@ -492,7 +481,7 @@ def _check_setting_option_value(option, value):
     if ((legal_values is not None) and (value in legal_values)) or (option in skip_verif):
         return True
 
-    if (option == "optimality_gap") or (option == "relative_gap"):
+    if (option == "optimality_gap") or (option == "relative_gap") or (option == "relaxed_optimality_gap"):
         if float(value) >= 0:
             return True
         else:

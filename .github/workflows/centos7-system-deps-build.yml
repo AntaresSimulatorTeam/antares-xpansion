@@ -1,4 +1,4 @@
-name: Centos7 CI (system libs + deps. build)
+name: Centos7 CI (build dependencies)
 
 on:
   push:
@@ -38,11 +38,10 @@ jobs:
           cmake3 --build . --target install -j8
           popd
           rm -rf tbb
-    - uses: nelonoel/branch-name@v1.0.1
 
-    - name: Checkout
-      run: |
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+    - uses: actions/checkout@v3
+      with:
+        submodules: true
         
     - name: Read antares-xpansion version
       id: antares-xpansion-version
@@ -82,7 +81,7 @@ jobs:
            source /etc/profile.d/modules.sh
            module load mpi
            cd _build
-           ctest3 -C Release --output-on-failure -L "unit|benders"
+           ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
     - name: .tar.gz creation
       run: |

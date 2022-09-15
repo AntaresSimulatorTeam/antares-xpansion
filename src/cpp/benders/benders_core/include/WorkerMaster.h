@@ -30,10 +30,14 @@ class WorkerMaster : public Worker {
                        double const &rhs) const;
   void addSubproblemCut(int i, Point const &s, Point const &x0,
                         double const &rhs) const;
-  void delete_constraint(int const nrows) const;
   void fix_alpha(double const &bestUB) const;
 
+  virtual void deactivate_integrity_constraints() const;
+  virtual void activate_integrity_constraints() const;
+  virtual std::vector<int> get_id_nb_units() const { return _id_nb_units; };
+
  private:
+  std::vector<int> _id_nb_units;
   std::vector<int> _id_alpha_i;
   int _id_alpha = 0;
   int subproblems_count;
@@ -53,4 +57,5 @@ class WorkerMaster : public Worker {
                                       std::vector<int> &mclind) const;
   void _set_upper_bounds() const;
   void _set_alpha_var();
+  void _set_nb_units_var_ids();
 };

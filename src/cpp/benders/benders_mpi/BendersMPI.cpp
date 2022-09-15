@@ -35,10 +35,10 @@ void BendersMpi::initialize_problems() {
   } else {
     // Dispatch subproblems to process
     for (const auto &problem : coupling_map) {
-      auto process_to_feed =
-          current_problem_id % subproblemProcessCount +
-          1;  // In case there are more subproblems than process
-      if (process_to_feed ==
+      // In case there are more subproblems than process
+      if (auto process_to_feed =
+              current_problem_id % subproblemProcessCount + 1;
+          process_to_feed ==
           _world
               .rank()) {  // Assign  [problemNumber % processCount] to processID
         addSubproblem(problem);
@@ -70,6 +70,10 @@ void BendersMpi::step_1_solve_master() {
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
   if (_world.rank() == rank_0) {
+    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+      activate_integrity_constraints();
+      reset_data_post_relaxation();
+    }
     solve_master_and_create_trace();
   }
 }
@@ -210,10 +214,17 @@ void BendersMpi::free() {
  *
  */
 void BendersMpi::run() {
+  init_data();
+
   if (_world.rank() == rank_0) {
     set_cut_storage();
+
+    if (is_initial_relaxation_requested()) {
+      deactivate_integrity_constraints();
+      set_data_pre_relaxation();
+    }
   }
-  init_data();
+
   _world.barrier();
 
   if (_world.rank() == rank_0) {
@@ -225,7 +236,6 @@ void BendersMpi::run() {
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
-    _data.deletedcut = 0;
 
     /*Solve Master problem, get optimal value and cost and send it to process*/
     step_1_solve_master();
@@ -246,6 +256,7 @@ void BendersMpi::run() {
       SaveCurrentBendersData();
     }
   }
+
   if (_world.rank() == rank_0) {
     CloseCsvFile();
     EndWritingInOutputFile();

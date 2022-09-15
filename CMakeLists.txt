@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.6.0)
+PROJECT (antaresXpansion VERSION 0.7.0)
 #set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
@@ -43,7 +43,7 @@ ENDIF ()
 
 # for centos docker to run MPI tests as root
 IF(ALLOW_RUN_AS_ROOT)
-	set(ALLOW_RUN_AS_ROOT True)
+	set(ALLOW_RUN_AS_ROOT "True")
 ENDIF() 
 
 # Set solvers to use

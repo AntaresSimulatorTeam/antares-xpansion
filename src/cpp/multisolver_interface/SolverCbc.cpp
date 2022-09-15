@@ -155,9 +155,30 @@ void SolverCbc::write_prob_lp(const std::filesystem::path &filename) {
 }
 
 void SolverCbc::write_basis(const std::filesystem::path &filename) {
-  ClpSimplex *clps = _clp_inner_solver.getModelPtr();
-  int status = clps->writeBasis(filename.string().c_str(), false, 1);
+  auto clp_updated_solver_ptr =
+      dynamic_cast<OsiClpSolverInterface *>(_cbc.solver());
+
+  ClpSimplex *clps = clp_updated_solver_ptr->getModelPtr();
+
+  setClpSimplexColNamesFromInnerSolver(clps);
+  setClpSimplexRowNamesFromInnerSolver(clps);
+
+  int status = clps->writeBasis(filename.string().c_str(), true, 1);
   zero_status_check(status, "write basis");
+}
+
+void SolverCbc::setClpSimplexColNamesFromInnerSolver(ClpSimplex *clps) const {
+  for (int col_id(0); col_id < get_ncols(); col_id++) {
+    std::string name = _clp_inner_solver.getColName(col_id);
+    clps->setColumnName(col_id, name);
+  }
+}
+
+void SolverCbc::setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const {
+  for (int row_id(0); row_id < clps->getNumRows(); row_id++) {
+    std::string  name = _clp_inner_solver.getRowName(row_id);
+    clps->setRowName(row_id, name);
+  }
 }
 
 void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
@@ -173,14 +194,11 @@ void SolverCbc::read_prob_lp(const std::filesystem::path &prob_name) {
 }
 
 void SolverCbc::read_basis(const std::filesystem::path &filename) {
-  ClpSimplex *clps = _clp_inner_solver.getModelPtr();
-  int status = clps->readBasis(filename.string().c_str());
+  int status =
+      _clp_inner_solver.getModelPtr()->readBasis(filename.string().c_str());
   // readBasis returns 1 if successful
   zero_status_check(status - 1, "read basis");
-  if (status == 1) {
-    auto basis = std::unique_ptr<CoinWarmStartBasis>(clps->getBasis());
-    _clp_inner_solver.setWarmStart(basis.get());
-  }
+  defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv) {
@@ -511,19 +529,9 @@ int SolverCbc::solve_mip() {
   int lp_status;
   // Passing OsiClp to Cbc to solve
   // Cbc keeps only solutions of problem
+
   defineCbcModelFromInnerSolver();
   _cbc.branchAndBound();
-
-  /*std::cout << "*********************************************" << std::endl;
-  std::cout << "COUCOU CBC STATUS " << _cbc.status() << std::endl;
-  std::cout << "COUCOU CBC STATUS " << _cbc.secondaryStatus() << std::endl;
-  std::cout << _cbc.isProvenOptimal() << std::endl;
-  std::cout << "INFEAS ? " << _cbc.isProvenInfeasible() << std::endl;
-  std::cout << "INFEAS ? " << _cbc.isInitialSolveProvenPrimalInfeasible() <<
-  std::endl; std::cout << "UNBD   ? " << _cbc.isProvenDualInfeasible() <<
-  std::endl; std::cout << "UNBD   ? " <<
-  _cbc.isInitialSolveProvenDualInfeasible() << std::endl; std::cout <<
-  "*********************************************" << std::endl;*/
 
   if (_cbc.isProvenOptimal()) {
     if (std::abs(_cbc.solver()->getObjValue()) >= 1e20) {

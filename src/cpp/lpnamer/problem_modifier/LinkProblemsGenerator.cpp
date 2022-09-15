@@ -1,6 +1,7 @@
 #include "LinkProblemsGenerator.h"
 
 #include <algorithm>
+#include <execution>
 
 #include "VariableFileReader.h"
 #include "helpers/StringUtils.h"
@@ -114,8 +115,8 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings) const {
   auto const mps_file_name = root / MPS_TXT;
-
-  for (auto const &mps : readMPSList(mps_file_name)) {
+  auto mpsList = readMPSList(mps_file_name);
+  std::for_each(std::execution::par, mpsList.begin(), mpsList.end(), [&](const auto& mps) {
     treat(root, mps, couplings);
-  }
+  });
 }

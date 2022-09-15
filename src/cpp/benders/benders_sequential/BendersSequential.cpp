@@ -18,8 +18,8 @@
  */
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
-                                     Logger &logger, Writer writer)
-    : BendersBase(options, logger, std::move(writer)) {}
+                                     Logger logger, Writer writer)
+    : BendersBase(options, std::move(logger), std::move(writer)) {}
 
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
@@ -80,9 +80,20 @@ void BendersSequential::run() {
     OpenCsvFile();
   }
 
+  if (is_initial_relaxation_requested()) {
+    deactivate_integrity_constraints();
+    set_data_pre_relaxation();
+  }
+
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
+
+    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+      _logger->log_at_switch_to_integer();
+      activate_integrity_constraints();
+      reset_data_post_relaxation();
+    }
 
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
