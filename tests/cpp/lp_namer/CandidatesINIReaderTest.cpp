@@ -87,8 +87,8 @@ class CandidatesINIReaderTest: public ::testing::Test {
 };
 
 TEST_F(CandidatesINIReaderTest, testReadIntero) {
-  std::vector<IntercoFileData> intercoDataList =
-      CandidatesINIReader::ReadAntaresIntercoFile("temp_interco.txt");
+  std::vector<IntercoFileReader::IntercoFileData> intercoDataList =
+      IntercoFileReader::ReadAntaresIntercoFile("temp_interco.txt");
 
   ASSERT_EQ(intercoDataList[0].index_interco, 0);
   ASSERT_EQ(intercoDataList[0].index_pays_origine, 0);

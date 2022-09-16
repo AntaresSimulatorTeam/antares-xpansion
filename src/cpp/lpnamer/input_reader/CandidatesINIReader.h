@@ -9,20 +9,13 @@
 
 #include "Candidate.h"
 #include "INIReader.h"
-
-struct IntercoFileData {
-  int index_interco;
-  int index_pays_origine;
-  int index_pays_extremite;
-};
+#include "IntercoFileReader.h"
 
 class CandidatesINIReader {
  public:
   CandidatesINIReader(const std::filesystem::path& antaresIntercoFile,
                       const std::filesystem::path& areaFile);
 
-  static std::vector<IntercoFileData> ReadAntaresIntercoFile(
-      const std::filesystem::path& antaresIntercoFile);
   static std::vector<std::string> ReadAreaFile(
       const std::filesystem::path& areaFile);
 
@@ -36,7 +29,7 @@ class CandidatesINIReader {
                                      const std::string& sectionName);
 
   std::map<std::string, int> _intercoIndexMap;
-  std::vector<IntercoFileData> _intercoFileData;
+  std::vector<IntercoFileReader::IntercoFileData> _intercoFileData;
   std::vector<std::string> _areaNames;
 };
 
