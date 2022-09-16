@@ -4,6 +4,7 @@
 
 #include <exception>
 
+#include "AreaFileReader.h"
 #include "INIReader.h"
 #include "IntercoFileReader.h"
 #include "helpers/StringUtils.h"
@@ -12,7 +13,7 @@ CandidatesINIReader::CandidatesINIReader(
     const std::filesystem::path &antaresIntercoFile,
     const std::filesystem::path &areaFile) {
   _intercoFileData =  IntercoFileReader::ReadAntaresIntercoFile(antaresIntercoFile);
-  _areaNames = ReadAreaFile(areaFile);
+  _areaNames = AreaFileReader::ReadAreaFile(areaFile);
 
   for (auto const &intercoFileData : _intercoFileData) {
     // TODO : check if index is available in areaNames
@@ -22,25 +23,6 @@ CandidatesINIReader::CandidatesINIReader(
     std::string linkName = pays_or + " - " + pays_ex;
     _intercoIndexMap[linkName] = intercoFileData.index_interco;
   }
-}
-
-std::vector<std::string> CandidatesINIReader::ReadAreaFile(
-    const std::filesystem::path &areaFile) {
-  std::vector<std::string> result;
-
-  std::ifstream area_filestream(areaFile);
-  if (!area_filestream.good()) {
-    std::string message = "unable to open " + areaFile.string();
-    throw std::runtime_error(message);
-  }
-
-  std::string line;
-  while (std::getline(area_filestream, line)) {
-    if (!line.empty() && line.front() != '#') {
-      result.push_back(StringUtils::ToLowercase(line));
-    }
-  }
-  return result;
 }
 
 std::string getStrVal(const INIReader &reader, const std::string &sectionName,

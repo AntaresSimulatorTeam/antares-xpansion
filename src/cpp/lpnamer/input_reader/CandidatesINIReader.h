@@ -16,9 +16,6 @@ class CandidatesINIReader {
   CandidatesINIReader(const std::filesystem::path& antaresIntercoFile,
                       const std::filesystem::path& areaFile);
 
-  static std::vector<std::string> ReadAreaFile(
-      const std::filesystem::path& areaFile);
-
   std::vector<CandidateData> readCandidateData(
       const std::filesystem::path& candidateFile);
 

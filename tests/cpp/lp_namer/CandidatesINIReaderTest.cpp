@@ -1,5 +1,6 @@
 #include <fstream>
 
+#include "AreaFileReader.h"
 #include "CandidatesINIReader.h"
 #include "gtest/gtest.h"
 
@@ -97,7 +98,7 @@ TEST_F(CandidatesINIReaderTest, testReadIntero) {
 
 TEST_F(CandidatesINIReaderTest, testReadArea) {
   std::vector<std::string> areaList =
-      CandidatesINIReader::ReadAreaFile("temp_area.txt");
+      AreaFileReader::ReadAreaFile("temp_area.txt");
 
   ASSERT_EQ(areaList[0], "area1");
   ASSERT_EQ(areaList[1], "area2");
