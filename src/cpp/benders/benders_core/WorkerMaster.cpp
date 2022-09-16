@@ -319,12 +319,12 @@ void WorkerMaster::_set_nb_units_var_ids() {
   }
 }
 
-void WorkerMaster::deactivate_integrity_constraints() const {
+void WorkerMaster::DeactivateIntegrityConstraints() const {
   std::vector<char> col_types(_id_nb_units.size(), 'C');
   _solver->chg_col_type(_id_nb_units, col_types);
 }
 
-void WorkerMaster::activate_integrity_constraints() const {
+void WorkerMaster::ActivateIntegrityConstraints() const {
   std::vector<char> col_types(_id_nb_units.size(), 'I');
   _solver->chg_col_type(_id_nb_units, col_types);
 }

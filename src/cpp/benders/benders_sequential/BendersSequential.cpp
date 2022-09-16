@@ -82,8 +82,8 @@ void BendersSequential::run() {
 
   if (is_initial_relaxation_requested()) {
     _logger->LogAtInitialRelaxation();
-    deactivate_integrity_constraints();
-    set_data_pre_relaxation();
+    DeactivateIntegrityConstraints();
+    SetDataPreRelaxation();
   }
 
   while (!_data.stop) {
@@ -91,9 +91,9 @@ void BendersSequential::run() {
     ++_data.it;
 
     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
-      _logger->log_at_switch_to_integer();
-      activate_integrity_constraints();
-      reset_data_post_relaxation();
+      _logger->LogAtSwitchToInteger();
+      ActivateIntegrityConstraints();
+      ResetDataPostRelaxation();
     }
 
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
@@ -115,7 +115,7 @@ void BendersSequential::run() {
 
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
-    update_trace();
+    UpdateTrace();
 
     set_timer_master(timer_master.elapsed());
     _data.elapsed_time = GetBendersTime();

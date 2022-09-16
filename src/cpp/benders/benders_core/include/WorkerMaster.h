@@ -32,8 +32,8 @@ class WorkerMaster : public Worker {
                         double const &rhs) const;
   void fix_alpha(double const &bestUB) const;
 
-  virtual void deactivate_integrity_constraints() const;
-  virtual void activate_integrity_constraints() const;
+  virtual void DeactivateIntegrityConstraints() const;
+  virtual void ActivateIntegrityConstraints() const;
   virtual std::vector<int> get_id_nb_units() const { return _id_nb_units; };
 
  private:
@@ -45,9 +45,9 @@ class WorkerMaster : public Worker {
   void define_matval_mclind(const Point &s, std::vector<double> &matval,
                             std::vector<int> &mclind) const;
 
-  void define_rhs_with_master_variable(const Point &s, const Point &x0,
-                                       const double &rhs,
-                                       std::vector<double> &rowrhs) const;
+  void DefineRhsWithMasterVariable(const Point &s, const Point &x0,
+                                   const double &rhs,
+                                   std::vector<double> &rowrhs) const;
 
   void define_rhs_from_sx0(const double &sx0, const double &rhs,
                            std::vector<double> &rowrhs) const;

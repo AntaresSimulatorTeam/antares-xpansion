@@ -195,7 +195,7 @@ bool BendersBase::ShouldRelaxationStop() const {
  *  Method updating the stopping criterion and reinitializing some datas
  *
  */
-void BendersBase::updateStoppingCriterion() {
+void BendersBase::UpdateStoppingCriterion() {
   _data.deletedcut = 0;
   _data.maxsimplexiter = 0;
   _data.minsimplexiter = std::numeric_limits<int>::max();
@@ -212,8 +212,8 @@ void BendersBase::updateStoppingCriterion() {
     _data.stopping_criterion = StoppingCriterion::relative_gap;
 }
 
-bool BendersBase::should_benders_stop() {
-  update_stopping_criterion();
+bool BendersBase::ShouldBendersStop() {
+  UpdateStoppingCriterion();
   return (_data.stopping_criterion != StoppingCriterion::empty) &&
          !_data.is_in_initial_relaxation;
 }
@@ -223,7 +223,7 @@ bool BendersBase::should_benders_stop() {
  *
  *  Fonction to store the current Benders data in the trace
  */
-void BendersBase::update_trace() {
+void BendersBase::UpdateTrace() {
   auto &LastWorkerMasterDataPtr = _trace[_data.it - 1];
   LastWorkerMasterDataPtr->_lb = _data.lb;
   LastWorkerMasterDataPtr->_ub = _data.ub;
@@ -253,11 +253,11 @@ bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
          ShouldRelaxationStop();
 }
 
-void BendersBase::set_data_pre_relaxation() {
+void BendersBase::SetDataPreRelaxation() {
   _data.is_in_initial_relaxation = true;
 }
 
-void BendersBase::reset_data_post_relaxation() {
+void BendersBase::ResetDataPostRelaxation() {
   _data.is_in_initial_relaxation = false;
   _data.best_ub = 1e+20;
   _data.best_it = 0;
@@ -325,12 +325,12 @@ void BendersBase::get_master_value() {
   _data.timer_master = timer_master.elapsed();
 }
 
-void BendersBase::deactivate_integrity_constraints() const {
-  _master->deactivate_integrity_constraints();
+void BendersBase::DeactivateIntegrityConstraints() const {
+  _master->DeactivateIntegrityConstraints();
 }
 
-void BendersBase::activate_integrity_constraints() const {
-  _master->activate_integrity_constraints();
+void BendersBase::ActivateIntegrityConstraints() const {
+  _master->ActivateIntegrityConstraints();
 }
 
 void BendersBase::ComputeXCut() {
@@ -359,7 +359,7 @@ void BendersBase::ComputeInvestCost() {
 }
 
 void BendersBase::compute_ub() {
-  compute_invest_cost();
+  ComputeInvestCost();
   _data.ub += _data.invest_cost;
 }
 

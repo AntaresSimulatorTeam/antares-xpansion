@@ -516,7 +516,7 @@ TEST_F(UserLoggerTest, LogTotalDuration) {
 TEST_F(UserLoggerTest, LogAtInitialRelaxation) {
   std::stringstream expected;
   expected << "--- Switch master formulation to relaxed" << std::endl;
-  _logger.log_at_initial_relaxation();
+  _logger.LogAtInitialRelaxation();
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
@@ -524,7 +524,7 @@ TEST_F(UserLoggerTest, LogAtSwitchInteger) {
   std::stringstream expected;
   expected << "--- Relaxed gap reached, switch master formulation to integer"
            << std::endl;
-  _logger.log_at_switch_to_integer();
+  _logger.LogAtSwitchToInteger();
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
@@ -590,9 +590,9 @@ class SimpleLoggerMock : public ILogger {
     //
   }
 
-  void log_at_initial_relaxation() { _initialRelaxationCall = true; }
+  void LogAtInitialRelaxation() { _initialRelaxationCall = true; }
 
-  void log_at_switch_to_integer() { _switchToIntegerCall = true; }
+  void LogAtSwitchToInteger() { _switchToIntegerCall = true; }
 
   bool _initCall;
   bool _iterationStartCall;
@@ -686,13 +686,13 @@ TEST_F(MasterLoggerTest, LogStoppingCriterion) {
 }
 
 TEST_F(MasterLoggerTest, LogAtInitialRelaxation) {
-  _master.log_at_initial_relaxation();
+  _master.LogAtInitialRelaxation();
   ASSERT_TRUE(_logger->_initialRelaxationCall);
   ASSERT_TRUE(_logger2->_initialRelaxationCall);
 }
 
 TEST_F(MasterLoggerTest, LogSwitchToInteger) {
-  _master.log_at_switch_to_integer();
+  _master.LogAtSwitchToInteger();
   ASSERT_TRUE(_logger->_switchToIntegerCall);
   ASSERT_TRUE(_logger2->_switchToIntegerCall);
 }

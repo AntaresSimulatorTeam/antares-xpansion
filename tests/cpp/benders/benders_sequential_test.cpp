@@ -15,12 +15,12 @@ class FakeWorkerMaster : public WorkerMaster {
     return worker_master->get_id_nb_units();
   };
 
-  void deactivate_integrity_constraints() const override {
-    worker_master->deactivate_integrity_constraints();
+  void DeactivateIntegrityConstraints() const override {
+    worker_master->DeactivateIntegrityConstraints();
   };
 
-  void activate_integrity_constraints() const override {
-    worker_master->activate_integrity_constraints();
+  void ActivateIntegrityConstraints() const override {
+    worker_master->ActivateIntegrityConstraints();
   };
 
   SolverAbstract::Ptr solver() const override { return worker_master->_solver; }
@@ -63,7 +63,7 @@ class BendersSequentialDouble : public BendersSequential {
   BendersData get_data() const { return _data; }
   void build_input_map() override{};
   void write_basis() const override{};
-  void update_trace() override{};
+  void UpdateTrace() override{};
   void post_run_actions() const override{};
   void SaveCurrentBendersData() override{};
   void reset_master(WorkerMaster *worker_master) override {
@@ -74,24 +74,24 @@ class BendersSequentialDouble : public BendersSequential {
   void free() override{};
 
   // No override as the base class function is const
-  void deactivate_integrity_constraints() const override {
+  void DeactivateIntegrityConstraints() const override {
     _deactivateIntConstraintCall = true;
-    BendersBase::deactivate_integrity_constraints();
+    BendersBase::DeactivateIntegrityConstraints();
   };
 
   // No override as the base class function is const
-  void activate_integrity_constraints() const override {
+  void ActivateIntegrityConstraints() const override {
     _reactivateIntConstraintCall = true;
-    BendersBase::activate_integrity_constraints();
+    BendersBase::ActivateIntegrityConstraints();
   };
 
-  void set_data_pre_relaxation() override {
+  void SetDataPreRelaxation() override {
     _setDataPreRelaxationCall = true;
-    BendersBase::set_data_pre_relaxation();
+    BendersBase::SetDataPreRelaxation();
   }
-  void reset_data_post_relaxation() override {
+  void ResetDataPostRelaxation() override {
     _setDataPostRelaxationCall = true;
-    BendersBase::reset_data_post_relaxation();
+    BendersBase::ResetDataPostRelaxation();
   }
 
   void set_data(bool stop, int nsubproblem) {
