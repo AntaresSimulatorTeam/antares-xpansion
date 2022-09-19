@@ -68,8 +68,8 @@ class ProblemGeneratorDriver:
         self.is_relaxed = False
         self._lp_path = None
         self.mps_zip_filename = "MPS_ZIP"
-        self.zip_ext = "zip"
-        self.mps_zip_file = self.mps_zip_filename+"."+self.zip_ext
+        self.zip_ext = ".zip"
+        self.mps_zip_file = self.mps_zip_filename+self.zip_ext
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """

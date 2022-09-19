@@ -53,16 +53,10 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
 void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
                                   Couplings &couplings, ArchiveReader &reader,
-                                  ArchiveWriter &writer) {
+                                  ArchiveWriter &writer)const {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const mps_name = root / problemData._problem_mps;
-  auto const var_name = root / problemData._variables_txt;
 
-  // new mps file in the new lp directory
-  // std::string const lp_name =
-  //     problemData._problem_mps.substr(0, problemData._problem_mps.size() -
-  //     4);
-  // const auto newMpsFile = (lp_name + ".mps");
   auto const lp_mps_name = lpDir_ / problemData._problem_mps;
 
   // List of variables
@@ -111,10 +105,8 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   }
 
   in_prblm->write_prob_mps(lp_mps_name);
-  // writer.AddFileInArchive(FileInBuffer().run(lp_mps_name));
   writer.AddFileInArchive(lp_mps_name);
   std::filesystem::remove(lp_mps_name);
-  // mpsBufferVector.push_back(FileInBuffer().run(lp_mps_name));
 }
 
 /**
@@ -130,11 +122,6 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings) {
   auto const mps_file_name = root / MPS_TXT;
   lpDir_ = root / "lp";
-  // const auto archivePath = lpDir_ / MPS_ZIP_FILE;
-  // const auto root_dir_name = root.filename().string();
-  // std::size_t pos = root_dir_name.find("-Xpansion");
-  // const auto archivePath =
-  //     root.parent_path() / (root_dir_name.substr(0, pos) + ".zip");
   auto reader = ArchiveReader(archivePath);
   reader.Open();
   const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;

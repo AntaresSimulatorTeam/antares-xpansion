@@ -45,10 +45,9 @@ class LinkProblemsGenerator {
 
   void treat(const std::filesystem::path& root, ProblemData const&,
              Couplings& couplings, ArchiveReader& reader,
-             ArchiveWriter& writer);
+             ArchiveWriter& writer) const;
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
   std::filesystem::path lpDir_ = "";
-  FileBufferVector mpsBufferVector = {};
 };
