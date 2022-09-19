@@ -55,10 +55,6 @@ def launch_optimization(data_path, commands, status=None):
     data_path_ = Path(data_path)
     expansion_dir = data_path_ / "expansion"
     assert expansion_dir.is_dir()
-    shutil.copyfile(data_path_ / "out_default_test_restart.json",
-                    expansion_dir / "out.json")
-    shutil.copyfile(data_path_ / "last_iteration_default_test_restart.json",
-                    expansion_dir / "last_iteration.json")
     os.chdir(data_path)
 
     # Launching optimization from instance folder
@@ -128,7 +124,7 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
 
-    #MPS_ZIP = "MPS_ZIP_FILE.zip"
+    MPS_ZIP = "MPS_ZIP_FILE.zip"
     for instance in expected_results_dict:
         instance_path = expected_results_dict[instance]['path']
         options_file = expected_results_dict[instance]['option_file']
@@ -152,10 +148,10 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
         shutil.copyfile(tmp_study / expected_results_dict[instance]["last_iteration_file"],
                         expansion_dir / "last_iteration.json")
 
-        #with ZipFile(tmp_study/MPS_ZIP, "w") as write_mps_zip:
-        #    for file in Path(tmp_study).glob("*.mps"):
-        #        write_mps_zip.write(
-        #            file, file.name, compress_type=ZIP_DEFLATED)
+        with ZipFile(tmp_study/MPS_ZIP, "w") as write_mps_zip:
+            for file in Path(tmp_study).glob("*.mps"):
+                write_mps_zip.write(
+                    file, file.name, compress_type=ZIP_DEFLATED)
 
         launch_optimization(tmp_study, command, status)
         check_optimization_json_output(
