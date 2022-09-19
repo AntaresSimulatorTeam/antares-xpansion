@@ -25,7 +25,7 @@ CandidatesINIReader::CandidatesINIReader(
   }
 }
 
-std::string getStrVal(const INIReader &reader, const std::string &sectionName,
+std::string readString(const INIReader &reader, const std::string &sectionName,
                       const std::string &key) {
   std::string val = reader.Get(sectionName, key, "NA");
   if ((val != "NA") && (val != "na"))
@@ -34,7 +34,7 @@ std::string getStrVal(const INIReader &reader, const std::string &sectionName,
     return "";
 }
 
-double getDblVal(const INIReader &reader, const std::string &sectionName,
+double readDouble(const INIReader &reader, const std::string &sectionName,
                  const std::string &key) {
   double d_val(0);
 
@@ -47,7 +47,7 @@ double getDblVal(const INIReader &reader, const std::string &sectionName,
   return d_val;
 }
 
-bool getBoolVal(const INIReader &reader, const std::string &sectionName,
+bool readBool(const INIReader &reader, const std::string &sectionName,
                 const std::string &key) {
   bool result = reader.GetBoolean(sectionName, key, true);
   return result;
@@ -80,9 +80,9 @@ CandidateData CandidatesINIReader::readCandidateSection(
     const std::string &sectionName) {
   CandidateData candidateData;
   candidateData.name =
-      StringUtils::ToLowercase(getStrVal(reader, sectionName, "name"));
+      StringUtils::ToLowercase(readString(reader, sectionName, "name"));
   candidateData.link_name =
-      StringUtils::ToLowercase(getStrVal(reader, sectionName, "link"));
+      StringUtils::ToLowercase(readString(reader, sectionName, "link"));
   size_t i = candidateData.link_name.find(" - ");
   if (i != std::string::npos) {
     candidateData.linkor = candidateData.link_name.substr(0, i);
@@ -110,19 +110,23 @@ CandidateData CandidatesINIReader::readCandidateSection(
     throw std::runtime_error(message);
   }
   candidateData.link_id = it->second;
-  candidateData.direct_link_profile = getStrVal(reader, sectionName, "direct-link-profile");
-  candidateData.indirect_link_profile = getStrVal(reader, sectionName, "indirect-link-profile");
-  candidateData.installed_direct_link_profile_name = getStrVal(reader, sectionName, "already-installed-direct-link-profile");
-  candidateData.installed_indirect_link_profile_name = getStrVal(reader, sectionName, "already-installed-indirect-link-profile");
+  candidateData.direct_link_profile =
+      readString(reader, sectionName, "direct-link-profile");
+  candidateData.indirect_link_profile =
+      readString(reader, sectionName, "indirect-link-profile");
+  candidateData.installed_direct_link_profile_name =
+      readString(reader, sectionName, "already-installed-direct-link-profile");
+  candidateData.installed_indirect_link_profile_name = readString(
+      reader, sectionName, "already-installed-indirect-link-profile");
 
   candidateData.annual_cost_per_mw =
-      getDblVal(reader, sectionName, "annual-cost-per-mw");
+      readDouble(reader, sectionName, "annual-cost-per-mw");
   candidateData.max_investment =
-      getDblVal(reader, sectionName, "max-investment");
-  candidateData.unit_size = getDblVal(reader, sectionName, "unit-size");
-  candidateData.max_units = getDblVal(reader, sectionName, "max-units");
+      readDouble(reader, sectionName, "max-investment");
+  candidateData.unit_size = readDouble(reader, sectionName, "unit-size");
+  candidateData.max_units = readDouble(reader, sectionName, "max-units");
   candidateData.already_installed_capacity =
-      getDblVal(reader, sectionName, "already-installed-capacity");
-  candidateData.enable = getBoolVal(reader, sectionName, "enable");
+      readDouble(reader, sectionName, "already-installed-capacity");
+  candidateData.enable = readBool(reader, sectionName, "enable");
   return candidateData;
 }
