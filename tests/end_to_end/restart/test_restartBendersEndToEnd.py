@@ -55,9 +55,9 @@ def launch_optimization(data_path, commands, status=None):
     data_path_ = Path(data_path)
     expansion_dir = data_path_ / "expansion"
     assert expansion_dir.is_dir()
-    shutil.copyfile(data_path_ / "out_default_test_restart.json",
-                    expansion_dir / "out.json")
-    shutil.copyfile(data_path_ / "last_iteration_default_test_restart.json",
+    #shutil.copyfile(data_path_ / "out_default_test_restart.json",
+    #                expansion_dir / "out.json")
+    #shutil.copyfile(data_path_ / "last_iteration_default_test_restart.json",
                     expansion_dir / "last_iteration.json")
     os.chdir(data_path)
 
