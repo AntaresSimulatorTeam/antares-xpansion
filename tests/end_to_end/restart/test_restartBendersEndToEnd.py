@@ -58,7 +58,7 @@ def launch_optimization(data_path, commands, status=None):
     #shutil.copyfile(data_path_ / "out_default_test_restart.json",
     #                expansion_dir / "out.json")
     #shutil.copyfile(data_path_ / "last_iteration_default_test_restart.json",
-                    expansion_dir / "last_iteration.json")
+    #                expansion_dir / "last_iteration.json")
     os.chdir(data_path)
 
     # Launching optimization from instance folder
