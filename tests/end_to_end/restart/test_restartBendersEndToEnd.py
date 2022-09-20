@@ -109,7 +109,7 @@ def check_optimization_json_output(expected_results_dict, output_path: Path):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, solver, tmp_path, instance, allow_run_as_root=False):
+def run_solver(install_dir, solver, tmp_study, instance, allow_run_as_root=False):
 
     solver_executable = get_solver_exe(solver)
 
@@ -121,12 +121,6 @@ def run_solver(install_dir, solver, tmp_path, instance, allow_run_as_root=False)
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
 
-    # MPS_ZIP = "MPS_ZIP_FILE.zip"
-    instance_path = instance['path']
-    options_file = instance['option_file']
-    tmp_study = tmp_path / \
-        (Path(instance_path).name+"-"+Path(options_file).stem)
-    shutil.copytree(instance_path, tmp_study)
     command = [e for e in pre_command]
     command.append(executable_path)
     command.append(
