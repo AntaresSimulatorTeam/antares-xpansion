@@ -8,7 +8,9 @@
 #include <vector>
 
 #include "Link.h"
+#include "StudyAdapter.h"
 class LinkService {
  public:
+  explicit LinkService(const IStudyAdapter& adapter);
   [[nodiscard]] std::vector<Link> Load(const std::filesystem::path& study_path) const;
 };

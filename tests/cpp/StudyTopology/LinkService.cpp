@@ -6,3 +6,4 @@
 std::vector<Link> LinkService::Load(const std::filesystem::path& study_path) const {
   return {};
 }
+LinkService::LinkService(const IStudyAdapter& adapter) {}

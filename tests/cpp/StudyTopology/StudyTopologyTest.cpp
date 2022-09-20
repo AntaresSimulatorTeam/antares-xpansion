@@ -3,6 +3,7 @@
 //
 #include <filesystem>
 
+#include "InMemoryStudyAdapter.h"
 #include "Link.h"
 #include "LinkService.h"
 #include "gtest/gtest.h"
@@ -14,13 +15,15 @@ TEST(Foo, bar) {
   //Then produce a model with 1 link associated with 1 candidate
 }
 
-TEST(Foo, bar1) {
+TEST(StudyTopology, LoadLink_noCandidate) {
   //Given a study
     //1 lien sans candidat
   // When I start the study
   // Then produce nothing
 
-  LinkService link_service;
+  InMemoryStudyAdapter study_adapter;
+  study_adapter.addLink({});
+  LinkService link_service(study_adapter);
   std::filesystem::path study;
   std::vector<Link> link_list = link_service.Load(study);
   EXPECT_TRUE(link_list.empty());
