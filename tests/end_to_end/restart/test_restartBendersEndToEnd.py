@@ -19,7 +19,6 @@ import numpy as np
 #       - optimal_variables :
 #           * one entry by variable with variable name as key : optimal
 #               value of the variable
-RESULT_FILE_PATH = Path('resultTest.json')
 
 # File CONFIG_FILE_PATH
 # yaml file containing executable name
@@ -55,14 +54,11 @@ def launch_optimization(data_path, commands, status=None):
     data_path_ = Path(data_path)
     expansion_dir = data_path_ / "expansion"
     assert expansion_dir.is_dir()
-    #shutil.copyfile(data_path_ / "out_default_test_restart.json",
-    #                expansion_dir / "out.json")
-    #shutil.copyfile(data_path_ / "last_iteration_default_test_restart.json",
-    #                expansion_dir / "last_iteration.json")
     os.chdir(data_path)
 
     # Launching optimization from instance folder
-    process = subprocess.run(commands, stdout=subprocess.PIPE, stderr=None)
+    process = subprocess.run(
+        commands, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # Back to working directory
     os.chdir(owd)
@@ -113,10 +109,7 @@ def check_optimization_json_output(expected_results_dict, output_path: Path):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
-    # Loading expected results from json RESULT_FILE_PATH
-    with open(RESULT_FILE_PATH, 'r') as jsonFile:
-        expected_results_dict = json.load(jsonFile)
+def run_solver(install_dir, solver, tmp_path, instance, allow_run_as_root=False):
 
     solver_executable = get_solver_exe(solver)
 
@@ -128,38 +121,32 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
 
-    #MPS_ZIP = "MPS_ZIP_FILE.zip"
-    for instance in expected_results_dict:
-        instance_path = expected_results_dict[instance]['path']
-        options_file = expected_results_dict[instance]['option_file']
-        tmp_study = tmp_path / \
-            (Path(instance_path).name+"-"+Path(options_file).stem)
-        shutil.copytree(instance_path, tmp_study)
-        command = [e for e in pre_command]
-        command.append(executable_path)
-        command.append(
-            expected_results_dict[instance]['option_file']
-        )
-        status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
+    # MPS_ZIP = "MPS_ZIP_FILE.zip"
+    instance_path = instance['path']
+    options_file = instance['option_file']
+    tmp_study = tmp_path / \
+        (Path(instance_path).name+"-"+Path(options_file).stem)
+    shutil.copytree(instance_path, tmp_study)
+    command = [e for e in pre_command]
+    command.append(executable_path)
+    command.append(
+        instance['option_file']
+    )
+    status = instance["status"] if "status" in instance else None
 
-        expansion_dir = tmp_study / "expansion"
-        if expansion_dir.is_dir():
-            shutil.rmtree(expansion_dir)
+    expansion_dir = tmp_study / "expansion"
+    if expansion_dir.is_dir():
+        shutil.rmtree(expansion_dir)
 
-        expansion_dir.mkdir()
-        shutil.copyfile(tmp_study / expected_results_dict[instance]["output_file"],
-                        expansion_dir / "out.json")
-        shutil.copyfile(tmp_study / expected_results_dict[instance]["last_iteration_file"],
-                        expansion_dir / "last_iteration.json")
+    expansion_dir.mkdir()
+    shutil.copyfile(tmp_study / instance["output_file"],
+                    expansion_dir / "out.json")
+    shutil.copyfile(tmp_study / instance["last_iteration_file"],
+                    expansion_dir / "last_iteration.json")
 
-        #with ZipFile(tmp_study/MPS_ZIP, "w") as write_mps_zip:
-        #    for file in Path(tmp_study).glob("*.mps"):
-        #        write_mps_zip.write(
-        #            file, file.name, compress_type=ZIP_DEFLATED)
-
-        launch_optimization(tmp_study, command, status)
-        check_optimization_json_output(
-            expected_results_dict[instance], tmp_study/"expansion/out.json")
+    launch_optimization(tmp_study, command, status)
+    check_optimization_json_output(
+        instance, tmp_study/"expansion/out.json")
 
 
 def get_solver_exe(solver: str):
