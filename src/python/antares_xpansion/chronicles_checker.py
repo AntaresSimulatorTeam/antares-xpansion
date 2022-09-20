@@ -53,7 +53,7 @@ class ChronicleChecker:
                 if antares_direct_link.shape != direct_link_profile.shape:
                     raise NTC_And_Candidate_Mismatch
             elif candidate_reader.has_installed_profile(self._study_path, candidate):
-                if antares_direct_link != installed_direct_link_profile.shape:
+                if antares_direct_link.shape != installed_direct_link_profile.shape:
                     raise NTC_And_Candidate_Mismatch
             if candidate_reader.has_installed_profile(self._study_path, candidate) and\
                     candidate_reader.has_profile(self._study_path, candidate) and\

@@ -32,20 +32,22 @@ class BendersBase {
   virtual void run() = 0;
   virtual void initialize_problems() = 0;
   virtual void init_data();
-  void print_csv();
   void update_best_ub();
-  bool stopping_criterion();
+  bool ShouldBendersStop();
   bool is_initial_relaxation_requested() const;
   bool switch_to_integer_master(bool is_relaxed) const;
-  void update_trace();
+  virtual void UpdateTrace();
+  void ComputeXCut();
+  void ComputeInvestCost();
+  virtual void compute_ub();
   virtual void get_master_value();
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
   virtual void post_run_actions() const;
   void build_cut_full(const AllCutPackage &all_package);
-  void deactivate_integrity_constraints() const;
-  void activate_integrity_constraints() const;
-  void set_data_pre_relaxation();
-  void reset_data_post_relaxation();
+  virtual void DeactivateIntegrityConstraints() const;
+  virtual void ActivateIntegrityConstraints() const;
+  virtual void SetDataPreRelaxation();
+  virtual void ResetDataPostRelaxation();
   [[nodiscard]] std::filesystem::path GetSubproblemPath(
       std::string const &subproblem_name) const;
   [[nodiscard]] double SubproblemWeight(int subproblem_count,
@@ -67,8 +69,8 @@ class BendersBase {
   [[nodiscard]] std::string get_solver_name() const;
   [[nodiscard]] int get_log_level() const;
   [[nodiscard]] bool is_trace() const;
-  [[nodiscard]] Point get_x0() const;
-  void set_x0(const Point &x0);
+  [[nodiscard]] Point get_x_cut() const;
+  void set_x_cut(const Point &x0);
   [[nodiscard]] double get_timer_master() const;
   void set_timer_master(const double &timer_master);
   [[nodiscard]] double GetSubproblemTimers() const;
@@ -87,7 +89,7 @@ class BendersBase {
   void OpenCsvFile();
   void CloseCsvFile();
   void ChecksResumeMode();
-  void SaveCurrentBendersData();
+  virtual void SaveCurrentBendersData();
   void EndWritingInOutputFile() const;
   [[nodiscard]] int GetNumIterationsBeforeRestart() const {
     return iterations_before_resume;
@@ -102,7 +104,8 @@ class BendersBase {
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
                         Point const &xopt) const;
   void bound_simplex_iter(int simplexiter);
-  bool relaxation_stopping_criterion() const;
+  void UpdateStoppingCriterion();
+  bool ShouldRelaxationStop() const;
   void check_status(AllCutPackage const &all_package) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
   [[nodiscard]] Output::IterationsData output_data() const;

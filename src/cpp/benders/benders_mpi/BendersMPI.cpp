@@ -71,8 +71,9 @@ void BendersMpi::step_1_solve_master() {
 void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
   if (_world.rank() == rank_0) {
     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
-      activate_integrity_constraints();
-      reset_data_post_relaxation();
+      _logger->LogAtSwitchToInteger();
+      ActivateIntegrityConstraints();
+      ResetDataPostRelaxation();
     }
     solve_master_and_create_trace();
   }
@@ -80,9 +81,9 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
 
 void BendersMpi::broadcast_the_master_problem() {
   if (!_exceptionRaised) {
-    Point x0 = get_x0();
-    mpi::broadcast(_world, x0, rank_0);
-    set_x0(x0);
+    Point x_cut = get_x_cut();
+    mpi::broadcast(_world, x_cut, rank_0);
+    set_x_cut(x_cut);
     _world.barrier();
   }
 }
@@ -92,6 +93,8 @@ void BendersMpi::solve_master_and_create_trace() {
   _logger->display_message("\tSolving master...");
   get_master_value();
   _logger->log_master_solving_duration(get_timer_master());
+
+  ComputeXCut();
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
   push_in_trace(std::make_shared<WorkerMasterData>());
@@ -184,14 +187,15 @@ void BendersMpi::write_exception_message(const std::exception &ex) const {
 void BendersMpi::step_4_update_best_solution(int rank,
                                              const Timer &timer_master) {
   if (rank == rank_0) {
+    compute_ub();
     update_best_ub();
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
-    update_trace();
+    UpdateTrace();
 
     _data.elapsed_time = GetBendersTime();
     set_timer_master(timer_master.elapsed());
-    _data.stop = stopping_criterion();
+    _data.stop = ShouldBendersStop();
   }
 }
 
@@ -220,8 +224,9 @@ void BendersMpi::run() {
     set_cut_storage();
 
     if (is_initial_relaxation_requested()) {
-      deactivate_integrity_constraints();
-      set_data_pre_relaxation();
+      _logger->LogAtInitialRelaxation();
+      DeactivateIntegrityConstraints();
+      SetDataPreRelaxation();
     }
   }
 
@@ -233,6 +238,7 @@ void BendersMpi::run() {
       OpenCsvFile();
     }
   }
+
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
@@ -251,6 +257,7 @@ void BendersMpi::run() {
     }
     _data.stop |= _exceptionRaised;
 
+    broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);
     if (_world.rank() == rank_0) {
       SaveCurrentBendersData();

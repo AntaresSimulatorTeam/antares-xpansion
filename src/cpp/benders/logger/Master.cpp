@@ -83,9 +83,15 @@ void Master::restart_best_iterations_infos(const LogData &best_iteration_data) {
   }
 }
 
-void Master::log_at_switch_to_integer() {
+void Master::LogAtInitialRelaxation() {
   for (auto logger : _loggers) {
-    logger->log_at_switch_to_integer();
+    logger->LogAtInitialRelaxation();
+  }
+}
+
+void Master::LogAtSwitchToInteger() {
+  for (auto logger : _loggers) {
+    logger->LogAtSwitchToInteger();
   }
 }
 

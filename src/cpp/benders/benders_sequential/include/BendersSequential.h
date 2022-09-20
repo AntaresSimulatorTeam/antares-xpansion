@@ -14,7 +14,7 @@ class BendersSequential : public BendersBase {
                              Writer writer);
   virtual ~BendersSequential() = default;
   virtual void launch();
-  void build_cut();
+  virtual void build_cut();
   virtual void initialize_problems();
 
  protected:

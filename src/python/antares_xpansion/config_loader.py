@@ -265,14 +265,14 @@ class ConfigLoader:
     def get_relaxed_optimality_gap(self):
         """
         returns the relaxed optimality gap read from the settings file
-        :return: gap value or 1e-4 if the value is set to a lower value than 1e-12
+        :return: gap value or 1e-12 if the value is set to a lower value than 1e-12
         """
         relaxed_gap_str = self.options.get(
             "relaxed_optimality_gap",
             self._config.settings_default["relaxed_optimality_gap"],
         )
 
-        return float(relaxed_gap_str) if float(relaxed_gap_str) > 1e-12 else 1e-4
+        return float(relaxed_gap_str) if float(relaxed_gap_str) > 1e-12 else 1e-12
 
     def get_max_iterations(self):
         """
@@ -296,16 +296,16 @@ class ConfigLoader:
         """
         return self.options.get("master", self._config.settings_default["master"])
 
-    def get_initial_master_relaxation(self):
+    def get_separation(self):
         """
-        return initial master relaxation read from the settings file
+        return the separation parameter read from the settings file
         """
-        init_master_relaxation_str = self.options.get(
-            "initial_master_relaxation",
-            self._config.settings_default["initial_master_relaxation"],
+        separation_parameter_str = self.options.get(
+            "separation_parameter",
+            self._config.settings_default["separation_parameter"],
         )
 
-        return init_master_relaxation_str in ["true", "True"]
+        return float(separation_parameter_str)
 
     def additional_constraints(self):
         """
@@ -433,9 +433,7 @@ class ConfigLoader:
         options_values[
             OptimisationKeys.master_formulation_key()
         ] = self.get_master_formulation()
-        options_values[
-            OptimisationKeys.initial_master_relaxation_key()
-        ] = self.get_initial_master_relaxation()
+        options_values[OptimisationKeys.separation_key()] = self.get_separation()
         options_values[
             OptimisationKeys.max_iterations_key()
         ] = self.get_max_iterations()

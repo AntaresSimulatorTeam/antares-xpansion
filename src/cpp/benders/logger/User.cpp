@@ -84,7 +84,12 @@ void User::restart_best_iterations_infos(const LogData &best_iteration_data) {
   log_at_iteration_end(best_iteration_data);
 }
 
-void User::log_at_switch_to_integer() {
+void User::LogAtInitialRelaxation() {
+  _stream << "--- Switch master formulation to relaxed"
+          << std::endl;
+}
+
+void User::LogAtSwitchToInteger() {
   _stream << "--- Relaxed gap reached, switch master formulation to integer"
           << std::endl;
 }

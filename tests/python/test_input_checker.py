@@ -321,14 +321,10 @@ class TestCheckSettingOptionValue:
     def test_relaxed_optimality_gap_negative_float(self):
         with pytest.raises(GapValueError):
             _check_setting_option_value("relaxed_optimality_gap", -1.2)
+
+    def test_separation_parameter_illegal_value(self):
+        with pytest.raises(SeparationParameterValueError):
+            _check_setting_option_value("separation_parameter", -1)
     
-    def test_initial_master_relaxation_bool(self):
-        with pytest.raises(OptionTypeError):
-            _check_setting_option_value("initial_master_relaxation", True)
-
-    def test_initial_master_relaxation_allowed_str(self):
-        assert _check_setting_option_value("initial_master_relaxation", "True") == True
-
-    def test_initial_master_relaxation_illegal_value(self):
-        with pytest.raises(SystemExit):
-            _check_setting_option_value("initial_master_relaxation", "unknown")
+    def test_separation_parameter_legal_value(self):
+        assert _check_setting_option_value("separation_parameter", 0.39) == True

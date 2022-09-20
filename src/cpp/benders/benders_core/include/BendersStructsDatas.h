@@ -6,7 +6,6 @@
 #include "core/ILogger.h"
 
 struct BendersData {
-  int nbasis;
   double subproblem_timers;
   double timer_master;
   double lb;
@@ -22,8 +21,9 @@ struct BendersData {
   double subproblem_cost;
   double invest_cost;
   int best_it;
-  Point bestx;
-  Point x0;
+  Point x_in;
+  Point x_out;
+  Point x_cut;
   Point min_invest;
   Point max_invest;
   int nsubproblem;
@@ -46,10 +46,11 @@ class WorkerMasterData {
   double _ub;
   double _best_ub;
   int _deleted_cut;
-  int _nbasis;
   double _master_duration;
   double _subproblem_duration;
-  PointPtr _x0;
+  PointPtr _x_in;
+  PointPtr _x_out;
+  PointPtr _x_cut;
   PointPtr _min_invest;
   PointPtr _max_invest;
   std::map<std::string, SubproblemCutDataPtr> _cut_trace;
@@ -57,13 +58,10 @@ class WorkerMasterData {
   double _invest_cost;
   double _operational_cost;
 
-  Point get_point() const;
+  Point get_x_cut() const;
   Point get_min_invest() const;
   Point get_max_invest() const;
 };
 
 using WorkerMasterDataPtr = std::shared_ptr<WorkerMasterData>;
 using BendersTrace = std::vector<WorkerMasterDataPtr>;
-
-LogData defineLogDataFromBendersDataAndTrace(const BendersData& data,
-                                             const BendersTrace& trace);

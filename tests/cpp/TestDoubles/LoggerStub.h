@@ -6,7 +6,7 @@
 
 #include "core/ILogger.h"
 
-class LoggerNOOPStub: public ILogger {
+class LoggerNOOPStub : public ILogger {
  public:
   void display_message(const std::string& str) override {}
   void log_at_initialization(const int it_number) override {}
@@ -24,5 +24,6 @@ class LoggerNOOPStub: public ILogger {
   void restart_best_iteration(const int best_iterations) override {}
   void restart_best_iterations_infos(
       const LogData& best_iterations_data) override {}
-  void log_at_switch_to_integer() override {}
+  void LogAtInitialRelaxation() override {}
+  void LogAtSwitchToInteger() override {}
 };

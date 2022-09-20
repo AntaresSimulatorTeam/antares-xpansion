@@ -42,12 +42,12 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
  *  Set optimal variables of a problem which has the form (min(x,alpha) : f(x) +
  * alpha)
  *
- *  \param x0 : reference to an empty map list
+ *  \param x_out : reference to an empty map list
  *
  *  \param alpha : reference to an empty double
  */
-void WorkerMaster::get(Point &x0, double &alpha, DblVector &alpha_i) {
-  x0.clear();
+void WorkerMaster::get(Point &x_out, double &alpha, DblVector &alpha_i) {
+  x_out.clear();
   std::vector<double> ptr(_solver->get_ncols());
 
   if (_solver->get_n_integer_vars() > 0) {
@@ -57,7 +57,7 @@ void WorkerMaster::get(Point &x0, double &alpha, DblVector &alpha_i) {
   }
   assert(_id_alpha_i.back() + 1 == ptr.size());
   for (auto const &kvp : _id_to_name) {
-    x0[kvp.second] = ptr[kvp.first];
+    x_out[kvp.second] = ptr[kvp.first];
   }
   alpha = ptr[_id_alpha];
   for (int i(0); i < _id_alpha_i.size(); ++i) {
@@ -83,13 +83,13 @@ int WorkerMaster::get_number_constraint() const { return _solver->get_nrows(); }
 /*!
  *  \brief Add benders cut to a problem
  *
- *  \param s : optimal slave variables
- *  \param x0 : optimal Master variables
+ *  \param s : subgradient of optimal slave variables
+ *  \param x_cut : master separation point
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::add_cut(Point const &s, Point const &x0,
+void WorkerMaster::add_cut(Point const &s, Point const &x_cut,
                            double const &rhs) const {
-  // cut is -rhs >= alpha  + s^(x-x0)
+  // cut is -rhs >= alpha  + s^(x-x_cut)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
@@ -97,20 +97,20 @@ void WorkerMaster::add_cut(Point const &s, Point const &x0,
   std::vector<int> mstart = {0, ncoeffs};
   std::vector<int> mclind(ncoeffs);
 
-  define_rhs_with_master_variable(s, x0, rhs, rowrhs);
+  DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
   define_matval_mclind(s, matval, mclind);
 
   solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
-void WorkerMaster::define_rhs_with_master_variable(
-    const Point &s, const Point &x0, const double &rhs,
+void WorkerMaster::DefineRhsWithMasterVariable(
+    const Point &s, const Point &x_cut, const double &rhs,
     std::vector<double> &rowrhs) const {
   rowrhs.front() -= rhs;
   for (auto const &kvp : _name_to_id) {
     if (s.find(kvp.first) != s.end()) {
       rowrhs.front() +=
-          (s.find(kvp.first)->second * x0.find(kvp.first)->second);
+          (s.find(kvp.first)->second * x_cut.find(kvp.first)->second);
     }
   }
 }
@@ -202,12 +202,13 @@ void WorkerMaster::define_matval_mclind_for_index(
  *
  *  \param i : identifier of a subproblem
  *  \param s : optimal slave variables
- *  \param x0 : optimal Master variables
+ *  \param x_cut : optimal Master variables
  *  \param rhs : optimal slave value
  */
-void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x0,
+// TODO : Refactor this with add_cut and define_matval_mclind(_for_index)
+void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x_cut,
                                     double const &rhs) const {
-  // cut is -rhs >= alpha  + s^(x-x0)
+  // cut is -rhs >= alpha  + s^(x-x_cut)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
@@ -215,7 +216,7 @@ void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x0,
   std::vector<int> mstart = {0, ncoeffs};
   std::vector<int> mclind(ncoeffs);
 
-  define_rhs_with_master_variable(s, x0, rhs, rowrhs);
+  DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
   define_matval_mclind_for_index(i, s, matval, mclind);
 
   solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
@@ -318,12 +319,12 @@ void WorkerMaster::_set_nb_units_var_ids() {
   }
 }
 
-void WorkerMaster::deactivate_integrity_constraints() const {
+void WorkerMaster::DeactivateIntegrityConstraints() const {
   std::vector<char> col_types(_id_nb_units.size(), 'C');
   _solver->chg_col_type(_id_nb_units, col_types);
 }
 
-void WorkerMaster::activate_integrity_constraints() const {
+void WorkerMaster::ActivateIntegrityConstraints() const {
   std::vector<char> col_types(_id_nb_units.size(), 'I');
   _solver->chg_col_type(_id_nb_units, col_types);
 }

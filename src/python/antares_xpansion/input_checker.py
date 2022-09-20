@@ -334,14 +334,14 @@ options_types_and_legal_values = {
     "optimality_gap": (type_float, None),
     "relative_gap": (type_float, None),
     "relaxed_optimality_gap": (type_float, None),
-    "initial_master_relaxation": (type_str, ["True", "true", "False", "false"]),
     "week_selection": (type_str, ["true", "false"]),
     "max_iteration": (type_int, None),
     "solver": (type_str, None),
     "timelimit": (type_int, None),
     "yearly-weights": (type_str, None),
     "additional-constraints": (type_str, None),
-    "log_level": (type_int, ["0", "1", "2", "3"])
+    "log_level": (type_int, ["0", "1", "2", "3"]),
+    "separation_parameter": (type_float, None),
 }
 
 
@@ -409,6 +409,9 @@ class TimelimitValueError(Exception):
 class LogLevelValueError(Exception):
     pass
 
+class SeparationParameterValueError(Exception):
+    pass
+
 
 def check_options(options):
     """
@@ -455,9 +458,15 @@ def _check_log_level(value) -> bool:
         return True
     else:
         flushed_print(
-            f"Illegal {value} for option log_lvel : only greater than or equal to zero values are accepted")
+            f"Illegal {value} for option log_level : only greater than or equal to zero values are accepted")
         raise LogLevelValueError
 
+def _check_separation(value) -> bool:
+    if 0 <= float(value) <= 1:
+        return True
+    else:
+        flushed_print(f"Illegal {value} for option separation_parameter : only values within the interval [0,1] are accepted")
+        raise SeparationParameterValueError
 
 def _check_setting_option_value(option, value):
     """
@@ -499,6 +508,9 @@ def _check_setting_option_value(option, value):
 
     elif option == 'log_level':
         return _check_log_level(value)
+    
+    elif option == "separation_parameter":
+        return _check_separation(value)
 
     flushed_print(
         'check_candidate_option_value: Illegal value %s for option %s' % (value, option))

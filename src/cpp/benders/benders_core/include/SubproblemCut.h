@@ -70,10 +70,10 @@ class SubproblemCutDataHandler {
 class SubproblemCutTrimmer {
  public:
   SubproblemCutDataHandlerPtr _data_cut;
-  Point _x0;
+  Point _x_cut;
   double _const_cut;
 
-  SubproblemCutTrimmer(SubproblemCutDataHandlerPtr &data, Point &x0);
+  SubproblemCutTrimmer(SubproblemCutDataHandlerPtr &data, const Point &x_cut);
   Point const &get_subgradient() const;
 
   bool operator<(SubproblemCutTrimmer const &other) const;

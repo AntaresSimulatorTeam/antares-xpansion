@@ -143,6 +143,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.RELATIVE_GAP = RELATIVE_GAP;
   result.RELAXED_GAP = RELAXED_GAP;
   result.TIME_LIMIT = TIME_LIMIT;
+  result.SEPARATION_PARAM = SEPARATION_PARAM;
 
   if (MASTER_FORMULATION == "integer") {
     result.MASTER_FORMULATION = MasterFormulation::INTEGER;
@@ -154,7 +155,6 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
     std::exit(1);
   }
 
-  result.INITIAL_MASTER_RELAXATION = INITIAL_MASTER_RELAXATION;
   result.AGGREGATION = AGGREGATION;
   result.TRACE = TRACE;
   result.BOUND_ALPHA = BOUND_ALPHA;

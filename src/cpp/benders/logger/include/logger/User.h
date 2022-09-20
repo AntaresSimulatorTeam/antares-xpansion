@@ -41,7 +41,8 @@ class User : public ILogger {
   void restart_best_iteration(const int best_iterations) override;
   void restart_best_iterations_infos(
       const LogData &best_iterations_data) override;
-  void log_at_switch_to_integer() override;
+  void LogAtInitialRelaxation() override;
+  void LogAtSwitchToInteger() override;
 
  private:
   std::ostream &_stream;
