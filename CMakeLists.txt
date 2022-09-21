@@ -185,7 +185,7 @@ endif()
 add_subdirectory(antares-deps)
 
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
-find_package(minizip-ng  REQUIRED)
+find_package(minizip  REQUIRED)
 # ---------------------------------------------------------------------------
 # Boost
 # ---------------------------------------------------------------------------

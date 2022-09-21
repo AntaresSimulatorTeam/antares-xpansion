@@ -43,5 +43,5 @@ target_link_libraries (helpers
 		solvers
 		glog::glog
 		gflags::gflags
-		MINIZIP::minizip-ng
+		MINIZIP::minizip
 )
