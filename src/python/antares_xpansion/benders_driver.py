@@ -115,13 +115,13 @@ class BendersDriver:
         """
         bare_solver_command = [self.solver, self.options_file]
         if self.solver == self.benders_mpi:
-            mpi_command = self._get_mpi_run_command_root()
+            mpi_command = self.get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)
             return mpi_command
         else:
             return bare_solver_command
 
-    def _get_mpi_run_command_root(self):
+    def get_mpi_run_command_root(self):
 
         mpi_command = [self.MPI_LAUNCHER, self.MPI_N, str(self.n_mpi)]
         if sys.platform.startswith("linux"):

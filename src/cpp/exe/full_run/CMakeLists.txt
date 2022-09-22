@@ -24,12 +24,9 @@ endif ()
 
 target_link_libraries (full_run
 		PRIVATE
-		${PROJECT_NAME}::lp_namer_helper
-		${PROJECT_NAME}::lp_namer_model
-		${PROJECT_NAME}::lp_namer_input_reader
-		${PROJECT_NAME}::lp_namer_problem_modifier
-		Boost::boost Boost::program_options
+		${PROJECT_NAME}::problem_generation_main
 		${PROJECT_NAME}::benders_sequential_core
+		${PROJECT_NAME}::benders_mpi_core
 )
 
 install(TARGETS full_run DESTINATION bin)
