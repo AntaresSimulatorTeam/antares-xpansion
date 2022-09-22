@@ -77,9 +77,7 @@ set (LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 set (CMAKE_CXX_STANDARD 17)
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
-if (USE_MPI)
-	set (CMAKE_CXX_COMPILER mpicxx)
-endif ()
+
 message ("USE_MPI is ${USE_MPI}")
 
 if (MSVC)
