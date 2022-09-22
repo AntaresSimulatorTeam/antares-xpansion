@@ -7,10 +7,10 @@
 # ===========================================================================
 
 # ---------------------------------------------------------------------------
-# MPI Benders Exe
+# Full Run Exe
 # ---------------------------------------------------------------------------
 
-add_executable (bendersmpi
+add_executable (full_run
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
@@ -22,19 +22,17 @@ if (USE_MPI)
 	endif (MPI_FOUND)
 endif ()
 
-#IF (WIN32)
-#	target_link_libraries (bendersmpi
-#			${PROJECT_NAME}::benders_sequential_core ${PROJECT_NAME}::benders_mpi_core
-#			msmpi libboost_serialization-vc141-mt-x64-1_67)
-#ELSE (WIN32)
-	target_link_libraries (bendersmpi
-			${PROJECT_NAME}::benders_core
-			${PROJECT_NAME}::benders_sequential_core
-			${PROJECT_NAME}::benders_mpi_core
-			${PROJECT_NAME}::factories
-			${PROJECT_NAME}::output_core
-			logger_lib
-			Boost::serialization)
-#ENDIF (WIN32)
+target_link_libraries (full_run
+		PRIVATE
+		${PROJECT_NAME}::lp_namer_helper
+		${PROJECT_NAME}::lp_namer_model
+		${PROJECT_NAME}::lp_namer_input_reader
+		${PROJECT_NAME}::lp_namer_problem_modifier
+		Boost::boost Boost::program_options
+		${PROJECT_NAME}::benders_core
+		${PROJECT_NAME}::benders_sequential_core
+		${PROJECT_NAME}::factories
+		${PROJECT_NAME}::output_core
+		logger_lib)
 
-install(TARGETS bendersmpi DESTINATION bin)
+install(TARGETS full_run DESTINATION bin)
