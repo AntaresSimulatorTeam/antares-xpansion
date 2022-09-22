@@ -29,10 +29,7 @@ target_link_libraries (full_run
 		${PROJECT_NAME}::lp_namer_input_reader
 		${PROJECT_NAME}::lp_namer_problem_modifier
 		Boost::boost Boost::program_options
-		${PROJECT_NAME}::benders_core
 		${PROJECT_NAME}::benders_sequential_core
-		${PROJECT_NAME}::factories
-		${PROJECT_NAME}::output_core
-		logger_lib)
+)
 
 install(TARGETS full_run DESTINATION bin)
