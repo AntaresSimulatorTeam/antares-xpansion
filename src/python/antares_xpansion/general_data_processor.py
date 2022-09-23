@@ -41,9 +41,9 @@ class GeneralDataProcessor:
         config.read(self._general_data_ini_file)
         value_to_change = self._get_values_to_change_general_data_file()
         for (section, key) in value_to_change:
-            if config.has_section(section):
-                if config.has_option(section, key):
-                    config.set(section, key, value_to_change[(section, key)])
+            if not config.has_section(section):
+                config.add_section(section)
+            config.set(section, key, value_to_change[(section, key)])
         with open(self._general_data_ini_file, "w") as writer:
             config.write(writer)
 
