@@ -30,12 +30,12 @@ class AntaresDriver:
         self._set_antares_n_cpu(antares_n_cpu)
         self._launch(antares_study_path)
 
-
     def _set_antares_n_cpu(self, antares_n_cpu: int):
         if antares_n_cpu >= 1:
             self.antares_n_cpu = antares_n_cpu
         else:
-            flushed_print(f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
+            flushed_print(
+                f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
 
     def _launch(self, antares_study_path):
         self._clear_old_log()
@@ -57,21 +57,24 @@ class AntaresDriver:
         flushed_print("-- launching antares")
 
         start_time = datetime.now()
-
         returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
                                     stdout=subprocess.DEVNULL,
                                     stderr=subprocess.DEVNULL)
 
         end_time = datetime.now()
-        flushed_print('Antares simulation duration : {}'.format(end_time - start_time))
+        flushed_print('Antares simulation duration : {}'.format(
+            end_time - start_time))
 
         if returned_l.returncode == 1:
-            raise AntaresDriver.AntaresExecutionError("Error: exited antares with status {returned_l.returncode}")
-        elif returned_l.returncode != 0 and returned_l.returncode != 1 :
-            print("Warning: exited antares with status %d" % returned_l.returncode)
+            raise AntaresDriver.AntaresExecutionError(
+                "Error: exited antares with status {returned_l.returncode}")
+        elif returned_l.returncode != 0 and returned_l.returncode != 1:
+            print("Warning: exited antares with status %d" %
+                  returned_l.returncode)
         else:
             self._set_simulation_name()
-            StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / self.simulation_name))
+            StudyOutputCleaner.clean_antares_step(
+                (Path(self.antares_output_dir()) / self.simulation_name))
 
     def _set_simulation_name(self):
 
@@ -81,7 +84,8 @@ class AntaresDriver:
                                      os.listdir(self.antares_output_dir()))
         # Sort list of files based on last modification time in ascending order
         list_of_dirs = sorted(list_of_dirs_filter,
-                              key=lambda x: os.path.getmtime(os.path.join(self.antares_output_dir(), x))
+                              key=lambda x: os.path.getmtime(
+                                  os.path.join(self.antares_output_dir(), x))
                               )
         if list_of_dirs:
             self.simulation_name = list_of_dirs[-1]
@@ -91,7 +95,6 @@ class AntaresDriver:
 
     class Error(Exception):
         pass
-    
+
     class AntaresExecutionError(Exception):
         pass
-

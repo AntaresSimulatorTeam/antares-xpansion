@@ -163,7 +163,6 @@ class ProblemGeneratorDriver:
         """
         self.create_lp_dir()
         self.set_weights()
-
         with open(self.get_lp_namer_log_filename(), 'w') as output_file:
 
             start_time = datetime.now()
@@ -198,6 +197,6 @@ class ProblemGeneratorDriver:
             raise ProblemGeneratorDriver.LPNamerExeError(
                 f"LP namer exe: {self.lp_namer_exe_path} not found")
         command = [self.lp_namer_exe_path]
-        return command.extend(self.lp_namer_options())
-
+        command.extend(self.lp_namer_options())
+        return command
     output_path = property(get_output_path, set_output_path)
