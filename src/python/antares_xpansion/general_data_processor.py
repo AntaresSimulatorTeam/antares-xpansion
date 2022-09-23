@@ -1,9 +1,8 @@
 import os
 from pathlib import Path
 
-from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.flushed_print import flushed_print
-
+import configparser
 
 class GeneralDataFileExceptions:
     class GeneralDataFileNotFound(Exception):
@@ -38,37 +37,22 @@ class GeneralDataProcessor:
 
     def change_general_data_file_to_configure_antares_execution(self):
         flushed_print("-- pre antares")
-        with open(self._general_data_ini_file, "r") as reader:
-            lines = reader.readlines()
-
+        config = configparser.ConfigParser()
+        config.read(self._general_data_ini_file)
+        value_to_change = self._get_values_to_change_general_data_file()
+        for (section, key) in value_to_change:
+            if config.has_section(section):
+                if config.has_option(section, key):
+                    config.set(section, key, value_to_change[(section, key)])
         with open(self._general_data_ini_file, "w") as writer:
-            current_section = ""
-            for line in lines:
-                if IniReader.line_is_not_a_section_header(line):
-                    key = line.split("=")[0].strip()
-                    line = self._get_new_line(line, current_section, key)
-                else:
-                    current_section = line.strip()
-
-                if line:
-                    writer.write(line)
+            config.write(writer)
 
     general_data_ini_file = property(
         get_general_data_ini_file, set_general_data_ini_file
     )
 
-    def _get_new_line(self, line, section, key):
-        changed_val = self._get_values_to_change_general_data_file()
-        if (section, key) in changed_val:
-            new_val = changed_val[(section, key)]
-            if new_val:
-                line = key + " = " + new_val + "\n"
-            else:
-                line = None
-        return line
-
     def _get_values_to_change_general_data_file(self):
-        optimization = "[optimization]"
+        optimization = "optimization"
 
         return {
             (optimization, "include-exportmps"): "true",
@@ -80,9 +64,9 @@ class GeneralDataProcessor:
             if self.is_accurate
             else "false",
             (optimization, "include-dayahead"): "true" if self.is_accurate else "false",
-            ("[general]", "mode"): "expansion" if self.is_accurate else "Economy",
-            ("[output]", "storenewset"): "true",
-            ("[other preferences]", "unit-commitment-mode"): "accurate"
+            ("general", "mode"): "expansion" if self.is_accurate else "Economy",
+            ("output", "storenewset"): "true",
+            ("other preferences", "unit-commitment-mode"): "accurate"
             if self.is_accurate
             else "fast",
         }
