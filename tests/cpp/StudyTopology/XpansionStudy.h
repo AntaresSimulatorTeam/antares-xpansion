@@ -11,6 +11,8 @@ class XpansionStudy {
  public:
   std::vector<Link> Links();
   void addLink(Link link);
+  void RemoveInvalidLinks();
+
  private:
   std::vector<Link> links_;
 };

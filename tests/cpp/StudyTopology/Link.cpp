@@ -3,3 +3,6 @@
 //
 
 #include "Link.h"
+std::vector<CandidateID> Link::Candidates() {
+  return candidates_;
+}

@@ -20,7 +20,7 @@ TEST(StudyTopology, Study_noLink) {
   EXPECT_TRUE(xpansion_study.Links().empty());
 }
 
-TEST(StudyTopology, ProvideStudy_oneLink) {
+TEST(StudyTopology, IgnoreLinkWithoutCandidates) {
   //Given a study
   //1 lien avec candidat
   // When I start the study
@@ -31,5 +31,5 @@ TEST(StudyTopology, ProvideStudy_oneLink) {
   ForProvidingXpansionStudy providing_xpansion_study(study_adapter);
   std::filesystem::path study;
   XpansionStudy xpansion_study = providing_xpansion_study.provide(study);
-  EXPECT_EQ(xpansion_study.Links().size(), 1);
+  EXPECT_EQ(xpansion_study.Links().size(), 0);
 }

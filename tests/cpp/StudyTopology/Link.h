@@ -4,4 +4,13 @@
 
 #pragma once
 
-class Link {};
+#include <vector>
+
+#include "CandidateID.h"
+class Link {
+ public:
+  std::vector<CandidateID> Candidates();
+
+ private:
+  std::vector<CandidateID> candidates_;
+};
