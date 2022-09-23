@@ -3,28 +3,33 @@
 //
 #include <filesystem>
 
-#include "InMemoryStudyAdapter.h"
-#include "Link.h"
-#include "LinkService.h"
+#include "ForProvidingXpansionStudy.h"
+#include "ForProvidingXpansionStudyInMemoryAdapter.h"
 #include "gtest/gtest.h"
 
-TEST(Foo, bar) {
-  //Given a study
-    //1 candidat sur un lien reliant 2 zones
-  //When I start the study
-  //Then produce a model with 1 link associated with 1 candidate
-}
-
-TEST(StudyTopology, LoadLink_noCandidate) {
+TEST(StudyTopology, Study_noLink) {
   //Given a study
     //1 lien sans candidat
   // When I start the study
   // Then produce nothing
 
-  InMemoryStudyAdapter study_adapter;
-  study_adapter.addLink({});
-  LinkService link_service(study_adapter);
+  auto study_adapter = std::make_shared<ForProvidingXpansionStudyInMemoryAdapter>();
+  ForProvidingXpansionStudy link_service(study_adapter);
   std::filesystem::path study;
-  std::vector<Link> link_list = link_service.Load(study);
-  EXPECT_TRUE(link_list.empty());
+  XpansionStudy xpansion_study = link_service.provide(study);
+  EXPECT_TRUE(xpansion_study.Links().empty());
+}
+
+TEST(StudyTopology, ProvideStudy_oneLink) {
+  //Given a study
+  //1 lien avec candidat
+  // When I start the study
+  // Then produce nothing
+
+  auto study_adapter = std::make_shared<ForProvidingXpansionStudyInMemoryAdapter>();
+  study_adapter->addLink({});
+  ForProvidingXpansionStudy providing_xpansion_study(study_adapter);
+  std::filesystem::path study;
+  XpansionStudy xpansion_study = providing_xpansion_study.provide(study);
+  EXPECT_EQ(xpansion_study.Links().size(), 1);
 }

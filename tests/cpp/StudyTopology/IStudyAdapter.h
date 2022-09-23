@@ -7,7 +7,12 @@
 #include <vector>
 
 #include "Link.h"
+#include "XpansionStudy.h"
 class IStudyAdapter {
  public:
-  [[nodiscard]] virtual std::vector<Link> Links() const = 0;
+  IStudyAdapter() = default;
+  IStudyAdapter(const IStudyAdapter&) = default;
+  virtual ~IStudyAdapter() = default;
+
+  [[nodiscard]] virtual XpansionStudy Study() const = 0;
 };
