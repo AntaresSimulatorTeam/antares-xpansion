@@ -9,7 +9,8 @@
  *
  */
 
-#include <boost/program_options.hpp>
+#include "ProblemGenerationMain.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -26,6 +27,57 @@
 #include "solver_utils.h"
 
 namespace po = boost::program_options;
+void RunProblemGeneration(const std::filesystem::path& root,
+                          const std::string& master_formulation,
+                          const std::string& additionalConstraintFilename_l) {
+  ActiveLinksBuilder linkBuilder = get_link_builders(root);
+
+  if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
+    std::cout << "Invalid formulation argument : argument must be "
+                 "\"integer\" or \"relaxed\""
+              << std::endl;
+    std::exit(1);
+  }
+
+  AdditionalConstraints additionalConstraints;
+  if (!additionalConstraintFilename_l.empty()) {
+    additionalConstraints =
+        AdditionalConstraints(additionalConstraintFilename_l);
+  }
+
+  Couplings couplings;
+  std::string solver_name = "CBC";
+  std::vector<ActiveLink> links = linkBuilder.getLinks();
+  LinkProblemsGenerator linkProblemsGenerator(links, solver_name);
+  linkProblemsGenerator.treatloop(root, couplings);
+
+  MasterGeneration master_generation(root, links, additionalConstraints,
+                                     couplings, master_formulation,
+                                     solver_name);
+}
+ProblemGenerationExeOptions::ProblemGenerationExeOptions() {
+  desc_.add_options()("help,h", "produce help message")(
+      "output,o", po::value<std::filesystem::path>(&root_)->required(),
+      "antares-xpansion study output")(
+      "formulation,f",
+      po::value<std::string>(&master_formulation_)->default_value("relaxed"),
+      "master formulation (relaxed or integer)")(
+      "exclusion-files,e",
+      po::value<std::string>(&additional_constraintFilename_l_),
+      "path to exclusion files");
+}
+
+void ProblemGenerationExeOptions::parse(int argc, char** argv) {
+  po::variables_map opts;
+  po::store(po::parse_command_line(argc, argv, desc_), opts);
+
+  if (opts.count("help")) {
+    std::cout << desc_ << std::endl;
+    return std::exit(0);
+  }
+
+  po::notify(opts);
+}
 
 /**
  * \fn int main (void)
@@ -35,62 +87,20 @@ namespace po = boost::program_options;
  * \param  argv Path to input data which is the 1st argument vector of the
  * command line argument. \return an integer 0 corresponding to exit success
  */
-int ProblemGenerationMain(int argc, char **argv) {
+int ProblemGenerationMain(int argc, char** argv) {
   try {
-    std::filesystem::path root;
-    std::string master_formulation;
-    std::string additionalConstraintFilename_l;
+    auto options_parser = ProblemGenerationExeOptions();
+    options_parser.parse(argc, argv);
 
-    po::options_description desc("Allowed options");
-
-    desc.add_options()("help,h", "produce help message")(
-        "output,o", po::value<std::filesystem::path>(&root)->required(),
-        "antares-xpansion study output")(
-        "formulation,f",
-        po::value<std::string>(&master_formulation)->default_value("relaxed"),
-        "master formulation (relaxed or integer)")(
-        "exclusion-files,e",
-        po::value<std::string>(&additionalConstraintFilename_l),
-        "path to exclusion files");
-
-    po::variables_map opts;
-    po::store(po::parse_command_line(argc, argv, desc), opts);
-
-    if (opts.count("help")) {
-      std::cout << desc << std::endl;
-      return 0;
-    }
-
-    po::notify(opts);
-
-    ActiveLinksBuilder linkBuilder = get_link_builders(root);
-
-    if ((master_formulation != "relaxed") &&
-        (master_formulation != "integer")) {
-      std::cout << "Invalid formulation argument : argument must be "
-                   "\"integer\" or \"relaxed\""
-                << std::endl;
-      std::exit(1);
-    }
-
-    AdditionalConstraints additionalConstraints;
-    if (!additionalConstraintFilename_l.empty()) {
-      additionalConstraints =
-          AdditionalConstraints(additionalConstraintFilename_l);
-    }
-
-    Couplings couplings;
-    std::string solver_name = "CBC";
-    std::vector<ActiveLink> links = linkBuilder.getLinks();
-    LinkProblemsGenerator linkProblemsGenerator(links, solver_name);
-    linkProblemsGenerator.treatloop(root, couplings);
-
-    MasterGeneration master_generation(root, links, additionalConstraints,
-                                       couplings, master_formulation,
-                                       solver_name);
+    auto root = options_parser.root();
+    auto master_formulation = options_parser.master_formulation();
+    auto additionalConstraintFilename_l =
+        options_parser.additional_constraintFilename_l();
+    RunProblemGeneration(root, master_formulation,
+                         additionalConstraintFilename_l);
 
     return 0;
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     std::cerr << "error: " << e.what() << std::endl;
     return 1;
   } catch (...) {

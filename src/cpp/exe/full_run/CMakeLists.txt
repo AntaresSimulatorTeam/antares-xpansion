@@ -20,13 +20,16 @@ if (USE_MPI)
 		message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
 		set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 	endif (MPI_FOUND)
+	target_link_libraries (full_run
+		PRIVATE
+		${PROJECT_NAME}::benders_mpi_core
+)
 endif ()
 
 target_link_libraries (full_run
 		PRIVATE
 		${PROJECT_NAME}::problem_generation_main
 		${PROJECT_NAME}::benders_sequential_core
-		${PROJECT_NAME}::benders_mpi_core
 )
 
 install(TARGETS full_run DESTINATION bin)
