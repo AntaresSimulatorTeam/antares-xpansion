@@ -9,9 +9,8 @@
 
 constexpr int ANTARES_VERSION_CAPACITIES_IN_INDIVIDUAL_FILES = 820;
 
-
 StudyUpdater::StudyUpdater(
-    std::filesystem::path  studyPath_p,
+    std::filesystem::path studyPath_p,
     const AntaresVersionProvider& antares_version_provider)
     : studyPath_(std::move(studyPath_p)) {
   antaresVersion_ = antares_version_provider.getAntaresVersion(studyPath_);
@@ -30,7 +29,7 @@ int StudyUpdater::updateLinkdataFile(
 }
 
 int StudyUpdater::update(std::vector<ActiveLink> const& links_p,
-                         std::string const& jsonPath_p) const {
+                         const std::filesystem::path& jsonPath_p) const {
   JsonXpansionReader jsonReader_l;
   jsonReader_l.read(jsonPath_p);
 
@@ -50,4 +49,3 @@ int StudyUpdater::update(
 
   return updateFailures_l;
 }
-

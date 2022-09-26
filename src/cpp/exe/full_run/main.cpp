@@ -10,6 +10,7 @@
 #include "BendersSequentialMain.h"
 #include "FullRunOptionsParser.h"
 #include "RunProblemGeneration.h"
+#include "StudyUpdateRunner.h"
 
 namespace po = boost::program_options;
 // METHOD OptionsReader(int argc, char** argv) {
@@ -38,10 +39,11 @@ namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
   auto options_parser = FullRunOptionsParser();
+  std::filesystem::path root;
   try {
-    options_parser.parse(argc, argv);
-    auto root = options_parser.root();
-    auto master_formulation = options_parser.master_formulation();
+    options_parser.Parse(argc, argv);
+    root = options_parser.Root();
+    auto master_formulation = options_parser.MasterFormulation();
     auto additionalConstraintFilename_l =
         options_parser.additional_constraintFilename_l();
     RunProblemGeneration(root, master_formulation,
@@ -66,5 +68,12 @@ int main(int argc, char** argv) {
     BendersSequentialMain(argc_, argv_.data());
   }
 #endif
+
+  auto solutionFile_l = options_parser.SolutionFile();
+  ActiveLinksBuilder linksBuilder = get_link_builders(root);
+
+  const std::vector<ActiveLink> links = linksBuilder.getLinks();
+
+  updateStudy(root, links, solutionFile_l);
   return 0;
 }

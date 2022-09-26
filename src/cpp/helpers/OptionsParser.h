@@ -11,7 +11,7 @@ class OptionsParser {
   OptionsParser() = default;
   virtual ~OptionsParser() = default;
 
-  void parse(int argc, char** argv);
+  void Parse(int argc, char** argv);
 
   //   template <class T>
   //   void AddOption(std::string& option_name, bool required, const T* t,

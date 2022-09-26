@@ -6,7 +6,10 @@ FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
                "benders method")(
       "benders_options,b",
       po::value<std::filesystem::path>(&benders_options_file_)->required(),
-      "benders options file");
+      "benders options file")(
+      "solution,s",
+      po::value<std::filesystem::path>(&solutionFile_)->required(),
+      "path to json solution file");
 }
 
 FullRunOptionsParser::METHOD FullRunOptionsParser::Method() const {

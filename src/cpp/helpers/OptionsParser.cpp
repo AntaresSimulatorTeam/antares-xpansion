@@ -3,7 +3,7 @@
 #include <iostream>
 namespace po = boost::program_options;
 
-void OptionsParser::parse(int argc, char** argv) {
+void OptionsParser::Parse(int argc, char** argv) {
   po::variables_map opts;
   po::store(po::parse_command_line(argc, argv, desc_), opts);
 

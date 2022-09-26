@@ -12,8 +12,8 @@ class ProblemGenerationExeOptions : public OptionsParser {
  public:
   ProblemGenerationExeOptions();
   virtual ~ProblemGenerationExeOptions() = default;
-  std::filesystem::path root() const { return root_; }
-  std::string master_formulation() const { return master_formulation_; }
+  std::filesystem::path Root() const { return root_; }
+  std::string MasterFormulation() const { return master_formulation_; }
   std::string additional_constraintFilename_l() const {
     return additional_constraintFilename_l_;
   }
