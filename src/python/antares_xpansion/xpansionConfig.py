@@ -20,6 +20,7 @@ class ConfigParameters:
     LP_NAMER: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
+    FULL_RUN: str
     AVAILABLE_SOLVERS: List[str]
 
 
@@ -58,6 +59,7 @@ class XpansionConfig:
         self.LP_NAMER: str = ""
         self.STUDY_UPDATER: str = ""
         self.SENSITIVITY_EXE: str = ""
+        self.FULL_RUN: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
         self.AVAILABLE_SOLVER: List[str]
@@ -72,7 +74,8 @@ class XpansionConfig:
         self.step = self.input_parameters.step
         self.simulation_name = self.input_parameters.simulation_name
         self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
-        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
+        self.install_dir = self._get_install_dir(
+            self.input_parameters.install_dir)
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
         self.antares_n_cpu = self.input_parameters.antares_n_cpu
@@ -229,5 +232,6 @@ class XpansionConfig:
         self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
+        self.FULL_RUN = self.config_parameters.FULL_RUN
         self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE
         self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS

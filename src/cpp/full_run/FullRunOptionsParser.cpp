@@ -5,7 +5,7 @@ FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
   AddOptions()("method,m", po::value<std::string>(&method_)->required(),
                "benders method")(
       "benders_options,b",
-      po::value<std::string>(&benders_options_file_)->required(),
+      po::value<std::filesystem::path>(&benders_options_file_)->required(),
       "benders options file");
 }
 

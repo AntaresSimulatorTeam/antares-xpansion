@@ -14,6 +14,7 @@ from antares_xpansion.study_updater_driver import StudyUpdaterDriver
 from antares_xpansion.sensitivity_driver import SensitivityDriver
 from antares_xpansion.general_data_processor import GeneralDataProcessor
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.full_run_driver import FullRunDriver
 
 
 class XpansionDriver:
@@ -55,6 +56,8 @@ class XpansionDriver:
         self.sensitivity_driver = SensitivityDriver(
             self.config_loader.sensitivity_exe())
 
+        self.full_run_driver = FullRunDriver(self.config_loader.full_run_exe(
+        ), self.problem_generator_driver, self.benders_driver)
         self.settings = 'settings'
 
     def launch(self):
@@ -65,10 +68,21 @@ class XpansionDriver:
         if self.config_loader.step() == "full":
             self.launch_antares_step()
             flushed_print("-- post antares")
-            self.launch_problem_generation_step()
-            self.launch_benders_step()
-            self.study_update_driver.launch(
-                self.config_loader.simulation_output_path(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
+            self.problem_generator_driver.set_output_path(
+                self.config_loader.simulation_output_path())
+            self.problem_generator_driver.create_lp_dir()
+            self.config_loader.benders_pre_actions()
+            self.full_run_driver.launch(self.config_loader.simulation_output_path(),
+                                        self.config_loader.is_relaxed(),
+                                        self.config_loader.method(),
+                                        self.config_loader.keep_mps(),
+                                        self.config_loader.n_mpi(),
+                                        self.config_loader.oversubscribe(),
+                                        self.config_loader.allow_run_as_root())
+            # self.launch_problem_generation_step()
+            # self.launch_benders_step()
+            # self.study_update_driver.launch(
+            #     self.config_loader.simulation_output_path(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
 
         elif self.config_loader.step() == "antares":
             self.launch_antares_step()

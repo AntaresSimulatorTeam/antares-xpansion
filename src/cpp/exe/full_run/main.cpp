@@ -38,8 +38,8 @@ namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
   auto options_parser = FullRunOptionsParser();
-  options_parser.parse(argc, argv);
   try {
+    options_parser.parse(argc, argv);
     auto root = options_parser.root();
     auto master_formulation = options_parser.master_formulation();
     auto additionalConstraintFilename_l =
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
     std::cerr << "Exception of unknown type!" << std::endl;
   }
   int argc_ = 2;
-  auto options_file = options_parser.BendersOptionsFile();
+  auto options_file = options_parser.BendersOptionsFile().string();
   std::vector<char> cstr(options_file.c_str(),
                          options_file.c_str() + options_file.size() + 1);
   std::vector<char*> argv_ = {"", cstr.data()};
