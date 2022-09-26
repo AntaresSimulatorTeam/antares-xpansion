@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "ACL/IStudyAdapter.h"
-#include "CoreHexagone/Candidate.h"
-#include "CoreHexagone/Link.h"
-class ForProvidingXpansionStudyInMemoryAdapter : public IStudyAdapter {
+#include "../../CoreHexagone/Candidate.h"
+#include "../../CoreHexagone/Link.h"
+#include "../IStudyAdapter.h"
+class StudyInMemoryAdapter : public IStudyAdapter {
  public:
   void addLink(Link link);
   void addCandidate(Candidate candidate);

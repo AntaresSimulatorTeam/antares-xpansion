@@ -3,8 +3,8 @@
 //
 #include <filesystem>
 
+#include "ACL/Stub/StudyInMemoryAdapter.h"
 #include "CoreHexagone/ForProvidingXpansionStudy.h"
-#include "ForProvidingXpansionStudyInMemoryAdapter.h"
 #include "gtest/gtest.h"
 
 TEST(StudyTopology, Study_noLink) {
@@ -13,7 +13,7 @@ TEST(StudyTopology, Study_noLink) {
   // When I start the study
   // Then produce nothing
 
-  auto study_adapter = std::make_shared<ForProvidingXpansionStudyInMemoryAdapter>();
+  auto study_adapter = std::make_shared<StudyInMemoryAdapter>();
   ForProvidingXpansionStudy link_service(study_adapter);
   std::filesystem::path study;
   XpansionStudy xpansion_study = link_service.provide(study);
@@ -26,7 +26,7 @@ TEST(StudyTopology, IgnoreLinkWithoutCandidates) {
   // When I start the study
   // Then produce nothing
 
-  auto study_adapter = std::make_shared<ForProvidingXpansionStudyInMemoryAdapter>();
+  auto study_adapter = std::make_shared<StudyInMemoryAdapter>();
   study_adapter->addLink({});
   ForProvidingXpansionStudy providing_xpansion_study(study_adapter);
   std::filesystem::path study;
