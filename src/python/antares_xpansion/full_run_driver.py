@@ -35,10 +35,12 @@ class FullRunDriver:
         self.full_exe = full_exe
         self.benders_driver = benders_driver
         self.problem_generation_driver = problem_generation_driver
+        self.json_file_path = ""
 
     def launch(self, output_path: Path,
                problem_generation_is_relaxed: bool,
                benders_method,
+               json_file_path,
                benders_keep_mps=False,
                benders_n_mpi=1,
                benders_oversubscribe=False,
@@ -71,6 +73,7 @@ class FullRunDriver:
         flushed_print("Current directory is now: ", os.getcwd())
         self.benders_driver.set_solver()
 
+        self.json_file_path = json_file_path
         ret = subprocess.run(
             self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')
@@ -82,7 +85,8 @@ class FullRunDriver:
 
     def full_command(self) -> List:
         bare_solver_command = [
-            self.full_exe, "--benders_options", self.benders_driver.options_file, "--method", self.benders_driver.method]
+            self.full_exe, "--benders_options", self.benders_driver.options_file, "--method", self.benders_driver.method, "-s",
+            str(self.json_file_path)]
         bare_solver_command.extend(
             self.problem_generation_driver.lp_namer_options())
 
