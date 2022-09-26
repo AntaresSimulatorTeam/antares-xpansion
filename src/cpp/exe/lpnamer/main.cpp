@@ -7,10 +7,10 @@
 int main(int argc, char** argv) {
   try {
     auto options_parser = ProblemGenerationExeOptions();
-    options_parser.parse(argc, argv);
+    options_parser.Parse(argc, argv);
 
-    auto root = options_parser.root();
-    auto master_formulation = options_parser.master_formulation();
+    auto root = options_parser.Root();
+    auto master_formulation = options_parser.MasterFormulation();
     auto additionalConstraintFilename_l =
         options_parser.additional_constraintFilename_l();
     RunProblemGeneration(root, master_formulation,

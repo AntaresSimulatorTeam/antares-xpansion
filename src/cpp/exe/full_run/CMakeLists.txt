@@ -31,6 +31,7 @@ target_link_libraries (full_run
 		${PROJECT_NAME}::full_run_lib
 		${PROJECT_NAME}::problem_generation_main
 		${PROJECT_NAME}::benders_sequential_core
+		${PROJECT_NAME}::xpansion_study_updater_lib
 )
 
 install(TARGETS full_run DESTINATION bin)
