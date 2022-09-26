@@ -10,6 +10,11 @@ Adapter::Adapter(
     const StudyFileReader::ICandidateFileReader &candidate_reader) {
 
 }
+Adapter::Adapter(LinkFileReaderInMemory link_reader,
+                 AreaFileReaderInMemory area_reader,
+                 CandidateFileReaderInMemory candidate_reader) {
+
+}
 
 std::vector<Link> Adapter::Links(const std::string &study_path) const {
   return {};
@@ -21,3 +26,7 @@ std::vector<Area> Adapter::Areas(const std::string &study_path) const {
 std::vector<Candidate> Adapter::Candidates(const std::string &study_path) {
   return {};
 }
+XpansionStudy::Study Adapter::Study(const std::string &study_path) {
+  return {};
+}
+
