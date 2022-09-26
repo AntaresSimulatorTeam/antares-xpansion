@@ -11,7 +11,8 @@
 # ---------------------------------------------------------------------------
 
 add_library (problem_generation_main STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationMain.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/RunProblemGeneration.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
 )
 
 target_link_libraries (problem_generation_main 
@@ -20,12 +21,15 @@ target_link_libraries (problem_generation_main
 		${PROJECT_NAME}::lp_namer_model
 		${PROJECT_NAME}::lp_namer_input_reader
 		${PROJECT_NAME}::lp_namer_problem_modifier
-		Boost::boost Boost::program_options)
+		Boost::boost Boost::program_options
+		helpers)
 
+get_target_property(helpers_include helpers INTERFACE_INCLUDE_DIRECTORIES)
 
 	target_include_directories (problem_generation_main
 		PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/include
+		${helpers_include}
 	)
 
 

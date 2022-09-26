@@ -1,3 +1,28 @@
 
-#include "ProblemGenerationMain.h"
-int main(int argc, char **argv) { return ProblemGenerationMain(argc, argv); }
+#include <iostream>
+
+#include "ProblemGenerationExeOptions.h"
+#include "RunProblemGeneration.h"
+
+int main(int argc, char** argv) {
+  try {
+    auto options_parser = ProblemGenerationExeOptions();
+    options_parser.parse(argc, argv);
+
+    auto root = options_parser.root();
+    auto master_formulation = options_parser.master_formulation();
+    auto additionalConstraintFilename_l =
+        options_parser.additional_constraintFilename_l();
+    RunProblemGeneration(root, master_formulation,
+                         additionalConstraintFilename_l);
+
+    return 0;
+  } catch (std::exception& e) {
+    std::cerr << "error: " << e.what() << std::endl;
+    return 1;
+  } catch (...) {
+    std::cerr << "Exception of unknown type!" << std::endl;
+  }
+
+  return 0;
+}

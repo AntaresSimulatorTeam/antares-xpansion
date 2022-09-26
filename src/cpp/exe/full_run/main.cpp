@@ -2,16 +2,16 @@
 #include <iostream>
 #include <string>
 
-#ifdef BENDERSMPIMAIN
+#if __has_include("BendersMpiMain.h")
 #include "BendersMpiMain.h"
 #endif
 #include <boost/program_options.hpp>
 
 #include "BendersSequentialMain.h"
-#include "ProblemGenerationMain.h"
+#include "FullRunOptionsParser.h"
+#include "RunProblemGeneration.h"
 
 namespace po = boost::program_options;
-enum class METHOD { SEQUANTIAL, MPI };
 // METHOD OptionsReader(int argc, char** argv) {
 //   po::options_description desc("Allowed options");
 
@@ -37,14 +37,34 @@ enum class METHOD { SEQUANTIAL, MPI };
 // }
 
 int main(int argc, char** argv) {
-  auto ret = ProblemGenerationMain(argc, argv);
-  if (ret != 0) {
-    std::string msg =
-        "Error Problem Generation returned: " + std::to_string(ret);
-    throw std::runtime_error(msg);
+  auto options_parser = FullRunOptionsParser();
+  options_parser.parse(argc, argv);
+  try {
+    auto root = options_parser.root();
+    auto master_formulation = options_parser.master_formulation();
+    auto additionalConstraintFilename_l =
+        options_parser.additional_constraintFilename_l();
+    RunProblemGeneration(root, master_formulation,
+                         additionalConstraintFilename_l);
+
+  } catch (std::exception& e) {
+    std::cerr << "error: " << e.what() << std::endl;
+    return 1;
+  } catch (...) {
+    std::cerr << "Exception of unknown type!" << std::endl;
   }
+  int argc_ = 2;
+  auto options_file = options_parser.BendersOptionsFile();
+  std::vector<char> cstr(options_file.c_str(),
+                         options_file.c_str() + options_file.size() + 1);
+  std::vector<char*> argv_ = {"", cstr.data()};
+
 #ifdef BENDERSMPIMAIN
-  ret = BendersMpiMain(argc, argv);
+  if (options_parser.Method() == FullRunOptionsParser::METHOD::MPI) {
+    BendersMpiMain(argc_, argv_.data());
+  } else {
+    BendersSequentialMain(argc_, argv_.data());
+  }
 #endif
   return 0;
 }
