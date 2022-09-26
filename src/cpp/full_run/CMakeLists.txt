@@ -10,27 +10,18 @@
 # Full Run Exe
 # ---------------------------------------------------------------------------
 
-add_executable (full_run
-	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+add_library (full_run_lib STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/FullRunOptionsParser.cpp
 )
+#get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
-if (USE_MPI)
-	find_package(MPI REQUIRED)
-	if (MPI_FOUND)
-		message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
-		set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-	endif (MPI_FOUND)
-	target_link_libraries (full_run
-		PRIVATE
-		${PROJECT_NAME}::benders_mpi_core
-)
-endif ()
 
-target_link_libraries (full_run
+target_link_libraries (full_run_lib
 		PRIVATE
-		${PROJECT_NAME}::full_run_lib
 		${PROJECT_NAME}::problem_generation_main
-		${PROJECT_NAME}::benders_sequential_core
 )
-
-install(TARGETS full_run DESTINATION bin)
+target_include_directories (problem_generation_main
+		PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+	)
+add_library (${PROJECT_NAME}::full_run_lib ALIAS full_run_lib)

@@ -15,7 +15,7 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-int BendersMpiMain(int argc, char **argv) {
+int BendersMpiMain(int argc, char** argv) {
   mpi::environment env(argc, argv);
   mpi::communicator world;
 
@@ -29,7 +29,7 @@ int BendersMpiMain(int argc, char **argv) {
 
   BendersBaseOptions benders_options(options.get_benders_options());
 
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
+  // gflags::ParseCommandLineFlags(&argc, &argv, true);
   google::InitGoogleLogging(argv[0]);
   auto path_to_log =
       std::filesystem::path(options.OUTPUTROOT) /
