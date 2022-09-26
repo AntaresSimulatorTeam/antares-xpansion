@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "Candidate.h"
 #include "solver_utils.h"
 
 std::set<int> extract_time_steps(

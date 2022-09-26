@@ -14,5 +14,5 @@ class IStudyAdapter {
   IStudyAdapter(const IStudyAdapter&) = default;
   virtual ~IStudyAdapter() = default;
 
-  [[nodiscard]] virtual XpansionStudy Study() const = 0;
+  [[nodiscard]] virtual XpansionStudy::XpansionStudy Study() const = 0;
 };

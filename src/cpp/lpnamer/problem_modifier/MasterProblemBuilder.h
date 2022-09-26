@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #include "ActiveLinks.h"
+#include "Candidate.h"
 
 #ifndef ANTARESXPANSION_MASTERPROBLEMBUILDER_H
 #define ANTARESXPANSION_MASTERPROBLEMBUILDER_H

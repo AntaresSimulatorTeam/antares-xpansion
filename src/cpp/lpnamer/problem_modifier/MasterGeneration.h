@@ -5,6 +5,7 @@
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
+#include "Candidate.h"
 #include "LinkProblemsGenerator.h"
 class MasterGeneration {
  public:

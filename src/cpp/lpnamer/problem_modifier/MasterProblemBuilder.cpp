@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <unordered_map>
 
+#include "Candidate.h"
+
 MasterProblemBuilder::MasterProblemBuilder(
     const std::string& master_formulation)
     : _master_formulation(master_formulation) {}

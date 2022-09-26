@@ -9,7 +9,10 @@
 #include "Link.h"
 
 namespace XpansionStudy {
-std::vector<Link> Study::Links() const { return {}; }
+std::vector<Link> Study::Links() const { return links_; }
 std::vector<Candidate> Study::Candidates() const { return {}; }
 std::vector<Area> Study::Areas() const { return {}; }
+Study::Study(std::vector<Link>&& links) {
+  links_ = std::move(links);
+}
 }  // namespace XpansionStudy

@@ -9,7 +9,7 @@
 
 #include "XpansionStudy.h"
 
-XpansionStudy ForProvidingXpansionStudy::provide(const std::filesystem::path& study_path) const {
+XpansionStudy::XpansionStudy ForProvidingXpansionStudy::provide(const std::filesystem::path& study_path) const {
   auto study = study_adapter_->Study();
   study.RemoveInvalidLinks();
   return study;

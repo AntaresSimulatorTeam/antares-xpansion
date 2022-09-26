@@ -3,3 +3,7 @@
 //
 
 #include "Candidate.h"
+bool XpansionStudy::Candidate::operator==(
+    const XpansionStudy::Candidate& candidate) const {
+  return true;
+}

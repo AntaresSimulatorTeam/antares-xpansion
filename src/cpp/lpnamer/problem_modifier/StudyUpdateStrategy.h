@@ -5,6 +5,7 @@
 #pragma once
 
 #include "ActiveLinks.h"
+#include "Candidate.h"
 class StudyUpdateStrategy {
  public:
   [[nodiscard]] virtual int Update(const ActiveLink& link, const std::map<std::string, double>& map) = 0;

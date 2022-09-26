@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "ActiveLinks.h"
+#include "Candidate.h"
 #include "ColumnToChange.h"
 #include "Problem.h"
 

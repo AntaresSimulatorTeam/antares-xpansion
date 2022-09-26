@@ -4,6 +4,8 @@
 
 #include "StudyUpdateStrategy.h"
 
+#include "Candidate.h"
+
 static const std::filesystem::path ANTARES_LINK_FOLDER = std::filesystem::path("input") / "links";
 
 void StudyUpdateStrategy::EnsureCandidateInvestmentFound(

@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include <vector>
+
+#include "../CoreHexagone/Candidate.h"
 namespace StudyFileReader {
 
 class Link {};

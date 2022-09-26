@@ -4,4 +4,6 @@
 
 #pragma once
 
+namespace XpansionStudy {
 class Area {};
+}  // namespace XpansionStudy

@@ -4,6 +4,8 @@
 #include <unordered_set>
 #include <utility>
 
+#include "Candidate.h"
+
 bool doubles_are_different(const double a, const double b) {
   constexpr double MACHINE_EPSILON = std::numeric_limits<double>::epsilon();
   return std::abs(a - b) > MACHINE_EPSILON;

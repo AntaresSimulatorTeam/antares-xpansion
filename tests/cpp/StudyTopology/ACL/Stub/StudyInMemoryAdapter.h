@@ -6,12 +6,14 @@
 
 #include "../../CoreHexagone/Candidate.h"
 #include "../../CoreHexagone/Link.h"
+#include "../../StudyFileAdapter/Link.h"
 #include "../IStudyAdapter.h"
+
 class StudyInMemoryAdapter : public IStudyAdapter {
  public:
-  void addLink(Link link);
-  void addCandidate(Candidate candidate);
-  XpansionStudy Study() const override;
-  std::vector<Link> links_;
-  std::vector<Candidate> candidates_;
+  void addLink(XpansionStudy::Link link);
+  void addCandidate(XpansionStudy::Candidate candidate);
+  XpansionStudy::XpansionStudy Study() const override;
+  std::vector<XpansionStudy::Link> links_;
+  std::vector<XpansionStudy::Candidate> candidates_;
 };

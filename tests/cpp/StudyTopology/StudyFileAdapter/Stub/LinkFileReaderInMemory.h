@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 
+#include "../../CoreHexagone/Link.h"
 #include "../ILinkFileReader.h"
 #include "../Link.h"
 
@@ -15,4 +16,6 @@ class LinkFileReaderInMemory : public StudyFileReader::ILinkFileReader {
   virtual ~LinkFileReaderInMemory() = default;
   [[nodiscard]] std::vector<StudyFileReader::Link> Links(
       const std::string &study_path) const override;
+  void Feed(StudyFileReader::Link link);
+  std::vector<StudyFileReader::Link> links_;
 };

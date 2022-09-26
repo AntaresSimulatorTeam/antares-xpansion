@@ -6,11 +6,16 @@
 
 #include <vector>
 
-#include "CandidateID.h"
+#include "Candidate.h"
+
+namespace XpansionStudy {
 class Link {
  public:
-  std::vector<CandidateID> Candidates();
+  [[nodiscard]] std::vector<Candidate> Candidates() const;
+
+  void AddCandidate(const XpansionStudy::Candidate& candidate);
 
  private:
-  std::vector<CandidateID> candidates_;
+  std::vector<Candidate> candidates_;
 };
+}  // namespace XpansionStudy

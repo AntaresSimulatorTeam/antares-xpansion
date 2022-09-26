@@ -18,7 +18,7 @@ class ForProvidingXpansionStudy {
   ~ForProvidingXpansionStudy() = default;
 
   explicit ForProvidingXpansionStudy(std::shared_ptr<IStudyAdapter> adapter);
-  [[nodiscard]] XpansionStudy provide(const std::filesystem::path& study_path) const;
+  [[nodiscard]] XpansionStudy::XpansionStudy provide(const std::filesystem::path& study_path) const;
 
  private:
   std::shared_ptr<IStudyAdapter> study_adapter_;

@@ -3,6 +3,7 @@
 //
 #include <solver_utils.h>
 
+#include "Candidate.h"
 #include "MasterProblemBuilder.h"
 #include "gtest/gtest.h"
 

@@ -13,9 +13,12 @@ namespace XpansionStudy {
 
 class Study {
  public:
+  Study(std::vector<Link>&& links);
   [[nodiscard]] std::vector<Area> Areas() const;
   [[nodiscard]] std::vector<Link> Links() const;
   [[nodiscard]] std::vector<Candidate> Candidates() const;
+ private:
+  std::vector<Link> links_;
 };
 
 }  // namespace XpansionStudy

@@ -7,6 +7,8 @@
 #include <vector>
 
 #include "Link.h"
+
+namespace XpansionStudy {
 class XpansionStudy {
  public:
   std::vector<Link> Links();
@@ -16,3 +18,4 @@ class XpansionStudy {
  private:
   std::vector<Link> links_;
 };
+}  // namespace XpansionStudy

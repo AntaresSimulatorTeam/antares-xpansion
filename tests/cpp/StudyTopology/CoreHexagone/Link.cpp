@@ -3,6 +3,15 @@
 //
 
 #include "Link.h"
-std::vector<CandidateID> Link::Candidates() {
+
+#include "Candidate.h"
+#include "XpansionStudy.h"
+
+namespace XpansionStudy {
+std::vector<Candidate> Link::Candidates() const {
   return candidates_;
+}
+void Link::AddCandidate(const Candidate& candidate) {
+  candidates_.push_back(candidate);
+}
 }

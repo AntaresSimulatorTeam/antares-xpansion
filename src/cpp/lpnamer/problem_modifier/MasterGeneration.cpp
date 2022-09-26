@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <filesystem>
 
+#include "Candidate.h"
 #include "LauncherHelpers.h"
 #include "MasterProblemBuilder.h"
 #include "multisolver_interface/SolverAbstract.h"

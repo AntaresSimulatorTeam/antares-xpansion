@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <execution>
 
+#include "Candidate.h"
 #include "VariableFileReader.h"
 #include "helpers/StringUtils.h"
 #include "solver_utils.h"
