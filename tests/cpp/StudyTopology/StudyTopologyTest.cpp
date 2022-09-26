@@ -3,7 +3,7 @@
 //
 #include <filesystem>
 
-#include "ForProvidingXpansionStudy.h"
+#include "CoreHexagone/ForProvidingXpansionStudy.h"
 #include "ForProvidingXpansionStudyInMemoryAdapter.h"
 #include "gtest/gtest.h"
 

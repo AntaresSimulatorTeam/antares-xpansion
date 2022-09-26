@@ -6,8 +6,8 @@
 
 #include <vector>
 
-#include "Link.h"
-#include "XpansionStudy.h"
+#include "../CoreHexagone/Link.h"
+#include "../CoreHexagone/XpansionStudy.h"
 class IStudyAdapter {
  public:
   IStudyAdapter() = default;

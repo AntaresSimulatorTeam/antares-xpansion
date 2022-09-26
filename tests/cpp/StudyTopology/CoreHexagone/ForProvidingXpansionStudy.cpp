@@ -2,11 +2,12 @@
 // Created by marechaljas on 20/09/22.
 //
 
+#include "ForProvidingXpansionStudy.h"
+
+#include <algorithm>
 #include <utility>
 
-#include "ForProvidingXpansionStudy.h"
 #include "XpansionStudy.h"
-#include <algorithm>
 
 XpansionStudy ForProvidingXpansionStudy::provide(const std::filesystem::path& study_path) const {
   auto study = study_adapter_->Study();

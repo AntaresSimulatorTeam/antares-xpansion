@@ -1,7 +1,7 @@
 find_package (GTest REQUIRED)
 
 add_executable (StudyTopology_test
-        StudyTopologyTest.cpp Link.cpp Link.h LinkService.cpp ForProvidingXpansionStudy.h StudyAdapter.cpp StudyAdapter.h InMemoryStudyAdapter.cpp ForProvidingXpansionStudyInMemoryAdapter.h Candidate.cpp Candidate.h XpansionStudy.cpp XpansionStudy.h CandidateID.cpp CandidateID.h)
+        StudyTopologyTest.cpp CoreHexagone/Link.cpp CoreHexagone/Link.h CoreHexagone/ForProvidingXpansionStudy.cpp CoreHexagone/ForProvidingXpansionStudy.h ACL/StudyAdapter.cpp ACL/StudyAdapter.h ForProvidingXpansionStudyInMemoryAdapter.cpp ForProvidingXpansionStudyInMemoryAdapter.h CoreHexagone/Candidate.cpp CoreHexagone/Candidate.h CoreHexagone/XpansionStudy.cpp CoreHexagone/XpansionStudy.h CoreHexagone/CandidateID.cpp CoreHexagone/CandidateID.h)
 
 target_link_libraries (StudyTopology_test PRIVATE
         GTest::Main
