@@ -6,6 +6,8 @@
 
 #include "../CoreHexagone/Area.h"
 #include "../CoreHexagone/Link.h"
+#include "../CoreHexagone/Candidate.h"
+#include "../ICandidateFileReader.h"
 #include "../StudyFileAdapter/IAreaFileReader.h"
 #include "../StudyFileAdapter/ILinkFileReader.h"
 
@@ -13,6 +15,9 @@ class Adapter {
  public:
   explicit Adapter(const StudyFileReader::ILinkFileReader &link_file_reader);
   explicit Adapter(const StudyFileReader::IAreaFileReader &area_file_reader);
+  explicit Adapter(
+      const StudyFileReader::ICandidateFileReader &candidate_reader);
   [[nodiscard]] std::vector<Link> Links(const std::string &study_path) const;
   [[nodiscard]] std::vector<Area> Areas(const std::string &study_path) const;
+  std::vector<Candidate> Candidates(const std::string &study_path);
 };

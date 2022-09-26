@@ -6,6 +6,8 @@
 
 #include "ACL/Adapter.h"
 #include "AreaFileReaderInMemory.h"
+#include "CandidateFileReaderInMemory.h"
+#include "CoreHexagone/Candidate.h"
 #include "CoreHexagone/Link.h"
 #include "StudyFileAdapter/ILinkFileReader.h"
 #include "StudyFileAdapter/Stub/LinkFileReaderInMemory.h"
@@ -28,3 +30,10 @@ TEST(ACL, NoAreaForEmptyFile) {
   EXPECT_TRUE(areas.empty());
 }
 
+TEST(ACL, NoCandidatesForEmptyFile) {
+  CandidateFileReaderInMemory candidate_file_reader;
+
+  Adapter adapter(candidate_file_reader);
+  std::vector<Candidate> candidates = adapter.Candidates("StudyPath");
+  EXPECT_TRUE(candidates.empty());
+}

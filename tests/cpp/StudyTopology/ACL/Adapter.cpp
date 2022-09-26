@@ -6,11 +6,18 @@
 
 Adapter::Adapter(const StudyFileReader::ILinkFileReader &link_file_reader) {}
 Adapter::Adapter(const StudyFileReader::IAreaFileReader &area_file_reader) {}
+Adapter::Adapter(
+    const StudyFileReader::ICandidateFileReader &candidate_reader) {
+
+}
 
 std::vector<Link> Adapter::Links(const std::string &study_path) const {
   return {};
 }
 
 std::vector<Area> Adapter::Areas(const std::string &study_path) const {
+  return {};
+}
+std::vector<Candidate> Adapter::Candidates(const std::string &study_path) {
   return {};
 }
