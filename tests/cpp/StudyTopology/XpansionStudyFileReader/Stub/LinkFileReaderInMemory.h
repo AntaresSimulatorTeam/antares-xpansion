@@ -7,9 +7,9 @@
 #include <string>
 #include <vector>
 
-#include "../../CoreHexagone/Link.h"
+#include "../../CoreHexagone/Model/Link.h"
 #include "../ILinkFileReader.h"
-#include "../Link.h"
+#include "../Model/Link.h"
 
 class LinkFileReaderInMemory : public StudyFileReader::ILinkFileReader {
  public:

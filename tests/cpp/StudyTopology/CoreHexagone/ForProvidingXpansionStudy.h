@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "../ACL/StudyAdapter.h"
-#include "Link.h"
-#include "XpansionStudy.h"
+#include "Model/Link.h"
+#include "Model/XpansionStudy.h"
 class ForProvidingXpansionStudy {
  public:
   ForProvidingXpansionStudy() = delete;

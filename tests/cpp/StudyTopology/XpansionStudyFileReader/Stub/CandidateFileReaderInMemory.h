@@ -6,8 +6,8 @@
 
 #include <vector>
 
-#include "../Candidate.h"
 #include "../ICandidateFileReader.h"
+#include "../Model/Candidate.h"
 
 class CandidateFileReaderInMemory : public StudyFileReader::ICandidateFileReader {
  public:

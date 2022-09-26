@@ -6,26 +6,26 @@
 
 #include <memory>
 
-#include "../CoreHexagone/Area.h"
-#include "../CoreHexagone/Candidate.h"
-#include "../CoreHexagone/Link.h"
-#include "../CoreHexagone/Study.h"
-#include "../StudyFileAdapter/IAreaFileReader.h"
-#include "../StudyFileAdapter/ICandidateFileReader.h"
-#include "../StudyFileAdapter/ILinkFileReader.h"
-#include "../StudyFileAdapter/Stub/AreaFileReaderInMemory.h"
-#include "../StudyFileAdapter/Stub/CandidateFileReaderInMemory.h"
-#include "../StudyFileAdapter/Stub/LinkFileReaderInMemory.h"
+#include "../CoreHexagone/Model/Area.h"
+#include "../CoreHexagone/Model/Candidate.h"
+#include "../CoreHexagone/Model/Link.h"
+#include "../CoreHexagone/Model/Study.h"
+#include "../XpansionStudyFileReader/IAreaFileReader.h"
+#include "../XpansionStudyFileReader/ICandidateFileReader.h"
+#include "../XpansionStudyFileReader/ILinkFileReader.h"
+#include "../XpansionStudyFileReader/Stub/AreaFileReaderInMemory.h"
+#include "../XpansionStudyFileReader/Stub/CandidateFileReaderInMemory.h"
+#include "../XpansionStudyFileReader/Stub/LinkFileReaderInMemory.h"
 #include "ILinkTranslator.h"
 
-class Adapter {
+class XpansionStudyFileAdapter {
  public:
-  explicit Adapter(const StudyFileReader::ILinkFileReader &link_file_reader);
-  explicit Adapter(const StudyFileReader::IAreaFileReader &area_file_reader);
-  explicit Adapter(
+  explicit XpansionStudyFileAdapter(const StudyFileReader::ILinkFileReader &link_file_reader);
+  explicit XpansionStudyFileAdapter(const StudyFileReader::IAreaFileReader &area_file_reader);
+  explicit XpansionStudyFileAdapter(
       const StudyFileReader::ICandidateFileReader &candidate_reader);
 
-  Adapter(std::shared_ptr<StudyFileReader::ILinkFileReader> link_reader,
+  XpansionStudyFileAdapter(std::shared_ptr<StudyFileReader::ILinkFileReader> link_reader,
           std::shared_ptr<StudyFileReader::IAreaFileReader> area_reader,
           std::shared_ptr<StudyFileReader::ICandidateFileReader> candidate_reader,
           std::shared_ptr<ILinkTranslator> link_translator);

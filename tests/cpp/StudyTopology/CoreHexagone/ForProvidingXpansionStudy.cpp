@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <utility>
 
-#include "XpansionStudy.h"
+#include "Model/XpansionStudy.h"
 
 XpansionStudy::XpansionStudy ForProvidingXpansionStudy::provide(const std::filesystem::path& study_path) const {
   auto study = study_adapter_->Study();

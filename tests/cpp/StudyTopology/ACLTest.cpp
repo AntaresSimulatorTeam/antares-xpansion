@@ -4,22 +4,21 @@
 
 #include <gtest/gtest.h>
 
-#include "ACL/Adapter.h"
 #include "ACL/LinkFromFileTranslator.h"
-#include "CoreHexagone/Candidate.h"
-#include "CoreHexagone/Link.h"
-#include "CoreHexagone/Study.h"
-#include "StudyFileAdapter/ILinkFileReader.h"
-#include "StudyFileAdapter/Stub/AreaFileReaderInMemory.h"
-#include "StudyFileAdapter/Stub/CandidateFileReaderInMemory.h"
-#include "StudyFileAdapter/Stub/LinkFileReaderInMemory.h"
+#include "ACL/XpansionStudyFileAdapter.h"
+#include "CoreHexagone/Model/Candidate.h"
+#include "CoreHexagone/Model/Link.h"
+#include "CoreHexagone/Model/Study.h"
+#include "XpansionStudyFileReader/Stub/AreaFileReaderInMemory.h"
+#include "XpansionStudyFileReader/Stub/CandidateFileReaderInMemory.h"
+#include "XpansionStudyFileReader/Stub/LinkFileReaderInMemory.h"
 
 TEST(ACL, NoLinkForEmptyFile) {
   //Read empty link
 
   LinkFileReaderInMemory link_reader;
 
-  Adapter adapter(link_reader);
+  XpansionStudyFileAdapter adapter(link_reader);
   std::vector<XpansionStudy::Link> links = adapter.Links("StudyPath");
   EXPECT_TRUE(links.empty());
 }
@@ -27,7 +26,7 @@ TEST(ACL, NoLinkForEmptyFile) {
 TEST(ACL, NoAreaForEmptyFile) {
   AreaFileReaderInMemory area_file_reader;
 
-  Adapter adapter(area_file_reader);
+  XpansionStudyFileAdapter adapter(area_file_reader);
   std::vector<XpansionStudy::Area> areas = adapter.Areas("StudyPath");
   EXPECT_TRUE(areas.empty());
 }
@@ -35,7 +34,7 @@ TEST(ACL, NoAreaForEmptyFile) {
 TEST(ACL, NoCandidatesForEmptyFile) {
   CandidateFileReaderInMemory candidate_file_reader;
 
-  Adapter adapter(candidate_file_reader);
+  XpansionStudyFileAdapter adapter(candidate_file_reader);
   std::vector<XpansionStudy::Candidate> candidates = adapter.Candidates("StudyPath");
   EXPECT_TRUE(candidates.empty());
 }
@@ -46,7 +45,7 @@ TEST(ACL, ProvidefullStudy) {
   auto candidate_file_reader = std::make_shared<CandidateFileReaderInMemory>();
 
   auto link_translator = std::make_shared<LinkFromFileTranslator>();
-  Adapter adapter(link_reader, area_file_reader, candidate_file_reader, link_translator);
+  XpansionStudyFileAdapter adapter(link_reader, area_file_reader, candidate_file_reader, link_translator);
   XpansionStudy::Study study = adapter.Study("StudyPath");
   EXPECT_TRUE(study.Areas().empty());
   EXPECT_TRUE(study.Links().empty());
@@ -65,7 +64,7 @@ TEST(ACL, LinkWithCandidate) {
 
   auto link_translator = std::make_shared<LinkFromFileTranslator>();
 
-  Adapter adapter(link_reader, area_file_reader, candidate_file_reader, link_translator);
+  XpansionStudyFileAdapter adapter(link_reader, area_file_reader, candidate_file_reader, link_translator);
   XpansionStudy::Study study = adapter.Study("StudyPath");
 
   const XpansionStudy::Link link = study.Links().front();

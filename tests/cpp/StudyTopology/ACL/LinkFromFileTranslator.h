@@ -6,10 +6,10 @@
 
 #include <vector>
 
-#include "../CoreHexagone/Candidate.h"
-#include "../CoreHexagone/Link.h"
-#include "../StudyFileAdapter/Candidate.h"
-#include "../StudyFileAdapter/Link.h"
+#include "../CoreHexagone/Model/Candidate.h"
+#include "../CoreHexagone/Model/Link.h"
+#include "../XpansionStudyFileReader/Model/Candidate.h"
+#include "../XpansionStudyFileReader/Model/Link.h"
 #include "ILinkTranslator.h"
 class LinkFromFileTranslator : public ILinkTranslator {
  public:

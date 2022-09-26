@@ -6,7 +6,8 @@
 
 #include <string>
 #include <vector>
-#include "Link.h"
+
+#include "Model/Link.h"
 
 namespace StudyFileReader {
   class ILinkFileReader {

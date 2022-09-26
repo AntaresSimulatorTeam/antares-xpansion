@@ -4,8 +4,9 @@
 
 #pragma once
 
-#include "Candidate.h"
 #include <string>
+
+#include "Model/Candidate.h"
 
 namespace StudyFileReader {
 class ICandidateFileReader {

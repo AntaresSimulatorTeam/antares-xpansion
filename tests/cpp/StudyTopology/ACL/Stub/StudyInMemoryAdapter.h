@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "../../CoreHexagone/Candidate.h"
-#include "../../CoreHexagone/Link.h"
-#include "../../StudyFileAdapter/Link.h"
+#include "../../CoreHexagone/Model/Candidate.h"
+#include "../../CoreHexagone/Model/Link.h"
+#include "../../XpansionStudyFileReader/Model/Link.h"
 #include "../IStudyAdapter.h"
 
 class StudyInMemoryAdapter : public IStudyAdapter {
