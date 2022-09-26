@@ -4,7 +4,7 @@
 class FullRunOptionsParser : public ProblemGenerationExeOptions {
  private:
   std::string method_;
-  std::string benders_options_file_;
+  std::filesystem::path benders_options_file_;
 
  public:
   enum class METHOD { SEQUANTIAL, MPI };
@@ -12,7 +12,9 @@ class FullRunOptionsParser : public ProblemGenerationExeOptions {
   FullRunOptionsParser();
   virtual ~FullRunOptionsParser() = default;
   METHOD Method() const;
-  std::string BendersOptionsFile() const { return benders_options_file_; }
+  std::filesystem::path BendersOptionsFile() const {
+    return benders_options_file_;
+  }
 };
 
 #endif  // ANTARES_XPANSION_SRC_CPP_FULL_RUN_FULLRUNOPTIONSPARSER_H
