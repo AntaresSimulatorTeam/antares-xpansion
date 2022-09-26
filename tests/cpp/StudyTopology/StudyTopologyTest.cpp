@@ -16,20 +16,6 @@ TEST(StudyTopology, Study_noLink) {
   auto study_adapter = std::make_shared<StudyInMemoryAdapter>();
   ForProvidingXpansionStudy link_service(study_adapter);
   std::filesystem::path study;
-  XpansionStudy::XpansionStudy xpansion_study = link_service.provide(study);
+  XpansionStudy::Study xpansion_study = link_service.provide(study);
   EXPECT_TRUE(xpansion_study.Links().empty());
-}
-
-TEST(StudyTopology, IgnoreLinkWithoutCandidates) {
-  //Given a study
-  //1 lien avec candidat
-  // When I start the study
-  // Then produce nothing
-
-  auto study_adapter = std::make_shared<StudyInMemoryAdapter>();
-  study_adapter->addLink({});
-  ForProvidingXpansionStudy providing_xpansion_study(study_adapter);
-  std::filesystem::path study;
-  XpansionStudy::XpansionStudy xpansion_study = providing_xpansion_study.provide(study);
-  EXPECT_EQ(xpansion_study.Links().size(), 0);
 }

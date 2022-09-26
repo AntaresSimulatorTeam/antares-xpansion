@@ -13,7 +13,7 @@ class StudyInMemoryAdapter : public IStudyAdapter {
  public:
   void addLink(XpansionStudy::Link link);
   void addCandidate(XpansionStudy::Candidate candidate);
-  XpansionStudy::XpansionStudy Study() const override;
+  [[nodiscard]] XpansionStudy::Study Study(const std::string& study_path) const override;
   std::vector<XpansionStudy::Link> links_;
   std::vector<XpansionStudy::Candidate> candidates_;
 };

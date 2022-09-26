@@ -11,9 +11,7 @@ void StudyInMemoryAdapter::addCandidate(
     XpansionStudy::Candidate candidate) {
   candidates_.push_back(candidate);
 }
-XpansionStudy::XpansionStudy StudyInMemoryAdapter::Study() const {
-  XpansionStudy::XpansionStudy xpansion_study;
-  for (auto link: links_)
-    xpansion_study.addLink(link);
-  return xpansion_study;
+XpansionStudy::Study StudyInMemoryAdapter::Study(const std::string& study_path) const {
+  auto copy = links_;
+  return { std::move(copy) };
 }

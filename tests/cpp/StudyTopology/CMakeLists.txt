@@ -6,16 +6,10 @@ add_executable(StudyTopology_test
         CoreHexagone/Model/Link.h
         CoreHexagone/ForProvidingXpansionStudy.cpp
         CoreHexagone/ForProvidingXpansionStudy.h
-        ACL/StudyAdapter.cpp
-        ACL/StudyAdapter.h
         ACL/Stub/StudyInMemoryAdapter.cpp
         ACL/Stub/StudyInMemoryAdapter.h
         CoreHexagone/Model/Candidate.cpp
         CoreHexagone/Model/Candidate.h
-        CoreHexagone/Model/XpansionStudy.cpp
-        CoreHexagone/Model/XpansionStudy.h
-        CoreHexagone/CandidateID.cpp
-        CoreHexagone/CandidateID.h
         ACLTest.cpp
         XpansionStudyFileReader/Stub/LinkFileReaderInMemory.cpp
         XpansionStudyFileReader/Stub/LinkFileReaderInMemory.h

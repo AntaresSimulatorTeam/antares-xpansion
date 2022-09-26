@@ -5,7 +5,6 @@
 #include "Link.h"
 
 #include "Candidate.h"
-#include "XpansionStudy.h"
 
 namespace XpansionStudy {
 std::vector<Candidate> Link::Candidates() const {

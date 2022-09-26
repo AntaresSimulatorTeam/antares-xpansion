@@ -7,11 +7,9 @@
 #include <algorithm>
 #include <utility>
 
-#include "Model/XpansionStudy.h"
 
-XpansionStudy::XpansionStudy ForProvidingXpansionStudy::provide(const std::filesystem::path& study_path) const {
-  auto study = study_adapter_->Study();
-  study.RemoveInvalidLinks();
+XpansionStudy::Study ForProvidingXpansionStudy::provide(const std::filesystem::path& study_path) const {
+  auto study = study_adapter_->Study(study_path);
   return study;
 }
 ForProvidingXpansionStudy::ForProvidingXpansionStudy(std::shared_ptr<IStudyAdapter> adapter):

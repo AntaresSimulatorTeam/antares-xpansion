@@ -7,9 +7,10 @@
 #include <filesystem>
 #include <vector>
 
-#include "../ACL/StudyAdapter.h"
+#include "../ACL/IStudyAdapter.h"
 #include "Model/Link.h"
-#include "Model/XpansionStudy.h"
+#include "Model/Study.h"
+
 class ForProvidingXpansionStudy {
  public:
   ForProvidingXpansionStudy() = delete;
@@ -18,7 +19,7 @@ class ForProvidingXpansionStudy {
   ~ForProvidingXpansionStudy() = default;
 
   explicit ForProvidingXpansionStudy(std::shared_ptr<IStudyAdapter> adapter);
-  [[nodiscard]] XpansionStudy::XpansionStudy provide(const std::filesystem::path& study_path) const;
+  [[nodiscard]] XpansionStudy::Study provide(const std::filesystem::path& study_path) const;
 
  private:
   std::shared_ptr<IStudyAdapter> study_adapter_;

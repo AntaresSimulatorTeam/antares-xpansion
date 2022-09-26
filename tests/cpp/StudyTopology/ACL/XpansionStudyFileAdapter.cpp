@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "XpansionStudyFileAdapter.h"
+#include <algorithm>
 
 XpansionStudyFileAdapter::XpansionStudyFileAdapter(const StudyFileReader::ILinkFileReader &link_file_reader) {}
 XpansionStudyFileAdapter::XpansionStudyFileAdapter(const StudyFileReader::IAreaFileReader &area_file_reader) {}
@@ -34,11 +35,19 @@ std::vector<XpansionStudy::Area> XpansionStudyFileAdapter::Areas(const std::stri
 std::vector<XpansionStudy::Candidate> XpansionStudyFileAdapter::Candidates(const std::string &study_path) {
   return {};
 }
-XpansionStudy::Study XpansionStudyFileAdapter::Study(const std::string &study_path) {
+XpansionStudy::Study XpansionStudyFileAdapter::Study(const std::string &study_path) const {
   auto links = link_reader_->Links(study_path);
   auto candidates = candidate_reader_->Candidates(study_path);
   auto study_links = link_translator_->translate(links, candidates);
 
+  removeOrphanLinks(study_links);
+
   return {std::move(study_links)};
 }
-
+void XpansionStudyFileAdapter::removeOrphanLinks(
+    std::vector<XpansionStudy::Link>&links) const {
+  auto new_end = std::remove_if(links.begin(), links.end(), [](XpansionStudy::Link link) -> bool {
+      return !link.Candidates().empty();
+    });
+  links.erase(new_end, links.end());
+}

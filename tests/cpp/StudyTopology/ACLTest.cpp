@@ -72,3 +72,19 @@ TEST(ACL, LinkWithCandidate) {
   auto expected_candidate = link_translator->translate(std::vector<StudyFileReader::Link>{link_input}, {candidate_input}).front().Candidates().front();
   EXPECT_EQ(candidate, expected_candidate);
 }
+
+TEST(ACL, IgnoreLinkWithoutCandidates) {
+  //Given a study
+  //1 lien avec candidat
+  // When I start the study
+  // Then produce nothing
+
+  auto link_reader = std::make_shared<LinkFileReaderInMemory>();
+  auto area_file_reader = std::make_shared<AreaFileReaderInMemory>();
+  auto candidate_file_reader = std::make_shared<CandidateFileReaderInMemory>();
+
+  auto link_translator = std::make_shared<LinkFromFileTranslator>();
+  XpansionStudyFileAdapter adapter(link_reader, area_file_reader, candidate_file_reader, link_translator);
+  auto study = adapter.Study("dummy");
+  EXPECT_EQ(study.Links().size(), 0);
+}
