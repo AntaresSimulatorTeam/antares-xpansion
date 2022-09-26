@@ -4,5 +4,5 @@
 
 #pragma once
 
-#include "StudyFileAdapter/IAreaFileReader.h"
+#include "../IAreaFileReader.h"
 class AreaFileReaderInMemory : public StudyFileReader::IAreaFileReader {};

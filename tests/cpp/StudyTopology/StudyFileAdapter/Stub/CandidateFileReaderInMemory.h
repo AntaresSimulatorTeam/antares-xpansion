@@ -4,5 +4,5 @@
 
 #pragma once
 
-#include "ICandidateFileReader.h"
+#include "../ICandidateFileReader.h"
 class CandidateFileReaderInMemory : public StudyFileReader::ICandidateFileReader {};

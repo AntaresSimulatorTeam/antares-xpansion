@@ -5,10 +5,10 @@
 #pragma once
 
 #include "../CoreHexagone/Area.h"
-#include "../CoreHexagone/Link.h"
 #include "../CoreHexagone/Candidate.h"
-#include "../ICandidateFileReader.h"
+#include "../CoreHexagone/Link.h"
 #include "../StudyFileAdapter/IAreaFileReader.h"
+#include "../StudyFileAdapter/ICandidateFileReader.h"
 #include "../StudyFileAdapter/ILinkFileReader.h"
 
 class Adapter {

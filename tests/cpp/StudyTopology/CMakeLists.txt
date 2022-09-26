@@ -1,7 +1,7 @@
 find_package (GTest REQUIRED)
 
 add_executable (StudyTopology_test
-        StudyTopologyTest.cpp CoreHexagone/Link.cpp CoreHexagone/Link.h CoreHexagone/ForProvidingXpansionStudy.cpp CoreHexagone/ForProvidingXpansionStudy.h ACL/StudyAdapter.cpp ACL/StudyAdapter.h ACL/Stub/StudyInMemoryAdapter.cpp ACL/Stub/StudyInMemoryAdapter.h CoreHexagone/Candidate.cpp CoreHexagone/Candidate.h CoreHexagone/XpansionStudy.cpp CoreHexagone/XpansionStudy.h CoreHexagone/CandidateID.cpp CoreHexagone/CandidateID.h ACLTest.cpp StudyFileAdapter/Stub/LinkFileReaderInMemory.cpp StudyFileAdapter/Stub/LinkFileReaderInMemory.h ACL/Adapter.cpp ACL/Adapter.h StudyFileAdapter/Link.cpp StudyFileAdapter/Link.h AreaFileReaderInMemory.cpp AreaFileReaderInMemory.h CoreHexagone/Area.cpp CoreHexagone/Area.h CandidateFileReaderInMemory.cpp CandidateFileReaderInMemory.h)
+        StudyTopologyTest.cpp CoreHexagone/Link.cpp CoreHexagone/Link.h CoreHexagone/ForProvidingXpansionStudy.cpp CoreHexagone/ForProvidingXpansionStudy.h ACL/StudyAdapter.cpp ACL/StudyAdapter.h ACL/Stub/StudyInMemoryAdapter.cpp ACL/Stub/StudyInMemoryAdapter.h CoreHexagone/Candidate.cpp CoreHexagone/Candidate.h CoreHexagone/XpansionStudy.cpp CoreHexagone/XpansionStudy.h CoreHexagone/CandidateID.cpp CoreHexagone/CandidateID.h ACLTest.cpp StudyFileAdapter/Stub/LinkFileReaderInMemory.cpp StudyFileAdapter/Stub/LinkFileReaderInMemory.h ACL/Adapter.cpp ACL/Adapter.h StudyFileAdapter/Link.cpp StudyFileAdapter/Link.h StudyFileAdapter/Stub/AreaFileReaderInMemory.cpp StudyFileAdapter/Stub/AreaFileReaderInMemory.h CoreHexagone/Area.cpp CoreHexagone/Area.h StudyFileAdapter/Stub/CandidateFileReaderInMemory.cpp StudyFileAdapter/Stub/CandidateFileReaderInMemory.h)
 
 target_link_libraries (StudyTopology_test PRIVATE
         GTest::Main

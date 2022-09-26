@@ -5,11 +5,11 @@
 #include <gtest/gtest.h>
 
 #include "ACL/Adapter.h"
-#include "AreaFileReaderInMemory.h"
-#include "CandidateFileReaderInMemory.h"
 #include "CoreHexagone/Candidate.h"
 #include "CoreHexagone/Link.h"
 #include "StudyFileAdapter/ILinkFileReader.h"
+#include "StudyFileAdapter/Stub/AreaFileReaderInMemory.h"
+#include "StudyFileAdapter/Stub/CandidateFileReaderInMemory.h"
 #include "StudyFileAdapter/Stub/LinkFileReaderInMemory.h"
 
 TEST(ACL, NoLinkForEmptyFile) {
