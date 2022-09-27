@@ -4,8 +4,6 @@ add_executable(StudyTopology_test
         StudyTopologyTest.cpp
         CoreHexagone/Model/Link.cpp
         CoreHexagone/Model/Link.h
-        CoreHexagone/ForProvidingXpansionStudy.cpp
-        CoreHexagone/ForProvidingXpansionStudy.h
         ACL/Stub/StudyInMemoryAdapter.cpp
         ACL/Stub/StudyInMemoryAdapter.h
         CoreHexagone/Model/Candidate.cpp

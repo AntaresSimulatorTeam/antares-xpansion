@@ -4,12 +4,12 @@
 
 #pragma once
 
+#include "../../CoreHexagone/IForProvidingStudyPort.h"
 #include "../../CoreHexagone/Model/Candidate.h"
 #include "../../CoreHexagone/Model/Link.h"
 #include "../../XpansionStudyFileReader/Model/Link.h"
-#include "../IStudyAdapter.h"
 
-class StudyInMemoryAdapter : public IStudyAdapter {
+class StudyInMemoryAdapter : public IForProvidingStudyPort {
  public:
   void addLink(XpansionStudy::Link link);
   void addCandidate(XpansionStudy::Candidate candidate);

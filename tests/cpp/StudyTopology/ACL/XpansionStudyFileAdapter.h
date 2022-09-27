@@ -6,6 +6,7 @@
 
 #include <memory>
 
+#include "../CoreHexagone/IForProvidingStudyPort.h"
 #include "../CoreHexagone/Model/Area.h"
 #include "../CoreHexagone/Model/Candidate.h"
 #include "../CoreHexagone/Model/Link.h"
@@ -17,9 +18,8 @@
 #include "../XpansionStudyFileReader/Stub/CandidateFileReaderInMemory.h"
 #include "../XpansionStudyFileReader/Stub/LinkFileReaderInMemory.h"
 #include "ILinkTranslator.h"
-#include "IStudyAdapter.h"
 
-class XpansionStudyFileAdapter: public IStudyAdapter {
+class XpansionStudyFileAdapter: public IForProvidingStudyPort {
  public:
   explicit XpansionStudyFileAdapter(const StudyFileReader::ILinkFileReader &link_file_reader);
   explicit XpansionStudyFileAdapter(const StudyFileReader::IAreaFileReader &area_file_reader);
