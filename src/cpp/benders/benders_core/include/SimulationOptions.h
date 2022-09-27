@@ -11,9 +11,9 @@ class SimulationOptions {
 #undef BENDERS_OPTIONS_MACRO
 
   SimulationOptions();
-  explicit SimulationOptions(const std::string &options_filename);
+  explicit SimulationOptions(const std::filesystem::path &options_filename);
 
-  void read(std::string const &file_name);
+  void read(const std::filesystem::path &file_name);
   void print(std::ostream &stream) const;
   BendersBaseOptions get_benders_options() const;
   BaseOptions get_base_options() const;

@@ -56,16 +56,13 @@ int main(int argc, char** argv) {
     std::cerr << "Exception of unknown type!" << std::endl;
   }
   int argc_ = 2;
-  auto options_file = options_parser.BendersOptionsFile().string();
-  std::vector<char> cstr(options_file.c_str(),
-                         options_file.c_str() + options_file.size() + 1);
-  std::vector<char*> argv_ = {"", cstr.data()};
+  auto options_file = options_parser.BendersOptionsFile();
 
 #ifdef BENDERSMPIMAIN
   if (options_parser.Method() == FullRunOptionsParser::METHOD::MPI) {
-    BendersMpiMain(argc_, argv_.data());
+    BendersMpiMain(argc_, argv, options_file);
   } else {
-    BendersSequentialMain(argc_, argv_.data());
+    BendersSequentialMain(argc_, argv, options_file);
   }
 #endif
 
