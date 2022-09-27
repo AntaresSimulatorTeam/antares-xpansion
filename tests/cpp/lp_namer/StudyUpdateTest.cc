@@ -514,30 +514,53 @@ TEST_F(UpdateCapacitiesTest, update_link_parameters_version_800) {
 
 TEST_F(UpdateCapacitiesTest, update_version_820_two_chronicle_installed_capacity_candidate_profile) {
   ActiveLink active_link(0, "dummy_link", "area1", "area2", 100);
-  CandidateData candidate { true,
-                          "dummy_link", 0, "area1", "area2",
-                          "candidate_installed_direct_profile", "candidate_installed_indirect_profile", 1000,
-                          "dummy_candidate", 0, 0, 0, 0, "candidate_direct_profile", "candidate_indirect_profile"};
+  CandidateData candidate{true,
+                          "dummy_link",
+                          0,
+                          "area1",
+                          "area2",
+                          "candidate_installed_direct_profile",
+                          "candidate_installed_indirect_profile",
+                          1000,
+                          "dummy_candidate",
+                          0,
+                          0,
+                          0,
+                          0,
+                          "candidate_direct_profile",
+                          "candidate_indirect_profile"};
   LinkProfile candidate_profile1, candidate_profile2;
-  candidate_profile1.direct_link_profile.fill(0.2);
-  candidate_profile1.indirect_link_profile.fill(0.2);
-  candidate_profile2.indirect_link_profile.fill(0.5);
-  candidate_profile2.direct_link_profile.fill(0.5);
+  std::fill(candidate_profile1.direct_link_profile.begin(),
+            candidate_profile1.direct_link_profile.end(), 0.2);
+  std::fill(candidate_profile1.indirect_link_profile.begin(),
+            candidate_profile1.indirect_link_profile.end(), 0.2);
+  std::fill(candidate_profile2.direct_link_profile.begin(),
+            candidate_profile2.direct_link_profile.end(), 0.5);
+  std::fill(candidate_profile2.indirect_link_profile.begin(),
+            candidate_profile2.indirect_link_profile.end(), 0.5);
   LinkProfile installed_chronicle1, installed_chronicle2;
-  installed_chronicle1.direct_link_profile.fill(0.1);
-  installed_chronicle1.indirect_link_profile.fill(0.1);
-  installed_chronicle2.direct_link_profile.fill(0.9);
-  installed_chronicle2.indirect_link_profile.fill(0.9);
-  active_link.setAlreadyInstalledLinkProfiles({installed_chronicle1, installed_chronicle2});
+  std::fill(installed_chronicle1.direct_link_profile.begin(),
+            installed_chronicle1.direct_link_profile.end(), 0.1);
+  std::fill(installed_chronicle1.indirect_link_profile.begin(),
+            installed_chronicle1.indirect_link_profile.end(), 0.1);
+  std::fill(installed_chronicle2.direct_link_profile.begin(),
+            installed_chronicle2.direct_link_profile.end(), 0.9);
+  std::fill(installed_chronicle2.indirect_link_profile.begin(),
+            installed_chronicle2.indirect_link_profile.end(), 0.9);
+  active_link.setAlreadyInstalledLinkProfiles(
+      {installed_chronicle1, installed_chronicle2});
 
   active_link.addCandidate(candidate, {candidate_profile1, candidate_profile2});
-  std::map<std::string, double> solution {
+  std::map<std::string, double> solution{
       {"dummy_candidate", 300},
   };
 
-  fs::create_directories(tmp_directory_path_ / "input" / "links" / "area1" / "capacities");
-  auto direct_ntc_file_path = tmp_directory_path_ / "input" / "links" / "area1" / "capacities" / "area2_direct.txt";
-  auto indirect_ntc_file_path = tmp_directory_path_ / "input" / "links" / "area1" / "capacities" / "area2_indirect.txt";
+  fs::create_directories(tmp_directory_path_ / "input" / "links" / "area1" /
+                         "capacities");
+  auto direct_ntc_file_path = tmp_directory_path_ / "input" / "links" /
+                              "area1" / "capacities" / "area2_direct.txt";
+  auto indirect_ntc_file_path = tmp_directory_path_ / "input" / "links" /
+                                "area1" / "capacities" / "area2_indirect.txt";
   std::ofstream direct_file, indirect_file;
   direct_file.open(direct_ntc_file_path);
   indirect_file.open(indirect_ntc_file_path);

@@ -19,7 +19,7 @@ class LinkProfile {
    *  \brief LinkProfile default constructor
    *
    */
-  LinkProfile();
+  LinkProfile() = default;
 
   /*!
    *  \brief returns the value of a direct link profile
@@ -38,9 +38,12 @@ class LinkProfile {
   double getIndirectProfile(size_t hour) const;
 
   //! direct linkprofile values
-  std::array<double, NUMBER_OF_HOUR_PER_YEAR> direct_link_profile;
+  // ADR
+  std::vector<double> direct_link_profile =
+      std::vector<double>(NUMBER_OF_HOUR_PER_YEAR, 1);
   //! indirect linkprofile values if different from direct linkprofile
-  std::array<double, NUMBER_OF_HOUR_PER_YEAR> indirect_link_profile;
+  std::vector<double> indirect_link_profile =
+      std::vector<double>(NUMBER_OF_HOUR_PER_YEAR, 1);
 
   bool operator==(const LinkProfile& rhs) const {
     return direct_link_profile == rhs.direct_link_profile &&
