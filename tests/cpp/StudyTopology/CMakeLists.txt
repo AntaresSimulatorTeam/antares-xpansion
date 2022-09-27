@@ -1,13 +1,13 @@
 find_package(GTest REQUIRED)
 
 add_executable(StudyTopology_test
-        StudyTopologyTest.cpp
-        CoreHexagone/Model/Link.cpp
-        CoreHexagone/Model/Link.h
+        UseCasesTests.cpp
+        CoreHexagone/Model/Xpansion/Link.cpp
+        CoreHexagone/Model/Xpansion/Link.h
         ACL/Stub/StudyInMemoryAdapter.cpp
         ACL/Stub/StudyInMemoryAdapter.h
-        CoreHexagone/Model/Candidate.cpp
-        CoreHexagone/Model/Candidate.h
+        CoreHexagone/Model/Xpansion/Candidate.cpp
+        CoreHexagone/Model/Xpansion/Candidate.h
         ACLTest.cpp
         XpansionStudyFileReader/Stub/LinkFileReaderInMemory.cpp
         XpansionStudyFileReader/Stub/LinkFileReaderInMemory.h
@@ -17,16 +17,16 @@ add_executable(StudyTopology_test
         XpansionStudyFileReader//Model/Link.h
         XpansionStudyFileReader//Stub/AreaFileReaderInMemory.cpp
         XpansionStudyFileReader//Stub/AreaFileReaderInMemory.h
-        CoreHexagone/Model/Area.cpp
-        CoreHexagone/Model/Area.h
+        CoreHexagone/Model/Xpansion/Area.cpp
+        CoreHexagone/Model/Xpansion/Area.h
         XpansionStudyFileReader/Stub/CandidateFileReaderInMemory.cpp
         XpansionStudyFileReader/Stub/CandidateFileReaderInMemory.h
-        CoreHexagone/Model/Study.cpp
-        CoreHexagone/Model/Study.h
+        CoreHexagone/Model/Xpansion/Study.cpp
+        CoreHexagone/Model/Xpansion/Study.h
         XpansionStudyFileReader/Model/Candidate.cpp
         XpansionStudyFileReader/Model/Candidate.h
         ACL/LinkFromFileTranslator.cpp
-        ACL/LinkFromFileTranslator.h)
+        ACL/LinkFromFileTranslator.h AntaresStudyInMemoryAdapter.cpp AntaresStudyInMemoryAdapter.h CoreHexagone/Model/Antares/Study.cpp CoreHexagone/Model/Antares/Study.h CoreHexagone/OptimizationProblemAdapter.cpp CoreHexagone/OptimizationProblemAdapter.h CoreHexagone/Model/Optimization/OptimizationProblem.cpp CoreHexagone/Model/Optimization/OptimizationProblem.h CoreHexagone/ProblemSolver.cpp CoreHexagone/ProblemSolver.h CoreHexagone/Model/Solution/Solution.cpp CoreHexagone/Model/Solution/Solution.h)
 
 target_link_libraries(StudyTopology_test PRIVATE
         GTest::Main

@@ -6,8 +6,8 @@
 
 #include <vector>
 
-#include "../CoreHexagone/Model/Candidate.h"
-#include "../CoreHexagone/Model/Link.h"
+#include "../CoreHexagone/Model/Xpansion/Candidate.h"
+#include "../CoreHexagone/Model/Xpansion/Link.h"
 #include "../XpansionStudyFileReader/Model/Candidate.h"
 #include "../XpansionStudyFileReader/Model/Link.h"
 #include "ILinkTranslator.h"
@@ -15,8 +15,9 @@ class LinkFromFileTranslator : public ILinkTranslator {
  public:
   virtual ~LinkFromFileTranslator() = default;
   [[nodiscard]] std::vector<XpansionStudy::Link> translate(
-      const std::vector<StudyFileReader::Link> &links,
-      const std::vector<StudyFileReader::Candidate> &candidates) const override;
+      const std::vector<StudyFileReader::Link>& links,
+      const std::vector<StudyFileReader::Candidate>& candidates) const override;
+
  private:
   [[nodiscard]] XpansionStudy::Link translate(const StudyFileReader::Link& link,
                                 const std::vector<StudyFileReader::Candidate>& candidates) const;

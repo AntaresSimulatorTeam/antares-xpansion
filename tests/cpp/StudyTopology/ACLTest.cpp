@@ -6,15 +6,15 @@
 
 #include "ACL/LinkFromFileTranslator.h"
 #include "ACL/XpansionStudyFileAdapter.h"
-#include "CoreHexagone/Model/Candidate.h"
-#include "CoreHexagone/Model/Link.h"
-#include "CoreHexagone/Model/Study.h"
+#include "CoreHexagone/Model/Xpansion/Candidate.h"
+#include "CoreHexagone/Model/Xpansion/Link.h"
+#include "CoreHexagone/Model/Xpansion/Study.h"
 #include "XpansionStudyFileReader/Stub/AreaFileReaderInMemory.h"
 #include "XpansionStudyFileReader/Stub/CandidateFileReaderInMemory.h"
 #include "XpansionStudyFileReader/Stub/LinkFileReaderInMemory.h"
 
 TEST(ACL, NoLinkForEmptyFile) {
-  //Read empty link
+  // Read empty link
 
   LinkFileReaderInMemory link_reader;
 

@@ -6,7 +6,7 @@
 
 #include <vector>
 
-#include "../../CoreHexagone/Model/Candidate.h"
+#include "../../CoreHexagone/Model/Xpansion/Candidate.h"
 namespace StudyFileReader {
 
 class Link {};

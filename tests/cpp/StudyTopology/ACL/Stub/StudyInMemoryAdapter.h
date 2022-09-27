@@ -4,16 +4,17 @@
 
 #pragma once
 
-#include "../../CoreHexagone/IForProvidingStudyPort.h"
-#include "../../CoreHexagone/Model/Candidate.h"
-#include "../../CoreHexagone/Model/Link.h"
+#include "../../CoreHexagone/IForProvidingXpansionStudyPort.h"
+#include "../../CoreHexagone/Model/Xpansion/Candidate.h"
+#include "../../CoreHexagone/Model/Xpansion/Link.h"
 #include "../../XpansionStudyFileReader/Model/Link.h"
 
-class StudyInMemoryAdapter : public IForProvidingStudyPort {
+class StudyInMemoryAdapter : public IForProvidingXpansionStudyPort {
  public:
   void addLink(XpansionStudy::Link link);
   void addCandidate(XpansionStudy::Candidate candidate);
-  [[nodiscard]] XpansionStudy::Study Study(const std::string& study_path) const override;
+  [[nodiscard]] XpansionStudy::Study Study(
+      const std::string& study_path) const override;
   std::vector<XpansionStudy::Link> links_;
   std::vector<XpansionStudy::Candidate> candidates_;
 };

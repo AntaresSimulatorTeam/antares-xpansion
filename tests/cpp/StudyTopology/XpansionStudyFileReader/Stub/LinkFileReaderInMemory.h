@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "../../CoreHexagone/Model/Link.h"
+#include "../../CoreHexagone/Model/Xpansion/Link.h"
 #include "../ILinkFileReader.h"
 #include "../Model/Link.h"
 
