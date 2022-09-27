@@ -12,10 +12,8 @@
 #include "WriterFactories.h"
 #include "glog/logging.h"
 
-int BendersSequentialMain(int argc, char **argv) {
-  // options.print(std::cout);
-  usage(argc);
-  SimulationOptions options(argv[1]);
+int RunSequential(char **argv, const std::filesystem::path &options_file) {
+  SimulationOptions options(options_file);
   BendersBaseOptions benders_options(options.get_benders_options());
 
   google::InitGoogleLogging(argv[0]);
@@ -49,4 +47,13 @@ int BendersSequentialMain(int argc, char **argv) {
   logger->log_total_duration(benders.execution_time());
 
   return 0;
+}
+int BendersSequentialMain(int argc, char **argv) {
+  usage(argc);
+  return RunSequential(argv, argv[1]);
+}
+int BendersSequentialMain(int argc, char **argv,
+                          const std::filesystem::path &options_file) {
+  usage(argc);
+  return RunSequential(argv, options_file);
 }

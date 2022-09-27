@@ -15,17 +15,10 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-int BendersMpiMain(int argc, char** argv) {
-  mpi::environment env(argc, argv);
-  mpi::communicator world;
-
-  // First check usage (options are given)
-  if (world.rank() == 0) {
-    usage(argc);
-  }
-
+int RunMpi(char** argv, const std::filesystem::path& options_file,
+           mpi::environment& env, mpi::communicator& world) {
   // Read options, needed to have options.OUTPUTROOT
-  SimulationOptions options(argv[1]);
+  SimulationOptions options(options_file);
 
   BendersBaseOptions benders_options(options.get_benders_options());
 
@@ -81,4 +74,24 @@ int BendersMpiMain(int argc, char** argv) {
   logger->display_message(str.str());
   logger->log_total_duration(timer.elapsed());
   return 0;
+}
+int BendersMpiMain(int argc, char** argv) {
+  mpi::environment env(argc, argv);
+  mpi::communicator world;
+  // First check usage (options are given)
+  if (world.rank() == 0) {
+    usage(argc);
+  }
+  return RunMpi(argv, argv[1], env, world);
+}
+int BendersMpiMain(int argc, char** argv,
+                   const std::filesystem::path& options_file) {
+  mpi::environment env(argc, argv);
+  mpi::communicator world;
+
+  // First check usage (options are given)
+  if (world.rank() == 0) {
+    usage(argc);
+  }
+  return RunMpi(argv, options_file, env, world);
 }
