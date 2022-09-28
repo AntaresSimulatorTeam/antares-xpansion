@@ -1,16 +1,15 @@
-from unittest.mock import ANY, patch
+import configparser
+from pathlib import Path
+from unittest.mock import patch
 
 import pytest
-import os
-from pathlib import Path
-import yaml
-
-from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import (
     GeneralDataFileExceptions,
     GeneralDataProcessor,
 )
+from antares_xpansion.general_data_reader import IniReader
+
 from tests.build_config_reader import get_antares_solver_path
 
 SUBPROCESS_RUN = "antares_xpansion.antares_driver.subprocess.run"
@@ -55,12 +54,6 @@ class TestGeneralDataProcessor:
         gen_data_path = settings_dir / self.generaldata_filename
 
         is_accurate = True
-        optimization = "[optimization]"
-        general = "[general]"
-        random_section = "[random_section]"
-        output = "[output]"
-
-        other_preferences = "[other preferences]"
         default_val = (
             "[general] \n"
             "mode = unrelevant\n"
@@ -82,6 +75,12 @@ class TestGeneralDataProcessor:
         )
 
         gen_data_path.write_text(default_val)
+        optimization = "optimization"
+        general = "general"
+        random_section = "random_section"
+        output = "output"
+        other_preferences = "other preferences"
+
         expected_val = {
             (optimization, "include-exportmps"): "true",
             (optimization, "include-exportstructure"): "true",
@@ -138,6 +137,12 @@ class TestGeneralDataProcessor:
 
         general_data_path.write_text(default_val)
 
+        #Removing '[' and ']' from sections name
+        optimization = "optimization"
+        general = "general"
+        random_section = "random_section"
+        other_preferences = "other preferences"
+        output = "output"
         expected_val = {
             (optimization, "include-exportmps"): "true",
             (optimization, "include-exportstructure"): "true",
@@ -161,6 +166,13 @@ class TestGeneralDataProcessor:
     def verify_that_general_data_contains_expected_vals(
         self, general_data_ini_file, expected_val
     ):
+        actual_config = configparser.ConfigParser()
+        actual_config.read(general_data_ini_file)
+        for (section, key) in expected_val:
+            value = actual_config.get(section, key, fallback=None)
+            assert value is not None
+            assert value == expected_val[(section, key)]
+
         with open(general_data_ini_file, "r") as reader:
             current_section = ""
             lines = reader.readlines()
