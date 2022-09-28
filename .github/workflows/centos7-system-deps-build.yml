@@ -6,7 +6,6 @@ on:
       - main
       - develop
       - release/*
-
 jobs:
 
   build:
@@ -15,7 +14,8 @@ jobs:
     container: 'centos:7'
 
     steps:
-    
+    - uses: nelonoel/branch-name@v1.0.1
+
     - name: Set up Python
       run: |
            yum update -y
@@ -30,6 +30,11 @@ jobs:
            yum install -y rh-git227-git
            yum install -y libuuid-devel
 
+    - name: Clone
+      run: |
+        git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+        git submodule update --init
+
     - name: Install TBB
       run: |
           git clone https://github.com/wjakob/tbb.git
@@ -39,20 +44,12 @@ jobs:
           popd
           rm -rf tbb
 
-    - uses: actions/checkout@v3
-      with:
-        submodules: true
-        
     - name: Read antares-xpansion version
       id: antares-xpansion-version
       uses: notiz-dev/github-action-json-property@release
       with: 
         path: 'antares-version.json'
         prop_path: 'antares_xpansion_version'
-
-    - name: Init submodule
-      run: |
-           git submodule update --init --recursive .
 
     - name: Install dependencies
       run: |
