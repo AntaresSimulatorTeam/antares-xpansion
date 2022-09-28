@@ -15,7 +15,6 @@
 
 namespace po = boost::program_options;
 
-
 int main(int argc, char** argv) {
 #ifdef BENDERSMPIMAIN
   mpi::environment env(argc, argv);
@@ -23,12 +22,12 @@ int main(int argc, char** argv) {
 #endif
   auto options_parser = FullRunOptionsParser();
   std::filesystem::path root;
+  options_parser.Parse(argc, argv);
 
 #ifdef BENDERSMPIMAIN
   if (world.rank() == 0) {
 #endif
     try {
-      options_parser.Parse(argc, argv);
       root = options_parser.Root();
       auto master_formulation = options_parser.MasterFormulation();
       auto additionalConstraintFilename_l =
@@ -54,8 +53,8 @@ int main(int argc, char** argv) {
     BendersMpiMain(argc_, argv, options_file, env, world);
   } else {
     if (world.rank() == 0) {
-    BendersSequentialMain(argc_, argv, options_file);
-  }
+      BendersSequentialMain(argc_, argv, options_file);
+    }
   }
 #else
   BendersSequentialMain(argc_, argv, options_file);
