@@ -27,11 +27,14 @@ class ArchiveIOSpecificException : public std::runtime_error {
             std::to_string(expectedStatus) + " expected)") {}
 };
 #include <filesystem>
+#include <shared_mutex>
 class ArchiveIO {
  private:
   std::filesystem::path archivePath_;
 
  protected:
+  mutable std::shared_mutex mutex_;
+
   virtual void Create() = 0;
 
  public:

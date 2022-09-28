@@ -34,6 +34,7 @@ int32_t ArchiveReader::ExtractFile(
 int32_t ArchiveReader::ExtractFile(
     const std::filesystem::path& fileToExtractPath,
     const std::filesystem::path& destination) {
+  std::unique_lock lock(mutex_);
   int32_t err = MZ_OK;
   LocateEntry(fileToExtractPath);
   OpenEntry(fileToExtractPath);
@@ -74,6 +75,7 @@ void ArchiveReader::OpenEntry(const std::filesystem::path& fileToExtractPath) {
 }
 std::istringstream ArchiveReader::ExtractFileInStringStream(
     const std::filesystem::path& FileToExtractPath) {
+  std::unique_lock lock(mutex_);
   LocateEntry(FileToExtractPath);
   OpenEntry(FileToExtractPath);
   int32_t len = mz_zip_reader_entry_save_buffer_length(internalPointer_);

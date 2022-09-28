@@ -39,6 +39,7 @@ int32_t ArchiveWriter::Close() { return mz_zip_writer_close(internalPointer_); }
 void ArchiveWriter::Delete() { mz_zip_writer_delete(&internalPointer_); }
 
 int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
+  std::unique_lock lock(mutex_);
   fileInfo_.filename = FileBufferToAdd.fname.c_str();
   fileInfo_.creation_date = std::time(0);
   int32_t err = mz_zip_writer_entry_open(internalPointer_, &fileInfo_);
@@ -75,6 +76,7 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
 }
 int32_t ArchiveWriter::AddFileInArchive(
     const std::filesystem::path& FileToAdd) {
+  std::unique_lock lock(mutex_);
   auto err =
       mz_zip_writer_add_file(internalPointer_, FileToAdd.string().c_str(),
                              FileToAdd.filename().string().c_str());
