@@ -129,9 +129,9 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
   auto writer = ArchiveWriter(tmpArchivePath);
   writer.Open();
   auto mpsList = readMPSList(mps_file_name);
-  std::for_each(std::execution::seq, mpsList.begin(), mpsList.end(), [&](const auto& mps) {
-    treat(root, mps, couplings, reader, writer);
-  });
+  std::for_each(
+      std::execution::par, mpsList.begin(), mpsList.end(),
+      [&](const auto &mps) { treat(root, mps, couplings, reader, writer); });
   reader.Close();
   reader.Delete();
   writer.Close();
