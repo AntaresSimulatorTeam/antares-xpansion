@@ -64,17 +64,22 @@ class TestGeneralDataProcessor:
         assert active_years == [1, 42]
         assert inactive_years == [5, 0]
 
-    def test_no_changes_in_empty_file(self, tmp_path):
+    def test_empty_file_should_be_populated_by_default_values(self, tmp_path):
         settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
         settings_dir.mkdir()
         gen_data_path = settings_dir / self.generaldata_filename
         gen_data_path.touch()
         gen_data_proc = GeneralDataProcessor(settings_dir, True)
+        gen_data_proc.change_general_data_file_to_configure_antares_execution()
 
         with open(gen_data_proc.general_data_ini_file, "r") as reader:
             lines = reader.readlines()
 
-        assert len(lines) == 0
+        assert len(lines) != 0
+        parser = configparser.ConfigParser()
+        parser.read(gen_data_proc.general_data_ini_file)
+        for option in gen_data_proc._get_values_to_change_general_data_file():
+            assert parser.get(option[0], option[1]) is not None
 
     def test_values_change_in_general_file_accurate_mode(self, tmp_path):
 
