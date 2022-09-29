@@ -17,7 +17,14 @@
 
 int RunMpi(char** argv, const std::filesystem::path& options_file,
            mpi::environment& env, mpi::communicator& world) {
-  // Read options, needed to have options.OUTPUTROOT
+  int temp;
+  /* if (world.rank() == 0) {
+   
+      std::cout << "enter int \n";
+      std::cin >> temp;
+  }*/
+  world.barrier();
+    // Read options, needed to have options.OUTPUTROOT
   SimulationOptions options(options_file);
 
   BendersBaseOptions benders_options(options.get_benders_options());

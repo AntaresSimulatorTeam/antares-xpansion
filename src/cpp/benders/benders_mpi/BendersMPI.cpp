@@ -263,12 +263,13 @@ void BendersMpi::run() {
       SaveCurrentBendersData();
     }
   }
-
+  auto new_var = _world.rank();
   if (_world.rank() == rank_0) {
     CloseCsvFile();
     EndWritingInOutputFile();
     write_basis();
   }
+  _world.barrier();
 }
 
 void BendersMpi::launch() {
