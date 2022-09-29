@@ -50,7 +50,13 @@ class GeneralDataIniReader:
             self._set_playlist_year_lists()
             return self._get_active_years()
         else:
-            return list(range(1, self._mc_years+1))
+            return list(range(1, self._mc_years + 1))
+
+    def get_raw_active_years(self):
+        return self._active_year_list
+
+    def get_raw_inactive_years(self):
+        return self._inactive_year_list
 
     def _get_active_years(self):
         if self._playlist_reset_option is True:
