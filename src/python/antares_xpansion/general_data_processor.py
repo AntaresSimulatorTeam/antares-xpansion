@@ -50,17 +50,23 @@ class GeneralDataProcessor:
                 config.add_section(section)
             config.set(section, key, value_to_change[(section, key)])
         with open(self._general_data_ini_file, "w") as writer:
-            has_playlist = config.remove_section("playlist")
+            has_playlist = config.has_section("playlist")
+            if has_playlist:
+                playlist_options = dict(config.items("playlist"))
+                config.remove_section("playlist")
             config.write(writer)
             if has_playlist:
-                self.backport_playlisy(ini_file_backup, writer)
+                self.backport_playlist(ini_file_backup, writer, playlist_options)
 
-    def backport_playlisy(self, ini_file_backup, writer):
+    def backport_playlist(self, ini_file_backup, writer, playlist_options: dict):
         ini_reader = GeneralDataIniReader(ini_file_backup)
         ini_reader.get_active_years()
         active_years = ini_reader.get_raw_active_years()
         inactive_years = ini_reader.get_raw_inactive_years()
         writer.write("[playlist]\n")
+        for option in playlist_options:
+            if option != "playlist_year +" and option != "playlist_year -":
+                writer.write(f"{option} = {playlist_options[option]}\n")
         for year in active_years:
             writer.write(f"playlist_year + = {year}\n")
         for year in inactive_years:

@@ -43,6 +43,7 @@ class TestGeneralDataProcessor:
         with open(gen_data_path, "w") as writer:
             writer.write("[general]\nnbyears=2\nuser-playlist = true\n")
             writer.write("[playlist]\n")
+            writer.write("dummy_entry = value\n")
             writer.write("playlist_year + = 1\n")
             writer.write("playlist_year + = 42\n")
             writer.write("playlist_year - = 5\n")
@@ -55,8 +56,11 @@ class TestGeneralDataProcessor:
 
         xpansion_ini_reader = GeneralDataIniReader(general_data_ini_file)
         xpansion_ini_reader.get_active_years()
+        config_reader = configparser.ConfigParser(strict=False)
+        config_reader.read(gen_data_path)
         active_years = xpansion_ini_reader.get_raw_active_years()
         inactive_years = xpansion_ini_reader.get_raw_inactive_years()
+        assert config_reader.get("playlist", "dummy_entry") == "value"
         assert active_years == [1, 42]
         assert inactive_years == [5, 0]
 
