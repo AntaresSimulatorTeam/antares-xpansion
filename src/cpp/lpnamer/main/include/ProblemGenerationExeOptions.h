@@ -10,7 +10,7 @@ class ProblemGenerationExeOptions : public OptionsParser {
   std::string additional_constraintFilename_l_;
 
  public:
-  ProblemGenerationExeOptions() : OptionsParser("Problem Generation exe"){};
+  ProblemGenerationExeOptions() ;
   
   virtual ~ProblemGenerationExeOptions() = default;
   std::filesystem::path Root() const { return root_; }

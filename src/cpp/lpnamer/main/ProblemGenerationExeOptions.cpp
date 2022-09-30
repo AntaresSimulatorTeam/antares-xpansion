@@ -1,7 +1,8 @@
 #include "ProblemGenerationExeOptions.h"
 namespace po = boost::program_options;
 
-ProblemGenerationExeOptions::ProblemGenerationExeOptions() {
+ProblemGenerationExeOptions::ProblemGenerationExeOptions()
+    : OptionsParser("Problem Generation exe") {
   AddOptions()("help,h", "produce help message")(
       "output,o", po::value<std::filesystem::path>(&root_)->required(),
       "antares-xpansion study output")(
