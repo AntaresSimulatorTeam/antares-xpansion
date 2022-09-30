@@ -23,21 +23,16 @@ class TestFullRunDriver:
     def test_sequential_command(self, tmp_path):
 
         output_path = tmp_path / "outputPath"
-        output_path.mkdir()
-        lp_path = output_path / "lp"
-        lp_path.mkdir()
-        area_file = output_path / "area-1.txt"
-        area_file.touch()
-        interco_file = output_path / "interco-1.txt"
-        interco_file.touch()
-        is_relaxed = False
+        self.create_problem_generation_files(output_path)
+
         benders_method = "sequential"
         json_file_path = tmp_path / "file"
         json_file_path.touch()
         benders_keep_mps = False
-        benders_n_mpi = 3
         benders_oversubscribe = False
         benders_allow_run_as_root = False
+        is_relaxed = False
+
         problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
 
         benders_driver = BendersDriver(
@@ -45,7 +40,7 @@ class TestFullRunDriver:
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
-                                        benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
+                                        benders_keep_mps=benders_keep_mps, benders_oversubscribe=benders_oversubscribe, benders_allow_run_as_root=benders_allow_run_as_root)
         expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
                             "--method", benders_method, "-s", str(json_file_path), "-o", str(output_path), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
 
@@ -54,3 +49,44 @@ class TestFullRunDriver:
         assert len(expected_command) == len(command)
         for item in expected_command:
             assert (item in command)
+
+    def test_mpi_command(self, tmp_path):
+
+        output_path = tmp_path / "outputPath"
+        self.create_problem_generation_files(output_path)
+
+        benders_method = "mpibenders"
+        json_file_path = tmp_path / "file"
+        json_file_path.touch()
+        benders_keep_mps = False
+        benders_n_mpi = 3
+        benders_oversubscribe = False
+        benders_allow_run_as_root = False
+        is_relaxed = False
+
+        problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
+
+        benders_driver = BendersDriver(
+            "", "sequential", "", self.benders_driver_options_file)
+        full_run_driver = FullRunDriver(self.full_run_exe,
+                                        problem_generation, benders_driver)
+        full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
+                                        benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
+        expected_command = [benders_driver.MPI_LAUNCHER, "-n", str(benders_n_mpi), self.full_run_exe, "--benders_options", self.benders_driver_options_file,
+                            "--method", benders_method, "-s", str(json_file_path), "-o", str(output_path), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
+
+        command = full_run_driver.full_command()
+
+        assert len(expected_command) == len(command)
+        for item in expected_command:
+            assert (item in command)
+
+    def create_problem_generation_files(self, output_path: Path):
+
+        output_path.mkdir()
+        lp_path = output_path / "lp"
+        lp_path.mkdir()
+        area_file = output_path / "area-1.txt"
+        area_file.touch()
+        interco_file = output_path / "interco-1.txt"
+        interco_file.touch()
