@@ -18,7 +18,7 @@ class StudyUpdaterExeOptions : public OptionsParser {
   std::filesystem::path solution_file_;
 
  public:
-  StudyUpdaterExeOptions();
+  StudyUpdaterExeOptions() : OptionsParser("Study-updater exe"){};
   virtual ~StudyUpdaterExeOptions() = default;
   std::filesystem::path SolutionFile() const { return solution_file_; }
   std::filesystem::path Root() const { return root_; }

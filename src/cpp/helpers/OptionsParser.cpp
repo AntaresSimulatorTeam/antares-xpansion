@@ -3,8 +3,12 @@
 #include <iostream>
 namespace po = boost::program_options;
 
-void OptionsParser::Parse(int argc, char** argv) {
-  po::variables_map opts;
+void OptionsParser::Parse(unsigned int argc, const char* const* argv)const {
+
+    if (argc == 0) {
+    throw OptionsParser::InvalidNumberOfArgumentsPassedToParser(argc, exe_name_);
+    }
+   po::variables_map opts;
   po::store(po::parse_command_line(argc, argv, desc_), opts);
 
   if (opts.count("help")) {
