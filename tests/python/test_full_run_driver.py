@@ -1,0 +1,56 @@
+from antares_xpansion.full_run_driver import FullRunDriver
+from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
+from antares_xpansion.benders_driver import BendersDriver
+
+from unittest.mock import patch
+import pytest
+from pathlib import Path
+
+SUBPROCESS_RUN = "antares_xpansion.full_run_driver.subprocess.run"
+
+
+class TestFullRunDriver:
+
+    def setup_method(self):
+
+        self.pb_gen_data = ProblemGeneratorData(keep_mps=False, additional_constraints="str", user_weights_file_path="",
+                                                weight_file_name_for_lp="", lp_namer_exe_path=Path("lp.exe"), active_years=[1, 2])
+
+        self.benders_driver_options_file = "options_file.json"
+
+        self.full_run_exe = Path("full_run.exe")
+
+    def test_sequential_command(self, tmp_path):
+
+        output_path = tmp_path / "outputPath"
+        output_path.mkdir()
+        lp_path = output_path / "lp"
+        lp_path.mkdir()
+        area_file = output_path / "area-1.txt"
+        area_file.touch()
+        interco_file = output_path / "interco-1.txt"
+        interco_file.touch()
+        is_relaxed = False
+        benders_method = "sequential"
+        json_file_path = tmp_path / "file"
+        json_file_path.touch()
+        benders_keep_mps = False
+        benders_n_mpi = 3
+        benders_oversubscribe = False
+        benders_allow_run_as_root = False
+        problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
+
+        benders_driver = BendersDriver(
+            "", "sequential", "", self.benders_driver_options_file)
+        full_run_driver = FullRunDriver(self.full_run_exe,
+                                        problem_generation, benders_driver)
+        full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
+                                        benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
+        expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
+                            "--method", benders_method, "-s", str(json_file_path), "-o", str(output_path), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
+
+        command = full_run_driver.full_command()
+
+        assert len(expected_command) == len(command)
+        for item in expected_command:
+            assert (item in command)

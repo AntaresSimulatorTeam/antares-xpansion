@@ -1,9 +1,8 @@
-from unittest.mock import ANY, patch
+from unittest.mock import patch
 
 import pytest
 import os
 from pathlib import Path
-import yaml
 
 from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.antares_driver import AntaresDriver
@@ -198,7 +197,8 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", str(n_cpu)]
+            expected_cmd = [exe_path, study_dir,
+                            "--force-parallel", str(n_cpu)]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -230,7 +230,8 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu)]
+            expected_cmd = [str(exe_path), study_dir,
+                            "--force-parallel", str(n_cpu)]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
