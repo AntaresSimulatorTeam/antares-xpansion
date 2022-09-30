@@ -57,6 +57,7 @@ class GeneralDataProcessor:
             config.write(writer)
             if has_playlist:
                 self.backport_playlist(ini_file_backup, writer, playlist_options)
+        os.remove(ini_file_backup)
 
     def backport_playlist(self, ini_file_backup, writer, playlist_options: dict):
         ini_reader = GeneralDataIniReader(ini_file_backup)
