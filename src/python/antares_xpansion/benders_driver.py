@@ -27,6 +27,8 @@ class BendersDriver:
         else:
             raise BendersDriver.BendersOptionsFileError(
                 f"Invalid Options File!")
+
+        self.MPI_N = "-n"
         self._initialise_system_specific_mpi_vars()
 
     def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False, allow_run_as_root=False):
@@ -134,10 +136,8 @@ class BendersDriver:
     def _initialise_system_specific_mpi_vars(self):
         if sys.platform.startswith("win32"):
             self.MPI_LAUNCHER = "mpiexec"
-            self.MPI_N = "-n"
         elif sys.platform.startswith("linux"):
             self.MPI_LAUNCHER = "mpirun"
-            self.MPI_N = "-np"
         else:
             raise (
                 BendersDriver.BendersUnsupportedPlatform(
