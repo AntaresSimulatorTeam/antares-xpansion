@@ -27,7 +27,9 @@ add_executable (lp_namer_tests
         MasterProblemBuilderTest.cpp
         ChronicleMapReaderTest.cpp
         ChronicleMapProviderTest.cpp
-        ProblemConstructionTest.cpp NOOPSolver.h)
+        ProblemConstructionTest.cpp 
+        NOOPSolver.h
+        ProblemGenerationExeOptionsTest.cpp)
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main
@@ -37,6 +39,7 @@ target_link_libraries (lp_namer_tests PRIVATE
         lp_namer_input_reader
         lp_namer_problem_modifier
         xpansion_study_updater_lib
+        problem_generation_main
         )
 
 if (USE_MPI)

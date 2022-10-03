@@ -29,7 +29,21 @@ TEST_F(OptionsParserTest, FailsIfRequiredOptionIsAddedWithNullArgv) {
                               "test option");
   try {
     options_parser.Parse(1, nullptr);
+  } catch (const OptionsParser::NullArgumentsValues&e) {
+    EXPECT_EQ(e.what(), std::string("Error while parsing  options: null Arguments values!"));
+  }
+}
+ TEST_F(OptionsParserTest, FailsIfRequiredOptionIsAddedWithMissingOption) {
+  int option;
+  options_parser.AddOptions()("option,-o", po::value<int>(&option)->required(),
+                              "test option");
+  char c = 'c';
+  char* pc = &c;
+  char** ppc = &pc;
+  try {
+    options_parser.Parse(1, ppc);
   } catch (const std::exception&e) {
     EXPECT_EQ(e.what(), std::string("the option '--option' is required but missing"));
   }
 }
+
