@@ -14,13 +14,11 @@ MOCK_SYS = "antares_xpansion.benders_driver.sys"
 class TestBendersDriver:
 
     def setup_method(self):
-
+        self.MPI_N = "-n"
         if sys.platform.startswith("win32"):
             self.MPI_LAUNCHER = "mpiexec"
-            self.MPI_N = "-n"
         elif sys.platform.startswith("linux"):
             self.MPI_LAUNCHER = "mpirun"
-            self.MPI_N = "-np"
 
         self.OPTIONS_JSON = "options.json"
 
