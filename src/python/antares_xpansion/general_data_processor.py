@@ -61,9 +61,7 @@ class GeneralDataProcessor:
 
     def backport_playlist(self, ini_file_backup, writer, playlist_options: dict):
         ini_reader = GeneralDataIniReader(ini_file_backup)
-        ini_reader.get_active_years()
-        active_years = ini_reader.get_raw_active_years()
-        inactive_years = ini_reader.get_raw_inactive_years()
+        active_years, inactive_years = ini_reader.get_raw_playlist()
         writer.write("[playlist]\n")
         for option in playlist_options:
             if option != "playlist_year +" and option != "playlist_year -":
