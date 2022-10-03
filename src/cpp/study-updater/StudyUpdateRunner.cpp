@@ -1,7 +1,8 @@
 #include "StudyUpdateRunner.h"
 
 namespace po = boost::program_options;
-StudyUpdaterExeOptions::StudyUpdaterExeOptions() : OptionsParser() {
+StudyUpdaterExeOptions::StudyUpdaterExeOptions()
+    : OptionsParser("Study-updater exe") {
   AddOptions()("help,h", "produce help message")(
       "study-output,o", po::value<std::filesystem::path>(&root_)->required(),
       "antares-xpansion study output")(
