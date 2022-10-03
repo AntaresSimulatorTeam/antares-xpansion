@@ -7,7 +7,7 @@ from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, Pr
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
-
+from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 import os
 import shutil
 from pathlib import Path
@@ -41,7 +41,7 @@ class FullRunDriver:
 
         # self.problem_generation_driver.create_lp_dir()
         self.problem_generation_driver.set_weights()
-
+        self.keep_mps = benders_keep_mps
         # Benders pre-step
 
         self.benders_driver.method = benders_method
@@ -49,11 +49,6 @@ class FullRunDriver:
         self.benders_driver.oversubscribe = benders_oversubscribe
         self.benders_driver.allow_run_as_root = benders_allow_run_as_root
         self.benders_driver.simulation_output_path = output_path
-        old_cwd = os.getcwd()
-        lp_path = self.benders_driver.get_lp_path()
-
-        os.chdir(lp_path)
-        flushed_print("Current directory is now: ", os.getcwd())
         self.benders_driver.set_solver()
 
         self.json_file_path = json_file_path
@@ -72,14 +67,24 @@ class FullRunDriver:
         self.run()
 
     def run(self):
+        old_cwd = os.getcwd()
+
+        lp_path = self.benders_driver.get_lp_path()
+
+        os.chdir(lp_path)
+        flushed_print("Current directory is now: ", os.getcwd())
         ret = subprocess.run(
             self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')
 
         if ret.returncode != 0:
             raise FullRunDriver.FullRunExecutionError(
-                f"ERROR: exited solver with status {ret.returncode}"
+                f"ERROR: exited {self.full_exe} with status {ret.returncode}"
             )
+        elif not self.keep_mps:
+            StudyOutputCleaner.clean_lpnamer_step(
+                Path(self.problem_generation_driver.output_path))
+        os.chdir(old_cwd)
 
     def full_command(self) -> List:
         bare_solver_command = [

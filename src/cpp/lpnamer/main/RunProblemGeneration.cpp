@@ -1,13 +1,3 @@
-/**
- * \file lpnamer/main.cpp
- * \brief POC Antares Xpansion V2
- * \author {Manuel Ruiz; Luc Di Gallo}
- * \version 0.1
- * \date 07 aout 2019
- *
- * POC Antares Xpansion V2: create inputs for the solver version 2
- *
- */
 
 #include "RunProblemGeneration.h"
 
