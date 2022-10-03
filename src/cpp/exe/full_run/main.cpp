@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
       root = options_parser.Root();
       auto master_formulation = options_parser.MasterFormulation();
       auto additionalConstraintFilename_l =
-          options_parser.additional_constraintFilename_l();
+          options_parser.AdditionalConstraintsFilename();
       RunProblemGeneration(root, master_formulation,
                            additionalConstraintFilename_l);
 
