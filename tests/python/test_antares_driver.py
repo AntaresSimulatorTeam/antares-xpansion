@@ -58,8 +58,7 @@ class TestGeneralDataProcessor:
         xpansion_ini_reader.get_active_years()
         config_reader = configparser.ConfigParser(strict=False)
         config_reader.read(gen_data_path)
-        active_years = xpansion_ini_reader.get_raw_active_years()
-        inactive_years = xpansion_ini_reader.get_raw_inactive_years()
+        active_years, inactive_years = xpansion_ini_reader.get_raw_playlist()
         assert config_reader.get("playlist", "dummy_entry") == "value"
         assert active_years == [1, 42]
         assert inactive_years == [5, 0]

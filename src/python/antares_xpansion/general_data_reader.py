@@ -35,7 +35,7 @@ class GeneralDataIniReader:
         self.file_lines = open(file_path, 'r').readlines()
 
         self._mc_years: int = int(self.config["general"]["nbyears"])
-        self._user_playlist = str(self.config["general"]["user-playlist"])
+        self._user_playlist = self.config.getboolean("general", "user-playlist")
         self._playlist_reset_option: bool = True
         self._active_year_list: List[int] = []
         self._inactive_year_list: List[int] = []
@@ -44,19 +44,27 @@ class GeneralDataIniReader:
         return self._mc_years
 
     def get_active_years(self):
-
-        if self._user_playlist == "true":
+        self._active_year_list = []
+        self._inactive_year_list = []
+        if self._user_playlist:
             self._set_playlist_reset_option()
             self._set_playlist_year_lists()
             return self._get_active_years()
         else:
             return list(range(1, self._mc_years + 1))
 
-    def get_raw_active_years(self):
-        return self._active_year_list
-
-    def get_raw_inactive_years(self):
-        return self._inactive_year_list
+    def get_raw_playlist(self):
+        current_section = ""
+        self._active_year_list = []
+        self._inactive_year_list = []
+        for line in self.file_lines:
+            if IniReader.line_is_not_a_section_header(line):
+                if current_section == 'playlist':
+                    key, val = IniReader.get_key_val_from_line(line)
+                    self._read_playlist_val(key, val)
+            else:
+                current_section = IniReader.read_section_header(line)
+        return self._active_year_list, self._inactive_year_list
 
     def _get_active_years(self):
         if self._playlist_reset_option is True:
@@ -83,8 +91,6 @@ class GeneralDataIniReader:
         self._playlist_reset_option = self.config.getboolean('playlist', 'playlist_reset', fallback=True)
 
     def _set_playlist_year_lists(self):
-        self._active_year_list = []
-        self._inactive_year_list = []
         current_section = ""
         for line in self.file_lines:
             current_section = self._read_playlist(current_section, line.strip())
