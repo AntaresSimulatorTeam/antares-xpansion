@@ -2,7 +2,7 @@
 namespace po = boost::program_options;
 
 FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
-  AddOptions()("method,m", po::value<std::string>(&method_)->required(),
+  AddOptions()("method,m", po::value<std::string>(&method_str_)->required(),
                "benders method")(
       "benders_options,b",
       po::value<std::filesystem::path>(&benders_options_file_)->required(),
@@ -11,13 +11,18 @@ FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
       po::value<std::filesystem::path>(&solutionFile_)->required(),
       "path to json solution file");
 }
-
-FullRunOptionsParser::METHOD FullRunOptionsParser::Method() const {
-  if (method_ == "sequential") {
-    return METHOD::SEQUANTIAL;
-  } else if (method_ == "mpibenders") {
-    return METHOD::MPI;
+void FullRunOptionsParser::Parse(unsigned int argc, const char* const* argv) {
+  OptionsParser::Parse(argc, argv);
+  SetMethod();
+}
+void FullRunOptionsParser::SetMethod() {
+  if (method_str_ == "sequential") {
+    method_ = METHOD::SEQUENTIAL;
+  } else if (method_str_ == "mpibenders") {
+    method_ = METHOD::MPI;
+  } else if (method_str_ == "mergeMPS") {
+    method_ = METHOD::MERGEMPS;
+  } else {
+    throw FullRunOptionsParser::FullRunOptionInvalidMethod(method_str_);
   }
-
-  // else if(method_ == "mergeMPS")
 }

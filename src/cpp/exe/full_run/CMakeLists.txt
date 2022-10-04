@@ -25,6 +25,10 @@ if (USE_MPI)
 		${PROJECT_NAME}::benders_mpi_core
 )
 endif ()
+get_target_property(full_run_lib_include full_run_lib INTERFACE_INCLUDE_DIRECTORIES)
+
+target_include_directories(full_run PRIVATE
+${full_run_lib_include})
 
 target_link_libraries (full_run
 		PRIVATE
