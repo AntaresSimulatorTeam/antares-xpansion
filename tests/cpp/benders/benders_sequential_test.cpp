@@ -273,6 +273,7 @@ TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached) {
 
 TEST_F(BendersSequentialTest,
        MaxIterReachedBeforeRelaxedGapShouldEndRunWithAnIntegerMasterIteration) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double relaxed_gap = 1e-5;
@@ -319,6 +320,7 @@ TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::RELAXED;
   double sep_param = 0.8;
   double relaxed_gap = 1e-2;
@@ -362,6 +364,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::RELAXED;
   double relaxed_gap = 1e-2;
   double sep_param = 0.8;
