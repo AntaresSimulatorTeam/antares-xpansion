@@ -18,8 +18,8 @@
  */
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
-                                     Logger &logger, Writer writer)
-    : BendersBase(options, logger, std::move(writer)) {}
+                                     Logger logger, Writer writer)
+    : BendersBase(options, std::move(logger), std::move(writer)) {}
 
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
@@ -80,15 +80,28 @@ void BendersSequential::run() {
     OpenCsvFile();
   }
 
+  if (is_initial_relaxation_requested()) {
+    _logger->LogAtInitialRelaxation();
+    DeactivateIntegrityConstraints();
+    SetDataPreRelaxation();
+  }
+
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
+
+    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+      _logger->LogAtSwitchToInteger();
+      ActivateIntegrityConstraints();
+      ResetDataPostRelaxation();
+    }
 
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();
     _logger->log_master_solving_duration(get_timer_master());
 
+    ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
     push_in_trace(std::make_shared<WorkerMasterData>());
@@ -97,15 +110,16 @@ void BendersSequential::run() {
     build_cut();
     _logger->log_subproblems_solving_duration(GetSubproblemTimers());
 
+    compute_ub();
     update_best_ub();
 
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
-    update_trace();
+    UpdateTrace();
 
     set_timer_master(timer_master.elapsed());
     _data.elapsed_time = GetBendersTime();
-    _data.stop = stopping_criterion();
+    _data.stop = ShouldBendersStop();
     SaveCurrentBendersData();
   }
   CloseCsvFile();

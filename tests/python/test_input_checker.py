@@ -264,6 +264,7 @@ class TestCheckSettingOptionType:
         assert _check_setting_option_type(
             "uc_type", "expansion_accurate") == True
         assert _check_setting_option_type("uc_type", 123) == False
+        assert _check_setting_option_type("master", "a string") == True
 
     def test_int_options(self):
 
@@ -272,6 +273,7 @@ class TestCheckSettingOptionType:
         assert _check_setting_option_type("timelimit", -1) == True
         assert _check_setting_option_type("timelimit", "inf") == False
         assert _check_setting_option_type("timelimit", "+Inf") == True
+        assert _check_setting_option_type("timelimit", 12.2) == False
 
     def test_double_options(self):
 
@@ -315,3 +317,14 @@ class TestCheckSettingOptionValue:
 
         with pytest.raises(LogLevelValueError):
             _check_setting_option_value("log_level", -30)
+    
+    def test_relaxed_optimality_gap_negative_float(self):
+        with pytest.raises(GapValueError):
+            _check_setting_option_value("relaxed_optimality_gap", -1.2)
+
+    def test_separation_parameter_illegal_value(self):
+        with pytest.raises(SeparationParameterValueError):
+            _check_setting_option_value("separation_parameter", -1)
+    
+    def test_separation_parameter_legal_value(self):
+        assert _check_setting_option_value("separation_parameter", 0.39) == True

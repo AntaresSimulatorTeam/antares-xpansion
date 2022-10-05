@@ -83,5 +83,16 @@ void User::restart_best_iterations_infos(const LogData &best_iteration_data) {
   log_subproblems_solving_duration(best_iteration_data.subproblem_time);
   log_at_iteration_end(best_iteration_data);
 }
+
+void User::LogAtInitialRelaxation() {
+  _stream << "--- Switch master formulation to relaxed"
+          << std::endl;
+}
+
+void User::LogAtSwitchToInteger() {
+  _stream << "--- Relaxed gap reached, switch master formulation to integer"
+          << std::endl;
+}
+
 }  // namespace logger
 }  // namespace xpansion

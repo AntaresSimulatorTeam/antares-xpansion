@@ -23,7 +23,3 @@ double LinkProfile::getIndirectProfile(size_t hour) const {
 
   return indirect_link_profile[hour];
 }
-LinkProfile::LinkProfile() {
-  direct_link_profile.fill(1);
-  indirect_link_profile.fill(1);
-}

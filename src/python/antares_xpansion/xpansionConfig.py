@@ -39,13 +39,15 @@ class InputParameters:
 
 class XpansionConfig:
     """
-        Class defininf the parameters for an AntaresXpansion session
+    Class defininf the parameters for an AntaresXpansion session
     """
 
     # pylint: disable=too-many-instance-attributes
     # pylint: disable=too-few-public-methods
 
-    def __init__(self, input_parameters: InputParameters, config_parameters: ConfigParameters):
+    def __init__(
+        self, input_parameters: InputParameters, config_parameters: ConfigParameters
+    ):
 
         self.input_parameters = input_parameters
         self.config_parameters = config_parameters
@@ -70,8 +72,7 @@ class XpansionConfig:
         self.step = self.input_parameters.step
         self.simulation_name = self.input_parameters.simulation_name
         self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
-        self.install_dir = self._get_install_dir(
-            self.input_parameters.install_dir)
+        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
         self.antares_n_cpu = self.input_parameters.antares_n_cpu
@@ -94,9 +95,10 @@ class XpansionConfig:
 
     def _initialize_install_dir_with_default_value(self):
 
-        if getattr(sys, 'frozen', False):
-            install_dir_inside_package = Path(
-                os.path.abspath(__file__)).parent.parent / "bin"
+        if getattr(sys, "frozen", False):
+            install_dir_inside_package = (
+                Path(os.path.abspath(__file__)).parent.parent / "bin"
+            )
             install_dir_next_to_package = Path(sys.executable).parent / "bin"
             if Path.is_dir(install_dir_inside_package):
                 return install_dir_inside_package
@@ -112,22 +114,22 @@ class XpansionConfig:
 
     def _set_constants(self):
         # TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
-        self.SETTINGS = 'settings'
-        self.GENERAL_DATA_INI = 'generaldata.ini'
-        self.OUTPUT = 'output'
+        self.SETTINGS = "settings"
+        self.GENERAL_DATA_INI = "generaldata.ini"
+        self.OUTPUT = "output"
 
-        self.USER = 'user'
-        self.EXPANSION = 'expansion'
-        self.SENSITIVITY_DIR = 'sensitivity'
-        self.CAPADIR = 'capa'
-        self.NB_YEARS = 'nbyears'
-        self.SETTINGS_INI = 'settings.ini'
-        self.CANDIDATES_INI = 'candidates.ini'
-        self.UC_TYPE = 'uc_type'
-        self.EXPANSION_ACCURATE = 'expansion_accurate'
-        self.EXPANSION_FAST = 'expansion_fast'
-        self.OPTIONS_JSON = 'options.json'
-        self.LAUNCHER_OPTIONS_JSON = 'launcher_options.json'
+        self.USER = "user"
+        self.EXPANSION = "expansion"
+        self.SENSITIVITY_DIR = "sensitivity"
+        self.CAPADIR = "capa"
+        self.NB_YEARS = "nbyears"
+        self.SETTINGS_INI = "settings.ini"
+        self.CANDIDATES_INI = "candidates.ini"
+        self.UC_TYPE = "uc_type"
+        self.EXPANSION_ACCURATE = "expansion_accurate"
+        self.EXPANSION_FAST = "expansion_fast"
+        self.OPTIONS_JSON = "options.json"
+        self.LAUNCHER_OPTIONS_JSON = "launcher_options.json"
         self.JSON_NAME = "out.json"
         self.LAST_ITERATION_JSON_FILE_NAME = "last_iteration.json"
         self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
@@ -140,20 +142,18 @@ class XpansionConfig:
 
     def _set_default_settings(self):
         self.settings_default = {
-            "method": "benders_decomposition",
             "uc_type": "expansion_fast",
             "master": "integer",
             "optimality_gap": "1",
             "relative_gap": "1e-12",
-            "cut_type": "yearly",
-            "week_selection": "false",
             "max_iteration": "+infini",
-            "relaxed_optimality_gap": "0.01",
+            "relaxed_optimality_gap": "1e-4",
             "solver": "Cbc",
             "timelimit": "+infini",
             "additional-constraints": "",
             "yearly-weights": "",
             "log_level": "0",
+            "separation_parameter": "0.5",
         }
 
     def _set_default_options(self):
@@ -161,6 +161,7 @@ class XpansionConfig:
             OptimisationKeys.max_iterations_key(): self.max_iterations_default_value(),
             OptimisationKeys.absolute_gap_key(): self.absolute_gap_default_value(),
             OptimisationKeys.relative_gap_key(): self.relative_gap_default_value(),
+            OptimisationKeys.relaxed_gap_key(): self.relaxed_gap_default_value(),
             OptimisationKeys.aggregation_key(): self.aggregation_default_value(),
             OptimisationKeys.outpoutroot_key(): self.outpoutroot_default_value(),
             OptimisationKeys.trace_key(): self.trace_default_value(),
@@ -171,6 +172,7 @@ class XpansionConfig:
             OptimisationKeys.input_root_key(): self.input_root_default_value(),
             OptimisationKeys.csv_name_key(): self.csv_name_default_value(),
             OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
+            OptimisationKeys.separation_key(): self.separation_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -209,8 +211,14 @@ class XpansionConfig:
     def absolute_gap_default_value(self):
         return "1"
 
+    def relaxed_gap_default_value(self):
+        return "1e-4"
+
     def max_iterations_default_value(self):
         return "-1"
+
+    def separation_default_value(self):
+        return "0.5"
 
     def _get_config_values(self):
 

@@ -10,6 +10,15 @@ BENDERS_OPTIONS_MACRO(ABSOLUTE_GAP, double, 1, asDouble())
 // Absolute required level of precision
 BENDERS_OPTIONS_MACRO(RELATIVE_GAP, double, 1e-12, asDouble())
 
+// Relative required level of precision with master relaxation
+BENDERS_OPTIONS_MACRO(RELAXED_GAP, double, 1e-4, asDouble())
+
+// In-out separation parameter
+BENDERS_OPTIONS_MACRO(SEPARATION_PARAM, double, 0.5, asDouble())
+
+// Formulation of the master problem
+BENDERS_OPTIONS_MACRO(MASTER_FORMULATION, std::string, "integer", asString())
+
 // True if cuts need to be aggregated, false otherwise
 BENDERS_OPTIONS_MACRO(AGGREGATION, bool, false, asBool())
 

@@ -49,6 +49,8 @@ class Master : public ILogger {
   void restart_best_iteration(const int best_iterations) override;
   void restart_best_iterations_infos(
       const LogData &best_iterations_data) override;
+  void LogAtInitialRelaxation() override;
+  void LogAtSwitchToInteger() override;
 
  private:
   std::list<std::shared_ptr<ILogger>> _loggers;

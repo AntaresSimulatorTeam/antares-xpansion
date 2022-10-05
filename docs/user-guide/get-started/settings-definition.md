@@ -24,6 +24,8 @@ The following section lists the configurable parameters. If the user does not sp
 |[`solver`](#solver) | `Cbc` | Name of the solver |
 |[`log_level`](#log_level) | `0` | Solver's log level |
 |[`additional-constraints`](#additional-constraints) | `None` | Path of the additional constraints file |
+|[`separation_parameter`](#separation_parameter) | `1` | Step size for the in-out separation |
+|[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-4` | Threshold to switch from relaxed to integer master |
 
 The format is a standard `.ini` and should follow this template:
 ```ini
@@ -94,7 +96,7 @@ Antares-Xpansion algorithm.
 
 At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
 
-$$\frac{\texttt{xpansion solution cost} - \texttt{optimal cost}}{\texttt{optimal cost}} < \alpha .$$
+$$\frac{{\small\texttt{xpansion solution cost}} - {\small\texttt{optimal cost}}}{{\small\texttt{optimal cost}}} < \alpha .$$
 
 !!! Remark
     The algorithm stops as soon as the first criterion among `optimality_gap` and `relative_gap` is met. Keep in mind that if either parameter is not specified by the user, the default value is used.
@@ -263,3 +265,24 @@ time, but it can invest in neither.
 ![](../../assets/media/image19.png)
 
 **Figure 13** – Example of an additional constraint file.
+
+#### `separation_parameter`
+
+Float in \\([0,1]\\). Default value: `1`. 
+
+Defines the step size for the in-out separation. If \\(x_{in}\\) is the current best feasible solution and \\(x_{out}\\) is the master solution at the current iteration, the investment in the subproblems is set to 
+
+$$ x_{cut} = {\small\texttt{separation_parameter}} * x_{out} + (1 - {\small\texttt{separation_parameter}}) * x_{in} .$$
+
+The in-out stabilisation technique is used in order to speed up the Benders decomposition. When `separation_parameter < 1`, it is necessary to relax the master problem in the first iterations as the cut point \\(x_{cut}\\) is a convex combination of the best feasible solution and of the solution of the master problem. In the case where `master = integer`, the algorithm proceeds as follows:
+
+1. Solve the first iterations with the relaxed formulation using the in-out stabilisation technique,
+2. Once the gap is *sufficiently small* (see [`relaxed_optimality_gap`](#relaxed_optimality_gap)), switch back to the integer formulation and set back `separation_parameter = 1` i.e. use the classical Benders algorithm.
+
+#### `relaxed_optimality_gap`
+
+Positive float. Default value: `1e-12`. 
+
+The `relaxed_optimality_gap` parameter only has effect when `master = integer`. In this case, the master problem is relaxed in the first iterations. The `relaxed_optimality_gap` is the threshold from which to switch back from the relaxed to the integer master formulation. 
+
+In the first iterations, the algorithm computes upper and lower bounds on the optimal cost of the relaxed master problem. The algorithm switches to the integer formulation as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relaxed_optimality_gap`. For the subsequent iterations, the best upper bound is reset to \\(+\infty\\) as the solutions of the relaxed problem are not feasible for the integer formulation.

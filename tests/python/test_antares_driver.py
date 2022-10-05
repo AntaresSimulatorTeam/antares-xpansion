@@ -142,12 +142,6 @@ class TestGeneralDataProcessor:
         general_data_path = settings_dir / self.generaldata_filename
 
         is_accurate = False
-        optimization = "[optimization]"
-        general = "[general]"
-        random_section = "[random_section]"
-        other_preferences = "[other preferences]"
-        output = "[output]"
-
         default_val = (
             "[general] \n"
             "mode = expansion\n"

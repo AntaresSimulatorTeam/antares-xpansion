@@ -40,6 +40,8 @@ class UserFile : public ILogger {
   void restart_best_iteration(const int best_iterations) override;
   void restart_best_iterations_infos(
       const LogData &best_iterations_data) override;
+  void LogAtInitialRelaxation() override;
+  void LogAtSwitchToInteger() override;
 
   const std::string LINE_PREFIX = "<<BENDERS>> ";
 

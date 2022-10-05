@@ -52,7 +52,9 @@ struct LogData {
   int best_it;
   double subproblem_cost;
   double invest_cost;
-  LogPoint x0;
+  LogPoint x_in;
+  LogPoint x_out;
+  LogPoint x_cut;
   LogPoint min_invest;
   LogPoint max_invest;
   double optimality_gap;
@@ -65,7 +67,8 @@ struct LogData {
     return lb == lhs.lb && best_ub == lhs.best_ub && ub == lhs.ub &&
            it == lhs.it && best_it == lhs.best_it &&
            subproblem_cost == lhs.subproblem_cost &&
-           invest_cost == lhs.invest_cost && x0 == lhs.x0 &&
+           invest_cost == lhs.invest_cost && x_in == lhs.x_in &&
+           x_out == lhs.x_out && x_cut == lhs.x_cut &&
            min_invest == lhs.min_invest && max_invest == lhs.max_invest &&
            optimality_gap == lhs.optimality_gap &&
            relative_gap == lhs.relative_gap &&
@@ -126,6 +129,8 @@ class ILogger {
   virtual void restart_best_iteration(const int best_iterations) = 0;
   virtual void restart_best_iterations_infos(
       const LogData &best_iterations_data) = 0;
+  virtual void LogAtInitialRelaxation() = 0;
+  virtual void LogAtSwitchToInteger() = 0;
 };
 
 using Logger = std::shared_ptr<ILogger>;

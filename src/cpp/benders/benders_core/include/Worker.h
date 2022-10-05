@@ -29,6 +29,7 @@ class Worker {
 
   void free();
   void write_basis(const std::filesystem::path &filename) const;
+  virtual SolverAbstract::Ptr solver() const { return _solver; }
 
  public:
   std::filesystem::path _path_to_mps;

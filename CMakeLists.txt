@@ -43,7 +43,7 @@ ENDIF ()
 
 # for centos docker to run MPI tests as root
 IF(ALLOW_RUN_AS_ROOT)
-	set(ALLOW_RUN_AS_ROOT True)
+	set(ALLOW_RUN_AS_ROOT "True")
 ENDIF() 
 
 # Set solvers to use
@@ -77,9 +77,7 @@ set (LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 set (CMAKE_CXX_STANDARD 17)
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
-if (USE_MPI)
-	set (CMAKE_CXX_COMPILER mpicxx)
-endif ()
+
 message ("USE_MPI is ${USE_MPI}")
 
 if (MSVC)

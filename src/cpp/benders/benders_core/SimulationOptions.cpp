@@ -141,7 +141,19 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
 
   result.ABSOLUTE_GAP = ABSOLUTE_GAP;
   result.RELATIVE_GAP = RELATIVE_GAP;
+  result.RELAXED_GAP = RELAXED_GAP;
   result.TIME_LIMIT = TIME_LIMIT;
+  result.SEPARATION_PARAM = SEPARATION_PARAM;
+
+  if (MASTER_FORMULATION == "integer") {
+    result.MASTER_FORMULATION = MasterFormulation::INTEGER;
+  } else if (MASTER_FORMULATION == "relaxed") {
+    result.MASTER_FORMULATION = MasterFormulation::RELAXED;
+  } else {
+    std::cerr << "Invalid value " << MASTER_FORMULATION << " for option master"
+              << std::endl;
+    std::exit(1);
+  }
 
   result.AGGREGATION = AGGREGATION;
   result.TRACE = TRACE;

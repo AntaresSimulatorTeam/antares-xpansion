@@ -5,10 +5,7 @@ on:
     branches:
       - main
       - develop
-      - features/*
-      - feature/*
-      - fix/*
-      - release/*
+  workflow_dispatch:
   release:
     types: [ created ]
 
@@ -82,7 +79,7 @@ jobs:
     container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
       matrix:
-        xprs: [ ON, OFF ]
+        xprs: [XPRESS-ON, XPRESS-OFF]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -103,6 +100,7 @@ jobs:
           git submodule update --init --recursive antares-deps
 
       - name: Checkout xpressmp linux
+        if: matrix.xprs == 'XPRESS-ON'
         run: |
           git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
 
@@ -148,6 +146,7 @@ jobs:
 
       - name: Configure
         run: |
+          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
@@ -159,7 +158,7 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
-                 -DXPRESS=${{ matrix.xprs }} \
+                 -DXPRESS=${{ env.XPRESS_VALUE }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
                  -DALLOW_RUN_AS_ROOT=ON
 
@@ -227,7 +226,7 @@ jobs:
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
           export XPRESS=${{ env.XPRESS }}
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders"
+          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
       - name: Publish .tar.gz
         if: github.event_name == 'release' && github.event.action == 'created'

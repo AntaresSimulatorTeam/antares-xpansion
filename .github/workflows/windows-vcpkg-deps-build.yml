@@ -1,4 +1,4 @@
-name: Windows CI (VCPKG + deps build)
+name: Windows CI full build
 
 on:
   push:

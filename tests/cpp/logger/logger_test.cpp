@@ -13,20 +13,22 @@ using namespace xpansion::logger;
 
 void addCandidate(LogData& logData, std::string candidate, double invest,
                   double minInvest, double maxInvest) {
-  logData.x0[candidate] = invest;
+  logData.x_cut[candidate] = invest;
   logData.min_invest[candidate] = minInvest;
   logData.max_invest[candidate] = maxInvest;
 }
 
-const LogPoint x0 = {{"candidate1", 56}, {"candidate2", 6}};
+const LogPoint x_in = {{"candidate1", 52}, {"candidate2", 4}};
+const LogPoint x_out = {{"candidate1", 56}, {"candidate2", 6}};
+const LogPoint x_cut = {{"candidate1", 60}, {"candidate2", 12}};
 const LogPoint min_invest = {{"candidate1", 5}, {"candidate2", 2}};
 const LogPoint max_invest = {{"candidate1", 10}, {"candidate2", 20}};
 const LogData best_iteration_data = {
-    15e5,       255e6,      200e6, 63,    63,   587e8, 8562e8, x0,
-    min_invest, max_invest, 9e9,   3e-15, 5876, 999,   898,    23};
+    15e5,  255e6,      200e6,      63,  63,    587e8, 8562e8, x_in, x_out,
+    x_cut, min_invest, max_invest, 9e9, 3e-15, 5876,  999,    898,  23};
 const LogData last_iteration_data = {
-    1e5,        255e6,      200e6, 159,   63,   587e8, 8562e8, x0,
-    min_invest, max_invest, 9e9,   3e-15, 5876, 9999,  898,    25};
+    1e5,   255e6,      200e6,      159, 63,    587e8, 8562e8, x_in, x_out,
+    x_cut, min_invest, max_invest, 9e9, 3e-15, 5876,  9999,   898,  25};
 
 class FileLoggerTest : public ::testing::Test {
  public:
@@ -314,7 +316,7 @@ TEST_F(UserLoggerTest, IterationStartLogCandidateLongInvestment) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
-TEST_F(UserLoggerTest, IterationStartLogCandidateNameLenght) {
+TEST_F(UserLoggerTest, IterationStartLogCandidateNameLength) {
   LogData logData;
   addCandidate(logData, "z", 50.0, 0.0, 100.0);
   addCandidate(logData, "a", 10.0, 0.0, 50.0);
@@ -446,7 +448,7 @@ TEST_F(UserLoggerTest, EndLog) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
-TEST_F(UserLoggerTest, DifferentCallsAddToTheSamStream) {
+TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
   LogData logData1;
   logData1.it = 1;
   addCandidate(logData1, "z", 5000000.0, 0.0, 10000000.0);
@@ -511,6 +513,21 @@ TEST_F(UserLoggerTest, LogTotalDuration) {
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
+TEST_F(UserLoggerTest, LogAtInitialRelaxation) {
+  std::stringstream expected;
+  expected << "--- Switch master formulation to relaxed" << std::endl;
+  _logger.LogAtInitialRelaxation();
+  ASSERT_EQ(_stream.str(), expected.str());
+}
+
+TEST_F(UserLoggerTest, LogAtSwitchInteger) {
+  std::stringstream expected;
+  expected << "--- Relaxed gap reached, switch master formulation to integer"
+           << std::endl;
+  _logger.LogAtSwitchToInteger();
+  ASSERT_EQ(_stream.str(), expected.str());
+}
+
 class SimpleLoggerMock : public ILogger {
  public:
   SimpleLoggerMock() {
@@ -518,6 +535,8 @@ class SimpleLoggerMock : public ILogger {
     _iterationStartCall = false;
     _iterationEndCall = false;
     _endingCall = false;
+    _switchToIntegerCall = false;
+    _initialRelaxationCall = false;
 
     _stopping_criterion = StoppingCriterion::empty;
 
@@ -571,10 +590,16 @@ class SimpleLoggerMock : public ILogger {
     //
   }
 
+  void LogAtInitialRelaxation() { _initialRelaxationCall = true; }
+
+  void LogAtSwitchToInteger() { _switchToIntegerCall = true; }
+
   bool _initCall;
   bool _iterationStartCall;
   bool _iterationEndCall;
   bool _endingCall;
+  bool _switchToIntegerCall;
+  bool _initialRelaxationCall;
   StoppingCriterion _stopping_criterion;
 
   std::string _displaymessage;
@@ -658,4 +683,16 @@ TEST_F(MasterLoggerTest, LogStoppingCriterion) {
   _master.log_stop_criterion_reached(criterion);
   ASSERT_EQ(_logger->_stopping_criterion, StoppingCriterion::absolute_gap);
   ASSERT_EQ(_logger2->_stopping_criterion, StoppingCriterion::absolute_gap);
+}
+
+TEST_F(MasterLoggerTest, LogAtInitialRelaxation) {
+  _master.LogAtInitialRelaxation();
+  ASSERT_TRUE(_logger->_initialRelaxationCall);
+  ASSERT_TRUE(_logger2->_initialRelaxationCall);
+}
+
+TEST_F(MasterLoggerTest, LogSwitchToInteger) {
+  _master.LogAtSwitchToInteger();
+  ASSERT_TRUE(_logger->_switchToIntegerCall);
+  ASSERT_TRUE(_logger2->_switchToIntegerCall);
 }
