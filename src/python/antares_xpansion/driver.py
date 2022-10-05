@@ -80,10 +80,6 @@ class XpansionDriver:
                                         self.config_loader.n_mpi(),
                                         self.config_loader.oversubscribe(),
                                         self.config_loader.allow_run_as_root())
-            # self.launch_problem_generation_step()
-            # self.launch_benders_step()
-            # self.study_update_driver.launch(
-            #     self.config_loader.simulation_output_path(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
 
         elif self.config_loader.step() == "antares":
             self.launch_antares_step()

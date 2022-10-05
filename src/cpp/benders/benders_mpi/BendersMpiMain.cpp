@@ -22,7 +22,6 @@ int RunMpi(char** argv, const std::filesystem::path& options_file,
 
   BendersBaseOptions benders_options(options.get_benders_options());
 
-  // gflags::ParseCommandLineFlags(&argc, &argv, true);
   google::InitGoogleLogging(argv[0]);
   auto path_to_log =
       std::filesystem::path(options.OUTPUTROOT) /

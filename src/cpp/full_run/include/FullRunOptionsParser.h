@@ -12,7 +12,7 @@ class FullRunOptionsParser : public ProblemGenerationExeOptions {
   enum class METHOD { SEQUENTIAL, MPI, MERGEMPS };
   class FullRunOptionInvalidMethod : public std::runtime_error {
    public:
-    FullRunOptionInvalidMethod(const std::string& method)
+    explicit FullRunOptionInvalidMethod(const std::string& method)
         : std::runtime_error(
               std::string("Eror in FullRunOptionParser, method: ") + method +
               " is not supported! Please choose one of: " +
