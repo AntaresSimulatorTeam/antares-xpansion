@@ -1,4 +1,5 @@
 import configparser
+import os
 from pathlib import Path
 from unittest.mock import patch
 
@@ -285,6 +286,8 @@ class TestAntaresDriver:
     def test_empty_study_dir(self, tmp_path):
 
         study_dir = tmp_path
+        print(f"Study dir : {study_dir}")
+        os.listdir()
         antares_driver = AntaresDriver(get_antares_solver_path())
 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
