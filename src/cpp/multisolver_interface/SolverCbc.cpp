@@ -162,8 +162,9 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
 
   setClpSimplexColNamesFromInnerSolver(clps);
   setClpSimplexRowNamesFromInnerSolver(clps);
-
-  int status = clps->writeBasis(filename.string().c_str(), true, 1);
+  auto filename_str = filename.string();
+  auto filename_c_str = filename_str.c_str();
+  int status = clps->writeBasis(filename_c_str, true, 0);
   zero_status_check(status, "write basis");
 }
 
