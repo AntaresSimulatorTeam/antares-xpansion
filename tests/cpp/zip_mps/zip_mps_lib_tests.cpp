@@ -25,12 +25,12 @@ data/mps_zip/archive1
 
 */
 
-const std::filesystem::path mpsZipDir = "data_test/mps_zip";
-const std::filesystem::path archive1 = mpsZipDir / "archive1.zip";
-const std::filesystem::path archive1Dir = mpsZipDir / "archive1";
-const std::filesystem::path archive1File1 = archive1Dir / "file1";
-const std::filesystem::path archive1File2 = archive1Dir / "file2";
-const std::filesystem::path archive1File3 = archive1Dir / "file3";
+const auto mpsZipDir = std::filesystem::path ("data_test") / "mps_zip";
+const auto archive1 = mpsZipDir / "archive1.zip";
+const auto archive1Dir = mpsZipDir / "archive1";
+const auto archive1File1 = archive1Dir / "file1";
+const auto archive1File2 = archive1Dir / "file2";
+const auto archive1File3 = archive1Dir / "file3";
 
 class ArchiveReaderTest : public ::testing::Test {
  public:
@@ -98,12 +98,15 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   void* reader = NULL;
 
   mz_zip_reader_create(&reader);
+  const auto& archive_path_str = archivePath.string();
+  auto archive_path_c_str = archive_path_str.c_str();
+  assert(mz_zip_reader_open_file(reader, archive_path_c_str) == MZ_OK);
+  //assert(mz_zip_reader_entry_open(reader) == MZ_OK);
 
-  mz_zip_reader_open_file(reader, archivePath.string().c_str());
-  assert(mz_zip_reader_entry_open(reader) == MZ_OK);
-
-  for (const auto file : std::filesystem::directory_iterator(dirPath)) {
-    const auto searchFilename = file.path().filename().string().c_str();
+  for (const auto &file : std::filesystem::directory_iterator(dirPath)) {
+    const auto &filename_path = file.path().filename();
+    const auto &filename_str = filename_path.string();
+    const auto searchFilename = filename_str.c_str();
     assert(mz_zip_reader_locate_entry(reader, searchFilename, 1) == MZ_OK);
     assert(mz_zip_reader_entry_open(reader) == MZ_OK);
     const auto extractedFilePath = tmpDir / searchFilename;
