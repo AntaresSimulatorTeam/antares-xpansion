@@ -6,10 +6,10 @@ inputs:
     required: true  
   antares-version:
     description: 'antares-solver version'
-    required: true  
+    required: true
   os:
     description: 'operational system used for github action'
-    required: true  
+    required: true
   os-full-name:
     description: 'full operational system name used (for example Centos-7.9.2009 or Ubuntu-20.04)'
     required: true
@@ -17,6 +17,10 @@ inputs:
     description: 'build type'
     required: false
     default: 'Release'
+  variant:
+    description: 'extra qualifiers'
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps: 
