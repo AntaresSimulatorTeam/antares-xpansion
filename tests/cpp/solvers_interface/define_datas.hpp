@@ -3,13 +3,14 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #include "multisolver_interface/SolverAbstract.h"
 
 /* Contains all the data to check the results of the tests on an instance*/
 class InstanceData {
  public:
-  std::string _path;
+  std::filesystem _path;
   int _ncols;
   int _nintegervars;
   int _nrows;
