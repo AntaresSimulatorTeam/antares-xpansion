@@ -15,85 +15,85 @@ jobs:
     container: 'centos:7'
 
     steps:
-    - uses: nelonoel/branch-name@v1.0.1
+      - uses: nelonoel/branch-name@v1.0.1
 
-    - name: Set up Python
-      run: |
-           yum update -y
-           yum install -y python3 python3-pip
-           pip3 install --upgrade pip
+      - name: Set up Python
+        run: |
+          yum update -y
+          yum install -y python3 python3-pip
+          pip3 install --upgrade pip
 
-    - name: Install libraries
-      run: |
-           yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
-           yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options
-           yum install -y cmake3 devtoolset-9 environment-modules rpm-build zlib-devel
-           yum install -y rh-git227-git
-           yum install -y libuuid-devel
+      - name: Install libraries
+        run: |
+          yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
+          yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options
+          yum install -y cmake3 devtoolset-9 environment-modules rpm-build zlib-devel
+          yum install -y rh-git227-git
+          yum install -y libuuid-devel
 
-    - name: Clone
-      run: |
-        git config --global --add safe.directory ${GITHUB_WORKSPACE}
-        git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
-        git submodule update --init
+      - name: Clone
+        run: |
+          git config --global --add safe.directory ${GITHUB_WORKSPACE}
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+          git submodule update --init
 
-    - name: Install TBB
-      run: |
+      - name: Install TBB
+        run: |
           git clone https://github.com/wjakob/tbb.git
           pushd tbb/build
           cmake3 ..
           cmake3 --build . --target install -j8
           popd
           rm -rf tbb
-        
-    - name: Read antares-xpansion version
-      id: antares-xpansion-version
-      uses: notiz-dev/github-action-json-property@release
-      with: 
-        path: 'antares-version.json'
-        prop_path: 'antares_xpansion_version'
 
-    - name: Install dependencies
-      run: |
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_xpansion_version'
+
+      - name: Install dependencies
+        run: |
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
 
-    - name: Configure
-      run: |
-           source /opt/rh/devtoolset-9/enable
-           #git 2.x must be enabled for Coin compilation with CMake ExternalProject_Add
-           source /opt/rh/rh-git227/enable
-           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-           export PATH=/usr/lib64/openmpi/bin:$PATH
-           cmake3 -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DALLOW_RUN_AS_ROOT=ON
+      - name: Configure
+        run: |
+          source /opt/rh/devtoolset-9/enable
+          #git 2.x must be enabled for Coin compilation with CMake ExternalProject_Add
+          source /opt/rh/rh-git227/enable
+          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+          export PATH=/usr/lib64/openmpi/bin:$PATH
+          cmake3 -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DALLOW_RUN_AS_ROOT=ON
 
-    - name: Build
-      run: |
-           source /opt/rh/devtoolset-9/enable
-           source /opt/rh/rh-git227/enable
-           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-           export PATH=/usr/lib64/openmpi/bin:$PATH
-           cmake3 --build _build --config Release -j2 --target install
+      - name: Build
+        run: |
+          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/rh-git227/enable
+          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+          export PATH=/usr/lib64/openmpi/bin:$PATH
+          cmake3 --build _build --config Release -j2 --target install
 
-    - name: Running unit tests
-      run: |
-           source /etc/profile.d/modules.sh
-           module load mpi
-           cd _build
-           ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+      - name: Running unit tests
+        run: |
+          source /etc/profile.d/modules.sh
+          module load mpi
+          cd _build
+          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
-    - name: .tar.gz creation
-      run: |
-        cd _build
-        cpack3 -G TGZ
+      - name: .tar.gz creation
+        run: |
+          cd _build
+          cpack3 -G TGZ
 
-    - name: Installer .rpm creation
-      run: |
-        cd _build
-        cpack3 -G RPM
+      - name: Installer .rpm creation
+        run: |
+          cd _build
+          cpack3 -G RPM
 
-    - id: create-single-file
-      name: Single file .tar.gz creation
-      uses: ./.github/workflows/single-file-creation-tgz
-      with:
-        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+      - id: create-single-file
+        name: Single file .tar.gz creation
+        uses: ./.github/workflows/single-file-creation-tgz
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}

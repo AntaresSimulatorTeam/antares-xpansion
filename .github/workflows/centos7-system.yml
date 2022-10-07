@@ -76,11 +76,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    needs: [docker_publish, userguide]
+    needs: [ docker_publish, userguide ]
     container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
       matrix:
-        xprs: [XPRESS-ON, XPRESS-OFF]
+        xprs: [ XPRESS-ON, XPRESS-OFF ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin

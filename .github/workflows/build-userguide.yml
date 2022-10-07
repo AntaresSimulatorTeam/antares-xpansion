@@ -20,39 +20,39 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Get release
-      if: github.event_name == 'release' && github.event.action == 'created'
-      id: get_release
-      uses: bruceadams/get-release@v1.2.3
+      - name: Get release
+        if: github.event_name == 'release' && github.event.action == 'created'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
 
-    - name: Read antares-xpansion version
-      id: antares-xpansion-version
-      uses: notiz-dev/github-action-json-property@release
-      with: 
-        path: 'antares-version.json'
-        prop_path: 'antares_xpansion_version'
-        
-    - id: create-user-guide
-      name: user guide pdf creation
-      uses: ./.github/workflows/generate-userguide-pdf
-      with:
-        antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: notiz-dev/github-action-json-property@release
+        with:
+          path: 'antares-version.json'
+          prop_path: 'antares_xpansion_version'
 
-    - name: upload user guide
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{ steps.create-user-guide.outputs.pdf-name }}
-        path: ${{ steps.create-user-guide.outputs.pdf-path }}
+      - id: create-user-guide
+        name: user guide pdf creation
+        uses: ./.github/workflows/generate-userguide-pdf
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
 
-    - name: publish guide upload
-      if: github.event_name == 'release' && github.event.action == 'created'
-      uses: actions/upload-release-asset@v1.0.2
-      with:
-        upload_url: ${{ steps.get_release.outputs.upload_url }}
-        asset_path: ${{ steps.create-user-guide.outputs.pdf-path }}
-        asset_name: ${{ steps.create-user-guide.outputs.pdf-name }}
-        asset_content_type: application/pdf
+      - name: upload user guide
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.create-user-guide.outputs.pdf-name }}
+          path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
+      - name: publish guide upload
+        if: github.event_name == 'release' && github.event.action == 'created'
+        uses: actions/upload-release-asset@v1.0.2
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: ${{ steps.create-user-guide.outputs.pdf-path }}
+          asset_name: ${{ steps.create-user-guide.outputs.pdf-name }}
+          asset_content_type: application/pdf
 
 
