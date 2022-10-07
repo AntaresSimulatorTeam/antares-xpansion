@@ -169,10 +169,20 @@ $$ \mathbb{E}\left(\text{cost}\right) = \frac{\sum_{i = 1}^{n}{\omega_i\text{cos
 with \\(\text{cost}_{i}\\) the production cost of the \\(i\\)-th Monte Carlo
 year and \\(\omega_i\\) the associated weigth.
 
-The file defined by the `yearly-weights` parameters must be located in the `user/expansion/weights` folder of the Antares
+The file defined by the `yearly-weights` parameter must be located in the `user/expansion/weights` folder of the Antares
 study. It must contain a column with as many numerical values as there
 are Monte-Carlo years in the Antares study. The value of the \\(i\\)-th
 row is the weight \\(\omega_i\\) of the \\(i\\)-th Monte Carlo year (see **Figure 11**).
+
+`user/expansion/settings.ini`
+```ini
+uc_type = expansion_accurate
+master = integer
+optimality_gap = 0
+yearly-weights = weights.txt
+```
+
+`user/expansion/weights/weights.txt`
 
 ![](../../assets/media/image17.png)
 
@@ -217,9 +227,19 @@ constraints between the invested capacities of investment candidates. These line
 
 The syntax of the `additional-constraints` file is illustrated on **Figure 12**. The format is inspired by Antares' binding constraints.
 
+`user/expansion/settings.ini`
+```ini
+uc_type = expansion_accurate
+master = integer
+optimality_gap = 0
+additional-constraints = constraints.txt
+```
+
+`user/expansion/constraints/constraints.txt`
+
 ![](../../assets/media/image18.png)
 
-**Figure 12** – Example of an additional constraint file.
+**Figure 12** – Example of an additional constraints file.
 
 A constraint in the `additional-constraints` is defined with the following parameters:
 

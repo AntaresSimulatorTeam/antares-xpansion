@@ -4,8 +4,6 @@
 
 #include "ChronicleMapProvider.h"
 
-#include <gtest/gtest.h>
-
 #include <filesystem>
 #include <fstream>
 #include <utility>

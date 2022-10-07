@@ -1,16 +1,16 @@
-from unittest.mock import ANY, patch
-
-import pytest
+import configparser
 import os
 from pathlib import Path
-import yaml
+from unittest.mock import patch
 
-from antares_xpansion.general_data_reader import IniReader
+import pytest
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import (
     GeneralDataFileExceptions,
     GeneralDataProcessor,
 )
+from antares_xpansion.general_data_reader import IniReader, GeneralDataIniReader
+
 from tests.build_config_reader import get_antares_solver_path
 
 SUBPROCESS_RUN = "antares_xpansion.antares_driver.subprocess.run"
@@ -36,17 +36,50 @@ class TestGeneralDataProcessor:
         gen_data_proc = GeneralDataProcessor(settings_dir, True)
         assert gen_data_proc.general_data_ini_file == expected_path
 
-    def test_no_changes_in_empty_file(self, tmp_path):
+    def test_preserve_playlist(self, tmp_path):
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / self.generaldata_filename
+
+        with open(gen_data_path, "w") as writer:
+            writer.write("[general]\nnbyears=2\nuser-playlist = true\n")
+            writer.write("[playlist]\n")
+            writer.write("dummy_entry = value\n")
+            writer.write("playlist_year + = 1\n")
+            writer.write("playlist_year + = 42\n")
+            writer.write("playlist_year - = 5\n")
+            writer.write("playlist_year - = 0\n")
+
+        gen_data_proc = GeneralDataProcessor(settings_dir, True)
+
+        gen_data_proc.change_general_data_file_to_configure_antares_execution()
+        general_data_ini_file = gen_data_proc.general_data_ini_file
+
+        xpansion_ini_reader = GeneralDataIniReader(general_data_ini_file)
+        xpansion_ini_reader.get_active_years()
+        config_reader = configparser.ConfigParser(strict=False)
+        config_reader.read(gen_data_path)
+        active_years, inactive_years = xpansion_ini_reader.get_raw_playlist()
+        assert config_reader.get("playlist", "dummy_entry") == "value"
+        assert active_years == [1, 42]
+        assert inactive_years == [5, 0]
+
+    def test_empty_file_should_be_populated_by_default_values(self, tmp_path):
         settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
         settings_dir.mkdir()
         gen_data_path = settings_dir / self.generaldata_filename
         gen_data_path.touch()
         gen_data_proc = GeneralDataProcessor(settings_dir, True)
+        gen_data_proc.change_general_data_file_to_configure_antares_execution()
 
         with open(gen_data_proc.general_data_ini_file, "r") as reader:
             lines = reader.readlines()
 
-        assert len(lines) == 0
+        assert len(lines) != 0
+        parser = configparser.ConfigParser()
+        parser.read(gen_data_proc.general_data_ini_file)
+        for option in gen_data_proc._get_values_to_change_general_data_file():
+            assert parser.get(option[0], option[1]) is not None
 
     def test_values_change_in_general_file_accurate_mode(self, tmp_path):
 
@@ -55,12 +88,6 @@ class TestGeneralDataProcessor:
         gen_data_path = settings_dir / self.generaldata_filename
 
         is_accurate = True
-        optimization = "[optimization]"
-        general = "[general]"
-        random_section = "[random_section]"
-        output = "[output]"
-
-        other_preferences = "[other preferences]"
         default_val = (
             "[general] \n"
             "mode = unrelevant\n"
@@ -82,6 +109,12 @@ class TestGeneralDataProcessor:
         )
 
         gen_data_path.write_text(default_val)
+        optimization = "optimization"
+        general = "general"
+        random_section = "random_section"
+        output = "output"
+        other_preferences = "other preferences"
+
         expected_val = {
             (optimization, "include-exportmps"): "true",
             (optimization, "include-exportstructure"): "true",
@@ -110,12 +143,6 @@ class TestGeneralDataProcessor:
         general_data_path = settings_dir / self.generaldata_filename
 
         is_accurate = False
-        optimization = "[optimization]"
-        general = "[general]"
-        random_section = "[random_section]"
-        other_preferences = "[other preferences]"
-        output = "[output]"
-
         default_val = (
             "[general] \n"
             "mode = expansion\n"
@@ -138,6 +165,12 @@ class TestGeneralDataProcessor:
 
         general_data_path.write_text(default_val)
 
+        # Removing '[' and ']' from sections name
+        optimization = "optimization"
+        general = "general"
+        random_section = "random_section"
+        other_preferences = "other preferences"
+        output = "output"
         expected_val = {
             (optimization, "include-exportmps"): "true",
             (optimization, "include-exportstructure"): "true",
@@ -159,8 +192,15 @@ class TestGeneralDataProcessor:
         )
 
     def verify_that_general_data_contains_expected_vals(
-        self, general_data_ini_file, expected_val
+            self, general_data_ini_file, expected_val
     ):
+        actual_config = configparser.ConfigParser()
+        actual_config.read(general_data_ini_file)
+        for (section, key) in expected_val:
+            value = actual_config.get(section, key, fallback=None)
+            assert value is not None
+            assert value == expected_val[(section, key)]
+
         with open(general_data_ini_file, "r") as reader:
             current_section = ""
             lines = reader.readlines()
@@ -246,6 +286,8 @@ class TestAntaresDriver:
     def test_empty_study_dir(self, tmp_path):
 
         study_dir = tmp_path
+        print(f"Study dir : {study_dir}")
+        os.listdir()
         antares_driver = AntaresDriver(get_antares_solver_path())
 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
