@@ -10,7 +10,7 @@
 /* Contains all the data to check the results of the tests on an instance*/
 class InstanceData {
  public:
-  std::filesystem _path;
+  std::filesystem::path _path;
   int _ncols;
   int _nintegervars;
   int _nrows;
