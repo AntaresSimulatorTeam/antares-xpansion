@@ -87,6 +87,12 @@ void SolverClp::write_prob_lp(const std::filesystem::path &filename) {
 void SolverClp::write_basis(const std::filesystem::path &filename) {
   auto filename_str = filename.string();
   auto filename_c_str = filename_str.c_str();
+
+  /*
+  formatType must be = 0 (normal accuracy) to avoid undefined behavior.
+  see Adr in
+  conception/Architecture_decision_records/Change_Solver_Basis_Format.md
+  */
   int status = _clp.writeBasis(filename_c_str, false, 0);
   zero_status_check(status, "write basis");
 }

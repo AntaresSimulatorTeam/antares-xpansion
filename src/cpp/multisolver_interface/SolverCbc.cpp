@@ -164,6 +164,12 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
   setClpSimplexRowNamesFromInnerSolver(clps);
   auto filename_str = filename.string();
   auto filename_c_str = filename_str.c_str();
+
+  /*
+  formatType must be = 0 (normal accuracy) to avoid undefined behavior.
+  see Adr in
+  conception/Architecture_decision_records/Change_Solver_Basis_Format.md
+  */
   int status = clps->writeBasis(filename_c_str, true, 0);
   zero_status_check(status, "write basis");
 }
@@ -177,7 +183,7 @@ void SolverCbc::setClpSimplexColNamesFromInnerSolver(ClpSimplex *clps) const {
 
 void SolverCbc::setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const {
   for (int row_id(0); row_id < clps->getNumRows(); row_id++) {
-    std::string  name = _clp_inner_solver.getRowName(row_id);
+    std::string name = _clp_inner_solver.getRowName(row_id);
     clps->setRowName(row_id, name);
   }
 }
