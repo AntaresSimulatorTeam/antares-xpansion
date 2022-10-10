@@ -4,6 +4,7 @@
 
 #include <filesystem>
 #include <memory>
+#include <mutex>
 
 #include "ActiveLinks.h"
 #include "Candidate.h"
@@ -45,4 +46,5 @@ class LinkProblemsGenerator {
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  mutable std::mutex coupling_mutex_;
 };

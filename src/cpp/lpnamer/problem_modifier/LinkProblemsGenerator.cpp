@@ -97,6 +97,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   for (const ActiveLink &link : _links) {
     for (const Candidate &candidate : link.getCandidates()) {
       if (problem_modifier.has_candidate_col_id(candidate.get_name())) {
+        std::lock_guard guard(coupling_mutex_);
         couplings[{candidate.get_name(), mps_name}] =
             problem_modifier.get_candidate_col_id(candidate.get_name());
       }
