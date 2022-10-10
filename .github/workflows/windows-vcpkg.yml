@@ -59,20 +59,23 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
 
-    - name: Checkout xpressmp linux
-      if: matrix.xprs == 'XPRESS-ON'
-      uses: actions/checkout@v2
-      with:
-        repository: rte-france/xpress-mp-temp
-        path: ${{ env.XPRESSDIR }}
-        ref: master
-        token: ${{ secrets.AS_TOKEN }}
+      - name: Enable git longpaths
+        run: git config --system core.longpaths true
 
-    - name: Get release
+      - name: Checkout xpressmp linux
+        if: matrix.xprs == 'XPRESS-ON'
+        uses: actions/checkout@v2
+        with:
+          repository: rte-france/xpress-mp-temp
+          path: ${{ env.XPRESSDIR }}
+          ref: master
+          token: ${{ secrets.AS_TOKEN }}
+
+      - name: Get release
       if: github.event_name == 'release' && github.event.action == 'created'
       id: get_release
       uses:

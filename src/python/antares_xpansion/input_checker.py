@@ -333,8 +333,6 @@ options_types_and_legal_values = {
     "master": (type_str, ["relaxed", "integer"]),
     "optimality_gap": (type_float, None),
     "relative_gap": (type_float, None),
-    "relaxed_optimality_gap": (type_float, None),
-    "week_selection": (type_str, ["true", "false"]),
     "max_iteration": (type_int, None),
     "solver": (type_str, None),
     "timelimit": (type_int, None),
@@ -508,7 +506,7 @@ def _check_setting_option_value(option, value):
 
     elif option == 'log_level':
         return _check_log_level(value)
-    
+
     elif option == "separation_parameter":
         return _check_separation(value)
 
