@@ -124,8 +124,6 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
 
-    MPS_ZIP = "MPS_ZIP_FILE.zip"
-
     for instance in expected_results_dict:
         instance_path = expected_results_dict[instance]['path']
         command = [e for e in pre_command]
@@ -139,10 +137,6 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
             (Path(instance_path).name+"-"+Path(options_file).stem)
         shutil.copytree(instance_path, tmp_study)
 
-        with ZipFile(tmp_study/MPS_ZIP, "w") as write_mps_zip:
-            for file in Path(tmp_study).glob("*.mps"):
-                write_mps_zip.write(
-                    file, file.name, compress_type=ZIP_DEFLATED)
         launch_optimization(tmp_study, command, status)
         check_optimization_json_output(
             expected_results_dict[instance], tmp_study/"expansion/out.json")
