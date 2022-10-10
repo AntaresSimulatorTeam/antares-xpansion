@@ -5,6 +5,7 @@
 #include "ActiveLinks.h"
 #include "AntaresVersionProvider.h"
 #include "LinkProblemsGenerator.h"
+#include "ProblemGenerationLogger.h"
 
 /*!
  * \class StudyUpdater
@@ -17,6 +18,7 @@ class StudyUpdater {
   std::filesystem::path studyPath_;
   // antares version
   int antaresVersion_;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 
  public:
   /*!
@@ -24,7 +26,10 @@ class StudyUpdater {
    *
    * \param studyPath_p : path to the antares study folder
    */
-  explicit StudyUpdater(std::filesystem::path  studyPath_p, const AntaresVersionProvider& antares_version_provider);
+  explicit StudyUpdater(
+      std::filesystem::path studyPath_p,
+      const AntaresVersionProvider& antares_version_provider,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   /*!
    * \brief default destructor of calass StudyUpdater
@@ -43,7 +48,7 @@ class StudyUpdater {
 
   [[nodiscard]] int updateLinkdataFile(
       const ActiveLink& link_p,
-      const std::map<std::string, double>& investments_p) const;
+      const std::map<std::string, double>& investments_p)const;
 
   /*!
    * \brief updates the linkdata files for multiple candidates from a solution
@@ -55,7 +60,7 @@ class StudyUpdater {
    * \return number of candidates we failed to update
    */
   [[nodiscard]] int update(std::vector<ActiveLink> const& links_p,
-             const std::map<std::string, double>& investments_p) const;
+                           const std::map<std::string, double>& investments_p);
 
   /*!
    * \brief updates the linkdata files for multiple candidates from a json file
@@ -67,5 +72,5 @@ class StudyUpdater {
    * \return number of candidates we failed to update
    */
   int update(std::vector<ActiveLink> const& links_p,
-             std::string const& jsonPath_p) const;
+             std::string const& jsonPath_p);
 };

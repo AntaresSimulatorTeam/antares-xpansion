@@ -1,5 +1,6 @@
 #include <fstream>
 
+#include "LoggerBuilder.h"
 #include "VariableFileReader.h"
 #include "gtest/gtest.h"
 
@@ -115,8 +116,9 @@ TEST_F(VariableFileReaderTest, FileNotAvailable) {
   try {
     std::vector<ActiveLink> links;
     VariableFileReadNameConfiguration variable_name_config;
+    auto logger = emptyLogger();
     VariableFileReader varReader("not_available_file.txt", links,
-                                 variable_name_config);
+                                 variable_name_config, logger);
     FAIL();
   } catch (const std::runtime_error& expected) {
     ASSERT_STREQ(expected.what(), "Unable to open 'not_available_file.txt'");
@@ -134,7 +136,9 @@ TEST_F(VariableFileReaderTest, ReadVariable) {
 
   std::vector<ActiveLink> links;
   VariableFileReadNameConfiguration variable_name_config;
-  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config);
+  auto logger = emptyLogger();
+  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config,
+                               logger);
 
   std::vector<std::string> expectedVariable =
       createExpectedVariableName(_variable, _id_pays, _id_link, _time_step);
@@ -157,7 +161,9 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithoutActiveLink) {
   variable_name_config.ntc_variable_name = "var_ntc";
 
   std::vector<ActiveLink> links;
-  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config);
+  auto logger = emptyLogger();
+  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config,
+                               logger);
 
   std::map<linkId, ColumnsToChange> ntcVarColumns =
       varReader.getNtcVarColumns();
@@ -175,10 +181,12 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithOneActiveLink) {
                      _time_step);
 
   std::vector<ActiveLink> links;
-  links.push_back(ActiveLink(1, "link", "from", "to", 0));
+  auto logger = emptyLogger();
+  links.push_back(ActiveLink(1, "link", "from", "to", 0, logger));
   VariableFileReadNameConfiguration variable_name_config;
   variable_name_config.ntc_variable_name = "var_ntc";
-  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config);
+  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config,
+                               logger);
 
   std::map<linkId, ColumnsToChange> ntcVarColumns =
       varReader.getNtcVarColumns();
@@ -199,11 +207,13 @@ TEST_F(VariableFileReaderTest, ReadNtcColumnsWithMultipleActiveLink) {
                      _time_step);
 
   std::vector<ActiveLink> links;
-  links.push_back(ActiveLink(1, "link", "from1", "to1", 0));
-  links.push_back(ActiveLink(2, "link2", "from2", "to2", 0));
+  auto logger = emptyLogger();
+  links.push_back(ActiveLink(1, "link", "from1", "to1", 0, logger));
+  links.push_back(ActiveLink(2, "link2", "from2", "to2", 0, logger));
   VariableFileReadNameConfiguration variable_name_config;
   variable_name_config.ntc_variable_name = "var_ntc";
-  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config);
+  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config,
+                               logger);
 
   std::map<linkId, ColumnsToChange> ntcVarColumns =
       varReader.getNtcVarColumns();
@@ -225,13 +235,15 @@ TEST_F(VariableFileReaderTest, ReadCostColumnsWithMultipleActiveLink) {
                      _time_step);
 
   std::vector<ActiveLink> links;
-  links.push_back(ActiveLink(1, "link", "from", "to", 0));
-  links.push_back(ActiveLink(2, "link2", "from", "to", 0));
+  auto logger = emptyLogger();
+  links.push_back(ActiveLink(1, "link", "from", "to", 0, logger));
+  links.push_back(ActiveLink(2, "link2", "from", "to", 0, logger));
 
   VariableFileReadNameConfiguration variable_name_config;
   variable_name_config.cost_origin_variable_name = "cost_ori";
   variable_name_config.cost_extremite_variable_name = "cost_ext";
-  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config);
+  VariableFileReader varReader(TEMP_FILE_NAME, links, variable_name_config,
+                               logger);
 
   std::map<linkId, ColumnsToChange> directCostVarColumns =
       varReader.getDirectCostVarColumns();

@@ -2,6 +2,7 @@
 #define ANTARESXPANSION_CANDIDATE_H
 
 #include "LinkProfile.h"
+#include "ProblemGenerationLogger.h"
 #include "common_lpnamer.h"
 
 struct CandidateData {
@@ -32,7 +33,7 @@ struct CandidateData {
 class Candidate {
  public:
   Candidate() = default;
-  Candidate(const CandidateData& data, std::vector<LinkProfile>  profile);
+  Candidate(const CandidateData& data, std::vector<LinkProfile> profile);
 
   double directCapacityFactor(size_t timeStep) const;
   double indirectCapacityFactor(size_t timeStep) const;
