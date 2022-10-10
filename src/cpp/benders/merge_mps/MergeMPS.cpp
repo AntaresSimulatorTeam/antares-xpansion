@@ -30,14 +30,14 @@ void MergeMPS::launch() {
   reader.Open();
   for (auto const &kvp : input) {
     auto problem_name(inputRootDir / (kvp.first + MPS_SUFFIX));
-    reader.ExtractFile(problem_name.filename());
     SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
     solver_l->init();
     solver_l->set_output_log_level(_options.LOG_LEVEL);
-    solver_l->read_prob_mps(problem_name);
-    std::filesystem::remove(problem_name);
 
     if (kvp.first != _options.MASTER_NAME) {
+      reader.ExtractFile(problem_name.filename());
+      solver_l->read_prob_mps(problem_name);
+      std::filesystem::remove(problem_name);
       int mps_ncols(solver_l->get_ncols());
 
       DblVector o(mps_ncols);
@@ -51,6 +51,8 @@ void MergeMPS::launch() {
         c *= weigth;
       }
       solver_l->chg_obj(sequence, o);
+    } else {
+      solver_l->read_prob_mps(problem_name);
     }
     StandardLp lpData(solver_l);
     std::string varPrefix_l = "prob" + std::to_string(cntProblems_l) + "_";
