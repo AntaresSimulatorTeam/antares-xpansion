@@ -116,10 +116,9 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
  * \return void
  */
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
-                                      Couplings &couplings) {
+                                      Couplings &couplings) const {
   auto const mps_file_name = root / MPS_TXT;
   auto mpsList = readMPSList(mps_file_name);
-  std::for_each(std::execution::par, mpsList.begin(), mpsList.end(), [&](const auto& mps) {
-    treat(root, mps, couplings);
-  });
+  std::for_each(std::execution::par, mpsList.begin(), mpsList.end(),
+                [&](const auto &mps) { treat(root, mps, couplings); });
 }

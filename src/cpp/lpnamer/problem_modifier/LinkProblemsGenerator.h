@@ -34,7 +34,7 @@ class LinkProblemsGenerator {
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : _links(links), _solver_name(solver_name), logger_(logger) {}
 
-  void treatloop(const std::filesystem::path& root, Couplings& couplings);
+  void treatloop(const std::filesystem::path& root, Couplings& couplings) const;
 
  private:
   std::vector<ProblemData> readMPSList(
