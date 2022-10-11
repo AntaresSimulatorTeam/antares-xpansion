@@ -4,6 +4,7 @@
 
 #include <filesystem>
 #include <memory>
+#include <mutex>
 
 #include "ActiveLinks.h"
 #include "Candidate.h"
@@ -33,7 +34,7 @@ class LinkProblemsGenerator {
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : _links(links), _solver_name(solver_name), logger_(logger) {}
 
-  void treatloop(const std::filesystem::path& root, Couplings& couplings);
+  void treatloop(const std::filesystem::path& root, Couplings& couplings) const;
 
  private:
   std::vector<ProblemData> readMPSList(
@@ -45,4 +46,5 @@ class LinkProblemsGenerator {
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  mutable std::mutex coupling_mutex_;
 };
