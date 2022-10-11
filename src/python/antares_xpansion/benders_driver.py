@@ -4,13 +4,12 @@
 
 import glob
 import os
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 
-
-from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class BendersDriver:
@@ -52,7 +51,7 @@ class BendersDriver:
         self._clean_log_files()
 
         ret = subprocess.run(
-            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
+            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr, check=True, capture_output=True,
             encoding='utf-8')
 
         if ret.returncode != 0:
