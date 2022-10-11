@@ -92,7 +92,7 @@ class TestGeneralDataProcessor:
             "[general] \n"
             "mode = unrelevant\n"
             "[optimization] \n"
-            "include-exportmps = false\n"
+            "include-exportmps = true\n"
             "include-tc-minstablepower = false\n"
             "include-dayahead = NO\n"
             "include-usexprs = value\n"
@@ -116,7 +116,8 @@ class TestGeneralDataProcessor:
         other_preferences = "other preferences"
 
         expected_val = {
-            (optimization, "include-exportmps"): "true",
+            (optimization, "include-exportmps"): "optim-1",
+            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "true",
             (optimization, "include-tc-min-ud-time"): "true",
@@ -172,7 +173,8 @@ class TestGeneralDataProcessor:
         other_preferences = "other preferences"
         output = "output"
         expected_val = {
-            (optimization, "include-exportmps"): "true",
+            (optimization, "include-exportmps"): "optim-1",
+            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "false",
             (optimization, "include-tc-min-ud-time"): "false",

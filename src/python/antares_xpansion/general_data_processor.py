@@ -79,7 +79,8 @@ class GeneralDataProcessor:
         optimization = "optimization"
 
         return {
-            (optimization, "include-exportmps"): "true",
+            (optimization, "include-exportmps"): "optim-1",
+            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "true"
             if self.is_accurate
