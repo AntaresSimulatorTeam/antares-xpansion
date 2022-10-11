@@ -127,6 +127,7 @@ class TestGeneralDataProcessor:
             (other_preferences, "unit-commitment-mode"): "accurate",
             (random_section, "key1"): "value1",
             (random_section, "key2"): "value2",
+            ("adequacy patch", "include-adq-patch"): "false"
         }
 
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
@@ -184,6 +185,7 @@ class TestGeneralDataProcessor:
             (other_preferences, "unit-commitment-mode"): "fast",
             (random_section, "key1"): "value1",
             (random_section, "key2"): "value2",
+            ("adequacy patch", "include-adq-patch"): "false"
         }
 
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
@@ -201,6 +203,7 @@ class TestGeneralDataProcessor:
         for (section, key) in expected_val:
             value = actual_config.get(section, key, fallback=None)
             assert value is not None
+            print(f"Section {section}, key {key}, value {value}, expected {expected_val[(section, key)]}")
             assert value == expected_val[(section, key)]
 
         with open(general_data_ini_file, "r") as reader:
