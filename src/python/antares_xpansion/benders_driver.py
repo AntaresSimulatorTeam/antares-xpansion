@@ -51,7 +51,7 @@ class BendersDriver:
         self._clean_log_files()
 
         ret = subprocess.run(
-            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr, check=True, capture_output=True,
+            self._get_solver_cmd(), shell=False, check=True, capture_output=True,
             encoding='utf-8')
 
         if ret.returncode != 0:
