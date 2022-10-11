@@ -96,3 +96,15 @@ class GeneralDataProcessor:
             if self.is_accurate
             else "fast",
         }
+
+    def backup_data(self):
+        ini_file_backup = self._backup_file_name()
+        shutil.copyfile(self._general_data_ini_file, ini_file_backup)
+
+    def revert_backup_data(self):
+        ini_file_backup = self._backup_file_name()
+        shutil.copyfile(ini_file_backup, self._general_data_ini_file)
+        os.remove(ini_file_backup)
+
+    def _backup_file_name(self):
+        return self._general_data_ini_file.with_suffix(self._general_data_ini_file.suffix + ".backup")

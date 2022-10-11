@@ -320,3 +320,29 @@ class TestAntaresDriver:
             "key2 = value2\n"
         )
         general_data_path.write_text(default_val)
+
+    def test_preserve_adequacy_option_after_run(self, tmp_path):
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / "generaldata.ini"
+
+        with open(gen_data_path, "w") as writer:
+            writer.write("[adequacy patch]\ndummy=false\nfoo = bar\n")
+            writer.write("include-adq-patch = true\n")
+
+        study_dir = tmp_path
+        exe_path = tmp_path
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu)]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+        config_reader = configparser.ConfigParser(strict=False)
+        config_reader.read(gen_data_path)
+        assert config_reader.getboolean("adequacy patch", "dummy") is False
+        assert config_reader.get("adequacy patch", "foo") == "bar"
+        assert config_reader.getboolean("adequacy patch", "include-adq-patch") is True

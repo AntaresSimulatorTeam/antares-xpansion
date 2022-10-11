@@ -1,19 +1,18 @@
 """
     Class to control the execution of the optimization session
 """
-import sys
 import os
 from pathlib import Path
 
-from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.antares_driver import AntaresDriver
-from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 from antares_xpansion.benders_driver import BendersDriver
-from antares_xpansion.resume_study import ResumeStudy, ResumeStudyData
-from antares_xpansion.study_updater_driver import StudyUpdaterDriver
-from antares_xpansion.sensitivity_driver import SensitivityDriver
-from antares_xpansion.general_data_processor import GeneralDataProcessor
+from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.general_data_processor import GeneralDataProcessor
+from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
+from antares_xpansion.resume_study import ResumeStudy, ResumeStudyData
+from antares_xpansion.sensitivity_driver import SensitivityDriver
+from antares_xpansion.study_updater_driver import StudyUpdaterDriver
 
 
 class XpansionDriver:
@@ -94,18 +93,15 @@ class XpansionDriver:
                 f"Launching failed! {self.config_loader.step()} is not an Xpansion step.")
 
     def launch_antares_step(self):
+        self._configure_general_data_processor()
+        self._backup_general_data_ini()
         self._update_general_data_ini()
         self.antares_driver.launch(
             self.config_loader.data_dir(), self.config_loader.antares_n_cpu())
+        self._revert_general_data_ini()
 
     def _update_general_data_ini(self):
-        settings_dir = os.path.normpath(
-            os.path.join(self.config_loader.data_dir(), self.settings)
-        )
-        gen_data_proc = GeneralDataProcessor(
-            settings_dir, self.config_loader.is_accurate()
-        )
-        gen_data_proc.change_general_data_file_to_configure_antares_execution()
+        self.gen_data_proc.change_general_data_file_to_configure_antares_execution()
 
     def launch_problem_generation_step(self):
         self.problem_generator_driver.launch(
@@ -151,3 +147,17 @@ class XpansionDriver:
 
     class UnknownStep(Exception):
         pass
+
+    def _revert_general_data_ini(self):
+        self.gen_data_proc.revert_backup_data()
+
+    def _backup_general_data_ini(self):
+        self.gen_data_proc.backup_data()
+
+    def _configure_general_data_processor(self):
+        settings_dir = os.path.normpath(
+            os.path.join(self.config_loader.data_dir(), self.settings)
+        )
+        self.gen_data_proc = GeneralDataProcessor(
+            settings_dir, self.config_loader.is_accurate()
+        )
