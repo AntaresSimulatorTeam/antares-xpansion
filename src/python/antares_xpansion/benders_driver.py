@@ -52,9 +52,9 @@ class BendersDriver:
         flushed_print(f"Subprocess command : {self._get_solver_cmd()}")
         rc = subprocess.call(['where', 'mpiexec'])
         if rc == 0:
-            print('mpiexec installed!')
+            flushed_print('mpiexec installed!')
         else:
-            print('mpiexec missing in path!')
+            flushed_print('mpiexec missing in path!')
         flushed_print(f"File exists {self.solver} : {os.path.exists(self.solver)}")
         ret = subprocess.run(
             self._get_solver_cmd(), shell=False, check=True, capture_output=True,
