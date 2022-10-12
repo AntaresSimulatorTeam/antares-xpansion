@@ -18,7 +18,8 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
   std::vector<ProblemData> result;
   std::ifstream mps_filestream(mps_filePath_p.c_str());
   if (!mps_filestream.good()) {
-    std::cout << "unable to open " << mps_filePath_p << std::endl;
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << mps_filePath_p << std::endl;
     std::exit(1);
   }
   while (std::getline(mps_filestream, line)) {
@@ -53,7 +54,7 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
 void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
                                   Couplings &couplings, ArchiveReader &reader,
-                                  ArchiveWriter &writer)const {
+                                  ArchiveWriter &writer) const {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const mps_name = root / problemData._problem_mps;
 
@@ -68,8 +69,8 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       "CoutExtremiteVersOrigineDeLInterconnexion";
   auto variableFileContent =
       reader.ExtractFileInStringStream(problemData._variables_txt);
-  auto variableReader =
-      VariableFileReader(variableFileContent, _links, variable_name_config);
+  auto variableReader = VariableFileReader(variableFileContent, _links,
+                                           variable_name_config, logger_);
 
   std::vector<std::string> var_names = variableReader.getVariables();
   std::map<colId, ColumnsToChange> p_ntc_columns =
@@ -89,7 +90,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
 
   solver_rename_vars(in_prblm, var_names);
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger_);
   in_prblm = problem_modifier.changeProblem(
       std::move(in_prblm), _links, p_ntc_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -98,6 +99,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   for (const ActiveLink &link : _links) {
     for (const Candidate &candidate : link.getCandidates()) {
       if (problem_modifier.has_candidate_col_id(candidate.get_name())) {
+        std::lock_guard guard(coupling_mutex_);
         couplings[{candidate.get_name(), mps_name}] =
             problem_modifier.get_candidate_col_id(candidate.get_name());
       }

@@ -171,23 +171,24 @@ class ProblemGeneratorDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
 
-        with open(self.get_lp_namer_log_filename(), 'w') as output_file:
+       
 
-            start_time = datetime.now()
-            returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
-                                        stdout=output_file,
-                                        stderr=output_file)
+        start_time = datetime.now()
+        returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
+                                    stdout=sys.stdout, stderr=sys.stderr)
 
-            end_time = datetime.now()
-            flushed_print('Post antares step duration: {}'.format(
-                end_time - start_time))
+      
 
-            if returned_l.returncode != 0:
-                raise ProblemGeneratorDriver.LPNamerExecutionError(
-                    "ERROR: exited lpnamer with status %d" % returned_l.returncode)
-            # TODO will not be needed
-            # elif not self.keep_mps:
-            #     StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
+        end_time = datetime.now()
+        flushed_print('Post antares step duration: {}'.format(
+            end_time - start_time))
+
+        if returned_l.returncode != 0:
+            raise ProblemGeneratorDriver.LPNamerExecutionError(
+                "ERROR: exited lpnamer with status %d" % returned_l.returncode)
+        # TODO will not be needed
+        # elif not self.keep_mps:
+        #     StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
 
     def _create_lp_dir(self):
         if os.path.isdir(self._lp_path):
@@ -203,11 +204,6 @@ class ProblemGeneratorDriver:
             YearlyWeightWriter(Path(self.xpansion_output_dir), self.output_path).create_weight_file(weight_list, self.weight_file_name_for_lp,
                                                                                                     self.active_years)
 
-    def get_lp_namer_log_filename(self):
-        if not self._lp_path:
-            raise ProblemGeneratorDriver.LPNamerPathError(
-                "Error output path is not given")
-        return os.path.join(self._lp_path, os.path.splitext(self.LP_NAMER)[0] + '.log')
 
     def _get_lp_namer_command(self):
 

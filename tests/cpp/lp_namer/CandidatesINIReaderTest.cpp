@@ -1,6 +1,8 @@
 #include <fstream>
 
 #include "CandidatesINIReader.h"
+#include "LoggerBuilder.h"
+#include "ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 
 const std::string interco_content_l =
@@ -26,8 +28,10 @@ const std::string candidate_content_l =
     "unit-size = 200\n"
     "max-units = 10\n"
     "enable = true\n"
-    "already-installed-direct-link-profile = alreadyInstalledDirectProfile.txt\n"
-    "already-installed-indirect-link-profile = alreadyInstalledIndirectProfile.txt\n"
+    "already-installed-direct-link-profile = "
+    "alreadyInstalledDirectProfile.txt\n"
+    "already-installed-indirect-link-profile = "
+    "alreadyInstalledIndirectProfile.txt\n"
     "direct-link-profile = directLinkProfile.txt\n"
     "indirect-link-profile = indirectLinkProfile.txt\n"
     "\n"
@@ -46,11 +50,10 @@ const std::string candidate_content_l =
     "unit-size = 100\n"
     "max-units = 20";
 
-class CandidatesINIReaderTest: public ::testing::Test {
+class CandidatesINIReaderTest : public ::testing::Test {
  protected:
   static void SetUpTestCase() {
     // called before 1st test
-
 
     // dummy interco tmp file name
     std::ofstream file_interco("temp_interco.txt");
@@ -84,11 +87,16 @@ class CandidatesINIReaderTest: public ::testing::Test {
   void TearDown() {
     // called after each test
   }
+
+ public:
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger_ =
+      emptyLogger();
 };
 
 TEST_F(CandidatesINIReaderTest, testReadIntero) {
   std::vector<IntercoFileData> intercoDataList =
-      CandidatesINIReader::ReadAntaresIntercoFile("temp_interco.txt");
+      CandidatesINIReader(emptyLogger_)
+          .ReadAntaresIntercoFile("temp_interco.txt");
 
   ASSERT_EQ(intercoDataList[0].index_interco, 0);
   ASSERT_EQ(intercoDataList[0].index_pays_origine, 0);
@@ -97,7 +105,7 @@ TEST_F(CandidatesINIReaderTest, testReadIntero) {
 
 TEST_F(CandidatesINIReaderTest, testReadArea) {
   std::vector<std::string> areaList =
-      CandidatesINIReader::ReadAreaFile("temp_area.txt");
+      CandidatesINIReader(emptyLogger_).ReadAreaFile("temp_area.txt");
 
   ASSERT_EQ(areaList[0], "area1");
   ASSERT_EQ(areaList[1], "area2");
@@ -105,7 +113,7 @@ TEST_F(CandidatesINIReaderTest, testReadArea) {
 }
 
 TEST_F(CandidatesINIReaderTest, testReadCandidate) {
-  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt");
+  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger_);
 
   std::vector<CandidateData> candidates_data =
       reader.readCandidateData("temp_candidate.ini");
@@ -132,21 +140,24 @@ TEST_F(CandidatesINIReaderTest, testReadCandidate) {
 }
 
 TEST_F(CandidatesINIReaderTest, AcceptLinkProfileKey) {
-  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt");
+  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger_);
 
   std::vector<CandidateData> candidates_data =
       reader.readCandidateData("temp_candidate.ini");
 
   ASSERT_EQ(candidates_data.at(0).direct_link_profile, "directLinkProfile.txt");
-  ASSERT_EQ(candidates_data.at(0).indirect_link_profile, "indirectLinkProfile.txt");
+  ASSERT_EQ(candidates_data.at(0).indirect_link_profile,
+            "indirectLinkProfile.txt");
 }
 
 TEST_F(CandidatesINIReaderTest, AcceptAlreadyInstalledLinkProfileKey) {
-  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt");
+  CandidatesINIReader reader("temp_interco.txt", "temp_area.txt", emptyLogger_);
 
   std::vector<CandidateData> candidates_data =
       reader.readCandidateData("temp_candidate.ini");
 
-  ASSERT_EQ(candidates_data.at(0).installed_direct_link_profile_name, "alreadyInstalledDirectProfile.txt");
-  ASSERT_EQ(candidates_data.at(0).installed_indirect_link_profile_name, "alreadyInstalledIndirectProfile.txt");
+  ASSERT_EQ(candidates_data.at(0).installed_direct_link_profile_name,
+            "alreadyInstalledDirectProfile.txt");
+  ASSERT_EQ(candidates_data.at(0).installed_indirect_link_profile_name,
+            "alreadyInstalledIndirectProfile.txt");
 }

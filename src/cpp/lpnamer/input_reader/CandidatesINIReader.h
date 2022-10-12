@@ -9,6 +9,7 @@
 
 #include "Candidate.h"
 #include "INIReader.h"
+#include "ProblemGenerationLogger.h"
 
 struct IntercoFileData {
   int index_interco;
@@ -18,20 +19,24 @@ struct IntercoFileData {
 
 class CandidatesINIReader {
  public:
-  CandidatesINIReader(const std::filesystem::path& antaresIntercoFile,
-                      const std::filesystem::path& areaFile);
-
-  static std::vector<IntercoFileData> ReadAntaresIntercoFile(
-      const std::filesystem::path& antaresIntercoFile);
-  static std::vector<IntercoFileData> ReadAntaresIntercoFile(
-      std::istringstream& antaresIntercoFileInStringStream);
-  static std::vector<std::string> ReadAreaFile(
-      const std::filesystem::path& areaFile);
-  static std::vector<std::string> ReadAreaFile(
-      std::istringstream& areaFileInStringStream);
-  static std::vector<IntercoFileData> ReadLineByLineInterco(
-      std::istream& stream);
-  static std::vector<std::string> ReadLineByLineArea(std::istream& stream);
+  CandidatesINIReader(
+      const std::filesystem::path& antaresIntercoFile,
+      const std::filesystem::path& areaFile,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+  CandidatesINIReader(
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      : logger_(logger) {}
+  std::vector<IntercoFileData> ReadAntaresIntercoFile(
+      const std::filesystem::path& antaresIntercoFile) const;
+  std::vector<IntercoFileData> ReadAntaresIntercoFile(
+      std::istringstream& antaresIntercoFileInStringStream) const;
+  std::vector<std::string> ReadAreaFile(
+      const std::filesystem::path& areaFile) const;
+  std::vector<std::string> ReadAreaFile(
+      std::istringstream& areaFileInStringStream) const;
+  std::vector<IntercoFileData> ReadLineByLineInterco(
+      std::istream& stream) const;
+  std::vector<std::string> ReadLineByLineArea(std::istream& stream) const;
   std::vector<CandidateData> readCandidateData(
       const std::filesystem::path& candidateFile);
 
@@ -44,6 +49,7 @@ class CandidatesINIReader {
   std::map<std::string, int> _intercoIndexMap;
   std::vector<IntercoFileData> _intercoFileData;
   std::vector<std::string> _areaNames;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 };
 
 #endif  // ANTARESXPANSION_CANDIDATESINIREADER_H

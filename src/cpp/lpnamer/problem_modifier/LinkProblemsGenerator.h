@@ -4,14 +4,17 @@
 
 #include <filesystem>
 #include <memory>
+#include <mutex>
 
 #include "ActiveLinks.h"
 #include "ArchiveReader.h"
 #include "ArchiveWriter.h"
 #include "Candidate.h"
 #include "FileInBuffer.h"
+#include "ProblemGenerationLogger.h"
 #include "ProblemModifier.h"
 #include "common_lpnamer.h"
+
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
 const std::string MPS_TXT{"mps.txt"};
@@ -31,9 +34,10 @@ struct ProblemData {
 
 class LinkProblemsGenerator {
  public:
-  LinkProblemsGenerator(const std::vector<ActiveLink>& links,
-                        const std::string& solver_name)
-      : _links(links), _solver_name(solver_name) {}
+  LinkProblemsGenerator(
+      const std::vector<ActiveLink>& links, const std::string& solver_name,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      : _links(links), _solver_name(solver_name), logger_(logger) {}
 
   void treatloop(const std::filesystem::path& root,
                  const std::filesystem::path& archivePath,
@@ -50,4 +54,6 @@ class LinkProblemsGenerator {
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
   std::filesystem::path lpDir_ = "";
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  mutable std::mutex coupling_mutex_;
 };

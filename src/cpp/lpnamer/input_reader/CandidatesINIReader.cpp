@@ -9,10 +9,11 @@
 
 CandidatesINIReader::CandidatesINIReader(
     const std::filesystem::path &antaresIntercoFile,
-    const std::filesystem::path &areaFile) {
+    const std::filesystem::path &areaFile,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    : logger_(logger) {
   _intercoFileData = ReadAntaresIntercoFile(antaresIntercoFile);
   _areaNames = ReadAreaFile(areaFile);
-
   for (auto const &intercoFileData : _intercoFileData) {
     // TODO : check if index is available in areaNames
     std::string const &pays_or(_areaNames[intercoFileData.index_pays_origine]);
@@ -24,23 +25,24 @@ CandidatesINIReader::CandidatesINIReader(
 }
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
-    const std::filesystem::path &antaresIntercoFile) {
+    const std::filesystem::path &antaresIntercoFile) const {
   std::ifstream interco_filestream(antaresIntercoFile);
   if (!interco_filestream.good()) {
-    std::string message = "unable to open " + antaresIntercoFile.string();
-    throw std::runtime_error(message);
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << antaresIntercoFile.string();
+    std::exit(1);
   }
 
   return ReadLineByLineInterco(interco_filestream);
 }
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
-    std::istringstream &antaresIntercoFileInStringStream) {
+    std::istringstream &antaresIntercoFileInStringStream) const {
   return ReadLineByLineInterco(antaresIntercoFileInStringStream);
 }
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadLineByLineInterco(
-    std::istream &stream) {
+    std::istream &stream) const {
   std::vector<IntercoFileData> result;
 
   std::string line;
@@ -59,23 +61,24 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadLineByLineInterco(
 }
 
 std::vector<std::string> CandidatesINIReader::ReadAreaFile(
-    const std::filesystem::path &areaFile) {
+    const std::filesystem::path &areaFile) const {
   std::ifstream area_filestream(areaFile);
   if (!area_filestream.good()) {
-    std::string message = "unable to open " + areaFile.string();
-    throw std::runtime_error(message);
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << areaFile.string();
+    std::exit(1);
   }
 
   return ReadLineByLineArea(area_filestream);
 }
 
 std::vector<std::string> CandidatesINIReader::ReadAreaFile(
-    std::istringstream &areaFileInStringStream) {
+    std::istringstream &areaFileInStringStream) const {
   return ReadLineByLineArea(areaFileInStringStream);
 }
 
 std::vector<std::string> CandidatesINIReader::ReadLineByLineArea(
-    std::istream &stream) {
+    std::istream &stream) const {
   std::vector<std::string> result;
 
   std::string line;
@@ -92,8 +95,9 @@ std::string getStrVal(const INIReader &reader, const std::string &sectionName,
   std::string val = reader.Get(sectionName, key, "NA");
   if ((val != "NA") && (val != "na"))
     return val;
-  else
+  else {
     return "";
+  }
 }
 
 double getDblVal(const INIReader &reader, const std::string &sectionName,
@@ -151,25 +155,25 @@ CandidateData CandidatesINIReader::readCandidateSection(
     candidateData.linkex =
         candidateData.link_name.substr(i + 3, candidateData.link_name.size());
     if (!checkArea(candidateData.linkor)) {
-      std::string message = "Unrecognized area " + candidateData.linkor +
-                            " in section " + sectionName + " in " +
-                            candidateFile.string() + ".";
-      throw std::runtime_error(message);
+      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "Unrecognized area " << candidateData.linkor << " in section "
+          << sectionName << " in " << candidateFile.string() + ".";
+      std::exit(1);
     }
     if (!checkArea(candidateData.linkex)) {
-      std::string message = "Unrecognized area " + candidateData.linkex +
-                            " in section " + sectionName + " in " +
-                            candidateFile.string() + ".";
-      throw std::runtime_error(message);
+      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "Unrecognized area " << candidateData.linkex << " in section "
+          << sectionName << " in " << candidateFile.string() << ".";
+      std::exit(1);
     }
   }
 
   // Check if interco is available
   auto it = _intercoIndexMap.find(candidateData.link_name);
   if (it == _intercoIndexMap.end()) {
-    std::string message =
-        "cannot link candidate " + candidateData.name + " to interco id";
-    throw std::runtime_error(message);
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "cannot link candidate " << candidateData.name << " to interco id";
+    std::exit(1);
   }
   candidateData.link_id = it->second;
   candidateData.direct_link_profile =

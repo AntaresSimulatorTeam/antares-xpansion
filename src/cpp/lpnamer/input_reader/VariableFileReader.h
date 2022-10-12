@@ -21,11 +21,13 @@ class VariableFileReader {
  public:
   VariableFileReader(
       const std::string& fileName, const std::vector<ActiveLink>& links,
-      const VariableFileReadNameConfiguration& variable_name_config);
+      const VariableFileReadNameConfiguration& variable_name_config,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   VariableFileReader(
       std::istringstream& fileInIStringStream,
       const std::vector<ActiveLink>& links,
-      const VariableFileReadNameConfiguration& variable_name_config);
+      const VariableFileReadNameConfiguration& variable_name_config),
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger;
   void ReadVarsFromStream(
       std::istream& stream, const std::vector<ActiveLink>& links,
       const VariableFileReadNameConfiguration& variable_name_config);
@@ -41,6 +43,7 @@ class VariableFileReader {
   std::map<linkId, ColumnsToChange> _ntc_p_var_columns;
   std::map<linkId, ColumnsToChange> _indirect_cost_p_var_columns;
   std::map<linkId, ColumnsToChange> _direct_cost_p_var_columns;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 };
 
 #endif  // ANTARESXPANSION_VARIABLEFILEREADER_H

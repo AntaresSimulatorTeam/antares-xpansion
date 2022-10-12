@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - ci/*
   workflow_dispatch:
   release:
     types: [ created ]
@@ -49,8 +50,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        os: [ubuntu-20.04]
-        xprs: [XPRESS-ON, XPRESS-OFF]
+        os: [ ubuntu-20.04 ]
+        xprs: [ XPRESS-ON, XPRESS-OFF ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -211,7 +212,7 @@ jobs:
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Publish .tar.gz
-        if:  github.event_name == 'release' && github.event.action == 'created'
+        if: github.event_name == 'release' && github.event.action == 'created'
         uses: actions/upload-release-asset@v1.0.2
         with:
           upload_url: ${{ steps.get_release.outputs.upload_url }}

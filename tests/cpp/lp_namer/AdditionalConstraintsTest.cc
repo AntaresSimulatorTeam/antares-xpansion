@@ -1,17 +1,16 @@
-#include "gtest/gtest.h"
-
-#include <sstream>
 #include <fstream>
+#include <sstream>
 
 #include "AdditionalConstraints.h"
+#include "LoggerBuilder.h"
+#include "gtest/gtest.h"
 
-class AdditionalConstraintsTest : public ::testing::Test
-{
-protected:
-	static void SetUpTestCase()
-	{
-		// called before 1st test
-		std::string content_l = "\
+class AdditionalConstraintsTest : public ::testing::Test {
+ protected:
+  static void SetUpTestCase() {
+    // called before 1st test
+    std::string content_l =
+        "\
 [variables]\n\
 grid = bin_grid\n\
 grid2 = bin_grid2\n\
@@ -51,56 +50,53 @@ sign = greater_or_equal\n\
 rhs = 200\
 ";
 
-	// dummy additional contraints tmp file name
-	std::ofstream file_l("temp_additional_constraints.ini");
-	file_l << content_l;
-	file_l.close();
-	}
+    // dummy additional contraints tmp file name
+    std::ofstream file_l("temp_additional_constraints.ini");
+    file_l << content_l;
+    file_l.close();
+  }
 
-	static void TearDownTestCase()
-	{
-		// called after last test
+  static void TearDownTestCase() {
+    // called after last test
 
-		//delete the created tmp file
-		std::remove("temp_additional_constraints.ini");
-	}
+    // delete the created tmp file
+    std::remove("temp_additional_constraints.ini");
+  }
 
-	void SetUp()
-	{
-		// called before each test
-	}
+  void SetUp() {
+    // called before each test
+  }
 
-   void TearDown()
-	{
-		// called after each test
-	}
+  void TearDown() {
+    // called after each test
+  }
 };
 
-TEST_F(AdditionalConstraintsTest, testCreation)
-{
-	AdditionalConstraints additionalConstraints_l("temp_additional_constraints.ini");
+TEST_F(AdditionalConstraintsTest, testCreation) {
+  auto logger = emptyLogger();
+  AdditionalConstraints additionalConstraints_l(
+      "temp_additional_constraints.ini", logger);
 
-	ASSERT_EQ(additionalConstraints_l.getVariablesToBinarise().size(), 5);
-	ASSERT_EQ(additionalConstraints_l.size(), 4);
+  ASSERT_EQ(additionalConstraints_l.getVariablesToBinarise().size(), 5);
+  ASSERT_EQ(additionalConstraints_l.size(), 4);
 
-	std::vector<std::string> expectedConstraintNames_l = {"additional_c1", "additional_c2", "additional_c3", "my_ge_constraint"};
-	size_t cnt_l(0);
-	for ( auto pairNameConstraint : additionalConstraints_l )
-	{
-		ASSERT_EQ(pairNameConstraint.first, expectedConstraintNames_l[cnt_l++]);
-	}
+  std::vector<std::string> expectedConstraintNames_l = {
+      "additional_c1", "additional_c2", "additional_c3", "my_ge_constraint"};
+  size_t cnt_l(0);
+  for (auto pairNameConstraint : additionalConstraints_l) {
+    ASSERT_EQ(pairNameConstraint.first, expectedConstraintNames_l[cnt_l++]);
+  }
 
-	std::vector<double> expectedRHS_l = {3000, 3000, 3, 200};
-	cnt_l = 0;
-	for ( auto pairNameConstraint : additionalConstraints_l )
-	{
-		ASSERT_EQ(pairNameConstraint.second.getRHS(), expectedRHS_l[cnt_l++]);
-	}
+  std::vector<double> expectedRHS_l = {3000, 3000, 3, 200};
+  cnt_l = 0;
+  for (auto pairNameConstraint : additionalConstraints_l) {
+    ASSERT_EQ(pairNameConstraint.second.getRHS(), expectedRHS_l[cnt_l++]);
+  }
 
-	std::vector<std::string> expectedSign_l = {"less_or_equal", "equal", "less_or_equal", "greater_or_equal"};
-	cnt_l = 0;
-	for ( auto pairNameConstraint : additionalConstraints_l )
-	{
-		ASSERT_EQ(pairNameConstraint.second.getSign(), expectedSign_l[cnt_l++]);
-	}
+  std::vector<std::string> expectedSign_l = {
+      "less_or_equal", "equal", "less_or_equal", "greater_or_equal"};
+  cnt_l = 0;
+  for (auto pairNameConstraint : additionalConstraints_l) {
+    ASSERT_EQ(pairNameConstraint.second.getSign(), expectedSign_l[cnt_l++]);
+  }
 }

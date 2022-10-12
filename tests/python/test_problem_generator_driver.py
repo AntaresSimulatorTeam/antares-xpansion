@@ -138,40 +138,6 @@ class TestProblemGeneratorDriver:
                 my_list = line.strip().split(" ")
                 assert my_list in expected_results
 
-    def test_lp_namer_log_filename(self, tmp_path):
-
-        lp_exe_file = tmp_path / self.lp_exe
-        lp_exe_file.write_text("")
-        additional_constraints = "my additionals constraints"
-        pblm_gen_data = ProblemGeneratorData(keep_mps=False,
-                                             additional_constraints=additional_constraints,
-                                             user_weights_file_path=Path(""),
-                                             weight_file_name_for_lp="",
-                                             lp_namer_exe_path=lp_exe_file,
-                                             active_years=[])
-
-        self._create_empty_area_file(tmp_path)
-        self._create_empty_interco_file(tmp_path)
-        zipped_output = self.get_zipped_output(tmp_path)
-        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
-        problem_generator_driver.output_path = zipped_output
-        assert problem_generator_driver.get_lp_namer_log_filename(
-        ) == os.path.join(self.xpansion_output(tmp_path), "lp", "lp_namer.log")
-
-    def test_lp_namer_log_filename_with_non_existing_lp_dir(self):
-
-        additional_constraints = "my additionals constraints"
-        pblm_gen_data = ProblemGeneratorData(keep_mps=False,
-                                             additional_constraints=additional_constraints,
-                                             user_weights_file_path=Path(""),
-                                             weight_file_name_for_lp="",
-                                             lp_namer_exe_path="",
-                                             active_years=[])
-
-        problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
-        with pytest.raises(ProblemGeneratorDriver.LPNamerPathError):
-            problem_generator_driver.get_lp_namer_log_filename()
-
     def test_clear_old_log(self, tmp_path):
 
         lp_namer_file = tmp_path / self.lp_exe
