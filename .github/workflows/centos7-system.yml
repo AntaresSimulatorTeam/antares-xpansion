@@ -177,13 +177,6 @@ jobs:
           export TGZ_NAME=$(ls *.tar.gz)
           echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
 
-      - name: Installer .rpm creation
-        run: |
-          cd _build
-          cpack3 -G RPM
-          export RPM_NAME=$(ls *.rpm)
-          echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
-
       - name: set name variables
         id: single_file_name
         shell: bash
@@ -194,6 +187,13 @@ jobs:
           echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
+
+      - name: Installer .rpm creation
+        run: |
+          cd _build
+          cpack3 -G RPM -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009.rpm
+          export RPM_NAME=$(ls *.rpm)
+          echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
 
       - id: create-single-file
         name: Single file .tar.gz creation
