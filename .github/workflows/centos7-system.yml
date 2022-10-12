@@ -170,23 +170,24 @@ jobs:
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
 
-      - name: .tar.gz creation
-        run: |
-          cd _build
-          cpack3 -G TGZ
-          export TGZ_NAME=$(ls *.tar.gz)
-          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
-
       - name: set name variables
         id: single_file_name
         shell: bash
         run: |
-          XPRS=${{ matrix.xprs }}
+          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          XPRS=${{ XPRESS_VALUE }}
           [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
           VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
+
+      - name: .tar.gz creation
+        run: |
+          cd _build
+          cpack3 -G TGZ -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009.tar.gz
+          export TGZ_NAME=$(ls *.tar.gz)
+          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
 
       - name: Installer .rpm creation
         run: |
