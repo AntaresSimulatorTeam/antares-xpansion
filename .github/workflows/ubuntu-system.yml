@@ -184,7 +184,7 @@ jobs:
       - name: Installer .deb creation
         run: |
           cd _build
-          cpack -G DEB
+          cpack -G DEB -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009.rpm
           export DEB_NAME=$(ls *.deb)
           echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
 
