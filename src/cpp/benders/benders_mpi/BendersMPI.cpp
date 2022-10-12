@@ -12,7 +12,9 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
                        mpi::communicator &world)
     : BendersBase(options, logger, std::move(writer)),
       _env(env),
-      _world(world) {}
+      _world(world) {
+  logger->display_message("Constructing MPI benders");
+}
 
 /*!
  *  \brief Method to load each problem in a thread
@@ -22,6 +24,7 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
  */
 
 void BendersMpi::initialize_problems() {
+  _logger->display_message(__FUNCTION__);
   match_problem_to_id();
 
   int current_problem_id = 0;
@@ -57,6 +60,7 @@ void BendersMpi::initialize_problems() {
  *  \param _world : communicator variable for mpi communication
  */
 void BendersMpi::step_1_solve_master() {
+  _logger->display_message(__FUNCTION__);
   int success = 1;
   try {
     do_solve_master_create_trace_and_update_cuts();
@@ -69,6 +73,7 @@ void BendersMpi::step_1_solve_master() {
 }
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
+  _logger->display_message(__FUNCTION__);
   if (_world.rank() == rank_0) {
     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
       _logger->LogAtSwitchToInteger();
@@ -80,6 +85,7 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
 }
 
 void BendersMpi::broadcast_the_master_problem() {
+  _logger->display_message(__FUNCTION__);
   if (!_exceptionRaised) {
     Point x_cut = get_x_cut();
     mpi::broadcast(_world, x_cut, rank_0);
@@ -89,6 +95,7 @@ void BendersMpi::broadcast_the_master_problem() {
 }
 
 void BendersMpi::solve_master_and_create_trace() {
+  _logger->display_message(__FUNCTION__);
   _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
   _logger->display_message("\tSolving master...");
   get_master_value();
@@ -109,6 +116,7 @@ void BendersMpi::solve_master_and_create_trace() {
  *
  */
 void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
+  _logger->display_message(__FUNCTION__);
   int success = 1;
   SubproblemCutPackage subproblem_cut_package;
   Timer process_timer;
@@ -128,6 +136,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     const SubproblemCutPackage &subproblem_cut_package,
     const Timer &process_timer) {
+  _logger->display_message(__FUNCTION__);
   if (!_exceptionRaised) {
     if (_world.rank() != rank_0) {
       mpi::gather(_world, subproblem_cut_package, rank_0);
@@ -141,12 +150,14 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
 }
 
 SubproblemCutPackage BendersMpi::get_subproblem_cut_package() {
+  _logger->display_message(__FUNCTION__);
   SubproblemCutPackage subproblem_cut_package;
   getSubproblemCut(subproblem_cut_package);
   return subproblem_cut_package;
 }
 
 void BendersMpi::master_build_cuts(AllCutPackage all_package) {
+  _logger->display_message(__FUNCTION__);
   SetSubproblemCost(0);
   for (auto const &pack : all_package) {
     for (auto &&[_, subproblem_cut_package] : pack) {
@@ -171,6 +182,7 @@ void BendersMpi::master_build_cuts(AllCutPackage all_package) {
  */
 
 void BendersMpi::check_if_some_proc_had_a_failure(int success) {
+  _logger->display_message(__FUNCTION__);
   int global_success;
   mpi::all_reduce(_world, success, global_success, mpi::bitwise_and<int>());
   if (global_success == 0) {
@@ -179,6 +191,7 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success) {
 }
 
 void BendersMpi::write_exception_message(const std::exception &ex) const {
+  _logger->display_message(__FUNCTION__);
   std::string error = "Exception raised : " + std::string(ex.what());
   LOG(WARNING) << error << std::endl;
   _logger->display_message(error);
@@ -186,6 +199,7 @@ void BendersMpi::write_exception_message(const std::exception &ex) const {
 
 void BendersMpi::step_4_update_best_solution(int rank,
                                              const Timer &timer_master) {
+  _logger->display_message(__FUNCTION__);
   if (rank == rank_0) {
     compute_ub();
     update_best_ub();
@@ -203,6 +217,7 @@ void BendersMpi::step_4_update_best_solution(int rank,
  *  \brief Method to free the memory used by each problem
  */
 void BendersMpi::free() {
+  _logger->display_message(__FUNCTION__);
   if (_world.rank() == rank_0) {
     free_master();
   } else {
@@ -218,9 +233,11 @@ void BendersMpi::free() {
  *
  */
 void BendersMpi::run() {
+  _logger->display_message(__FUNCTION__);
   init_data();
-
+  _logger->display_message("Post init data");
   if (_world.rank() == rank_0) {
+    _logger->display_message("Rank 0");
     set_cut_storage();
 
     if (is_initial_relaxation_requested()) {
@@ -272,6 +289,7 @@ void BendersMpi::run() {
 }
 
 void BendersMpi::launch() {
+  _logger->display_message(__FUNCTION__);
   build_input_map();
   _world.barrier();
 
