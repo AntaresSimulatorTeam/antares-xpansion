@@ -13,7 +13,12 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 int main(int argc, char **argv) {
+  std::cout << "Stating MPI Benders" << std::endl;
+  for (int i = 0; i < argc; ++i) {
+    std::cout << argv[i] << std::endl;
+  }
   mpi::environment env(argc, argv);
+  std::cout << "MPI env setup" << std::endl;
   mpi::communicator world;
 
   // First check usage (options are given)
@@ -23,22 +28,28 @@ int main(int argc, char **argv) {
 
   // Read options, needed to have options.OUTPUTROOT
   SimulationOptions options(argv[1]);
+  std::cout << "Options read" << std::endl;
 
   BendersBaseOptions benders_options(options.get_benders_options());
+  std::cout << "Benders options read" << std::endl;
 
   gflags::ParseCommandLineFlags(&argc, &argv, true);
+  std::cout << "Command line parsed" << std::endl;
   google::InitGoogleLogging(argv[0]);
+  std::cout << "Logging OK" << std::endl;
   auto path_to_log =
       std::filesystem::path(options.OUTPUTROOT) /
       ("bendersmpiLog-rank" + std::to_string(world.rank()) + ".txt.");
   google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
 
+  std::cout << "Set log file OK" << std::endl;
   auto log_reports_name =
       std::filesystem::path(options.OUTPUTROOT) / "reportbendersmpi.txt";
   Logger logger;
   Writer writer;
 
   if (world.rank() == 0) {
+    std::cout << "Rank 0" << std::endl;
     auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
 
     logger = logger_factory.get_logger();
@@ -47,8 +58,10 @@ int main(int argc, char **argv) {
     std::ostringstream oss_l = start_message(options, "mpi");
     LOG(INFO) << oss_l.str() << std::endl;
   } else {
+    std::cout << "Other rank" << std::endl;
     logger = build_void_logger();
     writer = build_void_writer();
+    std::cout << "logger/writter OK" << std::endl;
   }
 
   world.barrier();
