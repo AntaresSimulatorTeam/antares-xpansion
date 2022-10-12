@@ -50,9 +50,11 @@ class BendersDriver:
         # delete execution logs
         self._clean_log_files()
         flushed_print(f"Subprocess command : {self._get_solver_cmd()}")
-        subprocess.run(
-            "mpiexec --version", shell=False, check=True, capture_output=True,
-            encoding='utf-8')
+        rc = subprocess.call(['where', 'mpiexec'])
+        if rc == 0:
+            print('mpiexec installed!')
+        else:
+            print('mpiexec missing in path!')
         flushed_print(f"File exists {self.solver} : {os.path.exists(self.solver)}")
         ret = subprocess.run(
             self._get_solver_cmd(), shell=False, check=True, capture_output=True,
