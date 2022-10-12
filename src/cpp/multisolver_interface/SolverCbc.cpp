@@ -29,8 +29,9 @@ SolverCbc::SolverCbc() {
   set_output_log_level(0);
 }
 
-SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy) {
-  // Try to cast the solver in fictif to a SolverCPLEX
+SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
+    : SolverCbc() {
+  // Try to cast the solver in fictif to a SolverCbc
   if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
     _NumberOfProblems += 1;
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
