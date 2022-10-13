@@ -87,16 +87,16 @@ jobs:
 
       - name: Read antares-solver version
         id: antares-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_version'
+          key: 'antares_version'
       - name: Read antares-deps version
         id: antares-deps-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_deps_version'
+          key: 'antares_deps_version'
 
       - name: Install deps with VCPKG
         run: |
@@ -111,8 +111,8 @@ jobs:
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-zip
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
-          antares-version: ${{steps.antares-version.outputs.prop}}
+          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+          antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
 
       - name: Expand xpress value in env
@@ -125,7 +125,7 @@ jobs:
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release  -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.prop}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DUSE_MPI=ON  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ env.XPRESS_VALUE }}  -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
+          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release  -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DUSE_MPI=ON  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ env.XPRESS_VALUE }}  -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
       - name: Build
         run: |
           cmake --build _build --config Release -j2 --target install

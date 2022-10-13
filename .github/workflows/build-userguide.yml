@@ -20,7 +20,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
@@ -29,16 +29,16 @@ jobs:
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - id: create-user-guide
         name: user guide pdf creation
         uses: ./.github/workflows/generate-userguide-pdf
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: upload user guide
         uses: actions/upload-artifact@v3

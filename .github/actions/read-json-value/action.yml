@@ -1,0 +1,32 @@
+name: "Read a json value"
+description: "Read a json value"
+inputs:
+  path:
+    description: "Path to json file"
+    required: true
+  key:
+    description: "key to read the value"
+    required: true
+outputs:
+  result:
+    description: "Value attached to the key"
+    value: ${{steps.export-value.outputs.result}}
+
+runs:
+  using: "composite"
+  steps:
+    - id: read-file
+      shell: bash
+      run: |
+        content=`cat ${{inputs.path}}`
+        # the following lines are only required for multi line json
+        content="${content//'%'/'%25'}"
+        content="${content//$'\n'/'%0A'}"
+        content="${content//$'\r'/'%0D'}"
+        # end of optional handling for multi line json
+        echo "::set-output name=content::$content"
+
+    - id: export-value
+      shell: bash
+      run: |
+        echo "::set-output name=result::${{fromJson(steps.read-file.outputs.content)[inputs.key]}}"

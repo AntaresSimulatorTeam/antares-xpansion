@@ -25,16 +25,16 @@ jobs:
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - id: create-user-guide
         name: user guide pdf creation
         uses: ./.github/workflows/generate-userguide-pdf
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: user guide upload
         id: userguide_upload
@@ -97,30 +97,30 @@ jobs:
 
       - name: Read antares-solver version
         id: antares-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_version'
+          key: 'antares_version'
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - name: Read antares-deps version
         id: antares-deps-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_deps_version'
+          key: 'antares_deps_version'
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
-          antares-version: ${{steps.antares-version.outputs.prop}}
+          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+          antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
 
@@ -164,7 +164,7 @@ jobs:
           else
             WITH_XPRS=""
           fi
-          VERSION=${{steps.antares-xpansion-version.outputs.value}}${WITH_XPRS}
+          VERSION=${{steps.antares-xpansion-version.outputs.result}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
