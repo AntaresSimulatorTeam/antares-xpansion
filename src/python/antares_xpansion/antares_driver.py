@@ -66,9 +66,9 @@ class AntaresDriver:
         flushed_print('Antares simulation duration : {}'.format(end_time - start_time))
 
         if returned_l.returncode == 1:
-            raise AntaresDriver.AntaresExecutionError("Error: exited antares with status {returned_l.returncode}")
+            raise AntaresDriver.AntaresExecutionError(f"Error: exited antares with status {returned_l.returncode}")
         elif returned_l.returncode != 0 and returned_l.returncode != 1 :
-            print("Warning: exited antares with status %d" % returned_l.returncode)
+            print(f"Warning: exited antares with status {returned_l.returncode}")
         else:
             self._set_simulation_name()
             StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / self.simulation_name))
