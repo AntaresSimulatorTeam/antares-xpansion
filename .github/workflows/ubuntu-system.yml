@@ -161,7 +161,7 @@ jobs:
         shell: bash
         run: |
           [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          XPRS=${{ env.XPRESS_VALUE }}
+          XPRS=${{ XPRESS_VALUE }}
           [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
           VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
@@ -177,14 +177,14 @@ jobs:
       - name: Installer .tar.gz creation
         run: |
           cd _build
-          cpack -G TGZ
+          cpack -G TGZ -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}.tar.gz
           export TGZ_NAME=$(ls *.tar.gz)
           echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
 
       - name: Installer .deb creation
         run: |
           cd _build
-          cpack -G DEB
+          cpack -G DEB -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}.deb
           export DEB_NAME=$(ls *.deb)
           echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
 
