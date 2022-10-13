@@ -160,6 +160,7 @@ jobs:
         id: single_file_name
         shell: bash
         run: |
+          XPRESS_VALUE="OFF"
           [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           XPRS=${{ XPRESS_VALUE }}
           [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
