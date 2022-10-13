@@ -55,16 +55,16 @@ jobs:
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - id: create-user-guide
         name: user guide pdf creation
         uses: ./.github/workflows/generate-userguide-pdf
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: user guide upload
         id: userguide_upload
@@ -73,10 +73,38 @@ jobs:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
-  build:
-
+  versions:
     runs-on: ubuntu-latest
-    needs: [ docker_publish, userguide ]
+    outputs:
+      antares-version: ${{steps.antares-version.outputs.result}}
+      antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+      antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read antares-solver version
+        id: antares-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_version'
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - name: Read antares-deps version
+        id: antares-deps-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_deps_version'
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [ docker_publish, userguide, versions ]
     container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
       matrix:
@@ -101,32 +129,11 @@ jobs:
         run: |
           git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
 
-      - name: Read antares-solver version
-        id: antares-version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_version'
-
-      - name: Read antares-xpansion version
-        id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
-
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_deps_version'
-
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
-          antares-version: ${{steps.antares-version.outputs.prop}}
+          antares-deps-version: ${{needs.versions.outputs.antares-deps-version}}
+          antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
 
@@ -179,7 +186,7 @@ jobs:
           else
           WITH_XPRS=""
           fi
-          VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
+          VERSION=${{needs.versions.outputs.antares-xpansion-version}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
