@@ -15,7 +15,8 @@ jobs:
     container: 'centos:7'
 
     steps:
-      - uses: nelonoel/branch-name@v1.0.1
+      - id: branch-name
+        uses: tj-actions/branch-names@v6
 
       - name: Set up Python
         run: |
@@ -34,7 +35,7 @@ jobs:
       - name: Clone
         run: |
           git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
           git submodule update --init
 
       - name: Install TBB

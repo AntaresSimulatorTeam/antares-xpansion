@@ -87,7 +87,8 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
-      - uses: nelonoel/branch-name@v1.0.1
+      - id: branch-name
+        uses: tj-actions/branch-names@v6
 
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
@@ -97,7 +98,7 @@ jobs:
       - name: Checkout
         run: |
           git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
           git submodule update --init --recursive antares-deps
 
       - name: Checkout xpressmp linux
