@@ -72,7 +72,7 @@ jobs:
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1
+        uses: hendrikmuhs/ccache-action@v1.2.3
         with:
           key: ${{ matrix.os }}-${{ matrix.xprs }}
 
