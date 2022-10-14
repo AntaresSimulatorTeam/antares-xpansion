@@ -83,7 +83,7 @@ jobs:
           bruceadams/get-release@v1.2.3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
