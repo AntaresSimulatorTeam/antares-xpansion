@@ -21,7 +21,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -58,13 +58,13 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: true
 
       - name: Checkout xpressmp linux
         if: matrix.xprs == 'XPRESS-ON'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
