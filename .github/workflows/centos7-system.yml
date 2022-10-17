@@ -90,11 +90,6 @@ jobs:
       - id: branch-name
         uses: tj-actions/branch-names@v6
 
-      - name: Get release
-        if: github.event_name == 'release' && github.event.action == 'created'
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
-
       - name: Checkout
         run: |
           git config --global --add safe.directory ${GITHUB_WORKSPACE}
@@ -148,7 +143,11 @@ jobs:
 
       - name: Configure
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          XPRESS_VALUE="ON"
+          else
+          XPRESS_VALUE="OFF"
+          fi
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
@@ -175,27 +174,28 @@ jobs:
         id: single_file_name
         shell: bash
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          XPRS=${{ XPRESS_VALUE }}
-          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          WITH_XPRS="-xpress"
+          else
+          WITH_XPRS=""
+          fi
           VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
-          echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
       - name: .tar.gz creation
         run: |
           cd _build
-          cpack3 -G TGZ -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009.tar.gz
-          export TGZ_NAME=$(ls *.tar.gz)
-          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
+          cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Installer .rpm creation
         run: |
           cd _build
-          cpack3 -G RPM -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009.rpm
-          export RPM_NAME=$(ls *.rpm)
-          echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
+          cpack3 -G RPM -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME -D CPACK_OUTPUT_FILE_NAME=$FILE_NAME.rpm
+          echo "RPM_NAME=$FILE_NAME.rpm" >> $GITHUB_ENV
 
       - id: create-single-file
         name: Single file .tar.gz creation
@@ -230,6 +230,11 @@ jobs:
           export XPRESS=${{ env.XPRESS }}
           cd _build
           ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+
+      - name: Get release
+        if: github.event_name == 'release' && github.event.action == 'created'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
 
       - name: Publish .tar.gz
         if: github.event_name == 'release' && github.event.action == 'created'
