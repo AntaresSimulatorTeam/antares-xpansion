@@ -20,7 +20,7 @@ class ConfigParameters:
     LP_NAMER: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
-    AVAILABLE_SOLVERS: List[str]
+    AVAILABLE_SOLVERS: dict
 
 
 @dataclass
@@ -60,7 +60,7 @@ class XpansionConfig:
         self.SENSITIVITY_EXE: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
-        self.AVAILABLE_SOLVER: List[str]
+        self.AVAILABLE_SOLVER: dict
 
         self._get_config_values()
 
@@ -72,7 +72,8 @@ class XpansionConfig:
         self.step = self.input_parameters.step
         self.simulation_name = self.input_parameters.simulation_name
         self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
-        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
+        self.install_dir = self._get_install_dir(
+            self.input_parameters.install_dir)
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
         self.antares_n_cpu = self.input_parameters.antares_n_cpu

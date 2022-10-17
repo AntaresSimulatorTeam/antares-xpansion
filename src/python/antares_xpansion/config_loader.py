@@ -76,7 +76,8 @@ class ConfigLoader:
 
     def _set_simulation_name(self):
         if not self._config.simulation_name:
-            raise ConfigLoader.MissingSimulationName("Missing argument simulationName")
+            raise ConfigLoader.MissingSimulationName(
+                "Missing argument simulationName")
         else:
             self._simulation_name = self._config.simulation_name
 
@@ -86,9 +87,11 @@ class ConfigLoader:
 
         self._config.method = options[LauncherOptionsKeys.method_key()]
         self._config.n_mpi = options[LauncherOptionsKeys.n_mpi_key()]
-        self._config.antares_n_cpu = options[LauncherOptionsKeys.antares_n_cpu_key()]
+        self._config.antares_n_cpu = options[LauncherOptionsKeys.antares_n_cpu_key(
+        )]
         self._config.keep_mps = options[LauncherOptionsKeys.keep_mps_key()]
-        self._config.oversubscribe = options[LauncherOptionsKeys.oversubscribe_key()]
+        self._config.oversubscribe = options[LauncherOptionsKeys.oversubscribe_key(
+        )]
         self._config.allow_run_as_root = options[
             LauncherOptionsKeys.allow_run_as_root_key()
         ]
@@ -330,7 +333,8 @@ class ConfigLoader:
         return self._simulation_lp_path()
 
     def _simulation_lp_path(self):
-        lp_path = os.path.normpath(os.path.join(self.simulation_output_path(), "lp"))
+        lp_path = os.path.normpath(os.path.join(
+            self.simulation_output_path(), "lp"))
         return lp_path
 
     def _verify_additional_constraints_file(self):
@@ -354,7 +358,8 @@ class ConfigLoader:
         else:
             try:
                 XpansionStudyReader.check_solver(
-                    self.options["solver"], self._config.AVAILABLE_SOLVER
+                    self.options["solver"], list(
+                        self._config.AVAILABLE_SOLVER.keys())
                 )
             except XpansionStudyReader.BaseException as e:
                 flushed_print(e)
@@ -364,7 +369,8 @@ class ConfigLoader:
         if self._simulation_name == "last":
             self._set_last_simulation_name()
         return Path(
-            os.path.normpath(os.path.join(self.antares_output(), self._simulation_name))
+            os.path.normpath(os.path.join(
+                self.antares_output(), self._simulation_name))
         )
 
     def benders_pre_actions(self):
@@ -381,14 +387,16 @@ class ConfigLoader:
         options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
         options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
         options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
-        options[LauncherOptionsKeys.allow_run_as_root_key()] = self.allow_run_as_root()
+        options[LauncherOptionsKeys.allow_run_as_root_key()
+                ] = self.allow_run_as_root()
 
         with open(self.launcher_options_file_path(), "w") as launcher_options:
             json.dump(options, launcher_options, indent=4)
 
     def launcher_options_file_path(self):
         return os.path.normpath(
-            os.path.join(self._simulation_lp_path(), self._config.LAUNCHER_OPTIONS_JSON)
+            os.path.join(self._simulation_lp_path(),
+                         self._config.LAUNCHER_OPTIONS_JSON)
         )
 
     def create_expansion_dir(self):
@@ -423,7 +431,8 @@ class ConfigLoader:
         options_values[OptimisationKeys.slave_weight_value_key()] = len(
             self.active_years
         )
-        options_values[OptimisationKeys.json_file_key()] = self.json_file_path()
+        options_values[OptimisationKeys.json_file_key()
+                       ] = self.json_file_path()
         options_values[
             OptimisationKeys.last_iteration_json_file_key()
         ] = self.last_iteration_json_file_path()
@@ -439,15 +448,14 @@ class ConfigLoader:
         options_values[
             OptimisationKeys.master_formulation_key()
         ] = self.get_master_formulation()
-        options_values[OptimisationKeys.separation_key()] = self.get_separation()
+        options_values[OptimisationKeys.separation_key()
+                       ] = self.get_separation()
         options_values[
             OptimisationKeys.max_iterations_key()
         ] = self.get_max_iterations()
         options_values[
             OptimisationKeys.solver_name_key()
-        ] = XpansionStudyReader.convert_study_solver_to_option_solver(
-            self.options.get("solver", "Cbc")
-        )
+        ] = self._config.AVAILABLE_SOLVER.get(self.options.get("solver", "Cbc"))
 
         if self.weight_file_name():
             options_values[
@@ -483,7 +491,8 @@ class ConfigLoader:
         # Sort list of files based on last modification time in ascending order
         list_of_dirs = sorted(
             list_of_dirs_filter,
-            key=lambda x: os.path.getmtime(os.path.join(self.antares_output(), x)),
+            key=lambda x: os.path.getmtime(
+                os.path.join(self.antares_output(), x)),
         )
         self._simulation_name = list_of_dirs[-1]
 
@@ -498,7 +507,8 @@ class ConfigLoader:
         uc_type = self.options.get(
             self._config.UC_TYPE, self._config.settings_default[self._config.UC_TYPE]
         )
-        assert uc_type in [self._config.EXPANSION_ACCURATE, self._config.EXPANSION_FAST]
+        assert uc_type in [self._config.EXPANSION_ACCURATE,
+                           self._config.EXPANSION_FAST]
         return uc_type == self._config.EXPANSION_ACCURATE
 
     class MissingFile(Exception):
@@ -573,14 +583,16 @@ class ConfigLoader:
     def structure_file_path(self):
         # Assumes that structure file is always the default, ok for now as the user cannot set it, but could it be dangerous if later we wish for some reasons modify its name to a non-default one
         return os.path.join(
-            self.simulation_lp_path(), self._config.options_default["STRUCTURE_FILE"]
+            self.simulation_lp_path(
+            ), self._config.options_default["STRUCTURE_FILE"]
         )
 
     def last_master_file_path(self):
         # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
         return os.path.join(
             self.simulation_lp_path(),
-            self._config.options_default["MASTER_NAME"] + "_last_iteration.mps",
+            self._config.options_default["MASTER_NAME"] +
+            "_last_iteration.mps",
         )
 
     def last_master_basis_path(self):
@@ -617,7 +629,8 @@ class ConfigLoader:
 
     def sensitivity_log_file(self) -> Path:
         return Path(
-            os.path.join(self._sensitivity_dir(), self._config.SENSITIVITY_LOG_FILE)
+            os.path.join(self._sensitivity_dir(),
+                         self._config.SENSITIVITY_LOG_FILE)
         )
 
     class MissingSimulationName(Exception):

@@ -28,21 +28,21 @@ class XpansionStudyReader:
     class NoSimulationDirectory(BaseException):
         pass
 
-    @staticmethod
-    def convert_study_solver_to_option_solver(study_solver: str) -> str:
-        keys = {
-            "Cbc": "COIN",
-            "Coin": "COIN",
-            "Xpress": "XPRESS",
-            "Cplex": "CPLEX",
-        }
-        if study_solver in keys:
-            return keys.get(study_solver)
-        elif study_solver == "":
-            return keys.get("Cbc")
-        else:
-            raise XpansionStudyReader.SolverNotAvailable(
-                f'Solver {study_solver} not available.')
+    # @staticmethod
+    # def convert_study_solver_to_option_solver(study_solver: str) -> str:
+    #     keys = {
+    #         "Cbc": "COIN",
+    #         "Coin": "COIN",
+    #         "Xpress": "XPRESS",
+    #         "Cplex": "CPLEX",
+    #     }
+    #     if study_solver in keys:
+    #         return keys.get(study_solver)
+    #     elif study_solver == "":
+    #         return keys.get("Cbc")
+    #     else:
+    #         raise XpansionStudyReader.SolverNotAvailable(
+    #             f'Solver {study_solver} not available.')
 
     @staticmethod
     def check_weights_file(filename_path, nb_active_years: int):

@@ -43,10 +43,28 @@ ENDIF(COIN_OR)
 # ---------------------------------------------------------------------------
 # Solver library creation and conditionnal link to internal solvers libraries
 # ---------------------------------------------------------------------------
+
+
+	message("************** ${${OTHER_SOLVER_NAME}_INCLUDE_DIRS}************")		
+if(USE_OTHER_SOLVER)
+	list(APPEND Solver_sources ${CMAKE_CURRENT_LIST_DIR}/SolverAbc.cpp)
+endif(USE_OTHER_SOLVER)
+
 add_library (solvers STATIC
 	${Solver_sources}
 )
+	
+if(USE_OTHER_SOLVER)
+	find_package(${OTHER_SOLVER_NAME} REQUIRED)
+	target_include_directories(solvers
+	PUBLIC
+	${${OTHER_SOLVER_NAME}_INCLUDE_DIRS})
 
+	target_link_libraries(solvers
+	PUBLIC
+	${OTHER_SOLVER_NAME})
+
+endif(USE_OTHER_SOLVER)
 target_include_directories (solvers
 		PUBLIC
 			${CMAKE_CURRENT_SOURCE_DIR}/include
