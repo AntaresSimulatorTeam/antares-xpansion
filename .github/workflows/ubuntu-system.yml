@@ -76,11 +76,6 @@ jobs:
         with:
           key: ${{ matrix.os }}-${{ matrix.xprs }}
 
-      - name: Get release
-        if: github.event_name == 'release' && github.event.action == 'created'
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -138,7 +133,11 @@ jobs:
       - name: Configure
         shell: bash
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+            XPRESS_VALUE="ON"
+          else
+            XPRESS_VALUE="OFF"
+          fi
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
@@ -160,10 +159,12 @@ jobs:
         id: single_file_name
         shell: bash
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          XPRS=${{ XPRESS_VALUE }}
-          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
-          VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+            WITH_XPRS="-xpress"
+          else
+            WITH_XPRS=""
+          fi
+          VERSION=${{steps.antares-xpansion-version.outputs.value}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
@@ -177,16 +178,18 @@ jobs:
       - name: Installer .tar.gz creation
         run: |
           cd _build
-          cpack -G TGZ -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}.tar.gz
-          export TGZ_NAME=$(ls *.tar.gz)
-          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}"
+          cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          #Need to differentiate between xpress/no_xpress files
+          #Cpack command line doesn't seem to care about -P or -R options
+          echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Installer .deb creation
         run: |
           cd _build
-          cpack -G DEB -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}.deb
-          export DEB_NAME=$(ls *.deb)
-          echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}"
+          cpack -G DEB -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          echo "DEB_NAME=$FILE_NAME.deb" >> $GITHUB_ENV
 
       - name: Upload .tar.gz
         uses: actions/upload-artifact@v3
@@ -210,6 +213,11 @@ jobs:
         run: |
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+
+      - name: Get release
+        if: github.event_name == 'release' && github.event.action == 'created'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
 
       - name: Publish .tar.gz
         if: github.event_name == 'release' && github.event.action == 'created'
