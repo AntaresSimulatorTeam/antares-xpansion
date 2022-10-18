@@ -4,17 +4,19 @@ class SolverAbc : public SolverAbstract {
   /**
    * @brief Returns number of instances of solver currently in memory
    */
+
   Abc abc_;
-  int get_number_of_instances() override {
-    return abc_.ReturnInt();
-    ;
-    ;
-    ;
-  }
+
+ public:
+  SolverAbc(const std::filesystem::path log_file) {}
+  SolverAbc(const std::shared_ptr<const SolverAbstract> &to_copy) {}
+  static const char *NAME_;
+
+  int get_number_of_instances() override { return abc_.ReturnInt(); }
   /**
    * @brief Returns the solver used
    */
-  std::string get_solver_name() const override { return "Abc"; }
+  std::string get_solver_name() const override { return NAME_; }
   /**
    * @brief Initializes a problem
    */
@@ -89,18 +91,18 @@ class SolverAbc : public SolverAbstract {
   /**
    * @brief returns number of rows of the problem
    */
-  int get_nrows() const override { abc_.ReturnInt(); }
+  int get_nrows() const override { return abc_.ReturnInt(); }
 
   /**
    * @brief returns number of non zeros elements in the matrix, excluding
    * objective
    */
-  int get_nelems() const override { abc_.ReturnInt(); }
+  int get_nelems() const override { return abc_.ReturnInt(); }
 
   /**
    * @brief returns number of integer variables in the problem
    */
-  int get_n_integer_vars() const override { abc_.ReturnInt(); }
+  int get_n_integer_vars() const override { return abc_.ReturnInt(); }
 
   /**
    * @brief returns the objective function coefficients for the columns in a
@@ -193,14 +195,18 @@ class SolverAbc : public SolverAbstract {
    *
    * @param name : name of row to get the index
    */
-  int get_row_index(std::string const &name) const override {}
+  int get_row_index(std::string const &name) const override {
+    return abc_.ReturnInt();
+  }
 
   /**
    * @brief Returns the index of column named "name"
    *
    * @param name : name of column to get the index
    */
-  int get_col_index(std::string const &name) const override {}
+  int get_col_index(std::string const &name) const override {
+    return abc_.ReturnInt();
+  }
 
   /**
    * @brief Returns the names of row from index first to last
@@ -377,14 +383,14 @@ class SolverAbc : public SolverAbstract {
    *
    * @return lp_status      : status of the problem after resolution
    */
-  int solve_lp() override {}
+  int solve_lp() override { return abc_.ReturnInt(); }
 
   /**
    * @brief Solves a problem as MIP
    *
    * @return lp_status      : status of the problem after resolution
    */
-  int solve_mip() override { abc_.ReturnInt(); }
+  int solve_mip() override { return abc_.ReturnInt(); }
 
   /*************************************************************************************************
   -------------------------    Methods to get solutions information
@@ -410,7 +416,7 @@ class SolverAbc : public SolverAbstract {
    *
    * @return lb : optimal value of a MIP problem
    */
-  double get_mip_value() const override { abc_.ReturnDouble(); }
+  double get_mip_value() const override { return abc_.ReturnDouble(); }
 
   /**
    * @brief Get the optimal value of a LP problem (available after method
@@ -418,7 +424,7 @@ class SolverAbc : public SolverAbstract {
    *
    * @return lb : optimal value of a LP problem
    */
-  double get_lp_value() const override { abc_.ReturnDouble(); }
+  double get_lp_value() const override { return abc_.ReturnDouble(); }
 
   /**
    * @brief Get the number of simplex iterations done in the last resolution of
@@ -427,7 +433,7 @@ class SolverAbc : public SolverAbstract {
    * @return result : number of simplex iterations done in the last resolution
    * of the problem
    */
-  int get_splex_num_of_ite_last() const override { abc_.ReturnInt(); }
+  int get_splex_num_of_ite_last() const override { return abc_.ReturnInt(); }
 
   /**
    * @brief Get LP solution of a problem (available after method "solve_lp")

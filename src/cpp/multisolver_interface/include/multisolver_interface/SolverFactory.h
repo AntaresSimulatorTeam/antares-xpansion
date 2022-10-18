@@ -16,6 +16,7 @@ const std::string UNKNOWN_STR("UNKNOWN"), COIN_STR("COIN"), CBC_STR("CBC"),
 class SolverFactory {
  private:
   std::vector<std::string> _available_solvers;
+  std::string other_solver_ = "";
 
  public:
   /**

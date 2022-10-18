@@ -8,7 +8,7 @@
 #include "SolverCbc.h"
 #include "SolverClp.h"
 #endif
-
+#include "OtherSolver.h"
 #include "multisolver_interface/SolverFactory.h"
 
 SolverFactory::SolverFactory() {
@@ -23,7 +23,12 @@ SolverFactory::SolverFactory() {
   _available_solvers.push_back(CLP_STR);
   _available_solvers.push_back(CBC_STR);
 #endif
-}
+
+  other_solver_ = GetOtherSolverName();
+  if (other_solver_ != "") {
+    _available_solvers.push_back(other_solver_);
+  }
+ }
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type) const {
@@ -68,7 +73,9 @@ SolverAbstract::Ptr SolverFactory::create_solver(
     return std::make_shared<SolverCbc>(log_name);
   }
 #endif
-  else {
+  else if (solver_name == other_solver_) {
+    return std::make_shared<OtherSolverType>(log_name);
+  } else {
     throw InvalidSolverNameException(solver_name);
   }
 }
@@ -97,7 +104,9 @@ SolverAbstract::Ptr SolverFactory::copy_solver(
     return std::make_shared<SolverCbc>(to_copy);
   }
 #endif
-  else {
+  else if (solver_name == other_solver_) {
+    return std::make_shared<OtherSolverType>(to_copy);
+  } else {
     throw InvalidSolverNameException(solver_name);
   }
 }

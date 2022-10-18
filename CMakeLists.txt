@@ -40,7 +40,18 @@ option (USE_SEQUENTIAL "Enable sequential" ON)
 IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
 	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
 ENDIF ()
+#---
 
+option (USE_OTHER_SOLVER "USE EXTERNAL SOLVER" OFF)
+
+if(USE_OTHER_SOLVER)
+if(NOT OTHER_SOLVER_DIR OR NOT OTHER_SOLVER_NAME)
+message (FATAL_ERROR "if -DUSE_OTHER_SOLVER is On then -DOTHER_SOLVER_DIR and -DOTHER_SOLVER_NAME must be given")
+endif()
+list(APPEND CMAKE_PREFIX_PATH ${OTHER_SOLVER_DIR})
+find_package(${OTHER_SOLVER_NAME} REQUIRED)
+endif(USE_OTHER_SOLVER)
+#---
 # for centos docker to run MPI tests as root
 IF(ALLOW_RUN_AS_ROOT)
 	set(ALLOW_RUN_AS_ROOT "True")
