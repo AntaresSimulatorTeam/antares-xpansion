@@ -136,6 +136,7 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
+          #variant: -ortools-xpress
 
       - name: Install dependencies
         run: |
