@@ -27,7 +27,7 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v17.3
+        uses: tj-actions/changed-files@v32
         with:
           files: |
             docker/centos7-bare
@@ -51,20 +51,20 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - id: create-user-guide
         name: user guide pdf creation
         uses: ./.github/workflows/generate-userguide-pdf
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: user guide upload
         id: userguide_upload
@@ -73,10 +73,38 @@ jobs:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
-  build:
-
+  versions:
     runs-on: ubuntu-latest
-    needs: [ docker_publish, userguide ]
+    outputs:
+      antares-version: ${{steps.antares-version.outputs.result}}
+      antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+      antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read antares-solver version
+        id: antares-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_version'
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - name: Read antares-deps version
+        id: antares-deps-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_deps_version'
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [ docker_publish, userguide, versions ]
     container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
       matrix:
@@ -87,17 +115,13 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
-      - uses: nelonoel/branch-name@v1.0.1
-
-      - name: Get release
-        if: github.event_name == 'release' && github.event.action == 'created'
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
+      - id: branch-name
+        uses: tj-actions/branch-names@v6
 
       - name: Checkout
         run: |
           git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
           git submodule update --init --recursive antares-deps
 
       - name: Checkout xpressmp linux
@@ -105,32 +129,11 @@ jobs:
         run: |
           git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
 
-      - name: Read antares-solver version
-        id: antares-version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_version'
-
-      - name: Read antares-xpansion version
-        id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
-
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: notiz-dev/github-action-json-property@release
-        with:
-          path: 'antares-version.json'
-          prop_path: 'antares_deps_version'
-
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
-          antares-version: ${{steps.antares-version.outputs.prop}}
+          antares-deps-version: ${{needs.versions.outputs.antares-deps-version}}
+          antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
 
@@ -140,14 +143,18 @@ jobs:
           pip3 install -r requirements-ui.txt
 
       - name: Download userguide
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: user-guide
           path: docs/
 
       - name: Configure
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          XPRESS_VALUE="ON"
+          else
+          XPRESS_VALUE="OFF"
+          fi
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
@@ -174,27 +181,28 @@ jobs:
         id: single_file_name
         shell: bash
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          XPRS=${{ XPRESS_VALUE }}
-          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
-          VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          WITH_XPRS="-xpress"
+          else
+          WITH_XPRS=""
+          fi
+          VERSION=${{needs.versions.outputs.antares-xpansion-version}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
-          echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
       - name: .tar.gz creation
         run: |
           cd _build
-          cpack3 -G TGZ -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009.tar.gz
-          export TGZ_NAME=$(ls *.tar.gz)
-          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
+          cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Installer .rpm creation
         run: |
           cd _build
-          cpack3 -G RPM -P antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009.rpm
-          export RPM_NAME=$(ls *.rpm)
-          echo "RPM_NAME=$RPM_NAME" >> $GITHUB_ENV
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
+          cpack3 -G RPM -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME -D CPACK_OUTPUT_FILE_NAME=$FILE_NAME.rpm
+          echo "RPM_NAME=$FILE_NAME.rpm" >> $GITHUB_ENV
 
       - id: create-single-file
         name: Single file .tar.gz creation
@@ -229,6 +237,11 @@ jobs:
           export XPRESS=${{ env.XPRESS }}
           cd _build
           ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+
+      - name: Get release
+        if: github.event_name == 'release' && github.event.action == 'created'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
 
       - name: Publish .tar.gz
         if: github.event_name == 'release' && github.event.action == 'created'
