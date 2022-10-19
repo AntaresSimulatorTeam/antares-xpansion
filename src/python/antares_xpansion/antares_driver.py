@@ -25,10 +25,9 @@ class AntaresDriver:
         self.ANTARES_N_CPU_OPTION = "--force-parallel"
         self.antares_n_cpu = 1  # default
 
-    def launch(self, antares_study_path, antares_n_cpu: int):
+    def launch(self, antares_study_path, antares_n_cpu: int) -> bool:
         self._set_antares_n_cpu(antares_n_cpu)
-        self._launch(antares_study_path)
-
+        return self._launch(antares_study_path)
 
     def _set_antares_n_cpu(self, antares_n_cpu: int):
         if antares_n_cpu >= 1:
@@ -36,10 +35,10 @@ class AntaresDriver:
         else:
             flushed_print(f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
 
-    def _launch(self, antares_study_path):
+    def _launch(self, antares_study_path) -> bool:
         self._clear_old_log()
         self.data_dir = antares_study_path
-        self._run_antares()
+        return self._run_antares()
 
     def _clear_old_log(self):
         logfile = str(self.antares_exe_path) + '.log'
@@ -52,7 +51,7 @@ class AntaresDriver:
         """
         return os.path.normpath(os.path.join(self.data_dir, self.output))
 
-    def _run_antares(self):
+    def _run_antares(self) -> bool:
         flushed_print("-- launching antares")
 
         start_time = datetime.now()
@@ -67,9 +66,10 @@ class AntaresDriver:
             raise AntaresDriver.AntaresExecutionError(f"Error: exited antares with status {returned_l.returncode}")
         elif returned_l.returncode != 0 and returned_l.returncode != 1 :
             print(f"Warning: exited antares with status {returned_l.returncode}")
-            raise AntaresDriver.AntaresUnknownError(f"Error: exited antares with status {returned_l.returncode}")
+            return True
         else:
             self._set_simulation_name()
+            return False
 
     def _set_simulation_name(self):
 
@@ -90,11 +90,5 @@ class AntaresDriver:
     class Error(Exception):
         pass
 
-    class AntaresExecutionException(Exception):
-        pass
-
-    class AntaresExecutionError(AntaresExecutionException):
-        pass
-
-    class AntaresUnknownError(AntaresExecutionException):
+    class AntaresExecutionError(Exception):
         pass
