@@ -96,9 +96,15 @@ class XpansionDriver:
         self._configure_general_data_processor()
         self._backup_general_data_ini()
         self._update_general_data_ini()
-        self.antares_driver.launch(
-            self.config_loader.data_dir(), self.config_loader.antares_n_cpu())
-        self._revert_general_data_ini()
+        try:
+            self.antares_driver.launch(
+                self.config_loader.data_dir(), self.config_loader.antares_n_cpu())
+            self._revert_general_data_ini()
+        except AntaresDriver.AntaresExecutionException as e:
+            flushed_print("Antares exited with error, backup current general data file and revert original one")
+            self._backup_general_data_ini_on_error()
+            self._revert_general_data_ini()
+            raise e
 
     def _update_general_data_ini(self):
         self.gen_data_proc.change_general_data_file_to_configure_antares_execution()
@@ -161,3 +167,6 @@ class XpansionDriver:
         self.gen_data_proc = GeneralDataProcessor(
             settings_dir, self.config_loader.is_accurate()
         )
+
+    def _backup_general_data_ini_on_error(self):
+        self.gen_data_proc.backup_data_on_error()

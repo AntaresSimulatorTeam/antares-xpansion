@@ -101,6 +101,10 @@ class GeneralDataProcessor:
         ini_file_backup = self._backup_file_name()
         shutil.copyfile(self._general_data_ini_file, ini_file_backup)
 
+    def backup_data_on_error(self):
+        ini_file_backup = self._error_file_name()
+        shutil.copyfile(self._general_data_ini_file, ini_file_backup)
+
     def revert_backup_data(self):
         ini_file_backup = self._backup_file_name()
         shutil.copyfile(ini_file_backup, self._general_data_ini_file)
@@ -108,3 +112,6 @@ class GeneralDataProcessor:
 
     def _backup_file_name(self):
         return self._general_data_ini_file.with_suffix(self._general_data_ini_file.suffix + ".backup")
+
+    def _error_file_name(self):
+        return self._general_data_ini_file.with_suffix(self._general_data_ini_file.suffix + ".error")

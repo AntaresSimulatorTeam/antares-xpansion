@@ -56,7 +56,6 @@ class AntaresDriver:
         flushed_print("-- launching antares")
 
         start_time = datetime.now()
-
         returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
                                     stdout=subprocess.DEVNULL,
                                     stderr=subprocess.DEVNULL)
@@ -68,6 +67,7 @@ class AntaresDriver:
             raise AntaresDriver.AntaresExecutionError(f"Error: exited antares with status {returned_l.returncode}")
         elif returned_l.returncode != 0 and returned_l.returncode != 1 :
             print(f"Warning: exited antares with status {returned_l.returncode}")
+            raise AntaresDriver.AntaresUnknownError(f"Error: exited antares with status {returned_l.returncode}")
         else:
             self._set_simulation_name()
 
@@ -89,7 +89,12 @@ class AntaresDriver:
 
     class Error(Exception):
         pass
-    
-    class AntaresExecutionError(Exception):
+
+    class AntaresExecutionException(Exception):
         pass
 
+    class AntaresExecutionError(AntaresExecutionException):
+        pass
+
+    class AntaresUnknownError(AntaresExecutionException):
+        pass
