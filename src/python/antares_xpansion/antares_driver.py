@@ -65,7 +65,7 @@ class AntaresDriver:
         if returned_l.returncode == 1:
             raise AntaresDriver.AntaresExecutionError(f"Error: exited antares with status {returned_l.returncode}")
         elif returned_l.returncode != 0 and returned_l.returncode != 1 :
-            print(f"Warning: exited antares with status {returned_l.returncode}")
+            flushed_print(f"Warning: exited antares with status {returned_l.returncode}")
             return True
         else:
             self._set_simulation_name()
