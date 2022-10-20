@@ -150,6 +150,7 @@ jobs:
           path: docs/
 
       - name: Configure
+        shell: bash
         run: |
           if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
           export XPRESS_VALUE="ON"
