@@ -122,7 +122,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true
-        if: matrix.xprs == 'XPRESS-ON'
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
