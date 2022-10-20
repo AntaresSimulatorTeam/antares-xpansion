@@ -152,9 +152,9 @@ jobs:
       - name: Configure
         run: |
           if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
-          XPRESS_VALUE="ON"
+          export XPRESS_VALUE="ON"
           else
-          XPRESS_VALUE="OFF"
+          export XPRESS_VALUE="OFF"
           fi
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
@@ -167,7 +167,7 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
-                 -DXPRESS=${XPRESS_VALUE } \
+                 -DXPRESS=${XPRESS_VALUE} \
                  -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON
 
