@@ -164,11 +164,6 @@ jobs:
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
-          echo "Xpress : ${XPRESS_VALUE}"
-          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
-          ls ${XPRESSDIR}
-          fi
-          echo "-----------"
           cmake3 -B _build -S . \
                  -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
