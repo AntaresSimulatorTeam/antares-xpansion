@@ -79,6 +79,9 @@ jobs:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+      XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
+      XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
+      XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
 
     steps:
       - name: Get release
@@ -90,10 +93,13 @@ jobs:
           submodules: true
 
       - name: Checkout xpressmp linux
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AS_TOKEN }}
+          repository: rte-france/xpress-mp
+          path: ${{ env.XPRESSDIR }}
+          github-server-url: https://github.com
         if: matrix.xprs == 'XPRESS-ON'
-        run: |
-          git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
-
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -135,7 +141,7 @@ jobs:
         run: |
           source /etc/profile.d/modules.sh
           module load mpi
-          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
-          export XPRESS=${{ env.XPRESS }}
+          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
+          export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"

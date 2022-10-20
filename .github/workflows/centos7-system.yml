@@ -113,21 +113,18 @@ jobs:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+      XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
+      XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
+      XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
 
     steps:
       - id: branch-name
         uses: tj-actions/branch-names@v6
 
       - name: Checkout
-        run: |
-          git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
-          git submodule update --init --recursive antares-deps
-
-      - name: Checkout xpressmp linux
-        if: matrix.xprs == 'XPRESS-ON'
-        run: |
-          git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
+        uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -149,12 +146,22 @@ jobs:
           name: user-guide
           path: docs/
 
+      - name: Checkout xpressmp linux
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AS_TOKEN }}
+          repository: rte-france/xpress-mp
+          path: ${{ env.XPRESSDIR }}
+          github-server-url: https://github.com
+        if: matrix.xprs == 'XPRESS-ON'
+
       - name: Configure
+        shell: bash
         run: |
           if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
-          XPRESS_VALUE="ON"
+          export XPRESS_VALUE="ON"
           else
-          XPRESS_VALUE="OFF"
+          export XPRESS_VALUE="OFF"
           fi
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
@@ -167,11 +174,12 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
-                 -DXPRESS=${{ env.XPRESS_VALUE }} \
-                 -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
+                 -DXPRESS=${XPRESS_VALUE} \
+                 -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON
 
       - name: Build
+        shell: bash
         run: |
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
@@ -234,8 +242,8 @@ jobs:
         run: |
           source /etc/profile.d/modules.sh
           module load mpi
-          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path }}
-          export XPRESS=${{ env.XPRESS }}
+          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
+          export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
