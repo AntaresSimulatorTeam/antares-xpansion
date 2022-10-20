@@ -120,8 +120,8 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
-          with:
-            submodules: true
+        with:
+          submodules: true
         if: matrix.xprs == 'XPRESS-ON'
 
       - name: Download pre-compiled librairies
