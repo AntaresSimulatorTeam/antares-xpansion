@@ -212,6 +212,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif ()
 find_package (Threads REQUIRED)
 
+find_package(ZLIB) #Required for CoinUtils
 
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
 find_package(gflags REQUIRED)
