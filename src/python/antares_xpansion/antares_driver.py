@@ -8,6 +8,7 @@ from datetime import datetime
 from pathlib import Path
 
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class AntaresDriver:
@@ -69,6 +70,7 @@ class AntaresDriver:
             return True
         else:
             self._set_simulation_name()
+            StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / self.simulation_name))
             return False
 
     def _set_simulation_name(self):
