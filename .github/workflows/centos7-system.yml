@@ -161,7 +161,7 @@ jobs:
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           echo "Xpress : ${XPRESS_VALUE}"
-          [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
           ls ${XPRESSDIR}
           fi
           echo "-----------"
