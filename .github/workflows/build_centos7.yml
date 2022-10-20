@@ -90,10 +90,13 @@ jobs:
           submodules: true
 
       - name: Checkout xpressmp linux
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AS_TOKEN }}
+          repository: rte-france/xpress-mp
+          path: ${{ env.XPRESSDIR }}
+          github-server-url: https://github.com
         if: matrix.xprs == 'XPRESS-ON'
-        run: |
-          git clone https://${{ secrets.AS_TOKEN }}@github.com/rte-france/xpress-mp.git ${{ env.XPRESSDIR }}
-
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz

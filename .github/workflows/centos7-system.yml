@@ -119,10 +119,10 @@ jobs:
         uses: tj-actions/branch-names@v6
 
       - name: Checkout
-        run: |
-          git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
-          git submodule update --init --recursive antares-deps
+        uses: actions/checkout@v3
+          with:
+            submodules: true
+        if: matrix.xprs == 'XPRESS-ON'
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz

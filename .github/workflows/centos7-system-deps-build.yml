@@ -63,10 +63,10 @@ jobs:
           yum install -y libuuid-devel
 
       - name: Clone
-        run: |
-          git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
-          git submodule update --init
+        uses: actions/checkout@v3
+          with:
+            submodules: true
+        if: matrix.xprs == 'XPRESS-ON'
 
       - name: Install TBB
         run: |
