@@ -167,8 +167,8 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
-                 -DXPRESS=${{ env.XPRESS_VALUE }} \
-                 -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
+                 -DXPRESS=${XPRESS_VALUE } \
+                 -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON
 
       - name: Build
