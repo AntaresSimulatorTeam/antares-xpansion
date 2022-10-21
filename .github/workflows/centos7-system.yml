@@ -156,6 +156,8 @@ jobs:
         if: matrix.xprs == 'XPRESS-ON'
         shell: bash
         run: |
+          ls
+          echo "-----------"
           ls ${{ env.XPRESSDIR }}
           echo "-----------"
           ls ${{ env.XPRESSDIR }}/bin
