@@ -110,9 +110,9 @@ jobs:
       matrix:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
     env:
-      XPRESSDIR: ${{ runner.workspace }}/xpress
-      XPRESS: ${{ runner.workspace }}/xpress/bin
-      XPRS_LIB_Path: ${{ runner.workspace }}/xpress/lib
+      XPRESSDIR: ${GITHUB_WORKSPACE}/xpress
+      XPRESS: ${GITHUB_WORKSPACE}/xpress/bin
+      XPRS_LIB_Path: ${GITHUB_WORKSPACE}/xpress/lib
 
     steps:
       - id: branch-name
