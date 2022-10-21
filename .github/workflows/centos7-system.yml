@@ -261,19 +261,6 @@ jobs:
           module load mpi
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
-          echo "Env xpress ${{ env.XPRESS_CONTAINER }}"
-          echo "Xpress $XPRESS"
-          ls /
-          echo "-----------"
-          ls /home
-          echo "-----------"
-          ls $GITHUB_WORKSPACE
-          echo "----------"
-          ls ${{ github.workspace }}
-          echo "-----------"
-          readlink -f ${{ github.workspace }}
-          echo "-----------"
-          ls ${{ env.XPRS_LIB_Path_CONTAINER }}
           cd _build
           ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
