@@ -110,9 +110,9 @@ jobs:
       matrix:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
     env:
-      XPRESSDIR: xpress
-      XPRESS: xpress/bin
-      XPRS_LIB_Path: xpress/lib
+      XPRESSDIR: ${{ github.workspace }}/xpress
+      XPRESS: ${{ github.workspace }}/xpress/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
       - id: branch-name
@@ -166,12 +166,6 @@ jobs:
           echo "-------------"
           ls xpress/lib
           echo "--------------"
-          ls ${{ env.XPRESSDIR }}
-          echo "-----------"
-          ls ${{ env.XPRESSDIR }}/bin
-          echo "-------------"
-          ls ${{ env.XPRESSDIR }}/lib
-          echo "--------------"
 
       - name: Configure
         shell: bash
@@ -193,7 +187,7 @@ jobs:
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                  -DXPRESS=${XPRESS_VALUE} \
-                 -DXPRESS_ROOT=${{ github.workspace }}/${XPRESSDIR} \
+                 -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON
 
       - name: Build
