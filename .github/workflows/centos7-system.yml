@@ -152,6 +152,17 @@ jobs:
           github-server-url: https://github.com
         if: matrix.xprs == 'XPRESS-ON'
 
+      - name: List express
+        if: matrix.xprs == 'XPRESS-ON'
+        shell: bash
+        run: |
+          ls ${{ env.XPRESSDIR }}
+          echo "-----------"
+          ls ${{ env.XPRESSDIR }}/bin
+          echo "-------------"
+          ${{ env.XPRESSDIR }}/lib
+          echo "--------------"
+
       - name: Configure
         shell: bash
         run: |
@@ -176,6 +187,7 @@ jobs:
                  -DALLOW_RUN_AS_ROOT=ON
 
       - name: Build
+        shell: bash
         run: |
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
