@@ -158,6 +158,14 @@ jobs:
         run: |
           ls
           echo "-----------"
+          echo $PWD
+          echo "------------"
+          ls xpress
+          echo "-----------"
+          ls xpress/bin
+          echo "-------------"
+          ls xpress/lib
+          echo "--------------"
           ls ${{ env.XPRESSDIR }}
           echo "-----------"
           ls ${{ env.XPRESSDIR }}/bin
