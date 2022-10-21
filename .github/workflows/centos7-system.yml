@@ -160,7 +160,7 @@ jobs:
           echo "-----------"
           echo "pwd : $PWD"
           echo "workspace ${{github.workspace}}"
-          echo "WORKSPACE $GITHUB_WORKSPACE
+          echo "WORKSPACE $GITHUB_WORKSPACE"
           echo "------------"
           ls xpress
           echo "-----------"
