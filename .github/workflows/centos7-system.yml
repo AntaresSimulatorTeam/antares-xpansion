@@ -110,9 +110,9 @@ jobs:
       matrix:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
     env:
-      XPRESSDIR: ${GITHUB_WORKSPACE}/xpress
-      XPRESS: ${GITHUB_WORKSPACE}/xpress/bin
-      XPRS_LIB_Path: ${GITHUB_WORKSPACE}/xpress/lib
+      XPRESSDIR: ${{ github.workspace }}/xpress
+      XPRESS: ${{ github.workspace }}/xpress/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
       - id: branch-name
@@ -158,7 +158,9 @@ jobs:
         run: |
           ls
           echo "-----------"
-          echo $PWD
+          echo "pwd : $PWD"
+          echo "workspace ${{github.workspace}}"
+          echo "WORKSPACE $GITHUB_WORKSPACE
           echo "------------"
           ls xpress
           echo "-----------"
@@ -262,6 +264,8 @@ jobs:
           echo "-----------"
           ls /home
           echo "-----------"
+          ls $GITHUB_WORKSPACE
+          echo "----------"
           ls ${{ github.workspace }}
           echo "-----------"
           readlink -f ${{ github.workspace }}
