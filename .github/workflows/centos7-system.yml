@@ -170,7 +170,7 @@ jobs:
           echo "-----------"
           ls ${{ env.XPRESSDIR }}/bin
           echo "-------------"
-          ${{ env.XPRESSDIR }}/lib
+          ls ${{ env.XPRESSDIR }}/lib
           echo "--------------"
 
       - name: Configure
