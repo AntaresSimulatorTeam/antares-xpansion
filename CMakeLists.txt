@@ -77,7 +77,6 @@ set (LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 set (CMAKE_CXX_STANDARD 17)
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 message ("USE_MPI is ${USE_MPI}")
 
 if (MSVC)
@@ -213,6 +212,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif ()
 find_package (Threads REQUIRED)
 
+find_package(ZLIB REQUIRED) #Required for CoinUtils
 
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
 find_package(gflags REQUIRED)
