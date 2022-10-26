@@ -206,7 +206,7 @@ class XpansionConfig:
         return False
 
     def relative_gap_default_value(self):
-        return "1e-12"
+        return "1e-8"
 
     def absolute_gap_default_value(self):
         return "1"
