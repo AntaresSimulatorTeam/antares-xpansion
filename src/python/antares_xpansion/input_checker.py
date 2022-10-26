@@ -333,6 +333,7 @@ options_types_and_legal_values = {
     "master": (type_str, ["relaxed", "integer"]),
     "optimality_gap": (type_float, None),
     "relative_gap": (type_float, None),
+    "relaxed_optimality_gap": (type_float, None),
     "max_iteration": (type_int, None),
     "solver": (type_str, None),
     "timelimit": (type_int, None),
