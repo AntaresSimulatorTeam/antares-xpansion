@@ -495,7 +495,7 @@ class ConfigLoader:
             self._simulation_name = last_dir_path
         else:
             # TODO temp function to zip study output -- for now antares does not provide archive output
-            self.zip_last_study(last_dir_path)
+            # self.zip_last_study(last_dir_path)
             # Get list of all dirs only in the given directory
             list_of_zip_filter = Path(self.antares_output()).glob("*.zip")
 
