@@ -21,20 +21,20 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - id: create-user-guide
         name: user guide pdf creation
         uses: ./.github/workflows/generate-userguide-pdf
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: user guide upload
         id: userguide_upload
@@ -58,13 +58,13 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: true
 
       - name: Checkout xpressmp linux
         if: matrix.xprs == 'XPRESS-ON'
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
@@ -72,17 +72,12 @@ jobs:
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache
-        uses: hendrikmuhs/ccache-action@v1
+        uses: hendrikmuhs/ccache-action@v1.2.3
         with:
           key: ${{ matrix.os }}-${{ matrix.xprs }}
 
-      - name: Get release
-        if: github.event_name == 'release' && github.event.action == 'created'
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
-
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
@@ -102,35 +97,35 @@ jobs:
 
       - name: Read antares-solver version
         id: antares-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_version'
+          key: 'antares_version'
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - name: Read antares-deps version
         id: antares-deps-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_deps_version'
+          key: 'antares_deps_version'
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
-          antares-version: ${{steps.antares-version.outputs.prop}}
+          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+          antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
 
       - name: Download userguide
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: user-guide
           path: docs/
@@ -138,7 +133,11 @@ jobs:
       - name: Configure
         shell: bash
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+            XPRESS_VALUE="ON"
+          else
+            XPRESS_VALUE="OFF"
+          fi
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
@@ -160,12 +159,13 @@ jobs:
         id: single_file_name
         shell: bash
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          XPRS=${{ env.XPRESS_VALUE }}
-          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
-          VERSION=${{steps.antares-xpansion-version.outputs.prop}}${WITH_XPRS}
+          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+            WITH_XPRS="-xpress"
+          else
+            WITH_XPRS=""
+          fi
+          VERSION=${{steps.antares-xpansion-version.outputs.result}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
-          echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
       - id: create-single-file
@@ -177,16 +177,18 @@ jobs:
       - name: Installer .tar.gz creation
         run: |
           cd _build
-          cpack -G TGZ
-          export TGZ_NAME=$(ls *.tar.gz)
-          echo "TGZ_NAME=$TGZ_NAME" >> $GITHUB_ENV
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}"
+          cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          #Need to differentiate between xpress/no_xpress files
+          #Cpack command line doesn't seem to care about -P or -R options
+          echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Installer .deb creation
         run: |
           cd _build
-          cpack -G DEB
-          export DEB_NAME=$(ls *.deb)
-          echo "DEB_NAME=$DEB_NAME" >> $GITHUB_ENV
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}"
+          cpack -G DEB -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          echo "DEB_NAME=$FILE_NAME.deb" >> $GITHUB_ENV
 
       - name: Upload .tar.gz
         uses: actions/upload-artifact@v3
@@ -210,6 +212,11 @@ jobs:
         run: |
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+
+      - name: Get release
+        if: github.event_name == 'release' && github.event.action == 'created'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
 
       - name: Publish .tar.gz
         if: github.event_name == 'release' && github.event.action == 'created'

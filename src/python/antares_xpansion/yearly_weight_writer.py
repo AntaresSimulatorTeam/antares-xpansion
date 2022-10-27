@@ -54,4 +54,4 @@ class YearlyWeightWriter:
 
     @staticmethod
     def _file_should_be_added(file_name) -> bool:
-        return '.mps' in file_name and not '-1.mps' in file_name
+        return '.mps' in file_name

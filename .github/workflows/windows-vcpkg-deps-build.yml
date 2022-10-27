@@ -23,7 +23,7 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: true
 
@@ -31,26 +31,26 @@ jobs:
         run: git config --system core.longpaths true
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
       # Restore both vcpkg and its artifacts from the GitHub cache service.
       - name: Restore vcpkg and its artifacts.
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
-        # The first path is the location of vcpkg (it contains the vcpkg executable and data files).
-        # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
-        path: |
-          ${{ env.VCPKG_ROOT }}
-          !${{ env.VCPKG_ROOT }}/buildtrees
-          !${{ env.VCPKG_ROOT }}/packages
-          !${{ env.VCPKG_ROOT }}/downloads
-        # The key is composed in a way that it gets properly invalidated: this must happen whenever vcpkg's Git commit id changes, or the list of packages changes. In this case a cache miss must happen and a new entry with a new key with be pushed to GitHub the cache service.
-        # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
-        # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
-        key: |
-          ${{ hashFiles( 'vcpkg_manifest/vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
+          # The first path is the location of vcpkg (it contains the vcpkg executable and data files).
+          # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
+          path: |
+            ${{ env.VCPKG_ROOT }}
+            !${{ env.VCPKG_ROOT }}/buildtrees
+            !${{ env.VCPKG_ROOT }}/packages
+            !${{ env.VCPKG_ROOT }}/downloads
+          # The key is composed in a way that it gets properly invalidated: this must happen whenever vcpkg's Git commit id changes, or the list of packages changes. In this case a cache miss must happen and a new entry with a new key with be pushed to GitHub the cache service.
+          # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
+          # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
+          key: |
+            ${{ hashFiles( 'vcpkg_manifest/vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
 
       - name: Install dependencies
         run: |
@@ -67,16 +67,16 @@ jobs:
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - name: Install deps with VCPKG
         run: |
           cd vcpkg
           ./bootstrap-vcpkg.sh
-          vcpkg install jsoncpp gtest boost-mpi boost-program-options tbb --triplet ${{matrix.triplet}}
+          vcpkg install jsoncpp gtest boost-mpi boost-program-options tbb zlib --triplet ${{matrix.triplet}}
           rm -rf buildtrees
           rm -rf packages
           rm -rf downloads
@@ -107,5 +107,5 @@ jobs:
         name: Single file .zip creation
         uses: ./.github/workflows/single-file-creation-zip
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.prop}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 

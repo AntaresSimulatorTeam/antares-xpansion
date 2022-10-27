@@ -1,8 +1,11 @@
 import os
 from pathlib import Path
 
-from antares_xpansion.study_output_cleaner import rename_master, remove_files_containing_str_from_dir, StudyOutputCleaner
+from antares_xpansion.study_output_cleaner import rename_master, remove_files_containing_str_from_dir, \
+    StudyOutputCleaner
+
 from file_creation import _create_empty_file_from_list
+
 
 def _check_result(tmp_path: Path, removed_files, keep_files):
     keep_files_result = os.listdir(tmp_path)
@@ -35,9 +38,10 @@ class TestStudyOutputCleaner:
 
     def test_antares_step_clean(self, tmp_path):
         removed_files = (
-        "problem-year-week-date-hour-1.mps", "criterion-year-week-date-hour-1.txt", "criterion-year-week-date-hour.txt",
-        "other-year-week-date-hour-1.txt")
-        keep_files = ("problem-year-week-date-hour.mps", "other-year-week-date-hour.txt")
+            "criterion-year-week-date-hour-1.txt", "criterion-year-week-date-hour.txt")
+        keep_files = (
+            "problem-year-week-date-hour-1.mps", "problem-year-week-date-hour.mps", "other-year-week-date-hour.txt",
+            "other-year-week-date-hour-1.txt")
         _create_empty_file_from_list(tmp_path, removed_files)
         _create_empty_file_from_list(tmp_path, keep_files)
 

@@ -28,9 +28,7 @@ class StudyOutputCleaner:
 
     @staticmethod
     def clean_antares_step(study_output: Path):
-        remove_files_containing_str_from_dir('-1.mps', study_output)
         remove_files_containing_str_from_dir('criterion', study_output)
-        remove_files_containing_str_from_dir('-1.txt', study_output)
 
     @staticmethod
     def clean_lpnamer_step(study_output: Path):
