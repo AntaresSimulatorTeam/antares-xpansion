@@ -5,6 +5,7 @@
 
 #include <filesystem>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "Candidate.h"
@@ -23,7 +24,7 @@ class CandidatesINIReader {
       const std::filesystem::path& antaresIntercoFile,
       const std::filesystem::path& areaFile,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
-  CandidatesINIReader(
+  explicit CandidatesINIReader(
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : logger_(logger) {}
   std::vector<IntercoFileData> ReadAntaresIntercoFile(
@@ -38,13 +39,13 @@ class CandidatesINIReader {
       std::istream& stream) const;
   std::vector<std::string> ReadLineByLineArea(std::istream& stream) const;
   std::vector<CandidateData> readCandidateData(
-      const std::filesystem::path& candidateFile);
+      const std::filesystem::path& candidateFile) const;
 
  private:
   bool checkArea(std::string const& areaName_p) const;
   CandidateData readCandidateSection(const std::filesystem::path& candidateFile,
                                      const INIReader& reader,
-                                     const std::string& sectionName);
+                                     const std::string& sectionName) const;
 
   std::map<std::string, int> _intercoIndexMap;
   std::vector<IntercoFileData> _intercoFileData;

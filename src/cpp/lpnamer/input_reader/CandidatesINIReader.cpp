@@ -126,7 +126,7 @@ bool CandidatesINIReader::checkArea(std::string const &areaName_p) const {
 }
 
 std::vector<CandidateData> CandidatesINIReader::readCandidateData(
-    const std::filesystem::path &candidateFile) {
+    const std::filesystem::path &candidateFile) const {
   std::vector<CandidateData> result;
 
   INIReader reader(candidateFile.string());
@@ -143,7 +143,7 @@ std::vector<CandidateData> CandidatesINIReader::readCandidateData(
 
 CandidateData CandidatesINIReader::readCandidateSection(
     const std::filesystem::path &candidateFile, const INIReader &reader,
-    const std::string &sectionName) {
+    const std::string &sectionName) const {
   CandidateData candidateData;
   candidateData.name =
       StringUtils::ToLowercase(getStrVal(reader, sectionName, "name"));
