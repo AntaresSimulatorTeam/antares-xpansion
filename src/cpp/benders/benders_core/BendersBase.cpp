@@ -584,7 +584,7 @@ std::string BendersBase::status_from_criterion() const {
  */
 std::filesystem::path BendersBase::GetSubproblemPath(
     std::string const &slave_name) const {
-  return std::filesystem::path(_options.INPUTROOT) / (slave_name + MPS_SUFFIX);
+  return std::filesystem::path(_options.INPUTROOT) / slave_name;
 }
 
 /*!

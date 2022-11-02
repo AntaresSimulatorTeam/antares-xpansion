@@ -29,7 +29,7 @@ void MergeMPS::launch() {
   auto reader = ArchiveReader(inputRootDir / _options.MPS_ZIP_FILE);
   reader.Open();
   for (auto const &kvp : input) {
-    auto problem_name(inputRootDir / (kvp.first + MPS_SUFFIX));
+    auto problem_name(inputRootDir / (kvp.first));
     SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
     solver_l->init();
     solver_l->set_output_log_level(_options.LOG_LEVEL);

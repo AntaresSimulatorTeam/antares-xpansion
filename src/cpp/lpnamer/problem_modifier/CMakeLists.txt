@@ -18,17 +18,39 @@ add_library(lp_namer_problem_modifier STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/ProblemModifier.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/ProblemModifier.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/MasterProblemBuilder.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/MasterProblemBuilder.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.h)
+		${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemModifier.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemModifier.h
+		${CMAKE_CURRENT_SOURCE_DIR}/MasterProblemBuilder.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/MasterProblemBuilder.h
+		${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
+		${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.h
+		${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemProviderAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemProviderAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/IProblemProviderPort.h
+		${CMAKE_CURRENT_SOURCE_DIR}/IProblemWriter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveProblemWriter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveProblemWriter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesZipAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesZipAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/IProblemVariablesProviderPort.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFileAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFileAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/LpsFromAntares.h
+		${CMAKE_CURRENT_SOURCE_DIR}/XpansionProblemsFromAntaresProvider.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/XpansionProblemsFromAntaresProvider.h
+		${CMAKE_CURRENT_SOURCE_DIR}/AntaresProblemToXpansionProblemTranslator.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/AntaresProblemToXpansionProblemTranslator.h
+		${CMAKE_CURRENT_SOURCE_DIR}/IXpansionProblemsProvider.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemsProviderAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemsProviderAdapter.h
+		)
 
 target_include_directories (lp_namer_problem_modifier
 	PUBLIC

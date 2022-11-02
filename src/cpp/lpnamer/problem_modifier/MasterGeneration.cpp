@@ -50,7 +50,7 @@ void MasterGeneration::write_structure_file(
     const std::filesystem::path &rootPath, const Couplings &couplings) const {
   std::map<std::string, std::map<std::string, unsigned int>> output;
   for (const auto &[candidate_name_and_mps_filePath, colId] : couplings) {
-    output[candidate_name_and_mps_filePath.second.stem().string()]
+    output[candidate_name_and_mps_filePath.second]
           [candidate_name_and_mps_filePath.first] = colId;
   }
   unsigned int i = 0;
