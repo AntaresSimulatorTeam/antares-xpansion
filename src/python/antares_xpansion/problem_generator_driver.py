@@ -2,22 +2,20 @@
     Class to control the Problem Generation
 """
 
-import shutil
 import os
+import shutil
 import subprocess
-from typing import List
-import zipfile
-
 import sys
-from datetime import datetime
+import zipfile
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
+from typing import List
 
-from antares_xpansion.xpansion_utils import read_and_write_mps
-from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
+from antares_xpansion.xpansion_utils import read_and_write_mps
+from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 
 
 @dataclass
@@ -136,6 +134,9 @@ class ProblemGeneratorDriver:
                     if 'interco' in e:
                         study_archive.extract(
                             e, self.xpansion_output_dir)
+                if 'ts-numbers' in e:
+                    study_archive.extract(
+                        e, self.xpansion_output_dir)
 
         self._check_and_rename_area_file()
         self._check_and_rename_interco_file()
@@ -174,6 +175,7 @@ class ProblemGeneratorDriver:
        
 
         start_time = datetime.now()
+        flushed_print(f"LPNamer command {self._get_lp_namer_command()}")
         returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
                                     stdout=sys.stdout, stderr=sys.stderr)
 

@@ -2,28 +2,22 @@
     Class to work on config
 """
 
-from glob import glob
+import json
 import os
 import re
 import shutil
-import subprocess
 import sys
-import json
-
 from pathlib import Path
-from zipfile import ZipFile
-import zipfile
 
+from antares_xpansion.chronicles_checker import ChronicleChecker
+from antares_xpansion.flushed_print import flushed_print
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
+from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.optimisation_keys import OptimisationKeys
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.flushed_print import flushed_print
-from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
-
-from antares_xpansion.chronicles_checker import ChronicleChecker
 
 
 class NTCColumnConstraintError(Exception):
@@ -518,19 +512,26 @@ class ConfigLoader:
 
         shutil.rmtree(last_dir_path, ignore_errors=True)
 
+    def is_zip(self, file):
+        filename, ext = os.path.splitext(file)
+        return ext == ".zip"
+
     def get_last_modified_dir(self, root_dir):
-        list_of_dirs_filter = filter(
-            lambda x: os.path.isdir(os.path.join(root_dir, x)),
-            os.listdir(root_dir),
+        list_dir = os.listdir(root_dir)
+        list_of_zip = filter(
+            lambda x: self.is_zip(x), list_dir
         )
         # Sort list of files based on last modification time in ascending order
-        list_of_dirs = sorted(
-            list_of_dirs_filter,
+        zip_sorted = sorted(
+            list_of_zip,
             key=lambda x: os.path.getmtime(
                 os.path.join(root_dir, x)),
         )
-        last_dir_path = Path(root_dir) / list_of_dirs[-1]
-        return last_dir_path
+
+        last_zip = Path(root_dir) / zip_sorted[-1]
+        filename, ext = os.path.splitext(last_zip)
+        output_dir = os.path.basename(filename)
+        return output_dir
 
     def is_accurate(self):
         """
