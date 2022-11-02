@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <utility>
 
 #include "LauncherHelpers.h"
 #include "MasterProblemBuilder.h"
@@ -9,11 +10,12 @@
 
 MasterGeneration::MasterGeneration(
     const std::filesystem::path &rootPath, const std::vector<ActiveLink> &links,
-    const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
-    std::string const &master_formulation, std::string const &solver_name,
+    const AdditionalConstraints &additionalConstraints_p,
+    const Couplings &couplings, std::string const &master_formulation,
+    std::string const &solver_name,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
     const std::filesystem::path &log_file_path)
-    : logger_(logger) {
+    : logger_(std::move(logger)) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
                    additionalConstraints_p, log_file_path);
