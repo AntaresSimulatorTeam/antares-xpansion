@@ -1,15 +1,25 @@
 Antares-Xpansion changelog
 =================
 
+v1.0.0 (11/2022)
+--------------------
+
+### Features
+
+- Use Antares-Simulator 8.3.2
+- Implement in-out benders optimisation
+
 v0.8.0 (08/2022)
 --------------------
+
 ### Features
 
 - Use Antares-Simulator 8.2.2
-- Allow the use of different chronicles of link profile for each Monte-Carlo year. More information [here](user-guide/get-started/candidate-definition.md#using-different-profiles-depending-on-the-monte-carlo-year)
+- Allow the use of different chronicles of link profile for each Monte-Carlo year. More
+  information [here](user-guide/get-started/candidate-definition.md#using-different-profiles-depending-on-the-monte-carlo-year)
 - New directories to store additional constraints files and weights files:
-    - Additional constraints files must be stored in `user/expansion/constraints`
-    - Weights files must be stored in `user/expansion/weights`
+  - Additional constraints files must be stored in `user/expansion/constraints`
+  - Weights files must be stored in `user/expansion/weights`
 
 ### Bug fixes
 - Allow the `capa` folder to be missing if unused
