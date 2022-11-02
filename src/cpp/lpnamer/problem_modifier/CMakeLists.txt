@@ -29,8 +29,8 @@ add_library(lp_namer_problem_modifier STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.h
 		${CMAKE_CURRENT_SOURCE_DIR}/LinkCapacitiesCSVWriter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/LinkCapacitiesCSVWriter.cpp
@@ -39,7 +39,11 @@ add_library(lp_namer_problem_modifier STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkCapacitiesStrategy.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkCapacitiesStrategy.h
 		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.h)
+		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.h
+		${CMAKE_CURRENT_SOURCE_DIR}/MyAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/MyAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/IProblemProviderPort.h
+		)
 
 target_include_directories (lp_namer_problem_modifier
 	PUBLIC

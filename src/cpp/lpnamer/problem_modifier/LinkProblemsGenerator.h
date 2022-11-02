@@ -11,8 +11,10 @@
 #include "ArchiveWriter.h"
 #include "Candidate.h"
 #include "FileInBuffer.h"
+#include "IProblemProviderPort.h"
 #include "ProblemGenerationLogger.h"
 #include "ProblemModifier.h"
+#include "VariableFileReader.h"
 #include "common_lpnamer.h"
 
 const std::string CANDIDATES_INI{"candidates.ini"};
@@ -21,10 +23,10 @@ const std::string MPS_TXT{"mps.txt"};
 const std::string MPS_ZIP_FILE{"MPS_ZIP_FILE"};
 const std::string ZIP_EXT{".zip"};
 const std::string STUDY_FILE{"study.antares"};
-typedef std::pair<std::string, std::filesystem::path>
-    CandidateNameAndMpsFilePath;
-typedef unsigned int ColId;
-typedef std::map<CandidateNameAndMpsFilePath, ColId> Couplings;
+using CandidateNameAndMpsFilePath =
+    std::pair<std::string, std::filesystem::path>;
+using ColId = unsigned int;
+using Couplings = std::map<CandidateNameAndMpsFilePath, ColId>;
 
 struct ProblemData {
   ProblemData(const std::string& problem_mps, const std::string& variables_txt);
@@ -52,8 +54,8 @@ class LinkProblemsGenerator {
       const std::filesystem::path& mps_filePath_p) const;
 
   void treat(const std::filesystem::path& root, ProblemData const&,
-             Couplings& couplings, ArchiveReader& reader,
-             ArchiveWriter& writer) const;
+             Couplings& couplings, ArchiveReader& reader, ArchiveWriter& writer,
+             IProblemProviderPort* problem_provider) const;
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
