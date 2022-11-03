@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04 ]
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [ XPRESS-ON ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -116,5 +116,6 @@ jobs:
 
       - name: Test
         run: |
+          ls ${{ env.XPRESSDIR }}s
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
