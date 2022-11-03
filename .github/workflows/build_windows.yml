@@ -134,7 +134,8 @@ jobs:
         run: |
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
           set PATH=%PATH%;${GITHUB_WORKSPACE}/xpress/bin;${GITHUB_WORKSPACE}/xpress;${{ env.XPRESS }};${{ env.XPRESSDIR }};${GITHUB_WORKSPACE}/xpress/bin
-          set XPRESS=${GITHUB_WORKSPACE}/xpress
+          set XPRESS=${{ env.XPRESS }}
+          dir ${GITHUB_WORKSPACE}/xpress/
           echo "---------------"
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
