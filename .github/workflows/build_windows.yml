@@ -37,7 +37,7 @@ jobs:
         if: matrix.xprs == 'XPRESS-ON'
         uses: actions/checkout@v3
         with:
-          repository: rte-france/xpress-mp-temp
+          repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           ref: master
           token: ${{ secrets.AS_TOKEN }}
