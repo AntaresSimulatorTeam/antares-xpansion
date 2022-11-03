@@ -26,11 +26,11 @@ SolverClp::SolverClp(const std::filesystem::path &log_file) : SolverClp() {
 SolverClp::SolverClp() {
   _NumberOfProblems += 1;
   _fp = nullptr;
+  set_output_log_level(0);
 }
 
 SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     : SolverClp() {
-  _fp = nullptr;
   // Try to cast the solver in fictif to a SolverCPLEX
   if (const auto c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
