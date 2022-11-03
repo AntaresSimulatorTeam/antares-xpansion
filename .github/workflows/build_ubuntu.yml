@@ -117,6 +117,6 @@ jobs:
       - name: Test
         shell: bash
         run: |
-          ls ${{ env.XPRESSDIR }}k
+          ls ${{ env.XPRESSDIR }}
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
