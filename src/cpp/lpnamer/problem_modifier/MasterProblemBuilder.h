@@ -4,6 +4,7 @@
 
 #include <multisolver_interface/SolverAbstract.h>
 
+#include <filesystem>
 #include <unordered_map>
 
 #include "ActiveLinks.h"
@@ -17,7 +18,8 @@ class MasterProblemBuilder {
  public:
   explicit MasterProblemBuilder(const std::string& master_formulation);
   std::shared_ptr<SolverAbstract> build(
-      const std::string& solverName, const std::vector<Candidate>& candidates);
+      const std::string& solverName, const std::vector<Candidate>& candidates,
+      const std::filesystem::path& log_file_path);
 
  private:
   void addNvarOnEachIntegerCandidate(

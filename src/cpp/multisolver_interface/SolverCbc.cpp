@@ -25,13 +25,13 @@ SolverCbc::SolverCbc(const std::filesystem::path &log_file) : SolverCbc() {
 }
 SolverCbc::SolverCbc() {
   _NumberOfProblems += 1;
-  _current_log_level = 0;
+  set_output_log_level(0);
 }
 
-SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
-    : SolverCbc() {
+SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy) {
   // Try to cast the solver in fictif to a SolverCPLEX
   if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
+    _NumberOfProblems += 1;
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
     _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.string().c_str(), "a+");

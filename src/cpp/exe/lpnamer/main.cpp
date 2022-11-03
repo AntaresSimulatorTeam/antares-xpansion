@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
 
     MasterGeneration master_generation(root, links, additionalConstraints,
                                        couplings, master_formulation,
-                                       solver_name, logger);
+                                       solver_name, logger, log_file_path);
 
     return 0;
   } catch (std::exception &e) {
