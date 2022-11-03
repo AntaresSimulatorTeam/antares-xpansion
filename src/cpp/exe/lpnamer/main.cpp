@@ -65,8 +65,8 @@ int main(int argc, char **argv) {
     po::notify(opts);
     /**/
     using namespace ProblemGenerationLog;
-    auto logFile = std::make_shared<ProblemGenerationFileLogger>(
-        root / "lp" / "ProblemGenerationLog.txt");
+    const auto log_file_path = root / "lp" / "ProblemGenerationLog.txt";
+    auto logFile = std::make_shared<ProblemGenerationFileLogger>(log_file_path);
 
     auto logStd = std::make_shared<ProblemGenerationOstreamLogger>(std::cout);
 
@@ -96,7 +96,8 @@ int main(int argc, char **argv) {
     Couplings couplings;
     std::string solver_name = "CBC";
     std::vector<ActiveLink> links = linkBuilder.getLinks();
-    LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger);
+    LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
+                                                log_file_path);
     linkProblemsGenerator.treatloop(root, couplings);
 
     MasterGeneration master_generation(root, links, additionalConstraints,
