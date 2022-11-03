@@ -115,7 +115,8 @@ jobs:
           cmake --build _build --config Release -j8
 
       - name: Test
+        shell: bash
         run: |
-          ls ${{ env.XPRESSDIR }}s
+          ls ${{ env.XPRESSDIR }}k
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
