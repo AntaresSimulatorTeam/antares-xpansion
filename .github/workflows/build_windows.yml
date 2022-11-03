@@ -133,7 +133,7 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
-          set PATH=%PATH%;${{ env.XPRESS }};${{ env.XPRESSDIR }}
+          set PATH=%PATH%;${{ env.XPRESS }};${{ env.XPRESSDIR }};${GITHUB_WORKSPACE}/xpress/bin
           echo %PATH%
           echo "---------------"
           echo ${{ env.XPRESSDIR }}
@@ -148,5 +148,9 @@ jobs:
           echo "---------------"
           echo "list include"
           dir ${{ env.XPRESSDIR }}\include
+          echo "---------------"
+          echo "list bin"
+          dir ${GITHUB_WORKSPACE}/xpress/bin
+          echo "---------------"
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
