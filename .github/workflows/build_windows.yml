@@ -133,7 +133,7 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
-          set PATH=%PATH%;${GITHUB_WORKSPACE}\xpress\bin;${GITHUB_WORKSPACE}\xpress;${{ env.XPRESS }};${{ env.XPRESSDIR }
+          set PATH=%PATH%;${GITHUB_WORKSPACE}\xpress\bin;${GITHUB_WORKSPACE}\xpress;${{ env.XPRESS }};${{ env.XPRESSDIR }}
           set XPRESS=${{ env.XPRESS }}
           dir ${GITHUB_WORKSPACE}\xpress
           echo "---------------"
