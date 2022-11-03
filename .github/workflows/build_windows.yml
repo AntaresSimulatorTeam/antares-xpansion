@@ -133,20 +133,20 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
-          set PATH=%PATH%;${{ env.XPRESS }}
+          set PATH=%PATH%;${{ env.XPRESS }};${{ env.XPRESSDIR }}
           echo %PATH%
           echo "---------------"
-          echo ${{ env.XPRESS }}
+          echo ${{ env.XPRESSDIR }}
           echo "list xpress"
-          dir ${{ env.XPRESS }}
+          dir ${{ env.XPRESSDIR }}
           echo "---------------"
           echo "list lib"
-          dir ${{ env.XPRESS }}\lib
+          dir ${{ env.XPRESSDIR }}\lib
           echo "---------------"
           echo "list bin"
-          dir ${{ env.XPRESS }}\bin
+          dir ${{ env.XPRESSDIR }}\bin
           echo "---------------"
           echo "list include"
-          dir ${{ env.XPRESS }}\include
+          dir ${{ env.XPRESSDIR }}\include
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
