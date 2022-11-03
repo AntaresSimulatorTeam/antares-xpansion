@@ -20,7 +20,7 @@ jobs:
       matrix:
         os: [ windows-latest ]
         triplet: [ x64-windows ]
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [ XPRESS-ON ]
     env:
       XPRESSDIR: ${{ github.workspace }}\xpress
       XPRESS: ${{ github.workspace }}\xpress\bin
@@ -137,11 +137,14 @@ jobs:
           echo %PATH%
           echo "---------------"
           echo ${{ env.XPRESS }}
+          echo "list xpress"
           dir ${{ env.XPRESS }}
           echo "---------------"
-           dir ${{ env.XPRESS }}/lib
+          echo "list lib"
+          dir ${{ env.XPRESS }}/lib
           echo "---------------"
-           dir ${{ env.XPRESS }}/bin
+          echo "list bin"
+          dir ${{ env.XPRESS }}/bin
           echo "---------------"
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
