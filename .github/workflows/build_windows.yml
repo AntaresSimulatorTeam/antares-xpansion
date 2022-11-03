@@ -141,10 +141,12 @@ jobs:
           dir ${{ env.XPRESS }}
           echo "---------------"
           echo "list lib"
-          dir ${{ env.XPRESS }}/lib
+          dir ${{ env.XPRESS }}\lib
           echo "---------------"
           echo "list bin"
-          dir ${{ env.XPRESS }}/bin
+          dir ${{ env.XPRESS }}\bin
           echo "---------------"
+          echo "list include"
+          dir ${{ env.XPRESS }}\include
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
