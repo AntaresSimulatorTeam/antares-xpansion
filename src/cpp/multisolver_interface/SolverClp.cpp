@@ -19,7 +19,7 @@ SolverClp::SolverClp(const std::filesystem::path &log_file) : SolverClp() {
                 << std::endl;
     } else {
       setvbuf(_fp, NULL, _IONBF, 0);
-      _message_handler.setFilePointer(_fp);
+      _clp.messageHandler()->setFilePointer(_fp);
     }
   }
 }
@@ -38,7 +38,7 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     _fp = fopen(_log_file.string().c_str(), "a+");
     if (_fp != nullptr) {
       setvbuf(_fp, nullptr, _IONBF, 0);
-      _message_handler.setFilePointer(_fp);
+      _clp.messageHandler()->setFilePointer(_fp);
     }
   } else {
     _NumberOfProblems -= 1;
@@ -493,11 +493,10 @@ void SolverClp::get_mip_sol(double *primals) {
 ---------------------------
 *************************************************************************************************/
 void SolverClp::set_output_log_level(int loglevel) {
-  _clp.passInMessageHandler(&_message_handler);
   if (loglevel > 0) {
-    _message_handler.setLogLevel(1);
+    _clp.messageHandler()->setLogLevel(1);
   } else {
-    _message_handler.setLogLevel(0);
+    _clp.messageHandler()->setLogLevel(0);
   }
 }
 

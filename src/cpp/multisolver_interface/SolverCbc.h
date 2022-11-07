@@ -27,7 +27,6 @@ class SolverCbc : public SolverAbstract {
   const std::string name_ = "CBC";
   OsiClpSolverInterface _clp_inner_solver;
   CbcModel _cbc;
-  CoinMessageHandler _message_handler;
   int _current_log_level;
 
   /*************************************************************************************************
