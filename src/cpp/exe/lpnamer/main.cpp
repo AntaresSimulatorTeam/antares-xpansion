@@ -99,9 +99,28 @@ int main(int argc, char **argv) {
     Couplings couplings;
     std::string solver_name = "CBC";
     std::vector<ActiveLink> links = linkBuilder.getLinks();
+
+    auto const mps_file_name = root / MPS_TXT;
+    auto lpDir_ = root / "lp";
+    auto reader = ArchiveReader(archivePath);
+    reader.Open();
+    const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
+    const auto tmpArchivePath = lpDir_ / tmpArchiveName;
+    auto writer = ArchiveWriter(tmpArchivePath);
+    writer.Open();
+
     LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
                                                 log_file_path);
-    linkProblemsGenerator.treatloop(root, archivePath, couplings);
+    auto mpsList = linkProblemsGenerator.readMPSList(mps_file_name);
+
+    linkProblemsGenerator.treatloop(root, couplings, mpsList, writer, reader);
+
+    std::filesystem::remove(archivePath);
+    std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
+    reader.Close();
+    reader.Delete();
+    writer.Close();
+    writer.Delete();
 
 
     MasterGeneration master_generation(root, links, additionalConstraints,

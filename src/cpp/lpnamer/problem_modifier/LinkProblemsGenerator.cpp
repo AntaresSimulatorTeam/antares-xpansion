@@ -109,26 +109,13 @@ void LinkProblemsGenerator::treat(
  * \return void
  */
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
-                                      const std::filesystem::path &archivePath,
-                                      Couplings &couplings) {
-  auto const mps_file_name = root / MPS_TXT;
-  lpDir_ = root / "lp";
-  auto reader = ArchiveReader(archivePath);
-  reader.Open();
-  const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
-  const auto tmpArchivePath = lpDir_ / tmpArchiveName;
-  auto writer = ArchiveWriter(tmpArchivePath);
-  writer.Open();
-  auto mpsList = readMPSList(mps_file_name);
-  std::for_each(std::execution::par, mpsList.begin(), mpsList.end(),
+                                      Couplings &couplings,
+                                      const std::vector<ProblemData> &mps_list,
+                                      ArchiveWriter &writer,
+                                      ArchiveReader &reader) {
+  std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
                 [&](const auto &mps) {
                   MyAdapter adapter(root, mps);
                   treat(root, mps, couplings, reader, writer, &adapter);
                 });
-  reader.Close();
-  reader.Delete();
-  writer.Close();
-  writer.Delete();
-  std::filesystem::remove(archivePath);
-  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
 }
