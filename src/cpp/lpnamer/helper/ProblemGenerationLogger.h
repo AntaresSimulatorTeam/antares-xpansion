@@ -1,7 +1,6 @@
 #ifndef __PROBLEMGENERATIONLOGGER_H__
 #define __PROBLEMGENERATIONLOGGER_H__
 #include <chrono>
-// #include <cstdio>
 #include <ctime>
 #include <filesystem>
 #include <fstream>
