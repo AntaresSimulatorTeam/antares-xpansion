@@ -31,20 +31,25 @@ class LinkProblemsGenerator {
  public:
   LinkProblemsGenerator(
       const std::vector<ActiveLink>& links, const std::string& solver_name,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : _links(links), _solver_name(solver_name), logger_(logger) {}
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+      const std::filesystem::path& log_file_path)
+      : _links(links),
+        _solver_name(solver_name),
+        logger_(logger),
+        log_file_path_(log_file_path) {}
 
   void treatloop(const std::filesystem::path& root, Couplings& couplings) const;
 
  private:
   std::vector<ProblemData> readMPSList(
-      const std::filesystem::path& mps_filePath_p)const;
+      const std::filesystem::path& mps_filePath_p) const;
 
   void treat(const std::filesystem::path& root, ProblemData const&,
-             Couplings& couplings)const;
+             Couplings& couplings) const;
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   mutable std::mutex coupling_mutex_;
+  std::filesystem::path log_file_path_;
 };

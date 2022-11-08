@@ -1,10 +1,11 @@
 #include "ProblemGenerationLogger.h"
+
 #include "Clock.h"
 
 namespace ProblemGenerationLog {
 
-std::string LogLevelToStr(const LOGLEVEL logLevel) {
-  switch (logLevel) {
+std::string LogLevelToStr(const LOGLEVEL log_level) {
+  switch (log_level) {
     case LOGLEVEL::TRACE:
       return "<Trace> ";
     case LOGLEVEL::DEBUG:
@@ -25,6 +26,7 @@ std::string LogLevelToStr(const LOGLEVEL logLevel) {
 ProblemGenerationFileLogger::ProblemGenerationFileLogger(
     const std::filesystem::path& logFilePath)
     : logFilePath_(logFilePath) {
+  SetType(LOGGERTYPE::FILE);
   logFile_.open(logFilePath_, std::ofstream::out | std::ofstream::app);
   if (logFile_.fail()) {
     std::cerr << "ProblemGenerationFileLogger: Invalid file ("
@@ -39,6 +41,7 @@ void ProblemGenerationFileLogger::DisplayMessage(const std::string& message) {
 ProblemGenerationOstreamLogger::ProblemGenerationOstreamLogger(
     std::ostream& stream)
     : stream_(stream) {
+  SetType(LOGGERTYPE::CONSOLE);
   if (stream_.fail()) {
     std::cerr
         << "ProblemGenerationOstreamLogger: Invalid stream passed as parameter"
@@ -49,33 +52,61 @@ void ProblemGenerationOstreamLogger::DisplayMessage(
     const std::string& message) {
   stream_ << message << std::endl;
 }
-
-void ProblemGenerationLogger::DisplayMessage(const std::string& message)const {
-  for (const auto& logger : loggers_) {
+void ProblemGenerationLogger::AddLogger(
+    const ProblemGenerationILoggerSharedPointer& logger) {
+  loggers_.push_back(logger);
+  try_to_add_logger_to_enabled_list(logger);
+}
+void ProblemGenerationLogger::DisplayMessage(const std::string& message) const {
+  for (const auto& logger : enabled_loggers_) {
     logger->DisplayMessage(message);
   }
 }
 void ProblemGenerationLogger::DisplayMessage(const std::string& message,
-                                             const LOGLEVEL logLevel)const {
-  for (const auto& logger : loggers_) {
-    logger->DisplayMessage(LogLevelToStr(logLevel));
+                                             const LOGLEVEL log_level) const {
+  for (const auto& logger : enabled_loggers_) {
+    logger->DisplayMessage(LogLevelToStr(log_level));
     logger->DisplayMessage(message);
   }
 }
-std::string ProblemGenerationLogger::PrefixMessage(const LOGLEVEL& logLevel) const {
-  return LogLevelToStr(logLevel) + clock_utils::timeToStr(std::time(nullptr))+  ": ";
+void ProblemGenerationLogger::setLogLevel(const LOGLEVEL log_level) {
+  log_level_ = log_level;
+  prefix_ = LogLevelToStr(log_level_);
+  update_enabled_logger();
+}
+void ProblemGenerationLogger::update_enabled_logger() {
+  enabled_loggers_.clear();
+  for (const auto& logger : loggers_) {
+    try_to_add_logger_to_enabled_list(logger);
+  }
+}
+bool ProblemGenerationLogger::try_to_add_logger_to_enabled_list(
+    const ProblemGenerationILoggerSharedPointer& logger) {
+  if ((logger->Type() == LOGGERTYPE::CONSOLE && log_level_ != LOGLEVEL::DEBUG &&
+       log_level_ != LOGLEVEL::TRACE) ||
+      logger->Type() == LOGGERTYPE::FILE) {
+    enabled_loggers_.insert(logger);
+    return true;
+  }
+  return false;
+}
+std::string ProblemGenerationLogger::PrefixMessage(
+    const LOGLEVEL& log_level) const {
+  return LogLevelToStr(log_level) + clock_utils::timeToStr(std::time(nullptr)) +
+         ": ";
 }
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
-    const LOGLEVEL logLevel) {
-  for (const auto& subLogger : loggers_) {
-    subLogger->GetOstreamObject() << PrefixMessage(logLevel);
+    const LOGLEVEL log_level) {
+  setLogLevel(log_level);
+  for (const auto& subLogger : enabled_loggers_) {
+    subLogger->GetOstreamObject() << PrefixMessage(log_level);
   }
   return *this;
 }
 
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     std::ostream& (*f)(std::ostream&)) {
-  for (const auto& subLogger : loggers_) {
+  for (const auto& subLogger : enabled_loggers_) {
     subLogger->GetOstreamObject() << f;
   }
   return *this;

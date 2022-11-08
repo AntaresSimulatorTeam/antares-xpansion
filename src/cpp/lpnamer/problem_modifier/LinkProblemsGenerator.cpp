@@ -12,7 +12,7 @@ ProblemData::ProblemData(const std::string &problem_mps,
     : _problem_mps(problem_mps), _variables_txt(variables_txt) {}
 
 std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
-    const std::filesystem::path &mps_filePath_p)const {
+    const std::filesystem::path &mps_filePath_p) const {
   std::string line;
   std::vector<ProblemData> result;
   std::ifstream mps_filestream(mps_filePath_p.c_str());
@@ -82,8 +82,8 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       variableReader.getIndirectCostVarColumns();
 
   SolverFactory factory;
-  auto in_prblm =
-      std::make_shared<Problem>(factory.create_solver(_solver_name));
+  auto in_prblm = std::make_shared<Problem>(
+      factory.create_solver(_solver_name, log_file_path_));
   in_prblm->read_prob_mps(mps_name);
 
   solver_rename_vars(in_prblm, var_names);
