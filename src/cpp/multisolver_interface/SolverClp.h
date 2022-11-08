@@ -28,7 +28,6 @@ class SolverClp : public SolverAbstract {
 
  public:
   ClpSimplex _clp;
-  CoinMessageHandler _message_handler;
   const std::string name_ = "CLP";
 
   /*************************************************************************************************
@@ -56,7 +55,7 @@ class SolverClp : public SolverAbstract {
   SolverClp(const SolverClp &other) = delete;
   SolverClp &operator=(const SolverClp &other) = delete;
 
-  virtual ~SolverClp();
+  ~SolverClp() override;
   virtual int get_number_of_instances() override;
 
   virtual std::string get_solver_name() const override { return name_; }
@@ -181,7 +180,7 @@ class SolverClp : public SolverAbstract {
   ---------------------------
   *************************************************************************************************/
  public:
-  virtual void set_output_log_level(int loglevel) override;
+  void set_output_log_level(int loglevel) final;
   virtual void set_algorithm(std::string const &algo) override;
   virtual void set_threads(int n_threads) override;
   virtual void set_optimality_gap(double gap) override;

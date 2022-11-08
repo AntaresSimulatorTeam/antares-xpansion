@@ -13,12 +13,13 @@ MasterProblemBuilder::MasterProblemBuilder(
     : _master_formulation(master_formulation) {}
 
 std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
-    const std::string& solverName, const std::vector<Candidate>& candidates) {
+    const std::string& solverName, const std::vector<Candidate>& candidates,
+    const std::filesystem::path& log_file_path) {
   _indexOfNvar.clear();
   _indexOfPmaxVar.clear();
 
   SolverFactory factory;
-  auto master_l = factory.create_solver(solverName);
+  auto master_l = factory.create_solver(solverName, log_file_path);
 
   addVariablesPmaxOnEachCandidate(candidates, master_l);
 
