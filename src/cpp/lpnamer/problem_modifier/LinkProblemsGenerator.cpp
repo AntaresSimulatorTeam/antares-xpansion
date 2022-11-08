@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <execution>
 
+#include "ArchiveProblemWriter.h"
 #include "IProblemProviderPort.h"
+#include "IProblemWriter.h"
 #include "MyAdapter.h"
 #include "helpers/StringUtils.h"
 #include "solver_utils.h"
@@ -53,7 +55,7 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  */
 void LinkProblemsGenerator::treat(
     const std::filesystem::path &root, ProblemData const &problemData,
-    Couplings &couplings, ArchiveReader &reader, ArchiveWriter &writer,
+    Couplings &couplings, ArchiveReader &reader, IProblemWriter *writer,
     IProblemProviderPort *problem_provider) const {
   MyAdapter adapter(root, problemData);
   // get path of file problem***.mps, variable***.txt and constraints***.txt
@@ -92,12 +94,7 @@ void LinkProblemsGenerator::treat(
       }
     }
   }
-
-  // Another port/adapter to write data
-  auto const lp_mps_name = lpDir_ / problemData._problem_mps;
-  in_prblm->write_prob_mps(lp_mps_name);
-  writer.AddFileInArchive(lp_mps_name);
-  std::filesystem::remove(lp_mps_name);
+  writer->Write_problem(in_prblm);
 }
 
 /**
@@ -111,7 +108,7 @@ void LinkProblemsGenerator::treat(
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings,
                                       const std::vector<ProblemData> &mps_list,
-                                      ArchiveWriter &writer,
+                                      IProblemWriter *writer,
                                       ArchiveReader &reader) {
   std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
                 [&](const auto &mps) {

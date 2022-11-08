@@ -16,6 +16,7 @@
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
+#include "ArchiveProblemWriter.h"
 #include "Candidate.h"
 #include "CandidatesINIReader.h"
 #include "LauncherHelpers.h"
@@ -106,21 +107,23 @@ int main(int argc, char **argv) {
     reader.Open();
     const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
     const auto tmpArchivePath = lpDir_ / tmpArchiveName;
-    auto writer = ArchiveWriter(tmpArchivePath);
-    writer.Open();
+    auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
+    writer->Open();
 
     LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
                                                 log_file_path);
     auto mpsList = linkProblemsGenerator.readMPSList(mps_file_name);
 
-    linkProblemsGenerator.treatloop(root, couplings, mpsList, writer, reader);
+    ArchiveProblemWriter problem_writer(root, writer);
+    linkProblemsGenerator.treatloop(root, couplings, mpsList, &problem_writer,
+                                    reader);
 
     std::filesystem::remove(archivePath);
     std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
     reader.Close();
     reader.Delete();
-    writer.Close();
-    writer.Delete();
+    writer->Close();
+    writer->Delete();
 
 
     MasterGeneration master_generation(root, links, additionalConstraints,
