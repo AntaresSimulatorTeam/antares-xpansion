@@ -183,7 +183,7 @@ class SolverCbc : public SolverAbstract {
   ---------------------------
   *************************************************************************************************/
  public:
-  virtual void set_output_log_level(int loglevel) override;
+  void set_output_log_level(int loglevel) final;
   virtual void set_algorithm(std::string const &algo) override;
   virtual void set_threads(int n_threads) override;
   virtual void set_optimality_gap(double gap) override;
