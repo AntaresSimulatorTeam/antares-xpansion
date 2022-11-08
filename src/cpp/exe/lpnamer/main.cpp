@@ -25,6 +25,7 @@
 #include "MasterGeneration.h"
 #include "MasterProblemBuilder.h"
 #include "ProblemGenerationLogger.h"
+#include "ProblemVariablesZipAdapter.h"
 #include "solver_utils.h"
 
 namespace po = boost::program_options;
@@ -103,8 +104,8 @@ int main(int argc, char **argv) {
 
     auto const mps_file_name = root / MPS_TXT;
     auto lpDir_ = root / "lp";
-    auto reader = ArchiveReader(archivePath);
-    reader.Open();
+    auto reader = std::make_shared<ArchiveReader>(archivePath);
+    reader->Open();
     const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
     const auto tmpArchivePath = lpDir_ / tmpArchiveName;
     auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
@@ -114,14 +115,14 @@ int main(int argc, char **argv) {
                                                 log_file_path);
     auto mpsList = linkProblemsGenerator.readMPSList(mps_file_name);
 
-    ArchiveProblemWriter problem_writer(root, writer);
-    linkProblemsGenerator.treatloop(root, couplings, mpsList, &problem_writer,
+    auto problem_writer = std::make_shared<ArchiveProblemWriter>(root, writer);
+    linkProblemsGenerator.treatloop(root, couplings, mpsList, problem_writer,
                                     reader);
 
     std::filesystem::remove(archivePath);
     std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
-    reader.Close();
-    reader.Delete();
+    reader->Close();
+    reader->Delete();
     writer->Close();
     writer->Delete();
 

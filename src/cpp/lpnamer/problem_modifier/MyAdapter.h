@@ -8,7 +8,8 @@
 #include "LinkProblemsGenerator.h"
 class MyAdapter : public IProblemProviderPort {
  public:
-  explicit MyAdapter(std::filesystem::path lp_dir, ProblemData data);
+  explicit MyAdapter(std::filesystem::path lp_dir, ProblemData data,
+                     std::shared_ptr<ArchiveReader> ptr);
   std::istringstream reader_extract(const ProblemData& problemData,
                                     ArchiveReader& reader) const;
   void reader_extract_file(const ProblemData& problemData,
@@ -26,4 +27,5 @@ class MyAdapter : public IProblemProviderPort {
   const ProblemData problem_data_;
   [[nodiscard]] std::shared_ptr<Problem> provide_problem(
       const std::string& solver_name) const override;
+  std::shared_ptr<ArchiveReader> archive_reader_;
 };

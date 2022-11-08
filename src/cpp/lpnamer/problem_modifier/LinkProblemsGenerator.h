@@ -12,6 +12,7 @@
 #include "Candidate.h"
 #include "FileInBuffer.h"
 #include "IProblemProviderPort.h"
+#include "IProblemVariablesProviderPort.h"
 #include "IProblemWriter.h"
 #include "ProblemGenerationLogger.h"
 #include "ProblemModifier.h"
@@ -48,15 +49,18 @@ class LinkProblemsGenerator {
 
   void treatloop(const std::filesystem::path& root, Couplings& couplings,
                  const std::vector<ProblemData>& mps_list,
-                 IProblemWriter* writer, ArchiveReader& reader);
+                 std::shared_ptr<IProblemWriter> writer,
+                 std::shared_ptr<ArchiveReader> reader);
   std::vector<ProblemData> readMPSList(
       const std::filesystem::path& mps_filePath_p) const;
 
  private:
-  void treat(const std::filesystem::path& root, ProblemData const& problemData,
-             Couplings& couplings, ArchiveReader& reader,
-             IProblemWriter* writer,
-             IProblemProviderPort* problem_provider) const;
+  void treat(
+      const std::filesystem::path& root, ProblemData const& problemData,
+      Couplings& couplings, std::shared_ptr<ArchiveReader> reader,
+      std::shared_ptr<IProblemWriter> writer,
+      std::shared_ptr<IProblemProviderPort> problem_provider,
+      std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const;
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;

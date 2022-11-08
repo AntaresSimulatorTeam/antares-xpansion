@@ -5,8 +5,6 @@
 #include "MyAdapter.h"
 
 #include <algorithm>
-#include <cassert>
-#include <execution>
 #include <utility>
 
 #include "LinkProblemsGenerator.h"
@@ -51,6 +49,7 @@ void MyAdapter::extract_variables(
 
 std::shared_ptr<Problem> MyAdapter::provide_problem(
     const std::string& solver_name) const {
+  reader_extract_file(problem_data_, *archive_reader_, lp_dir_);
   SolverFactory factory;
   auto const lp_mps_name =
       MyAdapter::lp_dir_ / MyAdapter::problem_data_._problem_mps;
@@ -60,5 +59,8 @@ std::shared_ptr<Problem> MyAdapter::provide_problem(
   return in_prblm;
 }
 
-MyAdapter::MyAdapter(std::filesystem::path lp_dir, ProblemData data)
-    : lp_dir_(std::move(lp_dir)), problem_data_(std::move(data)) {}
+MyAdapter::MyAdapter(std::filesystem::path lp_dir, ProblemData data,
+                     std::shared_ptr<ArchiveReader> ptr)
+    : lp_dir_(std::move(lp_dir)),
+      problem_data_(std::move(data)),
+      archive_reader_(std::move(ptr)) {}
