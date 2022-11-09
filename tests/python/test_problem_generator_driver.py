@@ -1,16 +1,13 @@
-from typing import Text
-import pytest
-import os
-from pathlib import Path
-from datetime import date, datetime
-from unittest.mock import ANY, mock_open, patch
 import shutil
+from datetime import date, datetime
+from pathlib import Path
+from unittest.mock import patch
+
+import pytest
+from antares_xpansion.problem_generator_driver import ProblemGeneratorData, ProblemGeneratorDriver
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 from .file_creation import _create_weight_file
-from antares_xpansion.problem_generator_driver import ProblemGeneratorData, ProblemGeneratorDriver
-from antares_xpansion.antares_driver import AntaresDriver
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.general_data_reader import GeneralDataIniReader
 
 SUBPROCESS_RUN = "antares_xpansion.problem_generator_driver.subprocess.run"
 zipfile_ZipFile = "antares_xpansion.problem_generator_driver.zipfile.ZipFile"
@@ -310,8 +307,7 @@ class TestProblemGeneratorDriver:
         expected_weight_file_content = []
         for file in mps_files:
             year = self._get_year_index_from_name(file)
-            expected_weight_file_content.append(Path(file).with_suffix(
-                '').name + " " + str(float(weight_list[year - 1])) + "\n")
+            expected_weight_file_content.append(Path(file).name + " " + str(float(weight_list[year - 1])) + "\n")
         expected_weight_file_content.append(
             "WEIGHT_SUM " + str(float(sum(weight_list))))
         self._create_empty_area_file(tmp_path)

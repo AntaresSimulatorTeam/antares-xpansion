@@ -56,15 +56,10 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  */
 
 void LinkProblemsGenerator::treat(
-    const std::filesystem::path &root, ProblemData const &problemData,
-    Couplings &couplings, std::shared_ptr<ArchiveReader> reader,
+    const std::string &problem_name, Couplings &couplings,
     std::shared_ptr<IProblemWriter> writer,
     std::shared_ptr<IProblemProviderPort> problem_provider,
     std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const {
-  MyAdapter adapter(root, problemData, reader);
-  // get path of file problem***.mps, variable***.txt and constraints***.txt
-  auto const mps_name = root / problemData._problem_mps;
-
   std::shared_ptr<Problem> in_prblm =
       problem_provider->provide_problem(_solver_name);
 
@@ -83,7 +78,7 @@ void LinkProblemsGenerator::treat(
     for (const Candidate &candidate : link.getCandidates()) {
       if (problem_modifier.has_candidate_col_id(candidate.get_name())) {
         std::lock_guard guard(coupling_mutex_);
-        couplings[{candidate.get_name(), mps_name}] =
+        couplings[{candidate.get_name(), problem_name}] =
             problem_modifier.get_candidate_col_id(candidate.get_name());
       }
     }
@@ -106,11 +101,12 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       std::shared_ptr<ArchiveReader> reader) {
   std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
                 [&](const auto &mps) {
-                  auto adapter = std::make_shared<MyAdapter>(root, mps, reader);
+                  auto adapter = std::make_shared<MyAdapter>(
+                      root, mps._problem_mps, reader);
                   auto problem_variables_from_zip_adapter =
                       std::make_shared<ProblemVariablesZipAdapter>(
                           reader, mps, _links, logger_);
-                  treat(root, mps, couplings, reader, writer, adapter,
+                  treat(mps._problem_mps, couplings, writer, adapter,
                         problem_variables_from_zip_adapter);
                 });
 }

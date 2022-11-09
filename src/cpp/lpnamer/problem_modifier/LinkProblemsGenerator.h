@@ -25,10 +25,9 @@ const std::string MPS_TXT{"mps.txt"};
 const std::string MPS_ZIP_FILE{"MPS_ZIP_FILE"};
 const std::string ZIP_EXT{".zip"};
 const std::string STUDY_FILE{"study.antares"};
-using CandidateNameAndMpsFilePath =
-    std::pair<std::string, std::filesystem::path>;
+using CandidateNameAndProblemName = std::pair<std::string, std::string>;
 using ColId = unsigned int;
-using Couplings = std::map<CandidateNameAndMpsFilePath, ColId>;
+using Couplings = std::map<CandidateNameAndProblemName, ColId>;
 
 struct ProblemData {
   ProblemData(const std::string& problem_mps, const std::string& variables_txt);
@@ -56,8 +55,7 @@ class LinkProblemsGenerator {
 
  private:
   void treat(
-      const std::filesystem::path& root, ProblemData const& problemData,
-      Couplings& couplings, std::shared_ptr<ArchiveReader> reader,
+      const std::string& problem_name, Couplings& couplings,
       std::shared_ptr<IProblemWriter> writer,
       std::shared_ptr<IProblemProviderPort> problem_provider,
       std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const;

@@ -35,7 +35,7 @@ class YearlyWeightWriter:
     def _add_mps_file_to_output_file_content(self, file_name, weight_list,  active_years):
         year = self._get_year_index_from_name(file_name)
         year_index = active_years.index(int(year))
-        mps_file_name = Path(file_name).with_suffix('').name
+        mps_file_name = Path(file_name).name
         self.file_content.append(
             mps_file_name + " " + str(weight_list[year_index]) + "\n")
 
