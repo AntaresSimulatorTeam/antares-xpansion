@@ -18,14 +18,14 @@ void updateMapColumn(const std::vector<ActiveLink>& links, int link_id,
 }
 
 VariableFileReader::VariableFileReader(
-    const std::string& fileName, const std::vector<ActiveLink>& links,
+    const std::filesystem::path& path, const std::vector<ActiveLink>& links,
     const VariableFileReadNameConfiguration& variable_name_config,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : logger_(logger) {
   std::string line;
-  std::ifstream file(fileName.c_str());
+  std::ifstream file(path);
   if (!file.good()) {
-    auto errMsg = std::string("Unable to open '") + fileName + "'";
+    auto errMsg = std::string("Unable to open '") + path.string() + "'";
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
     throw std::runtime_error(errMsg);
   }
@@ -51,11 +51,11 @@ void VariableFileReader::ReadVarsFromStream(
 
     std::istringstream buffer(line);
     colId id;
-    std::string variable;
+    std::string type_de_variable;
     buffer >> id;
-    buffer >> variable;
+    buffer >> type_de_variable;
 
-    if (variable == variable_name_config.ntc_variable_name) {
+    if (type_de_variable == variable_name_config.ntc_variable_name) {
       int pays;
       int link_id;
       int time_step;
@@ -63,14 +63,16 @@ void VariableFileReader::ReadVarsFromStream(
       buffer >> link_id;
       buffer >> time_step;
       updateMapColumn(links, link_id, id, time_step, _ntc_p_var_columns);
-    } else if (variable == variable_name_config.cost_extremite_variable_name) {
+    } else if (type_de_variable ==
+               variable_name_config.cost_extremite_variable_name) {
       int link_id;
       int time_step;
       buffer >> link_id;
       buffer >> time_step;
       updateMapColumn(links, link_id, id, time_step,
                       _indirect_cost_p_var_columns);
-    } else if (variable == variable_name_config.cost_origin_variable_name) {
+    } else if (type_de_variable ==
+               variable_name_config.cost_origin_variable_name) {
       int link_id;
       int time_step;
       buffer >> link_id;

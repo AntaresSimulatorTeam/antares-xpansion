@@ -103,28 +103,64 @@ int main(int argc, char **argv) {
     std::vector<ActiveLink> links = linkBuilder.getLinks();
 
     auto const mps_file_name = root / MPS_TXT;
-    auto lpDir_ = root / "lp";
-    auto reader = std::make_shared<ArchiveReader>(archivePath);
-    reader->Open();
-    const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
-    const auto tmpArchivePath = lpDir_ / tmpArchiveName;
-    auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
-    writer->Open();
 
     LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
                                                 log_file_path);
     auto mpsList = linkProblemsGenerator.readMPSList(mps_file_name);
 
-    auto problem_writer = std::make_shared<ArchiveProblemWriter>(root, writer);
-    linkProblemsGenerator.treatloop(root, couplings, mpsList, problem_writer,
-                                    reader);
+    bool use_zip_implementation = false;
+    if (use_zip_implementation) {
+      /* Instantiate Zip reader */
+      auto reader = std::make_shared<ArchiveReader>(archivePath);
+      reader->Open();
 
-    std::filesystem::remove(archivePath);
-    std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
-    reader->Close();
-    reader->Delete();
-    writer->Close();
-    writer->Delete();
+      /*Instantiate zip writer */
+      auto lpDir_ = root / "lp";
+      const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
+      const auto tmpArchivePath = lpDir_ / tmpArchiveName;
+      auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
+      writer->Open();
+
+      /* Zip problem writer */
+      auto problem_writer =
+          std::make_shared<ArchiveProblemWriter>(root, writer);
+
+      /* Main stuff */
+      linkProblemsGenerator.treatloop(root, couplings, mpsList, problem_writer,
+                                      reader);
+
+      /* Clean up */
+      reader->Close();
+      reader->Delete();
+
+      std::filesystem::remove(archivePath);
+      std::filesystem::rename(tmpArchivePath,
+                              lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
+      writer->Close();
+      writer->Delete();
+    } else {
+      /*Instantiate zip writer */
+      auto lpDir_ = root / "lp";
+      const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
+      const auto tmpArchivePath = lpDir_ / tmpArchiveName;
+      std::filesystem::remove(tmpArchivePath);
+      auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
+      writer->Open();
+
+      /* Zip problem writer */
+      auto problem_writer =
+          std::make_shared<ArchiveProblemWriter>(root, writer);
+
+      /* Main stuff */
+      linkProblemsGenerator.treatloop_files(root, couplings, mpsList,
+                                            problem_writer);
+
+      std::filesystem::remove(archivePath);
+      std::filesystem::rename(tmpArchivePath,
+                              lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
+      writer->Close();
+      writer->Delete();
+    }
 
 
     MasterGeneration master_generation(root, links, additionalConstraints,

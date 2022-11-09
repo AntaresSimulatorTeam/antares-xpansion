@@ -172,14 +172,16 @@ class ProblemGeneratorDriver:
             produces a file named with xpansionConfig.MPS_TXT
         """
 
-       
-
         start_time = datetime.now()
+        use_zip = False
+        if not use_zip:
+            flushed_print(f"Output pat {self.output_path}")
+            with zipfile.ZipFile(self.output_path, 'r') as study_archive:
+                study_archive.extractall(self.xpansion_output_dir)
+            os.remove(self.output_path)
         flushed_print(f"LPNamer command {self._get_lp_namer_command()}")
         returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
                                     stdout=sys.stdout, stderr=sys.stderr)
-
-      
 
         end_time = datetime.now()
         flushed_print('Post antares step duration: {}'.format(
