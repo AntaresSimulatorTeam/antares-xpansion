@@ -40,7 +40,7 @@ add_library(lp_namer_problem_modifier STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkCapacitiesStrategy.h
 		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.h
-		${CMAKE_CURRENT_SOURCE_DIR}/MyAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemProviderAdapter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/MyAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/IProblemProviderPort.h
 		IProblemWriter.h ArchiveProblemWriter.cpp ArchiveProblemWriter.h ProblemVariablesZipAdapter.cpp ProblemVariablesZipAdapter.h IProblemVariablesProviderPort.h)
