@@ -5,6 +5,9 @@
 class BendersByBatch : public BendersBase {
  private:
   /* data */
+ private:
+  [[nodiscard]] bool shouldParallelize() const final { return true; }
+
  public:
   BendersByBatch(BendersBaseOptions const &options, Logger logger,
                  Writer writer);
@@ -13,6 +16,7 @@ class BendersByBatch : public BendersBase {
   void free() override;
   void run() override;
   void initialize_problems() override;
+  virtual void build_cut();
 };
 
 #endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
