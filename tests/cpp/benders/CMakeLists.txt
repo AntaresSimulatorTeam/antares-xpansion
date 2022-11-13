@@ -1,9 +1,11 @@
 add_executable(benders_sequential_test 
-        benders_sequential_test.cpp )
+        benders_sequential_test.cpp
+        BendersByBatchTest.cpp )
 
 target_link_libraries(benders_sequential_test
         PRIVATE
         benders_sequential_core
+        benders_by_batch_core
         benders_core
         output_core
         logger_lib
