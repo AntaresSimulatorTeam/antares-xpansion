@@ -4,7 +4,7 @@
 
 #include "SubproblemWorker.h"
 struct Batch {
-  std::vector<std::string> sub_problems_names;
+  std::vector<std::string> sub_problem_names;
   unsigned id;
 };
 class BatchCollection {
@@ -13,16 +13,16 @@ class BatchCollection {
   unsigned number_of_batch_;
 
  public:
-  BatchCollection(SubproblemsMapPtr sub_problems_map_ptr,
+  BatchCollection(StrVector sub_problem_names,
                   unsigned size_of_sub_problems_collection);
   class InvalidSizeOfSubPrblemCollection : public std::runtime_error {
    public:
-    explicit InvalidSizeOfSubPrblemCollection(
-        unsigned size, unsigned sub_problems_map_ptr_size)
+    explicit InvalidSizeOfSubPrblemCollection(unsigned size,
+                                              unsigned sub_problems_names_size)
         : std::runtime_error(std::string(
               "Bacth size: " + std::to_string(size) +
               " must be less or equal than number of sub problems: " +
-              std::to_string(sub_problems_map_ptr_size))) {}
+              std::to_string(sub_problems_names_size))) {}
   };
   size_t size() const { return batch_collections_.size(); }
   std::vector<Batch> BatchCollections() const { return batch_collections_; }

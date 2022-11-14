@@ -8,7 +8,7 @@
 
 add_library (benders_by_batch_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersByBatch.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/RandomSubProblemsCollection.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/BatchCollection.cpp
         )
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)

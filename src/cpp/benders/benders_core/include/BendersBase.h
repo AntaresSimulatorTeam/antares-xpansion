@@ -97,7 +97,8 @@ class BendersBase {
   }
   double GetBendersTime() const;
   virtual void write_basis() const;
-  SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
+  // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
+  StrVector GetSubProblemNames() const { return subproblems; }
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
