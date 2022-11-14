@@ -1,8 +1,9 @@
-#ifndef SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_SUBPROBLEMSCOLLECTION_H_
-#define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_SUBPROBLEMSCOLLECTION_H_
+#ifndef SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BATCHCOLLECTION_H_
+#define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BATCHCOLLECTION_H_
 #include <stdexcept>
+#include <string>
+#include <vector>
 
-#include "SubproblemWorker.h"
 struct Batch {
   std::vector<std::string> sub_problem_names;
   unsigned id;
@@ -13,7 +14,7 @@ class BatchCollection {
   unsigned number_of_batch_;
 
  public:
-  BatchCollection(StrVector sub_problem_names,
+  BatchCollection(const std::vector<std::string>& sub_problem_names,
                   unsigned size_of_sub_problems_collection);
   class InvalidSizeOfSubPrblemCollection : public std::runtime_error {
    public:
@@ -26,6 +27,7 @@ class BatchCollection {
   };
   size_t size() const { return batch_collections_.size(); }
   std::vector<Batch> BatchCollections() const { return batch_collections_; }
+  Batch GetBatchFromId(unsigned id) const { return batch_collections_[id]; }
   unsigned NumberOfBatch() const { return number_of_batch_; }
 };
-#endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_SUBPROBLEMSCOLLECTION_H_
+#endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BATCHCOLLECTION_H_
