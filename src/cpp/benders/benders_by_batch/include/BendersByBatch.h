@@ -1,5 +1,6 @@
 #ifndef SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
+#include "BatchCollection.h"
 #include "BendersBase.h"
 
 class BendersByBatch : public BendersBase {
@@ -7,6 +8,7 @@ class BendersByBatch : public BendersBase {
   /* data */
  private:
   [[nodiscard]] bool shouldParallelize() const final { return true; }
+  std::vector<unsigned> random_batch_permutation_;
 
  public:
   BendersByBatch(BendersBaseOptions const &options, Logger logger,

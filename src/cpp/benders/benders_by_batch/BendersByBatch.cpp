@@ -1,6 +1,7 @@
 #include "BendersByBatch.h"
 
-#include "RandomSubProblemsCollection.h"
+#include "BatchCollection.h"
+#include "RandomBatchShuffler.h"
 #include "glog/logging.h"
 
 BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
@@ -99,8 +100,11 @@ void BendersByBatch::initialize_problems() {
     AddSubproblemName(problem.first);
   }
   unsigned size_of_sub_problems_collection = 2;
-  auto sub_problems_collection =
+  const auto sub_problems_collection =
       BatchCollection(GetSubProblemNames(), size_of_sub_problems_collection);
+  random_batch_permutation_ =
+      RandomBatchShuffler(sub_problems_collection.NumberOfBatch())
+          .GetRandomBatchOrder();
 }
 
 /*!
