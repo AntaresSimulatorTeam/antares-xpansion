@@ -1,5 +1,6 @@
 #include "BendersByBatch.h"
 
+#include "RandomSubProblemsCollection.h"
 #include "glog/logging.h"
 
 BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
@@ -97,6 +98,9 @@ void BendersByBatch::initialize_problems() {
     addSubproblem(problem);
     AddSubproblemName(problem.first);
   }
+  unsigned size_of_sub_problems_collection = 2;
+  auto sub_problems_collection =
+      BatchCollection(GetSubProblemsMapPtr(), size_of_sub_problems_collection);
 }
 
 /*!
