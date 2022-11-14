@@ -529,7 +529,7 @@ LogData BendersBase::FinalLogData() const {
   result.best_it = _data.best_it + iterations_before_resume;
   result.lb = _data.lb;
   result.best_ub = _data.best_ub;
-  result.x_out = _data.x_in;
+  result.x_out = _data.x_in;  //TODO: Check this
 
   result.subproblem_cost = best_iteration_data.subproblem_cost;
   result.invest_cost = best_iteration_data.invest_cost;
