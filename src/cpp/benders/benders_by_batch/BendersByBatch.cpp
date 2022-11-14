@@ -100,7 +100,7 @@ void BendersByBatch::initialize_problems() {
   }
   unsigned size_of_sub_problems_collection = 2;
   auto sub_problems_collection =
-      BatchCollection(GetSubProblemsMapPtr(), size_of_sub_problems_collection);
+      BatchCollection(GetSubProblemNames(), size_of_sub_problems_collection);
 }
 
 /*!
