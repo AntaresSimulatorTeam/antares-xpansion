@@ -18,7 +18,11 @@ class BendersByBatch : public BendersBase {
   void free() override;
   void run() override;
   void initialize_problems() override;
-  virtual void build_cut();
+  void build_cut(const std::vector<std::string> &batch_sub_problems);
+
+ private:
+  void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package,
+                        const std::vector<std::string> &batch_sub_problems);
 };
 
 #endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
