@@ -1,5 +1,7 @@
 #include "BendersByBatch.h"
 
+#include <mutex>
+
 #include "BatchCollection.h"
 #include "RandomBatchShuffler.h"
 #include "glog/logging.h"
@@ -49,41 +51,65 @@ void BendersByBatch::run() {
     SetDataPreRelaxation();
   }
 
-  while (!_data.stop) {
-    Timer timer_master;
-    ++_data.it;
+  //   while (!_data.stop) {
+  //     Timer timer_master;
+  //     ++_data.it;
 
-    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
-      _logger->LogAtSwitchToInteger();
-      ActivateIntegrityConstraints();
-      ResetDataPostRelaxation();
-    }
+  //     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+  //       _logger->LogAtSwitchToInteger();
+  //       ActivateIntegrityConstraints();
+  //       ResetDataPostRelaxation();
+  //     }
 
-    _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
-    _logger->display_message("\tSolving master...");
+  //     _logger->log_at_initialization(_data.it +
+  //     GetNumIterationsBeforeRestart()); _logger->display_message("\tSolving
+  //     master..."); get_master_value();
+  //     _logger->log_master_solving_duration(get_timer_master());
+
+  //     ComputeXCut();
+  //     _logger->log_iteration_candidates(bendersDataToLogData(_data));
+
+  //     push_in_trace(std::make_shared<WorkerMasterData>());
+
+  //     _logger->display_message("\tSolving subproblems...");
+  //     build_cut();
+  //     _logger->log_subproblems_solving_duration(GetSubproblemTimers());
+
+  //     compute_ub();
+  //     update_best_ub();
+
+  //     _logger->log_at_iteration_end(bendersDataToLogData(_data));
+
+  //     UpdateTrace();
+
+  //     set_timer_master(timer_master.elapsed());
+  //     _data.elapsed_time = GetBendersTime();
+  //     _data.stop = ShouldBendersStop();
+  //     SaveCurrentBendersData();
+  //   }
+  auto iteration_number = 0;
+  auto batch_counter = 0;
+  unsigned batch_size = 2;
+  double epsilon_at_iteration = AbsoluteGap();
+  bool authorized_epsilon = false;
+  const auto batch_collection =
+      BatchCollection(GetSubProblemNames(), batch_size);
+  while (batch_counter < batch_collection.NumberOfBatch()) {
+    iteration_number++;
     get_master_value();
-    _logger->log_master_solving_duration(get_timer_master());
-
-    ComputeXCut();
-    _logger->log_iteration_candidates(bendersDataToLogData(_data));
-
-    push_in_trace(std::make_shared<WorkerMasterData>());
-
-    _logger->display_message("\tSolving subproblems...");
-    build_cut();
-    _logger->log_subproblems_solving_duration(GetSubproblemTimers());
-
-    compute_ub();
-    update_best_ub();
-
-    _logger->log_at_iteration_end(bendersDataToLogData(_data));
-
-    UpdateTrace();
-
-    set_timer_master(timer_master.elapsed());
-    _data.elapsed_time = GetBendersTime();
-    _data.stop = ShouldBendersStop();
-    SaveCurrentBendersData();
+    batch_counter++;
+    epsilon_at_iteration = AbsoluteGap();
+    authorized_epsilon = false;
+    random_batch_permutation_ =
+        RandomBatchShuffler(batch_collection.NumberOfBatch())
+            .GetRandomBatchOrder();
+    while (!authorized_epsilon) {
+      for (const auto batch_id : random_batch_permutation_) {
+        auto batch = batch_collection.GetBatchFromId(batch_id);
+        auto batch_sub_problems = batch.sub_problem_names;
+        build_cut(batch_sub_problems);
+      }
+    }
   }
   CloseCsvFile();
   EndWritingInOutputFile();
@@ -99,12 +125,6 @@ void BendersByBatch::initialize_problems() {
     addSubproblem(problem);
     AddSubproblemName(problem.first);
   }
-  unsigned size_of_sub_problems_collection = 2;
-  const auto sub_problems_collection =
-      BatchCollection(GetSubProblemNames(), size_of_sub_problems_collection);
-  random_batch_permutation_ =
-      RandomBatchShuffler(sub_problems_collection.NumberOfBatch())
-          .GetRandomBatchOrder();
 }
 
 /*!
@@ -114,11 +134,12 @@ void BendersByBatch::initialize_problems() {
  * and add them to the Master problem
  *
  */
-void BendersByBatch::build_cut() {
+void BendersByBatch::build_cut(
+    const std::vector<std::string> &batch_sub_problems) {
   SubproblemCutPackage subproblem_cut_package;
   AllCutPackage all_package;
   Timer timer;
-  getSubproblemCut(subproblem_cut_package);
+  getSubproblemCut(subproblem_cut_package, batch_sub_problems);
   SetSubproblemCost(0);
   for (const auto &pair_name_subproblemcutdata_l : subproblem_cut_package) {
     SetSubproblemCost(
@@ -129,4 +150,49 @@ void BendersByBatch::build_cut() {
   SetSubproblemTimers(timer.elapsed());
   all_package.push_back(subproblem_cut_package);
   build_cut_full(all_package);
+}
+
+/*!
+ *  \brief Solve and store optimal variables of all Subproblem Problems
+ *
+ *  Method to solve and store optimal variables of all Subproblem Problems
+ * after fixing trial values
+ *
+ *  \param subproblem_cut_package : map storing for each subproblem its cut
+ */
+void BendersByBatch::getSubproblemCut(
+    SubproblemCutPackage &subproblem_cut_package,
+    const std::vector<std::string> &batch_sub_problems) {
+  // With gcc9 there was no parallelisation when iterating on the map directly
+  // so with project it in a vector
+  std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
+  nameAndWorkers.reserve(batch_sub_problems.size());
+  auto sub_pblm_map = GetSubProblemMap();
+  for (const auto &name : batch_sub_problems) {
+    nameAndWorkers.emplace_back(name, sub_pblm_map[name]);
+  }
+  std::mutex m;
+  selectPolicy(
+      [this, &nameAndWorkers, &m, &subproblem_cut_package](auto &policy) {
+        std::for_each(
+            policy, nameAndWorkers.begin(), nameAndWorkers.end(),
+            [this, &m, &subproblem_cut_package](
+                const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
+              const auto &[name, worker] = kvp;
+              Timer subproblem_timer;
+              auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
+              auto handler(std::make_shared<SubproblemCutDataHandler>(
+                  subproblem_cut_data));
+              worker->fix_to(_data.x_cut);
+              worker->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
+                            _options.LAST_MASTER_MPS + MPS_SUFFIX);
+              worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
+              worker->get_subgradient(handler->get_subgradient());
+              worker->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
+              handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
+              std::lock_guard guard(m);
+              subproblem_cut_package[name] = *subproblem_cut_data;
+            });
+      },
+      shouldParallelize());
 }

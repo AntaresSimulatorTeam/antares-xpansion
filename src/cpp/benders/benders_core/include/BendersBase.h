@@ -12,7 +12,18 @@
 #include "WorkerMaster.h"
 #include "common.h"
 #include "core/ILogger.h"
-
+/**
+ * std execution policies don't share a base type so we can't just select them
+ *in place in the foreach This function allow the selection of policy via
+ *template deduction
+ **/
+template <class lambda>
+auto selectPolicy(lambda f, bool shouldParallelize) {
+  if (shouldParallelize)
+    return f(std::execution::par_unseq);
+  else
+    return f(std::execution::seq);
+}
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
@@ -98,7 +109,9 @@ class BendersBase {
   double GetBendersTime() const;
   virtual void write_basis() const;
   // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
+  SubproblemsMapPtr GetSubProblemMap() const { return subproblem_map; }
   StrVector GetSubProblemNames() const { return subproblems; }
+  double AbsoluteGap() const { return _options.ABSOLUTE_GAP; }
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
