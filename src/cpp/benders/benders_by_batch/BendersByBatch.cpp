@@ -85,36 +85,54 @@ void BendersByBatch::run() {
   //     set_timer_master(timer_master.elapsed());
   //     _data.elapsed_time = GetBendersTime();
   //     _data.stop = ShouldBendersStop();
-  //     SaveCurrentBendersData();
+  //   SaveCurrentBendersData();
   //   }
-  auto iteration_number = 0;
   auto batch_counter = 0;
   unsigned batch_size = 2;
-  double epsilon_at_iteration = AbsoluteGap();
-  bool authorized_epsilon = false;
+  double remaining_epsilon = AbsoluteGap();
+  bool is_gap_consumed = false;
   const auto batch_collection =
       BatchCollection(GetSubProblemNames(), batch_size);
-  while (batch_counter < batch_collection.NumberOfBatch()) {
-    iteration_number++;
+  auto number_of_batch = batch_collection.NumberOfBatch();
+  while (batch_counter < number_of_batch) {
+    _data.it++;
+    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+      _logger->LogAtSwitchToInteger();
+      ActivateIntegrityConstraints();
+      ResetDataPostRelaxation();
+    }
+
+    _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
+    _logger->display_message("\tSolving master...");
     get_master_value();
+    _logger->log_master_solving_duration(get_timer_master());
+
+    ComputeXCut();
+    _logger->log_iteration_candidates(bendersDataToLogData(_data));
+
+    push_in_trace(std::make_shared<WorkerMasterData>());
     batch_counter++;
-    epsilon_at_iteration = AbsoluteGap();
-    authorized_epsilon = false;
+    remaining_epsilon = AbsoluteGap();
+    is_gap_consumed = false;
     random_batch_permutation_ =
-        RandomBatchShuffler(batch_collection.NumberOfBatch())
-            .GetRandomBatchOrder();
-    while (!authorized_epsilon) {
-      for (const auto batch_id : random_batch_permutation_) {
-        auto batch = batch_collection.GetBatchFromId(batch_id);
-        auto batch_sub_problems = batch.sub_problem_names;
-        build_cut(batch_sub_problems);
-      }
+        RandomBatchShuffler(number_of_batch).GetRandomBatchOrder();
+    while (batch_counter < number_of_batch && remaining_epsilon > 0) {
+      auto batch_id = random_batch_permutation_[batch_counter];
+      auto batch = batch_collection.GetBatchFromId(batch_id);
+      auto batch_sub_problems = batch.sub_problem_names;
+      double sum = 0;
+      build_cut(batch_sub_problems, &sum);
+      //   if (sum < remaining_epsilon){
+      remaining_epsilon -= sum;
+      batch_counter++;
+      //   }else{
     }
   }
   CloseCsvFile();
   EndWritingInOutputFile();
   write_basis();
 }
+
 void BendersByBatch::initialize_problems() {
   match_problem_to_id();
 
@@ -135,11 +153,11 @@ void BendersByBatch::initialize_problems() {
  *
  */
 void BendersByBatch::build_cut(
-    const std::vector<std::string> &batch_sub_problems) {
+    const std::vector<std::string> &batch_sub_problems, double *sum) {
   SubproblemCutPackage subproblem_cut_package;
   AllCutPackage all_package;
   Timer timer;
-  getSubproblemCut(subproblem_cut_package, batch_sub_problems);
+  getSubproblemCut(subproblem_cut_package, batch_sub_problems, sum);
   SetSubproblemCost(0);
   for (const auto &pair_name_subproblemcutdata_l : subproblem_cut_package) {
     SetSubproblemCost(
@@ -162,7 +180,8 @@ void BendersByBatch::build_cut(
  */
 void BendersByBatch::getSubproblemCut(
     SubproblemCutPackage &subproblem_cut_package,
-    const std::vector<std::string> &batch_sub_problems) {
+    const std::vector<std::string> &batch_sub_problems, double *sum) {
+  *sum = 0;
   // With gcc9 there was no parallelisation when iterating on the map directly
   // so with project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
@@ -186,8 +205,11 @@ void BendersByBatch::getSubproblemCut(
               worker->fix_to(_data.x_cut);
               worker->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX);
-              worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
-              worker->get_subgradient(handler->get_subgradient());
+              worker->get_value(
+                  handler->get_dbl(SUBPROBLEM_COST));  // solution phi(x,s)
+              worker->get_subgradient(handler->get_subgradient());  // dual pi_s
+              sum += handler->get_dbl(SUBPROBLEM_COST) -
+                     GetAlpha_i()[ProblemToId(name)];
               worker->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
               handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
               std::lock_guard guard(m);

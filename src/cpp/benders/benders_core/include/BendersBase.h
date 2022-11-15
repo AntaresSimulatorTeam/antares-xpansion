@@ -111,6 +111,10 @@ class BendersBase {
   SubproblemsMapPtr GetSubProblemMap() const { return subproblem_map; }
   StrVector GetSubProblemNames() const { return subproblems; }
   double AbsoluteGap() const { return _options.ABSOLUTE_GAP; }
+  DblVector GetAlpha_i() const { return _data.alpha_i; }
+  int ProblemToId(const std::string &problem_name) const {
+    return _problem_to_id.at(problem_name);
+  }
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
