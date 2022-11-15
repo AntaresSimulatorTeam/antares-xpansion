@@ -19,25 +19,27 @@ SolverCbc::SolverCbc(const std::filesystem::path &log_file) : SolverCbc() {
                 << std::endl;
     } else {
       setvbuf(_fp, nullptr, _IONBF, 0);
-      _message_handler.setFilePointer(_fp);
+      _clp_inner_solver.messageHandler()->setFilePointer(_fp);
+      _cbc.messageHandler()->setFilePointer(_fp);
     }
   }
 }
 SolverCbc::SolverCbc() {
   _NumberOfProblems += 1;
-  _current_log_level = 0;
+  set_output_log_level(0);
 }
 
-SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
-    : SolverCbc() {
+SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy) {
   // Try to cast the solver in fictif to a SolverCPLEX
   if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
+    _NumberOfProblems += 1;
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
     _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.string().c_str(), "a+");
     if (_fp != nullptr) {
       setvbuf(_fp, nullptr, _IONBF, 0);
-      _message_handler.setFilePointer(_fp);
+      _clp_inner_solver.messageHandler()->setFilePointer(_fp);
+      _cbc.messageHandler()->setFilePointer(_fp);
     }
     defineCbcModelFromInnerSolver();
   } else {
@@ -619,19 +621,20 @@ void SolverCbc::set_output_log_level(int loglevel) {
   // Saving asked log_level for calls in solve, when Cbc is reinitialized
   _current_log_level = loglevel;
 
-  _clp_inner_solver.passInMessageHandler(&_message_handler);
-  _cbc.passInMessageHandler(&_message_handler);
-  if (loglevel > 0) {
-    _message_handler.setLogLevel(0, 1);  // Coin messages
-    _message_handler.setLogLevel(1, 1);  // Clp messages
-    _message_handler.setLogLevel(2, 1);  // Presolve messages
-    _message_handler.setLogLevel(3, 1);  // Cgl messages
-  } else {
-    _message_handler.setLogLevel(0, 0);  // Coin messages
-    _message_handler.setLogLevel(1, 0);  // Clp messages
-    _message_handler.setLogLevel(2, 0);  // Presolve messages
-    _message_handler.setLogLevel(3, 0);  // Cgl messages
-    _message_handler.setLogLevel(0);
+  for (const auto message_handler :
+       {_clp_inner_solver.messageHandler(), _cbc.messageHandler()}) {
+    if (loglevel > 0) {
+      message_handler->setLogLevel(0, 1);  // Coin messages
+      message_handler->setLogLevel(1, 1);  // Clp messages
+      message_handler->setLogLevel(2, 1);  // Presolve messages
+      message_handler->setLogLevel(3, 1);  // Cgl messages
+    } else {
+      message_handler->setLogLevel(0, 0);  // Coin messages
+      message_handler->setLogLevel(1, 0);  // Clp messages
+      message_handler->setLogLevel(2, 0);  // Presolve messages
+      message_handler->setLogLevel(3, 0);  // Cgl messages
+      message_handler->setLogLevel(0);
+    }
   }
 }
 
