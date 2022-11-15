@@ -206,13 +206,13 @@ class XpansionConfig:
         return False
 
     def relative_gap_default_value(self):
-        return "1e-8"
+        return "1e-6"
 
     def absolute_gap_default_value(self):
         return "1"
 
     def relaxed_gap_default_value(self):
-        return "1e-4"
+        return "1e-5"
 
     def max_iterations_default_value(self):
         return "-1"
