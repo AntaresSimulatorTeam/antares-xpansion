@@ -1,13 +1,6 @@
 Antares-Xpansion changelog
 =================
 
-## Performance history
-
-| Study ID | Nb of nodes | Nb of links | Master | Nb of MC year | Xpansion 0.8 (min) | Xpansion 1.0 (min) |
-| ---------| ------------| ------------|--------|---------------| -------------------|--------------------|
-|eb7d54e0-ce82-4215-8ea5-9eb8b64fc677 | 61 | 368 | `relaxed` | 10 | 190 | 72 |
-|eb7d54e0-ce82-4215-8ea5-9eb8b64fc677 | 61 | 368 | `integer` | 10 | 80 | 72 |
-
 v1.0 (12/2022)
 --------------------
 ### Features
