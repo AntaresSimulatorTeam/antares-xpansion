@@ -44,6 +44,7 @@ class XpansionDriver:
         self.benders_driver = BendersDriver(
             self.config_loader.benders_mpi_exe(),
             self.config_loader.benders_sequential_exe(),
+            self.config_loader.benders_by_batch_exe(),
             self.config_loader.merge_mps_exe(),
             self.config_loader.options_file_name()
         )
@@ -105,7 +106,8 @@ class XpansionDriver:
                 self._backup_general_data_ini_on_error()
                 self._revert_general_data_ini()
         except AntaresDriver.AntaresExecutionException as e:
-            flushed_print("Antares exited with error, backup current general data file and revert original one")
+            flushed_print(
+                "Antares exited with error, backup current general data file and revert original one")
             self._backup_general_data_ini_on_error()
             self._revert_general_data_ini()
             raise e

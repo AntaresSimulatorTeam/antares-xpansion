@@ -447,7 +447,8 @@ class ConfigLoader:
         options_values[
             OptimisationKeys.master_formulation_key()
         ] = self.get_master_formulation()
-        options_values[OptimisationKeys.separation_key()] = self.get_separation()
+        options_values[OptimisationKeys.separation_key()
+                       ] = self.get_separation()
         options_values[
             OptimisationKeys.max_iterations_key()
         ] = self.get_max_iterations()
@@ -577,6 +578,9 @@ class ConfigLoader:
 
     def benders_sequential_exe(self):
         return self.exe_path(self._config.BENDERS_SEQUENTIAL)
+
+    def benders_by_batch_exe(self):
+        return self.exe_path(self._config.BENDERS_BY_BATCH)
 
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)
