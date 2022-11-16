@@ -1,5 +1,6 @@
 #pragma once
 
+#include <execution>
 #include <filesystem>
 
 #include "BendersStructsDatas.h"
@@ -12,6 +13,7 @@
 #include "WorkerMaster.h"
 #include "common.h"
 #include "core/ILogger.h"
+
 /**
  * std execution policies don't share a base type so we can't just select them
  *in place in the foreach This function allow the selection of policy via
@@ -116,6 +118,7 @@ class BendersBase {
   int ProblemToId(const std::string &problem_name) const {
     return _problem_to_id.at(problem_name);
   }
+  BendersBaseOptions Options() const { return _options; }
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);

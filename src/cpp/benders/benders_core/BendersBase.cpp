@@ -1,6 +1,5 @@
 #include "BendersBase.h"
 
-#include <execution>
 #include <memory>
 #include <mutex>
 #include <numeric>

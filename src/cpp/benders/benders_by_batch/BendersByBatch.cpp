@@ -87,7 +87,7 @@ void BendersByBatch::run() {
   //     _data.stop = ShouldBendersStop();
   //   SaveCurrentBendersData();
   //   }
-  auto batch_counter = 0;
+  unsigned batch_counter = 0;
   unsigned batch_size = 2;
   double remaining_epsilon = AbsoluteGap();
   bool is_gap_consumed = false;
@@ -192,24 +192,24 @@ void BendersByBatch::getSubproblemCut(
   }
   std::mutex m;
   selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_cut_package](auto &policy) {
+      [this, &nameAndWorkers, &m, &subproblem_cut_package, &sum](auto &policy) {
         std::for_each(
             policy, nameAndWorkers.begin(), nameAndWorkers.end(),
-            [this, &m, &subproblem_cut_package](
-                const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
+            [this, &m, &subproblem_cut_package,
+             &sum](const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
               const auto &[name, worker] = kvp;
               Timer subproblem_timer;
               auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
               auto handler(std::make_shared<SubproblemCutDataHandler>(
                   subproblem_cut_data));
               worker->fix_to(_data.x_cut);
-              worker->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
-                            _options.LAST_MASTER_MPS + MPS_SUFFIX);
+              worker->solve(handler->get_int(LPSTATUS), Options().OUTPUTROOT,
+                            Options().LAST_MASTER_MPS + MPS_SUFFIX);
               worker->get_value(
                   handler->get_dbl(SUBPROBLEM_COST));  // solution phi(x,s)
               worker->get_subgradient(handler->get_subgradient());  // dual pi_s
-              sum += handler->get_dbl(SUBPROBLEM_COST) -
-                     GetAlpha_i()[ProblemToId(name)];
+              *sum += handler->get_dbl(SUBPROBLEM_COST) -
+                      GetAlpha_i()[ProblemToId(name)];
               worker->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
               handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
               std::lock_guard guard(m);
