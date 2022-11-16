@@ -16,7 +16,7 @@ The following section lists the configurable parameters. If the user does not sp
 | -----| -------------| -------------|
 |[`optimality_gap`](#optimality_gap) | `1` | Tolerance on absolute gap |
 |[`relative_gap`](#relative_gap) | `1e-6` | Tolerance on relative gap |
-|[`max_iteration`](#max_iteration) | `Inf` | Maximum number of Benders iterations |
+|[`max_iteration`](#max_iteration) | `+Inf` | Maximum number of Benders iterations |
 |[`timelimit`](#timelimit) | `1e12` | Timelimit (in seconds) of the Benders step |
 |[`uc_type`](#uc_type) | `expansion_fast` | Unit-commitment type used by Antares |
 |[`master`](#master) | `integer` | Resolution mode of the master problem |
@@ -94,7 +94,7 @@ Positive float. Default value: `1e-6`.
 The `relative_gap` parameter is the tolerance on the relative gap for the
 Antares-Xpansion algorithm. 
 
-At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
+At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / max(|best_upper_bound|, |best_lower_bound|)` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
 
 $$\frac{{\small\texttt{xpansion solution cost}} - {\small\texttt{optimal cost}}}{{\small\texttt{optimal cost}}} < \alpha .$$
 
@@ -103,7 +103,7 @@ $$\frac{{\small\texttt{xpansion solution cost}} - {\small\texttt{optimal cost}}}
 
 #### `max_iteration`
 
-Strictly positive integer or infinite. Default value: `Inf`.
+Strictly positive integer or infinite. Default value: `+Inf`.
 
 Maximum number of
 iterations for the Benders decomposition algorithm. Once this number of iterations is reached, the Antares-Xpansion algorithm ends, regardless of the quality of the solution.
