@@ -163,6 +163,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.CSV_NAME = CSV_NAME;
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
+  result.BATCH_SIZE = BATCH_SIZE;
 
   return result;
 }

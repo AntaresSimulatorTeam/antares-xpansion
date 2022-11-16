@@ -87,14 +87,22 @@ void BendersByBatch::run() {
   //     _data.stop = ShouldBendersStop();
   //   SaveCurrentBendersData();
   //   }
-  unsigned batch_counter = 0;
-  unsigned batch_size = 2;
+  unsigned batch_size = GetSubProblemNames().size() ? Options().BATCH_SIZE == 0
+                                                    : Options().BATCH_SIZE;
+  std::cout << " *************** batch_size: " << batch_size
+            << "***************\n";
   double remaining_epsilon = AbsoluteGap();
   bool is_gap_consumed = false;
   const auto batch_collection =
       BatchCollection(GetSubProblemNames(), batch_size);
   auto number_of_batch = batch_collection.NumberOfBatch();
+  unsigned batch_counter = 0;
+
+  std::cout << "number_of_batch: " << number_of_batch << "\n";
+
   while (batch_counter < number_of_batch) {
+    std::cout << "batch_counter outer loop: " << batch_counter << "\n";
+
     _data.it++;
     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
       _logger->LogAtSwitchToInteger();
@@ -111,23 +119,35 @@ void BendersByBatch::run() {
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
     push_in_trace(std::make_shared<WorkerMasterData>());
-    batch_counter++;
+
     remaining_epsilon = AbsoluteGap();
     is_gap_consumed = false;
     random_batch_permutation_ =
         RandomBatchShuffler(number_of_batch).GetRandomBatchOrder();
+    batch_counter = 0;
     while (batch_counter < number_of_batch && remaining_epsilon > 0) {
+      std::cout << "batch_counter inner loop: " << batch_counter << "\n";
       auto batch_id = random_batch_permutation_[batch_counter];
       auto batch = batch_collection.GetBatchFromId(batch_id);
       auto batch_sub_problems = batch.sub_problem_names;
       double sum = 0;
       build_cut(batch_sub_problems, &sum);
-      //   if (sum < remaining_epsilon){
       remaining_epsilon -= sum;
       batch_counter++;
-      //   }else{
     }
   }
+  get_master_value();
+  ComputeXCut();
+  push_in_trace(std::make_shared<WorkerMasterData>());
+  double dummy = 0;
+  _logger->display_message("\tSolving subproblems...");
+  build_cut(GetSubProblemNames(), &dummy);
+  compute_ub();
+  update_best_ub();
+  _logger->log_at_iteration_end(bendersDataToLogData(_data));
+  UpdateTrace();
+  SaveCurrentBendersData();
+
   CloseCsvFile();
   EndWritingInOutputFile();
   write_basis();

@@ -27,7 +27,9 @@ class BatchCollection {
   };
   size_t size() const { return batch_collections_.size(); }
   std::vector<Batch> BatchCollections() const { return batch_collections_; }
-  Batch GetBatchFromId(unsigned id) const { return batch_collections_[id]; }
+  Batch GetBatchFromId(unsigned batch_id) const {
+    return batch_collections_[batch_id];
+  }
   unsigned NumberOfBatch() const { return number_of_batch_; }
 };
 #endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BATCHCOLLECTION_H_
