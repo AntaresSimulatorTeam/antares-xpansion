@@ -14,13 +14,14 @@ from antares_xpansion.flushed_print import flushed_print
 
 
 class BendersDriver:
-    def __init__(self, benders_mpi, benders_sequential, merge_mps, options_file) -> None:
+    def __init__(self, benders_mpi, benders_sequential, benders_by_batch, merge_mps, options_file) -> None:
 
         self.oversubscribe = False
         self.allow_run_as_root = False
         self.benders_mpi = benders_mpi
         self.merge_mps = merge_mps
         self.benders_sequential = benders_sequential
+        self.benders_by_batch = benders_by_batch
 
         if (options_file != ""):
             self.options_file = options_file
@@ -51,8 +52,10 @@ class BendersDriver:
         # delete execution logs
         self._clean_log_files()
 
+        new_var = self._get_solver_cmd()
+        print(f"**new_var: {new_var}/5454")
         ret = subprocess.run(
-            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
+            new_var, shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')
 
         if ret.returncode != 0:
@@ -92,6 +95,8 @@ class BendersDriver:
             self.solver = self.merge_mps
         elif self.method == "sequential":
             self.solver = self.benders_sequential
+        elif self.method == "benders_by_batch":
+            self.solver = self.benders_by_batch
         else:
             flushed_print("Illegal optim method")
             raise BendersDriver.BendersSolverError(

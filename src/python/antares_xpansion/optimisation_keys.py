@@ -90,3 +90,7 @@ class OptimisationKeys:
     @staticmethod
     def separation_key():
         return "SEPARATION_PARAM"
+
+    @staticmethod
+    def batch_size_key():
+        return "BATCH_SIZE"
