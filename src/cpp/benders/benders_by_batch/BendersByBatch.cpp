@@ -136,12 +136,6 @@ void BendersByBatch::run() {
       batch_counter++;
     }
   }
-  get_master_value();
-  ComputeXCut();
-  push_in_trace(std::make_shared<WorkerMasterData>());
-  double dummy = 0;
-  _logger->display_message("\tSolving subproblems...");
-  build_cut(GetSubProblemNames(), &dummy);
   compute_ub();
   update_best_ub();
   _logger->log_at_iteration_end(bendersDataToLogData(_data));
