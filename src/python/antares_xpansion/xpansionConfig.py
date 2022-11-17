@@ -157,6 +157,7 @@ class XpansionConfig:
             "yearly-weights": "",
             "log_level": "0",
             "separation_parameter": "0.5",
+            "batch_size": "0",
         }
 
     def _set_default_options(self):

@@ -316,6 +316,17 @@ class ConfigLoader:
 
         return float(separation_parameter_str)
 
+    def get_batch_size(self):
+        """
+        return the separation parameter read from the settings file
+        """
+        batch_size_str = self.options.get(
+            "batch_size",
+            self._config.settings_default["batch_size"],
+        )
+
+        return int(batch_size_str)
+
     def additional_constraints(self):
         """
         returns path to additional constraints file
@@ -468,6 +479,8 @@ class ConfigLoader:
             OptimisationKeys.last_mps_master_name_key()
         ] = self._config.LAST_MASTER_MPS
         options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
+        options_values[OptimisationKeys.batch_size_key()
+                       ] = self.get_batch_size()
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)

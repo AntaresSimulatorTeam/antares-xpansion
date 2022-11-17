@@ -416,7 +416,7 @@ void BendersBase::getSubproblemCut(
  *
  */
 void BendersBase::compute_cut(AllCutPackage const &all_package) {
-  _data.ub = 0;
+  // _data.ub = 0;
   std::for_each(
       all_package.begin(), all_package.end(),
       [this](const SubproblemCutPackage &i) {
