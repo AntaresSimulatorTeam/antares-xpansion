@@ -87,8 +87,9 @@ void BendersByBatch::run() {
   //     _data.stop = ShouldBendersStop();
   //   SaveCurrentBendersData();
   //   }
-  unsigned batch_size = GetSubProblemNames().size() ? Options().BATCH_SIZE == 0
-                                                    : Options().BATCH_SIZE;
+  std::cout << "Options().BATCH_SIZE: " << Options().BATCH_SIZE << "\n";
+  unsigned batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
+                                                  : Options().BATCH_SIZE;
   std::cout << " *************** batch_size: " << batch_size
             << "***************\n";
   double remaining_epsilon = AbsoluteGap();
@@ -100,10 +101,12 @@ void BendersByBatch::run() {
 
   std::cout << "number_of_batch: " << number_of_batch << "\n";
 
+  auto current_batch_id = 0;
   while (batch_counter < number_of_batch) {
     std::cout << "batch_counter outer loop: " << batch_counter << "\n";
 
     _data.it++;
+    _data.ub = 0;
     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
       _logger->LogAtSwitchToInteger();
       ActivateIntegrityConstraints();
@@ -122,18 +125,26 @@ void BendersByBatch::run() {
 
     remaining_epsilon = AbsoluteGap();
     is_gap_consumed = false;
-    random_batch_permutation_ =
-        RandomBatchShuffler(number_of_batch).GetRandomBatchOrder();
+    std::cout << "initialisation remaining_epsilon : " << remaining_epsilon
+              << "\n";
+
+    random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
+                                    .GetCyclicBatchOrder(current_batch_id);
     batch_counter = 0;
-    while (batch_counter < number_of_batch && remaining_epsilon > 0) {
-      std::cout << "batch_counter inner loop: " << batch_counter << "\n";
-      auto batch_id = random_batch_permutation_[batch_counter];
-      auto batch = batch_collection.GetBatchFromId(batch_id);
+    while (batch_counter < number_of_batch) {
+      current_batch_id = random_batch_permutation_[batch_counter];
+      auto batch = batch_collection.GetBatchFromId(current_batch_id);
       auto batch_sub_problems = batch.sub_problem_names;
       double sum = 0;
       build_cut(batch_sub_problems, &sum);
       remaining_epsilon -= sum;
-      batch_counter++;
+      std::cout << "sum : " << sum << "\n";
+      std::cout << "remaining_epsilon : " << remaining_epsilon << "\n";
+      std::cout << "current_batch_id : " << current_batch_id << "\n";
+      if (remaining_epsilon > 0)
+        batch_counter++;
+      else
+        break;
     }
   }
   compute_ub();
