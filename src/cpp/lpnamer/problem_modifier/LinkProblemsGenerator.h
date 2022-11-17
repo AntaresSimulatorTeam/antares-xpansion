@@ -53,13 +53,13 @@ class LinkProblemsGenerator {
   std::vector<ProblemData> readMPSList(
       const std::filesystem::path& mps_filePath_p) const;
 
- private:
   void treat(
       const std::string& problem_name, Couplings& couplings,
       std::shared_ptr<IProblemWriter> writer,
       std::shared_ptr<IProblemProviderPort> problem_provider,
       std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const;
 
+ private:
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
   std::filesystem::path lpDir_ = "";
@@ -70,4 +70,8 @@ class LinkProblemsGenerator {
   void treatloop_files(const std::filesystem::path& root, Couplings& couplings,
                        const std::vector<ProblemData>& mps_list,
                        std::shared_ptr<IProblemWriter> writer);
+  void treat(
+      const std::string& problem_name, Couplings& couplings,
+      std::shared_ptr<IProblemWriter> writer, std::shared_ptr<Problem> problem,
+      std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const;
 };

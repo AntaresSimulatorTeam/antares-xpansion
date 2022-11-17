@@ -66,12 +66,45 @@ void LinkProblemsGenerator::treat(
       problem_provider->provide_problem(_solver_name);
 
   ProblemVariables problem_variables = variable_provider->Provide();
-
+  auto problem_modifier = ProblemModifier(logger_);
+  // auto path =
+  // "/tmp/pytest-of-marechaljas/zip-1/test_full_study_short_sequenti0/link-profile-with-empty-week/output/out/lp/zip/pre_change"
+  // + in_prblm->_name; in_prblm->write_prob_mps(path);
   solver_rename_vars(in_prblm, problem_variables.variable_names);
 
-  auto problem_modifier = ProblemModifier(logger_);
   in_prblm = problem_modifier.changeProblem(
       in_prblm, _links, problem_variables.ntc_columns,
+      problem_variables.direct_cost_columns,
+      problem_variables.indirect_cost_columns);
+
+  // couplings creation
+  for (const ActiveLink &link : _links) {
+    for (const Candidate &candidate : link.getCandidates()) {
+      if (problem_modifier.has_candidate_col_id(candidate.get_name())) {
+        std::lock_guard guard(coupling_mutex_);
+        couplings[{candidate.get_name(), problem_name}] =
+            problem_modifier.get_candidate_col_id(candidate.get_name());
+      }
+    }
+  }
+  writer->Write_problem(in_prblm);
+}
+
+void LinkProblemsGenerator::treat(
+    const std::string &problem_name, Couplings &couplings,
+    std::shared_ptr<IProblemWriter> writer, std::shared_ptr<Problem> problem,
+    std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const {
+  ProblemVariables problem_variables = variable_provider->Provide();
+
+  // auto path =
+  // "/tmp/pytest-of-marechaljas/zip-1/test_full_study_short_sequenti0/link-profile-with-empty-week/output/out/lp/memory/pre_change"
+  // + problem->_name; problem->write_prob_mps(path);
+
+  solver_rename_vars(problem, problem_variables.variable_names);
+
+  auto problem_modifier = ProblemModifier(logger_);
+  auto in_prblm = problem_modifier.changeProblem(
+      problem, _links, problem_variables.ntc_columns,
       problem_variables.direct_cost_columns,
       problem_variables.indirect_cost_columns);
 
@@ -101,7 +134,7 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       const std::vector<ProblemData> &mps_list,
                                       std::shared_ptr<IProblemWriter> writer,
                                       std::shared_ptr<ArchiveReader> reader) {
-  std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
+  std::for_each(std::execution::seq, mps_list.begin(), mps_list.end(),
                 [&](const auto &mps) {
                   auto adapter = std::make_shared<ZipProblemProviderAdapter>(
                       root, mps._problem_mps, reader);

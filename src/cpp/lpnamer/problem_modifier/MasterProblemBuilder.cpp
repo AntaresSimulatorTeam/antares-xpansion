@@ -20,7 +20,7 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
 
   SolverFactory factory;
   auto master_l = factory.create_solver(solverName, log_file_path);
-
+  master_l->init();
   addVariablesPmaxOnEachCandidate(candidates, master_l);
 
   std::vector<Candidate> candidatesInteger;

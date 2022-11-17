@@ -9,7 +9,7 @@
 class ZipProblemProviderAdapter : public IProblemProviderPort {
  public:
   explicit ZipProblemProviderAdapter(std::filesystem::path lp_dir,
-                                     const std::string& data,
+                                     std::string problem_name,
                                      std::shared_ptr<ArchiveReader> ptr);
   void reader_extract_file(const std::string& problem_name,
                            ArchiveReader& reader,
