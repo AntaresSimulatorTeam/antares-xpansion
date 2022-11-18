@@ -107,6 +107,7 @@ void BendersByBatch::run() {
 
     _data.it++;
     _data.ub = 0;
+    SetSubproblemCost(0);
     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
       _logger->LogAtSwitchToInteger();
       ActivateIntegrityConstraints();
@@ -138,6 +139,8 @@ void BendersByBatch::run() {
       double sum = 0;
       build_cut(batch_sub_problems, &sum);
       remaining_epsilon -= sum;
+      UpdateTrace();
+
       std::cout << "sum : " << sum << "\n";
       std::cout << "remaining_epsilon : " << remaining_epsilon << "\n";
       std::cout << "current_batch_id : " << current_batch_id << "\n";
@@ -150,7 +153,6 @@ void BendersByBatch::run() {
   compute_ub();
   update_best_ub();
   _logger->log_at_iteration_end(bendersDataToLogData(_data));
-  UpdateTrace();
   SaveCurrentBendersData();
 
   CloseCsvFile();
@@ -183,11 +185,13 @@ void BendersByBatch::build_cut(
   AllCutPackage all_package;
   Timer timer;
   getSubproblemCut(subproblem_cut_package, batch_sub_problems, sum);
-  SetSubproblemCost(0);
-  for (const auto &pair_name_subproblemcutdata_l : subproblem_cut_package) {
-    SetSubproblemCost(
-        GetSubproblemCost() +
-        pair_name_subproblemcutdata_l.second.first.second[SUBPROBLEM_COST]);
+  // SetSubproblemCost(0);
+  // for (const auto &pair_name_subproblemcutdata_l : subproblem_cut_package) {
+  for (const auto &sub_problem_name : batch_sub_problems) {
+    auto sub_problem_cut_data = subproblem_cut_package[sub_problem_name];
+    auto sub_problem_cut_cost =
+        sub_problem_cut_data.first.second[SUBPROBLEM_COST];
+    SetSubproblemCost(GetSubproblemCost() + sub_problem_cut_cost);
   }
 
   SetSubproblemTimers(timer.elapsed());
