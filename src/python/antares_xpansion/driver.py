@@ -152,6 +152,7 @@ class XpansionDriver:
             self.config_loader.options_file_name(),
             self.config_loader.benders_mpi_exe(),
             self.config_loader.benders_sequential_exe(),
+            self.config_loader.benders_by_batch_exe(),
             self.config_loader.merge_mps_exe())
 
         resume_study = ResumeStudy(resume_study_data)
