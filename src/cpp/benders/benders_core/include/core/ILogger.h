@@ -131,6 +131,7 @@ class ILogger {
       const LogData &best_iterations_data) = 0;
   virtual void LogAtInitialRelaxation() = 0;
   virtual void LogAtSwitchToInteger() = 0;
+  virtual void number_of_sub_problem_resolved(int number) = 0;
 };
 
 using Logger = std::shared_ptr<ILogger>;
