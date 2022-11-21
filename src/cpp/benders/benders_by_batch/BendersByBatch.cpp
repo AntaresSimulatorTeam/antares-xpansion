@@ -61,6 +61,8 @@ void BendersByBatch::run() {
   unsigned batch_counter = 0;
 
   auto current_batch_id = 0;
+  int number_of_sub_problem_resolved = 0;
+
   while (batch_counter < number_of_batch) {
     _data.it++;
     _data.ub = 0;
@@ -86,12 +88,14 @@ void BendersByBatch::run() {
     random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
                                     .GetCyclicBatchOrder(current_batch_id);
     batch_counter = 0;
+
     while (batch_counter < number_of_batch) {
       current_batch_id = random_batch_permutation_[batch_counter];
       auto batch = batch_collection.GetBatchFromId(current_batch_id);
       auto batch_sub_problems = batch.sub_problem_names;
       double sum = 0;
       build_cut(batch_sub_problems, &sum);
+      number_of_sub_problem_resolved += batch_sub_problems.size();
       remaining_epsilon -= sum;
       UpdateTrace();
 
@@ -100,6 +104,7 @@ void BendersByBatch::run() {
       else
         break;
     }
+    _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
   }
   compute_ub();
   update_best_ub();

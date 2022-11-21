@@ -106,8 +106,7 @@ void UserFile::restart_best_iterations_infos(
 }
 
 void UserFile::LogAtInitialRelaxation() {
-  _file << LINE_PREFIX
-        << "--- Switch master formulation to relaxed"
+  _file << LINE_PREFIX << "--- Switch master formulation to relaxed"
         << std::endl;
   _file.flush();
 }
@@ -117,6 +116,11 @@ void UserFile::LogAtSwitchToInteger() {
         << "--- Relaxed gap reached, switch master formulation to integer"
         << std::endl;
   _file.flush();
+}
+void UserFile::number_of_sub_problem_resolved(int number) {
+  _file << LINE_PREFIX << indent_1
+        << "cumulative number of call to solver (only for subproblems) : "
+        << number << std::endl;
 }
 
 }  // namespace logger
