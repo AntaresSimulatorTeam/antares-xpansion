@@ -52,10 +52,8 @@ class BendersDriver:
         # delete execution logs
         self._clean_log_files()
 
-        new_var = self._get_solver_cmd()
-        print(f"**new_var: {new_var}/5454")
         ret = subprocess.run(
-            new_var, shell=False, stdout=sys.stdout, stderr=sys.stderr,
+            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')
 
         if ret.returncode != 0:
