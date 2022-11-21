@@ -21,7 +21,7 @@ void BendersByBatch::launch() {
   LOG(INFO) << "Running solver..." << std::endl;
   try {
     run();
-    LOG(INFO) << "BendersSequential solver terminated." << std::endl;
+    LOG(INFO) << "Benders by batch solver terminated." << std::endl;
   } catch (std::exception const &ex) {
     std::string error = "Exception raised : " + std::string(ex.what());
     LOG(WARNING) << error << std::endl;
@@ -51,60 +51,17 @@ void BendersByBatch::run() {
     SetDataPreRelaxation();
   }
 
-  //   while (!_data.stop) {
-  //     Timer timer_master;
-  //     ++_data.it;
-
-  //     if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
-  //       _logger->LogAtSwitchToInteger();
-  //       ActivateIntegrityConstraints();
-  //       ResetDataPostRelaxation();
-  //     }
-
-  //     _logger->log_at_initialization(_data.it +
-  //     GetNumIterationsBeforeRestart()); _logger->display_message("\tSolving
-  //     master..."); get_master_value();
-  //     _logger->log_master_solving_duration(get_timer_master());
-
-  //     ComputeXCut();
-  //     _logger->log_iteration_candidates(bendersDataToLogData(_data));
-
-  //     push_in_trace(std::make_shared<WorkerMasterData>());
-
-  //     _logger->display_message("\tSolving subproblems...");
-  //     build_cut();
-  //     _logger->log_subproblems_solving_duration(GetSubproblemTimers());
-
-  //     compute_ub();
-  //     update_best_ub();
-
-  //     _logger->log_at_iteration_end(bendersDataToLogData(_data));
-
-  //     UpdateTrace();
-
-  //     set_timer_master(timer_master.elapsed());
-  //     _data.elapsed_time = GetBendersTime();
-  //     _data.stop = ShouldBendersStop();
-  //   SaveCurrentBendersData();
-  //   }
-  std::cout << "Options().BATCH_SIZE: " << Options().BATCH_SIZE << "\n";
   unsigned batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
                                                   : Options().BATCH_SIZE;
-  std::cout << " *************** batch_size: " << batch_size
-            << "***************\n";
+
   double remaining_epsilon = AbsoluteGap();
-  bool is_gap_consumed = false;
   const auto batch_collection =
       BatchCollection(GetSubProblemNames(), batch_size);
   auto number_of_batch = batch_collection.NumberOfBatch();
   unsigned batch_counter = 0;
 
-  std::cout << "number_of_batch: " << number_of_batch << "\n";
-
   auto current_batch_id = 0;
   while (batch_counter < number_of_batch) {
-    std::cout << "batch_counter outer loop: " << batch_counter << "\n";
-
     _data.it++;
     _data.ub = 0;
     SetSubproblemCost(0);
@@ -125,9 +82,6 @@ void BendersByBatch::run() {
     push_in_trace(std::make_shared<WorkerMasterData>());
 
     remaining_epsilon = AbsoluteGap();
-    is_gap_consumed = false;
-    std::cout << "initialisation remaining_epsilon : " << remaining_epsilon
-              << "\n";
 
     random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
                                     .GetCyclicBatchOrder(current_batch_id);
@@ -141,9 +95,6 @@ void BendersByBatch::run() {
       remaining_epsilon -= sum;
       UpdateTrace();
 
-      std::cout << "sum : " << sum << "\n";
-      std::cout << "remaining_epsilon : " << remaining_epsilon << "\n";
-      std::cout << "current_batch_id : " << current_batch_id << "\n";
       if (remaining_epsilon > 0)
         batch_counter++;
       else
@@ -185,8 +136,7 @@ void BendersByBatch::build_cut(
   AllCutPackage all_package;
   Timer timer;
   getSubproblemCut(subproblem_cut_package, batch_sub_problems, sum);
-  // SetSubproblemCost(0);
-  // for (const auto &pair_name_subproblemcutdata_l : subproblem_cut_package) {
+
   for (const auto &sub_problem_name : batch_sub_problems) {
     auto sub_problem_cut_data = subproblem_cut_package[sub_problem_name];
     auto sub_problem_cut_cost =
