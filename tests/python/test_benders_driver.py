@@ -79,7 +79,8 @@ class TestBendersDriver:
             exe_path = os.path.normpath(
                 os.path.join(my_install_dir, my_benders_mpi))
 
-            benders_driver = BendersDriver(exe_path, "", "", self.OPTIONS_JSON)
+            benders_driver = BendersDriver(
+                exe_path, "", "", "", self.OPTIONS_JSON)
 
             simulation_output_path = tmp_path
             lp_path = Path(os.path.normpath(
