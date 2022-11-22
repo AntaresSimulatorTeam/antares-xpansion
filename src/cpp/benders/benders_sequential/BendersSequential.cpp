@@ -73,6 +73,7 @@ void BendersSequential::build_cut() {
 
   SetSubproblemTimers(timer.elapsed());
   all_package.push_back(subproblem_cut_package);
+  _data.ub = 0;
   build_cut_full(all_package);
 }
 
