@@ -18,8 +18,18 @@ class BatchCollectionTest : public ::testing::Test {
 
 TEST_F(BatchCollectionTest,
        NumberOfCollectionCanNotBeGreaterThanNumberOfSubProblems) {
-  auto batch_collection = BatchCollection(sub_problems_name_list,
-                                          sub_problems_name_list.size() + 1);
+  auto sub_problems_name_list_size = sub_problems_name_list.size();
+  auto batch_size = sub_problems_name_list_size + 1;
+  try {
+    auto batch_collection = BatchCollection(sub_problems_name_list, batch_size);
+  } catch (const BatchCollection::InvalidSizeOfSubPrblemCollection& err) {
+    auto expected =
+        std::string("Bacth size: " + std::to_string(batch_size) +
+                    " must be less or equal than number of sub problems: " +
+                    std::to_string(sub_problems_name_list_size))
+            .c_str();
+    ASSERT_STREQ(err.what(), expected);
+  }
 }
 TEST_F(
     BatchCollectionTest,
