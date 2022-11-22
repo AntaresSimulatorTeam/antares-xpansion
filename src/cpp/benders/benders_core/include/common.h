@@ -156,7 +156,7 @@ struct BendersBaseOptions : public BaseOptions {
   std::string LAST_MASTER_MPS;
   std::string LAST_MASTER_BASIS;
 
-  unsigned BATCH_SIZE;
+  size_t BATCH_SIZE;
 };
 
 void usage(int argc);

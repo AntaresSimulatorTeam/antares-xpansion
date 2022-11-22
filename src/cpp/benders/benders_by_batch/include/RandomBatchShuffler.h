@@ -8,7 +8,7 @@ class RandomBatchShuffler {
   unsigned number_of_batch_;
 
  public:
-  RandomBatchShuffler(unsigned number_of_batch)
+  explicit RandomBatchShuffler(unsigned number_of_batch)
       : number_of_batch_(number_of_batch) {}
 
   std::vector<unsigned> GetRandomBatchOrder() const;

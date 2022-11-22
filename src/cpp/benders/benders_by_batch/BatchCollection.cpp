@@ -2,7 +2,7 @@
 
 #include <cmath>
 BatchCollection::BatchCollection(
-    const std::vector<std::string>& sub_problem_names, unsigned batch_size) {
+    const std::vector<std::string>& sub_problem_names, size_t batch_size) {
   const auto sub_problems_number = sub_problem_names.size();
 
   if (batch_size > sub_problems_number) {

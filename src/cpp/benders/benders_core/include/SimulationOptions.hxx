@@ -71,4 +71,4 @@ BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
                       asString())
 
 // Name of the last master basis file
-BENDERS_OPTIONS_MACRO(BATCH_SIZE, unsigned, 0, asUInt())
+BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())

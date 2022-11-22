@@ -5,15 +5,13 @@
 
 class BendersByBatch : public BendersBase {
  private:
-  /* data */
- private:
   [[nodiscard]] bool shouldParallelize() const final { return true; }
   std::vector<unsigned> random_batch_permutation_;
 
  public:
   BendersByBatch(BendersBaseOptions const &options, Logger logger,
                  Writer writer);
-  ~BendersByBatch() = default;
+  ~BendersByBatch() override = default;
   void launch() override;
   void free() override;
   void run() override;
@@ -24,7 +22,7 @@ class BendersByBatch : public BendersBase {
  private:
   void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package,
                         const std::vector<std::string> &batch_sub_problems,
-                        double *sum);
+                        double *sum) const;
 };
 
 #endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_

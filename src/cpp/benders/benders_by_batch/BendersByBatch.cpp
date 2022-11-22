@@ -51,8 +51,8 @@ void BendersByBatch::run() {
     SetDataPreRelaxation();
   }
 
-  unsigned batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
-                                                  : Options().BATCH_SIZE;
+  auto batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
+                                              : Options().BATCH_SIZE;
 
   double remaining_epsilon = AbsoluteGap();
   const auto batch_collection =
@@ -91,8 +91,8 @@ void BendersByBatch::run() {
 
     while (batch_counter < number_of_batch) {
       current_batch_id = random_batch_permutation_[batch_counter];
-      auto batch = batch_collection.GetBatchFromId(current_batch_id);
-      auto batch_sub_problems = batch.sub_problem_names;
+      const auto &batch = batch_collection.GetBatchFromId(current_batch_id);
+      const auto &batch_sub_problems = batch.sub_problem_names;
       double sum = 0;
       build_cut(batch_sub_problems, &sum);
       number_of_sub_problem_resolved += batch_sub_problems.size();
@@ -164,7 +164,7 @@ void BendersByBatch::build_cut(
  */
 void BendersByBatch::getSubproblemCut(
     SubproblemCutPackage &subproblem_cut_package,
-    const std::vector<std::string> &batch_sub_problems, double *sum) {
+    const std::vector<std::string> &batch_sub_problems, double *sum) const {
   *sum = 0;
   // With gcc9 there was no parallelisation when iterating on the map directly
   // so with project it in a vector
