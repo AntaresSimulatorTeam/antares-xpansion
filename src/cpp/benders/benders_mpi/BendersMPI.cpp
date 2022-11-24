@@ -110,56 +110,56 @@ void BendersMpi::solve_master_and_create_trace() {
  */
 void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   int success = 1;
-  SubproblemCutPackage subproblem_cut_package;
+  SubProblemDataMap subproblem_data_map;
   Timer process_timer;
   try {
     if (_world.rank() != rank_0) {
-      subproblem_cut_package = get_subproblem_cut_package();
+      subproblem_data_map = get_subproblem_cut_package();
     }
   } catch (std::exception const &ex) {
     success = 0;
     write_exception_message(ex);
   }
   check_if_some_proc_had_a_failure(success);
-  gather_subproblems_cut_package_and_build_cuts(subproblem_cut_package,
+  gather_subproblems_cut_package_and_build_cuts(subproblem_data_map,
                                                 process_timer);
 }
 
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
-    const SubproblemCutPackage &subproblem_cut_package,
-    const Timer &process_timer) {
+    const SubProblemDataMap &subproblem_data_map, const Timer &process_timer) {
   if (!_exceptionRaised) {
     if (_world.rank() != rank_0) {
-      mpi::gather(_world, subproblem_cut_package, rank_0);
+      mpi::gather(_world, subproblem_data_map, rank_0);
     } else {
-      AllCutPackage all_package;
-      mpi::gather(_world, subproblem_cut_package, all_package, rank_0);
+      std::vector<SubProblemDataMap> gather_subproblem_map;
+      mpi::gather(_world, subproblem_data_map, gather_subproblem_map, rank_0);
       SetSubproblemTimers(process_timer.elapsed());
-      master_build_cuts(all_package);
+      master_build_cuts(gather_subproblem_map);
     }
   }
 }
 
-SubproblemCutPackage BendersMpi::get_subproblem_cut_package() {
-  SubproblemCutPackage subproblem_cut_package;
-  getSubproblemCut(subproblem_cut_package);
-  return subproblem_cut_package;
+SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
+  SubProblemDataMap subproblem_data_map;
+  getSubproblemCut(subproblem_data_map);
+  return subproblem_data_map;
 }
 
-void BendersMpi::master_build_cuts(AllCutPackage all_package) {
+void BendersMpi::master_build_cuts(
+    std::vector<SubProblemDataMap> gather_subproblem_map) {
   SetSubproblemCost(0);
-  for (auto const &pack : all_package) {
-    for (auto &&[_, subproblem_cut_package] : pack) {
-      SetSubproblemCost(GetSubproblemCost() +
-                        subproblem_cut_package.first.second[SUBPROBLEM_COST]);
+  for (const auto &subproblem_data_map : gather_subproblem_map) {
+    for (auto &&[_, subproblem_data] : subproblem_data_map) {
+      SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
     }
   }
-  all_package.erase(all_package.begin());
 
   _logger->display_message("\tSolving subproblems...");
 
   _data.ub = 0;
-  build_cut_full(all_package);
+  for (const auto &subproblem_data_map : gather_subproblem_map) {
+    build_cut_full(subproblem_data_map);
+  }
   _logger->log_subproblems_solving_duration(GetSubproblemTimers());
 }
 
@@ -222,8 +222,6 @@ void BendersMpi::run() {
   init_data();
 
   if (_world.rank() == rank_0) {
-    set_cut_storage();
-
     if (is_initial_relaxation_requested()) {
       _logger->LogAtInitialRelaxation();
       DeactivateIntegrityConstraints();

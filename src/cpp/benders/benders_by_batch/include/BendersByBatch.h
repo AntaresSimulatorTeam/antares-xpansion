@@ -20,7 +20,7 @@ class BendersByBatch : public BendersBase {
                  double *sum);
 
  private:
-  void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package,
+  void getSubproblemCut(SubProblemDataMap &subproblem_cut_package,
                         const std::vector<std::string> &batch_sub_problems,
                         double *sum) const;
 };

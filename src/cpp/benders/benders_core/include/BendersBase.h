@@ -36,7 +36,7 @@ class BendersBase {
   double execution_time() const;
 
  protected:
-  BendersData _data;
+  CurrentIterationData _data;
   VariableMap master_variable_map;
   CouplingMap coupling_map;
 
@@ -54,9 +54,9 @@ class BendersBase {
   void ComputeInvestCost();
   virtual void compute_ub();
   virtual void get_master_value();
-  void getSubproblemCut(SubproblemCutPackage &subproblem_cut_package);
+  void getSubproblemCut(SubProblemDataMap &subproblem_data_map);
   virtual void post_run_actions() const;
-  void build_cut_full(const AllCutPackage &all_package);
+  void build_cut_full(const SubProblemDataMap &subproblem_data_map);
   virtual void DeactivateIntegrityConstraints() const;
   virtual void ActivateIntegrityConstraints() const;
   virtual void SetDataPreRelaxation();
@@ -67,7 +67,8 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
-  [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
+  [[nodiscard]] LogData bendersDataToLogData(
+      const CurrentIterationData &data) const;
   virtual void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   virtual void reset_master(WorkerMaster *worker_master);
@@ -76,7 +77,6 @@ class BendersBase {
   void addSubproblem(const std::pair<std::string, VariableMap> &kvp);
   [[nodiscard]] WorkerMasterPtr get_master() const;
   void match_problem_to_id();
-  void set_cut_storage();
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -128,13 +128,13 @@ class BendersBase {
   void bound_simplex_iter(int simplexiter);
   void UpdateStoppingCriterion();
   bool ShouldRelaxationStop() const;
-  void check_status(AllCutPackage const &all_package) const;
+  void check_status(const SubProblemDataMap &subproblem_data_map) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
   [[nodiscard]] Output::IterationsData output_data() const;
   [[nodiscard]] Output::SolutionData solution() const;
   [[nodiscard]] std::string status_from_criterion() const;
-  void compute_cut_aggregate(const AllCutPackage &all_package);
-  void compute_cut(const AllCutPackage &all_package);
+  void compute_cut_aggregate(const SubProblemDataMap &subproblem_data_map);
+  void compute_cut(const SubProblemDataMap &subproblem_data_map);
   [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       std::map<std::string, std::map<std::string, int>> input_map) const;
   [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
@@ -150,7 +150,6 @@ class BendersBase {
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;
-  AllCutStorage _all_cuts_storage;
   StrVector subproblems;
   std::ofstream _csv_file;
   std::filesystem::path _csv_file_path;

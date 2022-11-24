@@ -5,7 +5,7 @@
 #include "common.h"
 #include "core/ILogger.h"
 
-struct BendersData {
+struct CurrentIterationData {
   double subproblem_timers;
   double timer_master;
   double lb;
@@ -53,7 +53,7 @@ class WorkerMasterData {
   PointPtr _x_cut;
   PointPtr _min_invest;
   PointPtr _max_invest;
-  std::map<std::string, SubproblemCutDataPtr> _cut_trace;
+  SubProblemDataMap _cut_trace;
 
   double _invest_cost;
   double _operational_cost;

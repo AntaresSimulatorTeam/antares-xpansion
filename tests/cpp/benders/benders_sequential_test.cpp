@@ -60,7 +60,7 @@ class BendersSequentialDouble : public BendersSequential {
   void get_master_value() override{};
   void build_cut() override{};
   void compute_ub() override { _data.ub = parametrized_ub; };
-  BendersData get_data() const { return _data; }
+  CurrentIterationData get_data() const { return _data; }
   void build_input_map() override{};
   void write_basis() const override{};
   void UpdateTrace() override{};

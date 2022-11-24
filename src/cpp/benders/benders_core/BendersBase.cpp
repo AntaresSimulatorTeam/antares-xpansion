@@ -91,21 +91,21 @@ void BendersBase::print_csv_iteration(std::ostream &file, int ite) {
  *
  *  \param subproblem_index : problem id
  */
-void print_cut_csv(std::ostream &stream,
-                   SubproblemCutDataHandler const &handler,
-                   std::string const &name, int subproblem_index) {
+void print_cut_csv(std::ostream &stream, const SubProblemData &subproblem_data,
+                   std::string const &subproblem_name, int subproblem_index,
+                   double alpha_i) {
   stream << "Subproblem"
          << ";";
-  stream << name << ";";
+  stream << subproblem_name << ";";
   stream << subproblem_index << ";";
-  stream << handler.get_dbl(SUBPROBLEM_COST) << ";";
+  stream << subproblem_data.subproblem_cost << ";";
   stream << ";";
   stream << ";";
-  stream << handler.get_int(SIMPLEXITER) << ";";
+  stream << subproblem_data.simplex_iter << ";";
   stream << ";";
-  stream << handler.get_dbl(ALPHA_I) << ";";
+  stream << alpha_i << ";";
   stream << ";";
-  stream << handler.get_dbl(SUBPROBLEM_TIMER) << ";";
+  stream << subproblem_data.subproblem_timer << ";";
   stream << std::endl;
 }
 
@@ -116,10 +116,11 @@ void BendersBase::print_master_and_cut(std::ostream &file, int ite,
 
   print_master_csv(file, trace, x_cut);
 
-  for (auto &kvp : trace->_cut_trace) {
-    const SubproblemCutDataHandler handler(kvp.second);
+  for (auto &[subproblem_name, subproblem_data] : trace->_cut_trace) {
+    auto problem_id = _problem_to_id[subproblem_name];
     file << ite << ";";
-    print_cut_csv(file, handler, kvp.first, _problem_to_id[kvp.first]);
+    print_cut_csv(file, subproblem_data, subproblem_name, problem_id,
+                  _data.alpha_i[problem_id]);
   }
 }
 
@@ -270,26 +271,21 @@ void BendersBase::ResetDataPostRelaxation() {
  *  \param all_package : storage of each subproblems status
  *  \param data : BendersData used to get master solving status
  */
-void BendersBase::check_status(AllCutPackage const &all_package) const {
+void BendersBase::check_status(
+    const SubProblemDataMap &subproblem_data_map) const {
   if (_data.master_status != SOLVER_STATUS::OPTIMAL) {
     LOG(INFO) << "Master status is " << _data.master_status << std::endl;
     throw InvalidSolverStatusException("Master status is " +
                                        std::to_string(_data.master_status));
   }
-  for (const auto &package : all_package) {
-    for (const auto &kvp : package) {
-      SubproblemCutDataPtr subproblem_cut_data(
-          new SubproblemCutData(kvp.second));
-      SubproblemCutDataHandlerPtr const handler(
-          new SubproblemCutDataHandler(subproblem_cut_data));
-      if (handler->get_int(LPSTATUS) != SOLVER_STATUS::OPTIMAL) {
-        std::stringstream stream;
-        stream << "Subproblem " << kvp.first << " status is "
-               << handler->get_int(LPSTATUS);
-        LOG(INFO) << stream.str() << std::endl;
+  for (const auto &[subproblem_name, subproblemData] : subproblem_data_map) {
+    if (subproblemData.lpstatus != SOLVER_STATUS::OPTIMAL) {
+      std::stringstream stream;
+      stream << "Subproblem " << subproblem_name << " status is "
+             << subproblemData.lpstatus;
+      LOG(INFO) << stream.str() << std::endl;
 
-        throw InvalidSolverStatusException(stream.str());
-      }
+      throw InvalidSolverStatusException(stream.str());
     }
   }
 }
@@ -370,8 +366,7 @@ void BendersBase::compute_ub() {
  *
  *  \param subproblem_cut_package : map storing for each subproblem its cut
  */
-void BendersBase::getSubproblemCut(
-    SubproblemCutPackage &subproblem_cut_package) {
+void BendersBase::getSubproblemCut(SubProblemDataMap &subproblem_data_map) {
   // With gcc9 there was no parallelisation when iterating on the map directly
   // so with project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
@@ -381,25 +376,23 @@ void BendersBase::getSubproblemCut(
   }
   std::mutex m;
   selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_cut_package](auto &policy) {
+      [this, &nameAndWorkers, &m, &subproblem_data_map](auto &policy) {
         std::for_each(
             policy, nameAndWorkers.begin(), nameAndWorkers.end(),
-            [this, &m, &subproblem_cut_package](
+            [this, &m, &subproblem_data_map](
                 const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
               const auto &[name, worker] = kvp;
               Timer subproblem_timer;
-              auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
-              auto handler(std::make_shared<SubproblemCutDataHandler>(
-                  subproblem_cut_data));
+              SubProblemData subproblem_data;
               worker->fix_to(_data.x_cut);
-              worker->solve(handler->get_int(LPSTATUS), _options.OUTPUTROOT,
+              worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX);
-              worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
-              worker->get_subgradient(handler->get_subgradient());
-              worker->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
-              handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
+              worker->get_value(subproblem_data.subproblem_cost);
+              worker->get_subgradient(subproblem_data.var_name_and_subgradient);
+              worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+              subproblem_data.subproblem_timer = subproblem_timer.elapsed();
               std::lock_guard guard(m);
-              subproblem_cut_package[name] = *subproblem_cut_data;
+              subproblem_data_map[name] = subproblem_data;
             });
       },
       shouldParallelize());
@@ -415,36 +408,26 @@ void BendersBase::getSubproblemCut(
  * subproblem problem
  *
  */
-void BendersBase::compute_cut(AllCutPackage const &all_package) {
+void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
   // _data.ub = 0;
-  std::for_each(
-      all_package.begin(), all_package.end(),
-      [this](const SubproblemCutPackage &i) {
-        for (auto const &[name, data] : i) {
-          auto subproblem_cut_data(std::make_shared<SubproblemCutData>(data));
-          auto handler(
-              std::make_shared<SubproblemCutDataHandler>(subproblem_cut_data));
-          handler->get_dbl(ALPHA_I) = _data.alpha_i[_problem_to_id[name]];
-          _data.ub += handler->get_dbl(SUBPROBLEM_COST);
-          SubproblemCutTrimmer cut(handler, _data.x_cut);
+  for (auto const &[subproblem_name, subproblem_data] : subproblem_data_map) {
+    _data.ub += subproblem_data.subproblem_cost;
 
-          _master->addSubproblemCut(_problem_to_id[name],
-                                    handler->get_subgradient(), _data.x_cut,
-                                    handler->get_dbl(SUBPROBLEM_COST));
-          _all_cuts_storage[name].insert(cut);
-          _trace[_data.it - 1]->_cut_trace[name] = subproblem_cut_data;
+    _master->addSubproblemCut(_problem_to_id[subproblem_name],
+                              subproblem_data.var_name_and_subgradient,
+                              _data.x_cut, subproblem_data.subproblem_cost);
+    _trace[_data.it - 1]->_cut_trace[subproblem_name] = subproblem_data;
 
-          bound_simplex_iter(handler->get_int(SIMPLEXITER));
-        }
-      });
+    bound_simplex_iter(subproblem_data.simplex_iter);
+  }
 }
 
-void compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
-                     const Point &x_cut, Point &s) {
+void compute_cut_val(const Point &var_name_subgradient, const Point &x_cut,
+                     Point &s) {
   for (auto const &[cand_name, cand_value] : x_cut) {
-    if (handler->get_subgradient().find(cand_name) !=
-        handler->get_subgradient().end()) {
-      s[cand_name] += handler->get_subgradient().find(cand_name)->second;
+    const auto cand_name_and_subgradient = var_name_subgradient.find(cand_name);
+    if (cand_name_and_subgradient != var_name_subgradient.end()) {
+      s[cand_name] += cand_name_and_subgradient->second;
     }
   }
 }
@@ -458,28 +441,20 @@ void compute_cut_val(const SubproblemCutDataHandlerPtr &handler,
  *  \param all_package : vector storing all cuts information for each
  * subproblem problem
  */
-void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
+void BendersBase::compute_cut_aggregate(
+    const SubProblemDataMap &subproblem_data_map) {
   Point s;
   double rhs(0);
   _data.ub = 0;
-  for (const auto &i : all_package) {
-    for (auto const &itmap : i) {
-      SubproblemCutDataPtr subproblem_cut_data(
-          new SubproblemCutData(itmap.second));
-      SubproblemCutDataHandlerPtr handler(
-          new SubproblemCutDataHandler(subproblem_cut_data));
-      _data.ub += handler->get_dbl(SUBPROBLEM_COST);
-      rhs += handler->get_dbl(SUBPROBLEM_COST);
+  for (auto const &[name, subproblem_data] : subproblem_data_map) {
+    _data.ub += subproblem_data.subproblem_cost;
+    rhs += subproblem_data.subproblem_cost;
 
-      compute_cut_val(handler, _data.x_cut, s);
+    compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
 
-      SubproblemCutTrimmer cut(handler, _data.x_cut);
+    _trace[_data.it - 1]->_cut_trace[name] = subproblem_data;
 
-      _all_cuts_storage.find(itmap.first)->second.insert(cut);
-      _trace[_data.it - 1]->_cut_trace[itmap.first] = subproblem_cut_data;
-
-      bound_simplex_iter(handler->get_int(SIMPLEXITER));
-    }
+    bound_simplex_iter(subproblem_data.simplex_iter);
   }
   _master->add_cut(s, _data.x_cut, rhs);
 }
@@ -491,12 +466,12 @@ void BendersBase::compute_cut_aggregate(AllCutPackage const &all_package) {
  *
  *  \param all_package : storage of every subproblem information
  */
-void BendersBase::build_cut_full(AllCutPackage const &all_package) {
-  check_status(all_package);
+void BendersBase::build_cut_full(const SubProblemDataMap &subproblem_data_map) {
+  check_status(subproblem_data_map);
   if (_options.AGGREGATION) {
-    compute_cut_aggregate(all_package);
+    compute_cut_aggregate(subproblem_data_map);
   } else {
-    compute_cut(all_package);
+    compute_cut(subproblem_data_map);
   }
 }
 
@@ -696,7 +671,8 @@ std::filesystem::path BendersBase::get_structure_path() const {
   return std::filesystem::path(_options.INPUTROOT) / _options.STRUCTURE_FILE;
 }
 
-LogData BendersBase::bendersDataToLogData(const BendersData &data) const {
+LogData BendersBase::bendersDataToLogData(
+    const CurrentIterationData &data) const {
   auto optimal_gap(data.best_ub - data.lb);
   return {data.lb,
           data.best_ub,
@@ -792,11 +768,6 @@ void BendersBase::match_problem_to_id() {
   for (const auto &problem : coupling_map) {
     _problem_to_id[problem.first] = count;
     count++;
-  }
-}
-void BendersBase::set_cut_storage() {
-  for (auto const &kvp : _problem_to_id) {
-    _all_cuts_storage[kvp.first] = SubproblemCutStorage();
   }
 }
 
