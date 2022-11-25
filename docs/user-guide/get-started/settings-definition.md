@@ -15,8 +15,8 @@ The following section lists the configurable parameters. If the user does not sp
 | Name | Default value | Description |
 | -----| -------------| -------------|
 |[`optimality_gap`](#optimality_gap) | `1` | Tolerance on absolute gap |
-|[`relative_gap`](#relative_gap) | `1e-12` | Tolerance on relative gap |
-|[`max_iteration`](#max_iteration) | `Inf` | Maximum number of Benders iterations |
+|[`relative_gap`](#relative_gap) | `1e-6` | Tolerance on relative gap |
+|[`max_iteration`](#max_iteration) | `+Inf` | Maximum number of Benders iterations |
 |[`timelimit`](#timelimit) | `1e12` | Timelimit (in seconds) of the Benders step |
 |[`uc_type`](#uc_type) | `expansion_fast` | Unit-commitment type used by Antares |
 |[`master`](#master) | `integer` | Resolution mode of the master problem |
@@ -24,8 +24,8 @@ The following section lists the configurable parameters. If the user does not sp
 |[`solver`](#solver) | `Cbc` | Name of the solver |
 |[`log_level`](#log_level) | `0` | Solver's log level |
 |[`additional-constraints`](#additional-constraints) | `None` | Path of the additional constraints file |
-|[`separation_parameter`](#separation_parameter) | `1` | Step size for the in-out separation |
-|[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-4` | Threshold to switch from relaxed to integer master |
+|[`separation_parameter`](#separation_parameter) | `0.5` | Step size for the in-out separation |
+|[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-5` | Threshold to switch from relaxed to integer master |
 
 The format is a standard `.ini` and should follow this template:
 ```ini
@@ -89,12 +89,12 @@ significantly different installed capacities (see **Figure
 
 #### `relative_gap`
 
-Positive float. Default value: `1e-12`. 
+Positive float. Default value: `1e-6`. 
 
 The `relative_gap` parameter is the tolerance on the relative gap for the
 Antares-Xpansion algorithm. 
 
-At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
+At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / max(|best_upper_bound|, |best_lower_bound|)` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
 
 $$\frac{{\small\texttt{xpansion solution cost}} - {\small\texttt{optimal cost}}}{{\small\texttt{optimal cost}}} < \alpha .$$
 
@@ -103,7 +103,7 @@ $$\frac{{\small\texttt{xpansion solution cost}} - {\small\texttt{optimal cost}}}
 
 #### `max_iteration`
 
-Strictly positive integer or infinite. Default value: `Inf`.
+Strictly positive integer or infinite. Default value: `+Inf`.
 
 Maximum number of
 iterations for the Benders decomposition algorithm. Once this number of iterations is reached, the Antares-Xpansion algorithm ends, regardless of the quality of the solution.
@@ -268,7 +268,7 @@ time, but it can invest in neither.
 
 #### `separation_parameter`
 
-Float in \\([0,1]\\). Default value: `1`. 
+Float in \\([0,1]\\). Default value: `0.5`. 
 
 Defines the step size for the in-out separation. If \\(x_{in}\\) is the current best feasible solution and \\(x_{out}\\) is the master solution at the current iteration, the investment in the subproblems is set to 
 
@@ -281,7 +281,7 @@ The in-out stabilisation technique is used in order to speed up the Benders deco
 
 #### `relaxed_optimality_gap`
 
-Positive float. Default value: `1e-12`. 
+Positive float. Default value: `1e-5`. 
 
 The `relaxed_optimality_gap` parameter only has effect when `master = integer`. In this case, the master problem is relaxed in the first iterations. The `relaxed_optimality_gap` is the threshold from which to switch back from the relaxed to the integer master formulation. 
 

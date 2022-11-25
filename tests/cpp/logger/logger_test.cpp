@@ -432,14 +432,8 @@ TEST_F(UserLoggerTest, RelativeGapReached) {
 TEST_F(UserLoggerTest, EndLog) {
   LogData logData;
   logData.best_it = 1;
-  logData.best_ub = 20;
-  logData.lb = 19.5;
   logData.subproblem_cost = 1e6;
   logData.invest_cost = 10e6;
-  logData.optimality_gap = 1;
-  logData.relative_gap = 1e-6;
-  logData.it = 2;
-  logData.max_iterations = 10;
   std::stringstream expected;
   expected << indent_1 << "Best solution = it 1" << std::endl;
   expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;

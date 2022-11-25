@@ -1,17 +1,19 @@
 Antares-Xpansion changelog
 =================
 
-v1.0.0 (11/2022)
+v1.0.0 (12/2022)
 --------------------
-
 ### Features
 
-- Use Antares-Simulator 8.3.2
-- Implement in-out benders optimisation
+- Use Antares-Simulator 8.4.0
+- Performance improvement in execution time
+    - In-out stabilisation of the Benders algorithm : new parameters `separation_parameter` and `relaxed_optimality_gap` to tune the stabilization, more information [here](user-guide/get-started/settings-definition.md#separation_parameter)
+    - Parallelization of the `problem_generation` step
+- Performance improvement in disk space consumption : zip of the MPS folder
+- Change the default value of `relative_gap` from `1e-12` to `1e-6`
 
-v0.8.0 (08/2022)
+v0.8.0 (10/2022)
 --------------------
-
 ### Features
 
 - Use Antares-Simulator 8.2.2
