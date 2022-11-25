@@ -70,7 +70,6 @@ class BendersBase {
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   virtual void build_input_map();
-  void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
   virtual void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_subproblems();
@@ -120,7 +119,6 @@ class BendersBase {
   BendersBaseOptions Options() const { return _options; }
 
  private:
-  void print_csv_iteration(std::ostream &file, int ite);
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterDataPtr &trace, Point const &xopt);
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
@@ -129,7 +127,6 @@ class BendersBase {
   bool ShouldRelaxationStop() const;
   void check_status(const SubProblemDataMap &subproblem_data_map) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
-  [[nodiscard]] Output::IterationsData output_data() const;
   [[nodiscard]] Output::SolutionData solution() const;
   [[nodiscard]] std::string status_from_criterion() const;
   void compute_cut_aggregate(const SubProblemDataMap &subproblem_data_map);
@@ -145,7 +142,7 @@ class BendersBase {
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
   std::filesystem::path _log_name;
-  BendersTrace _trace;
+  BendersRelevantIterationsData relevantIterationData_ = {nullptr, nullptr};
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;

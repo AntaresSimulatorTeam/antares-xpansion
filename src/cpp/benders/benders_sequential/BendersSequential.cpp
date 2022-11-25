@@ -100,8 +100,6 @@ void BendersSequential::run() {
     ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-    push_in_trace(std::make_shared<WorkerMasterData>());
-
     _logger->display_message("\tSolving subproblems...");
     build_cut();
     _logger->log_subproblems_solving_duration(GetSubproblemTimers());

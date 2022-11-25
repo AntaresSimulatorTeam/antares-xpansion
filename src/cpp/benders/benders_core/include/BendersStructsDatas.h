@@ -60,4 +60,8 @@ class WorkerMasterData {
 };
 
 using WorkerMasterDataPtr = std::shared_ptr<WorkerMasterData>;
+struct BendersRelevantIterationsData {
+  WorkerMasterDataPtr last;
+  WorkerMasterDataPtr best;
+};
 using BendersTrace = std::vector<WorkerMasterDataPtr>;

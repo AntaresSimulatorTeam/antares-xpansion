@@ -96,8 +96,6 @@ void BendersMpi::solve_master_and_create_trace() {
 
   ComputeXCut();
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
-
-  push_in_trace(std::make_shared<WorkerMasterData>());
 }
 
 /*!

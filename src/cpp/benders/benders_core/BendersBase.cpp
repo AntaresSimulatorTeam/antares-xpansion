@@ -57,23 +57,20 @@ void BendersBase::CloseCsvFile() {
   }
 }
 void BendersBase::PrintCurrentIterationCsv() {
-  print_csv_iteration(_csv_file, _data.it - 1);
-}
-
-void BendersBase::print_csv_iteration(std::ostream &file, int ite) {
-  if (_trace[ite]->_valid) {
+  if (relevantIterationData_.last->_valid) {
+    auto ite = _data.it - 1;
     Point x_cut;
     // Write first problem : use result of best iteration
     if (ite == 0) {
       int best_it_index = _data.best_it - 1;
-      if (best_it_index >= 0 && _trace.size() > best_it_index) {
-        x_cut = _trace[best_it_index]->get_x_cut();
+      if (best_it_index >= 0 && relevantIterationData_.best != nullptr) {
+        x_cut = relevantIterationData_.best->get_x_cut();
       }
     } else {
-      x_cut = _trace[ite - 1]->get_x_cut();
+      x_cut = relevantIterationData_.last->get_x_cut();
     }
-    print_master_and_cut(file, ite + 1 + iterations_before_resume, _trace[ite],
-                         x_cut);
+    print_master_and_cut(_csv_file, ite + 1 + iterations_before_resume,
+                         relevantIterationData_.last, x_cut);
   }
 }
 
@@ -158,6 +155,7 @@ void BendersBase::update_best_ub() {
     _data.x_in = _data.x_cut;
     _data.best_ub = _data.ub;
     _data.best_it = _data.it;
+    relevantIterationData_.best = relevantIterationData_.last;
     best_iteration_data = bendersDataToLogData(_data);
   }
 }
@@ -201,7 +199,7 @@ bool BendersBase::ShouldBendersStop() {
  *  Fonction to store the current Benders data in the trace
  */
 void BendersBase::UpdateTrace() {
-  auto &LastWorkerMasterDataPtr = _trace[_data.it - 1];
+  auto &LastWorkerMasterDataPtr = relevantIterationData_.last;
   LastWorkerMasterDataPtr->_lb = _data.lb;
   LastWorkerMasterDataPtr->_ub = _data.ub;
   LastWorkerMasterDataPtr->_best_ub = _data.best_ub;
@@ -393,7 +391,8 @@ void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
     _master->addSubproblemCut(_problem_to_id[subproblem_name],
                               subproblem_data.var_name_and_subgradient,
                               _data.x_cut, subproblem_data.subproblem_cost);
-    _trace[_data.it - 1]->_cut_trace[subproblem_name] = subproblem_data;
+    relevantIterationData_.last = std::make_shared<WorkerMasterData>();
+    relevantIterationData_.last->_cut_trace[subproblem_name] = subproblem_data;
   }
 }
 
@@ -426,8 +425,9 @@ void BendersBase::compute_cut_aggregate(
     rhs += subproblem_data.subproblem_cost;
 
     compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
+    relevantIterationData_.last = std::make_shared<WorkerMasterData>();
 
-    _trace[_data.it - 1]->_cut_trace[name] = subproblem_data;
+    relevantIterationData_.last->_cut_trace[name] = subproblem_data;
   }
   _master->add_cut(s, _data.x_cut, rhs);
 }
@@ -481,7 +481,7 @@ void BendersBase::post_run_actions() const {
 }
 
 void BendersBase::SaveCurrentIterationInOutputFile() const {
-  auto &LastWorkerMasterDataPtr = _trace[_data.it - 1];
+  auto &LastWorkerMasterDataPtr = relevantIterationData_.last;
   if (LastWorkerMasterDataPtr->_valid) {
     _writer->write_iteration(iteration(LastWorkerMasterDataPtr),
                              _data.it + iterations_before_resume);
@@ -527,22 +527,6 @@ Output::Iteration BendersBase::iteration(
   return iteration;
 }
 
-Output::IterationsData BendersBase::output_data() const {
-  Output::IterationsData iterations_data;
-  Output::Iterations iters;
-  iterations_data.nbWeeks_p = _totalNbProblems;
-  // Iterations
-  for (const auto &masterDataPtr_l : _trace) {
-    if (masterDataPtr_l->_valid) {
-      iters.push_back(iteration(masterDataPtr_l));
-    }
-  }
-  iterations_data.iters = iters;
-  iterations_data.solution_data = solution();
-  iterations_data.elapsed_time = _data.elapsed_time;
-  return iterations_data;
-}
-
 Output::SolutionData BendersBase::solution() const {
   Output::SolutionData solution_data;
   solution_data.nbWeeks_p = _totalNbProblems;
@@ -552,7 +536,7 @@ Output::SolutionData BendersBase::solution() const {
   const auto relative_gap(optimal_gap / _data.best_ub);
 
   if (IsResumeMode()) {
-    // solution may not be in _trace
+    // solution may not be in relevantIterationData_
     Output::CandidatesVec candidates_vec;
     std::transform(
         best_iteration_data.x_cut.cbegin(), best_iteration_data.x_cut.cend(),
@@ -577,10 +561,9 @@ Output::SolutionData BendersBase::solution() const {
         candidates_vec};
 
   } else {
-    size_t bestItIndex_l = _data.best_it - 1;
-
-    if (bestItIndex_l < _trace.size()) {
-      solution_data.solution = iteration(_trace[bestItIndex_l]);
+    const auto &best_iteration_worker_master_data = relevantIterationData_.best;
+    if (best_iteration_worker_master_data != nullptr) {
+      solution_data.solution = iteration(best_iteration_worker_master_data);
       solution_data.solution.optimality_gap = optimal_gap;
       solution_data.solution.relative_gap = relative_gap;
     }
@@ -713,10 +696,6 @@ CouplingMap BendersBase::GetCouplingMap(CouplingMap input) const {
                  return kvp.first != master_name;
                });
   return couplingMap;
-}
-
-void BendersBase::push_in_trace(const WorkerMasterDataPtr &worker_master_data) {
-  _trace.push_back(worker_master_data);
 }
 
 void BendersBase::reset_master(WorkerMaster *worker_master) {

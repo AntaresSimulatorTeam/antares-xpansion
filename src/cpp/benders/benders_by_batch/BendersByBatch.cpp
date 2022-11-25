@@ -80,8 +80,6 @@ void BendersByBatch::run() {
     ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-    push_in_trace(std::make_shared<WorkerMasterData>());
-
     remaining_epsilon = AbsoluteGap();
 
     random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
