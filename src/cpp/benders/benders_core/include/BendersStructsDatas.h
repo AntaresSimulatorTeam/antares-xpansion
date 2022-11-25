@@ -64,4 +64,3 @@ struct BendersRelevantIterationsData {
   WorkerMasterDataPtr last;
   WorkerMasterDataPtr best;
 };
-using BendersTrace = std::vector<WorkerMasterDataPtr>;
