@@ -131,10 +131,10 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     if (_world.rank() != rank_0) {
       mpi::gather(_world, subproblem_data_map, rank_0);
     } else {
-      std::vector<SubProblemDataMap> gather_subproblem_map;
-      mpi::gather(_world, subproblem_data_map, gather_subproblem_map, rank_0);
+      std::vector<SubProblemDataMap> gathered_subproblem_map;
+      mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
       SetSubproblemTimers(process_timer.elapsed());
-      master_build_cuts(gather_subproblem_map);
+      master_build_cuts(gathered_subproblem_map);
     }
   }
 }
@@ -146,9 +146,9 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
 }
 
 void BendersMpi::master_build_cuts(
-    std::vector<SubProblemDataMap> gather_subproblem_map) {
+    std::vector<SubProblemDataMap> gathered_subproblem_map) {
   SetSubproblemCost(0);
-  for (const auto &subproblem_data_map : gather_subproblem_map) {
+  for (const auto &subproblem_data_map : gathered_subproblem_map) {
     for (auto &&[_, subproblem_data] : subproblem_data_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
     }
@@ -157,7 +157,7 @@ void BendersMpi::master_build_cuts(
   _logger->display_message("\tSolving subproblems...");
 
   _data.ub = 0;
-  for (const auto &subproblem_data_map : gather_subproblem_map) {
+  for (const auto &subproblem_data_map : gathered_subproblem_map) {
     build_cut_full(subproblem_data_map);
   }
   _logger->log_subproblems_solving_duration(GetSubproblemTimers());

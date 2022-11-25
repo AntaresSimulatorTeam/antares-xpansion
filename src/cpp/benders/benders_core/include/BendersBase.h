@@ -113,7 +113,7 @@ class BendersBase {
   SubproblemsMapPtr GetSubProblemMap() const { return subproblem_map; }
   StrVector GetSubProblemNames() const { return subproblems; }
   double AbsoluteGap() const { return _options.ABSOLUTE_GAP; }
-  DblVector GetAlpha_i() const { return _data.alpha_i; }
+  DblVector GetAlpha_i() const { return _data.single_subpb_costs_under_approx; }
   int ProblemToId(const std::string &problem_name) const {
     return _problem_to_id.at(problem_name);
   }
@@ -125,7 +125,6 @@ class BendersBase {
                             WorkerMasterDataPtr &trace, Point const &xopt);
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
                         Point const &xopt) const;
-  void bound_simplex_iter(int simplexiter);
   void UpdateStoppingCriterion();
   bool ShouldRelaxationStop() const;
   void check_status(const SubProblemDataMap &subproblem_data_map) const;
