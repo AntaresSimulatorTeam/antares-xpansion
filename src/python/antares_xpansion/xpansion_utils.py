@@ -3,15 +3,17 @@
 """
 
 import os
+from zipfile import ZipFile
 
 
-def read_and_write_mps(root_path):
+def read_and_write_mps(study_archive):
     """
         :return: a dictionary giving instance file, variables file and
         constraints file per (year, week)
     """
     result = {}
-    sorted_root_dir = sorted(os.listdir(root_path))
+    with ZipFile(study_archive, 'r') as zip_object:
+        sorted_root_dir = sorted(zip_object.namelist())
 
     mps_ext = '.mps'
     txt_ext = ".txt"

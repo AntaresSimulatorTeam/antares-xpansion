@@ -29,7 +29,23 @@ VariableFileReader::VariableFileReader(
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
     throw std::runtime_error(errMsg);
   }
-  while (std::getline(file, line)) {
+  ReadVarsFromStream(file, links, variable_name_config);
+  file.close();
+}
+
+VariableFileReader::VariableFileReader(
+    std::istringstream& fileInIStringStream,
+    const std::vector<ActiveLink>& links,
+    const VariableFileReadNameConfiguration& variable_name_config,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    : logger_(logger) {
+  ReadVarsFromStream(fileInIStringStream, links, variable_name_config);
+}
+void VariableFileReader::ReadVarsFromStream(
+    std::istream& stream, const std::vector<ActiveLink>& links,
+    const VariableFileReadNameConfiguration& variable_name_config) {
+  std::string line;
+  while (std::getline(stream, line)) {
     std::string name = getVarNameFromLine(line);
     _variables.push_back(name);
 
@@ -63,9 +79,7 @@ VariableFileReader::VariableFileReader(
                       _direct_cost_p_var_columns);
     }
   }
-  file.close();
 }
-
 std::string VariableFileReader::getVarNameFromLine(
     const std::string& line) const {
   std::ostringstream name;

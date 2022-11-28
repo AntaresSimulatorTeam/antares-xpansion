@@ -13,7 +13,7 @@ TEST_CASE("Modification: deleting rows", "[modif][del-rows]") {
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
   SECTION("Loop on instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance = datas[inst]._path;
 
       //========================================================================================
       // solver declaration
@@ -54,7 +54,7 @@ TEST_CASE("Modification: add rows", "[modif][add-rows]") {
     for (auto const& solver_name : factory.get_solvers_list()) {
       // trying each type of row
       for (auto const& constr_type : {'L', 'G', 'E'}) {
-        std::string instance = datas[inst]._path;
+        std::filesystem::path instance = datas[inst]._path;
 
         //========================================================================================
         // solver declaration
@@ -140,7 +140,7 @@ TEST_CASE("Modification: change obj", "[modif][chg-obj]") {
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
   SECTION("Loop on instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance = datas[inst]._path;
 
       //========================================================================================
       // solver declaration
@@ -182,7 +182,7 @@ TEST_CASE("Modification: change right-hand side", "[modif][chg-rhs]") {
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
   SECTION("Loop on instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance = datas[inst]._path;
 
       //========================================================================================
       // solver declaration
@@ -222,7 +222,7 @@ TEST_CASE("Modification: change matrix coefficient", "[modif][chg-coef]") {
   auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
   SECTION("Loop on instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance = datas[inst]._path;
 
       //========================================================================================
       // solver declaration
@@ -279,7 +279,7 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
     for (auto const& solver_name : factory.get_solvers_list()) {
       // testing add 1 and 2 columns
       for (int newcol = 1; newcol < 3; newcol++) {
-        std::string instance = datas[inst]._path;
+        std::filesystem::path instance = datas[inst]._path;
 
         //========================================================================================
         // solver declaration
@@ -411,7 +411,7 @@ TEST_CASE("Modification: change name of row and column", "[modif][chg-names]") {
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Loop on instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance = datas[inst]._path;
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       solver->init();
       solver->read_prob_mps(instance);
@@ -450,7 +450,7 @@ TEST_CASE("Modification: add cols and a row associated to those columns",
   auto inst = GENERATE(NET_MASTER);
   SECTION("Loop on instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance = datas[inst]._path;
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       solver->init();
       solver->read_prob_mps(instance);

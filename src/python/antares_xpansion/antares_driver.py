@@ -25,6 +25,7 @@ class AntaresDriver:
         self.output = 'output'
         self.ANTARES_N_CPU_OPTION = "--force-parallel"
         self.antares_n_cpu = 1  # default
+        self.zip_option = "-z"
 
     def launch(self, antares_study_path, antares_n_cpu: int) -> bool:
         self._set_antares_n_cpu(antares_n_cpu)
@@ -87,7 +88,8 @@ class AntaresDriver:
             self.simulation_name = list_of_dirs[-1]
 
     def _get_antares_cmd(self):
-        return [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu)]
+        return [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu),
+                self.zip_option]
 
     class Error(Exception):
         pass
