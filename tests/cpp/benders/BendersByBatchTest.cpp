@@ -26,9 +26,8 @@ TEST_F(BatchCollectionTest,
     auto expected =
         std::string("Bacth size: " + std::to_string(batch_size) +
                     " must be less or equal than number of sub problems: " +
-                    std::to_string(sub_problems_name_list_size))
-            .c_str();
-    ASSERT_STREQ(err.what(), expected);
+                    std::to_string(sub_problems_name_list_size));
+    ASSERT_STREQ(err.what(), expected.c_str());
   }
 }
 TEST_F(
