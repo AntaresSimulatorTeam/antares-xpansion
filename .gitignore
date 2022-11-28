@@ -36,6 +36,7 @@
 _build
 _install
 antares-deps
+include/google
 
 # Cmake generated files
 CMakeCache.txt
@@ -54,3 +55,7 @@ coverage-reports
 
 # Doc pdf file
 antaresxpansionuserguide.pdf
+include/google/protobuf/message.h
+
+# vscode
+.vscode

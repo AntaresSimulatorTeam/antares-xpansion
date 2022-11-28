@@ -36,8 +36,12 @@ class LinkProblemsGenerator {
  public:
   LinkProblemsGenerator(
       const std::vector<ActiveLink>& links, const std::string& solver_name,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : _links(links), _solver_name(solver_name), logger_(logger) {}
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+      const std::filesystem::path& log_file_path)
+      : _links(links),
+        _solver_name(solver_name),
+        logger_(logger),
+        log_file_path_(log_file_path) {}
 
   void treatloop(const std::filesystem::path& root,
                  const std::filesystem::path& archivePath,
@@ -56,4 +60,5 @@ class LinkProblemsGenerator {
   std::filesystem::path lpDir_ = "";
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   mutable std::mutex coupling_mutex_;
+  std::filesystem::path log_file_path_;
 };
