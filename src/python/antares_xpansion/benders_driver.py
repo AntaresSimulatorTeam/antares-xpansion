@@ -4,13 +4,12 @@
 
 import glob
 import os
-from pathlib import Path
 import subprocess
 import sys
+from pathlib import Path
 
-
-from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class BendersDriver:
@@ -59,7 +58,6 @@ class BendersDriver:
             raise BendersDriver.BendersExecutionError(
                 f"ERROR: exited solver with status {ret.returncode}"
             )
-        #assert False
         elif not keep_mps:
             StudyOutputCleaner.clean_benders_step(self.simulation_output_path)
         os.chdir(old_cwd)
