@@ -117,7 +117,6 @@ class TestGeneralDataProcessor:
 
         expected_val = {
             (optimization, "include-exportmps"): "optim-1",
-            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "true",
             (optimization, "include-tc-min-ud-time"): "true",
@@ -175,7 +174,6 @@ class TestGeneralDataProcessor:
         output = "output"
         expected_val = {
             (optimization, "include-exportmps"): "optim-1",
-            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "false",
             (optimization, "include-tc-min-ud-time"): "false",
