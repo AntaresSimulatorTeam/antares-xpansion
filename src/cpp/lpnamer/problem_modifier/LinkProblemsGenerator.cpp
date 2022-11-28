@@ -56,8 +56,6 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   Couplings &couplings, ArchiveReader &reader,
                                   ArchiveWriter &writer) const {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
-  auto const mps_name = root / problemData._problem_mps;
-
   auto const lp_mps_name = lpDir_ / problemData._problem_mps;
 
   // List of variables
@@ -84,7 +82,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   auto in_prblm = std::make_shared<Problem>(
       factory.create_solver(_solver_name, log_file_path_));
   reader.ExtractFile(problemData._problem_mps, lpDir_);
-  in_prblm->read_prob_mps(mps_name);
+  in_prblm->read_prob_mps(lp_mps_name);
 
   solver_rename_vars(in_prblm, var_names);
 
@@ -98,7 +96,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
     for (const Candidate &candidate : link.getCandidates()) {
       if (problem_modifier.has_candidate_col_id(candidate.get_name())) {
         std::lock_guard guard(coupling_mutex_);
-        couplings[{candidate.get_name(), mps_name}] =
+        couplings[{candidate.get_name(), lp_mps_name}] =
             problem_modifier.get_candidate_col_id(candidate.get_name());
       }
     }
