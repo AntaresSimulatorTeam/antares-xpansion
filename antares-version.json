@@ -1,6 +1,6 @@
 {
-  "antares_version": "8.3.2",
-  "antares_version_executable": "8.3",
+  "antares_version": "8.4.0-rc2",
+  "antares_version_executable": "8.4",
   "antares_xpansion_version": "0.8.0",
   "antares_deps_version": "2.0.5"
 }
