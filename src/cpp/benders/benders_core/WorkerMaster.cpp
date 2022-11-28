@@ -242,7 +242,7 @@ void WorkerMaster::_set_upper_bounds() const {
 
 void WorkerMaster::_set_alpha_var() {
   // add the variable overall_subpb_cost_under_approx
-  const std::string alpha_str("overall_subpb_cost_under_approx");
+  const std::string alpha_str("alpha");
   auto const it(_name_to_id.find(alpha_str));
   if (it == _name_to_id.end()) {
     id_single_subpb_costs_under_approx_.resize(subproblems_count, -1);
