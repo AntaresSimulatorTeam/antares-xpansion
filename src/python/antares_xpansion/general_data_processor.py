@@ -80,7 +80,6 @@ class GeneralDataProcessor:
 
         return {
             (optimization, "include-exportmps"): "optim-1",
-            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             ("adequacy patch", "include-adq-patch"): "false",
             (optimization, "include-tc-minstablepower"): "true"
