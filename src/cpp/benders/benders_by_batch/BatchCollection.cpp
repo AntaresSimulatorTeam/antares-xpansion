@@ -6,7 +6,7 @@ BatchCollection::BatchCollection(
   const auto sub_problems_number = sub_problem_names.size();
 
   if (batch_size > sub_problems_number) {
-    throw BatchCollection::InvalidSizeOfSubPrblemCollection(
+    throw BatchCollection::InvalidSizeOfSubProblemCollection(
         batch_size, sub_problems_number);
   }
   number_of_batch_ = std::ceil(double(sub_problems_number) / batch_size);

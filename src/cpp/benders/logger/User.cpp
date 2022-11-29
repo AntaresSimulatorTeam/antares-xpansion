@@ -94,8 +94,8 @@ void User::LogAtSwitchToInteger() {
 }
 void User::number_of_sub_problem_resolved(int number) {
   _stream << indent_1
-          << "cumulative number of call to solver (only for subproblems): "
-          << number << std::endl;
+          << "cumulative number of subproblem resolutions: " << number
+          << std::endl;
 }
 }  // namespace logger
 }  // namespace xpansion
