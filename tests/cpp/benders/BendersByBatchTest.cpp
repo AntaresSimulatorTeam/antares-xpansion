@@ -22,7 +22,7 @@ TEST_F(BatchCollectionTest,
   auto batch_size = sub_problems_name_list_size + 1;
   try {
     auto batch_collection = BatchCollection(sub_problems_name_list, batch_size);
-  } catch (const BatchCollection::InvalidSizeOfSubPrblemCollection& err) {
+  } catch (const BatchCollection::InvalidSizeOfSubProblemCollection& err) {
     auto expected = (std::string("Bacth size: ") + std::to_string(batch_size) +
                      " must be less or equal than number of sub problems: " +
                      std::to_string(sub_problems_name_list_size));

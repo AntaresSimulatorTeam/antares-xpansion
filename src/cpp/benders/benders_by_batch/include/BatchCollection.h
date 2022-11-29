@@ -16,10 +16,10 @@ class BatchCollection {
  public:
   BatchCollection(const std::vector<std::string>& sub_problem_names,
                   size_t size_of_sub_problems_collection);
-  class InvalidSizeOfSubPrblemCollection : public std::runtime_error {
+  class InvalidSizeOfSubProblemCollection : public std::runtime_error {
    public:
-    explicit InvalidSizeOfSubPrblemCollection(size_t size,
-                                              size_t sub_problems_names_size)
+    explicit InvalidSizeOfSubProblemCollection(size_t size,
+                                               size_t sub_problems_names_size)
         : std::runtime_error(std::string(
               "Bacth size: " + std::to_string(size) +
               " must be less or equal than number of sub problems: " +
