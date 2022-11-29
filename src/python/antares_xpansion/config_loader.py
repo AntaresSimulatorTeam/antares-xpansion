@@ -318,7 +318,7 @@ class ConfigLoader:
 
     def get_batch_size(self):
         """
-        return the separation parameter read from the settings file
+        return the batch_size read from the settings file
         """
         batch_size_str = self.options.get(
             "batch_size",
