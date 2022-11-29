@@ -177,7 +177,7 @@ class XpansionConfig:
             OptimisationKeys.csv_name_key(): self.csv_name_default_value(),
             OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
             OptimisationKeys.separation_key(): self.separation_default_value(),
-            OptimisationKeys.batch_size_key(): self.batch_size_value(),
+            OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -225,7 +225,7 @@ class XpansionConfig:
     def separation_default_value(self):
         return "0.5"
 
-    def batch_size_value(self):
+    def batch_size_default_value(self):
         return "0"
 
     def _get_config_values(self):
