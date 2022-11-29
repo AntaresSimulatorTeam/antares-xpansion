@@ -25,9 +25,7 @@ CandidatesINIReader::CandidatesINIReader(
 }
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
-    const std::filesystem::path &antaresIntercoFile)const {
-  std::vector<IntercoFileData> result;
-
+    const std::filesystem::path &antaresIntercoFile) const {
   std::ifstream interco_filestream(antaresIntercoFile);
   if (!interco_filestream.good()) {
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
@@ -35,8 +33,20 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
     std::exit(1);
   }
 
+  return ReadLineByLineInterco(interco_filestream);
+}
+
+std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
+    std::istringstream &antaresIntercoFileInStringStream) const {
+  return ReadLineByLineInterco(antaresIntercoFileInStringStream);
+}
+
+std::vector<IntercoFileData> CandidatesINIReader::ReadLineByLineInterco(
+    std::istream &stream) const {
+  std::vector<IntercoFileData> result;
+
   std::string line;
-  while (std::getline(interco_filestream, line)) {
+  while (std::getline(stream, line)) {
     std::stringstream buffer(line);
     if (!line.empty() && line.front() != '#') {
       IntercoFileData intercoData;
@@ -49,10 +59,9 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
   }
   return result;
 }
+
 std::vector<std::string> CandidatesINIReader::ReadAreaFile(
     const std::filesystem::path &areaFile) const {
-  std::vector<std::string> result;
-
   std::ifstream area_filestream(areaFile);
   if (!area_filestream.good()) {
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
@@ -60,8 +69,20 @@ std::vector<std::string> CandidatesINIReader::ReadAreaFile(
     std::exit(1);
   }
 
+  return ReadLineByLineArea(area_filestream);
+}
+
+std::vector<std::string> CandidatesINIReader::ReadAreaFile(
+    std::istringstream &areaFileInStringStream) const {
+  return ReadLineByLineArea(areaFileInStringStream);
+}
+
+std::vector<std::string> CandidatesINIReader::ReadLineByLineArea(
+    std::istream &stream) const {
+  std::vector<std::string> result;
+
   std::string line;
-  while (std::getline(area_filestream, line)) {
+  while (std::getline(stream, line)) {
     if (!line.empty() && line.front() != '#') {
       result.push_back(StringUtils::ToLowercase(line));
     }
@@ -105,7 +126,7 @@ bool CandidatesINIReader::checkArea(std::string const &areaName_p) const {
 }
 
 std::vector<CandidateData> CandidatesINIReader::readCandidateData(
-    const std::filesystem::path &candidateFile) {
+    const std::filesystem::path &candidateFile) const {
   std::vector<CandidateData> result;
 
   INIReader reader(candidateFile.string());
@@ -122,7 +143,7 @@ std::vector<CandidateData> CandidatesINIReader::readCandidateData(
 
 CandidateData CandidatesINIReader::readCandidateSection(
     const std::filesystem::path &candidateFile, const INIReader &reader,
-    const std::string &sectionName) {
+    const std::string &sectionName) const {
   CandidateData candidateData;
   candidateData.name =
       StringUtils::ToLowercase(getStrVal(reader, sectionName, "name"));

@@ -67,6 +67,7 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
+  [[nodiscard]] std::filesystem::path GetMpsZipPath() const;
   [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
   virtual void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);

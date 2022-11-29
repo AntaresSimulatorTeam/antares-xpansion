@@ -6,6 +6,7 @@ from pathlib import Path
 import sys
 import yaml
 import numpy as np
+from zipfile import ZipFile, ZIP_DEFLATED
 
 # File RESULT_FILE_PATH
 # Json file containing
@@ -72,15 +73,14 @@ def launch_optimization(data_path, commands, status=None):
 # arguments :
 #   - expected_results_dict   : Dict of expected values to compare with ones present in
 #                               in file out.json
+#   - output_path             : Path to the output file out.json
 
 
-def check_optimization_json_output(expected_results_dict):
+def check_optimization_json_output(expected_results_dict, output_path: Path):
 
     # Loading output from optimization process
     curr_instance_json = {}
 
-    output_path = expected_results_dict['path'] + \
-        "/expansion/out.json"
     with open(output_path, 'r') as jsonFile:
         curr_instance_json = json.load(jsonFile)
 
@@ -109,7 +109,7 @@ def check_optimization_json_output(expected_results_dict):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, solver, allow_run_as_root=False):
+def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -128,13 +128,18 @@ def run_solver(install_dir, solver, allow_run_as_root=False):
         instance_path = expected_results_dict[instance]['path']
         command = [e for e in pre_command]
         command.append(executable_path)
+        options_file = expected_results_dict[instance]['option_file']
         command.append(
-            expected_results_dict[instance]['option_file']
+            options_file
         )
         status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
-        launch_optimization(instance_path, command, status)
+        tmp_study = tmp_path / \
+            (Path(instance_path).name+"-"+Path(options_file).stem)
+        shutil.copytree(instance_path, tmp_study)
+
+        launch_optimization(tmp_study, command, status)
         check_optimization_json_output(
-            expected_results_dict[instance])
+            expected_results_dict[instance], tmp_study/"expansion/out.json")
 
 
 def get_solver_exe(solver: str):

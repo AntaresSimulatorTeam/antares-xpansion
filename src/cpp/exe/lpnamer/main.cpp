@@ -39,6 +39,7 @@ namespace po = boost::program_options;
 int main(int argc, char **argv) {
   try {
     std::filesystem::path root;
+    std::filesystem::path archivePath;
     std::string master_formulation;
     std::string additionalConstraintFilename_l;
 
@@ -47,6 +48,8 @@ int main(int argc, char **argv) {
     desc.add_options()("help,h", "produce help message")(
         "output,o", po::value<std::filesystem::path>(&root)->required(),
         "antares-xpansion study output")(
+        "archive,a", po::value<std::filesystem::path>(&archivePath)->required(),
+        "antares-xpansion study zip")(
         "formulation,f",
         po::value<std::string>(&master_formulation)->default_value("relaxed"),
         "master formulation (relaxed or integer)")(
@@ -98,7 +101,8 @@ int main(int argc, char **argv) {
     std::vector<ActiveLink> links = linkBuilder.getLinks();
     LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
                                                 log_file_path);
-    linkProblemsGenerator.treatloop(root, couplings);
+    linkProblemsGenerator.treatloop(root, archivePath, couplings);
+
 
     MasterGeneration master_generation(root, links, additionalConstraints,
                                        couplings, master_formulation,
