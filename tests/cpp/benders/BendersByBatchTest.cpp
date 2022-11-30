@@ -76,15 +76,7 @@ TEST_F(BatchCollectionTest,
 }
 
 class RandomBatchShufflerTest : public ::testing::Test {};
-TEST_F(RandomBatchShufflerTest, GetRandomBatchPermutation) {
-  unsigned number_of_batch(10);
-  auto batch_suffler = RandomBatchShuffler(number_of_batch);
-  const auto random_batch_permutation = batch_suffler.GetRandomBatchOrder();
-  std::vector<unsigned> not_expected_vec(number_of_batch);
-  std::iota(not_expected_vec.begin(), not_expected_vec.end(), 0);
 
-  ASSERT_FALSE(not_expected_vec == random_batch_permutation);
-}
 TEST_F(RandomBatchShufflerTest, GetCyclicBatchPermutation) {
   unsigned number_of_batch(10);
   auto batch_suffler = RandomBatchShuffler(number_of_batch);

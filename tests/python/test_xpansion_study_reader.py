@@ -63,9 +63,6 @@ def test_option_solver_conversion():
     study_solver = "Xpress"
     assert (XpansionStudyReader.convert_study_solver_to_option_solver(
         study_solver) == "XPRESS")
-    study_solver = "Cplex"
-    assert (XpansionStudyReader.convert_study_solver_to_option_solver(
-        study_solver) == "CPLEX")
     study_solver = ""
     assert (XpansionStudyReader.convert_study_solver_to_option_solver(
         study_solver) == "COIN")

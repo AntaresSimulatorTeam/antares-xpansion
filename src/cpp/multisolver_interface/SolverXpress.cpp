@@ -40,7 +40,7 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy)
   SolverXpress::init();
   int status = 0;
 
-  // Try to cast the solver in fictif to a SolverCPLEX
+  // Try to cast the solver in fictif to a SolverXpress
   if (const SolverXpress *xpSolv =
           dynamic_cast<const SolverXpress *>(toCopy.get())) {
     status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
