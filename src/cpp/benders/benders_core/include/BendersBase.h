@@ -70,6 +70,7 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
+  [[nodiscard]] std::filesystem::path GetMpsZipPath() const;
   virtual void build_input_map();
   virtual void reset_master(WorkerMaster *worker_master);
   void free_master() const;

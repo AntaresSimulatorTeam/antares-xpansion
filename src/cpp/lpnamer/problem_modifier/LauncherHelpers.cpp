@@ -1,5 +1,7 @@
 #include "LauncherHelpers.h"
 
+#include <ArchiveReader.h>
+
 #include <filesystem>
 
 #include "Candidate.h"
@@ -128,6 +130,7 @@ ActiveLinksBuilder get_link_builders(
     const std::filesystem::path &root,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   const auto area_file_name = root / "area.txt";
+
   const auto interco_file_name = root / "interco.txt";
   const auto ts_root = root / "ts-numbers/ntc";
 

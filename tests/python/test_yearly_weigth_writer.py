@@ -1,4 +1,5 @@
 from pathlib import Path
+import shutil
 
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from file_creation import _create_weight_file, _create_empty_file_from_list
@@ -17,7 +18,10 @@ def test_weight_file_write(tmp_path):
         f"problem-{active_years[2]}-1-AAAAMMDD-hhmmss.mps", f"problem-{active_years[2]}-24-AAAAMMDD-hhmmss.mps")
 
     _create_empty_file_from_list(tmp_path, mps_files)
-    YearlyWeightWriter(tmp_path).create_weight_file(weight_list, input_weight_file_name, active_years)
+    shutil.make_archive(tmp_path, "zip", tmp_path)
+    zipped_out = tmp_path.parent/(tmp_path.name+".zip")
+    YearlyWeightWriter(tmp_path, zipped_out).create_weight_file(
+        weight_list, input_weight_file_name, active_years)
 
     expected_content = f"problem-{active_years[0]}-1-AAAAMMDD-hhmmss {weight_list[0]}\n" \
                        f"problem-{active_years[0]}-24-AAAAMMDD-hhmmss {weight_list[0]}\n" \
@@ -27,6 +31,6 @@ def test_weight_file_write(tmp_path):
                        f"problem-{active_years[2]}-24-AAAAMMDD-hhmmss {weight_list[2]}\n" \
                        f"WEIGHT_SUM {sum(weight_list)}"
 
-    with open(YearlyWeightWriter(tmp_path).output_dir / input_weight_file_name, 'r') as write_file:
+    with open(YearlyWeightWriter(tmp_path, zipped_out).output_dir / input_weight_file_name, 'r') as write_file:
         content = write_file.read()
         assert content == expected_content

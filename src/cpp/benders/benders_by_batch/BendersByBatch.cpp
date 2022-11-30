@@ -26,7 +26,6 @@ void BendersByBatch::run() {
   auto batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
                                               : Options().BATCH_SIZE;
 
-  double remaining_epsilon = AbsoluteGap();
   const auto batch_collection =
       BatchCollection(GetSubProblemNames(), batch_size);
   auto number_of_batch = batch_collection.NumberOfBatch();
@@ -53,7 +52,7 @@ void BendersByBatch::run() {
     ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-    remaining_epsilon = AbsoluteGap();
+    auto remaining_epsilon = AbsoluteGap();
 
     random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
                                     .GetCyclicBatchOrder(current_batch_id);

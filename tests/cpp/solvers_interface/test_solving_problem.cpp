@@ -13,7 +13,7 @@ TEST_CASE("A LP problem is solved", "[solve-lp]") {
   auto inst = GENERATE(MULTIKP);
   SECTION("Loop on the instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance = datas[inst]._path;
 
       //========================================================================================
       // Solver declaration and read problem
@@ -64,7 +64,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value",
   auto inst = GENERATE(MULTIKP, NET_MASTER, NET_SP1, NET_SP2);
   SECTION("Loop on the instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      auto instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -88,7 +88,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value",
       }
 
       success = false;
-      for (auto stat : datas[inst]._status) {
+      for (const auto &stat : datas[inst]._status) {
         if (stat == solver->SOLVER_STRING_STATUS[slv_status]) {
           SUCCEED();
           success = true;
@@ -122,7 +122,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution",
   auto inst = GENERATE(LP_TOY, SLACKS, REDUCED);
   SECTION("Loop on the instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance = datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -146,7 +146,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution",
       }
 
       success = false;
-      for (auto stat : datas[inst]._status) {
+      for (const auto &stat : datas[inst]._status) {
         if (stat == solver->SOLVER_STRING_STATUS[slv_status]) {
           SUCCEED();
           success = true;
@@ -207,7 +207,7 @@ TEST_CASE("A problem is solved and we can get the optimal solution",
     for (auto const& solver_name : factory.get_solvers_list()) {
       // As CLP is a pure LP solver, it cannot pass this test
       if (solver_name != "CLP") {
-        std::string instance = datas[inst]._path;
+        std::filesystem::path instance = datas[inst]._path;
         //========================================================================================
         // Solver declaration
         SolverAbstract::Ptr solver = factory.create_solver(solver_name);

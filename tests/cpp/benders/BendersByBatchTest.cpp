@@ -22,11 +22,10 @@ TEST_F(BatchCollectionTest,
   auto batch_size = sub_problems_name_list_size + 1;
   try {
     auto batch_collection = BatchCollection(sub_problems_name_list, batch_size);
-  } catch (const BatchCollection::InvalidSizeOfSubPrblemCollection& err) {
-    auto expected =
-        std::string("Bacth size: " + std::to_string(batch_size) +
-                    " must be less or equal than number of sub problems: " +
-                    std::to_string(sub_problems_name_list_size));
+  } catch (const BatchCollection::InvalidSizeOfSubProblemCollection& err) {
+    auto expected = (std::string("Bacth size: ") + std::to_string(batch_size) +
+                     " must be less or equal than number of sub problems: " +
+                     std::to_string(sub_problems_name_list_size));
     ASSERT_STREQ(err.what(), expected.c_str());
   }
 }
@@ -85,4 +84,12 @@ TEST_F(RandomBatchShufflerTest, GetRandomBatchPermutation) {
   std::iota(not_expected_vec.begin(), not_expected_vec.end(), 0);
 
   ASSERT_FALSE(not_expected_vec == random_batch_permutation);
+}
+TEST_F(RandomBatchShufflerTest, GetCyclicBatchPermutation) {
+  unsigned number_of_batch(10);
+  auto batch_suffler = RandomBatchShuffler(number_of_batch);
+  const auto random_batch_permutation = batch_suffler.GetCyclicBatchOrder(5);
+  std::vector<unsigned> expected_vec = {5, 6, 7, 8, 9, 0, 1, 2, 3, 4};
+
+  ASSERT_TRUE(expected_vec == random_batch_permutation);
 }

@@ -13,7 +13,7 @@ TEST_CASE("Un objet solveur peut etre cree et detruit", "[read][init]") {
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Construction and destruction") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
 
       //========================================================================================
       // solver declaration
@@ -40,7 +40,7 @@ TEST_CASE("MPS file can be read and we can get number of columns",
   SECTION("Reading instance") {
     namespace fs = std::filesystem;
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       std::cout << "Current dir " << fs::current_path() << std::endl;
       std::cout << instance << std::endl;
       //========================================================================================
@@ -72,7 +72,7 @@ TEST_CASE("MPS file can be read and we can get number of rows",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -99,7 +99,7 @@ TEST_CASE("MPS file can be read and we can get number of integer variables",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -128,7 +128,7 @@ TEST_CASE(
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -155,7 +155,7 @@ TEST_CASE("MPS file can be read and we can get objective function coefficients",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -188,7 +188,7 @@ TEST_CASE("MPS file can be read and we can get matrix coefficients",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -235,7 +235,7 @@ TEST_CASE("MPS file can be read and we can get right hand side",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -270,7 +270,7 @@ TEST_CASE("MPS file can be read and we can get row types",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver Declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -303,7 +303,7 @@ TEST_CASE("MPS file can be read and we can get types of columns",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver Declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -335,7 +335,7 @@ TEST_CASE("MPS file can be read and we can get lower bounds on variables",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -367,7 +367,7 @@ TEST_CASE("MPS file can be read and we can get upper bounds on variables",
                        NET_SP1, NET_SP2);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -407,7 +407,7 @@ TEST_CASE(
                        NET_SP1, NET_SP2, SLACKS, REDUCED);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
@@ -512,7 +512,7 @@ TEST_CASE(
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -561,7 +561,7 @@ TEST_CASE("We can get the indices of rows and columns by their names",
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Reading instance") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
@@ -605,7 +605,7 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]") {
   auto inst = GENERATE(MIP_TOY, MULTIKP);
   SECTION("Construction and destruction") {
     for (auto const& solver_name : factory.get_solvers_list()) {
-      std::string instance = datas[inst]._path;
+      std::filesystem::path instance= datas[inst]._path;
 
       //========================================================================================
       // Intial solver declaration and read problem

@@ -384,7 +384,6 @@ void BendersBase::getSubproblemCut(SubProblemDataMap &subproblem_data_map) {
  *
  */
 void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
-  // _data.ub = 0;
   for (auto const &[subproblem_name, subproblem_data] : subproblem_data_map) {
     _data.ub += subproblem_data.subproblem_cost;
 
@@ -625,6 +624,13 @@ std::filesystem::path BendersBase::get_master_path() const {
  */
 std::filesystem::path BendersBase::get_structure_path() const {
   return std::filesystem::path(_options.INPUTROOT) / _options.STRUCTURE_FILE;
+}
+
+/*!
+ *  \brief Get path to mps zip file from options
+ */
+std::filesystem::path BendersBase::GetMpsZipPath() const {
+  return std::filesystem::path(_options.INPUTROOT) / _options.MPS_ZIP_FILE;
 }
 
 LogData BendersBase::bendersDataToLogData(

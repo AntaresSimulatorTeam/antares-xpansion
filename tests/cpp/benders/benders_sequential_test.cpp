@@ -1,7 +1,9 @@
 #include <algorithm>
 
+#include "ArchiveWriter.h"
 #include "BendersSequential.h"
 #include "JsonWriter.h"
+#include "RandomDirGenerator.h"
 #include "LoggerStub.h"
 #include "gtest/gtest.h"
 
@@ -72,7 +74,19 @@ class BendersSequentialDouble : public BendersSequential {
     BendersBase::reset_master(new FakeWorkerMaster(var));
   };
   void free() override{};
+  void initialize_problems() override {
+    match_problem_to_id();
 
+    reset_master(new WorkerMaster(
+        master_variable_map, get_master_path(), get_solver_name(),
+        get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
+    for (const auto &problem : coupling_map) {
+      const auto subProblemFilePath = GetSubproblemPath(problem.first);
+      addSubproblem(problem);
+      AddSubproblemName(problem.first);
+      std::filesystem::remove(subProblemFilePath);
+    }
+  }
   // No override as the base class function is const
   void DeactivateIntegrityConstraints() const override {
     _deactivateIntConstraintCall = true;
@@ -116,6 +130,9 @@ class BendersSequentialTest : public ::testing::Test {
   Logger logger;
   Writer writer;
   const std::filesystem::path data_test_dir = "data_test";
+  const std::filesystem::path mps_dir = data_test_dir / "mps";
+  std::filesystem::path tmpDir;
+  const std::string MPS_ZIP_FILE = "MPS_ZIP_FILE.zip";
 
  protected:
   void SetUp() override {
@@ -123,7 +140,12 @@ class BendersSequentialTest : public ::testing::Test {
     writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                   std::tmpnam(nullptr));
   }
+  void copyMasterMps() {
+    tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
 
+    std::filesystem::copy(mps_dir / "mip_toy_prob.mps", tmpDir,
+                          std::filesystem::copy_options::update_existing);
+  }
   BaseOptions init_base_options() const {
     BaseOptions base_options;
 
@@ -133,10 +155,11 @@ class BendersSequentialTest : public ::testing::Test {
     base_options.SLAVE_WEIGHT = "CONSTANT";
     base_options.MASTER_NAME = "mip_toy_prob";
     base_options.STRUCTURE_FILE = "my_structure.txt";
-    base_options.INPUTROOT = (data_test_dir / "mps").string();
+    base_options.INPUTROOT = tmpDir.string();
     base_options.SOLVER_NAME = "COIN";
     base_options.weights = {};
     base_options.RESUME = false;
+    base_options.MPS_ZIP_FILE = MPS_ZIP_FILE;
 
     return base_options;
   }
@@ -188,6 +211,7 @@ class BendersSequentialTest : public ::testing::Test {
 };
 
 TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double relaxed_gap = 1e-2;
@@ -196,8 +220,8 @@ TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
       master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(true, 0);
-  benders.launch();
 
+  benders.launch();
   std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
   EXPECT_EQ(benders._deactivateIntConstraintCall, false);
@@ -207,6 +231,7 @@ TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
 }
 
 TEST_F(BendersSequentialTest, MasterRelaxedWhenSepLowerThanOne) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double relaxed_gap = 1e-2;
@@ -226,6 +251,7 @@ TEST_F(BendersSequentialTest, MasterRelaxedWhenSepLowerThanOne) {
 }
 
 TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double relaxed_gap = 1e-2;
@@ -247,6 +273,7 @@ TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached) {
 
 TEST_F(BendersSequentialTest,
        MaxIterReachedBeforeRelaxedGapShouldEndRunWithAnIntegerMasterIteration) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double relaxed_gap = 1e-5;
@@ -271,6 +298,7 @@ TEST_F(BendersSequentialTest,
 }
 
 TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::INTEGER;
   int max_iter = 1;
   double relaxed_gap = 1e-2;
@@ -292,6 +320,7 @@ TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::RELAXED;
   double sep_param = 0.8;
   double relaxed_gap = 1e-2;
@@ -335,6 +364,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
 }
 
 TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
+  copyMasterMps();
   MasterFormulation master_formulation = MasterFormulation::RELAXED;
   double relaxed_gap = 1e-2;
   double sep_param = 0.8;
