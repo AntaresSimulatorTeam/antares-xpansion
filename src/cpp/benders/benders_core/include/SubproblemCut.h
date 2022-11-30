@@ -27,15 +27,11 @@ typedef std::set<SubproblemCutDataHandlerPtr, Predicate>
 
 void BuildSubproblemCutData(SubproblemCutData &);
 
-enum SubproblemCutInt { SIMPLEXITER = 0, LPSTATUS, MAXINTEGER };
+const int MAXINTEGER = 2;
+enum SubproblemCutInt { SIMPLEXITER = 0, LPSTATUS };
 
-enum SubproblemCutDbl {
-  SUBPROBLEM_COST = 0,
-  ALPHA_I,
-  SUBPROBLEM_TIMER,
-  MAXDBL
-};
-
+const int MAXDBL = 2;
+enum SubproblemCutDbl { SUBPROBLEM_COST = 0, ALPHA_I, SUBPROBLEM_TIMER };
 enum SubproblemCutStr { MAXSTR = 0 };
 
 class SubproblemCutDataHandler {

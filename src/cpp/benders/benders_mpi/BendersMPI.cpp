@@ -165,6 +165,7 @@ void BendersMpi::master_build_cuts(AllCutPackage all_package) {
 
   _logger->display_message("\tSolving subproblems...");
 
+  _data.ub = 0;
   build_cut_full(all_package);
   _logger->log_subproblems_solving_duration(GetSubproblemTimers());
 }

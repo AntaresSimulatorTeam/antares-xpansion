@@ -17,6 +17,7 @@ class ConfigParameters:
     MERGE_MPS: str
     BENDERS_MPI: str
     BENDERS_SEQUENTIAL: str
+    BENDERS_BY_BATCH: str
     LP_NAMER: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
@@ -55,6 +56,7 @@ class XpansionConfig:
         self.MERGE_MPS: str = ""
         self.BENDERS_MPI: str = ""
         self.BENDERS_SEQUENTIAL: str = ""
+        self.BENDERS_BY_BATCH: str = ""
         self.LP_NAMER: str = ""
         self.STUDY_UPDATER: str = ""
         self.SENSITIVITY_EXE: str = ""
@@ -72,7 +74,8 @@ class XpansionConfig:
         self.step = self.input_parameters.step
         self.simulation_name = self.input_parameters.simulation_name
         self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
-        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
+        self.install_dir = self._get_install_dir(
+            self.input_parameters.install_dir)
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
         self.antares_n_cpu = self.input_parameters.antares_n_cpu
@@ -154,6 +157,7 @@ class XpansionConfig:
             "yearly-weights": "",
             "log_level": "0",
             "separation_parameter": "0.5",
+            "batch_size": "0",
         }
 
     def _set_default_options(self):
@@ -174,6 +178,7 @@ class XpansionConfig:
             OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
             OptimisationKeys.mps_zip_file_key(): self.mps_zip_file_default_value(),
             OptimisationKeys.separation_key(): self.separation_default_value(),
+            OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -227,6 +232,9 @@ class XpansionConfig:
     def separation_default_value(self):
         return "0.5"
 
+    def batch_size_default_value(self):
+        return "0"
+
     def _get_config_values(self):
 
         self.default_install_dir = self.config_parameters.default_install_dir
@@ -234,6 +242,7 @@ class XpansionConfig:
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
         self.BENDERS_MPI = self.config_parameters.BENDERS_MPI
         self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
+        self.BENDERS_BY_BATCH = self.config_parameters.BENDERS_BY_BATCH
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
         self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE

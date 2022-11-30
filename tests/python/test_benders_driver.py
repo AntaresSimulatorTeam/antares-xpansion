@@ -27,24 +27,24 @@ class TestBendersDriver:
     def test_lp_path(self, tmp_path):
         lp_path = tmp_path / "lp"
         os.mkdir(lp_path)
-        benders_driver = BendersDriver("", "", "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver("", "", "", "", self.OPTIONS_JSON)
         benders_driver.set_simulation_output_path(tmp_path)
         assert benders_driver.get_lp_path() == lp_path
 
     def test_non_existing_output_path(self, tmp_path):
-        benders_driver = BendersDriver("", "", "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver("", "", "", "", self.OPTIONS_JSON)
         with pytest.raises(BendersDriver.BendersOutputPathError):
             benders_driver.launch(tmp_path / "i_dont_exist", "test", False, 13)
 
     def test_empty_output_path(self, tmp_path):
-        benders_driver = BendersDriver("", "", "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver("", "", "", "", self.OPTIONS_JSON)
         with pytest.raises(BendersDriver.BendersLpPathError):
             benders_driver.launch(tmp_path, "")
 
     def test_illegal_method(self, tmp_path):
         lp_path = tmp_path / "lp"
         os.mkdir(lp_path)
-        benders_driver = BendersDriver("", "", "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver("", "", "", "", self.OPTIONS_JSON)
         with pytest.raises(BendersDriver.BendersSolverError):
             benders_driver.launch(tmp_path, "test")
 
@@ -55,7 +55,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_benders_mpi))
 
-        benders_driver = BendersDriver(exe_path, "", "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver(exe_path, "", "", "", self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -79,7 +79,8 @@ class TestBendersDriver:
             exe_path = os.path.normpath(
                 os.path.join(my_install_dir, my_benders_mpi))
 
-            benders_driver = BendersDriver(exe_path, "", "", self.OPTIONS_JSON)
+            benders_driver = BendersDriver(
+                exe_path, "", "", "", self.OPTIONS_JSON)
 
             simulation_output_path = tmp_path
             lp_path = Path(os.path.normpath(
@@ -101,7 +102,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_sequential))
 
-        benders_driver = BendersDriver("", exe_path, "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver("", exe_path, "", "", self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -121,7 +122,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_merges_mps))
 
-        benders_driver = BendersDriver("", "", exe_path, self.OPTIONS_JSON)
+        benders_driver = BendersDriver("", "", "", exe_path, self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -143,7 +144,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_benders_mpi))
 
-        benders_driver = BendersDriver(exe_path, "", "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver(exe_path, "", "", "", self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -162,7 +163,7 @@ class TestBendersDriver:
         my_n_mpi = 13
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_benders_mpi))
-        benders_driver = BendersDriver(exe_path, "", "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver(exe_path, "", "", "", self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -192,7 +193,7 @@ class TestBendersDriver:
         with patch(MOCK_SYS, autospec=True) as sys_:
             sys_.platform = "exotic_platform"
             with pytest.raises(BendersDriver.BendersUnsupportedPlatform):
-                BendersDriver("", "", "", self.OPTIONS_JSON)
+                BendersDriver("", "", "", "", self.OPTIONS_JSON)
 
     def test_clean_benders_step_if_not_keep_mps(self, tmp_path):
         my_benders_mpi = "something"
@@ -201,7 +202,7 @@ class TestBendersDriver:
             os.path.join(my_install_dir, my_benders_mpi))
         keep_mps = False
 
-        benders_driver = BendersDriver(exe_path, "", "", self.OPTIONS_JSON)
+        benders_driver = BendersDriver(exe_path, "", "", "", self.OPTIONS_JSON)
 
         simulation_output_path = tmp_path
         lp_path = Path(os.path.normpath(
@@ -234,7 +235,7 @@ class TestBendersDriver:
     def test_invalid_options_file(self):
 
         with pytest.raises(BendersDriver.BendersOptionsFileError):
-            BendersDriver("", "", "", "")
+            BendersDriver("", "", "", "", "")
 
     def _create_empty_file(self, tmp_path: Path, fname: str):
         file = tmp_path / fname

@@ -20,3 +20,5 @@ if (USE_SEQUENTIAL)
 	message (STATUS "Generating sequential executable!")
 	add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders_sequential")
 endif ()
+
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/benders_by_batch")

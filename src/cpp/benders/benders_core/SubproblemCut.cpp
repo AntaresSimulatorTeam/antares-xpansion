@@ -8,8 +8,8 @@
 SubproblemCutDataHandler::SubproblemCutDataHandler(SubproblemCutDataPtr& data)
     : _data(data) {
   // get_subgradient().clear();
-  get_int().resize(SubproblemCutInt::MAXINTEGER);
-  get_dbl().resize(SubproblemCutDbl::MAXDBL);
+  get_int().resize(MAXINTEGER);
+  get_dbl().resize(MAXDBL);
   get_str().resize(SubproblemCutStr::MAXSTR);
 }
 
