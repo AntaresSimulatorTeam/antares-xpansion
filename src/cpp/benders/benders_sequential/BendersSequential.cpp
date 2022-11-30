@@ -132,7 +132,7 @@ void BendersSequential::launch() {
   LOG(INFO) << "Running solver..." << std::endl;
   try {
     run();
-    LOG(INFO) << "BendersSequential solver terminated." << std::endl;
+    LOG(INFO) << BendersName() + " solver terminated." << std::endl;
   } catch (std::exception const &ex) {
     std::string error = "Exception raised : " + std::string(ex.what());
     LOG(WARNING) << error << std::endl;

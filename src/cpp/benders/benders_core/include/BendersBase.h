@@ -34,6 +34,7 @@ class BendersBase {
   void set_log_file(const std::filesystem::path &log_name);
   [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
   double execution_time() const;
+  virtual std::string BendersName() const = 0;
 
  protected:
   CurrentIterationData _data;

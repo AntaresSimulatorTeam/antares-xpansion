@@ -8,35 +8,8 @@
 
 BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
                                Writer writer)
-    : BendersBase(options, std::move(logger), std::move(writer)) {}
+    : BendersSequential(options, std::move(logger), std::move(writer)) {}
 
-void BendersByBatch::launch() {
-  build_input_map();
-
-  LOG(INFO) << "Building input" << std::endl;
-
-  LOG(INFO) << "Constructing workers..." << std::endl;
-
-  initialize_problems();
-  LOG(INFO) << "Running solver..." << std::endl;
-  try {
-    run();
-    LOG(INFO) << "Benders by batch solver terminated." << std::endl;
-  } catch (std::exception const &ex) {
-    std::string error = "Exception raised : " + std::string(ex.what());
-    LOG(WARNING) << error << std::endl;
-    _logger->display_message(error);
-  }
-
-  post_run_actions();
-  free();
-}
-void BendersByBatch::free() {
-  if (get_master()) {
-    free_master();
-  }
-  free_subproblems();
-}
 void BendersByBatch::run() {
   init_data();
   ChecksResumeMode();
@@ -111,18 +84,6 @@ void BendersByBatch::run() {
   CloseCsvFile();
   EndWritingInOutputFile();
   write_basis();
-}
-
-void BendersByBatch::initialize_problems() {
-  match_problem_to_id();
-
-  reset_master(new WorkerMaster(master_variable_map, get_master_path(),
-                                get_solver_name(), get_log_level(),
-                                _data.nsubproblem, log_name(), IsResumeMode()));
-  for (const auto &problem : coupling_map) {
-    addSubproblem(problem);
-    AddSubproblemName(problem.first);
-  }
 }
 
 /*!
