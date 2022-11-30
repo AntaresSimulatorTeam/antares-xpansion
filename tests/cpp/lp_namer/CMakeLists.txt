@@ -39,6 +39,7 @@ target_link_libraries (lp_namer_tests PRIVATE
         lp_namer_model
         lp_namer_input_reader
         lp_namer_problem_modifier
+        Boost::serialization
         )
 
 if (USE_MPI)
