@@ -49,7 +49,6 @@ ENDIF()
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
 option (XPRESS  "Use solver FICO XPRESS" OFF)
-option (CPLEX   "Use solver IBM ILOG CPLEX" OFF)
 
 if(COIN_OR)
 	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
@@ -231,18 +230,14 @@ endif()
 find_package(sirius_solver REQUIRED)
 
 if (SOLVER)
-	if (SOLVER STREQUAL "cplex")
-		add_definitions (-DCPLEX_SOLVER -DUSE_CPLEX)
-	elseif (SOLVER STREQUAL "gurobi")
-		add_definitions (-DGUROBI_SOLVER -DUSE_GUROBI)
-	elseif (SOLVER STREQUAL "xpress")
+	if (SOLVER STREQUAL "xpress")
 		add_definitions (-DXPRESS_SOLVER -DUSE_XPRESS)
 	elseif (SOLVER STREQUAL "coin")#already achieved by default through ORTOOLS_DEFINITIONS
 		add_definitions (-DUSE_CBC -DUSE_CLP)
 	else ()
 		message (FATAL_ERROR "unsupported value, ${SOLVER}, for solver option.")
 	endif ()
-endif ()
+endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
 
@@ -272,20 +267,6 @@ if(XPRESS)
 	add_definitions( -DXPRESS=true )
 endif(XPRESS)
 
-## Cplex
-if(CPLEX)
-	message("CPLEX is ${CPLEX}")
-	# Folder including file cplex.h (C interface)
-	set ( CPLEX_INCLUDE_FILES	$ENV{CPLEX_STUDIO_DIR129}/cplex/include/ilcplex )
-	set ( CPLEX_DEBUG_LIB  		$ENV{CPLEX_STUDIO_DIR129}/cplex/lib/x64_windows_vs2017/stat_mdd/cplex1290.lib )
-	set ( CPLEX_OPT_LIB 		$ENV{CPLEX_STUDIO_DIR129}/cplex/lib/x64_windows_vs2017/stat_mda/cplex1290.lib )
-	message("CPLEX include directory is ${CPLEX_INCLUDE_FILES}")
-	message("CPLEX debug library is ${CPLEX_DEBUG_LIB}")
-	message("CPLEX optim library is ${CPLEX_OPT_LIB}")
-
-	# Add solver variables for usage in C++ source code
-	add_definitions( -DCPLEX=true )
-endif(CPLEX)
 
 ## Coin-OR (Clp and CBC solvers)
 if(COIN_OR)
@@ -404,9 +385,6 @@ if(XPRESS)
 set(CPACK_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-xpress")
 endif(XPRESS)
 
-if(CPLEX)
-set(CPACK_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-cplex")
-endif(CPLEX)
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
 set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
