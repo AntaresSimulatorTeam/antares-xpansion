@@ -4,7 +4,8 @@
 #include "BendersByBatch.h"
 #include "RandomBatchShuffler.h"
 #include "gtest/gtest.h"
-
+#include "logger/Master.h"
+#include "logger/User.h"
 class BatchCollectionTest : public ::testing::Test {
  public:
   const std::vector<std::string> sub_problems_name_list = {"P1", "P2", "P3"};
@@ -14,31 +15,48 @@ class BatchCollectionTest : public ::testing::Test {
                                                              "P4", "P5"};
 
  protected:
+  Logger logger_;
+  Logger std_out_logger;
+  void SetUp() override {
+    Logger std_out_logger;
+    std_out_logger = std::make_shared<xpansion::logger::User>(std::cerr);
+    auto master_logger = std::make_shared<xpansion::logger::Master>();
+    master_logger->addLogger(std_out_logger);
+    logger_ = master_logger;
+  }
 };
 
 TEST_F(BatchCollectionTest,
        NumberOfCollectionCanNotBeGreaterThanNumberOfSubProblems) {
   auto sub_problems_name_list_size = sub_problems_name_list.size();
   auto batch_size = sub_problems_name_list_size + 1;
-  try {
-    auto batch_collection = BatchCollection(sub_problems_name_list, batch_size);
-  } catch (const BatchCollection::InvalidSizeOfSubProblemCollection& err) {
-    auto expected = (std::string("Bacth size: ") + std::to_string(batch_size) +
-                     " must be less or equal than number of sub problems: " +
-                     std::to_string(sub_problems_name_list_size));
-    ASSERT_STREQ(err.what(), expected.c_str());
-  }
+
+  std::stringstream redirectedErrorStream;
+  std::streambuf* initialBufferCerr =
+      std::cerr.rdbuf(redirectedErrorStream.rdbuf());
+  auto expected = std::string("Warning: batch_size(") +
+                  std::to_string(batch_size) +
+                  ") can not be greater than number of subproblems (" +
+                  std::to_string(sub_problems_name_list_size) +
+                  ")\nSetting batch_size = number of subproblems(" +
+                  std::to_string(sub_problems_name_list_size) +
+                  ")\nWhich means that there is only one batch!\n";
+  auto batch_collection =
+      BatchCollection(sub_problems_name_list, batch_size, logger_);
+
+  std::cerr.rdbuf(initialBufferCerr);
+  ASSERT_TRUE(redirectedErrorStream.str().find(expected) != std::string::npos);
 }
 TEST_F(
     BatchCollectionTest,
     IfNumberOfSubProblemIsEqualToBatchSizeThanBatchCollectionSizeIsEqualTo1) {
-  auto batch_collection =
-      BatchCollection(sub_problems_name_list, sub_problems_name_list.size());
+  auto batch_collection = BatchCollection(
+      sub_problems_name_list, sub_problems_name_list.size(), logger_);
   ASSERT_EQ(batch_collection.size(), 1);
 }
 TEST_F(BatchCollectionTest, NumberOfSubProblemIsEqualToTheSumOfBatchSize) {
-  auto batch_collection =
-      BatchCollection(sub_problems_name_list, sub_problems_name_list.size());
+  auto batch_collection = BatchCollection(
+      sub_problems_name_list, sub_problems_name_list.size(), logger_);
 
   auto sum_batch_size = 0;
   for (const auto& batch : batch_collection.BatchCollections()) {
@@ -48,19 +66,19 @@ TEST_F(BatchCollectionTest, NumberOfSubProblemIsEqualToTheSumOfBatchSize) {
 }
 TEST_F(BatchCollectionTest,
        IfNumberOFSubProblemIs3AndBatchSize2ThenNumberOfBatchIs2) {
-  auto batch_collection = BatchCollection(sub_problems_name_list, 2);
+  auto batch_collection = BatchCollection(sub_problems_name_list, 2, logger_);
 
   ASSERT_EQ(batch_collection.NumberOfBatch(), 2);
 }
 TEST_F(BatchCollectionTest,
        IfNumberOFSubProblemIs4AndBatchSize2ThenNumberOfBatchIs2) {
-  auto batch_collection = BatchCollection(sub_problems_name_list_4, 2);
+  auto batch_collection = BatchCollection(sub_problems_name_list_4, 2, logger_);
 
   ASSERT_EQ(batch_collection.NumberOfBatch(), 2);
 }
 TEST_F(BatchCollectionTest,
        IfNumberOFSubProblemIs5AndBatchSize2Then_P2_isInBatch1AndP3IsInBatch2) {
-  auto batch_collection = BatchCollection(sub_problems_name_list_5, 2);
+  auto batch_collection = BatchCollection(sub_problems_name_list_5, 2, logger_);
 
   ASSERT_EQ(batch_collection.NumberOfBatch(), 3);
   const auto vec_batch0 = batch_collection.GetBatchFromId(0).sub_problem_names;

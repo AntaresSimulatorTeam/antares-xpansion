@@ -1,7 +1,27 @@
 #pragma once
 
+#include <boost/serialization/map.hpp>
+
 #include "Worker.h"
 #include "common.h"
+
+struct SubProblemData {
+  double subproblem_cost;
+  Point var_name_and_subgradient;
+  double subproblem_timer;
+  int simplex_iter;
+  int lpstatus;
+  friend class boost::serialization::access;
+  template <class Archive>
+  void serialize(Archive &ar, const unsigned int version) {
+    ar &subproblem_cost;
+    ar &var_name_and_subgradient;
+    ar &subproblem_timer;
+    ar &simplex_iter;
+    ar &lpstatus;
+  }
+};
+using SubProblemDataMap = std::map<std::string, SubProblemData>;
 
 typedef std::pair<Point, IntVector> SubproblemCutData1;
 typedef std::pair<SubproblemCutData1, DblVector> SubproblemCutData2;
@@ -14,8 +34,6 @@ typedef std::map<std::string, SubproblemCutData> SubproblemCutPackage;
 typedef std::vector<SubproblemCutPackage> AllCutPackage;
 
 class SubproblemCutTrimmer;
-typedef std::set<SubproblemCutTrimmer> SubproblemCutStorage;
-typedef std::map<std::string, SubproblemCutStorage> AllCutStorage;
 
 class SubproblemCutDataHandler;
 typedef std::shared_ptr<SubproblemCutDataHandler> SubproblemCutDataHandlerPtr;
@@ -62,21 +80,5 @@ class SubproblemCutDataHandler {
 
   SubproblemCutDataPtr _data;
 };
-
-class SubproblemCutTrimmer {
- public:
-  SubproblemCutDataHandlerPtr _data_cut;
-  Point _x_cut;
-  double _const_cut;
-
-  SubproblemCutTrimmer(SubproblemCutDataHandlerPtr &data, const Point &x_cut);
-  Point const &get_subgradient() const;
-
-  bool operator<(SubproblemCutTrimmer const &other) const;
-
-  void print(std::ostream &stream) const;
-};
-
-std::ostream &operator<<(std::ostream &stream, SubproblemCutTrimmer const &rhs);
 
 std::ostream &operator<<(std::ostream &stream, SubproblemCutData const &rhs);

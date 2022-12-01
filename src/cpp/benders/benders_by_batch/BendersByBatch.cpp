@@ -8,37 +8,9 @@
 
 BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
                                Writer writer)
-    : BendersBase(options, std::move(logger), std::move(writer)) {}
+    : BendersSequential(options, std::move(logger), std::move(writer)) {}
 
-void BendersByBatch::launch() {
-  build_input_map();
-
-  LOG(INFO) << "Building input" << std::endl;
-
-  LOG(INFO) << "Constructing workers..." << std::endl;
-
-  initialize_problems();
-  LOG(INFO) << "Running solver..." << std::endl;
-  try {
-    run();
-    LOG(INFO) << "Benders by batch solver terminated." << std::endl;
-  } catch (std::exception const &ex) {
-    std::string error = "Exception raised : " + std::string(ex.what());
-    LOG(WARNING) << error << std::endl;
-    _logger->display_message(error);
-  }
-
-  post_run_actions();
-  free();
-}
-void BendersByBatch::free() {
-  if (get_master()) {
-    free_master();
-  }
-  free_subproblems();
-}
 void BendersByBatch::run() {
-  set_cut_storage();
   init_data();
   ChecksResumeMode();
   if (is_trace()) {
@@ -55,7 +27,7 @@ void BendersByBatch::run() {
                                               : Options().BATCH_SIZE;
 
   const auto batch_collection =
-      BatchCollection(GetSubProblemNames(), batch_size);
+      BatchCollection(GetSubProblemNames(), batch_size, _logger);
   auto number_of_batch = batch_collection.NumberOfBatch();
   unsigned batch_counter = 0;
 
@@ -79,8 +51,6 @@ void BendersByBatch::run() {
 
     ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
-
-    push_in_trace(std::make_shared<WorkerMasterData>());
 
     auto remaining_epsilon = AbsoluteGap();
 
@@ -115,18 +85,6 @@ void BendersByBatch::run() {
   write_basis();
 }
 
-void BendersByBatch::initialize_problems() {
-  match_problem_to_id();
-
-  reset_master(new WorkerMaster(master_variable_map, get_master_path(),
-                                get_solver_name(), get_log_level(),
-                                _data.nsubproblem, log_name(), IsResumeMode()));
-  for (const auto &problem : coupling_map) {
-    addSubproblem(problem);
-    AddSubproblemName(problem.first);
-  }
-}
-
 /*!
  * \brief Build subproblem cut and store it in the BendersSequential trace
  *
@@ -136,21 +94,19 @@ void BendersByBatch::initialize_problems() {
  */
 void BendersByBatch::build_cut(
     const std::vector<std::string> &batch_sub_problems, double *sum) {
-  SubproblemCutPackage subproblem_cut_package;
-  AllCutPackage all_package;
+  SubProblemDataMap subproblem_data_map;
+  // AllCutPackage all_package;
   Timer timer;
-  getSubproblemCut(subproblem_cut_package, batch_sub_problems, sum);
+  getSubproblemCut(subproblem_data_map, batch_sub_problems, sum);
 
   for (const auto &sub_problem_name : batch_sub_problems) {
-    auto sub_problem_cut_data = subproblem_cut_package[sub_problem_name];
-    auto sub_problem_cut_cost =
-        sub_problem_cut_data.first.second[SUBPROBLEM_COST];
-    SetSubproblemCost(GetSubproblemCost() + sub_problem_cut_cost);
+    auto sub_problem_data = subproblem_data_map[sub_problem_name];
+    SetSubproblemCost(GetSubproblemCost() + sub_problem_data.subproblem_cost);
   }
 
   SetSubproblemTimers(timer.elapsed());
-  all_package.push_back(subproblem_cut_package);
-  build_cut_full(all_package);
+  // all_package.push_back(subproblem_data_map);
+  build_cut_full(subproblem_data_map);
 }
 
 /*!
@@ -159,10 +115,10 @@ void BendersByBatch::build_cut(
  *  Method to solve and store optimal variables of all Subproblem Problems
  * after fixing trial values
  *
- *  \param subproblem_cut_package : map storing for each subproblem its cut
+ *  \param subproblem_data_map : map storing for each subproblem its cut
  */
 void BendersByBatch::getSubproblemCut(
-    SubproblemCutPackage &subproblem_cut_package,
+    SubProblemDataMap &subproblem_data_map,
     const std::vector<std::string> &batch_sub_problems, double *sum) const {
   *sum = 0;
   // With gcc9 there was no parallelisation when iterating on the map directly
@@ -175,28 +131,27 @@ void BendersByBatch::getSubproblemCut(
   }
   std::mutex m;
   selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_cut_package, &sum](auto &policy) {
+      [this, &nameAndWorkers, &m, &subproblem_data_map, &sum](auto &policy) {
         std::for_each(
             policy, nameAndWorkers.begin(), nameAndWorkers.end(),
-            [this, &m, &subproblem_cut_package,
+            [this, &m, &subproblem_data_map,
              &sum](const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
               const auto &[name, worker] = kvp;
               Timer subproblem_timer;
-              auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
-              auto handler(std::make_shared<SubproblemCutDataHandler>(
-                  subproblem_cut_data));
+              SubProblemData subproblem_data;
               worker->fix_to(_data.x_cut);
-              worker->solve(handler->get_int(LPSTATUS), Options().OUTPUTROOT,
+              worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
                             Options().LAST_MASTER_MPS + MPS_SUFFIX);
               worker->get_value(
-                  handler->get_dbl(SUBPROBLEM_COST));  // solution phi(x,s)
-              worker->get_subgradient(handler->get_subgradient());  // dual pi_s
-              *sum += handler->get_dbl(SUBPROBLEM_COST) -
+                  subproblem_data.subproblem_cost);  // solution phi(x,s)
+              worker->get_subgradient(
+                  subproblem_data.var_name_and_subgradient);  // dual pi_s
+              *sum += subproblem_data.subproblem_cost -
                       GetAlpha_i()[ProblemToId(name)];
-              worker->get_splex_num_of_ite_last(handler->get_int(SIMPLEXITER));
-              handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
+              worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+              subproblem_data.subproblem_timer = subproblem_timer.elapsed();
               std::lock_guard guard(m);
-              subproblem_cut_package[name] = *subproblem_cut_data;
+              subproblem_data_map[name] = subproblem_data;
             });
       },
       shouldParallelize());

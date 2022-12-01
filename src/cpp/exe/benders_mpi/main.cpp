@@ -43,7 +43,9 @@ int main(int argc, char **argv) {
 
     logger = logger_factory.get_logger();
     writer = build_json_writer(options.JSON_FILE, options.RESUME);
-    if (Benders::StartUp startup; startup.StudyAlreadyAchievedCriterion(options, writer, logger)) return 0;
+    if (Benders::StartUp startup;
+        startup.StudyAlreadyAchievedCriterion(options, writer, logger))
+      return 0;
     std::ostringstream oss_l = start_message(options, "mpi");
     LOG(INFO) << oss_l.str() << std::endl;
   } else {
