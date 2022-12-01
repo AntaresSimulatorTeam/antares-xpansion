@@ -27,7 +27,7 @@ void BendersByBatch::run() {
                                               : Options().BATCH_SIZE;
 
   const auto batch_collection =
-      BatchCollection(GetSubProblemNames(), batch_size);
+      BatchCollection(GetSubProblemNames(), batch_size, _logger);
   auto number_of_batch = batch_collection.NumberOfBatch();
   unsigned batch_counter = 0;
 
