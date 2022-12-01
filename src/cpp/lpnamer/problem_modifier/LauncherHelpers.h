@@ -18,6 +18,10 @@ void treatAdditionalConstraints(
     const AdditionalConstraints& additionalConstraints_p,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
+char getConstraintSenseSymbol(
+    const AdditionalConstraint& additionalConstraint_p,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+
 /**
  * \brief adds an additional constraint to an existent solver
  *

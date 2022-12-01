@@ -18,9 +18,29 @@ void treatAdditionalConstraints(
                      logger);
 
   // add the constraints
-  for (auto pairNameAdditionalcstr : additionalConstraints_p) {
-    addAdditionalConstraint(master_p, pairNameAdditionalcstr.second, logger);
+  for (auto [name, additional_constraint] : additionalConstraints_p) {
+    addAdditionalConstraint(master_p, additional_constraint, logger);
   }
+}
+
+char getConstraintSenseSymbol(
+    const AdditionalConstraint &additionalConstraint_p,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+  char rtype;
+  if (std::string sign_l = additionalConstraint_p.getSign();
+      sign_l == "less_or_equal") {
+    rtype = 'L';
+  } else if (sign_l == "greater_or_equal") {
+    rtype = 'G';
+  } else if (sign_l == "equal") {
+    rtype = 'E';
+  } else {
+    (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "FATAL: in addAdditionalConstraint, unknown row type " << sign_l
+        << std::endl;
+    std::exit(1);
+  }
+  return rtype;
 }
 
 void addAdditionalConstraint(
@@ -36,31 +56,19 @@ void addAdditionalConstraint(
   matstart[0] = 0;
   matstart[1] = newnz;
 
-  std::string sign_l = additionalConstraint_p.getSign();
-  if (sign_l == "less_or_equal") {
-    rtype[0] = 'L';
-  } else if (sign_l == "greater_or_equal") {
-    rtype[0] = 'G';
-  } else if (sign_l == "equal") {
-    rtype[0] = 'E';
-  } else {
-    (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
-        << "FATAL: in addAdditionalConstraint, unknown row type " << sign_l
-        << std::endl;
-    std::exit(1);
-  }
+  rtype[0] = getConstraintSenseSymbol(additionalConstraint_p, logger);
 
   int i = 0;
-  for (auto &pairNameCoeff : additionalConstraint_p) {
-    int col_index = master_p->get_col_index(pairNameCoeff.first);
+  for (auto const &[name, coeff] : additionalConstraint_p) {
+    int col_index = master_p->get_col_index(name);
     if (col_index == -1) {
       (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
-          << "missing variable " << pairNameCoeff.first
+          << "missing variable " << name
           << " used in additional constraint file!\n";
       std::exit(1);
     }
     mindex[i] = col_index;
-    matval[i] = pairNameCoeff.second;
+    matval[i] = coeff;
     i++;
   }
 
