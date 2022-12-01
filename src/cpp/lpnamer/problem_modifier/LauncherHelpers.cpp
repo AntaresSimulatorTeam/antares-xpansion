@@ -40,7 +40,7 @@ void addAdditionalConstraint(
   if (sign_l == "less_or_equal") {
     rtype[0] = 'L';
   } else if (sign_l == "greater_or_equal") {
-    rtype[0] = 'U';
+    rtype[0] = 'G';
   } else if (sign_l == "equal") {
     rtype[0] = 'E';
   } else {
