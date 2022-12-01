@@ -1,3 +1,3 @@
-SP1             0.99
-SP2             0.01
+SP1.mps             0.99
+SP2.mps             0.01
 WEIGHT_SUM      1.0
