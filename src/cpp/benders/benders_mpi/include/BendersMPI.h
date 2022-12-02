@@ -22,6 +22,7 @@ class BendersMpi : public BendersBase {
              mpi::environment &env, mpi::communicator &world);
 
   void launch() override;
+  std::string BendersName() const { return "Mpi"; }
 
  protected:
   void free() override;
@@ -33,8 +34,9 @@ class BendersMpi : public BendersBase {
   void step_2_solve_subproblems_and_build_cuts();
   void step_4_update_best_solution(int rank, const Timer &timer_master);
 
-  void master_build_cuts(AllCutPackage all_package);
-  SubproblemCutPackage get_subproblem_cut_package();
+  void master_build_cuts(
+      std::vector<SubProblemDataMap> gathered_subproblem_map);
+  SubProblemDataMap get_subproblem_cut_package();
 
   void solve_master_and_create_trace();
 
@@ -45,8 +47,7 @@ class BendersMpi : public BendersBase {
   void broadcast_the_master_problem();
 
   void gather_subproblems_cut_package_and_build_cuts(
-      const SubproblemCutPackage &subproblem_cut_package,
-      const Timer &process_timer);
+      const SubProblemDataMap &subproblem_data_map, const Timer &process_timer);
 
   void write_exception_message(const std::exception &ex) const;
 
