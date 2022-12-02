@@ -18,7 +18,7 @@ void treatAdditionalConstraints(
                      logger);
 
   // add the constraints
-  for (auto [name, additional_constraint] : additionalConstraints_p) {
+  for (const auto &[name, additional_constraint] : additionalConstraints_p) {
     addAdditionalConstraint(master_p, additional_constraint, logger);
   }
 }
