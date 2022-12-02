@@ -2,24 +2,22 @@
     Class to work on config
 """
 
+import json
 import os
 import re
 import shutil
 import sys
-import json
-
 from pathlib import Path
 
+from antares_xpansion.chronicles_checker import ChronicleChecker
+from antares_xpansion.flushed_print import flushed_print
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
+from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.optimisation_keys import OptimisationKeys
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.flushed_print import flushed_print
-from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
-
-from antares_xpansion.chronicles_checker import ChronicleChecker
 
 
 class NTCColumnConstraintError(Exception):
@@ -51,6 +49,7 @@ class ConfigLoader:
         self.platform = sys.platform
         self._INFO_MSG = "<< INFO >>"
         self._config = config
+        self._last_zip = None
         if self._config.step == "resume":
             self._config.simulation_name = (
                 LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
@@ -194,6 +193,12 @@ class ConfigLoader:
     def _get_constraints_file_path_in_constraints_dir(self, filename):
         return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.CONSTRAINTS, filename)))
 
+    def _get_weight_file_path_in_weights_dir(self, filename):
+        return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.WEIGHTS, filename)))
+
+    def _get_constraints_file_path_in_constraints_dir(self, filename):
+        return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.CONSTRAINTS, filename)))
+
     def capacity_file(self, filename):
         """
         returns path to input capacity file
@@ -310,6 +315,17 @@ class ConfigLoader:
 
         return float(separation_parameter_str)
 
+    def get_batch_size(self):
+        """
+        return the batch_size read from the settings file
+        """
+        batch_size_str = self.options.get(
+            "batch_size",
+            self._config.settings_default["batch_size"],
+        )
+
+        return int(batch_size_str)
+
     def additional_constraints(self):
         """
         returns path to additional constraints file
@@ -327,9 +343,12 @@ class ConfigLoader:
         return self._simulation_lp_path()
 
     def _simulation_lp_path(self):
-        lp_path = os.path.normpath(os.path.join(
-            self.simulation_output_path(), "lp"))
-        return lp_path
+        return self.xpansion_simulation_output() / "lp"
+
+    def xpansion_simulation_output(self):
+        if self._simulation_name == "last":
+            self._set_last_simulation_name()
+        return self._simulation_name
 
     def _verify_additional_constraints_file(self):
         if self.options.get("additional-constraints", "") != "":
@@ -361,10 +380,8 @@ class ConfigLoader:
     def simulation_output_path(self) -> Path:
         if self._simulation_name == "last":
             self._set_last_simulation_name()
-        return Path(
-            os.path.normpath(os.path.join(
-                self.antares_output(), self._simulation_name))
-        )
+
+        return self._last_zip
 
     def benders_pre_actions(self):
         self.save_launcher_options()
@@ -405,12 +422,12 @@ class ConfigLoader:
 
     def _expansion_dir(self):
         return os.path.normpath(
-            os.path.join(self.simulation_output_path(), "expansion")
+            os.path.join(self.xpansion_simulation_output(), "expansion")
         )
 
     def _sensitivity_dir(self):
         return os.path.normpath(
-            os.path.join(self.simulation_output_path(), "sensitivity")
+            os.path.join(self.xpansion_simulation_output(), "sensitivity")
         )
 
     def _set_options_for_benders_solver(self):
@@ -461,6 +478,8 @@ class ConfigLoader:
             OptimisationKeys.last_mps_master_name_key()
         ] = self._config.LAST_MASTER_MPS
         options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
+        options_values[OptimisationKeys.batch_size_key()
+                       ] = self.get_batch_size()
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)
@@ -477,18 +496,55 @@ class ConfigLoader:
         """
         return last simulation name
         """
+        last_dir_path = self.get_last_modified_dir(self.antares_output())
+
+        if self.step() == "resume":
+            self._simulation_name = last_dir_path
+        else:
+            # TODO temp function to zip study output -- for now antares does not provide archive output
+            # self.zip_last_study(last_dir_path)
+            # Get list of all dirs only in the given directory
+            list_of_zip_filter = Path(self.antares_output()).glob("*.zip")
+
+            # Sort list of files based on last modification time in ascending order
+            list_of_zip = sorted(
+                list_of_zip_filter,
+                key=lambda x: os.path.getmtime(
+                    os.path.join(self.antares_output(), x)),
+            )
+            self._last_zip = list_of_zip[-1]
+            self._simulation_name = self._last_zip.parent / \
+                (self._last_zip.stem+"-Xpansion")
+
+    def zip_last_study(self, last_dir_path):
+        """
+        zip last simulation and delete it
+        """
         # Get list of all dirs only in the given directory
-        list_of_dirs_filter = filter(
-            lambda x: os.path.isdir(os.path.join(self.antares_output(), x)),
-            os.listdir(self.antares_output()),
+        shutil.make_archive(str(last_dir_path), "zip", last_dir_path)
+
+        shutil.rmtree(last_dir_path, ignore_errors=True)
+
+    def is_zip(self, file):
+        filename, ext = os.path.splitext(file)
+        return ext == ".zip"
+
+    def get_last_modified_dir(self, root_dir):
+        list_dir = os.listdir(root_dir)
+        list_of_zip = filter(
+            lambda x: self.is_zip(x), list_dir
         )
         # Sort list of files based on last modification time in ascending order
-        list_of_dirs = sorted(
-            list_of_dirs_filter,
+        zip_sorted = sorted(
+            list_of_zip,
             key=lambda x: os.path.getmtime(
-                os.path.join(self.antares_output(), x)),
+                os.path.join(root_dir, x)),
         )
-        self._simulation_name = list_of_dirs[-1]
+
+        last_zip = Path(root_dir) / zip_sorted[-1]
+        filename, ext = os.path.splitext(last_zip)
+        output_dir = os.path.basename(filename)
+        return output_dir
 
     def is_accurate(self):
         """
@@ -534,6 +590,9 @@ class ConfigLoader:
 
     def benders_sequential_exe(self):
         return self.exe_path(self._config.BENDERS_SEQUENTIAL)
+
+    def benders_by_batch_exe(self):
+        return self.exe_path(self._config.BENDERS_BY_BATCH)
 
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)

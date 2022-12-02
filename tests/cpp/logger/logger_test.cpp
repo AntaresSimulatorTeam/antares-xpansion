@@ -593,6 +593,8 @@ class SimpleLoggerMock : public ILogger {
   void LogAtInitialRelaxation() { _initialRelaxationCall = true; }
 
   void LogAtSwitchToInteger() { _switchToIntegerCall = true; }
+  void number_of_sub_problem_resolved(int number) {  //
+  }
 
   bool _initCall;
   bool _iterationStartCall;

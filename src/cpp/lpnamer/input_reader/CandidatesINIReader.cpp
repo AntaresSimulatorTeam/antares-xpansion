@@ -9,10 +9,11 @@
 
 CandidatesINIReader::CandidatesINIReader(
     const std::filesystem::path &antaresIntercoFile,
-    const std::filesystem::path &areaFile) {
+    const std::filesystem::path &areaFile,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    : logger_(logger) {
   _intercoFileData = ReadAntaresIntercoFile(antaresIntercoFile);
   _areaNames = ReadAreaFile(areaFile);
-
   for (auto const &intercoFileData : _intercoFileData) {
     // TODO : check if index is available in areaNames
     std::string const &pays_or(_areaNames[intercoFileData.index_pays_origine]);
@@ -24,17 +25,28 @@ CandidatesINIReader::CandidatesINIReader(
 }
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
-    const std::filesystem::path &antaresIntercoFile) {
-  std::vector<IntercoFileData> result;
-
+    const std::filesystem::path &antaresIntercoFile) const {
   std::ifstream interco_filestream(antaresIntercoFile);
   if (!interco_filestream.good()) {
-    std::string message = "unable to open " + antaresIntercoFile.string();
-    throw std::runtime_error(message);
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << antaresIntercoFile.string();
+    std::exit(1);
   }
 
+  return ReadLineByLineInterco(interco_filestream);
+}
+
+std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
+    std::istringstream &antaresIntercoFileInStringStream) const {
+  return ReadLineByLineInterco(antaresIntercoFileInStringStream);
+}
+
+std::vector<IntercoFileData> CandidatesINIReader::ReadLineByLineInterco(
+    std::istream &stream) const {
+  std::vector<IntercoFileData> result;
+
   std::string line;
-  while (std::getline(interco_filestream, line)) {
+  while (std::getline(stream, line)) {
     std::stringstream buffer(line);
     if (!line.empty() && line.front() != '#') {
       IntercoFileData intercoData;
@@ -47,18 +59,30 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
   }
   return result;
 }
-std::vector<std::string> CandidatesINIReader::ReadAreaFile(
-    const std::filesystem::path &areaFile) {
-  std::vector<std::string> result;
 
+std::vector<std::string> CandidatesINIReader::ReadAreaFile(
+    const std::filesystem::path &areaFile) const {
   std::ifstream area_filestream(areaFile);
   if (!area_filestream.good()) {
-    std::string message = "unable to open " + areaFile.string();
-    throw std::runtime_error(message);
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << areaFile.string();
+    std::exit(1);
   }
 
+  return ReadLineByLineArea(area_filestream);
+}
+
+std::vector<std::string> CandidatesINIReader::ReadAreaFile(
+    std::istringstream &areaFileInStringStream) const {
+  return ReadLineByLineArea(areaFileInStringStream);
+}
+
+std::vector<std::string> CandidatesINIReader::ReadLineByLineArea(
+    std::istream &stream) const {
+  std::vector<std::string> result;
+
   std::string line;
-  while (std::getline(area_filestream, line)) {
+  while (std::getline(stream, line)) {
     if (!line.empty() && line.front() != '#') {
       result.push_back(StringUtils::ToLowercase(line));
     }
@@ -71,8 +95,9 @@ std::string getStrVal(const INIReader &reader, const std::string &sectionName,
   std::string val = reader.Get(sectionName, key, "NA");
   if ((val != "NA") && (val != "na"))
     return val;
-  else
+  else {
     return "";
+  }
 }
 
 double getDblVal(const INIReader &reader, const std::string &sectionName,
@@ -101,7 +126,7 @@ bool CandidatesINIReader::checkArea(std::string const &areaName_p) const {
 }
 
 std::vector<CandidateData> CandidatesINIReader::readCandidateData(
-    const std::filesystem::path &candidateFile) {
+    const std::filesystem::path &candidateFile) const {
   std::vector<CandidateData> result;
 
   INIReader reader(candidateFile.string());
@@ -118,7 +143,7 @@ std::vector<CandidateData> CandidatesINIReader::readCandidateData(
 
 CandidateData CandidatesINIReader::readCandidateSection(
     const std::filesystem::path &candidateFile, const INIReader &reader,
-    const std::string &sectionName) {
+    const std::string &sectionName) const {
   CandidateData candidateData;
   candidateData.name =
       StringUtils::ToLowercase(getStrVal(reader, sectionName, "name"));
@@ -130,31 +155,35 @@ CandidateData CandidatesINIReader::readCandidateSection(
     candidateData.linkex =
         candidateData.link_name.substr(i + 3, candidateData.link_name.size());
     if (!checkArea(candidateData.linkor)) {
-      std::string message = "Unrecognized area " + candidateData.linkor +
-                            " in section " + sectionName + " in " +
-                            candidateFile.string() + ".";
-      throw std::runtime_error(message);
+      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "Unrecognized area " << candidateData.linkor << " in section "
+          << sectionName << " in " << candidateFile.string() + ".";
+      std::exit(1);
     }
     if (!checkArea(candidateData.linkex)) {
-      std::string message = "Unrecognized area " + candidateData.linkex +
-                            " in section " + sectionName + " in " +
-                            candidateFile.string() + ".";
-      throw std::runtime_error(message);
+      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << "Unrecognized area " << candidateData.linkex << " in section "
+          << sectionName << " in " << candidateFile.string() << ".";
+      std::exit(1);
     }
   }
 
   // Check if interco is available
   auto it = _intercoIndexMap.find(candidateData.link_name);
   if (it == _intercoIndexMap.end()) {
-    std::string message =
-        "cannot link candidate " + candidateData.name + " to interco id";
-    throw std::runtime_error(message);
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "cannot link candidate " << candidateData.name << " to interco id";
+    std::exit(1);
   }
   candidateData.link_id = it->second;
-  candidateData.direct_link_profile = getStrVal(reader, sectionName, "direct-link-profile");
-  candidateData.indirect_link_profile = getStrVal(reader, sectionName, "indirect-link-profile");
-  candidateData.installed_direct_link_profile_name = getStrVal(reader, sectionName, "already-installed-direct-link-profile");
-  candidateData.installed_indirect_link_profile_name = getStrVal(reader, sectionName, "already-installed-indirect-link-profile");
+  candidateData.direct_link_profile =
+      getStrVal(reader, sectionName, "direct-link-profile");
+  candidateData.indirect_link_profile =
+      getStrVal(reader, sectionName, "indirect-link-profile");
+  candidateData.installed_direct_link_profile_name =
+      getStrVal(reader, sectionName, "already-installed-direct-link-profile");
+  candidateData.installed_indirect_link_profile_name =
+      getStrVal(reader, sectionName, "already-installed-indirect-link-profile");
 
   candidateData.annual_cost_per_mw =
       getDblVal(reader, sectionName, "annual-cost-per-mw");

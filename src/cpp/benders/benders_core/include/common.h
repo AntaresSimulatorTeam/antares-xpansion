@@ -132,6 +132,7 @@ struct BaseOptions {
   bool RESUME = false;
 
   Str2Dbl weights;
+  std::string MPS_ZIP_FILE;
 };
 typedef BaseOptions MergeMPSOptions;
 struct BendersBaseOptions : public BaseOptions {
@@ -155,6 +156,8 @@ struct BendersBaseOptions : public BaseOptions {
   std::string CSV_NAME;
   std::string LAST_MASTER_MPS;
   std::string LAST_MASTER_BASIS;
+
+  size_t BATCH_SIZE;
 };
 
 void usage(int argc);

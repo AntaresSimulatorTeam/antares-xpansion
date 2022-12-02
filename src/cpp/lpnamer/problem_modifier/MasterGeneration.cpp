@@ -10,10 +10,13 @@
 MasterGeneration::MasterGeneration(
     const std::filesystem::path &rootPath, const std::vector<ActiveLink> &links,
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
-    std::string const &master_formulation, std::string const &solver_name) {
+    std::string const &master_formulation, std::string const &solver_name,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+    const std::filesystem::path &log_file_path)
+    : logger_(logger) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
-                   additionalConstraints_p);
+                   additionalConstraints_p, log_file_path);
   write_structure_file(rootPath, couplings);
 }
 
@@ -32,10 +35,12 @@ void MasterGeneration::add_candidates(const std::vector<ActiveLink> &links) {
 void MasterGeneration::write_master_mps(
     const std::filesystem::path &rootPath,
     std::string const &master_formulation, std::string const &solver_name,
-    const AdditionalConstraints &additionalConstraints_p) const {
+    const AdditionalConstraints &additionalConstraints_p,
+    const std::filesystem::path &log_file_path) const {
   SolverAbstract::Ptr master_l =
-      MasterProblemBuilder(master_formulation).build(solver_name, candidates);
-  treatAdditionalConstraints(master_l, additionalConstraints_p);
+      MasterProblemBuilder(master_formulation)
+          .build(solver_name, candidates, log_file_path);
+  treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);
 
   std::string const &lp_name = "master";
   master_l->write_prob_mps(rootPath / "lp" / (lp_name + ".mps"));

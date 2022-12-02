@@ -15,5 +15,6 @@
      "BOUND_ALPHA": true,
      "SOLVER_NAME": "COIN",
      "JSON_FILE": "./expansion/out.json",
-     "LAST_ITERATION_JSON_FILE": "./expansion/last_iteration.json"
+     "LAST_ITERATION_JSON_FILE": "./expansion/last_iteration.json",
+     "MPS_ZIP_FILE": "MPS_ZIP_FILE.zip"
 }

@@ -15,7 +15,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ ubuntu-20.04 ]
 
     env:
       SONAR_SCANNER_VERSION: 4.7.0.2747 # Find the latest version in the "Linux" link on this page:
@@ -23,8 +23,8 @@ jobs:
       SONAR_SERVER_URL: "https://sonarcloud.io"
 
     steps:
-    
-      - uses: actions/checkout@v2
+
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -45,7 +45,7 @@ jobs:
           mkdir -p $HOME/.sonar
           curl -sSLo $HOME/.sonar/sonar-scanner.zip ${{ env.SONAR_SCANNER_DOWNLOAD_URL }}
           unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
-          
+
       - name: Download and setup build-wrapper
         shell: bash
         env:
@@ -54,14 +54,14 @@ jobs:
         run: |
           curl -sSLo $HOME/.sonar/build-wrapper-linux-x86.zip ${{ env.BUILD_WRAPPER_DOWNLOAD_URL }}
           unzip -o $HOME/.sonar/build-wrapper-linux-x86.zip -d $HOME/.sonar/
-          
+
       - name: Set build-wrapper and sonar-scanner paths
         run: |
           echo "$HOME/.sonar/build-wrapper-linux-x86" >> $GITHUB_PATH
           echo "$HOME/.sonar/sonar-scanner-${{ env.SONAR_SCANNER_VERSION }}-linux/bin" >> $GITHUB_PATH
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.8
 
@@ -70,54 +70,54 @@ jobs:
 
       - name: Install dependencies
         run: |
-            python -m pip install --upgrade pip
-            pip3 install -r requirements-tests.txt
+          python -m pip install --upgrade pip
+          pip3 install -r requirements-tests.txt
 
       - name: Install libraries
         run: |
-             sudo apt-get update --fix-missing
-             sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
-             cd /usr/src/googletest/
-             sudo cmake .
-             sudo cmake --build . --target install
+          sudo apt-get update --fix-missing
+          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          cd /usr/src/googletest/
+          sudo cmake .
+          sudo cmake --build . --target install
 
       - name: Read antares-solver version
         id: antares-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_version'
+          key: 'antares_version'
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_xpansion_version'
+          key: 'antares_xpansion_version'
 
       - name: Read antares-deps version
         id: antares-deps-version
-        uses: notiz-dev/github-action-json-property@release
+        uses: ./.github/actions/read-json-value
         with:
           path: 'antares-version.json'
-          prop_path: 'antares_deps_version'
+          key: 'antares_deps_version'
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.prop}}
-          antares-version: ${{steps.antares-version.outputs.prop}}
+          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+          antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
           buildtype: Debug
 
       - name: Init submodule
         run: |
-             git submodule update --init --recursive .
+          git submodule update --init --recursive .
 
       - name: Configure
         run: |
-             cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Debug -DCODE_COVERAGE=ON -DBUILD_TESTING=ON -DBUILD_antares_solver=OFF -DCMAKE_BUILD_TYPE=Debug -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install
+          cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Debug -DCODE_COVERAGE=ON -DBUILD_TESTING=ON -DBUILD_antares_solver=OFF -DCMAKE_BUILD_TYPE=Debug -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install
 
       - name: Build
         run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Debug -j2

@@ -3,7 +3,8 @@
 #include <algorithm>
 #include <utility>
 
-Candidate::Candidate(const CandidateData& data, std::vector<LinkProfile>  profile)
+Candidate::Candidate(const CandidateData& data,
+                     std::vector<LinkProfile> profile)
     : _profile(std::move(profile)),
       _name(data.name),
       _annual_cost_per_mw(data.annual_cost_per_mw),
@@ -31,20 +32,19 @@ double Candidate::directCapacityFactor(size_t chronicle_number,
   if (chronicle_number == 0) {
     return _profile.at(0).getDirectProfile(timeStep);
   }
-  if (chronicle_number > _profile.size())
-    chronicle_number = 1;
+  if (chronicle_number > _profile.size()) chronicle_number = 1;
   // 1-based chronicle in 0 based vector
   return _profile.at(chronicle_number - 1).getDirectProfile(timeStep);
 }
 
-double Candidate::indirectCapacityFactor(size_t chronicle_number, size_t timeStep) const {
+double Candidate::indirectCapacityFactor(size_t chronicle_number,
+                                         size_t timeStep) const {
   if (chronicle_number == 0) {
     return _profile.at(0).getIndirectProfile(timeStep);
   }
-  if (chronicle_number > _profile.size())
-    chronicle_number = 1;
+  if (chronicle_number > _profile.size()) chronicle_number = 1;
   // 1-based chronicle in 0 based vector
-  return _profile.at(chronicle_number - 1 ).getIndirectProfile(timeStep);
+  return _profile.at(chronicle_number - 1).getIndirectProfile(timeStep);
 }
 
 double Candidate::obj() const { return _annual_cost_per_mw; }
@@ -70,8 +70,12 @@ void Candidate::set_name(const std::string& name) { _name = name; }
 
 bool Candidate::hasNullProfile(unsigned int chronicle,
                                const std::set<int>& time_steps) const {
-  return std::all_of(time_steps.begin(), time_steps.end(), [this, chronicle](auto time_step) {
-    return directCapacityFactor(chronicle, time_step) == 0.0 && indirectCapacityFactor(chronicle, time_step) == 0.0;
-  });
+  return std::all_of(
+      time_steps.begin(), time_steps.end(), [this, chronicle](auto time_step) {
+        return directCapacityFactor(chronicle, time_step) == 0.0 &&
+               indirectCapacityFactor(chronicle, time_step) == 0.0;
+      });
 }
-unsigned long Candidate::number_of_chronicles() const { return _profile.size(); }
+unsigned long Candidate::number_of_chronicles() const {
+  return _profile.size();
+}

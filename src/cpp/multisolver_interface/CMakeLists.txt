@@ -16,12 +16,6 @@
 list(APPEND Solver_sources
 	${CMAKE_CURRENT_LIST_DIR}/SolverFactory.cpp
 )
-# CPLEX
-IF( CPLEX )
-	list(APPEND Solver_sources
-		${CMAKE_CURRENT_LIST_DIR}/SolverCplex.cpp
-	)
-ENDIF( CPLEX )
 
 # XPRESS
 IF( XPRESS )
@@ -54,18 +48,6 @@ target_include_directories (solvers
 			${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-# CPLEX
-if(CPLEX)
-	target_include_directories (solvers
-		PUBLIC
-			${CPLEX_INCLUDE_FILES}
-	)
-	target_link_libraries (solvers
-		PUBLIC
-			debug		${CPLEX_DEBUG_LIB}
-			optimized	${CPLEX_OPT_LIB}
-	)
-endif()
 
 # XPRESS
 if(XPRESS)

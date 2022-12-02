@@ -8,8 +8,8 @@ CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.7.0)
-#set(ANTARES_XPANSION_RC 1)
+PROJECT (antaresXpansion VERSION 0.8.0)
+#set(ANTARES_XPANSION_RC 3)
 
 # ===========================================================================
 # Default parameters
@@ -49,7 +49,6 @@ ENDIF()
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
 option (XPRESS  "Use solver FICO XPRESS" OFF)
-option (CPLEX   "Use solver IBM ILOG CPLEX" OFF)
 
 if(COIN_OR)
 	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
@@ -77,7 +76,6 @@ set (LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 set (CMAKE_CXX_STANDARD 17)
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 message ("USE_MPI is ${USE_MPI}")
 
 if (MSVC)
@@ -165,6 +163,7 @@ sbeParseJson(antares_version jsonContent)
 #need to know antares solver version because antares-solver targets still refers to antares version
 SET(ANTARES_VERSION ${antares_version.antares_version_executable})
 SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
+SET(MINIZIP_TAG ${antares_version.minizip_ng_version})
 
 sbeClearJson(antares_version)
 
@@ -184,7 +183,7 @@ endif()
 add_subdirectory(antares-deps)
 
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
-
+find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
 # Boost
 # ---------------------------------------------------------------------------
@@ -213,6 +212,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif ()
 find_package (Threads REQUIRED)
 
+find_package(ZLIB REQUIRED) #Required for CoinUtils
 
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
 find_package(gflags REQUIRED)
@@ -230,18 +230,14 @@ endif()
 find_package(sirius_solver REQUIRED)
 
 if (SOLVER)
-	if (SOLVER STREQUAL "cplex")
-		add_definitions (-DCPLEX_SOLVER -DUSE_CPLEX)
-	elseif (SOLVER STREQUAL "gurobi")
-		add_definitions (-DGUROBI_SOLVER -DUSE_GUROBI)
-	elseif (SOLVER STREQUAL "xpress")
+	if (SOLVER STREQUAL "xpress")
 		add_definitions (-DXPRESS_SOLVER -DUSE_XPRESS)
 	elseif (SOLVER STREQUAL "coin")#already achieved by default through ORTOOLS_DEFINITIONS
 		add_definitions (-DUSE_CBC -DUSE_CLP)
 	else ()
 		message (FATAL_ERROR "unsupported value, ${SOLVER}, for solver option.")
 	endif ()
-endif ()
+endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
 
@@ -271,20 +267,6 @@ if(XPRESS)
 	add_definitions( -DXPRESS=true )
 endif(XPRESS)
 
-## Cplex
-if(CPLEX)
-	message("CPLEX is ${CPLEX}")
-	# Folder including file cplex.h (C interface)
-	set ( CPLEX_INCLUDE_FILES	$ENV{CPLEX_STUDIO_DIR129}/cplex/include/ilcplex )
-	set ( CPLEX_DEBUG_LIB  		$ENV{CPLEX_STUDIO_DIR129}/cplex/lib/x64_windows_vs2017/stat_mdd/cplex1290.lib )
-	set ( CPLEX_OPT_LIB 		$ENV{CPLEX_STUDIO_DIR129}/cplex/lib/x64_windows_vs2017/stat_mda/cplex1290.lib )
-	message("CPLEX include directory is ${CPLEX_INCLUDE_FILES}")
-	message("CPLEX debug library is ${CPLEX_DEBUG_LIB}")
-	message("CPLEX optim library is ${CPLEX_OPT_LIB}")
-
-	# Add solver variables for usage in C++ source code
-	add_definitions( -DCPLEX=true )
-endif(CPLEX)
 
 ## Coin-OR (Clp and CBC solvers)
 if(COIN_OR)
@@ -403,9 +385,6 @@ if(XPRESS)
 set(CPACK_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-xpress")
 endif(XPRESS)
 
-if(CPLEX)
-set(CPACK_PACKAGE_NAME "${CPACK_PACKAGE_NAME}-cplex")
-endif(CPLEX)
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
 set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")

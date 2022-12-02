@@ -19,26 +19,27 @@ SolverClp::SolverClp(const std::filesystem::path &log_file) : SolverClp() {
                 << std::endl;
     } else {
       setvbuf(_fp, NULL, _IONBF, 0);
-      _message_handler.setFilePointer(_fp);
+      _clp.messageHandler()->setFilePointer(_fp);
     }
   }
 }
 SolverClp::SolverClp() {
   _NumberOfProblems += 1;
   _fp = nullptr;
+  set_output_log_level(0);
 }
 
 SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     : SolverClp() {
   _fp = nullptr;
-  // Try to cast the solver in fictif to a SolverCPLEX
+  // Try to cast the solver in fictif to a SolverClp
   if (const auto c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
     _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.string().c_str(), "a+");
     if (_fp != nullptr) {
       setvbuf(_fp, nullptr, _IONBF, 0);
-      _message_handler.setFilePointer(_fp);
+      _clp.messageHandler()->setFilePointer(_fp);
     }
   } else {
     _NumberOfProblems -= 1;
@@ -85,12 +86,21 @@ void SolverClp::write_prob_lp(const std::filesystem::path &filename) {
 }
 
 void SolverClp::write_basis(const std::filesystem::path &filename) {
-  int status = _clp.writeBasis(filename.string().c_str(), false, 0);
+  auto filename_str = filename.string();
+  auto filename_c_str = filename_str.c_str();
+
+  /*
+  formatType must be = 0 (normal accuracy) to avoid undefined behavior.
+  see Adr in
+  conception/Architecture_decision_records/Change_Solver_Basis_Format.md
+  */
+  int status = _clp.writeBasis(filename_c_str, false, 0);
   zero_status_check(status, "write basis");
 }
 
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
-  _clp.readMps(filename.string().c_str(), true, false);
+  int status = _clp.readMps(filename.string().c_str(), true, false);
+  zero_status_check(status, "Clp readMps");
 }
 
 void SolverClp::read_prob_lp(const std::filesystem::path &filename) {
@@ -485,11 +495,10 @@ void SolverClp::get_mip_sol(double *primals) {
 ---------------------------
 *************************************************************************************************/
 void SolverClp::set_output_log_level(int loglevel) {
-  _clp.passInMessageHandler(&_message_handler);
   if (loglevel > 0) {
-    _message_handler.setLogLevel(1);
+    _clp.messageHandler()->setLogLevel(1);
   } else {
-    _message_handler.setLogLevel(0);
+    _clp.messageHandler()->setLogLevel(0);
   }
 }
 

@@ -3,6 +3,7 @@
 //
 #include <solver_utils.h>
 
+#include "LoggerBuilder.h"
 #include "MasterProblemBuilder.h"
 #include "gtest/gtest.h"
 
@@ -20,7 +21,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;
@@ -31,8 +33,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
                       candidateFromLink.end());
   }
 
-  auto master_problem =
-      MasterProblemBuilder(master_formulation).build(solver_name, candidates);
+  auto master_problem = MasterProblemBuilder(master_formulation)
+                            .build(solver_name, candidates, "");
   ASSERT_EQ(master_problem->get_ncols(), 1);
   ASSERT_EQ(
       master_problem->get_col_names(0, master_problem->get_ncols() - 1)[0],
@@ -73,7 +75,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_integer) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;
@@ -84,8 +87,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_integer) {
                       candidateFromLink.end());
   }
 
-  auto master_problem =
-      MasterProblemBuilder(master_formulation).build(solver_name, candidates);
+  auto master_problem = MasterProblemBuilder(master_formulation)
+                            .build(solver_name, candidates, "");
   ASSERT_EQ(master_problem->get_ncols(), 2);
 
   std::vector<char> colTypeArray(master_problem->get_ncols());
@@ -134,7 +137,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_relaxed) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::vector<Candidate> candidates;
@@ -145,8 +149,8 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_relaxed) {
                       candidateFromLink.end());
   }
 
-  auto master_problem =
-      MasterProblemBuilder(master_formulation).build(solver_name, candidates);
+  auto master_problem = MasterProblemBuilder(master_formulation)
+                            .build(solver_name, candidates, "");
   ASSERT_EQ(master_problem->get_ncols(), 1);
   ASSERT_EQ(
       master_problem->get_col_names(0, master_problem->get_ncols() - 1)[0],

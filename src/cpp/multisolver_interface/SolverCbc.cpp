@@ -19,25 +19,27 @@ SolverCbc::SolverCbc(const std::filesystem::path &log_file) : SolverCbc() {
                 << std::endl;
     } else {
       setvbuf(_fp, nullptr, _IONBF, 0);
-      _message_handler.setFilePointer(_fp);
+      _clp_inner_solver.messageHandler()->setFilePointer(_fp);
+      _cbc.messageHandler()->setFilePointer(_fp);
     }
   }
 }
 SolverCbc::SolverCbc() {
   _NumberOfProblems += 1;
-  _current_log_level = 0;
+  set_output_log_level(0);
 }
 
 SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
     : SolverCbc() {
-  // Try to cast the solver in fictif to a SolverCPLEX
+  // Try to cast the solver in fictif to a SolverCbc
   if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
     _log_file = toCopy->_log_file;
     _fp = fopen(_log_file.string().c_str(), "a+");
     if (_fp != nullptr) {
       setvbuf(_fp, nullptr, _IONBF, 0);
-      _message_handler.setFilePointer(_fp);
+      _clp_inner_solver.messageHandler()->setFilePointer(_fp);
+      _cbc.messageHandler()->setFilePointer(_fp);
     }
     defineCbcModelFromInnerSolver();
   } else {
@@ -162,9 +164,15 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
 
   setClpSimplexColNamesFromInnerSolver(clps);
   setClpSimplexRowNamesFromInnerSolver(clps);
-  auto filename_string = filename.string();
-  auto fname = filename_string.c_str();
-  int status = clps->writeBasis(fname, true, 0);
+  auto filename_str = filename.string();
+  auto filename_c_str = filename_str.c_str();
+
+  /*
+  formatType must be = 0 (normal accuracy) to avoid undefined behavior.
+  see Adr in
+  conception/Architecture_decision_records/Change_Solver_Basis_Format.md
+  */
+  int status = clps->writeBasis(filename_c_str, true, 0);
   zero_status_check(status, "write basis");
 }
 
@@ -177,7 +185,7 @@ void SolverCbc::setClpSimplexColNamesFromInnerSolver(ClpSimplex *clps) const {
 
 void SolverCbc::setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const {
   for (int row_id(0); row_id < clps->getNumRows(); row_id++) {
-    std::string  name = _clp_inner_solver.getRowName(row_id);
+    std::string name = _clp_inner_solver.getRowName(row_id);
     clps->setRowName(row_id, name);
   }
 }
@@ -613,19 +621,20 @@ void SolverCbc::set_output_log_level(int loglevel) {
   // Saving asked log_level for calls in solve, when Cbc is reinitialized
   _current_log_level = loglevel;
 
-  _clp_inner_solver.passInMessageHandler(&_message_handler);
-  _cbc.passInMessageHandler(&_message_handler);
-  if (loglevel > 0) {
-    _message_handler.setLogLevel(0, 1);  // Coin messages
-    _message_handler.setLogLevel(1, 1);  // Clp messages
-    _message_handler.setLogLevel(2, 1);  // Presolve messages
-    _message_handler.setLogLevel(3, 1);  // Cgl messages
-  } else {
-    _message_handler.setLogLevel(0, 0);  // Coin messages
-    _message_handler.setLogLevel(1, 0);  // Clp messages
-    _message_handler.setLogLevel(2, 0);  // Presolve messages
-    _message_handler.setLogLevel(3, 0);  // Cgl messages
-    _message_handler.setLogLevel(0);
+  for (const auto message_handler :
+       {_clp_inner_solver.messageHandler(), _cbc.messageHandler()}) {
+    if (loglevel > 0) {
+      message_handler->setLogLevel(0, 1);  // Coin messages
+      message_handler->setLogLevel(1, 1);  // Clp messages
+      message_handler->setLogLevel(2, 1);  // Presolve messages
+      message_handler->setLogLevel(3, 1);  // Cgl messages
+    } else {
+      message_handler->setLogLevel(0, 0);  // Coin messages
+      message_handler->setLogLevel(1, 0);  // Clp messages
+      message_handler->setLogLevel(2, 0);  // Presolve messages
+      message_handler->setLogLevel(3, 0);  // Cgl messages
+      message_handler->setLogLevel(0);
+    }
   }
 }
 

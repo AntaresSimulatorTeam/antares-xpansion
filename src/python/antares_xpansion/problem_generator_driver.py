@@ -2,21 +2,20 @@
     Class to control the Problem Generation
 """
 
-import shutil
 import os
+import shutil
 import subprocess
+import sys
+import zipfile
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
 from typing import List
 
-import sys
-from datetime import datetime
-from dataclasses import dataclass
-from pathlib import Path
-
-from antares_xpansion.xpansion_utils import read_and_write_mps
-from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
+from antares_xpansion.xpansion_utils import read_and_write_mps
+from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 
 
 @dataclass
@@ -31,6 +30,9 @@ class ProblemGeneratorData:
 
 class ProblemGeneratorDriver:
     class BasicException(Exception):
+        pass
+
+    class MpsZipFileException(BasicException):
         pass
 
     class AreaFileException(BasicException):
@@ -63,6 +65,9 @@ class ProblemGeneratorDriver:
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
         self._lp_path = None
+        self.mps_zip_filename = "MPS_ZIP"
+        self.zip_ext = ".zip"
+        self.mps_zip_file = self.mps_zip_filename+self.zip_ext
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """
@@ -81,8 +86,13 @@ class ProblemGeneratorDriver:
 
         if output_path.exists():
             self._output_path = output_path
+            self.xpansion_output_dir = output_path.parent / \
+                (output_path.stem+"-Xpansion")
+            if self.xpansion_output_dir.exists():
+                shutil.rmtree(self.xpansion_output_dir)
+            os.makedirs(self.xpansion_output_dir)
             self._lp_path = os.path.normpath(
-                os.path.join(self._output_path, 'lp'))
+                os.path.join(self.xpansion_output_dir, 'lp'))
         else:
             raise ProblemGeneratorDriver.OutputPathError(
                 f"{output_path} not found")
@@ -104,29 +114,46 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
+        self._create_lp_dir()
+
+        self._process_weights_file()
 
         mps_txt = read_and_write_mps(self.output_path)
-        with open(os.path.normpath(os.path.join(self.output_path, self.MPS_TXT)), 'w') as file_l:
+        with open(os.path.normpath(os.path.join(self.xpansion_output_dir, self.MPS_TXT)), 'w') as file_l:
             for line in mps_txt.items():
-                file_l.write(line[1][0] + ' ' + line[1]
+                mps_sub_problem_file = line[1][0]
+                file_l.write(mps_sub_problem_file + ' ' + line[1]
                              [1] + ' ' + line[1][2] + '\n')
 
-        self._check_and_copy_area_file()
-        self._check_and_copy_interco_file()
+        with zipfile.ZipFile(self.output_path, 'r') as study_archive:
+            for e in study_archive.namelist():
+                if '.txt' in e and '/' not in e:
+                    if 'area' in e:
+                        study_archive.extract(
+                            e, self.xpansion_output_dir)
+                    if 'interco' in e:
+                        study_archive.extract(
+                            e, self.xpansion_output_dir)
+                if 'ts-numbers' in e:
+                    study_archive.extract(
+                        e, self.xpansion_output_dir)
 
-    def _check_and_copy_area_file(self):
-        self._check_and_copy_txt_file(
+        self._check_and_rename_area_file()
+        self._check_and_rename_interco_file()
+
+    def _check_and_rename_area_file(self):
+        self._check_and_rename_txt_file(
             "area", ProblemGeneratorDriver.AreaFileException)
 
-    def _check_and_copy_interco_file(self):
-        self._check_and_copy_txt_file(
+    def _check_and_rename_interco_file(self):
+        self._check_and_rename_txt_file(
             "interco", ProblemGeneratorDriver.IntercoFilesException)
 
-    def _check_and_copy_txt_file(self, prefix, exception_to_raise: BasicException):
-        self._check_and_copy_file(prefix, "txt", exception_to_raise)
+    def _check_and_rename_txt_file(self, prefix, exception_to_raise: BasicException):
+        self._check_and_rename_file(prefix, "txt", exception_to_raise)
 
-    def _check_and_copy_file(self, prefix, extension, exception_to_raise: BasicException):
-        glob_path = Path(self.output_path)
+    def _check_and_rename_file(self, prefix, extension, exception_to_raise: BasicException):
+        glob_path = Path(self.xpansion_output_dir)
         files = [str(pp) for pp in glob_path.glob(prefix + "*" + extension)]
         if len(files) == 0:
             raise exception_to_raise("No %s*.txt file found" % prefix)
@@ -136,24 +163,7 @@ class ProblemGeneratorDriver:
                 "More than one %s*.txt file found" % prefix)
 
         shutil.copy(files[0], os.path.normpath(
-            os.path.join(self.output_path, prefix + '.' + extension)))
-
-    def create_lp_dir(self):
-        """
-            create lp dir
-        """
-        if os.path.isdir(self._lp_path):
-            shutil.rmtree(self._lp_path)
-        os.makedirs(self._lp_path)
-
-    def set_weights(self):
-        if self.weight_file_name_for_lp:
-            XpansionStudyReader.check_weights_file(
-                self.user_weights_file_path, len(self.active_years))
-            weight_list = XpansionStudyReader.get_years_weight_from_file(
-                self.user_weights_file_path)
-            YearlyWeightWriter(Path(self.output_path)).create_weight_file(weight_list, self.weight_file_name_for_lp,
-                                                                          self.active_years)
+            os.path.join(self.xpansion_output_dir, prefix + '.' + extension)))
 
     def _lp_step(self):
         """
@@ -161,34 +171,40 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        self.create_lp_dir()
-        self.set_weights()
-        with open(self.get_lp_namer_log_filename(), 'w') as output_file:
+        start_time = datetime.now()
+        flushed_print(f"LPNamer command {self._get_lp_namer_command()}")
+        returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
+                                    stdout=sys.stdout, stderr=sys.stderr)
 
-            start_time = datetime.now()
-            returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
-                                        stdout=output_file,
-                                        stderr=output_file)
+        end_time = datetime.now()
+        flushed_print('Post antares step duration: {}'.format(
+            end_time - start_time))
 
-            end_time = datetime.now()
-            flushed_print('Post antares step duration: {}'.format(
-                end_time - start_time))
+        if returned_l.returncode != 0:
+            raise ProblemGeneratorDriver.LPNamerExecutionError(
+                "ERROR: exited lpnamer with status %d" % returned_l.returncode)
+        # TODO will not be needed
+        # elif not self.keep_mps:
+        #     StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
 
-            if returned_l.returncode != 0:
-                raise ProblemGeneratorDriver.LPNamerExecutionError(
-                    "ERROR: exited lpnamer with status %d" % returned_l.returncode)
-            elif not self.keep_mps:
-                StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
+    def _create_lp_dir(self):
+        if os.path.isdir(self._lp_path):
+            shutil.rmtree(self._lp_path)
+        os.makedirs(self._lp_path)
 
-    def get_lp_namer_log_filename(self):
-        if not self._lp_path:
-            raise ProblemGeneratorDriver.LPNamerPathError(
-                "Error output path is not given")
-        return os.path.join(self._lp_path, os.path.splitext(self.LP_NAMER)[0] + '.log')
+    def _process_weights_file(self):
+        if self.weight_file_name_for_lp:
+            XpansionStudyReader.check_weights_file(
+                self.user_weights_file_path, len(self.active_years))
+            weight_list = XpansionStudyReader.get_years_weight_from_file(
+                self.user_weights_file_path)
+            YearlyWeightWriter(Path(self.xpansion_output_dir), self.output_path).create_weight_file(weight_list, self.weight_file_name_for_lp,
+                                                                                                    self.active_years)
 
     def lp_namer_options(self):
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
-        ret = ["-o", str(self.output_path), "-f", is_relaxed]
+        ret = ["-o", str(self.xpansion_output_dir), "-a",
+               self.output_path, "-f", is_relaxed]
 
         if self.additional_constraints != "":
             ret.extend(["-e",
@@ -203,4 +219,5 @@ class ProblemGeneratorDriver:
         command = [self.lp_namer_exe_path]
         command.extend(self.lp_namer_options())
         return command
+
     output_path = property(get_output_path, set_output_path)

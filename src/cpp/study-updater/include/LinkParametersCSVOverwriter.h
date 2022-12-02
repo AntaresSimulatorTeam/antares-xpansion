@@ -5,11 +5,14 @@
 #pragma once
 
 #include <filesystem>
+
 #include "LinkdataRecord.h"
 
 class LinkParametersCSVOverWriter {
  public:
-  LinkParametersCSVOverWriter() = default;
+  LinkParametersCSVOverWriter(
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      : logger_(logger) {}
 
   bool open(const std::filesystem::path& linkdataFilename_l);
 
@@ -25,4 +28,5 @@ class LinkParametersCSVOverWriter {
   std::ifstream inputCsv_l_;
   std::ofstream tempOutCsvFile;
   bool already_warned_ = false;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 };

@@ -11,10 +11,13 @@
 #include "ActiveLinks.h"
 #include "ColumnToChange.h"
 #include "Problem.h"
+#include "ProblemGenerationLogger.h"
 
 class ProblemModifier {
  public:
-  ProblemModifier() = default;
+  ProblemModifier(
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      : logger_(logger) {}
 
   std::shared_ptr<Problem> changeProblem(
       std::shared_ptr<Problem> problem,
@@ -87,8 +90,10 @@ class ProblemModifier {
       const std::vector<ActiveLink> &active_links,
       const std::set<int> &time_steps) const;
 
-    bool candidateContributionIndirectIsNotNull(const ColumnToChange &column, unsigned int chronicle_to_use,
-                                                const Candidate &candidate) const;
+  bool candidateContributionIndirectIsNotNull(const ColumnToChange &column,
+                                              unsigned int chronicle_to_use,
+                                              const Candidate &candidate) const;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 };
 
 #endif  // ANTARESXPANSION_PROBLEMMODIFIER_H

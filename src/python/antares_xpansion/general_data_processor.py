@@ -1,8 +1,10 @@
+import configparser
 import os
+import shutil
 from pathlib import Path
 
-from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.general_data_reader import GeneralDataIniReader
 
 
 class GeneralDataFileExceptions:
@@ -38,41 +40,49 @@ class GeneralDataProcessor:
 
     def change_general_data_file_to_configure_antares_execution(self):
         flushed_print("-- pre antares")
-        with open(self._general_data_ini_file, "r") as reader:
-            lines = reader.readlines()
-
+        ini_file_backup = self._general_data_ini_file.with_suffix(self._general_data_ini_file.suffix + ".with-playlist")
+        shutil.copyfile(self._general_data_ini_file, ini_file_backup)
+        config = configparser.ConfigParser(strict=False)
+        config.read(self._general_data_ini_file)
+        value_to_change = self._get_values_to_change_general_data_file()
+        for (section, key) in value_to_change:
+            if not config.has_section(section):
+                config.add_section(section)
+            config.set(section, key, value_to_change[(section, key)])
         with open(self._general_data_ini_file, "w") as writer:
-            current_section = ""
-            for line in lines:
-                if IniReader.line_is_not_a_section_header(line):
-                    key = line.split("=")[0].strip()
-                    line = self._get_new_line(line, current_section, key)
-                else:
-                    current_section = line.strip()
+            has_playlist = config.has_section("playlist")
+            if has_playlist:
+                playlist_options = dict(config.items("playlist"))
+                config.remove_section("playlist")
+            config.write(writer)
+            if has_playlist:
+                self.backport_playlist(ini_file_backup, writer, playlist_options)
+        os.remove(ini_file_backup)
 
-                if line:
-                    writer.write(line)
+    def backport_playlist(self, ini_file_backup, writer, playlist_options: dict):
+        ini_reader = GeneralDataIniReader(ini_file_backup)
+        active_years, inactive_years = ini_reader.get_raw_playlist()
+        writer.write("[playlist]\n")
+        for option in playlist_options:
+            if option != "playlist_year +" and option != "playlist_year -":
+                writer.write(f"{option} = {playlist_options[option]}\n")
+        for year in active_years:
+            writer.write(f"playlist_year + = {year}\n")
+        for year in inactive_years:
+            writer.write(f"playlist_year - = {year}\n")
 
     general_data_ini_file = property(
         get_general_data_ini_file, set_general_data_ini_file
     )
 
-    def _get_new_line(self, line, section, key):
-        changed_val = self._get_values_to_change_general_data_file()
-        if (section, key) in changed_val:
-            new_val = changed_val[(section, key)]
-            if new_val:
-                line = key + " = " + new_val + "\n"
-            else:
-                line = None
-        return line
-
     def _get_values_to_change_general_data_file(self):
-        optimization = "[optimization]"
+        optimization = "optimization"
 
         return {
-            (optimization, "include-exportmps"): "true",
+            (optimization, "include-exportmps"): "optim-1",
+            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
+            ("adequacy patch", "include-adq-patch"): "false",
             (optimization, "include-tc-minstablepower"): "true"
             if self.is_accurate
             else "false",
@@ -80,9 +90,28 @@ class GeneralDataProcessor:
             if self.is_accurate
             else "false",
             (optimization, "include-dayahead"): "true" if self.is_accurate else "false",
-            ("[general]", "mode"): "expansion" if self.is_accurate else "Economy",
-            ("[output]", "storenewset"): "true",
-            ("[other preferences]", "unit-commitment-mode"): "accurate"
+            ("general", "mode"): "expansion" if self.is_accurate else "Economy",
+            ("output", "storenewset"): "true",
+            ("other preferences", "unit-commitment-mode"): "accurate"
             if self.is_accurate
             else "fast",
         }
+
+    def backup_data(self):
+        ini_file_backup = self._backup_file_name()
+        shutil.copyfile(self._general_data_ini_file, ini_file_backup)
+
+    def backup_data_on_error(self):
+        ini_file_backup = self._error_file_name()
+        shutil.copyfile(self._general_data_ini_file, ini_file_backup)
+
+    def revert_backup_data(self):
+        ini_file_backup = self._backup_file_name()
+        shutil.copyfile(ini_file_backup, self._general_data_ini_file)
+        os.remove(ini_file_backup)
+
+    def _backup_file_name(self):
+        return self._general_data_ini_file.with_suffix(self._general_data_ini_file.suffix + ".backup")
+
+    def _error_file_name(self):
+        return self._general_data_ini_file.with_suffix(self._general_data_ini_file.suffix + ".error")

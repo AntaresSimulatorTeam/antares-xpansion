@@ -9,6 +9,7 @@
 #include "CandidatesINIReader.h"
 #include "LauncherHelpers.h"
 #include "LinkProfileReader.h"
+#include "ProblemGenerationLogger.h"
 #include "StudyUpdateRunner.h"
 #include "StudyUpdater.h"
 
@@ -29,11 +30,14 @@ int main(int argc, char **argv) {
 
     root = study_updater_options_parser.Root();
     solutionFile_l = study_updater_options_parser.SolutionFile();
-    ActiveLinksBuilder linksBuilder = get_link_builders(root);
+    using namespace ProblemGenerationLog;
+    auto log_file_path = root / "lp" / "StudyUpdateLog.txt";
+    auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
+    ActiveLinksBuilder linksBuilder = get_link_builders(root, logger);
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 
-    updateStudy(root, links, solutionFile_l);
+    updateStudy(root, links, solutionFile_l, logger);
 
     return 0;
   } catch (std::exception &e) {

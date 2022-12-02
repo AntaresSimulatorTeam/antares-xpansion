@@ -4,6 +4,8 @@
 #include <set>
 #include <string>
 
+#include "ProblemGenerationLogger.h"
+
 /*!
  *  \struct AdditionalConstraintsReader
  *  \brief candidate exclusion constraints reading structure
@@ -28,12 +30,15 @@ struct AdditionalConstraintsReader {
   std::string _line = "";
   //! number of the line that is being currently processed
   int _lineNb = 0;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 
  public:
   /*!
    *  default constructor for struct AdditionalConstraintsReader
    */
-  AdditionalConstraintsReader() = default;
+  AdditionalConstraintsReader(
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      : logger_(logger) {}
 
   /*!
    * \brief AdditionalConstraintsReader from an inifile
@@ -42,7 +47,8 @@ struct AdditionalConstraintsReader {
    * additional constraints
    */
   explicit AdditionalConstraintsReader(
-      std::string const& constraints_file_path);
+      std::string const& constraints_file_path,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   /*!
    * \brief return the section defining the binary variables to add

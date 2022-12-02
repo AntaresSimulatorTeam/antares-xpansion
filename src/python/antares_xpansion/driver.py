@@ -1,20 +1,19 @@
 """
     Class to control the execution of the optimization session
 """
-import sys
 import os
 from pathlib import Path
 
-from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.antares_driver import AntaresDriver
-from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 from antares_xpansion.benders_driver import BendersDriver
-from antares_xpansion.resume_study import ResumeStudy, ResumeStudyData
-from antares_xpansion.study_updater_driver import StudyUpdaterDriver
-from antares_xpansion.sensitivity_driver import SensitivityDriver
-from antares_xpansion.general_data_processor import GeneralDataProcessor
+from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.general_data_processor import GeneralDataProcessor
+from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
+from antares_xpansion.resume_study import ResumeStudy, ResumeStudyData
+from antares_xpansion.sensitivity_driver import SensitivityDriver
 from antares_xpansion.full_run_driver import FullRunDriver
+from antares_xpansion.study_updater_driver import StudyUpdaterDriver
 
 
 class XpansionDriver:
@@ -46,6 +45,7 @@ class XpansionDriver:
         self.benders_driver = BendersDriver(
             self.config_loader.benders_mpi_exe(),
             self.config_loader.benders_sequential_exe(),
+            self.config_loader.benders_by_batch_exe(),
             self.config_loader.merge_mps_exe(),
             self.config_loader.options_file_name()
         )
@@ -89,7 +89,7 @@ class XpansionDriver:
 
         elif self.config_loader.step() == "study_update":
             self.study_update_driver.launch(
-                self.config_loader.simulation_output_path(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
+                self.config_loader.xpansion_simulation_output(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
 
         elif self.config_loader.step() == "benders":
             self.launch_benders_step()
@@ -105,18 +105,26 @@ class XpansionDriver:
                 f"Launching failed! {self.config_loader.step()} is not an Xpansion step.")
 
     def launch_antares_step(self):
+        self._configure_general_data_processor()
+        self._backup_general_data_ini()
         self._update_general_data_ini()
-        self.antares_driver.launch(
-            self.config_loader.data_dir(), self.config_loader.antares_n_cpu())
+        try:
+            ret = self.antares_driver.launch(
+                self.config_loader.data_dir(), self.config_loader.antares_n_cpu())
+            if ret is False:
+                self._revert_general_data_ini()
+            else:
+                self._backup_general_data_ini_on_error()
+                self._revert_general_data_ini()
+        except AntaresDriver.AntaresExecutionException as e:
+            flushed_print(
+                "Antares exited with error, backup current general data file and revert original one")
+            self._backup_general_data_ini_on_error()
+            self._revert_general_data_ini()
+            raise e
 
     def _update_general_data_ini(self):
-        settings_dir = os.path.normpath(
-            os.path.join(self.config_loader.data_dir(), self.settings)
-        )
-        gen_data_proc = GeneralDataProcessor(
-            settings_dir, self.config_loader.is_accurate()
-        )
-        gen_data_proc.change_general_data_file_to_configure_antares_execution()
+        self.gen_data_proc.change_general_data_file_to_configure_antares_execution()
 
     def launch_problem_generation_step(self):
         self.problem_generator_driver.launch(
@@ -125,7 +133,7 @@ class XpansionDriver:
     def launch_benders_step(self):
         self.config_loader.benders_pre_actions()
         self.benders_driver.launch(
-            self.config_loader.simulation_output_path(),
+            self.config_loader.xpansion_simulation_output(),
             self.config_loader.method(),
             self.config_loader.keep_mps(),
             self.config_loader.n_mpi(),
@@ -155,6 +163,7 @@ class XpansionDriver:
             self.config_loader.options_file_name(),
             self.config_loader.benders_mpi_exe(),
             self.config_loader.benders_sequential_exe(),
+            self.config_loader.benders_by_batch_exe(),
             self.config_loader.merge_mps_exe())
 
         resume_study = ResumeStudy(resume_study_data)
@@ -162,3 +171,20 @@ class XpansionDriver:
 
     class UnknownStep(Exception):
         pass
+
+    def _revert_general_data_ini(self):
+        self.gen_data_proc.revert_backup_data()
+
+    def _backup_general_data_ini(self):
+        self.gen_data_proc.backup_data()
+
+    def _configure_general_data_processor(self):
+        settings_dir = os.path.normpath(
+            os.path.join(self.config_loader.data_dir(), self.settings)
+        )
+        self.gen_data_proc = GeneralDataProcessor(
+            settings_dir, self.config_loader.is_accurate()
+        )
+
+    def _backup_general_data_ini_on_error(self):
+        self.gen_data_proc.backup_data_on_error()

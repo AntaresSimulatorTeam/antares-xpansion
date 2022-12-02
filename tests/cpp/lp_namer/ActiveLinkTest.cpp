@@ -4,6 +4,11 @@
 const double DEFAULT_CAPACITY = 0;
 const double DEFAULT_PROFILE_VALUE = 1;
 
+static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
+emptyLogger() {
+  return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
+      ProblemGenerationLog::LOGLEVEL::NONE);
+}
 LinkProfile createProfile(
     const std::vector<double>& directAlreadyInstalledLinkprofile_l,
     const std::vector<double>& indirectAlreadyInstalledLinkprofile_l) {
@@ -23,8 +28,8 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_no_capacity) {
   std::vector<CandidateData> cand_data_list = {cand1};
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_EQ(links.size(), 1);
@@ -55,8 +60,8 @@ TEST(LinkBuilderTest, one_valid_candidate_no_profile_with_capacity) {
   std::vector<CandidateData> cand_data_list = {cand1};
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_DOUBLE_EQ(links[0].get_already_installed_capacity(), 20);
@@ -90,7 +95,8 @@ TEST(LinkBuilderTest, one_valid_candidate_with_profile_no_capacity) {
 
   profile_map[link_profile_cand1] = {linkProfileCandidat1};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_EQ(links.size(), 1);
@@ -132,7 +138,8 @@ TEST(LinkBuilderTest, two_valid_candidate_no_profile_with_capacity) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_EQ(links.size(), 1);
@@ -183,7 +190,8 @@ TEST(LinkBuilderTest,
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   ASSERT_EQ(links.size(), 2);
@@ -240,10 +248,12 @@ TEST(LinkBuilderTest,
   std::vector<CandidateData> cand_data_list;
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
-  std::map<std::string, std::vector<LinkProfile>> profile_map = {{"dummy", {LinkProfile()}}};
+  std::map<std::string, std::vector<LinkProfile>> profile_map = {
+      {"dummy", {LinkProfile()}}};
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "duplicate not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(
@@ -270,7 +280,8 @@ TEST(LinkBuilderTest,
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "incompatibility of link_id not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(err.what(),
@@ -295,7 +306,8 @@ TEST(LinkBuilderTest, two_candidates_same_name) {
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "duplicate not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(err.what(),
@@ -314,7 +326,8 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
   cand1.name = "transmission_line_1";
   cand1.link_name = "area1 - area2";
   cand1.already_installed_capacity = 0;
-  cand1.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+  cand1.installed_direct_link_profile_name =
+      temp_already_installed_profile1_name;
 
   CandidateData cand2;
   cand2.link_id = 1;
@@ -345,7 +358,8 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
   profile_map[temp_already_installed_profile2_name] = {alreadyInstalledProfile};
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Candidate of the same links have different "
               "already_installed_links_profile and it's not detected";
   } catch (const std::runtime_error& err) {
@@ -355,7 +369,8 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
   }
 }
 
-TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profiles) {
+TEST(LinkBuilderTest,
+     properly_set_direct_and_indirect_already_installed_profiles) {
   std::string temp_already_installed_profile1_name =
       "temp_already_installed_profile1.txt";
 
@@ -364,7 +379,8 @@ TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profile
   cand1.name = "transmission_line_1";
   cand1.link_name = "area1 - area2";
   cand1.already_installed_capacity = 0;
-  cand1.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+  cand1.installed_direct_link_profile_name =
+      temp_already_installed_profile1_name;
 
   CandidateData cand2;
   cand2.link_id = 1;
@@ -393,7 +409,8 @@ TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profile
 
   profile_map[temp_already_installed_profile1_name] = {alreadyInstalledProfile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
   ASSERT_EQ(links[0].already_installed_direct_profile(0), 0);
   ASSERT_EQ(links[0].already_installed_direct_profile(1), 0.5);
@@ -401,7 +418,9 @@ TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profile
   ASSERT_EQ(links[0].already_installed_indirect_profile(1), 0.75);
 }
 
-TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profiles_diffrent_chronicle) {
+TEST(
+    LinkBuilderTest,
+    properly_set_direct_and_indirect_already_installed_profiles_diffrent_chronicle) {
   std::string temp_already_installed_profile1_name =
       "temp_already_installed_profile1.txt";
 
@@ -410,7 +429,8 @@ TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profile
   cand1.name = "transmission_line_1";
   cand1.link_name = "area1 - area2";
   cand1.already_installed_capacity = 0;
-  cand1.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+  cand1.installed_direct_link_profile_name =
+      temp_already_installed_profile1_name;
 
   CandidateData cand2;
   cand2.link_id = 1;
@@ -437,14 +457,16 @@ TEST(LinkBuilderTest, properly_set_direct_and_indirect_already_installed_profile
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  profile_map[temp_already_installed_profile1_name] = {{}, alreadyInstalledProfile};
+  profile_map[temp_already_installed_profile1_name] = {{},
+                                                       alreadyInstalledProfile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
-  ASSERT_EQ(links[0].already_installed_direct_profile(2,0), 0);
-  ASSERT_EQ(links[0].already_installed_direct_profile(2,1), 0.5);
-  ASSERT_EQ(links[0].already_installed_indirect_profile(2,0), 0.25);
-  ASSERT_EQ(links[0].already_installed_indirect_profile(2,1), 0.75);
+  ASSERT_EQ(links[0].already_installed_direct_profile(2, 0), 0);
+  ASSERT_EQ(links[0].already_installed_direct_profile(2, 1), 0.5);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(2, 0), 0.25);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(2, 1), 0.75);
 }
 
 TEST(LinkBuilderTest, return_first_profile_if_chronicle_does_not_exists) {
@@ -456,7 +478,8 @@ TEST(LinkBuilderTest, return_first_profile_if_chronicle_does_not_exists) {
   cand1.name = "transmission_line_1";
   cand1.link_name = "area1 - area2";
   cand1.already_installed_capacity = 0;
-  cand1.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+  cand1.installed_direct_link_profile_name =
+      temp_already_installed_profile1_name;
 
   CandidateData cand2;
   cand2.link_id = 1;
@@ -483,17 +506,21 @@ TEST(LinkBuilderTest, return_first_profile_if_chronicle_does_not_exists) {
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  profile_map[temp_already_installed_profile1_name] = {{}, alreadyInstalledProfile};
+  profile_map[temp_already_installed_profile1_name] = {{},
+                                                       alreadyInstalledProfile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
-  ASSERT_EQ(links[0].already_installed_direct_profile(5,0), 1);
-  ASSERT_EQ(links[0].already_installed_direct_profile(5,1), 1);
-  ASSERT_EQ(links[0].already_installed_indirect_profile(5,0), 1);
-  ASSERT_EQ(links[0].already_installed_indirect_profile(5,1), 1);
+  ASSERT_EQ(links[0].already_installed_direct_profile(5, 0), 1);
+  ASSERT_EQ(links[0].already_installed_direct_profile(5, 1), 1);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(5, 0), 1);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(5, 1), 1);
 }
 
-TEST(LinkBuilderTest, properly_access_missing_installed_profiles_with_correct_number_of_chronicles) {
+TEST(
+    LinkBuilderTest,
+    properly_access_missing_installed_profiles_with_correct_number_of_chronicles) {
   CandidateData cand1;
   cand1.link_id = 1;
   cand1.name = "transmission_line_1";
@@ -527,17 +554,26 @@ TEST(LinkBuilderTest, properly_access_missing_installed_profiles_with_correct_nu
       createProfile(directLinkprofile_l, indirectLinkprofile_l),
       createProfile(directLinkprofile_l, indirectLinkprofile_l)};
   profile_map[cand2.direct_link_profile] = {
-      createProfile(directLinkprofile_l, indirectLinkprofile_l), createProfile(directLinkprofile_l, indirectLinkprofile_l) , createProfile(directLinkprofile_l, indirectLinkprofile_l)};
+      createProfile(directLinkprofile_l, indirectLinkprofile_l),
+      createProfile(directLinkprofile_l, indirectLinkprofile_l),
+      createProfile(directLinkprofile_l, indirectLinkprofile_l)};
 
-  //Verifier acces installed profile OK
+  // Verifier acces installed profile OK
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
-  ASSERT_EQ(links[0].already_installed_direct_profile(profile_map[cand1.direct_link_profile].size() - 1, 0), 1);
-  ASSERT_EQ(links[0].already_installed_indirect_profile(profile_map[cand1.direct_link_profile].size() - 1, 0), 1);
+  ASSERT_EQ(links[0].already_installed_direct_profile(
+                profile_map[cand1.direct_link_profile].size() - 1, 0),
+            1);
+  ASSERT_EQ(links[0].already_installed_indirect_profile(
+                profile_map[cand1.direct_link_profile].size() - 1, 0),
+            1);
 }
 
-TEST(LinkBuilderTest, properly_access_missing_candidate_profiles_with_correct_number_of_chronicles) {
+TEST(
+    LinkBuilderTest,
+    properly_access_missing_candidate_profiles_with_correct_number_of_chronicles) {
   std::string temp_already_installed_profile1_name =
       "temp_already_installed_profile1.txt";
 
@@ -546,7 +582,8 @@ TEST(LinkBuilderTest, properly_access_missing_candidate_profiles_with_correct_nu
   cand1.name = "transmission_line_1";
   cand1.link_name = "area1 - area2";
   cand1.already_installed_capacity = 0;
-  cand1.installed_direct_link_profile_name = temp_already_installed_profile1_name;
+  cand1.installed_direct_link_profile_name =
+      temp_already_installed_profile1_name;
 
   CandidateData cand2;
   cand2.link_id = 1;
@@ -573,13 +610,22 @@ TEST(LinkBuilderTest, properly_access_missing_candidate_profiles_with_correct_nu
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  profile_map[temp_already_installed_profile1_name] = {alreadyInstalledProfile, alreadyInstalledProfile, alreadyInstalledProfile};
+  profile_map[temp_already_installed_profile1_name] = {alreadyInstalledProfile,
+                                                       alreadyInstalledProfile,
+                                                       alreadyInstalledProfile};
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
-  for (auto const& candidate: links[0].getCandidates()) {
-    ASSERT_EQ(candidate.directCapacityFactor(profile_map[temp_already_installed_profile1_name].size() - 1, 0), 1);
-    ASSERT_EQ(candidate.indirectCapacityFactor(profile_map[temp_already_installed_profile1_name].size() - 1, 0), 1);
+  for (auto const& candidate : links[0].getCandidates()) {
+    ASSERT_EQ(
+        candidate.directCapacityFactor(
+            profile_map[temp_already_installed_profile1_name].size() - 1, 0),
+        1);
+    ASSERT_EQ(
+        candidate.indirectCapacityFactor(
+            profile_map[temp_already_installed_profile1_name].size() - 1, 0),
+        1);
   }
 }
 
@@ -603,7 +649,8 @@ TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity) {
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Same alreadyInstalledCapacity : not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(
@@ -628,7 +675,8 @@ TEST(LinkBuilderTest, missing_link_profile_in_profile_map) {
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
   try {
-    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+    auto logger = emptyLogger();
+    ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Missing link profile : not detected";
   } catch (const std::runtime_error& err) {
     ASSERT_STREQ(err.what(),
@@ -654,7 +702,8 @@ TEST(LinkBuilderTest, candidate_not_enable) {
   cand_data_list.push_back(cand2);
   std::map<std::string, std::vector<LinkProfile>> profile_map;
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
   const auto& candidates = links[0].getCandidates();
   ASSERT_EQ(candidates.size(), 1);
@@ -675,13 +724,16 @@ TEST(LinkBuilderTest, ChronicleMap_properly_loaded_in_link) {
 
   std::filesystem::path ts_info_root_ = std::filesystem::temp_directory_path();
   std::filesystem::create_directories(ts_info_root_ / "area1");
-  std::ofstream b_file(ts_info_root_ / "area1"/"area2.txt");
+  std::ofstream b_file(ts_info_root_ / "area1" / "area2.txt");
   b_file << "Garbage\n52\n";
   b_file.close();
 
-  ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, DirectAccessScenarioToChronicleProvider(ts_info_root_)};
+  auto logger = emptyLogger();
+  ActiveLinksBuilder linkBuilder{
+      cand_data_list, profile_map,
+      DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   std::map<unsigned, unsigned> expected = {{1, 52}};
-  ASSERT_EQ(links[0].McYearToChronicle(),  expected);
+  ASSERT_EQ(links[0].McYearToChronicle(), expected);
 }

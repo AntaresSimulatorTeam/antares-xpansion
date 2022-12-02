@@ -4,6 +4,7 @@ import shutil
 import subprocess
 from pathlib import Path
 import sys
+from zipfile import ZIP_DEFLATED, ZipFile
 import yaml
 import numpy as np
 
@@ -18,7 +19,6 @@ import numpy as np
 #       - optimal_variables :
 #           * one entry by variable with variable name as key : optimal
 #               value of the variable
-RESULT_FILE_PATH = Path('resultTest.json')
 
 # File CONFIG_FILE_PATH
 # yaml file containing executable name
@@ -54,14 +54,11 @@ def launch_optimization(data_path, commands, status=None):
     data_path_ = Path(data_path)
     expansion_dir = data_path_ / "expansion"
     assert expansion_dir.is_dir()
-    shutil.copyfile(data_path_ / "out_default_test_restart.json",
-                    expansion_dir / "out.json")
-    shutil.copyfile(data_path_ / "last_iteration_default_test_restart.json",
-                    expansion_dir / "last_iteration.json")
     os.chdir(data_path)
 
     # Launching optimization from instance folder
-    process = subprocess.run(commands, stdout=subprocess.PIPE, stderr=None)
+    process = subprocess.run(
+        commands, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # Back to working directory
     os.chdir(owd)
@@ -75,15 +72,15 @@ def launch_optimization(data_path, commands, status=None):
 # arguments :
 #   - expected_results_dict   : Dict of expected values to compare with ones present in
 #                               in file out.json
+#   - output_path             : Path to the output file out.json
 
 
-def check_optimization_json_output(expected_results_dict):
+def check_optimization_json_output(expected_results_dict, output_path: Path):
 
     # Loading output from optimization process
     curr_instance_json = {}
 
-    output_path = expected_results_dict['path'] + \
-        "/expansion/out.json"
+    # output_path = expected_results_dict['path'] / "expansion/out.json"
     with open(output_path, 'r') as jsonFile:
         curr_instance_json = json.load(jsonFile)
 
@@ -112,10 +109,7 @@ def check_optimization_json_output(expected_results_dict):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, solver, allow_run_as_root=False):
-    # Loading expected results from json RESULT_FILE_PATH
-    with open(RESULT_FILE_PATH, 'r') as jsonFile:
-        expected_results_dict = json.load(jsonFile)
+def run_solver(install_dir, solver, tmp_study, instance, allow_run_as_root=False):
 
     solver_executable = get_solver_exe(solver)
 
@@ -127,29 +121,26 @@ def run_solver(install_dir, solver, allow_run_as_root=False):
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
 
-    for instance in expected_results_dict:
-        instance_path = expected_results_dict[instance]['path']
-        command = [e for e in pre_command]
-        command.append(executable_path)
-        command.append(
-            expected_results_dict[instance]['option_file']
-        )
-        status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
+    command = [e for e in pre_command]
+    command.append(executable_path)
+    command.append(
+        instance['option_file']
+    )
+    status = instance["status"] if "status" in instance else None
 
-        data_path_ = Path(instance_path)
-        expansion_dir = data_path_ / "expansion"
-        if expansion_dir.is_dir():
-            shutil.rmtree(expansion_dir)
+    expansion_dir = tmp_study / "expansion"
+    if expansion_dir.is_dir():
+        shutil.rmtree(expansion_dir)
 
-        expansion_dir.mkdir()
-        shutil.copyfile(data_path_ / expected_results_dict[instance]["output_file"],
-                        expansion_dir / "out.json")
-        shutil.copyfile(data_path_ / expected_results_dict[instance]["last_iteration_file"],
-                        expansion_dir / "last_iteration.json")
+    expansion_dir.mkdir()
+    shutil.copyfile(tmp_study / instance["output_file"],
+                    expansion_dir / "out.json")
+    shutil.copyfile(tmp_study / instance["last_iteration_file"],
+                    expansion_dir / "last_iteration.json")
 
-    launch_optimization(instance_path, command, status)
+    launch_optimization(tmp_study, command, status)
     check_optimization_json_output(
-        expected_results_dict[instance])
+        instance, tmp_study/"expansion/out.json")
 
 
 def get_solver_exe(solver: str):

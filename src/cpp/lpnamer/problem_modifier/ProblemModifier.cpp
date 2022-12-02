@@ -20,11 +20,14 @@ std::vector<Candidate> ProblemModifier::candidates_with_not_null_profile(
     const std::set<int> &time_steps) const {
   std::vector<Candidate> candidates_to_keep;
 
-  for (const auto& link: active_links) {
-      auto const& candidates = link.getCandidates();
-      std::copy_if(candidates.begin(), candidates.end(), std::back_inserter(candidates_to_keep), [this, &link, &time_steps](auto candidate){
-          return !candidate.hasNullProfile(chronicleToUse(link), time_steps);
-      });
+  for (const auto &link : active_links) {
+    auto const &candidates = link.getCandidates();
+    std::copy_if(candidates.begin(), candidates.end(),
+                 std::back_inserter(candidates_to_keep),
+                 [this, &link, &time_steps](auto candidate) {
+                   return !candidate.hasNullProfile(chronicleToUse(link),
+                                                    time_steps);
+                 });
   }
   return candidates_to_keep;
 }
@@ -60,8 +63,10 @@ void ProblemModifier::change_upper_bounds_to_pos_inf(
 unsigned int ProblemModifier::get_candidate_col_id(
     const std::string &cand_name) const {
   if (_candidate_col_id.find(cand_name) == _candidate_col_id.end()) {
-    throw std::runtime_error("Candidate '" + cand_name +
-                             "' not added in problem");
+    auto errMsg =
+        std::string("Candidate '") + cand_name + "' not added in problem";
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
+    throw std::runtime_error(errMsg);
   }
   return _candidate_col_id.at(cand_name);
 }
@@ -200,17 +205,20 @@ void ProblemModifier::add_direct_profile_column_constraint(
   colind.push_back(column.id);
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
-    if (candidateContributionDirectIsNotNull(column, chronicle_to_use, candidate)) {
+    if (candidateContributionDirectIsNotNull(column, chronicle_to_use,
+                                             candidate)) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(-candidate.directCapacityFactor(chronicle_to_use, column.time_step));
+      dmatval.push_back(
+          -candidate.directCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
 }
-bool ProblemModifier::candidateContributionDirectIsNotNull(const ColumnToChange &column,
-                                                           unsigned int chronicle_to_use,
-                                                           const Candidate &candidate) const {
-  return candidate.directCapacityFactor(chronicle_to_use, column.time_step) != 0.0;
+bool ProblemModifier::candidateContributionDirectIsNotNull(
+    const ColumnToChange &column, unsigned int chronicle_to_use,
+    const Candidate &candidate) const {
+  return candidate.directCapacityFactor(chronicle_to_use, column.time_step) !=
+         0.0;
 }
 
 void ProblemModifier::add_indirect_profile_ntc_column_constraint(
@@ -222,7 +230,8 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(
 
   double already_installed_capacity(link.get_already_installed_capacity());
   double indirect_already_installed_profile_at_timestep =
-      link.already_installed_indirect_profile(chronicle_to_use, column.time_step);
+      link.already_installed_indirect_profile(chronicle_to_use,
+                                              column.time_step);
   rhs.push_back(-already_installed_capacity *
                 indirect_already_installed_profile_at_timestep);
 
@@ -230,18 +239,21 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(
   colind.push_back(column.id);
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
-    if (candidateContributionIndirectIsNotNull(column, chronicle_to_use, candidate)) {
+    if (candidateContributionIndirectIsNotNull(column, chronicle_to_use,
+                                               candidate)) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(candidate.indirectCapacityFactor(chronicle_to_use, column.time_step));
+      dmatval.push_back(
+          candidate.indirectCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());
 }
 
-bool
-ProblemModifier::candidateContributionIndirectIsNotNull(const ColumnToChange &column, unsigned int chronicle_to_use,
-                                                        const Candidate &candidate) const {
-    return candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) != 0.0;
+bool ProblemModifier::candidateContributionIndirectIsNotNull(
+    const ColumnToChange &column, unsigned int chronicle_to_use,
+    const Candidate &candidate) const {
+  return candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) !=
+         0.0;
 }
 
 unsigned int ProblemModifier::chronicleToUse(const ActiveLink &link) const {
@@ -260,7 +272,8 @@ void ProblemModifier::add_indirect_cost_column_constraint(
 
   double already_installed_capacity(link.get_already_installed_capacity());
   double indirect_already_installed_profile_at_timestep =
-      link.already_installed_indirect_profile(chronicle_to_use, column.time_step);
+      link.already_installed_indirect_profile(chronicle_to_use,
+                                              column.time_step);
   rhs.push_back(already_installed_capacity *
                 indirect_already_installed_profile_at_timestep);
 
@@ -269,9 +282,11 @@ void ProblemModifier::add_indirect_cost_column_constraint(
   dmatval.push_back(1);
 
   for (const auto &candidate : link.getCandidates()) {
-    if (candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) != 0.0) {
+    if (candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) !=
+        0.0) {
       colind.push_back(_candidate_col_id[candidate.get_name()]);
-      dmatval.push_back(-candidate.indirectCapacityFactor(chronicle_to_use, column.time_step));
+      dmatval.push_back(-candidate.indirectCapacityFactor(chronicle_to_use,
+                                                          column.time_step));
     }
   }
   rstart.push_back((int)dmatval.size());

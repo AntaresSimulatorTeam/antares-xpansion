@@ -317,10 +317,6 @@ class TestCheckSettingOptionValue:
 
         with pytest.raises(LogLevelValueError):
             _check_setting_option_value("log_level", -30)
-    
-    def test_relaxed_optimality_gap_negative_float(self):
-        with pytest.raises(GapValueError):
-            _check_setting_option_value("relaxed_optimality_gap", -1.2)
 
     def test_separation_parameter_illegal_value(self):
         with pytest.raises(SeparationParameterValueError):

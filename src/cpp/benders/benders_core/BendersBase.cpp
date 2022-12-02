@@ -1,6 +1,5 @@
 #include "BendersBase.h"
 
-#include <execution>
 #include <memory>
 #include <mutex>
 #include <numeric>
@@ -363,19 +362,6 @@ void BendersBase::compute_ub() {
   _data.ub += _data.invest_cost;
 }
 
-/**
- * std execution policies don't share a base type so we can't just select them
- *in place in the foreach This function allow the selection of policy via
- *template deduction
- **/
-template <class lambda>
-auto selectPolicy(lambda f, bool shouldParallelize) {
-  if (shouldParallelize)
-    return f(std::execution::par_unseq);
-  else
-    return f(std::execution::seq);
-}
-
 /*!
  *  \brief Solve and store optimal variables of all Subproblem Problems
  *
@@ -430,7 +416,6 @@ void BendersBase::getSubproblemCut(
  *
  */
 void BendersBase::compute_cut(AllCutPackage const &all_package) {
-  _data.ub = 0;
   std::for_each(
       all_package.begin(), all_package.end(),
       [this](const SubproblemCutPackage &i) {
@@ -708,6 +693,13 @@ std::filesystem::path BendersBase::get_master_path() const {
  */
 std::filesystem::path BendersBase::get_structure_path() const {
   return std::filesystem::path(_options.INPUTROOT) / _options.STRUCTURE_FILE;
+}
+
+/*!
+ *  \brief Get path to mps zip file from options
+ */
+std::filesystem::path BendersBase::GetMpsZipPath() const {
+  return std::filesystem::path(_options.INPUTROOT) / _options.MPS_ZIP_FILE;
 }
 
 LogData BendersBase::bendersDataToLogData(const BendersData &data) const {

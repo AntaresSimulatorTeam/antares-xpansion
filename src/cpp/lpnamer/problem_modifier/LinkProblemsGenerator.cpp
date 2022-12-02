@@ -1,6 +1,7 @@
 #include "LinkProblemsGenerator.h"
 
 #include <algorithm>
+#include <cassert>
 #include <execution>
 
 #include "VariableFileReader.h"
@@ -17,7 +18,8 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
   std::vector<ProblemData> result;
   std::ifstream mps_filestream(mps_filePath_p.c_str());
   if (!mps_filestream.good()) {
-    std::cout << "unable to open " << mps_filePath_p << std::endl;
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << "unable to open " << mps_filePath_p << std::endl;
     std::exit(1);
   }
   while (std::getline(mps_filestream, line)) {
@@ -51,15 +53,10 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  */
 void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
-                                  Couplings &couplings) const {
+                                  Couplings &couplings, ArchiveReader &reader,
+                                  ArchiveWriter &writer) const {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
-  auto const mps_name = root / problemData._problem_mps;
-  auto const var_name = root / problemData._variables_txt;
-
-  // new mps file in the new lp directory
-  std::string const lp_name =
-      problemData._problem_mps.substr(0, problemData._problem_mps.size() - 4);
-  auto const lp_mps_name = root / "lp" / (lp_name + ".mps");
+  auto const lp_mps_name = lpDir_ / problemData._problem_mps;
 
   // List of variables
   VariableFileReadNameConfiguration variable_name_config;
@@ -68,9 +65,10 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       "CoutOrigineVersExtremiteDeLInterconnexion";
   variable_name_config.cost_extremite_variable_name =
       "CoutExtremiteVersOrigineDeLInterconnexion";
-
-  auto variableReader =
-      VariableFileReader(var_name.string(), _links, variable_name_config);
+  auto variableFileContent =
+      reader.ExtractFileInStringStream(problemData._variables_txt);
+  auto variableReader = VariableFileReader(variableFileContent, _links,
+                                           variable_name_config, logger_);
 
   std::vector<std::string> var_names = variableReader.getVariables();
   std::map<colId, ColumnsToChange> p_ntc_columns =
@@ -81,12 +79,14 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
       variableReader.getIndirectCostVarColumns();
 
   SolverFactory factory;
-  auto in_prblm = std::make_shared<Problem>(factory.create_solver(_solver_name));
-  in_prblm->read_prob_mps(mps_name);
+  auto in_prblm = std::make_shared<Problem>(
+      factory.create_solver(_solver_name, log_file_path_));
+  reader.ExtractFile(problemData._problem_mps, lpDir_);
+  in_prblm->read_prob_mps(lp_mps_name);
 
   solver_rename_vars(in_prblm, var_names);
 
-  auto problem_modifier = ProblemModifier();
+  auto problem_modifier = ProblemModifier(logger_);
   in_prblm = problem_modifier.changeProblem(
       std::move(in_prblm), _links, p_ntc_columns, p_direct_cost_columns,
       p_indirect_cost_columns);
@@ -95,13 +95,16 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   for (const ActiveLink &link : _links) {
     for (const Candidate &candidate : link.getCandidates()) {
       if (problem_modifier.has_candidate_col_id(candidate.get_name())) {
-        couplings[{candidate.get_name(), mps_name}] =
+        std::lock_guard guard(coupling_mutex_);
+        couplings[{candidate.get_name(), lp_mps_name}] =
             problem_modifier.get_candidate_col_id(candidate.get_name());
       }
     }
   }
 
   in_prblm->write_prob_mps(lp_mps_name);
+  writer.AddFileInArchive(lp_mps_name);
+  std::filesystem::remove(lp_mps_name);
 }
 
 /**
@@ -113,10 +116,24 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
  * \return void
  */
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
-                                      Couplings &couplings) const {
+                                      const std::filesystem::path &archivePath,
+                                      Couplings &couplings) {
   auto const mps_file_name = root / MPS_TXT;
+  lpDir_ = root / "lp";
+  auto reader = ArchiveReader(archivePath);
+  reader.Open();
+  const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
+  const auto tmpArchivePath = lpDir_ / tmpArchiveName;
+  auto writer = ArchiveWriter(tmpArchivePath);
+  writer.Open();
   auto mpsList = readMPSList(mps_file_name);
-  std::for_each(std::execution::par, mpsList.begin(), mpsList.end(), [&](const auto& mps) {
-    treat(root, mps, couplings);
-  });
+  std::for_each(
+      std::execution::par, mpsList.begin(), mpsList.end(),
+      [&](const auto &mps) { treat(root, mps, couplings, reader, writer); });
+  reader.Close();
+  reader.Delete();
+  writer.Close();
+  writer.Delete();
+  std::filesystem::remove(archivePath);
+  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
 }

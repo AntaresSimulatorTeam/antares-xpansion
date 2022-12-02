@@ -1,15 +1,16 @@
-from unittest.mock import patch
-
-import pytest
+import configparser
 import os
 from pathlib import Path
+from unittest.mock import patch
+import pytest
 
-from antares_xpansion.general_data_reader import IniReader
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import (
     GeneralDataFileExceptions,
     GeneralDataProcessor,
 )
+from antares_xpansion.general_data_reader import IniReader, GeneralDataIniReader
+
 from tests.build_config_reader import get_antares_solver_path
 
 SUBPROCESS_RUN = "antares_xpansion.antares_driver.subprocess.run"
@@ -35,17 +36,50 @@ class TestGeneralDataProcessor:
         gen_data_proc = GeneralDataProcessor(settings_dir, True)
         assert gen_data_proc.general_data_ini_file == expected_path
 
-    def test_no_changes_in_empty_file(self, tmp_path):
+    def test_preserve_playlist(self, tmp_path):
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / self.generaldata_filename
+
+        with open(gen_data_path, "w") as writer:
+            writer.write("[general]\nnbyears=2\nuser-playlist = true\n")
+            writer.write("[playlist]\n")
+            writer.write("dummy_entry = value\n")
+            writer.write("playlist_year + = 1\n")
+            writer.write("playlist_year + = 42\n")
+            writer.write("playlist_year - = 5\n")
+            writer.write("playlist_year - = 0\n")
+
+        gen_data_proc = GeneralDataProcessor(settings_dir, True)
+
+        gen_data_proc.change_general_data_file_to_configure_antares_execution()
+        general_data_ini_file = gen_data_proc.general_data_ini_file
+
+        xpansion_ini_reader = GeneralDataIniReader(general_data_ini_file)
+        xpansion_ini_reader.get_active_years()
+        config_reader = configparser.ConfigParser(strict=False)
+        config_reader.read(gen_data_path)
+        active_years, inactive_years = xpansion_ini_reader.get_raw_playlist()
+        assert config_reader.get("playlist", "dummy_entry") == "value"
+        assert active_years == [1, 42]
+        assert inactive_years == [5, 0]
+
+    def test_empty_file_should_be_populated_by_default_values(self, tmp_path):
         settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
         settings_dir.mkdir()
         gen_data_path = settings_dir / self.generaldata_filename
         gen_data_path.touch()
         gen_data_proc = GeneralDataProcessor(settings_dir, True)
+        gen_data_proc.change_general_data_file_to_configure_antares_execution()
 
         with open(gen_data_proc.general_data_ini_file, "r") as reader:
             lines = reader.readlines()
 
-        assert len(lines) == 0
+        assert len(lines) != 0
+        parser = configparser.ConfigParser()
+        parser.read(gen_data_proc.general_data_ini_file)
+        for option in gen_data_proc._get_values_to_change_general_data_file():
+            assert parser.get(option[0], option[1]) is not None
 
     def test_values_change_in_general_file_accurate_mode(self, tmp_path):
 
@@ -54,17 +88,11 @@ class TestGeneralDataProcessor:
         gen_data_path = settings_dir / self.generaldata_filename
 
         is_accurate = True
-        optimization = "[optimization]"
-        general = "[general]"
-        random_section = "[random_section]"
-        output = "[output]"
-
-        other_preferences = "[other preferences]"
         default_val = (
             "[general] \n"
             "mode = unrelevant\n"
             "[optimization] \n"
-            "include-exportmps = false\n"
+            "include-exportmps = true\n"
             "include-tc-minstablepower = false\n"
             "include-dayahead = NO\n"
             "include-usexprs = value\n"
@@ -81,8 +109,15 @@ class TestGeneralDataProcessor:
         )
 
         gen_data_path.write_text(default_val)
+        optimization = "optimization"
+        general = "general"
+        random_section = "random_section"
+        output = "output"
+        other_preferences = "other preferences"
+
         expected_val = {
-            (optimization, "include-exportmps"): "true",
+            (optimization, "include-exportmps"): "optim-1",
+            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "true",
             (optimization, "include-tc-min-ud-time"): "true",
@@ -92,6 +127,7 @@ class TestGeneralDataProcessor:
             (other_preferences, "unit-commitment-mode"): "accurate",
             (random_section, "key1"): "value1",
             (random_section, "key2"): "value2",
+            ("adequacy patch", "include-adq-patch"): "false"
         }
 
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
@@ -109,12 +145,6 @@ class TestGeneralDataProcessor:
         general_data_path = settings_dir / self.generaldata_filename
 
         is_accurate = False
-        optimization = "[optimization]"
-        general = "[general]"
-        random_section = "[random_section]"
-        other_preferences = "[other preferences]"
-        output = "[output]"
-
         default_val = (
             "[general] \n"
             "mode = expansion\n"
@@ -137,8 +167,15 @@ class TestGeneralDataProcessor:
 
         general_data_path.write_text(default_val)
 
+        # Removing '[' and ']' from sections name
+        optimization = "optimization"
+        general = "general"
+        random_section = "random_section"
+        other_preferences = "other preferences"
+        output = "output"
         expected_val = {
-            (optimization, "include-exportmps"): "true",
+            (optimization, "include-exportmps"): "optim-1",
+            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "false",
             (optimization, "include-tc-min-ud-time"): "false",
@@ -148,6 +185,7 @@ class TestGeneralDataProcessor:
             (other_preferences, "unit-commitment-mode"): "fast",
             (random_section, "key1"): "value1",
             (random_section, "key2"): "value2",
+            ("adequacy patch", "include-adq-patch"): "false"
         }
 
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
@@ -158,8 +196,17 @@ class TestGeneralDataProcessor:
         )
 
     def verify_that_general_data_contains_expected_vals(
-        self, general_data_ini_file, expected_val
+            self, general_data_ini_file, expected_val
     ):
+        actual_config = configparser.ConfigParser()
+        actual_config.read(general_data_ini_file)
+        for (section, key) in expected_val:
+            value = actual_config.get(section, key, fallback=None)
+            assert value is not None
+            print(
+                f"Section {section}, key {key}, value {value}, expected {expected_val[(section, key)]}")
+            assert value == expected_val[(section, key)]
+
         with open(general_data_ini_file, "r") as reader:
             current_section = ""
             lines = reader.readlines()
@@ -185,7 +232,7 @@ class TestAntaresDriver:
         # mock subprocess.run
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, 1)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", "1"]
+            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -197,8 +244,15 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
+
+
+<< << << < HEAD
             expected_cmd = [exe_path, study_dir,
                             "--force-parallel", str(n_cpu)]
+== == == =
+            expected_cmd = [exe_path, study_dir,
+                "--force-parallel", str(n_cpu), "-z"]
+>>>>>> > develop
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -216,6 +270,7 @@ class TestAntaresDriver:
                 study_dir,
                 "--force-parallel",
                 str(expected_n_cpu),
+                "-z"
             ]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
@@ -230,8 +285,7 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu)]
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -247,38 +301,12 @@ class TestAntaresDriver:
     def test_empty_study_dir(self, tmp_path):
 
         study_dir = tmp_path
+        print(f"Study dir : {study_dir}")
+        os.listdir()
         antares_driver = AntaresDriver(get_antares_solver_path())
 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
             antares_driver.launch(study_dir, 1)
-
-    def test_clean_antares_step(self, tmp_path):
-        study_dir = tmp_path
-        self.initialize_dummy_study_dir(study_dir)
-
-        exe_path = Path("/Path/to/exe")
-        output_dir = study_dir / "output"
-        output_dir.mkdir()
-        simulation_dir = output_dir / "my_simu"
-        simulation_dir.mkdir()
-        fnames = ["something_criterion_other.ext", "-1.mps", "-1.txt"]
-        files_to_remove = [simulation_dir / fname for fname in fnames]
-        for file in files_to_remove:
-            file.write_text("")
-            assert file.exists()
-
-        antares_driver = AntaresDriver(exe_path)
-        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
-            run_function.return_value.returncode = 0
-            antares_driver.launch(study_dir, 1)
-
-            expected_cmd = [str(exe_path), study_dir, "--force-parallel", "1"]
-            run_function.assert_called_once_with(
-                expected_cmd, shell=False, stdout=-3, stderr=-3
-            )
-
-        for file in files_to_remove:
-            assert not file.exists()
 
     def initialize_dummy_study_dir(self, study_dir):
         settings_dir = study_dir / "settings"
@@ -302,3 +330,49 @@ class TestAntaresDriver:
             "key2 = value2\n"
         )
         general_data_path.write_text(default_val)
+
+    def test_preserve_adequacy_option_after_run(self, tmp_path):
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / "generaldata.ini"
+
+        with open(gen_data_path, "w") as writer:
+            writer.write("[adequacy patch]\ndummy=false\nfoo = bar\n")
+            writer.write("include-adq-patch = true\n")
+
+        study_dir = tmp_path
+        exe_path = tmp_path
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+        config_reader = configparser.ConfigParser(strict=False)
+        config_reader.read(gen_data_path)
+        assert config_reader.getboolean("adequacy patch", "dummy") is False
+        assert config_reader.get("adequacy patch", "foo") == "bar"
+        assert config_reader.getboolean("adequacy patch", "include-adq-patch") is True
+
+    def test_preserve_general_file_section_missing(self, tmp_path):
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / "generaldata.ini"
+
+        study_dir = tmp_path
+        exe_path = tmp_path
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+        config_reader = configparser.ConfigParser(strict=False)
+        config_reader.read(gen_data_path)
+        assert config_reader.has_section("adequacy patch") is False

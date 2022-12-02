@@ -23,7 +23,9 @@ class StudyUpdaterExeOptions : public OptionsParser {
   std::filesystem::path SolutionFile() const { return solution_file_; }
   std::filesystem::path Root() const { return root_; }
 };
-void updateStudy(const std::filesystem::path &rootPath_p,
-                 const std::vector<ActiveLink> &links_p,
-                 const std::filesystem::path &jsonPath_l);
+void updateStudy(
+    const std::filesystem::path &rootPath_p,
+    const std::vector<ActiveLink> &links_p,
+    const std::filesystem::path &jsonPath_l,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 #endif  // ANTARES_XPANSION_SRC_CPP_STUDY_UPDATER_STUDYUPDATERUNNER_H

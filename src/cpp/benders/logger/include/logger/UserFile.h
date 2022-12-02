@@ -42,6 +42,7 @@ class UserFile : public ILogger {
       const LogData &best_iterations_data) override;
   void LogAtInitialRelaxation() override;
   void LogAtSwitchToInteger() override;
+  void number_of_sub_problem_resolved(int number) override;
 
   const std::string LINE_PREFIX = "<<BENDERS>> ";
 

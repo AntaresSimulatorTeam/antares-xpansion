@@ -1,5 +1,6 @@
 #pragma once
 
+#include <execution>
 #include <filesystem>
 
 #include "BendersStructsDatas.h"
@@ -13,6 +14,18 @@
 #include "common.h"
 #include "core/ILogger.h"
 
+/**
+ * std execution policies don't share a base type so we can't just select them
+ *in place in the foreach This function allow the selection of policy via
+ *template deduction
+ **/
+template <class lambda>
+auto selectPolicy(lambda f, bool shouldParallelize) {
+  if (shouldParallelize)
+    return f(std::execution::par_unseq);
+  else
+    return f(std::execution::seq);
+}
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
@@ -54,6 +67,7 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
+  [[nodiscard]] std::filesystem::path GetMpsZipPath() const;
   [[nodiscard]] LogData bendersDataToLogData(const BendersData &data) const;
   virtual void build_input_map();
   void push_in_trace(const WorkerMasterDataPtr &worker_master_data);
@@ -96,6 +110,15 @@ class BendersBase {
   }
   double GetBendersTime() const;
   virtual void write_basis() const;
+  // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
+  SubproblemsMapPtr GetSubProblemMap() const { return subproblem_map; }
+  StrVector GetSubProblemNames() const { return subproblems; }
+  double AbsoluteGap() const { return _options.ABSOLUTE_GAP; }
+  DblVector GetAlpha_i() const { return _data.alpha_i; }
+  int ProblemToId(const std::string &problem_name) const {
+    return _problem_to_id.at(problem_name);
+  }
+  BendersBaseOptions Options() const { return _options; }
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);

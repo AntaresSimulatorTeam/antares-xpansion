@@ -10,6 +10,7 @@
 
 #include "BendersSequentialMain.h"
 #include "FullRunOptionsParser.h"
+#include "ProblemGenerationLogger.h"
 #include "RunProblemGeneration.h"
 #include "StudyUpdateRunner.h"
 
@@ -22,6 +23,7 @@ int main(int argc, char** argv) {
 #endif
   auto options_parser = FullRunOptionsParser();
   std::filesystem::path root;
+  std::filesystem::path archive_path;
   options_parser.Parse(argc, argv);
 
 #ifdef BENDERSMPIMAIN
@@ -29,11 +31,18 @@ int main(int argc, char** argv) {
 #endif
     try {
       root = options_parser.Root();
+      archive_path = options_parser.ArchivePath();
+
+      const auto log_file_path = root / "lp" / "ProblemGenerationLog.txt";
+      auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
+      auto& loggerRef = (*logger);
+
       auto master_formulation = options_parser.MasterFormulation();
       auto additionalConstraintFilename_l =
           options_parser.AdditionalConstraintsFilename();
       RunProblemGeneration(root, master_formulation,
-                           additionalConstraintFilename_l);
+                           additionalConstraintFilename_l, archive_path, logger,
+                           log_file_path);
 
     } catch (std::exception& e) {
       std::cerr << "error: " << e.what() << std::endl;
@@ -63,12 +72,14 @@ int main(int argc, char** argv) {
 #ifdef BENDERSMPIMAIN
   if (world.rank() == 0) {
 #endif
+    auto log_file_path = root / "lp" / "StudyUpdateLog.txt";
+    auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
     auto solutionFile_l = options_parser.SolutionFile();
-    ActiveLinksBuilder linksBuilder = get_link_builders(root);
+    ActiveLinksBuilder linksBuilder = get_link_builders(root, logger);
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 
-    updateStudy(root, links, solutionFile_l);
+    updateStudy(root, links, solutionFile_l, logger);
 
 #ifdef BENDERSMPIMAIN
   }

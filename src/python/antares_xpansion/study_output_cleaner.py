@@ -17,7 +17,7 @@ def rename_master(old_master_path: Path, new_master_path: Path):
 
 
 def get_last_master_path(dirpath: Path) -> Path:
-    return Path(dirpath / 'lp/master_last_iteration.mps')
+    return Path(dirpath / "lp"/'master_last_iteration.mps')
 
 
 def get_tmp_master_path(master_path: Path) -> Path:
@@ -28,9 +28,7 @@ class StudyOutputCleaner:
 
     @staticmethod
     def clean_antares_step(study_output: Path):
-        remove_files_containing_str_from_dir('-1.mps', study_output)
         remove_files_containing_str_from_dir('criterion', study_output)
-        remove_files_containing_str_from_dir('-1.txt', study_output)
 
     @staticmethod
     def clean_lpnamer_step(study_output: Path):
@@ -44,11 +42,13 @@ class StudyOutputCleaner:
         master_path = get_last_master_path(study_output)
         tmp_master_path = get_tmp_master_path(master_path)
 
+        lp_dir = study_output / 'lp'
         rename_master(master_path, tmp_master_path)
-        remove_files_containing_str_from_dir('.mps', study_output / 'lp')
+        remove_files_containing_str_from_dir('.mps', lp_dir)
         rename_master(tmp_master_path, master_path)
 
-        remove_files_containing_str_from_dir('.lp', study_output / 'lp')
+        remove_files_containing_str_from_dir('.lp', lp_dir)
+        remove_files_containing_str_from_dir(".zip", lp_dir)
 
     @staticmethod
     def clean_study_update_step(study_output: Path):

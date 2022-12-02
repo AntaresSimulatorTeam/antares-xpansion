@@ -15,26 +15,30 @@ class MasterGeneration {
    * \param rootPath String corresponding to the path where are located input
    * data
    * \param links Structure which contains the list of Activelink
-   * \param couplings map pairs and integer which give the correspondence between optim
-   * variable and antares variable
+   * \param couplings map pairs and integer which give the correspondence
+   * between optim variable and antares variable
    */
   explicit MasterGeneration(
       const std::filesystem::path &rootPath,
       const std::vector<ActiveLink> &links,
       const AdditionalConstraints &additionalConstraints_p,
       Couplings &couplings, std::string const &master_formulation,
-      std::string const &solver_name);
+      std::string const &solver_name,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+      const std::filesystem::path &log_file_path);
 
  private: /*methods*/
   void add_candidates(const std::vector<ActiveLink> &links);
-  void write_master_mps(
-      const std::filesystem::path &rootPath,
-      std::string const &master_formulation, std::string const &solver_name,
-      const AdditionalConstraints &additionalConstraints_p) const;
+  void write_master_mps(const std::filesystem::path &rootPath,
+                        std::string const &master_formulation,
+                        std::string const &solver_name,
+                        const AdditionalConstraints &additionalConstraints_p,
+                        const std::filesystem::path &log_file_path) const;
   void write_structure_file(const std::filesystem::path &rootPath,
                             const Couplings &couplings) const;
 
  private: /*members*/
   std::vector<Candidate> candidates;
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 };
 #endif  //__MASTER_GENERATION__

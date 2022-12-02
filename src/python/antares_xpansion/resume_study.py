@@ -17,6 +17,7 @@ class ResumeStudyData:
     benders_options_file: str
     benders_mpi_exe: str
     benders_sequential_exe: str
+    benders_by_batch_exe: str
     merge_mps_exe: str
 
 
@@ -30,6 +31,7 @@ class ResumeStudy:
         self._load_resume_options()
         self.benders_mpi_exe = resume_study_data.benders_mpi_exe
         self.benders_sequential_exe = resume_study_data.benders_sequential_exe
+        self.benders_by_batch_exe = resume_study_data.benders_by_batch_exe
         self.merge_mps_exe = resume_study_data.merge_mps_exe
         self.benders_options_file = resume_study_data.benders_options_file
 
@@ -112,6 +114,7 @@ class ResumeStudy:
         benders_driver = BendersDriver(
             self.benders_mpi_exe,
             self.benders_sequential_exe,
+            self.benders_by_batch_exe,
             self.merge_mps_exe,
             self.benders_options_file
         )
