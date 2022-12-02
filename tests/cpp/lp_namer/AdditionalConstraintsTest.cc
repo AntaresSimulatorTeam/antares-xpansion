@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "AdditionalConstraints.h"
+#include "LauncherHelpers.h"
 #include "LoggerBuilder.h"
 #include "gtest/gtest.h"
 
@@ -85,12 +86,15 @@ TEST_F(AdditionalConstraintsTest, testCreation) {
   std::vector<double> expectedRHS_l = {3000, 3000, 3, 200};
   std::vector<std::string> expectedSign_l = {
       "less_or_equal", "equal", "less_or_equal", "greater_or_equal"};
+  std::vector<char> expected_rtype = {'L', 'E', 'L', 'G'};
 
   size_t cnt_l(0);
   for (auto const& [name, constraint] : additionalConstraints_l) {
     ASSERT_EQ(name, expectedConstraintNames_l[cnt_l]);
     ASSERT_EQ(constraint.getRHS(), expectedRHS_l[cnt_l]);
     ASSERT_EQ(constraint.getSign(), expectedSign_l[cnt_l]);
+    ASSERT_EQ(getConstraintSenseSymbol(constraint, logger),
+              expected_rtype[cnt_l]);
     cnt_l++;
   }
 }

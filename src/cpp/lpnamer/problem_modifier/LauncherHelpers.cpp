@@ -44,7 +44,7 @@ char getConstraintSenseSymbol(
 }
 
 void addAdditionalConstraint(
-    SolverAbstract::Ptr master_p, AdditionalConstraint &additionalConstraint_p,
+    SolverAbstract::Ptr master_p, const AdditionalConstraint &additionalConstraint_p,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   auto newnz = (int)additionalConstraint_p.size();
   int newrows = 1;

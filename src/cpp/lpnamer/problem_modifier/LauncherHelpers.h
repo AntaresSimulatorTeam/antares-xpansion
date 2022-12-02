@@ -29,7 +29,7 @@ char getConstraintSenseSymbol(
  * \param additionalConstraint_p the additional constraint to add
  */
 void addAdditionalConstraint(
-    SolverAbstract::Ptr master_p, AdditionalConstraint& additionalConstraint_p,
+    SolverAbstract::Ptr master_p, const AdditionalConstraint& additionalConstraint_p,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
 /**
