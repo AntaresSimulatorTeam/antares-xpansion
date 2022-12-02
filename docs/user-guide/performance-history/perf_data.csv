@@ -1,0 +1,10 @@
+Study name,Master,Nb years,Nb weeks,Nb proc,Xpansion step,Xpansion 0.8,In-Out,Sim 8.3 in_out // pb gen
+BP50_M23_EU_CC1_X0_E2_Xpansion_2051_def5,integer,10,52,12,Antares,8,6.0,7
+BP50_M23_EU_CC1_X0_E2_Xpansion_2051_def5,integer,10,52,12,Problem generation,17,16.0,6
+BP50_M23_EU_CC1_X0_E2_Xpansion_2051_def5,integer,10,52,12,Benders,78,31.0,32
+BP50_M23_EU_CC1_X0_E2_Xpansion_2051_def5,relaxed,10,52,12,Antares,7,7.0,8
+BP50_M23_EU_CC1_X0_E2_Xpansion_2051_def5,relaxed,10,52,12,Problem generation,16,16.0,7
+BP50_M23_EU_CC1_X0_E2_Xpansion_2051_def5,relaxed,10,52,12,Benders,192,30.0,38
+NT2040_Xp_Phase2_12K_withEC_vf3_minFlex_V2,integer,10,52,12,Antares,9,,8
+NT2040_Xp_Phase2_12K_withEC_vf3_minFlex_V2,integer,10,52,12,Problem generation,24,,8
+NT2040_Xp_Phase2_12K_withEC_vf3_minFlex_V2,integer,10,52,12,Benders,24,,28
