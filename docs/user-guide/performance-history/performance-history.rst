@@ -4,4 +4,4 @@ Performance history
 .. toctree::
    :hidden:
 
-    Performance log<performance-log>
+    Performance log <performance-log>

@@ -96,7 +96,7 @@ Antares-Xpansion algorithm.
 
 At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / max(|best_upper_bound|, |best_lower_bound|)` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
 
-$$\frac{{\small\texttt{xpansion solution cost}} - {\small\texttt{optimal cost}}}{{\small\texttt{optimal cost}}} < \alpha .$$
+$$\frac{{\scriptstyle\texttt{xpansion solution cost}} - {\scriptstyle\texttt{optimal cost}}}{{\scriptstyle\texttt{optimal cost}}} < \alpha .$$
 
 !!! Remark
     The algorithm stops as soon as the first criterion among `optimality_gap` and `relative_gap` is met. Keep in mind that if either parameter is not specified by the user, the default value is used.
@@ -272,7 +272,7 @@ Float in \\([0,1]\\). Default value: `0.5`.
 
 Defines the step size for the in-out separation. If \\(x_{in}\\) is the current best feasible solution and \\(x_{out}\\) is the master solution at the current iteration, the investment in the subproblems is set to 
 
-$$ x_{cut} = {\small\texttt{separation_parameter}} * x_{out} + (1 - {\small\texttt{separation_parameter}}) * x_{in} .$$
+$$ x_{cut} = {\scriptstyle\texttt{separation_parameter}} * x_{out} + (1 - {\scriptstyle\texttt{separation_parameter}}) * x_{in} .$$
 
 The in-out stabilisation technique is used in order to speed up the Benders decomposition. When `separation_parameter < 1`, it is necessary to relax the master problem in the first iterations as the cut point \\(x_{cut}\\) is a convex combination of the best feasible solution and of the solution of the master problem. In the case where `master = integer`, the algorithm proceeds as follows:
 
