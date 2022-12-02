@@ -36,7 +36,7 @@ nav:
     - 'How does Antares-Xpansion work ?':
         - 'The optimal investment problem in Antares-Xpansion': 'user-guide/optimization-principles/investment-problem.md'
         - 'Mathematical formulation of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
-        - 'Performance log': 'user-guide/performance-history/performance.ipynb'
+        - 'Performance log': 'user-guide/performance-history/perf-graphs.ipynb'
     - 'Getting started':
       - 'Installation': 'user-guide/get-started/installation.md'
       - 'Set up an Antares-Xpansion study':
@@ -62,7 +62,9 @@ nav:
 
 plugins:
   - search
-  - mkdocs-jupyter
+  - mkdocs-jupyter:
+      execute: False
+      show_input: False
 
 extra_css:
   - stylesheets/extra.css
