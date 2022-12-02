@@ -204,7 +204,7 @@ class ProblemGeneratorDriver:
     def lp_namer_options(self):
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
         ret = ["-o", str(self.xpansion_output_dir), "-a",
-               self.output_path, "-f", is_relaxed]
+               str(self.output_path), "-f", is_relaxed]
 
         if self.additional_constraints != "":
             ret.extend(["-e",

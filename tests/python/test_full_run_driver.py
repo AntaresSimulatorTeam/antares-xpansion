@@ -1,7 +1,7 @@
 from antares_xpansion.full_run_driver import FullRunDriver
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 from antares_xpansion.benders_driver import BendersDriver
-
+from test_problem_generator_driver import get_zipped_output
 from unittest.mock import patch
 import pytest
 from pathlib import Path
@@ -24,7 +24,7 @@ class TestFullRunDriver:
 
         output_path = tmp_path / "outputPath"
         self.create_problem_generation_files(output_path)
-
+        output_path = get_zipped_output(output_path)
         benders_method = "sequential"
         json_file_path = tmp_path / "file"
         json_file_path.touch()
@@ -36,16 +36,17 @@ class TestFullRunDriver:
         problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
 
         benders_driver = BendersDriver(
-            "", "sequential", "", self.benders_driver_options_file)
+            "", "sequential", "", "", self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
                                         benders_keep_mps=benders_keep_mps, benders_oversubscribe=benders_oversubscribe, benders_allow_run_as_root=benders_allow_run_as_root)
+        xpansion_output_dir = output_path.parent / \
+            (output_path.stem+"-Xpansion")
         expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
-                            "--method", benders_method, "-s", str(json_file_path), "-o", str(output_path), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
+                            "--method", benders_method, "-s", str(json_file_path), "-a", str(output_path), "-o", str(xpansion_output_dir), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
 
         command = full_run_driver.full_command()
-
         assert len(expected_command) == len(command)
         for item in expected_command:
             assert (item in command)
@@ -54,7 +55,7 @@ class TestFullRunDriver:
 
         output_path = tmp_path / "outputPath"
         self.create_problem_generation_files(output_path)
-
+        output_path = get_zipped_output(output_path)
         benders_method = "mpibenders"
         json_file_path = tmp_path / "file"
         json_file_path.touch()
@@ -67,13 +68,15 @@ class TestFullRunDriver:
         problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
 
         benders_driver = BendersDriver(
-            "", "sequential", "", self.benders_driver_options_file)
+            "", "sequential", "", "", self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
                                         benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
+        xpansion_output_dir = output_path.parent / \
+            (output_path.stem+"-Xpansion")
         expected_command = [benders_driver.MPI_LAUNCHER, "-n", str(benders_n_mpi), self.full_run_exe, "--benders_options", self.benders_driver_options_file,
-                            "--method", benders_method, "-s", str(json_file_path), "-o", str(output_path), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
+                            "--method", benders_method, "-s", str(json_file_path), "-a", str(output_path), "-o", str(xpansion_output_dir), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
 
         command = full_run_driver.full_command()
 

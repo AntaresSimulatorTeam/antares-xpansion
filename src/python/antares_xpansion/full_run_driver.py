@@ -39,8 +39,6 @@ class FullRunDriver:
 
         self.problem_generation_driver.is_relaxed = problem_generation_is_relaxed
 
-        # self.problem_generation_driver.create_lp_dir()
-        self.problem_generation_driver.set_weights()
         self.keep_mps = benders_keep_mps
         # Benders pre-step
 
@@ -48,7 +46,7 @@ class FullRunDriver:
         self.benders_driver.n_mpi = benders_n_mpi
         self.benders_driver.oversubscribe = benders_oversubscribe
         self.benders_driver.allow_run_as_root = benders_allow_run_as_root
-        self.benders_driver.simulation_output_path = output_path
+        self.benders_driver.simulation_output_path = self.problem_generation_driver.xpansion_output_dir
         self.benders_driver.set_solver()
 
         self.json_file_path = json_file_path
