@@ -77,6 +77,7 @@ class ProblemGeneratorDriver:
         flushed_print("-- Problem Generation")
         self.output_path = output_path
 
+        self.create_lp_dir()
         self.get_names()
 
         self.is_relaxed = is_relaxed
@@ -114,7 +115,6 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        self._create_lp_dir()
 
         self._process_weights_file()
 
@@ -187,7 +187,7 @@ class ProblemGeneratorDriver:
         # elif not self.keep_mps:
         #     StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
 
-    def _create_lp_dir(self):
+    def create_lp_dir(self):
         if os.path.isdir(self._lp_path):
             shutil.rmtree(self._lp_path)
         os.makedirs(self._lp_path)

@@ -33,8 +33,9 @@ class FullRunDriver:
         """
         # Pb Gen pre-step
         self.problem_generation_driver.clear_old_log()
-        self.problem_generation_driver.output_path = output_path
+        # self.problem_generation_driver.output_path = output_path
 
+        # self.problem_generation_driver.create_lp_dir()
         self.problem_generation_driver.get_names()
 
         self.problem_generation_driver.is_relaxed = problem_generation_is_relaxed
@@ -80,8 +81,8 @@ class FullRunDriver:
                 f"ERROR: exited {self.full_exe} with status {ret.returncode}"
             )
         elif not self.keep_mps:
-            StudyOutputCleaner.clean_lpnamer_step(
-                Path(self.problem_generation_driver.output_path))
+            StudyOutputCleaner.clean_benders_step(
+                self.benders_driver.simulation_output_path)
         os.chdir(old_cwd)
 
     def full_command(self) -> List:

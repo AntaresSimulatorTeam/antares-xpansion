@@ -35,6 +35,8 @@ class TestFullRunDriver:
 
         problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
 
+        problem_generation.set_output_path(output_path)
+        problem_generation.create_lp_dir()
         benders_driver = BendersDriver(
             "", "sequential", "", "", self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
@@ -66,6 +68,8 @@ class TestFullRunDriver:
         is_relaxed = False
 
         problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
+        problem_generation.set_output_path(output_path)
+        problem_generation.create_lp_dir()
 
         benders_driver = BendersDriver(
             "", "sequential", "", "", self.benders_driver_options_file)
