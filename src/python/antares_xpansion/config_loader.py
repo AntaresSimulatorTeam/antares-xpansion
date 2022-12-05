@@ -396,7 +396,6 @@ class ConfigLoader:
         options[LauncherOptionsKeys.antares_n_cpu_key()] = self.antares_n_cpu()
         options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
         options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
-        options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
         options[LauncherOptionsKeys.allow_run_as_root_key()
                 ] = self.allow_run_as_root()
 
@@ -603,6 +602,9 @@ class ConfigLoader:
 
     def sensitivity_exe(self):
         return self.exe_path(self._config.SENSITIVITY_EXE)
+
+    def full_run_exe(self):
+        return self.exe_path(self._config.FULL_RUN)
 
     def method(self):
         return self._config.method

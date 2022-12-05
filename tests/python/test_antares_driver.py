@@ -2,8 +2,8 @@ import configparser
 import os
 from pathlib import Path
 from unittest.mock import patch
-
 import pytest
+
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import (
     GeneralDataFileExceptions,
@@ -203,7 +203,8 @@ class TestGeneralDataProcessor:
         for (section, key) in expected_val:
             value = actual_config.get(section, key, fallback=None)
             assert value is not None
-            print(f"Section {section}, key {key}, value {value}, expected {expected_val[(section, key)]}")
+            print(
+                f"Section {section}, key {key}, value {value}, expected {expected_val[(section, key)]}")
             assert value == expected_val[(section, key)]
 
         with open(general_data_ini_file, "r") as reader:
@@ -243,7 +244,9 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", str(n_cpu), "-z"]
+
+            expected_cmd = [exe_path, study_dir,
+                            "--force-parallel", str(n_cpu), "-z"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -276,7 +279,8 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
+            expected_cmd = [str(exe_path), study_dir,
+                            "--force-parallel", str(n_cpu), "-z"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -337,7 +341,8 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
+            expected_cmd = [str(exe_path), study_dir,
+                            "--force-parallel", str(n_cpu), "-z"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -346,7 +351,8 @@ class TestAntaresDriver:
         config_reader.read(gen_data_path)
         assert config_reader.getboolean("adequacy patch", "dummy") is False
         assert config_reader.get("adequacy patch", "foo") == "bar"
-        assert config_reader.getboolean("adequacy patch", "include-adq-patch") is True
+        assert config_reader.getboolean(
+            "adequacy patch", "include-adq-patch") is True
 
     def test_preserve_general_file_section_missing(self, tmp_path):
         settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
@@ -359,7 +365,8 @@ class TestAntaresDriver:
         antares_driver = AntaresDriver(exe_path)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
-            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
+            expected_cmd = [str(exe_path), study_dir,
+                            "--force-parallel", str(n_cpu), "-z"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )

@@ -16,6 +16,7 @@ class ConfigFileParser:
         self.BENDERS_BY_BATCH_DEFAULT = "benders_by_batch"
         self.LP_NAMER_DEFAULT = "lp_namer"
         self.STUDY_UPDATER_DEFAULT = "study_updater"
+        self.FULL_RUN_DEFAULT = "full_run"
         self.SENSITIVITY_DEFAULT = "sensitivity"
         self.AVAILABLE_SOLVERS_DEFAULT = []
 
@@ -39,6 +40,8 @@ class ConfigFileParser:
                 LP_NAMER=content.get('LP_NAMER', self.LP_NAMER_DEFAULT),
                 STUDY_UPDATER=content.get(
                     'STUDY_UPDATER', self.STUDY_UPDATER_DEFAULT),
+                FULL_RUN=content.get(
+                    'FULL_RUN', self.FULL_RUN_DEFAULT),
                 SENSITIVITY_EXE=content.get(
                     'SENSITIVITY', self.SENSITIVITY_DEFAULT),
                 AVAILABLE_SOLVERS=content.get(

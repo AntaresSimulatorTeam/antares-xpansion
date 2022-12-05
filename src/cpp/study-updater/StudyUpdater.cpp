@@ -19,7 +19,7 @@ StudyUpdater::StudyUpdater(
 
 int StudyUpdater::updateLinkdataFile(
     const ActiveLink& link_p,
-    const std::map<std::string, double>& investments_p)const {
+    const std::map<std::string, double>& investments_p) const {
   if (antaresVersion_ >= ANTARES_VERSION_CAPACITIES_IN_INDIVIDUAL_FILES) {
     StudyUpdateLinkCapacitiesStrategy study_update(studyPath_, logger_);
     return study_update.Update(link_p, investments_p);
@@ -30,7 +30,7 @@ int StudyUpdater::updateLinkdataFile(
 }
 
 int StudyUpdater::update(std::vector<ActiveLink> const& links_p,
-                         std::string const& jsonPath_p) {
+                         const std::filesystem::path& jsonPath_p) {
   JsonXpansionReader jsonReader_l;
   jsonReader_l.read(jsonPath_p);
 

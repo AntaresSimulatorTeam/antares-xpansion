@@ -15,7 +15,6 @@ if (TBB_VERSION_MAJOR VERSION_GREATER "2020")
 endif()
 
 add_library(lp_namer_problem_modifier STATIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdater.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.h
@@ -29,17 +28,7 @@ add_library(lp_namer_problem_modifier STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LinkCapacitiesCSVWriter.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LinkCapacitiesCSVWriter.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateStrategy.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateStrategy.h
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkCapacitiesStrategy.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkCapacitiesStrategy.h
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.h)
+		${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.h)
 
 target_include_directories (lp_namer_problem_modifier
 	PUBLIC

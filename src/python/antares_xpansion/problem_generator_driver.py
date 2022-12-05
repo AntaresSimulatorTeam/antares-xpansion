@@ -73,11 +73,12 @@ class ProblemGeneratorDriver:
         """
             problem generation step : getnames + lp_namer
         """
-        self._clear_old_log()
+        self.clear_old_log()
         flushed_print("-- Problem Generation")
         self.output_path = output_path
 
-        self._get_names()
+        self.create_lp_dir()
+        self.get_names()
 
         self.is_relaxed = is_relaxed
         self._lp_step()
@@ -100,11 +101,11 @@ class ProblemGeneratorDriver:
     def get_output_path(self):
         return self._output_path
 
-    def _clear_old_log(self):
+    def clear_old_log(self):
         if (os.path.isfile(str(self.lp_namer_exe_path) + '.log')):
             os.remove(str(self.lp_namer_exe_path) + '.log')
 
-    def _get_names(self):
+    def get_names(self):
         """
             produces a .txt file describing the weekly problems:
             each line of the file contains :
@@ -114,7 +115,6 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        self._create_lp_dir()
 
         self._process_weights_file()
 
@@ -171,15 +171,10 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-
-       
-
         start_time = datetime.now()
         flushed_print(f"LPNamer command {self._get_lp_namer_command()}")
         returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
                                     stdout=sys.stdout, stderr=sys.stderr)
-
-      
 
         end_time = datetime.now()
         flushed_print('Post antares step duration: {}'.format(
@@ -192,7 +187,7 @@ class ProblemGeneratorDriver:
         # elif not self.keep_mps:
         #     StudyOutputCleaner.clean_lpnamer_step(Path(self.output_path))
 
-    def _create_lp_dir(self):
+    def create_lp_dir(self):
         if os.path.isdir(self._lp_path):
             shutil.rmtree(self._lp_path)
         os.makedirs(self._lp_path)
@@ -206,15 +201,23 @@ class ProblemGeneratorDriver:
             YearlyWeightWriter(Path(self.xpansion_output_dir), self.output_path).create_weight_file(weight_list, self.weight_file_name_for_lp,
                                                                                                     self.active_years)
 
+    def lp_namer_options(self):
+        is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
+        ret = ["-o", str(self.xpansion_output_dir), "-a",
+               str(self.output_path), "-f", is_relaxed]
+
+        if self.additional_constraints != "":
+            ret.extend(["-e",
+                        self.additional_constraints])
+        return ret
 
     def _get_lp_namer_command(self):
 
-        is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
         if not self.lp_namer_exe_path.is_file():
             raise ProblemGeneratorDriver.LPNamerExeError(
                 f"LP namer exe: {self.lp_namer_exe_path} not found")
-
-        return [self.lp_namer_exe_path, "-o", str(self.xpansion_output_dir), "-a", self.output_path, "-f", is_relaxed, "-e",
-                self.additional_constraints]
+        command = [self.lp_namer_exe_path]
+        command.extend(self.lp_namer_options())
+        return command
 
     output_path = property(get_output_path, set_output_path)

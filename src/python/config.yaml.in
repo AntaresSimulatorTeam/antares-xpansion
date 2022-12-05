@@ -6,6 +6,7 @@ BENDERS_SEQUENTIAL  : $<TARGET_FILE_NAME:benderssequential>
 BENDERS_BY_BATCH    : $<TARGET_FILE_NAME:bendersbybatch>
 LP_NAMER            : $<TARGET_FILE_NAME:lp_namer>
 STUDY_UPDATER       : $<TARGET_FILE_NAME:xpansion-study-updater>
+FULL_RUN            : $<TARGET_FILE_NAME:full_run>
 SENSITIVITY         : $<TARGET_FILE_NAME:sensitivity>
 AVAILABLE_SOLVER :
 @AVAILABLE_SOLVER_YML_LIST@
