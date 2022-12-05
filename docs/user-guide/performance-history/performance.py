@@ -64,6 +64,7 @@ class PerfPlotsGenerator:
 
             fig_name = "_".join(name_master_tuple)
             self._create_fig(fig_name)
+            self.axes[fig_name].set_title(fig_name, fontsize=14)
 
             study_data = self.perf_data.loc[name_master_tuple].dropna(axis=1)
             columns_to_plot = self._columns_to_plot(study_data)
