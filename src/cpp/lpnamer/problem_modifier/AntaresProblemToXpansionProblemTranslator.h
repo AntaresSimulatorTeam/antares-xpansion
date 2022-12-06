@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include "../model/Problem.h"
 #include "LpsFromAntares.h"
-#include "Problem.h"
+
 class AntaresProblemToXpansionProblemTranslator {
  public:
   [[nodiscard]] static std::shared_ptr<Problem> translateToXpansionProblem(

@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "Problem.h"
+#include "../../lpnamer/model/Problem.h"
+
 class IProblemProviderPort {
  public:
   virtual ~IProblemProviderPort() = default;

@@ -4,9 +4,10 @@
 
 #pragma once
 
+#include "../model/Problem.h"
 #include "IXpansionProblemsProvider.h"
 #include "LpsFromAntares.h"
-#include "Problem.h"
+
 class XpansionProblemsFromAntaresProvider : public IXpansionProblemsProvider {
  public:
   explicit XpansionProblemsFromAntaresProvider(LpsFromAntares antares);

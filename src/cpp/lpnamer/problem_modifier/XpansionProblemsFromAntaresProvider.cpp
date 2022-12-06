@@ -6,8 +6,9 @@
 
 #include <utility>
 
+#include "../model/Problem.h"
 #include "AntaresProblemToXpansionProblemTranslator.h"
-#include "Problem.h"
+
 XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
     LpsFromAntares lps)
     : antares_hebdo_problems(std::move(lps)) {}

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Problem.h"
+#include "../../lpnamer/model/Problem.h"
 class IProblemWriter {
  public:
   virtual ~IProblemWriter() = default;

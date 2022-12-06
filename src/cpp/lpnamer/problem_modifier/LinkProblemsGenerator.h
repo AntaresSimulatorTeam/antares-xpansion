@@ -6,10 +6,8 @@
 #include <memory>
 #include <mutex>
 
-#include "ActiveLinks.h"
 #include "ArchiveReader.h"
 #include "ArchiveWriter.h"
-#include "Candidate.h"
 #include "FileInBuffer.h"
 #include "IProblemProviderPort.h"
 #include "IProblemVariablesProviderPort.h"
