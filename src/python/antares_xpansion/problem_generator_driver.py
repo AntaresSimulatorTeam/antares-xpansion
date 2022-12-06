@@ -229,3 +229,13 @@ class ProblemGeneratorDriver:
         return command
 
     output_path = property(get_output_path, set_output_path)
+
+    def lp_namer_options(self):
+        is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
+        ret = ["-o", str(self.xpansion_output_dir), "-a",
+               str(self.output_path), "-f", is_relaxed]
+
+        if self.additional_constraints != "":
+            ret.extend(["-e",
+                        self.additional_constraints])
+        return ret

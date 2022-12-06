@@ -4,11 +4,10 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from file_creation import _create_weight_file
 from antares_xpansion.problem_generator_driver import ProblemGeneratorData, ProblemGeneratorDriver
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
-from .file_creation import _create_weight_file
+from tests.python.file_creation import _create_weight_file
 
 SUBPROCESS_RUN = "antares_xpansion.problem_generator_driver.subprocess.run"
 zipfile_ZipFile = "antares_xpansion.problem_generator_driver.zipfile.ZipFile"
