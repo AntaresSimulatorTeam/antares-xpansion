@@ -15,7 +15,6 @@ if (TBB_VERSION_MAJOR VERSION_GREATER "2020")
 endif()
 
 add_library(lp_namer_problem_modifier STATIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdater.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.h
@@ -29,21 +28,20 @@ add_library(lp_namer_problem_modifier STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.h
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LinkParametersCSVOverwriter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LinkCapacitiesCSVWriter.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LinkCapacitiesCSVWriter.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateStrategy.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateStrategy.h
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkCapacitiesStrategy.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkCapacitiesStrategy.h
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StudyUpdateLinkParameterStrategy.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemProviderAdapter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemProviderAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/IProblemProviderPort.h
-		IProblemWriter.h ArchiveProblemWriter.cpp ArchiveProblemWriter.h ProblemVariablesZipAdapter.cpp ProblemVariablesZipAdapter.h IProblemVariablesProviderPort.h ProblemVariablesFileAdapter.cpp ProblemVariablesFileAdapter.h MPSFileProblemProviderAdapter.cpp MPSFileProblemProviderAdapter.h)
+		${CMAKE_CURRENT_SOURCE_DIR}/IProblemWriter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveProblemWriter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveProblemWriter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesZipAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesZipAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/IProblemVariablesProviderPort.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFileAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFileAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.h)
 
 target_include_directories (lp_namer_problem_modifier
 	PUBLIC

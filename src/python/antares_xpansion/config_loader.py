@@ -396,7 +396,6 @@ class ConfigLoader:
         options[LauncherOptionsKeys.antares_n_cpu_key()] = self.antares_n_cpu()
         options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
         options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
-        options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
         options[LauncherOptionsKeys.allow_run_as_root_key()
                 ] = self.allow_run_as_root()
 
@@ -502,8 +501,6 @@ class ConfigLoader:
         if self.step() == "resume":
             self._simulation_name = last_dir_path
         else:
-            # TODO temp function to zip study output -- for now antares does not provide archive output
-            # self.zip_last_study(last_dir_path)
             # Get list of all dirs only in the given directory
             list_of_zip_filter = Path(self.antares_output()).glob("*.zip")
 
@@ -516,15 +513,6 @@ class ConfigLoader:
             self._last_zip = list_of_zip[-1]
             self._simulation_name = self._last_zip.parent / \
                 (self._last_zip.stem+"-Xpansion")
-
-    def zip_last_study(self, last_dir_path):
-        """
-        zip last simulation and delete it
-        """
-        # Get list of all dirs only in the given directory
-        shutil.make_archive(str(last_dir_path), "zip", last_dir_path)
-
-        shutil.rmtree(last_dir_path, ignore_errors=True)
 
     def is_zip(self, file):
         filename, ext = os.path.splitext(file)
@@ -603,6 +591,9 @@ class ConfigLoader:
 
     def sensitivity_exe(self):
         return self.exe_path(self._config.SENSITIVITY_EXE)
+
+    def full_run_exe(self):
+        return self.exe_path(self._config.FULL_RUN)
 
     def method(self):
         return self._config.method

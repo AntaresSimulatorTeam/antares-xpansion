@@ -4,6 +4,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+from file_creation import _create_weight_file
 from antares_xpansion.problem_generator_driver import ProblemGeneratorData, ProblemGeneratorDriver
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
@@ -11,6 +12,12 @@ from .file_creation import _create_weight_file
 
 SUBPROCESS_RUN = "antares_xpansion.problem_generator_driver.subprocess.run"
 zipfile_ZipFile = "antares_xpansion.problem_generator_driver.zipfile.ZipFile"
+
+
+def get_zipped_output(tmp_path) -> Path:
+    zipped_output = tmp_path.parent / (tmp_path.name+".zip")
+    shutil.make_archive(tmp_path, "zip", tmp_path)
+    return zipped_output
 
 
 class TestProblemGeneratorDriver:
@@ -47,21 +54,16 @@ class TestProblemGeneratorDriver:
 
         problem_generator_driver = ProblemGeneratorDriver(
             self.empty_pblm_gen_data)
-        zipped_output = self.get_zipped_output(tmp_path)
+        zipped_output = get_zipped_output(tmp_path)
 
         with pytest.raises(ProblemGeneratorDriver.AreaFileException):
             problem_generator_driver.launch(zipped_output, False)
-
-    def get_zipped_output(self, tmp_path):
-        zipped_output = tmp_path.parent / (tmp_path.name+".zip")
-        shutil.make_archive(tmp_path, "zip", tmp_path)
-        return zipped_output
 
     def test_more_than_1_area_file(self, tmp_path):
 
         self._create_empty_area_file(tmp_path)
         self._create_empty_area_file(tmp_path)
-        zipped_output = self.get_zipped_output(tmp_path)
+        zipped_output = get_zipped_output(tmp_path)
         problem_generator_driver = ProblemGeneratorDriver(
             self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.AreaFileException):
@@ -70,7 +72,7 @@ class TestProblemGeneratorDriver:
     def test_no_interco_file(self, tmp_path):
 
         self._create_empty_area_file(tmp_path)
-        zipped_output = self.get_zipped_output(tmp_path)
+        zipped_output = get_zipped_output(tmp_path)
         problem_generator_driver = ProblemGeneratorDriver(
             self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.IntercoFilesException):
@@ -81,7 +83,7 @@ class TestProblemGeneratorDriver:
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
-        zipped_output = self.get_zipped_output(tmp_path)
+        zipped_output = get_zipped_output(tmp_path)
         problem_generator_driver = ProblemGeneratorDriver(
             self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.IntercoFilesException):
@@ -91,7 +93,7 @@ class TestProblemGeneratorDriver:
 
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
-        zipped_output = self.get_zipped_output(tmp_path)
+        zipped_output = get_zipped_output(tmp_path)
         problem_generator_driver = ProblemGeneratorDriver(
             self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
@@ -101,7 +103,7 @@ class TestProblemGeneratorDriver:
 
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
-        zipped_output = self.get_zipped_output(tmp_path)
+        zipped_output = get_zipped_output(tmp_path)
 
         problem_generator_driver = ProblemGeneratorDriver(
             self.empty_pblm_gen_data)
@@ -120,7 +122,7 @@ class TestProblemGeneratorDriver:
         expected_results = self._get_expected_mps_txt(tmp_path)
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
-        zipped_output = self.get_zipped_output(tmp_path)
+        zipped_output = get_zipped_output(tmp_path)
         problem_generator_driver = ProblemGeneratorDriver(
             self.empty_pblm_gen_data)
         with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
@@ -147,7 +149,7 @@ class TestProblemGeneratorDriver:
                                              active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
-        output_zipped = self.get_zipped_output(tmp_path)
+        output_zipped = get_zipped_output(tmp_path)
         log_file_name = self.lp_exe + ".log"
         xpansion_dir = self.xpansion_output(tmp_path)
         log_file = xpansion_dir / log_file_name
@@ -174,7 +176,7 @@ class TestProblemGeneratorDriver:
                                              active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
-        output_zipped = self.get_zipped_output(tmp_path)
+        output_zipped = get_zipped_output(tmp_path)
         log_file_name = self.lp_exe + ".log"
         xpansion_dir = self.xpansion_output(tmp_path)
         xpansion_dir.mkdir()
@@ -209,7 +211,7 @@ class TestProblemGeneratorDriver:
                                              active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
-        output_zipped = self.get_zipped_output(tmp_path)
+        output_zipped = get_zipped_output(tmp_path)
         expected_message = f'Illegal value : {str(file_path)} is not an existent yearly-weights file'
 
         problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
@@ -312,7 +314,7 @@ class TestProblemGeneratorDriver:
             "WEIGHT_SUM " + str(float(sum(weight_list))))
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
-        zipped_output = self.get_zipped_output(tmp_path)
+        zipped_output = get_zipped_output(tmp_path)
 
         problem_generator_driver = ProblemGeneratorDriver(pblm_gen_data)
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:

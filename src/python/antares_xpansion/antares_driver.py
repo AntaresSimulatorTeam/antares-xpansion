@@ -35,7 +35,8 @@ class AntaresDriver:
         if antares_n_cpu >= 1:
             self.antares_n_cpu = antares_n_cpu
         else:
-            flushed_print(f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
+            flushed_print(
+                f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
 
     def _launch(self, antares_study_path) -> bool:
         self._clear_old_log()
@@ -62,16 +63,20 @@ class AntaresDriver:
                                     stderr=subprocess.DEVNULL)
 
         end_time = datetime.now()
-        flushed_print('Antares simulation duration : {}'.format(end_time - start_time))
+        flushed_print('Antares simulation duration : {}'.format(
+            end_time - start_time))
 
         if returned_l.returncode == 1:
-            raise AntaresDriver.AntaresExecutionError(f"Error: exited antares with status {returned_l.returncode}")
-        elif returned_l.returncode != 0 and returned_l.returncode != 1 :
-            flushed_print(f"Warning: exited antares with status {returned_l.returncode}")
+            raise AntaresDriver.AntaresExecutionError(
+                f"Error: exited antares with status {returned_l.returncode}")
+        elif returned_l.returncode != 0 and returned_l.returncode != 1:
+            flushed_print(
+                f"Warning: exited antares with status {returned_l.returncode}")
             return True
         else:
             self._set_simulation_name()
-            StudyOutputCleaner.clean_antares_step((Path(self.antares_output_dir()) / self.simulation_name))
+            StudyOutputCleaner.clean_antares_step(
+                (Path(self.antares_output_dir()) / self.simulation_name))
             return False
 
     def _set_simulation_name(self):
@@ -82,7 +87,8 @@ class AntaresDriver:
                                      os.listdir(self.antares_output_dir()))
         # Sort list of files based on last modification time in ascending order
         list_of_dirs = sorted(list_of_dirs_filter,
-                              key=lambda x: os.path.getmtime(os.path.join(self.antares_output_dir(), x))
+                              key=lambda x: os.path.getmtime(
+                                  os.path.join(self.antares_output_dir(), x))
                               )
         if list_of_dirs:
             self.simulation_name = list_of_dirs[-1]

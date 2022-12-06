@@ -1,7 +1,7 @@
 add_executable (helpers_test
 		JsonXpansionReaderTest.cc
 		AntaresVersionProviderTest.cpp
-		)
+		OptionsParserTest.cpp)
 
 target_include_directories (helpers_test
 		SYSTEM PRIVATE

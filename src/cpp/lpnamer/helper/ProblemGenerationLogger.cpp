@@ -112,4 +112,14 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
   return *this;
 }
 
+ProblemGenerationLoggerSharedPointer BuildLogger(
+    const std::filesystem::path& log_file_path, std::ostream& stream) {
+  auto logFile = std::make_shared<ProblemGenerationFileLogger>(log_file_path);
+  auto logStd = std::make_shared<ProblemGenerationOstreamLogger>(std::cout);
+
+  auto logger = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::INFO);
+  logger->AddLogger(logFile);
+  logger->AddLogger(logStd);
+  return logger;
+}
 }  // namespace ProblemGenerationLog

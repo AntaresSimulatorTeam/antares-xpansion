@@ -118,9 +118,8 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   SubProblemDataMap subproblem_data_map;
   Timer process_timer;
   try {
-    if (_world.rank() != rank_0) {
-      subproblem_data_map = get_subproblem_cut_package();
-    }
+    subproblem_data_map = get_subproblem_cut_package();
+
   } catch (std::exception const &ex) {
     success = 0;
     write_exception_message(ex);
@@ -133,14 +132,10 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     const SubProblemDataMap &subproblem_data_map, const Timer &process_timer) {
   if (!_exceptionRaised) {
-    if (_world.rank() != rank_0) {
-      mpi::gather(_world, subproblem_data_map, rank_0);
-    } else {
-      std::vector<SubProblemDataMap> gathered_subproblem_map;
-      mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
-      SetSubproblemTimers(process_timer.elapsed());
-      master_build_cuts(gathered_subproblem_map);
-    }
+    std::vector<SubProblemDataMap> gathered_subproblem_map;
+    mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
+    SetSubproblemTimers(process_timer.elapsed());
+    master_build_cuts(gathered_subproblem_map);
   }
 }
 
@@ -267,12 +262,12 @@ void BendersMpi::run() {
       SaveCurrentBendersData();
     }
   }
-
   if (_world.rank() == rank_0) {
     CloseCsvFile();
     EndWritingInOutputFile();
     write_basis();
   }
+  _world.barrier();
 }
 
 void BendersMpi::launch() {
