@@ -13,5 +13,6 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
       "master formulation (relaxed or integer)")(
       "exclusion-files,e",
       po::value<std::string>(&additional_constraintFilename_l_),
-      "path to exclusion files");
+      "path to exclusion files")("zip-mps,z", po::bool_switch(&zip_mps_),
+                                 "mps files will be zipped");
 }

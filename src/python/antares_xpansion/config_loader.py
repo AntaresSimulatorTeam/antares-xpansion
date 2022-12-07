@@ -684,3 +684,6 @@ class ConfigLoader:
     def check_NTC_column_constraints(self, antares_version):
         checker = ChronicleChecker(self._config.data_dir, antares_version)
         checker.CheckChronicleConstraints()
+
+    def zip_mps(self):
+        return self._config.zip_mps

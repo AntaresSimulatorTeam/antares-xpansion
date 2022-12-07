@@ -3,7 +3,7 @@ from typing import List
 import subprocess
 import sys
 from antares_xpansion.benders_driver import BendersDriver
-from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
+from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
