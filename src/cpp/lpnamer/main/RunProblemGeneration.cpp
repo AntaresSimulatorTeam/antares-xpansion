@@ -56,7 +56,7 @@ void RunProblemGeneration(
                                               log_file_path);
   auto mpsList = linkProblemsGenerator.readMPSList(mps_file_name);
 
-  bool use_zip_implementation = true;
+  bool use_zip_implementation = false;
   bool use_file_implementation = false;
   if (use_zip_implementation) {
     /* Instantiate Zip reader */
