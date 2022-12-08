@@ -27,7 +27,7 @@ add_executable (lp_namer_tests
         MasterProblemBuilderTest.cpp
         ChronicleMapReaderTest.cpp
         ChronicleMapProviderTest.cpp
-        ProblemConstructionTest.cpp 
+        ProblemConstructionTest.cpp
         NOOPSolver.h
         ProblemGenerationExeOptionsTest.cpp
         LoggerBuilder.h
@@ -43,6 +43,7 @@ target_link_libraries (lp_namer_tests PRIVATE
         lp_namer_problem_modifier
         xpansion_study_updater_lib
         problem_generation_main
+        Boost::serialization
         )
 
 if (USE_MPI)

@@ -67,7 +67,7 @@ class ProblemGeneratorDriver:
         self._lp_path = None
         self.mps_zip_filename = "MPS_ZIP"
         self.zip_ext = ".zip"
-        self.mps_zip_file = self.mps_zip_filename+self.zip_ext
+        self.mps_zip_file = self.mps_zip_filename + self.zip_ext
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """
@@ -88,7 +88,7 @@ class ProblemGeneratorDriver:
         if output_path.exists():
             self._output_path = output_path
             self.xpansion_output_dir = output_path.parent / \
-                (output_path.stem+"-Xpansion")
+                                       (output_path.stem + "-Xpansion")
             if self.xpansion_output_dir.exists():
                 shutil.rmtree(self.xpansion_output_dir)
             os.makedirs(self.xpansion_output_dir)
@@ -123,7 +123,7 @@ class ProblemGeneratorDriver:
             for line in mps_txt.items():
                 mps_sub_problem_file = line[1][0]
                 file_l.write(mps_sub_problem_file + ' ' + line[1]
-                             [1] + ' ' + line[1][2] + '\n')
+                [1] + ' ' + line[1][2] + '\n')
 
         with zipfile.ZipFile(self.output_path, 'r') as study_archive:
             for e in study_archive.namelist():
@@ -171,7 +171,14 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
+
         start_time = datetime.now()
+        use_zip = True  # Replace with proper option management
+        if not use_zip:
+            flushed_print(f"Output pat {self.output_path}")
+            with zipfile.ZipFile(self.output_path, 'r') as study_archive:
+                study_archive.extractall(self.xpansion_output_dir)
+            os.remove(self.output_path)
         flushed_print(f"LPNamer command {self._get_lp_namer_command()}")
         returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
                                     stdout=sys.stdout, stderr=sys.stderr)
@@ -198,10 +205,11 @@ class ProblemGeneratorDriver:
                 self.user_weights_file_path, len(self.active_years))
             weight_list = XpansionStudyReader.get_years_weight_from_file(
                 self.user_weights_file_path)
-            YearlyWeightWriter(Path(self.xpansion_output_dir), self.output_path).create_weight_file(weight_list, self.weight_file_name_for_lp,
+            YearlyWeightWriter(Path(self.xpansion_output_dir), self.output_path).create_weight_file(weight_list,
+                                                                                                    self.weight_file_name_for_lp,
                                                                                                     self.active_years)
 
-    def lp_namer_options(self):
+    def _get_lp_namer_command(self):
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
         ret = ["-o", str(self.xpansion_output_dir), "-a",
                str(self.output_path), "-f", is_relaxed]
@@ -221,3 +229,13 @@ class ProblemGeneratorDriver:
         return command
 
     output_path = property(get_output_path, set_output_path)
+
+    def lp_namer_options(self):
+        is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
+        ret = ["-o", str(self.xpansion_output_dir), "-a",
+               str(self.output_path), "-f", is_relaxed]
+
+        if self.additional_constraints != "":
+            ret.extend(["-e",
+                        self.additional_constraints])
+        return ret

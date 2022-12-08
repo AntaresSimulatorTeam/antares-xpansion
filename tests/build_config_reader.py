@@ -1,6 +1,7 @@
-import yaml
 import os
 from pathlib import Path
+
+import yaml
 
 
 def get_install_dir():
@@ -20,7 +21,7 @@ def get_antares_solver():
             raise RuntimeError("Please check file build_config.yaml, content is empty")
 
 def get_antares_solver_path() -> Path:
-        return Path(get_install_dir()) / get_antares_solver()
+    return Path(get_install_dir()) / get_antares_solver()
 
 def get_lp_namer_exe():
     with open(Path(os.path.abspath(__file__)).parent / 'build_config.yaml') as file:
