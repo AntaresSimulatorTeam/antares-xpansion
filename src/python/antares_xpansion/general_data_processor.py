@@ -98,6 +98,7 @@ class GeneralDataProcessor:
             else "fast",
             (general_section, "year-by-year"): "false",
             (output_section, "synthesis"): "false",
+            ("input", "import"): "",
         }
 
     def backup_data(self):

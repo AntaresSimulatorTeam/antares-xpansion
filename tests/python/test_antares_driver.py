@@ -107,6 +107,8 @@ class TestGeneralDataProcessor:
             "[random_section] \n"
             "key1 = value1\n"
             "key2 = value2\n"
+            "[input]\n"
+            "import = blabla\n"
 
         )
 
@@ -131,6 +133,7 @@ class TestGeneralDataProcessor:
             ("adequacy patch", "include-adq-patch"): "false",
             (general, "year-by-year"): "false",
             (output, "synthesis"): "false",
+            ("input", "import"): "",
         }
 
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
@@ -167,6 +170,8 @@ class TestGeneralDataProcessor:
             "[random_section] \n"
             "key1 = value1\n"
             "key2 = value2\n"
+            "[input]\n"
+            "import =\n"
         )
 
         general_data_path.write_text(default_val)
@@ -191,6 +196,7 @@ class TestGeneralDataProcessor:
             ("adequacy patch", "include-adq-patch"): "false",
             (general, "year-by-year"): "false",
             (output, "synthesis"): "false",
+            ("input", "import"): "",
         }
 
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
