@@ -150,13 +150,16 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
         [&](const auto &mps) { treat(root, mps, couplings, reader, writer); });
     writer.Close();
     writer.Delete();
+    reader.Close();
+    reader.Delete();
     std::filesystem::remove(archivePath);
     std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
   } else {
     std::for_each(
         std::execution::par, mpsList.begin(), mpsList.end(),
         [&](const auto &mps) { treat(root, mps, couplings, reader); });
+
+    reader.Close();
+    reader.Delete();
   }
-  reader.Close();
-  reader.Delete();
 }
