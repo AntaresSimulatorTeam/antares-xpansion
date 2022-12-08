@@ -75,3 +75,6 @@ BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 
 // Name of the MPS ZIP file
 BENDERS_OPTIONS_MACRO(MPS_ZIP_FILE, std::string, "MPS_ZIP_FILE.zip", asString())
+
+// true if mps file are in zip archive
+BENDERS_OPTIONS_MACRO(MPS_IN_ZIP, bool, false, asBool())

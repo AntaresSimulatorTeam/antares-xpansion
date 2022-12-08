@@ -53,6 +53,8 @@ class LinkProblemsGenerator {
       const std::filesystem::path& mps_filePath_p) const;
 
   void treat(const std::filesystem::path& root, ProblemData const&,
+             Couplings& couplings, ArchiveReader& reader) const;
+  void treat(const std::filesystem::path& root, ProblemData const&,
              Couplings& couplings, ArchiveReader& reader,
              ArchiveWriter& writer) const;
 

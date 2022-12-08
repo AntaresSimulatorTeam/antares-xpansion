@@ -480,6 +480,8 @@ class ConfigLoader:
         options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
         options_values[OptimisationKeys.batch_size_key()
                        ] = self.get_batch_size()
+        options_values[OptimisationKeys.mps_in_zip_key()
+                       ] = self.zip_mps()
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)
