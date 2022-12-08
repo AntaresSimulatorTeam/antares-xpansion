@@ -139,10 +139,10 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
   lpDir_ = root / "lp";
   auto reader = ArchiveReader(archivePath);
   reader.Open();
-  const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
-  const auto tmpArchivePath = lpDir_ / tmpArchiveName;
   auto mpsList = readMPSList(mps_file_name);
   if (zip_mps_) {
+    const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
+    const auto tmpArchivePath = lpDir_ / tmpArchiveName;
     auto writer = ArchiveWriter(tmpArchivePath);
     writer.Open();
     std::for_each(
@@ -150,6 +150,8 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
         [&](const auto &mps) { treat(root, mps, couplings, reader, writer); });
     writer.Close();
     writer.Delete();
+    std::filesystem::remove(archivePath);
+    std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
   } else {
     std::for_each(
         std::execution::par, mpsList.begin(), mpsList.end(),
@@ -157,6 +159,4 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
   }
   reader.Close();
   reader.Delete();
-  std::filesystem::remove(archivePath);
-  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
 }

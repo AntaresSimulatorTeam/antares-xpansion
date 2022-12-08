@@ -92,38 +92,3 @@ std::istringstream ArchiveReader::ExtractFileInStringStream(
   mz_zip_reader_entry_close(internalPointer_);
   return std::istringstream(std::string(buf.begin(), buf.end()));
 }
-
-void ArchiveReaderManager::SetMethods() {
-  methodClose = [this]() { return reader_.Close(); };
-  methodDelete = [this]() { reader_.Delete(); };
-
-  methodOpen = [this]() { return reader_.Open(); };
-
-  methodExtractFile = [this](const std::filesystem::path& FileToExtractPath) {
-    return reader_.ExtractFile(FileToExtractPath);
-  };
-
-  methodExtractFile2 = [this](const std::filesystem::path& FileToExtractPath,
-                              const std::filesystem::path& destination) {
-    return reader_.ExtractFile(FileToExtractPath, destination);
-  };
-
-  methodLocateEntry = [this](const std::filesystem::path& fileToExtractPath) {
-    reader_.LocateEntry(fileToExtractPath);
-  };
-
-  methodOpenEntry = [this](const std::filesystem::path& fileToExtractPath) {
-    reader_.OpenEntry(fileToExtractPath);
-  };
-
-  methodExtractFileInStringStream =
-      [this](const std::filesystem::path& FileToExtractPath) {
-        return reader_.ExtractFileInStringStream(FileToExtractPath);
-      };
-
-  methodArchivePath = [this]() { return reader_.ArchivePath(); };
-
-  methodSetArchivePath = [this](const std::filesystem::path& archive_path) {
-    reader_.SetArchivePath(archive_path);
-  };
-}
