@@ -9,6 +9,7 @@
 #include "CandidateLog.h"
 #include "Commons.h"
 #include "IterationResultLog.h"
+#include "Timer.h"
 
 using xpansion::logger::commons::indent_1;
 
