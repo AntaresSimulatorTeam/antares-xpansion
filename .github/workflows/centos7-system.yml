@@ -245,7 +245,7 @@ jobs:
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer"
+          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
