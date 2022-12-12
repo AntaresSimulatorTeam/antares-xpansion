@@ -9,12 +9,14 @@
 #include "AdditionalConstraints.h"
 #include "Candidate.h"
 #include "CandidatesINIReader.h"
+#include "Clock.h"
 #include "LauncherHelpers.h"
 #include "LinkProblemsGenerator.h"
 #include "LinkProfileReader.h"
 #include "MasterGeneration.h"
 #include "MasterProblemBuilder.h"
 #include "ProblemGenerationExeOptions.h"
+#include "Timer.h"
 #include "solver_utils.h"
 
 void RunProblemGeneration(
@@ -23,6 +25,10 @@ void RunProblemGeneration(
     std::filesystem::path archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
     const std::filesystem::path& log_file_path, bool zip_mps) {
+  (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
+      << "Launching Problem Generation" << std::endl;
+
+  Timer problem_generation_timer;
   ActiveLinksBuilder linkBuilder = get_link_builders(root, logger);
 
   if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
@@ -48,4 +54,7 @@ void RunProblemGeneration(
   MasterGeneration master_generation(root, links, additionalConstraints,
                                      couplings, master_formulation, solver_name,
                                      logger, log_file_path);
+  (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
+      << "Problem Generation ran in: "
+      << format_time_str(problem_generation_timer.elapsed()) << std::endl;
 }
