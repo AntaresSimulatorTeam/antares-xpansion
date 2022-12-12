@@ -134,4 +134,4 @@ class InputParser:
             params.allow_run_as_root = LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT()
 
         if params.zip_mps == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.allow_run_as_root = LauncherOptionsDefaultValues.DEFAULT_ZIP_MPS()
+            params.zip_mps = LauncherOptionsDefaultValues.DEFAULT_ZIP_MPS()
