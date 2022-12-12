@@ -171,7 +171,7 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        flushed_print(f"LPNamer command {self._get_lp_namer_command()}")
+
         returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
                                     stdout=sys.stdout, stderr=sys.stderr)
 
