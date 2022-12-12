@@ -208,7 +208,7 @@ class ProblemGeneratorDriver:
         ret = ["-o", str(self.xpansion_output_dir), "-a",
                str(self.output_path), "-f", is_relaxed]
         if self.zip_mps:
-            ret.append("--zip_mps")
+            ret.append("--zip-mps")
 
         if self.additional_constraints != "":
             ret.extend(["-e",
