@@ -171,13 +171,9 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-        start_time = datetime.now()
+
         returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
                                     stdout=sys.stdout, stderr=sys.stderr)
-
-        end_time = datetime.now()
-        flushed_print('Post antares step duration: {}'.format(
-            end_time - start_time))
 
         if returned_l.returncode != 0:
             raise ProblemGeneratorDriver.LPNamerExecutionError(

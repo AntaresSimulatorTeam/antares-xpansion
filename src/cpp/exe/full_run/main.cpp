@@ -13,7 +13,6 @@
 #include "ProblemGenerationLogger.h"
 #include "RunProblemGeneration.h"
 #include "StudyUpdateRunner.h"
-
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {

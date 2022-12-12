@@ -92,8 +92,8 @@ bool ProblemGenerationLogger::try_to_add_logger_to_enabled_list(
 }
 std::string ProblemGenerationLogger::PrefixMessage(
     const LOGLEVEL& log_level) const {
-  return LogLevelToStr(log_level) + clock_utils::timeToStr(std::time(nullptr)) +
-         ": ";
+  return std::string("[") + LogLevelToStr(log_level) +
+         clock_utils::timeToStr(std::time(nullptr)) + "] ";
 }
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     const LOGLEVEL log_level) {
