@@ -279,7 +279,7 @@ void BendersMpi::launch() {
 
   initialize_problems();
   _world.barrier();
-  if (Options().MPS_IN_ZIP && _world.rank() == rank_0) {
+  if (Options().MPS_IN_ZIP) {
     reader_.Close();
     reader_.Delete();
   }
