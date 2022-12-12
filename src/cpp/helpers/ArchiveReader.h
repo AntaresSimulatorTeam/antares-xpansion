@@ -1,6 +1,5 @@
 #ifndef _ARCHIVEREADER_H
 #define _ARCHIVEREADER_H
-#include <functional>
 #include <istream>
 #include <sstream>
 
