@@ -10,7 +10,6 @@ ArchiveWriter::ArchiveWriter(const std::filesystem::path& archivePath)
   Create();
   InitFileInfo();
 }
-// void* ArchiveWriter::InternalPointer() const { return mz_zip_reader; }
 ArchiveWriter::ArchiveWriter() : ArchiveIO() {
   Create();
   InitFileInfo();
