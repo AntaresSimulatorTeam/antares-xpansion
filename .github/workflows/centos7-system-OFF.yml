@@ -1,4 +1,4 @@
-name: Centos7 CI (bare docker image)
+name: Centos7 CI XPRESS-OFF(bare docker image)
 
 on:
   push:
@@ -107,15 +107,15 @@ jobs:
     needs: [ docker_publish, userguide, versions ]
     container: 'antaresrte/rte-antares:centos7-xpansion-bare'
     strategy:
-      matrix:
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
-    env:
-      XPRESSDIR: ${{ github.workspace }}/xpress
-      XPRESS: ${{ github.workspace }}/xpress/bin
-      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
-      XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
-      XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
-      XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
+      #matrix:
+      #  xprs: [ XPRESS-ON, XPRESS-OFF ]
+    # env:
+    #   XPRESSDIR: ${{ github.workspace }}/xpress
+    #   XPRESS: ${{ github.workspace }}/xpress/bin
+    #   XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+    #   XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
+    #   XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
+    #   XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
 
     steps:
       - id: branch-name
@@ -146,23 +146,23 @@ jobs:
           name: user-guide
           path: docs/
 
-      - name: Checkout xpressmp linux
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.AS_TOKEN }}
-          repository: rte-france/xpress-mp
-          path: ${{ env.XPRESSDIR }}
-          github-server-url: https://github.com
-        if: matrix.xprs == 'XPRESS-ON'
+      # - name: Checkout xpressmp linux
+      #   uses: actions/checkout@v3
+      #   with:
+      #     token: ${{ secrets.AS_TOKEN }}
+      #     repository: rte-france/xpress-mp
+      #     path: ${{ env.XPRESSDIR }}
+      #     github-server-url: https://github.com
+      #   if: matrix.xprs == 'XPRESS-ON'
 
       - name: Configure
         shell: bash
         run: |
-          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
-          export XPRESS_VALUE="ON"
-          else
+          # if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          # export XPRESS_VALUE="ON"
+          # else
           export XPRESS_VALUE="OFF"
-          fi
+          # fi
           source /opt/rh/devtoolset-9/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
@@ -175,7 +175,6 @@ jobs:
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                  -DXPRESS=${XPRESS_VALUE} \
-                 -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON
 
       - name: Build
@@ -190,11 +189,11 @@ jobs:
         id: single_file_name
         shell: bash
         run: |
-          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
-          WITH_XPRS="-xpress"
-          else
+          # if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          # WITH_XPRS="-xpress"
+          # else
           WITH_XPRS=""
-          fi
+          # fi
           VERSION=${{needs.versions.outputs.antares-xpansion-version}}${WITH_XPRS}
           echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
@@ -242,8 +241,8 @@ jobs:
         run: |
           source /etc/profile.d/modules.sh
           module load mpi
-          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
-          export XPRESS=${{ env.XPRESS_CONTAINER }}
+          # export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
+          # export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
