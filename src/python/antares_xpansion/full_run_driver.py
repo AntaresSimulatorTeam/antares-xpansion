@@ -33,9 +33,7 @@ class FullRunDriver:
         """
         # Pb Gen pre-step
         self.problem_generation_driver.clear_old_log()
-        # self.problem_generation_driver.output_path = output_path
 
-        # self.problem_generation_driver.create_lp_dir()
         self.problem_generation_driver.get_names()
 
         self.problem_generation_driver.is_relaxed = problem_generation_is_relaxed
