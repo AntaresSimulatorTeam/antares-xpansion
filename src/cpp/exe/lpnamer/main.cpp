@@ -56,7 +56,7 @@ int main(int argc, char **argv) {
         "master formulation (relaxed or integer)")(
         "exclusion-files,e",
         po::value<std::string>(&additionalConstraintFilename_l),
-        "path to exclusion files")("zip-mps,z", po::bool_switch(&zip_mps_),
+        "path to exclusion files")("zip-mps,z", po::bool_switch(&zip_mps),
                                    "mps files will be zipped");
 
     po::variables_map opts;

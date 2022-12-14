@@ -97,6 +97,7 @@ class BendersBase {
   }
   double GetBendersTime() const;
   virtual void write_basis() const;
+  BendersBaseOptions Options() const { return _options; }
 
  private:
   void print_csv_iteration(std::ostream &file, int ite);
