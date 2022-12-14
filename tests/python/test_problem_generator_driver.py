@@ -34,7 +34,7 @@ class TestProblemGeneratorDriver:
                                                         weight_file_name_for_lp="",
                                                         lp_namer_exe_path=Path(
                                                             ""),
-                                                        active_years=[])
+                                                        active_years=[], zip_mps=False)
 
     def test_problem_generator_data(self):
 
@@ -148,7 +148,8 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[])
+                                             active_years=[],
+                                             zip_mps=False)
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         output_zipped = get_zipped_output(tmp_path)
@@ -175,7 +176,8 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[])
+                                             active_years=[],
+                                             zip_mps=False)
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         output_zipped = get_zipped_output(tmp_path)
@@ -210,7 +212,8 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=Path(""),
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[])
+                                             active_years=[],
+                                             zip_mps=False)
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         output_zipped = get_zipped_output(tmp_path)
@@ -234,7 +237,8 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=weight_file_name,
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[])
+                                             active_years=[],
+                                             zip_mps=False)
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
 
@@ -258,7 +262,8 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=weight_file_name,
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[1, 2])
+                                             active_years=[1, 2],
+                                             zip_mps=False)
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         expected_message = f'file {str(file_path)} : all values are null'
@@ -281,7 +286,8 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=weight_file_name,
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[1, 2, 3])
+                                             active_years=[1, 2, 3],
+                                             zip_mps=False)
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         expected_message = f'file {str(file_path)} : invalid weight number : 4 values / 5 expected'
@@ -304,7 +310,8 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=file_path,
                                              weight_file_name_for_lp=weight_file_name,
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[1, 2])
+                                             active_years=[1, 2],
+                                             zip_mps=False)
 
         list_generated_files = self._get_expected_mps_txt(tmp_path)
         mps_files = [week_files[0] for week_files in list_generated_files]

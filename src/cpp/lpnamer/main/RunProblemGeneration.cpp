@@ -24,7 +24,7 @@ void RunProblemGeneration(
     const std::string& additionalConstraintFilename_l,
     std::filesystem::path archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-    const std::filesystem::path& log_file_path) {
+    const std::filesystem::path& log_file_path, bool zip_mps) {
   (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
 
@@ -48,7 +48,7 @@ void RunProblemGeneration(
   std::string solver_name = "CBC";
   std::vector<ActiveLink> links = linkBuilder.getLinks();
   LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
-                                              log_file_path);
+                                              log_file_path, zip_mps);
   linkProblemsGenerator.treatloop(root, archive_path, couplings);
 
   MasterGeneration master_generation(root, links, additionalConstraints,

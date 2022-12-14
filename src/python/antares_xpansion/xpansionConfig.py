@@ -37,6 +37,7 @@ class InputParameters:
     keep_mps: bool
     oversubscribe: bool
     allow_run_as_root: bool
+    zip_mps: bool
 
 
 class XpansionConfig:
@@ -84,6 +85,7 @@ class XpansionConfig:
         self.keep_mps = self.input_parameters.keep_mps
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
+        self.zip_mps = self.input_parameters.zip_mps
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -181,6 +183,7 @@ class XpansionConfig:
             OptimisationKeys.mps_zip_file_key(): self.mps_zip_file_default_value(),
             OptimisationKeys.separation_key(): self.separation_default_value(),
             OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
+            OptimisationKeys.mps_in_zip_key(): self.mps_in_zip_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -236,6 +239,9 @@ class XpansionConfig:
 
     def batch_size_default_value(self):
         return "0"
+
+    def mps_in_zip_default_value(self):
+        return False
 
     def _get_config_values(self):
 

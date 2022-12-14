@@ -3,7 +3,7 @@ from typing import List
 import subprocess
 import sys
 from antares_xpansion.benders_driver import BendersDriver
-from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
+from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.flushed_print import flushed_print
@@ -33,9 +33,7 @@ class FullRunDriver:
         """
         # Pb Gen pre-step
         self.problem_generation_driver.clear_old_log()
-        # self.problem_generation_driver.output_path = output_path
 
-        # self.problem_generation_driver.create_lp_dir()
         self.problem_generation_driver.get_names()
 
         self.problem_generation_driver.is_relaxed = problem_generation_is_relaxed

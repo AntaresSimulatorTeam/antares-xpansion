@@ -39,9 +39,10 @@ int main(int argc, char** argv) {
       auto master_formulation = options_parser.MasterFormulation();
       auto additionalConstraintFilename_l =
           options_parser.AdditionalConstraintsFilename();
+      auto zip_mps = options_parser.ZipMps();
       RunProblemGeneration(root, master_formulation,
                            additionalConstraintFilename_l, archive_path, logger,
-                           log_file_path);
+                           log_file_path, zip_mps);
 
     } catch (std::exception& e) {
       std::cerr << "error: " << e.what() << std::endl;

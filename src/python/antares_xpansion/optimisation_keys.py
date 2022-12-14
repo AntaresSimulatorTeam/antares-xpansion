@@ -98,3 +98,7 @@ class OptimisationKeys:
     @staticmethod
     def batch_size_key():
         return "BATCH_SIZE"
+
+    @staticmethod
+    def mps_in_zip_key():
+        return "MPS_IN_ZIP"

@@ -39,7 +39,8 @@ class XpansionDriver:
                                                                                     user_weights_file_path=self.config_loader.weights_file_path(),
                                                                                     weight_file_name_for_lp=self.config_loader.weight_file_name(),
                                                                                     lp_namer_exe_path=self.config_loader.lp_namer_exe(),
-                                                                                    active_years=self.config_loader.active_years
+                                                                                    active_years=self.config_loader.active_years,
+                                                                                    zip_mps=self.config_loader.zip_mps()
                                                                                     ))
 
         self.benders_driver = BendersDriver(

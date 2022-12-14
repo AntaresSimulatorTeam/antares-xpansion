@@ -9,6 +9,7 @@ class ProblemGenerationExeOptions : public OptionsParser {
   std::string master_formulation_;
   std::string additional_constraintFilename_l_;
   std::filesystem::path archive_path_;
+  bool zip_mps_ = false;
 
  public:
   ProblemGenerationExeOptions();
@@ -20,5 +21,6 @@ class ProblemGenerationExeOptions : public OptionsParser {
     return additional_constraintFilename_l_;
   }
   std::filesystem::path ArchivePath() const { return archive_path_; }
+  bool ZipMps() const { return zip_mps_; }
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H

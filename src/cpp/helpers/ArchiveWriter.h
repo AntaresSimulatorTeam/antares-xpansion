@@ -19,8 +19,6 @@ class ArchiveWriter : public ArchiveIO {
 
   int32_t Close() override;
   void Delete() override;
-  //   void* InternalPointer() const override;
-  //   void* handle() const override;
 
   int Open() override;
   void InitFileInfo();

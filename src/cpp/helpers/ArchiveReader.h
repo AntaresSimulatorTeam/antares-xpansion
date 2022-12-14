@@ -16,8 +16,6 @@ class ArchiveReader : public ArchiveIO {
 
   int32_t Close() override;
   void Delete() override;
-  //   void* InternalPointer() const override;
-  //   void* handle() const override;
 
   int Open() override;
   int32_t ExtractFile(const std::filesystem::path& FileToExtractPath);
@@ -28,4 +26,5 @@ class ArchiveReader : public ArchiveIO {
   std::istringstream ExtractFileInStringStream(
       const std::filesystem::path& FileToExtractPath);
 };
+
 #endif  // _ARCHIVEREADER_H

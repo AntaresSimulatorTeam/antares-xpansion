@@ -4,7 +4,6 @@
 #include <iomanip>
 #include <utility>
 
-#include "ArchiveReader.h"
 #include "Timer.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
@@ -20,7 +19,12 @@
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger logger, Writer writer)
-    : BendersBase(options, std::move(logger), std::move(writer)) {}
+    : BendersBase(options, std::move(logger), std::move(writer)) {
+  if (options.MPS_IN_ZIP) {
+    reader_.SetArchivePath(GetMpsZipPath());
+    reader_.Open();
+  }
+}
 
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
@@ -28,18 +32,19 @@ void BendersSequential::initialize_problems() {
   reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
                                 _data.nsubproblem, log_name(), IsResumeMode()));
-  auto reader = ArchiveReader(GetMpsZipPath());
-  reader.Open();
   for (const auto &problem : coupling_map) {
     const auto subProblemFilePath = GetSubproblemPath(problem.first);
-    reader.ExtractFile(subProblemFilePath.filename());
+
+    if (Options().MPS_IN_ZIP)
+      reader_.ExtractFile(subProblemFilePath.filename());
     addSubproblem(problem);
     AddSubproblemName(problem.first);
     std::filesystem::remove(subProblemFilePath);
   }
-
-  reader.Close();
-  reader.Delete();
+  if (Options().MPS_IN_ZIP) {
+    reader_.Close();
+    reader_.Delete();
+  }
 }
 
 /*!
