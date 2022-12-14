@@ -94,3 +94,7 @@ class OptimisationKeys:
     @staticmethod
     def separation_key():
         return "SEPARATION_PARAM"
+
+    @staticmethod
+    def mps_in_zip_key():
+        return "MPS_IN_ZIP"

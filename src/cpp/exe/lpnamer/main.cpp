@@ -42,6 +42,7 @@ int main(int argc, char **argv) {
     std::filesystem::path archivePath;
     std::string master_formulation;
     std::string additionalConstraintFilename_l;
+    bool zip_mps;
 
     po::options_description desc("Allowed options");
 
@@ -55,7 +56,8 @@ int main(int argc, char **argv) {
         "master formulation (relaxed or integer)")(
         "exclusion-files,e",
         po::value<std::string>(&additionalConstraintFilename_l),
-        "path to exclusion files");
+        "path to exclusion files")("zip-mps,z", po::bool_switch(&zip_mps_),
+                                   "mps files will be zipped");
 
     po::variables_map opts;
     po::store(po::parse_command_line(argc, argv, desc), opts);
@@ -100,9 +102,8 @@ int main(int argc, char **argv) {
     std::string solver_name = "CBC";
     std::vector<ActiveLink> links = linkBuilder.getLinks();
     LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
-                                                log_file_path);
+                                                log_file_path, zip_mps);
     linkProblemsGenerator.treatloop(root, archivePath, couplings);
-
 
     MasterGeneration master_generation(root, links, additionalConstraints,
                                        couplings, master_formulation,

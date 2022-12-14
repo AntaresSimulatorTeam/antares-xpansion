@@ -37,11 +37,12 @@ class LinkProblemsGenerator {
   LinkProblemsGenerator(
       const std::vector<ActiveLink>& links, const std::string& solver_name,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      const std::filesystem::path& log_file_path)
+      const std::filesystem::path& log_file_path, bool zip_mps)
       : _links(links),
         _solver_name(solver_name),
         logger_(logger),
-        log_file_path_(log_file_path) {}
+        log_file_path_(log_file_path),
+        zip_mps_(zip_mps) {}
 
   void treatloop(const std::filesystem::path& root,
                  const std::filesystem::path& archivePath,
@@ -52,6 +53,8 @@ class LinkProblemsGenerator {
       const std::filesystem::path& mps_filePath_p) const;
 
   void treat(const std::filesystem::path& root, ProblemData const&,
+             Couplings& couplings, ArchiveReader& reader) const;
+  void treat(const std::filesystem::path& root, ProblemData const&,
              Couplings& couplings, ArchiveReader& reader,
              ArchiveWriter& writer) const;
 
@@ -61,4 +64,5 @@ class LinkProblemsGenerator {
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   mutable std::mutex coupling_mutex_;
   std::filesystem::path log_file_path_;
+  bool zip_mps_ = false;
 };

@@ -53,8 +53,8 @@ std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
  */
 void LinkProblemsGenerator::treat(const std::filesystem::path &root,
                                   ProblemData const &problemData,
-                                  Couplings &couplings, ArchiveReader &reader,
-                                  ArchiveWriter &writer) const {
+                                  Couplings &couplings,
+                                  ArchiveReader &reader) const {
   // get path of file problem***.mps, variable***.txt and constraints***.txt
   auto const lp_mps_name = lpDir_ / problemData._problem_mps;
 
@@ -103,6 +103,23 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
   }
 
   in_prblm->write_prob_mps(lp_mps_name);
+}
+/**
+ * \brief That function create new optimization problems with new candidates
+ *
+ * \param root String corresponding to the path where are located input data
+ * \param mps Strings vector with  the list of mps files
+ * \param couplings map of pair of strings associated to an int. Determine the
+ * correspondence between optimizer variables and interconnection candidates
+ * \return void
+ */
+void LinkProblemsGenerator::treat(const std::filesystem::path &root,
+                                  ProblemData const &problemData,
+                                  Couplings &couplings, ArchiveReader &reader,
+                                  ArchiveWriter &writer) const {
+  // get path of file problem***.mps, variable***.txt and constraints***.txt
+  auto const lp_mps_name = lpDir_ / problemData._problem_mps;
+  treat(root, problemData, couplings, reader);
   writer.AddFileInArchive(lp_mps_name);
   std::filesystem::remove(lp_mps_name);
 }
@@ -122,18 +139,27 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
   lpDir_ = root / "lp";
   auto reader = ArchiveReader(archivePath);
   reader.Open();
-  const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
-  const auto tmpArchivePath = lpDir_ / tmpArchiveName;
-  auto writer = ArchiveWriter(tmpArchivePath);
-  writer.Open();
   auto mpsList = readMPSList(mps_file_name);
-  std::for_each(
-      std::execution::par, mpsList.begin(), mpsList.end(),
-      [&](const auto &mps) { treat(root, mps, couplings, reader, writer); });
-  reader.Close();
-  reader.Delete();
-  writer.Close();
-  writer.Delete();
-  std::filesystem::remove(archivePath);
-  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
+  if (zip_mps_) {
+    const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
+    const auto tmpArchivePath = lpDir_ / tmpArchiveName;
+    auto writer = ArchiveWriter(tmpArchivePath);
+    writer.Open();
+    std::for_each(
+        std::execution::par, mpsList.begin(), mpsList.end(),
+        [&](const auto &mps) { treat(root, mps, couplings, reader, writer); });
+    writer.Close();
+    writer.Delete();
+    reader.Close();
+    reader.Delete();
+    std::filesystem::remove(archivePath);
+    std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
+  } else {
+    std::for_each(
+        std::execution::par, mpsList.begin(), mpsList.end(),
+        [&](const auto &mps) { treat(root, mps, couplings, reader); });
+
+    reader.Close();
+    reader.Delete();
+  }
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ArchiveReader.h"
 #include "BendersBase.h"
 #include "common.h"
 #include "core/ILogger.h"
@@ -23,4 +24,7 @@ class BendersSequential : public BendersBase {
 
  private:
   [[nodiscard]] bool shouldParallelize() const final { return true; }
+
+ private:
+  ArchiveReader reader_;
 };

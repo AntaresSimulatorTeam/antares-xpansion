@@ -35,6 +35,7 @@ class InputParameters:
     keep_mps: bool
     oversubscribe: bool
     allow_run_as_root: bool
+    zip_mps: bool
 
 
 class XpansionConfig:
@@ -72,13 +73,15 @@ class XpansionConfig:
         self.step = self.input_parameters.step
         self.simulation_name = self.input_parameters.simulation_name
         self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
-        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
+        self.install_dir = self._get_install_dir(
+            self.input_parameters.install_dir)
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
         self.antares_n_cpu = self.input_parameters.antares_n_cpu
         self.keep_mps = self.input_parameters.keep_mps
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
+        self.zip_mps = self.input_parameters.zip_mps
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -174,6 +177,7 @@ class XpansionConfig:
             OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
             OptimisationKeys.mps_zip_file_key(): self.mps_zip_file_default_value(),
             OptimisationKeys.separation_key(): self.separation_default_value(),
+            OptimisationKeys.mps_in_zip_key(): self.mps_in_zip_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -226,6 +230,9 @@ class XpansionConfig:
 
     def separation_default_value(self):
         return "0.5"
+
+    def mps_in_zip_default_value(self):
+        return False
 
     def _get_config_values(self):
 

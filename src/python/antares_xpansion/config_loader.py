@@ -447,7 +447,8 @@ class ConfigLoader:
         options_values[
             OptimisationKeys.master_formulation_key()
         ] = self.get_master_formulation()
-        options_values[OptimisationKeys.separation_key()] = self.get_separation()
+        options_values[OptimisationKeys.separation_key()
+                       ] = self.get_separation()
         options_values[
             OptimisationKeys.max_iterations_key()
         ] = self.get_max_iterations()
@@ -467,6 +468,8 @@ class ConfigLoader:
             OptimisationKeys.last_mps_master_name_key()
         ] = self._config.LAST_MASTER_MPS
         options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
+        options_values[OptimisationKeys.mps_in_zip_key()
+                       ] = self.zip_mps()
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)
@@ -676,3 +679,6 @@ class ConfigLoader:
     def check_NTC_column_constraints(self, antares_version):
         checker = ChronicleChecker(self._config.data_dir, antares_version)
         checker.CheckChronicleConstraints()
+
+    def zip_mps(self):
+        return self._config.zip_mps

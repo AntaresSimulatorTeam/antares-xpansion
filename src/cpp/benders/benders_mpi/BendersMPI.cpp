@@ -13,8 +13,10 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
     : BendersBase(options, logger, std::move(writer)),
       _env(env),
       _world(world) {
-  reader_.SetArchivePath(GetMpsZipPath());
-  reader_.Open();
+  if (options.MPS_IN_ZIP) {
+    reader_.SetArchivePath(GetMpsZipPath());
+    reader_.Open();
+  }
 }
 
 /*!
@@ -46,7 +48,8 @@ void BendersMpi::initialize_problems() {
               .rank()) {  // Assign  [problemNumber % processCount] to processID
 
         const auto subProblemFilePath = GetSubproblemPath(problem.first);
-        reader_.ExtractFile(subProblemFilePath.filename());
+        if (Options().MPS_IN_ZIP)
+          reader_.ExtractFile(subProblemFilePath.filename());
         addSubproblem(problem);
         AddSubproblemName(problem.first);
         std::filesystem::remove(subProblemFilePath);
@@ -284,7 +287,7 @@ void BendersMpi::launch() {
 
   initialize_problems();
   _world.barrier();
-  if (_world.rank() == rank_0) {
+  if (Options().MPS_IN_ZIP) {
     reader_.Close();
     reader_.Delete();
   }

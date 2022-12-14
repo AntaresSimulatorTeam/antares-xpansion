@@ -6,7 +6,6 @@ ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
   Create();
 }
-// void* ArchiveReader::InternalPointer() const { return mz_zip_reader; }
 ArchiveReader::ArchiveReader() : ArchiveIO() { Create(); }
 void ArchiveReader::Create() { mz_zip_reader_create(&internalPointer_); }
 

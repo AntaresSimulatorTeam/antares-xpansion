@@ -9,5 +9,6 @@
      "STRUCTURE_FILE": "structure.txt",
      "INPUTROOT": ".",
      "SOLVER": "XPRESS",
-     "JSON_FILE": "./expansion/out.json"
+     "JSON_FILE": "./expansion/out.json",
+     "MPS_IN_ZIP":  true
 }
