@@ -5,7 +5,6 @@
 
 #include <filesystem>
 
-#include "BendersMPI.h"
 #include "BendersSequential.h"
 #include "LoggerFactories.h"
 #include "StartUp.h"

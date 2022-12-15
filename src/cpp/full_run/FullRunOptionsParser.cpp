@@ -17,11 +17,13 @@ void FullRunOptionsParser::Parse(unsigned int argc, const char* const* argv) {
 }
 void FullRunOptionsParser::SetMethod() {
   if (method_str_ == "sequential") {
-    method_ = METHOD::SEQUENTIAL;
+    method_ = BENDERSMETHOD::SEQUENTIAL;
   } else if (method_str_ == "mpibenders") {
-    method_ = METHOD::MPI;
+    method_ = BENDERSMETHOD::MPI;
+  } else if (method_str_ == "benders_by_batch") {
+    method_ = BENDERSMETHOD::BENDERSBYBATCH;
   } else if (method_str_ == "mergeMPS") {
-    method_ = METHOD::MERGEMPS;
+    method_ = BENDERSMETHOD::MERGEMPS;
   } else {
     throw FullRunOptionsParser::FullRunOptionInvalidMethod(method_str_);
   }

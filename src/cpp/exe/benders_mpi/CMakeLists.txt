@@ -29,6 +29,7 @@ endif ()
 #ELSE (WIN32)
 	target_link_libraries (bendersmpi
 			${PROJECT_NAME}::benders_mpi_core
+			factories
 			)
 #ENDIF (WIN32)
 

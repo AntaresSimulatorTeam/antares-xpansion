@@ -4,8 +4,7 @@
 #include <filesystem>
 #include <string>
 
-#define BENDERSMPIMAIN
-
+#include "BendersMPI.h"
 int BendersMpiMain(int argc, char** argv, boost::mpi::environment& env,
                    boost::mpi::communicator& world);
 int BendersMpiMain(int argc, char** argv,
