@@ -5,11 +5,6 @@ add_library (factories
         )
 
 if (USE_MPI)
-	find_package(MPI REQUIRED)
-	if (MPI_FOUND)
-		message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
-		set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-	endif (MPI_FOUND)
 	target_link_libraries (factories
 		PUBLIC
 		${PROJECT_NAME}::benders_mpi_core)

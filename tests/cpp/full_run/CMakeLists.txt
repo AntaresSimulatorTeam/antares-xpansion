@@ -1,7 +1,12 @@
 add_executable (full_run_tests
 		FullRunTest.cpp)
 
-
+if (USE_MPI)
+	target_link_libraries (full_run_tests
+		PRIVATE
+		${PROJECT_NAME}::benders_mpi_core
+)
+endif ()
 
 target_link_libraries (full_run_tests
 		PRIVATE
