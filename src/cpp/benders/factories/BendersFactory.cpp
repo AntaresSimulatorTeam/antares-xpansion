@@ -97,7 +97,6 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
   }
 
   options_file_ = std::filesystem::path(argv_[1]);
-  //   return RunMpi(argv, argv[1], env, world);
 }
 BendersMainFactory::BendersMainFactory(
     int argc, char** argv, const BENDERSMETHOD& method,
@@ -170,10 +169,12 @@ BendersMainFactory::BendersMainFactory(
 }
 int BendersMainFactory::Run() const {
 #ifdef __BENDERSMPI__
-  if (method_ == BENDERSMETHOD::MPI) {
-    return RunMpi(argv_, options_file_, *penv_, *pworld_);
-  } else if (pworld_->rank() == 0) {
+
+  if (pworld_ == nullptr ||
+      (pworld_->rank() == 0 && method_ != BENDERSMETHOD::MPI)) {
     return RunSequential(argv_, options_file_, method_);
+  } else {
+    return RunMpi(argv_, options_file_, *penv_, *pworld_);
   }
 #else
   return RunSequential(argv_, options_file_, method_);
