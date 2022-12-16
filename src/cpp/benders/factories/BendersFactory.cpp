@@ -87,13 +87,10 @@ int RunMpi(char** argv, const std::filesystem::path& options_file,
 }
 
 BendersMainFactory::BendersMainFactory(int argc, char** argv,
+                                       const BENDERSMETHOD& method,
                                        mpi::environment& env,
                                        mpi::communicator& world)
-    : argc_(argc),
-      argv_(argv),
-      method_(BENDERSMETHOD::MPI),
-      penv_(&env),
-      pworld_(&world) {
+    : argc_(argc), argv_(argv), method_(method), penv_(&env), pworld_(&world) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
@@ -103,11 +100,12 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
   //   return RunMpi(argv, argv[1], env, world);
 }
 BendersMainFactory::BendersMainFactory(
-    int argc, char** argv, const std::filesystem::path& options_file,
-    mpi::environment& env, mpi::communicator& world)
+    int argc, char** argv, const BENDERSMETHOD& method,
+    const std::filesystem::path& options_file, mpi::environment& env,
+    mpi::communicator& world)
     : argc_(argc),
       argv_(argv),
-      method_(BENDERSMETHOD::MPI),
+      method_(method),
       options_file_(options_file),
       penv_(&env),
       pworld_(&world) {
@@ -165,8 +163,8 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
   options_file_ = std::filesystem::path(argv_[1]);
 }
 BendersMainFactory::BendersMainFactory(
-    int argc, char** argv, const std::filesystem::path& options_file,
-    const BENDERSMETHOD& method)
+    int argc, char** argv, const BENDERSMETHOD& method,
+    const std::filesystem::path& options_file)
     : argc_(argc), argv_(argv), method_(method), options_file_(options_file) {
   usage(argc);
 }
@@ -175,7 +173,6 @@ int BendersMainFactory::Run() const {
   if (method_ == BENDERSMETHOD::MPI) {
     return RunMpi(argv_, options_file_, *penv_, *pworld_);
   } else if (pworld_->rank() == 0) {
-    std::cout << "launching method\n";
     return RunSequential(argv_, options_file_, method_);
   }
 #else

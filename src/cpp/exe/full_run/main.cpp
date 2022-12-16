@@ -57,23 +57,12 @@ int main(int argc, char** argv) {
 
 #ifdef __BENDERSMPI__
   world.barrier();
-  if (benders_method == BENDERSMETHOD::MPI) {
-    auto benders_factory =
-        BendersMainFactory(argc_, argv, options_file, env, world);
-    benders_factory.Run();
-  } else {
-    if (world.rank() == 0) {
-      std::cout << "argv[0]: " << argv[0] << "\n";
-      std::cout << "argv[1]: " << argv[1] << "\n";
-      std::cout << "argv[2]: " << argv[2] << "\n";
-      auto benders_factory =
-          BendersMainFactory(argc_, argv, options_file, benders_method);
-      benders_factory.Run();
-    }
-  }
+  auto benders_factory =
+      BendersMainFactory(argc_, argv, benders_method, options_file, env, world);
+  benders_factory.Run();
 #else
   auto benders_factory =
-      BendersMainFactory(argc_, argv, options_file, benders_method);
+      BendersMainFactory(argc_, argv, benders_method, options_file);
   benders_factory.Run();
 #endif
 

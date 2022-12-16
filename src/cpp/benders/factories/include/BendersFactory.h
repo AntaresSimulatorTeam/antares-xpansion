@@ -32,15 +32,17 @@ class BendersMainFactory {
   explicit BendersMainFactory(int argc, char** argv,
                               const BENDERSMETHOD& method);
   explicit BendersMainFactory(int argc, char** argv,
-                              const std::filesystem::path& options_file,
-                              const BENDERSMETHOD& method);
+                              const BENDERSMETHOD& method,
+                              const std::filesystem::path& options_file);
 #ifdef __BENDERSMPI__
   boost::mpi::environment* penv_ = nullptr;
   boost::mpi::communicator* pworld_ = nullptr;
   explicit BendersMainFactory(int argc, char** argv,
+                              const BENDERSMETHOD& method,
                               boost::mpi::environment& env,
                               boost::mpi::communicator& world);
   explicit BendersMainFactory(int argc, char** argv,
+                              const BENDERSMETHOD& method,
                               const std::filesystem::path& options_file,
                               boost::mpi::environment& env,
                               boost::mpi::communicator& world);
