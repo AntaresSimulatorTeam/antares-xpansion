@@ -77,8 +77,10 @@ class ConfigLoader:
         if not self._config.simulation_name:
             raise ConfigLoader.MissingSimulationName(
                 "Missing argument simulationName")
+        elif self._config.simulation_name == "last":
+            self._simulation_name = self._config.simulation_name
 
-        elif self._config.simulation_name != "last":
+        else:
             tmp_zip = Path(self.antares_output()) / \
                 self._config.simulation_name
             if self.is_zip(tmp_zip):
