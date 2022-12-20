@@ -11,6 +11,15 @@ class WeightsFileReaderTest : public ::testing::Test {
 };
 
 TEST_F(WeightsFileReaderTest, FailsIfWeightsFileDoesNotExist) {
-  auto weights_file_reader = WeightsFileReader("", {}, logger_);
-  ASSERT_FALSE(weights_file_reader.CheckWeightsFile());
+  const auto invalid_path = "";
+  auto weights_file_reader = WeightsFileReader(invalid_path, {}, logger_);
+  std::ostringstream expectedErrorString;
+  expectedErrorString << "Could not open weights file: " << invalid_path
+                      << std::endl;
+
+  try {
+    weights_file_reader.CheckWeightsFile();
+  } catch (const WeightsFileReader::WeightsFileOpenError& e) {
+    EXPECT_EQ(e.what(), expectedErrorString.str());
+  }
 }
