@@ -16,6 +16,8 @@ add_library (lp_namer_input_reader STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/LinkProfileReader.h
 	${CMAKE_CURRENT_SOURCE_DIR}/VariableFileReader.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/VariableFileReader.h
+	${CMAKE_CURRENT_SOURCE_DIR}/WeightsFileReader.h
+	${CMAKE_CURRENT_SOURCE_DIR}/WeightsFileReader.cpp
     )
 
 target_include_directories (lp_namer_input_reader
