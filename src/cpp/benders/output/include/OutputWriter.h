@@ -18,7 +18,8 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
     OVERALL_COST_C("overall_cost"), RELATIVE_GAP_C("relative_gap"), UB_C("ub"),
     NBWEEKS_C("nbWeeks"), OPTIONS_C("options"), SOLUTION_C("solution"),
     ITERATION_C("iteration"), PROBLEM_STATUS_C("problem_status"),
-    STATUS_OPTIMAL_C("OPTIMAL"), STATUS_ERROR_C("ERROR"), VALUES_C("values"),
+    STATUS_OPTIMAL_C("OPTIMAL"), STATUS_LIMIT_REACHED_C("limit reached"),
+    STATUS_ERROR_C("ERROR"), VALUES_C("values"),
     STOPPING_CRITERION_C("stopping_criterion"), MASTER_NAME_C("MASTER_NAME"),
     LOG_LEVEL_C("LOG_LEVEL"), SOLVER_NAME_C("SOLVER_NAME");
 struct CandidateData {

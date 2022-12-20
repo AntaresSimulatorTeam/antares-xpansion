@@ -575,10 +575,10 @@ std::string BendersBase::status_from_criterion() const {
   switch (_data.stopping_criterion) {
     case StoppingCriterion::absolute_gap:
     case StoppingCriterion::relative_gap:
+      return Output::STATUS_OPTIMAL_C;
     case StoppingCriterion::max_iteration:
     case StoppingCriterion::timelimit:
-      return Output::STATUS_OPTIMAL_C;
-
+      return Output::STATUS_LIMIT_REACHED_C;
     default:
       return Output::STATUS_ERROR_C;
   }
