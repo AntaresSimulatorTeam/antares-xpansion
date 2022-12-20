@@ -1,6 +1,8 @@
 """
     launches the execution of the antares xpansion c++ module
 """
+from datetime import datetime
+import json
 from pathlib import Path
 
 from antares_xpansion.study_locker import StudyLocker
@@ -29,6 +31,7 @@ flushed_print(f"antares simulator version: {__antares_simulator_version__}")
 flushed_print(
     "----------------------------------------------------------------")
 
+start_time = datetime.now()
 
 locker = StudyLocker(Path(input_parameters.data_dir))
 locker.lock()
@@ -37,6 +40,18 @@ config_loader = ConfigLoader(CONFIG)
 DRIVER = XpansionDriver(config_loader)
 
 DRIVER.launch()
-flushed_print("Xpansion Finished.")
+end_time = datetime.now()
 
+xpansion_total_duration = end_time - start_time
+
+flushed_print('Xpansion duration : {}'.format(
+    xpansion_total_duration))
+flushed_print("Xpansion Finished.")
+# output_json_file = config_loader.json_file_path()
+# with open(config_loader.json_file_path(), "r+") as json_file:
+#     output_file_content = json.load(json_file)
+#     output_file_content["antares_xpansion"]["Xpansion total duration"] = str(
+#         xpansion_total_duration)
+#     json_file.seek(0)
+#     json.dump(output_file_content, json_file, indent=4)
 locker.unlock()
