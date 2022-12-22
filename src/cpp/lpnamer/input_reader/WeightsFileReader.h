@@ -1,8 +1,8 @@
 #ifndef SRC_CPP_LPNAMER_INPUTREADER_WEIGHTSFILEREADER_H
 #define SRC_CPP_LPNAMER_INPUTREADER_WEIGHTSFILEREADER_H
 #include <filesystem>
-#include <set>
 #include <stdexcept>
+#include <vector>
 
 #include "ProblemGenerationLogger.h"
 template <std::ctype_base::mask mask>
@@ -26,12 +26,14 @@ class WeightsFileReader {
   int number_of_active_years_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   bool null_weights = true;
+  std::vector<int> weights_list_;
 
   int CountValues() const;
   bool AreAllWeightsNull() const;
-  double GetLineValue(const std::string& line, int idx) const;
+  double GetWeightFromLine(const std::string& line, int idx) const;
   void CheckValue(const double line, int idx);
   void CheckFileIsNotEmpty(std::ifstream& file) const;
+  std::vector<int> WeightsList() const { return weights_list_; }
 
  public:
   explicit WeightsFileReader(

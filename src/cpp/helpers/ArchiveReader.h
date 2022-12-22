@@ -25,6 +25,8 @@ class ArchiveReader : public ArchiveIO {
   void OpenEntry(const std::filesystem::path& fileToExtractPath);
   std::istringstream ExtractFileInStringStream(
       const std::filesystem::path& FileToExtractPath);
+  uint64_t GetNumberOfEntries();
+  std::string GetEntryFileName(const int64_t pos);
 };
 
 #endif  // _ARCHIVEREADER_H

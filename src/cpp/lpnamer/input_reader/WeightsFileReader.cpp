@@ -23,14 +23,16 @@ bool WeightsFileReader::CheckWeightsFile() {
     throw WeightsFileOpenError(msg.str());
   }
   CheckFileIsNotEmpty(file_reader);
+  weights_list_.clear();
   null_weights = true;
   int nb_values = 0;
   int idx = 0;
   std::string line;
   while (std::getline(file_reader, line)) {
-    auto line_value = GetLineValue(line, idx);
+    auto weight = GetWeightFromLine(line, idx);
     nb_values += 1;
-    CheckValue(line_value, idx);
+    CheckValue(weight, idx);
+    weights_list_.push_back(weight);
     idx++;
   }
 
@@ -52,10 +54,11 @@ bool WeightsFileReader::CheckWeightsFile() {
   return true;
 }
 
-double WeightsFileReader::GetLineValue(const std::string &line, int idx) const {
-  double line_value;
+double WeightsFileReader::GetWeightFromLine(const std::string &line,
+                                            int idx) const {
+  double weight;
   try {
-    line_value = std::stod(trim(line));
+    weight = std::stod(trim(line));
   } catch (const std::invalid_argument &e) {
     std::ostringstream msg;
     msg << "Line " << idx << " in file " << weights_file_path_.string()
@@ -63,7 +66,7 @@ double WeightsFileReader::GetLineValue(const std::string &line, int idx) const {
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw InvalidYearsWeightValue(msg.str());
   }
-  return line_value;
+  return weight;
 }
 void WeightsFileReader::CheckValue(const double value, const int index) {
   if (value > 0) {

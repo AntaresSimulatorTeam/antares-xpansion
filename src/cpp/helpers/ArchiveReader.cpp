@@ -15,7 +15,7 @@ int32_t ArchiveReader::Open() {
   if (err != MZ_OK) {
     Close();
     Delete();
-    std::stringstream errMsg;
+    std::ostringstream errMsg;
     errMsg << "Open Archive: " << ArchivePath().string() << std::endl;
     throw ArchiveIOGeneralException(err, errMsg.str());
   }
@@ -54,7 +54,7 @@ void ArchiveReader::LocateEntry(
   if (err != MZ_OK) {
     Close();
     Delete();
-    std::stringstream errMsg;
+    std::ostringstream errMsg;
     errMsg << "File : " << fileToExtractPath.string().c_str()
            << " is not found in archive :" << ArchivePath().c_str()
            << std::endl;
@@ -66,7 +66,7 @@ void ArchiveReader::OpenEntry(const std::filesystem::path& fileToExtractPath) {
   if (err != MZ_OK) {
     Close();
     Delete();
-    std::stringstream errMsg;
+    std::ostringstream errMsg;
     errMsg << "open " << fileToExtractPath.string()
            << " in archive :" << ArchivePath().string() << std::endl;
     throw ArchiveIOGeneralException(err, errMsg.str());
@@ -83,11 +83,46 @@ std::istringstream ArchiveReader::ExtractFileInStringStream(
   if (err != MZ_OK) {
     Close();
     Delete();
-    std::stringstream errMsg;
+    std::ostringstream errMsg;
     errMsg << "Extract file " << FileToExtractPath.string()
            << "in archive: " << ArchivePath().string() << std::endl;
     throw ArchiveIOGeneralException(err, errMsg.str());
   }
   mz_zip_reader_entry_close(internalPointer_);
   return std::istringstream(std::string(buf.begin(), buf.end()));
+}
+
+uint64_t ArchiveReader::GetNumberOfEntries() {
+  uint64_t number_entry = 0;
+  auto err = mz_zip_get_number_entry(internalPointer_, &number_entry);
+  if (err != MZ_OK) {
+    Close();
+    Delete();
+    std::ostringstream msg;
+    msg << "get the number of entries" << std::endl;
+    throw ArchiveIOGeneralException(err, msg.str());
+  }
+  return number_entry;
+}
+
+std::string ArchiveReader::GetEntryFileName(const int64_t pos) {
+  auto err = mz_zip_goto_entry(internalPointer_, 0);
+  if (err != MZ_OK) {
+    Close();
+    Delete();
+    std::ostringstream msg;
+    msg << "find entry at position: " << pos << std::endl;
+    throw ArchiveIOGeneralException(err, msg.str());
+  }
+
+  mz_zip_file* file_info = NULL;
+  err = mz_zip_entry_get_info(internalPointer_, &file_info);
+  if (err != MZ_OK) {
+    Close();
+    Delete();
+    std::ostringstream msg;
+    msg << "get entry info at position: " << pos << std::endl;
+    throw ArchiveIOGeneralException(err, msg.str());
+  }
+  return file_info->filename;
 }
