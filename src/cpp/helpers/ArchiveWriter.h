@@ -8,8 +8,8 @@
 
 class ArchiveWriter : public ArchiveIO {
  private:
-  void* internalPointer_ = NULL;
-  void* handle_ = NULL;
+  void* pmz_zip_writer_instance_ = NULL;
+  void* pzip_handle_ = NULL;
   void Create() override;
   mz_zip_file fileInfo_ = {0};
 

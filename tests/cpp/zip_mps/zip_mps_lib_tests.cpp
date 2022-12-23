@@ -25,7 +25,7 @@ data/mps_zip/archive1
 
 */
 
-const auto mpsZipDir = std::filesystem::path ("data_test") / "mps_zip";
+const auto mpsZipDir = std::filesystem::path("data_test") / "mps_zip";
 const auto archive1 = mpsZipDir / "archive1.zip";
 const auto archive1Dir = mpsZipDir / "archive1";
 const auto archive1File1 = archive1Dir / "file1";
@@ -48,7 +48,7 @@ TEST_F(ArchiveReaderTest, ShouldFailIfInvalidFileIsGiven) {
                              " (" + std::to_string(MZ_OK) + " expected)";
 
   try {
-    auto fileExt = ArchiveReader(invalid_file_path);
+    auto archive_reader = ArchiveReader(invalid_file_path);
   } catch (const ArchiveIOGeneralException& e) {
     EXPECT_EQ(e.what(), expectedErrorString.str());
   }
@@ -66,15 +66,30 @@ bool equal_files(const std::filesystem::path& a,
   return file1 == file2;
 }
 TEST_F(ArchiveReaderTest, ShouldExtractFile1FromArchive1) {
-  auto fileExt = ArchiveReader(archive1);
-  ASSERT_EQ(fileExt.Open(), MZ_OK);
+  auto archive_reader = ArchiveReader(archive1);
+  ASSERT_EQ(archive_reader.Open(), MZ_OK);
   const auto tmpDir = std::filesystem::temp_directory_path();
   const auto expectedFilePath = tmpDir / archive1File1.filename();
-  ASSERT_EQ(fileExt.ExtractFile(archive1File1.filename(), tmpDir), MZ_OK);
+  ASSERT_EQ(archive_reader.ExtractFile(archive1File1.filename(), tmpDir),
+            MZ_OK);
   ASSERT_TRUE(std::filesystem::exists(expectedFilePath));
   ASSERT_TRUE(equal_files(expectedFilePath, archive1File1));
-  ASSERT_EQ(fileExt.Close(), MZ_OK);
-  fileExt.Delete();
+  ASSERT_EQ(archive_reader.Close(), MZ_OK);
+  archive_reader.Delete();
+}
+TEST_F(ArchiveReaderTest, ShouldReturnNumberOfFilesInGivenArchive) {
+  auto archive_reader = ArchiveReader(archive1);
+  ASSERT_EQ(archive_reader.Open(), MZ_OK);
+  ASSERT_EQ(archive_reader.GetNumberOfEntries(), 3);
+  ASSERT_EQ(archive_reader.Close(), MZ_OK);
+  archive_reader.Delete();
+}
+TEST_F(ArchiveReaderTest, ShouldCorrectFileName) {
+  auto archive_reader = ArchiveReader(archive1);
+  ASSERT_EQ(archive_reader.Open(), MZ_OK);
+  ASSERT_TRUE(archive_reader.GetEntryFileName(0) == archive1File1);
+  ASSERT_EQ(archive_reader.Close(), MZ_OK);
+  archive_reader.Delete();
 }
 class ArchiveWriterTest : public ::testing::Test {
  public:
@@ -101,11 +116,11 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   const auto& archive_path_str = archivePath.string();
   auto archive_path_c_str = archive_path_str.c_str();
   assert(mz_zip_reader_open_file(reader, archive_path_c_str) == MZ_OK);
-  //assert(mz_zip_reader_entry_open(reader) == MZ_OK);
+  // assert(mz_zip_reader_entry_open(reader) == MZ_OK);
 
-  for (const auto &file : std::filesystem::directory_iterator(dirPath)) {
-    const auto &filename_path = file.path().filename();
-    const auto &filename_str = filename_path.string();
+  for (const auto& file : std::filesystem::directory_iterator(dirPath)) {
+    const auto& filename_path = file.path().filename();
+    const auto& filename_str = filename_path.string();
     const auto searchFilename = filename_str.c_str();
     assert(mz_zip_reader_locate_entry(reader, searchFilename, 1) == MZ_OK);
     assert(mz_zip_reader_entry_open(reader) == MZ_OK);

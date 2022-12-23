@@ -15,7 +15,7 @@ ArchiveWriter::ArchiveWriter() : ArchiveIO() {
   InitFileInfo();
 }
 
-void ArchiveWriter::Create() { mz_zip_writer_create(&internalPointer_); }
+void ArchiveWriter::Create() { mz_zip_writer_create(&pmz_zip_writer_instance_); }
 void ArchiveWriter::InitFileInfo() {
   fileInfo_.compression_method = MZ_COMPRESS_METHOD_DEFLATE;
   fileInfo_.flag = MZ_ZIP_FLAG_UTF8;
@@ -23,7 +23,7 @@ void ArchiveWriter::InitFileInfo() {
 int32_t ArchiveWriter::Open() {
   // disk-spanning is disabled, meaning that only one file is created
   const auto err =
-      mz_zip_writer_open_file(internalPointer_, ArchivePath().string().c_str(),
+      mz_zip_writer_open_file(pmz_zip_writer_instance_, ArchivePath().string().c_str(),
                               0 /* disk-spanning disabled */, 1 /* append */);
   if (err != MZ_OK) {
     Close();
@@ -34,14 +34,14 @@ int32_t ArchiveWriter::Open() {
   }
   return err;
 }
-int32_t ArchiveWriter::Close() { return mz_zip_writer_close(internalPointer_); }
-void ArchiveWriter::Delete() { mz_zip_writer_delete(&internalPointer_); }
+int32_t ArchiveWriter::Close() { return mz_zip_writer_close(pmz_zip_writer_instance_); }
+void ArchiveWriter::Delete() { mz_zip_writer_delete(&pmz_zip_writer_instance_); }
 
 int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
   std::unique_lock lock(mutex_);
   fileInfo_.filename = FileBufferToAdd.fname.c_str();
   fileInfo_.creation_date = std::time(0);
-  int32_t err = mz_zip_writer_entry_open(internalPointer_, &fileInfo_);
+  int32_t err = mz_zip_writer_entry_open(pmz_zip_writer_instance_, &fileInfo_);
   if (err != MZ_OK) {
     Close();
     Delete();
@@ -51,7 +51,7 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
     throw ArchiveIOGeneralException(err, errMsg.str());
   }
   const auto len = FileBufferToAdd.buffer.size();
-  auto bw = mz_zip_writer_entry_write(internalPointer_,
+  auto bw = mz_zip_writer_entry_write(pmz_zip_writer_instance_,
                                       FileBufferToAdd.buffer.c_str(), len);
   if (bw != len) {
     Close();
@@ -61,7 +61,7 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
            << "data to be read got" << bw << std::endl;
     throw ArchiveIOSpecificException(err, errMsg.str());
   }
-  err = mz_zip_writer_entry_close(internalPointer_);
+  err = mz_zip_writer_entry_close(pmz_zip_writer_instance_);
   if (MZ_OK != err) {
     Close();
     Delete();
@@ -77,7 +77,7 @@ int32_t ArchiveWriter::AddFileInArchive(
     const std::filesystem::path& FileToAdd) {
   std::unique_lock lock(mutex_);
   auto err =
-      mz_zip_writer_add_file(internalPointer_, FileToAdd.string().c_str(),
+      mz_zip_writer_add_file(pmz_zip_writer_instance_, FileToAdd.string().c_str(),
                              FileToAdd.filename().string().c_str());
   if (err != MZ_OK) {
     Close();
