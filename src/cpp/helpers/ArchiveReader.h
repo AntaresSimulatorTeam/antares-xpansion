@@ -6,8 +6,8 @@
 #include "ArchiveIO.h"
 class ArchiveReader : public ArchiveIO {
  private:
-  void* internalPointer_ = NULL;
-  void* handle_ = NULL;
+  void* pmz_zip_reader_instance_ = NULL;
+  void* pzip_handle_ = NULL;
   void Create() override;
 
  public:
