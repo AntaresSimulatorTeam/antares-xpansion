@@ -2,13 +2,17 @@
 #define _ARCHIVEREADER_H
 #include <istream>
 #include <sstream>
+#include <string>
+#include <vector>
 
 #include "ArchiveIO.h"
 class ArchiveReader : public ArchiveIO {
  private:
   void* pmz_zip_reader_instance_ = NULL;
   void* pzip_handle_ = NULL;
+  std::vector<std::filesystem::path> entries_path_;
   void Create() override;
+  std::filesystem::path CurrentEntryPath();
 
  public:
   explicit ArchiveReader(const std::filesystem::path& archivePath);
@@ -26,7 +30,10 @@ class ArchiveReader : public ArchiveIO {
   std::istringstream ExtractFileInStringStream(
       const std::filesystem::path& FileToExtractPath);
   uint64_t GetNumberOfEntries();
-  std::string GetEntryFileName(const int64_t pos);
+  std::vector<std::filesystem::path> EntriesPath() const {
+    return entries_path_;
+  }
+  void SetEntriesPath();
 };
 
 #endif  // _ARCHIVEREADER_H
