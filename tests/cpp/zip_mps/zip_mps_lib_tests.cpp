@@ -5,6 +5,7 @@
 #include <mz_zip.h>
 #include <mz_zip_rw.h>
 
+#include <algorithm>
 #include <fstream>
 #include <iterator>
 
@@ -84,10 +85,13 @@ TEST_F(ArchiveReaderTest, ShouldReturnNumberOfFilesInGivenArchive) {
   ASSERT_EQ(archive_reader.Close(), MZ_OK);
   archive_reader.Delete();
 }
-TEST_F(ArchiveReaderTest, ShouldCorrectFileName) {
+TEST_F(ArchiveReaderTest, Shouldfindarchive1File2) {
   auto archive_reader = ArchiveReader(archive1);
   ASSERT_EQ(archive_reader.Open(), MZ_OK);
-  ASSERT_TRUE(archive_reader.GetEntryFileName(0) == archive1File1);
+  archive_reader.SetEntriesPath();
+  auto file_names_vect = archive_reader.EntriesPath();
+  ASSERT_TRUE(std::find(file_names_vect.begin(), file_names_vect.end(),
+                        archive1File2.filename()) != file_names_vect.end());
   ASSERT_EQ(archive_reader.Close(), MZ_OK);
   archive_reader.Delete();
 }
@@ -116,7 +120,6 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   const auto& archive_path_str = archivePath.string();
   auto archive_path_c_str = archive_path_str.c_str();
   assert(mz_zip_reader_open_file(reader, archive_path_c_str) == MZ_OK);
-  // assert(mz_zip_reader_entry_open(reader) == MZ_OK);
 
   for (const auto& file : std::filesystem::directory_iterator(dirPath)) {
     const auto& filename_path = file.path().filename();

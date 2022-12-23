@@ -122,25 +122,44 @@ uint64_t ArchiveReader::GetNumberOfEntries() {
   return number_entry;
 }
 
-std::string ArchiveReader::GetEntryFileName(const int64_t pos) {
-  auto err = mz_zip_goto_entry(pzip_handle_, pos);
-  // auto err = mz_zip_goto_first_entry(pmz_zip_reader_instance_);
+void ArchiveReader::SetEntriesPath() {
+  auto err = mz_zip_goto_first_entry(pzip_handle_);
+  auto entry_number = 0;
+
   if (err != MZ_OK) {
     Close();
     Delete();
     std::ostringstream msg;
-    msg << "find entry at position: " << pos << std::endl;
+    msg << "to get first entry of archive" << ArchivePath().string().c_str()
+        << std::endl;
     throw ArchiveIOGeneralException(err, msg.str());
   }
+  entries_path_.push_back(CurrentEntryPath());
+  entry_number++;
 
+  auto number_of_entries = GetNumberOfEntries();
+  while (entry_number < number_of_entries) {
+    err = mz_zip_goto_next_entry(pzip_handle_);
+    if (err != MZ_OK) {
+      Close();
+      Delete();
+      std::ostringstream msg;
+      msg << "get entry n° " << entry_number << std::endl;
+      throw ArchiveIOGeneralException(err, msg.str());
+    }
+    entry_number++;
+    entries_path_.push_back(CurrentEntryPath());
+  }
+}
+
+std::filesystem::path ArchiveReader::CurrentEntryPath() {
   mz_zip_file* file_info = NULL;
-  err = mz_zip_entry_get_info(pzip_handle_, &file_info);
-  // err = mz_zip_entry_get_info(pmz_zip_reader_instance_, &file_info);
-  if (err != MZ_OK) {
+  if (auto err = mz_zip_entry_get_info(pzip_handle_, &file_info);
+      err != MZ_OK) {
     Close();
     Delete();
     std::ostringstream msg;
-    msg << "get entry info at position: " << pos << std::endl;
+    msg << "get info from current entry " << std::endl;
     throw ArchiveIOGeneralException(err, msg.str());
   }
   return file_info->filename;

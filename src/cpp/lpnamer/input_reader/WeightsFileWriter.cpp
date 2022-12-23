@@ -21,4 +21,10 @@ YearlyWeightsWriter::YearlyWeightsWriter(
 void YearlyWeightsWriter::FillMpsWeightsMap() {
   auto zip_reader = ArchiveReader(zipped_output_path_);
   zip_reader.Open();
+  zip_reader.SetEntriesPath();
+  const auto& archive_files = zip_reader.EntriesPath();
+  for (auto& file : archive_files) {
+    if (file.extension().string() == ".mps") {
+        }
+  }
 }
