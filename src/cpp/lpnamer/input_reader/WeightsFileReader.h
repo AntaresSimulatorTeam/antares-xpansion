@@ -5,20 +5,6 @@
 #include <vector>
 
 #include "ProblemGenerationLogger.h"
-template <std::ctype_base::mask mask>
-class IsNot {
-  std::locale myLocale;  // To ensure lifetime of facet...
-  std::ctype<char> const* myCType;
-
- public:
-  IsNot(std::locale const& l = std::locale())
-      : myLocale(l), myCType(&std::use_facet<std::ctype<char> >(l)) {}
-  bool operator()(char ch) const { return !myCType->is(mask, ch); }
-};
-
-typedef IsNot<std::ctype_base::space> IsNotSpace;
-
-std::string trim(std::string const& original);
 
 class WeightsFileReader {
  private:

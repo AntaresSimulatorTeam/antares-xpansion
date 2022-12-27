@@ -3,13 +3,8 @@
 #include <fstream>
 #include <sstream>
 
-std::string trim(std::string const &original) {
-  std::string::const_iterator right =
-      std::find_if(original.rbegin(), original.rend(), IsNotSpace()).base();
-  std::string::const_iterator left =
-      std::find_if(original.begin(), right, IsNotSpace());
-  return std::string(left, right);
-}
+#include "common_lpnamer.h"
+
 bool WeightsFileReader::CheckWeightsFile() {
   std::ifstream file_reader;
   if (!file_reader.is_open()) {
@@ -58,7 +53,7 @@ double WeightsFileReader::GetWeightFromLine(const std::string &line,
                                             int idx) const {
   double weight;
   try {
-    weight = std::stod(trim(line));
+    weight = std::stod(common_lpnamer::trim(line));
   } catch (const std::invalid_argument &e) {
     std::ostringstream msg;
     msg << "Line " << idx << " in file " << weights_file_path_.string()
