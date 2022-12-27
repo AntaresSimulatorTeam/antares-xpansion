@@ -8,11 +8,11 @@
 
 YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& xpansion_output_dir,
-    const std::filesystem::path& zipped_output_path,
+    const std::filesystem::path& antares_archive_path,
     std::vector<double> weights_vector,
     const std::filesystem::path& output_file, std::vector<int> active_years)
     : xpansion_output_dir_(xpansion_output_dir),
-      zipped_output_path_(zipped_output_path),
+      antares_archive_path_(antares_archive_path),
       weights_vector_(weights_vector),
       output_file_(output_file),
       active_years_(active_years) {
@@ -29,7 +29,7 @@ void YearlyWeightsWriter::CreateWeightFile() {
 
 void YearlyWeightsWriter::FillMpsWeightsMap() {
   mps_weights_.clear();
-  auto zip_reader = ArchiveReader(zipped_output_path_);
+  auto zip_reader = ArchiveReader(antares_archive_path_);
   zip_reader.Open();
   zip_reader.LoadEntriesPath();
   const auto& mps_files = zip_reader.GetEntriesPathWithExtension(".mps");

@@ -17,7 +17,7 @@ class YearlyWeightsWriter {
  private:
   std::filesystem::path xpansion_output_dir_;
   std::filesystem::path xpansion_lp_dir_ = "";
-  std::filesystem::path zipped_output_path_;
+  std::filesystem::path antares_archive_path_;
   const std::string LP_DIR = "lp";
   std::map<std::filesystem::path, double> mps_weights_ = {};
   std::vector<double> weights_vector_;
