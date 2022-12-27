@@ -2,7 +2,7 @@
 #define SRC_CPP_LPNAMER_INPUTWRITER_YEARLYWEIGHTSWRITER_H
 #include <filesystem>
 #include <map>
-#include <set>
+#include <pair>
 #include <vector>
 
 class YearlyWeightsWriter {
@@ -12,6 +12,8 @@ class YearlyWeightsWriter {
                                std::vector<double> weights_vector,
                                const std::filesystem::path& output_file,
                                std::vector<int> active_years);
+
+  void CreateWeightFile();
 
  private:
   std::filesystem::path xpansion_output_dir_;
@@ -24,6 +26,6 @@ class YearlyWeightsWriter {
   std::vector<int> active_years_;
   void FillMpsWeightsMap();
   int GetYearFromMpsName(const std::string file_name) const;
-  void DumpMpsWeightsMapToFile() const;
+  void DumpMpsWeightsToFile() const;
 };
 #endif  // SRC_CPP_LPNAMER_INPUTWRITER_YEARLYWEIGHTSWRITER_H

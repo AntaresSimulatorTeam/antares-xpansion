@@ -22,7 +22,13 @@ YearlyWeightsWriter::YearlyWeightsWriter(
   }
 }
 
+void YearlyWeightsWriter::CreateWeightFile() {
+  FillMpsWeightsMap();
+  DumpMpsWeightsToFile();
+}
+
 void YearlyWeightsWriter::FillMpsWeightsMap() {
+  mps_weights_.clear();
   auto zip_reader = ArchiveReader(zipped_output_path_);
   zip_reader.Open();
   zip_reader.SetEntriesPath();
@@ -34,8 +40,6 @@ void YearlyWeightsWriter::FillMpsWeightsMap() {
       mps_weights_[file] = weights_vector_[year_index];
     }
   }
-  mps_weights_["WEIGHT_SUM"] =
-      std::reduce(weights_vector_.begin(), weights_vector_.end());
 }
 
 int YearlyWeightsWriter::GetYearFromMpsName(const std::string file_name) const {
@@ -43,8 +47,14 @@ int YearlyWeightsWriter::GetYearFromMpsName(const std::string file_name) const {
   return std::atoi(split_name[1].c_str());
 }
 
-void YearlyWeightsWriter::DumpMpsWeightsMapToFile() const {
-  // auto mps_weights_file std::ofstream(xpansion_lp_dir_/output_file_.);
+void YearlyWeightsWriter::DumpMpsWeightsToFile() const {
+  auto mps_weights_file =
+      std::ofstream(xpansion_lp_dir_ / output_file_.filename());
   for (const auto& [mps_name, weight] : mps_weights_) {
+    mps_weights_file << mps_name << " " << weight << std::endl;
   }
+  mps_weights_file << "WEIGHT_SUM "
+                   << std::reduce(weights_vector_.begin(),
+                                  weights_vector_.end())
+                   << std::endl;
 }
