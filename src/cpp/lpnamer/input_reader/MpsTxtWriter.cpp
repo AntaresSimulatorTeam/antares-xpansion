@@ -4,7 +4,6 @@
 #include <cstdlib>
 
 #include "ArchiveReader.h"
-#include "common_lpnamer.h"
 
 void MpsTxtWriter::FillDict() {
   auto zip_reader = ArchiveReader(antares_archive_path_);
@@ -48,7 +47,7 @@ void MpsTxtWriter::FillDictWithVariablesFiles(
     const std::vector<std::filesystem::path>& variables_files) {
   for (const auto& variables_file : variables_files) {
     auto year_and_week = YearAndWeekFromFileName(variables_file);
-    auto& [_, variables_file_field, _] =
+    auto& [dummy1, variables_file_field, dummy2] =
         year_week_and_files_dict_[year_and_week];
     variables_file_field = variables_file;
   }
@@ -57,7 +56,7 @@ void MpsTxtWriter::FillDictWithConstraintsFiles(
     const std::vector<std::filesystem::path>& constraints_files) {
   for (const auto& constraints_file : constraints_files) {
     auto year_and_week = YearAndWeekFromFileName(constraints_file);
-    auto& [_, _, constraints_file_field] =
+    auto& [dummy1, dummy2, constraints_file_field] =
         year_week_and_files_dict_[year_and_week];
     constraints_file_field = constraints_file;
   }
