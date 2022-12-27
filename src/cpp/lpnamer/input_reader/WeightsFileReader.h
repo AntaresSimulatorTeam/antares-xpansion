@@ -12,7 +12,7 @@ class WeightsFileReader {
   int number_of_active_years_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   bool null_weights = true;
-  std::vector<int> weights_list_;
+  std::vector<double> weights_list_;
 
   int CountValues() const;
   bool AreAllWeightsNull() const;
@@ -55,6 +55,6 @@ class WeightsFileReader {
   // nb_weight equal nb_active_yearse
   /// @return true if it's ok
   bool CheckWeightsFile();
-  std::vector<int> WeightsList() const { return weights_list_; }
+  std::vector<double> WeightsList() const { return weights_list_; }
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_WEIGHTSFILEREADER_H
