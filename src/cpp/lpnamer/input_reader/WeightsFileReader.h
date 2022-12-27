@@ -19,7 +19,6 @@ class WeightsFileReader {
   double GetWeightFromLine(const std::string& line, int idx) const;
   void CheckValue(const double line, int idx);
   void CheckFileIsNotEmpty(std::ifstream& file) const;
-  std::vector<int> WeightsList() const { return weights_list_; }
 
  public:
   explicit WeightsFileReader(
@@ -56,5 +55,6 @@ class WeightsFileReader {
   // nb_weight equal nb_active_yearse
   /// @return true if it's ok
   bool CheckWeightsFile();
+  std::vector<int> WeightsList() const { return weights_list_; }
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_WEIGHTSFILEREADER_H

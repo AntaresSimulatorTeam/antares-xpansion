@@ -19,15 +19,22 @@
 ARCHIVES COMPOSITION:
 
 data/mps_zip/archive1.zip
-data/mps_zip/archive1
+data/mps_zip/archive2.zip
+data/mps_zip/archive2
                     |__ file1
                     |__ file2
                     |__ file3
+data/mps_zip/archive2
+                    |__ file1.txt
+                    |__ file2
+                    |__ file3.xlsx
+                    |__ file4.txt
 
 */
 
 const auto mpsZipDir = std::filesystem::path("data_test") / "mps_zip";
 const auto archive1 = mpsZipDir / "archive1.zip";
+const auto archive2 = mpsZipDir / "archive2.zip";
 const auto archive1Dir = mpsZipDir / "archive1";
 const auto archive1File1 = archive1Dir / "file1";
 const auto archive1File2 = archive1Dir / "file2";
@@ -88,10 +95,22 @@ TEST_F(ArchiveReaderTest, ShouldReturnNumberOfFilesInGivenArchive) {
 TEST_F(ArchiveReaderTest, Shouldfindarchive1File2) {
   auto archive_reader = ArchiveReader(archive1);
   ASSERT_EQ(archive_reader.Open(), MZ_OK);
-  archive_reader.SetEntriesPath();
+  archive_reader.LoadEntriesPath();
   auto file_names_vect = archive_reader.EntriesPath();
   ASSERT_TRUE(std::find(file_names_vect.begin(), file_names_vect.end(),
                         archive1File2.filename()) != file_names_vect.end());
+  ASSERT_EQ(archive_reader.Close(), MZ_OK);
+  archive_reader.Delete();
+}
+TEST_F(ArchiveReaderTest, ShouldReturnFilesWithExt_TXT) {
+  auto archive_reader = ArchiveReader(archive2);
+  ASSERT_EQ(archive_reader.Open(), MZ_OK);
+  archive_reader.LoadEntriesPath();
+  auto file_names_vect = archive_reader.GetEntriesPathWithExtension(".txt");
+  ASSERT_EQ(file_names_vect.size(), 2);
+  for (auto& file_path : file_names_vect) {
+    ASSERT_TRUE(file_path.extension() == ".txt");
+  }
   ASSERT_EQ(archive_reader.Close(), MZ_OK);
   archive_reader.Delete();
 }

@@ -46,6 +46,7 @@ bool WeightsFileReader::CheckWeightsFile() {
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw OnlyNullYearsWeightValue(msg.str());
   }
+  file_reader.close();
   return true;
 }
 

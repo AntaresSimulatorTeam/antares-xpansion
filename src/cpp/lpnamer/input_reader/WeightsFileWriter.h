@@ -1,8 +1,7 @@
-#ifndef SRC_CPP_LPNAMER_INPUTWRITER_YEARLYWEIGHTSWRITER_H
-#define SRC_CPP_LPNAMER_INPUTWRITER_YEARLYWEIGHTSWRITER_H
+#ifndef SRC_CPP_LPNAMER_INPUTREADER_YEARLYWEIGHTSWRITER_H
+#define SRC_CPP_LPNAMER_INPUTREADER_YEARLYWEIGHTSWRITER_H
 #include <filesystem>
 #include <map>
-#include <pair>
 #include <vector>
 
 class YearlyWeightsWriter {
@@ -28,4 +27,4 @@ class YearlyWeightsWriter {
   int GetYearFromMpsName(const std::string file_name) const;
   void DumpMpsWeightsToFile() const;
 };
-#endif  // SRC_CPP_LPNAMER_INPUTWRITER_YEARLYWEIGHTSWRITER_H
+#endif  // SRC_CPP_LPNAMER_INPUTREADER_YEARLYWEIGHTSWRITER_H
