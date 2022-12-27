@@ -4,6 +4,9 @@
 #include <map>
 #include <tuple>
 #include <utility>
+
+#include "common_lpnamer.h"
+
 // a pair to hold double key (year and week)
 using YearAndWeek = std::pair<int, int>;
 // a tuple to hold files (mps, variable, constraints)
