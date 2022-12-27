@@ -31,15 +31,15 @@ void YearlyWeightsWriter::FillMpsWeightsMap() {
   mps_weights_.clear();
   auto zip_reader = ArchiveReader(zipped_output_path_);
   zip_reader.Open();
-  zip_reader.SetEntriesPath();
-  const auto& archive_files = zip_reader.EntriesPath();
-  for (auto& file : archive_files) {
-    if (file.extension().string() == ".mps") {
-      auto year = GetYearFromMpsName(file.string());
-      auto year_index = active_years_[year];
-      mps_weights_[file] = weights_vector_[year_index];
-    }
+  zip_reader.LoadEntriesPath();
+  const auto& mps_files = zip_reader.GetEntriesPathWithExtension(".mps");
+  for (auto& mps_file : mps_files) {
+    auto year = GetYearFromMpsName(mps_file.string());
+    auto year_index = active_years_[year];
+    mps_weights_[mps_file] = weights_vector_[year_index];
   }
+  zip_reader.Close();
+  zip_reader.Delete();
 }
 
 int YearlyWeightsWriter::GetYearFromMpsName(const std::string file_name) const {
@@ -57,4 +57,5 @@ void YearlyWeightsWriter::DumpMpsWeightsToFile() const {
                    << std::reduce(weights_vector_.begin(),
                                   weights_vector_.end())
                    << std::endl;
+  mps_weights_file.close();
 }

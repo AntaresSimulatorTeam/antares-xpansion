@@ -13,6 +13,7 @@ class ArchiveReader : public ArchiveIO {
   std::vector<std::filesystem::path> entries_path_;
   void Create() override;
   std::filesystem::path CurrentEntryPath();
+  bool entries_path_are_loaded_ = false;
 
  public:
   explicit ArchiveReader(const std::filesystem::path& archivePath);
@@ -33,7 +34,10 @@ class ArchiveReader : public ArchiveIO {
   std::vector<std::filesystem::path> EntriesPath() const {
     return entries_path_;
   }
-  void SetEntriesPath();
+
+  void LoadEntriesPath();
+  std::vector<std::filesystem::path> GetEntriesPathWithExtension(
+      const std::string& ext);
 };
 
 #endif  // _ARCHIVEREADER_H

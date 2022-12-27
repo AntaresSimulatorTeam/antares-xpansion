@@ -1,6 +1,8 @@
 #include "ArchiveReader.h"
 
+#include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <vector>
 ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
@@ -122,33 +124,36 @@ uint64_t ArchiveReader::GetNumberOfEntries() {
   return number_entry;
 }
 
-void ArchiveReader::SetEntriesPath() {
-  auto err = mz_zip_goto_first_entry(pzip_handle_);
-  auto entry_number = 0;
+void ArchiveReader::LoadEntriesPath() {
+  if (!entries_path_are_loaded_) {
+    auto err = mz_zip_goto_first_entry(pzip_handle_);
+    auto entry_number = 0;
 
-  if (err != MZ_OK) {
-    Close();
-    Delete();
-    std::ostringstream msg;
-    msg << "to get first entry of archive" << ArchivePath().string().c_str()
-        << std::endl;
-    throw ArchiveIOGeneralException(err, msg.str());
-  }
-  entries_path_.push_back(CurrentEntryPath());
-  entry_number++;
-
-  auto number_of_entries = GetNumberOfEntries();
-  while (entry_number < number_of_entries) {
-    err = mz_zip_goto_next_entry(pzip_handle_);
     if (err != MZ_OK) {
       Close();
       Delete();
       std::ostringstream msg;
-      msg << "get entry n° " << entry_number << std::endl;
+      msg << "to get first entry of archive" << ArchivePath().string().c_str()
+          << std::endl;
       throw ArchiveIOGeneralException(err, msg.str());
     }
-    entry_number++;
     entries_path_.push_back(CurrentEntryPath());
+    entry_number++;
+
+    auto number_of_entries = GetNumberOfEntries();
+    while (entry_number < number_of_entries) {
+      err = mz_zip_goto_next_entry(pzip_handle_);
+      if (err != MZ_OK) {
+        Close();
+        Delete();
+        std::ostringstream msg;
+        msg << "get entry n° " << entry_number << std::endl;
+        throw ArchiveIOGeneralException(err, msg.str());
+      }
+      entry_number++;
+      entries_path_.push_back(CurrentEntryPath());
+    }
+    entries_path_are_loaded_ = true;
   }
 }
 
@@ -163,4 +168,15 @@ std::filesystem::path ArchiveReader::CurrentEntryPath() {
     throw ArchiveIOGeneralException(err, msg.str());
   }
   return file_info->filename;
+}
+
+std::vector<std::filesystem::path> ArchiveReader::GetEntriesPathWithExtension(
+    const std::string& ext) {
+  LoadEntriesPath();
+  std::vector<std::filesystem::path> result;
+  std::copy_if(entries_path_.begin(), entries_path_.end(),
+               std::back_inserter(result), [&ext](auto& entry_path) -> bool {
+                 return entry_path.extension() == ext;
+               });
+  return result;
 }
