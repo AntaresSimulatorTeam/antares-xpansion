@@ -2,6 +2,7 @@
 #include "MpsTxtWriter.h"
 
 #include <cstdlib>
+#include <fstream>
 
 #include "ArchiveReader.h"
 
@@ -60,4 +61,15 @@ void MpsTxtWriter::FillDictWithConstraintsFiles(
         year_week_and_files_dict_[year_and_week];
     constraints_file_field = constraints_file;
   }
+}
+
+void MpsTxtWriter::Write() {
+  FillDict();
+  std::ofstream output_file(output_file_path_);
+  for (const auto& [year_and_week, files] : year_week_and_files_dict_) {
+    auto& [mps_file, vars_file, constr_file] = files;
+    output_file << mps_file.string() << " " << vars_file.string() << " "
+                << constr_file.string() << std::endl;
+  }
+  output_file.close();
 }

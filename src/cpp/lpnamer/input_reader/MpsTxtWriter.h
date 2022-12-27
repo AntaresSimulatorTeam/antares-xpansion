@@ -18,12 +18,16 @@ using MpsVariableConstraintsFiles =
 using YearWeekAndFilesDict = std::map<YearAndWeek, MpsVariableConstraintsFiles>;
 class MpsTxtWriter {
  public:
-  explicit MpsTxtWriter(const std::filesystem::path& antares_archive_path)
-      : antares_archive_path_(antares_archive_path) {}
+  explicit MpsTxtWriter(const std::filesystem::path& antares_archive_path,
+                        const std::filesystem::path& output_file_path)
+      : antares_archive_path_(antares_archive_path),
+        output_file_path_(output_file_path) {}
+  void Write();
 
  private:
   YearWeekAndFilesDict year_week_and_files_dict_;
   std::filesystem::path antares_archive_path_;
+  std::filesystem::path output_file_path_;
   void FillDict();
   void FillDictWithMpsFiles(
       const std::vector<std::filesystem::path>& mps_files);
