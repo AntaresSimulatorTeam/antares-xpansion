@@ -183,13 +183,13 @@ std::vector<std::filesystem::path> ArchiveReader::GetEntriesPathWithExtension(
   return result;
 }
 
-void ArchiveReader::ExtractPattern(const std::string& pattern,
-                                   const std::string& exclude) {
-  ExtractPattern(pattern, exclude, ArchivePath().parent_path());
+std::vector<std::filesystem::path> ArchiveReader::ExtractPattern(
+    const std::string& pattern, const std::string& exclude) {
+  return ExtractPattern(pattern, exclude, ArchivePath().parent_path());
 }
-void ArchiveReader::ExtractPattern(const std::string& pattern,
-                                   const std::string& exclude,
-                                   const std::filesystem::path& destination) {
+std::vector<std::filesystem::path> ArchiveReader::ExtractPattern(
+    const std::string& pattern, const std::string& exclude,
+    const std::filesystem::path& destination) {
   if (!std::filesystem::is_directory(destination)) {
     std::ostringstream msg;
     msg << "ArchiveReader::ExtractPattern destination must be a directory "
@@ -197,6 +197,7 @@ void ArchiveReader::ExtractPattern(const std::string& pattern,
         << destination.string() << std::endl;
     throw ArchiveIOSpecificException(msg.str());
   }
+  std::vector<std::filesystem::path> result;
   mz_zip_reader_set_pattern(pmz_zip_reader_instance_, pattern.c_str(), 1);
   if (mz_zip_reader_goto_first_entry(pmz_zip_reader_instance_) == MZ_OK) {
     do {
@@ -208,9 +209,11 @@ void ArchiveReader::ExtractPattern(const std::string& pattern,
               : std::regex_match(current_path.string(), exclude_regex);
       if (not_excluded) {
         auto target = destination / current_path;
+        result.push_back(target);
         mz_zip_reader_entry_save_file(pmz_zip_reader_instance_,
                                       target.string().c_str());
       }
     } while (mz_zip_reader_goto_next_entry(pmz_zip_reader_instance_) == MZ_OK);
   }
+  return result;
 }
