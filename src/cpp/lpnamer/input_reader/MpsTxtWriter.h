@@ -1,5 +1,6 @@
 #ifndef SRC_CPP_LPNAMER_INPUTREADER_MPSTXTWRITER_H
 #define SRC_CPP_LPNAMER_INPUTREADER_MPSTXTWRITER_H
+#include <cstdlib>
 #include <filesystem>
 #include <map>
 #include <tuple>
