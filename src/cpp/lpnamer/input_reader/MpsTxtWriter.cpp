@@ -1,7 +1,6 @@
 
 #include "MpsTxtWriter.h"
 
-#include <cstdlib>
 #include <fstream>
 
 #include "ArchiveReader.h"

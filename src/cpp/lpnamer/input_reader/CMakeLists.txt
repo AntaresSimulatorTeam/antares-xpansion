@@ -22,6 +22,8 @@ add_library (lp_namer_input_reader STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/WeightsFileWriter.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/MpsTxtWriter.h
 	${CMAKE_CURRENT_SOURCE_DIR}/MpsTxtWriter.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/LpFilesExtractor.h
+	${CMAKE_CURRENT_SOURCE_DIR}/LpFilesExtractor.cpp
     )
 
 target_include_directories (lp_namer_input_reader

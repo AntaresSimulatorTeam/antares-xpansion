@@ -25,6 +25,8 @@ class ArchiveIOSpecificException : public std::runtime_error {
       : std::runtime_error(
             errMessage + "\ninvalid status: " + std::to_string(status) + " (" +
             std::to_string(expectedStatus) + " expected)") {}
+  ArchiveIOSpecificException(const std::string& errMessage)
+      : std::runtime_error(errMessage) {}
 };
 #include <filesystem>
 #include <shared_mutex>

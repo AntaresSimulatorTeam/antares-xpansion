@@ -3,7 +3,9 @@
 #include <algorithm>
 #include <iostream>
 #include <iterator>
+#include <regex>
 #include <vector>
+
 ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
   Create();
@@ -179,4 +181,36 @@ std::vector<std::filesystem::path> ArchiveReader::GetEntriesPathWithExtension(
                  return entry_path.extension() == ext;
                });
   return result;
+}
+
+void ArchiveReader::ExtractPattern(const std::string& pattern,
+                                   const std::string& exclude) {
+  ExtractPattern(pattern, exclude, ArchivePath().parent_path());
+}
+void ArchiveReader::ExtractPattern(const std::string& pattern,
+                                   const std::string& exclude,
+                                   const std::filesystem::path& destination) {
+  if (!std::filesystem::is_directory(destination)) {
+    std::ostringstream msg;
+    msg << "ArchiveReader::ExtractPattern destination must be a directory "
+           "given: "
+        << destination.string() << std::endl;
+    throw ArchiveIOSpecificException(msg.str());
+  }
+  mz_zip_reader_set_pattern(pmz_zip_reader_instance_, pattern.c_str(), 1);
+  if (mz_zip_reader_goto_first_entry(pmz_zip_reader_instance_) == MZ_OK) {
+    do {
+      auto current_path = CurrentEntryPath();
+      auto exclude_regex = std::regex(std::string("^((?!") + exclude + ").)*$");
+      auto not_excluded =
+          exclude == ""
+              ? true
+              : std::regex_match(current_path.string(), exclude_regex);
+      if (not_excluded) {
+        auto target = destination / current_path;
+        mz_zip_reader_entry_save_file(pmz_zip_reader_instance_,
+                                      target.string().c_str());
+      }
+    } while (mz_zip_reader_goto_next_entry(pmz_zip_reader_instance_) == MZ_OK);
+  }
 }
