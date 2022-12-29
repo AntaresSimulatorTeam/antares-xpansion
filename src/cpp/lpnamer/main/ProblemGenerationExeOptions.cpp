@@ -14,5 +14,6 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
       "exclusion-files,e",
       po::value<std::string>(&additional_constraintFilename_l_),
       "path to exclusion files")("zip-mps,z", po::bool_switch(&zip_mps_),
-                                 "mps files will be zipped");
+                                 "mps files will be zipped")("weights-file,w", po::value<std::filesystem::path>(&weights_file_)->default_value(""),
+                                 "user weights file");
 }

@@ -40,9 +40,11 @@ int main(int argc, char** argv) {
       auto additionalConstraintFilename_l =
           options_parser.AdditionalConstraintsFilename();
       auto zip_mps = options_parser.ZipMps();
+      auto weights_file = options_parser.WeightsFile();
+
       RunProblemGeneration(root, master_formulation,
                            additionalConstraintFilename_l, archive_path, logger,
-                           log_file_path, zip_mps);
+                           log_file_path, zip_mps, weights_file);
 
     } catch (std::exception& e) {
       std::cerr << "error: " << e.what() << std::endl;

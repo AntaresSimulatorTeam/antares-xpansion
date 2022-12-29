@@ -18,18 +18,22 @@
 #include "ProblemGenerationExeOptions.h"
 #include "Timer.h"
 #include "solver_utils.h"
-
+#include "WeightsFileReader.h"
 void RunProblemGeneration(
     const std::filesystem::path& root, const std::string& master_formulation,
     const std::string& additionalConstraintFilename_l,
     std::filesystem::path archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-    const std::filesystem::path& log_file_path, bool zip_mps) {
+    const std::filesystem::path& log_file_path, bool zip_mps, const std::filesystem::path& weights_file) {
   (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
 
   Timer problem_generation_timer;
-  ActiveLinksBuilder linkBuilder = get_link_builders(root, logger);
+  if(!weights_file.empty())
+  { 
+    // WeightsFileReader weights_file_reader(weights_file, number_active_years, logger);
+  }
+      ActiveLinksBuilder linkBuilder = get_link_builders(root, logger);
 
   if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
     std::cout << "Invalid formulation argument : argument must be "
