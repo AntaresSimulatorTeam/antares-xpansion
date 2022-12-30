@@ -104,9 +104,10 @@ class GeneralDataIniReader{
     std::vector<int> ActiveYearsFromActiveList(){
         std::vector<int> active_years ;
         for (auto year = 0; year < mc_years_; year++){
-            if (std::find( active_year_list_.begin(), active_year_list_.end(), year)!= active_year_list_.end())):
-                active_years.append(year+1);
+            if (std::find( active_year_list_.begin(), active_year_list_.end(), year)!= active_year_list_.end()){
+                active_years.push_back(year+1);
                 }
+            }
         return active_years;
         }
 
@@ -121,7 +122,7 @@ class GeneralDataIniReader{
 }
     void SetPlaylistResetOption(){
         //  Default : all mc years are activated
-        playlist_reset_option_ = reader_.GetBoolean('playlist', 'playlist_reset', true);
+        playlist_reset_option_ = reader_.GetBoolean("playlist", "playlist_reset", true);
 }
    void SetPlaylistYearLists(){
         std::string current_section = "";
