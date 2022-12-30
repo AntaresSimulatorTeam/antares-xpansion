@@ -14,14 +14,14 @@
 #include "StudyUpdater.h"
 class StudyUpdaterExeOptions : public OptionsParser {
  private:
-  std::filesystem::path root_;
+  std::filesystem::path xpansion_output_dir_;
   std::filesystem::path solution_file_;
 
  public:
   StudyUpdaterExeOptions();
   virtual ~StudyUpdaterExeOptions() = default;
   std::filesystem::path SolutionFile() const { return solution_file_; }
-  std::filesystem::path Root() const { return root_; }
+  std::filesystem::path XpansionOutputDir() const { return xpansion_output_dir_; }
 };
 void updateStudy(
     const std::filesystem::path &rootPath_p,

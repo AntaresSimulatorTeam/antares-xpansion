@@ -10,10 +10,10 @@ int main(int argc, char** argv) {
     auto options_parser = ProblemGenerationExeOptions();
     options_parser.Parse(argc, argv);
 
-    auto root = options_parser.Root();
+    auto xpansion_output_dir = options_parser.XpansionOutputDir();
     auto archive_path = options_parser.ArchivePath();
     using namespace ProblemGenerationLog;
-    const auto log_file_path = root / "lp" / "ProblemGenerationLog.txt";
+    const auto log_file_path = xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
 
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
     auto& loggerRef = (*logger);
@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
         options_parser.AdditionalConstraintsFilename();
     auto zip_mps = options_parser.ZipMps();
     auto  weights_file = options_parser.WeightsFile();
-    RunProblemGeneration(root, master_formulation,
+    RunProblemGeneration(xpansion_output_dir, master_formulation,
                          additionalConstraintFilename_l, archive_path, logger,
                          log_file_path, zip_mps, weights_file);
 

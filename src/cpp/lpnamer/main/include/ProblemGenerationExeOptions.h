@@ -6,7 +6,7 @@
 
 class ProblemGenerationExeOptions : public OptionsParser {
  private:
-  std::filesystem::path root_;
+  std::filesystem::path xpansion_output_dir_;
   std::string master_formulation_;
   std::string additional_constraintFilename_l_;
   std::filesystem::path archive_path_;
@@ -18,7 +18,7 @@ class ProblemGenerationExeOptions : public OptionsParser {
   ProblemGenerationExeOptions();
 
   virtual ~ProblemGenerationExeOptions() = default;
-  std::filesystem::path Root() const { return root_; }
+  std::filesystem::path XpansionOutputDir() const { return xpansion_output_dir_; }
   std::string MasterFormulation() const { return master_formulation_; }
   std::string AdditionalConstraintsFilename() const {
     return additional_constraintFilename_l_;
