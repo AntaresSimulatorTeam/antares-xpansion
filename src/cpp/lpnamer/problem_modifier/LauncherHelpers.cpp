@@ -122,23 +122,23 @@ void addBinaryVariables(
 /**
  * \fn
  * \brief return Active Links Builder
- * \param root  path corresponding to the path to the simulation output
+ * \param xpansion_output_dir  path corresponding to the path to the simulation output
  * directory containing the lp directory \return ActiveLinksBuilder object
  */
 
 ActiveLinksBuilder get_link_builders(
-    const std::filesystem::path &root,
+    const std::filesystem::path &xpansion_output_dir,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
-  const auto area_file_name = root / "area.txt";
+  const auto area_file_name = xpansion_output_dir / "area.txt";
 
-  const auto interco_file_name = root / "interco.txt";
-  const auto ts_root = root / "ts-numbers/ntc";
+  const auto interco_file_name = xpansion_output_dir / "interco.txt";
+  const auto ts_root = xpansion_output_dir / "ts-numbers/ntc";
 
   CandidatesINIReader candidateReader(interco_file_name, area_file_name,
                                       logger);
 
   // Get all mandatory path
-  auto const xpansion_user_dir = root / ".." / ".." / "user" / "expansion";
+  auto const xpansion_user_dir = xpansion_output_dir / ".." / ".." / "user" / "expansion";
   auto const candidates_file_name = xpansion_user_dir / CANDIDATES_INI;
   auto const capacity_folder = xpansion_user_dir / "capa";
 

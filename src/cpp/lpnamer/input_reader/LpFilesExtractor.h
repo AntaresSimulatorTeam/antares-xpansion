@@ -8,16 +8,16 @@
 class LpFilesExtractor {
  private:
   std::filesystem::path antares_archive_path_;
-  std::filesystem::path xpansion_lp_dir_;
+  std::filesystem::path xpansion_output_dir_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 
  public:
   explicit LpFilesExtractor(
       const std::filesystem::path& antares_archive_path,
-      const std::filesystem::path& xpansion_lp_dir,
+      const std::filesystem::path& xpansion_output_dir,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : antares_archive_path_(antares_archive_path),
-        xpansion_lp_dir_(xpansion_lp_dir),
+        xpansion_output_dir_(xpansion_output_dir),
         logger_(logger) {}
   void ExtractFiles() const;
 

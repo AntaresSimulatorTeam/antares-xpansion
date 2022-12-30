@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
   mpi::communicator world;
 #endif
   auto options_parser = FullRunOptionsParser();
-  std::filesystem::path root;
+  std::filesystem::path xpansion_output_dir;
   std::filesystem::path archive_path;
   options_parser.Parse(argc, argv);
 
@@ -29,10 +29,10 @@ int main(int argc, char** argv) {
   if (world.rank() == 0) {
 #endif
     try {
-      root = options_parser.Root();
+      xpansion_output_dir = options_parser.XpansionOutputDir();
       archive_path = options_parser.ArchivePath();
 
-      const auto log_file_path = root / "lp" / "ProblemGenerationLog.txt";
+      const auto log_file_path = xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
       auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
       auto& loggerRef = (*logger);
 
@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
       auto zip_mps = options_parser.ZipMps();
       auto weights_file = options_parser.WeightsFile();
 
-      RunProblemGeneration(root, master_formulation,
+      RunProblemGeneration(xpansion_output_dir, master_formulation,
                            additionalConstraintFilename_l, archive_path, logger,
                            log_file_path, zip_mps, weights_file);
 
@@ -74,14 +74,14 @@ int main(int argc, char** argv) {
 #ifdef BENDERSMPIMAIN
   if (world.rank() == 0) {
 #endif
-    auto log_file_path = root / "lp" / "StudyUpdateLog.txt";
+    auto log_file_path = xpansion_output_dir / "lp" / "StudyUpdateLog.txt";
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
     auto solutionFile_l = options_parser.SolutionFile();
-    ActiveLinksBuilder linksBuilder = get_link_builders(root, logger);
+    ActiveLinksBuilder linksBuilder = get_link_builders(xpansion_output_dir, logger);
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 
-    updateStudy(root, links, solutionFile_l, logger);
+    updateStudy(xpansion_output_dir, links, solutionFile_l, logger);
 
 #ifdef BENDERSMPIMAIN
   }

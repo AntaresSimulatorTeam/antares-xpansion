@@ -23,7 +23,7 @@ class WeightsFileReader {
  public:
   explicit WeightsFileReader(
       const std::filesystem::path& weights_file_path,
-      const int number_of_active_years,
+      const size_t number_of_active_years,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : weights_file_path_(weights_file_path),
         number_of_active_years_(number_of_active_years),
