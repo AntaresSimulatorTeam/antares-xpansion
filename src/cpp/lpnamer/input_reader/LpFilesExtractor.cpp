@@ -7,17 +7,14 @@
 void LpFilesExtractor::ExtractFiles() const {
   auto archive_reader = ArchiveReader(antares_archive_path_);
   archive_reader.Open();
-  const auto vect_area_files = archive_reader.ExtractPattern(
-      (antares_archive_path_ / "area*.txt").string(), "",
-      xpansion_output_dir_);
-
+  const auto vect_area_files = archive_reader.ExtractPattern("area*.txt", "", xpansion_output_dir_);
   auto num_areas_file = vect_area_files.size();
   if (num_areas_file == 0) {
     std::ostringstream msg;
     msg << "No area*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw ErrorWithAreaFile(msg.str());
-  } else if (num_areas_file == 1) {
+  } else if (num_areas_file > 1) {
     std::ostringstream msg;
     msg << "More than one area*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
@@ -26,9 +23,7 @@ void LpFilesExtractor::ExtractFiles() const {
   std::filesystem::rename(vect_area_files[0],
                           xpansion_output_dir_ / "area.txt");
 
-  const auto vect_interco_files = archive_reader.ExtractPattern(
-      (antares_archive_path_ / "interco*.txt").string(), "",
-      xpansion_output_dir_);
+  const auto vect_interco_files = archive_reader.ExtractPattern("interco*.txt", "", xpansion_output_dir_);
 
   auto num_intercos_file = vect_interco_files.size();
   if (num_intercos_file == 0) {
@@ -36,7 +31,7 @@ void LpFilesExtractor::ExtractFiles() const {
     msg << "No interco*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw ErrorWithIntercosFile(msg.str());
-  } else if (num_intercos_file == 1) {
+  } else if (num_intercos_file > 1) {
     std::ostringstream msg;
     msg << "More than one interco*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
@@ -44,9 +39,7 @@ void LpFilesExtractor::ExtractFiles() const {
   }
   std::filesystem::rename(vect_interco_files[0],
                           xpansion_output_dir_ / "interco.txt");
-  archive_reader.ExtractPattern(
-      (antares_archive_path_ / "ts-numbers*").string(), "",
-      xpansion_output_dir_);
+  archive_reader.ExtractPattern("ts-numbers*", "", xpansion_output_dir_);
   archive_reader.Close();
   archive_reader.Delete();
 }
