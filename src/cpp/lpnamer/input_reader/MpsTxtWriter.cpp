@@ -33,6 +33,8 @@ void MpsTxtWriter::FillDict() {
   }
   FillDictWithVariablesFiles(variables_files);
   FillDictWithConstraintsFiles(constraints_files);
+  zip_reader.Close();
+  zip_reader.Delete();
 }
 
 void MpsTxtWriter::FillDictWithMpsFiles(

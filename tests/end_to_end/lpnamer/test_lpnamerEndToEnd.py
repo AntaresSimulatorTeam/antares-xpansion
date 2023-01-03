@@ -54,6 +54,8 @@ def setup_and_teardown_lp_directory(request):
 
     list_files = list(Path(test_dir).glob("*.mps"))
     list_files.extend(list(Path(test_dir).glob("variables*.txt")))
+    list_files.extend(list(Path(test_dir).glob("area*.txt")))
+    list_files.extend(list(Path(test_dir).glob("interco*.txt")))
     with zipfile.ZipFile(lp_dir/MPS_ZIP, "w") as write_mps_zip:
         for file in list_files:
             write_mps_zip.write(
