@@ -33,7 +33,9 @@ add_executable (lp_namer_tests
         LoggerBuilder.h
         LoggerBuilder.cpp
         ProblemGenerationLoggerTest.cpp
-        WeightsFileReaderTest.cpp)
+        WeightsFileReaderTest.cpp
+        LpFilesExtractorTest.cpp
+        )
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main
