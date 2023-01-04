@@ -36,8 +36,10 @@ void YearlyWeightsWriter::FillMpsWeightsMap() {
   const auto& mps_files = zip_reader.GetEntriesPathWithExtension(".mps");
   for (auto& mps_file : mps_files) {
     auto year = GetYearFromMpsName(mps_file.string());
-    auto year_index = active_years_[year];
-    mps_weights_[mps_file] = weights_vector_[year_index];
+    auto year_index =
+        std::find(active_years_.begin(), active_years_.end(), year) -
+        active_years_.begin();
+    mps_weights_[mps_file.stem()] = weights_vector_[year_index];
   }
   zip_reader.Close();
   zip_reader.Delete();
