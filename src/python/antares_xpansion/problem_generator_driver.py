@@ -203,7 +203,7 @@ class ProblemGeneratorDriver:
         ret = ["-o", str(self.xpansion_output_dir), "-a",
                str(self.output_path), "-f", is_relaxed]
         if self.weight_file_name_for_lp:
-            ret.append("-w", str(self.user_weights_file_path))
+            ret.extend(["-w", str(self.user_weights_file_path)])
         if self.zip_mps:
             ret.append("--zip-mps")
 

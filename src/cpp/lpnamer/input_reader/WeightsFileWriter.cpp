@@ -9,15 +9,16 @@
 YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& xpansion_output_dir,
     const std::filesystem::path& antares_archive_path,
-    std::vector<double> weights_vector,
-    const std::filesystem::path& output_file, std::vector<int> active_years)
+    const std::vector<double>& weights_vector,
+    const std::filesystem::path& output_file,
+    const std::vector<int>& active_years)
     : xpansion_output_dir_(xpansion_output_dir),
       antares_archive_path_(antares_archive_path),
       weights_vector_(weights_vector),
       output_file_(output_file),
       active_years_(active_years) {
+  xpansion_lp_dir_ = xpansion_output_dir / LP_DIR;
   if (!std::filesystem::is_directory(xpansion_lp_dir_)) {
-    xpansion_lp_dir_ = xpansion_output_dir / LP_DIR;
     std::filesystem::create_directory(xpansion_lp_dir_);
   }
 }
@@ -48,10 +49,12 @@ int YearlyWeightsWriter::GetYearFromMpsName(const std::string file_name) const {
 }
 
 void YearlyWeightsWriter::DumpMpsWeightsToFile() const {
-  auto mps_weights_file =
-      std::ofstream(xpansion_lp_dir_ / output_file_.filename());
+  auto file = xpansion_lp_dir_ / output_file_.filename().string();
+  std::ofstream mps_weights_file;
+  mps_weights_file.open(file);
+
   for (const auto& [mps_name, weight] : mps_weights_) {
-    mps_weights_file << mps_name << " " << weight << std::endl;
+    mps_weights_file << mps_name.string() << " " << weight << std::endl;
   }
   mps_weights_file << "WEIGHT_SUM "
                    << std::reduce(weights_vector_.begin(),
