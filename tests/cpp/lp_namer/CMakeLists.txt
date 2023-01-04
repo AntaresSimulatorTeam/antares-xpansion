@@ -63,6 +63,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options (unit_tests PUBLIC -Wno-covered-switch-default)
 endif ()
 
-add_test(NAME unit_lpnamer COMMAND lp_namer_tests)
+add_test(NAME unit_lpnamer COMMAND lp_namer_tests WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 set_property(TEST unit_lpnamer PROPERTY LABELS unit)
 
