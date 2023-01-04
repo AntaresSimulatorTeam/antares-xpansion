@@ -31,7 +31,7 @@ std::vector<int> GeneralDataIniReader::GetActiveYears() {
     SetPlaylistYearLists();
     return GetActiveYears_();
   } else {
-    std::vector<int> active_years(mc_years_ + 1);
+    std::vector<int> active_years(mc_years_);
     std::iota(std::begin(active_years), std::end(active_years), 1);
     return active_years;
   }
