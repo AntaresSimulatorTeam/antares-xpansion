@@ -597,6 +597,9 @@ class ConfigLoader:
     def full_run_exe(self):
         return self.exe_path(self._config.FULL_RUN)
 
+    def antares_archive_updater_exe(self):
+        return self.exe_path(self._config.ANTARES_ARCHIVE_UPDATER)
+
     def method(self):
         return self._config.method
 

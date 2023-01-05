@@ -11,6 +11,7 @@ add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/lpnamer")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/study-updater")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/sensitivity")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/full_run")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/antares_archive_updater")
 
 if (USE_MPI)
 	message (STATUS "Generating mpi executable!")
