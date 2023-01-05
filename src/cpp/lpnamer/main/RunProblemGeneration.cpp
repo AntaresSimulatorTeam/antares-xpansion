@@ -59,8 +59,8 @@ void RunProblemGeneration(
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;
   auto archive_updater = ArchiveWriter(archive_path);
   archive_updater.Open();
-  archive_updater.AddPathInArchive(root, root);
   archive_updater.Close();
   archive_updater.Delete();
+  archive_updater.AddPathInArchive(root, root);
   std::filesystem::remove_all(root);
 }
