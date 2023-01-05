@@ -30,7 +30,12 @@ add_library (helpers STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/FileInBuffer.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Clock.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Clock.h
-		${CMAKE_CURRENT_SOURCE_DIR}/Timer.h)
+		${CMAKE_CURRENT_SOURCE_DIR}/Timer.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveUpdater.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveUpdater.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveUpdaterExeOptions.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveUpdaterExeOptions.cpp
+		)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
