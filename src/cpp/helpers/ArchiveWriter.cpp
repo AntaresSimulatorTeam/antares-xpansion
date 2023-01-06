@@ -21,11 +21,11 @@ void ArchiveWriter::InitFileInfo() {
   fileInfo_.flag = MZ_ZIP_FLAG_UTF8;
 }
 int32_t ArchiveWriter::Open() {
-  // disk-spanning is disabled, meaning that only one file is created
-  const auto err =
-      mz_zip_writer_open_file(internalPointer_, ArchivePath().string().c_str(),
-                              0 /* disk-spanning disabled */, 1 /* append */);
-  if (err != MZ_OK) {
+  if (  // disk-spanning is disabled, meaning that only one file is created
+      const auto err = mz_zip_writer_open_file(
+          internalPointer_, ArchivePath().string().c_str(),
+          0 /* disk-spanning disabled */, 1 /* append */);
+      err != MZ_OK) {
     Close();
     Delete();
     std::stringstream errMsg;
@@ -76,10 +76,10 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
 int32_t ArchiveWriter::AddFileInArchive(
     const std::filesystem::path& FileToAdd) {
   std::unique_lock lock(mutex_);
-  auto err =
-      mz_zip_writer_add_file(internalPointer_, FileToAdd.string().c_str(),
-                             FileToAdd.filename().string().c_str());
-  if (err != MZ_OK) {
+  if (auto err =
+          mz_zip_writer_add_file(internalPointer_, FileToAdd.string().c_str(),
+                                 FileToAdd.filename().string().c_str());
+      err != MZ_OK) {
     Close();
     Delete();
     std::stringstream errMsg;
@@ -94,10 +94,10 @@ int32_t ArchiveWriter::AddPathInArchive(
     const std::filesystem::path& path_to_add,
     const std::filesystem::path& root_path) {
   std::unique_lock lock(mutex_);
-  auto err =
-      mz_zip_writer_add_path(internalPointer_, path_to_add.string().c_str(),
-                             root_path.string().c_str(), 0, 1);
-  if (err != MZ_OK) {
+  if (auto err =
+          mz_zip_writer_add_path(internalPointer_, path_to_add.string().c_str(),
+                                 root_path.string().c_str(), 0, 1);
+      err != MZ_OK) {
     Close();
     Delete();
     std::stringstream errMsg;
