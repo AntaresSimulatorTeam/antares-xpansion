@@ -76,7 +76,6 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
 int32_t ArchiveWriter::AddFileInArchive(
     const std::filesystem::path& FileToAdd) {
   std::unique_lock lock(mutex_);
-  std::cout << "internalPointer_: " << internalPointer_ << "\n";
   auto err =
       mz_zip_writer_add_file(internalPointer_, FileToAdd.string().c_str(),
                              FileToAdd.filename().string().c_str());
