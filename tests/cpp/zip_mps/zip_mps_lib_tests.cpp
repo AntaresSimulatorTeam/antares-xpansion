@@ -9,6 +9,7 @@
 #include <iterator>
 
 #include "ArchiveReader.h"
+#include "ArchiveUpdater.h"
 #include "ArchiveWriter.h"
 #include "FileInBuffer.h"
 #include "RandomDirGenerator.h"
@@ -25,7 +26,7 @@ data/mps_zip/archive1
 
 */
 
-const auto mpsZipDir = std::filesystem::path ("data_test") / "mps_zip";
+const auto mpsZipDir = std::filesystem::path("data_test") / "mps_zip";
 const auto archive1 = mpsZipDir / "archive1.zip";
 const auto archive1Dir = mpsZipDir / "archive1";
 const auto archive1File1 = archive1Dir / "file1";
@@ -101,11 +102,11 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   const auto& archive_path_str = archivePath.string();
   auto archive_path_c_str = archive_path_str.c_str();
   assert(mz_zip_reader_open_file(reader, archive_path_c_str) == MZ_OK);
-  //assert(mz_zip_reader_entry_open(reader) == MZ_OK);
+  // assert(mz_zip_reader_entry_open(reader) == MZ_OK);
 
-  for (const auto &file : std::filesystem::directory_iterator(dirPath)) {
-    const auto &filename_path = file.path().filename();
-    const auto &filename_str = filename_path.string();
+  for (const auto& file : std::filesystem::directory_iterator(dirPath)) {
+    const auto& filename_path = file.path().filename();
+    const auto& filename_str = filename_path.string();
     const auto searchFilename = filename_str.c_str();
     assert(mz_zip_reader_locate_entry(reader, searchFilename, 1) == MZ_OK);
     assert(mz_zip_reader_entry_open(reader) == MZ_OK);
@@ -133,7 +134,49 @@ TEST_F(ArchiveWriterTest, ShouldCreateArchiveWithVecBuffer) {
   writer.Delete();
   compareArchiveAndDir(archivePath, archive1Dir, tmpDir);
 }
-class FileInBufferTest : public ::testing::Test {
+class ArchiveUpdaterTest : public ::testing::Test {
  public:
-  FileInBufferTest() = default;
+  ArchiveUpdaterTest() = default;
 };
+
+TEST_F(ArchiveUpdaterTest, ThatNewFileAndDirCanBeAddToArchive) {
+  auto tmp_dir = std::filesystem::temp_directory_path();
+  auto new_dir_to_add = tmp_dir / "new_dir_to_add";
+  std::filesystem::create_directory(new_dir_to_add);
+
+  std::filesystem::copy(archive1, tmp_dir,
+                        std::filesystem::copy_options::overwrite_existing);
+  // create file in tmp/new_file1.txt
+  auto new_file_name1 = tmp_dir / "new_file1.txt";
+  std::ofstream new_file1(new_file_name1);
+  auto new_file_content = "HELLO!";
+  new_file1 << new_file_content;
+  new_file1.close();
+
+  // create another file in new_dir_to_add/
+  auto new_file_name2 = new_dir_to_add / "file.m";
+  std::filesystem::copy(new_file_name1, new_file_name2,
+                        std::filesystem::copy_options::overwrite_existing);
+  auto copy_archive = tmp_dir / archive1.filename();
+
+  ArchiveUpdater archive_updater;
+
+  // adding new_file_name1 in archive
+  archive_updater.Update(copy_archive, new_file_name1, true);
+  // adding new_dir_to_add in archive
+  archive_updater.Update(copy_archive, new_dir_to_add, true);
+
+  ASSERT_FALSE(std::filesystem::exists(new_file_name1));
+  ASSERT_FALSE(std::filesystem::exists(new_dir_to_add));
+
+  auto reader = ArchiveReader(copy_archive);
+  reader.Open();
+  auto string_stream =
+      reader.ExtractFileInStringStream(new_file_name1.filename());
+  ASSERT_STREQ(string_stream.str().c_str(), new_file_content);
+  auto string_stream2 =
+      reader.ExtractFileInStringStream(new_file_name2.filename());
+  ASSERT_STREQ(string_stream2.str().c_str(), new_file_content);
+  reader.Close();
+  reader.Delete();
+}
