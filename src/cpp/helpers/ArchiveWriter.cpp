@@ -21,11 +21,11 @@ void ArchiveWriter::InitFileInfo() {
   fileInfo_.flag = MZ_ZIP_FLAG_UTF8;
 }
 int32_t ArchiveWriter::Open() {
-  if (  // disk-spanning is disabled, meaning that only one file is created
-      const auto err = mz_zip_writer_open_file(
-          internalPointer_, ArchivePath().string().c_str(),
-          0 /* disk-spanning disabled */, 1 /* append */);
-      err != MZ_OK) {
+  // disk-spanning is disabled, meaning that only one file is created
+  const auto err =
+      mz_zip_writer_open_file(internalPointer_, ArchivePath().string().c_str(),
+                              0 /* disk-spanning disabled */, 1 /* append */);
+  if (err != MZ_OK) {
     Close();
     Delete();
     std::stringstream errMsg;
