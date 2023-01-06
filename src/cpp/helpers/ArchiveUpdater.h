@@ -7,6 +7,7 @@ class ArchiveUpdater {
   ArchiveUpdater() = default;
 
   static void Update(const std::filesystem::path& antares_archive,
-                     const std::filesystem::path& path_to_add, const bool keep);
+                     const std::filesystem::path& path_to_add,
+                     const bool delete_path);
 };
 #endif  // ANTARESXPANSION_SRC_CPP_HELPERS_ARCHIVEUPDATER_H_
