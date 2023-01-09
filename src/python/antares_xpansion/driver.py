@@ -85,7 +85,7 @@ class XpansionDriver:
                                         self.config_loader.allow_run_as_root())
             ret = subprocess.run(
                 [str(self.config_loader.antares_archive_updater_exe()), "-a", str(self.config_loader.simulation_output_path()),
-                 "-p", str(self.config_loader.xpansion_simulation_output()), "-d"], shell=False, stdout=sys.stdout, stderr=sys.stderr,
+                 "-p", self.config_loader.simulation_lp_path(), self.config_loader.expansion_dir(), "-d"], shell=False, stdout=sys.stdout, stderr=sys.stderr,
                 encoding='utf-8')
             if ret.returncode != 0:
                 raise XpansionDriver.AntaresArchiveUpdaterExeError(
