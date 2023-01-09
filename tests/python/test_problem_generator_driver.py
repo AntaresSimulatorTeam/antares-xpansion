@@ -62,21 +62,6 @@ class TestProblemGeneratorDriver:
         with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
             problem_generator_driver.launch(zipped_output, False)
 
-    # def test_mps_txt_creation(self, tmp_path):
-
-    #     self._create_empty_area_file(tmp_path)
-    #     self._create_empty_interco_file(tmp_path)
-    #     zipped_output = get_zipped_output(tmp_path)
-
-    #     problem_generator_driver = ProblemGeneratorDriver(
-    #         self.empty_pblm_gen_data)
-    #     with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
-    #         problem_generator_driver.launch(zipped_output, False)
-
-    #     xpansion_output = self.xpansion_output(tmp_path)
-    #     mps_txt_file = xpansion_output / "mps.txt"
-    #     assert mps_txt_file.exists()
-
     def xpansion_output(self, tmp_path):
         return tmp_path.parent / (tmp_path.name + '-Xpansion')
 
