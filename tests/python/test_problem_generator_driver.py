@@ -65,26 +65,6 @@ class TestProblemGeneratorDriver:
     def xpansion_output(self, tmp_path):
         return tmp_path.parent / (tmp_path.name + '-Xpansion')
 
-    # def test_mps_txt_content(self, tmp_path):
-
-    #     expected_results = self._get_expected_mps_txt(tmp_path)
-    #     self._create_empty_area_file(tmp_path)
-    #     self._create_empty_interco_file(tmp_path)
-    #     zipped_output = get_zipped_output(tmp_path)
-    #     problem_generator_driver = ProblemGeneratorDriver(
-    #         self.empty_pblm_gen_data)
-    #     with pytest.raises(ProblemGeneratorDriver.LPNamerExeError):
-    #         problem_generator_driver.launch(zipped_output, False)
-
-    #     mps_txt_file = self.xpansion_output(
-    #         tmp_path) / problem_generator_driver.MPS_TXT
-    #     assert mps_txt_file.exists()
-
-    #     with open(mps_txt_file) as mps_txt:
-    #         for line in mps_txt:
-    #             my_list = line.strip().split(" ")
-    #             assert my_list in expected_results
-
     def test_clear_old_log(self, tmp_path):
 
         lp_namer_file = tmp_path / self.lp_exe
