@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
   auto delete_path = options_parser.DeletePath();
   auto archive_path = options_parser.Archive();
   auto paths = options_parser.PathsToAdd();
-  for (const auto path : paths) {
+  for (const auto& path : paths) {
     ArchiveUpdater::Update(archive_path, path, delete_path);
   }
   return 0;
