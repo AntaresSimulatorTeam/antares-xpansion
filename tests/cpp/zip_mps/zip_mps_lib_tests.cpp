@@ -159,13 +159,15 @@ TEST_F(ArchiveUpdaterTest, ThatNewFileAndDirCanBeAddToArchive) {
                         std::filesystem::copy_options::overwrite_existing);
   auto copy_archive = tmp_dir / archive1.filename();
 
-  ArchiveUpdater archive_updater;
+  auto writer = ArchiveWriter(copy_archive);
+  writer.Open();
 
   // adding new_file_name1 in archive
-  archive_updater.Update(copy_archive, new_file_name1, true);
+  ArchiveUpdater::Update(writer, new_file_name1, true);
   // adding new_dir_to_add in archive
-  archive_updater.Update(copy_archive, new_dir_to_add, true);
-
+  ArchiveUpdater::Update(writer, new_dir_to_add, true);
+  writer.Close();
+  writer.Delete();
   ASSERT_FALSE(std::filesystem::exists(new_file_name1));
   ASSERT_FALSE(std::filesystem::exists(new_dir_to_add));
 

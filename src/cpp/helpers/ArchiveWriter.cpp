@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <sstream>
-
 ArchiveWriter::ArchiveWriter(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
   Create();

@@ -1,13 +1,22 @@
 #ifndef ANTARESXPANSION_SRC_CPP_HELPERS_ARCHIVEUPDATER_H_
 #define ANTARESXPANSION_SRC_CPP_HELPERS_ARCHIVEUPDATER_H_
 #include <filesystem>
+#include <vector>
+
+#include "ArchiveWriter.h"
 
 class ArchiveUpdater {
  public:
   ArchiveUpdater() = default;
 
-  static void Update(const std::filesystem::path& antares_archive,
+  static void Update(ArchiveWriter& writer,
                      const std::filesystem::path& path_to_add,
                      const bool delete_path);
+  static void DeleteFromArchive(
+      const std::vector<std::filesystem::path>& paths,
+      const std::filesystem::path& src_archive,
+      const std::filesystem::path& target_archive = "");
+  static int32_t MinizipErase(const std::vector<std::filesystem::path>& paths,
+                              void* reader, void* writer);
 };
 #endif  // ANTARESXPANSION_SRC_CPP_HELPERS_ARCHIVEUPDATER_H_
