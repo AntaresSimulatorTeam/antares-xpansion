@@ -171,11 +171,13 @@ TEST_F(ArchiveUpdaterTest, ThatNewFileAndDirCanBeAddToArchive) {
 
   auto reader = ArchiveReader(copy_archive);
   reader.Open();
-  auto string_stream =
-      reader.ExtractFileInStringStream(new_file_name1.filename());
+  auto file1_name_in_archive = new_file_name1.filename();
+  auto string_stream = reader.ExtractFileInStringStream(file1_name_in_archive);
   ASSERT_STREQ(string_stream.str().c_str(), new_file_content);
-  auto string_stream2 =
-      reader.ExtractFileInStringStream(new_file_name2.filename());
+
+  auto file2_name_in_archive =
+      new_file_name2.parent_path().filename() / new_file_name2.filename();
+  auto string_stream2 = reader.ExtractFileInStringStream(file2_name_in_archive);
   ASSERT_STREQ(string_stream2.str().c_str(), new_file_content);
   reader.Close();
   reader.Delete();
