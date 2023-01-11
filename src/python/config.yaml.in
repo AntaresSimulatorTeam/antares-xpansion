@@ -1,13 +1,10 @@
-DEFAULT_INSTALL_DIR             : ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-ANTARES                         : @ANTARES_SOLVER_APP@
-MERGE_MPS                       : $<TARGET_FILE_NAME:merge_mps>
-BENDERS_MPI                     : @BENDERSMPI_APP@
-BENDERS_SEQUENTIAL              : $<TARGET_FILE_NAME:benderssequential>
-BENDERS_BY_BATCH                : $<TARGET_FILE_NAME:bendersbybatch>
-LP_NAMER                        : $<TARGET_FILE_NAME:lp_namer>
-STUDY_UPDATER                   : $<TARGET_FILE_NAME:xpansion-study-updater>
-FULL_RUN                        : $<TARGET_FILE_NAME:full_run>
-SENSITIVITY                     : $<TARGET_FILE_NAME:sensitivity>
-ANTARES_ARCHIVE_UPDATER         : $<TARGET_FILE_NAME:antares_archive_updater>
+DEFAULT_INSTALL_DIR         : ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+ANTARES             : @ANTARES_SOLVER_APP@
+MERGE_MPS           : $<TARGET_FILE_NAME:merge_mps>
+BENDERS_MPI         : @BENDERSMPI_APP@
+BENDERS_SEQUENTIAL  : $<TARGET_FILE_NAME:benderssequential>
+LP_NAMER            : $<TARGET_FILE_NAME:lp_namer>
+STUDY_UPDATER       : $<TARGET_FILE_NAME:xpansion-study-updater>
+SENSITIVITY         : $<TARGET_FILE_NAME:sensitivity>
 AVAILABLE_SOLVER :
 @AVAILABLE_SOLVER_YML_LIST@

@@ -11,6 +11,9 @@
 #include <string>
 #include <vector>
 
+inline bool contains(std::string const& v1, std::string const& v2) {
+  return v1.find(v2) != std::string::npos;
+}
 inline int to_int(std::string const& value) {
   std::stringstream buffer;
   buffer << value;

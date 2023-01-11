@@ -20,10 +20,6 @@ def get_last_master_path(dirpath: Path) -> Path:
     return Path(dirpath / "lp"/'master_last_iteration.mps')
 
 
-def get_master_path(dirpath: Path) -> Path:
-    return Path(dirpath / "lp"/'master.mps')
-
-
 def get_tmp_master_path(master_path: Path) -> Path:
     return Path(master_path.parent, master_path.stem + '.tmp')
 
@@ -43,17 +39,13 @@ class StudyOutputCleaner:
     @staticmethod
     def clean_benders_step(study_output: Path):
 
-        last_master_path = get_last_master_path(study_output)
-        master_path = get_master_path(study_output)
-        tmp_last_master_path = get_tmp_master_path(last_master_path)
+        master_path = get_last_master_path(study_output)
         tmp_master_path = get_tmp_master_path(master_path)
 
         lp_dir = study_output / 'lp'
-        rename_master(last_master_path, tmp_last_master_path)
         rename_master(master_path, tmp_master_path)
         remove_files_containing_str_from_dir('.mps', lp_dir)
         rename_master(tmp_master_path, master_path)
-        rename_master(tmp_last_master_path, last_master_path)
 
         remove_files_containing_str_from_dir('.lp', lp_dir)
         remove_files_containing_str_from_dir(".zip", lp_dir)

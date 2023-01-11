@@ -209,7 +209,7 @@ class TestBendersDriver:
         lp_path.mkdir()
         os.chdir(lp_path)
 
-        mps_fnames = ["1.mps", "2.mps"]
+        mps_fnames = ["master.mps", "1.mps", "2.mps"]
         mps_files = [self._create_empty_file(
             lp_path, mps_fname) for mps_fname in mps_fnames]
 

@@ -20,17 +20,10 @@ class ConfigParameters:
     LP_NAMER: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
-
-
-<< << << < HEAD
-== == == =
-    FULL_RUN: str
-    ANTARES_ARCHIVE_UPDATER: str
->>>>>> > 4ef148bd(Feature/put-xpansion-output-in-antares-zip(  # 596))
     AVAILABLE_SOLVERS: List[str]
 
 
-@ dataclass
+@dataclass
 class InputParameters:
     step: str
     simulation_name: str
@@ -57,22 +50,17 @@ class XpansionConfig:
         self, input_parameters: InputParameters, config_parameters: ConfigParameters
     ):
 
-        self.input_parameters=input_parameters
-        self.config_parameters=config_parameters
-        self.ANTARES: str=""
-        self.MERGE_MPS: str=""
-        self.BENDERS_MPI: str=""
-        self.BENDERS_SEQUENTIAL: str=""
-        self.LP_NAMER: str=""
-        self.STUDY_UPDATER: str=""
-        self.SENSITIVITY_EXE: str=""
-<< << << < HEAD
-== == == =
-        self.FULL_RUN: str=""
-        self.ANTARES_ARCHIVE_UPDATER: str=""
->> >>>> > 4ef148bd(Feature/put-xpansion-output-in-antares-zip(  # 596))
-        self.MPI_LAUNCHER: str=""
-        self.MPI_N: str=""
+        self.input_parameters = input_parameters
+        self.config_parameters = config_parameters
+        self.ANTARES: str = ""
+        self.MERGE_MPS: str = ""
+        self.BENDERS_MPI: str = ""
+        self.BENDERS_SEQUENTIAL: str = ""
+        self.LP_NAMER: str = ""
+        self.STUDY_UPDATER: str = ""
+        self.SENSITIVITY_EXE: str = ""
+        self.MPI_LAUNCHER: str = ""
+        self.MPI_N: str = ""
         self.AVAILABLE_SOLVER: List[str]
 
         self._get_config_values()
@@ -82,18 +70,18 @@ class XpansionConfig:
         self._initialize_default_values()
 
     def _get_parameters_from_arguments(self):
-        self.step=self.input_parameters.step
-        self.simulation_name=self.input_parameters.simulation_name
-        self.data_dir=str(Path(self.input_parameters.data_dir).absolute())
-        self.install_dir=self._get_install_dir(
+        self.step = self.input_parameters.step
+        self.simulation_name = self.input_parameters.simulation_name
+        self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
+        self.install_dir = self._get_install_dir(
             self.input_parameters.install_dir)
-        self.method=self.input_parameters.method
-        self.n_mpi=self.input_parameters.n_mpi
-        self.antares_n_cpu=self.input_parameters.antares_n_cpu
-        self.keep_mps=self.input_parameters.keep_mps
-        self.oversubscribe=self.input_parameters.oversubscribe
-        self.allow_run_as_root=self.input_parameters.allow_run_as_root
-        self.zip_mps=self.input_parameters.zip_mps
+        self.method = self.input_parameters.method
+        self.n_mpi = self.input_parameters.n_mpi
+        self.antares_n_cpu = self.input_parameters.antares_n_cpu
+        self.keep_mps = self.input_parameters.keep_mps
+        self.oversubscribe = self.input_parameters.oversubscribe
+        self.allow_run_as_root = self.input_parameters.allow_run_as_root
+        self.zip_mps = self.input_parameters.zip_mps
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -101,7 +89,7 @@ class XpansionConfig:
         else:
             return self._initialize_install_dir_with_absolute_path(install_dir)
 
-    @ staticmethod
+    @staticmethod
     def _initialize_install_dir_with_absolute_path(install_dir):
         if not Path.is_absolute(Path(install_dir)):
             return os.path.join(Path.cwd(), Path(install_dir))
@@ -111,10 +99,10 @@ class XpansionConfig:
     def _initialize_install_dir_with_default_value(self):
 
         if getattr(sys, "frozen", False):
-            install_dir_inside_package=(
+            install_dir_inside_package = (
                 Path(os.path.abspath(__file__)).parent.parent / "bin"
             )
-            install_dir_next_to_package=Path(sys.executable).parent / "bin"
+            install_dir_next_to_package = Path(sys.executable).parent / "bin"
             if Path.is_dir(install_dir_inside_package):
                 return install_dir_inside_package
             else:
@@ -129,34 +117,34 @@ class XpansionConfig:
 
     def _set_constants(self):
         # TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
-        self.SETTINGS="settings"
-        self.GENERAL_DATA_INI="generaldata.ini"
-        self.OUTPUT="output"
+        self.SETTINGS = "settings"
+        self.GENERAL_DATA_INI = "generaldata.ini"
+        self.OUTPUT = "output"
 
-        self.USER="user"
-        self.EXPANSION="expansion"
-        self.SENSITIVITY_DIR="sensitivity"
-        self.CAPADIR="capa"
-        self.NB_YEARS="nbyears"
-        self.SETTINGS_INI="settings.ini"
-        self.CANDIDATES_INI="candidates.ini"
-        self.UC_TYPE="uc_type"
-        self.EXPANSION_ACCURATE="expansion_accurate"
-        self.EXPANSION_FAST="expansion_fast"
-        self.OPTIONS_JSON="options.json"
-        self.LAUNCHER_OPTIONS_JSON="launcher_options.json"
-        self.JSON_NAME="out.json"
-        self.LAST_ITERATION_JSON_FILE_NAME="last_iteration.json"
-        self.JSON_SENSITIVITY_IN="sensitivity_in.json"
-        self.JSON_SENSITIVITY_OUT="sensitivity_out.json"
-        self.SENSITIVITY_LOG_FILE="sensitivity_log.txt"
-        self.LAST_MASTER_MPS="master_last_iteration"
-        self.LAST_MASTER_BASIS="master_last_basis.bss"
-        self.WEIGHTS="weights"
-        self.CONSTRAINTS="constraints"
+        self.USER = "user"
+        self.EXPANSION = "expansion"
+        self.SENSITIVITY_DIR = "sensitivity"
+        self.CAPADIR = "capa"
+        self.NB_YEARS = "nbyears"
+        self.SETTINGS_INI = "settings.ini"
+        self.CANDIDATES_INI = "candidates.ini"
+        self.UC_TYPE = "uc_type"
+        self.EXPANSION_ACCURATE = "expansion_accurate"
+        self.EXPANSION_FAST = "expansion_fast"
+        self.OPTIONS_JSON = "options.json"
+        self.LAUNCHER_OPTIONS_JSON = "launcher_options.json"
+        self.JSON_NAME = "out.json"
+        self.LAST_ITERATION_JSON_FILE_NAME = "last_iteration.json"
+        self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
+        self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
+        self.SENSITIVITY_LOG_FILE = "sensitivity_log.txt"
+        self.LAST_MASTER_MPS = "master_last_iteration"
+        self.LAST_MASTER_BASIS = "master_last_basis.bss"
+        self.WEIGHTS = "weights"
+        self.CONSTRAINTS = "constraints"
 
     def _set_default_settings(self):
-        self.settings_default={
+        self.settings_default = {
             "uc_type": "expansion_fast",
             "master": "integer",
             "optimality_gap": "1",
@@ -172,7 +160,7 @@ class XpansionConfig:
         }
 
     def _set_default_options(self):
-        self.options_default={
+        self.options_default = {
             OptimisationKeys.max_iterations_key(): self.max_iterations_default_value(),
             OptimisationKeys.absolute_gap_key(): self.absolute_gap_default_value(),
             OptimisationKeys.relative_gap_key(): self.relative_gap_default_value(),
@@ -248,14 +236,12 @@ class XpansionConfig:
 
     def _get_config_values(self):
 
-        self.default_install_dir=self.config_parameters.default_install_dir
-        self.ANTARES=self.config_parameters.ANTARES
-        self.MERGE_MPS=self.config_parameters.MERGE_MPS
-        self.BENDERS_MPI=self.config_parameters.BENDERS_MPI
-        self.BENDERS_SEQUENTIAL=self.config_parameters.BENDERS_SEQUENTIAL
-        self.LP_NAMER=self.config_parameters.LP_NAMER
-        self.STUDY_UPDATER=self.config_parameters.STUDY_UPDATER
-        self.FULL_RUN=self.config_parameters.FULL_RUN
-        self.ANTARES_ARCHIVE_UPDATER=self.config_parameters.ANTARES_ARCHIVE_UPDATER
-        self.SENSITIVITY_EXE=self.config_parameters.SENSITIVITY_EXE
-        self.AVAILABLE_SOLVER=self.config_parameters.AVAILABLE_SOLVERS
+        self.default_install_dir = self.config_parameters.default_install_dir
+        self.ANTARES = self.config_parameters.ANTARES
+        self.MERGE_MPS = self.config_parameters.MERGE_MPS
+        self.BENDERS_MPI = self.config_parameters.BENDERS_MPI
+        self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
+        self.LP_NAMER = self.config_parameters.LP_NAMER
+        self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
+        self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE
+        self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS

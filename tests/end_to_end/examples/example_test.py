@@ -3,7 +3,6 @@ from pathlib import Path
 import sys
 import shutil
 import json
-import zipfile
 
 import numpy as np
 import subprocess
@@ -16,13 +15,13 @@ RELATIVE_TOLERANCE = 1e-4
 RELATIVE_TOLERANCE_LIGHT = 1e-2
 
 
-def get_json_file_data(output_dir, folder, filename):
-    data = None
+def get_json_filepath(output_dir, folder, filename):
+    op = []
     for path in Path(output_dir).iterdir():
-        if path.suffix == ".zip":
-            with zipfile.ZipFile(path, "r") as archive:
-                data = json.loads(archive.read(folder+"/"+filename))
-    return data
+        for jsonpath in Path(path / folder).rglob(filename):
+            op.append(jsonpath)
+    assert len(op) == 1
+    return op[0]
 
 
 def remove_outputs(study_path):
@@ -74,11 +73,19 @@ def assert_convergence(solution, options_data):
 
 def verify_solution(study_path, expected_values, expected_investment_solution):
     output_path = study_path / "output"
-    json_data = get_json_file_data(output_path, "expansion", "out.json")
-    options_data = get_json_file_data(output_path, "lp", "options.json")
+    json_path = get_json_filepath(output_path, "expansion", "out.json")
+    options_path = get_json_filepath(output_path, "lp", "options.json")
+
+    with open(str(json_path), "r") as json_file:
+        json_data = json.load(json_file)
+
+    with open(str(options_path), "r") as options_file:
+        options_data = json.load(options_file)
 
     solution = json_data["solution"]
     investment_solution = solution["values"]
+
+    json_file.close()
 
     np.testing.assert_allclose(
         solution["investment_cost"],
@@ -155,10 +162,8 @@ def verify_study_update(study_path, expected_investment_solution, antares_versio
                         study_path, candidate_name_list[0]
                     ).shape
                 )
-                expected_direct_link_capacity += investment * \
-                    link_profile_array[:, 0]
-                expected_indirect_link_capacity += investment * \
-                    link_profile_array[:, 1]
+                expected_direct_link_capacity += investment * link_profile_array[:, 0]
+                expected_indirect_link_capacity += investment * link_profile_array[:, 1]
             else:
                 direct_array = link_profile_array[:, :, 0].transpose()
                 indirect_array = link_profile_array[:, :, 1].transpose()
@@ -225,8 +230,7 @@ def assert_ntc_update_post_820(
     link,
     study_path,
 ):
-    direct_ntc = candidate_reader.get_link_antares_direct_link_file(
-        study_path, link)
+    direct_ntc = candidate_reader.get_link_antares_direct_link_file(study_path, link)
     indirect_ntc = candidate_reader.get_link_antares_indirect_link_file(
         study_path, link
     )
@@ -249,8 +253,7 @@ def assert_ntc_update_pre_820(
     link,
     study_path,
 ):
-    study_link = candidate_reader.get_link_antares_link_file_pre820(
-        study_path, link)
+    study_link = candidate_reader.get_link_antares_link_file_pre820(study_path, link)
     study_link_array = np.loadtxt(study_link, delimiter="\t")
     link_capacity = study_link_array[:, [0, 1]]
     np.testing.assert_allclose(
@@ -348,8 +351,7 @@ def test_full_study_long_sequential(
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "sequential")
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -370,8 +372,7 @@ def test_full_study_long_mpi(
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
 medium_parameters_values = [
@@ -535,8 +536,7 @@ def test_full_study_medium_sequential(
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "sequential")
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -557,8 +557,7 @@ def test_full_study_medium_parallel(
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
 short_parameters_values = [
@@ -621,8 +620,7 @@ def test_full_study_short_sequential(
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "sequential")
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -643,5 +641,4 @@ def test_full_study_short_parallel(
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
+    verify_study_update(tmp_study, expected_investment_solution, antares_version)

@@ -399,7 +399,7 @@ class ConfigLoader:
         )
 
     def create_expansion_dir(self):
-        expansion_dir = self.expansion_dir()
+        expansion_dir = self._expansion_dir()
         if os.path.isdir(expansion_dir):
             shutil.rmtree(expansion_dir)
         os.makedirs(expansion_dir)
@@ -410,7 +410,7 @@ class ConfigLoader:
             shutil.rmtree(sensitivity_dir)
         os.makedirs(sensitivity_dir)
 
-    def expansion_dir(self):
+    def _expansion_dir(self):
         return os.path.normpath(
             os.path.join(self.xpansion_simulation_output(), "expansion")
         )
@@ -590,12 +590,6 @@ class ConfigLoader:
     def sensitivity_exe(self):
         return self.exe_path(self._config.SENSITIVITY_EXE)
 
-    def full_run_exe(self):
-        return self.exe_path(self._config.FULL_RUN)
-
-    def antares_archive_updater_exe(self):
-        return self.exe_path(self._config.ANTARES_ARCHIVE_UPDATER)
-
     def method(self):
         return self._config.method
 
@@ -612,13 +606,13 @@ class ConfigLoader:
         return self._config.antares_n_cpu
 
     def json_file_path(self):
-        return os.path.join(self.expansion_dir(), self.json_name())
+        return os.path.join(self._expansion_dir(), self.json_name())
 
     def json_name(self):
         return self._config.JSON_NAME
 
     def last_iteration_json_file_path(self):
-        return os.path.join(self.expansion_dir(), self.last_iteration_json_file_name())
+        return os.path.join(self._expansion_dir(), self.last_iteration_json_file_name())
 
     def last_iteration_json_file_name(self):
         return self._config.LAST_ITERATION_JSON_FILE_NAME
