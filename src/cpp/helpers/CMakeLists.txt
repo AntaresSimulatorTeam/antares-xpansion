@@ -51,5 +51,6 @@ target_link_libraries (helpers
 		solvers
 		glog::glog
 		gflags::gflags
+		Boost::boost Boost::program_options
 		MINIZIP::minizip-ng
 )
