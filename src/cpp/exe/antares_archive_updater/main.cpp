@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
   }
   writer.Close();
   writer.Delete();
-  ArchiveUpdater::DeleteFromArchive(archive_path);
+  ArchiveUpdater::CleanAntaresArchive(archive_path);
 
   return 0;
 }

@@ -87,7 +87,7 @@ void ArchiveUpdater::Update(ArchiveWriter &writer,
   }
 }
 
-void ArchiveUpdater::DeleteFromArchive(
+void ArchiveUpdater::CleanAntaresArchive(
     const std::filesystem::path &src_archive,
     const std::filesystem::path &target_archive) {
   auto tmp_target_path = target_archive;
