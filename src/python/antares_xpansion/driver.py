@@ -3,6 +3,7 @@
 """
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
@@ -91,6 +92,7 @@ class XpansionDriver:
                 raise XpansionDriver.AntaresArchiveUpdaterExeError(
                     f"ERROR: exited {self.config_loader.antares_archive_updater_exe()} with status {ret.returncode}"
                 )
+            shutil.rmtree(self.config_loader.xpansion_simulation_output())
 
         elif self.config_loader.step() == "antares":
             self.launch_antares_step()
