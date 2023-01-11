@@ -4,19 +4,41 @@
 #include <vector>
 
 #include "ArchiveReader.h"
+#include "include/helpers/StringUtils.h"
 
-int32_t ArchiveUpdater::MinizipErase(
-    const std::vector<std::filesystem::path> &paths, void *reader,
-    void *writer) {
+const std::string CRITERION_FILES_PREFIX = "criterion";
+const std::string CONSTRAINTS_FILES_PREFIX = "constraints";
+const std::string VARIABLES_FILES_PREFIX = "variables";
+const std::string MPS_FILES_EXTENSION = ".mps";
+
+bool isCriterionFile(const std::filesystem::path &file_name) {
+  auto file_name_str = file_name.string();
+  return StringUtils::contains(file_name_str, CRITERION_FILES_PREFIX) &&
+         !file_name.has_root_path();
+}
+bool isVariablesFile(const std::filesystem::path &file_name) {
+  auto file_name_str = file_name.string();
+  return StringUtils::contains(file_name_str, VARIABLES_FILES_PREFIX) &&
+         !file_name.has_root_path();
+}
+bool isConstraintsFile(const std::filesystem::path &file_name) {
+  auto file_name_str = file_name.string();
+  return StringUtils::contains(file_name_str, CONSTRAINTS_FILES_PREFIX) &&
+         !file_name.has_root_path();
+}
+
+bool IsAntaresMpsFile(const std::filesystem::path &file_name) {
+  return file_name.filename().extension() == MPS_FILES_EXTENSION &&
+         !file_name.has_parent_path();
+}
+
+int32_t ArchiveUpdater::MinizipErase(void *reader, void *writer) {
   mz_zip_file *file_info = NULL;
   const char *filename_in_zip = NULL;
 
   int32_t skip = 0;
   int32_t err = MZ_OK;
   uint8_t zip_cd = 0;
-
-  std::vector<std::filesystem::path> unseen_paths;
-  std::vector<std::filesystem::path> remaining_paths = paths;
 
   err = mz_zip_reader_goto_first_entry(reader);
 
@@ -32,22 +54,10 @@ int32_t ArchiveUpdater::MinizipErase(
 
     /* Copy all entries from original archive to temporary archive
        except the ones we don't want */
-    unseen_paths.clear();
     skip = 0;
-    for (const auto &filename_in_zip : remaining_paths) {
-      std::cout << "filename_in_zip = " << filename_in_zip << "\n";
-      std::cout << "file_info->filename = " << file_info->filename << "\n";
-      std::cout << "std::filesystem::path(file_info->filename) = "
-                << std::filesystem::path(file_info->filename) << "\n";
-      if (filename_in_zip.compare(file_info->filename) == 0) {
-        skip = 1;
-        std::cout << "skipped\n";
-      } else {
-        unseen_paths.push_back(filename_in_zip);
-      }
-    }
-    remaining_paths = unseen_paths;
-    if (skip == 0) {
+    auto file_name = std::filesystem::path(file_info->filename);
+    if (!isCriterionFile(file_name) && !isConstraintsFile(file_name) &&
+        !isVariablesFile(file_name) && !IsAntaresMpsFile(file_name)) {
       err = mz_zip_writer_copy_from_reader(writer, reader);
 
       if (err != MZ_OK) {
@@ -80,7 +90,6 @@ void ArchiveUpdater::Update(ArchiveWriter &writer,
 }
 
 void ArchiveUpdater::DeleteFromArchive(
-    const std::vector<std::filesystem::path> &paths,
     const std::filesystem::path &src_archive,
     const std::filesystem::path &target_archive) {
   auto tmp_target_path = target_archive;
@@ -95,7 +104,7 @@ void ArchiveUpdater::DeleteFromArchive(
   auto writer = ArchiveWriter(tmp_target_path);
   reader.Open();
   writer.Open();
-  MinizipErase(paths, reader.InternalPointer(), writer.InternalPointer());
+  MinizipErase(reader.InternalPointer(), writer.InternalPointer());
   reader.Close();
   reader.Delete();
   writer.Close();

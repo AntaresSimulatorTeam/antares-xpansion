@@ -13,10 +13,8 @@ class ArchiveUpdater {
                      const std::filesystem::path& path_to_add,
                      const bool delete_path);
   static void DeleteFromArchive(
-      const std::vector<std::filesystem::path>& paths,
       const std::filesystem::path& src_archive,
       const std::filesystem::path& target_archive = "");
-  static int32_t MinizipErase(const std::vector<std::filesystem::path>& paths,
-                              void* reader, void* writer);
+  static int32_t MinizipErase(void* reader, void* writer);
 };
 #endif  // ANTARESXPANSION_SRC_CPP_HELPERS_ARCHIVEUPDATER_H_

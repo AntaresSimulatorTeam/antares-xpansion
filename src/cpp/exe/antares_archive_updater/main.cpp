@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
   }
   writer.Close();
   writer.Delete();
-  ArchiveUpdater::DeleteFromArchive({"a.txt"}, archive_path);
+  ArchiveUpdater::DeleteFromArchive(archive_path);
 
   // std::filesystem::remove_all()
   return 0;
