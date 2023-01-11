@@ -1,5 +1,5 @@
-#ifndef ANTARESXPANSION_SRC_CPP_HELPERS_ARCHIVEUPDATER_H_
-#define ANTARESXPANSION_SRC_CPP_HELPERS_ARCHIVEUPDATER_H_
+#ifndef ANTARESXPANSION_SRC_CPP_HELPERS_ANTARESARCHIVEUPDATER_H_
+#define ANTARESXPANSION_SRC_CPP_HELPERS_ANTARESARCHIVEUPDATER_H_
 #include <filesystem>
 #include <vector>
 
@@ -17,4 +17,4 @@ class AntaresArchiveUpdater {
       const std::filesystem::path& target_archive = "");
   static int32_t MinizipErase(void* reader, void* writer);
 };
-#endif  // ANTARESXPANSION_SRC_CPP_HELPERS_ARCHIVEUPDATER_H_
+#endif  // ANTARESXPANSION_SRC_CPP_HELPERS_ANTARESARCHIVEUPDATER_H_

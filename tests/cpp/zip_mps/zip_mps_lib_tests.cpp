@@ -9,7 +9,7 @@
 #include <iterator>
 
 #include "ArchiveReader.h"
-#include "ArchiveUpdater.h"
+#include "AntaresArchiveUpdater.h"
 #include "ArchiveWriter.h"
 #include "FileInBuffer.h"
 #include "RandomDirGenerator.h"

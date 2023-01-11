@@ -1,11 +1,11 @@
 #include <iostream>
 
-#include "ArchiveUpdater.h"
-#include "ArchiveUpdaterExeOptions.h"
+#include "AntaresArchiveUpdater.h"
+#include "AntaresArchiveUpdaterExeOptions.h"
 #include "ArchiveWriter.h"
 
 int main(int argc, char** argv) {
-  ArchiveUpdaterExeOptions options_parser;
+  AntaresArchiveUpdaterExeOptions options_parser;
 
   options_parser.Parse(argc, argv);
   auto delete_path = options_parser.DeletePath();

@@ -1,8 +1,8 @@
-#include "ArchiveUpdaterExeOptions.h"
+#include "AntaresArchiveUpdaterExeOptions.h"
 
 namespace po = boost::program_options;
 
-ArchiveUpdaterExeOptions::ArchiveUpdaterExeOptions()
+AntaresArchiveUpdaterExeOptions::AntaresArchiveUpdaterExeOptions()
     : OptionsParser("Problem Generation exe") {
   AddOptions()("help,h", "produce help message")(
       "archive,a", po::value<std::filesystem::path>(&archive_)->required(),
