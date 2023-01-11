@@ -17,10 +17,12 @@
 add_library (helpers STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.cc
-	${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/StringUtils.cpp AntaresVersionProvider.cpp AntaresVersionProvider.h
-	${CMAKE_CURRENT_SOURCE_DIR}/ArchiveIO.h
-	${CMAKE_CURRENT_SOURCE_DIR}/ArchiveReader.h
+		${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/StringUtils.cpp AntaresVersionProvider.cpp AntaresVersionProvider.h
+		${CMAKE_CURRENT_SOURCE_DIR}/OptionsParser.h
+		${CMAKE_CURRENT_SOURCE_DIR}/OptionsParser.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveIO.h
+		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveReader.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveReader.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveWriter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveWriter.cpp
