@@ -28,7 +28,6 @@ add_library (helpers STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/FileInBuffer.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Clock.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Clock.h
-		${CMAKE_CURRENT_SOURCE_DIR}/Timer.h
 		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdater.h
 		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdater.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdaterExeOptions.h
