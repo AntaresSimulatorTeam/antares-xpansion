@@ -14,11 +14,11 @@ int main(int argc, char** argv) {
   auto writer = ArchiveWriter(archive_path);
   writer.Open();
   for (const auto& path : paths) {
-    ArchiveUpdater::Update(writer, path, delete_path);
+    AntaresArchiveUpdater::Update(writer, path, delete_path);
   }
   writer.Close();
   writer.Delete();
-  ArchiveUpdater::CleanAntaresArchive(archive_path);
+  AntaresArchiveUpdater::CleanAntaresArchive(archive_path);
 
   return 0;
 }

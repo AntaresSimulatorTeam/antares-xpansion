@@ -163,9 +163,9 @@ TEST_F(ArchiveUpdaterTest, ThatNewFileAndDirCanBeAddToArchive) {
   writer.Open();
 
   // adding new_file_name1 in archive
-  ArchiveUpdater::Update(writer, new_file_name1, true);
+  AntaresArchiveUpdater::Update(writer, new_file_name1, true);
   // adding new_dir_to_add in archive
-  ArchiveUpdater::Update(writer, new_dir_to_add, true);
+  AntaresArchiveUpdater::Update(writer, new_dir_to_add, true);
   writer.Close();
   writer.Delete();
   ASSERT_FALSE(std::filesystem::exists(new_file_name1));

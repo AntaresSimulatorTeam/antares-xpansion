@@ -32,7 +32,7 @@ bool IsAntaresMpsFile(const std::filesystem::path &file_name) {
          !file_name.has_parent_path();
 }
 
-int32_t ArchiveUpdater::MinizipErase(void *reader, void *writer) {
+int32_t AntaresArchiveUpdater::MinizipErase(void *reader, void *writer) {
   mz_zip_file *file_info = NULL;
   const char *filename_in_zip = NULL;
 
@@ -76,9 +76,9 @@ int32_t ArchiveUpdater::MinizipErase(void *reader, void *writer) {
   return err;
 }
 
-void ArchiveUpdater::Update(ArchiveWriter &writer,
-                            const std::filesystem::path &path_to_add,
-                            const bool delete_path) {
+void AntaresArchiveUpdater::Update(ArchiveWriter &writer,
+                                   const std::filesystem::path &path_to_add,
+                                   const bool delete_path) {
   const auto root_path = path_to_add.parent_path();
   writer.AddPathInArchive(path_to_add, root_path);
 
@@ -87,7 +87,7 @@ void ArchiveUpdater::Update(ArchiveWriter &writer,
   }
 }
 
-void ArchiveUpdater::CleanAntaresArchive(
+void AntaresArchiveUpdater::CleanAntaresArchive(
     const std::filesystem::path &src_archive,
     const std::filesystem::path &target_archive) {
   auto tmp_target_path = target_archive;

@@ -5,9 +5,9 @@
 
 #include "ArchiveWriter.h"
 
-class ArchiveUpdater {
+class AntaresArchiveUpdater {
  public:
-  ArchiveUpdater() = default;
+  AntaresArchiveUpdater() = default;
 
   static void Update(ArchiveWriter& writer,
                      const std::filesystem::path& path_to_add,
