@@ -20,6 +20,7 @@ class ConfigParameters:
     LP_NAMER: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
+    ANTARES_ARCHIVE_UPDATER: str
     AVAILABLE_SOLVERS: List[str]
 
 
@@ -59,6 +60,7 @@ class XpansionConfig:
         self.LP_NAMER: str = ""
         self.STUDY_UPDATER: str = ""
         self.SENSITIVITY_EXE: str = ""
+        self.ANTARES_ARCHIVE_UPDATER: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
         self.AVAILABLE_SOLVER: List[str]
@@ -243,5 +245,6 @@ class XpansionConfig:
         self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
+        self.ANTARES_ARCHIVE_UPDATER = self.config_parameters.ANTARES_ARCHIVE_UPDATER
         self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE
         self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS

@@ -3,6 +3,9 @@
 """
 import os
 from pathlib import Path
+import shutil
+import subprocess
+import sys
 
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.benders_driver import BendersDriver
@@ -69,6 +72,7 @@ class XpansionDriver:
             self.launch_benders_step()
             self.study_update_driver.launch(
                 self.config_loader.xpansion_simulation_output(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
+            self.clean_step()
 
         elif self.config_loader.step() == "antares":
             self.launch_antares_step()
@@ -93,6 +97,17 @@ class XpansionDriver:
             raise XpansionDriver.UnknownStep(
                 f"Launching failed! {self.config_loader.step()} is not an Xpansion step.")
 
+    def clean_step(self):
+        ret = subprocess.run(
+            [str(self.config_loader.antares_archive_updater_exe()), "-a", str(self.config_loader.simulation_output_path()),
+             "-p", self.config_loader.simulation_lp_path(), self.config_loader.expansion_dir(), "-d"], shell=False, stdout=sys.stdout, stderr=sys.stderr,
+            encoding='utf-8')
+        if ret.returncode != 0:
+            raise XpansionDriver.AntaresArchiveUpdaterExeError(
+                f"ERROR: exited {self.config_loader.antares_archive_updater_exe()} with status {ret.returncode}"
+            )
+        shutil.rmtree(self.config_loader.xpansion_simulation_output())
+
     def launch_antares_step(self):
         self._configure_general_data_processor()
         self._backup_general_data_ini()
@@ -106,7 +121,8 @@ class XpansionDriver:
                 self._backup_general_data_ini_on_error()
                 self._revert_general_data_ini()
         except AntaresDriver.AntaresExecutionException as e:
-            flushed_print("Antares exited with error, backup current general data file and revert original one")
+            flushed_print(
+                "Antares exited with error, backup current general data file and revert original one")
             self._backup_general_data_ini_on_error()
             self._revert_general_data_ini()
             raise e
@@ -157,6 +173,9 @@ class XpansionDriver:
         resume_study.launch()
 
     class UnknownStep(Exception):
+        pass
+
+    class AntaresArchiveUpdaterExeError(Exception):
         pass
 
     def _revert_general_data_ini(self):
