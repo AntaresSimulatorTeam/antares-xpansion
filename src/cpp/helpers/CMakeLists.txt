@@ -25,9 +25,15 @@ add_library (helpers STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveWriter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveWriter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/FileInBuffer.h
-	${CMAKE_CURRENT_SOURCE_DIR}/FileInBuffer.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/Clock.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/Clock.h)
+		${CMAKE_CURRENT_SOURCE_DIR}/FileInBuffer.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Clock.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Clock.h
+		${CMAKE_CURRENT_SOURCE_DIR}/Timer.h
+		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdater.h
+		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdater.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdaterExeOptions.h
+		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdaterExeOptions.cpp
+		)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 

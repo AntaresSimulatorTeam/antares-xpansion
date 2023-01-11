@@ -25,6 +25,7 @@ class ArchiveReader : public ArchiveIO {
   void OpenEntry(const std::filesystem::path& fileToExtractPath);
   std::istringstream ExtractFileInStringStream(
       const std::filesystem::path& FileToExtractPath);
+  void* InternalPointer() const { return internalPointer_; }
 };
 
 #endif  // _ARCHIVEREADER_H
