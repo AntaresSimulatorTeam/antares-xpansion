@@ -84,15 +84,7 @@ class XpansionDriver:
                                         self.config_loader.n_mpi(),
                                         self.config_loader.oversubscribe(),
                                         self.config_loader.allow_run_as_root())
-            ret = subprocess.run(
-                [str(self.config_loader.antares_archive_updater_exe()), "-a", str(self.config_loader.simulation_output_path()),
-                 "-p", self.config_loader.simulation_lp_path(), self.config_loader.expansion_dir(), "-d"], shell=False, stdout=sys.stdout, stderr=sys.stderr,
-                encoding='utf-8')
-            if ret.returncode != 0:
-                raise XpansionDriver.AntaresArchiveUpdaterExeError(
-                    f"ERROR: exited {self.config_loader.antares_archive_updater_exe()} with status {ret.returncode}"
-                )
-            shutil.rmtree(self.config_loader.xpansion_simulation_output())
+            self.clean_step()
 
         elif self.config_loader.step() == "antares":
             self.launch_antares_step()
@@ -116,6 +108,17 @@ class XpansionDriver:
         else:
             raise XpansionDriver.UnknownStep(
                 f"Launching failed! {self.config_loader.step()} is not an Xpansion step.")
+
+    def clean_step(self):
+        ret = subprocess.run(
+            [str(self.config_loader.antares_archive_updater_exe()), "-a", str(self.config_loader.simulation_output_path()),
+             "-p", self.config_loader.simulation_lp_path(), self.config_loader.expansion_dir(), "-d"], shell=False, stdout=sys.stdout, stderr=sys.stderr,
+            encoding='utf-8')
+        if ret.returncode != 0:
+            raise XpansionDriver.AntaresArchiveUpdaterExeError(
+                f"ERROR: exited {self.config_loader.antares_archive_updater_exe()} with status {ret.returncode}"
+            )
+        shutil.rmtree(self.config_loader.xpansion_simulation_output())
 
     def launch_antares_step(self):
         self._configure_general_data_processor()
