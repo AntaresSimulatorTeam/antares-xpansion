@@ -36,7 +36,6 @@ int32_t ArchiveUpdater::MinizipErase(void *reader, void *writer) {
   mz_zip_file *file_info = NULL;
   const char *filename_in_zip = NULL;
 
-  int32_t skip = 0;
   int32_t err = MZ_OK;
   uint8_t zip_cd = 0;
 
@@ -54,7 +53,6 @@ int32_t ArchiveUpdater::MinizipErase(void *reader, void *writer) {
 
     /* Copy all entries from original archive to temporary archive
        except the ones we don't want */
-    skip = 0;
     auto file_name = std::filesystem::path(file_info->filename);
     if (!isCriterionFile(file_name) && !isConstraintsFile(file_name) &&
         !isVariablesFile(file_name) && !IsAntaresMpsFile(file_name)) {
