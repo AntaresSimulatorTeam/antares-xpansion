@@ -43,6 +43,7 @@ class ArchiveReader : public ArchiveIO {
   void LoadEntriesPath();
   std::vector<std::filesystem::path> GetEntriesPathWithExtension(
       const std::string& ext);
+  void* InternalPointer() const { return pmz_zip_reader_instance_; }
 };
 
 #endif  // _ARCHIVEREADER_H

@@ -75,7 +75,7 @@ void ArchiveReader::LocateEntry(
     Delete();
     std::ostringstream errMsg;
     errMsg << "File : " << fileToExtractPath.string().c_str()
-           << " is not found in archive :" << ArchivePath().c_str()
+           << " is not found in archive :" << ArchivePath().string().c_str()
            << std::endl;
     throw ArchiveIOSpecificException(err, errMsg.str());
   }

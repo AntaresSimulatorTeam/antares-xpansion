@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
@@ -10,7 +11,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 namespace common_lpnamer {
 template <std::ctype_base::mask mask>

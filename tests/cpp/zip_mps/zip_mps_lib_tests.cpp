@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iterator>
 
+#include "AntaresArchiveUpdater.h"
 #include "ArchiveReader.h"
 #include "ArchiveWriter.h"
 #include "FileInBuffer.h"
@@ -170,7 +171,53 @@ TEST_F(ArchiveWriterTest, ShouldCreateArchiveWithVecBuffer) {
   writer.Delete();
   compareArchiveAndDir(archivePath, archive1Dir, tmpDir);
 }
-class FileInBufferTest : public ::testing::Test {
+class ArchiveUpdaterTest : public ::testing::Test {
  public:
-  FileInBufferTest() = default;
+  ArchiveUpdaterTest() = default;
 };
+
+TEST_F(ArchiveUpdaterTest, ThatNewFileAndDirCanBeAddToArchive) {
+  auto tmp_dir = std::filesystem::temp_directory_path();
+  auto new_dir_to_add = tmp_dir / "new_dir_to_add";
+  std::filesystem::create_directory(new_dir_to_add);
+
+  std::filesystem::copy(archive1, tmp_dir,
+                        std::filesystem::copy_options::overwrite_existing);
+  // create file in tmp/new_file1.txt
+  auto new_file_name1 = tmp_dir / "new_file1.txt";
+  std::ofstream new_file1(new_file_name1);
+  auto new_file_content = "HELLO!";
+  new_file1 << new_file_content;
+  new_file1.close();
+
+  // create another file in new_dir_to_add/
+  auto new_file_name2 = new_dir_to_add / "file.m";
+  std::filesystem::copy(new_file_name1, new_file_name2,
+                        std::filesystem::copy_options::overwrite_existing);
+  auto copy_archive = tmp_dir / archive1.filename();
+
+  auto writer = ArchiveWriter(copy_archive);
+  writer.Open();
+
+  // adding new_file_name1 in archive
+  AntaresArchiveUpdater::Update(writer, new_file_name1, true);
+  // adding new_dir_to_add in archive
+  AntaresArchiveUpdater::Update(writer, new_dir_to_add, true);
+  writer.Close();
+  writer.Delete();
+  ASSERT_FALSE(std::filesystem::exists(new_file_name1));
+  ASSERT_FALSE(std::filesystem::exists(new_dir_to_add));
+
+  auto reader = ArchiveReader(copy_archive);
+  reader.Open();
+  auto file1_name_in_archive = new_file_name1.filename();
+  auto string_stream = reader.ExtractFileInStringStream(file1_name_in_archive);
+  ASSERT_STREQ(string_stream.str().c_str(), new_file_content);
+
+  auto file2_name_in_archive =
+      new_file_name2.parent_path().filename() / new_file_name2.filename();
+  auto string_stream2 = reader.ExtractFileInStringStream(file2_name_in_archive);
+  ASSERT_STREQ(string_stream2.str().c_str(), new_file_content);
+  reader.Close();
+  reader.Delete();
+}
