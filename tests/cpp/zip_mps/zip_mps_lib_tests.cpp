@@ -21,11 +21,11 @@ ARCHIVES COMPOSITION:
 
 data/mps_zip/archive1.zip
 data/mps_zip/archive2.zip
-data/mps_zip/archive2
+data/mps_zip/archive1
                     |__ file1
                     |__ file2
                     |__ file3
-data/mps_zip/archive2
+data/mps_zip/archive2.zip
                     |__ file1.txt
                     |__ file2
                     |__ file3.xlsx
