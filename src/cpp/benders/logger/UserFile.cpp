@@ -72,7 +72,7 @@ void UserFile::log_at_ending(const LogData &d) {
 }
 
 void UserFile::log_total_duration(double durationInSeconds) {
-  _file << LINE_PREFIX << "Problem ran in " << durationInSeconds << " s"
+  _file << LINE_PREFIX << "Benders ran in " << durationInSeconds << " s"
         << std::endl;
   _file.flush();
 }
