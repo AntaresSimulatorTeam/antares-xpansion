@@ -57,7 +57,7 @@ void User::log_at_ending(const LogData &d) {
           << std::endl;
 }
 void User::log_total_duration(double durationInSeconds) {
-  _stream << "Problem ran in " << durationInSeconds << " s" << std::endl;
+  _stream << "Benders ran in " << durationInSeconds << " s" << std::endl;
 }
 
 void User::log_stop_criterion_reached(

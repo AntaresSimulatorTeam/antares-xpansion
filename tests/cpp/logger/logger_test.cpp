@@ -510,7 +510,7 @@ TEST_F(UserLoggerTest, LogSubProblemDuration) {
 
 TEST_F(UserLoggerTest, LogTotalDuration) {
   std::stringstream expected;
-  expected << "Problem ran in 3 s" << std::endl;
+  expected << "Benders ran in 3 s" << std::endl;
   _logger.log_total_duration(3.000000);
   ASSERT_EQ(_stream.str(), expected.str());
 }
