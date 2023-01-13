@@ -17,6 +17,7 @@ class ConfigFileParser:
         self.LP_NAMER_DEFAULT = "lp_namer"
         self.STUDY_UPDATER_DEFAULT = "study_updater"
         self.FULL_RUN_DEFAULT = "full_run"
+        self.ANTARES_ARCHIVE_UPDATER_DEFAULT = "antares_archive_updater"
         self.SENSITIVITY_DEFAULT = "sensitivity"
         self.AVAILABLE_SOLVERS_DEFAULT = []
 
@@ -42,6 +43,8 @@ class ConfigFileParser:
                     'STUDY_UPDATER', self.STUDY_UPDATER_DEFAULT),
                 FULL_RUN=content.get(
                     'FULL_RUN', self.FULL_RUN_DEFAULT),
+                ANTARES_ARCHIVE_UPDATER=content.get(
+                    'ANTARES_ARCHIVE_UPDATER', self.ANTARES_ARCHIVE_UPDATER_DEFAULT),
                 SENSITIVITY_EXE=content.get(
                     'SENSITIVITY', self.SENSITIVITY_DEFAULT),
                 AVAILABLE_SOLVERS=content.get(
