@@ -47,11 +47,4 @@ xpansion_total_duration = end_time - start_time
 flushed_print('Xpansion duration : {}'.format(
     xpansion_total_duration))
 flushed_print("Xpansion Finished.")
-# output_json_file = config_loader.json_file_path()
-# with open(config_loader.json_file_path(), "r+") as json_file:
-#     output_file_content = json.load(json_file)
-#     output_file_content["antares_xpansion"]["Xpansion total duration"] = str(
-#         xpansion_total_duration)
-#     json_file.seek(0)
-#     json.dump(output_file_content, json_file, indent=4)
 locker.unlock()
