@@ -14,7 +14,6 @@ message ("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 add_library (benders_mpi_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMPI.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/BendersMpiMain.cpp
 )
 
 target_link_libraries (benders_mpi_core
