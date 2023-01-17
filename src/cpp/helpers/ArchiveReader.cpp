@@ -115,8 +115,8 @@ std::istringstream ArchiveReader::ExtractFileInStringStream(
 
 uint64_t ArchiveReader::GetNumberOfEntries() {
   uint64_t number_entry = 0;
-  auto err = mz_zip_get_number_entry(pzip_handle_, &number_entry);
-  if (err != MZ_OK) {
+  if (auto err = mz_zip_get_number_entry(pzip_handle_, &number_entry);
+  err != MZ_OK) {
     Close();
     Delete();
     std::ostringstream msg;
@@ -178,7 +178,7 @@ std::vector<std::filesystem::path> ArchiveReader::GetEntriesPathWithExtension(
   std::vector<std::filesystem::path> result;
   std::copy_if(entries_path_.begin(), entries_path_.end(),
                std::back_inserter(result), [&ext](auto& entry_path) -> bool {
-                 return entry_path.extension() == ext;
+                 return entry_path.extension().string() == ext;
                });
   return result;
 }

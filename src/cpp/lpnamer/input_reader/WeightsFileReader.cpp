@@ -20,7 +20,7 @@ bool WeightsFileReader::CheckWeightsFile() {
   CheckFileIsNotEmpty(file_reader);
   weights_list_.clear();
   null_weights = true;
-  int nb_values = 0;
+  size_t nb_values = 0;
   int idx = 0;
   std::string line;
   while (std::getline(file_reader, line)) {
@@ -55,7 +55,7 @@ double WeightsFileReader::GetWeightFromLine(const std::string &line,
   double weight;
   try {
     weight = std::stod(common_lpnamer::trim(line));
-  } catch (const std::invalid_argument &e) {
+  } catch (...) {
     std::ostringstream msg;
     msg << "Line " << idx << " in file " << weights_file_path_.string()
         << "is not a single non-negative value" << std::endl;

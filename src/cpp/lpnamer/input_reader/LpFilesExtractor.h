@@ -23,12 +23,12 @@ class LpFilesExtractor {
 
   class ErrorWithAreaFile : public std::runtime_error {
    public:
-    ErrorWithAreaFile(const std::string& err_message)
+    explicit ErrorWithAreaFile(const std::string& err_message)
         : std::runtime_error(err_message) {}
   };
   class ErrorWithIntercosFile : public std::runtime_error {
    public:
-    ErrorWithIntercosFile(const std::string& err_message)
+    explicit ErrorWithIntercosFile(const std::string& err_message)
         : std::runtime_error(err_message) {}
   };
 };

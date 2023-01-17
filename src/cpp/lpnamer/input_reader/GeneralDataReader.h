@@ -15,7 +15,7 @@
 
 class IniFileNotFound : public std::runtime_error {
  public:
-  IniFileNotFound(const std::string& msg) : std::runtime_error(msg) {}
+  explicit IniFileNotFound(const std::string& msg) : std::runtime_error(msg) {}
 };
 
 class IniReaderUtils {
@@ -35,7 +35,7 @@ class IniReaderUtils {
       const std::string& line) {
     auto key = common_lpnamer::trim(common_lpnamer::split(line, '=')[0]);
     auto val = std::atoi(
-        (common_lpnamer::trim(common_lpnamer::split(line, '=')[1]).c_str()));
+        common_lpnamer::trim(common_lpnamer::split(line, '=')[1]).c_str());
     return {key, val};
   }
 };

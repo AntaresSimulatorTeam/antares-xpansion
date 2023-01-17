@@ -45,7 +45,8 @@ void YearlyWeightsWriter::FillMpsWeightsMap() {
   zip_reader.Delete();
 }
 
-int YearlyWeightsWriter::GetYearFromMpsName(const std::string file_name) const {
+int YearlyWeightsWriter::GetYearFromMpsName(
+    const std::string& file_name) const {
   auto split_name = common_lpnamer::split(common_lpnamer::trim(file_name), '-');
   return std::atoi(split_name[1].c_str());
 }

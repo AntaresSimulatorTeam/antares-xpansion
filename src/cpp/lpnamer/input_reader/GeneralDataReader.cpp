@@ -72,7 +72,7 @@ GeneralDataIniReader::GetRawPlaylist() {
   std::string current_section = "";
   active_year_list_.clear();
   inactive_year_list_.clear();
-  for (auto line : file_lines_) {
+  for (const auto& line : file_lines_) {
     if (IniReaderUtils::LineIsNotASectionHeader(line)) {
       if (current_section == "playlist") {
         auto [key, val] = IniReaderUtils::GetKeyValFromLine(line);

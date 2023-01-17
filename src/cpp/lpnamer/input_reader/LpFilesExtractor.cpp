@@ -7,9 +7,9 @@
 void LpFilesExtractor::ExtractFiles() const {
   auto archive_reader = ArchiveReader(antares_archive_path_);
   archive_reader.Open();
-  const auto vect_area_files = archive_reader.ExtractPattern("area*.txt", "", xpansion_output_dir_);
-  auto num_areas_file = vect_area_files.size();
-  if (num_areas_file == 0) {
+  const auto vect_area_files =
+      archive_reader.ExtractPattern("area*.txt", "", xpansion_output_dir_);
+  if (auto num_areas_file = vect_area_files.size(); num_areas_file == 0) {
     std::ostringstream msg;
     msg << "No area*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
@@ -23,10 +23,11 @@ void LpFilesExtractor::ExtractFiles() const {
   std::filesystem::rename(vect_area_files[0],
                           xpansion_output_dir_ / "area.txt");
 
-  const auto vect_interco_files = archive_reader.ExtractPattern("interco*.txt", "", xpansion_output_dir_);
+  const auto vect_interco_files =
+      archive_reader.ExtractPattern("interco*.txt", "", xpansion_output_dir_);
 
-  auto num_intercos_file = vect_interco_files.size();
-  if (num_intercos_file == 0) {
+  if (auto num_intercos_file = vect_interco_files.size();
+      num_intercos_file == 0) {
     std::ostringstream msg;
     msg << "No interco*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();

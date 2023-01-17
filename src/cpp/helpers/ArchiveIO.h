@@ -12,7 +12,7 @@ extern "C" {
 
 class ArchiveIOGeneralException : public std::runtime_error {
  public:
-  ArchiveIOGeneralException(int32_t status, const std::string& action,
+  explicit ArchiveIOGeneralException(int32_t status, const std::string& action,
                             int32_t expectedStatus = MZ_OK)
       : std::runtime_error("Failed to " + action +
                            " invalid status: " + std::to_string(status) + " (" +

@@ -22,11 +22,12 @@
 #include "Timer.h"
 #include "WeightsFileReader.h"
 #include "WeightsFileWriter.h"
+#include "common_lpnamer.h"
 #include "solver_utils.h"
 
 void ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
-    std::filesystem::path antares_archive_path,
+    const std::filesystem::path& antares_archive_path,
     const std::filesystem::path& weights_file,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   const auto settings_dir = xpansion_output_dir / ".." / ".." / "settings";
@@ -45,9 +46,8 @@ void ProcessWeights(
 
 void WriteMpsTxt(const std::filesystem::path& antares_archive_path,
                  const std::filesystem::path& xpansion_output_dir) {
-  const auto MPS_TXT = "mps.txt";
-  auto mps_txt_writer =
-      MpsTxtWriter(antares_archive_path, xpansion_output_dir / MPS_TXT);
+  auto mps_txt_writer = MpsTxtWriter(
+      antares_archive_path, xpansion_output_dir / common_lpnamer::MPS_TXT);
   mps_txt_writer.Write();
 }
 
@@ -64,7 +64,7 @@ void RunProblemGeneration(
     const std::filesystem::path& xpansion_output_dir,
     const std::string& master_formulation,
     const std::string& additionalConstraintFilename_l,
-    std::filesystem::path antares_archive_path,
+    const std::filesystem::path& antares_archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
     const std::filesystem::path& log_file_path, bool zip_mps,
     const std::filesystem::path& weights_file) {

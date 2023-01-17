@@ -40,8 +40,8 @@ void MpsTxtWriter::FillDict() {
 void MpsTxtWriter::FillDictWithMpsFiles(
     const std::vector<std::filesystem::path>& mps_files) {
   for (const auto& mps_file : mps_files) {
-    year_week_and_files_dict_.insert(
-        {YearAndWeekFromFileName(mps_file), {mps_file, "", ""}});
+    year_week_and_files_dict_.try_emplace(YearAndWeekFromFileName(mps_file),
+                                          mps_file, "", "");
   }
 }
 

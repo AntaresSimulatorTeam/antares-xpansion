@@ -80,7 +80,6 @@ class ProblemGeneratorDriver:
         self.output_path = output_path
 
         self.create_lp_dir()
-        self.get_names()
 
         self.is_relaxed = is_relaxed
         self._lp_step()
@@ -107,66 +106,6 @@ class ProblemGeneratorDriver:
         if (os.path.isfile(str(self.lp_namer_exe_path) + '.log')):
             os.remove(str(self.lp_namer_exe_path) + '.log')
 
-    def get_names(self):
-        """
-            produces a .txt file describing the weekly problems:
-            each line of the file contains :
-             - mps file name
-             - variables file name
-             - constraints file name
-
-            produces a file named with xpansionConfig.MPS_TXT
-        """
-
-        # self._process_weights_file()
-
-        # mps_txt = read_and_write_mps(self.output_path)
-        # with open(os.path.normpath(os.path.join(self.xpansion_output_dir, self.MPS_TXT)), 'w') as file_l:
-        #     for line in mps_txt.items():
-        #         mps_sub_problem_file = line[1][0]
-        #         file_l.write(mps_sub_problem_file + ' ' + line[1]
-        #                      [1] + ' ' + line[1][2] + '\n')
-
-    #     with zipfile.ZipFile(self.output_path, 'r') as study_archive:
-    #         for e in study_archive.namelist():
-    #             if '.txt' in e and '/' not in e:
-    #                 if 'area' in e:
-    #                     study_archive.extract(
-    #                         e, self.xpansion_output_dir)
-    #                 if 'interco' in e:
-    #                     study_archive.extract(
-    #                         e, self.xpansion_output_dir)
-    #             if 'ts-numbers' in e:
-    #                 study_archive.extract(
-    #                     e, self.xpansion_output_dir)
-
-    #     self._check_and_rename_area_file()
-    #     self._check_and_rename_interco_file()
-
-    # def _check_and_rename_area_file(self):
-    #     self._check_and_rename_txt_file(
-    #         "area", ProblemGeneratorDriver.AreaFileException)
-
-    # def _check_and_rename_interco_file(self):
-    #     self._check_and_rename_txt_file(
-    #         "interco", ProblemGeneratorDriver.IntercoFilesException)
-
-    # def _check_and_rename_txt_file(self, prefix, exception_to_raise: BasicException):
-    #     self._check_and_rename_file(prefix, "txt", exception_to_raise)
-
-    # def _check_and_rename_file(self, prefix, extension, exception_to_raise: BasicException):
-    #     glob_path = Path(self.xpansion_output_dir)
-    #     files = [str(pp) for pp in glob_path.glob(prefix + "*" + extension)]
-    #     if len(files) == 0:
-    #         raise exception_to_raise("No %s*.txt file found" % prefix)
-
-    #     elif len(files) > 1:
-    #         raise exception_to_raise(
-    #             "More than one %s*.txt file found" % prefix)
-
-    #     shutil.copy(files[0], os.path.normpath(
-    #         os.path.join(self.xpansion_output_dir, prefix + '.' + extension)))
-
     def _lp_step(self):
         """
             copies area and interco files and launches the lp_namer
@@ -188,15 +127,6 @@ class ProblemGeneratorDriver:
         if os.path.isdir(self._lp_path):
             shutil.rmtree(self._lp_path)
         os.makedirs(self._lp_path)
-
-    # def _process_weights_file(self):
-    #     if self.weight_file_name_for_lp:
-    #         XpansionStudyReader.check_weights_file(
-    #             self.user_weights_file_path, len(self.active_years))
-    #         weight_list = XpansionStudyReader.get_years_weight_from_file(
-    #             self.user_weights_file_path)
-    #         YearlyWeightWriter(Path(self.xpansion_output_dir), self.output_path).create_weight_file(weight_list, self.weight_file_name_for_lp,
-    #                                                                                                    self.active_years)
 
     def lp_namer_options(self):
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'

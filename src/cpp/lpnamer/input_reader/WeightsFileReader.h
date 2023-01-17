@@ -9,7 +9,7 @@
 class WeightsFileReader {
  private:
   std::filesystem::path weights_file_path_;
-  int number_of_active_years_;
+  size_t number_of_active_years_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   bool null_weights = true;
   std::vector<double> weights_list_;
@@ -30,7 +30,8 @@ class WeightsFileReader {
         logger_(logger) {}
   class WeightsFileError : public std::runtime_error {
    public:
-    WeightsFileError(const std::string& msg) : std::runtime_error(msg) {}
+    explicit WeightsFileError(const std::string& msg)
+        : std::runtime_error(msg) {}
   };
   class WeightsFileOpenError : public WeightsFileError {
     using WeightsFileError::WeightsFileError;

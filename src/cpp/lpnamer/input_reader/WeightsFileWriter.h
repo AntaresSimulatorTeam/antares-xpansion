@@ -24,7 +24,7 @@ class YearlyWeightsWriter {
   std::filesystem::path output_file_;
   std::vector<int> active_years_;
   void FillMpsWeightsMap();
-  int GetYearFromMpsName(const std::string file_name) const;
+  int GetYearFromMpsName(const std::string& file_name) const;
   void DumpMpsWeightsToFile() const;
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_YEARLYWEIGHTSWRITER_H
