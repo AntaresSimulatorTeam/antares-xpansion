@@ -441,6 +441,8 @@ TEST_F(UserLoggerTest, EndLog) {
   logData.it = 2;
   logData.max_iterations = 10;
   std::stringstream expected;
+  expected << indent_1 << "Total number of iterations done = " << logData.it
+           << std::endl;
   expected << indent_1 << "Best solution = it 1" << std::endl;
   expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
 
@@ -508,7 +510,7 @@ TEST_F(UserLoggerTest, LogSubProblemDuration) {
 
 TEST_F(UserLoggerTest, LogTotalDuration) {
   std::stringstream expected;
-  expected << "Problem ran in 3 s" << std::endl;
+  expected << "Benders ran in 3 s" << std::endl;
   _logger.log_total_duration(3.000000);
   ASSERT_EQ(_stream.str(), expected.str());
 }

@@ -77,8 +77,19 @@ class ConfigLoader:
         if not self._config.simulation_name:
             raise ConfigLoader.MissingSimulationName(
                 "Missing argument simulationName")
-        else:
+        elif self._config.simulation_name == "last":
             self._simulation_name = self._config.simulation_name
+
+        else:
+            tmp_zip = Path(self.antares_output()) / \
+                self._config.simulation_name
+            if self.is_zip(tmp_zip):
+                self._last_zip = tmp_zip
+                self._simulation_name = self._last_zip.parent / \
+                    (self._last_zip.stem+"-Xpansion")
+            else:
+                raise ConfigLoader.InvalidSimulationName(
+                    f"{tmp_zip} is not a valid zip archive")
 
     def _restore_launcher_options(self):
         with open(self.launcher_options_file_path(), "r") as launcher_options:
@@ -409,7 +420,7 @@ class ConfigLoader:
         )
 
     def create_expansion_dir(self):
-        expansion_dir = self._expansion_dir()
+        expansion_dir = self.expansion_dir()
         if os.path.isdir(expansion_dir):
             shutil.rmtree(expansion_dir)
         os.makedirs(expansion_dir)
@@ -420,7 +431,7 @@ class ConfigLoader:
             shutil.rmtree(sensitivity_dir)
         os.makedirs(sensitivity_dir)
 
-    def _expansion_dir(self):
+    def expansion_dir(self):
         return os.path.normpath(
             os.path.join(self.xpansion_simulation_output(), "expansion")
         )
@@ -597,6 +608,9 @@ class ConfigLoader:
     def full_run_exe(self):
         return self.exe_path(self._config.FULL_RUN)
 
+    def antares_archive_updater_exe(self):
+        return self.exe_path(self._config.ANTARES_ARCHIVE_UPDATER)
+
     def method(self):
         return self._config.method
 
@@ -613,13 +627,13 @@ class ConfigLoader:
         return self._config.antares_n_cpu
 
     def json_file_path(self):
-        return os.path.join(self._expansion_dir(), self.json_name())
+        return os.path.join(self.expansion_dir(), self.json_name())
 
     def json_name(self):
         return self._config.JSON_NAME
 
     def last_iteration_json_file_path(self):
-        return os.path.join(self._expansion_dir(), self.last_iteration_json_file_name())
+        return os.path.join(self.expansion_dir(), self.last_iteration_json_file_name())
 
     def last_iteration_json_file_name(self):
         return self._config.LAST_ITERATION_JSON_FILE_NAME
@@ -681,6 +695,9 @@ class ConfigLoader:
         )
 
     class MissingSimulationName(Exception):
+        pass
+
+    class InvalidSimulationName(Exception):
         pass
 
     def check_NTC_column_constraints(self, antares_version):

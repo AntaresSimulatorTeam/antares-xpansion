@@ -50,6 +50,7 @@ class ArchiveIO {
   virtual void Delete() = 0;
 
   virtual int Open() = 0;
+  virtual void* InternalPointer() const = 0;
 };
 
 #endif  // _ARCHIVEIO_H

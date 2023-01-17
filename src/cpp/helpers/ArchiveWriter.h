@@ -24,5 +24,8 @@ class ArchiveWriter : public ArchiveIO {
   void InitFileInfo();
   int32_t AddFileInArchive(const FileBuffer& FileBufferToAdd);
   int32_t AddFileInArchive(const std::filesystem::path& FileToAdd);
+  int32_t AddPathInArchive(const std::filesystem::path& path_to_add,
+                           const std::filesystem::path& root_path);
+  void* InternalPointer() const { return internalPointer_; }
 };
 #endif  // _ARCHIVEWRITER_H
