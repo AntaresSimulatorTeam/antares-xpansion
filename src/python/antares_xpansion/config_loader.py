@@ -77,8 +77,19 @@ class ConfigLoader:
         if not self._config.simulation_name:
             raise ConfigLoader.MissingSimulationName(
                 "Missing argument simulationName")
-        else:
+        elif self._config.simulation_name == "last":
             self._simulation_name = self._config.simulation_name
+
+        else:
+            tmp_zip = Path(self.antares_output()) / \
+                self._config.simulation_name
+            if self.is_zip(tmp_zip):
+                self._last_zip = tmp_zip
+                self._simulation_name = self._last_zip.parent / \
+                    (self._last_zip.stem+"-Xpansion")
+            else:
+                raise ConfigLoader.InvalidSimulationName(
+                    f"{tmp_zip} is not a valid zip archive")
 
     def _restore_launcher_options(self):
         with open(self.launcher_options_file_path(), "r") as launcher_options:
@@ -684,6 +695,9 @@ class ConfigLoader:
         )
 
     class MissingSimulationName(Exception):
+        pass
+
+    class InvalidSimulationName(Exception):
         pass
 
     def check_NTC_column_constraints(self, antares_version):

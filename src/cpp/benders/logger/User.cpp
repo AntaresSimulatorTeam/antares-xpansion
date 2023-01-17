@@ -49,13 +49,15 @@ void User::log_at_iteration_end(const LogData &d) {
 
 void User::log_at_ending(const LogData &d) {
   const double overall_cost = d.subproblem_cost + d.invest_cost;
+  _stream << indent_1 << "Total number of iterations done = " << d.it
+          << std::endl;
   _stream << indent_1 << "Best solution = it " << d.best_it << std::endl;
   _stream << indent_1 << " Overall cost = "
           << commons::create_str_million_euros(overall_cost) << " Me"
           << std::endl;
 }
 void User::log_total_duration(double durationInSeconds) {
-  _stream << "Problem ran in " << durationInSeconds << " s" << std::endl;
+  _stream << "Benders ran in " << durationInSeconds << " s" << std::endl;
 }
 
 void User::log_stop_criterion_reached(

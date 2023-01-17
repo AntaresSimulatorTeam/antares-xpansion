@@ -59,6 +59,8 @@ void UserFile::log_at_iteration_end(const LogData &d) {
 
 void UserFile::log_at_ending(const LogData &d) {
   const double overall_cost = d.subproblem_cost + d.invest_cost;
+  _file << LINE_PREFIX << indent_1
+        << "Total number of iterations done = " << d.it << std::endl;
   _file << LINE_PREFIX << indent_1 << "Best solution = it " << d.best_it
         << std::endl;
   _file.flush();
@@ -70,7 +72,7 @@ void UserFile::log_at_ending(const LogData &d) {
 }
 
 void UserFile::log_total_duration(double durationInSeconds) {
-  _file << LINE_PREFIX << "Problem ran in " << durationInSeconds << " s"
+  _file << LINE_PREFIX << "Benders ran in " << durationInSeconds << " s"
         << std::endl;
   _file.flush();
 }
