@@ -1,82 +1,117 @@
-from typing import List, Dict, Tuple
+from typing import List
 
+import json
 import pandas as pd
 from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from matplotlib import pyplot as plt, rc, rcParams, style
 
+ANTARES_STEP = "antares"
+PROBLEM_GENERATION_STEP = "problem_generation"
+BENDERS_STEP = "benders"
+
+
+class JsonFileProcessor:
+    def __init__(self, filepath: str) -> None:
+        self.json_path = filepath
+
+    def run(self) -> pd.DataFrame:
+        with open(self.json_path, "r") as file:
+            json_data = json.load(file)
+
+        return self._format_data(json_data)
+
+    def _format_data(self, json_data) -> pd.DataFrame:
+        formatted_data = pd.json_normalize(
+            json_data["studies"],
+            record_path=["xpansion_data"],
+            meta=["name", "id", "master"],
+        )
+        formatted_data = formatted_data.set_index(["id", "version"])
+        return formatted_data
+
+def short_id(input_str: str) -> str:
+    try :
+        return input_str[:4] + "[...]" + input_str[-4:]
+    except Exception:
+        return input_str
 
 class PerfPlotsGenerator:
     def __init__(self, perf_data: pd.DataFrame) -> None:
         self.perf_data = perf_data
 
-        self.figs: Dict[Figure] = {}
-        self.axes: Dict[Axes] = {}
+        self.fig: Figure
+        self.ax: Axes
 
         style.use("default")
         rc("font", **{"family": "serif"})
         rcParams.update({"font.size": 16})
 
-    def _columns_to_plot(self, study_data: pd.DataFrame) -> List:
-        return [
-            column
-            for column in self.perf_data.columns[-3:]
-            if column in study_data.columns
-        ]
+    def _xpansion_versions(self) -> List[float]:
+        return self.perf_data.index.unique(level="version").tolist()
 
-    def _xpansion_steps(self) -> List:
-        return self.perf_data["Xpansion step"].unique()
+    def _create_fig(self) -> None:
 
-    def _create_fig(self, fig_name: str) -> None:
-
-        fig, ax = plt.subplots(figsize=(8, 8))
-        self.figs[fig_name] = fig
-        self.axes[fig_name] = ax
-
-    def _plot_xpansion_step(
-        self,
-        fig_name: str,
-        study_data: pd.DataFrame,
-        xpansion_step: str,
-        columns_to_plot: List[str],
-    ):
-
-        xpansion_step_data = study_data[study_data["Xpansion step"] == xpansion_step]
-
-        self.axes[fig_name].plot(
-            columns_to_plot,
-            xpansion_step_data[columns_to_plot].to_numpy()[0],
-            label=xpansion_step,
+        nb_versions = len(self._xpansion_versions())
+        fig, ax = plt.subplots(
+            1, nb_versions, sharey=True, figsize=(5 * nb_versions, 8)
         )
-        self.axes[fig_name].set_xticks(columns_to_plot)
-        self.axes[fig_name].set_xticklabels(columns_to_plot, rotation=45)
 
-    def _plot_total_time(
-        self, fig_name: str, study_data: pd.DataFrame, columns_to_plot: List[str]
-    ):
+        self.fig = fig
+        self.ax = ax
 
-        total_time = study_data[columns_to_plot].sum()
-        self.axes[fig_name].plot(columns_to_plot, total_time, label="Total")
+    def _study_ids(self) -> List[str]:
+        return self.perf_data.index.unique(level="id").tolist()
+    
+    def _shorten_ids(self) -> List[str]:
+        return list(map(short_id, self._study_ids()))
+
+    def _beautify_fig(self) -> None:
+        self.fig.subplots_adjust(bottom=0.2)
+        self.fig.suptitle("Xpansion performance evolution")
+
+        self.fig.supylabel("Execution time (s)")
+        self.fig.supxlabel("Study id")
+        self.ax[-1].legend()
+
+        for axes in self.ax:
+            axes.set_xticks(self._shorten_ids())
+            axes.set_xticklabels(self._shorten_ids(), rotation=90)
+
+        self.fig.tight_layout()
+
+    def _plot_single_version(self, version_count: int, xpansion_version: float) -> None:
+        antares_step_times = self.perf_data.loc[
+            (slice(None), xpansion_version), ANTARES_STEP
+        ].values
+        problem_generation_step_times = self.perf_data.loc[
+            (slice(None), xpansion_version), PROBLEM_GENERATION_STEP
+        ].values
+        benders_step_times = self.perf_data.loc[
+            (slice(None), xpansion_version), BENDERS_STEP
+        ].values
+        self.ax[version_count].bar(
+            self._shorten_ids(), antares_step_times, label=ANTARES_STEP
+        )
+        self.ax[version_count].bar(
+            self._shorten_ids(),
+            problem_generation_step_times,
+            bottom=antares_step_times,
+            label=PROBLEM_GENERATION_STEP,
+        )
+        self.ax[version_count].bar(
+            self._shorten_ids(),
+            benders_step_times,
+            bottom=problem_generation_step_times,
+            label=BENDERS_STEP,
+        )
+        self.ax[version_count].set_title(f"Version {xpansion_version}")
 
     def run(self) -> None:
 
-        for name_master_tuple in self.perf_data.index.unique():
+        self._create_fig()
 
-            fig_name = "_".join(name_master_tuple)
-            self._create_fig(fig_name)
-            self.axes[fig_name].set_title(fig_name, fontsize=14)
+        for version_count, xpansion_version in enumerate(self._xpansion_versions()):
+            self._plot_single_version(version_count, xpansion_version)
 
-            study_data = self.perf_data.loc[name_master_tuple].dropna(axis=1)
-            columns_to_plot = self._columns_to_plot(study_data)
-
-            for xpansion_step in self._xpansion_steps():
-
-                self._plot_xpansion_step(
-                    fig_name, study_data, xpansion_step, columns_to_plot
-                )
-
-            self._plot_total_time(fig_name, study_data, columns_to_plot)
-
-            self.axes[fig_name].set_xlabel("Xpansion version")
-            self.axes[fig_name].set_ylabel("Time (min)")
-            self.axes[fig_name].legend()
+        self._beautify_fig()
