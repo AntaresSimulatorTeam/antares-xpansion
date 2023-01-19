@@ -135,4 +135,4 @@ jobs:
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
           set PATH=%PATH%;${{ env.XPRESS }}
           cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+          ctest -j1 -C Release --output-on-failure -L "medium|unit|benders|lpnamer"

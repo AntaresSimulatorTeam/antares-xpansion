@@ -104,7 +104,7 @@ jobs:
           source /etc/profile.d/modules.sh
           module load mpi
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest3 -j1 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
       - name: .tar.gz creation
         run: |
