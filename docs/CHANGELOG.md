@@ -6,7 +6,7 @@ v1.0.0 (12/2022)
 
 ### Features
 
-- Use Antares-Simulator 8.4.0
+- Use Antares-Simulator 8.4.1
 - Performance improvement in execution time
   - In-out stabilisation of the Benders algorithm : new parameters `separation_parameter` and `relaxed_optimality_gap`
     to tune the stabilization, more
@@ -17,7 +17,7 @@ v1.0.0 (12/2022)
 
 ### Documentation
 
-- Add new page for [performance history](user-guide/performance-history/performance-log.md)
+- Add new page for [performance history](user-guide/performance-history/perf-graphs.ipynb)
 
 v0.8.0 (10/2022)
 --------------------
