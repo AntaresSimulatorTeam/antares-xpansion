@@ -1,16 +1,10 @@
 # Settings of the algorithm
 
-In order to solve the investment problem defined by an Antares study and its associated `candidates.ini` file, Antares-Xpansion uses the [Benders decomposition algorithm](../optimization-principles/investment-problem.md). The parameters of the algorithm are defined in the `settings.ini` file. 
-
-## Parameterization of the optimization algorithm in `settings.ini`
-
-The simulation options and algorithmic parameters for solving the
-investment problem must be entered in `settings.ini` located in the
-folder `user/expansion/` of the Antares study.
+In order to solve the investment problem defined by an Antares study and its associated `candidates.ini` file, Antares-Xpansion uses the [Benders decomposition algorithm](../optimization-principles/investment-problem.md). The simulation options and algorithmic parameters are defined in the `settings.ini` file, located in the folder `user/expansion/` of the Antares study.
 
 The following section lists the configurable parameters. If the user does not specify the value of a parameter, its default value is used.
 
-### Overview of the `settings.ini` file
+## Overview of the `settings.ini` file
 
 | Name | Default value | Description |
 | -----| -------------| -------------|
@@ -38,8 +32,8 @@ additional-constraints = constraint.txt
 log_level = 0
 ```
 
-### Details of the parameters
-#### `optimality_gap`
+## Details of the parameters
+### `optimality_gap`
 
 Positive float. Default value: `1`. 
 
@@ -87,7 +81,7 @@ significantly different installed capacities (see **Figure
   solution of the modelled expansion problem, the settings can be less
   constraining with an `optimality_gap` of a few million euros.
 
-#### `relative_gap`
+### `relative_gap`
 
 Positive float. Default value: `1e-6`. 
 
@@ -96,25 +90,25 @@ Antares-Xpansion algorithm.
 
 At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity `(best_upper_bound - best_lower_bound) / max(|best_upper_bound|, |best_lower_bound|)` falls below `relative_gap`. For a relative gap \\(\alpha\\), the cost of the solution returned by the algorithm satisfies:
 
-$$\frac{{\small\texttt{xpansion solution cost}} - {\small\texttt{optimal cost}}}{{\small\texttt{optimal cost}}} < \alpha .$$
+$$\frac{{\scriptstyle\texttt{xpansion solution cost}} - {\scriptstyle\texttt{optimal cost}}}{{\scriptstyle\texttt{optimal cost}}} < \alpha .$$
 
 !!! Remark
     The algorithm stops as soon as the first criterion among `optimality_gap` and `relative_gap` is met. Keep in mind that if either parameter is not specified by the user, the default value is used.
 
-#### `max_iteration`
+### `max_iteration`
 
 Strictly positive integer or infinite. Default value: `+Inf`.
 
 Maximum number of
 iterations for the Benders decomposition algorithm. Once this number of iterations is reached, the Antares-Xpansion algorithm ends, regardless of the quality of the solution.
 
-#### `timelimit`
+### `timelimit`
 
 Strictly positive integer. Default value: `1e12`.
 
 Maximum allowed time in seconds for the execution of the Benders step of Antares-Xpansion (i.e. the time of the initial Antares simulation and for the problem generation step is not accounted for). Once the timelimit is reached, the algorithm finishes the current Benders iteration - which can take several additional seconds or minutes - and terminates.
 
-#### `uc_type`
+### `uc_type`
 
 Possible values: `expansion_fast` and `expansion_accurate`. By default:
 `expansion_fast`.
@@ -135,7 +129,7 @@ system:
   flexibility constraints of the thermal units as well as the start-up
   costs are taken into account.
 
-#### `master`
+### `master`
 
 Possible values: `integer` and `relaxed`. By default: `integer`.
 
@@ -152,7 +146,7 @@ For problems with several investment candidates with large `max-units`,
 using `master = relaxed` can accelerate the Antares-Xpansion algorithm
 very significantly.
 
-#### `yearly-weights`
+### `yearly-weights`
 
 String, specifying the name of a file. Default: `None`.
 
@@ -197,7 +191,7 @@ line with the Antares study playlist by the user**: years with
 zero weights must be removed from the Antares study playlist in order
 not to be simulated unnecessarily.
 
-#### `solver`
+### `solver`
 
 String. Default value: `Cbc`.
 
@@ -208,7 +202,7 @@ Defines the solver that is used to solve the master and the subproblems in the [
 
 To use another solver, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.
 
-#### `log_level`
+### `log_level`
 
 Positive integer, specifying the `solver`'s log severity. Default value: `0`.
 
@@ -218,7 +212,7 @@ For now two log levels are available:
 
  - If `log_level > 0`: full logs are printed simultaneously in standard output and in `benders.log` file located in the `lp` folder.
 
-#### `additional-constraints`
+### `additional-constraints`
 
 String, specifying the name of a file. Default: `None`.
 
@@ -266,20 +260,20 @@ time, but it can invest in neither.
 
 **Figure 13** – Example of an additional constraint file.
 
-#### `separation_parameter`
+### `separation_parameter`
 
 Float in \\([0,1]\\). Default value: `0.5`. 
 
 Defines the step size for the in-out separation. If \\(x_{in}\\) is the current best feasible solution and \\(x_{out}\\) is the master solution at the current iteration, the investment in the subproblems is set to 
 
-$$ x_{cut} = {\small\texttt{separation_parameter}} * x_{out} + (1 - {\small\texttt{separation_parameter}}) * x_{in} .$$
+$$ x_{cut} = {\small \texttt{separation parameter}} * x_{out} + (1 - {\small \texttt{separation parameter}}) * x_{in} .$$
 
 The in-out stabilisation technique is used in order to speed up the Benders decomposition. When `separation_parameter < 1`, it is necessary to relax the master problem in the first iterations as the cut point \\(x_{cut}\\) is a convex combination of the best feasible solution and of the solution of the master problem. In the case where `master = integer`, the algorithm proceeds as follows:
 
 1. Solve the first iterations with the relaxed formulation using the in-out stabilisation technique,
 2. Once the gap is *sufficiently small* (see [`relaxed_optimality_gap`](#relaxed_optimality_gap)), switch back to the integer formulation and set back `separation_parameter = 1` i.e. use the classical Benders algorithm.
 
-#### `relaxed_optimality_gap`
+### `relaxed_optimality_gap`
 
 Positive float. Default value: `1e-5`. 
 

@@ -24,7 +24,7 @@ v1.0.0 (12/2022)
 
 ### Documentation
 
-- Add new page for [performance history](user-guide/performance-history/performance-log.md)
+- Add new page for [performance history](user-guide/performance-history/perf-graphs.ipynb)
 
 v0.8.0 (10/2022)
 --------------------
