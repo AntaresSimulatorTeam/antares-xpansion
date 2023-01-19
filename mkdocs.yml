@@ -36,7 +36,7 @@ nav:
     - 'How does Antares-Xpansion work ?':
         - 'The optimal investment problem in Antares-Xpansion': 'user-guide/optimization-principles/investment-problem.md'
         - 'Mathematical formulation of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
-        - 'Performance log': 'user-guide/performance-history/perf-graphs.ipynb'
+        - 'Performance history': 'user-guide/performance-history/perf-graphs.ipynb'
     - 'Getting started':
       - 'Installation': 'user-guide/get-started/installation.md'
       - 'Set up an Antares-Xpansion study':
@@ -87,4 +87,4 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed
 
-copyright: Copyright &copy; 2007 - 2021 RTE
+copyright: Copyright &copy; 2007 - 2023 RTE

@@ -19,22 +19,55 @@ class JsonFileProcessor:
         with open(self.json_path, "r") as file:
             json_data = json.load(file)
 
-        return self._format_data(json_data)
+        return self._preprocess_data(json_data)
 
-    def _format_data(self, json_data) -> pd.DataFrame:
-        formatted_data = pd.json_normalize(
+    def _preprocess_data(self, json_data) -> None:
+        processed_data = pd.json_normalize(
             json_data["studies"],
             record_path=["xpansion_data"],
-            meta=["name", "id", "master"],
+            meta=[
+                "name",
+                "study_id",
+                "areas",
+                "links",
+                ["master", "candidates"],
+                ["master", "type"],
+                ["subproblems", "variables"],
+                ["subproblems", "constraints"],
+                ["subproblems", "non_zero_coefficients"],
+                ["mc_years"],
+                ["weeks"],
+                ["resolution", "stopping_criterion", "type"],
+                ["resolution", "stopping_criterion", "value"],
+            ],
         )
-        formatted_data = formatted_data.set_index(["id", "version"])
-        return formatted_data
+        self.processed_data = processed_data.set_index(["study_id", "version"])
+
+    def stylize_data_for_display(self):
+        columns_to_display = [
+            "areas",
+            "links",
+            "master.candidates",
+            "master.type",
+            "subproblems.variables",
+            "subproblems.constraints",
+            "subproblems.non_zero_coefficients",
+            "mc_years",
+            "weeks",
+            "resolution.stopping_criterion.type",
+            "resolution.stopping_criterion.value",
+        ]
+        stylized_data = self.processed_data.loc[(slice(None), 1.0), columns_to_display]
+        stylized_data.index = stylized_data.index.droplevel(1)
+        return stylized_data
+
 
 def short_id(input_str: str) -> str:
-    try :
+    try:
         return input_str[:4] + "[...]" + input_str[-4:]
     except Exception:
         return input_str
+
 
 class PerfPlotsGenerator:
     def __init__(self, perf_data: pd.DataFrame) -> None:
@@ -61,8 +94,8 @@ class PerfPlotsGenerator:
         self.ax = ax
 
     def _study_ids(self) -> List[str]:
-        return self.perf_data.index.unique(level="id").tolist()
-    
+        return self.perf_data.index.unique(level="study_id").tolist()
+
     def _shorten_ids(self) -> List[str]:
         return list(map(short_id, self._study_ids()))
 
@@ -90,6 +123,7 @@ class PerfPlotsGenerator:
         benders_step_times = self.perf_data.loc[
             (slice(None), xpansion_version), BENDERS_STEP
         ].values
+
         self.ax[version_count].bar(
             self._shorten_ids(), antares_step_times, label=ANTARES_STEP
         )
@@ -102,7 +136,7 @@ class PerfPlotsGenerator:
         self.ax[version_count].bar(
             self._shorten_ids(),
             benders_step_times,
-            bottom=problem_generation_step_times,
+            bottom=problem_generation_step_times + antares_step_times,
             label=BENDERS_STEP,
         )
         self.ax[version_count].set_title(f"Version {xpansion_version}")
