@@ -5,6 +5,7 @@
 #include <map>
 #include <tuple>
 #include <utility>
+#include <vector>
 
 #include "common_lpnamer.h"
 
@@ -17,31 +18,34 @@ using MpsVariableConstraintsFiles =
 
 // dict to associate YearAndWeek --> MpsVariableConstraintsFiles
 using YearWeekAndFilesDict = std::map<YearAndWeek, MpsVariableConstraintsFiles>;
-class MpsTxtWriter {
+
+struct ProblemData {
+  ProblemData(const std::string& problem_mps, const std::string& variables_txt)
+      : _problem_mps(problem_mps), _variables_txt(variables_txt) {}
+  std::string _problem_mps;
+  std::string _variables_txt;
+};
+
+class FilesMapper {
  public:
-  explicit MpsTxtWriter(const std::filesystem::path& antares_archive_path,
-                        const std::filesystem::path& output_file_path)
-      : antares_archive_path_(antares_archive_path),
-        output_file_path_(output_file_path) {}
-  void Write();
+  explicit FilesMapper(const std::filesystem::path& antares_archive_path)
+      : antares_archive_path_(antares_archive_path) {}
+  YearWeekAndFilesDict FilesMap() {
+    FillMap();
+    return year_week_and_files_dict_;
+  }
+  std::vector<ProblemData> MpsAndVariablesFilesVect();
 
  private:
   YearWeekAndFilesDict year_week_and_files_dict_;
   std::filesystem::path antares_archive_path_;
-  std::filesystem::path output_file_path_;
-  void FillDict();
-  void FillDictWithMpsFiles(
-      const std::vector<std::filesystem::path>& mps_files);
-  void FillDictWithVariablesFiles(
+  void FillMap();
+  void FillMapWithMpsFiles(const std::vector<std::filesystem::path>& mps_files);
+  void FillMapWithVariablesFiles(
       const std::vector<std::filesystem::path>& variables_files);
-  void FillDictWithConstraintsFiles(
+  void FillMapWithConstraintsFiles(
       const std::vector<std::filesystem::path>& variables_files);
   YearAndWeek YearAndWeekFromFileName(
-      const std::filesystem::path& file_name) const {
-    auto split_file_name =
-        common_lpnamer::split(common_lpnamer::trim(file_name.string()), '-');
-    return {std::atoi(split_file_name[1].c_str()),
-            std::atoi(split_file_name[2].c_str())};
-  }
+      const std::filesystem::path& file_name) const;
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_MPSTXTWRITER_H

@@ -44,13 +44,6 @@ void ProcessWeights(
   yearly_weight_writer.CreateWeightFile();
 }
 
-void WriteMpsTxt(const std::filesystem::path& antares_archive_path,
-                 const std::filesystem::path& xpansion_output_dir) {
-  auto mps_txt_writer = MpsTxtWriter(
-      antares_archive_path, xpansion_output_dir / common_lpnamer::MPS_TXT);
-  mps_txt_writer.Write();
-}
-
 void ExtractUtilsFiles(
     const std::filesystem::path& antares_archive_path,
     const std::filesystem::path& xpansion_output_dir,
@@ -76,8 +69,6 @@ void RunProblemGeneration(
     ProcessWeights(xpansion_output_dir, antares_archive_path, weights_file,
                    logger);
   }
-
-  WriteMpsTxt(antares_archive_path, xpansion_output_dir);
 
   ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
 

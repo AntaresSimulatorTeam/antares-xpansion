@@ -11,6 +11,7 @@
 #include "ArchiveWriter.h"
 #include "Candidate.h"
 #include "FileInBuffer.h"
+#include "MpsTxtWriter.h"
 #include "ProblemGenerationLogger.h"
 #include "ProblemModifier.h"
 #include "common_lpnamer.h"
@@ -24,12 +25,6 @@ typedef std::pair<std::string, std::filesystem::path>
     CandidateNameAndMpsFilePath;
 typedef unsigned int ColId;
 typedef std::map<CandidateNameAndMpsFilePath, ColId> Couplings;
-
-struct ProblemData {
-  ProblemData(const std::string& problem_mps, const std::string& variables_txt);
-  std::string _problem_mps;
-  std::string _variables_txt;
-};
 
 class LinkProblemsGenerator {
  public:
@@ -48,9 +43,6 @@ class LinkProblemsGenerator {
                  Couplings& couplings);
 
  private:
-  std::vector<ProblemData> readMPSList(
-      const std::filesystem::path& mps_filePath_p) const;
-
   void treat(const std::filesystem::path& root, ProblemData const&,
              Couplings& couplings, ArchiveReader& reader) const;
   void treat(const std::filesystem::path& root, ProblemData const&,
