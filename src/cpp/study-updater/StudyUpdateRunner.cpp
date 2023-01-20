@@ -4,7 +4,7 @@ namespace po = boost::program_options;
 StudyUpdaterExeOptions::StudyUpdaterExeOptions()
     : OptionsParser("Study-updater exe") {
   AddOptions()("help,h", "produce help message")(
-      "study-output,o", po::value<std::filesystem::path>(&root_)->required(),
+      "study-output,o", po::value<std::filesystem::path>(&xpansion_output_dir_)->required(),
       "antares-xpansion study output")(
       "solution,s",
       po::value<std::filesystem::path>(&solution_file_)->required(),

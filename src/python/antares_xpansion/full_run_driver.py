@@ -34,8 +34,6 @@ class FullRunDriver:
         # Pb Gen pre-step
         self.problem_generation_driver.clear_old_log()
 
-        self.problem_generation_driver.get_names()
-
         self.problem_generation_driver.is_relaxed = problem_generation_is_relaxed
 
         self.keep_mps = benders_keep_mps

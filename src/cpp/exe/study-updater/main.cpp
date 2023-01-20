@@ -23,21 +23,21 @@
  */
 int main(int argc, char **argv) {
   try {
-    std::filesystem::path root;
+    std::filesystem::path xpansion_output_dir;
     std::filesystem::path solutionFile_l;
     auto study_updater_options_parser = StudyUpdaterExeOptions();
     study_updater_options_parser.Parse(argc, argv);
 
-    root = study_updater_options_parser.Root();
+    xpansion_output_dir = study_updater_options_parser.XpansionOutputDir();
     solutionFile_l = study_updater_options_parser.SolutionFile();
     using namespace ProblemGenerationLog;
-    auto log_file_path = root / "lp" / "StudyUpdateLog.txt";
+    auto log_file_path = xpansion_output_dir / "lp" / "StudyUpdateLog.txt";
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
-    ActiveLinksBuilder linksBuilder = get_link_builders(root, logger);
+    ActiveLinksBuilder linksBuilder = get_link_builders(xpansion_output_dir, logger);
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 
-    updateStudy(root, links, solutionFile_l, logger);
+    updateStudy(xpansion_output_dir, links, solutionFile_l, logger);
 
     return 0;
   } catch (std::exception &e) {

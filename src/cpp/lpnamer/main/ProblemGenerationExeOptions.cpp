@@ -4,7 +4,8 @@ namespace po = boost::program_options;
 ProblemGenerationExeOptions::ProblemGenerationExeOptions()
     : OptionsParser("Problem Generation exe") {
   AddOptions()("help,h", "produce help message")(
-      "output,o", po::value<std::filesystem::path>(&root_)->required(),
+      "output,o",
+      po::value<std::filesystem::path>(&xpansion_output_dir_)->required(),
       "antares-xpansion study output")(
       "archive,a", po::value<std::filesystem::path>(&archive_path_)->required(),
       "antares-xpansion study zip")(
@@ -14,5 +15,8 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
       "exclusion-files,e",
       po::value<std::string>(&additional_constraintFilename_l_),
       "path to exclusion files")("zip-mps,z", po::bool_switch(&zip_mps_),
-                                 "mps files will be zipped");
+                                 "mps files will be zipped")(
+      "weights-file,w",
+      po::value<std::filesystem::path>(&weights_file_)->default_value(""),
+      "user weights file");
 }
