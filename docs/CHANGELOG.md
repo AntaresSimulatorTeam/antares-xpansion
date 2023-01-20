@@ -1,12 +1,19 @@
 Antares-Xpansion changelog
 =================
 
+v1.0.1 (01/2023)
+--------------------
+
+### Features
+
+Use simulator 8.4.2
+
 v1.0.0 (12/2022)
 --------------------
 
 ### Features
 
-- Use Antares-Simulator 8.4.0
+- Use Antares-Simulator 8.4.1
 - Performance improvement in execution time
   - In-out stabilisation of the Benders algorithm : new parameters `separation_parameter` and `relaxed_optimality_gap`
     to tune the stabilization, more
