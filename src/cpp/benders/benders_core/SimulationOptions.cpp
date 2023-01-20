@@ -3,7 +3,7 @@
 #include <json/json.h>
 
 #include <filesystem>
-Json::Value get_value_from_json(const std::string &file_name) {
+Json::Value get_value_from_json(const std::filesystem::path &file_name) {
   Json::Value _input;
   std::ifstream input_file_l(file_name, std::ifstream::binary);
   Json::CharReaderBuilder builder_l;
@@ -32,7 +32,8 @@ SimulationOptions::SimulationOptions()
  *  \brief Constructor of Benders Options
  *  \param options_filename file that contains options
  */
-SimulationOptions::SimulationOptions(const std::string &options_filename)
+SimulationOptions::SimulationOptions(
+    const std::filesystem::path &options_filename)
     : SimulationOptions() {
   read(options_filename);
 }
@@ -51,7 +52,7 @@ void SimulationOptions::write_default() const {
  *
  *  \param file_name : path to options txt file
  */
-void SimulationOptions::read(std::string const &file_name) {
+void SimulationOptions::read(const std::filesystem::path &file_name) {
   const auto options_values = get_value_from_json(file_name);
   for (const auto &var_name : options_values.getMemberNames()) {
 #define BENDERS_OPTIONS_MACRO(var__, type__, default__, \
@@ -164,6 +165,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.CSV_NAME = CSV_NAME;
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
+  result.BATCH_SIZE = BATCH_SIZE;
 
   return result;
 }

@@ -17,9 +17,11 @@ class ConfigParameters:
     MERGE_MPS: str
     BENDERS_MPI: str
     BENDERS_SEQUENTIAL: str
+    BENDERS_BY_BATCH: str
     LP_NAMER: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
+    FULL_RUN: str
     ANTARES_ARCHIVE_UPDATER: str
     AVAILABLE_SOLVERS: List[str]
 
@@ -57,9 +59,11 @@ class XpansionConfig:
         self.MERGE_MPS: str = ""
         self.BENDERS_MPI: str = ""
         self.BENDERS_SEQUENTIAL: str = ""
+        self.BENDERS_BY_BATCH: str = ""
         self.LP_NAMER: str = ""
         self.STUDY_UPDATER: str = ""
         self.SENSITIVITY_EXE: str = ""
+        self.FULL_RUN: str = ""
         self.ANTARES_ARCHIVE_UPDATER: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
@@ -150,15 +154,16 @@ class XpansionConfig:
             "uc_type": "expansion_fast",
             "master": "integer",
             "optimality_gap": "1",
-            "relative_gap": "1e-6",
+            "relative_gap": "1e-12",
             "max_iteration": "+infini",
-            "relaxed_optimality_gap": "1e-5",
+            "relaxed_optimality_gap": "1e-4",
             "solver": "Cbc",
             "timelimit": "+infini",
             "additional-constraints": "",
             "yearly-weights": "",
             "log_level": "0",
             "separation_parameter": "0.5",
+            "batch_size": "0",
         }
 
     def _set_default_options(self):
@@ -179,6 +184,7 @@ class XpansionConfig:
             OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
             OptimisationKeys.mps_zip_file_key(): self.mps_zip_file_default_value(),
             OptimisationKeys.separation_key(): self.separation_default_value(),
+            OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
             OptimisationKeys.mps_in_zip_key(): self.mps_in_zip_default_value(),
         }
 
@@ -213,13 +219,13 @@ class XpansionConfig:
         return False
 
     def relative_gap_default_value(self):
-        return "1e-6"
+        return "1e-12"
 
     def absolute_gap_default_value(self):
         return "1"
 
     def relaxed_gap_default_value(self):
-        return "1e-5"
+        return "1e-4"
 
     def max_iterations_default_value(self):
         return "-1"
@@ -233,6 +239,9 @@ class XpansionConfig:
     def separation_default_value(self):
         return "0.5"
 
+    def batch_size_default_value(self):
+        return "0"
+
     def mps_in_zip_default_value(self):
         return False
 
@@ -243,8 +252,10 @@ class XpansionConfig:
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
         self.BENDERS_MPI = self.config_parameters.BENDERS_MPI
         self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
+        self.BENDERS_BY_BATCH = self.config_parameters.BENDERS_BY_BATCH
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
+        self.FULL_RUN = self.config_parameters.FULL_RUN
         self.ANTARES_ARCHIVE_UPDATER = self.config_parameters.ANTARES_ARCHIVE_UPDATER
         self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE
         self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS

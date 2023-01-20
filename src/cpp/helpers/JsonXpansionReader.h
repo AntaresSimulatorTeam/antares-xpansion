@@ -2,6 +2,7 @@
 
 #include <json/reader.h>
 
+#include <filesystem>
 /*!
  * \class JsonXpansionReader
  * \brief Class that reads a json file describing an antares-xpansion solution
@@ -37,7 +38,7 @@ class JsonXpansionReader {
    *
    *  \param filename_p name of the json file to read from
    */
-  void read(std::string const& filename_p);
+  void read(const std::filesystem::path& filename_p);
 
   /*!
    *  \brief returns the index of the best iteration indicated in the json

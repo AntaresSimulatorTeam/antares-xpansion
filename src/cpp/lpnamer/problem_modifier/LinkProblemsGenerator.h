@@ -17,7 +17,6 @@
 
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
-const std::string MPS_TXT{"mps.txt"};
 const std::string MPS_ZIP_FILE{"MPS_ZIP_FILE"};
 const std::string ZIP_EXT{".zip"};
 const std::string STUDY_FILE{"study.antares"};

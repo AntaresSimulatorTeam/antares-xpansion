@@ -13,8 +13,10 @@ class ConfigFileParser:
         self.MERGE_MPS_DEFAULT = "merge_mps"
         self.BENDERS_MPI_DEFAULT = "benders_mpi"
         self.BENDERS_SEQUENTIAL_DEFAULT = "benders_sequential"
+        self.BENDERS_BY_BATCH_DEFAULT = "benders_by_batch"
         self.LP_NAMER_DEFAULT = "lp_namer"
         self.STUDY_UPDATER_DEFAULT = "study_updater"
+        self.FULL_RUN_DEFAULT = "full_run"
         self.ANTARES_ARCHIVE_UPDATER_DEFAULT = "antares_archive_updater"
         self.SENSITIVITY_DEFAULT = "sensitivity"
         self.AVAILABLE_SOLVERS_DEFAULT = []
@@ -34,9 +36,13 @@ class ConfigFileParser:
                     'BENDERS_MPI', self.BENDERS_MPI_DEFAULT),
                 BENDERS_SEQUENTIAL=content.get(
                     'BENDERS_SEQUENTIAL', self.BENDERS_SEQUENTIAL_DEFAULT),
+                BENDERS_BY_BATCH=content.get(
+                    'BENDERS_BY_BATCH', self.BENDERS_BY_BATCH_DEFAULT),
                 LP_NAMER=content.get('LP_NAMER', self.LP_NAMER_DEFAULT),
                 STUDY_UPDATER=content.get(
                     'STUDY_UPDATER', self.STUDY_UPDATER_DEFAULT),
+                FULL_RUN=content.get(
+                    'FULL_RUN', self.FULL_RUN_DEFAULT),
                 ANTARES_ARCHIVE_UPDATER=content.get(
                     'ANTARES_ARCHIVE_UPDATER', self.ANTARES_ARCHIVE_UPDATER_DEFAULT),
                 SENSITIVITY_EXE=content.get(

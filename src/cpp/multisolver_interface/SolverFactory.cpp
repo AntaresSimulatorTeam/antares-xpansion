@@ -1,6 +1,3 @@
-#ifdef CPLEX
-#include "SolverCplex.h"
-#endif
 #ifdef XPRESS
 #include "SolverXpress.h"
 #endif
@@ -13,9 +10,6 @@
 
 SolverFactory::SolverFactory() {
   _available_solvers.clear();
-#ifdef CPLEX
-  _available_solvers.push_back(CPLEX_STR);
-#endif
 #ifdef XPRESS
   _available_solvers.push_back(XPRESS_STR);
 #endif
@@ -51,11 +45,6 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name);
   }
-#ifdef CPLEX
-  else if (solver_name == CPLEX_STR) {
-    return std::make_shared<SolverCplex>(log_name);
-  }
-#endif
 #ifdef XPRESS
   else if (solver_name == XPRESS_STR) {
     return std::make_shared<SolverXpress>(log_name);
@@ -80,11 +69,6 @@ SolverAbstract::Ptr SolverFactory::copy_solver(
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name);
   }
-#ifdef CPLEX
-  else if (solver_name == CPLEX_STR) {
-    return std::make_shared<SolverCplex>(to_copy);
-  }
-#endif
 #ifdef XPRESS
   else if (solver_name == XPRESS_STR) {
     return std::make_shared<SolverXpress>(to_copy);

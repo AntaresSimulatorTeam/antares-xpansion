@@ -65,20 +65,17 @@ void BendersSequential::free() {
  *
  */
 void BendersSequential::build_cut() {
-  SubproblemCutPackage subproblem_cut_package;
-  AllCutPackage all_package;
+  SubProblemDataMap subproblem_data_map;
   Timer timer;
-  getSubproblemCut(subproblem_cut_package);
+  getSubproblemCut(subproblem_data_map);
   SetSubproblemCost(0);
-  for (const auto &pair_name_subproblemcutdata_l : subproblem_cut_package) {
-    SetSubproblemCost(
-        GetSubproblemCost() +
-        pair_name_subproblemcutdata_l.second.first.second[SUBPROBLEM_COST]);
+  for (const auto &[_, subproblem_data] : subproblem_data_map) {
+    SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
   }
 
   SetSubproblemTimers(timer.elapsed());
-  all_package.push_back(subproblem_cut_package);
-  build_cut_full(all_package);
+  _data.ub = 0;
+  build_cut_full(subproblem_data_map);
 }
 
 /*!
@@ -87,7 +84,6 @@ void BendersSequential::build_cut() {
  *  Method to run BendersSequential algorithm
  */
 void BendersSequential::run() {
-  set_cut_storage();
   init_data();
   ChecksResumeMode();
   if (is_trace()) {
@@ -117,8 +113,6 @@ void BendersSequential::run() {
 
     ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
-
-    push_in_trace(std::make_shared<WorkerMasterData>());
 
     _logger->display_message("\tSolving subproblems...");
     build_cut();
@@ -152,7 +146,7 @@ void BendersSequential::launch() {
   LOG(INFO) << "Running solver..." << std::endl;
   try {
     run();
-    LOG(INFO) << "BendersSequential solver terminated." << std::endl;
+    LOG(INFO) << BendersName() + " solver terminated." << std::endl;
   } catch (std::exception const &ex) {
     std::string error = "Exception raised : " + std::string(ex.what());
     LOG(WARNING) << error << std::endl;

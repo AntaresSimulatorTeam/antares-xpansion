@@ -8,8 +8,6 @@
 const std::string CRITERION_FILES_PREFIX = "criterion";
 const std::string CONSTRAINTS_FILES_PREFIX = "constraints";
 const std::string VARIABLES_FILES_PREFIX = "variables";
-const std::string INTERCO_FILES_PREFIX = "interco";
-const std::string AREA_FILES_PREFIX = "area";
 const std::string MPS_FILES_EXTENSION = ".mps";
 
 bool isCriterionFile(const std::filesystem::path &file_name) {
@@ -25,18 +23,6 @@ bool isVariablesFile(const std::filesystem::path &file_name) {
 bool isConstraintsFile(const std::filesystem::path &file_name) {
   auto file_name_str = file_name.string();
   return StringUtils::contains(file_name_str, CONSTRAINTS_FILES_PREFIX) &&
-         !file_name.has_root_path();
-}
-
-bool isAreaFile(const std::filesystem::path &file_name) {
-  auto file_name_str = file_name.string();
-  return StringUtils::contains(file_name_str, AREA_FILES_PREFIX) &&
-         !file_name.has_root_path();
-}
-
-bool isIntercoFile(const std::filesystem::path &file_name) {
-  auto file_name_str = file_name.string();
-  return StringUtils::contains(file_name_str, INTERCO_FILES_PREFIX) &&
          !file_name.has_root_path();
 }
 
@@ -68,7 +54,7 @@ int32_t AntaresArchiveUpdater::MinizipErase(void *reader, void *writer) {
        except the ones we don't want */
     auto file_name = std::filesystem::path(file_info->filename);
     if (!isCriterionFile(file_name) && !isConstraintsFile(file_name) &&
-        !isVariablesFile(file_name) && !isAreaFile(file_name) && !isIntercoFile(file_name) && !IsAntaresMpsFile(file_name)) {
+        !isVariablesFile(file_name) && !IsAntaresMpsFile(file_name)) {
       err = mz_zip_writer_copy_from_reader(writer, reader);
 
       if (err != MZ_OK) {

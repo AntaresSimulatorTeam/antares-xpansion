@@ -55,5 +55,5 @@ void addBinaryVariables(
  * directory containing the lp directory \return ActiveLinksBuilder object
  */
 ActiveLinksBuilder get_link_builders(
-    const std::filesystem::path& root,
+    const std::filesystem::path& xpansion_output_dir,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);

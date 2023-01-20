@@ -8,8 +8,8 @@
 
 class ArchiveWriter : public ArchiveIO {
  private:
-  void* internalPointer_ = NULL;
-  void* handle_ = NULL;
+  void* pmz_zip_writer_instance_ = NULL;
+  void* pzip_handle_ = NULL;
   void Create() override;
   mz_zip_file fileInfo_ = {0};
 
@@ -26,6 +26,6 @@ class ArchiveWriter : public ArchiveIO {
   int32_t AddFileInArchive(const std::filesystem::path& FileToAdd);
   int32_t AddPathInArchive(const std::filesystem::path& path_to_add,
                            const std::filesystem::path& root_path);
-  void* InternalPointer() const { return internalPointer_; }
+  void* InternalPointer() const { return pmz_zip_writer_instance_; }
 };
 #endif  // _ARCHIVEWRITER_H

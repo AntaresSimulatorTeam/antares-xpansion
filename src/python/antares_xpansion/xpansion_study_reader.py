@@ -33,8 +33,7 @@ class XpansionStudyReader:
         keys = {
             "Cbc": "COIN",
             "Coin": "COIN",
-            "Xpress": "XPRESS",
-            "Cplex": "CPLEX",
+            "Xpress": "XPRESS"
         }
         if study_solver in keys:
             return keys.get(study_solver)

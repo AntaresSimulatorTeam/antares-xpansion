@@ -260,7 +260,8 @@ def _check_candidate_exclusive_attributes(ini_file):
 
 
 def _copy_in_backup(ini_file, candidates_ini_filepath):
-    backup_path = candidates_ini_filepath.parent / f"{candidates_ini_filepath.name}.bak"
+    backup_path = candidates_ini_filepath.parent / \
+        f"{candidates_ini_filepath.name}.bak"
     shutil.copyfile(candidates_ini_filepath,
                     backup_path)
     with open(candidates_ini_filepath, 'w') as out_file:
@@ -341,6 +342,7 @@ options_types_and_legal_values = {
     "additional-constraints": (type_str, None),
     "log_level": (type_int, ["0", "1", "2", "3"]),
     "separation_parameter": (type_float, None),
+    "batch_size": (type_int, None),
 }
 
 
@@ -408,7 +410,12 @@ class TimelimitValueError(Exception):
 class LogLevelValueError(Exception):
     pass
 
+
 class SeparationParameterValueError(Exception):
+    pass
+
+
+class BatchSizeValueError(Exception):
     pass
 
 
@@ -460,12 +467,24 @@ def _check_log_level(value) -> bool:
             f"Illegal {value} for option log_level : only greater than or equal to zero values are accepted")
         raise LogLevelValueError
 
+
+def _check_batch_size(value) -> bool:
+    if int(value) >= 0:
+        return True
+    else:
+        flushed_print(
+            f"Illegal {value} for option batch_size : only greater than or equal to zero values are accepted")
+        raise BatchSizeValueError
+
+
 def _check_separation(value) -> bool:
     if 0 <= float(value) <= 1:
         return True
     else:
-        flushed_print(f"Illegal {value} for option separation_parameter : only values within the interval [0,1] are accepted")
+        flushed_print(
+            f"Illegal {value} for option separation_parameter : only values within the interval [0,1] are accepted")
         raise SeparationParameterValueError
+
 
 def _check_setting_option_value(option, value):
     """
@@ -510,6 +529,9 @@ def _check_setting_option_value(option, value):
 
     elif option == "separation_parameter":
         return _check_separation(value)
+
+    elif option == "batch_size":
+        return _check_batch_size(value)
 
     flushed_print(
         'check_candidate_option_value: Illegal value %s for option %s' % (value, option))

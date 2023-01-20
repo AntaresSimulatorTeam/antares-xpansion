@@ -5,11 +5,12 @@
 #include <mz_zip.h>
 #include <mz_zip_rw.h>
 
+#include <algorithm>
 #include <fstream>
 #include <iterator>
 
-#include "ArchiveReader.h"
 #include "AntaresArchiveUpdater.h"
+#include "ArchiveReader.h"
 #include "ArchiveWriter.h"
 #include "FileInBuffer.h"
 #include "RandomDirGenerator.h"
@@ -19,15 +20,22 @@
 ARCHIVES COMPOSITION:
 
 data/mps_zip/archive1.zip
+data/mps_zip/archive2.zip
 data/mps_zip/archive1
                     |__ file1
                     |__ file2
                     |__ file3
+data/mps_zip/archive2.zip
+                    |__ file1.txt
+                    |__ file2
+                    |__ file3.xlsx
+                    |__ file4.txt
 
 */
 
 const auto mpsZipDir = std::filesystem::path("data_test") / "mps_zip";
 const auto archive1 = mpsZipDir / "archive1.zip";
+const auto archive2 = mpsZipDir / "archive2.zip";
 const auto archive1Dir = mpsZipDir / "archive1";
 const auto archive1File1 = archive1Dir / "file1";
 const auto archive1File2 = archive1Dir / "file2";
@@ -49,7 +57,7 @@ TEST_F(ArchiveReaderTest, ShouldFailIfInvalidFileIsGiven) {
                              " (" + std::to_string(MZ_OK) + " expected)";
 
   try {
-    auto fileExt = ArchiveReader(invalid_file_path);
+    auto archive_reader = ArchiveReader(invalid_file_path);
   } catch (const ArchiveIOGeneralException& e) {
     EXPECT_EQ(e.what(), expectedErrorString.str());
   }
@@ -67,15 +75,45 @@ bool equal_files(const std::filesystem::path& a,
   return file1 == file2;
 }
 TEST_F(ArchiveReaderTest, ShouldExtractFile1FromArchive1) {
-  auto fileExt = ArchiveReader(archive1);
-  ASSERT_EQ(fileExt.Open(), MZ_OK);
+  auto archive_reader = ArchiveReader(archive1);
+  ASSERT_EQ(archive_reader.Open(), MZ_OK);
   const auto tmpDir = std::filesystem::temp_directory_path();
   const auto expectedFilePath = tmpDir / archive1File1.filename();
-  ASSERT_EQ(fileExt.ExtractFile(archive1File1.filename(), tmpDir), MZ_OK);
+  ASSERT_EQ(archive_reader.ExtractFile(archive1File1.filename(), tmpDir),
+            MZ_OK);
   ASSERT_TRUE(std::filesystem::exists(expectedFilePath));
   ASSERT_TRUE(equal_files(expectedFilePath, archive1File1));
-  ASSERT_EQ(fileExt.Close(), MZ_OK);
-  fileExt.Delete();
+  ASSERT_EQ(archive_reader.Close(), MZ_OK);
+  archive_reader.Delete();
+}
+TEST_F(ArchiveReaderTest, ShouldReturnNumberOfFilesInGivenArchive) {
+  auto archive_reader = ArchiveReader(archive1);
+  ASSERT_EQ(archive_reader.Open(), MZ_OK);
+  ASSERT_EQ(archive_reader.GetNumberOfEntries(), 3);
+  ASSERT_EQ(archive_reader.Close(), MZ_OK);
+  archive_reader.Delete();
+}
+TEST_F(ArchiveReaderTest, Shouldfindarchive1File2) {
+  auto archive_reader = ArchiveReader(archive1);
+  ASSERT_EQ(archive_reader.Open(), MZ_OK);
+  archive_reader.LoadEntriesPath();
+  auto file_names_vect = archive_reader.EntriesPath();
+  ASSERT_TRUE(std::find(file_names_vect.begin(), file_names_vect.end(),
+                        archive1File2.filename()) != file_names_vect.end());
+  ASSERT_EQ(archive_reader.Close(), MZ_OK);
+  archive_reader.Delete();
+}
+TEST_F(ArchiveReaderTest, ShouldReturnFilesWithExt_TXT) {
+  auto archive_reader = ArchiveReader(archive2);
+  ASSERT_EQ(archive_reader.Open(), MZ_OK);
+  archive_reader.LoadEntriesPath();
+  auto file_names_vect = archive_reader.GetEntriesPathWithExtension(".txt");
+  ASSERT_EQ(file_names_vect.size(), 2);
+  for (auto& file_path : file_names_vect) {
+    ASSERT_TRUE(file_path.extension() == ".txt");
+  }
+  ASSERT_EQ(archive_reader.Close(), MZ_OK);
+  archive_reader.Delete();
 }
 class ArchiveWriterTest : public ::testing::Test {
  public:
@@ -102,7 +140,6 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   const auto& archive_path_str = archivePath.string();
   auto archive_path_c_str = archive_path_str.c_str();
   assert(mz_zip_reader_open_file(reader, archive_path_c_str) == MZ_OK);
-  // assert(mz_zip_reader_entry_open(reader) == MZ_OK);
 
   for (const auto& file : std::filesystem::directory_iterator(dirPath)) {
     const auto& filename_path = file.path().filename();

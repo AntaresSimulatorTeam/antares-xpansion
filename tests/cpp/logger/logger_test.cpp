@@ -435,6 +435,8 @@ TEST_F(UserLoggerTest, EndLog) {
   logData.subproblem_cost = 1e6;
   logData.invest_cost = 10e6;
   std::stringstream expected;
+  expected << indent_1 << "Total number of iterations done = " << logData.it
+           << std::endl;
   expected << indent_1 << "Best solution = it 1" << std::endl;
   expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
 
@@ -502,7 +504,7 @@ TEST_F(UserLoggerTest, LogSubProblemDuration) {
 
 TEST_F(UserLoggerTest, LogTotalDuration) {
   std::stringstream expected;
-  expected << "Problem ran in 3 s" << std::endl;
+  expected << "Benders ran in 3 s" << std::endl;
   _logger.log_total_duration(3.000000);
   ASSERT_EQ(_stream.str(), expected.str());
 }
@@ -587,6 +589,8 @@ class SimpleLoggerMock : public ILogger {
   void LogAtInitialRelaxation() { _initialRelaxationCall = true; }
 
   void LogAtSwitchToInteger() { _switchToIntegerCall = true; }
+  void number_of_sub_problem_resolved(int number) {  //
+  }
 
   bool _initCall;
   bool _iterationStartCall;
