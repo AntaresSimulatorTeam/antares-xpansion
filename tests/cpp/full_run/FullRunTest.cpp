@@ -28,7 +28,7 @@ class FullRunOptionsParserTest : public ::testing::Test {
 };
 class FullRunOptionsParserTestParameterizedMethod
     : public ::testing::TestWithParam<
-          std::pair<std::string, FullRunOptionsParser::METHOD>> {
+          std::pair<std::string, BENDERSMETHOD>> {
  protected:
   FullRunOptionsParser full_run_options_options_parser_;
 };
@@ -116,7 +116,7 @@ TEST_F(FullRunOptionsParserTest, OptionsParsing) {
   ASSERT_EQ(full_run_options_options_parser_.SolutionFile(),
             std::filesystem::path(argv10));
   ASSERT_EQ(full_run_options_options_parser_.Method(),
-            FullRunOptionsParser::METHOD::SEQUENTIAL);
+            BENDERSMETHOD::SEQUENTIAL);
 }
 TEST_P(FullRunOptionsParserTestParameterizedMethod, AllowedMethods) {
   const char argv0[] = "full_run.exe";
@@ -145,10 +145,10 @@ TEST_P(FullRunOptionsParserTestParameterizedMethod, AllowedMethods) {
 }
 auto GetData() {
   return ::testing::ValuesIn(
-      std::vector<std::pair<std::string, FullRunOptionsParser::METHOD>>{
-          {"sequential", FullRunOptionsParser::METHOD::SEQUENTIAL},
-          {"mpibenders", FullRunOptionsParser::METHOD::MPI},
-          {"mergeMPS", FullRunOptionsParser::METHOD::MERGEMPS}});
+      std::vector<std::pair<std::string, BENDERSMETHOD>>{
+          {"sequential", BENDERSMETHOD::SEQUENTIAL},
+          {"mpibenders", BENDERSMETHOD::MPI},
+          {"mergeMPS", BENDERSMETHOD::MERGEMPS}});
 }
 INSTANTIATE_TEST_CASE_P(Method, FullRunOptionsParserTestParameterizedMethod,
                         GetData());

@@ -2,13 +2,11 @@
 #include <iostream>
 #include <string>
 
-#if __has_include("BendersMpiMain.h")
-#include "BendersMpiMain.h"
+#if __has_include("common_mpi.h")
 #include "common_mpi.h"
 #endif
 #include <boost/program_options.hpp>
 
-#include "BendersSequentialMain.h"
 #include "FullRunOptionsParser.h"
 #include "ProblemGenerationLogger.h"
 #include "RunProblemGeneration.h"
@@ -16,7 +14,7 @@
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
-#ifdef BENDERSMPIMAIN
+#ifdef __BENDERSMPI__
   mpi::environment env(argc, argv);
   mpi::communicator world;
 #endif
@@ -25,7 +23,7 @@ int main(int argc, char** argv) {
   std::filesystem::path archive_path;
   options_parser.Parse(argc, argv);
 
-#ifdef BENDERSMPIMAIN
+#ifdef __BENDERSMPI__
   if (world.rank() == 0) {
 #endif
     try {
@@ -52,26 +50,25 @@ int main(int argc, char** argv) {
     } catch (...) {
       std::cerr << "Exception of unknown type!" << std::endl;
     }
-#ifdef BENDERSMPIMAIN
+#ifdef __BENDERSMPI__
   }
 #endif
   int argc_ = 2;
-  auto options_file = options_parser.BendersOptionsFile();
+  const auto options_file = options_parser.BendersOptionsFile();
+  const auto benders_method = options_parser.Method();
 
-#ifdef BENDERSMPIMAIN
+#ifdef __BENDERSMPI__
   world.barrier();
-  if (options_parser.Method() == FullRunOptionsParser::METHOD::MPI) {
-    BendersMpiMain(argc_, argv, options_file, env, world);
-  } else {
-    if (world.rank() == 0) {
-      BendersSequentialMain(argc_, argv, options_file);
-    }
-  }
+  auto benders_factory =
+      BendersMainFactory(argc_, argv, benders_method, options_file, env, world);
+  benders_factory.Run();
 #else
-  BendersSequentialMain(argc_, argv, options_file);
+  auto benders_factory =
+      BendersMainFactory(argc_, argv, benders_method, options_file);
+  benders_factory.Run();
 #endif
 
-#ifdef BENDERSMPIMAIN
+#ifdef __BENDERSMPI__
   if (world.rank() == 0) {
 #endif
     auto log_file_path = xpansion_output_dir / "lp" / "StudyUpdateLog.txt";
@@ -83,7 +80,7 @@ int main(int argc, char** argv) {
 
     updateStudy(xpansion_output_dir, links, solutionFile_l, logger);
 
-#ifdef BENDERSMPIMAIN
+#ifdef __BENDERSMPI__
   }
 #endif
   return 0;

@@ -16,6 +16,7 @@ add_executable (benderssequential
 
 target_link_libraries (benderssequential
 		${PROJECT_NAME}::benders_sequential_core
+		factories
 		)
 
 install(TARGETS benderssequential DESTINATION bin)
