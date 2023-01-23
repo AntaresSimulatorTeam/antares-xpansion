@@ -26,7 +26,6 @@ class JsonFileProcessor:
             json_data["studies"],
             record_path=["xpansion_data"],
             meta=[
-                "name",
                 "study_id",
                 "areas",
                 "links",
