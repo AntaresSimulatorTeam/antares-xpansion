@@ -77,10 +77,11 @@ class GeneralDataProcessor:
 
     def _get_values_to_change_general_data_file(self):
         optimization = "optimization"
+        general_section = "general"
+        output_section = "output"
 
         return {
             (optimization, "include-exportmps"): "optim-1",
-            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             ("adequacy patch", "include-adq-patch"): "false",
             (optimization, "include-tc-minstablepower"): "true"
@@ -90,11 +91,14 @@ class GeneralDataProcessor:
             if self.is_accurate
             else "false",
             (optimization, "include-dayahead"): "true" if self.is_accurate else "false",
-            ("general", "mode"): "expansion" if self.is_accurate else "Economy",
-            ("output", "storenewset"): "true",
+            (general_section, "mode"): "expansion" if self.is_accurate else "Economy",
+            (output_section, "storenewset"): "true",
             ("other preferences", "unit-commitment-mode"): "accurate"
             if self.is_accurate
             else "fast",
+            (general_section, "year-by-year"): "false",
+            (output_section, "synthesis"): "false",
+            ("input", "import"): "",
         }
 
     def backup_data(self):

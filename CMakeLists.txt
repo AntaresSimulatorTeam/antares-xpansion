@@ -2,14 +2,14 @@
 # CMake configuration
 # ===========================================================================
 
-CMAKE_MINIMUM_REQUIRED (VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 
 # ===========================================================================
 # Project configuration
 # ===========================================================================
 
-PROJECT (antaresXpansion VERSION 0.8.0)
-#set(ANTARES_XPANSION_RC 3)
+PROJECT(antaresXpansion VERSION 1.0.0)
+#set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
 # Default parameters
@@ -17,7 +17,7 @@ PROJECT (antaresXpansion VERSION 0.8.0)
 
 if (MSVC)
 	cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
-endif()
+endif ()
 
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) #To force OR-Tools build and set option for antares-deps
 

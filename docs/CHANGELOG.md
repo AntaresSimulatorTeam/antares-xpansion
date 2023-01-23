@@ -1,15 +1,35 @@
 Antares-Xpansion changelog
 =================
 
-v0.8.0 (08/2022)
+v1.0.0 (12/2022)
 --------------------
+
+### Features
+
+- Use Antares-Simulator 8.4.1
+- Performance improvement in execution time
+  - In-out stabilisation of the Benders algorithm : new parameters `separation_parameter` and `relaxed_optimality_gap`
+    to tune the stabilization, more
+    information [here](user-guide/get-started/settings-definition.md#separation_parameter)
+  - Parallelization of the `problem_generation` step
+- Performance improvement in disk space consumption : zip of the MPS folder
+- Change the default value of `relative_gap` from `1e-12` to `1e-6`
+
+### Documentation
+
+- Add new page for [performance history](user-guide/performance-history/perf-graphs.ipynb)
+
+v0.8.0 (10/2022)
+--------------------
+
 ### Features
 
 - Use Antares-Simulator 8.2.2
-- Allow the use of different chronicles of link profile for each Monte-Carlo year. More information [here](user-guide/get-started/candidate-definition.md#using-different-profiles-depending-on-the-monte-carlo-year)
+- Allow the use of different chronicles of link profile for each Monte-Carlo year. More
+  information [here](user-guide/get-started/candidate-definition.md#using-different-profiles-depending-on-the-monte-carlo-year)
 - New directories to store additional constraints files and weights files:
-    - Additional constraints files must be stored in `user/expansion/constraints`
-    - Weights files must be stored in `user/expansion/weights`
+  - Additional constraints files must be stored in `user/expansion/constraints`
+  - Weights files must be stored in `user/expansion/weights`
 
 ### Bug fixes
 - Allow the `capa` folder to be missing if unused

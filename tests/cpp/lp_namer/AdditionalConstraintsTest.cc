@@ -2,6 +2,7 @@
 #include <sstream>
 
 #include "AdditionalConstraints.h"
+#include "LauncherHelpers.h"
 #include "LoggerBuilder.h"
 #include "gtest/gtest.h"
 
@@ -82,21 +83,18 @@ TEST_F(AdditionalConstraintsTest, testCreation) {
 
   std::vector<std::string> expectedConstraintNames_l = {
       "additional_c1", "additional_c2", "additional_c3", "my_ge_constraint"};
-  size_t cnt_l(0);
-  for (auto pairNameConstraint : additionalConstraints_l) {
-    ASSERT_EQ(pairNameConstraint.first, expectedConstraintNames_l[cnt_l++]);
-  }
-
   std::vector<double> expectedRHS_l = {3000, 3000, 3, 200};
-  cnt_l = 0;
-  for (auto pairNameConstraint : additionalConstraints_l) {
-    ASSERT_EQ(pairNameConstraint.second.getRHS(), expectedRHS_l[cnt_l++]);
-  }
-
   std::vector<std::string> expectedSign_l = {
       "less_or_equal", "equal", "less_or_equal", "greater_or_equal"};
-  cnt_l = 0;
-  for (auto pairNameConstraint : additionalConstraints_l) {
-    ASSERT_EQ(pairNameConstraint.second.getSign(), expectedSign_l[cnt_l++]);
+  std::vector<char> expected_rtype = {'L', 'E', 'L', 'G'};
+
+  size_t cnt_l(0);
+  for (auto const& [name, constraint] : additionalConstraints_l) {
+    ASSERT_EQ(name, expectedConstraintNames_l[cnt_l]);
+    ASSERT_EQ(constraint.getRHS(), expectedRHS_l[cnt_l]);
+    ASSERT_EQ(constraint.getSign(), expectedSign_l[cnt_l]);
+    ASSERT_EQ(getConstraintSenseSymbol(constraint, logger),
+              expected_rtype[cnt_l]);
+    cnt_l++;
   }
 }

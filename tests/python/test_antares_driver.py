@@ -91,6 +91,7 @@ class TestGeneralDataProcessor:
         default_val = (
             "[general] \n"
             "mode = unrelevant\n"
+            "year-by-year = true\n"
             "[optimization] \n"
             "include-exportmps = true\n"
             "include-tc-minstablepower = false\n"
@@ -106,6 +107,9 @@ class TestGeneralDataProcessor:
             "[random_section] \n"
             "key1 = value1\n"
             "key2 = value2\n"
+            "[input]\n"
+            "import = blabla\n"
+
         )
 
         gen_data_path.write_text(default_val)
@@ -117,7 +121,6 @@ class TestGeneralDataProcessor:
 
         expected_val = {
             (optimization, "include-exportmps"): "optim-1",
-            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "true",
             (optimization, "include-tc-min-ud-time"): "true",
@@ -127,7 +130,10 @@ class TestGeneralDataProcessor:
             (other_preferences, "unit-commitment-mode"): "accurate",
             (random_section, "key1"): "value1",
             (random_section, "key2"): "value2",
-            ("adequacy patch", "include-adq-patch"): "false"
+            ("adequacy patch", "include-adq-patch"): "false",
+            (general, "year-by-year"): "false",
+            (output, "synthesis"): "false",
+            ("input", "import"): "",
         }
 
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
@@ -158,11 +164,14 @@ class TestGeneralDataProcessor:
             "include-trace = value\n"
             "[output]\n"
             "storenewset = false\n"
+            "synthesis = true\n"
             "[other preferences] \n"
             "unit-commitment-mode = dada\n"
             "[random_section] \n"
             "key1 = value1\n"
             "key2 = value2\n"
+            "[input]\n"
+            "import =\n"
         )
 
         general_data_path.write_text(default_val)
@@ -175,7 +184,6 @@ class TestGeneralDataProcessor:
         output = "output"
         expected_val = {
             (optimization, "include-exportmps"): "optim-1",
-            (optimization, "include-split-exported-mps"): "false",
             (optimization, "include-exportstructure"): "true",
             (optimization, "include-tc-minstablepower"): "false",
             (optimization, "include-tc-min-ud-time"): "false",
@@ -185,7 +193,10 @@ class TestGeneralDataProcessor:
             (other_preferences, "unit-commitment-mode"): "fast",
             (random_section, "key1"): "value1",
             (random_section, "key2"): "value2",
-            ("adequacy patch", "include-adq-patch"): "false"
+            ("adequacy patch", "include-adq-patch"): "false",
+            (general, "year-by-year"): "false",
+            (output, "synthesis"): "false",
+            ("input", "import"): "",
         }
 
         gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate)
