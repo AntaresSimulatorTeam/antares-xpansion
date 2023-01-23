@@ -12,8 +12,6 @@ message ("MPI_C_INCLUDE_DIRS ${MPI_C_INCLUDE_DIRS}")
 message ("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
 find_package(MPI REQUIRED)
-message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
-set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 
 add_library (benders_mpi_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.cpp

@@ -15,8 +15,6 @@ add_executable (full_run
 )
 
 find_package(MPI REQUIRED)
-message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
-set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 target_link_libraries (full_run
 	PRIVATE
 	${PROJECT_NAME}::benders_mpi_core
