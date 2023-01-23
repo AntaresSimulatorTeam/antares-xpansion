@@ -14,12 +14,13 @@ add_executable (full_run
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
-if (USE_MPI)
-	target_link_libraries (full_run
-		PRIVATE
-		${PROJECT_NAME}::benders_mpi_core
-)
-endif ()
+find_package(MPI REQUIRED)
+message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
+set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+target_link_libraries (full_run
+	PRIVATE
+	${PROJECT_NAME}::benders_mpi_core
+	)
 get_target_property(full_run_lib_include full_run_lib INTERFACE_INCLUDE_DIRECTORIES)
 
 target_include_directories(full_run PRIVATE

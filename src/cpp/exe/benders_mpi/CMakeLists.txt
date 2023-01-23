@@ -14,6 +14,9 @@ add_executable (bendersmpi
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
+find_package(MPI REQUIRED)
+message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
+set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 
 #IF (WIN32)
 #	target_link_libraries (bendersmpi
