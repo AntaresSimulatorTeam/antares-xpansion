@@ -111,7 +111,6 @@ BendersMainFactory::BendersMainFactory(
   if (world.rank() == 0) {
     usage(argc);
   }
-  //   return RunMpi(argv, options_file, env, world);
 }
 int RunSequential(char** argv, const std::filesystem::path& options_file,
                   const BENDERSMETHOD& method) {
