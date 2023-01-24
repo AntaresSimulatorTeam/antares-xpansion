@@ -1,12 +1,10 @@
 #ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #include "BendersByBatch.h"
+#include "BendersMPI.h"
+#include "BendersSequential.h"
 #include "OutputWriter.h"
 #include "core/ILogger.h"
-#if __has_include("BendersMPI.h")
-#include "BendersMPI.h"
-#endif
-#include "BendersSequential.h"
 enum class BENDERSMETHOD { SEQUENTIAL, MPI, BENDERSBYBATCH, MERGEMPS };
 
 class BendersSequentialFactory {

@@ -1,16 +1,13 @@
+#include <boost/program_options.hpp>
 #include <exception>
 #include <iostream>
 #include <string>
-
-#if __has_include("common_mpi.h")
-#include "common_mpi.h"
-#endif
-#include <boost/program_options.hpp>
 
 #include "FullRunOptionsParser.h"
 #include "ProblemGenerationLogger.h"
 #include "RunProblemGeneration.h"
 #include "StudyUpdateRunner.h"
+#include "common_mpi.h"
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
