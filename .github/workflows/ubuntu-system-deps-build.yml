@@ -57,7 +57,7 @@ jobs:
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
                 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release \
-                -DUSE_MPI=ON -DCMAKE_INSTALL_PREFIX=_install \
+                -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON
 
       - name: Build
