@@ -11,8 +11,6 @@
 #include "common_mpi.h"
 #include "core/ILogger.h"
 
-#define __BENDERSMPI__
-
 /*!
  * \class BendersMpi
  * \brief Class use run the benders algorithm in parallel
