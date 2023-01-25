@@ -8,13 +8,11 @@
 find_package (GTest REQUIRED)
 
 message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
-if (USE_MPI)
-	find_package(MPI REQUIRED)
-	if (MPI_FOUND)
-		message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
-		set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-	endif (MPI_FOUND)
-endif ()
+find_package(MPI REQUIRED)
+
+if(UNIX)
+set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+endif()
 # ===========================================================================
 # Targets
 # ===========================================================================

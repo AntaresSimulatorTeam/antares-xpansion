@@ -24,7 +24,6 @@ BendersSequentialFactory::BendersSequentialFactory(
 }
 
 pBendersBase BendersSequentialFactory::GetBenders() const { return benders_; }
-#ifdef __BENDERSMPI__
 
 int RunMpi(char** argv, const std::filesystem::path& options_file,
            mpi::environment& env, mpi::communicator& world) {
@@ -112,9 +111,7 @@ BendersMainFactory::BendersMainFactory(
   if (world.rank() == 0) {
     usage(argc);
   }
-  //   return RunMpi(argv, options_file, env, world);
 }
-#endif  // __BENDERSMPI__
 int RunSequential(char** argv, const std::filesystem::path& options_file,
                   const BENDERSMETHOD& method) {
   SimulationOptions options(options_file);
@@ -168,15 +165,10 @@ BendersMainFactory::BendersMainFactory(
   usage(argc);
 }
 int BendersMainFactory::Run() const {
-#ifdef __BENDERSMPI__
-
   if (pworld_ == nullptr ||
       (pworld_->rank() == 0 && method_ != BENDERSMETHOD::MPI)) {
     return RunSequential(argv_, options_file_, method_);
   } else {
     return RunMpi(argv_, options_file_, *penv_, *pworld_);
   }
-#else
-  return RunSequential(argv_, options_file_, method_);
-#endif  //__BENDERSMPI__
 }

@@ -4,11 +4,6 @@ add_library (factories
         BendersFactory.cpp
         )
 
-if (USE_MPI)
-	target_link_libraries (factories
-		PUBLIC
-		${PROJECT_NAME}::benders_mpi_core)
-endif ()
 target_link_libraries (factories
         PUBLIC
         benders_core
@@ -16,6 +11,7 @@ target_link_libraries (factories
 	benders_by_batch_core
         output_core
         logger_lib
+        ${PROJECT_NAME}::benders_mpi_core
         )
 
 target_include_directories (factories

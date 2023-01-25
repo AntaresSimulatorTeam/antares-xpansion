@@ -1,10 +1,6 @@
 add_subdirectory (cpp)
 
-if(USE_MPI)
-    set(BENDERSMPI_APP $<TARGET_FILE_NAME:bendersmpi>)    
-else()    
-    set(BENDERSMPI_APP "mpi_not_available")    
-endif()
+set(BENDERSMPI_APP $<TARGET_FILE_NAME:bendersmpi>)    
 
 if (COIN_OR)
     SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Cbc\n")

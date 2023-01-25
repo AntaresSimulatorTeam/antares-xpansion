@@ -1,12 +1,10 @@
 #ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #include "BendersByBatch.h"
+#include "BendersMPI.h"
+#include "BendersSequential.h"
 #include "OutputWriter.h"
 #include "core/ILogger.h"
-#if __has_include("BendersMPI.h")
-#include "BendersMPI.h"
-#endif
-#include "BendersSequential.h"
 enum class BENDERSMETHOD { SEQUENTIAL, MPI, BENDERSBYBATCH, MERGEMPS };
 
 class BendersSequentialFactory {
@@ -34,7 +32,6 @@ class BendersMainFactory {
   explicit BendersMainFactory(int argc, char** argv,
                               const BENDERSMETHOD& method,
                               const std::filesystem::path& options_file);
-#ifdef __BENDERSMPI__
   boost::mpi::environment* penv_ = nullptr;
   boost::mpi::communicator* pworld_ = nullptr;
   explicit BendersMainFactory(int argc, char** argv,
@@ -46,7 +43,6 @@ class BendersMainFactory {
                               const std::filesystem::path& options_file,
                               boost::mpi::environment& env,
                               boost::mpi::communicator& world);
-#endif  //__BENDERSMPI__
   int Run() const;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H

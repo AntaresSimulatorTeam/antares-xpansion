@@ -144,7 +144,6 @@ jobs:
                 -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                 -DBUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=Release \
-                -DUSE_MPI=ON \
                 -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
                 -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \

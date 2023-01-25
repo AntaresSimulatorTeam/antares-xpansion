@@ -34,13 +34,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
 endif()
 
-option (USE_MPI "Enable MPI" OFF)
-option (USE_SEQUENTIAL "Enable sequential" ON)
-
-IF ((NOT USE_MPI) AND (NOT USE_SEQUENTIAL))
-	message (FATAL_ERROR "Need to specify at least an executable target : set USE_MPI to true or USE_SEQUENTIAL to false")
-ENDIF ()
-
 # for centos docker to run MPI tests as root
 IF(ALLOW_RUN_AS_ROOT)
 	set(ALLOW_RUN_AS_ROOT "True")
@@ -76,7 +69,6 @@ set (LIBRARY_OUTPUT_PATH	${CMAKE_BINARY_DIR})
 set (CMAKE_CXX_STANDARD 17)
 
 set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
-message ("USE_MPI is ${USE_MPI}")
 
 if (MSVC)
 	message ("WINDOWS")
@@ -190,19 +182,17 @@ find_package(minizip-ng REQUIRED)
 
 find_package (Boost REQUIRED COMPONENTS program_options)
 	
-if (USE_MPI)
-	# ugly fix required due to conan packages and policies vs. boost brainfucking name rules
-	if (MSVC)
-		list (APPEND CMAKE_FIND_LIBRARY_PREFIXES "" "lib")
-	endif ()
-	find_package(MPI REQUIRED)
-	find_package (Boost REQUIRED COMPONENTS mpi serialization)
-	include_directories (${Boost_INCLUDE_DIRS})
-
-	message (STATUS "BOOST_MPI_LIBRARY : " ${Boost_MPI_LIBRARY})
-	message (STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY})
-	message (STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS})
+# ugly fix required due to conan packages and policies vs. boost brainfucking name rules
+if (MSVC)
+	list (APPEND CMAKE_FIND_LIBRARY_PREFIXES "" "lib")
 endif ()
+find_package(MPI REQUIRED)
+find_package (Boost REQUIRED COMPONENTS mpi serialization)
+include_directories (${Boost_INCLUDE_DIRS})
+
+message (STATUS "BOOST_MPI_LIBRARY : " ${Boost_MPI_LIBRARY})
+message (STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY})
+message (STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS})
 
 # ---------------------------------------------------------------------------
 # Threads
