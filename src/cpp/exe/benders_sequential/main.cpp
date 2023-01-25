@@ -1,3 +1,7 @@
+#include "BendersFactory.h"
 
-#include "BendersSequentialMain.h"
-int main(int argc, char **argv) { return BendersSequentialMain(argc, argv); }
+int main(int argc, char **argv) {
+  auto benders_factory =
+      BendersMainFactory(argc, argv, BENDERSMETHOD::SEQUENTIAL);
+  return benders_factory.Run();
+}

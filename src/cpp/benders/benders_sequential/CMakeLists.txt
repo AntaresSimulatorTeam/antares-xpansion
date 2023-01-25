@@ -8,7 +8,6 @@
 
 add_library (benders_sequential_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersSequential.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/BendersSequentialMain.cpp
         )
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)

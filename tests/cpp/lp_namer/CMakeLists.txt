@@ -49,13 +49,6 @@ target_link_libraries (lp_namer_tests PRIVATE
         problem_generation_main
         )
 
-if (USE_MPI)
-else ()
-    set (THREADS_PREFER_PTHREAD_FLAG ON)
-    target_link_libraries (lp_namer_tests PRIVATE
-            Threads::Threads
-            )
-endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options (unit_tests PUBLIC -Wno-global-constructors)

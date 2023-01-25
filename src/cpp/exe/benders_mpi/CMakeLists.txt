@@ -14,13 +14,10 @@ add_executable (bendersmpi
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
-if (USE_MPI)
-	find_package(MPI REQUIRED)
-	if (MPI_FOUND)
-		message("CMAKE_CXX_COMPILER: ${MPI_CXX_COMPILER}")
-		set (CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-	endif (MPI_FOUND)
-endif ()
+find_package(MPI REQUIRED)
+if(UNIX)
+set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+endif()
 
 #IF (WIN32)
 #	target_link_libraries (bendersmpi
@@ -29,6 +26,7 @@ endif ()
 #ELSE (WIN32)
 	target_link_libraries (bendersmpi
 			${PROJECT_NAME}::benders_mpi_core
+			factories
 			)
 #ENDIF (WIN32)
 

@@ -1,38 +1,30 @@
+#include <boost/program_options.hpp>
 #include <exception>
 #include <iostream>
 #include <string>
 
-#if __has_include("BendersMpiMain.h")
-#include "BendersMpiMain.h"
-#include "common_mpi.h"
-#endif
-#include <boost/program_options.hpp>
-
-#include "BendersSequentialMain.h"
 #include "FullRunOptionsParser.h"
 #include "ProblemGenerationLogger.h"
 #include "RunProblemGeneration.h"
 #include "StudyUpdateRunner.h"
+#include "common_mpi.h"
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {
-#ifdef BENDERSMPIMAIN
   mpi::environment env(argc, argv);
   mpi::communicator world;
-#endif
   auto options_parser = FullRunOptionsParser();
   std::filesystem::path xpansion_output_dir;
   std::filesystem::path archive_path;
   options_parser.Parse(argc, argv);
 
-#ifdef BENDERSMPIMAIN
   if (world.rank() == 0) {
-#endif
     try {
       xpansion_output_dir = options_parser.XpansionOutputDir();
       archive_path = options_parser.ArchivePath();
 
-      const auto log_file_path = xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
+      const auto log_file_path =
+          xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
       auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
       auto& loggerRef = (*logger);
 
@@ -52,39 +44,26 @@ int main(int argc, char** argv) {
     } catch (...) {
       std::cerr << "Exception of unknown type!" << std::endl;
     }
-#ifdef BENDERSMPIMAIN
   }
-#endif
   int argc_ = 2;
-  auto options_file = options_parser.BendersOptionsFile();
+  const auto options_file = options_parser.BendersOptionsFile();
+  const auto benders_method = options_parser.Method();
 
-#ifdef BENDERSMPIMAIN
   world.barrier();
-  if (options_parser.Method() == FullRunOptionsParser::METHOD::MPI) {
-    BendersMpiMain(argc_, argv, options_file, env, world);
-  } else {
-    if (world.rank() == 0) {
-      BendersSequentialMain(argc_, argv, options_file);
-    }
-  }
-#else
-  BendersSequentialMain(argc_, argv, options_file);
-#endif
+  auto benders_factory =
+      BendersMainFactory(argc_, argv, benders_method, options_file, env, world);
+  benders_factory.Run();
 
-#ifdef BENDERSMPIMAIN
   if (world.rank() == 0) {
-#endif
     auto log_file_path = xpansion_output_dir / "lp" / "StudyUpdateLog.txt";
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
     auto solutionFile_l = options_parser.SolutionFile();
-    ActiveLinksBuilder linksBuilder = get_link_builders(xpansion_output_dir, logger);
+    ActiveLinksBuilder linksBuilder =
+        get_link_builders(xpansion_output_dir, logger);
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 
     updateStudy(xpansion_output_dir, links, solutionFile_l, logger);
-
-#ifdef BENDERSMPIMAIN
   }
-#endif
   return 0;
 }

@@ -21,16 +21,9 @@ target_link_libraries (helpers_test PRIVATE
 		${PROJECT_NAME}::benders_sequential_core
 		)
 
-if (USE_MPI)
-	target_link_libraries (helpers_test PRIVATE
+target_link_libraries (helpers_test PRIVATE
 			${PROJECT_NAME}::benders_mpi_core
 			)
-else ()
-	set (THREADS_PREFER_PTHREAD_FLAG ON)
-	target_link_libraries (helpers_test PRIVATE
-			Threads::Threads
-			)
-endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options (helpers_test PUBLIC -Wno-global-constructors)
