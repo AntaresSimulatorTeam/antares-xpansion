@@ -111,6 +111,8 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(T const& t) {
   }
   return *this;
 }
+ProblemGenerationLoggerSharedPointer BuildLogger(
+    const std::filesystem::path& log_file_path, std::ostream& stream);
 
 }  // namespace ProblemGenerationLog
 #endif  //__PROBLEMGENERATIONLOGGER_H__

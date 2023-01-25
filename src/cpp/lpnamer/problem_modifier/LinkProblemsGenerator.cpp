@@ -5,6 +5,7 @@
 #include <execution>
 
 #include "VariableFileReader.h"
+#include "common_lpnamer.h"
 #include "helpers/StringUtils.h"
 #include "solver_utils.h"
 
@@ -135,7 +136,7 @@ void LinkProblemsGenerator::treat(const std::filesystem::path &root,
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       const std::filesystem::path &archivePath,
                                       Couplings &couplings) {
-  auto const mps_file_name = root / MPS_TXT;
+  auto const mps_file_name = root / common_lpnamer::MPS_TXT;
   lpDir_ = root / "lp";
   auto reader = ArchiveReader(archivePath);
   reader.Open();

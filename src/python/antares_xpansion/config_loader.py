@@ -77,8 +77,19 @@ class ConfigLoader:
         if not self._config.simulation_name:
             raise ConfigLoader.MissingSimulationName(
                 "Missing argument simulationName")
-        else:
+        elif self._config.simulation_name == "last":
             self._simulation_name = self._config.simulation_name
+
+        else:
+            tmp_zip = Path(self.antares_output()) / \
+                self._config.simulation_name
+            if self.is_zip(tmp_zip):
+                self._last_zip = tmp_zip
+                self._simulation_name = self._last_zip.parent / \
+                    (self._last_zip.stem+"-Xpansion")
+            else:
+                raise ConfigLoader.InvalidSimulationName(
+                    f"{tmp_zip} is not a valid zip archive")
 
     def _restore_launcher_options(self):
         with open(self.launcher_options_file_path(), "r") as launcher_options:
@@ -315,6 +326,17 @@ class ConfigLoader:
 
         return float(separation_parameter_str)
 
+    def get_batch_size(self):
+        """
+        return the batch_size read from the settings file
+        """
+        batch_size_str = self.options.get(
+            "batch_size",
+            self._config.settings_default["batch_size"],
+        )
+
+        return int(batch_size_str)
+
     def additional_constraints(self):
         """
         returns path to additional constraints file
@@ -384,7 +406,6 @@ class ConfigLoader:
         options[LauncherOptionsKeys.n_mpi_key()] = self.n_mpi()
         options[LauncherOptionsKeys.antares_n_cpu_key()] = self.antares_n_cpu()
         options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
-        options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
         options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
         options[LauncherOptionsKeys.allow_run_as_root_key()
                 ] = self.allow_run_as_root()
@@ -468,6 +489,8 @@ class ConfigLoader:
             OptimisationKeys.last_mps_master_name_key()
         ] = self._config.LAST_MASTER_MPS
         options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
+        options_values[OptimisationKeys.batch_size_key()
+                       ] = self.get_batch_size()
         options_values[OptimisationKeys.mps_in_zip_key()
                        ] = self.zip_mps()
         # generate options file for the solver
@@ -491,8 +514,6 @@ class ConfigLoader:
         if self.step() == "resume":
             self._simulation_name = last_dir_path
         else:
-            # TODO temp function to zip study output -- for now antares does not provide archive output
-            # self.zip_last_study(last_dir_path)
             # Get list of all dirs only in the given directory
             list_of_zip_filter = Path(self.antares_output()).glob("*.zip")
 
@@ -505,15 +526,6 @@ class ConfigLoader:
             self._last_zip = list_of_zip[-1]
             self._simulation_name = self._last_zip.parent / \
                 (self._last_zip.stem+"-Xpansion")
-
-    def zip_last_study(self, last_dir_path):
-        """
-        zip last simulation and delete it
-        """
-        # Get list of all dirs only in the given directory
-        shutil.make_archive(str(last_dir_path), "zip", last_dir_path)
-
-        shutil.rmtree(last_dir_path, ignore_errors=True)
 
     def is_zip(self, file):
         filename, ext = os.path.splitext(file)
@@ -581,6 +593,9 @@ class ConfigLoader:
     def benders_sequential_exe(self):
         return self.exe_path(self._config.BENDERS_SEQUENTIAL)
 
+    def benders_by_batch_exe(self):
+        return self.exe_path(self._config.BENDERS_BY_BATCH)
+
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)
 
@@ -589,6 +604,9 @@ class ConfigLoader:
 
     def sensitivity_exe(self):
         return self.exe_path(self._config.SENSITIVITY_EXE)
+
+    def full_run_exe(self):
+        return self.exe_path(self._config.FULL_RUN)
 
     def antares_archive_updater_exe(self):
         return self.exe_path(self._config.ANTARES_ARCHIVE_UPDATER)
@@ -677,6 +695,9 @@ class ConfigLoader:
         )
 
     class MissingSimulationName(Exception):
+        pass
+
+    class InvalidSimulationName(Exception):
         pass
 
     def check_NTC_column_constraints(self, antares_version):

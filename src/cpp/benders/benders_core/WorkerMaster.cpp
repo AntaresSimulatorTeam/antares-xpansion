@@ -9,7 +9,7 @@ WorkerMaster::WorkerMaster() { _is_master = true; }
  *  \brief Constructor of a Master Problem
  *
  *  Construct a Master Problem by loading mps and mapping files and adding the
- * variable alpha
+ * variable overall_subpb_cost_under_approx
  *
  *  \param variable_map : map linking each variable to its id in the problem
  *  \param path_to_mps : path to the problem mps file
@@ -39,14 +39,16 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
 /*!
  *  \brief Return optimal variables of a problem
  *
- *  Set optimal variables of a problem which has the form (min(x,alpha) : f(x) +
- * alpha)
+ *  Set optimal variables of a problem which has the form
+ * (min(x,overall_subpb_cost_under_approx) : f(x) +
+ * overall_subpb_cost_under_approx)
  *
  *  \param x_out : reference to an empty map list
  *
- *  \param alpha : reference to an empty double
+ *  \param overall_subpb_cost_under_approx : reference to an empty double
  */
-void WorkerMaster::get(Point &x_out, double &alpha, DblVector &alpha_i) {
+void WorkerMaster::get(Point &x_out, double &overall_subpb_cost_under_approx,
+                       DblVector &single_subpb_costs_under_approx) {
   x_out.clear();
   std::vector<double> ptr(_solver->get_ncols());
 
@@ -55,13 +57,14 @@ void WorkerMaster::get(Point &x_out, double &alpha, DblVector &alpha_i) {
   } else {
     _solver->get_lp_sol(ptr.data(), NULL, NULL);
   }
-  assert(_id_alpha_i.back() + 1 == ptr.size());
+  assert(id_single_subpb_costs_under_approx_.back() + 1 == ptr.size());
   for (auto const &kvp : _id_to_name) {
     x_out[kvp.second] = ptr[kvp.first];
   }
-  alpha = ptr[_id_alpha];
-  for (int i(0); i < _id_alpha_i.size(); ++i) {
-    alpha_i[i] = ptr[_id_alpha_i[i]];
+  overall_subpb_cost_under_approx = ptr[_id_alpha];
+  for (int i(0); i < id_single_subpb_costs_under_approx_.size(); ++i) {
+    single_subpb_costs_under_approx[i] =
+        ptr[id_single_subpb_costs_under_approx_[i]];
   }
 }
 
@@ -89,7 +92,7 @@ int WorkerMaster::get_number_constraint() const { return _solver->get_nrows(); }
  */
 void WorkerMaster::add_cut(Point const &s, Point const &x_cut,
                            double const &rhs) const {
-  // cut is -rhs >= alpha  + s^(x-x_cut)
+  // cut is -rhs >= overall_subpb_cost_under_approx  + s^(x-x_cut)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
@@ -139,7 +142,7 @@ void WorkerMaster::define_matval_mclind(const Point &s,
  */
 void WorkerMaster::add_dynamic_cut(Point const &s, double const &sx0,
                                    double const &rhs) const {
-  // cut is -rhs >= alpha  + s^(x-x0)
+  // cut is -rhs >= overall_subpb_cost_under_approx  + s^(x-x0)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
@@ -168,7 +171,7 @@ void WorkerMaster::define_rhs_from_sx0(const double &sx0, const double &rhs,
  */
 void WorkerMaster::add_cut_by_iter(int const i, Point const &s,
                                    double const &sx0, double const &rhs) const {
-  // cut is -rhs >= alpha  + s^(x-x0)
+  // cut is -rhs >= overall_subpb_cost_under_approx  + s^(x-x0)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
@@ -193,7 +196,7 @@ void WorkerMaster::define_matval_mclind_for_index(
       ++mclindCnt_l;
     }
   }
-  mclind.back() = _id_alpha_i[i];
+  mclind.back() = id_single_subpb_costs_under_approx_[i];
   matval.back() = -1;
 }
 
@@ -208,7 +211,7 @@ void WorkerMaster::define_matval_mclind_for_index(
 // TODO : Refactor this with add_cut and define_matval_mclind(_for_index)
 void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x_cut,
                                     double const &rhs) const {
-  // cut is -rhs >= alpha  + s^(x-x_cut)
+  // cut is -rhs >= overall_subpb_cost_under_approx  + s^(x-x_cut)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
@@ -238,18 +241,19 @@ void WorkerMaster::_set_upper_bounds() const {
 }
 
 void WorkerMaster::_set_alpha_var() {
-  // add the variable alpha
+  // add the variable overall_subpb_cost_under_approx
   const std::string alpha_str("alpha");
   auto const it(_name_to_id.find(alpha_str));
   if (it == _name_to_id.end()) {
-    _id_alpha_i.resize(subproblems_count, -1);
+    id_single_subpb_costs_under_approx_.resize(subproblems_count, -1);
 
     if (_mps_has_alpha) {
       _id_alpha = _solver->get_col_index(alpha_str);
       for (int i(0); i < subproblems_count; ++i) {
         std::stringstream buffer;
         buffer << "alpha_" << i;
-        _id_alpha_i[i] = _solver->get_col_index(buffer.str());
+        id_single_subpb_costs_under_approx_[i] =
+            _solver->get_col_index(buffer.str());
       }
     } else {
       double lb(-1e10); /*!< Lower Bound */
@@ -262,18 +266,22 @@ void WorkerMaster::_set_alpha_var() {
           _solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0),
           DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
           CharVector(1, 'C'),
-          StrVector(1, alpha_str)); /* Add variable alpha and its parameters */
+          StrVector(1,
+                    alpha_str)); /* Add variable overall_subpb_cost_under_approx
+                                    and its parameters */
 
       for (int i(0); i < subproblems_count; ++i) {
         std::stringstream buffer;
         buffer << "alpha_" << i;
-        _id_alpha_i[i] = _solver->get_ncols();
+        id_single_subpb_costs_under_approx_[i] = _solver->get_ncols();
         solver_addcols(
             _solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0),
             DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
             CharVector(1, 'C'),
             StrVector(
-                1, buffer.str())); /* Add variable alpha_i and its parameters */
+                1,
+                buffer.str())); /* Add variable single_subpb_costs_under_approx
+                                   and its parameters */
       }
 
       std::vector<char> rowtype = {'E'};
@@ -284,19 +292,22 @@ void WorkerMaster::_set_alpha_var() {
       mclind[0] = _id_alpha;
       matval[0] = 1;
       for (int i(0); i < subproblems_count; ++i) {
-        mclind[i + 1] = _id_alpha_i[i];
+        mclind[i + 1] = id_single_subpb_costs_under_approx_[i];
         matval[i + 1] = -1;
       }
 
       solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
     }
   } else {
-    LOG(INFO) << "ERROR a variable named alpha is in input" << std::endl;
+    LOG(INFO)
+        << "ERROR a variable named overall_subpb_cost_under_approx is in input"
+        << std::endl;
   }
 }
 
 /*!
- *  \brief Fix an upper bound and the variable alpha of a problem
+ *  \brief Fix an upper bound and the variable overall_subpb_cost_under_approx
+ * of a problem
  *
  *  \param bestUB : bound to fix
  */

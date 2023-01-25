@@ -9,6 +9,7 @@
 #include "CandidateLog.h"
 #include "Commons.h"
 #include "IterationResultLog.h"
+#include "Timer.h"
 
 using xpansion::logger::commons::indent_1;
 
@@ -58,6 +59,8 @@ void UserFile::log_at_iteration_end(const LogData &d) {
 
 void UserFile::log_at_ending(const LogData &d) {
   const double overall_cost = d.subproblem_cost + d.invest_cost;
+  _file << LINE_PREFIX << indent_1
+        << "Total number of iterations done = " << d.it << std::endl;
   _file << LINE_PREFIX << indent_1 << "Best solution = it " << d.best_it
         << std::endl;
   _file.flush();
@@ -69,7 +72,7 @@ void UserFile::log_at_ending(const LogData &d) {
 }
 
 void UserFile::log_total_duration(double durationInSeconds) {
-  _file << LINE_PREFIX << "Problem ran in " << durationInSeconds << " s"
+  _file << LINE_PREFIX << "Benders ran in " << durationInSeconds << " s"
         << std::endl;
   _file.flush();
 }
@@ -106,8 +109,7 @@ void UserFile::restart_best_iterations_infos(
 }
 
 void UserFile::LogAtInitialRelaxation() {
-  _file << LINE_PREFIX
-        << "--- Switch master formulation to relaxed"
+  _file << LINE_PREFIX << "--- Switch master formulation to relaxed"
         << std::endl;
   _file.flush();
 }
@@ -117,6 +119,11 @@ void UserFile::LogAtSwitchToInteger() {
         << "--- Relaxed gap reached, switch master formulation to integer"
         << std::endl;
   _file.flush();
+}
+void UserFile::number_of_sub_problem_resolved(int number) {
+  _file << LINE_PREFIX << indent_1
+        << "cumulative number of call to solver (only for subproblems) : "
+        << number << std::endl;
 }
 
 }  // namespace logger

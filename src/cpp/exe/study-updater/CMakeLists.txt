@@ -8,6 +8,7 @@ target_link_libraries (xpansion-study-updater
 		${PROJECT_NAME}::lp_namer_model
 		${PROJECT_NAME}::lp_namer_input_reader
 		${PROJECT_NAME}::lp_namer_problem_modifier	
+		${PROJECT_NAME}::xpansion_study_updater_lib	
 		Boost::boost Boost::program_options)
 
 install(TARGETS xpansion-study-updater DESTINATION bin)

@@ -13,19 +13,22 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class BendersDriver:
-    def __init__(self, benders_mpi, benders_sequential, merge_mps, options_file) -> None:
+    def __init__(self, benders_mpi, benders_sequential, benders_by_batch, merge_mps, options_file) -> None:
 
         self.oversubscribe = False
         self.allow_run_as_root = False
         self.benders_mpi = benders_mpi
         self.merge_mps = merge_mps
         self.benders_sequential = benders_sequential
+        self.benders_by_batch = benders_by_batch
 
         if (options_file != ""):
             self.options_file = options_file
         else:
             raise BendersDriver.BendersOptionsFileError(
                 f"Invalid Options File!")
+
+        self.MPI_N = "-n"
         self._initialise_system_specific_mpi_vars()
 
     def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False, allow_run_as_root=False):
@@ -91,6 +94,8 @@ class BendersDriver:
             self.solver = self.merge_mps
         elif self.method == "sequential":
             self.solver = self.benders_sequential
+        elif self.method == "benders_by_batch":
+            self.solver = self.benders_by_batch
         else:
             flushed_print("Illegal optim method")
             raise BendersDriver.BendersSolverError(
@@ -114,13 +119,13 @@ class BendersDriver:
         """
         bare_solver_command = [self.solver, self.options_file]
         if self.solver == self.benders_mpi:
-            mpi_command = self._get_mpi_run_command_root()
+            mpi_command = self.get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)
             return mpi_command
         else:
             return bare_solver_command
 
-    def _get_mpi_run_command_root(self):
+    def get_mpi_run_command_root(self):
 
         mpi_command = [self.MPI_LAUNCHER, self.MPI_N, str(self.n_mpi)]
         if sys.platform.startswith("linux"):
@@ -133,10 +138,8 @@ class BendersDriver:
     def _initialise_system_specific_mpi_vars(self):
         if sys.platform.startswith("win32"):
             self.MPI_LAUNCHER = "mpiexec"
-            self.MPI_N = "-n"
         elif sys.platform.startswith("linux"):
             self.MPI_LAUNCHER = "mpirun"
-            self.MPI_N = "-np"
         else:
             raise (
                 BendersDriver.BendersUnsupportedPlatform(

@@ -19,7 +19,8 @@ class WorkerMaster : public Worker {
                bool mps_has_alpha);
   virtual ~WorkerMaster() = default;
 
-  void get(Point &x0, double &alpha, DblVector &alpha_i);
+  void get(Point &x0, double &overall_subpb_cost_under_approx,
+           DblVector &single_subpb_costs_under_approx);
   void get_dual_values(std::vector<double> &dual) const;
   int get_number_constraint() const;
 
@@ -38,7 +39,7 @@ class WorkerMaster : public Worker {
 
  private:
   std::vector<int> _id_nb_units;
-  std::vector<int> _id_alpha_i;
+  std::vector<int> id_single_subpb_costs_under_approx_;
   int _id_alpha = 0;
   int subproblems_count;
   bool _mps_has_alpha = false;

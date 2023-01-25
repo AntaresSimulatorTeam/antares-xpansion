@@ -95,5 +95,11 @@ void Master::LogAtSwitchToInteger() {
   }
 }
 
+void Master::number_of_sub_problem_resolved(int number) {
+  for (auto logger : _loggers) {
+    logger->number_of_sub_problem_resolved(number);
+  }
+}
+
 }  // namespace logger
 }  // namespace xpansion

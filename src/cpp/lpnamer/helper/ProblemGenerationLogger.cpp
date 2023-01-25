@@ -92,8 +92,8 @@ bool ProblemGenerationLogger::try_to_add_logger_to_enabled_list(
 }
 std::string ProblemGenerationLogger::PrefixMessage(
     const LOGLEVEL& log_level) const {
-  return LogLevelToStr(log_level) + clock_utils::timeToStr(std::time(nullptr)) +
-         ": ";
+  return std::string("[") + LogLevelToStr(log_level) +
+         clock_utils::timeToStr(std::time(nullptr)) + "] ";
 }
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     const LOGLEVEL log_level) {
@@ -112,4 +112,14 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
   return *this;
 }
 
+ProblemGenerationLoggerSharedPointer BuildLogger(
+    const std::filesystem::path& log_file_path, std::ostream& stream) {
+  auto logFile = std::make_shared<ProblemGenerationFileLogger>(log_file_path);
+  auto logStd = std::make_shared<ProblemGenerationOstreamLogger>(std::cout);
+
+  auto logger = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::INFO);
+  logger->AddLogger(logFile);
+  logger->AddLogger(logStd);
+  return logger;
+}
 }  // namespace ProblemGenerationLog
