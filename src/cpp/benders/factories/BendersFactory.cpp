@@ -62,16 +62,8 @@ int RunMpi(char** argv, const std::filesystem::path& options_file,
   Timer timer;
   pBendersBase benders;
 
-  // if (world.size() == 1) {
-  // std::cout << "Sequential launch" << std::endl;
-  // LOG(INFO) << "Size is 1. Launching in sequential mode..." << std::endl;
-
-  // benders =
-  // std::make_shared<BendersSequential>(benders_options, logger, writer);
-  // } else {
   benders =
       std::make_shared<BendersMpi>(benders_options, logger, writer, env, world);
-  // }
   benders->set_log_file(log_reports_name);
 
   writer->write_log_level(options.LOG_LEVEL);
