@@ -33,7 +33,7 @@ def remove_outputs(study_path):
                 shutil.rmtree(f)
 
 
-def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
+def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False, nproc: int = 4):
     # Clean study output
     remove_outputs(study_path)
 
@@ -51,7 +51,7 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False):
         "--step",
         "full",
         "-n",
-        "4",
+        str(nproc),
         "--oversubscribe",
     ]
     if allow_run_as_root == "True":
@@ -338,6 +338,7 @@ long_parameters_values = [
 @pytest.mark.long_sequential
 def test_full_study_long_sequential(
     install_dir,
+    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -346,7 +347,7 @@ def test_full_study_long_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "sequential")
+    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -525,6 +526,7 @@ medium_parameters_values = [
 @pytest.mark.medium_sequential
 def test_full_study_medium_sequential(
     install_dir,
+    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -533,7 +535,7 @@ def test_full_study_medium_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "sequential")
+    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -611,6 +613,7 @@ short_parameters_values = [
 @pytest.mark.short_sequential
 def test_full_study_short_sequential(
     install_dir,
+    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -619,7 +622,7 @@ def test_full_study_short_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "sequential")
+    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
