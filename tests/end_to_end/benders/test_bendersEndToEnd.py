@@ -158,14 +158,15 @@ def get_solver_exe(solver: str):
 def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
     MPI_LAUNCHER = ""
     MPI_N = ""
+    nproc_str = str(nproc)
     if sys.platform.startswith("win32"):
         MPI_LAUNCHER = "mpiexec"
         MPI_N = "-n"
-        return [MPI_LAUNCHER, MPI_N, nproc]
+        return [MPI_LAUNCHER, MPI_N, nproc_str]
     elif sys.platform.startswith("linux"):
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
         if (allow_run_as_root):
-            return [MPI_LAUNCHER, "--allow-run-as-root", MPI_N, str(nproc), "--oversubscribe"]
+            return [MPI_LAUNCHER, "--allow-run-as-root", MPI_N, nproc_str, "--oversubscribe"]
         else:
-            return [MPI_LAUNCHER, MPI_N, nproc, "--oversubscribe"]
+            return [MPI_LAUNCHER, MPI_N, nproc_str, "--oversubscribe"]
