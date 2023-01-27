@@ -120,6 +120,8 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
 
     if (solver == "BENDERS_MPI"):
         pre_command = get_mpi_command(allow_run_as_root, 2)
+    elif solver == "BENDERS_SEQUENTIAL":
+        pre_command = get_mpi_command(allow_run_as_root)
 
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
