@@ -1,6 +1,20 @@
 Antares-Xpansion changelog
 =================
 
+v1.0.2 (01/2023)
+--------------------
+
+### Bug
+
+Fix missing performance graph from release
+
+v1.0.1 (01/2023)
+--------------------
+
+### Features
+
+Use simulator 8.4.2
+
 v1.0.0 (12/2022)
 --------------------
 
