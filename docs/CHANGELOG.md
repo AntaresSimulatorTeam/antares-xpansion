@@ -13,14 +13,14 @@ v1.0.2 (01/2023)
 
 ### Bug
 
-Fix missing performance graph from release
+- Fix missing performance graph from release
 
 v1.0.1 (01/2023)
 --------------------
 
 ### Features
 
-Use simulator 8.4.2
+- Use Antares-Simulator 8.4.2
 
 v1.0.0 (12/2022)
 --------------------
@@ -33,7 +33,7 @@ v1.0.0 (12/2022)
     to tune the stabilization, more
     information [here](user-guide/get-started/settings-definition.md#separation_parameter)
   - Parallelization of the `problem_generation` step
-- Performance improvement in disk space consumption : zip of the MPS folder
+- Performance improvement in disk space consumption : in full run mode i.e with option `--step full` (default behavior), Antares-Xpansion outputs are zipped within Antares study archive
 - Change the default value of `relative_gap` from `1e-12` to `1e-6`
 
 ### Documentation
