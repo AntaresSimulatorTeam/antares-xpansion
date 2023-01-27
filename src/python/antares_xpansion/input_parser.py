@@ -44,8 +44,7 @@ class InputParser:
         self.parser.add_argument("-n", "--np",
                                  dest=LauncherOptionsKeys.n_mpi_key(),
                                  default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
-                                 type=lambda x: (int(x) > 1) and int(x) or sys.exit(
-                                     "Minimum of MPI processes is 2"),
+                                 type=int,
                                  help='Number of MPI processes')
         self.parser.add_argument("--antares-n-cpu",
                                  dest=LauncherOptionsKeys.antares_n_cpu_key(),

@@ -21,7 +21,7 @@ class LauncherOptionsDefaultValues():
 
     @staticmethod
     def DEFAULT_NP():
-        return 2
+        return 1
 
     @staticmethod
     def DEFAULT_ANTARES_N_CPU():

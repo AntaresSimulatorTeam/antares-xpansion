@@ -30,32 +30,28 @@ void BendersMpi::initialize_problems() {
   match_problem_to_id();
 
   int current_problem_id = 0;
-  auto subproblemProcessCount = _world.size() - 1;
 
   if (_world.rank() == rank_0) {
     reset_master(new WorkerMaster(
         master_variable_map, get_master_path(), get_solver_name(),
         get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
     LOG(INFO) << "subproblem number is " << _data.nsubproblem << std::endl;
-  } else {
-    // Dispatch subproblems to process
-    for (const auto &problem : coupling_map) {
-      // In case there are more subproblems than process
-      if (auto process_to_feed =
-              current_problem_id % subproblemProcessCount + 1;
-          process_to_feed ==
-          _world
-              .rank()) {  // Assign  [problemNumber % processCount] to processID
+  }
+  // Dispatch subproblems to process
+  for (const auto &problem : coupling_map) {
+    // In case there are more subproblems than process
+    if (auto process_to_feed = current_problem_id % _world.size();
+        process_to_feed ==
+        _world.rank()) {  // Assign  [problemNumber % processCount] to processID
 
-        const auto subProblemFilePath = GetSubproblemPath(problem.first);
-        if (Options().MPS_IN_ZIP)
-          reader_.ExtractFile(subProblemFilePath.filename());
-        addSubproblem(problem);
-        AddSubproblemName(problem.first);
-        std::filesystem::remove(subProblemFilePath);
-      }
-      current_problem_id++;
+      const auto subProblemFilePath = GetSubproblemPath(problem.first);
+      if (Options().MPS_IN_ZIP)
+        reader_.ExtractFile(subProblemFilePath.filename());
+      addSubproblem(problem);
+      AddSubproblemName(problem.first);
+      std::filesystem::remove(subProblemFilePath);
     }
+    current_problem_id++;
   }
 }
 

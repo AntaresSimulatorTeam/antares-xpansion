@@ -119,7 +119,7 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     pre_command = []
 
     if (solver == "BENDERS_MPI"):
-        pre_command = get_mpi_command(allow_run_as_root)
+        pre_command = get_mpi_command(allow_run_as_root, 2)
 
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
@@ -155,18 +155,18 @@ def get_solver_exe(solver: str):
     return solver_executable
 
 
-def get_mpi_command(allow_run_as_root=False):
+def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
     MPI_LAUNCHER = ""
     MPI_N = ""
-    nproc = "2"
+    nproc_str = str(nproc)
     if sys.platform.startswith("win32"):
         MPI_LAUNCHER = "mpiexec"
         MPI_N = "-n"
-        return [MPI_LAUNCHER, MPI_N, nproc]
+        return [MPI_LAUNCHER, MPI_N, nproc_str]
     elif sys.platform.startswith("linux"):
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
         if (allow_run_as_root):
-            return [MPI_LAUNCHER, "--allow-run-as-root", MPI_N, nproc, "--oversubscribe"]
+            return [MPI_LAUNCHER, "--allow-run-as-root", MPI_N, nproc_str, "--oversubscribe"]
         else:
-            return [MPI_LAUNCHER, MPI_N, nproc, "--oversubscribe"]
+            return [MPI_LAUNCHER, MPI_N, nproc_str, "--oversubscribe"]

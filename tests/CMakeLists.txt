@@ -24,7 +24,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     # Examples tests
     add_test(
         NAME examples_short_sequential
-        COMMAND Python3::Interpreter -m pytest -m short_sequential --installDir=${XPANSION_INSTALL_DIR} example_test.py
+        COMMAND Python3::Interpreter -m pytest -m short_sequential --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_short_sequential PROPERTY LABELS short short_sequential end_to_end)
@@ -38,7 +38,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
     add_test(
             NAME examples_medium_sequential
-            COMMAND Python3::Interpreter -m pytest -m medium_sequential --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            COMMAND Python3::Interpreter -m pytest -m medium_sequential --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_medium_sequential PROPERTY LABELS medium medium_sequential end_to_end)
@@ -52,7 +52,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
     add_test(
         NAME examples_long_sequential
-        COMMAND Python3::Interpreter -m pytest -m long_sequential --installDir=${XPANSION_INSTALL_DIR} example_test.py
+        COMMAND Python3::Interpreter -m pytest -m long_sequential --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_long_sequential PROPERTY LABELS long long_sequential end_to_end)
@@ -73,7 +73,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     set_property(TEST sequential PROPERTY LABELS benders benders-sequential end_to_end)
     add_test(
         NAME sequential_restart
-        COMMAND Python3::Interpreter -m pytest --installDir=${XPANSION_INSTALL_DIR} test_restartBendersSequentialEndToEnd.py
+        COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersSequentialEndToEnd.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
     )
     set_property(TEST sequential_restart PROPERTY LABELS benders benders-sequential end_to_end restart)
