@@ -11,7 +11,7 @@ v1.0.3 (02/2023)
 v1.0.2 (01/2023)
 --------------------
 
-### Bug
+### Bug fix
 
 - Fix missing performance graph from release
 
