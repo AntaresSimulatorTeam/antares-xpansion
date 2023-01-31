@@ -1,7 +1,7 @@
 {
     "studies": [
         {
-            "study_id": "d5f1e605-5cb3-4115-ba14-c137ebd45246",
+            "display_name": "Study 1",
             "areas": 61,
             "links": 398,
             "master": {
@@ -38,7 +38,7 @@
             ]
         },
         {
-            "study_id": "41df0e77-cc24-417c-8772-7bc2b8c40082",
+            "display_name": "Study 2",
             "areas": 61,
             "links": 398,
             "master": {
@@ -75,7 +75,7 @@
             ]
         },
         {
-            "study_id": "9a3dbbab-71c5-4f43-bf8a-695fa3616167",
+            "display_name": "Study 3",
             "areas": 61,
             "links": 398,
             "master": {
@@ -112,7 +112,7 @@
             ]
         },
         {
-            "study_id": "a9af2043-311d-466e-975e-5eb822c4b76f",
+            "display_name": "Study 4",
             "areas": 160,
             "links": 563,
             "master": {
