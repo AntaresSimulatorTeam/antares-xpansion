@@ -115,7 +115,7 @@ void RunProblemGeneration(
 
     /* Zip problem writer */
     auto problem_writer =
-        std::make_shared<ArchiveProblemWriter>(xpansion_output_dir, writer);
+        std::make_shared<ArchiveProblemWriter>(lpDir_, writer);
 
     /* Main stuff */
     std::vector<std::string> problem_names;
