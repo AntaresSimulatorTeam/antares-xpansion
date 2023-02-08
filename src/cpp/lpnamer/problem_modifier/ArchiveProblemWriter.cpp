@@ -13,7 +13,8 @@ void ArchiveProblemWriter::Write_problem(std::shared_ptr<Problem> &in_prblm) {
   auto const lp_mps_name = lp_dir_ / in_prblm->_name;
   in_prblm->write_prob_mps(lp_mps_name);
   writer_->AddFileInArchive(lp_mps_name);
-  std::filesystem::remove(lp_mps_name);
+  // If we remove mps file we can't load them later
+  // std::filesystem::remove(lp_mps_name);
 }
 
 ArchiveProblemWriter::ArchiveProblemWriter(
