@@ -2,11 +2,10 @@
 
 ## Context
 
-This is a test for the inner optimization part of AntaresXpansion. Those tests focus on three C++ executables :
+This is a test for the inner optimization part of AntaresXpansion. Those tests focus on two C++ executables :
 
-1. benderssequential
-2. bendersmpi
-3. merge_mps
+1. bendersmpi
+2. merge_mps
 
 **Input** : Files created by *lpnamer* executable of the project, or any group of files following the desired structure :
 

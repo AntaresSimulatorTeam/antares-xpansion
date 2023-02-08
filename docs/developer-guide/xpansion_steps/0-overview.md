@@ -54,5 +54,5 @@ calling these executables with the correct options for each step.
 |-----|-----|
 |`antares-x.x-solver`|Antares-Simulator optimization problems retrieval, where `x.x` stands for the version number of Antares-Simulator, for example `antares-8.1-solver`. |
 |`lp_namer`|Investment problem generation. |  
-|`benderssequential` or `bendersmpi`|Benders decomposition, either sequential or with MPI. | 
+|`bendersmpi`|Benders decomposition. | 
 |`xpansion-study-updater `|Update of antares study. | 
