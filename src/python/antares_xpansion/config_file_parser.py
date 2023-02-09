@@ -32,10 +32,8 @@ class ConfigFileParser:
                     "DEFAULT_INSTALL_DIR", self.default_install_dir),
                 ANTARES=content.get('ANTARES', self.ANTARES_DEFAULT),
                 MERGE_MPS=content.get('MERGE_MPS', self.MERGE_MPS_DEFAULT),
-                BENDERS_MPI=content.get(
-                    'BENDERS_MPI', self.BENDERS_MPI_DEFAULT),
-                BENDERS_SEQUENTIAL=content.get(
-                    'BENDERS_SEQUENTIAL', self.BENDERS_SEQUENTIAL_DEFAULT),
+                BENDERS=content.get(
+                    'BENDERS', self.BENDERS_MPI_DEFAULT),
                 BENDERS_BY_BATCH=content.get(
                     'BENDERS_BY_BATCH', self.BENDERS_BY_BATCH_DEFAULT),
                 LP_NAMER=content.get('LP_NAMER', self.LP_NAMER_DEFAULT),

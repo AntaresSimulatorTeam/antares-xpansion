@@ -28,4 +28,4 @@ def test_001_sequential(install_dir, tmp_path, study):
                     expansion_dir / "out.json")
     shutil.copyfile(instance_path / study["last_iteration_file"],
                     expansion_dir / "last_iteration.json")
-    run_solver(install_dir, 'BENDERS_SEQUENTIAL', instance_path, study)
+    run_solver(install_dir, instance_path, study)
