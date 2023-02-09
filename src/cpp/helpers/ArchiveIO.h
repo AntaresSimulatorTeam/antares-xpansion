@@ -43,6 +43,8 @@ class ArchiveIO {
   explicit ArchiveIO(const std::filesystem::path& archivePath)
       : archivePath_(archivePath) {}
   ArchiveIO() = default;
+  virtual ~ArchiveIO() = default;
+
   std::filesystem::path ArchivePath() const { return archivePath_; }
   void SetArchivePath(const std::filesystem::path& archivePath) {
     archivePath_ = archivePath;

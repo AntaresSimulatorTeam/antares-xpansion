@@ -35,12 +35,8 @@ int32_t ArchiveWriter::Open() {
   }
   return err;
 }
-int32_t ArchiveWriter::Close() {
-  return mz_zip_writer_close(pmz_zip_writer_instance_);
-}
-void ArchiveWriter::Delete() {
-  mz_zip_writer_delete(&pmz_zip_writer_instance_);
-}
+int32_t ArchiveWriter::Close() { return CloseInternal(); }
+void ArchiveWriter::Delete() { return DeleteInternal(); }
 
 int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
   std::unique_lock lock(mutex_);
@@ -112,4 +108,19 @@ int32_t ArchiveWriter::AddPathInArchive(
   }
 
   return MZ_OK;
+}
+ArchiveWriter::~ArchiveWriter() {
+  CloseInternal();
+  DeleteInternal();
+}
+
+int32_t ArchiveWriter::CloseInternal() {
+  if (pmz_zip_writer_instance_) {
+    return mz_zip_writer_close(pmz_zip_writer_instance_);
+  }
+  return MZ_OK;
+}
+
+void ArchiveWriter::DeleteInternal() {
+  return mz_zip_writer_delete(&pmz_zip_writer_instance_);
 }
