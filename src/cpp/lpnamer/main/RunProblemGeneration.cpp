@@ -25,6 +25,10 @@
 #include "ZipProblemsProviderAdapter.h"
 #include "common_lpnamer.h"
 
+std::shared_ptr<ArchiveReader> InstantiateZipReader(
+    const std::filesystem::path& antares_archive_path);
+std::filesystem::path OpenTmpArchive(const std::filesystem::path& lpDir_,
+                                     std::shared_ptr<ArchiveWriter>& writer);
 void ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
     const std::filesystem::path& antares_archive_path,
@@ -99,19 +103,15 @@ void RunProblemGeneration(
                                               log_file_path, zip_mps);
   auto mpsList = linkProblemsGenerator.readMPSList(mps_file_name);
 
+  auto lpDir_ = xpansion_output_dir / "lp";
+
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
   if (use_zip_implementation) {
-    /* Instantiate Zip reader */
-    auto reader = std::make_shared<ArchiveReader>(antares_archive_path);
-    reader->Open();
-
-    /*Instantiate zip writer */
-    auto lpDir_ = xpansion_output_dir / "lp";
-    const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
-    const auto tmpArchivePath = lpDir_ / tmpArchiveName;
-    auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
-    writer->Open();
+    std::shared_ptr<ArchiveReader> reader =
+        InstantiateZipReader(antares_archive_path);
+    std::shared_ptr<ArchiveWriter> writer;
+    const std::filesystem::path tmpArchivePath = OpenTmpArchive(lpDir_, writer);
 
     /* Zip problem writer */
     auto problem_writer =
@@ -154,13 +154,8 @@ void RunProblemGeneration(
     writer->Close();
     writer->Delete();
   } else if (use_file_implementation) {
-    /*Instantiate zip writer */
-    auto lpDir_ = xpansion_output_dir / "lp";
-    const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
-    const auto tmpArchivePath = lpDir_ / tmpArchiveName;
-    std::filesystem::remove(tmpArchivePath);
-    auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
-    writer->Open();
+    std::shared_ptr<ArchiveWriter> writer;
+    const std::filesystem::path tmpArchivePath = OpenTmpArchive(lpDir_, writer);
 
     /* Zip problem writer */
     auto problem_writer =
@@ -197,7 +192,6 @@ void RunProblemGeneration(
 
     auto reader = std::make_shared<ArchiveReader>(antares_archive_path);
     reader->Open();
-    auto lpDir_ = xpansion_output_dir / "lp";
     const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
     const auto tmpArchivePath = lpDir_ / tmpArchiveName;
     auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
@@ -229,4 +223,19 @@ void RunProblemGeneration(
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
       master_formulation, solver_name, logger, log_file_path);
+}
+std::filesystem::path OpenTmpArchive(const std::filesystem::path& lpDir_,
+                                     std::shared_ptr<ArchiveWriter>& writer) {
+  const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
+  auto tmpArchivePath = lpDir_ / tmpArchiveName;
+  writer = std::make_shared<ArchiveWriter>(
+      tmpArchivePath); /*Instantiate zip writer */
+  writer->Open();
+  return tmpArchivePath;
+}
+std::shared_ptr<ArchiveReader> InstantiateZipReader(
+    const std::filesystem::path& antares_archive_path) {
+  auto reader = std::make_shared<ArchiveReader>(antares_archive_path);
+  reader->Open();
+  return reader;
 }
