@@ -29,6 +29,10 @@ std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path);
 std::filesystem::path OpenTmpArchive(const std::filesystem::path& lpDir_,
                                      std::shared_ptr<ArchiveWriter>& writer);
+void CleanUpArchives(const std::filesystem::path& antares_archive_path,
+                     const std::filesystem::path& lpDir_,
+                     std::shared_ptr<ArchiveWriter>& writer,
+                     const std::filesystem::path& tmpArchivePath);
 void ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
     const std::filesystem::path& antares_archive_path,
@@ -149,10 +153,7 @@ void RunProblemGeneration(
     reader->Close();
     reader->Delete();
 
-    std::filesystem::remove(antares_archive_path);
-    std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
-    writer->Close();
-    writer->Delete();
+    CleanUpArchives(antares_archive_path, lpDir_, writer, tmpArchivePath);
   } else if (use_file_implementation) {
     std::shared_ptr<ArchiveWriter> writer;
     const std::filesystem::path tmpArchivePath = OpenTmpArchive(lpDir_, writer);
@@ -165,10 +166,7 @@ void RunProblemGeneration(
     linkProblemsGenerator.treatloop_files(xpansion_output_dir, couplings,
                                           mpsList, problem_writer);
 
-    std::filesystem::remove(antares_archive_path);
-    std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
-    writer->Close();
-    writer->Delete();
+    CleanUpArchives(antares_archive_path, lpDir_, writer, tmpArchivePath);
   } else {
     std::filesystem::path path =
         xpansion_output_dir.parent_path().parent_path() /
@@ -214,15 +212,21 @@ void RunProblemGeneration(
     reader->Close();
     reader->Delete();
 
-    std::filesystem::remove(antares_archive_path);
-    std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
-    writer->Close();
-    writer->Delete();
+    CleanUpArchives(antares_archive_path, lpDir_, writer, tmpArchivePath);
   }
 
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
       master_formulation, solver_name, logger, log_file_path);
+}
+void CleanUpArchives(const std::filesystem::path& antares_archive_path,
+                     const std::filesystem::path& lpDir_,
+                     std::shared_ptr<ArchiveWriter>& writer,
+                     const std::filesystem::path& tmpArchivePath) {
+  std::filesystem::remove(antares_archive_path);
+  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
+  writer->Close();
+  writer->Delete();
 }
 std::filesystem::path OpenTmpArchive(const std::filesystem::path& lpDir_,
                                      std::shared_ptr<ArchiveWriter>& writer) {
