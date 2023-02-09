@@ -115,6 +115,11 @@ def run_solver(install_dir, solver, tmp_study, instance, allow_run_as_root=False
 
     pre_command = []
 
+    if (solver == "MERGE_MPS"):
+        solver_executable = get_solver_exe(solver)
+    else:
+        solver_executable = get_solver_exe("BENDERS_MPI")
+
     if (solver == "BENDERS_MPI"):
         pre_command = get_mpi_command(allow_run_as_root)
 
