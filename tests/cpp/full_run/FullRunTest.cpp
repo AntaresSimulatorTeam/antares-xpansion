@@ -27,8 +27,7 @@ class FullRunOptionsParserTest : public ::testing::Test {
   FullRunOptionsParser full_run_options_options_parser_;
 };
 class FullRunOptionsParserTestParameterizedMethod
-    : public ::testing::TestWithParam<
-          std::pair<std::string, BENDERSMETHOD>> {
+    : public ::testing::TestWithParam<std::pair<std::string, BENDERSMETHOD>> {
  protected:
   FullRunOptionsParser full_run_options_options_parser_;
 };
@@ -103,7 +102,7 @@ TEST_F(FullRunOptionsParserTest, OptionsParsing) {
   const char argv5[] = "--benders_options";
   const char argv6[] = "options.json";
   const char argv7[] = "-m";
-  const char argv8[] = "sequential";
+  const char argv8[] = "benders";
   const char argv9[] = "-s";
   const char argv10[] = "/path/to/solution.json";
   std::vector<const char*> ppargv = {argv0, argv1, argv2, argv3, argv4, argv5,
@@ -115,8 +114,7 @@ TEST_F(FullRunOptionsParserTest, OptionsParsing) {
             std::filesystem::path(argv6));
   ASSERT_EQ(full_run_options_options_parser_.SolutionFile(),
             std::filesystem::path(argv10));
-  ASSERT_EQ(full_run_options_options_parser_.Method(),
-            BENDERSMETHOD::SEQUENTIAL);
+  ASSERT_EQ(full_run_options_options_parser_.Method(), BENDERSMETHOD::BENDERS);
 }
 TEST_P(FullRunOptionsParserTestParameterizedMethod, AllowedMethods) {
   const char argv0[] = "full_run.exe";
@@ -144,11 +142,10 @@ TEST_P(FullRunOptionsParserTestParameterizedMethod, AllowedMethods) {
   ASSERT_EQ(full_run_options_options_parser_.Method(), expected_method_enum);
 }
 auto GetData() {
-  return ::testing::ValuesIn(
-      std::vector<std::pair<std::string, BENDERSMETHOD>>{
-          {"sequential", BENDERSMETHOD::SEQUENTIAL},
-          {"mpibenders", BENDERSMETHOD::MPI},
-          {"mergeMPS", BENDERSMETHOD::MERGEMPS}});
+  return ::testing::ValuesIn(std::vector<std::pair<std::string, BENDERSMETHOD>>{
+      {"benders", BENDERSMETHOD::BENDERS},
+      {"benders_by_batch", BENDERSMETHOD::BENDERSBYBATCH},
+      {"mergeMPS", BENDERSMETHOD::MERGEMPS}});
 }
 INSTANTIATE_TEST_CASE_P(Method, FullRunOptionsParserTestParameterizedMethod,
                         GetData());

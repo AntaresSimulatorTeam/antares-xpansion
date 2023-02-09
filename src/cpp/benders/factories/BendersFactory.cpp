@@ -14,7 +14,7 @@
 BendersSequentialFactory::BendersSequentialFactory(
     const BendersBaseOptions& benders_options, Logger logger, Writer writer,
     const BENDERSMETHOD& method) {
-  if (method == BENDERSMETHOD::SEQUENTIAL || method == BENDERSMETHOD::MPI) {
+  if (method == BENDERSMETHOD::BENDERS) {
     benders_ =
         std::make_shared<BendersSequential>(benders_options, logger, writer);
   } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
@@ -157,8 +157,7 @@ BendersMainFactory::BendersMainFactory(
   usage(argc);
 }
 int BendersMainFactory::Run() const {
-  if (pworld_ == nullptr ||
-      (pworld_->rank() == 0 && method_ != BENDERSMETHOD::MPI)) {
+  if (pworld_ == nullptr || pworld_->size() == 1) {
     return RunSequential(argv_, options_file_, method_);
   } else {
     return RunMpi(argv_, options_file_, *penv_, *pworld_);

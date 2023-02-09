@@ -16,10 +16,8 @@ void FullRunOptionsParser::Parse(unsigned int argc, const char* const* argv) {
   SetMethod();
 }
 void FullRunOptionsParser::SetMethod() {
-  if (method_str_ == "sequential") {
-    method_ = BENDERSMETHOD::SEQUENTIAL;
-  } else if (method_str_ == "mpibenders") {
-    method_ = BENDERSMETHOD::MPI;
+  if (method_str_ == "benders") {
+    method_ = BENDERSMETHOD::BENDERS;
   } else if (method_str_ == "benders_by_batch") {
     method_ = BENDERSMETHOD::BENDERSBYBATCH;
   } else if (method_str_ == "mergeMPS") {

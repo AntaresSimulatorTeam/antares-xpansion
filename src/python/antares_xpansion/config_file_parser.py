@@ -11,8 +11,7 @@ class ConfigFileParser:
         self.default_install_dir = ""
         self.ANTARES_DEFAULT = "antares-solver"
         self.MERGE_MPS_DEFAULT = "merge_mps"
-        self.BENDERS_MPI_DEFAULT = "benders_mpi"
-        self.BENDERS_SEQUENTIAL_DEFAULT = "benders_sequential"
+        self.BENDERS_DEFAULT = "benders_mpi"
         self.BENDERS_BY_BATCH_DEFAULT = "benders_by_batch"
         self.LP_NAMER_DEFAULT = "lp_namer"
         self.STUDY_UPDATER_DEFAULT = "study_updater"
@@ -33,7 +32,7 @@ class ConfigFileParser:
                 ANTARES=content.get('ANTARES', self.ANTARES_DEFAULT),
                 MERGE_MPS=content.get('MERGE_MPS', self.MERGE_MPS_DEFAULT),
                 BENDERS=content.get(
-                    'BENDERS', self.BENDERS_MPI_DEFAULT),
+                    'BENDERS', self.BENDERS_DEFAULT),
                 BENDERS_BY_BATCH=content.get(
                     'BENDERS_BY_BATCH', self.BENDERS_BY_BATCH_DEFAULT),
                 LP_NAMER=content.get('LP_NAMER', self.LP_NAMER_DEFAULT),

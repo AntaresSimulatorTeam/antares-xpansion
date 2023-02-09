@@ -5,7 +5,7 @@
 #include "BendersSequential.h"
 #include "OutputWriter.h"
 #include "core/ILogger.h"
-enum class BENDERSMETHOD { SEQUENTIAL, MPI, BENDERSBYBATCH, MERGEMPS };
+enum class BENDERSMETHOD { BENDERS, BENDERSBYBATCH, MERGEMPS };
 
 class BendersSequentialFactory {
  private:

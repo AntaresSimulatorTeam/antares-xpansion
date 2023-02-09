@@ -13,13 +13,12 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class BendersDriver:
-    def __init__(self, benders_mpi, benders_sequential, benders_by_batch, merge_mps, options_file) -> None:
+    def __init__(self, benders, benders_by_batch, merge_mps, options_file) -> None:
 
         self.oversubscribe = False
         self.allow_run_as_root = False
-        self.benders_mpi = benders_mpi
+        self.benders = benders
         self.merge_mps = merge_mps
-        self.benders_sequential = benders_sequential
         self.benders_by_batch = benders_by_batch
 
         if (options_file != ""):
@@ -88,12 +87,10 @@ class BendersDriver:
             )
 
     def set_solver(self):
-        if self.method == "mpibenders":
-            self.solver = self.benders_mpi
+        if self.method == "benders":
+            self.solver = self.benders
         elif self.method == "mergeMPS":
             self.solver = self.merge_mps
-        elif self.method == "sequential":
-            self.solver = self.benders_sequential
         elif self.method == "benders_by_batch":
             self.solver = self.benders_by_batch
         else:
@@ -118,7 +115,7 @@ class BendersDriver:
         returns a list consisting of the path to the required solver and its launching options
         """
         bare_solver_command = [self.solver, self.options_file]
-        if self.solver == self.benders_mpi:
+        if self.solver == self.benders and self.n_mpi > 1:
             mpi_command = self.get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)
             return mpi_command
