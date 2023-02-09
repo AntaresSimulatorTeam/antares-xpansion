@@ -114,8 +114,10 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
 
-    solver_executable = get_solver_exe(solver)
-
+    if (solver == "MERGE_MPS"):
+        solver_executable = get_solver_exe(solver)
+    else:
+        solver_executable = get_solver_exe("BENDERS_MPI")
     pre_command = []
 
     if (solver == "BENDERS_MPI"):
