@@ -1,6 +1,6 @@
 add_subdirectory (cpp)
 
-set(BENDERSMPI_APP $<TARGET_FILE_NAME:bendersmpi>)    
+set(BENDERS $<TARGET_FILE_NAME:benders>)    
 
 if (COIN_OR)
     SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Cbc\n")
