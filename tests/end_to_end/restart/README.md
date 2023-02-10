@@ -4,7 +4,7 @@
 
 This is a test for the inner optimization part of AntaresXpansion. Those tests focus on three C++ executables :
 
-1. bendersmpi
+1. benders
 2. merge_mps
 
 **Input** : Files created by *lpnamer* executable of the project, or any group of files following the desired structure :
@@ -56,7 +56,7 @@ Python module *pytest* should be installed. The test can be run with the followi
 All the tests present in this test have the common marker **optim**.
 There are also markers to launch only tests on specific optimization executables :
 
-* bendersmpi : launching only tests with bendersmpi executable
+* bendersmpi : launching only tests with benders executable
 * mergemps : launching only tests with merge_mps executable
 
 To run some specific tests, markers can be used as follows :

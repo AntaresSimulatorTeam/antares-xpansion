@@ -4,8 +4,7 @@
 
 This test case is a toy network design problem to test the resolution of a stochastic problem by AntaresXpansion optimization modules :
 
-* benderssequential
-* bendersmpi
+* benders
 * merge_mps
 
 This data is used in the test bendersEndToEnd. This data is used in two different tests cases :

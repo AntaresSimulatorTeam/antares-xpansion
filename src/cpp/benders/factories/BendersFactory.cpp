@@ -35,11 +35,11 @@ int RunMpi(char** argv, const std::filesystem::path& options_file,
   google::InitGoogleLogging(argv[0]);
   auto path_to_log =
       std::filesystem::path(options.OUTPUTROOT) /
-      ("bendersmpiLog-rank" + std::to_string(world.rank()) + ".txt.");
+      ("bendersLog-rank" + std::to_string(world.rank()) + ".txt.");
   google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
 
   auto log_reports_name =
-      std::filesystem::path(options.OUTPUTROOT) / "reportbendersmpi.txt";
+      std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
   Logger logger;
   Writer writer;
 
