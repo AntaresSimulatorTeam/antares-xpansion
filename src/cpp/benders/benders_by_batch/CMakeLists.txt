@@ -5,7 +5,16 @@
 # ===========================================================================
 # Targets
 # ===========================================================================
+find_package(MPI REQUIRED)
+find_package (MPI REQUIRED COMPONENTS C)
+message ("MPI_C_INCLUDE_PATH ${MPI_C_INCLUDE_PATH}")
+message ("MPI_C_INCLUDE_DIRS ${MPI_C_INCLUDE_DIRS}")
+message ("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
+
+if(UNIX)
+set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+endif()
 add_library (benders_by_batch_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersByBatch.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BatchCollection.cpp
@@ -27,6 +36,7 @@ target_link_libraries (benders_by_batch_core
 	PUBLIC
         benders_core
 		benders_sequential_core
+		benders_mpi_core
 		helpers
 		output_core
 		solvers

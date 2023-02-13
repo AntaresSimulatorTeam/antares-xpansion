@@ -7,8 +7,11 @@
 #include "glog/logging.h"
 
 BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
-                               Writer writer)
-    : BendersSequential(options, std::move(logger), std::move(writer)) {}
+                               Writer writer, mpi::environment &env,
+                               mpi::communicator &world)
+    : BendersSequential(options, std::move(logger), std::move(writer)),
+      _env(env),
+      _world(world) {}
 
 void BendersByBatch::run() {
   init_data();
