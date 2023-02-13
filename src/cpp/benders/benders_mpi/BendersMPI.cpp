@@ -35,7 +35,6 @@ void BendersMpi::initialize_problems() {
     reset_master(new WorkerMaster(
         master_variable_map, get_master_path(), get_solver_name(),
         get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
-    LOG(INFO) << "subproblem number is " << _data.nsubproblem << std::endl;
   }
   // Dispatch subproblems to process
   for (const auto &problem : coupling_map) {
