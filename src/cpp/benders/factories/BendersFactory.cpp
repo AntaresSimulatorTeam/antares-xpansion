@@ -11,7 +11,8 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-int RunBendersByBatch(char** argv, const std::filesystem::path& options_file) {
+int RunBendersByBatch(char** argv, const std::filesystem::path& options_file,
+                      mpi::environment& env, mpi::communicator& world) {
   SimulationOptions options(options_file);
   BendersBaseOptions benders_options(options.get_benders_options());
 
@@ -38,7 +39,7 @@ int RunBendersByBatch(char** argv, const std::filesystem::path& options_file) {
   writer->write_solver_name(options.SOLVER_NAME);
 
   auto benders =
-      std::make_shared<BendersByBatch>(benders_options, logger, writer);
+      std::make_shared<BendersByBatch>(benders_options, logger, writer, env, world);
   benders->set_log_file(loggerFileName);
   benders->launch();
   std::stringstream str;
@@ -143,7 +144,7 @@ BendersMainFactory::BendersMainFactory(
 int BendersMainFactory::Run() const {
   if (method_ == BENDERSMETHOD::BENDERSBYBATCH &&
       (pworld_ == nullptr || pworld_->rank() == 0)) {
-    return RunBendersByBatch(argv_, options_file_);
+    return RunBendersByBatch(argv_, options_file_, *penv_, *pworld_);
   } else {
     return RunBenders(argv_, options_file_, *penv_, *pworld_);
   }
