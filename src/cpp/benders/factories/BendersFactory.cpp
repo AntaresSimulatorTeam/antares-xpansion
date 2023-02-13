@@ -11,8 +11,7 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-int RunBendersByBatch(char** argv, const std::filesystem::path& options_file,
-                      const BENDERSMETHOD& method) {
+int RunBendersByBatch(char** argv, const std::filesystem::path& options_file) {
   SimulationOptions options(options_file);
   BendersBaseOptions benders_options(options.get_benders_options());
 
@@ -144,7 +143,7 @@ BendersMainFactory::BendersMainFactory(
 int BendersMainFactory::Run() const {
   if (method_ == BENDERSMETHOD::BENDERSBYBATCH &&
       (pworld_ == nullptr || pworld_->rank() == 0)) {
-    return RunBendersByBatch(argv_, options_file_, method_);
+    return RunBendersByBatch(argv_, options_file_);
   } else {
     return RunBenders(argv_, options_file_, *penv_, *pworld_);
   }
