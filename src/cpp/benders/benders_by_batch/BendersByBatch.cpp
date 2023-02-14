@@ -1,6 +1,8 @@
 #include "BendersByBatch.h"
 
+#include <algorithm>
 #include <mutex>
+#include <numeric>
 
 #include "BatchCollection.h"
 #include "RandomBatchShuffler.h"
@@ -17,7 +19,7 @@ void BendersByBatch::run() {
   BatchCollection batch_collection;
   batch_collection.SetLogger(_logger);
 
-  if (rank() == rank_0) {
+  if (Rank() == rank_0) {
     auto batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
                                                 : Options().BATCH_SIZE;
     batch_collection.SetBatchSize(batch_size);
@@ -35,24 +37,28 @@ void BendersByBatch::run() {
     _data.it++;
     _data.ub = 0;
     SetSubproblemCost(0);
-    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
-      _logger->LogAtSwitchToInteger();
-      ActivateIntegrityConstraints();
-      ResetDataPostRelaxation();
-    }
-
-    _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
-    _logger->display_message("\tSolving master...");
-    get_master_value();
-    _logger->log_master_solving_duration(get_timer_master());
-
-    ComputeXCut();
-    _logger->log_iteration_candidates(bendersDataToLogData(_data));
-
     auto remaining_epsilon = AbsoluteGap();
 
-    random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
-                                    .GetCyclicBatchOrder(current_batch_id);
+    if (Rank() == rank_0) {
+      if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+        _logger->LogAtSwitchToInteger();
+        ActivateIntegrityConstraints();
+        ResetDataPostRelaxation();
+      }
+
+      _logger->log_at_initialization(_data.it +
+                                     GetNumIterationsBeforeRestart());
+      _logger->display_message("\tSolving master...");
+      get_master_value();
+      _logger->log_master_solving_duration(get_timer_master());
+
+      ComputeXCut();
+      _logger->log_iteration_candidates(bendersDataToLogData(_data));
+
+      random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
+                                      .GetCyclicBatchOrder(current_batch_id);
+      BroadCast(random_batch_permutation_, rank_0);
+    }
     batch_counter = 0;
 
     while (batch_counter < number_of_batch) {
@@ -61,25 +67,37 @@ void BendersByBatch::run() {
       const auto &batch_sub_problems = batch.sub_problem_names;
       double sum = 0;
       build_cut(batch_sub_problems, &sum);
-      number_of_sub_problem_resolved += batch_sub_problems.size();
-      remaining_epsilon -= sum;
-      UpdateTrace();
+      std::vector<double> vect_of_sum;
+      Gather(sum, vect_of_sum, rank_0);
+      if (Rank() == rank_0) {
+        number_of_sub_problem_resolved += batch_sub_problems.size();
 
-      if (remaining_epsilon > 0)
-        batch_counter++;
-      else
-        break;
+        remaining_epsilon -=
+            std::reduce(vect_of_sum.begin(), vect_of_sum.end());
+        UpdateTrace();
+
+        if (remaining_epsilon > 0) {
+          batch_counter++;
+          BroadCast(batch_counter, rank_0);
+        } else
+          break;
+      }
+      Barrier();
     }
-    _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
+    if (Rank() == rank_0) {
+      _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
+    }
   }
-  compute_ub();
-  update_best_ub();
-  _logger->log_at_iteration_end(bendersDataToLogData(_data));
-  SaveCurrentBendersData();
+  if (Rank() == rank_0) {
+    compute_ub();
+    update_best_ub();
+    _logger->log_at_iteration_end(bendersDataToLogData(_data));
+    SaveCurrentBendersData();
 
-  CloseCsvFile();
-  EndWritingInOutputFile();
-  write_basis();
+    CloseCsvFile();
+    EndWritingInOutputFile();
+    write_basis();
+  }
 }
 
 /*!
@@ -97,8 +115,11 @@ void BendersByBatch::build_cut(
   getSubproblemCut(subproblem_data_map, batch_sub_problems, sum);
 
   for (const auto &sub_problem_name : batch_sub_problems) {
-    auto sub_problem_data = subproblem_data_map[sub_problem_name];
-    SetSubproblemCost(GetSubproblemCost() + sub_problem_data.subproblem_cost);
+    if (subproblem_data_map.find(sub_problem_name) !=
+        subproblem_data_map.end()) {
+      auto sub_problem_data = subproblem_data_map[sub_problem_name];
+      SetSubproblemCost(GetSubproblemCost() + sub_problem_data.subproblem_cost);
+    }
   }
 
   SetSubproblemTimers(timer.elapsed());
@@ -124,7 +145,14 @@ void BendersByBatch::getSubproblemCut(
   nameAndWorkers.reserve(batch_sub_problems.size());
   auto sub_pblm_map = GetSubProblemMap();
   for (const auto &name : batch_sub_problems) {
-    nameAndWorkers.emplace_back(name, sub_pblm_map[name]);
+    //   nameAndWorkers.emplace_back(name, sub_pblm_map[name]);
+    std::copy_if(
+        sub_pblm_map.cbegin(), sub_pblm_map.cend(),
+        std::back_inserter(nameAndWorkers),
+        [&sub_pblm_map, &name](std::pair<std::string, SubproblemWorkerPtr>
+                                   name_subproblemWorkerPtr) {
+          return sub_pblm_map.find(name) != sub_pblm_map.cend();
+        });
   }
   std::mutex m;
   selectPolicy(

@@ -60,9 +60,14 @@ class BendersMpi : public BendersBase {
  protected:
   [[nodiscard]] bool shouldParallelize() const final { return false; }
   void PreRunInitialization();
-  int rank() const { return _world.rank(); }
+  int Rank() const { return _world.rank(); }
   template <typename T>
   void BroadCast(T value, int root) {
     mpi::broadcast(_world, value, root);
   }
+  template <typename T>
+  void Gather(const T &value, std::vector<T> &vector_of_values, int root) {
+    mpi::gather(_world, value, vector_of_values, root);
+  }
+  void Barrier() { _world.barrier(); }
 };
