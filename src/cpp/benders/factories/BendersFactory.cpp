@@ -38,8 +38,8 @@ int RunBendersByBatch(char** argv, const std::filesystem::path& options_file,
   writer->write_master_name(options.MASTER_NAME);
   writer->write_solver_name(options.SOLVER_NAME);
 
-  auto benders =
-      std::make_shared<BendersByBatch>(benders_options, logger, writer, env, world);
+  auto benders = std::make_shared<BendersByBatch>(benders_options, logger,
+                                                  writer, env, world);
   benders->set_log_file(loggerFileName);
   benders->launch();
   std::stringstream str;
@@ -142,8 +142,7 @@ BendersMainFactory::BendersMainFactory(
   usage(argc);
 }
 int BendersMainFactory::Run() const {
-  if (method_ == BENDERSMETHOD::BENDERSBYBATCH &&
-      (pworld_ == nullptr || pworld_->rank() == 0)) {
+  if (method_ == BENDERSMETHOD::BENDERSBYBATCH && pworld_->rank() == 0) {
     return RunBendersByBatch(argv_, options_file_, *penv_, *pworld_);
   } else {
     return RunBenders(argv_, options_file_, *penv_, *pworld_);
