@@ -9,22 +9,21 @@
 BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
                                Writer writer, mpi::environment &env,
                                mpi::communicator &world)
-    : BendersMpi(options, std::move(logger), std::move(writer), env, world) {}
+    : BendersMpi(options, logger, writer, env, world) {}
 
 void BendersByBatch::run() {
   PreRunInitialization();
 
-  size_t batch_size = 0;
   BatchCollection batch_collection;
-  if (rank() == rank_0) {
-    batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
-                                           : Options().BATCH_SIZE;
+  batch_collection.SetLogger(_logger);
 
-    batch_collection.SetLogger(_logger);
+  if (rank() == rank_0) {
+    auto batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
+                                                : Options().BATCH_SIZE;
     batch_collection.SetBatchSize(batch_size);
     batch_collection.SetSubProblemNames(GetSubProblemNames());
     batch_collection.BuildBatches();
-    BroadCast(batch_size, rank_0);
+    BroadCast(batch_collection, rank_0);
   }
   auto number_of_batch = batch_collection.NumberOfBatch();
   unsigned batch_counter = 0;

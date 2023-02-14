@@ -7,7 +7,7 @@
 #include "Timer.h"
 #include "glog/logging.h"
 
-BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
+BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
                        mpi::communicator &world)
     : BendersBase(options, logger, std::move(writer)),
