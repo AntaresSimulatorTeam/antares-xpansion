@@ -9,9 +9,7 @@
 BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
                                Writer writer, mpi::environment &env,
                                mpi::communicator &world)
-    : BendersSequential(options, std::move(logger), std::move(writer)),
-      _env(env),
-      _world(world) {}
+    : BendersMpi(options, std::move(logger), std::move(writer), env, world) {}
 
 void BendersByBatch::run() {
   init_data();
@@ -159,3 +157,24 @@ void BendersByBatch::getSubproblemCut(
       },
       shouldParallelize());
 }
+// void BendersByBatch::launch() {
+//   build_input_map();
+
+//   LOG(INFO) << "Building input" << std::endl;
+
+//   LOG(INFO) << "Constructing workers..." << std::endl;
+
+//   initialize_problems();
+//   LOG(INFO) << "Running solver..." << std::endl;
+//   try {
+//     run();
+//     LOG(INFO) << BendersName() + " solver terminated." << std::endl;
+//   } catch (std::exception const &ex) {
+//     std::string error = "Exception raised : " + std::string(ex.what());
+//     LOG(WARNING) << error << std::endl;
+//     _logger->display_message(error);
+//   }
+
+//   post_run_actions();
+//   free();
+// }
