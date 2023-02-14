@@ -12,23 +12,20 @@ BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
     : BendersMpi(options, std::move(logger), std::move(writer), env, world) {}
 
 void BendersByBatch::run() {
-  init_data();
-  ChecksResumeMode();
-  if (is_trace()) {
-    OpenCsvFile();
+  PreRunInitialization();
+
+  size_t batch_size = 0;
+  BatchCollection batch_collection;
+  if (rank() == rank_0) {
+    batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
+                                           : Options().BATCH_SIZE;
+
+    batch_collection.SetLogger(_logger);
+    batch_collection.SetBatchSize(batch_size);
+    batch_collection.SetSubProblemNames(GetSubProblemNames());
+    batch_collection.BuildBatches();
+    BroadCast(batch_size, rank_0);
   }
-
-  if (is_initial_relaxation_requested()) {
-    _logger->LogAtInitialRelaxation();
-    DeactivateIntegrityConstraints();
-    SetDataPreRelaxation();
-  }
-
-  auto batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
-                                              : Options().BATCH_SIZE;
-
-  const auto batch_collection =
-      BatchCollection(GetSubProblemNames(), batch_size, _logger);
   auto number_of_batch = batch_collection.NumberOfBatch();
   unsigned batch_counter = 0;
 

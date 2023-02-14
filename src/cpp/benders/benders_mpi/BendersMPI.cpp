@@ -217,25 +217,7 @@ void BendersMpi::free() {
  *
  */
 void BendersMpi::run() {
-  init_data();
-
-  if (_world.rank() == rank_0) {
-    if (is_initial_relaxation_requested()) {
-      _logger->LogAtInitialRelaxation();
-      DeactivateIntegrityConstraints();
-      SetDataPreRelaxation();
-    }
-  }
-
-  _world.barrier();
-
-  if (_world.rank() == rank_0) {
-    ChecksResumeMode();
-    if (is_trace()) {
-      OpenCsvFile();
-    }
-  }
-
+  PreRunInitialization();
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
@@ -267,7 +249,26 @@ void BendersMpi::run() {
   }
   _world.barrier();
 }
+void BendersMpi::PreRunInitialization() {
+  init_data();
 
+  if (_world.rank() == rank_0) {
+    if (is_initial_relaxation_requested()) {
+      _logger->LogAtInitialRelaxation();
+      DeactivateIntegrityConstraints();
+      SetDataPreRelaxation();
+    }
+  }
+
+  _world.barrier();
+
+  if (_world.rank() == rank_0) {
+    ChecksResumeMode();
+    if (is_trace()) {
+      OpenCsvFile();
+    }
+  }
+}
 void BendersMpi::launch() {
   build_input_map();
   _world.barrier();
