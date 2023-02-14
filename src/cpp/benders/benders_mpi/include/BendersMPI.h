@@ -18,7 +18,7 @@
 class BendersMpi : public BendersBase {
  public:
   ~BendersMpi() override = default;
-  BendersMpi(BendersBaseOptions const &options, Logger &logger, Writer writer,
+  BendersMpi(BendersBaseOptions const &options, Logger logger, Writer writer,
              mpi::environment &env, mpi::communicator &world);
 
   void launch() override;
