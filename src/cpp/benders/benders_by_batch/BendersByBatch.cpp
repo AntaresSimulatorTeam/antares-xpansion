@@ -71,16 +71,18 @@ void BendersByBatch::run() {
       std::vector<double> vect_of_sum;
       Gather(sum, vect_of_sum, rank_0);
       // Barrier();
-      // if (Rank() == rank_0) {
-      number_of_sub_problem_resolved += batch_sub_problems.size();
+      if (Rank() == rank_0) {
+        number_of_sub_problem_resolved += batch_sub_problems.size();
 
-      remaining_epsilon -= std::reduce(vect_of_sum.begin(), vect_of_sum.end());
-      UpdateTrace();
+        remaining_epsilon -=
+            std::reduce(vect_of_sum.begin(), vect_of_sum.end());
+        UpdateTrace();
 
-      if (remaining_epsilon > 0) {
-        batch_counter++;
-      } else
-        break;
+        if (remaining_epsilon > 0) {
+          batch_counter++;
+        } else
+          break;
+      }
       BroadCast(batch_counter, rank_0);
       // }
       // Barrier();
