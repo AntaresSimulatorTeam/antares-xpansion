@@ -35,6 +35,7 @@ class BatchCollection {
   void SetBatchSize(size_t batch_size) { batch_size_ = batch_size; }
   void SetSubProblemNames(const std::vector<std::string> &sub_problem_names) {
     sub_problem_names_ = sub_problem_names;
+    sub_problems_number_ = sub_problem_names.size();
   }
   size_t size() const { return batch_collections_.size(); }
   std::vector<Batch> BatchCollections() const { return batch_collections_; }
