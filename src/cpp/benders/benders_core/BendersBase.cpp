@@ -459,6 +459,7 @@ LogData BendersBase::build_log_data_from_data() const {
 LogData BendersBase::FinalLogData() const {
   LogData result;
 
+  result.it = _data.it + iterations_before_resume;
   result.best_it = _data.best_it + iterations_before_resume;
 
   result.subproblem_cost = best_iteration_data.subproblem_cost;
