@@ -19,14 +19,14 @@ void BendersByBatch::run() {
   BatchCollection batch_collection;
   batch_collection.SetLogger(_logger);
 
-  if (Rank() == rank_0) {
-    auto batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
-                                                : Options().BATCH_SIZE;
-    batch_collection.SetBatchSize(batch_size);
-    batch_collection.SetSubProblemNames(GetSubProblemNames());
-    batch_collection.BuildBatches();
-    BroadCast(batch_collection, rank_0);
-  }
+  // if (Rank() == rank_0) {
+  auto batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
+                                              : Options().BATCH_SIZE;
+  batch_collection.SetBatchSize(batch_size);
+  batch_collection.SetSubProblemNames(GetSubProblemNames());
+  batch_collection.BuildBatches();
+  BroadCast(batch_collection, rank_0);
+  // }
   auto number_of_batch = batch_collection.NumberOfBatch();
   unsigned batch_counter = 0;
 
@@ -57,8 +57,9 @@ void BendersByBatch::run() {
 
       random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
                                       .GetCyclicBatchOrder(current_batch_id);
-      BroadCast(random_batch_permutation_, rank_0);
     }
+    BroadCast(random_batch_permutation_, rank_0);
+    // }
     batch_counter = 0;
 
     while (batch_counter < number_of_batch) {
@@ -69,24 +70,24 @@ void BendersByBatch::run() {
       build_cut(batch_sub_problems, &sum);
       std::vector<double> vect_of_sum;
       Gather(sum, vect_of_sum, rank_0);
-      if (Rank() == rank_0) {
-        number_of_sub_problem_resolved += batch_sub_problems.size();
+      // Barrier();
+      // if (Rank() == rank_0) {
+      number_of_sub_problem_resolved += batch_sub_problems.size();
 
-        remaining_epsilon -=
-            std::reduce(vect_of_sum.begin(), vect_of_sum.end());
-        UpdateTrace();
+      remaining_epsilon -= std::reduce(vect_of_sum.begin(), vect_of_sum.end());
+      UpdateTrace();
 
-        if (remaining_epsilon > 0) {
-          batch_counter++;
-          BroadCast(batch_counter, rank_0);
-        } else
-          break;
-      }
-      Barrier();
+      if (remaining_epsilon > 0) {
+        batch_counter++;
+      } else
+        break;
+      BroadCast(batch_counter, rank_0);
+      // }
+      // Barrier();
     }
-    if (Rank() == rank_0) {
-      _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
-    }
+    // if (Rank() == rank_0) {
+    _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
+    // }
   }
   if (Rank() == rank_0) {
     compute_ub();
