@@ -142,7 +142,7 @@ BendersMainFactory::BendersMainFactory(
   usage(argc);
 }
 int BendersMainFactory::Run() const {
-  if (method_ == BENDERSMETHOD::BENDERSBYBATCH && pworld_->rank() == 0) {
+  if (method_ == BENDERSMETHOD::BENDERSBYBATCH) {
     return RunBendersByBatch(argv_, options_file_, *penv_, *pworld_);
   } else {
     return RunBenders(argv_, options_file_, *penv_, *pworld_);
