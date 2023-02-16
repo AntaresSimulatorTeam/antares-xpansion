@@ -17,7 +17,7 @@ class LauncherOptionsDefaultValues():
 
     @staticmethod
     def DEFAULT_METHOD():
-        return "sequential"
+        return "benders"
 
     @staticmethod
     def DEFAULT_NP():

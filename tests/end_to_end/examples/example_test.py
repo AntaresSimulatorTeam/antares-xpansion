@@ -347,7 +347,7 @@ def test_full_study_long_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root, 1)
+    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -369,7 +369,7 @@ def test_full_study_long_mpi(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -535,7 +535,7 @@ def test_full_study_medium_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root, 1)
+    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -557,7 +557,7 @@ def test_full_study_medium_parallel(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -622,7 +622,8 @@ def test_full_study_short_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root, 1)
+    launch_xpansion(install_dir, tmp_study, "benders",
+                    allow_run_as_root, nproc=1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -644,7 +645,7 @@ def test_full_study_short_parallel(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "mpibenders", allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)

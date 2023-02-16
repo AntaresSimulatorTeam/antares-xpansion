@@ -15,8 +15,7 @@ class ConfigParameters:
     default_install_dir: str
     ANTARES: str
     MERGE_MPS: str
-    BENDERS_MPI: str
-    BENDERS_SEQUENTIAL: str
+    BENDERS: str
     BENDERS_BY_BATCH: str
     LP_NAMER: str
     STUDY_UPDATER: str
@@ -57,8 +56,7 @@ class XpansionConfig:
         self.config_parameters = config_parameters
         self.ANTARES: str = ""
         self.MERGE_MPS: str = ""
-        self.BENDERS_MPI: str = ""
-        self.BENDERS_SEQUENTIAL: str = ""
+        self.BENDERS: str = ""
         self.BENDERS_BY_BATCH: str = ""
         self.LP_NAMER: str = ""
         self.STUDY_UPDATER: str = ""
@@ -250,8 +248,7 @@ class XpansionConfig:
         self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
-        self.BENDERS_MPI = self.config_parameters.BENDERS_MPI
-        self.BENDERS_SEQUENTIAL = self.config_parameters.BENDERS_SEQUENTIAL
+        self.BENDERS = self.config_parameters.BENDERS
         self.BENDERS_BY_BATCH = self.config_parameters.BENDERS_BY_BATCH
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER

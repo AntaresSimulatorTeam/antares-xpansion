@@ -13,10 +13,7 @@ add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/sensitivity")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/full_run")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/antares_archive_updater")
 
-message (STATUS "Generating mpi executable!")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders_mpi")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders")
 
-message (STATUS "Generating sequential executable!")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders_sequential")
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/benders_by_batch")

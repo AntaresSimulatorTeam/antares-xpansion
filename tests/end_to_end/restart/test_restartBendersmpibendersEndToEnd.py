@@ -24,5 +24,5 @@ def test_001_mpibenders(install_dir, tmp_path, study, allow_run_as_root):
                     expansion_dir / "out.json")
     shutil.copyfile(instance_path / study["last_iteration_file"],
                     expansion_dir / "last_iteration.json")
-    run_solver(install_dir, 'BENDERS_MPI',
-               instance_path, study, allow_run_as_root)
+    run_solver(install_dir,
+               instance_path, study, allow_run_as_root, mpi=True)

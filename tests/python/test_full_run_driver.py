@@ -25,7 +25,7 @@ class TestFullRunDriver:
         output_path = tmp_path / "outputPath"
         self.create_problem_generation_files(output_path)
         output_path = get_zipped_output(output_path)
-        benders_method = "sequential"
+        benders_method = "benders"
         json_file_path = tmp_path / "file"
         json_file_path.touch()
         benders_keep_mps = False
@@ -38,7 +38,7 @@ class TestFullRunDriver:
         problem_generation.set_output_path(output_path)
         problem_generation.create_lp_dir()
         benders_driver = BendersDriver(
-            "", "sequential", "", "", self.benders_driver_options_file)
+            "benders.exe", "", "", self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
@@ -58,7 +58,7 @@ class TestFullRunDriver:
         output_path = tmp_path / "outputPath"
         self.create_problem_generation_files(output_path)
         output_path = get_zipped_output(output_path)
-        benders_method = "mpibenders"
+        benders_method = "benders"
         json_file_path = tmp_path / "file"
         json_file_path.touch()
         benders_keep_mps = False
@@ -72,7 +72,7 @@ class TestFullRunDriver:
         problem_generation.create_lp_dir()
 
         benders_driver = BendersDriver(
-            "", "sequential", "", "", self.benders_driver_options_file)
+            "benders.exe", "", "", self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,

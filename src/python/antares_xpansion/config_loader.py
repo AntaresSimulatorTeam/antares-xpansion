@@ -587,11 +587,8 @@ class ConfigLoader:
     def lp_namer_exe(self):
         return self.exe_path(self._config.LP_NAMER)
 
-    def benders_mpi_exe(self):
-        return self.exe_path(self._config.BENDERS_MPI)
-
-    def benders_sequential_exe(self):
-        return self.exe_path(self._config.BENDERS_SEQUENTIAL)
+    def benders_exe(self):
+        return self.exe_path(self._config.BENDERS)
 
     def benders_by_batch_exe(self):
         return self.exe_path(self._config.BENDERS_BY_BATCH)

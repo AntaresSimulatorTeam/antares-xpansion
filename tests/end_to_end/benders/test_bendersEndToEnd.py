@@ -109,16 +109,18 @@ def check_optimization_json_output(expected_results_dict, output_path: Path):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False):
+def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
 
-    solver_executable = get_solver_exe(solver)
-
+    if (solver == "MERGE_MPS"):
+        solver_executable = get_solver_exe(solver)
+    else:
+        solver_executable = get_solver_exe("BENDERS")
     pre_command = []
 
-    if (solver == "BENDERS_MPI"):
+    if mpi:
         pre_command = get_mpi_command(allow_run_as_root, 2)
 
     executable_path = str(
@@ -147,7 +149,7 @@ def get_solver_exe(solver: str):
     with open(CONFIG_FILE_PATH) as file:
         content = yaml.full_load(file)
         if content is not None:
-            solver_executable = content.get(solver, solver)
+            solver_executable = content.get(solver)
         else:
             raise RuntimeError(
                 "Please check file config.yaml, content is empty")

@@ -24,7 +24,7 @@ class FullRunOptionsParser : public ProblemGenerationExeOptions {
   }
   std::filesystem::path SolutionFile() const { return solutionFile_; }
   static inline std::string ListAvailalbleMethods() {
-    return "sequential,\n mpibenders,\n benders_by_batch,\n mergeMPS\n";
+    return "benders,\n benders_by_batch,\n mergeMPS\n";
   }
 
  private:
