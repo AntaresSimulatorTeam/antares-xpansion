@@ -29,13 +29,8 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
 void BendersMpi::initialize_problems() {
   match_problem_to_id();
 
+  BuildMasterProblem();
   int current_problem_id = 0;
-
-  if (_world.rank() == rank_0) {
-    reset_master(new WorkerMaster(
-        master_variable_map, get_master_path(), get_solver_name(),
-        get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
-  }
   // Dispatch subproblems to process
   for (const auto &problem : coupling_map) {
     // In case there are more subproblems than process
@@ -53,7 +48,13 @@ void BendersMpi::initialize_problems() {
     current_problem_id++;
   }
 }
-
+void BendersMpi::BuildMasterProblem() {
+  if (_world.rank() == rank_0) {
+    reset_master(new WorkerMaster(
+        master_variable_map, get_master_path(), get_solver_name(),
+        get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
+  }
+}
 /*!
  *  \brief Solve, get and send solution of the Master Problem to every thread
  *

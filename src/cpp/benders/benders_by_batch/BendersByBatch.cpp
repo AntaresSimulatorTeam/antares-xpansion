@@ -13,21 +13,41 @@ BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
                                mpi::communicator &world)
     : BendersMpi(options, logger, writer, env, world) {}
 
+void BendersByBatch::initialize_problems() {
+  match_problem_to_id();
+
+  BuildMasterProblem();
+  auto batch_size =
+      Options().BATCH_SIZE == 0 ? coupling_map.size() : Options().BATCH_SIZE;
+  batch_collection_.SetLogger(_logger);
+  batch_collection_.SetBatchSize(batch_size);
+  batch_collection_.SetSubProblemNames(GetSubProblemNames());
+  batch_collection_.BuildBatches();
+  BroadCast(batch_collection_, rank_0);
+  // Dispatch subproblems to process
+  for (const auto &batch : batch_collection_.BatchCollections()) {
+    for (const auto &problem_name : batch.sub_problem_names) {
+      // In case there are more subproblems than process
+      if (auto process_to_feed = ProblemToId(problem_name) % WorldSize();
+          process_to_feed ==
+          Rank()) {  // Assign  [problemNumber % processCount] to processID
+
+        const auto subProblemFilePath = GetSubproblemPath(problem_name);
+        if (Options().MPS_IN_ZIP)
+          reader_.ExtractFile(subProblemFilePath.filename());
+        addSubproblem({problem_name, coupling_map[problem_name]});
+        AddSubproblemName(problem_name);
+        std::filesystem::remove(subProblemFilePath);
+      }
+    }
+  }
+}
 void BendersByBatch::run() {
   PreRunInitialization();
 
-  BatchCollection batch_collection;
-  batch_collection.SetLogger(_logger);
-
   // if (Rank() == rank_0) {
-  auto batch_size = Options().BATCH_SIZE == 0 ? GetSubProblemNames().size()
-                                              : Options().BATCH_SIZE;
-  batch_collection.SetBatchSize(batch_size);
-  batch_collection.SetSubProblemNames(GetSubProblemNames());
-  batch_collection.BuildBatches();
-  BroadCast(batch_collection, rank_0);
   // }
-  auto number_of_batch = batch_collection.NumberOfBatch();
+  auto number_of_batch = batch_collection_.NumberOfBatch();
   unsigned batch_counter = 0;
 
   auto current_batch_id = 0;
@@ -64,7 +84,7 @@ void BendersByBatch::run() {
 
     while (batch_counter < number_of_batch) {
       current_batch_id = random_batch_permutation_[batch_counter];
-      const auto &batch = batch_collection.GetBatchFromId(current_batch_id);
+      const auto &batch = batch_collection_.GetBatchFromId(current_batch_id);
       const auto &batch_sub_problems = batch.sub_problem_names;
       double sum = 0;
       build_cut(batch_sub_problems, &sum);

@@ -17,11 +17,14 @@ class BendersByBatch : public BendersMpi {
                  double *sum);
   std::string BendersName() const { return "By Batch"; }
   // void launch() override;
+ protected:
+  void initialize_problems() override;
 
  private:
   void getSubproblemCut(SubProblemDataMap &subproblem_cut_package,
                         const std::vector<std::string> &batch_sub_problems,
                         double *sum) const;
+  BatchCollection batch_collection_;
 };
 
 #endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
