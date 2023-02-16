@@ -19,24 +19,17 @@ auto const empty_files_archive = std::filesystem::path("data_test") /
 class MpsTxtWriterTest : public ::testing::Test {};
 
 TEST_F(MpsTxtWriterTest, CheckMpsTxtContent) {
-  auto mps_txt = std::filesystem::temp_directory_path() / "mps.txt";
-  auto mps_txt_writer = MpsTxtWriter(empty_files_archive, mps_txt);
-  mps_txt_writer.Write();
+  auto files_mapper = FilesMapper(empty_files_archive);
+  auto year_week_files = files_mapper.FilesMap();
+  std::vector<MpsVariableConstraintsFiles> files_map;
 
-  ASSERT_TRUE(std::filesystem::exists(mps_txt));
+  std::transform(year_week_files.cbegin(), year_week_files.cend(),
+                 std::back_inserter(files_map),
+                 [](const std::pair<YearAndWeek, MpsVariableConstraintsFiles>&
+                        year_week_files) {
+                   auto& [year_week, files] = year_week_files;
+                   return files;
+                 });
 
-  std::ifstream mps_txt_file(mps_txt);
-  std::string line;
-  std::vector<MpsVariableConstraintsFiles> mps_txt_content;
-  while (std::getline(mps_txt_file, line)) {
-    std::istringstream instream(line);
-    std::string mps_file;
-    std::string vars_file;
-    std::string constraints_file;
-    instream >> mps_file >> vars_file >> constraints_file;
-    ;
-    mps_txt_content.push_back({mps_file, vars_file, constraints_file});
-  }
-
-  ASSERT_EQ(EXPECTED_RESULTS, mps_txt_content);
+  ASSERT_EQ(EXPECTED_RESULTS, files_map);
 }

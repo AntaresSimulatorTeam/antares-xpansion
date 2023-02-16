@@ -5,12 +5,12 @@
 
 #include "ArchiveReader.h"
 
-void MpsTxtWriter::FillDict() {
+void FilesMapper::FillMap() {
   auto zip_reader = ArchiveReader(antares_archive_path_);
   zip_reader.Open();
   zip_reader.LoadEntriesPath();
   year_week_and_files_dict_.clear();
-  FillDictWithMpsFiles(zip_reader.GetEntriesPathWithExtension(".mps"));
+  FillMapWithMpsFiles(zip_reader.GetEntriesPathWithExtension(".mps"));
   std::vector<std::filesystem::path> variables_files;
   std::vector<std::filesystem::path> constraints_files;
   auto vect_of_files_with_txt_ext =
@@ -31,13 +31,13 @@ void MpsTxtWriter::FillDict() {
       constraints_files.emplace_back(file);
     }
   }
-  FillDictWithVariablesFiles(variables_files);
-  FillDictWithConstraintsFiles(constraints_files);
+  FillMapWithVariablesFiles(variables_files);
+  FillMapWithConstraintsFiles(constraints_files);
   zip_reader.Close();
   zip_reader.Delete();
 }
 
-void MpsTxtWriter::FillDictWithMpsFiles(
+void FilesMapper::FillMapWithMpsFiles(
     const std::vector<std::filesystem::path>& mps_files) {
   for (const auto& mps_file : mps_files) {
     year_week_and_files_dict_.try_emplace(YearAndWeekFromFileName(mps_file),
@@ -45,7 +45,7 @@ void MpsTxtWriter::FillDictWithMpsFiles(
   }
 }
 
-void MpsTxtWriter::FillDictWithVariablesFiles(
+void FilesMapper::FillMapWithVariablesFiles(
     const std::vector<std::filesystem::path>& variables_files) {
   for (const auto& variables_file : variables_files) {
     auto year_and_week = YearAndWeekFromFileName(variables_file);
@@ -54,7 +54,7 @@ void MpsTxtWriter::FillDictWithVariablesFiles(
     variables_file_field = variables_file;
   }
 }
-void MpsTxtWriter::FillDictWithConstraintsFiles(
+void FilesMapper::FillMapWithConstraintsFiles(
     const std::vector<std::filesystem::path>& constraints_files) {
   for (const auto& constraints_file : constraints_files) {
     auto year_and_week = YearAndWeekFromFileName(constraints_file);
@@ -64,13 +64,26 @@ void MpsTxtWriter::FillDictWithConstraintsFiles(
   }
 }
 
-void MpsTxtWriter::Write() {
-  FillDict();
-  std::ofstream output_file(output_file_path_);
-  for (const auto& [year_and_week, files] : year_week_and_files_dict_) {
-    auto& [mps_file, vars_file, constr_file] = files;
-    output_file << mps_file.string() << " " << vars_file.string() << " "
-                << constr_file.string() << std::endl;
-  }
-  output_file.close();
+YearAndWeek FilesMapper::YearAndWeekFromFileName(
+    const std::filesystem::path& file_name) const {
+  auto split_file_name =
+      common_lpnamer::split(common_lpnamer::trim(file_name.string()), '-');
+  return {std::atoi(split_file_name[1].c_str()),
+          std::atoi(split_file_name[2].c_str())};
+}
+
+std::vector<ProblemData> FilesMapper::MpsAndVariablesFilesVect() {
+  std::vector<ProblemData> problems_data_vect;
+  FillMap();
+  std::transform(
+      year_week_and_files_dict_.cbegin(), year_week_and_files_dict_.cend(),
+      std::back_inserter(problems_data_vect),
+      [](const std::pair<YearAndWeek, MpsVariableConstraintsFiles>&
+             year_week_files) {
+        auto& [year_week, files] = year_week_files;
+        auto& [mps_file, variables_file, constraints_file] = files;
+        return ProblemData(mps_file.string(), variables_file.string());
+      });
+
+  return problems_data_vect;
 }

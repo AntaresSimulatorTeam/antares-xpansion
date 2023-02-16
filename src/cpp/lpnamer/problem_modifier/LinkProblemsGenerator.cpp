@@ -4,44 +4,11 @@
 #include <cassert>
 #include <execution>
 
+#include "MpsTxtWriter.h"
 #include "VariableFileReader.h"
 #include "common_lpnamer.h"
 #include "helpers/StringUtils.h"
 #include "solver_utils.h"
-
-ProblemData::ProblemData(const std::string &problem_mps,
-                         const std::string &variables_txt)
-    : _problem_mps(problem_mps), _variables_txt(variables_txt) {}
-
-std::vector<ProblemData> LinkProblemsGenerator::readMPSList(
-    const std::filesystem::path &mps_filePath_p) const {
-  std::string line;
-  std::vector<ProblemData> result;
-  std::ifstream mps_filestream(mps_filePath_p.c_str());
-  if (!mps_filestream.good()) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
-        << "unable to open " << mps_filePath_p << std::endl;
-    std::exit(1);
-  }
-  while (std::getline(mps_filestream, line)) {
-    std::stringstream buffer(line);
-    if (!line.empty() && line.front() != '#') {
-      std::string ProblemMps;
-      std::string VariablesTxt;
-      std::string ConstraintsTxt;
-
-      buffer >> ProblemMps;
-      buffer >> VariablesTxt;
-      buffer >> ConstraintsTxt;
-
-      ProblemData problemData(ProblemMps, VariablesTxt);
-
-      result.push_back(problemData);
-    }
-  }
-
-  return result;
-}
 
 /**
  * \brief That function create new optimization problems with new candidates
@@ -137,10 +104,13 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       const std::filesystem::path &archivePath,
                                       Couplings &couplings) {
   auto const mps_file_name = root / common_lpnamer::MPS_TXT;
+
+  auto files_mapper = FilesMapper(archivePath);
+  auto mpsList = files_mapper.MpsAndVariablesFilesVect();
+
   lpDir_ = root / "lp";
   auto reader = ArchiveReader(archivePath);
   reader.Open();
-  auto mpsList = readMPSList(mps_file_name);
   if (zip_mps_) {
     const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
     const auto tmpArchivePath = lpDir_ / tmpArchiveName;
