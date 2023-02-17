@@ -8,8 +8,11 @@ RUN yum install -y epel-release
 
 # Install requirements
 RUN yum install -y git redhat-lsb-core gcc gcc-c++ make wget centos-release-scl scl-utils rpm-build &&\
-    yum install -y cmake3 devtoolset-9 &&\
-    yum install -y rh-git227-git
+    yum install -y cmake3 devtoolset-9
+
+RUN yum -y remove git && \
+    yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm && \
+    yum -y install git
 
 # Install xpansion requirements
 RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options environment-modules rpm-build zlib-devel
