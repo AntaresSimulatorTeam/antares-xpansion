@@ -17,18 +17,24 @@ void BendersByBatch::initialize_problems() {
   match_problem_to_id();
 
   BuildMasterProblem();
+  const auto &coupling_map_size = coupling_map.size();
+  std::vector<std::string> problem_names(coupling_map_size);
+  for (const auto &[problem_name, _] : coupling_map) {
+    problem_names.emplace_back(problem_name);
+  }
   auto batch_size =
-      Options().BATCH_SIZE == 0 ? coupling_map.size() : Options().BATCH_SIZE;
+      Options().BATCH_SIZE == 0 ? coupling_map_size : Options().BATCH_SIZE;
   batch_collection_.SetLogger(_logger);
   batch_collection_.SetBatchSize(batch_size);
-  batch_collection_.SetSubProblemNames(GetSubProblemNames());
+  batch_collection_.SetSubProblemNames(problem_names);
   batch_collection_.BuildBatches();
   BroadCast(batch_collection_, rank_0);
   // Dispatch subproblems to process
+  auto problem_count = 0;
   for (const auto &batch : batch_collection_.BatchCollections()) {
     for (const auto &problem_name : batch.sub_problem_names) {
       // In case there are more subproblems than process
-      if (auto process_to_feed = ProblemToId(problem_name) % WorldSize();
+      if (auto process_to_feed = problem_count % WorldSize();
           process_to_feed ==
           Rank()) {  // Assign  [problemNumber % processCount] to processID
 
@@ -38,6 +44,7 @@ void BendersByBatch::initialize_problems() {
         addSubproblem({problem_name, coupling_map[problem_name]});
         AddSubproblemName(problem_name);
         std::filesystem::remove(subProblemFilePath);
+        problem_count++;
       }
     }
   }
