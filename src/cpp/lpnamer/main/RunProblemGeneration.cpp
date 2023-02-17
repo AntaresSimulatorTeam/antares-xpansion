@@ -105,7 +105,8 @@ void RunProblemGeneration(
 
   LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
                                               log_file_path, zip_mps);
-  auto mpsList = linkProblemsGenerator.readMPSList(mps_file_name);
+  auto files_mapper = FilesMapper(antares_archive_path);
+  auto mpsList = files_mapper.MpsAndVariablesFilesVect();
 
   auto lpDir_ = xpansion_output_dir / "lp";
 
