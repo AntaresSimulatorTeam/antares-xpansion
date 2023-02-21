@@ -29,6 +29,7 @@ class BendersMpi : public BendersBase {
   void free() override;
   void run() override;
   void initialize_problems() override;
+  void BroadcastXCut();
 
  private:
   void step_1_solve_master();
@@ -45,8 +46,6 @@ class BendersMpi : public BendersBase {
 
   void do_solve_master_create_trace_and_update_cuts();
 
-  void broadcast_the_master_problem();
-
   void gather_subproblems_cut_package_and_build_cuts(
       const SubProblemDataMap &subproblem_data_map, const Timer &process_timer);
 
@@ -62,14 +61,18 @@ class BendersMpi : public BendersBase {
   void PreRunInitialization();
   int Rank() const { return _world.rank(); }
   template <typename T>
-  void BroadCast(T value, int root) {
+  void BroadCast(T& value, int root) {
     mpi::broadcast(_world, value, root);
+  }
+  template <typename T>
+  void BroadCast(T *values, int n, int root) {
+    mpi::broadcast(_world, values, n, root);
   }
   template <typename T>
   void Gather(const T &value, std::vector<T> &vector_of_values, int root) {
     mpi::gather(_world, value, vector_of_values, root);
   }
-  void Barrier() { _world.barrier(); }
   void BuildMasterProblem();
   int WorldSize() const { return _world.size(); }
+  void Barrier() {  _world.barrier(); }
 };

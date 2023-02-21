@@ -17,7 +17,6 @@ int main(int argc, char** argv) {
   std::filesystem::path xpansion_output_dir;
   std::filesystem::path archive_path;
   options_parser.Parse(argc, argv);
-
   if (world.rank() == 0) {
     try {
       xpansion_output_dir = options_parser.XpansionOutputDir();
@@ -48,7 +47,13 @@ int main(int argc, char** argv) {
   int argc_ = 2;
   const auto options_file = options_parser.BendersOptionsFile();
   const auto benders_method = options_parser.Method();
+  int i(0);
 
+  if (world.rank() == 0) {
+    std::cout << "enter \n";
+    std::cin >> i;
+  }
+  
   world.barrier();
   auto benders_factory =
       BendersMainFactory(argc_, argv, benders_method, options_file, env, world);

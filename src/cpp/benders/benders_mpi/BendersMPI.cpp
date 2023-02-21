@@ -71,7 +71,7 @@ void BendersMpi::step_1_solve_master() {
     write_exception_message(ex);
   }
   check_if_some_proc_had_a_failure(success);
-  broadcast_the_master_problem();
+  BroadcastXCut();
 }
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
@@ -85,12 +85,11 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
   }
 }
 
-void BendersMpi::broadcast_the_master_problem() {
+void BendersMpi::BroadcastXCut() {
   if (!_exceptionRaised) {
     Point x_cut = get_x_cut();
     mpi::broadcast(_world, x_cut, rank_0);
     set_x_cut(x_cut);
-    _world.barrier();
   }
 }
 

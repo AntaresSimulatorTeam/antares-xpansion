@@ -115,6 +115,9 @@ class BendersBase {
   StrVector GetSubProblemNames() const { return subproblems; }
   double AbsoluteGap() const { return _options.ABSOLUTE_GAP; }
   DblVector GetAlpha_i() const { return _data.single_subpb_costs_under_approx; }
+  void SetAlpha_i(const DblVector &single_subpb_costs_under_approx) {
+    _data.single_subpb_costs_under_approx = single_subpb_costs_under_approx ;
+  }
   int ProblemToId(const std::string &problem_name) const {
     return _problem_to_id.at(problem_name);
   }

@@ -1,6 +1,7 @@
 #include "BatchCollection.h"
 
 #include <cmath>
+#include <iostream>
 BatchCollection::BatchCollection(
     const std::vector<std::string>& sub_problem_names, size_t batch_size,
     Logger logger)
@@ -21,6 +22,8 @@ void BatchCollection::BuildBatches() {
         ")\nWhich means that there is only one batch!\n");
   }
   number_of_batch_ = std::ceil(double(sub_problems_number_) / batch_size_);
+  std::cout << "sub_problems_number_= " << sub_problems_number_ << "\n";
+  std::cout << "batch_size_= " << batch_size_ << "\n";
   for (auto id = 0; id < number_of_batch_ - 1; id++) {
     Batch b;
     b.id = id;

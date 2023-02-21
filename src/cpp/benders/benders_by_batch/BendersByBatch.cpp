@@ -18,7 +18,7 @@ void BendersByBatch::initialize_problems() {
 
   BuildMasterProblem();
   const auto &coupling_map_size = coupling_map.size();
-  std::vector<std::string> problem_names(coupling_map_size);
+  std::vector<std::string> problem_names;
   for (const auto &[problem_name, _] : coupling_map) {
     problem_names.emplace_back(problem_name);
   }
@@ -44,10 +44,26 @@ void BendersByBatch::initialize_problems() {
         addSubproblem({problem_name, coupling_map[problem_name]});
         AddSubproblemName(problem_name);
         std::filesystem::remove(subProblemFilePath);
-        problem_count++;
       }
+      problem_count++;
     }
   }
+}
+void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
+  DblVector single_subpb_costs_under_approx; 
+  int size=0;
+    if (Rank() == rank_0) {
+    single_subpb_costs_under_approx = GetAlpha_i();
+    size = single_subpb_costs_under_approx.size();
+    }
+
+    BroadCast(size, rank_0);
+    Barrier();
+    if(Rank() != rank_0) {
+      single_subpb_costs_under_approx.resize(size);
+    }
+    BroadCast(single_subpb_costs_under_approx.data(), size, rank_0);
+    SetAlpha_i(single_subpb_costs_under_approx);
 }
 void BendersByBatch::run() {
   PreRunInitialization();
@@ -55,6 +71,7 @@ void BendersByBatch::run() {
   // if (Rank() == rank_0) {
   // }
   auto number_of_batch = batch_collection_.NumberOfBatch();
+  random_batch_permutation_.resize(number_of_batch);
   unsigned batch_counter = 0;
 
   auto current_batch_id = 0;
@@ -85,7 +102,10 @@ void BendersByBatch::run() {
       random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
                                       .GetCyclicBatchOrder(current_batch_id);
     }
-    BroadCast(random_batch_permutation_, rank_0);
+    BroadcastXCut();
+    BroadcastSingleSubpbCostsUnderApprox();
+    BroadCast(random_batch_permutation_.data(), random_batch_permutation_.size(),
+              rank_0);
     // }
     batch_counter = 0;
 
@@ -97,7 +117,7 @@ void BendersByBatch::run() {
       build_cut(batch_sub_problems, &sum);
       std::vector<double> vect_of_sum;
       Gather(sum, vect_of_sum, rank_0);
-      // Barrier();
+       Barrier();
       if (Rank() == rank_0) {
         number_of_sub_problem_resolved += batch_sub_problems.size();
 
@@ -112,7 +132,7 @@ void BendersByBatch::run() {
       }
       BroadCast(batch_counter, rank_0);
       // }
-      // Barrier();
+       Barrier();
     }
     // if (Rank() == rank_0) {
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
@@ -152,9 +172,13 @@ void BendersByBatch::build_cut(
     }
   }
 
+  std::vector<SubProblemDataMap> gathered_subproblem_map;
+  Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemTimers(timer.elapsed());
-  // all_package.push_back(subproblem_data_map);
-  build_cut_full(subproblem_data_map);
+
+  for (const auto &subproblem_map : gathered_subproblem_map) {
+    build_cut_full(subproblem_map);
+  }
 }
 
 /*!
@@ -172,18 +196,21 @@ void BendersByBatch::getSubproblemCut(
   // With gcc9 there was no parallelisation when iterating on the map directly
   // so with project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
-  nameAndWorkers.reserve(batch_sub_problems.size());
-  auto sub_pblm_map = GetSubProblemMap();
-  for (const auto &name : batch_sub_problems) {
-    //   nameAndWorkers.emplace_back(name, sub_pblm_map[name]);
-    std::copy_if(
-        sub_pblm_map.cbegin(), sub_pblm_map.cend(),
-        std::back_inserter(nameAndWorkers),
-        [&sub_pblm_map, &name](std::pair<std::string, SubproblemWorkerPtr>
-                                   name_subproblemWorkerPtr) {
-          return sub_pblm_map.find(name) != sub_pblm_map.cend();
-        });
-  }
+  const auto &sub_pblm_map = GetSubProblemMap();
+  //for (const auto &name : batch_sub_problems) {
+  //  if (sub_pblm_map.find(name) != sub_pblm_map.cend()){
+  //    nameAndWorkers.emplace_back(name,sub_pblm_map[name]);
+  //  }
+  //  //   nameAndWorkers.emplace_back(name, sub_pblm_map[name]);
+  //  
+  //}
+  std::copy_if(
+      sub_pblm_map.cbegin(), sub_pblm_map.cend(),
+      std::back_inserter(nameAndWorkers),
+      [&batch_sub_problems](const std::pair<std::string, SubproblemWorkerPtr>
+                                 &name_subproblemWorkerPtr) {
+        return std::find(batch_sub_problems.cbegin(),batch_sub_problems.cend(),  name_subproblemWorkerPtr.first) != batch_sub_problems.cend();
+      });
   std::mutex m;
   selectPolicy(
       [this, &nameAndWorkers, &m, &subproblem_data_map, &sum](auto &policy) {

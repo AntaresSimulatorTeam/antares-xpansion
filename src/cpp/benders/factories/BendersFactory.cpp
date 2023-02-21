@@ -18,29 +18,37 @@ int RunBendersByBatch(char** argv, const std::filesystem::path& options_file,
 
   google::InitGoogleLogging(argv[0]);
   auto path_to_log =
-      std::filesystem::path(options.OUTPUTROOT) / "benderssequentialLog.txt.";
+      std::filesystem::path(options.OUTPUTROOT) / "benders_by_batchLog.txt.";
   google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
 
   std::ostringstream oss_l = start_message(options, "Sequential");
   LOG(INFO) << oss_l.str() << std::endl;
 
-  const auto& loggerFileName =
-      std::filesystem::path(options.OUTPUTROOT) / "reportbenderssequential.txt";
+  const auto& log_reports_name =
+      std::filesystem::path(options.OUTPUTROOT) / "reportbenders_by_batch.txt";
+  Logger logger;
+  Writer writer;
 
-  auto logger_factory = FileAndStdoutLoggerFactory(loggerFileName);
+  if (world.rank() == 0) {
+    auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
 
-  Logger logger = logger_factory.get_logger();
-  Writer writer = build_json_writer(options.JSON_FILE, options.RESUME);
-  if (Benders::StartUp startup;
-      startup.StudyAlreadyAchievedCriterion(options, writer, logger))
-    return 0;
+    logger = logger_factory.get_logger();
+    writer = build_json_writer(options.JSON_FILE, options.RESUME);
+    if (Benders::StartUp startup;
+        startup.StudyAlreadyAchievedCriterion(options, writer, logger))
+      return 0;
+    std::ostringstream oss_l = start_message(options, "mpi");
+    LOG(INFO) << oss_l.str() << std::endl;
+  } else {
+    logger = build_void_logger();
+    writer = build_void_writer();
+  }
   writer->write_log_level(options.LOG_LEVEL);
   writer->write_master_name(options.MASTER_NAME);
   writer->write_solver_name(options.SOLVER_NAME);
-
   auto benders = std::make_shared<BendersByBatch>(benders_options, logger,
                                                   writer, env, world);
-  benders->set_log_file(loggerFileName);
+  benders->set_log_file(log_reports_name);
   benders->launch();
   std::stringstream str;
   str << "Optimization results available in : " << options.JSON_FILE;

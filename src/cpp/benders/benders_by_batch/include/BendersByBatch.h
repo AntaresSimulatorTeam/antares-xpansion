@@ -19,7 +19,7 @@ class BendersByBatch : public BendersMpi {
   // void launch() override;
  protected:
   void initialize_problems() override;
-
+  void BroadcastSingleSubpbCostsUnderApprox();
  private:
   void getSubproblemCut(SubProblemDataMap &subproblem_cut_package,
                         const std::vector<std::string> &batch_sub_problems,
