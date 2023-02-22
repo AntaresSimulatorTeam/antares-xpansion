@@ -44,12 +44,12 @@ int main(int argc, char** argv) {
       std::cerr << "Exception of unknown type!" << std::endl;
     }
   }
+  world.barrier();
   int argc_ = 2;
   const auto options_file = options_parser.BendersOptionsFile();
   const auto benders_method = options_parser.Method();
 
-  
-  auto benders_factory =
+    auto benders_factory =
       BendersMainFactory(argc_, argv, benders_method, options_file, env, world);
   benders_factory.Run();
 
