@@ -185,12 +185,9 @@ void RunProblemGeneration(
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
 
-    auto reader = std::make_shared<ArchiveReader>(antares_archive_path);
-    reader->Open();
-    const auto tmpArchiveName = MPS_ZIP_FILE + "-tmp" + ZIP_EXT;
-    const auto tmpArchivePath = lpDir_ / tmpArchiveName;
-    auto writer = std::make_shared<ArchiveWriter>(tmpArchivePath);
-    writer->Open();
+    auto reader = InstantiateZipReader(antares_archive_path);
+    std::shared_ptr<ArchiveWriter> writer;
+    const std::filesystem::path tmpArchivePath = OpenTmpArchive(lpDir_, writer);
     auto problem_writer =
         std::make_shared<ArchiveProblemWriter>(lpDir_, writer);
 
