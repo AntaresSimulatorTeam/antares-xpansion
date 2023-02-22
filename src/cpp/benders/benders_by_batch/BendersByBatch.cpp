@@ -82,6 +82,7 @@ void BendersByBatch::run() {
     _data.ub = 0;
     SetSubproblemCost(0);
     auto remaining_epsilon = AbsoluteGap();
+    Timer timer_master;
 
     if (Rank() == rank_0) {
       if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
@@ -144,6 +145,7 @@ void BendersByBatch::run() {
     update_best_ub();
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
     SaveCurrentBendersData();
+    _data.elapsed_time = GetBendersTime();
 
     CloseCsvFile();
     EndWritingInOutputFile();

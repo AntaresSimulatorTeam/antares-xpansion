@@ -92,7 +92,6 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
   }
 
   world.barrier();
-  Timer timer;
   pBendersBase benders;
 
   benders =
@@ -106,7 +105,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
   std::stringstream str;
   str << "Optimization results available in : " << options.JSON_FILE;
   logger->display_message(str.str());
-  logger->log_total_duration(timer.elapsed());
+  logger->log_total_duration(benders->execution_time());
   return 0;
 }
 
