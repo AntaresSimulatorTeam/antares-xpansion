@@ -150,10 +150,6 @@ void RunProblemGeneration(
                         problem_variables_from_zip_adapter);
                   });
 
-    /* Clean up */
-    reader->Close();
-    reader->Delete();
-
     CleanUpArchives(antares_archive_path, lpDir_, writer, tmpArchivePath);
   } else if (use_file_implementation) {
     std::shared_ptr<ArchiveWriter> writer;
@@ -209,9 +205,6 @@ void RunProblemGeneration(
                         data._problem_mps, couplings, problem_writer, problem,
                         problem_variables_from_zip_adapter);
                   });
-    /* Clean up */
-    reader->Close();
-    reader->Delete();
 
     CleanUpArchives(antares_archive_path, lpDir_, writer, tmpArchivePath);
   }

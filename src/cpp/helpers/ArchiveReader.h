@@ -18,6 +18,7 @@ class ArchiveReader : public ArchiveIO {
  public:
   explicit ArchiveReader(const std::filesystem::path& archivePath);
   ArchiveReader();
+  ~ArchiveReader() override;
 
   int32_t Close() override;
   void Delete() override;

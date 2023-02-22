@@ -217,3 +217,7 @@ std::vector<std::filesystem::path> ArchiveReader::ExtractPattern(
   }
   return result;
 }
+ArchiveReader::~ArchiveReader() {
+  mz_zip_reader_close(pmz_zip_reader_instance_);
+  mz_zip_reader_delete(&pmz_zip_reader_instance_);
+}
