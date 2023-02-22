@@ -50,20 +50,20 @@ void BendersByBatch::initialize_problems() {
   }
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
-  DblVector single_subpb_costs_under_approx; 
-  int size=0;
-    if (Rank() == rank_0) {
+  DblVector single_subpb_costs_under_approx;
+  size_t size = 0;
+  if (Rank() == rank_0) {
     single_subpb_costs_under_approx = GetAlpha_i();
     size = single_subpb_costs_under_approx.size();
-    }
+  }
 
-    BroadCast(size, rank_0);
-    Barrier();
-    if(Rank() != rank_0) {
-      single_subpb_costs_under_approx.resize(size);
-    }
-    BroadCast(single_subpb_costs_under_approx.data(), size, rank_0);
-    SetAlpha_i(single_subpb_costs_under_approx);
+  BroadCast(size, rank_0);
+  Barrier();
+  if (Rank() != rank_0) {
+    single_subpb_costs_under_approx.resize(size);
+  }
+  BroadCast(single_subpb_costs_under_approx.data(), size, rank_0);
+  SetAlpha_i(single_subpb_costs_under_approx);
 }
 void BendersByBatch::run() {
   PreRunInitialization();
@@ -104,8 +104,8 @@ void BendersByBatch::run() {
     }
     BroadcastXCut();
     BroadcastSingleSubpbCostsUnderApprox();
-    BroadCast(random_batch_permutation_.data(), random_batch_permutation_.size(),
-              rank_0);
+    BroadCast(random_batch_permutation_.data(),
+              random_batch_permutation_.size(), rank_0);
     // }
     batch_counter = 0;
 
@@ -117,23 +117,24 @@ void BendersByBatch::run() {
       build_cut(batch_sub_problems, &sum);
       std::vector<double> vect_of_sum;
       Gather(sum, vect_of_sum, rank_0);
-       Barrier();
+      Barrier();
       if (Rank() == rank_0) {
         number_of_sub_problem_resolved += batch_sub_problems.size();
 
         remaining_epsilon -=
             std::reduce(vect_of_sum.begin(), vect_of_sum.end());
         UpdateTrace();
-
-        if (remaining_epsilon > 0) {
+      }
+      BroadCast(remaining_epsilon, rank_0);
+      if (remaining_epsilon > 0) {
           batch_counter++;
         } else
           break;
       }
       BroadCast(batch_counter, rank_0);
       // }
-       Barrier();
-    }
+      //Barrier();
+    
     // if (Rank() == rank_0) {
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
     // }
@@ -197,19 +198,21 @@ void BendersByBatch::getSubproblemCut(
   // so with project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
   const auto &sub_pblm_map = GetSubProblemMap();
-  //for (const auto &name : batch_sub_problems) {
-  //  if (sub_pblm_map.find(name) != sub_pblm_map.cend()){
-  //    nameAndWorkers.emplace_back(name,sub_pblm_map[name]);
-  //  }
-  //  //   nameAndWorkers.emplace_back(name, sub_pblm_map[name]);
-  //  
-  //}
+  // for (const auto &name : batch_sub_problems) {
+  //   if (sub_pblm_map.find(name) != sub_pblm_map.cend()){
+  //     nameAndWorkers.emplace_back(name,sub_pblm_map[name]);
+  //   }
+  //   //   nameAndWorkers.emplace_back(name, sub_pblm_map[name]);
+  //
+  // }
   std::copy_if(
       sub_pblm_map.cbegin(), sub_pblm_map.cend(),
       std::back_inserter(nameAndWorkers),
       [&batch_sub_problems](const std::pair<std::string, SubproblemWorkerPtr>
-                                 &name_subproblemWorkerPtr) {
-        return std::find(batch_sub_problems.cbegin(),batch_sub_problems.cend(),  name_subproblemWorkerPtr.first) != batch_sub_problems.cend();
+                                &name_subproblemWorkerPtr) {
+        return std::find(batch_sub_problems.cbegin(), batch_sub_problems.cend(),
+                         name_subproblemWorkerPtr.first) !=
+               batch_sub_problems.cend();
       });
   std::mutex m;
   selectPolicy(
