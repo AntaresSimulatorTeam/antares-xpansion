@@ -130,6 +130,7 @@ jobs:
         run: |
           cmake --build _build --config Release -j2 --target install
       - name: Running unit tests
+        timeout-minutes: 45
         shell: cmd
         run: |
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
