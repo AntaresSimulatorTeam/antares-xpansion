@@ -3,8 +3,8 @@
 #include "ArchiveWriter.h"
 #include "BendersSequential.h"
 #include "JsonWriter.h"
-#include "RandomDirGenerator.h"
 #include "LoggerStub.h"
+#include "RandomDirGenerator.h"
 #include "gtest/gtest.h"
 
 class FakeWorkerMaster : public WorkerMaster {
@@ -159,7 +159,6 @@ class BendersSequentialTest : public ::testing::Test {
     base_options.SOLVER_NAME = "COIN";
     base_options.weights = {};
     base_options.RESUME = false;
-    base_options.MPS_ZIP_FILE = MPS_ZIP_FILE;
 
     return base_options;
   }

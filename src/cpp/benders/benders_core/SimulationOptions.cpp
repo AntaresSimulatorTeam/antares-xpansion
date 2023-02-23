@@ -131,8 +131,6 @@ BaseOptions SimulationOptions::get_base_options() const {
   result.SOLVER_NAME = SOLVER_NAME;
   result.weights = _weights;
   result.RESUME = RESUME;
-  result.MPS_ZIP_FILE = MPS_ZIP_FILE;
-  result.MPS_IN_ZIP = MPS_IN_ZIP;
 
   return result;
 }
