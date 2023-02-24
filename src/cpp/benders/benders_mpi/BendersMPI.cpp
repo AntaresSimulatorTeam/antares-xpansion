@@ -41,7 +41,6 @@ void BendersMpi::initialize_problems() {
       const auto subProblemFilePath = GetSubproblemPath(problem.first);
       addSubproblem(problem);
       AddSubproblemName(problem.first);
-      std::filesystem::remove(subProblemFilePath);
     }
     current_problem_id++;
   }

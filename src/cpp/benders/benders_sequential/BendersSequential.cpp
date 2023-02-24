@@ -32,7 +32,6 @@ void BendersSequential::initialize_problems() {
 
     addSubproblem(problem);
     AddSubproblemName(problem.first);
-    std::filesystem::remove(subProblemFilePath);
   }
 }
 
