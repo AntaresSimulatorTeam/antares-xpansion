@@ -13,7 +13,6 @@
      "BOUND_ALPHA": 1,
      "JSON_FILE": "./expansion/out.json",
      "LAST_ITERATION_JSON_FILE": "./expansion/last_iteration.json",
-     "RESUME": true,
-     "MPS_IN_ZIP":  true
+     "RESUME": true
 
 }

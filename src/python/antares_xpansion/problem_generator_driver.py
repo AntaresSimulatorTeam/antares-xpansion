@@ -26,7 +26,6 @@ class ProblemGeneratorData:
     weight_file_name_for_lp: str
     lp_namer_exe_path: Path
     active_years: List
-    zip_mps: bool
 
 
 class ProblemGeneratorDriver:
@@ -63,13 +62,9 @@ class ProblemGeneratorDriver:
         self.user_weights_file_path = problem_generator_data.user_weights_file_path
         self.weight_file_name_for_lp = problem_generator_data.weight_file_name_for_lp
         self.active_years = problem_generator_data.active_years
-        self.zip_mps = problem_generator_data.zip_mps
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
         self._lp_path = None
-        self.mps_zip_filename = "MPS_ZIP"
-        self.zip_ext = ".zip"
-        self.mps_zip_file = self.mps_zip_filename+self.zip_ext
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """
@@ -134,8 +129,6 @@ class ProblemGeneratorDriver:
                str(self.output_path), "-f", is_relaxed]
         if self.weight_file_name_for_lp:
             ret.extend(["-w", str(self.user_weights_file_path)])
-        if self.zip_mps:
-            ret.append("--zip-mps")
 
         if self.additional_constraints != "":
             ret.extend(["-e",

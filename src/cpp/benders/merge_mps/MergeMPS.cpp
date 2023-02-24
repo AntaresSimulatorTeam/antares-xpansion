@@ -26,8 +26,6 @@ void MergeMPS::launch() {
   int cntProblems_l(0);
 
   LOG(INFO) << "Merging problems..." << std::endl;
-  auto reader = ArchiveReader(inputRootDir / _options.MPS_ZIP_FILE);
-  reader.Open();
   for (auto const &kvp : input) {
     auto problem_name(inputRootDir / (kvp.first + MPS_SUFFIX));
     SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
@@ -35,7 +33,6 @@ void MergeMPS::launch() {
     solver_l->set_output_log_level(_options.LOG_LEVEL);
 
     if (kvp.first != _options.MASTER_NAME) {
-      reader.ExtractFile(problem_name.filename());
       solver_l->read_prob_mps(problem_name);
       std::filesystem::remove(problem_name);
       int mps_ncols(solver_l->get_ncols());
@@ -77,9 +74,6 @@ void MergeMPS::launch() {
 
     ++cntProblems_l;
   }
-
-  reader.Close();
-  reader.Delete();
 
   IntVector mstart;
   IntVector cindex;

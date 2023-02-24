@@ -83,16 +83,12 @@ def launch_and_compare_lp_with_reference(install_dir, master_mode, test_dir):
     study_dir = test_dir.resolve()
     os.chdir(test_dir.parent)
     launch_command = [str(lp_namer_exe), "-o", str(study_dir), "-a", str(zip_path),
-                      "-e", "contraintes.txt", "-f", master_mode, "--zip-mps"]
+                      "-e", "contraintes.txt", "-f", master_mode]
     # when
     returned_l = subprocess.run(launch_command, shell=False)
     # then
     os.chdir(old_path)
 
-    with zipfile.ZipFile(zip_path, "r") as mps_zip_file:
-        mps_zip_file.extractall(zip_path.parent)
-
-    os.remove(zip_path)
     files_to_compare = os.listdir(reference_lp_dir)
     match, mismatch, errors = filecmp.cmpfiles(
         reference_lp_dir, lp_dir, files_to_compare)
