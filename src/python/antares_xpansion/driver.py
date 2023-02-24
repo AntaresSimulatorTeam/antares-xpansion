@@ -2,10 +2,10 @@
     Class to control the execution of the optimization session
 """
 import os
-from pathlib import Path
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.benders_driver import BendersDriver
@@ -156,7 +156,8 @@ class XpansionDriver:
             self.config_loader.last_master_basis_path(),
             self.config_loader.structure_file_path(),
             self.config_loader.json_sensitivity_out_path(),
-            self.config_loader.sensitivity_log_file()
+            self.config_loader.sensitivity_log_file(),
+            self.config_loader.xpansion_simulation_output()
         )
 
     def resume_study(self):
