@@ -15,6 +15,7 @@ ArchiveWriter::ArchiveWriter() : ArchiveIO() {
 }
 
 void ArchiveWriter::Create() {
+  std::unique_lock lock(mutex_);
   mz_zip_writer_create(&pmz_zip_writer_instance_);
 }
 void ArchiveWriter::InitFileInfo() {
@@ -115,6 +116,7 @@ ArchiveWriter::~ArchiveWriter() {
 }
 
 int32_t ArchiveWriter::CloseInternal() {
+  std::unique_lock lock(mutex_);
   if (pmz_zip_writer_instance_) {
     return mz_zip_writer_close(pmz_zip_writer_instance_);
   }
@@ -122,5 +124,6 @@ int32_t ArchiveWriter::CloseInternal() {
 }
 
 void ArchiveWriter::DeleteInternal() {
+  std::unique_lock lock(mutex_);
   return mz_zip_writer_delete(&pmz_zip_writer_instance_);
 }
