@@ -2,7 +2,9 @@
     Class to control the sensitivity analysis
 """
 
+import glob
 import os
+import shutil
 import subprocess
 import sys
 import zipfile
@@ -62,6 +64,12 @@ class SensitivityDriver:
             )
 
         os.chdir(old_cwd)
+        with zipfile.ZipFile(self.simulation_output_path, 'a') as output_zip:
+            sensitivity_path = os.path.dirname(self.sensitivity_log_path)
+            for file in glob.glob(sensitivity_path + "/*"):
+                if os.path.isfile(file):
+                    output_zip.write(file, os.path.join("sensitivity", os.path.basename(file)))
+        shutil.rmtree(xpansion_simulation_output)
 
     @staticmethod
     def _get_file_path(filepath):
