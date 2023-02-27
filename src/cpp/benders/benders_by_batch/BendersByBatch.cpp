@@ -50,19 +50,19 @@ void BendersByBatch::initialize_problems() {
   }
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
-  DblVector single_subpb_costs_under_approx;
-  size_t size = 0;
+  DblVector single_subpb_costs_under_approx(_data.nsubproblem);
+  // size_t size = 0;
   if (Rank() == rank_0) {
     single_subpb_costs_under_approx = GetAlpha_i();
-    size = single_subpb_costs_under_approx.size();
+    // size = single_subpb_costs_under_approx.size();
   }
 
-  BroadCast(size, rank_0);
-  Barrier();
-  if (Rank() != rank_0) {
-    single_subpb_costs_under_approx.resize(size);
-  }
-  BroadCast(single_subpb_costs_under_approx.data(), size, rank_0);
+  // BroadCast(size, rank_0);
+  // Barrier();
+  // if (Rank() != rank_0) {
+  //   single_subpb_costs_under_approx.resize(size);
+  // }
+  BroadCast(single_subpb_costs_under_approx.data(), _data.nsubproblem, rank_0);
   SetAlpha_i(single_subpb_costs_under_approx);
 }
 void BendersByBatch::run() {
@@ -117,6 +117,7 @@ void BendersByBatch::run() {
       double sum = 0;
       build_cut(batch_sub_problems, &sum);
       std::vector<double> vect_of_sum;
+      // voir avec boost::mpi::reduce
       Gather(sum, vect_of_sum, rank_0);
       Barrier();
       if (Rank() == rank_0) {
@@ -128,14 +129,14 @@ void BendersByBatch::run() {
       }
       BroadCast(remaining_epsilon, rank_0);
       if (remaining_epsilon > 0) {
-          batch_counter++;
-        } else
-          break;
-      }
-      BroadCast(batch_counter, rank_0);
-      // }
-      //Barrier();
-    
+        batch_counter++;
+      } else
+        break;
+    }
+    BroadCast(batch_counter, rank_0);
+    // }
+    // Barrier();
+
     // if (Rank() == rank_0) {
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
     // }
@@ -177,11 +178,12 @@ void BendersByBatch::build_cut(
 
   std::vector<SubProblemDataMap> gathered_subproblem_map;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
-  SetSubproblemTimers(timer.elapsed());
 
   for (const auto &subproblem_map : gathered_subproblem_map) {
     build_cut_full(subproblem_map);
   }
+  // TODO
+  SetSubproblemTimers(timer.elapsed());
 }
 
 /*!
