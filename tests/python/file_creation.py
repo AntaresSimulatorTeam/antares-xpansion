@@ -1,3 +1,4 @@
+import os.path
 from pathlib import Path
 
 
@@ -16,8 +17,8 @@ def _create_years_content(weight_list):
 
 
 def _create_empty_file(tmp_path: Path, filename):
-    file_path = tmp_path / filename
-    file_path.touch()
+    empty_file = os.path.join(tmp_path, filename)
+    Path(empty_file).touch()
 
 
 def _create_empty_file_from_list(tmp_path: Path, files):
