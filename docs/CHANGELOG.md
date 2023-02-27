@@ -4,6 +4,10 @@ Antares-Xpansion changelog
 v1.0.3 (02/2023)
 --------------------
 
+### Bug
+
+- Fix sensitivity not working with antares-web
+
 ### Features
 
 - Use Antares-Simulator 8.5.0
