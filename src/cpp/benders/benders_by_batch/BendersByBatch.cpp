@@ -112,7 +112,6 @@ void BendersByBatch::run() {
       if (Rank() == rank_0) {
         number_of_sub_problem_resolved += batch_sub_problems.size();
         remaining_epsilon -= result;
-        UpdateTrace();
       }
       BroadCast(remaining_epsilon, rank_0);
       if (remaining_epsilon > 0) {
@@ -128,6 +127,7 @@ void BendersByBatch::run() {
     compute_ub();
     update_best_ub();
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
+    UpdateTrace();
     SaveCurrentBendersData();
     _data.elapsed_time = GetBendersTime();
 
