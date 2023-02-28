@@ -40,11 +40,8 @@ void BendersByBatch::initialize_problems() {
           Rank()) {  // Assign  [problemNumber % processCount] to processID
 
         const auto subProblemFilePath = GetSubproblemPath(problem_name);
-        if (Options().MPS_IN_ZIP)
-          reader_.ExtractFile(subProblemFilePath.filename());
         addSubproblem({problem_name, coupling_map[problem_name]});
         AddSubproblemName(problem_name);
-        std::filesystem::remove(subProblemFilePath);
       }
       problem_count++;
     }
