@@ -51,25 +51,16 @@ void BendersByBatch::initialize_problems() {
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
   DblVector single_subpb_costs_under_approx(_data.nsubproblem);
-  // size_t size = 0;
   if (Rank() == rank_0) {
     single_subpb_costs_under_approx = GetAlpha_i();
-    // size = single_subpb_costs_under_approx.size();
   }
 
-  // BroadCast(size, rank_0);
-  // Barrier();
-  // if (Rank() != rank_0) {
-  //   single_subpb_costs_under_approx.resize(size);
-  // }
   BroadCast(single_subpb_costs_under_approx.data(), _data.nsubproblem, rank_0);
   SetAlpha_i(single_subpb_costs_under_approx);
 }
 void BendersByBatch::run() {
   PreRunInitialization();
 
-  // if (Rank() == rank_0) {
-  // }
   auto number_of_batch = batch_collection_.NumberOfBatch();
   random_batch_permutation_.resize(number_of_batch);
   unsigned batch_counter = 0;
@@ -168,18 +159,13 @@ void BendersByBatch::build_cut(
   Timer timer;
   getSubproblemCut(subproblem_data_map, batch_sub_problems, sum);
 
-  for (const auto &sub_problem_name : batch_sub_problems) {
-    if (subproblem_data_map.find(sub_problem_name) !=
-        subproblem_data_map.end()) {
-      auto sub_problem_data = subproblem_data_map[sub_problem_name];
-      SetSubproblemCost(GetSubproblemCost() + sub_problem_data.subproblem_cost);
-    }
-  }
-
   std::vector<SubProblemDataMap> gathered_subproblem_map;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
 
   for (const auto &subproblem_map : gathered_subproblem_map) {
+    for (auto &&[_, subproblem_data] : subproblem_data_map) {
+      SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+    }
     build_cut_full(subproblem_map);
   }
   // TODO
@@ -202,13 +188,6 @@ void BendersByBatch::getSubproblemCut(
   // so with project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
   const auto &sub_pblm_map = GetSubProblemMap();
-  // for (const auto &name : batch_sub_problems) {
-  //   if (sub_pblm_map.find(name) != sub_pblm_map.cend()){
-  //     nameAndWorkers.emplace_back(name,sub_pblm_map[name]);
-  //   }
-  //   //   nameAndWorkers.emplace_back(name, sub_pblm_map[name]);
-  //
-  // }
   std::copy_if(
       sub_pblm_map.cbegin(), sub_pblm_map.cend(),
       std::back_inserter(nameAndWorkers),
@@ -218,51 +197,46 @@ void BendersByBatch::getSubproblemCut(
                          name_subproblemWorkerPtr.first) !=
                batch_sub_problems.cend();
       });
-  std::mutex m;
-  selectPolicy(
-      [this, &nameAndWorkers, &m, &subproblem_data_map, &sum](auto &policy) {
-        std::for_each(
-            policy, nameAndWorkers.begin(), nameAndWorkers.end(),
-            [this, &m, &subproblem_data_map,
-             &sum](const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
-              const auto &[name, worker] = kvp;
-              Timer subproblem_timer;
-              SubProblemData subproblem_data;
-              worker->fix_to(_data.x_cut);
-              worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
-                            Options().LAST_MASTER_MPS + MPS_SUFFIX);
-              worker->get_value(
-                  subproblem_data.subproblem_cost);  // solution phi(x,s)
-              worker->get_subgradient(
-                  subproblem_data.var_name_and_subgradient);  // dual pi_s
-              *sum += subproblem_data.subproblem_cost -
-                      GetAlpha_i()[ProblemToId(name)];
-              worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
-              subproblem_data.subproblem_timer = subproblem_timer.elapsed();
-              std::lock_guard guard(m);
-              subproblem_data_map[name] = subproblem_data;
-            });
-      },
-      shouldParallelize());
+  /* std::mutex m;
+   selectPolicy(
+       [this, &nameAndWorkers, &m, &subproblem_data_map, &sum](auto &policy) {
+         std::for_each(
+             policy, nameAndWorkers.begin(), nameAndWorkers.end(),
+             [this, &m, &subproblem_data_map,
+              &sum](const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
+               const auto &[name, worker] = kvp;
+               Timer subproblem_timer;
+               SubProblemData subproblem_data;
+               worker->fix_to(_data.x_cut);
+               worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
+                             Options().LAST_MASTER_MPS + MPS_SUFFIX);
+               worker->get_value(
+                   subproblem_data.subproblem_cost);  // solution phi(x,s)
+               worker->get_subgradient(
+                   subproblem_data.var_name_and_subgradient);  // dual pi_s
+               *sum += subproblem_data.subproblem_cost -
+                       GetAlpha_i()[ProblemToId(name)];
+               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+               subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+               std::lock_guard guard(m);
+               subproblem_data_map[name] = subproblem_data;
+             });
+       },
+       shouldParallelize());*/
+
+  for (const auto &[name, worker] : nameAndWorkers) {
+    Timer subproblem_timer;
+    SubProblemData subproblem_data;
+    worker->fix_to(_data.x_cut);
+    worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
+                  Options().LAST_MASTER_MPS + MPS_SUFFIX);
+    worker->get_value(subproblem_data.subproblem_cost);  // solution phi(x,s)
+    worker->get_subgradient(
+        subproblem_data.var_name_and_subgradient);  // dual pi_s
+    *sum += subproblem_data.subproblem_cost - GetAlpha_i()[ProblemToId(name)];
+    worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+    subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+    // std::lock_guard guard(m);
+    subproblem_data_map[name] = subproblem_data;
+  }
 }
-// void BendersByBatch::launch() {
-//   build_input_map();
-
-//   LOG(INFO) << "Building input" << std::endl;
-
-//   LOG(INFO) << "Constructing workers..." << std::endl;
-
-//   initialize_problems();
-//   LOG(INFO) << "Running solver..." << std::endl;
-//   try {
-//     run();
-//     LOG(INFO) << BendersName() + " solver terminated." << std::endl;
-//   } catch (std::exception const &ex) {
-//     std::string error = "Exception raised : " + std::string(ex.what());
-//     LOG(WARNING) << error << std::endl;
-//     _logger->display_message(error);
-//   }
-
-//   post_run_actions();
-//   free();
-// }
