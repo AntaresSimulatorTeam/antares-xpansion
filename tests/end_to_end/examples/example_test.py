@@ -572,6 +572,33 @@ def test_full_study_medium_parallel(
         tmp_study, expected_investment_solution, antares_version)
 
 
+@pytest.mark.parametrize(
+    parameters_names,
+    medium_parameters_values,
+)
+@pytest.mark.medium_benders_by_batch_mpi
+def test_full_study_medium_benders_by_batch_parallel(
+    install_dir,
+    allow_run_as_root,
+    study_path,
+    expected_values,
+    expected_investment_solution,
+    tmp_path,
+    antares_version,
+):
+    tmp_study = tmp_path / study_path.name
+    shutil.copytree(study_path, tmp_study)
+    shutil.move(tmp_study/"user"/"expansion"/"settings_by_batch.ini",
+                tmp_study/"user"/"expansion"/"settings.ini")
+    method = BendersMethod.BENDERS_BY_BATCH
+    launch_xpansion(install_dir, tmp_study,
+                    method, allow_run_as_root)
+    verify_solution(tmp_study, expected_values,
+                    expected_investment_solution, method)
+    verify_study_update(
+        tmp_study, expected_investment_solution, antares_version)
+
+
 short_parameters_values = [
     (
         ALL_STUDIES_PATH / "link-profile-with-empty-week",
