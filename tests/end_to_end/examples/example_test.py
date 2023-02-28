@@ -677,6 +677,8 @@ def test_full_study_short_benders_by_batch_parallel(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
+    shutil.move(tmp_study/"user"/"expansion"/"settings_by_batch.ini",
+                tmp_study/"user"/"expansion"/"settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
     launch_xpansion(install_dir, tmp_study,
                     method, allow_run_as_root)
