@@ -18,7 +18,7 @@ RELATIVE_TOLERANCE_LIGHT = 1e-2
 
 
 class BendersMethod(Enum):
-    BENDERS = "benders",
+    BENDERS = "benders"
     BENDERS_BY_BATCH = "benders_by_batch"
 
 
