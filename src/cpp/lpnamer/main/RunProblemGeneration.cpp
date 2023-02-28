@@ -150,6 +150,8 @@ void RunProblemGeneration(
                         problem_variables_from_zip_adapter);
                   });
 
+    reader->Close();
+    reader->Delete();
     CleanUpArchives(antares_archive_path, lpDir_, writer, tmpArchivePath);
   } else if (use_file_implementation) {
     std::shared_ptr<ArchiveWriter> writer;
@@ -214,10 +216,10 @@ void CleanUpArchives(const std::filesystem::path& antares_archive_path,
                      const std::filesystem::path& lpDir_,
                      std::shared_ptr<ArchiveWriter>& writer,
                      const std::filesystem::path& tmpArchivePath) {
-  std::filesystem::remove(antares_archive_path);
-  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
   writer->Close();
   writer->Delete();
+  std::filesystem::remove(antares_archive_path);
+  std::filesystem::rename(tmpArchivePath, lpDir_ / (MPS_ZIP_FILE + ZIP_EXT));
 }
 std::filesystem::path OpenTmpArchive(const std::filesystem::path& lpDir_,
                                      std::shared_ptr<ArchiveWriter>& writer) {
