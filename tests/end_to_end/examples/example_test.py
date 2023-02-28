@@ -1,3 +1,4 @@
+from enum import Enum
 import os
 from pathlib import Path
 import sys
@@ -14,6 +15,11 @@ from src.python.antares_xpansion.candidates_reader import CandidatesReader
 ALL_STUDIES_PATH = Path("../../../data_test/examples")
 RELATIVE_TOLERANCE = 1e-4
 RELATIVE_TOLERANCE_LIGHT = 1e-2
+
+
+class BendersMethod(Enum):
+    BENDERS = "benders",
+    BENDERS_BY_BATCH = "benders_by_batch"
 
 
 def get_json_file_data(output_dir, folder, filename):
@@ -33,7 +39,7 @@ def remove_outputs(study_path):
                 shutil.rmtree(f)
 
 
-def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False, nproc: int = 4):
+def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as_root=False, nproc: int = 4):
     # Clean study output
     remove_outputs(study_path)
 
@@ -47,7 +53,7 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False, np
         "--dataDir",
         str(study_path),
         "--method",
-        method,
+        method.value,
         "--step",
         "full",
         "-n",
@@ -65,14 +71,13 @@ def launch_xpansion(install_dir, study_path, method, allow_run_as_root=False, np
     assert process.returncode == 0
 
 
-def assert_convergence(solution, options_data):
+def assert_convergence(solution, options_data, method: BendersMethod):
     assert (solution["relative_gap"] <= options_data["RELATIVE_GAP"]) or (
         solution["overall_cost"] * solution["relative_gap"]
-        <= options_data["ABSOLUTE_GAP"]
-    )
+        <= options_data["ABSOLUTE_GAP"]) or (method == BendersMethod.BENDERS_BY_BATCH and solution["ABSOLUTE_GAP"] <= options_data["ABSOLUTE_GAP"])
 
 
-def verify_solution(study_path, expected_values, expected_investment_solution):
+def verify_solution(study_path, expected_values, expected_investment_solution, method: BendersMethod = BendersMethod.BENDERS):
     output_path = study_path / "output"
     json_data = get_json_file_data(output_path, "expansion", "out.json")
     options_data = get_json_file_data(output_path, "lp", "options.json")
@@ -96,7 +101,7 @@ def verify_solution(study_path, expected_values, expected_investment_solution):
         rtol=RELATIVE_TOLERANCE,
     )
 
-    assert_convergence(solution, options_data)
+    assert_convergence(solution, options_data, method)
 
     for investment in expected_investment_solution.keys():
         assert investment in investment_solution.keys(), (
@@ -347,7 +352,8 @@ def test_full_study_long_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root, 1)
+    launch_xpansion(install_dir, tmp_study,
+                    BendersMethod.BENDERS, allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -369,7 +375,8 @@ def test_full_study_long_mpi(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study,
+                    BendersMethod.BENDERS, allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -535,7 +542,8 @@ def test_full_study_medium_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root, 1)
+    launch_xpansion(install_dir, tmp_study,
+                    BendersMethod.BENDERS, allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -557,7 +565,8 @@ def test_full_study_medium_parallel(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study,
+                    BendersMethod.BENDERS, allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -622,7 +631,7 @@ def test_full_study_short_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "benders",
+    launch_xpansion(install_dir, tmp_study, BendersMethod.BENDERS,
                     allow_run_as_root, nproc=1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
@@ -645,7 +654,33 @@ def test_full_study_short_parallel(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, "benders", allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study,
+                    BendersMethod.BENDERS, allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
+    verify_study_update(
+        tmp_study, expected_investment_solution, antares_version)
+
+
+@pytest.mark.parametrize(
+    parameters_names,
+    short_parameters_values,
+)
+@pytest.mark.short_benders_by_batch_mpi
+def test_full_study_short_benders_by_batch_parallel(
+    install_dir,
+    allow_run_as_root,
+    study_path,
+    expected_values,
+    expected_investment_solution,
+    tmp_path,
+    antares_version,
+):
+    tmp_study = tmp_path / study_path.name
+    shutil.copytree(study_path, tmp_study)
+    method = BendersMethod.BENDERS_BY_BATCH
+    launch_xpansion(install_dir, tmp_study,
+                    method, allow_run_as_root)
+    verify_solution(tmp_study, expected_values,
+                    expected_investment_solution, method)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
