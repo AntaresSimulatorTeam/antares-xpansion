@@ -1,4 +1,5 @@
 #include "define_datas.hpp"
+
 #include <filesystem>
 
 void fill_datas(AllDatas& datas) {
@@ -227,7 +228,7 @@ void fill_datas(AllDatas& datas) {
   //==================================================================
   // 6. NETWORK instance -- SubProblem1
   auto net_sp1 = InstanceData();
-  net_sp1._path = data_test_dir / "mini_network" / "SubProblem1.mps";
+  net_sp1._path = data_test_dir / "mini_network" / "SP1.mps";
   net_sp1._ncols = 4;
   net_sp1._nintegervars = 0;
   net_sp1._nrows = 3;
@@ -257,7 +258,7 @@ void fill_datas(AllDatas& datas) {
   //==================================================================
   // 7. NETWORK instance -- SubProblem2
   auto net_sp2 = InstanceData();
-  net_sp2._path = data_test_dir / "mini_network" / "SubProblem2.mps";
+  net_sp2._path = data_test_dir / "mini_network" / "SP2.mps";
   net_sp2._ncols = 4;
   net_sp2._nintegervars = 0;
   net_sp2._nrows = 3;

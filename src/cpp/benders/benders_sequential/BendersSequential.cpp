@@ -19,12 +19,7 @@
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger logger, Writer writer)
-    : BendersBase(options, std::move(logger), std::move(writer)) {
-  if (options.MPS_IN_ZIP) {
-    reader_.SetArchivePath(GetMpsZipPath());
-    reader_.Open();
-  }
-}
+    : BendersBase(options, std::move(logger), std::move(writer)) {}
 
 void BendersSequential::initialize_problems() {
   match_problem_to_id();
@@ -35,15 +30,8 @@ void BendersSequential::initialize_problems() {
   for (const auto &problem : coupling_map) {
     const auto subProblemFilePath = GetSubproblemPath(problem.first);
 
-    if (Options().MPS_IN_ZIP)
-      reader_.ExtractFile(subProblemFilePath.filename());
     addSubproblem(problem);
     AddSubproblemName(problem.first);
-    std::filesystem::remove(subProblemFilePath);
-  }
-  if (Options().MPS_IN_ZIP) {
-    reader_.Close();
-    reader_.Delete();
   }
 }
 

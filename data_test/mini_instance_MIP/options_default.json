@@ -12,7 +12,5 @@
      "CSV_NAME": "benders_output_trace",
      "BOUND_ALPHA": true,
      "JSON_FILE": "./expansion/out.json",
-     "LAST_ITERATION_JSON_FILE": "./expansion/last_iteration.json",
-     "MPS_ZIP_FILE": "MPS_ZIP_FILE.zip",
-     "MPS_IN_ZIP":  true
+     "LAST_ITERATION_JSON_FILE": "./expansion/last_iteration.json"
 }
