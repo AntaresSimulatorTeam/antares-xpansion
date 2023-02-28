@@ -163,13 +163,14 @@ void BendersByBatch::build_cut(
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
 
   for (const auto &subproblem_map : gathered_subproblem_map) {
-    for (auto &&[_, subproblem_data] : subproblem_data_map) {
+    for (auto &&[_, subproblem_data] : subproblem_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
     }
+  }
+
+  for (const auto &subproblem_map : gathered_subproblem_map) {
     build_cut_full(subproblem_map);
   }
-  // TODO
-  SetSubproblemTimers(timer.elapsed());
 }
 
 /*!
@@ -197,32 +198,6 @@ void BendersByBatch::getSubproblemCut(
                          name_subproblemWorkerPtr.first) !=
                batch_sub_problems.cend();
       });
-  /* std::mutex m;
-   selectPolicy(
-       [this, &nameAndWorkers, &m, &subproblem_data_map, &sum](auto &policy) {
-         std::for_each(
-             policy, nameAndWorkers.begin(), nameAndWorkers.end(),
-             [this, &m, &subproblem_data_map,
-              &sum](const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
-               const auto &[name, worker] = kvp;
-               Timer subproblem_timer;
-               SubProblemData subproblem_data;
-               worker->fix_to(_data.x_cut);
-               worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
-                             Options().LAST_MASTER_MPS + MPS_SUFFIX);
-               worker->get_value(
-                   subproblem_data.subproblem_cost);  // solution phi(x,s)
-               worker->get_subgradient(
-                   subproblem_data.var_name_and_subgradient);  // dual pi_s
-               *sum += subproblem_data.subproblem_cost -
-                       GetAlpha_i()[ProblemToId(name)];
-               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
-               subproblem_data.subproblem_timer = subproblem_timer.elapsed();
-               std::lock_guard guard(m);
-               subproblem_data_map[name] = subproblem_data;
-             });
-       },
-       shouldParallelize());*/
 
   for (const auto &[name, worker] : nameAndWorkers) {
     Timer subproblem_timer;
