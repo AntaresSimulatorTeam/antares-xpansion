@@ -61,7 +61,7 @@ class BendersMpi : public BendersBase {
   void PreRunInitialization();
   int Rank() const { return _world.rank(); }
   template <typename T>
-  void BroadCast(T& value, int root) {
+  void BroadCast(T &value, int root) {
     mpi::broadcast(_world, value, root);
   }
   template <typename T>
@@ -74,5 +74,10 @@ class BendersMpi : public BendersBase {
   }
   void BuildMasterProblem();
   int WorldSize() const { return _world.size(); }
-  void Barrier() {  _world.barrier(); }
+  void Barrier() { _world.barrier(); }
+
+  template <typename T, typename Op>
+  void Reduce(const T &in_value, T &out_value, Op op, int root) {
+    mpi::reduce(_world, in_value, out_value, op, root);
+  }
 };

@@ -1,6 +1,7 @@
 #include "BendersByBatch.h"
 
 #include <algorithm>
+#include <functional>
 #include <mutex>
 #include <numeric>
 
@@ -98,7 +99,6 @@ void BendersByBatch::run() {
     BroadcastSingleSubpbCostsUnderApprox();
     BroadCast(random_batch_permutation_.data(),
               random_batch_permutation_.size(), rank_0);
-    // }
     batch_counter = 0;
 
     while (batch_counter < number_of_batch) {
@@ -106,16 +106,12 @@ void BendersByBatch::run() {
       const auto &batch = batch_collection_.GetBatchFromId(current_batch_id);
       const auto &batch_sub_problems = batch.sub_problem_names;
       double sum = 0;
+      double result = 0;
       build_cut(batch_sub_problems, &sum);
-      std::vector<double> vect_of_sum;
-      // voir avec boost::mpi::reduce
-      Gather(sum, vect_of_sum, rank_0);
-      Barrier();
+      Reduce(sum, result, std::plus<double>(), rank_0);
       if (Rank() == rank_0) {
         number_of_sub_problem_resolved += batch_sub_problems.size();
-
-        remaining_epsilon -=
-            std::reduce(vect_of_sum.begin(), vect_of_sum.end());
+        remaining_epsilon -= result;
         UpdateTrace();
       }
       BroadCast(remaining_epsilon, rank_0);
@@ -125,12 +121,8 @@ void BendersByBatch::run() {
         break;
     }
     BroadCast(batch_counter, rank_0);
-    // }
-    // Barrier();
 
-    // if (Rank() == rank_0) {
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
-    // }
   }
   if (Rank() == rank_0) {
     compute_ub();
@@ -155,7 +147,6 @@ void BendersByBatch::run() {
 void BendersByBatch::build_cut(
     const std::vector<std::string> &batch_sub_problems, double *sum) {
   SubProblemDataMap subproblem_data_map;
-  // AllCutPackage all_package;
   Timer timer;
   getSubproblemCut(subproblem_data_map, batch_sub_problems, sum);
 
@@ -211,7 +202,6 @@ void BendersByBatch::getSubproblemCut(
     *sum += subproblem_data.subproblem_cost - GetAlpha_i()[ProblemToId(name)];
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
-    // std::lock_guard guard(m);
     subproblem_data_map[name] = subproblem_data;
   }
 }
