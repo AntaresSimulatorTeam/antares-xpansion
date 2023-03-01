@@ -14,8 +14,8 @@ BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
                                mpi::communicator &world)
     : BendersMpi(options, logger, writer, env, world) {}
 
-void BendersByBatch::initialize_problems() {
-  match_problem_to_id();
+void BendersByBatch::InitializeProblems() {
+  MatchProblemToId();
 
   BuildMasterProblem();
   const auto &coupling_map_size = coupling_map.size();
@@ -40,7 +40,7 @@ void BendersByBatch::initialize_problems() {
           Rank()) {  // Assign  [problemNumber % processCount] to processID
 
         const auto subProblemFilePath = GetSubproblemPath(problem_name);
-        addSubproblem({problem_name, coupling_map[problem_name]});
+        AddSubproblem({problem_name, coupling_map[problem_name]});
         AddSubproblemName(problem_name);
       }
       problem_count++;
@@ -56,7 +56,7 @@ void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
   BroadCast(single_subpb_costs_under_approx.data(), _data.nsubproblem, rank_0);
   SetAlpha_i(single_subpb_costs_under_approx);
 }
-void BendersByBatch::run() {
+void BendersByBatch::Run() {
   PreRunInitialization();
 
   auto number_of_batch = batch_collection_.NumberOfBatch();
@@ -74,7 +74,7 @@ void BendersByBatch::run() {
     Timer timer_master;
 
     if (Rank() == rank_0) {
-      if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+      if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
         _logger->LogAtSwitchToInteger();
         ActivateIntegrityConstraints();
         ResetDataPostRelaxation();
@@ -104,7 +104,7 @@ void BendersByBatch::run() {
       const auto &batch_sub_problems = batch.sub_problem_names;
       double sum = 0;
       double result = 0;
-      build_cut(batch_sub_problems, &sum);
+      BuildCut(batch_sub_problems, &sum);
       Reduce(sum, result, std::plus<double>(), rank_0);
       if (Rank() == rank_0) {
         number_of_sub_problem_resolved += batch_sub_problems.size();
@@ -135,17 +135,15 @@ void BendersByBatch::run() {
 }
 
 /*!
- * \brief Build subproblem cut and store it in the BendersSequential trace
- *
- * Method to build subproblem cuts, store them in the BendersSequential trace
+ * \brief Build subproblem cut
+ * Method to build subproblem cuts
  * and add them to the Master problem
- *
  */
-void BendersByBatch::build_cut(
+void BendersByBatch::BuildCut(
     const std::vector<std::string> &batch_sub_problems, double *sum) {
   SubProblemDataMap subproblem_data_map;
   Timer timer;
-  getSubproblemCut(subproblem_data_map, batch_sub_problems, sum);
+  GetSubproblemCut(subproblem_data_map, batch_sub_problems, sum);
 
   std::vector<SubProblemDataMap> gathered_subproblem_map;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
@@ -157,7 +155,7 @@ void BendersByBatch::build_cut(
   }
 
   for (const auto &subproblem_map : gathered_subproblem_map) {
-    build_cut_full(subproblem_map);
+    BuildCutFull(subproblem_map);
   }
 }
 
@@ -169,12 +167,10 @@ void BendersByBatch::build_cut(
  *
  *  \param subproblem_data_map : map storing for each subproblem its cut
  */
-void BendersByBatch::getSubproblemCut(
+void BendersByBatch::GetSubproblemCut(
     SubProblemDataMap &subproblem_data_map,
     const std::vector<std::string> &batch_sub_problems, double *sum) const {
   *sum = 0;
-  // With gcc9 there was no parallelisation when iterating on the map directly
-  // so with project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
   const auto &sub_pblm_map = GetSubProblemMap();
   std::copy_if(

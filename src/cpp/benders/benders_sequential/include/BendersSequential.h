@@ -15,12 +15,12 @@ class BendersSequential : public BendersBase {
                              Writer writer);
   virtual ~BendersSequential() = default;
   virtual void launch();
-  virtual void build_cut();
-  virtual void initialize_problems();
+  virtual void BuildCut();
+  virtual void InitializeProblems();
   std::string BendersName() const { return "Sequential"; }
 
  protected:
   virtual void free();
-  virtual void run();
+  virtual void Run();
   [[nodiscard]] bool shouldParallelize() const final { return true; }
 };

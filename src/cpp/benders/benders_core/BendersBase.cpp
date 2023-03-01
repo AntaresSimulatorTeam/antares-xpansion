@@ -223,7 +223,7 @@ bool BendersBase::is_initial_relaxation_requested() const {
           _options.SEPARATION_PARAM < 1);
 }
 
-bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
+bool BendersBase::SwitchToIntegerMaster(bool is_relaxed) const {
   return is_initial_relaxation_requested() && is_relaxed &&
          ShouldRelaxationStop();
 }
@@ -342,7 +342,7 @@ void BendersBase::compute_ub() {
  *
  *  \param subproblem_cut_package : map storing for each subproblem its cut
  */
-void BendersBase::getSubproblemCut(SubProblemDataMap &subproblem_data_map) {
+void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
   // With gcc9 there was no parallelisation when iterating on the map directly
   // so with project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
@@ -439,7 +439,7 @@ void BendersBase::compute_cut_aggregate(
  *
  *  \param all_package : storage of every subproblem information
  */
-void BendersBase::build_cut_full(const SubProblemDataMap &subproblem_data_map) {
+void BendersBase::BuildCutFull(const SubProblemDataMap &subproblem_data_map) {
   check_status(subproblem_data_map);
   if (_options.AGGREGATION) {
     compute_cut_aggregate(subproblem_data_map);
@@ -699,7 +699,7 @@ void BendersBase::reset_master(WorkerMaster *worker_master) {
 void BendersBase::free_master() const { _master->free(); }
 WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
-void BendersBase::addSubproblem(
+void BendersBase::AddSubproblem(
     const std::pair<std::string, VariableMap> &kvp) {
   subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
       kvp.second, GetSubproblemPath(kvp.first),
@@ -710,7 +710,7 @@ void BendersBase::addSubproblem(
 void BendersBase::free_subproblems() {
   for (auto &ptr : subproblem_map) ptr.second->free();
 }
-void BendersBase::match_problem_to_id() {
+void BendersBase::MatchProblemToId() {
   int count = 0;
   for (const auto &problem : coupling_map) {
     _problem_to_id[problem.first] = count;

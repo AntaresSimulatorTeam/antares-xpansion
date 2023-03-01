@@ -12,16 +12,17 @@ class BendersByBatch : public BendersMpi {
                  Writer writer, mpi::environment &env,
                  mpi::communicator &world);
   ~BendersByBatch() override = default;
-  void run() override;
-  void build_cut(const std::vector<std::string> &batch_sub_problems,
-                 double *sum);
+  void Run() override;
+  void BuildCut(const std::vector<std::string> &batch_sub_problems,
+                double *sum);
   std::string BendersName() const { return "By Batch"; }
-  // void launch() override;
+
  protected:
-  void initialize_problems() override;
+  void InitializeProblems() override;
   void BroadcastSingleSubpbCostsUnderApprox();
+
  private:
-  void getSubproblemCut(SubProblemDataMap &subproblem_cut_package,
+  void GetSubproblemCut(SubProblemDataMap &subproblem_cut_package,
                         const std::vector<std::string> &batch_sub_problems,
                         double *sum) const;
   BatchCollection batch_collection_;

@@ -27,8 +27,8 @@ class BendersMpi : public BendersBase {
 
  protected:
   void free() override;
-  void run() override;
-  void initialize_problems() override;
+  void Run() override;
+  void InitializeProblems() override;
   void BroadcastXCut();
 
  private:

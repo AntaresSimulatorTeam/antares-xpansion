@@ -21,8 +21,8 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
  *
  */
 
-void BendersMpi::initialize_problems() {
-  match_problem_to_id();
+void BendersMpi::InitializeProblems() {
+  MatchProblemToId();
 
   BuildMasterProblem();
   int current_problem_id = 0;
@@ -34,7 +34,7 @@ void BendersMpi::initialize_problems() {
         _world.rank()) {  // Assign  [problemNumber % processCount] to processID
 
       const auto subProblemFilePath = GetSubproblemPath(problem.first);
-      addSubproblem(problem);
+      AddSubproblem(problem);
       AddSubproblemName(problem.first);
     }
     current_problem_id++;
@@ -68,7 +68,7 @@ void BendersMpi::step_1_solve_master() {
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
   if (_world.rank() == rank_0) {
-    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+    if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
       _logger->LogAtSwitchToInteger();
       ActivateIntegrityConstraints();
       ResetDataPostRelaxation();
@@ -131,7 +131,7 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
 
 SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
   SubProblemDataMap subproblem_data_map;
-  getSubproblemCut(subproblem_data_map);
+  GetSubproblemCut(subproblem_data_map);
   return subproblem_data_map;
 }
 
@@ -148,7 +148,7 @@ void BendersMpi::master_build_cuts(
 
   _data.ub = 0;
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
-    build_cut_full(subproblem_data_map);
+    BuildCutFull(subproblem_data_map);
   }
   _logger->log_subproblems_solving_duration(GetSubproblemTimers());
 }
@@ -208,7 +208,7 @@ void BendersMpi::free() {
  *  Method to run Benders algorithm in parallel
  *
  */
-void BendersMpi::run() {
+void BendersMpi::Run() {
   PreRunInitialization();
   while (!_data.stop) {
     Timer timer_master;
@@ -265,10 +265,10 @@ void BendersMpi::launch() {
   build_input_map();
   _world.barrier();
 
-  initialize_problems();
+  InitializeProblems();
   _world.barrier();
 
-  run();
+  Run();
   _world.barrier();
 
   post_run_actions();
