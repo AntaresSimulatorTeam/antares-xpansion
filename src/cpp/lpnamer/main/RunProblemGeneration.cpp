@@ -59,7 +59,7 @@ void RunProblemGeneration(
     const std::string& additionalConstraintFilename_l,
     const std::filesystem::path& antares_archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-    const std::filesystem::path& log_file_path, bool zip_mps,
+    const std::filesystem::path& log_file_path,
     const std::filesystem::path& weights_file) {
   (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
@@ -93,7 +93,7 @@ void RunProblemGeneration(
   std::string solver_name = "CBC";
   std::vector<ActiveLink> links = linkBuilder.getLinks();
   LinkProblemsGenerator linkProblemsGenerator(links, solver_name, logger,
-                                              log_file_path, zip_mps);
+                                              log_file_path);
   linkProblemsGenerator.treatloop(xpansion_output_dir, antares_archive_path,
                                   couplings);
 

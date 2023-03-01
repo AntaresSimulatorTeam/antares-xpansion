@@ -18,8 +18,6 @@
 
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
-const std::string MPS_ZIP_FILE{"MPS_ZIP_FILE"};
-const std::string ZIP_EXT{".zip"};
 const std::string STUDY_FILE{"study.antares"};
 typedef std::pair<std::string, std::filesystem::path>
     CandidateNameAndMpsFilePath;
@@ -31,12 +29,11 @@ class LinkProblemsGenerator {
   LinkProblemsGenerator(
       const std::vector<ActiveLink>& links, const std::string& solver_name,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      const std::filesystem::path& log_file_path, bool zip_mps)
+      const std::filesystem::path& log_file_path)
       : _links(links),
         _solver_name(solver_name),
         logger_(logger),
-        log_file_path_(log_file_path),
-        zip_mps_(zip_mps) {}
+        log_file_path_(log_file_path) {}
 
   void treatloop(const std::filesystem::path& root,
                  const std::filesystem::path& archivePath,
@@ -45,9 +42,6 @@ class LinkProblemsGenerator {
  private:
   void treat(const std::filesystem::path& root, ProblemData const&,
              Couplings& couplings, ArchiveReader& reader) const;
-  void treat(const std::filesystem::path& root, ProblemData const&,
-             Couplings& couplings, ArchiveReader& reader,
-             ArchiveWriter& writer) const;
 
   const std::vector<ActiveLink>& _links;
   std::string _solver_name;
@@ -55,5 +49,4 @@ class LinkProblemsGenerator {
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   mutable std::mutex coupling_mutex_;
   std::filesystem::path log_file_path_;
-  bool zip_mps_ = false;
 };
