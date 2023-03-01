@@ -13,15 +13,10 @@ class BendersMainFactory {
   char** argv_;
   BENDERSMETHOD method_;
   std::filesystem::path options_file_;
-
- public:
-  explicit BendersMainFactory(int argc, char** argv,
-                              const BENDERSMETHOD& method);
-  explicit BendersMainFactory(int argc, char** argv,
-                              const BENDERSMETHOD& method,
-                              const std::filesystem::path& options_file);
   boost::mpi::environment* penv_ = nullptr;
   boost::mpi::communicator* pworld_ = nullptr;
+
+ public:
   explicit BendersMainFactory(int argc, char** argv,
                               const BENDERSMETHOD& method,
                               boost::mpi::environment& env,

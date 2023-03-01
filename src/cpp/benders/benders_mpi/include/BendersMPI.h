@@ -22,7 +22,7 @@ class BendersMpi : public BendersBase {
              mpi::environment &env, mpi::communicator &world);
 
   void launch() override;
-  std::string BendersName() const { return "Mpi"; }
+  std::string BendersName() const { return "Benders mpi"; }
   const unsigned int rank_0 = 0;
 
  protected:
