@@ -56,7 +56,6 @@ class BendersMpi : public BendersBase {
   mpi::communicator &_world;
 
  protected:
-  ArchiveReader reader_;
   [[nodiscard]] bool shouldParallelize() const final { return false; }
   void PreRunInitialization();
   int Rank() const { return _world.rank(); }
