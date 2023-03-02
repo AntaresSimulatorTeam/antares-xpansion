@@ -65,13 +65,12 @@ void BendersByBatch::Run() {
 
   auto current_batch_id = 0;
   int number_of_sub_problem_resolved = 0;
-
+  double cumulative_subproblems_timer_per_iter = 0;
   while (batch_counter < number_of_batch) {
     _data.it++;
     _data.ub = 0;
     SetSubproblemCost(0);
     auto remaining_epsilon = AbsoluteGap();
-    Timer timer_master;
 
     if (Rank() == rank_0) {
       if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
@@ -97,6 +96,7 @@ void BendersByBatch::Run() {
     BroadCast(random_batch_permutation_.data(),
               random_batch_permutation_.size(), rank_0);
     batch_counter = 0;
+    cumulative_subproblems_timer_per_iter = 0;
 
     while (batch_counter < number_of_batch) {
       current_batch_id = random_batch_permutation_[batch_counter];
@@ -109,6 +109,9 @@ void BendersByBatch::Run() {
       Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
              batch_subproblems_costs_contribution_in_gap, std::plus<double>(),
              rank_0);
+      Reduce(GetSubproblemTimers(), cumulative_subproblems_timer_per_iter,
+             std::plus<double>(), rank_0);
+
       if (Rank() == rank_0) {
         number_of_sub_problem_resolved += batch_sub_problems.size();
         remaining_epsilon -= batch_subproblems_costs_contribution_in_gap;
@@ -120,8 +123,9 @@ void BendersByBatch::Run() {
         break;
     }
     BroadCast(batch_counter, rank_0);
-
+    SetSubproblemTimers(cumulative_subproblems_timer_per_iter);
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
+    _logger->log_subproblems_solving_duration(GetSubproblemTimers());
   }
   if (Rank() == rank_0) {
     compute_ub();
@@ -146,7 +150,7 @@ void BendersByBatch::BuildCut(
     const std::vector<std::string> &batch_sub_problems,
     double *batch_subproblems_costs_contribution_in_gap_per_proc) {
   SubProblemDataMap subproblem_data_map;
-  Timer timer;
+  Timer subproblems_timer_per_proc;
   GetSubproblemCut(subproblem_data_map, batch_sub_problems,
                    batch_subproblems_costs_contribution_in_gap_per_proc);
 
@@ -158,7 +162,7 @@ void BendersByBatch::BuildCut(
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
     }
   }
-
+  SetSubproblemTimers(subproblems_timer_per_proc.elapsed());
   for (const auto &subproblem_map : gathered_subproblem_map) {
     BuildCutFull(subproblem_map);
   }
