@@ -1,6 +1,7 @@
 name: Centos7 Build
 
 on:
+  merge_group:
   push:
     branches:
       - main
