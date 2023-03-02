@@ -2,16 +2,17 @@
 
 #include <algorithm>
 #include <execution>
+#include <utility>
 
 #include "IProblemProviderPort.h"
 #include "IProblemVariablesProviderPort.h"
 #include "IProblemWriter.h"
 #include "MPSFileProblemProviderAdapter.h"
+#include "MpsTxtWriter.h"
 #include "ProblemVariablesFileAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
-#include "ZipProblemProviderAdapter.h"
-#include "MpsTxtWriter.h"
 #include "VariableFileReader.h"
+#include "ZipProblemProviderAdapter.h"
 #include "common_lpnamer.h"
 #include "helpers/StringUtils.h"
 #include "solver_utils.h"
@@ -34,29 +35,8 @@ void LinkProblemsGenerator::treat(
   std::shared_ptr<Problem> in_prblm =
       problem_provider->provide_problem(_solver_name);
 
-  ProblemVariables problem_variables = variable_provider->Provide();
-  auto problem_modifier = ProblemModifier(logger_);
-  // auto path =
-  // "/tmp/pytest-of-marechaljas/zip-1/test_full_study_short_sequenti0/link-profile-with-empty-week/output/out/lp/zip/pre_change"
-  // + in_prblm->_name; in_prblm->write_prob_mps(path);
-  solver_rename_vars(in_prblm, problem_variables.variable_names);
-
-  in_prblm = problem_modifier.changeProblem(
-      in_prblm, _links, problem_variables.ntc_columns,
-      problem_variables.direct_cost_columns,
-      problem_variables.indirect_cost_columns);
-
-  // couplings creation
-  for (const ActiveLink &link : _links) {
-    for (const Candidate &candidate : link.getCandidates()) {
-      if (problem_modifier.has_candidate_col_id(candidate.get_name())) {
-        std::lock_guard guard(coupling_mutex_);
-        couplings[{candidate.get_name(), problem_name}] =
-            problem_modifier.get_candidate_col_id(candidate.get_name());
-      }
-    }
-  }
-  writer->Write_problem(in_prblm);
+  treat(problem_name, couplings, std::move(writer), in_prblm,
+        std::move(variable_provider));
 }
 
 void LinkProblemsGenerator::treat(
