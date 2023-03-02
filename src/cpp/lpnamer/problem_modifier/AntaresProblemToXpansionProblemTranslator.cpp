@@ -19,8 +19,7 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
 
   std::vector<int> tmp(constant->NombreDeVariables, 0);
   std::vector<char> coltypes(constant->NombreDeVariables, 'C');
-  // solver_addcols(problem, hebdo->CoutLineaire, tmp, {}, {}, hebdo->Xmin,
-  // hebdo->Xmax, coltypes, {});
+
   problem->add_cols(constant->NombreDeVariables, 0, hebdo->CoutLineaire.data(),
                     tmp.data(), {}, {}, hebdo->Xmin.data(), hebdo->Xmax.data());
   problem->add_rows(
