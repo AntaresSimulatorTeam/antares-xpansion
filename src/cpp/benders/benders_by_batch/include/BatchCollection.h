@@ -28,7 +28,7 @@ class BatchCollection {
  public:
   BatchCollection() = default;
   BatchCollection(const std::vector<std::string> &sub_problem_names,
-                  size_t size_of_sub_problems_collection, Logger logger);
+                  size_t batch_size, Logger logger);
   void BuildBatches();
 
   void SetLogger(Logger logger) { logger_ = std::move(logger); }

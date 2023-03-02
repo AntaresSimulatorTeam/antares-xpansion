@@ -19,12 +19,14 @@ All tests are associated to a label and multiple labels can be defined. You can 
 | `output_writer`              | `unit`  | Unit test for the output writer.                                               |
 | `helpers_test`               | `unit`  | Unit test for helpers (json reader, AntaresVersionProvider).                   |
 | `lpnamer_end_to_end`         | `lpnamer` `end_to_end`  | End-to-end tests for lpnamer.                                                  |
-| `examples_short_sequential`  | `short` `short_sequential` `end_to_end` | Non-parallel end-to-end tests with examples antares studies (short duration).  |
-| `examples_short_mpi`         | `short` `short_mpi` `end_to_end` | Parallel end-to-end tests with examples antares study (short duration).        |
-| `examples_medium_sequential` | `medium` `medium_sequential` `end_to_end` | Non-parallel end-to-end tests with examples antares studies (medium duration). |
-| `examples_medium_mpi`        | `medium` `medium_mpi` `end_to_end` | Parallel end-to-end tests with examples antares study (medium duration).       |
-| `examples_long_sequential`   | `long` `long_sequential` `end_to_end` | Non-parallel end-to-end tests with examples antares studies (long duration).   |
-| `examples_long_mpi`          | `long` `long_mpi` `end_to_end` | Parallel end-to-end tests with examples antares studies (long duration).       |
+| `examples_short_sequential`  | `short` `short_sequential` `end_to_end` | Non-parallel end-to-end tests using benders algorithm on antares studies (short duration).  |
+| `examples_short_mpi`         | `short` `short_mpi` `end_to_end` | Parallel end-to-end tests using benders algorithm on antares studies (short duration).        |
+| `examples_short_benders_by_batch_mpi`         | `short` `short_mpi` `end_to_end` `benders_by_batch` | Parallel end-to-end tests using benders by batch algorithm on antares studies (short duration).        |
+| `examples_medium_sequential` | `medium` `medium_sequential` `end_to_end` | Non-parallel end-to-end tests using benders algorithm on antares studies (medium duration). |
+| `examples_medium_mpi`        | `medium` `medium_mpi` `end_to_end` | Parallel end-to-end tests using benders algorithm on antares studies (medium duration).       |
+| `examples_medium_benders_by_batch_mpi`        | `medium` `medium_mpi` `end_to_end` `benders_by_batch` | Parallel end-to-end tests using benders by batch algorithm on antares studies (medium duration).       |
+| `examples_long_sequential`   | `long` `long_sequential` `end_to_end` | Non-parallel end-to-end tests using benders algorithm on antares studies (long duration).   |
+| `examples_long_mpi`          | `long` `long_mpi` `end_to_end` | Parallel end-to-end tests using benders algorithm on antares studies (long duration).       |
 | `mpibenders`                 | `benders`, `benders-mpi` `end_to_end` | End-to-end tests for benders mpi optimization.                                 |
 | `sequential`                 | `benders` `benders-sequential` `end_to_end` | End-to-end tests for benders sequential optimization.                          |
 | `merge_mps`                  | `benders` `merge-mps` `end_to_end` | End-to-end tests for merge mps optimization.                                   |
