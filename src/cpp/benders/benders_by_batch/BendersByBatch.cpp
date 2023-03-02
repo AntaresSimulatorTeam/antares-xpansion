@@ -102,13 +102,16 @@ void BendersByBatch::Run() {
       current_batch_id = random_batch_permutation_[batch_counter];
       const auto &batch = batch_collection_.GetBatchFromId(current_batch_id);
       const auto &batch_sub_problems = batch.sub_problem_names;
-      double sum = 0;
-      double result = 0;
-      BuildCut(batch_sub_problems, &sum);
-      Reduce(sum, result, std::plus<double>(), rank_0);
+      double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
+      double batch_subproblems_costs_contribution_in_gap = 0;
+      BuildCut(batch_sub_problems,
+               &batch_subproblems_costs_contribution_in_gap_per_proc);
+      Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
+             batch_subproblems_costs_contribution_in_gap, std::plus<double>(),
+             rank_0);
       if (Rank() == rank_0) {
         number_of_sub_problem_resolved += batch_sub_problems.size();
-        remaining_epsilon -= result;
+        remaining_epsilon -= batch_subproblems_costs_contribution_in_gap;
       }
       BroadCast(remaining_epsilon, rank_0);
       if (remaining_epsilon > 0) {
@@ -140,10 +143,12 @@ void BendersByBatch::Run() {
  * and add them to the Master problem
  */
 void BendersByBatch::BuildCut(
-    const std::vector<std::string> &batch_sub_problems, double *sum) {
+    const std::vector<std::string> &batch_sub_problems,
+    double *batch_subproblems_costs_contribution_in_gap_per_proc) {
   SubProblemDataMap subproblem_data_map;
   Timer timer;
-  GetSubproblemCut(subproblem_data_map, batch_sub_problems, sum);
+  GetSubproblemCut(subproblem_data_map, batch_sub_problems,
+                   batch_subproblems_costs_contribution_in_gap_per_proc);
 
   std::vector<SubProblemDataMap> gathered_subproblem_map;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
@@ -169,32 +174,27 @@ void BendersByBatch::BuildCut(
  */
 void BendersByBatch::GetSubproblemCut(
     SubProblemDataMap &subproblem_data_map,
-    const std::vector<std::string> &batch_sub_problems, double *sum) const {
-  *sum = 0;
-  std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
+    const std::vector<std::string> &batch_sub_problems,
+    double *batch_subproblems_costs_contribution_in_gap_per_proc) const {
+  *batch_subproblems_costs_contribution_in_gap_per_proc = 0;
   const auto &sub_pblm_map = GetSubProblemMap();
-  std::copy_if(
-      sub_pblm_map.cbegin(), sub_pblm_map.cend(),
-      std::back_inserter(nameAndWorkers),
-      [&batch_sub_problems](const std::pair<std::string, SubproblemWorkerPtr>
-                                &name_subproblemWorkerPtr) {
-        return std::find(batch_sub_problems.cbegin(), batch_sub_problems.cend(),
-                         name_subproblemWorkerPtr.first) !=
-               batch_sub_problems.cend();
-      });
 
-  for (const auto &[name, worker] : nameAndWorkers) {
-    Timer subproblem_timer;
-    SubProblemData subproblem_data;
-    worker->fix_to(_data.x_cut);
-    worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
-                  Options().LAST_MASTER_MPS + MPS_SUFFIX);
-    worker->get_value(subproblem_data.subproblem_cost);  // solution phi(x,s)
-    worker->get_subgradient(
-        subproblem_data.var_name_and_subgradient);  // dual pi_s
-    *sum += subproblem_data.subproblem_cost - GetAlpha_i()[ProblemToId(name)];
-    worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
-    subproblem_data.subproblem_timer = subproblem_timer.elapsed();
-    subproblem_data_map[name] = subproblem_data;
+  for (const auto &[name, worker] : sub_pblm_map) {
+    if (std::find(batch_sub_problems.cbegin(), batch_sub_problems.cend(),
+                  name) != batch_sub_problems.cend()) {
+      Timer subproblem_timer;
+      SubProblemData subproblem_data;
+      worker->fix_to(_data.x_cut);
+      worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
+                    Options().LAST_MASTER_MPS + MPS_SUFFIX);
+      worker->get_value(subproblem_data.subproblem_cost);  // solution phi(x,s)
+      worker->get_subgradient(
+          subproblem_data.var_name_and_subgradient);  // dual pi_s
+      *batch_subproblems_costs_contribution_in_gap_per_proc +=
+          subproblem_data.subproblem_cost - GetAlpha_i()[ProblemToId(name)];
+      worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+      subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+      subproblem_data_map[name] = subproblem_data;
+    }
   }
 }
