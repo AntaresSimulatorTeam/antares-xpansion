@@ -46,9 +46,18 @@ void UserFile::log_master_solving_duration(double durationInSeconds) {
   _file.flush();
 }
 
-void UserFile::log_subproblems_solving_duration(double durationInSeconds) {
-  _file << LINE_PREFIX << indent_1 << "Subproblems solved in "
-        << durationInSeconds << " s" << std::endl;
+void UserFile::LogSubproblemsSolvingWalltime(double durationInSeconds) {
+  _file << LINE_PREFIX << indent_1
+        << "Subproblems solved in (walltime): " << durationInSeconds << " s"
+        << std::endl;
+  _file.flush();
+}
+
+void UserFile::LogSubproblemsSolvingCumulativeCpuTime(
+    double durationInSeconds) {
+  _file << LINE_PREFIX << indent_1
+        << "Subproblems solved in (cumulative cpu): " << durationInSeconds
+        << " s" << std::endl;
   _file.flush();
 }
 
@@ -104,7 +113,7 @@ void UserFile::restart_best_iterations_infos(
   _file << LINE_PREFIX << indent_1 << "Best Iteration Infos: " << std::endl;
   log_master_solving_duration(best_iteration_data.master_time);
   log_iteration_candidates(best_iteration_data);
-  log_subproblems_solving_duration(best_iteration_data.subproblem_time);
+  LogSubproblemsSolvingWalltime(best_iteration_data.subproblem_time);
   log_at_iteration_end(best_iteration_data);
 }
 

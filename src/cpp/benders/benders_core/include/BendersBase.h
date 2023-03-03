@@ -86,8 +86,12 @@ class BendersBase {
   void set_x_cut(const Point &x0);
   [[nodiscard]] double get_timer_master() const;
   void set_timer_master(const double &timer_master);
-  [[nodiscard]] double GetSubproblemTimers() const;
-  void SetSubproblemTimers(const double &subproblem_timer);
+  [[nodiscard]] double GetSubproblemsWalltime() const;
+  void SetSubproblemsWalltime(const double &duration);
+  [[nodiscard]] double GetSubproblemsCpuTime() const;
+  void SetSubproblemsCpuTime(const double &duration);
+  [[nodiscard]] double GetSubproblemsCumulativeCpuTime() const;
+  void SetSubproblemsCumulativeCpuTime(const double &duration);
   [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
   bool IsResumeMode() const;

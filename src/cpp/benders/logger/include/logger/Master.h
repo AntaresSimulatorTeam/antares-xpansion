@@ -32,7 +32,10 @@ class Master : public ILogger {
 
   void log_master_solving_duration(double durationInSeconds) override;
 
-  void log_subproblems_solving_duration(double durationInSeconds) override;
+  void LogSubproblemsSolvingWalltime(double durationInSeconds) override;
+
+  void LogSubproblemsSolvingCumulativeCpuTime(
+      double durationInSeconds) override;
 
   void log_at_iteration_end(const LogData &d) override;
 

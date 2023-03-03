@@ -106,25 +106,30 @@ void BendersMpi::solve_master_and_create_trace() {
 void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   int success = 1;
   SubProblemDataMap subproblem_data_map;
-  Timer process_timer;
+  Timer walltime;
+  Timer subproblems_timer_per_proc;
   try {
     subproblem_data_map = get_subproblem_cut_package();
+    SetSubproblemsCpuTime(subproblems_timer_per_proc.elapsed());
 
   } catch (std::exception const &ex) {
     success = 0;
     write_exception_message(ex);
   }
   check_if_some_proc_had_a_failure(success);
-  gather_subproblems_cut_package_and_build_cuts(subproblem_data_map,
-                                                process_timer);
+  gather_subproblems_cut_package_and_build_cuts(subproblem_data_map, walltime);
 }
 
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
-    const SubProblemDataMap &subproblem_data_map, const Timer &process_timer) {
+    const SubProblemDataMap &subproblem_data_map, const Timer &walltime) {
   if (!_exceptionRaised) {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
-    SetSubproblemTimers(process_timer.elapsed());
+    SetSubproblemsWalltime(walltime.elapsed());
+    double cumulative_subproblems_timer_per_iter(0);
+    Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
+           std::plus<double>(), rank_0);
+    SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
     master_build_cuts(gathered_subproblem_map);
   }
 }
@@ -150,7 +155,9 @@ void BendersMpi::master_build_cuts(
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     BuildCutFull(subproblem_data_map);
   }
-  _logger->log_subproblems_solving_duration(GetSubproblemTimers());
+  _logger->LogSubproblemsSolvingCumulativeCpuTime(
+      GetSubproblemsCumulativeCpuTime());
+  _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
 }
 
 /*!

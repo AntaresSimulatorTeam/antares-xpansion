@@ -212,7 +212,7 @@ void BendersBase::UpdateTrace() {
   LastWorkerMasterDataPtr->_min_invest =
       std::make_shared<Point>(_data.min_invest);
   LastWorkerMasterDataPtr->_master_duration = _data.timer_master;
-  LastWorkerMasterDataPtr->_subproblem_duration = _data.subproblem_timer;
+  LastWorkerMasterDataPtr->_subproblem_duration = _data.subproblems_walltime;
   LastWorkerMasterDataPtr->_invest_cost = _data.invest_cost;
   LastWorkerMasterDataPtr->_operational_cost = _data.subproblem_cost;
   LastWorkerMasterDataPtr->_valid = true;
@@ -642,7 +642,7 @@ LogData BendersBase::bendersDataToLogData(
           _options.MAX_ITERATIONS,
           data.elapsed_time,
           data.timer_master,
-          data.subproblem_timer};
+          data.subproblems_walltime};
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_name) {
   _log_name = log_name;
@@ -735,11 +735,23 @@ double BendersBase::get_timer_master() const { return _data.timer_master; }
 void BendersBase::set_timer_master(const double &timer_master) {
   _data.timer_master = timer_master;
 }
-double BendersBase::GetSubproblemTimers() const {
-  return _data.subproblem_timer;
+double BendersBase::GetSubproblemsWalltime() const {
+  return _data.subproblems_walltime;
 }
-void BendersBase::SetSubproblemTimers(const double &subproblem_timer) {
-  _data.subproblem_timer = subproblem_timer;
+void BendersBase::SetSubproblemsWalltime(const double &duration) {
+  _data.subproblems_walltime = duration;
+}
+double BendersBase::GetSubproblemsCpuTime() const {
+  return _data.subproblems_cputime;
+}
+void BendersBase::SetSubproblemsCpuTime(const double &duration) {
+  _data.subproblems_cputime = duration;
+}
+double BendersBase::GetSubproblemsCumulativeCpuTime() const {
+  return _data.subproblems_cumulative_cputime;
+}
+void BendersBase::SetSubproblemsCumulativeCpuTime(const double &duration) {
+  _data.subproblems_cumulative_cputime = duration;
 }
 double BendersBase::GetSubproblemCost() const { return _data.subproblem_cost; }
 void BendersBase::SetSubproblemCost(const double &subproblem_cost) {

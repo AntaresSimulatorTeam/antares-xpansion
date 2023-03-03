@@ -61,7 +61,7 @@ void BendersSequential::BuildCut() {
     SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
   }
 
-  SetSubproblemTimers(timer.elapsed());
+  SetSubproblemsWalltime(timer.elapsed());
   _data.ub = 0;
   BuildCutFull(subproblem_data_map);
 }
@@ -104,7 +104,7 @@ void BendersSequential::Run() {
 
     _logger->display_message("\tSolving subproblems...");
     BuildCut();
-    _logger->log_subproblems_solving_duration(GetSubproblemTimers());
+    _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
 
     compute_ub();
     update_best_ub();

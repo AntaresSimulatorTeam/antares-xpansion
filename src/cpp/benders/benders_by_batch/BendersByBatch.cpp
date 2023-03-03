@@ -104,17 +104,19 @@ void BendersByBatch::Run() {
       const auto &batch_sub_problems = batch.sub_problem_names;
       double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
       double batch_subproblems_costs_contribution_in_gap = 0;
+      Timer walltime;
       BuildCut(batch_sub_problems,
                &batch_subproblems_costs_contribution_in_gap_per_proc);
       Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
              batch_subproblems_costs_contribution_in_gap, std::plus<double>(),
              rank_0);
-      Reduce(GetSubproblemTimers(), cumulative_subproblems_timer_per_iter,
+      Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
              std::plus<double>(), rank_0);
 
       if (Rank() == rank_0) {
         number_of_sub_problem_resolved += batch_sub_problems.size();
         remaining_epsilon -= batch_subproblems_costs_contribution_in_gap;
+        SetSubproblemsWalltime(walltime.elapsed());
       }
       BroadCast(remaining_epsilon, rank_0);
       if (remaining_epsilon > 0) {
@@ -123,9 +125,11 @@ void BendersByBatch::Run() {
         break;
     }
     BroadCast(batch_counter, rank_0);
-    SetSubproblemTimers(cumulative_subproblems_timer_per_iter);
+    SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
-    _logger->log_subproblems_solving_duration(GetSubproblemTimers());
+    _logger->LogSubproblemsSolvingCumulativeCpuTime(
+        GetSubproblemsCumulativeCpuTime());
+    _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
   }
   if (Rank() == rank_0) {
     compute_ub();
@@ -154,15 +158,15 @@ void BendersByBatch::BuildCut(
   GetSubproblemCut(subproblem_data_map, batch_sub_problems,
                    batch_subproblems_costs_contribution_in_gap_per_proc);
 
+  SetSubproblemsCpuTime(subproblems_timer_per_proc.elapsed());
   std::vector<SubProblemDataMap> gathered_subproblem_map;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
-
+  SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
   for (const auto &subproblem_map : gathered_subproblem_map) {
     for (auto &&[_, subproblem_data] : subproblem_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
     }
   }
-  SetSubproblemTimers(subproblems_timer_per_proc.elapsed());
   for (const auto &subproblem_map : gathered_subproblem_map) {
     BuildCutFull(subproblem_map);
   }
