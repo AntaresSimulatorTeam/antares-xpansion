@@ -11,7 +11,7 @@ struct Batch {
   unsigned id;
   friend class boost::serialization::access;
   template <class Archive>
-  void serialize(Archive &ar, const unsigned int version) {
+  void serialize(Archive &ar, [[maybe_unused]] const unsigned int version) {
     ar &sub_problem_names;
     ar &id;
   }
@@ -45,7 +45,7 @@ class BatchCollection {
   unsigned NumberOfBatch() const { return number_of_batch_; }
   friend class boost::serialization::access;
   template <class Archive>
-  void serialize(Archive &ar, const unsigned int version) {
+  void serialize(Archive &ar, [[maybe_unused]] const unsigned int version) {
     ar &sub_problem_names_;
     ar &sub_problems_number_;
     ar &batch_size_;

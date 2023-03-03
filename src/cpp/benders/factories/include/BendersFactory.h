@@ -9,7 +9,6 @@ enum class BENDERSMETHOD { BENDERS, BENDERSBYBATCH, MERGEMPS };
 
 class BendersMainFactory {
  private:
-  int argc_;
   char** argv_;
   BENDERSMETHOD method_;
   std::filesystem::path options_file_;

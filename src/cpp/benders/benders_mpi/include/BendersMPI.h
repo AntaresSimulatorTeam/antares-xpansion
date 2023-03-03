@@ -22,7 +22,7 @@ class BendersMpi : public BendersBase {
              mpi::environment &env, mpi::communicator &world);
 
   void launch() override;
-  std::string BendersName() const { return "Benders mpi"; }
+  virtual std::string BendersName() const { return "Benders mpi"; }
   const unsigned int rank_0 = 0;
 
  protected:
@@ -60,7 +60,7 @@ class BendersMpi : public BendersBase {
   void PreRunInitialization();
   int Rank() const { return _world.rank(); }
   template <typename T>
-  void BroadCast(T &value, int root) {
+  void BroadCast(T &value, int root) const {
     mpi::broadcast(_world, value, root);
   }
   template <typename T>

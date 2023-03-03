@@ -76,7 +76,7 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
                                        const BENDERSMETHOD& method,
                                        mpi::environment& env,
                                        mpi::communicator& world)
-    : argc_(argc), argv_(argv), method_(method), penv_(&env), pworld_(&world) {
+    : argv_(argv), method_(method), penv_(&env), pworld_(&world) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
@@ -88,8 +88,7 @@ BendersMainFactory::BendersMainFactory(
     int argc, char** argv, const BENDERSMETHOD& method,
     const std::filesystem::path& options_file, mpi::environment& env,
     mpi::communicator& world)
-    : argc_(argc),
-      argv_(argv),
+    : argv_(argv),
       method_(method),
       options_file_(options_file),
       penv_(&env),
