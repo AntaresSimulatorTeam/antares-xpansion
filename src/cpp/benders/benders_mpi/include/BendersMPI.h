@@ -64,19 +64,20 @@ class BendersMpi : public BendersBase {
     mpi::broadcast(_world, value, root);
   }
   template <typename T>
-  void BroadCast(T *values, int n, int root) {
+  void BroadCast(T *values, int n, int root) const {
     mpi::broadcast(_world, values, n, root);
   }
   template <typename T>
-  void Gather(const T &value, std::vector<T> &vector_of_values, int root) {
+  void Gather(const T &value, std::vector<T> &vector_of_values,
+              int root) const {
     mpi::gather(_world, value, vector_of_values, root);
   }
   void BuildMasterProblem();
   int WorldSize() const { return _world.size(); }
-  void Barrier() { _world.barrier(); }
+  void Barrier() const { _world.barrier(); }
 
   template <typename T, typename Op>
-  void Reduce(const T &in_value, T &out_value, Op op, int root) {
+  void Reduce(const T &in_value, T &out_value, Op op, int root) const {
     mpi::reduce(_world, in_value, out_value, op, root);
   }
 };
