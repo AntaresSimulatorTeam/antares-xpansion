@@ -12,6 +12,7 @@ ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
 }
 ArchiveReader::ArchiveReader() : ArchiveIO() { Create(); }
 void ArchiveReader::Create() {
+  std::unique_lock lock(mutex_);
   mz_zip_reader_create(&pmz_zip_reader_instance_);
 }
 
@@ -37,9 +38,11 @@ int32_t ArchiveReader::Open() {
   return err;
 }
 int32_t ArchiveReader::Close() {
+  std::unique_lock lock(mutex_);
   return mz_zip_reader_close(pmz_zip_reader_instance_);
 }
 void ArchiveReader::Delete() {
+  std::unique_lock lock(mutex_);
   mz_zip_reader_delete(&pmz_zip_reader_instance_);
 }
 
@@ -190,6 +193,7 @@ std::vector<std::filesystem::path> ArchiveReader::ExtractPattern(
 std::vector<std::filesystem::path> ArchiveReader::ExtractPattern(
     const std::string& pattern, const std::string& exclude,
     const std::filesystem::path& destination) {
+  std::unique_lock lock(mutex_);
   if (!std::filesystem::is_directory(destination)) {
     std::ostringstream msg;
     msg << "ArchiveReader::ExtractPattern destination must be a directory "
@@ -216,4 +220,11 @@ std::vector<std::filesystem::path> ArchiveReader::ExtractPattern(
     } while (mz_zip_reader_goto_next_entry(pmz_zip_reader_instance_) == MZ_OK);
   }
   return result;
+}
+ArchiveReader::~ArchiveReader() {
+  std::unique_lock lock(mutex_);
+  if (pmz_zip_reader_instance_) {
+    mz_zip_reader_close(pmz_zip_reader_instance_);
+    mz_zip_reader_delete(&pmz_zip_reader_instance_);
+  }
 }

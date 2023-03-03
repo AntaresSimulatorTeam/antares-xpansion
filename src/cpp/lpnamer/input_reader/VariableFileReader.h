@@ -20,7 +20,8 @@ struct VariableFileReadNameConfiguration {
 class VariableFileReader {
  public:
   VariableFileReader(
-      const std::string& fileName, const std::vector<ActiveLink>& links,
+      const std::filesystem::path& fileName,
+      const std::vector<ActiveLink>& links,
       const VariableFileReadNameConfiguration& variable_name_config,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   VariableFileReader(
