@@ -74,19 +74,19 @@ void BendersByBatch::Run() {
 }
 
 void BendersByBatch::MasterLoop() {
-  auto number_of_batch = batch_collection_.NumberOfBatch();
-  random_batch_permutation_.resize(number_of_batch);
+  number_of_batch_ = batch_collection_.NumberOfBatch();
+  random_batch_permutation_.resize(number_of_batch_);
   unsigned batch_counter = 0;
-  auto current_batch_id = 0;
+  current_batch_id_ = 0;
 
-  int number_of_sub_problem_resolved = 0;
-  double cumulative_subproblems_timer_per_iter = 0;
+  number_of_sub_problem_resolved_ = 0;
+  cumulative_subproblems_timer_per_iter_ = 0;
 
-  while (batch_counter < number_of_batch) {
+  while (batch_counter < number_of_batch_) {
     _data.it++;
     _data.ub = 0;
     SetSubproblemCost(0);
-    auto remaining_epsilon = AbsoluteGap();
+    remaining_epsilon_ = AbsoluteGap();
 
     if (Rank() == rank_0) {
       if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
@@ -104,51 +104,52 @@ void BendersByBatch::MasterLoop() {
       ComputeXCut();
       _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-      random_batch_permutation_ = RandomBatchShuffler(number_of_batch)
-                                      .GetCyclicBatchOrder(current_batch_id);
+      random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
+                                      .GetCyclicBatchOrder(current_batch_id_);
     }
     BroadcastXCut();
     BroadcastSingleSubpbCostsUnderApprox();
     BroadCast(random_batch_permutation_.data(),
               random_batch_permutation_.size(), rank_0);
-    batch_counter = 0;
-    cumulative_subproblems_timer_per_iter = 0;
-
-    while (batch_counter < number_of_batch) {
-      current_batch_id = random_batch_permutation_[batch_counter];
-      const auto &batch = batch_collection_.GetBatchFromId(current_batch_id);
-      const auto &batch_sub_problems = batch.sub_problem_names;
-      double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
-      double batch_subproblems_costs_contribution_in_gap = 0;
-      Timer walltime;
-      BuildCut(batch_sub_problems,
-               &batch_subproblems_costs_contribution_in_gap_per_proc);
-      Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
-             batch_subproblems_costs_contribution_in_gap, std::plus<double>(),
-             rank_0);
-      Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
-             std::plus<double>(), rank_0);
-
-      if (Rank() == rank_0) {
-        number_of_sub_problem_resolved += batch_sub_problems.size();
-        remaining_epsilon -= batch_subproblems_costs_contribution_in_gap;
-        SetSubproblemsWalltime(walltime.elapsed());
-      }
-      BroadCast(remaining_epsilon, rank_0);
-      if (remaining_epsilon > 0) {
-        batch_counter++;
-      } else
-        break;
-    }
+    batch_counter = SolveBatches();
     BroadCast(batch_counter, rank_0);
-    SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
-    _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved);
+    SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter_);
+    _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved_);
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
   }
 }
-
+int BendersByBatch::SolveBatches() {
+  auto batch_counter = 0;
+  cumulative_subproblems_timer_per_iter_ = 0;
+  while (batch_counter < number_of_batch_) {
+    current_batch_id_ = random_batch_permutation_[batch_counter];
+    const auto &batch = batch_collection_.GetBatchFromId(current_batch_id_);
+    const auto &batch_sub_problems = batch.sub_problem_names;
+    double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
+    double batch_subproblems_costs_contribution_in_gap = 0;
+    Timer walltime;
+    BuildCut(batch_sub_problems,
+             &batch_subproblems_costs_contribution_in_gap_per_proc);
+    Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
+           batch_subproblems_costs_contribution_in_gap, std::plus<double>(),
+           rank_0);
+    Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter_,
+           std::plus<double>(), rank_0);
+    if (Rank() == rank_0) {
+      number_of_sub_problem_resolved_ += batch_sub_problems.size();
+      remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
+      SetSubproblemsWalltime(walltime.elapsed());
+    }
+    BroadCast(remaining_epsilon_, rank_0);
+    if (remaining_epsilon_ > 0) {
+      batch_counter++;
+    } else
+      break;
+  }
+  return batch_counter;
+}
 /*!
  * \brief Build subproblem cut
  * Method to build subproblem cuts

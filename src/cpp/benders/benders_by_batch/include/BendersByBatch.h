@@ -26,6 +26,14 @@ class BendersByBatch : public BendersMpi {
                         const std::vector<std::string> &batch_sub_problems,
                         double *sum) const;
   BatchCollection batch_collection_;
+  void MasterLoop();
+  int SolveBatches();
+  // void SeparationLoop();
+  size_t number_of_batch_;
+  unsigned current_batch_id_;
+  int number_of_sub_problem_resolved_;
+  double remaining_epsilon_;
+  double cumulative_subproblems_timer_per_iter_;
 };
 
 #endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
