@@ -184,6 +184,9 @@ void RunProblemGeneration(
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
       master_formulation, solver_name, logger, log_file_path);
+  (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
+      << "Problem Generation ran in: "
+      << format_time_str(problem_generation_timer.elapsed()) << std::endl;
 }
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path) {
