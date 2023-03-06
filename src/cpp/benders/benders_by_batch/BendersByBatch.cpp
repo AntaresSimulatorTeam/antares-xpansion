@@ -58,14 +58,30 @@ void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
 }
 void BendersByBatch::Run() {
   PreRunInitialization();
+  MasterLoop();
+  if (Rank() == rank_0) {
+    compute_ub();
+    update_best_ub();
+    _logger->log_at_iteration_end(bendersDataToLogData(_data));
+    UpdateTrace();
+    SaveCurrentBendersData();
+    _data.elapsed_time = GetBendersTime();
 
+    CloseCsvFile();
+    EndWritingInOutputFile();
+    write_basis();
+  }
+}
+
+void BendersByBatch::MasterLoop() {
   auto number_of_batch = batch_collection_.NumberOfBatch();
   random_batch_permutation_.resize(number_of_batch);
   unsigned batch_counter = 0;
-
   auto current_batch_id = 0;
+
   int number_of_sub_problem_resolved = 0;
   double cumulative_subproblems_timer_per_iter = 0;
+
   while (batch_counter < number_of_batch) {
     _data.it++;
     _data.ub = 0;
@@ -130,18 +146,6 @@ void BendersByBatch::Run() {
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
-  }
-  if (Rank() == rank_0) {
-    compute_ub();
-    update_best_ub();
-    _logger->log_at_iteration_end(bendersDataToLogData(_data));
-    UpdateTrace();
-    SaveCurrentBendersData();
-    _data.elapsed_time = GetBendersTime();
-
-    CloseCsvFile();
-    EndWritingInOutputFile();
-    write_basis();
   }
 }
 
