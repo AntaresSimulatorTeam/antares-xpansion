@@ -83,7 +83,6 @@ void BendersByBatch::MasterLoop() {
   cumulative_subproblems_timer_per_iter_ = 0;
 
   while (batch_counter < number_of_batch_) {
-    _data.it++;
     _data.ub = 0;
     SetSubproblemCost(0);
     remaining_epsilon_ = AbsoluteGap();
@@ -101,7 +100,6 @@ void BendersByBatch::MasterLoop() {
       get_master_value();
       _logger->log_master_solving_duration(get_timer_master());
 
-      ComputeXCut();
       _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
       random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
@@ -111,13 +109,39 @@ void BendersByBatch::MasterLoop() {
     BroadcastSingleSubpbCostsUnderApprox();
     BroadCast(random_batch_permutation_.data(),
               random_batch_permutation_.size(), rank_0);
-    batch_counter = SolveBatches();
+    batch_counter = SeparationLoop();
+    // batch_counter = SolveBatches();
     BroadCast(batch_counter, rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter_);
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved_);
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
+  }
+}
+int BendersByBatch::SeparationLoop() {
+  misprice_ = true;
+  auto batch_counter = 0;
+  while (misprice_) {
+    _data.it++;
+    ComputeXCut();
+    UpdateRemainingEpsilon();
+    batch_counter = SolveBatches();
+  }
+  return batch_counter;
+}
+void BendersByBatch::UpdateRemainingEpsilon() {
+  if (Rank() == rank_0) {
+    auto master_ptr = get_master();
+    int ncols = master_ptr->_solver->get_ncols();
+    std::vector<double> obj(ncols);
+    master_ptr->_solver->get_obj(obj.data(), 0, ncols - 1);
+    double quantity = 0;
+    for (const auto &[col_name, x_cut_value_at_name] : _data.x_cut) {
+      int col_id = master_ptr->_name_to_id[col_name];
+      remaining_epsilon_ -=
+          obj[col_id] * (x_cut_value_at_name - _data.x_out[col_name]);
+    }
   }
 }
 int BendersByBatch::SolveBatches() {
@@ -142,6 +166,7 @@ int BendersByBatch::SolveBatches() {
       remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
       SetSubproblemsWalltime(walltime.elapsed());
     }
+
     BroadCast(remaining_epsilon_, rank_0);
     if (remaining_epsilon_ > 0) {
       batch_counter++;
@@ -188,7 +213,7 @@ void BendersByBatch::BuildCut(
 void BendersByBatch::GetSubproblemCut(
     SubProblemDataMap &subproblem_data_map,
     const std::vector<std::string> &batch_sub_problems,
-    double *batch_subproblems_costs_contribution_in_gap_per_proc) const {
+    double *batch_subproblems_costs_contribution_in_gap_per_proc) {
   *batch_subproblems_costs_contribution_in_gap_per_proc = 0;
   const auto &sub_pblm_map = GetSubProblemMap();
 
@@ -203,8 +228,16 @@ void BendersByBatch::GetSubproblemCut(
       worker->get_value(subproblem_data.subproblem_cost);  // solution phi(x,s)
       worker->get_subgradient(
           subproblem_data.var_name_and_subgradient);  // dual pi_s
+      auto alpha_i_at_name = GetAlpha_i()[ProblemToId(name)];
       *batch_subproblems_costs_contribution_in_gap_per_proc +=
-          subproblem_data.subproblem_cost - GetAlpha_i()[ProblemToId(name)];
+          subproblem_data.subproblem_cost - alpha_i_at_name;
+      auto subgradient_at_name = subproblem_data.var_name_and_subgradient[name];
+      if (alpha_i_at_name < subproblem_data.subproblem_cost +
+                                subgradient_at_name * (_data.x_out.at(name) -
+                                                       _data.x_cut.at(name))) {
+        misprice_ = false;
+        BroadCast(misprice_, Rank());
+      }
       worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
       subproblem_data.subproblem_timer = subproblem_timer.elapsed();
       subproblem_data_map[name] = subproblem_data;
