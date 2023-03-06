@@ -1,6 +1,7 @@
 name: Ubuntu build
 
 on:
+  merge_group:
   push:
     branches:
       - main

@@ -8,14 +8,18 @@
 
 class ArchiveWriter : public ArchiveIO {
  private:
-  void* pmz_zip_writer_instance_ = NULL;
-  void* pzip_handle_ = NULL;
+  void* pmz_zip_writer_instance_ = nullptr;
+  void* pzip_handle_ = nullptr;
   void Create() override;
   mz_zip_file fileInfo_ = {0};
+
+  int32_t CloseInternal();
+  void DeleteInternal();
 
  public:
   explicit ArchiveWriter(const std::filesystem::path& archivePath);
   ArchiveWriter();
+  ~ArchiveWriter() override;
 
   int32_t Close() override;
   void Delete() override;

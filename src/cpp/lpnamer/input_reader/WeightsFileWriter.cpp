@@ -39,7 +39,7 @@ void YearlyWeightsWriter::FillMpsWeightsMap() {
     auto year_index =
         std::find(active_years_.begin(), active_years_.end(), year) -
         active_years_.begin();
-    mps_weights_[mps_file.stem()] = weights_vector_[year_index];
+    mps_weights_[mps_file.filename()] = weights_vector_[year_index];
   }
   zip_reader.Close();
   zip_reader.Delete();
