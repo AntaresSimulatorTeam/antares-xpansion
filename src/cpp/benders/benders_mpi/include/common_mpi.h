@@ -15,5 +15,3 @@
 #include "common.h"
 
 namespace mpi = boost::mpi;
-
-typedef std::pair<int, std::string> mps_order;

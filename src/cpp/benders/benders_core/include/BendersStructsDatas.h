@@ -6,7 +6,9 @@
 #include "core/ILogger.h"
 
 struct CurrentIterationData {
-  double subproblem_timer;
+  double subproblems_walltime;
+  double subproblems_cputime;
+  double subproblems_cumulative_cputime;
   double timer_master;
   double lb;
   double ub;

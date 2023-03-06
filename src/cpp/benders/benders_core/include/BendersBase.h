@@ -43,21 +43,21 @@ class BendersBase {
 
  protected:
   virtual void free() = 0;
-  virtual void run() = 0;
-  virtual void initialize_problems() = 0;
+  virtual void Run() = 0;
+  virtual void InitializeProblems() = 0;
   virtual void init_data();
   void update_best_ub();
   bool ShouldBendersStop();
   bool is_initial_relaxation_requested() const;
-  bool switch_to_integer_master(bool is_relaxed) const;
+  bool SwitchToIntegerMaster(bool is_relaxed) const;
   virtual void UpdateTrace();
   void ComputeXCut();
   void ComputeInvestCost();
   virtual void compute_ub();
   virtual void get_master_value();
-  void getSubproblemCut(SubProblemDataMap &subproblem_data_map);
+  void GetSubproblemCut(SubProblemDataMap &subproblem_data_map);
   virtual void post_run_actions() const;
-  void build_cut_full(const SubProblemDataMap &subproblem_data_map);
+  void BuildCutFull(const SubProblemDataMap &subproblem_data_map);
   virtual void DeactivateIntegrityConstraints() const;
   virtual void ActivateIntegrityConstraints() const;
   virtual void SetDataPreRelaxation();
@@ -74,9 +74,9 @@ class BendersBase {
   virtual void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_subproblems();
-  void addSubproblem(const std::pair<std::string, VariableMap> &kvp);
+  void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
   [[nodiscard]] WorkerMasterPtr get_master() const;
-  void match_problem_to_id();
+  void MatchProblemToId();
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -86,8 +86,12 @@ class BendersBase {
   void set_x_cut(const Point &x0);
   [[nodiscard]] double get_timer_master() const;
   void set_timer_master(const double &timer_master);
-  [[nodiscard]] double GetSubproblemTimers() const;
-  void SetSubproblemTimers(const double &subproblem_timer);
+  [[nodiscard]] double GetSubproblemsWalltime() const;
+  void SetSubproblemsWalltime(const double &duration);
+  [[nodiscard]] double GetSubproblemsCpuTime() const;
+  void SetSubproblemsCpuTime(const double &duration);
+  [[nodiscard]] double GetSubproblemsCumulativeCpuTime() const;
+  void SetSubproblemsCumulativeCpuTime(const double &duration);
   [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
   bool IsResumeMode() const;
@@ -114,6 +118,9 @@ class BendersBase {
   StrVector GetSubProblemNames() const { return subproblems; }
   double AbsoluteGap() const { return _options.ABSOLUTE_GAP; }
   DblVector GetAlpha_i() const { return _data.single_subpb_costs_under_approx; }
+  void SetAlpha_i(const DblVector &single_subpb_costs_under_approx) {
+    _data.single_subpb_costs_under_approx = single_subpb_costs_under_approx;
+  }
   int ProblemToId(const std::string &problem_name) const {
     return _problem_to_id.at(problem_name);
   }

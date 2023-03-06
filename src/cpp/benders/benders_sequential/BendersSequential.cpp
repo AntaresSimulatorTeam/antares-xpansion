@@ -21,8 +21,8 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger logger, Writer writer)
     : BendersBase(options, std::move(logger), std::move(writer)) {}
 
-void BendersSequential::initialize_problems() {
-  match_problem_to_id();
+void BendersSequential::InitializeProblems() {
+  MatchProblemToId();
 
   reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                 get_solver_name(), get_log_level(),
@@ -30,7 +30,7 @@ void BendersSequential::initialize_problems() {
   for (const auto &problem : coupling_map) {
     const auto subProblemFilePath = GetSubproblemPath(problem.first);
 
-    addSubproblem(problem);
+    AddSubproblem(problem);
     AddSubproblemName(problem.first);
   }
 }
@@ -52,18 +52,18 @@ void BendersSequential::free() {
  * and add them to the Master problem
  *
  */
-void BendersSequential::build_cut() {
+void BendersSequential::BuildCut() {
   SubProblemDataMap subproblem_data_map;
   Timer timer;
-  getSubproblemCut(subproblem_data_map);
+  GetSubproblemCut(subproblem_data_map);
   SetSubproblemCost(0);
   for (const auto &[_, subproblem_data] : subproblem_data_map) {
     SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
   }
 
-  SetSubproblemTimers(timer.elapsed());
+  SetSubproblemsWalltime(timer.elapsed());
   _data.ub = 0;
-  build_cut_full(subproblem_data_map);
+  BuildCutFull(subproblem_data_map);
 }
 
 /*!
@@ -71,7 +71,7 @@ void BendersSequential::build_cut() {
  *
  *  Method to run BendersSequential algorithm
  */
-void BendersSequential::run() {
+void BendersSequential::Run() {
   init_data();
   ChecksResumeMode();
   if (is_trace()) {
@@ -88,7 +88,7 @@ void BendersSequential::run() {
     Timer timer_master;
     ++_data.it;
 
-    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+    if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
       _logger->LogAtSwitchToInteger();
       ActivateIntegrityConstraints();
       ResetDataPostRelaxation();
@@ -103,8 +103,8 @@ void BendersSequential::run() {
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
     _logger->display_message("\tSolving subproblems...");
-    build_cut();
-    _logger->log_subproblems_solving_duration(GetSubproblemTimers());
+    BuildCut();
+    _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
 
     compute_ub();
     update_best_ub();
@@ -130,10 +130,10 @@ void BendersSequential::launch() {
 
   LOG(INFO) << "Constructing workers..." << std::endl;
 
-  initialize_problems();
+  InitializeProblems();
   LOG(INFO) << "Running solver..." << std::endl;
   try {
-    run();
+    Run();
     LOG(INFO) << BendersName() + " solver terminated." << std::endl;
   } catch (std::exception const &ex) {
     std::string error = "Exception raised : " + std::string(ex.what());

@@ -212,7 +212,7 @@ void BendersBase::UpdateTrace() {
   LastWorkerMasterDataPtr->_min_invest =
       std::make_shared<Point>(_data.min_invest);
   LastWorkerMasterDataPtr->_master_duration = _data.timer_master;
-  LastWorkerMasterDataPtr->_subproblem_duration = _data.subproblem_timer;
+  LastWorkerMasterDataPtr->_subproblem_duration = _data.subproblems_walltime;
   LastWorkerMasterDataPtr->_invest_cost = _data.invest_cost;
   LastWorkerMasterDataPtr->_operational_cost = _data.subproblem_cost;
   LastWorkerMasterDataPtr->_valid = true;
@@ -223,7 +223,7 @@ bool BendersBase::is_initial_relaxation_requested() const {
           _options.SEPARATION_PARAM < 1);
 }
 
-bool BendersBase::switch_to_integer_master(bool is_relaxed) const {
+bool BendersBase::SwitchToIntegerMaster(bool is_relaxed) const {
   return is_initial_relaxation_requested() && is_relaxed &&
          ShouldRelaxationStop();
 }
@@ -342,7 +342,7 @@ void BendersBase::compute_ub() {
  *
  *  \param subproblem_cut_package : map storing for each subproblem its cut
  */
-void BendersBase::getSubproblemCut(SubProblemDataMap &subproblem_data_map) {
+void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
   // With gcc9 there was no parallelisation when iterating on the map directly
   // so with project it in a vector
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
@@ -439,7 +439,7 @@ void BendersBase::compute_cut_aggregate(
  *
  *  \param all_package : storage of every subproblem information
  */
-void BendersBase::build_cut_full(const SubProblemDataMap &subproblem_data_map) {
+void BendersBase::BuildCutFull(const SubProblemDataMap &subproblem_data_map) {
   check_status(subproblem_data_map);
   if (_options.AGGREGATION) {
     compute_cut_aggregate(subproblem_data_map);
@@ -459,6 +459,7 @@ LogData BendersBase::build_log_data_from_data() const {
 LogData BendersBase::FinalLogData() const {
   LogData result;
 
+  result.it = _data.it + iterations_before_resume;
   result.best_it = _data.best_it + iterations_before_resume;
 
   result.subproblem_cost = best_iteration_data.subproblem_cost;
@@ -641,7 +642,7 @@ LogData BendersBase::bendersDataToLogData(
           _options.MAX_ITERATIONS,
           data.elapsed_time,
           data.timer_master,
-          data.subproblem_timer};
+          data.subproblems_walltime};
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_name) {
   _log_name = log_name;
@@ -698,7 +699,7 @@ void BendersBase::reset_master(WorkerMaster *worker_master) {
 void BendersBase::free_master() const { _master->free(); }
 WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
-void BendersBase::addSubproblem(
+void BendersBase::AddSubproblem(
     const std::pair<std::string, VariableMap> &kvp) {
   subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
       kvp.second, GetSubproblemPath(kvp.first),
@@ -709,7 +710,7 @@ void BendersBase::addSubproblem(
 void BendersBase::free_subproblems() {
   for (auto &ptr : subproblem_map) ptr.second->free();
 }
-void BendersBase::match_problem_to_id() {
+void BendersBase::MatchProblemToId() {
   int count = 0;
   for (const auto &problem : coupling_map) {
     _problem_to_id[problem.first] = count;
@@ -734,11 +735,23 @@ double BendersBase::get_timer_master() const { return _data.timer_master; }
 void BendersBase::set_timer_master(const double &timer_master) {
   _data.timer_master = timer_master;
 }
-double BendersBase::GetSubproblemTimers() const {
-  return _data.subproblem_timer;
+double BendersBase::GetSubproblemsWalltime() const {
+  return _data.subproblems_walltime;
 }
-void BendersBase::SetSubproblemTimers(const double &subproblem_timer) {
-  _data.subproblem_timer = subproblem_timer;
+void BendersBase::SetSubproblemsWalltime(const double &duration) {
+  _data.subproblems_walltime = duration;
+}
+double BendersBase::GetSubproblemsCpuTime() const {
+  return _data.subproblems_cputime;
+}
+void BendersBase::SetSubproblemsCpuTime(const double &duration) {
+  _data.subproblems_cputime = duration;
+}
+double BendersBase::GetSubproblemsCumulativeCpuTime() const {
+  return _data.subproblems_cumulative_cputime;
+}
+void BendersBase::SetSubproblemsCumulativeCpuTime(const double &duration) {
+  _data.subproblems_cumulative_cputime = duration;
 }
 double BendersBase::GetSubproblemCost() const { return _data.subproblem_cost; }
 void BendersBase::SetSubproblemCost(const double &subproblem_cost) {

@@ -27,9 +27,15 @@ void Master::log_master_solving_duration(double durationInSeconds) {
   }
 }
 
-void Master::log_subproblems_solving_duration(double durationInSeconds) {
+void Master::LogSubproblemsSolvingWalltime(double durationInSeconds) {
   for (auto logger : _loggers) {
-    logger->log_subproblems_solving_duration(durationInSeconds);
+    logger->LogSubproblemsSolvingWalltime(durationInSeconds);
+  }
+}
+
+void Master::LogSubproblemsSolvingCumulativeCpuTime(double durationInSeconds) {
+  for (auto logger : _loggers) {
+    logger->LogSubproblemsSolvingCumulativeCpuTime(durationInSeconds);
   }
 }
 

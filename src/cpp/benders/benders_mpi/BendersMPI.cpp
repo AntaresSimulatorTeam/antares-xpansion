@@ -7,7 +7,7 @@
 #include "Timer.h"
 #include "glog/logging.h"
 
-BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
+BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
                        mpi::communicator &world)
     : BendersBase(options, logger, std::move(writer)),
@@ -21,16 +21,11 @@ BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger &logger,
  *
  */
 
-void BendersMpi::initialize_problems() {
-  match_problem_to_id();
+void BendersMpi::InitializeProblems() {
+  MatchProblemToId();
 
+  BuildMasterProblem();
   int current_problem_id = 0;
-
-  if (_world.rank() == rank_0) {
-    reset_master(new WorkerMaster(
-        master_variable_map, get_master_path(), get_solver_name(),
-        get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
-  }
   // Dispatch subproblems to process
   for (const auto &problem : coupling_map) {
     // In case there are more subproblems than process
@@ -39,13 +34,19 @@ void BendersMpi::initialize_problems() {
         _world.rank()) {  // Assign  [problemNumber % processCount] to processID
 
       const auto subProblemFilePath = GetSubproblemPath(problem.first);
-      addSubproblem(problem);
+      AddSubproblem(problem);
       AddSubproblemName(problem.first);
     }
     current_problem_id++;
   }
 }
-
+void BendersMpi::BuildMasterProblem() {
+  if (_world.rank() == rank_0) {
+    reset_master(new WorkerMaster(
+        master_variable_map, get_master_path(), get_solver_name(),
+        get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
+  }
+}
 /*!
  *  \brief Solve, get and send solution of the Master Problem to every thread
  *
@@ -62,12 +63,12 @@ void BendersMpi::step_1_solve_master() {
     write_exception_message(ex);
   }
   check_if_some_proc_had_a_failure(success);
-  broadcast_the_master_problem();
+  BroadcastXCut();
 }
 
 void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
   if (_world.rank() == rank_0) {
-    if (switch_to_integer_master(_data.is_in_initial_relaxation)) {
+    if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
       _logger->LogAtSwitchToInteger();
       ActivateIntegrityConstraints();
       ResetDataPostRelaxation();
@@ -76,12 +77,11 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
   }
 }
 
-void BendersMpi::broadcast_the_master_problem() {
+void BendersMpi::BroadcastXCut() {
   if (!_exceptionRaised) {
     Point x_cut = get_x_cut();
     mpi::broadcast(_world, x_cut, rank_0);
     set_x_cut(x_cut);
-    _world.barrier();
   }
 }
 
@@ -106,32 +106,37 @@ void BendersMpi::solve_master_and_create_trace() {
 void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   int success = 1;
   SubProblemDataMap subproblem_data_map;
-  Timer process_timer;
+  Timer walltime;
+  Timer subproblems_timer_per_proc;
   try {
     subproblem_data_map = get_subproblem_cut_package();
+    SetSubproblemsCpuTime(subproblems_timer_per_proc.elapsed());
 
   } catch (std::exception const &ex) {
     success = 0;
     write_exception_message(ex);
   }
   check_if_some_proc_had_a_failure(success);
-  gather_subproblems_cut_package_and_build_cuts(subproblem_data_map,
-                                                process_timer);
+  gather_subproblems_cut_package_and_build_cuts(subproblem_data_map, walltime);
 }
 
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
-    const SubProblemDataMap &subproblem_data_map, const Timer &process_timer) {
+    const SubProblemDataMap &subproblem_data_map, const Timer &walltime) {
   if (!_exceptionRaised) {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
-    SetSubproblemTimers(process_timer.elapsed());
+    SetSubproblemsWalltime(walltime.elapsed());
+    double cumulative_subproblems_timer_per_iter(0);
+    Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
+           std::plus<double>(), rank_0);
+    SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
     master_build_cuts(gathered_subproblem_map);
   }
 }
 
 SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
   SubProblemDataMap subproblem_data_map;
-  getSubproblemCut(subproblem_data_map);
+  GetSubproblemCut(subproblem_data_map);
   return subproblem_data_map;
 }
 
@@ -148,9 +153,11 @@ void BendersMpi::master_build_cuts(
 
   _data.ub = 0;
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
-    build_cut_full(subproblem_data_map);
+    BuildCutFull(subproblem_data_map);
   }
-  _logger->log_subproblems_solving_duration(GetSubproblemTimers());
+  _logger->LogSubproblemsSolvingCumulativeCpuTime(
+      GetSubproblemsCumulativeCpuTime());
+  _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
 }
 
 /*!
@@ -208,26 +215,8 @@ void BendersMpi::free() {
  *  Method to run Benders algorithm in parallel
  *
  */
-void BendersMpi::run() {
-  init_data();
-
-  if (_world.rank() == rank_0) {
-    if (is_initial_relaxation_requested()) {
-      _logger->LogAtInitialRelaxation();
-      DeactivateIntegrityConstraints();
-      SetDataPreRelaxation();
-    }
-  }
-
-  _world.barrier();
-
-  if (_world.rank() == rank_0) {
-    ChecksResumeMode();
-    if (is_trace()) {
-      OpenCsvFile();
-    }
-  }
-
+void BendersMpi::Run() {
+  PreRunInitialization();
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
@@ -259,15 +248,34 @@ void BendersMpi::run() {
   }
   _world.barrier();
 }
+void BendersMpi::PreRunInitialization() {
+  init_data();
 
+  if (_world.rank() == rank_0) {
+    if (is_initial_relaxation_requested()) {
+      _logger->LogAtInitialRelaxation();
+      DeactivateIntegrityConstraints();
+      SetDataPreRelaxation();
+    }
+  }
+
+  _world.barrier();
+
+  if (_world.rank() == rank_0) {
+    ChecksResumeMode();
+    if (is_trace()) {
+      OpenCsvFile();
+    }
+  }
+}
 void BendersMpi::launch() {
   build_input_map();
   _world.barrier();
 
-  initialize_problems();
+  InitializeProblems();
   _world.barrier();
 
-  run();
+  Run();
   _world.barrier();
 
   post_run_actions();

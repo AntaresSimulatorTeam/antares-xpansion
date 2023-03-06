@@ -83,7 +83,9 @@ class ILogger {
   virtual void log_at_initialization(const int it_number) = 0;
   virtual void log_iteration_candidates(const LogData &d) = 0;
   virtual void log_master_solving_duration(double durationInSeconds) = 0;
-  virtual void log_subproblems_solving_duration(double durationInSeconds) = 0;
+  virtual void LogSubproblemsSolvingWalltime(double durationInSeconds) = 0;
+  virtual void LogSubproblemsSolvingCumulativeCpuTime(
+      double durationInSeconds) = 0;
   virtual void log_at_iteration_end(const LogData &d) = 0;
   virtual void log_at_ending(const LogData &d) = 0;
   virtual void log_total_duration(double durationInSeconds) = 0;

@@ -160,8 +160,9 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
       << prefix << indent_0 << indent_1
       << "candidate2 =  8.00 invested MW -- possible interval [ 3.00; 40.00] MW"
       << std::endl
-      << prefix << indent_1 << "Subproblems solved in " << l.subproblem_time
-      << " s" << std::endl
+      << prefix << indent_1
+      << "Subproblems solved in (walltime): " << l.subproblem_time << " s"
+      << std::endl
       << prefix << indent_0 << "Solution =" << std::endl
       << prefix << indent_0 << indent_1 << "Operational cost =       15.50 Me"
       << std::endl
@@ -194,7 +195,7 @@ TEST_F(FileLoggerTest, ShouldHavePrefixOnEveryLine) {
 
   user_file.log_master_solving_duration(2);
 
-  user_file.log_subproblems_solving_duration(36);
+  user_file.LogSubproblemsSolvingWalltime(36);
 
   LogData log_data;
   log_data.it = 45;
@@ -497,8 +498,8 @@ TEST_F(UserLoggerTest, LogMasterDuration) {
 
 TEST_F(UserLoggerTest, LogSubProblemDuration) {
   std::stringstream expected;
-  expected << indent_1 << "Subproblems solved in 3 s" << std::endl;
-  _logger.log_subproblems_solving_duration(3.000000);
+  expected << indent_1 << "Subproblems solved in (walltime): 3 s" << std::endl;
+  _logger.LogSubproblemsSolvingWalltime(3.000000);
   ASSERT_EQ(_stream.str(), expected.str());
 }
 
@@ -553,8 +554,12 @@ class SimpleLoggerMock : public ILogger {
     _durationMaster = durationInSeconds;
   }
 
-  void log_subproblems_solving_duration(double durationInSeconds) {
+  void LogSubproblemsSolvingWalltime(double durationInSeconds) {
     _durationSubproblem = durationInSeconds;
+  }
+
+  void LogSubproblemsSolvingCumulativeCpuTime(double durationInSeconds) {
+    //
   }
 
   void log_at_iteration_end(const LogData& d) override {
@@ -664,7 +669,7 @@ TEST_F(MasterLoggerTest, LogMasterDuration) {
 
 TEST_F(MasterLoggerTest, LogSubProblemDuration) {
   double duration = 3.0;
-  _master.log_subproblems_solving_duration(duration);
+  _master.LogSubproblemsSolvingWalltime(duration);
   ASSERT_EQ(_logger->_durationSubproblem, duration);
   ASSERT_EQ(_logger2->_durationSubproblem, duration);
 }

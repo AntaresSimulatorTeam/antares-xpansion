@@ -60,7 +60,7 @@ class BendersSequentialDouble : public BendersSequential {
   };
 
   void get_master_value() override{};
-  void build_cut() override{};
+  void BuildCut() override{};
   void compute_ub() override { _data.ub = parametrized_ub; };
   CurrentIterationData get_data() const { return _data; }
   void build_input_map() override{};
@@ -74,15 +74,15 @@ class BendersSequentialDouble : public BendersSequential {
     BendersBase::reset_master(new FakeWorkerMaster(var));
   };
   void free() override{};
-  void initialize_problems() override {
-    match_problem_to_id();
+  void InitializeProblems() override {
+    MatchProblemToId();
 
     reset_master(new WorkerMaster(
         master_variable_map, get_master_path(), get_solver_name(),
         get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
     for (const auto &problem : coupling_map) {
       const auto subProblemFilePath = GetSubproblemPath(problem.first);
-      addSubproblem(problem);
+      AddSubproblem(problem);
       AddSubproblemName(problem.first);
       std::filesystem::remove(subProblemFilePath);
     }
