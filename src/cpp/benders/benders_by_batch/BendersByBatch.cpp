@@ -131,17 +131,28 @@ int BendersByBatch::SeparationLoop() {
   }
   return batch_counter;
 }
+void BendersByBatch::ComputeXCut() {
+  if (_data.it == 1) {
+    _data.x_in = _data.x_out;
+    _data.x_cut = _data.x_out;
+  } else {
+    _data.x_in = _data.x_cut;
+    for (const auto &[name, value] : _data.x_out) {
+      _data.x_cut[name] = Options().SEPARATION_PARAM * _data.x_out[name] +
+                          (1 - Options().SEPARATION_PARAM) * _data.x_in[name];
+    }
+  }
+}
 void BendersByBatch::UpdateRemainingEpsilon() {
   if (Rank() == rank_0) {
     auto master_ptr = get_master();
     int ncols = master_ptr->_solver->get_ncols();
     std::vector<double> obj(ncols);
     master_ptr->_solver->get_obj(obj.data(), 0, ncols - 1);
-    double quantity = 0;
-    for (const auto &[col_name, x_cut_value_at_name] : _data.x_cut) {
-      int col_id = master_ptr->_name_to_id[col_name];
+    for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
+      int col_id = master_ptr->_name_to_id[candidate_name];
       remaining_epsilon_ -=
-          obj[col_id] * (x_cut_value_at_name - _data.x_out[col_name]);
+          obj[col_id] * (x_cut_candidate_value - _data.x_out[candidate_name]);
     }
   }
 }
@@ -233,10 +244,21 @@ void BendersByBatch::GetSubproblemCut(
       *batch_subproblems_costs_contribution_in_gap_per_proc +=
           subproblem_data.subproblem_cost - alpha_i_at_name;
       auto subgradient_at_name = subproblem_data.var_name_and_subgradient[name];
+      // int ncols = worker->_solver->get_ncols();
+      // std::vector<double> obj(ncols);
+      // worker->_solver->get_obj(obj.data(), 0, ncols - 1);
+      double XCutMinusXOut = 0;
+      for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
+        XCutMinusXOut += x_cut_candidate_value - _data.x_out[candidate_name];
+      }
 
       if (alpha_i_at_name < subproblem_data.subproblem_cost +
-                                subgradient_at_name * (_data.x_out.at(name) -
-                                                       _data.x_cut.at(name))) {
+                                subgradient_at_name * XCutMinusXOut) {
+        // if (alpha_i_at_name < subproblem_data.subproblem_cost +
+        //                           subgradient_at_name * (_data.x_out.at(name)
+        //                           -
+        //                                                  _data.x_cut.at(name)))
+        //                                                  {
         misprice_ = false;
         BroadCast(misprice_, Rank());
       }

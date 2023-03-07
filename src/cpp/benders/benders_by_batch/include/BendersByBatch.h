@@ -20,6 +20,7 @@ class BendersByBatch : public BendersMpi {
  protected:
   void InitializeProblems() override;
   void BroadcastSingleSubpbCostsUnderApprox();
+  void ComputeXCut() override;
 
  private:
   void GetSubproblemCut(

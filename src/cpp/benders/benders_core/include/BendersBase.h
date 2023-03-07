@@ -51,7 +51,7 @@ class BendersBase {
   bool is_initial_relaxation_requested() const;
   bool SwitchToIntegerMaster(bool is_relaxed) const;
   virtual void UpdateTrace();
-  void ComputeXCut();
+  virtual void ComputeXCut();
   void ComputeInvestCost();
   virtual void compute_ub();
   virtual void get_master_value();
