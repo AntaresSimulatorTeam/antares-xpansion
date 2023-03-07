@@ -84,6 +84,8 @@ class BendersBase {
   [[nodiscard]] bool is_trace() const;
   [[nodiscard]] Point get_x_cut() const;
   void set_x_cut(const Point &x0);
+  [[nodiscard]] Point get_x_out() const;
+  void set_x_out(const Point &x0);
   [[nodiscard]] double get_timer_master() const;
   void set_timer_master(const double &timer_master);
   [[nodiscard]] double GetSubproblemsWalltime() const;

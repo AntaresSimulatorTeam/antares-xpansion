@@ -105,7 +105,6 @@ void BendersByBatch::MasterLoop() {
       random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
                                       .GetCyclicBatchOrder(current_batch_id_);
     }
-    BroadcastXCut();
     BroadcastSingleSubpbCostsUnderApprox();
     BroadCast(random_batch_permutation_.data(),
               random_batch_permutation_.size(), rank_0);
@@ -125,6 +124,8 @@ int BendersByBatch::SeparationLoop() {
   while (misprice_) {
     _data.it++;
     ComputeXCut();
+    BroadcastXCut();
+    BroadcastXOut();
     UpdateRemainingEpsilon();
     batch_counter = SolveBatches();
   }
@@ -232,6 +233,7 @@ void BendersByBatch::GetSubproblemCut(
       *batch_subproblems_costs_contribution_in_gap_per_proc +=
           subproblem_data.subproblem_cost - alpha_i_at_name;
       auto subgradient_at_name = subproblem_data.var_name_and_subgradient[name];
+
       if (alpha_i_at_name < subproblem_data.subproblem_cost +
                                 subgradient_at_name * (_data.x_out.at(name) -
                                                        _data.x_cut.at(name))) {
@@ -243,4 +245,9 @@ void BendersByBatch::GetSubproblemCut(
       subproblem_data_map[name] = subproblem_data;
     }
   }
+}
+void BendersByBatch::BroadcastXOut() {
+  Point x_out = get_x_out();
+  BroadCast(x_out, rank_0);
+  set_x_out(x_out);
 }

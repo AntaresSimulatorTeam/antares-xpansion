@@ -731,6 +731,8 @@ int BendersBase::get_log_level() const { return _options.LOG_LEVEL; }
 bool BendersBase::is_trace() const { return _options.TRACE; }
 Point BendersBase::get_x_cut() const { return _data.x_cut; }
 void BendersBase::set_x_cut(const Point &x_cut) { _data.x_cut = x_cut; }
+Point BendersBase::get_x_out() const { return _data.x_out; }
+void BendersBase::set_x_out(const Point &x_out) { _data.x_out = x_out; }
 double BendersBase::get_timer_master() const { return _data.timer_master; }
 void BendersBase::set_timer_master(const double &timer_master) {
   _data.timer_master = timer_master;
