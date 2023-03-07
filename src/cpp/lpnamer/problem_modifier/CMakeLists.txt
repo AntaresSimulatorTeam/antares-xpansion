@@ -33,8 +33,8 @@ add_library(lp_namer_problem_modifier STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemProviderAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/IProblemProviderPort.h
 		${CMAKE_CURRENT_SOURCE_DIR}/IProblemWriter.h
-		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveProblemWriter.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveProblemWriter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileWriter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileWriter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesZipAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesZipAdapter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/IProblemVariablesProviderPort.h

@@ -12,7 +12,7 @@ void RunProblemGeneration(
     const std::string& additionalConstraintFilename_l,
     const std::filesystem::path& archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-    const std::filesystem::path& log_file_path, bool zip_mps,
+    const std::filesystem::path& log_file_path,
     const std::filesystem::path& weights_file);
 void ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,

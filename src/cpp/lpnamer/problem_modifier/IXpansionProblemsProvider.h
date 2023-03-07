@@ -11,5 +11,6 @@ class IXpansionProblemsProvider {
  public:
   virtual ~IXpansionProblemsProvider() = default;
   [[nodiscard]] virtual std::vector<std::shared_ptr<Problem>> provideProblems(
-      const std::string &solver_name) const = 0;
+      const std::string& solver_name,
+      const std::filesystem::path& log_file_path) const = 0;
 };

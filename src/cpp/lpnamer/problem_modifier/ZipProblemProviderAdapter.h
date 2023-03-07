@@ -17,6 +17,7 @@ class ZipProblemProviderAdapter : public IProblemProviderPort {
   const std::filesystem::path lp_dir_;
   const std::string problem_name_;
   [[nodiscard]] std::shared_ptr<Problem> provide_problem(
-      const std::string& solver_name) const override;
+      const std::string& solver_name,
+      const std::filesystem::path& log_file_path) const override;
   std::shared_ptr<ArchiveReader> archive_reader_;
 };
