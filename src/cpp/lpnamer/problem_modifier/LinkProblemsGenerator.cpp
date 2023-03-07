@@ -30,17 +30,20 @@
 void LinkProblemsGenerator::treat(
     const std::string &problem_name, Couplings &couplings,
     std::shared_ptr<IProblemProviderPort> problem_provider,
-    std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const {
+    std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
+    std::shared_ptr<IProblemWriter> writer) const {
   std::shared_ptr<Problem> in_prblm =
       problem_provider->provide_problem(_solver_name, log_file_path_);
 
-  treat(problem_name, couplings, in_prblm, std::move(variable_provider));
+  treat(problem_name, couplings, in_prblm, std::move(variable_provider),
+        writer);
 }
 
 void LinkProblemsGenerator::treat(
     const std::string &problem_name, Couplings &couplings,
     std::shared_ptr<Problem> problem,
-    std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const {
+    std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
+    std::shared_ptr<IProblemWriter> writer) const {
   ProblemVariables problem_variables = variable_provider->Provide();
 
   solver_rename_vars(problem, problem_variables.variable_names);
@@ -62,21 +65,23 @@ void LinkProblemsGenerator::treat(
     }
   }
   auto const lp_mps_name = lpDir_ / in_prblm->_name;
-
-  in_prblm->write_prob_mps(lp_mps_name);
+  writer->Write_problem(in_prblm);
 }
 
-void LinkProblemsGenerator::treatloop_files(
-    const std::filesystem::path &root, Couplings &couplings,
-    const std::vector<ProblemData> &mps_list) {
-  std::for_each(
-      std::execution::par, mps_list.begin(), mps_list.end(),
-      [&](const auto &mps) {
-        auto adapter = std::make_shared<MPSFileProblemProviderAdapter>(
-            root, mps._problem_mps);
-        auto variables_file_adapter =
-            std::make_shared<ProblemVariablesFileAdapter>(mps, _links, logger_,
-                                                          root);
-        treat(mps._problem_mps, couplings, adapter, variables_file_adapter);
-      });
+void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
+                                      Couplings &couplings,
+                                      const std::vector<ProblemData> &mps_list,
+                                      std::shared_ptr<IProblemWriter> writer) {
+  std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
+                [&](const auto &mps) {
+                  auto adapter =
+                      std::make_shared<MPSFileProblemProviderAdapter>(
+                          root, mps._problem_mps);
+                  auto variables_file_adapter =
+                      std::make_shared<ProblemVariablesFileAdapter>(
+                          mps, _links, logger_, root);
+
+                  treat(mps._problem_mps, couplings, adapter,
+                        variables_file_adapter, writer);
+                });
 }

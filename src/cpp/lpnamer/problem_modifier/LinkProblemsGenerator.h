@@ -38,16 +38,17 @@ class LinkProblemsGenerator {
         logger_(logger),
         log_file_path_(log_file_path) {}
 
-  void treatloop_files(const std::filesystem::path& root, Couplings& couplings,
-                       const std::vector<ProblemData>& mps_list);
-  void treat(
-      const std::string& problem_name, Couplings& couplings,
-      std::shared_ptr<Problem> problem,
-      std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const;
-  void treat(
-      const std::string& problem_name, Couplings& couplings,
-      std::shared_ptr<IProblemProviderPort> problem_provider,
-      std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const;
+  void treatloop(const std::filesystem::path& root, Couplings& couplings,
+                 const std::vector<ProblemData>& mps_list,
+                 std::shared_ptr<IProblemWriter> writer);
+  void treat(const std::string& problem_name, Couplings& couplings,
+             std::shared_ptr<Problem> problem,
+             std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
+             std::shared_ptr<IProblemWriter> writer) const;
+  void treat(const std::string& problem_name, Couplings& couplings,
+             std::shared_ptr<IProblemProviderPort> problem_provider,
+             std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
+             std::shared_ptr<IProblemWriter> writer) const;
 
  private:
   const std::vector<ActiveLink>& _links;

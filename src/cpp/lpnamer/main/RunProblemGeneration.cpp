@@ -7,12 +7,12 @@
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
-#include "ArchiveProblemWriter.h"
 #include "Clock.h"
 #include "GeneralDataReader.h"
 #include "LauncherHelpers.h"
 #include "LinkProblemsGenerator.h"
 #include "LpFilesExtractor.h"
+#include "MPSFileWriter.h"
 #include "MasterGeneration.h"
 #include "MasterProblemBuilder.h"
 #include "MpsTxtWriter.h"
@@ -125,6 +125,7 @@ void RunProblemGeneration(
       xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
+    auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
     std::for_each(std::execution::par, problems_and_data.begin(),
                   problems_and_data.end(), [&](const auto& problem_and_data) {
                     const auto& [problem, data] = problem_and_data;
@@ -134,15 +135,16 @@ void RunProblemGeneration(
                             reader, data, links, logger);
                     linkProblemsGenerator.treat(
                         data._problem_mps, couplings, problem,
-                        problem_variables_from_zip_adapter);
+                        problem_variables_from_zip_adapter, mps_file_writer);
                   });
 
     reader->Close();
     reader->Delete();
   } else if (use_file_implementation) {
     /* Main stuff */
-    linkProblemsGenerator.treatloop_files(xpansion_output_dir, couplings,
-                                          mpsList);
+    auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
+    linkProblemsGenerator.treatloop(xpansion_output_dir, couplings, mpsList,
+                                    mps_file_writer);
 
   } else {
     std::filesystem::path path =
@@ -167,6 +169,7 @@ void RunProblemGeneration(
     }
 
     auto reader = InstantiateZipReader(antares_archive_path);
+    auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
 
     std::for_each(std::execution::par, problems_and_data.begin(),
                   problems_and_data.end(), [&](const auto& problem_and_data) {
@@ -177,7 +180,7 @@ void RunProblemGeneration(
                             reader, data, links, logger);
                     linkProblemsGenerator.treat(
                         data._problem_mps, couplings, problem,
-                        problem_variables_from_zip_adapter);
+                        problem_variables_from_zip_adapter, mps_file_writer);
                   });
   }
 
