@@ -132,7 +132,6 @@ class BendersSequentialTest : public ::testing::Test {
   const std::filesystem::path data_test_dir = "data_test";
   const std::filesystem::path mps_dir = data_test_dir / "mps";
   std::filesystem::path tmpDir;
-  const std::string MPS_ZIP_FILE = "MPS_ZIP_FILE.zip";
 
  protected:
   void SetUp() override {

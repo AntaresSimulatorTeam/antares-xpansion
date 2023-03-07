@@ -15,7 +15,8 @@ XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
 
 std::vector<std::shared_ptr<Problem>>
 XpansionProblemsFromAntaresProvider::provideProblems(
-    const std::string& solver_name) const {
+    const std::string& solver_name,
+    const std::filesystem::path& log_file_path) const {
   std::vector<std::shared_ptr<Problem>> xpansion_problems;
   xpansion_problems.reserve(
       XpansionProblemsFromAntaresProvider::antares_hebdo_problems._hebdo
@@ -25,7 +26,7 @@ XpansionProblemsFromAntaresProvider::provideProblems(
     xpansion_problems.push_back(
         AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
             XpansionProblemsFromAntaresProvider::antares_hebdo_problems,
-            problem_id.year, problem_id.week, solver_name));
+            problem_id.year, problem_id.week, solver_name, log_file_path));
   }
   return xpansion_problems;
 }

@@ -30,12 +30,11 @@ int main(int argc, char** argv) {
       auto master_formulation = options_parser.MasterFormulation();
       auto additionalConstraintFilename_l =
           options_parser.AdditionalConstraintsFilename();
-      auto zip_mps = options_parser.ZipMps();
       auto weights_file = options_parser.WeightsFile();
 
       RunProblemGeneration(xpansion_output_dir, master_formulation,
                            additionalConstraintFilename_l, archive_path, logger,
-                           log_file_path, zip_mps, weights_file);
+                           log_file_path, weights_file);
 
     } catch (std::exception& e) {
       std::cerr << "error: " << e.what() << std::endl;

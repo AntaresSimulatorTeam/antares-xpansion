@@ -180,7 +180,6 @@ class XpansionConfig:
             OptimisationKeys.input_root_key(): self.input_root_default_value(),
             OptimisationKeys.csv_name_key(): self.csv_name_default_value(),
             OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
-            OptimisationKeys.mps_zip_file_key(): self.mps_zip_file_default_value(),
             OptimisationKeys.separation_key(): self.separation_default_value(),
             OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
         }
@@ -229,9 +228,6 @@ class XpansionConfig:
 
     def initial_master_relaxation_default_value(self):
         return False
-
-    def mps_zip_file_default_value(self):
-        return "MPS_ZIP_FILE.zip"
 
     def separation_default_value(self):
         return "0.5"

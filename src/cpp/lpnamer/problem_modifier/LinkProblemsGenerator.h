@@ -20,8 +20,6 @@
 
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
-const std::string MPS_ZIP_FILE{"MPS_ZIP_FILE"};
-const std::string ZIP_EXT{".zip"};
 const std::string STUDY_FILE{"study.antares"};
 using CandidateNameAndProblemName = std::pair<std::string, std::string>;
 using ColId = unsigned int;
@@ -30,27 +28,27 @@ using Couplings = std::map<CandidateNameAndProblemName, ColId>;
 class LinkProblemsGenerator {
  public:
   LinkProblemsGenerator(
-      const std::vector<ActiveLink>& links, const std::string& solver_name,
+      std::filesystem::path& lpDir, const std::vector<ActiveLink>& links,
+      const std::string& solver_name,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      const std::filesystem::path& log_file_path, bool zip_mps)
-      : _links(links),
+      const std::filesystem::path& log_file_path)
+      : lpDir_(lpDir),
+        _links(links),
         _solver_name(solver_name),
         logger_(logger),
-        log_file_path_(log_file_path),
-        zip_mps_(zip_mps) {}
+        log_file_path_(log_file_path) {}
 
   void treatloop(const std::filesystem::path& root, Couplings& couplings,
                  const std::vector<ProblemData>& mps_list,
-                 std::shared_ptr<IProblemWriter> writer,
-                 std::shared_ptr<ArchiveReader> reader);
-  std::vector<ProblemData> readMPSList(
-      const std::filesystem::path& mps_filePath_p) const;
-
-  void treat(
-      const std::string& problem_name, Couplings& couplings,
-      std::shared_ptr<IProblemWriter> writer,
-      std::shared_ptr<IProblemProviderPort> problem_provider,
-      std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const;
+                 std::shared_ptr<IProblemWriter> writer);
+  void treat(const std::string& problem_name, Couplings& couplings,
+             std::shared_ptr<Problem> problem,
+             std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
+             std::shared_ptr<IProblemWriter> writer) const;
+  void treat(const std::string& problem_name, Couplings& couplings,
+             std::shared_ptr<IProblemProviderPort> problem_provider,
+             std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
+             std::shared_ptr<IProblemWriter> writer) const;
 
  private:
   const std::vector<ActiveLink>& _links;
@@ -59,14 +57,6 @@ class LinkProblemsGenerator {
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   mutable std::mutex coupling_mutex_;
   std::filesystem::path log_file_path_;
-  bool zip_mps_ = false;
 
  public:
-  void treatloop_files(const std::filesystem::path& root, Couplings& couplings,
-                       const std::vector<ProblemData>& mps_list,
-                       std::shared_ptr<IProblemWriter> writer);
-  void treat(
-      const std::string& problem_name, Couplings& couplings,
-      std::shared_ptr<IProblemWriter> writer, std::shared_ptr<Problem> problem,
-      std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const;
 };

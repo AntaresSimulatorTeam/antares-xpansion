@@ -29,25 +29,22 @@
 
 void LinkProblemsGenerator::treat(
     const std::string &problem_name, Couplings &couplings,
-    std::shared_ptr<IProblemWriter> writer,
     std::shared_ptr<IProblemProviderPort> problem_provider,
-    std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const {
+    std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
+    std::shared_ptr<IProblemWriter> writer) const {
   std::shared_ptr<Problem> in_prblm =
-      problem_provider->provide_problem(_solver_name);
+      problem_provider->provide_problem(_solver_name, log_file_path_);
 
-  treat(problem_name, couplings, std::move(writer), in_prblm,
-        std::move(variable_provider));
+  treat(problem_name, couplings, in_prblm, std::move(variable_provider),
+        writer);
 }
 
 void LinkProblemsGenerator::treat(
     const std::string &problem_name, Couplings &couplings,
-    std::shared_ptr<IProblemWriter> writer, std::shared_ptr<Problem> problem,
-    std::shared_ptr<IProblemVariablesProviderPort> variable_provider) const {
+    std::shared_ptr<Problem> problem,
+    std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
+    std::shared_ptr<IProblemWriter> writer) const {
   ProblemVariables problem_variables = variable_provider->Provide();
-
-  // auto path =
-  // "/tmp/pytest-of-marechaljas/zip-1/test_full_study_short_sequenti0/link-profile-with-empty-week/output/out/lp/memory/pre_change"
-  // + problem->_name; problem->write_prob_mps(path);
 
   solver_rename_vars(problem, problem_variables.variable_names);
 
@@ -67,38 +64,14 @@ void LinkProblemsGenerator::treat(
       }
     }
   }
+  auto const lp_mps_name = lpDir_ / in_prblm->_name;
   writer->Write_problem(in_prblm);
 }
 
-/**
- * \brief Execute the treat function for each mps elements
- *
- * \param root String corresponding to the path where are located input data
- * \param couplings map of pair of strings associated to an int. Determine the
- * correspondence between optimizer variables and interconnection candidates
- * \return void
- */
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings,
                                       const std::vector<ProblemData> &mps_list,
-                                      std::shared_ptr<IProblemWriter> writer,
-                                      std::shared_ptr<ArchiveReader> reader) {
-  std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
-                [&](const auto &mps) {
-                  auto adapter = std::make_shared<ZipProblemProviderAdapter>(
-                      root, mps._problem_mps, reader);
-                  auto problem_variables_from_zip_adapter =
-                      std::make_shared<ProblemVariablesZipAdapter>(
-                          reader, mps, _links, logger_);
-                  treat(mps._problem_mps, couplings, writer, adapter,
-                        problem_variables_from_zip_adapter);
-                });
-}
-
-void LinkProblemsGenerator::treatloop_files(
-    const std::filesystem::path &root, Couplings &couplings,
-    const std::vector<ProblemData> &mps_list,
-    std::shared_ptr<IProblemWriter> writer) {
+                                      std::shared_ptr<IProblemWriter> writer) {
   std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
                 [&](const auto &mps) {
                   auto adapter =
@@ -107,7 +80,8 @@ void LinkProblemsGenerator::treatloop_files(
                   auto variables_file_adapter =
                       std::make_shared<ProblemVariablesFileAdapter>(
                           mps, _links, logger_, root);
-                  treat(mps._problem_mps, couplings, writer, adapter,
-                        variables_file_adapter);
+
+                  treat(mps._problem_mps, couplings, adapter,
+                        variables_file_adapter, writer);
                 });
 }

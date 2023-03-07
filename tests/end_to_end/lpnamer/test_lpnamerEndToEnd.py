@@ -7,7 +7,7 @@ import pytest
 import zipfile
 from pathlib import Path
 
-MPS_ZIP = "MPS_ZIP_FILE.zip"
+MPS_ZIP = "AntaresStudyOutput.zip"
 DATA_TEST = Path("../../../data_test/")
 DATA_TEST_INTEGER = DATA_TEST / "tests_lpnamer" / "tests_integer"
 DATA_TEST_RELAXED = DATA_TEST / "tests_lpnamer" / "tests_relaxed"
