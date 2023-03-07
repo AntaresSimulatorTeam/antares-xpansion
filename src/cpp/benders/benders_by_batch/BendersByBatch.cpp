@@ -240,21 +240,20 @@ void BendersByBatch::GetSubproblemCut(
       worker->get_value(subproblem_data.subproblem_cost);  // solution phi(x,s)
       worker->get_subgradient(
           subproblem_data.var_name_and_subgradient);  // dual pi_s
-      auto alpha_i_at_name = GetAlpha_i()[ProblemToId(name)];
+      auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
       *batch_subproblems_costs_contribution_in_gap_per_proc +=
-          subproblem_data.subproblem_cost - alpha_i_at_name;
-      auto subgradient_at_name = subproblem_data.var_name_and_subgradient[name];
+          subproblem_data.subproblem_cost - subpb_cost_under_approx;
       // int ncols = worker->_solver->get_ncols();
       // std::vector<double> obj(ncols);
       // worker->_solver->get_obj(obj.data(), 0, ncols - 1);
-      double XCutMinusXOut = 0;
+      double cut_value_at_x_cut = 0;
       for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
-        XCutMinusXOut += x_cut_candidate_value - _data.x_out[candidate_name];
+        auto subgradient_at_name = subproblem_data.var_name_and_subgradient[candidate_name];        
+        cut_value_at_x_cut +=  subgradient_at_name * (_data.x_out[candidate_name] - x_cut_candidate_value);
       }
 
-      if (alpha_i_at_name < subproblem_data.subproblem_cost +
-                                subgradient_at_name * XCutMinusXOut) {
-        // if (alpha_i_at_name < subproblem_data.subproblem_cost +
+      if (subpb_cost_under_approx < cut_value_at_x_cut) {
+        // if (subpb_cost_under_approx < subproblem_data.subproblem_cost +
         //                           subgradient_at_name * (_data.x_out.at(name)
         //                           -
         //                                                  _data.x_cut.at(name)))
