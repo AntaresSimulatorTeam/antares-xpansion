@@ -80,4 +80,8 @@ class BendersMpi : public BendersBase {
   void Reduce(const T &in_value, T &out_value, Op op, int root) const {
     mpi::reduce(_world, in_value, out_value, op, root);
   }
+  template <typename T, typename Op>
+  void AllReduce(const T &in_value, T &out_value, Op op) const {
+    mpi::all_reduce(_world, in_value, out_value, op);
+  }
 };

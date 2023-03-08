@@ -105,6 +105,7 @@ void BendersByBatch::MasterLoop() {
       random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
                                       .GetCyclicBatchOrder(current_batch_id_);
     }
+    BroadcastXOut();
     BroadcastSingleSubpbCostsUnderApprox();
     BroadCast(random_batch_permutation_.data(),
               random_batch_permutation_.size(), rank_0);
@@ -125,7 +126,6 @@ int BendersByBatch::SeparationLoop() {
     _data.it++;
     ComputeXCut();
     BroadcastXCut();
-    BroadcastXOut();
     UpdateRemainingEpsilon();
     batch_counter = SolveBatches();
   }
@@ -202,6 +202,10 @@ void BendersByBatch::BuildCut(
 
   SetSubproblemsCpuTime(subproblems_timer_per_proc.elapsed());
   std::vector<SubProblemDataMap> gathered_subproblem_map;
+  bool global_misprice = misprice_;
+  AllReduce(misprice_, global_misprice, std::logical_and<bool>());
+  misprice_ = global_misprice;
+  // std::cout << "rank = " << Rank() << "misprice_= " << misprice_ << "\n";
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
   for (const auto &subproblem_map : gathered_subproblem_map) {
@@ -243,23 +247,17 @@ void BendersByBatch::GetSubproblemCut(
       auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
       *batch_subproblems_costs_contribution_in_gap_per_proc +=
           subproblem_data.subproblem_cost - subpb_cost_under_approx;
-      // int ncols = worker->_solver->get_ncols();
-      // std::vector<double> obj(ncols);
-      // worker->_solver->get_obj(obj.data(), 0, ncols - 1);
       double cut_value_at_x_cut = 0;
       for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
-        auto subgradient_at_name = subproblem_data.var_name_and_subgradient[candidate_name];        
-        cut_value_at_x_cut +=  subgradient_at_name * (_data.x_out[candidate_name] - x_cut_candidate_value);
+        auto subgradient_at_name =
+            subproblem_data.var_name_and_subgradient[candidate_name];
+        cut_value_at_x_cut +=
+            subgradient_at_name *
+            (_data.x_out[candidate_name] - x_cut_candidate_value);
       }
 
       if (subpb_cost_under_approx < cut_value_at_x_cut) {
-        // if (subpb_cost_under_approx < subproblem_data.subproblem_cost +
-        //                           subgradient_at_name * (_data.x_out.at(name)
-        //                           -
-        //                                                  _data.x_cut.at(name)))
-        //                                                  {
         misprice_ = false;
-        BroadCast(misprice_, Rank());
       }
       worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
       subproblem_data.subproblem_timer = subproblem_timer.elapsed();
