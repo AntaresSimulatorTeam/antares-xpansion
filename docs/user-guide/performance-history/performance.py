@@ -26,7 +26,7 @@ class JsonFileProcessor:
             json_data["studies"],
             record_path=["xpansion_data"],
             meta=[
-                "study_id",
+                "display_name",
                 "areas",
                 "links",
                 ["master", "candidates"],
@@ -40,7 +40,7 @@ class JsonFileProcessor:
                 ["resolution", "stopping_criterion", "value"],
             ],
         )
-        self.processed_data = processed_data.set_index(["study_id", "version"])
+        self.processed_data = processed_data.set_index(["display_name", "version"])
 
     def stylize_data_for_display(self):
         columns_to_display = [
@@ -59,13 +59,6 @@ class JsonFileProcessor:
         stylized_data = self.processed_data.loc[(slice(None), 1.0), columns_to_display]
         stylized_data.index = stylized_data.index.droplevel(1)
         return stylized_data
-
-
-def short_id(input_str: str) -> str:
-    try:
-        return input_str[:4] + "[...]" + input_str[-4:]
-    except Exception:
-        return input_str
 
 
 class PerfPlotsGenerator:
@@ -92,11 +85,8 @@ class PerfPlotsGenerator:
         self.fig = fig
         self.ax = ax
 
-    def _study_ids(self) -> List[str]:
-        return self.perf_data.index.unique(level="study_id").tolist()
-
-    def _shorten_ids(self) -> List[str]:
-        return list(map(short_id, self._study_ids()))
+    def _display_names(self) -> List[str]:
+        return self.perf_data.index.unique(level="display_name").tolist()
 
     def _beautify_fig(self) -> None:
         self.fig.subplots_adjust(bottom=0.2)
@@ -107,8 +97,8 @@ class PerfPlotsGenerator:
         self.ax[-1].legend()
 
         for axes in self.ax:
-            axes.set_xticks(self._shorten_ids())
-            axes.set_xticklabels(self._shorten_ids(), rotation=90)
+            axes.set_xticks(self._display_names())
+            axes.set_xticklabels(self._display_names(), rotation=90)
 
         self.fig.tight_layout()
 
@@ -124,16 +114,16 @@ class PerfPlotsGenerator:
         ].values
 
         self.ax[version_count].bar(
-            self._shorten_ids(), antares_step_times, label=ANTARES_STEP
+            self._display_names(), antares_step_times, label=ANTARES_STEP
         )
         self.ax[version_count].bar(
-            self._shorten_ids(),
+            self._display_names(),
             problem_generation_step_times,
             bottom=antares_step_times,
             label=PROBLEM_GENERATION_STEP,
         )
         self.ax[version_count].bar(
-            self._shorten_ids(),
+            self._display_names(),
             benders_step_times,
             bottom=problem_generation_step_times + antares_step_times,
             label=BENDERS_STEP,

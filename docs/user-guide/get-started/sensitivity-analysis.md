@@ -126,12 +126,15 @@ An sample `sensitivity_in.json` is given below:
 The sensitivity analysis can be launched from the command line as follows:
 
 ```
-antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates --step sensitivity  --simulationName mySimulation
+antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates --step sensitivity  --simulationName mySimulation.zip
 ```
 
 - The `-i` parameter specifies the Antares study folder path.
 - The `--step` parameter specifies that we launch a sensitivity analysis.
-- The `--simulationName` parameter (optional) is the name of the Antares-Xpansion output directory on which we wish to perform the sensitivity analysis. If `--simulationName` is not specified, the most recently modified output directory of the Antares study folder will be used. The output directory used by the sensitivity analysis **must contain the results of an Antares-Xpansion optimization**.
+- The `--simulationName` parameter (optional) is the name of the Antares-Xpansion output archive on which we wish to
+  perform the sensitivity analysis. If `--simulationName` is not specified, the most recently modified output of the
+  Antares study folder will be used. The output used by the sensitivity analysis **must contain the results of an
+  Antares-Xpansion optimization**.
 
 The problems solved during the sensitivity analysis use the same solver settings and integrality constraints on the candidates as those used beforehand to perform the corresponding Antares-Xpansion optimization.
 
