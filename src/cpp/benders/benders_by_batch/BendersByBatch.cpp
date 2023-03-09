@@ -8,7 +8,6 @@
 #include "BatchCollection.h"
 #include "RandomBatchShuffler.h"
 #include "glog/logging.h"
-int batch_loop_count = 0;
 BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
                                Writer writer, mpi::environment &env,
                                mpi::communicator &world)
