@@ -76,13 +76,13 @@ void BendersByBatch::Run() {
 void BendersByBatch::MasterLoop() {
   number_of_batch_ = batch_collection_.NumberOfBatch();
   random_batch_permutation_.resize(number_of_batch_);
-  unsigned batch_counter = 0;
+  batch_counter_ = 0;
   current_batch_id_ = 0;
 
   number_of_sub_problem_resolved_ = 0;
   cumulative_subproblems_timer_per_iter_ = 0;
-
-  while (batch_counter < number_of_batch_) {
+  first_unsolved_batch_ = 0;
+  while (batch_counter_ < number_of_batch_) {
     _data.ub = 0;
     SetSubproblemCost(0);
     remaining_epsilon_ = AbsoluteGap();
@@ -105,8 +105,8 @@ void BendersByBatch::MasterLoop() {
     BroadcastSingleSubpbCostsUnderApprox();
     BroadCast(random_batch_permutation_.data(),
               random_batch_permutation_.size(), rank_0);
-    batch_counter = SeparationLoop();
-    BroadCast(batch_counter, rank_0);
+    SeparationLoop();
+    BroadCast(batch_counter_, rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter_);
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved_);
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
@@ -114,10 +114,11 @@ void BendersByBatch::MasterLoop() {
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
   }
 }
-int BendersByBatch::SeparationLoop() {
+void BendersByBatch::SeparationLoop() {
   misprice_ = true;
-  auto batch_counter = 0;
-  while (misprice_ && batch_counter < number_of_batch_) {
+  first_unsolved_batch_ = 0;
+  batch_counter_ = 0;
+  while (misprice_ && batch_counter_ < number_of_batch_) {
     _data.it++;
 
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
@@ -126,9 +127,8 @@ int BendersByBatch::SeparationLoop() {
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
     BroadcastXCut();
     UpdateRemainingEpsilon();
-    batch_counter = SolveBatches();
+    SolveBatches();
   }
-  return batch_counter;
 }
 void BendersByBatch::ComputeXCut() {
   if (_data.it == 1) {
@@ -156,12 +156,15 @@ void BendersByBatch::UpdateRemainingEpsilon() {
     }
   }
 }
-int BendersByBatch::SolveBatches() {
-  auto batch_counter = 0;
+void BendersByBatch::SolveBatches() {
+  batch_counter_ = 0;
   cumulative_subproblems_timer_per_iter_ = 0;
-  while (batch_counter < number_of_batch_) {
-    current_batch_id_ = random_batch_permutation_[batch_counter];
+  while (batch_counter_ < number_of_batch_) {
+    first_unsolved_batch_ = first_unsolved_batch_ % number_of_batch_;
+    current_batch_id_ = random_batch_permutation_[first_unsolved_batch_];
+    first_unsolved_batch_++;
     const auto &batch = batch_collection_.GetBatchFromId(current_batch_id_);
+    current_batch_id_++;
     const auto &batch_sub_problems = batch.sub_problem_names;
     double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
     double batch_subproblems_costs_contribution_in_gap = 0;
@@ -181,13 +184,10 @@ int BendersByBatch::SolveBatches() {
 
     BroadCast(remaining_epsilon_, rank_0);
     if (remaining_epsilon_ > 0) {
-      batch_counter++;
+      batch_counter_++;
     } else
       break;
   }
-  BroadCast(batch_counter, rank_0);
-
-  return batch_counter;
 }
 /*!
  * \brief Build subproblem cut

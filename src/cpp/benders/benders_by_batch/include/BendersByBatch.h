@@ -29,8 +29,8 @@ class BendersByBatch : public BendersMpi {
       double *batch_subproblems_costs_contribution_in_gap_per_proc);
   BatchCollection batch_collection_;
   void MasterLoop();
-  int SolveBatches();
-  int SeparationLoop();
+  void SolveBatches();
+  void SeparationLoop();
   void UpdateRemainingEpsilon();
   void BroadcastXOut();
   size_t number_of_batch_;
@@ -39,6 +39,8 @@ class BendersByBatch : public BendersMpi {
   double remaining_epsilon_;
   double cumulative_subproblems_timer_per_iter_;
   bool misprice_;
+  int first_unsolved_batch_;
+  int batch_counter_;
 };
 
 #endif  // SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
