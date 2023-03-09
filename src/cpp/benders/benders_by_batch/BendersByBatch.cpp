@@ -96,7 +96,7 @@ void BendersByBatch::MasterLoop() {
 
       _logger->display_message("\tSolving master...");
       get_master_value();
-      // _logger->log_master_solving_duration(get_timer_master());
+      _logger->log_master_solving_duration(get_timer_master());
 
       random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
                                       .GetCyclicBatchOrder(current_batch_id_);
@@ -122,7 +122,6 @@ void BendersByBatch::SeparationLoop() {
     _data.it++;
 
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
-    _logger->log_master_solving_duration(get_timer_master());
     ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
     BroadcastXCut();
