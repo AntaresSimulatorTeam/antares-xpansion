@@ -2,10 +2,13 @@
     Class to control the sensitivity analysis
 """
 
+import glob
 import os
-from pathlib import Path
+import shutil
 import subprocess
 import sys
+import zipfile
+from pathlib import Path
 
 from antares_xpansion.flushed_print import flushed_print
 
@@ -24,6 +27,7 @@ class SensitivityDriver:
         structure_path,
         json_sensitivity_out_path,
         sensitivity_log_path,
+            xpansion_simulation_output
     ):
         """
         launch sensitivity analysis
@@ -31,6 +35,8 @@ class SensitivityDriver:
         self.simulation_output_path = self._get_simulation_output_path(
             simulation_output_path
         )
+        with zipfile.ZipFile(self.simulation_output_path, 'r') as output_zip:
+            output_zip.extractall(xpansion_simulation_output)
         self.json_sensitivity_in_path = self._get_file_path(json_sensitivity_in_path)
         self.json_benders_output_path = self._get_file_path(json_benders_output_path)
         self.last_master_path = self._get_file_path(last_master_path)
@@ -43,7 +49,7 @@ class SensitivityDriver:
         flushed_print("-- Sensitivity study")
 
         old_cwd = os.getcwd()
-        os.chdir(simulation_output_path)
+        os.chdir(xpansion_simulation_output)
         flushed_print(f"Current directory is now {os.getcwd()}")
 
         returned_l = subprocess.run(
@@ -58,6 +64,12 @@ class SensitivityDriver:
             )
 
         os.chdir(old_cwd)
+        with zipfile.ZipFile(self.simulation_output_path, 'a') as output_zip:
+            sensitivity_path = os.path.dirname(self.sensitivity_log_path)
+            for file in glob.glob(sensitivity_path + "/*"):
+                if os.path.isfile(file):
+                    output_zip.write(file, os.path.join("sensitivity", os.path.basename(file)))
+        shutil.rmtree(xpansion_simulation_output)
 
     @staticmethod
     def _get_file_path(filepath):
@@ -70,8 +82,13 @@ class SensitivityDriver:
 
     @staticmethod
     def _get_simulation_output_path(simulation_output_path):
-        if simulation_output_path.is_dir():
-            return simulation_output_path
+        if os.path.exists(simulation_output_path):
+            if zipfile.is_zipfile(simulation_output_path):
+                return simulation_output_path
+            else:
+                raise SensitivityDriver.SensitivityOutputPathError(
+                    f"Sensitivity Error: {simulation_output_path} is not a zip "
+                )
         else:
             raise SensitivityDriver.SensitivityOutputPathError(
                 f"Sensitivity Error: {simulation_output_path} not found "

@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
 # Project configuration
 # ===========================================================================
 
-PROJECT(antaresXpansion VERSION 1.0.2)
+PROJECT(antaresXpansion VERSION 1.0.3)
 #set(ANTARES_XPANSION_RC 1)
 
 # ===========================================================================
