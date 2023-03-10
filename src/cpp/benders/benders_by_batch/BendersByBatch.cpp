@@ -92,6 +92,10 @@ void BendersByBatch::MasterLoop() {
         ActivateIntegrityConstraints();
         ResetDataPostRelaxation();
       }
+      _logger->display_message(
+          " _______________________________________________________________"
+          "_"
+          "________\n/\n");
 
       _logger->display_message("\tSolving master...");
       get_master_value();
@@ -111,6 +115,9 @@ void BendersByBatch::MasterLoop() {
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
+    _logger->display_message(
+        "\\________________________________________________________________"
+        "________\n");
   }
 }
 void BendersByBatch::SeparationLoop() {
