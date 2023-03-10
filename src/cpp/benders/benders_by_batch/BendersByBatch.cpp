@@ -36,7 +36,7 @@ void BendersByBatch::InitializeProblems() {
       // In case there are more subproblems than process
       if (auto process_to_feed = problem_count % WorldSize();
           process_to_feed ==
-          Rank()) {  // Assign  [problemNumber % processCount] to processID
+          Rank()) {  // Assign  [problemNumber % WorldSize] to processID
 
         const auto subProblemFilePath = GetSubproblemPath(problem_name);
         AddSubproblem({problem_name, coupling_map[problem_name]});
