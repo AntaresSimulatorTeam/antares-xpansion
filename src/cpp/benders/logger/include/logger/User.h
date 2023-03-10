@@ -11,7 +11,6 @@
 
 namespace xpansion {
 namespace logger {
-
 class User : public ILogger {
  public:
   User(std::ostream &stream);
@@ -50,6 +49,9 @@ class User : public ILogger {
 
  private:
   std::ostream &_stream;
+  std::string user_name_ = "Unidentified user";
+  std::string host_name_ = "Unidentified host";
+  std::string user_name_and_host_name_;
 };
 
 }  // namespace logger

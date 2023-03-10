@@ -47,11 +47,15 @@ class UserFile : public ILogger {
   void LogAtSwitchToInteger() override;
   void number_of_sub_problem_resolved(int number) override;
 
-  const std::string LINE_PREFIX = "<<BENDERS>> ";
+  const std::string LINE_PREFIX_BENDERS = "<<BENDERS>> ";
+  std::string line_prefix_;
 
  private:
   std::ofstream _file;
   std::string _filename;
+  std::string user_name_ = "Unidentified user";
+  std::string host_name_ = "Unidentified host";
+  std::string user_name_and_host_name_;
 };
 
 }  // namespace logger
