@@ -6,11 +6,15 @@ std::string LogUtils::UserName() {
   TCHAR user_name[INFO_BUFFER_SIZE];
   DWORD bufCharCount = INFO_BUFFER_SIZE;
 
-  GetUserName(user_name, &bufCharCount);
+  if (!GetUserName(user_name, &bufCharCount)) {
+    strcpy_s(user_name, "Unidentified user");
+  }
   return user_name;
 #else
   char user_name[LOGIN_NAME_MAX];
-  getlogin_r(user_name, LOGIN_NAME_MAX);
+  if (!getlogin_r(user_name, LOGIN_NAME_MAX)) {
+    strcpy_s(user_name, "Unidentified user");
+  }
   return user_name;
 #endif
 }
@@ -19,11 +23,15 @@ std::string LogUtils::HostName() {
   TCHAR host_name[INFO_BUFFER_SIZE];
   DWORD bufCharCount = INFO_BUFFER_SIZE;
 
-  GetComputerName(host_name, &bufCharCount);
+  if (!GetComputerName(host_name, &bufCharCount)) {
+    strcpy_s(host_name, "Unidentified host");
+  }
   return host_name;
 #else
   char host_name[HOST_NAME_MAX];
-  gethostname(host_name, HOST_NAME_MAX);
+  if (!gethostname(host_name, HOST_NAME_MAX)) {
+    strcpy_s(host_name, "Unidentified host");
+  }
   return host_name;
 #endif
 }
