@@ -36,7 +36,7 @@ jobs:
         with:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
-          ref: master
+          ref: 8.13
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache
