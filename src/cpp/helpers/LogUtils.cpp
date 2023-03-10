@@ -13,7 +13,7 @@ std::string LogUtils::UserName() {
 #else
   char user_name[LOGIN_NAME_MAX];
   if (!getlogin_r(user_name, LOGIN_NAME_MAX)) {
-    strcpy_s(user_name, "Unidentified user");
+    strcpy(user_name, "Unidentified user");
   }
   return user_name;
 #endif
@@ -30,7 +30,7 @@ std::string LogUtils::HostName() {
 #else
   char host_name[HOST_NAME_MAX];
   if (!gethostname(host_name, HOST_NAME_MAX)) {
-    strcpy_s(host_name, "Unidentified host");
+    strcpy(host_name, "Unidentified host");
   }
   return host_name;
 #endif
