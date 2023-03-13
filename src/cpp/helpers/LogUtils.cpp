@@ -1,4 +1,6 @@
 #include "LogUtils.h"
+
+#include <cstring>
 #define INFO_BUFFER_SIZE 32767
 
 std::string LogUtils::UserName() {
