@@ -1,40 +1,38 @@
 #include "LogUtils.h"
 
-#include <string.h>
 #define INFO_BUFFER_SIZE 32767
 
 std::string LogUtils::UserName() {
+  std::string user_name("Unidentified user");
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  TCHAR user_name[INFO_BUFFER_SIZE];
+  TCHAR tchar_user_name[INFO_BUFFER_SIZE];
   DWORD bufCharCount = INFO_BUFFER_SIZE;
 
-  if (!GetUserName(user_name, &bufCharCount)) {
-    strcpy_s(user_name, "Unidentified user");
+  if (GetUserName(tchar_user_name, &bufCharCount)) {
+    user_name = tchar_user_name;
   }
-  std::string s;
-  return user_name;
 #else
-  char user_name[LOGIN_NAME_MAX];
-  if (!getlogin_r(user_name, LOGIN_NAME_MAX)) {
-    strcpy_s(user_name, "Unidentified user");
+  char char_user_name[LOGIN_NAME_MAX];
+  if (getlogin_r(char_user_name, LOGIN_NAME_MAX)) {
+    user_name = char_user_name;
   }
-  return user_name;
 #endif
+  return user_name;
 }
 std::string LogUtils::HostName() {
+  std::string host_name("Unidentified host");
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-  TCHAR host_name[INFO_BUFFER_SIZE];
+  TCHAR tchar_host_name[INFO_BUFFER_SIZE];
   DWORD bufCharCount = INFO_BUFFER_SIZE;
 
-  if (!GetComputerName(host_name, &bufCharCount)) {
-    strcpy_s(host_name, "Unidentified host");
+  if (GetComputerName(tchar_host_name, &bufCharCount)) {
+    host_name = tchar_host_name;
   }
-  return host_name;
 #else
-  char host_name[HOST_NAME_MAX];
-  if (!gethostname(host_name, HOST_NAME_MAX)) {
-    strcpy_s(host_name, "Unidentified host");
+  char char_host_name[INFO_BUFFER_SIZE];
+  if (gethostname(char_host_name, HOST_NAME_MAX)) {
+    host_name = char_host_name;
   }
-  return host_name;
 #endif
+  return host_name;
 }
