@@ -2,10 +2,12 @@
 
 #include "BatchCollection.h"
 #include "BendersByBatch.h"
+#include "LogUtils.h"
 #include "RandomBatchShuffler.h"
 #include "gtest/gtest.h"
 #include "logger/Master.h"
 #include "logger/User.h"
+
 class BatchCollectionTest : public ::testing::Test {
  public:
   const std::vector<std::string> sub_problems_name_list = {"P1", "P2", "P3"};
@@ -30,15 +32,17 @@ TEST_F(BatchCollectionTest,
        NumberOfCollectionCanNotBeGreaterThanNumberOfSubProblems) {
   auto sub_problems_name_list_size = sub_problems_name_list.size();
   auto batch_size = sub_problems_name_list_size + 1;
-
+  std::string user_name_and_host_name =
+      "[" + LogUtils::UserName() + "@" + LogUtils::HostName() + "] ";
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
-  auto expected = std::string("Warning: batch_size(") +
+  auto expected = user_name_and_host_name + "Warning: batch_size(" +
                   std::to_string(batch_size) +
                   ") can not be greater than number of subproblems (" +
-                  std::to_string(sub_problems_name_list_size) +
-                  ")\nSetting batch_size = number of subproblems(" +
+                  std::to_string(sub_problems_name_list_size) + ")\n" +
+                  user_name_and_host_name +
+                  "Setting batch_size = number of subproblems(" +
                   std::to_string(sub_problems_name_list_size) +
                   ")\nWhich means that there is only one batch!\n";
   auto batch_collection =
