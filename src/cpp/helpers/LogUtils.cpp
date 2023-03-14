@@ -1,5 +1,11 @@
 #include "LogUtils.h"
 
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#include <windows.h>
+#else
+#include <limits.h>
+#include <unistd.h>
+#endif
 #define INFO_BUFFER_SIZE 32767
 
 std::string LogUtils::UserName() {
