@@ -6,7 +6,7 @@ from sre_constants import IN
 
 
 from antares_xpansion.split_link_profile import SplitLinkProfile
-from antares_xpansion.flushed_print import flushed_print, INFO_MSG
+from antares_xpansion.flushed_print import log_message, INFO_MSG
 
 
 class ProfileLinkChecker:
@@ -56,7 +56,7 @@ class ProfileLinkChecker:
         update_candidate_file = False
         for candidate in self.config.sections():
             if self.has_link_profile_key(candidate):
-                flushed_print(
+                log_message(
                     f"{INFO_MSG} in candidate {candidate} description, deprecated option: **{self.LINK_PROFILE_KEY}** is replaced by **{self.DIRECT_LINK_PROFILE_KEY}** and **{self.INDIRECT_LINK_PROFILE_KEY}** options")
                 update_candidate_file = True
                 link_file = self.config.get(candidate, self.LINK_PROFILE_KEY)
@@ -70,7 +70,7 @@ class ProfileLinkChecker:
                     candidate, self.INDIRECT_LINK_PROFILE_KEY, indirect_link_profile.name)
 
             if self.has_already_installed_link_profile_key(candidate):
-                flushed_print(
+                log_message(
                     f"{INFO_MSG} in candidate {candidate} description, deprecated option: **{self.ALREADY_INSTALLED_LINK_PROFILE_KEY}** is replaced by **{self.DIRECT_ALREADY_INSTALLED_LINK_PROFILE_KEY}** and **{self.INDIRECT_ALREADY_INSTALLED_LINK_PROFILE_KEY}** options")
                 update_candidate_file = True
                 link_file = self.config.get(
@@ -88,6 +88,6 @@ class ProfileLinkChecker:
         return update_candidate_file
 
     def write(self):
-        flushed_print(f"{self._candidate_file.name} is updated.")
+        log_message(f"{self._candidate_file.name} is updated.")
         with open(self._candidate_file, "w") as candidate_file:
             self.config.write(candidate_file)

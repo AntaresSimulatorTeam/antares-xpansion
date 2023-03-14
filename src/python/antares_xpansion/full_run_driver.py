@@ -6,7 +6,7 @@ from antares_xpansion.benders_driver import BendersDriver
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import log_message
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 import os
 import shutil
@@ -67,7 +67,7 @@ class FullRunDriver:
         lp_path = self.benders_driver.get_lp_path()
 
         os.chdir(lp_path)
-        flushed_print("Current directory is now: ", os.getcwd())
+        log_message("Current directory is now: ", os.getcwd())
         ret = subprocess.run(
             self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')

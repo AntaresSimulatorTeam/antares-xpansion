@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 from antares_xpansion.chronicles_checker import ChronicleChecker
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import log_message
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
@@ -257,7 +257,7 @@ class ConfigLoader:
         :return: gap value or 0 if the gap is negative
         """
         if "optimality_gap" not in self.options:
-            flushed_print(
+            log_message(
                 f"{self._INFO_MSG} optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used"
             )
         abs_optimality_gap_str = self.options.get(
@@ -365,7 +365,7 @@ class ConfigLoader:
         if self.options.get("additional-constraints", "") != "":
             additional_constraints_path = self.additional_constraints()
             if not os.path.isfile(additional_constraints_path):
-                flushed_print(
+                log_message(
                     "Illegal value: %s is not an existent additional-constraints file"
                     % additional_constraints_path
                 )
@@ -375,7 +375,7 @@ class ConfigLoader:
 
         if "solver" not in self.options:
             default_solver = self._config.settings_default["solver"]
-            flushed_print(
+            log_message(
                 f"{self._INFO_MSG} No solver defined in user/expansion/settings.ini. {default_solver} used"
             )
             self.options["solver"] = default_solver
@@ -385,7 +385,7 @@ class ConfigLoader:
                     self.options["solver"], self._config.AVAILABLE_SOLVER
                 )
             except XpansionStudyReader.BaseException as e:
-                flushed_print(e)
+                log_message(e)
                 sys.exit(1)
 
     def simulation_output_path(self) -> Path:
@@ -551,7 +551,7 @@ class ConfigLoader:
         indicates if method to use is accurate by reading the uc_type in the settings file
         """
         if self._config.UC_TYPE not in self.options:
-            flushed_print(
+            log_message(
                 f"{self._INFO_MSG} {self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used."
             )
         uc_type = self.options.get(
@@ -570,7 +570,7 @@ class ConfigLoader:
         from the settings file
         """
         if "master" not in self.options:
-            flushed_print(
+            log_message(
                 f"{self._INFO_MSG} master options is not defined, {self._config.settings_default['master']} used"
             )
 

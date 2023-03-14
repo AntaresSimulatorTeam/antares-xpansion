@@ -4,6 +4,7 @@
 from datetime import datetime
 import json
 from pathlib import Path
+from antares_xpansion.log_utils import LogUtils
 
 from antares_xpansion.study_locker import StudyLocker
 from antares_xpansion.input_parser import InputParser
@@ -26,6 +27,8 @@ input_parameters = parser.parse_args()
 flushed_print(
     "----------------------------------------------------------------")
 flushed_print("Running Antares Xpansion ... ")
+flushed_print(f"user: {LogUtils.user_name()}")
+flushed_print(f"hostname: {LogUtils.host_name()}")
 flushed_print(f"Xpansion version: {__version__}")
 flushed_print(f"antares simulator version: {__antares_simulator_version__}")
 flushed_print(

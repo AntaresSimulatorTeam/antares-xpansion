@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import log_message
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
@@ -35,7 +35,7 @@ class BendersDriver:
         launch the optimization of the antaresXpansion problem using the specified solver
 
         """
-        flushed_print("-- Benders")
+        log_message("-- Benders")
         self.method = method
         self.n_mpi = n_mpi
         self.oversubscribe = oversubscribe
@@ -45,7 +45,7 @@ class BendersDriver:
         lp_path = self.get_lp_path()
 
         os.chdir(lp_path)
-        flushed_print("Current directory is now: ", os.getcwd())
+        log_message("Current directory is now: ", os.getcwd())
 
         self.set_solver()
 
@@ -94,7 +94,7 @@ class BendersDriver:
         elif self.method == "benders_by_batch":
             self.solver = self.benders_by_batch
         else:
-            flushed_print("Illegal optim method")
+            log_message("Illegal optim method")
             raise BendersDriver.BendersSolverError(
                 f" {self.method} method is unavailable !"
             )
@@ -106,7 +106,7 @@ class BendersDriver:
             try:
                 os.remove(file_path)
             except OSError:
-                flushed_print("Error while deleting file : ", file_path)
+                log_message("Error while deleting file : ", file_path)
         if os.path.isfile(solver_name + ".log"):
             os.remove(solver_name + ".log")
 

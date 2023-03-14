@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print, INFO_MSG
+from antares_xpansion.flushed_print import log_message, INFO_MSG
 
 
 class SplitLinkProfile:
@@ -66,13 +66,13 @@ class SplitLinkProfile:
             (self.INDIRECT_SUFFIX +
              self._link_profile_file.name) if two_profiles else direct_file
 
-        flushed_print(
+        log_message(
             f"{INFO_MSG} direct link profile: {direct_file.name} is created from link-profile file: {self._link_profile_file.name}")
         with open(direct_file, "w") as direct:
             direct.writelines(["%s\n" % item for item in first_profile])
 
         if (two_profiles):
-            flushed_print(
+            log_message(
                 f"{INFO_MSG} indirect link profile: {indirect_file.name} is created from link-profile file: {self._link_profile_file.name}")
             with open(indirect_file, "w") as indirect:
                 indirect.writelines(["%s\n" % item for item in indirect_profile]

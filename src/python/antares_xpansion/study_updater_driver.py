@@ -9,7 +9,7 @@ from pathlib import Path
 from dataclasses import dataclass
 
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import log_message
 
 
 class StudyUpdaterDriver:
@@ -31,7 +31,7 @@ class StudyUpdaterDriver:
         """
         self._set_simulation_output_path(simulation_output_path)
         self._set_json_file_path(Path(json_file_path))
-        flushed_print("-- Study Update")
+        log_message("-- Study Update")
 
         with open(self.get_study_updater_log_filename(), 'w') as output_file:
             returned_l = subprocess.run(self.get_study_updater_command(), shell=False,

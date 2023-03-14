@@ -12,7 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import log_message
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.xpansion_utils import read_and_write_mps
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
@@ -71,7 +71,7 @@ class ProblemGeneratorDriver:
             problem generation step : getnames + lp_namer
         """
         self.clear_old_log()
-        flushed_print("-- Problem Generation")
+        log_message("-- Problem Generation")
         self.output_path = output_path
 
         self.create_lp_dir()

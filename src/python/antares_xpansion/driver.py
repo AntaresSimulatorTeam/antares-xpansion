@@ -10,7 +10,7 @@ from pathlib import Path
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.benders_driver import BendersDriver
 from antares_xpansion.config_loader import ConfigLoader
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import log_message
 from antares_xpansion.general_data_processor import GeneralDataProcessor
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 from antares_xpansion.resume_study import ResumeStudy, ResumeStudyData
@@ -69,7 +69,7 @@ class XpansionDriver:
 
         if self.config_loader.step() == "full":
             self.launch_antares_step()
-            flushed_print("-- post antares")
+            log_message("-- post antares")
             self.problem_generator_driver.set_output_path(
                 self.config_loader.simulation_output_path())
             self.problem_generator_driver.create_lp_dir()
@@ -131,7 +131,7 @@ class XpansionDriver:
                 self._backup_general_data_ini_on_error()
                 self._revert_general_data_ini()
         except AntaresDriver.AntaresExecutionException as e:
-            flushed_print(
+            log_message(
                 "Antares exited with error, backup current general data file and revert original one")
             self._backup_general_data_ini_on_error()
             self._revert_general_data_ini()

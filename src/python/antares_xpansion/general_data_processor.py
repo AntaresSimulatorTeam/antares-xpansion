@@ -3,7 +3,7 @@ import os
 import shutil
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import log_message
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 
 
@@ -39,8 +39,9 @@ class GeneralDataProcessor:
         return self._general_data_ini_file
 
     def change_general_data_file_to_configure_antares_execution(self):
-        flushed_print("-- pre antares")
-        ini_file_backup = self._general_data_ini_file.with_suffix(self._general_data_ini_file.suffix + ".with-playlist")
+        log_message("-- pre antares")
+        ini_file_backup = self._general_data_ini_file.with_suffix(
+            self._general_data_ini_file.suffix + ".with-playlist")
         shutil.copyfile(self._general_data_ini_file, ini_file_backup)
         config = configparser.ConfigParser(strict=False)
         config.read(self._general_data_ini_file)
@@ -56,7 +57,8 @@ class GeneralDataProcessor:
                 config.remove_section("playlist")
             config.write(writer)
             if has_playlist:
-                self.backport_playlist(ini_file_backup, writer, playlist_options)
+                self.backport_playlist(
+                    ini_file_backup, writer, playlist_options)
         os.remove(ini_file_backup)
 
     def backport_playlist(self, ini_file_backup, writer, playlist_options: dict):

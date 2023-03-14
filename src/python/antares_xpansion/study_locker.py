@@ -1,8 +1,8 @@
 import os
-from functools import partial
-from operator import is_not
 from pathlib import Path
 import psutil
+
+from antares_xpansion.flushed_print import log_message
 
 
 class StudyLocker:
@@ -82,7 +82,7 @@ class StudyLocker:
     def _lock(self):
         with open(self.locker_file, "w") as locker:
             locker.write(self.PID_ATTRIBUTE + " = " + str(os.getpid()))
-        print(f"{self.study_dir} is locked")
+        log_message(f"{self.study_dir} is locked")
 
     class NotAValidDirectory(Exception):
         pass
