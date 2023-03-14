@@ -1,7 +1,6 @@
 #include "ProblemGenerationLogger.h"
 
 #include "Clock.h"
-
 namespace ProblemGenerationLog {
 
 std::string LogLevelToStr(const LOGLEVEL log_level) {
@@ -92,8 +91,9 @@ bool ProblemGenerationLogger::try_to_add_logger_to_enabled_list(
 }
 std::string ProblemGenerationLogger::PrefixMessage(
     const LOGLEVEL& log_level) const {
-  return std::string("[") + LogLevelToStr(log_level) +
-         clock_utils::timeToStr(std::time(nullptr)) + "] ";
+  return std::string("[") + user_name_ + "@" + host_name_ + " " +
+         LogLevelToStr(log_level) + clock_utils::timeToStr(std::time(nullptr)) +
+         "] ";
 }
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     const LOGLEVEL log_level) {

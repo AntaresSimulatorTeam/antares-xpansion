@@ -10,6 +10,9 @@
 #include <ostream>
 #include <set>
 #include <string>
+
+#include "LogUtils.h"
+
 inline std::string LogLocationToStr(int line, const char* file,
                                     const char* func) {
   return std::string("This is line ") + std::to_string(line) + " of file " +
@@ -68,6 +71,8 @@ class ProblemGenerationLogger {
  private:
   std::string prefix_;
   LOGLEVEL log_level_;
+  const std::string user_name_ = LogUtils::UserName();
+  const std::string host_name_ = LogUtils::HostName();
 
  public:
   explicit ProblemGenerationLogger(const LOGLEVEL log_level)
