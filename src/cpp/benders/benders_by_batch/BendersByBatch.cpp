@@ -64,8 +64,8 @@ void BendersByBatch::Run() {
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
     UpdateTrace();
     SaveCurrentBendersData();
-    _data.elapsed_time = GetBendersTime();
-
+    _data.stopping_criterion = _data.stop ? StoppingCriterion::timelimit
+                                          : StoppingCriterion::absolute_gap;
     CloseCsvFile();
     EndWritingInOutputFile();
     write_basis();
@@ -81,7 +81,7 @@ void BendersByBatch::MasterLoop() {
   number_of_sub_problem_resolved_ = 0;
   cumulative_subproblems_timer_per_iter_ = 0;
   first_unsolved_batch_ = 0;
-  while (batch_counter_ < number_of_batch_) {
+  while (batch_counter_ < number_of_batch_ || _data.stop) {
     _data.ub = 0;
     SetSubproblemCost(0);
     remaining_epsilon_ = AbsoluteGap();
@@ -109,6 +109,11 @@ void BendersByBatch::MasterLoop() {
     BroadCast(random_batch_permutation_.data(),
               random_batch_permutation_.size(), rank_0);
     SeparationLoop();
+    if (Rank() == rank_0) {
+      _data.elapsed_time = GetBendersTime();
+      _data.stop = (_data.elapsed_time > Options().TIME_LIMIT);
+    }
+    BroadCast(_data.stop, rank_0);
     BroadCast(batch_counter_, rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter_);
     _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved_);
@@ -173,7 +178,6 @@ void BendersByBatch::SolveBatches() {
     const auto &batch_sub_problems = batch.sub_problem_names;
     double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
     double batch_subproblems_costs_contribution_in_gap = 0;
-    Timer walltime;
     BuildCut(batch_sub_problems,
              &batch_subproblems_costs_contribution_in_gap_per_proc);
     Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
@@ -184,7 +188,6 @@ void BendersByBatch::SolveBatches() {
     if (Rank() == rank_0) {
       number_of_sub_problem_resolved_ += batch_sub_problems.size();
       remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
-      SetSubproblemsWalltime(walltime.elapsed());
     }
 
     BroadCast(remaining_epsilon_, rank_0);
