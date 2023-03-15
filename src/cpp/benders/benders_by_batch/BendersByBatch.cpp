@@ -84,7 +84,7 @@ void BendersByBatch::MasterLoop() {
   while (batch_counter_ < number_of_batch_ || _data.stop) {
     _data.ub = 0;
     SetSubproblemCost(0);
-    remaining_epsilon_ = AbsoluteGap();
+    remaining_epsilon_ = Gap();
 
     if (Rank() == rank_0) {
       if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
@@ -160,9 +160,8 @@ void BendersByBatch::UpdateRemainingEpsilon() {
     master_ptr->_solver->get_obj(obj.data(), 0, ncols - 1);
     for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
       int col_id = master_ptr->_name_to_id[candidate_name];
-      remaining_epsilon_ =
-          AbsoluteGap() -
-          obj[col_id] * (x_cut_candidate_value - _data.x_out[candidate_name]);
+      remaining_epsilon_ = Gap() - obj[col_id] * (x_cut_candidate_value -
+                                                  _data.x_out[candidate_name]);
     }
   }
 }
@@ -278,4 +277,7 @@ void BendersByBatch::BroadcastXOut() {
   Point x_out = get_x_out();
   BroadCast(x_out, rank_0);
   set_x_out(x_out);
+}
+double BendersByBatch::Gap() const {
+  return std::max(AbsoluteGap(), RelativeGap() * _data.lb);
 }

@@ -33,6 +33,7 @@ class BendersByBatch : public BendersMpi {
   void SeparationLoop();
   void UpdateRemainingEpsilon();
   void BroadcastXOut();
+  double Gap() const;
   size_t number_of_batch_;
   unsigned current_batch_id_;
   int number_of_sub_problem_resolved_;
