@@ -51,7 +51,7 @@ class BendersBase {
   bool is_initial_relaxation_requested() const;
   bool SwitchToIntegerMaster(bool is_relaxed) const;
   virtual void UpdateTrace();
-  void ComputeXCut();
+  virtual void ComputeXCut();
   void ComputeInvestCost();
   virtual void compute_ub();
   virtual void get_master_value();
@@ -84,6 +84,8 @@ class BendersBase {
   [[nodiscard]] bool is_trace() const;
   [[nodiscard]] Point get_x_cut() const;
   void set_x_cut(const Point &x0);
+  [[nodiscard]] Point get_x_out() const;
+  void set_x_out(const Point &x0);
   [[nodiscard]] double get_timer_master() const;
   void set_timer_master(const double &timer_master);
   [[nodiscard]] double GetSubproblemsWalltime() const;
