@@ -51,7 +51,8 @@ class CandidatesReader:
 
     def _get_candidate_index(self, candidate: str):
         if candidate not in self.get_candidates_list():
-            log_message(f"Candidate {candidate} not found in candidate list.")
+            log_message(
+                f"Candidate {candidate} not found in candidate list.")
             raise CandidateNotFound
         return self.candidates_map[candidate]
 
