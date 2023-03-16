@@ -77,14 +77,14 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
 
   if (lp_status != SOLVER_STATUS::OPTIMAL) {
     LOG(INFO) << "lp_status is : " << lp_status << std::endl;
-    std::stringstream buffer;
-    buffer << std::filesystem::path(outputroot) /
-                  (_path_to_mps.string() + "_lp_status_") /
-                  (_solver->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
+    std::filesystem::path buffer;
+    buffer = std::filesystem::path(outputroot) /
+                  (_path_to_mps.filename().string() + "_lp_status_" +
+                  _solver->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
     LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status]
               << std::endl;
-    LOG(INFO) << "written in " << buffer.str() << std::endl;
-    _solver->write_prob_mps(buffer.str());
+    LOG(INFO) << "written in " << buffer.string() << std::endl;
+    _solver->write_prob_mps(buffer);
 
     throw InvalidSolverStatusException(
         "Invalid solver status " + _solver->SOLVER_STRING_STATUS[lp_status] +
