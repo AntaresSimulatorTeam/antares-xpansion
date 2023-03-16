@@ -128,13 +128,13 @@ class BendersBase {
     return _problem_to_id.at(problem_name);
   }
   BendersBaseOptions Options() const { return _options; }
+  virtual void UpdateStoppingCriterion();
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterDataPtr &trace, Point const &xopt);
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
                         Point const &xopt) const;
-  void UpdateStoppingCriterion();
   bool ShouldRelaxationStop() const;
   void check_status(const SubProblemDataMap &subproblem_data_map) const;
   [[nodiscard]] LogData build_log_data_from_data() const;

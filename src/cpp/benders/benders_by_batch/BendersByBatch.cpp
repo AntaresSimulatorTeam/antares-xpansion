@@ -64,8 +64,6 @@ void BendersByBatch::Run() {
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
     UpdateTrace();
     SaveCurrentBendersData();
-    _data.stopping_criterion = _data.stop ? StoppingCriterion::timelimit
-                                          : StoppingCriterion::absolute_gap;
     CloseCsvFile();
     EndWritingInOutputFile();
     write_basis();
@@ -111,7 +109,7 @@ void BendersByBatch::MasterLoop() {
     SeparationLoop();
     if (Rank() == rank_0) {
       _data.elapsed_time = GetBendersTime();
-      _data.stop = (_data.elapsed_time > Options().TIME_LIMIT);
+      _data.stop = ShouldBendersStop();
     }
     BroadCast(_data.stop, rank_0);
     BroadCast(batch_counter_, rank_0);
@@ -280,4 +278,27 @@ void BendersByBatch::BroadcastXOut() {
 }
 double BendersByBatch::Gap() const {
   return std::max(AbsoluteGap(), RelativeGap() * _data.lb);
+}
+/*!
+ *  \brief Update stopping criterion
+ *
+ *  Method updating the stopping criterion and reinitializing some datas
+ *
+ */
+void BendersByBatch::UpdateStoppingCriterion() {
+  if (_data.elapsed_time > Options().TIME_LIMIT) {
+    _data.stopping_criterion = StoppingCriterion::timelimit;
+  }
+  // else if ((Options().MAX_ITERATIONS != -1) &&
+  //          (_data.it >= Options().MAX_ITERATIONS))
+  // _data.stopping_criterion = StoppingCriterion::max_iteration;
+  // else if (Options().ABSOLUTE_GAP >= remaining_epsilon_)
+  //   _data.stopping_criterion = StoppingCriterion::absolute_gap;
+  // else if (Options().RELATIVE_GAP * _data.lb >= remaining_epsilon_)
+  //   _data.stopping_criterion = StoppingCriterion::relative_gap;
+  else if (AbsoluteGap() == Gap()) {
+    _data.stopping_criterion = StoppingCriterion::absolute_gap;
+  } else if (Gap() == RelativeGap() * _data.lb) {
+    _data.stopping_criterion = StoppingCriterion::relative_gap;
+  }
 }
