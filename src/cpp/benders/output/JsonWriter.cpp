@@ -155,4 +155,10 @@ void JsonWriter::write_log_level(const int log_level) {
 std::string JsonWriter::solution_status() const {
   return _output[SOLUTION_C][PROBLEM_STATUS_C].asString();
 }
+
+void JsonWriter::WriteProblem(const ProblemData &problem_data) {
+  _output[ERROR_C][PROBLEMNAME_C] = problem_data.name;
+  _output[ERROR_C][PROBLEMPATH_C] = problem_data.path.string();
+  _output[ERROR_C][PROBLEM_STATUS_C] = problem_data.status;
+}
 }  // namespace Output

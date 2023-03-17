@@ -279,7 +279,7 @@ void BendersBase::get_master_value() {
     _master->fix_alpha(_data.best_ub);
   }
   _master->solve(_data.master_status, _options.OUTPUTROOT,
-                 _options.LAST_MASTER_MPS + MPS_SUFFIX);
+                 _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
   _master->get(
       _data.x_out, _data.overall_subpb_cost_under_approx,
       _data.single_subpb_costs_under_approx); /*Get the optimal variables of the
@@ -362,7 +362,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               SubProblemData subproblem_data;
               worker->fix_to(_data.x_cut);
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
-                            _options.LAST_MASTER_MPS + MPS_SUFFIX);
+                            _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
@@ -571,12 +571,12 @@ std::string BendersBase::status_from_criterion() const {
   switch (_data.stopping_criterion) {
     case StoppingCriterion::absolute_gap:
     case StoppingCriterion::relative_gap:
-      return Output::STATUS_OPTIMAL_C;
+      return Output::OPTIMAL_C;
     case StoppingCriterion::max_iteration:
     case StoppingCriterion::timelimit:
-      return Output::STATUS_LIMIT_REACHED_C;
+      return Output::LIMIT_REACHED_C;
     default:
-      return Output::STATUS_ERROR_C;
+      return Output::ERROR_C;
   }
 }
 

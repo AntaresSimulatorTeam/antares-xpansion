@@ -65,4 +65,8 @@ void VoidWriter::write_duration(const double duration) {
   // keep this method empty
 }
 std::string VoidWriter::solution_status() const { return ""; }
+void VoidWriter::WriteProblem(const ProblemData &problem_data) {
+  // keep this method empty
+}
+
 }  // namespace Output

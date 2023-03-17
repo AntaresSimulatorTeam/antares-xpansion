@@ -6,9 +6,11 @@
 
 namespace Benders {
 
-bool StartUp::StudyAlreadyAchievedCriterion(const SimulationOptions& options, const Writer& writer, const Logger& logger) const {
+bool StartUp::StudyAlreadyAchievedCriterion(const SimulationOptions& options,
+                                            const Writer& writer,
+                                            const Logger& logger) const {
   if (!options.RESUME) return false;
-  if (writer->solution_status() == Output::STATUS_OPTIMAL_C) {
+  if (writer->solution_status() == Output::OPTIMAL_C) {
     std::stringstream str;
     str << "Study is already optimal " << std::endl
         << "Optimization results available in : " << options.JSON_FILE;

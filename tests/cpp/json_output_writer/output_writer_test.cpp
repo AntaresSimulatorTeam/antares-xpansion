@@ -147,7 +147,7 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData) {
   solution_data.solution = iter2;
   solution_data.nbWeeks_p = 5;
   solution_data.best_it = 2;
-  solution_data.problem_status = STATUS_OPTIMAL_C;
+  solution_data.problem_status = OPTIMAL_C;
   solution_data.stopping_criterion = CRIT_MAX_ITER_C;
 
   IterationsData iterations_data;
