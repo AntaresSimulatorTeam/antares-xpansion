@@ -8,7 +8,6 @@
       "MASTER_NAME": "master",
       "STRUCTURE_FILE": "structure.txt",
       "INPUTROOT": ".",
-      "SOLVER": "XPRESS",
-      "JSON_FILE": "./expansion/out.json",
-     "MPS_IN_ZIP":  true
+      "SOLVER_NAME": "XPRESS",
+      "JSON_FILE": "./expansion/out.json"
 }
