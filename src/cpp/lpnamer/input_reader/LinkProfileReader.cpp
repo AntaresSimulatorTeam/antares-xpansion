@@ -2,6 +2,8 @@
 
 #include <filesystem>
 
+#include "LogUtils.h"
+
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &direct_filename,
     const std::filesystem::path &indirect_file_name) {
