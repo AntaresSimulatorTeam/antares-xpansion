@@ -44,6 +44,12 @@
     "mini_instance_INFEASIBLE": {
         "path": "../../../data_test/mini_instance_INFEAS/",
         "option_file": "options_default.json",
-        "status": "ERROR"
+        "status": "ERROR",
+        "ERROR" : 
+                {
+                    "problem_name" : "SP1.mps",
+                    "problem_path" : "./outputs/SP1.mps_lp_status_INFEASIBLE.mps",
+                    "problem_status" : "INFEASIBLE"
+                }
     }
 }
