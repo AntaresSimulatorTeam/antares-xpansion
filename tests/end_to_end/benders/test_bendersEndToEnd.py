@@ -90,23 +90,31 @@ def check_optimization_json_output(expected_results_dict, output_path: Path):
         prb_status = curr_instance_json['solution']['problem_status']
         assert prb_status == expected_results_dict['status']
 
-    # Testing optimization output if the instance has a solution
-    if(prb_status == 'OPTIMAL'):
-        value = curr_instance_json['solution']['overall_cost']
-        optimal_variables = np.array([i[1] for i in
-                                      sorted(curr_instance_json['solution']['values'].items())])
+        # Testing optimization output if the instance has a solution
+        if(prb_status == 'OPTIMAL'):
+            value = curr_instance_json['solution']['overall_cost']
+            optimal_variables = np.array([i[1] for i in
+                                          sorted(curr_instance_json['solution']['values'].items())])
 
-        # Testing optimal value
-        np.testing.assert_allclose(value,
-                                   expected_results_dict['optimal_value'], rtol=1e-6, atol=0)
+            # Testing optimal value
+            np.testing.assert_allclose(value,
+                                       expected_results_dict['optimal_value'], rtol=1e-6, atol=0)
 
-        # Testing optmal solution (variables)
-        # Sorting the Dict tuples (key, val) by alphabetic order then taking the values
-        # for comparison
-        expected_sorted_values = np.array([i[1] for i in
-                                           sorted(expected_results_dict['optimal_variables'].items())])
-        np.testing.assert_allclose(optimal_variables, expected_sorted_values,
-                                   rtol=1e-6, atol=0)
+            # Testing optmal solution (variables)
+            # Sorting the Dict tuples (key, val) by alphabetic order then taking the values
+            # for comparison
+            expected_sorted_values = np.array([i[1] for i in
+                                               sorted(expected_results_dict['optimal_variables'].items())])
+            np.testing.assert_allclose(optimal_variables, expected_sorted_values,
+                                       rtol=1e-6, atol=0)
+
+    elif("ERROR" in curr_instance_json):
+        prb_status = curr_instance_json["ERROR"]['problem_status']
+        assert prb_status == expected_results_dict["ERROR"]["problem_status"]
+        problem_path = curr_instance_json["ERROR"]["problem_path"]
+        assert problem_path == expected_results_dict["ERROR"]["problem_path"]
+        problem_name = curr_instance_json["ERROR"]["problem_name"]
+        assert problem_name == expected_results_dict["ERROR"]["problem_name"]
 
 
 def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False):
