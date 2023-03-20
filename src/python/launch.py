@@ -13,6 +13,7 @@ from antares_xpansion.driver import XpansionDriver
 from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.__version__ import __version__, __antares_simulator_version__
 from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.log_utils import LogUtils
 import os
 
 
@@ -26,6 +27,8 @@ input_parameters = parser.parse_args()
 flushed_print(
     "----------------------------------------------------------------")
 flushed_print("Running Antares Xpansion ... ")
+flushed_print(f"user: {LogUtils.user_name()}")
+flushed_print(f"hostname: {LogUtils.host_name()}")
 flushed_print(f"Xpansion version: {__version__}")
 flushed_print(f"antares simulator version: {__antares_simulator_version__}")
 flushed_print(
