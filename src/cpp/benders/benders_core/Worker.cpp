@@ -1,8 +1,8 @@
 #include "Worker.h"
 
+#include "LogUtils.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
-
 /*!
  *  \brief Free the problem
  */
@@ -39,7 +39,6 @@ void Worker::init(VariableMap const &variable_map,
                   std::string const &solver_name, int log_level,
                   const std::filesystem::path &log_name) {
   _path_to_mps = path_to_mps;
-
   SolverFactory factory;
   if (_is_master) {
     _solver =
@@ -76,19 +75,23 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
   }
 
   if (lp_status != SOLVER_STATUS::OPTIMAL) {
-    LOG(INFO) << "lp_status is : " << lp_status << std::endl;
     std::filesystem::path buffer;
     buffer = std::filesystem::path(outputroot) /
-                  (_path_to_mps.filename().string() + "_lp_status_" +
-                  _solver->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
-    LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status]
-              << std::endl;
-    LOG(INFO) << "written in " << buffer.string() << std::endl;
-    _solver->write_prob_mps(buffer);
+             (_path_to_mps.filename().string() + "_lp_status_" +
+              _solver->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
+    std::ostringstream msg;
+    msg << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status]
+        << std::endl;
 
-    throw InvalidSolverStatusException(
-        "Invalid solver status " + _solver->SOLVER_STRING_STATUS[lp_status] +
-        " optimality expected");
+    msg << "written in " << buffer.string() << std::endl;
+    logger_->display_message(msg.str());
+    _solver->write_prob_mps(buffer);
+    msg.str("");
+    msg << LOGLOCATION
+        << "Invalid solver status " + _solver->SOLVER_STRING_STATUS[lp_status] +
+               " optimality expected";
+    logger_->display_message(msg.str());
+    throw InvalidSolverStatusException(msg.str());
   }
 
   if (_is_master) {

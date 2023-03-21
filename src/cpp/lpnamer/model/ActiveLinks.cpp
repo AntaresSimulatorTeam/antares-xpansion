@@ -4,6 +4,8 @@
 #include <unordered_set>
 #include <utility>
 
+#include "LogUtils.h"
+
 bool doubles_are_different(const double a, const double b) {
   constexpr double MACHINE_EPSILON = std::numeric_limits<double>::epsilon();
   return std::abs(a - b) > MACHINE_EPSILON;
@@ -68,19 +70,22 @@ void ActiveLinksBuilder::raise_errors_if_link_data_differs_from_existing_link(
   const LinkData& old_link_data = _links_data.at(link_name);
   if (doubles_are_different(link_data.installed_capacity,
                             old_link_data.installed_capacity)) {
-    std::string message =
-        "Multiple already installed capacity detected for link " + link_name;
+    auto message = LOGLOCATION +
+                   "Multiple already installed capacity detected for link " +
+                   link_name;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
     throw std::runtime_error(message);
   }
   if (old_link_data.profile_name != link_data.profile_name) {
-    std::string message =
-        "Multiple already_installed_profile detected for link " + link_name;
+    auto message = LOGLOCATION +
+                   "Multiple already_installed_profile detected for link " +
+                   link_name;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
     throw std::runtime_error(message);
   }
   if (old_link_data.id != link_data.id) {
-    std::string message = "Multiple link_id detected for link " + link_name;
+    auto message =
+        LOGLOCATION + "Multiple link_id detected for link " + link_name;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
     throw std::runtime_error(message);
   }
@@ -92,8 +97,8 @@ void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(
     const auto& it_profile = _profile_map.find(profileName);
 
     if (it_profile == _profile_map.end()) {
-      std::string message =
-          "There is no linkProfile associated with " + profileName;
+      auto message = LOGLOCATION + "There is no linkProfile associated with " +
+                     profileName;
       (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
       throw std::runtime_error(message);
     }
@@ -105,8 +110,8 @@ void ActiveLinksBuilder::checkCandidateNameDuplication() const {
   for (const auto& candidateData : _candidateDatas) {
     auto it_inserted = setCandidatesNames.insert(candidateData.name);
     if (!it_inserted.second) {
-      std::string message =
-          "Candidate " + candidateData.name + " duplication detected";
+      auto message = LOGLOCATION + "Candidate " + candidateData.name +
+                     " duplication detected";
       (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
       throw std::runtime_error(message);
     }

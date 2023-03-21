@@ -1,3 +1,4 @@
+#include "LogUtils.h"
 #include "catch2.hpp"
 #include "multisolver_interface/Solver.h"
 
@@ -8,7 +9,7 @@ TEST_CASE("InvalidStatusException", "[exceptions][invalid_status]") {
     // solver declaration
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
     try {
-      solver->zero_status_check(-1, "test exception");
+      solver->zero_status_check(-1, "test exception", LOGLOCATION);
     } catch (InvalidStatusException& ex) {
       REQUIRE(std::string(ex.what()) ==
               "Failed to test exception: invalid status -1 (0 expected)");

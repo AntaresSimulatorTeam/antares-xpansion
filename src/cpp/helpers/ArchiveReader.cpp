@@ -6,6 +6,8 @@
 #include <regex>
 #include <vector>
 
+#include "LogUtils.h"
+
 ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
   Create();
@@ -24,7 +26,7 @@ int32_t ArchiveReader::Open() {
     Delete();
     std::ostringstream errMsg;
     errMsg << "Open Archive: " << ArchivePath().string() << std::endl;
-    throw ArchiveIOGeneralException(err, errMsg.str());
+    throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
   }
   err = mz_zip_reader_get_zip_handle(pmz_zip_reader_instance_, &pzip_handle_);
   if (err != MZ_OK) {
@@ -33,7 +35,7 @@ int32_t ArchiveReader::Open() {
     std::ostringstream errMsg;
     errMsg << "get underlying zip handle: " << ArchivePath().string()
            << std::endl;
-    throw ArchiveIOGeneralException(err, errMsg.str());
+    throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
   }
   return err;
 }
@@ -80,7 +82,7 @@ void ArchiveReader::LocateEntry(
     errMsg << "File : " << fileToExtractPath.string().c_str()
            << " is not found in archive :" << ArchivePath().string().c_str()
            << std::endl;
-    throw ArchiveIOSpecificException(err, errMsg.str());
+    throw ArchiveIOSpecificException(err, errMsg.str(), LOGLOCATION);
   }
 }
 void ArchiveReader::OpenEntry(const std::filesystem::path& fileToExtractPath) {
@@ -91,7 +93,7 @@ void ArchiveReader::OpenEntry(const std::filesystem::path& fileToExtractPath) {
     std::ostringstream errMsg;
     errMsg << "open " << fileToExtractPath.string()
            << " in archive :" << ArchivePath().string() << std::endl;
-    throw ArchiveIOGeneralException(err, errMsg.str());
+    throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
   }
 }
 std::istringstream ArchiveReader::ExtractFileInStringStream(
@@ -110,7 +112,7 @@ std::istringstream ArchiveReader::ExtractFileInStringStream(
     std::ostringstream errMsg;
     errMsg << "Extract file " << FileToExtractPath.string()
            << "in archive: " << ArchivePath().string() << std::endl;
-    throw ArchiveIOGeneralException(err, errMsg.str());
+    throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
   }
   mz_zip_reader_entry_close(pmz_zip_reader_instance_);
   return std::istringstream(std::string(buf.begin(), buf.end()));
@@ -119,12 +121,12 @@ std::istringstream ArchiveReader::ExtractFileInStringStream(
 uint64_t ArchiveReader::GetNumberOfEntries() {
   uint64_t number_entry = 0;
   if (auto err = mz_zip_get_number_entry(pzip_handle_, &number_entry);
-  err != MZ_OK) {
+      err != MZ_OK) {
     Close();
     Delete();
     std::ostringstream msg;
     msg << "get the number of entries" << std::endl;
-    throw ArchiveIOGeneralException(err, msg.str());
+    throw ArchiveIOGeneralException(err, msg.str(), LOGLOCATION);
   }
   return number_entry;
 }
@@ -140,7 +142,7 @@ void ArchiveReader::LoadEntriesPath() {
       std::ostringstream msg;
       msg << "to get first entry of archive" << ArchivePath().string().c_str()
           << std::endl;
-      throw ArchiveIOGeneralException(err, msg.str());
+      throw ArchiveIOGeneralException(err, msg.str(), LOGLOCATION);
     }
     entries_path_.push_back(CurrentEntryPath());
     entry_number++;
@@ -153,7 +155,7 @@ void ArchiveReader::LoadEntriesPath() {
         Delete();
         std::ostringstream msg;
         msg << "get entry n° " << entry_number << std::endl;
-        throw ArchiveIOGeneralException(err, msg.str());
+        throw ArchiveIOGeneralException(err, msg.str(), LOGLOCATION);
       }
       entry_number++;
       entries_path_.push_back(CurrentEntryPath());
@@ -170,7 +172,7 @@ std::filesystem::path ArchiveReader::CurrentEntryPath() {
     Delete();
     std::ostringstream msg;
     msg << "get info from current entry " << std::endl;
-    throw ArchiveIOGeneralException(err, msg.str());
+    throw ArchiveIOGeneralException(err, msg.str(), LOGLOCATION);
   }
   return file_info->filename;
 }
@@ -199,7 +201,7 @@ std::vector<std::filesystem::path> ArchiveReader::ExtractPattern(
     msg << "ArchiveReader::ExtractPattern destination must be a directory "
            "given: "
         << destination.string() << std::endl;
-    throw ArchiveIOSpecificException(msg.str());
+    throw ArchiveIOSpecificException(msg.str(), LOGLOCATION);
   }
   std::vector<std::filesystem::path> result;
   mz_zip_reader_set_pattern(pmz_zip_reader_instance_, pattern.c_str(), 1);

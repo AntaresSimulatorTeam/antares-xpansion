@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "ArchiveReader.h"
+#include "LogUtils.h"
 
 void LpFilesExtractor::ExtractFiles() const {
   auto archive_reader = ArchiveReader(antares_archive_path_);
@@ -11,12 +12,12 @@ void LpFilesExtractor::ExtractFiles() const {
       archive_reader.ExtractPattern("area*.txt", "", xpansion_output_dir_);
   if (auto num_areas_file = vect_area_files.size(); num_areas_file == 0) {
     std::ostringstream msg;
-    msg << "No area*.txt file found" << std::endl;
+    msg << LOGLOCATION << "No area*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw ErrorWithAreaFile(msg.str());
   } else if (num_areas_file > 1) {
     std::ostringstream msg;
-    msg << "More than one area*.txt file found" << std::endl;
+    msg << LOGLOCATION << "More than one area*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw ErrorWithAreaFile(msg.str());
   }
@@ -29,12 +30,12 @@ void LpFilesExtractor::ExtractFiles() const {
   if (auto num_intercos_file = vect_interco_files.size();
       num_intercos_file == 0) {
     std::ostringstream msg;
-    msg << "No interco*.txt file found" << std::endl;
+    msg << LOGLOCATION << "No interco*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw ErrorWithIntercosFile(msg.str());
   } else if (num_intercos_file > 1) {
     std::ostringstream msg;
-    msg << "More than one interco*.txt file found" << std::endl;
+    msg << LOGLOCATION << "More than one interco*.txt file found" << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw ErrorWithIntercosFile(msg.str());
   }

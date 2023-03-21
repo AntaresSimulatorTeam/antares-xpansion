@@ -6,7 +6,7 @@
 #include <fstream>
 #include <ostream>
 
-#include "core/ILogger.h"
+#include "ILogger.h"
 #include "logger/User.h"
 namespace xpansion {
 namespace logger {

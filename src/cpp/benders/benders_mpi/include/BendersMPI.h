@@ -3,13 +3,13 @@
 #include "ArchiveReader.h"
 #include "BendersBase.h"
 #include "BendersStructsDatas.h"
+#include "ILogger.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
 #include "Timer.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "common_mpi.h"
-#include "core/ILogger.h"
 
 /*!
  * \class BendersMpi

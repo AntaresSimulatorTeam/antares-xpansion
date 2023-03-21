@@ -11,12 +11,12 @@ typedef std::shared_ptr<WorkerMaster> WorkerMasterPtr;
 
 class WorkerMaster : public Worker {
  public:
-  WorkerMaster();
+  explicit WorkerMaster(Logger logger);
   WorkerMaster(VariableMap const &variable_map,
                const std::filesystem::path &path_to_mps,
                const std::string &solver_name, const int log_level,
                int subproblems_count, const std::filesystem::path &log_name,
-               bool mps_has_alpha);
+               bool mps_has_alpha, Logger logger);
   virtual ~WorkerMaster() = default;
 
   void get(Point &x0, double &overall_subpb_cost_under_approx,

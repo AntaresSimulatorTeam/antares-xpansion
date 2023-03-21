@@ -24,16 +24,17 @@ class OptionsParser {
   virtual void Parse(unsigned int argc, const char* const* argv);
   class NullArgumentsValues : public std::runtime_error {
    public:
-    explicit NullArgumentsValues(const std::string& exe_name)
-        : std::runtime_error(std::string("Error while parsing ") + exe_name +
+    explicit NullArgumentsValues(const std::string& exe_name,
+                                 const std::string& log_location)
+        : std::runtime_error(log_location + "Error while parsing " + exe_name +
                              " options: null Arguments values!"){};
   };
   class InvalidNumberOfArgumentsPassedToParser : public std::runtime_error {
    public:
-    explicit InvalidNumberOfArgumentsPassedToParser(int argc,
-                                                    const std::string& exe_name)
+    explicit InvalidNumberOfArgumentsPassedToParser(
+        int argc, const std::string& exe_name, const std::string& log_location)
         : std::runtime_error(
-              std::string("Error while parsing ") + exe_name +
+              log_location + "Error while parsing " + exe_name +
               ": invalid number arguments:  " + std::to_string(argc)){};
   };
 };

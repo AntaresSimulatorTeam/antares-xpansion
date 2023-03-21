@@ -8,6 +8,7 @@
 #include "LastIterationPrinter.h"
 #include "LastIterationReader.h"
 #include "LastIterationWriter.h"
+#include "LogUtils.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
 
@@ -249,17 +250,21 @@ void BendersBase::ResetDataPostRelaxation() {
 void BendersBase::check_status(
     const SubProblemDataMap &subproblem_data_map) const {
   if (_data.master_status != SOLVER_STATUS::OPTIMAL) {
-    LOG(INFO) << "Master status is " << _data.master_status << std::endl;
-    throw InvalidSolverStatusException("Master status is " +
-                                       std::to_string(_data.master_status));
+    std::ostringstream msg;
+    msg << "Master status is " << _data.master_status << std::endl;
+    _logger->display_message(msg.str());
+    msg.str("");
+    msg << LOGLOCATION
+        << "Master status is " + std::to_string(_data.master_status);
+    _logger->display_message(msg.str());
+    throw InvalidSolverStatusException(msg.str());
   }
   for (const auto &[subproblem_name, subproblemData] : subproblem_data_map) {
     if (subproblemData.lpstatus != SOLVER_STATUS::OPTIMAL) {
-      std::stringstream stream;
-      stream << "Subproblem " << subproblem_name << " status is "
-             << subproblemData.lpstatus;
-      LOG(INFO) << stream.str() << std::endl;
-
+      std::ostringstream stream;
+      stream << LOGLOCATION << "Subproblem " << subproblem_name << " status is "
+             << subproblemData.lpstatus << std::endl;
+      _logger->display_message(stream.str());
       throw InvalidSolverStatusException(stream.str());
     }
   }
@@ -704,7 +709,7 @@ void BendersBase::AddSubproblem(
   subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
       kvp.second, GetSubproblemPath(kvp.first),
       SubproblemWeight(_data.nsubproblem, kvp.first), _options.SOLVER_NAME,
-      _options.LOG_LEVEL, log_name());
+      _options.LOG_LEVEL, log_name(), _logger);
 }
 
 void BendersBase::free_subproblems() {

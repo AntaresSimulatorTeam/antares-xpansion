@@ -1,6 +1,7 @@
 #include "SolverCbc.h"
 
 #include "COIN_common_functions.h"
+#include "LogUtils.h"
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
@@ -44,7 +45,8 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
     defineCbcModelFromInnerSolver();
   } else {
     _NumberOfProblems -= 1;
-    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_);
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_,
+                                        LOGLOCATION);
   }
 }
 
@@ -173,7 +175,7 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
   conception/Architecture_decision_records/Change_Solver_Basis_Format.md
   */
   int status = clps->writeBasis(filename_c_str, true, 0);
-  zero_status_check(status, "write basis");
+  zero_status_check(status, "write basis", LOGLOCATION);
 }
 
 void SolverCbc::setClpSimplexColNamesFromInnerSolver(ClpSimplex *clps) const {
@@ -192,13 +194,13 @@ void SolverCbc::setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const {
 
 void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
   int status = _clp_inner_solver.readMps(prob_name.string().c_str());
-  zero_status_check(status, "read problem");
+  zero_status_check(status, "read problem", LOGLOCATION);
   defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::read_prob_lp(const std::filesystem::path &prob_name) {
   int status = _clp_inner_solver.readLp(prob_name.string().c_str());
-  zero_status_check(status, "read problem");
+  zero_status_check(status, "read problem", LOGLOCATION);
   defineCbcModelFromInnerSolver();
 }
 
@@ -206,12 +208,12 @@ void SolverCbc::read_basis(const std::filesystem::path &filename) {
   int status =
       _clp_inner_solver.getModelPtr()->readBasis(filename.string().c_str());
   // readBasis returns 1 if successful
-  zero_status_check(status - 1, "read basis");
+  zero_status_check(status - 1, "read basis", LOGLOCATION);
   defineCbcModelFromInnerSolver();
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv) {
-  std::string error = "Copy CBC problem : TO DO WHEN NEEDED";
+  auto error = LOGLOCATION + "Copy CBC problem : TO DO WHEN NEEDED";
   throw NotImplementedFeatureSolverException(error);
 }
 
@@ -269,7 +271,8 @@ void SolverCbc::get_rhs(double *rhs, int first, int last) const {
 
 void SolverCbc::get_rhs_range(double *range, int first, int last) const {
   std::stringstream buffer;
-  buffer << "ERROR : get rhs range not implemented in the interface for COIN "
+  buffer << LOGLOCATION
+         << "ERROR : get rhs range not implemented in the interface for COIN "
             "CLP-CBC"
          << std::endl;
   buffer << "ERROR : range constraints have to be set as two different "
@@ -341,7 +344,7 @@ std::vector<std::string> SolverCbc::get_row_names(int first, int last) {
 
   std::vector<std::string> solver_row_names = _clp_inner_solver.getRowNames();
   if (solver_row_names.size() < size) {
-    throw InvalidRowSizeException(size, solver_row_names.size());
+    throw InvalidRowSizeException(size, solver_row_names.size(), LOGLOCATION);
   }
 
   for (int i(first); i < last + 1; i++) {
@@ -357,7 +360,7 @@ std::vector<std::string> SolverCbc::get_col_names(int first, int last) {
 
   std::vector<std::string> solver_col_names = _clp_inner_solver.getColNames();
   if (solver_col_names.size() < size) {
-    throw InvalidColSizeException(size, solver_col_names.size());
+    throw InvalidColSizeException(size, solver_col_names.size(), LOGLOCATION);
   }
 
   for (int i(first); i < last + 1; i++) {
@@ -406,7 +409,8 @@ void SolverCbc::add_cols(int newcol, int newnz, const double *objx,
 }
 
 void SolverCbc::add_name(int type, const char *cnames, int indice) {
-  std::string error = "ERROR : addnames not implemented in the CLP interface.";
+  auto error =
+      LOGLOCATION + "ERROR : addnames not implemented in the CLP interface.";
   throw NotImplementedFeatureSolverException(error);
 }
 
@@ -437,7 +441,7 @@ void SolverCbc::chg_bounds(const std::vector<int> &mindex,
       _clp_inner_solver.setColLower(mindex[i], bnd[i]);
       _clp_inner_solver.setColUpper(mindex[i], bnd[i]);
     } else {
-      throw InvalidBoundTypeException(qbtype[i]);
+      throw InvalidBoundTypeException(qbtype[i], LOGLOCATION);
     }
   }
 }
@@ -459,7 +463,7 @@ void SolverCbc::chg_col_type(const std::vector<int> &mindex,
     } else if (qctype[i] == 'I') {
       _clp_inner_solver.setInteger(mindex[i]);
     } else {
-      throw InvalidColTypeException(qctype[i]);
+      throw InvalidColTypeException(qctype[i], LOGLOCATION);
     }
     std::vector<char> colT(1);
     get_col_type(colT.data(), mindex[i], mindex[i]);
@@ -473,7 +477,8 @@ void SolverCbc::chg_rhs(int id_row, double val) {
   if (rowLower[id_row] <= -COIN_DBL_MAX) {
     if (rowUpper[id_row] >= COIN_DBL_MAX) {
       std::stringstream buffer;
-      buffer << "ERROR : unconstrained constraint " << id_row << " in chg_rhs.";
+      buffer << LOGLOCATION << "ERROR : unconstrained constraint " << id_row
+             << " in chg_rhs.";
       throw GenericSolverException(buffer.str());
     } else {
       _clp_inner_solver.setRowUpper(id_row, val);
@@ -483,7 +488,7 @@ void SolverCbc::chg_rhs(int id_row, double val) {
       _clp_inner_solver.setRowLower(id_row, val);
     } else {
       std::stringstream buffer;
-      buffer << "ERROR : constraint " << id_row
+      buffer << LOGLOCATION << "ERROR : constraint " << id_row
              << " has both lower and upper bound in chg_rhs." << std::endl;
       buffer << "Not implemented in CLP interface yet.";
       throw GenericSolverException(buffer.str());
@@ -639,17 +644,17 @@ void SolverCbc::set_output_log_level(int loglevel) {
 }
 
 void SolverCbc::set_algorithm(std::string const &algo) {
-  throw InvalidSolverOptionException("set_algorithm : " + algo);
+  throw InvalidSolverOptionException("set_algorithm : " + algo, LOGLOCATION);
 }
 
 void SolverCbc::set_threads(int n_threads) { _cbc.setNumberThreads(n_threads); }
 
 void SolverCbc::set_optimality_gap(double gap) {
-  throw InvalidSolverOptionException("set_optimality_gap : " +
-                                     std::to_string(gap));
+  throw InvalidSolverOptionException(
+      "set_optimality_gap : " + std::to_string(gap), LOGLOCATION);
 }
 
 void SolverCbc::set_simplex_iter(int iter) {
-  throw InvalidSolverOptionException("set_simplex_iter : " +
-                                     std::to_string(iter));
+  throw InvalidSolverOptionException(
+      "set_simplex_iter : " + std::to_string(iter), LOGLOCATION);
 }

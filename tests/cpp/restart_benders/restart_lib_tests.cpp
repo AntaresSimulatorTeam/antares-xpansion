@@ -1,11 +1,11 @@
 
+#include "ILogger.h"
 #include "LastIterationReader.h"
 #include "LastIterationWriter.h"
 #include "LoggerStub.h"
 #include "StartUp.h"
 #include "WriterStub.h"
 #include "common.h"
-#include "core/ILogger.h"
 #include "gtest/gtest.h"
 
 const LogPoint best_x_in = {{"candidate1", 56.e8}, {"candidate2", 6e4}};

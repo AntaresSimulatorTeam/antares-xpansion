@@ -3,7 +3,9 @@
 #include "glog/logging.h"
 #include "solver_utils.h"
 
-WorkerMaster::WorkerMaster() { _is_master = true; }
+WorkerMaster::WorkerMaster(Logger logger) : Worker(logger) {
+  _is_master = true;
+}
 
 /*!
  *  \brief Constructor of a Master Problem
@@ -22,8 +24,8 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
                            const std::string &solver_name, const int log_level,
                            int subproblems_count,
                            const std::filesystem::path &log_name,
-                           const bool mps_has_alpha)
-    : Worker(),
+                           const bool mps_has_alpha, Logger logger)
+    : Worker(logger),
       subproblems_count(subproblems_count),
       _mps_has_alpha(mps_has_alpha) {
   _is_master = true;

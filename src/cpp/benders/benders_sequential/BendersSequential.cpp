@@ -24,9 +24,9 @@ BendersSequential::BendersSequential(BendersBaseOptions const &options,
 void BendersSequential::InitializeProblems() {
   MatchProblemToId();
 
-  reset_master(new WorkerMaster(master_variable_map, get_master_path(),
-                                get_solver_name(), get_log_level(),
-                                _data.nsubproblem, log_name(), IsResumeMode()));
+  reset_master(new WorkerMaster(
+      master_variable_map, get_master_path(), get_solver_name(),
+      get_log_level(), _data.nsubproblem, log_name(), IsResumeMode(), _logger));
   for (const auto &problem : coupling_map) {
     const auto subProblemFilePath = GetSubproblemPath(problem.first);
 

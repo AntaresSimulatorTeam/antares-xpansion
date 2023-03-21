@@ -4,6 +4,7 @@
 #include <fstream>
 #include <utility>
 
+#include "LogUtils.h"
 #include "OutputWriter.h"
 #include "common.h"
 #include "multisolver_interface/SolverFactory.h"
@@ -18,7 +19,8 @@ Json::Value read_json(const std::filesystem::path &json_file_path) {
   if (json_file.good()) {
     json_file >> json_data;
   } else {
-    throw std::runtime_error("unable to open : " + json_file_path.string());
+    throw std::runtime_error(LOGLOCATION +
+                             "unable to open : " + json_file_path.string());
   }
   return json_data;
 }
@@ -128,8 +130,8 @@ std::map<std::string, int> SensitivityInputReader::get_name_to_id() const {
       }
     }
   } else {
-    throw std::runtime_error("unable to open : " +
-                             _structure_file_path.string());
+    throw std::runtime_error(
+        LOGLOCATION + "unable to open : " + _structure_file_path.string());
   }
   return name_to_id;
 }

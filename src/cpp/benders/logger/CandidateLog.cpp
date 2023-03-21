@@ -7,7 +7,7 @@
 #include <sstream>
 
 #include "CandidateLog.h"
-#include "core/ILogger.h"
+#include "ILogger.h"
 
 namespace xpansion {
 namespace logger {

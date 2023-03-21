@@ -7,8 +7,8 @@
 #include <sstream>
 
 #include "Commons.h"
+#include "ILogger.h"
 #include "IterationResultLog.h"
-#include "core/ILogger.h"
 
 namespace xpansion {
 namespace logger {
@@ -27,7 +27,9 @@ void IterationResultLog::setValuesFromData(const LogData &data) {
   double rel_gap = abs_gap / data.best_ub;
   const double overall_cost = data.subproblem_cost + data.invest_cost;
 
-  // To reassure users when gap is slightly negative, check has been done that it is only due to numerical precision, and not to a convergence default of the algorithm
+  // To reassure users when gap is slightly negative, check has been done that
+  // it is only due to numerical precision, and not to a convergence default of
+  // the algorithm
   if (abs_gap < 0) {
     abs_gap = 0;
     rel_gap = 0;
@@ -38,8 +40,8 @@ void IterationResultLog::setValuesFromData(const LogData &data) {
 
   _values.clear();
   _values.push_back(create_value_map(
-      "Operational cost", commons::create_str_million_euros(data.subproblem_cost),
-      " Me"));
+      "Operational cost",
+      commons::create_str_million_euros(data.subproblem_cost), " Me"));
   _values.push_back(create_value_map(
       "Investment cost", commons::create_str_million_euros(data.invest_cost),
       " Me"));

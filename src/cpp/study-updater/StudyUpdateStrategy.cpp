@@ -4,6 +4,8 @@
 
 #include "StudyUpdateStrategy.h"
 
+#include "LogUtils.h"
+
 static const std::filesystem::path ANTARES_LINK_FOLDER =
     std::filesystem::path("input") / "links";
 
@@ -12,9 +14,9 @@ void StudyUpdateStrategy::EnsureCandidateInvestmentFound(
     const ActiveLink& link_p, const Candidate& candidate,
     const std::map<std::string, double>::const_iterator& it_candidate) const {
   if (it_candidate == investments_p.end()) {
-    std::string message = "No investment computed for the candidate " +
-                          candidate.get_name() + " on the link " +
-                          link_p.get_LinkName();
+    auto message = LOGLOCATION + "No investment computed for the candidate " +
+                   candidate.get_name() + " on the link " +
+                   link_p.get_LinkName();
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
     throw std::runtime_error(message);
   }

@@ -2,6 +2,7 @@
 
 #include <algorithm>
 
+#include "LogUtils.h"
 #include "solver_utils.h"
 
 std::set<int> extract_time_steps(
@@ -64,7 +65,7 @@ unsigned int ProblemModifier::get_candidate_col_id(
     const std::string &cand_name) const {
   if (_candidate_col_id.find(cand_name) == _candidate_col_id.end()) {
     auto errMsg =
-        std::string("Candidate '") + cand_name + "' not added in problem";
+        LOGLOCATION + "Candidate '" + cand_name + "' not added in problem";
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
     throw std::runtime_error(errMsg);
   }

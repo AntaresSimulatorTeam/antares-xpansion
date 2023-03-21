@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "core/ILogger.h"
+#include "ILogger.h"
 
 struct Batch {
   std::vector<std::string> sub_problem_names;
