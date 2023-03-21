@@ -9,6 +9,7 @@
 add_library (output_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/VoidWriter.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/OutputWriterFileLog.cpp
         )
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
