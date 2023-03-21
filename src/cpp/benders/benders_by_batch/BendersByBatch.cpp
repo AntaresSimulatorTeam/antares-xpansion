@@ -79,7 +79,7 @@ void BendersByBatch::MasterLoop() {
   number_of_sub_problem_resolved_ = 0;
   cumulative_subproblems_timer_per_iter_ = 0;
   first_unsolved_batch_ = 0;
-  while (batch_counter_ < number_of_batch_ || _data.stop) {
+  while (!_data.stop) {
     _data.ub = 0;
     SetSubproblemCost(0);
     remaining_epsilon_ = Gap();
@@ -156,10 +156,11 @@ void BendersByBatch::UpdateRemainingEpsilon() {
     int ncols = master_ptr->_solver->get_ncols();
     std::vector<double> obj(ncols);
     master_ptr->_solver->get_obj(obj.data(), 0, ncols - 1);
+    remaining_epsilon_ = Gap();
     for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
       int col_id = master_ptr->_name_to_id[candidate_name];
-      remaining_epsilon_ = Gap() - obj[col_id] * (x_cut_candidate_value -
-                                                  _data.x_out[candidate_name]);
+      remaining_epsilon_ -=
+          obj[col_id] * (x_cut_candidate_value - _data.x_out[candidate_name]);
     }
   }
 }
@@ -289,16 +290,15 @@ void BendersByBatch::UpdateStoppingCriterion() {
   if (_data.elapsed_time > Options().TIME_LIMIT) {
     _data.stopping_criterion = StoppingCriterion::timelimit;
   }
-  // else if ((Options().MAX_ITERATIONS != -1) &&
-  //          (_data.it >= Options().MAX_ITERATIONS))
-  // _data.stopping_criterion = StoppingCriterion::max_iteration;
-  // else if (Options().ABSOLUTE_GAP >= remaining_epsilon_)
-  //   _data.stopping_criterion = StoppingCriterion::absolute_gap;
-  // else if (Options().RELATIVE_GAP * _data.lb >= remaining_epsilon_)
-  //   _data.stopping_criterion = StoppingCriterion::relative_gap;
-  else if (AbsoluteGap() == Gap()) {
-    _data.stopping_criterion = StoppingCriterion::absolute_gap;
-  } else if (Gap() == RelativeGap() * _data.lb) {
-    _data.stopping_criterion = StoppingCriterion::relative_gap;
+  else if ((Options().MAX_ITERATIONS != -1) &&
+           (_data.it >= Options().MAX_ITERATIONS))
+  _data.stopping_criterion = StoppingCriterion::max_iteration;
+  else if (batch_counter_ >= number_of_batch_) {
+    if (Gap() == AbsoluteGap()) {
+      _data.stopping_criterion = StoppingCriterion::absolute_gap;  
+    }
+    else {
+      _data.stopping_criterion = StoppingCriterion::relative_gap;
+    }
   }
 }
