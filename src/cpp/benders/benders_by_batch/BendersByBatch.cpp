@@ -80,16 +80,19 @@ void BendersByBatch::MasterLoop() {
   cumulative_subproblems_timer_per_iter_ = 0;
   first_unsolved_batch_ = 0;
   while (!_data.stop) {
-    _data.ub = 0;
-    SetSubproblemCost(0);
-    remaining_epsilon_ = Gap();
-
     if (Rank() == rank_0) {
       if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
         _logger->LogAtSwitchToInteger();
         ActivateIntegrityConstraints();
         ResetDataPostRelaxation();
       }
+    }
+
+    _data.ub = 0;
+    SetSubproblemCost(0);
+    remaining_epsilon_ = Gap();
+
+    if (Rank() == rank_0) {
       _logger->display_message(
           " _______________________________________________________________"
           "_"
@@ -278,7 +281,11 @@ void BendersByBatch::BroadcastXOut() {
   set_x_out(x_out);
 }
 double BendersByBatch::Gap() const {
-  return std::max(AbsoluteGap(), RelativeGap() * _data.lb);
+  if (_data.is_in_initial_relaxation) {
+    return RelaxedGap() * _data.lb;
+  } else {
+    return std::max(AbsoluteGap(), RelativeGap() * _data.lb);
+  }
 }
 /*!
  *  \brief Update stopping criterion
@@ -289,16 +296,21 @@ double BendersByBatch::Gap() const {
 void BendersByBatch::UpdateStoppingCriterion() {
   if (_data.elapsed_time > Options().TIME_LIMIT) {
     _data.stopping_criterion = StoppingCriterion::timelimit;
-  }
-  else if ((Options().MAX_ITERATIONS != -1) &&
-           (_data.it >= Options().MAX_ITERATIONS))
-  _data.stopping_criterion = StoppingCriterion::max_iteration;
+  } else if ((Options().MAX_ITERATIONS != -1) &&
+             (_data.it >= Options().MAX_ITERATIONS))
+    _data.stopping_criterion = StoppingCriterion::max_iteration;
   else if (batch_counter_ >= number_of_batch_) {
     if (Gap() == AbsoluteGap()) {
-      _data.stopping_criterion = StoppingCriterion::absolute_gap;  
-    }
-    else {
+      _data.stopping_criterion = StoppingCriterion::absolute_gap;
+    } else {
       _data.stopping_criterion = StoppingCriterion::relative_gap;
     }
   }
+}
+
+/*!
+ *  \brief Check if initial relaxation should stop
+ */
+bool BendersByBatch::ShouldRelaxationStop() const {
+  return (_data.stopping_criterion != StoppingCriterion::empty);
 }

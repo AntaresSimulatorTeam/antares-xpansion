@@ -22,6 +22,7 @@ class BendersByBatch : public BendersMpi {
   void BroadcastSingleSubpbCostsUnderApprox();
   void ComputeXCut() override;
   void UpdateStoppingCriterion() override;
+  bool ShouldRelaxationStop() const override;
 
  private:
   void GetSubproblemCut(
