@@ -255,9 +255,11 @@ TEST(LinkBuilderTest,
     auto logger = emptyLogger();
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "duplicate not detected";
-  } catch (const std::runtime_error& err) {
+  } catch (
+      const ActiveLinksBuilder::MultipleAlreadyInstalledProfileDetectedForLink&
+          err) {
     ASSERT_STREQ(
-        err.what(),
+        err.ErrorMessage().c_str(),
         "Multiple already_installed_profile detected for link area1 - area2");
   }
 }
@@ -283,8 +285,8 @@ TEST(LinkBuilderTest,
     auto logger = emptyLogger();
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "incompatibility of link_id not detected";
-  } catch (const std::runtime_error& err) {
-    ASSERT_STREQ(err.what(),
+  } catch (const ActiveLinksBuilder::MultipleLinkIddetectedForLink& err) {
+    ASSERT_STREQ(err.ErrorMessage().c_str(),
                  "Multiple link_id detected for link area1 - area2");
   }
 }
@@ -309,8 +311,8 @@ TEST(LinkBuilderTest, two_candidates_same_name) {
     auto logger = emptyLogger();
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "duplicate not detected";
-  } catch (const std::runtime_error& err) {
-    ASSERT_STREQ(err.what(),
+  } catch (const ActiveLinksBuilder::CandidateDuplicationDetected& err) {
+    ASSERT_STREQ(err.ErrorMessage().c_str(),
                  "Candidate transmission_line_1 duplication detected");
   }
 }
@@ -362,9 +364,11 @@ TEST(LinkBuilderTest, one_link_two_already_installed_profile) {
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Candidate of the same links have different "
               "already_installed_links_profile and it's not detected";
-  } catch (const std::runtime_error& err) {
+  } catch (
+      const ActiveLinksBuilder::MultipleAlreadyInstalledProfileDetectedForLink&
+          err) {
     ASSERT_STREQ(
-        err.what(),
+        err.ErrorMessage().c_str(),
         "Multiple already_installed_profile detected for link area1 - area2");
   }
 }
@@ -652,9 +656,11 @@ TEST(LinkBuilderTest, one_link_with_two_different_already_installed_capacity) {
     auto logger = emptyLogger();
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Same alreadyInstalledCapacity : not detected";
-  } catch (const std::runtime_error& err) {
+  } catch (
+      const ActiveLinksBuilder::MultipleAlreadyInstalledCapacityDetectedForLink&
+          err) {
     ASSERT_STREQ(
-        err.what(),
+        err.ErrorMessage().c_str(),
         "Multiple already installed capacity detected for link area1 - area2");
   }
 }
@@ -678,8 +684,10 @@ TEST(LinkBuilderTest, missing_link_profile_in_profile_map) {
     auto logger = emptyLogger();
     ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
     FAIL() << "Missing link profile : not detected";
-  } catch (const std::runtime_error& err) {
-    ASSERT_STREQ(err.what(),
+  } catch (
+      const ActiveLinksBuilder::ThereIsNoLinkProfileAssociatedWithThisProfile&
+          err) {
+    ASSERT_STREQ(err.ErrorMessage().c_str(),
                  "There is no linkProfile associated with cand1Profile.txt");
   }
 }

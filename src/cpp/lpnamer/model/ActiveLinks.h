@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #include "ChronicleMapProvider.h"
+#include "LogUtils.h"
 #include "ProblemGenerationLogger.h"
 
 using LinkName = std::string;
@@ -74,6 +75,37 @@ class ActiveLinksBuilder {
       const std::vector<CandidateData>& candidateList,
       const std::map<std::string, std::vector<LinkProfile>>& profile_map,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+
+  class MultipleAlreadyInstalledCapacityDetectedForLink : public XpansionError {
+   public:
+    explicit MultipleAlreadyInstalledCapacityDetectedForLink(
+        const std::string& err_message, const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
+  };
+  class MultipleAlreadyInstalledProfileDetectedForLink : public XpansionError {
+   public:
+    explicit MultipleAlreadyInstalledProfileDetectedForLink(
+        const std::string& err_message, const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
+  };
+  class MultipleLinkIddetectedForLink : public XpansionError {
+   public:
+    explicit MultipleLinkIddetectedForLink(const std::string& err_message,
+                                           const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
+  };
+  class CandidateDuplicationDetected : public XpansionError {
+   public:
+    explicit CandidateDuplicationDetected(const std::string& err_message,
+                                          const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
+  };
+  class ThereIsNoLinkProfileAssociatedWithThisProfile : public XpansionError {
+   public:
+    explicit ThereIsNoLinkProfileAssociatedWithThisProfile(
+        const std::string& err_message, const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
+  };
 
   const std::vector<ActiveLink>& getLinks();
 
