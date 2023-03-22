@@ -681,7 +681,8 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
     std::map<std::string, std::map<std::string, int>> input_map) const {
   auto const it_master(input_map.find(get_master_name()));
   if (it_master == input_map.end()) {
-    LOG(ERROR) << "UNABLE TO FIND " << get_master_name() << std::endl;
+    _logger->display_message(LOGLOCATION + "UNABLE TO FIND " +
+                             get_master_name() + "\n");
     std::exit(1);
   }
   return it_master->second;

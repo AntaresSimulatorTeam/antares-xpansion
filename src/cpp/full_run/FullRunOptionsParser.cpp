@@ -1,6 +1,7 @@
 #include "FullRunOptionsParser.h"
-namespace po = boost::program_options;
+
 #include "LogUtils.h"
+namespace po = boost::program_options;
 
 FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
   AddOptions()("method,m", po::value<std::string>(&method_str_)->required(),

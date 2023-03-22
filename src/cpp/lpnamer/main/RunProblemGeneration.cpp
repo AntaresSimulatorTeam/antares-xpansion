@@ -11,6 +11,7 @@
 #include "GeneralDataReader.h"
 #include "LauncherHelpers.h"
 #include "LinkProblemsGenerator.h"
+#include "LogUtils.h"
 #include "LpFilesExtractor.h"
 #include "MPSFileWriter.h"
 #include "MasterGeneration.h"
@@ -79,6 +80,7 @@ void RunProblemGeneration(
 
   if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
     (*logger)(ProblemGenerationLog::LOGLEVEL ::FATAL)
+        << LOGLOCATION
         << "Invalid formulation argument : argument must be "
            "\"integer\" or \"relaxed\""
         << std::endl;
