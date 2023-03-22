@@ -86,12 +86,12 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
     msg << "written in " << buffer.string() << std::endl;
     logger_->display_message(msg.str());
     _solver->write_prob_mps(buffer);
+    auto log_location = LOGLOCATION;
     msg.str("");
-    msg << LOGLOCATION
-        << "Invalid solver status " + _solver->SOLVER_STRING_STATUS[lp_status] +
+    msg << "Invalid solver status " + _solver->SOLVER_STRING_STATUS[lp_status] +
                " optimality expected";
-    logger_->display_message(msg.str());
-    throw InvalidSolverStatusException(msg.str());
+    logger_->display_message(log_location + msg.str());
+    throw InvalidSolverStatusException(msg.str(), log_location);
   }
 
   if (_is_master) {

@@ -1,8 +1,8 @@
 #ifndef SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H
 #define SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H
 #include <filesystem>
-#include <stdexcept>
 
+#include "LogUtils.h"
 #include "ProblemGenerationLogger.h"
 
 class LpFilesExtractor {
@@ -21,15 +21,17 @@ class LpFilesExtractor {
         logger_(logger) {}
   void ExtractFiles() const;
 
-  class ErrorWithAreaFile : public std::runtime_error {
+  class ErrorWithAreaFile : public XpansionError {
    public:
-    explicit ErrorWithAreaFile(const std::string& err_message)
-        : std::runtime_error(err_message) {}
+    explicit ErrorWithAreaFile(const std::string& err_message,
+                               const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
   };
-  class ErrorWithIntercosFile : public std::runtime_error {
+  class ErrorWithIntercosFile : public XpansionError {
    public:
-    explicit ErrorWithIntercosFile(const std::string& err_message)
-        : std::runtime_error(err_message) {}
+    explicit ErrorWithIntercosFile(const std::string& err_message,
+                                   const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
   };
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H

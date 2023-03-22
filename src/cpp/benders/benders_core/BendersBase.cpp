@@ -254,18 +254,19 @@ void BendersBase::check_status(
     msg << "Master status is " << _data.master_status << std::endl;
     _logger->display_message(msg.str());
     msg.str("");
-    msg << LOGLOCATION
-        << "Master status is " + std::to_string(_data.master_status);
-    _logger->display_message(msg.str());
-    throw InvalidSolverStatusException(msg.str());
+    auto log_location = LOGLOCATION;
+    msg << "Master status is " + std::to_string(_data.master_status);
+    _logger->display_message(log_location + msg.str());
+    throw InvalidSolverStatusException(msg.str(), log_location);
   }
   for (const auto &[subproblem_name, subproblemData] : subproblem_data_map) {
     if (subproblemData.lpstatus != SOLVER_STATUS::OPTIMAL) {
       std::ostringstream stream;
-      stream << LOGLOCATION << "Subproblem " << subproblem_name << " status is "
+      auto log_location = LOGLOCATION;
+      stream << "Subproblem " << subproblem_name << " status is "
              << subproblemData.lpstatus << std::endl;
-      _logger->display_message(stream.str());
-      throw InvalidSolverStatusException(stream.str());
+      _logger->display_message(log_location + stream.str());
+      throw InvalidSolverStatusException(stream.str(), log_location);
     }
   }
 }
