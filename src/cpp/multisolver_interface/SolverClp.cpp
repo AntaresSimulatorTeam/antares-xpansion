@@ -1,7 +1,6 @@
 #include "SolverClp.h"
 
 #include "COIN_common_functions.h"
-#include "LogUtils.h"
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor

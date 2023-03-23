@@ -15,9 +15,9 @@ TEST_F(OptionsParserTest, FailsWithArgcEqualToZero) {
     options_parser.Parse(0, argv.data());
     FAIL() << "Expected OptionsParser::InvalidNumberOfArgumentsPassedToParser";
   } catch (const OptionsParser::InvalidNumberOfArgumentsPassedToParser& err) {
-    EXPECT_EQ(err.what(), std::string("Error while parsing ") +
-                              +
-                             ": invalid number arguments:  0");
+    EXPECT_EQ(err.ErrorMessage().c_str(),
+              std::string("Error while parsing ") +
+                  +": invalid number arguments:  0");
   } catch (...) {
     FAIL() << "Expected OptionsParser::InvalidNumberOfArgumentsPassedToParser";
   }
@@ -29,11 +29,13 @@ TEST_F(OptionsParserTest, FailsIfRequiredOptionIsAddedWithNullArgv) {
                               "test option");
   try {
     options_parser.Parse(1, nullptr);
-  } catch (const OptionsParser::NullArgumentsValues&e) {
-    EXPECT_EQ(e.what(), std::string("Error while parsing  options: null Arguments values!"));
+  } catch (const OptionsParser::NullArgumentsValues& e) {
+    EXPECT_EQ(
+        e.ErrorMessage().c_str(),
+        std::string("Error while parsing  options: null Arguments values!"));
   }
 }
- TEST_F(OptionsParserTest, FailsIfRequiredOptionIsAddedWithMissingOption) {
+TEST_F(OptionsParserTest, FailsIfRequiredOptionIsAddedWithMissingOption) {
   int option;
   options_parser.AddOptions()("option,-o", po::value<int>(&option)->required(),
                               "test option");
@@ -42,8 +44,8 @@ TEST_F(OptionsParserTest, FailsIfRequiredOptionIsAddedWithNullArgv) {
   char** ppc = &pc;
   try {
     options_parser.Parse(1, ppc);
-  } catch (const std::exception&e) {
-    EXPECT_EQ(e.what(), std::string("the option '--option' is required but missing"));
+  } catch (const std::exception& e) {
+    EXPECT_EQ(e.what(),
+              std::string("the option '--option' is required but missing"));
   }
 }
-

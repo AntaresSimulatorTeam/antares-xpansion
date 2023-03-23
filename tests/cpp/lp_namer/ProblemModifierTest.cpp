@@ -276,8 +276,8 @@ TEST_F(ProblemModifierTest,
   try {
     problem_modifier.get_candidate_col_id("invalid_cand_name");
     FAIL();
-  } catch (const std::runtime_error& expected) {
-    ASSERT_STREQ(expected.what(),
+  } catch (const ProblemModifier::CandidateWasNotAddedInProblem& expected) {
+    ASSERT_STREQ(expected.ErrorMessage().c_str(),
                  "Candidate 'invalid_cand_name' not added in problem");
   }
 }

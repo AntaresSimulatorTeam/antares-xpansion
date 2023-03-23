@@ -21,7 +21,8 @@ class LinkProfile {
    *  \brief LinkProfile default constructor
    *
    */
-  LinkProfile(ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+  explicit LinkProfile(
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
       : logger_(logger) {}
 
   /*!

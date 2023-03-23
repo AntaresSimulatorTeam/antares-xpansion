@@ -10,6 +10,8 @@
 #include <string>
 #include <vector>
 
+#include "LogUtils.h"
+
 class InvalidStatusException : public std::runtime_error {
  public:
   InvalidStatusException(int status, const std::string &action,
@@ -19,44 +21,49 @@ class InvalidStatusException : public std::runtime_error {
                            " (0 expected)") {}
 };
 
-class InvalidRowSizeException : public std::runtime_error {
+class InvalidRowSizeException : public XpansionError<std::runtime_error> {
  public:
   InvalidRowSizeException(int expected_size, int actual_size,
                           const std::string &log_location)
-      : std::runtime_error(log_location + "Invalid row size for solver. " +
-                           std::to_string(actual_size) + " rows available (" +
-                           std::to_string(expected_size) + " expected)") {}
+      : XpansionError(std::string("Invalid row size for solver. ") +
+                          std::to_string(actual_size) + " rows available (" +
+                          std::to_string(expected_size) + " expected)",
+                      log_location) {}
 };
 
-class InvalidColSizeException : public std::runtime_error {
+class InvalidColSizeException : public XpansionError<std::runtime_error> {
  public:
   InvalidColSizeException(int expected_size, int actual_size,
                           const std::string &log_location)
-      : std::runtime_error(log_location + "Invalid col size for solver. " +
-                           std::to_string(actual_size) + " cols available (" +
-                           std::to_string(expected_size) + " expected)") {}
+      : XpansionError(std::string("Invalid col size for solver. ") +
+                          std::to_string(actual_size) + " cols available (" +
+                          std::to_string(expected_size) + " expected)",
+                      log_location) {}
 };
 
-class InvalidBoundTypeException : public std::runtime_error {
+class InvalidBoundTypeException : public XpansionError<std::runtime_error> {
  public:
   InvalidBoundTypeException(char qbtype, const std::string &log_location)
-      : std::runtime_error(log_location + "Invalid bound type " + qbtype +
-                           " for solver.") {}
+      : XpansionError(
+            std::string("Invalid bound type ") + qbtype + " for solver.",
+            log_location) {}
 };
 
-class InvalidColTypeException : public std::runtime_error {
+class InvalidColTypeException : public XpansionError<std::runtime_error> {
  public:
   InvalidColTypeException(char qctype, const std::string &log_location)
-      : std::runtime_error(log_location + "Invalid col type " + qctype +
-                           " for solver.") {}
+      : XpansionError(
+            std::string("Invalid col type ") + qctype + " for solver.",
+            log_location) {}
 };
 
-class InvalidSolverOptionException : public std::runtime_error {
+class InvalidSolverOptionException : public XpansionError<std::runtime_error> {
  public:
   InvalidSolverOptionException(const std::string &option,
                                const std::string &log_location)
-      : std::runtime_error(log_location + "Invalid option '" + option +
-                           "' for solver.") {}
+      : XpansionError(
+            std::string("Invalid option '") + option + "' for solver.",
+            log_location) {}
 };
 
 class InvalidSolverForCopyException : public std::runtime_error {
@@ -68,12 +75,12 @@ class InvalidSolverForCopyException : public std::runtime_error {
                            "solver from " + to_solver) {}
 };
 
-class InvalidSolverNameException : public std::runtime_error {
+class InvalidSolverNameException : public XpansionError<std::runtime_error> {
  public:
   InvalidSolverNameException(const std::string &solver_name,
                              const std::string &log_location)
-      : std::runtime_error(log_location + "Solver '" + solver_name +
-                           "' not supported") {}
+      : XpansionError("Solver '" + solver_name + "' not supported",
+                      log_location) {}
 };
 class GenericSolverException : public std::runtime_error {
  public:

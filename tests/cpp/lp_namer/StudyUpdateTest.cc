@@ -228,8 +228,9 @@ TEST_F(StudyUpdateTest, no_computed_investment_for_candidate_peak) {
     (void)studyupdater.computeNewCapacities(investissments, _links[1], 0);
     FAIL() << "Missing investment not detected for candidate peak on link "
               "area1 - peak";
-  } catch (const std::runtime_error& err) {
-    ASSERT_STREQ(err.what(),
+  } catch (
+      const StudyUpdateStrategy::NoInvestmentComputedForTheCandidate& err) {
+    ASSERT_STREQ(err.ErrorMessage().c_str(),
                  "No investment computed for the candidate peak on the link "
                  "area1 - peak");
   }

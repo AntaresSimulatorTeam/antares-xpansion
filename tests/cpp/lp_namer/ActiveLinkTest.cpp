@@ -460,11 +460,10 @@ TEST(
       createProfile(directLinkprofile_l, indirectLinkprofile_l);
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-  std::vector<LinkProfile> a = {{}, alreadyInstalledProfile};
-  profile_map[temp_already_installed_profile1_name] = {{},
+  auto logger = emptyLogger();
+  profile_map[temp_already_installed_profile1_name] = {LinkProfile(logger),
                                                        alreadyInstalledProfile};
 
-  auto logger = emptyLogger();
   ActiveLinksBuilder linkBuilder{cand_data_list, profile_map, logger};
   auto links = linkBuilder.getLinks();
   ASSERT_EQ(links[0].already_installed_direct_profile(2, 0), 0);

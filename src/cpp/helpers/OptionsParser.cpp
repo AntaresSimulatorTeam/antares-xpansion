@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "LogUtils.h"
 namespace po = boost::program_options;
 
 void OptionsParser::Parse(unsigned int argc, const char* const* argv) {

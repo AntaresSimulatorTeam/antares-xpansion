@@ -10,6 +10,7 @@
 
 #include "ActiveLinks.h"
 #include "ColumnToChange.h"
+#include "LogUtils.h"
 #include "Problem.h"
 #include "ProblemGenerationLogger.h"
 
@@ -28,6 +29,13 @@ class ProblemModifier {
 
   unsigned int get_candidate_col_id(const std::string &cand_name) const;
   bool has_candidate_col_id(const std::string &cand_name) const;
+  class CandidateWasNotAddedInProblem
+      : public XpansionError<std::runtime_error> {
+   public:
+    explicit CandidateWasNotAddedInProblem(const std::string &err_message,
+                                           const std::string &log_location)
+        : XpansionError(err_message, log_location) {}
+  };
 
  private:
   void changeProblem(

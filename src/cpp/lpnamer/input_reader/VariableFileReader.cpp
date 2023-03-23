@@ -4,8 +4,6 @@
 #include <algorithm>
 #include <sstream>
 
-#include "LogUtils.h"
-
 void updateMapColumn(const std::vector<ActiveLink>& links, int link_id,
                      colId id, int time_step,
                      std::map<linkId, ColumnsToChange>& mapColumn) {
@@ -27,9 +25,10 @@ VariableFileReader::VariableFileReader(
   std::string line;
   std::ifstream file(fileName.c_str());
   if (!file.good()) {
-    auto errMsg = LOGLOCATION + "Unable to open '" + fileName.string() + "'";
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
-    throw std::runtime_error(errMsg);
+    auto log_location = LOGLOCATION;
+    auto errMsg = "Unable to open '" + fileName.string() + "'";
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << log_location << errMsg;
+    throw VariablesNotFound(errMsg, log_location);
   }
   ReadVarsFromStream(file, links, variable_name_config);
   file.close();

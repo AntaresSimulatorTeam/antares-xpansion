@@ -9,7 +9,7 @@ TEST_CASE("InvalidStatusException", "[exceptions][invalid_status]") {
     // solver declaration
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
     try {
-      solver->zero_status_check(-1, "test exception", LOGLOCATION);
+      solver->zero_status_check(-1, "test exception", "");
     } catch (InvalidStatusException& ex) {
       REQUIRE(std::string(ex.what()) ==
               "Failed to test exception: invalid status -1 (0 expected)");
@@ -28,7 +28,7 @@ TEST_CASE("InvalidRowSizeException", "[exceptions][invalid_row_size]") {
   try {
     std::vector<std::string> names = solver->get_row_names(0, 9);
   } catch (InvalidRowSizeException& ex) {
-    REQUIRE(std::string(ex.what()) ==
+    REQUIRE(ex.ErrorMessage() ==
             "Invalid row size for solver. 0 rows available (10 expected)");
   }
 }
@@ -44,7 +44,7 @@ TEST_CASE("InvalidColSizeException", "[exceptions][invalid_col_size]") {
   try {
     std::vector<std::string> names = solver->get_col_names(0, 9);
   } catch (InvalidColSizeException& ex) {
-    REQUIRE(std::string(ex.what()) ==
+    REQUIRE(ex.ErrorMessage() ==
             "Invalid col size for solver. 0 cols available (10 expected)");
   }
 }
@@ -86,7 +86,7 @@ TEST_CASE("InvalidColTypeException", "[exceptions][invalid_col_type]") {
     try {
       solver->chg_col_type(std::vector<int>(1, 0), std::vector<char>(1, 'P'));
     } catch (InvalidColTypeException& ex) {
-      REQUIRE(std::string(ex.what()) == "Invalid col type P for solver.");
+      REQUIRE(ex.ErrorMessage() == "Invalid col type P for solver.");
     }
   }
 }
@@ -99,7 +99,7 @@ TEST_CASE("InvalidBoundTypeException", "[exceptions][invalid_bound_type]") {
       solver->chg_bounds(std::vector<int>(1, 0), std::vector<char>(1, 'P'),
                          std::vector<double>(1, 0));
     } catch (InvalidBoundTypeException& ex) {
-      REQUIRE(std::string(ex.what()) == "Invalid bound type P for solver.");
+      REQUIRE(ex.ErrorMessage() == "Invalid bound type P for solver.");
     }
   }
 }
@@ -113,7 +113,7 @@ TEST_CASE("InvalidSetAlgorithm", "[exceptions][invalid_set_algorithm]") {
     try {
       solver->set_algorithm("BARRIER");
     } catch (InvalidSolverOptionException& ex) {
-      REQUIRE(std::string(ex.what()) ==
+      REQUIRE(ex.ErrorMessage() ==
               "Invalid option 'set_algorithm : BARRIER' for solver.");
     }
   }
@@ -128,7 +128,7 @@ TEST_CASE("InvalidSetSimpleIter", "[exceptions][set_simplex_iter]") {
     try {
       solver->set_simplex_iter(10);
     } catch (InvalidSolverOptionException& ex) {
-      REQUIRE(std::string(ex.what()) ==
+      REQUIRE(ex.ErrorMessage() ==
               "Invalid option 'set_simplex_iter : 10' for solver.");
     }
   }
@@ -143,7 +143,7 @@ TEST_CASE("InvalidSetOptimatilityGap", "[exceptions][set_optimality_gap]") {
     try {
       solver->set_optimality_gap(10);
     } catch (InvalidSolverOptionException& ex) {
-      REQUIRE(std::string(ex.what()) ==
+      REQUIRE(ex.ErrorMessage() ==
               "Invalid option 'set_optimality_gap : 10.000000' for solver.");
     }
   }
@@ -155,7 +155,7 @@ TEST_CASE("InvalidSolverNameException", "[exceptions][invalid_solver_name]") {
     try {
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
     } catch (InvalidSolverNameException& ex) {
-      REQUIRE(std::string(ex.what()) ==
+      REQUIRE(ex.ErrorMessage() ==
               std::string("Solver '" + solver_name + "' not supported"));
     }
   }
