@@ -84,7 +84,7 @@ void LinkProfileReader::UpdateProfile(std::vector<LinkProfile> &result,
 void LinkProfileReader::ConstructChronicle(std::vector<LinkProfile> &result,
                                            int chronicle_id) const {
   if (result.size() <= chronicle_id) {
-    result.emplace_back();
+    result.emplace_back(logger_);
   }
 }
 

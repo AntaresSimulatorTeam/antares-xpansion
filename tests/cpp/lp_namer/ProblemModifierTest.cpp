@@ -438,15 +438,15 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
 
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-  LinkProfile profile_link;
+  LinkProfile profile_link(logger);
   profile_link.direct_link_profile = {1, 2};
   profile_link.indirect_link_profile = {3, 4};
   profile_map["install_link_profile"] = {profile_link};
-  LinkProfile profile_cand1;
+  LinkProfile profile_cand1(logger);
   profile_cand1.direct_link_profile = {0.5, 1};
   profile_cand1.indirect_link_profile = {0.8, 1.2};
   profile_map["profile_cand1"] = {profile_cand1};
-  LinkProfile profile_cand2;
+  LinkProfile profile_cand2(logger);
   profile_cand2.direct_link_profile = {1.5, 1.7};
   profile_cand2.indirect_link_profile = {2.6, 2.8};
   profile_map["profile_cand2"] = {profile_cand2};
@@ -554,15 +554,15 @@ TEST_F(ProblemModifierTest,
 
   std::vector<CandidateData> cand_data_list = {cand1, cand2};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-  LinkProfile profile_link;
+  LinkProfile profile_link(logger);
   profile_link.direct_link_profile = {1, 2};
   profile_link.indirect_link_profile = {3, 4};
   profile_map["install_link_profile"] = {profile_link};
-  LinkProfile profile_cand1;
+  LinkProfile profile_cand1(logger);
   profile_cand1.direct_link_profile = {0.5, 1};
   profile_cand1.indirect_link_profile = {0.8, 1.2};
   profile_map["profile_cand1"] = {profile_cand1};
-  LinkProfile empty_profile;
+  LinkProfile empty_profile(logger);
   empty_profile.direct_link_profile = {0.0, 0.0};
   empty_profile.indirect_link_profile = {0.0, 0.0};
   profile_map["empty_profile"] = {empty_profile};
@@ -643,11 +643,11 @@ TEST_F(ProblemModifierTest, candidateWithNotNullProfileExists) {
 
   std::vector<CandidateData> cand_data_list = {cand1};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-  LinkProfile profile_link;
+  LinkProfile profile_link(logger);
   profile_link.direct_link_profile = {1, 2};
   profile_link.indirect_link_profile = {3, 4};
   profile_map["install_link_profile"] = {profile_link};
-  LinkProfile profile_cand1;
+  LinkProfile profile_cand1(logger);
   profile_cand1.direct_link_profile = {0.5, 1};
   profile_cand1.indirect_link_profile = {0.8, 1.2};
   profile_map["profile_cand1"] = {profile_cand1};
@@ -685,11 +685,11 @@ TEST_F(ProblemModifierTest, candidateWithNullProfileIsRemoved) {
 
   std::vector<CandidateData> cand_data_list = {cand1};
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-  LinkProfile profile_link;
+  LinkProfile profile_link(logger);
   profile_link.direct_link_profile = {0, 0};
   profile_link.indirect_link_profile = {0, 0};
   profile_map["install_link_profile"] = {profile_link};
-  LinkProfile profile_cand1;
+  LinkProfile profile_cand1(logger);
   profile_cand1.direct_link_profile = {0, 0};
   profile_cand1.indirect_link_profile = {0, 0};
   profile_map["profile_cand1"] = {profile_cand1};
@@ -778,8 +778,11 @@ class ProblemModifierTestMultiChronicle : public ProblemModifierTest {
       {link_id, {{{2, 0}, {2, 1}}}}};
   CandidateData cand1, cand2;
   const double link_capacity = 2000.0;
-  LinkProfile profile_link, profile_cand1, profile_cand1_2, profile_cand2,
-      profile_cand2_2;
+  LinkProfile profile_link = LinkProfile(logger),
+              profile_cand1 = LinkProfile(logger),
+              profile_cand1_2 = LinkProfile(logger),
+              profile_cand2 = LinkProfile(logger),
+              profile_cand2_2 = LinkProfile(logger);
 };
 
 TEST_F(
@@ -975,7 +978,9 @@ class ProblemModifierTestWithProfile : public ProblemModifierTest {
   const std::map<linkId, ColumnsToChange> p_indirect_cost_columns = {
       {link_id, {{{2, 0}, {2, 1}}}}};
 
-  LinkProfile installed_profile, chronicle_1, chronicle_2;
+  LinkProfile installed_profile = LinkProfile(logger),
+              chronicle_1 = LinkProfile(logger),
+              chronicle_2 = LinkProfile(logger);
   std::map<std::string, std::vector<LinkProfile>> profile_map;
   std::vector<CandidateData> cand_data_list = {cand1};
   std::filesystem::path ts_info_root_ =

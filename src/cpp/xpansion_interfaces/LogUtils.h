@@ -9,12 +9,12 @@ inline std::string LogLocationToStr(int line, const char* file,
 }
 #define LOGLOCATION LogLocationToStr(__LINE__, __FILE__, __func__)
 
-class XpansionError : public std::runtime_error {
+template <typename T>
+class XpansionError : public T {
  public:
   explicit XpansionError(const std::string& err_message,
                          const std::string& log_location)
-      : std::runtime_error(log_location + err_message),
-        err_message_(err_message) {}
+      : T(log_location + err_message), err_message_(err_message) {}
 
  public:
   std::string ErrorMessage() const { return err_message_; }

@@ -76,31 +76,36 @@ class ActiveLinksBuilder {
       const std::map<std::string, std::vector<LinkProfile>>& profile_map,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
-  class MultipleAlreadyInstalledCapacityDetectedForLink : public XpansionError {
+  class MultipleAlreadyInstalledCapacityDetectedForLink
+      : public XpansionError<std::runtime_error> {
    public:
     explicit MultipleAlreadyInstalledCapacityDetectedForLink(
         const std::string& err_message, const std::string& log_location)
         : XpansionError(err_message, log_location) {}
   };
-  class MultipleAlreadyInstalledProfileDetectedForLink : public XpansionError {
+  class MultipleAlreadyInstalledProfileDetectedForLink
+      : public XpansionError<std::runtime_error> {
    public:
     explicit MultipleAlreadyInstalledProfileDetectedForLink(
         const std::string& err_message, const std::string& log_location)
         : XpansionError(err_message, log_location) {}
   };
-  class MultipleLinkIddetectedForLink : public XpansionError {
+  class MultipleLinkIddetectedForLink
+      : public XpansionError<std::runtime_error> {
    public:
     explicit MultipleLinkIddetectedForLink(const std::string& err_message,
                                            const std::string& log_location)
         : XpansionError(err_message, log_location) {}
   };
-  class CandidateDuplicationDetected : public XpansionError {
+  class CandidateDuplicationDetected
+      : public XpansionError<std::runtime_error> {
    public:
     explicit CandidateDuplicationDetected(const std::string& err_message,
                                           const std::string& log_location)
         : XpansionError(err_message, log_location) {}
   };
-  class ThereIsNoLinkProfileAssociatedWithThisProfile : public XpansionError {
+  class ThereIsNoLinkProfileAssociatedWithThisProfile
+      : public XpansionError<std::runtime_error> {
    public:
     explicit ThereIsNoLinkProfileAssociatedWithThisProfile(
         const std::string& err_message, const std::string& log_location)

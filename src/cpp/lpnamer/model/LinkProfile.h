@@ -5,6 +5,8 @@ constexpr int NUMBER_OF_HOUR_PER_YEAR = 8760;
 #include <array>
 #include <exception>
 
+#include "LogUtils.h"
+#include "ProblemGenerationLogger.h"
 #include "common_lpnamer.h"
 
 /*!
@@ -19,7 +21,8 @@ class LinkProfile {
    *  \brief LinkProfile default constructor
    *
    */
-  LinkProfile() = default;
+  LinkProfile(ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      : logger_(logger) {}
 
   /*!
    *  \brief returns the value of a direct link profile
@@ -49,6 +52,16 @@ class LinkProfile {
     return direct_link_profile == rhs.direct_link_profile &&
            indirect_link_profile == rhs.indirect_link_profile;
   }
+
+  class InvalidHourForProfile : public XpansionError<std::invalid_argument> {
+   public:
+    explicit InvalidHourForProfile(const std::string& err_message,
+                                   const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
+  };
+
+ private:
+  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
 };
 
 #endif  // ANTARESXPANSION_LINKPROFILE_H

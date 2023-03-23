@@ -12,7 +12,7 @@ emptyLogger() {
 LinkProfile createProfile(
     const std::vector<double>& directAlreadyInstalledLinkprofile_l,
     const std::vector<double>& indirectAlreadyInstalledLinkprofile_l) {
-  LinkProfile profile;
+  LinkProfile profile(emptyLogger());
   profile.direct_link_profile = directAlreadyInstalledLinkprofile_l;
   profile.indirect_link_profile = indirectAlreadyInstalledLinkprofile_l;
   return profile;
@@ -249,7 +249,7 @@ TEST(LinkBuilderTest,
   cand_data_list.push_back(cand1);
   cand_data_list.push_back(cand2);
   std::map<std::string, std::vector<LinkProfile>> profile_map = {
-      {"dummy", {LinkProfile()}}};
+      {"dummy", {LinkProfile(emptyLogger())}}};
 
   try {
     auto logger = emptyLogger();

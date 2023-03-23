@@ -21,13 +21,13 @@ class LpFilesExtractor {
         logger_(logger) {}
   void ExtractFiles() const;
 
-  class ErrorWithAreaFile : public XpansionError {
+  class ErrorWithAreaFile : public XpansionError<std::runtime_error> {
    public:
     explicit ErrorWithAreaFile(const std::string& err_message,
                                const std::string& log_location)
         : XpansionError(err_message, log_location) {}
   };
-  class ErrorWithIntercosFile : public XpansionError {
+  class ErrorWithIntercosFile : public XpansionError<std::runtime_error> {
    public:
     explicit ErrorWithIntercosFile(const std::string& err_message,
                                    const std::string& log_location)

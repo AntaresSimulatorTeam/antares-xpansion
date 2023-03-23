@@ -166,7 +166,7 @@ std::vector<LinkProfile> ActiveLinksBuilder::getProfilesFromProfileMap(
   if (_profile_map.find(profile_name) != _profile_map.end()) {
     profiles = _profile_map.at(profile_name);
   }
-  if (profiles.empty()) return {LinkProfile()};
+  if (profiles.empty()) return {LinkProfile(logger_)};
   return profiles;
 }
 
@@ -182,7 +182,7 @@ ActiveLink::ActiveLink(
       _linkex(std::move(linkex)),
       _already_installed_capacity(already_installed_capacity),
       logger_(logger) {
-  _already_installed_profile.emplace_back();
+  _already_installed_profile.emplace_back(logger_);
 }
 
 ActiveLink::ActiveLink(
