@@ -460,7 +460,7 @@ TEST(
       createProfile(directLinkprofile_l, indirectLinkprofile_l);
 
   std::map<std::string, std::vector<LinkProfile>> profile_map;
-
+  std::vector<LinkProfile> a = {{}, alreadyInstalledProfile};
   profile_map[temp_already_installed_profile1_name] = {{},
                                                        alreadyInstalledProfile};
 

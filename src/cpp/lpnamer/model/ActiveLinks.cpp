@@ -154,6 +154,7 @@ void ActiveLinksBuilder::create_links() {
     ActiveLink link(link_data.id, link_name, link_data._linkor,
                     link_data._linkex, link_data.installed_capacity,
                     mc_year_to_chronicle, logger_);
+    std::cout << "link_name: " << link_name << "\n";
     link.setAlreadyInstalledLinkProfiles(
         getProfilesFromProfileMap(link_data.profile_name));
     _links.push_back(link);
@@ -166,6 +167,8 @@ std::vector<LinkProfile> ActiveLinksBuilder::getProfilesFromProfileMap(
   if (_profile_map.find(profile_name) != _profile_map.end()) {
     profiles = _profile_map.at(profile_name);
   }
+  std::cout << "profile_name: " << profile_name << "\n";
+  std::cout << "_profile_map.size(): " << _profile_map.size() << "\n";
   if (profiles.empty()) return {LinkProfile(logger_)};
   return profiles;
 }
