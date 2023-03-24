@@ -251,11 +251,8 @@ void BendersBase::check_status(
     const SubProblemDataMap &subproblem_data_map) const {
   if (_data.master_status != SOLVER_STATUS::OPTIMAL) {
     std::ostringstream msg;
-    msg << "Master status is " << _data.master_status << std::endl;
-    _logger->display_message(msg.str());
-    msg.str("");
     auto log_location = LOGLOCATION;
-    msg << "Master status is " + std::to_string(_data.master_status);
+    msg << "Master status is " + std::to_string(_data.master_status) << std::endl;
     _logger->display_message(log_location + msg.str());
     throw InvalidSolverStatusException(msg.str(), log_location);
   }
