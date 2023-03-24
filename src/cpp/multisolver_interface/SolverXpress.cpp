@@ -407,7 +407,7 @@ int SolverXpress::solve_lp() {
     std::ostringstream err;
     err << LOGLOCATION << "Error : UNKNOWN XPRESS STATUS IS : " << xprs_status
         << std::endl;
-    std::cerr << err;
+    std::cerr << err.str();
   }
   return lp_status;
 }
@@ -432,7 +432,7 @@ int SolverXpress::solve_mip() {
     lp_status = UNKNOWN;
     std::ostringstream err;
     err << LOGLOCATION << "XPRESS STATUS IS : " << xprs_status << std::endl;
-    std::cerr << err;
+    std::cerr << err.str();
   }
   return lp_status;
 }
