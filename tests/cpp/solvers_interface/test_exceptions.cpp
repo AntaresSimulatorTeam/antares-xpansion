@@ -11,7 +11,7 @@ TEST_CASE("InvalidStatusException", "[exceptions][invalid_status]") {
     try {
       solver->zero_status_check(-1, "test exception", "");
     } catch (InvalidStatusException& ex) {
-      REQUIRE(std::string(ex.what()) ==
+      REQUIRE(ex.ErrorMessage() ==
               "Failed to test exception: invalid status -1 (0 expected)");
     }
   }

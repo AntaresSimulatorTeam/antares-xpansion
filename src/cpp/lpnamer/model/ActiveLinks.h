@@ -78,38 +78,23 @@ class ActiveLinksBuilder {
 
   class MultipleAlreadyInstalledCapacityDetectedForLink
       : public XpansionError<std::runtime_error> {
-   public:
-    explicit MultipleAlreadyInstalledCapacityDetectedForLink(
-        const std::string& err_message, const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
   class MultipleAlreadyInstalledProfileDetectedForLink
       : public XpansionError<std::runtime_error> {
-   public:
-    explicit MultipleAlreadyInstalledProfileDetectedForLink(
-        const std::string& err_message, const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
   class MultipleLinkIddetectedForLink
       : public XpansionError<std::runtime_error> {
-   public:
-    explicit MultipleLinkIddetectedForLink(const std::string& err_message,
-                                           const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
   class CandidateDuplicationDetected
       : public XpansionError<std::runtime_error> {
-   public:
-    explicit CandidateDuplicationDetected(const std::string& err_message,
-                                          const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
   class ThereIsNoLinkProfileAssociatedWithThisProfile
       : public XpansionError<std::runtime_error> {
-   public:
-    explicit ThereIsNoLinkProfileAssociatedWithThisProfile(
-        const std::string& err_message, const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
 
   const std::vector<ActiveLink>& getLinks();

@@ -18,10 +18,7 @@ class StudyUpdateStrategy {
   virtual ~StudyUpdateStrategy() = default;
   class NoInvestmentComputedForTheCandidate
       : public XpansionError<std::runtime_error> {
-   public:
-    explicit NoInvestmentComputedForTheCandidate(
-        const std::string& err_message, const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
 
  protected:

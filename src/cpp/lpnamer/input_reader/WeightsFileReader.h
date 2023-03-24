@@ -30,10 +30,7 @@ class WeightsFileReader {
         number_of_active_years_(number_of_active_years),
         logger_(logger) {}
   class WeightsFileError : public XpansionError<std::runtime_error> {
-   public:
-    explicit WeightsFileError(const std::string& msg,
-                              const std::string& log_location)
-        : XpansionError(msg, log_location) {}
+    using XpansionError::XpansionError;
   };
   class WeightsFileOpenError : public WeightsFileError {
     using WeightsFileError::WeightsFileError;

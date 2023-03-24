@@ -22,16 +22,10 @@ class LpFilesExtractor {
   void ExtractFiles() const;
 
   class ErrorWithAreaFile : public XpansionError<std::runtime_error> {
-   public:
-    explicit ErrorWithAreaFile(const std::string& err_message,
-                               const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
   class ErrorWithIntercosFile : public XpansionError<std::runtime_error> {
-   public:
-    explicit ErrorWithIntercosFile(const std::string& err_message,
-                                   const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H

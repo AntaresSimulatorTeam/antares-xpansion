@@ -55,10 +55,7 @@ class LinkProfile {
   }
 
   class InvalidHourForProfile : public XpansionError<std::invalid_argument> {
-   public:
-    explicit InvalidHourForProfile(const std::string& err_message,
-                                   const std::string& log_location)
-        : XpansionError(err_message, log_location) {}
+    using XpansionError::XpansionError;
   };
 
  private:

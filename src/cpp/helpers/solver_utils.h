@@ -7,10 +7,7 @@
 #include "multisolver_interface/Solver.h"
 
 class InvalidSolverStatusException : public XpansionError<std::runtime_error> {
- public:
-  InvalidSolverStatusException(const std::string &message,
-                               const std::string &log_location)
-      : XpansionError(message, log_location) {}
+  using XpansionError::XpansionError;
 };
 
 /**

@@ -12,20 +12,20 @@
 
 #include "LogUtils.h"
 
-class InvalidStatusException : public std::runtime_error {
+class InvalidStatusException : public XpansionError<std::runtime_error> {
  public:
   InvalidStatusException(int status, const std::string &action,
                          const std::string &log_message)
-      : std::runtime_error(log_message + "Failed to " + action +
-                           ": invalid status " + std::to_string(status) +
-                           " (0 expected)") {}
+      : XpansionError("Failed to " + action + ": invalid status " +
+                          std::to_string(status) + " (0 expected)",
+                      log_message) {}
 };
 
 class InvalidRowSizeException : public XpansionError<std::runtime_error> {
  public:
   InvalidRowSizeException(int expected_size, int actual_size,
                           const std::string &log_location)
-      : XpansionError(std::string("Invalid row size for solver. ") +
+      : XpansionError("Invalid row size for solver. " +
                           std::to_string(actual_size) + " rows available (" +
                           std::to_string(expected_size) + " expected)",
                       log_location) {}
@@ -35,7 +35,7 @@ class InvalidColSizeException : public XpansionError<std::runtime_error> {
  public:
   InvalidColSizeException(int expected_size, int actual_size,
                           const std::string &log_location)
-      : XpansionError(std::string("Invalid col size for solver. ") +
+      : XpansionError("Invalid col size for solver. " +
                           std::to_string(actual_size) + " cols available (" +
                           std::to_string(expected_size) + " expected)",
                       log_location) {}
@@ -66,13 +66,13 @@ class InvalidSolverOptionException : public XpansionError<std::runtime_error> {
             log_location) {}
 };
 
-class InvalidSolverForCopyException : public std::runtime_error {
+class InvalidSolverForCopyException : public XpansionError<std::runtime_error> {
  public:
   InvalidSolverForCopyException(const std::string &from_solver,
                                 const std::string &to_solver,
                                 const std::string &log_location)
-      : std::runtime_error(log_location + "Can't copy " + from_solver +
-                           "solver from " + to_solver) {}
+      : XpansionError("Can't copy " + from_solver + "solver from " + to_solver,
+                      log_location) {}
 };
 
 class InvalidSolverNameException : public XpansionError<std::runtime_error> {
