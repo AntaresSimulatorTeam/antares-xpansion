@@ -39,7 +39,14 @@
     },
     "mini_instance_UNBOUNDED": {
         "path": "../../../data_test/mini_instance_UNBOUNDED/",
-        "option_file": "options_default.json"
+        "option_file": "options_default.json",
+	"status":"ERROR",
+	"ERROR" :
+		{
+		"problem_name" : "master.mps",
+		"problem_path" : "./outputs/master.mps_lp_status_UNBOUNDED.mps",
+		"problem_status" : "UNBOUNDED"
+		}
     },
     "mini_instance_INFEASIBLE": {
         "path": "../../../data_test/mini_instance_INFEAS/",
