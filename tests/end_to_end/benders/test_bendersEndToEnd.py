@@ -135,7 +135,7 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False
         (Path(install_dir) / Path(solver_executable)).resolve())
 
     for instance in expected_results_dict:
-        instance_path = expected_results_dict[instance]['path']
+        instance_path = Path(expected_results_dict[instance]['path'])
         command = [e for e in pre_command]
         command.append(executable_path)
         options_file = expected_results_dict[instance]['option_file']
@@ -149,7 +149,7 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False
         )
         status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
         tmp_study = tmp_path / \
-            (Path(instance_path).name+"-"+Path(options_file).stem)
+            (instance_path.name+"-"+Path(options_file).stem)
         shutil.copytree(instance_path, tmp_study)
 
         launch_optimization(tmp_study, command, status)
