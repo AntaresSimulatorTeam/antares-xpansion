@@ -117,7 +117,7 @@ def check_optimization_json_output(expected_results_dict, output_path: Path):
         assert problem_name == expected_results_dict["ERROR"]["problem_name"]
 
 
-def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False):
+def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False, xpress=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -139,6 +139,11 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False
         command = [e for e in pre_command]
         command.append(executable_path)
         options_file = expected_results_dict[instance]['option_file']
+        options_file_content = []
+        with open(instance_path/options_file, 'r') as jsonFile:
+            options_file_content = json.load(jsonFile)
+        if(options_file_content["SOLVER_NAME"] == "XPRESS" and not xpress):
+            continue
         command.append(
             options_file
         )
