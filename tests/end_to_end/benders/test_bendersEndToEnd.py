@@ -142,7 +142,7 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False
         options_file_content = []
         with open(instance_path/options_file, 'r') as jsonFile:
             options_file_content = json.load(jsonFile)
-        if(options_file_content["SOLVER_NAME"] == "XPRESS" and not xpress):
+        if("SOLVER_NAME" in options_file_content and options_file_content["SOLVER_NAME"] == "XPRESS" and not xpress):
             continue
         command.append(
             options_file
