@@ -13,7 +13,7 @@ find_python_module(numpy)
 
 if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
         set(xpress_avalaible "False")
-        if(XPRESS)
+        if(${XPRESS})
 	        set(xpress_avalaible "True")
         endif() 
     # Python unit test
