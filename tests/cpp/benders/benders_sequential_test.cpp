@@ -65,6 +65,7 @@ class BendersSequentialDouble : public BendersSequential {
   CurrentIterationData get_data() const { return _data; }
   void build_input_map() override{};
   void write_basis() const override{};
+  void EndWritingInOutputFile() const override{};
   void UpdateTrace() override{};
   void post_run_actions() const override{};
   void SaveCurrentBendersData() override{};
