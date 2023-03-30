@@ -152,9 +152,9 @@ class XpansionConfig:
             "uc_type": "expansion_fast",
             "master": "integer",
             "optimality_gap": "1",
-            "relative_gap": "1e-12",
+            "relative_gap": "1e-6",
             "max_iteration": "+infini",
-            "relaxed_optimality_gap": "1e-4",
+            "relaxed_optimality_gap": "1e-5",
             "solver": "Cbc",
             "timelimit": "+infini",
             "additional-constraints": "",
@@ -215,13 +215,13 @@ class XpansionConfig:
         return False
 
     def relative_gap_default_value(self):
-        return "1e-12"
+        return "1e-6"
 
     def absolute_gap_default_value(self):
         return "1"
 
     def relaxed_gap_default_value(self):
-        return "1e-4"
+        return "1e-5"
 
     def max_iterations_default_value(self):
         return "-1"

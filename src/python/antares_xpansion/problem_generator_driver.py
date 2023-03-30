@@ -26,6 +26,7 @@ class ProblemGeneratorData:
     weight_file_name_for_lp: str
     lp_namer_exe_path: Path
     active_years: List
+    zip_mps: bool
 
 
 class ProblemGeneratorDriver:
@@ -62,6 +63,7 @@ class ProblemGeneratorDriver:
         self.user_weights_file_path = problem_generator_data.user_weights_file_path
         self.weight_file_name_for_lp = problem_generator_data.weight_file_name_for_lp
         self.active_years = problem_generator_data.active_years
+        self.zip_mps = problem_generator_data.zip_mps
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
         self._lp_path = None
