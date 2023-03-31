@@ -19,12 +19,7 @@
 
 BendersSequential::BendersSequential(BendersBaseOptions const &options,
                                      Logger logger, Writer writer)
-    : BendersBase(options, std::move(logger), std::move(writer)) {
-  if (options.MPS_IN_ZIP) {
-    reader_.SetArchivePath(GetMpsZipPath());
-    reader_.Open();
-  }
-}
+    : BendersBase(options, std::move(logger), std::move(writer)) {}
 
 void BendersSequential::InitializeProblems() {
   MatchProblemToId();
