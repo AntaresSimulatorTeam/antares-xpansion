@@ -90,8 +90,3 @@ class TestInputParser:
         my_parser = InputParser()
         result = my_parser.parse_args(["--dataDir=hello", "--oversubscribe"])
         assert result.oversubscribe is True
-
-    def test_if_option_zip_mps_then_zip_mps_is_true(self):
-        my_parser = InputParser()
-        result = my_parser.parse_args(["--dataDir=hello", "--zip-mps"])
-        assert result.zip_mps is True

@@ -37,7 +37,6 @@ class InputParameters:
     keep_mps: bool
     oversubscribe: bool
     allow_run_as_root: bool
-    zip_mps: bool
 
 
 class XpansionConfig:
