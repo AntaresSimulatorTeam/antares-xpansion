@@ -34,7 +34,7 @@ class TestProblemGeneratorDriver:
                                                         weight_file_name_for_lp="",
                                                         lp_namer_exe_path=Path(
                                                             ""),
-                                                        active_years=[], zip_mps=False)
+                                                        active_years=[])
 
     def test_problem_generator_data(self):
 
@@ -74,8 +74,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[],
-                                             zip_mps=False)
+                                             active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         output_zipped = get_zipped_output(tmp_path)
@@ -102,8 +101,7 @@ class TestProblemGeneratorDriver:
                                              user_weights_file_path=Path(""),
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
-                                             active_years=[],
-                                             zip_mps=False)
+                                             active_years=[])
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         output_zipped = get_zipped_output(tmp_path)
