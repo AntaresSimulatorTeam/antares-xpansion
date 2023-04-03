@@ -96,7 +96,8 @@ void BendersByBatch::MasterLoop() {
       _logger->display_message(
           " _______________________________________________________________"
           "_"
-          "________\n/\n");
+          "________");
+      _logger->display_message("/");
 
       _logger->display_message("\tSolving master...");
       get_master_value();
@@ -123,7 +124,7 @@ void BendersByBatch::MasterLoop() {
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
     _logger->display_message(
         "\\________________________________________________________________"
-        "________\n");
+        "________");
   }
 }
 void BendersByBatch::SeparationLoop() {
