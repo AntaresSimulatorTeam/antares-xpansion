@@ -26,6 +26,7 @@ std::shared_ptr<Problem> ZipProblemProviderAdapter::provide_problem(
       factory.create_solver(solver_name, log_file_path));
 
   in_prblm->read_prob_mps(lp_mps_name);
+  auto n = in_prblm->get_col_names(0, in_prblm->get_ncols() - 1);
   return in_prblm;
 }
 

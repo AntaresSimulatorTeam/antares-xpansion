@@ -17,6 +17,7 @@
 #include "MasterProblemBuilder.h"
 #include "MpsTxtWriter.h"
 #include "ProblemGenerationExeOptions.h"
+#include "ProblemVariablesFromMpsFileAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
 #include "Timer.h"
 #include "WeightsFileReader.h"
@@ -105,6 +106,9 @@ void RunProblemGeneration(
 
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
+  int i;
+  std::cout << "enter an int\n";
+  std::cin >> i;
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
         InstantiateZipReader(antares_archive_path);
@@ -130,9 +134,13 @@ void RunProblemGeneration(
                   problems_and_data.end(), [&](const auto& problem_and_data) {
                     const auto& [problem, data] = problem_and_data;
 
+                    // auto problem_variables_from_zip_adapter =
+                    //     std::make_shared<ProblemVariablesZipAdapter>(
+                    //         reader, data, links, logger);
+
                     auto problem_variables_from_zip_adapter =
-                        std::make_shared<ProblemVariablesZipAdapter>(
-                            reader, data, links, logger);
+                        std::make_shared<ProblemVariablesFromMpsFileAdapter>(
+                            problem, links, logger);
                     linkProblemsGenerator.treat(
                         data._problem_mps, couplings, problem,
                         problem_variables_from_zip_adapter, mps_file_writer);
