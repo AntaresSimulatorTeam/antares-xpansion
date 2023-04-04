@@ -75,11 +75,6 @@ class InputParser:
                                  default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
                                  action='store_true',
                                  help='allow-run-as-root option (linux only)')
-        self.parser.add_argument("--zip-mps",
-                                 dest=LauncherOptionsKeys.zip_mps_key(),
-                                 default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
-                                 action='store_true',
-                                 help='zip-mps to zip mps file after problem_generation step')
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -98,7 +93,6 @@ class InputParser:
             keep_mps=params.keep_mps,
             oversubscribe=params.oversubscribe,
             allow_run_as_root=params.allow_run_as_root,
-            zip_mps=params.zip_mps
         )
         return my_parameters
 
@@ -131,6 +125,3 @@ class InputParser:
 
         if params.allow_run_as_root == LauncherOptionsDefaultValues.DEFAULT_VALUE():
             params.allow_run_as_root = LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT()
-
-        if params.zip_mps == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.zip_mps = LauncherOptionsDefaultValues.DEFAULT_ZIP_MPS()

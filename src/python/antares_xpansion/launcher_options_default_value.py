@@ -38,7 +38,3 @@ class LauncherOptionsDefaultValues():
     @staticmethod
     def DEFAULT_ALLOW_RUN_AS_ROOT():
         return False
-
-    @staticmethod
-    def DEFAULT_ZIP_MPS():
-        return False

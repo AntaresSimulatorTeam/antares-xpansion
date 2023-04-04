@@ -119,7 +119,7 @@ std::istringstream ArchiveReader::ExtractFileInStringStream(
 uint64_t ArchiveReader::GetNumberOfEntries() {
   uint64_t number_entry = 0;
   if (auto err = mz_zip_get_number_entry(pzip_handle_, &number_entry);
-  err != MZ_OK) {
+      err != MZ_OK) {
     Close();
     Delete();
     std::ostringstream msg;
