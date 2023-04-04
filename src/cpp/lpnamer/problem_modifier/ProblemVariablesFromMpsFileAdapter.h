@@ -2,7 +2,8 @@
 
 #include "IProblemVariablesProviderPort.h"
 #include "LinkProblemsGenerator.h"
-class ProblemVariablesFileAdapter : public IProblemVariablesProviderPort {
+class ProblemVariablesFromMpsFileAdapter
+    : public IProblemVariablesProviderPort {
  public:
   ProblemVariablesFromMpsFileAdapter(
       ProblemData data, std::vector<struct ActiveLink> vector_1,
