@@ -57,23 +57,23 @@ If the value is `last`, the most recent run will be used. This option only has a
 among `{problem_generation, benders, study_update, sensitivity}`.
 In a step by step workflow keep both _.zip_ file and _-Xpansion_ corresponding folder.
 
-#### `-m, --method {sequential, mpibenders, mergeMPS}`
+#### `-m, --method {benders, benders_by_batch, mergeMPS}`
 
-Default value: `sequential`. 
+Default value: `benders`. 
 
 Sets the optimization method used by Antares-Xpansion.
 
 | Option | Description                           |
 | ---------- | ----------------------------------------------------------------------- |
-| `sequential` | Launch sequential Benders decomposition.
-| `mpibenders` | Launch the MPI version of Benders decomposition if the user has MPI. Use the option `-n` or `--np` to set the number of processes to use.  |
+| `benders` | Launch the classical Benders decomposition.
+| `benders_by_batch` | Launch the Benders by batch algorithm. |
 | `mergeMPS`   | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.|
 
 #### `-n, --np`
 
 Default value: 2. 
 
-Sets the number of MPI processes to use for the MPI version of Benders decomposition. This option only has an effect when `-m` is set to `mpibenders`.
+Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when `-m` is set to `benders` or `benders_by_batch`.
 
 #### `--antares-n-cpu`
 
@@ -105,33 +105,34 @@ Since v0.6.0, Antares-Xpansion comes with a GUI. The GUI can be launched by runn
 ### Results
 When the Antares-Xpansion algorithm terminates, i.e. when an optimal
 investment combination has been found, the
-package performs the following steps:
+package produces an archive `simulation-name.zip` located in the `output` folder of the Antares study.
 
-  - It writes output data in the `reportbenderssequential` text file and the `out.json` file located in the subdirectory `/output/simulation-name/lp/` of the Antares study. They gather for each iteration:
-	1. The investment combination that has been evaluated,
-	2. The operational, investment and overall costs, 
-	3. The current lower and upper bounds,
-	4. The absolute and relative gap,  
-	5. The resolution time for the subproblems (`reportbenderssequential` only) and the master problem.
+Once you unzip the archive, the files `lp/reportbenders.txt` and the `expansion/out.json` log information for each iteration:
+1. The investment combination that has been evaluated,
+2. The operational, investment and overall costs, 
+3. The current lower and upper bounds (no upper bound for the Benders by batch),
+4. The absolute and relative gap,  
+5. The resolution time for the subproblems and the master problem.
 
-	Finally, the iteration number which has led to the best solution is given. The file `out.json` also gives the parameters that are used by the optimization algorithm (some of them are defined by the user in `settings.ini`).   
+There is also information on the iteration number which has led to the best solution. The file `out.json` also gives the parameters that are used by the optimization algorithm (some of them are defined by the user in `settings.ini`).   
 
-  - It updates the Antares study by replacing the capacities of investment
-    candidate links with their optimal value taking into account the
-    `link-profile`, the `already-installed-capacity` and the
-    `already-installed-link-profile`, see **Figure 15**.
-	
-	The user can therefore immediately launch an Antares simulation using the results of the best iteration. 
-	
-	!!! Advice 
-		It is recommended to relaunch an Antares study with the optimal solution returned by Antares-Xpansion for further analysis. Antares-Xpansion relaxes some constraints (see `link-profile` and `uc_type` parameters for example), therefore the total cost may be a bit different.
+### Updates of candidate links
+
+At the end of the run, Antares-Xpansion updates the Antares study by replacing the capacities of investment candidate links with their optimal value taking into account the
+`link-profile`, the `already-installed-capacity` and the
+`already-installed-link-profile`, see **Figure 15**.
+
+The user can therefore immediately launch an Antares simulation using the results of the best iteration. 
+
+!!! Advice 
+	It is recommended to relaunch an Antares study with the optimal solution returned by Antares-Xpansion for further analysis. Antares-Xpansion relaxes some constraints (see `link-profile` and `uc_type` parameters for example), therefore the total cost may be a bit different.
 
 ![](../../assets/media/image23.png)
 
 **Figure** **15** – Update of the Antares study.
 
 ### Logs
-During the simulation, logs are displayed on the console to give information on the current iteration, corresponding to the data written in the `reportbenderssequential` text file.
+During the simulation, logs are displayed on the console to give information on the current iteration, corresponding to the data written in the `reportbenders.txt` text file.
 
 ```
 ITERATION 6:

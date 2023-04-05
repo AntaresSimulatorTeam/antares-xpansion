@@ -6,7 +6,7 @@ v1.0.3 (02/2023)
 
 ### Bug
 
-- Fix sensitivity not working with antares-web
+- Fix sensitivity not working with AntaresWeb
 
 ### Features
 
