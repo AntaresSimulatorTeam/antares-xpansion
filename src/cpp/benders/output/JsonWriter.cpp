@@ -16,10 +16,15 @@ JsonWriter::JsonWriter(const std::filesystem::path &json_filename,
       _output(json_file_content) {}
 
 void JsonWriter::_open_file() {
+  auto parent_path = _filename.parent_path();
+  if (!std::filesystem::exists(parent_path) &&
+      !std::filesystem::create_directories(parent_path)) {
+    std::cerr << "Could not create " << _filename.filename()
+              << " parent folder: " << parent_path << std::endl;
+  }
   _jsonOut_l.open(_filename, std::ofstream::out | std::ofstream::trunc);
   if (_jsonOut_l.fail()) {
-    std::cout << "Impossible d'ouvrir le fichier json " << _filename
-              << std::endl;
+    std::cout << "Could not open json file: " << _filename << std::endl;
   }
 }
 
