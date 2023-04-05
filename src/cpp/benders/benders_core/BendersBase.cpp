@@ -391,7 +391,6 @@ void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
     _master->addSubproblemCut(_problem_to_id[subproblem_name],
                               subproblem_data.var_name_and_subgradient,
                               _data.x_cut, subproblem_data.subproblem_cost);
-    relevantIterationData_.last = std::make_shared<WorkerMasterData>();
     relevantIterationData_.last->_cut_trace[subproblem_name] = subproblem_data;
   }
 }
@@ -425,7 +424,6 @@ void BendersBase::compute_cut_aggregate(
     rhs += subproblem_data.subproblem_cost;
 
     compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
-    relevantIterationData_.last = std::make_shared<WorkerMasterData>();
 
     relevantIterationData_.last->_cut_trace[name] = subproblem_data;
   }

@@ -109,7 +109,7 @@ class BendersBase {
   void CloseCsvFile();
   void ChecksResumeMode();
   virtual void SaveCurrentBendersData();
-  void EndWritingInOutputFile() const;
+  virtual void EndWritingInOutputFile() const;
   [[nodiscard]] int GetNumIterationsBeforeRestart() const {
     return iterations_before_resume;
   }
@@ -152,7 +152,8 @@ class BendersBase {
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
   std::filesystem::path _log_name;
-  BendersRelevantIterationsData relevantIterationData_ = {nullptr, nullptr};
+  BendersRelevantIterationsData relevantIterationData_ = {
+      std::make_shared<WorkerMasterData>(), nullptr};
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;
