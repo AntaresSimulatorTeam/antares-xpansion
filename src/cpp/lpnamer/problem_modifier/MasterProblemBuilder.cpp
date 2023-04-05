@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <unordered_map>
 
+#include "LogUtils.h"
+
 MasterProblemBuilder::MasterProblemBuilder(
     const std::string& master_formulation)
     : _master_formulation(master_formulation) {}
@@ -84,8 +86,8 @@ int MasterProblemBuilder::getPmaxVarColumnNumberFor(
     const Candidate& candidate) {
   const auto& it = _indexOfPmaxVar.find(candidate.get_name());
   if (it == _indexOfPmaxVar.end()) {
-    std::string message =
-        "There is no Pvar for the candidate " + candidate.get_name();
+    auto message = LOGLOCATION + "There is no Pvar for the candidate " +
+                   candidate.get_name();
     throw std::runtime_error(message);
   }
   return it->second;

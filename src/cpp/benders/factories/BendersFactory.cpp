@@ -3,6 +3,7 @@
 
 #include <filesystem>
 
+#include "LogUtils.h"
 #include "LoggerFactories.h"
 #include "StartUp.h"
 #include "Timer.h"

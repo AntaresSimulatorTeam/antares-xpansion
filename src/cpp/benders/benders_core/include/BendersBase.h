@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #include "BendersStructsDatas.h"
+#include "ILogger.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
@@ -12,7 +13,6 @@
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "common.h"
-#include "core/ILogger.h"
 
 /**
  * std execution policies don't share a base type so we can't just select them
@@ -109,7 +109,7 @@ class BendersBase {
   void CloseCsvFile();
   void ChecksResumeMode();
   virtual void SaveCurrentBendersData();
-  void EndWritingInOutputFile() const;
+  virtual void EndWritingInOutputFile() const;
   [[nodiscard]] int GetNumIterationsBeforeRestart() const {
     return iterations_before_resume;
   }
@@ -119,6 +119,8 @@ class BendersBase {
   SubproblemsMapPtr GetSubProblemMap() const { return subproblem_map; }
   StrVector GetSubProblemNames() const { return subproblems; }
   double AbsoluteGap() const { return _options.ABSOLUTE_GAP; }
+  double RelativeGap() const { return _options.RELATIVE_GAP; }
+  double RelaxedGap() const { return _options.RELAXED_GAP; }
   DblVector GetAlpha_i() const { return _data.single_subpb_costs_under_approx; }
   void SetAlpha_i(const DblVector &single_subpb_costs_under_approx) {
     _data.single_subpb_costs_under_approx = single_subpb_costs_under_approx;
@@ -127,14 +129,14 @@ class BendersBase {
     return _problem_to_id.at(problem_name);
   }
   BendersBaseOptions Options() const { return _options; }
+  virtual void UpdateStoppingCriterion();
+  virtual bool ShouldRelaxationStop() const;
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterDataPtr &trace, Point const &xopt);
   void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
                         Point const &xopt) const;
-  void UpdateStoppingCriterion();
-  bool ShouldRelaxationStop() const;
   void check_status(const SubProblemDataMap &subproblem_data_map) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
   [[nodiscard]] Output::SolutionData solution() const;
@@ -152,7 +154,8 @@ class BendersBase {
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
   std::filesystem::path _log_name;
-  BendersRelevantIterationsData relevantIterationData_ = {nullptr, nullptr};
+  BendersRelevantIterationsData relevantIterationData_ = {
+      std::make_shared<WorkerMasterData>(), nullptr};
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;

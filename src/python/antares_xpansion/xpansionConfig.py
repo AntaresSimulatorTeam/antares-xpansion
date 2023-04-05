@@ -37,7 +37,6 @@ class InputParameters:
     keep_mps: bool
     oversubscribe: bool
     allow_run_as_root: bool
-    zip_mps: bool
 
 
 class XpansionConfig:
@@ -85,7 +84,6 @@ class XpansionConfig:
         self.keep_mps = self.input_parameters.keep_mps
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
-        self.zip_mps = self.input_parameters.zip_mps
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -152,9 +150,9 @@ class XpansionConfig:
             "uc_type": "expansion_fast",
             "master": "integer",
             "optimality_gap": "1",
-            "relative_gap": "1e-12",
+            "relative_gap": "1e-6",
             "max_iteration": "+infini",
-            "relaxed_optimality_gap": "1e-4",
+            "relaxed_optimality_gap": "1e-5",
             "solver": "Cbc",
             "timelimit": "+infini",
             "additional-constraints": "",
@@ -215,13 +213,13 @@ class XpansionConfig:
         return False
 
     def relative_gap_default_value(self):
-        return "1e-12"
+        return "1e-6"
 
     def absolute_gap_default_value(self):
         return "1"
 
     def relaxed_gap_default_value(self):
-        return "1e-4"
+        return "1e-5"
 
     def max_iterations_default_value(self):
         return "-1"

@@ -3,13 +3,15 @@
 #include <json/json.h>
 
 #include <filesystem>
+
+#include "LogUtils.h"
 Json::Value get_value_from_json(const std::filesystem::path &file_name) {
   Json::Value _input;
   std::ifstream input_file_l(file_name, std::ifstream::binary);
   Json::CharReaderBuilder builder_l;
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
-    std::cerr << "Invalid options file: " << file_name;
+    std::cerr << LOGLOCATION << "Invalid options file: " << file_name;
     std::exit(1);
   }
   return _input;
@@ -89,7 +91,8 @@ void SimulationOptions::set_weights() {
     }
 
     if (weights_sum == -1) {
-      std::cout
+      std::cerr
+          << LOGLOCATION
           << "ERROR : Invalid weight file format : Key WEIGHT_SUM not found."
           << std::endl;
       std::exit(1);
@@ -151,8 +154,8 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   } else if (MASTER_FORMULATION == "relaxed") {
     result.MASTER_FORMULATION = MasterFormulation::RELAXED;
   } else {
-    std::cerr << "Invalid value " << MASTER_FORMULATION << " for option master"
-              << std::endl;
+    std::cerr << LOGLOCATION << "Invalid value " << MASTER_FORMULATION
+              << " for option master" << std::endl;
     std::exit(1);
   }
 

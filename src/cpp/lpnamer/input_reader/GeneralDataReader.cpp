@@ -1,13 +1,16 @@
 #include "GeneralDataReader.h"
 
 #include <iterator>
+
+#include "LogUtils.h"
 GeneralDataIniReader::GeneralDataIniReader(
     const std::filesystem::path& file_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : logger_(logger) {
   if (file_path.empty() || !std::filesystem::exists(file_path)) {
     std::ostringstream msg;
-    msg << "General data file is not found : " << file_path.string()
+    msg << LOGLOCATION
+        << "General data file is not found : " << file_path.string()
         << std::endl;
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
     throw IniFileNotFound(msg.str());

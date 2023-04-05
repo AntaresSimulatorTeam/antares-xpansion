@@ -4,7 +4,7 @@
 
 #include <filesystem>
 
-#include "core/ILogger.h"
+#include "ILogger.h"
 class LastIterationWriter {
  public:
   explicit LastIterationWriter(const std::filesystem::path &last_iteration_file)

@@ -39,7 +39,3 @@ class LauncherOptionsKeys:
     @staticmethod
     def step_key():
         return "step"
-
-    @staticmethod
-    def zip_mps_key():
-        return "zip_mps"

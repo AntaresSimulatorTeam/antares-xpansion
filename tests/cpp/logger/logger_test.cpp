@@ -3,7 +3,7 @@
 #include <ostream>
 #include <sstream>
 
-#include "core/ILogger.h"
+#include "ILogger.h"
 #include "gtest/gtest.h"
 #include "logger/Master.h"
 #include "logger/User.h"

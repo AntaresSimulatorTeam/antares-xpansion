@@ -11,6 +11,8 @@
 #include <string>
 #include <vector>
 
+#include "LogUtils.h"
+
 struct VariableFileReadNameConfiguration {
   std::string ntc_variable_name;
   std::string cost_origin_variable_name;
@@ -36,6 +38,10 @@ class VariableFileReader {
   const std::map<linkId, ColumnsToChange>& getNtcVarColumns() const;
   const std::map<linkId, ColumnsToChange>& getDirectCostVarColumns() const;
   const std::map<linkId, ColumnsToChange>& getIndirectCostVarColumns() const;
+
+  class VariablesNotFound : public XpansionError<std::runtime_error> {
+    using XpansionError::XpansionError;
+  };
 
  private:
   std::string getVarNameFromLine(const std::string& line) const;

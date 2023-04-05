@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "LogUtils.h"
+
 class OptionsParser {
  private:
   boost::program_options::options_description desc_ =
@@ -22,19 +24,23 @@ class OptionsParser {
     return desc_.add_options();
   }
   virtual void Parse(unsigned int argc, const char* const* argv);
-  class NullArgumentsValues : public std::runtime_error {
+  class NullArgumentsValues : public XpansionError<std::runtime_error> {
    public:
-    explicit NullArgumentsValues(const std::string& exe_name)
-        : std::runtime_error(std::string("Error while parsing ") + exe_name +
-                             " options: null Arguments values!"){};
+    explicit NullArgumentsValues(const std::string& exe_name,
+                                 const std::string& log_location)
+        : XpansionError("Error while parsing " + exe_name +
+                            " options: null Arguments values!",
+                        log_location){};
   };
-  class InvalidNumberOfArgumentsPassedToParser : public std::runtime_error {
+  class InvalidNumberOfArgumentsPassedToParser
+      : public XpansionError<std::runtime_error> {
    public:
-    explicit InvalidNumberOfArgumentsPassedToParser(int argc,
-                                                    const std::string& exe_name)
-        : std::runtime_error(
-              std::string("Error while parsing ") + exe_name +
-              ": invalid number arguments:  " + std::to_string(argc)){};
+    explicit InvalidNumberOfArgumentsPassedToParser(
+        int argc, const std::string& exe_name, const std::string& log_location)
+        : XpansionError(
+              "Error while parsing " + exe_name +
+                  ": invalid number arguments:  " + std::to_string(argc),
+              log_location){};
   };
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_HELPERS_OPTIONSPARSER_H

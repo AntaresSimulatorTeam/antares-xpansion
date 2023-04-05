@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "LogUtils.h"
 #include "ProblemGenerationLogger.h"
 
 class WeightsFileReader {
@@ -28,10 +29,8 @@ class WeightsFileReader {
       : weights_file_path_(weights_file_path),
         number_of_active_years_(number_of_active_years),
         logger_(logger) {}
-  class WeightsFileError : public std::runtime_error {
-   public:
-    explicit WeightsFileError(const std::string& msg)
-        : std::runtime_error(msg) {}
+  class WeightsFileError : public XpansionError<std::runtime_error> {
+    using XpansionError::XpansionError;
   };
   class WeightsFileOpenError : public WeightsFileError {
     using WeightsFileError::WeightsFileError;

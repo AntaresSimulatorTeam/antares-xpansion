@@ -23,7 +23,7 @@ SolverXpress::SolverXpress() {
   int status = 0;
   if (_NumberOfProblems == 0) {
     status = XPRSinit(NULL);
-    zero_status_check(status, "initialize XPRESS environment");
+    zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
   }
 
   _NumberOfProblems += 1;
@@ -49,11 +49,12 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy)
       _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
       add_stream(_log_stream);
     }
-    zero_status_check(status, "create problem");
+    zero_status_check(status, "create problem", LOGLOCATION);
   } else {
     _NumberOfProblems -= 1;
     SolverXpress::free();
-    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_);
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_,
+                                        LOGLOCATION);
   }
 }
 
@@ -65,7 +66,7 @@ SolverXpress::~SolverXpress() {
 
     if (_NumberOfProblems == 0) {
       int status = XPRSfree();
-      zero_status_check(status, "free XPRESS environment");
+      zero_status_check(status, "free XPRESS environment", LOGLOCATION);
     }
   }
   if (_log_stream.is_open()) {
@@ -86,19 +87,19 @@ int SolverXpress::get_number_of_instances() { return _NumberOfProblems; }
 *************************************************************************************************/
 void SolverXpress::init() {
   int status = XPRScreateprob(&_xprs);
-  zero_status_check(status, "create XPRESS problem");
+  zero_status_check(status, "create XPRESS problem", LOGLOCATION);
 
   SolverXpress::set_output_log_level(0);
   status = XPRSloadlp(_xprs, "empty", 0, 0, NULL, NULL, NULL, NULL, NULL, NULL,
                       NULL, NULL, NULL, NULL);
-  zero_status_check(status,
-                    "generate empty prob in XPRS interface init method");
+  zero_status_check(status, "generate empty prob in XPRS interface init method",
+                    LOGLOCATION);
 }
 
 void SolverXpress::free() {
   int status = XPRSdestroyprob(_xprs);
   _xprs = NULL;
-  zero_status_check(status, "destroy XPRESS problem");
+  zero_status_check(status, "destroy XPRESS problem", LOGLOCATION);
 }
 
 /*************************************************************************************************
@@ -108,20 +109,20 @@ void SolverXpress::free() {
 void SolverXpress::write_prob_mps(const std::filesystem::path &filename) {
   std::string nFlags = "";
   int status = XPRSwriteprob(_xprs, filename.string().c_str(), nFlags.c_str());
-  zero_status_check(status, "write problem");
+  zero_status_check(status, "write problem", LOGLOCATION);
 }
 
 void SolverXpress::write_prob_lp(const std::filesystem::path &filename) {
   std::string nFlags = "l";
   int status = XPRSwriteprob(_xprs, filename.string().c_str(), nFlags.c_str());
-  zero_status_check(status, "write problem");
+  zero_status_check(status, "write problem", LOGLOCATION);
 }
 
 const std::string WRITE_SOL_VALUES = "n";
 void SolverXpress::write_basis(const std::filesystem::path &filename) {
   int status = XPRSwritebasis(_xprs, filename.string().c_str(),
                               WRITE_SOL_VALUES.c_str());
-  zero_status_check(status, "write basis");
+  zero_status_check(status, "write basis", LOGLOCATION);
 }
 
 void SolverXpress::read_prob_mps(const std::filesystem::path &filename) {
@@ -137,7 +138,7 @@ void SolverXpress::read_prob(const char *prob_name, const char *flags) {
   // To delete obj from rows when reading prob
   int keeprows(0);
   int status = XPRSgetintcontrol(_xprs, XPRS_KEEPNROWS, &keeprows);
-  zero_status_check(status, "get XPRS_KEEPNROWS");
+  zero_status_check(status, "get XPRS_KEEPNROWS", LOGLOCATION);
 
   /*
    * This part of the code requires XPRESS version 8.8.5 or higher
@@ -152,12 +153,12 @@ void SolverXpress::read_prob(const char *prob_name, const char *flags) {
   /*
   if (keeprows != -1) {
           status = XPRSsetintcontrol(_xprs, XPRS_KEEPNROWS, -1);
-          zero_status_check(status, "set XPRS_KEEPNROWS to -1");
+          zero_status_check(status, "set XPRS_KEEPNROWS to -1",LOGLOCATION);
   }
   */
 
   status = XPRSreadprob(_xprs, prob_name, flags);
-  zero_status_check(status, "read problem");
+  zero_status_check(status, "read problem", LOGLOCATION);
 
   // If param KEEPNROWS not -1 remove first row which is the objective function
   if (keeprows != -1) {
@@ -167,11 +168,11 @@ void SolverXpress::read_prob(const char *prob_name, const char *flags) {
 
 void SolverXpress::read_basis(const std::filesystem::path &filename) {
   int status = XPRSreadbasis(_xprs, filename.string().c_str(), "");
-  zero_status_check(status, "read basis");
+  zero_status_check(status, "read basis", LOGLOCATION);
 }
 
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv) {
-  std::string error = "Copy XPRESS problem : TO DO WHEN NEEDED";
+  auto error = LOGLOCATION + "Copy XPRESS problem : TO DO WHEN NEEDED";
   throw NotImplementedFeatureSolverException(error);
 }
 
@@ -182,21 +183,21 @@ void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv) {
 int SolverXpress::get_ncols() const {
   int cols(0);
   int status = XPRSgetintattrib(_xprs, XPRS_COLS, &cols);
-  zero_status_check(status, "get number of columns");
+  zero_status_check(status, "get number of columns", LOGLOCATION);
   return cols;
 }
 
 int SolverXpress::get_nrows() const {
   int rows(0);
   int status = XPRSgetintattrib(_xprs, XPRS_ROWS, &rows);
-  zero_status_check(status, "get number of rows");
+  zero_status_check(status, "get number of rows", LOGLOCATION);
   return rows;
 }
 
 int SolverXpress::get_nelems() const {
   int elems(0);
   int status = XPRSgetintattrib(_xprs, XPRS_ELEMS, &elems);
-  zero_status_check(status, "get number of non zero elements");
+  zero_status_check(status, "get number of non zero elements", LOGLOCATION);
 
   return elems;
 }
@@ -204,63 +205,64 @@ int SolverXpress::get_nelems() const {
 int SolverXpress::get_n_integer_vars() const {
   int n_int_vars(0);
   int status = XPRSgetintattrib(_xprs, XPRS_MIPENTS, &n_int_vars);
-  zero_status_check(status, "get number of integer variables");
+  zero_status_check(status, "get number of integer variables", LOGLOCATION);
   return n_int_vars;
 }
 
 void SolverXpress::get_obj(double *obj, int first, int last) const {
   int status = XPRSgetobj(_xprs, obj, first, last);
-  zero_status_check(status, "get objective function");
+  zero_status_check(status, "get objective function", LOGLOCATION);
 }
 
 void SolverXpress::get_rows(int *mstart, int *mclind, double *dmatval, int size,
                             int *nels, int first, int last) const {
   int status =
       XPRSgetrows(_xprs, mstart, mclind, dmatval, size, nels, first, last);
-  zero_status_check(status, "get rows");
+  zero_status_check(status, "get rows", LOGLOCATION);
 }
 
 void SolverXpress::get_row_type(char *qrtype, int first, int last) const {
   int status = XPRSgetrowtype(_xprs, qrtype, first, last);
-  zero_status_check(status, "get rows types");
+  zero_status_check(status, "get rows types", LOGLOCATION);
 }
 
 void SolverXpress::get_rhs(double *rhs, int first, int last) const {
   int status = XPRSgetrhs(_xprs, rhs, first, last);
-  zero_status_check(status, "get RHS");
+  zero_status_check(status, "get RHS", LOGLOCATION);
 }
 
 void SolverXpress::get_rhs_range(double *range, int first, int last) const {
   int status = XPRSgetrhsrange(_xprs, range, first, last);
-  zero_status_check(status, "get RHS of range rows");
+  zero_status_check(status, "get RHS of range rows", LOGLOCATION);
 }
 
 void SolverXpress::get_col_type(char *coltype, int first, int last) const {
   int status = XPRSgetcoltype(_xprs, coltype, first, last);
-  zero_status_check(status, "get type of columns");
+  zero_status_check(status, "get type of columns", LOGLOCATION);
 }
 
 void SolverXpress::get_lb(double *lb, int first, int last) const {
   int status = XPRSgetlb(_xprs, lb, first, last);
-  zero_status_check(status, "get lower bounds of variables");
+  zero_status_check(status, "get lower bounds of variables", LOGLOCATION);
 }
 
 void SolverXpress::get_ub(double *ub, int first, int last) const {
   int status = XPRSgetub(_xprs, ub, first, last);
-  zero_status_check(status, "get upper bounds of variables");
+  zero_status_check(status, "get upper bounds of variables", LOGLOCATION);
 }
 
 int SolverXpress::get_row_index(std::string const &name) const {
   int id = 0;
   int status = XPRSgetindex(_xprs, 1, name.c_str(), &id);
-  zero_status_check(status, "get row index. Name does not exist.");
+  zero_status_check(status, "get row index. Name does not exist.", LOGLOCATION);
   return id;
 }
 
 int SolverXpress::get_col_index(std::string const &name) const {
   int id = 0;
   int status = XPRSgetindex(_xprs, 2, name.c_str(), &id);
-  zero_status_check(status, "get column index. Name does not exist.");
+  zero_status_check(status, "get column index. Name does not exist.",
+                    LOGLOCATION);
   return id;
 }
 
@@ -270,7 +272,7 @@ std::vector<std::string> SolverXpress::get_row_names(int first, int last) {
   char cur_name[100];
   for (int i = 0; i < last - first + 1; i++) {
     int status = XPRSgetnames(_xprs, 1, cur_name, i + first, i + first);
-    zero_status_check(status, "get row names.");
+    zero_status_check(status, "get row names.", LOGLOCATION);
     names.push_back(cur_name);
     memset(cur_name, 0, 100);
   }
@@ -284,7 +286,7 @@ std::vector<std::string> SolverXpress::get_col_names(int first, int last) {
   char cur_name[100];
   for (int i = 0; i < last - first + 1; i++) {
     int status = XPRSgetnames(_xprs, 2, cur_name, i + first, i + first);
-    zero_status_check(status, "get column names.");
+    zero_status_check(status, "get column names.", LOGLOCATION);
     names.push_back(cur_name);
     memset(cur_name, 0, 100);
   }
@@ -303,7 +305,7 @@ void SolverXpress::del_rows(int first, int last) {
     mindex[i] = first + i;
   }
   int status = XPRSdelrows(_xprs, last - first + 1, mindex.data());
-  zero_status_check(status, "delete rows");
+  zero_status_check(status, "delete rows", LOGLOCATION);
 }
 
 void SolverXpress::add_rows(int newrows, int newnz, const char *qrtype,
@@ -312,7 +314,7 @@ void SolverXpress::add_rows(int newrows, int newnz, const char *qrtype,
                             const double *dmatval) {
   int status = XPRSaddrows(_xprs, newrows, newnz, qrtype, rhs, range, mstart,
                            mclind, dmatval);
-  zero_status_check(status, "add rows");
+  zero_status_check(status, "add rows", LOGLOCATION);
 }
 
 void SolverXpress::add_cols(int newcol, int newnz, const double *objx,
@@ -321,25 +323,25 @@ void SolverXpress::add_cols(int newcol, int newnz, const double *objx,
                             const double *bdu) {
   int status = XPRSaddcols(_xprs, newcol, newnz, objx, mstart, mrwind, dmatval,
                            bdl, bdu);
-  zero_status_check(status, "add columns");
+  zero_status_check(status, "add columns", LOGLOCATION);
 }
 
 void SolverXpress::add_name(int type, const char *cnames, int indice) {
   int status = XPRSaddnames(_xprs, type, cnames, indice, indice);
-  zero_status_check(status, "add names");
+  zero_status_check(status, "add names", LOGLOCATION);
 }
 
 void SolverXpress::chg_obj(const std::vector<int> &mindex,
                            const std::vector<double> &obj) {
   assert(obj.size() == mindex.size());
   int status = XPRSchgobj(_xprs, obj.size(), mindex.data(), obj.data());
-  zero_status_check(status, "change objective");
+  zero_status_check(status, "change objective", LOGLOCATION);
 }
 
 void SolverXpress::chg_obj_direction(const bool minimize) {
   int objsense = minimize ? XPRS_OBJ_MINIMIZE : XPRS_OBJ_MAXIMIZE;
   int status = XPRSchgobjsense(_xprs, objsense);
-  zero_status_check(status, "change objective sense");
+  zero_status_check(status, "change objective sense", LOGLOCATION);
 }
 
 void SolverXpress::chg_bounds(const std::vector<int> &mindex,
@@ -349,7 +351,7 @@ void SolverXpress::chg_bounds(const std::vector<int> &mindex,
   assert(bnd.size() == mindex.size());
   int status = XPRSchgbounds(_xprs, mindex.size(), mindex.data(), qbtype.data(),
                              bnd.data());
-  zero_status_check(status, "change bounds");
+  zero_status_check(status, "change bounds", LOGLOCATION);
 }
 
 void SolverXpress::chg_col_type(const std::vector<int> &mindex,
@@ -357,28 +359,28 @@ void SolverXpress::chg_col_type(const std::vector<int> &mindex,
   assert(qctype.size() == mindex.size());
   int status =
       XPRSchgcoltype(_xprs, mindex.size(), mindex.data(), qctype.data());
-  zero_status_check(status, "change column types");
+  zero_status_check(status, "change column types", LOGLOCATION);
 }
 
 void SolverXpress::chg_rhs(int id_row, double val) {
   int status = XPRSchgrhs(_xprs, 1, std::vector<int>(1, id_row).data(),
                           std::vector<double>(1, val).data());
-  zero_status_check(status, "change rhs");
+  zero_status_check(status, "change rhs", LOGLOCATION);
 }
 
 void SolverXpress::chg_coef(int id_row, int id_col, double val) {
   int status = XPRSchgcoef(_xprs, id_row, id_col, val);
-  zero_status_check(status, "change matrix coefficient");
+  zero_status_check(status, "change matrix coefficient", LOGLOCATION);
 }
 
 void SolverXpress::chg_row_name(int id_row, std::string const &name) {
   int status = XPRSaddnames(_xprs, 1, name.data(), id_row, id_row);
-  zero_status_check(status, "Set row name");
+  zero_status_check(status, "Set row name", LOGLOCATION);
 }
 
 void SolverXpress::chg_col_name(int id_col, std::string const &name) {
   int status = XPRSaddnames(_xprs, 2, name.data(), id_col, id_col);
-  zero_status_check(status, "Set col name");
+  zero_status_check(status, "Set col name", LOGLOCATION);
 }
 
 /*************************************************************************************************
@@ -388,11 +390,11 @@ void SolverXpress::chg_col_name(int id_col, std::string const &name) {
 int SolverXpress::solve_lp() {
   int lp_status;
   int status = XPRSlpoptimize(_xprs, "");
-  zero_status_check(status, "solve problem as LP");
+  zero_status_check(status, "solve problem as LP", LOGLOCATION);
 
   int xprs_status(0);
   status = XPRSgetintattrib(_xprs, XPRS_LPSTATUS, &xprs_status);
-  zero_status_check(status, "get LP status after LP solve");
+  zero_status_check(status, "get LP status after LP solve", LOGLOCATION);
 
   if (xprs_status == XPRS_LP_OPTIMAL) {
     lp_status = OPTIMAL;
@@ -402,8 +404,10 @@ int SolverXpress::solve_lp() {
     lp_status = UNBOUNDED;
   } else {
     lp_status = UNKNOWN;
-    std::cout << "Error : UNKNOWN XPRESS STATUS IS : " << xprs_status
-              << std::endl;
+    std::ostringstream err;
+    err << LOGLOCATION << "Error : UNKNOWN XPRESS STATUS IS : " << xprs_status
+        << std::endl;
+    std::cerr << err.str();
   }
   return lp_status;
 }
@@ -412,11 +416,11 @@ int SolverXpress::solve_mip() {
   int lp_status;
   int status(0);
   status = XPRSmipoptimize(_xprs, "");
-  zero_status_check(status, "solve problem as MIP");
+  zero_status_check(status, "solve problem as MIP", LOGLOCATION);
 
   int xprs_status(0);
   status = XPRSgetintattrib(_xprs, XPRS_MIPSTATUS, &xprs_status);
-  zero_status_check(status, "get MIP status after MIP solve");
+  zero_status_check(status, "get MIP status after MIP solve", LOGLOCATION);
 
   if (xprs_status == XPRS_MIP_OPTIMAL) {
     lp_status = OPTIMAL;
@@ -426,7 +430,9 @@ int SolverXpress::solve_mip() {
     lp_status = UNBOUNDED;
   } else {
     lp_status = UNKNOWN;
-    std::cout << "XPRESS STATUS IS : " << xprs_status << std::endl;
+    std::ostringstream err;
+    err << LOGLOCATION << "XPRESS STATUS IS : " << xprs_status << std::endl;
+    std::cerr << err.str();
   }
   return lp_status;
 }
@@ -437,39 +443,39 @@ int SolverXpress::solve_mip() {
 *************************************************************************************************/
 void SolverXpress::get_basis(int *rstatus, int *cstatus) const {
   int status = XPRSgetbasis(_xprs, rstatus, cstatus);
-  zero_status_check(status, "get basis");
+  zero_status_check(status, "get basis", LOGLOCATION);
 }
 
 double SolverXpress::get_mip_value() const {
   double val;
   int status = XPRSgetdblattrib(_xprs, XPRS_MIPOBJVAL, &val);
-  zero_status_check(status, "get MIP value");
+  zero_status_check(status, "get MIP value", LOGLOCATION);
   return val;
 }
 
 double SolverXpress::get_lp_value() const {
   double val;
   int status = XPRSgetdblattrib(_xprs, XPRS_LPOBJVAL, &val);
-  zero_status_check(status, "get LP value");
+  zero_status_check(status, "get LP value", LOGLOCATION);
   return val;
 }
 
 int SolverXpress::get_splex_num_of_ite_last() const {
   int result;
   int status = XPRSgetintattrib(_xprs, XPRS_SIMPLEXITER, &result);
-  zero_status_check(status, "get simplex iterations");
+  zero_status_check(status, "get simplex iterations", LOGLOCATION);
   return result;
 }
 
 void SolverXpress::get_lp_sol(double *primals, double *duals,
                               double *reduced_costs) {
   int status = XPRSgetlpsol(_xprs, primals, NULL, duals, reduced_costs);
-  zero_status_check(status, "get LP sol");
+  zero_status_check(status, "get LP sol", LOGLOCATION);
 }
 
 void SolverXpress::get_mip_sol(double *primals) {
   int status = XPRSgetmipsol(_xprs, primals, NULL);
-  zero_status_check(status, "get MIP sol");
+  zero_status_check(status, "get MIP sol", LOGLOCATION);
 }
 
 /*************************************************************************************************
@@ -478,52 +484,52 @@ void SolverXpress::get_mip_sol(double *primals) {
 *************************************************************************************************/
 void SolverXpress::set_output_log_level(int loglevel) {
   int status = XPRSsetcbmessage(_xprs, optimizermsg, &get_stream());
-  zero_status_check(status, "set message stream to solver stream");
+  zero_status_check(status, "set message stream to solver stream", LOGLOCATION);
 
   if (loglevel > 0) {
     int status =
         XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-    zero_status_check(status, "set log level");
+    zero_status_check(status, "set log level", LOGLOCATION);
   } else {
     int status =
         XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_NO_OUTPUT);
-    zero_status_check(status, "set log level");
+    zero_status_check(status, "set log level", LOGLOCATION);
   }
 }
 
 void SolverXpress::set_algorithm(std::string const &algo) {
   if (algo == "BARRIER") {
     int status = XPRSsetintcontrol(_xprs, XPRS_DEFAULTALG, 4);
-    zero_status_check(status, "set barrier algorithm");
+    zero_status_check(status, "set barrier algorithm", LOGLOCATION);
   } else if (algo == "BARRIER_WO_CROSSOVER") {
     int status = XPRSsetintcontrol(_xprs, XPRS_DEFAULTALG, 4);
-    zero_status_check(status, "set barrier algorithm");
+    zero_status_check(status, "set barrier algorithm", LOGLOCATION);
     status = XPRSsetintcontrol(_xprs, XPRS_CROSSOVER, 0);
-    zero_status_check(status, "desactivate barrier crossover");
+    zero_status_check(status, "desactivate barrier crossover", LOGLOCATION);
   } else if (algo == "DUAL") {
     int status = XPRSsetintcontrol(_xprs, XPRS_DEFAULTALG, 2);
-    zero_status_check(status, "set dual simplex algorithm");
+    zero_status_check(status, "set dual simplex algorithm", LOGLOCATION);
   } else {
-    throw InvalidSolverOptionException("set_algorithm : " + algo);
+    throw InvalidSolverOptionException("set_algorithm : " + algo, LOGLOCATION);
   }
 }
 
 void SolverXpress::set_threads(int n_threads) {
   int status = XPRSsetintcontrol(_xprs, XPRS_THREADS, n_threads);
-  zero_status_check(status, "set threads");
+  zero_status_check(status, "set threads", LOGLOCATION);
 }
 
 void SolverXpress::set_optimality_gap(double gap) {
   int status = XPRSsetdblcontrol(_xprs, XPRS_OPTIMALITYTOL, gap);
-  zero_status_check(status, "set optimality gap");
+  zero_status_check(status, "set optimality gap", LOGLOCATION);
 }
 
 void SolverXpress::set_simplex_iter(int iter) {
   int status = XPRSsetdblcontrol(_xprs, XPRS_BARITERLIMIT, iter);
-  zero_status_check(status, "set barrier max iter");
+  zero_status_check(status, "set barrier max iter", LOGLOCATION);
 
   status = XPRSsetdblcontrol(_xprs, XPRS_LPITERLIMIT, iter);
-  zero_status_check(status, "set simplex max iter");
+  zero_status_check(status, "set simplex max iter", LOGLOCATION);
 }
 
 void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,

@@ -10,12 +10,11 @@
  *  \param problem_name : Name of the problem
  *
  */
-SubproblemWorker::SubproblemWorker(VariableMap const &variable_map,
-                                   const std::filesystem::path &path_to_mps,
-                                   double const &slave_weight,
-                                   const std::string &solver_name,
-                                   const int log_level,
-                                   const std::filesystem::path &log_name) {
+SubproblemWorker::SubproblemWorker(
+    VariableMap const &variable_map, const std::filesystem::path &path_to_mps,
+    double const &slave_weight, const std::string &solver_name,
+    const int log_level, const std::filesystem::path &log_name, Logger logger)
+    : Worker(logger) {
   init(variable_map, path_to_mps, solver_name, log_level, log_name);
 
   int mps_ncols(_solver->get_ncols());

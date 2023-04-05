@@ -35,16 +35,17 @@ add_library (helpers STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdater.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdaterExeOptions.h
 		${CMAKE_CURRENT_SOURCE_DIR}/AntaresArchiveUpdaterExeOptions.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/LogUtils.h
 		)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
+get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
 
 target_include_directories (helpers
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 		${CMAKE_CURRENT_SOURCE_DIR}
 		${JSON_INC_PATH}/jsoncpp
+		${xpansion_interfaces_path}
 )
 
 target_link_libraries (helpers 

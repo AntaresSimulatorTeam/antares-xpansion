@@ -120,8 +120,9 @@ TEST_F(VariableFileReaderTest, FileNotAvailable) {
     VariableFileReader varReader("not_available_file.txt", links,
                                  variable_name_config, logger);
     FAIL();
-  } catch (const std::runtime_error& expected) {
-    ASSERT_STREQ(expected.what(), "Unable to open 'not_available_file.txt'");
+  } catch (const VariableFileReader::VariablesNotFound& expected) {
+    ASSERT_STREQ(expected.ErrorMessage().c_str(),
+                 "Unable to open 'not_available_file.txt'");
   }
 }
 

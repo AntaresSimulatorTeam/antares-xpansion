@@ -54,7 +54,7 @@ Default value: `last`.
 
 Defines the name of the Antares-Simulator output archive that Antares-Xpansion uses to generate the expansion problem.
 If the value is `last`, the most recent run will be used. This option only has an effect when `--step` is
-among `{problem_generation, benders, study_update}`.
+among `{problem_generation, benders, study_update, sensitivity}`.
 In a step by step workflow keep both _.zip_ file and _-Xpansion_ corresponding folder.
 
 #### `-m, --method {sequential, mpibenders, mergeMPS}`

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "ActiveLinks.h"
+#include "LogUtils.h"
 #include "ProblemGenerationLogger.h"
 
 class StudyUpdateStrategy {
@@ -15,6 +16,10 @@ class StudyUpdateStrategy {
       const std::filesystem::path& study_path,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   virtual ~StudyUpdateStrategy() = default;
+  class NoInvestmentComputedForTheCandidate
+      : public XpansionError<std::runtime_error> {
+    using XpansionError::XpansionError;
+  };
 
  protected:
   void EnsureCandidateInvestmentFound(

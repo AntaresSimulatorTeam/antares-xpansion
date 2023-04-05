@@ -4,6 +4,7 @@
 
 #include "AntaresProblemToXpansionProblemTranslator.h"
 
+#include "LogUtils.h"
 #include "multisolver_interface/SolverFactory.h"
 #include "solver_utils.h"
 
@@ -55,7 +56,7 @@ std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
       c = *++data;
       continue;
     } else {
-      throw std::runtime_error(&"Bad character parsing "[c]);
+      throw std::runtime_error(LOGLOCATION + "Bad character parsing " + c);
     }
   }
   return LEG_vector;

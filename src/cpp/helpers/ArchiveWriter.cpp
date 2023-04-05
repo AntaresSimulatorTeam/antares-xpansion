@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include <sstream>
+
+#include "LogUtils.h"
 ArchiveWriter::ArchiveWriter(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
   Create();
@@ -32,7 +34,7 @@ int32_t ArchiveWriter::Open() {
     Delete();
     std::stringstream errMsg;
     errMsg << "Open Archive: " << ArchivePath().string() << std::endl;
-    throw ArchiveIOGeneralException(err, errMsg.str());
+    throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
   }
   return err;
 }
@@ -50,7 +52,7 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
     std::stringstream errMsg;
     errMsg << "Open entry: " << FileBufferToAdd.fname
            << " in archive: " << ArchivePath().string() << std::endl;
-    throw ArchiveIOGeneralException(err, errMsg.str());
+    throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
   }
   const auto len = FileBufferToAdd.buffer.size();
   auto bw = mz_zip_writer_entry_write(pmz_zip_writer_instance_,
@@ -61,7 +63,7 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
     std::stringstream errMsg;
     errMsg << "[KO] mz_zip_writer_entry_write, expected " << len
            << "data to be read got" << bw << std::endl;
-    throw ArchiveIOSpecificException(err, errMsg.str());
+    throw ArchiveIOSpecificException(err, errMsg.str(), LOGLOCATION);
   }
   err = mz_zip_writer_entry_close(pmz_zip_writer_instance_);
   if (MZ_OK != err) {
@@ -70,7 +72,7 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
     std::stringstream errMsg;
     errMsg << "[KO] mz_zip_writer_entry_close error: could not close entry: "
            << FileBufferToAdd.fname << std::endl;
-    throw ArchiveIOSpecificException(err, errMsg.str());
+    throw ArchiveIOSpecificException(err, errMsg.str(), LOGLOCATION);
   }
 
   return MZ_OK;
@@ -87,7 +89,7 @@ int32_t ArchiveWriter::AddFileInArchive(
     std::stringstream errMsg;
     errMsg << "[KO] mz_zip_writer_add_file: Failed to add file: " << FileToAdd
            << " in archive: " << ArchivePath().string() << std::endl;
-    throw ArchiveIOSpecificException(err, errMsg.str());
+    throw ArchiveIOSpecificException(err, errMsg.str(), LOGLOCATION);
   }
 
   return MZ_OK;
@@ -105,7 +107,7 @@ int32_t ArchiveWriter::AddPathInArchive(
     std::stringstream errMsg;
     errMsg << "[KO] mz_zip_writer_add_path: Failed to add path: " << path_to_add
            << " in archive: " << ArchivePath().string() << std::endl;
-    throw ArchiveIOSpecificException(err, errMsg.str());
+    throw ArchiveIOSpecificException(err, errMsg.str(), LOGLOCATION);
   }
 
   return MZ_OK;

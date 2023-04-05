@@ -8,6 +8,7 @@
 #include "CandidatesINIReader.h"
 #include "LinkProblemsGenerator.h"
 #include "LinkProfileReader.h"
+#include "LogUtils.h"
 
 void treatAdditionalConstraints(
     SolverAbstract::Ptr master_p,
@@ -36,15 +37,16 @@ char getConstraintSenseSymbol(
     rtype = 'E';
   } else {
     (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
-        << "FATAL: in addAdditionalConstraint, unknown row type " << sign_l
-        << std::endl;
+        << LOGLOCATION << "FATAL: in addAdditionalConstraint, unknown row type "
+        << sign_l << std::endl;
     std::exit(1);
   }
   return rtype;
 }
 
 void addAdditionalConstraint(
-    SolverAbstract::Ptr master_p, const AdditionalConstraint &additionalConstraint_p,
+    SolverAbstract::Ptr master_p,
+    const AdditionalConstraint &additionalConstraint_p,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   auto newnz = (int)additionalConstraint_p.size();
   int newrows = 1;
@@ -63,7 +65,7 @@ void addAdditionalConstraint(
     int col_index = master_p->get_col_index(name);
     if (col_index == -1) {
       (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
-          << "missing variable " << name
+          << LOGLOCATION << "missing variable " << name
           << " used in additional constraint file!\n";
       std::exit(1);
     }
@@ -85,7 +87,7 @@ void addBinaryVariables(
 
     if (col_index == -1) {
       (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
-          << "missing variable " << pairOldNewVarnames.first
+          << LOGLOCATION << "missing variable " << pairOldNewVarnames.first
           << " used in additional constraint file!\n";
       std::exit(1);
     }
@@ -130,8 +132,9 @@ void addBinaryVariables(
 /**
  * \fn
  * \brief return Active Links Builder
- * \param xpansion_output_dir  path corresponding to the path to the simulation output
- * directory containing the lp directory \return ActiveLinksBuilder object
+ * \param xpansion_output_dir  path corresponding to the path to the simulation
+ * output directory containing the lp directory \return ActiveLinksBuilder
+ * object
  */
 
 ActiveLinksBuilder get_link_builders(
@@ -146,7 +149,8 @@ ActiveLinksBuilder get_link_builders(
                                       logger);
 
   // Get all mandatory path
-  auto const xpansion_user_dir = xpansion_output_dir / ".." / ".." / "user" / "expansion";
+  auto const xpansion_user_dir =
+      xpansion_output_dir / ".." / ".." / "user" / "expansion";
   auto const candidates_file_name = xpansion_user_dir / CANDIDATES_INI;
   auto const capacity_folder = xpansion_user_dir / "capa";
 
