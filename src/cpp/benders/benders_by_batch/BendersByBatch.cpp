@@ -138,6 +138,8 @@ void BendersByBatch::SeparationLoop() {
     BroadcastXCut();
     UpdateRemainingEpsilon();
     SolveBatches();
+    UpdateTrace();
+    SaveCurrentBendersData();
   }
 }
 void BendersByBatch::ComputeXCut() {
