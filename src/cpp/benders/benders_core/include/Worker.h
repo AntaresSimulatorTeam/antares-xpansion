@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include "ILogger.h"
+#include "OutputWriter.h"
 #include "common.h"
 #include "multisolver_interface/Solver.h"
 class Worker;
@@ -41,7 +42,8 @@ class Worker {
 
  public:
   void solve(int &lp_status, const std::string &outputroot,
-             const std::string &output_master_mps_file_name) const;
+             const std::string &output_master_mps_file_name,
+             Writer writer) const;
 
  public:
   SolverAbstract::Ptr _solver =

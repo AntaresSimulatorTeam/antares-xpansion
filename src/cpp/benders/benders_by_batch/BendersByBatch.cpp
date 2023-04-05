@@ -253,7 +253,7 @@ void BendersByBatch::GetSubproblemCut(
       SubProblemData subproblem_data;
       worker->fix_to(_data.x_cut);
       worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
-                    Options().LAST_MASTER_MPS + MPS_SUFFIX);
+                    Options().LAST_MASTER_MPS + MPS_SUFFIX, _writer);
       worker->get_value(subproblem_data.subproblem_cost);  // solution phi(x,s)
       worker->get_subgradient(
           subproblem_data.var_name_and_subgradient);  // dual pi_s

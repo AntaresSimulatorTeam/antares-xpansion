@@ -90,7 +90,7 @@ TEST_F(LastIterationWriterTest, ShouldFailIfInvalidFileIsGiven) {
 
 class WriterMockStatus : public WriterNOOPStub {
  public:
-  std::string status = Output::STATUS_OPTIMAL_C;
+  std::string status = Output::OPTIMAL_C;
   std::string solution_status() const override { return status; }
 };
 

@@ -70,5 +70,6 @@ class VoidWriter : public OutputWriter {
   void write_nbweeks(const int nb_weeks) override;
   void write_duration(const double duration) override;
   std::string solution_status() const override;
+  void WriteProblem(const ProblemData &problem_data) override;
 };
 }  // namespace Output
