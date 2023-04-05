@@ -30,7 +30,7 @@ TEST_F(LpFilesExtractorTest, IfNoAreaFileIsInAntaresArchive) {
   try {
     lp_files_extractor.ExtractFiles();
   } catch (const LpFilesExtractor::ErrorWithAreaFile& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage(), expectedErrorString.str());
   }
 }
 TEST_F(LpFilesExtractorTest, IfMoreThanOneAreaFileFoundInAntaresArchive) {
@@ -43,7 +43,7 @@ TEST_F(LpFilesExtractorTest, IfMoreThanOneAreaFileFoundInAntaresArchive) {
   try {
     lp_files_extractor.ExtractFiles();
   } catch (const LpFilesExtractor::ErrorWithAreaFile& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage(), expectedErrorString.str());
   }
 }
 TEST_F(LpFilesExtractorTest, IfNoIntercoFileIsInAntaresArchive) {
@@ -56,7 +56,7 @@ TEST_F(LpFilesExtractorTest, IfNoIntercoFileIsInAntaresArchive) {
   try {
     lp_files_extractor.ExtractFiles();
   } catch (const LpFilesExtractor::ErrorWithIntercosFile& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage(), expectedErrorString.str());
   }
 }
 TEST_F(LpFilesExtractorTest, IfMoreThanOneIntercoFileFoundInAntaresArchive) {
@@ -70,6 +70,6 @@ TEST_F(LpFilesExtractorTest, IfMoreThanOneIntercoFileFoundInAntaresArchive) {
   try {
     lp_files_extractor.ExtractFiles();
   } catch (const LpFilesExtractor::ErrorWithIntercosFile& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage(), expectedErrorString.str());
   }
 }

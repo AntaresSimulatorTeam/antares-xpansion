@@ -43,7 +43,8 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     }
   } else {
     _NumberOfProblems -= 1;
-    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_);
+    throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_,
+                                        LOGLOCATION);
   }
 }
 
@@ -95,12 +96,12 @@ void SolverClp::write_basis(const std::filesystem::path &filename) {
   conception/Architecture_decision_records/Change_Solver_Basis_Format.md
   */
   int status = _clp.writeBasis(filename_c_str, false, 0);
-  zero_status_check(status, "write basis");
+  zero_status_check(status, "write basis", LOGLOCATION);
 }
 
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
   int status = _clp.readMps(filename.string().c_str(), true, false);
-  zero_status_check(status, "Clp readMps");
+  zero_status_check(status, "Clp readMps", LOGLOCATION);
 }
 
 void SolverClp::read_prob_lp(const std::filesystem::path &filename) {
@@ -112,7 +113,7 @@ void SolverClp::read_basis(const std::filesystem::path &filename) {
 }
 
 void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv) {
-  std::string error = "Copy Clp problem : TO DO WHEN NEEDED";
+  auto error = LOGLOCATION + "Copy Clp problem : TO DO WHEN NEEDED";
   throw NotImplementedFeatureSolverException(error);
 }
 
@@ -168,8 +169,8 @@ void SolverClp::get_rhs(double *rhs, int first, int last) const {
 }
 
 void SolverClp::get_rhs_range(double *range, int first, int last) const {
-  std::string error =
-      "ERROR : get rhs range not implemented for COIN CLP interface";
+  auto error = LOGLOCATION +
+               "ERROR : get rhs range not implemented for COIN CLP interface";
   throw NotImplementedFeatureSolverException(error);
 }
 
@@ -290,7 +291,8 @@ void SolverClp::add_cols(int newcol, int newnz, const double *objx,
 }
 
 void SolverClp::add_name(int type, const char *cnames, int indice) {
-  std::string error = "ERROR : addnames not implemented in the CLP interface.";
+  auto error =
+      LOGLOCATION + "ERROR : addnames not implemented in the CLP interface.";
   throw NotImplementedFeatureSolverException(error);
 }
 
@@ -321,7 +323,7 @@ void SolverClp::chg_bounds(const std::vector<int> &mindex,
       _clp.setColLower(mindex[i], bnd[i]);
       _clp.setColUpper(mindex[i], bnd[i]);
     } else {
-      throw InvalidBoundTypeException(qbtype[i]);
+      throw InvalidBoundTypeException(qbtype[i], LOGLOCATION);
     }
   }
 }
@@ -347,7 +349,7 @@ void SolverClp::chg_col_type(const std::vector<int> &mindex,
         _clp.setInteger(mindex[i]);
         break;
       default:
-        throw InvalidColTypeException(qctype[i]);
+        throw InvalidColTypeException(qctype[i], LOGLOCATION);
     }
   }
 }
@@ -359,7 +361,8 @@ void SolverClp::chg_rhs(int id_row, double val) {
   if (rowLower[id_row] <= -COIN_DBL_MAX) {
     if (rowUpper[id_row] >= COIN_DBL_MAX) {
       std::stringstream buffer;
-      buffer << "ERROR : unconstrained constraint " << id_row << " in chg_rhs.";
+      buffer << LOGLOCATION << "ERROR : unconstrained constraint " << id_row
+             << " in chg_rhs.";
       throw GenericSolverException(buffer.str());
     } else {
       _clp.setRowUpper(id_row, val);
@@ -369,8 +372,8 @@ void SolverClp::chg_rhs(int id_row, double val) {
       _clp.setRowLower(id_row, val);
     } else {
       std::stringstream buffer;
-      std::cout << "ERROR : constraint " << id_row
-                << " has both different lower and upper bound in chg_rhs.";
+      buffer << LOGLOCATION << "ERROR : constraint " << id_row
+             << " has both different lower and upper bound in chg_rhs.";
       throw GenericSolverException(buffer.str());
     }
   }
@@ -506,15 +509,15 @@ void SolverClp::set_algorithm(std::string const &algo) {
   if (algo == "DUAL") {
     _clp.setAlgorithm(1);
   } else {
-    throw InvalidSolverOptionException("set_algorithm : " + algo);
+    throw InvalidSolverOptionException("set_algorithm : " + algo, LOGLOCATION);
   }
 }
 
 void SolverClp::set_threads(int n_threads) { _clp.setNumberThreads(n_threads); }
 
 void SolverClp::set_optimality_gap(double gap) {
-  throw InvalidSolverOptionException("set_optimality_gap : " +
-                                     std::to_string(gap));
+  throw InvalidSolverOptionException(
+      "set_optimality_gap : " + std::to_string(gap), LOGLOCATION);
 }
 
 void SolverClp::set_simplex_iter(int iter) { _clp.setMaximumIterations(iter); }

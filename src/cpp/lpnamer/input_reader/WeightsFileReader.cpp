@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 
+#include "LogUtils.h"
 #include "common_lpnamer.h"
 
 bool WeightsFileReader::CheckWeightsFile() {
@@ -12,10 +13,12 @@ bool WeightsFileReader::CheckWeightsFile() {
   }
   if (!file_reader) {
     std::ostringstream msg;
+    auto log_location = LOGLOCATION;
     msg << "Could not open weights file: " << weights_file_path_.string()
         << std::endl;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::ERROR) << msg.str();
-    throw WeightsFileOpenError(msg.str());
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::ERROR)
+        << log_location << msg.str();
+    throw WeightsFileOpenError(msg.str(), log_location);
   }
   CheckFileIsNotEmpty(file_reader);
   weights_list_.clear();
@@ -33,18 +36,22 @@ bool WeightsFileReader::CheckWeightsFile() {
 
   if (nb_values != number_of_active_years_) {
     std::ostringstream msg;
+    auto log_location = LOGLOCATION;
     msg << " file " << weights_file_path_.string()
         << " : invalid weight number : " << nb_values << " values / "
         << number_of_active_years_ << " expected" << std::endl;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
-    throw InvalidYearsWeightNumber(msg.str());
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << log_location << msg.str();
+    throw InvalidYearsWeightNumber(msg.str(), log_location);
   }
   if (null_weights) {
     std::ostringstream msg;
+    auto log_location = LOGLOCATION;
     msg << "file " << weights_file_path_.string() << ": all values are null"
         << std::endl;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
-    throw OnlyNullYearsWeightValue(msg.str());
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << log_location << msg.str();
+    throw OnlyNullYearsWeightValue(msg.str(), log_location);
   }
   file_reader.close();
   return true;
@@ -57,10 +64,12 @@ double WeightsFileReader::GetWeightFromLine(const std::string &line,
     weight = std::stod(common_lpnamer::trim(line));
   } catch (...) {
     std::ostringstream msg;
+    auto log_location = LOGLOCATION;
     msg << "Line " << idx << " in file " << weights_file_path_.string()
         << "is not a single non-negative value" << std::endl;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
-    throw InvalidYearsWeightValue(msg.str());
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << log_location << msg.str();
+    throw InvalidYearsWeightValue(msg.str(), log_location);
   }
   return weight;
 }
@@ -70,19 +79,23 @@ void WeightsFileReader::CheckValue(const double value, const int index) {
   }
   if (value < 0) {
     std::ostringstream msg;
+    auto log_location = LOGLOCATION;
     msg << "Line " << index + 1 << " in file " << weights_file_path_.string()
         << " indicates a negative value" << std::endl;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
-    throw InvalidYearsWeightValue(msg.str());
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << log_location << msg.str();
+    throw InvalidYearsWeightValue(msg.str(), log_location);
   }
 }
 bool WeightsFileReader::AreAllWeightsNull() const { return null_weights; }
 void WeightsFileReader::CheckFileIsNotEmpty(std::ifstream &file) const {
   if (file.peek() == std::ifstream::traits_type::eof()) {
     std::ostringstream msg;
+    auto log_location = LOGLOCATION;
     msg << "Error! Weights file is empty: " << weights_file_path_.string()
         << std::endl;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
-    throw WeightsFileIsEmtpy(msg.str());
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << log_location << msg.str();
+    throw WeightsFileIsEmtpy(msg.str(), log_location);
   }
 }

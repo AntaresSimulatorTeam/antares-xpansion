@@ -21,10 +21,11 @@ add_executable (test_solver
 	${CMAKE_CURRENT_SOURCE_DIR}/define_datas.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/test_basis.cpp
 )
-
+#get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
 target_link_libraries (test_solver
 	PUBLIC
 		solvers
+		xpansion_interfaces
 )
 
 add_test(NAME unit_solver COMMAND test_solver WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})

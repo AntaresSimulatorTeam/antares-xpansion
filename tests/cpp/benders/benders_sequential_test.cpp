@@ -12,7 +12,7 @@ class FakeWorkerMaster : public WorkerMaster {
   WorkerMasterPtr worker_master;
 
   FakeWorkerMaster(WorkerMasterPtr worker_master)
-      : worker_master(worker_master){};
+      : WorkerMaster(worker_master->logger_), worker_master(worker_master){};
   std::vector<int> get_id_nb_units() const override {
     return worker_master->get_id_nb_units();
   };
@@ -78,9 +78,10 @@ class BendersSequentialDouble : public BendersSequential {
   void InitializeProblems() override {
     MatchProblemToId();
 
-    reset_master(new WorkerMaster(
-        master_variable_map, get_master_path(), get_solver_name(),
-        get_log_level(), _data.nsubproblem, log_name(), IsResumeMode()));
+    reset_master(new WorkerMaster(master_variable_map, get_master_path(),
+                                  get_solver_name(), get_log_level(),
+                                  _data.nsubproblem, log_name(), IsResumeMode(),
+                                  _logger));
     for (const auto &problem : coupling_map) {
       const auto subProblemFilePath = GetSubproblemPath(problem.first);
       AddSubproblem(problem);

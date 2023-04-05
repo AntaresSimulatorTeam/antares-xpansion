@@ -3,7 +3,7 @@
 #include "SubproblemCut.h"
 #include "Worker.h"
 #include "common.h"
-#include "core/ILogger.h"
+#include "ILogger.h"
 
 struct CurrentIterationData {
   double subproblems_walltime;

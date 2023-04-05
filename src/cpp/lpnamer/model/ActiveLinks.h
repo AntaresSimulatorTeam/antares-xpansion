@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #include "ChronicleMapProvider.h"
+#include "LogUtils.h"
 #include "ProblemGenerationLogger.h"
 
 using LinkName = std::string;
@@ -74,6 +75,27 @@ class ActiveLinksBuilder {
       const std::vector<CandidateData>& candidateList,
       const std::map<std::string, std::vector<LinkProfile>>& profile_map,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+
+  class MultipleAlreadyInstalledCapacityDetectedForLink
+      : public XpansionError<std::runtime_error> {
+    using XpansionError::XpansionError;
+  };
+  class MultipleAlreadyInstalledProfileDetectedForLink
+      : public XpansionError<std::runtime_error> {
+    using XpansionError::XpansionError;
+  };
+  class MultipleLinkIddetectedForLink
+      : public XpansionError<std::runtime_error> {
+    using XpansionError::XpansionError;
+  };
+  class CandidateDuplicationDetected
+      : public XpansionError<std::runtime_error> {
+    using XpansionError::XpansionError;
+  };
+  class ThereIsNoLinkProfileAssociatedWithThisProfile
+      : public XpansionError<std::runtime_error> {
+    using XpansionError::XpansionError;
+  };
 
   const std::vector<ActiveLink>& getLinks();
 

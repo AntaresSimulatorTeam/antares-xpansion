@@ -3,8 +3,8 @@
 #include "BendersByBatch.h"
 #include "BendersMPI.h"
 #include "BendersSequential.h"
+#include "ILogger.h"
 #include "OutputWriter.h"
-#include "core/ILogger.h"
 enum class BENDERSMETHOD { BENDERS, BENDERSBYBATCH, MERGEMPS };
 
 class BendersMainFactory {

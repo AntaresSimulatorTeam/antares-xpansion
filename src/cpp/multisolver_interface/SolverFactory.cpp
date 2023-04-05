@@ -5,7 +5,7 @@
 #include "SolverCbc.h"
 #include "SolverClp.h"
 #endif
-
+#include "LogUtils.h"
 #include "multisolver_interface/SolverFactory.h"
 
 SolverFactory::SolverFactory() {
@@ -43,7 +43,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name,
     const std::filesystem::path &log_name) const {
   if (solver_name == "") {
-    throw InvalidSolverNameException(solver_name);
+    throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
 #ifdef XPRESS
   else if (solver_name == XPRESS_STR) {
@@ -58,7 +58,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   }
 #endif
   else {
-    throw InvalidSolverNameException(solver_name);
+    throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
 }
 
@@ -67,7 +67,7 @@ SolverAbstract::Ptr SolverFactory::copy_solver(
   std::string solver_name = to_copy->get_solver_name();
 
   if (solver_name == "") {
-    throw InvalidSolverNameException(solver_name);
+    throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
 #ifdef XPRESS
   else if (solver_name == XPRESS_STR) {
@@ -82,7 +82,7 @@ SolverAbstract::Ptr SolverFactory::copy_solver(
   }
 #endif
   else {
-    throw InvalidSolverNameException(solver_name);
+    throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
 }
 

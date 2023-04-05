@@ -3,12 +3,11 @@
 #include <cassert>
 #include <sstream>
 
+#include "LogUtils.h"
 #include "multisolver_interface/Solver.h"
 
-class InvalidSolverStatusException : public std::runtime_error {
- public:
-  InvalidSolverStatusException(const std::string &message)
-      : std::runtime_error(message) {}
+class InvalidSolverStatusException : public XpansionError<std::runtime_error> {
+  using XpansionError::XpansionError;
 };
 
 /**
@@ -39,9 +38,9 @@ void solver_getrows(SolverAbstract::Ptr const solver_p,
  * @param first_p  : first column to consider.
  * @param last_p  : last column to consider.
  */
-void solver_get_obj_func_coeffs(const std::shared_ptr<const SolverAbstract> solver_p,
-                                std::vector<double> &obj_p, int first_p,
-                                int last_p);
+void solver_get_obj_func_coeffs(
+    const std::shared_ptr<const SolverAbstract> solver_p,
+    std::vector<double> &obj_p, int first_p, int last_p);
 
 /**
  * @brief Adds variables to an existent solver

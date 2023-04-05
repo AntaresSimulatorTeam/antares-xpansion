@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #include "BendersStructsDatas.h"
+#include "ILogger.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
@@ -12,7 +13,6 @@
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "common.h"
-#include "core/ILogger.h"
 
 /**
  * std execution policies don't share a base type so we can't just select them

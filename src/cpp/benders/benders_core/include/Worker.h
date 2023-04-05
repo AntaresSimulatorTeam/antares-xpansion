@@ -2,6 +2,7 @@
 
 #include <filesystem>
 
+#include "ILogger.h"
 #include "common.h"
 #include "multisolver_interface/Solver.h"
 class Worker;
@@ -16,7 +17,7 @@ typedef std::shared_ptr<Worker> WorkerPtr;
 
 class Worker {
  public:
-  Worker() = default;
+  explicit Worker(Logger logger) : logger_(std::move(logger)) {}
   void init(VariableMap const &variable_map,
             const std::filesystem::path &path_to_mps,
             std::string const &solver_name, int log_level,
@@ -46,4 +47,6 @@ class Worker {
   SolverAbstract::Ptr _solver =
       nullptr; /*!< Problem stocked in the instance Worker*/
   bool _is_master = false;
+
+  Logger logger_;
 };

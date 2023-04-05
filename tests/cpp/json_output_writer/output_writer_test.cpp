@@ -9,6 +9,7 @@
 #include <ostream>
 
 #include "JsonWriter.h"
+#include "LogUtils.h"
 #include "gtest/gtest.h"
 
 using namespace Output;
@@ -51,7 +52,7 @@ Json::Value get_value_from_json(const std::filesystem::path &file_name) {
   Json::CharReaderBuilder builder_l;
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
-    throw std::runtime_error("");
+    throw std::runtime_error(LOGLOCATION);
   }
   return _input;
 }

@@ -2,8 +2,8 @@
 
 #include "ArchiveReader.h"
 #include "BendersBase.h"
+#include "ILogger.h"
 #include "common.h"
-#include "core/ILogger.h"
 
 /*!
  * \class BendersSequential

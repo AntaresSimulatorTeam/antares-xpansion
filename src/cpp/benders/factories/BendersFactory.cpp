@@ -3,6 +3,7 @@
 
 #include <filesystem>
 
+#include "LogUtils.h"
 #include "LoggerFactories.h"
 #include "StartUp.h"
 #include "Timer.h"
@@ -53,7 +54,8 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     benders = std::make_shared<BendersByBatch>(benders_options, logger, writer,
                                                env, world);
   } else {
-    auto err_msg = "Error only benders or benders-by-batch allowed!";
+    auto err_msg =
+        LOGLOCATION + "Error only benders or benders-by-batch allowed!";
     logger->display_message(err_msg);
     std::exit(1);
   }

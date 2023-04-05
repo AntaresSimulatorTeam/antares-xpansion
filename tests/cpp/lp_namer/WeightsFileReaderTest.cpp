@@ -22,7 +22,7 @@ TEST_F(WeightsFileReaderTest, FailsIfWeightsFileDoesNotExist) {
   try {
     weights_file_reader.CheckWeightsFile();
   } catch (const WeightsFileReader::WeightsFileOpenError& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage().c_str(), expectedErrorString.str());
   }
 }
 
@@ -39,7 +39,7 @@ TEST_F(WeightsFileReaderTest, FailsIfEmptyWeightFileIsGiven) {
   try {
     weights_file_reader.CheckWeightsFile();
   } catch (const WeightsFileReader::WeightsFileIsEmtpy& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage().c_str(), expectedErrorString.str());
   }
 }
 
@@ -57,7 +57,7 @@ TEST_F(WeightsFileReaderTest, FailsIfAllWeightsValueAreNull) {
   try {
     weights_file_reader.CheckWeightsFile();
   } catch (const WeightsFileReader::OnlyNullYearsWeightValue& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage().c_str(), expectedErrorString.str());
   }
 }
 
@@ -76,7 +76,7 @@ TEST_F(WeightsFileReaderTest, FailsIfStringLineIsWritenInWeightsFile) {
   try {
     weights_file_reader.CheckWeightsFile();
   } catch (const WeightsFileReader::InvalidYearsWeightValue& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage().c_str(), expectedErrorString.str());
   }
 }
 
@@ -94,6 +94,6 @@ TEST_F(WeightsFileReaderTest, FailsIfNegativeValueIsGivenInWeightsFile) {
   try {
     weights_file_reader.CheckWeightsFile();
   } catch (const WeightsFileReader::InvalidYearsWeightValue& e) {
-    EXPECT_EQ(e.what(), expectedErrorString.str());
+    EXPECT_EQ(e.ErrorMessage().c_str(), expectedErrorString.str());
   }
 }
