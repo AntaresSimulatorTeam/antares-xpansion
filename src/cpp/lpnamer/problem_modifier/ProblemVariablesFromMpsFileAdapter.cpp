@@ -19,17 +19,23 @@ struct VariablesFields {
 // };
 VariablesFields VariableFieldsFromVariableName(const std::string& var_name) {
   auto vect_fields = common_lpnamer::split(var_name, '_');
-  return {vect_fields[0], std::atoi(vect_fields[1].c_str()),
-          std::atoi(vect_fields[2].c_str())};
+
+  if (vect_fields.size() == 3) {
+    return {vect_fields[0], std::atoi(vect_fields[1].c_str()),
+            std::atoi(vect_fields[2].c_str())};
+
+  } else {
+    return {vect_fields[0], std::atoi(vect_fields[2].c_str()),
+            std::atoi(vect_fields[3].c_str())};
+  }
 }
-// NTCVariablesFields NTCVariablesFieldsFromVariableName(
+// VariablesFields NTCVariablesFieldsFromVariableName(
 //     const std::string& var_name) {
 //   auto vect_fields = common_lpnamer::split(var_name, '_');
-//   NTCVariablesFields result;
-//   result.pays = std::atoi(vect_fields[0].c_str());
-//   result.name = vect_fields[1];
-//   result.link_id = std::atoi(vect_fields[1].c_str());
-//   result.time_step = std::atoi(vect_fields[2].c_str());
+//   VariablesFields result;
+//   result.name = vect_fields[0];
+//   result.link_id = std::atoi(vect_fields[2].c_str());
+//   result.time_step = std::atoi(vect_fields[3].c_str());
 // };
 
 // void ParseVarNames(

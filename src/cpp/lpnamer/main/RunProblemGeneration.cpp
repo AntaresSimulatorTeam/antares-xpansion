@@ -130,9 +130,10 @@ void RunProblemGeneration(
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
     auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
-    std::for_each(std::execution::par, problems_and_data.begin(),
+    std::for_each(std::execution::seq, problems_and_data.begin(),
                   problems_and_data.end(), [&](const auto& problem_and_data) {
                     const auto& [problem, data] = problem_and_data;
+                    // for (const auto& [problem, data] : problems_and_data) {
 
                     // auto problem_variables_from_zip_adapter =
                     //     std::make_shared<ProblemVariablesZipAdapter>(
