@@ -252,7 +252,8 @@ void BendersBase::check_status(
   if (_data.master_status != SOLVER_STATUS::OPTIMAL) {
     std::ostringstream msg;
     auto log_location = LOGLOCATION;
-    msg << "Master status is " + std::to_string(_data.master_status) << std::endl;
+    msg << "Master status is " + std::to_string(_data.master_status)
+        << std::endl;
     _logger->display_message(log_location + msg.str());
     throw InvalidSolverStatusException(msg.str(), log_location);
   }
@@ -459,7 +460,7 @@ LogData BendersBase::build_log_data_from_data() const {
 
 LogData BendersBase::FinalLogData() const {
   LogData result;
-
+  result.it = _data.it + iterations_before_resume;
   result.best_it = _data.best_it + iterations_before_resume;
 
   result.subproblem_cost = best_iteration_data.subproblem_cost;
