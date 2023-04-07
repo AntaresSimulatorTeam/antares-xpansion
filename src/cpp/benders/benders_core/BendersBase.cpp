@@ -99,8 +99,8 @@ void print_cut_csv(std::ostream &stream, const SubProblemData &subproblem_data,
   stream << subproblem_data.simplex_iter << ";";
   stream << ";";
   stream << alpha_i << ";";
-  stream << ";";
   stream << subproblem_data.subproblem_timer << ";";
+  stream << ";";
   stream << std::endl;
 }
 
