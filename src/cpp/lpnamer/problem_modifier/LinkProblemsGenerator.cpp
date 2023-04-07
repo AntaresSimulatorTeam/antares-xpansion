@@ -10,6 +10,7 @@
 #include "MPSFileProblemProviderAdapter.h"
 #include "MpsTxtWriter.h"
 #include "ProblemVariablesFileAdapter.h"
+#include "ProblemVariablesFromProblemAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
 #include "VariableFileReader.h"
 #include "ZipProblemProviderAdapter.h"
@@ -68,20 +69,27 @@ void LinkProblemsGenerator::treat(
   writer->Write_problem(in_prblm);
 }
 
-void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
-                                      Couplings &couplings,
-                                      const std::vector<ProblemData> &mps_list,
-                                      std::shared_ptr<IProblemWriter> writer) {
-  std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
-                [&](const auto &mps) {
-                  auto adapter =
-                      std::make_shared<MPSFileProblemProviderAdapter>(
-                          root, mps._problem_mps);
-                  auto variables_file_adapter =
-                      std::make_shared<ProblemVariablesFileAdapter>(
-                          mps, _links, logger_, root);
+void LinkProblemsGenerator::treatloop(
+    const std::filesystem::path &root, Couplings &couplings,
+    const std::vector<ProblemData> &mps_list,
+    std::shared_ptr<IProblemWriter> writer,
+    bool provide_variables_from_variables_file) {
+  std::for_each(
+      std::execution::par, mps_list.begin(), mps_list.end(),
+      [&](const auto &mps) {
+        auto adapter = std::make_shared<MPSFileProblemProviderAdapter>(
+            root, mps._problem_mps);
+        auto problem = adapter->provide_problem(_solver_name, log_file_path_);
+        std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
+        if (provide_variables_from_variables_file) {
+          variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
+              mps, _links, logger_, root);
+        } else {
+          variables_provider =
+              std::make_shared<ProblemVariablesFromProblemAdapter>(
+                  problem, _links, logger_);
+        }
 
-                  treat(mps._problem_mps, couplings, adapter,
-                        variables_file_adapter, writer);
-                });
+        treat(mps._problem_mps, couplings, problem, variables_provider, writer);
+      });
 }

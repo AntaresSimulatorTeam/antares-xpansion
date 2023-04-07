@@ -3,10 +3,10 @@
 #include "IProblemVariablesProviderPort.h"
 #include "LinkProblemsGenerator.h"
 
-class ProblemVariablesFromMpsFileAdapter
+class ProblemVariablesFromProblemAdapter
     : public IProblemVariablesProviderPort {
  public:
-  ProblemVariablesFromMpsFileAdapter(
+  ProblemVariablesFromProblemAdapter(
       std::shared_ptr<Problem> problem, std::vector<struct ActiveLink> vector_1,
       std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
           shared_ptr_1);
