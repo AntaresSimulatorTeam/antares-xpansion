@@ -137,11 +137,10 @@ void RunProblemGeneration(
           const auto& [problem, data] = problem_and_data;
           std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
           if (provide_variables_from_variables_file) {
-            auto variables_provider =
-                std::make_shared<ProblemVariablesZipAdapter>(reader, data,
-                                                             links, logger);
+            variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
+                reader, data, links, logger);
           } else {
-            auto variables_provider =
+            variables_provider =
                 std::make_shared<ProblemVariablesFromProblemAdapter>(
                     problem, links, logger);
           }
