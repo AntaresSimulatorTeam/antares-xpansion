@@ -144,6 +144,7 @@ void BendersByBatch::SeparationLoop() {
       UpdateTrace();
       SaveCurrentBendersData();
     }
+    ClearCurrentIterationCutTrace();
   }
 }
 void BendersByBatch::ComputeXCut() {
