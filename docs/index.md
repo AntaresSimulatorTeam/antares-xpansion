@@ -53,6 +53,5 @@ Antares-Xpansion is currently under development. Feel free to submit any issue.
 
 [xpansion-github]: https://github.com/AntaresSimulatorTeam/antares-xpansion
 [antares-github]: https://github.com/AntaresSimulatorTeam/Antares_Simulator
-[readthedocs]: https://antares-xpansion.readthedocs.io/
 [readthedocs-antares]: https://antares-doc.readthedocs.io/
 [antareswebsite]: https://antares-simulator.org

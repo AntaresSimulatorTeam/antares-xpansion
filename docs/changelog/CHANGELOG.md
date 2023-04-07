@@ -6,7 +6,7 @@ v1.1 (TBA)
 ### Features
 
 - Implementation of the Benders by batch algorithm : performance improvements over the classical Benders algorithm
-- New parameter `batch_size` in `settings.ini` to tune the Benders by batch algorithm, more details [here](user-guide/get-started/settings-definition.md#batch_size)
+- New parameter `batch_size` in `settings.ini` to tune the Benders by batch algorithm, more details [here](../user-guide/get-started/settings-definition.md#batch_size)
 - Logs improvements:
     - Print user and hostname in the standard output and in `reportbenders.txt`
     - Print both walltime and cumulative CPU time for subproblems resolution
@@ -50,14 +50,14 @@ v1.0.0 (12/2022)
 - Performance improvement in execution time
     - In-out stabilisation of the Benders algorithm : new parameters `separation_parameter` and `relaxed_optimality_gap`
     to tune the stabilization, more
-    information [here](user-guide/get-started/settings-definition.md#separation_parameter)
+    information [here](../user-guide/get-started/settings-definition.md#separation_parameter)
     - Parallelization of the `problem_generation` step
 - Performance improvement in disk space consumption : in full run mode i.e with option `--step full` (default behavior), Antares-Xpansion outputs are zipped within Antares study archive
 - Change the default value of `relative_gap` from `1e-12` to `1e-6`
 
 ### Documentation
 
-- Add new page for [performance history](user-guide/performance-history/perf-graphs.ipynb)
+- Add new page for [performance history](../user-guide/performance-history/perf-graphs.ipynb)
 
 v0.8.0 (10/2022)
 --------------------
@@ -66,7 +66,7 @@ v0.8.0 (10/2022)
 
 - Use Antares-Simulator 8.2.2
 - Allow the use of different chronicles of link profile for each Monte-Carlo year. More
-  information [here](user-guide/get-started/candidate-definition.md#using-different-profiles-depending-on-the-monte-carlo-year)
+  information [here](../user-guide/get-started/candidate-definition.md#using-different-profiles-depending-on-the-monte-carlo-year)
 - New directories to store additional constraints files and weights files:
     - Additional constraints files must be stored in `user/expansion/constraints`
     - Weights files must be stored in `user/expansion/weights`
