@@ -3,3 +3,4 @@ mkdocs-material
 sphinx
 myst-parser
 mkdocs-jupyter
+mkdocs-bibtex

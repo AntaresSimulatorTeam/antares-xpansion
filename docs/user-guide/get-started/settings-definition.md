@@ -20,6 +20,7 @@ The following section lists the configurable parameters. If the user does not sp
 |[`additional-constraints`](#additional-constraints) | `None` | Path of the additional constraints file |
 |[`separation_parameter`](#separation_parameter) | `0.5` | Step size for the in-out separation |
 |[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-5` | Threshold to switch from relaxed to integer master |
+|[`batch_size`](#batch_size) | `0` | Number of subproblems per batch |
 
 The format is a standard `.ini` and should follow this template:
 ```ini
@@ -280,3 +281,9 @@ Positive float. Default value: `1e-5`.
 The `relaxed_optimality_gap` parameter only has effect when `master = integer`. In this case, the master problem is relaxed in the first iterations. The `relaxed_optimality_gap` is the threshold from which to switch back from the relaxed to the integer master formulation. 
 
 In the first iterations, the algorithm computes upper and lower bounds on the optimal cost of the relaxed master problem. The algorithm switches to the integer formulation as soon as the quantity `(best_upper_bound - best_lower_bound) / best_upper_bound` falls below `relaxed_optimality_gap`. For the subsequent iterations, the best upper bound is reset to \\(+\infty\\) as the solutions of the relaxed problem are not feasible for the integer formulation.
+
+### `batch_size`
+
+Positive integer. Default value: `0`.
+
+This parameter is used only when `--method` is `benders_by_batch`, otherwise it has no effect. The `batch_size` specifies the number of subproblems per batch. If set to `0`, then all subproblems are in the same batch. In this case, the Benders by batch algorithm is launched with a single batch, which is mathematically equivalent to the classical Benders algorithm.
