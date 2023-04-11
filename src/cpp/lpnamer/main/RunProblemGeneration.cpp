@@ -106,9 +106,7 @@ void RunProblemGeneration(
 
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
-  int i;
-  std::cout << "enter an int\n";
-  std::cin >> i;
+
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
         InstantiateZipReader(antares_archive_path);
