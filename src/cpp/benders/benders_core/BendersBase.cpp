@@ -815,7 +815,7 @@ void BendersBase::SaveCurrentBendersData() {
     PrintCurrentIterationCsv();
   }
 }
-void BendersBase::ClearCurrentIterationCutTrace() {
+void BendersBase::ClearCurrentIterationCutTrace() const {
   relevantIterationData_.last->_cut_trace.clear();
 }
 void BendersBase::EndWritingInOutputFile() const {

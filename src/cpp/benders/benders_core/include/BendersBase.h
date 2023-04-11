@@ -109,7 +109,7 @@ class BendersBase {
   void CloseCsvFile();
   void ChecksResumeMode();
   virtual void SaveCurrentBendersData();
-  void ClearCurrentIterationCutTrace();
+  void ClearCurrentIterationCutTrace() const;
   virtual void EndWritingInOutputFile() const;
   [[nodiscard]] int GetNumIterationsBeforeRestart() const {
     return iterations_before_resume;
