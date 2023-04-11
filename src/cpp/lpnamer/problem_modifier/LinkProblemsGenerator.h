@@ -41,7 +41,7 @@ class LinkProblemsGenerator {
   void treatloop(const std::filesystem::path& root, Couplings& couplings,
                  const std::vector<ProblemData>& mps_list,
                  std::shared_ptr<IProblemWriter> writer,
-    bool provide_variables_from_variables_file);
+    bool with_variables_files);
   void treat(const std::string& problem_name, Couplings& couplings,
              std::shared_ptr<Problem> problem,
              std::shared_ptr<IProblemVariablesProviderPort> variable_provider,

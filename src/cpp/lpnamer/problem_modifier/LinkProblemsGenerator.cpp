@@ -73,7 +73,7 @@ void LinkProblemsGenerator::treatloop(
     const std::filesystem::path &root, Couplings &couplings,
     const std::vector<ProblemData> &mps_list,
     std::shared_ptr<IProblemWriter> writer,
-    bool provide_variables_from_variables_file) {
+    bool with_variables_files) {
   std::for_each(
       std::execution::par, mps_list.begin(), mps_list.end(),
       [&](const auto &mps) {
@@ -81,7 +81,7 @@ void LinkProblemsGenerator::treatloop(
             root, mps._problem_mps);
         auto problem = adapter->provide_problem(_solver_name, log_file_path_);
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-        if (provide_variables_from_variables_file) {
+        if (with_variables_files) {
           variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
               mps, _links, logger_, root);
         } else {
