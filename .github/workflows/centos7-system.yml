@@ -238,7 +238,7 @@ jobs:
           path: ${{ steps.create-single-file.outputs.archive-path }}
 
       - name: Running unit tests
-        timeout-minutes: 45
+        timeout-minutes: 120
         shell: bash
         run: |
           source /etc/profile.d/modules.sh

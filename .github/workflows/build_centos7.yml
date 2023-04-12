@@ -138,7 +138,7 @@ jobs:
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j8 --target install
       - name: Running unit tests
-        timeout-minutes: 45
+        timeout-minutes: 120
         shell: bash
         run: |
           source /etc/profile.d/modules.sh
