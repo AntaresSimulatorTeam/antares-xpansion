@@ -31,11 +31,11 @@ int main(int argc, char** argv) {
       auto additionalConstraintFilename_l =
           options_parser.AdditionalConstraintsFilename();
       auto weights_file = options_parser.WeightsFile();
-      auto with_variables_files = options_parser.WithVariablesFiles();
+      auto rename_variables = options_parser.RenameVariables();
 
       RunProblemGeneration(xpansion_output_dir, master_formulation,
                            additionalConstraintFilename_l, archive_path, logger,
-                           log_file_path, weights_file, with_variables_files);
+                           log_file_path, weights_file, rename_variables);
 
     } catch (std::exception& e) {
       std::cerr << "error: " << e.what() << std::endl;

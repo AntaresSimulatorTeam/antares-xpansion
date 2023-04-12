@@ -17,7 +17,7 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
       "path to exclusion files")(
       "weights-file,w",
       po::value<std::filesystem::path>(&weights_file_)->default_value(""),
-      "user weights file")("with-variables-files,v",
-                           po::bool_switch(&with_variables_files_),
+      "user weights file")("rename-variables,r",
+                           po::bool_switch(&rename_variables_),
                            "use variables files to rename mps");
 }

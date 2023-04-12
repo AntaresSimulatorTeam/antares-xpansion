@@ -63,7 +63,7 @@ void RunProblemGeneration(
     const std::filesystem::path& antares_archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
     const std::filesystem::path& log_file_path,
-    const std::filesystem::path& weights_file, bool with_variables_files) {
+    const std::filesystem::path& weights_file, bool rename_variables) {
   (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
 
@@ -133,7 +133,7 @@ void RunProblemGeneration(
         [&](const auto& problem_and_data) {
           const auto& [problem, data] = problem_and_data;
           std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-          if (with_variables_files) {
+          if (rename_variables) {
             variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
                 reader, data, links, logger);
           } else {
@@ -151,7 +151,7 @@ void RunProblemGeneration(
     /* Main stuff */
     auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
     linkProblemsGenerator.treatloop(xpansion_output_dir, couplings, mpsList,
-                                    mps_file_writer, with_variables_files);
+                                    mps_file_writer, rename_variables);
 
   } else {
     std::filesystem::path path =
@@ -183,7 +183,7 @@ void RunProblemGeneration(
         [&](const auto& problem_and_data) {
           const auto& [problem, data] = problem_and_data;
           std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-          if (with_variables_files) {
+          if (rename_variables) {
             variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
                 reader, data, links, logger);
           } else {

@@ -13,7 +13,7 @@ void RunProblemGeneration(
     const std::filesystem::path& archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
     const std::filesystem::path& log_file_path,
-    const std::filesystem::path& weights_file, bool with_variables_files);
+    const std::filesystem::path& weights_file, bool rename_variables);
 void ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
     const std::filesystem::path& antares_archive_path,
