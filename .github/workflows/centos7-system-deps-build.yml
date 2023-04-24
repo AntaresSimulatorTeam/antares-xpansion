@@ -57,7 +57,7 @@ jobs:
       - name: Install libraries
         run: |
           yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
-          yum install -y jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel doxygen graphviz boost-program-options
+          yum install -y jsoncpp-devel gtest-devel doxygen graphviz boost-program-options
           yum install -y cmake3 devtoolset-9 environment-modules rpm-build zlib-devel
           yum install -y rh-git227-git
           yum install -y libuuid-devel
@@ -68,14 +68,7 @@ jobs:
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
           git submodule update --init
 
-      - name: Install TBB
-        run: |
-          git clone https://github.com/wjakob/tbb.git
-          pushd tbb/build
-          cmake3 ..
-          cmake3 --build . --target install -j8
-          popd
-          rm -rf tbb
+    
 
       - name: Install dependencies
         run: |

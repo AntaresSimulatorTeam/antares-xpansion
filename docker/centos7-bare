@@ -10,9 +10,7 @@ RUN yum install -y epel-release
 RUN yum install -y git redhat-lsb-core gcc gcc-c++ make wget centos-release-scl scl-utils rpm-build &&\
     yum install -y cmake3 devtoolset-9
 
-RUN yum -y remove git && \
-    yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm && \
-    yum -y install git
+RUN yum install -y rh-git227-git
 
 # Install xpansion requirements
 RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel doxygen graphviz environment-modules rpm-build zlib-devel
@@ -28,7 +26,13 @@ RUN yum install -y python3-pip &&\
     python3 -m pip install --upgrade pip &&\
     pip3 install pyinstaller pyyaml pytest numpy touch pytest-cov mkdocs mkdocs-material
 
-
+RUN yum install -y  openmpi-devel 
+RUN wget https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz \
+      tar xvf boost-1.81.0.tar.gz \
+      cd boost-1.81.0 \
+      ./bootstrap.sh  --with-libraries=serialization,program_options,mpi \
+      echo "using mpi ;" >> project-config.jam \
+      ./b2 install
 #create user
 RUN useradd user
 # USER user

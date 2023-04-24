@@ -93,6 +93,11 @@ jobs:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
+        
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost-ubuntu
+        with: 
+          prefix: "../rte-antares-deps-Release/"
 
       - name: Configure
         shell: bash
