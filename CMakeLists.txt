@@ -184,23 +184,29 @@ find_package (Boost REQUIRED COMPONENTS program_options)
 	
 # ugly fix required due to conan packages and policies vs. boost brainfucking name rules
 if (MSVC)
-	list (APPEND CMAKE_FIND_LIBRARY_PREFIXES "" "lib")
+	list(APPEND CMAKE_FIND_LIBRARY_PREFIXES "" "lib")
 endif ()
 find_package(MPI REQUIRED)
-find_package (Boost REQUIRED COMPONENTS mpi serialization)
-include_directories (${Boost_INCLUDE_DIRS})
+find_package(Boost REQUIRED COMPONENTS mpi serialization)
+include_directories(${Boost_INCLUDE_DIRS})
 
-message (STATUS "BOOST_MPI_LIBRARY : " ${Boost_MPI_LIBRARY})
-message (STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY})
-message (STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS})
+message(STATUS "BOOST_MPI_LIBRARY : " ${Boost_MPI_LIBRARY})
+message(STATUS "Boost_SERIALIZATION_LIBRARY : " ${Boost_SERIALIZATION_LIBRARY})
+message(STATUS "BOOST_LIBRARIES : " ${Boost_INCLUDE_DIRS})
+
+install(FILES
+		$<TARGET_FILE:Boost::mpi>
+		$<TARGET_FILE:Boost::serialization>
+		$<TARGET_FILE:Boost::program_options>
+		DESTINATION bin)
 
 # ---------------------------------------------------------------------------
 # Threads
 # ---------------------------------------------------------------------------
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
-	set (THREADS_PREFER_PTHREAD_FLAG ON)
+	set(THREADS_PREFER_PTHREAD_FLAG ON)
 endif ()
-find_package (Threads REQUIRED)
+find_package(Threads REQUIRED)
 
 find_package(ZLIB REQUIRED) #Required for CoinUtils
 
