@@ -7,7 +7,7 @@ inputs:
 runs:
   using: "composite"
   steps: 
-  - id: install boost
+  - id: install-boost
     shell: bash
     run: |
       export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH

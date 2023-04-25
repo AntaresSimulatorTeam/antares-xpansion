@@ -3,7 +3,7 @@ description: "Download and compile boost"
 runs:
   using: "composite"
   steps: 
-  - id: install tbb
+  - id: install-tbb
     shell: bash
     description: 'Install tbb. tbb is required for execution policy (parallelization c++) but the system version is too old.'
     run: |  
