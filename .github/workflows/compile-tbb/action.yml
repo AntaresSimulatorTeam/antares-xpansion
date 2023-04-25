@@ -5,7 +5,6 @@ runs:
   steps: 
   - id: install-tbb
     shell: bash
-    description: 'Install tbb. tbb is required for execution policy (parallelization c++) but the system version is too old.'
     run: |  
       git clone https://github.com/wjakob/tbb.git 
       cd tbb/build 
