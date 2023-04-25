@@ -95,9 +95,12 @@ jobs:
           os-full-name: Ubuntu-20.04
         
       - name: Compile Boost
-        uses: ./.github/workflows/compile-boost-ubuntu
+        uses: ./.github/workflows/compile-boost
         with: 
           prefix: "../rte-antares-deps-Release/"
+        
+      - name: Compile tbb
+        uses: ./.github/workflows/compile-tbb  
 
       - name: Configure
         shell: bash

@@ -110,6 +110,14 @@ jobs:
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
           buildtype: Debug
+      
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost
+        with: 
+          prefix: "../rte-antares-deps-Release/"
+        
+      - name: Compile tbb
+        uses: ./.github/workflows/compile-tbb    
 
       - name: Init submodule
         run: |

@@ -1,0 +1,13 @@
+name: "Download and compile boost"
+description: "Download and compile boost"
+runs:
+  using: "composite"
+  steps: 
+  - id: install tbb
+    shell: bash
+    description: 'Install tbb. tbb is required for execution policy (parallelization c++) but the system version is too old.'
+    run: |  
+      git clone https://github.com/wjakob/tbb.git 
+      cd tbb/build 
+      cmake3 .. 
+      cmake3 --build . --target install -j8
