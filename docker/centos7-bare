@@ -26,7 +26,7 @@ RUN yum install -y python3-pip &&\
     python3 -m pip install --upgrade pip &&\
     pip3 install pyinstaller pyyaml pytest numpy touch pytest-cov mkdocs mkdocs-material
 
-RUN yum install -y  openmpi-devel 
+ 
 RUN wget https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz \
       tar xvf boost-1.81.0.tar.gz \
       cd boost-1.81.0 \
