@@ -98,10 +98,7 @@ jobs:
         uses: ./.github/workflows/compile-boost
         with: 
           prefix: "../rte-antares-deps-Release/"
-        
-      - name: Compile tbb
-        uses: ./.github/workflows/compile-tbb  
-
+         
       - name: Configure
         shell: bash
         #XPRESS_VALUE = ${{ matrix.xprs }} == "XPRESS-ON" ? "ON" : "OFF"

@@ -49,8 +49,6 @@ jobs:
         with: 
           prefix: "../rte-antares-deps-Release/"
         
-      - name: Compile tbb
-        uses: ./.github/workflows/compile-tbb  
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version

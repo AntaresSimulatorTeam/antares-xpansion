@@ -129,9 +129,6 @@ jobs:
         with: 
           prefix: "../rte-antares-deps-Release/"
         
-      - name: Compile tbb
-        uses: ./.github/workflows/compile-tbb
-
       - name: Download userguide
         uses: actions/download-artifact@v3
         with:
