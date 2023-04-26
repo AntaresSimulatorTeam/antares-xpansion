@@ -36,3 +36,11 @@ RUN rm -rf rte-antares-deps-centos7-Release.tar.gz
 RUN wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${ANTARES_SOLVER_VERSION}/antares-${ANTARES_SOLVER_VERSION}-CentOS-7.9.2009.tar.gz
 RUN tar -xvf antares-${ANTARES_SOLVER_VERSION}-CentOS-7.9.2009-ortools-xpress.tar.gz -C rte-antares-deps-Release --strip-components=1
 RUN rm -rf antares-${ANTARES_SOLVER_VERSION}-CentOS-7.9.2009-ortools-xpress.tar.gz
+
+RUN yum install -y  openmpi-devel 
+RUN wget https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz \
+      tar xvf boost-1.81.0.tar.gz \
+      cd boost-1.81.0 \
+      ./bootstrap.sh  --with-libraries=serialization,program_options,mpi \
+      echo "using mpi ;" >> project-config.jam \
+      ./b2 install

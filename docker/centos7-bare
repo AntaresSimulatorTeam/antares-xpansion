@@ -15,7 +15,7 @@ RUN yum -y remove git && \
     yum -y install git
 
 # Install xpansion requirements
-RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel doxygen graphviz environment-modules rpm-build zlib-devel
+RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel doxygen graphviz environment-modules zlib-devel
 
 # Install tbb. tbb is required for execution policy (parallelization c++) but the system version is too old.
 RUN git clone https://github.com/wjakob/tbb.git && \
@@ -27,7 +27,6 @@ RUN git clone https://github.com/wjakob/tbb.git && \
 RUN yum install -y python3-pip &&\
     python3 -m pip install --upgrade pip &&\
     pip3 install pyinstaller pyyaml pytest numpy touch pytest-cov mkdocs mkdocs-material
-
 
 #create user
 RUN useradd user
