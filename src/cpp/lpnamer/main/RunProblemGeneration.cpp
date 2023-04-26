@@ -26,7 +26,30 @@
 #include "XpansionProblemsFromAntaresProvider.h"
 #include "ZipProblemsProviderAdapter.h"
 #include "common_lpnamer.h"
+#include "config.h"
 
+struct Version {
+  Version(const std::string& version) {
+    auto split_version =
+        common_lpnamer::split(common_lpnamer::trim(version), '.');
+    major = std::atoi(split_version[0].c_str());
+    minor = std::atoi(split_version[1].c_str());
+  }
+
+  bool operator<(const Version& another) {
+    if (this->major == another.major) {
+      return this->minor < another.minor;
+    } else {
+      return this->major < another.major;
+    }
+  }
+
+  bool operator>(const Version& another) { return !operator<(another); }
+
+ private:
+  int major;
+  int minor;
+};
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path);
 void ProcessWeights(
@@ -109,6 +132,14 @@ void RunProblemGeneration(
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
 
+  /*temporarly we keep --rename-variables option to deal with unammed mps
+   it will be replaced by reading the antares version
+   */
+
+  Version antares_version(ANTARES_VERSION);
+  Version first_version_without_variables_files("8.6");
+  rename_variables = antares_version < first_version_without_variables_files;
+
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
         InstantiateZipReader(antares_archive_path);
@@ -154,7 +185,6 @@ void RunProblemGeneration(
     auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
     linkProblemsGenerator.treatloop(xpansion_output_dir, couplings, mpsList,
                                     mps_file_writer, rename_variables);
-
   } else {
     std::filesystem::path path =
         xpansion_output_dir.parent_path().parent_path() /
