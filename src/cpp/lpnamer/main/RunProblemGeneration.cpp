@@ -36,7 +36,7 @@ struct Version {
     minor = std::atoi(split_version[1].c_str());
   }
 
-  bool operator<(const Version& another) {
+  bool operator<(const Version& another) const {
     if (this->major == another.major) {
       return this->minor < another.minor;
     } else {
@@ -44,7 +44,17 @@ struct Version {
     }
   }
 
-  bool operator>(const Version& another) { return !operator<(another); }
+  bool operator>(const Version& another) const { return !operator<(another); }
+
+  bool operator==(const Version& another) const {
+    return (this->major == another.major && this->minor == another.minor);
+  }
+  bool operator<=(const Version& another) const {
+    return (operator<(another) || operator==(another));
+  }
+  bool operator>=(const Version& another) const {
+    return (operator>(another) || operator==(another));
+  }
 
  private:
   int major;
