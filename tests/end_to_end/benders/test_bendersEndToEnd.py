@@ -90,26 +90,34 @@ def check_optimization_json_output(expected_results_dict, output_path: Path):
         prb_status = curr_instance_json['solution']['problem_status']
         assert prb_status == expected_results_dict['status']
 
-    # Testing optimization output if the instance has a solution
-    if(prb_status == 'OPTIMAL'):
-        value = curr_instance_json['solution']['overall_cost']
-        optimal_variables = np.array([i[1] for i in
-                                      sorted(curr_instance_json['solution']['values'].items())])
+        # Testing optimization output if the instance has a solution
+        if(prb_status == 'OPTIMAL'):
+            value = curr_instance_json['solution']['overall_cost']
+            optimal_variables = np.array([i[1] for i in
+                                          sorted(curr_instance_json['solution']['values'].items())])
 
-        # Testing optimal value
-        np.testing.assert_allclose(value,
-                                   expected_results_dict['optimal_value'], rtol=1e-6, atol=0)
+            # Testing optimal value
+            np.testing.assert_allclose(value,
+                                       expected_results_dict['optimal_value'], rtol=1e-6, atol=0)
 
-        # Testing optmal solution (variables)
-        # Sorting the Dict tuples (key, val) by alphabetic order then taking the values
-        # for comparison
-        expected_sorted_values = np.array([i[1] for i in
-                                           sorted(expected_results_dict['optimal_variables'].items())])
-        np.testing.assert_allclose(optimal_variables, expected_sorted_values,
-                                   rtol=1e-6, atol=0)
+            # Testing optmal solution (variables)
+            # Sorting the Dict tuples (key, val) by alphabetic order then taking the values
+            # for comparison
+            expected_sorted_values = np.array([i[1] for i in
+                                               sorted(expected_results_dict['optimal_variables'].items())])
+            np.testing.assert_allclose(optimal_variables, expected_sorted_values,
+                                       rtol=1e-6, atol=0)
+
+    elif("ERROR" in curr_instance_json):
+        prb_status = curr_instance_json["ERROR"]['problem_status']
+        assert prb_status == expected_results_dict["ERROR"]["problem_status"]
+        problem_path = curr_instance_json["ERROR"]["problem_path"]
+        assert problem_path == expected_results_dict["ERROR"]["problem_path"]
+        problem_name = curr_instance_json["ERROR"]["problem_name"]
+        assert problem_name == expected_results_dict["ERROR"]["problem_name"]
 
 
-def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False):
+def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False, xpress=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -127,16 +135,21 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False
         (Path(install_dir) / Path(solver_executable)).resolve())
 
     for instance in expected_results_dict:
-        instance_path = expected_results_dict[instance]['path']
+        instance_path = Path(expected_results_dict[instance]['path'])
         command = [e for e in pre_command]
         command.append(executable_path)
         options_file = expected_results_dict[instance]['option_file']
+        options_file_content = []
+        with open(instance_path/options_file, 'r') as jsonFile:
+            options_file_content = json.load(jsonFile)
+        if("SOLVER_NAME" in options_file_content and options_file_content["SOLVER_NAME"] == "XPRESS" and not xpress):
+            continue
         command.append(
             options_file
         )
         status = expected_results_dict[instance]["status"] if "status" in expected_results_dict[instance] else None
         tmp_study = tmp_path / \
-            (Path(instance_path).name+"-"+Path(options_file).stem)
+            (instance_path.name+"-"+Path(options_file).stem)
         shutil.copytree(instance_path, tmp_study)
 
         launch_optimization(tmp_study, command, status)

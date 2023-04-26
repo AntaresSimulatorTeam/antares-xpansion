@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "CoinFinite.hpp"
+#include "LogUtils.h"
 #include "multisolver_interface/SolverAbstract.h"
 namespace coin_common {
 
@@ -38,8 +39,8 @@ void fill_row_type_from_row_bounds(const double *rowLower,
       qrtype[i - first] = 'E';
     } else if (rowLower[i] > -COIN_DBL_MAX) {
       if (rowUpper[i] < COIN_DBL_MAX) {
-        std::string error = "ERROR : Row " + std::to_string(i) +
-                            " has two different RHS, both right and left.";
+        auto error = LOGLOCATION + "ERROR : Row " + std::to_string(i) +
+                     " has two different RHS, both right and left.";
         throw GenericSolverException(error);
       } else {
         qrtype[i - first] = 'G';
@@ -47,8 +48,8 @@ void fill_row_type_from_row_bounds(const double *rowLower,
     } else if (rowUpper[i] < COIN_DBL_MAX) {
       qrtype[i - first] = 'L';
     } else {
-      std::string error = "ERROR : Row " + std::to_string(i) +
-                          " in unconstrained. No RHS found.";
+      auto error = LOGLOCATION + "ERROR : Row " + std::to_string(i) +
+                   " in unconstrained. No RHS found.";
       throw GenericSolverException(error);
     }
   }
@@ -61,8 +62,8 @@ void fill_rhs_from_bounds(const double *rowLower, const double *rowUpper,
       rhs[i - first] = rowLower[i];
     } else if (rowLower[i] > -COIN_DBL_MAX) {
       if (rowUpper[i] < COIN_DBL_MAX) {
-        std::string error = "ERROR : Row " + std::to_string(i) +
-                            " has two different RHS, both right and left.";
+        auto error = LOGLOCATION + "ERROR : Row " + std::to_string(i) +
+                     " has two different RHS, both right and left.";
         throw GenericSolverException(error);
       } else {
         rhs[i - first] = rowLower[i];
@@ -70,8 +71,8 @@ void fill_rhs_from_bounds(const double *rowLower, const double *rowUpper,
     } else if (rowUpper[i] < COIN_DBL_MAX) {
       rhs[i - first] = rowUpper[i];
     } else {
-      std::string error = "ERROR : Row " + std::to_string(i) +
-                          " in unconstrained. No RHS found.";
+      auto error = LOGLOCATION + "ERROR : Row " + std::to_string(i) +
+                   " in unconstrained. No RHS found.";
       throw GenericSolverException(error);
     }
   }
@@ -92,8 +93,8 @@ void fill_row_bounds_from_new_rows_data(std::vector<double> &rowLower,
       rowLower[i] = rhs[i];
     } else {
       std::stringstream buffer;
-      buffer << "ERROR : add rows, qrtype " << qrtype[i] << " of row " << i
-             << " to add unknown.";
+      buffer << LOGLOCATION << "ERROR : add rows, qrtype " << qrtype[i]
+             << " of row " << i << " to add unknown.";
       throw GenericSolverException(buffer.str());
     }
   }

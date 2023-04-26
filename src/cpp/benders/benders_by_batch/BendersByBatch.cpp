@@ -64,8 +64,6 @@ void BendersByBatch::Run() {
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
     UpdateTrace();
     SaveCurrentBendersData();
-    _data.stopping_criterion = _data.stop ? StoppingCriterion::timelimit
-                                          : StoppingCriterion::absolute_gap;
     CloseCsvFile();
     EndWritingInOutputFile();
     write_basis();
@@ -81,21 +79,25 @@ void BendersByBatch::MasterLoop() {
   number_of_sub_problem_resolved_ = 0;
   cumulative_subproblems_timer_per_iter_ = 0;
   first_unsolved_batch_ = 0;
-  while (batch_counter_ < number_of_batch_ || _data.stop) {
-    _data.ub = 0;
-    SetSubproblemCost(0);
-    remaining_epsilon_ = AbsoluteGap();
-
+  while (!_data.stop) {
     if (Rank() == rank_0) {
       if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
         _logger->LogAtSwitchToInteger();
         ActivateIntegrityConstraints();
         ResetDataPostRelaxation();
       }
+    }
+
+    _data.ub = 0;
+    SetSubproblemCost(0);
+    remaining_epsilon_ = Gap();
+
+    if (Rank() == rank_0) {
       _logger->display_message(
           " _______________________________________________________________"
           "_"
-          "________\n/\n");
+          "________");
+      _logger->display_message("/");
 
       _logger->display_message("\tSolving master...");
       get_master_value();
@@ -111,7 +113,7 @@ void BendersByBatch::MasterLoop() {
     SeparationLoop();
     if (Rank() == rank_0) {
       _data.elapsed_time = GetBendersTime();
-      _data.stop = (_data.elapsed_time > Options().TIME_LIMIT);
+      _data.stop = ShouldBendersStop();
     }
     BroadCast(_data.stop, rank_0);
     BroadCast(batch_counter_, rank_0);
@@ -122,7 +124,7 @@ void BendersByBatch::MasterLoop() {
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
     _logger->display_message(
         "\\________________________________________________________________"
-        "________\n");
+        "________");
   }
 }
 void BendersByBatch::SeparationLoop() {
@@ -138,6 +140,11 @@ void BendersByBatch::SeparationLoop() {
     BroadcastXCut();
     UpdateRemainingEpsilon();
     SolveBatches();
+    if (Rank() == rank_0) {
+      UpdateTrace();
+      SaveCurrentBendersData();
+    }
+    ClearCurrentIterationCutTrace();
   }
 }
 void BendersByBatch::ComputeXCut() {
@@ -158,10 +165,10 @@ void BendersByBatch::UpdateRemainingEpsilon() {
     int ncols = master_ptr->_solver->get_ncols();
     std::vector<double> obj(ncols);
     master_ptr->_solver->get_obj(obj.data(), 0, ncols - 1);
+    remaining_epsilon_ = Gap();
     for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
       int col_id = master_ptr->_name_to_id[candidate_name];
-      remaining_epsilon_ =
-          AbsoluteGap() -
+      remaining_epsilon_ -=
           obj[col_id] * (x_cut_candidate_value - _data.x_out[candidate_name]);
     }
   }
@@ -249,7 +256,7 @@ void BendersByBatch::GetSubproblemCut(
       SubProblemData subproblem_data;
       worker->fix_to(_data.x_cut);
       worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
-                    Options().LAST_MASTER_MPS + MPS_SUFFIX);
+                    Options().LAST_MASTER_MPS + MPS_SUFFIX, _writer);
       worker->get_value(subproblem_data.subproblem_cost);  // solution phi(x,s)
       worker->get_subgradient(
           subproblem_data.var_name_and_subgradient);  // dual pi_s
@@ -278,4 +285,38 @@ void BendersByBatch::BroadcastXOut() {
   Point x_out = get_x_out();
   BroadCast(x_out, rank_0);
   set_x_out(x_out);
+}
+double BendersByBatch::Gap() const {
+  if (_data.is_in_initial_relaxation) {
+    return RelaxedGap() * _data.lb;
+  } else {
+    return std::max(AbsoluteGap(), RelativeGap() * _data.lb);
+  }
+}
+/*!
+ *  \brief Update stopping criterion
+ *
+ *  Method updating the stopping criterion and reinitializing some datas
+ *
+ */
+void BendersByBatch::UpdateStoppingCriterion() {
+  if (_data.elapsed_time > Options().TIME_LIMIT) {
+    _data.stopping_criterion = StoppingCriterion::timelimit;
+  } else if ((Options().MAX_ITERATIONS != -1) &&
+             (_data.it >= Options().MAX_ITERATIONS))
+    _data.stopping_criterion = StoppingCriterion::max_iteration;
+  else if (batch_counter_ >= number_of_batch_) {
+    if (Gap() == AbsoluteGap()) {
+      _data.stopping_criterion = StoppingCriterion::absolute_gap;
+    } else {
+      _data.stopping_criterion = StoppingCriterion::relative_gap;
+    }
+  }
+}
+
+/*!
+ *  \brief Check if initial relaxation should stop
+ */
+bool BendersByBatch::ShouldRelaxationStop() const {
+  return (_data.stopping_criterion != StoppingCriterion::empty);
 }

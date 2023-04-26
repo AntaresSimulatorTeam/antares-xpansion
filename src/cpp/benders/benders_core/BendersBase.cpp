@@ -8,6 +8,7 @@
 #include "LastIterationPrinter.h"
 #include "LastIterationReader.h"
 #include "LastIterationWriter.h"
+#include "LogUtils.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
 
@@ -98,8 +99,8 @@ void print_cut_csv(std::ostream &stream, const SubProblemData &subproblem_data,
   stream << subproblem_data.simplex_iter << ";";
   stream << ";";
   stream << alpha_i << ";";
-  stream << ";";
   stream << subproblem_data.subproblem_timer << ";";
+  stream << ";";
   stream << std::endl;
 }
 
@@ -249,18 +250,21 @@ void BendersBase::ResetDataPostRelaxation() {
 void BendersBase::check_status(
     const SubProblemDataMap &subproblem_data_map) const {
   if (_data.master_status != SOLVER_STATUS::OPTIMAL) {
-    LOG(INFO) << "Master status is " << _data.master_status << std::endl;
-    throw InvalidSolverStatusException("Master status is " +
-                                       std::to_string(_data.master_status));
+    std::ostringstream msg;
+    auto log_location = LOGLOCATION;
+    msg << "Master status is " + std::to_string(_data.master_status)
+        << std::endl;
+    _logger->display_message(log_location + msg.str());
+    throw InvalidSolverStatusException(msg.str(), log_location);
   }
   for (const auto &[subproblem_name, subproblemData] : subproblem_data_map) {
     if (subproblemData.lpstatus != SOLVER_STATUS::OPTIMAL) {
-      std::stringstream stream;
+      std::ostringstream stream;
+      auto log_location = LOGLOCATION;
       stream << "Subproblem " << subproblem_name << " status is "
-             << subproblemData.lpstatus;
-      LOG(INFO) << stream.str() << std::endl;
-
-      throw InvalidSolverStatusException(stream.str());
+             << subproblemData.lpstatus << std::endl;
+      _logger->display_message(log_location + stream.str());
+      throw InvalidSolverStatusException(stream.str(), log_location);
     }
   }
 }
@@ -279,7 +283,7 @@ void BendersBase::get_master_value() {
     _master->fix_alpha(_data.best_ub);
   }
   _master->solve(_data.master_status, _options.OUTPUTROOT,
-                 _options.LAST_MASTER_MPS + MPS_SUFFIX);
+                 _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
   _master->get(
       _data.x_out, _data.overall_subpb_cost_under_approx,
       _data.single_subpb_costs_under_approx); /*Get the optimal variables of the
@@ -362,7 +366,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               SubProblemData subproblem_data;
               worker->fix_to(_data.x_cut);
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
-                            _options.LAST_MASTER_MPS + MPS_SUFFIX);
+                            _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
@@ -391,7 +395,6 @@ void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
     _master->addSubproblemCut(_problem_to_id[subproblem_name],
                               subproblem_data.var_name_and_subgradient,
                               _data.x_cut, subproblem_data.subproblem_cost);
-    relevantIterationData_.last = std::make_shared<WorkerMasterData>();
     relevantIterationData_.last->_cut_trace[subproblem_name] = subproblem_data;
   }
 }
@@ -425,7 +428,6 @@ void BendersBase::compute_cut_aggregate(
     rhs += subproblem_data.subproblem_cost;
 
     compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
-    relevantIterationData_.last = std::make_shared<WorkerMasterData>();
 
     relevantIterationData_.last->_cut_trace[name] = subproblem_data;
   }
@@ -458,7 +460,7 @@ LogData BendersBase::build_log_data_from_data() const {
 
 LogData BendersBase::FinalLogData() const {
   LogData result;
-
+  result.it = _data.it + iterations_before_resume;
   result.best_it = _data.best_it + iterations_before_resume;
 
   result.subproblem_cost = best_iteration_data.subproblem_cost;
@@ -570,12 +572,12 @@ std::string BendersBase::status_from_criterion() const {
   switch (_data.stopping_criterion) {
     case StoppingCriterion::absolute_gap:
     case StoppingCriterion::relative_gap:
-      return Output::STATUS_OPTIMAL_C;
+      return Output::OPTIMAL_C;
     case StoppingCriterion::max_iteration:
     case StoppingCriterion::timelimit:
-      return Output::STATUS_LIMIT_REACHED_C;
+      return Output::LIMIT_REACHED_C;
     default:
-      return Output::STATUS_ERROR_C;
+      return Output::ERROR_C;
   }
 }
 
@@ -675,7 +677,8 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
     std::map<std::string, std::map<std::string, int>> input_map) const {
   auto const it_master(input_map.find(get_master_name()));
   if (it_master == input_map.end()) {
-    LOG(ERROR) << "UNABLE TO FIND " << get_master_name() << std::endl;
+    _logger->display_message(LOGLOCATION + "UNABLE TO FIND " +
+                             get_master_name() + "\n");
     std::exit(1);
   }
   return it_master->second;
@@ -703,7 +706,7 @@ void BendersBase::AddSubproblem(
   subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
       kvp.second, GetSubproblemPath(kvp.first),
       SubproblemWeight(_data.nsubproblem, kvp.first), _options.SOLVER_NAME,
-      _options.LOG_LEVEL, log_name());
+      _options.LOG_LEVEL, log_name(), _logger);
 }
 
 void BendersBase::free_subproblems() {
@@ -812,7 +815,9 @@ void BendersBase::SaveCurrentBendersData() {
     PrintCurrentIterationCsv();
   }
 }
-
+void BendersBase::ClearCurrentIterationCutTrace() const {
+  relevantIterationData_.last->_cut_trace.clear();
+}
 void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
   _writer->write_duration(_data.elapsed_time);

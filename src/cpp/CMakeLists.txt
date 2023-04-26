@@ -18,6 +18,7 @@ endif()
 # Targets
 # ===========================================================================
 
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/xpansion_interfaces")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/helpers")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/lpnamer")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders")

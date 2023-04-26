@@ -35,7 +35,7 @@ nav:
   - 'User guide':
     - 'How does Antares-Xpansion work ?':
         - 'The optimal investment problem in Antares-Xpansion': 'user-guide/optimization-principles/investment-problem.md'
-        - 'Mathematical formulation of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
+        - 'Mathematical aspects of the investment problem': 'user-guide/optimization-principles/problem-formalization.md'
         - 'Performance history': 'user-guide/performance-history/perf-graphs.ipynb'
     - 'Getting started':
       - 'Installation': 'user-guide/get-started/installation.md'
@@ -58,13 +58,17 @@ nav:
       - 'Overview' : 'developer-guide/xpansion_steps/0-overview.md'
       - 'Antares optimization problem retrieval' : 'developer-guide/xpansion_steps/1-antares-solver-problem.md'
       - 'Investment problem generation' : 'developer-guide/xpansion_steps/2-problem-modification.md'
-  - 'Changelog': 'CHANGELOG.md'
+  - 'Changelog': 
+    - 'Changelog': 'changelog/CHANGELOG.md'
+    - 'File format changes': 'changelog/format_changes.md'
 
 plugins:
   - search
   - mkdocs-jupyter:
       execute: False
       show_input: False
+  - bibtex:
+      bib_file: 'docs/user-guide/benders.bib'
 
 extra_css:
   - stylesheets/extra.css
@@ -86,5 +90,6 @@ markdown_extensions:
   - pymdownx.details
   - pymdownx.superfences
   - pymdownx.tabbed
+  - footnotes
 
 copyright: Copyright &copy; 2007 - 2023 RTE

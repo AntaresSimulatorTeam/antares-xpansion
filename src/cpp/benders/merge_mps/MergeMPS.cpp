@@ -3,8 +3,10 @@
 #include <filesystem>
 
 #include "ArchiveReader.h"
+#include "LogUtils.h"
 #include "Timer.h"
 #include "glog/logging.h"
+
 MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
                    Writer writer)
     : _options(options), _logger(logger), _writer(writer) {}
@@ -59,8 +61,9 @@ void MergeMPS::launch() {
     for (auto const &x : kvp.second) {
       int col_index = mergedSolver_l->get_col_index(varPrefix_l + x.first);
       if (col_index == -1) {
-        std::cerr << "missing variable " << x.first << " in " << kvp.first
-                  << " supposedly renamed to " << varPrefix_l + x.first << ".";
+        std::cerr << LOGLOCATION << "missing variable " << x.first << " in "
+                  << kvp.first << " supposedly renamed to "
+                  << varPrefix_l + x.first << ".";
         mergedSolver_l->write_prob_lp(
             std::filesystem::path(_options.OUTPUTROOT) / "mergeError.lp");
         mergedSolver_l->write_prob_mps(

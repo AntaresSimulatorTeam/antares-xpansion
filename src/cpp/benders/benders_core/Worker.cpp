@@ -1,8 +1,8 @@
 #include "Worker.h"
 
+#include "LogUtils.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
-
 /*!
  *  \brief Free the problem
  */
@@ -39,7 +39,6 @@ void Worker::init(VariableMap const &variable_map,
                   std::string const &solver_name, int log_level,
                   const std::filesystem::path &log_name) {
   _path_to_mps = path_to_mps;
-
   SolverFactory factory;
   if (_is_master) {
     _solver =
@@ -68,7 +67,8 @@ void Worker::init(VariableMap const &variable_map,
  *  \param lp_status : problem status after optimization
  */
 void Worker::solve(int &lp_status, const std::string &outputroot,
-                   const std::string &output_master_mps_file_name) const {
+                   const std::string &output_master_mps_file_name,
+                   Writer writer) const {
   if (_is_master && _solver->get_n_integer_vars() > 0) {
     lp_status = _solver->solve_mip();
   } else {
@@ -76,19 +76,28 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
   }
 
   if (lp_status != SOLVER_STATUS::OPTIMAL) {
-    LOG(INFO) << "lp_status is : " << lp_status << std::endl;
-    std::filesystem::path buffer;
-    buffer = std::filesystem::path(outputroot) /
-                  (_path_to_mps.filename().string() + "_lp_status_" +
-                  _solver->SOLVER_STRING_STATUS[lp_status] + MPS_SUFFIX);
-    LOG(INFO) << "lp_status is : " << _solver->SOLVER_STRING_STATUS[lp_status]
-              << std::endl;
-    LOG(INFO) << "written in " << buffer.string() << std::endl;
-    _solver->write_prob_mps(buffer);
+    std::filesystem::path error_file_path;
+    auto problem_status = _solver->SOLVER_STRING_STATUS[lp_status];
+    error_file_path = std::filesystem::path(outputroot) /
+                      (_path_to_mps.filename().string() + "_lp_status_" +
+                       problem_status + MPS_SUFFIX);
+    std::ostringstream msg;
+    msg << "lp_status is : " << problem_status << std::endl;
 
-    throw InvalidSolverStatusException(
-        "Invalid solver status " + _solver->SOLVER_STRING_STATUS[lp_status] +
-        " optimality expected");
+    msg << "written in " << error_file_path.string() << std::endl;
+    logger_->display_message(msg.str());
+    _solver->write_prob_mps(error_file_path);
+    Output::ProblemData data;
+    data.name = _path_to_mps.filename().string();
+    data.path = error_file_path;
+    data.status = problem_status;
+    writer->WriteProblem(data);
+    writer->dump();
+    auto log_location = LOGLOCATION;
+    msg.str("");
+    msg << "Invalid solver status " + problem_status + " optimality expected";
+    logger_->display_message(log_location + msg.str());
+    throw InvalidSolverStatusException(msg.str(), log_location);
   }
 
   if (_is_master) {

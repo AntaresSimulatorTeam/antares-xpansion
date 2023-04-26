@@ -9,6 +9,7 @@
 #include <ostream>
 
 #include "JsonWriter.h"
+#include "LogUtils.h"
 #include "gtest/gtest.h"
 
 using namespace Output;
@@ -51,7 +52,7 @@ Json::Value get_value_from_json(const std::filesystem::path &file_name) {
   Json::CharReaderBuilder builder_l;
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
-    throw std::runtime_error("");
+    throw std::runtime_error(LOGLOCATION);
   }
   return _input;
 }
@@ -147,7 +148,7 @@ TEST_F(JsonWriterTest, EndWritingShouldPrintIterationsData) {
   solution_data.solution = iter2;
   solution_data.nbWeeks_p = 5;
   solution_data.best_it = 2;
-  solution_data.problem_status = STATUS_OPTIMAL_C;
+  solution_data.problem_status = OPTIMAL_C;
   solution_data.stopping_criterion = CRIT_MAX_ITER_C;
 
   IterationsData iterations_data;

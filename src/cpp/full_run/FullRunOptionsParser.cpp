@@ -1,4 +1,6 @@
 #include "FullRunOptionsParser.h"
+
+#include "LogUtils.h"
 namespace po = boost::program_options;
 
 FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
@@ -23,6 +25,7 @@ void FullRunOptionsParser::SetMethod() {
   } else if (method_str_ == "mergeMPS") {
     method_ = BENDERSMETHOD::MERGEMPS;
   } else {
-    throw FullRunOptionsParser::FullRunOptionInvalidMethod(method_str_);
+    throw FullRunOptionsParser::FullRunOptionInvalidMethod(LOGLOCATION +
+                                                           method_str_);
   }
 }

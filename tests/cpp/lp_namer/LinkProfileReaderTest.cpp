@@ -122,16 +122,16 @@ TEST_F(LinkProfileReaderTest, GetTimeStepLargerThan8760InSplitFile) {
   try {
     profile.getDirectProfile(8790);
     FAIL();
-  } catch (const std::invalid_argument& expected) {
-    ASSERT_STREQ(expected.what(),
+  } catch (const LinkProfile::InvalidHourForProfile& expected) {
+    ASSERT_STREQ(expected.ErrorMessage().c_str(),
                  "Link profiles can be requested between point 0 and 8759.");
   }
 
   try {
     profile.getIndirectProfile(8790);
     FAIL();
-  } catch (const std::invalid_argument& expected) {
-    ASSERT_STREQ(expected.what(),
+  } catch (const LinkProfile::InvalidHourForProfile& expected) {
+    ASSERT_STREQ(expected.ErrorMessage().c_str(),
                  "Link profiles can be requested between point 0 and 8759.");
   }
 }

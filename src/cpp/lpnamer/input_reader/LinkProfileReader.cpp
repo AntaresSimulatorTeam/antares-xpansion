@@ -2,6 +2,8 @@
 
 #include <filesystem>
 
+#include "LogUtils.h"
+
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &direct_filename,
     const std::filesystem::path &indirect_file_name) {
@@ -19,8 +21,8 @@ void LinkProfileReader::EnsureFileIsGood(
     const std::filesystem::path &direct_filename) const {
   if (std::ifstream infile(direct_filename); !infile.good()) {
     (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
-        << "unable to open file" << direct_filename;
-    throw std::filesystem::filesystem_error("unable to open file",
+        << LOGLOCATION << "unable to open file" << direct_filename;
+    throw std::filesystem::filesystem_error(LOGLOCATION + "unable to open file",
                                             direct_filename, std::error_code());
   }
 }
@@ -39,8 +41,9 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
   std::ifstream infile(filename);
   if (!infile.good()) {
     auto errMsg = std::string("unable to open file ");
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg << filename;
-    throw std::filesystem::filesystem_error(errMsg, filename,
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << LOGLOCATION << errMsg << filename;
+    throw std::filesystem::filesystem_error(LOGLOCATION + errMsg, filename,
                                             std::error_code());
   }
   double value;
@@ -59,7 +62,8 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
     } else {
       auto errMsg = std::string("error not enough line in link-profile ") +
                     filename.string();
-      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << errMsg;
+      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+          << LOGLOCATION << errMsg;
       throw std::domain_error(errMsg);
     }
   }
@@ -80,7 +84,7 @@ void LinkProfileReader::UpdateProfile(std::vector<LinkProfile> &result,
 void LinkProfileReader::ConstructChronicle(std::vector<LinkProfile> &result,
                                            int chronicle_id) const {
   if (result.size() <= chronicle_id) {
-    result.emplace_back();
+    result.emplace_back(logger_);
   }
 }
 

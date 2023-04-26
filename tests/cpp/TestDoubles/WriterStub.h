@@ -5,7 +5,7 @@
 #pragma once
 #include "OutputWriter.h"
 
-class WriterNOOPStub: public Output::OutputWriter {
+class WriterNOOPStub : public Output::OutputWriter {
  public:
   void update_solution(const Output::SolutionData& solution_data) override {}
   void dump() override {}
@@ -22,4 +22,5 @@ class WriterNOOPStub: public Output::OutputWriter {
   void write_nbweeks(const int nb_weeks) override {}
   void write_duration(const double duration) override {}
   std::string solution_status() const override { return std::string(); }
+  void WriteProblem(const Output::ProblemData& problem_data) override {}
 };

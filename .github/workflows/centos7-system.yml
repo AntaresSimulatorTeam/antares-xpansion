@@ -134,7 +134,12 @@ jobs:
           os: centos7
           os-full-name: CentOS-7.9.2009
           #variant: -ortools-xpress
-
+        
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost
+        with: 
+          prefix: "../rte-antares-deps-Release/"
+               
       - name: Install dependencies
         run: |
           pip3 install -r requirements-tests.txt
@@ -238,7 +243,7 @@ jobs:
           path: ${{ steps.create-single-file.outputs.archive-path }}
 
       - name: Running unit tests
-        timeout-minutes: 45
+        timeout-minutes: 120
         shell: bash
         run: |
           source /etc/profile.d/modules.sh

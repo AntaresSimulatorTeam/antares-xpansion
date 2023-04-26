@@ -40,12 +40,14 @@ ENDIF(COIN_OR)
 add_library (solvers STATIC
 	${Solver_sources}
 )
-
+get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
 target_include_directories (solvers
 		PUBLIC
 			${CMAKE_CURRENT_SOURCE_DIR}/include
 		PRIVATE
 			${CMAKE_CURRENT_SOURCE_DIR}
+		public
+		${xpansion_interfaces_path}	
 )
 
 

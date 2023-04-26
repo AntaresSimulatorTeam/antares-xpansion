@@ -1,4 +1,4 @@
-# The Benders decomposition for the optimal investment problem
+# Mathematical aspects of the investment problem
 
 In this part, we give the mathematical formulation of the investment problem considered in Antares-Xpansion. We also explain the Benders decomposition algorithm that is used.
 
@@ -149,7 +149,7 @@ As the number of extreme points of \\(F_{l, s}\\) is often very large, the full 
 This is why, the Benders decomposition algorithm proceeds iteratively:
 
 1. Solve the master problem where all Benders cuts have been removed. The optimal solution \\(\bar{x}\\) is taken as a trial investment value.
-2. For each MC year and each week, solve the (dual) weekly Antares problem, referred as _satellite problem_, with the investment value set to \\(\bar{x}\\):
+2. For each MC year and each week, solve the (dual) weekly Antares problem, referred as _subproblem_, with the investment value set to \\(\bar{x}\\):
 
     $$
     \begin{aligned}
@@ -158,7 +158,7 @@ This is why, the Benders decomposition algorithm proceeds iteratively:
     \end{aligned}
     $$
     
-    There are \\(52 N\\) satellite problems to solve. Let \\(\bar{\pi}\_{l, s}\\) the solution of the satellite problem for MC year \\(l\\) and week \\(s\\), so that its optimal objective value is \\(\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\).
+    There are \\(52 N\\) subproblems to solve. Let \\(\bar{\pi}\_{l, s}\\) the solution of the subproblem for MC year \\(l\\) and week \\(s\\), so that its optimal objective value is \\(\bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\).
 
 3. For all \\(l\\), for all \\(s\\), add the cut \\(\vartheta_{l, s} \geq \bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\\) to the master problem. There are \\(52 N\\) new cuts i.e. additional constraints to the master problem.
 
@@ -172,11 +172,15 @@ $$
 \end{aligned}
 $$
 
-where \\({\bar{\pi}\_{l, s}^{i}}\\) is the solution of the satellite problem for MC year \\(l\\) at week \\(s\\) at iteration \\(i < k\\). Solve this master problem. The optimal solution is denoted \\(\bar{x}\\). Go to step 2.
+where \\({\bar{\pi}\_{l, s}^{i}}\\) is the solution of the subproblem for MC year \\(l\\) at week \\(s\\) at iteration \\(i < k\\). Solve this master problem. The optimal solution is denoted \\(\bar{x}\\). Go to step 2.
 
 In order to check convergence of the algorithm, an optimality gap is computed at each iteration:
 
 - The solution of the master problem is a lower bound of the optimal cost as it is a relaxation of the investment problem.
-- With a given investment level \\(\bar{x}\\), we get a feasible solution with a cost equal to the sum of the investment cost and of the optimal cost of the satellite problems: \\(c^{\top}\bar{x} + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\). This gives a valid upper bound for the investment problem.
+- With a given investment level \\(\bar{x}\\), we get a feasible solution with a cost equal to the sum of the investment cost and of the optimal cost of the subproblems: \\(c^{\top}\bar{x} + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \bar{\pi}\_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\\). This gives a valid upper bound for the investment problem.
 
 The optimality gap is the difference (either absolute or relative) between the lower and the upper bound. The Benders decomposition algorithm stops when the optimality gap falls below a value specified by the user (or set by default), see [`optimality_gap`](../get-started/settings-definition.md#optimality_gap) and [`relative_gap`](../get-started/settings-definition.md#relative_gap).
+
+### The Benders by batch algorithm
+
+In the classical Benders algorithm, all subproblems are solved at each iteration, resulting in \\(52 N\\) resolutions and as many cuts are added in the master problem. This can be quite time-consuming. The idea of the Benders by batch algorithm is to solve subproblems by batch and stop solving them at a given iteration once we know that the master solution is not optimal. Each iteration consists in fewer subproblems resolution (and fewer cuts added to the master) but we need more iterations to converge. Overall the tradeoff makes the Benders by batch algorithm usually faster than the classical Benders method. A comprehensive description of the Benders by batch algorithm can be found in the thesis of Xavier Blanchot[@blanchot_solving_2022].

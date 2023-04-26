@@ -12,11 +12,13 @@ void StudyUpdateStrategy::EnsureCandidateInvestmentFound(
     const ActiveLink& link_p, const Candidate& candidate,
     const std::map<std::string, double>::const_iterator& it_candidate) const {
   if (it_candidate == investments_p.end()) {
-    std::string message = "No investment computed for the candidate " +
-                          candidate.get_name() + " on the link " +
-                          link_p.get_LinkName();
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << message;
-    throw std::runtime_error(message);
+    auto log_location = LOGLOCATION;
+    auto message = "No investment computed for the candidate " +
+                   candidate.get_name() + " on the link " +
+                   link_p.get_LinkName();
+    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        << log_location << message;
+    throw NoInvestmentComputedForTheCandidate(message, log_location);
   }
 }
 StudyUpdateStrategy::StudyUpdateStrategy(

@@ -12,7 +12,10 @@ find_python_module(pytest)
 find_python_module(numpy)
 
 if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
-
+        set(xpress_avalaible "False")
+        if(${XPRESS})
+	        set(xpress_avalaible "True")
+        endif() 
     # Python unit test
     add_test(
             NAME unit_launcher
@@ -41,7 +44,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
         COMMAND Python3::Interpreter -m pytest -m short_benders_by_batch_mpi --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
-    set_property(TEST examples_short_mpi PROPERTY LABELS short short_mpi end_to_end benders_by_batch)
+    set_property(TEST examples_short_benders_by_batch_mpi PROPERTY LABELS short short_mpi end_to_end benders_by_batch)
 
     add_test(
             NAME examples_medium_sequential
@@ -62,7 +65,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
             COMMAND Python3::Interpreter -m pytest -m medium_benders_by_batch_mpi --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
-    set_property(TEST examples_medium_mpi PROPERTY LABELS medium medium_mpi end_to_end benders_by_batch)
+    set_property(TEST example_medium_benders_by_batch_mpi PROPERTY LABELS medium medium_mpi end_to_end benders_by_batch)
 
     add_test(
             NAME examples_long_sequential
@@ -77,23 +80,28 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_long_mpi PROPERTY LABELS long long_mpi end_to_end)
-
+    add_test(
+        NAME examples_long_benders_by_batch_mpi
+        COMMAND Python3::Interpreter -m pytest -m long_benders_by_batch_mpi --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_long_benders_by_batch_mpi PROPERTY LABELS long long_mpi end_to_end benders_by_batch)
     # benders end to end tests
     add_test(
             NAME sequential
-            COMMAND Python3::Interpreter -m pytest --installDir=${XPANSION_INSTALL_DIR} test_bendersSequentialEndToEnd.py
+            COMMAND Python3::Interpreter -m pytest --installDir=${XPANSION_INSTALL_DIR} --xpress=${xpress_avalaible} test_bendersSequentialEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
     set_property(TEST sequential PROPERTY LABELS benders benders-sequential end_to_end)
     add_test(
             NAME sequential_restart
-            COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersSequentialEndToEnd.py
+            COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR}  test_restartBendersSequentialEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
     )
     set_property(TEST sequential_restart PROPERTY LABELS benders benders-sequential end_to_end restart)
     add_test(
             NAME mpibenders
-            COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} test_bendersmpibendersEndToEnd.py
+            COMMAND Python3::Interpreter -m pytest --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} --xpress=${xpress_avalaible} test_bendersmpibendersEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
     set_property(TEST mpibenders PROPERTY LABELS benders benders-mpi end_to_end)

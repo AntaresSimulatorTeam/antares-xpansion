@@ -1,5 +1,6 @@
 
 #pragma once
+#include <filesystem>
 #include <memory>
 #include <string>
 #include <vector>
@@ -18,10 +19,11 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
     OVERALL_COST_C("overall_cost"), RELATIVE_GAP_C("relative_gap"), UB_C("ub"),
     NBWEEKS_C("nbWeeks"), OPTIONS_C("options"), SOLUTION_C("solution"),
     ITERATION_C("iteration"), PROBLEM_STATUS_C("problem_status"),
-    STATUS_OPTIMAL_C("OPTIMAL"), STATUS_LIMIT_REACHED_C("limit reached"),
-    STATUS_ERROR_C("ERROR"), VALUES_C("values"),
-    STOPPING_CRITERION_C("stopping_criterion"), MASTER_NAME_C("MASTER_NAME"),
-    LOG_LEVEL_C("LOG_LEVEL"), SOLVER_NAME_C("SOLVER_NAME");
+    OPTIMAL_C("OPTIMAL"), LIMIT_REACHED_C("limit reached"), ERROR_C("ERROR"),
+    VALUES_C("values"), STOPPING_CRITERION_C("stopping_criterion"),
+    MASTER_NAME_C("MASTER_NAME"), LOG_LEVEL_C("LOG_LEVEL"),
+    SOLVER_NAME_C("SOLVER_NAME"), PROBLEMNAME_C("problem_name"),
+    PROBLEMPATH_C("problem_path");
 struct CandidateData {
   std::string name;
   double invest;
@@ -72,7 +74,11 @@ struct IterationsData {
   Iterations iters;
   SolutionData solution_data;
 };
-
+struct ProblemData {
+  std::string name;
+  std::filesystem::path path;
+  std::string status;
+};
 /*!
  * \class OutputWriter
  * \brief OutputWriter class to describe the execuion session of an antares
@@ -115,6 +121,7 @@ class OutputWriter {
   virtual void write_nbweeks(const int nb_weeks) = 0;
   virtual void write_duration(const double duration) = 0;
   virtual std::string solution_status() const = 0;
+  virtual void WriteProblem(const ProblemData &problem_data) = 0;
 };
 }  // namespace Output
 using Writer = std::shared_ptr<Output::OutputWriter>;

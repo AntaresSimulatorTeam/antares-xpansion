@@ -13,20 +13,23 @@ extern "C" {
 class ArchiveIOGeneralException : public std::runtime_error {
  public:
   explicit ArchiveIOGeneralException(int32_t status, const std::string& action,
-                            int32_t expectedStatus = MZ_OK)
-      : std::runtime_error("Failed to " + action +
+                                     const std::string& log_location,
+                                     int32_t expectedStatus = MZ_OK)
+      : std::runtime_error(log_location + "Failed to " + action +
                            " invalid status: " + std::to_string(status) + " (" +
                            std::to_string(expectedStatus) + " expected)") {}
 };
 class ArchiveIOSpecificException : public std::runtime_error {
  public:
   ArchiveIOSpecificException(int32_t status, const std::string& errMessage,
+                             const std::string& log_location,
                              int32_t expectedStatus = MZ_OK)
-      : std::runtime_error(
-            errMessage + "\ninvalid status: " + std::to_string(status) + " (" +
-            std::to_string(expectedStatus) + " expected)") {}
-  ArchiveIOSpecificException(const std::string& errMessage)
-      : std::runtime_error(errMessage) {}
+      : std::runtime_error(log_location + errMessage + "\ninvalid status: " +
+                           std::to_string(status) + " (" +
+                           std::to_string(expectedStatus) + " expected)") {}
+  ArchiveIOSpecificException(const std::string& errMessage,
+                             const std::string& log_location)
+      : std::runtime_error(log_location + errMessage) {}
 };
 #include <filesystem>
 #include <shared_mutex>

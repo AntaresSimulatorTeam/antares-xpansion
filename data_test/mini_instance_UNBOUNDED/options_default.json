@@ -8,6 +8,6 @@
      "MASTER_NAME": "master",
      "STRUCTURE_FILE": "structure.txt",
      "INPUTROOT": ".",
-     "SOLVER": "XPRESS",
+     "SOLVER_NAME": "XPRESS",
      "JSON_FILE": "./expansion/out.json"
 }
