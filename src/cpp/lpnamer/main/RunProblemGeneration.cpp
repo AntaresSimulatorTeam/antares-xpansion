@@ -97,7 +97,7 @@ void RunProblemGeneration(
     const std::filesystem::path& antares_archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
     const std::filesystem::path& log_file_path,
-    const std::filesystem::path& weights_file, bool rename_variables) {
+    const std::filesystem::path& weights_file) {
   (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
 
@@ -142,13 +142,10 @@ void RunProblemGeneration(
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
 
-  /*temporarly we keep --rename-variables option to deal with unammed mps
-   it will be replaced by reading the antares version
-   */
-
   Version antares_version(ANTARES_VERSION);
   Version first_version_without_variables_files("8.6");
-  rename_variables = antares_version < first_version_without_variables_files;
+  auto rename_variables =
+      antares_version < first_version_without_variables_files;
 
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =

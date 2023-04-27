@@ -23,11 +23,10 @@ int main(int argc, char** argv) {
     auto additionalConstraintFilename_l =
         options_parser.AdditionalConstraintsFilename();
     auto weights_file = options_parser.WeightsFile();
-    auto rename_variables = options_parser.RenameVariables();
 
     RunProblemGeneration(xpansion_output_dir, master_formulation,
                          additionalConstraintFilename_l, archive_path, logger,
-                         log_file_path, weights_file, rename_variables);
+                         log_file_path, weights_file);
 
     return 0;
   } catch (std::exception& e) {

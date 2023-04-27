@@ -83,7 +83,7 @@ def launch_and_compare_lp_with_reference(install_dir, master_mode, test_dir):
     study_dir = test_dir.resolve()
     os.chdir(test_dir.parent)
     launch_command = [str(lp_namer_exe), "-o", str(study_dir), "-a", str(zip_path),
-                      "-e", "contraintes.txt", "-f", master_mode, "--rename-variables"]
+                      "-e", "contraintes.txt", "-f", master_mode]
     # when
     returned_l = subprocess.run(launch_command, shell=False)
     # then

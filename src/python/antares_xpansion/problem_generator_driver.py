@@ -26,7 +26,6 @@ class ProblemGeneratorData:
     weight_file_name_for_lp: str
     lp_namer_exe_path: Path
     active_years: List
-    rename_variables: bool
 
 
 class ProblemGeneratorDriver:
@@ -63,7 +62,6 @@ class ProblemGeneratorDriver:
         self.user_weights_file_path = problem_generator_data.user_weights_file_path
         self.weight_file_name_for_lp = problem_generator_data.weight_file_name_for_lp
         self.active_years = problem_generator_data.active_years
-        self.rename_variables = problem_generator_data.rename_variables
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
         self._lp_path = None
@@ -136,8 +134,6 @@ class ProblemGeneratorDriver:
             ret.extend(["-e",
                         self.additional_constraints])
 
-        if self.rename_variables:
-            ret.extend(["--rename-variables"])
         return ret
 
     def _get_lp_namer_command(self):

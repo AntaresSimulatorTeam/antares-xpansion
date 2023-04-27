@@ -14,7 +14,7 @@ class TestFullRunDriver:
     def setup_method(self):
 
         self.pb_gen_data = ProblemGeneratorData(keep_mps=False, additional_constraints="str", user_weights_file_path="",
-                                                weight_file_name_for_lp="", lp_namer_exe_path=Path("lp.exe"), active_years=[1, 2], rename_variables=True)
+                                                weight_file_name_for_lp="", lp_namer_exe_path=Path("lp.exe"), active_years=[1, 2])
 
         self.benders_driver_options_file = "options_file.json"
 
@@ -46,7 +46,7 @@ class TestFullRunDriver:
         xpansion_output_dir = output_path.parent / \
             (output_path.stem+"-Xpansion")
         expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
-                            "--method", benders_method, "-s", str(json_file_path), "-a", str(output_path), "-o", str(xpansion_output_dir), "-f", "integer", "-e", self.pb_gen_data.additional_constraints, "--rename-variables"]
+                            "--method", benders_method, "-s", str(json_file_path), "-a", str(output_path), "-o", str(xpansion_output_dir), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
 
         command = full_run_driver.full_command()
         assert len(expected_command) == len(command)
@@ -80,7 +80,7 @@ class TestFullRunDriver:
         xpansion_output_dir = output_path.parent / \
             (output_path.stem+"-Xpansion")
         expected_command = [benders_driver.MPI_LAUNCHER, "-n", str(benders_n_mpi), self.full_run_exe, "--benders_options", self.benders_driver_options_file,
-                            "--method", benders_method, "-s", str(json_file_path), "-a", str(output_path), "-o", str(xpansion_output_dir), "-f", "integer", "-e", self.pb_gen_data.additional_constraints, "--rename-variables"]
+                            "--method", benders_method, "-s", str(json_file_path), "-a", str(output_path), "-o", str(xpansion_output_dir), "-f", "integer", "-e", self.pb_gen_data.additional_constraints]
 
         command = full_run_driver.full_command()
 
