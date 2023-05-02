@@ -146,6 +146,8 @@ void RunProblemGeneration(
   Version first_version_without_variables_files("8.6");
   auto rename_variables =
       antares_version < first_version_without_variables_files;
+  (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
+      << "rename variable: " << std::boolalpha << rename_variables << std::endl;
 
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
