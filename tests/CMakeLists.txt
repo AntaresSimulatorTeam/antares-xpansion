@@ -44,7 +44,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
         COMMAND Python3::Interpreter -m pytest -m short_benders_by_batch_mpi --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
-    set_property(TEST examples_short_benders_by_batch_mpi PROPERTY LABELS short short_mpi end_to_end benders_by_batch)
+    set_property(TEST examples_short_benders_by_batch_mpi PROPERTY LABELS short short_mpi end_to_end)
 
     add_test(
             NAME examples_medium_sequential
