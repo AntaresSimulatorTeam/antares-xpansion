@@ -217,24 +217,31 @@ class CandidatesReader:
         link_profile_array = np.ones((8760, 2))
         if file:
             link_profile_array = np.genfromtxt(file)
-            nan_indices = np.argwhere(np.isnan(link_profile_array))
-            if len(nan_indices) > 0:
-                msg = """Value Error detected at
-                Row    Col
-                """
-                msg = msg + "{}".format(
-                    '\n'.join([str(index[0])+"    "+str(index[1]) for index in nan_indices]))
-                raise ProfilesValueError(msg)
+            CandidatesReader.check_nan_in_profile_link_array(
+                link_profile_array, file)
             if link_profile_array.ndim == 1:
                 link_profile_array = np.c_[
                     link_profile_array, link_profile_array]
         return link_profile_array
 
     @staticmethod
+    def check_nan_in_profile_link_array(link_profile_array, file: str):
+        nan_indices = np.argwhere(np.isnan(link_profile_array))
+        if len(nan_indices) > 0:
+            msg = f"Value(s) Error detected in file {file} at (row, column):\n"
+            for index in nan_indices:
+                msg = msg + f"({index[0]},{index[1]})\n"
+            print(nan_indices)
+            raise ProfilesValueError(msg)
+
+    @staticmethod
     def _read_or_create_link_profile_array_simple(file: str):
         link_profile_array = np.ones(8760)
         if file:
-            link_profile_array = np.loadtxt(file)
+            link_profile_array = np.genfromtxt(file)
+            CandidatesReader.check_nan_in_profile_link_array(
+                link_profile_array, file)
+
         return link_profile_array
 
     def get_candidate_link_profile_array(self, study_path: Path, candidate: str):
