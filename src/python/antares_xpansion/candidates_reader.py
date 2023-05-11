@@ -200,31 +200,6 @@ class CandidatesReader:
         return area1, area2
 
     @staticmethod
-    def _read_or_create_link_profile_array(
-        direct_link_file: str, indirect_link_file: str
-    ):
-        link_profile_array = np.ones((8760, 2))
-        if direct_link_file:
-            direct_link_profile_array = np.loadtxt(direct_link_file)
-            indirect_link_profile_array = np.loadtxt(indirect_link_file)
-            link_profile_array = np.c_[
-                direct_link_profile_array, indirect_link_profile_array
-            ]
-        return link_profile_array
-
-    @staticmethod
-    def _read_or_create_link_profile_array_one_file(file: str):
-        link_profile_array = np.ones((8760, 2))
-        if file:
-            link_profile_array = np.genfromtxt(file)
-            CandidatesReader.check_nan_in_profile_link_array(
-                link_profile_array, file)
-            if link_profile_array.ndim == 1:
-                link_profile_array = np.c_[
-                    link_profile_array, link_profile_array]
-        return link_profile_array
-
-    @staticmethod
     def check_nan_in_profile_link_array(link_profile_array, file: str):
         nan_indices = np.argwhere(np.isnan(link_profile_array))
         if len(nan_indices) > 0:
