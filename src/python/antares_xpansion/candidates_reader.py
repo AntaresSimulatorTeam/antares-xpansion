@@ -19,6 +19,10 @@ class ProfilesOfDifferentDimensions(Exception):
     pass
 
 
+class ProfilesValueError(Exception):
+    pass
+
+
 class CandidatesReader:
     def __init__(self, file_path: Path = None):
         if not file_path or not file_path.is_file():
@@ -51,7 +55,8 @@ class CandidatesReader:
 
     def _get_candidate_index(self, candidate: str):
         if candidate not in self.get_candidates_list():
-            flushed_print(f"Candidate {candidate} not found in candidate list.")
+            flushed_print(
+                f"Candidate {candidate} not found in candidate list.")
             raise CandidateNotFound
         return self.candidates_map[candidate]
 
@@ -140,13 +145,15 @@ class CandidatesReader:
         )
 
     def get_candidate_antares_direct_link_array(self, study_path: Path, candidate: str):
-        link_file = self.get_candidate_antares_direct_link_file(study_path, candidate)
+        link_file = self.get_candidate_antares_direct_link_file(
+            study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_file)
 
     def get_candidate_antares_indirect_link_array(
         self, study_path: Path, candidate: str
     ):
-        link_file = self.get_candidate_antares_indirect_link_file(study_path, candidate)
+        link_file = self.get_candidate_antares_indirect_link_file(
+            study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_file)
 
     def get_candidate_antares_indirect_link_file(
@@ -209,9 +216,18 @@ class CandidatesReader:
     def _read_or_create_link_profile_array_one_file(file: str):
         link_profile_array = np.ones((8760, 2))
         if file:
-            link_profile_array = np.loadtxt(file)
+            link_profile_array = np.genfromtxt(file)
+            nan_indices = np.argwhere(np.isnan(link_profile_array))
+            if len(nan_indices) > 0:
+                msg = """Value Error detected at
+                Row    Col
+                """
+                msg = msg + "{}".format(
+                    '\n'.join([str(index[0])+"    "+str(index[1]) for index in nan_indices]))
+                raise ProfilesValueError(msg)
             if link_profile_array.ndim == 1:
-                link_profile_array = np.c_[link_profile_array, link_profile_array]
+                link_profile_array = np.c_[
+                    link_profile_array, link_profile_array]
         return link_profile_array
 
     @staticmethod
@@ -307,20 +323,23 @@ class CandidatesReader:
         return self._read_or_create_link_profile_array_simple(link_profile)
 
     def get_candidate_direct_link_profile_array(self, study_path: Path, candidate: str):
-        link_profile = self.get_candidate_direct_link_profile(study_path, candidate)
+        link_profile = self.get_candidate_direct_link_profile(
+            study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_profile)
 
     def get_candidate_indirect_link_profile_array(
         self, study_path: Path, candidate: str
     ):
-        link_profile = self.get_candidate_indirect_link_profile(study_path, candidate)
+        link_profile = self.get_candidate_indirect_link_profile(
+            study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_profile)
 
     def get_link_antares_direct_link_file(self, study_path, link_name):
         return self.link_path_antares_link_file(link_name, study_path, True)
 
     def link_path_antares_link_file(self, link_name, study_path, is_direct: bool):
-        link_path = self.get_link_antares_link_file_pre820(study_path, link_name)
+        link_path = self.get_link_antares_link_file_pre820(
+            study_path, link_name)
         link_path_component = link_path.parts
         link_to_name = link_path_component[-1]
         link_path_until_from = link_path_component[0:-1]
@@ -338,7 +357,8 @@ class CandidatesReader:
         return self.link_path_antares_link_file(link_name, study_path, False)
 
     def has_profile(self, study_path, candidate):
-        link_profile = self.get_candidate_direct_link_profile(study_path, candidate)
+        link_profile = self.get_candidate_direct_link_profile(
+            study_path, candidate)
         indirect_profile = self.get_candidate_indirect_link_profile(
             study_path, candidate
         )
