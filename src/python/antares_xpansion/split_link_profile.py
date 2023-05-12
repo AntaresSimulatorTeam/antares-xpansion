@@ -2,12 +2,12 @@
 
 from pathlib import Path
 
-from antares_xpansion.logger import flushed_print, INFO_MSG
+from antares_xpansion.logger import step_logger
 
 
 class SplitLinkProfile:
     def __init__(self, link_profile_file: str, capacity_dir: Path) -> None:
-
+        self.logger = step_logger(__name__)
         if not capacity_dir.exists():
             raise SplitLinkProfile.CapacityDirNotFound(
                 f"Capacity directory: {capacity_dir} was not found!")
@@ -66,14 +66,14 @@ class SplitLinkProfile:
             (self.INDIRECT_SUFFIX +
              self._link_profile_file.name) if two_profiles else direct_file
 
-        flushed_print(
-            f"{INFO_MSG} direct link profile: {direct_file.name} is created from link-profile file: {self._link_profile_file.name}")
+        self.logger.info(
+            f"Direct link profile: {direct_file.name} is created from link-profile file: {self._link_profile_file.name}")
         with open(direct_file, "w") as direct:
             direct.writelines(["%s\n" % item for item in first_profile])
 
         if (two_profiles):
-            flushed_print(
-                f"{INFO_MSG} indirect link profile: {indirect_file.name} is created from link-profile file: {self._link_profile_file.name}")
+            self.logger.info(
+                f"Indirect link profile: {indirect_file.name} is created from link-profile file: {self._link_profile_file.name}")
             with open(indirect_file, "w") as indirect:
                 indirect.writelines(["%s\n" % item for item in indirect_profile]
                                     )

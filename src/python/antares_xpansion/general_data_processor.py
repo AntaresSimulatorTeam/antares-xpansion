@@ -3,7 +3,7 @@ import os
 import shutil
 from pathlib import Path
 
-from antares_xpansion.logger import flushed_print
+from antares_xpansion.logger import step_logger
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 
 
@@ -15,6 +15,7 @@ class GeneralDataFileExceptions:
 class GeneralDataProcessor:
     def __init__(self, general_data_file_root: Path, is_accurate: bool) -> None:
 
+        self.logger = step_logger(__name__)
         self.general_data_ini = "generaldata.ini"
         self.general_data_ini_file = Path(
             os.path.normpath(
@@ -39,7 +40,7 @@ class GeneralDataProcessor:
         return self._general_data_ini_file
 
     def change_general_data_file_to_configure_antares_execution(self):
-        flushed_print("-- pre antares")
+        self.logger.info("Pre Antares")
         ini_file_backup = self._general_data_ini_file.with_suffix(
             self._general_data_ini_file.suffix + ".with-playlist")
         shutil.copyfile(self._general_data_ini_file, ini_file_backup)

@@ -10,12 +10,13 @@ import sys
 import zipfile
 from pathlib import Path
 
-from antares_xpansion.logger import flushed_print
+from antares_xpansion.logger import step_logger
 
 
 class SensitivityDriver:
     def __init__(self, sensitivity_exe):
         self.sensitivity_exe = sensitivity_exe
+        self.logger = step_logger(__name__, {"step": "Sensitivity"})
 
     def launch(
         self,
@@ -48,11 +49,11 @@ class SensitivityDriver:
         self.json_sensitivity_out_path = json_sensitivity_out_path
         self.sensitivity_log_path = sensitivity_log_path
 
-        flushed_print("-- Sensitivity study")
+        self.logger.info("Sensitivity study")
 
         old_cwd = os.getcwd()
         os.chdir(xpansion_simulation_output)
-        flushed_print(f"Current directory is now {os.getcwd()}")
+        self.logger.info(f"Current directory is now {os.getcwd()}")
 
         returned_l = subprocess.run(
             self._get_sensitivity_cmd(),

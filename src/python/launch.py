@@ -5,15 +5,15 @@ from datetime import datetime
 import json
 import logging
 from pathlib import Path
+from antares_xpansion.input_parser import InputParser
 
 from antares_xpansion.study_locker import StudyLocker
-from antares_xpansion.input_parser import InputParser
 from antares_xpansion.config_file_parser import ConfigFileParser
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.driver import XpansionDriver
 from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.__version__ import __version__, __antares_simulator_version__
-from antares_xpansion.logger import flushed_print, get_logger
+from antares_xpansion.logger import get_logger, step_logger
 from antares_xpansion.log_utils import LogUtils
 import os
 
@@ -24,16 +24,12 @@ configuration_data = config_parser.get_config_parameters()
 
 parser = InputParser()
 input_parameters = parser.parse_args()
-# logging.basicConfig(level=logging.INFO,
-#                     format='%(step)s  %(info)s',
-#                     filename='/tmp/myapp.log',
-#                     filemode='w')
 
 
+step_info = {"step": "Pre Antares"}
 logger = get_logger(__name__)
 logger.setLevel(logging.INFO)
 simple_message = {"simple": True}
-step_info = {"step": "Pre Antares"}
 logger.info(
     "----------------------------------------------------------------", extra=simple_message)
 logger.info("Running Antares Xpansion ... ", extra=step_info)

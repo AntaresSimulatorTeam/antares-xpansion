@@ -23,3 +23,10 @@ def get_logger(name):
         formatter, datefmt="%d-%m-%Y %H:%M:%S"))
     logger.addHandler(handler)
     return logger
+
+
+@staticmethod
+def step_logger(name, step={"step": ""}):
+    logger = get_logger(name)
+
+    return logging.LoggerAdapter(logger, step)
