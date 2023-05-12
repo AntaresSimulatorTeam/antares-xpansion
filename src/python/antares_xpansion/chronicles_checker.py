@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import flushed_print
 from antares_xpansion.candidates_reader import CandidatesReader
 
 
@@ -100,7 +100,8 @@ class ChronicleChecker:
                     )
                     raise NTC_And_Candidate_Mismatch
             if (
-                candidate_reader.has_installed_profile(self._study_path, candidate)
+                candidate_reader.has_installed_profile(
+                    self._study_path, candidate)
                 and candidate_reader.has_profile(self._study_path, candidate)
                 and direct_link_profile.shape != installed_direct_link_profile.shape
             ):

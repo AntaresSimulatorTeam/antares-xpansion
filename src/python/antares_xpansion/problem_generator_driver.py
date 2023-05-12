@@ -12,7 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import flushed_print
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.xpansion_utils import read_and_write_mps
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter

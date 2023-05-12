@@ -9,7 +9,7 @@ from pathlib import Path
 from dataclasses import dataclass
 
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import flushed_print
 
 
 class StudyUpdaterDriver:

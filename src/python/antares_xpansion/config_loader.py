@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 from antares_xpansion.chronicles_checker import ChronicleChecker
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import flushed_print
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues

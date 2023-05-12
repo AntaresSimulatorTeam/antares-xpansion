@@ -7,7 +7,7 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import flushed_print
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 

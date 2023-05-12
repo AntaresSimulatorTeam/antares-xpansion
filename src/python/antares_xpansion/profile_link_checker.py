@@ -6,7 +6,7 @@ from sre_constants import IN
 
 
 from antares_xpansion.split_link_profile import SplitLinkProfile
-from antares_xpansion.flushed_print import flushed_print, INFO_MSG
+from antares_xpansion.logger import flushed_print, INFO_MSG
 
 
 class ProfileLinkChecker:

@@ -10,7 +10,7 @@ import sys
 import zipfile
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import flushed_print
 
 
 class SensitivityDriver:
@@ -37,8 +37,10 @@ class SensitivityDriver:
         )
         with zipfile.ZipFile(self.simulation_output_path, 'r') as output_zip:
             output_zip.extractall(xpansion_simulation_output)
-        self.json_sensitivity_in_path = self._get_file_path(json_sensitivity_in_path)
-        self.json_benders_output_path = self._get_file_path(json_benders_output_path)
+        self.json_sensitivity_in_path = self._get_file_path(
+            json_sensitivity_in_path)
+        self.json_benders_output_path = self._get_file_path(
+            json_benders_output_path)
         self.last_master_path = self._get_file_path(last_master_path)
         self.last_master_basis = last_master_basis
         self.structure_path = self._get_file_path(structure_path)
@@ -68,7 +70,8 @@ class SensitivityDriver:
             sensitivity_path = os.path.dirname(self.sensitivity_log_path)
             for file in glob.glob(sensitivity_path + "/*"):
                 if os.path.isfile(file):
-                    output_zip.write(file, os.path.join("sensitivity", os.path.basename(file)))
+                    output_zip.write(file, os.path.join(
+                        "sensitivity", os.path.basename(file)))
         shutil.rmtree(xpansion_simulation_output)
 
     @staticmethod

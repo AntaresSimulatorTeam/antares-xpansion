@@ -10,7 +10,7 @@ from pathlib import Path
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.benders_driver import BendersDriver
 from antares_xpansion.config_loader import ConfigLoader
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import flushed_print
 from antares_xpansion.general_data_processor import GeneralDataProcessor
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 from antares_xpansion.resume_study import ResumeStudy, ResumeStudyData

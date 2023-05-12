@@ -6,7 +6,7 @@ import os
 import shutil
 import sys
 
-from antares_xpansion.flushed_print import flushed_print, WARNING_MSG
+from antares_xpansion.logger import flushed_print, WARNING_MSG
 from antares_xpansion.profile_link_checker import ProfileLinkChecker
 
 

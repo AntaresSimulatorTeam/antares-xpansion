@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print, INFO_MSG
+from antares_xpansion.logger import flushed_print, INFO_MSG
 
 
 class SplitLinkProfile:
