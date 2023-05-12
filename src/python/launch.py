@@ -12,7 +12,7 @@ from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.driver import XpansionDriver
 from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.__version__ import __version__, __antares_simulator_version__
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.flushed_print import LOGLEVEL, XpansionLogger, flushed_print
 from antares_xpansion.log_utils import LogUtils
 import os
 
@@ -23,15 +23,18 @@ configuration_data = config_parser.get_config_parameters()
 
 parser = InputParser()
 input_parameters = parser.parse_args()
-
-flushed_print(
+logger = XpansionLogger()
+logger.set_level(LOGLEVEL.INFO)
+step = "Pre Antares"
+logger.free_message(
     "----------------------------------------------------------------")
-flushed_print("Running Antares Xpansion ... ")
-flushed_print(f"user: {LogUtils.user_name()}")
-flushed_print(f"hostname: {LogUtils.host_name()}")
-flushed_print(f"Xpansion version: {__version__}")
-flushed_print(f"antares simulator version: {__antares_simulator_version__}")
-flushed_print(
+logger.message(step, "Running Antares Xpansion ... ")
+logger.message(step, f"user: {LogUtils.user_name()}")
+logger.message(step, f"hostname: {LogUtils.host_name()}")
+logger.message(step, f"Xpansion version: {__version__}")
+logger.message(
+    step, f"antares simulator version: {__antares_simulator_version__}")
+logger.free_message(
     "----------------------------------------------------------------")
 
 start_time = datetime.now()
