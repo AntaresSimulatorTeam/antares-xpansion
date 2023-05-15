@@ -17,7 +17,7 @@ class ProfileLinkChecker:
         self.INDIRECT_ALREADY_INSTALLED_LINK_PROFILE_KEY = "already-installed-indirect-link-profile"
         self.DIRECT_LINK_PROFILE_KEY = "direct-"+self.LINK_PROFILE_KEY
         self.INDIRECT_LINK_PROFILE_KEY = "indirect-"+self.LINK_PROFILE_KEY
-        self.logger = step_logger(__name__)
+        self.logger = step_logger(__name__, __class__.__name__)
 
         if (not candidate_file.exists()):
             raise ProfileLinkChecker.CandidateFileNotFound(

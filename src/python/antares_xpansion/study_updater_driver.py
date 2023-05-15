@@ -14,7 +14,7 @@ from antares_xpansion.logger import step_logger
 
 class StudyUpdaterDriver:
     def __init__(self, study_updater_exe) -> None:
-        self.logger = step_logger(__name__, {"step": "Study Updater"})
+        self.logger = step_logger(__name__, __class__.__name__)
 
         self._set_study_updater_exe(study_updater_exe)
 

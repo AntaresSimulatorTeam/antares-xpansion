@@ -25,7 +25,6 @@ configuration_data = config_parser.get_config_parameters()
 parser = InputParser()
 input_parameters = parser.parse_args()
 
-
 step_info = {"step": "Pre Antares"}
 logger = get_logger(__name__)
 logger.setLevel(logging.INFO)

@@ -20,7 +20,7 @@ class BendersDriver:
         self.benders = benders
         self.merge_mps = merge_mps
         self.benders_by_batch = benders_by_batch
-        self.logger = step_logger(__name__, {"step": "Benders"})
+        self.logger = step_logger(__name__, __class__.__name__)
 
         if (options_file != ""):
             self.options_file = options_file
@@ -46,7 +46,7 @@ class BendersDriver:
         lp_path = self.get_lp_path()
 
         os.chdir(lp_path)
-        self.logger.info("Current directory is now: ", os.getcwd())
+        self.logger.info(f"Current directory is now: {os.getcwd()}")
 
         self.set_solver()
 

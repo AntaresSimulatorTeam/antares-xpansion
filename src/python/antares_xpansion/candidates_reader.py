@@ -7,9 +7,6 @@ import numpy as np
 from .logger import step_logger
 
 
-logger = step_logger(__name__)
-
-
 class IniFileNotFound(Exception):
     pass
 
@@ -24,6 +21,8 @@ class ProfilesOfDifferentDimensions(Exception):
 
 class CandidatesReader:
     def __init__(self, file_path: Path = None):
+        self.logger = step_logger(__name__, __class__.__name__)
+
         if not file_path or not file_path.is_file():
             raise IniFileNotFound
 

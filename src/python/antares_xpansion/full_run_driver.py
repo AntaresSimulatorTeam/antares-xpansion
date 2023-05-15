@@ -16,7 +16,7 @@ class FullRunDriver:
         self.benders_driver = benders_driver
         self.problem_generation_driver = problem_generation_driver
         self.json_file_path = ""
-        self.logger = step_logger(__name__, {"step": "FullRun"})
+        self.logger = step_logger(__name__, __class__.__name__)
 
     def prepare_drivers(self, output_path: Path,
                         problem_generation_is_relaxed: bool,
@@ -65,7 +65,7 @@ class FullRunDriver:
         lp_path = self.benders_driver.get_lp_path()
 
         os.chdir(lp_path)
-        self.logger.info("Current directory is now: ", os.getcwd())
+        self.logger.info(f"Current directory is now: {os.getcwd()}")
         ret = subprocess.run(
             self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')

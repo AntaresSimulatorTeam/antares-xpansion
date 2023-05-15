@@ -7,7 +7,7 @@ from antares_xpansion.logger import step_logger
 
 class SplitLinkProfile:
     def __init__(self, link_profile_file: str, capacity_dir: Path) -> None:
-        self.logger = step_logger(__name__)
+        self.logger = step_logger(__name__, __class__.__name__)
         if not capacity_dir.exists():
             raise SplitLinkProfile.CapacityDirNotFound(
                 f"Capacity directory: {capacity_dir} was not found!")

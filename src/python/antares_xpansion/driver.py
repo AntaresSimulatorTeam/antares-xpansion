@@ -33,7 +33,7 @@ class XpansionDriver:
         """
 
         self.config_loader = config_loader
-        self.logger = step_logger(__name__)
+        self.logger = step_logger(__name__, __class__.__name__)
         self.antares_driver = AntaresDriver(
             self.config_loader.antares_exe()
         )

@@ -15,7 +15,7 @@ class GeneralDataFileExceptions:
 class GeneralDataProcessor:
     def __init__(self, general_data_file_root: Path, is_accurate: bool) -> None:
 
-        self.logger = step_logger(__name__)
+        self.logger = step_logger(__name__, __class__.__name__)
         self.general_data_ini = "generaldata.ini"
         self.general_data_ini_file = Path(
             os.path.normpath(

@@ -16,7 +16,7 @@ from antares_xpansion.logger import step_logger
 class SensitivityDriver:
     def __init__(self, sensitivity_exe):
         self.sensitivity_exe = sensitivity_exe
-        self.logger = step_logger(__name__, {"step": "Sensitivity"})
+        self.logger = step_logger(__name__, __class__.__name__)
 
     def launch(
         self,

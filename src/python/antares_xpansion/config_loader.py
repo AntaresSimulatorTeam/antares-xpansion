@@ -47,7 +47,7 @@ class ConfigLoader:
         :type config: XpansionConfig object
         """
         self.platform = sys.platform
-        self.logger = step_logger(__name__)
+        self.logger = step_logger(__name__, __class__.__name__)
 
         self._config = config
         self._last_zip = None
@@ -698,4 +698,4 @@ class ConfigLoader:
 
     def check_NTC_column_constraints(self, antares_version):
         checker = ChronicleChecker(self._config.data_dir, antares_version)
-        checker.CheckChronicleConstraints()
+        checker.check_chronicle_constraints()

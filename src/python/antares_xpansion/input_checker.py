@@ -32,7 +32,7 @@ class ProfileFileNegativeValue(Exception):
 
 INFINITY_LIST = ["+Inf", "+infini"]
 
-logger = step_logger(__name__)
+logger = step_logger(__name__, "input checks")
 
 
 def _check_profile_file_consistency(filename_path):

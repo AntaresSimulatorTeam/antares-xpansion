@@ -26,7 +26,7 @@ class AntaresDriver:
         self.ANTARES_N_CPU_OPTION = "--force-parallel"
         self.antares_n_cpu = 1  # default
         self.zip_option = "-z"
-        self.logger = step_logger(__name__, {"step": "Antares"})
+        self.logger = step_logger(__name__, __class__.__name__)
 
     def launch(self, antares_study_path, antares_n_cpu: int) -> bool:
         self._set_antares_n_cpu(antares_n_cpu)

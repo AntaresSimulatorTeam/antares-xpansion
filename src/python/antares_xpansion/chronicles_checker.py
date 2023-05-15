@@ -26,13 +26,13 @@ class NTC_And_Candidate_Mismatch(Exception):
 
 class ChronicleChecker:
     _study_path = Path()
-    logger = step_logger(__name__)
 
     def __init__(self, study_path, antares_version):
+        self.logger = step_logger(__name__, __class__.__name__)
         self.antares_version = antares_version
         self._study_path = Path(study_path)
 
-    def CheckChronicleConstraints(self):
+    def check_chronicle_constraints(self):
         # NTC mismatch can only happen after 820
         if self.antares_version < 820:
             return

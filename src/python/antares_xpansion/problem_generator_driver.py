@@ -65,7 +65,7 @@ class ProblemGeneratorDriver:
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
         self._lp_path = None
-        self.logger = step_logger(__name__, {"step": "Problem Generation"})
+        self.logger = step_logger(__name__, __class__.__name__)
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """

@@ -25,8 +25,11 @@ def get_logger(name):
     return logger
 
 
-@staticmethod
-def step_logger(name, step={"step": ""}):
+def step_logger(name, step=None, log_level=logging.INFO):
+    extra = {"step": ""}
+    if step is not None:
+        extra["step"] = step
     logger = get_logger(name)
+    logger.setLevel(log_level)
 
-    return logging.LoggerAdapter(logger, step)
+    return logging.LoggerAdapter(logger, extra)
