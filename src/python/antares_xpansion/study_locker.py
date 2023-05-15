@@ -4,6 +4,8 @@ from operator import is_not
 from pathlib import Path
 import psutil
 
+from antares_xpansion.logger import step_logger
+
 
 class StudyLocker:
     """
@@ -11,6 +13,7 @@ class StudyLocker:
     """
 
     def __init__(self, study_dir: Path) -> None:
+        self.logger = step_logger(__name__, __class__.__name__)
         self.study_dir = Path("")
         self._set_study_dir(study_dir)
         self.PID_ATTRIBUTE: str = "PID"
@@ -82,7 +85,7 @@ class StudyLocker:
     def _lock(self):
         with open(self.locker_file, "w") as locker:
             locker.write(self.PID_ATTRIBUTE + " = " + str(os.getpid()))
-        print(f"{self.study_dir} is locked")
+        self.logger.info(f"{self.study_dir} is locked")
 
     class NotAValidDirectory(Exception):
         pass
