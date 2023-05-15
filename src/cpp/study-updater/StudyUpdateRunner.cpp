@@ -29,7 +29,7 @@ void updateStudy(
   int updateFailures_l = studyUpdater.update(links_p, jsonPath_l);
 
   if (updateFailures_l) {
-    (*logger)(ProblemGenerationLog::LOGLEVEL::ERROR)
+    (*logger)(LogUtils::LOGLEVEL::ERR)
         << "Failed to update " << updateFailures_l << " files."
         << links_p.size() - updateFailures_l << " files were updated\n";
   }

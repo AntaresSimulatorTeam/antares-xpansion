@@ -3,30 +3,10 @@
 #include "Clock.h"
 
 namespace ProblemGenerationLog {
-
-std::string LogLevelToStr(const LOGLEVEL log_level) {
-  switch (log_level) {
-    case LOGLEVEL::TRACE:
-      return "<Trace> ";
-    case LOGLEVEL::DEBUG:
-      return "<Debug> ";
-    case LOGLEVEL::INFO:
-      return "<Info> ";
-    case LOGLEVEL::WARNING:
-      return "<Warning> ";
-    case LOGLEVEL::ERROR:
-      return "<Error> ";
-    case LOGLEVEL::FATAL:
-      return "<Fatal> ";
-    default:
-      return "";
-  }
-}
-
 ProblemGenerationFileLogger::ProblemGenerationFileLogger(
     const std::filesystem::path& logFilePath)
     : logFilePath_(logFilePath) {
-  SetType(LOGGERTYPE::FILE);
+  SetType(LogUtils::LOGGERTYPE::FILE);
   logFile_.open(logFilePath_, std::ofstream::out | std::ofstream::app);
   if (logFile_.fail()) {
     std::cerr << "ProblemGenerationFileLogger: Invalid file ("
@@ -41,7 +21,7 @@ void ProblemGenerationFileLogger::DisplayMessage(const std::string& message) {
 ProblemGenerationOstreamLogger::ProblemGenerationOstreamLogger(
     std::ostream& stream)
     : stream_(stream) {
-  SetType(LOGGERTYPE::CONSOLE);
+  SetType(LogUtils::LOGGERTYPE::CONSOLE);
   if (stream_.fail()) {
     std::cerr
         << "ProblemGenerationOstreamLogger: Invalid stream passed as parameter"
@@ -62,16 +42,15 @@ void ProblemGenerationLogger::DisplayMessage(const std::string& message) const {
     logger->DisplayMessage(message);
   }
 }
-void ProblemGenerationLogger::DisplayMessage(const std::string& message,
-                                             const LOGLEVEL log_level) const {
+void ProblemGenerationLogger::DisplayMessage(
+    const std::string& message, const LogUtils::LOGLEVEL log_level) const {
   for (const auto& logger : enabled_loggers_) {
-    logger->DisplayMessage(LogLevelToStr(log_level));
+    logger->DisplayMessage(LogUtils::LogLevelToStr(log_level));
     logger->DisplayMessage(message);
   }
 }
-void ProblemGenerationLogger::setLogLevel(const LOGLEVEL log_level) {
+void ProblemGenerationLogger::setLogLevel(const LogUtils::LOGLEVEL log_level) {
   log_level_ = log_level;
-  prefix_ = LogLevelToStr(log_level_);
   update_enabled_logger();
 }
 void ProblemGenerationLogger::update_enabled_logger() {
@@ -82,24 +61,21 @@ void ProblemGenerationLogger::update_enabled_logger() {
 }
 bool ProblemGenerationLogger::try_to_add_logger_to_enabled_list(
     const ProblemGenerationILoggerSharedPointer& logger) {
-  if ((logger->Type() == LOGGERTYPE::CONSOLE && log_level_ != LOGLEVEL::DEBUG &&
-       log_level_ != LOGLEVEL::TRACE) ||
-      logger->Type() == LOGGERTYPE::FILE) {
+  if ((logger->Type() == LogUtils::LOGGERTYPE::CONSOLE &&
+       log_level_ != LogUtils::LOGLEVEL::DEBUG &&
+       log_level_ != LogUtils::LOGLEVEL::TRACE) ||
+      logger->Type() == LogUtils::LOGGERTYPE::FILE) {
     enabled_loggers_.insert(logger);
     return true;
   }
   return false;
 }
-std::string ProblemGenerationLogger::PrefixMessage(
-    const LOGLEVEL& log_level) const {
-  return std::string("[") + LogLevelToStr(log_level) +
-         clock_utils::timeToStr(std::time(nullptr)) + "] ";
-}
+
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
-    const LOGLEVEL log_level) {
+    const LogUtils::LOGLEVEL log_level) {
   setLogLevel(log_level);
   for (const auto& subLogger : enabled_loggers_) {
-    subLogger->GetOstreamObject() << PrefixMessage(log_level);
+    subLogger->GetOstreamObject() << PrefixMessage(log_level, context_);
   }
   return *this;
 }
@@ -113,13 +89,16 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
 }
 
 ProblemGenerationLoggerSharedPointer BuildLogger(
-    const std::filesystem::path& log_file_path, std::ostream& stream) {
+    const std::filesystem::path& log_file_path, std::ostream& stream,
+    const std::string& context) {
   auto logFile = std::make_shared<ProblemGenerationFileLogger>(log_file_path);
   auto logStd = std::make_shared<ProblemGenerationOstreamLogger>(std::cout);
 
-  auto logger = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::INFO);
+  auto logger =
+      std::make_shared<ProblemGenerationLogger>(LogUtils::LOGLEVEL::INFO);
   logger->AddLogger(logFile);
   logger->AddLogger(logStd);
+  logger->setContext(context);
   return logger;
 }
 }  // namespace ProblemGenerationLog

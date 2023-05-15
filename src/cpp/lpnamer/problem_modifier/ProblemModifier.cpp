@@ -65,7 +65,7 @@ unsigned int ProblemModifier::get_candidate_col_id(
   if (_candidate_col_id.find(cand_name) == _candidate_col_id.end()) {
     auto log_location = LOGLOCATION;
     auto errMsg = "Candidate '" + cand_name + "' not added in problem";
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << log_location << errMsg;
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << errMsg;
     throw CandidateWasNotAddedInProblem(errMsg, log_location);
   }
   return _candidate_col_id.at(cand_name);

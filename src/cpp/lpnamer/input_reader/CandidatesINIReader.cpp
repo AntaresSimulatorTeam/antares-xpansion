@@ -29,7 +29,7 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
     const std::filesystem::path &antaresIntercoFile) const {
   std::ifstream interco_filestream(antaresIntercoFile);
   if (!interco_filestream.good()) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "unable to open " << antaresIntercoFile.string();
     std::exit(1);
   }
@@ -65,7 +65,7 @@ std::vector<std::string> CandidatesINIReader::ReadAreaFile(
     const std::filesystem::path &areaFile) const {
   std::ifstream area_filestream(areaFile);
   if (!area_filestream.good()) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "unable to open " << areaFile.string();
     std::exit(1);
   }
@@ -156,14 +156,14 @@ CandidateData CandidatesINIReader::readCandidateSection(
     candidateData.linkex =
         candidateData.link_name.substr(i + 3, candidateData.link_name.size());
     if (!checkArea(candidateData.linkor)) {
-      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+      (*logger_)(LogUtils::LOGLEVEL::FATAL)
           << LOGLOCATION << "Unrecognized area " << candidateData.linkor
           << " in section " << sectionName << " in "
           << candidateFile.string() + ".";
       std::exit(1);
     }
     if (!checkArea(candidateData.linkex)) {
-      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+      (*logger_)(LogUtils::LOGLEVEL::FATAL)
           << LOGLOCATION << "Unrecognized area " << candidateData.linkex
           << " in section " << sectionName << " in " << candidateFile.string()
           << ".";
@@ -174,7 +174,7 @@ CandidateData CandidatesINIReader::readCandidateSection(
   // Check if interco is available
   auto it = _intercoIndexMap.find(candidateData.link_name);
   if (it == _intercoIndexMap.end()) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "cannot link candidate " << candidateData.name
         << " to interco id";
     std::exit(1);

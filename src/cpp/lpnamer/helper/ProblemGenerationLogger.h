@@ -10,23 +10,23 @@
 #include <ostream>
 #include <set>
 #include <string>
+
+#include "LogUtils.h"
+#include "LoggerUtils.h"
 namespace ProblemGenerationLog {
 
-enum class LOGLEVEL { NONE, TRACE, DEBUG, INFO, WARNING, ERROR, FATAL };
-enum class LOGGERTYPE { NONE, FILE, CONSOLE };
-std::string LogLevelToStr(const LOGLEVEL log_level);
 class ProblemGenerationILogger {
  public:
   virtual ~ProblemGenerationILogger() = default;
   virtual void DisplayMessage(const std::string& message) = 0;
   virtual std::ostream& GetOstreamObject() = 0;
-  LOGGERTYPE Type() const { return type_; }
+  LogUtils::LOGGERTYPE Type() const { return type_; }
 
  protected:
-  void SetType(const LOGGERTYPE& type) { type_ = type; }
+  void SetType(const LogUtils::LOGGERTYPE& type) { type_ = type; }
 
  private:
-  LOGGERTYPE type_ = LOGGERTYPE::NONE;
+  LogUtils::LOGGERTYPE type_ = LogUtils::LOGGERTYPE::NONE;
 };
 using ProblemGenerationILoggerSharedPointer =
     std::shared_ptr<ProblemGenerationILogger>;
@@ -60,33 +60,34 @@ using ProblemGenerationLoggerSharedPointer =
 
 class ProblemGenerationLogger {
  private:
-  std::string prefix_;
-  LOGLEVEL log_level_;
+  LogUtils::LOGLEVEL log_level_;
+  std::string context_ = "Unknown Context";
 
  public:
-  explicit ProblemGenerationLogger(const LOGLEVEL log_level)
-      : prefix_(LogLevelToStr(log_level)), log_level_(log_level) {}
+  explicit ProblemGenerationLogger(const LogUtils::LOGLEVEL log_level)
+      : log_level_(log_level) {}
   ~ProblemGenerationLogger() = default;
 
   void AddLogger(const ProblemGenerationILoggerSharedPointer& logger);
   void DisplayMessage(const std::string& message) const;
   void DisplayMessage(const std::string& message,
-                      const LOGLEVEL log_level) const;
-  void setLogLevel(const LOGLEVEL log_level);
+                      const LogUtils::LOGLEVEL log_level) const;
+  void setLogLevel(const LogUtils::LOGLEVEL log_level);
+  void setContext(const std::string& context) { context_ = context; }
 
-  std::string PrefixMessage() const { return PrefixMessage(log_level_); }
-  std::string PrefixMessage(const LOGLEVEL&) const;
-  ProblemGenerationLogger& operator()(const LOGLEVEL log_level) {
+  ProblemGenerationLogger& operator()(const LogUtils::LOGLEVEL log_level) {
     return (*this) << log_level;
   }
-  ProblemGenerationLogger& operator()() { return (*this) << PrefixMessage(); }
+  ProblemGenerationLogger& operator()() {
+    return (*this) << PrefixMessage(log_level_, context_);
+  }
 
   ProblemGenerationLogger& operator<<(std::ostream& (*f)(std::ostream&));
   ProblemGenerationLogger& operator<<(
       const ProblemGenerationLoggerSharedPointer logger) {
     return (*logger);
   }
-  ProblemGenerationLogger& operator<<(const LOGLEVEL log_level);
+  ProblemGenerationLogger& operator<<(const LogUtils::LOGLEVEL log_level);
 
   template <typename T>
   ProblemGenerationLogger& operator<<(T const& t);
@@ -106,7 +107,8 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(T const& t) {
   return *this;
 }
 ProblemGenerationLoggerSharedPointer BuildLogger(
-    const std::filesystem::path& log_file_path, std::ostream& stream);
+    const std::filesystem::path& log_file_path, std::ostream& stream,
+    const std::string& context);
 
 }  // namespace ProblemGenerationLog
 #endif  //__PROBLEMGENERATIONLOGGER_H__

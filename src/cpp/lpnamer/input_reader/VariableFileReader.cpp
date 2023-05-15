@@ -27,7 +27,7 @@ VariableFileReader::VariableFileReader(
   if (!file.good()) {
     auto log_location = LOGLOCATION;
     auto errMsg = "Unable to open '" + fileName.string() + "'";
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << log_location << errMsg;
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << errMsg;
     throw VariablesNotFound(errMsg, log_location);
   }
   ReadVarsFromStream(file, links, variable_name_config);

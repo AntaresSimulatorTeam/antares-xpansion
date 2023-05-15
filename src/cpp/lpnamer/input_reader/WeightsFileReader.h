@@ -29,8 +29,8 @@ class WeightsFileReader {
       : weights_file_path_(weights_file_path),
         number_of_active_years_(number_of_active_years),
         logger_(logger) {}
-  class WeightsFileError : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+  class WeightsFileError : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
   class WeightsFileOpenError : public WeightsFileError {
     using WeightsFileError::WeightsFileError;

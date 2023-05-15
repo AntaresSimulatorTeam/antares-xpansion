@@ -7,7 +7,7 @@
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &direct_filename,
     const std::filesystem::path &indirect_file_name) {
-  (*logger_)(ProblemGenerationLog::LOGLEVEL::DEBUG)
+  (*logger_)(LogUtils::LOGLEVEL::DEBUG)
       << LOGLOCATION << "direct_filename : " << direct_filename << "\n"
       << "indirect_file_name: " << indirect_file_name << "\n";
   EnsureFileIsGood(direct_filename);
@@ -20,7 +20,7 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
 void LinkProfileReader::EnsureFileIsGood(
     const std::filesystem::path &direct_filename) const {
   if (std::ifstream infile(direct_filename); !infile.good()) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "unable to open file" << direct_filename;
     throw std::filesystem::filesystem_error(LOGLOCATION + "unable to open file",
                                             direct_filename, std::error_code());
@@ -41,7 +41,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
   std::ifstream infile(filename);
   if (!infile.good()) {
     auto errMsg = std::string("unable to open file ");
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << errMsg << filename;
     throw std::filesystem::filesystem_error(LOGLOCATION + errMsg, filename,
                                             std::error_code());
@@ -62,7 +62,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
     } else {
       auto errMsg = std::string("error not enough line in link-profile ") +
                     filename.string();
-      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+      (*logger_)(LogUtils::LOGLEVEL::FATAL)
           << LOGLOCATION << errMsg;
       throw std::domain_error(errMsg);
     }

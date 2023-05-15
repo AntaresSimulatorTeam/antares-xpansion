@@ -39,8 +39,8 @@ class VariableFileReader {
   const std::map<linkId, ColumnsToChange>& getDirectCostVarColumns() const;
   const std::map<linkId, ColumnsToChange>& getIndirectCostVarColumns() const;
 
-  class VariablesNotFound : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+  class VariablesNotFound : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
 
  private:
