@@ -6,7 +6,6 @@ import logging
 flushed_print = functools.partial(print, flush=True)
 
 
-@staticmethod
 def get_logger(name):
 
     class ConditionalFormatter(logging.Formatter):
