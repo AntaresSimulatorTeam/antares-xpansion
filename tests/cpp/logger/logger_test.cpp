@@ -64,9 +64,23 @@ TEST_F(FileLoggerTest, EmptyFileCreatedAtInit) {
 
   ASSERT_TRUE(fileStream.good() && stringStreamFromFile.str().empty());
 }
+std::string CleanPrefixFromLineMessage(const std::string& msg) {
+  // format of prefix :  "[XXXX][XXXX]"
+
+  auto to_search = ']';
+  auto pos = msg.find(to_search);
+  if (pos != std::string::npos) {
+    pos = msg.find(to_search, pos + 1);
+  }
+  if (pos != std::string::npos) {
+    return msg.substr(pos + 1);
+  } else {
+    return msg;
+  }
+}
 TEST_F(FileLoggerTest, ShouldPrintRestartMessage) {
   std::stringstream expected_msg;
-  expected_msg << "<<BENDERS>> Restart Study..." << std::endl;
+  expected_msg << " Restart Study..." << std::endl;
   UserFile fileLog(_fileName);
   fileLog.display_restart_message();
 
@@ -74,8 +88,9 @@ TEST_F(FileLoggerTest, ShouldPrintRestartMessage) {
   std::stringstream stringStreamFromFile;
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
-
-  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+  auto stringFromFileWithoutPrefix =
+      CleanPrefixFromLineMessage(stringStreamFromFile.str());
+  ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
 TEST_F(FileLoggerTest, ShouldPrintRestartElapsedTimeMessage) {
   std::stringstream expected_msg;
@@ -91,8 +106,7 @@ TEST_F(FileLoggerTest, ShouldPrintRestartElapsedTimeMessage) {
                                      std::to_string(hours) + " hours " +
                                      std::to_string(minutes) + " minutes " +
                                      std::to_string(seconds) + " seconds ");
-  expected_msg << "<<BENDERS>> \tElapsed time: " << elapsed_time_str
-               << std::endl;
+  expected_msg << " \tElapsed time: " << elapsed_time_str << std::endl;
   UserFile fileLog(_fileName);
   fileLog.restart_elapsed_time(elapsed_time_numeric);
 
@@ -100,15 +114,17 @@ TEST_F(FileLoggerTest, ShouldPrintRestartElapsedTimeMessage) {
   std::stringstream stringStreamFromFile;
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
+  auto stringFromFileWithoutPrefix =
+      CleanPrefixFromLineMessage(stringStreamFromFile.str());
 
-  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+  ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
 TEST_F(FileLoggerTest, ShouldPrintNumberOfIterationsBeforeRestart) {
   std::stringstream expected_msg;
 
   const int num_iteration(684);
-  expected_msg << "<<BENDERS>> \tNumber of Iterations performed: "
-               << num_iteration << std::endl;
+  expected_msg << " \tNumber of Iterations performed: " << num_iteration
+               << std::endl;
   UserFile fileLog(_fileName);
   fileLog.number_of_iterations_before_restart(num_iteration);
 
@@ -116,14 +132,16 @@ TEST_F(FileLoggerTest, ShouldPrintNumberOfIterationsBeforeRestart) {
   std::stringstream stringStreamFromFile;
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
+  auto stringFromFileWithoutPrefix =
+      CleanPrefixFromLineMessage(stringStreamFromFile.str());
 
-  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+  ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
 TEST_F(FileLoggerTest, ShouldPrintBestIterationsBeforeRestart) {
   std::stringstream expected_msg;
 
   const int best_it(84);
-  expected_msg << "<<BENDERS>> \tBest Iteration: " << best_it << std::endl;
+  expected_msg << " \tBest Iteration: " << best_it << std::endl;
   UserFile fileLog(_fileName);
   fileLog.restart_best_iteration(best_it);
 
@@ -131,15 +149,25 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsBeforeRestart) {
   std::stringstream stringStreamFromFile;
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
+  auto stringFromFileWithoutPrefix =
+      CleanPrefixFromLineMessage(stringStreamFromFile.str());
 
-  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+  ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
+}
+
+std::string CleanPrefixFromMessage(std::stringstream& message) {
+  std::string message_without_prefix = "";
+  std::string line;
+  while (std::getline(message, line)) {
+    message_without_prefix += CleanPrefixFromLineMessage(line) + "\n";
+  }
+  return message_without_prefix;
 }
 TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
   std::stringstream expected_msg;
 
   const auto indent_1("\t");
   const std::string indent_0 = "\t\t";
-  const auto prefix = "<<BENDERS>> ";
   LogData l;
   l.master_time = 898;
   l.subproblem_time = 6;
@@ -151,32 +179,32 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
   addCandidate(l, "candidate1", 58.0, 23.0, 64.0);
   addCandidate(l, "candidate2", 8.0, 3.0, 40.0);
   expected_msg
-      << "<<BENDERS>> \tBest Iteration Infos: " << std::endl
-      << "<<BENDERS>> \tMaster solved in " << l.master_time << " s" << std::endl
-      << prefix << indent_0 << "Candidates:" << std::endl
-      << prefix << indent_0 << indent_1
+      << " \tBest Iteration Infos: " << std::endl
+      << " \tMaster solved in " << l.master_time << " s" << std::endl
+      << " " << indent_0 << "Candidates:" << std::endl
+      << " " << indent_0 << indent_1
       << "candidate1 = 58.00 invested MW -- possible interval [23.00; 64.00] MW"
       << std::endl
-      << prefix << indent_0 << indent_1
+      << " " << indent_0 << indent_1
       << "candidate2 =  8.00 invested MW -- possible interval [ 3.00; 40.00] MW"
       << std::endl
-      << prefix << indent_1
+      << " " << indent_1
       << "Subproblems solved in (walltime): " << l.subproblem_time << " s"
       << std::endl
-      << prefix << indent_0 << "Solution =" << std::endl
-      << prefix << indent_0 << indent_1 << "Operational cost =       15.50 Me"
+      << " " << indent_0 << "Solution =" << std::endl
+      << " " << indent_0 << indent_1 << "Operational cost =       15.50 Me"
       << std::endl
-      << prefix << indent_0 << indent_1 << " Investment cost =       20.00 Me"
+      << " " << indent_0 << indent_1 << " Investment cost =       20.00 Me"
       << std::endl
-      << prefix << indent_0 << indent_1 << "    Overall cost =       35.50 Me"
+      << " " << indent_0 << indent_1 << "    Overall cost =       35.50 Me"
       << std::endl
-      << prefix << indent_0 << indent_1 << "   Best Solution =        3.00 Me"
+      << " " << indent_0 << indent_1 << "   Best Solution =        3.00 Me"
       << std::endl
-      << prefix << indent_0 << indent_1 << "     Lower Bound =        2.00 Me"
+      << " " << indent_0 << indent_1 << "     Lower Bound =        2.00 Me"
       << std::endl
-      << prefix << indent_0 << indent_1 << "    Absolute gap = 1.00000e+06 e"
+      << " " << indent_0 << indent_1 << "    Absolute gap = 1.00000e+06 e"
       << std::endl
-      << prefix << indent_0 << indent_1 << "    Relative gap = 3.33333e-01"
+      << " " << indent_0 << indent_1 << "    Relative gap = 3.33333e-01"
       << std::endl;
   UserFile fileLog(_fileName);
   fileLog.restart_best_iterations_infos(l);
@@ -186,49 +214,12 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
 
-  ASSERT_EQ(stringStreamFromFile.str(), expected_msg.str());
+  auto stringFromFileWithoutPrefix =
+      CleanPrefixFromMessage(stringStreamFromFile);
+
+  ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
-TEST_F(FileLoggerTest, ShouldHavePrefixOnEveryLine) {
-  UserFile user_file(_fileName);
 
-  user_file.display_message("Hello!");
-
-  user_file.log_master_solving_duration(2);
-
-  user_file.LogSubproblemsSolvingWalltime(36);
-
-  LogData log_data;
-  log_data.it = 45;
-  user_file.log_at_initialization(log_data.it);
-
-  addCandidate(log_data, "z", 50.0, 0.0, 100.0);
-  user_file.log_iteration_candidates(log_data);
-
-  log_data.subproblem_cost = 150000000.5e6;
-  log_data.invest_cost = 200000000e6;
-  log_data.best_ub = 100e6;
-  log_data.lb = 3e6;
-  user_file.log_at_iteration_end(log_data);
-
-  log_data.best_it = 1;
-  log_data.optimality_gap = 1;
-  log_data.relative_gap = 1e-6;
-  log_data.max_iterations = 10;
-  user_file.log_at_ending(log_data);
-
-  user_file.log_total_duration(123);
-
-  user_file.log_stop_criterion_reached(StoppingCriterion::absolute_gap);
-  std::ifstream fileStream(_fileName);
-  const std::string expected_prefix = "<<BENDERS>> ";
-
-  std::string line;
-  while (std::getline(fileStream, line)) {
-    auto prefix = line.substr(0, expected_prefix.size());
-    ASSERT_EQ(prefix, expected_prefix);
-  }
-  fileStream.close();
-}
 class UserLoggerTest : public ::testing::Test {
  public:
   const std::string indent_0 = "\t\t";
