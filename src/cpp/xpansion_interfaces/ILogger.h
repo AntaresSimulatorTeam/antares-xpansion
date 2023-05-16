@@ -101,6 +101,7 @@ class ILogger {
   virtual void LogAtInitialRelaxation() = 0;
   virtual void LogAtSwitchToInteger() = 0;
   virtual void number_of_sub_problem_resolved(int number) = 0;
+  const std::string CONTEXT = "Benders";
 };
 
 using Logger = std::shared_ptr<ILogger>;

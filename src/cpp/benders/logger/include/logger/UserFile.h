@@ -47,8 +47,6 @@ class UserFile : public ILogger {
   void LogAtSwitchToInteger() override;
   void number_of_sub_problem_resolved(int number) override;
 
-  const std::string LINE_PREFIX = "<<BENDERS>> ";
-
  private:
   std::ofstream _file;
   std::string _filename;
