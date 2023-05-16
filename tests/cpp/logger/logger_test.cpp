@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "ILogger.h"
+#include "LogPrefixManip.h"
 #include "gtest/gtest.h"
 #include "logger/Master.h"
 #include "logger/User.h"
@@ -64,20 +65,7 @@ TEST_F(FileLoggerTest, EmptyFileCreatedAtInit) {
 
   ASSERT_TRUE(fileStream.good() && stringStreamFromFile.str().empty());
 }
-std::string CleanPrefixFromLineMessage(const std::string& msg) {
-  // format of prefix :  "[XXXX][XXXX]"
 
-  auto to_search = ']';
-  auto pos = msg.find(to_search);
-  if (pos != std::string::npos) {
-    pos = msg.find(to_search, pos + 1);
-  }
-  if (pos != std::string::npos) {
-    return msg.substr(pos + 1);
-  } else {
-    return msg;
-  }
-}
 TEST_F(FileLoggerTest, ShouldPrintRestartMessage) {
   std::stringstream expected_msg;
   expected_msg << " Restart Study..." << std::endl;
@@ -89,7 +77,7 @@ TEST_F(FileLoggerTest, ShouldPrintRestartMessage) {
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
   auto stringFromFileWithoutPrefix =
-      CleanPrefixFromLineMessage(stringStreamFromFile.str());
+      RemovePrefixFromLineMessage(stringStreamFromFile.str());
   ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
 TEST_F(FileLoggerTest, ShouldPrintRestartElapsedTimeMessage) {
@@ -115,7 +103,7 @@ TEST_F(FileLoggerTest, ShouldPrintRestartElapsedTimeMessage) {
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
   auto stringFromFileWithoutPrefix =
-      CleanPrefixFromLineMessage(stringStreamFromFile.str());
+      RemovePrefixFromLineMessage(stringStreamFromFile.str());
 
   ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
@@ -133,7 +121,7 @@ TEST_F(FileLoggerTest, ShouldPrintNumberOfIterationsBeforeRestart) {
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
   auto stringFromFileWithoutPrefix =
-      CleanPrefixFromLineMessage(stringStreamFromFile.str());
+      RemovePrefixFromLineMessage(stringStreamFromFile.str());
 
   ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
@@ -150,19 +138,11 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsBeforeRestart) {
   stringStreamFromFile << fileStream.rdbuf();
   fileStream.close();
   auto stringFromFileWithoutPrefix =
-      CleanPrefixFromLineMessage(stringStreamFromFile.str());
+      RemovePrefixFromLineMessage(stringStreamFromFile.str());
 
   ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
 
-std::string CleanPrefixFromMessage(std::stringstream& message) {
-  std::string message_without_prefix = "";
-  std::string line;
-  while (std::getline(message, line)) {
-    message_without_prefix += CleanPrefixFromLineMessage(line) + "\n";
-  }
-  return message_without_prefix;
-}
 TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
   std::stringstream expected_msg;
 
@@ -215,7 +195,7 @@ TEST_F(FileLoggerTest, ShouldPrintBestIterationsInfos) {
   fileStream.close();
 
   auto stringFromFileWithoutPrefix =
-      CleanPrefixFromMessage(stringStreamFromFile);
+      RemovePrefixFromMessage(stringStreamFromFile);
 
   ASSERT_EQ(stringFromFileWithoutPrefix, expected_msg.str());
 }
@@ -236,8 +216,7 @@ TEST_F(UserLoggerTest, EmptyStreamAtInit) {
 }
 
 TEST_F(UserLoggerTest, InvalidStreamNotified) {
-  const std::string expectedErrorString =
-      "Invalid stream passed as parameter\n";
+  const std::string expected_msg = " Invalid stream passed as parameter\n";
 
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
@@ -248,17 +227,23 @@ TEST_F(UserLoggerTest, InvalidStreamNotified) {
 
   std::cerr.rdbuf(initialBufferCerr);
 
-  ASSERT_EQ(redirectedErrorStream.str(), expectedErrorString);
+  auto logWithoutPrefix =
+      RemovePrefixFromLineMessage(redirectedErrorStream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected_msg);
 }
 
 TEST_F(UserLoggerTest, InitLog) {
   LogData logData;
   logData.it = 1;
   std::stringstream expected;
-  expected << "ITERATION 1:" << std::endl;
+  expected << " ITERATION 1:" << std::endl;
 
   _logger.log_at_initialization(logData.it);
-  ASSERT_EQ(_stream.str(), expected.str());
+
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateOrder) {
@@ -268,19 +253,21 @@ TEST_F(UserLoggerTest, IterationStartLogCandidateOrder) {
   addCandidate(logData, "c", 50.0, 0.0, 100.0);
 
   std::stringstream expected;
-  expected << indent_0 << "Candidates:" << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << "Candidates:" << std::endl;
+  expected << " " << indent_0 << indent_1
            << "a = 10.00 invested MW -- possible interval [0.00;  50.00] MW"
            << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << indent_1
            << "c = 50.00 invested MW -- possible interval [0.00; 100.00] MW"
            << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << indent_1
            << "z = 50.00 invested MW -- possible interval [0.00; 100.00] MW"
            << std::endl;
 
   _logger.log_iteration_candidates(logData);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateLongInvestment) {
@@ -290,22 +277,24 @@ TEST_F(UserLoggerTest, IterationStartLogCandidateLongInvestment) {
   addCandidate(logData, "b", 20.0, 0.0, 200.0);
 
   std::stringstream expected;
-  expected << indent_0 << "Candidates:" << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << "Candidates:" << std::endl;
+  expected << " " << indent_0 << indent_1
            << "a =      10.00 invested MW -- possible interval [200.00;       "
               "50.00] MW"
            << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << indent_1
            << "b =      20.00 invested MW -- possible interval [  0.00;      "
               "200.00] MW"
            << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << indent_1
            << "z = 5000000.00 invested MW -- possible interval [  0.00; "
               "10000000.00] MW"
            << std::endl;
 
   _logger.log_iteration_candidates(logData);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, IterationStartLogCandidateNameLength) {
@@ -315,22 +304,24 @@ TEST_F(UserLoggerTest, IterationStartLogCandidateNameLength) {
   addCandidate(logData, "very long name of investment", 50.0, 0.0, 100.0);
 
   std::stringstream expected;
-  expected << indent_0 << "Candidates:" << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << "Candidates:" << std::endl;
+  expected << " " << indent_0 << indent_1
            << "                           a = 10.00 invested MW -- possible "
               "interval [0.00;  50.00] MW"
            << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << indent_1
            << "very long name of investment = 50.00 invested MW -- possible "
               "interval [0.00; 100.00] MW"
            << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << indent_1
            << "                           z = 50.00 invested MW -- possible "
               "interval [0.00; 100.00] MW"
            << std::endl;
 
   _logger.log_iteration_candidates(logData);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, IterationEndLog) {
@@ -341,24 +332,26 @@ TEST_F(UserLoggerTest, IterationEndLog) {
   logData.lb = 2e6;
 
   std::stringstream expected;
-  expected << indent_0 << "Solution =" << std::endl;
-  expected << indent_0 << indent_1 << "Operational cost =       15.50 Me"
+  expected << " " << indent_0 << "Solution =" << std::endl;
+  expected << " " << indent_0 << indent_1 << "Operational cost =       15.50 Me"
            << std::endl;
-  expected << indent_0 << indent_1 << " Investment cost =       20.00 Me"
+  expected << " " << indent_0 << indent_1 << " Investment cost =       20.00 Me"
            << std::endl;
-  expected << indent_0 << indent_1 << "    Overall cost =       35.50 Me"
+  expected << " " << indent_0 << indent_1 << "    Overall cost =       35.50 Me"
            << std::endl;
-  expected << indent_0 << indent_1 << "   Best Solution =        3.00 Me"
+  expected << " " << indent_0 << indent_1 << "   Best Solution =        3.00 Me"
            << std::endl;
-  expected << indent_0 << indent_1 << "     Lower Bound =        2.00 Me"
+  expected << " " << indent_0 << indent_1 << "     Lower Bound =        2.00 Me"
            << std::endl;
-  expected << indent_0 << indent_1 << "    Absolute gap = 1.00000e+06 e"
+  expected << " " << indent_0 << indent_1 << "    Absolute gap = 1.00000e+06 e"
            << std::endl;
-  expected << indent_0 << indent_1 << "    Relative gap = 3.33333e-01"
+  expected << " " << indent_0 << indent_1 << "    Relative gap = 3.33333e-01"
            << std::endl;
 
   _logger.log_at_iteration_end(logData);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, IterationEndLogLongCost) {
@@ -369,56 +362,66 @@ TEST_F(UserLoggerTest, IterationEndLogLongCost) {
   logData.lb = 3e6;
 
   std::stringstream expected;
-  expected << indent_0 << "Solution =" << std::endl;
-  expected << indent_0 << indent_1 << "Operational cost = 150000000.50 Me"
+  expected << " " << indent_0 << "Solution =" << std::endl;
+  expected << " " << indent_0 << indent_1
+           << "Operational cost = 150000000.50 Me" << std::endl;
+  expected << " " << indent_0 << indent_1
+           << " Investment cost = 200000000.00 Me" << std::endl;
+  expected << " " << indent_0 << indent_1
+           << "    Overall cost = 350000000.50 Me" << std::endl;
+  expected << " " << indent_0 << indent_1
+           << "   Best Solution =       100.00 Me" << std::endl;
+  expected << " " << indent_0 << indent_1
+           << "     Lower Bound =         3.00 Me" << std::endl;
+  expected << " " << indent_0 << indent_1 << "    Absolute gap =  9.70000e+07 e"
            << std::endl;
-  expected << indent_0 << indent_1 << " Investment cost = 200000000.00 Me"
-           << std::endl;
-  expected << indent_0 << indent_1 << "    Overall cost = 350000000.50 Me"
-           << std::endl;
-  expected << indent_0 << indent_1 << "   Best Solution =       100.00 Me"
-           << std::endl;
-  expected << indent_0 << indent_1 << "     Lower Bound =         3.00 Me"
-           << std::endl;
-  expected << indent_0 << indent_1 << "    Absolute gap =  9.70000e+07 e"
-           << std::endl;
-  expected << indent_0 << indent_1 << "    Relative gap =  9.70000e-01"
+  expected << " " << indent_0 << indent_1 << "    Relative gap =  9.70000e-01"
            << std::endl;
 
   _logger.log_at_iteration_end(logData);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, MaxIterationsReached) {
   std::stringstream expected;
-  expected << "--- Run completed: maximum iterations reached" << std::endl;
+  expected << " --- Run completed: maximum iterations reached" << std::endl;
   StoppingCriterion criterion = StoppingCriterion::max_iteration;
   _logger.log_stop_criterion_reached(criterion);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, TimeLimitReached) {
   std::stringstream expected;
-  expected << "--- Run completed: timelimit reached" << std::endl;
+  expected << " --- Run completed: timelimit reached" << std::endl;
   StoppingCriterion criterion = StoppingCriterion::timelimit;
   _logger.log_stop_criterion_reached(criterion);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, AbsoluteGapReached) {
   std::stringstream expected;
-  expected << "--- Run completed: absolute gap reached" << std::endl;
+  expected << " --- Run completed: absolute gap reached" << std::endl;
   StoppingCriterion criterion = StoppingCriterion::absolute_gap;
   _logger.log_stop_criterion_reached(criterion);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, RelativeGapReached) {
   std::stringstream expected;
-  expected << "--- Run completed: relative gap reached" << std::endl;
+  expected << " --- Run completed: relative gap reached" << std::endl;
   StoppingCriterion criterion = StoppingCriterion::relative_gap;
   _logger.log_stop_criterion_reached(criterion);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, EndLog) {
@@ -427,13 +430,15 @@ TEST_F(UserLoggerTest, EndLog) {
   logData.subproblem_cost = 1e6;
   logData.invest_cost = 10e6;
   std::stringstream expected;
-  expected << indent_1 << "Total number of iterations done = " << logData.it
-           << std::endl;
-  expected << indent_1 << "Best solution = it 1" << std::endl;
-  expected << indent_1 << " Overall cost = 11.00 Me" << std::endl;
+  expected << " " << indent_1
+           << "Total number of iterations done = " << logData.it << std::endl;
+  expected << " " << indent_1 << "Best solution = it 1" << std::endl;
+  expected << " " << indent_1 << " Overall cost = 11.00 Me" << std::endl;
 
   _logger.log_at_ending(logData);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
@@ -443,12 +448,12 @@ TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
   addCandidate(logData1, "a", 10.0, 200.0, 50.0);
 
   std::stringstream expected;
-  expected << indent_0 << "Candidates:" << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << "Candidates:" << std::endl;
+  expected << " " << indent_0 << indent_1
            << "a =      10.00 invested MW -- possible interval [200.00;       "
               "50.00] MW"
            << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << indent_1
            << "z = 5000000.00 invested MW -- possible interval [  0.00; "
               "10000000.00] MW"
            << std::endl;
@@ -458,62 +463,77 @@ TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
   addCandidate(logData2, "b", 6000000.0, 0.0, 10000000.0);
   addCandidate(logData2, "a", 200.0, 200.0, 50.0);
 
-  expected << indent_0 << "Candidates:" << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << "Candidates:" << std::endl;
+  expected << " " << indent_0 << indent_1
            << "a =     200.00 invested MW -- possible interval [200.00;       "
               "50.00] MW"
            << std::endl;
-  expected << indent_0 << indent_1
+  expected << " " << indent_0 << indent_1
            << "b = 6000000.00 invested MW -- possible interval [  0.00; "
               "10000000.00] MW"
            << std::endl;
   _logger.log_iteration_candidates(logData1);
   _logger.log_iteration_candidates(logData2);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, DisplayMessage) {
   std::stringstream expected;
-  expected << "Message" << std::endl;
+  expected << " Message" << std::endl;
 
   _logger.display_message("Message");
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, LogMasterDuration) {
   std::stringstream expected;
-  expected << indent_1 << "Master solved in 3 s" << std::endl;
+  expected << " " << indent_1 << "Master solved in 3 s" << std::endl;
   _logger.log_master_solving_duration(3.000000);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, LogSubProblemDuration) {
   std::stringstream expected;
-  expected << indent_1 << "Subproblems solved in (walltime): 3 s" << std::endl;
+  expected << " " << indent_1 << "Subproblems solved in (walltime): 3 s"
+           << std::endl;
   _logger.LogSubproblemsSolvingWalltime(3.000000);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, LogTotalDuration) {
   std::stringstream expected;
-  expected << "Benders ran in 3 s" << std::endl;
+  expected << " Benders ran in 3 s" << std::endl;
   _logger.log_total_duration(3.000000);
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, LogAtInitialRelaxation) {
   std::stringstream expected;
-  expected << "--- Switch master formulation to relaxed" << std::endl;
+  expected << " --- Switch master formulation to relaxed" << std::endl;
   _logger.LogAtInitialRelaxation();
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 TEST_F(UserLoggerTest, LogAtSwitchInteger) {
   std::stringstream expected;
-  expected << "--- Relaxed gap reached, switch master formulation to integer"
+  expected << " --- Relaxed gap reached, switch master formulation to integer"
            << std::endl;
   _logger.LogAtSwitchToInteger();
-  ASSERT_EQ(_stream.str(), expected.str());
+  auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
+
+  ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
 class SimpleLoggerMock : public ILogger {
@@ -534,6 +554,9 @@ class SimpleLoggerMock : public ILogger {
   }
 
   void display_message(const std::string& str) { _displaymessage = str; }
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level) {
+    _displaymessage = str;
+  }
 
   void log_at_initialization(const int it_number) override { _initCall = true; }
 

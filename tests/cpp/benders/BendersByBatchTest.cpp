@@ -2,10 +2,12 @@
 
 #include "BatchCollection.h"
 #include "BendersByBatch.h"
+#include "LogPrefixManip.h"
 #include "RandomBatchShuffler.h"
 #include "gtest/gtest.h"
 #include "logger/Master.h"
 #include "logger/User.h"
+
 class BatchCollectionTest : public ::testing::Test {
  public:
   const std::vector<std::string> sub_problems_name_list = {"P1", "P2", "P3"};
@@ -34,11 +36,10 @@ TEST_F(BatchCollectionTest,
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
-  auto expected = std::string("Warning: batch_size(") +
-                  std::to_string(batch_size) +
+  auto expected = std::string(" batch_size(") + std::to_string(batch_size) +
                   ") can not be greater than number of subproblems (" +
-                  std::to_string(sub_problems_name_list_size) +
-                  ")\nSetting batch_size = number of subproblems(" +
+                  std::to_string(sub_problems_name_list_size) + ")\n" +
+                  " Setting batch_size = number of subproblems(" +
                   std::to_string(sub_problems_name_list_size) +
                   ")\nWhich means that there is only one batch!\n";
   auto batch_collection =
@@ -46,7 +47,9 @@ TEST_F(BatchCollectionTest,
   batch_collection.BuildBatches();
 
   std::cerr.rdbuf(initialBufferCerr);
-  ASSERT_TRUE(redirectedErrorStream.str().find(expected) != std::string::npos);
+  auto redirectedErrorStreamWithoutLogPrefix =
+      RemovePrefixFromMessage(redirectedErrorStream);
+  ASSERT_EQ(redirectedErrorStreamWithoutLogPrefix, expected);
 }
 TEST_F(
     BatchCollectionTest,

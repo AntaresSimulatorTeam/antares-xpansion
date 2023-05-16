@@ -9,7 +9,6 @@
 #include "CandidateLog.h"
 #include "Commons.h"
 #include "IterationResultLog.h"
-#include "LogUtils.h"
 #include "LoggerUtils.h"
 #include "Timer.h"
 using xpansion::logger::commons::indent_1;
@@ -29,6 +28,11 @@ UserFile::~UserFile() { _file.close(); }
 
 void UserFile::display_message(const std::string &str) {
   _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT) << str << std::endl;
+  _file.flush();
+}
+void UserFile::display_message(const std::string &str,
+                               LogUtils::LOGLEVEL level) {
+  _file << PrefixMessage(level, CONTEXT) << str << std::endl;
   _file.flush();
 }
 

@@ -8,6 +8,7 @@
 
 #include "ILogger.h"
 #include "logger/User.h"
+
 namespace xpansion {
 namespace logger {
 
@@ -17,7 +18,8 @@ class UserFile : public ILogger {
   ~UserFile();
 
   void display_message(const std::string &str) override;
-
+  void display_message(const std::string &str,
+                       LogUtils::LOGLEVEL level) override;
   void log_at_initialization(const int it_number) override;
 
   void log_iteration_candidates(const LogData &d) override;

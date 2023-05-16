@@ -1,5 +1,8 @@
 
-add_library(tests_utils STATIC RandomDirGenerator.h RandomDirGenerator.cpp)
+add_library(tests_utils STATIC 
+						RandomDirGenerator.h RandomDirGenerator.cpp
+						LogPrefixManip.h LogPrefixManip.cpp
+						 )
 target_include_directories (helpers
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
