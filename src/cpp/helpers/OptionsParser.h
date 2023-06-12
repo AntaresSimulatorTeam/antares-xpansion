@@ -24,20 +24,22 @@ class OptionsParser {
     return desc_.add_options();
   }
   virtual void Parse(unsigned int argc, const char* const* argv);
-  class NullArgumentsValues : public XpansionError<std::runtime_error> {
+  class NullArgumentsValues
+      : public LogUtils::XpansionError<std::runtime_error> {
    public:
     explicit NullArgumentsValues(const std::string& exe_name,
                                  const std::string& log_location)
-        : XpansionError("Error while parsing " + exe_name +
-                            " options: null Arguments values!",
-                        log_location){};
+        : LogUtils::XpansionError<std::runtime_error>(
+              "Error while parsing " + exe_name +
+                  " options: null Arguments values!",
+              log_location){};
   };
   class InvalidNumberOfArgumentsPassedToParser
-      : public XpansionError<std::runtime_error> {
+      : public LogUtils::XpansionError<std::runtime_error> {
    public:
     explicit InvalidNumberOfArgumentsPassedToParser(
         int argc, const std::string& exe_name, const std::string& log_location)
-        : XpansionError(
+        : LogUtils::XpansionError<std::runtime_error>(
               "Error while parsing " + exe_name +
                   ": invalid number arguments:  " + std::to_string(argc),
               log_location){};

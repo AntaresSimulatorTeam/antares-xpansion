@@ -9,6 +9,7 @@ target_link_libraries(benders_sequential_test
         benders_core
         output_core
         logger_lib
+        tests_utils
         GTest::Main
         tests_utils)
 

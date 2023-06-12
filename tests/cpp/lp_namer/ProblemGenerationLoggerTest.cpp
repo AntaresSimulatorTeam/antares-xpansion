@@ -13,8 +13,8 @@ class ProblemGenerationLoggerTest : public ::testing::Test {
 TEST_F(ProblemGenerationLoggerTest, fileLogIsCreated) {
   temp_file_ = std::filesystem::temp_directory_path() /
                "ProblemGenerationLoggerTestFile.txt";
-  logger_ = BuildLoggerWithParams(LOGLEVEL::INFO, temp_file_);
-  (*logger_)(LOGLEVEL::INFO) << "HELLO;";
+  logger_ = BuildLoggerWithParams(LogUtils::LOGLEVEL::INFO, temp_file_);
+  (*logger_)(LogUtils::LOGLEVEL::INFO) << "HELLO;";
   ASSERT_EQ(std::filesystem::exists(temp_file_), true);
 }
 TEST_F(ProblemGenerationLoggerTest, MessageAreWritenInStream) {
@@ -22,7 +22,7 @@ TEST_F(ProblemGenerationLoggerTest, MessageAreWritenInStream) {
                "ProblemGenerationLoggerTestFile.txt";
   std::stringstream stream;
 
-  logger_ = BuildLoggerWithParams(LOGLEVEL::INFO, stream);
+  logger_ = BuildLoggerWithParams(LogUtils::LOGLEVEL::INFO, stream);
   std::string expectedMsg ("HELLO");
   (*logger_)() << expectedMsg;
   auto printedMsg = stream.str();

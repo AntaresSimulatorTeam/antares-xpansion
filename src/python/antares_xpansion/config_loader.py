@@ -10,7 +10,7 @@ import sys
 from pathlib import Path
 
 from antares_xpansion.chronicles_checker import ChronicleChecker
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import step_logger
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
@@ -47,7 +47,8 @@ class ConfigLoader:
         :type config: XpansionConfig object
         """
         self.platform = sys.platform
-        self._INFO_MSG = "<< INFO >>"
+        self.logger = step_logger(__name__, __class__.__name__)
+
         self._config = config
         self._last_zip = None
         if self._config.step == "resume":
@@ -257,8 +258,8 @@ class ConfigLoader:
         :return: gap value or 0 if the gap is negative
         """
         if "optimality_gap" not in self.options:
-            flushed_print(
-                f"{self._INFO_MSG} optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used"
+            self.logger.info(
+                f" optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used"
             )
         abs_optimality_gap_str = self.options.get(
             "optimality_gap", self._config.settings_default["optimality_gap"]
@@ -365,7 +366,7 @@ class ConfigLoader:
         if self.options.get("additional-constraints", "") != "":
             additional_constraints_path = self.additional_constraints()
             if not os.path.isfile(additional_constraints_path):
-                flushed_print(
+                self.logger.error(
                     "Illegal value: %s is not an existent additional-constraints file"
                     % additional_constraints_path
                 )
@@ -375,8 +376,8 @@ class ConfigLoader:
 
         if "solver" not in self.options:
             default_solver = self._config.settings_default["solver"]
-            flushed_print(
-                f"{self._INFO_MSG} No solver defined in user/expansion/settings.ini. {default_solver} used"
+            self.logger.info(
+                f"No solver defined in user/expansion/settings.ini. {default_solver} used"
             )
             self.options["solver"] = default_solver
         else:
@@ -385,7 +386,7 @@ class ConfigLoader:
                     self.options["solver"], self._config.AVAILABLE_SOLVER
                 )
             except XpansionStudyReader.BaseException as e:
-                flushed_print(e)
+                self.logger.error(e)
                 sys.exit(1)
 
     def simulation_output_path(self) -> Path:
@@ -551,8 +552,8 @@ class ConfigLoader:
         indicates if method to use is accurate by reading the uc_type in the settings file
         """
         if self._config.UC_TYPE not in self.options:
-            flushed_print(
-                f"{self._INFO_MSG} {self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used."
+            self.logger.info(
+                f"{self._config.UC_TYPE} not specified, {self._config.settings_default[self._config.UC_TYPE]} used."
             )
         uc_type = self.options.get(
             self._config.UC_TYPE, self._config.settings_default[self._config.UC_TYPE]
@@ -570,8 +571,8 @@ class ConfigLoader:
         from the settings file
         """
         if "master" not in self.options:
-            flushed_print(
-                f"{self._INFO_MSG} master options is not defined, {self._config.settings_default['master']} used"
+            self.logger.info(
+                f" master options is not defined, {self._config.settings_default['master']} used"
             )
 
         return self.get_master_formulation() == "relaxed"
@@ -697,4 +698,4 @@ class ConfigLoader:
 
     def check_NTC_column_constraints(self, antares_version):
         checker = ChronicleChecker(self._config.data_dir, antares_version)
-        checker.CheckChronicleConstraints()
+        checker.check_chronicle_constraints()

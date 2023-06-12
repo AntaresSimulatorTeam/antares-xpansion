@@ -24,7 +24,8 @@ int main(int argc, char** argv) {
 
       const auto log_file_path =
           xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
-      auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
+      auto logger = ProblemGenerationLog::BuildLogger(
+          log_file_path, std::cout, "Full Run - Problem Generation");
       auto& loggerRef = (*logger);
 
       auto master_formulation = options_parser.MasterFormulation();
@@ -54,7 +55,8 @@ int main(int argc, char** argv) {
 
   if (world.rank() == 0) {
     auto log_file_path = xpansion_output_dir / "lp" / "StudyUpdateLog.txt";
-    auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
+    auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
+                                                    "Full Run - Study Update");
     auto solutionFile_l = options_parser.SolutionFile();
     ActiveLinksBuilder linksBuilder =
         get_link_builders(xpansion_output_dir, logger);

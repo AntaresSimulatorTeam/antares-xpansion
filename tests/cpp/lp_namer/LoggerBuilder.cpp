@@ -2,7 +2,7 @@
 
 ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger() {
   return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
+      LogUtils::LOGLEVEL::NONE);
 }
 ProblemGenerationLog::ProblemGenerationILoggerSharedPointer FileLogger(
     const std::filesystem::path& FilePath) {
@@ -15,32 +15,32 @@ ProblemGenerationLog::ProblemGenerationILoggerSharedPointer StreamLogger(
       stream);
 }
 ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-BuildLoggerWithParams(const ProblemGenerationLog::LOGLEVEL& logLevel,
+BuildLoggerWithParams(const LogUtils::LOGLEVEL& loglevel,
                       const std::filesystem::path& FilePath,
                       std::ostream& stream) {
   auto fileLogger = FileLogger(FilePath);
 
-  auto logger = BuildLoggerWithParams(logLevel, stream);
+  auto logger = BuildLoggerWithParams(loglevel, stream);
   logger->AddLogger(fileLogger);
 
   return logger;
 }
 ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-BuildLoggerWithParams(const ProblemGenerationLog::LOGLEVEL& logLevel,
+BuildLoggerWithParams(const LogUtils::LOGLEVEL& loglevel,
                       const std::filesystem::path& FilePath) {
   auto fileLogger = FileLogger(FilePath);
   auto logger =
-      std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(logLevel);
+      std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(loglevel);
   logger->AddLogger(fileLogger);
   return logger;
 }
 
 ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
-BuildLoggerWithParams(const ProblemGenerationLog::LOGLEVEL& logLevel,
+BuildLoggerWithParams(const LogUtils::LOGLEVEL& loglevel,
                       std::ostream& stream) {
   auto StdOutLogger = StreamLogger(stream);
   auto logger =
-      std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(logLevel);
+      std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(loglevel);
   logger->AddLogger(StdOutLogger);
   return logger;
 }

@@ -32,8 +32,10 @@ int main(int argc, char **argv) {
     solutionFile_l = study_updater_options_parser.SolutionFile();
     using namespace ProblemGenerationLog;
     auto log_file_path = xpansion_output_dir / "lp" / "StudyUpdateLog.txt";
-    auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
-    ActiveLinksBuilder linksBuilder = get_link_builders(xpansion_output_dir, logger);
+    auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
+                                                    "Study Update");
+    ActiveLinksBuilder linksBuilder =
+        get_link_builders(xpansion_output_dir, logger);
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 

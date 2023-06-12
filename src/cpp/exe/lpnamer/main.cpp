@@ -16,7 +16,8 @@ int main(int argc, char** argv) {
     const auto log_file_path =
         xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
 
-    auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout);
+    auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
+                                                    "Problem Generation");
     auto& loggerRef = (*logger);
 
     auto master_formulation = options_parser.MasterFormulation();

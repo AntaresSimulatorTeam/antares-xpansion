@@ -1,13 +1,12 @@
 #pragma once
 #include <stdexcept>
 #include <string>
-
+namespace LogUtils {
 inline std::string LogLocationToStr(int line, const char* file,
                                     const char* func) {
   return std::string("This is line ") + std::to_string(line) + " of file " +
          file + " (function " + func + ")\n";
 }
-#define LOGLOCATION LogLocationToStr(__LINE__, __FILE__, __func__)
 
 template <typename T>
 class XpansionError : public T {
@@ -22,3 +21,27 @@ class XpansionError : public T {
  private:
   const std::string err_message_;
 };
+
+enum class LOGLEVEL { NONE, TRACE, DEBUG, INFO, WARNING, ERR, FATAL };
+enum class LOGGERTYPE { NONE, FILE, CONSOLE };
+inline std::string LogLevelToStr(const LogUtils::LOGLEVEL log_level) {
+  switch (log_level) {
+    case LogUtils::LOGLEVEL::TRACE:
+      return "TRACE";
+    case LogUtils::LOGLEVEL::DEBUG:
+      return "DEBUG";
+    case LogUtils::LOGLEVEL::INFO:
+      return "INFO";
+    case LogUtils::LOGLEVEL::WARNING:
+      return "WARNING";
+    case LogUtils::LOGLEVEL::ERR:
+      return "ERROR";
+    case LogUtils::LOGLEVEL::FATAL:
+      return "FATAL";
+    default:
+      return "";
+  }
+}
+}  // namespace LogUtils
+
+#define LOGLOCATION LogUtils::LogLocationToStr(__LINE__, __FILE__, __func__)
