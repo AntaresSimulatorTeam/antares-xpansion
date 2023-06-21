@@ -205,8 +205,7 @@ class CandidatesReader:
         if len(nan_indices) > 0:
             msg = f"Value(s) Error detected in file {file} at (row, column):\n"
             for index in nan_indices:
-                msg = msg + f"({index[0]},{index[1]})\n"
-            print(nan_indices)
+                msg = msg + f"({index[0]+1}, {index[1]+1})\n"
             raise ProfilesValueError(msg)
 
     @staticmethod
