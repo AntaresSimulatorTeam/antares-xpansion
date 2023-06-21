@@ -3,7 +3,6 @@
 #include <filesystem>
 
 #include "LogUtils.h"
-#include "ProblemGenerationLogger.h"
 
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &direct_filename,
@@ -74,8 +73,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
           auto errMsg =
               std::string("Error while reading value in link-profile ") +
               filename.string() + " line " + std::to_string(time_step) + "\n";
-          (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
-              << LOGLOCATION << errMsg;
+          (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << errMsg;
           throw std::domain_error(errMsg);
         }
       }
