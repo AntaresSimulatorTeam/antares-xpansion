@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
@@ -20,12 +20,13 @@ class BendersDriver:
         self.benders = benders
         self.merge_mps = merge_mps
         self.benders_by_batch = benders_by_batch
+        self.logger = step_logger(__name__, __class__.__name__)
 
         if (options_file != ""):
             self.options_file = options_file
         else:
             raise BendersDriver.BendersOptionsFileError(
-                f"Invalid Options File!")
+                "Invalid Options File!")
 
         self.MPI_N = "-n"
         self._initialise_system_specific_mpi_vars()
@@ -35,7 +36,7 @@ class BendersDriver:
         launch the optimization of the antaresXpansion problem using the specified solver
 
         """
-        flushed_print("-- Benders")
+        self.logger.info("Benders")
         self.method = method
         self.n_mpi = n_mpi
         self.oversubscribe = oversubscribe
@@ -45,7 +46,7 @@ class BendersDriver:
         lp_path = self.get_lp_path()
 
         os.chdir(lp_path)
-        flushed_print("Current directory is now: ", os.getcwd())
+        self.logger.info(f"Current directory is now: {os.getcwd()}")
 
         self.set_solver()
 
@@ -94,7 +95,7 @@ class BendersDriver:
         elif self.method == "benders_by_batch":
             self.solver = self.benders_by_batch
         else:
-            flushed_print("Illegal optim method")
+            self.logger.error("Illegal optim method")
             raise BendersDriver.BendersSolverError(
                 f" {self.method} method is unavailable !"
             )
@@ -106,7 +107,7 @@ class BendersDriver:
             try:
                 os.remove(file_path)
             except OSError:
-                flushed_print("Error while deleting file : ", file_path)
+                self.logger.error("Error while deleting file : ", file_path)
         if os.path.isfile(solver_name + ".log"):
             os.remove(solver_name + ".log")
 

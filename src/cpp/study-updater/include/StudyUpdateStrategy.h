@@ -17,8 +17,8 @@ class StudyUpdateStrategy {
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   virtual ~StudyUpdateStrategy() = default;
   class NoInvestmentComputedForTheCandidate
-      : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
 
  protected:

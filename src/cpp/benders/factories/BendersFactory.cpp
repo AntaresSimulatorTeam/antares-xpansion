@@ -62,7 +62,8 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
       std::exit(1);
     }
     std::ostringstream oss_l = start_message(options, benders->BendersName());
-    LOG(INFO) << oss_l.str() << std::endl;
+    oss_l << std::endl;
+    logger->display_message(oss_l.str());
     benders->set_log_file(log_reports_name);
 
     writer->write_log_level(options.LOG_LEVEL);

@@ -16,7 +16,7 @@ bool LinkParametersCSVOverWriter::open(
   tempOutCsvFile = std::ofstream(tempOutCsvFile_name_);
 
   if (!tempOutCsvFile.is_open()) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::ERROR)
+    (*logger_)(LogUtils::LOGLEVEL::ERR)
         << "ERROR: Error writing " + linkdataFilename_l.string() + "."
         << std::endl;
     return false;
@@ -24,7 +24,7 @@ bool LinkParametersCSVOverWriter::open(
 
   already_warned_ = false;
   if (!inputCsv_l_.is_open()) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::WARNING)
+    (*logger_)(LogUtils::LOGLEVEL::WARNING)
         << "WARNING: Missing file to update antares study : "
         << linkdataFilename_l << "."
         << " Unknown values were populated with 0 in a newly created file."
@@ -51,7 +51,7 @@ void LinkParametersCSVOverWriter::FillRecord(std::string basic_string_1,
   } else {
     record.reset();
     if (!already_warned_) {
-      (*logger_)(ProblemGenerationLog::LOGLEVEL::WARNING)
+      (*logger_)(LogUtils::LOGLEVEL::WARNING)
           << "WARNING: Missing entries in : "
           << link_parameters_file_path_.string()
           << ". Missing values were populated with 0." << std::endl;

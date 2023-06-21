@@ -10,12 +10,13 @@ import sys
 import zipfile
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import step_logger
 
 
 class SensitivityDriver:
     def __init__(self, sensitivity_exe):
         self.sensitivity_exe = sensitivity_exe
+        self.logger = step_logger(__name__, __class__.__name__)
 
     def launch(
         self,
@@ -37,8 +38,10 @@ class SensitivityDriver:
         )
         with zipfile.ZipFile(self.simulation_output_path, 'r') as output_zip:
             output_zip.extractall(xpansion_simulation_output)
-        self.json_sensitivity_in_path = self._get_file_path(json_sensitivity_in_path)
-        self.json_benders_output_path = self._get_file_path(json_benders_output_path)
+        self.json_sensitivity_in_path = self._get_file_path(
+            json_sensitivity_in_path)
+        self.json_benders_output_path = self._get_file_path(
+            json_benders_output_path)
         self.last_master_path = self._get_file_path(last_master_path)
         self.last_master_basis = last_master_basis
         self.structure_path = self._get_file_path(structure_path)
@@ -46,11 +49,11 @@ class SensitivityDriver:
         self.json_sensitivity_out_path = json_sensitivity_out_path
         self.sensitivity_log_path = sensitivity_log_path
 
-        flushed_print("-- Sensitivity study")
+        self.logger.info("Sensitivity study")
 
         old_cwd = os.getcwd()
         os.chdir(xpansion_simulation_output)
-        flushed_print(f"Current directory is now {os.getcwd()}")
+        self.logger.info(f"Current directory is now {os.getcwd()}")
 
         returned_l = subprocess.run(
             self._get_sensitivity_cmd(),
@@ -68,7 +71,8 @@ class SensitivityDriver:
             sensitivity_path = os.path.dirname(self.sensitivity_log_path)
             for file in glob.glob(sensitivity_path + "/*"):
                 if os.path.isfile(file):
-                    output_zip.write(file, os.path.join("sensitivity", os.path.basename(file)))
+                    output_zip.write(file, os.path.join(
+                        "sensitivity", os.path.basename(file)))
         shutil.rmtree(xpansion_simulation_output)
 
     @staticmethod

@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 import numpy as np
 
-from .flushed_print import flushed_print
+from .logger import step_logger
 
 
 class IniFileNotFound(Exception):
@@ -25,6 +25,8 @@ class ProfilesValueError(Exception):
 
 class CandidatesReader:
     def __init__(self, file_path: Path = None):
+        self.logger = step_logger(__name__, __class__.__name__)
+
         if not file_path or not file_path.is_file():
             raise IniFileNotFound
 
@@ -55,7 +57,7 @@ class CandidatesReader:
 
     def _get_candidate_index(self, candidate: str):
         if candidate not in self.get_candidates_list():
-            flushed_print(
+            logger.error(
                 f"Candidate {candidate} not found in candidate list.")
             raise CandidateNotFound
         return self.candidates_map[candidate]
@@ -229,7 +231,7 @@ class CandidatesReader:
             study_path, candidate
         )
         if direct_link_profile.shape != indirect_link_profile.shape:
-            flushed_print(
+            logger.error(
                 f"For candidate {candidate}, shape of direct link profile {direct_link_profile.shape} does not match shape of indirect link profile {indirect_link_profile.shape}"
             )
             raise ProfilesOfDifferentDimensions
@@ -278,7 +280,7 @@ class CandidatesReader:
             )
         )
         if direct_link_profile.shape != indirect_link_profile.shape:
-            flushed_print(
+            logger.error(
                 f"For candidate {candidate}, shape of already installed direct link profile {direct_link_profile.shape} does not match shape of already installed indirect link profile {indirect_link_profile.shape}"
             )
             raise ProfilesOfDifferentDimensions

@@ -8,6 +8,7 @@
 
 #include "ILogger.h"
 #include "logger/User.h"
+
 namespace xpansion {
 namespace logger {
 
@@ -17,7 +18,8 @@ class UserFile : public ILogger {
   ~UserFile();
 
   void display_message(const std::string &str) override;
-
+  void display_message(const std::string &str,
+                       LogUtils::LOGLEVEL level) override;
   void log_at_initialization(const int it_number) override;
 
   void log_iteration_candidates(const LogData &d) override;
@@ -46,8 +48,6 @@ class UserFile : public ILogger {
   void LogAtInitialRelaxation() override;
   void LogAtSwitchToInteger() override;
   void number_of_sub_problem_resolved(int number) override;
-
-  const std::string LINE_PREFIX = "<<BENDERS>> ";
 
  private:
   std::ofstream _file;

@@ -13,13 +13,14 @@ BatchCollection::BatchCollection(
 void BatchCollection::BuildBatches() {
   if (batch_size_ > sub_problems_number_) {
     logger_->display_message(
-        std::string("Warning: batch_size(") + std::to_string(batch_size_) +
-        ") can not be greater than number of subproblems (" +
-        std::to_string(sub_problems_number_) + ")");
+        std::string("batch_size(") + std::to_string(batch_size_) +
+            ") can not be greater than number of subproblems (" +
+            std::to_string(sub_problems_number_) + ")",
+        LogUtils::LOGLEVEL::WARNING);
     logger_->display_message(
         std::string("Setting batch_size = number of subproblems(") +
         std::to_string(sub_problems_number_) +
-        ")\nWhich means that there is only one batch!\n");
+        ")\nWhich means that there is only one batch!");
   }
   number_of_batch_ = std::ceil(double(sub_problems_number_) / batch_size_);
   for (auto id = 0; id < number_of_batch_ - 1; id++) {

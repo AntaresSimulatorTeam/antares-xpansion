@@ -30,7 +30,7 @@ std::string AdditionalConstraintsReader::illegal_chars = " \n\r\t\f\v-+=:[]()";
 
 void AdditionalConstraintsReader::processSectionLine() {
   if (_line[_line.length() - 1] != ']') {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "additional constraints file:  line " << _lineNb
         << " : section line not ending with ']'.\n";
     std::exit(1);
@@ -39,7 +39,7 @@ void AdditionalConstraintsReader::processSectionLine() {
   _section = _line.substr(1, _line.find(']') - 1);
 
   if (!_sections.insert(_section).second) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "additional constraints file:  line " << _lineNb
         << " : duplicate section " << _section << "!\n";
     std::exit(1);
@@ -49,7 +49,7 @@ void AdditionalConstraintsReader::processSectionLine() {
 void AdditionalConstraintsReader::processEntryLine() {
   size_t delimiterIt_l = _line.find(" = ");
   if (delimiterIt_l == std::string::npos) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "additional constraints file: line " << _lineNb
         << " : incorrect entry line format. Expected format 'attribute = "
            "value'!\n";
@@ -62,7 +62,7 @@ void AdditionalConstraintsReader::processEntryLine() {
   size_t illegalCharIndex_l =
       attribute_l.find_first_of(AdditionalConstraintsReader::illegal_chars);
   if (illegalCharIndex_l != std::string::npos) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "additional constraints file: line " << _lineNb
         << " : Illegal character '" << attribute_l[illegalCharIndex_l]
         << "' in attribute name!\n";
@@ -70,7 +70,7 @@ void AdditionalConstraintsReader::processEntryLine() {
   }
 
   if (_values[_section].count(attribute_l)) {
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "additional constraints file:  line " << _lineNb
         << " : duplicate attribute " << attribute_l << "!\n";
     std::exit(1);
@@ -79,7 +79,7 @@ void AdditionalConstraintsReader::processEntryLine() {
       illegalCharIndex_l =
           value_l.find_first_of(AdditionalConstraintsReader::illegal_chars);
       if (illegalCharIndex_l != std::string::npos) {
-        (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        (*logger_)(LogUtils::LOGLEVEL::FATAL)
             << LOGLOCATION << "additional constraints file: line " << _lineNb
             << " : Illegal character '" << value_l[illegalCharIndex_l]
             << "' in value!\n";
@@ -90,7 +90,7 @@ void AdditionalConstraintsReader::processEntryLine() {
     if (attribute_l == "sign") {
       if ((value_l != "greater_or_equal") && (value_l != "less_or_equal") &&
           (value_l != "equal")) {
-        (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        (*logger_)(LogUtils::LOGLEVEL::FATAL)
             << LOGLOCATION << "additional constraints file:  line " << _lineNb
             << " : Illegal sign value : " << value_l
             << "! supported values are: "
@@ -123,7 +123,7 @@ AdditionalConstraintsReader::AdditionalConstraintsReader(
     } else {
       // check we have a valid section name
       if (_section == "") {
-        (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+        (*logger_)(LogUtils::LOGLEVEL::FATAL)
             << LOGLOCATION
             << "additional constraints file:  Section line is required "
                "before line "

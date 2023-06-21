@@ -8,7 +8,7 @@ double LinkProfile::getDirectProfile(size_t hour) const {
   if (hour > MAX_LINK_PROFILE_HOUR) {
     auto log_location = LOGLOCATION;
     auto err_msg = "Link profiles can be requested between point 0 and 8759.";
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << LOGLOCATION << err_msg;
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << err_msg;
     throw InvalidHourForProfile(err_msg, log_location);
   }
 
@@ -19,7 +19,7 @@ double LinkProfile::getIndirectProfile(size_t hour) const {
   if (hour > MAX_LINK_PROFILE_HOUR) {
     auto log_location = LOGLOCATION;
     auto err_msg = "Link profiles can be requested between point 0 and 8759.";
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << LOGLOCATION << err_msg;
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << err_msg;
     throw InvalidHourForProfile(err_msg, log_location);
   }
 

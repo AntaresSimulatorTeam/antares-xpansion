@@ -7,7 +7,7 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
@@ -26,6 +26,7 @@ class AntaresDriver:
         self.ANTARES_N_CPU_OPTION = "--force-parallel"
         self.antares_n_cpu = 1  # default
         self.zip_option = "-z"
+        self.logger = step_logger(__name__, __class__.__name__)
 
     def launch(self, antares_study_path, antares_n_cpu: int) -> bool:
         self._set_antares_n_cpu(antares_n_cpu)
@@ -35,8 +36,8 @@ class AntaresDriver:
         if antares_n_cpu >= 1:
             self.antares_n_cpu = antares_n_cpu
         else:
-            flushed_print(
-                f"WARNING! value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
+            self.logger.warning(
+                f"value antares_n_cpu= {antares_n_cpu} is not accepted, default value will be used.")
 
     def _launch(self, antares_study_path) -> bool:
         self._clear_old_log()
@@ -55,7 +56,7 @@ class AntaresDriver:
         return os.path.normpath(os.path.join(self.data_dir, self.output))
 
     def _run_antares(self) -> bool:
-        flushed_print("-- launching antares")
+        self.logger.info("Launching antares")
 
         start_time = datetime.now()
         returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
@@ -63,14 +64,14 @@ class AntaresDriver:
                                     stderr=subprocess.DEVNULL)
 
         end_time = datetime.now()
-        flushed_print('Antares simulation duration : {}'.format(
-            end_time - start_time))
+        self.logger.info(
+            f'Antares simulation duration : {end_time - start_time}')
 
         if returned_l.returncode == 1:
             raise AntaresDriver.AntaresExecutionError(
                 f"Error: exited antares with status {returned_l.returncode}")
         elif returned_l.returncode != 0 and returned_l.returncode != 1:
-            flushed_print(
+            self.logger.info(
                 f"Warning: exited antares with status {returned_l.returncode}")
             return True
         else:
