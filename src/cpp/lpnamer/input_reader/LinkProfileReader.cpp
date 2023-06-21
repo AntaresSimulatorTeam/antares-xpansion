@@ -3,6 +3,7 @@
 #include <filesystem>
 
 #include "LogUtils.h"
+#include "ProblemGenerationLogger.h"
 
 std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
     const std::filesystem::path &direct_filename,
