@@ -56,9 +56,6 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
   double value;
   std::string line;
   int chronicle_id = 0;
-  int i;
-  std::cout << "HELLO\n";
-  std::cin >> i;
   for (size_t time_step(0); time_step < NUMBER_OF_HOUR_PER_YEAR; ++time_step) {
     if (std::getline(infile, line)) {
       std::stringstream buffer(line);
