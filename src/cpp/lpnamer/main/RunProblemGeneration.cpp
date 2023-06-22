@@ -143,12 +143,11 @@ void RunProblemGeneration(
   bool use_file_implementation = false;
 
   Version antares_version(ANTARES_VERSION);
-  Version first_version_without_variables_files("8.6");
+  Version first_version_without_variables_files("8.7");
   auto rename_variables =
       antares_version < first_version_without_variables_files;
-  (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
-      << "rename variables: " << std::boolalpha << rename_variables
-      << std::endl;
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "rename variables: " << std::boolalpha
+                                      << rename_variables << std::endl;
 
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
