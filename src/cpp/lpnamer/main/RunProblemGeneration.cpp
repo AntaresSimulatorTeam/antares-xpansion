@@ -98,7 +98,7 @@ void RunProblemGeneration(
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
     const std::filesystem::path& log_file_path,
     const std::filesystem::path& weights_file) {
-  (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
+  (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
 
   Timer problem_generation_timer;
@@ -113,7 +113,7 @@ void RunProblemGeneration(
       get_link_builders(xpansion_output_dir, logger);
 
   if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
-    (*logger)(ProblemGenerationLog::LOGLEVEL ::FATAL)
+    (*logger)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION
         << "Invalid formulation argument : argument must be "
            "\"integer\" or \"relaxed\""
@@ -241,7 +241,7 @@ void RunProblemGeneration(
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
       master_formulation, solver_name, logger, log_file_path);
-  (*logger)(ProblemGenerationLog::LOGLEVEL::INFO)
+  (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;
 }

@@ -77,24 +77,24 @@ class ActiveLinksBuilder {
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   class MultipleAlreadyInstalledCapacityDetectedForLink
-      : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
   class MultipleAlreadyInstalledProfileDetectedForLink
-      : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
   class MultipleLinkIddetectedForLink
-      : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
   class CandidateDuplicationDetected
-      : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
   class ThereIsNoLinkProfileAssociatedWithThisProfile
-      : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
 
   const std::vector<ActiveLink>& getLinks();

@@ -9,11 +9,12 @@ from pathlib import Path
 from dataclasses import dataclass
 
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import step_logger
 
 
 class StudyUpdaterDriver:
     def __init__(self, study_updater_exe) -> None:
+        self.logger = step_logger(__name__, __class__.__name__)
 
         self._set_study_updater_exe(study_updater_exe)
 
@@ -31,7 +32,7 @@ class StudyUpdaterDriver:
         """
         self._set_simulation_output_path(simulation_output_path)
         self._set_json_file_path(Path(json_file_path))
-        flushed_print("-- Study Update")
+        self.logger.info("Study Update")
 
         with open(self.get_study_updater_log_filename(), 'w') as output_file:
             returned_l = subprocess.run(self.get_study_updater_command(), shell=False,

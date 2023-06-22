@@ -356,7 +356,7 @@ ProblemGenerationLoggerSharedPointer Getlog(
 
   auto logStd = std::make_shared<ProblemGenerationOstreamLogger>(std::cout);
 
-  auto logger = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::INFO);
+  auto logger = std::make_shared<ProblemGenerationLogger>(LogUtils::LOGLEVEL::INFO);
   logger->AddLogger(logFile);
   logger->AddLogger(logStd);
   return logger;

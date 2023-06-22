@@ -25,6 +25,8 @@ class Master : public ILogger {
   }
 
   void display_message(const std::string &str) override;
+  void display_message(const std::string &str,
+                       LogUtils::LOGLEVEL level) override;
 
   void log_at_initialization(const int it_number) override;
 

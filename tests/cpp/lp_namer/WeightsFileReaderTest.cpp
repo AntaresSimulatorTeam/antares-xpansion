@@ -8,7 +8,7 @@ class WeightsFileReaderTest : public ::testing::Test {
   ProblemGenerationLoggerSharedPointer logger_;
 
   void SetUp() {
-    logger_ = std::make_shared<ProblemGenerationLogger>(LOGLEVEL::NONE);
+    logger_ = std::make_shared<ProblemGenerationLogger>(LogUtils::LOGLEVEL::NONE);
   }
 };
 

@@ -36,7 +36,7 @@ char getConstraintSenseSymbol(
   } else if (sign_l == "equal") {
     rtype = 'E';
   } else {
-    (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION << "FATAL: in addAdditionalConstraint, unknown row type "
         << sign_l << std::endl;
     std::exit(1);
@@ -64,7 +64,7 @@ void addAdditionalConstraint(
   for (auto const &[name, coeff] : additionalConstraint_p) {
     int col_index = master_p->get_col_index(name);
     if (col_index == -1) {
-      (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
+      (*logger)(LogUtils::LOGLEVEL::FATAL)
           << LOGLOCATION << "missing variable " << name
           << " used in additional constraint file!\n";
       std::exit(1);
@@ -86,7 +86,7 @@ void addBinaryVariables(
     int col_index = master_p->get_col_index(pairOldNewVarnames.first);
 
     if (col_index == -1) {
-      (*logger)(ProblemGenerationLog::LOGLEVEL::FATAL)
+      (*logger)(LogUtils::LOGLEVEL::FATAL)
           << LOGLOCATION << "missing variable " << pairOldNewVarnames.first
           << " used in additional constraint file!\n";
       std::exit(1);

@@ -8,6 +8,11 @@ void Master::display_message(const std::string &str) {
     logger->display_message(str);
   }
 }
+void Master::display_message(const std::string &str, LogUtils::LOGLEVEL level) {
+  for (auto logger : _loggers) {
+    logger->display_message(str, level);
+  }
+}
 
 void Master::log_at_initialization(const int it_number) {
   for (auto logger : _loggers) {
