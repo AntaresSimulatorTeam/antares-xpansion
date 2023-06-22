@@ -45,4 +45,15 @@ inline std::vector<std::string> split(const std::string& original,
   }
   return strings;
 }
+inline std::vector<std::string> split(const std::string& original,
+                                      const std::string& delimiter) {
+  size_t pos = 0;
+  auto copy_original = original;
+  std::vector<std::string> result;
+  while ((pos = copy_original.find(delimiter)) != std::string::npos) {
+    result.push_back(copy_original.substr(0, pos));
+    copy_original.erase(0, pos + delimiter.length());
+  }
+  return result;
+}
 }  // namespace common_lpnamer

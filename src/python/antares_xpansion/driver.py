@@ -130,7 +130,7 @@ class XpansionDriver:
             else:
                 self._backup_general_data_ini_on_error()
                 self._revert_general_data_ini()
-        except AntaresDriver.AntaresExecutionException as e:
+        except AntaresDriver.AntaresExecutionError as e:
             self.logger.error(
                 "Antares exited with error, backup current general data file and revert original one")
             self._backup_general_data_ini_on_error()
