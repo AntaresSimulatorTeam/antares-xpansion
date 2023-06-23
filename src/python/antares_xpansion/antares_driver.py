@@ -59,6 +59,7 @@ class AntaresDriver:
         self.logger.info("Launching antares")
 
         start_time = datetime.now()
+        print(self._get_antares_cmd())
         returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
                                     stdout=subprocess.DEVNULL,
                                     stderr=subprocess.DEVNULL)
@@ -95,7 +96,7 @@ class AntaresDriver:
             self.simulation_name = list_of_dirs[-1]
 
     def _get_antares_cmd(self):
-        return [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), "--named-problems", self.zip_option]
+        return [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option, "--named-problems"]
 
     class Error(Exception):
         pass

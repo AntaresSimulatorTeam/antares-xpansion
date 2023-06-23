@@ -143,7 +143,7 @@ void RunProblemGeneration(
   bool use_file_implementation = false;
 
   Version antares_version(ANTARES_VERSION);
-  Version first_version_without_variables_files("8.7");
+  Version first_version_without_variables_files("8.4");
   auto rename_variables =
       antares_version < first_version_without_variables_files;
   (*logger)(LogUtils::LOGLEVEL::INFO) << "rename variables: " << std::boolalpha

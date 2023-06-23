@@ -243,7 +243,7 @@ class TestAntaresDriver:
         # mock subprocess.run
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, 1)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z"]
+            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z", "--named-problems"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -257,7 +257,7 @@ class TestAntaresDriver:
             antares_driver.launch(study_dir, n_cpu)
 
             expected_cmd = [exe_path, study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
+                            "--force-parallel", str(n_cpu), "-z", "--named-problems"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -275,7 +275,7 @@ class TestAntaresDriver:
                 study_dir,
                 "--force-parallel",
                 str(expected_n_cpu),
-                "-z"
+                "-z", "--named-problems"
             ]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
@@ -291,7 +291,7 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
+                            "--force-parallel", str(n_cpu), "-z", "--named-problems"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -307,7 +307,6 @@ class TestAntaresDriver:
     def test_empty_study_dir(self, tmp_path):
 
         study_dir = tmp_path
-        print(f"Study dir : {study_dir}")
         os.listdir()
         antares_driver = AntaresDriver(get_antares_solver_path())
 
@@ -353,7 +352,7 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
+                            "--force-parallel", str(n_cpu), "-z", "--named-problems"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -377,7 +376,7 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
+                            "--force-parallel", str(n_cpu), "-z", "--named-problems"]
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
