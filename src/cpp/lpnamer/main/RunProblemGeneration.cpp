@@ -144,7 +144,7 @@ void RunProblemGeneration(
 
   Version antares_version(ANTARES_VERSION);
   // TODO update the version of simulator that come with named mps
-  Version first_version_without_variables_files("8.4");
+  Version first_version_without_variables_files("8.8");
   auto rename_variables =
       antares_version < first_version_without_variables_files;
   (*logger)(LogUtils::LOGLEVEL::INFO) << "rename variables: " << std::boolalpha
