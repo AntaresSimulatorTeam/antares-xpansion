@@ -143,6 +143,7 @@ void RunProblemGeneration(
   bool use_file_implementation = false;
 
   Version antares_version(ANTARES_VERSION);
+  // TODO update the version of simulator that come with named mps
   Version first_version_without_variables_files("8.4");
   auto rename_variables =
       antares_version < first_version_without_variables_files;
