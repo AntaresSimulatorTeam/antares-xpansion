@@ -154,9 +154,9 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
 
 void solver_rename_vars(SolverAbstract::Ptr outSolver_p, const std::vector<std::string> &names_p)
 {
-
-    for (int i = 0; i < outSolver_p->get_ncols(); i++)
-    {
-        outSolver_p->chg_col_name(i, names_p[i]);
+    if (const auto ncols = outSolver_p->get_ncols(); ncols == names_p.size()) {
+        for (int i = 0; i < ncols; i++) {
+            outSolver_p->chg_col_name(i, names_p[i]);
+        }
     }
 }
