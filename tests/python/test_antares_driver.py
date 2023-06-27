@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from unittest.mock import patch
 import pytest
+from packaging import version
 
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import (
@@ -12,7 +13,7 @@ from antares_xpansion.general_data_processor import (
 from antares_xpansion.general_data_reader import IniReader, GeneralDataIniReader
 
 from tests.build_config_reader import get_antares_solver_path
-
+from antares_xpansion.__version__ import __antares_simulator_version__
 SUBPROCESS_RUN = "antares_xpansion.antares_driver.subprocess.run"
 
 
@@ -236,6 +237,10 @@ class TestGeneralDataProcessor:
 
 
 class TestAntaresDriver:
+    def setup_method(self):
+        
+        self.nammed_problems = version.parse(__antares_simulator_version__) >= version.parse("8.7")
+
     def test_antares_cmd(self, tmp_path):
         study_dir = tmp_path
         exe_path = "/Path/to/bin1"
@@ -243,7 +248,10 @@ class TestAntaresDriver:
         # mock subprocess.run
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, 1)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z", "--named-problems"]
+            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z"]
+            if(self.nammed_problems):
+                expected_cmd.extend("--named-problems")
+
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -257,7 +265,9 @@ class TestAntaresDriver:
             antares_driver.launch(study_dir, n_cpu)
 
             expected_cmd = [exe_path, study_dir,
-                            "--force-parallel", str(n_cpu), "-z", "--named-problems"]
+                            "--force-parallel", str(n_cpu), "-z"]
+            if(self.nammed_problems):
+                expected_cmd.extend("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -275,8 +285,10 @@ class TestAntaresDriver:
                 study_dir,
                 "--force-parallel",
                 str(expected_n_cpu),
-                "-z", "--named-problems"
+                "-z"
             ]
+            if(self.nammed_problems):
+                expected_cmd.extend("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -291,7 +303,9 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z", "--named-problems"]
+                            "--force-parallel", str(n_cpu), "-z"]
+            if(self.nammed_problems):
+                expected_cmd.extend("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -352,7 +366,9 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z", "--named-problems"]
+                            "--force-parallel", str(n_cpu), "-z"]
+            if(self.nammed_problems):
+                expected_cmd.extend("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -376,7 +392,9 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z", "--named-problems"]
+                            "--force-parallel", str(n_cpu), "-z"]
+            if(self.nammed_problems):
+                expected_cmd.extend("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
