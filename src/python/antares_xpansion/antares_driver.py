@@ -9,6 +9,8 @@ from pathlib import Path
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
+from antares_xpansion.__version__ import __antares_simulator_version__
+from packaging import version
 
 
 class AntaresDriver:
@@ -27,6 +29,8 @@ class AntaresDriver:
         self.antares_n_cpu = 1  # default
         self.zip_option = "-z"
         self.logger = step_logger(__name__, __class__.__name__)
+        self.FIRST_VERSION_WITH_NAMED_PROBLEMS = "8.7"
+
 
     def launch(self, antares_study_path, antares_n_cpu: int) -> bool:
         self._set_antares_n_cpu(antares_n_cpu)
@@ -59,7 +63,6 @@ class AntaresDriver:
         self.logger.info("Launching antares")
 
         start_time = datetime.now()
-        print(self._get_antares_cmd())
         returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
                                     stdout=subprocess.DEVNULL,
                                     stderr=subprocess.DEVNULL)
@@ -96,7 +99,10 @@ class AntaresDriver:
             self.simulation_name = list_of_dirs[-1]
 
     def _get_antares_cmd(self):
-        return [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option, "--named-problems"]
+        cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option]
+        if(version.parse(__antares_simulator_version__) >= version.parse(self.FIRST_VERSION_WITH_NAMED_PROBLEMS)):
+            cmd.extend("--named-problems")
+        return cmd
 
     class Error(Exception):
         pass
