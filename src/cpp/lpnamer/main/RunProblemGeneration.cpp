@@ -97,7 +97,7 @@ void RunProblemGeneration(
     const std::filesystem::path& antares_archive_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
     const std::filesystem::path& log_file_path,
-    const std::filesystem::path& weights_file) {
+    const std::filesystem::path& weights_file, bool unnamed_problems) {
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
 
@@ -144,8 +144,9 @@ void RunProblemGeneration(
 
   Version antares_version(ANTARES_VERSION);
   // TODO update the version of simulator that come with named mps
-  Version first_version_without_variables_files("8.8");
+  Version first_version_without_variables_files("8.7");
   auto rename_variables =
+      unnamed_problems ||
       antares_version < first_version_without_variables_files;
   (*logger)(LogUtils::LOGLEVEL::INFO) << "rename variables: " << std::boolalpha
                                       << rename_variables << std::endl;
