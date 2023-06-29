@@ -251,6 +251,10 @@ std::vector<std::string> SolverClp::get_col_names(int first, int last) {
   return names;
 }
 
+std::vector<std::string> SolverClp::get_col_names() {
+  return *_clp.columnNames();
+}
+
 /*************************************************************************************************
 ------------------------------    Methods to modify problem
 ----------------------------------

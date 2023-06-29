@@ -7,7 +7,7 @@
 #include "JsonXpansionReader.h"
 #include "LinkdataRecord.h"
 #include "StudyUpdater.h"
-#include "common_lpnamer.h"
+
 bool LinkParametersCSVOverWriter::open(
     const std::filesystem::path& linkdataFilename_l) {
   link_parameters_file_path_ = linkdataFilename_l;

@@ -97,6 +97,9 @@ class Problem : public SolverAbstract {
   std::vector<std::string> get_col_names(int first, int last) override {
     return solver_abstract_->get_col_names(first, last);
   }
+  std::vector<std::string> get_col_names() override {
+    return solver_abstract_->get_col_names();
+  }
   void del_rows(int first, int last) override {
     solver_abstract_->del_rows(first, last);
   }

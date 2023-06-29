@@ -419,6 +419,12 @@ class SolverAbstract {
    */
   virtual std::vector<std::string> get_col_names(int first, int last) = 0;
 
+  /**
+   * @brief Returns the names of columns
+   * @return names : vector of names
+   */
+  virtual std::vector<std::string> get_col_names() = 0;
+
   /*************************************************************************************************
   ------------------------------    Methods to modify problem
   ----------------------------------

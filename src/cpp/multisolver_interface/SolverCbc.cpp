@@ -367,6 +367,9 @@ std::vector<std::string> SolverCbc::get_col_names(int first, int last) {
   }
   return names;
 }
+std::vector<std::string> SolverCbc::get_col_names() {
+  return _clp_inner_solver.getColNames();
+}
 
 /*************************************************************************************************
 ------------------------------    Methods to modify problem

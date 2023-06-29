@@ -67,7 +67,7 @@ void FilesMapper::FillMapWithConstraintsFiles(
 YearAndWeek FilesMapper::YearAndWeekFromFileName(
     const std::filesystem::path& file_name) const {
   auto split_file_name =
-      common_lpnamer::split(common_lpnamer::trim(file_name.string()), '-');
+      StringManip::split(StringManip::trim(file_name.string()), '-');
   return {std::atoi(split_file_name[1].c_str()),
           std::atoi(split_file_name[2].c_str())};
 }

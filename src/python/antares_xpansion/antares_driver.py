@@ -29,7 +29,7 @@ class AntaresDriver:
         self.antares_n_cpu = 1  # default
         self.zip_option = "-z"
         self.logger = step_logger(__name__, __class__.__name__)
-        self.FIRST_VERSION_WITH_NAMED_PROBLEMS = "8.2"
+        self.FIRST_VERSION_WITH_NAMED_PROBLEMS = "8.6"
 
 
     def launch(self, antares_study_path, antares_n_cpu: int) -> bool:
@@ -101,7 +101,7 @@ class AntaresDriver:
     def _get_antares_cmd(self):
         cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option]
         if(version.parse(__antares_simulator_version__) >= version.parse(self.FIRST_VERSION_WITH_NAMED_PROBLEMS)):
-            cmd.extend("--named-problems")
+            cmd.append("--named-problems")
         return cmd
 
     class Error(Exception):

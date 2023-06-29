@@ -14,8 +14,6 @@
 #include "ProblemVariablesZipAdapter.h"
 #include "VariableFileReader.h"
 #include "ZipProblemProviderAdapter.h"
-#include "common_lpnamer.h"
-#include "helpers/StringUtils.h"
 #include "solver_utils.h"
 
 /**
@@ -47,8 +45,9 @@ void LinkProblemsGenerator::treat(
     std::shared_ptr<IProblemWriter> writer) const {
   ProblemVariables problem_variables = variable_provider->Provide();
 
-  // solver_rename_vars(problem, problem_variables.variable_names);
-
+  if (rename_problems_) {
+    solver_rename_vars(problem, problem_variables.variable_names);
+  }
   auto problem_modifier = ProblemModifier(logger_);
   auto in_prblm = problem_modifier.changeProblem(
       problem, _links, problem_variables.ntc_columns,
@@ -69,11 +68,10 @@ void LinkProblemsGenerator::treat(
   writer->Write_problem(in_prblm);
 }
 
-void LinkProblemsGenerator::treatloop(
-    const std::filesystem::path &root, Couplings &couplings,
-    const std::vector<ProblemData> &mps_list,
-    std::shared_ptr<IProblemWriter> writer,
-    bool with_variables_files) {
+void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
+                                      Couplings &couplings,
+                                      const std::vector<ProblemData> &mps_list,
+                                      std::shared_ptr<IProblemWriter> writer) {
   std::for_each(
       std::execution::par, mps_list.begin(), mps_list.end(),
       [&](const auto &mps) {
@@ -81,7 +79,7 @@ void LinkProblemsGenerator::treatloop(
             root, mps._problem_mps);
         auto problem = adapter->provide_problem(_solver_name, log_file_path_);
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-        if (with_variables_files) {
+        if (rename_problems_) {
           variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
               mps, _links, logger_, root);
         } else {

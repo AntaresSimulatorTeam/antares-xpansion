@@ -114,6 +114,7 @@ class SolverCbc : public SolverAbstract {
   virtual int get_col_index(std::string const &name) const override;
   virtual std::vector<std::string> get_row_names(int first, int last) override;
   virtual std::vector<std::string> get_col_names(int first, int last) override;
+  virtual std::vector<std::string> get_col_names() override;
 
   /*************************************************************************************************
   ------------------------------    Methods to modify problem

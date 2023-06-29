@@ -45,6 +45,9 @@ class NOOPSolver: public SolverAbstract {
   virtual std::vector<std::string> get_col_names(int first, int last) override {
     return std::vector<std::string>();
   }
+  virtual std::vector<std::string> get_col_names() override {
+    return std::vector<std::string>();
+  }
   virtual void del_rows(int first, int last) override {}
   virtual void add_rows(int newrows, int newnz, const char *qrtype,
                         const double *rhs, const double *range,

@@ -20,18 +20,19 @@
 #include "ProblemGenerationExeOptions.h"
 #include "ProblemVariablesFromProblemAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
+#include "StringManip.h"
 #include "Timer.h"
 #include "WeightsFileReader.h"
 #include "WeightsFileWriter.h"
 #include "XpansionProblemsFromAntaresProvider.h"
 #include "ZipProblemsProviderAdapter.h"
-#include "common_lpnamer.h"
 #include "config.h"
+
+const std::string MPS_TXT{"mps.txt"};
 
 struct Version {
   Version(const std::string& version) {
-    auto split_version =
-        common_lpnamer::split(common_lpnamer::trim(version), '.');
+    auto split_version = StringManip::split(StringManip::trim(version), '.');
     major = std::atoi(split_version[0].c_str());
     minor = std::atoi(split_version[1].c_str());
   }
@@ -131,25 +132,24 @@ void RunProblemGeneration(
   std::string solver_name = "CBC";
   std::vector<ActiveLink> links = linkBuilder.getLinks();
 
-  auto const mps_file_name = xpansion_output_dir / common_lpnamer::MPS_TXT;
+  auto const mps_file_name = xpansion_output_dir / MPS_TXT;
 
   auto lpDir_ = xpansion_output_dir / "lp";
-  LinkProblemsGenerator linkProblemsGenerator(lpDir_, links, solver_name,
-                                              logger, log_file_path);
+  Version antares_version(ANTARES_VERSION);
+  // TODO update the version of simulator that come with named mps
+  Version first_version_without_variables_files("8.6");
+  auto rename_problems =
+      unnamed_problems ||
+      antares_version < first_version_without_variables_files;
+  (*logger)(LogUtils::LOGLEVEL::INFO)
+      << "rename problems: " << std::boolalpha << rename_problems << std::endl;
+  LinkProblemsGenerator linkProblemsGenerator(
+      lpDir_, links, solver_name, logger, log_file_path, rename_problems);
   auto files_mapper = FilesMapper(antares_archive_path);
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
 
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
-
-  Version antares_version(ANTARES_VERSION);
-  // TODO update the version of simulator that come with named mps
-  Version first_version_without_variables_files("8.2");
-  auto rename_variables =
-      unnamed_problems ||
-      antares_version < first_version_without_variables_files;
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "rename variables: " << std::boolalpha
-                                      << rename_variables << std::endl;
 
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
@@ -177,7 +177,7 @@ void RunProblemGeneration(
         [&](const auto& problem_and_data) {
           const auto& [problem, data] = problem_and_data;
           std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-          if (rename_variables) {
+          if (rename_problems) {
             variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
                 reader, data, links, logger);
           } else {
@@ -195,7 +195,7 @@ void RunProblemGeneration(
     /* Main stuff */
     auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
     linkProblemsGenerator.treatloop(xpansion_output_dir, couplings, mpsList,
-                                    mps_file_writer, rename_variables);
+                                    mps_file_writer);
   } else {
     std::filesystem::path path =
         xpansion_output_dir.parent_path().parent_path() /
@@ -226,7 +226,7 @@ void RunProblemGeneration(
         [&](const auto& problem_and_data) {
           const auto& [problem, data] = problem_and_data;
           std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-          if (rename_variables) {
+          if (rename_problems) {
             variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
                 reader, data, links, logger);
           } else {

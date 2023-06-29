@@ -3,10 +3,13 @@
 #include <cassert>
 #include <cstring>
 
+#include "StringManip.h"
+
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
+const int XPRS_NAMELENGTH = 1028;
 int SolverXpress::_NumberOfProblems = 0;
 std::mutex SolverXpress::license_guard;
 
@@ -292,6 +295,24 @@ std::vector<std::string> SolverXpress::get_col_names(int first, int last) {
   }
 
   return names;
+}
+std::vector<std::string> SolverXpress::get_col_names() {
+  std::vector<std::string> names;
+  names.reserve(1 + last - first);
+
+  int xprs_name_length;
+  int Colu zero_status_check(
+      XPRSgetintattrib(prob, XPRS_NAMELENGTH, &xprs_name_length),
+      "get xprs name length", LOGLOCATION);
+
+  std::string names_in_one_string;
+  auto ncols = get_ncols();
+  names_in_one_string.resize((8 * xprs_name_length + 1) * ncols);
+
+  zero_status_check(XPRSgetnames(_xprs, 2, names_in_one_string, 0, ncols - 1),
+                    "get columns names.", LOGLOCATION);
+
+  return StringManip::split(StringManip::trim(names_in_one_string), '\0');
 }
 
 /*************************************************************************************************

@@ -20,14 +20,14 @@ struct VariableNameComposition {
 
 std::string StringBetweenChevrons(const std::string& input) {
   // input = X<Y>
-  return common_lpnamer::split(common_lpnamer::split(input, '<')[1], '>')[0];
+  return StringManip::split(StringManip::split(input, '<')[1], '>')[0];
 }
 
 void ReadLinkZones(const std::string& input, std::string& origin,
                    std::string& destination) {
   // input format should be link<area1$$area2>
   const auto zones =
-      common_lpnamer::split(StringBetweenChevrons(input), AREA_SEPARATOR);
+      StringManip::split(StringBetweenChevrons(input), AREA_SEPARATOR);
   origin = zones[0];
   std::replace(origin.begin(), origin.end(), WITHESPACESUBSTITUTE, ' ');
   destination = zones[1];
@@ -59,7 +59,7 @@ void updateMapColumn(const std::vector<ActiveLink>& links,
 
 // VariableNameComposition VariableFieldsFromVariableName(
 //     const std::string& var_name) {
-//   auto vect_fields = common_lpnamer::split(var_name, SEPARATOR);
+//   auto vect_fields = StringManip::split(var_name, SEPARATOR);
 //   VariableNameComposition result;
 //   if (vect_fields.size() == 3) {
 //     result.name = vect_fields[0];
@@ -81,11 +81,11 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
   variable_name_config.cost_origin_variable_name = "IntercoDirectCost";
   variable_name_config.cost_extremite_variable_name = "IntercoInDirectCost";
 
-  var_names = problem_->get_col_names(0, problem_->get_ncols() - 1);
+  var_names = problem_->get_col_names();
   std::string origin;
   std::string destination;
   for (const auto& var_name : var_names) {
-    auto split_name = common_lpnamer::split(var_name, SEPARATOR);
+    auto split_name = StringManip::split(var_name, SEPARATOR);
 
     if (split_name[0] == variable_name_config.ntc_variable_name) {
       ReadLinkZones(split_name[1], origin, destination);

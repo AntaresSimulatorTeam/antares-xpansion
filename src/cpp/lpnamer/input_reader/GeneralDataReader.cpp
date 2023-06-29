@@ -95,7 +95,7 @@ void GeneralDataIniReader::SetPlaylistResetOption() {
 void GeneralDataIniReader::SetPlaylistYearLists() {
   std::string current_section = "";
   for (const auto& line : file_lines_) {
-    current_section = ReadPlaylist(current_section, common_lpnamer::trim(line));
+    current_section = ReadPlaylist(current_section, StringManip::trim(line));
   }
 }
 

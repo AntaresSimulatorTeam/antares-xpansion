@@ -18,7 +18,7 @@ add_library (helpers STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/solver_utils.cc
 		${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StringUtils.cpp AntaresVersionProvider.cpp AntaresVersionProvider.h
+		 AntaresVersionProvider.cpp AntaresVersionProvider.h
 		${CMAKE_CURRENT_SOURCE_DIR}/OptionsParser.h
 		${CMAKE_CURRENT_SOURCE_DIR}/OptionsParser.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ArchiveIO.h
@@ -43,7 +43,6 @@ get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLU
 
 target_include_directories (helpers
 	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}/include
 		${CMAKE_CURRENT_SOURCE_DIR}
 		${JSON_INC_PATH}/jsoncpp
 		${xpansion_interfaces_path}

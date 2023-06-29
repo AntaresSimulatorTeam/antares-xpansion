@@ -3,7 +3,7 @@
 
 #include "LinkProfile.h"
 #include "ProblemGenerationLogger.h"
-#include "common_lpnamer.h"
+#include "StringManip.h"
 
 struct CandidateData {
   bool enable = true;

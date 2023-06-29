@@ -5,15 +5,10 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <list>
-#include <map>
-#include <set>
 #include <sstream>
 #include <string>
 #include <vector>
-
-namespace common_lpnamer {
-const std::string MPS_TXT{"mps.txt"};
+namespace StringManip {
 
 template <std::ctype_base::mask mask>
 class IsNot {
@@ -59,4 +54,17 @@ inline std::vector<std::string> split(const std::string& original,
   }
   return result;
 }
-}  // namespace common_lpnamer
+
+class StringUtils {
+ public:
+  static std::string StringUtils::ToLowercase(const std::string& s) {
+    std::string result;
+    std::transform(s.cbegin(), s.cend(), std::back_inserter(result),
+                   [](char const& c) { return std::tolower(c); });
+    return result;
+  }
+  static inline bool contains(std::string const& v1, std::string const& v2) {
+    return v1.find(v2) != std::string::npos;
+  }
+};
+}  // namespace StringManip

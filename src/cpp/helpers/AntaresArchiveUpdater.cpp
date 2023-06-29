@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "ArchiveReader.h"
-#include "include/helpers/StringUtils.h"
+#include "StringManip.h"
 
 const std::string CRITERION_FILES_PREFIX = "criterion";
 const std::string CONSTRAINTS_FILES_PREFIX = "constraints";
@@ -15,29 +15,33 @@ const std::string MPS_FILES_EXTENSION = ".mps";
 
 bool isCriterionFile(const std::filesystem::path &file_name) {
   auto file_name_str = file_name.string();
-  return StringUtils::contains(file_name_str, CRITERION_FILES_PREFIX) &&
+  return StringManip::StringUtils::contains(file_name_str,
+                                            CRITERION_FILES_PREFIX) &&
          !file_name.has_root_path();
 }
 bool isVariablesFile(const std::filesystem::path &file_name) {
   auto file_name_str = file_name.string();
-  return StringUtils::contains(file_name_str, VARIABLES_FILES_PREFIX) &&
+  return StringManip::StringUtils::contains(file_name_str,
+                                            VARIABLES_FILES_PREFIX) &&
          !file_name.has_root_path();
 }
 bool isConstraintsFile(const std::filesystem::path &file_name) {
   auto file_name_str = file_name.string();
-  return StringUtils::contains(file_name_str, CONSTRAINTS_FILES_PREFIX) &&
+  return StringManip::StringUtils::contains(file_name_str,
+                                            CONSTRAINTS_FILES_PREFIX) &&
          !file_name.has_root_path();
 }
 
 bool isAreaFile(const std::filesystem::path &file_name) {
   auto file_name_str = file_name.string();
-  return StringUtils::contains(file_name_str, AREA_FILES_PREFIX) &&
+  return StringManip::StringUtils::contains(file_name_str, AREA_FILES_PREFIX) &&
          !file_name.has_root_path();
 }
 
 bool isIntercoFile(const std::filesystem::path &file_name) {
   auto file_name_str = file_name.string();
-  return StringUtils::contains(file_name_str, INTERCO_FILES_PREFIX) &&
+  return StringManip::StringUtils::contains(file_name_str,
+                                            INTERCO_FILES_PREFIX) &&
          !file_name.has_root_path();
 }
 

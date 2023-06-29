@@ -63,7 +63,7 @@ class StandardLp {
     std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] = nrows;
     std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] = nelems;
 
-    _colNames = solver_p->get_col_names(0, ncols - 1);
+    _colNames = solver_p->get_col_names();
 
     std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].clear();
     std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].resize(
