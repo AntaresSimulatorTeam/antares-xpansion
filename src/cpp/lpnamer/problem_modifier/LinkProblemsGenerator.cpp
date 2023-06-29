@@ -47,7 +47,7 @@ void LinkProblemsGenerator::treat(
     std::shared_ptr<IProblemWriter> writer) const {
   ProblemVariables problem_variables = variable_provider->Provide();
 
-  solver_rename_vars(problem, problem_variables.variable_names);
+  // solver_rename_vars(problem, problem_variables.variable_names);
 
   auto problem_modifier = ProblemModifier(logger_);
   auto in_prblm = problem_modifier.changeProblem(
