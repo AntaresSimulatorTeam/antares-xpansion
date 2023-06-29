@@ -56,18 +56,19 @@ void updateMapColumn(const std::vector<ActiveLink>& links,
     mapColumn[it->get_idLink()].push_back({id, time_step});
   }
 }
-VariableNameComposition VariableFieldsFromVariableName(
-    const std::string& var_name) {
-  auto vect_fields = common_lpnamer::split(var_name, SEPARATOR);
-  VariableNameComposition result;
-  if (vect_fields.size() == 3) {
-    result.name = vect_fields[0];
-    ReadLinkZones(vect_fields[1], result.origin, result.destination);
-    result.time_step = ReadTimeStep(vect_fields[2]);
-  }
 
-  return result;
-}
+// VariableNameComposition VariableFieldsFromVariableName(
+//     const std::string& var_name) {
+//   auto vect_fields = common_lpnamer::split(var_name, SEPARATOR);
+//   VariableNameComposition result;
+//   if (vect_fields.size() == 3) {
+//     result.name = vect_fields[0];
+//     ReadLinkZones(vect_fields[1], result.origin, result.destination);
+//     result.time_step = ReadTimeStep(vect_fields[2]);
+//   }
+
+//   return result;
+// }
 
 void ProblemVariablesFromProblemAdapter::extract_variables(
     std::vector<std::string>& var_names,
@@ -81,23 +82,29 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
   variable_name_config.cost_extremite_variable_name = "IntercoInDirectCost";
 
   var_names = problem_->get_col_names(0, problem_->get_ncols() - 1);
-
+  std::string origin;
+  std::string destination;
   for (const auto& var_name : var_names) {
-    auto var_fields = VariableFieldsFromVariableName(var_name);
-    if (var_fields.name == variable_name_config.ntc_variable_name) {
-      updateMapColumn(active_links_, var_fields.origin, var_fields.destination,
-                      problem_->get_col_index(var_name), var_fields.time_step,
-                      p_ntc_columns);
-    } else if (var_fields.name ==
+    auto split_name = common_lpnamer::split(var_name, SEPARATOR);
+
+    if (split_name[0] == variable_name_config.ntc_variable_name) {
+      ReadLinkZones(split_name[1], origin, destination);
+
+      updateMapColumn(active_links_, origin, destination,
+                      problem_->get_col_index(var_name),
+                      ReadTimeStep(split_name[2]), p_ntc_columns);
+    } else if (split_name[0] ==
                variable_name_config.cost_origin_variable_name) {
-      updateMapColumn(active_links_, var_fields.origin, var_fields.destination,
-                      problem_->get_col_index(var_name), var_fields.time_step,
-                      p_direct_cost_columns);
-    } else if (var_fields.name ==
+      ReadLinkZones(split_name[1], origin, destination);
+      updateMapColumn(active_links_, origin, destination,
+                      problem_->get_col_index(var_name),
+                      ReadTimeStep(split_name[2]), p_direct_cost_columns);
+    } else if (split_name[0] ==
                variable_name_config.cost_extremite_variable_name) {
-      updateMapColumn(active_links_, var_fields.origin, var_fields.destination,
-                      problem_->get_col_index(var_name), var_fields.time_step,
-                      p_indirect_cost_columns);
+      ReadLinkZones(split_name[1], origin, destination);
+      updateMapColumn(active_links_, origin, destination,
+                      problem_->get_col_index(var_name),
+                      ReadTimeStep(split_name[2]), p_indirect_cost_columns);
     }
   }
 }
