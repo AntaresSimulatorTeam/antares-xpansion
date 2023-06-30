@@ -34,7 +34,13 @@ std::vector<LinkProfile> LinkProfileReader::ReadLinkProfile(
   ReadLinkProfile(direct_filename, result, false);
   return result;
 }
+bool is_number(std::string const &str, double &result) {
+  auto i = std::istringstream(str);
 
+  i >> result;
+
+  return !i.fail() && i.eof();
+}
 void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
                                         std::vector<LinkProfile> &result,
                                         bool fillDirectProfile) {
@@ -46,6 +52,7 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
     throw std::filesystem::filesystem_error(LOGLOCATION + errMsg, filename,
                                             std::error_code());
   }
+  std::string str_value;
   double value;
   std::string line;
   int chronicle_id = 0;
@@ -53,11 +60,19 @@ void LinkProfileReader::ReadLinkProfile(const std::filesystem::path &filename,
     if (std::getline(infile, line)) {
       std::stringstream buffer(line);
       chronicle_id = 0;
-      while (buffer >> value) {
-        ConstructChronicle(result, chronicle_id);
-        UpdateProfile(result, fillDirectProfile, value, chronicle_id,
-                      time_step);
-        ++chronicle_id;
+      while (buffer >> str_value) {
+        if (is_number(str_value, value)) {
+          ConstructChronicle(result, chronicle_id);
+          UpdateProfile(result, fillDirectProfile, value, chronicle_id,
+                        time_step);
+          ++chronicle_id;
+        } else {
+          auto errMsg =
+              std::string("Error while reading value in link-profile ") +
+              filename.string() + " line " + std::to_string(time_step) + "\n";
+          (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << errMsg;
+          throw std::domain_error(errMsg);
+        }
       }
     } else {
       auto errMsg = std::string("error not enough line in link-profile ") +
