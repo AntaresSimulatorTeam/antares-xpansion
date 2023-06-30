@@ -71,7 +71,6 @@ void updateMapColumn(const std::vector<ActiveLink>& links,
 // }
 
 void ProblemVariablesFromProblemAdapter::extract_variables(
-    std::vector<std::string>& var_names,
     std::map<colId, ColumnsToChange>& p_ntc_columns,
     std::map<colId, ColumnsToChange>& p_direct_cost_columns,
     std::map<colId, ColumnsToChange>& p_indirect_cost_columns) const {
@@ -81,29 +80,27 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
   variable_name_config.cost_origin_variable_name = "IntercoDirectCost";
   variable_name_config.cost_extremite_variable_name = "IntercoInDirectCost";
 
-  var_names = problem_->get_col_names();
+  const auto& var_names = problem_->get_col_names();
   std::string origin;
   std::string destination;
-  for (const auto& var_name : var_names) {
-    auto split_name = StringManip::split(var_name, SEPARATOR);
+  for (size_t var_index = 0; var_index < var_names.size(); var_index++) {
+    const auto& var_name = var_names.at(var_index);
+    const auto& split_name = StringManip::split(var_name, SEPARATOR);
 
     if (split_name[0] == variable_name_config.ntc_variable_name) {
       ReadLinkZones(split_name[1], origin, destination);
 
-      updateMapColumn(active_links_, origin, destination,
-                      problem_->get_col_index(var_name),
+      updateMapColumn(active_links_, origin, destination, var_index,
                       ReadTimeStep(split_name[2]), p_ntc_columns);
     } else if (split_name[0] ==
                variable_name_config.cost_origin_variable_name) {
       ReadLinkZones(split_name[1], origin, destination);
-      updateMapColumn(active_links_, origin, destination,
-                      problem_->get_col_index(var_name),
+      updateMapColumn(active_links_, origin, destination, var_index,
                       ReadTimeStep(split_name[2]), p_direct_cost_columns);
     } else if (split_name[0] ==
                variable_name_config.cost_extremite_variable_name) {
       ReadLinkZones(split_name[1], origin, destination);
-      updateMapColumn(active_links_, origin, destination,
-                      problem_->get_col_index(var_name),
+      updateMapColumn(active_links_, origin, destination, var_index,
                       ReadTimeStep(split_name[2]), p_indirect_cost_columns);
     }
   }
@@ -111,8 +108,8 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
 
 ProblemVariables ProblemVariablesFromProblemAdapter::Provide() {
   ProblemVariables result;
-  extract_variables(result.variable_names, result.ntc_columns,
-                    result.direct_cost_columns, result.indirect_cost_columns);
+  extract_variables(result.ntc_columns, result.direct_cost_columns,
+                    result.indirect_cost_columns);
   return result;
 }
 

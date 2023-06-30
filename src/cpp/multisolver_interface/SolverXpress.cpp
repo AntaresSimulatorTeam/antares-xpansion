@@ -12,6 +12,7 @@
 const int XPRS_NAMELENGTH = 1028;
 int SolverXpress::_NumberOfProblems = 0;
 std::mutex SolverXpress::license_guard;
+const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
 SolverXpress::SolverXpress(const std::filesystem::path &log_file)
     : SolverXpress() {
@@ -254,19 +255,38 @@ void SolverXpress::get_ub(double *ub, int first, int last) const {
   zero_status_check(status, "get upper bounds of variables", LOGLOCATION);
 }
 
-int SolverXpress::get_row_index(std::string const &name) const {
+int SolverXpress::get_row_index(std::string const &name) {
   int id = 0;
   int status = XPRSgetindex(_xprs, 1, name.c_str(), &id);
   zero_status_check(status, "get row index. Name does not exist.", LOGLOCATION);
   return id;
 }
 
-int SolverXpress::get_col_index(std::string const &name) const {
+int SolverXpress::get_col_index(std::string const &name) {
   int id = 0;
   int status = XPRSgetindex(_xprs, 2, name.c_str(), &id);
   zero_status_check(status, "get column index. Name does not exist.",
                     LOGLOCATION);
   return id;
+}
+
+std::vector<std::string> get_names(int type) {
+  std::vector<std::string> names;
+  names.reserve(1 + last - first);
+
+  int xprs_name_length;
+  zero_status_check(XPRSgetintattrib(prob, XPRS_NAMELENGTH, &xprs_name_length),
+                    "get xprs name length", LOGLOCATION);
+
+  std::string names_in_one_string;
+  auto ncols = get_ncols();
+  names_in_one_string.resize((8 * xprs_name_length + 1) * ncols);
+
+  zero_status_check(
+      XPRSgetnames(_xprs, type, names_in_one_string, 0, ncols - 1),
+      "get " + TYPETONAME[type] + " names.", LOGLOCATION);
+
+  return StringManip::split(StringManip::trim(names_in_one_string), '\0');
 }
 
 std::vector<std::string> SolverXpress::get_row_names(int first, int last) {
@@ -283,6 +303,8 @@ std::vector<std::string> SolverXpress::get_row_names(int first, int last) {
   return names;
 }
 
+std::vector<std::string> SolverXpress::get_row_names() { return get_names(1); }
+
 std::vector<std::string> SolverXpress::get_col_names(int first, int last) {
   std::vector<std::string> names;
   names.reserve(1 + last - first);
@@ -296,24 +318,7 @@ std::vector<std::string> SolverXpress::get_col_names(int first, int last) {
 
   return names;
 }
-std::vector<std::string> SolverXpress::get_col_names() {
-  std::vector<std::string> names;
-  names.reserve(1 + last - first);
-
-  int xprs_name_length;
-  int Colu zero_status_check(
-      XPRSgetintattrib(prob, XPRS_NAMELENGTH, &xprs_name_length),
-      "get xprs name length", LOGLOCATION);
-
-  std::string names_in_one_string;
-  auto ncols = get_ncols();
-  names_in_one_string.resize((8 * xprs_name_length + 1) * ncols);
-
-  zero_status_check(XPRSgetnames(_xprs, 2, names_in_one_string, 0, ncols - 1),
-                    "get columns names.", LOGLOCATION);
-
-  return StringManip::split(StringManip::trim(names_in_one_string), '\0');
-}
+std::vector<std::string> SolverXpress::get_col_names() { return get_names(2); }
 
 /*************************************************************************************************
 ------------------------------    Methods to modify problem

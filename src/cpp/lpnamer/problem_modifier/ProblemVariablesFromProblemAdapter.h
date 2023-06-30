@@ -14,7 +14,6 @@ class ProblemVariablesFromProblemAdapter
 
  private:
   void extract_variables(
-      std::vector<std::string>& var_names,
       std::map<colId, ColumnsToChange>& p_ntc_columns,
       std::map<colId, ColumnsToChange>& p_direct_cost_columns,
       std::map<colId, ColumnsToChange>& p_indirect_cost_columns) const;
