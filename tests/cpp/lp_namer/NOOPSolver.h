@@ -33,13 +33,12 @@ class NOOPSolver: public SolverAbstract {
   }
   virtual void get_lb(double *lb, int fisrt, int last) const override {}
   virtual void get_ub(double *ub, int fisrt, int last) const override {}
-  virtual int get_row_index(const std::string &name) const override {
-    return 0;
-  }
-  virtual int get_col_index(const std::string &name) const override {
-    return 0;
-  }
+  virtual int get_row_index(const std::string &name) override { return 0; }
+  virtual int get_col_index(const std::string &name) override { return 0; }
   virtual std::vector<std::string> get_row_names(int first, int last) override {
+    return std::vector<std::string>();
+  }
+  virtual std::vector<std::string> get_row_names() override {
     return std::vector<std::string>();
   }
   virtual std::vector<std::string> get_col_names(int first, int last) override {
