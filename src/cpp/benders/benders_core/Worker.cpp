@@ -55,9 +55,8 @@ void Worker::init(VariableMap const &variable_map,
 
   int var_index;
   for (auto const &kvp : variable_map) {
-    var_index = _solver->get_col_index(kvp.first);
     _id_to_name[var_index] = kvp.first;
-    _name_to_id[kvp.first] = var_index;
+    _name_to_id[kvp.first] = kvp.second;
   }
 }
 
