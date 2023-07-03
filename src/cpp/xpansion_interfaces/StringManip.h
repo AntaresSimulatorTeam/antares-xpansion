@@ -57,7 +57,7 @@ inline std::vector<std::string> split(const std::string& original,
 
 class StringUtils {
  public:
-  static std::string StringUtils::ToLowercase(const std::string& s) {
+  static std::string ToLowercase(const std::string& s) {
     std::string result;
     std::transform(s.cbegin(), s.cend(), std::back_inserter(result),
                    [](char const& c) { return std::tolower(c); });
