@@ -191,7 +191,7 @@ class SolverXpress : public SolverAbstract {
   std::ofstream _log_stream;
 
  private:
-  std::vector<std::string> get_names(int type);
+  std::vector<std::string> get_names(int type, size_t nelements);
 };
 
 /************************************************************************************\
