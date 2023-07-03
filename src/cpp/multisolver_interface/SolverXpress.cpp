@@ -2,6 +2,7 @@
 
 #include <cassert>
 #include <cstring>
+#include <map>
 
 #include "StringManip.h"
 
@@ -9,7 +10,6 @@
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-const int XPRS_NAMELENGTH = 1028;
 int SolverXpress::_NumberOfProblems = 0;
 std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
@@ -274,6 +274,7 @@ std::vector<std::string> get_names(int type) {
   std::vector<std::string> names;
   names.reserve(1 + last - first);
 
+  const int XPRS_NAMELENGTH = 1028;
   int xprs_name_length;
   zero_status_check(XPRSgetintattrib(prob, XPRS_NAMELENGTH, &xprs_name_length),
                     "get xprs name length", LOGLOCATION);
