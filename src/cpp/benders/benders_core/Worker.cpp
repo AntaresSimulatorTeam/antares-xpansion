@@ -54,9 +54,10 @@ void Worker::init(VariableMap const &variable_map,
   _solver->read_prob_mps(path_to_mps);
 
   int var_index;
+  _name_to_id = variable_map;
+
   for (auto const &kvp : variable_map) {
-    _id_to_name[var_index] = kvp.first;
-    _name_to_id[kvp.first] = kvp.second;
+    _id_to_name[kvp.second] = kvp.first;
   }
 }
 
