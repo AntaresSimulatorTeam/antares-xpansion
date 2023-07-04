@@ -271,7 +271,6 @@ int SolverXpress::get_col_index(std::string const &name) {
 }
 
 std::vector<std::string> SolverXpress::get_names(int type, size_t nelements) {
-  const int XPRS_NAMELENGTH = 1028;
   int xprs_name_length;
   zero_status_check(XPRSgetintattrib(prob, XPRS_NAMELENGTH, &xprs_name_length),
                     "get xprs name length", LOGLOCATION);
