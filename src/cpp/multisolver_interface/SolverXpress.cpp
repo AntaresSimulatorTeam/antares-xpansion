@@ -272,14 +272,14 @@ int SolverXpress::get_col_index(std::string const &name) {
 
 std::vector<std::string> SolverXpress::get_names(int type, size_t nelements) {
   int xprs_name_length;
-  zero_status_check(XPRSgetintattrib(prob, XPRS_NAMELENGTH, &xprs_name_length),
+  zero_status_check(XPRSgetintattrib(_xprs, XPRS_NAMELENGTH, &xprs_name_length),
                     "get xprs name length", LOGLOCATION);
 
   std::string names_in_one_string;
   names_in_one_string.resize((8 * xprs_name_length + 1) * nelements);
 
   zero_status_check(
-      XPRSgetnames(_xprs, type, names_in_one_string, 0, ncols - 1),
+      XPRSgetnames(_xprs, type, names_in_one_string, 0, nelements - 1),
       "get " + TYPETONAME[type] + " names.", LOGLOCATION);
 
   return StringManip::split(StringManip::trim(names_in_one_string), '\0');
