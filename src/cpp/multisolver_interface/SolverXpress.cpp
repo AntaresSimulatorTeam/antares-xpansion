@@ -279,7 +279,7 @@ std::vector<std::string> SolverXpress::get_names(int type, size_t nelements) {
   names_in_one_string.resize((8 * xprs_name_length + 1) * nelements);
 
   zero_status_check(
-      XPRSgetnames(_xprs, type, names_in_one_string, 0, nelements - 1),
+      XPRSgetnames(_xprs, type, names_in_one_string.data(), 0, nelements - 1),
       "get " + TYPETONAME[type] + " names.", LOGLOCATION);
 
   return StringManip::split(StringManip::trim(names_in_one_string), '\0');
