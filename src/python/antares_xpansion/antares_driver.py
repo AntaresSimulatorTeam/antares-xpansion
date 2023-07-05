@@ -29,6 +29,7 @@ class AntaresDriver:
         self.antares_n_cpu = 1  # default
         self.zip_option = "-z"
         self.logger = step_logger(__name__, __class__.__name__)
+        #TODO update antares version which comes with named problems
         self.FIRST_VERSION_WITH_NAMED_PROBLEMS = "8.6"
 
 
