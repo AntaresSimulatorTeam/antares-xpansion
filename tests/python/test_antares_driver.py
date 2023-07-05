@@ -250,7 +250,7 @@ class TestAntaresDriver:
             antares_driver.launch(study_dir, 1)
             expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z"]
             if(self.nammed_problems):
-                expected_cmd.extend("--named-problems")
+                expected_cmd.append("--named-problems")
 
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
@@ -267,7 +267,7 @@ class TestAntaresDriver:
             expected_cmd = [exe_path, study_dir,
                             "--force-parallel", str(n_cpu), "-z"]
             if(self.nammed_problems):
-                expected_cmd.extend("--named-problems")
+                expected_cmd.append("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -288,7 +288,7 @@ class TestAntaresDriver:
                 "-z"
             ]
             if(self.nammed_problems):
-                expected_cmd.extend("--named-problems")
+                expected_cmd.append("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -305,7 +305,7 @@ class TestAntaresDriver:
             expected_cmd = [str(exe_path), study_dir,
                             "--force-parallel", str(n_cpu), "-z"]
             if(self.nammed_problems):
-                expected_cmd.extend("--named-problems")
+                expected_cmd.append("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -368,7 +368,7 @@ class TestAntaresDriver:
             expected_cmd = [str(exe_path), study_dir,
                             "--force-parallel", str(n_cpu), "-z"]
             if(self.nammed_problems):
-                expected_cmd.extend("--named-problems")
+                expected_cmd.append("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
@@ -394,7 +394,7 @@ class TestAntaresDriver:
             expected_cmd = [str(exe_path), study_dir,
                             "--force-parallel", str(n_cpu), "-z"]
             if(self.nammed_problems):
-                expected_cmd.extend("--named-problems")
+                expected_cmd.append("--named-problems")
             run_function.assert_called_once_with(
                 expected_cmd, shell=False, stdout=-3, stderr=-3
             )
