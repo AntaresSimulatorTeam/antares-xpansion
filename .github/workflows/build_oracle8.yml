@@ -1,0 +1,147 @@
+name: Oracle 8 Build
+
+on:
+  merge_group:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+  release:
+    types: [ created ]
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+  versions:
+    runs-on: ubuntu-latest
+    outputs:
+      antares-version: ${{steps.antares-version.outputs.result}}
+      antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+      antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read antares-solver version
+        id: antares-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_version'
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - name: Read antares-deps version
+        id: antares-deps-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_deps_version'
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container: 'oraclelinux:8'
+    strategy:
+      matrix:
+        xprs: [ XPRESS-ON, XPRESS-OFF ]
+    needs: [ versions ]
+    env:
+      XPRESSDIR: ${{ github.workspace }}/xpress
+      XPRESS: ${{ github.workspace }}/xpress/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+      XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
+      XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
+      XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
+
+    steps:
+
+      - name: Install System
+        run: |
+          dnf install -y epel-release git cmake wget rpm-build redhat-lsb-core openmpi-devel
+          dnf install -y unzip libuuid-devel boost-test boost-devel gcc-toolset-9-toolchain zlib-devel python3-devel
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Checkout xpressmp linux
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AS_TOKEN }}
+          repository: rte-france/xpress-mp
+          path: ${{ env.XPRESSDIR }}
+          github-server-url: https://github.com
+          ref: 8.13
+        if: matrix.xprs == 'XPRESS-ON'
+
+      - name: Set up Python
+        run: |
+          dnf update -y
+          dnf install -y python3 python3-pip
+
+      - run:
+          echo ${{needs.versions.outputs.antares-deps-version}}
+
+      - name: Download pre-compiled librairies
+        uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
+        with:
+          antares-deps-version: ${{needs.versions.outputs.antares-deps-version}}
+          antares-version: ${{needs.versions.outputs.antares-version}}
+          os: Oracle8
+          os-full-name: OracleServer-8.8
+
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost
+        with:
+          prefix: "../rte-antares-deps-Release/"
+
+      - name: Compile TBB
+        uses: ./.github/workflows/compile-tbb
+
+      - name: Install dependencies
+        run: |
+          source /opt/rh/gcc-toolset-9/enable
+          pip3 install wheel
+          pip3 install -r requirements-tests.txt
+
+      - name: Configure
+        run: |
+          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          source /opt/rh/gcc-toolset-9/enable
+          dnf install jsoncpp-devel
+          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+          export PATH=/usr/lib64/openmpi/bin:$PATH
+          cmake3 -B _build -S . \
+                 -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
+                 -DBUILD_TESTING=ON \
+                 -DCMAKE_BUILD_TYPE=Release \
+                 -DCMAKE_INSTALL_PREFIX=_install \
+                 -DBUILD_UI=OFF \
+                 -DXPRESS=${{ env.XPRESS_VALUE }} \
+                 -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
+                 -DALLOW_RUN_AS_ROOT=ON
+
+
+      - name: Build
+        run: |
+          source /opt/rh/gcc-toolset-9/enable
+          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+          export PATH=/usr/lib64/openmpi/bin:$PATH
+          cmake --build _build --config Release -j2
+
+      - name: Running unit tests
+        timeout-minutes: 120
+        shell: bash
+        run: |
+          source /etc/profile.d/modules.sh
+          module load mpi
+          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
+          export XPRESS=${{ env.XPRESS_CONTAINER }}
+          cd _build
+          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
