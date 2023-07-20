@@ -36,8 +36,9 @@ class SensitivityDriver:
         self.simulation_output_path = self._get_simulation_output_path(
             simulation_output_path
         )
-        with zipfile.ZipFile(self.simulation_output_path, 'r') as output_zip:
-            output_zip.extractall(xpansion_simulation_output)
+        if (os.path.splitext(simulation_output_path)[1] == ".zip"):
+            with zipfile.ZipFile(self.simulation_output_path, 'r') as output_zip:
+                output_zip.extractall(xpansion_simulation_output)
         self.json_sensitivity_in_path = self._get_file_path(
             json_sensitivity_in_path)
         self.json_benders_output_path = self._get_file_path(

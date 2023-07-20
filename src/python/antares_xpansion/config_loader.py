@@ -50,7 +50,7 @@ class ConfigLoader:
         self.logger = step_logger(__name__, __class__.__name__)
 
         self._config = config
-        self._last_zip = None
+        self._last_study = None
         if self._config.step == "resume":
             self._config.simulation_name = (
                 LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
@@ -84,10 +84,10 @@ class ConfigLoader:
         else:
             tmp_zip = Path(self.antares_output()) / \
                 self._config.simulation_name
-            if self.is_zip(tmp_zip):
-                self._last_zip = tmp_zip
-                self._simulation_name = self._last_zip.parent / \
-                    (self._last_zip.stem+"-Xpansion")
+            if self.is_antares_study(tmp_zip):
+                self._last_study = tmp_zip
+                self._simulation_name = self._last_study.parent / \
+                    (self._last_study.stem+"-Xpansion")
             else:
                 raise ConfigLoader.InvalidSimulationName(
                     f"{tmp_zip} is not a valid zip archive")
@@ -198,12 +198,6 @@ class ConfigLoader:
                 self.data_dir(), self._config.USER, self._config.EXPANSION, filename
             )
         )
-
-    def _get_weight_file_path_in_weights_dir(self, filename):
-        return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.WEIGHTS, filename)))
-
-    def _get_constraints_file_path_in_constraints_dir(self, filename):
-        return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.CONSTRAINTS, filename)))
 
     def _get_weight_file_path_in_weights_dir(self, filename):
         return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.WEIGHTS, filename)))
@@ -393,7 +387,7 @@ class ConfigLoader:
         if self._simulation_name == "last":
             self._set_last_simulation_name()
 
-        return self._last_zip
+        return self._last_study
 
     def benders_pre_actions(self):
         self.save_launcher_options()
@@ -508,44 +502,33 @@ class ConfigLoader:
         """
         return last simulation name
         """
-        last_dir_path = self.get_last_modified_dir(self.antares_output())
+        last_study = self.last_modified_study(self.antares_output())
 
         if self.step() == "resume":
-            self._simulation_name = last_dir_path
+            self._simulation_name = os.path.basename(os.path.splitext(last_study)[0])
         else:
-            # Get list of all dirs only in the given directory
-            list_of_zip_filter = Path(self.antares_output()).glob("*.zip")
+            self._last_study = last_study
+            self._simulation_name = self._last_study.parent / \
+                (self._last_study.stem+"-Xpansion")
 
-            # Sort list of files based on last modification time in ascending order
-            list_of_zip = sorted(
-                list_of_zip_filter,
-                key=lambda x: os.path.getmtime(
-                    os.path.join(self.antares_output(), x)),
-            )
-            self._last_zip = list_of_zip[-1]
-            self._simulation_name = self._last_zip.parent / \
-                (self._last_zip.stem+"-Xpansion")
+    def is_antares_study(self, study):
+        _, ext = os.path.splitext(study)
+        return ext == ".zip" or os.path.isdir(study)
 
-    def is_zip(self, file):
-        filename, ext = os.path.splitext(file)
-        return ext == ".zip"
-
-    def get_last_modified_dir(self, root_dir):
+    def last_modified_study(self, root_dir):
         list_dir = os.listdir(root_dir)
-        list_of_zip = filter(
-            lambda x: self.is_zip(x), list_dir
+        list_of_studies = filter(
+            lambda x: self.is_antares_study(x), list_dir
         )
         # Sort list of files based on last modification time in ascending order
-        zip_sorted = sorted(
-            list_of_zip,
+        sort_studies = sorted(
+            list_of_studies,
             key=lambda x: os.path.getmtime(
                 os.path.join(root_dir, x)),
         )
 
-        last_zip = Path(root_dir) / zip_sorted[-1]
-        filename, ext = os.path.splitext(last_zip)
-        output_dir = os.path.basename(filename)
-        return output_dir
+        last_study = Path(root_dir) / sort_studies[-1]
+        return last_study
 
     def is_accurate(self):
         """
