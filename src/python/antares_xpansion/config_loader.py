@@ -518,7 +518,7 @@ class ConfigLoader:
     def last_modified_study(self, root_dir):
         list_dir = os.listdir(root_dir)
         list_of_studies = filter(
-            lambda x: self.is_antares_study(x), list_dir
+            lambda x: self.is_antares_study(os.path.join(root_dir, x)), list_dir
         )
         # Sort list of files based on last modification time in ascending order
         sort_studies = sorted(
@@ -526,7 +526,6 @@ class ConfigLoader:
             key=lambda x: os.path.getmtime(
                 os.path.join(root_dir, x)),
         )
-
         last_study = Path(root_dir) / sort_studies[-1]
         return last_study
 
