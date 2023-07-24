@@ -2,12 +2,14 @@
     Class to work on config
 """
 
+import glob
 import json
 import os
 import re
 import shutil
 import sys
 from pathlib import Path
+import zipfile
 
 from antares_xpansion.chronicles_checker import ChronicleChecker
 from antares_xpansion.logger import step_logger
@@ -55,7 +57,7 @@ class ConfigLoader:
             self._config.simulation_name = (
                 LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
             )
-            self._simulation_name = self._config.simulation_name
+            self._xpansion_simulation_name = self._config.simulation_name
             self._restore_launcher_options()
         else:
             self._set_simulation_name()
@@ -79,15 +81,22 @@ class ConfigLoader:
             raise ConfigLoader.MissingSimulationName(
                 "Missing argument simulationName")
         elif self._config.simulation_name == "last":
-            self._simulation_name = self._config.simulation_name
+            self._xpansion_simulation_name = self._config.simulation_name
 
         else:
             tmp_zip = Path(self.antares_output()) / \
                 self._config.simulation_name
             if self.is_antares_study(tmp_zip):
                 self._last_study = tmp_zip
-                self._simulation_name = self._last_study.parent / \
-                    (self._last_study.stem+"-Xpansion")
+                if self.step() in ["resume", "sensitivity"] :
+                    self._xpansion_simulation_name = self._last_study
+                    if self.is_zip(self._last_study):
+                        self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
+                        with zipfile.ZipFile(self._last_study, 'r') as output_zip:
+                            output_zip.extractall(self._xpansion_simulation_name)
+                else:
+                    self._xpansion_simulation_name = self._last_study.parent / \
+                        (self._last_study.stem+"-Xpansion")
             else:
                 raise ConfigLoader.InvalidSimulationName(
                     f"{tmp_zip} is not a valid zip archive")
@@ -351,10 +360,10 @@ class ConfigLoader:
     def _simulation_lp_path(self):
         return self.xpansion_simulation_output() / "lp"
 
-    def xpansion_simulation_output(self):
-        if self._simulation_name == "last":
+    def xpansion_simulation_output(self) -> Path:
+        if self._xpansion_simulation_name == "last":
             self._set_last_simulation_name()
-        return self._simulation_name
+        return self._xpansion_simulation_name
 
     def _verify_additional_constraints_file(self):
         if self.options.get("additional-constraints", "") != "":
@@ -384,7 +393,7 @@ class ConfigLoader:
                 sys.exit(1)
 
     def simulation_output_path(self) -> Path:
-        if self._simulation_name == "last":
+        if self._xpansion_simulation_name == "last":
             self._set_last_simulation_name()
 
         return self._last_study
@@ -432,9 +441,7 @@ class ConfigLoader:
         )
 
     def _sensitivity_dir(self):
-        return os.path.normpath(
-            os.path.join(self.xpansion_simulation_output(), "sensitivity")
-        )
+        return self.xpansion_simulation_output() / "sensitivity"
 
     def _set_options_for_benders_solver(self):
         """
@@ -502,20 +509,35 @@ class ConfigLoader:
         """
         return last simulation name
         """
-        last_study = self.last_modified_study(self.antares_output())
+        self._last_study = self.last_modified_study(self.antares_output())
 
-        if self.step() == "resume":
-            self._simulation_name = os.path.basename(os.path.splitext(last_study)[0])
+        if self.step() in ["resume", "sensitivity"] :
+            
+            self._xpansion_simulation_name = self._last_study
+            if self.is_zip(self._last_study):
+                self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
+                with zipfile.ZipFile(self._last_study, 'r') as output_zip:
+                    output_zip.extractall(self._xpansion_simulation_name)
         else:
-            self._last_study = last_study
-            self._simulation_name = self._last_study.parent / \
+            self._xpansion_simulation_name = self._last_study.parent / \
                 (self._last_study.stem+"-Xpansion")
+
+    def is_zip(self, study):
+        _, ext = os.path.splitext(study)
+        return ext == ".zip" 
+    
+    def update_last_study_with_sensitivity_results(self):
+        if self.is_zip(self._last_study):
+            os.remove(self._last_study)
+            shutil.make_archive(self._last_study.parent / self._last_study.stem, 'zip', self._xpansion_simulation_name)  
+            if(os.path.exists(self._xpansion_simulation_name)):
+                shutil.rmtree(self._xpansion_simulation_name)
 
     def is_antares_study(self, study):
         _, ext = os.path.splitext(study)
         return ext == ".zip" or os.path.isdir(study)
 
-    def last_modified_study(self, root_dir):
+    def last_modified_study(self, root_dir)-> Path: 
         list_dir = os.listdir(root_dir)
         list_of_studies = filter(
             lambda x: self.is_antares_study(os.path.join(root_dir, x)), list_dir
@@ -599,7 +621,7 @@ class ConfigLoader:
         return self._config.step
 
     def simulation_name(self):
-        return self._simulation_name
+        return self._xpansion_simulation_name
 
     def antares_n_cpu(self):
         return self._config.antares_n_cpu
