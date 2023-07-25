@@ -1,6 +1,6 @@
 {
-  "antares_version": "8.6.0",
-  "antares_version_executable": "8.6",
+  "antares_version": "8.7.0-rc1",
+  "antares_version_executable": "8.7",
   "antares_xpansion_version": "1.0.3",
   "antares_deps_version": "2.0.6",
   "minizip_ng_version": "3.0.6"
