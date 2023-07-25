@@ -30,7 +30,7 @@ class AntaresDriver:
         self.zip_option = "-z"
         self.logger = step_logger(__name__, __class__.__name__)
         #TODO update antares version which comes with named problems
-        self.FIRST_VERSION_WITH_NAMED_PROBLEMS = "8.6"
+        self.FIRST_VERSION_WITH_NAMED_PROBLEMS = "8.7"
 
 
     def launch(self, antares_study_path, antares_n_cpu: int) -> bool:

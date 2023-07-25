@@ -137,7 +137,7 @@ void RunProblemGeneration(
   auto lpDir_ = xpansion_output_dir / "lp";
   Version antares_version(ANTARES_VERSION);
   // TODO update the version of simulator that come with named mps
-  Version first_version_without_variables_files("8.6");
+  Version first_version_without_variables_files("8.7");
   auto rename_problems =
       unnamed_problems ||
       antares_version < first_version_without_variables_files;
