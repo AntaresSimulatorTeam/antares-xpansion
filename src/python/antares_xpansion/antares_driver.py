@@ -102,7 +102,7 @@ class AntaresDriver:
     def _get_antares_cmd(self):
         cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option]
         if(version.parse(__antares_simulator_version__) >= version.parse(self.FIRST_VERSION_WITH_NAMED_PROBLEMS)):
-            cmd.append("--named-problems")
+            cmd.append("--named-mps-problems")
         return cmd
 
     class Error(Exception):
