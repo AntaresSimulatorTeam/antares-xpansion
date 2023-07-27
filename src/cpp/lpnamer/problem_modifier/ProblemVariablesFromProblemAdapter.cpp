@@ -78,7 +78,7 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
   VariableFileReadNameConfiguration variable_name_config;
   variable_name_config.ntc_variable_name = "NTCDirect";
   variable_name_config.cost_origin_variable_name = "IntercoDirectCost";
-  variable_name_config.cost_extremite_variable_name = "IntercoInDirectCost";
+  variable_name_config.cost_extremite_variable_name = "IntercoIndirectCost";
 
   const auto& var_names = problem_->get_col_names();
   std::string origin;
