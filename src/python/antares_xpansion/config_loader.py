@@ -84,22 +84,14 @@ class ConfigLoader:
             self._xpansion_simulation_name = self._config.simulation_name
 
         else:
-            tmp_zip = Path(self.antares_output()) / \
+            tmp_path = Path(self.antares_output()) / \
                 self._config.simulation_name
-            if self.is_antares_study(tmp_zip):
-                self._last_study = tmp_zip
-                if self.step() in ["resume", "sensitivity"] :
-                    self._xpansion_simulation_name = self._last_study
-                    if self.is_zip(self._last_study):
-                        self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
-                        with zipfile.ZipFile(self._last_study, 'r') as output_zip:
-                            output_zip.extractall(self._xpansion_simulation_name)
-                else:
-                    self._xpansion_simulation_name = self._last_study.parent / \
-                        (self._last_study.stem+"-Xpansion")
+            if self.is_antares_study_output(tmp_path):
+                self._last_study = tmp_path
+                self._set_xpansion_simulation_name()
             else:
                 raise ConfigLoader.InvalidSimulationName(
-                    f"{tmp_zip} is not a valid zip archive")
+                    f"{tmp_path} is not a valid Antares output")
 
     def _restore_launcher_options(self):
         with open(self.launcher_options_file_path(), "r") as launcher_options:
@@ -511,8 +503,10 @@ class ConfigLoader:
         """
         self._last_study = self.last_modified_study(self.antares_output())
 
-        if self.step() in ["resume", "sensitivity"] :
-            
+        self._set_xpansion_simulation_name()
+
+    def _set_xpansion_simulation_name(self):
+        if self.step() in ["resume", "sensitivity"] : 
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
                 self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
@@ -533,14 +527,14 @@ class ConfigLoader:
             if(os.path.exists(self._xpansion_simulation_name)):
                 shutil.rmtree(self._xpansion_simulation_name)
 
-    def is_antares_study(self, study):
+    def is_antares_study_output(self, study):
         _, ext = os.path.splitext(study)
         return ext == ".zip" or os.path.isdir(study)
 
     def last_modified_study(self, root_dir)-> Path: 
         list_dir = os.listdir(root_dir)
         list_of_studies = filter(
-            lambda x: self.is_antares_study(os.path.join(root_dir, x)), list_dir
+            lambda x: self.is_antares_study_output(os.path.join(root_dir, x)), list_dir
         )
         # Sort list of files based on last modification time in ascending order
         sort_studies = sorted(
@@ -548,6 +542,9 @@ class ConfigLoader:
             key=lambda x: os.path.getmtime(
                 os.path.join(root_dir, x)),
         )
+        if len(sort_studies) == 0:
+            raise ConfigLoader.MissingAntaresOutput("No Antares output is found")
+        
         last_study = Path(root_dir) / sort_studies[-1]
         return last_study
 
@@ -698,6 +695,9 @@ class ConfigLoader:
         pass
 
     class InvalidSimulationName(Exception):
+        pass
+
+    class MissingAntaresOutput(Exception):
         pass
 
     def check_NTC_column_constraints(self, antares_version):
