@@ -169,6 +169,7 @@ class XpansionDriver:
             self.config_loader.sensitivity_log_file(),
             self.config_loader.xpansion_simulation_output()
         )
+        self.config_loader.update_last_study_with_sensitivity_results()
 
     def resume_study(self):
         self.config_loader.benders_pre_actions()

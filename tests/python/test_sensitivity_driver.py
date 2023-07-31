@@ -31,7 +31,7 @@ class TestSensitivityDriver:
     def test_non_existing_input_file(self, tmp_path):
         simulation_path = tmp_path
         sensitivity_driver = SensitivityDriver("")
-        with pytest.raises(SensitivityDriver.SensitivityOutputPathError):
+        with pytest.raises(SensitivityDriver.SensitivityFilePathError):
             sensitivity_driver.launch(
                 simulation_path,
                 tmp_path / "i_dont_exist",
