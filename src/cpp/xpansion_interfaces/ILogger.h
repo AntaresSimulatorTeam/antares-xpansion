@@ -62,6 +62,7 @@ struct LogData {
   double benders_elapsed_time;
   double master_time;
   double subproblem_time;
+  int cumulative_number_of_subproblem_resolved;
   bool operator==(const LogData &lhs) const {
     return lb == lhs.lb && best_ub == lhs.best_ub && ub == lhs.ub &&
            it == lhs.it && best_it == lhs.best_it &&
@@ -74,7 +75,9 @@ struct LogData {
            max_iterations == lhs.max_iterations &&
            benders_elapsed_time == lhs.benders_elapsed_time &&
            master_time == lhs.master_time &&
-           subproblem_time == lhs.subproblem_time;
+           subproblem_time == lhs.subproblem_time &&
+           cumulative_number_of_subproblem_resolved ==
+               lhs.cumulative_number_of_subproblem_resolved;
   }
 };
 class ILogger {
