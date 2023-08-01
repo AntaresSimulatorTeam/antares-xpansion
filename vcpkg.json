@@ -6,11 +6,13 @@
     "gtest",
     "boost-mpi",
     "boost-program-options",
-    "tbb",
+    {
+     "name": "tbb",
+     "version-string": "2020_U3",
+     "port-version": 0
+    }
+      ,
     "zlib"
-  ],
-  "builtin-baseline": "9d47b24eacbd1cd94f139457ef6cd35e5d92cc84",
-  "overrides": [
-    { "name": "tbb", "version-string": "2020_U3" }
   ]
+
 }
