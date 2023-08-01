@@ -1,6 +1,13 @@
 Antares-Xpansion changelog
 =================
 
+v1.0.2 (08/2023)
+--------------------
+
+### Update
+
+Update simulator to 8.4.3 to fix issue with large MPS files
+
 v1.0.2 (01/2023)
 --------------------
 
