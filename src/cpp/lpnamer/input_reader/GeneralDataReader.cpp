@@ -18,13 +18,14 @@ GeneralDataIniReader::GeneralDataIniReader(
 
   reader_ = INIReader(file_path.string());
   std::ifstream input_file(file_path);
-  std::copy(std::istream_iterator<std::string>(input_file),
-            std::istream_iterator<std::string>(),
-            std::back_inserter(file_lines_));
+  std::string line;
+  while (std::getline(input_file, line)) {
+    file_lines_.push_back(line);
+  }
 
-  mc_years_ = reader_.GetInteger("general", "nbyears", 0);
-  user_playlist_ = reader_.GetBoolean("general", "user-playlist", false);
-  playlist_reset_option_ = true;
+    mc_years_ = reader_.GetInteger("general", "nbyears", 0);
+    user_playlist_ = reader_.GetBoolean("general", "user-playlist", false);
+    playlist_reset_option_ = true;
 }
 std::vector<int> GeneralDataIniReader::GetActiveYears() {
   active_year_list_.clear();
@@ -63,7 +64,7 @@ std::vector<int> GeneralDataIniReader::ActiveYearsFromInactiveList() {
   std::vector<int> active_years;
   for (auto year = 0; year < mc_years_; year++) {
     if (std::find(inactive_year_list_.begin(), inactive_year_list_.end(),
-                  year) != inactive_year_list_.end()) {
+                  year) == inactive_year_list_.end()) {
       active_years.push_back(year + 1);
     }
   }
