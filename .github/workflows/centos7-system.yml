@@ -6,6 +6,7 @@ on:
       - main
       - develop
       - ci/*
+  pull_request:
   workflow_dispatch:
   release:
     types: [ created ]
@@ -118,13 +119,14 @@ jobs:
       XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
 
     steps:
+      - uses: nelonoel/branch-name@v1.0.1
       - id: branch-name
         uses: tj-actions/branch-names@v6
 
       - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
+        run: |
+          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
+          git submodule update --init --recursive antares-deps
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
