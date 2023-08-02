@@ -6,7 +6,7 @@ on:
       - main
       - develop
       - ci/*
-  pull_request:
+      - release/*
   workflow_dispatch:
   release:
     types: [ created ]
