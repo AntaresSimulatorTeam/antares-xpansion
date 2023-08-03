@@ -84,6 +84,8 @@ jobs:
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb   
+        with:
+          cmake: 'cmake'    
 
       - name: Configure
         run: |
