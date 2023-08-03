@@ -107,7 +107,6 @@ void JsonWriter::write_solution(const SolutionData &solution) {
 
   _output[SOLUTION_C][STOPPING_CRITERION_C] = solution.stopping_criterion;
   _output[SOLUTION_C][PROBLEM_STATUS_C] = solution.problem_status;
-  _
 }
 
 void JsonWriter::update_solution(const SolutionData &solution_data) {
