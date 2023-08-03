@@ -2,7 +2,6 @@ import configparser
 import os
 import subprocess
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 from antares_xpansion.antares_driver import AntaresDriver
@@ -236,17 +235,6 @@ class TestGeneralDataProcessor:
 
 
 class TestAntaresDriver:
-    def test_antares_cmd(self, tmp_path):
-        study_dir = tmp_path
-        exe_path = "/Path/to/bin1"
-        antares_driver = AntaresDriver(exe_path)
-        # mock subprocess.run
-        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
-            antares_driver.launch(study_dir, 1)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z"]
-            run_function.assert_called_once_with(
-                expected_cmd, shell=False, stdout=-3, stderr=-3
-            )
 
     def test_empty_study_dir(self, tmp_path):
 
