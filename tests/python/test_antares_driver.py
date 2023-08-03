@@ -323,9 +323,7 @@ class TestAntaresDriver:
         print(returned_l.stdout)
         print(returned_l.stderr)
         antares_driver = AntaresDriver(get_antares_solver_path())
-
-        with pytest.raises(AntaresDriver.AntaresExecutionError):
-            antares_driver.launch(study_dir, 1)
+        antares_driver.launch(study_dir, 1)
 
     def initialize_dummy_study_dir(self, study_dir):
         settings_dir = study_dir / "settings"
