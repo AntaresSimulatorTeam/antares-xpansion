@@ -1,5 +1,6 @@
 import configparser
 import os
+import subprocess
 from pathlib import Path
 from unittest.mock import patch
 
@@ -305,6 +306,23 @@ class TestAntaresDriver:
         study_dir = tmp_path
         print(f"Study dir : {study_dir}")
         os.listdir()
+        print("Testing exe")
+        print(f"PAth {get_antares_solver_path()}")
+        if os.path.exists(get_antares_solver_path()):
+            print("Exe exists")
+        else:
+            print("Exe doesn't exist")
+        print("Test if executable ")
+        if os.path.isfile(get_antares_solver_path()) and os.access(get_antares_solver_path(), os.X_OK):
+            print("File is executable")
+        else:
+            print("File is not executable")
+
+        returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
+                                    capture_output=True,
+                                    stdout=subprocess.STDOUT,
+                                    stderr=subprocess.STDOUT)
+
         antares_driver = AntaresDriver(get_antares_solver_path())
 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
