@@ -71,10 +71,7 @@ jobs:
           yum install -y python3-pip
           python3 -m pip install --upgrade pip
           pip3 install pyinstaller pyyaml pytest numpy touch pytest-cov mkdocs mkdocs-material
-          git clone https://github.com/wjakob/tbb.git && \
-              cd tbb/build && \
-              cmake3 .. && \
-              cmake3 --build . --target install -j8
+
           # wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{needs.versions.outputs.antares-deps-version}}/rte-antares-deps-centos7-Release.tar.gz
           # tar -xvf rte-antares-deps-centos7-Release.tar.gz
           # rm -rf rte-antares-deps-centos7-Release.tar.gz
@@ -92,6 +89,13 @@ jobs:
           git config --global --add safe.directory ${GITHUB_WORKSPACE}
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${BRANCH_NAME} .
           git submodule update --init --recursive antares-deps
+
+      - name: tbb
+        run: |
+          git clone https://github.com/wjakob/tbb.git
+          cd tbb/build
+          cmake3 ..
+          cmake3 --build . --target install -j8
 
       - name: Checkout xpressmp linux
         uses: actions/checkout@v3
