@@ -76,7 +76,7 @@ void BendersByBatch::MasterLoop() {
   batch_counter_ = 0;
   current_batch_id_ = 0;
 
-  number_of_sub_problem_resolved_ = 0;
+  _data.number_of_subproblem_resolved = 0;
   cumulative_subproblems_timer_per_iter_ = 0;
   first_unsolved_batch_ = 0;
   while (!_data.stop) {
@@ -118,7 +118,9 @@ void BendersByBatch::MasterLoop() {
     BroadCast(_data.stop, rank_0);
     BroadCast(batch_counter_, rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter_);
-    _logger->number_of_sub_problem_resolved(number_of_sub_problem_resolved_);
+    _logger->number_of_sub_problem_resolved(
+        _data.number_of_subproblem_resolved +
+        GetNumOfSubProblemsResolvedBeforeResume());
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
@@ -193,7 +195,7 @@ void BendersByBatch::SolveBatches() {
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter_,
            std::plus<double>(), rank_0);
     if (Rank() == rank_0) {
-      number_of_sub_problem_resolved_ += batch_sub_problems.size();
+      _data.number_of_subproblem_resolved += batch_sub_problems.size();
       remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
     }
 

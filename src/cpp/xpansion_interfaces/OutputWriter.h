@@ -25,7 +25,7 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
     SOLVER_NAME_C("SOLVER_NAME"), PROBLEMNAME_C("problem_name"),
     PROBLEMPATH_C("problem_path"),
     CUMULATIVE_NUMBER_OF_SUBPROBLEM_RESOLVED_C(
-        "cumulative_number_of_subproblem_resolved");
+        "cumulative_number_of_subproblem_resolutions");
 struct CandidateData {
   std::string name;
   double invest;

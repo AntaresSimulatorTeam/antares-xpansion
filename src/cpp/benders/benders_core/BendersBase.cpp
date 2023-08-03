@@ -809,6 +809,8 @@ void BendersBase::ChecksResumeMode() {
     benders_timer = Timer(last_iter.benders_elapsed_time);
     _data.stop = ShouldBendersStop();
     iterations_before_resume = last_iter.it;
+    cumulative_number_of_subproblem_resolved_before_resume =
+        last_iter.cumulative_number_of_subproblem_resolved;
   }
 }
 
