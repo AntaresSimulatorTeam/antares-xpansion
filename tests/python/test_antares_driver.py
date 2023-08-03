@@ -319,8 +319,7 @@ class TestAntaresDriver:
             print("File is not executable")
 
         returned_l = subprocess.run(f"{get_antares_solver_path()} --version,", shell=False,
-                                    stdout=subprocess.STDOUT,
-                                    stderr=subprocess.STDOUT)
+                                    capture_output=True)
 
         antares_driver = AntaresDriver(get_antares_solver_path())
 
