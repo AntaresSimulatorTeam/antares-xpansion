@@ -32,8 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: 'recursive'
-          fetch-depth: 0
+          submodules: true
 
       - name: Checkout xpressmp linux
         if: matrix.xprs == 'XPRESS-ON'
@@ -109,6 +108,9 @@ jobs:
           rm -rf packages
           rm -rf downloads
         shell: bash
+
+      - name: Compile tbb
+        uses: ./.github/workflows/compile-tbb          
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-zip

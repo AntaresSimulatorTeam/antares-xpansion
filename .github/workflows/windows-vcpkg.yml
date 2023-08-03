@@ -62,8 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          submodules: 'recursive'
-          fetch-depth: 0
+          submodules: true
 
       - name: Enable git longpaths
         run: git config --system core.longpaths true
@@ -143,11 +142,14 @@ jobs:
         run: |
           cd vcpkg
           ./bootstrap-vcpkg.sh
-          vcpkg install  --triplet ${{matrix.triplet}}
+          vcpkg install --triplet ${{matrix.triplet}}
           rm -rf buildtrees
           rm -rf packages
           rm -rf downloads
         shell: bash
+
+      - name: Compile tbb
+        uses: ./.github/workflows/compile-tbb   
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-zip
