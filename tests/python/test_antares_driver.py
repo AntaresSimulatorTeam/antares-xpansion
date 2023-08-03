@@ -259,3 +259,4 @@ class TestAntaresDriver:
         print(returned_l.stderr)
         antares_driver = AntaresDriver(get_antares_solver_path())
         antares_driver.launch(study_dir, 1)
+        assert False
