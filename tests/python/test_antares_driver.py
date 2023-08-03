@@ -318,7 +318,7 @@ class TestAntaresDriver:
         else:
             print("File is not executable")
 
-        returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
+        returned_l = subprocess.run(f"{get_antares_solver_path()} --version,", shell=False,
                                     capture_output=True,
                                     stdout=subprocess.STDOUT,
                                     stderr=subprocess.STDOUT)
