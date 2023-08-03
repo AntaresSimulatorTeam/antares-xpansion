@@ -79,7 +79,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [ docker_publish, userguide, versions ]
+    needs: [ userguide, versions ]
     container: 'centos:7'
     strategy:
       matrix:
