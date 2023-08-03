@@ -119,10 +119,3 @@ jobs:
         run: |
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
-
-      - name: Upload build on failure
-        if: ${{ failure() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-after-failure
-          path: ${{ github.workspace }}
