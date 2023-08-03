@@ -320,7 +320,8 @@ class TestAntaresDriver:
 
         returned_l = subprocess.run([get_antares_solver_path(), "--version"], shell=False,
                                     capture_output=True)
-
+        print(returned_l.stdout)
+        print(returned_l.stderr)
         antares_driver = AntaresDriver(get_antares_solver_path())
 
         with pytest.raises(AntaresDriver.AntaresExecutionError):
