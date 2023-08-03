@@ -73,7 +73,7 @@ jobs:
         with:
           repository: rte-france/xpress-mp-temp
           path: ${{ env.XPRESSDIR }}
-          ref: 8.13
+          ref: 8.13a
           token: ${{ secrets.AS_TOKEN }}
 
       - name: Get release

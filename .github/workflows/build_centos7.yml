@@ -100,7 +100,7 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: 8.13
+          ref: 8.13a
         if: matrix.xprs == 'XPRESS-ON'
 
       - name: Download pre-compiled librairies
