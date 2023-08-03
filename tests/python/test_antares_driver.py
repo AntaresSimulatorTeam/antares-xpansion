@@ -1,7 +1,7 @@
 import configparser
 import os
-import subprocess
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
 from antares_xpansion.antares_driver import AntaresDriver
@@ -235,28 +235,146 @@ class TestGeneralDataProcessor:
 
 
 class TestAntaresDriver:
+    def test_antares_cmd(self, tmp_path):
+        study_dir = tmp_path
+        exe_path = "/Path/to/bin1"
+        antares_driver = AntaresDriver(exe_path)
+        # mock subprocess.run
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, 1)
+            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z"]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+    def test_antares_cmd_force_parallel_option(self, tmp_path):
+        study_dir = tmp_path
+        exe_path = "/Path/to/bin2"
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [exe_path, study_dir, "--force-parallel", str(n_cpu), "-z"]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+    def test_invalid_n_cpu(self, tmp_path):
+        study_dir = tmp_path
+        exe_path = "/Path/to/bin"
+        n_cpu = -1
+        expected_n_cpu = 1
+        antares_driver = AntaresDriver(exe_path)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [
+                exe_path,
+                study_dir,
+                "--force-parallel",
+                str(expected_n_cpu),
+                "-z"
+            ]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+    def test_remove_log_file(self, tmp_path):
+        study_dir = tmp_path
+        exe_path = tmp_path
+        log_file = str(exe_path) + ".log"
+        log_file = Path(log_file).touch()
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+    def test_non_valid_exe_empty(self, tmp_path):
+        study_dir = tmp_path
+        settings_dir = study_dir / "settings"
+        settings_dir.mkdir()
+        antares_driver = AntaresDriver("")
+        with pytest.raises(OSError):
+            antares_driver.launch(study_dir, 1)
 
     def test_empty_study_dir(self, tmp_path):
 
         study_dir = tmp_path
         print(f"Study dir : {study_dir}")
         os.listdir()
-        print("Testing exe")
-        print(f"PAth {get_antares_solver_path()}")
-        if os.path.exists(get_antares_solver_path()):
-            print("Exe exists")
-        else:
-            print("Exe doesn't exist")
-        print("Test if executable ")
-        if os.path.isfile(get_antares_solver_path()) and os.access(get_antares_solver_path(), os.X_OK):
-            print("File is executable")
-        else:
-            print("File is not executable")
-
-        returned_l = subprocess.run([get_antares_solver_path(), "--version"], shell=False,
-                                    capture_output=True)
-        print(returned_l.stdout)
-        print(returned_l.stderr)
         antares_driver = AntaresDriver(get_antares_solver_path())
-        antares_driver.launch(study_dir, 1)
-        assert False
+
+        with pytest.raises(AntaresDriver.AntaresExecutionError):
+            antares_driver.launch(study_dir, 1)
+
+    def initialize_dummy_study_dir(self, study_dir):
+        settings_dir = study_dir / "settings"
+        settings_dir.mkdir()
+        general_data_path = settings_dir / "generaldata.ini"
+        default_val = (
+            "[general] \n"
+            "mode = expansion\n"
+            "[optimization] \n"
+            "include-exportmps = false\n"
+            "include-tc-minstablepower = false\n"
+            "include-dayahead = NO\n"
+            "include-usexprs = value\n"
+            "include-inbasis = value\n"
+            "include-outbasis = value\n"
+            "include-trace = value\n"
+            "[other preferences] \n"
+            "unit-commitment-mode = dada\n"
+            "[random_section] \n"
+            "key1 = value1\n"
+            "key2 = value2\n"
+        )
+        general_data_path.write_text(default_val)
+
+    def test_preserve_adequacy_option_after_run(self, tmp_path):
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / "generaldata.ini"
+
+        with open(gen_data_path, "w") as writer:
+            writer.write("[adequacy patch]\ndummy=false\nfoo = bar\n")
+            writer.write("include-adq-patch = true\n")
+
+        study_dir = tmp_path
+        exe_path = tmp_path
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+        config_reader = configparser.ConfigParser(strict=False)
+        config_reader.read(gen_data_path)
+        assert config_reader.getboolean("adequacy patch", "dummy") is False
+        assert config_reader.get("adequacy patch", "foo") == "bar"
+        assert config_reader.getboolean("adequacy patch", "include-adq-patch") is True
+
+    def test_preserve_general_file_section_missing(self, tmp_path):
+        settings_dir = TestGeneralDataProcessor.get_settings_dir(tmp_path)
+        settings_dir.mkdir()
+        gen_data_path = settings_dir / "generaldata.ini"
+
+        study_dir = tmp_path
+        exe_path = tmp_path
+        n_cpu = 13
+        antares_driver = AntaresDriver(exe_path)
+        with patch(SUBPROCESS_RUN, autospec=True) as run_function:
+            antares_driver.launch(study_dir, n_cpu)
+            expected_cmd = [str(exe_path), study_dir, "--force-parallel", str(n_cpu), "-z"]
+            run_function.assert_called_once_with(
+                expected_cmd, shell=False, stdout=-3, stderr=-3
+            )
+
+        config_reader = configparser.ConfigParser(strict=False)
+        config_reader.read(gen_data_path)
+        assert config_reader.has_section("adequacy patch") is False

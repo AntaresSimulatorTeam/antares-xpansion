@@ -57,11 +57,9 @@ class AntaresDriver:
         flushed_print("-- launching antares")
 
         start_time = datetime.now()
-        flushed_print("Antares ", self._get_antares_cmd())
         returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
-                                    capture_output=True)
-        flushed_print(returned_l.stdout)
-        flushed_print(returned_l.stderr)
+                                    stdout=subprocess.DEVNULL,
+                                    stderr=subprocess.DEVNULL)
 
         end_time = datetime.now()
         flushed_print('Antares simulation duration : {}'.format(end_time - start_time))
