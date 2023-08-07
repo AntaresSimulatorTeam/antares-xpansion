@@ -12,7 +12,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import step_logger
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.xpansion_utils import read_and_write_mps
 from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
@@ -65,13 +65,14 @@ class ProblemGeneratorDriver:
         self.MPS_TXT = "mps.txt"
         self.is_relaxed = False
         self._lp_path = None
+        self.logger = step_logger(__name__, __class__.__name__)
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """
             problem generation step : getnames + lp_namer
         """
         self.clear_old_log()
-        flushed_print("-- Problem Generation")
+        self.logger.info("Problem Generation")
         self.output_path = output_path
 
         self.create_lp_dir()

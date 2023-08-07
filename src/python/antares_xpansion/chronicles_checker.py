@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import step_logger
 from antares_xpansion.candidates_reader import CandidatesReader
 
 
@@ -28,10 +28,11 @@ class ChronicleChecker:
     _study_path = Path()
 
     def __init__(self, study_path, antares_version):
+        self.logger = step_logger(__name__, __class__.__name__)
         self.antares_version = antares_version
         self._study_path = Path(study_path)
 
-    def CheckChronicleConstraints(self):
+    def check_chronicle_constraints(self):
         # NTC mismatch can only happen after 820
         if self.antares_version < 820:
             return
@@ -70,12 +71,12 @@ class ChronicleChecker:
             )
 
             if antares_direct_link.shape != antares_indirect_link.shape:
-                flushed_print(
+                self.logger.error(
                     f"For candidate {candidate}, the shapes of the direct and indirect NTC profiles of the virtual link in the Antares study do not match ({antares_direct_link.shape} vs. {antares_indirect_link.shape})"
                 )
                 raise NTCColumnMismatch
             if direct_link_profile.shape != indirect_link_profile.shape:
-                flushed_print(
+                self.logger.error(
                     f"For candidate {candidate}, shape of direct link profile {direct_link_profile.shape} does not match shape of indirect link profile {indirect_link_profile.shape}"
                 )
                 raise CandidateProfileColumnNumberMismatch
@@ -83,28 +84,29 @@ class ChronicleChecker:
                 installed_direct_link_profile.shape
                 != installed_indirect_link_profile.shape
             ):
-                flushed_print(
+                self.logger.error(
                     f"For candidate {candidate}, shape of direct already installed link profile {installed_direct_link_profile.shape} does not match shape of indirect already installed link profile {installed_indirect_link_profile.shape}"
                 )
                 raise CandidateInstalledProfileColumnNumberMismatch
             if candidate_reader.has_profile(self._study_path, candidate):
                 if antares_direct_link.shape != direct_link_profile.shape:
-                    flushed_print(
+                    self.logger.error(
                         f"For candidate {candidate}, the shape of the direct link profile {direct_link_profile.shape} does not match the shape of the NTC direct profile of the virtual link in the Antares study {antares_direct_link.shape}"
                     )
                     raise NTC_And_Candidate_Mismatch
             elif candidate_reader.has_installed_profile(self._study_path, candidate):
                 if antares_direct_link.shape != installed_direct_link_profile.shape:
-                    flushed_print(
+                    self.logger.error(
                         f"For candidate {candidate}, the shape of the already installed direct link profile {installed_direct_link_profile.shape} does not match the shape of the NTC direct profile of the virtual link in the Antares study {antares_direct_link.shape}"
                     )
                     raise NTC_And_Candidate_Mismatch
             if (
-                candidate_reader.has_installed_profile(self._study_path, candidate)
+                candidate_reader.has_installed_profile(
+                    self._study_path, candidate)
                 and candidate_reader.has_profile(self._study_path, candidate)
                 and direct_link_profile.shape != installed_direct_link_profile.shape
             ):
-                flushed_print(
+                self.logger.error(
                     f"For candidate {candidate}, the shape of the direct link profile {direct_link_profile.shape} does not match the shape of the already installed direct profile {installed_direct_link_profile.shape}"
                 )
                 raise CandidateInstalledProfileColumnNumberMismatchWithProfile

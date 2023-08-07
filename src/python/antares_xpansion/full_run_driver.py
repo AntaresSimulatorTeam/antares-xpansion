@@ -4,12 +4,9 @@ import subprocess
 import sys
 from antares_xpansion.benders_driver import BendersDriver
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
-from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.flushed_print import flushed_print
+from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 import os
-import shutil
 from pathlib import Path
 
 
@@ -19,6 +16,7 @@ class FullRunDriver:
         self.benders_driver = benders_driver
         self.problem_generation_driver = problem_generation_driver
         self.json_file_path = ""
+        self.logger = step_logger(__name__, __class__.__name__)
 
     def prepare_drivers(self, output_path: Path,
                         problem_generation_is_relaxed: bool,
@@ -67,7 +65,7 @@ class FullRunDriver:
         lp_path = self.benders_driver.get_lp_path()
 
         os.chdir(lp_path)
-        flushed_print("Current directory is now: ", os.getcwd())
+        self.logger.info(f"Current directory is now: {os.getcwd()}")
         ret = subprocess.run(
             self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')

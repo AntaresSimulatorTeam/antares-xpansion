@@ -6,8 +6,9 @@
 #include "LogUtils.h"
 #include "multisolver_interface/Solver.h"
 
-class InvalidSolverStatusException : public XpansionError<std::runtime_error> {
-  using XpansionError::XpansionError;
+class InvalidSolverStatusException
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
 /**

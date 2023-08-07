@@ -16,7 +16,7 @@ void StudyUpdateStrategy::EnsureCandidateInvestmentFound(
     auto message = "No investment computed for the candidate " +
                    candidate.get_name() + " on the link " +
                    link_p.get_LinkName();
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << log_location << message;
     throw NoInvestmentComputedForTheCandidate(message, log_location);
   }

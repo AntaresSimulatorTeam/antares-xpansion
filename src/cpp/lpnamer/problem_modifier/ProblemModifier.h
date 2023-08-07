@@ -30,8 +30,8 @@ class ProblemModifier {
   unsigned int get_candidate_col_id(const std::string &cand_name) const;
   bool has_candidate_col_id(const std::string &cand_name) const;
   class CandidateWasNotAddedInProblem
-      : public XpansionError<std::runtime_error> {
-    using XpansionError::XpansionError;
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
 
  private:

@@ -54,8 +54,9 @@ class LinkProfile {
            indirect_link_profile == rhs.indirect_link_profile;
   }
 
-  class InvalidHourForProfile : public XpansionError<std::invalid_argument> {
-    using XpansionError::XpansionError;
+  class InvalidHourForProfile
+      : public LogUtils::XpansionError<std::invalid_argument> {
+    using LogUtils::XpansionError<std::invalid_argument>::XpansionError;
   };
 
  private:

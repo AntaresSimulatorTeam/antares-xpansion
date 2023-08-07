@@ -12,7 +12,7 @@ GeneralDataIniReader::GeneralDataIniReader(
     msg << LOGLOCATION
         << "General data file is not found : " << file_path.string()
         << std::endl;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL) << msg.str();
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << msg.str();
     throw IniFileNotFound(msg.str());
   }
 

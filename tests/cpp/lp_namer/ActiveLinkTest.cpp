@@ -7,7 +7,7 @@ const double DEFAULT_PROFILE_VALUE = 1;
 static ProblemGenerationLog::ProblemGenerationLoggerSharedPointer
 emptyLogger() {
   return std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-      ProblemGenerationLog::LOGLEVEL::NONE);
+      LogUtils::LOGLEVEL::NONE);
 }
 LinkProfile createProfile(
     const std::vector<double>& directAlreadyInstalledLinkprofile_l,

@@ -71,7 +71,7 @@ void ActiveLinksBuilder::raise_errors_if_link_data_differs_from_existing_link(
     auto log_location = LOGLOCATION;
     auto message =
         "Multiple already installed capacity detected for link " + link_name;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << log_location << message;
     throw MultipleAlreadyInstalledCapacityDetectedForLink(message,
                                                           log_location);
@@ -80,14 +80,14 @@ void ActiveLinksBuilder::raise_errors_if_link_data_differs_from_existing_link(
     auto log_location = LOGLOCATION;
     auto message =
         "Multiple already_installed_profile detected for link " + link_name;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << log_location << message;
     throw MultipleAlreadyInstalledProfileDetectedForLink(message, log_location);
   }
   if (old_link_data.id != link_data.id) {
     auto log_location = LOGLOCATION;
     auto message = "Multiple link_id detected for link " + link_name;
-    (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+    (*logger_)(LogUtils::LOGLEVEL::FATAL)
         << log_location << message;
     throw MultipleLinkIddetectedForLink(message, log_location);
   }
@@ -101,7 +101,7 @@ void ActiveLinksBuilder::launchExceptionIfNoLinkProfileAssociated(
     if (it_profile == _profile_map.end()) {
       auto log_location = LOGLOCATION;
       auto message = "There is no linkProfile associated with " + profileName;
-      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+      (*logger_)(LogUtils::LOGLEVEL::FATAL)
           << log_location << message;
       throw ThereIsNoLinkProfileAssociatedWithThisProfile(message,
                                                           log_location);
@@ -117,7 +117,7 @@ void ActiveLinksBuilder::checkCandidateNameDuplication() const {
       auto log_location = LOGLOCATION;
       auto message =
           "Candidate " + candidateData.name + " duplication detected";
-      (*logger_)(ProblemGenerationLog::LOGLEVEL::FATAL)
+      (*logger_)(LogUtils::LOGLEVEL::FATAL)
           << log_location << message;
       throw CandidateDuplicationDetected(message, log_location);
     }
