@@ -34,6 +34,7 @@ void BendersBase::init_data() {
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
   _data.is_in_initial_relaxation = false;
+  _data.number_of_subproblem_resolved = 0;
 }
 
 void BendersBase::OpenCsvFile() {
