@@ -21,7 +21,7 @@ class IniFileNotFound : public std::runtime_error {
 class IniReaderUtils {
  public:
   static bool LineIsNotASectionHeader(const std::string& line) {
-    return common_lpnamer::split(common_lpnamer::trim(line), '=').size() == 2;
+    return line.find('=') != std::string::npos;
   }
 
   static std::string ReadSectionHeader(const std::string& line) {
