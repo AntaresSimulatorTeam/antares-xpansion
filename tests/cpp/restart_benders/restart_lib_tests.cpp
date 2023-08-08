@@ -7,7 +7,27 @@
 #include "WriterStub.h"
 #include "common.h"
 #include "gtest/gtest.h"
+bool operator==(const LogPoint& lhs, const LogPoint& rhs) {
+  return lhs.size() == rhs.size() &&
+         std::equal(lhs.begin(), lhs.end(), rhs.begin());
+}
 
+bool operator==(const LogData& lhs, const LogData& rhs) {
+  return rhs.lb == lhs.lb && rhs.best_ub == lhs.best_ub && rhs.ub == lhs.ub &&
+         rhs.it == lhs.it && rhs.best_it == lhs.best_it &&
+         rhs.subproblem_cost == lhs.subproblem_cost &&
+         rhs.invest_cost == lhs.invest_cost && rhs.x_in == lhs.x_in &&
+         rhs.x_out == lhs.x_out && rhs.x_cut == lhs.x_cut &&
+         rhs.min_invest == lhs.min_invest && rhs.max_invest == lhs.max_invest &&
+         rhs.optimality_gap == lhs.optimality_gap &&
+         rhs.relative_gap == lhs.relative_gap &&
+         rhs.max_iterations == lhs.max_iterations &&
+         rhs.benders_elapsed_time == lhs.benders_elapsed_time &&
+         rhs.master_time == lhs.master_time &&
+         rhs.subproblem_time == lhs.subproblem_time &&
+         rhs.cumulative_number_of_subproblem_resolved ==
+             lhs.cumulative_number_of_subproblem_resolved;
+}
 const LogPoint best_x_in = {{"candidate1", 56.e8}, {"candidate2", 6e4}};
 const LogPoint best_x_out = {{"candidate1", 568.e6}, {"candidate2", 682e9}};
 const LogPoint best_x_cut = {{"candidate1", 60e5}, {"candidate2", 12.4e8}};
@@ -54,7 +74,7 @@ TEST_F(LastIterationReaderTest,
   auto writer = LastIterationWriter(_last_iteration_file);
   writer.SaveBestAndLastIterations(best_iteration_data, last_iteration_data);
   auto reader = LastIterationReader(_last_iteration_file);
-  const auto [last, best] = reader.LastIterationData();
+  const auto& [last, best] = reader.LastIterationData();
 
   LogData expec_last_iteration_data = last_iteration_data;
   expec_last_iteration_data.x_in = {};
@@ -64,8 +84,8 @@ TEST_F(LastIterationReaderTest,
   expec_best_iteration_data.x_in = {};
   expec_best_iteration_data.x_out = {};
 
-  ASSERT_EQ(last, expec_last_iteration_data);
-  ASSERT_EQ(best, expec_best_iteration_data);
+  ASSERT_TRUE(last == expec_last_iteration_data);
+  ASSERT_TRUE(best == expec_best_iteration_data);
 }
 
 class LastIterationWriterTest : public ::testing::Test {
