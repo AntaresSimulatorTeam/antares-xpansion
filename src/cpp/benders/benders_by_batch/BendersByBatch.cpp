@@ -118,7 +118,7 @@ void BendersByBatch::MasterLoop() {
     BroadCast(_data.stop, rank_0);
     BroadCast(batch_counter_, rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter_);
-    _logger->number_of_sub_problem_resolved(
+    _logger->cumulative_number_of_sub_problem_resolved(
         _data.number_of_subproblem_resolved +
         GetNumOfSubProblemsResolvedBeforeResume());
     _logger->LogSubproblemsSolvingCumulativeCpuTime(

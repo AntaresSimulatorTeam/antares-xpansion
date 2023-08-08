@@ -441,6 +441,17 @@ TEST_F(UserLoggerTest, EndLog) {
   ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
+TEST_F(UserLoggerTest, CumulativeNumberOfSubProblemResolved) {
+  auto number(9150);
+  _logger.cumulative_number_of_sub_problem_resolved(number);
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+  std::stringstream expected;
+  expected << " " << indent_1
+           << "cumulative number of subproblem resolutions: " << number
+           << std::endl;
+  ASSERT_EQ(logWithoutPrefix, expected.str());
+}
+
 TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
   LogData logData1;
   logData1.it = 1;
@@ -608,7 +619,7 @@ class SimpleLoggerMock : public ILogger {
   void LogAtInitialRelaxation() { _initialRelaxationCall = true; }
 
   void LogAtSwitchToInteger() { _switchToIntegerCall = true; }
-  void number_of_sub_problem_resolved(int number) {  //
+  void cumulative_number_of_sub_problem_resolved(int number) {  //
   }
 
   bool _initCall;

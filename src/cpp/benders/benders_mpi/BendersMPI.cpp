@@ -121,7 +121,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   gather_subproblems_cut_package_and_build_cuts(subproblem_data_map, walltime);
   if (Rank() == rank_0) {
     _data.number_of_subproblem_resolved += _data.nsubproblem;
-    _logger->number_of_sub_problem_resolved(
+    _logger->cumulative_number_of_sub_problem_resolved(
         _data.number_of_subproblem_resolved +
         GetNumOfSubProblemsResolvedBeforeResume());
   }
