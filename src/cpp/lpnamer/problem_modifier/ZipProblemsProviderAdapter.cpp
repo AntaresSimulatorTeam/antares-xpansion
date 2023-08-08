@@ -13,10 +13,8 @@ std::vector<std::shared_ptr<Problem>>
 ZipProblemsProviderAdapter::provideProblems(
     const std::string& solver_name,
     const std::filesystem::path& log_file_path) const {
-  std::vector<std::shared_ptr<Problem>> problems(
-      problem_names_
-          .size());  // Order is important. Problems need to be in the same
-  // order as names
+  std::vector<std::shared_ptr<Problem>> problems(problem_names_.size());
+  // Order is important. Problems need to be in the same order as names
   std::transform(std::execution::par,
                  /*std::transform preserves order of element*/
                  problem_names_.begin(), problem_names_.end(), problems.begin(),
