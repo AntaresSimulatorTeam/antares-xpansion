@@ -21,7 +21,6 @@ ZipProblemsProviderAdapter::provideProblems(
                  [&](auto name) {
                    ZipProblemProviderAdapter problem_provider(lp_dir_, name,
                                                               archive_reader_);
-                   std::cout << "Providing problem" << name << std::endl;
                    return problem_provider.provide_problem(solver_name,
                                                            log_file_path);
                  });
