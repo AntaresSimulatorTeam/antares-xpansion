@@ -106,9 +106,9 @@ void Master::LogAtSwitchToInteger() {
   }
 }
 
-void Master::number_of_sub_problem_resolved(int number) {
+void Master::cumulative_number_of_sub_problem_resolved(int number) {
   for (auto logger : _loggers) {
-    logger->number_of_sub_problem_resolved(number);
+    logger->cumulative_number_of_sub_problem_resolved(number);
   }
 }
 

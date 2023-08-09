@@ -23,7 +23,9 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
     VALUES_C("values"), STOPPING_CRITERION_C("stopping_criterion"),
     MASTER_NAME_C("MASTER_NAME"), LOG_LEVEL_C("LOG_LEVEL"),
     SOLVER_NAME_C("SOLVER_NAME"), PROBLEMNAME_C("problem_name"),
-    PROBLEMPATH_C("problem_path");
+    PROBLEMPATH_C("problem_path"),
+    CUMULATIVE_NUMBER_OF_SUBPROBLEM_RESOLVED_C(
+        "cumulative_number_of_subproblem_resolutions");
 struct CandidateData {
   std::string name;
   double invest;
@@ -43,6 +45,7 @@ struct Iteration {
   double operational_cost;
   double overall_cost;
   CandidatesVec candidates;
+  int cumulative_number_of_subproblem_resolved;
 };
 typedef std::vector<Iteration> Iterations;
 /*!

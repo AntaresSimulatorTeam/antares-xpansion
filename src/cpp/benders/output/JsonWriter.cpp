@@ -76,6 +76,9 @@ void JsonWriter::write_iteration(const Iteration &iter,
   _output[ITERATIONS_C][strIterCnt_l][OPERATIONAL_COST_C] =
       iter.operational_cost;
   _output[ITERATIONS_C][strIterCnt_l][OVERALL_COST_C] = iter.overall_cost;
+  _output[ITERATIONS_C][strIterCnt_l]
+         [CUMULATIVE_NUMBER_OF_SUBPROBLEM_RESOLVED_C] =
+             iter.cumulative_number_of_subproblem_resolved;
 
   Json::Value vectCandidates_l(Json::arrayValue);
   for (const auto &candidate : iter.candidates) {
