@@ -107,20 +107,31 @@ void RunProblemGeneration(
 
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
+  (*logger)(LogUtils::LOGLEVEL::INFO)
+      << "Time before treating :"
+      << format_time_str(problem_generation_timer.elapsed()) << std::endl;
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
         InstantiateZipReader(antares_archive_path);
 
     /* Main stuff */
+    (*logger)(LogUtils::LOGLEVEL::INFO)
+        << "Time before problem names :"
+        << format_time_str(problem_generation_timer.elapsed()) << std::endl;
     std::vector<std::string> problem_names;
     std::transform(mpsList.begin(), mpsList.end(),
                    std::back_inserter(problem_names),
                    [](ProblemData const& data) { return data._problem_mps; });
+    (*logger)(LogUtils::LOGLEVEL::INFO)
+        << "Time after problem names :"
+        << format_time_str(problem_generation_timer.elapsed()) << std::endl;
     auto adapter = std::make_shared<ZipProblemsProviderAdapter>(lpDir_, reader,
                                                                 problem_names);
     std::vector<std::shared_ptr<Problem>> xpansion_problems =
         adapter->provideProblems(solver_name, log_file_path);
-
+    (*logger)(LogUtils::LOGLEVEL::INFO)
+        << "Time after provide problems :"
+        << format_time_str(problem_generation_timer.elapsed()) << std::endl;
     std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
         problems_and_data;
     for (int i = 0; i < xpansion_problems.size(); ++i) {
