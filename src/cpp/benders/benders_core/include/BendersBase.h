@@ -132,6 +132,9 @@ class BendersBase {
   BendersBaseOptions Options() const { return _options; }
   virtual void UpdateStoppingCriterion();
   virtual bool ShouldRelaxationStop() const;
+  int GetNumOfSubProblemsResolvedBeforeResume() {
+    return cumulative_number_of_subproblem_resolved_before_resume;
+  }
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
@@ -165,6 +168,7 @@ class BendersBase {
   std::filesystem::path _csv_file_path;
   LogData best_iteration_data;
   int iterations_before_resume = 0;
+  int cumulative_number_of_subproblem_resolved_before_resume = 0;
   Timer benders_timer;
 
  public:

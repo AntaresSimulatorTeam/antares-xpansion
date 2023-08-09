@@ -47,4 +47,6 @@ void LastIterationWriter::FillOutput(const std::string &iteration_name,
   output_[iteration_name]["master_duration"] = iteration_data.master_time;
   output_[iteration_name]["subproblem_duration"] =
       iteration_data.subproblem_time;
+  output_[iteration_name]["cumulative_number_of_subproblem_resolved"] =
+      iteration_data.cumulative_number_of_subproblem_resolved;
 }
