@@ -6,6 +6,8 @@ on:
       - main
       - develop
       - ci/*
+      - test/ci-centos
+
   workflow_dispatch:
   release:
     types: [ created ]
@@ -41,9 +43,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: docker
-          dockerfile: centos7-bare
+          dockerfile: Dockerfile
           cache: false
-          tags: centos7-xpansion-bare
+          tags: variant
 
   userguide:
     runs-on: ubuntu-latest

@@ -6,6 +6,8 @@ on:
     branches:
       - main
       - develop
+      - test/ci-centos
+
   pull_request:
   release:
     types: [ created ]
@@ -36,9 +38,9 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: docker
-          dockerfile: centos7-bare
+          dockerfile: Dockerfile
           cache: false
-          tags: centos7-xpansion-bare
+          tags: variant
 
   versions:
     runs-on: ubuntu-latest
