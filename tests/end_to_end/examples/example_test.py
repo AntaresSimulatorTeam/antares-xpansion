@@ -60,8 +60,8 @@ def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as
         str(nproc),
         "--oversubscribe",
     ]
-    if allow_run_as_root == "True":
-        command.append("--allow-run-as-root")
+    #if allow_run_as_root == "True":
+    #    command.append("--allow-run-as-root")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
     if process.returncode != 0:

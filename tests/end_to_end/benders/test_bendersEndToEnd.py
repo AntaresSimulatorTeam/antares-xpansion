@@ -182,6 +182,6 @@ def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
         if (allow_run_as_root):
-            return [MPI_LAUNCHER, "--allow-run-as-root", MPI_N, nproc_str, "--oversubscribe"]
+            return [MPI_LAUNCHER, MPI_N, nproc_str]
         else:
-            return [MPI_LAUNCHER, MPI_N, nproc_str, "--oversubscribe"]
+            return [MPI_LAUNCHER, MPI_N, nproc_str]
