@@ -87,10 +87,10 @@ class TestBendersDriver:
             os.chdir(lp_path)
             with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
                 expected_cmd = [self.MPI_LAUNCHER, self.MPI_N, str(
-                    my_n_mpi), "--oversubscribe", exe_path, self.OPTIONS_JSON]
+                    my_n_mpi), exe_path, self.OPTIONS_JSON]
                 run_function.return_value.returncode = 0
                 benders_driver.launch(
-                    simulation_output_path, "benders", True, my_n_mpi, oversubscribe=True)
+                    simulation_output_path, "benders", True, my_n_mpi, oversubscribe=False)
                 args, _ = run_function.call_args_list[0]
                 assert args[0] == expected_cmd
 

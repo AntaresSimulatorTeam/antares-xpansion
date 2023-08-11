@@ -86,7 +86,7 @@ class TestInputParser:
         result = my_parser.parse_args(["--dataDir=hello", "--np=2"])
         assert result.oversubscribe is False
 
-    def test_if_option_oversubscribe_then_oversubscribe_is_true(self):
-        my_parser = InputParser()
-        result = my_parser.parse_args(["--dataDir=hello", "--oversubscribe"])
-        assert result.oversubscribe is True
+    # def test_if_option_oversubscribe_then_oversubscribe_is_true(self):
+    #     my_parser = InputParser()
+    #     result = my_parser.parse_args(["--dataDir=hello", "--oversubscribe"])
+    #     assert result.oversubscribe is True

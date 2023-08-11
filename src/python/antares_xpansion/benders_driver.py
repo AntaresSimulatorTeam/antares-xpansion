@@ -126,13 +126,7 @@ class BendersDriver:
     def get_mpi_run_command_root(self):
 
         mpi_command = [self.MPI_LAUNCHER, self.MPI_N, str(self.n_mpi)]
-        if sys.platform.startswith("linux"):
-            if self.oversubscribe:
-                mpi_command.append("--oversubscribe")
-            if self.allow_run_as_root:
-                mpi_command.append("--allow-run-as-root")
-        return mpi_command
-
+       
     def _initialise_system_specific_mpi_vars(self):
         if sys.platform.startswith("win32"):
             self.MPI_LAUNCHER = "mpiexec"

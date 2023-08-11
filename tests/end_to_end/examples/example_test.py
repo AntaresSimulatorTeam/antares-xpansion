@@ -57,8 +57,7 @@ def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as
         "--step",
         "full",
         "-n",
-        str(nproc),
-        "--oversubscribe",
+        str(nproc)
     ]
     #if allow_run_as_root == "True":
     ##    command.append("--allow-run-as-root")
