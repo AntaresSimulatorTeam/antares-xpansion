@@ -74,7 +74,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [ docker_publish, versions ]
-    container: 'antaresrte/rte-antares:centos7-xpansion-bare'
+    container: '13words/centos7-variant:variant'
     strategy:
       matrix:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
