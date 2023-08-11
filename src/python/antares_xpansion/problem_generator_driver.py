@@ -6,16 +6,11 @@ import os
 import shutil
 import subprocess
 import sys
-import zipfile
 from dataclasses import dataclass
-from datetime import datetime
 from pathlib import Path
 from typing import List
 
 from antares_xpansion.logger import step_logger
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.xpansion_utils import read_and_write_mps
-from antares_xpansion.yearly_weight_writer import YearlyWeightWriter
 
 
 @dataclass

@@ -9,6 +9,7 @@
 
 #include "ArchiveReader.h"
 #include "ZipProblemProviderAdapter.h"
+
 std::vector<std::shared_ptr<Problem>>
 ZipProblemsProviderAdapter::provideProblems(
     const std::string& solver_name,
