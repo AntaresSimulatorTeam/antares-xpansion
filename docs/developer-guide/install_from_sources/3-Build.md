@@ -39,7 +39,6 @@ Here is a list of available CMake configure options:
 |`DEPS_INSTALL_DIR`|`../rte-antares-deps-<CMAKE_BUILD_TYPE>`|Define dependencies install directory.|
 |`BUILD_TESTING`|`OFF`|Enable test build.|
 |`BUILD_UI`|`OFF`|Enable UI build.|
-|`ALLOW_RUN_AS_ROOT`|`OFF`|allow mpi to run as root for centOs docker.|
 
 Additionnal options for Windows:
 

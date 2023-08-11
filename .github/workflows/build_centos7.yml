@@ -136,8 +136,7 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DXPRESS=${{ env.XPRESS_VALUE }} \
-                 -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
-                 -DALLOW_RUN_AS_ROOT=ON
+                 -DXPRESS_ROOT=${{ env.XPRESSDIR }}
       - name: Build
         run: |
           source /opt/rh/devtoolset-9/enable

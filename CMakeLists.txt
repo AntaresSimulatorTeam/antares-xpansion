@@ -34,10 +34,6 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE ${DEFAULT_BUILD_TYPE})
 endif()
 
-# for centos docker to run MPI tests as root
-IF(ALLOW_RUN_AS_ROOT)
-	set(ALLOW_RUN_AS_ROOT "True")
-ENDIF() 
 
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
