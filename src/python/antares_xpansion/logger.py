@@ -7,7 +7,7 @@ import sys
 flushed_print = functools.partial(print, flush=True)
 
 
-def get_logger(name, log_level):
+def get_logger(name, log_level = logging.INFO):
 
     class ConditionalFormatter(logging.Formatter):
         def format(self, record):
