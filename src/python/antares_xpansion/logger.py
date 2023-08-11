@@ -18,9 +18,12 @@ def get_logger(name, log_level = logging.INFO):
 
     logger = logging.getLogger(name)
     formatter = '[%(step)s][%(levelname)s %(asctime)s]  %(message)s'
-    handler = logging.StreamHandler()
+
+    log_destination = sys.stderr
     if log_level <= logging.WARNING:
-        handler.setStream(sys.stdout)
+        log_destination = sys.stdout
+    
+    handler = logging.StreamHandler(log_destination)
     
     handler.setFormatter(ConditionalFormatter(
         formatter, datefmt="%d-%m-%Y %H:%M:%S"))
