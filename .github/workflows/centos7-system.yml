@@ -201,7 +201,6 @@ jobs:
           WITH_XPRS=""
           fi
           VERSION=${{needs.versions.outputs.antares-xpansion-version}}${WITH_XPRS}
-          echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
       - name: .tar.gz creation
