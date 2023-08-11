@@ -167,7 +167,4 @@ def get_mpi_command(allow_run_as_root=False):
     elif sys.platform.startswith("linux"):
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
-        if (allow_run_as_root):
-            return [MPI_LAUNCHER, "--allow-run-as-root", MPI_N, nproc, "--oversubscribe"]
-        else:
-            return [MPI_LAUNCHER, MPI_N, nproc, "--oversubscribe"]
+        return [MPI_LAUNCHER, MPI_N, nproc]
