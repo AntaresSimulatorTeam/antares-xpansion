@@ -29,8 +29,6 @@ class TestFullRunDriver:
         json_file_path = tmp_path / "file"
         json_file_path.touch()
         benders_keep_mps = False
-        benders_oversubscribe = False
-        benders_allow_run_as_root = False
         is_relaxed = False
 
         problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
@@ -42,7 +40,7 @@ class TestFullRunDriver:
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
-                                        benders_keep_mps=benders_keep_mps, benders_oversubscribe=benders_oversubscribe, benders_allow_run_as_root=benders_allow_run_as_root)
+                                        benders_keep_mps=benders_keep_mps)
         xpansion_output_dir = output_path.parent / \
             (output_path.stem+"-Xpansion")
         expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
@@ -63,8 +61,6 @@ class TestFullRunDriver:
         json_file_path.touch()
         benders_keep_mps = False
         benders_n_mpi = 3
-        benders_oversubscribe = False
-        benders_allow_run_as_root = False
         is_relaxed = False
 
         problem_generation = ProblemGeneratorDriver(self.pb_gen_data)
@@ -76,7 +72,7 @@ class TestFullRunDriver:
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
-                                        benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
+                                        benders_keep_mps, benders_n_mpi)
         xpansion_output_dir = output_path.parent / \
             (output_path.stem+"-Xpansion")
         expected_command = [benders_driver.MPI_LAUNCHER, "-n", str(benders_n_mpi), self.full_run_exe, "--benders_options", self.benders_driver_options_file,

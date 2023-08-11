@@ -80,8 +80,7 @@ class XpansionDriver:
                                         self.config_loader.json_file_path(),
                                         self.config_loader.keep_mps(),
                                         self.config_loader.n_mpi(),
-                                        self.config_loader.oversubscribe(),
-                                        self.config_loader.allow_run_as_root())
+                                        )
             self.clean_step()
 
         elif self.config_loader.step() == "antares":
@@ -150,9 +149,7 @@ class XpansionDriver:
             self.config_loader.xpansion_simulation_output(),
             self.config_loader.method(),
             self.config_loader.keep_mps(),
-            self.config_loader.n_mpi(),
-            oversubscribe=self.config_loader.oversubscribe(),
-            allow_run_as_root=self.config_loader.allow_run_as_root()
+            self.config_loader.n_mpi()
         )
 
     def launch_sensitivity_step(self):

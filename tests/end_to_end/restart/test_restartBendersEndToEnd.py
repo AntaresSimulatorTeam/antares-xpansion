@@ -109,14 +109,14 @@ def check_optimization_json_output(expected_results_dict, output_path: Path):
                                    rtol=1e-6, atol=0)
 
 
-def run_solver(install_dir, tmp_study, instance, allow_run_as_root=False, mpi=False):
+def run_solver(install_dir, tmp_study, instance, mpi=False):
 
     pre_command = []
 
     solver_executable = get_solver_exe()
 
     if mpi:
-        pre_command = get_mpi_command(allow_run_as_root)
+        pre_command = get_mpi_command()
 
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
@@ -156,15 +156,15 @@ def get_solver_exe():
     return solver_executable
 
 
-def get_mpi_command(allow_run_as_root=False):
+def get_mpi_command():
     MPI_LAUNCHER = ""
     MPI_N = ""
     nproc = "2"
     if sys.platform.startswith("win32"):
         MPI_LAUNCHER = "mpiexec"
         MPI_N = "-n"
-        return [MPI_LAUNCHER, MPI_N, nproc]
     elif sys.platform.startswith("linux"):
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
-        return [MPI_LAUNCHER, MPI_N, nproc]
+
+    return [MPI_LAUNCHER, MPI_N, nproc]

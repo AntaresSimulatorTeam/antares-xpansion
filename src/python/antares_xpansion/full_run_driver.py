@@ -23,9 +23,8 @@ class FullRunDriver:
                         benders_method,
                         json_file_path,
                         benders_keep_mps=False,
-                        benders_n_mpi=1,
-                        benders_oversubscribe=False,
-                        benders_allow_run_as_root=False):
+                        benders_n_mpi=1
+                        ):
         """
             problem generation step : getnames + lp_namer
         """
@@ -39,8 +38,6 @@ class FullRunDriver:
 
         self.benders_driver.method = benders_method
         self.benders_driver.n_mpi = benders_n_mpi
-        self.benders_driver.oversubscribe = benders_oversubscribe
-        self.benders_driver.allow_run_as_root = benders_allow_run_as_root
         self.benders_driver.simulation_output_path = self.problem_generation_driver.xpansion_output_dir
         self.benders_driver.set_solver()
 
@@ -51,12 +48,10 @@ class FullRunDriver:
                benders_method,
                json_file_path,
                benders_keep_mps=False,
-               benders_n_mpi=1,
-               benders_oversubscribe=False,
-               benders_allow_run_as_root=False):
+               benders_n_mpi=1):
         self.prepare_drivers(
             output_path, problem_generation_is_relaxed, benders_method,
-            json_file_path, benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
+            json_file_path, benders_keep_mps, benders_n_mpi)
         self.run()
 
     def run(self):

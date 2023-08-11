@@ -30,11 +30,3 @@ class LauncherOptionsDefaultValues():
     @staticmethod
     def DEFAULT_KEEPMPS():
         return False
-
-    @staticmethod
-    def DEFAULT_OVERSUBSCRIBE():
-        return False
-
-    @staticmethod
-    def DEFAULT_ALLOW_RUN_AS_ROOT():
-        return False

@@ -1,13 +1,6 @@
 
 class LauncherOptionsKeys:
-    @staticmethod
-    def allow_run_as_root_key():
-        return "allow_run_as_root"
-
-    @staticmethod
-    def oversubscribe_key():
-        return "oversubscribe"
-
+    
     @staticmethod
     def keep_mps_key():
         return "keep_mps"

@@ -15,8 +15,6 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 class BendersDriver:
     def __init__(self, benders, benders_by_batch, merge_mps, options_file) -> None:
 
-        self.oversubscribe = False
-        self.allow_run_as_root = False
         self.benders = benders
         self.merge_mps = merge_mps
         self.benders_by_batch = benders_by_batch
@@ -31,7 +29,7 @@ class BendersDriver:
         self.MPI_N = "-n"
         self._initialise_system_specific_mpi_vars()
 
-    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False, allow_run_as_root=False):
+    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
 
@@ -39,8 +37,6 @@ class BendersDriver:
         self.logger.info("Benders")
         self.method = method
         self.n_mpi = n_mpi
-        self.oversubscribe = oversubscribe
-        self.allow_run_as_root = allow_run_as_root
         self.simulation_output_path = simulation_output_path
         old_cwd = os.getcwd()
         lp_path = self.get_lp_path()

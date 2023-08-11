@@ -102,12 +102,7 @@ class ConfigLoader:
         self._config.antares_n_cpu = options[LauncherOptionsKeys.antares_n_cpu_key(
         )]
         self._config.keep_mps = options[LauncherOptionsKeys.keep_mps_key()]
-        self._config.oversubscribe = options[LauncherOptionsKeys.oversubscribe_key(
-        )]
-        self._config.allow_run_as_root = options[
-            LauncherOptionsKeys.allow_run_as_root_key()
-        ]
-
+        
     def _verify_settings_ini_file_exists(self):
         if not os.path.isfile(self._get_settings_ini_filepath()):
             raise ConfigLoader.MissingFile(
@@ -402,9 +397,6 @@ class ConfigLoader:
         options[LauncherOptionsKeys.n_mpi_key()] = self.n_mpi()
         options[LauncherOptionsKeys.antares_n_cpu_key()] = self.antares_n_cpu()
         options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
-        options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
-        options[LauncherOptionsKeys.allow_run_as_root_key()
-                ] = self.allow_run_as_root()
 
         with open(self.launcher_options_file_path(), "w") as launcher_options:
             json.dump(options, launcher_options, indent=4)
@@ -658,12 +650,6 @@ class ConfigLoader:
             self.simulation_lp_path(),
             self._config.options_default["MASTER_NAME"] + "_last_basis.bss",
         )
-
-    def oversubscribe(self):
-        return self._config.oversubscribe
-
-    def allow_run_as_root(self):
-        return self._config.allow_run_as_root
 
     def timelimit(self):
         """

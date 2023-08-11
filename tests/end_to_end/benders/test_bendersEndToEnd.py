@@ -117,7 +117,7 @@ def check_optimization_json_output(expected_results_dict, output_path: Path):
         assert problem_name == expected_results_dict["ERROR"]["problem_name"]
 
 
-def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False, xpress=False):
+def run_solver(install_dir, solver, tmp_path, mpi=False, xpress=False):
     # Loading expected results from json RESULT_FILE_PATH
     with open(RESULT_FILE_PATH, 'r') as jsonFile:
         expected_results_dict = json.load(jsonFile)
@@ -129,7 +129,7 @@ def run_solver(install_dir, solver, tmp_path, allow_run_as_root=False, mpi=False
     pre_command = []
 
     if mpi:
-        pre_command = get_mpi_command(allow_run_as_root, 2)
+        pre_command = get_mpi_command (2)
 
     executable_path = str(
         (Path(install_dir) / Path(solver_executable)).resolve())
@@ -170,7 +170,7 @@ def get_solver_exe(solver: str):
     return solver_executable
 
 
-def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
+def get_mpi_command(nproc: int = 1):
     MPI_LAUNCHER = ""
     MPI_N = ""
     nproc_str = str(nproc)
@@ -181,7 +181,4 @@ def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
     elif sys.platform.startswith("linux"):
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
-        if (allow_run_as_root):
-            return [MPI_LAUNCHER, MPI_N, nproc_str]
-        else:
-            return [MPI_LAUNCHER, MPI_N, nproc_str]
+        return [MPI_LAUNCHER, MPI_N, nproc_str]

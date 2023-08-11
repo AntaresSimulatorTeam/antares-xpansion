@@ -43,10 +43,6 @@ class ResumeStudy:
 
         self.method = resume_options.get(
             LauncherOptionsKeys.method_key(), LauncherOptionsDefaultValues.DEFAULT_METHOD())
-        self.allow_run_as_root = resume_options.get(
-            LauncherOptionsKeys.allow_run_as_root_key(), LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT())
-        self.oversubscribe = resume_options.get(
-            LauncherOptionsKeys.oversubscribe_key(), LauncherOptionsDefaultValues.DEFAULT_OVERSUBSCRIBE())
         self.keep_mps = resume_options.get(LauncherOptionsKeys.keep_mps_key(
         ), LauncherOptionsDefaultValues.DEFAULT_KEEPMPS())
         self.antares_n_cpu = resume_options.get(
@@ -116,7 +112,7 @@ class ResumeStudy:
             self.benders_options_file
         )
         benders_driver.launch(self._simulation_output_path.parent, self.method,
-                              self.keep_mps, self.n_mpi, self.oversubscribe, self.allow_run_as_root)
+                              self.keep_mps, self.n_mpi)
 
     class OptionsFileNotFound(Exception):
         pass

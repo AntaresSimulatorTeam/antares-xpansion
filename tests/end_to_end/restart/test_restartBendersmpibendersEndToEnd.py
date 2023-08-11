@@ -11,7 +11,7 @@ from .studies import study_parameters, study_values
 )
 @pytest.mark.optim
 @pytest.mark.bendersmpi
-def test_001_mpibenders(install_dir, tmp_path, study, allow_run_as_root):
+def test_001_mpibenders(install_dir, tmp_path, study):
 
     instance_path = Path(study['path'])
 
@@ -25,4 +25,4 @@ def test_001_mpibenders(install_dir, tmp_path, study, allow_run_as_root):
     shutil.copyfile(instance_path / study["last_iteration_file"],
                     expansion_dir / "last_iteration.json")
     run_solver(install_dir,
-               instance_path, study, allow_run_as_root, mpi=True)
+               instance_path, study, mpi=True)

@@ -69,31 +69,7 @@ class TestBendersDriver:
             args, _ = run_function.call_args_list[0]
             assert args[0] == expected_cmd
 
-    def test_benders_cmd_mpibenders_with_oversubscribe_linux_only(self, tmp_path):
-        if sys.platform.startswith("linux"):
-            my_benders_mpi = "something"
-            my_install_dir = Path("Dummy/Path/to/installDir")
-            my_n_mpi = 13
-            exe_path = os.path.normpath(
-                os.path.join(my_install_dir, my_benders_mpi))
-
-            benders_driver = BendersDriver(
-                exe_path, "", "", self.OPTIONS_JSON)
-
-            simulation_output_path = tmp_path
-            lp_path = Path(os.path.normpath(
-                os.path.join(simulation_output_path, 'lp')))
-            lp_path.mkdir()
-            os.chdir(lp_path)
-            with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
-                expected_cmd = [self.MPI_LAUNCHER, self.MPI_N, str(
-                    my_n_mpi), exe_path, self.OPTIONS_JSON]
-                run_function.return_value.returncode = 0
-                benders_driver.launch(
-                    simulation_output_path, "benders", True, my_n_mpi, oversubscribe=False)
-                args, _ = run_function.call_args_list[0]
-                assert args[0] == expected_cmd
-
+    
     def test_benders_cmd_sequential(self, tmp_path):
         my_sequential = "something"
         my_install_dir = Path("Path/to/Dir")

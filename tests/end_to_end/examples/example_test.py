@@ -39,7 +39,7 @@ def remove_outputs(study_path):
                 shutil.rmtree(f)
 
 
-def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as_root=False, nproc: int = 4):
+def launch_xpansion(install_dir, study_path, method: BendersMethod, nproc: int = 4):
     # Clean study output
     remove_outputs(study_path)
 
@@ -59,8 +59,6 @@ def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as
         "-n",
         str(nproc)
     ]
-    #if allow_run_as_root == "True":
-    ##    command.append("--allow-run-as-root")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
     if process.returncode != 0:
@@ -342,7 +340,6 @@ long_parameters_values = [
 @pytest.mark.long_sequential
 def test_full_study_long_sequential(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -352,7 +349,7 @@ def test_full_study_long_sequential(
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root, 1)
+                    BendersMethod.BENDERS, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -365,7 +362,6 @@ def test_full_study_long_sequential(
 @pytest.mark.long_mpi
 def test_full_study_long_mpi(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -375,7 +371,7 @@ def test_full_study_long_mpi(
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root)
+                    BendersMethod.BENDERS)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -388,7 +384,6 @@ def test_full_study_long_mpi(
 @pytest.mark.long_benders_by_batch_mpi
 def test_full_study_long_benders_by_batch_parallel(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -401,7 +396,7 @@ def test_full_study_long_benders_by_batch_parallel(
                 tmp_study/"user"/"expansion"/"settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
     launch_xpansion(install_dir, tmp_study,
-                    method, allow_run_as_root)
+                    method)
     verify_solution(tmp_study, expected_values,
                     expected_investment_solution, method)
     verify_study_update(
@@ -559,7 +554,6 @@ medium_parameters_values = [
 @pytest.mark.medium_sequential
 def test_full_study_medium_sequential(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -569,7 +563,7 @@ def test_full_study_medium_sequential(
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root, 1)
+                    BendersMethod.BENDERS, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -582,7 +576,6 @@ def test_full_study_medium_sequential(
 @pytest.mark.medium_mpi
 def test_full_study_medium_parallel(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -592,7 +585,7 @@ def test_full_study_medium_parallel(
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root)
+                    BendersMethod.BENDERS)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -605,7 +598,6 @@ def test_full_study_medium_parallel(
 @pytest.mark.medium_benders_by_batch_mpi
 def test_full_study_medium_benders_by_batch_parallel(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -618,7 +610,7 @@ def test_full_study_medium_benders_by_batch_parallel(
                 tmp_study/"user"/"expansion"/"settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
     launch_xpansion(install_dir, tmp_study,
-                    method, allow_run_as_root)
+                    method)
     verify_solution(tmp_study, expected_values,
                     expected_investment_solution, method)
     verify_study_update(
@@ -675,7 +667,6 @@ short_parameters_values = [
 @pytest.mark.short_sequential
 def test_full_study_short_sequential(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -685,7 +676,7 @@ def test_full_study_short_sequential(
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, BendersMethod.BENDERS,
-                    allow_run_as_root, nproc=1)
+                    nproc=1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -698,7 +689,6 @@ def test_full_study_short_sequential(
 @pytest.mark.short_mpi
 def test_full_study_short_parallel(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -708,7 +698,7 @@ def test_full_study_short_parallel(
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root)
+                    BendersMethod.BENDERS)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -721,7 +711,6 @@ def test_full_study_short_parallel(
 @pytest.mark.short_benders_by_batch_mpi
 def test_full_study_short_benders_by_batch_parallel(
     install_dir,
-    allow_run_as_root,
     study_path,
     expected_values,
     expected_investment_solution,
@@ -734,7 +723,7 @@ def test_full_study_short_benders_by_batch_parallel(
                 tmp_study/"user"/"expansion"/"settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
     launch_xpansion(install_dir, tmp_study,
-                    method, allow_run_as_root)
+                    method)
     verify_solution(tmp_study, expected_values,
                     expected_investment_solution, method)
     verify_study_update(
