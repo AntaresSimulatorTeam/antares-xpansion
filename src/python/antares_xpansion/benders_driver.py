@@ -125,7 +125,7 @@ class BendersDriver:
 
     def get_mpi_run_command_root(self):
 
-        mpi_command = [self.MPI_LAUNCHER, self.MPI_N, str(self.n_mpi)]
+        return [self.MPI_LAUNCHER, self.MPI_N, str(self.n_mpi)]
        
     def _initialise_system_specific_mpi_vars(self):
         if sys.platform.startswith("win32"):
