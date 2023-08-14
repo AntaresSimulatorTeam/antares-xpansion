@@ -94,8 +94,8 @@ jobs:
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
         
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
+      - name: Build Boost
+        uses: ./.github/workflows/build-boost
         with: 
           prefix: "../rte-antares-deps-Release/"
          

@@ -136,8 +136,8 @@ jobs:
           os-full-name: CentOS-7.9.2009
           #variant: -ortools-xpress
         
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
+      - name: Build Boost
+        uses: ./.github/workflows/build-boost
         with: 
           prefix: "../rte-antares-deps-Release/"
                

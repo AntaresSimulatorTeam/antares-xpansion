@@ -1,5 +1,5 @@
-name: "Download and compile boost"
-description: "Download and compile boost"
+name: "Download and Build Boost"
+description: "Download and Build Boost"
 inputs:
   prefix:
     description: 'extra qualifiers'
