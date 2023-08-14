@@ -1,0 +1,17 @@
+name: "Download and compile mpich2"
+description: "mpich2 is an mpi implementation (required for parallelization)."
+runs:
+  using: "composite"
+  steps: 
+  - id: build-mpich2
+    shell: bash
+    run: |  
+      cd /usr/local/src/ && \
+      wget http://www.mpich.org/static/downloads/3.2/mpich-3.2.tar.gz && \
+      tar xf mpich-3.2.tar.gz && \
+      rm mpich-3.2.tar.gz && \
+      cd mpich-3.2 && \
+      ./configure --disable-fortran && \
+      make && make install && \
+      cd /usr/local/src && \
+      rm -rf mpich-3.2

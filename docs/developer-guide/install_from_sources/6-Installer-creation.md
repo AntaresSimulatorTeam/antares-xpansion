@@ -54,5 +54,5 @@ CPack can be used to create the installer after the build phase :
     ### Required system libraries
     There are still some system libraries that must be installed if you want to use Antares-Xpansion:
     ```
-    sudo apt-get install libcurl4 libjsoncpp1 libboost-mpi-dev libboost-program-options-dev
+    sudo apt-get install libcurl4 libjsoncpp1 libmpich-dev libboost-program-options-dev
     ```

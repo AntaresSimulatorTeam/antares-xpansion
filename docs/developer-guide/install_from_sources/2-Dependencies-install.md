@@ -80,7 +80,7 @@ The install procedure can be done:
 === "Ubuntu (apt-get)"
 
     ```
-    sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev libtbb-dev
+    sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libmpich-dev doxygen graphviz libboost-program-options-dev libtbb-dev
     sudo apt-get install unzip uuid-dev
     ```
     !!! Note
