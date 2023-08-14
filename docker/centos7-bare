@@ -15,7 +15,17 @@ RUN yum -y remove git && \
     yum -y install git
 
 # Install xpansion requirements
-RUN yum install -y jsoncpp-devel gtest-devel openmpi-devel doxygen graphviz environment-modules zlib-devel
+RUN yum install -y jsoncpp-devel gtest-devel doxygen graphviz environment-modules zlib-devel
+
+RUN cd /usr/local/src/ && \
+    wget http://www.mpich.org/static/downloads/3.2/mpich-3.2.tar.gz && \
+    tar xf mpich-3.2.tar.gz && \
+    rm mpich-3.2.tar.gz && \
+    cd mpich-3.2 && \
+    ./configure --disable-fortran && \
+    make && make install && \
+    cd /usr/local/src && \
+    rm -rf mpich-3.2
 
 # Install tbb. tbb is required for execution policy (parallelization c++) but the system version is too old.
 RUN git clone https://github.com/wjakob/tbb.git && \

@@ -18,10 +18,10 @@ jobs:
         id: docker_push
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
-          name: 13words/centos7-variant
+          name: antaresrte/rte-antares
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: docker
-          dockerfile: Dockerfile
+          dockerfile: centos7-bare
           cache: false
-          tags: variant
+          tags: centos7-xpansion-bare
